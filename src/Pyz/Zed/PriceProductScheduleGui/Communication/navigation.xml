@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+<config>
+    <price>
+        <visible>0</visible>
+        <pages>
+            <price-product-schedule>
+                <visible>0</visible>
+            </price-product-schedule>
+        </pages>
+    </price>
+</config>

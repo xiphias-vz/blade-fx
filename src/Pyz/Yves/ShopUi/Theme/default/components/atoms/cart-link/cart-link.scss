@@ -1,0 +1,35 @@
+@mixin shop-ui-cart-link ($name: '.cart-link') {
+    #{$name} {
+        position: relative;
+        padding: rem(10) 0;
+
+        &__quantity {
+            position: absolute;
+            top: 0;
+            left: rem(10);
+            color: $setting-color-white;
+            background: $setting-color-green;
+            border-radius: 50%;
+            text-align: center;
+            line-height: rem(18);
+            min-width: rem(22);
+            border: rem(2) solid $setting-color-white;
+            font-size: rem(12);
+            font-weight: fw(bold);
+
+            @include helper-breakpoint-media-min($xl-min) {
+                @include helper-effect-transition(background-color);
+            }
+        }
+
+        &:active {
+            @include helper-breakpoint-media-min($xl-min) {
+                #{$name}__quantity {
+                    background: $setting-color-green;
+                }
+            }
+        }
+    }
+}
+
+@include shop-ui-cart-link();

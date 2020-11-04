@@ -1,0 +1,23 @@
+{% extends '@Gui/Layout/layout.twig' %}
+
+{% set widget_title = 'sales-document.store-picking.form.title.picking-list' %}
+
+{% block head_title %}
+    {{ widget_title | trans }}
+{% endblock %}
+
+{% block section_title %}
+    {{ widget_title | trans }}
+{% endblock %}
+
+{% block content %}
+    {{ form_start(form) }}
+        {{ form_widget(form) }}
+        <input type="submit" class="btn btn-primary safe-submit" value="{{ 'sales-document.form.print' | trans }}" />
+    {{ form_end(form) }}
+{% endblock %}
+
+{% block footer_js %}
+    {{ parent() }}
+    <script src="{{ assetsPath('js/zed-sales-document-export-main.js') }}"></script>
+{% endblock %}

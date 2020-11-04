@@ -1,0 +1,71 @@
+{% extends model('component') %}
+
+{% define config = {
+    name: 'navigation-top',
+    tag: 'nav',
+} %}
+
+{% define data = {
+    cartQuantity: app['cart.quantity'] | default,
+    cartAmount: app['cart.amount'] | default,
+    showUserMenu: true,
+} %}
+
+{% block extraClass %} {{ config.jsName }} {% endblock %}
+
+{% block body %}
+    <ul class="grid grid--middle grid--right">
+        <li class="{{ config.name }}__item">
+            {% set custometLink = is_granted('ROLE_USER') ? 'customer/overview' : 'login' %}
+
+            <a href="{{ url(custometLink) }}" class="link link--nav">
+                {% include atom('icon') with {
+                    class: 'link__icon link__icon--xxl-with-text',
+                    modifiers: ['big'],
+                    data: {
+                        name: 'user-account',
+                    },
+                } only %}
+
+                <span class="link__text link__text--xxl-visible">
+                    {{ 'customer.profile.link' | trans }}
+                </span>
+            </a>
+        </li>
+
+        {% if data.showUserMenu and is_granted('IS_AUTHENTICATED_FULLY') %}
+            <li class="{{ config.name }}__item">
+                <a href="{{ url('wishlist/overview') }}" class="link link--nav">
+                    {% include atom('icon') with {
+                        class: 'link__icon link__icon--xxl-with-text',
+                        modifiers: ['big'],
+                        data: {
+                            name: 'wishlist',
+                        },
+                    } only %}
+
+                    <span class="link__text link__text--xxl-visible">
+                        {{ 'global.my_wishlist' | trans }}
+                    </span>
+                </a>
+            </li>
+        {% endif %}
+
+        <li class="{{ config.name }}__item">
+            {% include atom('cart-link') with {
+                class: config.name ~ '__link link link--nav',
+                data: {
+                    cartAmount: data.cartAmount | money,
+                    cartQuantity: data.cartQuantity,
+                },
+                attributes: {
+                    href: url('cart'),
+                },
+            } only %}
+
+            {% include molecule('cart-block') with {
+                class: 'is-hidden',
+            } only %}
+        </li>
+    </ul>
+{% endblock %}

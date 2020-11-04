@@ -1,0 +1,109 @@
+@mixin shop-ui-breadcrumb-step($name: '.breadcrumb-step') {
+    #{$name} {
+        display: flex;
+        font-size: rem(12);
+
+        &__link {
+            @include helper-effect-transition(color);
+            text-decoration: none;
+            color: $setting-color-black;
+
+            &:hover {
+                color: $setting-color-green;
+            }
+        }
+
+        &__separator {
+            width: rem(25);
+            color: $setting-color-gray-3;
+            position: relative;
+            display: none;
+        }
+
+        &:not(:last-child) &__separator {
+            display: block;
+
+            &::after {
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                content: '';
+                width: rem(4);
+                height: rem(4);
+                transform: translate(-50%, -50%);
+                border-radius: 50%;
+                background: $setting-color-gray-15;
+            }
+        }
+
+        &--progress {
+            position: relative;
+            font: fw(medium) rem(14)/rem(24) $setting-font-family;
+            letter-spacing: rem(0.1);
+            color: $setting-color-gray-9;
+            flex: 1;
+            display: block;
+            padding-right: rem(24);
+            margin: 0;
+            white-space: nowrap;
+
+            &:last-child {
+                padding-right: 0;
+
+                &::after {
+                    right: rem(-3);
+                }
+            }
+
+            #{$name}__link {
+                color: $setting-color-green;
+                text-decoration: none;
+            }
+        }
+
+        &--progress-active {
+            margin-right: rem(24);
+
+            @include helper-breakpoint-media-min($lg-min) {
+                margin-right: rem(46);
+            }
+        }
+
+        &--active {
+            color: $setting-color-black;
+            margin-right: 0;
+
+            &::after {
+                content: '';
+                display: block;
+                position: absolute;
+                left: 0;
+                right: rem(22);
+                bottom: rem(-4);
+                height: rem(1);
+                background: $setting-color-black;
+            }
+        }
+
+        &__check {
+            position: absolute;
+            top: 50%;
+            right: 0;
+            transform: translateY(-50%);
+            display: none;
+            z-index: $setting-zi-element + 1;
+
+            &--progress-active {
+                display: block;
+            }
+
+            &--active {
+                display: none;
+            }
+        }
+
+        @content;
+    }
+}
+
+@include shop-ui-breadcrumb-step();

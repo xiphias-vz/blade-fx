@@ -1,0 +1,37 @@
+{% extends model('component') %}
+
+{% define config = {
+    name: 'product-quantity-input'
+} %}
+
+{% define data = {
+    label: 'cart.item_quantity' | trans,
+    maxQuantity: null,
+    minQuantity: 1,
+    value: 1,
+    readOnly: false,
+    hasUpdateButton: true,
+    decrIconName: null,
+    removeUrl: '',
+} %}
+
+{% block body %}
+    <div class="grid grid--middle grid--left">
+        {% block label %}{% endblock %}
+
+        {% block input %}
+            {% include molecule('quantity-counter') with {
+                modifiers: ['quantity-lighter', 'no-spacing'],
+                data: {
+                    maxQuantity: data.maxQuantity,
+                    minQuantity: data.minQuantity,
+                    value: data.value,
+                    readOnly: data.readOnly,
+                    autoUpdate: data.hasUpdateButton,
+                    decrIconName: data.decrIconName,
+                    removeUrl: data.removeUrl,
+                }
+            } only %}
+        {% endblock %}
+    </div>
+{% endblock %}

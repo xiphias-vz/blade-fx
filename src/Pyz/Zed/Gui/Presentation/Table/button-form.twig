@@ -1,0 +1,6 @@
+<form action="{{ url }}" method="post" class="inline">
+    <input type="hidden" name="token" value="{{ csrf_token('button') }}"/>
+    <button class="btn btn-xs btn-outline {{ class }}" {{ parameters | raw }} type="submit">
+        {{ icon | raw }} {{ title | trans | raw }}
+    </button>
+</form>

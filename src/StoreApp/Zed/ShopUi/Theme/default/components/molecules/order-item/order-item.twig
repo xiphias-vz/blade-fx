@@ -1,0 +1,54 @@
+{% extends model('component') %}
+
+{% define config = {
+    name: 'order-item',
+} %}
+
+{% define data = {
+    reference: required,
+    productsCount: required,
+    date: '',
+    deadline: required
+} %}
+
+{% block body %}
+    <div class="{{ component.renderClass('box', modifiers) }}">
+        <div class="grid grid--justify grid--stretch {{ config.name }}__content">
+            <div class="col {{ config.name }}__left-col">
+                <div class="{{ config.name }}__time">
+                    {% if data.date %}
+                        {{ data.date }}<br />
+                    {% endif %}
+                    {{ data.deadline }}
+                </div>
+                <div class="{{ config.name }}__products">
+                    {% block products %}
+                        {% if data.collectNumber %}
+                            <div class="{{ config.name }}__collect">
+                                {{ 'Collect Number' | trans }}: {{ data.collectNumber }}
+                            </div>
+                        {% endif %}
+                        {% include atom('icon-row') with {
+                            data: {
+                                iconName: 'cart',
+                                rowText: data.productsCount ~ ' ' ~ 'products' | trans
+                            }
+                        } only %}
+                    {% endblock %}
+                </div>
+            </div>
+            <div class="col {{ config.name }}__right-col">
+                {% block orderReference %}
+                    <div class="{{ config.name }}__id spacing-bottom spacing-bottom--big">
+                        {{ 'Order ID' | trans }}: {{ data.reference }}
+                    </div>
+                {% endblock %}
+                <div class="{{ config.name }}__action">
+                    {% block action %}{% endblock %}
+                </div>
+            </div>
+            {% block additionalFields %}{% endblock %}
+        </div>
+        {% block additionalContent %}{% endblock %}
+    </div>
+{% endblock %}

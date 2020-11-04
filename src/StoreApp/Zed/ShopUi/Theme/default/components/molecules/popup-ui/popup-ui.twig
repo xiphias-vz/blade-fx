@@ -1,0 +1,61 @@
+{% extends model('component') %}
+
+{% define config = {
+    name: 'popup-ui',
+    tag: 'popup-ui'
+} %}
+
+{% define data = {
+    title: 'Confirm your work!' | trans,
+    buttons: {
+        submit: {
+            title: 'Confirm' | trans,
+            isButton: false,
+            url: '/',
+            blank: false,
+            additionalClass: ''
+        },
+        cancel: {
+            title: 'Cancel' | trans
+        }
+    }
+} %}
+
+{% define attributes = {
+    'close-on-submit': true
+} %}
+
+{% block body %}
+    <div class="{{ config.name }}__overlay">
+        <div class="{{ config.name }}__container">
+            <div class="{{ config.name }}__title">
+                {{ data.title }}
+            </div>
+            <div class="{{ config.name }}__content">
+                {% block content %}{% endblock %}
+
+                {% block popupActions %}
+                    {% block confirmButton %}
+                        {% if data.buttons.submit.isButton %}
+                            <button type="submit" class="button button--expand {{ data.buttons.submit.additionalClass }} {{ config.jsName }}__submit">
+                                {{ data.buttons.submit.title }}
+                            </button>
+                        {% else %}
+                            <a href="{{ data.buttons.submit.url }}" class="button button--expand {{ data.buttons.submit.additionalClass }} {{ config.jsName }}__submit" {% if data.buttons.submit.blank %}target="_blank"{% endif %}>
+                                {{ data.buttons.submit.title }}
+                            </a>
+                        {% endif %}
+                    {% endblock %}
+                    <div class="text-center spacing-top spacing-top--big">
+                        {% block cancelButton %}
+                            <a href="#" class="link link--close {{ config.jsName }}__close">
+                                {{ data.buttons.cancel.title }}
+                            </a>
+                        {% endblock %}
+                    </div>
+                {% endblock %}
+            </div>
+        </div>
+    </div>
+    {% block button %}{% endblock %}
+{% endblock %}

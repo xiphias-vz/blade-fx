@@ -1,0 +1,19 @@
+@function fw($weight) {
+    @return map-get($setting-font-weight, $weight);
+}
+
+@mixin helper-font-size-mobile($size) {
+    font-size: map-get($setting-font-size-mobile, $size);
+}
+
+@mixin helper-heading($size) {
+    @include helper-font-size-mobile($size);
+    @include helper-font-line-height($size);
+    font-family: $setting-font-family-additional;
+    font-weight: fw(bold);
+    display: block;
+
+    @include helper-breakpoint-media-min($lg-min) {
+        @include helper-font-size($size);
+    }
+}

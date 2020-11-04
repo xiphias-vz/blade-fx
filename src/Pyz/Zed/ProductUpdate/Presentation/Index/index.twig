@@ -1,0 +1,37 @@
+{% extends '@Gui/Layout/layout.twig' %}
+
+{% set widget_title = 'Product Update' %}
+
+{% block section_title %}
+    {{ widget_title | trans }}
+{% endblock %}
+
+{% block content %}
+    {{ form_start(form) }}
+    {{ form_widget(form) }}
+    <input type="submit" class="btn btn-primary" value="{{ 'Update prices' | trans }}" />
+    <input type="reset" value="{{ 'Reset' | trans }}" class="btn btn-danger reset">
+    {{ form_end(form) }}
+
+    <h3>Examples:</h3>
+        Update price for product in all stores to the same value:
+    <pre>
+Artikelnummer;Verkaufspreis
+1012;5,00</pre>
+
+        Update price only in one store:
+    <pre>
+Artikelnummer;Verkaufspreis_041
+1012;5,00</pre>
+
+        Set specific price in one store, others - another value:
+    <pre>
+Artikelnummer;Verkaufspreis_041;Verkaufspreis
+1012;5.00;6,00</pre>
+
+        It's safe to use comma and dot as a decimal separator.
+{% endblock %}
+
+{% block footer_js %}
+    {{ parent() }}
+{% endblock %}

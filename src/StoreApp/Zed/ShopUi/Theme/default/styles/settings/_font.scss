@@ -1,0 +1,41 @@
+$setting-font-family: 'Montserrat', sans-serif;
+$setting-font-family-additional: 'Montserrat', sans-serif;
+$setting-font-family-code: 'Menlo', monospace;
+$setting-font-size-base: 16px;
+
+$setting-font-size: (
+  1: rem(26, number),
+  2: rem(22, number),
+  3: rem(20, number),
+  4: rem(19, number),
+  big: rem(20),
+  default: rem(15),
+  small: rem(13)
+);
+
+$setting-font-weight: (
+  light: 300,
+  regular: 400,
+  medium: 500,
+  semibold: 600,
+  bold: 700,
+  black: 900
+);
+
+$setting-font-line-height: (
+  1: 1.2,
+  2: 1.2,
+  3: 1.2,
+  4: 1.2,
+  default: 1.5,
+  tight: 1.4
+);
+
+$setting-font-letter-spacing: (
+  1: rem(0.8, number),
+  2: rem(0.8, number),
+  3: rem(1.39, number),
+  4: rem(0.15, number),
+  5: rem(2.7, number),
+  6: rem(2.5, number)
+);

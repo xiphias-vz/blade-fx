@@ -1,0 +1,234 @@
+@mixin shop-ui-navigation-multilevel-node($name: '.navigation-multilevel-node') {
+    $image-url: '../images';
+    $image-class: image;
+
+    #{$name} {
+        white-space: nowrap;
+        cursor: default;
+        padding: 0;
+
+        &__menu {
+            &--hidden {
+                display: none;
+            }
+        }
+
+        &__link {
+            display: inline-block;
+            color: $setting-color-gray-6;
+            text-decoration: none;
+            font: fw(medium) rem(14) $setting-font-family-additional;
+            cursor: pointer;
+            padding: 0 0 rem(12);
+            white-space: normal;
+            word-break: break-all;
+
+            @include helper-breakpoint-media-min($xl-min) {
+                padding-top: rem(6);
+                padding-bottom: rem(6);
+            }
+
+            &:hover {
+                color: $setting-color-gray-6;
+                text-decoration: underline;
+            }
+
+            &--lvl-1 {
+                position: relative;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                background: $setting-color-gray-14;
+                padding: 0;
+
+                @include helper-breakpoint-media-min($xl-min) {
+                    position: relative;
+
+                    &:hover {
+                        background: $setting-color-white;
+                        color: $setting-color-gray-6;
+                        text-decoration: none;
+                        border-left: rem(5) solid $setting-color-green;
+                    }
+
+                    &#{$name}__link {
+                        &--header {
+                            transform: scaleX(-1);
+                        }
+                    }
+                }
+
+                @include helper-media-ie() {
+                    &#{$name}__link {
+                        &--header {
+                            transform: none;
+                        }
+                    }
+                }
+            }
+
+            &--lvl-2 {
+                font-weight: fw(bold);
+            }
+
+            &--lvl-3 {
+                color: $setting-color-gray-9;
+            }
+        }
+
+        &__link-icon {
+            flex-shrink: 0;
+
+            @include helper-breakpoint-media-min($xl-min) {
+                display: flex;
+                align-items: center;
+                position: absolute;
+                right: 0;
+                top: 0;
+                height: 100%;
+                padding-right: rem(20);
+            }
+
+            .no-touch & {
+                pointer-events: none;
+            }
+        }
+
+        &__link-icon-inner {
+            @include helper-breakpoint-media-min($xl-min) {
+                transform: rotate(-90deg);
+            }
+        }
+
+        &__link-inner {
+            &,
+            &:hover {
+                color: inherit;
+                text-decoration: none;
+            }
+
+            &--lvl-1 {
+                width: 100%;
+                padding: rem(20) rem(50) rem(20) rem(20);
+
+                @include helper-breakpoint-media-min($xl-min) {
+                    padding: rem(12) rem(44) rem(12) rem(20);
+                }
+            }
+        }
+
+        &__icon {
+            display: none;
+
+            &--side-drawer {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                position: absolute;
+                top: 0;
+                right: 0;
+                width: rem(44);
+                height: rem(60);
+                cursor: pointer;
+                color: $setting-color-gray-6;
+                padding-right: rem(20);
+                padding-left: rem(5);
+                z-index: $setting-zi-element;
+            }
+
+            &--active {
+                transform: rotate(-180deg);
+                padding-right: rem(5);
+                padding-left: rem(20);
+
+                ~ #{$name}__link::before {
+                    content: '';
+                    position: absolute;
+                    left: 0;
+                    top: 0;
+                    right: 0;
+                    bottom: 0;
+                    background: $setting-color-alpha-11;
+                    pointer-events: none;
+                }
+            }
+        }
+
+        &--has-children-dropdown {
+            > #{$name}__menu {
+                @include helper-visibility-invisible;
+                position: absolute;
+                right: 100%;
+                top: 0;
+                width: rem(345);
+                height: 100%;
+                background: $setting-color-white;
+                border-left: rem(1) solid $setting-color-gray-14;
+                overflow-y: auto;
+                box-shadow: 0 rem(27) 0 $setting-color-gray-14;
+                padding-bottom: rem(20);
+
+                @include helper-breakpoint-media-min($xl-min) {
+                    &--header {
+                        transform: scaleX(-1);
+                    }
+                }
+                // With position from the right and transform whole block moves outside the screen (IE11)
+                @include helper-media-ie() {
+                    right: auto;
+                    left: 100%;
+                    transform: none;
+                }
+            }
+
+            &:hover {
+                > #{$name}__menu {
+                    @include helper-visibility-visible;
+                }
+            }
+        }
+
+        &--lvl-1 {
+            padding: 0;
+            position: relative;
+            border-bottom: rem(1) solid $setting-color-gray-15;
+
+            @include helper-media-ie() {
+                direction: ltr;
+            }
+
+            @include helper-breakpoint-media-min($xl-min) {
+                position: static;
+            }
+        }
+
+        &--lvl-2 {
+            padding: 0 rem(20);
+            margin-bottom: rem(18);
+
+            @include helper-breakpoint-media-min($xl-min) {
+                padding-right: rem(24);
+                padding-left: rem(36);
+                margin-bottom: rem(26);
+            }
+
+            &:first-child {
+                margin-top: rem(12);
+
+                @include helper-breakpoint-media-min($xl-min) {
+                    margin-top: rem(18);
+                }
+            }
+
+            &:last-child {
+                margin-bottom: rem(12);
+
+                @include helper-breakpoint-media-min($xl-min) {
+                    margin-bottom: 0;
+                }
+            }
+        }
+    }
+}
+
+@include shop-ui-navigation-multilevel-node();

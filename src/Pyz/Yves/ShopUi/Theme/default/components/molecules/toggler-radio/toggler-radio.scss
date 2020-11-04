@@ -1,0 +1,242 @@
+/* stylelint-disable */
+@import '../../atoms/radio/radio';
+
+@mixin shop-ui-toggler-radio($name: '.toggler-radio') {
+    @include shop-ui-radio($name);
+
+    #{$name} {
+        &__box {
+            width: rem(16);
+            height: rem(16);
+        }
+
+        &__input:checked + #{$name}__box {
+            background-color: $setting-color-main;
+            border-color: $setting-color-main;
+
+            #{$name}__check {
+                opacity: 1;
+                visibility: visible;
+            }
+        }
+
+        &--with-bg,
+        &--with-bg & {
+            margin-bottom: 0;
+            display: block;
+
+            #{$name}__container {
+                padding: rem(25) rem(24) rem(23);
+                position: relative;
+                cursor: pointer;
+                white-space: nowrap;
+            }
+
+            #{$name}__box {
+                margin-top: 0;
+                position: absolute;
+                left: 0;
+                top: 0;
+                width: 100%;
+                height: 100%;
+                z-index: -1;
+                border: none;
+                border-top: rem(3) solid $setting-color-gray-2;
+                border-radius: 0;
+                background: $setting-color-gray-2;
+            }
+
+            #{$name}__check {
+                display: none;
+            }
+
+            #{$name}__subtext {
+                display: none;
+
+                @include helper-breakpoint-media-min($lg-min) {
+                    display: block;
+                    font: bold rem(15) $setting-font-family;
+                }
+            }
+
+            &:hover,
+            &:focus {
+                #{$name}__box {
+                    border-color: $setting-color-green;
+                }
+            }
+
+            #{$name}__input {
+                position: absolute;
+
+                &:checked {
+                    & + #{$name}__box {
+                        background-color: $setting-color-white;
+                        border-color: $setting-color-green;
+                    }
+
+                    & ~ #{$name}__check {
+                        pointer-events: none;
+                        visibility: hidden;
+                        opacity: 0;
+                    }
+                }
+            }
+
+            #{$name}__label {
+                font: bold rem(22) $setting-font-family;
+                color: $setting-color-gray-6;
+                display: inline-block;
+            }
+
+            &#{$name}--checkout {
+                #{$name}__box {
+                    border-width: 6px;
+                }
+
+                #{$name}__label {
+                    @include helper-breakpoint-media-min($lg-min) {
+                        font-size: rem(24);
+                    }
+                }
+            }
+        }
+
+        &--alternative,
+        &--alternative & {
+            #{$name}__container {
+                padding: rem(17) rem(13);
+                margin-bottom: rem(-3);
+            }
+
+            #{$name}__label {
+                font: fw(semibold) rem(16)/1.4 $setting-font-family;
+                color: $setting-color-gray-9;
+            }
+
+            #{$name}__box {
+                background-color: $setting-color-transparent;
+                border-bottom: rem(3) solid $setting-color-gray-15;
+                border-top: none;
+
+                @include helper-breakpoint-media-min($lg-min) {
+                    border-color: $setting-color-transparent;
+                }
+            }
+
+            &:hover,
+            &:focus,
+            #{$name}__input:checked {
+
+                & + #{$name}__box {
+                    background-color: $setting-color-transparent;
+                    border-color: $setting-color-green;
+                }
+
+                & ~ #{$name}__label {
+                    color: $setting-color-gray-6;
+                }
+            }
+        }
+
+        &--payment {
+            margin-bottom: 0;
+            display: block;
+
+            #{$name}__container {
+                padding: rem(17) rem(120) rem(17) rem(20);
+                min-height: rem(60);
+                position: relative;
+                cursor: pointer;
+                white-space: nowrap;
+                display: flex;
+                align-items: center;
+            }
+
+            #{$name}__box {
+                margin-top: 0;
+                position: absolute;
+                left: 0;
+                top: 0;
+                width: 100%;
+                height: 100%;
+                z-index: -1;
+                border: rem(1) solid $setting-color-gray-3;
+                border-radius: rem(4);
+                background-color: $setting-color-white;
+            }
+
+            #{$name}__check {
+                display: none;
+            }
+
+            #{$name}__subtext {
+                display: none;
+
+                @include helper-breakpoint-media-min($lg-min) {
+                    display: block;
+                    font: bold rem(15) $setting-font-family;
+                }
+            }
+
+            &:hover,
+            &:focus {
+                #{$name}__box {
+                    border-color: $setting-color-gray-4;
+                }
+            }
+
+            #{$name}__input {
+                position: absolute;
+
+                &:checked {
+                    & + #{$name}__box {
+                        background-color: $setting-color-white;
+                        border-color: map-get($setting-color-actions, success);
+                    }
+
+                    & ~ #{$name}__check {
+                        pointer-events: none;
+                        visibility: hidden;
+                        opacity: 0;
+                    }
+
+                    & ~ #{$name}__label {
+                        color: $setting-color-gray-6;
+
+                        &::before {
+                            border: rem(5) solid $setting-color-green;
+                        }
+                    }
+                }
+            }
+
+            #{$name}__label {
+                font: fw(semibold) rem(16) $setting-font-family-additional;
+                color: $setting-color-gray-9;
+                letter-spacing: rem(0.1);
+                display: inline-block;
+
+                &:before {
+                    content: '';
+                    display: inline-block;
+                    height: rem(20);
+                    width: rem(20);
+                    margin-right: rem(10);
+                    border: rem(2) solid $setting-color-gray-15;
+                    border-radius: 50%;
+                    vertical-align: middle;
+
+                }
+            }
+        }
+
+        &__container {
+            &--checkout {
+                text-align: center;
+            }
+        }
+    }
+}
+
+@include shop-ui-toggler-radio();

@@ -1,0 +1,166 @@
+env:
+    APPLICATION_ENV: docker
+
+command-timeout: 3600
+
+sections:
+    build:
+        prepare-bin:
+            command: "chmod +x ./src/bin/*"
+
+        clear_directory_cache:
+            command: "vendor/bin/console clear:directory:cache"
+
+        generate-transfers:
+            command: "vendor/bin/console transfer:generate"
+
+        router-cache-warmup-yves:
+            command: "vendor/bin/yves router:cache:warm-up"
+
+        router-cache-warmup-zed:
+            command: "vendor/bin/console router:cache:warm-up"
+
+        twig-cache-warmup:
+            command: "vendor/bin/console twig:cache:warmer"
+
+        navigation-cache-warmup:
+            command: "vendor/bin/console navigation:build-cache"
+
+        rest-request-validation-cache-warmup:
+            command: "vendor/bin/console glue:rest:build-request-validation-cache"
+
+        propel-copy-schema:
+            command: "vendor/bin/console propel:schema:copy"
+
+        propel-build:
+            command: "vendor/bin/console propel:model:build"
+
+        generate-entity-transfer:
+            command: "vendor/bin/console transfer:entity:generate"
+
+        generate-page-source-map:
+            command: "vendor/bin/console search:setup:source-map"
+
+        translator-generate-cache:
+            command: "vendor/bin/console translator:generate-cache"
+
+    build-production:
+        excluded: true
+        cache-class-resolver-build:
+            command: 'vendor/bin/console cache:class-resolver:build'
+
+        cache-class-resolver-build-storeapp:
+            command: 'src/bin/storeapp cache:class-resolver:build'
+
+    build-development:
+        generate-transfers:
+            command: "vendor/bin/console transfer:generate"
+
+        generate-transfer-databuilders:
+            command: "vendor/bin/console transfer:databuilder:generate"
+
+        generate-auto-completion:
+            command: "vendor/bin/console dev:ide:generate-auto-completion"
+
+        rest-api-generate-documentation:
+            command: "vendor/bin/console rest-api:generate:documentation"
+
+    build-static:
+        dependencies-install:
+            command: "vendor/bin/console frontend:project:install-dependencies"
+
+        yves-install-dependencies:
+            command: "vendor/bin/console frontend:yves:install-dependencies"
+
+        zed-install-dependencies:
+            command: "vendor/bin/console frontend:zed:install-dependencies"
+
+    build-static-production:
+        excluded: true
+        yves-build-frontend:
+            command: "npm run yves:production"
+
+        zed-build-frontend:
+            command: "npm run zed:production"
+
+        store-app-build-frontend:
+            command: "npm run storeapp:production"
+
+    build-static-development:
+        yves-build-frontend:
+            command: "npm run yves"
+
+        zed-build-frontend:
+            command: "npm run zed"
+
+        store-app-build-frontend:
+            command: "npm run storeapp"
+
+    scheduler-stop:
+        scheduler-clean:
+            command: "vendor/bin/console install:per-store:run vendor/bin/console scheduler:clean"
+
+    clean-storage:
+        clean-storage:
+            command: "vendor/bin/console install:per-store:run vendor/bin/console storage:delete"
+
+        clean-search:
+            command: "vendor/bin/console install:per-store:run vendor/bin/console elasticsearch:index:delete"
+
+        clean-virtual-hosts:
+            command: "vendor/bin/console install:per-store:run vendor/bin/console rabbitmq:virtual-hosts:remove"
+
+        clean-db:
+            command: "vendor/bin/console install:per-store:run vendor/bin/console propel:tables:drop"
+
+    init-storage:
+        setup-search-create-sources:
+            command: "vendor/bin/console install:per-store:run vendor/bin/console search:setup:sources"
+
+        setup-virtual-hosts:
+            command: "vendor/bin/console install:per-store:run vendor/bin/console rabbitmq:virtual-hosts:init"
+
+    init-storages-per-region:
+        propel-copy-schema:
+            command: "vendor/bin/console propel:schema:copy"
+
+        propel-postgres-compatibility:
+            command: "vendor/bin/console propel:pg-sql-compat"
+
+        propel-migration-delete:
+            command: "vendor/bin/console propel:migration:delete"
+
+        propel-tables-drop:
+            command: "vendor/bin/console propel:tables:drop"
+
+        propel-diff:
+            command: "vendor/bin/console propel:diff"
+
+        propel-migrate:
+            command: "vendor/bin/console propel:migrate"
+
+        propel-migration-cleanup:
+            command: "vendor/bin/console propel:migration:delete"
+
+        init-database:
+            command: "vendor/bin/console install:per-store:run vendor/bin/console setup:init-db"
+
+    demodata:
+        import:
+            command: "vendor/bin/console data:import"
+
+        import-mu:
+            command: "vendor/bin/console install:per-store:run vendor/bin/console data:import product-measurement-unit"
+
+        import-pu:
+            command: "vendor/bin/console install:per-store:run vendor/bin/console data:import product-packaging-unit"
+
+        update-product-labels:
+            command: "vendor/bin/console product-label:relations:update"
+
+        check-product-validity:
+            command: "vendor/bin/console product:check-validity"
+
+    scheduler-start:
+        scheduler-setup:
+            command: "vendor/bin/console install:per-store:run vendor/bin/console scheduler:setup"

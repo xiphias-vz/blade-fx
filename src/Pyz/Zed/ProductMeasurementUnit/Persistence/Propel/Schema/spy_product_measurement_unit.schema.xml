@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+<database xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          name="zed"
+          xsi:noNamespaceSchemaLocation="http://static.spryker.com/schema-01.xsd"
+          namespace="Orm\Zed\ProductMeasurementUnit\Persistence"
+          package="src.Orm.Zed.ProductMeasurementUnit.Persistence">
+
+    <table name="spy_product_measurement_unit">
+        <behavior name="event">
+            <parameter name="spy_product_measurement_unit_all" column="*"/>
+        </behavior>
+    </table>
+
+    <table name="spy_product_measurement_base_unit">
+        <behavior name="event">
+            <parameter name="spy_product_measurement_base_unit_all" column="*"/>
+        </behavior>
+    </table>
+
+    <table name="spy_product_measurement_sales_unit">
+        <behavior name="event">
+            <parameter name="spy_product_measurement_sales_unit_all" column="*"/>
+        </behavior>
+    </table>
+
+    <table name="spy_product_measurement_sales_unit_store">
+        <behavior name="event">
+            <parameter name="spy_product_measurement_sales_unit_store_all" column="*"/>
+        </behavior>
+    </table>
+</database>

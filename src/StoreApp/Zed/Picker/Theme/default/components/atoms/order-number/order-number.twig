@@ -1,0 +1,13 @@
+{% extends model('component') %}
+
+{% define config = {
+    name: 'order-number',
+} %}
+
+{% define data = {
+    number: required,
+} %}
+
+{% block body %}
+    {{ data.number }}
+{% endblock %}

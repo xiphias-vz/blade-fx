@@ -1,0 +1,23 @@
+{% extends '@Gui/Layout/layout.twig' %}
+
+{% set widget_title = 'Users' %}
+
+{% block section_title %}{{ widget_title | trans }}{% endblock %}
+
+{% block action %}
+    {{ createActionButton('/user/edit/create', 'Add New User' | trans) }}
+{% endblock %}
+
+{% block content %}
+
+    {% embed '@Gui/Partials/widget.twig' with { widget_title: 'List Users' | trans } %}
+
+        {% block widget_content %}
+
+            {{ users | raw }}
+
+        {% endblock %}
+
+    {% endembed %}
+
+{% endblock %}

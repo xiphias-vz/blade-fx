@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config>
+    <export>
+        <label>Export</label>
+        <title>Export</title>
+        <pages>
+            <posting>
+                <label>Postings</label>
+                <title>Postings</title>
+                <bundle>posting-export</bundle>
+                <controller>index</controller>
+                <action>index</action>
+            </posting>
+            <pos>
+                <label>PoS</label>
+                <title>PoS</title>
+                <bundle>posting-export</bundle>
+                <controller>pos</controller>
+                <action>index</action>
+            </pos>
+        </pages>
+    </export>
+</config>

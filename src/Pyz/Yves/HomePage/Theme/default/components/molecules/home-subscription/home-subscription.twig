@@ -1,0 +1,17 @@
+{% extends model('component') %}
+
+{% define config = {
+    name: 'home-subscription',
+} %}
+
+{% block body %}
+    <h2 class="{{ config.name }}__title">{{ 'newsletter.subsription.headline' | trans }}</h2>
+    <p class="{{ config.name }}__text">{{ 'newsletter.subsription.subheadline' | trans }}</p>
+
+    <div class="{{ config.name }}__form">
+        {{- render(path('newsletter/subscribe')) -}}
+    </div>
+{% endblock %}
+
+
+

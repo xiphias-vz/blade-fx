@@ -1,0 +1,170 @@
+@mixin shop-ui-menu($name: '.menu') {
+    @include shop-ui-list($name) {
+        &__item {
+            @include helper-font-weight(regular);
+            margin: rem(8) 0;
+
+            &--active {
+                @include helper-font-weight(bold);
+            }
+
+            &--has-children-list {
+                margin-bottom: rem(16);
+
+                &:last-child {
+                    margin-bottom: 0;
+                }
+
+                & > #{$name} {
+                    margin: 0 rem(8);
+                }
+
+                & #{$name}__item {
+                    @include helper-font-size(small);
+                    margin: rem(8);
+                }
+            }
+
+            &--has-children-dropdown {
+                position: relative;
+                z-index: $setting-zi-element + 1;
+
+                & > #{$name} {
+                    @include helper-visibility-invisible;
+                    @include helper-effect-transition;
+                    position: absolute;
+                    left: 0;
+                    margin-left: - rem(8);
+                    border: none;
+                    padding: rem(8);
+                    background-color: $setting-color-white;
+                }
+
+                &:hover > #{$name} {
+                    @include helper-visibility-visible;
+                }
+
+                & > #{$name} > #{$name}__item {
+                    margin-left: rem(8);
+                    margin-right: rem(8);
+                }
+            }
+        }
+
+        &__link {
+            &--side-drawer {
+                text-transform: uppercase;
+                font: fw(medium) rem(13) $setting-font-family-additional;
+                letter-spacing: rem(2);
+                white-space: nowrap;
+                display: inline-block;
+                padding: rem(16) 0;
+            }
+        }
+
+        &__title {
+            color: $setting-color-gray-6;
+        }
+
+        &__separator {
+            &:not(&--horizontal-line) {
+                display: inline-block;
+                margin: 0 rem(8);
+
+                &::after {
+                    content: '|';
+                    color: $setting-color-gray-6;
+                }
+            }
+
+            &--horizontal-line {
+                display: block;
+                border-top: rem(1) solid $setting-color-gray-6;
+            }
+        }
+
+        &--customer-navigation {
+            padding: 0;
+            border-top: none;
+
+            #{$name}__item {
+                margin: 0 0 rem(5);
+                background: $setting-color-gray-1;
+                border: rem(1) solid $setting-color-gray-1;
+
+                &:hover {
+                    background: $setting-color-white;
+                    color: $setting-color-gray-6;
+
+                    & > #{$name}__link {
+                        color: $setting-color-gray-6;
+                    }
+                }
+
+                &--active {
+                    background: $setting-color-white;
+                    border-left: rem(4) solid $setting-color-green;
+
+                    & > #{$name}__link {
+                        color: $setting-color-gray-6;
+                    }
+                }
+            }
+
+            #{$name}__link {
+                display: block;
+                font-weight: fw(bold);
+                text-decoration: none;
+                padding: rem(9) rem(20);
+            }
+        }
+
+        &--side-drawer {
+            border-bottom: rem(1) solid $setting-color-gray-3;
+        }
+
+        &--customer-account {
+            display: flex;
+            justify-content: space-around;
+            width: 100%;
+
+            @include helper-breakpoint-media-min($md-min) {
+                justify-content: flex-end;
+                width: auto;
+            }
+
+            #{$name}__item,
+            #{$name}__link {
+                letter-spacing: rem(0.09);
+                font-size: rem(13);
+                word-break: normal;
+            }
+        }
+
+        &--order-summary {
+            #{$name}__item {
+                font: fw(light) rem(16) $setting-font-family-additional;
+                margin: rem(10) 0;
+            }
+        }
+
+        &--actions {
+            #{$name}__item {
+                margin: 0;
+
+                @include helper-breakpoint-media-min($md-min) {
+                    white-space: nowrap;
+                    margin: 0 rem(8);
+                }
+            }
+        }
+
+        &--middle {
+            vertical-align: middle;
+        }
+
+        @content;
+    }
+}
+
+@include shop-ui-menu();

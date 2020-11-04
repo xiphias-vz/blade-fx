@@ -1,0 +1,31 @@
+{% extends model('component') %}
+
+{% define config = {
+    name: 'cart-link',
+    tag: 'a',
+} %}
+
+{% define data = {
+    cartAmount: required,
+    cartQuantity: 0,
+} %}
+
+{% define attributes = {
+    href: required,
+} %}
+
+{% block body %}
+    {% include atom('icon') with {
+        class: 'link__icon link__icon--xxl-with-text',
+        modifiers: ['big'],
+        data: {
+            name: 'cart',
+        },
+    } only %}
+
+    <span class="{{ config.name }}__quantity js-ajax-add-to-cart__quantity">{{ data.cartQuantity }}</span>
+
+    <span class="link__text link__text--xxl-visible">
+        <span class="{{ config.name }}__text">{{'cart.cart' | trans }}</span>
+    </span>
+{% endblock %}

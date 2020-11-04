@@ -1,0 +1,8 @@
+@import '~ShopUi/styles/util';
+@import './utils/text';
+@import './utils/spacing';
+
+@include util-spacing;
+@include util-text;
+@include util-float;
+@include util-visibility;

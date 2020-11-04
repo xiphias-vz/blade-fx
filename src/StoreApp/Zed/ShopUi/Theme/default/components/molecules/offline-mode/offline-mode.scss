@@ -1,0 +1,11 @@
+@mixin shop-ui-offline-mode($name: '.offline-mode') {
+    #{$name} {
+        display: none;
+
+        &--showed {
+            display: block;
+        }
+    }
+}
+
+@include shop-ui-offline-mode();

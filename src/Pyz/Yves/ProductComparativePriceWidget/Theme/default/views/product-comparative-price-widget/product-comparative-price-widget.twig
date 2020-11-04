@@ -1,0 +1,11 @@
+{% extends template('widget') %}
+
+{% define data = {
+    productComparativePrice: _widget.productComparativePrice,
+} %}
+
+{% block body %}
+    {% if data.productComparativePrice.isValid  %}
+        ({{ data.productComparativePrice.currencySymbol}} {{ data.productComparativePrice.amount | money(false) }}/{{ data.productComparativePrice.unit }})
+    {% endif %}
+{% endblock %}

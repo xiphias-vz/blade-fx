@@ -1,0 +1,18 @@
+{% extends template('page-blank') %}
+
+{% block body %}
+    {% block container %}
+        <div class="page-layout-main {% block pageLayoutClass %}{% endblock %}">
+            {% block header %}{% endblock %}
+            <main class="container {% block contentClass %}{% endblock %}">
+                <div class="container__inner">
+                    {% block content %}{% endblock %}
+                </div>
+            </main>
+        </div>
+    {% endblock %}
+
+    {% include atom('icon-sprite') only %}
+    {% include molecule('offline-mode') only %}
+    {% include molecule('submit-form-handler') only %}
+{% endblock %}

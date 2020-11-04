@@ -1,0 +1,26 @@
+@mixin shop-ui-title($name: '.title') {
+    #{$name} {
+        @each $i in (1, 2, 3, 4) {
+            &--h#{$i} {
+                @include helper-heading($i);
+            }
+        }
+
+        &--h4 {
+            font-family: $setting-font-family;
+            font-weight: fw(light);
+        }
+
+        &--general {
+            color: $setting-color-gray-6;
+        }
+
+        &--login {
+            color: $setting-color-gray-6;
+        }
+
+        @content;
+    }
+}
+
+@include shop-ui-title();

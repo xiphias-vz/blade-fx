@@ -1,0 +1,1 @@
+import './app-label.scss';

@@ -1,0 +1,7 @@
+@mixin shop-ui-navigation-top-mobile ($name: '.navigation-top-mobile') {
+    #{$name} {
+        margin-right: rem(-8);
+    }
+}
+
+@include shop-ui-navigation-top-mobile();

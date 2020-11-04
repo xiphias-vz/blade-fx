@@ -1,0 +1,12 @@
+{% extends template('widget') %}
+
+{% define data = {
+    product: _widget.product,
+} %}
+
+{% include molecule('product-item') with {
+    class: 'col col--lg-3 col--sm-6',
+    data: {
+        product: data.product,
+    },
+} only %}

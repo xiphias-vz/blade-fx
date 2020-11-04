@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<config>
+    <administration>
+        <pages>
+            <payments-method>
+                <label>Payment Methods</label>
+                <title>Payment Methods</title>
+                <bundle>payment-gui</bundle>
+                <controller>payment-method</controller>
+                <action>index</action>
+                <icon>fa-angle-double-right</icon>
+                <order>0</order>
+            </payments-method>
+            <payments>
+                <visible>0</visible>
+            </payments>
+        </pages>
+    </administration>
+</config>
+

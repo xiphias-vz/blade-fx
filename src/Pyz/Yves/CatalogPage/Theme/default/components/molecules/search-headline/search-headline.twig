@@ -1,0 +1,30 @@
+{% extends model('component') %}
+
+{% define config = {
+    name: 'search-headline',
+} %}
+
+{% define data = {
+    headline: '',
+    searchString: '',
+    pagination: '',
+} %}
+
+{% block body %}
+    <div class="grid">
+        <div class="col col--sm-12">
+            <h1 class="spacing-bottom spacing-bottom--inner">{{ data.headline }}: {{ data.searchString }}</h1>
+            <div>
+                {{ 'catalog.itemsFound' | trans({ '%numFound%': data.pagination.numFound }) }}
+            </div>
+        </div>
+
+        <div class="col col--sm-12">
+            {% include molecule('spelling-suggestion', 'CatalogPage') with {
+                data: {
+                    suggestion: data.suggestion,
+                },
+            } only %}
+        </div>
+    </div>
+{% endblock %}

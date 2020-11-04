@@ -1,0 +1,212 @@
+{% extends model('component') %}
+
+{% define config = {
+    name: 'nutritional-information',
+} %}
+
+{% define data = {
+    attributes: required,
+    isNutritionalInformationContainsReferenceAmount: required,
+} %}
+
+{% block class -%}
+    {{ parent() }}
+{%- endblock %}
+
+{% block body %}
+    <div class="is-scrollable-x spacing-bottom">
+        <table class="table table--expand">
+            <thead>
+                <th class="{{ config.name }}__col"></th>
+                <th class="{{ config.name }}__col">
+                    {% if (data.attributes['Bezugsgröße'] is defined and data.attributes['Bezugsgröße Maßeinheit'] is defined) %}
+                        {{ 'product.info.nutritional.information.prefix' | trans }} {{ data.attributes['Bezugsgröße'] }} {{ data.attributes['Bezugsgröße Maßeinheit'] }}
+                    {% endif %}
+                </th>
+                {% if data.isNutritionalInformationContainsReferenceAmount %}
+                    <th class="{{ config.name }}__col--tight">% RM*</th>
+                {% endif %}
+            </thead>
+            <tbody>
+                {% if (data.attributes['Brennwert/kJ'] is defined and data.attributes['Brenntwert/kcal'] is defined) %}
+                    <tr class="table__row table__row--with-border">
+                        <td>
+                            <strong>{{ 'product.info.condensing' | trans }}</strong>
+                        </td>
+                        <td>{{ data.attributes['Brennwert/kJ'] }} kJ<br>{{ data.attributes['Brenntwert/kcal'] }} kcal</td>
+                        {% if data.isNutritionalInformationContainsReferenceAmount %}
+                            {% if data.attributes['Referenzmenge in %'] is defined %}
+                                <td>{{ data.attributes['Referenzmenge in %'] }} %</td>
+                            {% else %}
+                                <td></td>
+                            {% endif %}
+                        {% endif %}
+                    </tr>
+                {% endif %}
+                {% if (data.attributes['Fett'] is defined and data.attributes['Fett Bezugsgröße'] is defined) %}
+                    <tr class="table__row table__row--with-border">
+                        <td>
+                            <strong>{{ 'product.info.fat' | trans }}</strong>
+                        </td>
+                        <td>
+                            {% include molecule('nutrition-value', 'ProductDetailPage') with {
+                                data: {
+                                    accuracy: data.attributes['Fett Genauigkeit'] ?? '',
+                                    value: data.attributes['Fett'],
+                                    measurementUnit: data.attributes['Fett Bezugsgröße'],
+                                },
+                            } only %}
+                        </td>
+                        {% if data.isNutritionalInformationContainsReferenceAmount %}
+                            {% if data.attributes['Fett Referenzmenge'] is defined %}
+                                <td>{{ data.attributes['Fett Referenzmenge'] }} %</td>
+                            {% else %}
+                                <td></td>
+                            {% endif %}
+                        {% endif %}
+                    </tr>
+                    {%  if (data.attributes['davon ges. Fettsäuren'] is defined and data.attributes['davon ges. Fettsäuren Bezugsgröße'] is defined) %}
+                        <tr class="table__row table__row--additional">
+                            <td>
+                                {{ 'product.info.saturated.fatty.acids' | trans }}
+                            </td>
+                            <td>
+                                {% include molecule('nutrition-value', 'ProductDetailPage') with {
+                                    data: {
+                                        accuracy: data.attributes['davon ges. Fettsäuren Genauigkeit'] ?? '',
+                                        value: data.attributes['davon ges. Fettsäuren'],
+                                        measurementUnit: data.attributes['davon ges. Fettsäuren Bezugsgröße'],
+                                    },
+                                } only %}
+                            </td>
+                            {% if data.isNutritionalInformationContainsReferenceAmount %}
+                                {% if data.attributes['davon ges. Fettsäuren Referenzmenge'] is defined %}
+                                    <td>{{ data.attributes['davon ges. Fettsäuren Referenzmenge'] }} %</td>
+                                {% else %}
+                                    <td></td>
+                                {% endif %}
+                            {% endif %}
+                        </tr>
+                    {% endif %}
+                {% endif %}
+                {% if (data.attributes['Kohlenhydrate'] is defined and data.attributes['Kohlenhydrate Bezugsgröße'] is defined) %}
+                    <tr class="table__row table__row--with-border">
+                        <td>
+                            <strong>{{ 'product.info.carbohydrates' | trans }}</strong>
+                        </td>
+                        <td>
+                            {% include molecule('nutrition-value', 'ProductDetailPage') with {
+                                data: {
+                                    accuracy: data.attributes['Kohlenhydrate Genauigkeit'] ?? '',
+                                    value: data.attributes['Kohlenhydrate'],
+                                    measurementUnit: data.attributes['Kohlenhydrate Bezugsgröße'],
+                                },
+                            } only %}
+                        </td>
+                        {% if data.isNutritionalInformationContainsReferenceAmount %}
+                            {% if data.attributes['Kohlenhydrate Referenzmenge'] is defined %}
+                                <td>{{ data.attributes['Kohlenhydrate Referenzmenge'] }} %</td>
+                            {% else %}
+                                <td></td>
+                            {% endif %}
+                        {% endif %}
+                    </tr>
+                    {% if (data.attributes['davon Zucker'] is defined and data.attributes['davon Zucker Bezugsgröße'] is defined) %}
+                        <tr class="table__row table__row--additional">
+                            <td>
+                                {{ 'product.info.sugar' | trans }}
+                            </td>
+                            <td>
+                                {% include molecule('nutrition-value', 'ProductDetailPage') with {
+                                    data: {
+                                        accuracy: data.attributes['davon Zucker Genauigkeit'] ?? '',
+                                        value: data.attributes['davon Zucker'],
+                                        measurementUnit: data.attributes['davon Zucker Bezugsgröße'],
+                                    },
+                                } only %}
+                            </td>
+                            {% if data.isNutritionalInformationContainsReferenceAmount %}
+                                {% if data.attributes['davon Zucker Referenzmenge'] is defined %}
+                                    <td>{{ data.attributes['davon Zucker Referenzmenge'] }} %</td>
+                                {% else %}
+                                    <td></td>
+                                {% endif %}
+                            {% endif %}
+                        </tr>
+                    {% endif %}
+                {% endif %}
+                {% if (data.attributes['Eiweiß'] is defined and data.attributes['Eiweiß Bezugsgröße'] is defined) %}
+                    <tr class="table__row table__row--with-border">
+                        <td>
+                            <strong>{{ 'product.info.protein' | trans }}</strong>
+                        </td>
+                        <td>
+                            {% include molecule('nutrition-value', 'ProductDetailPage') with {
+                                data: {
+                                    accuracy: data.attributes['Eiweiß Genauigkeit'] ?? '',
+                                    value: data.attributes['Eiweiß'],
+                                    measurementUnit: data.attributes['Eiweiß Bezugsgröße'],
+                                },
+                            } only %}
+                        </td>
+                        {% if data.isNutritionalInformationContainsReferenceAmount %}
+                            {% if data.attributes['Eiweiß Referenzmenge'] is defined %}
+                                <td>{{ data.attributes['Eiweiß Referenzmenge'] }} %</td>
+                            {% else %}
+                                <td></td>
+                            {% endif %}
+                        {% endif %}
+                    </tr>
+                {% endif %}
+                {% if (data.attributes['Salz'] is defined and data.attributes['Salz Bezugsgröße'] is defined) %}
+                    <tr class="table__row table__row--with-border">
+                        <td>
+                            <strong>{{ 'product.info.salt' | trans }}</strong>
+                        </td>
+                        <td>
+                            {% include molecule('nutrition-value', 'ProductDetailPage') with {
+                                data: {
+                                    accuracy: data.attributes['Salz Genauigkeit'] ?? '',
+                                    value: data.attributes['Salz'],
+                                    measurementUnit: data.attributes['Salz Bezugsgröße'],
+                                },
+                            } only %}
+                        </td>
+                        {% if data.isNutritionalInformationContainsReferenceAmount %}
+                            {% if data.attributes['Salz Referenzmenge'] is defined %}
+                                <td>{{ data.attributes['Salz Referenzmenge'] }} %</td>
+                            {% else %}
+                                <td></td>
+                            {% endif %}
+                        {% endif %}
+                    </tr>
+                {% endif %}
+                {% if data.vitamins is defined %}
+                    {% for vitaminName, vitaminData in data.vitamins %}
+                        <tr class="table__row table__row--with-border">
+                            <td><b>{{ vitaminName }}</b></td>
+                            <td>
+                                {% include molecule('nutrition-value', 'ProductDetailPage') with {
+                                    data: {
+                                        value: vitaminData['Menge'],
+                                        measurementUnit: vitaminData['Einheit'],
+                                    },
+                                } only %}
+                            </td>
+                            {% if data.isNutritionalInformationContainsReferenceAmount %}
+                                {% if vitaminData['Prozent Tagesdosis'] is defined %}
+                                    <td>{{ vitaminData['Prozent Tagesdosis'] }} %</td>
+                                {% else %}
+                                    <td></td>
+                                {% endif %}
+                            {% endif %}
+                        </tr>
+                    {% endfor %}
+                {% endif %}
+            </tbody>
+        </table>
+    </div>
+    {% if data.isNutritionalInformationContainsReferenceAmount %}
+        <div class="text-secondary">{{ 'product.info.avarage.adult' | trans }}</div>
+    {% endif %}
+{% endblock %}

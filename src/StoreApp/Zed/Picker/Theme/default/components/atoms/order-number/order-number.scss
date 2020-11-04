@@ -1,0 +1,15 @@
+@mixin picker-order-number($name: '.order-number') {
+    #{$name} {
+        display: inline-block;
+        padding: rem(6);
+        word-break: break-all;
+        background: $setting-color-blue-light-alpha-1;
+        font-size: map-get($setting-font-size, small);
+        text-align: center;
+        line-height: 1;
+        color: $setting-color-white;
+        border-radius: rem(15);
+    }
+}
+
+@include picker-order-number();

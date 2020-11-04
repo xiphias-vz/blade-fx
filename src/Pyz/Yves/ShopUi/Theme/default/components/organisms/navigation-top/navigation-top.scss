@@ -1,0 +1,18 @@
+@mixin shop-ui-navigation-top ($name: '.navigation-top') {
+    #{$name} {
+        padding-left: rem(30);
+
+        &__item {
+            position: relative;
+            padding: 0 rem(20);
+            line-height: 1;
+            z-index: $setting-zi-element + 2;
+
+            &:last-child {
+                padding-right: 0;
+            }
+        }
+    }
+}
+
+@include shop-ui-navigation-top();

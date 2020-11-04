@@ -1,0 +1,13 @@
+{% extends molecule('customer-reorder-link', '@SprykerShop:CustomerReorderWidget') %}
+
+{% block body %}
+    <a href="{{ path('customer/order/reorder', {'idSalesOrder': data.idSalesOrder}) }}" class="link link--darkest link--edit table__action js-form-dynamic-submitter--trigger" data-csrf-token="{{ csrf_token('reorder-cart') }}">
+        {% include molecule('icon-tooltip') with {
+            modifiers: ['medium-up'],
+            data: {
+                icon: 'cart',
+                text: 'customer.order.reorder' | trans,
+            },
+        } only %}
+    </a>
+{% endblock %}

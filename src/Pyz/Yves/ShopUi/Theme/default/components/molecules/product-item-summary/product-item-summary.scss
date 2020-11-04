@@ -1,0 +1,31 @@
+$image-width-with-spacing: rem(144);
+
+@mixin shop-ui-product-item-summary($name: '.product-item-summary') {
+    #{$name} {
+        &--cart {
+            width: 100%;
+        }
+
+        &--hidden {
+            display: none;
+        }
+
+        &__item {
+            line-height: 1.5;
+            font-size: rem(12);
+        }
+
+        &--alternative {
+            padding-top: rem(7);
+            width: 100%;
+
+            @include helper-breakpoint-media-min($lg-min) {
+                padding-top: rem(10);
+            }
+        }
+
+        @content;
+    }
+}
+
+@include shop-ui-product-item-summary();

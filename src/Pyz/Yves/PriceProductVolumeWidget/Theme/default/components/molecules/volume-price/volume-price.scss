@@ -1,0 +1,18 @@
+@include shop-ui-volume-price() {
+    margin-bottom: rem(5);
+
+    &__amount {
+        font: fw(bold) rem(20) $setting-font-family-additional;
+
+        @include helper-breakpoint-media-min($xl-min) {
+            font-size: rem(26);
+        }
+
+        &--original {
+            display: block;
+            color: $setting-color-gray-5;
+            font: fw(regular) rem(16) $setting-font-family-additional;
+            line-height: rem(19);
+        }
+    }
+}

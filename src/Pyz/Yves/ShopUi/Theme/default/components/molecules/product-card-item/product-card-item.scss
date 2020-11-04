@@ -1,0 +1,372 @@
+$image-width: rem(120);
+$image-width-with-checkbox: rem(158);
+$image-small-width: rem(100);
+$additional-info-width: rem(350);
+
+@mixin shop-ui-product-card-item($name: '.product-card-item') {
+    #{$name} {
+        &__box {
+            border: rem(1) solid $setting-color-gray-3;
+            padding: rem(10) rem(10) rem(94);
+            margin-bottom: rem(10);
+            position: relative;
+
+            @include helper-breakpoint-media-min($md-min) {
+                padding: rem(15) rem(15) rem(15) 0;
+            }
+
+            &--mini-cart {
+                padding: rem(10) rem(10) rem(10) 0;
+            }
+
+            &--summary {
+                padding: 0;
+                border: 0;
+                margin-bottom: rem(25);
+            }
+
+            &--with-actions {
+                padding-bottom: rem(10);
+
+                @include helper-breakpoint-media-min($md-min) {
+                    padding-bottom: rem(15);
+                }
+            }
+
+            &--light {
+                background: $setting-color-white;
+            }
+        }
+
+        &__heading {
+            width: 100%;
+
+            @include helper-breakpoint-media-min($xl-min) {
+                display: flex;
+                flex-direction: column;
+                flex-grow: 1;
+                padding-right: rem(15);
+                width: auto;
+
+                &--with-actions {
+                    display: block;
+                }
+            }
+        }
+
+        &__title {
+            font-weight: fw(semibold);
+            font-size: rem(16);
+            text-decoration: none;
+            color: $setting-color-black;
+            margin: 0 rem(5) rem(5) 0;
+
+            &:hover {
+                text-decoration: none;
+
+                &:not(&--alternative) {
+                    color: $setting-color-green;
+                }
+            }
+
+            &--mini-cart {
+                font-size: rem(15);
+                margin-bottom: rem(5);
+            }
+
+            &--secondary {
+                font-size: rem(15);
+                line-height: rem(18);
+                margin: rem(10) 0;
+            }
+
+            &--readonly {
+                pointer-events: none;
+            }
+
+            &--summary {
+                font-size: rem(15);
+                font-weight: fw(bold);
+                text-decoration: none;
+                margin: 0;
+                padding-right: rem(15);
+            }
+        }
+
+        &__remove {
+            position: absolute;
+            top: rem(10);
+            right: rem(10);
+
+            @include helper-breakpoint-media-min($xl-min) {
+                top: rem(24);
+                right: rem(15);
+            }
+        }
+
+        &__content {
+            width: 100%;
+            padding-right: rem(30);
+
+            @include helper-breakpoint-media-min($xl-min) {
+                padding-right: rem(40);
+            }
+
+            &--mini-cart {
+                width: calc(100% - #{$image-small-width});
+            }
+
+            &--alternative {
+                @include helper-breakpoint-media-min($lg-min) {
+                    padding: 0 0 0 rem(20);
+                }
+            }
+
+            &--additional-info {
+                padding: 0 0 0 rem(20);
+
+                @include helper-breakpoint-media-min($lg-min) {
+                    width: calc(100% - #{$image-width} - #{$additional-info-width});
+                }
+            }
+
+            &--with-checkbox {
+                width: calc(100% - #{rem(45)});
+
+                @include helper-breakpoint-media-min($lg-min) {
+                    width: calc(100% - #{$image-width-with-checkbox});
+                }
+            }
+
+            &--summary {
+                padding-right: 0;
+            }
+        }
+
+        &__image {
+            width: $image-width;
+            flex-shrink: 0;
+            position: absolute;
+            bottom: 0;
+            left: rem(-15);
+
+            @include helper-breakpoint-media-min($md-min) {
+                position: static;
+                margin-top: rem(-15);
+            }
+
+            &--mini-cart {
+                position: static;
+                width: $image-small-width;
+                margin-bottom: rem(-15);
+
+                .thumbnail {
+                    height: rem(60);
+                }
+            }
+
+            &--readonly {
+                position: static;
+                pointer-events: none;
+            }
+
+            &--summary {
+                width: rem(70);
+                position: static;
+                margin: rem(5) rem(15) 0 0;
+                background: $setting-color-white;
+            }
+
+            &--with-actions {
+                position: static;
+
+                @include helper-breakpoint-media-min($xl-min) {
+                    bottom: rem(50);
+                }
+            }
+        }
+
+        &__price-col {
+            @include helper-breakpoint-media-min($xl-min) {
+                padding: 0 rem(5);
+                width: 20%;
+                flex-shrink: 0;
+            }
+        }
+
+        &__price-unit {
+            flex-grow: 1;
+            display: flex;
+            align-items: flex-end;
+        }
+
+        &__price {
+            font-weight: fw(semibold);
+            font-size: rem(16);
+            color: $setting-color-black;
+            text-align: right;
+            margin-right: rem(-30);
+
+            &--subtotal {
+                @include helper-breakpoint-media-min($xl-min) {
+                    text-align: right;
+                }
+            }
+
+            @include helper-breakpoint-media-min($lg-min) {
+                padding: rem(8) 0;
+                margin-right: 0;
+            }
+
+            &--mini-cart {
+                font-size: rem(15);
+                line-height: rem(20);
+                align-self: flex-start;
+                padding-bottom: rem(5);
+            }
+
+            &--secondary {
+                font: fw(medium) rem(15)/rem(17) $setting-font-family;
+                width: 100%;
+                margin-bottom: rem(5);
+            }
+
+            &--summary {
+                padding: 0;
+                margin: 0;
+            }
+
+            &--with-actions {
+                margin-right: 0;
+                text-align: center;
+
+                @include helper-breakpoint-media-min($md-min) {
+                    text-align: right;
+                }
+            }
+        }
+
+        &__general-information {
+            @include helper-breakpoint-media-min($xl-min) {
+                display: flex;
+                justify-content: space-between;
+                height: 100%;
+            }
+
+            &--with-actions {
+                @include helper-breakpoint-media-min($lg-min) {
+                    min-height: rem(90);
+                }
+            }
+        }
+
+        &__quantity {
+            padding: 15px 0;
+            position: absolute;
+            right: rem(10);
+            bottom: rem(-5);
+
+            &--summary {
+                position: static;
+                padding: 0;
+            }
+
+            &--with-actions {
+                position: static;
+            }
+
+            @include helper-breakpoint-media-min($lg-min) {
+                position: static;
+            }
+
+            @include helper-breakpoint-media-min($xl-min) {
+                padding: 0;
+                flex-shrink: 0;
+            }
+        }
+
+        &__actions {
+            position: absolute;
+            left: rem(10);
+            bottom: rem(10);
+            max-width: 50%;
+
+            @include helper-breakpoint-media-min($lg-min) {
+                left: rem(15);
+                bottom: rem(18);
+            }
+
+            &--with-actions {
+                position: static;
+                max-width: 100%;
+                width: 100%;
+                text-align: right;
+                margin-top: rem(10);
+
+                @include helper-breakpoint-media-min($lg-min) {
+                    position: absolute;
+                    left: auto;
+                    right: rem(15);
+                    bottom: rem(15);
+                }
+            }
+        }
+
+        &__option {
+            &--mini-cart {
+                font: fw(regular) rem(13)/rem(17) $setting-font-family-additional;
+                text-align: right;
+            }
+        }
+
+        &__options {
+            font: fw(medium) rem(13)/rem(15) $setting-font-family-additional;
+            margin-bottom: rem(5);
+
+            @include helper-breakpoint-media-min($lg-min) {
+                font: fw(medium) rem(16)/rem(22) $setting-font-family;
+            }
+        }
+
+        &__additional-info {
+            width: 100%;
+            padding-top: rem(15);
+
+            @include helper-breakpoint-media-min($lg-min) {
+                padding-left: rem(15);
+                padding-top: 0;
+                max-width: $additional-info-width;
+            }
+        }
+
+        &--expand {
+            width: 100%;
+        }
+
+        &--right-indent-from-tablet {
+            @include helper-breakpoint-media-min($lg-min) {
+                padding-right: rem(20);
+            }
+        }
+
+        &__text-quantity {
+            &--summary {
+                font: fw(medium) rem(13) / 1 $setting-font-family-additional;
+                color: $setting-color-gray-6;
+            }
+        }
+
+        &__quantity-measurement-line {
+            font-size: rem(13);
+            color: $setting-color-gray-9;
+
+            .cart-quantity-input {
+                display: none;
+            }
+        }
+
+        @content;
+    }
+}
+
+@include shop-ui-product-card-item();

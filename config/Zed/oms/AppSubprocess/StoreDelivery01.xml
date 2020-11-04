@@ -1,0 +1,83 @@
+<?xml version="1.0"?>
+<statemachine
+        xmlns="spryker:oms-01"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="spryker:oms-01 http://static.spryker.com/oms-01.xsd">
+
+    <process name="Delivery01">
+
+        <states>
+            <state name="delivery process" />
+            <state name="ready for delivery" />
+            <state name="delivery started" />
+            <state name="delivered to customer" />
+            <state name="delivery cancelled by customer" >
+                <flag>cancelled</flag>
+            </state>
+            <state name="delivery cancelled by store" >
+                <flag>cancelled</flag>
+            </state>
+
+        </states>
+
+        <transitions>
+            <transition happy="true">
+                <source>delivery process</source>
+                <target>ready for delivery</target>
+                <event>move to ready for delivery</event>
+            </transition>
+
+            <transition happy="true">
+                <source>ready for delivery</source>
+                <target>delivery started</target>
+                <event>start delivery</event>
+            </transition>
+
+            <transition>
+                <source>delivery started</source>
+                <target>ready for delivery</target>
+                <event>cancel start delivery</event>
+            </transition>
+
+            <transition happy="true">
+                <source>delivery started</source>
+                <target>delivered to customer</target>
+                <event>confirm delivery</event>
+            </transition>
+
+            <transition>
+                <source>delivery started</source>
+                <target>delivery cancelled by customer</target>
+                <event>cancel delivery by customer</event>
+            </transition>
+
+            <transition>
+                <source>delivery started</source>
+                <target>delivery cancelled by store</target>
+                <event>cancel delivery by store</event>
+            </transition>
+
+            <transition>
+                <source>delivery cancelled by customer</source>
+                <target>cancellation process</target>
+                <event>pass</event>
+            </transition>
+
+            <transition>
+                <source>delivery cancelled by store</source>
+                <target>cancellation process</target>
+                <event>pass</event>
+            </transition>
+        </transitions>
+
+        <events>
+            <event name="move to ready for delivery" onEnter="true" command="Sales/MoveToReadyForDelivery"/>
+            <event name="start delivery" manual="true" command="Sales/StartDelivery"/>
+            <event name="cancel start delivery" manual="true" command="Sales/CancelStartDelivery"/>
+            <event name="confirm delivery" manual="true" command="Sales/ConfirmDelivery"/>
+            <event name="cancel delivery by customer" manual="true" command="Sales/MarkCancelledByCustomer"/>
+            <event name="cancel delivery by store" manual="true" command="Sales/MarkCancelledByStore"/>
+            <event name="pass" onEnter="true"/>
+        </events>
+    </process>
+</statemachine>

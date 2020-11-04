@@ -1,0 +1,61 @@
+<html>
+<head>
+    <meta charset="UTF-8">
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            padding: 4px;
+        }
+        table tbody tr:nth-child(odd) {
+            background-color: #CCCCCC;
+        }
+        .fixed-width-16 {
+            width: 16em
+        }
+    </style>
+</head>
+
+<body>
+
+{% for storePickingList in storePickingListCollection %}
+    <h1 align="center">
+        {{ 'sales-document.store-picking.html-template.title.picking-list' | trans }}
+    </h1>
+    <table border="1">
+        <tr>
+            <td>{{ 'sales-document.store-picking.html-template.delivery-date' | trans }} : {{ storePickingList.deliveryDate | date('d/m/Y') }}</td>
+            <td class="fixed-width-16">{{ 'sales-document.store-picking.html-template.picker-name' | trans }} : </td>
+            <td>{{ 'sales-document.store-picking.html-template.order-reference' | trans }} : {{ storePickingList.orderReference }}</td>
+            <td>{{ 'sales-document.store-picking.html-template.customer-reference' | trans}} : {{ storePickingList.customerReference }}</td>
+        </tr>
+    </table>
+    <br>
+
+    <table border="1">
+        <thead>
+        <tr>
+            <th>{{ 'sales-document.store-picking.html-template.article-number' | trans | raw }}</th>
+            <th>{{ 'sales-document.store-picking.html-template.article-name' | trans | raw }}</th>
+            <th>{{ 'sales-document.store-picking.html-template.article-variety' | trans | raw }}</th>
+            <th>{{ 'sales-document.store-picking.html-template.quantity' | trans | raw }}</th>
+            <th style="width: 20em">{{ 'sales-document.store-picking.html-template.comments' | trans | raw }}</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for item in storePickingList.items %}
+            <tr>
+                <td>{{ item.productNumber }}</td>
+                <td>{{ item.productName }}</td>
+                <td>{{ item.productVariety }}</td>
+                <td>{{ item.quantity }}</td>
+                <td></td>
+            </tr>
+        {%  endfor %}
+        </tbody>
+    </table>
+{% endfor %}
+</body>
+</html>

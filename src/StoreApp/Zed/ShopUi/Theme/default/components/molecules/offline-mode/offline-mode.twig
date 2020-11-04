@@ -1,0 +1,25 @@
+{% extends model('component') %}
+
+{% define config = {
+    name: 'offline-mode',
+    tag: 'offline-mode'
+} %}
+
+{% block body %}
+    {% embed molecule('popup-ui') with {
+        config: {
+            tag: 'div'
+        },
+        modifiers: ['show'],
+        data: {
+            title: 'app.offline.title' | trans
+        }
+    } only %}
+        {% block content %}
+            <div class="text-center">
+                {{ 'app.offline.content' | trans }}
+            </div>
+        {% endblock %}
+        {% block popupActions %}{% endblock %}
+    {% endembed %}
+{% endblock %}

@@ -1,0 +1,24 @@
+@mixin shop-ui-animated-spinner($name: '.animated-spinner') {
+    #{$name} {
+        display: none;
+
+        &__overlay {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            background: $setting-color-white-alpha-1;
+        }
+
+        &__spinner {
+            width: rem(96);
+            height: rem(96);
+        }
+    }
+}
+
+@include shop-ui-animated-spinner();

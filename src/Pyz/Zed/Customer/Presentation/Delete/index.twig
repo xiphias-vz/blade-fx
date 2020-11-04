@@ -1,0 +1,27 @@
+{% extends '@Gui/Layout/layout.twig' %}
+
+{% set widget_title = 'Customer deletion confirmation' %}
+
+{% block head_title %}
+    {{ widget_title | trans }}
+{% endblock %}
+
+{% block section_title %}
+    {{ widget_title | trans }}
+{% endblock %}
+
+{% block action %}
+    {{ backActionButton(app.request.headers.get('referer'), 'Back' | trans) }}
+{% endblock %}
+
+{% block content %}
+    {% embed '@Gui/Partials/widget.twig' %}
+        {% block widget_content %}
+            <a href="{{ app.request.headers.get('referer') }}" class="btn btn-back">{{ 'Back' | trans}}</a>
+            <form action="{{ url('/customer/delete/confirm', {'id-customer': idCustomer}) }}" method="post" class="inline">
+                <input type="hidden" name="token" value="{{ csrf_token('confirm-deletion') }}"/>
+                <input class="btn btn-danger safe-submit" type="submit" value="{{ 'Delete account' | trans}}">
+            </form>
+        {% endblock %}
+    {% endembed %}
+{% endblock %}

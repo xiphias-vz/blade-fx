@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config>
+    <product>
+        <pages>
+            <product-barcode>
+                <visible>0</visible>
+            </product-barcode>
+        </pages>
+    </product>
+</config>

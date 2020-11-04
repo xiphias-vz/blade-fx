@@ -1,0 +1,93 @@
+language: php
+
+git:
+    depth: 3
+
+env:
+    global:
+        - APPLICATION_ENV=devtest
+        - APPLICATION_STORE=MUELHEIM
+        - PROJECT=spryker-demo-project
+        - VALIDATION=1
+
+matrix:
+    fast_finish: true
+    include:
+        - php: "7.2"
+          dist: trusty
+addons:
+    postgresql: 9.6
+
+    apt:
+        packages:
+            - graphviz
+
+    hosts:
+        - backoffice-ccd.demo-spryker.test
+        - www.ccd-berlin.demo-spryker.test
+
+cache:
+    directories:
+        - $HOME/.composer/cache
+        - /home/travis/.rvm/gems # Mailcatcher is a ruby gem, takes 5 minutes to install.
+
+services:
+    - postgresql
+    - redis
+    - rabbitmq
+
+sudo: required
+
+before_install:
+    - echo "extension = redis.so" >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini
+    - phpenv config-rm xdebug.ini
+
+install:
+    - chmod -R a+x config/Shared/ci/travis/
+    - composer global require hirak/prestissimo
+    - composer install --optimize-autoloader --no-interaction
+    - config/Shared/ci/travis/install_elasticsearch.sh
+    - config/Shared/ci/travis/install_mailcatcher.sh
+
+before_script:
+    - nvm install 8
+
+    - mkdir -p shared/data/common/jenkins
+    - mkdir -p shared/data/common/jenkins/jobs
+    - mkdir -p data/MULHEIM/cache/Yves/twig -m 0777
+    - mkdir -p data/MULHEIM/cache/Zed/twig -m 0777
+    - mkdir -p data/MULHEIM/logs -m 0777
+    - mkdir -p src/Orm/Propel/MUELHEIM/Schema -m 0777
+    - chmod -R 777 data/
+    - chmod -R 660 config/Zed/dev_only_private.key
+    - chmod -R 660 config/Zed/dev_only_public.key
+
+    - cat config/Shared/ci/travis/postgresql_ci.config >> config/Shared/ci/travis/config_ci.php
+
+    - cp config/Shared/ci/travis/config_ci.php config/Shared/config_local.php
+
+    - vendor/bin/install MUELHEIM -r testing -x frontend -v
+
+    - vendor/bin/console transfer:generate
+    - vendor/bin/console propel:install
+    - vendor/bin/codecept build --ansi
+    - vendor/bin/console transfer:databuilder:generate
+    - vendor/bin/console setup:search
+    - vendor/bin/console frontend:project:install-dependencies
+    - vendor/bin/console frontend:yves:install-dependencies
+
+script:
+    - vendor/bin/phpstan analyze -c phpstan.neon src/ -l 4
+
+    - vendor/bin/console propel:schema:validate-xml-names
+    - vendor/bin/console transfer:validate
+    - vendor/bin/console code:sniff:style
+
+    - timeout 45m bash -c "vendor/bin/phantomjs --webdriver=4444 --disk-cache=true --load-images=false" &
+    - vendor/bin/codecept run -x Presentation
+
+#    - node ./frontend/libs/stylelint
+#    - node ./frontend/libs/tslint stylish
+
+notifications:
+    email: false

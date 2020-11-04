@@ -1,0 +1,15 @@
+@mixin shop-ui-product-type($name: '.product-type') {
+    #{$name} {
+        &__text {
+            color: $setting-color-blue-midi;
+        }
+
+        &--wrested {
+            background-color: $setting-color-gray-2;
+            margin: 0 rem(-16);
+            padding: rem(1) rem(16);
+        }
+    }
+}
+
+@include shop-ui-product-type();

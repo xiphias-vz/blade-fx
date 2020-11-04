@@ -1,0 +1,26 @@
+<?xml version="1.0"?>
+<statemachine
+        xmlns="spryker:oms-01"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="spryker:oms-01 http://static.spryker.com/oms-01.xsd">
+
+    <process name="Invalidation01">
+        <states>
+            <state name="invalid"/>
+            <state name="invalid and time slot released" />
+        </states>
+
+        <transitions>
+            <transition>
+                <source>invalid</source>
+                <target>invalid and time slot released</target>
+                <event>release time slot</event>
+            </transition>
+        </transitions>
+
+        <events>
+            <event name="release time slot" onEnter="true" command="TimeSlot/Release"/>
+        </events>
+    </process>
+
+</statemachine>

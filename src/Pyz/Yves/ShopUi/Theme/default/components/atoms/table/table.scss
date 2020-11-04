@@ -1,0 +1,222 @@
+@mixin shop-ui-table($name: '.table') {
+    #{$name} {
+        margin-bottom: rem(10);
+
+        @include helper-breakpoint-media-min($lg-min) {
+            margin-bottom: rem(20);
+        }
+
+        thead,
+        &__head {
+            font-weight: fw(bold);
+            border-bottom: none;
+            background-color: $setting-color-gray-1;
+        }
+
+        th,
+        td {
+            padding: 0.5rem 0.25rem;
+
+            &:not(#{$name}__col--right) {
+                text-align: left;
+            }
+        }
+
+        &__row {
+            &--backgroungless {
+                background: none;
+            }
+
+            &--highlighted {
+                background-color: $setting-color-lightest;
+            }
+
+            &--spacing-y-small {
+                th,
+                td {
+                    padding-top: 0.25rem;
+                    padding-bottom: 0.25rem;
+                }
+            }
+
+            &--spacing-bottom-reset {
+                th,
+                td {
+                    padding-bottom: 0;
+                }
+            }
+
+            &--with-background {
+                background: $setting-color-gray-2;
+
+                td {
+                    border-bottom: rem(5) solid $setting-color-bg;
+                }
+            }
+
+            &--white {
+                background: $setting-color-white;
+            }
+
+            &--with-border {
+                border-top: rem(1) solid $setting-color-gray-3;
+            }
+
+            &--with-border-bottom {
+                border-bottom: rem(1) solid $setting-color-gray-3;
+            }
+
+            &--additional {
+                border-top: none;
+
+                td {
+                    padding-top: 0;
+                }
+            }
+        }
+
+        &__col {
+            &--right {
+                text-align: right;
+            }
+        }
+
+        &--expand {
+            width: 100%;
+        }
+
+        &--customer-account {
+            td,
+            th {
+                padding: rem(5);
+
+                @include helper-breakpoint-media-min($lg-min) {
+                    padding: rem(15);
+                }
+            }
+
+            .checkbox {
+                margin: rem(4) 0 0;
+            }
+        }
+
+        &--order {
+            th,
+            td {
+                font-size: rem(13);
+
+                @include helper-breakpoint-media-min($md-min) {
+                    font-size: rem(15);
+                }
+            }
+
+            th {
+                white-space: nowrap;
+            }
+        }
+
+        &--order-detail {
+            th,
+            td {
+                font-size: rem(11);
+                padding: rem(4);
+
+                @include helper-breakpoint-media-min($md-min) {
+                    font-size: rem(16);
+                    padding: rem(8);
+                }
+            }
+
+            .checkbox {
+                margin: 0;
+
+                @include helper-breakpoint-media-min($md-min) {
+                    margin: rem(4) 0 0;
+                }
+            }
+        }
+
+        &--wishlist {
+            th,
+            td {
+                padding-left: 0;
+
+                @include helper-breakpoint-media-min($lg-min) {
+                    padding-left: rem(4);
+                }
+            }
+        }
+
+        &--responsive {
+            @include helper-breakpoint-media-max($md-max) {
+                thead {
+                    display: none;
+                }
+
+                tr {
+                    display: block;
+
+                    &:not(:last-child) {
+                        margin-bottom: rem(15);
+                    }
+                }
+
+                td {
+                    &:not(.is-hidden-sm-md) {
+                        display: flex;
+                    }
+                }
+
+                #{$name} {
+                    &__col {
+                        &--responsive {
+                            &::before {
+                                content: attr(data-content) ':';
+                                display: inline-block;
+                                margin-right: rem(5);
+                                font-weight: fw(bold);
+                            }
+                        }
+
+                        &--expand-label {
+                            flex-wrap: wrap;
+
+                            &::before {
+                                width: 100%;
+                            }
+                        }
+
+                        &--checkbox {
+                            float: left;
+                            padding: rem(30) 0;
+                        }
+
+                        &--block {
+                            display: block;
+                        }
+
+                        &--hidden {
+                            display: none;
+                        }
+
+                        &--spacing-reset {
+                            padding-top: 0;
+                        }
+                    }
+
+                    &__action {
+                        padding: rem(10) rem(15);
+                        border-radius: rem(4);
+                        border: rem(1) solid $setting-color-gray-4;
+                        text-align: center;
+                        text-decoration: none;
+                    }
+                }
+            }
+        }
+
+        @content;
+    }
+}
+
+@include shop-ui-table();

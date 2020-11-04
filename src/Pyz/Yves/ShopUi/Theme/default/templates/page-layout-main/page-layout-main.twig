@@ -1,0 +1,151 @@
+{% extends template('page-blank') %}
+
+{% define data = {
+    activePage: '',
+    matomoUrl: app['matomo.url'],
+    matomoIdSite: app['matomo.idsite'],
+} %}
+
+{%- block class -%}page-layout-main js-page-layout-main js-page-layout-main--side-drawer-container js-page-layout-main--block-scroll{%- endblock -%}
+
+{% block body %}
+    <div class="page-layout-main__container">
+        {% block sidebar %}
+            {% include organism('side-drawer') with {
+                modifiers: ['right'],
+                class: 'is-hidden-xl-only',
+                attributes: {
+                    'container-selector': 'js-page-layout-main--side-drawer-container',
+                    'trigger-selector': 'js-page-layout-main__side-drawer-trigger',
+                },
+            } only %}
+        {% endblock %}
+
+        {% block accountSidebar %}
+            {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+                {% embed organism('side-drawer') with {
+                    modifiers: ['right'],
+                    class: 'is-hidden-xl-only',
+                    attributes: {
+                        'container-selector': 'js-page-layout-main--side-drawer-container',
+                        'trigger-selector': 'js-page-layout-main__account-side-drawer-trigger',
+                    },
+                    embed: {
+                        activePage: data.activePage,
+                    },
+                } only %}
+                    {% block topBar %}
+                        {% set user = app['user'].customerTransfer ?? app['user'].userTransfer %}
+
+                        <div class="{{config.name}}__top-bar grid grid--justify">
+                            <div class="col grid">
+                                <div class="col">
+                                    {% include atom('icon') with {
+                                        modifiers: ['user-side-drawer'],
+                                        data: {
+                                            name: 'user-account',
+                                        },
+                                    } only %}
+                                </div>
+                                <div class="col">
+                                    {{ user.firstName }} {{ user.lastName }}
+                                </div>
+                            </div>
+
+                            {% block close %}
+                                {{ parent() }}
+                            {% endblock %}
+                        </div>
+                    {% endblock %}
+
+                    {% block content %}
+                        <div class="{{config.name}}__navigation">
+                            {% widget 'CustomerNavigationWidget' args [embed.activePage] only %}
+                                {% block body %}
+                                    {% define data = {
+                                        modifiers: ['side-drawer'],
+                                    } %}
+                                    {{ parent() }}
+                                {% endblock %}
+                            {% endwidget %}
+                        </div>
+                    {% endblock %}
+                {% endembed %}
+            {% endif %}
+        {% endblock %}
+
+        {% block outside %}{% endblock %}
+
+        {% block header %}
+            {% include organism('header') only %}
+        {% endblock %}
+
+        <div class="page-layout-main__content">
+            {% block container %}
+                <div class="container">
+                    {% block pageInfo %}
+                        {% block breadcrumbs %}
+                            {% include molecule('breadcrumb') only %}
+                        {% endblock %}
+
+                        {% block title %}
+                            <h1 class="title title--main title--with-border title--medium">{{ data.title }}</h1>
+                        {% endblock %}
+                    {% endblock %}
+
+                    <main class="{% block contentClass %}{% endblock %}">
+                        {% block content %}{% endblock %}
+                    </main>
+                </div>
+            {% endblock %}
+        </div>
+
+        {% block footer %}
+            {% cms_slot 'slt-1' %}
+
+            {% include organism('footer') only %}
+        {% endblock %}
+    </div>
+
+    {% block globalComponents %}
+        {% include molecule('action-single-click-enforcer') with {
+            attributes: {
+                'target-selector': '[data-init-single-click]',
+            },
+        } only %}
+
+        {% include molecule('form-submitter') with {
+            attributes: {
+                'trigger-selector': '[data-form-submitter]',
+            },
+        } only %}
+
+        {% include molecule('form-dynamic-submitter') with {
+            attributes: {
+                'trigger-class-name': 'js-form-dynamic-submitter--trigger',
+            },
+        } only %}
+
+        {% include molecule('toggler-click') with {
+            attributes: {
+                'trigger-class-name': 'js-page-layout-main--block-scroll-trigger',
+                'target-class-name': 'js-page-layout-main--block-scroll',
+                'class-to-toggle': 'is-not-scrollable-on-mobile',
+            },
+        } only %}
+    {% endblock %}
+
+    {% block icons %}
+        {% include atom('icon-sprite') only %}
+    {% endblock %}
+
+    {% block notifications %}
+        <div class="js-ajax-add-to-cart__message">
+            {%- include organism('notification-area') only -%}
+        </div>
+    {% endblock %}
+
+    {% include molecule('image-animation') %}
+    {% include molecule('ajax-add-to-cart') %}
+    {% include molecule('matomo-popup-ui-corrector') %}
+{% endblock %}

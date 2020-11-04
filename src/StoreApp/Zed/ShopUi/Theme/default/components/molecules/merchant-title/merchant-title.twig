@@ -1,0 +1,20 @@
+{% extends model('component') %}
+
+{% define config = {
+    name: 'merchant-title',
+} %}
+
+{% define data = {
+    merchant: required,
+} %}
+
+{% block component %}
+    {% if data.merchant is not null %}
+        {{ parent() }}
+    {% endif %}
+{% endblock %}
+
+{% block body %}
+    <h1 class="spacing-y">{{ 'storeapp.filiale.region.format' | trans | format(data.merchant.regionNumber, data.merchant.regionName) }}</h1>
+    <h3 class="title title--regular">{{ 'storeapp.filiale.number.format' | trans | format(data.merchant.filialNumber) }}</h3>
+{% endblock %}

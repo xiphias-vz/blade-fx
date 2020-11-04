@@ -1,0 +1,136 @@
+<?xml version="1.0"?>
+<statemachine
+        xmlns="spryker:oms-01"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="spryker:oms-01 http://static.spryker.com/oms-01.xsd">
+
+    <process name="Cancellation01">
+        <states>
+            <state name="cancellation process" >
+                <flag>cancelled</flag>
+            </state>
+            <state name="release time slot and cancel" >
+                <flag>cancelled</flag>
+            </state>
+            <state name="need to release time slot" >
+                <flag>cancelled</flag>
+            </state>
+            <state name="order cancellation recalculated">
+                <flag>cancelled</flag>
+            </state>
+            <state name="cancelled" >
+                <flag>cancelled</flag>
+            </state>
+            <state name="have to send Email order cancelled" >
+                <flag>cancelled</flag>
+            </state>
+            <state name="email order cancelled sent" >
+                <flag>cancelled</flag>
+            </state>
+            <state name="collection cancelled by timeout" />
+            <state name="delivery cancelled by timeout" />
+            <state name="cancelled by timeout" >
+                <flag>cancelled</flag>
+            </state>
+            <state name="cancelled by customer" >
+                <flag>cancelled</flag>
+            </state>
+        </states>
+
+        <transitions>
+            <transition>
+                <source>cancellation process</source>
+                <target>order cancellation recalculated</target>
+                <event>recalculate order cancellation</event>
+            </transition>
+
+            <transition condition="is order cancelled">
+                <source>order cancellation recalculated</source>
+                <target>have to send Email order cancelled</target>
+                <event>pass 10 minutes</event>
+            </transition>
+
+            <transition>
+                <source>order cancellation recalculated</source>
+                <target>cancelled</target>
+                <event>pass 10 minutes</event>
+            </transition>
+
+            <transition>
+                <source>have to send Email order cancelled</source>
+                <target>email order cancelled sent</target>
+                <event>send order cancelled email</event>
+            </transition>
+
+            <transition>
+                <source>email order cancelled sent</source>
+                <target>cancelled</target>
+                <event>pass</event>
+            </transition>
+
+            <transition condition="is order cancelled">
+                <source>release time slot and cancel</source>
+                <target>need to release time slot</target>
+                <event>pass</event>
+            </transition>
+
+            <transition>
+                <source>need to release time slot</source>
+                <target>cancellation process</target>
+                <event>release time slot</event>
+            </transition>
+
+            <transition>
+                <source>release time slot and cancel</source>
+                <target>cancellation process</target>
+                <event>pass</event>
+            </transition>
+
+            <transition>
+                <source>cancelled by timeout</source>
+                <target>cancellation process</target>
+                <event>pass</event>
+            </transition>
+
+            <transition condition="Sales/IsExpiredOrder">
+                <source>ready for collection</source>
+                <target>collection cancelled by timeout</target>
+                <event>pass 10 minutes</event>
+            </transition>
+
+            <transition>
+                <source>collection cancelled by timeout</source>
+                <target>cancelled by timeout</target>
+                <event>cancel by timeout</event>
+            </transition>
+
+            <transition condition="Sales/IsExpiredOrder">
+                <source>ready for delivery</source>
+                <target>delivery cancelled by timeout</target>
+                <event>pass 10 minutes</event>
+            </transition>
+
+            <transition condition="Sales/IsExpiredOrder">
+                <source>delivery started</source>
+                <target>delivery cancelled by timeout</target>
+                <event>pass 10 minutes</event>
+            </transition>
+
+            <transition>
+                <source>delivery cancelled by timeout</source>
+                <target>cancelled by timeout</target>
+                <event>cancel by timeout</event>
+            </transition>
+        </transitions>
+
+        <events>
+            <event name="pass 10 minutes" timeout="10 minutes" onEnter="true"/>
+            <event name="cancel by timeout" onEnter="true" command="Sales/CancelByTimeout"/>
+            <event name="recalculate order cancellation" onEnter="true"  command="Cancel and recalculate order"/>
+            <event name="send order cancelled email" timeout="1 second"/>
+            <event name="release time slot" onEnter="true" command="TimeSlot/Release"/>
+            <event name="pass" onEnter="true"/>
+        </events>
+    </process>
+
+</statemachine>

@@ -1,0 +1,137 @@
+@mixin shop-ui-footer($name: '.footer') {
+    #{$name} {
+        $footer-socials-width: rem(300);
+        background: $setting-color-gray-12;
+        color: $setting-color-white;
+
+        &__top {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            padding: rem(16) rem(16) rem(32);
+            position: relative;
+
+            @include helper-breakpoint-media-min($lg-min) {
+                padding: rem(32) rem(16) rem(16);
+            }
+        }
+
+        &__logo-section {
+            width: rem(90);
+        }
+
+        &__logo-copy {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            @include helper-breakpoint-media-min($lg-min) {
+                justify-content: flex-start;
+            }
+        }
+
+        &__logo-copy-text {
+            letter-spacing: rem(3.2);
+            font: fw(regular) rem(10)/rem(16) $setting-font-family-additional;
+            text-transform: uppercase;
+            margin-right: rem(10);
+        }
+
+        &__bottom {
+            display: block;
+            padding: 0 rem(15);
+            background: $setting-color-gray-6;
+            color: $setting-color-white;
+            position: relative;
+        }
+
+        &__content {
+            display: flex;
+            flex-wrap: wrap;
+            flex: 1;
+        }
+
+        &__socials {
+            width: 100%;
+            padding-bottom: rem(15);
+
+            @include helper-breakpoint-media-min($xl-min) {
+                padding-top: rem(60);
+            }
+
+            &-title {
+                padding-right: rem(16);
+            }
+
+            &-holder {
+                display: flex;
+                align-items: center;
+            }
+        }
+
+        &__navigation {
+            color: $setting-color-white;
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            flex-grow: 1;
+            padding-bottom: rem(30);
+
+            @include helper-breakpoint-media-min($lg-min) {
+                padding-right: 6%;
+            }
+        }
+
+        &__contact-info {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            margin-bottom: rem(16);
+
+            @include helper-breakpoint-media-min($lg-min) {
+                display: block;
+                margin-bottom: 0;
+            }
+
+            &::after {
+                display: none;
+            }
+        }
+
+        &__contact-info-item {
+            @include helper-effect-transition(color);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: $setting-color-gray-10;
+            font-size: rem(14);
+            font-weight: fw(medium);
+            text-align: center;
+            width: calc(50% - #{rem(10)});
+            min-height: rem(70);
+            border: rem(1) solid $setting-color-gray-2;
+            border-radius: rem(4);
+            line-height: rem(24);
+            text-decoration: none;
+
+            &:focus,
+            &:active,
+            &:hover {
+                color: $setting-color-gray-10;
+                text-decoration: underline;
+            }
+
+            @include helper-breakpoint-media-min($lg-min) {
+                display: block;
+                width: 100%;
+                min-height: 0;
+                border: none;
+                text-align: left;
+                margin-bottom: rem(6);
+            }
+        }
+    }
+}
+
+@include shop-ui-footer();

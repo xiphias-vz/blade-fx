@@ -1,0 +1,24 @@
+{% extends '@Gui/Layout/layout.twig' %}
+
+{% set widget_title = 'export.posting.page.title' %}
+
+{% block head_title %}
+    {{ widget_title | trans }}
+{% endblock %}
+
+{% block section_title %}
+    {{ widget_title | trans }}
+{% endblock %}
+
+{% block content %}
+    {{ form_start(form) }}
+    {{ form_widget(form) }}
+    <input type="submit" class="btn btn-primary" value="{{ 'export.posting.form.button' | trans }}" name="postings">
+    <input type="reset" value="{{ 'Reset' | trans }}" class="btn btn-danger reset">
+    {{ form_end(form) }}
+{% endblock %}
+
+{% block footer_js %}
+    {{ parent() }}
+    <script src="{{ assetsPath('js/zed-posting-export-main.js') }}"></script>
+{% endblock %}

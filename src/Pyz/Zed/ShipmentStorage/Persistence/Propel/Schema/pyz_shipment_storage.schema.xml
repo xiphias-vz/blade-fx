@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<database xmlns="spryker:schema-01" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" name="zed" xsi:schemaLocation="spryker:schema-01 https://static.spryker.com/schema-01.xsd"
+          namespace="Orm\Zed\ShipmentStorage\Persistence"
+          package="src.Orm.Zed.ShipmentStorage.Persistence">
+
+    <table name="pyz_shipment_methods_list_storage" identifierQuoting="true">
+        <column name="id_shipment_methods_list_storage" type="BIGINT" autoIncrement="true" primaryKey="true"/>
+        <column name="data" type="LONGVARCHAR" required="false"/>
+        <column name="key" type="VARCHAR" required="true"/>
+
+        <id-method-parameter value="pyz_shipment_methods_list_storage_pk_seq"/>
+
+        <behavior name="synchronization">
+            <parameter name="resource" value="shipment_methods_list"/>
+            <parameter name="queue_group" value="sync.storage.shipment"/>
+            <parameter name="store" required="true"/>
+        </behavior>
+
+        <behavior name="timestampable"/>
+    </table>
+
+</database>

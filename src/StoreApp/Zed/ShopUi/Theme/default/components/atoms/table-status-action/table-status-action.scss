@@ -1,0 +1,22 @@
+@mixin shop-ui-table-status-action($name: '.table-status-action') {
+    #{$name} {
+        &__status {
+            display: inline-block;
+            @include helper-font-weight(bold);
+
+            &--done {
+                color: map-get($setting-color-actions, success);
+            }
+
+            &--picked {
+                color: $setting-color-blue;
+            }
+
+            &--canceled {
+                color: map-get($setting-color-actions, alert);
+            }
+        }
+    }
+}
+
+@include shop-ui-table-status-action();

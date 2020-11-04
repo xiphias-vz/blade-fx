@@ -1,0 +1,4 @@
+template_name,template_path
+static full page,@Cms/templates/page-full-static/page-full-static.twig
+static full page empty,@Cms/templates/page-full-static-empty/page-full-static-empty.twig
+playground,@Cms/templates/page-playground/page-playground.twig

@@ -1,0 +1,55 @@
+{% extends model('component') %}
+
+{% define config = {
+    name: 'pick-products',
+    tag: 'pick-products'
+} %}
+
+{% define data = {
+    productsLength: 0
+} %}
+
+{% define attributes = {
+    'products-count': 0,
+    'order-id': ''
+} %}
+
+{% block body %}
+    <div class="grid grid--middle text-center spacing-y spacing-y--big spacing-y--inner">
+        <div class="col col--sm-4">
+            {% embed atom('app-label') with {
+                modifiers: ['not-found', 'product'],
+                data: {
+                    text: 'not found' | trans
+                },
+                embed: {
+                    jsName: config.jsName
+                }
+            } only %}
+                {% block body %}
+                    <span class="{{ embed.jsName }}__not-picked">0</span> {{ data.text }}
+                {% endblock %}
+            {% endembed %}
+        </div>
+        <div class="col col--sm-4">
+            <strong>
+                {{ data.productsLength }} {{ 'products' | trans }}
+            </strong>
+        </div>
+        <div class="col col--sm-4">
+            {% embed atom('app-label') with {
+                modifiers: ['picked', 'product'],
+                data: {
+                    text: 'picked' | trans
+                },
+                embed: {
+                    jsName: config.jsName
+                }
+            } only %}
+                {% block body %}
+                    <span class="{{ embed.jsName }}__picked">0</span> {{ data.text }}
+                {% endblock %}
+            {% endembed %}
+        </div>
+    </div>
+{% endblock %}

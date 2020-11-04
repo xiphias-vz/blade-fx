@@ -1,0 +1,13 @@
+@mixin shop-ui-image-animation($name: '.image-animation') {
+    #{$name} {
+        &__image {
+            position: absolute;
+            z-index: $setting-zi-image-with-animation;
+            pointer-events: none;
+            animation: flip-scale 1s linear both;
+            border-radius: 50%;
+        }
+    }
+}
+
+@include shop-ui-image-animation();

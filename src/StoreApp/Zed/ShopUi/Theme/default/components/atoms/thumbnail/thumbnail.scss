@@ -1,0 +1,18 @@
+@include shop-ui-thumbnail {
+    margin: 0;
+    border-radius: rem(8);
+    overflow: hidden;
+    background: $setting-color-white;
+
+    &--no-margin {
+        margin: 0;
+    }
+
+    &--product {
+        height: rem(80);
+    }
+
+    &--large {
+        height: rem(117);
+    }
+}

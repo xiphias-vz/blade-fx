@@ -1,0 +1,32 @@
+{% extends model('component') %}
+
+{% define config = {
+    name: 'content-tabs',
+    tag: 'content-tabs',
+} %}
+
+{% define data = {
+    tabs: required,
+} %}
+
+{% block body %}
+    <div class="{{ config.name }}__triggers">
+        {% for tab in data.tabs %}
+            {% set activeClass = loop.index == 1 ? 'active' : '' %}
+
+            <div class="{{ config.name }}__item">
+                <button class="{{ config.name }}__button {{ config.jsName }}__trigger button button--tab {{ activeClass }}" data-target="{{ config.jsName }}__content-{{ loop.index }}">{{ tab.title }}</button>
+            </div>
+        {% endfor %}
+    </div>
+
+    {% block tabContents %}
+        {% for tab, index in data.tabs %}
+            {% set activeClass = loop.index == 1 ? 'active' : '' %}
+
+            <div class="{{ config.name }}__content {{ config.jsName }}__content {{ config.jsName }}__content-{{ loop.index }} {{ activeClass }}">
+                {% block tabContent %}{% endblock %}
+            </div>
+        {% endfor %}
+    {% endblock %}
+{% endblock %}

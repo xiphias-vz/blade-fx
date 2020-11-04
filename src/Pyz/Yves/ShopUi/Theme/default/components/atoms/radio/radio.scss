@@ -1,0 +1,143 @@
+/* stylelint-disable */
+
+@include shop-ui-radio {
+    $name: '.radio';
+
+    &--category-filter {
+        width: 100%;
+    }
+
+    &__container {
+        display: flex;
+        align-items: center;
+
+        &--category-filter {
+            align-items: flex-start;
+            flex-direction: row-reverse;
+            justify-content: space-between;
+        }
+    }
+
+    &__box {
+        width: rem(20);
+        min-width: rem(20);
+        height: rem(20);
+        margin-right: rem(7);
+        position: relative;
+
+        &--category-filter {
+            margin: 0 0 0 rem(7);
+            width: auto;
+            height: auto;
+            border: none;
+            min-width: 0;
+        }
+    }
+
+    &__label {
+        line-height: rem(18);
+        font-weight: fw(medium);
+        color: $setting-color-gray-9;
+    }
+
+    &__check {
+        transition: none;
+        left: rem(3);
+
+        &--category-filter {
+            position: static;
+            background: none;
+            color: $setting-color-gray-11;
+        }
+    }
+
+    &__input:checked {
+        & + #{$name}__box {
+            border-color: $setting-color-main;
+            background-color: $setting-color-main;
+
+            &--category-filter {
+                background: none;
+            }
+
+            #{$name}__check {
+                opacity: 1;
+                visibility: visible;
+            }
+        }
+
+        & ~ #{$name}__label {
+            color: $setting-color-black;
+        }
+    }
+
+    &--with-bg,
+    &--with-bg-wrap & {
+        margin-bottom: 0;
+        display: block;
+
+        #{$name}__container {
+            padding: rem(18) rem(21);
+            position: relative;
+            cursor: pointer;
+            white-space: nowrap;
+        }
+
+        #{$name}__box {
+            margin-top: rem(4);
+
+            &::before {
+                content: '';
+                position: absolute;
+                left: 0;
+                top: 0;
+                width: 100%;
+                height: 100%;
+                z-index: $setting-zi-underside;
+                border: rem(1) solid $setting-color-input-border;
+                background-color: $setting-color-white;
+                border-radius: rem(3);
+            }
+        }
+
+        &:hover,
+        &:focus {
+            #{$name}__box::before {
+                border-color: $setting-color-input-border-focus;
+                background-color: $setting-color-gray-2;
+            }
+        }
+
+        &#{$name}--error {
+            #{$name}__box::before {
+                border-color: map-get($setting-color-actions, alert);
+            }
+        }
+
+        #{$name}__input:checked {
+            & + #{$name}__box {
+                border: rem(3) solid $setting-color-white;
+                background-color: $setting-color-black;
+                box-shadow: 0 0 0 rem(1) $setting-color-input-border;
+
+                &::before {
+                    border: none;
+                    background-color: $setting-color-alpha-9;
+                }
+            }
+
+            #{$name}__check {
+                pointer-events: none;
+                visibility: hidden;
+                opacity: 0;
+            }
+        }
+
+        #{$name}__label {
+            font-weight: fw(medium);
+            color: $setting-color-black;
+            margin-top: rem(2);
+            display: inline-block;
+        }
+    }
+}

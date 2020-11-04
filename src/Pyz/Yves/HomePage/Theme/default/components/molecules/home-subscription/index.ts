@@ -1,0 +1,1 @@
+import './home-subscription.scss';

@@ -1,0 +1,258 @@
+@mixin shop-ui-title($name: '.title') {
+    #{$name} {
+        @each $i in (1, 2, 3, 4, 5, 6) {
+            &--h#{$i} {
+                @include helper-heading($i);
+            }
+        }
+
+        &--alternative {
+            color: $setting-color-gray-4;
+        }
+
+        &--general {
+            color: $setting-color-gray-6;
+        }
+
+        &--main {
+            padding: rem(20) 0;
+            text-align: center;
+            margin-bottom: rem(40);
+        }
+
+        &--checkout {
+            width: 100%;
+            margin-bottom: rem(8);
+            padding-bottom: rem(10);
+            border-bottom: solid rem(1) $setting-color-gray-3;
+
+            @include helper-breakpoint-media-min($md-min) {
+                margin-bottom: rem(58);
+            }
+
+            &:not(:first-of-type) {
+                margin-top: rem(42);
+            }
+        }
+
+        &--shipment {
+            font: fw(regular) rem(14)/rem(17) $setting-font-family-additional;
+            margin-bottom: rem(13);
+        }
+
+        &--primary {
+            width: 100%;
+            margin-bottom: rem(28);
+            font-size: rem(20);
+            font-weight: fw(semibold);
+            color: $setting-color-black;
+        }
+
+        &--secondary {
+            font: fw(bold) rem(25)/rem(30) $setting-font-family-additional;
+            border-bottom: rem(1) solid $setting-color-gray-3;
+            padding-bottom: rem(7);
+            margin-bottom: rem(20);
+            letter-spacing: 0;
+
+            @include helper-breakpoint-media-min($lg-min) {
+                padding-bottom: rem(15);
+                letter-spacing: rem(-0.3);
+                font: fw(medium) rem(28)/rem(34);
+            }
+        }
+
+        &--secondary-box {
+            border-bottom: rem(1) solid $setting-color-gray-3;
+            padding-bottom: rem(8);
+            margin-bottom: rem(16);
+
+            @include helper-breakpoint-media-min($lg-min) {
+                border: none;
+                padding-bottom: 0;
+            }
+        }
+
+        &--secondary-small {
+            font: fw(bold) rem(15)/rem(17) $setting-font-family-additional;
+            margin-bottom: rem(13);
+            letter-spacing: rem(-0.17);
+        }
+
+        &--account-main {
+            text-transform: capitalize;
+            text-align: center;
+            border-bottom: rem(1) solid $setting-color-gray-3;
+            padding: rem(25) 0;
+            margin: 0 0 rem(25);
+        }
+
+        &--product-set-main {
+            position: relative;
+            margin-bottom: rem(24);
+
+            &::before {
+                content: '';
+                position: absolute;
+                top: 50%;
+                left: 0;
+                right: 0;
+                height: rem(1);
+                background-color: $setting-color-gray-6;
+            }
+        }
+
+        &--product-set-secondary {
+            position: relative;
+            display: inline-block;
+            background-color: $setting-color-white;
+            padding-right: rem(50);
+        }
+
+        &--review-summary {
+            border-bottom: rem(1) solid $setting-color-gray-3;
+            padding-bottom: rem(6);
+            margin-bottom: rem(29);
+            letter-spacing: rem(-0.3);
+
+            @include helper-breakpoint-media-min($md-min) {
+                padding-bottom: rem(10);
+                margin-bottom: rem(50);
+            }
+        }
+
+        &--footer {
+            padding: 0 0 rem(16);
+        }
+
+        &--product {
+            margin-bottom: rem(10);
+
+            @include helper-breakpoint-media-min($xl-min) {
+                margin-bottom: rem(20);
+            }
+        }
+
+        &--checkout-success {
+            margin-bottom: rem(12);
+            font-size: rem(30);
+            color: $setting-color-green;
+
+            @include helper-breakpoint-media-min($md-min) {
+                margin-bottom: rem(22);
+            }
+        }
+
+        &--promotion {
+            padding: rem(18) 0;
+            margin-bottom: rem(36);
+            letter-spacing: rem(-0.3);
+        }
+
+        &--mini-cart {
+            padding-bottom: rem(10);
+        }
+
+        &--form {
+            width: 100%;
+            margin-bottom: rem(32);
+            padding-bottom: rem(10);
+
+            @include helper-breakpoint-media-min($md-min) {
+                margin-bottom: rem(58);
+            }
+        }
+
+        &--catalog-cms {
+            margin: 0 0 rem(11);
+            letter-spacing: normal;
+        }
+
+        &--pdp-review {
+            margin-right: rem(14);
+            letter-spacing: normal;
+
+            @include helper-breakpoint-media-min($md-min) {
+                margin-right: rem(19);
+            }
+        }
+
+        &--cart-block {
+            font: fw(bold) rem(36) $setting-font-family-additional;
+            padding-bottom: rem(10);
+            border-bottom: rem(1) solid $setting-color-gray-3;
+        }
+
+        &--medium {
+            font-weight: fw(medium);
+        }
+
+        &--regular {
+            font-weight: fw(regular);
+        }
+
+        &--uppercase {
+            text-transform: uppercase;
+        }
+
+        &--with-border {
+            border-bottom: rem(1) solid $setting-color-gray-3;
+        }
+
+        &--with-top-border {
+            border-top: rem(1) solid $setting-color-gray-3;
+        }
+
+        &--mobile-size {
+            @include helper-breakpoint-media-max($md-max) {
+                font-size: rem(14);
+            }
+        }
+
+        &--bottom-indent {
+            padding-bottom: rem(5);
+            margin-bottom: rem(8);
+        }
+
+        &--product-details {
+            border-bottom: solid 1px $setting-color-gray-3;
+            padding: rem(20) 0;
+            cursor: pointer;
+            position: relative;
+
+            &::after {
+                content: '';
+                position: absolute;
+                right: rem(10);
+                top: rem(21);
+                width: rem(15);
+                height: rem(15);
+                border-right: solid 2px $setting-color-gray-3;
+                border-bottom: solid 2px $setting-color-gray-3;
+                transform: rotate(45deg);
+            }
+
+            &:hover {
+                color: $setting-color-blue-midi;
+            }
+
+            &.active {
+                color: $setting-color-blue-midi;
+                border-color: $setting-color-blue-midi;
+                margin-bottom: rem(25);
+
+                & + div {
+                    margin-bottom: rem(15);
+                }
+
+                &::after {
+                    border-color: $setting-color-blue-midi;
+                }
+            }
+        }
+
+        @content;
+    }
+}
+
+@include shop-ui-title();

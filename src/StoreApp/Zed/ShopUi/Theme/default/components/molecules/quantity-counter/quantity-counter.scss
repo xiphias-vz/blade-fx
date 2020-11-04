@@ -1,0 +1,35 @@
+@mixin shop-ui-quantity-counter($name: '.quantity-counter') {
+    #{$name} {
+        &--expand {
+            width: 100%;
+        }
+
+        &__container {
+            padding: 0 rem(10);
+
+            &--no-spacing {
+                padding: 0;
+            }
+        }
+
+        &__input {
+            margin: 0;
+            display: block;
+            font: fw(bold) rem(15)/rem(40) $setting-font-family-additional;
+            height: rem(40);
+            text-align: center;
+
+            &::-webkit-inner-spin-button {
+                appearance: none;
+            }
+
+            &--quantity-large {
+                font-size: rem(15);
+            }
+        }
+
+        @content;
+    }
+}
+
+@include shop-ui-quantity-counter();

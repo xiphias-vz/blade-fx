@@ -1,0 +1,23 @@
+@mixin shop-ui-navigation-footer($name: '.navigation-footer') {
+    #{$name} {
+        &__col {
+            width: 100%;
+
+            @include helper-breakpoint-media-min($md-min) {
+                width: 33%;
+            }
+
+            @include helper-breakpoint-media-min($xl-min) {
+                padding-right: rem(20);
+            }
+        }
+
+        &--login {
+            padding: 0 rem(15) !important;
+        }
+
+        @content;
+    }
+}
+
+@include shop-ui-navigation-footer();

@@ -1,0 +1,226 @@
+@mixin shop-ui-slick-carousel($name: '.slick-carousel') {
+    #{$name} {
+        &--align-left {
+            .slick-track {
+                margin-left: 0;
+            }
+        }
+
+        &__container {
+            position: relative;
+
+            @include helper-breakpoint-media-max($sm-max) {
+                padding: 0 rem(11);
+            }
+
+            .slick-arrow {
+                position: absolute;
+                top: rem(165);
+                font-size: 0;
+                width: rem(30);
+                height: rem(30);
+                background: url('../images/right-chevron.svg') no-repeat center / rem(15);
+                border-radius: 50%;
+                z-index: $setting-zi-element + 1;
+                opacity: 0.7;
+
+                @include helper-breakpoint-media-max($sm-max) {
+                    top: rem(125);
+                }
+
+                &:hover {
+                    background-color: $setting-color-white;
+                    opacity: 1;
+                    cursor: pointer;
+                }
+            }
+
+            .slick-prev {
+                left: rem(20);
+                transform: rotate(180deg);
+
+                @include helper-breakpoint-media-max($sm-max) {
+                    left: rem(15);
+                }
+            }
+
+            .slick-next {
+                right: rem(20);
+
+                @include helper-breakpoint-media-max($sm-max) {
+                    right: rem(15);
+                }
+            }
+        }
+
+        &--product-set {
+            #{$name}__container {
+                padding: 0;
+            }
+
+            .slick-dots {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                margin-top: rem(12);
+
+                li {
+                    display: block;
+                    margin: rem(4.8) rem(8);
+                    width: rem(6);
+                    height: rem(6);
+                    background: $setting-color-gray-3;
+                    border-radius: 50%;
+
+                    &:hover {
+                        cursor: pointer;
+                    }
+
+                    &.slick-active {
+                        width: rem(12);
+                        height: rem(12);
+                        background: $setting-color-transparent;
+                        border: rem(1) solid map-get($setting-color-actions, alert);
+                    }
+                }
+
+                button {
+                    font-size: 0;
+                }
+            }
+
+            .slick-arrow {
+                @include helper-breakpoint-media-max($md-max) {
+                    top: rem(85);
+                }
+            }
+
+            .slick-prev {
+                @include helper-breakpoint-media-max($md-max) {
+                    left: 0;
+                }
+            }
+
+            .slick-next {
+                @include helper-breakpoint-media-max($md-max) {
+                    right: 0;
+                }
+            }
+
+            .slick-disabled {
+                display: none !important;
+            }
+        }
+
+        &--product-set-secondary {
+            margin-top: rem(24);
+
+            @include helper-breakpoint-media-min($lg-min) {
+                margin-top: 0;
+            }
+
+            .slick-slide {
+                width: rem(230);
+
+                @include helper-breakpoint-media-min($sm-max) {
+                    padding-right: rem(30);
+
+                    &:last-of-type {
+                        padding-right: 0;
+                    }
+                }
+
+                @include helper-breakpoint-media-min($lg-min) {
+                    width: rem(309);
+                }
+            }
+        }
+
+        &--timeslots {
+            margin: 0 rem(-15);
+
+            #{$name}__container {
+                padding-top: rem(56);
+            }
+
+            #{$name}__column {
+                padding: rem(30) rem(26);
+                background: $setting-color-white;
+
+                #{$name}__input {
+                    display: none;
+                }
+
+                /* stylelint-disable selector-max-combinators, selector-max-compound-selectors */
+                #{$name}__input:checked + #{$name}__slot-label {
+                    border-color: $setting-color-green;
+                    color: $setting-color-white;
+                    background-color: $setting-color-green;
+                    position: relative;
+
+                    &::after {
+                        content: '';
+                        position: absolute;
+                        right: rem(20);
+                        top: rem(15);
+                        display: block;
+                        width: rem(8);
+                        height: rem(12);
+                        transform: rotate(45deg);
+                        border-right: rem(2) solid $setting-color-white;
+                        border-bottom: rem(2) solid $setting-color-white;
+                    }
+                }
+                /* stylelint-enable */
+
+                #{$name}__slot-label {
+                    background: $setting-color-lighter;
+                    border-radius: rem(2);
+                    border: rem(1) solid $setting-color-transparent;
+                    padding: rem(9);
+                    margin: rem(8) 0;
+                    text-align: center;
+                    color: $setting-color-black-1;
+                    line-height: rem(28);
+
+                    &:hover {
+                        cursor: pointer;
+                        color: $setting-color-green;
+                        border-color: $setting-color-green;
+                        background: $setting-color-white;
+                    }
+                }
+            }
+
+            #{$name}__date {
+                font: fw(semibold) rem(16) / rem(22) $setting-font-family;
+                color: $setting-color-black;
+                margin-bottom: rem(30);
+            }
+
+            .slick-arrow {
+                top: 0;
+                right: rem(15);
+                left: auto;
+                width: rem(36);
+                height: rem(36);
+                background-color: $setting-color-white;
+                border-radius: rem(4);
+
+                &:hover {
+                    background-color: $setting-color-white;
+                }
+            }
+
+            .slick-prev {
+                right: rem(69);
+            }
+
+            .slick-slide {
+                margin: 0 rem(15);
+            }
+        }
+    }
+}
+
+@include shop-ui-slick-carousel();

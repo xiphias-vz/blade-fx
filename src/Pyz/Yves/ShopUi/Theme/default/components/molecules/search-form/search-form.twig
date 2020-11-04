@@ -1,0 +1,41 @@
+{% extends molecule('search-form', '@SprykerShop:ShopUi') %}
+
+{% block extraClass %} {{ config.jsName }}{% endblock %}
+
+{% block body %}
+    <form action="{{ data.searchUrl }}">
+        <div class="grid grid--middle grid--no-wrap">
+            <button class="{{ config.name }}__submit button button--skinless">
+                {% include atom('icon') with {
+                    modifiers: ['big'],
+                    data: {
+                        name: 'search',
+                    },
+                } only %}
+            </button>
+            <input name="q"
+                   type="text"
+                   class="input input--expand input--search suggest-search__input {{ config.name }}__input {{ config.jsName }}__input--{{ attributes['data-search-id'] }}"
+                   placeholder="{{ 'global.search' | trans }}"
+                   value="{{ data.searchValue }}"
+                   autocomplete="off">
+            <button class="{{ config.name }}__clear {{ config.jsName }}__clear button button button--clear is-hidden" type="button">
+                {% include atom('icon') with {
+                    data: {
+                        name: 'close-circle',
+                    },
+                } only %}
+            </button>
+        </div>
+
+        {% include molecule('suggest-search') with {
+            attributes: {
+                'suggestion-url': path('search/suggestion'),
+                'input-class-name': config.jsName ~ '__input--' ~ attributes['data-search-id'],
+                'wrap-class-name': config.jsName,
+                'wrap-active-class-name': config.name ~ '--active',
+                'clear-button-class-name': config.jsName ~ '__clear',
+            },
+        } only %}
+    </form>
+{% endblock %}

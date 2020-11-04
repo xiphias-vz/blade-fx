@@ -1,0 +1,13 @@
+"Incorrect password provided, it should contain at least 3 of the following: small letters, capital letters, numbers, special symbols","Bei falschem Passwort sollte es mindestens 3 der folgenden Elemente enthalten: Kleinbuchstaben, Großbuchstaben, Zahlen, spezielle Symbole"
+Merchant,Filialen
+Groups,Gruppen
+E-mail,E-Mail-Addresse
+Users,User Verwaltung
+List Users,Liste der User
+User Management,User Verwaltung
+Last Login,Letzte Anmeldung
+"General Information","User Informationen"
+"active","Aktiv"
+"blocked","Gesperrt"
+"deleted","Gelöscht"
+Update,Aktualisieren

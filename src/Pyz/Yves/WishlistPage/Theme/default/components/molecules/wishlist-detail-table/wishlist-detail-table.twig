@@ -1,0 +1,101 @@
+{% extends model('component') %}
+
+{% define config = {
+    name: 'wishlist-detail-table',
+} %}
+
+{% define data = {
+    wishlistItems: required,
+    wishlistName: required,
+} %}
+
+{% block body %}
+    {% for item in data.wishlistItems %}
+        {% set isItemAvailable = item.available is defined and item.available and item.price is defined and item.price is not null %}
+        {% set productDiscontinuedWidget = findWidget('ProductDiscontinuedWidget', [item.sku]) %}
+        {% set isDiscontinued = productDiscontinuedWidget.isDiscontinued %}
+        {% if isDiscontinued is not null %}
+            {% set isItemAvailable = not isDiscontinued and isItemAvailable %}
+        {% endif %}
+
+        {% embed molecule('product-card-item') with {
+            modifiers: ['with-actions', 'light'],
+            data: {
+                productItem: item,
+                canEditCart: isItemAvailable,
+            },
+            embed: {
+                index: loop.index,
+                pathConfig: {
+                    sku: item.sku,
+                    'wishlist-name': data.wishlistName,
+                },
+            },
+        } only %}
+            {% block removeButton %}
+                <form id="deleteWishlistItem_{{ embed.index }}"
+                      method="POST"
+                      action="{{ path('wishlist/remove-item', embed.pathConfig) }}"
+                >
+                    <input type="hidden" name="token" value="{{ csrf_token('remove-items-from-wishlist') }}">
+                    <button class="{{ component.renderClass(config.name ~ '__remove', modifiers) }} link link--darkest link--edit" title="{{ 'customer.account.wishlist.remove' | trans }}">
+                        {% include atom('icon') with {
+                            data: {
+                                name: 'close',
+                            },
+                        } only %}
+                    </button>
+                </form>
+            {% endblock %}
+
+            {% block quantity %}
+                <div class="{{ component.renderClass(config.name ~ '__quantity', modifiers) }}">
+                    {% if data.canEditCart %}
+                        <form id="changeQuantityWishlistItem_{{ embed.index }}"
+                              method="POST"
+                              action="{{ path('wishlist/change-quantity', embed.pathConfig) }}"
+                        >
+                            <input type="hidden" name="token" value="{{ csrf_token('change-cart') }}">
+                            {% include molecule('quantity-counter') with {
+                                modifiers: [embed.index, 'no-spacing', 'quantity-large', 'align-right'],
+                                data: {
+                                    minQuantity: 1,
+                                    maxQuantity: null,
+                                    value: data.productItem.quantity,
+                                    readOnly: true,
+                                    autoUpdate: true,
+                                },
+                            } only %}
+                        </form>
+                    {% endif %}
+                </div>
+            {% endblock %}
+
+            {% block actions %}
+                <div class="{{ component.renderClass(config.name ~ '__actions', modifiers) }}">
+                    {% if data.canEditCart %}
+                        <form id="addToCart_{{ embed.index }}"
+                              method="POST"
+                              action="{{ path('wishlist/move-to-cart', embed.pathConfig) }}"
+                        >
+                            <input type="hidden" name="token" value="{{ csrf_token('add-items-to-cart') }}">
+                            <input type="hidden" name="quantity" value="{{ data.productItem.quantity }}">
+                            <button class="button button--with-icon button--with-icon-hidden-sm-only" name="idProductAbstract" value="{{ data.productItem.idProductAbstract }}">
+                                {% include atom('icon') with {
+                                    class: 'button__icon is-hidden-sm-only',
+                                    modifiers: ['big'],
+                                    data: {
+                                        name: 'add',
+                                    },
+                                } only %}
+                                {{- 'customer.account.wishlist.add-to-cart' | trans -}}
+                            </button>
+                        </form>
+                    {% else %}
+                        {{ 'customer.account.wishlist.not_available' | trans }}
+                    {% endif %}
+                </div>
+            {% endblock %}
+        {% endembed %}
+    {% endfor %}
+{% endblock %}

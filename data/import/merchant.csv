@@ -1,0 +1,13 @@
+region_number,store,region_name,filial_number,zip_code,city,street,latitude,longitude,picking_capacity_per_slot,delivery_capacity_per_slot
+41,BERLIN,Berlin,83,10115,Berlin,Julie-Wolfthorn-Straße 1,52.532278,13.384491,5,10
+41,BERLIN,Berlin,84,10557,Berlin,"Berlin Hbf, Europaplatz 1",52.532278,13.384491,5,10
+41,BERLIN,Berlin,85,10117,Berlin,"Mall of Berlin, Leipziger Pl. 12",52.532278,13.384491,5,10
+41,BERLIN,Berlin,86,10789,Berlin,"KaDeWe, Tauentzienstraße 21-24",52.532278,13.384491,5,
+41,BERLIN,Berlin,87,13357,Berlin,"Gesundbrunnen, Badstraße 1-3",52.532278,13.384491,5,10
+41,BERLIN,Berlin,88,10117,Berlin,"Gendarmenmarkt, Gendarmenmarkt 5",52.532278,13.384491,5,
+42,HAMBURG,Hamburg,89,20095,Hamburg,Spitalerstraße 3,53.551086,9.993682,5,10
+42,HAMBURG,Hamburg,90,20099,Hamburg,"Hamburg Hbf, Hachmannplatz 16",53.551086,9.993682,5,10
+42,HAMBURG,Hamburg,91,20354,Hamburg,"Jungfernstieg, 16-20",53.551086,9.993682,5,
+42,HAMBURG,Hamburg,92,20095,Hamburg,"Europa Passage, Ballindamm 40 EG2",53.551086,9.993682,5,10
+42,HAMBURG,Hamburg,93,20457,Hamburg,"Hafen City, Am Kaiserkai 62",53.551086,9.993682,5,
+42,HAMBURG,Hamburg,94,22083,Hamburg,"Mundsburg, Hamburger Str. 1,",53.551086,9.993682,5,10

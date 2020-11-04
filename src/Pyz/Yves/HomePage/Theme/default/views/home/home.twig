@@ -1,0 +1,37 @@
+{% extends template('page-layout-main') %}
+
+{% block pageInfo %}{% endblock %}
+
+{% block container %}
+    <main>
+        {% embed organism('jumbotron-slider') only %}
+            {% block body %}
+                {% embed molecule('slick-carousel') with {
+                    attributes: {
+                        'data-json': attributes['data-json'],
+                    },
+                } only %}
+                    {% block slides %}
+                        {% cms_slot 'slt-2' %}
+                    {% endblock %}
+                {% endembed %}
+            {% endblock %}
+        {% endembed %}
+
+        <div class="container">
+            <div class="container__inner">
+                {% block content %}
+                    <div class="spacing-bottom spacing-bottom--bigger">
+                        {{- spyCmsBlock({ keys: ['home-promotions-products']}) -}}
+                    </div>
+
+                    <div class="spacing-bottom spacing-bottom--biggest">
+                        {% widget 'NavigationWidget' args ['POPULAR_CATEGORIES', 'navigation-categories'] %}{% endwidget %}
+                    </div>
+
+                    {% include molecule('home-subscription', 'HomePage') %}
+                {% endblock %}
+            </div>
+        </div>
+    </main>
+{% endblock %}

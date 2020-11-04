@@ -1,0 +1,5 @@
+{% block content %}
+    {% if order.collectNumber %}
+        <div style="font: 15px/24px Helvetica, sans-serif; color: #4a4a4a !important;">{{ 'mail.order.confirmation.collect.number' | trans({}, null, order.locale.localeName) }}: {{ order.collectNumber }}</div>
+    {% endif %}
+{% endblock %}

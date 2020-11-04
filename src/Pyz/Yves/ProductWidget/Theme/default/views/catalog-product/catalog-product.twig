@@ -1,0 +1,38 @@
+{% extends template('widget') %}
+
+{% define data = {
+    product: _widget.product,
+    viewMode: _widget.viewMode,
+    depositPrice: _widget.depositPrice,
+} %}
+
+{% block body %}
+    {% set productTemplate = molecule('product-item') %}
+    {% set class = 'col--sm-12 col--md-6 col--lg-4' %}
+
+    {% if data.viewMode == 'list' %}
+        {% set productTemplate = molecule('product-item-list') %}
+        {% set class = 'col col--sm-12' %}
+    {% endif %}
+
+    {% set image = data.product.images ? data.product.images | last %}
+
+    {% embed productTemplate with {
+        productTemplate: productTemplate,
+        class: class,
+        data: {
+            product: data.product,
+            name: data.product.abstract_name,
+            idProductAbstract: data.product.id_product_abstract,
+            image: image.external_url_small,
+            depositPrice: data.depositPrice,
+        },
+    } only %}
+        {% block productAbstractLabels %}
+            {% widget 'ProductConcreteLabelWidget' args [data.product.id_product_labels] only %}{% endwidget %}
+        {% endblock %}
+
+        {% block rating %}
+        {% endblock %}
+    {% endembed %}
+{% endblock %}

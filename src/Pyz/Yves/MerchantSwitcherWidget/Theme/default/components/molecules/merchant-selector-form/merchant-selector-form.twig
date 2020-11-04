@@ -1,0 +1,38 @@
+{% extends molecule('merchant-selector-form', '@SprykerShop:MerchantSwitcherWidget') %}
+
+{% block body %}
+    <form class="{{ config.jsName }}__form {% block formClass %}{% endblock %}" method="POST" autocomplete="off" action="{{ path('switch-merchant') }}">
+        {% block merchantSelect %}
+            {% block merchantSwitcherLabel %}
+                <div class="spacing-bottom spacing-bottom--small">
+                    {{- 'merchant_switcher.label' | trans -}}
+                </div>
+            {% endblock %}
+            <input type="hidden" name="token" value="{{ csrf_token('merchant-change') }}">
+
+            {% embed molecule('custom-select') with {
+                class: 'spacing-bottom spacing-bottom--big',
+                modifiers: ['expand'] | merge(modifiers),
+                attributes: {
+                    name: 'merchant-reference',
+                },
+                embed: {
+                    jsName: config.jsName,
+                    merchantList: data.merchantList,
+                    currentMerchantReference: data.currentMerchantReference,
+                },
+            } only %}
+                {% block selectClass %}{{ embed.jsName }}__select js-custom-select col{% endblock %}
+
+                {% block options %}
+                    {% for merchant in embed.merchantList %}
+                        <option value="{{ merchant.merchantReference }}" {{ merchant.merchantReference == embed.currentMerchantReference ? 'selected' }}>
+                            {{ merchant.name }}
+                        </option>
+                    {% endfor %}
+                {% endblock %}
+            {% endembed %}
+        {% endblock %}
+    </form>
+{% endblock %}
+

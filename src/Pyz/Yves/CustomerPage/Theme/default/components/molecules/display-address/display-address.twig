@@ -1,0 +1,23 @@
+{% extends model('component') %}
+
+{% define config = {
+    name: 'display-address',
+    tag: 'ul'
+} %}
+
+{% define data = {
+    address: required
+} %}
+
+{% block body %}
+    <li class="menu__item">{{ data.address.address1 }} {{ data.address.address2 }} {{ data.address.floor | default | trans }}</li>
+    {% if data.address.comment is not empty %}
+        <li class="menu__item">{{ 'address.comment.prefix' | trans }}{{ data.address.comment }}</li>
+    {% endif %}
+    <li class="menu__item">{{ data.address.zipCode }} {{ data.address.city }}</li>
+
+    {% if data.address.phone is not empty %}
+        <li class="menu__item">{{ data.address.phone }}</li>
+    {% endif %}
+
+{% endblock %}

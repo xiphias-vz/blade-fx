@@ -1,0 +1,142 @@
+{% extends molecule('order-detail', '@SprykerShop:CustomerPage') %}
+
+{% define data = {
+    taxPayments: _view.taxPayments,
+    merchantName: app['merchant_name'] | default,
+} %}
+
+{% block body %}
+    {% set shipmentGroup = data.shipmentGroups | first %}
+
+    {% include molecule('order-detail-table', 'CustomerPage') with {
+        data: {
+            shipmentGroups: data.shipmentGroups,
+            orderedItems: data.orderedItems,
+            canceledItems: data.canceledItems,
+            orderShipmentExpenses: data.orderShipmentExpenses,
+            currencyIsoCode: data.order.currencyIsoCode,
+            order: data.order,
+        },
+    } only %}
+
+    <div class="box spacing-bottom spacing-bottom--biggest">
+        {% include molecule('title-box', 'CustomerPage') with {
+            modifiers: ['borderless'],
+            data: {
+                title: 'customer.order.grandTotal' | trans,
+            },
+        } only %}
+
+        {% include molecule('order-summary', 'CustomerPage') with {
+            data: {
+                order: data.order,
+                taxPayments: data.taxPayments,
+            },
+        } only %}
+    </div>
+
+    <div class="grid grid--justify grid--stretch">
+        <div class="col col--sm-12 col--lg-6 spacing-bottom spacing-bottom--inner spacing-bottom--biggest">
+            <div class="page-layout-customer__col-first box">
+                {% include molecule('title-box', 'CustomerPage') with {
+                    modifiers: ['borderless'],
+                    data: {
+                        title: 'customer.order.shipment.title' | trans,
+                    },
+                } only %}
+
+                <ul class="menu">
+                    <li class="menu__item">
+                        <strong class="menu__title">{{ 'customer.order.details.shipping.date' | trans }}:</strong>
+                        {% include molecule('time-slot-date-formatted') with {
+                            data: {
+                                timeFrom: data.order.createdAt,
+                            },
+                        } only %}
+                    </li>
+
+                    {% if data.order.collectNumber %}
+                        <li class="menu__item">
+                            <strong class="menu__title">{{ 'customer.order.collect_number' | trans }}:</strong>
+                            {{ data.order.collectNumber -}}
+                        </li>
+                    {% endif %}
+
+                    <li class="menu__item grid">
+                        <strong class="menu__title col">{{ shipmentGroup.shipment.method.carrierName | trans }}:&nbsp;</strong>
+                        <span class="col col--expand">
+                            {{- shipmentGroup.shipment.method.name | trans -}}
+
+                            {% if data.order.merchantName is defined %}
+                                <br>{{ data.order.merchantName -}}
+                            {% endif %}
+                        </span>
+                    </li>
+                    <li class="menu__item">
+                        {% set splittedDeliveryDate = shipmentGroup.shipment.requestedDeliveryDate | split('_') %}
+
+                        <strong class="menu__title">{{ 'checkout.date.and.time' | trans }}:</strong>
+                        {{ splittedDeliveryDate | first | formatDate }} - {{ splittedDeliveryDate | last -}}
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="col col--sm-12 col--lg-6 spacing-bottom spacing-bottom--inner spacing-bottom--biggest">
+            <div class="page-layout-customer__col-last box">
+                {% include molecule('title-box', 'CustomerPage') with {
+                    modifiers: ['borderless'],
+                    data: {
+                        title: 'checkout.step.summary.delivery_address' | trans,
+                    },
+                } only %}
+
+                {% include molecule('display-address') with {
+                    data: {
+                        address: shipmentGroup.shipment.shippingAddress,
+                    },
+                } only %}
+            </div>
+        </div>
+    </div>
+
+    <div class="grid grid--justify grid--stretch">
+        <div class="col col--sm-12 col--lg-6 spacing-bottom spacing-bottom--inner spacing-bottom--biggest">
+            <div class="page-layout-customer__col-first box">
+                {% include molecule('title-box', 'CustomerPage') with {
+                    modifiers: ['borderless'],
+                    data: {
+                        title: 'customer.order.payment' | trans,
+                    },
+                } only %}
+
+                <h4 class="title title--h5 title--alternative spacing-bottom">
+                    {{- data.order.payments[0].paymentMethod | trans | capitalize -}}
+                </h4>
+
+                {% include molecule('order-payment', 'CustomerPage') with {
+                    data: {
+                        payments: data.order.payments,
+                        currencyIsoCode: data.order.currencyIsoCode,
+                    },
+                } only %}
+            </div>
+        </div>
+        <div class="col col--sm-12 col--lg-6 spacing-bottom spacing-bottom--inner spacing-bottom--biggest">
+            <div class="page-layout-customer__col-last box">
+                {% include molecule('title-box', 'CustomerPage') with {
+                    modifiers: ['borderless'],
+                    data: {
+                        title: 'customer.order.billing_address' | trans,
+                    },
+                } only %}
+
+                {% include molecule('display-address') with {
+                    class: 'spacing-bottom',
+                    data: {
+                        address: data.order.billingAddress,
+                    },
+                } only %}
+            </div>
+        </div>
+    </div>
+{% endblock %}

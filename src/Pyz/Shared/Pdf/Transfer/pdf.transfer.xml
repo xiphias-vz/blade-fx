@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<transfers xmlns="spryker:transfer-01"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="spryker:transfer-01 http://static.spryker.com/transfer-01.xsd">
+
+    <transfer name="PdfParameters">
+        <property name="mode" type="string"/>
+        <property name="orientation" type="string"/>
+        <property name="fontDir" type="array"/>
+        <property name="fontData" type="array"/>
+        <property name="defaultFont" type="string"/>
+        <property name="autoTopMargin" type="string"/>
+    </transfer>
+
+</transfers>

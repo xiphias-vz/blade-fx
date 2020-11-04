@@ -1,0 +1,57 @@
+{% extends template('page-layout-main') %}
+
+{% define data = {
+    title: _view.pageTitle | default('global.spryker.shop' | trans),
+    metaTitle: _view.pageTitle | default('global.spryker.shop' | trans),
+    metaDescription: _view.pageDescription | default(''),
+    metaKeywords: _view.pageKeywords | default('')
+} %}
+
+{% block breadcrumbs %}{% endblock %}
+
+{% block pageInfo %}{% endblock %}
+
+{% block sidebar %}{% endblock %}
+
+{% block accountSidebar %}{% endblock %}
+
+{% block outside %}{% endblock %}
+
+{% block header %}{% endblock %}
+
+{% block content %}
+    <!-- CMS_PLACEHOLDER : "title" -->
+    <div class="cms-page__title">
+        <h2>
+            {{ spyCms('title') | raw }}
+        </h2>
+    </div>
+
+    <!-- CMS_PLACEHOLDER : "content" -->
+    <div class="cms-page__content">
+        {{ spyCms('content') | raw }}
+    </div>
+{% endblock %}
+
+{% block footer %}
+    {% embed organism('footer') with {
+        modifiers: ['login']
+    } only %}
+        {% block logo %}{% endblock %}
+
+        {% block navigation %}
+            <div class="{{ config.name }}__navigation">
+                <ul class="list navigation-list navigation-list--footer">
+                    <li class="node node--footer list__item">
+                        <a class="node__link node__link--footer " href="/de/impressum/empty">{{ "Impressum" | trans }}</a>
+                    </li>
+                    <li class="node node--footer list__item">
+                        <a class="node__link node__link--footer " href="/de/datenschutz/empty">{{ "Datenschutz" | trans }}</a>
+                    </li>
+                </ul>
+            </div>
+        {% endblock %}
+
+        {% block copyright %}{% endblock %}
+    {% endembed %}
+{% endblock %}

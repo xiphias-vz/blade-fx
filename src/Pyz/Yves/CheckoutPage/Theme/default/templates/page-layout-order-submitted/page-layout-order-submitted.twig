@@ -1,0 +1,39 @@
+{% extends template('page-layout-main') %}
+
+{% define data = {
+    title: required,
+    message: required,
+    collectNumber: '',
+    requestedDeliveryDate: '',
+    deliveryMethodKey: '',
+} %}
+
+{%- block class -%}{{ parent() }} page-layout-main--success-page{%- endblock -%}
+
+{% block breadcrumbs %}{% endblock %}
+
+{% block title %}{% endblock %}
+
+{% block content %}
+    <div class="page-layout-checkout success-page text-center">
+        <div class="success-page__container container">
+            <h1 class="title title--checkout-success">{{ data.title }}</h1>
+            <p class="success-page__text">{{ data.message }}</p>
+
+            {% if data.requestedDeliveryDate %}
+                {% set splittedDeliveryDate = data.requestedDeliveryDate | split('_') %}
+                <p class="success-page__text">{{ ('checkout.order.submitted.' ~ data.deliveryMethodKey) | trans }} : {{ splittedDeliveryDate | first | formatDate }} - {{ splittedDeliveryDate | last }}</p>
+            {% endif %}
+
+            {% if data.collectNumber %}
+                <p class="success-page__text">{{ 'customer.order.collect_number' | trans }}:
+                    <strong>{{ data.collectNumber }}</strong>
+                </p>
+            {% endif %}
+
+            {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+                <a class="button" href="{{ url('customer/overview') }}">{{ 'checkout.step.success.link' | trans }}</a>
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}

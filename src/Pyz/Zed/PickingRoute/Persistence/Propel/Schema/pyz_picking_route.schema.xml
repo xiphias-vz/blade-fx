@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<database xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          name="zed"
+          xsi:noNamespaceSchemaLocation="http://static.spryker.com/schema-01.xsd"
+          namespace="Orm\Zed\PickingRoute\Persistence"
+          package="src.Orm.Zed.PickingRoute.Persistence">
+
+    <table name="pyz_picking_route">
+        <column name="id_picking_route" type="INTEGER" autoIncrement="true" primaryKey="true"/>
+        <column name="picking_order" type="INTEGER" required="true"/>
+        <column name="product_group" type="VARCHAR" required="true"/>
+        <column name="sub_product_group" type="VARCHAR" required="true"/>
+
+        <column name="picking_order_key" type="VARCHAR" required="true"/>
+
+        <index name="pyz_picking_route-index-picking_order_key">
+            <index-column name="picking_order_key"/>
+        </index>
+
+        <id-method-parameter value="pyz_picking_route_pk_seq"/>
+    </table>
+
+</database>

@@ -1,0 +1,185 @@
+$header-mobile-height: rem(61, number);
+$header-height: rem(147, number);
+$header-sticky-height: rem(69, number);
+
+@mixin shop-ui-header($name: '.header') {
+    #{$name} {
+        position: relative;
+        z-index: $setting-zi-header;
+
+        &__top {
+            background: $setting-color-white;
+            color: $setting-color-gray-13;
+            display: none;
+
+            @include helper-breakpoint-media-min($xl-min) {
+                display: block;
+                padding: rem(10) 0 rem(5);
+            }
+        }
+
+        &__row {
+            padding: 0 rem(20) 0 rem(70);
+
+            @include helper-breakpoint-media-min($xl-min) {
+                padding: 0;
+            }
+        }
+
+        &__content-holder {
+            min-height: $header-mobile-height;
+
+            @include helper-breakpoint-media-min($xl-min) {
+                min-height: $header-sticky-height;
+            }
+        }
+
+        &__middle {
+            position: fixed;
+            left: 0;
+            top: 0;
+            right: 0;
+            padding: rem(14) 0;
+            background: $setting-color-gray-14;
+            border-top: rem(5) solid $setting-color-gray-14;
+            z-index: $setting-zi-header + 1;
+
+            @include helper-breakpoint-media-min($xl-min) {
+                position: relative;
+            }
+
+            &--sticky {
+                @include helper-breakpoint-media-min($xl-min) {
+                    position: fixed;
+                }
+            }
+        }
+
+        &__container {
+            position: relative;
+            z-index: $setting-zi-header + 1;
+        }
+
+        &__navigation-top {
+            position: relative;
+            z-index: $setting-zi-header + 3;
+
+            &--checkout {
+                display: flex;
+                justify-content: flex-end;
+            }
+        }
+
+        &__search-bar {
+            @include helper-breakpoint-media-max($lg-max) {
+                position: absolute;
+                left: 0;
+                top: 100%;
+                right: 0;
+                padding: rem(12) rem(16) rem(12) rem(20);
+                margin-top: rem(7);
+                background: $setting-color-gray-14;
+            }
+        }
+
+        &__search-form {
+            z-index: $setting-zi-header + 2;
+        }
+
+        &__navigation-main {
+            position: fixed;
+            top: #{$header-mobile-height};
+            left: 0;
+            width: 100%;
+            bottom: 0;
+            border-top: rem(8) solid $setting-color-green;
+            background: $setting-color-gray-14;
+            z-index: $setting-zi-header + 1;
+            box-shadow: 0 rem(2) 0 $setting-color-gray-14;
+            display: flex;
+            flex-direction: column;
+
+            @include helper-breakpoint-media-min($xl-min) {
+                position: absolute;
+                top: 100%;
+                bottom: auto;
+                display: block;
+                width: rem(345);
+                height: calc(100vh - #{$header-height});
+                box-shadow: 0 ($header-height - $header-sticky-height) 0 $setting-color-gray-14;
+                // Move scrollbar to the left side
+                transform: scaleX(-1);
+            }
+
+            @include helper-media-ie() {
+                transform: none;
+            }
+
+            #{$name}__middle--sticky & {
+                @include helper-breakpoint-media-min($xl-min) {
+                    height: calc(100vh - #{$header-sticky-height});
+                }
+            }
+        }
+
+        &__navigation-button-container {
+            margin-right: rem(50);
+            min-width: rem(190);
+        }
+
+        &__navigation-title {
+            position: relative;
+            color: $setting-color-gray-6;
+            text-align: center;
+            padding: rem(22) rem(20);
+            box-shadow: 0 rem(2) rem(12) 0 $setting-color-alpha-8;
+            z-index: $setting-zi-element;
+        }
+
+        &__text-small {
+            font: fw(regular) rem(13)/rem(16) $setting-font-family-additional;
+            letter-spacing: rem(0.1);
+        }
+
+        &__secure-block {
+            font: fw(regular) rem(13)/rem(16) $setting-font-family-additional;
+            letter-spacing: rem(0.1);
+            color: $setting-color-white;
+            display: flex;
+            align-items: center;
+            padding-left: rem(5);
+
+            @include helper-breakpoint-media-min($lg-min) {
+                font-size: rem(15);
+                justify-content: flex-end;
+            }
+        }
+
+        &--checkout {
+            #{$name}__top {
+                @include helper-breakpoint-media-min($xl-min) {
+                    padding: rem(10) 0;
+                }
+            }
+        }
+
+        &__merchant {
+            display: block;
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            color: $setting-color-gray-13;
+            padding: 0 rem(30);
+        }
+
+        &__logo {
+            position: fixed;
+            left: rem(15);
+            top: rem(5);
+        }
+
+        @content;
+    }
+}
+
+@include shop-ui-header();

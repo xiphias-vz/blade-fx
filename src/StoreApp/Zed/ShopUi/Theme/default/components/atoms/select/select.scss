@@ -1,0 +1,40 @@
+@mixin shop-ui-select($name: '.select') {
+    #{$name} {
+        position: relative;
+        display: block;
+
+        &__select {
+            display: block;
+            width: 100%;
+            padding: 0 rem(16) 0 rem(8);
+            font: fw(regular) rem(15)/rem(38) $setting-font-family;
+            background: $setting-color-white;
+            border: rem(1) solid $setting-color-input-border;
+            border-radius: rem(4);
+            appearance: none;
+            height: rem(50);
+
+            &::-ms-expand {
+                display: none;
+            }
+
+            &:-moz-focusring {
+                color: transparent;
+                text-shadow: 0 0 0 $setting-color-black;
+            }
+        }
+
+        &__caret {
+            position: absolute;
+            top: 50%;
+            right: rem(5);
+            transform: translate(0, -50%);
+            width: rem(10);
+            color: $setting-color-gray-6;
+        }
+
+        @content;
+    }
+}
+
+@include shop-ui-select();

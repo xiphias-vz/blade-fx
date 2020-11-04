@@ -1,0 +1,21 @@
+{% extends template('page-layout-customer', 'CustomerPage') %}
+
+{% define data = {
+    bankingInformationForm: _view.bankingInformationForm,
+    title: 'customer.account.banking-information' | trans,
+    activePage: 'banking-information'
+} %}
+{% block customerContent %}
+    <div>
+        {% include molecule('customer-form', 'CustomerPage') with {
+            class: 'box',
+            data: {
+                title: 'customer.banking-information.update' | trans,
+                form: data.bankingInformationForm,
+                submit: {
+                    enable: true
+                }
+            }
+        } only %}
+    </div>
+{% endblock %}

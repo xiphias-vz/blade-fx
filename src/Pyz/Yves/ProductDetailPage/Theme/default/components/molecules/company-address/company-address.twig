@@ -1,0 +1,27 @@
+{% extends model('component') %}
+
+{% define config = {
+    name: 'company-address',
+} %}
+
+{% define data = {
+    productAttributes: required,
+    triggerClassName: '',
+} %}
+
+{% block body %}
+    {% if data.productAttributes['Firma'] is defined and data.productAttributes['Adresse'] is defined %}
+        <div class="{{ component.renderClass(config.name ~ '__content', modifiers) }}">
+            {% block contentText %}
+                <h3 class="title title--h2 title--product-details {{ data.triggerClassName }}"
+                    data-toggle-target-class-name="{{ config.jsName }}__toggler-target">
+                    <strong>{{ 'product.info.company.address' | trans }}</strong>
+                </h3>
+                <div class="{{ config.jsName }}__toggler-target is-hidden">
+                    <div>{{ data.productAttributes['Firma'] }}</div>
+                    <div>{{ data.productAttributes['Adresse'] }}</div>
+                </div>
+            {% endblock %}
+        </div>
+    {% endif %}
+{% endblock %}

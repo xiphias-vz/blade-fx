@@ -1,0 +1,44 @@
+{% extends model('component') %}
+
+{% define config = {
+    name: 'store-switcher',
+    tag: 'store-switcher'
+} %}
+
+{% define data = {
+    stores: required,
+    currentStore: required,
+    pattern: required,
+    additionalModifiers: required,
+    additionalClassName: '',
+} %}
+
+{% block body %}
+    {% embed molecule('custom-select') with {
+        modifiers: data.additionalModifiers,
+        attributes: {
+            'config-theme': 'secondary',
+            'additional-class-name': data.additionalClassName,
+        },
+        embed: {
+            jsName: config.jsName ~ '__select_store',
+            stores: data.stores,
+            currentStore: data.currentStore,
+            pattern: data.pattern
+        }
+    } only %}
+        {% block selectClass %}
+            {{ parent() }} {{ embed.jsName }}
+        {% endblock %}
+        {% block options %}
+            {% for store in embed.stores %}
+
+                {% set selectedOption = store == embed.currentStore ? 'selected' %}
+
+                <option value="{{ embed.pattern | format(store | lower) }}" {{ selectedOption }}>
+                    {{ store }}
+                </option>
+            {% endfor %}
+        {% endblock %}
+    {% endembed %}
+{% endblock %}

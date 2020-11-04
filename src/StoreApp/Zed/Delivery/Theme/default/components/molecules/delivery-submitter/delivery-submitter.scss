@@ -1,0 +1,40 @@
+@mixin customer-page-delivery-submitter($name: '.delivery-submitter') {
+    #{$name} {
+        &.active {
+            height: rem(60);
+
+            #{$name} {
+                &__content {
+                    transform: translateY(0);
+                }
+            }
+        }
+
+        &__content {
+            @include helper-effect-transition(transform);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background: $setting-color-green;
+            padding: rem(7) rem(16);
+            transform: translateY(100%);
+        }
+
+        &__counter {
+            @include helper-font-weight(bold);
+            font-size: rem(15);
+            line-height: 1;
+            color: $setting-color-white;
+        }
+
+        &__button {
+            min-width: rem(148);
+        }
+    }
+}
+
+@include customer-page-delivery-submitter();

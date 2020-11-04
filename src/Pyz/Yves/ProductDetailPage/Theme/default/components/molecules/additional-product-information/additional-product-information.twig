@@ -1,0 +1,47 @@
+{% extends model('component') %}
+
+{% define config = {
+    name: 'additional-product-information',
+} %}
+
+{% define data = {
+    productAttributes: required,
+    triggerClassName: '',
+} %}
+
+{% block body %}
+    <div class="{{ component.renderClass(config.name ~ '__content', modifiers) }}">
+        {% block contentText %}
+            <h3 class="title title--h2 title--product-details {{ data.triggerClassName }}"
+                data-toggle-target-class-name="{{ config.jsName }}__toggler-target">
+                <strong>{{ 'product.info.additional' | trans }}</strong>
+            </h3>
+            <div class="{{ config.jsName }}__toggler-target is-hidden">
+                {% if data.productAttributes['Aufbewahrung'] is defined %}
+                    <div><strong>{{ 'product.info.additional.storage' | trans }}:</strong> {{ data.productAttributes['Aufbewahrung'] }}</div>
+                {% endif %}
+                {% if data.productAttributes['Serviervorschlag'] is defined %}
+                    <div><strong>{{ 'product.info.additional.serving' | trans }}:</strong> {{ data.productAttributes['Serviervorschlag'] }}</div>
+                {% endif %}
+                {% if data.productAttributes['Haltungsform'] is defined %}
+                    <div><strong>{{ 'product.info.additional.husbandry' | trans }}:</strong> {{ data.productAttributes['Haltungsform'] }}</div>
+                {% endif %}
+                {% if data.productAttributes['Zubereitung'] is defined %}
+                    <div><strong>{{ 'product.info.additional.preparation' | trans }}:</strong> {{ data.productAttributes['Zubereitung'] }}</div>
+                {% endif %}
+                {% if data.productAttributes['Ursprungsland'] is defined %}
+                    <div><strong>{{ 'product.info.additional.origin.country' | trans }}:</strong> {{ data.productAttributes['Ursprungsland'] }}</div>
+                {% endif %}
+                {% if data.productAttributes['Handelsklasse'] is defined %}
+                    <div><strong>{{ 'product.info.additional.grading' | trans }}:</strong> {{ data.productAttributes['Handelsklasse'] }}</div>
+                {% endif %}
+                {% if data.productAttributes['Alkoholgehalt in %'] is defined %}
+                    <div><strong>{{ 'product.info.additional.alcohol' | trans }}:</strong> {{ data.productAttributes['Alkoholgehalt in %'] }} %</div>
+                {% endif %}
+                {% if data.productAttributes['Hinweise'] is defined %}
+                    <div><strong>{{ 'product.info.additional.hints' | trans }}:</strong> {{ data.productAttributes['Hinweise'] }}</div>
+                {% endif %}
+            </div>
+        {% endblock %}
+    </div>
+{% endblock %}

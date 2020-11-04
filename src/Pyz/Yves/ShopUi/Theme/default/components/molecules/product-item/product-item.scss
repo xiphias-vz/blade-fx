@@ -1,0 +1,197 @@
+@mixin shop-ui-product-item($name: '.product-item') {
+    #{$name} {
+        position: relative;
+        padding: 0 rem(5) rem(30);
+
+        @include helper-breakpoint-media-min($md-min) {
+            padding: 0 rem(15) rem(30);
+        }
+
+        &--catalog {
+            padding-bottom: rem(15);
+
+            @include helper-breakpoint-media-min($md-min) {
+                padding: 0 rem(15) rem(30);
+            }
+        }
+
+        &__image-wrap {
+            position: relative;
+            overflow: hidden;
+        }
+
+        &__overlay {
+            display: block;
+            padding: 0;
+            position: relative;
+
+            @include helper-breakpoint-media-min($md-min) {
+                padding: rem(10) rem(20);
+
+                .no-touch &:hover {
+                    #{$name}__image-button {
+                        @include helper-visibility-visible;
+                    }
+                }
+            }
+        }
+
+        &__image-button {
+            position: absolute;
+            bottom: rem(25);
+            right: rem(20);
+
+            @include helper-breakpoint-media-min($md-min) {
+                @include helper-visibility-visible;
+
+                .no-touch & {
+                    @include helper-effect-transition(box-shadow visibility opacity);
+                    visibility: hidden;
+                    opacity: 0;
+                }
+            }
+        }
+
+        &__container {
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            color: $setting-color-black;
+            background: $setting-color-white;
+            padding-bottom: rem(20);
+            border-radius: rem(2);
+            border: rem(1) solid $setting-color-gray-1;
+
+            .no-touch &:hover {
+                text-decoration: none;
+                color: $setting-color-black;
+
+                #{$name}__image-wrap {
+                    box-shadow: none;
+                }
+            }
+
+            &--title-top {
+                display: flex;
+                flex-direction: column;
+                justify-content: space-between;
+                height: 100%;
+            }
+        }
+
+        &__content-wrapper {
+            display: flex;
+            flex-direction: column;
+            padding: 0 rem(20);
+            flex-grow: 1;
+        }
+
+        &__content-top {
+            flex-grow: 1;
+
+            @include helper-breakpoint-media-min($md-min) {
+                padding-bottom: rem(20);
+            }
+        }
+
+        &__info {
+            display: block;
+            margin-bottom: rem(6);
+
+            @include helper-breakpoint-media-min($md-min) {
+                min-height: rem(41);
+            }
+        }
+
+        &__name {
+            text-decoration: none;
+            font-weight: fw(semibold);
+            font-size: rem(16);
+            line-height: 1.3;
+            letter-spacing: rem(0.1);
+            color: $setting-color-black;
+
+            &:hover {
+                color: $setting-color-green;
+                text-decoration: none;
+            }
+        }
+
+        &__info-more {
+            display: flex;
+            justify-content: space-between;
+            margin: 0 rem(-4);
+            align-items: flex-end;
+        }
+
+        &__info-more-col {
+            padding: 0 rem(4);
+        }
+
+        &__sale-volume {
+            padding-bottom: rem(3);
+            color: $setting-color-gray-13;
+            font-size: rem(12);
+            line-height: 1.5;
+        }
+
+        &__additional-info {
+            margin: rem(10) rem(10) 0;
+
+            @include helper-breakpoint-media-min($md-min) {
+                margin-left: rem(11);
+                margin-right: rem(11);
+            }
+        }
+
+        &--stretch {
+            height: 100%;
+        }
+
+        &--slider {
+            display: inline-block;
+            width: 25%;
+        }
+
+        &--product-set {
+            #{$name}__overlay {
+                padding-top: rem(20);
+                padding-bottom: rem(20);
+
+                @include helper-breakpoint-media-min($md-min) {
+                    padding-top: rem(30);
+                    padding-bottom: rem(30);
+                }
+            }
+
+            #{$name}__info {
+                min-height: rem(48);
+            }
+        }
+
+        &--widget {
+            @include helper-breakpoint-media-min($md-min) {
+                padding: 0;
+            }
+
+            &:not(:first-child) {
+                display: none;
+            }
+        }
+
+        &--cms {
+            align-self: stretch;
+            padding-bottom: rem(64);
+            margin-bottom: rem(32);
+
+            #{$name}__actions-container {
+                padding: 0 rem(7);
+            }
+        }
+
+        @content;
+    }
+}
+
+@include shop-ui-product-item();

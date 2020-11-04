@@ -1,0 +1,30 @@
+@mixin checkout-page-success($name: '.success-page') {
+    #{$name} {
+        padding: rem(24) rem(16);
+
+        @include helper-breakpoint-media-min($lg-min) {
+            padding: rem(85) rem(16);
+        }
+
+        &__container {
+            padding: rem(60) rem(40);
+            background-color: $setting-color-white;
+            border-top: rem(4) solid $setting-color-green;
+        }
+
+        &__text {
+            max-width: 100%;
+            padding: 0 rem(15);
+            margin: 0 auto rem(18);
+
+            @include helper-breakpoint-media-min($lg-min) {
+                max-width: 65%;
+                margin: 0 auto rem(38);
+            }
+        }
+
+        @content;
+    }
+}
+
+@include checkout-page-success();

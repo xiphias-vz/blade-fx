@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<transfers xmlns="spryker:transfer-01"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="spryker:transfer-01 http://static.spryker.com/transfer-01.xsd">
+
+    <transfer name="CollectOrder">
+        <property name="bagsCount" type="int"/>
+        <property name="pickedItems" type="CollectOrderItem[]" singular="pickedItem"/>
+        <property name="pickedItemsCount" type="int"/>
+        <property name="pickedProductTypes" type="string[]" singular="pickedProductType"/>
+        <property name="notFoundItems" type="CollectOrderItem[]" singular="notFoundItem"/>
+        <property name="notFoundItemsCount" type="int"/>
+        <property name="deliveryMinimumAge" type="int"/>
+    </transfer>
+
+    <transfer name="CollectOrderItem">
+        <property name="sku" type="string"/>
+        <property name="name" type="string"/>
+        <property name="imageUrl" type="string"/>
+        <property name="quantity" type="int"/>
+        <property name="productType" type="string"/>
+    </transfer>
+
+</transfers>

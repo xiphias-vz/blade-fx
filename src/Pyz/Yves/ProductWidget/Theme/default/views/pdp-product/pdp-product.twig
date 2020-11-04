@@ -1,0 +1,15 @@
+{% extends template('widget') %}
+
+{% define data = {
+    product: _widget.product,
+} %}
+
+{% block body %}
+    {% include molecule('product-item') with {
+        class: 'col col--sm-12 col--md-4',
+        modifiers: ['stretch'],
+        data: {
+            product: data.product,
+        },
+    } only %}
+{% endblock %}

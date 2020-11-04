@@ -1,0 +1,32 @@
+"Add Merchant","Filialen hinzufügen"
+"Back to Merchants","Zurück zu Filialen"
+"Edit Merchant","Filialen bearbeiten"
+"Edit Merchant:","Filialen bearbeiten:"
+"List of Merchants","Liste der Filialen"
+"Merchant created successfully.","Filialen erfolgreich erstellt."
+"Merchant has not been created.","Filialen wurde nicht erstellt."
+"Merchant Id",Filialen-ID
+"Merchant updated successfully.","Filialen erfolgreich aktualisiert."
+"Merchant with id %s doesn't exists.","Filialen mit der ID %s existiert nicht."
+"Overview of Merchants","Übersicht der Filialen"
+Save,Speichern
+approved,Genehmigt
+denied,Verweigert
+approved_button,"Zugang gewähren"
+denied_button,"Zugang verweigern"
+E-Mail,E-Mail
+Name,Name
+"Registration number",Registrierungsnummer
+"Contact person first name","Vorname des Ansprechpartners"
+"Contact person last name","Nachname des Ansprechpartners"
+"Contact person phone","Ansprechpartner Telefon"
+"Contact person title","Titel der Kontaktperson"
+Email,Email
+General,Allgemein
+merchant_gui.error_wrong_params,"Status kann nicht aktualisiert werden."
+merchant_gui.success_merchant_status_update,"Status wurde aktualisiert."
+"Merchant reference is already used.","Filialen-Referenznummer wird bereits verwendet."
+Merchants,Filialen
+Email,E-Mail-Addresse
+Merchant Reference,Filialen Referenz
+Merchants Management,Filialverwaltung

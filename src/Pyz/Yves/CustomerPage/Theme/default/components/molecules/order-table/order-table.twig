@@ -1,0 +1,112 @@
+{% extends model('component') %}
+
+{% define config = {
+    name: 'order-table',
+} %}
+
+{% define data = {
+    orders: required,
+} %}
+
+{% block body %}
+    {% if data.orders is empty %}
+        <p>{{ 'customer.account.no_order' | trans }}</p>
+    {% else %}
+        <table class="table table--expand table--customer-account table--order table--responsive">
+            <thead>
+                <tr>
+                    <th>{{ 'customer.order.order_id' | trans }}</th>
+                    <th>{{ 'customer.order.collect_number' | trans }}</th>
+                    <th>{{ 'customer.order.collect_time' | trans }}</th>
+                    <th>{{ 'customer.order.date' | trans }}</th>
+                    <th>{{ 'customer.order.total' | trans }}</th>
+                    <th>{{ 'customer.order.status' | trans }}</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for order in data.orders %}
+
+                    <tr class="table__row table__row--white table__row--with-border-bottom {% if order.isCancelled %} cancelled{% endif %}">
+                        <td class="table__col table__col--responsive" data-content="{{ 'customer.order.order_id' | trans }}">{{ order.orderReference }}</td>
+                        <td class="table__col table__col--responsive {{ order.collectNumber ?? 'is-hidden-sm-md' }}" data-content="{{ 'customer.order.collect_number' | trans }}">{{ order.collectNumber }}</td>
+                        <td class="table__col table__col--responsive" data-content="{{ 'customer.order.collect_time' | trans }}">{{ order.requestedDeliveryDate }}</td>
+                        <td class="table__col table__col--responsive" data-content="{{ 'customer.order.date' | trans }}">{{ date(order.createdAt) | formatDateTime }}</td>
+                        <td class="table__col table__col--responsive" data-content="{{ 'customer.order.total' | trans }}">{{ order.totals.grandTotal | default(0) | money(true, order.currencyIsoCode) }}</td>
+                        <td class="table__col table__col--responsive" data-content="{{ 'customer.order.status' | trans }}">{{ ('customer.order.state.' ~ order.status | replace({' ': '-'})) | trans }}</td>
+                        <td class="table__col">
+                            <ul class="menu menu--inline menu--customer-account">
+                                <li class="menu__item">
+                                    <a class="menu__link link link--darkest link--edit table__action" href="{{ path('customer/order/details', {'id': order.idSalesOrder}) }}">
+                                        {% include molecule('icon-tooltip') with {
+                                            modifiers: ['medium-up'],
+                                            data: {
+                                                icon: 'eye',
+                                                text: 'customer.order.view_order' | trans,
+                                            },
+                                        } only %}
+                                    </a>
+                                </li>
+                                {% if order.invoiceCreatedAt %}
+                                    <li class="menu__item link link--darkest link--edit">
+                                        <a class="menu__link link link--darkest link--edit table__action" href="{{ path('customer/order/invoice', {'id': order.idSalesOrder}) }}" target="_blank">
+                                            {% include molecule('icon-tooltip') with {
+                                                modifiers: ['medium-up'],
+                                                data: {
+                                                    icon: 'print',
+                                                    text: 'customer.order.invoice' | trans,
+                                                },
+                                            } only %}
+                                        </a>
+                                    </li>
+                                {% endif %}
+
+                                {% include molecule('customer-reorder-link', 'CustomerReorderWidget') with {
+                                    data: {
+                                        idSalesOrder: order.idSalesOrder,
+                                    },
+                                } only %}
+
+                                {% if order.isCancellableByCustomer %}
+                                    <li class="menu__item">
+                                        <form action="{{ path('customer/order/cancel') }}" method="post">
+                                            <input type="hidden" name="token" value="{{ csrf_token('cancel-customer-order') }}">
+                                            <input type="hidden" name="id" value="{{ order.idSalesOrder }}">
+
+                                            <button type="button" class="link link--darkest link--edit table__action {{ config.name }}__button {{ config.jsName }}__modal-trigger-{{ order.orderReference }}">
+                                                {% include molecule('icon-tooltip') with {
+                                                    modifiers: ['medium-up'],
+                                                    data: {
+                                                        icon: 'cross',
+                                                        text: 'customer.order.cancel_order' | trans,
+                                                    },
+                                                } only %}
+                                            </button>
+
+                                            {% include molecule('confirmation-modal') with {
+                                                data: {
+                                                    title: 'customer.order.delete.message',
+                                                    buttons: {
+                                                        submit: {
+                                                            title: 'customer.order.cancel_order',
+                                                        },
+                                                        cancel: {
+                                                            title: 'customer.order.delete.cancel'
+                                                        },
+                                                    },
+                                                },
+                                                attributes: {
+                                                    'trigger-class': config.jsName ~ '__modal-trigger-' ~ order.orderReference,
+                                                },
+                                            } only %}
+                                        </form>
+                                    </li>
+                                {% endif %}
+                            </ul>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% endif %}
+{% endblock %}

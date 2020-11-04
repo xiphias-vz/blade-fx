@@ -1,0 +1,20 @@
+{% extends model('component') %}
+
+{% define config = {
+    name: 'nutrition-value',
+} %}
+
+{% define data = {
+    accuracy: '',
+    value: required,
+    measurementUnit: required,
+} %}
+
+{% block body %}
+    {% if data.accuracy == 'APPROXIMATELY' %}
+        ~
+    {% elseif data.accuracy == 'LESS_THAN' %}
+        <
+    {% endif %}
+    {{ data.value | replace({'.': ','}) }} {{ data.measurementUnit }}
+{% endblock %}

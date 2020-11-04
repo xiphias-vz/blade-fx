@@ -1,0 +1,79 @@
+<?xml version="1.0"?>
+<statemachine
+        xmlns="spryker:oms-01"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="spryker:oms-01 http://static.spryker.com/oms-01.xsd">
+
+    <process name="Refund01">
+
+        <states>
+            <state name="ready for return"/>
+            <state name="returned"/>
+            <state name="ready for refund"/>
+            <state name="refund pending"/>
+            <state name="refund failed clarification"/>
+            <state name="refund approved"/>
+            <state name="refund saved"/>
+            <state name="refunded"/>
+        </states>
+
+        <transitions>
+            <transition>
+                <source>ready for return</source>
+                <target>returned</target>
+                <event>execute-return</event>
+            </transition>
+
+            <transition>
+                <source>returned</source>
+                <target>ready for refund</target>
+                <event>pass</event>
+            </transition>
+
+            <transition condition="Payone/PartialRefundIsApproved">
+                <source>ready for refund</source>
+                <target>refund pending</target>
+                <event>refund</event>
+            </transition>
+
+            <transition>
+                <source>ready for refund</source>
+                <target>refund failed clarification</target>
+                <event>refund</event>
+            </transition>
+
+            <transition condition="Payone/PaymentIsRefund">
+                <source>refund pending</source>
+                <target>refund approved</target>
+            </transition>
+
+            <transition>
+                <source>refund failed clarification</source>
+                <target>refund approved</target>
+                <event>refund manually</event>
+            </transition>
+
+            <transition>
+                <source>refund approved</source>
+                <target>refund saved</target>
+                <event>save refund</event>
+            </transition>
+
+            <transition>
+                <source>refund saved</source>
+                <target>refunded</target>
+                <event>send refunded email</event>
+            </transition>
+        </transitions>
+
+        <events>
+            <event name="execute-return" onEnter="true"/>
+            <event name="refund" manual="true" command="Payone/PartialRefund"/>
+            <event name="refund manually" manual="true" />
+            <event name="save refund" onEnter="true" command="Payone/SavePartialRefund" />
+            <event name="send refunded email" onEnter="true"/>
+            <event name="pass" onEnter="true"/>
+        </events>
+    </process>
+
+</statemachine>

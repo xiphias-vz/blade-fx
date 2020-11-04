@@ -1,0 +1,32 @@
+{% extends model('component') %}
+
+{% define config = {
+    name: 'image-gallery',
+    tag: 'image-gallery'
+} %}
+
+{% define data = {
+    idProductAbstract: required,
+    images: []
+} %}
+
+{% define attributes = {
+    'active-class': '',
+    'slider-config': '{}'
+} %}
+
+{% set imagesQuantity = data.images | length %}
+{% set firstImage = data.images | first %}
+
+{% block body %}
+    <a href="{{ path("cart/add-ajax", {"productAbstractId": data.idProductAbstract}) }}"
+       class="{{ config.name }}__container {{config.name}}__container--single-image {{config.jsName}} js-product-color-group__image-{{ data.idProductAbstract }} js-image-animation__link js-ajax-add-to-cart__link"
+       data-product-id="{{ data.idProductAbstract }}"
+       data-csrf-token="{{ csrf_token('add-to-cart-ajax') }}">
+        <div class="{{ config.name }}__item {{ config.jsName }}__item {{ config.name }}__item--active">
+            {% if firstImage.externalUrlLarge is not empty %}
+                <img class="{{ config.name }}__image js-image-animation__image-{{ data.idProductAbstract }}" src="{{ firstImage.externalUrlLarge }}" alt="{{ 'page.product.details.slider_image' | trans }}">
+            {% endif %}
+        </div>
+    </a>
+{% endblock %}

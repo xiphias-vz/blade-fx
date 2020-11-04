@@ -1,0 +1,17 @@
+mail.invoice.group.name,Spryker Systems GmbH Group
+mail.invoice.number,Invoice Number
+mail.invoice.goods,We hereby charge you for the following goods
+mail.invoice.table.number,Pos.
+mail.invoice.table.quantity,Quantity
+mail.invoice.table.name,Name
+mail.invoice.table.tax,Tax Rate
+mail.invoice.table.price,Unit price<br/>Gross
+mail.invoice.table.sum,Pos.<br/>Gross
+mail.invoice.table.pfand,One-way deposit
+mail.invoice.table.pfand.return,One-way deposit return
+mail.invoice.table.total.gross,Total gross
+mail.invoice.table.total.net,Total net
+mail.invoice.table.vat,VAT.
+mail.invoice.table.payment.amount,Payment amount
+mail.invoice.table.delivery.date,Delivery date
+mail.invoice.table.vat.included,included %tax%% VAT. net

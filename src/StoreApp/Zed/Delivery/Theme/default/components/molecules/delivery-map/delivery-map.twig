@@ -1,0 +1,35 @@
+{% extends model('component') %}
+
+{% define config = {
+    name: 'delivery-map',
+    jsName: 'js-delivery-map',
+    tag: 'delivery-map',
+} %}
+
+{% set referencePopupMarkup %}
+    <div class="{{ config.name }}__reference-popup">%reference%</div>
+{% endset %}
+
+{% set addressPopupMarkup %}
+    <div class="{{ config.name }}__popup">
+        <a href="#" class="{{ config.name }}__close {{ config.jsName }}__close">
+            {% include atom('icon') with {
+                modifiers: ['smaller'],
+                data: {
+                    name: 'close'
+                }
+            } only %}
+        </a>
+        <div class="{{ config.jsName }}__content"></div>
+    </div>
+{% endset %}
+
+{% define attributes = {
+    'markers-json': required,
+    'address-popup': addressPopupMarkup | json_encode(),
+    'reference-popup': referencePopupMarkup | json_encode(),
+} %}
+
+{% block body %}
+    <div class="{{ config.name }}__map {{ config.jsName }}__map"></div>
+{% endblock %}

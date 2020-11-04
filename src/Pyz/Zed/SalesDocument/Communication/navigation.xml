@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config>
+    <sales-document>
+        <label>Sales Documents</label>
+        <title>Sales Documents</title>
+        <pages>
+            <picking-list-generator>
+                <label>Store Picking List</label>
+                <title>Store Picking List</title>
+                <bundle>sales-document</bundle>
+                <controller>print</controller>
+                <action>store-picking</action>
+            </picking-list-generator>
+        </pages>
+    </sales-document>
+</config>

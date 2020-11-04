@@ -1,0 +1,43 @@
+{% extends model('component') %}
+
+{% define config = {
+    name: 'filter-enumeration',
+} %}
+
+{% define data = {
+    filter: null,
+    isMultiSelect: null,
+    parentJsName: '',
+} %}
+
+{% set isMultiSelect = data.isMultiSelect is null ? (data.filter.config.isMultiValued | default(false)) : false %}
+{% set activeValues = isMultiSelect ? data.filter.activeValue : [data.filter.activeValue] %}
+{% set inputComponent = atom('checkbox') %}
+{% set label =  ('product.filter.' ~ data.filter.name | lower) | trans %}
+
+{% block body %}
+    <ul class="menu">
+        {% block filterList %}
+            {% for filterValue in data.filter.values %}
+                {% block filterItem %}
+                    {% set docCountText = filterValue.docCount ? ' (' ~ filterValue.docCount ~ ')' : '' %}
+
+                    <li class="menu__item">
+                        {% include inputComponent with {
+                            modifiers: modifiers,
+                            class: data.parentJsName,
+                            attributes: {
+                                name: data.filter.config.parameterName ~ (isMultiSelect ? '[]' : ''),
+                                value: filterValue.value,
+                                checked: (filterValue.value in activeValues),
+                            },
+                            data: {
+                                label: label | trans ~ docCountText,
+                            },
+                        } only %}
+                    </li>
+                {% endblock %}
+            {% endfor %}
+        {% endblock %}
+    </ul>
+{% endblock %}

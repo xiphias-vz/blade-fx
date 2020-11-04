@@ -1,0 +1,55 @@
+{% extends molecule('order-summary', '@SprykerShop:CustomerPage') %}
+
+{% define data = {
+    taxPayments: required,
+} %}
+
+{% block body %}
+    <li class="{{ config.name }}__item">
+        <strong class="{{ config.name }}__amount float-right">{{ data.order.totals.subtotal | money(true, data.order.currencyIsoCode) }}</strong>
+        {{- 'customer.order.subTotal' | trans -}}
+    </li>
+
+    <li class="{{ config.name }}__item">
+        {% for expense in data.order.expenses %}
+            <div class="grid grid--justify">
+                <span class="col col--sm-8 col--lg-10">{% if expense.type == 'SHIPMENT_EXPENSE_TYPE' %}{{ 'customer.order.shipment' | trans }} {% endif %}{{ expense.name | trans }}</span>
+                <strong class="{{ config.name }}__amount col col--expand text-right">{{ expense.unitPrice | money(true, data.order.currencyIsoCode) }}</strong>
+            </div>
+        {% endfor %}
+    </li>
+
+    {% if data.order.calculatedDiscounts.count %}
+        <li class="{{ config.name }}__item">
+            {{- 'cart.discounts' | trans -}}
+            <div class="spacing-top">
+                {% for discount in data.order.calculatedDiscounts %}
+                    <div class="grid grid--justify">
+                        <span class="col col--sm-8 col--lg-10">{{ discount.displayName | trans }}</span>
+                        <strong class="{{ config.name }}__amount col col--expand text-right">- {{ discount.sumAmount | money(true, data.order.currencyIsoCode) }}</strong>
+                    </div>
+                {% endfor %}
+            </div>
+        </li>
+    {% endif %}
+
+    {% if data.order.totals.canceledTotal %}
+        <li class="{{ config.name }}__item">
+            <strong class="{{ config.name }}__amount float-right">{{ data.order.totals.canceledTotal | money(true, data.order.currencyIsoCode) }}</strong>
+            {{- 'customer.order.canceledTotal' | trans -}}
+        </li>
+    {% endif %}
+
+    {% for rate,taxItem in data.taxPayments if taxItem.tax > 0 %}
+        <li class="{{ config.name }}__item">
+            {{- 'customer.order.taxTotal' | trans }} {{ rate / 100 }}%
+            <strong class="{{ config.name }}__amount float-right">{{ taxItem.tax | money }}</strong>
+        </li>
+    {% endfor %}
+
+
+    <li class="{{ config.name }}__item {{ config.name }}__item--total">
+        <strong class="{{ config.name }}__amount float-right">{{ data.order.totals.grandTotal | money(true, data.order.currencyIsoCode) }}</strong>
+        <strong>{{ 'customer.order.grandTotal' | trans }}</strong>
+    </li>
+{% endblock %}

@@ -1,0 +1,9 @@
+@mixin shop-ui-navigation-header-mobile($name: '.navigation-header-mobile') {
+    #{$name} {
+        position: relative;
+        overflow-y: auto;
+        flex-grow: 1;
+    }
+}
+
+@include shop-ui-navigation-header-mobile();

@@ -1,0 +1,20 @@
+@mixin shop-ui-delivery-time-slot-selector($name: '.delivery-time-slot-selector') {
+    #{$name} {
+        padding-bottom: rem(10);
+
+        &__select {
+            @include helper-font-size(small);
+            width: 100%;
+            padding: rem(10) rem(9) rem(12);
+            border-right: 0 !important;
+            border-radius: rem(4) 0 0 rem(4) !important;
+        }
+
+        &__button {
+            min-width: initial;
+            border-radius: 0 rem(4) rem(4) 0 !important;
+        }
+    }
+}
+
+@include shop-ui-delivery-time-slot-selector();

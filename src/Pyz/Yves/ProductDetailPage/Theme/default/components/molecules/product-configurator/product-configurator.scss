@@ -1,0 +1,41 @@
+@mixin product-detail-page-product-configurator($name: '.product-configurator') {
+    #{$name} {
+        &__info,
+        &__quantity-wrapper {
+            padding-bottom: rem(16);
+            margin-bottom: rem(16);
+        }
+
+        &__quantity-wrapper {
+            padding-bottom: rem(24);
+            margin-bottom: rem(5);
+        }
+
+        &__stock-wrapper-label {
+            font: fw(bold) rem(13) $setting-font-family;
+            display: inline-block;
+        }
+
+        &__stock-wrapper-badge {
+            display: inline-block;
+            font: fw(bold) rem(13) $setting-font-family;
+            color: $setting-color-white;
+            background: map-get($setting-color-actions, success);
+            border-radius: rem(3);
+            padding: rem(3) rem(5);
+            margin-left: rem(4);
+        }
+
+        &__button-wrap {
+            padding: rem(10) 0;
+
+            @include helper-breakpoint-media-min($xl-min) {
+                padding-top: rem(20);
+            }
+        }
+
+        @content;
+    }
+}
+
+@include product-detail-page-product-configurator();

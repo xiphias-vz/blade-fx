@@ -1,0 +1,25 @@
+{% extends model('component') %}
+
+{% define config = {
+    name: 'product-options',
+} %}
+
+{% define data = {
+    options: null,
+} %}
+
+{% block component %}
+    {% if data.options is not empty %}
+        {{ parent() }}
+    {% endif %}
+{% endblock %}
+
+{% block body %}
+    <ul>
+        {% for option in data.options %}
+            <li class="{{ component.renderClass(config.name ~ '__item', modifiers) }} grid">
+                + {{ option.value | trans }} {{ option.sumPrice | money }}
+            </li>
+        {% endfor %}
+    </ul>
+{% endblock %}

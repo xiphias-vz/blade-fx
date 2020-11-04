@@ -1,0 +1,13 @@
+@mixin shop-ui-ajax-add-to-cart($name: '.ajax-add-to-cart') {
+    #{$name} {
+        &__notification-area {
+            position: fixed;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            z-index: $setting-zi-notification-area;
+        }
+    }
+}
+
+@include shop-ui-ajax-add-to-cart();

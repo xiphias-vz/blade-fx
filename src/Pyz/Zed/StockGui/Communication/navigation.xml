@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<config>
+    <administration>
+        <pages>
+            <warehouses>
+                <visible>0</visible>
+            </warehouses>
+        </pages>
+    </administration>
+</config>

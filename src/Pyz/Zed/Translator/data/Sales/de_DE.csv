@@ -1,0 +1,35 @@
+Refunds,Rückerstattung
+Reclamations,Reklamationen
+Order Reference,Bestellnummer
+Customer Full Name,Vollständiger Name des Kunden
+Sales,Bestellverwaltung
+Orders,Bestellübersicht
+"Order Matrix",Bestellungen Matrix
+"View Order:","Bestell-ID:"
+checkout.order.overview,Bestellübersicht
+Order date,Bestelldatum
+Unique Product Quantity,Anzahl der einzigartigen Produkte
+Total taxes,Gesamtsumme Steuern
+Trigger all matching states inside this order,Alle übereinstimmenden Stati innerhalb dieser Bestellung auslösen
+Reference,Referenz
+Previous orders count,Anzahl der vorherigen Bestellungen des Kunden
+Billing address,Rechnungsadresse
+Order Items,Auftragspositionen
+Shipmnent,Lieferung
+of,von
+Delivery Address,Lieferadresse
+Delivery Method,Service Methode
+Request delivery date,Angefragtes Lieferdatum
+Trigger all matching states of order inside this shipment,Alle übereinstimmenden Stati innerhalb dieser Bestellung auslösen
+Shipping Method,Versandart
+NET_MODE,Netto
+GROSS_MODE,Brutto
+Trigger event,Event auslösen
+Discounts & Vouchers,Rabatte und Gutscheine
+sales.shipment,Lieferung
+email.qty,Qty
+email.qty,Anzahl
+Time slot,Abholzeitfenster
+Merchant Address, Filiale Adresse
+Merchant Region Number, Division Nummer
+Merchant Number, Filiale Nummer

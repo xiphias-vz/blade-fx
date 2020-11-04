@@ -1,0 +1,26 @@
+@include shop-ui-suggest-search {
+    &__input {
+        min-height: rem(44);
+    }
+
+    &__hint {
+        border-radius: rem(4);
+        font: fw(medium) rem(14)/rem(18) $setting-font-family;
+        padding: rem(15) rem(60);
+
+        &--active {
+            border-bottom-left-radius: 0;
+            border-bottom-right-radius: 0;
+        }
+    }
+
+    &__container {
+        padding: rem(10) rem(40) rem(8) rem(40);
+        border-bottom-left-radius: rem(4);
+        border-bottom-right-radius: rem(4);
+        border-top: rem(1) solid $setting-color-input-border-focus;
+        background: $setting-color-white;
+        overflow-y: auto;
+        overflow-x: hidden;
+    }
+}

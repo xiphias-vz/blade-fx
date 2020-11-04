@@ -1,0 +1,17 @@
+{% extends model('component') %}
+
+{% define config = {
+    name: 'scroll-to-top',
+    tag: 'scroll-to-top',
+} %}
+
+{% block body %}
+    <div class="{{ component.renderClass(config.name ~ '__trigger', modifiers) }} {{ config.jsName }}__trigger">
+        {% include atom('icon') with {
+            modifiers: ['big'],
+            data: {
+                name: 'arrow-up',
+            },
+        } only %}
+    </div>
+{% endblock %}

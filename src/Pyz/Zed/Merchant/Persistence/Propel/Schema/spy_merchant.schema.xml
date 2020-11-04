@@ -1,0 +1,52 @@
+<?xml version="1.0"?>
+<database xmlns="spryker:schema-01" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" name="zed" xsi:schemaLocation="spryker:schema-01 https://static.spryker.com/schema-01.xsd"
+          namespace="Orm\Zed\Merchant\Persistence"
+          package="src.Orm.Zed.Merchant.Persistence">
+
+    <table name="spy_merchant">
+        <column name="fk_store" required="false" type="INTEGER"/>
+        <column name="region_number" required="false" type="INTEGER"/>
+        <column name="region_name" required="false" size="255" type="VARCHAR"/>
+        <column name="filial_number" required="false" type="INTEGER"/>
+        <column name="zip_code" required="false" size="255" type="VARCHAR"/>
+        <column name="city" required="false" size="255" type="VARCHAR"/>
+        <column name="street" required="false" size="255" type="VARCHAR"/>
+        <column name="latitude" required="false" type="DECIMAL" size="9" scale="6"/>
+        <column name="longitude" required="false" type="DECIMAL" size="9" scale="6"/>
+        <column name="picking_capacity_per_slot" required="false" default="0" type="INTEGER"/>
+        <column name="delivery_capacity_per_slot" required="false" default="0" type="INTEGER"/>
+
+        <foreign-key name="spy_merchant-fk_store" foreignTable="spy_store">
+            <reference local="fk_store" foreign="id_store"/>
+        </foreign-key>
+
+        <foreign-key name="spy_merchant-region_number" foreignTable="pyz_merchant_region">
+            <reference local="region_number" foreign="region_number"/>
+        </foreign-key>
+
+        <behavior name="event">
+            <parameter name="spy_merchant_all" column="*"/>
+            <parameter name="spy_merchant_fk_store" column="fk_store" keep-additional="true"/>
+        </behavior>
+    </table>
+
+    <table name="pyz_merchant_delivery_postal_code">
+        <column name="id_merchant_delivery_zip_code" required="true" type="INTEGER" autoIncrement="true" primaryKey="true"/>
+        <column name="fk_merchant" type="INTEGER" required="true"/>
+        <column name="fk_postal_code" type="INTEGER" required="true" />
+
+        <foreign-key name="pyz_merchant_delivery_postal_code-fk_merchant" foreignTable="spy_merchant">
+            <reference local="fk_merchant" foreign="id_merchant"/>
+        </foreign-key>
+
+        <foreign-key name="pyz_merchant_delivery_postal_code-fk_postal_code" foreignTable="pyz_postal_code">
+            <reference local="fk_postal_code" foreign="id_postal_code"/>
+        </foreign-key>
+
+        <behavior name="event">
+            <parameter name="spy_merchant_delivery_zip_code" column="*"/>
+        </behavior>
+        <id-method-parameter value="id_merchant_delivery_zip_code_pk_seq"/>
+    </table>
+
+</database>

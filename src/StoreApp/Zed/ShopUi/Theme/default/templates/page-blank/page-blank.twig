@@ -1,0 +1,54 @@
+{% extends model('template') %}
+
+{% define data = {
+    locale: app.locale | slice(0, 2),
+    title: 'global.spryker.shop' | trans,
+    metaTitle: 'global.spryker.shop' | trans,
+    metaDescription: '',
+    metaKeywords: ''
+} %}
+
+{% block template %}
+    <!doctype html>
+    <html lang="{{ data.locale }}">
+        <head>
+            {% block meta %}
+                <meta charset="utf-8" />
+                <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+                <meta name="title" content="{% block metaTitle %}{{ data.metaTitle }}{% endblock %}" />
+                <meta name="description" content="{% block metaDescription %}{{ data.metaDescription }}{% endblock %}" />
+                <meta name="keywords" content="{% block metaKeywords %}{{ data.metaKeywords }}{% endblock %}" />
+                <meta name="generator" content="spryker" />
+            {% endblock %}
+
+            {% block headStyles %}
+                <link rel="stylesheet" href="{{publicPath('css/storeapp_default.app.css')}}" />
+            {% endblock %}
+
+            {% block headScripts %}
+                <script nomodule src="{{publicPath('js/storeapp_default.runtime.legacy.js')}}" crossorigin></script>
+                <script type="module" src="{{publicPath('js/storeapp_default.runtime.esm.js')}}" crossorigin></script>
+            {% endblock %}
+
+            <title>{% block headTitle %}{{ data.title }}{% endblock %}</title>
+        </head>
+        <body {% if block('class') is not empty %} class="{% block class %}{% endblock %}"{% endif %}
+            {% block attributes %}{{qa('page')}}{% endblock %}>
+
+            {% block notifications %}
+                {% include organism('notification-area') only %}
+            {% endblock %}
+
+            {{ parent() }}
+
+            {% include molecule('check-touch') only %}
+
+            {% block footerScripts %}
+                <script nomodule src="{{publicPath('js/storeapp_default.vendor.legacy.js')}}" crossorigin></script>
+                <script type="module" src="{{publicPath('js/storeapp_default.vendor.esm.js')}}" crossorigin></script>
+                <script nomodule src="{{publicPath('js/storeapp_default.app.legacy.js')}}" crossorigin></script>
+                <script type="module" src="{{publicPath('js/storeapp_default.app.esm.js')}}" crossorigin></script>
+            {% endblock %}
+        </body>
+    </html>
+{% endblock %}

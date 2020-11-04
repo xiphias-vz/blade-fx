@@ -1,0 +1,14 @@
+@mixin cart-page-cart-limitation-message($name: '.cart-limitation-message') {
+    #{$name} {
+        padding: rem(13) rem(17);
+        background: $setting-color-alt-3;
+        font-weight: fw(medium);
+        border-radius: rem(2);
+        margin-bottom: rem(15);
+        color: $setting-color-alt-4;
+
+        @content;
+    }
+}
+
+@include cart-page-cart-limitation-message();

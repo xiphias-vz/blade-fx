@@ -1,0 +1,20 @@
+{% extends model('component') %}
+
+{% define config = {
+    name: 'form-dynamic-submitter',
+    tag: 'form-dynamic-submitter',
+} %}
+
+{% define attributes = {
+    'trigger-class-name': required,
+} %}
+
+{% block extraClass %}
+    is-hidden
+{%- endblock %}
+
+{% block body %}
+    <form action="" method="post">
+        <input class="{{ config.jsName }}__input-token" type="hidden" name="token" value="">
+    </form>
+{% endblock %}

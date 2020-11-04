@@ -1,0 +1,13 @@
+{% extends template('page-layout-customer', 'CustomerPage') %}
+
+{% define data = {
+    wishlists: required,
+    title: 'customer.account.wishlist' | trans,
+    activePage: 'wishlist',
+    activeWishlistId: null,
+} %}
+
+{% block customerNavigationContainer %}
+    {% set customerNavigationData = [data.activePage, data.activeWishlistId] %}
+    {{ parent() }}
+{% endblock %}

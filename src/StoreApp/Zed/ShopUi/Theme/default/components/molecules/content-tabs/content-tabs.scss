@@ -1,0 +1,21 @@
+@mixin shop-ui-content-tabs($name: '.content-tabs') {
+    #{$name} {
+        &__triggers {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        &__content {
+            display: none;
+            padding-top: rem(16);
+
+            &.active {
+                display: block;
+            }
+        }
+
+        @content;
+    }
+}
+
+@include shop-ui-content-tabs();

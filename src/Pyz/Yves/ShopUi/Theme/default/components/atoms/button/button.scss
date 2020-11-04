@@ -1,0 +1,509 @@
+@mixin shop-ui-button($name: '.button') {
+    $button-min-width: rem(146, number);
+    $button-tight-min-width: rem(130, number);
+    $button-medium-min-width: rem(120, number);
+
+    #{$name} {
+        @include helper-effect-transition(color background box-shadow border-color);
+        display: inline-block;
+        padding: rem(11) rem(15);
+        border: none;
+        min-width: $button-min-width/1.3;
+        text-align: center;
+        font: fw(medium) rem(14)/1.7 $setting-font-family-additional;
+        cursor: pointer;
+        background: $setting-color-green;
+        color: $setting-color-white;
+        text-decoration: none;
+        border-radius: rem(2);
+        box-shadow: 0 rem(4) rem(18) $setting-color-transparent;
+
+        @include helper-breakpoint-media-min($md-min) {
+            min-width: $button-min-width;
+        }
+
+        &:hover,
+        &:focus,
+        &:active {
+            background: $setting-color-green;
+            color: $setting-color-white;
+            box-shadow: 0 rem(4) rem(18) $setting-color-green-alpha-1;
+        }
+
+        &:focus {
+            background: $setting-color-green;
+            color: $setting-color-white;
+        }
+
+        &__icon {
+            flex-shrink: 0;
+            margin-right: rem(10);
+            float: left;
+
+            &--center {
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+            }
+
+            &--no-indents {
+                float: none;
+                margin: 0;
+            }
+        }
+
+        &--font-weight-medium {
+            font-weight: fw(medium);
+        }
+
+        &--alert {
+            background-color: $setting-color-alt;
+            border-color: $setting-color-alt;
+            color: $setting-color-white;
+
+            &:hover,
+            &:active {
+                background: rgba($setting-color-alt, 0.5);
+                color: $setting-color-white;
+                box-shadow: none;
+            }
+        }
+
+        &--collapsed {
+            min-width: 100%;
+
+            @include helper-breakpoint-media-min($lg-min) {
+                min-width: 0;
+            }
+        }
+
+        &--skinless {
+            transition: none;
+            border: none;
+            border-radius: 0;
+            background-color: $setting-color-transparent;
+            color: $setting-color-black;
+            min-width: 0;
+
+            &:hover,
+            &:focus,
+            &:active {
+                border: none;
+                background-color: $setting-color-transparent;
+                color: $setting-color-black;
+                box-shadow: none;
+            }
+        }
+
+        &--send-review {
+            position: absolute;
+            top: rem(13);
+            right: rem(24);
+            min-width: rem(100);
+            padding: rem(12) rem(16);
+
+            @include helper-breakpoint-media-min($lg-min) {
+                min-width: $button-min-width;
+                padding: rem(16);
+                margin-top: rem(20);
+                position: relative;
+                top: 0;
+                right: 0;
+            }
+        }
+
+        &--quantity {
+            border: rem(1) solid $setting-color-gray-10;
+            font: fw(bold) rem(30)/1 $setting-font-family-additional;
+            background-color: $setting-color-gray-10;
+            color: $setting-color-gray-6;
+            padding: 0;
+            width: rem(38);
+            height: rem(38);
+            user-select: none;
+            min-width: 0;
+
+            &:hover,
+            &:focus,
+            &:active {
+                border-color: $setting-color-gray-10;
+                color: $setting-color-gray-6;
+                background-color: $setting-color-alpha-2;
+                box-shadow: none;
+            }
+        }
+
+        &--quantity-lighter {
+            background-color: $setting-color-gray-3;
+            border-color: $setting-color-gray-3;
+        }
+
+        &--quantity-large {
+            width: rem(46);
+            height: rem(46);
+            line-height: rem(35);
+            font-size: rem(21);
+            border-radius: rem(4);
+        }
+
+        &[disabled],
+        &--disabled {
+            border-color: $setting-color-gray-3;
+            background-color: $setting-color-gray-3;
+            cursor: not-allowed;
+            color: $setting-color-gray-9;
+            pointer-events: none;
+        }
+
+        &--hollow,
+        &--hollow-border-light,
+        &--hollow-gray,
+        &--hollow-light {
+            background-color: $setting-color-transparent;
+            border: rem(1) solid $setting-color-green;
+            color: $setting-color-green;
+
+            &:hover,
+            &:focus,
+            &:active {
+                border-color: $setting-color-green;
+                color: $setting-color-white;
+                background-color: $setting-color-green;
+                box-shadow: none;
+            }
+
+            &[disabled],
+            &--disabled {
+                background-color: $setting-color-white;
+                border-color: $setting-color-gray-3;
+                color: $setting-color-gray-3;
+
+                &:hover,
+                &:focus,
+                &:active {
+                    background-color: $setting-color-white;
+                }
+            }
+        }
+
+        &--hollow-border-light {
+            border-color: $setting-color-gray-10;
+        }
+
+        &--hollow-light {
+            border-color: $setting-color-gray-3;
+            color: $setting-color-gray-4;
+
+            &:hover,
+            &:active {
+                background: $setting-color-alpha-6;
+            }
+
+            &:hover,
+            &:active,
+            &:focus {
+                border-color: $setting-color-gray-3;
+                color: $setting-color-gray-4;
+            }
+
+            &:focus {
+                box-shadow: 0 0 0 rem(2) $setting-color-alpha-6;
+            }
+        }
+
+        &--hollow-gray {
+            border-color: $setting-color-gray-9;
+            color: $setting-color-gray-9;
+
+            &:hover,
+            &:active,
+            &:focus {
+                border-color: $setting-color-gray-9;
+                color: $setting-color-gray-9;
+                background: $setting-color-alpha-6;
+            }
+
+            &:focus {
+                box-shadow: 0 0 0 rem(2) $setting-color-alpha-6;
+            }
+        }
+
+        &--inspirational {
+            text-transform: uppercase;
+            letter-spacing: rem(2.1);
+            min-width: 0;
+
+            @include helper-breakpoint-media-min($md-min) {
+                letter-spacing: rem(2.5);
+            }
+        }
+
+        &--promotion-item {
+            min-width: 0;
+            width: 100%;
+            margin-top: rem(16);
+            height: rem(28);
+            padding: 0 rem(16);
+            font: fw(regular) rem(10)/rem(26) $setting-font-family-additional;
+
+            @include helper-breakpoint-media-min($md-min) {
+                margin-top: 0;
+            }
+
+            @include helper-breakpoint-media-min($lg-min) {
+                width: auto;
+                height: rem(32);
+                line-height: rem(30);
+            }
+        }
+
+        &--agent {
+            min-width: rem(79);
+        }
+
+        &--combined {
+            border-radius: 0 rem(2) rem(2) 0;
+            min-width: rem(113);
+            font-weight: fw(regular);
+            font-size: rem(13);
+        }
+
+        &--combined-small {
+            min-width: 0;
+            padding-left: rem(12);
+            padding-right: rem(12);
+        }
+
+        &--expand {
+            width: 100%;
+        }
+
+        &--expand-mobile {
+            width: 100%;
+
+            @include helper-breakpoint-media-min($md-min) {
+                width: auto;
+            }
+        }
+
+        &--expand-tablet {
+            width: 100%;
+
+            @include helper-breakpoint-media-min($xl-min) {
+                width: auto;
+            }
+        }
+
+        &--search {
+            border-top-left-radius: 0;
+            border-bottom-left-radius: 0;
+            min-width: rem(80);
+        }
+
+        &--with-icon {
+            position: relative;
+            padding: rem(9) rem(20) rem(9) rem(25);
+            line-height: rem(24);
+
+            &:not(#{$name}--hollow):not(#{$name}--hollow-white) {
+                padding-top: rem(9);
+                padding-bottom: rem(9);
+            }
+        }
+
+        &--middle-icon {
+            display: inline-flex;
+            align-items: center;
+        }
+
+        &--with-icon-hidden-sm-only {
+            padding-right: rem(15);
+            padding-left: rem(15);
+
+            @include helper-breakpoint-media-min($md-min) {
+                padding-right: rem(25);
+            }
+        }
+
+        &--cart {
+            color: $setting-color-white;
+
+            @include helper-breakpoint-media-max($lg-max) {
+                padding: rem(8) rem(10);
+            }
+
+            @include helper-breakpoint-media-min($xl-min) {
+                background: $setting-color-blue-light;
+                text-align: left;
+                padding-left: rem(15);
+                padding-right: rem(15);
+            }
+
+            &:hover,
+            &:focus {
+                background: none;
+                color: $setting-color-white;
+
+                @include helper-breakpoint-media-min($xl-min) {
+                    background: $setting-color-blue-light-alpha-1;
+                }
+            }
+
+            &:active {
+                @include helper-breakpoint-media-min($lg-max) {
+                    background: $setting-color-gray-2;
+                    color: $setting-color-blue-midi;
+                }
+            }
+        }
+
+        &--close-drawer {
+            &,
+            &:hover,
+            &:focus,
+            &:active {
+                background: $setting-color-gray-14;
+                color: $setting-color-black;
+            }
+        }
+
+        &--reset-min-width {
+            min-width: 0;
+        }
+
+        &--medium {
+            @include helper-breakpoint-media-min($md-min) {
+                min-width: $button-medium-min-width;
+            }
+        }
+
+        &--link-secondary,
+        &--link {
+            min-width: auto;
+            padding: rem(5);
+            margin-left: rem(-5);
+            margin-right: rem(-5);
+            border-radius: 0;
+            text-transform: none;
+            text-decoration: underline;
+            background: transparent;
+            color: $setting-color-gray-13;
+
+            &:focus {
+                background: transparent;
+                color: $setting-color-green;
+                box-shadow: 0 0 0 rem(2) $setting-color-blue-midi-alpha-1;
+            }
+
+            &:hover,
+            &:active {
+                background: transparent;
+                color: $setting-color-green;
+                text-decoration: underline;
+            }
+        }
+
+        &--link-secondary {
+            &:active,
+            &:hover {
+                text-decoration: none;
+                color: $setting-color-gray-6;
+                box-shadow: none;
+            }
+        }
+
+        &--clear {
+            color: $setting-color-gray-6;
+            border: none;
+            background: none;
+            min-width: rem(16);
+
+            &:hover,
+            &:focus,
+            &:active {
+                color: $setting-color-blue-midi;
+                background: none;
+                box-shadow: none;
+            }
+        }
+
+        &--tight {
+            min-width: $button-tight-min-width;
+        }
+
+        &--mobile-small {
+            font-weight: fw(medium);
+            font-size: rem(12);
+            padding: rem(7) rem(10);
+
+            @include helper-breakpoint-media-min($lg-min) {
+                font-size: rem(14);
+                padding: rem(10) rem(14);
+            }
+        }
+
+        &--mobile-active {
+            color: $setting-color-black;
+        }
+
+        &--no-inner-events {
+            * {
+                pointer-events: none;
+            }
+        }
+
+        &--ghost {
+            min-height: rem(50);
+            color: $setting-color-black-1;
+            background: $setting-color-gray-15;
+            border-radius: rem(4);
+
+            &:hover,
+            &:focus,
+            &:active {
+                background: $setting-color-gray-15;
+                color: $setting-color-black-1;
+                box-shadow: none;
+            }
+
+            &:hover {
+                color: $setting-color-gray-13;
+            }
+        }
+
+        &--alternative {
+            background-color: $setting-color-alt;
+            border-color: $setting-color-alt;
+            color: $setting-color-white;
+
+            &:hover,
+            &:focus {
+                background-color: helper-color-dark($setting-color-alt);
+                border-color: helper-color-dark($setting-color-alt);
+                box-shadow: none;
+            }
+        }
+
+        &--subscribe {
+            padding-top: rem(14);
+            padding-bottom: rem(13);
+            border-radius: 0 rem(2) rem(2) 0;
+            min-width: rem(140);
+        }
+
+        &--without-radius {
+            border-radius: 0;
+        }
+
+        &--icon-only {
+            border-radius: 50%;
+            min-width: 0;
+            padding: rem(6);
+        }
+
+        @content;
+    }
+}
+
+@include shop-ui-button();

@@ -1,0 +1,15 @@
+{% extends model('component') %}
+
+{% define config = {
+    name: 'time-slot-date-formatted',
+    tag: 'span'
+} %}
+
+{% define data = {
+    timeFrom: required
+} %}
+
+{% block body %}
+    {% set weekDayNumber = data.timeFrom | date("w") %}
+    {{ ('day-of-week.short.n.' ~ weekDayNumber) | trans }}, {{ data.timeFrom | date("d.m.Y") }}
+{% endblock %}

@@ -1,0 +1,7 @@
+@mixin matomo-popup-ui-corrector($name: '#ppms_cm_disagree') {
+    #{$name} {
+        display: none !important;
+    }
+}
+
+@include matomo-popup-ui-corrector();

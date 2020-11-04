@@ -1,0 +1,26 @@
+{% extends model('component') %}
+
+{% define config = {
+    name: 'ingredients-and-allergens',
+} %}
+
+{% define data = {
+    productAttributes: required,
+} %}
+
+{% block class -%}
+    grid {{ parent() }}
+{%- endblock %}
+
+{% block body %}
+    <div class="{{ component.renderClass(config.name ~ '__content', modifiers) }}">
+        {% block contentText %}
+            {% if data.productAttributes['Zutaten / Inhaltsstoffe'] is defined %}
+                <div class="spacing-bottom spacing-bottom--bigger"><strong>{{ 'product.info.ingredients' | trans }}:</strong> {{ data.productAttributes['Zutaten / Inhaltsstoffe'] }}</div>
+            {% endif %}
+            {% if data.productAttributes['Allergene'] is defined %}
+                <div class="spacing-bottom spacing-bottom--bigger"><strong>{{ 'product.info.alergens' | trans }}:</strong> {{ data.productAttributes['Allergene'] }}</div>
+            {% endif %}
+        {% endblock %}
+    </div>
+{% endblock %}

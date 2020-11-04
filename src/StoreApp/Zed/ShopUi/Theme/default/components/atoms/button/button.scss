@@ -1,0 +1,219 @@
+$button-radius: rem(10);
+
+@mixin shop-ui-button($name: '.button') {
+    #{$name} {
+        @include helper-font-weight(bold);
+        position: relative;
+        display: inline-block;
+        max-width: rem(390);
+        padding: rem(11) rem(15);
+        font: fw(medium) rem(14)/1.7 $setting-font-family-additional;
+        text-align: center;
+        text-decoration: none;
+        background: $setting-color-green;
+        border-radius: $button-radius;
+        color: $setting-color-white;
+        cursor: pointer;
+
+        &:hover,
+        &:active {
+            color: $setting-color-white;
+        }
+
+        &--large {
+            padding: rem(11) rem(15) rem(13);
+            border-radius: rem(25);
+        }
+
+        &--not-delivered {
+            color: $setting-color-green;
+            background: $setting-color-white;
+            border-radius: 0;
+
+            &:hover,
+            &:active {
+                background: $setting-color-green-alpha-1;
+                color: $setting-color-white;
+            }
+        }
+
+        &--delivered {
+            background: $setting-color-green;
+            color: $setting-color-white;
+            border-radius: 0;
+
+            &:hover,
+            &:active {
+                background: $setting-color-green-alpha-1;
+                color: $setting-color-white;
+            }
+        }
+
+        &--hollow {
+            padding: rem(7) rem(14) rem(9);
+            background: transparent;
+            border: rem(1) solid $setting-color-green;
+            color: $setting-color-green;
+            text-decoration: none;
+            border-radius: $button-radius;
+
+            &:hover,
+            &:focus,
+            &:active {
+                border-color: $setting-color-green;
+                color: $setting-color-white;
+                background-color: $setting-color-green;
+                box-shadow: none;
+            }
+
+            &[disabled],
+            &--disabled {
+                background-color: $setting-color-white;
+                border-color: $setting-color-gray-3;
+                color: $setting-color-gray-3;
+
+                &:hover,
+                &:focus,
+                &:active {
+                    background-color: $setting-color-white;
+                }
+            }
+        }
+
+        &--white {
+            background: $setting-color-white;
+
+            &:hover,
+            &:focus,
+            &:active {
+                color: $setting-color-green;
+                background-color: $setting-color-white;
+            }
+        }
+
+        &--secondary {
+            background: $setting-color-gray-4;
+            color: $setting-color-white;
+
+            &:hover,
+            &:active {
+                color: $setting-color-white;
+            }
+        }
+
+        &--expand {
+            width: 100%;
+        }
+
+        &--disabled,
+        &[disabled] {
+            &:not(#{$name}--hollow) {
+                background: $setting-color-gray-2;
+            }
+            color: $setting-color-gray-4;
+            border-color: $setting-color-gray-4;
+            cursor: not-allowed;
+            pointer-events: none;
+
+            &:hover,
+            &:active {
+                color: $setting-color-gray-4;
+            }
+        }
+
+        &--popup {
+            min-width: rem(80);
+        }
+
+        &--small {
+            font-size: map-get($setting-font-size, small);
+        }
+
+        &--error {
+            background: $setting-color-brown;
+            color: $setting-color-white;
+
+            &:hover,
+            &:active {
+                color: $setting-color-white;
+            }
+        }
+
+        &--warning {
+            background: lighten($setting-color-brown, 25%);
+            color: $setting-color-black;
+
+            &:hover,
+            &:active {
+                color: $setting-color-black;
+            }
+        }
+
+        &--undo,
+        &--delete {
+            background: $setting-color-gray-2;
+            color: $setting-color-gray-10;
+
+            &:hover,
+            &:active {
+                color: $setting-color-gray-6;
+            }
+        }
+
+        &--undo {
+            color: $setting-color-gray-5;
+        }
+
+        &--table {
+            padding: rem(5) rem(6) rem(7);
+        }
+
+        &--tab {
+            @include helper-font-weight(regular);
+            padding: rem(11) rem(8) rem(13);
+            font-size: rem(15);
+            line-height: 1;
+            background: transparent;
+            color: $setting-color-gray-10;
+
+            &.active {
+                background: $setting-color-gray-2;
+                border-radius: rem(8);
+            }
+
+            &:hover,
+            &:active {
+                color: $setting-color-gray-6;
+            }
+        }
+
+        &--active-tab {
+            background: $setting-color-gray-2;
+            border-radius: rem(8);
+        }
+
+        &__icon {
+            font-size: rem(24);
+        }
+
+        &--round {
+            width: rem(40);
+            height: rem(40);
+
+            #{$name} {
+                &__icon {
+                    position: absolute;
+                    top: 50%;
+                    left: 50%;
+                    transform: translate(-50%, -50%);
+                }
+            }
+        }
+
+        &--light {
+            background: $setting-color-white;
+        }
+    }
+}
+
+@include shop-ui-button();

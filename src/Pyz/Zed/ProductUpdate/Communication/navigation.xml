@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<config>
+    <product>
+        <pages>
+            <product-update>
+                <label>Product Update</label>
+                <title>Product Update</title>
+                <bundle>product-update</bundle>
+                <controller>index</controller>
+                <action>index</action>
+                <visible>1</visible>
+            </product-update>
+        </pages>
+    </product>
+</config>

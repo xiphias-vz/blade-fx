@@ -1,0 +1,6 @@
+name,is_active,is_dynamic,is_exclusive,front_end_reference,valid_from,valid_to,name.en_US,name.de_DE,product_abstract_skus,link
+Standard label,0,0,0,,,,Standard Label,Standard Label,"",
+NEW,1,1,0,template:tag,,,New,Neu,"",/de/new
+SALE,1,1,0,highlight,,,SALE %,Angebote,"",/de/outlet
+Discontinued,1,1,0,discontinued,,,Discontinued,Eingestellt,,
+Alternatives available,1,1,0,alternative,,,Alternatives available,Alternativen verfügbar,,

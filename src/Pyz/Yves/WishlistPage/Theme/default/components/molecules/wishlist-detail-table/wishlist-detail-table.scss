@@ -1,0 +1,35 @@
+@mixin wishlist-page-wishlist-detail-table($name: '.wishlist-detail-table') {
+    #{$name} {
+        &__row {
+            overflow: hidden;
+            padding-bottom: rem(16);
+            margin-bottom: rem(16);
+            border-bottom: rem(1) solid $setting-color-light;
+        }
+
+        &__cell {
+            display: block;
+            width: 70%;
+            float: right;
+
+            @include helper-breakpoint-media-min($lg-min) {
+                display: table-cell;
+                width: auto;
+                float: none;
+            }
+
+            &:first-child {
+                width: 30%;
+                float: left;
+                text-align: center;
+
+                @include helper-breakpoint-media-min($lg-min) {
+                    width: 5%;
+                    float: none;
+                }
+            }
+        }
+    }
+}
+
+@include wishlist-page-wishlist-detail-table();

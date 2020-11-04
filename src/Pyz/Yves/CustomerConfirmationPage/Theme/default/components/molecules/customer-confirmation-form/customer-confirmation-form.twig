@@ -1,0 +1,188 @@
+{% extends model('component') %}
+
+{% define config = {
+    name: 'customer-confirmation-form',
+    tag: 'customer-confirmation-form',
+} %}
+
+{% define data = {
+    form: required,
+    enableStart: true,
+    enableEnd: true,
+    title: '',
+    submitButtonText: 'customer-confirmation.submit' | trans,
+    formAction: '',
+    layout: {},
+    options: {},
+    isSubmitEnabled: true,
+    isCancelEnabled: false,
+    cancelUrl: url('customer/address'),
+    passwordFieldName: '[password][pass]',
+    phoneFieldName: '[shipping_address][phone]',
+    cancelClass: '',
+    submitClass: 'form__action--login button button--large button--expand',
+} %}
+
+{% define attributes = {
+    'is-customer-form-exist': true,
+    'is-password-form-exist': true,
+    'is-address-form-exist': true,
+    'form-name': data.form.vars.full_name,
+    'new-password-selector': 'input[name="' ~ data.form.vars.full_name ~ data.passwordFieldName ~ '"]',
+    'phone-selector': 'input[name="' ~ data.form.vars.full_name ~ data.phoneFieldName ~ '"]',
+} %}
+
+{% set isCustomerFormExist = attributes['is-customer-form-exist'] %}
+{% set isPasswordFormExist = attributes['is-password-form-exist'] %}
+{% set isAddressFormExist = attributes['is-address-form-exist'] %}
+
+{% block body %}
+    {% block title %}
+        {% if data.title %}
+            {% include molecule('title-box', 'CustomerPage') with {
+                modifiers: modifiers,
+                data: {
+                    title: data.title,
+                },
+            } only %}
+        {% endif %}
+    {% endblock %}
+
+    {% embed molecule('form') with {
+        class: config.jsName ~ '__form',
+        modifiers: modifiers,
+        data: {
+            form: data.form,
+            enableStart: data.enableStart,
+            enableEnd: data.enableEnd,
+            submit: {
+                class: config.jsName ~ '__submit-button ' ~ data.submitClass,
+                enable: data.isSubmitEnabled,
+                text: data.submitButtonText | trans,
+            },
+            options: {
+                action: data.formAction,
+                attr: null,
+            },
+            cancel: {
+                enable: data.isCancelEnabled,
+                url: data.cancelUrl,
+                text: 'general.back.button' | trans,
+                class: data.cancelClass,
+            },
+        },
+        qa: 'register-form',
+        embed: {
+            jsName: config.jsName,
+            isCustomerFormExist: isCustomerFormExist,
+            isPasswordFormExist: isPasswordFormExist,
+            isAddressFormExist: isAddressFormExist,
+        },
+    } only %}
+        {% block fieldset %}
+            <div class="{{ config.name }}__fields grid grid--top grid--indent">
+                {% block fields %}
+                    {% set fieldLayoutClass = 'col col--sm-12' %}
+                    {% set layout = data.layout %}
+
+                    {% if data.form.vars.full_name == 'registerForm' %}
+                        {% set layout = {
+                            'salutation': 'col col--sm-12 col--md-8',
+                            'first_name': 'col col--sm-12',
+                            'last_name': 'col col--sm-12',
+                            'email': 'col col--sm-12',
+                            'password': 'col col--sm-12',
+                            'address1': 'col col--sm-12',
+                            'address2': 'col col--sm-12',
+                            'floor': 'col col--sm-12',
+                            'additional_info': 'col col--sm-12',
+                            'zip_code': 'col col--sm-12',
+                            'city': 'col col--sm-12',
+                            'merchant_reference': 'col col--sm-12',
+                            'phone': 'col col--sm-12',
+                            'accept_terms': 'col col--sm-12',
+                            '_token': 'col col--sm-12',
+                        } %}
+                    {% endif %}
+
+                    {% if data.form.vars.full_name == 'registerForm[customer]' %}
+                        {% set layout = {
+                            'salutation': 'col col--sm-12 col--md-4',
+                            'first_name': 'col col--sm-12 col--md-4',
+                            'last_name': 'col col--sm-12 col--md-4',
+                            'email': 'col col--order-1 col--sm-12',
+                            'password': 'col col--order-1 col--sm-12 col--md-6',
+                            'confirm': 'col col--order-1 col--sm-12 col--md-6',
+                            'address1': 'col col--order-1 col--sm-12 col--md-8',
+                            'address2': 'col col--order-1 col--sm-12 col--md-4',
+                            'floor': 'col col--order-1 col--sm-12 col--md-4',
+                            'zip_code': 'col col--order-1 col--sm-12 col--md-4',
+                            'city': 'col col--order-1 col--sm-12 col--md-4',
+                            'additional_info': 'col col--order-2 col--sm-12',
+                            'merchant_reference': 'col col--order-2 col--sm-12',
+                            'phone': 'col col--order-2 col--sm-12',
+                            'accept_terms': 'col col--order-2 col--sm-12',
+                        } %}
+                    {% endif %}
+
+                    {% for fieldName in data.form | keys %}
+                        {% set field = attribute(data.form.children, fieldName) %}
+                        {% set registerFormName = 'registerForm' or 'registerForm[customer]' %}
+
+                        {% if (data.form.vars.full_name == registerFormName) and (fieldName in layout | keys) %}
+                            {% set fieldLayoutClass = attribute(layout, fieldName) %}
+                        {% endif %}
+
+                        {% block field %}
+                            {% set passwordFieldName = 'password' %}
+
+                            {% if data.form.vars.full_name == 'passwordForm' %}
+                                {% set passwordFieldName = 'new_password' %}
+                            {% endif %}
+
+                            {% if fieldName == passwordFieldName %}
+                                {{ form_row(field, {
+                                    rowAttr: {
+                                        class: 'form__field ' ~ fieldLayoutClass,
+                                    },
+                                }) }}
+
+                                {% set passwordCriteriaFieldLayoutClass = 'form__field col col--sm-12' %}
+
+                                {% if data.form.vars.full_name == 'registerForm[customer]' %}
+                                    {% set passwordCriteriaFieldLayoutClass = 'form__field col col--order-1 col--sm-12 col--md-6' %}
+                                {% endif %}
+
+                                <div class="{{ embed.jsName }}__password-criteria {{ passwordCriteriaFieldLayoutClass }} is-hidden">
+                                    {{ 'customer-confirmation.new.password.criteria' | trans | raw }}
+                                </div>
+                            {% elseif fieldName == 'phone' %}
+                                {{ form_row(field, {
+                                    rowAttr: {
+                                        class: 'form__field ' ~ fieldLayoutClass,
+                                    },
+                                }) }}
+                                <div class="{{ embed.jsName }}__phone-criteria form__field col col--sm-12 is-hidden">
+                                    <ul class="list list--bullet list--info">
+                                        <li class="list__item"><i>{{ 'customer-confirmation.phone.validation.criteria' | trans }}</i></li>
+                                    </ul>
+                                </div>
+                                <div class="{{ embed.jsName }}__phone-error form__field col col--sm-12 is-hidden">
+                                    <ul class="list list--bullet list--alert">
+                                        <li class="list__item">{{ 'customer-confirmation.phone.validation-error' | trans }}</li>
+                                    </ul>
+                                </div>
+                            {% else %}
+                                {{ form_row(field, {
+                                    rowAttr: {
+                                        class: 'form__field ' ~ fieldLayoutClass,
+                                    },
+                                }) }}
+                            {% endif %}
+                        {% endblock %}
+                    {% endfor %}
+                {% endblock %}
+            </div>
+        {% endblock %}
+    {% endembed %}
+{% endblock %}

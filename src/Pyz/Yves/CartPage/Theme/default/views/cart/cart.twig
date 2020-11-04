@@ -1,0 +1,90 @@
+{% extends template('page-layout-cart', 'CartPage') %}
+
+{% define data = {
+    cart: _view.cart,
+    cartItems: _view.cartItems,
+    isQuoteValid: _view.isQuoteValid,
+    isQuoteEditable: _view.isQuoteEditable,
+    attributes: _view.attributes,
+    request: app.request,
+    isHardThresholdReached: _view.cart.isHardThresholdReached | default(false),
+    isHardMaxThresholdReached: _view.cart.isHardMaxThresholdReached | default(false),
+    title: 'cart.cart' | trans,
+    orderLimitationMessage: _view.orderLimitationMessage | default,
+    taxPayments: _view.taxPayments,
+} %}
+
+{% block title %}
+    {% widget 'CartOperationsWidget' args [data.cart] use view('cart-operations-title', 'MultiCartWidget') only %}{% endwidget %}
+{% endblock %}
+
+{% block content %}
+    <div class="spacing-x spacing-x--big">
+        {% include molecule('breadcrumb') only %}
+    </div>
+
+    {% if data.cart.idQuote is not empty %}
+        <div>
+            {% widget 'CreateShoppingListFromCartWidget' args [data.cart.idQuote] only %}{% endwidget %}
+        </div>
+    {% endif %}
+
+    {% if data.cart.items is empty %}
+        <div class="page-layout-cart__empty text-center">
+            <h1>{{ data.title }}</h1>
+            <h6 class="spacing-top spacing-top--bigger">{{ 'cart.empty' | trans }}</h6>
+        </div>
+    {% else %}
+        <div class="grid grid--stretch spacing-x spacing-x--big">
+            <div class="col col--sm-12 col--lg-8">
+
+                <div class="page-layout-cart__col page-layout-cart__col--content">
+                    {% if data.orderLimitationMessage %}
+                        <div class="cart-limitation-message">
+                            {{ data.orderLimitationMessage | nl2br }}
+                        </div>
+                    {% endif %}
+
+                    <div class="cart-box grid grid--middle grid--justify">
+                        <h3 class="col">{{ 'cart.title_content' | trans }}</h3>
+                        <span class="col">
+                            <form action="{{ path('cart/clear') }}" method="post">
+                                <input type="hidden" name="token" value="{{ csrf_token('clear-cart') }}"/>
+                                <input class="cart-box__quantity link" type="submit" value="{{ 'cart.clear' | trans }}">
+                            </form>
+                        </span>
+                    </div>
+
+
+                    {% for cartItem in data.cartItems %}
+                        {% include molecule('product-card-item') with {
+                            data: {
+                                product: data.cart,
+                                productItem: cartItem,
+                                attributes: data.attributes[cartItem.sku] | default([]),
+                            },
+                        } only %}
+                    {% endfor %}
+
+                    {% widget 'CartDiscountPromotionProductListWidget' args [data.cart, data.request] only %}{% endwidget %}
+                </div>
+            </div>
+
+            <div class="col col--sm-12 col--lg-4">
+                <div class="page-layout-cart__col page-layout-cart__col--sidebar">
+                    {% include molecule('cart-summary', 'CartPage') with {
+                        data: {
+                            cart: data.cart,
+                            taxPayments: data.taxPayments,
+                            isQuoteValid: data.isQuoteValid,
+                            isQuoteEditable: data.isQuoteEditable,
+                            isHardThresholdReached: data.isHardThresholdReached,
+                            isHardMaxThresholdReached: data.isHardMaxThresholdReached
+                        },
+                    } only %}
+                </div>
+            </div>
+        </div>
+    {% endif %}
+    {% widget 'UpSellingProductsWidget' args [data.cart] only %}{% endwidget %}
+{% endblock %}

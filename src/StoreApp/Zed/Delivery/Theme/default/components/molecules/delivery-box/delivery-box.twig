@@ -1,0 +1,158 @@
+{% extends model('component') %}
+
+{% define config = {
+    name: 'delivery-box',
+    tag: 'delivery-box',
+} %}
+
+{% define data = {
+    order: required,
+    additionalText: '',
+} %}
+
+{% block body %}
+    <div class="{{ config.name }}__info">
+        <div class="{{ config.name }}__row">
+            {% block headCol %}
+                <div class="{{ config.name }}__col">
+                    {% block head %}
+                        {% set fullAddress = data.order.deliveryAddress.address1 ~ ' '
+                            ~ data.order.deliveryAddress.address2 ~ ', '
+                            ~ data.order.deliveryAddress.city ~ ', '
+                            ~ data.order.deliveryAddress.zipCode ~ ' '
+                            ~ data.order.deliveryAddress.floor | trans
+                        %}
+
+                        {% block title %}
+                            <span class="{{ config.name }}__text {{ config.name }}__text--heading">
+                                {{ fullAddress }}
+                            </span>
+
+                            {% if data.order.deliveryAddress.additionalInfo %}
+                                <span class="{{ config.name }}__text">{{ data.order.deliveryAddress.additionalInfo }}</span>
+                            {% endif %}
+                        {% endblock %}
+                        <span class="{{ config.name }}__text">
+                            {{ data.order.requestedDeliveryDate | split(' ') | last ~ ' ' ~ 'hour' | trans }}
+                        </span>
+                    {% endblock %}
+                </div>
+            {% endblock %}
+
+            {% block headingCol %}{% endblock %}
+        </div>
+
+        <div class="{{ config.name }}__row {{ config.name }}__row--middle">
+            {% block bagCol %}
+                <div class="{{ config.name }}__col">
+                    {% block bag %}
+                        {% include atom('icon-row') with {
+                            class: config.name ~ '__bags',
+                            modifiers: ['round'],
+                            data: {
+                                iconName: 'bag',
+                                rowText: data.order.pickingBags | default(0) ~ ' ' ~ 'picker.collect-by-customer.order.bags' | trans,
+                            },
+                        } only %}
+                    {% endblock %}
+                </div>
+            {% endblock %}
+
+            {% block orderCol %}
+                <div class="{{ config.name }}__col">
+                    {% block order %}
+                        {% include atom('app-label') with {
+                            modifiers: ['order'],
+                            data: {
+                                text: 'Order ID' | trans ~ ': ' ~ data.order.orderReference,
+                            },
+                        } only %}
+                    {% endblock %}
+                </div>
+            {% endblock %}
+        </div>
+
+        <div class="{{ config.name }}__row {{ config.name }}__row--middle">
+            {% block addressCol %}
+                <div class="{{ config.name }}__col">
+                    {% block address %}
+                        <div class="{{ config.name }}__text">
+                            {{ data.order.deliveryAddress.salutation }} {{ data.order.deliveryAddress.firstName }} {{ data.order.deliveryAddress.lastName }}
+                        </div>
+                    {% endblock %}
+
+                    {% block phone %}
+                        {% if data.order.deliveryAddress.phone %}
+                            <a href="tel:{{ data.order.deliveryAddress.phone }}">{{ data.order.deliveryAddress.phone }}</a>
+                        {% endif %}
+                    {% endblock %}
+                </div>
+            {% endblock %}
+
+            {% block phoneCol %}
+                <div class="{{ config.name }}__col">
+                    {% set isCheckAge = data.order.deliveryMinimumAge > 0 %}
+
+                    {% embed atom('icon-row') with {
+                        modifiers: ['round', 'center', 'age'] | merge(isCheckAge ? ['error'] : []),
+                        data: {
+                            iconName: 'user-account',
+                        },
+                        embed: {
+                            isCheckAge: isCheckAge,
+                            deliveryMinimumAge: data.order.deliveryMinimumAge,
+                        }
+                    } only %}
+                        {% block text %}
+                            {% if embed.isCheckAge %}
+                                {{- embed.deliveryMinimumAge -}}+
+                            {% else %}
+                                {% include atom('icon') with {
+                                    data: {
+                                        name: 'check',
+                                    }
+                                } only %}
+                            {% endif %}
+                        {% endblock %}
+                    {% endembed %}
+                </div>
+            {% endblock %}
+        </div>
+    </div>
+
+    {% block additional %}
+        {% if data.additionalText %}
+            <div class="{{ config.name }}__additional">
+                <div class="{{ config.name }}__row {{ config.name }}__row--spaceless">
+                    {% block additionalTimeCol %}
+
+                            <div class="{{ config.name }}__col">
+                                {% block additionalTime %}
+                                    <span class="{{ config.name }}__additional-text">
+                                        {% if data.order.deliveredAt %}
+                                            {% set time =  data.order.deliveredAt | date("H:i") %}
+                                            {{ 'delivery.at' | trans }} {{ time }}
+                                        {% endif %}
+                                    </span>
+                                {% endblock %}
+                            </div>
+
+                    {% endblock %}
+
+                    {% block additionalLabelCol %}
+                        <div class="{{ config.name }}__col {{ config.name }}__col--right">
+                            {% block additionalLabel %}
+                                {% include atom('app-label') with {
+                                    modifiers: modifiers,
+                                    data: {
+                                        text: data.additionalText | trans,
+                                    },
+                                } only %}
+                            {% endblock %}
+                        </div>
+                    {% endblock %}
+                </div>
+            </div>
+        {% endif %}
+    {% endblock %}
+{% endblock %}

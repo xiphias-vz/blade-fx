@@ -1,0 +1,54 @@
+@include shop-ui-link {
+    color: $setting-color-gray-10;
+
+    &:hover {
+        text-decoration: none;
+    }
+
+    &--icon {
+        position: relative;
+        display: inline-block;
+        padding-left: rem(23);
+    }
+
+    &__icon {
+        position: absolute;
+        top: 50%;
+        left: 0;
+        transform: translate(0, -50%);
+
+        &--cancel {
+            transform: rotate(180deg) translate(0, 50%);
+        }
+
+        &--marker {
+            left: rem(-4);
+        }
+    }
+
+    &--cancel {
+        color: $setting-color-gray-10;
+        text-decoration: none;
+
+        &:hover {
+            color: $setting-color-gray-6;
+        }
+    }
+
+    &--close {
+        color: $setting-color-gray-6;
+        text-decoration: none;
+    }
+
+    &--logout {
+        width: rem(24);
+        height: rem(24);
+        padding: 0;
+        color: $setting-color-gray-10;
+        text-decoration: none;
+
+        &:hover {
+            color: $setting-color-gray-6;
+        }
+    }
+}

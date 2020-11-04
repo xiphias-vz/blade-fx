@@ -1,0 +1,193 @@
+{% extends model('component') %}
+
+{% define config = {
+    name: 'summary-sidebar',
+} %}
+
+{% define data = {
+    shipment: required,
+    isGiftCardExists: false,
+    canEdit: false,
+    billingAddress: null,
+    payment: null,
+    merchantName: app['merchant_name'] | default,
+} %}
+
+{% block body %}
+    {% block adress %}
+        <div class="{{ config.name }}__item col col--sm-12">
+            <div class="{{ config.name }}__row">
+                <div class="{{ config.name }}__col {{ config.name }}__col--wide">
+                    {% block addressHeading %}
+                        <div class="{{ config.name }}__heading">
+                            <h4 class="{{ config.name }}__title">{{ 'checkout.step.address.title' | trans }}</h4>
+
+                            {% if data.canEdit %}
+                                <a href="{{ url('checkout-address') }}" class="link link--darkest link--edit">
+                                    {% include molecule('icon-tooltip') with {
+                                        modifiers: ['medium-up'],
+                                        data: {
+                                            icon: 'edit',
+                                            text: 'general.edit.button' | trans,
+                                        },
+                                    } only %}
+                                </a>
+                            {% endif %}
+                        </div>
+                    {% endblock %}
+                </div>
+
+                <div class="{{ config.name }}__col">
+                    {% block shippingAddress %}
+                        {% set address = data.shipment.shippingAddress %}
+                        {% set fullShippingName = address.firstName ~ ' ' ~ address.lastName %}
+                        {% set fullAddress = address.address1 ~ ' ' ~ address.address2 ~ ' ' ~ (address.floor | default | trans) ~ ',' %}
+
+                        <span class="{{ config.name }}__title {{ config.name }}__title--sub">{{ 'checkout.step.summary.delivery_address' | trans }}</span>
+
+                        {% if address.company %}
+                            <span class="{{ config.name }}__text">{{ address.company }}</span>
+                        {% endif %}
+
+                        <span class="{{ config.name }}__text">{{ fullShippingName | trans }}</span>
+                        <span class="{{ config.name }}__text">{{ fullAddress }}</span>
+
+                        {% if address.phone %}
+                            <span class="{{ config.name }}__text">{{ address.phone }}</span>
+                        {% endif %}
+
+                        <span class="{{ config.name }}__text">{{ address.zipCode }}, {{ ('countries.iso.' ~ address.iso2code) | trans }}</span>
+                    {% endblock %}
+                </div>
+
+                {% if data.billingAddress %}
+                    <div class="{{ config.name }}__col">
+                        {% block billingAddress %}
+                            {% set address = data.billingAddress %}
+                            {% set fullShippingName = address.firstName ~ ' ' ~ address.lastName %}
+                            {% set fullAddress = address.address1 ~ ' ' ~ address.address2 ~ ' ' ~ (address.floor | default | trans) ~ ',' %}
+
+                            <span class="{{ config.name }}__title {{ config.name }}__title--sub">{{ 'checkout.step.summary.billing_address' | trans }}</span>
+
+                            {% if address.company %}
+                                <span class="{{ config.name }}__text">{{ address.company }}</span>
+                            {% endif %}
+
+                            <span class="{{ config.name }}__text">{{ fullShippingName }}</span>
+                            <span class="{{ config.name }}__text">{{ fullAddress }}</span>
+
+                            {% if address.phone %}
+                                <span class="{{ config.name }}__text">{{ address.phone }}</span>
+                            {% endif %}
+
+                            <span class="{{ config.name }}__text">{{ address.zipCode }}, {{ ('countries.iso.' ~ address.iso2code) | trans }}</span>
+                        {% endblock %}
+                    </div>
+                {% endif %}
+
+            </div>
+        </div>
+    {% endblock %}
+
+    {% if not data.isGiftCardExists %}
+        {% block delivery %}
+            <div class="{{ config.name }}__item col col--sm-12">
+                <div class="{{ config.name }}__row">
+                    <div class="{{ config.name }}__col {{ config.name }}__col--wide">
+                        {% block shippingHeading %}
+                            <div class="{{ config.name }}__heading">
+                                <h4 class="{{ config.name }}__title">{{ 'checkout.step.summary.shipping' | trans }}</h4>
+
+                                {% if data.canEdit %}
+                                    <a href="{{ url('checkout-shipment') }}" class="link link--darkest link--edit">
+                                        {% include molecule('icon-tooltip') with {
+                                            modifiers: ['medium-up'],
+                                            data: {
+                                                icon: 'edit',
+                                                text: 'general.edit.button' | trans,
+                                            },
+                                        } only %}
+                                    </a>
+                                {% endif %}
+                            </div>
+                        {% endblock %}
+                    </div>
+
+                    <div class="{{ config.name }}__col">
+                        {% block method %}
+                            <span class="{{ config.name }}__title {{ config.name }}__title--sub">{{ data.shipment.method.carrierName | trans }}</span>
+
+                            {% if data.merchantName is defined %}
+                                <span class="{{ config.name }}__text">{{ data.merchantName }}</span>
+                            {% endif %}
+
+                            <span class="{{ config.name }}__text">{{ data.shipment.method.name | trans }}: {{ data.shipment.method.storeCurrencyPrice | money(true, data.shipment.method.currencyIsoCode) }}</span>
+                        {% endblock %}
+                    </div>
+
+                    <div class="{{ config.name }}__col">
+                        {% block date %}
+                            {% set splittedDeliveryDate = data.shipment.requestedDeliveryDate | split('_') %}
+
+                            <span class="{{ config.name }}__title {{ config.name }}__title--sub">{{ 'checkout.date.and.time' | trans }}</span>
+                            <span class="{{ config.name }}__text">{{  splittedDeliveryDate | first | formatDate }} - {{ splittedDeliveryDate | last }}</span>
+                        {% endblock %}
+                    </div>
+                </div>
+            </div>
+        {% endblock %}
+    {% endif %}
+
+    {% if data.payment %}
+        {% block payment %}
+            <div class="{{ config.name }}__item col col--sm-12 col--lg-6">
+                <div class="{{ config.name }}__row">
+                    <div class="{{ config.name }}__col {{ config.name }}__col--wide">
+                        {% block paymentHeading %}
+                            <div class="{{ config.name }}__heading">
+                                <h4 class="{{ config.name }}__title">{{ 'checkout.step.summary.payment' | trans }}</h4>
+
+                                {% if data.canEdit %}
+                                    <a href="{{ url('checkout-payment') }}" class="link link--darkest link--edit">
+                                        {% include molecule('icon-tooltip') with {
+                                            modifiers: ['medium-up'],
+                                            data: {
+                                                icon: 'edit',
+                                                text: 'general.edit.button' | trans,
+                                            },
+                                        } only %}
+                                    </a>
+                                {% endif %}
+                            </div>
+                        {% endblock %}
+                    </div>
+
+                    <div class="{{ config.name }}__col {{ config.name }}__col--wide">
+                        {% block paymentMethod %}
+                            {% set dummyPayment = 'dummyPaymentCreditCard' %}
+
+                            <span class="{{ config.name }}__title {{ config.name }}__title--sub">{{ data.payment.paymentMethod | lower | trans }}</span>
+
+                            {% if data.payment.paymentSelection == dummyPayment %}
+                                {% set partOfCardNumder = data.payment.dummyPayment.cardNumber[ (data.payment.dummyPayment.cardNumber | length) -3 :] %}
+
+                                 <span class="{{ config.name }}__text">
+                                     {{ 'dummyPaymentCreditCard.card_type' | trans }}: {{ data.payment.dummyPayment.cardType }}
+                                 </span>
+                                 <span class="{{ config.name }}__text">
+                                     {{ 'dummyPaymentCreditCard.card_number' | trans }}: {{ 'dummyPaymentCreditCard.hidden_numbers' | trans }}{{ partOfCardNumder }}
+                                 </span>
+                                 <span class="{{ config.name }}__text">
+                                     {{ 'dummyPaymentCreditCard.name_on_card' | trans }}: {{ data.payment.dummyPayment.nameOnCard }}
+                                 </span>
+                                 <span class="{{ config.name }}__text">
+                                     {{ 'dummyPaymentCreditCard.card_expires' | trans }}: {{ data.payment.dummyPayment.cardExpiresMonth }}, {{ data.payment.dummyPayment.cardExpiresYear }}
+                                 </span>
+                            {% endif %}
+                        {% endblock %}
+                    </div>
+                </div>
+            </div>
+        {% endblock %}
+    {% endif %}
+{% endblock %}

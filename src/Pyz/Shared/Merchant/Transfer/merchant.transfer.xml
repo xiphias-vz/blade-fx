@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<transfers xmlns="spryker:transfer-01"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="spryker:transfer-01 http://static.spryker.com/transfer-01.xsd">
+
+    <transfer name="Merchant">
+        <property name="regionNumber" type="int"/>
+        <property name="regionName" type="string"/>
+        <property name="filialNumber" type="int"/>
+        <property name="zipCode" type="string"/>
+        <property name="city" type="string"/>
+        <property name="street" type="string"/>
+        <property name="latitude" type="decimal"/>
+        <property name="longitude" type="decimal"/>
+        <property name="deliveryCapacityPerSlot" type="int"/>
+        <property name="pickingCapacityPerSlot" type="int"/>
+    </transfer>
+
+    <transfer name="MerchantCriteriaFilter">
+        <property name="idStore" type="int"/>
+        <property name="withDeliveryPostalCodes" type="bool"/>
+    </transfer>
+
+</transfers>

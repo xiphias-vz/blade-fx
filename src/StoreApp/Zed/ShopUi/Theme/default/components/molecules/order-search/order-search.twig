@@ -1,0 +1,42 @@
+{% extends model('component') %}
+
+{% define config = {
+    name: 'order-search',
+    jsName: 'js-order-search',
+    tag: 'order-search'
+} %}
+
+{% define data = {
+    selectOptions: []
+} %}
+
+{% define attributes = {
+    'search-item-class': config.jsName ~ '__item'
+} %}
+
+{% block body %}
+    <div class="grid grid--no-wrap">
+        <div class="col col--expand">
+            <input type="text" class="input input--expand spacing-bottom spacing-bottom--big {{ config.jsName }}__input" placeholder="{{ 'Order Search' | trans }}">
+        </div>
+        {% if data.selectOptions | length %}
+            {% set placeholderOption = [{
+                value: '',
+                label: 'Timeslot' | trans
+            }] %}
+            <div class="col col--sm-5 spacing-left spacing-left--inner">
+                {% embed atom('select') with {
+                    data: {
+                        options: placeholderOption | merge(data.selectOptions)
+                    },
+                    embed: {
+                        jsName: config.jsName
+                    },
+                } only %}
+                    {% block selectClass %}{{ embed.jsName }}__select{% endblock %}
+                {% endembed %}
+            </div>
+        {% endif %}
+    </div>
+{% endblock %}
+

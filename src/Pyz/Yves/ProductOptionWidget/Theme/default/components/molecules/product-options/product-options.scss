@@ -1,0 +1,13 @@
+@mixin product-option-widget-product-options($name: '.product-options') {
+    #{$name} {
+        &__item {
+            margin-bottom: 0;
+            font-size: rem(12);
+            color: $setting-color-gray-13;
+        }
+
+        @content;
+    }
+}
+
+@include product-option-widget-product-options();

@@ -1,0 +1,58 @@
+{% extends template('page-layout-catalog', 'CatalogPage') %}
+
+{% define data = {
+    suggestion: _view.spellingSuggestion,
+    searchString: _view.searchString | default,
+    title: ('global.search.results' | trans) ~ ' ' ~ _view.searchString,
+    pagination: {
+        paginationPath: app.request.attributes.get('_route'),
+    },
+} %}
+
+{% block breadcrumb %}
+    {% include molecule('breadcrumb') with {
+        modifiers: ['no-border'],
+        data: {
+            steps: [{
+                label: 'global.search.results' | trans
+            }]
+        }
+    } only %}
+{% endblock %}
+
+{% block title %}
+    <div class="container">
+        <div class="container__inner spacing-y spacing-y--inner spacing-y--bigger">
+            {% include molecule('search-headline', 'CatalogPage') with {
+                data: {
+                    headline: data.searchString | trim ? 'global.search.results.for' | trans : 'global.search.results' | trans,
+                    searchString: data.searchString,
+                    pagination: data.pagination,
+                    suggestion: data.suggestion,
+                },
+            } only %}
+        </div>
+    </div>
+{% endblock %}
+
+{% block form %}
+    <div class="col col--sm-12 spacing spacing--inner">
+        {% widget 'FullTextSearchTabsWidget' args [data.searchString, 'FullTextSearchProductsTab'] only %}{% endwidget %}
+    </div>
+
+    {% embed molecule('spelling-suggestion', 'CatalogPage') with {
+        data: {
+            suggestion: data.suggestion
+        }
+    } only %}
+        {% block body %}
+            {{parent()}}
+        {% endblock %}
+    {% endembed %}
+
+    {{parent()}}
+
+    {% if data.searchString is not empty %}
+        <input type="hidden" name="q" value="{{ data.searchString }}" />
+    {% endif %}
+{% endblock %}

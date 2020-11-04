@@ -1,0 +1,31 @@
+@include shop-ui-list {
+    &__item--check-bullet {
+        position: relative;
+        padding: rem(8) 0 rem(8) rem(40);
+
+        &::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: rem(10);
+            display: block;
+            background: map-get($setting-color-actions, success);
+            border-radius: 50%;
+            width: rem(20);
+            height: rem(20);
+        }
+
+        &::after {
+            content: '';
+            position: absolute;
+            left: rem(8);
+            top: rem(14);
+            display: block;
+            width: rem(5);
+            height: rem(10);
+            transform: rotate(45deg);
+            border-right: solid 1px $setting-color-white;
+            border-bottom: solid 1px $setting-color-white;
+        }
+    }
+}

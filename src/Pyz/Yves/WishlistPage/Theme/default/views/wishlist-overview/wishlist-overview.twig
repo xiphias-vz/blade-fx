@@ -1,0 +1,28 @@
+{% extends view('wishlist-overview', '@SprykerShop:WishlistPage') %}
+
+{% block customerContent %}
+    {% include molecule('title-box', 'CustomerPage') with {
+        data: {
+            title: 'customer.account.wishlist.overview.title' | trans,
+        },
+    } only %}
+
+    {% include molecule('add-wishlist', 'WishlistPage') with {
+        data: {
+            wishlistForm: data.wishlistForm,
+        },
+    }  only %}
+
+    {% if data.wishlists is empty %}
+        <div class="text-center spacing-top spacing-top--big">
+            <h6>{{ 'customer.account.wishlist.overview.empty' | trans }}</h6>
+        </div>
+    {% else %}
+        {% include molecule('wishlist-overview-table', 'WishlistPage') with {
+            class: 'spacing-top spacing-top--big',
+            data: {
+                wishlists: data.wishlists,
+            },
+        } only %}
+    {% endif %}
+{% endblock %}

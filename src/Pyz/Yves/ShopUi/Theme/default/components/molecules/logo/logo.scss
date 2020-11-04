@@ -1,0 +1,54 @@
+@mixin shop-ui-logo ($name: '.logo') {
+    #{$name} {
+        position: relative;
+
+        &__image {
+            width: 100%;
+            max-height: inherit;
+        }
+
+        &__link {
+            font-size: 0;
+
+            &--header {
+                position: absolute;
+                left: 0;
+                bottom: 0;
+            }
+        }
+
+        &--header {
+            width: rem(232);
+            height: rem(63);
+        }
+
+        &--header-mobile {
+            width: rem(40);
+            height: rem(63);
+        }
+
+        &--login {
+            width: rem(70);
+            height: rem(65);
+            margin: 0 auto;
+
+            @include helper-breakpoint-media-min($md-min) {
+                width: rem(100);
+                height: rem(100);
+            }
+
+            @include helper-breakpoint-media-min($lg-min) {
+                height: rem(115);
+            }
+        }
+
+        &--footer {
+            width: rem(90);
+            height: rem(108);
+        }
+
+        @content;
+    }
+}
+
+@include shop-ui-logo();

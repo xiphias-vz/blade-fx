@@ -1,0 +1,22 @@
+{% extends model('component') %}
+
+{% define config = {
+    name: 'title-box',
+} %}
+
+{% define data = {
+    title: required,
+    isTitleRaw: false,
+} %}
+
+{% block extraClass %} grid grid--justify grid--middle{% endblock %}
+
+{% block body %}
+    {% block title %}
+        <h3 class="title title--h2 title--general col">
+            {{- data.isTitleRaw ? data.title | raw : data.title -}}
+        </h3>
+    {% endblock %}
+
+    {% block additionalContent %}{% endblock %}
+{% endblock %}

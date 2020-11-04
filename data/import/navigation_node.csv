@@ -1,0 +1,17 @@
+navigation_key,node_key,parent_node_key,node_type,title.en_US,url.en_US,css_class.en_US,title.de_DE,url.de_DE,css_class.de_DE,valid_from,valid_to,position
+FOOTER_NAVIGATION,node_key_34,,cms_page,GTC,/en/gtc-online-purchase,,AGB,/de/agb-online-kauf,,,,2
+FOOTER_NAVIGATION,node_key_35,,cms_page,Data privacy,/en/privacy,,Datenschutz,/de/datenschutz/,,,,3
+FOOTER_NAVIGATION,node_key_50,,cms_page,Imprint,/en/imprint,,Impressum,/de/impressum/,,,,4
+SOCIAL_LINKS,node_key_39,,external_url,Instagram,https://www.instagram.com/spryker/,instagram,Instagram,https://www.instagram.com/spryker/?hl=de,instagram,,,
+SOCIAL_LINKS,node_key_42,,external_url,YouTube,https://www.youtube.com/channel/UC6lVOEbqXxUh0W5FMTvlPDQ,youtube,YouTube,https://www.youtube.com/channel/UC6lVOEbqXxUh0W5FMTvlPDQ,youtube,,,
+POPULAR_CATEGORIES,node_key_159,,external_url,Groceries,/en/fruit-&-vegetable/vegetables,category-1,Lebensmittel,/de/obst-&-gemüse/gemüse,category-1,,,1
+POPULAR_CATEGORIES,node_key_160,,external_url,Medicine Cabinet,/en/medicine,category-2,Hausapotheke,/de/hausapotheke,category-2,,,2
+POPULAR_CATEGORIES,node_key_161,,external_url,Garden & Outdoor,/en/garden-&-outdoor,category-3,Garten & Outdoor,/de/garten-&-outdoor,category-3,,,3
+POPULAR_CATEGORIES,node_key_162,,external_url,Electronics,/en/electronics,category-4,Elektrowaren,/de/elekrowaren,category-4,,,4
+POPULAR_CATEGORIES,node_key_163,,external_url,Office supplies,/en/household/stationery,category-5,Schreibwaren,/de/haushalt/schreibwaren,category-5,,,5
+POPULAR_CATEGORIES,node_key_164,,external_url,Household,/en/household/laundry-detergent,category-6,Haushalt,/de/haushalt/waschmittel,category-6,,,6
+FOOTER_NAVIGATION_CATEGORIES,node_key_165,,external_url,Garden & Outdoor,/en/garden-&-outdoor,category-7,Garten & Outdoor,/de/garten-&-outdoor,category-7,,,2
+FOOTER_NAVIGATION_CATEGORIES,node_key_166,,external_url,Medicine Cabinet,/en/medicine,category-8,Hausapotheke,/de/hausapotheke,category-8,,,3
+FOOTER_NAVIGATION_CATEGORIES,node_key_167,,external_url,Electronics,/en/electronics,category-9,Elektrowaren,/de/elekrowaren,category-9,,,4
+FOOTER_NAVIGATION_CATEGORIES,node_key_168,,external_url,Household,/en/household/laundry-detergent,category-10,Haushalt,/de/haushalt/waschmittel,category-10,,,5
+FOOTER_NAVIGATION_CATEGORIES,node_key_169,,external_url,Groceries,/en/fruit-&-vegetable/vegetables,category-11,Lebensmittel,/de/obst-&-gemüse/gemüse,category-11,,,6

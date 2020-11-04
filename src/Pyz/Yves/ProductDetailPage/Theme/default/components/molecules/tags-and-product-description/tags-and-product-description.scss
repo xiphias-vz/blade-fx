@@ -1,0 +1,35 @@
+@mixin product-detail-page-tags-and-product-description($name: '.tags-and-product-description') {
+    #{$name} {
+        margin-bottom: rem(15);
+
+        &__label {
+            @include helper-font-size(small);
+            @include helper-font-weight(bold);
+            display: inline-block;
+            margin: 0 rem(10) rem(10) 0;
+            padding: rem(2) rem(5);
+            letter-spacing: 0.05em;
+            color: $setting-color-white;
+            background: $setting-color-yellow;
+            border-radius: rem(4);
+
+            &--laktosefrei {
+                background: $setting-color-blue-light;
+            }
+
+            &--bio {
+                background: lighten(map-get($setting-color-actions, success), 5%);
+            }
+
+            &--vegetarisch {
+                background: lighten(map-get($setting-color-actions, success), 20%);
+            }
+
+            &--glutenfrei {
+                background: $setting-color-brown;
+            }
+        }
+    }
+}
+
+@include product-detail-page-tags-and-product-description();

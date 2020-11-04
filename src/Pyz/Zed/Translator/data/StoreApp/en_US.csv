@@ -1,0 +1,138 @@
+global.spryker.shop,Store App
+forms.submit.login,Login
+Username,User Name
+Password,Password
+hour,Hour
+back,Back
+Filial-App,Store-App
+Forgot password?, Forgot password?
+
+storeapp.filiale.region.format,%d - %s
+storeapp.filiale.number.format,Filial - %d
+
+picker.activity.picking,Picking
+picker.activity.collection,Pick Up
+
+picker.picking.order.deadline,Completion
+picker.picking.order.reference,Enter order number
+picker.picking.order.item-count,Number of products
+picker.picking.order.status-action,Status/Action
+picker.picking.order.status.done,Done
+picker.picking.order.action,Action
+picker.picking.order.action.start,Start
+
+picker.picking.confirmation,Ready
+
+picker.collect-by-customer.order.collect-interval,Pickup window
+picker.collect-by-customer.order.reference,Order number
+picker.collect-by-customer.order.collect_number,Collection code
+picker.collect-by-customer.order.alcohol-age-check,ID check
+picker.collect-by-customer.order.bags,Bags
+picker.collect-by-customer.order.product-types,Types
+picker.collect-by-customer.order.status-action,Status/ACtion
+
+picker.collect-by-customer.order.confirm-collection,Confirm pickup
+picker.collect-by-customer.order.collection-details,Wish purchase
+picker.collect-by-customer.order.cancel-collection,Cancel
+
+picker.collect-by-customer.order.status.collected,Already picked up
+picker.collect-by-customer.order.status.cancelled,Canceled
+
+delivery.order.delivery-time,Delivery window
+delivery.order.reference,Order number
+delivery.order.bags,Bags
+delivery.order.address,Pick-up time window
+delivery.order.status,Status
+delivery.order.status-action,Action
+delivery.order.action.start,Start
+delivery.order.action.start-all,Start all
+delivery.order.action.confirm,Confirm delivery
+delivery.order.action.cancel,Cancel delivery
+
+delivery.order.status-delivered,delivered
+delivery.order.status-cancelled,canceled
+Cancel,Back
+products,Products
+Total bags, Number of bags
+not found, not found
+picked, packed
+Confirm,Confirm
+Confirm your work!, Confirm your work!
+bags, Bags
+Picked up!, Picked up!
+Not picked up!, Not picked up!
+Order %order% has been picked up, Order %order% has been picked up
+Order %order% hasn’t been picked up,Order %order% hasn’t been picked up
+Current Delivery, Current delivery
+Order Search, Order Search
+Timeslot, Timeslot
+ambient,Dry assortment
+chilled,Chilled
+frozen,Frozen
+
+picker.collect-by-customer.item.name,Name
+picker.collect-by-customer.item.image,Picture
+
+picker.collect-by-customer.details.bags,Bags
+picker.collect-by-customer.details.products,Products
+picker.collect-by-customer.details.picked-items,Packed
+picker.collect-by-customer.details.not-found-items,Not found
+picker.collect-by-customer.details.frozen,Products are in the freezer
+picker.collect-by-customer.details.chilled,Products are in the fridge
+
+delivery.at,at
+delivery.confirm,Confirm
+delivery.delivered,Delivered
+delivery.not.delivered,Not delivered
+delivery.selected,selected
+delivery.orders.amount,Orders (length)
+back.to.delivery,Back to the current delivery
+delivery.delivered.orders.amount,Delivered (length)
+delivery.not.delivered.orders.amount,Not delivered (length)
+delivery.was.not.delivered,Requested purchase was NOT delivered
+delivery.has.delivered,Wish purchase was delivered!
+delivery.order.not.delivered.message,Order number: number was not delivered to:
+delivery.order.delivered.message,Order number: number was delivered to:
+delivery.order.finish,Finished
+app.offline.title,You are now in offline mode
+app.offline.content,"Do not leave the current page until you are connected to the Internet again. If you navigate to another page, your progress will be lost"
+Collect Number,Collection code
+started-by,Started by
+error_page.title,Error
+error_page.home_link,To home page
+message.submit_link,Ok!
+error_page.text,This page does not exist. Please check the link. You can go to the start page %link%.
+
+storeapp.picking.message.info.no-orders-to-pick,No orders to pick
+storeapp.picking.message.info.order-will-be-moved-to-next-stage,The desired purchase was transferred to the next step
+storeapp.picking.message.error.order-is-already-being-processed,Request purchase is already being processed
+
+storeapp.collect-by-customer.message.info.no-orders-to-collect,No orders to pick up
+
+storeapp.delivery.message.info.no-orders-to-deliver,No orders to deliver
+storeapp.delivery.message.info.no-orders-selected-for-delivery,No orders are selected for delivery
+
+global.permission.failed,This action is not allowed
+
+storeapp.picking.message.error.order-is-fully-cancelled,The request purchase was canceled
+storeapp.picking.message.success.order-has-been-picked,The picking of the desired purchase is completed
+collected,Picked up
+not collected, Not picked up
+
+storeapp.delivery.message.info.not-all-selected-orders-were-processed,Not all selected orders could be started
+of,of
+storeapp.login.access.denied,"Dear user, your user account does not seem to have a branch assigned. Please contact the shop administration."
+
+customer.address.floor.ug,UG
+customer.address.floor.eg,EG
+customer.address.floor.1,1. Floor
+customer.address.floor.2,2. Floor
+customer.address.floor.3,3. Floor
+customer.address.floor.4,4. Floor
+customer.address.floor.5,5. Floor
+customer.address.floor.6,6. Floor
+customer.address.floor.7,7. Floor
+customer.address.floor.8,>=8. Floor
+
+storeapp.delivery.message.success.order-successfully-delivered,Order successfully delivered
+storeapp.delivery.message.success.order-not-delivered,Order could not be delivered

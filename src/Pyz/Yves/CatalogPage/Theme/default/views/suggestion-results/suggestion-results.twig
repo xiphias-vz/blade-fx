@@ -1,0 +1,83 @@
+{% extends template('widget') %}
+
+{% define data = {
+    completion: completion | default([]),
+    suggestionByType: suggestionByType | default,
+    category: suggestionByType.category | default([]),
+    product_abstract: suggestionByType.product_abstract | default([]),
+    suggestionsLength: 4,
+    categoriesLength: 3,
+    pagesLength: 3,
+    productsLength: 4
+} %}
+
+{% set isCompletionVisible = data.completion is not empty %}
+{% set isProductsVisible = data.product_abstract is not empty %}
+{% set isCategoriesVisible = data.category is not empty %}
+{% set isSuggestionsEmpty = not isCompletionVisible and not isProductsVisible and not isCategoriesVisible %}
+
+{% block body %}
+    {% if isCompletionVisible %}
+        {% include molecule('suggestion-links-list', 'CatalogPage') with {
+            data: {
+                name: '',
+                items: data.completion,
+                length: data.suggestionsLength,
+                isTitleHiddenOnTablet: true,
+                isSuggestion: true,
+            },
+        } only %}
+    {% endif %}
+
+    {% if isProductsVisible %}
+        <h4 class="title title--with-border title--bottom-indent grid grid--justify grid--middle">
+            <span class="col">
+                {{- 'global.search.suggestion.in_products' | trans -}}
+            </span>
+            <div class="col is-hidden-lg-xl">
+                <button class="button button--link-secondary">
+                    {{- 'global.search.suggestion.see_all_products' | trans -}}
+                </button>
+            </div>
+        </h4>
+        <ul class="spacing-top spacing-top--big">
+            {% for product in data.product_abstract | slice(0, data.productsLength) if product is not empty %}
+                <li class="list__item spacing-y spacing-y--small">
+                    {% include molecule('suggestion-product', 'CatalogPage') with {
+                        data: {
+                            product: product,
+                            url: product.url | default,
+                            image: product.images | first | default,
+                            alt: product.abstract_name | default,
+                            title: product.abstract_name | default,
+                            price: product.price,
+                            originalPrice: product.prices.ORIGINAL ?? null,
+                        },
+                    } only %}
+                </li>
+            {% endfor %}
+        </ul>
+        <div class="is-hidden-sm-md">
+            <button class="button button--link-secondary">
+                {{- 'global.search.suggestion.see_all_products' | trans -}}
+            </button>
+        </div>
+    {% endif %}
+
+    {% if isCategoriesVisible %}
+        {% include molecule('suggestion-links-list', 'CatalogPage') with {
+            class: 'spacing-top',
+            data: {
+                name: 'global.search.suggestion.in_categories' | trans,
+                items: data.category,
+                length: data.categoriesLength,
+            },
+        } only %}
+    {% endif %}
+
+    {% if isSuggestionsEmpty %}
+        <div class="text-center">
+            {{ 'global.search.suggestion.no_result' | trans }}
+        </div>
+    {% endif %}
+{% endblock %}

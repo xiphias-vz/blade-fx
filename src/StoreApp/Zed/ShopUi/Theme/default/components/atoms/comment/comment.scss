@@ -1,0 +1,16 @@
+@mixin shop-ui-comment($name: '.comment') {
+    #{$name} {
+        margin: rem(15) 0;
+
+        &__comment {
+            width: 100%;
+            margin-top: rem(5);
+            min-height: rem(44);
+            padding: rem(10);
+            border: rem(1) solid $setting-color-blue-light;
+            border-radius: rem(4);
+        }
+    }
+}
+
+@include shop-ui-comment();

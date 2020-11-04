@@ -1,0 +1,23 @@
+{% extends template('widget') %}
+
+{% define data = {
+    stores: _widget.stores,
+    currentStore: _widget.currentStore,
+    pattern: _widget.pattern,
+    additionalModifiers: ['header'],
+    additionalClassName: '',
+} %}
+
+{% block body %}
+    <form method="GET" action="">
+        {% include molecule('store-switcher', 'StoreSwitcherWidget') with {
+            data: {
+                stores: data.stores,
+                currentStore: data.currentStore,
+                pattern: data.pattern,
+                additionalModifiers: data.additionalModifiers,
+                additionalClassName: data.additionalClassName,
+            },
+        } only %}
+    </form>
+{% endblock %}

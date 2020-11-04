@@ -1,0 +1,184 @@
+<?php
+
+/**
+ * This file is part of the Spryker Commerce OS.
+ * For full license information, please view the LICENSE file that was distributed with this source code.
+ */
+
+namespace Pyz\Zed\Sales\Business;
+
+use DateTime;
+use Generated\Shared\Transfer\OrderCriteriaFilterTransfer;
+use Generated\Shared\Transfer\OrderTransfer;
+use Generated\Shared\Transfer\OrderUpdateRequestTransfer;
+use Spryker\Zed\Sales\Business\SalesFacadeInterface as SprykerSalesFacadeInterface;
+
+interface SalesFacadeInterface extends SprykerSalesFacadeInterface
+{
+    /**
+     * Specification:
+     * - Updates the order picking bags count
+     *
+     * @api
+     *
+     * @param int $idSalesOrder
+     * @param int $pickingBagsCount
+     *
+     * @return bool
+     */
+    public function updateOrderPickingBagsCount(int $idSalesOrder, int $pickingBagsCount): bool;
+
+    /**
+     * Specification:
+     * - Finds all sales order for provided filter criteria
+     *
+     * @api
+     *
+     * @param \Generated\Shared\Transfer\OrderCriteriaFilterTransfer $orderFilterCriteriaTransport
+     *
+     * @return int[]
+     */
+    public function findIdSalesOrdersByOrderFilterCriteria(OrderCriteriaFilterTransfer $orderFilterCriteriaTransport): array;
+
+    /**
+     * Specification:
+     * - Updates the order status
+     *
+     * @api
+     *
+     * @param int $idSalesOrder
+     * @param string $status
+     *
+     * @return bool
+     */
+    public function updateOrderStoreStatus(int $idSalesOrder, string $status): bool;
+
+    /**
+     * Specification:
+     * - Returns true order shipment matches the required one
+     *
+     * @api
+     *
+     * @param int $idSalesShipment
+     * @param string $shipmentMethodKey
+     *
+     * @return bool
+     */
+    public function checkOrderShipment(int $idSalesShipment, string $shipmentMethodKey): bool;
+
+    /**
+     * Specification:
+     * - save order reference.
+     *
+     * @api
+     *
+     * @param int $idSalesOrder
+     * @param string $invoiceReference
+     * @param \DateTime $invoiceDateTime
+     *
+     * @return void
+     */
+    public function saveInvoiceReference(int $idSalesOrder, string $invoiceReference, DateTime $invoiceDateTime): void;
+
+    /**
+     * Specification:
+     * - hydrate sales order status.
+     *
+     * @api
+     *
+     * @param \Generated\Shared\Transfer\OrderTransfer $orderTransfer
+     *
+     * @return \Generated\Shared\Transfer\OrderTransfer
+     */
+    public function hydrateSalesOrderStatus(OrderTransfer $orderTransfer): OrderTransfer;
+
+    /**
+     * Specification:
+     * - gets sales order ids by customer and order references.
+     *
+     * @api
+     *
+     * @param string $customerReference
+     * @param int $idSalesOrder
+     *
+     * @return int[]
+     */
+    public function getSaleOrderIdsByCustomerReferenceAndIdSalesOrder(string $customerReference, int $idSalesOrder): array;
+
+    /**
+     * Specification:
+     * - save order reference.
+     *
+     * @api
+     *
+     * @param \DateTime|null $dateFrom
+     * @param \DateTime|null $dateTo
+     *
+     * @return array
+     */
+    public function getOrdersInfoByInvoiceDateTimeRange(?DateTime $dateFrom, ?DateTime $dateTo): array;
+
+    /**
+     * @param int[] $idSalesOrders
+     *
+     * @return int[]
+     */
+    public function findIdOrderItemsByIdSalesOrders(array $idSalesOrders): array;
+
+    /**
+     * Specification:
+     * - update order with values in the update request
+     *
+     * @api
+     *
+     * @param int $idSalesOrder
+     * @param \Generated\Shared\Transfer\OrderUpdateRequestTransfer $orderUpdateRequestTransfer
+     *
+     * @return bool
+     */
+    public function updateOrderWithOrderUpdateRequest(int $idSalesOrder, OrderUpdateRequestTransfer $orderUpdateRequestTransfer): bool;
+
+    /**
+     * Specification:
+     * - Retrieve all requested delivery dates for given sales order
+     *
+     * @api
+     *
+     * @param int[] $idSalesOrders
+     *
+     * @return string[]
+     */
+    public function findRequestedDeliveryDatesByIdSalesOrders(array $idSalesOrders): array;
+
+    /**
+     * Specification:
+     * - hydrate the order with minimum required age for delivery
+     *
+     * @api
+     *
+     * @param \Generated\Shared\Transfer\OrderTransfer $orderTransfer
+     *
+     * @return \Generated\Shared\Transfer\OrderTransfer
+     */
+    public function hydrateMinimumAge(OrderTransfer $orderTransfer): OrderTransfer;
+
+    /**
+     * Specification:
+     * - checks if order requested date was `hours` hours in the past.
+     *
+     * @api
+     *
+     * @param string $requestedDeliveryDate
+     * @param int $hours
+     *
+     * @return bool
+     */
+    public function isRequestedOrderDatePassed(string $requestedDeliveryDate, int $hours): bool;
+
+    /**
+     * @param int $idSalesOrder
+     *
+     * @return \Generated\Shared\Transfer\OrderTransfer|null
+     */
+    public function findOrderByIdSalesOrderForStoreApp(int $idSalesOrder): ?OrderTransfer;
+}

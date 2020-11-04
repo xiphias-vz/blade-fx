@@ -1,0 +1,82 @@
+{% extends molecule('wishlist-overview-table', '@SprykerShop:WishlistPage') %}
+
+{% define data = {
+    isLabelExpand: false,
+} %}
+
+{% block body %}
+    <table class="table table--expand table--customer-account table--responsive">
+        <thead>
+            <tr>
+                <th width="35%">{{ 'customer.account.wishlist.overview.name' | trans }}</th>
+                <th width="20%">{{ 'customer.account.wishlist.overview.item_count' | trans }}</th>
+                <th width="20%">{{ 'customer.account.wishlist.overview.date' | trans }}</th>
+                <th width="25%"></th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for wishlist in data.wishlists %}
+            {% set hasWishlistForm = data.wishlistForm is not empty and wishlist.idWishlist == data.wishlistForm.vars.data.idWishlist %}
+            {% set expandLabelClass = data.isLabelExpand ? 'table__col--expand-label' %}
+            <tr class="table__row table__row--with-border">
+                <td class="table__col table__col--responsive {{ expandLabelClass }}" data-content="{{ 'customer.account.wishlist.overview.name' | trans }}">
+                    {% if hasWishlistForm %}
+                        {{ form_start(data.wishlistForm, {
+                            attr: {
+                                class: 'form form--expand',
+                            }
+                        }) }}
+                        <div class="grid grid--desktop-no-wrap grid--middle">
+                            <div class="col col--sm-12 col--lg-8">
+                                {{ form_widget(data.wishlistForm.name, {attr: {placeholder: 'customer.account.wishlist.overview.enter_name'|trans}}) }}
+                            </div>
+                            <div class="{{ config.name }}__update-button-col col col--sm-12 col--lg-4">
+                                <button class="button button--combined button--expand button--combined-small">
+                                    {{ 'wishlist.form.save' | trans }}
+                                </button>
+                            </div>
+                        </div>
+                        {{ form_errors(data.wishlistForm) }}
+                        {{ form_end(data.wishlistForm) }}
+                    {% else %}
+                        <a href="{{ path('wishlist/details', { wishlistName: wishlist.name }) }}">{{ wishlist.name }}</a>
+                    {% endif %}
+                </td>
+                <td class="table__col table__col--responsive" data-content="{{ 'customer.account.wishlist.overview.item_count' | trans }}"><span class="spacing-x spacing-x--inner spacing-x--big">{{ wishlist.numberOfItems }}</span></td>
+                <td class="table__col table__col--responsive" data-content="{{ 'customer.account.wishlist.overview.date' | trans }}">{{ wishlist.createdAt | formatDate }}</td>
+                <td class="table__col table__col--right">
+                    <ul class="menu menu--inline menu--customer-account">
+                        {% if not hasWishlistForm %}
+                            <li class="menu__item">
+                                <a href="{{ url('wishlist/update', {wishlistName: wishlist.name}) }}" class="link link--darkest link--edit table__action" title="{{ 'customer.account.wishlist.overview.edit' | trans }}">
+                                    {% include molecule('icon-tooltip') with {
+                                        modifiers: ['medium-up'],
+                                        data: {
+                                            icon: 'edit',
+                                            text: 'customer.account.wishlist.overview.edit' | trans,
+                                        },
+                                    } only %}
+                                </a>
+                            </li>
+                        {% endif %}
+                        <li class="menu__item">
+                            <form method="POST" action="{{ path('wishlist/delete', {wishlistName: wishlist.name}) }}">
+                                <input type="hidden" name="token" value="{{ csrf_token('delete-wishlist') }}">
+                                <button class="link link--darkest link--edit table__action" title="{{ 'customer.account.wishlist.overview.delete' | trans }}">
+                                    {% include molecule('icon-tooltip') with {
+                                        modifiers: ['medium-up'],
+                                        data: {
+                                            icon: 'bin',
+                                            text: 'customer.account.wishlist.overview.delete' | trans,
+                                        },
+                                    } only %}
+                                </button>
+                            </form>
+                        </li>
+                    </ul>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

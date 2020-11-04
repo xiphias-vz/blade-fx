@@ -1,0 +1,378 @@
+<?php
+
+/**
+ * This file is part of the Spryker Commerce OS.
+ * For full license information, please view the LICENSE file that was distributed with this source code.
+ */
+
+namespace Pyz\Zed\DataImport\Business\Model\ProductAbstract;
+
+use Orm\Zed\Locale\Persistence\SpyLocaleQuery;
+use Orm\Zed\Product\Persistence\SpyProductAbstract;
+use Orm\Zed\Product\Persistence\SpyProductAbstractLocalizedAttributesQuery;
+use Orm\Zed\Product\Persistence\SpyProductAbstractQuery;
+use Orm\Zed\ProductImage\Persistence\SpyProductImage;
+use Orm\Zed\ProductImage\Persistence\SpyProductImageQuery;
+use Orm\Zed\ProductImage\Persistence\SpyProductImageSet;
+use Orm\Zed\ProductImage\Persistence\SpyProductImageSetQuery;
+use Orm\Zed\ProductImage\Persistence\SpyProductImageSetToProductImageQuery;
+use Orm\Zed\Tax\Persistence\SpyTaxSetQuery;
+use Orm\Zed\Url\Persistence\SpyUrlQuery;
+use Propel\Runtime\ActiveQuery\Criteria;
+use Pyz\Shared\Product\ProductConfig;
+use Pyz\Zed\DataImport\Business\Exception\EntityNotFoundException;
+use Pyz\Zed\DataImport\Business\Model\BaseProduct\AttributesExtractorStep;
+use Pyz\Zed\DataImport\Business\Model\Product\ProductLocalizedAttributesExtractorStep;
+use Pyz\Zed\DataImport\Business\Model\Product\Repository\ProductRepository;
+use Pyz\Zed\DataImport\Business\Model\ProductConcrete\ProductConcreteWriter;
+use Spryker\Service\UtilText\UtilTextServiceInterface;
+use Spryker\Shared\Kernel\Store;
+use Spryker\Shared\ProductImageCartConnector\ProductImageCartConnectorConfig;
+use Spryker\Zed\DataImport\Business\Model\DataImportStep\DataImportStepInterface;
+use Spryker\Zed\DataImport\Business\Model\DataImportStep\PublishAwareStep;
+use Spryker\Zed\DataImport\Business\Model\DataSet\DataSetInterface;
+use Spryker\Zed\Product\Dependency\ProductEvents;
+use Spryker\Zed\ProductImage\Dependency\ProductImageEvents;
+use Spryker\Zed\Url\Dependency\UrlEvents;
+
+class ProductAbstractWriterStep extends PublishAwareStep implements DataImportStepInterface
+{
+    public const BULK_SIZE = 100;
+
+    public const KEY_PRODUCT_NUMBER = ProductConfig::KEY_PRODUCT_NUMBER;
+    public const KEY_CONCRETE_SKU = 'Key';
+    public const KEY_TAX_SET = 'Steuersatz';
+    public const KEY_NAME = ProductConfig::KEY_ARTIKELNAME_SPRYKER;
+    public const KEY_DESCRIPTION = 'Zusätzliche Produktinformationen';
+    public const KEY_LOCALES = 'locales';
+    public const ID_PRODUCT_ABSTRACT = 'id_product_abstract';
+    public const DEFAULT_TAX_SET = 'STANDARD';
+    public const IS_PRODUCT_CONCRETE = 'Concrete';
+
+    /**
+     * @var \Pyz\Zed\DataImport\Business\Model\Product\Repository\ProductRepository
+     */
+    protected $productRepository;
+
+    /**
+     * @var array
+     */
+    protected static $idLocaleBuffer = [];
+
+    /**
+     * @var \Spryker\Service\UtilText\UtilTextServiceInterface
+     */
+    private $utilTextService;
+
+    /**
+     * @param \Pyz\Zed\DataImport\Business\Model\Product\Repository\ProductRepository $productRepository
+     * @param \Spryker\Service\UtilText\UtilTextServiceInterface $utilTextService
+     */
+    public function __construct(
+        ProductRepository $productRepository,
+        UtilTextServiceInterface $utilTextService
+    ) {
+        $this->productRepository = $productRepository;
+        $this->utilTextService = $utilTextService;
+    }
+
+    /**
+     * @param \Spryker\Zed\DataImport\Business\Model\DataSet\DataSetInterface $dataSet
+     *
+     * @return void
+     */
+    public function execute(DataSetInterface $dataSet)
+    {
+        if (isset($dataSet[static::IS_PRODUCT_CONCRETE]) && $dataSet[static::IS_PRODUCT_CONCRETE]) {
+
+            $productAbstractEntity = SpyProductAbstractQuery::create()
+                ->filterBySku_Like(ProductAbstractWriterStep::getAbstractSku($dataSet))
+                ->findOne();
+
+            if (!$productAbstractEntity) {
+                throw new EntityNotFoundException(sprintf('Product Abstract by productNumber "%s" not found.', ProductAbstractWriterStep::getAbstractSku($dataSet)));
+            }
+
+            $dataSet[static::ID_PRODUCT_ABSTRACT] = $productAbstractEntity->getIdProductAbstract();
+
+            return;
+        }
+
+        $productAbstractEntity = $this->importProductAbstract($dataSet);
+
+        $this->productRepository->addProductAbstract($productAbstractEntity);
+
+        $this->importProductAbstractLocalizedAttributes($dataSet, $productAbstractEntity);
+
+        $locales = Store::getInstance()->getLocales();
+        $this->importProductUrls($dataSet, $productAbstractEntity, $locales);
+        $this->importProductImage($dataSet, $locales);
+
+        $this->addPublishEvents(ProductEvents::PRODUCT_ABSTRACT_PUBLISH, $productAbstractEntity->getIdProductAbstract());
+    }
+
+    /**
+     * @param \Spryker\Zed\DataImport\Business\Model\DataSet\DataSetInterface $dataSet
+     *
+     * @return string
+     */
+    public static function getAbstractSku(DataSetInterface $dataSet): string
+    {
+        if (isset($dataSet[static::IS_PRODUCT_CONCRETE]) && $dataSet[static::IS_PRODUCT_CONCRETE]) {
+            $productNumber = $concreteSku = explode('_', $dataSet[static::KEY_PRODUCT_NUMBER])[0] .'_0';
+
+            return $productNumber . '_' . str_replace(' ', '_', $concreteSku);
+        }
+
+        return $dataSet[static::KEY_PRODUCT_NUMBER] . '_' . str_replace([' ', ',', ';', '/', '.'], '-', strtolower($dataSet[static::KEY_CONCRETE_SKU]));
+    }
+
+    /**
+     * @param \Spryker\Zed\DataImport\Business\Model\DataSet\DataSetInterface $dataSet
+     *
+     * @return \Orm\Zed\Product\Persistence\SpyProductAbstract
+     */
+    protected function importProductAbstract(DataSetInterface $dataSet)
+    {
+        $productAbstractEntity = SpyProductAbstractQuery::create()
+            ->filterBySku($this->getAbstractSku($dataSet))
+            ->findOneOrCreate();
+
+        $taxSetEntity = SpyTaxSetQuery::create()
+            ->filterByName($dataSet[static::KEY_TAX_SET] ?: static::DEFAULT_TAX_SET)
+            ->findOne();
+
+        $productAttributes = $this->removeUnnecessaryAttributes($dataSet[AttributesExtractorStep::KEY_ATTRIBUTES]);
+
+        $productAbstractEntity
+            ->setFkTaxSet($taxSetEntity->getIdTaxSet())
+            ->setAttributes(json_encode($productAttributes));
+
+        if ($productAbstractEntity->isNew() || $productAbstractEntity->isModified()) {
+            $productAbstractEntity->save();
+        }
+
+        $dataSet[static::ID_PRODUCT_ABSTRACT] = $productAbstractEntity->getIdProductAbstract();
+
+        return $productAbstractEntity;
+    }
+
+    /**
+     * @param array $productAttributes
+     *
+     * @return array
+     */
+    protected function removeUnnecessaryAttributes(array $productAttributes): array
+    {
+        unset($productAttributes[ProductConfig::PRODUCT_ATTRIBUTE_KEY_PICKING_AREA]);
+        unset($productAttributes[ProductConfig::PRODUCT_ATTRIBUTE_ABT_NR]);
+        unset($productAttributes[ProductConfig::PRODUCT_ATTRIBUTE_LAGERPLATZ]);
+        unset($productAttributes[ProductConfig::KEY_PRICE]);
+        unset($productAttributes[ProductConfig::KEY_PRICE_ORIGINAL]);
+        unset($productAttributes[ProductConfig::KEY_PRICE_ORIGINAL_FROM]);
+        unset($productAttributes[ProductConfig::KEY_PRICE_ORIGINAL_TO]);
+        unset($productAttributes[ProductConfig::KEY_PRICE_FROM]);
+        unset($productAttributes[ProductConfig::KEY_PRICE_TO]);
+
+        return $productAttributes;
+    }
+
+    /**
+     * @param \Spryker\Zed\DataImport\Business\Model\DataSet\DataSetInterface $dataSet
+     * @param \Orm\Zed\Product\Persistence\SpyProductAbstract $productAbstractEntity
+     *
+     * @return void
+     */
+    protected function importProductAbstractLocalizedAttributes(DataSetInterface $dataSet, SpyProductAbstract $productAbstractEntity)
+    {
+        foreach ($dataSet[ProductLocalizedAttributesExtractorStep::KEY_LOCALIZED_ATTRIBUTES] as $idLocale => $localizedAttributes) {
+            $productAbstractLocalizedAttributesEntity = SpyProductAbstractLocalizedAttributesQuery::create()
+                ->filterByFkProductAbstract($productAbstractEntity->getIdProductAbstract())
+                ->filterByFkLocale($idLocale)
+                ->findOneOrCreate();
+
+            $productAbstractLocalizedAttributesEntity
+                ->setName($localizedAttributes[static::KEY_NAME])
+                ->setDescription($dataSet[static::KEY_DESCRIPTION])
+                ->setAttributes(json_encode($localizedAttributes[AttributesExtractorStep::KEY_ATTRIBUTES]));
+
+            if ($productAbstractLocalizedAttributesEntity->isNew() || $productAbstractLocalizedAttributesEntity->isModified()) {
+                $productAbstractLocalizedAttributesEntity->save();
+            }
+        }
+    }
+
+    /**
+     * @param \Spryker\Zed\DataImport\Business\Model\DataSet\DataSetInterface $dataSet
+     * @param \Orm\Zed\Product\Persistence\SpyProductAbstract $productAbstractEntity
+     * @param string[] $locales
+     *
+     * @return void
+     */
+    protected function importProductUrls(DataSetInterface $dataSet, SpyProductAbstract $productAbstractEntity, array $locales)
+    {
+        foreach ($dataSet[ProductLocalizedAttributesExtractorStep::KEY_LOCALIZED_ATTRIBUTES] as $idLocale => $localizedAttributes) {
+            $urlPathParts = [
+                array_search($localizedAttributes[ProductLocalizedAttributesExtractorStep::KEY_LOCALE_KEY], $locales),
+                $localizedAttributes[static::KEY_NAME],
+                $dataSet[static::KEY_CONCRETE_SKU],
+            ];
+
+            $convertCallback = function ($value) {
+                return $this->utilTextService->generateSlug(trim($value));
+            };
+            $urlPathParts = array_map($convertCallback, $urlPathParts);
+            $abstractProductUrl = '/' . implode('/', $urlPathParts);
+
+            $this->cleanupRedirectUrls($abstractProductUrl);
+
+            $urlEntity = SpyUrlQuery::create()
+                ->filterByFkLocale($idLocale)
+                ->filterByFkResourceProductAbstract($productAbstractEntity->getIdProductAbstract())
+                ->_or()
+                ->filterByUrl($abstractProductUrl)
+                ->findOneOrCreate();
+
+            $urlEntity->setFkResourceProductAbstract($productAbstractEntity->getIdProductAbstract());
+            $urlEntity->setUrl($abstractProductUrl);
+
+            if ($urlEntity->isNew() || $urlEntity->isModified()) {
+                $urlEntity->save();
+
+                $this->addPublishEvents(UrlEvents::URL_PUBLISH, $urlEntity->getIdUrl());
+            }
+        }
+    }
+
+    /**
+     * @param \Spryker\Zed\DataImport\Business\Model\DataSet\DataSetInterface $dataSet
+     * @param string[] $locales
+     *
+     * @return void
+     */
+    protected function importProductImage(DataSetInterface $dataSet, array $locales)
+    {
+        foreach ($locales as $localeKey => $localeName) {
+            $productImageSetEntity = $this->findOrCreateImageSet($dataSet, $localeName);
+
+            $productImageEntity = $this->findOrCreateImage(ProductConcreteWriter::getProductImageUrlForCatalog($dataSet));
+            $this->updateOrCreateImageToImageSetRelation($productImageSetEntity, $productImageEntity, 1);
+
+            $this->addImagePublishEvents($productImageSetEntity);
+        }
+    }
+
+    /**
+     * @param \Spryker\Zed\DataImport\Business\Model\DataSet\DataSetInterface $dataSet
+     * @param string $localeName
+     *
+     * @return \Orm\Zed\ProductImage\Persistence\SpyProductImageSet
+     */
+    protected function findOrCreateImageSet(DataSetInterface $dataSet, string $localeName)
+    {
+        $query = SpyProductImageSetQuery::create()
+            ->filterByName(ProductImageCartConnectorConfig::DEFAULT_IMAGE_SET_NAME)
+            ->filterByFkLocale($this->getIdLocaleByName($localeName));
+
+        $idProductAbstract = $this->productRepository->getIdProductAbstractByAbstractSku($this->getAbstractSku($dataSet));
+        $query->filterByFkProductAbstract($idProductAbstract);
+
+        $productImageSetEntity = $query->findOneOrCreate();
+        if ($productImageSetEntity->isNew() || $productImageSetEntity->isModified()) {
+            $productImageSetEntity->save();
+
+            $this->addImagePublishEvents($productImageSetEntity);
+        }
+
+        return $productImageSetEntity;
+    }
+
+    /**
+     * @param string $imageUrl
+     *
+     * @return \Orm\Zed\ProductImage\Persistence\SpyProductImage
+     */
+    protected function findOrCreateImage(string $imageUrl): SpyProductImage
+    {
+        $productImageEntity = SpyProductImageQuery::create()
+            ->filterByExternalUrlLarge($imageUrl)
+            ->findOneOrCreate();
+
+        $productImageEntity->setExternalUrlSmall($imageUrl);
+
+        if ($productImageEntity->isNew() || $productImageEntity->isModified()) {
+            $productImageEntity->save();
+        }
+
+        return $productImageEntity;
+    }
+
+    /**
+     * @param \Orm\Zed\ProductImage\Persistence\SpyProductImageSet $productImageSetEntity
+     * @param \Orm\Zed\ProductImage\Persistence\SpyProductImage $productImageEntity
+     * @param int $sortOrder
+     *
+     * @return void
+     */
+    protected function updateOrCreateImageToImageSetRelation(
+        SpyProductImageSet $productImageSetEntity,
+        SpyProductImage $productImageEntity,
+        int $sortOrder
+    )
+    {
+        $productImageSetToProductImageEntity = SpyProductImageSetToProductImageQuery::create()
+            ->filterByFkProductImageSet($productImageSetEntity->getIdProductImageSet())
+            ->filterByFkProductImage($productImageEntity->getIdProductImage())
+            ->findOneOrCreate();
+
+        $productImageSetToProductImageEntity
+            ->setSortOrder($sortOrder);
+
+        if ($productImageSetToProductImageEntity->isNew() || $productImageSetToProductImageEntity->isModified()) {
+            $productImageSetToProductImageEntity->save();
+        }
+    }
+
+    /**
+     * @param \Orm\Zed\ProductImage\Persistence\SpyProductImageSet $productImageSetEntity
+     *
+     * @return void
+     */
+    protected function addImagePublishEvents(SpyProductImageSet $productImageSetEntity)
+    {
+        if ($productImageSetEntity->getFkProductAbstract()) {
+            $this->addPublishEvents(ProductImageEvents::PRODUCT_IMAGE_PRODUCT_ABSTRACT_PUBLISH, $productImageSetEntity->getFkProductAbstract());
+            $this->addPublishEvents(ProductEvents::PRODUCT_ABSTRACT_PUBLISH, $productImageSetEntity->getFkProductAbstract());
+        } elseif ($productImageSetEntity->getFkProduct()) {
+            $this->addPublishEvents(ProductImageEvents::PRODUCT_IMAGE_PRODUCT_CONCRETE_PUBLISH, $productImageSetEntity->getFkProduct());
+        }
+    }
+
+    /**
+     * @param string $abstractProductUrl
+     *
+     * @return void
+     */
+    protected function cleanupRedirectUrls($abstractProductUrl)
+    {
+        SpyUrlQuery::create()
+            ->filterByUrl($abstractProductUrl)
+            ->filterByFkResourceRedirect(null, Criteria::ISNOTNULL)
+            ->delete();
+    }
+
+    /**
+     * @param string $localeName
+     *
+     * @return int
+     */
+    protected function getIdLocaleByName($localeName)
+    {
+        if (!isset(static::$idLocaleBuffer[$localeName])) {
+            static::$idLocaleBuffer[$localeName] =
+                SpyLocaleQuery::create()->findOneByLocaleName($localeName)->getIdLocale();
+        }
+
+        return static::$idLocaleBuffer[$localeName];
+    }
+}

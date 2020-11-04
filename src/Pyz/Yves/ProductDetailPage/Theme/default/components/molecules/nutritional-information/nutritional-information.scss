@@ -1,0 +1,13 @@
+@mixin product-detail-page-nutritional-information($name: '.nutritional-information') {
+    #{$name} {
+        &__col {
+            width: 40%;
+
+            &--tight {
+                width: 20%;
+            }
+        }
+    }
+}
+
+@include product-detail-page-nutritional-information();

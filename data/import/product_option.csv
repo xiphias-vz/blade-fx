@@ -1,0 +1,7 @@
+option_group_id,tax_set_name,group_name_translation_key,group_name.en_US,group_name.de_DE,option_name_translation_key,option_name.en_US,option_name.de_DE,sku
+1,STANDARD,product.option.group.name.deposit_bottle_1,Deposit,Pfand,product.option.group.name.deposit_bottle,Deposit,Pfand,OP_product_deposit_1
+2,STANDARD,product.option.group.name.deposit_bottle_2,Deposit,Pfand,product.option.group.name.deposit_bottle,Deposit,Pfand,OP_product_deposit_2
+3,STANDARD,product.option.group.name.deposit_bottle_3,Deposit,Pfand,product.option.group.name.deposit_bottle,Deposit,Pfand,OP_product_deposit_3
+4,STANDARD,product.option.group.name.deposit_bottle_4,Deposit,Pfand,product.option.group.name.deposit_bottle,Deposit,Pfand,OP_product_deposit_4
+5,STANDARD,product.option.group.name.deposit_bottle_5,Deposit,Pfand,product.option.group.name.deposit_bottle,Deposit,Pfand,OP_product_deposit_5
+6,STANDARD,product.option.group.name.deposit_bottle_6,Deposit,Pfand,product.option.group.name.deposit_bottle,Deposit,Pfand,OP_product_deposit_6

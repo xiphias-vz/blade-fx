@@ -1,0 +1,50 @@
+{% extends template('page-layout-main') %}
+
+{% define data = {
+    activePage: 'overview',
+} %}
+
+{%- block class -%}{{ parent() }} page-layout-main--customer{%- endblock -%}
+
+{% block breadcrumbs %}
+    {% include molecule('breadcrumb') with {
+        data: {
+            steps: [{
+                label: data.title,
+            }],
+        },
+    } only %}
+{% endblock %}
+
+{% block title %}{% endblock %}
+
+{% block content %}
+    <div class="grid page-layout-customer">
+        <div class="col col--sm-12 col--xl-3">
+            {% block customerNavigation %}
+                <div class="page-layout-customer__container page-layout-customer__container--navigation" data-qa="customer-account-sidebar">
+                    {% set customerNavigationData = [data.activePage] %}
+
+                    {% block customerNavigationContainer %}
+                        {% widget 'CustomerNavigationWidget' args customerNavigationData with {
+                            data: {
+                                modifiers: ['customer-navigation'],
+                            },
+                        } only %}
+                        {% endwidget %}
+                    {% endblock %}
+                </div>
+            {% endblock %}
+        </div>
+
+        <div class="col col--sm-12 col--xl-9">
+            <div class="page-layout-customer__container page-layout-customer__container--content">
+                {% block pageTitle %}
+                    <h1 class="title title--general spacing-bottom spacing-bottom--bigger">{{ data.title }}</h1>
+                {% endblock %}
+
+                {% block customerContent %}{% endblock %}
+            </div>
+        </div>
+    </div>
+{% endblock %}

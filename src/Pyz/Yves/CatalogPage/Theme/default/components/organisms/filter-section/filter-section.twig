@@ -1,0 +1,212 @@
+{% extends organism('filter-section', '@SprykerShop:CatalogPage') %}
+
+{% define data = {
+    togglerClass: '',
+    sort: null,
+} %}
+
+{% set isEnumerationFilter = false %}
+
+{% block body %}
+    <div class="{{ config.name }}__top-panel is-hidden-xl-only">
+        <h3 class="text-center title title--medium spacing-bottom">{{ 'catalog.filter.filter' | trans }}</h3>
+        <span class="{{ config.name }}__top-panel-button {{ data.togglerClass }}">
+            {% include atom('icon') with {
+                data: {
+                    name: 'close',
+                },
+            } only %}
+        </span>
+
+        <div class="grid grid--middle {{ config.jsName }}__sorting"></div>
+    </div>
+
+    {% block filters %}
+        {% if data.sort %}
+            {% set unsortOption = {
+                value: '',
+                docCount: '',
+                label: 'relevance',
+            } %}
+
+            {% set sortParams = data.sort.sortParamNames | map(name => {
+                value: name,
+                docCount: '',
+                label: name,
+            }) %}
+
+            {% set sortFilters = {
+                config: {
+                    parameterName: 'sort'
+                },
+                values: [unsortOption] | merge(sortParams),
+                activeValue: data.sort.currentSortParam,
+                name: 'sort',
+            } %}
+
+            {% embed molecule('toggler-item') with {
+                modifiers: ['border-without-top', 'filter-sidebar'],
+                data: {
+                    title: 'catalog.sort.by' | trans,
+                    triggerClass: data.parentJsName ~ '__toggler-trigger',
+                    targetClass: data.parentJsName ~ '__target--enumeration--sort',
+                    isTogglerIncluded: false,
+                },
+                embed: {
+                    sort: data.sort,
+                    parentJsName: data.parentJsName ~ '__sort-trigger',
+                    sortFilters: sortFilters,
+                },
+            } only %}
+                {% block arrow %}
+                    <div class="{{ config.name }}__arrow">
+                        {% include atom('icon') with {
+                            class: config.name ~ '__arrow-icon',
+                            modifiers: ['xsmall'],
+                            data: {
+                                name: 'arrow-right',
+                            },
+                        } only %}
+                    </div>
+                {% endblock %}
+
+                {% block contentText %}
+                    {% include molecule('filter-sort-select', 'CatalogPage') with {
+                        data: {
+                            filter: embed.sortFilters,
+                            parentJsName: embed.parentJsName,
+                        },
+                    } only %}
+                {% endblock %}
+            {% endembed %}
+        {% endif %}
+
+        {% for filter in data.facets %}
+            {% set filterHasValues = (filter.values is not defined) or (filter.values | length > 0) %}
+
+            {% if not isEnumerationFilter and 'enumeration' in filter.config.type and filterHasValues %}
+                {% set isEnumerationFilter = true %}
+            {% endif %}
+
+            {% if filterHasValues and 'enumeration' not in filter.config.type %}
+                {% block filter %}
+                    {% embed molecule('toggler-item') with {
+                        modifiers: ['border-without-top', 'filter-sidebar'],
+                        data: {
+                            title: ('product.filter.' ~ filter.name | lower) | trans,
+                            triggerClass: data.parentJsName ~ '__toggler-trigger',
+                            targetClass: data.parentJsName ~ '__toggler-target--' ~ filter.name,
+                            isTogglerIncluded: false,
+                        },
+                        embed: {
+                            filterPath: data.filterPath,
+                            filter: filter,
+                            category: data.category,
+                            parentJsName: data.parentJsName,
+                        },
+                    } only %}
+                        {% block arrow %}
+                            <div class="{{ config.name }}__arrow">
+                                {% include atom('icon') with {
+                                    class: config.name ~ '__arrow-icon',
+                                    modifiers: ['xsmall'],
+                                    data: {
+                                        name: 'arrow-right',
+                                    },
+                                } only %}
+                            </div>
+                        {% endblock %}
+
+                        {% block contentText %}
+                            {% include [
+                                molecule('filter-' ~ embed.filter.config.name, 'CatalogPage'),
+                                molecule('filter-' ~ embed.filter.config.type, 'CatalogPage')
+                                ] ignore missing with {
+                                data: {
+                                    filterPath: embed.filterPath,
+                                    filter: embed.filter,
+                                    category: embed.category,
+                                    parameter: embed.filter.config.parameterName | default,
+                                    min: embed.filter.min | default(0),
+                                    max: embed.filter.max | default(0),
+                                    activeMin: embed.filter.activeMin | default(0),
+                                    activeMax: embed.filter.activeMax | default(0),
+                                    parentJsName: embed.parentJsName,
+                                },
+                            } only %}
+                        {% endblock %}
+                    {% endembed %}
+                {% endblock %}
+            {% endif %}
+        {% endfor %}
+
+        {% if isEnumerationFilter %}
+            {% embed molecule('toggler-item') with {
+                modifiers: ['border-without-top', 'filter-sidebar'],
+                data: {
+                    title: 'product.filter.properties' | trans,
+                    triggerClass: data.parentJsName ~ '__toggler-trigger',
+                    targetClass: data.parentJsName ~ '__target--enumeration',
+                    isTogglerIncluded: false,
+                },
+                embed: {
+                    facets: data.facets,
+                    filterPath: data.filterPath,
+                    category: data.category,
+                }
+            } only %}
+                {% block arrow %}
+                    <div class="{{ config.name }}__arrow">
+                        {% include atom('icon') with {
+                            class: config.name ~ '__arrow-icon',
+                            modifiers: ['xsmall'],
+                            data: {
+                                name: 'arrow-right',
+                            },
+                        } only %}
+                    </div>
+                {% endblock %}
+
+                {% block contentText %}
+                    {% for filter in embed.facets %}
+                        {% set filterHasValues = (filter.values is not defined) or (filter.values | length > 0) %}
+
+                        {% if filterHasValues and 'enumeration' in filter.config.type %}
+                            {% include [
+                                molecule('filter-' ~ filter.config.name, 'CatalogPage'),
+                                molecule('filter-' ~ filter.config.type, 'CatalogPage')
+                                ] ignore missing with {
+                                data: {
+                                    filterPath: embed.filterPath,
+                                    filter: filter,
+                                    category: embed.category,
+                                    parameter: filter.config.parameterName | default(''),
+                                    min: filter.min | default(0),
+                                    max: filter.max | default(0),
+                                    activeMin: filter.activeMin | default(0),
+                                    activeMax: filter.activeMax | default(0),
+                                },
+                            } only %}
+                        {% endif %}
+                    {% endfor %}
+                {% endblock %}
+            {% endembed %}
+        {% endif %}
+    {% endblock %}
+
+    {% include molecule('toggler-accordion') with {
+        attributes: {
+            'trigger-class-name': data.parentJsName ~ '__toggler-trigger',
+        },
+    } only %}
+
+    {% block actions %}
+        {% set triggerButtonJsName = data.parentJsName ? data.parentJsName ~ '__trigger' %}
+
+        <div class="{{ config.name }}__actions">
+            <button type="button" class="button button--hollow-border-light button--expand {{ triggerButtonJsName }}">
+                {{ 'catalog.filter.button' | trans }}
+            </button>
+        </div>
+    {% endblock %}
+{% endblock %}

@@ -1,0 +1,58 @@
+{% extends model('component') %}
+
+{% define config = {
+    name: 'delivery-time-slot-selector'
+} %}
+
+{% define data = {
+    quote: required
+} %}
+
+{% block body %}
+    {% if data.quote.deliveryTimeSlot %}
+        <div class="{{ config.name }}__title spacing-y">
+            <strong>
+                {{ 'customer.profile.time-slot' | trans }}
+            </strong>
+            :
+            {% include molecule('time-slot-formatted') with {
+                data: {
+                    timeFrom: data.quote.deliveryTimeSlot.timeFrom,
+                    timeTo: data.quote.deliveryTimeSlot.timeTo
+                }
+            } only %}
+        </div>
+    {% endif %}
+
+    <form action="{{ path('delivery-time-slot/update') }}" method="post">
+        <input type="hidden" name="token" value="{{ csrf_token('update-delivery-time-slot') }}">
+
+        <div class="grid grid--no-wrap">
+            <div class="col col--expand">
+                <select name="timeSlot" class="select {{ config.name }}__select">
+                    {% for deliveryTimeSlot in data.quote.customerDeliveryTimeSlots %}
+                        {% set isOptionSelected = data.quote.deliveryTimeSlot.timeFrom == deliveryTimeSlot.timeFrom and data.quote.deliveryTimeSlot.timeTo == deliveryTimeSlot.timeTo %}
+                        <option
+                            value="{{ deliveryTimeSlot.timeFrom }}"
+                            {% if isOptionSelected %}
+                                selected
+                            {% endif %}
+                        >
+                            {% include molecule('time-slot-formatted') with {
+                                data: {
+                                    timeFrom: deliveryTimeSlot.timeFrom,
+                                    timeTo: deliveryTimeSlot.timeTo
+                                }
+                            } only %}
+                        </option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="col">
+                <button type="submit" class="button {{ config.name }}__button">
+                    {{ 'customer.profile.time-slot-form.submit' | trans }}
+                </button>
+            </div>
+        </div>
+    </form>
+{% endblock %}

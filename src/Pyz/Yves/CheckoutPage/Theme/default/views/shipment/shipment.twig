@@ -1,0 +1,88 @@
+{% extends view('shipment', '@SprykerShop:CheckoutPage') %}
+
+{% block content %}
+    {% embed molecule('form') with {
+        modifiers: ['checkout-form-elements'],
+        data: {
+            form: data.forms.shipment,
+            submit: {
+                enable: true,
+                text: 'general.next.button' | trans,
+                class: 'form__action--checkout button button--large button--expand js-time-slots-selector__submit-button',
+            },
+            cancel: {
+                enable: true,
+                url: data.backUrl,
+                text: 'general.back.button' | trans,
+                class: 'form__action--checkout button button--hollow button--hollow-border-light button--expand',
+            },
+        },
+    } only %}
+        {% block fieldset %}
+            {% set shipmentGroupCollectionForm = data.form.shipmentGroups | default %}
+
+            <div class="grid">
+                {% for shipmentGroupForm in shipmentGroupCollectionForm %}
+                    {% if shipmentGroupForm.hash is defined %}
+                        {% do shipmentGroupForm.hash.setRendered %}
+                    {% endif %}
+
+                    <article class="checkout-block checkout-block--shipment {{ loop.last ? 'checkout-block--border-bottom-less' }} grid col col--sm-12">
+                        <div class="col col--sm-12">
+                            <h2 class="title title--primary spacing-bottom spacing-bottom--big">{{ 'checkout.step.shipment.title' | trans }}</h2>
+
+                            {% include molecule('delivery-type-switcher', 'CheckoutPage') with {
+                                modifiers: ['checkout-services'],
+                                data: {
+                                    shipment: shipmentGroupForm.shipment,
+                                    shipmentMethods: shipmentGroupForm.vars.data.availableShipmentMethods.methods,
+                                },
+                            } only %}
+
+                            {% include molecule('time-slots-selector', 'CheckoutPage') with {
+                                data: {
+                                    shipment: shipmentGroupForm.shipment,
+                                    shipmentMethods: shipmentGroupForm.vars.data.availableShipmentMethods.methods,
+                                },
+                            } only %}
+                        </div>
+                    </article>
+                {% endfor %}
+            </div>
+        {% endblock %}
+        {% block actions %}
+            <div class="{{ config.name }}__actions">
+                <div class="grid grid--tablet-revers grid--justify">
+                    {% if data.cancel.enable %}
+                        {% block cancel %}
+                            <div class="col col--sm-12 col--xl-2 spacing-bottom spacing-bottom--big">
+                                <a href="{{ data.cancel.url }}" class="{{ config.name }}__action {{ data.cancel.class }} col " {{ qa(data.cancel.qa) }}>
+                                    {{ data.cancel.text }}
+                                </a>
+                            </div>
+                        {% endblock %}
+                    {% endif %}
+
+                    {% if data.submit.enable %}
+                        {% block submit %}
+                            <div class="col col--sm-12 col--xl-2 spacing-bottom spacing-bottom--big">
+                                <button type="submit" class="{{ config.name }}__action {{ data.submit.class }}" {{ qa(data.submit.qa) }} disabled>
+                                    {% if data.submit.icon is not empty %}
+                                        {% include atom('icon') with {
+                                            modifiers: ['small'],
+                                            data: {
+                                                name: data.submit.icon,
+                                            },
+                                        } only %}
+                                    {% endif %}
+
+                                    {{ data.submit.text }}
+                                </button>
+                            </div>
+                        {% endblock %}
+                    {% endif %}
+                </div>
+            </div>
+        {% endblock %}
+    {% endembed %}
+{% endblock %}

@@ -1,0 +1,32 @@
+{% extends model('component') %}
+
+{% define config = {
+    name: 'tags-and-product-description',
+} %}
+
+{% define data = {
+    attributes: required,
+    description: '',
+    tags: [],
+} %}
+
+{% block class -%}
+    {{ parent() }}
+{%- endblock %}
+
+{% block body %}
+    <div class="{{ component.renderClass(config.name ~ '__content', modifiers) }}">
+        {% block contentText %}
+            {% for tag in data.tags %}
+                {% if data.attributes[tag] is defined %}
+                    <div class="{{ config.name }}__label {{ config.name }}__label--{{- tag | lower -}}">{{ tag | trans }}</div>
+                {% endif %}
+            {% endfor %}
+        {% endblock %}
+    </div>
+    {% block description %}
+        {% if data.description is not empty %}
+            <div>{{ data.description }}</div>
+        {% endif %}
+    {% endblock %}
+{% endblock %}

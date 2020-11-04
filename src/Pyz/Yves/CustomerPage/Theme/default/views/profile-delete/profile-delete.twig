@@ -1,0 +1,30 @@
+{% extends template('page-layout-customer', 'CustomerPage') %}
+
+{% define data = {
+    title: 'customer.account.profile_data' | trans,
+    activePage: 'profile'
+} %}
+
+{% block pageTitle %}{% endblock %}
+
+{% block customerContent %}
+    <div class="box">
+        {% include molecule('title-box', 'CustomerPage') with {
+            modifiers: ['borderless'],
+            data: {
+                title: "customer.profile.delete" | trans,
+            },
+        } only %}
+
+        <div class="grid grid--justify grid--middle">
+            <p class="col spacing-bottom spacing-bottom--big">{{ "customer.profile.delete.confirmation_question" | trans }}</p>
+
+            <form class="col col--sm-12 col--lg-auto" action="{{url('customer/delete/confirm')}}" method="post">
+                <input type="hidden" name="token" value="{{ csrf_token('customer-delete') }}">
+                <button class="button button--alternative button--expand-mobile">
+                    {{ "customer.profile.delete" | trans }}
+                </button>
+            </form>
+        </div>
+    </div>
+{% endblock %}

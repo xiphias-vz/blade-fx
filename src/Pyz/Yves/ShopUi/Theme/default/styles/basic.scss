@@ -1,0 +1,10 @@
+@import '~ShopUi/styles/basic';
+
+@import 'basics/animation';
+@import 'basics/grid';
+@import 'basics/reset';
+@import 'basics/typography';
+
+@include basic-reset;
+@include basic-typography;
+@include basic-grid;

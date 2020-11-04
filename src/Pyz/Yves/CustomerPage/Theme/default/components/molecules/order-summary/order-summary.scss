@@ -1,0 +1,22 @@
+@mixin customer-page-order-summary($name: '.order-summary') {
+    #{$name} {
+        &__item {
+            margin: rem(10) 0;
+
+            &--total {
+                font-size: rem(18);
+                font-weight: fw(bold);
+                text-transform: uppercase;
+                margin-top: rem(20);
+            }
+        }
+
+        &__amount {
+            color: $setting-color-gray-6;
+        }
+
+        @content;
+    }
+}
+
+@include customer-page-order-summary();

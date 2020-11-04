@@ -1,0 +1,147 @@
+{% extends template('page-layout-main') %}
+
+{% define data = {
+    merchant: merchant,
+    deliveryForm: deliveryForm,
+    deliveryOrders: deliveryOrders,
+    alreadyAssignedOrders: alreadyAssignedOrders,
+    deliveredOrders: deliveredOrders,
+    notDeliveredOrders: notDeliveredOrders,
+    requestedDeliveryDates: requestedDeliveryDates,
+} %}
+
+{% block header %}
+    {% include organism('header') with {
+        data: {
+            headerLocationTitle: data.merchant.name,
+        },
+    } only %}
+{% endblock %}
+
+{% block content %}
+    {% embed molecule('content-tabs') with {
+        data: {
+            tabs: [
+                {
+                    title: 'delivery.orders.amount' | trans({ length: data.deliveryOrders | length }),
+                },
+                {
+                    title: 'delivery.delivered.orders.amount' | trans({ length: data.deliveredOrders | length }),
+                },
+                {
+                    title: 'delivery.not.delivered.orders.amount' | trans({ length: data.notDeliveredOrders | length }),
+                },
+            ],
+        },
+        embed: {
+            deliveryOrders: data.deliveryOrders,
+            alreadyAssignedOrders: alreadyAssignedOrders,
+            deliveryForm: data.deliveryForm,
+            deliveredOrders: data.deliveredOrders,
+            notDeliveredOrders: data.notDeliveredOrders,
+        },
+    } only %}
+        {% block tabContent %}
+            {% if loop.index == 1 %}
+                {{ form_start(embed.deliveryForm) }}
+                    {% for fieldName in embed.deliveryForm.children | keys %}
+                        {% set validName = 'field_id_sales_order' %}
+
+                        {% if validName in fieldName  %}
+                            {% set field = attribute(embed.deliveryForm.children, fieldName) %}
+                            {% set checkedClass = field.vars.checked ? 'active' : ''%}
+                            {% set fieldId = field.vars.name | split('_') | last %}
+                            {% set deliveryOrder = embed.deliveryOrders[fieldId] %}
+
+                            {% embed molecule('delivery-box', 'Delivery') with {
+                                class: config.jsName ~ '__block ' ~ checkedClass,
+                                data: {
+                                    order: deliveryOrder,
+                                },
+                                embed: {
+                                    checkboxClass: config.jsName ~ '__checkbox',
+                                    checkboxId: field.vars.id,
+                                    checkedClass: checkedClass,
+                                },
+                            } only %}
+                                {% block headingCol %}
+                                    <div class="{{ config.name }}__col {{ config.name }}__col--right">
+                                        {% block checkbox %}
+                                            {% if data.order.assignedUser is not null %}
+                                                {% set assignedFullName = data.order.assignedUser.firstName ~ ' ' ~ data.order.assignedUser.lastName %}
+                                            {% endif %}
+                                            {% if assignedFullName is defined and assignedFullName != username %}
+                                                {{ 'started-by' | trans }}<br>{{ assignedFullName }}
+                                            {% else %}
+                                                {% include atom('delivery-checkbox', 'Delivery') with {
+                                                    data: {
+                                                        checkboxClass: embed.checkboxClass,
+                                                        checkboxId: embed.checkboxId,
+                                                        defaultState: embed.checkedClass,
+                                                    },
+                                                } only %}
+                                            {% endif %}
+                                        {% endblock %}
+                                    </div>
+                                {% endblock %}
+                            {% endembed %}
+
+                            <div class="is-hidden">
+                                {{ form_row(field) }}
+                            </div>
+                        {% endif %}
+                    {% endfor %}
+
+                    {% for alreadyAssignedOrder in embed.alreadyAssignedOrders %}
+                        {% embed molecule('delivery-box', 'Delivery') with {
+                            class: config.jsName ~ '__block active',
+                            data: {
+                                order: alreadyAssignedOrder,
+                            },
+                        } only %}
+                            {% block headingCol %}
+                                <div class="{{ config.name }}__col {{ config.name }}__col--right">
+                                    {% block checkbox %}
+                                        {% set assignedFullName = data.order.assignedUser.firstName ~ ' ' ~ data.order.assignedUser.lastName %}
+                                        {{ 'started-by' | trans }}<br>{{ assignedFullName }}
+                                    {% endblock %}
+                                </div>
+                            {% endblock %}
+                        {% endembed %}
+                    {% endfor %}
+
+                    {% include molecule('delivery-submitter', 'Delivery') with {
+                        attributes: {
+                            'target-checkbox-class': config.jsName ~ '__checkbox',
+                            'closest-block-class': config.jsName ~ '__block',
+                        },
+                    } only %}
+                {{ form_end(embed.deliveryForm) }}
+
+            {% elseif loop.index == 2 %}
+                {% for deliveryOrder in embed.deliveredOrders %}
+                    {% include molecule('delivery-box', 'Delivery') with {
+                        class: config.jsName ~ '__block',
+                        modifiers: ['delivered'],
+                        data: {
+                            order: deliveryOrder,
+                            additionalText: 'delivery.delivered',
+                        },
+                    } only %}
+                {% endfor %}
+
+            {% elseif loop.index == 3 %}
+                {% for deliveryOrder in embed.notDeliveredOrders %}
+                    {% include molecule('delivery-box', 'Delivery') with {
+                        class: config.jsName ~ '__block',
+                        modifiers: ['not-found', 'not-delivered'],
+                        data: {
+                            order: deliveryOrder,
+                            additionalText: 'delivery.not.delivered',
+                        },
+                    } only %}
+                {% endfor %}
+            {% endif %}
+        {% endblock %}
+    {% endembed %}
+{% endblock content %}

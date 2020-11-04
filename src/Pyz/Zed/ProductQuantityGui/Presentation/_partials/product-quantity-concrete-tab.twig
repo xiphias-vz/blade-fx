@@ -1,0 +1,17 @@
+<div class="well">
+    <h3>{{ 'Product Restrictions' | trans }}</h3>
+    <p>
+        {{ 'Quantity restriction values define the amount of items that customer can put into the cart.' | trans }}
+    </p>
+</div>
+
+<div>
+    <div class="form-group">
+        {{ form_label(form['quantity_max']) }}
+        {{ form_errors(form['quantity_max']) }}
+        {{ form_widget(form['quantity_max']) }}
+    </div>
+    <div class="form-group">
+        {{ form_widget(form['fk_product']) }}
+    </div>
+</div>

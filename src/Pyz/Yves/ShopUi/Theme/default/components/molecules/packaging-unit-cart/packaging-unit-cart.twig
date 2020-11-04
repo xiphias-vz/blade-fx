@@ -1,0 +1,41 @@
+{% extends model('component') %}
+
+{% define config = {
+    name: 'packaging-unit-cart',
+    tag: 'ul'
+} %}
+
+{% define data = {
+    amount: required,
+    quantity: required,
+    quantitySalesUnit: required,
+    quantityConversion: required,
+    quantityProductMeasurementUnit: required,
+    amountSalesUnit: required,
+    amountConversion: required,
+    amountProductMeasurementUnit: required,
+    countOfDecimalsInAmount: 10,
+} %}
+
+{% block body %}
+    {% set salesUnitName = data.quantityProductMeasurementUnit.name | default('') %}
+    {% set leadSalesUnitName = data.amountProductMeasurementUnit.name | default('') %}
+    {% set amountPerQuantity = data.amount.divide(data.quantity, data.countOfDecimalsInAmount).trim %}
+
+    <li class="{{ config.name }}__item">
+        {% if data.quantityConversion is not empty %}
+            {{ 'packaging_units.cart.quantity' | trans }}
+            {{ data.quantity }}
+            [= {{ data.quantity / data.quantityConversion }} {{ salesUnitName | trans }}]
+        {% endif %}
+    </li>
+    <li class="{{ config.name }}__item">
+        {% if data.amountConversion is not empty %}
+            {{ 'packaging_units.cart.amount' | trans }}
+            {{ amountPerQuantity }}
+            <small class="text-secondary">
+                [= {{ amountPerQuantity.divide(data.amountConversion, data.countOfDecimalsInAmount).trim }} {{ leadSalesUnitName | trans }}]
+            </small>
+        {% endif %}
+    </li>
+{% endblock body %}

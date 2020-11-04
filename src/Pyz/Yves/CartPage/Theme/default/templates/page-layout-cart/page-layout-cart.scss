@@ -1,0 +1,33 @@
+@mixin cart-page-layout-cart($name: '.page-layout-cart') {
+    #{$name} {
+        display: block;
+
+        &__empty {
+            margin-top: rem(48);
+            margin-bottom: rem(50);
+        }
+
+        &__col {
+            &--content {
+                padding-bottom: rem(30);
+
+                @include helper-breakpoint-media-min($lg-min) {
+                    padding: 0 rem(20) rem(50) 0;
+                }
+            }
+
+            &--sidebar {
+                position: relative;
+                margin: 0 rem(-15);
+                height: 100%;
+
+                @include helper-breakpoint-media-min($lg-min) {
+                    margin: 0;
+                    padding: 0 0 rem(60);
+                }
+            }
+        }
+    }
+}
+
+@include cart-page-layout-cart();

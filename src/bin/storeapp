@@ -1,0 +1,18 @@
+#!/usr/bin/env php
+<?php
+
+use Spryker\Zed\Console\Communication\ConsoleBootstrap;
+
+define('APPLICATION', 'STOREAPP');
+define('PROJECT_NAMESPACE', 'StoreApp');
+define('PROJECT_NAMESPACES', [
+    'StoreApp',
+    'Pyz',
+]);
+
+defined('APPLICATION_ROOT_DIR') || define('APPLICATION_ROOT_DIR', dirname(__DIR__, 2));
+
+require_once APPLICATION_ROOT_DIR . '/vendor/autoload.php';
+
+$bootstrap = new ConsoleBootstrap();
+$bootstrap->run();

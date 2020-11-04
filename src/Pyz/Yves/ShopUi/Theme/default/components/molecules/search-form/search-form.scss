@@ -1,0 +1,25 @@
+@include shop-ui-search-form {
+    $name: '.search-form';
+
+    &__input {
+        border-radius: rem(4);
+        font: fw(medium) rem(14)/rem(18) $setting-font-family;
+        padding: rem(15) rem(60);
+    }
+
+    &__clear {
+        position: absolute;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        z-index: $setting-zi-navigation-top;
+    }
+
+    &__submit {
+        position: absolute;
+        left: 0;
+        top: 0;
+        bottom: 0;
+        z-index: $setting-zi-navigation-top;
+    }
+}

@@ -1,0 +1,32 @@
+{% extends model('component') %}
+
+{% define config = {
+    name: 'navigation-top-mobile-item',
+    tag: 'li',
+} %}
+
+{% define data = {
+    url: '/',
+    iconName: required,
+    isButton: false,
+    jsClass: '',
+} %}
+
+{% block body %}
+    {% if data.isButton %}
+        <button type="button" class="{{ config.name }}__item button button--skinless {{ data.jsClass }} button--no-inner-events">
+            {% block icon %}
+                {% include atom('icon') with {
+                    modifiers: ['big', 'dark'],
+                    data: {
+                        name: data.iconName,
+                    },
+                } only %}
+            {% endblock %}
+        </button>
+    {% else %}
+        <a class="{{ config.name }}__item" href="{{ data.url }}">
+            {{ block('icon') }}
+        </a>
+    {% endif %}
+{% endblock %}

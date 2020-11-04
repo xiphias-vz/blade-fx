@@ -1,0 +1,18 @@
+{% extends atom('thumbnail') %}
+
+{% define config = {
+    name: 'lazy-thumbnail',
+} %}
+
+{% block body %}
+    {% set imageExtraClasses = '' %}
+
+    {% block image %}
+        {% include molecule('lazy-image') with {
+            data: {
+                imageClasses: component.renderClass(config.name ~ '__image', modifiers) ~ ' ' ~ imageExtraClasses,
+            },
+            attributes: attributes,
+        } only %}
+    {% endblock %}
+{% endblock %}

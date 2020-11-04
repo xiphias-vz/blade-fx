@@ -1,0 +1,17 @@
+@mixin customer-confirmation-page-customer-confirmation-form($name: '.customer-confirmation-form') {
+    #{$name} {
+        width: 100%;
+
+        input[readonly='readonly'] {
+            background: $setting-color-gray-3;
+        }
+
+        .list--info {
+            color: $setting-color-gray-9;
+        }
+
+        @content;
+    }
+}
+
+@include customer-confirmation-page-customer-confirmation-form;

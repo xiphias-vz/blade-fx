@@ -1,0 +1,72 @@
+$setting-color-yellow: #ffbf1c;
+$setting-color-yellow-alpha-1: rgba($setting-color-yellow, 0.6);
+$setting-color-yellow-alpha-2: rgba($setting-color-yellow, 0.3);
+
+$setting-color-blue: #5e3dff;
+$setting-color-blue-alpha-1: rgba($setting-color-blue, 0.1);
+$setting-color-blue-alpha-2: rgba($setting-color-blue, 0.5);
+
+$setting-color-white-alpha-1: rgba($setting-color-white, 0.9);
+
+$setting-color-blue-midi: #344384;
+$setting-color-blue-midi-light-1: lighten($setting-color-blue-midi, 30%);
+$setting-color-blue-midi-light-2: lighten($setting-color-blue-midi, 60%);
+
+$setting-color-blue-light: #0099dd;
+$setting-color-blue-light-alpha-1: lighten($setting-color-blue-light, 30%);
+$setting-color-blue-info: #b3e4f8;
+
+$setting-color-green: #1bbea0;
+$setting-color-green-alpha-1: rgba($setting-color-green, 0.6);
+
+$setting-color-white: #fff;
+$setting-color-gray-1: #f5f5f5;
+$setting-color-gray-2: #ededed;
+$setting-color-gray-3: #dedede;
+$setting-color-gray-4: #555;
+$setting-color-gray-5: #444;
+$setting-color-gray-6: #333;
+$setting-color-gray-8: #f0ede6;
+$setting-color-gray-9: #9ea1a7;
+$setting-color-gray-10: #71747c;
+$setting-color-black: #111;
+
+//$setting-color-green: #1e8813;
+
+$setting-color-brown: #d55400;
+
+// Main colors
+$setting-color-main: #00afb4;
+$setting-color-alt: #ff4859;
+
+// Typography
+$setting-color-text: $setting-color-black;
+$setting-color-text-alpha-1: rgba($setting-color-text, 0.2);
+$setting-color-text-alpha-2: rgba($setting-color-text, 0.5);
+
+$setting-color-link: $setting-color-blue-midi;
+
+// Form Elements
+$setting-color-input-border: $setting-color-gray-9;
+$setting-color-input-border-focus: $setting-color-gray-3;
+$setting-color-input-shadow-focus: rgba($setting-color-gray-6, 0.5);
+$setting-color-checkbox-border: $setting-color-input-border;
+$setting-color-checkbox-border-focus: $setting-color-blue-midi;
+$setting-color-checkbox-shadow-focus: rgba($setting-color-blue-midi, 0.5);
+
+$setting-color-alpha-1: rgba($setting-color-black, 0.05);
+$setting-color-alpha-2: rgba($setting-color-main, 0.1);
+$setting-color-alpha-3: rgba($setting-color-black, 0.5);
+$setting-color-alpha-5: rgba($setting-color-gray-6, 0.4);
+$setting-color-alpha-6: rgba($setting-color-gray-3, 0.5);
+$setting-color-alpha-7: rgba($setting-color-gray-3, 0.75);
+$setting-color-alpha-8: rgba($setting-color-black, 0.24);
+$setting-color-alpha-9: rgba($setting-color-main, 0.4);
+
+$setting-color-actions: (
+    system: $setting-color-gray-5,
+    info: $setting-color-blue-info,
+    warning: #f37849,
+    success: #4ac38e,
+    alert: #cb3d49,
+);

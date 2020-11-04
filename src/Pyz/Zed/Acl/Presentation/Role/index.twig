@@ -1,0 +1,26 @@
+{% extends '@Gui/Layout/layout.twig' %}
+
+{% set section_title = 'Roles' %}
+{% set widget_title = 'Role list' %}
+
+{% block section_title section_title | trans %}
+{% block head_title widget_title | trans %}
+
+{% block action %}
+    {{ createActionButton('/acl/role/create', 'Add new Role' | trans) }}
+{% endblock %}
+
+{% block content %}
+
+    {% embed '@Gui/Partials/widget.twig' %}
+
+        {% block widget_content %}
+
+            {{ roleTable | raw }}
+
+        {% endblock %}
+
+    {% endembed %}
+
+{% endblock %}
+

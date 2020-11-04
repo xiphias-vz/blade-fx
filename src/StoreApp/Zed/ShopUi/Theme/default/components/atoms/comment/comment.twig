@@ -1,0 +1,28 @@
+{% extends model('component') %}
+
+{% define config = {
+    name: 'comment',
+} %}
+
+{% define data = {
+    content: '',
+    editable: false,
+    placeholder: ''
+} %}
+
+{% block body %}
+    <h3>{{ 'driver.app.tour.comment' | trans }}:</h3>
+    {% if data.editable %}
+        <textarea
+            name="comment"
+            class="textarea {{ config.name }}__comment"
+            placeholder="{{ data.placeholder }}">{{ data.content }}</textarea>
+    {% else %}
+        <div class="{{ config.name }}__comment">
+            {{ data.content }}
+        </div>
+    {% endif %}
+{% endblock %}
+
+
+

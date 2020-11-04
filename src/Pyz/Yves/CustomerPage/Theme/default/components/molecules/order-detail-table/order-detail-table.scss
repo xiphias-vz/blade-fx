@@ -1,0 +1,38 @@
+@mixin customer-page-order-detail-table($name: '.order-detail-table') {
+    #{$name} {
+        &__item {
+            margin-bottom: rem(25);
+            border: rem(1) solid $setting-color-gray-15;
+            padding: rem(15) rem(15) rem(5);
+
+            &--disabled {
+                opacity: 0.5;
+
+                #{$name} {
+                    &__amount {
+                        color: $setting-color-text;
+                        text-decoration: line-through;
+                    }
+                }
+            }
+        }
+
+        &__item-image {
+            width: rem(90);
+
+            @include helper-breakpoint-media-min($lg-min) {
+                width: rem(120);
+            }
+        }
+
+        &__amount {
+            color: $setting-color-gray-6;
+        }
+
+        &__canceled-check {
+            width: rem(30);
+        }
+    }
+}
+
+@include customer-page-order-detail-table();

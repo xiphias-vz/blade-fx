@@ -1,0 +1,68 @@
+{% extends view('order-detail', '@SprykerShop:CustomerPage') %}
+
+{% define data = {
+    taxPayments: _view.taxPayments,
+    orderedItems: _view.orderedItems,
+    canceledItems: _view.canceledItems,
+} %}
+
+{% block pageTitle %}{% endblock %}
+
+{% block customerContent %}
+    {% embed molecule('customer-reorder-form', 'CustomerReorderWidget') ignore missing with {
+        data: {
+            idSalesOrder: data.order.idSalesOrder,
+        },
+        embed: {
+            order: data.order,
+            orderedItems: data.orderedItems,
+            canceledItems: data.canceledItems,
+            shipmentGroups: data.shipmentGroups,
+            orderShipmentExpenses: data.orderShipmentExpenses,
+            taxPayments: data.taxPayments,
+        },
+    } only %}
+        {% block formContent %}
+            <div class="grid grid--middle">
+                <h1 class="col col--expand title title--general">
+                    {{- 'customer.profile.order_details' | trans -}}
+                </h1>
+                <button class="col button button--hollow {{ config.name }}__button {{ config.jsName }}__trigger" disabled>
+                    {{- 'customer.order.reorder_selected' | trans -}}
+                </button>
+                <a href="{{ path('customer/order/reorder', {'idSalesOrder': data.idSalesOrder}) }}" class="col button {{ config.name }}__button js-form-dynamic-submitter--trigger" data-csrf-token="{{ csrf_token('reorder-cart') }}">
+                    {{- 'customer.order.reorder_all' | trans -}}
+                </a>
+            </div>
+
+            <ul class="menu">
+                <li class="menu__item">
+                    <strong class="menu__title">{{ 'customer.order.order_id' | trans }}:</strong>
+                    {{ embed.order.orderReference -}}
+                </li>
+
+                <li class="menu__item">
+                    <strong class="menu__title">{{ 'customer.order.date' | trans }}:</strong>
+                    {{ embed.order.createdAt | formatDateTime -}}
+                </li>
+
+                <li class="menu__item">
+                    <strong class="menu__title">{{ 'customer.order.status' | trans }}:</strong>
+                    {{ ('customer.order.state.' ~ embed.order.status | replace({' ': '-'})) | trans -}}
+                </li>
+            </ul>
+
+            {% include molecule('order-detail', 'CustomerPage') with {
+                class: 'spacing-top spacing-top--bigger',
+                data: {
+                    order: embed.order,
+                    shipmentGroups: embed.shipmentGroups,
+                    orderedItems: embed.orderedItems,
+                    canceledItems: embed.canceledItems,
+                    orderShipmentExpenses: embed.orderShipmentExpenses,
+                    taxPayments: embed.taxPayments,
+                },
+            } only %}
+        {% endblock %}
+    {% endembed %}
+{% endblock %}

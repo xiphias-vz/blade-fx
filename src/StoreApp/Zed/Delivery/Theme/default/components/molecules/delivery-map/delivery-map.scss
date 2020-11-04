@@ -1,0 +1,61 @@
+@mixin customer-page-delivery-map($name: '.delivery-map') {
+    #{$name} {
+        &__map {
+            height: rem(150);
+
+            @include helper-breakpoint-media-min($md-min) {
+                height: rem(300);
+            }
+        }
+
+        &__popup,
+        &__reference-popup {
+            padding: rem(5);
+            font-size: map-get($setting-font-size, small);
+            line-height: 1;
+            word-break: break-all;
+            background: $setting-color-white;
+            border-radius: rem(4);
+        }
+
+        &__popup {
+            position: relative;
+            width: rem(120);
+            transform: translate(0, -16px);
+
+            &::after {
+                content: '';
+                position: absolute;
+                bottom: 0;
+                left: 50%;
+                width: rem(8);
+                height: rem(8);
+                background: $setting-color-white;
+                transform: translate(-50%, 50%) rotate(-45deg);
+            }
+        }
+
+        &__reference-popup {
+            background: $setting-color-green-alpha-1;
+            color: $setting-color-white;
+            font-weight: fw(bold);
+            border-radius: rem(10);
+            cursor: pointer;
+        }
+
+        iframe {
+            margin: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        &__close {
+            position: absolute;
+            top: rem(4);
+            right: rem(4);
+            font-size: rem(8);
+        }
+    }
+}
+
+@include customer-page-delivery-map();

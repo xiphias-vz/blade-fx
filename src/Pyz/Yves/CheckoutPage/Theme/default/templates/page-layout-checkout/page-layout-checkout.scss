@@ -1,0 +1,22 @@
+@mixin checkout-page-layout-checkout($name: '.page-layout-checkout') {
+    #{$name} {
+        padding-bottom: rem(60);
+        display: block;
+
+        @include helper-breakpoint-media-min($lg-min) {
+            overflow: hidden;
+        }
+
+        &__breadcrumbs {
+            background-color: $setting-color-gray-2;
+        }
+
+        &--full-width {
+            max-width: 100%;
+        }
+
+        @content;
+    }
+}
+
+@include checkout-page-layout-checkout();

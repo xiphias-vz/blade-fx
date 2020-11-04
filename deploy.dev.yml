@@ -1,0 +1,149 @@
+version: "0.1"
+
+namespace: spryker-demo-project
+tag: 'dev'
+
+environment: docker_dev
+image: spryker/php:7.3-DRAFT-new-relic
+
+composer:
+    mode: --dev
+    autoload: ''
+
+assets:
+    mode: development
+    compression:
+        gzip:
+            level: 5
+
+regions:
+    DE:
+        services:
+            database:
+                database: spryker_demo_development
+                username: spryker
+                password: secret
+
+        stores:
+            BERLIN:
+                services:
+                    broker:
+                        namespace: berlin_queue
+                    key_value_store:
+                        namespace: 1
+                    search:
+                        namespace: berlin_search
+                    session:
+                        namespace: 2
+            HAMBURG:
+                services:
+                    broker:
+                        namespace: hamburg_queue
+                    key_value_store:
+                        namespace: 3
+                    search:
+                        namespace: hamburg_search
+                    session:
+                        namespace: 4
+
+groups:
+    DE-1:
+        region: DE
+        applications:
+            Welcome:
+                application: static
+                endpoints:
+                    www.welcome.ccd.demo-spryker.local:
+                        entry-point: Welcome
+            Yves:
+                application: yves
+                endpoints:
+                    www.berlin.ccd.demo-spryker.local:
+                        store: BERLIN
+                    www.hamburg.ccd.demo-spryker.local:
+                        store: HAMBURG
+            Zed:
+                application: zed
+                endpoints:
+                    backoffice.ccd.demo-spryker.local:
+                        store: BERLIN
+
+                    zed.berlin.ccd.demo-spryker.local:
+                        store: BERLIN
+                        primal: true
+                    zed.hamburg.ccd.demo-spryker.local:
+                        store: HAMBURG
+                        primal: true
+
+                    filial-app.berlin.ccd.demo-spryker.local:
+                        store: BERLIN
+                        entry-point: StoreApp
+                    filial-app.hamburg.ccd.demo-spryker.local:
+                        store: HAMBURG
+                        entry-point: StoreApp
+services:
+    database:
+        engine: mysql
+        version: mariadb-10.4
+        root:
+            username: "root"
+            password: "secret"
+        endpoints:
+            localhost:3306:
+                protocol: tcp
+    broker:
+        engine: rabbitmq
+        api:
+            username: "spryker"
+            password: "secret"
+        endpoints:
+            queue.demo-spryker.local:
+            localhost:5672:
+                protocol: tcp
+    session:
+        engine: redis
+    key_value_store:
+        engine: redis
+        endpoints:
+            localhost:16379:
+                protocol: tcp
+    search:
+        engine: elastic
+        version: 6.8
+        endpoints:
+            localhost:9200:
+                protocol: tcp
+    scheduler:
+        engine: jenkins
+        endpoints:
+            scheduler.demo-spryker.local:
+    mail_catcher:
+        engine: mailhog
+        endpoints:
+            mail.demo-spryker.local:
+
+docker:
+
+    blackfire:
+        enabled: true
+        server-id: "242f78bc-3e56-4fde-9d1f-c00304648db9"
+        server-token: "fd29782cbf1874e5eca4a88ad7b075dcfd2b34054dd1940cab1f070abda41079"
+
+    ssl:
+        enabled: true
+
+    testing:
+        store: BERLIN
+
+    debug:
+        enabled: true
+
+    mount:
+        native:
+            platforms:
+                - linux
+
+        docker-sync:
+            platforms:
+                - macos
+                - windows

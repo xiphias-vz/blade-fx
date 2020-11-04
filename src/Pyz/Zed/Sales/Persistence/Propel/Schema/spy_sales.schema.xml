@@ -1,0 +1,89 @@
+<?xml version="1.0"?>
+<database xmlns="spryker:schema-01" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" name="zed" xsi:schemaLocation="spryker:schema-01 https://static.spryker.com/schema-01.xsd" namespace="Orm\Zed\Sales\Persistence" package="src.Orm.Zed.Sales.Persistence">
+
+    <table name="spy_sales_order">
+        <column name="id_sales_order" required="true" type="BIGINT" autoIncrement="true" primaryKey="true"/>
+        <column name="fk_sales_order_address_billing" type="BIGINT" required="true"/>
+        <column name="fk_sales_order_address_shipping" type="BIGINT" required="false"/>
+        <column name="merchant_reference" type="VARCHAR" size="255" required="false"/>
+        <column name="merchant_region_number" type="INTEGER" required="false"/>
+        <column name="merchant_filial_number" type="INTEGER" required="false"/>
+        <column name="merchant_name" type="VARCHAR" size="255" required="false"/>
+        <column name="picking_bags_count" type="INTEGER" required="false"/>
+        <column name="fk_user" type="integer" required="false"/>
+        <column name="store_status" type="VARCHAR" required="false"/>
+        <column name="invoice_reference" type="VARCHAR" size="2048"/>
+        <column name="invoice_created_at" type="TIMESTAMP" />
+        <column name="delivered_at" type="TIMESTAMP" />
+        <column name="picked_at" type="TIMESTAMP" />
+        <column name="collected_at" type="TIMESTAMP" />
+        <column name="salutation" type="ENUM" valueSet="Mr, Ms, Divers, Dr" required="false"/>
+
+        <foreign-key name="spy_sales_order-fk_user" foreignTable="spy_user">
+            <reference local="fk_user" foreign="id_user"/>
+        </foreign-key>
+    </table>
+
+    <table name="spy_sales_order_item">
+        <column name="oms_processor_id" type="INTEGER" required="false"/>
+        <column name="product_number" type="VARCHAR" size="255" required="false"/>
+        <column name="store" type="VARCHAR" size="255" required="false"/>
+    </table>
+
+    <table name="spy_sales_order_address">
+        <column name="id_sales_order_address" required="true" type="BIGINT" autoIncrement="true" primaryKey="true"/>
+        <column name="salutation" type="ENUM" valueSet="Mr, Ms, Divers, Dr"/>
+    </table>
+
+    <table name="spy_sales_order_address_history">
+        <column name="id_sales_order_address_history" required="true" type="BIGINT" autoIncrement="true" primaryKey="true"/>
+        <column name="fk_sales_order_address" type="BIGINT" required="true"/>
+        <column name="salutation" type="ENUM" valueSet="Mr, Ms, Divers, Dr"/>
+    </table>
+
+    <table name="spy_sales_order_totals">
+        <column name="id_sales_order_totals" required="true" type="BIGINT" autoIncrement="true" primaryKey="true"/>
+        <column name="fk_sales_order" type="BIGINT" required="true" default="0"/>
+        <index name="index-spy_sales_order_totals-grand_total">
+            <index-column name="grand_total"/>
+        </index>
+    </table>
+
+    <table name="spy_sales_order_comment">
+        <column name="id_sales_order_comment" required="true" type="BIGINT" autoIncrement="true" primaryKey="true"/>
+        <column name="fk_sales_order" type="BIGINT" required="true"/>
+    </table>
+
+    <table name="spy_sales_order_note">
+        <column name="id_sales_order_note" required="true" type="BIGINT" autoIncrement="true" primaryKey="true"/>
+        <column name="fk_sales_order" type="BIGINT" required="true"/>
+    </table>
+
+    <table name="spy_sales_expense">
+        <column name="id_sales_expense" required="true" type="BIGINT" autoIncrement="true" primaryKey="true"/>
+        <column name="fk_sales_order" type="BIGINT" required="false" default="NULL"/>
+    </table>
+
+    <table name="spy_sales_order_item">
+        <column name="id_sales_order_item" required="true" type="BIGINT" autoIncrement="true" primaryKey="true"/>
+        <column name="fk_sales_order" type="BIGINT" required="true"/>
+        <column name="fk_oms_order_item_state" type="BIGINT" required="true"/>
+        <column name="fk_oms_order_process" type="BIGINT" required="false"/>
+    </table>
+
+    <table name="spy_sales_order_item_metadata">
+        <column name="id_sales_order_item_metadata" required="true" type="BIGINT" autoIncrement="true" primaryKey="true"/>
+        <column name="fk_sales_order_item" type="BIGINT" required="true"/>
+    </table>
+
+    <table name="spy_sales_order_address">
+        <column name="additional_info" size="255" type="VARCHAR"/>
+        <column name="floor" size="255" type="VARCHAR"/>
+    </table>
+
+    <table name="spy_sales_order_address_history">
+        <column name="additional_info" size="255" type="VARCHAR"/>
+        <column name="floor" size="255" type="VARCHAR"/>
+    </table>
+
+</database>

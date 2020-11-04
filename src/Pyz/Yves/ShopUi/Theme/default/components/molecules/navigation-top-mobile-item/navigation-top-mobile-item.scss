@@ -1,0 +1,10 @@
+@mixin shop-ui-navigation-top-mobile-item ($name: '.navigation-top-mobile-item') {
+    #{$name} {
+        &__item {
+            display: inline-block;
+            padding: rem(8);
+        }
+    }
+}
+
+@include shop-ui-navigation-top-mobile-item();

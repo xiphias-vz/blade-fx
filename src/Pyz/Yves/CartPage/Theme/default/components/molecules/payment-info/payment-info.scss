@@ -1,0 +1,38 @@
+@mixin cart-page-payment-info($name: '.payment-info') {
+    #{$name} {
+        &__container {
+            padding-top: rem(30);
+        }
+
+        &__icons {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin: rem(-5);
+            padding-bottom: rem(15);
+        }
+
+        &__icons-item {
+            padding: rem(5);
+        }
+
+        &__icon-holder {
+            padding: rem(5) rem(7);
+            background: $setting-color-white;
+        }
+
+        &__additional {
+            padding-top: rem(30);
+        }
+
+        &__text {
+            display: block;
+            text-align: center;
+            font-size: rem(12);
+        }
+
+        @content;
+    }
+}
+
+@include cart-page-payment-info();

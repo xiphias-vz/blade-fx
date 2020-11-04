@@ -1,0 +1,30 @@
+@mixin shop-ui-logo ($name: '.logo') {
+    #{$name} {
+        width: rem(170);
+        height: rem(63);
+        padding: 0;
+        margin: 0 auto;
+
+        &__image {
+            width: 100%;
+            max-height: inherit;
+        }
+
+        &--header {
+            position: relative;
+            width: rem(170);
+            padding: 0 0 rem(46);
+            margin: 0;
+
+            #{$name} {
+                &__image {
+                    position: absolute;
+                    top: 0;
+                    left: 0;
+                }
+            }
+        }
+    }
+}
+
+@include shop-ui-logo();

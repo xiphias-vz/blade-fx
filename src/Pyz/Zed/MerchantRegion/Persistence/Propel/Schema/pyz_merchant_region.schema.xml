@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<database xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          name="zed"
+          xsi:noNamespaceSchemaLocation="http://static.spryker.com/schema-01.xsd"
+          namespace="Orm\Zed\MerchantRegion\Persistence"
+          package="src.Orm.Zed.MerchantRegion.Persistence">
+
+    <table name="pyz_merchant_region" idMethod="native" allowPkInsert="true">
+        <column name="id_merchant_region" required="true" type="INTEGER" primaryKey="true" autoIncrement="true"/>
+        <column name="abbreviation" required="true" size="255" type="VARCHAR"/>
+        <column name="region_number" required="true" type="INTEGER"/>
+        <column name="region_name" required="true" size="255" type="VARCHAR"/>
+        <column name="street" required="true" size="255" type="VARCHAR"/>
+        <column name="zip_code" required="true" size="255" type="INTEGER"/>
+        <column name="city" required="true" size="255" type="VARCHAR"/>
+        <column name="vat" required="true" size="255" type="VARCHAR"/>
+        <column name="fax" required="true" size="255" type="VARCHAR"/>
+        <column name="footer_text" required="true" size="4096" type="VARCHAR"/>
+
+        <unique name="pyz_merchant_region-region_number">
+            <unique-column name="region_number"/>
+        </unique>
+
+        <id-method-parameter value="pyz_merchant_region_pk_seq"/>
+    </table>
+
+</database>

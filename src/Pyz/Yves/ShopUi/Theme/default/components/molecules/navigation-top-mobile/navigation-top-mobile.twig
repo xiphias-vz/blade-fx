@@ -1,0 +1,108 @@
+{% extends model('component') %}
+
+{% define config = {
+    name: 'navigation-top-mobile',
+    tag: 'navigation-top-mobile',
+} %}
+
+{% define data = {
+    url: '/',
+    searchUrl: path('search'),
+    cartQuantity: app['cart.quantity'] | default,
+    cartAmount: app['cart.amount'] | default,
+} %}
+
+{% block body %}
+    {% set items = [
+        {
+            iconName: 'shop',
+            secondIconName: 'shop-filled',
+            isButton: true,
+            jsClass: 'js-header__navigation-trigger js-header__navigation-target js-page-layout-main--block-scroll-trigger',
+            extraButton: {
+                iconName: 'shop-filled',
+                jsClass: 'js-header__navigation-trigger js-header__navigation-target js-page-layout-main--block-scroll-trigger',
+                buttonClass: 'is-hidden',
+            },
+        },
+        {
+            iconName: 'search',
+            isButton: true,
+            jsClass: 'js-suggest-search--trigger',
+        },
+        {
+            iconName: 'wishlist',
+            url: url('wishlist/overview'),
+            isVisibleForAuthorized: is_granted('ROLE_USER'),
+        },
+        {
+            iconName: 'cart',
+            isCart: true,
+        },
+        {
+            iconName: 'icon-hamburger',
+            isButton: true,
+            jsClass: 'js-page-layout-main__side-drawer-trigger',
+        },
+    ] %}
+
+    <nav>
+        <ul class="grid grid--middle grid--justify">
+            {% for item in items if item.isVisibleForAuthorized ?? true %}
+                {% if item.isCart ?? false %}
+                    {% embed molecule('navigation-top-mobile-item') with {
+                        class: 'col',
+                        data: {
+                            iconName: item.iconName,
+                        },
+                        embed: {
+                            cartAmount: data.cartAmount,
+                            cartQuantity: data.cartQuantity,
+                        },
+                    } only %}
+                        {% block body %}
+                            {% include atom('cart-link') with {
+                                class: 'button--skinless',
+                                data: {
+                                    cartAmount: embed.cartAmount | money,
+                                    cartQuantity: embed.cartQuantity,
+                                },
+                                attributes: {
+                                    href: url('cart'),
+                                },
+                            } only %}
+                        {% endblock %}
+                    {% endembed %}
+                {% else %}
+                    {% embed molecule('navigation-top-mobile-item') with {
+                        class: 'col',
+                        data: {
+                            url: item.url ?? data.url,
+                            iconName: item.iconName,
+                            isButton: item.isButton ?? false,
+                            jsClass: item.jsClass ?? '',
+                        },
+                        embed: {
+                            extraButton: item.extraButton | default({}),
+                        },
+                    } only %}
+                        {% block body %}
+                            {{ parent() }}
+
+                            {% if embed.extraButton %}
+                                <button type="button" class="{{ config.name }}__item button button--skinless button--mobile-active {{ embed.extraButton.buttonClass }} {{ embed.extraButton.jsClass }}">
+                                    {% include atom('icon') with {
+                                        modifiers: ['big'],
+                                        data: {
+                                            name: embed.extraButton.iconName,
+                                        },
+                                    } only %}
+                                </button>
+                            {% endif %}
+                        {% endblock %}
+                    {% endembed %}
+                {% endif %}
+            {% endfor %}
+        </ul>
+    </nav>
+{% endblock %}

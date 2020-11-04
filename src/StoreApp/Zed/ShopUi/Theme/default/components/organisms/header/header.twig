@@ -1,0 +1,104 @@
+{% extends model('component') %}
+
+{% define config = {
+    name: 'header',
+} %}
+
+{% define data = {
+    headerLocationTitle: '',
+    orderReference: '',
+    collectNumber: '',
+    orderTime: '',
+    withoutLogo: false,
+    buttonUrl: '/',
+    buttonText: 'Cancel' | trans
+} %}
+
+{% block extraClass %}
+    {% if data.withoutLogo %}
+        header--spacing-reset
+    {% endif %}
+{% endblock %}
+
+{% block body %}
+    <header class="{{ config.name }}__header">
+        <div class="{{ config.name }}__header-top">
+            <div class="container">
+                <div class="container__inner">
+                    <div class="grid grid--middle grid--no-wrap {{ config.name }}__content">
+                        {% if not data.withoutLogo %}
+                            <div class="col col--bottom">
+                                {% include molecule('logo') with {
+                                    modifiers: ['header']
+                                } only %}
+                            </div>
+                            <div class="col col--expand spacing-x spacing-x--inner">
+                                {% if data.headerLocationTitle %}
+                                    <h1 class="header__location-title grid grid--no-wrap grid--middle grid--center">
+                                        <div class="col">
+                                            {% include atom('icon') with {
+                                                class: 'spacing-right spacing-right--small',
+                                                modifiers: ['big'],
+                                                data: {
+                                                    name: 'map-marker',
+                                                },
+                                            } only %}
+                                        </div>
+                                        <div class="col">
+                                            {{ data.headerLocationTitle }}
+                                        </div>
+                                    </h1>
+                                {% endif %}
+                            </div>
+                            <div class="col {{ config.name }}__logout text-right">
+                                <a href="/auth/logout" class="link link--icon link--logout">
+                                    {% include atom('icon') with {
+                                        modifiers: ['big'],
+                                        class: 'link__icon',
+                                        data: {
+                                            name: 'logout'
+                                        }
+                                    } only %}
+                                    &nbsp;
+                                </a>
+                            </div>
+                        {% else %}
+                            <div class="col col--sm-4">
+                                <a href="{{ data.buttonUrl }}" class="link link--cancel link--icon">
+                                    {% include atom('icon') with {
+                                        class: 'link__icon link__icon--cancel',
+                                        data: {
+                                            name: 'arrow-right'
+                                        }
+                                    } only %}
+                                    {{ data.buttonText }}
+                                </a>
+                            </div>
+                            <div class="col col--sm-4 text-center">
+                                {% block middleTitle %}
+                                    {% include atom('app-label') with {
+                                        data: {
+                                            text: 'Order ID' |  trans ~ ': ' ~ data.orderReference
+                                        }
+                                    } only %}
+                                {% endblock %}
+                            </div>
+                            <div class="col col--sm-4 text-right">
+                                <div class="{{ config.name }}__time">
+                                    {{ data.orderTime }}
+                                </div>
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="{{ config.name }}__header-bottom">
+            <div class="container">
+                <div class="container__inner">
+                    {% block headerBottom %}{% endblock %}
+                </div>
+            </div>
+        </div>
+    </header>
+{% endblock %}

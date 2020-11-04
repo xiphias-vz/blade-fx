@@ -1,0 +1,69 @@
+@mixin customer-page-layout-customer($name: '.page-layout-customer') {
+    #{$name} {
+        padding-top: rem(20);
+        padding-bottom: rem(30);
+
+        &__container {
+            background: $setting-color-white;
+
+            &--navigation {
+                @include helper-breakpoint-media-min($xl-min) {
+                    margin-right: rem(10);
+                }
+            }
+
+            &--content {
+                margin-top: rem(20);
+                padding: rem(20) rem(30) rem(30);
+
+                @include helper-breakpoint-media-min($xl-min) {
+                    margin-top: 0;
+                }
+            }
+        }
+
+        &__form-wrap {
+            max-width: rem(860);
+            margin-left: auto;
+            margin-right: auto;
+            background: $setting-color-white;
+
+            @include helper-breakpoint-media-min($lg-min) {
+                border: rem(1) solid $setting-color-gray-15;
+                border-top: none;
+            }
+        }
+
+        &__col-first {
+            @include helper-breakpoint-media-min($lg-min) {
+                margin-right: rem(20);
+                height: 100%;
+            }
+        }
+
+        &__col-last {
+            @include helper-breakpoint-media-min($lg-min) {
+                padding-left: rem(20);
+                height: 100%;
+            }
+        }
+
+        &__left-indent {
+            margin: rem(16) 0;
+
+            @include helper-breakpoint-media-min($lg-min) {
+                margin: 0 0 0 rem(30);
+            }
+        }
+
+        &--login-wrap {
+            margin-top: rem(-1);
+
+            @include helper-breakpoint-media-min($lg-min) {
+                padding: rem(60) 0;
+            }
+        }
+    }
+}
+
+@include customer-page-layout-customer();

@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<config>
+    <administration>
+        <pages>
+            <delivery-methods>
+                <label>Delivery Methods</label>
+                <title>Delivery Methods</title>
+                <bundle>shipment-gui</bundle>
+                <controller>shipment-method</controller>
+                <action>index</action>
+                <icon>fa-angle-double-right</icon>
+                <order>1</order>
+            </delivery-methods>
+            <shipments>
+                <visible>0</visible>
+            </shipments>
+        </pages>
+    </administration>
+</config>

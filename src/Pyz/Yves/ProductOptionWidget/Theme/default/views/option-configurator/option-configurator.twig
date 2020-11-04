@@ -1,0 +1,17 @@
+{% extends template('widget') %}
+
+{% define data = {
+    optionGroups: _widget.productOptionGroups
+} %}
+
+{% block template %}
+    {% if data.optionGroups is not empty %}{{parent()}}{% endif %}
+{% endblock %}
+
+{% block body %}
+    {% for optionGroup in data.optionGroups %}
+        {% if optionGroup.getProductOptionValues[0] %}
+            <input name="product-option['{{ optionGroup.name}}']" value="{{ optionGroup.getProductOptionValues[0].getIdProductOptionValue }}" type="hidden">
+        {% endif %}
+    {% endfor %}
+{% endblock %}

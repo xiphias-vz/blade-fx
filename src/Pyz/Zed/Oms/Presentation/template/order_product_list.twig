@@ -1,0 +1,40 @@
+{% block content %}
+    {% if order.items is defined %}
+        <div style='margin-bottom: 20px;'>
+            {% set orderLocale = order.locale.localeName %}
+            {% for orderItem in order.itemGroups %}
+                <table cellpadding='0' cellspacing='0' width='100%'>
+                    <tbody>
+                        <tr>
+                            <td style='padding: 0 0 10px 0; width: 84px; border: none;'>
+                                <img width='70' src='{{ orderItem.metadata.image }}' alt=''>
+                            </td>
+                            <td style='padding: 0 0 10px 0; vertical-align: top; border: none;'>
+                                <div>
+                                    <div style='font: bold 15px/20px Helvetica, sans-serif;
+                                                color: #344384 !important; margin-bottom: 18px;'>
+                                        {{ orderItem.name }}
+                                    </div>
+                                    <div style='font: bold 13px Helvetica, sans-serif; color: #494949 !important;'>
+                                        {{ orderItem.locale.localeName }}
+                                        {{ 'mail.order.confirmation.item.quantity' | trans({}, null, orderLocale) }}: {{ orderItem.quantity }}
+                                    </div>
+                                    {% for orderItemOption in orderItem.productOptions %}
+                                        <div style='font: bold 13px Helvetica, sans-serif; color: #494949 !important;'>
+                                            {{ 'mail.order.confirmation.deposit' | trans({}, null, orderLocale) }}: {{ (orderItemOption.sumPrice * orderItem.quantity) | money(true, order.currencyIsoCode) }}
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                            </td>
+                            <td style='vertical-align: top; width: 80px; padding: 0 0 10px 0; border: none;'>
+                                <div style='text-align: right; font: bold 15px/20px Helvetica, sans-serif; color: #344384 !important;'>
+                                    {{ orderItem.sumPrice | money(true, order.currencyIsoCode) }}
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            {% endfor %}
+        </div>
+    {% endif %}
+{% endblock %}

@@ -1,0 +1,34 @@
+{% extends template('page-layout-main') %}
+
+{% block header %}{% endblock %}
+
+{% block pageLayoutClass %}page-layout-main--login{% endblock %}
+
+{% block content %}
+    {% include molecule('logo') with {
+        class: 'spacing-bottom spacing-bottom--big'
+    } only %}
+
+    <h2 class="text-center title title--login">
+        {{ 'Filial-App' | trans }}
+    </h2>
+
+    <div class="spacing-y spacing-y--inner spacing-y--biggest">
+        {% embed molecule('form') with {
+            modifiers: ['grid-indent', 'login'],
+            data: {
+                form: form,
+                submit: {
+                    enable: true,
+                    text: 'forms.submit.login' | trans,
+                    class: 'form__action--login button  button--large button--expand'
+                },
+            },
+            qa: 'register-form'
+        } only %}
+            {% block submit %}
+                {{ parent() }}
+            {% endblock %}
+        {% endembed %}
+    </div>
+{% endblock %}

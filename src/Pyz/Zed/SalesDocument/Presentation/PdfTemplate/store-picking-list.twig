@@ -1,0 +1,85 @@
+<html>
+<head>
+    <meta charset="UTF-8">
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            padding: 4px;
+        }
+        table tbody tr:nth-child(odd) {
+            background-color: #CCCCCC;
+        }
+        .fixed-width-16 {
+            width: 16em
+        }
+    </style>
+</head>
+
+<body>
+<htmlpagefooter name="footer">
+    {{ 'sales-document.store-picking.footer.message' | trans }} <br>
+    {PAGENO}/{nbpg}
+</htmlpagefooter>
+<sethtmlpagefooter name="footer" value="on"/>
+
+{% for storePickingList in storePickingListCollection %}
+    <htmlpageheader name="{{ storePickingList.merchantDetails }}">
+        <h1 align="center">
+            {{ storePickingList.merchantDetails }}
+        </h1>
+        <table border="1">
+            <tr>
+                <td>{{ 'sales-document.store-picking.html-template.delivery-date' | trans }} : {{ storePickingList.deliveryDate | date('d/m/Y') }}</td>
+                <td class="fixed-width-16">{{ 'sales-document.store-picking.html-template.picker-name' | trans }} : </td>
+                <td>{{ 'sales-document.store-picking.html-template.order-reference' | trans }} : {{ storePickingList.orderReference }}</td>
+                <td>{{ 'sales-document.store-picking.html-template.customer-reference' | trans}} : {{ storePickingList.customerReference }}</td>
+            </tr>
+        </table>
+    </htmlpageheader>
+    <sethtmlpageheader name="{{ storePickingList.merchantDetails }}" value="on"/>
+
+    {% if loop.first == false %}
+        <pagebreak></pagebreak>
+    {% else %}
+        <h1 align="center">
+            {{ 'sales-document.store-picking.html-template.title.picking-list' | trans }}
+        </h1>
+        <table border="1">
+            <tr>
+                <td>{{ 'sales-document.store-picking.html-template.delivery-date' | trans }} : {{ storePickingList.deliveryDate | date('d/m/Y') }}</td>
+                <td class="fixed-width-16">{{ 'sales-document.store-picking.html-template.picker-name' | trans }} : </td>
+                <td>{{ 'sales-document.store-picking.html-template.order-reference' | trans }} : {{ storePickingList.orderReference }}</td>
+                <td>{{ 'sales-document.store-picking.html-template.customer-reference' | trans}} : {{ storePickingList.customerReference }}</td>
+            </tr>
+        </table>
+        <br>
+    {% endif %}
+
+    <table border="1">
+        <thead>
+        <tr>
+            <th>{{ 'sales-document.store-picking.html-template.article-number' | trans | raw }}</th>
+            <th>{{ 'sales-document.store-picking.html-template.article-name' | trans | raw }}</th>
+            <th>{{ 'sales-document.store-picking.html-template.article-variety' | trans | raw }}</th>
+            <th>{{ 'sales-document.store-picking.html-template.quantity' | trans | raw }}</th>
+            <th style="width: 20em">{{ 'sales-document.store-picking.html-template.comments' | trans | raw }}</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for item in storePickingList.items %}
+            <tr>
+                <td>{{ item.productNumber }}</td>
+                <td>{{ item.productName }}</td>
+                <td>{{ item.productVariety }}</td>
+                <td>{{ item.quantity }}</td>
+                <td></td>
+            </tr>
+        {%  endfor %}
+        </tbody>
+    </table>
+{% endfor %}
+</body>
+</html>

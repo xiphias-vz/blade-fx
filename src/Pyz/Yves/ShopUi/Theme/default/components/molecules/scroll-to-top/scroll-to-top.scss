@@ -1,0 +1,33 @@
+@mixin shop-ui-scroll-to-top($name: '.scroll-to-top') {
+    #{$name} {
+        position: absolute;
+        top: 50%;
+        right: 0;
+        transform: translateY(-50%);
+        border-radius: 50%;
+
+        @include helper-breakpoint-media-min($lg-min) {
+            right: rem(40);
+        }
+
+        &__trigger {
+            @include helper-effect-transition(color);
+            cursor: pointer;
+            width: rem(50);
+            height: rem(50);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            color: $setting-color-white;
+
+            &:hover {
+                color: $setting-color-gray-3;
+            }
+        }
+
+        @content;
+    }
+}
+
+@include shop-ui-scroll-to-top();

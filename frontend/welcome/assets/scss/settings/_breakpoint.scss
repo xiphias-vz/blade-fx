@@ -1,0 +1,16 @@
+$sm-min: 0;
+$sm-max: 575px;
+$md-min: 576px;
+$md-max: 768px;
+$lg-min: 769px;
+$lg-max: 991px;
+$xl-min: 992px;
+$xl-max: 1300px;
+$xxl-min: 1301px;
+
+$setting-breakpoints: (
+    sm: ($sm-min, $sm-max),
+    md: ($md-min, $md-max),
+    lg: ($lg-min, $lg-max),
+    xl: ($xl-min)
+);

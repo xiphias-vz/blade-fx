@@ -1,0 +1,35 @@
+@mixin catalog-page-suggestion-links-list($name: '.suggestion-links-list') {
+    #{$name} {
+        &__holder {
+            margin-bottom: rem(15);
+        }
+
+        &__item {
+            margin: rem(7) 0;
+
+            &:first-child {
+                margin-top: 0;
+            }
+        }
+
+        &__item-link {
+            @include helper-effect-transition(color background);
+            display: block;
+            text-transform: capitalize;
+            text-decoration: none;
+            padding: rem(3) rem(10);
+            margin: 0 rem(-10);
+            border-radius: rem(5);
+            color: $setting-color-gray-6;
+
+            &:hover {
+                text-decoration: none;
+                background: $setting-color-gray-2;
+            }
+        }
+
+        @content;
+    }
+}
+
+@include catalog-page-suggestion-links-list();

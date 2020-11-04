@@ -1,0 +1,126 @@
+<?xml version="1.0"?>
+<statemachine
+        xmlns="spryker:oms-01"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="spryker:oms-01 http://static.spryker.com/oms-01.xsd">
+
+    <process name="DummyPayment01" main="true">
+        <subprocesses>
+            <process>Refund</process>
+            <process>Cancellation</process>
+            <process>StorePicking</process>
+            <process>StoreCollection</process>
+            <process>StoreDelivery</process>
+            <process>Invoice</process>
+        </subprocesses>
+
+        <states>
+            <state name="new">
+                <flag>cancellable by customer</flag>
+            </state>
+            <state name="paid">
+                <flag>cancellable by customer</flag>
+            </state>
+            <state name="confirmed">
+                <flag>cancellable by customer</flag>
+            </state>
+            <state name="not cancellable by customer">
+                <flag>cancellable by customer</flag>
+            </state>
+            <state name="accepted by customer"/>
+            <state name="order invoiced"/>
+            <state name="closed"/>
+        </states>
+
+        <transitions>
+            <transition happy="true">
+                <source>new</source>
+                <target>paid</target>
+                <event>pass 1 second</event>
+            </transition>
+
+            <transition>
+                <source>new</source>
+                <target>cancelled by customer</target>
+                <event>cancel by customer</event>
+            </transition>
+
+            <transition happy="true">
+                <source>paid</source>
+                <target>confirmed</target>
+                <event>confirm</event>
+            </transition>
+
+            <transition happy="true" >
+                <source>confirmed</source>
+                <target>not cancellable by customer</target>
+                <event>wait for cancellation deadline</event>
+            </transition>
+
+            <transition happy="true">
+                <source>not cancellable by customer</source>
+                <target>started order processing</target>
+                <event>pass</event>
+            </transition>
+
+            <transition>
+                <source>confirmed</source>
+                <target>cancelled by customer</target>
+                <event>cancel by customer</event>
+            </transition>
+
+            <transition>
+                <source>started order processing</source>
+                <target>cancelled by customer</target>
+                <event>cancel by customer</event>
+            </transition>
+
+            <transition>
+                <source>cancelled by customer</source>
+                <target>release time slot and cancel</target>
+                <event>pass</event>
+            </transition>
+
+            <transition happy="true">
+                <source>accepted by customer</source>
+                <target>invoice process</target>
+                <event>pass</event>
+            </transition>
+
+            <transition>
+                <source>order invoiced</source>
+                <target>ready for return</target>
+                <event>return</event>
+            </transition>
+
+            <transition happy="true">
+                <source>order invoiced</source>
+                <target>closed</target>
+                <event>close</event>
+            </transition>
+        </transitions>
+
+        <events>
+            <event name="authorize" onEnter="true"/>
+            <event name="pay" manual="true" timeout="1 hour" command="DummyPayment/Pay"/>
+            <event name="confirm" onEnter="true"/>
+            <event name="wait for cancellation deadline" timeout="1 second"/>
+            <event name="release time slot" onEnter="true" command="TimeSlot/Release"/>
+            <event name="cancel by customer" manual="true" command="OrderCancelByCustomer"/>
+            <event name="export" onEnter="true"/>
+            <event name="close" manual="true" />
+            <event name="return" manual="true" />
+
+            <event name="pass" onEnter="true"/>
+            <event name="pass 1 second" timeout="1 second"/>
+            <event name="TEST manual skip" manual="true"/>
+        </events>
+
+    </process>
+
+    <process name="Refund" file="Subprocess/Refund02.xml"/>
+    <process name="Cancellation" file="Subprocess/Cancellation01.xml"/>
+    <process name="StorePicking" file="AppSubprocess/StorePicking01.xml"/>
+    <process name="Invoice" file="Subprocess/Invoice01.xml"/>
+
+</statemachine>

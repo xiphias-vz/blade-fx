@@ -1,0 +1,22 @@
+@mixin picker-pick-products($name: '.pick-products') {
+    #{$name} {
+        &__action-wrapper {
+            min-height: rem(56);
+        }
+
+        &__action {
+            padding: 0 0 map-get($setting-spacing, big);
+
+            &--fixed {
+                position: fixed;
+                bottom: 0;
+                left: 0;
+                z-index: $setting-zi-popup;
+                width: 100%;
+                padding: map-get($setting-spacing, big);
+            }
+        }
+    }
+}
+
+@include picker-pick-products();

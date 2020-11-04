@@ -1,0 +1,12 @@
+@mixin shop-ui-navigation-header($name: '.navigation-header') {
+    #{$name} {
+        max-height: 100%;
+        overflow-y: auto;
+
+        @include helper-media-ie() {
+            direction: rtl;
+        }
+    }
+}
+
+@include shop-ui-navigation-header();

@@ -1,0 +1,75 @@
+@mixin checkout-page-checkout-block($name: '.checkout-block') {
+    #{$name} {
+        background-color: $setting-color-gray-1;
+        color: $setting-color-gray-9;
+        border-radius: rem(2);
+        padding: rem(20) rem(15);
+
+        @include helper-breakpoint-media-min($xl-min) {
+            padding: rem(30);
+        }
+
+        &--shipment {
+            padding-bottom: 0;
+            margin-bottom: rem(30);
+        }
+
+        &--summary {
+            background: none;
+            padding: 0;
+            border-radius: 0;
+        }
+
+        &__title-with-link {
+            @include helper-breakpoint-media-min($md-min) {
+                display: flex;
+                justify-content: space-between;
+                align-items: baseline;
+            }
+        }
+
+        &__summary {
+            background: $setting-color-gray-2;
+            padding: rem(15);
+            border-radius: rem(4);
+            margin-bottom: rem(15);
+
+            @include helper-breakpoint-media-min($lg-min) {
+                padding: rem(30);
+                margin-bottom: rem(30);
+            }
+        }
+
+        &__summary-total {
+            border-top: rem(1) solid $setting-color-gray-10;
+            padding: rem(15) rem(15) 0;
+            margin: 0 rem(-15);
+
+            @include helper-breakpoint-media-min($lg-min) {
+                padding: rem(30) rem(30) 0;
+                margin: 0 rem(-30);
+            }
+        }
+
+        &__title {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            align-items: center;
+            font: fw(bold) rem(24) / 1 $setting-font-family-additional;
+            padding-bottom: rem(30);
+            color: $setting-color-gray-6;
+
+            &-counter {
+                padding: rem(5) 0;
+                font-size: rem(15);
+                color: $setting-color-gray-6;
+                font-weight: fw(regular);
+            }
+        }
+
+        @content;
+    }
+}
+
+@include checkout-page-checkout-block();

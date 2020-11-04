@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<transfers xmlns="http://xsd.spryker.com"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://static.spryker.com http://static.spryker.com/transfer-01.xsd" >
+
+    <transfer name="ProductComparativePrice">
+        <property name="isValid" type="bool" />
+        <property name="amount" type="int" />
+        <property name="unit" type="string" />
+        <property name="currencySymbol" type="string" />
+    </transfer>
+</transfers>

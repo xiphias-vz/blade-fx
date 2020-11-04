@@ -1,0 +1,19 @@
+@mixin customer-reorder-widget-customer-reorder-form($name: '.customer-reorder-form') {
+    #{$name} {
+        &__button {
+            width: 100%;
+            margin-top: rem(12);
+
+            @include helper-breakpoint-media-min($lg-min) {
+                margin-top: 0;
+                width: auto;
+
+                &:not(:first-child) {
+                    margin-left: rem(12);
+                }
+            }
+        }
+    }
+}
+
+@include customer-reorder-widget-customer-reorder-form();

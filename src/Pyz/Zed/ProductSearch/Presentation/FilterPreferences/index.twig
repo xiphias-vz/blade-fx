@@ -1,0 +1,26 @@
+{% extends '@Gui/Layout/layout.twig' %}
+
+{% set widget_title = 'Filter Preferences' %}
+
+{% block section_title %}{{ widget_title | trans }}{% endblock %}
+{% block widget_tittle %}{{ widget_title | trans }}{% endblock %}
+
+{% block action %}
+    {{ createActionButton('/product-search/filter-preferences/create', 'Create filter' | trans, {'id': 'createFilter'}) }}
+    {{ editActionButton('/product-search/filter-reorder', 'Edit filter order' | trans, {'id': 'editFilter'}) }}
+    {{ viewActionButton('/product-search/filter-preferences/sync', 'Synchronize filter preferences' | trans, {'id': 'syncFilters'}) }}
+{% endblock %}
+
+{% block content %}
+
+    {% embed '@Gui/Partials/widget.twig' with { widget_title: 'Filter Preferences' | trans } %}
+
+        {% block widget_content %}
+
+            {{ filterPreferencesTable | raw }}
+
+        {% endblock %}
+
+    {% endembed %}
+
+{% endblock %}

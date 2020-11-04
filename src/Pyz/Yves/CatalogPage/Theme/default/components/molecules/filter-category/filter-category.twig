@@ -1,0 +1,15 @@
+{% extends molecule('filter-category', '@SprykerShop:CatalogPage') %}
+
+{% define data = {
+    categories: prepareFilterCategories(data.filter, data.category.node_id | default(0))
+} %}
+
+{% block body %}
+    {% include molecule('filter-category-nested', 'CatalogPage') with {
+        data: {
+            levelMenu: 1,
+            categories: data.categories,
+            parentJsName: data.parentJsName,
+        },
+    } only %}
+{% endblock %}

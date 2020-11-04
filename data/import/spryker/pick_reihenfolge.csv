@@ -1,0 +1,298 @@
+Reihenfolge;ACG_Warengruppe;ACG_Unterwarengruppe
+1;Kaffee/Kakao;Löslicher Kaffee
+2;Kaffee/Kakao;Bohnenkaffee
+3;Kaffee/Kakao;Kaffeehaltige Heißgetränke
+4;Kaffee/Kakao;Pulvergetränke
+5;Kaffee/Kakao;Kaffeekapseln
+6;Kaffee/Kakao;Einzelportionen/Trinkfertig
+7;Tee;Kräutertee
+8;Tee;Schwarztee
+9;Tee;Instanttee
+10;Tee;Früchtetee
+11;Tee;Grüner Tee
+12;Tee;Gemischte Sorten
+13;Konfitüren/Brotaufstriche;Fruchtaufstriche
+14;Konfitüren/Brotaufstriche;Honig
+15;Konfitüren/Brotaufstriche;Sirup/Garnierung
+16;Konfitüren/Brotaufstriche;Nussaufstriche
+17;Konfitüren/Brotaufstriche;Süße Aufstriche
+18;Brot/Kuchen;Aufbackartikel
+19;Brot/Kuchen;Frischbrot
+20;Brot/Kuchen;Frische Feinbackwaren
+21;Brot/Kuchen;Frische Kleinbackwaren
+22;Brot/Kuchen;Haltbare Feinbackwaren
+23;Brot/Kuchen;Haltbarer Kuchen
+24;Brot/Kuchen;Haltbares Brot
+25;Brot/Kuchen;Markenbrot
+26;Brot/Kuchen;Brötchen/Semmeln
+27;Brot/Kuchen;Alternativen zum Sandwich
+28;Brot/Kuchen;Frischer Kuchen
+29;Brot/Kuchen;Kleingebäck
+30;Bake-Off;Weißbrot
+31;Bake-Off;Schwarz-/Vollkornbrot
+32;Bake-Off;Spezialbrot
+33;Bake-Off;Pikante Snacks
+34;Bake-Off;Feinbackwaren
+35;Bake-Off;Brötchen/Semmeln
+36;Cerealien/Snacks;Cerealien
+37;Cerealien/Snacks;Warme Cerealien/Haferbrei
+38;Cerealien/Snacks;Snack-/Energie-/Müsliriegel
+39;Cerealien/Snacks;Gesunde Snacks
+40;Wasser;Wasser
+41;Wasser;Wasser, aromatisiert
+42;CO2 Erfrischungsgetränke;Softdrinks/Fruchthaltige Erfrischungsgetränke
+43;CO2 Erfrischungsgetränke;Tonics/Mixgetränke
+44;Gebäck;Gebäck
+45;Gebäck;Waffeln
+46;Schokolade/Pralinen;Tafelschokolade
+47;Schokolade/Pralinen;Schokoriegel
+48;Schokolade/Pralinen;Pralinen
+49;Schokolade/Pralinen;Süßwaren mit Schokolade
+50;Bonbons/Kaugummi;Kaugummi
+51;Bonbons/Kaugummi;Bonbons (mit Zucker/zuckerfrei)
+52;Bonbons/Kaugummi;Kaubonbons
+53;Bonbons/Kaugummi;Fruchtgummi
+54;Bonbons/Kaugummi;Lutschbonbons
+55;Nüsse/Trockenfrüchte;Nüsse
+56;Nüsse/Trockenfrüchte;Trockenfrüchte
+57;Chips/Snacks;Chips
+58;Chips/Snacks;Snacks
+59;Salzgebäck;Salzgebäck/Kräcker
+60;Funktionsgetränke/Eistee;Sport-/Energy Drinks
+61;Bier;Bier
+62;Bier;Biergetränke
+63;Bier;Cider
+64;Spirituosen;Spirituosen
+65;Spirituosen;Liköre/Bitter
+66;Spirituosen;Mixgetränke
+67;Sekt/Schaumwein;Sekt/Schaumwein
+68;Wein;Rotwein
+69;Wein;Weißwein
+70;Wein;Roséwein
+71;Wein;Likör-/Dessertwein
+72;Wein;Weinhaltige Getränke/Weine, sortiert
+73;Funktionsgetränke/Eistee;Eistee
+74;Funktionsgetränke/Eistee;ACE
+75;Fruchtsäfte/Sirupe;Fruchtsäfte (Säfte, Nektar)
+76;Fruchtsäfte/Sirupe;Sirupe
+77;Obst;Äpfel
+78;Obst;Birnen
+79;Obst;Steinobst
+80;Obst;Beeren
+81;Obst;Trauben
+82;Obst;Zitrusfrüchte
+83;Obst;Zitrusfrüche
+84;Obst;Exotische Früchte
+85;Obst;Bananen
+86;Obst;Melonen
+87;Obst;Mangos
+88;Obst;Avocados
+89;Obst;Loses Obst
+90;Obst;Sonstiges Obst
+91;Obst;Snacks/Obst, verzehrfertig
+92;Gemüse;Gemüse (hart)
+93;Gemüse;Paprika
+94;Gemüse;Tomaten
+95;Gemüse;Kohlgemüse
+96;Gemüse;Wurzel-/Knollengemüse
+97;Gemüse;Kartoffeln
+98;Gemüse;Zwiebelgemüse
+99;Gemüse;Pilze
+100;Gemüse;Hülsenfrüchte
+101;Gemüse;Kürbisse
+102;Gemüse;Zucchini
+103;Gemüse;Spargel
+104;Gemüse;Frische Kräuter
+105;Gemüse;Gewürze
+106;Gemüse;Loses Gemüse
+107;Gemüse;Sonstiges Gemüse
+108;Gemüse;Snacks/Gemüse, verzehrfertig
+109;Salate;Blattsalate
+110;Salate;Sonstige Salate
+111;Frischfleisch (ohne Schwein/Geflügel);Rind, frisch
+112;Frischfleisch (ohne Schwein/Geflügel);Lamm, frisch
+113;Frischfleisch (ohne Schwein/Geflügel);Frischfleisch-Spezialitäten
+114;Frischfleisch (ohne Schwein/Geflügel);Hackfleisch, diverse
+115;Frischfleisch (ohne Schwein/Geflügel);Wild, frisch
+116;Schweinefleisch, frisch;Schwein, frisch
+117;Schweinefleisch, frisch;Bratwurst, frisch
+118;Schweinefleisch, frisch;Schinken, frisch
+119;Schweinefleisch, frisch;Schweinefleisch-Spezialitäten, frisch
+120;Schweinefleisch, frisch;Hackfleisch, Schwein
+121;Geflügel, frisch;Hühnchen, frisch
+122;Geflügel, frisch;Pute, frisch
+123;Geflügel, frisch;Ente, frisch
+124;Geflügel, frisch;Geflügelwaren-Spezialitäten, frisch
+125;Geflügel, frisch;Hackfleisch, Geflügel
+126;Fisch, frisch;Fisch
+127;Fisch, frisch;Meeresfrüchte
+128;Gekühlte Getränke;Säfte
+129;Gekühlte Feinkost;Feinkost
+130;Gekühlte Feinkost;Aufstriche/Dips/Dressings
+131;Gekühlte Feinkost;Salat
+132;Gekühlte Feinkost;Salat, verzehrfertig
+133;Gekühlte Feinkost;Frucht-Snacks
+134;Gekühlte Feinkost;Sandwiches/Snacks
+135;Gekühlte Fertiggerichte;Fertiggerichte
+136;Gekühlte Fertiggerichte;Pizza
+137;Gekühlte Fertiggerichte;Kartoffelprodukte
+138;Gekühlte Fertiggerichte;Teigwaren
+139;Gekühlte Fertiggerichte;Backwaren
+140;Gekühlter verzehrfertiger Fisch;Fisch/Meeresfrüchte
+141;Gekühltes verzehrfertiges Fleisch/Fleischersatzprodukte;Verzehrfertiges Hähnchen
+142;Gekühltes verzehrfertiges Fleisch/Fleischersatzprodukte;Verzehrfertiges Fleisch
+143;Gekühltes verzehrfertiges Fleisch/Fleischersatzprodukte;Snack-Fleischwaren
+144;Gekühltes verzehrfertiges Fleisch/Fleischersatzprodukte;Fleischersatzprodukte
+145;Gekühlte Wurstwaren;Aspikware/Sülze
+146;Gekühlte Wurstwaren;Bratwurst
+147;Gekühlte Wurstwaren;Brühwurst
+148;Gekühlte Wurstwaren;Kochwurst
+149;Gekühlte Wurstwaren;Rohwurst
+150;Gekühlte Wurstwaren;Würstchen
+151;Gekühlte Wurstwaren;Schinken gekocht/gepökelt
+152;Gekühlte Wurstwaren;Schinken roh/gepökelt/luftgetrocknet
+153;Gekühlte Wurstwaren;Restliche Pökelware
+154;Gekühlte Wurstwaren;Sonstige Wurst
+155;Gekühlte Wurstwaren;Speck/Rohschinken
+156;Gekühlte Wurstwaren;Fleisch geschnitten/Wurst geschnitten
+157;Gekühlte Wurstwaren;Kochschinken
+158;Gekühlte Wurstwaren;Wurstwaren fermentiert/gepökelt/geräuchert
+159;Gekühlte Wurstwaren;Aufschnitt roh/gepökelt
+160;Gekühlte Wurstwaren;Gegarter Aufschnitt
+161;Gekühlte Wurstwaren;Pasteten
+162;Gekühlte Wurstwaren;Sonstige Fleischwaren
+163;Käse/Käseersatzprodukte;Hart-/Schnittkäse
+164;Käse/Käseersatzprodukte;Weichkäse
+165;Käse/Käseersatzprodukte;Frischkäse
+166;Käse/Käseersatzprodukte;Schmelzkäse
+167;Käse/Käseersatzprodukte;Käseerzeugnisse eigener Art
+168;Käse/Käseersatzprodukte;Cheddar am Stück
+169;Käse/Käseersatzprodukte;Käse gerieben/zerkleinert
+170;Käse/Käseersatzprodukte;Ingredients (keine dt. Übersetzung)
+171;Käse/Käseersatzprodukte;Käse geschnitten
+172;Käse/Käseersatzprodukte;Käsesnacks
+173;Käse/Käseersatzprodukte;Käsespezialitäten
+174;Käse/Käseersatzprodukte;Käseersatzprodukte
+175;Joghurts/Quark;Joghurt, Natur
+176;Joghurts/Quark;Joghurt, Frucht
+177;Joghurts/Quark;Joghurtersatzprodukte
+178;Joghurts/Quark;Quark
+179;Milch/Sahne/Butter;Milchgetränke
+180;Milch/Sahne/Butter;Milch
+181;Milch/Sahne/Butter;Sahne
+182;Milch/Sahne/Butter;Butter/tierische Fette
+183;Gekühlte Feinkost;Desserts
+184;TK Fertiggerichte/Pizzas;Fertig-/Teilfertiggerichte
+185;TK Fertiggerichte/Pizzas;Snacks/Kuchen
+186;TK Fertiggerichte/Pizzas;Frühstück
+187;TK Fleisch/Fisch;Fisch/Meeresfrüchte
+188;TK Fertiggerichte/Pizzas;Pizza/Baguettes
+189;TK Obst/Gemüse;Kartoffelprodukte
+190;TK Obst/Gemüse;Gemüse
+191;TK Obst/Gemüse;Obst
+192;TK Desserts/Backwaren/Eis;Backwaren
+193;TK Obst/Gemüse;Säfte
+194;TK Desserts/Backwaren/Eis;Eis
+195;TK Desserts/Backwaren/Eis;Desserts/Mehlspeisen
+196;TK Fleisch/Fisch;Hühnchen
+197;TK Fleisch/Fisch;Pute
+198;TK Fleisch/Fisch;Schwein
+199;TK Fleisch/Fisch;Rind
+200;TK Fleisch/Fisch;Lamm
+201;TK Fleisch/Fisch;Sonstige Fleischwaren
+202;TK Fleisch/Fisch;Hackfleisch
+203;TK Fleisch/Fisch;Wild
+204;TK Fleisch/Fisch;Fleischersatzprodukte
+205;Nährmittel;Kräuter/Gewürze/Würzzutaten
+206;Wurst-/Fleisch-/Fischkonserven;Fischkonserven
+207;Dauerwurst/Speck;Dauerwurst/Speck
+208;Konfitüren/Brotaufstriche;Herzhafte Aufstriche
+209;H-Milchprodukte/Milchersatzprodukte;H-Käse
+210;Obst;Trockenfrüchte
+211;Backartikel;Backzutaten
+212;Backartikel;Backmischungen
+213;Backartikel;Dessertpulver
+214;Dressings/Öle/Soßen;Dressings/Marinaden
+215;Fertiggerichte/Suppen;Trockensuppen/Fixprodukte/trockene Suppeneinlagen
+216;Nährmittel;Teigwaren
+217;Nährmittel;Vollwertkost
+218;Nährmittel;Kartoffelprodukte
+219;Nährmittel;Reis
+220;Nährmittel;Hülsenfrüchte/Getreide
+221;Dressings/Öle/Soßen;Ketchup/Senf
+222;Dressings/Öle/Soßen;Soßen/Pesto
+223;Dressings/Öle/Soßen;Mayonnaise
+224;Dressings/Öle/Soßen;Meerrettich
+225;H-Milchprodukte/Milchersatzprodukte;H-Milch
+226;H-Milchprodukte/Milchersatzprodukte;H-Sahne
+227;H-Milchprodukte/Milchersatzprodukte;Milchersatzprodukte
+228;Eier;Rohe Eier
+229;Eier;Gekochte Eier
+230;Backartikel;Mehl
+231;Backartikel;Zucker/Süßungsmittel
+232;Dressings/Öle/Soßen;Speiseöle
+233;Dressings/Öle/Soßen;Essig
+234;Margarine/pflanzliche Fette ;Margarine/pflanzliche Fette
+235;Konserven;Obstkonserven
+236;Konserven;Gemüsekonserven
+237;Konserven;Sauerkonserven
+238;Konserven;Pilzkonserven
+239;Konserven;Dessertkonserven
+240;Konserven;Antipasti, ungekühlt
+241;Fertiggerichte/Suppen;Fertiggerichte
+242;Fertiggerichte/Suppen;Eintöpfe/Nasssuppen
+243;Fertiggerichte/Suppen;Desserts
+244;Fertiggerichte/Suppen;Instantgerichte
+245;Wurst-/Fleisch-/Fischkonserven;Wurst-/Fleischkonserven
+246;Babyartikel;Milchnahrung
+247;Babyartikel;Beikost nass
+248;Babyartikel;Beikost trocken
+249;Babyartikel;Pflegeprodukte
+250;Babyartikel;Accessoires
+251;Babyartikel;Snacks/Getränke
+252;Babyartikel;Windeln
+253;Babyartikel;Babyausstattung
+254;Wasch-/Putz-/Reinigungsmittel;Waschmittel
+255;Wasch-/Putz-/Reinigungsmittel;Waschhilfsmittel
+256;Wasch-/Putz-/Reinigungsmittel;Spülmittel
+257;Wasch-/Putz-/Reinigungsmittel;Putzmittel
+258;Wasch-/Putz-/Reinigungsmittel;Insektizide
+259;Wasch-/Putz-/Reinigungsmittel;Lufterfrischer
+260;Wasch-/Putz-/Reinigungsmittel;WC
+261;Wasch-/Putz-/Reinigungsmittel;MGR (Maschinengeschirrreinigung)
+262;Wasch-/Putz-/Reinigungsmittel;Autopflege
+263;Folien/Tücher;Haushaltsfolien
+264;Folien/Tücher;Tragetaschen
+265;Folien/Tücher;Reinigungstücher/Schwämme/Handschuhe
+266;Folien/Tücher;Reinigungssysteme
+267;Tiernahrung;Hundenahrung
+268;Tiernahrung;Katzennahrung
+269;Tiernahrung;Vogelnahrung
+270;Tiernahrung;Gekühlte Tiernahrung
+271;Tiernahrung;Fischfutter
+272;Tiernahrung;Nahrung für andere Tierarten
+273;Tierbedarf;Katzenzubehör
+274;Audio/Video/Batterien;Batterien/Akkus
+275;Audio/Video/Batterien;Batteriezubehör
+276;Papierwaren;Toilettenpapier
+277;Papierwaren;Küchentücher
+278;Papierwaren;Taschentücher/Kosmetiktücher
+279;Papierwaren;Servietten/Geschirr
+280;Körperhygiene;Waschen/Duschen/Baden
+281;Körperhygiene;Deodorants
+282;Körperhygiene;Zahn-/Mundhygiene
+283;Körperhygiene;Rasur/Haarentfernung
+284;Körperhygiene;Damenhygiene
+285;Körperhygiene;Inkontinenzprodukte
+286;Kosmetik/Körperpflege;Haarpflege/Accessoires
+287;Kosmetik/Körperpflege;Hautpflege
+288;Kosmetik/Körperpflege;Sonnenpflege
+289;Kosmetik/Körperpflege;Herrenkosmetik
+290;Kosmetik/Körperpflege;Dekorative Kosmetik
+291;Kosmetik/Körperpflege;Nagel-/Kosmetik Accessoires
+292;Apothekenprodukte;Topische Arzneimittel
+293;Apothekenprodukte;Wundversorgung/Hausapotheke
+294;Apothekenprodukte;Orale Arzneimittel
+295;Apothekenprodukte;Nahrungsergänzungsmittel
+296;Apothekenprodukte;Mobilität/Alltagshilfen
+297;Apothekenprodukte;Sportnahrung

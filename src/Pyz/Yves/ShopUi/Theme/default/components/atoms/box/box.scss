@@ -1,0 +1,19 @@
+@include shop-ui-box {
+    border: none;
+    margin: 0;
+    padding: rem(20);
+    background: $setting-color-gray-1;
+    border-radius: rem(2);
+
+    &--checkout {
+        padding: rem(30);
+        box-shadow: 0 rem(6) rem(16) $setting-color-alpha-1;
+        border-radius: rem(4);
+        background: $setting-color-white;
+    }
+
+    hr,
+    &__separator {
+        border-bottom: none;
+    }
+}

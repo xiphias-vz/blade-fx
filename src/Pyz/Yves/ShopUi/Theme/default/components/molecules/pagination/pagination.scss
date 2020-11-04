@@ -1,0 +1,74 @@
+@mixin shop-ui-pagination($name: '.pagination') {
+    #{$name} {
+        &__list {
+            margin: 0 rem(-5) rem(50);
+        }
+
+        &__item {
+            display: inline-block;
+            padding: 0 rem(5);
+        }
+
+        &__step {
+            @include helper-effect-transition(color background);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: rem(25);
+            height: rem(25);
+            font-weight: fw(medium);
+            font-size: rem(13);
+            text-align: center;
+            color: $setting-color-gray-9;
+            background: $setting-color-white;
+            border: rem(1) solid $setting-color-gray-15;
+            border-radius: rem(2);
+            text-decoration: none;
+
+            @include helper-breakpoint-media-min($md-min) {
+                width: rem(40);
+                height: rem(40);
+                font-size: rem(14);
+                line-height: rem(54);
+            }
+
+            &--ellipsis,
+            &--previous,
+            &--next {
+                border: none;
+                color: $setting-color-gray-12;
+            }
+
+            &:hover {
+                text-decoration: none;
+                background: $setting-color-gray-1;
+                color: $setting-color-gray-9;
+            }
+
+            &--current {
+                color: $setting-color-black;
+                background: $setting-color-gray-1;
+                pointer-events: none;
+            }
+
+            &--ellipsis,
+            &--disabled {
+                color: $setting-color-gray-9;
+                pointer-events: none;
+            }
+        }
+
+        &--search-cms-results {
+            max-width: rem(870);
+            margin: 0 auto;
+
+            #{$name}__list {
+                @include helper-breakpoint-media-min($xl-min) {
+                    margin-bottom: rem(100);
+                }
+            }
+        }
+    }
+}
+
+@include shop-ui-pagination();

@@ -1,0 +1,56 @@
+{% extends view('profile', '@SprykerShop:CustomerPage') %}
+
+{% block customerContent %}
+    <div class="grid grid--justify grid--stretch">
+        <div class="col--lg-6 col--sm-12 spacing-bottom spacing-bottom--biggest">
+            {% include molecule('customer-form', 'CustomerPage') with {
+                class: 'page-layout-customer__col-first box',
+                modifiers: ['customer-overview'],
+                data: {
+                    title: 'customer.profile.update' | trans,
+                    form: data.forms.profile,
+                    layout: {
+                        salutation: 'col col--sm-12 col--lg-4 col--xl-4',
+                        first_name: 'col col--sm-12 col--lg-4 col--xl-4',
+                        last_name: 'col col--sm-12 col--lg-4 col--xl-4',
+                    },
+                    submit: {
+                        enable: true,
+                    },
+                },
+            } only %}
+        </div>
+
+        <div class="col--lg-6 col--sm-12 spacing-bottom spacing-bottom--biggest">
+            {% include molecule('customer-confirmation-form', 'CustomerConfirmationPage') ignore missing with {
+                modifiers: ['borderless'],
+                class: 'page-layout-customer__col-last box',
+                data: {
+                    title: 'customer.password.update' | trans,
+                    form: data.forms.password,
+                    submitButtonText: 'forms.submit-btn',
+                    passwordFieldName: '[new_password][password]',
+                    submitClass: 'button button--large button--expand-mobile spacing spacing--reset',
+                },
+                attributes: {
+                    'is-customer-form-exist': false,
+                    'is-address-form-exist': false,
+                },
+            } only %}
+        </div>
+
+        <div class="col--sm-12 box">
+            {% include molecule('title-box', 'CustomerPage') with {
+                modifiers: ['borderless'],
+                data: {
+                    title: "customer.profile.delete" | trans,
+                },
+            } only %}
+
+            <div class="grid grid--justify grid--middle">
+                <p class="col spacing-bottom spacing-bottom--big">{{ "customer.profile.delete.description" | trans }}</p>
+                <a href="{{ url('customer/delete') }}" class="button button--alternative col col--sm-12 col--lg-auto spacing-bottom spacing-bottom--big">{{ "customer.profile.delete" | trans }}</a>
+            </div>
+        </div>
+    </div>
+{% endblock %}

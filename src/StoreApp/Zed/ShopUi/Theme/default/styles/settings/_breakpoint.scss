@@ -1,0 +1,17 @@
+$sm-min: 0;
+$sm-max: rem(575);
+$md-min: rem(576);
+$md-max: rem(768);
+$lg-min: rem(769);
+$lg-max: rem(991);
+$xl-min: rem(992);
+$xl-max: rem(1300);
+$xxl-min: rem(1301);
+
+$setting-breakpoints: (
+    sm: ($sm-min, $sm-max),
+    md: ($md-min, $md-max),
+    lg: ($lg-min, $lg-max),
+    xl: ($xl-min, $xl-max),
+    xxl: ($xxl-min),
+) !default;

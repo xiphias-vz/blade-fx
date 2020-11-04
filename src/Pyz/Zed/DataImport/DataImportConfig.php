@@ -1,0 +1,337 @@
+<?php
+
+/**
+ * This file is part of the Spryker Commerce OS.
+ * For full license information, please view the LICENSE file that was distributed with this source code.
+ */
+
+namespace Pyz\Zed\DataImport;
+
+use Generated\Shared\Transfer\DataImporterConfigurationTransfer;
+use Pyz\Shared\DataImport\DataImportConfig as SharedDataImportConfig;
+use Pyz\Shared\DataImport\DataImportConstants;
+use Pyz\Shared\ProductDetailPage\ProductDetailPageConstants;
+use Pyz\Shared\ProductPageSearch\ProductPageSearchConstants;
+use Spryker\Zed\DataImport\DataImportConfig as SprykerDataImportConfig;
+
+/**
+ * @SuppressWarnings(PHPMD.ExcessiveClassComplexity)
+ */
+class DataImportConfig extends SprykerDataImportConfig
+{
+    public const IMPORT_TYPE_CATEGORY_TEMPLATE = 'category-template';
+    public const IMPORT_TYPE_CUSTOMER = 'customer';
+    public const IMPORT_TYPE_GLOSSARY = 'glossary';
+    public const IMPORT_TYPE_NAVIGATION = 'navigation';
+    public const IMPORT_TYPE_NAVIGATION_NODE = 'navigation-node';
+    public const IMPORT_TYPE_PRODUCT = 'product';
+    public const IMPORT_TYPE_VITAMIN_ATTRIBUTE = 'vitamin-attribute';
+    public const IMPORT_TYPE_VITAMIN_DATA = 'vitamin-data';
+    public const IMPORT_TYPE_PRODUCT_CATEGORY = 'product-category';
+    public const IMPORT_TYPE_PICKING_ROUTE = 'picking-route';
+    public const IMPORT_TYPE_MERCHANT_DELIVERY_POSTAL_CODE = 'merchant-delivery-postal-code';
+    public const IMPORT_TYPE_MERCHANT_USER = 'merchant-user';
+    public const IMPORT_TYPE_PRODUCT_STOCK = 'product-stock';
+    public const IMPORT_TYPE_PRODUCT_ABSTRACT = 'product-abstract';
+    public const IMPORT_TYPE_PRODUCT_ABSTRACT_STORE = 'product-abstract-store';
+    public const IMPORT_TYPE_PRODUCT_CONCRETE = 'product-concrete';
+    public const IMPORT_TYPE_PRODUCT_ATTRIBUTE_KEY = 'product-attribute-key';
+    public const IMPORT_TYPE_PRODUCT_MANAGEMENT_ATTRIBUTE = 'product-management-attribute';
+    public const IMPORT_TYPE_PRODUCT_RELATION = 'product-relation';
+    public const IMPORT_TYPE_PRODUCT_LABEL = 'product-label';
+    public const IMPORT_TYPE_PRODUCT_SET = 'product-set';
+    public const IMPORT_TYPE_PRODUCT_OPTION = 'product-option';
+    public const IMPORT_TYPE_PRODUCT_OPTION_PRICE = 'product-option-price';
+    public const IMPORT_TYPE_PRODUCT_IMAGE = 'product-image';
+    public const IMPORT_TYPE_PRODUCT_SEARCH_ATTRIBUTE_MAP = 'product-search-attribute-map';
+    public const IMPORT_TYPE_PRODUCT_SEARCH_ATTRIBUTE = 'product-search-attribute';
+    public const IMPORT_TYPE_CMS_TEMPLATE = 'cms-template';
+    public const IMPORT_TYPE_CMS_BLOCK = 'cms-block';
+    public const IMPORT_TYPE_CMS_BLOCK_STORE = 'cms-block-store';
+    public const IMPORT_TYPE_DISCOUNT = 'discount';
+    public const IMPORT_TYPE_DISCOUNT_STORE = 'discount-store';
+    public const IMPORT_TYPE_DISCOUNT_AMOUNT = 'discount-amount';
+    public const IMPORT_TYPE_DISCOUNT_VOUCHER = 'discount-voucher';
+    public const IMPORT_TYPE_SHIPMENT = 'shipment';
+    public const IMPORT_TYPE_SHIPMENT_PRICE = 'shipment-price';
+    public const IMPORT_TYPE_STOCK = 'stock';
+    public const IMPORT_TYPE_TAX = 'tax';
+    public const IMPORT_TYPE_CURRENCY = 'currency';
+    public const IMPORT_TYPE_STORE = 'store';
+    public const IMPORT_POSTAL_CODE = 'postal-code';
+    public const IMPORT_PRODUCT_MANAGEMENT_ATTRIBUTE = 'product-management-attribute';
+
+    /**
+     * @return \Generated\Shared\Transfer\DataImporterConfigurationTransfer
+     */
+    public function getProductDataImporterConfiguration()
+    {
+        return $this->buildBaseImporterConfiguration('spryker/product_data.csv', static::IMPORT_TYPE_PRODUCT, SharedDataImportConfig::IMPORT_CSV_BASE_DELIMITER);
+    }
+
+    /**
+     * @return \Generated\Shared\Transfer\DataImporterConfigurationTransfer
+     */
+    public function getVitaminDataImporterConfiguration(): DataImporterConfigurationTransfer
+    {
+        return $this->buildBaseImporterConfiguration('spryker/vitaminangaben.csv', static::IMPORT_TYPE_VITAMIN_DATA);
+    }
+
+    /**
+     * @return \Generated\Shared\Transfer\DataImporterConfigurationTransfer
+     */
+    public function getProductCategoryImporterConfiguration()
+    {
+        return $this->buildBaseImporterConfiguration('spryker/product_category.csv', static::IMPORT_TYPE_PRODUCT_CATEGORY, SharedDataImportConfig::IMPORT_CSV_BASE_DELIMITER);
+    }
+
+    /**
+     * @return \Generated\Shared\Transfer\DataImporterConfigurationTransfer
+     */
+    public function getProductManagementAttributeImporterConfiguration()
+    {
+        return $this->buildImporterConfiguration('product_management_attribute.csv', static::IMPORT_PRODUCT_MANAGEMENT_ATTRIBUTE);
+    }
+
+    /**
+     * @return \Generated\Shared\Transfer\DataImporterConfigurationTransfer
+     */
+    public function getPickingRouteDataImporterConfiguration(): DataImporterConfigurationTransfer
+    {
+        return $this->buildBaseImporterConfiguration('spryker/pick_reihenfolge.csv', static::IMPORT_TYPE_PICKING_ROUTE);
+    }
+
+    /**
+     * @return \Generated\Shared\Transfer\DataImporterConfigurationTransfer
+     */
+    public function getMerchantDeliveryPostalCodeImporterConfiguration()
+    {
+        return $this->buildBaseImporterConfiguration('spryker/merchant_delivery_zipcode.csv', static::IMPORT_TYPE_MERCHANT_DELIVERY_POSTAL_CODE);
+    }
+
+    /**
+     * @return \Generated\Shared\Transfer\DataImporterConfigurationTransfer
+     */
+    public function getCurrencyDataImporterConfiguration()
+    {
+        return $this->buildImporterConfiguration('currency.csv', static::IMPORT_TYPE_CURRENCY);
+    }
+
+    /**
+     * @return \Generated\Shared\Transfer\DataImporterConfigurationTransfer
+     */
+    public function getStoreDataImporterConfiguration()
+    {
+        return $this->buildImporterConfiguration('', static::IMPORT_TYPE_STORE);
+    }
+
+    /**
+     * @return \Generated\Shared\Transfer\DataImporterConfigurationTransfer
+     */
+    public function getGlossaryDataImporterConfiguration()
+    {
+        return $this->buildImporterConfiguration('glossary.csv', static::IMPORT_TYPE_GLOSSARY);
+    }
+
+    /**
+     * @return \Generated\Shared\Transfer\DataImporterConfigurationTransfer
+     */
+    public function getCustomerDataImporterConfiguration()
+    {
+        return $this->buildImporterConfiguration('customer.csv', static::IMPORT_TYPE_CUSTOMER);
+    }
+
+    /**
+     * @return \Generated\Shared\Transfer\DataImporterConfigurationTransfer
+     */
+    public function getCategoryTemplateDataImporterConfiguration()
+    {
+        return $this->buildImporterConfiguration('category_template.csv', static::IMPORT_TYPE_CATEGORY_TEMPLATE);
+    }
+
+    /**
+     * @return \Generated\Shared\Transfer\DataImporterConfigurationTransfer
+     */
+    public function getTaxDataImporterConfiguration()
+    {
+        return $this->buildImporterConfiguration('tax.csv', static::IMPORT_TYPE_TAX);
+    }
+
+    /**
+     * @return \Generated\Shared\Transfer\DataImporterConfigurationTransfer
+     */
+    public function getStockDataImporterConfiguration()
+    {
+        return $this->buildImporterConfiguration('stock.csv', static::IMPORT_TYPE_STOCK);
+    }
+
+    /**
+     * @return \Generated\Shared\Transfer\DataImporterConfigurationTransfer
+     */
+    public function getShipmentDataImporterConfiguration()
+    {
+        return $this->buildImporterConfiguration('shipment.csv', static::IMPORT_TYPE_SHIPMENT);
+    }
+
+    /**
+     * @return \Generated\Shared\Transfer\DataImporterConfigurationTransfer
+     */
+    public function getShipmentPriceDataImporterConfiguration()
+    {
+        return $this->buildImporterConfiguration('shipment_price.csv', static::IMPORT_TYPE_SHIPMENT_PRICE);
+    }
+
+    /**
+     * @return \Generated\Shared\Transfer\DataImporterConfigurationTransfer
+     */
+    public function getNavigationDataImporterConfiguration()
+    {
+        return $this->buildImporterConfiguration('navigation.csv', static::IMPORT_TYPE_NAVIGATION);
+    }
+
+    /**
+     * @return \Generated\Shared\Transfer\DataImporterConfigurationTransfer
+     */
+    public function getNavigationNodeDataImporterConfiguration()
+    {
+        return $this->buildImporterConfiguration('navigation_node.csv', static::IMPORT_TYPE_NAVIGATION_NODE);
+    }
+
+    /**
+     * @return \Generated\Shared\Transfer\DataImporterConfigurationTransfer
+     */
+    public function getProductAttributeKeyDataImporterConfiguration()
+    {
+        return $this->buildBaseImporterConfiguration('spryker/product_data.csv', static::IMPORT_TYPE_PRODUCT_ATTRIBUTE_KEY,SharedDataImportConfig::IMPORT_CSV_BASE_DELIMITER);
+    }
+
+    /**
+     * @return \Generated\Shared\Transfer\DataImporterConfigurationTransfer
+     */
+    public function getProductVitaminAttributeImporterConfiguration()
+    {
+        return $this->buildBaseImporterConfiguration('spryker/vitaminangaben.csv', static::IMPORT_TYPE_VITAMIN_ATTRIBUTE);
+    }
+
+    /**
+     * @return \Generated\Shared\Transfer\DataImporterConfigurationTransfer
+     */
+    public function getProductLabelDataImporterConfiguration()
+    {
+        return $this->buildImporterConfiguration('product_label.csv', static::IMPORT_TYPE_PRODUCT_LABEL);
+    }
+
+    /**
+     * @return \Generated\Shared\Transfer\DataImporterConfigurationTransfer
+     */
+    public function getProductSearchAttributeMapDataImporterConfiguration()
+    {
+        return $this->buildImporterConfiguration('product_search_attribute_map.csv', static::IMPORT_TYPE_PRODUCT_SEARCH_ATTRIBUTE_MAP);
+    }
+
+    /**
+     * @return \Generated\Shared\Transfer\DataImporterConfigurationTransfer
+     */
+    public function getProductSearchAttributeDataImporterConfiguration()
+    {
+        return $this->buildImporterConfiguration('product_search_attribute.csv', static::IMPORT_TYPE_PRODUCT_SEARCH_ATTRIBUTE);
+    }
+
+    /**
+     * @return \Generated\Shared\Transfer\DataImporterConfigurationTransfer
+     */
+    public function getProductOptionDataImporterConfiguration()
+    {
+        return $this->buildImporterConfiguration('product_option.csv', static::IMPORT_TYPE_PRODUCT_OPTION);
+    }
+
+    /**
+     * @return \Generated\Shared\Transfer\DataImporterConfigurationTransfer
+     */
+    public function getProductOptionPriceDataImporterConfiguration()
+    {
+        return $this->buildImporterConfiguration('product_option_price.csv', static::IMPORT_TYPE_PRODUCT_OPTION_PRICE);
+    }
+
+    /**
+     * @return \Generated\Shared\Transfer\DataImporterConfigurationTransfer
+     */
+    public function getCmsTemplateDataImporterConfiguration()
+    {
+        return $this->buildImporterConfiguration('cms_template.csv', static::IMPORT_TYPE_CMS_TEMPLATE);
+    }
+
+    /**
+     * @return \Generated\Shared\Transfer\DataImporterConfigurationTransfer
+     */
+    public function getCmsBlockDataImporterConfiguration()
+    {
+        return $this->buildImporterConfiguration('cms_block.csv', static::IMPORT_TYPE_CMS_BLOCK);
+    }
+
+    /**
+     * @return \Generated\Shared\Transfer\DataImporterConfigurationTransfer
+     */
+    public function getCmsBlockStoreDataImporterConfiguration()
+    {
+        return $this->buildImporterConfiguration('cms_block_store.csv', static::IMPORT_TYPE_CMS_BLOCK_STORE);
+    }
+
+    /**
+     * @return bool
+     */
+    public function isInternal()
+    {
+        return ($this->getConfig()->get(DataImportConstants::IS_ENABLE_INTERNAL_IMAGE)) ? true : false;
+    }
+
+    /**
+     * @return string[]
+     */
+    public function getSearchableAttributeKeys(): array
+    {
+        return $this->get(ProductPageSearchConstants::SEARCHABLE_ATTRIBUTE_KEYS, []);
+    }
+
+    /**
+     * @return string[]
+     */
+    public function getRequiredAttributeKeys(): array
+    {
+        return $this->get(ProductDetailPageConstants::REQUIRED_ATTRIBUTE_KEYS, []);
+    }
+
+    /**
+     * @param string $file
+     * @param string $importType
+     * @param string $defaultDelimiter
+     *
+     * @return \Generated\Shared\Transfer\DataImporterConfigurationTransfer
+     */
+    protected function buildBaseImporterConfiguration(string $file, string $importType, string $defaultDelimiter = SharedDataImportConfig::IMPORT_CSV_DELIMITER): DataImporterConfigurationTransfer
+    {
+        $dataImporterConfigurationTransfer = $this->buildImporterConfiguration($file, $importType);
+
+        $dataImporterConfigurationTransfer
+            ->getReaderConfiguration()
+            ->setCsvDelimiter($defaultDelimiter);
+
+        return $dataImporterConfigurationTransfer;
+    }
+
+    /**
+     * @return \Generated\Shared\Transfer\DataImporterConfigurationTransfer
+     */
+    public function getPostalCodeDataImporterConfiguration()
+    {
+        return $this->buildImporterConfiguration('postal_code.csv', static::IMPORT_POSTAL_CODE);
+    }
+
+    /**
+     * @return \Generated\Shared\Transfer\DataImporterConfigurationTransfer
+     */
+    public function getMerchantUserImporterConfiguration(): DataImporterConfigurationTransfer
+    {
+        return $this->buildBaseImporterConfiguration('spryker/merchant_user.csv', static::IMPORT_TYPE_MERCHANT_USER);
+    }
+}

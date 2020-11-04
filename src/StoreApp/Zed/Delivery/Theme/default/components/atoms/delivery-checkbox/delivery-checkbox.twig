@@ -1,0 +1,38 @@
+{% extends model('component') %}
+
+{% define config = {
+    name: 'delivery-checkbox',
+    tag: 'delivery-checkbox',
+} %}
+
+{% define data = {
+    checkboxClass: '',
+    checkboxId: '',
+    defaultState: '',
+} %}
+
+{% block body %}
+    <label class="{{ config.name }}__label">
+        <input type="checkbox" data-id="{{ data.checkboxId }}" class="{{ data.checkboxClass }} {{ config.name }}__checkbox" data-default="{{ data.defaultState }}">
+
+        <div class="button button--round {{ config.name }}__unchecked">
+            {% include atom('icon') with {
+                class: 'button__icon',
+                modifiers: ['big'],
+                data: {
+                    name: 'add',
+                },
+            } only %}
+        </div>
+
+        <div class="button button--round button--undo {{ config.name }}__checked">
+            {% include atom('icon') with {
+                class: 'button__icon',
+                modifiers: ['big'],
+                data: {
+                    name: 'undo',
+                },
+            } only %}
+        </div>
+    </label>
+{% endblock %}

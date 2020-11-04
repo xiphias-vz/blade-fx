@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<database xmlns="spryker:schema-01" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" name="zed" xsi:schemaLocation="spryker:schema-01 https://static.spryker.com/schema-01.xsd" namespace="Orm\Zed\DatabaseLoad\Persistence" package="src.Orm.Zed.DatabaseLoad.Persistence">
+
+    <table name="pyz_database_load_test">
+        <column name="id_pyz_database_load_test" required="true" type="BIGINT" autoIncrement="true" primaryKey="true"/>
+        <column name="fake_id" type="INTEGER"/>
+        <column name="fake_varchar" type="VARCHAR"/>
+        <column name="fake_text" type="LONGVARCHAR"/>
+        <index name="pyz_database_load_test-index-fake_id">
+            <index-column name="fake_id"/>
+        </index>
+    </table>
+</database>

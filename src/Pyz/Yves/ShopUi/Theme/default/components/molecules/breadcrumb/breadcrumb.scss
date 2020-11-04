@@ -1,0 +1,29 @@
+@mixin shop-ui-breadcrumb($name: '.breadcrumb') {
+    #{$name} {
+        display: flex;
+        flex-flow: row wrap;
+        padding: rem(20) 0;
+
+        &--bottom {
+            border-bottom: none;
+            border-top: rem(1) solid $setting-color-gray-3;
+        }
+
+        &--no-border {
+            border: none;
+        }
+
+        &--progress {
+            min-height: rem(46);
+            display: inline-flex;
+            align-items: center;
+            flex-wrap: nowrap;
+            border-bottom: none;
+            padding: 0;
+            max-width: rem(580);
+            margin: 0 auto;
+        }
+    }
+}
+
+@include shop-ui-breadcrumb();

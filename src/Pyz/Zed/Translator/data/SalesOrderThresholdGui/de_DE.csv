@@ -1,0 +1,13 @@
+Hard Threshold,Mindestbetrag
+Hard Minimum Threshold,Mindestbetrag
+Hard Maximum Threshold,Maximalbetrag
+Max Order value,Maximalbetrag
+Threshold settings,Grenzwerteinstellungen
+Store and Currency,Region und Währung
+Enter threshold value,Schwellenwert eingeben
+Message,Botschaft
+Enter fixed fee,Geben Sie eine feste Gebühr ein
+Enter flexible fee,Geben Sie die flexible Gebühr ein
+"You can use the placeholders <code>{{threshold}}</code>.","Sie können die Platzhalter <code>{{threshold}}</code> benutzen."
+"Minimum order value cannot be greater or equal to the maximum order value.","Der minimale Bestellwert darf nicht größer oder gleich dem maximalen Bestellwert sein."
+"The Global Thresholds is saved successfully.","Die globalen Bestellschwellen werden erfolgreich gespeichert."

@@ -1,0 +1,115 @@
+<?xml version="1.0"?>
+<statemachine
+        xmlns="spryker:oms-01"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="spryker:oms-01 http://static.spryker.com/oms-01.xsd">
+
+    <process name="StorePicking01">
+        <subprocesses>
+            <process>StoreCollection</process>
+            <process>StoreDelivery</process>
+        </subprocesses>
+
+        <states>
+            <state name="started order processing">
+                <flag>cancellable by customer</flag>
+            </state>
+            <state name="ready to start picking" />
+            <state name="ready for picking" />
+            <state name="picked" />
+            <state name="cancelled due to not in stock">
+                <flag>cancelled</flag>
+            </state>
+            <state name="picking cancelled by timeout">
+                <flag>cancelled</flag>
+            </state>
+        </states>
+
+        <transitions>
+            <transition happy="true" condition="can start picking">
+                <source>started order processing</source>
+                <target>ready to start picking</target>
+                <event>pass 10 minutes</event>
+            </transition>
+
+            <transition>
+                <source>started order processing</source>
+                <target>ready to start picking</target>
+                <event>TEST manual skip to picking</event>
+            </transition>
+
+            <transition happy="true">
+                <source>ready to start picking</source>
+                <target>ready for picking</target>
+                <event>move to ready for picking</event>
+            </transition>
+
+            <transition happy="true">
+                <source>ready for picking</source>
+                <target>picked</target>
+                <event>confirm picking</event>
+            </transition>
+
+            <transition condition="Sales/IsExpiredOrder">
+                <source>ready for picking</source>
+                <target>picking cancelled by timeout</target>
+                <event>pass 10 minutes</event>
+            </transition>
+
+            <transition>
+                <source>picking cancelled by timeout</source>
+                <target>cancelled by timeout</target>
+                <event>cancel by timeout</event>
+            </transition>
+
+            <transition>
+                <source>ready for picking</source>
+                <target>cancelled due to not in stock</target>
+                <event>cancel due to not in stock</event>
+            </transition>
+
+            <transition>
+                <source>cancelled due to not in stock</source>
+                <target>cancellation process</target>
+                <event>process cancelled due to not in stock</event>
+            </transition>
+
+            <transition happy="true" condition="is for collection">
+                <source>picked</source>
+                <target>collection process</target>
+                <event>pass</event>
+            </transition>
+
+            <transition>
+                <source>picked</source>
+                <target>delivery process</target>
+                <event>pass</event>
+            </transition>
+
+            <transition happy="true">
+                <source>collected by customer</source>
+                <target>accepted by customer</target>
+                <event>pass 1 second</event>
+            </transition>
+
+            <transition happy="true">
+                <source>delivered to customer</source>
+                <target>accepted by customer</target>
+                <event>pass 1 second</event>
+            </transition>
+        </transitions>
+
+        <events>
+            <event name="move to ready for picking" onEnter="true" command="Sales/MoveToReadyForPicking"/>
+            <event name="confirm picking" manual="true" command="Sales/ConfirmPicking"/>
+            <event name="cancel due to not in stock" manual="true"/>
+            <event name="process cancelled due to not in stock" onEnter="true" command="Oms/CancelDueToNotInStock"/>
+            <event name="close order" manual="true"/>
+            <event name="TEST manual skip to picking" manual="true"/>
+        </events>
+    </process>
+
+    <process name="StoreCollection" file="StoreCollection01.xml"/>
+    <process name="StoreDelivery" file="StoreDelivery01.xml"/>
+
+</statemachine>

@@ -1,0 +1,71 @@
+@mixin shop-ui-header($name: '.header') {
+    #{$name} {
+        height: rem(62);
+        margin-bottom: rem(35);
+
+        &--spacing-reset {
+            margin-bottom: rem(16);
+        }
+
+        &--picking-detail {
+            height: rem(124);
+        }
+
+        &--product-type {
+            min-height: rem(84);
+            margin-bottom: 0;
+
+            #{$name} {
+                &__header-bottom {
+                    background: $setting-color-gray-2;
+                }
+            }
+        }
+
+        &--product-type-big {
+            min-height: rem(125);
+        }
+
+        &__header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: $setting-zi-header;
+            width: 100%;
+        }
+
+        &__header-top {
+            min-height: rem(60);
+            padding: rem(8) 0;
+            background: $setting-color-white;
+            color: $setting-color-gray-10;
+            border-bottom: rem(5) solid $setting-color-gray-2;
+        }
+
+        &__header-bottom {
+            background: $setting-color-white;
+        }
+
+        &__content {
+            height: rem(63);
+        }
+
+        &__logout {
+            width: rem(60);
+        }
+
+        &__location-title {
+            font: rem(15)/1 $setting-font-family-additional;
+            @include helper-font-weight(light);
+        }
+
+        &__time {
+            padding-bottom: rem(3);
+            font-weight: fw(bold);
+        }
+
+        @content;
+    }
+}
+
+@include shop-ui-header();

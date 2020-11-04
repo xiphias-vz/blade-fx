@@ -1,0 +1,13 @@
+@include util-visibility() {
+    .is-not-scrollable-on-mobile {
+        @include helper-breakpoint-media-max($md-max) {
+            overflow: hidden;
+        }
+    }
+
+    .is-not-scrollable-on-mobile-tablet {
+        @include helper-breakpoint-media-max($lg-max) {
+            overflow: hidden;
+        }
+    }
+}

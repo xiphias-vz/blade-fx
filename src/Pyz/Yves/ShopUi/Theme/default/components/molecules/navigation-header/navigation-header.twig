@@ -1,0 +1,29 @@
+{% extends model('component') %}
+
+{% define config = {
+    name: 'navigation-header',
+    tag: 'nav',
+} %}
+
+{% define data = {
+    nodes: [],
+} %}
+
+{% block body %}
+    <ul class="{{ config.name }}__list">
+        {% for node in data.nodes %}
+            {% set hasChildren = node.children | length > 0 %}
+
+            {% embed molecule('navigation-multilevel-node') with {
+                class: config.name ~ '__item',
+                modifiers: ['header'],
+                data: {
+                    node: node,
+                    hasChildren: hasChildren,
+                },
+            } only %}
+                {% block linkIcon %}{% endblock %}
+            {% endembed %}
+        {% endfor %}
+    </ul>
+{% endblock %}

@@ -1,0 +1,149 @@
+@include shop-ui-table {
+    $name: '.table';
+    border-bottom: rem(1) solid $setting-color-gray-2;
+
+    td, th {
+        padding: rem(4);
+        word-break: break-all;
+    }
+
+    thead {
+        background: $setting-color-blue-light;
+        color: $setting-color-white;
+        border-bottom: none;
+    }
+
+    &__body,
+    tbody {
+        tr {
+            &:not(#{$name}__row--backgroungless) {
+                &:nth-child(even) {
+                    background: $setting-color-gray-2;
+                }
+            }
+        }
+    }
+
+    .text-right {
+        text-align: right;
+    }
+
+    &--customer-account {
+        td,
+        th {
+            padding: rem(8);
+        }
+
+        .checkbox {
+            margin: rem(4) 0 0;
+        }
+    }
+
+    &--order {
+        th,
+        td {
+            font-size: rem(14);
+
+            @include helper-breakpoint-media-min($md-min) {
+                font-size: rem(16);
+            }
+        }
+
+        th {
+            white-space: nowrap;
+        }
+    }
+
+    &--order-detail {
+        th,
+        td {
+            font-size: rem(11);
+            padding: rem(4);
+
+            @include helper-breakpoint-media-min($md-min) {
+                font-size: rem(16);
+                padding: rem(8);
+            }
+        }
+
+        .checkbox {
+            margin: 0;
+
+            @include helper-breakpoint-media-min($md-min) {
+                margin: rem(4) 0 0;
+            }
+        }
+    }
+
+    &--wishlist {
+        th,
+        td {
+            padding-left: 0;
+
+            @include helper-breakpoint-media-min($lg-min) {
+                padding-left: rem(4);
+            }
+        }
+
+        td:first-child {
+            width: 5%;
+        }
+    }
+
+    &--responsive {
+        @include helper-breakpoint-media-max($sm-max) {
+            thead {
+                display: none;
+            }
+
+            #{$name}__body,
+            tbody {
+                tr {
+                    display: block;
+                    padding: rem(5) 0;
+                    border-bottom: rem(1) solid $setting-color-gray-3;
+
+                    &:not(#{$name}__row--backgroungless) {
+                        &:nth-child(even) {
+                            background: transparent;
+                        }
+                    }
+                }
+            }
+
+            td {
+                display: flex;
+            }
+
+            #{$name} {
+                &__td {
+                    &--responsive {
+                        &::before {
+                            content: attr(data-content) ':';
+                            display: inline-block;
+                            margin-right: rem(5);
+                            font-weight: fw(bold);
+                        }
+                    }
+
+                    &--checkbox {
+                        float: left;
+                        padding: rem(30) 0;
+                    }
+
+                    &--block {
+                        display: block;
+                    }
+
+                    &--hidden {
+                        display: none;
+                    }
+
+                    &--action {
+                        justify-content: center;
+                    }
+                }
+            }
+        }
+    }
+}

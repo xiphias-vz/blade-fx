@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config>
+    <export>
+        <label>Export</label>
+        <title>Export</title>
+        <pages>
+            <commissioning>
+                <label>ERP Export</label>
+                <title>ERP Export</title>
+                <bundle>commissioning-export</bundle>
+                <controller>index</controller>
+                <action>index</action>
+            </commissioning>
+        </pages>
+    </export>
+</config>

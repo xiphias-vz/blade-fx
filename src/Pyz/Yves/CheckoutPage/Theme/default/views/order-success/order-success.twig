@@ -1,0 +1,9 @@
+{% extends template('page-layout-order-submitted', 'CheckoutPage') %}
+
+{% define data = {
+    title: 'checkout.step.success.title' | trans,
+    message: 'checkout.step.success.text' | trans,
+    collectNumber: _view.collectNumber,
+    requestedDeliveryDate: _view.requestedDeliveryDate,
+    deliveryMethodKey: _view.deliveryMethodKey,
+} %}

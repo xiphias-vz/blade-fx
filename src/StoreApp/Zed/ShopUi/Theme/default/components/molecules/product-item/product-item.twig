@@ -1,0 +1,108 @@
+{% extends model('component') %}
+
+{% define config = {
+    name: 'product-item',
+    tag: 'product-item',
+} %}
+
+{% define data = {
+    imageUrl: '',
+    title: '',
+    productsCount: 1
+} %}
+
+{% block body %}
+    <div class="grid grid--no-wrap {{ config.name }}__card">
+        {% block leftCol %}
+            <div class="col col--middle spacing-right spacing-right--inner {{ config.name }}__action-col">
+                <div class="button button--round button--delete {{ config.name }}__decline {{ config.jsName }}__decline">
+                    {% include atom('icon') with {
+                        class: 'button__icon ' ~ config.name ~ '__close',
+                        data: {
+                            name: 'close'
+                        }
+                    } only %}
+                    {% include atom('icon') with {
+                        class: 'button__icon ' ~ config.name ~ '__undo',
+                        data: {
+                            name: 'undo'
+                        }
+                    } only %}
+                </div>
+            </div>
+        {% endblock %}
+        <div class="col col--expand">
+            <div class="box {{ config.name }}__info">
+                <div class="{{ config.name }}__image-wrapper">
+                    {% include atom('thumbnail') with {
+                        modifiers: ['product'],
+                        attributes: {
+                            src: data.imageUrl,
+                            alt: data.title
+                        }
+                    } only %}
+                </div>
+                <div class="{{ config.name }}__title">
+                    {% block title %}
+                        {{ data.productsCount }} x {{ data.title }}
+                    {% endblock %}
+                </div>
+                <div class="{{ config.name }}__status">
+                    {% include atom('icon') with {
+                        class: config.name ~ '__icon-close',
+                        data: {
+                            name: 'close'
+                        }
+                    } only %}
+                    {% include atom('icon') with {
+                        class: config.name ~ '__icon-check',
+                        data: {
+                            name: 'check'
+                        }
+                    } only %}
+                </div>
+                {% block quantity %}
+                    {% if data.productsCount > 1 %}
+                        <div class="{{ config.name }}__quantity">
+                            <div class="{{ config.jsName }}__minus {{ config.name }}__minus spacing-right spacing-right--inner">
+                                {% include atom('icon') with {
+                                    data: {
+                                        name: 'remove'
+                                    }
+                                } only %}
+                            </div>
+                            <div class="box box--white box--bordered box--spaceless {{ config.name }}__counter text-center">
+                                <span class="{{ config.jsName }}__quantity-output">
+                                    0
+                                </span>
+                                {{ 'of' | trans }} {{ data.productsCount }}
+                            </div>
+                            <div class="{{ config.jsName }}__plus {{ config.name }}__plus spacing-left spacing-left--inner">
+                                {% include atom('icon') with {
+                                    data: {
+                                        name: 'add'
+                                    }
+                                } only %}
+                            </div>
+                        </div>
+                    {% endif %}
+                    <div class="is-hidden">
+                        {% block formElement %}{% endblock %}
+                    </div>
+                {% endblock %}
+            </div>
+        </div>
+        {% block rightCol %}
+            <div class="col col--middle spacing-left spacing-left--inner {{ config.name }}__action-col">
+                <div class="button button--round {{ config.name }}__pick {{ config.jsName }}__accept">
+                    {% include atom('icon') with {
+                        class: 'button__icon',
+                        data: {
+                            name: 'add'
+                        }
+                    } only %}
+                </div>
+            </div>
+        {% endblock %}
+    </div>
+{% endblock %}

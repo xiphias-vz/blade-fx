@@ -1,0 +1,73 @@
+{% extends model('template') %}
+
+{% define data = {
+    locale: app.locale | slice(0, 2),
+    title: 'global.shop' | trans,
+    metaTitle: 'global.shop' | trans,
+    metaDescription: '',
+    metaKeywords: ''
+} %}
+
+{% block template %}
+    <!doctype html>
+    <html lang="{{ data.locale }}">
+        <head>
+            {% block meta %}
+                <meta charset="utf-8" />
+                <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1" />
+                <meta name="title" content="{% block metaTitle %}{{ data.metaTitle }}{% endblock %}" />
+                <meta name="description" content="{% block metaDescription %}{{ data.metaDescription }}{% endblock %}" />
+                <meta name="keywords" content="{% block metaKeywords %}{{ data.metaKeywords }}{% endblock %}" />
+                <meta name="generator" content="spryker" />
+            {% endblock %}
+
+            {% block headStyles %}
+                <link rel="stylesheet" href="{{publicPath('css/yves_default.app.css')}}" />
+            {% endblock %}
+
+            {% block headScripts %}
+                <script type="text/javascript">
+                    if(/MSIE \d|Trident.*rv:/.test(navigator.userAgent)) {
+                        document.write(
+                            '<script nomodule type="application/javascript" src="' + '{{publicPath('js/yves_default.runtime.legacy.js')}}' + '"><\/script>'
+                        );
+                    } else {
+                        document.write(
+                            '<script nomodule type="application/javascript" src="' + '{{publicPath('js/yves_default.runtime.legacy.js')}}' + '" crossorigin><\/script>'
+                        );
+                    }
+                </script>
+                <script type="module" src="{{publicPath('js/yves_default.runtime.esm.js')}}" crossorigin></script>
+            {% endblock %}
+
+            <title>{% block headTitle %}{{ data.title }}{% endblock %}</title>
+        </head>
+        <body {%- if block('class') is not empty %} class="{%- block class -%}{%- endblock -%}"{%- endif %}
+            {%- block attributes -%}{{qa('page')}}{%- endblock -%}>
+            {% include molecule('outside-widgets') only %}
+
+            {{parent()}}
+
+            {% include molecule('check-touch') only %}
+
+            {% block footerScripts %}
+                <script type="text/javascript">
+                    if(/MSIE \d|Trident.*rv:/.test(navigator.userAgent)) {
+                        document.write(
+                            '<script nomodule type="application\/javascript" src="' + '{{ publicPath('js/yves_default.vendor.legacy.js') }}' + '"><\/script>' +
+                            '<script nomodule type="application\/javascript" src="' + '{{publicPath('js/yves_default.app.legacy.js')}}' + '"><\/script>'
+                        );
+                    } else {
+                        document.write(
+                            '<script nomodule type="application\/javascript" src="' + '{{publicPath('js/yves_default.vendor.legacy.js')}}' + '" crossorigin><\/script>' +
+                            '<script nomodule type="application\/javascript" src="' + '{{publicPath('js/yves_default.app.legacy.js')}}' + '" crossorigin><\/script>'
+                        );
+                    }
+                </script>
+
+                <script type="module" src="{{publicPath('js/yves_default.vendor.esm.js')}}" crossorigin></script>
+                <script type="module" src="{{publicPath('js/yves_default.app.esm.js')}}" crossorigin></script>
+            {% endblock %}
+        </body>
+    </html>
+{% endblock %}

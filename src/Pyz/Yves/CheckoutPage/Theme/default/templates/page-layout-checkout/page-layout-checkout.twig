@@ -1,0 +1,67 @@
+{% extends template('page-layout-checkout', '@SprykerShop:CheckoutPage') %}
+
+{% block header %}
+    {% embed organism('header') with {
+        modifiers: ['checkout'],
+        data: {
+            showSearchForm: false,
+            showNavigation: false,
+            showLangCurrencySwitches: false,
+            showStoreSwitches: false,
+        },
+    } only %}
+        {% block contentHolder %}
+            <div class="container {{ config.name }}__container">
+                <div class="{{ config.name }}__row {{ config.name }}__navigation-top {{ config.name }}__navigation-top--checkout">
+                    {% block logoMobile %}
+                        {{ parent() }}
+                    {% endblock %}
+
+                    <a href="{{ url('cart') }}" class="button button--hollow-gray">
+                        {{ 'header.back_to_cart_link' | trans }}
+                    </a>
+                </div>
+            </div>
+        {% endblock %}
+
+        {% block holder %}
+            <div class="{{ config.name }}__content-holder is-hidden-xl-only">
+                {% block middle %}
+                    {{ parent() }}
+                {% endblock %}
+            </div>
+        {% endblock %}
+    {% endembed %}
+{% endblock %}
+
+{% block container %}
+    {% block pageInfo %}
+        <div class="page-layout-checkout__breadcrumbs">
+            <div class="container">
+                <div class="container__inner">
+                    {% block breadcrumbs %}
+                        {{ parent() }}
+                    {% endblock %}
+                </div>
+            </div>
+        </div>
+    {% endblock %}
+
+    <div class="container">
+        <div class="container__inner">
+            <main class="page-layout-checkout {% block contentClass %}{% endblock %}">
+                {% block containerContent %}
+                    {% block title %}{% endblock %}
+
+                    {% block content %}{% endblock %}
+                {% endblock %}
+            </main>
+        </div>
+    </div>
+{% endblock %}
+
+{% block footer %}
+    {% embed organism('footer') only %}
+        {% block footerTop %}{% endblock %}
+    {% endembed %}
+{% endblock %}

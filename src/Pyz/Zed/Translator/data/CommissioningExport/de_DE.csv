@@ -1,0 +1,13 @@
+Export,Datenexporte
+Commissioning,ERP Export
+Date From,Datum von
+Date To,Datum bis
+"Date from cannot be later than Date to.","Datum von kann nicht nach dem Datum bis liegen."
+"Date to cannot be earlier than Date from.","Datum bis kann nicht vor dem Datum von liegen."
+export.commissioning.page.title, ERP Export
+export.commissioning.form.button,Exportieren
+export.commissioning.devision.number,Abteilungsnummer
+export.commissioning.store.number,Geschäft
+export.commissioning.product.number,Artikelnummer
+export.commissioning.product.name,Produktname
+export.commissioning.product.quantity,QTY

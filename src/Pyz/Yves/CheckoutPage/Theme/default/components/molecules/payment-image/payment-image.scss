@@ -1,0 +1,13 @@
+@mixin checkout-page-payment-image($name: '.payment-image') {
+    #{$name} {
+        height: rem(27);
+        max-width: rem(75);
+        margin-left: rem(10);
+        display: block;
+        flex-shrink: 0;
+
+        @content;
+    }
+}
+
+@include checkout-page-payment-image();

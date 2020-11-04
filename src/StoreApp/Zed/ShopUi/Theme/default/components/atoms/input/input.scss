@@ -1,0 +1,45 @@
+@include shop-ui-input {
+    @include helper-effect-transition(border-color, box-shadow);
+    font: fw(medium) rem(14)/rem(18) $setting-font-family;
+    color: $setting-color-black;
+    padding: rem(15);
+    border: rem(1) solid $setting-color-input-border;
+    border-radius: rem(4);
+    appearance: none;
+
+    &::placeholder {
+        @include helper-font-weight(regular);
+        color: $setting-color-gray-9;
+    }
+
+    &:focus {
+        &:not([readonly='readonly']) {
+            border-color: $setting-color-input-shadow-focus;
+            box-shadow: 0 0 0 rem(2) rgba($setting-color-gray-6, 0.5);
+        }
+    }
+
+    &[disabled],
+    &--disabled {
+        border-color: $setting-color-gray-3;
+        background: $setting-color-gray-2;
+        color: $setting-color-gray-4;
+    }
+
+    &--pfand {
+        width: rem(60);
+        padding: 0;
+        border: none;
+
+        &:focus {
+            &:not([readonly='readonly']) {
+                border-color: transparent;
+                box-shadow: none;
+            }
+        }
+    }
+
+    &--search {
+        border-radius: rem(4);
+    }
+}

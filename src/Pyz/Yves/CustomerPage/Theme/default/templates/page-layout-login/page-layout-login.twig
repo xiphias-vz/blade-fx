@@ -1,0 +1,125 @@
+{% extends template('page-layout-login', '@SprykerShop:CustomerPage') %}
+
+{% define data = {
+    isLogin: false,
+} %}
+
+{% block container %}
+    <div class="page-layout-customer page-layout-customer--login-wrap">
+        <div class="page-layout-customer__form-wrap">
+            <div class="list-switches">
+                <ul class="list-switches__list">
+                    <li class="list-switches__item">
+                        {% embed molecule('toggler-radio') with {
+                            data: {
+                                label: 'checkout.customer.auth_as_login' | trans,
+                            },
+                            attributes: {
+                                id: 'login',
+                                checked: data.isLogin,
+                                name: 'accountLoginSwitcher',
+                                'target-class-name': 'js-customer-page-login',
+                            },
+                            modifiers: ['with-bg'],
+                        } only %}
+                            {% block labelContainer %}
+                                <span class="{{ config.name }}__subtext">
+                                    {{ 'customer.login_subtext' | trans }}
+                                </span>
+
+                                {{ parent() }}
+                            {% endblock %}
+                        {% endembed %}
+                    </li>
+
+                    <li class="list-switches__item">
+                        {% embed molecule('toggler-radio') with {
+                            data: {
+                                label: 'checkout.customer.auth_as_user' | trans,
+                            },
+                            attributes: {
+                                id: 'register',
+                                checked: not data.isLogin,
+                                name: 'accountLoginSwitcher',
+                                'target-class-name': 'js-customer-page-login-register',
+                            },
+                            modifiers: ['with-bg'],
+                        } only %}
+                            {% block labelContainer %}
+                                <span class="{{ config.name }}__subtext">
+                                    {{ 'customer.signup_subtext' | trans }}
+                                </span>
+
+                                {{ parent() }}
+                            {% endblock %}
+                        {% endembed %}
+                    </li>
+                </ul>
+            </div>
+            <div class="js-customer-page-login {{ not data.isLogin ? 'is-hidden' }} grid">
+                <div class="col col--sm-12 col--lg-6 spacing spacing--bigger spacing--inner">
+                    {% include molecule('form') with {
+                        data: {
+                            form: data.forms.login,
+                            submit: {
+                                enable: true,
+                                text: 'forms.submit.login' | trans,
+                                class: 'form__action--login button button--large button--expand',
+                            },
+                            options: {
+                                attr: null,
+                            },
+                        },
+                        modifiers: ['grid-indent', 'login', 'checkout-actions'],
+                    } only %}
+                    <div class="text-center">
+                        <a href="{{ url('password/forgotten') }}" class="button button--link button--skinless spacing-top spacing-top--big" {{qa('customer-forgot-password-link')}}>
+                            {{ 'forms.forgot-password' | trans~'?' }}
+                        </a>
+                    </div>
+                </div>
+
+                <div class="col col--sm-12 col--lg-6 spacing spacing--bigger spacing--inner is-hidden-sm-md">
+                    <strong>
+                        {{ 'customer.registration.benefit_title' | trans }}
+                    </strong>
+                    <p class="spacing-y spacing-y--bigger">
+                        {{ 'customer.registration.benefit_message' | trans }}
+                    </p>
+                    <ul class="list">
+                        <li class="list__item list__item--check-bullet">{{ 'customer.registration.benefit_1' | trans }}</li>
+                        <li class="list__item list__item--check-bullet">{{ 'customer.registration.benefit_2' | trans }}</li>
+                        <li class="list__item list__item--check-bullet">{{ 'customer.registration.benefit_3' | trans }}</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="js-customer-page-login-register {{ data.isLogin ? ' is-hidden' }} grid">
+                <div class="col col--sm-12 col--lg-6 spacing spacing--bigger spacing--inner is-hidden-sm-md">
+                    <strong>
+                        {{ 'customer.registration.benefit_title' | trans }}
+                    </strong>
+                    <p class="spacing-y spacing-y--bigger">
+                        {{ 'customer.registration.benefit_message' | trans }}
+                    </p>
+                    <ul class="list">
+                        <li class="list__item list__item--check-bullet">{{ 'customer.registration.benefit_1' | trans }}</li>
+                        <li class="list__item list__item--check-bullet">{{ 'customer.registration.benefit_2' | trans }}</li>
+                        <li class="list__item list__item--check-bullet">{{ 'customer.registration.benefit_3' | trans }}</li>
+                    </ul>
+                </div>
+
+                <div class="col col--sm-12 col--lg-6 spacing spacing--bigger spacing--inner">
+                    {% include molecule('customer-confirmation-form', 'CustomerConfirmationPage') ignore missing with {
+                        modifiers: ['grid-indent', 'login', 'checkout-actions'],
+                        data: {
+                            form: data.forms.register,
+                            formAction: url('register'),
+                            submitButtonText: 'checkout.customer.auth_as_user',
+                        },
+                    } only %}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

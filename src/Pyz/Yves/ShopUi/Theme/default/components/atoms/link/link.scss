@@ -1,0 +1,159 @@
+@include shop-ui-link {
+    color: $setting-color-gray-13;
+
+    &:hover {
+        color: $setting-color-green;
+    }
+
+    &:focus {
+        box-shadow: 0 0 0 rem(2) $setting-color-blue-alpha-2;
+    }
+
+    &__icon {
+        margin-right: rem(15);
+
+        &--xxl-with-text {
+            margin-right: 0;
+
+            @include helper-breakpoint-media-min($xxl-min) {
+                margin-right: rem(15);
+            }
+        }
+    }
+
+    &__text {
+        &--xxl-visible {
+            display: none;
+
+            @include helper-breakpoint-media-min($xxl-min) {
+                display: inline;
+            }
+        }
+    }
+
+    &--darkest {
+        @include helper-effect-transition(all);
+        color: $setting-color-black;
+    }
+
+    &--without-underline {
+        text-decoration: none;
+    }
+
+    &--login-forgot-password {
+        margin-top: rem(20);
+
+        @include helper-breakpoint-media-min($md-min) {
+            margin-top: rem(16);
+        }
+    }
+
+    &--edit {
+        font: fw(light) rem(13) $setting-font-family-additional;
+        opacity: 0.4;
+
+        &:hover,
+        &:focus {
+            text-decoration: none;
+            color: inherit;
+            opacity: 1;
+            box-shadow: none;
+        }
+    }
+
+    &--custom-underline {
+        @include helper-effect-transition(opacity);
+        font: fw(bold) rem(11) $setting-font-family-additional;
+        letter-spacing: rem(2.7);
+        text-transform: uppercase;
+        position: relative;
+        color: $setting-color-text;
+        padding: rem(9) 0;
+
+        &:hover,
+        &:focus {
+            text-decoration: none;
+            color: $setting-color-text;
+            opacity: 0.5;
+        }
+
+        &::after {
+            content: '';
+            display: block;
+            position: absolute;
+            height: rem(1);
+            width: 100%;
+            background: $setting-color-text;
+            bottom: 0;
+        }
+    }
+
+    &--user-account {
+        font: fw(light) rem(16) $setting-font-family;
+        text-decoration: underline;
+    }
+
+    &--social-footer {
+        color: $setting-color-white;
+
+        &:focus {
+            box-shadow: none;
+        }
+
+        &:hover {
+            color: $setting-color-gray-11;
+        }
+    }
+
+    &--reset-focus {
+        &:focus {
+            box-shadow: none;
+        }
+    }
+
+    &--nav {
+        display: inline-flex;
+        align-items: center;
+        text-decoration: none;
+        color: $setting-color-gray-13;
+        margin: 0 rem(15);
+
+        &:hover,
+        &:focus {
+            opacity: 1;
+            color: $setting-color-black-1;
+            text-decoration: none;
+            box-shadow: none;
+        }
+
+        &:first-child {
+            margin-left: 0;
+        }
+
+        &:last-child {
+            margin-right: 0;
+        }
+    }
+
+    &--white {
+        color: $setting-color-white;
+        text-decoration: none;
+
+        &:hover,
+        &:focus {
+            color: $setting-color-white;
+            text-decoration: underline;
+        }
+    }
+
+    &--checkout-manage-addresses {
+        color: $setting-color-gray-9;
+        font-size: rem(14);
+        letter-spacing: rem(0.1);
+        font-weight: fw(medium);
+
+        @include helper-breakpoint-media-min($md-min) {
+            align-self: flex-end;
+        }
+    }
+}

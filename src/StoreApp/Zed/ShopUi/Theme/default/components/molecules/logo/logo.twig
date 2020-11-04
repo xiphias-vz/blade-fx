@@ -1,0 +1,15 @@
+{% extends model('component') %}
+
+{% define config = {
+    name: 'logo',
+    renderAttributes: false
+} %}
+
+{% define attributes = {
+    src: publicPath('images/logo@3x.png'),
+    alt: 'Logo',
+} %}
+
+{% block body %}
+    <img class="{{ config.name }}__image" {{ block('attributes') }}>
+{% endblock %}

@@ -1,0 +1,146 @@
+$setting-item-border-radius: rem(8);
+
+@mixin picker-product-item($name: '.product-item') {
+    #{$name} {
+        margin-bottom: rem(8);
+
+        #{$name} {
+            &__undo {
+                display: none;
+            }
+        }
+
+        &__info {
+            position: relative;
+            border: rem(1) solid transparent;
+        }
+
+        &__quantity {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding-top: rem(5);
+        }
+
+        &__counter {
+            min-width: rem(75);
+            background: $setting-color-white;
+            font-weight: fw(bold);
+        }
+
+        &__status {
+            position: absolute;
+            top: rem(10);
+            right: rem(10);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            width: rem(30);
+            height: rem(30);
+            border-radius: rem(15);
+            border: rem(1) solid map-get($setting-color-actions, success);
+            color: map-get($setting-color-actions, success);
+        }
+
+        &__icon-close {
+            display: none;
+        }
+
+        &__action-col {
+            min-width: rem(48);
+        }
+
+        &--picked,
+        &--picked-not-fully,
+        &--not-picked {
+            #{$name} {
+                &__info {
+                    background: $setting-color-white;
+                }
+
+                &__status {
+                    display: flex;
+                }
+
+                &__minus,
+                &__plus {
+                    display: none;
+                }
+
+                &__close,
+                &__pick {
+                    display: none;
+                }
+
+                &__undo {
+                    display: block;
+                }
+            }
+        }
+
+        &--picked,
+        &--picked-not-fully {
+            #{$name} {
+                &__info {
+                    border-color: map-get($setting-color-actions, success);
+                }
+
+                &__icon-close {
+                    display: none;
+                }
+
+                &__icon-check {
+                    display: block;
+                }
+            }
+        }
+
+        &--picked-not-fully {
+            #{$name} {
+                &__info {
+                    border-color: $setting-color-blue-info;
+                }
+
+                &__status {
+                    border-color: $setting-color-blue-info;
+                    color: $setting-color-blue-info;
+                }
+            }
+        }
+
+        &--not-picked {
+            #{$name} {
+                &__info {
+                    border-color: map-get($setting-color-actions, alert);
+                }
+
+                &__status {
+                    border-color: map-get($setting-color-actions, alert);
+                    color: map-get($setting-color-actions, alert);
+                }
+
+                &__icon-close {
+                    display: block;
+                }
+
+                &__icon-check {
+                    display: none;
+                }
+            }
+        }
+
+        &__image-wrapper {
+            position: relative;
+            max-width: rem(80);
+            margin: 0 auto rem(8);
+        }
+
+        &__title {
+            text-align: center;
+            color: $setting-color-blue-midi;
+            word-break: break-all;
+        }
+    }
+}
+
+@include picker-product-item();

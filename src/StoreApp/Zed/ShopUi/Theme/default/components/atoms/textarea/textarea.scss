@@ -1,0 +1,11 @@
+@include shop-ui-textarea {
+    min-height: rem(60);
+    font: fw(regular) rem(16) $setting-font-family;
+    padding: rem(8);
+    border: rem(1) solid $setting-color-blue-light;
+    border-radius: rem(4);
+
+    &::placeholder {
+        color: $setting-color-gray-4;
+    }
+}

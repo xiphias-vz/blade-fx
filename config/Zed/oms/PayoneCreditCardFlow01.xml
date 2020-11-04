@@ -1,0 +1,208 @@
+<?xml version="1.0"?>
+<statemachine
+    xmlns="spryker:oms-01"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="spryker:oms-01 http://static.spryker.com/oms-01.xsd">
+
+    <process name="PayoneCreditCardFlow01" main="true">
+        <subprocesses>
+            <process>Refund</process>
+            <process>Cancellation</process>
+            <process>StorePicking</process>
+            <process>StoreCollection</process>
+            <process>StoreDelivery</process>
+            <process>Invoice</process>
+            <process>Invalidation</process>
+        </subprocesses>
+
+        <states>
+            <state name="new"/>
+            <state name="3D secure verification"/>
+            <state name="pre-authorization pending"/>
+            <state name="pre-authorization appointed">
+                <flag>cancellable by customer</flag>
+            </state>
+            <state name="confirmed">
+                <flag>cancellable by customer</flag>
+            </state>
+            <state name="not cancellable by customer">
+                <flag>cancelled</flag>
+            </state>
+            <state name="reservation cancellation pending">
+                <flag>cancelled</flag>
+            </state>
+            <state name="reservation cancelled">
+                <flag>cancelled</flag>
+            </state>
+            <state name="accepted by customer"/>
+            <state name="capture pending"/>
+            <state name="captured"/>
+            <state name="capture failed clarification"/>
+            <state name="order invoiced"/>
+            <state name="closed"/>
+        </states>
+
+        <transitions>
+            <transition happy="true" condition="Payone/PreAuthorizationIsApproved">
+                <source>new</source>
+                <target>pre-authorization pending</target>
+                <event>pre-authorize</event>
+            </transition>
+
+            <transition condition="Payone/PaymentIsAppointed" happy="true">
+                <source>pre-authorization pending</source>
+                <target>pre-authorization appointed</target>
+            </transition>
+
+            <transition condition="Payone/PreAuthorizationIsError">
+                <source>new</source>
+                <target>invalid</target>
+                <event>pre-authorize</event>
+            </transition>
+
+            <transition condition="Payone/PreAuthorizationIsRedirect">
+                <source>new</source>
+                <target>3D secure verification</target>
+                <event>pre-authorize</event>
+            </transition>
+
+            <transition condition="Payone/PaymentIsAppointed" happy="true">
+                <source>3D secure verification</source>
+                <target>pre-authorization appointed</target>
+            </transition>
+
+            <transition>
+                <source>3D secure verification</source>
+                <target>invalid</target>
+                <event>redirect timeout</event>
+            </transition>
+
+            <transition>
+                <source>pre-authorization appointed</source>
+                <target>cancelled by customer</target>
+                <event>cancel by customer</event>
+            </transition>
+
+            <transition happy="true">
+                <source>pre-authorization appointed</source>
+                <target>confirmed</target>
+                <event>confirm</event>
+            </transition>
+
+            <transition happy="true" >
+                <source>confirmed</source>
+                <target>not cancellable by customer</target>
+                <event>wait for cancellation deadline</event>
+            </transition>
+
+            <transition happy="true">
+                <source>not cancellable by customer</source>
+                <target>started order processing</target>
+                <event>pass</event>
+            </transition>
+
+            <transition>
+                <source>confirmed</source>
+                <target>cancelled by customer</target>
+                <event>cancel by customer</event>
+            </transition>
+
+            <transition>
+                <source>started order processing</source>
+                <target>cancelled by customer</target>
+                <event>cancel by customer</event>
+            </transition>
+
+            <transition condition="Payone/CaptureIsApproved">
+                <source>cancelled by customer</source>
+                <target>reservation cancellation pending</target>
+                <event>cancel reservation</event>
+            </transition>
+
+            <transition condition="Payone/PaymentIsCapture">
+                <source>reservation cancellation pending</source>
+                <target>reservation cancelled</target>
+            </transition>
+
+            <transition>
+                <source>reservation cancelled</source>
+                <target>release time slot and cancel</target>
+                <event>pass</event>
+            </transition>
+
+            <transition happy="true" condition="Payone/PartialCaptureIsApproved">
+                <source>accepted by customer</source>
+                <target>capture pending</target>
+                <event>capture</event>
+            </transition>
+
+            <transition>
+                <source>accepted by customer</source>
+                <target>capture failed clarification</target>
+                <event>capture</event>
+            </transition>
+
+            <transition>
+                <source>capture failed clarification</source>
+                <target>accepted by customer</target>
+                <event>retry capture</event>
+            </transition>
+
+            <transition>
+                <source>capture failed clarification</source>
+                <target>cancellation process</target>
+                <event>cancel manually</event>
+            </transition>
+
+            <transition happy="true" condition="Payone/PaymentIsCapture">
+                <source>capture pending</source>
+                <target>captured</target>
+            </transition>
+
+            <transition happy="true">
+                <source>captured</source>
+                <target>invoice process</target>
+                <event>pass</event>
+            </transition>
+
+            <transition>
+                <source>order invoiced</source>
+                <target>ready for return</target>
+                <event>return</event>
+            </transition>
+
+            <transition happy="true">
+                <source>order invoiced</source>
+                <target>closed</target>
+                <event>close</event>
+            </transition>
+
+        </transitions>
+
+        <events>
+            <event name="pre-authorize" onEnter="true" command="Payone/PreAuthorize"/>
+            <event name="redirect timeout" timeout="1hour" />
+            <event name="confirm" onEnter="true"/>
+            <event name="capture" onEnter="true" command="Payone/PartialCapture"/>
+            <event name="retry capture" manual="true" />
+            <event name="wait for cancellation deadline" timeout="1 second"/>
+            <event name="cancel by customer" manual="true" command="OrderCancelByCustomer"/>
+            <event name="cancel reservation" onEnter="true" command="Payone/Cancel"/>
+            <event name="cancel manually" manual="true"/>
+            <event name="export" onEnter="true"/>
+            <event name="close" manual="true" />
+            <event name="return" manual="true" />
+
+            <event name="pass" onEnter="true" manual="true"/>
+            <event name="pass 1 second" timeout="1 second"/>
+        </events>
+
+    </process>
+
+    <process name="Refund" file="Subprocess/Refund01.xml"/>
+    <process name="Cancellation" file="Subprocess/Cancellation01.xml"/>
+    <process name="StorePicking" file="AppSubprocess/StorePicking01.xml"/>
+    <process name="Invoice" file="Subprocess/Invoice01.xml"/>
+    <process name="Invalidation" file="Subprocess/Invalidation01.xml"/>
+
+</statemachine>

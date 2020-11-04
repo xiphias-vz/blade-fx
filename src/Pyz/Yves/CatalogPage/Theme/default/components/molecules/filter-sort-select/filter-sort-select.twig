@@ -1,0 +1,23 @@
+{% extends molecule('filter-enumeration', 'CatalogPage') %}
+
+{% define config = {
+    name: 'filter-sort-select'
+} %}
+
+{% define data = {
+    isMultiSelect: false,
+} %}
+
+{% define modifiers = ['category-filter'] %}
+
+{% block body %}
+    {% set inputComponent = atom('radio') %}
+
+    {{ parent() }}
+{% endblock %}
+
+{% block filterItem %}
+    {% set label = ('catalog.sort.' ~ filterValue.label | lower) | trans %}
+
+    {{ parent() }}
+{% endblock %}

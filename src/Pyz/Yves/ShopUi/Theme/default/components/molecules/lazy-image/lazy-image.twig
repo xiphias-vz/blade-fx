@@ -1,0 +1,47 @@
+{% extends model('component') %}
+
+{% define config = {
+    name: 'lazy-image',
+    tag: 'lazy-image',
+} %}
+
+{% define data = {
+    imageClasses: '',
+    isImage: true,
+} %}
+
+{% define attributes = {
+    loading: 'lazy',
+} %}
+
+{% block attributes %}{% endblock %}
+
+{% block extraClass %}
+    {% if not data.isImage %}
+        {{ config.name }}--bg
+    {% endif %}
+
+    {{ parent() }}
+{% endblock %}
+
+{% block body %}
+    {% block image %}
+        {% set attributesWithoutSrc = attributes | merge({'src': ''}) %}
+
+        {% if data.isImage %}
+            <img class="{{ data.imageClasses }} {{ config.jsName }}__content is-invisible" data-src="{{ attributes.src }}" {{ component.renderAttributes(attributesWithoutSrc) }}>
+        {% else %}
+            <div class="{{ data.imageClasses }} {{ config.jsName }}__content is-invisible" data-background-image="{{ attributes.src }}"></div>
+        {% endif %}
+    {% endblock %}
+
+    {% block noscriptImage %}
+        <noscript>
+            {% if data.isImage %}
+                <img class="{{ data.imageClasses }}" {{ component.renderAttributes(attributes) }}>
+            {% else %}
+                <div class="{{ data.imageClasses }} {{ config.name }}__bg-fallback" style="background-image: url({{ attributes.src }})"></div>
+            {% endif %}
+        </noscript>
+    {% endblock %}
+{% endblock %}

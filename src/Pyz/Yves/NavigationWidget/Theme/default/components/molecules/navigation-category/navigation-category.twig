@@ -1,0 +1,19 @@
+{% extends model('component') %}
+
+{% define config = {
+    name: 'navigation-category',
+    tag: 'a',
+} %}
+
+{% define data = {
+    node: {},
+} %}
+
+{% define attributes = {
+    href: data.node.url,
+} %}
+
+{% block body %}
+    {{ data.node.title }}
+    <span class="{{ config.name }}__image {{ data.node.cssClass }}"></span>
+{% endblock %}

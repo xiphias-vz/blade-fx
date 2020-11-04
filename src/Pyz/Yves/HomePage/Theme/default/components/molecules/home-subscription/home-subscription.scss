@@ -1,0 +1,39 @@
+@mixin home-page-home-subscription($name: '.home-subscription') {
+    #{$name} {
+        margin-bottom: rem(50);
+        padding: rem(40) rem(15);
+        background: $setting-color-gray-16;
+        text-align: center;
+        color: $setting-color-white;
+        border-radius: rem(4);
+
+        @include helper-breakpoint-media-min($md-min) {
+            margin-bottom: rem(100);
+        }
+
+        &__title {
+            padding-bottom: rem(20);
+            font-weight: fw(semibold);
+            font-size: rem(26);
+            line-height: 1.2;
+            letter-spacing: rem(0.17);
+        }
+
+        &__text {
+            margin: 0;
+            font-weight: fw(medium);
+            font-size: rem(16);
+            padding-bottom: rem(30);
+            letter-spacing: rem(0.1);
+        }
+
+        &__form {
+            max-width: rem(520);
+            margin: 0 auto;
+        }
+
+        @content;
+    }
+}
+
+@include home-page-home-subscription;

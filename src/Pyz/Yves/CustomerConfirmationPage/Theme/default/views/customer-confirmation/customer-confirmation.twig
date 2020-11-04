@@ -1,0 +1,21 @@
+{% extends template('page-layout-main') %}
+
+{% define data = {
+    forms: {
+        customerConfirmation: _view.customerConfirmationForm
+    },
+
+    title: 'customer-confirmation.title' | trans,
+} %}
+
+{% block content %}
+    <div class="col--lg-6 col--sm-12">
+        {% include molecule('customer-confirmation-form', 'CustomerConfirmationPage') with {
+            class: 'box spacing-bottom spacing-bottom--bigger',
+            modifiers: ['customer-confirmation'],
+            data: {
+                form: data.forms.customerConfirmation,
+            },
+        } only %}
+    </div>
+{% endblock %}

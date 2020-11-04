@@ -1,0 +1,87 @@
+Bezeichnung.de_DE,Bezeichnung.en_US,Kategorie,WG,UWG,ID_laufend
+Spryker,Spryker,,,,
+Obst & Gemüse,Fruit & Vegetable,1,,,1
+Nahrungsmittel,Food,2,,,2
+Getränke,Beverages,3,,,3
+Haushalt,Household,4,,,4
+Garten & Outdoor,Garden & Outdoor,6,,,700
+Hausapotheke,Medicine,7,,,800
+Elekrowaren,Electronics,8,,,900
+Obst,Fruit,1,58,,103
+Äpfel,Apples,1,58,1,104
+Birnen,Pears,1,58,2,105
+Steinobst,Stone fruit,1,58,3,106
+Beeren,Berry,1,58,4,107
+Trauben,Grapes,1,58,5,108
+Zitrusfrüchte,Citrus fruits,1,58,6,109
+Exotische Früchte,Exotic fruits,1,58,7,110
+Bananen,Bananas,1,58,8,111
+Trockenfrüchte,Dried fruit,1,58,9,112
+Melonen,Melons,1,58,10,113
+Mangos,Mangoes,1,58,11,114
+Avocados,Avocados,1,58,12,115
+Snacks,Snacks,1,58,15,116
+Gemüse,Vegetables,1,38,,117
+Gurken,Cucumbers,1,38,1,118
+Paprika,Paprika,1,38,2,119
+Tomaten,Tomatoes,1,38,3,120
+Kohlgemüse,Cabbage,1,38,4,121
+Wurzel-/KnollenGemüse,Root/Tuber vegetables,1,38,5,122
+Kartoffeln,Potatoes,1,38,6,123
+ZwiebelGemüse,Onion vegetables,1,38,7,124
+Pilze,Mushrooms,1,38,8,125
+Hülsenfrüchte,Legumes,1,38,9,126
+Kürbisse,Pumpkins,1,38,10,127
+Zucchini,Zucchini,1,38,11,128
+Spargel,Asparagus,1,38,12,129
+Frische Kräuter,Fresh Herbs,1,38,13,130
+Gewürze,Spices,1,38,14,131
+Snacks,Snacks,1,38,17,132
+Salate,Salads,1,38,18,133
+Konserven,Canned Goods,2,47,,135
+Obstkonserven,Canned fruit,2,47,1,136
+Gemüsekonserven,Canned vegetables,2,47,2,137
+Fleisch- und Fischkonserven,Canned meat & fish,2,82,,138
+Fischkonserven,Canned fish,2,82,1,139
+Wurst-/Fleischkonserven,Canned meat/Sausages,2,82,2,140
+Fertiggerichte,Ready meals,2,48,,141
+Fertiggerichte,Fertiggerichte,2,48,1,142
+Eintöpfe/Suppen,Stews/Soups,2,48,2,143
+Instantgerichte,Instant dishes,2,48,4,144
+Fixprodukte,Fixed products,2,48,5,145
+Frische & Kühlung,Fresh & Cooled,2,49,,146
+Dressings/Öle/Soßen,Dressings/Oils/Sauces,2,52,,147
+Ketchup/Senf,Ketchup/Mustard,2,52,1,148
+Speiseöle,Cooking oils,2,52,2,149
+Mayonnaise,Mayonnaise,2,52,3,150
+Soßen/Pesto,Sauces/Pesto,2,52,4,151
+Essig,Vinegar,2,52,5,152
+Dressings/Marinaden,Dressings/Marinades,2,52,6,153
+Meerrettich,Horseradish,2,52,7,154
+"Nudel, Reis & Co.","Pasta, Rice & Co.",2,54,,155
+Reis,Rice,2,54,1,156
+Pasta,Pasta,2,54,2,157
+Kartoffelprodukte,Potato products,2,54,3,158
+Kräuter/Gewürze/Würzzutaten,Herbs/Sspices/Seasoning ingredients,2,54,4,159
+Hülsenfrüchte/Getreide,Legumes/Cereals,2,54,6,160
+Konfitüren/Brotaufstriche,JamsSpreads,2,53,,161
+Fruchtaufstriche,Fruit spreads,2,53,1,162
+Honig,Honey,2,53,2,163
+Sirup/Garnierung,Syrup/Garnish,2,53,3,164
+Nuss- und Schokoladenaufstriche,Nut and chocolate spreads,2,53,4,165
+Herzhafte Aufstriche,Hearty spreads,2,53,5,166
+Süße Aufstriche,Sweet spreads,2,53,6,167
+Süßes & Salziges,Sweet and Salty,2,90,,168
+Cerealien,Cereals,2,90,1,169
+Müsli & Müslisnacks,Cereals & Cereal snacks,2,90,3,170
+Wasser,Water,3,5,,172
+Eistee & Energy Drinks,Iced Tea & Energy Drinks,3,79,,173
+Softdrinks,Soft drinks,3,80,,174
+Fruchtsäfte/Sirupe,Fruit juices/Syrups,3,81,,175
+Taschentücher/Kosmetiktücher,Handkerchiefs/Facial tissues,4,1,,221
+Schreibwaren,Stationery,4,2,,222
+Waschmittel,Laundry detergent,4,3,,224
+Geschirrreinigung,Dish washing,4,4,,230
+Kameras,Cameras,8,1,,500
+Computer,Computer,8,2,,501
+Smart Wearables,Smart Wearables,8,3,,502

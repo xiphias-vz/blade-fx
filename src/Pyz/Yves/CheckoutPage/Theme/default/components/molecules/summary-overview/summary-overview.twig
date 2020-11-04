@@ -1,0 +1,78 @@
+{% extends molecule('summary-overview', '@SprykerShop:CheckoutPage') %}
+
+{% define data = {
+    taxPayments: required,
+} %}
+
+{% macro itemDiscounts(discounts, title, configName) %}
+    {% if discounts | length %}
+        <li class="{{ configName }}__list-item">
+            <span>{{ title | trans }}</span>
+
+            <div class="spacing-top">
+                {% for discount in discounts %}
+                    <div class="grid grid--justify">
+                        <span class="col col--sm-8 col--lg-10 text-secondary">{{ discount.displayName }}</span>
+                        <span class="col col--expand text-right">- {{ discount.amount | money }}</span>
+                    </div>
+                {% endfor %}
+            </div>
+        </li>
+    {% endif %}
+{% endmacro %}
+
+{% block body %}
+    <li class="{{ config.name }}__list-item">
+        <span class="float-right {{ config.name }}__price">{{ data.prices.subTotal | money }}</span>
+        <span>{{ 'checkout.step.summary.sub_total' | trans }}</span>
+    </li>
+
+    <li class="{{ config.name }}__list-item">
+        <span class="float-right {{ config.name }}__price">{{ data.totalCosts | money }}</span>
+        <span>{{ 'checkout.step.summary.shipment_costs_total' | trans }}</span>
+
+        <div class="spacing-top">
+            {% for shipmentGroup in data.shipmentGroups %}
+                {% set shippingMethod = shipmentGroup.shipment.method %}
+
+                <div class="grid grid--justify">
+                    <span class="col col--sm-8 col--lg-10 text-secondary">{{ shippingMethod.carrierName | trans }} - {{ shippingMethod.name | trans }}</span>
+                    <span class="col col--sm-4 col--lg-2 text-right">{{ shippingMethod.storeCurrencyPrice | money }}</span>
+                </div>
+            {% endfor %}
+        </div>
+    </li>
+
+    {% if data.prices.discountTotal %}
+        {{ _self.itemDiscounts(data.voucherDiscounts, 'cart.vouchers', config.name) }}
+        {{ _self.itemDiscounts(data.cartRuleDiscounts, 'cart.discounts', config.name) }}
+    {% endif %}
+
+    {% widget 'SalesOrderThresholdWidgetPlugin' args [data.expenses] with {config: config} only %}
+        {% block expenseItems %}
+            <li class="{{ config.name }}__list-item">
+                {{ parent() }}
+            </li>
+        {% endblock %}
+    {% endwidget %}
+
+    {% for rate,taxItem in data.taxPayments if taxItem.tax > 0 %}
+    <li class="{{ config.name }}__list-item">
+        <span>{{ 'checkout.step.summary.tax' | trans }} {{ rate / 100 }}%</span>
+        <span class="float-right {{ config.name }}__price">{{ taxItem.tax | money }}</span>
+    </li>
+    {% endfor %}
+
+    <li class="{{ config.name }}__list-item {{ config.name }}__list-item--total">
+        <strong>{{ 'checkout.step.summary.grand_total' | trans }}</strong>
+        <strong class="float-right {{ config.name }}__price {{ config.name }}__price--total">{{ data.prices.grandTotal | money }}</strong>
+    </li>
+
+    <li class="{{ config.name }}__list-item">
+        {% include molecule('gift-card-payment-summary', 'GiftCardWidget') ignore missing with {
+            data: {
+                cart: embed.cart,
+            },
+        } only %}
+    </li>
+{% endblock %}

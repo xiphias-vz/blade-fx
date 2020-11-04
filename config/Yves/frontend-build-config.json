@@ -1,0 +1,11 @@
+{
+    "path": "assets/%SPRYKER_BUILD_HASH%/%theme%",
+    "namespaces": [
+        {
+            "moduleSuffix": "",
+            "namespace": "",
+            "themes": [],
+            "defaultTheme": "default"
+        }
+    ]
+}

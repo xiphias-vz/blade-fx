@@ -1,0 +1,2 @@
+key,input_type,allow_input,is_multiple,values,key_translation.en_US,key_translation.de_DE,value_translations.en_US,value_translations.de_DE
+packaging_unit,text,no,no,"Item, Pack (6), Pack (4), Box",Packaging unit,Verpackungseinheit,"Item, Pack (6), Pack(4), Box","Item, Pack (4), Pack(6), Box"

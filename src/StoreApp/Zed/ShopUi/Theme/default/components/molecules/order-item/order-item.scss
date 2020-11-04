@@ -1,0 +1,77 @@
+$setting-item-border-radius: rem(8);
+
+@mixin picker-order-item($name: '.order-item') {
+    #{$name} {
+        margin-bottom: rem(8);
+
+        &--picked {
+            #{$name} {
+                &__left-col,
+                &__right-col {
+                    width: 50%;
+                    min-width: 50%;
+                }
+
+                &__time {
+                    padding-top: rem(3);
+                }
+            }
+        }
+
+        &--expanded {
+            #{$name} {
+                &__time {
+                    padding-bottom: rem(4);
+                }
+            }
+        }
+
+        &__content {
+            &::after {
+                display: none;
+            }
+        }
+
+        &__left-col,
+        &__right-col {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        &__left-col {
+            max-width: 45%;
+        }
+
+        &__right-col {
+            padding-left: rem(8);
+            max-width: 55%;
+        }
+
+        &__time {
+            padding: 0 0 rem(12);
+            font-size: rem(20);
+            font-weight: fw(bold);
+            line-height: rem(25);
+            color: $setting-color-gray-6;
+        }
+
+        &__collect {
+            color: $setting-color-gray-4;
+        }
+
+        &__products {
+            margin-top: auto;
+            padding-bottom: rem(3);
+        }
+
+        &__id {
+            padding: rem(3) rem(5) rem(5);
+            border: rem(1) solid $setting-color-gray-3;
+            line-height: 1;
+            border-radius: $setting-item-border-radius;
+        }
+    }
+}
+
+@include picker-order-item();

@@ -1,0 +1,91 @@
+{% extends molecule('filter-category', '@SprykerShop:CatalogPage') %}
+
+{% define data = {
+    levelMenu: 1,
+} %}
+
+{% block body %}
+    <ul class="menu">
+        {% for categoryNode in data.categories %}
+
+            {% set categoryUrl = data.filterPath is not empty ? url(data.filterPath, {categoryPath: (categoryNode.url | trimLocale)}) : categoryNode.url %}
+            {% set disableAttribute = not categoryNode.quantity ? 'disabled' %}
+            {% set classes = [
+                config.name ~ '__item',
+                config.name ~ '__item--level-' ~ data.levelMenu,
+                categoryNode.isActive ? config.name ~ '__item--active',
+                categoryNode.hasChildren ? config.name ~ '__item--children',
+            ] %}
+            {% set linkActiveClass = categoryNode.isCurrent ? config.name ~ '__link--active' %}
+            {% set triggerButtonJsName = data.parentJsName ? data.parentJsName ~ '__trigger' %}
+
+            <li class="{{ classes | join(' ') }}">
+                {% if not categoryNode.hasChildren and categoryNode.quantity %}
+                    <button class="{{ config.name }}__link {{ linkActiveClass }} {{ triggerButtonJsName }}"
+                        {{ disableAttribute }}
+                        type="button"
+                        data-url={{ categoryUrl }}>
+                        {{ categoryNode.name }}
+                        <span class="{{ config.name }}__quantity text-secondary">({{ categoryNode.quantity }})</span>
+                    </button>
+                {% endif %}
+
+                {% if categoryNode.hasChildren %}
+                    {% embed molecule('toggler-item') with {
+                        modifiers: ['filter'],
+                        data: {
+                            title: categoryNode.name,
+                            triggerClass: data.parentJsName ~ '__toggler-trigger',
+                            targetClass: data.parentJsName ~ '__toggler-target--' ~ categoryNode.nodeId,
+                            isTogglerIncluded: false,
+                            isActive: categoryNode.isActive,
+                        },
+                        embed: {
+                            parentConfigName: config.name,
+                            categoryUrl: categoryUrl,
+                            linkActiveClass: linkActiveClass,
+                            triggerButtonJsName: triggerButtonJsName,
+                            quantity: categoryNode.quantity,
+                            levelMenu: data.levelMenu + 1,
+                            categories: categoryNode.children,
+                            parentJsName: data.parentJsName,
+                        },
+                    } only %}
+                        {% block title %}
+                            <div class="{{ config.name }}__title-wrapper">
+                                <button class="{{ embed.parentConfigName }}__link {{ embed.parentConfigName }}__link--toggle {{ embed.linkActiveClass }}  {{ embed.triggerButtonJsName }}"
+                                    type="button"
+                                    data-url={{ embed.categoryUrl }}>
+                                    {{ data.title }}
+                                    <span class="{{ embed.parentConfigName }}__quantity">({{ embed.quantity }})</span>
+                                </button>
+
+                                {% set iconActiveClass = data.isActive ? 'active' %}
+
+                                <div class="{{ component.renderClass(config.name ~ '__arrow', modifiers) }} {{ iconActiveClass }} {{ data.triggerClass }}" {{ targetAttribute }}>
+                                    {% include atom('icon') with {
+                                        class: config.name ~ '__arrow-icon',
+                                        modifiers: ['xsmall'],
+                                        data: {
+                                            name: 'arrow-right',
+                                        },
+                                    } only %}
+                                </div>
+                            </div>
+                        {% endblock %}
+
+                        {% block contentText %}
+                            {% include molecule('filter-category-nested', 'CatalogPage') with {
+                                data: {
+                                    levelMenu: embed.levelMenu,
+                                    categories: embed.categories,
+                                    parentJsName: embed.parentJsName,
+                                },
+                            } only %}
+                        {% endblock %}
+                    {% endembed %}
+                {% endif %}
+            </li>
+        {% endfor %}
+    </ul>
+{% endblock %}

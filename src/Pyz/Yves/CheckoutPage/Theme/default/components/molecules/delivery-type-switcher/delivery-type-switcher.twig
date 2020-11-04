@@ -1,0 +1,63 @@
+{% extends model('component') %}
+
+{% define config = {
+    name: 'delivery-type-switcher',
+} %}
+
+{% define data = {
+    shipment: required,
+    shipmentMethods: required,
+} %}
+
+{% block body %}
+    {% set shipmentSelection = data.shipment.shipmentSelection %}
+    {% set shipmentSelectionIndex = shipmentSelection.vars.value %}
+
+    <div class="{{ config.name }}__item">
+        {{ form_errors(shipmentSelection) }}
+
+        {% for name, choices in shipmentSelection.vars.choices %}
+            {% embed molecule('list-switches') with {
+                class: 'text-center',
+                modifiers: modifiers | merge(['bordered', 'mobile-expand']),
+                data: {
+                    form: shipmentSelection,
+                    choices: choices,
+                    targetClassName: 'js-delivery-type-',
+                    rowAttrClass: 'toggler-radio--with-bg toggler-radio--alternative',
+                    providerIndex: shipmentSelectionIndex,
+                    isFirstItemChecked: shipmentSelectionIndex ? false : true,
+                },
+                embed: {
+                    shipmentMethods: data.shipmentMethods,
+                },
+            } only %}
+                {% block body %}
+                    <ul class="{{ component.renderClass(config.name ~ '__list', modifiers) }} {{ config.jsName }}__list">
+                        {% set checkedItem = data.providerIndex %}
+                        {% set emptyChoiceIndex = '' %}
+
+                        {% for shimpentMethodIndex, shipmentMethod in embed.shipmentMethods %}
+                            {% set timeSlots = shipmentMethod.timeSlots | first %}
+                            {% set emptyChoiceIndex = timeSlots ? '' : shimpentMethodIndex %}
+                        {% endfor %}
+
+                        {% for key, choice in data.choices %}
+                            {% set isItemHidden = false %}
+                            {% if emptyChoiceIndex and loop.index0 == emptyChoiceIndex %}
+                                {% set isItemHidden = true %}
+                            {% endif %}
+                            {% set hiddenClass = isItemHidden ? 'is-hidden' %}
+
+                            <li class="{{ component.renderClass(config.name ~ '__item', modifiers) }} {{ config.jsName }}__item {{ hiddenClass }}" data-target-class="{{ config.jsName }}__item-{{ loop.index }}" >
+                                {% block item %}
+                                    {{ parent() }}
+                                {% endblock %}
+                            </li>
+                        {% endfor %}
+                    </ul>
+                {% endblock %}
+            {% endembed %}
+        {% endfor %}
+    </div>
+{% endblock %}

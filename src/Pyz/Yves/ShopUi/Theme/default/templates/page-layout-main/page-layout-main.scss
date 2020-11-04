@@ -1,0 +1,95 @@
+@mixin shop-ui-page-layout-main($name: '.page-layout-main') {
+    #{$name} {
+        &__container {
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1;
+        }
+
+        &__content {
+            flex-grow: 1;
+            flex-shrink: 0;
+        }
+
+        &__content-pdp {
+            width: 100%;
+        }
+
+        &__sidebar-pdp {
+            width: 100%;
+
+            @include helper-breakpoint-media-min($lg-min) {
+                padding: rem(40) 0 0 rem(30);
+            }
+
+            @include helper-breakpoint-media-min($xl-min) {
+                padding-left: rem(50);
+                width: 45%;
+            }
+
+            @include helper-breakpoint-media-min($xxl-min) {
+                width: 44.4%;
+                padding-left: rem(90);
+            }
+        }
+
+        &--success-page {
+            #{$name}__content {
+                background: url('../images/welcome.jpg') no-repeat center top/100% auto;
+                margin-bottom: 0;
+
+                @include helper-breakpoint-media-min($lg-min) {
+                    margin-bottom: rem(100);
+                }
+            }
+        }
+
+        &--error {
+            #{$name}__content {
+                background: url('../images/welcome.jpg') no-repeat center top / 100% auto;
+            }
+
+            .title--general {
+                color: $setting-color-white;
+            }
+
+            #{$name}__main {
+                background: $setting-color-gray-16;
+                margin: rem(46) auto;
+                min-height: rem(352);
+                text-align: center;
+                padding: rem(20);
+                display: flex;
+                flex-direction: column;
+                justify-content: space-between;
+                max-width: rem(800);
+                color: $setting-color-white;
+
+                @include helper-breakpoint-media-min($lg-min) {
+                    margin: rem(92) auto;
+                    padding: rem(30);
+                }
+
+                a {
+                    color: $setting-color-white;
+                }
+            }
+
+            #{$name}__icon {
+                display: inline-flex;
+                justify-content: center;
+                align-items: center;
+                border-radius: 50%;
+                background: $setting-color-white;
+                width: rem(62);
+                height: rem(62);
+                margin-bottom: rem(30);
+                color: $setting-color-black;
+            }
+        }
+
+        @content;
+    }
+}
+
+@include shop-ui-page-layout-main();

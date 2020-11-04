@@ -1,0 +1,97 @@
+{% embed '@Gui/Partials/widget.twig' with { widget_title: 'checkout.order.overview' | trans } %}
+    {% block widget_content %}
+        <div class="row">
+            <div class="col-xs-12 col-md-6">
+                <div class="bottom-indent">
+                    <dl>
+                        <dt>{{ 'Order Reference' | trans }}</dt>
+                        <dd>{{ order.orderReference }}</dd>
+                        {% if order.collectNumber %}
+                        <dt>{{ 'Collect Number' | trans }}</dt>
+                        <dd>{{ order.collectNumber }}</dd>
+                        {% endif %}
+                        <dt>{{ 'Order date' | trans }}</dt>
+                        <dd>{{ order.createdAt | formatDateTime }}</dd>
+                        <dt>{{ 'Unique Product Quantity' | trans }}</dt>
+                        <dd>{{ order.uniqueProductQuantity }}</dd>
+                        <hr>
+                        <dt>{{ 'Merchant Address' | trans }}</dt>
+                        <dd>{{ order.merchantName }}</dd>
+                        <dt>{{ 'Merchant Region Number' | trans }}</dt>
+                        <dd>{{ order.merchantRegionNumber }}</dd>
+                        <dt>{{ 'Merchant Number' | trans }}</dt>
+                        <dd>{{ order.merchantFilialNumber }}</dd>
+                    </dl>
+                </div>
+            </div>
+
+            <div class="col-xs-12 col-md-6 bottom-indent">
+                <p><b>{{ 'Totals' | trans }}</b></p>
+
+                <div class="row">
+                    {% for orderItem in groupedOrderItems %}
+                        <div class="col-sm-10"><p>{{ orderItem.name }} x {{ orderItem.quantity }}</p></div>
+                        <div class="col-sm-2">{{ orderItem.sumPrice | money(true, order.currencyIsoCode) }}</div>
+
+                        {% for orderItemOption in orderItem.productOptions %}
+                            <div class="col-sm-10"><p>+ <span class="label">{{ 'Option' | trans }}</span> {{ orderItemOption.value }}</p></div>
+                            <div class="col-sm-2">{{ orderItemOption.sumPrice | money(true, order.currencyIsoCode) }}</div>
+                        {% endfor %}
+                    {% endfor %}
+                </div>
+
+                <div class="row subtotal-row">
+                    <div class="col-sm-10"><b>{{ 'Subtotal' | trans }}</b></div>
+                    <div class="col-sm-2"><b>{{ order.totals.subtotal | money(true, order.currencyIsoCode) }}</b></div>
+                </div>
+
+                <div class="row">
+                    {% include [
+                        '@ShipmentGui/Sales/boxes/shipment-expenses.twig',
+                        '@Sales/Detail/boxes/order-overview-shipment-expenses.twig'
+                    ] %}
+
+                    {% include [
+                        '@SalesOrderThresholdGui/Sales/boxes/threshold-expenses.twig',
+                        '@Sales/Detail/boxes/order-overview-threshold-expenses.twig'
+                    ] %}
+                </div>
+
+                <div class="row">
+                    <div class="col-sm-10"><p>{{ 'Discount' | trans }}</p></div>
+                    <div class="col-sm-2"><p>{{ order.totals.discountTotal | default(0) | money(true, order.currencyIsoCode) }}</p></div>
+                </div>
+
+                <div class="row">
+                    <div class="col-sm-10"><p>{{ 'Cancelled amount' | trans }}</p></div>
+                    <div class="col-sm-2">{{ order.totals.canceledTotal | default(0) | money(true, order.currencyIsoCode) }}</div>
+                </div>
+
+                <div class="row">
+                    <div class="col-sm-12 grandTotal-row">
+                        <div class="row">
+                            <div class="col-sm-10"><p><b>{{ 'GRAND TOTAL' | trans }}</b></p></div>
+                            <div class="col-sm-2"><p><b>{{ order.totals.grandTotal | money(true, order.currencyIsoCode) }}</b></p></div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-10"><p>{{ 'Total taxes' | trans }}</p></div>
+                            <div class="col-sm-2">{{ order.totals.taxTotal.amount | money(true, order.currencyIsoCode) }}</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-12">
+                {% embed '@Gui/Partials/widget.twig' with { widget_title: 'Trigger all matching states inside this order' } %}
+                    {% block widget_content %}
+                        {% include '@Oms/RenderForm/_partial/order-actions.twig' with {
+                            redirectUrl: changeStatusRedirectUrl,
+                            idSalesOrder: order.idSalesOrder,
+                            events: events,
+                        } only %}
+                    {% endblock %}
+                {% endembed %}
+            </div>
+        </div>
+    {% endblock %}
+{% endembed %}

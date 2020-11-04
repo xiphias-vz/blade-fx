@@ -1,0 +1,14 @@
+{% extends model('component') %}
+
+{% define config = {
+    name: 'sticky-element',
+    tag: 'sticky-element',
+} %}
+
+{% define attributes = {
+    'target-class-name': required,
+    'class-to-toggle': 'sticky',
+    'wrapper-class-name': '',
+    'desktop-only': false,
+    offset: null,
+} %}

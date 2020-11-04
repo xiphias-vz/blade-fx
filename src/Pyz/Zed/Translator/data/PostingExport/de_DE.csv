@@ -1,0 +1,42 @@
+Export,Exportieren
+Postings,Buchungen
+Date From,Datum von
+Date To,Datum bis
+"Date from cannot be later than Date to.","Datum von kann nicht nach dem Datum bis liegen."
+"Date to cannot be earlier than Date from.","Datum bis kann nicht vor dem Datum von liegen."
+export.posting.page.title,Buchungen exportieren
+export.pos.page.title,PoS exportieren
+export.posting.form.button,Exportieren
+export.commissioning.form.button,ERP Export generieren
+export.pos.form.button,PoS exportieren
+export.posting.invoice.region-number,Gesellschaft
+export.posting.invoice.store-code,Filiale
+export.posting.invoice.date,Rechnungsdatum
+export.posting.invoice.number,Rechnungsnummer
+export.posting.net.amount.zero-tax,Nettobetrag 0%
+export.posting.net.amount.low-tax,Nettobetrag 7%
+export.posting.net.amount.standard-tax,Nettobetrag 19% exklusive Pfand und Service Gebühr
+export.posting.low-tax,Steuerbetrag 7%
+export.posting.standard-tax,Steuerbetrag 19 % exklusive Pfand und Service Gebühr
+export.posting.gross.amount.low-tax,Bruttobetrag 7%
+export.posting.gross.amount.zero-tax,Bruttobetrag 0%
+export.posting.gross.amount.standard-tax,Bruttobetrag 19% exklusive Pfand und Serive Gebühr
+export.posting.deposit.sold.amount,Pfandeinnahme
+export.posting.deposit.received.amount,Pfandausgabe
+export.posting.net.deposit,Nettobetrag Pfand
+export.posting.tax.deposit,Steuerbetrag Pfand
+export.posting.gross.expenses,Bruttobetrag Service Gebühr
+export.posting.transaction-id,Transaktions-ID
+export.posting.payment-type,Zahlungsmethode
+export.posting.email,E-Mail Kunde
+payment.payone.creditcard,Kreditkarte
+payment.payone.e_wallet,PayPal
+payment.payone.online_bank_transfer,Sofort-Überweisung
+payment.payone.instant-online-transfer,Sofort-Überweisung
+export.order.number,Bestellnummer
+export.customer.number,Kundennummer
+export.product.number,Artikelnummer
+export.product.quantity,Menge
+export.product.gross-no-deposit,Bruttobetrag exklusive Pfand
+export.product.tax-rate,Steuersatz
+export.product.gross-deposit,Bruttobetrag Pfand

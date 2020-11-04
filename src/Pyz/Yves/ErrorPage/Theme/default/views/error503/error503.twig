@@ -1,0 +1,33 @@
+{% extends view('error404', '@SprykerShop:ErrorPage') %}
+
+{% block class -%}
+    {{ parent() }} page-layout-main--error
+{%- endblock %}
+
+{% block pageInfo %}{% endblock %}
+
+{% block content %}
+    {% set link -%}
+        <a href="{{ path('home') }}" class="link">{{ 'error_page.home_link' | trans }}</a>
+    {%- endset %}
+    <div>
+        <div class="page-layout-main__icon">
+            {% include atom('icon') with {
+                modifiers: ['bigger'],
+                data: {
+                    name: 'attention',
+                },
+            } only %}
+        </div>
+        <h1 class="title title--general spacing-bottom--big">{{ 'error_page.title' | trans }}</h1>
+        <p>
+            {{- 'error_page.text' | trans({
+                "%link%": link,
+            }) | raw -}}
+        </p>
+    </div>
+{% endblock %}
+
+{% block contentClass -%}
+    page-layout-main__main
+{%- endblock %}

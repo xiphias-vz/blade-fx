@@ -1,0 +1,10 @@
+{% block content %}
+    <!-- CMS_BLOCK_PLACEHOLDER : "title" -->
+    <!-- CMS_BLOCK_PLACEHOLDER : "content" -->
+
+    <div class="spacing-bottom spacing-bottom--bigger">
+        {{- spyCmsBlockPlaceholder('title') | raw -}}
+    </div>
+
+    {{- spyCmsBlockPlaceholder('content') | raw -}}
+{% endblock %}

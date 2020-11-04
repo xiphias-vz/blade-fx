@@ -1,0 +1,203 @@
+{% extends template('page-layout-main') %}
+
+{% define data = {
+    merchant: merchant,
+    deliveryOrders: deliveryOrders,
+    deliveredOrders: deliveredOrders,
+    notDeliveredOrders: notDeliveredOrders,
+    requestedDeliveryDates: requestedDeliveryDates,
+    requestParamIdSalesOrder: requestParamIdSalesOrder,
+    urlConfirmDelivery: urlConfirmDelivery,
+    urlCancelDelivery: urlCancelDelivery,
+} %}
+
+{% block header %}
+    {% embed organism('header') with {
+        data: {
+            withoutLogo: true,
+            headerLocationTitle: '',
+        },
+        embed: {
+            ordersCount: data.deliveryOrders | length,
+        },
+    } only %}
+        {% block middleTitle %}
+            {% include atom('app-label') with {
+                data: {
+                    text: 'Current Delivery' | trans ~ ': ' ~ embed.ordersCount,
+                },
+            } only %}
+        {% endblock %}
+    {% endembed %}
+{% endblock %}
+
+{% block content %}
+    {% set deliveryOrdersList = data.deliveryOrders | merge(data.deliveredOrders) | merge(data.notDeliveredOrders) %}
+
+    <div class="spacing-bottom spacing-bottom--bigger">
+        {% include molecule('delivery-map', 'Delivery') with {
+            class: 'spacing-bottom spacing-bottom--big',
+            attributes: {
+                'markers-json': [{
+                    latitude: data.merchant.latitude,
+                    longitude: data.merchant.longitude,
+                    address: data.merchant.city ~ ', ' ~ data.merchant.street,
+                    deliveryInterval: data.merchant.email,
+                    reference: 'Spryker',
+                }] | json_encode(),
+            },
+        } only %}
+
+        {% for deliveryOrder in deliveryOrdersList %}
+            {% if deliveryOrder.isDelivered %}
+                {% include molecule('delivery-box', 'Delivery') with {
+                    modifiers: ['delivered'],
+                    data: {
+                        order: deliveryOrder,
+                        additionalText: 'delivery.delivered',
+                    },
+                } only %}
+            {% elseif deliveryOrder.isCancelled %}
+                {% include molecule('delivery-box', 'Delivery') with {
+                    modifiers: ['not-found', 'not-delivered'],
+                    data: {
+                        order: deliveryOrder,
+                        additionalText: 'delivery.not.delivered',
+                    },
+                } only %}
+            {% else %}
+                {% embed molecule('delivery-box', 'Delivery') with {
+                    data: {
+                        order: deliveryOrder,
+                    },
+                    embed: {
+                        deliveryOrder: deliveryOrder,
+                        urlConfirmDelivery: data.urlConfirmDelivery,
+                        urlCancelDelivery: data.urlCancelDelivery,
+                        requestParamIdSalesOrder: data.requestParamIdSalesOrder,
+                    },
+                } only %}
+                    {% block title %}
+                        <a href="https://www.google.com/maps/place/{{- data.order.deliveryAddress.address1 -}}+{{- data.order.deliveryAddress.address2 -}},{{ data.order.deliveryAddress.city }}" class="link link--icon {{ config.name }}__text {{ config.name }}__text--heading" target="_blank">
+                            {% include atom('icon') with {
+                                class: 'link__icon link__icon--marker',
+                                modifiers: ['big'],
+                                data: {
+                                    name: 'map-marker'
+                                }
+                            } only %}
+                            {{ fullAddress }}
+                        </a>
+                    {% endblock %}
+
+                    {% if embed.deliveryOrder.isCancelled or embed.deliveryOrder.isDelivered %}
+                        {% block additional %}
+                            <div class="{{ config.name }}__additional {{ config.name }}__additional--spaceless">
+                                <div class="{{ config.name }}__row {{ config.name }}__row--spaceless {{ config.name }}__row--no-marigin">
+                                    <div class="{{ config.name }}__col {{ config.name }}__col--half {{ config.name }}__col--spaceless">
+                                        <form action="{{ embed.urlCancelDelivery }}" method="post" class="js-submit-form-handler__form">
+                                            <input type="hidden" name="{{ embed.requestParamIdSalesOrder }}" value="{{ embed.deliveryOrder.idSalesOrder }}">
+
+                                            {% embed molecule('popup-ui') with {
+                                                data: {
+                                                    title: 'delivery.was.not.delivered' | trans,
+                                                    buttons: {
+                                                        submit: {
+                                                            isButton: true,
+                                                        },
+                                                        cancel: {
+                                                            title: 'back.to.delivery' | trans,
+                                                        },
+                                                    },
+                                                },
+                                                embed: {
+                                                    deliveryOrder: embed.deliveryOrder,
+                                                },
+                                            } only %}
+                                                {% block content %}
+                                                    <div class="text-center text-additional spacing-bottom">
+                                                        {{ 'delivery.order.not.delivered.message' | trans({
+                                                            number: embed.deliveryOrder.orderReference
+                                                        }) }}
+                                                    </div>
+
+                                                    <div class="text-center text-additional text-bold spacing-bottom spacing-bottom--bigger">
+                                                        <div>
+                                                            {{ embed.deliveryOrder.deliveryAddress.salutation }} {{ embed.deliveryOrder.deliveryAddress.firstName }} {{ embed.deliveryOrder.deliveryAddress.lastName }}
+                                                        </div>
+                                                        {% set fullAddress = embed.deliveryOrder.deliveryAddress.address1 ~ ' '
+                                                            ~ embed.deliveryOrder.deliveryAddress.address2 ~ ', '
+                                                            ~ embed.deliveryOrder.deliveryAddress.zipCode ~ ' '
+                                                            ~ embed.deliveryOrder.deliveryAddress.city %}
+                                                        <div>{{ fullAddress }}</div>
+                                                    </div>
+                                                {% endblock %}
+
+                                                {% block button %}
+                                                    <button class="button button--expand button--large button--not-delivered {{ config.jsName }}__open">
+                                                        {{ 'delivery.not.delivered' | trans }}
+                                                    </button>
+                                                {% endblock %}
+                                            {% endembed %}
+                                        </form>
+                                    </div>
+                                    <div class="{{ config.name }}__col {{ config.name }}__col--half {{ config.name }}__col--spaceless">
+                                        <form action="{{ embed.urlConfirmDelivery }}" method="post" class="js-submit-form-handler__form">
+                                            <input type="hidden" name="{{ embed.requestParamIdSalesOrder }}" value="{{ embed.deliveryOrder.idSalesOrder }}">
+
+                                            {% embed molecule('popup-ui') with {
+                                                data: {
+                                                    title: 'delivery.has.delivered' | trans,
+                                                    buttons: {
+                                                        submit: {
+                                                            isButton: true,
+                                                        },
+                                                        cancel: {
+                                                            title: 'back.to.delivery' | trans,
+                                                        },
+                                                    },
+                                                },
+                                                embed: {
+                                                    deliveryOrder: embed.deliveryOrder,
+                                                },
+                                            } only %}
+                                                {% block content %}
+                                                    <div class="text-center text-additional spacing-bottom">
+                                                        {{ 'delivery.order.delivered.message' | trans({
+                                                            number: embed.deliveryOrder.orderReference
+                                                        }) }}
+                                                    </div>
+
+                                                    <div class="text-center text-additional text-bold spacing-bottom spacing-bottom--bigger">
+                                                        <div>
+                                                            {{ embed.deliveryOrder.deliveryAddress.salutation }} {{ embed.deliveryOrder.deliveryAddress.firstName }} {{ embed.deliveryOrder.deliveryAddress.lastName }}
+                                                        </div>
+                                                        {% set fullAddress = embed.deliveryOrder.deliveryAddress.address1 ~ ' '
+                                                            ~ embed.deliveryOrder.deliveryAddress.address2 ~ ', '
+                                                            ~ embed.deliveryOrder.deliveryAddress.zipCode ~ ' '
+                                                            ~ embed.deliveryOrder.deliveryAddress.city %}
+                                                        <div>{{ fullAddress }}</div>
+                                                    </div>
+                                                {% endblock %}
+
+                                                {% block button %}
+                                                    <button class="button button--expand button--large button--delivered {{ config.jsName }}__open">
+                                                        {{ 'delivery.delivered' | trans }}
+                                                    </button>
+                                                {% endblock %}
+                                            {% endembed %}
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endblock %}
+                    {% endif %}
+                {% endembed %}
+            {% endif %}
+        {% endfor %}
+    </div>
+
+    <div class="text-center spacing-bottom spacing-bottom--big">
+        <a href="/" class="button button--expand button--large">{{ 'delivery.order.finish' | trans }}</a>
+    </div>
+{% endblock content %}

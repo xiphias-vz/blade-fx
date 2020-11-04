@@ -1,0 +1,35 @@
+{% extends template('page-layout-main') %}
+
+{% define data = {
+    title: _view.pageTitle | default('global.spryker.shop' | trans),
+    metaTitle: _view.pageTitle | default('global.spryker.shop' | trans),
+    metaDescription: _view.pageDescription | default(''),
+    metaKeywords: _view.pageKeywords | default('')
+} %}
+
+{% block breadcrumbs %}{% endblock %}
+
+{% block title %}
+    <!-- CMS_PLACEHOLDER : "title" -->
+    <div class="cms-page__title">
+        <h2>
+            {{ spyCms('title') | raw }}
+        </h2>
+    </div>
+{% endblock %}
+
+{% block content %}
+    <!-- CMS_PLACEHOLDER : "content" -->
+    {% include molecule('cms-page-collapse-block') with {
+        attributes: {
+            'collapsible-container': 'cms-page__content',
+            'collapsible-header': 'collapsible-container-part--header',
+            'collapsible-block-active-class': 'm-active',
+            'collapsible-block-inactive-class': 'm-inactive',
+        },
+    } only %}
+
+    <div class="cms-page__content">
+        {{ spyCms('content') | raw }}
+    </div>
+{% endblock %}

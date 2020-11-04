@@ -1,0 +1,17 @@
+@include catalog-page-suggestion-product() {
+    &__link {
+        @include helper-effect-transition(color background);
+        text-transform: capitalize;
+        text-decoration: none;
+        padding: rem(3) rem(10);
+        margin: 0 rem(-10);
+        border-radius: rem(5);
+        color: $setting-color-gray-6;
+        max-width: none;
+
+        &:hover {
+            text-decoration: none;
+            background: $setting-color-gray-2;
+        }
+    }
+}

@@ -1,0 +1,39 @@
+day-of-week.n.0,Sonntag
+day-of-week.n.1,Montag
+day-of-week.n.2,Dienstag
+day-of-week.n.3,Mittwoch
+day-of-week.n.4,Donnerstag
+day-of-week.n.5,Freitag
+day-of-week.n.6,Samstag
+month-name.n.01,Januar
+month-name.n.02,Februar
+month-name.n.03,März
+month-name.n.04,April
+month-name.n.05,Mai
+month-name.n.06,Juni
+month-name.n.07,Juli
+month-name.n.08,August
+month-name.n.09,September
+month-name.n.10,Oktober
+month-name.n.11,November
+month-name.n.12,Dezember
+mail.invoice.group.name,Unternehmensgruppe Spryker Systems GmbH
+mail.invoice.number,Rechnungsnummer
+mail.invoice.goods,Hiermit berechnen wir Ihnen folgende Ware
+mail.invoice.table.number,Pos.
+mail.invoice.table.quantity,Menge
+mail.invoice.table.name,Artikelbezeichnung
+mail.invoice.table.tax,Steuersatz
+mail.invoice.table.price,Einzelpreis<br/>Brutto
+mail.invoice.table.sum,Pos.<br/>Brutto
+mail.invoice.table.pfand,Pfand Einweg
+mail.invoice.table.pfand.return,Pfandrückgabe Einweg
+mail.invoice.table.total.gross,Gesamt Brutto
+mail.invoice.table.total.net,Gesamt Netto
+mail.invoice.table.vat,MwSt.
+mail.invoice.table.payment.amount,Zahlbetrag
+mail.invoice.table.delivery.date,Lieferdatum
+mail.invoice.table.vat.included,darin enthalten %tax%% MwSt. Netto
+mail.order.confirmation.item.quantity,Anzahl
+mail.order.confirmation.collect.number,Dein persönlicher Abholcode
+mail.order.confirmation.deposit,Pfand

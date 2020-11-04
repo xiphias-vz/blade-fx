@@ -1,0 +1,102 @@
+{% extends template('page-layout-main') %}
+
+{% define data = {
+    product: _view.product,
+    productUrl: _view.productUrl,
+
+    cart: _view.cart,
+
+    title: product.metaTitle | default(_view.product.name),
+    metaTitle: product.metaTitle | default(_view.product.name),
+    metaDescription: _view.product.metaDescription | default,
+    metaKeywords: _view.product.metaKeywords | default,
+    tags: _view.tags,
+    vitamins: _view.vitamins,
+
+    depositPrice: _view.depositPrice,
+} %}
+
+{% block headStyles %}
+    {{ parent() }}
+    <link itemprop="url" href="{{ data.productUrl }}">
+{% endblock %}
+
+{% block pageInfo %}
+    <div class="container__inner">
+        {% block breadcrumbs %}
+            {% widget 'ProductBreadcrumbsWithCategoriesWidget' args [data.product] only %}{% endwidget %}
+        {% endblock %}
+    </div>
+{% endblock %}
+
+{% block contentClass %} page-layout-main page-layout-main--pdp{% endblock %}
+
+{% block content %}
+    <div class="container__inner">
+        <div class="grid grid--indent">
+            <div class="col col--spaced-lg col--sm-12 col--lg-6">
+                {% include molecule('product-carousel', 'ProductDetailPage') with {
+                    class: 'col page-layout-main__content-pdp',
+                    data: {
+                        product: data.product,
+                    },
+                } only %}
+            </div>
+
+            <div class="col col--spaced-lg col--sm-12 col--lg-6">
+                {% include molecule('product-configurator', 'ProductDetailPage') with {
+                    data: {
+                        product: data.product,
+                        tags: data.tags,
+                        depositPrice: data.depositPrice,
+                    },
+                } only %}
+            </div>
+        </div>
+    </div>
+
+    {% widget 'ProductAlternativeListWidget' args [data.product] only %}{% endwidget %}
+
+    <div class="grid grid--indent">
+        <div class="col col--spaced-lg col--sm-12 col--lg-6">
+            <div class="container__inner">
+                <p><b>{{ 'pdp.general.info' | trans }}</b></p>
+
+                {% include molecule('product-detail', 'ProductDetailPage') with {
+                    data: {
+                        description: data.product.description,
+                        attributes: data.product.attributes,
+                        sku: data.product.sku,
+                        vitamins: data.vitamins,
+                        isNutritionalInformationContainsReferenceAmount: data.product.nutritionalInformationContainsReferenceAmount,
+                        isAdditionalProductInformationShown: data.product.additionalProductInformationIsShown,
+                    },
+                } only %}
+            </div>
+        </div>
+    </div>
+
+    {% widget 'ProductReplacementForListWidget' args [data.product.sku] only %}{% endwidget %}
+
+    <div class="container__inner">
+        {% if data.product.productSetIds is not empty %}
+            {% widget 'ProductSetIdsWidget' args [data.product.productSetIds] only %}{% endwidget %}
+        {% endif %}
+    </div>
+
+    {% widget 'SimilarProductsWidget' args [data.product] only %}{% endwidget %}
+
+    <div class="container__inner">
+        {% embed molecule('product-cms-block', 'CmsBlockWidget') ignore missing with {
+            data: {
+                idProductAbstract: data.product.idProductAbstract,
+            }
+        } only %}
+            {% block body %}
+                {% cms_slot 'slt-7' required ['idProductAbstract'] with {
+                    idProductAbstract: data.idProductAbstract,
+                } %}
+            {% endblock %}
+        {% endembed %}
+    </div>
+{% endblock %}

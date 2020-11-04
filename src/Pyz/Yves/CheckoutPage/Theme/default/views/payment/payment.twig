@@ -1,0 +1,127 @@
+{% extends view('payment', '@SprykerShop:CheckoutPage') %}
+
+{% define data = {
+    isPayonePaymentExist: false,
+    customForms: {}
+} %}
+
+{% block content %}
+    {% embed molecule('form') with {
+        modifiers: ['payment'],
+        data: {
+            form: data.forms.payment,
+            submit: {
+                enable: true,
+                text: 'general.next.button' | trans,
+                class: 'button button--expand js-payone-credit-card__submit',
+            },
+            cancel: {
+                enable: true,
+                url: data.backUrl,
+                text: 'general.back.button' | trans,
+                class: 'button button--hollow button--expand button--hollow-border-light',
+            },
+            customForms: data.customForms,
+        },
+        embed: {
+            isPayonePaymentExist: data.isPayonePaymentExist,
+        },
+    } only %}
+        {% block fieldset %}
+            <div class="checkout-block">
+                <h2 class="title title--primary">{{ 'checkout.step.payment.title' | trans }}</h2>
+                <p class="spacing-bottom spacing-bottom--bigger">{{ 'checkout.step.payment.info' | trans }}</p>
+
+                {% set paymentSelectionIndex = data.form.paymentSelection.vars.value %}
+
+                {% for name, choices in data.form.paymentSelection.vars.choices %}
+                    {% set paymentProviderIndex = loop.index0 ~ '-' ~ paymentSelectionIndex %}
+                    {% set lastPaymentModifier = loop.last ? 'payment-last' %}
+
+                    {% embed molecule('list-switches') with {
+                        modifiers: ['payment', lastPaymentModifier, 'one-column',],
+                        data: {
+                            form: data.form.paymentSelection,
+                            choices: choices,
+                            rowAttrClass: 'toggler-radio--payment',
+                            targetClassName: 'js-payment-method-',
+                            providerIndex: paymentProviderIndex,
+                        },
+                        embed: {
+                            form: data.form,
+                            customForms: data.customForms,
+                            paymentProviderIndex: paymentProviderIndex,
+                        },
+                    } only %}
+                        {% block item %}
+                            {% set checkedItem = data.providerIndex | split('-') | last %}
+                            {{ parent() }}
+
+                            {% if choice.label == 'PayoneCreditCard' %}
+                                <div class="{{ config.name }}__img-wrap">
+                                    <img class="{{ config.name }}__img" src="{{ publicPath('images/visa-icon.svg') }}" alt="Visa">
+                                    <img class="{{ config.name }}__img" src="{{ publicPath('images/mastercard-icon.svg') }}" alt="Mastercard">
+                                </div>
+                            {% endif %}
+
+                            {% if choice.label == 'PayoneEWallet' %}
+                                <div class="{{ config.name }}__img-wrap">
+                                    <img class="{{ config.name }}__img" src="{{ publicPath('images/paypal-icon.svg') }}" alt="PayPal">
+                                </div>
+                            {% endif %}
+
+                            {% if choice.label == 'PayoneInstantOnlineTransfer' %}
+                                <div class="{{ config.name }}__img-wrap">
+                                    <img class="{{ config.name }}__img" src="{{ publicPath('images/instant-online-transfer-icon.svg') }}" alt="Instant Online Transfer">
+                                </div>
+                            {% endif %}
+
+                            {% embed molecule('form') with {
+                                modifiers: ['checkout-form'],
+                                data: {
+                                    form: embed.form[embed.form.paymentSelection[key].vars.value],
+                                    enableStart: false,
+                                    enableEnd: false,
+                                    customForms: embed.customForms,
+                                },
+                                embed: {
+                                    index: loop.index ~ '-' ~ embed.paymentProviderIndex,
+                                },
+                            } only %}
+                                {% block fieldset %}
+                                    <div class="is-hidden js-payment-method-{{ embed.index }}">
+                                        {% if data.customForms[data.form.vars.template_path] is not defined %}
+                                            <div class="payment-form-inner payment-form-inner--additional">
+                                                {{ parent() }}
+                                            </div>
+                                        {% else %}
+                                            {% set viewName = data.customForms[data.form.vars.template_path] | first %}
+                                            {% set moduleName = data.customForms[data.form.vars.template_path] | last %}
+
+                                            {% include view(viewName, moduleName) ignore missing with {
+                                                form: data.form.parent,
+                                            } only %}
+                                        {% endif %}
+                                    </div>
+                                {% endblock %}
+                            {% endembed %}
+                        {% endblock %}
+                    {% endembed %}
+                {% endfor %}
+            </div>
+        {% endblock %}
+
+        {% block actions %}
+            {% set submitButtonType = embed.isPayonePaymentExist ? 'button' : 'submit' %}
+
+            <div class="grid grid--tablet-revers grid--justify spacing-top spacing-top--biggest">
+                <div class="col col--sm-12 col--xl-3 spacing-bottom spacing-bottom--big">
+                    <a href="{{ data.cancel.url }}" class="{{ data.cancel.class }}">{{ data.cancel.text }}</a>
+                </div>
+                <div class="col col--sm-12 col--xl-3 spacing-bottom spacing-bottom--big">
+                    <button type="{{ submitButtonType }}" class="{{ data.submit.class }}" data-init-single-click>{{ data.submit.text }}</button>
+                </div>
+            </div>
+        {% endblock %}
+    {% endembed %}
+{% endblock %}

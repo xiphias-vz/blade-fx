@@ -1,0 +1,65 @@
+@mixin catalog-page-filter-section($name: '.filter-section') {
+    $mobile-top-panel-height: 57;
+    $mobile-button-height: 60;
+    $mobile-sort-and-button-max-height: rem($mobile-top-panel-height + $mobile-button-height);
+
+    #{$name} {
+        margin-top: rem($mobile-top-panel-height);
+        padding: 0 rem(24);
+        overflow-y: auto;
+        max-height: calc(100% - #{$mobile-sort-and-button-max-height});
+
+        @include helper-breakpoint-media-min($xl-min) {
+            margin: 0;
+            overflow-y: visible;
+            max-height: none;
+            border-top: rem(1) solid $setting-color-gray-15;
+            padding: 0;
+        }
+
+        &__top-panel {
+            position: absolute;
+            left: 0;
+            top: 0;
+            right: 0;
+            background-color: $setting-color-gray-1;
+            padding: rem(20) rem(48) rem(8);
+            height: rem($mobile-top-panel-height);
+
+            @include helper-breakpoint-media-min($xl-min) {
+                position: static;
+                padding: 0;
+                background: none;
+                height: auto;
+            }
+        }
+
+        &__top-panel-button {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            right: rem(24);
+
+            @include helper-breakpoint-media-min($xl-min) {
+                position: static;
+            }
+        }
+
+        &__actions {
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            right: 0;
+            padding: 0 rem(15) rem(10);
+
+            @include helper-breakpoint-media-min($xl-min) {
+                position: static;
+                padding: rem(20) 0 0 0;
+            }
+        }
+
+        @content;
+    }
+}
+
+@include catalog-page-filter-section();

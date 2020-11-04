@@ -1,0 +1,43 @@
+{% extends '@Gui/Layout/layout.twig' %}
+
+{% set section_title = 'Overview of Navigation Elements' %}
+{% set widget_title = 'Navigation' %}
+
+{% block section_title section_title | trans %}
+{% block widget_title widget_title | trans %}
+
+{% block action %}
+    {{ createActionButton('/navigation-gui/create', 'Create Navigation Element' | trans) }}
+{% endblock %}
+
+{% block content %}
+
+    {% embed '@Gui/Partials/widget.twig' with { widget_title: 'List of navigation elements' | trans } %}
+
+        {% block widget_content %}
+            {{ navigationTable | raw }}
+        {% endblock %}
+
+    {% endembed %}
+
+    <div class="row">
+        <div class="col-lg-6">
+            {% include '@NavigationGui/Index/_partials/navigation-tree.twig' %}
+        </div>
+
+        <div class="col-lg-6">
+            {% include '@NavigationGui/Index/_partials/navigation-tree-form-container.twig' %}
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block head_css %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ assetsPath('css/spryker-zed-navigation.css') }}" />
+{% endblock %}
+
+{% block footer_js %}
+    {{ parent() }}
+    <script src="{{ assetsPath('js/spryker-zed-navigation.js') }}"></script>
+{% endblock %}

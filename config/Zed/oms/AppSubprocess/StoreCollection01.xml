@@ -1,0 +1,67 @@
+<?xml version="1.0"?>
+<statemachine
+        xmlns="spryker:oms-01"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="spryker:oms-01 http://static.spryker.com/oms-01.xsd">
+
+    <process name="Collection01">
+        <states>
+            <state name="collection process" />
+            <state name="ready for collection" />
+            <state name="collected by customer" />
+            <state name="collection cancelled by customer" >
+                <flag>cancelled</flag>
+            </state>
+            <state name="collection cancelled by store" >
+                <flag>cancelled</flag>
+            </state>
+        </states>
+
+        <transitions>
+            <transition happy="true">
+                <source>collection process</source>
+                <target>ready for collection</target>
+                <event>move to ready for collection</event>
+            </transition>
+
+            <transition happy="true">
+                <source>ready for collection</source>
+                <target>collected by customer</target>
+                <event>confirm collection</event>
+            </transition>
+
+            <transition>
+                <source>ready for collection</source>
+                <target>collection cancelled by customer</target>
+                <event>cancel collection by customer</event>
+            </transition>
+
+            <transition>
+                <source>ready for collection</source>
+                <target>collection cancelled by store</target>
+                <event>cancel collection by store</event>
+            </transition>
+
+            <transition>
+                <source>collection cancelled by store</source>
+                <target>cancellation process</target>
+                <event>process collection cancelled by store</event>
+            </transition>
+
+            <transition>
+                <source>collection cancelled by customer</source>
+                <target>cancellation process</target>
+                <event>process collection cancelled by customer</event>
+            </transition>
+        </transitions>
+
+        <events>
+            <event name="move to ready for collection" onEnter="true" command="Sales/MoveToReadyForCollection"/>
+            <event name="confirm collection" manual="true" command="Sales/ConfirmCollection"/>
+            <event name="cancel collection by customer" manual="true"/>
+            <event name="process collection cancelled by customer" onEnter="true" command="Oms/CancelCollectionByCustomer"/>
+            <event name="cancel collection by store" manual="true"/>
+            <event name="process collection cancelled by store" onEnter="true" command="Oms/CancelCollectionByStore"/>
+        </events>
+    </process>
+</statemachine>

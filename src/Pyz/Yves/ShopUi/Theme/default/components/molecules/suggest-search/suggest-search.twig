@@ -1,0 +1,28 @@
+{% extends molecule('suggest-search', '@SprykerShop:ShopUi') %}
+
+{% define attributes = {
+    'wrap-class-name': '',
+    'wrap-active-class-name': '',
+    'clear-button-class-name': '',
+    'clear-button-hide-class-name': 'is-hidden',
+    'target-toggle-class-name': 'is-hidden-sm-lg',
+} %}
+
+{% block body %}
+    <div class="is-hidden {{ config.name }}__container {{ config.jsName }}__container"></div>
+
+    {% include molecule('ajax-provider') with {
+        class: config.jsName ~ '__ajax-provider',
+        attributes: {
+            method: 'post',
+            url: attributes['suggestion-url'],
+        },
+    } only %}
+
+    {% include molecule('ajax-loader') with {
+        modifiers: ['big'],
+        attributes: {
+            'provider-class-name': config.jsName ~ '__ajax-provider',
+        },
+    } only %}
+{% endblock %}

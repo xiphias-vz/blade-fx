@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<config>
+    <customer>
+        <pages>
+            <customer-access>
+                <visible>0</visible>
+            </customer-access>
+        </pages>
+    </customer>
+</config>

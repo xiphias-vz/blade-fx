@@ -1,0 +1,57 @@
+<?xml version="1.0"?>
+<statemachine
+        xmlns="spryker:oms-01"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="spryker:oms-01 http://static.spryker.com/oms-01.xsd">
+
+    <process name="LoopPayment01" main="true">
+        <states>
+            <state name="new" />
+            <state name="reserved" />
+            <state name="paid" />
+            <state name="wait" />
+            <state name="closed"/>
+        </states>
+
+        <transitions>
+            <transition happy="true" condition="Oms/TrueCondition">
+                <source>new</source>
+                <target>reserved</target>
+                <event>pass</event>
+            </transition>
+
+            <transition happy="true">
+                <source>reserved</source>
+                <target>paid</target>
+                <event>pass 1 minute</event>
+            </transition>
+
+            <transition happy="true">
+                <source>paid</source>
+                <target>wait</target>
+                <event>pass 1 minute</event>
+            </transition>
+
+            <transition happy="true">
+                <source>wait</source>
+                <target>paid</target>
+                <event>pass</event>
+            </transition>
+
+            <transition happy="true" condition="Oms/Is1DayPassed">
+                <source>wait</source>
+                <target>closed</target>
+                <event>pass</event>
+            </transition>
+
+        </transitions>
+
+        <events>
+            <event name="pass" onEnter="true" manual="true"/>
+            <event name="pass 1 second" timeout="1 second" manual="true"/>
+            <event name="pass 1 minute" timeout="1 minute" manual="true"/>
+        </events>
+
+    </process>
+
+</statemachine>

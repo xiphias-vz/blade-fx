@@ -1,0 +1,9 @@
+{{ form_start(form) }}
+    <input type="hidden" name="token" value="{{ csrf_token('confirm-deletion') }}"/>
+    {% for field in form if field.vars.name != '_token' %}
+        <input type="hidden" name="{{ field.vars.name }}" value="{{ field.vars.data }}"/>
+        {% do field.setRendered %}
+    {% endfor %}
+    {{ form_widget(form) }}
+    <button type="submit" class="safe-submit btn btn-xs btn-outline btn-danger"><i class="fa fa-trash"></i> {{ title | trans }}</button>
+{{ form_end(form) }}

@@ -1,0 +1,25 @@
+@mixin customer-page-delivery-checkbox($name: '.delivery-checkbox') {
+    #{$name} {
+        &__label {
+            display: inline-block;
+            line-height: 1;
+        }
+
+        &__checked,
+        &__checkbox {
+            display: none;
+        }
+
+        &__checkbox:checked {
+            & ~ #{$name}__checked {
+                display: block;
+            }
+
+            & ~ #{$name}__unchecked {
+                display: none;
+            }
+        }
+    }
+}
+
+@include customer-page-delivery-checkbox();

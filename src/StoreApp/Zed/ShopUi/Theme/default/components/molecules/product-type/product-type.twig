@@ -1,0 +1,74 @@
+{% extends model('component') %}
+
+{% define config = {
+    name: 'product-type',
+} %}
+
+{% define data = {
+    productTypes: [],
+    withoutText: false
+} %}
+
+{% block component %}
+    {% if data.productTypes %}
+        {{ parent() }}
+    {% endif %}
+{% endblock %}
+
+{% block body %}
+    <div class="container grid">
+        {% for productType in data.productTypes %}
+            {% set productTypeLower = productType | lower %}
+            {% set iconName = productTypeLower is same as('ambient') ? 'snowflake-ambient' : 'snowflake' %}
+
+            <div class="col spacing-bottom spacing-bottom--small spacing-right">
+                {% embed atom('icon-row') with {
+                    modifiers: ['round', 'frozen'] | merge(modifiers),
+                    data: {
+                        iconName: iconName,
+                        rowText: productTypeLower | trans
+                    },
+                    embed: {
+                        productTypeLower: productTypeLower,
+                        withoutText: data.withoutText
+                    }
+                } only %}
+                    {% block icon %}
+                        {% if embed.productTypeLower is same as('frozen') %}
+                            <div class="grid">
+                                <div class="col spacing-right spacing-right--small">
+                                    {% include atom('icon') with {
+                                        class: config.name ~ '__icon',
+                                        modifiers: ['big'],
+                                        data: {
+                                            name: data.iconName
+                                        }
+                                    } only %}
+                                </div>
+                                <div class="col">
+                                    {% include atom('icon') with {
+                                        class: config.name ~ '__icon',
+                                        modifiers: ['big'],
+                                        data: {
+                                            name: data.iconName
+                                        }
+                                    } only %}
+                                </div>
+                            </div>
+                        {% else %}
+                            {{ parent() }}
+                        {% endif %}
+                    {% endblock %}
+
+                    {% block text %}
+                        {% if not embed.withoutText %}
+                            <div class="{{ config.name }}__text">
+                                {{ parent() }}
+                            </div>
+                        {% endif %}
+                    {% endblock %}
+                {% endembed %}
+            </div>
+        {% endfor %}
+    </div>
+{% endblock %}

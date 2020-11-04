@@ -1,0 +1,25 @@
+{% extends model('component') %}
+
+{% define config = {
+    name: 'animated-spinner',
+    tag: 'animated-spinner',
+} %}
+
+{% define data = {
+
+} %}
+
+{% define attributes = {
+    'trigger-class-name': 'loading-spinner-trigger',
+} %}
+
+{% block body %}
+    <div class="{{ config.name }}__overlay">
+        {% include atom('icon') with {
+            class: config.name ~ '__spinner',
+            data: {
+                name: 'animated-spinner',
+            },
+        } only %}
+    </div>
+{% endblock %}

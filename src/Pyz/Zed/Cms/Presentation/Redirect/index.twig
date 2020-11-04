@@ -1,0 +1,25 @@
+{% extends '@Cms/Layout/layout.twig' %}
+
+{% set section_title = 'CMS Redirect' %}
+{% set widget_title = 'List CMS Redirect' %}
+
+{% block section_title section_title | trans %}
+{% block widget_title widget_title | trans %}
+
+{% block action %}
+    {{ createActionButton('/cms/redirect/add', 'Add CMS Redirect' | trans) }}
+{% endblock %}
+
+{% block content %}
+
+    {% embed '@Gui/Partials/widget.twig' %}
+
+        {% block widget_content %}
+
+            {{ redirects | raw }}
+
+        {% endblock %}
+
+    {% endembed %}
+
+{% endblock %}

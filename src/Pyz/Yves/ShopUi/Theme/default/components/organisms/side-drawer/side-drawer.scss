@@ -1,0 +1,119 @@
+$shop-ui-side-drawer-width: rem(375);
+$shop-ui-right-side-drawer-width: rem(320);
+
+@mixin shop-ui-side-drawer($name: '.side-drawer') {
+    #{$name} {
+        position: relative;
+        z-index: $setting-zi-side-drawer;
+
+        &__overlay {
+            @include helper-visibility-invisible;
+            @include helper-effect-transition(opacity visibility);
+            position: fixed;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background-color: $setting-color-overlay;
+        }
+
+        &__drawer {
+            @include helper-visibility-invisible;
+            @include helper-effect-transition(opacity visibility left right);
+            position: fixed;
+            top: 0;
+            bottom: 0;
+            left: -100%;
+            width: 100%;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+
+            @include helper-breakpoint-media-min($md-min) {
+                left: - $shop-ui-side-drawer-width;
+                width: $shop-ui-side-drawer-width;
+            }
+
+            &--right {
+                left: auto;
+                right: -100%;
+
+                @include helper-breakpoint-media-min($md-min) {
+                    right: - $shop-ui-right-side-drawer-width;
+                    width: $shop-ui-right-side-drawer-width;
+                }
+            }
+        }
+
+        &__top-bar,
+        &__close {
+            min-height: rem(61);
+        }
+
+        &__close {
+            margin: 0 0 0 auto;
+        }
+
+        &__top-bar {
+            background: $setting-color-gray-14;
+            border-bottom: rem(1) solid $setting-color-white;
+        }
+
+        &__merchant,
+        &__navigation {
+            margin: 0 rem(24);
+        }
+
+        &__merchant {
+            display: block;
+            color: $setting-color-black;
+            padding: rem(20) 0 rem(10);
+        }
+
+        &__navigation-item {
+            display: flex;
+            align-items: center;
+            padding: rem(8) 0;
+            color: $setting-color-black;
+            text-decoration: none;
+
+            &:hover {
+                text-decoration: none;
+                color: $setting-color-gray-7;
+            }
+        }
+
+        &--show {
+            #{$name}__overlay,
+            #{$name}__drawer {
+                @include helper-visibility-visible;
+            }
+
+            #{$name}__drawer {
+                left: 0;
+
+                &--right {
+                    left: auto;
+                    right: 0;
+                }
+            }
+        }
+
+        &__content {
+            background-color: $setting-color-gray-14;
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1;
+            overflow-y: auto;
+        }
+
+        &__bottom-bar {
+            padding: 0 rem(24) rem(12);
+            margin-top: auto;
+        }
+
+        @content;
+    }
+}
+
+@include shop-ui-side-drawer;

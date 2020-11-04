@@ -1,0 +1,177 @@
+{% extends view('summary', '@SprykerShop:CheckoutPage') %}
+
+{% define data = {
+    payment: _view.quoteTransfer.payment,
+    overview: {
+        taxPayments: _view.taxPayments,
+        totalItems: _view.totalItems,
+    },
+    agbInputName: 'terms_approval',
+} %}
+
+{% block content %}
+    {% set isGiftCardExists = null %}
+
+    {% for shipmentGroup in data.shipmentGroups %}
+        <article class="checkout-block checkout-block--summary grid grid--indent">
+            <div class="col col--spaced-lg col--sm-12 col--xl-8">
+                {% include molecule('summary-sidebar', 'CheckoutPage') with {
+                    class: 'grid',
+                    data: {
+                        shipment: shipmentGroup.shipment,
+                        billingAddress: data.billingAddress,
+                        isGiftCardExists: isGiftCardExists,
+                        canEdit: true,
+                        payment: data.payment,
+                    },
+                } only %}
+
+                <a href="{{ data.backUrl }}" class="is-hidden-sm-lg button button--hollow">
+                    {{ 'general.back.button' | trans }}
+                </a>
+            </div>
+
+            <div class="col col--spaced-lg col--sm-12 col--xl-4">
+                <div class="checkout-block__summary">
+                    <div class="checkout-block__title">
+                        <span>{{ 'checkout.order.overview' | trans }}</span>
+                        <span class="checkout-block__title-counter">
+                            {{ 'checkout.amount.items' | trans({
+                                '%items%': data.overview.totalItems
+                            }) }}
+                        </span>
+                    </div>
+
+                    {% for item in shipmentGroup.cartItems %}
+                        {% set cartItem = item.bundleProduct ?? item %}
+                        {% set isGiftCardExists = cartItem.giftCardMetadata is not null and cartItem.giftCardMetadata.isGiftCard %}
+
+                        {% embed molecule('product-card-item') with {
+                            modifiers: ['summary'],
+                            data: {
+                                productItem: cartItem,
+                                canEditCart: false,
+                                additionalContainerClass: 'grid--no-wrap',
+                                productOptionsModifiers: ['summary'],
+                            },
+                            embed: {
+                                bundleItems: item.bundleItems | default([]),
+                            },
+                        } only %}
+                            {% block image %}
+                                <div class="{{ component.renderClass(config.name ~ '__image', modifiers) }} col">
+                                    {% include molecule('product-image') with {
+                                        modifiers: ['summary'],
+                                        data: {
+                                            name: data.productItem.name,
+                                            image: data.productItem.images[0].externalUrlLarge ?? null,
+                                        },
+                                    } only %}
+                                </div>
+                            {% endblock %}
+
+                            {% block contentInner %}
+                                {% block headingGrid %}
+                                    <div class="grid grid--no-wrap grid--justify spacing-bottom">
+                                        {% block heading %}
+                                            {{ parent() }}
+                                        {% endblock %}
+                                    </div>
+                                {% endblock %}
+
+                                {% block quantityCondition %}
+                                    {% set price = data.productItem.unitPrice is defined ? data.productItem.unitPrice : data.productItem.price %}
+                                    {% set productItemSubTotal = data.productItem.quantity is not empty ? data.productItem.quantity * price : price %}
+
+                                    <div class="grid grid--justify grid--bottom">
+                                        <div class="col">
+                                            {% block summary %}
+                                                {{ parent() }}
+                                            {% endblock %}
+                                        </div>
+                                        <div class="col">
+                                            {% include molecule('money-price') with {
+                                                modifiers: ['cart'] | merge(modifiers),
+                                                class: component.renderClass(config.name ~ '__price', modifiers),
+                                                data: {
+                                                    amount: productItemSubTotal | default(null),
+                                                    originalAmount: null,
+                                                },
+                                            } only %}
+                                        </div>
+                                    </div>
+                                {% endblock %}
+
+                                {% block unitPrice %}{% endblock %}
+                                {% block summaryContent %}{% endblock %}
+                            {% endblock %}
+                        {% endembed %}
+                    {% endfor %}
+
+                    <div class="checkout-block__summary-total">
+                        <h3 class="title title--general">
+                            {{ 'checkout.step.summary.total' | trans }}
+                        </h3>
+                        {% embed molecule('form') with {
+                            modifiers: ['checkout-actions'],
+                            data: {
+                                form: data.forms.summary,
+                                submit: {
+                                    enable: true,
+                                    text: 'checkout.step.place.order' | trans,
+                                    class: 'form__action--checkout button button--large button--expand',
+                                },
+                                cancel: {
+                                    enable: true,
+                                    url: data.backUrl,
+                                    text: 'general.back.button' | trans,
+                                    icon: '',
+                                    class: 'is-hidden-xl-only form__action--checkout button button--hollow button--hollow-border-light button--expand',
+                                },
+                                agbInputName: data.agbInputName,
+                            },
+                            embed: {
+                                overview: data.overview,
+                                cart: data.cart,
+                            },
+                        } only %}
+                            {% block field %}
+                                {% if fieldName == data.agbInputName %}
+                                    {% set labelAnchor = 'page.terms.url' | trans %}
+                                    {% set labelText = 'summary.forms.accept_terms.text' | trans %}
+                                    {{ form_row(field, {
+                                        component: atom('checkbox'),
+                                        label: '<a class="link" href="' ~ labelAnchor ~ '" target="_blank">' ~ labelText ~ '</a>',
+                                        rowAttr: {
+                                            class: 'spacing-bottom spacing-bottom--bigger' ~ fieldLayoutClass,
+                                        },
+                                    }) }}
+                                    <span>{{ 'checkout.step.summary.info' | trans }}</span>
+                                {% else %}
+                                    {{ form_row(field, {
+                                        rowAttr: {
+                                            class: 'spacing-bottom spacing-bottom--bigger' ~ fieldLayoutClass,
+                                        },
+                                    }) }}
+                                {% endif %}
+                            {% endblock %}
+
+                            {% block body %}
+                                {% include molecule('summary-overview', 'CheckoutPage') with {
+                                    data: embed.overview,
+                                    embed: {
+                                        cart: embed.cart,
+                                    },
+                                } only %}
+
+                                {{ parent() }}
+                            {% endblock %}
+                        {% endembed %}
+
+                        {% include molecule('payment-info', 'CartPage') ignore missing only %}
+                    </div>
+                </div>
+            </div>
+        </article>
+    {% endfor %}
+{% endblock %}

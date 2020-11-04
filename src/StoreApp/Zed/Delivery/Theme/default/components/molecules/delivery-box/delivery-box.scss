@@ -1,0 +1,103 @@
+@mixin customer-page-delivery-box($name: '.delivery-box') {
+    $box-padding: rem(16);
+    $box-border-radius: rem(8);
+
+    #{$name} {
+        padding: $box-padding;
+        border-radius: $box-border-radius;
+        background: $setting-color-gray-2;
+        border: rem(1) solid transparent;
+        margin-bottom: rem(8);
+        overflow: hidden;
+
+        &.active {
+            background: $setting-color-white;
+            border-color: $setting-color-green;
+
+            #{$name} {
+                &__bags {
+                    background: $setting-color-gray-2;
+                }
+            }
+        }
+
+        &--delivered {
+            border-color: $setting-color-green;
+        }
+
+        &--not-delivered {
+            border-color: $setting-color-gray-5;
+        }
+
+        &__info {
+            margin: rem(-10) 0;
+        }
+
+        &__row {
+            display: flex;
+            justify-content: space-between;
+            margin: 0 rem(-5);
+            padding: rem(10) 0;
+
+            &--spaceless {
+                padding: 0;
+            }
+
+            &--no-marigin {
+                margin: 0;
+            }
+
+            &--middle {
+                align-items: center;
+            }
+        }
+
+        &__col {
+            padding: 0 rem(5);
+
+            &--spaceless {
+                padding: 0;
+            }
+
+            &--right {
+                display: flex;
+                justify-content: flex-end;
+            }
+
+            &--half {
+                width: 50%;
+            }
+        }
+
+        &__text {
+            display: block;
+            font-size: rem(15);
+
+            &--heading {
+                margin-bottom: rem(5);
+                font-weight: fw(bold);
+            }
+
+            &--with-spacing {
+                margin-bottom: rem(10);
+            }
+
+            &--additional {
+                text-decoration: underline;
+            }
+        }
+
+        &__additional {
+            margin: $box-padding -#{$box-padding} -#{$box-padding};
+            padding: $box-padding;
+            border-radius: 0 0 $box-border-radius $box-border-radius;
+            background: $setting-color-white;
+
+            &--spaceless {
+                padding: 0;
+            }
+        }
+    }
+}
+
+@include customer-page-delivery-box();

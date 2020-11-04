@@ -1,0 +1,23 @@
+Sales Documents,Verkaufsdokumente
+Store Picking List,Picklisten
+
+sales-document.store-picking.html-template.title.picking-list,Picklisten
+sales-document.store-picking.html-template.picker-name,Kommissionierer/-in
+sales-document.store-picking.html-template.delivery-date,Lieferdatum
+sales-document.store-picking.html-template.customer-reference,Kunde
+sales-document.store-picking.html-template.order-reference,Order ID
+sales-document.store-picking.html-template.article-number,Art. Nr.
+sales-document.store-picking.html-template.article-name,Artikelbeschreibung
+sales-document.store-picking.html-template.article-variety,Sorte
+sales-document.store-picking.html-template.quantity,Menge
+sales-document.store-picking.html-template.comments,Anmerkung
+
+sales-document.store-picking.footer.message,* = Ersatzartikel für dieses Sorte sind erlaubt.
+
+sales-document.form.print,Drucken
+
+sales-document.store-picking.form.title.picking-list,Picklisten
+sales-document.store-picking.form.merchant-selector,Händlerauswahl
+sales-document.store-picking.form.export-types,Exporttyp
+
+sales-document.store-picking.message.no-orders-found,Keine Bestellungen zu kommissionieren

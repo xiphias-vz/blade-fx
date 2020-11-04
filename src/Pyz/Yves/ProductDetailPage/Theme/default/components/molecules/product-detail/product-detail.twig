@@ -1,0 +1,40 @@
+{% extends model('component') %}
+
+{% define config = {
+    name: 'product-detail',
+    tag: 'section'
+} %}
+
+{% define data = {
+    description: '',
+    attributes: [],
+    vitamins: [],
+    sku: '',
+    index: '',
+    isBundle: false,
+    hiddenClass: 'is-hidden-sm-only',
+    isNutritionalInformationContainsReferenceAmount: false,
+    isAdditionalProductInformationShown: false,
+} %}
+
+{% block body %}
+    {% set modifiers = data.isBundle ? modifiers : modifiers | merge(['mobile', 'filter', 'desktop-border-bottom']) %}
+    {% set colClass = data.isBundle ? 'col col--sm-12' : config.name ~ '__col' %}
+    <div class="{{ component.renderClass(config.name ~ '__content', modifiers) }}">
+        {{ spyCmsBlock({ key: 'general-product-info', content: 'product.general.info'}) }}
+        {% if data.attributes['Alkoholkontrolle erforderlich'] is defined %}
+            {% if data.attributes['Alkoholkontrolle erforderlich'] == 18 %}
+                {{ spyCmsBlock({ key: 'alcohol-18'}) }}
+            {% elseif data.attributes['Alkoholkontrolle erforderlich'] == 16 %}
+                {{ spyCmsBlock({ key: 'alcohol-16' }) }}
+            {% endif %}
+        {% endif %}
+        {% block contentText %}
+            {% include molecule('toggler-accordion') with {
+                attributes: {
+                    'trigger-class-name': config.jsName ~ '__toggler-trigger',
+                },
+            } only %}
+        {% endblock %}
+    </div>
+{% endblock %}

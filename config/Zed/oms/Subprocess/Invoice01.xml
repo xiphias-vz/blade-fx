@@ -1,0 +1,48 @@
+<?xml version="1.0"?>
+<statemachine
+        xmlns="spryker:oms-01"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="spryker:oms-01 http://static.spryker.com/oms-01.xsd">
+
+    <process name="Invoice01">
+        <states>
+            <state name="invoice process"/>
+            <state name="started invoice process" />
+            <state name="generated invoice reference" />
+            <state name="invoice generated" />
+        </states>
+
+        <transitions>
+            <transition>
+                <source>invoice process</source>
+                <target>started invoice process</target>
+                <event>pass</event>
+            </transition>
+
+            <transition happy="true">
+                <source>started invoice process</source>
+                <target>generated invoice reference</target>
+                <event>generate invoice reference</event>
+            </transition>
+
+            <transition happy="true">
+                <source>generated invoice reference</source>
+                <target>invoice generated</target>
+                <event>send invoice</event>
+            </transition>
+
+            <transition happy="true">
+                <source>invoice generated</source>
+                <target>order invoiced</target>
+                <event>pass</event>
+            </transition>
+
+        </transitions>
+
+        <events>
+            <event name="generate invoice reference" command="Generate invoice reference" onEnter="true"/>
+            <event name="send invoice" onEnter="true"/>
+        </events>
+    </process>
+
+</statemachine>

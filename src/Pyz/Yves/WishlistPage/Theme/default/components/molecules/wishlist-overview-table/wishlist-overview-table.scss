@@ -1,0 +1,13 @@
+@mixin wishlist-page-wishlist-overview-table($name: '.wishlist-overview-table') {
+    #{$name} {
+        &__update-button-col {
+            margin: rem(6) 0;
+
+            @include helper-breakpoint-media-min($lg-min) {
+                margin: 0 rem(6);
+            }
+        }
+    }
+}
+
+@include wishlist-page-wishlist-overview-table();

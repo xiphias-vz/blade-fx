@@ -1,0 +1,52 @@
+{% extends view('wishlist-detail', '@SprykerShop:WishlistPage') %}
+
+{% block customerContent %}
+    <div class="box spacing-bottom spacing-bottom--biggest">
+        {% include molecule('title-box', 'CustomerPage') with {
+            modifiers: ['borderless'],
+            data: {
+                title: data.wishlistName,
+            },
+        } only %}
+
+        {% if data.wishlistItems is empty %}
+            <div class="text-center">
+                <h6>{{ 'customer.account.wishlist.empty' | trans }}</h6>
+            </div>
+        {% else %}
+            {% include molecule('wishlist-detail-table', 'WishlistPage') with {
+                data: {
+                    wishlistItems: data.wishlistItems,
+                    wishlistName: data.wishlistName,
+                },
+            } only %}
+        {% endif %}
+    </div>
+
+    {% if data.wishlistItems %}
+        {% include molecule('pagination') with {
+            data: data.pagination,
+        } only %}
+    {% endif %}
+
+    <div class="grid grid--right">
+        <div class="col col--expand text-right">
+            {% if data.wishlistItems is not empty %}
+                {{ form_start(data.addAllProductsToCart, {
+                    action: path('wishlist/move-all-available-to-cart', { wishlistName: data.wishlistName }),
+                    attr: { class: '' }
+                }) }}
+
+                <button class="button button--expand-mobile">
+                    {{- 'customer.account.wishlist.add_all_available_to_cart' | trans -}}
+                </button>
+
+                {% for wishlistItemMetaField in data.addAllProductsToCart.wishlistItemMetaCollection %}
+                    {{ form_widget(wishlistItemMetaField) }}
+                {% endfor %}
+
+                {{ form_end(data.addAllProductsToCart) }}
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}

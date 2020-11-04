@@ -1,0 +1,6 @@
+key,filter_type,position,key.en_US,key.de_DE
+Bio,single-select,1,Bio,Bio
+Vegan,single-select,2,Vegan,Vegan
+Laktosefrei,single-select,3,Laktosefrei,Laktosefrei
+Glutenfrei,single-select,4,Glutenfrei,Glutenfrei
+Vegetarisch,single-select,5,Vegetarisch,Vegetarisch
