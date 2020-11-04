@@ -1,0 +1,1 @@
+# spryker-click-and-collect
