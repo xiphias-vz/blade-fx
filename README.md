@@ -21,8 +21,8 @@ Mac users would increase vCPU and RAM dedicated for docker:
 ### Installation
 
 ```bash
-mkdir food-demo && cd food-demo
-git clone https://github.com/spryker-projects/food-demo.git ./
+mkdir spryker-click-and-collect && cd spryker-click-and-collect
+git clone git@github.com:globussbwarenhaus/spryker-click-and-collect.git ./
 ```
 ```bash
 git submodule update --init --force docker
