@@ -1,4 +1,4 @@
-# Spryker B2C Demo Project
+# Spryker Сlick And Collect
 [![Minimum PHP Version](https://img.shields.io/badge/php-%3E%3D%207.1-8892BF.svg)](https://php.net/)
 
 ## Docker installation
