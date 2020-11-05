@@ -36,6 +36,14 @@ echo "127.0.0.1 www.welcome.ccd.demo-spryker.local www.berlin.ccd.demo-spryker.l
 docker/sdk boot deploy.dev.yml
 docker/sdk up
 ```
+Install SSL certificate: https://documentation.spryker.com/docs/self-signed-ssl-certificate-setup
+
+Hosts:
+- https://www.welcome.ccd.demo-spryker.local
+- https://www.berlin.ccd.demo-spryker.local
+- https://backoffice.ccd.demo-spryker.local
+- https://filial-app.berlin.ccd.demo-spryker.local
+- etc.
 
 #### II. Git checkout
 ```bash
