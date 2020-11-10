@@ -1,12 +1,16 @@
 <?php
 
 $availableStores = [
-    'BERLIN' => true,
-    'HAMBURG' => true,
+    'EIN' => true,
+    'KMD' => true,
+    'LPZ' => true,
+    'HAD' => true,
 ];
 
-$storesFromEnvironment = explode(',', getenv('SPRYKER_ACTIVE_STORES') ?: 'BERLIN,HAMBURG');
-$activeStores = array_combine($storesFromEnvironment, $storesFromEnvironment);
+$activeStores = array_combine(
+    array_keys($availableStores),
+    array_keys($availableStores)
+);
 
 $template = [
     // different contexts
