@@ -22,7 +22,7 @@ class StoreSwitcherWidget extends AbstractWidget
 
         $this->addParameter('stores', $storeData->getAllowedStores())
             ->addParameter('currentStore', $storeData->getStoreName())
-            ->addParameter('pattern', str_ireplace($storeData->getStoreName(), '%s', $this->getYvesHost()));
+            ->addParameter('pattern', $this->getYvesHost() . '/store/switch?store=%s&referer-url=%s');
     }
 
     /**

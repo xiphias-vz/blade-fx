@@ -35,7 +35,7 @@
 
                 {% set selectedOption = store == embed.currentStore ? 'selected' %}
 
-                <option value="{{ embed.pattern | format(store | lower) }}" {{ selectedOption }}>
+                <option value="{{ embed.pattern | format(store, app.request.requestUri) }}" {{ selectedOption }}>
                     {{ store }}
                 </option>
             {% endfor %}
