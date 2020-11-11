@@ -27,9 +27,6 @@ sections:
         propel-copy-schema:
             command: "vendor/bin/console propel:schema:copy -vvv --no-ansi"
 
-        propel-postgres-compatibility:
-            command: "vendor/bin/console propel:pg-sql-compat -vvv --no-ansi"
-
         propel-migration-delete:
             command: "vendor/bin/console propel:migration:delete -vvv --no-ansi"
 
