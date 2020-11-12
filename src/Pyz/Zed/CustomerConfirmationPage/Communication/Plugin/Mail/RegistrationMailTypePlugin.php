@@ -38,6 +38,7 @@ class RegistrationMailTypePlugin extends AbstractPlugin implements MailTypePlugi
         $this
             ->setSubject($mailBuilder)
             ->setRecipient($mailBuilder)
+            ->setHtmlTemplate($mailBuilder)
             ->setSender($mailBuilder);
     }
 
@@ -78,6 +79,19 @@ class RegistrationMailTypePlugin extends AbstractPlugin implements MailTypePlugi
     protected function setSender(MailBuilderInterface $mailBuilder)
     {
         $mailBuilder->setSender('mail.sender.email', 'mail.sender.name');
+
+        return $this;
+    }
+
+    /**
+     * @param \Spryker\Zed\Mail\Business\Model\Mail\Builder\MailBuilderInterface $mailBuilder
+     *
+     * @return $this
+     */
+
+    protected function setHtmlTemplate(MailBuilderInterface $mailBuilder)
+    {
+        $mailBuilder->setHtmlTemplate('customer/mail/customer_registration.html.twig');
 
         return $this;
     }
