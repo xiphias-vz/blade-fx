@@ -1,6 +1,12 @@
 env:
     APPLICATION_ENV: docker
 
+stores:
+    - EIN
+    - KMD
+    - LPZ
+    - HAD
+
 command-timeout: 1200
 
 sections:
