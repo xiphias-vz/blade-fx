@@ -35,7 +35,6 @@ use Pyz\Zed\DataImport\Business\Model\PickingRoute\PickingRouteWriterStep;
 use Pyz\Zed\DataImport\Business\Model\PostalCode\PostalCodeWriterStep;
 use Pyz\Zed\DataImport\Business\Model\Product\ProductLocalizedAttributesExtractorStep;
 use Pyz\Zed\DataImport\Business\Model\Product\Repository\ProductRepository;
-use Pyz\Zed\DataImport\Business\Model\ProductAbstract\AddCategoryKeysStep;
 use Pyz\Zed\DataImport\Business\Model\ProductAbstract\AddProductAbstractSkusStep;
 use Pyz\Zed\DataImport\Business\Model\ProductAbstract\ProductAbstractWriterStep;
 use Pyz\Zed\DataImport\Business\Model\ProductAbstractStore\ProductAbstractStoreWriterStep;
@@ -55,7 +54,6 @@ use Pyz\Zed\DataImport\Business\Model\ProductSearchAttributeMap\ProductSearchAtt
 use Pyz\Zed\DataImport\Business\Model\ProductStock\Hook\UpdateAvailabilityAfterImport;
 use Pyz\Zed\DataImport\Business\Model\ProductStock\Hook\UpdateAvailabilityAfterImportInterface;
 use Pyz\Zed\DataImport\Business\Model\ProductStock\ProductStockWriterStep;
-use Pyz\Zed\DataImport\Business\Model\ProductVitaminAttributeKey\ProductVitaminAttributeKeyWriter;
 use Pyz\Zed\DataImport\Business\Model\Shipment\ShipmentWriterStep;
 use Pyz\Zed\DataImport\Business\Model\ShipmentPrice\ShipmentPriceWriterStep;
 use Pyz\Zed\DataImport\Business\Model\Stock\StockWriterStep;
@@ -63,7 +61,6 @@ use Pyz\Zed\DataImport\Business\Model\Store\StoreReader;
 use Pyz\Zed\DataImport\Business\Model\Store\StoreWriterStep;
 use Pyz\Zed\DataImport\Business\Model\Tax\TaxSetNameToIdTaxSetStep;
 use Pyz\Zed\DataImport\Business\Model\Tax\TaxWriterStep;
-use Pyz\Zed\DataImport\Business\Model\VitaminData\VitaminDataWriterStep;
 use Pyz\Zed\DataImport\DataImportDependencyProvider;
 use Pyz\Zed\MerchantRegion\Communication\Plugin\DataImport\MerchantRegionDataImportPlugin;
 use Pyz\Zed\ProductUpdate\Business\ProductUpdateFacadeInterface;
@@ -778,14 +775,6 @@ class DataImportBusinessFactory extends SprykerDataImportBusinessFactory
     }
 
     /**
-     * @return \Pyz\Zed\DataImport\Business\Model\ProductAbstract\AddCategoryKeysStep
-     */
-    protected function createAddCategoryKeysStep()
-    {
-        return new AddCategoryKeysStep();
-    }
-
-    /**
      * @param array $defaultAttributes
      *
      * @return \Pyz\Zed\DataImport\Business\Model\Product\ProductLocalizedAttributesExtractorStep
@@ -935,7 +924,8 @@ class DataImportBusinessFactory extends SprykerDataImportBusinessFactory
     {
         return new ProductAbstractWriterStep(
             $this->createProductRepository(),
-            $this->getUtilTextService()
+            $this->getUtilTextService(),
+            $this->getConfig()
         );
     }
 

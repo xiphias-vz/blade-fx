@@ -23,6 +23,7 @@ use Pyz\Shared\Product\ProductConfig;
 use Pyz\Zed\DataImport\Business\Model\BaseProduct\AttributesExtractorStep;
 use Pyz\Zed\DataImport\Business\Model\Product\ProductLocalizedAttributesExtractorStep;
 use Pyz\Zed\DataImport\Business\Model\Product\Repository\ProductRepository;
+use Pyz\Zed\DataImport\DataImportConfig;
 use Spryker\Service\UtilText\UtilTextServiceInterface;
 use Spryker\Shared\Kernel\Store;
 use Spryker\Shared\ProductImageCartConnector\ProductImageCartConnectorConfig;
@@ -61,15 +62,23 @@ class ProductAbstractWriterStep extends PublishAwareStep implements DataImportSt
     private $utilTextService;
 
     /**
+     * @var \Pyz\Zed\DataImport\DataImportConfig
+     */
+    private $dataImportConfig;
+
+    /**
      * @param \Pyz\Zed\DataImport\Business\Model\Product\Repository\ProductRepository $productRepository
      * @param \Spryker\Service\UtilText\UtilTextServiceInterface $utilTextService
+     * @param \Pyz\Zed\DataImport\DataImportConfig $dataImportConfig
      */
     public function __construct(
         ProductRepository $productRepository,
-        UtilTextServiceInterface $utilTextService
+        UtilTextServiceInterface $utilTextService,
+        DataImportConfig $dataImportConfig
     ) {
         $this->productRepository = $productRepository;
         $this->utilTextService = $utilTextService;
+        $this->dataImportConfig = $dataImportConfig;
     }
 
     /**
@@ -236,7 +245,7 @@ class ProductAbstractWriterStep extends PublishAwareStep implements DataImportSt
             $productImageSetEntity = $this->findOrCreateImageSet($dataSet, $localeName);
             $images = explode(';', $dataSet[ProductConfig::KEY_MAIN_IMAGE_FILE_NAME]);
             foreach ($images as $key => $image) {
-                $imageUrl = '/images/' . $image;
+                $imageUrl = $this->dataImportConfig->getImagesHostUrl() . '/' .  $image;
                 $productImageEntity = $this->findOrCreateImage($imageUrl);
                 $this->updateOrCreateImageToImageSetRelation($productImageSetEntity, $productImageEntity, $key);
             }

@@ -11,7 +11,9 @@ use Generated\Shared\Transfer\DataImporterConfigurationTransfer;
 use Pyz\Shared\DataImport\DataImportConfig as SharedDataImportConfig;
 use Pyz\Shared\DataImport\DataImportConstants;
 use Pyz\Shared\ProductDetailPage\ProductDetailPageConstants;
+use Pyz\Shared\ProductImage\ProductImageConstants;
 use Pyz\Shared\ProductPageSearch\ProductPageSearchConstants;
+use Pyz\Shared\Store\StoreConstants;
 use Spryker\Zed\DataImport\DataImportConfig as SprykerDataImportConfig;
 
 /**
@@ -357,6 +359,14 @@ class DataImportConfig extends SprykerDataImportConfig
      */
     public function getSapStoreIdToStoreMap(): array
     {
-        return $this->get(DataImportConstants::SAP_STORE_ID_TO_STORE_MAP, []);
+        return $this->get(StoreConstants::SAP_STORE_ID_TO_STORE_MAP, []);
+    }
+
+    /**
+     * @return string
+     */
+    public function getImagesHostUrl(): string
+    {
+        return $this->get(ProductImageConstants::IMAGES_HOST_URL, '');
     }
 }

@@ -12,5 +12,4 @@ use Spryker\Shared\DataImport\DataImportConstants as SprykerDataImportConstants;
 interface DataImportConstants extends SprykerDataImportConstants
 {
     public const IS_ENABLE_INTERNAL_IMAGE = 'DATA_IMPORT:IS_ENABLE_INTERNAL_IMAGE';
-    public const SAP_STORE_ID_TO_STORE_MAP = 'DATA_IMPORT:SAP_STORE_ID_TO_STORE_MAP';
 }
