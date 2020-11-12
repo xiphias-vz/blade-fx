@@ -6,7 +6,6 @@
 
 use Monolog\Logger;
 use Pyz\Shared\Console\ConsoleConstants;
-use Pyz\Shared\DataImport\DataImportConstants;
 use Pyz\Shared\MerchantSwitcherWidget\MerchantSwitcherWidgetConstants;
 use Pyz\Shared\Payone\PayoneConstants;
 use Pyz\Shared\Scheduler\SchedulerConfig;
@@ -226,7 +225,3 @@ foreach ($payOneCredentials as $store => $credentials) {
 }
 
 $config[PayoneConstants::PAYONE] = $config[PayoneConstants::PAYONE_ALL_STORES][APPLICATION_STORE]; // Current store
-
-$config[DataImportConstants::SAP_STORE_ID_TO_STORE_MAP] = [
-    1004 => 'BERLIN',
-];
