@@ -1,16 +1,9 @@
 env:
     APPLICATION_ENV: docker
 
-stores:
-    - EIN
-    - KMD
-    - LPZ
-    - HAD
-
 command-timeout: 1200
 
 sections:
-
     clean-oms:
         clear-oms-locks:
             command: "vendor/bin/console oms:clear-locks -vvv --no-ansi"
@@ -33,4 +26,4 @@ sections:
 
     scheduler-start:
         scheduler-setup:
-            command: "vendor/bin/console install:per-store:run --no-ansi vendor/bin/console scheduler:setup -vvv --no-ansi"
+            command: "vendor/bin/console scheduler:setup -vvv --no-ansi"
