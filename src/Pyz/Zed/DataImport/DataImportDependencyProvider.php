@@ -149,7 +149,7 @@ class DataImportDependencyProvider extends SprykerDataImportDependencyProvider
             new CmsPageStoreDataImportPlugin(),
             new SalesOrderThresholdDataImportPlugin(),
             new FileManagerDataImportPlugin(),
-            new StockStoreDataImportPlugin(),
+//            new StockStoreDataImportPlugin(),
             new ShipmentMethodStoreDataImportPlugin(),
             new CmsSlotTemplateDataImportPlugin(),
             new CmsSlotDataImportPlugin(),

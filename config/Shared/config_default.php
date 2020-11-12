@@ -533,6 +533,9 @@ $config[CmsGuiConstants::CMS_FOLDER_PATH] = '@Cms/templates/';
 
 // -------- DataImport
 $config[DataImportConstants::IS_ENABLE_INTERNAL_IMAGE] = false;
+$config[DataImportConstants::SAP_STORE_ID_TO_STORE_MAP] = [
+    1057 => 'BERLIN',
+];
 
 // ----------- Glue Application
 $config[GlueApplicationConstants::GLUE_APPLICATION_DOMAIN] = '';
@@ -607,8 +610,8 @@ $config[ShopUiConstants::YVES_ASSETS_URL_PATTERN] = '/assets/' . (getenv('SPRYKE
 $config[KernelConstants::STRICT_DOMAIN_REDIRECT] = true;
 
 // ALDI
-$config[ProductPageSearchConstants::SEARCHABLE_ATTRIBUTE_KEYS] = ['Bio', 'Vegan', 'Laktosefrei', 'Glutenfrei', 'Vegetarisch'];
-$config[ProductDetailPageConstants::REQUIRED_ATTRIBUTE_KEYS] = ['Bezugsgröße', 'Bezugsgröße Maßeinheit'];
+$config[ProductPageSearchConstants::SEARCHABLE_ATTRIBUTE_KEYS] = [];
+$config[ProductDetailPageConstants::REQUIRED_ATTRIBUTE_KEYS] = [];
 
 $config[SalesConstants::BOTTLE_DEPOSIT_PRICE_IN_CENTS] = 25;
 $config[InvoiceConstants::INVOICE_DUE_DATE_DAYS] = 14;
