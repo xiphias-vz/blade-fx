@@ -19,9 +19,9 @@ use Orm\Zed\ProductImage\Persistence\SpyProductImageSetToProductImageQuery;
 use Orm\Zed\ProductSearch\Persistence\SpyProductSearchQuery;
 use Pyz\Shared\Product\ProductConfig;
 use Pyz\Zed\DataImport\Business\Exception\ProductNumberIsMissingException;
-use Pyz\Zed\DataImport\Business\Model\BaseProduct\StoreSpecificAttributeExtractorStep;
 use Pyz\Zed\DataImport\Business\Model\Product\Repository\ProductRepository;
 use Pyz\Zed\DataImport\Business\Model\ProductAbstract\ProductAbstractWriterStep;
+use Pyz\Zed\DataImport\DataImportConfig;
 use Spryker\Shared\Kernel\Store;
 use Spryker\Zed\DataImport\Business\Model\DataImportStep\DataImportStepInterface;
 use Spryker\Zed\DataImport\Business\Model\DataImportStep\PublishAwareStep;
@@ -35,12 +35,10 @@ class ProductConcreteWriter extends PublishAwareStep implements DataImportStepIn
     public const BULK_SIZE = 100;
 
     public const KEY_ATTRIBUTES = 'attributes';
-    public const KEY_PRODUCT_NUMBER = 'Artikelnummer';
+    public const KEY_PRODUCT_NUMBER =  ProductConfig::KEY_PRODUCT_NUMBER;
     public const KEY_LOCALIZED_ATTRIBUTES = 'localizedAttributes';
     public const KEY_LOCALES = 'locales';
-    public const KEY_IS_ACTIVE = 'is_active';
-    public const KEY_CUSTOM_IMAGE_URL = 'Custom Image';
-    public const KEY_IS_QUANTITY_SPLITTABLE = 'is_quantity_splittable';
+    public const KEY_IS_ACTIVE = 'active';
 
     /**
      * @var \Pyz\Zed\DataImport\Business\Model\Product\Repository\ProductRepository
@@ -53,11 +51,20 @@ class ProductConcreteWriter extends PublishAwareStep implements DataImportStepIn
     protected static $idLocaleBuffer = [];
 
     /**
-     * @param \Pyz\Zed\DataImport\Business\Model\Product\Repository\ProductRepository $productRepository
+     * @var \Pyz\Zed\DataImport\DataImportConfig
      */
-    public function __construct(ProductRepository $productRepository)
-    {
+    protected $dataImportConfig;
+
+    /**
+     * @param \Pyz\Zed\DataImport\Business\Model\Product\Repository\ProductRepository $productRepository
+     * @param \Pyz\Zed\DataImport\DataImportConfig $dataImportConfig
+     */
+    public function __construct(
+        ProductRepository $productRepository,
+        DataImportConfig $dataImportConfig
+    ) {
         $this->productRepository = $productRepository;
+        $this->dataImportConfig = $dataImportConfig;
     }
 
     /**
@@ -69,22 +76,12 @@ class ProductConcreteWriter extends PublishAwareStep implements DataImportStepIn
     {
         $productEntity = $this->importProduct($dataSet);
 
-        $this->productRepository->addProductConcrete($productEntity, ProductAbstractWriterStep::getAbstractSku($dataSet));
+        $this->productRepository->addProductConcrete($productEntity, $dataSet[ProductConfig::KEY_PRODUCT_NUMBER]);
 
         $this->importProductLocalizedAttributes($dataSet, $productEntity);
         $this->importProductPlaceholderImage($dataSet);
 
         $this->addPublishEvents(ProductEvents::PRODUCT_CONCRETE_PUBLISH, $productEntity->getIdProduct());
-    }
-
-    /**
-     * @param \Spryker\Zed\DataImport\Business\Model\DataSet\DataSetInterface $dataSet
-     *
-     * @return string
-     */
-    public static function getConcreteSku(DataSetInterface $dataSet): string
-    {
-        return strtolower(str_replace([' ', ',', ';', '/', '.'], '-', $dataSet[ProductAbstractWriterStep::KEY_CONCRETE_SKU]));
     }
 
     /**
@@ -104,27 +101,20 @@ class ProductConcreteWriter extends PublishAwareStep implements DataImportStepIn
         }
 
         $attributes = $this->removeUnnecessaryAttributes($dataSet);
-        foreach ($dataSet[StoreSpecificAttributeExtractorStep::KEY_STORE_SPECIFIC_ATTRIBUTES] as $store => $storeAttributes) {
-            foreach ($storeAttributes as $storeAttributeKey => $storeAttributeValue) {
-                if ($storeAttributeKey === ProductConfig::KEY_PRICE) {
-                    continue;
-                }
-                $attributes[sprintf(ProductConfig::PRODUCT_STORE_ATTRIBUTE_FORMAT, $storeAttributeKey, $store)] = $storeAttributeValue;
-            }
-        }
 
         $productEntity = SpyProductQuery::create()
-            ->filterBySku($this->getConcreteSku($dataSet))
+            ->filterBySku($dataSet[ProductConfig::KEY_PRODUCT_NUMBER])
             ->findOneOrCreate();
 
         $idAbstract = $this->productRepository->getIdProductAbstractByAbstractSku(ProductAbstractWriterStep::getAbstractSku($dataSet));
 
         $productEntity
-            ->setIsActive(true)
+            ->setIsActive($dataSet[static::KEY_IS_ACTIVE])
             ->setFkProductAbstract($idAbstract)
             ->setProductNumber($dataSet[static::KEY_PRODUCT_NUMBER])
-            ->setAttributes(json_encode($attributes))
-            ->setIsQuantitySplittable($dataSet[static::KEY_IS_QUANTITY_SPLITTABLE]);
+            ->setSapNumber($dataSet[ProductConfig::KEY_SAP_NUMBER])
+            ->setSku($dataSet[static::KEY_PRODUCT_NUMBER])
+            ->setAttributes(json_encode($attributes));
 
         if ($productEntity->isNew() || $productEntity->isModified()) {
             $productEntity->save();
@@ -143,12 +133,14 @@ class ProductConcreteWriter extends PublishAwareStep implements DataImportStepIn
     protected function removeUnnecessaryAttributes(DataSetInterface $dataSet): array
     {
         $attributes = $dataSet[static::KEY_ATTRIBUTES];
-        unset($attributes[ProductConfig::KEY_PRICE]);
-        unset($attributes[ProductConfig::KEY_PRICE_ORIGINAL]);
-        unset($attributes[ProductConfig::KEY_PRICE_ORIGINAL_FROM]);
-        unset($attributes[ProductConfig::KEY_PRICE_ORIGINAL_TO]);
-        unset($attributes[ProductConfig::KEY_PRICE_FROM]);
-        unset($attributes[ProductConfig::KEY_PRICE_TO]);
+        unset($attributes[ProductConfig::KEY_ACTIVE]);
+        unset($attributes[ProductConfig::KEY_TAX]);
+        unset($attributes[ProductConfig::KEY_MAIN_IMAGE_FILE_NAME]);
+        unset($attributes[ProductConfig::KEY_ARTIKELNAME_SPRYKER]);
+        unset($attributes[ProductConfig::KEY_DESCRIPTION]);
+        unset($attributes[ProductConfig::KEY_PRODUCT_NUMBER]);
+        unset($attributes[ProductConfig::KEY_PRODUCT_NUMBER]);
+        unset($attributes[ProductConfig::KEY_SAP_NUMBER]);
 
         return $attributes;
     }
@@ -198,13 +190,12 @@ class ProductConcreteWriter extends PublishAwareStep implements DataImportStepIn
     {
         foreach (Store::getInstance()->getLocales() as $localeKey => $localeName) {
             $productImageSetEntity = $this->findOrCreateImageSet($dataSet, $localeName);
-
-            $productImageEntity = $this->findOrCreateImage(
-                ProductConcreteWriter::getProductImageUrlForPDP($dataSet),
-                ProductConcreteWriter::getProductImageUrlForCart($dataSet)
-            );
-            $this->updateOrCreateImageToImageSetRelation($productImageSetEntity, $productImageEntity, 1);
-
+            $images = explode(';', $dataSet[ProductConfig::KEY_MAIN_IMAGE_FILE_NAME]);
+            foreach ($images as $key => $image) {
+                $imageUrl = $this->dataImportConfig->getImagesHostUrl() . '/' . $image;
+                $productImageEntity = $this->findOrCreateImage($imageUrl);
+                $this->updateOrCreateImageToImageSetRelation($productImageSetEntity, $productImageEntity, $key);
+            }
             $this->addImagePublishEvents($productImageSetEntity);
         }
     }
@@ -223,7 +214,7 @@ class ProductConcreteWriter extends PublishAwareStep implements DataImportStepIn
             ->filterByName('default')
             ->filterByFkLocale($this->getIdLocaleByName($localeName));
 
-        $idProduct = $this->productRepository->getIdProductByConcreteSku($this->getConcreteSku($dataSet));
+        $idProduct = $this->productRepository->getIdProductByConcreteSku($dataSet[ProductConfig::KEY_PRODUCT_NUMBER]);
         $query->filterByFkProduct($idProduct);
 
         $productImageSetEntity = $query->findOneOrCreate();
@@ -237,18 +228,17 @@ class ProductConcreteWriter extends PublishAwareStep implements DataImportStepIn
     }
 
     /**
-     * @param string $imageUrlLarge
-     * @param string $imageUrlSmall
+     * @param string $imageUrl
      *
      * @return \Orm\Zed\ProductImage\Persistence\SpyProductImage
      */
-    protected function findOrCreateImage(string $imageUrlLarge, string $imageUrlSmall): SpyProductImage
+    protected function findOrCreateImage(string $imageUrl): SpyProductImage
     {
         $productImageEntity = SpyProductImageQuery::create()
-            ->filterByExternalUrlLarge($imageUrlLarge)
+            ->filterByExternalUrlLarge($imageUrl)
             ->findOneOrCreate();
 
-        $productImageEntity->setExternalUrlSmall($imageUrlSmall);
+        $productImageEntity->setExternalUrlSmall($imageUrl);
 
         if ($productImageEntity->isNew() || $productImageEntity->isModified()) {
             $productImageEntity->save();
@@ -312,57 +302,5 @@ class ProductConcreteWriter extends PublishAwareStep implements DataImportStepIn
         }
 
         return static::$idLocaleBuffer[$localeName];
-    }
-
-    /**
-     * @param \Spryker\Zed\DataImport\Business\Model\DataSet\DataSetInterface $dataSet
-     *
-     * @return string
-     */
-    public static function getProductImageUrlForPDP(DataSetInterface $dataSet): string
-    {
-        if (!empty($dataSet[static::KEY_CUSTOM_IMAGE_URL])) {
-            return $dataSet[static::KEY_CUSTOM_IMAGE_URL];
-        }
-
-        return sprintf('https://d1zcre1alumj4g.cloudfront.net/products_v2/%s_500x500.jpg', self::getImageId($dataSet));
-    }
-
-    /**
-     * @param \Spryker\Zed\DataImport\Business\Model\DataSet\DataSetInterface $dataSet
-     *
-     * @return string
-     */
-    public static function getProductImageUrlForCatalog(DataSetInterface $dataSet): string
-    {
-        if (!empty($dataSet[static::KEY_CUSTOM_IMAGE_URL])) {
-            return $dataSet[static::KEY_CUSTOM_IMAGE_URL];
-        }
-
-        return sprintf('https://d1zcre1alumj4g.cloudfront.net/products_v2/%s_228x228.jpg', self::getImageId($dataSet));
-    }
-
-    /**
-     * @param \Spryker\Zed\DataImport\Business\Model\DataSet\DataSetInterface $dataSet
-     *
-     * @return string
-     */
-    public static function getProductImageUrlForCart(DataSetInterface $dataSet): string
-    {
-        if (!empty($dataSet[static::KEY_CUSTOM_IMAGE_URL])) {
-            return $dataSet[static::KEY_CUSTOM_IMAGE_URL];
-        }
-
-        return sprintf('https://d1zcre1alumj4g.cloudfront.net/products_v2/%s_80x80.jpg', self::getImageId($dataSet));
-    }
-
-    /**
-     * @param \Spryker\Zed\DataImport\Business\Model\DataSet\DataSetInterface $dataSet
-     *
-     * @return string
-     */
-    private static function getImageId(DataSetInterface $dataSet): string
-    {
-        return self::getConcreteSku($dataSet);
     }
 }

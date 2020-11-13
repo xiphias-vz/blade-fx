@@ -5,31 +5,31 @@
  * For full license information, please view the LICENSE file that was distributed with this source code.
  */
 
-namespace Pyz\Zed\DataImport\Business\Model\BaseProduct;
+namespace Pyz\Zed\DataImport\Business\Model\ProductPrice;
 
 use NumberFormatter;
 use Orm\Zed\Currency\Persistence\SpyCurrencyQuery;
 use Orm\Zed\PriceProduct\Persistence\Map\SpyPriceTypeTableMap;
-use Orm\Zed\PriceProduct\Persistence\SpyPriceProductQuery;
-use Orm\Zed\PriceProduct\Persistence\SpyPriceProductStoreQuery;
 use Orm\Zed\PriceProduct\Persistence\SpyPriceTypeQuery;
 use Orm\Zed\PriceProductSchedule\Persistence\SpyPriceProductSchedule;
 use Orm\Zed\PriceProductSchedule\Persistence\SpyPriceProductScheduleListQuery;
 use Orm\Zed\PriceProductSchedule\Persistence\SpyPriceProductScheduleQuery;
+use Orm\Zed\Product\Persistence\SpyProductAbstractQuery;
 use Orm\Zed\Store\Persistence\SpyStoreQuery;
 use Orm\Zed\Tax\Persistence\SpyTaxSetQuery;
 use Pyz\Shared\Product\ProductConfig;
 use Pyz\Zed\DataImport\Business\Exception\InvalidDataException;
+use Pyz\Zed\DataImport\Business\Model\ProductAbstract\ProductAbstractWriterStep;
+use Pyz\Zed\DataImport\DataImportConfig;
 use Pyz\Zed\ProductUpdate\Business\Model\ProductPriceSaver;
 use Pyz\Zed\ProductUpdate\Business\ProductUpdateFacadeInterface;
-use Spryker\Shared\Kernel\Store;
 use Spryker\Zed\DataImport\Business\Model\DataImportStep\DataImportStepInterface;
 use Spryker\Zed\DataImport\Business\Model\DataImportStep\PublishAwareStep;
 use Spryker\Zed\DataImport\Business\Model\DataSet\DataSetInterface;
 use Spryker\Zed\Money\Business\MoneyFacadeInterface;
 use Spryker\Zed\PriceProductDataImport\Business\Model\DataSet\PriceProductDataSet;
 
-class PriceProductWriterStep extends PublishAwareStep implements DataImportStepInterface
+class ProductPriceWriterStep extends PublishAwareStep implements DataImportStepInterface
 {
     /**
      * @var array
@@ -62,18 +62,26 @@ class PriceProductWriterStep extends PublishAwareStep implements DataImportStepI
     private $productUpdateFacade;
 
     /**
+     * @var \Pyz\Zed\DataImport\DataImportConfig
+     */
+    private $dataImportConfig;
+
+    /**
      * @param \NumberFormatter $numberFormatter
      * @param \Spryker\Zed\Money\Business\MoneyFacadeInterface $moneyFacade
      * @param \Pyz\Zed\ProductUpdate\Business\ProductUpdateFacadeInterface $productUpdateFacade
+     * @param \Pyz\Zed\DataImport\DataImportConfig $dataImportConfig
      */
     public function __construct(
         NumberFormatter $numberFormatter,
         MoneyFacadeInterface $moneyFacade,
-        ProductUpdateFacadeInterface $productUpdateFacade
+        ProductUpdateFacadeInterface $productUpdateFacade,
+        DataImportConfig $dataImportConfig
     ) {
         $this->numberFormatter = $numberFormatter;
         $this->moneyFacade = $moneyFacade;
         $this->productUpdateFacade = $productUpdateFacade;
+        $this->dataImportConfig = $dataImportConfig;
     }
 
     /**
@@ -83,55 +91,30 @@ class PriceProductWriterStep extends PublishAwareStep implements DataImportStepI
      */
     public function execute(DataSetInterface $dataSet): void
     {
-        $availableStores = Store::getInstance()->getAllowedStores();
+        $sapStoreIdToStoreMap = $this->dataImportConfig->getSapStoreIdToStoreMap();
+        $dataSet[PriceProductDataSet::KEY_STORE] = $sapStoreIdToStoreMap[$dataSet[PriceProductDataSet::KEY_STORE]];
 
-        $dataSet = $this->increaseProductPriceBy50Percent($dataSet);
+        $productAbstractEntitiesCollection = SpyProductAbstractQuery::create()
+            ->filterBySapNumber($dataSet[ProductConfig::KEY_SAP_NUMBER])
+            ->find();
 
-        foreach ($availableStores as $store) {
-            $dataSet[PriceProductDataSet::KEY_STORE] = $store;
+        if (!$productAbstractEntitiesCollection) {
+            // according to requirements price data files can be provided with non existing sap number.
+            // this data should skipped
+            return;
+        }
+
+        foreach ($productAbstractEntitiesCollection as $productAbstractEntity) {
+            $dataSet[PriceProductDataSet::ID_PRODUCT_ABSTRACT] = $productAbstractEntity->getIdProductAbstract();
+            $dataSet[ProductAbstractWriterStep::IS_PRODUCT_CONCRETE] = false;
+
             if (!empty($dataSet[ProductConfig::KEY_PRICE_FROM]) && !empty($dataSet[ProductConfig::KEY_PRICE_TO])) {
-                $this->savePriceProductSchedule($dataSet);
-
-                continue;
+                $this->savePriceProductSchedule($dataSet, ProductPriceSaver::PRICE_TYPE_DEFAULT, ProductConfig::KEY_PSEUDO_PRICE);
+                $this->savePriceProductSchedule($dataSet, ProductPriceSaver::PRICE_TYPE_ORIGINAL, ProductConfig::KEY_PRICE);
+                return;
             }
 
             $this->productUpdateFacade->saveSinglePrice($dataSet, ProductPriceSaver::PRICE_TYPE_DEFAULT, ProductConfig::KEY_PRICE);
-
-            if (!empty($dataSet[ProductConfig::KEY_PRICE_ORIGINAL])) {
-                $this->productUpdateFacade->saveSinglePrice($dataSet, ProductPriceSaver::PRICE_TYPE_ORIGINAL, ProductConfig::KEY_PRICE_ORIGINAL);
-
-                continue;
-            }
-
-            $this->removeOriginalPrices($dataSet);
-        }
-    }
-
-    /**
-     * @param \Spryker\Zed\DataImport\Business\Model\DataSet\DataSetInterface $dataSet
-     *
-     * @return void
-     */
-    protected function removeOriginalPrices($dataSet): void
-    {
-        (SpyPriceProductScheduleQuery::create())
-            ->filterByFkPriceType($this->getIdPriceTypeByName(ProductPriceSaver::PRICE_TYPE_ORIGINAL))
-            ->filterByFkStore($this->getIdStoreByName($dataSet[PriceProductDataSet::KEY_STORE]))
-            ->filterByFkProductAbstract($dataSet[PriceProductDataSet::ID_PRODUCT_ABSTRACT])
-            ->delete();
-
-        $productPrices = SpyPriceProductQuery::create()
-            ->filterByFkPriceType($this->getIdPriceTypeByName(ProductPriceSaver::PRICE_TYPE_ORIGINAL))
-            ->filterByFkProductAbstract($dataSet[PriceProductDataSet::ID_PRODUCT_ABSTRACT])
-            ->find();
-
-        foreach ($productPrices as $priceProduct) {
-            SpyPriceProductStoreQuery::create()
-                ->filterByFkStore($this->getIdStoreByName($dataSet[PriceProductDataSet::KEY_STORE]))
-                ->filterByFkPriceProduct($priceProduct->getIdPriceProduct())
-                ->delete();
-
-            $priceProduct->delete();
         }
     }
 
@@ -163,26 +146,19 @@ class PriceProductWriterStep extends PublishAwareStep implements DataImportStepI
      * @return void
      */
     protected function savePriceProductSchedule(
-        DataSetInterface $dataSet
+        DataSetInterface $dataSet,
+        string $priceType,
+        string $priceKey
     ): void {
         $priceProductScheduleEntity = $this->createPriceProductScheduleQuery(
             $dataSet,
-            ProductPriceSaver::PRICE_TYPE_DEFAULT,
+            $priceType,
             ProductConfig::KEY_PRICE_FROM,
             ProductConfig::KEY_PRICE_TO
         )->findOneOrCreate();
 
-        if (!empty($dataSet[ProductConfig::KEY_PRICE])) {
-            $this->createPriceProductSchedule($dataSet, $priceProductScheduleEntity, ProductConfig::KEY_PRICE);
-        }
-
-        if (!empty($dataSet[ProductConfig::KEY_PRICE_ORIGINAL])) {
-            $keyActiveFrom = !empty($dataSet[ProductConfig::KEY_PRICE_ORIGINAL_FROM]) ? ProductConfig::KEY_PRICE_ORIGINAL_FROM : ProductConfig::KEY_PRICE_FROM;
-            $keyActiveTo = !empty($dataSet[ProductConfig::KEY_PRICE_ORIGINAL_TO]) ? ProductConfig::KEY_PRICE_ORIGINAL_TO : ProductConfig::KEY_PRICE_TO;
-
-            $priceProductScheduleEntity = $this->createPriceProductScheduleQuery($dataSet, ProductPriceSaver::PRICE_TYPE_ORIGINAL, $keyActiveFrom, $keyActiveTo)
-                ->findOneOrCreate();
-            $this->createPriceProductSchedule($dataSet, $priceProductScheduleEntity, ProductConfig::KEY_PRICE_ORIGINAL);
+        if (!empty($priceKey)) {
+            $this->createPriceProductSchedule($dataSet, $priceProductScheduleEntity, $priceKey);
         }
     }
 
@@ -198,7 +174,7 @@ class PriceProductWriterStep extends PublishAwareStep implements DataImportStepI
     protected function createPriceProductSchedule(DataSetInterface $dataSet, SpyPriceProductSchedule $priceProductScheduleEntity, string $priceKey): void
     {
         $priceProductScheduleListEntity = SpyPriceProductScheduleListQuery::create()
-            ->filterByName('price schedule data import')
+            ->filterByName($dataSet[ProductConfig::KEY_PRICE_PROMOTION])
             ->filterByIsActive(true)
             ->findOneOrCreate();
 
@@ -276,20 +252,5 @@ class PriceProductWriterStep extends PublishAwareStep implements DataImportStepI
         }
 
         return static::$idStoreBuffer[$storeName];
-    }
-
-    /**
-     * @param DataSetInterface $dataSet
-     *
-     * @return DataSetInterface
-     */
-    private function increaseProductPriceBy50Percent(DataSetInterface $dataSet): DataSetInterface
-    {
-        $parsedPrice = $this->numberFormatter->parse(trim($dataSet[ProductConfig::KEY_PRICE]));
-        $parsedPrice = round($parsedPrice * 1, 2);
-
-        $dataSet[ProductConfig::KEY_PRICE] = str_replace('.', ',', (string)$parsedPrice);
-
-        return $dataSet;
     }
 }

@@ -38,7 +38,7 @@ class CategoryDataImportConfig extends SprykerCategoryDataImportConfig
 
         $dataImporterConfigurationTransfer
             ->getReaderConfiguration()
-            ->setCsvDelimiter(DataImportConfig::IMPORT_CSV_BASE_DELIMITER);
+            ->setCsvDelimiter(DataImportConfig::IMPORT_CSV_PIPE_DELIMITER);
 
         return $dataImporterConfigurationTransfer;
     }
