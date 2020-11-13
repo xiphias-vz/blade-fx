@@ -1,5 +1,2 @@
 concrete_sku,lead_product_sku,packaging_unit_type_name,default_amount,is_amount_variable,amount_min,amount_max,amount_interval
-37526_0,37526_0,packaging_unit_type.item.name,1,0,0,0,0
-37526_1,37526_0,packaging_unit_type.pack_6.name,6,0,0,0,0
-37526_2,37526_0,packaging_unit_type.pack_4.name,4,0,0,0,0
-37526_3,37526_0,packaging_unit_type.pack_box.name,10,0,0,0,0
+

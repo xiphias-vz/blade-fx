@@ -7,10 +7,13 @@
 
 namespace Pyz\Zed\DataImport\Business\Model\ProductStock;
 
+use Orm\Zed\Product\Persistence\SpyProductQuery;
 use Orm\Zed\Stock\Persistence\SpyStockProductQuery;
 use Orm\Zed\Stock\Persistence\SpyStockQuery;
-use Pyz\Zed\DataImport\Business\Model\Product\Repository\ProductRepository;
-use Pyz\Zed\DataImport\Business\Model\ProductConcrete\ProductConcreteWriter;
+use Orm\Zed\Stock\Persistence\SpyStockStoreQuery;
+use Orm\Zed\Store\Persistence\SpyStoreQuery;
+use Pyz\Shared\Product\ProductConfig;
+use Pyz\Zed\DataImport\DataImportConfig;
 use Spryker\Zed\DataImport\Business\Model\DataImportStep\DataImportStepInterface;
 use Spryker\Zed\DataImport\Business\Model\DataImportStep\PublishAwareStep;
 use Spryker\Zed\DataImport\Business\Model\DataSet\DataSetInterface;
@@ -18,11 +21,11 @@ use Spryker\Zed\DataImport\Business\Model\DataSet\DataSetInterface;
 class ProductStockWriterStep extends PublishAwareStep implements DataImportStepInterface
 {
     public const BULK_SIZE = 100;
-
-    /**
-     * @var \Pyz\Zed\DataImport\Business\Model\Product\Repository\ProductRepository
-     */
-    protected $productRepository;
+    public const KEY_STOCK_QTY = 'instock';
+    public const KEY_STOCK_STORE = 'store';
+    public const KEY_STOCK_SHELF = 'shelf';
+    public const KEY_STOCK_SHELF_FIELD = 'shelffield';
+    public const KEY_STOCK_SHELF_FLOR = 'shelffloor';
 
     /**
      * @var array
@@ -30,11 +33,21 @@ class ProductStockWriterStep extends PublishAwareStep implements DataImportStepI
     protected static $idStockBuffer = [];
 
     /**
-     * @param \Pyz\Zed\DataImport\Business\Model\Product\Repository\ProductRepository $productRepository
+     * @var array
      */
-    public function __construct(ProductRepository $productRepository)
+    protected static $idStoreBuffer = [];
+
+    /**
+     * @var \Pyz\Zed\DataImport\DataImportConfig
+     */
+    protected $dataImportConfig;
+
+    /**
+     * @param \Pyz\Zed\DataImport\DataImportConfig $dataImportConfig
+     */
+    public function __construct(DataImportConfig $dataImportConfig)
     {
-        $this->productRepository = $productRepository;
+        $this->dataImportConfig = $dataImportConfig;
     }
 
     /**
@@ -44,18 +57,42 @@ class ProductStockWriterStep extends PublishAwareStep implements DataImportStepI
      */
     public function execute(DataSetInterface $dataSet)
     {
-        $idProduct = $this->productRepository->getIdProductByConcreteSku(ProductConcreteWriter::getConcreteSku($dataSet));
+        $sapStoreIdToStoreMap = $this->dataImportConfig->getSapStoreIdToStoreMap();
+        $storeName = $sapStoreIdToStoreMap[$dataSet[static::KEY_STOCK_STORE]];
 
-        $stockProductEntity = SpyStockProductQuery::create()
-            ->filterByFkProduct($idProduct)
-            ->filterByFkStock($this->getIdStockByWarehouseName('Warehouse1'))
-            ->findOneOrCreate();
+        if (!isset($sapStoreIdToStoreMap[$dataSet[static::KEY_STOCK_STORE]])) {
+            throw new \Exception('Sap store id does not exists in Spryker config map.');
+        }
 
-        $stockProductEntity
-            ->setQuantity(0)
-            ->setIsNeverOutOfStock(true);
+        $productEntityCollection = SpyProductQuery::create()
+            ->filterBySapNumber($dataSet[ProductConfig::KEY_SAP_NUMBER])
+            ->find();
 
-        $stockProductEntity->save();
+        if (!$productEntityCollection) {
+            return;
+        }
+
+        foreach ($productEntityCollection as $productEntity) {
+            $stockProductEntity = SpyStockProductQuery::create()
+                ->filterByFkProduct($productEntity->getIdProduct())
+                ->filterByFkStock($this->getIdStockByWarehouseName($sapStoreIdToStoreMap[$dataSet[static::KEY_STOCK_STORE]]))
+                ->findOneOrCreate();
+
+            $stockProductEntity
+                ->setQuantity($dataSet[static::KEY_STOCK_QTY])
+                ->setShelf($dataSet[static::KEY_STOCK_SHELF])
+                ->setShelfField($dataSet[static::KEY_STOCK_SHELF_FIELD])
+                ->setShelfFloor($dataSet[static::KEY_STOCK_SHELF_FLOR])
+                ->setIsNeverOutOfStock(true);
+
+            $stockProductEntity->save();
+
+            $stockStoreEntity = SpyStockStoreQuery::create()
+                ->filterByFkStore($this->getIdStoreByName($storeName))
+                ->filterByFkStock($this->getIdStockByWarehouseName($sapStoreIdToStoreMap[$dataSet[static::KEY_STOCK_STORE]]))
+                ->findOneOrCreate();
+            $stockStoreEntity->save();
+        }
     }
 
     /**
@@ -72,5 +109,20 @@ class ProductStockWriterStep extends PublishAwareStep implements DataImportStepI
         }
 
         return static::$idStockBuffer[$warehouseName];
+    }
+
+    /**
+     * @param string $storeName
+     *
+     * @return int
+     */
+    protected function getIdStoreByName(string $storeName)
+    {
+        if (!isset(static::$idStoreBuffer[$storeName])) {
+            $storeEntity = SpyStoreQuery::create()->filterByName($storeName)->findOne();
+            static::$idStoreBuffer[$storeName] = $storeEntity->getIdStore();
+        }
+
+        return static::$idStoreBuffer[$storeName];
     }
 }

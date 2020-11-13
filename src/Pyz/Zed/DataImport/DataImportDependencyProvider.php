@@ -38,7 +38,6 @@ use Spryker\Zed\ProductPackagingUnitDataImport\Communication\Plugin\DataImport\P
 use Spryker\Zed\ProductPackagingUnitDataImport\Communication\Plugin\DataImport\ProductPackagingUnitTypeDataImportPlugin;
 use Spryker\Zed\SalesOrderThresholdDataImport\Communication\Plugin\DataImport\SalesOrderThresholdDataImportPlugin;
 use Spryker\Zed\ShipmentDataImport\Communication\Plugin\ShipmentMethodStoreDataImportPlugin;
-use Spryker\Zed\StockDataImport\Communication\Plugin\StockStoreDataImportPlugin;
 use Spryker\Zed\User\Business\UserFacadeInterface;
 
 class DataImportDependencyProvider extends SprykerDataImportDependencyProvider
@@ -149,7 +148,6 @@ class DataImportDependencyProvider extends SprykerDataImportDependencyProvider
             new CmsPageStoreDataImportPlugin(),
             new SalesOrderThresholdDataImportPlugin(),
             new FileManagerDataImportPlugin(),
-            new StockStoreDataImportPlugin(),
             new ShipmentMethodStoreDataImportPlugin(),
             new CmsSlotTemplateDataImportPlugin(),
             new CmsSlotDataImportPlugin(),

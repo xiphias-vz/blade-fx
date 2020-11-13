@@ -29,25 +29,7 @@ class AttributesExtractorStep implements DataImportStepInterface
      * @var bool[]
      */
     protected const NUMERIC_ATTRIBUTES = [
-        ProductConfig::KEY_PRICE => true,
-        ProductConfig::KEY_PRICE_ORIGINAL => true,
-        ProductConfig::KEY_SALE_VOLUME => true,
-        ProductConfig::KEY_REFERENCE_SIZE => true,
 
-        ProductConfig::KEY_ENERGY_KCAL => true,
-        ProductConfig::KEY_ENERGY_KJ => true,
-        ProductConfig::KEY_CARBOHYDRATES => true,
-        ProductConfig::KEY_OF_WHICH_SUGAR => true,
-        ProductConfig::KEY_FAT => true,
-
-        ProductConfig::KEY_SATURATED_FAT => true,
-        ProductConfig::KEY_PROTEIN => true,
-        ProductConfig::KEY_SALT => true,
-        ProductConfig::KEY_HEIGHT => true,
-        ProductConfig::KEY_WIDTH => true,
-
-        ProductConfig::KEY_DEPTH => true,
-        ProductConfig::KEY_WEIGHT => true,
     ];
 
     /**
@@ -107,11 +89,6 @@ class AttributesExtractorStep implements DataImportStepInterface
                 continue;
             }
 
-            if ($key === ProductConfig::PRODUCT_ATTRIBUTE_KEY_PICKING_AREA) {
-                $attributes[$key] = strtoupper($value);
-                continue;
-            }
-
             if ($value !== '') {
                 $attributes[$key] = $value;
                 if (isset(static::NUMERIC_ATTRIBUTES[$key])) {
@@ -128,7 +105,7 @@ class AttributesExtractorStep implements DataImportStepInterface
             );
         }
 
-        $dataSet[static::KEY_ATTRIBUTES] = $this->removeStoreSpecificAttributes($attributes);
+        $dataSet[static::KEY_ATTRIBUTES] = $attributes;
     }
 
     /**
@@ -143,41 +120,14 @@ class AttributesExtractorStep implements DataImportStepInterface
     }
 
     /**
-     * @param array $attributes
-     *
-     * @return array
-     */
-    protected function removeStoreSpecificAttributes(array $attributes): array
-    {
-        foreach (ProductConfig::PRODUCT_STORE_SPECIFIC_ATTRIBUTES as $storeAttributeKey) {
-            foreach ($attributes as $attributeKey => $attributeValue) {
-                if (strpos($attributeKey, $storeAttributeKey) !== false && $attributeKey !== $storeAttributeKey) {
-                    unset($attributes[$attributeKey]);
-                }
-            }
-        }
-
-        return $attributes;
-    }
-
-    /**
      * @param \Spryker\Zed\DataImport\Business\Model\DataSet\DataSetInterface $dataSet
      *
      * @return string[]
      */
     protected function getAllowedAttributes(DataSetInterface $dataSet): array
     {
-        $attributes = [];
-        foreach ($dataSet->getArrayCopy() as $key => $attribute) {
-            if (strpos($key, Store::getInstance()->getCurrentLocale()) !== false) {
-                $attributes[explode('.', $key)[0]] = $attribute;
-            } else {
-                $attributes[$key] = $attribute;
-            }
-        }
-
         return array_intersect_key(
-            $attributes,
+            $dataSet->getArrayCopy(),
             array_flip($this->getAvailableProductAttributes())
         );
     }

@@ -1,14 +1,11 @@
 <?php
 
-/**
- * Copyright © 2016-present Spryker Systems GmbH. All rights reserved.
- * Use of this software requires acceptance of the Evaluation License Agreement. See LICENSE file.
- */
-
 namespace Pyz\Shared\Store;
 
 interface StoreConstants
 {
+    public const SAP_STORE_ID_TO_STORE_MAP = 'DATA_IMPORT:SAP_STORE_ID_TO_STORE_MAP';
+
     /**
      * Specification:
      * - Defines names for the stores

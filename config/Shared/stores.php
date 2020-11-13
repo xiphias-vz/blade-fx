@@ -40,7 +40,6 @@ $template = [
     'locales' => [
         // first entry is default
         'de' => 'de_DE',
-        'en' => 'en_US',
     ],
     // first entry is default
     'countries' => ['DE'],
