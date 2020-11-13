@@ -73,47 +73,47 @@ groups:
             Welcome:
                 application: static
                 endpoints:
-                    www.welcome.shop.globus-stg.cloud.spryker.toys:
+                    www.welcome.gl-stg.cloud.spryker.toys:
                         entry-point: Welcome
             Yves:
                 application: yves
                 endpoints:
-                    www.shop.globus-stg.cloud.spryker.toys:
+                    www.gl-stg.cloud.spryker.toys:
                         store: EIN
             Glue:
                 application: glue
                 endpoints:
-                    glue.shop.globus-stg.cloud.spryker.toys:
+                    glue.gl-stg.cloud.spryker.toys:
                         store: EIN
             Zed:
                 application: zed
                 endpoints:
-                    backoffice.shop.globus-stg.cloud.spryker.toys:
+                    backoffice.gl-stg.cloud.spryker.toys:
                         store: EIN
 
-                    zed.ein.shop.globus-stg.cloud.spryker.toys:
+                    zed.ein.gl-stg.cloud.spryker.toys:
                         store: EIN
                         primal: true
-                    zed.kmd.shop.globus-stg.cloud.spryker.toys:
+                    zed.kmd.gl-stg.cloud.spryker.toys:
                         store: KMD
                         primal: true
-                    zed.lpz.shop.globus-stg.cloud.spryker.toys:
+                    zed.lpz.gl-stg.cloud.spryker.toys:
                         store: LPZ
                         primal: true
-                    zed.had.shop.globus-stg.cloud.spryker.toys:
+                    zed.had.gl-stg.cloud.spryker.toys:
                         store: HAD
                         primal: true
 
-                    filial-app.ein.shop.globus-stg.cloud.spryker.toys:
+                    pick.ein.gl-stg.cloud.spryker.toys:
                         store: EIN
                         entry-point: StoreApp
-                    filial-app.kmd.shop.globus-stg.cloud.spryker.toys:
+                    pick.kmd.gl-stg.cloud.spryker.toys:
                         store: KMD
                         entry-point: StoreApp
-                    filial-app.lpz.shop.globus-stg.cloud.spryker.toys:
+                    pick.lpz.gl-stg.cloud.spryker.toys:
                         store: LPZ
                         entry-point: StoreApp
-                    filial-app.had.shop.globus-stg.cloud.spryker.toys:
+                    pick.had.gl-stg.cloud.spryker.toys:
                         store: HAD
                         entry-point: StoreApp
 
