@@ -82,7 +82,7 @@ script:
 
     - vendor/bin/console propel:schema:validate-xml-names
     - vendor/bin/console transfer:validate
-    - vendor/bin/console code:sniff:style
+    - vendor/bin/console code:sniff:style src
 
     - timeout 45m bash -c "vendor/bin/phantomjs --webdriver=4444 --disk-cache=true --load-images=false" &
     - vendor/bin/codecept run -x Presentation

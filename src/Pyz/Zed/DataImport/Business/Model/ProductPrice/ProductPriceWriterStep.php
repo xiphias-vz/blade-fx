@@ -98,7 +98,7 @@ class ProductPriceWriterStep extends PublishAwareStep implements DataImportStepI
             ->filterBySapNumber($dataSet[ProductConfig::KEY_SAP_NUMBER])
             ->find();
 
-        if (!$productAbstractEntitiesCollection) {
+        if ($productAbstractEntitiesCollection->isEmpty()) {
             // according to requirements price data files can be provided with non existing sap number.
             // this data should skipped
             return;

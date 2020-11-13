@@ -71,7 +71,7 @@ class ProductStockWriterStep extends PublishAwareStep implements DataImportStepI
             ->filterBySapNumber($dataSet[ProductConfig::KEY_SAP_NUMBER])
             ->find();
 
-        if (!$productEntityCollection) {
+        if ($productEntityCollection->isEmpty()) {
             return;
         }
 
