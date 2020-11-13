@@ -246,7 +246,10 @@ class DataImportBusinessFactory extends SprykerDataImportBusinessFactory
      */
     protected function createProductConcreteWriter(): ProductConcreteWriter
     {
-        return new ProductConcreteWriter($this->createProductRepository());
+        return new ProductConcreteWriter(
+            $this->createProductRepository(),
+            $this->getConfig()
+        );
     }
 
     /**
