@@ -1,5 +1,10 @@
 <?php
 
+/**
+ * This file is part of the Spryker Commerce OS.
+ * For full license information, please view the LICENSE file that was distributed with this source code.
+ */
+
 namespace Pyz\Yves\StoreSwitcherWidget\StoreSwitcher;
 
 use Symfony\Component\HttpFoundation\Cookie;
@@ -7,7 +12,7 @@ use Symfony\Component\HttpFoundation\Response;
 
 class StoreSwitcher
 {
-    const COOKIE_STORE_IDENTIFIER = 'current_store';
+    public const COOKIE_STORE_IDENTIFIER = 'current_store';
 
     /**
      * @param string $store
@@ -21,5 +26,4 @@ class StoreSwitcher
 
         return $response;
     }
-
 }

@@ -10,9 +10,8 @@ namespace Pyz\Zed\DataImport\Business;
 use NumberFormatter;
 use Pyz\Shared\Product\ProductConfig;
 use Pyz\Zed\DataImport\Business\Model\BaseProduct\AttributesExtractorStep as BaseAttributesExtractorStep;
-use Pyz\Zed\DataImport\Business\Model\ProductPrice\ProductPriceWriterStep;
-use Pyz\Zed\DataImport\Business\Model\BaseProduct\ProductDepositOptionStep;
 use Pyz\Zed\DataImport\Business\Model\BaseProduct\ProductCategoryWriterStep;
+use Pyz\Zed\DataImport\Business\Model\BaseProduct\ProductDepositOptionStep;
 use Pyz\Zed\DataImport\Business\Model\CategoryTemplate\CategoryTemplateWriterStep;
 use Pyz\Zed\DataImport\Business\Model\CmsBlock\CmsBlockWriterStep;
 use Pyz\Zed\DataImport\Business\Model\CmsBlockStore\CmsBlockStoreWriterStep;
@@ -47,6 +46,7 @@ use Pyz\Zed\DataImport\Business\Model\ProductManagementAttribute\ProductManageme
 use Pyz\Zed\DataImport\Business\Model\ProductManagementAttribute\ProductManagementLocalizedAttributesExtractorStep;
 use Pyz\Zed\DataImport\Business\Model\ProductOption\ProductOptionWriterStep;
 use Pyz\Zed\DataImport\Business\Model\ProductOptionPrice\ProductOptionPriceWriterStep;
+use Pyz\Zed\DataImport\Business\Model\ProductPrice\ProductPriceWriterStep;
 use Pyz\Zed\DataImport\Business\Model\ProductQuantity\ProductQuantityWriterStep;
 use Pyz\Zed\DataImport\Business\Model\ProductSearchAttribute\Hook\ProductSearchAfterImportHook;
 use Pyz\Zed\DataImport\Business\Model\ProductSearchAttribute\ProductSearchAttributeWriter;
@@ -181,6 +181,7 @@ class DataImportBusinessFactory extends SprykerDataImportBusinessFactory
 
         return $dataImporter;
     }
+
     /**
      * @return \Spryker\Zed\DataImport\Business\Model\DataImporterInterface|\Spryker\Zed\DataImport\Business\Model\DataSet\DataSetStepBrokerAwareInterface
      */

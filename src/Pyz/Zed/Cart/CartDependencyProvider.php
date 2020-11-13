@@ -187,7 +187,6 @@ class CartDependencyProvider extends SprykerCartDependencyProvider
         ];
     }
 
-
     /**
      * @param \Spryker\Zed\Kernel\Container $container
      *

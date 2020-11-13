@@ -7,6 +7,7 @@
 
 namespace Pyz\Zed\DataImport\Business\Model\ProductStock;
 
+use Exception;
 use Orm\Zed\Product\Persistence\SpyProductQuery;
 use Orm\Zed\Stock\Persistence\SpyStockProductQuery;
 use Orm\Zed\Stock\Persistence\SpyStockQuery;
@@ -53,6 +54,8 @@ class ProductStockWriterStep extends PublishAwareStep implements DataImportStepI
     /**
      * @param \Spryker\Zed\DataImport\Business\Model\DataSet\DataSetInterface $dataSet
      *
+     * @throws \Exception
+     *
      * @return void
      */
     public function execute(DataSetInterface $dataSet)
@@ -61,7 +64,7 @@ class ProductStockWriterStep extends PublishAwareStep implements DataImportStepI
         $storeName = $sapStoreIdToStoreMap[$dataSet[static::KEY_STOCK_STORE]];
 
         if (!isset($sapStoreIdToStoreMap[$dataSet[static::KEY_STOCK_STORE]])) {
-            throw new \Exception('Sap store id does not exists in Spryker config map.');
+            throw new Exception('Sap store id does not exists in Spryker config map.');
         }
 
         $productEntityCollection = SpyProductQuery::create()
