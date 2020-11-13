@@ -80,6 +80,11 @@ groups:
                 endpoints:
                     www.shop.globus-stg.cloud.spryker.toys:
                         store: EIN
+            Glue:
+                application: glue
+                endpoints:
+                    glue.shop.globus-stg.cloud.spryker.toys:
+                        store: GLUE
             Zed:
                 application: zed
                 endpoints:
