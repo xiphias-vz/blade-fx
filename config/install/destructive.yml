@@ -1,12 +1,6 @@
 env:
     APPLICATION_ENV: docker
 
-stores:
-    - EIN
-    - KMD
-    - LPZ
-    - HAD
-
 command-timeout: 7200
 
 sections:
@@ -14,26 +8,20 @@ sections:
     scheduler-clean:
         scheduler-clean:
             command: "vendor/bin/console scheduler:clean -vvv --no-ansi || true"
-            stores: true
 
     clean-storage:
         clean-storage:
             command: "vendor/bin/console storage:delete -vvv --no-ansi"
-            stores: true
 
         clean-search:
             command: "vendor/bin/console elasticsearch:index:delete -vvv --no-ansi"
-            stores: true
 
         clean-db:
             command: "vendor/bin/console propel:tables:drop -vvv --no-ansi"
-            stores:
-                - EIN
 
     init-storage:
         setup-search-create-sources:
             command: "vendor/bin/console search:setup:sources -vvv --no-ansi"
-            stores: true
 
     init-storages-per-region:
         propel-copy-schema:
@@ -44,24 +32,18 @@ sections:
 
         propel-tables-drop:
             command: "vendor/bin/console propel:tables:drop -vvv --no-ansi"
-            stores:
-                - EIN
 
         propel-diff:
             command: "vendor/bin/console propel:diff -vvv --no-ansi"
 
         propel-migrate:
             command: "vendor/bin/console propel:migrate -vvv --no-ansi"
-            stores:
-                - EIN
 
         propel-migration-cleanup:
             command: "vendor/bin/console propel:migration:delete -vvv --no-ansi"
 
         init-database:
             command: "vendor/bin/console setup:init-db -vvv --no-ansi"
-            stores:
-                - EIN
 
     demodata:
         import:
@@ -73,21 +55,12 @@ sections:
         import-pu:
             command: "vendor/bin/console data:import product-packaging-unit -vvv --no-ansi || true"
 
-        import-eu-region-demodata:
-            command: "vendor/bin/console data:import"
-            stores:
-                - EIN
-
         update-product-labels:
             command: "vendor/bin/console product-label:relations:update -vvv --no-ansi"
-            stores:
-                - EIN
 
         check-product-validity:
             command: "vendor/bin/console product:check-validity"
-            stores: true
 
     scheduler-start:
         scheduler-setup:
             command: "vendor/bin/console scheduler:setup -vvv --no-ansi || true"
-            stores: true
