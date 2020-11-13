@@ -12,6 +12,7 @@ use Pyz\Shared\ProductDetailPage\ProductDetailPageConstants;
 use Pyz\Shared\ProductPageSearch\ProductPageSearchConstants;
 use Pyz\Shared\Sales\SalesConstants;
 use Pyz\Shared\Shipment\ShipmentConfig;
+use Pyz\Shared\Store\StoreConstants;
 use Pyz\Shared\TimeSlot\TimeSlotConstants;
 use Pyz\Shared\TwigCache\TwigCacheConstants;
 use Spryker\Client\RabbitMq\Model\RabbitMqAdapter;
@@ -760,3 +761,11 @@ $config[KernelConstants::DOMAIN_WHITELIST] = [
 
 $config[SalesConstants::ORDER_EXPIRE_HOUR] = 22;
 $config[SalesConstants::ORDER_READY_FOR_PICKING_HOUR] = 0;
+
+// ----------- Stores
+$config[StoreConstants::STORE_NAMES] = [
+    'EIN' => 'Homburg-Einöd',
+    'KMD' => 'Köln',
+    'LPZ' => 'Leipzig',
+    'HAD' => 'Halle',
+];

@@ -18,10 +18,12 @@ class StoreSwitcherWidget extends AbstractWidget
 {
     public function __construct()
     {
-        $storeData = $this->getFactory()->getStore();
+        $store = $this->getFactory()->getStore();
+        $storeNames = $this->getConfig()->getStoreNames();
+        $storeName = $store->getStoreName();
 
-        $this->addParameter('stores', $storeData->getAllowedStores())
-            ->addParameter('currentStore', $storeData->getStoreName())
+        $this->addParameter('stores', $storeNames)
+            ->addParameter('currentStore', $storeName)
             ->addParameter('pattern', $this->getYvesHost() . '/store/switch?store=%s&referer-url=%s');
     }
 

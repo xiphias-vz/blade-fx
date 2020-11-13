@@ -31,12 +31,12 @@
             {{ parent() }} {{ embed.jsName }}
         {% endblock %}
         {% block options %}
-            {% for store in embed.stores %}
+            {% for storeName, storeTitle in embed.stores %}
 
-                {% set selectedOption = store == embed.currentStore ? 'selected' %}
+                {% set selectedOption = storeName == embed.currentStore ? 'selected' %}
 
-                <option value="{{ embed.pattern | format(store, app.request.requestUri) }}" {{ selectedOption }}>
-                    {{ store }}
+                <option value="{{ embed.pattern | format(storeName, app.request.requestUri) }}" {{ selectedOption }}>
+                    {{ storeTitle }}
                 </option>
             {% endfor %}
         {% endblock %}
