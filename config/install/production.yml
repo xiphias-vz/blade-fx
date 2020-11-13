@@ -13,23 +13,54 @@ sections:
     clean-oms:
         clear-oms-locks:
             command: "vendor/bin/console oms:clear-locks -vvv --no-ansi"
+            stores:
+                - EIN
+                - KMD
+                - LPZ
+                - HAD
 
     diff:
         propel-migration-delete:
             command: "vendor/bin/console propel:migration:delete -vvv --no-ansi"
+            stores:
+                - EIN
+                - KMD
+                - LPZ
+                - HAD
 
         propel-diff:
             command: "vendor/bin/console propel:diff -vvv --no-ansi"
+            stores:
+                - EIN
+                - KMD
+                - LPZ
+                - HAD
 
         show_migrations:
             command: "ls -al ./src/Orm/Propel/Migration_*/*.php 2>/dev/null || true"
+            stores:
+                - EIN
+                - KMD
+                - LPZ
+                - HAD
 
         propel-migrate:
             command: "vendor/bin/console propel:migrate -vvv --no-ansi"
+            stores:
+                - EIN
+                - KMD
+                - LPZ
+                - HAD
 
         propel-migration-cleanup:
             command: "vendor/bin/console propel:migration:delete -vvv --no-ansi"
+            stores:
+                - EIN
+                - KMD
+                - LPZ
+                - HAD
 
     scheduler-start:
         scheduler-setup:
             command: "vendor/bin/console scheduler:setup -vvv --no-ansi"
+            stores: true
