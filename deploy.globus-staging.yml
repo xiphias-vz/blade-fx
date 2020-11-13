@@ -84,7 +84,7 @@ groups:
                 application: glue
                 endpoints:
                     glue.shop.globus-stg.cloud.spryker.toys:
-                        store: GLUE
+                        store: EIN
             Zed:
                 application: zed
                 endpoints:
