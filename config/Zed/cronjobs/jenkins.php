@@ -54,23 +54,7 @@ $jobs[] = [
 ];
 
 /* Oms */
-for ($i = 1; $i < 11; $i++) {
-    $jobs[] = [
-        'name' => 'check-oms-conditions-' . $i,
-        'command' => '$PHP_BIN vendor/bin/console oms:check-condition -p ' . $i,
-        'schedule' => '* * * * *',
-        'enable' => true,
-        'stores' => $allStores,
-    ];
 
-    $jobs[] = [
-        'name' => 'check-oms-timeouts-' . $i,
-        'command' => '$PHP_BIN vendor/bin/console oms:check-timeout -p ' . $i,
-        'schedule' => '* * * * *',
-        'enable' => true,
-        'stores' => $allStores,
-    ];
-}
 
 $jobs[] = [
     'name' => 'clear-oms-locks',
@@ -161,6 +145,15 @@ $jobs[] = [
 $jobs[] = [
     'name' => 'data-import-product-update',
     'command' => '$PHP_BIN vendor/bin/console',
+    'schedule' => '0 0 * * *',
+    'enable' => false,
+    'stores' => $allStores,
+];
+
+
+$jobs[] = [
+    'name' => 'data-import-full',
+    'command' => 'vendor/bin/console data:import:files-download && vendor/bin/console data:import -vvv && vendor/bin/console data:import product -f spryker/2.globus_articles.csv -vvv && vendor/bin/console data:import product -f spryker/2.globus_articles.metzgerei.csv -vvv && vendor/bin/console data:import product-price -f 4.globus_article_prices.1004.csv -vvv && vendor/bin/console data:import product-price -f 4.globus_article_prices.1031.csv -vvv && vendor/bin/console data:import product-price -f 4.globus_article_prices.1042.csv -vvv && vendor/bin/console data:import product-price -f 4.globus_article_prices.1057.csv -vvv && vendor/bin/console data:import product-price -f 5.globus_article_instock.1004.csv -vvv && vendor/bin/console data:import product-price -f 5.globus_article_instock.1031.csv -vvv && vendor/bin/console data:import product-price -f 5.globus_article_instock.1042.csv -vvv && vendor/bin/console data:import product-price -f 5.globus_article_instock.1057.csv -vvv && vendor/bin/console data:import product-price -f 4.globus_article_prices.metzgerei.1004.csv -vvv && vendor/bin/console data:import product-price -f 4.globus_article_prices.metzgerei.1031.csv -vvv && vendor/bin/console data:import product-price -f 4.globus_article_prices.metzgerei.1042.csv -vvv && vendor/bin/console data:import product-price -f 4.globus_article_prices.metzgerei.1057.csv -vvv && vendor/bin/console data:import product-price -f 5.globus_article_instock.metzgerei.1004.csv -vvv && vendor/bin/console data:import product-price -f 5.globus_article_instock.metzgerei.1031.csv -vvv && vendor/bin/console data:import product-price -f 5.globus_article_instock.metzgerei.1042.csv -vvv && vendor/bin/console data:import product-price -f 5.globus_article_instock.metzgerei.1057.csv -vvv && vendor/bin/console data:import product-price -f 5.globus_article_instock.NOS.1004.csv -vvv && vendor/bin/console data:import product-price -f 5.globus_article_instock.NOS.1031.csv -vvv && vendor/bin/console data:import product-price -f 5.globus_article_instock.NOS.1042.csv -vvv && vendor/bin/console data:import product-price -f 5.globus_article_instock.NOS.1057.csv -vvv',
     'schedule' => '0 0 * * *',
     'enable' => false,
     'stores' => $allStores,

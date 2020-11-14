@@ -12,6 +12,8 @@ use Pyz\Zed\MerchantDataImport\Communication\Plugin\MerchantDataImportAfterImpor
 use Pyz\Zed\MerchantRegion\Communication\Plugin\DataImport\MerchantRegionDataImportPlugin;
 use Pyz\Zed\ProductUpdate\Business\ProductUpdateFacadeInterface;
 use Pyz\Zed\ShipmentDataImport\Communication\Plugin\ShipmentDataImportAfterImportHookPlugin;
+use Spryker\Service\FileSystem\FileSystemService;
+use Spryker\Service\Flysystem\FlysystemServiceInterface;
 use Spryker\Service\UtilText\UtilTextServiceInterface;
 use Spryker\Shared\Kernel\Store;
 use Spryker\Zed\Acl\Business\AclFacadeInterface;
@@ -47,6 +49,7 @@ class DataImportDependencyProvider extends SprykerDataImportDependencyProvider
     public const FACADE_PRODUCT_RELATION = 'product relation facade';
     public const FACADE_PRODUCT_SEARCH = 'product search facade';
     public const SERVICE_UTIL_TEXT = 'util text service';
+    public const SERVICE_FLY_SYSTEM_SERVICE = 'SERVICE_FLY_SYSTEM_SERVICE';
     public const STORE = 'STORE';
     public const FACADE_MONEY = 'FACADE_MONEY';
     public const FACADE_USER = 'FACADE_USER';
@@ -76,6 +79,7 @@ class DataImportDependencyProvider extends SprykerDataImportDependencyProvider
         $container = $this->addUserFacade($container);
         $container = $this->addAclFacade($container);
         $container = $this->addProductUpdateFacade($container);
+        $container = $this->addFlySystemService($container);
 
         return $container;
     }
@@ -266,6 +270,20 @@ class DataImportDependencyProvider extends SprykerDataImportDependencyProvider
     {
         $container->set(static::FACADE_PRODUCT_UPDATE, function (Container $container): ProductUpdateFacadeInterface {
             return $container->getLocator()->productUpdate()->facade();
+        });
+
+        return $container;
+    }
+
+    /**
+     * @param \Spryker\Zed\Kernel\Container $container
+     *
+     * @return \Spryker\Zed\Kernel\Container
+     */
+    private function addFlySystemService(Container $container): Container
+    {
+        $container->set(static::SERVICE_FLY_SYSTEM_SERVICE, function (Container $container): FileSystemService {
+            return $container->getLocator()->fileSystem()->service();
         });
 
         return $container;

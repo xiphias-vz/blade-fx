@@ -10,6 +10,7 @@ namespace Pyz\Zed\DataImport\Business;
 use NumberFormatter;
 use Pyz\Shared\Product\ProductConfig;
 use Pyz\Zed\DataImport\Business\Model\BaseProduct\AttributesExtractorStep as BaseAttributesExtractorStep;
+use Pyz\Zed\DataImport\Business\Model\FileDownload\SFTPDataImportFileDownloader;
 use Pyz\Zed\DataImport\Business\Model\ProductPrice\ProductPriceWriterStep;
 use Pyz\Zed\DataImport\Business\Model\BaseProduct\ProductDepositOptionStep;
 use Pyz\Zed\DataImport\Business\Model\BaseProduct\ProductCategoryWriterStep;
@@ -65,6 +66,7 @@ use Pyz\Zed\DataImport\DataImportDependencyProvider;
 use Pyz\Zed\MerchantRegion\Communication\Plugin\DataImport\MerchantRegionDataImportPlugin;
 use Pyz\Zed\ProductUpdate\Business\ProductUpdateFacadeInterface;
 use Pyz\Zed\ProductUpdate\ProductUpdateDependencyProvider;
+use Spryker\Service\Flysystem\FlysystemServiceInterface;
 use Spryker\Service\UtilText\UtilTextServiceInterface;
 use Spryker\Shared\Kernel\Store;
 use Spryker\Shared\ProductSearch\Code\KeyBuilder\FilterGlossaryKeyBuilder;
@@ -751,6 +753,17 @@ class DataImportBusinessFactory extends SprykerDataImportBusinessFactory
     public function createGroupToIdGroupStep(): GroupToIdGroupStep
     {
         return new GroupToIdGroupStep();
+    }
+
+    /**
+     * @return \Pyz\Zed\DataImport\Business\Model\FileDownload\SFTPDataImportFileDownloader
+     */
+    public function createSFTPDataImportFileLoader(): SFTPDataImportFileDownloader
+    {
+        return new SFTPDataImportFileDownloader(
+            $this->getProvidedDependency(DataImportDependencyProvider::SERVICE_FLY_SYSTEM_SERVICE),
+            $this->getConfig()
+        );
     }
 
     /**
