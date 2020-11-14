@@ -4,7 +4,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <title>Click&Collect&Delivery Demo</title>
-    <link rel="icon" href="assets/images/favicon.ico">
+    <link rel="shortcut icon" href="media/technisch/img/favicon/apple-touch-icon.png" type="image/x-icon" />
+    <link rel="apple-touch-icon" href="media/technisch/img/favicon/apple-touch-icon.png" />
+    <link rel="apple-touch-icon" sizes="57x57" href="media/technisch/img/favicon/apple-touch-icon-57x57.png" />
+    <link rel="apple-touch-icon" sizes="72x72" href="media/technisch/img/favicon/apple-touch-icon-72x72.png" />
+    <link rel="apple-touch-icon" sizes="76x76" href="media/technisch/img/favicon/apple-touch-icon-76x76.png" />
+    <link rel="apple-touch-icon" sizes="114x114" href="media/technisch/img/favicon/apple-touch-icon-114x114.png" />
+    <link rel="apple-touch-icon" sizes="120x120" href="media/technisch/img/favicon/apple-touch-icon-120x120.png" />
+    <link rel="apple-touch-icon" sizes="144x144" href="media/technisch/img/favicon/apple-touch-icon-144x144.png" />
+    <link rel="apple-touch-icon" sizes="152x152" href="media/technisch/img/favicon/apple-touch-icon-152x152.png" />
     <link rel="stylesheet" href="assets/css/welcome-app.css">
 </head>
 <body>
@@ -24,23 +32,28 @@
         <div class="main__inner">
             <div class="col col--sm-12 col--lg-6">
                 <h1 class="title">
-                    Welcome to the
+                    Herzlich Wilkommen bei
                 </h1>
                 <div class="sub-title">
-                    Spryker pick up and delivery service
+                    Ihrem Globus Abholservice
                 </div>
                 <div class="message">
-                    Discover the variety of offers and the unique shopping experience in the Spryker Click&Collect&Delivery Demo.
+                    Einfach online einkaufen und Ihre gewünschte Artikel <br/>
+                    in gewonter Globus Qualitat abholen.
                 </div>
                 <div class="form-title">
-                    Find the store of your choice now:
+                    Wählen Sie Ihre Abholstation, um mit Ihrem Einkauf zu beginnen:
                 </div>
 
                 <div class="form">
-                    <div class="input-wrapper">
-                        <input type="number" maxlength="5" placeholder="Enter postcode" class="js-zip">
-                    </div>
-                    <button type="button" class="js-submit-button button">Search for store</button>
+                    <select name="store-chooser" onchange="this.options[this.selectedIndex].value && (window.location = this.options[this.selectedIndex].value);">
+                        <option value="https://www.welcome.ccd.demo-spryker.local/">Bitte Abholstation wählen</option>
+                        <option value="https://www.berlin.ccd.demo-spryker.local/">BERLIN</option>
+                    </select>
+<!--                    <div class="input-wrapper">-->
+<!--                        <input type="number" maxlength="5" placeholder="Enter postcode" class="js-zip">-->
+<!--                    </div>-->
+<!--                    <button type="button" class="js-submit-button button">Search for store</button>-->
                 </div>
             </div>
         </div>

@@ -126,7 +126,7 @@ strong {
     display: flex;
     justify-content: space-between;
     background: $setting-color-white;
-    color: $setting-color-gray-5;
+    color: $setting-color-black;
 
     @include helper-breakpoint-media-min($md-min) {
         width: rem(400);
