@@ -55,7 +55,7 @@ class Global {
     }
 
     maxLimit() {
-        return +this.input.getAttribute('maxlength');
+         return +this.input.getAttribute('maxlength');
     }
 }
 
