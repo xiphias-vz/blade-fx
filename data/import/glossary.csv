@@ -21,7 +21,7 @@ cart.checkout,Zum Checkout,de_DE
 cart.checkout,Checkout,en_US
 cart.empty,Der Einkaufsliste ist zur Zeit leer!,de_DE
 cart.empty,Your shopping cart is empty!,en_US
-cart.cart,Einkaufsliste,de_DE
+cart.cart,Warenkorb,de_DE
 cart.cart,Cart,en_US
 cart.total.discount,Rabatt,de_DE
 cart.total.discount,Discount,en_US
@@ -434,7 +434,7 @@ global.benefit.warranty,3 Jahre Garantie,de_DE
 global.benefit.warranty,3 Years Warranty,en_US
 global.benefit.competitive_prices,Günstige Preise,de_DE
 global.benefit.competitive_prices,Competitive Prices,en_US
-global.help,Hilfe,de_DE
+global.help,Fragen? Kundenservice,de_DE
 global.help,Help,en_US
 global.store_finder,Filialen,de_DE
 global.store_finder,Store Finder,en_US
@@ -807,7 +807,7 @@ customer.profile,Mein Account,de_DE
 customer.profile.title,My Account,en_US
 customer.profile.title,Mein Konto,de_DE
 customer.profile.link,My Profile,en_US
-customer.profile.link,Mein Profil,de_DE
+customer.profile.link,Mein Konto,de_DE
 customer.profile.update,Update Profile,en_US
 customer.profile.update,Profil bearbeiten,de_DE
 customer.profile.delete,Delete Account,en_US
