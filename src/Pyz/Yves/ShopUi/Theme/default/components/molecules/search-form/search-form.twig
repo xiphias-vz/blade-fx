@@ -7,6 +7,7 @@
         <div class="grid grid--middle grid--no-wrap">
             <button class="{{ config.name }}__submit button button--skinless">
                 {% include atom('icon') with {
+                    class: 'icon--color-orange',
                     modifiers: ['big'],
                     data: {
                         name: 'search',
@@ -21,6 +22,7 @@
                    autocomplete="off">
             <button class="{{ config.name }}__clear {{ config.jsName }}__clear button button button--clear is-hidden" type="button">
                 {% include atom('icon') with {
+                    class: 'icon--color-orange',
                     data: {
                         name: 'close-circle',
                     },
