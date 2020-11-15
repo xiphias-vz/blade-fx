@@ -31,7 +31,7 @@ class CustomerPageSecurityPlugin extends SprykerCustomerPageSecurityPlugin
                 'password_parameter' => LoginForm::FORM_NAME . '[' . LoginForm::FIELD_PASSWORD . ']',
                 'with_csrf' => true,
                 'csrf_parameter' => LoginForm::FORM_NAME . '[_token]',
-                'csrf_token_id' => LoginForm::FORM_NAME            ],
+                'csrf_token_id' => LoginForm::FORM_NAME],
             'logout' => [
                 'logout_path' => static::ROUTE_LOGOUT,
                 'target_url' => static::ROUTE_HOME,
@@ -40,7 +40,6 @@ class CustomerPageSecurityPlugin extends SprykerCustomerPageSecurityPlugin
                 return $this->getFactory()->createCustomerUserProvider();
             },
         ]);
-
         return $securityBuilder;
     }
 }

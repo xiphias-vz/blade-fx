@@ -3,7 +3,6 @@
 {% define data = {
     isLogin: false,
 } %}
-
 {% block container %}
     <div class="page-layout-customer page-layout-customer--login-wrap">
         <div class="page-layout-customer__form-wrap">
@@ -58,6 +57,7 @@
             </div>
             <div class="js-customer-page-login {{ not data.isLogin ? 'is-hidden' }} grid">
                 <div class="col col--sm-12 col--lg-6 spacing spacing--bigger spacing--inner">
+
                     {% include molecule('form') with {
                         data: {
                             form: data.forms.login,

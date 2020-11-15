@@ -11,5 +11,4 @@
         <column name="merchant_reference" size="255" type="VARCHAR"/>
         <column name="salutation" type="ENUM" valueSet="Mr, Ms, Divers, Dr"/>
     </table>
-
 </database>

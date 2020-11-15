@@ -18,6 +18,7 @@ use Symfony\Component\Form\Extension\Core\Type\TelType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Validator\Constraint;
+use Symfony\Component\Validator\Constraints\Blank;
 use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\Regex;
@@ -36,6 +37,7 @@ class RegisterForm extends SprykerRegisterForm
     public const FIELD_ADDITIONAL_INFORMATION = 'additional_info';
     public const FIELD_PHONE = 'phone';
     public const FIELD_MERCHANT = 'merchant_reference';
+    public const FIELD_ADDITIONAL_REGISTER = 'additional_register';
     public const FORM_NAME = self::BLOCK_PREFIX;
 
     protected const VALIDATION_ADDRESS_NUMBER_MESSAGE = 'validation.address_number';
@@ -64,21 +66,22 @@ class RegisterForm extends SprykerRegisterForm
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $this
-            ->addSalutationField($builder)
-            ->addFirstNameField($builder)
-            ->addLastNameField($builder)
             ->addEmailField($builder)
             ->addPasswordField($builder, $options);
 
         $this
+            ->addSalutationField($builder)
+            ->addFirstNameField($builder)
+            ->addLastNameField($builder);
+
+        $this
             ->addAddress1Field($builder, $options)
             ->addAddress2Field($builder, $options)
-            ->addFloorLevelField($builder)
-            ->addAdditionalInformationField($builder)
             ->addZipCodeField($builder, $options)
             ->addCityField($builder, $options)
             ->addMerchantField($builder)
             ->addPhoneField($builder)
+            ->addAdditionalRegisterField($builder)
             ->addAcceptTermsField($builder);
     }
 
@@ -212,6 +215,20 @@ class RegisterForm extends SprykerRegisterForm
     }
 
     /**
+     * @param FormBuilderInterface $builder
+     * @return $this
+     */
+    protected function addAdditionalRegisterField(FormBuilderInterface $builder)
+    {
+        $builder->add(self::FIELD_ADDITIONAL_REGISTER, CheckboxType::class, [
+            'label' => 'forms.additional_register',
+            'mapped' => false,
+        ]);
+
+        return $this;
+    }
+
+    /**
      * @param \Symfony\Component\Form\FormBuilderInterface $builder
      * @param array $options
      *
@@ -318,6 +335,11 @@ class RegisterForm extends SprykerRegisterForm
         ]);
 
         return $this;
+    }
+
+    protected function addCountryField(FormBuilderInterface $builder)
+    {
+        $builder->add()
     }
 
     /**
@@ -453,6 +475,11 @@ class RegisterForm extends SprykerRegisterForm
         return new NotBlank(['message' => static::VALIDATION_NOT_BLANK_MESSAGE]);
     }
 
+    protected function createBlankConstraint(): Blank
+    {
+        return new Blank();
+    }
+
     /**
      * @param array $options
      *
@@ -467,6 +494,7 @@ class RegisterForm extends SprykerRegisterForm
 
         return $validationGroup;
     }
+
 
     /**
      * @return string[]

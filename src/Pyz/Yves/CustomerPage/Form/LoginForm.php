@@ -8,9 +8,11 @@
 namespace Pyz\Yves\CustomerPage\Form;
 
 use SprykerShop\Yves\CustomerPage\Form\LoginForm as SprykerLoginForm;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Validator\Constraints\Blank;
 
 /**
  * @method \Pyz\Yves\CustomerPage\CustomerPageFactory getFactory()
@@ -23,6 +25,21 @@ class LoginForm extends SprykerLoginForm
      *
      * @return $this
      */
+    public const FIELD_CHECKBOX = 'checkbox';
+
+    /**
+     * @param FormBuilderInterface $builder
+     * @param array $options
+     */
+    public function buildForm(FormBuilderInterface $builder, array $options)
+    {
+        $builder->setAction('/login_check');
+
+        $this
+            ->addEmailField($builder)
+            ->addPasswordField($builder);
+    }
+
     protected function addEmailField(FormBuilderInterface $builder)
     {
         $builder->add(self::FIELD_EMAIL, EmailType::class, [
@@ -36,7 +53,6 @@ class LoginForm extends SprykerLoginForm
                 'placeholder' => 'customer.login.email_placeholder',
             ],
         ]);
-
         return $this;
     }
 
@@ -58,5 +74,19 @@ class LoginForm extends SprykerLoginForm
         ]);
 
         return $this;
+    }
+
+    protected function addCheckboxField(FormBuilderInterface $builder)
+    {
+        $builder->add(self::FIELD_CHECKBOX, CheckboxType::class,[
+               'label' => 'customer.login.checkbox',
+               'mapped' => false
+            ]);
+        return $this;
+    }
+
+    protected function createBlankConstraint(): Blank
+    {
+        return new Blank();
     }
 }
