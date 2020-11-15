@@ -5,15 +5,29 @@
 } %}
 
 {% block body %}
-    <span class="{{ config.name }}__text">{{ 'global.build_with' | trans }}</span>
-    <a class="{{ config.name }}__link" href="{{ 'global.build_with.link' | trans }}" target="_blank">
-        {% include atom('icon') with {
-            modifiers: ['copyright'],
-            data: {
-                name: 'build-with-logo',
-            },
-        } only %}
-    </a>
 
-    {% include molecule('scroll-to-top') only %}
+    <div style="margin-right:10px ">
+        <a class="{{ config.name }}__contact-info-item" href="{{ 'page.privacy.url' | trans }}" target="_blank" style="text-decoration: none;border-right: 1px solid gray;padding-right: 10px">
+            {{ 'page.privacy.title' | trans }}
+        </a>
+    </div>
+
+    <div style="padding-right: 10px;">
+        <a class="{{ config.name }}__contact-info-item" href="{{ 'page.terms.url' | trans }}" target="_blank" style="text-decoration: none;border-right: 1px solid gray;padding-right: 10px">
+            {{ 'page.terms.title' | trans }}
+        </a>
+    </div>
+
+    <div style="padding-right: 10px;">
+        <a class="{{ config.name }}__contact-info-item" href="{{ 'page.imprint.url' | trans }}" target="_blank" style="text-decoration: none;border-right: 1px solid gray;padding-right: 10px">
+            {{ 'page.imprint.title' | trans }}
+        </a>
+    </div>
+
+    <div class="div-footer-right-text" style="float: right;color:gray;position: relative;right: -100px">
+        <p style="margin:0px">Alle Preise verstehen sich inklusive Mehrwertsteuer und zzgl. Servicegebühr</p>
+    </div>
+
+
+
 {% endblock %}

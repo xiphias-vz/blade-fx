@@ -7,12 +7,12 @@
         position: relative;
         display: flex;
         flex-wrap: wrap;
-        align-items: center;
-        justify-content: center;
+
 
         &__text {
             margin-right: rem(18);
             padding-top: rem(12);
+            color:gray;
         }
 
         &__link {
@@ -21,6 +21,13 @@
             &:hover,
             &:focus {
                 color: $setting-color-white;
+            }
+        }
+
+        .div-footer-right-text
+        {
+            @include helper-breakpoint-media-max($lg-max)  {
+                right: 0px !important;
             }
         }
     }

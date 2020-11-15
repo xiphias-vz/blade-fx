@@ -219,9 +219,9 @@ page.imprint.url,/de/impressum,de_DE
 page.imprint.url,/en/imprint,en_US
 page.imprint.title,Impressum,de_DE
 page.imprint.title,Imprint,en_US
-page.terms.url,/de/agb-online-kauf,de_DE
+page.terms.url,/de/Allgemeine-Geschaeftsbedingungende,de_DE
 page.terms.url,/en/gtc-online-purchase,en_US
-page.terms.title,AGB,de_DE
+page.terms.title,Allgemeine Geschäftsbedingungen enden,de_DE
 page.terms.title,GTC,en_US
 page.privacy.url,/de/datenschutz,de_DE
 page.privacy.url,/en/privacy,en_US
@@ -2405,6 +2405,7 @@ agent.confirm_user_selection,Confirm,en_US
 agent.confirm_user_selection,Bestätigen,de_DE
 agent.login.email,Email,en_US
 agent.login.email,E-Mail,de_DE
+global.paymentProviders,Zahlarten bei Abholung,de_DE
 agent.login.password,Password,en_US
 agent.login.password,Passwort,de_DE
 agent.control_bar.username,Agent:,en_US
@@ -2437,8 +2438,9 @@ footer.logo.link.imprint,https://spryker.com/imprint/,en_US
 footer.logo.link.imprint,https://spryker.com/imprint/?lang=de,de_DE
 footer.providers__title,Shipment and Payment,en_US
 footer.providers__title,Zahlung und Versand,de_DE
-footer.categories,Kategorien,de_DE
+footer.categories,Gut zu wissen,de_DE
 footer.categories,Categories,en_US
+footer.globus,Globus,de_DE
 footer.sortiment,INFOS,de_DE
 footer.sortiment,INFOS,en_US
 page.product.details.slider_image,Product Image,en_US
@@ -2658,7 +2660,7 @@ PRODUCT_PAGE_SEARCH:SEARCHABLE_ATTRIBUTE_VALUE_YES,Ja,de_DE
 checkout.timeslots.title,"Services",de_DE
 checkout.timeslots.title,Time slots,en_US
 footer.help,Important information,en_US
-footer.help,Wichtige Informationen,de_DE
+footer.help,Kundenservice,de_DE
 footer.about,About,en_US
 footer.about,Über uns,de_DE
 footer.information,Information,en_US
