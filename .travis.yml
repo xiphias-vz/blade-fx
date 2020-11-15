@@ -55,9 +55,9 @@ before_script:
 
     - mkdir -p shared/data/common/jenkins
     - mkdir -p shared/data/common/jenkins/jobs
-    - mkdir -p data/MULHEIM/cache/Yves/twig -m 0777
-    - mkdir -p data/MULHEIM/cache/Zed/twig -m 0777
-    - mkdir -p data/MULHEIM/logs -m 0777
+    - mkdir -p data/EIN/cache/Yves/twig -m 0777
+    - mkdir -p data/EIN/cache/Zed/twig -m 0777
+    - mkdir -p data/EIN/logs -m 0777
     - mkdir -p src/Orm/Propel/EIN/Schema -m 0777
     - chmod -R 777 data/
     - chmod -R 660 config/Zed/dev_only_private.key
@@ -82,7 +82,7 @@ script:
 
     - vendor/bin/console propel:schema:validate-xml-names
     - vendor/bin/console transfer:validate
-    - vendor/bin/console code:sniff:style
+    - vendor/bin/console code:sniff:style src
 
     - timeout 45m bash -c "vendor/bin/phantomjs --webdriver=4444 --disk-cache=true --load-images=false" &
     - vendor/bin/codecept run -x Presentation

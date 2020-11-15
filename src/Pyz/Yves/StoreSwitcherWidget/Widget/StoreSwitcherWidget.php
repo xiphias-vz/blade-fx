@@ -1,8 +1,8 @@
 <?php
 
 /**
- * Copyright © 2016-present Spryker Systems GmbH. All rights reserved.
- * Use of this software requires acceptance of the Evaluation License Agreement. See LICENSE file.
+ * This file is part of the Spryker Commerce OS.
+ * For full license information, please view the LICENSE file that was distributed with this source code.
  */
 
 namespace Pyz\Yves\StoreSwitcherWidget\Widget;
@@ -18,10 +18,12 @@ class StoreSwitcherWidget extends AbstractWidget
 {
     public function __construct()
     {
-        $storeData = $this->getFactory()->getStore();
+        $store = $this->getFactory()->getStore();
+        $storeNames = $this->getConfig()->getStoreNames();
+        $storeName = $store->getStoreName();
 
-        $this->addParameter('stores', $storeData->getAllowedStores())
-            ->addParameter('currentStore', $storeData->getStoreName())
+        $this->addParameter('stores', $storeNames)
+            ->addParameter('currentStore', $storeName)
             ->addParameter('pattern', $this->getYvesHost() . '/store/switch?store=%s&referer-url=%s');
     }
 
