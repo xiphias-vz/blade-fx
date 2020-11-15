@@ -13,6 +13,4 @@ class InvoiceConfig extends SprykerKernelConfig
 {
     public const NAME_INVOICE_REFERENCE = 'InvoiceReference';
     public const ROUTE_CUSTOMER_INVOICE = 'customer/order/invoice';
-
-
 }

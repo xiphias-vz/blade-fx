@@ -37,7 +37,6 @@ class ProductLocalizedAttributesExtractorStep implements DataImportStepInterface
     {
         $localizedAttributes = [];
         foreach ($dataSet['locales'] as $localeName => $idLocale) {
-
             foreach ($this->defaultAttributes as $defaultAttribute) {
                 $localizedAttributes[$idLocale][$defaultAttribute] = $dataSet[$defaultAttribute];
             }

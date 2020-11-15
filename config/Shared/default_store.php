@@ -1,3 +1,3 @@
 <?php
 
-return 'BERLIN';
+return 'EIN';

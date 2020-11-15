@@ -8,7 +8,6 @@
 namespace Pyz\Zed\Oms;
 
 use Pyz\Shared\Oms\OmsConstants;
-use Pyz\Shared\Sales\SalesConstants;
 use Spryker\Shared\Customer\CustomerConstants;
 use Spryker\Zed\Oms\OmsConfig as SprykerOmsConfig;
 

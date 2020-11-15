@@ -13,7 +13,6 @@ use Orm\Zed\Category\Persistence\SpyCategoryNodeQuery;
 use Orm\Zed\Category\Persistence\SpyCategoryQuery;
 use Orm\Zed\Category\Persistence\SpyCategoryTemplate;
 use Orm\Zed\Category\Persistence\SpyCategoryTemplateQuery;
-use Orm\Zed\Locale\Persistence\SpyLocaleQuery;
 use Orm\Zed\Navigation\Persistence\SpyNavigationNodeLocalizedAttributesQuery;
 use Orm\Zed\Navigation\Persistence\SpyNavigationNodeQuery;
 use Orm\Zed\Navigation\Persistence\SpyNavigationQuery;
@@ -296,7 +295,7 @@ class CategoryWriterStep extends SprykerCategoryWriterStep
 
     /**
      * @param \Spryker\Zed\DataImport\Business\Model\DataSet\DataSetInterface $dataSet
-     * @param $idLocale
+     * @param int $idLocale
      *
      * @return int
      */

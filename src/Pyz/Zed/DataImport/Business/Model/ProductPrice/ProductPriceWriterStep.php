@@ -98,7 +98,7 @@ class ProductPriceWriterStep extends PublishAwareStep implements DataImportStepI
             ->filterBySapNumber($dataSet[ProductConfig::KEY_SAP_NUMBER])
             ->find();
 
-        if (!$productAbstractEntitiesCollection) {
+        if ($productAbstractEntitiesCollection->isEmpty()) {
             // according to requirements price data files can be provided with non existing sap number.
             // this data should skipped
             return;
@@ -111,6 +111,7 @@ class ProductPriceWriterStep extends PublishAwareStep implements DataImportStepI
             if (!empty($dataSet[ProductConfig::KEY_PRICE_FROM]) && !empty($dataSet[ProductConfig::KEY_PRICE_TO])) {
                 $this->savePriceProductSchedule($dataSet, ProductPriceSaver::PRICE_TYPE_DEFAULT, ProductConfig::KEY_PSEUDO_PRICE);
                 $this->savePriceProductSchedule($dataSet, ProductPriceSaver::PRICE_TYPE_ORIGINAL, ProductConfig::KEY_PRICE);
+
                 return;
             }
 
@@ -142,6 +143,8 @@ class ProductPriceWriterStep extends PublishAwareStep implements DataImportStepI
 
     /**
      * @param \Spryker\Zed\DataImport\Business\Model\DataSet\DataSetInterface $dataSet
+     * @param string $priceType
+     * @param string $priceKey
      *
      * @return void
      */

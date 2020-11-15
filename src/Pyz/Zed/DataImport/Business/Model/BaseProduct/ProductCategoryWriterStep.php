@@ -9,13 +9,11 @@ namespace Pyz\Zed\DataImport\Business\Model\BaseProduct;
 
 use Orm\Zed\Category\Persistence\SpyCategoryQuery;
 use Orm\Zed\ProductCategory\Persistence\SpyProductCategoryQuery;
-use Pyz\Zed\CategoryDataImport\Business\Model\CategoryWriterStep;
 use Pyz\Zed\DataImport\Business\Model\ProductAbstract\ProductAbstractWriterStep;
 use Spryker\Zed\DataImport\Business\Model\DataImportStep\DataImportStepInterface;
 use Spryker\Zed\DataImport\Business\Model\DataImportStep\PublishAwareStep;
 use Spryker\Zed\DataImport\Business\Model\DataSet\DataSetInterface;
 use Spryker\Zed\Product\Dependency\ProductEvents;
-use Spryker\Zed\Product\Persistence\Propel\AbstractSpyProductAbstractQuery;
 use Spryker\Zed\ProductCategory\Dependency\ProductCategoryEvents;
 
 class ProductCategoryWriterStep extends PublishAwareStep implements DataImportStepInterface
@@ -35,13 +33,12 @@ class ProductCategoryWriterStep extends PublishAwareStep implements DataImportSt
                 ->filterByFkCategory($this->getCategoryId($dataSet))
                 ->findOneOrCreate();
 
-            if ($productCategoryEntity->isNew() || $productCategoryEntity->isModified()) {
-                $productCategoryEntity->save();
-            }
+        if ($productCategoryEntity->isNew() || $productCategoryEntity->isModified()) {
+            $productCategoryEntity->save();
+        }
 
             $this->addPublishEvents(ProductCategoryEvents::PRODUCT_CATEGORY_PUBLISH, $dataSet[ProductAbstractWriterStep::ID_PRODUCT_ABSTRACT]);
             $this->addPublishEvents(ProductEvents::PRODUCT_ABSTRACT_PUBLISH, $dataSet[ProductAbstractWriterStep::ID_PRODUCT_ABSTRACT]);
-
     }
 
     /**
