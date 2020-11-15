@@ -515,7 +515,7 @@ static full page,1,1,1,page_5,/de/faq/,/en/faq/,FAQ,FAQ,FAQ,FAQ,FAQ,FAQ,FAQ,FAQ,
     .cms-page__content h2, .cms-page__content h3 {
 								margin: 0.75rem 0;
 				}
-				
+
 				.cms-page__content h3 {
 				    font-size: 0.875rem;
     				font-weight: bold;
@@ -585,7 +585,7 @@ static full page,1,1,1,page_5,/de/faq/,/en/faq/,FAQ,FAQ,FAQ,FAQ,FAQ,FAQ,FAQ,FAQ,
     .cms-page__content h2, .cms-page__content h3 {
 								margin: 0.75rem 0;
 				}
-				
+
 				.cms-page__content h3 {
 				    font-size: 0.875rem;
     				font-weight: bold;
