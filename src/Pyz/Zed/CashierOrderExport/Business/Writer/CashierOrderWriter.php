@@ -75,10 +75,9 @@ class CashierOrderWriter implements CashierOrderWriterInterface
      */
     public function write(string $content, OrderTransfer $orderTransfer): void
     {
-        $salesOrderId = $orderTransfer->getIdSalesOrder();
-        $archiveFilePath = $this->cashierOrderFilePathResolver->resolveCashierOrderExportArchiveFilePath($salesOrderId);
-        $archiveFileName = $this->cashierOrderFilePathResolver->resolveCashierOrderExportArchiveFileName($salesOrderId);
-        $fileName = $this->cashierOrderFilePathResolver->resolveCashierOrderExportFileName($salesOrderId);
+        $archiveFileName = $this->cashierOrderFilePathResolver->resolveCashierOrderExportArchiveFileName();
+        $archiveFilePath = $this->cashierOrderFilePathResolver->resolveCashierOrderExportArchiveFilePath($archiveFileName);
+        $fileName = $this->cashierOrderFilePathResolver->resolveCashierOrderExportFileName();
         $archiveRemoteFilePat = $this->cashierOrderFilePathResolver
             ->resolveCashierOrderExportArchiveRemoteFilePath($archiveFileName);
 

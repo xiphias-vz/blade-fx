@@ -12,12 +12,12 @@ use Pyz\Zed\CashierOrderExport\CashierOrderExportConfig;
 
 class CashierOrderFileNameResolver implements CashierOrderFileNameResolverInterface
 {
-    protected const EXPORT_FILE_NAME_FORMAT = '%s%s-%s';
     protected const EXPORT_ARCHIVE_FILE_PATH_MASK = '%s%s%s';
     protected const EXPORT_FILE_NAME_DEFAULT_PREFIX = 'GN_';
     protected const EXPORT_FILE_NAME_DATE_FORMAT = 'Ymd-His';
+    protected const EXPORT_FILE_DEFAULT_NAME = 'order.txt';
     protected const EXPORT_FILE_REMOTE_FILE_PATH_FORMAT = '%s/%s';
-    protected const EXPORT_ARCHIVE_FILE_NAME_FORMAT = '%s%s';
+    protected const EXPORT_ARCHIVE_FILE_NAME_FORMAT = '%s%s%s';
     protected const EXPORT_ARCHIVE_FILE_EXTENSION = '.zip';
 
     /**
@@ -35,45 +35,37 @@ class CashierOrderFileNameResolver implements CashierOrderFileNameResolverInterf
     }
 
     /**
-     * @param int $salesOrderId
-     *
      * @return string
      */
-    public function resolveCashierOrderExportFileName(int $salesOrderId): string
+    public function resolveCashierOrderExportFileName(): string
     {
-        return sprintf(
-            static::EXPORT_FILE_NAME_FORMAT,
-            static::EXPORT_FILE_NAME_DEFAULT_PREFIX,
-            (new DateTime())->format(static::EXPORT_FILE_NAME_DATE_FORMAT),
-            $salesOrderId
-        );
+        return static::EXPORT_FILE_DEFAULT_NAME;
     }
 
     /**
-     * @param int $salesOrderId
+     * @param string $cashierOrderExportArchiveFileName
      *
      * @return string
      */
-    public function resolveCashierOrderExportArchiveFilePath(int $salesOrderId): string
+    public function resolveCashierOrderExportArchiveFilePath(string $cashierOrderExportArchiveFileName): string
     {
         return sprintf(
             static::EXPORT_ARCHIVE_FILE_PATH_MASK,
             $this->cashierOrderExportConfig->getDefaultCashierExportArchiveDirectoryRoot(),
             $this->cashierOrderExportConfig->getDefaultCashierExportArchiveFilePath(),
-            $this->resolveCashierOrderExportArchiveFileName($salesOrderId)
+            $cashierOrderExportArchiveFileName
         );
     }
 
     /**
-     * @param int $salesOrderId
-     *
      * @return string
      */
-    public function resolveCashierOrderExportArchiveFileName(int $salesOrderId): string
+    public function resolveCashierOrderExportArchiveFileName(): string
     {
         return sprintf(
             static::EXPORT_ARCHIVE_FILE_NAME_FORMAT,
-            $this->resolveCashierOrderExportFileName($salesOrderId),
+            static::EXPORT_FILE_NAME_DEFAULT_PREFIX,
+            (new DateTime())->format(static::EXPORT_FILE_NAME_DATE_FORMAT),
             static::EXPORT_ARCHIVE_FILE_EXTENSION
         );
     }

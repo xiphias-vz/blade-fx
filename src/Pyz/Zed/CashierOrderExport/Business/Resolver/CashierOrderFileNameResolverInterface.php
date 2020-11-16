@@ -10,25 +10,21 @@ namespace Pyz\Zed\CashierOrderExport\Business\Resolver;
 interface CashierOrderFileNameResolverInterface
 {
     /**
-     * @param int $salesOrderId
-     *
      * @return string
      */
-    public function resolveCashierOrderExportFileName(int $salesOrderId): string;
+    public function resolveCashierOrderExportFileName(): string;
 
     /**
-     * @param int $salesOrderId
+     * @param string $cashierOrderExportArchiveFileName
      *
      * @return string
      */
-    public function resolveCashierOrderExportArchiveFilePath(int $salesOrderId): string;
+    public function resolveCashierOrderExportArchiveFilePath(string $cashierOrderExportArchiveFileName): string;
 
     /**
-     * @param int $salesOrderId
-     *
      * @return string
      */
-    public function resolveCashierOrderExportArchiveFileName(int $salesOrderId): string;
+    public function resolveCashierOrderExportArchiveFileName(): string;
 
     /**
      * @param string $fileName
