@@ -22,7 +22,7 @@ class UserConfig extends SprykerUserConfig
                 'lastName' => 'Spryker',
                 'username' => 'admin@spryker.com',
                 'password' => 'Change1234',
-                'localeName' => 'en_US',
+                'localeName' => 'de_DE',
             ],
         ];
     }
