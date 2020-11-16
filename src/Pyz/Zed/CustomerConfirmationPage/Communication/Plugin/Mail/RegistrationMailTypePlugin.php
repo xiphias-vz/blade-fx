@@ -82,17 +82,4 @@ class RegistrationMailTypePlugin extends AbstractPlugin implements MailTypePlugi
 
         return $this;
     }
-
-    /**
-     * @param \Spryker\Zed\Mail\Business\Model\Mail\Builder\MailBuilderInterface $mailBuilder
-     *
-     * @return $this
-     */
-
-    protected function setHtmlTemplate(MailBuilderInterface $mailBuilder)
-    {
-        $mailBuilder->setHtmlTemplate('customer/mail/customer_registration.html.twig');
-
-        return $this;
-    }
 }
