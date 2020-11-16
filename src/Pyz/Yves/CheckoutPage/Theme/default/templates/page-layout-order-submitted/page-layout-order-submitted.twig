@@ -6,6 +6,7 @@
     collectNumber: '',
     requestedDeliveryDate: '',
     deliveryMethodKey: '',
+    orders: required
 } %}
 
 {%- block class -%}{{ parent() }} page-layout-main--success-page{%- endblock -%}
@@ -15,6 +16,7 @@
 {% block title %}{% endblock %}
 
 {% block content %}
+
     <div class="page-layout-checkout success-page text-center">
         <div class="success-page__container container">
             <h1 class="title title--checkout-success">{{ data.title }}</h1>
@@ -36,4 +38,6 @@
             {% endif %}
         </div>
     </div>
+
+
 {% endblock %}
