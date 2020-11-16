@@ -15,11 +15,25 @@
 
 {% block containerContent %}
     <div class="grid grid--center">
-        <div class="col col--sm-12 col--md-9 col--xl-6">
+        <div class="col col--sm-12 col--md-9 col--xl-9">
             <div class="box box--checkout">
                 {% block title %}
                     <div class="list-switches list-switches--checkout">
                         <ul class="list-switches__list list-switches--register-type">
+                            <li class="list-switches__item">
+                                {% include molecule('toggler-radio') with {
+                                    modifiers: ['checkout', 'with-bg'],
+                                    data: {
+                                        label: 'checkout.customer.auth_as_login' | trans
+                                    },
+                                    attributes: {
+                                        id: 'login',
+                                        checked: data.isLogin,
+                                        name: 'checkoutProceedAs',
+                                        'target-class-name': 'js-login__login',
+                                    },
+                                } only %}
+                            </li>
 
                             <li class="list-switches__item">
                                 {% include molecule('toggler-radio') with {
@@ -40,13 +54,13 @@
                                 {% include molecule('toggler-radio') with {
                                     modifiers: ['checkout', 'with-bg'],
                                     data: {
-                                        label: 'checkout.customer.auth_as_login' | trans
+                                        label: 'checkout.customer.register_as_guest' | trans,
                                     },
                                     attributes: {
-                                        id: 'login',
-                                        checked: data.isLogin,
+                                        id: 'guest',
+                                        checked: not data.isGuest and not data.isLogin,
                                         name: 'checkoutProceedAs',
-                                        'target-class-name': 'js-login__login',
+                                        'target-class-name': 'js-login__register',
                                     },
                                 } only %}
                             </li>

@@ -72,7 +72,7 @@ auth.password-forgot,Vergessen?,de_DE
 auth.password-forgot,Forgotten?,en_US
 auth.email,E-mail-Addresse,de_DE
 auth.email,E-mail,en_US
-auth.register,Registrieren,de_DE
+auth.register,Senden,de_DE
 auth.register,Register,en_US
 auth.im-new-customer,Ich bin Neukunde,de_DE
 auth.im-new-customer,New Customer,en_US
@@ -879,8 +879,8 @@ forms.confirm-password,Confirm Password,en_US
 forms.confirm-password,Passwort bestätigen,de_DE
 forms.accept_terms,"I agree to the <a href='/en/gtc-online-purchase' target='_blank'>AGB</a> and <a href='/en/privacy' target='_blank'>Privacy policy</a> to.",en_US
 forms.accept_terms,"Ich stimme den <a href='/de/agb-online-kauf' target='_blank'>AGB</a> und den <a href='/de/datenschutz/' target='_blank'>Datenschutzbestimmungen</a> zu.",de_DE
-forms.additional_register,"Register in CDC",en_US
-forms.additional_register,"Registrierung in der CDC",de_DE
+forms.additional_register,"Ja, Ich möchte radio",en_US
+forms.additional_register,"Ja, ich möchte über Produkte und Angebote informiert werder. Ich stimme hiermit den <a href='/de/agb-online-kauf' style='color:#ea8901; text-decoration:none' target='_blank'>Bedingungen der Werbeeinwilligung </a>zu.",de_DE
 address.salutation,Salutation,en_US
 address.salutation,Anrede,de_DE
 email.orderEmail.salutationMale,Mr.,en_US
@@ -944,7 +944,7 @@ checkout.customer.auth_as_user,Registrieren,de_DE
 checkout.customer.auth_as_guest,Buy as Guest,en_US
 checkout.customer.auth_as_guest,Gastbestellung,de_DE
 checkout.customer.auth_as_login,Login,en_US
-checkout.customer.auth_as_login,Hier anmelden,de_DE
+checkout.customer.auth_as_login,Anmelden,de_DE
 checkout.step.customer.title,Login,en_US
 checkout.step.customer.title,Anmelden,de_DE
 checkout.step.address.title,Address,en_US
@@ -2974,3 +2974,9 @@ Glutenfrei,Gluten free,en_US
 Glutenfrei,Glutenfrei,de_DE
 Vegetarisch,Vegetarian,en_US
 Vegetarisch,Vegetarisch,de_DE
+register.accept_terms,Ich habe die <a href='/de/agb-online-kauf' style='color:#ea8901; text-decoration:none' target='_blank'>Datenschutzbedingungen</a> gelesen und akzeptiere diese.*,de_DE
+customer.registration.country_placeholder,Deutschland,de_DE
+customer.registration.phone.prefix_placeholder,DE +49,de_DE
+customer.register.phone,Telefon (mindestens 1 Angabe Ist Pflicht),de_DE
+forms.recieve_notifications,"Ja, ich möchte über am <a href='/de/agb-online-kauf' style='color:#ea8901; text-decoration:none' target='_blank'>Mein Globus-Programm</a> teilnehmen, um corteile wie z.B. Punkte sammeln, Tankeschön und Scan&Go nutzen zu können. Ich habe die allgemeinen <a href='/de/agb-online-kauf' style='color:#ea8901; text-decoration:none' target='_blank'>Teilnahmebedingungen</a> zum Mein Globus-Programm gelesen und akzeptiere diese.",de_DE
+checkout.customer.register_as_guest,Als Gast bestellen,de_DE

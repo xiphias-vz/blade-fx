@@ -12,7 +12,7 @@
         text-align: center;
         font: fw(medium) rem(14)/1.7 $setting-font-family-additional;
         cursor: pointer;
-        background: $setting-color-green;
+        background: $setting-color-globus-lightOrange;
         color: $setting-color-white;
         text-decoration: none;
         border-radius: rem(2);
@@ -25,13 +25,13 @@
         &:hover,
         &:focus,
         &:active {
-            background: $setting-color-green;
+            background: $setting-color-globus-darkOrange;
             color: $setting-color-white;
             box-shadow: 0 rem(4) rem(18) $setting-color-green-alpha-1;
         }
 
         &:focus {
-            background: $setting-color-green;
+            background: $setting-color-globus-darkOrange;
             color: $setting-color-white;
         }
 
