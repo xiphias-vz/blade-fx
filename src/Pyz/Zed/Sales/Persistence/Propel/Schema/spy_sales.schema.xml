@@ -28,6 +28,10 @@
         <column name="oms_processor_id" type="INTEGER" required="false"/>
         <column name="product_number" type="VARCHAR" size="255" required="false"/>
         <column name="store" type="VARCHAR" size="255" required="false"/>
+        <column name="pick_zone" type="VARCHAR" size="255" required="false"/>
+        <index name="index-pick_zone">
+            <index-column name="pick_zone"/>
+        </index>
     </table>
 
     <table name="spy_sales_order_address">

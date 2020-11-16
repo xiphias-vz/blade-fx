@@ -9,6 +9,7 @@ namespace Pyz\Zed\ProductCartConnector\Business\Expander;
 
 use Generated\Shared\Transfer\ItemTransfer;
 use Generated\Shared\Transfer\ProductConcreteTransfer;
+use Pyz\Shared\Product\ProductConfig;
 use Spryker\Zed\ProductCartConnector\Business\Expander\ProductExpander as SprykerProductExpander;
 use Spryker\Zed\ProductCartConnector\Business\Expander\ProductExpanderInterface;
 
@@ -25,6 +26,7 @@ class ProductExpander extends SprykerProductExpander implements ProductExpanderI
         parent::expandItemWithProductConcrete($productConcreteTransfer, $itemTransfer);
 
         $itemTransfer
+            ->setPickZone($productConcreteTransfer->getAttributes()[ProductConfig::KEY_PICK_ZONE_ATTRIBUTE] ?? '')
             ->setProductNumber($productConcreteTransfer->getProductNumber());
     }
 }
