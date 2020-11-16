@@ -25,7 +25,7 @@ class CashierOrderArchiveWriter implements CashierOrderArchiveWriterInterface
 
         $zipArchiveFileSystem->write($fileNameInArchive, $content);
 
-        /** @var ZipArchiveAdapter $zipArchiveFileSystemAdapter */
+        /** @var \League\Flysystem\ZipArchive\ZipArchiveAdapter $zipArchiveFileSystemAdapter */
         $zipArchiveFileSystemAdapter = $zipArchiveFileSystem->getAdapter();
 
         return $zipArchiveFileSystemAdapter->getArchive()->close();
