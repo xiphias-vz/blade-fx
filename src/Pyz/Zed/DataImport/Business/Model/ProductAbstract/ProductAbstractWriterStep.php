@@ -16,15 +16,14 @@ use Orm\Zed\ProductImage\Persistence\SpyProductImageQuery;
 use Orm\Zed\ProductImage\Persistence\SpyProductImageSet;
 use Orm\Zed\ProductImage\Persistence\SpyProductImageSetQuery;
 use Orm\Zed\ProductImage\Persistence\SpyProductImageSetToProductImageQuery;
-use Orm\Zed\Tax\Persistence\SpyTaxSetQuery;
+use Orm\Zed\Tax\Persistence\SpyTaxRateQuery;
 use Orm\Zed\Url\Persistence\SpyUrlQuery;
 use Propel\Runtime\ActiveQuery\Criteria;
 use Pyz\Shared\Product\ProductConfig;
-use Pyz\Zed\DataImport\Business\Exception\EntityNotFoundException;
 use Pyz\Zed\DataImport\Business\Model\BaseProduct\AttributesExtractorStep;
 use Pyz\Zed\DataImport\Business\Model\Product\ProductLocalizedAttributesExtractorStep;
 use Pyz\Zed\DataImport\Business\Model\Product\Repository\ProductRepository;
-use Pyz\Zed\DataImport\Business\Model\ProductConcrete\ProductConcreteWriter;
+use Pyz\Zed\DataImport\DataImportConfig;
 use Spryker\Service\UtilText\UtilTextServiceInterface;
 use Spryker\Shared\Kernel\Store;
 use Spryker\Shared\ProductImageCartConnector\ProductImageCartConnectorConfig;
@@ -41,12 +40,10 @@ class ProductAbstractWriterStep extends PublishAwareStep implements DataImportSt
 
     public const KEY_PRODUCT_NUMBER = ProductConfig::KEY_PRODUCT_NUMBER;
     public const KEY_CONCRETE_SKU = 'Key';
-    public const KEY_TAX_SET = 'Steuersatz';
     public const KEY_NAME = ProductConfig::KEY_ARTIKELNAME_SPRYKER;
-    public const KEY_DESCRIPTION = 'Zusätzliche Produktinformationen';
+    public const KEY_DESCRIPTION = 'description_long';
     public const KEY_LOCALES = 'locales';
     public const ID_PRODUCT_ABSTRACT = 'id_product_abstract';
-    public const DEFAULT_TAX_SET = 'STANDARD';
     public const IS_PRODUCT_CONCRETE = 'Concrete';
 
     /**
@@ -65,15 +62,23 @@ class ProductAbstractWriterStep extends PublishAwareStep implements DataImportSt
     private $utilTextService;
 
     /**
+     * @var \Pyz\Zed\DataImport\DataImportConfig
+     */
+    private $dataImportConfig;
+
+    /**
      * @param \Pyz\Zed\DataImport\Business\Model\Product\Repository\ProductRepository $productRepository
      * @param \Spryker\Service\UtilText\UtilTextServiceInterface $utilTextService
+     * @param \Pyz\Zed\DataImport\DataImportConfig $dataImportConfig
      */
     public function __construct(
         ProductRepository $productRepository,
-        UtilTextServiceInterface $utilTextService
+        UtilTextServiceInterface $utilTextService,
+        DataImportConfig $dataImportConfig
     ) {
         $this->productRepository = $productRepository;
         $this->utilTextService = $utilTextService;
+        $this->dataImportConfig = $dataImportConfig;
     }
 
     /**
@@ -83,21 +88,6 @@ class ProductAbstractWriterStep extends PublishAwareStep implements DataImportSt
      */
     public function execute(DataSetInterface $dataSet)
     {
-        if (isset($dataSet[static::IS_PRODUCT_CONCRETE]) && $dataSet[static::IS_PRODUCT_CONCRETE]) {
-
-            $productAbstractEntity = SpyProductAbstractQuery::create()
-                ->filterBySku_Like(ProductAbstractWriterStep::getAbstractSku($dataSet))
-                ->findOne();
-
-            if (!$productAbstractEntity) {
-                throw new EntityNotFoundException(sprintf('Product Abstract by productNumber "%s" not found.', ProductAbstractWriterStep::getAbstractSku($dataSet)));
-            }
-
-            $dataSet[static::ID_PRODUCT_ABSTRACT] = $productAbstractEntity->getIdProductAbstract();
-
-            return;
-        }
-
         $productAbstractEntity = $this->importProductAbstract($dataSet);
 
         $this->productRepository->addProductAbstract($productAbstractEntity);
@@ -118,13 +108,7 @@ class ProductAbstractWriterStep extends PublishAwareStep implements DataImportSt
      */
     public static function getAbstractSku(DataSetInterface $dataSet): string
     {
-        if (isset($dataSet[static::IS_PRODUCT_CONCRETE]) && $dataSet[static::IS_PRODUCT_CONCRETE]) {
-            $productNumber = $concreteSku = explode('_', $dataSet[static::KEY_PRODUCT_NUMBER])[0] .'_0';
-
-            return $productNumber . '_' . str_replace(' ', '_', $concreteSku);
-        }
-
-        return $dataSet[static::KEY_PRODUCT_NUMBER] . '_' . str_replace([' ', ',', ';', '/', '.'], '-', strtolower($dataSet[static::KEY_CONCRETE_SKU]));
+        return $dataSet[static::KEY_PRODUCT_NUMBER] . '_abstract';
     }
 
     /**
@@ -135,17 +119,23 @@ class ProductAbstractWriterStep extends PublishAwareStep implements DataImportSt
     protected function importProductAbstract(DataSetInterface $dataSet)
     {
         $productAbstractEntity = SpyProductAbstractQuery::create()
-            ->filterBySku($this->getAbstractSku($dataSet))
+            ->filterBySku(static::getAbstractSku($dataSet))
             ->findOneOrCreate();
 
-        $taxSetEntity = SpyTaxSetQuery::create()
-            ->filterByName($dataSet[static::KEY_TAX_SET] ?: static::DEFAULT_TAX_SET)
-            ->findOne();
+        $fkTaxSet = SpyTaxRateQuery::create()
+            ->filterByRate($dataSet[ProductConfig::KEY_TAX])
+            ->joinWithSpyTaxSetTax()
+            ->find()
+            ->getFirst()
+            ->getSpyTaxSetTaxes()
+            ->getFirst()
+            ->getFkTaxSet();
 
         $productAttributes = $this->removeUnnecessaryAttributes($dataSet[AttributesExtractorStep::KEY_ATTRIBUTES]);
 
         $productAbstractEntity
-            ->setFkTaxSet($taxSetEntity->getIdTaxSet())
+            ->setFkTaxSet($fkTaxSet)
+            ->setSapNumber($dataSet[ProductConfig::KEY_SAP_NUMBER])
             ->setAttributes(json_encode($productAttributes));
 
         if ($productAbstractEntity->isNew() || $productAbstractEntity->isModified()) {
@@ -164,15 +154,14 @@ class ProductAbstractWriterStep extends PublishAwareStep implements DataImportSt
      */
     protected function removeUnnecessaryAttributes(array $productAttributes): array
     {
-        unset($productAttributes[ProductConfig::PRODUCT_ATTRIBUTE_KEY_PICKING_AREA]);
-        unset($productAttributes[ProductConfig::PRODUCT_ATTRIBUTE_ABT_NR]);
-        unset($productAttributes[ProductConfig::PRODUCT_ATTRIBUTE_LAGERPLATZ]);
-        unset($productAttributes[ProductConfig::KEY_PRICE]);
-        unset($productAttributes[ProductConfig::KEY_PRICE_ORIGINAL]);
-        unset($productAttributes[ProductConfig::KEY_PRICE_ORIGINAL_FROM]);
-        unset($productAttributes[ProductConfig::KEY_PRICE_ORIGINAL_TO]);
-        unset($productAttributes[ProductConfig::KEY_PRICE_FROM]);
-        unset($productAttributes[ProductConfig::KEY_PRICE_TO]);
+        unset($productAttributes[ProductConfig::KEY_ACTIVE]);
+        unset($productAttributes[ProductConfig::KEY_TAX]);
+        unset($productAttributes[ProductConfig::KEY_MAIN_IMAGE_FILE_NAME]);
+        unset($productAttributes[ProductConfig::KEY_ARTIKELNAME_SPRYKER]);
+        unset($productAttributes[ProductConfig::KEY_DESCRIPTION]);
+        unset($productAttributes[ProductConfig::KEY_PRODUCT_NUMBER]);
+        unset($productAttributes[ProductConfig::KEY_PRODUCT_NUMBER]);
+        unset($productAttributes[ProductConfig::KEY_SAP_NUMBER]);
 
         return $productAttributes;
     }
@@ -194,7 +183,7 @@ class ProductAbstractWriterStep extends PublishAwareStep implements DataImportSt
             $productAbstractLocalizedAttributesEntity
                 ->setName($localizedAttributes[static::KEY_NAME])
                 ->setDescription($dataSet[static::KEY_DESCRIPTION])
-                ->setAttributes(json_encode($localizedAttributes[AttributesExtractorStep::KEY_ATTRIBUTES]));
+                ->setAttributes(json_encode([]));
 
             if ($productAbstractLocalizedAttributesEntity->isNew() || $productAbstractLocalizedAttributesEntity->isModified()) {
                 $productAbstractLocalizedAttributesEntity->save();
@@ -215,11 +204,11 @@ class ProductAbstractWriterStep extends PublishAwareStep implements DataImportSt
             $urlPathParts = [
                 array_search($localizedAttributes[ProductLocalizedAttributesExtractorStep::KEY_LOCALE_KEY], $locales),
                 $localizedAttributes[static::KEY_NAME],
-                $dataSet[static::KEY_CONCRETE_SKU],
+                $dataSet[static::KEY_PRODUCT_NUMBER],
             ];
 
             $convertCallback = function ($value) {
-                return $this->utilTextService->generateSlug(trim($value));
+                return $this->utilTextService->generateSlug(trim(iconv('UTF-8', 'ASCII//IGNORE', $value)));
             };
             $urlPathParts = array_map($convertCallback, $urlPathParts);
             $abstractProductUrl = '/' . implode('/', $urlPathParts);
@@ -254,9 +243,12 @@ class ProductAbstractWriterStep extends PublishAwareStep implements DataImportSt
     {
         foreach ($locales as $localeKey => $localeName) {
             $productImageSetEntity = $this->findOrCreateImageSet($dataSet, $localeName);
-
-            $productImageEntity = $this->findOrCreateImage(ProductConcreteWriter::getProductImageUrlForCatalog($dataSet));
-            $this->updateOrCreateImageToImageSetRelation($productImageSetEntity, $productImageEntity, 1);
+            $images = explode(';', $dataSet[ProductConfig::KEY_MAIN_IMAGE_FILE_NAME]);
+            foreach ($images as $key => $image) {
+                $imageUrl = $this->dataImportConfig->getImagesHostUrl() . '/' .  $image;
+                $productImageEntity = $this->findOrCreateImage($imageUrl);
+                $this->updateOrCreateImageToImageSetRelation($productImageSetEntity, $productImageEntity, $key);
+            }
 
             $this->addImagePublishEvents($productImageSetEntity);
         }

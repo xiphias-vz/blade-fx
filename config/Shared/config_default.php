@@ -9,9 +9,11 @@ use Pyz\Shared\Matomo\MatomoConstants;
 use Pyz\Shared\Oms\OmsConstants;
 use Pyz\Shared\Pdf\PdfConstants;
 use Pyz\Shared\ProductDetailPage\ProductDetailPageConstants;
+use Pyz\Shared\ProductImage\ProductImageConstants;
 use Pyz\Shared\ProductPageSearch\ProductPageSearchConstants;
 use Pyz\Shared\Sales\SalesConstants;
 use Pyz\Shared\Shipment\ShipmentConfig;
+use Pyz\Shared\Store\StoreConstants;
 use Pyz\Shared\TimeSlot\TimeSlotConstants;
 use Pyz\Shared\TwigCache\TwigCacheConstants;
 use Spryker\Client\RabbitMq\Model\RabbitMqAdapter;
@@ -607,8 +609,8 @@ $config[ShopUiConstants::YVES_ASSETS_URL_PATTERN] = '/assets/' . (getenv('SPRYKE
 $config[KernelConstants::STRICT_DOMAIN_REDIRECT] = true;
 
 // ALDI
-$config[ProductPageSearchConstants::SEARCHABLE_ATTRIBUTE_KEYS] = ['Bio', 'Vegan', 'Laktosefrei', 'Glutenfrei', 'Vegetarisch'];
-$config[ProductDetailPageConstants::REQUIRED_ATTRIBUTE_KEYS] = ['Bezugsgröße', 'Bezugsgröße Maßeinheit'];
+$config[ProductPageSearchConstants::SEARCHABLE_ATTRIBUTE_KEYS] = [];
+$config[ProductDetailPageConstants::REQUIRED_ATTRIBUTE_KEYS] = [];
 
 $config[SalesConstants::BOTTLE_DEPOSIT_PRICE_IN_CENTS] = 25;
 $config[InvoiceConstants::INVOICE_DUE_DATE_DAYS] = 14;
@@ -760,3 +762,8 @@ $config[KernelConstants::DOMAIN_WHITELIST] = [
 
 $config[SalesConstants::ORDER_EXPIRE_HOUR] = 22;
 $config[SalesConstants::ORDER_READY_FOR_PICKING_HOUR] = 0;
+
+$config[ProductImageConstants::IMAGES_HOST_URL] = 'https://globus-staging-product-images.s3.eu-central-1.amazonaws.com';
+$config[StoreConstants::SAP_STORE_ID_TO_STORE_MAP] = [
+    1057 => 'BERLIN',
+];

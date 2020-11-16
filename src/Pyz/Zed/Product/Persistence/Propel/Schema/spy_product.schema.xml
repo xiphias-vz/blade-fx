@@ -4,6 +4,10 @@
           package="src.Orm.Zed.Product.Persistence">
 
     <table name="spy_product_abstract">
+        <column name="sap_number" type="VARCHAR"/>
+        <index>
+            <index-column name="sap_number"/>
+        </index>
         <behavior name="event">
             <parameter name="spy_product_abstract_all" column="*"/>
         </behavior>
@@ -17,6 +21,10 @@
 
     <table name="spy_product">
         <column name="product_number" required="false" type="VARCHAR"/>
+        <column name="sap_number" type="VARCHAR"/>
+        <index>
+            <index-column name="sap_number"/>
+        </index>
         <behavior name="event">
             <parameter name="spy_product_all" column="*"/>
         </behavior>
