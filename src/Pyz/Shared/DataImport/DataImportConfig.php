@@ -10,6 +10,7 @@ namespace Pyz\Shared\DataImport;
 class DataImportConfig
 {
     public const IMPORT_CSV_BASE_DELIMITER = ',';
+    public const IMPORT_CSV_PIPE_DELIMITER = '|';
     public const IMPORT_CSV_DELIMITER = ';';
     public const PICKING_ORDER_KEY_FORMAT = '%s_%s';
 }

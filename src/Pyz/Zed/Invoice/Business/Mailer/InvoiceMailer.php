@@ -91,7 +91,7 @@ class InvoiceMailer
      * @param \Pyz\Zed\Invoice\InvoiceConfig $config
      * @param \Spryker\Zed\Translator\Business\TranslatorFacadeInterface $translatorFacade
      * @param \Pyz\Service\MailCmsBlock\MailCmsBlockServiceInterface $mailCmsBlockService
-     * @param \Spryker\Shared\Kernel\Store
+     * @param \Spryker\Shared\Kernel\Store $store
      */
     public function __construct(
         MailFacadeInterface $mailFacade,

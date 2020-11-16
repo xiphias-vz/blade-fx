@@ -54,7 +54,7 @@ $jobs[] = [
 ];
 
 /* Oms */
-for ($i = 1; $i < 11; $i++) {
+for ($i = 1; $i <= 1; $i++) {
     $jobs[] = [
         'name' => 'check-oms-conditions-' . $i,
         'command' => '$PHP_BIN vendor/bin/console oms:check-condition -p ' . $i,
@@ -152,15 +152,6 @@ $jobs[] = [
 $jobs[] = [
     'name' => 'data-import-merchant',
     'command' => '$PHP_BIN vendor/bin/console data:import merchant',
-    'schedule' => '0 0 * * *',
-    'enable' => false,
-    'stores' => $allStores,
-];
-
-/* Data Imports */
-$jobs[] = [
-    'name' => 'data-import-product-update',
-    'command' => '$PHP_BIN vendor/bin/console',
     'schedule' => '0 0 * * *',
     'enable' => false,
     'stores' => $allStores,
