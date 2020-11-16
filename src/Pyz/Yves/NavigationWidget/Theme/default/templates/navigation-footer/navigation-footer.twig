@@ -2,6 +2,7 @@
 
 {% define data = {
     nodes: _widget.navigationTree.nodes,
+    merchant: app['merchant_name']
 } %}
 
 {% block body %}
@@ -11,4 +12,5 @@
             nodes: data.nodes,
         },
     } only %}
+
 {% endblock %}

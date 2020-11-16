@@ -1,5 +1,5 @@
 navigation_key,node_key,parent_node_key,node_type,title.en_US,url.en_US,css_class.en_US,title.de_DE,url.de_DE,css_class.de_DE,valid_from,valid_to,position
-FOOTER_NAVIGATION,node_key_34,,cms_page,GTC,/en/gtc-online-purchase,,AGB,/de/agb-online-kauf,,,,2
+FOOTER_NAVIGATION,node_key_34,,cms_page,10115 Berlin Julie-Wolfthorn-Straße 1,,,,,,,,2
 FOOTER_NAVIGATION,node_key_35,,cms_page,Data privacy,/en/privacy,,Datenschutz,/de/datenschutz/,,,,3
 FOOTER_NAVIGATION,node_key_50,,cms_page,Imprint,/en/imprint,,Impressum,/de/impressum/,,,,4
 NAVIGATION_FOOTER_ELEMENT,node_key_162,,external_url,About us,https://abholservice.globus.de/Ueber-uns/,category-4,Über uns,https://abholservice.globus.de/Ueber-uns/,category-4,,,4
