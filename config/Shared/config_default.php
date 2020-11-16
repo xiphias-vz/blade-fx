@@ -766,5 +766,16 @@ $config[SalesConstants::ORDER_READY_FOR_PICKING_HOUR] = 0;
 
 $config[ProductImageConstants::IMAGES_HOST_URL] = 'https://globus-staging-product-images.s3.eu-central-1.amazonaws.com';
 $config[StoreConstants::SAP_STORE_ID_TO_STORE_MAP] = [
-    1057 => 'BERLIN',
+    1004 => 'EIN',
+    1031 => 'KMD',
+    1042 => 'LPZ',
+    1057 => 'HAD',
+];
+
+// ----------- Stores
+$config[StoreConstants::STORE_NAMES] = [
+    'EIN' => 'Homburg-Einöd',
+    'KMD' => 'Köln',
+    'LPZ' => 'Leipzig',
+    'HAD' => 'Halle',
 ];

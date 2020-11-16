@@ -261,7 +261,7 @@ class CartController extends SprykerCartController
 
         $productConcreteIds = $productData->getAttributeMap()->getProductConcreteIds();
 
-        if (count($productConcreteIds) === 1)  {
+        if (count($productConcreteIds) === 1) {
             return $productData->getSku();
         }
 

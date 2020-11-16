@@ -7,35 +7,25 @@ sections:
 
     scheduler-clean:
         scheduler-clean:
-            command: "vendor/bin/console install:per-store:run --no-ansi vendor/bin/console scheduler:clean -vvv --no-ansi || true"
+            command: "vendor/bin/console scheduler:clean -vvv --no-ansi || true"
 
     clean-storage:
         clean-storage:
-            command: "vendor/bin/console install:per-store:run --no-ansi vendor/bin/console storage:delete -vvv --no-ansi"
+            command: "vendor/bin/console storage:delete -vvv --no-ansi"
 
         clean-search:
-            command: "vendor/bin/console install:per-store:run --no-ansi vendor/bin/console elasticsearch:index:delete -vvv --no-ansi"
-
-        clean-virtual-hosts:
-            command: "vendor/bin/console install:per-store:run --no-ansi vendor/bin/console rabbitmq:virtual-hosts:remove -vvv --no-ansi"
+            command: "vendor/bin/console elasticsearch:index:delete -vvv --no-ansi"
 
         clean-db:
-            command: "vendor/bin/console install:per-store:run --no-ansi vendor/bin/console propel:tables:drop -vvv --no-ansi"
+            command: "vendor/bin/console propel:tables:drop -vvv --no-ansi"
 
     init-storage:
         setup-search-create-sources:
-            command: "vendor/bin/console install:per-store:run --no-ansi vendor/bin/console search:setup:sources -vvv --no-ansi"
-
-        setup-virtual-hosts:
-            command: "vendor/bin/console install:per-store:run --no-ansi vendor/bin/console rabbitmq:virtual-hosts:init -vvv --no-ansi"
+            command: "vendor/bin/console search:setup:sources -vvv --no-ansi"
 
     init-storages-per-region:
         propel-copy-schema:
             command: "vendor/bin/console propel:schema:copy -vvv --no-ansi"
-
-# We use MariaDB at the moment
-#        propel-postgres-compatibility:
-#            command: "vendor/bin/console propel:pg-sql-compat -vvv --no-ansi"
 
         propel-migration-delete:
             command: "vendor/bin/console propel:migration:delete -vvv --no-ansi"
@@ -53,17 +43,17 @@ sections:
             command: "vendor/bin/console propel:migration:delete -vvv --no-ansi"
 
         init-database:
-            command: "vendor/bin/console install:per-store:run vendor/bin/console setup:init-db -vvv --no-ansi"
+            command: "vendor/bin/console setup:init-db -vvv --no-ansi"
 
     demodata:
         import:
             command: "vendor/bin/console data:import -vvv --no-ansi || true"
 
         import-mu:
-            command: "vendor/bin/console install:per-store:run vendor/bin/console data:import product-measurement-unit -vvv --no-ansi || true"
+            command: "vendor/bin/console data:import product-measurement-unit -vvv --no-ansi || true"
 
         import-pu:
-            command: "vendor/bin/console install:per-store:run vendor/bin/console data:import product-packaging-unit -vvv --no-ansi || true"
+            command: "vendor/bin/console data:import product-packaging-unit -vvv --no-ansi || true"
 
         update-product-labels:
             command: "vendor/bin/console product-label:relations:update -vvv --no-ansi"
@@ -73,4 +63,4 @@ sections:
 
     scheduler-start:
         scheduler-setup:
-            command: "vendor/bin/console install:per-store:run --no-ansi vendor/bin/console scheduler:setup -vvv --no-ansi || true"
+            command: "vendor/bin/console scheduler:setup -vvv --no-ansi || true"

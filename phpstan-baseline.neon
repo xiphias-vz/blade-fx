@@ -1,0 +1,146 @@
+parameters:
+	ignoreErrors:
+		-
+			message: "#^Strict comparison using \\=\\=\\= between array\\<string\\> and null will always evaluate to false\\.$#"
+			count: 1
+			path: src/Pyz/Client/OrderHistoryBoosting/OrderHistoryBoostingClient.php
+
+		-
+			message: "#^Negated boolean expression is always false\\.$#"
+			count: 1
+			path: src/Pyz/Client/TimeSlot/Expander/ShipmentTimeSlotsExpander.php
+
+		-
+			message: "#^PHPDoc tag @return with type Spryker\\\\Service\\\\Shipment\\\\Dependency\\\\Service\\\\ShipmentToCustomerServiceInterface is not subtype of native type Pyz\\\\Service\\\\DateTimeWithZone\\\\DateTimeWithZoneServiceInterface\\.$#"
+			count: 1
+			path: src/Pyz/Service/Shipment/ShipmentServiceFactory.php
+
+		-
+			message: "#^Call to an undefined method Spryker\\\\Service\\\\Container\\\\ContainerInterface\\:\\:path\\(\\)\\.$#"
+			count: 1
+			path: src/Pyz/Yves/CustomerReorderWidget/Controller/OrderController.php
+
+		-
+			message: "#^Call to an undefined method Spryker\\\\Yves\\\\Kernel\\\\AbstractBundleConfig\\:\\:getStoreNames\\(\\)\\.$#"
+			count: 1
+			path: src/Pyz/Yves/StoreSwitcherWidget/Widget/StoreSwitcherWidget.php
+
+		-
+			message: "#^Call to an undefined method Spryker\\\\Service\\\\Container\\\\ContainerInterface\\:\\:path\\(\\)\\.$#"
+			count: 1
+			path: src/Pyz/Yves/WishlistPage/Controller/WishlistController.php
+
+		-
+			message: "#^Return typehint of method Pyz\\\\Zed\\\\CommissioningExport\\\\Communication\\\\CommissioningExportCommunicationFactory\\:\\:createCommissioningExportResponseBuilder\\(\\) has invalid type Pyz\\\\Zed\\\\CommissioningExport\\\\Communication\\\\CommissioningExportCsvResponseBuilder\\\\CommissioningExportCsvResponseBuilderInterface\\.$#"
+			count: 2
+			path: src/Pyz/Zed/CommissioningExport/Communication/CommissioningExportCommunicationFactory.php
+
+		-
+			message: "#^Instantiated class Pyz\\\\Zed\\\\CommissioningExport\\\\Communication\\\\CommissioningExportCsvResponseBuilder\\\\CommissioningExportCsvResponseBuilder not found\\.$#"
+			count: 1
+			path: src/Pyz/Zed/CommissioningExport/Communication/CommissioningExportCommunicationFactory.php
+
+		-
+			message: "#^Method Pyz\\\\Zed\\\\CommissioningExport\\\\Communication\\\\CommissioningExportCommunicationFactory\\:\\:createCommissioningExportResponseBuilder\\(\\) should return Pyz\\\\Zed\\\\CommissioningExport\\\\Communication\\\\CommissioningExportCsvResponseBuilder\\\\CommissioningExportCsvResponseBuilderInterface but returns Pyz\\\\Zed\\\\CommissioningExport\\\\Communication\\\\CommissioningExportCsvResponseBuilder\\\\CommissioningExportCsvResponseBuilder\\.$#"
+			count: 1
+			path: src/Pyz/Zed/CommissioningExport/Communication/CommissioningExportCommunicationFactory.php
+
+		-
+			message: "#^Cannot access offset 'spy_locale\\.id_locale' on Orm\\\\Zed\\\\Locale\\\\Persistence\\\\SpyLocale\\.$#"
+			count: 1
+			path: src/Pyz/Zed/DataImport/Business/Model/Locale/Repository/LocaleRepository.php
+
+		-
+			message: "#^Cannot access offset 'spy_locale\\.locale…' on Orm\\\\Zed\\\\Locale\\\\Persistence\\\\SpyLocale\\.$#"
+			count: 1
+			path: src/Pyz/Zed/DataImport/Business/Model/Locale/Repository/LocaleRepository.php
+
+		-
+			message: "#^Call to an undefined method Orm\\\\Zed\\\\Product\\\\Persistence\\\\SpyProductAbstract\\:\\:setSapNumber\\(\\)\\.$#"
+			count: 1
+			path: src/Pyz/Zed/DataImport/Business/Model/ProductAbstract/ProductAbstractWriterStep.php
+
+		-
+			message: "#^Cannot access offset 'spy_product…' on Orm\\\\Zed\\\\Product\\\\Persistence\\\\SpyProductAttributeKey\\.$#"
+			count: 2
+			path: src/Pyz/Zed/DataImport/Business/Model/ProductAttributeKey/AddProductAttributeKeysStep.php
+
+		-
+			message: "#^Call to an undefined method Orm\\\\Zed\\\\Product\\\\Persistence\\\\SpyProduct\\:\\:setSapNumber\\(\\)\\.$#"
+			count: 1
+			path: src/Pyz/Zed/DataImport/Business/Model/ProductConcrete/ProductConcreteWriter.php
+
+		-
+			message: "#^Binary operation \"\\+\" between Orm\\\\Zed\\\\ProductLabel\\\\Persistence\\\\SpyProductLabel\\|null and 1 results in an error\\.$#"
+			count: 1
+			path: src/Pyz/Zed/DataImport/Business/Model/ProductLabel/ProductLabelWriterStep.php
+
+		-
+			message: "#^Call to an undefined method Orm\\\\Zed\\\\Product\\\\Persistence\\\\SpyProductAbstractQuery\\:\\:filterBySapNumber\\(\\)\\.$#"
+			count: 1
+			path: src/Pyz/Zed/DataImport/Business/Model/ProductPrice/ProductPriceWriterStep.php
+
+		-
+			message: "#^Call to an undefined method Orm\\\\Zed\\\\Product\\\\Persistence\\\\SpyProductQuery\\:\\:filterBySapNumber\\(\\)\\.$#"
+			count: 1
+			path: src/Pyz/Zed/DataImport/Business/Model/ProductStock/ProductStockWriterStep.php
+
+		-
+			message: "#^Call to an undefined method Orm\\\\Zed\\\\Stock\\\\Persistence\\\\SpyStockProduct\\:\\:setShelf\\(\\)\\.$#"
+			count: 1
+			path: src/Pyz/Zed/DataImport/Business/Model/ProductStock/ProductStockWriterStep.php
+
+		-
+			message: "#^PHPDoc tag @param for parameter \\$timeoutModel with type Spryker\\\\Zed\\\\Oms\\\\Business\\\\OrderStateMachine\\\\TimeoutInterface is not subtype of native type Pyz\\\\Zed\\\\Oms\\\\Business\\\\OrderStateMachine\\\\TimeoutInterface\\.$#"
+			count: 1
+			path: src/Pyz/Zed/Oms/Business/OrderStateMachine/OrderStateMachine.php
+
+		-
+			message: "#^Call to an undefined method Spryker\\\\Zed\\\\Oms\\\\Business\\\\Util\\\\TransitionLogInterface\\:\\:getAllLogs\\(\\)\\.$#"
+			count: 1
+			path: src/Pyz/Zed/Oms/Business/OrderStateMachine/OrderStateMachine.php
+
+		-
+			message: "#^Call to an undefined method Spryker\\\\Zed\\\\Oms\\\\Business\\\\OrderStateMachine\\\\TimeoutInterface\\:\\:dropOldTimeoutNeeded\\(\\)\\.$#"
+			count: 1
+			path: src/Pyz/Zed/Oms/Business/OrderStateMachine/OrderStateMachine.php
+
+		-
+			message: "#^Call to an undefined method Spryker\\\\Zed\\\\Oms\\\\Business\\\\OrderStateMachine\\\\TimeoutInterface\\:\\:getNewTimeoutEvent\\(\\)\\.$#"
+			count: 1
+			path: src/Pyz/Zed/Oms/Business/OrderStateMachine/OrderStateMachine.php
+
+		-
+			message: "#^Call to method capturePayment\\(\\) on an unknown class Pyz\\\\Zed\\\\Payone\\\\Business\\\\PayoneFacadeInterface\\.$#"
+			count: 1
+			path: src/Pyz/Zed/Payone/Communication/Plugin/Oms/Command/CancelCommandPlugin.php
+
+		-
+			message: "#^Call to method executePartialCapture\\(\\) on an unknown class Pyz\\\\Zed\\\\Payone\\\\Business\\\\PayoneFacadeInterface\\.$#"
+			count: 1
+			path: src/Pyz/Zed/Payone/Communication/Plugin/Oms/Command/PartialCaptureCommandByOrderPlugin.php
+
+		-
+			message: "#^Call to method findPayoneOrderItemStatus\\(\\) on an unknown class Pyz\\\\Zed\\\\Payone\\\\Business\\\\PayoneFacadeInterface\\.$#"
+			count: 1
+			path: src/Pyz/Zed/Payone/Communication/Plugin/Oms/Condition/PartialCaptureIsApprovedConditionPlugin.php
+
+		-
+			message: "#^PHPDoc tag @param for parameter \\$shipmentTransfer with type Generated\\\\Shared\\\\Transfer\\\\OrderTransfer is incompatible with native type Generated\\\\Shared\\\\Transfer\\\\ShipmentTransfer\\.$#"
+			count: 1
+			path: src/Pyz/Zed/TimeSlot/Business/Writer/TimeSlotCapacityReleaser.php
+
+		-
+			message: "#^Call to an undefined method Generated\\\\Zed\\\\Ide\\\\AutoCompletion\\|Spryker\\\\Shared\\\\Kernel\\\\LocatorLocatorInterface\\:\\:storeOrder\\(\\)\\.$#"
+			count: 1
+			path: src/StoreApp/Zed/Delivery/DeliveryDependencyProvider.php
+
+		-
+			message: "#^Call to an undefined method Generated\\\\Zed\\\\Ide\\\\AutoCompletion\\|Spryker\\\\Shared\\\\Kernel\\\\LocatorLocatorInterface\\:\\:permissionAccess\\(\\)\\.$#"
+			count: 1
+			path: src/StoreApp/Zed/Delivery/DeliveryDependencyProvider.php
+
+		-
+			message: "#^Call to an undefined method Generated\\\\Zed\\\\Ide\\\\AutoCompletion\\|Spryker\\\\Shared\\\\Kernel\\\\LocatorLocatorInterface\\:\\:permissionAccess\\(\\)\\.$#"
+			count: 1
+			path: src/StoreApp/Zed/Picker/PickerDependencyProvider.php

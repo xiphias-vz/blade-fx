@@ -1,0 +1,180 @@
+version: "0.1"
+
+namespace: spryker-cloud
+tag: '1.0'
+
+environment: docker_dev
+image: spryker/php:7.3-DRAFT-new-relic
+
+composer:
+    mode: --no-dev
+    autoload: ''
+
+assets:
+    mode: production
+    compression:
+        gzip:
+            level: 5
+
+regions:
+    DE:
+        services:
+            database:
+                database: globus_staging
+                username: spryker
+                password: secret
+
+        stores:
+            EIN:
+                services:
+                    broker:
+                        namespace: ein_queue
+                    key_value_store:
+                        namespace: 1
+                    search:
+                        namespace: ein_search
+                    session:
+                        namespace: 2
+            KMD:
+                services:
+                    broker:
+                        namespace: kmd_queue
+                    key_value_store:
+                        namespace: 3
+                    search:
+                        namespace: kmd_search
+                    session:
+                        namespace: 4
+            LPZ:
+                services:
+                    broker:
+                        namespace: lpz_queue
+                    key_value_store:
+                        namespace: 5
+                    search:
+                        namespace: lpz_search
+                    session:
+                        namespace: 6
+            HAD:
+                services:
+                    broker:
+                        namespace: had_queue
+                    key_value_store:
+                        namespace: 7
+                    search:
+                        namespace: had_search
+                    session:
+                        namespace: 8
+
+groups:
+    DE-1:
+        region: DE
+        applications:
+            Welcome:
+                application: static
+                endpoints:
+                    www.welcome.gl-stg.cloud.spryker.toys:
+                        entry-point: Welcome
+            Yves:
+                application: yves
+                endpoints:
+                    www.gl-stg.cloud.spryker.toys:
+                        store: EIN
+            Glue:
+                application: glue
+                endpoints:
+                    glue.gl-stg.cloud.spryker.toys:
+                        store: EIN
+            Zed:
+                application: zed
+                endpoints:
+                    backoffice.gl-stg.cloud.spryker.toys:
+                        store: EIN
+
+                    zed.ein.gl-stg.cloud.spryker.toys:
+                        store: EIN
+                        primal: true
+                    zed.kmd.gl-stg.cloud.spryker.toys:
+                        store: KMD
+                        primal: true
+                    zed.lpz.gl-stg.cloud.spryker.toys:
+                        store: LPZ
+                        primal: true
+                    zed.had.gl-stg.cloud.spryker.toys:
+                        store: HAD
+                        primal: true
+
+                    pick.ein.gl-stg.cloud.spryker.toys:
+                        store: EIN
+                        entry-point: StoreApp
+                    pick.kmd.gl-stg.cloud.spryker.toys:
+                        store: KMD
+                        entry-point: StoreApp
+                    pick.lpz.gl-stg.cloud.spryker.toys:
+                        store: LPZ
+                        entry-point: StoreApp
+                    pick.had.gl-stg.cloud.spryker.toys:
+                        store: HAD
+                        entry-point: StoreApp
+
+services:
+    database:
+        engine: mysql
+        version: mariadb-10.4
+        root:
+            username: "root"
+            password: "secret"
+        endpoints:
+            localhost:3306:
+                protocol: tcp
+    broker:
+        engine: rabbitmq
+        api:
+            username: "spryker"
+            password: "secret"
+        endpoints:
+            queue.globus-stg.cloud.spryker.toys:
+            localhost:5672:
+                protocol: tcp
+    session:
+        engine: redis
+    key_value_store:
+        engine: redis
+        endpoints:
+            localhost:16379:
+                protocol: tcp
+    search:
+        engine: elastic
+        version: 6.8
+        endpoints:
+            localhost:9200:
+                protocol: tcp
+    scheduler:
+        engine: jenkins
+        endpoints:
+            scheduler.globus-stg.cloud.spryker.toys:
+    mail_catcher:
+        engine: mailhog
+        endpoints:
+            mail.globus-stg.cloud.spryker.toys:
+
+docker:
+
+    ssl:
+        enabled: true
+
+    testing:
+        store: EIN
+
+    debug:
+        enabled: false
+        xdebug:
+            enabled: false
+
+    mount:
+        baked:
+
+        docker-sync:
+            platforms:
+                - macos
+                - windows

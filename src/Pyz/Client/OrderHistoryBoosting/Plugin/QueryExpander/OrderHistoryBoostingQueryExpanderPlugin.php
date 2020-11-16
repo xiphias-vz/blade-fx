@@ -22,6 +22,12 @@ use Spryker\Client\SearchExtension\Dependency\Plugin\QueryInterface;
  */
 class OrderHistoryBoostingQueryExpanderPlugin extends AbstractPlugin implements QueryExpanderPluginInterface
 {
+    /**
+     * @param \Spryker\Client\SearchExtension\Dependency\Plugin\QueryInterface $searchQuery
+     * @param array $requestParameters
+     *
+     * @return \Spryker\Client\SearchExtension\Dependency\Plugin\QueryInterface
+     */
     public function expandQuery(QueryInterface $searchQuery, array $requestParameters = [])
     {
         $customerTransfer = $this->getFactory()->getCustomerClient()->getCustomer();
@@ -37,6 +43,13 @@ class OrderHistoryBoostingQueryExpanderPlugin extends AbstractPlugin implements 
         return $searchQuery;
     }
 
+    /**
+     * @param \Elastica\Query $query
+     *
+     * @throws \InvalidArgumentException
+     *
+     * @return \Elastica\Query\BoolQuery
+     */
     protected function getBoolQuery(Query $query): BoolQuery
     {
         $boolQuery = $query->getQuery();
@@ -51,6 +64,12 @@ class OrderHistoryBoostingQueryExpanderPlugin extends AbstractPlugin implements 
         return $boolQuery;
     }
 
+    /**
+     * @param \Elastica\Query\BoolQuery $boolQuery
+     * @param array $skuList
+     *
+     * @return void
+     */
     protected function boostByOrderHistory(BoolQuery $boolQuery, array $skuList): void
     {
         $functionScoreQuery = new FunctionScore();
@@ -66,6 +85,11 @@ class OrderHistoryBoostingQueryExpanderPlugin extends AbstractPlugin implements 
         $boolQuery->addMust($functionScoreQuery);
     }
 
+    /**
+     * @param string $searchString
+     *
+     * @return \Elastica\Query\MultiMatch
+     */
     protected function createFulltextSearchQuery(string $searchString): MultiMatch
     {
         $matchQuery = (new MultiMatch())

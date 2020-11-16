@@ -3,9 +3,10 @@
 use Monolog\Logger;
 use Pyz\Shared\Console\ConsoleConstants;
 use Pyz\Shared\DataDog\DataDogConstants;
+use Pyz\Shared\DummyPayment\DummyPaymentConfig;
 use Pyz\Shared\MerchantSwitcherWidget\MerchantSwitcherWidgetConstants;
+use Pyz\Shared\Sales\SalesConstants;
 use Pyz\Shared\Scheduler\SchedulerConfig;
-use Pyz\Shared\TwigCache\TwigCacheConstants;
 use Spryker\Glue\Log\Plugin\GlueLoggerConfigPlugin;
 use Spryker\Shared\Acl\AclConstants;
 use Spryker\Shared\Application\ApplicationConstants;
@@ -54,10 +55,6 @@ use SprykerShop\Shared\ErrorPage\ErrorPageConstants;
 use SprykerShop\Shared\ShopApplication\ShopApplicationConstants;
 use SprykerShop\Shared\WebProfilerWidget\WebProfilerWidgetConstants;
 use Twig\Cache\FilesystemCache;
-use Pyz\Shared\DummyPayment\DummyPaymentConfig;
-use Pyz\Shared\Payone\PayoneConstants;
-use Pyz\Shared\Sales\SalesConstants;
-use SprykerEco\Zed\Payone\PayoneConfig;
 
 $ZED = APPLICATION === 'STOREAPP' ? APPLICATION : 'ZED';
 
@@ -405,4 +402,3 @@ $config[SalesConstants::PAYMENT_METHOD_STATEMACHINE_MAPPING] = [
     DummyPaymentConfig::PAYMENT_METHOD_INVOICE => 'DummyPayment01',
     DummyPaymentConfig::PAYMENT_METHOD_LOOP => 'LoopPayment01',
 ];
-

@@ -10,11 +10,9 @@ namespace Pyz\Zed\DataImport\Business\Model\BaseProduct;
 use NumberFormatter;
 use Orm\Zed\Product\Persistence\Map\SpyProductAttributeKeyTableMap;
 use Orm\Zed\Product\Persistence\SpyProductAttributeKeyQuery;
-use Pyz\Shared\Product\ProductConfig;
 use Pyz\Shared\ProductPageSearch\ProductPageSearchConstants;
 use Pyz\Zed\DataImport\Business\Exception\InvalidDataException;
 use Pyz\Zed\DataImport\DataImportConfig;
-use Spryker\Shared\Kernel\Store;
 use Spryker\Zed\DataImport\Business\Model\DataImportStep\DataImportStepInterface;
 use Spryker\Zed\DataImport\Business\Model\DataSet\DataSetInterface;
 

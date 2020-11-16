@@ -245,7 +245,7 @@ class ProductAbstractWriterStep extends PublishAwareStep implements DataImportSt
             $productImageSetEntity = $this->findOrCreateImageSet($dataSet, $localeName);
             $images = explode(';', $dataSet[ProductConfig::KEY_MAIN_IMAGE_FILE_NAME]);
             foreach ($images as $key => $image) {
-                $imageUrl = $this->dataImportConfig->getImagesHostUrl() . '/' .  $image;
+                $imageUrl = $this->dataImportConfig->getImagesHostUrl() . '/' . $image;
                 $productImageEntity = $this->findOrCreateImage($imageUrl);
                 $this->updateOrCreateImageToImageSetRelation($productImageSetEntity, $productImageEntity, $key);
             }
@@ -310,8 +310,7 @@ class ProductAbstractWriterStep extends PublishAwareStep implements DataImportSt
         SpyProductImageSet $productImageSetEntity,
         SpyProductImage $productImageEntity,
         int $sortOrder
-    )
-    {
+    ) {
         $productImageSetToProductImageEntity = SpyProductImageSetToProductImageQuery::create()
             ->filterByFkProductImageSet($productImageSetEntity->getIdProductImageSet())
             ->filterByFkProductImage($productImageEntity->getIdProductImage())
