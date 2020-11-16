@@ -14,8 +14,10 @@ use Pyz\Zed\CashierOrderExport\Persistence\CashierOrderExportRepository;
 
 class CashierOrderContentBuilder implements CashierOrderContentBuilderInterface
 {
-    protected const HEADER_MASK = '%s%s%s%s%s%s%s%s%s%s%s%s%020s%s%s%020u%s%020u%s%s%s%s%s%020s%s';
-    protected const POSITION_MASK = '%s%s%s%s%s%s%s%s%s%s%s%020s%s%s%s%s%s%020s%s%s%s%020s%s%020s%s';
+    protected const HEADER_MASK = '%s%s%s%s%s%s%s%s%s%s%s%020u%s%s%s%020u%s%020u%s%s%s%s%s%020s%s%s';
+    protected const DEFAULT_HEADER_ENDING_ERO_SETS = 7;
+    protected const POSITION_MASK = '%s%s%s%s%s%s%s%s%s%s%s%020u%s%s%s%s%s%020s%s%s%s%020s%s%020s';
+    protected const DEFAULT_POSITION_ENDING_ERO_SETS = 8;
 
     protected const HEADER_KEY_IDENTIFIER = '1070';
     protected const POSITION_KEY_IDENTIFIER = '1071';
@@ -24,6 +26,7 @@ class CashierOrderContentBuilder implements CashierOrderContentBuilderInterface
     protected const ORDER_TOTAL_KEY_IDENTIFIER = '0003';
     protected const ORDER_PAYMENT_STATE_IDENTIFIER = '0007';
     protected const ORDER_PAYMENT_TYPE_IDENTIFIER = '0004';
+    protected const ORDER_PAYMENT_SUM_IDENTIFIER = '0006';
     protected const ACCOUNT_NUMBER_IDENTIFIER = '0135';
     protected const ORDER_ITEMS_COUNT_IDENTIFIER = '0005';
     protected const ORDER_ITEM_EAN_IDENTIFIER = '0001';
@@ -39,7 +42,7 @@ class CashierOrderContentBuilder implements CashierOrderContentBuilderInterface
     protected const DEFAULT_CASH_DESK_NUMBER = '0000';
     protected const DEFAULT_BON_NUMBER = '0000';
     protected const DEFAULT_POSITIONS_NUMBER = '0000';
-    protected const DEFAULT_OPERATOR_NUMBER = '0000';
+    protected const DEFAULT_EMPTY_OPERATOR_NUMBER = '0000';
     protected const DEFAULT_ANDERUNGS_NUMBER = '02';
     protected const DEFAULT_EMPTY_NUMBER = '00000000000000000000';
 
@@ -83,34 +86,52 @@ class CashierOrderContentBuilder implements CashierOrderContentBuilderInterface
      */
     protected function getHeaderContent(OrderTransfer $orderTransfer): string
     {
-        return sprintf(
-            static::HEADER_MASK,
-            static::DEFAULT_HOUSE_NUMBER_NUMBER,
-            static::DEFAULT_COMPANY_NUMBER,
-            static::DEFAULT_KEYBOARD_NUMBER,
-            static::DEFAULT_CASH_DESK_NUMBER,
-            static::DEFAULT_BON_NUMBER,
-            static::DEFAULT_POSITIONS_NUMBER,
-            static::DEFAULT_OPERATOR_NUMBER,
-            (new DateTime())->format(static::DEFAULT_DATE_FORMAT),
-            static::HEADER_KEY_IDENTIFIER,
-            static::DEFAULT_ANDERUNGS_NUMBER,
-            static::ORDER_KEY_IDENTIFIER,
-            $orderTransfer->getIdSalesOrder() ?? static::DEFAULT_EMPTY_NUMBER,
-            static::ACCOUNT_NUMBER_IDENTIFIER,
-            static::DEFAULT_EMPTY_NUMBER,
-            static::CUSTOMER_KEY_IDENTIFIER,
-            $orderTransfer->getCustomer()->getIdCustomer() ?? static::DEFAULT_EMPTY_NUMBER,
-            static::ORDER_TOTAL_KEY_IDENTIFIER,
-            $orderTransfer->getTotals()->getGrandTotal() ?? static::DEFAULT_EMPTY_NUMBER,
-            static::ORDER_PAYMENT_STATE_IDENTIFIER,
-            static::DEFAULT_EMPTY_NUMBER,
-            static::ORDER_PAYMENT_TYPE_IDENTIFIER,
-            static::DEFAULT_EMPTY_NUMBER,
-            static::ORDER_ITEMS_COUNT_IDENTIFIER,
-            $orderTransfer->getItems()->count() ?? static::DEFAULT_EMPTY_NUMBER,
-            PHP_EOL
-        );
+         $content = sprintf(
+             static::HEADER_MASK,
+             static::DEFAULT_HOUSE_NUMBER_NUMBER,
+             static::DEFAULT_COMPANY_NUMBER,
+             static::DEFAULT_KEYBOARD_NUMBER,
+             static::DEFAULT_CASH_DESK_NUMBER,
+             static::DEFAULT_BON_NUMBER,
+             static::DEFAULT_POSITIONS_NUMBER,
+             static::DEFAULT_EMPTY_OPERATOR_NUMBER,
+             (new DateTime())->format(static::DEFAULT_DATE_FORMAT),
+             static::HEADER_KEY_IDENTIFIER,
+             static::DEFAULT_ANDERUNGS_NUMBER,
+             static::ORDER_KEY_IDENTIFIER,
+             $orderTransfer->getIdSalesOrder() ?? static::DEFAULT_EMPTY_NUMBER,
+             static::ACCOUNT_NUMBER_IDENTIFIER,
+             static::DEFAULT_EMPTY_NUMBER,
+             static::CUSTOMER_KEY_IDENTIFIER,
+             $orderTransfer->getCustomer()->getIdCustomer() ?? static::DEFAULT_EMPTY_NUMBER,
+             static::ORDER_TOTAL_KEY_IDENTIFIER,
+             $orderTransfer->getTotals()->getGrandTotal() ?? static::DEFAULT_EMPTY_NUMBER,
+             static::ORDER_PAYMENT_STATE_IDENTIFIER,
+             static::DEFAULT_EMPTY_NUMBER,
+             static::ORDER_PAYMENT_TYPE_IDENTIFIER,
+             static::DEFAULT_EMPTY_NUMBER,
+             static::ORDER_ITEMS_COUNT_IDENTIFIER,
+             $orderTransfer->getItems()->count() ?? static::DEFAULT_EMPTY_NUMBER,
+             static::ORDER_PAYMENT_SUM_IDENTIFIER,
+             static::DEFAULT_EMPTY_NUMBER
+         );
+
+        return $this->addEndingZeroSets($content, static::DEFAULT_HEADER_ENDING_ERO_SETS);
+    }
+
+    /**
+     * @param string $content
+     * @param int $quantity
+     *
+     * @return string
+     */
+    protected function addEndingZeroSets(string $content, int $quantity): string
+    {
+        for ($i = $quantity; $i !== 0; $i--) {
+            $content .= sprintf('%s%s', static::DEFAULT_EMPTY_OPERATOR_NUMBER, static::DEFAULT_EMPTY_NUMBER);
+        }
+
+        return $content . PHP_EOL;
     }
 
     /**
@@ -137,9 +158,7 @@ class CashierOrderContentBuilder implements CashierOrderContentBuilderInterface
      */
     protected function getPositionContent(OrderTransfer $orderTransfer, ItemTransfer $itemTransfer): string
     {
-        $itemName = $itemTransfer->getName() ?? static::DEFAULT_EMPTY_NUMBER;
-
-        return sprintf(
+        $content = sprintf(
             static::POSITION_MASK,
             static::DEFAULT_HOUSE_NUMBER_NUMBER,
             static::DEFAULT_COMPANY_NUMBER,
@@ -147,7 +166,7 @@ class CashierOrderContentBuilder implements CashierOrderContentBuilderInterface
             static::DEFAULT_CASH_DESK_NUMBER,
             static::DEFAULT_BON_NUMBER,
             static::DEFAULT_POSITIONS_NUMBER,
-            static::DEFAULT_OPERATOR_NUMBER,
+            static::DEFAULT_EMPTY_OPERATOR_NUMBER,
             (new DateTime())->format(static::DEFAULT_DATE_FORMAT),
             static::POSITION_KEY_IDENTIFIER,
             static::DEFAULT_ANDERUNGS_NUMBER,
@@ -156,7 +175,7 @@ class CashierOrderContentBuilder implements CashierOrderContentBuilderInterface
             static::ORDER_ITEM_EAN_IDENTIFIER,
             static::DEFAULT_ITEM_EAN_NUMBER,
             static::ORDER_ITEM_NAME_IDENTIFIER,
-            $itemName . PHP_EOL,
+            $itemTransfer->getName() ?? static::DEFAULT_EMPTY_NUMBER,
             static::ORDER_ITEM_PRICE_IDENTIFIER,
             $itemTransfer->getSumPrice() ?? static::DEFAULT_EMPTY_NUMBER,
             static::ORDER_ITEM_WRG_LINK_IDENTIFIER,
@@ -164,8 +183,9 @@ class CashierOrderContentBuilder implements CashierOrderContentBuilderInterface
             static::ORDER_ITEM_TAX_IDENTIFIER,
             $itemTransfer->getSumTaxAmount(),
             static::ORDER_ITEM_QUANTITY_IDENTIFIER,
-            $itemTransfer->getQuantity() ?? static::DEFAULT_EMPTY_NUMBER,
-            PHP_EOL
+            $itemTransfer->getQuantity() ?? static::DEFAULT_EMPTY_NUMBER
         );
+
+        return $this->addEndingZeroSets($content, static::DEFAULT_POSITION_ENDING_ERO_SETS);
     }
 }
