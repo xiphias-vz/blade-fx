@@ -7,8 +7,8 @@
 
 namespace Pyz\Zed\CashierOrderExport\Business\Writer;
 
-use Generated\Shared\Transfer\OrderTransfer;
 use Exception;
+use Generated\Shared\Transfer\OrderTransfer;
 use Pyz\Zed\CashierOrderExport\Business\Checker\CashierOrderFileCheckerInterface;
 use Pyz\Zed\CashierOrderExport\Business\Deleter\CashierOrderDeleterInterface;
 use Pyz\Zed\CashierOrderExport\Business\Resolver\CashierOrderFileNameResolverInterface;
@@ -95,6 +95,11 @@ class CashierOrderWriter implements CashierOrderWriterInterface
         }
     }
 
+    /**
+     * @param $message
+     * @param string $archiveFileName
+     * @param array $trace
+     */
     protected function logError($message, string $archiveFileName, array $trace = [])
     {
         $this->getLogger()->error(
