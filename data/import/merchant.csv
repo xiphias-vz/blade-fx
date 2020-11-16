@@ -1,5 +1,5 @@
 region_number,store,region_name,filial_number,zip_code,city,street,latitude,longitude,picking_capacity_per_slot,delivery_capacity_per_slot
-41,EIN,Germany,1004,66424,Homburg,"Neunmorgenstraße 8",52.532278,13.384491,10,
-41,KMD,Germany,1031,50858,Köln,"Max-Planck-Straße 9",52.532278,13.384491,10,
+41,KMD,Germany,1004,66424,Homburg,"Neunmorgenstraße 8",52.532278,13.384491,10,
+41,EIN,Germany,1031,50858,Köln,"Max-Planck-Straße 9",52.532278,13.384491,10,
 41,LPZ,Germany,1042,04356,Leipzig,"An der Passage 1",52.532278,13.384491,10,
 41,HAD,Germany,1057,06130,"Halle (Saale)","Dieselstraße 47",52.532278,13.384491,10,
