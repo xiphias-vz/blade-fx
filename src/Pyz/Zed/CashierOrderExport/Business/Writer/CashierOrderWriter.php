@@ -96,11 +96,13 @@ class CashierOrderWriter implements CashierOrderWriterInterface
     }
 
     /**
-     * @param $message
+     * @param string $message
      * @param string $archiveFileName
      * @param array $trace
+     *
+     * @return void
      */
-    protected function logError($message, string $archiveFileName, array $trace = [])
+    protected function logError(string $message, string $archiveFileName, array $trace = [])
     {
         $this->getLogger()->error(
             sprintf('%s%s', $message, $archiveFileName),
