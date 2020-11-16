@@ -2,7 +2,7 @@ navigation_key,node_key,parent_node_key,node_type,title.en_US,url.en_US,css_clas
 FOOTER_NAVIGATION,node_key_34,,cms_page,10115 Berlin Julie-Wolfthorn-Straße 1,,,,,,,,2
 FOOTER_NAVIGATION,node_key_35,,cms_page,Data privacy,/en/privacy,,Datenschutz,/de/datenschutz/,,,,3
 FOOTER_NAVIGATION,node_key_50,,cms_page,Imprint,/en/imprint,,Impressum,/de/impressum/,,,,4
-FOOTER_NAVIGATION_KONTAKT,node_key_161,,label,"Julie-Wolfthorn-Straße 1",,,,,,,,8
+SOCIAL_LINKS,node_key_39,,external_url,Instagram,https://www.instagram.com/spryker/,instagram,Instagram,https://www.instagram.com/spryker/?hl=de,instagram,,,
 NAVIGATION_FOOTER_ELEMENT,node_key_162,,external_url,About us,https://abholservice.globus.de/Ueber-uns/,category-4,Über uns,https://abholservice.globus.de/Ueber-uns/,category-4,,,4
 FOOTER_NAVIGATION_CATEGORIES,node_key_165,,external_url,Garden & Outdoor,/en/garden-&-outdoor,category-7,Fragen und Antworten,https://globus.zendesk.com/hc/de,category-7,,,2
 FOOTER_NAVIGATION_CATEGORIES,node_key_166,,external_url,Medicine Cabinet,/en/medicine,category-8,Abholeservice,https://abholservice.globus.de/abholservice/,category-8,,,3
