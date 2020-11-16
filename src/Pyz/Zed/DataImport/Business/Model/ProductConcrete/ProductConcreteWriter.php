@@ -35,7 +35,7 @@ class ProductConcreteWriter extends PublishAwareStep implements DataImportStepIn
     public const BULK_SIZE = 100;
 
     public const KEY_ATTRIBUTES = 'attributes';
-    public const KEY_PRODUCT_NUMBER =  ProductConfig::KEY_PRODUCT_NUMBER;
+    public const KEY_PRODUCT_NUMBER = ProductConfig::KEY_PRODUCT_NUMBER;
     public const KEY_LOCALIZED_ATTRIBUTES = 'localizedAttributes';
     public const KEY_LOCALES = 'locales';
     public const KEY_IS_ACTIVE = 'active';

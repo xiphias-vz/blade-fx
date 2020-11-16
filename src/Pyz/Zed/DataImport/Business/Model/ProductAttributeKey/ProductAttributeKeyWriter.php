@@ -18,7 +18,7 @@ use Spryker\Zed\DataImport\Business\Model\DataSet\DataSetInterface;
 class ProductAttributeKeyWriter implements DataImportStepInterface
 {
     public const KEY_SUPER_ATTRIBUTES = [
-        ProductConfig::KEY_HERKUNFTSLAND_ATTRIBUTE
+        ProductConfig::KEY_HERKUNFTSLAND_ATTRIBUTE,
     ];
 
     public const KEY_PACKAGING_UNIT = [];

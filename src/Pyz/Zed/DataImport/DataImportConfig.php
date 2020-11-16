@@ -221,7 +221,7 @@ class DataImportConfig extends SprykerDataImportConfig
      */
     public function getProductAttributeKeyDataImporterConfiguration()
     {
-        return $this->buildBaseImporterConfiguration('spryker/product_data.csv', static::IMPORT_TYPE_PRODUCT_ATTRIBUTE_KEY,SharedDataImportConfig::IMPORT_CSV_PIPE_DELIMITER);
+        return $this->buildBaseImporterConfiguration('spryker/product_data.csv', static::IMPORT_TYPE_PRODUCT_ATTRIBUTE_KEY, SharedDataImportConfig::IMPORT_CSV_PIPE_DELIMITER);
     }
 
     /**
