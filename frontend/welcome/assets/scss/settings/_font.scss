@@ -2,14 +2,17 @@
 @import url('https://fonts.googleapis.com/css2?family=Fira+Sans:wght@400;500&display=swap');
 
 @font-face {
-    font-family: Clearface-Medium;
-    src: url("../fonts/ClearfaceGothicPro-Medium~2.eot");
-    src: url("../fonts/ClearfaceGothicPro-Medium~2.eot?a3tps9#iefix") format('embedded-opentype'),
-    url("../fonts/ClearfaceGothicPro-Medium~1.ttf") format('truetype'),
-    url("../fonts/ClearfaceGothicPro-Medium.woff") format('woff'),
-    url("../fonts/ClearfaceGothicPro-Medium~3.svg") format('svg');
+    font-family: 'Clearface-Medium';
+    src: url('../fonts/ClearfaceGothicPro-Medium~2.eot');
+    src: url('../fonts/ClearfaceGothicPro-Medium~2.eot?a3tps9#iefix') format('embedded-opentype'),
+    url('../fonts/ClearfaceGothicPro-Medium~1.ttf') format('truetype'),
+    url('../fonts/ClearfaceGothicPro-Medium.woff') format('woff'),
+    url('../fonts/ClearfaceGothicPro-Medium~3.svg') format('svg');
+    font-weight: normal;
+    font-style: normal;
+    font-display: block;
 }
 
 $setting-font-family: 'Fira Sans','Montserrat', sans-serif;
-$setting-font-family-additional: 'ClearfaceGothicPro','Fira Sans','Montserrat', sans-serif;
+$setting-font-family-additional: 'Clearface-Medium','Fira Sans','Montserrat', sans-serif;
 $setting-font-size-base: 16px;
