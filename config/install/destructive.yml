@@ -55,6 +55,9 @@ sections:
         import-pu:
             command: "vendor/bin/console data:import product-packaging-unit -vvv --no-ansi || true"
 
+        sftp-based-full-import:
+            command: "vendor/bin/install -r sftp-based-full-import"
+
         update-product-labels:
             command: "vendor/bin/console product-label:relations:update -vvv --no-ansi"
 
