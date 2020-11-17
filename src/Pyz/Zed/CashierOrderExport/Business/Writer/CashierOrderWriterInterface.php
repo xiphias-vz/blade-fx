@@ -15,7 +15,7 @@ interface CashierOrderWriterInterface
      * @param string $content
      * @param \Generated\Shared\Transfer\OrderTransfer $orderTransfer
      *
-     * @return void
+     * @return \Generated\Shared\Transfer\OrderTransfer
      */
-    public function write(string $content, OrderTransfer $orderTransfer): void;
+    public function write(string $content, OrderTransfer $orderTransfer): OrderTransfer;
 }

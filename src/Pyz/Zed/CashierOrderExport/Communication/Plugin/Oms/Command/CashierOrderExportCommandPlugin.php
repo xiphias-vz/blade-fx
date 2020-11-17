@@ -37,7 +37,11 @@ class CashierOrderExportCommandPlugin extends AbstractPlugin implements CommandB
             ->getSalesFacade()
             ->getOrderByIdSalesOrder($orderEntity->getIdSalesOrder());
 
-        $this->getFacade()->exportOrders($orderTransfer);
+        $orderTransfer = $this->getFacade()->exportOrders($orderTransfer);
+
+        $this->getFactory()
+            ->getSalesFacade()
+            ->updateOrder($orderTransfer, $orderTransfer->getIdSalesOrder());
 
         return [];
     }

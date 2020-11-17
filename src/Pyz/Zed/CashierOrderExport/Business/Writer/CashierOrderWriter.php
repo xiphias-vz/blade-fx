@@ -71,10 +71,12 @@ class CashierOrderWriter implements CashierOrderWriterInterface
      * @param string $content
      * @param \Generated\Shared\Transfer\OrderTransfer $orderTransfer
      *
-     * @return void
+     * @return \Generated\Shared\Transfer\OrderTransfer
      */
-    public function write(string $content, OrderTransfer $orderTransfer): void
+    public function write(string $content, OrderTransfer $orderTransfer): OrderTransfer
     {
+        $orderTransfer->setIsCashierExportSuccess(false);
+
         $archiveFileName = $this->cashierOrderFilePathResolver->resolveCashierOrderExportArchiveFileName();
         $archiveFilePath = $this->cashierOrderFilePathResolver->resolveCashierOrderExportArchiveFilePath($archiveFileName);
         $fileName = $this->cashierOrderFilePathResolver->resolveCashierOrderExportFileName();
@@ -83,6 +85,8 @@ class CashierOrderWriter implements CashierOrderWriterInterface
 
         if ($this->cashierOrderFileChecker->isFileExist($archiveFilePath)) {
             $this->logError(static::FILE_EXIST_FAIL_MESSAGE, $archiveFileName);
+
+            return $orderTransfer;
         }
 
         try {
@@ -91,7 +95,11 @@ class CashierOrderWriter implements CashierOrderWriterInterface
             $this->cashierOrderDeleter->delete($archiveFileName);
         } catch (Exception $exception) {
             $this->logError(static::FILE_CREATE_FAIL_MESSAGE, $archiveFileName, $exception->getTrace());
+
+            return $orderTransfer;
         }
+
+        return $orderTransfer->setIsCashierExportSuccess(true);
     }
 
     /**

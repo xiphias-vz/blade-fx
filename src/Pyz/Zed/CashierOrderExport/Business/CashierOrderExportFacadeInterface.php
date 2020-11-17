@@ -19,7 +19,19 @@ interface CashierOrderExportFacadeInterface
      *
      * @param \Generated\Shared\Transfer\OrderTransfer $orderTransfer
      *
-     * @return void
+     * @return \Generated\Shared\Transfer\OrderTransfer
      */
-    public function exportOrders(OrderTransfer $orderTransfer): void;
+    public function exportOrders(OrderTransfer $orderTransfer): OrderTransfer;
+
+    /**
+     * Specification:
+     * - Finds Order by order id.
+     * - Checks for order `cashier_export_success`.
+     * - Returns true if success or false otherwise.
+     *
+     * @param int $orderId
+     *
+     * @return bool
+     */
+    public function checkIsOrderExportedToCashierSuccessfully(int $orderId): bool;
 }

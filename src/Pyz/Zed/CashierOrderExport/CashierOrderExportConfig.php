@@ -18,6 +18,11 @@ class CashierOrderExportConfig extends AbstractBundleConfig
     protected const SFTP_FILE_SYSTEM_SERVICE_PROVIDER_KEY = 'globus_sftp';
     protected const LOCAL_FILE_SYSTEM_SERVICE_PATH_KEY = 'path';
     protected const LOCAL_FILE_SYSTEM_SERVICE_ROOT_KEY = 'root';
+    protected const TAX_RATE_TO_SAP_ITEM_TAX_ID_MAP = [
+        '16.00' => '1',
+        '5.00' => '2',
+        '0' => '0',
+    ];
 
     /**
      * @return string
@@ -57,6 +62,14 @@ class CashierOrderExportConfig extends AbstractBundleConfig
     public function getDefaultRemoteCashierExportDirectoryPath(): string
     {
         return $this->get(CashierOrderExportConstants::SFTP_CASHIER_ORDER_FILES_FOLDER_KEY);
+    }
+
+    /**
+     * @return array
+     */
+    public function getTaxRateToSapItemTaxIdMap(): array
+    {
+       return static::TAX_RATE_TO_SAP_ITEM_TAX_ID_MAP;
     }
 
     /**

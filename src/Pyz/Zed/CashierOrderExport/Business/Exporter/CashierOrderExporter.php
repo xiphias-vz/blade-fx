@@ -38,12 +38,12 @@ class CashierOrderExporter implements CashierOrderExporterInterface
     /**
      * @param \Generated\Shared\Transfer\OrderTransfer $orderTransfer
      *
-     * @return void
+     * @return \Generated\Shared\Transfer\OrderTransfer
      */
-    public function exportOrders(OrderTransfer $orderTransfer): void
+    public function exportOrders(OrderTransfer $orderTransfer): OrderTransfer
     {
         $content = $this->cashierOrderContentBuilder->prepareContent($orderTransfer);
 
-        $this->cashierOrderWriter->write($content, $orderTransfer);
+        return $this->cashierOrderWriter->write($content, $orderTransfer);
     }
 }

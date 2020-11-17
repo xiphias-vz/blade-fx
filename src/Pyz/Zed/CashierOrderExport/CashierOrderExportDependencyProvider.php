@@ -24,6 +24,7 @@ class CashierOrderExportDependencyProvider extends AbstractBundleDependencyProvi
     {
         $container = parent::provideBusinessLayerDependencies($container);
         $container = $this->addFileSystemService($container);
+        $container = $this->addSalesFacade($container);
 
         return $container;
     }

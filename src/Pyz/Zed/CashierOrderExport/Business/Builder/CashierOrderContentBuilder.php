@@ -16,7 +16,7 @@ class CashierOrderContentBuilder implements CashierOrderContentBuilderInterface
 {
     protected const HEADER_MASK = '%s%s%s%s%s%s%s%s%s%s%s%020u%s%s%s%020u%s%020u%s%s%s%s%s%020s%s%s';
     protected const DEFAULT_HEADER_ENDING_ZERO_SETS = 7;
-    protected const POSITION_MASK = '%s%s%s%s%s%s%s%s%s%s%s%020u%s%s%s%s%s%020s%s%s%s%020s%s%020s';
+    protected const POSITION_MASK = '%s%s%s%s%s%s%s%s%s%s%s%020u%s%s%s%.20s%s%020s%s%s%s%020s%s%020s';
     protected const DEFAULT_POSITION_ENDING_ZERO_SETS = 8;
 
     protected const HEADER_KEY_IDENTIFIER = '1070';
@@ -179,12 +179,19 @@ class CashierOrderContentBuilder implements CashierOrderContentBuilderInterface
             static::ORDER_ITEM_WRG_LINK_IDENTIFIER,
             static::DEFAULT_ITEM_WRG_LINK_NUMBER,
             static::ORDER_ITEM_TAX_IDENTIFIER,
-            $itemTransfer->getSumTaxAmount(),
+            $this->getSapItemTaxId($itemTransfer),
             static::ORDER_ITEM_QUANTITY_IDENTIFIER,
             $itemTransfer->getQuantity() ?? static::DEFAULT_EMPTY_NUMBER
         );
 
         return $this->addEndingZeroSets($content, static::DEFAULT_POSITION_ENDING_ZERO_SETS);
+    }
+
+    protected function getSapItemTaxId(ItemTransfer $itemTransfer)
+    {
+        $taxRateToSapItemTaxIdMap = $this->cashierOrderExportConfig->getTaxRateToSapItemTaxIdMap();
+
+        return $taxRateToSapItemTaxIdMap[$itemTransfer->getTaxRate()] ?? static::DEFAULT_EMPTY_NUMBER;
     }
 
     /**

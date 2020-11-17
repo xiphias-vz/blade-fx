@@ -14,7 +14,7 @@ interface CashierOrderExporterInterface
     /**
      * @param \Generated\Shared\Transfer\OrderTransfer $orderTransfer
      *
-     * @return void
+     * @return \Generated\Shared\Transfer\OrderTransfer
      */
-    public function exportOrders(OrderTransfer $orderTransfer): void;
+    public function exportOrders(OrderTransfer $orderTransfer): OrderTransfer;
 }

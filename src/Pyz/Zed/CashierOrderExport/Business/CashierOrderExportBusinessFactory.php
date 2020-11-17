@@ -9,6 +9,8 @@ namespace Pyz\Zed\CashierOrderExport\Business;
 
 use Pyz\Zed\CashierOrderExport\Business\Builder\CashierOrderContentBuilder;
 use Pyz\Zed\CashierOrderExport\Business\Builder\CashierOrderContentBuilderInterface;
+use Pyz\Zed\CashierOrderExport\Business\Checker\CashierOrderExportStatusChecker;
+use Pyz\Zed\CashierOrderExport\Business\Checker\CashierOrderExportStatusCheckerInterface;
 use Pyz\Zed\CashierOrderExport\Business\Checker\CashierOrderFileChecker;
 use Pyz\Zed\CashierOrderExport\Business\Checker\CashierOrderFileCheckerInterface;
 use Pyz\Zed\CashierOrderExport\Business\Deleter\CashierOrderDeleter;
@@ -26,6 +28,7 @@ use Pyz\Zed\CashierOrderExport\Business\Writer\CashierOrderWriterInterface;
 use Pyz\Zed\CashierOrderExport\CashierOrderExportDependencyProvider;
 use Spryker\Service\FileSystem\FileSystemServiceInterface;
 use Spryker\Zed\Kernel\Business\AbstractBusinessFactory;
+use Spryker\Zed\Sales\Business\SalesFacadeInterface;
 
 /**
  * @method \Pyz\Zed\CashierOrderExport\CashierOrderExportConfig getConfig()
@@ -116,10 +119,26 @@ class CashierOrderExportBusinessFactory extends AbstractBusinessFactory
     }
 
     /**
+     * @return \Pyz\Zed\CashierOrderExport\Business\Checker\CashierOrderExportStatusCheckerInterface
+     */
+    public function createCashierOrderExportStatusChecker(): CashierOrderExportStatusCheckerInterface
+    {
+        return new CashierOrderExportStatusChecker($this->getSalesFacade());
+    }
+
+    /**
      * @return \Spryker\Service\FileSystem\FileSystemServiceInterface
      */
     public function getFileSystemService(): FileSystemServiceInterface
     {
         return $this->getProvidedDependency(CashierOrderExportDependencyProvider::SERVICE_FILE_SYSTEM);
+    }
+
+    /**
+     * @return \Spryker\Zed\Sales\Business\SalesFacadeInterface
+     */
+    public function getSalesFacade(): SalesFacadeInterface
+    {
+        return $this->getProvidedDependency(CashierOrderExportDependencyProvider::FACADE_SALES);
     }
 }
