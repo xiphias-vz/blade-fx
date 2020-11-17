@@ -157,16 +157,6 @@ $jobs[] = [
     'stores' => $allStores,
 ];
 
-/* Data Imports */
-$jobs[] = [
-    'name' => 'data-import-product-update',
-    'command' => '$PHP_BIN vendor/bin/console',
-    'schedule' => '0 0 * * *',
-    'enable' => false,
-    'stores' => $allStores,
-];
-
-
 $jobs[] = [
     'name' => 'data-import-full',
     'command' => 'vendor/bin/install -r sftp-based-full-import',
