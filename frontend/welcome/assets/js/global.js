@@ -10,18 +10,29 @@ class Global {
         this.regions = await this.getJson(JSON_PATH);
         this.shops = await this.getJson(JSON_PATH_SHOPS);
         this.links = await this.getJson(JSON_PATH_LINKS);
-
+        this.createSelect();
         this.mapEvents();
+    }
+    createSelect() {
+
+        alert("Creating.....");
     }
 
     mapEvents() {
         this.error.addEventListener('click', () => this.hideErrorMessage());
-        this.select.addEventListener('onchange', () => this.getWebAddress());
+        this.select.addEventListener('change', () => this.getWebAddress(this.links));
     }
 
-    getWebAddress() {
-        this.showErrorMessage();
+    getWebAddress(links) {
+        const href = window.location.href;
+        const selectValue = this.select.value;
+        const domain = href.includes('.local') ? 'Local' : 'Prod';
+        const store = Object.keys(links).find(store => domain+selectValue === store);
+
+        const storeUrlPart = Object.values(links[store]);
+        window.location.href = storeUrlPart;
     }
+
 
     async getJson(url) {
         const response = await fetch(url);

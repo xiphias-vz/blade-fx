@@ -38,12 +38,13 @@
                 </div>
 
                 <div class="form">
-                    <select class="select-store" name="Store-chooser" onchange="this.options[this.selectedIndex].value && (window.location = this.options[this.selectedIndex].value);">
-                        <option value="https://www.welcome.shop.globus.local/">Bitte Abholstation wählen</option>
-                        <option value="#">Homburg-Einöd</option>
-                        <option value="https://www.shop.globus.local/store/switch?store=KMD&referer-url=/de">Köln</option>
-                        <option value="https://www.shop.globus.local/store/switch?store=LPZ&referer-url=/de">Leipzig</option>
-                        <option value="https://www.shop.globus.local/store/switch?store=HAD&referer-url=/de">Halle</option>
+<!--                    onchange="this.options[this.selectedIndex].value && (window.location = this.options[this.selectedIndex].value);"-->
+                    <select class="select-store" name="Store-chooser">
+                        <option value="0">Bitte Abholstation wählen</option>
+                        <option value="EIN">Homburg-Einöd</option>
+                        <option value="KMD">Köln</option>
+                        <option value="LPZ">Leipzig</option>
+                        <option value="HAD">Halle</option>
                     </select>
                 </div>
             </div>
