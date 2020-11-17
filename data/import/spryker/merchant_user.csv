@@ -1,3 +1,3 @@
 first_name;last_name;username;password;locale_name;group;merchant_reference
 Picker;Spryker;picker@spryker.com;change123;de_DE;picker_group;Germany_1031_50858
-Delivery;Spryker;delivery@spryker.com;change123;en_US;delivery_group;Germany_1031_50858
+Delivery;Spryker;delivery@spryker.com;change123;de_DE;delivery_group;Germany_1031_50858
