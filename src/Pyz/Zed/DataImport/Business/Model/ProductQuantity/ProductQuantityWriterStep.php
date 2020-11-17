@@ -17,7 +17,7 @@ use Spryker\Zed\ProductQuantity\Dependency\ProductQuantityEvents;
 
 class ProductQuantityWriterStep extends PublishAwareStep implements DataImportStepInterface
 {
-    public const KEY_CART_MAX_QUANTITY = 'Warenkorb Limit';
+    public const KEY_CART_MAX_QUANTITY = 'orderlimit';
     private const DEFAULT_INTERVAL = 1;
     private const DEFAULT_MIN_QUANTITY = 1;
     private const DEFAULT_MAX_QUANTITY = 99;

@@ -6,14 +6,14 @@ git:
 env:
     global:
         - APPLICATION_ENV=devtest
-        - APPLICATION_STORE=MUELHEIM
-        - PROJECT=spryker-demo-project
+        - APPLICATION_STORE=EIN
+        - PROJECT=spryker-click-and-collect
         - VALIDATION=1
 
 matrix:
     fast_finish: true
     include:
-        - php: "7.2"
+        - php: "7.3"
           dist: trusty
 addons:
     postgresql: 9.6
@@ -23,8 +23,8 @@ addons:
             - graphviz
 
     hosts:
-        - backoffice-ccd.demo-spryker.test
-        - www.ccd-berlin.demo-spryker.test
+        - backoffice.globus.test
+        - www.globus.test
 
 cache:
     directories:
@@ -44,6 +44,7 @@ before_install:
 
 install:
     - chmod -R a+x config/Shared/ci/travis/
+    - composer self-update --1
     - composer global require hirak/prestissimo
     - composer install --optimize-autoloader --no-interaction
     - config/Shared/ci/travis/install_elasticsearch.sh
@@ -54,10 +55,10 @@ before_script:
 
     - mkdir -p shared/data/common/jenkins
     - mkdir -p shared/data/common/jenkins/jobs
-    - mkdir -p data/MULHEIM/cache/Yves/twig -m 0777
-    - mkdir -p data/MULHEIM/cache/Zed/twig -m 0777
-    - mkdir -p data/MULHEIM/logs -m 0777
-    - mkdir -p src/Orm/Propel/MUELHEIM/Schema -m 0777
+    - mkdir -p data/EIN/cache/Yves/twig -m 0777
+    - mkdir -p data/EIN/cache/Zed/twig -m 0777
+    - mkdir -p data/EIN/logs -m 0777
+    - mkdir -p src/Orm/Propel/EIN/Schema -m 0777
     - chmod -R 777 data/
     - chmod -R 660 config/Zed/dev_only_private.key
     - chmod -R 660 config/Zed/dev_only_public.key
@@ -66,7 +67,7 @@ before_script:
 
     - cp config/Shared/ci/travis/config_ci.php config/Shared/config_local.php
 
-    - vendor/bin/install MUELHEIM -r testing -x frontend -v
+    - vendor/bin/install EIN -r testing -x frontend -v
 
     - vendor/bin/console transfer:generate
     - vendor/bin/console propel:install
@@ -81,7 +82,7 @@ script:
 
     - vendor/bin/console propel:schema:validate-xml-names
     - vendor/bin/console transfer:validate
-    - vendor/bin/console code:sniff:style
+    - vendor/bin/console code:sniff:style src
 
     - timeout 45m bash -c "vendor/bin/phantomjs --webdriver=4444 --disk-cache=true --load-images=false" &
     - vendor/bin/codecept run -x Presentation

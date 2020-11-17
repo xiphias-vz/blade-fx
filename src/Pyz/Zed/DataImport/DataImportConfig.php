@@ -11,7 +11,9 @@ use Generated\Shared\Transfer\DataImporterConfigurationTransfer;
 use Pyz\Shared\DataImport\DataImportConfig as SharedDataImportConfig;
 use Pyz\Shared\DataImport\DataImportConstants;
 use Pyz\Shared\ProductDetailPage\ProductDetailPageConstants;
+use Pyz\Shared\ProductImage\ProductImageConstants;
 use Pyz\Shared\ProductPageSearch\ProductPageSearchConstants;
+use Pyz\Shared\Store\StoreConstants;
 use Spryker\Zed\DataImport\DataImportConfig as SprykerDataImportConfig;
 
 /**
@@ -25,6 +27,7 @@ class DataImportConfig extends SprykerDataImportConfig
     public const IMPORT_TYPE_NAVIGATION = 'navigation';
     public const IMPORT_TYPE_NAVIGATION_NODE = 'navigation-node';
     public const IMPORT_TYPE_PRODUCT = 'product';
+    public const IMPORT_TYPE_PRODUCT_PRICE = 'product-price';
     public const IMPORT_TYPE_VITAMIN_ATTRIBUTE = 'vitamin-attribute';
     public const IMPORT_TYPE_VITAMIN_DATA = 'vitamin-data';
     public const IMPORT_TYPE_PRODUCT_CATEGORY = 'product-category';
@@ -66,7 +69,23 @@ class DataImportConfig extends SprykerDataImportConfig
      */
     public function getProductDataImporterConfiguration()
     {
-        return $this->buildBaseImporterConfiguration('spryker/product_data.csv', static::IMPORT_TYPE_PRODUCT, SharedDataImportConfig::IMPORT_CSV_BASE_DELIMITER);
+        return $this->buildBaseImporterConfiguration('spryker/product_data.csv', static::IMPORT_TYPE_PRODUCT, SharedDataImportConfig::IMPORT_CSV_PIPE_DELIMITER);
+    }
+
+    /**
+     * @return \Generated\Shared\Transfer\DataImporterConfigurationTransfer
+     */
+    public function getProductPriceDataImporterConfiguration()
+    {
+        return $this->buildBaseImporterConfiguration('spryker/product_price.csv', static::IMPORT_TYPE_PRODUCT_PRICE, SharedDataImportConfig::IMPORT_CSV_DELIMITER);
+    }
+
+    /**
+     * @return \Generated\Shared\Transfer\DataImporterConfigurationTransfer
+     */
+    public function getProductStockDataImporterConfiguration()
+    {
+        return $this->buildBaseImporterConfiguration('spryker/product_stock.csv', static::IMPORT_TYPE_PRODUCT_STOCK, SharedDataImportConfig::IMPORT_CSV_DELIMITER);
     }
 
     /**
@@ -202,7 +221,7 @@ class DataImportConfig extends SprykerDataImportConfig
      */
     public function getProductAttributeKeyDataImporterConfiguration()
     {
-        return $this->buildBaseImporterConfiguration('spryker/product_data.csv', static::IMPORT_TYPE_PRODUCT_ATTRIBUTE_KEY,SharedDataImportConfig::IMPORT_CSV_BASE_DELIMITER);
+        return $this->buildBaseImporterConfiguration('spryker/product_data.csv', static::IMPORT_TYPE_PRODUCT_ATTRIBUTE_KEY, SharedDataImportConfig::IMPORT_CSV_PIPE_DELIMITER);
     }
 
     /**
@@ -333,5 +352,21 @@ class DataImportConfig extends SprykerDataImportConfig
     public function getMerchantUserImporterConfiguration(): DataImporterConfigurationTransfer
     {
         return $this->buildBaseImporterConfiguration('spryker/merchant_user.csv', static::IMPORT_TYPE_MERCHANT_USER);
+    }
+
+    /**
+     * @return array
+     */
+    public function getSapStoreIdToStoreMap(): array
+    {
+        return $this->get(StoreConstants::SAP_STORE_ID_TO_STORE_MAP, []);
+    }
+
+    /**
+     * @return string
+     */
+    public function getImagesHostUrl(): string
+    {
+        return $this->get(ProductImageConstants::IMAGES_HOST_URL, '');
     }
 }
