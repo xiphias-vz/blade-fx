@@ -19,7 +19,6 @@
 } %}
 
 {% set addAjaxUrl = path("cart/add-ajax", { "productAbstractId": data.product.id_product_abstract ?? data.product.idProductAbstract }) %}
-{#  {% set addAjaxUrlToPdp = path(data.product.name"/"data.product "cart/add-ajax", { "productAbstractId": data.product.id_product_abstract ?? data.product.idProductAbstract }) %} #}
 
 {%- block extraClass %}{% endblock -%}
 
