@@ -2,6 +2,15 @@ $setting-color-yellow: #ffbf1c;
 $setting-color-yellow-alpha-1: rgba($setting-color-yellow, 0.6);
 $setting-color-yellow-alpha-2: rgba($setting-color-yellow, 0.3);
 
+$setting-color-globus-lightOrange: #ea8901;
+$setting-color-globus-darkOrange: #ce6200;
+$setting-color-globus-lightGreen: #b9dcc3;
+$setting-color-globus-darkGreen: #007528;
+$setting-color-globus-black: #333333;
+$setting-color-globus-darkGray: #7c7c7c;
+$setting-color-globus-lightGray: #f7f7f7;
+$setting-color-globus-white: #ffffff;
+
 $setting-color-blue: #5e3dff;
 $setting-color-blue-alpha-1: rgba($setting-color-blue, 0.1);
 $setting-color-blue-alpha-2: rgba($setting-color-blue, 0.5);
@@ -36,15 +45,15 @@ $setting-color-black: #111;
 $setting-color-brown: #d55400;
 
 // Main colors
-$setting-color-main: #00afb4;
-$setting-color-alt: #ff4859;
+$setting-color-main: $setting-color-globus-lightOrange;
+$setting-color-alt: $setting-color-globus-lightGreen;
 
 // Typography
 $setting-color-text: $setting-color-black;
 $setting-color-text-alpha-1: rgba($setting-color-text, 0.2);
 $setting-color-text-alpha-2: rgba($setting-color-text, 0.5);
 
-$setting-color-link: $setting-color-blue-midi;
+$setting-color-link: $setting-color-globus-darkOrange;
 
 // Form Elements
 $setting-color-input-border: $setting-color-gray-9;
