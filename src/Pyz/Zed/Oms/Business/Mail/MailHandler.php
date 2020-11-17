@@ -8,7 +8,6 @@
 namespace Pyz\Zed\Oms\Business\Mail;
 
 use ArrayObject;
-use Generated\Shared\Transfer\MailAttachmentTransfer;
 use Generated\Shared\Transfer\MailTransfer;
 use Generated\Shared\Transfer\OrderTransfer;
 use Orm\Zed\Sales\Persistence\SpySalesOrder;

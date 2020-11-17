@@ -18,7 +18,7 @@ use Spryker\Zed\ProductOption\Dependency\ProductOptionEvents;
 
 class ProductDepositOptionStep extends PublishAwareStep implements DataImportStepInterface
 {
-    private const KEY_DEPOSIT = 'Anzahl Pfand';
+    private const KEY_DEPOSIT = 'pfand_1_count';
 
     /**
      * @var int[]

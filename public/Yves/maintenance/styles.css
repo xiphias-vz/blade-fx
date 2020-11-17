@@ -64,27 +64,13 @@ p {
 
 .header {
     position: relative;
-    background: #344384;
     min-height: 5.5rem;
-    border-top: 2.5rem solid #00005f;
-}
-
-.logo {
-    position: absolute;
-    top: -2.75rem;
-    left: 50%;
-    margin-left: -2.8125rem;
-    height: 6.75rem;
-    width: 5.625rem;
-    overflow: hidden;
 }
 
 .logo__image {
-    position: absolute;
-    left: 0;
-    bottom: 0;
-    width: 100%;
-    max-height: inherit;
+    display: inline-block;
+    vertical-align: top;
+    width: 14.5rem;
 }
 
 .content {

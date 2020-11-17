@@ -26,6 +26,7 @@
 
     <transfer name="Item">
         <property name="productNumber" type="string"/>
+        <property name="pickZone" type="string"/>
     </transfer>
 
     <transfer name="ProductConcrete">

@@ -6,12 +6,14 @@
           package="src.Orm.Zed.CategoryStorage.Persistence">
 
     <table name="spy_category_tree_storage">
+        <column name="data" type="CLOB"/>
         <behavior name="synchronization">
             <parameter name="queue_pool" value="synchronizationPool"/>
         </behavior>
     </table>
 
     <table name="spy_category_node_storage">
+        <column name="data" type="CLOB"/>
         <behavior name="synchronization">
             <parameter name="queue_pool" value="synchronizationPool"/>
         </behavior>
