@@ -657,7 +657,7 @@ $config[TimeSlotConstants::SHIPMENT_TIME_SLOTS] = [
 
 $config[TimeSlotConstants::SAME_DAY_SHIPMENT_TIME_SLOTS] = [
     ShipmentConfig::SHIPMENT_METHOD_CLICK_AND_COLLECT => [
-        'KMD' => [
+        'Germany_1004_66424' => [
             '09:00' => [
                 '12:00-14:00',
                 '14:00-16:00',
@@ -669,7 +669,7 @@ $config[TimeSlotConstants::SAME_DAY_SHIPMENT_TIME_SLOTS] = [
         ]
     ],
     ShipmentConfig::SHIPMENT_METHOD_DELIVERY => [
-        'KMD' => [
+        'Germany_1004_66424' => [
             '09:00' => [
                 '12:00-14:00',
                 '14:00-16:00',

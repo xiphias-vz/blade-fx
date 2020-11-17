@@ -20,7 +20,6 @@ use Pyz\Service\TimeSlot\TimeSlotServiceInterface;
 use Pyz\Shared\Shipment\ShipmentConfig;
 use Pyz\Shared\TimeSlot\TimeSlotConfig as SharedTimeSlotConfig;
 use Spryker\Client\Quote\QuoteClientInterface;
-use Spryker\Shared\Kernel\Store;
 
 class ShipmentTimeSlotsExpander implements ShipmentSlotsExpanderInterface
 {
@@ -56,7 +55,7 @@ class ShipmentTimeSlotsExpander implements ShipmentSlotsExpanderInterface
     protected $timeSlotStorageClient;
 
     /**
-     * @var \Pyz\Client\TimeSlotStorage\TimeSlotStorageClientInterface
+     * @var array
      */
     protected $sameDayshipmentTimeSlots;
 
@@ -173,7 +172,7 @@ class ShipmentTimeSlotsExpander implements ShipmentSlotsExpanderInterface
             $timeSlotTemplate = array_slice($timeSlotTemplate, 3);
         }
 
-        if ($this->isSameDayShipmentAllowed($shipmentMethodTransfer)) {
+        if ($this->isSameDayShipmentAllowed($shipmentMethodTransfer, $merchantTransfer)) {
             $shipmentSlots = $this->buildSameDayTimeSlotForShipment(
                 $shipmentMethodTransfer,
                 $merchantTransfer,
@@ -209,11 +208,9 @@ class ShipmentTimeSlotsExpander implements ShipmentSlotsExpanderInterface
      *
      * @return bool
      */
-    protected function isSameDayShipmentAllowed(ShipmentMethodTransfer $shipmentMethodTransfer): bool
+    protected function isSameDayShipmentAllowed(ShipmentMethodTransfer $shipmentMethodTransfer, MerchantTransfer $merchantTransfer): bool
     {
-        $currentStoreName = Store::getInstance()->getStoreName();
-
-        return isset($this->sameDayshipmentTimeSlots[$shipmentMethodTransfer->getShipmentMethodKey()][$currentStoreName]);
+        return isset($this->sameDayshipmentTimeSlots[$shipmentMethodTransfer->getShipmentMethodKey()][$merchantTransfer->getMerchantReference()]);
     }
 
     /**
@@ -228,7 +225,7 @@ class ShipmentTimeSlotsExpander implements ShipmentSlotsExpanderInterface
         MerchantTransfer $merchantTransfer,
         \DateTime $currentDateTime
     ) {
-        $sameDaytimeSlotTemplate = $this->getSameDayTimeSlotTemplateByShipmentMethod($shipmentMethodTransfer);
+        $sameDaytimeSlotTemplate = $this->getSameDayTimeSlotTemplateByShipmentMethod($shipmentMethodTransfer, $merchantTransfer);
         $currentDate = $currentDateTime->format(static::DATE_FORMAT);
         $availableTimeSlots = $this->filterTimeSlotTemplateAgainstCapacity(
             $shipmentMethodTransfer,
@@ -312,16 +309,17 @@ class ShipmentTimeSlotsExpander implements ShipmentSlotsExpanderInterface
 
     /**
      * @param \Generated\Shared\Transfer\ShipmentMethodTransfer $shipmentMethodTransfer
-     *
-     * @throws \Pyz\Client\TimeSlot\Exception\TimeSlotKeyNotFound
+     * @param \Generated\Shared\Transfer\MerchantTransfer $merchantTransfer
      *
      * @return array
      */
-    protected function getSameDayTimeSlotTemplateByShipmentMethod(ShipmentMethodTransfer $shipmentMethodTransfer): array
-    {
+    protected function getSameDayTimeSlotTemplateByShipmentMethod(
+        ShipmentMethodTransfer $shipmentMethodTransfer,
+        MerchantTransfer $merchantTransfer
+    ): array {
         $shipmentMethodKey = $shipmentMethodTransfer->getShipmentMethodKey();
 
-        $cutOffToShipmentTimeSlotsMap = $this->sameDayshipmentTimeSlots[$shipmentMethodKey][Store::getInstance()->getStoreName()];
+        $cutOffToShipmentTimeSlotsMap = $this->sameDayshipmentTimeSlots[$shipmentMethodKey][$merchantTransfer->getMerchantReference()];
 
         $shipmentTimeSlots = [];
         foreach ($cutOffToShipmentTimeSlotsMap as $cutOff => $shipmentTimeSlotsMap) {
