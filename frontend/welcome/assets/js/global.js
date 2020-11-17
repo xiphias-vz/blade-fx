@@ -5,15 +5,12 @@ class Global {
         this.button = document.getElementsByClassName('js-submit-button')[0];
         this.error = document.getElementsByClassName('js-error')[0];
         this.regions = await this.getJson(JSON_PATH);
-        // this.limit = this.maxLimit();
 
         this.mapEvents();
     }
 
     mapEvents() {
         this.error.addEventListener('click', () => this.hideErrorMessage());
-        // this.button.addEventListener('click', () => this.validateZip(this.regions));
-        // this.input.addEventListener('input', () => this.validateValue());
     }
 
     async getJson(url) {
@@ -53,10 +50,6 @@ class Global {
     showErrorMessage() {
         this.error.classList.remove('is-hidden');
     }
-
-    // maxLimit() {
-    //      return +this.input.getAttribute('maxlength');
-    // }
 }
 
 document.addEventListener("DOMContentLoaded", new Global().init());
