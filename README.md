@@ -26,7 +26,6 @@ git clone git@github.com:globussbwarenhaus/spryker-click-and-collect.git ./
 ```
 ```bash
 git submodule update --init --force docker
-echo "127.0.0.1 www.welcome.ccd.demo-spryker.local www.berlin.ccd.demo-spryker.local www.hamburg.ccd.demo-spryker.local backoffice.ccd.demo-spryker.local zed.berlin.ccd.demo-spryker.local zed.hamburg.ccd.demo-spryker.local filial-app.berlin.ccd.demo-spryker.local filial-app.hamburg.ccd.demo-spryker.local" | sudo tee -a /etc/hosts
 ```
 
 ### Developer environment
@@ -36,13 +35,15 @@ echo "127.0.0.1 www.welcome.ccd.demo-spryker.local www.berlin.ccd.demo-spryker.l
 docker/sdk boot deploy.dev.yml
 docker/sdk up
 ```
+Add hosts as suggested by docker/sdk bootstrap command
+
 Install SSL certificate: https://documentation.spryker.com/docs/self-signed-ssl-certificate-setup
 
 Hosts:
-- https://www.welcome.ccd.demo-spryker.local
-- https://www.berlin.ccd.demo-spryker.local
-- https://backoffice.ccd.demo-spryker.local
-- https://filial-app.berlin.ccd.demo-spryker.local
+- https://www.welcome.shop.globus.local
+- https://www.shop.globus.local
+- https://backoffice.shop.globus.local
+- https://filial-app.ein.shop.globus.local
 - etc.
 
 #### II. Git checkout

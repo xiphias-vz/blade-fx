@@ -96,29 +96,23 @@ sections:
         store-app-build-frontend:
             command: "npm run storeapp"
 
-    scheduler-stop:
-        scheduler-clean:
-            command: "vendor/bin/console install:per-store:run vendor/bin/console scheduler:clean"
+    scheduler-suspend:
+        excluded: true
+        jenkins-suspend:
+            command: "vendor/bin/console scheduler:suspend"
+
+    scheduler-clean:
+        excluded: true
+        jenkins-clean:
+            command: "vendor/bin/console scheduler:clean"
 
     clean-storage:
-        clean-storage:
-            command: "vendor/bin/console install:per-store:run vendor/bin/console storage:delete"
-
-        clean-search:
-            command: "vendor/bin/console install:per-store:run vendor/bin/console elasticsearch:index:delete"
-
-        clean-virtual-hosts:
-            command: "vendor/bin/console install:per-store:run vendor/bin/console rabbitmq:virtual-hosts:remove"
-
         clean-db:
-            command: "vendor/bin/console install:per-store:run vendor/bin/console propel:tables:drop"
+            command: "vendor/bin/console propel:tables:drop"
 
-    init-storage:
+    init-storages-per-store:
         setup-search-create-sources:
-            command: "vendor/bin/console install:per-store:run vendor/bin/console search:setup:sources"
-
-        setup-virtual-hosts:
-            command: "vendor/bin/console install:per-store:run vendor/bin/console rabbitmq:virtual-hosts:init"
+            command: "vendor/bin/console search:setup:sources"
 
     init-storages-per-region:
         propel-copy-schema:
@@ -143,17 +137,17 @@ sections:
             command: "vendor/bin/console propel:migration:delete"
 
         init-database:
-            command: "vendor/bin/console install:per-store:run vendor/bin/console setup:init-db"
+            command: "vendor/bin/console setup:init-db"
 
     demodata:
         import:
             command: "vendor/bin/console data:import"
 
         import-mu:
-            command: "vendor/bin/console install:per-store:run vendor/bin/console data:import product-measurement-unit"
+            command: "vendor/bin/console data:import product-measurement-unit"
 
         import-pu:
-            command: "vendor/bin/console install:per-store:run vendor/bin/console data:import product-packaging-unit"
+            command: "vendor/bin/console data:import product-packaging-unit"
 
         update-product-labels:
             command: "vendor/bin/console product-label:relations:update"
@@ -161,6 +155,6 @@ sections:
         check-product-validity:
             command: "vendor/bin/console product:check-validity"
 
-    scheduler-start:
+    scheduler-setup:
         scheduler-setup:
-            command: "vendor/bin/console install:per-store:run vendor/bin/console scheduler:setup"
+            command: "vendor/bin/console scheduler:setup"

@@ -13,6 +13,17 @@ define('PROJECT_NAMESPACES', [
 ]);
 defined('APPLICATION_ROOT_DIR') || define('APPLICATION_ROOT_DIR', dirname(__DIR__, 2));
 
+/**
+ * Store dynamic load
+ */
+$stores = require(APPLICATION_ROOT_DIR . '/config/Shared/stores.php');
+$allStores = array_keys($stores);
+$currentStore = $_COOKIE['current_store'] ?? null;
+
+if ($currentStore && in_array($currentStore, $allStores)) {
+    define('APPLICATION_STORE', $currentStore);
+}
+
 require_once APPLICATION_ROOT_DIR . '/vendor/autoload.php';
 
 if (extension_loaded('newrelic')) {
