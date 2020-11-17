@@ -7,7 +7,7 @@
 
 {% define data = {
     showNavigation: true,
-    merchant: app['merchant_name']
+    merchant: "KundenService "~app['merchant_name']
 } %}
 
 {% block body %}
@@ -16,6 +16,7 @@
             <div class="{{ config.name }}__top">
                 <div class="{{ config.name }}__content">
                     <div class="grid grid--justify grid--expand">
+
                         {% block navigation %}
 
                             <div class="col col--sm-12 col--lg-9">
@@ -26,16 +27,13 @@
                                         items: [
                                             {
                                                 title: data.merchant,
-                                                isShow: data.showNavigation,
                                                 templates: [
                                                     {
                                                         template: 'navigation-footer',
-                                                        menu: 'city',
+                                                        menu: '',
                                                     },
                                                 ],
                                             },
-
-
                                             {
                                                 title: 'footer.categories',
                                                 templates: [

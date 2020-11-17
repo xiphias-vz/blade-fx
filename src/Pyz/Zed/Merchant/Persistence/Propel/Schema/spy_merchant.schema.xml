@@ -11,6 +11,8 @@
         <column name="zip_code" required="false" size="255" type="VARCHAR"/>
         <column name="city" required="false" size="255" type="VARCHAR"/>
         <column name="street" required="false" size="255" type="VARCHAR"/>
+        <column name="phoneNumber" required="false" size="255" type="VARCHAR"/>
+        <column name="open_date_time" required="false" size="255" type="VARCHAR"/>
         <column name="latitude" required="false" type="DECIMAL" size="9" scale="6"/>
         <column name="longitude" required="false" type="DECIMAL" size="9" scale="6"/>
         <column name="picking_capacity_per_slot" required="false" default="0" type="INTEGER"/>
