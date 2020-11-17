@@ -6,7 +6,7 @@
     collectNumber: '',
     requestedDeliveryDate: '',
     deliveryMethodKey: '',
-    orders: required
+    orderReference:''
 } %}
 
 {%- block class -%}{{ parent() }} page-layout-main--success-page{%- endblock -%}
@@ -31,7 +31,7 @@
 
 
             <p style="font-weight:bold">Wie geht es weiter?</p>
-            Ihre Bestellbestätigung <strong> EIN-000000978908 </strong> ist bereits auf dem Weg in Ihr Email-Postfach - prüfen Sie also unbedingt auch Ihren Spam Ordner.<br>
+            Ihre Bestellbestätigung <strong> {{ data.orderReference }}</strong> ist bereits auf dem Weg in Ihr Email-Postfach - prüfen Sie also unbedingt auch Ihren Spam Ordner.<br>
             Ihren <strong>Abholschein</strong> erhalten Sie direkt am <strong>Abholtag per Mail</strong>, sobald wir Ihre Bestellung fertig gepackt haben.
             Darin finden Sie außerdem den <strong> detaillierten Lieferstatus </strong> aller bestellten Artikel
 
