@@ -8,6 +8,7 @@
 namespace Pyz\Zed\CashierOrderExport;
 
 use Pyz\Shared\CashierOrderExport\CashierOrderExportConstants;
+use Pyz\Shared\Store\StoreConstants;
 use Spryker\Shared\FileSystem\FileSystemConstants;
 use Spryker\Zed\Kernel\AbstractBundleConfig;
 
@@ -56,5 +57,13 @@ class CashierOrderExportConfig extends AbstractBundleConfig
     public function getDefaultRemoteCashierExportDirectoryPath(): string
     {
         return $this->get(CashierOrderExportConstants::SFTP_CASHIER_ORDER_FILES_FOLDER_KEY);
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getSapStoreIdToStoreMap()
+    {
+        return $this->get(StoreConstants::SAP_STORE_ID_TO_STORE_MAP);
     }
 }

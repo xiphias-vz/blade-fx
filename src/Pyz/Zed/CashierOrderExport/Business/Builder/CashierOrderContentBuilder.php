@@ -10,14 +10,14 @@ namespace Pyz\Zed\CashierOrderExport\Business\Builder;
 use DateTime;
 use Generated\Shared\Transfer\ItemTransfer;
 use Generated\Shared\Transfer\OrderTransfer;
-use Pyz\Zed\CashierOrderExport\Persistence\CashierOrderExportRepository;
+use Pyz\Zed\CashierOrderExport\CashierOrderExportConfig;
 
 class CashierOrderContentBuilder implements CashierOrderContentBuilderInterface
 {
     protected const HEADER_MASK = '%s%s%s%s%s%s%s%s%s%s%s%020u%s%s%s%020u%s%020u%s%s%s%s%s%020s%s%s';
-    protected const DEFAULT_HEADER_ENDING_ERO_SETS = 7;
+    protected const DEFAULT_HEADER_ENDING_ZERO_SETS = 7;
     protected const POSITION_MASK = '%s%s%s%s%s%s%s%s%s%s%s%020u%s%s%s%s%s%020s%s%s%s%020s%s%020s';
-    protected const DEFAULT_POSITION_ENDING_ERO_SETS = 8;
+    protected const DEFAULT_POSITION_ENDING_ZERO_SETS = 8;
 
     protected const HEADER_KEY_IDENTIFIER = '1070';
     protected const POSITION_KEY_IDENTIFIER = '1071';
@@ -47,23 +47,21 @@ class CashierOrderContentBuilder implements CashierOrderContentBuilderInterface
     protected const DEFAULT_EMPTY_NUMBER = '00000000000000000000';
 
     // @TODO EXAMPLE switch this value after it will be provided
-    protected const DEFAULT_HOUSE_NUMBER_NUMBER = '1607';
-    // @TODO EXAMPLE switch this value after it will be provided
     protected const DEFAULT_ITEM_WRG_LINK_NUMBER = '00000000000000000624';
     // @TODO EXAMPLE switch this value after it will be provided
     protected const DEFAULT_ITEM_EAN_NUMBER = '00000000000000000624';
 
     /**
-     * @var \Pyz\Zed\CashierOrderExport\Persistence\CashierOrderExportRepository
+     * @var \Pyz\Zed\CashierOrderExport\CashierOrderExportConfig
      */
-    protected $cashierOrderExportRepository;
+    protected $cashierOrderExportConfig;
 
     /**
-     * @param \Pyz\Zed\CashierOrderExport\Persistence\CashierOrderExportRepository $cashierOrderExportRepository
+     * @param \Pyz\Zed\CashierOrderExport\CashierOrderExportConfig $cashierOrderExportConfig
      */
-    public function __construct(CashierOrderExportRepository $cashierOrderExportRepository)
+    public function __construct(CashierOrderExportConfig $cashierOrderExportConfig)
     {
-        $this->cashierOrderExportRepository = $cashierOrderExportRepository;
+        $this->cashierOrderExportConfig = $cashierOrderExportConfig;
     }
 
     /**
@@ -88,7 +86,7 @@ class CashierOrderContentBuilder implements CashierOrderContentBuilderInterface
     {
          $content = sprintf(
              static::HEADER_MASK,
-             static::DEFAULT_HOUSE_NUMBER_NUMBER,
+             $this->getSapStoreId($orderTransfer->getStore()),
              static::DEFAULT_COMPANY_NUMBER,
              static::DEFAULT_KEYBOARD_NUMBER,
              static::DEFAULT_CASH_DESK_NUMBER,
@@ -116,7 +114,7 @@ class CashierOrderContentBuilder implements CashierOrderContentBuilderInterface
              static::DEFAULT_EMPTY_NUMBER
          );
 
-        return $this->addEndingZeroSets($content, static::DEFAULT_HEADER_ENDING_ERO_SETS);
+        return $this->addEndingZeroSets($content, static::DEFAULT_HEADER_ENDING_ZERO_SETS);
     }
 
     /**
@@ -160,7 +158,7 @@ class CashierOrderContentBuilder implements CashierOrderContentBuilderInterface
     {
         $content = sprintf(
             static::POSITION_MASK,
-            static::DEFAULT_HOUSE_NUMBER_NUMBER,
+            $this->getSapStoreId($orderTransfer->getStore()),
             static::DEFAULT_COMPANY_NUMBER,
             static::DEFAULT_KEYBOARD_NUMBER,
             static::DEFAULT_CASH_DESK_NUMBER,
@@ -186,6 +184,18 @@ class CashierOrderContentBuilder implements CashierOrderContentBuilderInterface
             $itemTransfer->getQuantity() ?? static::DEFAULT_EMPTY_NUMBER
         );
 
-        return $this->addEndingZeroSets($content, static::DEFAULT_POSITION_ENDING_ERO_SETS);
+        return $this->addEndingZeroSets($content, static::DEFAULT_POSITION_ENDING_ZERO_SETS);
+    }
+
+    /**
+     * @param string $store
+     *
+     * @return int
+     */
+    protected function getSapStoreId(string $store): int
+    {
+        $sapStoreIdToStoreMap = $this->cashierOrderExportConfig->getSapStoreIdToStoreMap();
+
+        return array_search($store, $sapStoreIdToStoreMap);
     }
 }

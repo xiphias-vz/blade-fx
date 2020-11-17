@@ -49,7 +49,7 @@ class CashierOrderExportBusinessFactory extends AbstractBusinessFactory
      */
     public function createCashierOrderContentBuilder(): CashierOrderContentBuilderInterface
     {
-        return new CashierOrderContentBuilder($this->getRepository());
+        return new CashierOrderContentBuilder($this->getConfig());
     }
 
     /**

@@ -5,7 +5,7 @@
 
     <transfer name="FlysystemConfigSftp">
         <property name="host" type="string"/>
-        <property name="port" type='int'/>
+        <property name="port" type="int"/>
         <property name="username" type="string"/>
         <property name="password" type="string"/>
         <property name="root" type="string"/>
