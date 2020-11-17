@@ -1,0 +1,10 @@
+{
+  "StagingEIN": {"StagingEIN": "https://www.shop.globus.local/store/switch?store=EIN&referer-url=/de"},
+  "StagingKMD": {"StagingKMD": "https://www.shop.globus.local/store/switch?store=KMD&referer-url=/de"},
+  "StagingLPZ": {"StagingLPZ": "https://www.shop.globus.local/store/switch?store=LPZ&referer-url=/de"},
+  "StagingHAD": {"StagingHAD": "https://www.shop.globus.local/store/switch?store=HAD&referer-url=/de"},
+  "ProdEIN": {"ProdEIN": "https://www.gl-stg.cloud.spryker.toys/store/switch?store=EIN&referer-url=/"},
+  "ProdKMD": {"ProdKMD": "https://www.gl-stg.cloud.spryker.toys/store/switch?store=KMD&referer-url=/"},
+  "ProdLPZ": {"ProdLPZ": "https://www.gl-stg.cloud.spryker.toys/store/switch?store=LPZ&referer-url=/"},
+  "ProdHAD": {"ProdHAD": "https://www.gl-stg.cloud.spryker.toys/store/switch?store=HAD&referer-url=/"}
+}

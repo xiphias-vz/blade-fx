@@ -1,0 +1,10 @@
+{
+  "StagingEIN": {"StagingEIN": "Homburg-Einöd"},
+  "StagingKMD": {"StagingKMD": "Köln"},
+  "StagingLPZ": {"StagingLPZ": "Leipzig"},
+  "StagingHAD": {"StagingHAD": "Halle"},
+  "ProdEIN": {"ProdEIN": "Homburg-Einöd"},
+  "ProdKMD": {"ProdKMD": "Köln"},
+  "ProdLPZ": {"ProdLPZ": "Leipzig"},
+  "ProdHAD": {"ProdHAD": "Halle"}
+}
