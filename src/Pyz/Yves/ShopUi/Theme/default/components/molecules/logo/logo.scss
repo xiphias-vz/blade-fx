@@ -18,13 +18,19 @@
         }
 
         &--header {
-            width: rem(232);
+            width: rem(99);
             height: rem(63);
         }
 
         &--header-mobile {
             width: rem(40);
             height: rem(63);
+        }
+
+        &__image--header-mobile {
+            width: rem(54);
+            height: rem(40);
+            margin-top: rem(12);
         }
 
         &--login {
