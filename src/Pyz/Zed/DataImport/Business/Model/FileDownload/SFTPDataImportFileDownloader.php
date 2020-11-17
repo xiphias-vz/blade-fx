@@ -1,5 +1,10 @@
 <?php
 
+/**
+ * This file is part of the Spryker Commerce OS.
+ * For full license information, please view the LICENSE file that was distributed with this source code.
+ */
+
 namespace Pyz\Zed\DataImport\Business\Model\FileDownload;
 
 use Generated\Shared\Transfer\FileSystemCopyTransfer;
@@ -39,6 +44,9 @@ class SFTPDataImportFileDownloader
         $this->dataImportConfig = $dataImportConfig;
     }
 
+    /**
+     * @return void
+     */
     public function downloadDataImportFiles()
     {
         $listContents = $this->fileSystemService->listContents(
@@ -92,18 +100,20 @@ class SFTPDataImportFileDownloader
 
     /**
      * @param \Generated\Shared\Transfer\FileSystemResourceTransfer $resourceTransfer
+     *
+     * @return void
      */
     protected function moveDownloadedFilesToArchive(FileSystemResourceTransfer $resourceTransfer): void
     {
-        $destinationPath = static::SFTP_PATH  .
+        $destinationPath = static::SFTP_PATH .
             $this->dataImportConfig->getDataImportFilesFolderName() .
             '/' .
-            self::SFTP_ARCHIVE_NAME.
-            '/'.
+            self::SFTP_ARCHIVE_NAME .
+            '/' .
             $resourceTransfer->getBasename();
 
         $this->fileSystemService->copy(
-            (new FileSystemCopyTransfer)
+            (new FileSystemCopyTransfer())
                 ->setFileSystemName(static::SFTP_FILE_SYSTEM_NAME)
                 ->setDestinationPath($destinationPath)
                 ->setSourcePath($resourceTransfer->getPath())
@@ -123,7 +133,7 @@ class SFTPDataImportFileDownloader
      */
     protected function removeUtf8Bom(string $text): string
     {
-        $bom = pack('H*','EFBBBF');
+        $bom = pack('H*', 'EFBBBF');
         $text = preg_replace("/^$bom/", '', $text);
 
         return $text;
