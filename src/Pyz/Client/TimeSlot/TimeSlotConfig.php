@@ -41,4 +41,14 @@ class TimeSlotConfig extends AbstractBundleConfig
     {
         return $this->getConfig()->get(TimeSlotConstants::SHIPMENT_TIME_SLOTS);
     }
+
+    /**
+     * Delivery time slots groped by shipment method
+     *
+     * @return array
+     */
+    public function getSameDayShipmentTimeSlots(): array
+    {
+        return $this->getConfig()->get(TimeSlotConstants::SAME_DAY_SHIPMENT_TIME_SLOTS);
+    }
 }
