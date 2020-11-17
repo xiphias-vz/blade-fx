@@ -370,7 +370,10 @@ class DataImportConfig extends SprykerDataImportConfig
         return $this->get(ProductImageConstants::IMAGES_HOST_URL, '');
     }
 
-    public function getRegexToSprykerFileNameMap()
+    /**
+     * @return array
+     */
+    public function getRegexToSprykerFileNameMap(): array
     {
         return [
             '/^2\.globus_articles\.metzgerei/' => '2.globus_articles.metzgerei.csv',
