@@ -11,7 +11,7 @@ html {
 body {
     color: #fff;
     background: #fff;
-    font: 400 0.9375rem/1.5 'ALDI SUED Office', sans-serif;
+    font: 400 0.9375rem/1.5 'Spryker Office', sans-serif;
     margin: 0;
     padding: 0;
     text-align: center;
@@ -116,7 +116,7 @@ p {
 }
 
 .title {
-    font: 700 1.125rem/1.2 "ALDI SUED OT", sans-serif;
+    font: 400 0.9375rem/1.5 'Spryker Office', sans-serif;
     color: #fff;
     margin: 0 0 1rem;
     padding: 0;

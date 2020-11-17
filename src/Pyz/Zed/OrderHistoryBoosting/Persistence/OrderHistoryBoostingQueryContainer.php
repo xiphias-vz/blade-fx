@@ -13,6 +13,11 @@ use Spryker\Zed\Kernel\Persistence\AbstractQueryContainer;
 
 class OrderHistoryBoostingQueryContainer extends AbstractQueryContainer
 {
+    /**
+     * @param string $customerReference
+     *
+     * @return array
+     */
     public function getPreviouslyBoughtSkusByCustomerReference(string $customerReference): array
     {
         $previouslyBoughtSkus =

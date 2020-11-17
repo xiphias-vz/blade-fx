@@ -44,4 +44,5 @@ class ProductConfig extends SprykerProductConfigAlias
     public const KEY_PRICE_TO = 'promotionend';
     public const KEY_PSEUDO_PRICE = 'pseudoprice';
     public const KEY_HERKUNFTSLAND_ATTRIBUTE = 'herkunftsland_o_g';
+    public const KEY_PICK_ZONE_ATTRIBUTE = 'Pickzone';
 }

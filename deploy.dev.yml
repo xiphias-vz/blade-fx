@@ -1,6 +1,6 @@
 version: "0.1"
 
-namespace: spryker-demo-project
+namespace: spryker-click-and-collect
 tag: 'dev'
 
 environment: docker_dev
@@ -20,31 +20,51 @@ regions:
     DE:
         services:
             database:
-                database: spryker_demo_development
+                database: de-globus
                 username: spryker
                 password: secret
 
         stores:
-            BERLIN:
+            EIN:
                 services:
                     broker:
-                        namespace: berlin_queue
+                        namespace: ein_queue
                     key_value_store:
                         namespace: 1
                     search:
-                        namespace: berlin_search
+                        namespace: ein_search
                     session:
                         namespace: 2
-            HAMBURG:
+            KMD:
                 services:
                     broker:
-                        namespace: hamburg_queue
+                        namespace: kmd_queue
                     key_value_store:
                         namespace: 3
                     search:
-                        namespace: hamburg_search
+                        namespace: kmd_search
                     session:
                         namespace: 4
+            LPZ:
+                services:
+                    broker:
+                        namespace: lpz_queue
+                    key_value_store:
+                        namespace: 5
+                    search:
+                        namespace: lpz_search
+                    session:
+                        namespace: 6
+            HAD:
+                services:
+                    broker:
+                        namespace: had_queue
+                    key_value_store:
+                        namespace: 7
+                    search:
+                        namespace: had_search
+                    session:
+                        namespace: 8
 
 groups:
     DE-1:
@@ -53,34 +73,45 @@ groups:
             Welcome:
                 application: static
                 endpoints:
-                    www.welcome.ccd.demo-spryker.local:
+                    www.welcome.shop.globus.local:
                         entry-point: Welcome
             Yves:
                 application: yves
                 endpoints:
-                    www.berlin.ccd.demo-spryker.local:
-                        store: BERLIN
-                    www.hamburg.ccd.demo-spryker.local:
-                        store: HAMBURG
+                    www.shop.globus.local:
+                        store: EIN
             Zed:
                 application: zed
                 endpoints:
-                    backoffice.ccd.demo-spryker.local:
-                        store: BERLIN
+                    backoffice.shop.globus.local:
+                        store: EIN
 
-                    zed.berlin.ccd.demo-spryker.local:
-                        store: BERLIN
+                    zed.ein.shop.globus.local:
+                        store: EIN
                         primal: true
-                    zed.hamburg.ccd.demo-spryker.local:
-                        store: HAMBURG
+                    zed.kmd.shop.globus.local:
+                        store: KMD
+                        primal: true
+                    zed.lpz.shop.globus.local:
+                        store: LPZ
+                        primal: true
+                    zed.had.shop.globus.local:
+                        store: HAD
                         primal: true
 
-                    filial-app.berlin.ccd.demo-spryker.local:
-                        store: BERLIN
+                    filial-app.ein.shop.globus.local:
+                        store: EIN
                         entry-point: StoreApp
-                    filial-app.hamburg.ccd.demo-spryker.local:
-                        store: HAMBURG
+                    filial-app.kmd.shop.globus.local:
+                        store: KMD
                         entry-point: StoreApp
+                    filial-app.lpz.shop.globus.local:
+                        store: LPZ
+                        entry-point: StoreApp
+                    filial-app.had.shop.globus.local:
+                        store: HAD
+                        entry-point: StoreApp
+
 services:
     database:
         engine: mysql
@@ -97,7 +128,7 @@ services:
             username: "spryker"
             password: "secret"
         endpoints:
-            queue.demo-spryker.local:
+            queue.globus.local:
             localhost:5672:
                 protocol: tcp
     session:
@@ -116,24 +147,19 @@ services:
     scheduler:
         engine: jenkins
         endpoints:
-            scheduler.demo-spryker.local:
+            scheduler.globus.local:
     mail_catcher:
         engine: mailhog
         endpoints:
-            mail.demo-spryker.local:
+            mail.globus.local:
 
 docker:
-
-    blackfire:
-        enabled: true
-        server-id: "242f78bc-3e56-4fde-9d1f-c00304648db9"
-        server-token: "fd29782cbf1874e5eca4a88ad7b075dcfd2b34054dd1940cab1f070abda41079"
 
     ssl:
         enabled: true
 
     testing:
-        store: BERLIN
+        store: EIN
 
     debug:
         enabled: true
