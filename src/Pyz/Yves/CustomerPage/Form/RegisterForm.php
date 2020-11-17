@@ -244,6 +244,7 @@ class RegisterForm extends SprykerRegisterForm
         $builder->add(self::FIELD_ADDITIONAL_REGISTER, CheckboxType::class, [
             'label' => 'forms.additional_register',
             'mapped' => false,
+            'required' => false,
         ]);
 
         return $this;
