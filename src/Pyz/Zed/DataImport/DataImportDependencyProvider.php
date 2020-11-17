@@ -12,8 +12,7 @@ use Pyz\Zed\MerchantDataImport\Communication\Plugin\MerchantDataImportAfterImpor
 use Pyz\Zed\MerchantRegion\Communication\Plugin\DataImport\MerchantRegionDataImportPlugin;
 use Pyz\Zed\ProductUpdate\Business\ProductUpdateFacadeInterface;
 use Pyz\Zed\ShipmentDataImport\Communication\Plugin\ShipmentDataImportAfterImportHookPlugin;
-use Spryker\Service\FileSystem\FileSystemService;
-use Spryker\Service\Flysystem\FlysystemServiceInterface;
+use Spryker\Service\FileSystem\FileSystemServiceInterface;
 use Spryker\Service\UtilText\UtilTextServiceInterface;
 use Spryker\Shared\Kernel\Store;
 use Spryker\Zed\Acl\Business\AclFacadeInterface;
@@ -282,7 +281,7 @@ class DataImportDependencyProvider extends SprykerDataImportDependencyProvider
      */
     private function addFlySystemService(Container $container): Container
     {
-        $container->set(static::SERVICE_FLY_SYSTEM_SERVICE, function (Container $container): FileSystemService {
+        $container->set(static::SERVICE_FLY_SYSTEM_SERVICE, function (Container $container): FileSystemServiceInterface {
             return $container->getLocator()->fileSystem()->service();
         });
 

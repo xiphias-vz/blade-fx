@@ -64,11 +64,11 @@ class SFTPDataImportFileDownloader
 
     /**
      * @param \Generated\Shared\Transfer\FileSystemResourceTransfer $resourceTransfer
-     * @param $destinationFileName
+     * @param string $destinationFileName
      *
      * @return bool
      */
-    protected function downloadFile(FileSystemResourceTransfer $resourceTransfer, $destinationFileName): bool
+    protected function downloadFile(FileSystemResourceTransfer $resourceTransfer, string $destinationFileName): bool
     {
         $csvFileBody = $this->fileSystemService->read(
             (new FileSystemQueryTransfer())
