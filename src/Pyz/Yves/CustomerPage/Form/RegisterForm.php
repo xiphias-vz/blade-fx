@@ -7,8 +7,9 @@
 
 namespace Pyz\Yves\CustomerPage\Form;
 
-use Orm\Zed\Customer\Persistence\SpyCustomerQuery;
+use Pyz\Shared\Customer\CustomerConstants;
 use Pyz\Yves\CustomerPage\Form\Constraints\PostalCodeConstraint;
+use Spryker\Shared\Config\Config;
 use SprykerShop\Yves\CustomerPage\Form\RegisterForm as SprykerRegisterForm;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -45,6 +46,9 @@ class RegisterForm extends SprykerRegisterForm
     public const FIELD_PHONE_PREFIX_2 = 'phone_prefix_2';
     public const FIELD_MOBILE_PHONE = 'mobile_phone';
     public const FIELD_RECIEVE_NOTIFICATIONS = 'recieve_notifications';
+    public const FIELD_DAY = 'day';
+    public const FIELD_MONTH = 'month';
+    public const FIELD_YEAR = 'year';
 
     protected const VALIDATION_ADDRESS_NUMBER_MESSAGE = 'validation.address_number';
     protected const VALIDATION_NOT_BLANK_MESSAGE = 'validation.not_blank';
@@ -61,16 +65,6 @@ class RegisterForm extends SprykerRegisterForm
         'customer.address.floor.6' => 'customer.address.floor.6',
         'customer.address.floor.7' => 'customer.address.floor.7',
         'customer.address.floor.8' => 'customer.address.floor.8',
-    ];
-
-    public const COUNTRIES =
-    [
-        60 => 'customer.registration.country_placeholder',
-    ];
-
-    public const PHONE_PREFIX =
-    [
-        '+49' => 'customer.registration.phone.prefix_placeholder',
     ];
 
 
@@ -101,10 +95,12 @@ class RegisterForm extends SprykerRegisterForm
             ->addMobileNumber($builder)
             ->addMobilePrefixField2($builder)
             ->addPhoneField($builder)
+            ->addDayField($builder)
+            ->addMonthField($builder)
+            ->addYearField($builder)
             ->addAcceptTermsField($builder)
             ->addAdditionalRegisterField($builder)
-            ->addFieldRecieveNotificationsAboutProducts($builder)
-        ;
+            ->addFieldRecieveNotificationsAboutProducts($builder);
     }
 
     /**
@@ -260,6 +256,7 @@ class RegisterForm extends SprykerRegisterForm
         $builder->add(self::FIELD_RECIEVE_NOTIFICATIONS, CheckboxType::class,[
            'label' => 'forms.recieve_notifications',
            'mapped' => false,
+            'required' => false,
         ]);
         return $this;
     }
@@ -375,8 +372,9 @@ class RegisterForm extends SprykerRegisterForm
 
     protected function addCountryField(FormBuilderInterface $builder)
     {
+        $countries = Config::get(CustomerConstants::CUSTOMER_COUNTRY);
         $builder->add(self::FIELD_MERCHANT, ChoiceType::class, [
-            'choices' => array_flip(self::COUNTRIES),
+            'choices' => array_flip($countries),
             'required' => true,
             'label' => 'customer.address.country',
             'constraints' =>
@@ -389,8 +387,9 @@ class RegisterForm extends SprykerRegisterForm
 
     protected function addMobilePrefixField1(FormBuilderInterface $builder)
     {
+        $prefixes = Config::get(CustomerConstants::CUSTOMER_PHONE_PREFIX);
         $builder->add(self::FIELD_PHONE_PREFIX_1, ChoiceType::class,[
-            'choices' => array_flip(self::PHONE_PREFIX),
+            'choices' => array_flip($prefixes),
             'required' => true,
             'label' => 'customer.register.phone',
             'constraints' =>
@@ -403,8 +402,9 @@ class RegisterForm extends SprykerRegisterForm
 
     protected function addMobilePrefixField2(FormBuilderInterface $builder)
     {
+        $prefixes = Config::get(CustomerConstants::CUSTOMER_PHONE_PREFIX);
         $builder->add(self::FIELD_PHONE_PREFIX_2, ChoiceType::class,[
-            'choices' => array_flip(self::PHONE_PREFIX),
+            'choices' => array_flip($prefixes),
             'required' => false,
             'constraints' =>
                 [
@@ -521,6 +521,71 @@ class RegisterForm extends SprykerRegisterForm
         return $this;
     }
 
+    protected function addDayField(FormBuilderInterface $builder)
+    {
+        $days = [];
+        for($i = 1; $i<32; $i++)
+        {
+            $days[$i] = $i;
+        }
+        $builder->add(static::FIELD_DAY, ChoiceType::class,[
+            'choices' => array_flip($days),
+            'required' => true,
+            'trim' => true,
+            'attr' => [
+                'placeholder' => 'customer.date.day'
+            ],
+            'constraints' =>
+            [
+                $this->createNotBlankConstraint(),
+            ],
+        ]);
+        return $this;
+    }
+
+    protected function addMonthField(FormBuilderInterface $builder)
+    {
+        $months = [];
+        for($i = 1; $i<13; $i++)
+        {
+            $months[$i] = $i;
+        }
+        $builder->add(static::FIELD_MONTH, ChoiceType::class,[
+            'choices' => array_flip($months),
+            'required' => true,
+            'trim' => true,
+            'attr' => [
+                'placeholder' => 'customer.date.month'
+            ],
+            'constraints' =>
+                [
+                    $this->createNotBlankConstraint(),
+                ],
+        ]);
+        return $this;
+    }
+    protected function AddYearField(FormBuilderInterface $builder)
+    {
+        $years = [];
+        for($i = 1900; $i<2101; $i++)
+        {
+            $years[$i] = $i;
+        }
+        $builder->add(static::FIELD_YEAR, ChoiceType::class,[
+            'choices' => array_flip($years),
+            'required' => true,
+            'trim' => true,
+            'attr' => [
+                'placeholder' => 'customer.date.year'
+            ],
+            'constraints' =>
+            [
+                $this->createNotBlankConstraint(),
+            ],
+        ]);
+        return $this;
+    }
+
     /**
      * @param array $options
      *
@@ -561,11 +626,6 @@ class RegisterForm extends SprykerRegisterForm
         return new NotBlank(['message' => static::VALIDATION_NOT_BLANK_MESSAGE]);
     }
 
-    protected function createBlankConstraint(): Blank
-    {
-        return new Blank();
-    }
-
     /**
      * @param array $options
      *
@@ -594,13 +654,6 @@ class RegisterForm extends SprykerRegisterForm
             $choices[$merchantTransfer->getName()] = $merchantTransfer->getMerchantReference();
         }
 
-        return $choices;
-    }
-
-    private function getCountryChoices(): array
-    {
-        //$countryClient = $this->getFactory()->getCountrySearchClient();  //TODO: ADD REST OF THE FUNCTION
-        $choices = [];
         return $choices;
     }
 }

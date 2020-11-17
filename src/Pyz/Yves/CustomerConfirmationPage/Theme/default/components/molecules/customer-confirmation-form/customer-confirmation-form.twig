@@ -103,6 +103,9 @@
                             'mobile_phone': 'col col--sm-12 col--md-7',
                             'phone_prefix_2': 'col col--sm-12 col--md-5',
                             'phone': 'col col--sm-12 col--md-7',
+                            'day': 'col col--sm-12 col--md-4',
+                            'month': 'col col--sm-12 col--md-4',
+                            'year': 'col col--sm-12 col--md-4',
                             'accept_terms': 'col col--sm-12',
                             '_token': 'col col--sm-12',
                         } %}
@@ -110,10 +113,10 @@
 
                     {% if data.form.vars.full_name == 'registerForm[customer]' %}
                         {% set layout = {
-                            'salutation': 'col col--sm-12 col--md-4',
+                            'email': 'col col--order-1 col--sm-6',
+                            'salutation': 'col col--sm-12 col--md-6',
                             'first_name': 'col col--sm-12 col--md-4',
                             'last_name': 'col col--sm-12 col--md-4',
-                            'email': 'col col--order-1 col--sm-12',
                             'password': 'col col--order-1 col--sm-12 col--md-6',
                             'confirm': 'col col--order-1 col--sm-12 col--md-6',
                             'address1': 'col col--order-1 col--sm-12 col--md-8',
