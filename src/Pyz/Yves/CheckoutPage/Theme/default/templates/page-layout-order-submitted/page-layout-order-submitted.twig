@@ -6,6 +6,8 @@
     collectNumber: '',
     requestedDeliveryDate: '',
     deliveryMethodKey: '',
+    orderReference:''
+
 } %}
 
 {%- block class -%}{{ parent() }} page-layout-main--success-page{%- endblock -%}
@@ -20,10 +22,18 @@
             <h1 class="title title--checkout-success">{{ data.title }}</h1>
             <p class="success-page__text">{{ data.message }}</p>
 
-            {% if data.requestedDeliveryDate %}
-                {% set splittedDeliveryDate = data.requestedDeliveryDate | split('_') %}
-                <p class="success-page__text">{{ ('checkout.order.submitted.' ~ data.deliveryMethodKey) | trans }} : {{ splittedDeliveryDate | first | formatDate }} - {{ splittedDeliveryDate | last }}</p>
-            {% endif %}
+            <div id="app">
+                <h2>Vielen Dank für Ihren Einkauf</h2>
+            </div>
+            Vielen Dank für Ihren Einkaufch
+            Ihre Bestellung ist erfolgreich in unserem Abholmarkt eingegangen.
+
+
+
+            <p style="font-weight:bold">Wie geht es weiter?</p>
+            Ihre Bestellbestätigung <strong> {{ data.orderReference }}</strong> ist bereits auf dem Weg in Ihr Email-Postfach - prüfen Sie also unbedingt auch Ihren Spam Ordner.<br>
+            Ihren <strong>Abholschein</strong> erhalten Sie direkt am <strong>Abholtag per Mail</strong>, sobald wir Ihre Bestellung fertig gepackt haben.
+            Darin finden Sie außerdem den <strong> detaillierten Lieferstatus </strong> aller bestellten Artikel
 
             {% if data.collectNumber %}
                 <p class="success-page__text">{{ 'customer.order.collect_number' | trans }}:
