@@ -38,7 +38,6 @@ class RegistrationMailTypePlugin extends AbstractPlugin implements MailTypePlugi
         $this
             ->setSubject($mailBuilder)
             ->setRecipient($mailBuilder)
-            ->setHtmlTemplate($mailBuilder)
             ->setSender($mailBuilder);
     }
 
