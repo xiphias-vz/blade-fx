@@ -10,13 +10,8 @@ namespace Pyz\Zed\DataImport\Business;
 use NumberFormatter;
 use Pyz\Shared\Product\ProductConfig;
 use Pyz\Zed\DataImport\Business\Model\BaseProduct\AttributesExtractorStep as BaseAttributesExtractorStep;
-use Pyz\Zed\DataImport\Business\Model\BaseProduct\PriceProductWriterStep;
+use Pyz\Zed\DataImport\Business\Model\BaseProduct\ProductCategoryWriterStep;
 use Pyz\Zed\DataImport\Business\Model\BaseProduct\ProductDepositOptionStep;
-use Pyz\Zed\DataImport\Business\Model\BaseProduct\ProductValidityWriterStep;
-use Pyz\Zed\DataImport\Business\Model\BaseProduct\SetDefaultValuesFromStoreStep;
-use Pyz\Zed\DataImport\Business\Model\BaseProduct\StoreSpecificAttributeExtractor;
-use Pyz\Zed\DataImport\Business\Model\BaseProduct\StoreSpecificAttributeExtractorStep;
-use Pyz\Zed\DataImport\Business\Model\ProductCategory\ProductCategoryWriterStep;
 use Pyz\Zed\DataImport\Business\Model\CategoryTemplate\CategoryTemplateWriterStep;
 use Pyz\Zed\DataImport\Business\Model\CmsBlock\CmsBlockWriterStep;
 use Pyz\Zed\DataImport\Business\Model\CmsBlockStore\CmsBlockStoreWriterStep;
@@ -39,7 +34,6 @@ use Pyz\Zed\DataImport\Business\Model\PickingRoute\PickingRouteWriterStep;
 use Pyz\Zed\DataImport\Business\Model\PostalCode\PostalCodeWriterStep;
 use Pyz\Zed\DataImport\Business\Model\Product\ProductLocalizedAttributesExtractorStep;
 use Pyz\Zed\DataImport\Business\Model\Product\Repository\ProductRepository;
-use Pyz\Zed\DataImport\Business\Model\ProductAbstract\AddCategoryKeysStep;
 use Pyz\Zed\DataImport\Business\Model\ProductAbstract\AddProductAbstractSkusStep;
 use Pyz\Zed\DataImport\Business\Model\ProductAbstract\ProductAbstractWriterStep;
 use Pyz\Zed\DataImport\Business\Model\ProductAbstractStore\ProductAbstractStoreWriterStep;
@@ -52,6 +46,7 @@ use Pyz\Zed\DataImport\Business\Model\ProductManagementAttribute\ProductManageme
 use Pyz\Zed\DataImport\Business\Model\ProductManagementAttribute\ProductManagementLocalizedAttributesExtractorStep;
 use Pyz\Zed\DataImport\Business\Model\ProductOption\ProductOptionWriterStep;
 use Pyz\Zed\DataImport\Business\Model\ProductOptionPrice\ProductOptionPriceWriterStep;
+use Pyz\Zed\DataImport\Business\Model\ProductPrice\ProductPriceWriterStep;
 use Pyz\Zed\DataImport\Business\Model\ProductQuantity\ProductQuantityWriterStep;
 use Pyz\Zed\DataImport\Business\Model\ProductSearchAttribute\Hook\ProductSearchAfterImportHook;
 use Pyz\Zed\DataImport\Business\Model\ProductSearchAttribute\ProductSearchAttributeWriter;
@@ -59,7 +54,6 @@ use Pyz\Zed\DataImport\Business\Model\ProductSearchAttributeMap\ProductSearchAtt
 use Pyz\Zed\DataImport\Business\Model\ProductStock\Hook\UpdateAvailabilityAfterImport;
 use Pyz\Zed\DataImport\Business\Model\ProductStock\Hook\UpdateAvailabilityAfterImportInterface;
 use Pyz\Zed\DataImport\Business\Model\ProductStock\ProductStockWriterStep;
-use Pyz\Zed\DataImport\Business\Model\ProductVitaminAttributeKey\ProductVitaminAttributeKeyWriter;
 use Pyz\Zed\DataImport\Business\Model\Shipment\ShipmentWriterStep;
 use Pyz\Zed\DataImport\Business\Model\ShipmentPrice\ShipmentPriceWriterStep;
 use Pyz\Zed\DataImport\Business\Model\Stock\StockWriterStep;
@@ -67,7 +61,6 @@ use Pyz\Zed\DataImport\Business\Model\Store\StoreReader;
 use Pyz\Zed\DataImport\Business\Model\Store\StoreWriterStep;
 use Pyz\Zed\DataImport\Business\Model\Tax\TaxSetNameToIdTaxSetStep;
 use Pyz\Zed\DataImport\Business\Model\Tax\TaxWriterStep;
-use Pyz\Zed\DataImport\Business\Model\VitaminData\VitaminDataWriterStep;
 use Pyz\Zed\DataImport\DataImportDependencyProvider;
 use Pyz\Zed\MerchantRegion\Communication\Plugin\DataImport\MerchantRegionDataImportPlugin;
 use Pyz\Zed\ProductUpdate\Business\ProductUpdateFacadeInterface;
@@ -120,13 +113,14 @@ class DataImportBusinessFactory extends SprykerDataImportBusinessFactory
             ->addDataImporter($this->createProductOptionImporter())
             ->addDataImporter($this->createProductOptionPriceImporter())
             ->addDataImporter($this->getProductImporter())
+            ->addDataImporter($this->getPriceImporter())
+            ->addDataImporter($this->getProductStockWriterStep())
             ->addDataImporter($this->createPostalCodeImporter())
             ->addDataImporter($this->createPickingRouteImporter());
 
         $dataImporterCollection->addDataImporterPlugins($this->getDataImporterPlugins());
 
         $dataImporterCollection
-            ->addDataImporter($this->createProductCategoryImporter())
             ->addDataImporter($this->createNavigationNodeImporter())
             ->addDataImporter($this->getMerchantDeliveryPostalCodeImporter())
             ->addDataImporter($this->getMerchantUserImporter());
@@ -135,14 +129,15 @@ class DataImportBusinessFactory extends SprykerDataImportBusinessFactory
     }
 
     /**
-     * @return \Pyz\Zed\DataImport\Business\Model\BaseProduct\PriceProductWriterStep
+     * @return \Pyz\Zed\DataImport\Business\Model\ProductPrice\ProductPriceWriterStep
      */
     public function createPriceProductWriterStep()
     {
-        return new PriceProductWriterStep(
+        return new ProductPriceWriterStep(
             $this->createNumberFormatter(),
             $this->getMoneyFacade(),
-            $this->getProductUpdateFacade()
+            $this->getProductUpdateFacade(),
+            $this->getConfig()
         );
     }
 
@@ -155,22 +150,16 @@ class DataImportBusinessFactory extends SprykerDataImportBusinessFactory
         $dataSetStepBroker = $this->createTransactionAwareDataSetStepBroker(ProductAbstractWriterStep::BULK_SIZE);
         $dataSetStepBroker
             ->addStep($this->createAddLocalesStep())
-            ->addStep($this->createAddCategoryKeysStep())
-            ->addStep($this->createStoreSpecificAttributeExtractorStep())
-            ->addStep($this->createSetDefaultValuesFromStoreStep())
             ->addStep($this->createAttributesExtractorStep())
             ->addStep($this->createProductLocalizedAttributesExtractorStep([
                 ProductConfig::KEY_ARTIKELNAME_SPRYKER,
-                ProductConfig::KEY_SALES_UNIT,
-                ProductCOnfig::KEY_VARIETY,
+                ProductConfig::KEY_DESCRIPTION,
             ]))
             ->addStep($this->createProductAbstractWriterStep())
             ->addStep($this->createProductAbstractStoreWriterStep())
+            ->addStep($this->createProductCategoryWriterStep())
             ->addStep($this->createProductConcreteWriter())
             ->addStep($this->createProductQuantityWriterStep())
-            ->addStep($this->createProductStockWriterStep())
-            ->addStep($this->createPriceProductWriterStep())
-            ->addStep($this->createProductValidityWriterStep())
             ->addStep($this->createProductDepositOptionStep());
 
         $dataImporter->addDataSetStepBroker($dataSetStepBroker);
@@ -181,12 +170,12 @@ class DataImportBusinessFactory extends SprykerDataImportBusinessFactory
     /**
      * @return \Spryker\Zed\DataImport\Business\Model\DataImporterInterface|\Spryker\Zed\DataImport\Business\Model\DataSet\DataSetStepBrokerAwareInterface
      */
-    protected function getVitaminDataImporter()
+    protected function getPriceImporter()
     {
-        $dataImporter = $this->getCsvDataImporterFromConfig($this->getConfig()->getVitaminDataImporterConfiguration());
+        $dataImporter = $this->getCsvDataImporterFromConfig($this->getConfig()->getProductPriceDataImporterConfiguration());
         $dataSetStepBroker = $this->createTransactionAwareDataSetStepBroker(ProductAbstractWriterStep::BULK_SIZE);
         $dataSetStepBroker
-            ->addStep($this->createVitaminDataWriter());
+            ->addStep($this->createPriceProductWriterStep());
 
         $dataImporter->addDataSetStepBroker($dataSetStepBroker);
 
@@ -196,17 +185,26 @@ class DataImportBusinessFactory extends SprykerDataImportBusinessFactory
     /**
      * @return \Spryker\Zed\DataImport\Business\Model\DataImporterInterface|\Spryker\Zed\DataImport\Business\Model\DataSet\DataSetStepBrokerAwareInterface
      */
-    protected function createProductCategoryImporter()
+    protected function getProductStockWriterStep()
     {
-        $dataImporter = $this->getCsvDataImporterFromConfig($this->getConfig()->getProductCategoryImporterConfiguration());
-        $dataSetStepBroker = $this->createTransactionAwareDataSetStepBroker(ProductCategoryWriterStep::BULK_SIZE);
+        $dataImporter = $this->getCsvDataImporterFromConfig($this->getConfig()->getProductStockDataImporterConfiguration());
+        $dataSetStepBroker = $this->createTransactionAwareDataSetStepBroker(ProductAbstractWriterStep::BULK_SIZE);
         $dataSetStepBroker
-            ->addStep($this->createStoreSpecificAttributeExtractorStep())
-            ->addStep($this->createSetDefaultValuesFromStoreStep())
-            ->addStep(new ProductCategoryWriterStep());
+            ->addStep($this->createProductStockWriterStep());
+
         $dataImporter->addDataSetStepBroker($dataSetStepBroker);
 
         return $dataImporter;
+    }
+
+    /**
+     * @return \Pyz\Zed\DataImport\Business\Model\ProductStock\ProductStockWriterStep
+     */
+    protected function createProductStockWriterStep()
+    {
+        return new ProductStockWriterStep(
+            $this->getConfig()
+        );
     }
 
     /**
@@ -249,36 +247,18 @@ class DataImportBusinessFactory extends SprykerDataImportBusinessFactory
      */
     protected function createProductConcreteWriter(): ProductConcreteWriter
     {
-        return new ProductConcreteWriter($this->createProductRepository());
-    }
-
-    /**
-     * @return \Pyz\Zed\DataImport\Business\Model\VitaminData\VitaminDataWriterStep
-     */
-    protected function createVitaminDataWriter(): VitaminDataWriterStep
-    {
-        return new VitaminDataWriterStep(
+        return new ProductConcreteWriter(
             $this->createProductRepository(),
-            $this->createNumberFormatter()
+            $this->getConfig()
         );
     }
 
     /**
-     * @return \Pyz\Zed\DataImport\Business\Model\BaseProduct\ProductValidityWriterStep
+     * @return \Pyz\Zed\DataImport\Business\Model\BaseProduct\ProductCategoryWriterStep
      */
-    protected function createProductValidityWriterStep()
+    protected function createProductCategoryWriterStep(): ProductCategoryWriterStep
     {
-        return new ProductValidityWriterStep();
-    }
-
-    /**
-     * @return \Pyz\Zed\DataImport\Business\Model\ProductStock\ProductStockWriterStep
-     */
-    protected function createProductStockWriterStep()
-    {
-        return new ProductStockWriterStep(
-            $this->createProductRepository()
-        );
+        return new ProductCategoryWriterStep();
     }
 
     /**
@@ -643,24 +623,7 @@ class DataImportBusinessFactory extends SprykerDataImportBusinessFactory
 
         $dataSetStepBroker = $this->createTransactionAwareDataSetStepBroker();
         $dataSetStepBroker
-            ->addStep($this->createStoreSpecificAttributeExtractorStep())
             ->addStep(new ProductAttributeKeyWriter());
-
-        $dataImporter->addDataSetStepBroker($dataSetStepBroker);
-
-        return $dataImporter;
-    }
-
-    /**
-     * @return \Spryker\Zed\DataImport\Business\Model\DataImporterInterface|\Spryker\Zed\DataImport\Business\Model\DataSet\DataSetStepBrokerAwareInterface
-     */
-    protected function createProductVitaminAttributeImporter()
-    {
-        $dataImporter = $this->getCsvDataImporterFromConfig($this->getConfig()->getProductVitaminAttributeImporterConfiguration());
-
-        $dataSetStepBroker = $this->createTransactionAwareDataSetStepBroker();
-        $dataSetStepBroker
-            ->addStep(new ProductVitaminAttributeKeyWriter());
 
         $dataImporter->addDataSetStepBroker($dataSetStepBroker);
 
@@ -816,14 +779,6 @@ class DataImportBusinessFactory extends SprykerDataImportBusinessFactory
     }
 
     /**
-     * @return \Pyz\Zed\DataImport\Business\Model\ProductAbstract\AddCategoryKeysStep
-     */
-    protected function createAddCategoryKeysStep()
-    {
-        return new AddCategoryKeysStep();
-    }
-
-    /**
      * @param array $defaultAttributes
      *
      * @return \Pyz\Zed\DataImport\Business\Model\Product\ProductLocalizedAttributesExtractorStep
@@ -973,7 +928,8 @@ class DataImportBusinessFactory extends SprykerDataImportBusinessFactory
     {
         return new ProductAbstractWriterStep(
             $this->createProductRepository(),
-            $this->getUtilTextService()
+            $this->getUtilTextService(),
+            $this->getConfig()
         );
     }
 
@@ -1014,34 +970,6 @@ class DataImportBusinessFactory extends SprykerDataImportBusinessFactory
     protected function createPickingRouteWriterStep(): PickingRouteWriterStep
     {
         return new PickingRouteWriterStep();
-    }
-
-    /**
-     * @return \Pyz\Zed\DataImport\Business\Model\BaseProduct\SetDefaultValuesFromStoreStep
-     */
-    private function createSetDefaultValuesFromStoreStep(): SetDefaultValuesFromStoreStep
-    {
-        return new SetDefaultValuesFromStoreStep(
-            $this->getStore()
-        );
-    }
-
-    /**
-     * @return \Pyz\Zed\DataImport\Business\Model\BaseProduct\StoreSpecificAttributeExtractor
-     */
-    private function createStoreSpecificAttributeExtractor(): StoreSpecificAttributeExtractor
-    {
-        return new StoreSpecificAttributeExtractor();
-    }
-
-    /**
-     * @return \Pyz\Zed\DataImport\Business\Model\BaseProduct\StoreSpecificAttributeExtractorStep
-     */
-    private function createStoreSpecificAttributeExtractorStep(): StoreSpecificAttributeExtractorStep
-    {
-        return new StoreSpecificAttributeExtractorStep(
-            $this->createStoreSpecificAttributeExtractor()
-        );
     }
 
     /**

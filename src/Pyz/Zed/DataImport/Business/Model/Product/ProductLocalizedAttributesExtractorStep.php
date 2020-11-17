@@ -14,7 +14,6 @@ class ProductLocalizedAttributesExtractorStep implements DataImportStepInterface
 {
     public const KEY_LOCALIZED_ATTRIBUTES = 'localizedAttributes';
     public const KEY_LOCALE_KEY = 'localeKey';
-    public const KEY_ATTRIBUTES = 'attributes';
 
     /**
      * @var array
@@ -36,43 +35,13 @@ class ProductLocalizedAttributesExtractorStep implements DataImportStepInterface
      */
     public function execute(DataSetInterface $dataSet)
     {
-        $keysToUnset = [];
         $localizedAttributes = [];
         foreach ($dataSet['locales'] as $localeName => $idLocale) {
-            $attributes = [];
-            foreach ($dataSet as $key => $value) {
-                if (!preg_match('/^attribute_key_(\d+).' . $localeName . '$/', $key, $match)) {
-                    continue;
-                }
-
-                $attributeValueKey = 'value_' . $match[1] . '.' . $localeName;
-                $attributeKey = trim($value);
-                $attributeValue = trim($dataSet[$attributeValueKey]);
-
-                if ($attributeKey !== '') {
-                    $attributes[$attributeKey] = $attributeValue;
-                }
-
-                $keysToUnset[] = $match[0];
-                $keysToUnset[] = $attributeValueKey;
-            }
-
-            $localizedAttributes[$idLocale] = [
-                static::KEY_ATTRIBUTES => $attributes,
-            ];
-
             foreach ($this->defaultAttributes as $defaultAttribute) {
-                $localizedAttributes[$idLocale][$defaultAttribute] = $dataSet[$defaultAttribute . '.' . $localeName];
-                $localizedAttributes[$idLocale][static::KEY_ATTRIBUTES][$defaultAttribute] = $dataSet[$defaultAttribute . '.' . $localeName];
-
-                $keysToUnset[] = $defaultAttribute . '.' . $localeName;
+                $localizedAttributes[$idLocale][$defaultAttribute] = $dataSet[$defaultAttribute];
             }
 
             $localizedAttributes[$idLocale][static::KEY_LOCALE_KEY] = $localeName;
-        }
-
-        foreach ($keysToUnset as $key) {
-            unset($dataSet[$key]);
         }
 
         $dataSet[static::KEY_LOCALIZED_ATTRIBUTES] = $localizedAttributes;

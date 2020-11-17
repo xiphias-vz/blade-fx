@@ -99,7 +99,6 @@ class ProductPriceSaver
 
             $this->addPublishEvents(PriceProductEvents::PRICE_ABSTRACT_PUBLISH, $idProductAbstract);
             $this->addPublishEvents(ProductEvents::PRODUCT_ABSTRACT_PUBLISH, $idProductAbstract);
-
         } else {
             $idProduct = $dataSet[PriceProductDataSet::ID_PRODUCT_CONCRETE];
             $priceProductQuery->filterByFkProduct($idProduct);

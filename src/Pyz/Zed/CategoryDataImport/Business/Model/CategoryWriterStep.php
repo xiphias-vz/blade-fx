@@ -13,7 +13,6 @@ use Orm\Zed\Category\Persistence\SpyCategoryNodeQuery;
 use Orm\Zed\Category\Persistence\SpyCategoryQuery;
 use Orm\Zed\Category\Persistence\SpyCategoryTemplate;
 use Orm\Zed\Category\Persistence\SpyCategoryTemplateQuery;
-use Orm\Zed\Locale\Persistence\SpyLocaleQuery;
 use Orm\Zed\Navigation\Persistence\SpyNavigationNodeLocalizedAttributesQuery;
 use Orm\Zed\Navigation\Persistence\SpyNavigationNodeQuery;
 use Orm\Zed\Navigation\Persistence\SpyNavigationQuery;
@@ -32,22 +31,16 @@ use Spryker\Zed\Url\Dependency\UrlEvents;
  */
 class CategoryWriterStep extends SprykerCategoryWriterStep
 {
-    public const KEY_NAME = 'Bezeichnung';
-    public const KEY_CATEGORY_KEY = 'Bezeichnung';
-    public const KEY_CATEGORY_MAIN_ID = 'ID_laufend';
-    public const KEY_KAT_ID = 'Kategorie';
-    public const KEY_WG_ID = 'WG';
-    public const KEY_UWG_ID = 'UWG';
+    public const KEY_NAME = 'name';
+    public const KEY_CATEGORY_KEY = 'categoryIdStibo';
+    public const KEY_PARENT_CATEGORY_KEY = 'parentIdCategoryStibo';
     public const KEY_URL_ID = 'url_id';
     public const KEY_LOCALE_ID = 'locale_id';
 
     public const NAVIGATION_MODE_MOBILE = 'MAIN_NAVIGATION';
     public const NAVIGATION_MODE_DESKTOP = 'MAIN_NAVIGATION_DESKTOP';
 
-    /**
-     * @var array
-     */
-    protected static $idLocaleBuffer = [];
+    protected const ROOT = 'cls_pim_de_cus_class';
 
     /**
      * @var array
@@ -82,15 +75,14 @@ class CategoryWriterStep extends SprykerCategoryWriterStep
     protected function findOrCreateCategory(DataSetInterface $dataSet)
     {
         $categoryEntity = SpyCategoryQuery::create()
-            ->filterByCategoryKey_Like('%\_' . $dataSet[static::KEY_CATEGORY_MAIN_ID])
+            ->filterByCategoryKey($dataSet[static::KEY_CATEGORY_KEY])
             ->findOneOrCreate();
 
-        $categoryKey = static::KEY_CATEGORY_KEY . '.de_DE';
         $categoryEntity->setIsActive(true)
-            ->setCategoryKey($dataSet[$categoryKey]. '_' . $dataSet[static::KEY_CATEGORY_MAIN_ID])
-            ->setIsClickable(true)
-            ->setIsInMenu(true)
-            ->setIsSearchable(!empty($dataSet[static::KEY_CATEGORY_MAIN_ID]));
+            ->setCategoryKey($dataSet[static::KEY_CATEGORY_KEY])
+            ->setIsClickable($dataSet[static::KEY_CATEGORY_KEY] !== static::ROOT)
+            ->setIsInMenu($dataSet[static::KEY_CATEGORY_KEY] !== static::ROOT)
+            ->setIsSearchable($dataSet[static::KEY_CATEGORY_KEY] !== static::ROOT);
 
         $categoryTemplateEntity = $this->getCategoryTemplate($dataSet);
         $categoryEntity->setFkCategoryTemplate($categoryTemplateEntity->getIdCategoryTemplate());
@@ -111,7 +103,7 @@ class CategoryWriterStep extends SprykerCategoryWriterStep
     protected function createNavigationNode(DataSetInterface $dataSet, string $navigationMode)
     {
         // Skip navigation node for root category
-        if (!$dataSet[static::KEY_CATEGORY_MAIN_ID]) {
+        if ($dataSet[static::KEY_CATEGORY_KEY] === static::ROOT) {
             return;
         }
 
@@ -119,13 +111,16 @@ class CategoryWriterStep extends SprykerCategoryWriterStep
             $this->idNavigationNodeBuffer[$navigationMode] = $this->resolveIdNavigation($navigationMode);
         }
 
+        $categoryIdExplodeData = explode('_', $dataSet[static::KEY_CATEGORY_KEY]);
+        $position = (end($categoryIdExplodeData));
+
         $navigationNodeEntity = SpyNavigationNodeQuery::create()
             ->filterByFkNavigation($this->idNavigationNodeBuffer[$navigationMode])
-            ->filterByNodeKey($navigationMode . NavigationHelper::NODE_KEY_SUFFIX . $dataSet[static::KEY_CATEGORY_MAIN_ID])
+            ->filterByNodeKey($navigationMode . NavigationHelper::NODE_KEY_SUFFIX . $position)
             ->findOneOrCreate();
 
         $navigationNodeEntity
-            ->setPosition((int)$dataSet[static::KEY_CATEGORY_MAIN_ID])
+            ->setPosition((int)1)
             ->setIsActive(true)
             ->setNodeType('category');
 
@@ -140,7 +135,7 @@ class CategoryWriterStep extends SprykerCategoryWriterStep
             ->filterByFkLocale($dataSet[static::KEY_LOCALE_ID])
             ->findOneOrCreate();
 
-        $categoryKey = static::KEY_NAME . '.' . array_search($dataSet[static::KEY_LOCALE_ID], $dataSet['locales']);
+        $categoryKey = static::KEY_NAME;
         $navigationNodeLocalizedAttributesEntity->setTitle($dataSet[$categoryKey]);
         $navigationNodeLocalizedAttributesEntity->setFkUrl($dataSet[static::KEY_URL_ID]);
         $navigationNodeEntity->addSpyNavigationNodeLocalizedAttributes($navigationNodeLocalizedAttributesEntity);
@@ -165,7 +160,7 @@ class CategoryWriterStep extends SprykerCategoryWriterStep
                 ->filterByFkLocale($idLocale)
                 ->findOneOrCreate();
 
-            $categoryAttributeEntity->setName($dataSet[static::KEY_NAME . '.' . $keyLocale]);
+            $categoryAttributeEntity->setName($dataSet[static::KEY_NAME]);
 
             if ($categoryAttributeEntity->isNew() || $categoryAttributeEntity->isModified()) {
                 $categoryAttributeEntity->save();
@@ -185,7 +180,7 @@ class CategoryWriterStep extends SprykerCategoryWriterStep
             ->filterByCategory($categoryEntity)
             ->findOneOrCreate();
 
-        if (empty($dataSet[static::KEY_CATEGORY_MAIN_ID])) {
+        if ($dataSet[static::KEY_CATEGORY_KEY] === static::ROOT) {
             $categoryNodeEntity->setIsRoot(true);
         }
 
@@ -282,17 +277,8 @@ class CategoryWriterStep extends SprykerCategoryWriterStep
      */
     protected function saveCategoryDataToBuffer(DataSetInterface $dataSet, int $id, string $url, int $idLocale)
     {
-        if (!empty($dataSet[static::KEY_UWG_ID])) {
-        } elseif (!empty($dataSet[static::KEY_WG_ID])) {
-            static::$idCategoryBuffer[$dataSet[static::KEY_KAT_ID]][$dataSet[static::KEY_WG_ID]][$idLocale]['id'] = $id;
-            static::$idCategoryBuffer[$dataSet[static::KEY_KAT_ID]][$dataSet[static::KEY_WG_ID]][$idLocale]['url'] = $url;
-        } elseif (!empty($dataSet[static::KEY_KAT_ID])) {
-            static::$idCategoryBuffer[$dataSet[static::KEY_KAT_ID]][$idLocale]['id'] = $id;
-            static::$idCategoryBuffer[$dataSet[static::KEY_KAT_ID]][$idLocale]['url'] = $url;
-        } else {
-            static::$idCategoryBuffer[$idLocale]['id'] = $id;
-            static::$idCategoryBuffer[$idLocale]['url'] = $url;
-        }
+        static::$idCategoryBuffer[$dataSet[static::KEY_CATEGORY_KEY]][$idLocale]['id'] = $id;
+        static::$idCategoryBuffer[$dataSet[static::KEY_CATEGORY_KEY]][$idLocale]['url'] = $url;
     }
 
     /**
@@ -304,31 +290,18 @@ class CategoryWriterStep extends SprykerCategoryWriterStep
      */
     protected function saveNavigationDataToBuffer(DataSetInterface $dataSet, int $idNavigationNode, string $navigationMode)
     {
-        if (!empty($dataSet[static::KEY_UWG_ID])) {
-        } elseif (!empty($dataSet[static::KEY_WG_ID])) {
-            static::$idCategoryBuffer[$dataSet[static::KEY_KAT_ID]][$dataSet[static::KEY_WG_ID]]['idNavigationNode'][$navigationMode] = $idNavigationNode;
-        } elseif (!empty($dataSet[static::KEY_KAT_ID])) {
-            static::$idCategoryBuffer[$dataSet[static::KEY_KAT_ID]]['idNavigationNode'][$navigationMode] = $idNavigationNode;
-        } else {
-            static::$idCategoryBuffer['idNavigationNode'][$navigationMode] = $idNavigationNode;
-        }
+        static::$idCategoryBuffer[$dataSet[static::KEY_CATEGORY_KEY]]['idNavigationNode'][$navigationMode] = $idNavigationNode;
     }
 
     /**
      * @param \Spryker\Zed\DataImport\Business\Model\DataSet\DataSetInterface $dataSet
-     * @param $idLocale
+     * @param int $idLocale
      *
      * @return int
      */
     protected function getParentCategoryId(DataSetInterface $dataSet, int $idLocale)
     {
-        if (!empty($dataSet[static::KEY_UWG_ID])) {
-            return static::$idCategoryBuffer[$dataSet[static::KEY_KAT_ID]][$dataSet[static::KEY_WG_ID]][$idLocale]['id'] ?? 0;
-        } elseif (!empty($dataSet[static::KEY_WG_ID])) {
-            return static::$idCategoryBuffer[$dataSet[static::KEY_KAT_ID]][$idLocale]['id'] ?? 0;
-        }
-
-        return static::$idCategoryBuffer[$idLocale]['id'] ?? 0;
+        return static::$idCategoryBuffer[$dataSet[static::KEY_PARENT_CATEGORY_KEY]][$idLocale]['id'] ?? 0;
     }
 
     /**
@@ -339,13 +312,7 @@ class CategoryWriterStep extends SprykerCategoryWriterStep
      */
     protected function getParentCategoryUrl(DataSetInterface $dataSet, int $idLocale)
     {
-        if (!empty($dataSet[static::KEY_UWG_ID])) {
-            return static::$idCategoryBuffer[$dataSet[static::KEY_KAT_ID]][$dataSet[static::KEY_WG_ID]][$idLocale]['url'] ?? '';
-        } elseif (!empty($dataSet[static::KEY_WG_ID])) {
-            return static::$idCategoryBuffer[$dataSet[static::KEY_KAT_ID]][$idLocale]['url'] ?? '';
-        }
-
-        return static::$idCategoryBuffer[$idLocale]['url'] ?? '';
+        return static::$idCategoryBuffer[$dataSet[static::KEY_PARENT_CATEGORY_KEY]][$idLocale]['url'] ?? '';
     }
 
     /**
@@ -356,28 +323,7 @@ class CategoryWriterStep extends SprykerCategoryWriterStep
      */
     protected function getParentNavigationNodeId(DataSetInterface $dataSet, string $navigationMode)
     {
-        if (!empty($dataSet[static::KEY_UWG_ID])) {
-            return static::$idCategoryBuffer[$dataSet[static::KEY_KAT_ID]][$dataSet[static::KEY_WG_ID]]['idNavigationNode'][$navigationMode] ?? 0;
-        } elseif (!empty($dataSet[static::KEY_WG_ID])) {
-            return static::$idCategoryBuffer[$dataSet[static::KEY_KAT_ID]]['idNavigationNode'][$navigationMode] ?? 0;
-        }
-
-        return 0;
-    }
-
-    /**
-     * @param string $localeName
-     *
-     * @return int
-     */
-    protected function getIdLocaleByName($localeName)
-    {
-        if (!isset(static::$idLocaleBuffer[$localeName])) {
-            static::$idLocaleBuffer[$localeName] =
-                SpyLocaleQuery::create()->findOneByLocaleName($localeName)->getIdLocale();
-        }
-
-        return static::$idLocaleBuffer[$localeName];
+        return static::$idCategoryBuffer[$dataSet[static::KEY_PARENT_CATEGORY_KEY]]['idNavigationNode'][$navigationMode] ?? 0;
     }
 
     /**

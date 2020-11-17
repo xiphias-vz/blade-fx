@@ -1,8 +1,2 @@
 sales_unit_key,concrete_sku,code,conversion,precision,is_displayed,is_default
-sales_unit_0,37526_0,ITEM,1,1,1,1
-sales_unit_1,37526_1,ITEM,1,1,1,1
-sales_unit_2,37526_2,ITEM,1,1,1,1
-sales_unit_3,37526_3,ITEM,1,1,1,1
-sales_unit_4,777_0-kartoffeln,ITEM,1,1,1,1
-sales_unit_5,777_0-kartoffeln,KILO,2,100,1,0
-sales_unit_6,777_0-kartoffeln,GRAM,0.002,1,1,0
+

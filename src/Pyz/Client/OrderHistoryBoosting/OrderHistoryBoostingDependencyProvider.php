@@ -12,7 +12,7 @@ use Spryker\Client\Kernel\Container;
 
 class OrderHistoryBoostingDependencyProvider extends AbstractDependencyProvider
 {
-    const CLIENT_CUSTOMER = 'CLIENT_CUSTOMER';
+    public const CLIENT_CUSTOMER = 'CLIENT_CUSTOMER';
 
     /**
      * @param \Spryker\Client\Kernel\Container $container

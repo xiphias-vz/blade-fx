@@ -7,10 +7,10 @@
 
 namespace Pyz\Zed\Payone\Business;
 
-use Pyz\Zed\Payone\Buisness\StandardParameter\StandardParameterProvider;
-use Pyz\Zed\Payone\Buisness\StandardParameter\StandardParameterProviderInterface;
 use Pyz\Zed\Payone\Business\Api\Adapter\Http\Guzzle;
 use Pyz\Zed\Payone\Business\Payment\PaymentManager;
+use Pyz\Zed\Payone\Business\StandardParameter\StandardParameterProvider;
+use Pyz\Zed\Payone\Business\StandardParameter\StandardParameterProviderInterface;
 use Pyz\Zed\Payone\Business\TransactionStatus\TransactionStatusUpdateManager;
 use Pyz\Zed\Payone\PayoneDependencyProvider;
 use Spryker\Zed\Store\Business\StoreFacadeInterface;
@@ -75,7 +75,7 @@ class PayoneBusinessFactory extends SprykerEcoPayoneBusinessFactory
     }
 
     /**
-     * @return \Pyz\Zed\Payone\Buisness\StandardParameter\StandardParameterProviderInterface
+     * @return \Pyz\Zed\Payone\Business\StandardParameter\StandardParameterProviderInterface
      */
     public function createStandardParameterProvider(): StandardParameterProviderInterface
     {
