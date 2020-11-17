@@ -201,7 +201,7 @@ input {
     transition: all 250ms ease-in-out;
     text-align: center;
     cursor: pointer;
-    background: $setting-color-green;
+    background: $setting-color-orange;
     color: $setting-color-white;
     border: none;
     padding: 0 rem(6);
@@ -211,7 +211,7 @@ input {
     &:hover,
     &:focus,
     &:active {
-        background: $setting-color-green;
+        background: $setting-color-orange;
         color: $setting-color-white;
         box-shadow: 0 rem(4) rem(18) $setting-color-green-alpha-1;
     }
