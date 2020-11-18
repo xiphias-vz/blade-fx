@@ -6,13 +6,13 @@ command-timeout: 3600
 sections:
     restore-local-demo-data-files:
         categories:
-            command: "mv data/import/spryker/categories.csv.local data/import/spryker/categories.csv"
+            command: "mv data/import/spryker/categories.local.csv data/import/spryker/categories.csv"
 
         product-data:
-            command: "mv data/import/spryker/product_data.csv.local data/import/spryker/product_data.csv"
+            command: "mv data/import/spryker/product_data.local.csv data/import/spryker/product_data.csv"
 
         product-price:
-            command: "mv data/import/spryker/product_price.csv.local data/import/spryker/product_price.csv"
+            command: "mv data/import/spryker/product_price.local.csv data/import/spryker/product_price.csv"
 
         product-stock:
-            command: "mv data/import/spryker/product_stock.csv.local data/import/spryker/product_stock.csv"
+            command: "mv data/import/spryker/product_stock.local.csv data/import/spryker/product_stock.csv"

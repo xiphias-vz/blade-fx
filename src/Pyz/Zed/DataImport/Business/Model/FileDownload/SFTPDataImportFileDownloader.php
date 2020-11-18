@@ -14,9 +14,12 @@ use Generated\Shared\Transfer\FileSystemQueryTransfer;
 use Generated\Shared\Transfer\FileSystemResourceTransfer;
 use Pyz\Zed\DataImport\DataImportConfig;
 use Spryker\Service\FileSystem\FileSystemService;
+use Spryker\Shared\Log\LoggerTrait;
 
 class SFTPDataImportFileDownloader
 {
+    use LoggerTrait;
+
     /**
      * @var \Spryker\Service\FileSystem\FileSystemService
      */
@@ -61,6 +64,7 @@ class SFTPDataImportFileDownloader
                     $csvFileSavingStatus = $this->downloadFile($content, $fileName);
 
                     if (!$csvFileSavingStatus) {
+                        $this->getLogger()->error($fileName . ' file save error occurred.');
                         continue;
                     }
 
@@ -87,9 +91,9 @@ class SFTPDataImportFileDownloader
         $destinationFilePath = APPLICATION_ROOT_DIR . static::IMPORT_FILES_LOCATION_PATH . $destinationFileName;
 
         if (file_exists($destinationFilePath)) {
-            $file = file($destinationFilePath, FILE_SKIP_EMPTY_LINES);
+            $fileLines = file($destinationFilePath, FILE_SKIP_EMPTY_LINES);
 
-            if (count($file) > 1) {
+            if (count($fileLines) > 1) {
                 // duplicated csv files for the same entity found, merge them with removal of header for the duplicates
                 return (bool)file_put_contents($destinationFilePath, strstr($csvFileBody, "\n"), FILE_APPEND);
             }
