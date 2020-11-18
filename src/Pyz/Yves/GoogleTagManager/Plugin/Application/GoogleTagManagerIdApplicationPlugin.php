@@ -1,23 +1,27 @@
 <?php
 
+/**
+ * This file is part of the Spryker Commerce OS.
+ * For full license information, please view the LICENSE file that was distributed with this source code.
+ */
 
 namespace Pyz\Yves\GoogleTagManager\Plugin\Application;
 
-
-use Pyz\Shared\GoogleTagManager\GoogleTagManagerConstants;
 use Spryker\Service\Container\ContainerInterface;
 use Spryker\Shared\ApplicationExtension\Dependency\Plugin\ApplicationPluginInterface;
-use Spryker\Shared\Config\Config;
 use Spryker\Yves\Kernel\AbstractPlugin;
 
+/**
+ * @method \Pyz\Yves\GoogleTagManager\GoogleTagManagerConfig getConfig()
+ */
 class GoogleTagManagerIdApplicationPlugin extends AbstractPlugin implements ApplicationPluginInterface
 {
-
     public const GOOGLE_TAG_MANAGER_ID = 'googleTagManagerId';
 
     /**
-     * @param ContainerInterface $container
-     * @return ContainerInterface
+     * @param \Spryker\Service\Container\ContainerInterface $container
+     *
+     * @return \Spryker\Service\Container\ContainerInterface
      */
     public function provide(ContainerInterface $container): ContainerInterface
     {
@@ -27,27 +31,17 @@ class GoogleTagManagerIdApplicationPlugin extends AbstractPlugin implements Appl
     }
 
     /**
-     * @param ContainerInterface $container
-     * @return ContainerInterface
+     * @param \Spryker\Service\Container\ContainerInterface $container
+     *
+     * @return \Spryker\Service\Container\ContainerInterface
      */
     protected function addGoogleTagManagerId(ContainerInterface $container): ContainerInterface
     {
-        $container[static::GOOGLE_TAG_MANAGER_ID] = function()        {
-            return $this->getGoogleTagManagerId();
-        };
+        $container->set(static::GOOGLE_TAG_MANAGER_ID, function () {
+
+            return $this->getConfig()->getGoogleTagManagerId();
+        });
 
         return $container;
     }
-
-    /**
-     * @return string
-     * @throws \Exception
-     */
-    protected function getGoogleTagManagerId() : string
-    {
-        $id= Config::get(GoogleTagManagerConstants::CONTAINER_ID);
-
-        return strval($id);
-    }
-
 }
