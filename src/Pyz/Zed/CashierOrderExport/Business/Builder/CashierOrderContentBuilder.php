@@ -182,6 +182,11 @@ class CashierOrderContentBuilder implements CashierOrderContentBuilderInterface
         return $this->addEndingZeroSets($content, static::DEFAULT_POSITION_ENDING_ZERO_SETS);
     }
 
+    /**
+     * @param \Generated\Shared\Transfer\ItemTransfer $itemTransfer
+     *
+     * @return string
+     */
     protected function getSapItemTaxId(ItemTransfer $itemTransfer)
     {
         $taxRateToSapItemTaxIdMap = $this->cashierOrderExportConfig->getTaxRateToSapItemTaxIdMap();
