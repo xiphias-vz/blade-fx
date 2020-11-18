@@ -2,6 +2,12 @@
     #{$name} {
         padding: rem(24) rem(16);
 
+        .success-information-holder {
+            margin: 0px auto;
+            text-align: left;
+            width: 80%;
+        }
+
         @include helper-breakpoint-media-min($lg-min) {
             padding: rem(85) rem(16);
         }
