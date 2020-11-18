@@ -9,5 +9,5 @@ namespace Pyz\Shared\GoogleTagManager;
 
 class GoogleTagManagerConstants
 {
-    public const CONTAINER_ID = '';
+    public const CONTAINER_ID = 'CONTAINER_ID';
 }
