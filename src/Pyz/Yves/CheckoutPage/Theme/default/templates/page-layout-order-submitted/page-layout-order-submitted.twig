@@ -6,7 +6,6 @@
     collectNumber: '',
     requestedDeliveryDate: '',
     deliveryMethodKey: '',
-    orderReference:'',
 } %}
 
 {%- block class -%}{{ parent() }} page-layout-main--success-page{%- endblock -%}
@@ -20,10 +19,6 @@
         <div class="success-page__container container">
             <h1 class="title title--checkout-success">{{ data.title }}</h1>
             <p class="success-page__text">{{ data.message }}</p>
-
-            <p class="success-page__text">{{ data.orderReference }}</p>
-
-
             {% if data.requestedDeliveryDate %}
                 {% set splittedDeliveryDate = data.requestedDeliveryDate | split('_') %}
                 <p class="success-page__text">{{ ('checkout.order.submitted.' ~ data.deliveryMethodKey) | trans }} : {{ splittedDeliveryDate | first | formatDate }} - {{ splittedDeliveryDate | last }}</p>
