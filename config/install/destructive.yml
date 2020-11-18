@@ -49,6 +49,9 @@ sections:
         import:
             command: "vendor/bin/console data:import -vvv --no-ansi || true"
 
+        sftp-based-full-import:
+            command: "vendor/bin/install -r sftp-based-full-import"
+
         import-mu:
             command: "vendor/bin/console data:import product-measurement-unit -vvv --no-ansi || true"
 
