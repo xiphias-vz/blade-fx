@@ -10,6 +10,7 @@
 
 {% block body %}
     {% for optionGroup in data.optionGroups %}
+        {{ optionGroup.name | trans }}
         {% if optionGroup.getProductOptionValues[0] %}
             <input name="product-option['{{ optionGroup.name}}']" value="{{ optionGroup.getProductOptionValues[0].getIdProductOptionValue }}" type="hidden">
         {% endif %}

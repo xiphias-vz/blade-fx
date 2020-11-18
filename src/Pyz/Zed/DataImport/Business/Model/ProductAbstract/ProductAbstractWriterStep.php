@@ -45,6 +45,7 @@ class ProductAbstractWriterStep extends PublishAwareStep implements DataImportSt
     public const KEY_LOCALES = 'locales';
     public const ID_PRODUCT_ABSTRACT = 'id_product_abstract';
     public const IS_PRODUCT_CONCRETE = 'Concrete';
+    public const FK_TAX_SET = 'fk_tax_set';
 
     /**
      * @var \Pyz\Zed\DataImport\Business\Model\Product\Repository\ProductRepository
@@ -143,6 +144,7 @@ class ProductAbstractWriterStep extends PublishAwareStep implements DataImportSt
         }
 
         $dataSet[static::ID_PRODUCT_ABSTRACT] = $productAbstractEntity->getIdProductAbstract();
+        $dataSet[static::FK_TAX_SET] = $fkTaxSet;
 
         return $productAbstractEntity;
     }

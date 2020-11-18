@@ -19,7 +19,7 @@
 {% set isProductConcrete = data.product.idProductConcrete is not empty %}
 {% set isDisabled = data.product.idProductConcrete is empty or data.product.price is empty %}
 {% set isProductAvailable = true %}
-{% set depositCount = data.product.attributes['Anzahl Pfand'] | default(0) %}
+{% set depositCount = data.product.attributes['pfand_1_count'] | default(0) %}
 
 {% for index in 1..data.maxQuantity %}
     {% set options = options | merge([{
