@@ -38,7 +38,6 @@ class GoogleTagManagerIdApplicationPlugin extends AbstractPlugin implements Appl
     protected function addGoogleTagManagerId(ContainerInterface $container): ContainerInterface
     {
         $container->set(static::GOOGLE_TAG_MANAGER_ID, function () {
-
             return $this->getConfig()->getGoogleTagManagerId();
         });
 
