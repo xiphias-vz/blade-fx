@@ -43,7 +43,7 @@ class SelectPickingZoneWidget extends AbstractWidget
     protected function findCurrentPickingZone(): ?PickingZoneTransfer
     {
         $factory = $this->getFactory();
-        $session = $this->getGlobalContainer()->getContainer()['session'];
+        $session = $this->getGlobalContainer()->getContainer()->get('session');
         $idPickingZone = $session->get($this->getConfig()->getPickingZoneSessionKey());
 
         if (!$idPickingZone) {

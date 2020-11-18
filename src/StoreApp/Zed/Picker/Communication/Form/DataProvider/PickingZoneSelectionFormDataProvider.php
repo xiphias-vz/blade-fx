@@ -48,7 +48,7 @@ class PickingZoneSelectionFormDataProvider
     }
 
     /**
-     * @return string[][]
+     * @return string[]
      */
     protected function getPickingZones(): array
     {

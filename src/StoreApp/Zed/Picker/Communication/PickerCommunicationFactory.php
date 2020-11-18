@@ -48,7 +48,7 @@ class PickerCommunicationFactory extends AbstractCommunicationFactory
      * @param mixed[] $data
      * @param mixed[] $options
      *
-     * @return \Symfony\Component\Form\FormInterface|\StoreApp\Zed\Picker\Communication\Form\PickingZoneSelectionForm
+     * @return \Symfony\Component\Form\FormInterface
      */
     public function createPickingZoneSelectionForm(array $data, array $options): FormInterface
     {

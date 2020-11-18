@@ -25,7 +25,7 @@ class PickingZonePersistenceFactory extends AbstractPersistenceFactory
     }
 
     /**
-     * @return \Spryker\Zed\Merchant\Persistence\Propel\Mapper\PickingZoneMapper
+     * @return \Pyz\Zed\PickingZone\Persistence\Mapper\PickingZoneMapper
      */
     public function createPickingZoneMapper(): PickingZoneMapper
     {
