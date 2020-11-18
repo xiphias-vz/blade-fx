@@ -57,7 +57,7 @@ $jobs[] = [
 for ($i = 1; $i <= 1; $i++) {
     $jobs[] = [
         'name' => 'check-oms-conditions-' . $i,
-        'command' => '$PHP_BIN vendor/bin/console oms:check-condition -p ' . $i,
+        'command' => '$PHP_BIN vendor/bin/console oms:check-condition', // -p ' . $i,
         'schedule' => '* * * * *',
         'enable' => true,
         'stores' => $allStores,
@@ -65,7 +65,7 @@ for ($i = 1; $i <= 1; $i++) {
 
     $jobs[] = [
         'name' => 'check-oms-timeouts-' . $i,
-        'command' => '$PHP_BIN vendor/bin/console oms:check-timeout -p ' . $i,
+        'command' => '$PHP_BIN vendor/bin/console oms:check-timeout', // -p ' . $i,
         'schedule' => '* * * * *',
         'enable' => true,
         'stores' => $allStores,
