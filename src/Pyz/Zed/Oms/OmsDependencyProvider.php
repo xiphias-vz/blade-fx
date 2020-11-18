@@ -9,6 +9,8 @@ namespace Pyz\Zed\Oms;
 
 use Pyz\Service\DateTimeWithZone\DateTimeWithZoneServiceInterface;
 use Pyz\Zed\CancelledItems\Communication\Plugin\Oms\Command\UpdateOrderDueCancelledItemsCommandByOrderPlugin;
+use Pyz\Zed\CashierOrderExport\Communication\Plugin\Oms\Command\CashierOrderExportCommandPlugin;
+use Pyz\Zed\CashierOrderExport\Communication\Plugin\Oms\Condition\IsOrderExportedToCashierConditionPlugin;
 use Pyz\Zed\Invoice\Communication\Plugin\Oms\Command\GenerateInvoiceReferenceCommandByOrderPlugin;
 use Pyz\Zed\Invoice\Communication\Plugin\Oms\Command\SendInvoiceCommandByOrderPlugin;
 use Pyz\Zed\Invoice\Communication\Plugin\Oms\Condition\IfTimeToSendInvoiceConditionPlugin;
@@ -174,6 +176,8 @@ class OmsDependencyProvider extends SprykerOmsDependencyProvider
 
             $commandCollection->add(new CancelByTimeoutCommandPlugin(), 'Sales/CancelByTimeout');
 
+            $commandCollection->add(new CashierOrderExportCommandPlugin(), 'CashierOrderExport/OrderExport');
+
             return $commandCollection;
         });
 
@@ -218,6 +222,9 @@ class OmsDependencyProvider extends SprykerOmsDependencyProvider
 
             // Invoice
             $conditionCollection->add(new IfTimeToSendInvoiceConditionPlugin(), 'if time to send invoice');
+
+            //Cashier
+            $conditionCollection->add(new IsOrderExportedToCashierConditionPlugin(), 'is order exported to cashier');
 
             return $conditionCollection;
         });
