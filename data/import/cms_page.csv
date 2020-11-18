@@ -1,5 +1,5 @@
 template_name,is_searchable,is_active,publish,page_key,url.de_DE,url.en_US,name.de_DE,name.en_US,meta_title.de_DE,meta_title.en_US,meta_keywords.de_DE,meta_keywords.en_US,meta_description.de_DE,meta_description.en_US,placeholder.title.de_DE,placeholder.title.en_US,placeholder.content.de_DE,placeholder.content.en_US
-Placeholders Title & Content + Slot,1,1,1,page_132,/de/impressum34,/en/imprint34,Impressum34,Imprint,Impressum34,Imprint,Impressum,Imprint,Impressum,Imprint,<h2>Impressum</h2>,<h2>About</h2>,"<span class=""cms-page__notification"">Bitte beachten Sie, dass dies nur ein Beispiel ist und im Einzelfall immer angepasst werden muss.</span>
+static full page,1,1,1,page_1,/de/impressum/,/en/imprint,Impressum,Imprint,Impressum,Imprint,Impressum,Imprint,Impressum,Imprint,<h2>Impressum</h2>,<h2>About</h2>,"<span class=""cms-page__notification"">Bitte beachten Sie, dass dies nur ein Beispiel ist und im Einzelfall immer angepasst werden muss.</span>
 <p>Demoshop<br/>
     Julie-Wolfthornstraße 1<br/>10555 Berlin</p>
 
@@ -88,7 +88,225 @@ Placeholders Title & Content + Slot,1,1,1,page_132,/de/impressum34,/en/imprint34
    pages requires the prior consent of the respective owner of the rights. Individual reproductions of a work are allowed only
    for private use, so must not serve either directly or indirectly for earnings. Unauthorized utilization of copyrighted works
    is punishable (§ 106 of the copyright law).</p>"
-Placeholders Title & Content + Slot,1,1,1,page_2,/de/agb,/en/gtc,AGB,GTC,AGB,GTC,AGB,GTC,AGB,GTC,<h2>Allgemeine Geschäftsbedingungen (AGB)</h2>,<h2>General Terms and Conditions (GTC)</h2>,"<span class=""cms-page__notification"">Bitte beachten Sie, dass dies nur ein Beispiel ist und im Einzelfall immer angepasst werden muss.</span>
+static full page,1,1,1,page_2,/de/datenschutz/,/en/privacy,Datenschutz,Data Privacy,Datenschutz,Data Privacy,Datenschutz,Data Privacy,Datenschutz,Data Privacy,<h2>Datenschutzerklärung</h2>,<h2>Data Privacy Policy</h2>,"<span class=""cms-page__notification"">Bitte beachten Sie, dass dies nur ein Beispiel ist und im Einzelfall immer angepasst werden muss.</span>
+<p>Die Nutzung unserer Seite ist ohne eine Angabe von personenbezogenen Daten möglich. Für die Nutzung einzelner
+    Services unserer Seite können sich hierfür abweichende Regelungen ergeben, die in diesem Falle nachstehend gesondert
+    erläutert werden. Ihre personenbezogenen Daten (z.B. Name, Anschrift, E-Mail, Telefonnummer, u.ä.) werden von uns
+    nur gemäß den Bestimmungen des deutschen Datenschutzrechts verarbeitet. Daten sind dann personenbezogen, wenn sie
+    eindeutig einer bestimmten natürlichen Person zugeordnet werden können. Die rechtlichen Grundlagen des Datenschutzes
+    finden Sie im Bundesdatenschutzgesetz (BDSG) und dem Telemediengesetz (TMG). Nachstehende Regelungen informieren Sie
+    insoweit über die Art, den Umfang und Zweck der Erhebung, die Nutzung und die Verarbeitung von personenbezogenen
+    Daten durch den Anbieter</p>
+
+<p>Wir weisen darauf hin, dass die internetbasierte Datenübertragung Sicherheitslücken aufweist, ein lückenloser Schutz
+    vor Zugriffen durch Dritte somit unmöglich ist.</p>
+
+<h3>Auskunft/Widerruf/Löschung</h3>
+
+<p>Sie können sich aufgrund des Bundesdatenschutzgesetzes bei Fragen zur Erhebung, Verarbeitung oder Nutzung Ihrer
+    personenbezogenen Daten und deren Berichtigung, Sperrung, Löschung oder einem Widerruf einer erteilten Einwilligung
+    unentgeltlich an uns wenden. Wir weisen darauf hin, dass Ihnen ein Recht auf Berichtigung falscher Daten oder
+    Löschung personenbezogener Daten zusteht, sollte diesem Anspruch keine gesetzliche Aufbewahrungspflicht
+    entgegenstehen.</p>
+
+<p>
+    <a target=""_blank"" href=""https://www.ratgeberrecht.eu/leistungen/muster-datenschutzerklaerung.html"">Muster-Datenschutzerklärung</a>
+    der Anwaltskanzlei Weiß &amp; Partner</p>","<span class=""cms-page__notification"">Please note this is only an example and must always be adapted in individual cases.</span>
+<p>Our website may be used without entering personal information. Different rules may apply to certain services on our site,
+ however, and are explained separately below. We collect personal information from you (e.g. name, address, email address,
+ telephone number, etc.) in accordance with the provisions of German data protection statutes. Information is considered
+ personal if it can be associated exclusively to a specific natural person. The legal framework for data protection may be found
+ in the German Federal Data Protection Act (BDSG) and the Telemedia Act (TMG). The provisions below serve to provide information
+ as to the manner, extent and purpose for collecting, using and processing personal information by the provider.</p>
+
+<p>Please be aware that data transfer via the internet is subject to security risks and, therefore, complete protection
+against third-party access to transferred data cannot be ensured.</p>
+
+<h3>Information/Cancellation/Deletion</h3>
+
+<p>On the basis of the Federal Data Protection Act, you may contact us at no cost if you have questions relating to the
+collection, processing or use of your personal information, if you wish to request the correction, blocking or deletion of the
+same, or if you wish to cancel explicitly granted consent. Please note that you have the right to have incorrect data corrected or
+to have personal data deleted, where such claim is not barred by any legal obligation to retain this data.</p>
+
+<p>
+    <a target=""_blank"" href=""https://www.ratgeberrecht.eu/leistungen/muster-datenschutzerklaerung.html"">Sample Data Privacy Policy Statement</a>
+    provided by the Law Offices of Weiß & Partner</p>"
+static full page,1,1,1,page_3,/de/kontakt/,/en/contact/,Kontakt,Contact,Kontakt,Contact,Kontakt,Contact,Kontakt,Contact,Kontakt,Contact,"<style type=""text/css"">
+    .block_ {
+        color: #00005F;
+        display: block;
+        font-size: 1.41667em;
+        font-weight: bold;
+        line-height: 1.2;
+        margin-bottom: 0;
+        margin-left: 0;
+        margin-right: 0;
+        margin-top: 0;
+        padding-bottom: 0;
+        padding-left: 0;
+        padding-right: 0;
+        padding-top: 0;
+        text-align: center
+    }
+    .block_1 {
+        color: black;
+        display: block;
+        font-family: serif;
+        font-size: 1em;
+        line-height: 1.2;
+        margin-bottom: 0;
+        margin-left: 0;
+        margin-right: 0;
+        margin-top: 0;
+        padding-bottom: 0;
+        padding-left: 0;
+        padding-right: 0;
+        padding-top: 0
+    }
+    .block_2 {
+        display: block;
+        line-height: 1.5;
+        margin-bottom: 0;
+        margin-left: 0;
+        margin-right: 0;
+        margin-top: 0;
+        padding-bottom: 0;
+        padding-left: 0;
+        padding-right: 0;
+        padding-top: 0
+    }
+    .block_3 {
+        color: black;
+        display: block;
+        font-family: serif;
+        font-size: 1em;
+        line-height: 1.5;
+        margin-bottom: 0;
+        margin-left: 0;
+        margin-right: 0;
+        margin-top: 0;
+        padding-bottom: 0;
+        padding-left: 0;
+        padding-right: 0;
+        padding-top: 0
+    }
+    .block_4 {
+        color: black;
+        display: block;
+        line-height: 1.5;
+        margin-bottom: 0;
+        margin-left: 0;
+        margin-right: 0;
+        margin-top: 0;
+        padding-bottom: 0;
+        padding-left: 0;
+        padding-right: 0;
+        padding-top: 0
+    }
+    .block_5 {
+        color: #1F3864;
+        display: block;
+        line-height: 1.5;
+        margin-bottom: 0;
+        margin-left: 0;
+        margin-right: 0;
+        margin-top: 0;
+        padding-bottom: 0;
+        padding-left: 0;
+        padding-right: 0;
+        padding-top: 0
+    }
+    .block_6 {
+        display: block;
+        margin-bottom: 8pt;
+        margin-left: 0;
+        margin-right: 0;
+        margin-top: 0;
+        padding-bottom: 0;
+        padding-left: 0;
+        padding-right: 0;
+        padding-top: 0
+    }
+    .calibre {
+        color: #000;
+        display: block;
+        font-family: ""Food Shop SUED Office"", serif;
+        font-size: 1em;
+        margin-bottom: 0;
+        margin-left: 5pt;
+        margin-right: 5pt;
+        margin-top: 0;
+        padding-left: 0;
+        padding-right: 0
+    }
+    .text_ {
+        color: #000
+    }
+    .text_1 {
+        background-color: #FFF;
+        border-bottom-color: black;
+        border-bottom-style: none;
+        border-bottom-width: 1pt;
+        border-left-color: black;
+        border-left-style: none;
+        border-left-width: 1pt;
+        border-right-color: black;
+        border-right-style: none;
+        border-right-width: 1pt;
+        border-top-color: black;
+        border-top-style: none;
+        border-top-width: 1pt;
+        color: #00005F;
+        padding-bottom: 0;
+        padding-left: 0;
+        padding-right: 0;
+        padding-top: 0
+    }
+    .text_2 {
+        background-color: #FFF;
+        border-bottom-color: black;
+        border-bottom-style: none;
+        border-bottom-width: 1pt;
+        border-left-color: black;
+        border-left-style: none;
+        border-left-width: 1pt;
+        border-right-color: black;
+        border-right-style: none;
+        border-right-width: 1pt;
+        border-top-color: black;
+        border-top-style: none;
+        border-top-width: 1pt;
+        color: #00005F;
+        padding-bottom: 0;
+        padding-left: 0;
+        padding-right: 0;
+        padding-top: 0;
+        text-decoration: underline
+    }
+
+    @page {
+        margin-bottom: 5pt;
+        margin-top: 5pt
+    }
+
+
+</style>
+<div class=""calibre"" id=""calibre_link-0"">
+    <p class=""block_1"">&nbsp;</p>
+    <p class=""block_1"">&nbsp;</p>
+    <p class=""block_1"">&nbsp;</p>
+    <p class=""block_2"">Du hast Fragen rund um unseren Abholservice oder möchtest uns helfen noch besser zu werden?</p>
+    <p class=""block_2"">Schreib uns einfach eine E-Mail - wir sind immer gerne für dich da!</p>
+    <p class=""block_3"">&nbsp;</p>
+    <p class=""block_4""><span class=""text_"">E-Mail:</span><span class=""text_1""> </span><a
+        href=""mailto:no-reply@spryker.de"" class=""text_2"">no-reply@spryker.de</a></p>
+    <p class=""block_3"">&nbsp;</p>
+    <p class=""block_5"">Dein Food Shop Team </p>
+    <p class=""block_6""></p>
+
+</div>",
+static full page,1,1,1,page_4,/de/agb-online-kauf,/en/gtc-online-purchase,AGB,GTC,AGB,GTC,AGB,GTC,AGB,GTC,<h2>Allgemeine Geschäftsbedingungen (AGB)</h2>,<h2>General Terms and Conditions (GTC)</h2>,"<span class=""cms-page__notification"">Bitte beachten Sie, dass dies nur ein Beispiel ist und im Einzelfall immer angepasst werden muss.</span>
 
 <br/>
 <br/><br/>
@@ -293,208 +511,148 @@ regarding user interactions with ad impressions and other ad service functions a
 <div style=""font-size:11px;"">
     <br/>
 </div>"
-Placeholders Title & Content + Slot,1,1,1,page_3,/de/datenschutz,/en/privacy,Datenschutzerklärung,Data Privacy,Datenschutzerklärung,Data Privacy,Datenschutzerklärung,Data Privacy,Datenschutzerklärung,Data Privacy,<h2>Datenschutzerklärung</h2>,<h2>Data Privacy Policy</h2>,"<span class=""cms-page__notification"">Bitte beachten Sie, dass dies nur ein Beispiel ist und im Einzelfall immer angepasst werden muss.</span>
-<p>Die Nutzung unserer Seite ist ohne eine Angabe von personenbezogenen Daten möglich. Für die Nutzung einzelner
-    Services unserer Seite können sich hierfür abweichende Regelungen ergeben, die in diesem Falle nachstehend gesondert
-    erläutert werden. Ihre personenbezogenen Daten (z.B. Name, Anschrift, E-Mail, Telefonnummer, u.ä.) werden von uns
-    nur gemäß den Bestimmungen des deutschen Datenschutzrechts verarbeitet. Daten sind dann personenbezogen, wenn sie
-    eindeutig einer bestimmten natürlichen Person zugeordnet werden können. Die rechtlichen Grundlagen des Datenschutzes
-    finden Sie im Bundesdatenschutzgesetz (BDSG) und dem Telemediengesetz (TMG). Nachstehende Regelungen informieren Sie
-    insoweit über die Art, den Umfang und Zweck der Erhebung, die Nutzung und die Verarbeitung von personenbezogenen
-    Daten durch den Anbieter</p>
+static full page,1,1,1,page_5,/de/faq/,/en/faq/,FAQ,FAQ,FAQ,FAQ,FAQ,FAQ,FAQ,FAQ,FAQ - Click&Collect&Delivery Shop,FAQ - Click&Collect&Delivery Shop,"<style type=""text/css"">
+    .cms-page__content h2, .cms-page__content h3 {
+								margin: 0.75rem 0;
+				}
 
-<p>Wir weisen darauf hin, dass die internetbasierte Datenübertragung Sicherheitslücken aufweist, ein lückenloser Schutz
-    vor Zugriffen durch Dritte somit unmöglich ist.</p>
+				.cms-page__content h3 {
+				    font-size: 0.875rem;
+    				font-weight: bold;
+				}
 
-<h3>Auskunft/Widerruf/Löschung</h3>
 
-<p>Sie können sich aufgrund des Bundesdatenschutzgesetzes bei Fragen zur Erhebung, Verarbeitung oder Nutzung Ihrer
-    personenbezogenen Daten und deren Berichtigung, Sperrung, Löschung oder einem Widerruf einer erteilten Einwilligung
-    unentgeltlich an uns wenden. Wir weisen darauf hin, dass Ihnen ein Recht auf Berichtigung falscher Daten oder
-    Löschung personenbezogener Daten zusteht, sollte diesem Anspruch keine gesetzliche Aufbewahrungspflicht
-    entgegenstehen.</p>
+</style>
+<h3>Please note this is only an example and must always be adapted in individual cases.</h3>
 
-<p>
-    <a target=""_blank"" href=""https://www.ratgeberrecht.eu/leistungen/muster-datenschutzerklaerung.html"">Muster-Datenschutzerklärung</a>
-    der Anwaltskanzlei Weiß &amp; Partner</p>","<span class=""cms-page__notification"">Please note this is only an example and must always be adapted in individual cases.</span>
-<p>Our website may be used without entering personal information. Different rules may apply to certain services on our site,
- however, and are explained separately below. We collect personal information from you (e.g. name, address, email address,
- telephone number, etc.) in accordance with the provisions of German data protection statutes. Information is considered
- personal if it can be associated exclusively to a specific natural person. The legal framework for data protection may be found
- in the German Federal Data Protection Act (BDSG) and the Telemedia Act (TMG). The provisions below serve to provide information
- as to the manner, extent and purpose for collecting, using and processing personal information by the provider.</p>
+<h3>Wie funktioniert der Click&Collect&Delivery Service?</h3>
+<p>Bei uns gibt es eine große Auswahl an Produkten von Lebensmitteln wie Obst und Gemüse bis hin zu Dingen für die Hausapotheke und Elekrtowaren. Sobald du alle deine Produkte zusammen hast, kannst du ein für dich passenden Service und das Zeitfenster auswählen und deine gewünschten Produkte bestellen.</p>
 
-<p>Please be aware that data transfer via the internet is subject to security risks and, therefore, complete protection
-against third-party access to transferred data cannot be ensured.</p>
+<h3>1. Bestellung</h3>
 
-<h3>Information/Cancellation/Deletion</h3>
+<h4>Wie übermittle ich einen Wunscheinkauf?</h4>
+<p>Der Click&Collect&Delivery Shop ist an jedem Tag und zu jeder Zeit für dich zur verfügung - auf der Seite kannst du ganz in Ruhe und bequem in unser Produktübersicht stöbern. Durch einfaches Klicken auf das Produkt kannst du die Artikel zu deinem Wunscheinkauf hinzufügen. Sobald du alle Produkte, die du benötigst, ausgewählt hast, kannst du ganz einfach auf das kleine Einkaufskorb-Symbol klicken. Anschließend kannst du einen Service und dein Zeitfenster auswählen und deinen Wunscheinkauf übermitteln.
+    Wie kann ich meinen Wunscheinkauf anpassen?</p>
+<p>Um Produkte zu deinem Wunscheinkauf hinzuzufügen, klicke einfach auf das Produktfoto oder auf den Button „zum Wunscheinkauf hinzufügen“. Die Anzahl der Produkte kannst du dabei problemlos durch mehrfaches klicken bestimmen.</p>
+<p>Über das kleine Einkaufskorb-Symbol gelangst jederzeit zu einer Übersicht mit allen Produkten, die du zu deinem Wunscheinkauf hinzugefügt hast. An dieser Stelle kannst du Produkte auch wieder entfernen oder die Anzahl verändern. Nutze dafür einfach die Plus/Minus Zeichen neben den einzelnen Produkten.</p>
+<p>Um den kompletten Wunscheinkauf zu löschen, kannst du einfach „Alle Produkte entfernen“ auswählen.</p>
 
-<p>On the basis of the Federal Data Protection Act, you may contact us at no cost if you have questions relating to the
-collection, processing or use of your personal information, if you wish to request the correction, blocking or deletion of the
-same, or if you wish to cancel explicitly granted consent. Please note that you have the right to have incorrect data corrected or
-to have personal data deleted, where such claim is not barred by any legal obligation to retain this data.</p>
+<h4>Welche Funktionen hat der Merkzettel?</h4>
+<p>Über die Produktseite kannst du jederzeit einzelne Produkte zu deinen (individuellen) Merkzetteln hinzufügen. Darüber hinaus kannst du für jeden Wunscheinkauf einen Merkzettel anlegen. Solltest du den gleichen oder einen ähnlichen Wunscheinkauf wiederholen wollen, kannst du einfach einen bereits vorhandenen Merkzettel aufrufen und alle Produkte erneut zu deinem Wunscheinkauf hinzufügen. Das spart Zeit!</p>
+    <h3>Wie wähle ich mein Zeitfenster aus?</h3>
+<p>Im Rahmen des Checkout-Prozesses kannst du ein einstündiges Zeitfenster auswählen. Dir werden immer die verfügbaren Zeitfenster für die nächsten 5 Tage angezeigt.</p>
+<h4>Kann ich meinen Wunscheinkauf nachträglich bearbeiten?</h4>
+<p>Du kannst deinen Wunscheinkauf bis zum Vortag um 24:00 Uhr stornieren und anschließend einen neuen Wunscheinkauf aufgeben, sofern du nachträglich etwas anpassen möchtest.</p>
+<h4>Ich habe keine Bestätigung für meinen Wunscheinkauf bekommen, was kann ich jetzt tun?</h4>
+<p>Solltest du keine Bestätigung für deinen Wunscheinkauf erhalten, kann es sein, dass diese in deinem Spam-Ordner gelandet ist. In dem Bereich ""Mein Profil"" werden alle getätigten Wunscheinkäufe aufgeführt. Solltest du sie dort nicht finden, kannst du dich gerne an unseren Kundenservice wenden.</p>
 
-<p>
-    <a target=""_blank"" href=""https://www.ratgeberrecht.eu/leistungen/muster-datenschutzerklaerung.html"">Sample Data Privacy Policy Statement</a>
-    provided by the Law Offices of Weiß & Partner</p>"
-Placeholders Title & Content + Slot,1,0,1,page_4,/de/loremde,/en/lorem,Lorem ipsum,Lorem ipsum,Lorem ipsum,Lorem ipsum,Lorem ipsum,Lorem ipsum,Lorem ipsum,Lorem ipsum,Lorem ipsum,Lorem ipsum,"Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem.","Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem."
-Placeholders Title & Content + Slot,1,1,0,page_5,/de/dolorde,/en/dolor,Dolor sit amet,Dolor sit amet,Dolor sit amet,Dolor sit amet,Dolor sit amet,Dolor sit amet,Dolor sit amet,Dolor sit amet,Lorem ipsum,Lorem ipsum,"Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem.","Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem."
-Placeholders Title & Content + Slot,1,1,1,page_6,/de/demo-landing-page,/en/demo-landing-page,Demo Landing Page,Demo Landing Page,Demo Landing Page,Demo Landing Page,"demo,cms page, landing page","demo,cms page, landing page",This is a demo landing page with different content widgets.,This is a demo landing page with different content widgets.,,,"<p>{{ content_banner('br-the-freedom-of-cellular', 'slider-without-link') }}</p>
-<p><br></p>
-<div class=""product-slider-title product-slider-title--set"">
-    <h3 class=""title title--regular"">Steuere dein Leben mit Smartwatches</h3>
-</div>
-<p>
-    <img src=""//d2s0ynfc62ej12.cloudfront.net/b2c/photo_1.png"">
-</p>
-<p>
-    <br>
-</p>
-<p>
-    <br>
-</p>
-<p>
-    Zeichne deine täglichen Aktivitäten mit unserer großen Auswahl an GPS Smartwatches auf. Vollgepackt mit verschiedenen Sensoren und technischen Innovationen um deinen Anforderungen gerecht zu werden, hält Someros Auswahl dich ständig auf dem Laufenden.
-</p>
-<div class=""product-slider-title product-slider-title--set"">
-    <h3 class=""title title--regular"">Lifestyle Uhren</h3>
-</div>
-<p>
-    <img src=""//d2s0ynfc62ej12.cloudfront.net/b2c/photo_2.png"">
-</p>
-<p>
-    Für alle, die ihre Smartwatch für mehr als nur Sport und Aktivitäten-Tracking tragen möchten, bieten wir eine große Auswahl an Optionen, mit denen du alltägliche Aufgaben, wie Anrufe oder Textnachrichten beantworten, Musik hören oder sogar Bestellung aufgeben, unkompliziert und flexibel erledigen kannst, dank automatischer Synchronisierung mit deinen mobilen Geräten. Jede Uhr ist Wi-Fi-kompatibel, damit du unterwegs Apps wie Musik, Wetter oder persönliche Nachrichten und E-Mails schneller und einfacher synchronisieren kannst.
-</p>
-<p>
-    <br>
-</p>
-<p>
-    <br>
-</p>
-<p>
-    {{ content_product_abstract_list('apl-watches', 'slider') }}
-    <span style=""color: rgb(17, 17, 17); font-family: Calibre, sans-serif; font-size: 16px;"">
-        <br>
-    </span>
-    <br>
-    {{ content_banner('br-white-or-black', 'slider-without-link') }}
-</p>
-<p>
-    <br>
-</p>
-<p>
-    <br>
-</p>
-<p style=""text-align: center; max-width: 400px; margin: 0 auto;"">
-    Schließlich kaufen wir heutzutage nicht nur Gadgets, sondern drücken damit ein Lebensstil aus. Daher ist es wichtig zu wissen, wie unsere Sachen von anderen wahrgenommen werden.
-</p>
-<p>
-    <br>
-</p>
-<p>
-    <br>
-</p>
-<p>
-    {{ content_product_abstract_list('apl-smartwatches-white', 'slider-not-include-group') }}
-    {{ content_product_abstract_list('apl-smartwatches-black', 'slider-not-include-group') }}
-</p>
-<div class=""product-slider-title product-slider-title--set"">
-    <h3 class=""title title--regular"">Für Outdoor Sport</h3>
-</div>
-<p>
-    <img src=""//d2s0ynfc62ej12.cloudfront.net/b2c/photo_3.png"">
-</p>
-<p>
-    Smartwatches speziell ausgerichtet auf Wandern und Klettern, ausgestattet mit speziellen Technologien für Höhenmessung, Barometern, Luftdruck und Routenplanung.
-</p>
-<p>
-    <br>
-</p>
-<p>
-    <br>
-</p>
-<p>
-    {{ content_product_abstract_list('apl-smartwatches-2', 'slider') }}
-</p>
-<br>
-{{ content_product_set('ps-1', 'add-to-cart') }}
-","<p>{{ content_banner('br-the-freedom-of-cellular', 'slider-without-link') }}</p>
-<p><br></p>
-<div class=""product-slider-title product-slider-title--set"">
-    <h3 class=""title title--regular"">Control your life with smartwatches</h3>
-</div>
-<p>
-    <img src=""//d2s0ynfc62ej12.cloudfront.net/b2c/photo_1.png"">
-</p>
-<p>
-    <br>
-</p>
-<p>
-    <br>
-</p>
-<p>
-    Track every stride you take with our smart selection of customizable GPS watches. Packed with different sensors and technology to fit your unique need, Spryker's selection of watches is sure to keep you connected no matter your activity or routine.
-</p>
-<div class=""product-slider-title product-slider-title--set"">
-    <h3 class=""title title--regular"">Lifestyle watches</h3>
-</div>
-<p>
-    <img src=""//d2s0ynfc62ej12.cloudfront.net/b2c/photo_2.png"">
-</p>
-<p>
-    For those who want to wear their smartwatch for more than just sports and activities, we carry a large selection of choices that allow you to perform everyday activities like answering calls or text messages through a synchronization&nbsp;with your mobile device, stream music, or even order coffee using your smartphone apps. Each watch sold is also Wi-Fi compatible, making it easier to sync items like music, weather, or personal items like email faster and easier while you're on the go.
-</p>
-<p>
-    <br>
-</p>
-<p>
-    <br>
-</p>
-<p>
-    {{ content_product_abstract_list('apl-watches', 'slider') }}
-    <span style=""color: rgb(17, 17, 17); font-family: Calibre, sans-serif; font-size: 16px;"">
-        <br>
-    </span>
-    <br>
-    {{ content_banner('br-white-or-black', 'slider-without-link') }}
-</p>
-<p>
-    <br>
-</p>
-<p>
-    <br>
-</p>
-<p style=""text-align: center; max-width: 400px; margin: 0 auto;"">
-    After all, these days we aren't just buying gadgets, but accessorizing our lifestyles, so it is important to know how our stuff will be perceived by others.
-</p>
-<p>
-    <br>
-</p>
-<p>
-    <br>
-</p>
-<p>
-    {{ content_product_abstract_list('apl-smartwatches-white', 'slider-not-include-group') }}
-    {{ content_product_abstract_list('apl-smartwatches-black', 'slider-not-include-group') }}
-</p>
-<div class=""product-slider-title product-slider-title--set"">
-    <h3 class=""title title--regular"">For Outdoor Sports</h3>
-</div>
-<p>
-    <img src=""//d2s0ynfc62ej12.cloudfront.net/b2c/photo_3.png"">
-</p>
-<p>
-    Watches geared towards hikers and trail runners are equipt with technology like Altimeters, barometers, and gyroscopes to keep tabs on outside elements like altitude, air pressure, and navigate new routes in the wilderness.
-</p>
-<p>
-    <br>
-</p>
-<p>
-    <br>
-</p>
-<p>
-    {{ content_product_abstract_list('apl-smartwatches-2', 'slider') }}
-</p>
-<br>
-{{ content_product_set('ps-1', 'add-to-cart') }}
+<h3>2.Abholung</h3>
+
+<h4>Wo kann ich meinen Wunscheinkauf abholen?</h4>
+<p>Deinen Wunscheinkauf kannst du an deiner gewählten Filiale abholen. Komm einfach in die Filiale und du wirst von unserem Personal vor Ort bedient. An der „Abholstation“ warten dann schon deine Tüten auf dich. Wenn du die Ware ganz oder teilweise nicht annehmen möchtest, wird unser Mitarbeiter die Ware kostenfrei zurücknehmen. Für diese Ware entstehen dir keine Kosten.</p>
+
+<h4>Wo finde ich meine Abholnummer?</h4>
+<p>Deine Abholnummer findest du in deiner Bestätigung für deinen Wunscheinkauf sowie in deinem Profil unter „Wunscheinkäufe“. Bitte halte diese während deiner Abholung bereit, sodass wir dir deine Produkte zuordnen können.</p>
+
+<h4>Muss ich meinen Wunscheinkauf persönlich abholen?</h4>
+<p>Nach Übermittlung deines Wunscheinkaufs senden wir dir eine Bestätigung mit einer Abholnummer zu. Die Abholnummer kannst du selbstverständlich auch weitergeben und den Wunscheinkauf von jemand anderem abholen lassen.</p>
+
+<h4>Was kann ich tun, wenn ich meine Abholnummer vergessen habe?</h4>
+<p>Deine Abholnummer findest du in deiner Bestätigung für deinen Wunscheinkauf. Zudem kannst du diese jederzeit in deinem Profil unter „Wunscheinkäufe“ einsehen. Bei weiteren Fragen kannst du dich an unseren Kundenservice wenden.</p>
+
+<h4>Was passiert, wenn ich es nicht pünktlich zum Abholzeifenster zu meiner Filiale schaffe?</h4>
+<p>Solltest du es einmal nicht schaffen, deinen Wunscheinkauf zu deinem gewählten Zeitfenster abzuholen, bewahren wir deine Produkte noch bis zum Abend auf. Sollte die Bestellung nicht geholt werden stornieren wir deinen Wunscheinkauf.</p>
+
+<h3>3. Bezahlung</h3>
+
+<h4>Wie kann ich meinen Wunscheinkauf bezahlen?</h4>
+<p>Die Bezahlung erfolgt bei uns ganz einfach im Shop.. Der entsprechende Betrag wird zunächst auf deinem Konto/deiner Kreditkarte vorgemerkt - abgebucht wird selbstverständlich erst nachdem du deine Produkte bei uns erfolgreich erhalten und deinen Wunscheinkauf damit abgeschlossen hast.</p>
+
+<h3>4. Kundenkonto</h3>
+
+<h4>Wie kann ich Daten in meinem Kundenkonto anpassen?</h4>
+<p>Klicke zur Bearbeitung deiner Angaben einfach im Bereich „Mein Profil“ unter „Benutzerdaten“. Dort kannst du deinen Namen, deine E-Mail-Adresse, dein Passwort und deine Rechnungsadresse ändern.</p>
+
+<h4>Ich habe mein Passwort vergessen, was muss ich tun?</h4>
+<p>Passwort vergessen kann jedem mal passieren! Darum kannst du das Passwort einfach neu anfordern. Klicke dafür bei der Anmeldung auf das Feld „Passwort vergessen“, damit dir ein Link zur Aktualisierung an deine E-Mail-Adresse gesendet wird. Solltest du keine E-Mail bekommen, kannst du natürlich auch den Kundenservice kontaktieren.</p>
+
+<h4>Wie garantiert ihr die Sicherheit meiner Daten?</h4>
+<p>Wir benötigen deine Angaben für die Registrierung und um dich über den Status deines Wunscheinkaufs auf dem Laufenden zu halten. Wir verwenden deine Daten ausschließlich zur Abwicklung unseres Service und werden sie in keinem Fall an Dritte weitergeben. Dabei werden alle Daten verschlüsselt übertragen. Alle Informationen werden selbstverständlich streng vertraulich behandelt.</p>
+
+<h4>Wie kann ich mein Kundenkonto löschen?</h4>
+<p>Wenn du unseren Service nicht länger nutzen möchtest, tut uns das natürlich sehr leid. Wir freuen uns in jedem Fall wenn du uns ein kurzes Feedback geben kannst. Zur Löschung deines Kundenkontos klicke einfach im Bereich „Mein Profil“ unter „Benutzerdaten auf ""Account löschen"". Im Anschluss wirst du gebeten die Löschung deines Kundenkontos zu bestätigen.</p>
+","<style type=""text/css"">
+    .cms-page__content h2, .cms-page__content h3 {
+								margin: 0.75rem 0;
+				}
+
+				.cms-page__content h3 {
+				    font-size: 0.875rem;
+    				font-weight: bold;
+				}
+</style>
+<h3>Please note this is only an example and must always be adapted in individual cases.</h3>
+<h3>How does the Click&Collect&Delivery Service work?</h3>
+
+<p>We offer a wide range of products from food products such as fruit and vegetables to items for the medicine cabinet and electrical goods. Once you have all your products together, you can choose a service and time slot that suits you and order the products you want.</p>
+
+<h3>1. Order</h3>
+
+<h4>How do I submit a purchase request?</h4>
+
+<p>The Click&Collect&Delivery Shop is available for you every day and at any time - you can browse through our product overview on the site at your leisure. By simply clicking on the product you can add the articles to your desired purchase. Once you have selected all the products you need, you can simply click on the small shopping basket symbol. You can then select a service and your time slot and submit your desired purchase.</p>
+
+<h4>How can I customize my shopping cart?</h4>
+<p>To add products to your desired purchase, simply click on the product photo or on the button ""add to desired purchase"". You can easily determine the number of products by clicking several times.</p>
+<p>By clicking on the small shopping basket symbol, you can always access an overview of all products that you have added to your desired purchase. At this point you can also remove products or change the quantity. Simply use the plus/minus signs next to the individual products.</p>
+<p>To delete the entire purchase, you can simply select ""Remove all products"".</p>
+
+<h4>Which functions does the notepad have?</h4>
+<p>On the product page you can add single products to your (individual) Wish List at any time. Furthermore, you can create a notepad for each purchase. If you want to repeat the same or a similar purchase, you can simply call up an existing Wish List and add all products to your Wish List again. That saves time!</p>
+
+<h4>How do I select my time slot?</h4>
+<p>During the checkout process you can select a one-hour time slot. You will always be shown the available time slots for the next 5 days.</p>
+
+<h4>Can I edit my purchase afterwards?</h4>
+<p>You can cancel your purchase up until 24:00 the day before and then make a new purchase if you want to make changes later.</p>
+
+
+<h4>I did not receive a confirmation for my purchase, what can I do now?</h4>
+<p>If you did not receive a confirmation for your desired purchase, it is possible that it has ended up in your spam folder. In the ""My profile"" section, all the purchases you have made are listed. If you can't find them there, you can contact our customer service.</p>
+
+<h3>2. Pick Up</h3>
+
+<h4>Where can I pick up my desired purchase?</h4>
+<p>You can pick up your Wunscheinkauf at your chosen branch. Just come to the branch and you will be served by our staff on site. Your bags will already be waiting for you at the ""pick-up station"". If you do not want to accept the goods in whole or in part, our staff will take the goods back free of charge. You will not incur any costs for these goods.</p>
+
+<h4>Where can I find my collection number?</h4>
+<p>You will find your pick-up number in your confirmation of your desired purchase and in your profile under ""Desired purchases"". Please have it ready during your pickup so that we can assign your products to you.</p>
+
+<h4>Do I need to collect my purchase in person?</h4>
+<p>Once we have received your purchase, we will send you a confirmation with a collection number. You can also pass on the collection number and have someone else collect your purchase.</p>
+
+<h4>What can I do if I have forgotten my collection number?</h4>
+<p>You will find your pick-up number in your confirmation of your purchase. You can also view it at any time in your profile under ""Wish purchases"". If you have any further questions, please contact our customer service.</p>
+
+<h4>What happens if I don't make it to my store in time for the collection window?</h4>
+<p>If you are unable to pick up your purchase during your chosen time slot, we will store your products until the evening. If the order is not picked up, we will cancel your purchase.</p>
+
+<h3>3. Payment</h3>
+
+<h4>How can I pay for my desired purchase?</h4>
+<p>The payment is done very simply in our shop. The corresponding amount will first be reserved on your account/credit card - of course, the amount will only be debited after you have successfully received your products and completed your desired purchase.</p>
+
+<h3>4. customer account</h3>
+
+<h4>How can I adjust data in my customer account?</h4>
+<p>To edit your details, simply click in the ""My profile"" area under ""User data"". There you can change your name, your email address, your password and your billing address.</p>
+
+<h4>I forgot my password, what should I do?</h4>
+<p>Forgotten password can happen to anyone! That's why you can simply request a new password. To do this, click on the ""Forgot your password"" field when you registered, so that an update link will be sent to your email address. If you do not receive an email, you can of course also contact customer service.</p>
+
+<h4>How do you guarantee the security of my data?</h4>
+<p>We need your details for registration and to keep you up to date on the status of your desired purchase. We only use your data to process our service and will never pass it on to third parties. All data is encrypted. All information will of course be kept strictly confidential.</p>
+
+<h4>How can I delete my customer account?</h4>
+<p>If you no longer want to use our service, we are of course very sorry. We are always happy if you can give us a short feedback. To delete your customer account, simply click on ""Delete account"" in the ""My profile"" area under ""User data"". You will then be asked to confirm the deletion of your customer account.</p>
 "
