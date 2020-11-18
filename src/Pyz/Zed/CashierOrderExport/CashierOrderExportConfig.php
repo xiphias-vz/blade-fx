@@ -69,7 +69,7 @@ class CashierOrderExportConfig extends AbstractBundleConfig
      */
     public function getTaxRateToSapItemTaxIdMap(): array
     {
-       return static::TAX_RATE_TO_SAP_ITEM_TAX_ID_MAP;
+        return static::TAX_RATE_TO_SAP_ITEM_TAX_ID_MAP;
     }
 
     /**

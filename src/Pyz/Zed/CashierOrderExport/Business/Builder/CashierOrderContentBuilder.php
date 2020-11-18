@@ -16,7 +16,7 @@ class CashierOrderContentBuilder implements CashierOrderContentBuilderInterface
 {
     protected const HEADER_MASK = '%s%s%s%s%s%s%s%s%s%s%s%020u%s%s%s%020u%s%020u%s%s%s%s%s%020s%s%s';
     protected const DEFAULT_HEADER_ENDING_ZERO_SETS = 7;
-    protected const POSITION_MASK = '%s%s%s%s%s%s%s%s%s%s%s%020u%s%s%s%.20s%s%020s%s%s%s%020s%s%020s';
+    protected const POSITION_MASK = '%s%s%s%s%s%s%s%s%s%s%s%020u%s%020s%s%.20s%s%020s%s%020s%s%020s%s%020s';
     protected const DEFAULT_POSITION_ENDING_ZERO_SETS = 8;
 
     protected const HEADER_KEY_IDENTIFIER = '1070';
@@ -32,7 +32,7 @@ class CashierOrderContentBuilder implements CashierOrderContentBuilderInterface
     protected const ORDER_ITEM_EAN_IDENTIFIER = '0001';
     protected const ORDER_ITEM_NAME_IDENTIFIER = '0002';
     protected const ORDER_ITEM_PRICE_IDENTIFIER = '0003';
-    protected const ORDER_ITEM_WRG_LINK_IDENTIFIER = '0004';
+    protected const ORDER_ITEM_WGR_LINK_IDENTIFIER = '0004';
     protected const ORDER_ITEM_TAX_IDENTIFIER = '0005';
     protected const ORDER_ITEM_QUANTITY_IDENTIFIER = '0059';
 
@@ -45,11 +45,6 @@ class CashierOrderContentBuilder implements CashierOrderContentBuilderInterface
     protected const DEFAULT_EMPTY_OPERATOR_NUMBER = '0000';
     protected const DEFAULT_ANDERUNGS_NUMBER = '02';
     protected const DEFAULT_EMPTY_NUMBER = '00000000000000000000';
-
-    // @TODO EXAMPLE switch this value after it will be provided
-    protected const DEFAULT_ITEM_WRG_LINK_NUMBER = '00000000000000000624';
-    // @TODO EXAMPLE switch this value after it will be provided
-    protected const DEFAULT_ITEM_EAN_NUMBER = '00000000000000000624';
 
     /**
      * @var \Pyz\Zed\CashierOrderExport\CashierOrderExportConfig
@@ -171,13 +166,13 @@ class CashierOrderContentBuilder implements CashierOrderContentBuilderInterface
             static::ORDER_KEY_IDENTIFIER,
             $orderTransfer->getIdSalesOrder() ?? static::DEFAULT_EMPTY_NUMBER,
             static::ORDER_ITEM_EAN_IDENTIFIER,
-            static::DEFAULT_ITEM_EAN_NUMBER,
+            $itemTransfer->getProductNumber() ?? static::DEFAULT_EMPTY_NUMBER,
             static::ORDER_ITEM_NAME_IDENTIFIER,
-            $itemTransfer->getName() ?? static::DEFAULT_EMPTY_NUMBER,
+            $itemTransfer->getBonText() ?? $itemTransfer->getName(),
             static::ORDER_ITEM_PRICE_IDENTIFIER,
             $itemTransfer->getSumPrice() ?? static::DEFAULT_EMPTY_NUMBER,
-            static::ORDER_ITEM_WRG_LINK_IDENTIFIER,
-            static::DEFAULT_ITEM_WRG_LINK_NUMBER,
+            static::ORDER_ITEM_WGR_LINK_IDENTIFIER,
+            $itemTransfer->getSapWgr() ?? static::DEFAULT_EMPTY_NUMBER,
             static::ORDER_ITEM_TAX_IDENTIFIER,
             $this->getSapItemTaxId($itemTransfer),
             static::ORDER_ITEM_QUANTITY_IDENTIFIER,
