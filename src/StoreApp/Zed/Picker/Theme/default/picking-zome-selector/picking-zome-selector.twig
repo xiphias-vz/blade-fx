@@ -1,0 +1,17 @@
+{% extends model('component') %}
+
+{% define data = {
+    currentPickingZone: _widget.currentPickingZone,
+} %}
+
+{% define config = {
+    name: 'picking-zome-selector'
+} %}
+
+{% block body %}
+    {% if data.currentPickingZone %}
+        <a href="/picker/select-picking-zone" class="{{ config.name }}--button button button button--small button--table button--expand">
+            {{ 'store-app.header.picking-zone-selector' | trans | format(data.currentPickingZone.name) }}
+        </a>
+    {% endif %}
+{% endblock %}
