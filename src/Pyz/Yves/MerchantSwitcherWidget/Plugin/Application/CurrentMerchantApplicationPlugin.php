@@ -17,7 +17,7 @@ use Spryker\Yves\Kernel\AbstractPlugin;
 class CurrentMerchantApplicationPlugin extends AbstractPlugin implements ApplicationPluginInterface
 {
     protected const MERCHANT_NAME = 'merchant_name';
-git
+
     /**
      * {@inheritDoc}
      * - Adds current `merchant_name` to the application
