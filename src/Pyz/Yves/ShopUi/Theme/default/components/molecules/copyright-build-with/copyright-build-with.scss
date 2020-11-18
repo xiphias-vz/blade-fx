@@ -26,8 +26,15 @@
 
         .div-footer-right-text
         {
+            float: right;
+            color:gray;
+            position: absolute;
+            right: -100px;
+
             @include helper-breakpoint-media-max($lg-max)  {
-                right: 0px !important;
+                position: static;
+                width:100%;
+
             }
         }
     }

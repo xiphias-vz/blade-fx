@@ -4,6 +4,10 @@
         background: $setting-color-grey-footer;
         color: $setting-color-white;
 
+        .contact-store-info .product-slider-title{
+            display: none;
+        }
+
         &__top {
             display: flex;
             flex-wrap: wrap;
