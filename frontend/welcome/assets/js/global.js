@@ -2,37 +2,45 @@ class Global {
     async init() {
         const JSON_PATH = './assets/json/regions.json';
         const JSON_PATH_SHOPS = './assets/json/shops.json';
-        const JSON_PATH_LINKS = './assets/json/shopLinks.json';
         this.input = document.getElementsByClassName('js-zip')[0];
         this.button = document.getElementsByClassName('js-submit-button')[0];
         this.error = document.getElementsByClassName('js-error')[0];
         this.select = document.getElementsByClassName('select-store')[0];
         this.regions = await this.getJson(JSON_PATH);
         this.shops = await this.getJson(JSON_PATH_SHOPS);
-        this.links = await this.getJson(JSON_PATH_LINKS);
-        this.createSelect();
+
+        this.createSelect(this.shops);
         this.mapEvents();
     }
-    createSelect() {
 
-        alert("Creating.....");
+    createSelect(shops) {
+       const sel = document.getElementById('select-store');
+
+       Object.entries(shops).forEach(entry => {
+           const [key, value] = entry;
+           const ke1 = key;
+           const name = value.name;
+           const el = document.createElement("option");
+           el.value = ke1;
+           el.text = name;
+
+           sel.add(el);
+        });
     }
 
     mapEvents() {
         this.error.addEventListener('click', () => this.hideErrorMessage());
-        this.select.addEventListener('change', () => this.getWebAddress(this.links));
+        this.select.addEventListener('change', () => this.getWebAddress(this.shops));
     }
 
-    getWebAddress(links) {
+    getWebAddress(shops) {
         const href = window.location.href;
+        const domainNew = href.replace('welcome.', '');
         const selectValue = this.select.value;
-        const domain = href.includes('.local') ? 'Local' : 'Prod';
-        const store = Object.keys(links).find(store => domain+selectValue === store);
-
-        const storeUrlPart = Object.values(links[store]);
-        window.location.href = storeUrlPart;
+        const store = Object.keys(shops).find(store => selectValue === store);
+        const storeUrlPart = shops[store].link;
+        window.location.href = domainNew+storeUrlPart;
     }
-
 
     async getJson(url) {
         const response = await fetch(url);
