@@ -30,15 +30,15 @@
                             {% widget 'StoreSwitcherWidget' %}{% endwidget %}
                         {% endif %}
 
-{#                        {% if data.showLangCurrencySwitches %}#}
-{#                            {% widget 'LanguageSwitcherWidget' args [app.request.pathInfo, app.request.queryString, app.request.requestUri] only %}#}
-{#                                {% block body %}#}
-{#                                    <div class="link link--nav">#}
-{#                                        {{ parent() }}#}
-{#                                    </div>#}
-{#                                {% endblock %}#}
-{#                            {% endwidget %}#}
-{#                        {% endif %}#}
+                        {% if data.showLangCurrencySwitches %}
+                            {% widget 'LanguageSwitcherWidget' args [app.request.pathInfo, app.request.queryString, app.request.requestUri] only %}
+                                {% block body %}
+                                    <div class="link link--nav">
+                                        {{ parent() }}
+                                    </div>
+                                {% endblock %}
+                            {% endwidget %}
+                        {% endif %}
                         <a href="{{ 'page.faq.url' | trans }}" class="link link--nav">
                             {% include atom('icon') with {
                                 modifiers: ['big'],
