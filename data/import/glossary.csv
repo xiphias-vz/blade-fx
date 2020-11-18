@@ -1001,11 +1001,11 @@ checkout.step.place.order,Wunscheinkauf übermitteln,de_DE
 checkout.step.payment.must_be_older_than_18_years,You must be at least 18 years old.,en_US
 checkout.step.payment.must_be_older_than_18_years,Sie müssen mindestens 18 Jahre alt sein.,de_DE
 checkout.step.success.title,Thank you.,en_US
-checkout.step.success.title,Vielen Dank!,de_DE
+checkout.step.success.title,Vielen Dank fur Ihren Einkauf!,de_DE
 checkout.step.success.text,Your order has been placed successfully. You will get the order confirmation email in a few minutes. You can check and track your order in Your Account.,en_US
-checkout.step.success.text,Dein Wunscheinkauf ist erfolgreich bei uns eingegangen. Die Bestätigung wurde soeben per E-Mail versendet. In deinem Benutzerkonto kannst du deinen Wunscheinkauf überprüfen und nachverfolgen.                                                                            ,de_DE
+checkout.step.success.text,Ihre Bestellung ist erfolgreich in unserem Abholmarkt eingegangen.,de_DE
 checkout.step.success.link,"Go to ""My Account""",en_US
-checkout.step.success.link,"Zum Benutzerkonto",de_DE
+checkout.step.success.link,"Zum meinem Konto",de_DE
 checkout.step.error.title,Your order has not been placed.,en_US
 checkout.step.error.title,"Lieber Kunde, Ihre Bestellung konnte leider nicht platziert werden.",de_DE
 checkout.step.error.text,Something went wrong. Sorry.,en_US
