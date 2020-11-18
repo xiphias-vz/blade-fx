@@ -7,6 +7,7 @@
 
 namespace Pyz\Yves\CustomerPage\Form;
 
+use Orm\Zed\Customer\Persistence\SpyCustomerQuery;
 use Pyz\Yves\CustomerPage\Form\Constraints\PostalCodeConstraint;
 use SprykerShop\Yves\CustomerPage\Form\RegisterForm as SprykerRegisterForm;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
@@ -39,6 +40,11 @@ class RegisterForm extends SprykerRegisterForm
     public const FIELD_MERCHANT = 'merchant_reference';
     public const FIELD_ADDITIONAL_REGISTER = 'additional_register';
     public const FORM_NAME = self::BLOCK_PREFIX;
+    public const FIELD_COUNTRY = 'country';
+    public const FIELD_PHONE_PREFIX_1 = 'phone_prefix_1';
+    public const FIELD_PHONE_PREFIX_2 = 'phone_prefix_2';
+    public const FIELD_MOBILE_PHONE = 'mobile_phone';
+    public const FIELD_RECIEVE_NOTIFICATIONS = 'recieve_notifications';
 
     protected const VALIDATION_ADDRESS_NUMBER_MESSAGE = 'validation.address_number';
     protected const VALIDATION_NOT_BLANK_MESSAGE = 'validation.not_blank';
@@ -56,6 +62,17 @@ class RegisterForm extends SprykerRegisterForm
         'customer.address.floor.7' => 'customer.address.floor.7',
         'customer.address.floor.8' => 'customer.address.floor.8',
     ];
+
+    public const COUNTRIES =
+    [
+        60 => 'customer.registration.country_placeholder',
+    ];
+
+    public const PHONE_PREFIX =
+    [
+        '+49' => 'customer.registration.phone.prefix_placeholder',
+    ];
+
 
     /**
      * @param \Symfony\Component\Form\FormBuilderInterface $builder
@@ -79,10 +96,15 @@ class RegisterForm extends SprykerRegisterForm
             ->addAddress2Field($builder, $options)
             ->addZipCodeField($builder, $options)
             ->addCityField($builder, $options)
-            ->addMerchantField($builder)
+            ->addCountryField($builder)
+            ->addMobilePrefixField1($builder)
+            ->addMobileNumber($builder)
+            ->addMobilePrefixField2($builder)
             ->addPhoneField($builder)
+            ->addAcceptTermsField($builder)
             ->addAdditionalRegisterField($builder)
-            ->addAcceptTermsField($builder);
+            ->addFieldRecieveNotificationsAboutProducts($builder)
+        ;
     }
 
     /**
@@ -203,14 +225,13 @@ class RegisterForm extends SprykerRegisterForm
     protected function addAcceptTermsField(FormBuilderInterface $builder)
     {
         $builder->add(self::FIELD_ACCEPT_TERMS, CheckboxType::class, [
-            'label' => 'forms.accept_terms',
+            'label' => 'register.accept_terms',
             'mapped' => false,
             'required' => true,
             'constraints' => [
                 $this->createNotBlankConstraint(),
             ],
         ]);
-
         return $this;
     }
 
@@ -223,8 +244,23 @@ class RegisterForm extends SprykerRegisterForm
         $builder->add(self::FIELD_ADDITIONAL_REGISTER, CheckboxType::class, [
             'label' => 'forms.additional_register',
             'mapped' => false,
+            'required' => false,
         ]);
 
+        return $this;
+    }
+
+
+    /**
+     * @param FormBuilderInterface $builder
+     * @return $this
+     */
+    protected function addFieldRecieveNotificationsAboutProducts(FormBuilderInterface $builder)
+    {
+        $builder->add(self::FIELD_RECIEVE_NOTIFICATIONS, CheckboxType::class,[
+           'label' => 'forms.recieve_notifications',
+           'mapped' => false,
+        ]);
         return $this;
     }
 
@@ -339,7 +375,58 @@ class RegisterForm extends SprykerRegisterForm
 
     protected function addCountryField(FormBuilderInterface $builder)
     {
-        $builder->add()
+        $builder->add(self::FIELD_MERCHANT, ChoiceType::class, [
+            'choices' => array_flip(self::COUNTRIES),
+            'required' => true,
+            'label' => 'customer.address.country',
+            'constraints' =>
+            [
+                $this->createNotBlankConstraint(),
+            ],
+        ]);
+        return $this;
+    }
+
+    protected function addMobilePrefixField1(FormBuilderInterface $builder)
+    {
+        $builder->add(self::FIELD_PHONE_PREFIX_1, ChoiceType::class,[
+            'choices' => array_flip(self::PHONE_PREFIX),
+            'required' => true,
+            'label' => 'customer.register.phone',
+            'constraints' =>
+            [
+                $this->createNotBlankConstraint(),
+            ]
+        ]);
+        return $this;
+    }
+
+    protected function addMobilePrefixField2(FormBuilderInterface $builder)
+    {
+        $builder->add(self::FIELD_PHONE_PREFIX_2, ChoiceType::class,[
+            'choices' => array_flip(self::PHONE_PREFIX),
+            'required' => false,
+            'constraints' =>
+                [
+                    $this->createNotBlankConstraint(),
+                ]
+        ]);
+        return $this;
+    }
+
+    protected function addMobileNumber(FormBuilderInterface $builder)
+    {
+        $builder->add(self::FIELD_MOBILE_PHONE, TextType::class,[
+            'label' => 'customer.register.mobile_phone',
+            'required' => true,
+            'trim' => true,
+            'constraints' =>
+            [
+                $this->createNotBlankConstraint(),
+                ProfileForm::createSafeStringRegexConstraint(),
+            ]
+        ]);
+        return $this;
     }
 
     /**
@@ -421,13 +508,12 @@ class RegisterForm extends SprykerRegisterForm
     {
         $builder->add(static::FIELD_PHONE, TelType::class, [
             'label' => 'customer.address.phone',
-            'required' => true,
+            'required' => false,
             'trim' => true,
             'attr' => [
                 'placeholder' => 'customer.registration.phone_placeholder',
             ],
             'constraints' => [
-                $this->createNotBlankConstraint(),
                 ProfileForm::createSafeStringRegexConstraint(),
             ],
         ]);
@@ -508,6 +594,13 @@ class RegisterForm extends SprykerRegisterForm
             $choices[$merchantTransfer->getName()] = $merchantTransfer->getMerchantReference();
         }
 
+        return $choices;
+    }
+
+    private function getCountryChoices(): array
+    {
+        //$countryClient = $this->getFactory()->getCountrySearchClient();  //TODO: ADD REST OF THE FUNCTION
+        $choices = [];
         return $choices;
     }
 }

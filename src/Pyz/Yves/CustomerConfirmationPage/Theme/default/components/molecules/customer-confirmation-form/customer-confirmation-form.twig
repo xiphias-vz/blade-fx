@@ -87,19 +87,22 @@
 
                     {% if data.form.vars.full_name == 'registerForm' %}
                         {% set layout = {
-                            'salutation': 'col col--sm-12 col--md-8',
+                            'salutation': 'col col--sm-12',
                             'first_name': 'col col--sm-12',
                             'last_name': 'col col--sm-12',
                             'email': 'col col--sm-12',
                             'password': 'col col--sm-12',
-                            'address1': 'col col--sm-12',
-                            'address2': 'col col--sm-12',
+                            'address1': 'col col--sm-12 col--md-7' ,
+                            'address2': 'col col--sm-5',
                             'floor': 'col col--sm-12',
                             'additional_info': 'col col--sm-12',
-                            'zip_code': 'col col--sm-12',
-                            'city': 'col col--sm-12',
+                            'zip_code': 'col col--sm-5',
+                            'city': 'col col--sm-7',
                             'merchant_reference': 'col col--sm-12',
-                            'phone': 'col col--sm-12',
+                            'phone_prefix_1': 'col col--sm-12 col--md-5',
+                            'mobile_phone': 'col col--sm-12 col--md-7',
+                            'phone_prefix_2': 'col col--sm-12 col--md-5',
+                            'phone': 'col col--sm-12 col--md-7',
                             'accept_terms': 'col col--sm-12',
                             '_token': 'col col--sm-12',
                         } %}

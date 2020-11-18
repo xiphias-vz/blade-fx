@@ -40,8 +40,17 @@ $setting-color-gray-16: #b7bec9;
 $setting-color-black: #111;
 $setting-color-black-1: #2b2c2d;
 
+$setting-color-globus-lightOrange: #ea8901;
+$setting-color-globus-darkOrange: #ce6200;
+$setting-color-globus-lightGreen: #b9dcc3;
+$setting-color-globus-darkGreen: #007528;
+$setting-color-globus-black: #333333;
+$setting-color-globus-darkGray: #7c7c7c;
+$setting-color-globus-lightGray: #f7f7f7;
+$setting-color-globus-white: #ffffff;
+
 // Main colors
-$setting-color-main: #00afb4;
+$setting-color-main: #ea8901;
 $setting-color-alt: #ff4859;
 $setting-color-alt-2: #fe462d;
 $setting-color-alt-3: #f8e9e6;
@@ -82,6 +91,6 @@ $setting-color-actions: (
     system: $setting-color-gray-5,
     info: $setting-color-blue-info,
     warning: #f37849,
-    success: #4ac38e,
+    success: $setting-color-globus-lightOrange,
     alert: #cb3d49,
 );
