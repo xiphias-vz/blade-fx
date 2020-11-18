@@ -4,6 +4,7 @@ use Monolog\Logger;
 use Pyz\Shared\CollectNumber\CollectNumberConstants;
 use Pyz\Shared\DataImport\DataImportConstants;
 use Pyz\Shared\DummyPayment\DummyPaymentConfig;
+use Pyz\Shared\GoogleTagManager\GoogleTagManagerConstants;
 use Pyz\Shared\Invoice\InvoiceConstants;
 use Pyz\Shared\Matomo\MatomoConstants;
 use Pyz\Shared\Oms\OmsConstants;
@@ -665,8 +666,8 @@ $config[TimeSlotConstants::SAME_DAY_SHIPMENT_TIME_SLOTS] = [
             '13:00' => [
                 '16:00-18:00',
                 '18:00-20:00',
-            ]
-        ]
+            ],
+        ],
     ],
     ShipmentConfig::SHIPMENT_METHOD_DELIVERY => [
         'EIN' => [
@@ -677,9 +678,9 @@ $config[TimeSlotConstants::SAME_DAY_SHIPMENT_TIME_SLOTS] = [
             '13:00' => [
                 '16:00-18:00',
                 '18:00-20:00',
-            ]
-        ]
-    ]
+            ],
+        ],
+    ],
 ];
 
 // Collect Number
@@ -797,3 +798,6 @@ $config[StoreConstants::STORE_NAMES] = [
     'LPZ' => 'Leipzig',
     'HAD' => 'Halle',
 ];
+
+// ----------- Google Tag Manager
+$config[GoogleTagManagerConstants::CONTAINER_ID] = 'GTM-KN8QSGS';
