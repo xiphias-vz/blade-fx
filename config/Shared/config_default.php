@@ -797,3 +797,7 @@ $config[StoreConstants::STORE_NAMES] = [
     'LPZ' => 'Leipzig',
     'HAD' => 'Halle',
 ];
+
+// ----------- Google Tag Manager
+$config[\Pyz\Shared\GoogleTagManager\GoogleTagManagerConstants::CONTAINER_ID] = 'GTM-KN8QSGS';
+
