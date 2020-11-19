@@ -1,0 +1,50 @@
+{% extends model('component') %}
+
+{% define config = {
+    name: 'pet-feeding-table',
+} %}
+
+{% define data = {
+    attributes: required,
+    petColumns: required,
+    petRows: required,
+    rowData: required,
+    triggerClassName: ''
+} %}
+
+{% block class -%}
+    {{ parent() }}
+{%- endblock %}
+
+{% block body %}
+
+    <div class="{{ component.renderClass(config.name ~ '__content', modifiers) }} col--lg-12">
+        <h3 class="title title--h2 title--product-details active"
+            data-toggle-target-class-name="{{ config.jsName }}__toggler-target">
+            <strong>Fütterungsempfehlung</strong>
+        </h3>
+        <div class="{{ config.jsName }}__toggler-target {{ data.triggerClassName }}">
+            <div class="is-scrollable-x spacing-bottom">
+                <table class="table table--expand">
+                    <thead>
+                        {% for column in data.petColumns %}
+                            <th class="{{ config.name }}__col">{{ column }}</th>
+                        {% endfor %}
+                    </thead>
+                    <tbody>
+
+                        {% for row in 0..data.petRows %}
+                            <tr class="table__row table__row--with-border">
+                                {% for item in data.rowData %}
+                                    <td>{{ item }}</td>
+                                {% endfor %}
+                            </tr>
+                        {% endfor %}
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
