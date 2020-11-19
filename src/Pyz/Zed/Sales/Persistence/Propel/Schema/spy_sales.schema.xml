@@ -31,6 +31,7 @@
         <column name="pick_zone" type="VARCHAR" size="255" required="false"/>
         <column name="sap_wgr" type="VARCHAR" size="255" required="false"/>
         <column name="bontext" type="VARCHAR" size="255" required="false"/>
+        <column name="weight_per_unit" type="INTEGER" required="false"/>
         <index name="index-pick_zone">
             <index-column name="pick_zone"/>
         </index>

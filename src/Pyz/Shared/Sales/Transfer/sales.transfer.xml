@@ -29,6 +29,7 @@
         <property name="pickZone" type="string"/>
         <property name="sapWgr" type="string"/>
         <property name="bonText" type="string"/>
+        <property name="weightPerUnit" type="int"/>
     </transfer>
 
     <transfer name="ProductConcrete">

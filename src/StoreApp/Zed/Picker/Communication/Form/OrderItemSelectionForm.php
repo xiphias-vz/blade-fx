@@ -27,6 +27,7 @@ class OrderItemSelectionForm extends AbstractType
     public const FIELD_ID_SALES_ORDER = 'field_id_sales_order';
 
     public const PREFIX_FIELD_SALES_ORDER_ITEM_SKU = 'field_sales_order_item_sku__';
+    public const PREFIX_FIELD_SALES_ORDER_ITEM_NEW_WEIGHT = 'field_sales_order_item_new_weight__';
 
     public const OPTION_SALES_ORDER_ITEMS = 'option_sales_order_items';
     public const OPTION_ITEM_ATTRIBUTES = 'OPTION_ITEM_ATTRIBUTES';
@@ -95,6 +96,26 @@ class OrderItemSelectionForm extends AbstractType
                     ],
                 ]
             );
+
+            if ($itemTransfer->getWeightPerUnit()) {
+                $weight = $itemTransfer->getWeightPerUnit() * $itemTransfer->getQuantity();
+
+                $builder->add(
+                    static::PREFIX_FIELD_SALES_ORDER_ITEM_NEW_WEIGHT . $itemTransfer->getSku(),
+                    IntegerType::class,
+                    [
+                        'required' => true,
+                        'data' => $weight,
+                        'attr' => [
+                            'min' => $weight * 0.8,
+                            'max' => $weight * 1.2,
+                        ],
+                        'constraints' => [
+                            new NotBlank(),
+                        ],
+                    ]
+                );
+            }
         }
 
         return $this;

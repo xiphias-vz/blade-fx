@@ -7,6 +7,10 @@
 
 namespace StoreApp\Zed\Picker\Communication\Mapper;
 
+use Generated\Shared\Transfer\OrderChangeRequestTransfer;
+use Generated\Shared\Transfer\OrderItemChangeRequestTransfer;
+use Generated\Shared\Transfer\OrderTransfer;
+
 class FormDataMapper implements FormDataMapperInterface
 {
     /**
@@ -31,5 +35,39 @@ class FormDataMapper implements FormDataMapperInterface
         }
 
         return $skuToPickedQuantityMap;
+    }
+
+    /**
+     * @param array $formData
+     * @param \Generated\Shared\Transfer\OrderTransfer $salesOrderTransfer
+     * @param string $fieldNamePrefix
+     *
+     * @return \Generated\Shared\Transfer\OrderChangeRequestTransfer
+     */
+    public function mapFormDataToOrderItemChangeRequest(
+        array $formData,
+        OrderTransfer $salesOrderTransfer,
+        string $fieldNamePrefix
+    ): OrderChangeRequestTransfer {
+
+        $orderChangeRequest = new OrderChangeRequestTransfer();
+        $orderChangeRequest->setFkSalesOrder($salesOrderTransfer->getIdSalesOrder());
+
+        $pattern = '/' . $fieldNamePrefix . '(.+)/';
+
+        foreach ($formData as $fieldName => $fieldValue) {
+            $matches = [];
+
+            if (preg_match($pattern, $fieldName, $matches) === false || empty($matches)) {
+                continue;
+            }
+
+            $orderItemChangeRequest = new OrderItemChangeRequestTransfer();
+
+            $sku = $matches[1];
+            $newWeight = $fieldValue;
+        }
+
+        return $orderChangeRequest;
     }
 }

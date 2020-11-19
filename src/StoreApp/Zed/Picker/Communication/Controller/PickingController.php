@@ -203,12 +203,29 @@ class PickingController extends AbstractController
             );
         }
 
+        $pickingFormSkuKeys = [];
+        $pickingFormWeightKeys = [];
+
+        foreach ($orderItemSelectionForm->all() as $item) {
+            if (strpos($item->getName(), OrderItemSelectionForm::PREFIX_FIELD_SALES_ORDER_ITEM_SKU) !== false) {
+                $pickingFormSkuKeys[] = $item->getName();
+            }
+
+            if (strpos($item->getName(), OrderItemSelectionForm::PREFIX_FIELD_SALES_ORDER_ITEM_NEW_WEIGHT) !== false) {
+                $nameParts = explode('__', $item->getName());
+                $sku = end($nameParts);
+                $pickingFormWeightKeys[$sku] = $item->getName();
+            }
+        }
+
         return [
             'merchant' => $this->getMerchantFromRequest($request),
             'maxPickingBags' => $this->getFactory()->getConfig()->getMaxPickingBags(),
             'itemsCount' => $this->getItemsCount($aggregatedItemTransfers),
             'itemImageUrls' => $this->getSkuToImageMapFromItemTransfers($aggregatedItemTransfers),
             'pickingForm' => $orderItemSelectionForm->createView(),
+            'pickingFormSkuKeys' => $pickingFormSkuKeys,
+            'pickingFormWeightKeys' => $pickingFormWeightKeys,
             'requestParamIdSalesOrder' => PickerConfig::REQUEST_PARAM_ID_ORDER,
             'idSalesOrder' => $idSalesOrder,
             'orderReference' => $salesOrderTransfer->getOrderReference(),
@@ -264,6 +281,13 @@ class PickingController extends AbstractController
 
         $this->getFacade()->markOrderItemsAsPicked($selectedIdSalesOrderItems);
         $this->getFacade()->updateOrderPickingBagsCount($idSalesOrder, $pickingBagsCount);
+
+        $orderItemChangeRequestTransfer = $this->getFactory()->getFormDataMapper()
+            ->mapFormDataToOrderItemChangeRequest(
+                $formData,
+                $salesOrderTransfer,
+                OrderItemSelectionForm::PREFIX_FIELD_SALES_ORDER_ITEM_NEW_WEIGHT
+            );
 
         $orderChangeItem = new OrderItemChangeRequestTransfer();
         $orderChangeItem->setIdSalesOrderItem(2);
