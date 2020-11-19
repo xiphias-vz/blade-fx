@@ -70,7 +70,7 @@
             float: right;
             color:gray;
             position: absolute;
-            right: -10px;
+            right: -120px;
 
             @include helper-breakpoint-media-max($lg-max)  {
                 position: static;
