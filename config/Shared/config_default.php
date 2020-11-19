@@ -1,9 +1,12 @@
 <?php
 
 use Monolog\Logger;
+use Pyz\Service\FlysystemSftpFileSystem\Plugin\Flysystem\SftpFileSystemBuilderPlugin;
+use Pyz\Shared\CashierOrderExport\CashierOrderExportConstants;
 use Pyz\Shared\CollectNumber\CollectNumberConstants;
 use Pyz\Shared\DataImport\DataImportConstants;
 use Pyz\Shared\DummyPayment\DummyPaymentConfig;
+use Pyz\Shared\GoogleTagManager\GoogleTagManagerConstants;
 use Pyz\Shared\Invoice\InvoiceConstants;
 use Pyz\Shared\Matomo\MatomoConstants;
 use Pyz\Shared\Oms\OmsConstants;
@@ -549,12 +552,28 @@ $config[OauthConstants::ENCRYPTION_KEY] = '';
 $config[OauthConstants::OAUTH_CLIENT_IDENTIFIER] = '';
 $config[OauthConstants::OAUTH_CLIENT_SECRET] = '';
 
+// ---------- CashierOrderExport
+$config[CashierOrderExportConstants::SFTP_CASHIER_ORDER_FILES_FOLDER_KEY] = 'kasse';
+
 // ---------- FileSystem
 $config[FileSystemConstants::FILESYSTEM_SERVICE] = [
     'files' => [
         'sprykerAdapterClass' => LocalFilesystemBuilderPlugin::class,
         'root' => APPLICATION_ROOT_DIR . '/data/' . APPLICATION_STORE . '/media/',
         'path' => 'files/',
+    ],
+    'cashier_order_local' => [
+        'sprykerAdapterClass' => LocalFilesystemBuilderPlugin::class,
+        'root' => APPLICATION_ROOT_DIR . '/data/' . APPLICATION_STORE . '/export/',
+        'path' => 'files/',
+    ],
+    'globus_sftp' => [
+        'sprykerAdapterClass' => SftpFileSystemBuilderPlugin::class,
+        'host' => getenv('GLOBUS_SFTP_HOST'),
+        'port' => getenv('GLOBUS_SFTP_PORT'),
+        'username' => getenv('GLOBUS_SFTP_USERNAME'),
+        'password' => getenv('GLOBUS_SFTP_PASSWORD'),
+        'root' => getenv('GLOBUS_SFTP_ROOT'),
     ],
 ];
 
@@ -640,26 +659,45 @@ $config[TimeSlotConstants::MAX_SHOW_DAYS] = 5;
 
 $config[TimeSlotConstants::SHIPMENT_TIME_SLOTS] = [
     ShipmentConfig::SHIPMENT_METHOD_CLICK_AND_COLLECT => [
-        '09:00-10:00',
-        '10:00-11:00',
-        '11:00-12:00',
-        '12:00-13:00',
-        '13:00-14:00',
-        '14:00-15:00',
-        '15:00-16:00',
-        '16:00-17:00',
-        '17:00-18:00',
+        '10:00-12:00',
+        '12:00-14:00',
+        '14:00-16:00',
+        '16:00-18:00',
+        '18:00-20:00',
     ],
     ShipmentConfig::SHIPMENT_METHOD_DELIVERY => [
-        '09:00-10:00',
-        '10:00-11:00',
-        '11:00-12:00',
-        '12:00-13:00',
-        '13:00-14:00',
-        '14:00-15:00',
-        '15:00-16:00',
-        '16:00-17:00',
-        '17:00-18:00',
+        '10:00-12:00',
+        '12:00-14:00',
+        '14:00-16:00',
+        '16:00-18:00',
+        '18:00-20:00',
+    ],
+];
+
+$config[TimeSlotConstants::SAME_DAY_SHIPMENT_TIME_SLOTS] = [
+    ShipmentConfig::SHIPMENT_METHOD_CLICK_AND_COLLECT => [
+        'EIN' => [
+            '09:00' => [
+                '12:00-14:00',
+                '14:00-16:00',
+            ],
+            '13:00' => [
+                '16:00-18:00',
+                '18:00-20:00',
+            ],
+        ],
+    ],
+    ShipmentConfig::SHIPMENT_METHOD_DELIVERY => [
+        'EIN' => [
+            '09:00' => [
+                '12:00-14:00',
+                '14:00-16:00',
+            ],
+            '13:00' => [
+                '16:00-18:00',
+                '18:00-20:00',
+            ],
+        ],
     ],
 ];
 
@@ -778,3 +816,6 @@ $config[StoreConstants::STORE_NAMES] = [
     'LPZ' => 'Leipzig',
     'HAD' => 'Halle',
 ];
+
+// ----------- Google Tag Manager
+$config[GoogleTagManagerConstants::CONTAINER_ID] = 'GTM-KN8QSGS';
