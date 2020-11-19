@@ -23,33 +23,29 @@
                             </div>
 
                             <div class="col col--sm-12 col--lg-8">
-
                                 {% include molecule('navigation-footer') with {
                                     class: config.name ~ '__navigation',
                                     data: {
                                         items: [
-
                                             {
-                                                title: 'footer.categories',
-                                                isShow:data.showNavigation,
-                                                templates: [
-                                                    {
-                                                        template: 'navigation-footer',
-                                                        menu: 'FOOTER_NAVIGATION_CATEGORIES',
-                                                    },
-                                                ],
-                                            },
-                                            {
-                                                title: 'footer.globus',
-                                                isShow:data.showNavigation,
+                                                title: 'footer.help',
+                                                isShow: data.showNavigation,
                                                 templates: [
                                                 {
                                                     template: 'navigation-footer',
-                                                    menu: 'NAVIGATION_FOOTER_ELEMENT',
+                                                    menu: 'FOOTER_NAVIGATION',
+                                                },
+                                            ],
+                                            },
+                                            {
+                                                title: 'footer.categories',
+                                                templates: [
+                                                {
+                                                    template: 'navigation-footer',
+                                                    menu: 'FOOTER_NAVIGATION_CATEGORIES',
                                                 },
                                             ],
                                             }
-
                                         ],
                                     },
                                 } only %}
