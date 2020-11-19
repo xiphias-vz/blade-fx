@@ -9,7 +9,7 @@ namespace StoreApp\Zed\Picker\Communication\Form;
 
 use Generated\Shared\Transfer\OrderContainerTransfer;
 use Spryker\Yves\Kernel\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\IntegerType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\Length;
@@ -56,7 +56,7 @@ class OrderItemContainerForm extends AbstractType
     {
         $builder->add(
             static::FIELD_CODE,
-            IntegerType::class,
+            TextType::class,
             [
                 'required' => false,
                 'label' => false,
