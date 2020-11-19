@@ -10,9 +10,12 @@
 
 {% block body %}
     {% for optionGroup in data.optionGroups %}
-        {{ optionGroup.name | trans }}
         {% if optionGroup.getProductOptionValues[0] %}
+            <div class="text-secondary">
+                {{ 'customer.order.item_price.excluding_pfand' | trans | format((optionGroup.getProductOptionValues[0].getPrice) | money) }}
+            </div>
             <input name="product-option['{{ optionGroup.name}}']" value="{{ optionGroup.getProductOptionValues[0].getIdProductOptionValue }}" type="hidden">
         {% endif %}
     {% endfor %}
+    </br>
 {% endblock %}

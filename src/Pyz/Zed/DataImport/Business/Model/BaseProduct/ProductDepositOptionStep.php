@@ -28,44 +28,47 @@ use Spryker\Zed\ProductOption\Dependency\ProductOptionEvents;
 
 class ProductDepositOptionStep extends PublishAwareStep implements DataImportStepInterface
 {
-    private const KEY_DEPOSIT_COUNT_1 = 'pfand_1_count';
-    private const KEY_DEPOSIT_COUNT_2 = 'pfand_2_count';
-    private const KEY_DEPOSIT_TYPE_1 = 'pfand_1_plu';
-    private const KEY_DEPOSIT_TYPE_2 = 'pfand_2_plu';
-    private const KEY_DEPOSIT_AMOUNT_1 = 'pfand_1_amount';
-    private const KEY_DEPOSIT_AMOUNT_2 = 'pfand_2_amount';
-    private const KEY_DEPOSIT_SAP_NUMBER_1 = 'pfand_1_sapnumber';
-    private const KEY_DEPOSIT_SAP_NUMBER_2 = 'pfand_2_sapnumber';
+    /**
+     * @var array
+     */
+    public static $productAbstractProductOptionBuffer = [];
 
-    private const KEY_DEPOSIT_COUNT = 'pfand_count';
-    private const KEY_DEPOSIT_TYPE = 'pfand_plu';
-    private const KEY_DEPOSIT_AMOUNT = 'pfand_amount';
-    private const KEY_DEPOSIT_SAP_NUMBER = 'pfand_sapnumber';
+    public const ID_PRODUCT_OPTION_GROUP = 'id_product_option_group';
 
-    private const GROUP_NAME_TRANSLATION_KEY_PATTERN = 'product.option.group.name.deposit_';
-    private const OPTION_NAME_TRANSLATION_KEY_PATTERN = 'product.option.group.name.deposit_';
+    protected const KEY_DEPOSIT_COUNT_1 = 'pfand_1_count';
+    protected const KEY_DEPOSIT_COUNT_2 = 'pfand_2_count';
+    protected const KEY_DEPOSIT_TYPE_1 = 'pfand_1_plu';
+    protected const KEY_DEPOSIT_TYPE_2 = 'pfand_2_plu';
+    protected const KEY_DEPOSIT_AMOUNT_1 = 'pfand_1_amount';
+    protected const KEY_DEPOSIT_AMOUNT_2 = 'pfand_2_amount';
+    protected const KEY_DEPOSIT_SAP_NUMBER_1 = 'pfand_1_sapnumber';
 
-    private const FK_TAX_SET = ProductAbstractWriterStep::FK_TAX_SET;
-    private const PRODUCT_OPTION_SKU = 'product_option_sku';
+    protected const KEY_DEPOSIT_SAP_NUMBER_2 = 'pfand_2_sapnumber';
+    protected const KEY_DEPOSIT_COUNT = 'pfand_count';
+    protected const KEY_DEPOSIT_TYPE = 'pfand_plu';
+    protected const KEY_DEPOSIT_AMOUNT = 'pfand_amount';
 
-    private const DEFAULT_CURRENCY = 'EUR';
+    protected const KEY_DEPOSIT_SAP_NUMBER = 'pfand_sapnumber';
+    protected const GROUP_NAME_TRANSLATION_KEY_PATTERN = 'product.option.group.name.deposit';
 
-    private const ID_PRODUCT_OPTION_GROUP = 'id_product_option_group';
+    protected const OPTION_NAME_TRANSLATION_KEY_PATTERN = 'product.option.group.name.deposit';
+    protected const FK_TAX_SET = ProductAbstractWriterStep::FK_TAX_SET;
+
+    protected const PRODUCT_OPTION_SKU = 'product_option_sku';
+
+    protected const DEFAULT_CURRENCY = 'EUR';
+
+    protected const DEFAULT_DEPOSIT_NAME = 'Pfand';
 
     /**
      * @var array
      */
-    private static $idStoreBuffer = [];
+    protected static $idStoreBuffer = [];
 
     /**
      * @var array
      */
     protected static $idCurrencyBuffer = [];
-
-    /**
-     * @var int[]
-     */
-    private static $idProductOptionGroup;
 
     /**
      * @param \Spryker\Zed\DataImport\Business\Model\DataSet\DataSetInterface $dataSet
@@ -112,8 +115,9 @@ class ProductDepositOptionStep extends PublishAwareStep implements DataImportSte
      */
     protected function writeProductOption(DataSetInterface $dataSet): void
     {
+        $optionGroupName = self::GROUP_NAME_TRANSLATION_KEY_PATTERN . '_' . $dataSet[static::KEY_DEPOSIT_TYPE];
         $productOptionGroupEntity = SpyProductOptionGroupQuery::create()
-            ->filterByName(self::GROUP_NAME_TRANSLATION_KEY_PATTERN . $dataSet[static::KEY_DEPOSIT_TYPE])
+            ->filterByName($optionGroupName)
             ->findOneOrCreate();
 
         $productOptionGroupEntity
@@ -123,7 +127,7 @@ class ProductDepositOptionStep extends PublishAwareStep implements DataImportSte
 
         $dataSet[static::ID_PRODUCT_OPTION_GROUP] = $productOptionGroupEntity->getIdProductOptionGroup();
 
-        $optionSku = 'OP_product_deposit_'.
+        $optionSku = 'OP_product_deposit_' .
             $dataSet[self::KEY_DEPOSIT_SAP_NUMBER] . '_' .
             $dataSet[self::KEY_DEPOSIT_TYPE] . '_' .
             $dataSet[self::KEY_DEPOSIT_COUNT];
@@ -135,19 +139,19 @@ class ProductDepositOptionStep extends PublishAwareStep implements DataImportSte
             ->filterByFkProductOptionGroup($productOptionGroupEntity->getIdProductOptionGroup())
             ->findOneOrCreate();
 
+        $optionValue = static::OPTION_NAME_TRANSLATION_KEY_PATTERN . $dataSet[self::KEY_DEPOSIT_TYPE] . '_' . $dataSet[self::KEY_DEPOSIT_COUNT];
         $productOptionValueEntity
-            ->setValue(static::OPTION_NAME_TRANSLATION_KEY_PATTERN . $dataSet[self::KEY_DEPOSIT_TYPE] . '_' . $dataSet[self::KEY_DEPOSIT_COUNT])
+            ->setValue($optionValue)
             ->save();
 
-        //TODO: check if translations are used
-//        foreach ($dataSet[ProductLocalizedAttributesExtractorStep::KEY_LOCALIZED_ATTRIBUTES] as $idLocale => $attributes) {
-//            $this->findOrCreateTranslation($dataSet[static::KEY_OPTION_NAME_TRANSLATION_KEY], $attributes[static::KEY_OPTION_NAME], $idLocale);
-//            $this->findOrCreateTranslation($dataSet[static::KEY_GROUP_NAME_TRANSLATION_KEY], $attributes[static::KEY_GROUP_NAME], $idLocale);
-//        }
+        $this->findOrCreateTranslation($optionGroupName, static::DEFAULT_DEPOSIT_NAME, $dataSet->getArrayCopy()['locales']['de_DE']);
+        $this->findOrCreateTranslation($optionValue, static::DEFAULT_DEPOSIT_NAME, $dataSet->getArrayCopy()['locales']['de_DE']);
     }
 
     /**
      * @param \Spryker\Zed\DataImport\Business\Model\DataSet\DataSetInterface $dataSet
+     *
+     * @throws \Pyz\Zed\DataImport\Business\Exception\InvalidDataException
      *
      * @return void
      */
@@ -182,9 +186,6 @@ class ProductDepositOptionStep extends PublishAwareStep implements DataImportSte
                 ->setGrossPrice($grossPrice)
                 ->setNetPrice($netPrice)
                 ->save();
-
-            //TODO: check that additional publish is not required
-//            $this->publishRelatedProductAbstracts($priceEntity->getFkProductOptionValue());
         }
     }
 
@@ -200,6 +201,9 @@ class ProductDepositOptionStep extends PublishAwareStep implements DataImportSte
             ->filterByFkProductAbstract($dataSet[PriceProductDataSet::ID_PRODUCT_ABSTRACT])
             ->findOneOrCreate()
             ->save();
+
+        $productAbstractProductOptionBufferKey = $dataSet[PriceProductDataSet::ID_PRODUCT_ABSTRACT] . '-' . $dataSet[static::ID_PRODUCT_OPTION_GROUP];
+        static::$productAbstractProductOptionBuffer[$productAbstractProductOptionBufferKey] = $productAbstractProductOptionBufferKey;
 
         $this->addPublishEvents(
             ProductOptionEvents::PRODUCT_ABSTRACT_PRODUCT_OPTION_PUBLISH,

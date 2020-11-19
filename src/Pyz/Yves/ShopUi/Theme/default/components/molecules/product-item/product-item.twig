@@ -126,15 +126,6 @@
                                                                 {% widget 'ProductComparativePriceWidget' args [data.product.prices.DEFAULT | default(null), data.productSaleUnit, data.productSaleVolume] only %}{% endwidget %}
                                                             </div>
 
-                                                            {% block depositValue %}
-                                                                {% set depositCount = data.product.attributes['pfand_1_count'] | default(0) %}
-
-                                                                {% if depositCount and data.depositPrice is not null %}
-                                                                    <div class="{{ config.name }}__sale-volume">
-                                                                        {{ 'customer.order.item_price.excluding_pfand' | trans | format((data.depositPrice * depositCount) | money) }}
-                                                                    </div>
-                                                                {% endif %}
-                                                            {% endblock %}
                                                         {% endif %}
                                                     </div>
                                                 {% endblock %}

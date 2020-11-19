@@ -19,7 +19,6 @@
 {% set isProductConcrete = data.product.idProductConcrete is not empty %}
 {% set isDisabled = data.product.idProductConcrete is empty or data.product.price is empty %}
 {% set isProductAvailable = true %}
-{% set depositCount = data.product.attributes['pfand_1_count'] | default(0) %}
 
 {% for index in 1..data.maxQuantity %}
     {% set options = options | merge([{
@@ -62,11 +61,6 @@
                 }
             } only %}
         {% endwidget %}
-        {% if depositCount and data.depositPrice is not null %}
-            <div class="text-secondary">
-                {{ 'customer.order.item_price.excluding_pfand' | trans | format((data.depositPrice * depositCount) | money) }}
-            </div>
-        {% endif %}
 
         <div class="grid">
             {% if productSaleVolume %}
