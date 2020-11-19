@@ -7,7 +7,6 @@
 
 {% define data = {
     showNavigation: true,
-    merchant: "KundenService "~app['merchant_name']
 } %}
 
 {% block body %}
@@ -32,6 +31,7 @@
 
                                             {
                                                 title: 'footer.categories',
+                                                isShow:data.showNavigation,
                                                 templates: [
                                                     {
                                                         template: 'navigation-footer',
@@ -41,6 +41,7 @@
                                             },
                                             {
                                                 title: 'footer.globus',
+                                                isShow:data.showNavigation,
                                                 templates: [
                                                 {
                                                     template: 'navigation-footer',
