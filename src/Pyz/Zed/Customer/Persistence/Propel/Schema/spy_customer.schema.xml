@@ -10,6 +10,8 @@
     <table name="spy_customer">
         <column name="merchant_reference" size="255" type="VARCHAR"/>
         <column name="salutation" type="ENUM" valueSet="Mr, Ms, Divers, Dr"/>
+        <column name="has_orders" type="BOOLEAN"/>
+        <column name="third_party_registration" type="INTEGER"/>
     </table>
 
 </database>

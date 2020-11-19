@@ -8,9 +8,11 @@
 namespace Pyz\Yves\CheckoutPage\Form\DataProvider;
 
 use ArrayObject;
+use Generated\Shared\Transfer\QuoteTransfer;
 use Generated\Shared\Transfer\ShipmentMethodsCollectionTransfer;
 use Generated\Shared\Transfer\ShipmentMethodsTransfer;
 use Pyz\Client\TimeSlot\TimeSlotClientInterface;
+use Pyz\Service\Shipment\ShipmentServiceInterface;
 use Spryker\Shared\Kernel\Store;
 use Spryker\Shared\Kernel\Transfer\AbstractTransfer;
 use Spryker\Shared\Money\Dependency\Plugin\MoneyPluginInterface;
@@ -30,6 +32,16 @@ class ShipmentFormDataProvider extends SprykerShipmentFormDataProvider
     protected $timeSlotClient;
 
     /**
+     * @var \SprykerShop\Yves\CheckoutPage\Dependency\Service\CheckoutPageToShipmentServiceInterface
+     */
+    protected $shipmentService;
+
+    /**
+     * @var \Pyz\Service\Shipment\ShipmentServiceInterface
+     */
+    protected $pyzShipmentService;
+
+    /**
      * @param \SprykerShop\Yves\CheckoutPage\Dependency\Client\CheckoutPageToShipmentClientInterface $shipmentClient
      * @param \SprykerShop\Yves\CheckoutPage\Dependency\Client\CheckoutPageToGlossaryStorageClientInterface $glossaryStorageClient
      * @param \Spryker\Shared\Kernel\Store $store
@@ -38,6 +50,7 @@ class ShipmentFormDataProvider extends SprykerShipmentFormDataProvider
      * @param \SprykerShop\Yves\CheckoutPage\CheckoutPageConfig $checkoutPageConfig
      * @param \SprykerShop\Yves\CheckoutPage\Dependency\Client\CheckoutPageToProductBundleClientInterface $productBundleClient
      * @param \Pyz\Client\TimeSlot\TimeSlotClientInterface $timeSlotClient
+     * @param \Pyz\Service\Shipment\ShipmentServiceInterface $pyzShipmentService
      */
     public function __construct(
         CheckoutPageToShipmentClientInterface $shipmentClient,
@@ -47,7 +60,8 @@ class ShipmentFormDataProvider extends SprykerShipmentFormDataProvider
         CheckoutPageToShipmentServiceInterface $shipmentService,
         CheckoutPageConfig $checkoutPageConfig,
         CheckoutPageToProductBundleClientInterface $productBundleClient,
-        TimeSlotClientInterface $timeSlotClient
+        TimeSlotClientInterface $timeSlotClient,
+        ShipmentServiceInterface $pyzShipmentService
     ) {
         parent::__construct(
             $shipmentClient,
@@ -60,6 +74,7 @@ class ShipmentFormDataProvider extends SprykerShipmentFormDataProvider
         );
 
         $this->timeSlotClient = $timeSlotClient;
+        $this->pyzShipmentService = $pyzShipmentService;
     }
 
     /**
@@ -79,6 +94,41 @@ class ShipmentFormDataProvider extends SprykerShipmentFormDataProvider
         $options[ShipmentCollectionForm::OPTION_SHIPMENT_GROUPS] = $shipmentGroups;
 
         return $options;
+    }
+
+    /**
+     * @param \Generated\Shared\Transfer\QuoteTransfer $quoteTransfer
+     *
+     * @return \Generated\Shared\Transfer\ShipmentMethodsCollectionTransfer
+     */
+    protected function getAvailableShipmentMethodsByShipment(QuoteTransfer $quoteTransfer): ShipmentMethodsCollectionTransfer
+    {
+        $shipmentMethods = $this->shipmentClient->getAvailableMethodsByShipment($quoteTransfer);
+
+        return $this->applyClickAndCollectShipmentPrice($quoteTransfer, $shipmentMethods);
+    }
+
+    /**
+     * @param \Generated\Shared\Transfer\QuoteTransfer $quoteTransfer
+     * @param \Generated\Shared\Transfer\ShipmentMethodsCollectionTransfer $shipmentMethodsCollectionTransfer
+     *
+     * @return \Generated\Shared\Transfer\ShipmentMethodsCollectionTransfer
+     */
+    protected function applyClickAndCollectShipmentPrice(
+        QuoteTransfer $quoteTransfer,
+        ShipmentMethodsCollectionTransfer $shipmentMethodsCollectionTransfer
+    ): ShipmentMethodsCollectionTransfer {
+        foreach ($shipmentMethodsCollectionTransfer->getShipmentMethods() as $shipmentMethodsTransfer){
+            foreach ($shipmentMethodsTransfer->getMethods() as $shipmentMethodTransfer) {
+                $clickAndCollectShipmentPrice = $this->pyzShipmentService->resolveClickAndCollectShipmentPrice($quoteTransfer);
+
+                if ($clickAndCollectShipmentPrice !== null) {
+                    $shipmentMethodTransfer->setStoreCurrencyPrice($clickAndCollectShipmentPrice);
+                }
+            }
+        }
+
+        return $shipmentMethodsCollectionTransfer;
     }
 
     /**

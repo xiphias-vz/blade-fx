@@ -9,8 +9,12 @@ namespace Pyz\Service\Shipment;
 
 use Pyz\Service\DateTimeWithZone\DateTimeWithZoneServiceInterface;
 use Pyz\Service\Shipment\DeliveryDate\Parser;
+use Pyz\Service\Shipment\Resolver\ClickAndCollectShipmentPriceResolver;
 use Spryker\Service\Shipment\ShipmentServiceFactory as SprykerShipmentServiceFactory;
 
+/**
+ * @method \Pyz\Service\Shipment\ShipmentConfig getConfig()
+ */
 class ShipmentServiceFactory extends SprykerShipmentServiceFactory
 {
     /**
@@ -21,6 +25,14 @@ class ShipmentServiceFactory extends SprykerShipmentServiceFactory
         return new Parser(
             $this->getDateTimeWithZoneService()
         );
+    }
+
+    /**
+     * @return \Pyz\Service\Shipment\DeliveryDate\Parser
+     */
+    public function createClickAndCollectShipmentPriceResolver(): ClickAndCollectShipmentPriceResolver
+    {
+        return new ClickAndCollectShipmentPriceResolver($this->getConfig());
     }
 
     /**
