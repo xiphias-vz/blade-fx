@@ -7,7 +7,6 @@
 
 namespace StoreApp\Zed\Picker\Communication\Widget;
 
-use Generated\Shared\Transfer\PickingZoneTransfer;
 use StoreApp\Zed\Kernel\Communication\Widget\AbstractWidget;
 
 /**
@@ -18,7 +17,11 @@ class SelectPickingZoneWidget extends AbstractWidget
 {
     public function __construct()
     {
-        $this->addParameter('currentPickingZone', $this->findCurrentPickingZone());
+        $this->addParameter(
+            'currentPickingZone',
+            $this->getFactory()->getPickerFacade()
+                ->findPickingZoneInSession()
+        );
     }
 
     /**
@@ -34,22 +37,6 @@ class SelectPickingZoneWidget extends AbstractWidget
      */
     public static function getTemplate(): string
     {
-        return '@Picker/picking-zome-selector/picking-zome-selector.twig';
-    }
-
-    /**
-     * @return \Generated\Shared\Transfer\PickingZoneTransfer|null
-     */
-    protected function findCurrentPickingZone(): ?PickingZoneTransfer
-    {
-        $factory = $this->getFactory();
-        $session = $this->getGlobalContainer()->getContainer()->get('session');
-        $idPickingZone = $session->get($this->getConfig()->getPickingZoneSessionKey());
-
-        if (!$idPickingZone) {
-            return null;
-        }
-
-        return $factory->getPickingZoneFacade()->findPickingZoneById($idPickingZone);
+        return '@Picker/picking-zone-selector/picking-zone-selector.twig';
     }
 }

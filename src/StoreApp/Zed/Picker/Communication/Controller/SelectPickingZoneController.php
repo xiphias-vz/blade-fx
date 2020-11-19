@@ -25,20 +25,22 @@ class SelectPickingZoneController extends AbstractController
     public function indexAction(Request $request)
     {
         $factory = $this->getFactory();
-        $pickingZoneSessionKey = $factory->getConfig()->getPickingZoneSessionKey();
-        $idPickingZone = $request->getSession()->get($pickingZoneSessionKey);
+        $selectedPickingZoneTransfer = $this->getFacade()->findPickingZoneInSession();
+
+        if (!$selectedPickingZoneTransfer) {
+            return $this->redirectResponse($factory->getConfig()->getSelectPickingZoneUri());
+        }
 
         $pickingZoneSelectionFormDataProvider = $factory->createPickingZoneSelectionFormDataProvider();
         $pickingZoneSelectionForm = $factory->createPickingZoneSelectionForm(
-            $pickingZoneSelectionFormDataProvider->getData($idPickingZone),
+            $pickingZoneSelectionFormDataProvider->getData($selectedPickingZoneTransfer->getIdPickingZone()),
             $pickingZoneSelectionFormDataProvider->getOptions()
         );
 
         $pickingZoneSelectionForm->handleRequest($request);
 
         if ($pickingZoneSelectionForm->isSubmitted() && $pickingZoneSelectionForm->isValid()) {
-            $request->getSession()->set(
-                $pickingZoneSessionKey,
+            $this->getFacade()->savePickingZoneInSession(
                 $pickingZoneSelectionForm->getData()[PickingZoneSelectionForm::FIELD_PICKING_ZONE]
             );
 

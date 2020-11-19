@@ -7,6 +7,7 @@
 
 namespace StoreApp\Zed\Picker\Business;
 
+use Generated\Shared\Transfer\PickingZoneTransfer;
 use Spryker\Zed\Kernel\Business\AbstractFacade;
 
 /**
@@ -57,5 +58,33 @@ class PickerFacade extends AbstractFacade implements PickerFacadeInterface
     {
         $this->getFactory()->createOrderUpdater()
             ->markOrderItemsAsCanceledByCustomer($idSalesOrderItems);
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * @api
+     *
+     * @return \Generated\Shared\Transfer\PickingZoneTransfer|null
+     */
+    public function findPickingZoneInSession(): ?PickingZoneTransfer
+    {
+        return $this->getFactory()->createPickingZoneReader()
+            ->findInSession();
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * @api
+     *
+     * @param int $idPickingZone
+     *
+     * @return void
+     */
+    public function savePickingZoneInSession(int $idPickingZone): void
+    {
+        $this->getFactory()->createPickingZoneWriter()
+            ->saveInSession($idPickingZone);
     }
 }
