@@ -12,4 +12,5 @@ interface TimeSlotConstants
     public const HOLIDAYS = 'TIME_SLOT:HOLIDAYS';
     public const MAX_SHOW_DAYS = 'TIME_SLOT:MAX_SHOW_DAYS';
     public const SHIPMENT_TIME_SLOTS = 'TIME_SLOT:SHIPMENT_TIME_SLOTS';
+    public const SAME_DAY_SHIPMENT_TIME_SLOTS = 'TIME_SLOT:SAME_DAY_SHIPMENT_TIME_SLOTS';
 }

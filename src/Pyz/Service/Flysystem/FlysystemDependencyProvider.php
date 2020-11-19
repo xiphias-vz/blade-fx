@@ -7,6 +7,7 @@
 
 namespace Pyz\Service\Flysystem;
 
+use Pyz\Service\FlysystemSftpFileSystem\Plugin\Flysystem\SftpFileSystemBuilderPlugin;
 use Spryker\Service\Flysystem\FlysystemDependencyProvider as SprykerFlysystemDependencyProvider;
 use Spryker\Service\FlysystemFtpFileSystem\Plugin\Flysystem\FtpFilesystemBuilderPlugin;
 use Spryker\Service\FlysystemLocalFileSystem\Plugin\Flysystem\LocalFilesystemBuilderPlugin;
@@ -25,6 +26,7 @@ class FlysystemDependencyProvider extends SprykerFlysystemDependencyProvider
             return [
                 new FtpFilesystemBuilderPlugin(),
                 new LocalFilesystemBuilderPlugin(),
+                new SftpFileSystemBuilderPlugin(),
             ];
         };
 
