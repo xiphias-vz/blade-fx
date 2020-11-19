@@ -2,8 +2,17 @@
 
 {% define data = {
     isLogin: false,
+    scriptSrc: 'https://cdns.us1.gigya.com/js/gigya.js?apikey=3_IVfYuFFTkEygbMQjcP8LamKwRZBH4_qjl-EAGSvZJPGTAL59E9yUPdTxqLCyofkZ'
 } %}
+
 {% block container %}
+    {% include molecule('script-loader') with {
+        attributes: {
+            src: data.scriptSrc
+        }
+    } only %}
+
+{#<script src="https://cdns.us1.gigya.com/js/gigya.js?apikey=3_IVfYuFFTkEygbMQjcP8LamKwRZBH4_qjl-EAGSvZJPGTAL59E9yUPdTxqLCyofkZ"></script>#}
     <div class="page-layout-customer page-layout-customer--login-wrap">
         <div class="page-layout-customer__form-wrap">
             <div class="list-switches">
@@ -57,7 +66,6 @@
             </div>
             <div class="js-customer-page-login {{ not data.isLogin ? 'is-hidden' }} grid">
                 <div class="col col--sm-12 col--lg-6 spacing spacing--bigger spacing--inner">
-
                     {% include molecule('form') with {
                         data: {
                             form: data.forms.login,
@@ -68,6 +76,7 @@
                             },
                             options: {
                                 attr: null,
+                                onsubmit: 'loginUser()'
                             },
                         },
                         modifiers: ['grid-indent', 'login', 'checkout-actions'],
@@ -122,4 +131,151 @@
             </div>
         </div>
     </div>
+    <script type="text/javascript">
+
+        function loginUser() {
+            var params = {
+                callback: loginUserResponse,
+                loginID: document.getElementById("loginForm_email").value,
+                password: document.getElementById("loginForm_password").value,
+            };
+            //alert(params.loginID);
+            gigyaRegistrationLogin();
+            //gigya.accounts.login(params);
+            //setTimeout('loginUserNew()', 2000);
+            //return false;
+
+        }
+
+        function loginUserResponse(response) {
+            if (response.errorCode === 206001) {
+                resendVerificationCode(response.regToken, response.userInfo.email);
+                alert(response.Text);
+            } else {
+                alert("Error :" + response.errorMessage);
+            }
+        }
+
+        function resendVerificationCode(token, email) {
+            var verificationParams = {
+                regToken: token,
+                email: email
+            };
+            gigya.accounts.resendVerificationCode(verificationParams);
+        }
+
+        function gigyaInitRegistration() {
+            var params = {
+                isLite: false,
+                callback: gigyaInitRegistrationCallback,
+            };
+            gigya.accounts.initRegistration(params);
+        }
+
+        function gigyaInitRegistrationCallback(response) {
+            if (response.errorCode == 0) {
+                var token = response.regToken;
+                gigyaRegisterUser(token);
+            } else {
+                alert("There was an error!");
+            }
+        }
+
+        function gigyaRegisterUser(token) {
+            //local.mobilePhonePrefix.  profile.phones.number
+            //local.homePhonePrefix.    profile.phones.number
+            //data.salutation. Frau 0001.  Herr 0002   None 0006
+            if (token) {
+                var regParams = {
+                    email: document.getElementById("registerForm_email").value,
+                    password: document.getElementById("registerForm_password_pass").value,
+                    regToken: token,
+                    finalizeRegistration: true,
+                    profile: {
+                        firstName: document.getElementById("registerForm_first_name").value,
+                        lastName: document.getElementById("registerForm_last_name").value,
+                        zip: document.getElementById("registerForm_zip_code").value,
+                        city: document.getElementById("registerForm_city").value,
+                        country: "Deutschland",
+                        birthDay: document.getElementById("1").value,
+                        birthMonth: document.getElementById("2").value,
+                        birthYear: document.getElementById("3").value,
+                        phones: [
+                            {
+                                type: document.getElementById("userName").value,
+                                number: document.getElementById("registerForm_mobile_phone").value
+                            }
+                        ]
+                    },
+                    data: {
+                        address: {
+                            street: document.getElementById("registerForm_address1").value,
+                            houseNo: document.getElementById("registerForm_address2").value
+                        },
+                        salutation: '0002'
+                    },
+                    format: "json",
+                    callback: gigyaRegisterUser,
+                };
+                gigya.accounts.register(regParams);
+            }
+        }
+        function gigyaRegisterUser(response) {
+            if (response.errorCode == 0) {
+                console.log(response);
+            } else {
+                console.log(response);
+                alert("There was an error!");
+            }
+        }
+
+        function loginUserNew() {
+            document.getElementsByName('loginForm')[0].onsubmit = function(){ };
+            document.getElementsByName('loginForm')[0].submit();
+        }
+
+        function showRegister(){
+            var togg = document.getElementById('register');
+            togg.targets.forEach((element) => {
+                if (togg.addClass) {
+                    element.classList.remove(togg.classToToggle);
+                }
+                element.classList.add(togg.classToToggle);
+            });
+        }
+
+        function gigyaRegistrationLogin() {
+            gigya.accounts.showScreenSet({
+                screenSet: 'CCCustomer-RegistrationLogin',
+                startScreen: 'gigya-register-screen'/*,
+                "onBeforeValidation": event => {
+                    var a = document.querySelectorAll("[data-gigya-name='profile.zip']")[0].value;
+                    var errors = [
+                        {
+                            // empty
+                            "profile.zip": "Please enter your zip code",
+                            "form":"There was a simple error in your form"
+                        },
+                        {
+                            // not digits
+                            "profile.zip":"Your zip code must be digits only",
+                            "form":"There was a complex error in your form"
+                        }
+                    ];
+
+                    if (a === '') {
+                        return errors[0];
+                    } else if (/^\d+$/g.test(a) !== true) {
+                        return errors[1];
+                    }
+                }*/});
+
+        }
+
+        //jQuery(document).ready(function() {
+        document.getElementsByName('loginForm')[0].onsubmit = function(){loginUser(); return false;};
+        console.log( "document loaded" );
+        //});
+    </script>
+
 {% endblock %}

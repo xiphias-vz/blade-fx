@@ -21,12 +21,4 @@ class DataImportFacade extends SprykerDataImportFacade implements DataImportFaca
     {
         $this->getFactory()->createUpdateAvailabilityAfterImport()->updateAvailability();
     }
-
-    /**
-     * @return void
-     */
-    public function downloadDataImportFiles(): void
-    {
-        $this->getFactory()->createSFTPDataImportFileLoader()->downloadDataImportFiles();
-    }
 }

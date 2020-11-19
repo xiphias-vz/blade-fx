@@ -83,9 +83,9 @@ class ProductStockWriterStep extends PublishAwareStep implements DataImportStepI
 
             $stockProductEntity
                 ->setQuantity($dataSet[static::KEY_STOCK_QTY])
-                ->setShelf($dataSet[static::KEY_STOCK_SHELF] ? : $stockProductEntity->getShelf())
-                ->setShelfField($dataSet[static::KEY_STOCK_SHELF_FIELD] ? : $stockProductEntity->getShelfField())
-                ->setShelfFloor($dataSet[static::KEY_STOCK_SHELF_FLOR] ? : $stockProductEntity->getShelfFloor())
+                ->setShelf($dataSet[static::KEY_STOCK_SHELF])
+                ->setShelfField($dataSet[static::KEY_STOCK_SHELF_FIELD])
+                ->setShelfFloor($dataSet[static::KEY_STOCK_SHELF_FLOR])
                 ->setIsNeverOutOfStock(true);
 
             $stockProductEntity->save();

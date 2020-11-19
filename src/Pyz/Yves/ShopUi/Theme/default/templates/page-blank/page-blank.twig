@@ -5,103 +5,71 @@
     title: 'global.shop' | trans,
     metaTitle: 'global.shop' | trans,
     metaDescription: '',
-    metaKeywords: '',
-    markt: app.store,
-    googleTagMangerId: app.googleTagManagerId
+    metaKeywords: ''
 } %}
 
 {% block template %}
     <!doctype html>
     <html lang="{{ data.locale }}">
-    <head>
-        {% if is_granted('IS_AUTHENTICATED_FULLY') %}
-            <script>
-                dataLayer = [{
-                    'isloggedin': 'true',
-                    'markt': '{{ data.markt }}'
-                }];
-            </script>
-        {% else %}
-            <script>
-                dataLayer = [{
-                    'isloggedin': 'false',
-                    'markt': '{{ data.markt }}'
-                }];
-            </script>
-        {% endif %}
-        <!-- Google Tag Manager -->
-        <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-                    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-                j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-                'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-            })(window,document,'script','dataLayer','{{ data.googleTagMangerId }}');
-        </script>
-        <!-- End Google Tag Manager -->
+        <head>
+            {% block meta %}
+                <meta charset="utf-8" />
+                <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1" />
+                <meta name="title" content="{% block metaTitle %}{{ data.metaTitle }}{% endblock %}" />
+                <meta name="description" content="{% block metaDescription %}{{ data.metaDescription }}{% endblock %}" />
+                <meta name="keywords" content="{% block metaKeywords %}{{ data.metaKeywords }}{% endblock %}" />
+                <link rel="shortcut icon" href="/media/technisch/img/favicon/apple-touch-icon.png" type="image/x-icon" />
+                <meta name="generator" content="spryker" />
+            {% endblock %}
 
-        {% block meta %}
-            <meta charset="utf-8" />
-            <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1" />
-            <meta name="title" content="{% block metaTitle %}{{ data.metaTitle }}{% endblock %}" />
-            <meta name="description" content="{% block metaDescription %}{{ data.metaDescription }}{% endblock %}" />
-            <meta name="keywords" content="{% block metaKeywords %}{{ data.metaKeywords }}{% endblock %}" />
-            <link rel="shortcut icon" href="/media/technisch/img/favicon/apple-touch-icon.png" type="image/x-icon" />
-            <meta name="generator" content="spryker" />
-        {% endblock %}
+            {% block headStyles %}
+                <link rel="stylesheet" href="{{publicPath('css/yves_default.app.css')}}" />
+            {% endblock %}
 
-        {% block headStyles %}
-            <link rel="stylesheet" href="{{publicPath('css/yves_default.app.css')}}" />
-        {% endblock %}
+            {% block headScripts %}
+                <script type="text/javascript">
+                    if(/MSIE \d|Trident.*rv:/.test(navigator.userAgent)) {
+                        document.write(
+                            '<script nomodule type="application/javascript" src="' + '{{publicPath('js/yves_default.runtime.legacy.js')}}' + '"><\/script>'
+                        );
+                    } else {
+                        document.write(
+                            '<script nomodule type="application/javascript" src="' + '{{publicPath('js/yves_default.runtime.legacy.js')}}' + '" crossorigin><\/script>'
+                        );
+                    }
+                </script>
+                <script type="module" src="{{publicPath('js/yves_default.runtime.esm.js')}}" crossorigin></script>
+            {% endblock %}
 
-        {% block headScripts %}
-            <script type="text/javascript">
-                if(/MSIE \d|Trident.*rv:/.test(navigator.userAgent)) {
-                    document.write(
-                        '<script nomodule type="application/javascript" src="' + '{{publicPath('js/yves_default.runtime.legacy.js')}}' + '"><\/script>'
-                    );
-                } else {
-                    document.write(
-                        '<script nomodule type="application/javascript" src="' + '{{publicPath('js/yves_default.runtime.legacy.js')}}' + '" crossorigin><\/script>'
-                    );
-                }
-            </script>
-            <script type="module" src="{{publicPath('js/yves_default.runtime.esm.js')}}" crossorigin></script>
-        {% endblock %}
+            <title>{% block headTitle %}{{ data.title }}{% endblock %}</title>
+        </head>
+        <body
+            {%- if block('class') is not empty %} class="{%- block class -%}{%- endblock -%}"{%- endif %}
+            {%- block attributes -%}{{qa('page')}}{%- endblock -%}>
+            {% include molecule('outside-widgets') only %}
 
-        <title>{% block headTitle %}{{ data.title }}{% endblock %}</title>
-    </head>
-    <body
-        {%- if block('class') is not empty %} class="{%- block class -%}{%- endblock -%}"{%- endif %}
-        {%- block attributes -%}{{qa('page')}}{%- endblock -%}>
-    {% include molecule('outside-widgets') only %}
+            {{parent()}}
 
-    {{parent()}}
+            {% include molecule('check-touch') only %}
 
-    {% include molecule('check-touch') only %}
+            {% block footerScripts %}
+                <script type="text/javascript">
+                    if(/MSIE \d|Trident.*rv:/.test(navigator.userAgent)) {
+                        document.write(
+                            '<script nomodule type="application\/javascript" src="' + '{{ publicPath('js/yves_default.vendor.legacy.js') }}' + '"><\/script>' +
+                            '<script nomodule type="application\/javascript" src="' + '{{publicPath('js/yves_default.app.legacy.js')}}' + '"><\/script>'
+                        );
+                    } else {
+                        document.write(
+                            '<script nomodule type="application\/javascript" src="' + '{{publicPath('js/yves_default.vendor.legacy.js')}}' + '" crossorigin><\/script>' +
+                            '<script nomodule type="application\/javascript" src="' + '{{publicPath('js/yves_default.app.legacy.js')}}' + '" crossorigin><\/script>'
+                        );
+                    }
+                </script>
 
-    {% block footerScripts %}
-        <!-- Google Tag Manager (noscript) -->
-        <noscript><iframe src="https://www.googletagmanager.com/ns.html?id={{ data.googleTagMangerId }}"
-                          height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
-        <!-- End Google Tag Manager (noscript) -->
-        <script type="text/javascript">
-            if(/MSIE \d|Trident.*rv:/.test(navigator.userAgent)) {
-                document.write(
-                    '<script nomodule type="application\/javascript" src="' + '{{ publicPath('js/yves_default.vendor.legacy.js') }}' + '"><\/script>' +
-                    '<script nomodule type="application\/javascript" src="' + '{{publicPath('js/yves_default.app.legacy.js')}}' + '"><\/script>'
-                );
-            } else {
-                document.write(
-                    '<script nomodule type="application\/javascript" src="' + '{{publicPath('js/yves_default.vendor.legacy.js')}}' + '" crossorigin><\/script>' +
-                    '<script nomodule type="application\/javascript" src="' + '{{publicPath('js/yves_default.app.legacy.js')}}' + '" crossorigin><\/script>'
-                );
-            }
-        </script>
-
-        <script type="module" src="{{publicPath('js/yves_default.vendor.esm.js')}}" crossorigin></script>
-        <script type="module" src="{{publicPath('js/yves_default.app.esm.js')}}" crossorigin></script>
-    {% endblock %}
-
-
-    </body>
+                <script type="module" src="{{publicPath('js/yves_default.vendor.esm.js')}}" crossorigin></script>
+                <script type="module" src="{{publicPath('js/yves_default.app.esm.js')}}" crossorigin></script>
+            {% endblock %}
+        </body>
     </html>
 {% endblock %}

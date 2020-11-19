@@ -12,5 +12,4 @@ use Spryker\Shared\DataImport\DataImportConstants as SprykerDataImportConstants;
 interface DataImportConstants extends SprykerDataImportConstants
 {
     public const IS_ENABLE_INTERNAL_IMAGE = 'DATA_IMPORT:IS_ENABLE_INTERNAL_IMAGE';
-    public const SFTP_DATA_IMPORT_FILES_FOLDER_NAME = 'DATA_IMPORT:SFTP_DATA_IMPORT_FILES_FOLDER_NAME';
 }

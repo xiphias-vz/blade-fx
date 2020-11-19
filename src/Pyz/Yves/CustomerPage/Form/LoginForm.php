@@ -21,6 +21,13 @@ use Symfony\Component\Validator\Constraints\Blank;
 class LoginForm extends SprykerLoginForm
 {
     /**
+     * @param \Symfony\Component\Form\FormBuilderInterface $builder
+     *
+     * @return $this
+     */
+    public const FIELD_CHECKBOX = 'checkbox';
+
+    /**
      * @param FormBuilderInterface $builder
      * @param array $options
      */
@@ -66,6 +73,15 @@ class LoginForm extends SprykerLoginForm
             ],
         ]);
 
+        return $this;
+    }
+
+    protected function addCheckboxField(FormBuilderInterface $builder)
+    {
+        $builder->add(self::FIELD_CHECKBOX, CheckboxType::class,[
+               'label' => 'customer.login.checkbox',
+               'mapped' => false
+            ]);
         return $this;
     }
 

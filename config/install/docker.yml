@@ -140,9 +140,6 @@ sections:
             command: "vendor/bin/console setup:init-db"
 
     demodata:
-        local-env-data-restore:
-            command: "vendor/bin/install -r local-env-data-restore"
-
         import:
             command: "vendor/bin/console data:import"
 

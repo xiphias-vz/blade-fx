@@ -15,9 +15,4 @@ interface DataImportFacadeInterface extends SprykerDataImportFacadeInterface
      * @return void
      */
     public function updateProductAvailability(): void;
-
-    /**
-     * @return void
-     */
-    public function downloadDataImportFiles(): void;
 }
