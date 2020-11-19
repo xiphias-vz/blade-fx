@@ -154,7 +154,6 @@ class PickingController extends AbstractController
      */
     public function orderPickingAction(Request $request)
     {
-//        dd(123);
         $idSalesOrder = $request->get(PickerConfig::REQUEST_PARAM_ID_ORDER) ?? 0;
 
         $salesOrderTransfer = $this->getFactory()->getSalesFacade()
@@ -189,11 +188,6 @@ class PickingController extends AbstractController
             $orderItemSelectionFormDataProvider->getData($salesOrderTransfer->getIdSalesOrder()),
             $orderItemSelectionFormDataProvider->getOptions($aggregatedItemTransfers, $salesOrderTransfer->getStore())
         );
-
-//        dd(
-//            $orderItemSelectionFormDataProvider->getData($salesOrderTransfer->getIdSalesOrder()),
-//            $orderItemSelectionFormDataProvider->getOptions($aggregatedItemTransfers, $salesOrderTransfer->getStore())
-//        );
 
         $orderItemSelectionForm->handleRequest($request);
 
@@ -252,8 +246,6 @@ class PickingController extends AbstractController
                 $formData,
                 $salesOrderTransfer
             );
-
-//        dd($formData, $pickingBagsCount, $salesOrderTransfer->toArray(), $skuToSelectedQuantityMap, $orderItemStatusesTransfer->toArray());
 
         $this->addInfoMessage(
             static::PICKING_INFO_MESSAGE_ORDER_WILL_MOVE_TO_NEXT_STAGE

@@ -47,9 +47,7 @@ class FormDataMapper implements FormDataMapperInterface
     {
         $orderContainerCollectionTransfer = new OrderContainerCollectionTransfer();
         foreach ($formData[OrderItemSelectionForm::FIELD_SALES_ORDER_CONTAINERS] as $orderContainerTransfer) {
-            /**
-             * @var \Generated\Shared\Transfer\OrderContainerTransfer $orderContainerTransfer
-             */
+            /** @var \Generated\Shared\Transfer\OrderContainerTransfer $orderContainerTransfer */
             $orderContainerTransfer->setIdSalesOrder($salesOrderTransfer->getIdSalesOrder());
             $orderContainerCollectionTransfer->addOrderContainer($orderContainerTransfer);
         }

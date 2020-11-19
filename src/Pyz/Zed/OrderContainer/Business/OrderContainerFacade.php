@@ -17,7 +17,9 @@ use Spryker\Zed\Kernel\Business\AbstractFacade;
 class OrderContainerFacade extends AbstractFacade implements OrderContainerFacadeInterface
 {
     /**
-     * @inheritDoc
+     * @param \Generated\Shared\Transfer\OrderContainerCollectionTransfer $orderContainerCollectionTransfer
+     *
+     * @return void
      */
     public function createOrderContainers(OrderContainerCollectionTransfer $orderContainerCollectionTransfer): void
     {

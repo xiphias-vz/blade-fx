@@ -64,7 +64,6 @@ class PickerBusinessFactory extends AbstractBusinessFactory
      */
     public function getOrderContainerFacade(): OrderContainerFacadeInterface
     {
-//        return new OrderContainerFacade();
         return $this->getProvidedDependency(PickerDependencyProvider::FACADE_ORDER_CONTAINER);
     }
 }
