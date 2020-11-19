@@ -1,0 +1,3 @@
+store-app.form.picking-zone-selector,Please choose your picking zone
+store-app.form.submit-label,Choose
+store-app.header.picking-zone-selector,Current picking zone is: %s
