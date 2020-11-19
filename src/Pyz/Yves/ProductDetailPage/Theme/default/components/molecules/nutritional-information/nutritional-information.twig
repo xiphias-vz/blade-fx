@@ -15,13 +15,6 @@
 {%- endblock %}
 
 {% block body %}
-
-    <div class="{{ component.renderClass(config.name ~ '__content', modifiers) }} col--lg-12">
-            <h3 class="title title--h2 title--product-details active"
-                data-toggle-target-class-name="{{ config.jsName }}__toggler-target">
-                <strong>Nährwerte</strong>
-            </h3>
-            <div class="{{ config.jsName }}__toggler-target {{ data.triggerClassName }}">
                 <div class="is-scrollable-x spacing-bottom">
                     <table class="table table--expand">
                         <thead>
@@ -90,7 +83,4 @@
                         </tbody>
                     </table>
                 </div>
-            </div>
-    </div>
-
 {% endblock %}
