@@ -136,7 +136,7 @@
         &--checkout-success {
             margin-bottom: rem(12);
             font-size: rem(30);
-            color: $setting-color-green;
+            color: $setting-color-globus-darkGreen;
 
             @include helper-breakpoint-media-min($md-min) {
                 margin-bottom: rem(22);
@@ -215,13 +215,11 @@
         }
 
         &--product-details {
-            border-bottom: solid 1px $setting-color-gray-3;
             padding: rem(20) 0;
             cursor: pointer;
             position: relative;
 
             &::after {
-                content: '';
                 position: absolute;
                 right: rem(10);
                 top: rem(21);
@@ -233,12 +231,12 @@
             }
 
             &:hover {
-                color: $setting-color-blue-midi;
+                color: $setting-color-globus-darkGray;
             }
 
             &.active {
-                color: $setting-color-blue-midi;
-                border-color: $setting-color-blue-midi;
+                color: $setting-color-globus-darkGray;
+                border-color: $setting-color-globus-darkGray;
                 margin-bottom: rem(25);
 
                 & + div {
@@ -246,7 +244,7 @@
                 }
 
                 &::after {
-                    border-color: $setting-color-blue-midi;
+                    border-color: $setting-color-globus-darkGray;
                 }
             }
         }
