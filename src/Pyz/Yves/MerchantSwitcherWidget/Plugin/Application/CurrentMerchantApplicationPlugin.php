@@ -34,7 +34,6 @@ class CurrentMerchantApplicationPlugin extends AbstractPlugin implements Applica
             return $this->getFactory()
                 ->createMerchantShopContextReader()
                 ->getCurrentMerchantName();
-
         });
 
         return $container;

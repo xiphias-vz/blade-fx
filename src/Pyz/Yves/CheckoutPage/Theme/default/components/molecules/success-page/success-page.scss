@@ -2,7 +2,6 @@
     #{$name} {
         padding: rem(24) rem(16);
 
-
         @include helper-breakpoint-media-min($lg-min) {
             padding: rem(85) rem(16);
         }
