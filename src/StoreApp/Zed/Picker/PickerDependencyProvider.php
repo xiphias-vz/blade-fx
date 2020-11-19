@@ -29,10 +29,17 @@ class PickerDependencyProvider extends AbstractBundleDependencyProvider
     public const FACADE_PRODUCT = 'FACADE_PRODUCT';
     public const FACADE_PICKING_ROUTE = 'FACADE_PICKING_ROUTE';
     public const FACADE_PICKING_ZONE = 'FACADE_PICKING_ZONE';
-
-    public const SERVICE_DATE_TIME_WITH_ZONE = 'SERVICE_DATE_TIME_WITH_ZONE';
     public const FACADE_MERCHANT_SALES_ORDER = 'FACADE_MERCHANT_SALES_ORDER';
     public const FACADE_PERMISSION_ACCESS = 'FACADE_PERMISSION_ACCESS';
+
+    public const SERVICE_DATE_TIME_WITH_ZONE = 'SERVICE_DATE_TIME_WITH_ZONE';
+
+    public const SERVICE_SESSION = 'SERVICE_SESSION';
+
+    /**
+     * @uses \Spryker\Zed\Http\Communication\Plugin\Application\HttpApplicationPlugin::SERVICE_REQUEST_STACK
+     */
+    protected const SERVICE_REQUEST_STACK = 'request_stack';
 
     /**
      * @param \Spryker\Zed\Kernel\Container $container
@@ -69,6 +76,8 @@ class PickerDependencyProvider extends AbstractBundleDependencyProvider
         $container = $this->addSalesFacade($container);
         $container = $this->addOmsFacade($container);
         $container = $this->addUserFacade($container);
+        $container = $this->addPickingZoneFacade($container);
+        $container = $this->addSessionService($container);
 
         return $container;
     }
@@ -208,6 +217,23 @@ class PickerDependencyProvider extends AbstractBundleDependencyProvider
     {
         $container->set(static::FACADE_PERMISSION_ACCESS, function (Container $container): PermissionAccessFacadeInterface {
             return $container->getLocator()->permissionAccess()->facade();
+        });
+
+        return $container;
+    }
+
+    /**
+     * @param \Spryker\Zed\Kernel\Container $container
+     *
+     * @return \Spryker\Zed\Kernel\Container
+     */
+    protected function addSessionService(Container $container)
+    {
+        $container->set(static::SERVICE_SESSION, function (Container $container) {
+            /** @var \Symfony\Component\HttpFoundation\RequestStack $requestStack */
+            $requestStack = $container->getApplicationService(static::SERVICE_REQUEST_STACK);
+
+            return $requestStack->getCurrentRequest()->getSession();
         });
 
         return $container;

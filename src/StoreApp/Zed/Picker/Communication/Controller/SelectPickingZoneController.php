@@ -25,20 +25,17 @@ class SelectPickingZoneController extends AbstractController
     public function indexAction(Request $request)
     {
         $factory = $this->getFactory();
-        $pickingZoneSessionKey = $factory->getConfig()->getPickingZoneSessionKey();
-        $idPickingZone = $request->getSession()->get($pickingZoneSessionKey);
 
         $pickingZoneSelectionFormDataProvider = $factory->createPickingZoneSelectionFormDataProvider();
         $pickingZoneSelectionForm = $factory->createPickingZoneSelectionForm(
-            $pickingZoneSelectionFormDataProvider->getData($idPickingZone),
+            $pickingZoneSelectionFormDataProvider->getData($this->findIdPickingZoneSelected()),
             $pickingZoneSelectionFormDataProvider->getOptions()
         );
 
         $pickingZoneSelectionForm->handleRequest($request);
 
         if ($pickingZoneSelectionForm->isSubmitted() && $pickingZoneSelectionForm->isValid()) {
-            $request->getSession()->set(
-                $pickingZoneSessionKey,
+            $this->getFacade()->savePickingZoneInSession(
                 $pickingZoneSelectionForm->getData()[PickingZoneSelectionForm::FIELD_PICKING_ZONE]
             );
 
@@ -48,5 +45,19 @@ class SelectPickingZoneController extends AbstractController
         return [
             'pickingZoneSelectionForm' => $pickingZoneSelectionForm->createView(),
         ];
+    }
+
+    /**
+     * @return int|null
+     */
+    protected function findIdPickingZoneSelected(): ?int
+    {
+        $selectedPickingZoneTransfer = $this->getFacade()->findPickingZoneInSession();
+
+        if (!$selectedPickingZoneTransfer) {
+            return null;
+        }
+
+        return $selectedPickingZoneTransfer->getIdPickingZone();
     }
 }

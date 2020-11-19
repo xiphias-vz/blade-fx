@@ -11,6 +11,10 @@
         <property name="merchantSalesOrder" type="MerchantSalesOrder"/>
     </transfer>
 
+    <transfer name="OrderCriteriaFilter">
+        <property name="pickingZoneName" type="string"/>
+    </transfer>
+
     <transfer name="MerchantSalesOrderCollection">
         <property name="merchantSalesOrders" type="MerchantSalesOrder[]" singular="merchantSalesOrder"/>
     </transfer>

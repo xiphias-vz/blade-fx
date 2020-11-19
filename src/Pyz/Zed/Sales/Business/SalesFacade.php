@@ -181,4 +181,23 @@ class SalesFacade extends SprykerSalesFacade implements SalesFacadeInterface
             ->createOrderReaderForStoreApp()
             ->findOrderByIdSalesOrder($idSalesOrder);
     }
+
+    /**
+     * {@inheritDoc}
+     *
+     * @api
+     *
+     * @param int $idSalesOrder
+     * @param string $pickingZoneName
+     *
+     * @return \Generated\Shared\Transfer\OrderTransfer|null
+     */
+    public function findOrderByIdSalesOrderAndPickingZoneForStoreApp(
+        int $idSalesOrder,
+        string $pickingZoneName
+    ): ?OrderTransfer {
+        return $this->getFactory()
+            ->createOrderReaderForStoreApp()
+            ->findOrderByIdSalesOrderAndPickingZone($idSalesOrder, $pickingZoneName);
+    }
 }

@@ -18,6 +18,7 @@ use Spryker\Zed\Oms\Business\OmsFacadeInterface;
 use Spryker\Zed\Sales\Business\SalesFacadeInterface;
 use Spryker\Zed\User\Business\UserFacadeInterface;
 use StoreApp\Zed\PermissionAccess\Business\PermissionAccessFacadeInterface;
+use StoreApp\Zed\Picker\Business\PickerFacadeInterface;
 use StoreApp\Zed\Picker\Communication\Aggregator\ItemAggregator;
 use StoreApp\Zed\Picker\Communication\Form\DataProvider\OrderItemSelectionFormDataProvider;
 use StoreApp\Zed\Picker\Communication\Form\DataProvider\PickingZoneSelectionFormDataProvider;
@@ -53,6 +54,14 @@ class PickerCommunicationFactory extends AbstractCommunicationFactory
     public function createPickingZoneSelectionForm(array $data, array $options): FormInterface
     {
         return $this->getFormFactory()->create(PickingZoneSelectionForm::class, $data, $options);
+    }
+
+    /**
+     * @return \StoreApp\Zed\Picker\Business\PickerFacadeInterface
+     */
+    public function getPickerFacade(): PickerFacadeInterface
+    {
+        return $this->getFacade();
     }
 
     /**
