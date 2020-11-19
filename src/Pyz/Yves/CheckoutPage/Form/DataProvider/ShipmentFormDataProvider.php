@@ -118,7 +118,7 @@ class ShipmentFormDataProvider extends SprykerShipmentFormDataProvider
         QuoteTransfer $quoteTransfer,
         ShipmentMethodsCollectionTransfer $shipmentMethodsCollectionTransfer
     ): ShipmentMethodsCollectionTransfer {
-        foreach ($shipmentMethodsCollectionTransfer->getShipmentMethods() as $shipmentMethodsTransfer){
+        foreach ($shipmentMethodsCollectionTransfer->getShipmentMethods() as $shipmentMethodsTransfer) {
             foreach ($shipmentMethodsTransfer->getMethods() as $shipmentMethodTransfer) {
                 $clickAndCollectShipmentPrice = $this->pyzShipmentService->resolveClickAndCollectShipmentPrice($quoteTransfer);
 

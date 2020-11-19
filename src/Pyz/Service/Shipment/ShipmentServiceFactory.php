@@ -28,7 +28,7 @@ class ShipmentServiceFactory extends SprykerShipmentServiceFactory
     }
 
     /**
-     * @return \Pyz\Service\Shipment\DeliveryDate\Parser
+     * @return \Pyz\Service\Shipment\Resolver\ClickAndCollectShipmentPriceResolver
      */
     public function createClickAndCollectShipmentPriceResolver(): ClickAndCollectShipmentPriceResolver
     {

@@ -8,7 +8,6 @@
 namespace Pyz\Yves\CheckoutPage;
 
 use Generated\Shared\Transfer\PaymentTransfer;
-use Pyz\Yves\CheckoutPage\Dependency\Service\CheckoutPageToShipmentServiceBridge;
 use Pyz\Yves\CustomerPage\Form\CheckoutAddressCollectionForm;
 use Pyz\Yves\CustomerPage\Form\RegisterForm;
 use Spryker\Shared\Nopayment\NopaymentConfig;

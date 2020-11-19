@@ -22,7 +22,6 @@ class ClickAndCollectShipmentPriceResolver implements ShipmentPriceResolverInter
      */
     public function __construct(ShipmentConfig $shipmentConfig)
     {
-
         $this->shipmentConfig = $shipmentConfig;
     }
 
@@ -33,12 +32,12 @@ class ClickAndCollectShipmentPriceResolver implements ShipmentPriceResolverInter
      */
     public function resolveShipmentPrice(QuoteTransfer $quoteTransfer): ?int
     {
-        if ($quoteTransfer->getCustomer()->getThirdPartyRegistration()) {
-            return $this->shipmentConfig->getMainGlobusCustomerClickAndCollectShipmentMethodPrice();
+        if (!$quoteTransfer->getCustomer()->getHasOrders()) {
+            return $this->shipmentConfig->getPromotionClickAndCollectShipmentMethodPrice();
         }
 
-        if ($quoteTransfer->getCustomer()->getHasOrders()) {
-            return $this->shipmentConfig->getPromotionClickAndCollectShipmentMethodPrice();
+        if ($quoteTransfer->getCustomer()->getThirdPartyRegistration()) {
+            return $this->shipmentConfig->getMainGlobusCustomerClickAndCollectShipmentMethodPrice();
         }
 
         return null;
