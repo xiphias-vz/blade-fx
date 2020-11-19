@@ -18,9 +18,6 @@
 } %}
 
 {% block body %}
-    {% set modifiers = data.isBundle ? modifiers : modifiers | merge(['mobile', 'filter', 'desktop-border-bottom']) %}
-    {% set colClass = data.isBundle ? 'col col--sm-12' : config.name ~ '__col' %}
-    <div class="{{ component.renderClass(config.name ~ '__content', modifiers) }} col--lg-12">
         {% if data.attributes['herkunftsland'] is defined %}
             <p class="description-text-color">{{ 'product.info.additional.origin.country' | trans }}: {{ data.attributes['herkunftsland'] }}</p>
         {% endif %}
@@ -34,5 +31,4 @@
                 {{ spyCmsBlock({ key: 'alcohol-16' }) }}
             {% endif %}
         {% endif %}
-    </div>
 {% endblock %}

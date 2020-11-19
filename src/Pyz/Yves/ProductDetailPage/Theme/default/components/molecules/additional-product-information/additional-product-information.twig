@@ -7,17 +7,10 @@
 {% define data = {
     productAttributes: required,
     product: required,
-    triggerClassName: 'active',
 } %}
 
 {% block body %}
-    <div class="{{ component.renderClass(config.name ~ '__content', modifiers) }} col--lg-12">
-        {% block contentText %}
-            <h3 class="title title--h2 title--product-details {{ data.triggerClassName }}"
-                data-toggle-target-class-name="{{ config.jsName }}__toggler-target">
-                <strong>{{ 'catalog.view.product.info' | trans }}</strong>
-            </h3>
-            <div class="{{ config.jsName }}__toggler-target"> {# is-hidden #}
+
                 {% if data.product['idProductConcrete'] is defined %}
                     <div><strong>Art.Nr:</strong> {{ data.product['idProductConcrete'] }}</div>
                 {% endif %}
@@ -39,7 +32,5 @@
                 {% if data.productAttributes['verwendungshinweise'] is defined %}
                     <div><strong>{{ 'product.info.additional.hints' | trans }}:</strong> {{ data.productAttributes['verwendungshinweise'] }}</div>
                 {% endif %}
-            </div>
-        {% endblock %}
-    </div>
+
 {% endblock %}

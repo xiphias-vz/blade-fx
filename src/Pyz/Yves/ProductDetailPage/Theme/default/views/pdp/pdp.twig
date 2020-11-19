@@ -19,6 +19,13 @@
     depositPrice: _view.depositPrice,
 } %}
 
+{% define data = {
+    product: required,
+    maxQuantity: 10,
+    isBundle: null,
+    bundleItems: []
+} %}
+
 {% block headStyles %}
     {{ parent() }}
     <link itemprop="url" href="{{ data.productUrl }}">
@@ -76,47 +83,127 @@
                 } only %}
 
                  {% if data.product.attributes.zutaten is defined or data.product.attributes.entallerg is defined %}
-                    {% include molecule('ingredients-and-allergens', 'ProductDetailPage') with {
-                        data: {
-                            productAttributes: data.product.attributes
-                        },
-                    } only %}
+                     {% embed molecule('toggler-item') with {
+                         data: {
+                             title: 'product.info.ingredients.and.allergens' | trans,
+                             triggerClass: 'ingredients-and-allergens__trigger-bundle',
+                             targetClass: 'ingredients-and-allergens__target-bundle',
+                             isActive: true,
+                             productAttributes: data.product.attributes,
+                             product: data.product
+                         },
+                         embed: {
+                             bundleItems: data.bundleItems,
+                         }
+                     } only %}
+                         {% block contentText %}
+                             {% include molecule('ingredients-and-allergens', 'ProductDetailPage') with {
+                                 data: {
+                                     productAttributes: data.product.attributes
+                                 },
+                             } only %}
+                         {% endblock %}
+                     {% endembed %}
                 {% endif %}
 
                 {% if data.product.attributes.energiekcalp100gml is defined and data.product.nutritionalInformationContainsReferenceAmount is defined%}
-                    {% include molecule('nutritional-information', 'ProductDetailPage') with {
+                    {% embed molecule('toggler-item') with {
                         data: {
-                            attributes: data.product.attributes,
-                            isNutritionalInformationContainsReferenceAmount: data.product.nutritionalInformationContainsReferenceAmount
+                            title: 'Nährwerte',
+                            triggerClass: 'nutritional-information__trigger-bundle',
+                            targetClass: 'nutritional-information__target-bundle',
+                            isActive: true,
+                            productAttributes: data.product.attributes,
+                            product: data.product
                         },
+                        embed: {
+                            bundleItems: data.bundleItems,
+                        }
                     } only %}
+                        {% block contentText %}
+                            {% include molecule('nutritional-information', 'ProductDetailPage') with {
+                                data: {
+                                    attributes: data.product.attributes,
+                                    isNutritionalInformationContainsReferenceAmount: data.product.nutritionalInformationContainsReferenceAmount
+                                },
+                            } only %}
+                        {% endblock %}
+                    {% endembed %}
                 {% endif %}
 
                 {% if data.product.attributes.verwendungshinweise is defined or data.product.attributes.warnhinweise is defined %}
-                    {% include molecule('warnings-and-usage-info', 'ProductDetailPage') with {
+                    {% embed molecule('toggler-item') with {
                         data: {
+                            title: 'Warnhinweise & Verwendungshinweise',
+                            triggerClass: 'warnings-and-usage-info__trigger-bundle',
+                            targetClass: 'warnings-and-usage-info__target-bundle',
+                            isActive: true,
                             productAttributes: data.product.attributes,
+                            product: data.product
                         },
+                        embed: {
+                            bundleItems: data.bundleItems,
+                        }
                     } only %}
+                        {% block contentText %}
+                            {% include molecule('warnings-and-usage-info', 'ProductDetailPage') with {
+                                data: {
+                                    productAttributes: data.product.attributes,
+                                },
+                            } only %}
+                        {% endblock %}
+                    {% endembed %}
                 {% endif %}
 
                 {% if data.product.attributes.pet_feeding_table is defined %}
-                    {% include molecule('pet-feeding-table', 'ProductDetailPage') with {
-                        data: {
-                            attributes: data.product.attributes,
-                            petColumns: data.petCols,
-                            petRows: data.petRows,
-                            rowData: data.rowData,
-                        },
-                    } only %}
-                {% endif %}
-
-                {% include molecule('additional-product-information', 'ProductDetailPage') with {
+                {% embed molecule('toggler-item') with {
                     data: {
+                        title: 'Fütterungsempfehlung',
+                        triggerClass: 'pet-feeding-table__trigger-bundle',
+                        targetClass: 'pet-feeding-table__target-bundle',
+                        isActive: true,
                         productAttributes: data.product.attributes,
                         product: data.product
                     },
+                    embed: {
+                        bundleItems: data.bundleItems,
+                    }
                 } only %}
+                    {% block contentText %}
+                            {% include molecule('pet-feeding-table', 'ProductDetailPage') with {
+                                data: {
+                                    attributes: data.product.attributes,
+                                    petColumns: data.petCols,
+                                    petRows: data.petRows,
+                                    rowData: data.rowData,
+                                },
+                            } only %}
+                    {% endblock %}
+                {% endembed %}
+                {% endif %}
+
+                {% embed molecule('toggler-item') with {
+                    data: {
+                        title: 'catalog.view.product.info' | trans,
+                        triggerClass: 'additional-product-information__trigger-bundle',
+                        targetClass: 'additional-product-information__target-bundle',
+                        isActive: true,
+                        productAttributes: data.product.attributes,
+                        product: data.product
+                    },
+                    embed: {
+                        bundleItems: data.bundleItems,
+                    }
+                } only %}
+                    {% block contentText %}
+                        {% include molecule('additional-product-information', 'ProductDetailPage') with {
+                            data: {
+                                productAttributes: data.productAttributes,
+                                product: data.product
+                            },
+                        } only %}
+                    {% endblock %}
+                {% endembed %}
 
             </div>
         </div>

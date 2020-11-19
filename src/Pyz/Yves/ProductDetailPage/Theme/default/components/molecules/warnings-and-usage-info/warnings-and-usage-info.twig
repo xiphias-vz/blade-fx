@@ -14,14 +14,6 @@
 {%- endblock %}
 
 {% block body %}
-    <div class="{{ component.renderClass(config.name ~ '__content', modifiers) }} col--lg-12">
-        {% block contentText %}
-            <h3 class="title title--h2 title--product-details active"
-                data-toggle-target-class-name="{{ config.jsName }}__toggler-target">
-                <strong>Warnhinweise & Verwendungshinweise</strong>
-            </h3>
-            <div class="{{ config.jsName }}__toggler-target {{ data.triggerClassName }}"> {# is-hidden #}
-
                 {% if data.productAttributes['verwendungshinweise'] is defined %}
                     <div class="spacing-bottom spacing-bottom--bigger"><strong>Aufbewahrung-/Verwendungshinweise:</strong> {{ data.productAttributes['verwendungshinweise'] }}</div>
                 {% endif %}
@@ -29,9 +21,4 @@
                 {% if data.productAttributes['warnhinweise'] is defined %}
                     <div class="spacing-bottom spacing-bottom--bigger"><strong>Gefahren-/Warnhinweise :</strong> {{ data.productAttributes['warnhinweise'] }}</div>
                 {% endif %}
-
-            </div>
-        {% endblock %}
-    </div>
-
 {% endblock %}
