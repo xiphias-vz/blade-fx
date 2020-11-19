@@ -1,8 +1,8 @@
 navigation_key,node_key,parent_node_key,node_type,title.en_US,url.en_US,css_class.en_US,title.de_DE,url.de_DE,css_class.de_DE,valid_from,valid_to,position
-FOOTER_NAVIGATION,node_key_35,,cms_page,Data privacy,/en/privacy,,Datenschutz,/de/datenschutz/,,,,3
-FOOTER_NAVIGATION,node_key_50,,cms_page,Imprint,/en/imprint,,Impressum,/de/impressum/,,,,4
+FOOTER_NAVIGATION,node_key_35,,cms_page,Data privacy,/en/privacy,,Datenschutz,/de/datenschutz/,,,,1
+FOOTER_NAVIGATION,node_key_50,,cms_page,Imprint,/en/imprint,,Impressum,/de/impressum/,,,,3
 NAVIGATION_FOOTER_ELEMENT,node_key_162,,external_url,About us,https://abholservice.globus.de/Ueber-uns/,category-4,Über uns,https://abholservice.globus.de/Ueber-uns/,category-4,,,4
 FOOTER_NAVIGATION_CATEGORIES,node_key_165,,external_url,Garden & Outdoor,/en/garden-&-outdoor,category-7,Fragen und Antworten,https://globus.zendesk.com/hc/de,category-7,,,2
 FOOTER_NAVIGATION_CATEGORIES,node_key_166,,external_url,Medicine Cabinet,/en/medicine,category-8,Abholeservice,https://abholservice.globus.de/abholservice/,category-8,,,3
-FOOTER_NAVIGATION_CATEGORIES,node_key_167,,external_url,,,category-9,Anfart,https://abholservice.globus.de/anfahrt/,category-9,,,4
-
+FOOTER_NAVIGATION,node_key_167,,external_url,,,category-9,Anfart,https://abholservice.globus.de/anfahrt/,category-9,,,4
+FOOTER_NAVIGATION,node_key_34,,cms_page,AGB,/en/Allgemeine-Geschaeftsbedingungen/,,Allgemeine-Geschaeftsbedingungen,/de/Allgemeine-Geschaeftsbedingungen/,,,,2
