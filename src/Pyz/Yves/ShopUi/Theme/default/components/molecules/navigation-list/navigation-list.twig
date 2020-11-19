@@ -14,7 +14,7 @@
         {% for node in data.nodes %}
             {% embed atom('node') with {
                 modifiers: modifiers,
-
+                class: 'list__item' ~ (node.url ? '' : ' ' ~ node.cssClass),
                 config: {
                     tag: 'li'
                 },
