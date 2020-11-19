@@ -24,6 +24,31 @@
             }
         }
 
+        .inline-list {
+            display: flex;
+        }
+
+
+
+        .inline-list li {
+            margin: 0px 10px;
+        }
+
+        .inline-list li a
+        {
+            color:gray;
+        }
+
+        .inline-list li a:nth-child(1) {
+            border-right: 1px solid gray;
+            padding-right: 15px;
+        }
+        .inline-list li a:nth-child(3) {
+            border-left: 1px solid gray;
+            padding-left: 15px;
+        }
+
+
         .div-footer-right-text
         {
             float: right;

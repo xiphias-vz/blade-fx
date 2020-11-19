@@ -5,24 +5,25 @@
 } %}
 
 {% block body %}
+    <div class="data-protection col col--sm-12 col--lg-8">
+        {% include molecule('navigation-footer') with {
+            class: config.name ~ '__navigation',
+            data: {
+                items: [
 
+                    {
+                        title: '',
+                        templates: [
+                        {
+                            template: 'navigation-legal-information',
+                            menu: 'FOOTER_NAVIGATION',
+                        },
+                    ],
+                    },
 
-    <div style="margin-right:10px ">
-        <a class="{{ config.name }}__contact-info-item" href="{{ 'page.privacy.url' | trans }}" target="_blank" style="text-decoration: none;border-right: 1px solid gray;padding-right: 10px">
-            {{ 'page.privacy.title' | trans }}
-        </a>
-    </div>
-
-    <div style="padding-right: 10px;">
-        <a class="{{ config.name }}__contact-info-item" href="{{ 'page.terms.url' | trans }}" target="_blank" style="text-decoration: none;border-right: 1px solid gray;padding-right: 10px">
-            {{ 'page.terms.title' | trans }}
-        </a>
-    </div>
-
-    <div style="padding-right: 10px;">
-        <a class="{{ config.name }}__contact-info-item" href="{{ 'page.imprint.url' | trans }}" target="_blank" style="text-decoration: none;border-right: 1px solid gray;padding-right: 10px">
-            {{ 'page.imprint.title' | trans }}
-        </a>
+                ],
+            },
+        } only %}
     </div>
 
     <div class="div-footer-right-text">
