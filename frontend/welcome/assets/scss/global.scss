@@ -90,9 +90,10 @@ strong {
     &__inner {
         position: relative;
         z-index: 2;
-        background: $setting-color-gray-4;
-        color: $setting-color-white;
+        background: $setting-color-white;
+        color: $setting-color-black;
         padding: rem(40) rem(20);
+        width: 90%;
 
         @include helper-breakpoint-media-min($md-min) {
             padding: rem(40);
@@ -101,12 +102,12 @@ strong {
 }
 
 .title {
-    font: normal rem(26) $setting-font-family-additional;
+    font: bold rem(26) $setting-font-family-additional;
     margin: 0 0 rem(8);
 }
 
 .sub-title {
-    font: normal rem(36) $setting-font-family;
+    font: bold rem(36) $setting-font-family-additional;
     margin: 0 0 rem(20);
 }
 
@@ -116,7 +117,12 @@ strong {
 
 .form-title {
     text-align: center;
-    font: normal rem(22) $setting-font-family;
+    font: bold rem(22) $setting-font-family;
+    margin-bottom: rem(15);
+}
+
+.form-text {
+    font: bold rem(18) $setting-font-family;
     margin-bottom: rem(15);
 }
 
@@ -126,11 +132,7 @@ strong {
     display: flex;
     justify-content: space-between;
     background: $setting-color-white;
-    color: $setting-color-gray-5;
-
-    @include helper-breakpoint-media-min($md-min) {
-        width: rem(400);
-    }
+    color: $setting-color-black;
 }
 
 .zip-label {
@@ -201,7 +203,7 @@ input {
     transition: all 250ms ease-in-out;
     text-align: center;
     cursor: pointer;
-    background: $setting-color-green;
+    background: $setting-color-orange;
     color: $setting-color-white;
     border: none;
     padding: 0 rem(6);
@@ -211,7 +213,7 @@ input {
     &:hover,
     &:focus,
     &:active {
-        background: $setting-color-green;
+        background: $setting-color-orange;
         color: $setting-color-white;
         box-shadow: 0 rem(4) rem(18) $setting-color-green-alpha-1;
     }
@@ -237,4 +239,27 @@ input {
 
 .is-hidden {
     display: none;
+}
+
+.select-store {
+    width: 80%;
+    -moz-appearance: none;
+    -webkit-appearance: none;
+    appearance: none;
+    position: relative;
+    cursor: pointer;
+    border: $setting-color-gray-4 solid 1px;
+    padding: rem(16) rem(16) rem(16) rem(8);
+    font: normal rem(14)/rem(40) $setting-font-family;
+    color: $setting-color-globus-darkGray;
+    background: $icon-arrow-down no-repeat;
+    background-position: 95%;
+    background-size: rem(24);
+
+
+    @include helper-breakpoint-media-min($md-min) {
+        font-size: rem(18);
+        padding: rem(8) rem(16);
+        background-size: rem(24);
+    }
 }
