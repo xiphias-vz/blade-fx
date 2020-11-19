@@ -880,7 +880,7 @@ forms.confirm-password,Passwort bestätigen,de_DE
 forms.accept_terms,"I agree to the <a href='/en/gtc-online-purchase' target='_blank'>AGB</a> and <a href='/en/privacy' target='_blank'>Privacy policy</a> to.",en_US
 forms.accept_terms,"Ich stimme den <a href='/de/agb-online-kauf' target='_blank'>AGB</a> und den <a href='/de/datenschutz/' target='_blank'>Datenschutzbestimmungen</a> zu.",de_DE
 forms.additional_register,"Ja, Ich möchte radio",en_US
-forms.additional_register,"Ja, ich möchte über Produkte und Angebote informiert werder. Ich stimme hiermit den <a href='/de/agb-online-kauf' style='color:#ea8901; text-decoration:none' target='_blank'>Bedingungen der Werbeeinwilligung </a>zu.",de_DE
+forms.recieve_notifications,"Ja, ich möchte über Produkte und Angebote informiert werder. Ich stimme hiermit den <a href='/de/agb-online-kauf' style='color:#ea8901; text-decoration:none' target='_blank'>Bedingungen der Werbeeinwilligung </a>zu.",de_DE
 address.salutation,Salutation,en_US
 address.salutation,Anrede,de_DE
 email.orderEmail.salutationMale,Mr.,en_US
@@ -2978,5 +2978,5 @@ register.accept_terms,Ich habe die <a href='/de/agb-online-kauf' style='color:#e
 customer.registration.country_placeholder,Deutschland,de_DE
 customer.registration.phone.prefix_placeholder,DE +49,de_DE
 customer.register.phone,Telefon (mindestens 1 Angabe Ist Pflicht),de_DE
-forms.recieve_notifications,"Ja, ich möchte über am <a href='/de/agb-online-kauf' style='color:#ea8901; text-decoration:none' target='_blank'>Mein Globus-Programm</a> teilnehmen, um corteile wie z.B. Punkte sammeln, Tankeschön und Scan&Go nutzen zu können. Ich habe die allgemeinen <a href='/de/agb-online-kauf' style='color:#ea8901; text-decoration:none' target='_blank'>Teilnahmebedingungen</a> zum Mein Globus-Programm gelesen und akzeptiere diese.",de_DE
+forms.additional_register,"Ja, ich möchte über am <a href='/de/agb-online-kauf' style='color:#ea8901; text-decoration:none' target='_blank'>Mein Globus-Programm</a> teilnehmen, um corteile wie z.B. Punkte sammeln, Tankeschön und Scan&Go nutzen zu können. Ich habe die allgemeinen <a href='/de/agb-online-kauf' style='color:#ea8901; text-decoration:none' target='_blank'>Teilnahmebedingungen</a> zum Mein Globus-Programm gelesen und akzeptiere diese.",de_DE
 checkout.customer.register_as_guest,Als Gast bestellen,de_DE

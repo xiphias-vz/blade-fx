@@ -819,3 +819,13 @@ $config[StoreConstants::STORE_NAMES] = [
 
 // ----------- Google Tag Manager
 $config[GoogleTagManagerConstants::CONTAINER_ID] = 'GTM-KN8QSGS';
+
+// ---------- Customer dropdowns
+$config[\Pyz\Shared\Customer\CustomerConstants::CUSTOMER_COUNTRY] =[
+    60 => 'customer.registration.country_placeholder',
+];
+
+$config[\Pyz\Shared\Customer\CustomerConstants::CUSTOMER_PHONE_PREFIX] =
+[
+    '+49' => 'customer.registration.phone.prefix_placeholder',
+];

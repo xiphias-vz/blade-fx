@@ -10,6 +10,16 @@
             color: $setting-color-gray-9;
         }
 
+        .salutation-margin
+        {
+            margin-top: 10%;
+        }
+
+        .margin-telefon-date
+        {
+            margin-top: 5%;
+        }
+
         @content;
     }
 }

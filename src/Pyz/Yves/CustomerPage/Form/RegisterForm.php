@@ -7,6 +7,7 @@
 
 namespace Pyz\Yves\CustomerPage\Form;
 
+use Mpdf\Form;
 use Pyz\Shared\Customer\CustomerConstants;
 use Pyz\Yves\CustomerPage\Form\Constraints\PostalCodeConstraint;
 use Spryker\Shared\Config\Config;
@@ -99,8 +100,9 @@ class RegisterForm extends SprykerRegisterForm
             ->addMonthField($builder)
             ->addYearField($builder)
             ->addAcceptTermsField($builder)
+            ->addFieldRecieveNotificationsAboutProducts($builder)
             ->addAdditionalRegisterField($builder)
-            ->addFieldRecieveNotificationsAboutProducts($builder);
+        ;
     }
 
     /**
@@ -392,7 +394,7 @@ class RegisterForm extends SprykerRegisterForm
         $builder->add(self::FIELD_PHONE_PREFIX_1, ChoiceType::class,[
             'choices' => array_flip($prefixes),
             'required' => true,
-            'label' => 'customer.register.phone',
+            'label' => false,
             'constraints' =>
             [
                 $this->createNotBlankConstraint(),
@@ -407,6 +409,7 @@ class RegisterForm extends SprykerRegisterForm
         $builder->add(self::FIELD_PHONE_PREFIX_2, ChoiceType::class,[
             'choices' => array_flip($prefixes),
             'required' => false,
+            'label' => false,
             'constraints' =>
                 [
                     $this->createNotBlankConstraint(),
@@ -418,9 +421,9 @@ class RegisterForm extends SprykerRegisterForm
     protected function addMobileNumber(FormBuilderInterface $builder)
     {
         $builder->add(self::FIELD_MOBILE_PHONE, TextType::class,[
-            'label' => 'customer.register.mobile_phone',
             'required' => true,
             'trim' => true,
+            'label' => false,
             'constraints' =>
             [
                 $this->createNotBlankConstraint(),
@@ -500,6 +503,7 @@ class RegisterForm extends SprykerRegisterForm
         return $this;
     }
 
+
     /**
      * @param \Symfony\Component\Form\FormBuilderInterface $builder
      *
@@ -507,12 +511,11 @@ class RegisterForm extends SprykerRegisterForm
      */
     protected function addPhoneField(FormBuilderInterface $builder)
     {
-        $builder->add(static::FIELD_PHONE, TelType::class, [
-            'label' => 'customer.address.phone',
+        $builder->add(static::FIELD_PHONE, TextType::class, [
+            'label' => false,
             'required' => false,
             'trim' => true,
             'attr' => [
-                'placeholder' => 'customer.registration.phone_placeholder',
             ],
             'constraints' => [
                 ProfileForm::createSafeStringRegexConstraint(),
@@ -533,6 +536,7 @@ class RegisterForm extends SprykerRegisterForm
             'choices' => array_flip($days),
             'required' => true,
             'trim' => true,
+            'label' => false,
             'attr' => [
                 'placeholder' => 'customer.date.day'
             ],
@@ -555,6 +559,7 @@ class RegisterForm extends SprykerRegisterForm
             'choices' => array_flip($months),
             'required' => true,
             'trim' => true,
+            'label' => false,
             'attr' => [
                 'placeholder' => 'customer.date.month'
             ],
@@ -576,6 +581,7 @@ class RegisterForm extends SprykerRegisterForm
             'choices' => array_flip($years),
             'required' => true,
             'trim' => true,
+            'label' => false,
             'attr' => [
                 'placeholder' => 'customer.date.year'
             ],
