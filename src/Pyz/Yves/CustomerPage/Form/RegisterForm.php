@@ -39,7 +39,7 @@ class RegisterForm extends SprykerRegisterForm
     public const FIELD_ADDITIONAL_INFORMATION = 'additional_info';
     public const FIELD_PHONE = 'phone';
     public const FIELD_MERCHANT = 'merchant_reference';
-    public const FIELD_ADDITIONAL_REGISTER = 'additional_register';
+    public const FIELD_ADDITIONAL_REGISTER = 'third_party_registration';
     public const FORM_NAME = self::BLOCK_PREFIX;
     public const FIELD_COUNTRY = 'country';
     public const FIELD_PHONE_PREFIX_1 = 'phone_prefix_1';
@@ -222,7 +222,7 @@ class RegisterForm extends SprykerRegisterForm
     {
         $builder->add(self::FIELD_ACCEPT_TERMS, CheckboxType::class, [
             'label' => 'register.accept_terms',
-            'mapped' => false,
+            'mapped' => true,
             'required' => true,
             'constraints' => [
                 $this->createNotBlankConstraint(),
@@ -239,7 +239,8 @@ class RegisterForm extends SprykerRegisterForm
     {
         $builder->add(self::FIELD_ADDITIONAL_REGISTER, CheckboxType::class, [
             'label' => 'forms.additional_register',
-            'mapped' => false,
+            'value' => 100,
+            'mapped' => true,
             'required' => false,
         ]);
 
@@ -255,7 +256,7 @@ class RegisterForm extends SprykerRegisterForm
     {
         $builder->add(self::FIELD_RECIEVE_NOTIFICATIONS, CheckboxType::class,[
            'label' => 'forms.recieve_notifications',
-           'mapped' => false,
+           'mapped' => true,
             'required' => false,
         ]);
         return $this;

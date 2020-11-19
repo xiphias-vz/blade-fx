@@ -17,6 +17,7 @@
         <property name="phone" type="string"/>
         <property name="merchantReference" type="string"/>
         <property name="registerFromCheckout" type="bool"/>
+        <property name="thirdPartyRegistration" type="int"/>
     </transfer>
 
     <transfer name="CustomerAddressResponse">
