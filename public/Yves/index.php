@@ -24,6 +24,11 @@ if ($currentStore && in_array($currentStore, $allStores)) {
     define('APPLICATION_STORE', $currentStore);
 }
 
+// Temporary KMD is a main shop
+if ($currentStore === null) {
+    define('APPLICATION_STORE', 'KMD');
+}
+
 require_once APPLICATION_ROOT_DIR . '/vendor/autoload.php';
 
 if (extension_loaded('newrelic')) {
