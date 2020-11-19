@@ -233,12 +233,12 @@
             }
 
             &:hover {
-                color: $setting-color-blue-midi;
+                color: $setting-color-globus-lightOrange;
             }
 
             &.active {
-                color: $setting-color-blue-midi;
-                border-color: $setting-color-blue-midi;
+                color: $setting-color-globus-lightOrange;
+                border-color: $setting-color-globus-lightOrange;
                 margin-bottom: rem(25);
 
                 & + div {
@@ -246,7 +246,7 @@
                 }
 
                 &::after {
-                    border-color: $setting-color-blue-midi;
+                    border-color: $setting-color-globus-lightOrange;
                 }
             }
         }

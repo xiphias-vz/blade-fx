@@ -58,9 +58,8 @@
     {% widget 'ProductAlternativeListWidget' args [data.product] only %}{% endwidget %}
 
     <div class="grid grid--indent">
-        <div class="col col--spaced-lg col--sm-12 col--lg-6">
+        <div class="col col--spaced-lg col--sm-12 col--lg-12">
             <div class="container__inner">
-                <p><b>{{ 'pdp.general.info' | trans }}</b></p>
 
                 {% include molecule('product-detail', 'ProductDetailPage') with {
                     data: {
@@ -72,6 +71,30 @@
                         isAdditionalProductInformationShown: data.product.additionalProductInformationIsShown,
                     },
                 } only %}
+
+                 {% if data.product.attributes.zutaten is defined or data.product.attributes.entallerg is defined %}
+                    {% include molecule('ingredients-and-allergens', 'ProductDetailPage') with {
+                        data: {
+                            productAttributes: data.product.attributes
+                        },
+                    } only %}
+                {% endif %}
+
+                {% if data.product.attributes.verwendungshinweise is defined or data.product.attributes.warnhinweise is defined %}
+                    {% include molecule('warnings-and-usage-info', 'ProductDetailPage') with {
+                        data: {
+                            productAttributes: data.product.attributes,
+                        },
+                    } only %}
+                {% endif %}
+
+                {% include molecule('additional-product-information', 'ProductDetailPage') with {
+                    data: {
+                        productAttributes: data.product.attributes,
+                        product: data.product
+                    },
+                } only %}
+
             </div>
         </div>
     </div>
