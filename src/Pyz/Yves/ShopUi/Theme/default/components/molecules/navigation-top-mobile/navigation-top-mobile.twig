@@ -18,7 +18,7 @@
             iconName: 'shop',
             secondIconName: 'shop-filled',
             isButton: true,
-            jsClass: 'js-header__navigation-trigger js-header__navigation-target js-page-layout-main--block-scroll-trigger',
+            jsClass: 'js-header__navigation-trigger js-header__navigation-target js-page-layout-main--block-scroll-trigger icon--color-orange',
             extraButton: {
                 iconName: 'shop-filled',
                 jsClass: 'js-header__navigation-trigger js-header__navigation-target js-page-layout-main--block-scroll-trigger',
@@ -28,22 +28,23 @@
         {
             iconName: 'search',
             isButton: true,
-            jsClass: 'js-suggest-search--trigger',
+            jsClass: 'js-suggest-search--trigger icon--color-orange',
         },
         {
             iconName: 'wishlist',
             url: url('wishlist/overview'),
             isVisibleForAuthorized: is_granted('ROLE_USER'),
+            jsClass: 'icon--color-orange',
+        },
+        {
+            iconName: 'user-account',
+            isButton: true,
+            jsClass: 'js-page-layout-main__side-drawer-trigger icon--color-orange',
         },
         {
             iconName: 'cart',
             isCart: true,
-        },
-        {
-            iconName: 'icon-hamburger',
-            isButton: true,
-            jsClass: 'js-page-layout-main__side-drawer-trigger',
-        },
+        }
     ] %}
 
     <nav>

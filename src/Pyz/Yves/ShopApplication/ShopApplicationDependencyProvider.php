@@ -7,6 +7,7 @@
 
 namespace Pyz\Yves\ShopApplication;
 
+use Pyz\Yves\GoogleTagManager\Plugin\Application\GoogleTagManagerIdApplicationPlugin;
 use Pyz\Yves\LanguageSwitcherWidget\Widget\LanguageSwitcherWidget;
 use Pyz\Yves\MerchantSwitcherWidget\Plugin\Application\CurrentMerchantApplicationPlugin;
 use Pyz\Yves\MerchantSwitcherWidget\Widget\MerchantSwitcherSelectorFormWidget;
@@ -149,6 +150,7 @@ class ShopApplicationDependencyProvider extends SprykerShopApplicationDependency
             new ErrorHandlerApplicationPlugin(),
             new ShopContextApplicationPlugin(),
             new CurrentMerchantApplicationPlugin(),
+            new GoogleTagManagerIdApplicationPlugin(),
         ];
 
         if (class_exists(WebProfilerApplicationPlugin::class)) {
