@@ -11,5 +11,12 @@
         <column name="merchant_reference" size="255" type="VARCHAR"/>
         <column name="salutation" type="ENUM" valueSet="Mr, Ms, Divers, Dr"/>
         <column name="third_party_registration" type="BOOLEAN"/>
+        <column name="phone_prefix" type="VARCHAR" />
+        <column name="mobile_phone_prefix" type="VARCHAR" />
+        <column name="mobile_phone_number" type="VARCHAR" />
+        <column name="birth_day" type="VARCHAR" />
+        <column name="birth_month" type="VARCHAR" />
+        <column name="birth_year" type="VARCHAR" />
+        <column name="accept_notifications" type="BOOLEAN" />
     </table>
 </database>

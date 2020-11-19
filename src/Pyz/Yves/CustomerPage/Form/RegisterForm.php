@@ -43,13 +43,13 @@ class RegisterForm extends SprykerRegisterForm
     public const FIELD_ADDITIONAL_REGISTER = 'third_party_registration';
     public const FORM_NAME = self::BLOCK_PREFIX;
     public const FIELD_COUNTRY = 'country';
-    public const FIELD_PHONE_PREFIX_1 = 'phone_prefix_1';
-    public const FIELD_PHONE_PREFIX_2 = 'phone_prefix_2';
-    public const FIELD_MOBILE_PHONE = 'mobile_phone';
-    public const FIELD_RECIEVE_NOTIFICATIONS = 'recieve_notifications';
-    public const FIELD_DAY = 'day';
-    public const FIELD_MONTH = 'month';
-    public const FIELD_YEAR = 'year';
+    public const FIELD_PHONE_PREFIX_1 = 'phone_prefix';
+    public const FIELD_PHONE_PREFIX_2 = 'mobile_phone_prefix';
+    public const FIELD_MOBILE_PHONE = 'mobile_phone_number';
+    public const FIELD_RECIEVE_NOTIFICATIONS = 'accept_notifications';
+    public const FIELD_DAY = 'birth_day';
+    public const FIELD_MONTH = 'birth_month';
+    public const FIELD_YEAR = 'birth_year';
 
     protected const VALIDATION_ADDRESS_NUMBER_MESSAGE = 'validation.address_number';
     protected const VALIDATION_NOT_BLANK_MESSAGE = 'validation.not_blank';
@@ -101,7 +101,7 @@ class RegisterForm extends SprykerRegisterForm
             ->addYearField($builder)
             ->addAcceptTermsField($builder)
             ->addFieldRecieveNotificationsAboutProducts($builder)
-            ->addAdditionalRegisterField($builder)
+            ->addAdditionalRegisterField($builder);
         ;
     }
 
@@ -230,6 +230,7 @@ class RegisterForm extends SprykerRegisterForm
                 $this->createNotBlankConstraint(),
             ],
         ]);
+
         return $this;
     }
 
@@ -241,7 +242,6 @@ class RegisterForm extends SprykerRegisterForm
     {
         $builder->add(self::FIELD_ADDITIONAL_REGISTER, CheckboxType::class, [
             'label' => 'forms.additional_register',
-            'value' => 100,
             'mapped' => true,
             'required' => false,
         ]);
@@ -261,6 +261,7 @@ class RegisterForm extends SprykerRegisterForm
            'mapped' => true,
             'required' => false,
         ]);
+
         return $this;
     }
 
@@ -376,7 +377,7 @@ class RegisterForm extends SprykerRegisterForm
     protected function addCountryField(FormBuilderInterface $builder)
     {
         $countries = Config::get(CustomerConstants::CUSTOMER_COUNTRY);
-        $builder->add(self::FIELD_MERCHANT, ChoiceType::class, [
+        $builder->add(self::FIELD_COUNTRY, ChoiceType::class, [
             'choices' => array_flip($countries),
             'required' => true,
             'label' => 'customer.address.country',
