@@ -83,7 +83,7 @@ class ApplicationDependencyProvider extends SprykerApplicationDependencyProvider
 
         $providers = [
             new ShopUiTwigServiceProvider(),
-            //new ErrorHandlerServiceProvider(), // TODO: check with Andrey T.?
+            new ErrorHandlerServiceProvider(),
         ];
         $providers = array_merge($coreProviders, $providers);
 
