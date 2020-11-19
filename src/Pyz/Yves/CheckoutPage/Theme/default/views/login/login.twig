@@ -76,7 +76,7 @@
                     form: data.forms.guest,
                     submit: {
                         enable: true,
-                        text: 'checkout.customer.auth_as_guest' | trans,
+                        text: 'checkout.customer.submit_as_guest' | trans,
                         class: 'button  button--large button--expand'
                     }
                 },
@@ -91,14 +91,13 @@
                             modifiers: ['login', 'checkout-actions', 'grid-indent'],
                             data: {
                                 class: 'col col--sm-6',
-                                title: 'checkout.customer.auth_as_guest' | trans,
                                 form: embed.forms.customerGuest,
                                 enableStart: false,
                                 enableEnd: false,
                                 layout: {
-                                    salutation: 'col col--sm-12 col--md-2',
-                                    first_name: 'col col--sm-12 col--md-5',
-                                    last_name: 'col col--sm-12 col--md-5'
+                                    salutation: 'col col--sm-12 col--md-6',
+                                    first_name: 'col col--sm-12 col--md-6',
+                                    last_name: 'col col--sm-12 col--md-6'
                                 },
                                 submit: {
                                     enable: false
