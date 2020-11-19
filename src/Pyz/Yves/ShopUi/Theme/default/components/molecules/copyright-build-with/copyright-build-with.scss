@@ -28,15 +28,31 @@
             display: flex;
         }
 
+        .data-protection .title  {
+            display: none;
+            @include helper-breakpoint-media-max($sm-max)  {
+                display: block;
+                text-align: left;
+                color:gray;
 
+                &:before {
+                    background: gray;
+                }
+                &:after {
+                    background: gray;
+                }
+            }
+        }
 
         .inline-list li {
             margin: 0px 10px;
+
         }
 
         .inline-list li a
         {
             color:gray;
+            text-decoration: none;
         }
 
         .inline-list li a:nth-child(1) {
@@ -54,7 +70,7 @@
             float: right;
             color:gray;
             position: absolute;
-            right: -100px;
+            right: -10px;
 
             @include helper-breakpoint-media-max($lg-max)  {
                 position: static;

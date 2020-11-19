@@ -4,15 +4,22 @@
     name: 'copyright-build-with',
 } %}
 
+{% define data = {
+    showNavigation: true,
+} %}
+
+
+
 {% block body %}
     <div class="data-protection col col--sm-12 col--lg-8">
-        {% include molecule('navigation-footer') with {
+        {% include molecule('navigation-inline-links') with {
             class: config.name ~ '__navigation',
             data: {
                 items: [
 
                     {
-                        title: '',
+                        title:'global.importInfo',
+                        isShow:data.showNavigation,
                         templates: [
                         {
                             template: 'navigation-legal-information',

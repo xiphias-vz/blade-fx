@@ -1,37 +1,56 @@
 {% extends model('component') %}
 
 {% define config = {
-    name: 'navigation-inline-links'
+    name: 'navigation-inline-links',
+    tag: 'navigation-inline-links'
 } %}
 
 {% define data = {
-    nodes: [],
-
+    items: []
 } %}
 
 {% block body %}
-    <ul class="inline-list">
-        {% for node in data.nodes %}
-            {% embed atom('node') with {
-                modifiers: modifiers,
-                config: {
-                    tag: 'li'
-                },
+
+    {% for itemNavigation in data.items %}
+
+        {% if itemNavigation.isShow is defined ? itemNavigation.isShow : true %}
+            {% embed molecule('toggler-item') with {
+                modifiers: ['mobile', 'footer'] | merge(itemNavigation.modifiers is defined ? itemNavigation.modifiers : []),
+                class: config.name ~ '__col ' ~ (itemNavigation.class is defined ? itemNavigation.class : ''),
                 data: {
-                    node: node
-                }
+                    title: itemNavigation.title | trans,
+                    triggerClass: config.jsName ~ '__trigger',
+                    targetClass: config.jsName ~ '__target--' ~ loop.index,
+                    isTogglerIncluded: loop.first ? true : false,
+                    hiddenClass: 'is-hidden-sm-only',
+                },
+                embed: {
+                    itemNavigation: itemNavigation,
+                },
             } only %}
-                {% block url %}
-                    <a class="" href="{{ data.node.url }}">{{ data.node.title }}</a>
+                {% block title %}
+                    <h4 class="title text-break {{ component.renderClass(config.name ~ '__title', modifiers) }} {{ data.triggerClass }} {{ titleActiveClass }} {{ titleReadOnlyClass }}"
+                        {{ targetAttribute }}>
+                        {{ data.title }}
+                    </h4>
                 {% endblock %}
-
-                {% block externalUrl %}
-                    <a class="" href="{{ data.node.url }}" target="_blank">{{ data.node.title }}</a>
+                {% block contentText %}
+                    {% for itemMenu in embed.itemNavigation.templates %}
+                        {% widget 'NavigationWidget' args [itemMenu.menu, itemMenu.template] %}
+                            {% block body %}
+                                {% if itemMenu.wrapClass is defined %}
+                                    <div class="{{ itemMenu.wrapClass }}">
+                                        {{ parent() }}
+                                    </div>
+                                {% else %}
+                                    {{ parent() }}
+                                {% endif %}
+                            {% endblock %}
+                        {% endwidget %}
+                    {% endfor %}
                 {% endblock %}
-
-
             {% endembed %}
-        {% endfor %}
-    </ul>
+        {% endif %}
 
+    {% endfor %}
 {% endblock %}
