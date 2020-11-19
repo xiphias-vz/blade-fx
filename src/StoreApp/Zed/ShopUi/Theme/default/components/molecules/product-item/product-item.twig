@@ -62,7 +62,7 @@
                     } only %}
                 </div>
                 {% block quantity %}
-                    {% if data.productsCount > 1 %}
+                    {% if data.productsCount >= 1 %}
                         <div class="{{ config.name }}__quantity">
                             <div class="{{ config.jsName }}__minus {{ config.name }}__minus spacing-right spacing-right--inner">
                                 {% include atom('icon') with {
@@ -88,6 +88,17 @@
                     {% endif %}
                     <div class="is-hidden">
                         {% block formElement %}{% endblock %}
+                    </div>
+                {% endblock %}
+
+                {% block weight %}
+                    <div class="{{ config.name }}__weight">
+                        <div class="box box--white box--bordered box--spaceless {{ config.name }}__counter text-center">
+                            <input type="text" class="input input--expand spacing-bottom spacing-bottom--big {{ config.jsName }}__input" placeholder="{{ 'Weight' | trans }}">
+                        </div>
+                    </div>
+                    <div class="is-hidden">
+
                     </div>
                 {% endblock %}
             </div>

@@ -22,6 +22,7 @@ use Pyz\Zed\Sales\Business\Model\Order\SalesOrderChecker;
 use Pyz\Zed\Sales\Business\Model\Order\SalesOrderSaver;
 use Pyz\Zed\Sales\Business\Order\OrderHydrator;
 use Pyz\Zed\Sales\Business\Order\OrderReader;
+use Pyz\Zed\Sales\Business\OrderChange\OrderChangeSaver;
 use Pyz\Zed\Sales\Business\OrderDate\OrderDateCheck;
 use Pyz\Zed\Sales\SalesDependencyProvider;
 use Spryker\Zed\Sales\Business\Model\Customer\CustomerOrderOverviewInterface;
@@ -62,6 +63,19 @@ class SalesBusinessFactory extends SprykerSalesBusinessFactory
     public function createOrderUpdater(): OrderUpdaterInterface
     {
         return new OrderUpdater($this->getQueryContainer());
+    }
+
+    /**
+     * @return \Pyz\Zed\Sales\Business\OrderChange\OrderChangeSaver
+     */
+    public function createOrderChangeSaver()
+    {
+        return new OrderChangeSaver(
+            $this->getQueryContainer(),
+            $this->createOrderHydratorWithMultiShippingAddress(),
+            $this->createOrderUpdater(),
+            $this->getCalculationFacade()
+        );
     }
 
     /**

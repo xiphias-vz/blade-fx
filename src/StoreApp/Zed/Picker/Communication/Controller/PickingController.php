@@ -11,7 +11,9 @@ use Generated\Shared\Transfer\ItemTransfer;
 use Generated\Shared\Transfer\MerchantSalesOrderCollectionTransfer;
 use Generated\Shared\Transfer\MerchantSalesOrderTransfer;
 use Generated\Shared\Transfer\MerchantTransfer;
+use Generated\Shared\Transfer\OrderChangeRequestTransfer;
 use Generated\Shared\Transfer\OrderCriteriaFilterTransfer;
+use Generated\Shared\Transfer\OrderItemChangeRequestTransfer;
 use Generated\Shared\Transfer\OrderTransfer;
 use Generated\Shared\Transfer\OrderUpdateRequestTransfer;
 use Generated\Shared\Transfer\UserTransfer;
@@ -262,6 +264,17 @@ class PickingController extends AbstractController
 
         $this->getFacade()->markOrderItemsAsPicked($selectedIdSalesOrderItems);
         $this->getFacade()->updateOrderPickingBagsCount($idSalesOrder, $pickingBagsCount);
+
+        $orderChangeItem = new OrderItemChangeRequestTransfer();
+        $orderChangeItem->setIdSalesOrderItem(2);
+        $orderChangeItem->setPrice(1000);
+        $orderChangeItem->setQuantity(1);
+
+        $orderChange = new OrderChangeRequestTransfer();
+        $orderChange->addOrderItemChangeRequest($orderChangeItem);
+        $orderChange->setFkSalesOrder(1);
+
+        $this->getFactory()->getSalesFacade()->saveOrderChange($orderChange);
 
         return $this->redirectResponse(PickerConfig::URL_PICKING_LIST);
     }

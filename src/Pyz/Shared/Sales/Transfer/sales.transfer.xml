@@ -57,4 +57,15 @@
         <property name="deliveredAt" type="string"/>
     </transfer>
 
+    <transfer name="OrderChangeRequest">
+        <property name="fkSalesOrder" type="int"/>
+        <property name="orderItemChangeRequest" type="OrderItemChangeRequest[]"/>
+    </transfer>
+
+    <transfer name="OrderItemChangeRequest">
+        <property name="idSalesOrderItem" type="int"/>
+        <property name="quantity" type="int"/>
+        <property name="price" type="int"/>
+    </transfer>
+
 </transfers>

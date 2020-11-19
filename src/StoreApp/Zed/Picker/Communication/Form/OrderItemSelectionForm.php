@@ -85,7 +85,7 @@ class OrderItemSelectionForm extends AbstractType
                 IntegerType::class,
                 [
                     'required' => true,
-                    'label' => $this->getItemDisplayName($itemTransfer, $options),
+                    'label' => '', //$this->getItemDisplayName($itemTransfer, $options),
                     'data' => 0,
                     'attr' => [
                         'max' => $itemTransfer->getQuantity(),
