@@ -12,6 +12,9 @@
     metaKeywords: _view.product.metaKeywords | default,
     tags: _view.tags,
     vitamins: _view.vitamins,
+    petCols: _view.petColumns,
+    petRows: _view.petRows,
+    rowData: _view.rowData,
 
     depositPrice: _view.depositPrice,
 } %}
@@ -80,10 +83,30 @@
                     } only %}
                 {% endif %}
 
+                {% if data.product.attributes.energiekcalp100gml is defined and data.product.nutritionalInformationContainsReferenceAmount is defined%}
+                    {% include molecule('nutritional-information', 'ProductDetailPage') with {
+                        data: {
+                            attributes: data.product.attributes,
+                            isNutritionalInformationContainsReferenceAmount: data.product.nutritionalInformationContainsReferenceAmount
+                        },
+                    } only %}
+                {% endif %}
+
                 {% if data.product.attributes.verwendungshinweise is defined or data.product.attributes.warnhinweise is defined %}
                     {% include molecule('warnings-and-usage-info', 'ProductDetailPage') with {
                         data: {
                             productAttributes: data.product.attributes,
+                        },
+                    } only %}
+                {% endif %}
+
+                {% if data.product.attributes.pet_feeding_table is defined %}
+                    {% include molecule('pet-feeding-table', 'ProductDetailPage') with {
+                        data: {
+                            attributes: data.product.attributes,
+                            petColumns: data.petCols,
+                            petRows: data.petRows,
+                            rowData: data.rowData,
                         },
                     } only %}
                 {% endif %}

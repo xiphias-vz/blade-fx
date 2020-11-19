@@ -74,6 +74,13 @@ class ProductController extends SprykerShopProductController
 
         $viewData['product'] = $productViewTransfer;
         $viewData['vitamins'] = $this->getVitaminData($productViewTransfer);
+        $position = strpos($productViewTransfer["attributes"]["pet_feeding_table"],"<n>");
+        $columnString = substr($productViewTransfer["attributes"]["pet_feeding_table"],0,$position);
+        $viewData['petColumns'] = explode('#',$columnString);
+
+        $viewData['petRows'] = substr_count(substr($productViewTransfer["attributes"]["pet_feeding_table"],$position),"<n>");
+
+        $viewData['rowData'] = explode('#', str_replace("<n>", "", substr($productViewTransfer["attributes"]["pet_feeding_table"], $position + 3)));
 
         return $viewData;
     }
