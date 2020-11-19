@@ -1,5 +1,5 @@
 template_name,is_searchable,is_active,publish,page_key,url.de_DE,url.en_US,name.de_DE,name.en_US,meta_title.de_DE,meta_title.en_US,meta_keywords.de_DE,meta_keywords.en_US,meta_description.de_DE,meta_description.en_US,placeholder.title.de_DE,placeholder.title.en_US,placeholder.content.de_DE,placeholder.content.en_US
-static full page,1,1,1,page_2,/de/Datenschutz111/,/en/Datenschutz111/,Datenschutz,DatenschutzEn,Datenschutz,DatenschutzEn,Datenschutz,Datenschutz,Datenschutz,Datenschutz,<h2>Datenschutz</h2>,<h2>Datenschutz</h2>,"<div>
+static full page,1,1,1,page_2,/de/Datenschutz/,/en/Datenschutz/,Datenschutz,DatenschutzEn,Datenschutz,DatenschutzEn,Datenschutz,Datenschutz,Datenschutz,Datenschutz,<h2>Datenschutz</h2>,<h2>Datenschutz</h2>,"<div>
 <p><strong>Unsere Datenschutzerkl&auml;rung (Stand: 05.12.2019)</strong></p>
 <p>Inhalt</p>
 <p><a href='#_Toc55395329'>1 Einleitung. 2</a></p>
@@ -333,7 +333,7 @@ static full page,1,1,1,page_2,/de/Datenschutz111/,/en/Datenschutz111/,Datenschut
 <p>Unsere Webseiten k&ouml;nnen Links zu Webseiten anderer Anbieter enthalten, auf die sich diese Datenschutzerkl&auml;rung nicht erstreckt. </p>
 <p>Die Webseite enth&auml;lt Verlinkungen zu anderen Webseiten ('externe Links'). Diese Webseiten unterliegen der Haftung der jeweiligen Seitenbetreiber. Bei Verkn&uuml;pfung der externen Links waren keine Rechtsverst&ouml;&szlig;e ersichtlich. Auf die aktuelle und k&uuml;nftige Gestaltung der verlinkten Seiten hat der Anbieter keinen Einfluss. Die permanente &Uuml;berpr&uuml;fung der externen Links ist f&uuml;r den Anbieter ohne konkrete Hinweise auf Rechtsverst&ouml;&szlig;e nicht zumutbar. Bei Bekanntwerden von Rechtsverst&ouml;&szlig;en werden die betroffenen externen Links unverz&uuml;glich gel&ouml;scht.</p>
 </div>",""
-static full page,1,1,1,page_4,/de/Allgemeine-Geschaeftsbedingungen111/,/en/Allgemeine-Geschaeftsbedingungen111/,AGB,AGB,agbGlobus,agbGlobus,agbGlobus,agbGlobus,agbGlobus,agbGlobus,<h2>Allgemeine-Geschaeftsbedingungen</h2>,<h2>Allgemeine-Geschaeftsbedingungen</h2>,"<div>
+static full page,1,1,1,page_4,/de/Allgemeine-Geschaeftsbedingungen/,/en/Allgemeine-Geschaeftsbedingungen/,AGB,AGB,agbGlobus,agbGlobus,agbGlobus,agbGlobus,agbGlobus,agbGlobus,<h2>Allgemeine-Geschaeftsbedingungen</h2>,<h2>Allgemeine-Geschaeftsbedingungen</h2>,"<div>
 <p><strong>Allgemeine Gesch&auml;ftsbedingungen</strong></p>
 <p><strong>f&uuml;r Bestellungen &uuml;ber die Plattform </strong></p>
 <p><strong>abholservice.globus.de</strong></p>
@@ -481,7 +481,7 @@ static full page,1,1,1,page_4,/de/Allgemeine-Geschaeftsbedingungen111/,/en/Allge
 <h1><a name='_Toc55463673'></a>14 Salvatorische Klausel</h1>
 <p>Sollten einzelne oder mehrere Regelungen dieser AGB unwirksam sein oder werden, so ber&uuml;hrt dies die Wirksamkeit der &uuml;brigen Regelungen nicht.</p>
 </div>",""
-static full page,1,1,1,page_5,/de/impressum111/,/en/impressum111/,Impressum,Impressum,Impressum,Impressum,Impressum,Impressum,Impressum,Impressum,<h2>Impressum</h2>,<h2>Impressum</h2>,"<div>
+static full page,1,1,1,page_5,/de/impressum/,/en/impressum/,Impressum,Impressum,Impressum,Impressum,Impressum,Impressum,Impressum,Impressum,<h2>Impressum</h2>,<h2>Impressum</h2>,"<div>
 <p><strong>Betreiber dieser Internetseite ist die</strong></p>
 <p><strong>Globus SB-Warenhaus Holding GmbH &amp; Co. KG</strong></p>
 <p></p>
