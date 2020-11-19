@@ -17,6 +17,9 @@
             <state name="ready to start picking" />
             <state name="ready for picking" />
             <state name="picked" />
+            <state name="ready for cashier order export"/>
+            <state name="cashier order exporting"/>
+            <state name="cashier order exporting fail"/>
             <state name="cancelled due to not in stock">
                 <flag>cancelled</flag>
             </state>
@@ -52,7 +55,7 @@
 
             <transition happy="true">
                 <source>ready for picking</source>
-                <target>picked</target>
+                <target>ready for cashier order export</target>
                 <event>confirm picking</event>
             </transition>
 
@@ -78,6 +81,30 @@
                 <source>cancelled due to not in stock</source>
                 <target>cancellation process</target>
                 <event>process cancelled due to not in stock</event>
+            </transition>
+
+            <transition>
+                <source>ready for cashier order export</source>
+                <target>cashier order exporting</target>
+                <event>export cashier order</event>
+            </transition>
+
+            <transition happy="true" condition="is order exported to cashier">
+                <source>cashier order exporting</source>
+                <target>picked</target>
+                <event>pass</event>
+            </transition>
+
+            <transition>
+                <source>cashier order exporting</source>
+                <target>cashier order exporting fail</target>
+                <event>pass</event>
+            </transition>
+
+            <transition>
+                <source>cashier order exporting fail</source>
+                <target>ready for cashier order export</target>
+                <event>cashier order export retry</event>
             </transition>
 
             <transition happy="true" condition="is for collection">
@@ -111,6 +138,8 @@
             <event name="cancel due to not in stock" manual="true"/>
             <event name="process cancelled due to not in stock" onEnter="true" command="Oms/CancelDueToNotInStock"/>
             <event name="close order" manual="true"/>
+            <event name="export cashier order" manual="true" command="CashierOrderExport/OrderExport"/>
+            <event name="cashier order export retry" manual="true"/>
             <event name="TEST manual skip to processing" manual="true"/>
             <event name="TEST manual skip to picking" manual="true"/>
         </events>

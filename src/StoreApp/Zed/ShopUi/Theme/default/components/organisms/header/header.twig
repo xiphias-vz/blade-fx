@@ -32,6 +32,9 @@
                                     modifiers: ['header']
                                 } only %}
                             </div>
+                            <div class="col">
+                                {% widget 'SelectPickingZoneWidget' %}{% endwidget %}
+                            </div>
                             <div class="col col--expand spacing-x spacing-x--inner">
                                 {% if data.headerLocationTitle %}
                                     <h1 class="header__location-title grid grid--no-wrap grid--middle grid--center">
