@@ -7,6 +7,8 @@
 
 namespace StoreApp\Zed\Picker\Business;
 
+use Generated\Shared\Transfer\OrderContainerCollectionTransfer;
+
 interface PickerFacadeInterface
 {
     /**
@@ -45,4 +47,11 @@ interface PickerFacadeInterface
      * @return void
      */
     public function markOrderItemsAsCanceledByCustomer(array $idSalesOrderItems): void;
+
+    /**
+     * @param \Generated\Shared\Transfer\OrderContainerCollectionTransfer $orderContainerCollectionTransfer
+     *
+     * @return void
+     */
+    public function createOrderContainers(OrderContainerCollectionTransfer $orderContainerCollectionTransfer): void;
 }

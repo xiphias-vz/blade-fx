@@ -10,6 +10,7 @@ namespace StoreApp\Zed\Picker;
 use Pyz\Service\DateTimeWithZone\DateTimeWithZoneServiceInterface;
 use Pyz\Zed\Merchant\Business\MerchantFacadeInterface;
 use Pyz\Zed\MerchantSalesOrder\Business\MerchantSalesOrderFacadeInterface;
+use Pyz\Zed\OrderContainer\Business\OrderContainerFacadeInterface;
 use Pyz\Zed\PickingRoute\Business\PickingRouteFacadeInterface;
 use Pyz\Zed\Sales\Business\SalesFacadeInterface;
 use Spryker\Zed\Kernel\AbstractBundleDependencyProvider;
@@ -23,6 +24,7 @@ class PickerDependencyProvider extends AbstractBundleDependencyProvider
 {
     public const FACADE_SALES = 'FACADE_SALES';
     public const FACADE_OMS = 'FACADE_OMS';
+    public const FACADE_ORDER_CONTAINER = 'FACADE_ORDER_CONTAINER';
     public const FACADE_USER = 'FACADE_USER';
     public const FACADE_MERCHANT = 'FACADE_MERCHANT';
     public const FACADE_PRODUCT = 'FACADE_PRODUCT';
@@ -66,6 +68,7 @@ class PickerDependencyProvider extends AbstractBundleDependencyProvider
         $container = $this->addSalesFacade($container);
         $container = $this->addOmsFacade($container);
         $container = $this->addUserFacade($container);
+        $container = $this->addOrderContainerFacade($container);
 
         return $container;
     }
@@ -93,6 +96,20 @@ class PickerDependencyProvider extends AbstractBundleDependencyProvider
     {
         $container->set(static::FACADE_OMS, function (Container $container): OmsFacadeInterface {
             return $container->getLocator()->oms()->facade();
+        });
+
+        return $container;
+    }
+
+    /**
+     * @param \Spryker\Zed\Kernel\Container $container
+     *
+     * @return \Spryker\Zed\Kernel\Container
+     */
+    private function addOrderContainerFacade(Container $container): Container
+    {
+        $container->set(static::FACADE_ORDER_CONTAINER, function (Container $container): OrderContainerFacadeInterface {
+            return $container->getLocator()->orderContainer()->facade();
         });
 
         return $container;

@@ -21,4 +21,15 @@
         <property name="productType" type="string"/>
     </transfer>
 
+    <transfer name="OrderContainer">
+        <property name="idOrderContainer" type="int"/>
+        <property name="code" type="int"/>
+        <property name="idSalesOrder" type="string"/>
+<!--        <property name="salesOrder" type="SalesOrder"/>-->
+    </transfer>
+
+    <transfer name="OrderContainerCollection">
+        <property name="orderContainers" type="OrderContainer[]" singular="OrderContainer"/>
+    </transfer>
+
 </transfers>

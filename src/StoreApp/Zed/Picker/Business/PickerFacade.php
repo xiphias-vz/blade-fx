@@ -7,6 +7,7 @@
 
 namespace StoreApp\Zed\Picker\Business;
 
+use Generated\Shared\Transfer\OrderContainerCollectionTransfer;
 use Spryker\Zed\Kernel\Business\AbstractFacade;
 
 /**
@@ -57,5 +58,13 @@ class PickerFacade extends AbstractFacade implements PickerFacadeInterface
     {
         $this->getFactory()->createOrderUpdater()
             ->markOrderItemsAsCanceledByCustomer($idSalesOrderItems);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function createOrderContainers(OrderContainerCollectionTransfer $orderContainerCollectionTransfer): void
+    {
+        $this->getFactory()->createOrderContainersCreator()->createOrderContainers($orderContainerCollectionTransfer);
     }
 }
