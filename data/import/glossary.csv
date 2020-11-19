@@ -219,9 +219,9 @@ page.imprint.url,/de/impressum,de_DE
 page.imprint.url,/en/imprint,en_US
 page.imprint.title,Impressum,de_DE
 page.imprint.title,Imprint,en_US
-page.terms.url,/de/Allgemeine-Geschaeftsbedingungende,de_DE
+page.terms.url,/de/agb-online-kauf,de_DE
 page.terms.url,/en/gtc-online-purchase,en_US
-page.terms.title,Allgemeine Geschäftsbedingungen enden,de_DE
+page.terms.title,AGB,de_DE
 page.terms.title,GTC,en_US
 page.privacy.url,/de/datenschutz,de_DE
 page.privacy.url,/en/privacy,en_US
@@ -1002,11 +1002,11 @@ checkout.step.place.order,Wunscheinkauf übermitteln,de_DE
 checkout.step.payment.must_be_older_than_18_years,You must be at least 18 years old.,en_US
 checkout.step.payment.must_be_older_than_18_years,Sie müssen mindestens 18 Jahre alt sein.,de_DE
 checkout.step.success.title,Thank you.,en_US
-checkout.step.success.title,Vielen Dank!,de_DE
+checkout.step.success.title,Vielen Dank fur Ihren Einkauf!,de_DE
 checkout.step.success.text,Your order has been placed successfully. You will get the order confirmation email in a few minutes. You can check and track your order in Your Account.,en_US
-checkout.step.success.text,Dein Wunscheinkauf ist erfolgreich bei uns eingegangen. Die Bestätigung wurde soeben per E-Mail versendet. In deinem Benutzerkonto kannst du deinen Wunscheinkauf überprüfen und nachverfolgen.                                                                            ,de_DE
+checkout.step.success.text,Ihre Bestellung ist erfolgreich in unserem Abholmarkt eingegangen.,de_DE
 checkout.step.success.link,"Go to ""My Account""",en_US
-checkout.step.success.link,"Zum Benutzerkonto",de_DE
+checkout.step.success.link,"Zum meinem Konto",de_DE
 checkout.step.error.title,Your order has not been placed.,en_US
 checkout.step.error.title,"Lieber Kunde, Ihre Bestellung konnte leider nicht platziert werden.",de_DE
 checkout.step.error.text,Something went wrong. Sorry.,en_US
@@ -2661,7 +2661,7 @@ PRODUCT_PAGE_SEARCH:SEARCHABLE_ATTRIBUTE_VALUE_YES,Ja,de_DE
 checkout.timeslots.title,"Services",de_DE
 checkout.timeslots.title,Time slots,en_US
 footer.help,Important information,en_US
-footer.help,Kundenservice,de_DE
+footer.help,Wichtige Informationen,de_DE
 footer.about,About,en_US
 footer.about,Über uns,de_DE
 footer.information,Information,en_US

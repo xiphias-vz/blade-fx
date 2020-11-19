@@ -41,16 +41,19 @@ $setting-color-gray-17:#dddddd;
 $setting-color-black: #111;
 $setting-color-black-1: #2b2c2d;
 
-//Orange icon color
-$setting-color-orange:#ea8901;
-
-//Footer Main Colors
-$setting-color-grey-footer:#363B3f;
+$setting-color-globus-lightOrange: #ea8901;
+$setting-color-globus-darkOrange: #ce6200;
+$setting-color-globus-lightGreen: #b9dcc3;
+$setting-color-globus-darkGreen: #007528;
+$setting-color-globus-black: #333333;
+$setting-color-globus-darkGray: #7c7c7c;
+$setting-color-globus-lightGray: #f7f7f7;
+$setting-color-globus-white: #ffffff;
 
 // Main colors
-$setting-color-main: #00afb4;
-$setting-color-alt: #ff4859;
-$setting-color-alt-2: #fe462d;
+$setting-color-main: #ea8901;
+$setting-color-alt: #b9dcc3;
+$setting-color-alt-2: #007528;
 $setting-color-alt-3: #f8e9e6;
 $setting-color-alt-4: #ff3b21;
 
@@ -59,15 +62,15 @@ $setting-color-text: $setting-color-black;
 $setting-color-text-alpha-1: rgba($setting-color-text, 0.2);
 $setting-color-text-alpha-2: rgba($setting-color-text, 0.5);
 
-$setting-color-link: $setting-color-blue-midi;
+$setting-color-link: $setting-color-globus-darkOrange;
 
 // Form Elements
 $setting-color-input-border: $setting-color-gray-15;
 $setting-color-input-border-focus: $setting-color-gray-3;
 $setting-color-input-shadow-focus: rgba($setting-color-gray-6, 0.5);
 $setting-color-checkbox-border: $setting-color-input-border;
-$setting-color-checkbox-border-focus: $setting-color-green;
-$setting-color-checkbox-shadow-focus: rgba($setting-color-green, 0.5);
+$setting-color-checkbox-border-focus: $setting-color-globus-darkOrange;
+$setting-color-checkbox-shadow-focus: rgba($setting-color-globus-darkOrange, 0.5);
 
 $setting-color-alpha-1: rgba($setting-color-black, 0.05);
 $setting-color-alpha-2: rgba($setting-color-main, 0.1);
