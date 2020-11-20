@@ -6,13 +6,13 @@ command-timeout: 3600
 sections:
     reset-local-demo-data-files:
         categories:
-            command: "mv data/import/spryker/categories.back.csv data/import/spryker/categories.csv"
+            command: "rm -rf data/import/spryker/categories.csv && mv data/import/spryker/categories.back.csv data/import/spryker/categories.csv"
 
         product-data:
-            command: "mv data/import/spryker/product_data.back.csv data/import/spryker/product_data.csv"
+            command: "rm -rf data/import/spryker/product_data.csv && mv data/import/spryker/product_data.back.csv data/import/spryker/product_data.csv"
 
         product-price:
-            command: "mv data/import/spryker/product_price.back.csv data/import/spryker/product_price.csv"
+            command: "rm -rf data/import/spryker/product_price.csv && mv data/import/spryker/product_price.back.csv data/import/spryker/product_price.csv"
 
         product-stock:
-            command: "mv data/import/spryker/product_stock.back.csv data/import/spryker/product_stock.csv"
+            command: "rm -rf data/import/spryker/product_stock.csv && mv data/import/spryker/product_stock.back.csv data/import/spryker/product_stock.csv"
