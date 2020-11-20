@@ -12,7 +12,6 @@
         }
     } only %}
 
-{#<script src="https://cdns.us1.gigya.com/js/gigya.js?apikey=3_IVfYuFFTkEygbMQjcP8LamKwRZBH4_qjl-EAGSvZJPGTAL59E9yUPdTxqLCyofkZ"></script>#}
     <div class="page-layout-customer page-layout-customer--login-wrap">
         <div class="page-layout-customer__form-wrap">
             <div class="list-switches">
@@ -75,8 +74,7 @@
                                 class: 'form__action--login button button--large button--expand',
                             },
                             options: {
-                                attr: null,
-                                onsubmit: 'loginUser()'
+                                attr: null
                             },
                         },
                         modifiers: ['grid-indent', 'login', 'checkout-actions'],
@@ -140,19 +138,30 @@
                 password: document.getElementById("loginForm_password").value,
             };
             //alert(params.loginID);
-            gigyaRegistrationLogin();
-            //gigya.accounts.login(params);
+            //gigyaRegistrationScreen();
+            //gigyaLoginScreen();
+
+            //gigyaInitRegistration();
+            gigya.accounts.login(params);
             //setTimeout('loginUserNew()', 2000);
             //return false;
-
         }
 
         function loginUserResponse(response) {
-            if (response.errorCode === 206001) {
+            if (response.errorCode === 0) {
+                var prof = {
+                    src: "CDC",
+                    data: response.data,
+                    profile: response.profile
+                }
+                document.getElementById("loginForm_data").value = JSON.stringify(prof);
+                loginUserLocal();
+            }
+            else if (response.errorCode === 206001) {
                 resendVerificationCode(response.regToken, response.userInfo.email);
                 alert(response.Text);
             } else {
-                alert("Error :" + response.errorMessage);
+                loginUserLocal();
             }
         }
 
@@ -196,13 +205,13 @@
                         lastName: document.getElementById("registerForm_last_name").value,
                         zip: document.getElementById("registerForm_zip_code").value,
                         city: document.getElementById("registerForm_city").value,
-                        country: "Deutschland",
-                        birthDay: document.getElementById("1").value,
-                        birthMonth: document.getElementById("2").value,
-                        birthYear: document.getElementById("3").value,
+                        country: "DE",
+                        birthDay: document.getElementById("select2-registerForm_day-container").innerText,
+                        birthMonth: document.getElementById("select2-registerForm_month-container").innerText,
+                        birthYear: document.getElementById("select2-registerForm_year-container").innerText,
                         phones: [
                             {
-                                type: document.getElementById("userName").value,
+                                type: "001",
                                 number: document.getElementById("registerForm_mobile_phone").value
                             }
                         ]
@@ -215,12 +224,13 @@
                         salutation: '0002'
                     },
                     format: "json",
-                    callback: gigyaRegisterUser,
+                    callback: gigyaRegisterUserCallback,
                 };
+                console.log(regParams);
                 gigya.accounts.register(regParams);
             }
         }
-        function gigyaRegisterUser(response) {
+        function gigyaRegisterUserCallback(response) {
             if (response.errorCode == 0) {
                 console.log(response);
             } else {
@@ -229,7 +239,7 @@
             }
         }
 
-        function loginUserNew() {
+        function loginUserLocal() {
             document.getElementsByName('loginForm')[0].onsubmit = function(){ };
             document.getElementsByName('loginForm')[0].submit();
         }
@@ -244,34 +254,19 @@
             });
         }
 
-        function gigyaRegistrationLogin() {
+        function gigyaRegistrationScreen() {
             gigya.accounts.showScreenSet({
                 screenSet: 'CCCustomer-RegistrationLogin',
-                startScreen: 'gigya-register-screen'/*,
-                "onBeforeValidation": event => {
-                    var a = document.querySelectorAll("[data-gigya-name='profile.zip']")[0].value;
-                    var errors = [
-                        {
-                            // empty
-                            "profile.zip": "Please enter your zip code",
-                            "form":"There was a simple error in your form"
-                        },
-                        {
-                            // not digits
-                            "profile.zip":"Your zip code must be digits only",
-                            "form":"There was a complex error in your form"
-                        }
-                    ];
-
-                    if (a === '') {
-                        return errors[0];
-                    } else if (/^\d+$/g.test(a) !== true) {
-                        return errors[1];
-                    }
-                }*/});
-
+                startScreen: 'gigya-register-screen'
+            });
         }
 
+        function gigyaLoginScreen() {
+            gigya.accounts.showScreenSet({
+                screenSet: 'CCCustomer-RegistrationLogin',
+                startScreen: 'gigya-login-screen'
+            });
+        }
         //jQuery(document).ready(function() {
         document.getElementsByName('loginForm')[0].onsubmit = function(){loginUser(); return false;};
         console.log( "document loaded" );

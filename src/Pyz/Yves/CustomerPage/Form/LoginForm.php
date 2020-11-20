@@ -8,8 +8,8 @@
 namespace Pyz\Yves\CustomerPage\Form;
 
 use SprykerShop\Yves\CustomerPage\Form\LoginForm as SprykerLoginForm;
-use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Validator\Constraints\Blank;
@@ -20,16 +20,13 @@ use Symfony\Component\Validator\Constraints\Blank;
  */
 class LoginForm extends SprykerLoginForm
 {
-    /**
-     * @param \Symfony\Component\Form\FormBuilderInterface $builder
-     *
-     * @return $this
-     */
-    public const FIELD_CHECKBOX = 'checkbox';
+    public const FIELD_DATA = 'data';
 
     /**
-     * @param FormBuilderInterface $builder
+     * @param \Symfony\Component\Form\FormBuilderInterface $builder
      * @param array $options
+     *
+     * @return void
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
@@ -37,7 +34,8 @@ class LoginForm extends SprykerLoginForm
 
         $this
             ->addEmailField($builder)
-            ->addPasswordField($builder);
+            ->addPasswordField($builder)
+            ->addDataField($builder);
     }
 
     protected function addEmailField(FormBuilderInterface $builder)
@@ -53,6 +51,7 @@ class LoginForm extends SprykerLoginForm
                 'placeholder' => 'customer.login.email_placeholder',
             ],
         ]);
+
         return $this;
     }
 
@@ -76,12 +75,18 @@ class LoginForm extends SprykerLoginForm
         return $this;
     }
 
-    protected function addCheckboxField(FormBuilderInterface $builder)
+    /**
+     * @param \Symfony\Component\Form\FormBuilderInterface $builder
+     *
+     * @return $this
+     */
+    protected function addDataField(FormBuilderInterface $builder)
     {
-        $builder->add(self::FIELD_CHECKBOX, CheckboxType::class,[
-               'label' => 'customer.login.checkbox',
-               'mapped' => false
-            ]);
+        $builder->add(self::FIELD_DATA, HiddenType::class, [
+            'constraints' => $this->createNotBlankConstraint(),
+            'mapped' => false,
+        ]);
+
         return $this;
     }
 

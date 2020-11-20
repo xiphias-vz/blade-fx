@@ -3,6 +3,8 @@
 {% define data = {
     isGuest: _view.guestForm.vars.value and (_view.guestForm.vars.value.customer and _view.guestForm.vars.value.customer.isGuest),
     isLogin: _view.loginForm.vars.value and not (_view.guestForm.vars.value and (_view.guestForm.vars.value.customer and _view.guestForm.vars.value.customer.isGuest)),
+
+
     forms: {
         registration: _view.registerForm,
         customer: _view.registerForm.customer,
@@ -49,22 +51,6 @@
                                     },
                                 } only %}
                             </li>
-
-                            <li class="list-switches__item">
-                                {% include molecule('toggler-radio') with {
-                                    modifiers: ['checkout', 'with-bg'],
-                                    data: {
-                                        label: 'checkout.customer.register_as_guest' | trans,
-                                    },
-                                    attributes: {
-                                        id: 'guest',
-                                        checked: not data.isGuest and not data.isLogin,
-                                        name: 'checkoutProceedAs',
-                                        'target-class-name': 'js-login__register',
-                                    },
-                                } only %}
-                            </li>
-
                         </ul>
                     </div>
                 {% endblock %}

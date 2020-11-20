@@ -28,4 +28,3 @@ class CustomerClient extends SprykerCustomerClient implements CustomerClientInte
             ->isPostalCodeWhiteListed($customerAddressRequestTransfer);
     }
 }
-
