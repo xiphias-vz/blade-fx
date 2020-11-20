@@ -18,16 +18,22 @@ defined('APPLICATION_ROOT_DIR') || define('APPLICATION_ROOT_DIR', dirname(__DIR_
  */
 $stores = require(APPLICATION_ROOT_DIR . '/config/Shared/stores.php');
 $allStores = array_keys($stores);
+
+/**
+ * Configs and domains load
+ */
+$storeConfig = require(APPLICATION_ROOT_DIR . '/config/Shared/store_config.php');
+
 $currentStore = $_COOKIE['current_store'] ?? null;
 
-if ($currentStore && in_array($currentStore, $allStores)) {
-    define('APPLICATION_STORE', $currentStore);
+// Temporary KMD is a main shop
+if (!$currentStore || !in_array($currentStore, $allStores)) {
+    $currentStore = 'KMD';
 }
 
-// Temporary KMD is a main shop
-if ($currentStore === null) {
-    define('APPLICATION_STORE', 'KMD');
-}
+define('APPLICATION_STORE', $currentStore);
+define('SPRYKER_KEY_VALUE_STORE_NAMESPACE', $storeConfig[$currentStore]['key_value_store_namespace']);
+define('HOST_ZED', $storeConfig[$currentStore]['zed']);
 
 require_once APPLICATION_ROOT_DIR . '/vendor/autoload.php';
 
