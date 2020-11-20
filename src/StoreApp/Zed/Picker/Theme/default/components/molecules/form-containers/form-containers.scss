@@ -1,0 +1,16 @@
+@mixin picker-form-containers($name: '.form-containers') {
+    #{$name} {
+        margin: rem(20) 0 rem(40);
+
+        label {
+            display: block;
+            margin-top: rem(10);
+        }
+
+        .input-with-remove {
+            width: calc(100% - 55px);
+        }
+    }
+}
+
+@include picker-form-containers();

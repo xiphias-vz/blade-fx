@@ -160,6 +160,14 @@ $button-radius: rem(10);
             }
         }
 
+        &--delete-bigger {
+            padding: rem(13) rem(16) rem(14);
+
+            .icon {
+                pointer-events: none;
+            }
+        }
+
         &--undo {
             color: $setting-color-gray-5;
         }
