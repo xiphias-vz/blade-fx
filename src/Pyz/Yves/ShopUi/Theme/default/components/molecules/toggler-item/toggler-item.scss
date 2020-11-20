@@ -19,7 +19,6 @@
 
                 &::before,
                 &::after {
-                    content: '';
                     background: $setting-color-black;
                     position: absolute;
                     top: 50%;
@@ -121,7 +120,7 @@
 
             &--desktop-border-bottom {
                 @include helper-breakpoint-media-min($md-min) {
-                    border-bottom: rem(1) solid $setting-color-gray-3;
+                    border-bottom: rem(1) solid $setting-color-globus-darkGray;
                     padding-bottom: rem(14);
                     margin-bottom: rem(16);
                 }
@@ -140,7 +139,7 @@
                     }
 
                     &:hover {
-                        color: $setting-color-green;
+                        color: $setting-color-globus-lightOrange;
                     }
 
                     &::after,
@@ -152,7 +151,7 @@
                         color: $setting-color-black;
 
                         &:hover {
-                            color: $setting-color-green;
+                            color: $setting-color-globus-lightOrange;
                         }
 
                         #{$name}__arrow-icon {
@@ -189,7 +188,7 @@
 
             &--filter-sidebar {
                 padding: rem(10) rem(20);
-                background: $setting-color-white;
+                background: $setting-color-globus-white;
             }
 
             &--flex {
@@ -220,7 +219,7 @@
                 color: $setting-color-black;
 
                 &:hover {
-                    color: $setting-color-green;
+                    color: $setting-color-globus-lightOrange;
                 }
 
                 &.active {
@@ -232,16 +231,16 @@
         }
 
         &--with-top-border {
-            border-top: rem(1) solid $setting-color-gray-3;
+            border-top: rem(1) solid $setting-color-globus-darkGray;
         }
 
         &--border-without-top {
-            border: rem(1) solid $setting-color-gray-15;
+            border: rem(1) solid $setting-color-globus-lightGray;
             border-top: none;
         }
 
         &--mobile {
-            border-top: rem(1) solid $setting-color-gray-3;
+            border-top: rem(1) solid $setting-color-globus-darkGray;
 
             @include helper-breakpoint-media-min($md-min) {
                 border-top: none;
@@ -251,6 +250,41 @@
         &--footer {
             border-top: none;
         }
+
+        .nutritional-information__trigger-bundle,
+        .additional-product-information__trigger-bundle,
+        .ingredients-and-allergens__trigger-bundle,
+        .warnings-and-usage-info__trigger-bundle,
+        .pet-feeding-table__trigger-bundle  {
+            color: $setting-color-globus-lightOrange;
+            border-bottom: 1px solid $setting-color-globus-lightOrange;
+        }
+
+        .nutritional-information__trigger-bundle:hover,
+        .additional-product-information__trigger-bundle:hover,
+        .ingredients-and-allergens__trigger-bundle:hover,
+        .warnings-and-usage-info__trigger-bundle:hover,
+        .pet-feeding-table__trigger-bundle:hover {
+            color: $setting-color-globus-lightOrange;
+        }
+
+        .nutritional-information__trigger-bundle::before,
+        .additional-product-information__trigger-bundle::before,
+        .ingredients-and-allergens__trigger-bundle::before,
+        .warnings-and-usage-info__trigger-bundle::before,
+        .pet-feeding-table__trigger-bundle::before {
+            content: '';
+        }
+
+        .nutritional-information__trigger-bundle::after,
+        .additional-product-information__trigger-bundle::after,
+        .ingredients-and-allergens__trigger-bundle::after,
+        .warnings-and-usage-info__trigger-bundle::after,
+        .pet-feeding-table__trigger-bundle::after {
+            content: '';
+            border-color: $setting-color-globus-lightOrange;
+        }
+
 
         @content;
     }
