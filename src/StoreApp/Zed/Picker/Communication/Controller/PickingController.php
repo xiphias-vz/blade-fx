@@ -538,7 +538,6 @@ class PickingController extends BaseOrderPickingController
         return $productAttributes;
     }
 
-
     /**
      * @param \Symfony\Component\HttpFoundation\Request $request
      *
