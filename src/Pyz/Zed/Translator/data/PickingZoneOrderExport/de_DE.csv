@@ -1,0 +1,11 @@
+picking_zone_order_export_gui.title,Picking Zone Order Items Export
+picking_zone_order_export_gui.field.picking_zone_id,Kommissionierzone
+picking_zone_order_export_gui.field.picking_date,Kommissionierdatum
+picking_zone_order_export_gui.field.button,Exportieren
+picking_zone_order_export_gui.field.reset,Zurücksetzen
+picking_zone_order_export.column.picking_date,Kommissionierdatum
+picking_zone_order_export.column.time_slot,Zeitfenster
+picking_zone_order_export.column.article,Artikel
+picking_zone_order_export.column.total_amount,Gesamtbetrag bestellt
+picking_zone_order_export.column.location,Ort
+picking_zone_order_export.column.ean,EAN
