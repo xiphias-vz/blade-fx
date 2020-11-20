@@ -33,6 +33,9 @@ cart.sales-order-threshold,Mindestbetrag,de_DE
 cart.sales-order-threshold,Minimum Order Value,en_US
 checkout.sales-order-threshold,Mindestbetrag,de_DE
 checkout.sales-order-threshold,Minimum Order Value,en_US
+cart.checkout.address.abholstation.note.up,Ich hole meine Bestellung an der Abholstation am gewählten Standort ab,de_DE
+cart.checkout.address.abholstation.note.down,Nachricht an die Abholstation,de_DE
+cart.checkout.address.abholstation.textarea.note,Kein Interesse an Ersatzprodukten? Was auch immer bei Ihrem aktuellen Einkauf wichtig ist. Sagen Sie es uns einfach.,de_DE
 sales-order-threshold.expense.name,Zuschlag,de_DE
 sales-order-threshold.expense.name,Surcharge,en_US
 cart.item_quantity,Anzahl,de_DE
@@ -97,6 +100,7 @@ page.checkout.address.name,Name,de_DE
 page.checkout.address.name,Name,en_US
 page.checkout.address.billing-address,Rechnungsadresse,de_DE
 page.checkout.address.billing-address,Billing Address,en_US
+page.checkout.address.abhol-address,Abholstation,de_DE
 page.checkout.address.billing-isnt-shipping-address,Abweichende Lieferadresse,de_DE
 page.checkout.address.billing-isnt-shipping-address,Different Delivery Address,en_US
 page.checkout.address.shipping-address,Lieferadresse,de_DE
@@ -120,7 +124,7 @@ page.checkout.address.option_group.company_business_unit,Addresse der Geschäfts
 page.checkout.address.delivery.address_select,Select a delivery address,en_US
 page.checkout.address.delivery.address_select,Wähle eine Lieferadresse,de_DE
 page.checkout.address.billing.address_select,Select a billing address,en_US
-page.checkout.address.billing.address_select,Wählen Sie eine Rechnungsadresse,de_DE
+page.checkout.address.billing.address_select,Wählen Sie Ihre Rechnungsadresse,de_DE
 page.checkout.address.manage_your_addresses,"Manage your addresses",en_US
 page.checkout.address.manage_your_addresses,"Verwalte deine Adressen",de_DE
 page.checkout.address.address_select.label,Select a delivery address,en_US
@@ -943,9 +947,10 @@ checkout.customer.auth_as_login,Anmelden,de_DE
 checkout.step.customer.title,Login,en_US
 checkout.step.customer.title,Anmelden,de_DE
 checkout.step.address.title,Address,en_US
-checkout.step.address.title,Adresse,de_DE
+checkout.step.address.title,Abholstation,de_DE
 checkout.step.shipment.title,Shipment,en_US
-checkout.step.shipment.title,Service,de_DE
+checkout.step.shipment.title,Abholzeitpunkt,de_DE
+checkout.step.shipment.note,Bitte beachten Sie: Aufgrund von Kapazitätenengpässen sind eventuell leider nicht immer alle Lieferfenster verfügbar,de_DE
 checkout.step.shipment.provider.a,DHL,en_US
 checkout.step.shipment.provider.a,DHL,de_DE
 checkout.step.shipment.provider.b,Hermes,en_US
@@ -2751,7 +2756,7 @@ product.detail.online_availability,Availability in the store:,en_US
 product.detail.online_availability,Verfügbarkeit in der Filiale:,de_DE
 product.detail.in_stock,Available,en_US
 product.detail.in_stock,Verfügbar,de_DE
-checkout.timeslots.title,"Wähle ein für dich passendes Zeitfenster aus.",de_DE
+checkout.timeslots.title,"Unsere verfügbaren Abholzeiten:",de_DE
 checkout.timeslots.title,Time slots,en_US
 customer.profile.shipment.only_picking_available,"Only Click & Collect is possible at the selected branch, not home delivery.",en_US
 customer.profile.shipment.only_picking_available,"Bei der gewählten Filiale ist nur Click & Collect möglich und nicht die Lieferung nach Hause.",de_DE
@@ -2793,6 +2798,7 @@ customer.order.delete.cancel,Cancel,en_US
 customer.order.delete.cancel,Abbrechen,de_DE
 cart.checkout.address.picking.note,"Please provide a delivery address, even if you decide to pick up your order at the store.",en_US
 cart.checkout.address.picking.note,"Bitte gebe eine Lieferadresse an, selbst wenn du dich für die Abholung in der Filiale entscheidest.",de_DE
+cart.checkout.address.billing.note,"Wähle Sie Ihre Billingadresse",de_DE
 global.build_with,Erstellt mit,de_DE
 global.build_with,Build with,en_US
 global.build_with.link,https://spryker.com/?lang=de,de_DE

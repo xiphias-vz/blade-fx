@@ -12,6 +12,7 @@ use Generated\Shared\Transfer\ItemTransfer;
 use Generated\Shared\Transfer\QuoteTransfer;
 use SprykerShop\Yves\CustomerPage\Form\CheckoutAddressCollectionForm as SprykerShopCheckoutAddressCollectionForm;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
@@ -19,6 +20,7 @@ use Symfony\Component\Form\FormInterface;
 
 class CheckoutAddressCollectionForm extends SprykerShopCheckoutAddressCollectionForm
 {
+    public const OPTION_MESSAGE_PICKUP = 'cart_note';
     /**
      * @param \Symfony\Component\Form\FormBuilderInterface $builder
      * @param array $options
@@ -30,9 +32,25 @@ class CheckoutAddressCollectionForm extends SprykerShopCheckoutAddressCollection
         $this
             ->addShippingAddressSubForm($builder, $options)
             ->addItemShippingAddressSubForm($builder, $options)
+            ->addTextAreaMessage($builder)
             ->addSameAsShippingCheckboxField($builder)
             ->addBillingAddressSubForm($builder, $options)
             ->addIsMultipleShipmentEnabledField($builder, $options);
+    }
+
+
+    protected function addTextAreaMessage(FormBuilderInterface $builder)
+    {
+        $builder->add(self::OPTION_MESSAGE_PICKUP, TextareaType::class, [
+            'label' => 'cart.checkout.address.abholstation.note.down',
+            'required' => false,
+            'trim' => false,
+            'attr' => [
+                'placeholder' => 'cart.checkout.address.abholstation.textarea.note',
+            ],
+        ]);
+
+        return $this;
     }
 
     /**

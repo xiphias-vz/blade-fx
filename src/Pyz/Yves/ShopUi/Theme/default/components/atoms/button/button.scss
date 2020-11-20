@@ -161,15 +161,15 @@
         &--hollow-gray,
         &--hollow-light {
             background-color: $setting-color-transparent;
-            border: rem(1) solid $setting-color-green;
-            color: $setting-color-green;
+            border: rem(1) solid $setting-color-globus-darkOrange;
+            color: $setting-color-globus-darkOrange;
 
             &:hover,
             &:focus,
             &:active {
-                border-color: $setting-color-green;
+                border-color: $setting-color-globus-darkOrange;
                 color: $setting-color-white;
-                background-color: $setting-color-green;
+                background-color: $setting-color-globus-darkOrange;
                 box-shadow: none;
             }
 
@@ -392,14 +392,14 @@
 
             &:focus {
                 background: transparent;
-                color: $setting-color-green;
+                color: $setting-color-globus-darkOrange;
                 box-shadow: 0 0 0 rem(2) $setting-color-blue-midi-alpha-1;
             }
 
             &:hover,
             &:active {
                 background: transparent;
-                color: $setting-color-green;
+                color: $setting-color-globus-darkOrange;
                 text-decoration: underline;
             }
         }
