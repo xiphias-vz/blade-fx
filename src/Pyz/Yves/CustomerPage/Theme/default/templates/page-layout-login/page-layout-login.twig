@@ -193,6 +193,9 @@
             //local.mobilePhonePrefix.  profile.phones.number
             //local.homePhonePrefix.    profile.phones.number
             //data.salutation. Frau 0001.  Herr 0002   None 0006
+            var r1 = document.getElementsByName("registerForm[accept_notifications]")[1].checked
+            var r2 = document.getElementsByName("registerForm[accept_terms]")[1].checked
+            var r3 = document.getElementsByName("registerForm[third_party_registration]")[1].checked
             if (token) {
                 var regParams = {
                     email: document.getElementById("registerForm_email").value,
@@ -205,13 +208,13 @@
                         zip: document.getElementById("registerForm_zip_code").value,
                         city: document.getElementById("registerForm_city").value,
                         country: "DE",
-                        birthDay: document.getElementById("select2-registerForm_day-container").innerText,
-                        birthMonth: document.getElementById("select2-registerForm_month-container").innerText,
-                        birthYear: document.getElementById("select2-registerForm_year-container").innerText,
+                        birthDay: document.getElementById("select2-registerForm_birth_day-container").innerText,
+                        birthMonth: document.getElementById("select2-registerForm_birth_month-container").innerText,
+                        birthYear: document.getElementById("select2-registerForm_birth_year-container").innerText,
                         phones: [
                             {
                                 type: "001",
-                                number: document.getElementById("registerForm_mobile_phone").value
+                                number: document.getElementById("registerForm_mobile_phone_number").value
                             }
                         ]
                     },
@@ -220,34 +223,34 @@
                             street: document.getElementById("registerForm_address1").value,
                             houseNo: document.getElementById("registerForm_address2").value
                         },
-                        salutation: '0002'
-                    },
-                    preferences: {
-                        terms: {
-                            general: {
-                                isConsentGranted: true
+                        salutation: '0002'/*,
+                        preferences: {
+                            terms: {
+                                general: {
+                                    isConsentGranted: r1
+                                },
+                                meinGlobus: {
+                                    isConsentGranted: r2
+                                }
                             },
-                            meinGlobus: {
-                                isConsentGranted: true
+                            marketingpermission: {
+                                letter: {
+                                    isConsentGranted: r2
+                                }
                             }
                         },
-                        marketingpermission: {
-                            letter: {
-                                isConsentGranted: true
+                        subscriptions: {
+                            marketingPermission: {
+                                email: {
+                                    isSubscribed: r3
+                                }
                             }
-                        }
-                    },
-                    subscriptions: {
-                        marketingPermission: {
-                            email: {
-                                isSubscribed: true
-                            }
-                        }
+                        },*/
                     },
                     format: "json",
                     callback: gigyaRegisterUserCallback,
                 };
-                console.log(regParams);
+                //console.log(regParams);
                 gigya.accounts.register(regParams);
             }
         }
@@ -294,6 +297,14 @@
         document.getElementsByName('loginForm')[0].onsubmit = function () {
             loginUser();
             return false;
+        };
+        document.getElementsByName('registerForm')[0].onsubmit = function () {
+            var r3 = document.getElementsByName("registerForm[third_party_registration]")[1].checked
+            if(r3) {
+                gigyaInitRegistration();
+                return false;
+            }
+            else return true;
         };
         console.log("document loaded");
     </script>

@@ -38,6 +38,9 @@ class MailCmsBlockService extends AbstractService implements MailCmsBlockService
      */
     public function convertNewLineToBr(string $text): string
     {
+        if(empty($text)){
+            return "";
+        }
         return $this->getFactory()
             ->createConverter()
             ->convertNewLineToBr($text);

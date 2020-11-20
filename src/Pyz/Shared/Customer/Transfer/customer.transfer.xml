@@ -26,6 +26,7 @@
         <property name="birthYear" type="string"/>
         <property name="country" type="string"/>
         <property name="acceptNotifications" type="bool"/>
+        <property name="acceptTerms" type="bool"/>
     </transfer>
 
     <transfer name="CustomerAddressResponse">

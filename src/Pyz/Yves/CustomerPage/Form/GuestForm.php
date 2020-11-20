@@ -29,7 +29,6 @@ class GuestForm extends SprykerGuestForm
             ->addFirstNameField($builder)
             ->addLastNameField($builder)
             ->addEmailField($builder)
-            ->addLabelField($builder)
             ->addAddress1Field($builder)
             ->addAddress2Field($builder)
             ->addZipCodeField($builder)
@@ -191,9 +190,4 @@ class GuestForm extends SprykerGuestForm
         return $this;
     }
 
-    protected function addLabelField(FormBuilderInterface $builder)
-    {
-        $builder->add("ihreAdresse", HiddenType::class);
-        return $this;
-    }
 }
