@@ -7,7 +7,7 @@
 
 namespace StoreApp\Zed\Picker\Communication\Form;
 
-use Generated\Shared\Transfer\OrderContainerTransfer;
+use Generated\Shared\Transfer\PickingSalesOrderTransfer;
 use Spryker\Zed\Kernel\Communication\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -22,7 +22,7 @@ use Symfony\Component\Validator\Constraints\NotBlank;
  */
 class OrderItemContainerForm extends AbstractType
 {
-    public const FIELD_CODE = 'code';
+    public const FIELD_CODE = 'container_code';
 
     /**
      * @param \Symfony\Component\Form\FormBuilderInterface $builder
@@ -43,7 +43,7 @@ class OrderItemContainerForm extends AbstractType
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
-            'data_class' => OrderContainerTransfer::class,
+            'data_class' => PickingSalesOrderTransfer::class,
         ]);
     }
 
@@ -62,7 +62,7 @@ class OrderItemContainerForm extends AbstractType
                 'label' => false,
                 'constraints' => [
                     new NotBlank(),
-                    new Length(['min' => 4, 'max' => 11]),
+                    new Length(['min' => 4]),
                 ],
             ]
         );

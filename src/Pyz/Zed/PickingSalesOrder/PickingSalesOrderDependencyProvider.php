@@ -5,13 +5,13 @@
  * For full license information, please view the LICENSE file that was distributed with this source code.
  */
 
-namespace Pyz\Zed\OrderContainer;
+namespace Pyz\Zed\PickingSalesOrder;
 
 use Spryker\Zed\Kernel\AbstractBundleDependencyProvider;
 
 /**
- * @method \Pyz\Zed\OrderContainer\OrderContainerConfig getConfig()
+ * @method \Pyz\Zed\PickingSalesOrder\PickingSalesOrderConfig getConfig()
  */
-class OrderContainerDependencyProvider extends AbstractBundleDependencyProvider
+class PickingSalesOrderDependencyProvider extends AbstractBundleDependencyProvider
 {
 }

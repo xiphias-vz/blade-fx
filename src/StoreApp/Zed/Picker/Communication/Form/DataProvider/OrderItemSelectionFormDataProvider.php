@@ -7,6 +7,7 @@
 
 namespace StoreApp\Zed\Picker\Communication\Form\DataProvider;
 
+use Generated\Shared\Transfer\OrderContainerTransfer;
 use Pyz\Zed\Product\Business\ProductFacadeInterface;
 use StoreApp\Zed\Picker\Communication\Form\OrderItemSelectionForm;
 
@@ -32,8 +33,14 @@ class OrderItemSelectionFormDataProvider
      */
     public function getData(int $idSalesOrder): array
     {
+        $c = (new OrderContainerTransfer())
+            ->setCode(123);
+
+        $c2 = (new OrderContainerTransfer())
+            ->setCode(123);
         return [
             OrderItemSelectionForm::FIELD_ID_SALES_ORDER => $idSalesOrder,
+//            OrderItemSelectionForm::FIELD_SALES_ORDER_CONTAINERS => [$c, $c2],
         ];
     }
 

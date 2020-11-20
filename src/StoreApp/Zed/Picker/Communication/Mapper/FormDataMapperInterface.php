@@ -7,8 +7,8 @@
 
 namespace StoreApp\Zed\Picker\Communication\Mapper;
 
-use Generated\Shared\Transfer\OrderContainerCollectionTransfer;
 use Generated\Shared\Transfer\OrderTransfer;
+use Generated\Shared\Transfer\PickingSalesOrderCollectionTransfer;
 
 interface FormDataMapperInterface
 {
@@ -24,7 +24,16 @@ interface FormDataMapperInterface
      * @param array $formData
      * @param \Generated\Shared\Transfer\OrderTransfer $salesOrderTransfer
      *
-     * @return \Generated\Shared\Transfer\OrderContainerCollectionTransfer
+     * @return \Generated\Shared\Transfer\PickingSalesOrderCollectionTransfer
      */
-    public function mapFormDataToOrderContainerCollection(array $formData, OrderTransfer $salesOrderTransfer): OrderContainerCollectionTransfer;
+    public function mapFormDataToPickingSalesOrderCollection(array $formData, OrderTransfer $salesOrderTransfer): PickingSalesOrderCollectionTransfer;
+
+    /**
+     * @param array $containerIdToShelveCodeMap
+     *
+     * @param \Generated\Shared\Transfer\OrderTransfer $salesOrderTransfer
+     *
+     * @return \Generated\Shared\Transfer\PickingSalesOrderCollectionTransfer
+     */
+    public function mapContainersToShelves(array $containerIdToShelveCodeMap, OrderTransfer $salesOrderTransfer): PickingSalesOrderCollectionTransfer;
 }

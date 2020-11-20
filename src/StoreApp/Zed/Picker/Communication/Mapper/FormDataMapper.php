@@ -7,8 +7,9 @@
 
 namespace StoreApp\Zed\Picker\Communication\Mapper;
 
-use Generated\Shared\Transfer\OrderContainerCollectionTransfer;
 use Generated\Shared\Transfer\OrderTransfer;
+use Generated\Shared\Transfer\PickingSalesOrderCollectionTransfer;
+use Generated\Shared\Transfer\PickingSalesOrderTransfer;
 use StoreApp\Zed\Picker\Communication\Form\OrderItemSelectionForm;
 
 class FormDataMapper implements FormDataMapperInterface
@@ -31,7 +32,7 @@ class FormDataMapper implements FormDataMapperInterface
                 continue;
             }
 
-            $skuToPickedQuantityMap[$matches[1]] = (int)$fieldValue;
+            $skuToPickedQuantityMap[$matches[1]] = $fieldValue;
         }
 
         return $skuToPickedQuantityMap;
@@ -41,17 +42,40 @@ class FormDataMapper implements FormDataMapperInterface
      * @param array $formData
      * @param \Generated\Shared\Transfer\OrderTransfer $salesOrderTransfer
      *
-     * @return \Generated\Shared\Transfer\OrderContainerCollectionTransfer
+     * @return \Generated\Shared\Transfer\PickingSalesOrderCollectionTransfer
      */
-    public function mapFormDataToOrderContainerCollection(array $formData, OrderTransfer $salesOrderTransfer): OrderContainerCollectionTransfer
+    public function mapFormDataToPickingSalesOrderCollection(array $formData, OrderTransfer $salesOrderTransfer): PickingSalesOrderCollectionTransfer
     {
-        $orderContainerCollectionTransfer = new OrderContainerCollectionTransfer();
-        foreach ($formData[OrderItemSelectionForm::FIELD_SALES_ORDER_CONTAINERS] as $orderContainerTransfer) {
-            /** @var \Generated\Shared\Transfer\OrderContainerTransfer $orderContainerTransfer */
-            $orderContainerTransfer->setIdSalesOrder($salesOrderTransfer->getIdSalesOrder());
-            $orderContainerCollectionTransfer->addOrderContainer($orderContainerTransfer);
+        $pickingSalesOrderCollectionTransfer = new PickingSalesOrderCollectionTransfer();
+        foreach ($formData[OrderItemSelectionForm::FIELD_SALES_ORDER_CONTAINERS] as $pickingSalesOrderTransfer) {
+            /** @var \Generated\Shared\Transfer\PickingSalesOrderTransfer $pickingSalesOrderTransfer */
+            $pickingSalesOrderTransfer->setIdSalesOrder($salesOrderTransfer->getIdSalesOrder());
+            $pickingSalesOrderCollectionTransfer->addPickingSalesOrder($pickingSalesOrderTransfer);
         }
 
-        return $orderContainerCollectionTransfer;
+        return $pickingSalesOrderCollectionTransfer;
+    }
+
+    /**
+     * @param array $containerIdToShelveCodeMap
+     *
+     * @param \Generated\Shared\Transfer\OrderTransfer $salesOrderTransfer
+     *
+     * @return \Generated\Shared\Transfer\PickingSalesOrderCollectionTransfer
+     */
+    public function mapContainersToShelves(array $containerIdToShelveCodeMap, OrderTransfer $salesOrderTransfer): PickingSalesOrderCollectionTransfer
+    {
+        $pickingSalesOrderCollectionTransfer = new PickingSalesOrderCollectionTransfer();
+
+        foreach ($containerIdToShelveCodeMap as $containerCode => $shelveCode) {
+            $pickingSalesOrderTransfer = new PickingSalesOrderTransfer();
+            $pickingSalesOrderTransfer->setContainerCode($containerCode);
+            $pickingSalesOrderTransfer->setShelveCode($shelveCode);
+            $pickingSalesOrderTransfer->setIdSalesOrder($salesOrderTransfer->getIdSalesOrder());
+
+            $pickingSalesOrderCollectionTransfer->addPickingSalesOrder($pickingSalesOrderTransfer);
+        }
+
+        return $pickingSalesOrderCollectionTransfer;
     }
 }

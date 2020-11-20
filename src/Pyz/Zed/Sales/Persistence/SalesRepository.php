@@ -9,6 +9,7 @@ namespace Pyz\Zed\Sales\Persistence;
 
 use DateTime;
 use Generated\Shared\Transfer\OrderCriteriaFilterTransfer;
+use Orm\Zed\Oms\Persistence\SpyOmsOrderItemStateQuery;
 use Orm\Zed\Payone\Persistence\Map\SpyPaymentPayoneTableMap;
 use Orm\Zed\Sales\Persistence\Map\SpySalesOrderItemTableMap;
 use Orm\Zed\Sales\Persistence\Map\SpySalesOrderTableMap;
@@ -205,6 +206,25 @@ class SalesRepository extends SprykerSalesRepository implements SalesRepositoryI
             ])
             ->find()
             ->toArray();
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getSalesOrderItemsIdsByIdSalesOrderAndStates(int $idSalesOrder, array $states): array
+    {
+        $salesOrderItemQuery = $this->getFactory()
+            ->createSalesOrderItemQuery()
+            ->filterByFkSalesOrder($idSalesOrder)
+            ->useStateQuery()
+                ->filterByName_In($states)
+            ->endUse()
+            ->select([
+                SpySalesOrderItemTableMap::COL_ID_SALES_ORDER_ITEM,
+            ])
+            ->find();
+
+        return $salesOrderItemQuery->toArray();
     }
 
     /**

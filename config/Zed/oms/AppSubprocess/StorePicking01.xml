@@ -16,6 +16,7 @@
             </state>
             <state name="ready to start picking" />
             <state name="ready for picking" />
+            <state name="ready for selecting shelves" />
             <state name="picked" />
             <state name="ready for cashier order export"/>
             <state name="cashier order exporting"/>
@@ -55,6 +56,12 @@
 
             <transition happy="true">
                 <source>ready for picking</source>
+                <target>ready for selecting shelves</target>
+                <event>confirm selecting containers</event>
+            </transition>
+
+            <transition happy="true">
+                <source>ready for selecting shelves</source>
                 <target>ready for cashier order export</target>
                 <event>confirm picking</event>
             </transition>
@@ -134,6 +141,7 @@
 
         <events>
             <event name="move to ready for picking" onEnter="true" command="Sales/MoveToReadyForPicking"/>
+            <event name="confirm selecting containers" manual="true"/>
             <event name="confirm picking" manual="true" command="Sales/ConfirmPicking"/>
             <event name="cancel due to not in stock" manual="true"/>
             <event name="process cancelled due to not in stock" onEnter="true" command="Oms/CancelDueToNotInStock"/>

@@ -10,8 +10,8 @@ namespace StoreApp\Zed\Picker;
 use Pyz\Service\DateTimeWithZone\DateTimeWithZoneServiceInterface;
 use Pyz\Zed\Merchant\Business\MerchantFacadeInterface;
 use Pyz\Zed\MerchantSalesOrder\Business\MerchantSalesOrderFacadeInterface;
-use Pyz\Zed\OrderContainer\Business\OrderContainerFacadeInterface;
 use Pyz\Zed\PickingRoute\Business\PickingRouteFacadeInterface;
+use Pyz\Zed\PickingSalesOrder\Business\PickingSalesOrderFacadeInterface;
 use Pyz\Zed\PickingZone\Business\PickingZoneFacadeInterface;
 use Pyz\Zed\Sales\Business\SalesFacadeInterface;
 use Spryker\Zed\Kernel\AbstractBundleDependencyProvider;
@@ -25,7 +25,7 @@ class PickerDependencyProvider extends AbstractBundleDependencyProvider
 {
     public const FACADE_SALES = 'FACADE_SALES';
     public const FACADE_OMS = 'FACADE_OMS';
-    public const FACADE_ORDER_CONTAINER = 'FACADE_ORDER_CONTAINER';
+    public const FACADE_PICKING_SALES_ORDER = 'FACADE_PICKING_SALES_ORDER';
     public const FACADE_USER = 'FACADE_USER';
     public const FACADE_MERCHANT = 'FACADE_MERCHANT';
     public const FACADE_PRODUCT = 'FACADE_PRODUCT';
@@ -55,6 +55,7 @@ class PickerDependencyProvider extends AbstractBundleDependencyProvider
         $container = $this->addDateTimeWithZoneService($container);
         $container = $this->addMerchantSalesOrderFacade($container);
         $container = $this->addPermissionAccessFacade($container);
+        $container = $this->addPickingSalesOrderFacade($container);
 
         return $container;
     }
@@ -71,7 +72,7 @@ class PickerDependencyProvider extends AbstractBundleDependencyProvider
         $container = $this->addSalesFacade($container);
         $container = $this->addOmsFacade($container);
         $container = $this->addUserFacade($container);
-        $container = $this->addOrderContainerFacade($container);
+        $container = $this->addPickingSalesOrderFacade($container);
 
         return $container;
     }
@@ -109,10 +110,10 @@ class PickerDependencyProvider extends AbstractBundleDependencyProvider
      *
      * @return \Spryker\Zed\Kernel\Container
      */
-    private function addOrderContainerFacade(Container $container): Container
+    private function addPickingSalesOrderFacade(Container $container): Container
     {
-        $container->set(static::FACADE_ORDER_CONTAINER, function (Container $container): OrderContainerFacadeInterface {
-            return $container->getLocator()->orderContainer()->facade();
+        $container->set(static::FACADE_PICKING_SALES_ORDER, function (Container $container): PickingSalesOrderFacadeInterface {
+            return $container->getLocator()->pickingSalesOrder()->facade();
         });
 
         return $container;
