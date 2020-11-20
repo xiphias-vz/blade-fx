@@ -38,6 +38,10 @@ class ProductDepositOptionStep extends PublishAwareStep implements DataImportSte
 
         $depositQuantity = (int)$dataSet[self::KEY_DEPOSIT];
 
+        if ($depositQuantity > 6) {
+            return;
+        }
+
         $this->loadIdProductOptionGroup($depositQuantity);
 
         $idProductAbstract = $dataSet[PriceProductDataSet::ID_PRODUCT_ABSTRACT];

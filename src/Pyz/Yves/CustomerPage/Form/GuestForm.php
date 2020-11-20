@@ -34,6 +34,42 @@ class GuestForm extends SprykerGuestForm
             ->addPhoneField($builder)
             ->addIsGuestField($builder);
     }
+    protected function addFirstNameField(FormBuilderInterface $builder)
+    {
+        $builder->add(self::FIELD_FIRST_NAME, TextType::class, [
+            'label' => 'customer.first_name',
+            'constraints' => [
+                $this->createNotBlankConstraint(),
+            ],
+            'attr'=>
+            [
+                'placeholder'=> 'customer.first_name',
+            ],
+        ]);
+
+        return $this;
+    }
+
+    /**
+     * @param \Symfony\Component\Form\FormBuilderInterface $builder
+     *
+     * @return \SprykerShop\Yves\CustomerPage\Form\GuestForm
+     */
+    protected function addLastNameField(FormBuilderInterface $builder)
+    {
+        $builder->add(self::FIELD_LAST_NAME, TextType::class, [
+            'label' => 'customer.last_name',
+            'constraints' => [
+                $this->createNotBlankConstraint(),
+            ],
+            'attr'=>
+            [
+                'placeholder'=> 'customer.last_name',
+            ],
+        ]);
+
+        return $this;
+    }
     protected function addEmailField(FormBuilderInterface $builder)
     {
         $builder->add(self::FIELD_EMAIL, EmailType::class, [
