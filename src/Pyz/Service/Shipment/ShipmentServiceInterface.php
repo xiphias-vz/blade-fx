@@ -8,6 +8,7 @@
 namespace Pyz\Service\Shipment;
 
 use DateTime;
+use Generated\Shared\Transfer\QuoteTransfer;
 use Spryker\Service\Shipment\ShipmentServiceInterface as SprykerShipmentServiceInterface;
 
 interface ShipmentServiceInterface extends SprykerShipmentServiceInterface
@@ -23,4 +24,16 @@ interface ShipmentServiceInterface extends SprykerShipmentServiceInterface
      * @return \DateTime
      */
     public function parseRequestedDeliveryDate(string $requestedDeliveryDate): DateTime;
+
+    /**
+     * Specification:
+     * - Checks for `hasOrders` and `thirdPartyRegistration` customer flags.
+     * - Applies custom logic if flags exists.
+     * - Returns null otherwise.
+     *
+     * @param \Generated\Shared\Transfer\QuoteTransfer $quoteTransfer
+     *
+     * @return int|null
+     */
+    public function resolveClickAndCollectShipmentPrice(QuoteTransfer $quoteTransfer): ?int;
 }
