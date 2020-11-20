@@ -150,8 +150,7 @@ Danke für Ihren Einkauf &amp; bis zum nächsten Mal
   </div>
   <div>
      <span style=""font-weight:bold"">Globus Abholstation Einöd</span><br>
-     Neunmorgenstraße 8 <br>
-     66424 Einöd
+     {{ merchantName }}
   </div>
 </div>
 <p style=""color:red;font-weight:bold;font-style:italic"">Hier folgt ein Erklörungstext:</p>
