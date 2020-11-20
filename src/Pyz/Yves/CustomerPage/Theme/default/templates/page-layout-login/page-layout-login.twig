@@ -80,7 +80,8 @@
                         modifiers: ['grid-indent', 'login', 'checkout-actions'],
                     } only %}
                     <div class="text-center">
-                        <a href="{{ url('password/forgotten') }}" class="button button--link button--skinless spacing-top spacing-top--big" {{qa('customer-forgot-password-link')}}>
+                        <a href="{{ url('password/forgotten') }}"
+                           class="button button--link button--skinless spacing-top spacing-top--big" {{ qa('customer-forgot-password-link') }}>
                             {{ 'forms.forgot-password' | trans~'?' }}
                         </a>
                     </div>
@@ -156,8 +157,7 @@
                 }
                 document.getElementById("loginForm_data").value = JSON.stringify(prof);
                 loginUserLocal();
-            }
-            else if (response.errorCode === 206001) {
+            } else if (response.errorCode === 206001) {
                 resendVerificationCode(response.regToken, response.userInfo.email);
                 alert(response.Text);
             } else {
@@ -223,6 +223,28 @@
                         },
                         salutation: '0002'
                     },
+                    preferences: {
+                        terms: {
+                            general: {
+                                isConsentGranted: true
+                            },
+                            meinGlobus: {
+                                isConsentGranted: true
+                            }
+                        },
+                        marketingpermission: {
+                            letter: {
+                                isConsentGranted: true
+                            }
+                        }
+                    },
+                    subscriptions: {
+                        marketingPermission: {
+                            email: {
+                                isSubscribed: true
+                            }
+                        }
+                    },
                     format: "json",
                     callback: gigyaRegisterUserCallback,
                 };
@@ -230,6 +252,7 @@
                 gigya.accounts.register(regParams);
             }
         }
+
         function gigyaRegisterUserCallback(response) {
             if (response.errorCode == 0) {
                 console.log(response);
@@ -240,11 +263,12 @@
         }
 
         function loginUserLocal() {
-            document.getElementsByName('loginForm')[0].onsubmit = function(){ };
+            document.getElementsByName('loginForm')[0].onsubmit = function () {
+            };
             document.getElementsByName('loginForm')[0].submit();
         }
 
-        function showRegister(){
+        function showRegister() {
             var togg = document.getElementById('register');
             togg.targets.forEach((element) => {
                 if (togg.addClass) {
@@ -267,10 +291,12 @@
                 startScreen: 'gigya-login-screen'
             });
         }
-        //jQuery(document).ready(function() {
-        document.getElementsByName('loginForm')[0].onsubmit = function(){loginUser(); return false;};
-        console.log( "document loaded" );
-        //});
+
+        document.getElementsByName('loginForm')[0].onsubmit = function () {
+            loginUser();
+            return false;
+        };
+        console.log("document loaded");
     </script>
 
 {% endblock %}

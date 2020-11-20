@@ -22,29 +22,30 @@ class CustomerUserProvider extends SprykerCustomerUserProvider
     /**
      * @param string $email
      *
+     * @return \Generated\Shared\Transfer\CustomerTransfer
      * @throws \Symfony\Component\Security\Core\Exception\AuthenticationException
      *
-     * @return \Generated\Shared\Transfer\CustomerTransfer
      */
     protected function loadCustomerByEmail($email)
     {
         $data = null;
-        if(!empty($_REQUEST["loginForm"]["data"])){
+        if (!empty($_REQUEST["loginForm"]["data"])) {
             $data = JSON::parse($_REQUEST["loginForm"]["data"]);
         }
 
         try {
             $customerTransfer = parent::loadCustomerByEmail($email);
-            if(!empty($data)) {
-                if($data["src"] == "CDC") {
-                    $customerTransfer->setPassword($_REQUEST["loginForm"]["password"]);
-                    $customerTransfer->setNewPassword($_REQUEST["loginForm"]["password"]);
-                    $this->getFactory()->getCustomerClient()->updateCustomerPassword($customerTransfer);
-                    $customerTransfer = parent::loadCustomerByEmail($email);
+            if (!empty($data)) {
+                if ($data["src"] == "CDC") {
+                    $user = $this->getFactory()->createSecurityUser($customerTransfer);
+                    $encoder = $this->getContainer()->get('security.encoder_factory');
+                    $encodedPass = $encoder->getEncoder($user)->encodePassword($_REQUEST["loginForm"]["password"], $user->getSalt());
+                    $customerTransfer->setPassword($encodedPass);
+                    $this->getFactory()->getCustomerClient()->updateCustomer($customerTransfer);
                 }
             }
         } catch (AuthenticationException $e) {
-            if(!empty($data)) {
+            if (!empty($data)) {
                 $customerTransfer = new CustomerTransfer();
                 $customerTransfer->setEmail($data["profile"]["email"]);
                 $customerTransfer->setFirstName($data["profile"]["firstName"]);
@@ -98,4 +99,6 @@ class CustomerUserProvider extends SprykerCustomerUserProvider
             ->getAuthenticationHandler()
             ->registerCustomer($customerTransfer);
     }
+
+
 }
