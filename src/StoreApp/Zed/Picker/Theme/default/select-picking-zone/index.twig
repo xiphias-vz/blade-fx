@@ -4,25 +4,16 @@
     pickingZoneSelectionForm: pickingZoneSelectionForm,
 } %}
 
+{% block header %}
+    {% embed organism('header') only %}
+        {% block selectPickingZone %}{% endblock %}
+    {% endembed %}
+{% endblock %}
+
 {% block content %}
-    {{ form_start(data.pickingZoneSelectionForm) }}
-        <div class="label">
-            {{ 'store-app.form.picking-zone-selector' | trans }}
-        </div>
-        <div class="choises">
-            {% for key, choice in data.pickingZoneSelectionForm.fieldIdPickingZone %}
-                {{ form_widget(choice, {
-                    required: false
-                }) }}
-            {% endfor %}
-        </div>
-        <div class="submit">
-            {{ form_widget(data.pickingZoneSelectionForm.buttonSubmit, {
-                label: 'store-app.form.submit-label' | trans,
-                attr: {
-                    class: 'button button--combined',
-                },
-            }) }}
-        </div>
-    {{ form_end(pickingZoneSelectionForm) }}
+    {% include molecule('select-picking-zone-form', 'Picker') with {
+        data: {
+            form: data.pickingZoneSelectionForm,
+        },
+    } only %}
 {% endblock %}
