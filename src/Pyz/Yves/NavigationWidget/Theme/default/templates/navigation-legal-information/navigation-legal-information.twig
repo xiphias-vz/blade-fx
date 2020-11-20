@@ -5,8 +5,8 @@
 } %}
 
 {% block body %}
-    {% include molecule('navigation-list') with {
-        modifiers: ['footer'],
+    {% include molecule('navigation-inline-links-list') with {
+        modifiers: ['copyright'],
         data: {
             nodes: data.nodes,
         },

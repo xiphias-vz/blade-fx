@@ -1,7 +1,7 @@
 {% extends model('component') %}
 
 {% define config = {
-    name: 'navigation-list'
+    name: 'navigation-inline-links-list'
 } %}
 
 {% define data = {
@@ -10,7 +10,7 @@
 } %}
 
 {% block body %}
-    <ul class="list {{ component.renderClass(config.name, modifiers) }}">
+    <ul class="inline-list {{ component.renderClass(config.name, modifiers) }}">
         {% for node in data.nodes %}
             {% embed atom('node') with {
                 modifiers: modifiers,

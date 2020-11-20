@@ -7,12 +7,12 @@
         position: relative;
         display: flex;
         flex-wrap: wrap;
-        align-items: center;
-        justify-content: center;
+
 
         &__text {
             margin-right: rem(18);
             padding-top: rem(12);
+            color:gray;
         }
 
         &__link {
@@ -21,6 +21,61 @@
             &:hover,
             &:focus {
                 color: $setting-color-white;
+            }
+        }
+
+        .inline-list {
+            display: flex;
+        }
+
+        .data-protection .title  {
+            display: none;
+            @include helper-breakpoint-media-max($sm-max)  {
+                display: block;
+                text-align: left;
+                color:gray;
+
+                &:before {
+                    background: gray;
+                }
+                &:after {
+                    background: gray;
+                }
+            }
+        }
+
+        .inline-list li {
+            margin: 0px 10px;
+
+        }
+
+        .inline-list li a
+        {
+            color:gray;
+            text-decoration: none;
+        }
+
+        .inline-list li a:nth-child(1) {
+            border-right: 1px solid gray;
+            padding-right: 15px;
+        }
+        .inline-list li a:nth-child(3) {
+            border-left: 1px solid gray;
+            padding-left: 15px;
+        }
+
+
+        .div-footer-right-text
+        {
+            float: right;
+            color:gray;
+            position: absolute;
+            right: -100px;
+
+            @include helper-breakpoint-media-max($xl-max)  {
+                position: static;
+                width:100%;
+
             }
         }
     }
