@@ -6,42 +6,31 @@
 
 {% define data = {
     productAttributes: required,
-    triggerClassName: '',
+    product: required,
 } %}
 
 {% block body %}
-    <div class="{{ component.renderClass(config.name ~ '__content', modifiers) }}">
-        {% block contentText %}
-            <h3 class="title title--h2 title--product-details {{ data.triggerClassName }}"
-                data-toggle-target-class-name="{{ config.jsName }}__toggler-target">
-                <strong>{{ 'product.info.additional' | trans }}</strong>
-            </h3>
-            <div class="{{ config.jsName }}__toggler-target is-hidden">
-                {% if data.productAttributes['Aufbewahrung'] is defined %}
-                    <div><strong>{{ 'product.info.additional.storage' | trans }}:</strong> {{ data.productAttributes['Aufbewahrung'] }}</div>
+
+                {% if data.product['idProductConcrete'] is defined %}
+                    <div><strong>Art.Nr:</strong> {{ data.product['idProductConcrete'] }}</div>
                 {% endif %}
-                {% if data.productAttributes['Serviervorschlag'] is defined %}
-                    <div><strong>{{ 'product.info.additional.serving' | trans }}:</strong> {{ data.productAttributes['Serviervorschlag'] }}</div>
+                {% if data.product['sku'] is defined %}
+                    <div><strong>EAN/GTIN:</strong> {{ data.product['sku'] }}</div>
                 {% endif %}
-                {% if data.productAttributes['Haltungsform'] is defined %}
-                    <div><strong>{{ 'product.info.additional.husbandry' | trans }}:</strong> {{ data.productAttributes['Haltungsform'] }}</div>
+                {% if data.productAttributes['alkgeh'] is defined %}
+                    <div><strong>{{ 'product.info.additional.alcohol' | trans }}:</strong> {{ data.productAttributes['alkgeh'] }}</div>
                 {% endif %}
-                {% if data.productAttributes['Zubereitung'] is defined %}
-                    <div><strong>{{ 'product.info.additional.preparation' | trans }}:</strong> {{ data.productAttributes['Zubereitung'] }}</div>
+                {% if data.productAttributes['fsk'] is defined %}
+                    <div><strong>Altersbeschränkung :</strong> {{ data.productAttributes['fsk'] }}</div>
                 {% endif %}
-                {% if data.productAttributes['Ursprungsland'] is defined %}
-                    <div><strong>{{ 'product.info.additional.origin.country' | trans }}:</strong> {{ data.productAttributes['Ursprungsland'] }}</div>
+                {% if data.productAttributes['bio'] is defined %}
+                    <div><strong>Bio:</strong> {{ data.productAttributes['bio'] }}</div>
                 {% endif %}
-                {% if data.productAttributes['Handelsklasse'] is defined %}
-                    <div><strong>{{ 'product.info.additional.grading' | trans }}:</strong> {{ data.productAttributes['Handelsklasse'] }}</div>
+                {% if data.productAttributes['inverkehrbringer'] is defined %}
+                    <div><strong>Inverkehrbringer (Hersteller):</strong> {{ data.productAttributes['inverkehrbringer'] }}</div>
                 {% endif %}
-                {% if data.productAttributes['Alkoholgehalt in %'] is defined %}
-                    <div><strong>{{ 'product.info.additional.alcohol' | trans }}:</strong> {{ data.productAttributes['Alkoholgehalt in %'] }} %</div>
+                {% if data.productAttributes['verwendungshinweise'] is defined %}
+                    <div><strong>{{ 'product.info.additional.hints' | trans }}:</strong> {{ data.productAttributes['verwendungshinweise'] }}</div>
                 {% endif %}
-                {% if data.productAttributes['Hinweise'] is defined %}
-                    <div><strong>{{ 'product.info.additional.hints' | trans }}:</strong> {{ data.productAttributes['Hinweise'] }}</div>
-                {% endif %}
-            </div>
-        {% endblock %}
-    </div>
+
 {% endblock %}
