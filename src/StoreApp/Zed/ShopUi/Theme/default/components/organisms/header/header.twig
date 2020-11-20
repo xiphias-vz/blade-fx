@@ -32,27 +32,29 @@
                                     modifiers: ['header']
                                 } only %}
                             </div>
-                            <div class="col">
-                                {% widget 'SelectPickingZoneWidget' %}{% endwidget %}
+                            <div class="col col--expand text-right">
+                                {% block selectPickingZone %}
+                                    {% widget 'SelectPickingZoneWidget' only %}{% endwidget %}
+                                {% endblock %}
                             </div>
-                            <div class="col col--expand spacing-x spacing-x--inner">
-                                {% if data.headerLocationTitle %}
-                                    <h1 class="header__location-title grid grid--no-wrap grid--middle grid--center">
-                                        <div class="col">
-                                            {% include atom('icon') with {
-                                                class: 'spacing-right spacing-right--small',
-                                                modifiers: ['big'],
-                                                data: {
-                                                    name: 'map-marker',
-                                                },
-                                            } only %}
-                                        </div>
-                                        <div class="col">
-                                            {{ data.headerLocationTitle }}
-                                        </div>
-                                    </h1>
-                                {% endif %}
-                            </div>
+{#                            <div class="col col--expand spacing-x spacing-x--inner">#}
+{#                                {% if data.headerLocationTitle %}#}
+{#                                    <h1 class="header__location-title grid grid--no-wrap grid--middle grid--center">#}
+{#                                        <div class="col">#}
+{#                                            {% include atom('icon') with {#}
+{#                                                class: 'spacing-right spacing-right--small',#}
+{#                                                modifiers: ['big'],#}
+{#                                                data: {#}
+{#                                                    name: 'map-marker',#}
+{#                                                },#}
+{#                                            } only %}#}
+{#                                        </div>#}
+{#                                        <div class="col">#}
+{#                                            {{ data.headerLocationTitle }}#}
+{#                                        </div>#}
+{#                                    </h1>#}
+{#                                {% endif %}#}
+{#                            </div>#}
                             <div class="col {{ config.name }}__logout text-right">
                                 <a href="/auth/logout" class="link link--icon link--logout">
                                     {% include atom('icon') with {
