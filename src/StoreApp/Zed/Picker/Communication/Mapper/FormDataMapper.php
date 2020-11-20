@@ -57,19 +57,19 @@ class FormDataMapper implements FormDataMapperInterface
     }
 
     /**
-     * @param array $containerIdToShelveCodeMap
+     * @param array $containerIdToShelfCodeMap
      * @param \Generated\Shared\Transfer\OrderTransfer $salesOrderTransfer
      *
      * @return \Generated\Shared\Transfer\PickingSalesOrderCollectionTransfer
      */
-    public function mapContainersToShelves(array $containerIdToShelveCodeMap, OrderTransfer $salesOrderTransfer): PickingSalesOrderCollectionTransfer
+    public function mapContainersToShelves(array $containerIdToShelfCodeMap, OrderTransfer $salesOrderTransfer): PickingSalesOrderCollectionTransfer
     {
         $pickingSalesOrderCollectionTransfer = new PickingSalesOrderCollectionTransfer();
 
-        foreach ($containerIdToShelveCodeMap as $containerCode => $shelveCode) {
+        foreach ($containerIdToShelfCodeMap as $containerCode => $shelfCode) {
             $pickingSalesOrderTransfer = new PickingSalesOrderTransfer();
             $pickingSalesOrderTransfer->setContainerCode($containerCode);
-            $pickingSalesOrderTransfer->setShelveCode($shelveCode);
+            $pickingSalesOrderTransfer->setShelfCode($shelfCode);
             $pickingSalesOrderTransfer->setIdSalesOrder($salesOrderTransfer->getIdSalesOrder());
 
             $pickingSalesOrderCollectionTransfer->addPickingSalesOrder($pickingSalesOrderTransfer);

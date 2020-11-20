@@ -21,15 +21,51 @@ class PickingSalesOrderEntityManager extends AbstractEntityManager implements Pi
     /**
      * @param \Generated\Shared\Transfer\PickingSalesOrderTransfer $pickingSalesOrderTransfer
      *
-     * @return void
+     * @return \Generated\Shared\Transfer\PickingSalesOrderTransfer
      */
-    public function create(PickingSalesOrderTransfer $pickingSalesOrderTransfer): void
+    public function create(PickingSalesOrderTransfer $pickingSalesOrderTransfer): PickingSalesOrderTransfer
+    {
+        $pickingSalesOrderTransfer = $this->savePickingSalesOrder($pickingSalesOrderTransfer, new PyzPickingSalesOrder());
+
+        return $pickingSalesOrderTransfer;
+    }
+
+    /**
+     * @param \Generated\Shared\Transfer\PickingSalesOrderTransfer $pickingSalesOrderTransfer
+     *
+     * @return \Generated\Shared\Transfer\PickingSalesOrderTransfer
+     */
+    public function update(PickingSalesOrderTransfer $pickingSalesOrderTransfer): PickingSalesOrderTransfer
+    {
+        $pickingSalesOrderEntity = $this->getFactory()
+            ->createPickingSalesOrderQuery()
+            ->filterByContainerCode($pickingSalesOrderTransfer->getContainerCode())
+            ->findOne();
+
+//        dd($pickingSalesOrderEntity->toArray(), $pickingSalesOrderTransfer->toArray());
+
+        $pickingSalesOrderTransfer = $this->savePickingSalesOrder($pickingSalesOrderTransfer, $pickingSalesOrderEntity);
+
+        return $pickingSalesOrderTransfer;
+    }
+
+    /**
+     * @param \Generated\Shared\Transfer\PickingSalesOrderTransfer $pickingSalesOrderTransfer
+     * @param \Orm\Zed\PickingSalesOrder\Persistence\PyzPickingSalesOrder $pickingSalesOrderEntity
+     *
+     * @return \Generated\Shared\Transfer\PickingSalesOrderTransfer
+     */
+    protected function savePickingSalesOrder(PickingSalesOrderTransfer $pickingSalesOrderTransfer, PyzPickingSalesOrder $pickingSalesOrderEntity): PickingSalesOrderTransfer
     {
         $pickingSalesOrderEntity = $this->getFactory()
             ->createPickingSalesOrderMapper()
-            ->mapPickingSalesOrderTransferToPickingSalesOrderEntity($pickingSalesOrderTransfer, new PyzPickingSalesOrder());
+            ->mapPickingSalesOrderTransferToPickingSalesOrderEntity($pickingSalesOrderTransfer, $pickingSalesOrderEntity);
 
         $pickingSalesOrderEntity->save();
+
+        $pickingSalesOrderTransfer->setIdPickingSalesOrder($pickingSalesOrderEntity->getIdPickingSalesOrder());
+
+        return $pickingSalesOrderTransfer;
     }
 
     /**

@@ -23,6 +23,9 @@ class PickingSalesOrderBusinessFactory extends AbstractBusinessFactory
      */
     public function createPickingSalesOrderWriter(): PickingSalesOrderWriterInterface
     {
-        return new PickingSalesOrderWriter($this->getEntityManager());
+        return new PickingSalesOrderWriter(
+            $this->getEntityManager(),
+            $this->getRepository()
+        );
     }
 }

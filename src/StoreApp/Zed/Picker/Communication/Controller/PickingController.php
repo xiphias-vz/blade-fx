@@ -152,15 +152,31 @@ class PickingController extends BaseOrderPickingController
      */
     public function orderPickingAction(Request $request)
     {
-        if (!$this->isValidRequest($request)) {
+        $idSalesOrder = $request->get(PickerConfig::REQUEST_PARAM_ID_ORDER) ?? 0;
+
+        $pickingZoneTransfer = $this->getFacade()->findPickingZoneInSession();
+        $salesOrderTransfer = $this->getFactory()->getSalesFacade()
+            ->findOrderByIdSalesOrderAndPickingZoneForStoreApp($idSalesOrder, $pickingZoneTransfer->getName());
+
+        $userTransfer = $this->getCurrentUser($request);
+
+        if (!$this->getFactory()->getPermissionAccessFacade()->isAccessAllowed(
+            $salesOrderTransfer,
+            $userTransfer,
+            [OmsConfig::STORE_STATE_READY_FOR_PICKING]
+        )) {
+            $this->addErrorMessage(MessagesConfig::MESSAGE_PERMISSION_FAILED);
+
             return $this->redirectResponse(PickerConfig::URL_PICKING_LIST);
         }
 
-        $idSalesOrder = $request->get(PickerConfig::REQUEST_PARAM_ID_ORDER) ?? 0;
-        $pickingZoneTransfer = $this->getFacade()->findPickingZoneInSession();
+        if ($this->isOrderPickingStartedByAnotherUser($idSalesOrder, $userTransfer)) {
+            $this->addErrorMessage(
+                static::PICKING_ERROR_MESSAGE_ORDER_IS_BEING_PROCESSED
+            );
 
-        $salesOrderTransfer = $this->getFactory()->getSalesFacade()
-            ->findOrderByIdSalesOrderAndPickingZoneForStoreApp($idSalesOrder, $pickingZoneTransfer->getName());
+            return $this->redirectResponse(PickerConfig::URL_PICKING_LIST);
+        }
 
         $aggregatedItemTransfers = $this->getFactory()->getItemAggregator()
             ->aggregateOrderItemsQuantities($salesOrderTransfer->getItems()->getArrayCopy());

@@ -34,6 +34,7 @@ use Pyz\Zed\Sales\Communication\Plugin\Oms\Command\CancelStartDeliveryCommandPlu
 use Pyz\Zed\Sales\Communication\Plugin\Oms\Command\ConfirmCollectionCommandPlugin;
 use Pyz\Zed\Sales\Communication\Plugin\Oms\Command\ConfirmDeliveryCommandPlugin;
 use Pyz\Zed\Sales\Communication\Plugin\Oms\Command\ConfirmPickingCommandPlugin;
+use Pyz\Zed\Sales\Communication\Plugin\Oms\Command\ConfirmSelectingContainersCommandPlugin;
 use Pyz\Zed\Sales\Communication\Plugin\Oms\Command\MarkDeliveryCancelledByCustomerCommandPlugin;
 use Pyz\Zed\Sales\Communication\Plugin\Oms\Command\MarkDeliveryCancelledByStoreCommandPlugin;
 use Pyz\Zed\Sales\Communication\Plugin\Oms\Command\MoveToReadyForCollectionCommandPlugin;
@@ -177,6 +178,8 @@ class OmsDependencyProvider extends SprykerOmsDependencyProvider
             $commandCollection->add(new CancelByTimeoutCommandPlugin(), 'Sales/CancelByTimeout');
 
             $commandCollection->add(new CashierOrderExportCommandPlugin(), 'CashierOrderExport/OrderExport');
+
+            $commandCollection->add(new ConfirmSelectingContainersCommandPlugin(), 'Sales/ConfirmSelectingContainers');
 
             return $commandCollection;
         });

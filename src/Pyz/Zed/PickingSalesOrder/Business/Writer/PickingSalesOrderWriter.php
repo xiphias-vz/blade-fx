@@ -11,6 +11,7 @@ use Generated\Shared\Transfer\PickingSalesOrderCollectionTransfer;
 use Generated\Shared\Transfer\PickingSalesOrderCriteriaTransfer;
 use Generated\Shared\Transfer\PickingSalesOrderTransfer;
 use Pyz\Zed\PickingSalesOrder\Persistence\PickingSalesOrderEntityManagerInterface;
+use Pyz\Zed\PickingSalesOrder\Persistence\PickingSalesOrderRepositoryInterface;
 use Spryker\Zed\Kernel\Persistence\EntityManager\TransactionTrait;
 
 class PickingSalesOrderWriter implements PickingSalesOrderWriterInterface
@@ -23,12 +24,20 @@ class PickingSalesOrderWriter implements PickingSalesOrderWriterInterface
     protected $pickingSalesOrderEntityManager;
 
     /**
+     * @var \Pyz\Zed\PickingSalesOrder\Persistence\PickingSalesOrderRepositoryInterface
+     */
+    protected $pickingSalesOrderRepository;
+
+    /**
      * @param \Pyz\Zed\PickingSalesOrder\Persistence\PickingSalesOrderEntityManagerInterface $pickingSalesOrderEntityManager
+     * @param \Pyz\Zed\PickingSalesOrder\Persistence\PickingSalesOrderRepositoryInterface $pickingSalesOrderRepository
      */
     public function __construct(
-        PickingSalesOrderEntityManagerInterface $pickingSalesOrderEntityManager
+        PickingSalesOrderEntityManagerInterface $pickingSalesOrderEntityManager,
+        PickingSalesOrderRepositoryInterface $pickingSalesOrderRepository
     ) {
         $this->pickingSalesOrderEntityManager = $pickingSalesOrderEntityManager;
+        $this->pickingSalesOrderRepository = $pickingSalesOrderRepository;
     }
 
     /**
@@ -83,5 +92,28 @@ class PickingSalesOrderWriter implements PickingSalesOrderWriterInterface
         foreach ($pickingSalesOrderCollectionTransfer->getPickingSalesOrders() as $pickingSalesOrderTransfer) {
             $this->createPickingSalesOrder($pickingSalesOrderTransfer);
         }
+    }
+
+    /**
+     * @param \Generated\Shared\Transfer\PickingSalesOrderTransfer $pickingSalesOrderTransfer
+     *
+     * @return \Generated\Shared\Transfer\PickingSalesOrderTransfer
+     */
+    public function bindContainerToShelf(PickingSalesOrderTransfer $pickingSalesOrderTransfer): PickingSalesOrderTransfer
+    {
+        $pickingSalesOrderCriteriaTransfer = (new PickingSalesOrderCriteriaTransfer())
+            ->addContainerCode($pickingSalesOrderTransfer->getContainerCode());
+
+        $pickingSalesOrders = $this->pickingSalesOrderRepository
+            ->getPickingSalesOrderCollection($pickingSalesOrderCriteriaTransfer)
+            ->getPickingSalesOrders();
+
+        if (!$pickingSalesOrders->count()) {
+            return $this->pickingSalesOrderEntityManager->create($pickingSalesOrderTransfer);
+        }
+
+        $pickingSalesOrderTransfer = $pickingSalesOrders[0]->setShelfCode($pickingSalesOrderTransfer->getShelfCode());
+
+        return $this->pickingSalesOrderEntityManager->update($pickingSalesOrderTransfer);
     }
 }

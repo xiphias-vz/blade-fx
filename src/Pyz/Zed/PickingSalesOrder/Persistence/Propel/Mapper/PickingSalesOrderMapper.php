@@ -22,7 +22,8 @@ class PickingSalesOrderMapper
         PickingSalesOrderTransfer $pickingSalesOrderTransfer,
         PyzPickingSalesOrder $pyzPickingSalesOrderEntity
     ): PyzPickingSalesOrder {
-        $pyzPickingSalesOrderEntity->fromArray($pickingSalesOrderTransfer->toArray());
+        $pyzPickingSalesOrderEntity->setContainerCode($pickingSalesOrderTransfer->getContainerCode());
+        $pyzPickingSalesOrderEntity->setShelfCode($pickingSalesOrderTransfer->getShelfCode());
         $pyzPickingSalesOrderEntity->setFkSalesOrder($pickingSalesOrderTransfer->getIdSalesOrder());
 
         return $pyzPickingSalesOrderEntity;
@@ -39,6 +40,7 @@ class PickingSalesOrderMapper
         PickingSalesOrderTransfer $pickingSalesOrderTransfer
     ): PickingSalesOrderTransfer {
         $pickingSalesOrderTransfer->fromArray($pyzPickingSalesOrderEntity->toArray(), true);
+        $pickingSalesOrderTransfer->setIdSalesOrder($pyzPickingSalesOrderEntity->getFkSalesOrder());
 
         return $pickingSalesOrderTransfer;
     }

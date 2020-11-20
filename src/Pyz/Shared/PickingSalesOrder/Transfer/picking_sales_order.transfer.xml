@@ -6,7 +6,7 @@
     <transfer name="PickingSalesOrder">
         <property name="idPickingSalesOrder" type="int"/>
         <property name="containerCode" type="string"/>
-        <property name="shelveCode" type="string"/>
+        <property name="shelfCode" type="string"/>
         <property name="idSalesOrder" type="int"/>
     </transfer>
 

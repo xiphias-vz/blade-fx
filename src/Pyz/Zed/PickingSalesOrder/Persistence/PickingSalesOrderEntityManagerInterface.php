@@ -15,9 +15,16 @@ interface PickingSalesOrderEntityManagerInterface
     /**
      * @param \Generated\Shared\Transfer\PickingSalesOrderTransfer $pickingSalesOrderTransfer
      *
-     * @return void
+     * @return \Generated\Shared\Transfer\PickingSalesOrderTransfer
      */
-    public function create(PickingSalesOrderTransfer $pickingSalesOrderTransfer): void;
+    public function create(PickingSalesOrderTransfer $pickingSalesOrderTransfer): PickingSalesOrderTransfer;
+
+    /**
+     * @param \Generated\Shared\Transfer\PickingSalesOrderTransfer $pickingSalesOrderTransfer
+     *
+     * @return \Generated\Shared\Transfer\PickingSalesOrderTransfer
+     */
+    public function update(PickingSalesOrderTransfer $pickingSalesOrderTransfer): PickingSalesOrderTransfer;
 
     /**
      * @param \Generated\Shared\Transfer\PickingSalesOrderCriteriaTransfer $pickingSalesOrderCriteriaTransfer
