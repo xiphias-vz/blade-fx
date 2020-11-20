@@ -51,9 +51,69 @@
                                     },
                                 } only %}
                             </li>
+
+                            <li class="list-switches__item">
+                                {% include molecule('toggler-radio') with {
+                                    modifiers: ['checkout', 'with-bg'],
+                                    data: {
+                                        label: 'checkout.customer.register_as_guest' | trans,
+                                    },
+                                    attributes: {
+                                        id: 'guest',
+                                        checked: not data.isGuest and not data.isLogin,
+                                        name: 'checkoutProceedAs',
+                                        'target-class-name': 'js-login__register',
+                                    },
+                                } only %}
+                            </li>
+
                         </ul>
                     </div>
                 {% endblock %}
+                {% embed molecule('form') with {
+                    class: 'register-form js-login__guest' ~ (data.isGuest ? '' : ' is-hidden'),
+                    modifiers: ['login', 'checkout-actions'],
+                    data: {
+                    form: data.forms.guest,
+                    submit: {
+                        enable: true,
+                        text: 'checkout.customer.submit_as_guest' | trans,
+                        class: 'form__action--checkout col col--middle button button--expand-tablet button--large'
+                    }
+                },
+                    embed: {
+                    forms: {
+                        customerGuest: data.forms.customerGuest
+                    }
+                }
+                    } only %}
+                    {% block fields %}
+                        {% include molecule('form') with {
+                            modifiers: ['login', 'checkout-actions', 'grid-indent'],
+                            data: {
+                                class: 'col col--sm-6',
+                                form: embed.forms.customerGuest,
+                                enableStart: false,
+                                enableEnd: false,
+                                layout: {
+                                    salutation: 'col col--sm-12 col--md-6',
+                                    first_name: 'col col--sm-12 col--md-6',
+                                    last_name: 'col col--sm-12 col--md-6',
+                                    address1: 'col col--sm-12 col--md-8',
+                                    address2: 'col col--sm-12 col--md-4',
+                                    zip_code: 'col col--sm-12 col--md-3',
+                                    city: 'col col--sm-12 col--md-9',
+                                },
+                                submit: {
+                                    enable: false
+                                },
+                                cancel: {
+                                    enable: false
+                                }
+                            }
+                        } only %}
+                    {% endblock %}
+                {% endembed %}
 
                 {% block content %}
                     {% embed molecule('form') with {

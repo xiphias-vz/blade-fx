@@ -8,6 +8,7 @@
 namespace Pyz\Yves\CustomerPage\Form;
 
 use SprykerShop\Yves\CustomerPage\Form\LoginForm as SprykerLoginForm;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;

@@ -821,7 +821,7 @@ $config[StoreConstants::STORE_NAMES] = [
 $config[GoogleTagManagerConstants::CONTAINER_ID] = 'GTM-KN8QSGS';
 
 // ---------- Customer dropdowns
-$config[\Pyz\Shared\Customer\CustomerConstants::CUSTOMER_COUNTRY] = [
+$config[\Pyz\Shared\Customer\CustomerConstants::CUSTOMER_COUNTRY] =[
     60 => 'customer.registration.country_placeholder',
 ];
 

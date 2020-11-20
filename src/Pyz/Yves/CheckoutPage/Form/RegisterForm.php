@@ -1,11 +1,7 @@
 <?php
 
-/**
- * This file is part of the Spryker Commerce OS.
- * For full license information, please view the LICENSE file that was distributed with this source code.
- */
 
-namespace Pyz\Yves\CustomerPage\Form;
+namespace Pyz\Yves\CheckoutPage\Form;
 
 use Mpdf\Form;
 use Pyz\Shared\Customer\CustomerConstants;
@@ -27,7 +23,7 @@ use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\Regex;
 
 /**
- * @method \Pyz\Yves\CustomerPage\CustomerPageConfig getConfig()
+ * @method \Pyz\Yves\CheckoutPage\CheckoutPageConfig getConfig()
  * @method \Pyz\Yves\CustomerPage\CustomerPageFactory getFactory()
  */
 class RegisterForm extends SprykerRegisterForm
@@ -78,10 +74,13 @@ class RegisterForm extends SprykerRegisterForm
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $this
+            ->addZipCodeField($builder, $options)
+            ->addMobileNumber($builder)
             ->addEmailField($builder)
             ->addPasswordField($builder, $options);
 
         $this
+            ->addCountryField($builder)
             ->addSalutationField($builder)
             ->addFirstNameField($builder)
             ->addLastNameField($builder);
@@ -89,11 +88,8 @@ class RegisterForm extends SprykerRegisterForm
         $this
             ->addAddress1Field($builder, $options)
             ->addAddress2Field($builder, $options)
-            ->addZipCodeField($builder, $options)
             ->addCityField($builder, $options)
-            ->addCountryField($builder)
             ->addMobilePrefixField1($builder)
-            ->addMobileNumber($builder)
             ->addMobilePrefixField2($builder)
             ->addPhoneField($builder)
             ->addDayField($builder)
@@ -102,7 +98,6 @@ class RegisterForm extends SprykerRegisterForm
             ->addAcceptTermsField($builder)
             ->addFieldRecieveNotificationsAboutProducts($builder)
             ->addAdditionalRegisterField($builder);
-        ;
     }
 
     /**
@@ -118,7 +113,6 @@ class RegisterForm extends SprykerRegisterForm
             'constraints' => [
                 $this->createNotBlankConstraint(),
                 $this->createMinLengthConstraint(),
-                ProfileForm::createSafeStringRegexConstraint(),
             ],
             'attr' => [
                 'placeholder' => 'customer.registration.first_name_placeholder',
@@ -141,7 +135,6 @@ class RegisterForm extends SprykerRegisterForm
             'constraints' => [
                 $this->createNotBlankConstraint(),
                 $this->createMinLengthConstraint(),
-                ProfileForm::createSafeStringRegexConstraint(),
             ],
             'attr' => [
                 'placeholder' => 'customer.registration.last_name_placeholder',
@@ -257,8 +250,8 @@ class RegisterForm extends SprykerRegisterForm
     protected function addFieldRecieveNotificationsAboutProducts(FormBuilderInterface $builder)
     {
         $builder->add(self::FIELD_RECIEVE_NOTIFICATIONS, CheckboxType::class,[
-           'label' => 'forms.recieve_notifications',
-           'mapped' => true,
+            'label' => 'forms.recieve_notifications',
+            'mapped' => true,
             'required' => false,
         ]);
 
@@ -280,7 +273,6 @@ class RegisterForm extends SprykerRegisterForm
             'constraints' => [
                 $this->createNotBlankConstraint(),
                 $this->createMinLengthConstraint($options),
-                ProfileForm::createSafeStringRegexConstraint(),
             ],
             'attr' => [
                 'placeholder' => 'customer.registration.address1_placeholder',
@@ -382,9 +374,9 @@ class RegisterForm extends SprykerRegisterForm
             'required' => true,
             'label' => 'customer.address.country',
             'constraints' =>
-            [
-                $this->createNotBlankConstraint(),
-            ],
+                [
+                    $this->createNotBlankConstraint(),
+                ],
         ]);
         return $this;
     }
@@ -395,11 +387,11 @@ class RegisterForm extends SprykerRegisterForm
         $builder->add(self::FIELD_PHONE_PREFIX_1, ChoiceType::class,[
             'choices' => array_flip($prefixes),
             'required' => true,
-            'label' => 'customer.register.phone',
+            'label' => false,
             'constraints' =>
-            [
-                $this->createNotBlankConstraint(),
-            ]
+                [
+                    $this->createNotBlankConstraint(),
+                ]
         ]);
         return $this;
     }
@@ -426,10 +418,9 @@ class RegisterForm extends SprykerRegisterForm
             'trim' => true,
             'label' => false,
             'constraints' =>
-            [
-                $this->createNotBlankConstraint(),
-                ProfileForm::createSafeStringRegexConstraint(),
-            ]
+                [
+                    $this->createNotBlankConstraint(),
+                ]
         ]);
         return $this;
     }
@@ -446,7 +437,6 @@ class RegisterForm extends SprykerRegisterForm
             'required' => false,
             'trim' => true,
             'constraints' => [
-                ProfileForm::createSafeStringRegexConstraint(),
             ],
         ]);
 
@@ -493,8 +483,7 @@ class RegisterForm extends SprykerRegisterForm
             'trim' => true,
             'constraints' => [
                 $this->createNotBlankConstraint(),
-                $this->createMinLengthConstraint($options),
-                ProfileForm::createSafeStringRegexConstraint(),
+               // $this->createMinLengthConstraint($options),
             ],
             'attr' => [
                 'placeholder' => 'customer.registration.city_placeholder',
@@ -519,7 +508,6 @@ class RegisterForm extends SprykerRegisterForm
             'attr' => [
             ],
             'constraints' => [
-                ProfileForm::createSafeStringRegexConstraint(),
             ],
         ]);
 
@@ -542,9 +530,9 @@ class RegisterForm extends SprykerRegisterForm
                 'placeholder' => 'customer.date.day'
             ],
             'constraints' =>
-            [
-                $this->createNotBlankConstraint(),
-            ],
+                [
+                    $this->createNotBlankConstraint(),
+                ],
         ]);
         return $this;
     }
@@ -587,9 +575,9 @@ class RegisterForm extends SprykerRegisterForm
                 'placeholder' => 'customer.date.year'
             ],
             'constraints' =>
-            [
-                $this->createNotBlankConstraint(),
-            ],
+                [
+                    $this->createNotBlankConstraint(),
+                ],
         ]);
         return $this;
     }
