@@ -260,14 +260,9 @@ class CashierOrderContentBuilder implements CashierOrderContentBuilderInterface
                 if (isset($depositAggregationCollection[$productOption->getSku()][static::QUANTITY])) {
                     $quantity = $productOption->getQuantity() + $depositAggregationCollection[$productOption->getSku()][static::QUANTITY];
                 }
+
                 $depositAggregationCollection[$productOption->getSku()][static::QUANTITY] = $quantity;
-
-                $price = $productOption->getUnitGrossPrice();
-                if (isset($depositAggregationCollection[$productOption->getSku()][static::PRICE])) {
-                    $price = $productOption->getUnitGrossPrice() + $depositAggregationCollection[$productOption->getSku()][static::PRICE];
-                }
-                $depositAggregationCollection[$productOption->getSku()][static::PRICE] = $price;
-
+                $depositAggregationCollection[$productOption->getSku()][static::PRICE] = $productOption->getUnitGrossPrice();
                 $depositAggregationCollection[$productOption->getSku()][static::DEPOSIT_NAME] = $productOption->getValue();
                 $depositAggregationCollection[$productOption->getSku()][static::TAX_RATE] = $productOption->getTaxRate();
             }
