@@ -10,7 +10,7 @@ namespace Pyz\Zed\Sales\Business\Order;
 use Generated\Shared\Transfer\OrderTransfer;
 use Spryker\Zed\Sales\Business\Order\OrderReader as SprykerOrderReader;
 
-class OrderReader extends SprykerOrderReader
+class OrderReader extends SprykerOrderReader implements OrderReaderInterface
 {
     /**
      * @param int $idSalesOrder
@@ -25,6 +25,29 @@ class OrderReader extends SprykerOrderReader
             ->getFirst();
 
         if ($orderEntity === null) {
+            return null;
+        }
+
+        return $this->orderHydrator->hydrateOrderTransferFromPersistenceBySalesOrder($orderEntity);
+    }
+
+    /**
+     * @param int $idSalesOrder
+     * @param string $pickingZoneName
+     *
+     * @return \Generated\Shared\Transfer\OrderTransfer|null
+     */
+    public function findOrderByIdSalesOrderAndPickingZone(int $idSalesOrder, string $pickingZoneName): ?OrderTransfer
+    {
+        $orderEntity = $this->queryContainer
+            ->querySalesOrderDetailsWithoutShippingAddress($idSalesOrder)
+            ->useItemQuery()
+                ->filterByPickZone($pickingZoneName)
+            ->endUse()
+            ->find()
+            ->getFirst();
+
+        if (!$orderEntity) {
             return null;
         }
 

@@ -18,5 +18,6 @@
         <column name="birth_month" type="VARCHAR" />
         <column name="birth_year" type="VARCHAR" />
         <column name="accept_notifications" type="BOOLEAN" />
+        <column name="has_orders" type="BOOLEAN"/>
     </table>
 </database>

@@ -11,6 +11,7 @@ use Generated\Shared\Transfer\ItemTransfer;
 use Pyz\Shared\Product\ProductConfig;
 use Spryker\Zed\Kernel\Communication\Form\AbstractType;
 use StoreApp\Shared\Picker\PickerConfig;
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -25,6 +26,7 @@ use Symfony\Component\Validator\Constraints\NotBlank;
 class OrderItemSelectionForm extends AbstractType
 {
     public const FIELD_ID_SALES_ORDER = 'field_id_sales_order';
+    public const FIELD_SALES_ORDER_CONTAINERS = 'field_sales_order_containers';
 
     public const PREFIX_FIELD_SALES_ORDER_ITEM_SKU = 'field_sales_order_item_sku__';
 
@@ -52,6 +54,7 @@ class OrderItemSelectionForm extends AbstractType
     {
         $this->addIdSalesOrder($builder);
         $this->addItems($builder, $options);
+        $this->addContainers($builder, $options);
     }
 
     /**
@@ -96,6 +99,36 @@ class OrderItemSelectionForm extends AbstractType
                 ]
             );
         }
+
+        return $this;
+    }
+
+    /**
+     * @param \Symfony\Component\Form\FormBuilderInterface $builder
+     * @param array $options
+     *
+     * @return $this
+     */
+    protected function addContainers(FormBuilderInterface $builder, array $options)
+    {
+        $builder->add(
+            static::FIELD_SALES_ORDER_CONTAINERS,
+            CollectionType::class,
+            [
+                'entry_type' => OrderItemContainerForm::class,
+                'allow_add' => true,
+                'allow_delete' => true,
+                'label' => 'Containers',
+                'entry_options' => [
+                    'label' => 'Container',
+                ],
+                'prototype' => true,
+                'prototype_name' => '__container_name__',
+                'constraints' => [
+                    new NotBlank(),
+                ],
+            ]
+        );
 
         return $this;
     }

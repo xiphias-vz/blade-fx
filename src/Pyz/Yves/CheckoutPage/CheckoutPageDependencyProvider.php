@@ -37,6 +37,7 @@ class CheckoutPageDependencyProvider extends SprykerShopCheckoutPageDependencyPr
 {
     public const CLIENT_TIME_SLOT = 'CLIENT_TIME_SLOT';
     public const CLIENT_ORDER_DETAIL = 'CLIENT_ORDER_DETAIL';
+    public const PYZ_SERVICE_SHIPMENT = 'PYZ_SERVICE_SHIPMENT';
 
     /**
      * @param \Spryker\Yves\Kernel\Container $container
@@ -50,6 +51,7 @@ class CheckoutPageDependencyProvider extends SprykerShopCheckoutPageDependencyPr
         $container = $this->extendSubFormPluginCollection($container);
         $container = $this->addTimeSlotClient($container);
         $container = $this->addOrderDetailClient($container);
+        $container = $this->addPyzShipmentService($container);
 
         return $container;
     }
@@ -239,6 +241,20 @@ class CheckoutPageDependencyProvider extends SprykerShopCheckoutPageDependencyPr
     {
         $container->set(static::CLIENT_ORDER_DETAIL, function () use ($container) {
             return $container->getLocator()->orderDetail()->client();
+        });
+
+        return $container;
+    }
+
+    /**
+     * @param \Spryker\Yves\Kernel\Container $container
+     *
+     * @return \Spryker\Yves\Kernel\Container
+     */
+    protected function addPyzShipmentService(Container $container): Container
+    {
+        $container->set(static::PYZ_SERVICE_SHIPMENT, function (Container $container) {
+            return $container->getLocator()->shipment()->service();
         });
 
         return $container;

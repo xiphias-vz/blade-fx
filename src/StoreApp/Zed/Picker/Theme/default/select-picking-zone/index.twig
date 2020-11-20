@@ -1,0 +1,19 @@
+{% extends template('page-layout-main') %}
+
+{% define data = {
+    pickingZoneSelectionForm: pickingZoneSelectionForm,
+} %}
+
+{% block header %}
+    {% embed organism('header') only %}
+        {% block selectPickingZone %}{% endblock %}
+    {% endembed %}
+{% endblock %}
+
+{% block content %}
+    {% include molecule('select-picking-zone-form', 'Picker') with {
+        data: {
+            form: data.pickingZoneSelectionForm,
+        },
+    } only %}
+{% endblock %}

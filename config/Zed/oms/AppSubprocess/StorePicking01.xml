@@ -16,6 +16,7 @@
             </state>
             <state name="ready to start picking" />
             <state name="ready for picking" />
+            <state name="ready for selecting shelves" />
             <state name="picked" />
             <state name="ready for cashier order export"/>
             <state name="cashier order exporting"/>
@@ -29,6 +30,12 @@
         </states>
 
         <transitions>
+            <transition>
+                <source>new</source>
+                <target>started order processing</target>
+                <event>TEST manual skip to processing</event>
+            </transition>
+
             <transition happy="true" condition="can start picking">
                 <source>started order processing</source>
                 <target>ready to start picking</target>
@@ -49,6 +56,12 @@
 
             <transition happy="true">
                 <source>ready for picking</source>
+                <target>ready for selecting shelves</target>
+                <event>confirm selecting containers</event>
+            </transition>
+
+            <transition happy="true">
+                <source>ready for selecting shelves</source>
                 <target>ready for cashier order export</target>
                 <event>confirm picking</event>
             </transition>
@@ -128,12 +141,14 @@
 
         <events>
             <event name="move to ready for picking" onEnter="true" command="Sales/MoveToReadyForPicking"/>
+            <event name="confirm selecting containers" manual="true" command="Sales/ConfirmSelectingContainers"/>
             <event name="confirm picking" manual="true" command="Sales/ConfirmPicking"/>
             <event name="cancel due to not in stock" manual="true"/>
             <event name="process cancelled due to not in stock" onEnter="true" command="Oms/CancelDueToNotInStock"/>
             <event name="close order" manual="true"/>
             <event name="export cashier order" manual="true" command="CashierOrderExport/OrderExport"/>
             <event name="cashier order export retry" manual="true"/>
+            <event name="TEST manual skip to processing" manual="true"/>
             <event name="TEST manual skip to picking" manual="true"/>
         </events>
     </process>

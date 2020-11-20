@@ -24,6 +24,12 @@ class CashierOrderExportConfig extends AbstractBundleConfig
         '0' => '0',
     ];
 
+    protected const SERVICE_FEE_TO_SERVICE_FEE_CASHIER_NUMBER = [
+        '199' => '00000002070000549869',
+        '299' => '00000002070000578456',
+        '0' => '00000002070000573031',
+    ];
+
     /**
      * @return string
      */
@@ -78,5 +84,13 @@ class CashierOrderExportConfig extends AbstractBundleConfig
     public function getSapStoreIdToStoreMap()
     {
         return $this->get(StoreConstants::SAP_STORE_ID_TO_STORE_MAP);
+    }
+
+    /**
+     * @return string[]
+     */
+    public function getServiceFeeToServiceFeeCashierNumber(): array
+    {
+        return static::SERVICE_FEE_TO_SERVICE_FEE_CASHIER_NUMBER;
     }
 }

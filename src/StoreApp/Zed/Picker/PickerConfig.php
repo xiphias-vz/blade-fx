@@ -27,4 +27,46 @@ class PickerConfig extends AbstractBundleConfig
     {
         return $this->get(PickerConstants::MAX_ORDERS_COUNT_TO_DISPLAY);
     }
+
+    /**
+     * @api
+     *
+     * @return mixed[]
+     */
+    public function getAllowedControllerNames(): array
+    {
+        return [
+            'select-picking-zone',
+        ];
+    }
+
+    /**
+     * @api
+     *
+     * @return string
+     */
+    public function getPickingUri(): string
+    {
+        return '/picker/picking';
+    }
+
+    /**
+     * @api
+     *
+     * @return string
+     */
+    public function getSelectPickingZoneUri(): string
+    {
+        return '/picker/select-picking-zone';
+    }
+
+    /**
+     * @api
+     *
+     * @return string
+     */
+    public function getPickingZoneSessionKey(): string
+    {
+        return 'picking_zone';
+    }
 }
