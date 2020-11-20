@@ -36,16 +36,16 @@ class OrderPickingBlockChecker implements OrderPickingBlockCheckerInterface
             ->requireIdPickingZone()
             ->requireIdUser();
 
-        $orderPickingBlockTransfer = $this->pickingZoneRepository->findOrderPickingBlock(
+        $foundOrderPickingBlockTransfer = $this->pickingZoneRepository->findOrderPickingBlock(
             $orderPickingBlockTransfer->getIdSalesOrder(),
             $orderPickingBlockTransfer->getIdPickingZone()
         );
 
-        if (!$orderPickingBlockTransfer) {
+        if (!$foundOrderPickingBlockTransfer) {
             return false;
         }
 
-        if ($orderPickingBlockTransfer->getIdUser() === $orderPickingBlockTransfer->getIdUser()) {
+        if ($foundOrderPickingBlockTransfer->getIdUser() === $orderPickingBlockTransfer->getIdUser()) {
             return false;
         }
 
