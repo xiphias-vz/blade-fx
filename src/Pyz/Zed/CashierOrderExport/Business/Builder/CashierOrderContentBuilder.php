@@ -17,7 +17,7 @@ class CashierOrderContentBuilder implements CashierOrderContentBuilderInterface
 {
     protected const HEADER_MASK = '%s%s%s%s%s%s%s%s%s%s%s%020u%s%s%s%020u%s%020u%s%s%s%s%s%020s%s%s';
     protected const DEFAULT_HEADER_ENDING_ZERO_SETS = 7;
-    protected const POSITION_MASK = '%s%s%s%s%s%s%s%s%s%s%s%020u%s%020s%s%-20s%s%020s%s%020s%s%020s%s%020s';
+    protected const POSITION_MASK = '%s%s%s%s%s%s%s%s%s%s%s%020u%s%020s%s%-20.20s%s%020s%s%020s%s%020s%s%020s';
     protected const DEFAULT_POSITION_ENDING_ZERO_SETS = 8;
 
     protected const HEADER_KEY_IDENTIFIER = '1070';
