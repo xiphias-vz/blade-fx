@@ -2545,8 +2545,8 @@ customer-confirmation.phone.validation.criteria,Mobile number guidelines: +49 XX
 customer-confirmation.phone.validation.criteria,Handynummer-Richtlinien: +49 XXXХ XX XX XX,de_DE
 customer.account.banking-information,Bank details,en_US
 customer.account.banking-information,Bankdaten,de_DE
-customer.order.item_price.excluding_pfand,"(Excl. deposit/piece: %s)",en_US
-customer.order.item_price.excluding_pfand,"(Exkl. Pfand/Stück: %s)",de_DE
+customer.order.item_price.excluding_pfand,"(Excl. deposit: %s)",en_US
+customer.order.item_price.excluding_pfand,"(Exkl. Pfand: %s)",de_DE
 merchant_switcher.message,"Wechseln von %currentMerchant% zu %newMerchant%? Aufgrund unterschiedlicher Verfügbarkeit können ggf. nicht alle Produkte in Einkaufsliste übernommen werden.",de_DE
 merchant_switcher.message,"Switch from %currentMerchant% to %newMerchant%? Due to different availability, not all products may be added to your shopping cart.",en_US
 merchant_switcher.label,Meine Filiale,de_DE
