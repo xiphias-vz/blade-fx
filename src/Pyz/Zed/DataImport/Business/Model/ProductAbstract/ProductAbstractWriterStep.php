@@ -127,7 +127,6 @@ class ProductAbstractWriterStep extends PublishAwareStep implements DataImportSt
             ->filterBySku(static::getAbstractSku($dataSet))
             ->findOneOrCreate();
 
-
         $productAttributes = $this->removeUnnecessaryAttributes($dataSet[AttributesExtractorStep::KEY_ATTRIBUTES]);
 
         $productAbstractEntity
