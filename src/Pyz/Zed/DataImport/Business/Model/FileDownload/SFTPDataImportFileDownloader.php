@@ -68,7 +68,7 @@ class SFTPDataImportFileDownloader
                         continue;
                     }
 
-//                    $this->moveDownloadedFilesToArchive($content);
+                    $this->moveDownloadedFilesToArchive($content);
                 }
             }
         }

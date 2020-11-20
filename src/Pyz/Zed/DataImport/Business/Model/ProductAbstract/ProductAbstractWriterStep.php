@@ -57,6 +57,11 @@ class ProductAbstractWriterStep extends PublishAwareStep implements DataImportSt
     protected static $idLocaleBuffer = [];
 
     /**
+     * @var array
+     */
+    protected static $idTaxSetBuffer = [];
+
+    /**
      * @var \Spryker\Service\UtilText\UtilTextServiceInterface
      */
     private $utilTextService;
@@ -122,20 +127,11 @@ class ProductAbstractWriterStep extends PublishAwareStep implements DataImportSt
             ->filterBySku(static::getAbstractSku($dataSet))
             ->findOneOrCreate();
 
-        //TODO: move to buffer
-        $fkTaxSet = SpyTaxRateQuery::create()
-            ->filterByRate($dataSet[ProductConfig::KEY_TAX])
-            ->joinWithSpyTaxSetTax()
-            ->find()
-            ->getFirst()
-            ->getSpyTaxSetTaxes()
-            ->getFirst()
-            ->getFkTaxSet();
 
         $productAttributes = $this->removeUnnecessaryAttributes($dataSet[AttributesExtractorStep::KEY_ATTRIBUTES]);
 
         $productAbstractEntity
-            ->setFkTaxSet($fkTaxSet)
+            ->setFkTaxSet($this->getIdTaxSet($dataSet[ProductConfig::KEY_TAX]))
             ->setSapNumber($dataSet[ProductConfig::KEY_SAP_NUMBER])
             ->setAttributes(json_encode($productAttributes));
 
@@ -366,5 +362,26 @@ class ProductAbstractWriterStep extends PublishAwareStep implements DataImportSt
         }
 
         return static::$idLocaleBuffer[$localeName];
+    }
+
+    /**
+     * @param string $taxRate
+     *
+     * @return int
+     */
+    protected function getIdTaxSet(string $taxRate)
+    {
+        if (!isset(static::$idTaxSetBuffer[$taxRate])) {
+            static::$idTaxSetBuffer[$taxRate] = SpyTaxRateQuery::create()
+                ->filterByRate($taxRate)
+                ->joinWithSpyTaxSetTax()
+                ->find()
+                ->getFirst()
+                ->getSpyTaxSetTaxes()
+                ->getFirst()
+                ->getFkTaxSet();
+        }
+
+        return static::$idTaxSetBuffer[$taxRate];
     }
 }
