@@ -17,7 +17,6 @@ use Orm\Zed\ProductOption\Persistence\SpyProductOptionValueQuery;
 use Orm\Zed\Store\Persistence\SpyStoreQuery;
 use Orm\Zed\Tax\Persistence\SpyTaxSetQuery;
 use Pyz\Zed\DataImport\Business\Exception\InvalidDataException;
-use Pyz\Zed\DataImport\Business\Model\ProductAbstract\ProductAbstractWriterStep;
 use Spryker\Shared\Kernel\Store;
 use Spryker\Zed\DataImport\Business\Model\DataImportStep\DataImportStepInterface;
 use Spryker\Zed\DataImport\Business\Model\DataImportStep\PublishAwareStep;
@@ -52,13 +51,15 @@ class ProductDepositOptionStep extends PublishAwareStep implements DataImportSte
     protected const GROUP_NAME_TRANSLATION_KEY_PATTERN = 'product.option.group.name.deposit';
 
     protected const OPTION_NAME_TRANSLATION_KEY_PATTERN = 'product.option.group.name.deposit';
-    protected const FK_TAX_SET = ProductAbstractWriterStep::FK_TAX_SET;
 
-    protected const PRODUCT_OPTION_SKU = 'product_option_sku';
+    protected const OPTION_SKU_PREFIX = 'OP_product_deposit_';
+    protected const KEY_PRODUCT_OPTION_SKU = 'product_option_sku';
 
     protected const DEFAULT_CURRENCY = 'EUR';
 
     protected const DEFAULT_DEPOSIT_NAME = 'Pfand';
+
+    protected const DEPOSITS_TAX_SET = 'STANDARD';
 
     /**
      * @var array
@@ -69,6 +70,11 @@ class ProductDepositOptionStep extends PublishAwareStep implements DataImportSte
      * @var array
      */
     protected static $idCurrencyBuffer = [];
+
+    /**
+     * @var array
+     */
+    protected static $idTaxSetBuffer = [];
 
     /**
      * @param \Spryker\Zed\DataImport\Business\Model\DataSet\DataSetInterface $dataSet
@@ -122,17 +128,17 @@ class ProductDepositOptionStep extends PublishAwareStep implements DataImportSte
 
         $productOptionGroupEntity
             ->setActive(true)
-            ->setFkTaxSet($dataSet[static::FK_TAX_SET])
+            ->setFkTaxSet($this->getIdTaxSet(static::DEPOSITS_TAX_SET))
             ->save();
 
         $dataSet[static::ID_PRODUCT_OPTION_GROUP] = $productOptionGroupEntity->getIdProductOptionGroup();
 
-        $optionSku = 'OP_product_deposit_' .
+        $optionSku = static::OPTION_SKU_PREFIX .
             $dataSet[self::KEY_DEPOSIT_SAP_NUMBER] . '_' .
             $dataSet[self::KEY_DEPOSIT_TYPE] . '_' .
             $dataSet[self::KEY_DEPOSIT_COUNT];
 
-        $dataSet[static::PRODUCT_OPTION_SKU] = $optionSku;
+        $dataSet[static::KEY_PRODUCT_OPTION_SKU] = $optionSku;
 
         $productOptionValueEntity = SpyProductOptionValueQuery::create()
             ->filterBySku($optionSku)
@@ -158,11 +164,11 @@ class ProductDepositOptionStep extends PublishAwareStep implements DataImportSte
     protected function writeProductOptionPrice(DataSetInterface $dataSet): void
     {
         $productOptionValueEntity = SpyProductOptionValueQuery::create()
-            ->findOneBySku($dataSet[static::PRODUCT_OPTION_SKU]);
+            ->findOneBySku($dataSet[static::KEY_PRODUCT_OPTION_SKU]);
 
         if ($productOptionValueEntity === null) {
             throw new InvalidDataException(
-                sprintf('Product option SKU (%s) not found in permanent storage.', $dataSet[static::PRODUCT_OPTION_SKU])
+                sprintf('Product option SKU (%s) not found in permanent storage.', $dataSet[static::KEY_PRODUCT_OPTION_SKU])
             );
         }
 
@@ -176,7 +182,7 @@ class ProductDepositOptionStep extends PublishAwareStep implements DataImportSte
                 ->findOneOrCreate();
 
             $taxSetEntity = SpyTaxSetQuery::create()
-                ->filterByIdTaxSet($dataSet[static::FK_TAX_SET])
+                ->filterByIdTaxSet($this->getIdTaxSet(static::DEPOSITS_TAX_SET))
                 ->findOne();
 
             $grossPrice = (float)$dataSet[static::KEY_DEPOSIT_AMOUNT] * 100;
@@ -216,7 +222,7 @@ class ProductDepositOptionStep extends PublishAwareStep implements DataImportSte
      *
      * @return int
      */
-    protected function getIdStore($storeName)
+    protected function getIdStore(string $storeName): int
     {
         if (!isset(static::$idStoreBuffer[$storeName])) {
             static::$idStoreBuffer[$storeName] =
@@ -231,7 +237,7 @@ class ProductDepositOptionStep extends PublishAwareStep implements DataImportSte
      *
      * @return int
      */
-    protected function getIdCurrency($currencyCode)
+    protected function getIdCurrency(string $currencyCode): int
     {
         if (!isset(static::$idCurrencyBuffer[$currencyCode])) {
             static::$idCurrencyBuffer[$currencyCode] =
@@ -239,6 +245,23 @@ class ProductDepositOptionStep extends PublishAwareStep implements DataImportSte
         }
 
         return static::$idCurrencyBuffer[$currencyCode];
+    }
+
+    /**
+     * @param string $taxSetName
+     *
+     * @return int
+     */
+    protected function getIdTaxSet(string $taxSetName): int
+    {
+        if (!isset(static::$idTaxSetBuffer[$taxSetName])) {
+            static::$idTaxSetBuffer[$taxSetName] = SpyTaxSetQuery::create()
+                ->filterByName($taxSetName)
+                ->findOne()
+                ->getIdTaxSet();
+        }
+
+        return static::$idTaxSetBuffer[$taxSetName];
     }
 
     /**

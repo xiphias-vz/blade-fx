@@ -46,6 +46,11 @@ class CashierOrderContentBuilder implements CashierOrderContentBuilderInterface
     protected const DEFAULT_ANDERUNGS_NUMBER = '02';
     protected const DEFAULT_EMPTY_NUMBER = '00000000000000000000';
 
+    protected const DEPOSIT_NAME = 'deposit_name';
+    protected const TAX_RATE = 'tax_rate';
+    protected const QUANTITY = 'quantity';
+    protected const PRICE = 'price';
+
     /**
      * @var \Pyz\Zed\CashierOrderExport\CashierOrderExportConfig
      */
@@ -68,8 +73,9 @@ class CashierOrderContentBuilder implements CashierOrderContentBuilderInterface
     {
         $headerContent = $this->getHeaderContent($orderTransfer);
         $positionsContent = $this->getPositionsContent($orderTransfer);
+        $depositPositionsContent = $this->getDepositPositionsContent($orderTransfer);
 
-        return $headerContent . $positionsContent;
+        return $headerContent . $positionsContent . $depositPositionsContent;
     }
 
     /**
@@ -174,7 +180,7 @@ class CashierOrderContentBuilder implements CashierOrderContentBuilderInterface
             static::ORDER_ITEM_WGR_LINK_IDENTIFIER,
             $itemTransfer->getSapWgr() ?? static::DEFAULT_EMPTY_NUMBER,
             static::ORDER_ITEM_TAX_IDENTIFIER,
-            $this->getSapItemTaxId($itemTransfer),
+            $this->getSapItemTaxIdByTaxRate($itemTransfer->getTaxRate()),
             static::ORDER_ITEM_QUANTITY_IDENTIFIER,
             $itemTransfer->getQuantity() ?? static::DEFAULT_EMPTY_NUMBER
         );
@@ -183,15 +189,104 @@ class CashierOrderContentBuilder implements CashierOrderContentBuilderInterface
     }
 
     /**
-     * @param \Generated\Shared\Transfer\ItemTransfer $itemTransfer
+     * @param \Generated\Shared\Transfer\OrderTransfer $orderTransfer
      *
      * @return string
      */
-    protected function getSapItemTaxId(ItemTransfer $itemTransfer)
+    protected function getDepositPositionsContent(OrderTransfer $orderTransfer): string
+    {
+        $positionsContent = '';
+        $depositAggregationCollection = [];
+
+        foreach ($orderTransfer->getItems() as $itemTransfer) {
+            foreach ($itemTransfer->getProductOptions() as $productOption) {
+                $quantity = $productOption->getQuantity();
+                if (isset($depositAggregationCollection[$productOption->getSku()][static::QUANTITY])) {
+                    $quantity = $productOption->getQuantity() + $depositAggregationCollection[$productOption->getSku()][static::QUANTITY];
+                }
+                $depositAggregationCollection[$productOption->getSku()][static::QUANTITY] = $quantity;
+
+                $price = $productOption->getUnitGrossPrice();
+                if (isset($depositAggregationCollection[$productOption->getSku()][static::PRICE])) {
+                    $price = $productOption->getUnitGrossPrice() + $depositAggregationCollection[$productOption->getSku()][static::PRICE];
+                }
+                $depositAggregationCollection[$productOption->getSku()][static::PRICE] = $price;
+
+                $depositAggregationCollection[$productOption->getSku()][static::DEPOSIT_NAME] = $productOption->getValue();
+                $depositAggregationCollection[$productOption->getSku()][static::TAX_RATE] = $productOption->getTaxRate();
+            }
+        }
+
+        foreach ($depositAggregationCollection as $depositSkuIdentifier => $depositAggregation) {
+            $positionsContent .= $this->getDepositPositionContent($orderTransfer, $depositAggregation, $depositSkuIdentifier);
+        }
+
+        return $positionsContent;
+    }
+
+    /**
+     * @param \Generated\Shared\Transfer\OrderTransfer $orderTransfer
+     * @param array $depositAggregation
+     * @param string $depositSkuIdentifier
+     *
+     * @return string
+     */
+    protected function getDepositPositionContent(OrderTransfer $orderTransfer, array $depositAggregation, string $depositSkuIdentifier): string
+    {
+        $content = sprintf(
+            static::POSITION_MASK,
+            $this->getSapStoreId($orderTransfer->getStore()),
+            static::DEFAULT_COMPANY_NUMBER,
+            static::DEFAULT_KEYBOARD_NUMBER,
+            static::DEFAULT_CASH_DESK_NUMBER,
+            static::DEFAULT_BON_NUMBER,
+            static::DEFAULT_POSITIONS_NUMBER,
+            static::DEFAULT_EMPTY_OPERATOR_NUMBER,
+            (new DateTime())->format(static::DEFAULT_DATE_FORMAT),
+            static::POSITION_KEY_IDENTIFIER,
+            static::DEFAULT_ANDERUNGS_NUMBER,
+            static::ORDER_KEY_IDENTIFIER,
+            $orderTransfer->getIdSalesOrder() ?? static::DEFAULT_EMPTY_NUMBER,
+            static::ORDER_ITEM_EAN_IDENTIFIER,
+            $this->extractPluFromProductDepositSku($depositSkuIdentifier) ?? static::DEFAULT_EMPTY_NUMBER,
+            static::ORDER_ITEM_NAME_IDENTIFIER,
+            $depositAggregation[static::DEPOSIT_NAME],
+            static::ORDER_ITEM_PRICE_IDENTIFIER,
+            $depositAggregation[static::PRICE] ?? static::DEFAULT_EMPTY_NUMBER,
+            static::ORDER_ITEM_WGR_LINK_IDENTIFIER,
+            static::DEFAULT_EMPTY_NUMBER,
+            static::ORDER_ITEM_TAX_IDENTIFIER,
+            $this->getSapItemTaxIdByTaxRate($depositAggregation[static::TAX_RATE]),
+            static::ORDER_ITEM_QUANTITY_IDENTIFIER,
+            //quantity of deposit items e.g. 3 bottles = 3000
+            ($depositAggregation[static::QUANTITY] * 1000) ?? static::DEFAULT_EMPTY_NUMBER
+        );
+
+        return $this->addEndingZeroSets($content, static::DEFAULT_POSITION_ENDING_ZERO_SETS);
+    }
+
+    /**
+     * @param string $productDepositSku
+     *
+     * @return string|null
+     */
+    protected function extractPluFromProductDepositSku(string $productDepositSku): ?string
+    {
+        $productDepositSkuParts = explode('_', $productDepositSku);
+
+        return $productDepositSkuParts[4] ?? null;
+    }
+
+    /**
+     * @param string $taxRate
+     *
+     * @return string
+     */
+    protected function getSapItemTaxIdByTaxRate(string $taxRate)
     {
         $taxRateToSapItemTaxIdMap = $this->cashierOrderExportConfig->getTaxRateToSapItemTaxIdMap();
 
-        return $taxRateToSapItemTaxIdMap[$itemTransfer->getTaxRate()] ?? static::DEFAULT_EMPTY_NUMBER;
+        return $taxRateToSapItemTaxIdMap[$taxRate] ?? static::DEFAULT_EMPTY_NUMBER;
     }
 
     /**
