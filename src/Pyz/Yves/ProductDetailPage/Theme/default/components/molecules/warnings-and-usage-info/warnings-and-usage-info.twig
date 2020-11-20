@@ -1,0 +1,24 @@
+{% extends model('component') %}
+
+{% define config = {
+    name: 'warnings-and-usage-info',
+} %}
+
+{% define data = {
+    productAttributes: required,
+    triggerClassName: '',
+} %}
+
+{% block class -%}
+    grid {{ parent() }}
+{%- endblock %}
+
+{% block body %}
+                {% if data.productAttributes['verwendungshinweise'] is defined %}
+                    <div class="spacing-bottom spacing-bottom--bigger"><strong>Aufbewahrung-/Verwendungshinweise:</strong> {{ data.productAttributes['verwendungshinweise'] }}</div>
+                {% endif %}
+
+                {% if data.productAttributes['warnhinweise'] is defined %}
+                    <div class="spacing-bottom spacing-bottom--bigger"><strong>Gefahren-/Warnhinweise :</strong> {{ data.productAttributes['warnhinweise'] }}</div>
+                {% endif %}
+{% endblock %}
