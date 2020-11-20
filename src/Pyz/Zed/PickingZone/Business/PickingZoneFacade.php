@@ -7,11 +7,14 @@
 
 namespace Pyz\Zed\PickingZone\Business;
 
+use Generated\Shared\Transfer\OrderPickingBlockTransfer;
 use Generated\Shared\Transfer\PickingZoneTransfer;
 use Spryker\Zed\Kernel\Business\AbstractFacade;
 
 /**
  * @method \Pyz\Zed\PickingZone\Persistence\PickingZoneRepositoryInterface getRepository()
+ * @method \Pyz\Zed\PickingZone\Persistence\PickingZoneEntityManagerInterface getEntityManager()
+ * @method \Pyz\Zed\PickingZone\Business\PickingZoneBusinessFactory getFactory()
  */
 class PickingZoneFacade extends AbstractFacade implements PickingZoneFacadeInterface
 {
@@ -39,5 +42,49 @@ class PickingZoneFacade extends AbstractFacade implements PickingZoneFacadeInter
     public function findPickingZoneById(int $idPickingZone): ?PickingZoneTransfer
     {
         return $this->getRepository()->findPickingZoneById($idPickingZone);
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * @api
+     *
+     * @param \Generated\Shared\Transfer\OrderPickingBlockTransfer $orderPickingBlockTransfer
+     *
+     * @return \Generated\Shared\Transfer\OrderPickingBlockTransfer
+     */
+    public function createOrderPickingBlock(
+        OrderPickingBlockTransfer $orderPickingBlockTransfer
+    ): OrderPickingBlockTransfer {
+        return $this->getEntityManager()->createOrderPickingBlock($orderPickingBlockTransfer);
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * @api
+     *
+     * @param \Generated\Shared\Transfer\OrderPickingBlockTransfer $orderPickingBlockTransfer
+     *
+     * @return bool
+     */
+    public function isOrderPickingBlockAvailableForUser(OrderPickingBlockTransfer $orderPickingBlockTransfer): bool
+    {
+        return $this->getFactory()->createOrderPickingBlockChecker()
+            ->isOrderPickingBlockAvailableForUser($orderPickingBlockTransfer);
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * @api
+     *
+     * @param \Generated\Shared\Transfer\OrderPickingBlockTransfer $orderPickingBlockTransfer
+     *
+     * @return void
+     */
+    public function deleteOrderPickingBlock(OrderPickingBlockTransfer $orderPickingBlockTransfer): void
+    {
+        $this->getEntityManager()->deleteOrderPickingBlock($orderPickingBlockTransfer);
     }
 }

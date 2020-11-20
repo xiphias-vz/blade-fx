@@ -1,0 +1,39 @@
+{% extends model('component') %}
+
+{% define config = {
+    name: 'select-picking-zone-form',
+} %}
+
+{% define data = {
+    form: required,
+} %}
+
+{% block body %}
+    <div class="{{ config.name }}__title">
+        {{ 'store-app.form.picking-zone-selector' | trans }}
+    </div>
+
+    {{ form_start(data.form) }}
+        <div class="{{ config.name }}__radio-list">
+            {% for key, choice in data.form.fieldIdPickingZone %}
+                <div class="{{ config.name }}__radio-item">
+                    {{ form_widget(choice, {
+                        required: false,
+                        attr: {
+                            class: 'test',
+                        },
+                    }) }}
+                </div>
+            {% endfor %}
+        </div>
+        <div class="submit">
+            {{ form_widget(data.form.buttonSubmit, {
+                label: 'store-app.form.submit-label' | trans,
+                attr: {
+                    class: 'button button--big',
+                },
+            }) }}
+        </div>
+    {{ form_end(data.form) }}
+{% endblock %}
+

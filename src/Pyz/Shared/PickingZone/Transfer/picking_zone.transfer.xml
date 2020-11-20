@@ -8,4 +8,11 @@
         <property name="name" type="string"/>
     </transfer>
 
+    <transfer name="OrderPickingBlock">
+        <property name="idOrderPickingBlock" type="int"/>
+        <property name="idSalesOrder" type="int"/>
+        <property name="idPickingZone" type="int"/>
+        <property name="idUser" type="int"/>
+    </transfer>
+
 </transfers>

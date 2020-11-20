@@ -21,6 +21,7 @@ picker.picking.order.status-action,Status/Action
 picker.picking.order.status.done,Done
 picker.picking.order.action,Action
 picker.picking.order.action.start,Start
+picker.picking.order.action.stop,Unblock
 
 picker.picking.confirmation,Ready
 
