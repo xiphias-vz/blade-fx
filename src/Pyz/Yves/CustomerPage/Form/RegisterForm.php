@@ -395,7 +395,7 @@ class RegisterForm extends SprykerRegisterForm
         $builder->add(self::FIELD_PHONE_PREFIX_1, ChoiceType::class,[
             'choices' => array_flip($prefixes),
             'required' => true,
-            'label' => 'customer.register.phone',
+            'label' => false,
             'constraints' =>
             [
                 $this->createNotBlankConstraint(),
@@ -429,7 +429,11 @@ class RegisterForm extends SprykerRegisterForm
             [
                 $this->createNotBlankConstraint(),
                 ProfileForm::createSafeStringRegexConstraint(),
-            ]
+            ],
+            'attr'=>
+                [
+                    'placeholder'=> 'mobile.phone.number'
+                ],
         ]);
         return $this;
     }
@@ -520,6 +524,10 @@ class RegisterForm extends SprykerRegisterForm
             ],
             'constraints' => [
                 ProfileForm::createSafeStringRegexConstraint(),
+            ],
+            'attr'=>
+            [
+                'placeholder'=> 'customer.land.phone'
             ],
         ]);
 

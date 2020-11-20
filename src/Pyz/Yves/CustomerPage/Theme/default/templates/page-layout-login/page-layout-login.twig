@@ -80,8 +80,7 @@
                         modifiers: ['grid-indent', 'login', 'checkout-actions'],
                     } only %}
                     <div class="text-center">
-                        <a href="{{ url('password/forgotten') }}"
-                           class="button button--link button--skinless spacing-top spacing-top--big" {{ qa('customer-forgot-password-link') }}>
+                        <a href="{{ url('password/forgotten') }}" class="button button--link button--skinless spacing-top spacing-top--big" {{qa('customer-forgot-password-link')}}>
                             {{ 'forms.forgot-password' | trans~'?' }}
                         </a>
                     </div>

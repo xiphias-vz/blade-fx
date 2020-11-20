@@ -40,7 +40,6 @@ class CustomerPageSecurityPlugin extends SprykerCustomerPageSecurityPlugin
                 return $this->getFactory()->createCustomerUserProvider();
             },
         ]);
-
         return $securityBuilder;
     }
 }

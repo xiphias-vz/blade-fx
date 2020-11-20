@@ -24,6 +24,7 @@
         <property name="birthDay" type="string"/>
         <property name="birthMonth" type="string"/>
         <property name="birthYear" type="string"/>
+        <property name="country" type="string"/>
         <property name="acceptNotifications" type="bool"/>
     </transfer>
 

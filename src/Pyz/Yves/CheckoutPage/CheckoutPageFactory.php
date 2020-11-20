@@ -7,19 +7,14 @@
 
 namespace Pyz\Yves\CheckoutPage;
 
-use Pyz\Client\Customer\CustomerClientInterface;
 use Pyz\Client\TimeSlot\TimeSlotClientInterface;
-use Pyz\Service\User\UserServiceInterface;
 use Pyz\Yves\CheckoutPage\Form\DataProvider\ShipmentFormDataProvider;
 use Pyz\Yves\CheckoutPage\Form\FormFactory;
 use Pyz\Yves\CheckoutPage\Process\StepFactory;
-use Pyz\Yves\CustomerPage\CustomerPageDependencyProvider;
-use Pyz\Yves\CustomerPage\Form\Constraints\PasswordConstraint;
 use SprykerShop\Yves\CheckoutPage\CheckoutPageFactory as SprykerShopCheckoutPageFactory;
 
 class CheckoutPageFactory extends SprykerShopCheckoutPageFactory
 {
-
     /**
      * @return \Pyz\Yves\CheckoutPage\Form\DataProvider\ShipmentFormDataProvider
      */
@@ -59,29 +54,5 @@ class CheckoutPageFactory extends SprykerShopCheckoutPageFactory
     public function createCheckoutFormFactory()
     {
         return new FormFactory();
-    }
-
-    /**
-     * @return \Pyz\Yves\CustomerPage\Form\Constraints\PasswordConstraint
-     */
-    public function createPasswordConstraint(): PasswordConstraint
-    {
-        return new PasswordConstraint([PasswordConstraint::OPTION_USER_SERVICE => $this->getUserService()]);
-    }
-
-    /**
-     * @return \Pyz\Service\User\UserServiceInterface
-     */
-    public function getUserService(): UserServiceInterface
-    {
-        return $this->getProvidedDependency(CheckoutPageDependencyProvider::SERVICE_USER);
-    }
-
-    /**
-     * @return \Pyz\Client\Customer\CustomerClientInterface
-     */
-    public function getBaseCustomerClient(): CustomerClientInterface
-    {
-        return $this->getProvidedDependency(CheckoutPageDependencyProvider::CLIENT_BASE_CUSTOMER);
     }
 }

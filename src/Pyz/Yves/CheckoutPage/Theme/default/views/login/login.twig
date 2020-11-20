@@ -54,19 +54,18 @@
 
                             <li class="list-switches__item">
                                 {% include molecule('toggler-radio') with {
-                                    modifiers: ['checkout', 'with-bg'],
                                     data: {
-                                        label: 'checkout.customer.register_as_guest' | trans,
+                                        label: 'checkout.customer.auth_as_guest' | trans
                                     },
                                     attributes: {
                                         id: 'guest',
-                                        checked: not data.isGuest and not data.isLogin,
+                                        checked: data.isGuest,
                                         name: 'checkoutProceedAs',
-                                        'target-class-name': 'js-login__register',
+                                        'target-class-name': 'js-login__guest',
                                     },
+                                    class: 'toggler-radio--with-bg'
                                 } only %}
                             </li>
-
                         </ul>
                     </div>
                 {% endblock %}

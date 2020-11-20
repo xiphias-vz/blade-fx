@@ -8,9 +8,9 @@
 namespace Pyz\Zed\Auth\Communication\Controller;
 
 use Pyz\Zed\Auth\AuthConfig;
-use Pyz\Zed\Auth\Communication\Form\LoginForm;
 use Spryker\Shared\Auth\AuthConstants;
 use Spryker\Zed\Auth\Communication\Controller\LoginController as SprykerLoginController;
+use Pyz\Zed\Auth\Communication\Form\LoginForm;
 use Symfony\Component\HttpFoundation\Request;
 
 /**

@@ -1,14 +1,14 @@
 <?php
 
-/**
- * This file is part of the Spryker Commerce OS.
- * For full license information, please view the LICENSE file that was distributed with this source code.
- */
 
 namespace Pyz\Client\CountryStorage;
 
+
 use Pyz\Client\CountryStorage\CountryStorage\CountryStorageReader;
 use Pyz\Client\CountryStorage\CountryStorage\CountryStorageReaderInterface;
+use Pyz\Client\MerchantStorage\MerchantStorage\MerchantStorageReader;
+use Pyz\Client\MerchantStorage\MerchantStorage\MerchantStorageReaderInterface;
+use Pyz\Client\MerchantStorage\MerchantStorageDependencyProvider;
 use Spryker\Client\Kernel\AbstractFactory;
 use Spryker\Client\Storage\StorageClientInterface;
 use Spryker\Client\Store\StoreClientInterface;
@@ -16,11 +16,10 @@ use Spryker\Service\Synchronization\SynchronizationServiceInterface;
 
 class CountryStorageFactory extends AbstractFactory
 {
-    public function getStorageClient(): StorageClientInterface
+    public function getStorageClient() : StorageClientInterface
     {
         return $this->getProvidedDependency(CountryStorageDependencyProvider::CLIENT_STORAGE);
     }
-
     /**
      * @return \Spryker\Service\Synchronization\SynchronizationServiceInterface
      */
@@ -48,4 +47,6 @@ class CountryStorageFactory extends AbstractFactory
             $this->getStoreClient()
         );
     }
+
+
 }
