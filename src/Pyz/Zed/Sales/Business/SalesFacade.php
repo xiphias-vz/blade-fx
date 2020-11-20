@@ -98,14 +98,14 @@ class SalesFacade extends SprykerSalesFacade implements SalesFacadeInterface
      *
      * @api
      *
-     * @param int $idSalesOrders
-     * @param string[] $idSalesOrders
+     * @param int $idSalesOrder
+     * @param string[] $states
      *
      * @return string[]
      */
-    public function getSalesOrderItemsIdsByIdSalesOrderAndStates(int $idSalesOrders, array $states): array
+    public function getSalesOrderItemsIdsByIdSalesOrderAndStates(int $idSalesOrder, array $states): array
     {
-        return $this->getRepository()->getSalesOrderItemsIdsByIdSalesOrderAndStates($idSalesOrders, $states);
+        return $this->getRepository()->getSalesOrderItemsIdsByIdSalesOrderAndStates($idSalesOrder, $states);
     }
 
     /**

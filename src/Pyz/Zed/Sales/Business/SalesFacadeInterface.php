@@ -111,12 +111,12 @@ interface SalesFacadeInterface extends SprykerSalesFacadeInterface
      *
      * @api
      *
-     * @param int $idSalesOrders
+     * @param int $idSalesOrder
      * @param string[] $states
      *
      * @return string[]
      */
-    public function getSalesOrderItemsIdsByIdSalesOrderAndStates(int $idSalesOrders, array $states): array;
+    public function getSalesOrderItemsIdsByIdSalesOrderAndStates(int $idSalesOrder, array $states): array;
 
     /**
      * Specification:
