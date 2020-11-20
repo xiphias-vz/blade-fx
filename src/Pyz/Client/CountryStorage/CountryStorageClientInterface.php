@@ -1,18 +1,15 @@
 <?php
 
-/**
- * This file is part of the Spryker Commerce OS.
- * For full license information, please view the LICENSE file that was distributed with this source code.
- */
 
 namespace Pyz\Client\CountryStorage;
+
 
 use Generated\Shared\Transfer\CountryCollectionTransfer;
 
 interface CountryStorageClientInterface
 {
     /**
-     * @return \Generated\Shared\Transfer\CountryCollectionTransfer
+     * @return CountryCollectionTransfer
      */
     public function getCountriesList(): CountryCollectionTransfer;
 }

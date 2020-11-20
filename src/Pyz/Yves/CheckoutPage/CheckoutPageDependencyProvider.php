@@ -8,7 +8,6 @@
 namespace Pyz\Yves\CheckoutPage;
 
 use Generated\Shared\Transfer\PaymentTransfer;
-use Pyz\Service\User\UserServiceInterface;
 use Pyz\Yves\CustomerPage\Form\CheckoutAddressCollectionForm;
 use Pyz\Yves\CustomerPage\Form\RegisterForm;
 use Spryker\Shared\Nopayment\NopaymentConfig;
@@ -38,10 +37,6 @@ class CheckoutPageDependencyProvider extends SprykerShopCheckoutPageDependencyPr
 {
     public const CLIENT_TIME_SLOT = 'CLIENT_TIME_SLOT';
     public const CLIENT_ORDER_DETAIL = 'CLIENT_ORDER_DETAIL';
-    public const SERVICE_USER = 'SERVICE_USER';
-    public const CLIENT_BASE_CUSTOMER = 'CLIENT_BASE_CUSTOMER';
-
-
 
     /**
      * @param \Spryker\Yves\Kernel\Container $container
@@ -55,8 +50,6 @@ class CheckoutPageDependencyProvider extends SprykerShopCheckoutPageDependencyPr
         $container = $this->extendSubFormPluginCollection($container);
         $container = $this->addTimeSlotClient($container);
         $container = $this->addOrderDetailClient($container);
-        $container = $this->addUserService($container);
-        $container = $this->addBaseCustomerClient($container);
 
         return $container;
     }
@@ -247,29 +240,6 @@ class CheckoutPageDependencyProvider extends SprykerShopCheckoutPageDependencyPr
         $container->set(static::CLIENT_ORDER_DETAIL, function () use ($container) {
             return $container->getLocator()->orderDetail()->client();
         });
-
-        return $container;
-    }
-
-    /**
-     * @param \Spryker\Yves\Kernel\Container $container
-     *
-     * @return \Spryker\Yves\Kernel\Container
-     */
-    protected function addUserService(Container $container): Container
-    {
-        $container->set(self::SERVICE_USER, function (Container $container): UserServiceInterface {
-            return $container->getLocator()->user()->service();
-        });
-
-        return $container;
-    }
-
-    protected function addBaseCustomerClient(Container $container): Container
-    {
-        $container[self::CLIENT_BASE_CUSTOMER] = function (Container $container) {
-            return $container->getLocator()->customer()->client();
-        };
 
         return $container;
     }

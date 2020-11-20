@@ -16,7 +16,6 @@
         <property name="city" type="string"/>
         <property name="phone" type="string"/>
         <property name="merchantReference" type="string"/>
-        <property name="country" type="string" />
         <property name="registerFromCheckout" type="bool"/>
         <property name="thirdPartyRegistration" type="bool"/>
         <property name="phonePrefix" type="string"/>
@@ -25,6 +24,7 @@
         <property name="birthDay" type="string"/>
         <property name="birthMonth" type="string"/>
         <property name="birthYear" type="string"/>
+        <property name="country" type="string"/>
         <property name="acceptNotifications" type="bool"/>
     </transfer>
 

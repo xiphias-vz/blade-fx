@@ -23,10 +23,6 @@
     submitClass: 'form__action--login button button--large button--expand',
 } %}
 
-{% define array = {
-    emptyField: '',
-} %}
-
 {% define attributes = {
     'is-customer-form-exist': true,
     'is-password-form-exist': true,
@@ -102,9 +98,7 @@
                             'floor': 'col col--sm-12',
                             'additional_info': 'col col--sm-12',
                             'zip_code': 'col col--sm-5',
-                            'array.emptyField': 'col col--sm-6',
                             'city': 'col col--sm-7',
-                            'array.emptyField': 'col col--sm-6',
                             'country': 'col col--sm-12',
                             'phone_prefix': 'col col--sm-12 col--md-5 margin-telefon-date',
                             'mobile_phone_number': 'col col--sm-12 col--md-7 margin-telefon-date',
@@ -168,6 +162,12 @@
                                 <div class="{{ embed.jsName }}__password-criteria {{ passwordCriteriaFieldLayoutClass }} is-hidden">
                                     {{ 'customer-confirmation.new.password.criteria' | trans | raw }}
                                 </div>
+                            {% elseif fieldName == 'phone_prefix' %}
+                                {{ form_row(field, {
+                                    rowAttr: {
+                                        class: 'form__field ' ~ fieldLayoutClass,
+                                    },
+                                }) }}
                             {% elseif fieldName == 'phone' %}
                                 {{ form_row(field, {
                                     rowAttr: {

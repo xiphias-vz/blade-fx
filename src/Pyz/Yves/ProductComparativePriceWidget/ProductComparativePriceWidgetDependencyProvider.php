@@ -33,6 +33,7 @@ class ProductComparativePriceWidgetDependencyProvider extends AbstractBundleDepe
         return $container;
     }
 
+
     /**
      * @param \Spryker\Yves\Kernel\Container $container
      *

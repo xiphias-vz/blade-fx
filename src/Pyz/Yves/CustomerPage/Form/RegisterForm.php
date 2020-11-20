@@ -429,7 +429,11 @@ class RegisterForm extends SprykerRegisterForm
             [
                 $this->createNotBlankConstraint(),
                 ProfileForm::createSafeStringRegexConstraint(),
-            ]
+            ],
+            'attr'=>
+                [
+                    'placeholder'=> 'mobile.phone.number'
+                ],
         ]);
         return $this;
     }
@@ -520,6 +524,10 @@ class RegisterForm extends SprykerRegisterForm
             ],
             'constraints' => [
                 ProfileForm::createSafeStringRegexConstraint(),
+            ],
+            'attr'=>
+            [
+                'placeholder'=> 'customer.land.phone'
             ],
         ]);
 

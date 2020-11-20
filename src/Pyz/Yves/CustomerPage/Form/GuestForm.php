@@ -3,9 +3,11 @@
 
 namespace Pyz\Yves\CustomerPage\Form;
 
+use PhpParser\Node\Stmt\Label;
 use Pyz\Yves\CustomerPage\Form\Constraints\PostalCodeConstraint;
 use SprykerShop\Yves\CustomerPage\Form\GuestForm as SprykerGuestForm;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Validator\Constraints\Callback;
@@ -27,6 +29,7 @@ class GuestForm extends SprykerGuestForm
             ->addFirstNameField($builder)
             ->addLastNameField($builder)
             ->addEmailField($builder)
+            ->addLabelField($builder)
             ->addAddress1Field($builder)
             ->addAddress2Field($builder)
             ->addZipCodeField($builder)
@@ -185,6 +188,12 @@ class GuestForm extends SprykerGuestForm
             ],
         ]);
 
+        return $this;
+    }
+
+    protected function addLabelField(FormBuilderInterface $builder)
+    {
+        $builder->add("ihreAdresse", HiddenType::class);
         return $this;
     }
 }
