@@ -11,7 +11,7 @@ use Spryker\Client\ProductOptionStorage\ProductOptionStorageClientInterface;
 
 class DepositProductOptionReader implements DepositProductOptionReaderInterface
 {
-    protected const PRODUCT_GROUP_DEPOSIT = 'product.option.group.name.deposit_bottle';
+    protected const PRODUCT_GROUP_DEPOSIT = 'product.option.group.name.deposit';
 
     /**
      * @var \Spryker\Client\ProductOptionStorage\ProductOptionStorageClientInterface
@@ -50,8 +50,6 @@ class DepositProductOptionReader implements DepositProductOptionReaderInterface
         foreach ($productAbstractOptionStorageTransfer->getProductOptionGroups() as $productOptionGroupStorageTransfer) {
             if (strpos($productOptionGroupStorageTransfer->getName(), static::PRODUCT_GROUP_DEPOSIT) === 0) {
                 $options[] = $productOptionGroupStorageTransfer->getProductOptionValues()[0]->getIdProductOptionValue();
-
-                break;
             }
         }
 

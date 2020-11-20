@@ -257,6 +257,7 @@
         .warnings-and-usage-info__trigger-bundle,
         .pet-feeding-table__trigger-bundle  {
             color: $setting-color-globus-lightOrange;
+            border-bottom: 1px solid $setting-color-globus-lightOrange;
         }
 
         .nutritional-information__trigger-bundle:hover,
