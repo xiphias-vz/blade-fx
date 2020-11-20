@@ -91,11 +91,18 @@
                     <div class="checkout-block">
                         <h2 class="title title--primary">{{ 'page.checkout.address.abhol-address' | trans }}</h2>
 
-                        <p class="spacing-bottom">{{ 'cart.checkout.address.abholstation.note.up' | trans }}</p>
-                        <span class="{{ config.name }}__merchant">
-                            {{- app['merchant_name'] -}}
-                        </span>
+                        <p class="spacing-bottom spacing-bottom--bigger">{{ 'cart.checkout.address.abholstation.note.up' | trans }}</p>
 
+                        <div class="spacing-bottom spacing-bottom--bigger">
+                            <span>
+                                {{- app['merchant_name'] -}}
+                            </span>
+                        </div>
+                        <div class="spacing-bottom">
+                            {{ form_row(data.form.cart_note, {
+                                placeholder: 'cart.checkout.address.abholstation.textarea.note' | trans,
+                            }) }}
+                        </div>
                         <div class="{{ embed.jsAddressClass }}__billing-same-as-shipping is-hidden">
                             {{ form_row(data.form.billingSameAsShipping, {
                                 label: 'page.checkout.address.billing-same-as-shipping' | trans,
