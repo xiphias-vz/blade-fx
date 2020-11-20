@@ -656,3 +656,509 @@ static full page,1,1,1,page_5,/de/faq/,/en/faq/,FAQ,FAQ,FAQ,FAQ,FAQ,FAQ,FAQ,FAQ,
 <h4>How can I delete my customer account?</h4>
 <p>If you no longer want to use our service, we are of course very sorry. We are always happy if you can give us a short feedback. To delete your customer account, simply click on ""Delete account"" in the ""My profile"" area under ""User data"". You will then be asked to confirm the deletion of your customer account.</p>
 "
+=======
+static full page,1,1,1,page_2,/de/Datenschutz/,/en/Datenschutz/,Datenschutz,DatenschutzEn,Datenschutz,DatenschutzEn,Datenschutz,Datenschutz,Datenschutz,Datenschutz,<h2>Datenschutz</h2>,<h2>Datenschutz</h2>,"<div>
+<p><strong>Unsere Datenschutzerkl&auml;rung (Stand: 05.12.2019)</strong></p>
+<p>Inhalt</p>
+<p><a href='#_Toc55395329'>1 Einleitung. 2</a></p>
+<p><a href='#_Toc55395330'>2 Verantwortlicher. 3</a></p>
+<p><a href='#_Toc55395331'>3 Datenschutzbeauftragter. 4</a></p>
+<p><a href='#_Toc55395332'>4 Betroffenenrechte. 4</a></p>
+<p><a href='#_Toc55395333'>5 Zwecke der Verarbeitung. 5</a></p>
+<p><a href='#_Toc55395334'>5.1 Aufgrund Ihrer Einwilligung (Art. 6 Abs. 1 Buchst. a DSGVO). 5</a></p>
+<p><a href='#_Toc55395335'>5.2 Erf&uuml;llung von vertraglichen Pflichten (Art. 6 Abs. 1 Buchst. b DSGVO ). 5</a></p>
+<p><a href='#_Toc55395336'>5.3 Aufgrund gesetzlicher Vorgaben (Art. 6 Abs. 1 Buchst. c DSGVO). 5</a></p>
+<p><a href='#_Toc55395337'>5.4 Zur Wahrung berechtigter Interessen (Art. 6 Abs. 1 Buchst. f DSGVO). 5</a></p>
+<p><a href='#_Toc55395338'>5.5 Zwecke f&uuml;r die Verarbeitung Ihrer personenbezogener Daten bei Globus. 5</a></p>
+<p><a href='#_Toc55395339'>6 Website. 6</a></p>
+<p><a href='#_Toc55395340'>6.1 Cookies. 6</a></p>
+<p><a href='#_Toc55395341'>6.1.1 Performance Cookies. 6</a></p>
+<p><a href='#_Toc55395342'>6.1.2 Funktionalit&auml;ts- /Personalisierungs-Cookies. 6</a></p>
+<p><a href='#_Toc55395343'>6.2 Webanalysedienste. 7</a></p>
+<p><a href='#_Toc55395344'>6.2.1 Einsatz von Webanalysedienst etracker. 7</a></p>
+<p><a href='#_Toc55395345'>6.3 Google Anwendungen. 7</a></p>
+<p><a href='#_Toc55395346'>6.3.1 Google Allgemein. 7</a></p>
+<p><a href='#_Toc55395347'>6.3.2 Einsatz von Google-Maps. 7</a></p>
+<p><a href='#_Toc55395348'>6.3.3 Einsatz von reCAPTCHA.. 8</a></p>
+<p><a href='#_Toc55395349'>6.3.4 Verwendung von Social Plug-Ins &ndash; Verweisung und Verlinkung zu sozialen Netzwerke. 9</a></p>
+<p><a href='#_Toc55395350'>6.3.5 Google Analytics. 9</a></p>
+<p><a href='#_Toc55395351'>6.3.6 Outbrain. 10</a></p>
+<p><a href='#_Toc55395352'>7 Globus Services. 10</a></p>
+<p><a href='#_Toc55395353'>7.1 Newsletter. 10</a></p>
+<p><a href='#_Toc55395354'>7.2 Kundenprogramme. 11</a></p>
+<p><a href='#_Toc55395355'>7.3 Werbeeinwilligung. 11</a></p>
+<p><a href='#_Toc55395356'>7.4 Gewinnspiele, Wettbewerbe und &auml;hnliche Aktionen. 12</a></p>
+<p><a href='#_Toc55395357'>7.5 Kontaktformular. 12</a></p>
+<p><a href='#_Toc55395358'>7.6 Ver&ouml;ffentlichung von Stellenanzeigen / Online-Stellenbewerbungen. 13</a></p>
+<p><a href='#_Toc55395359'>8 Mobile Apps. 13</a></p>
+<p><a href='#_Toc55395360'>8.1 Mein Globus App. 13</a></p>
+<p><a href='#_Toc55395361'>8.2 Mitarbeiter App. 14</a></p>
+<p><a href='#_Toc55395362'>9 Social Media. 15</a></p>
+<p><a href='#_Toc55395363'>9.1 Re-Targeting/ Interessensbasierte Online-Werbung/ Facebook-Pixel 15</a></p>
+<p><a href='#_Toc55395364'>10 Verarbeitung von personenbezogenen Kundendaten. 16</a></p>
+<p><a href='#_Toc55395365'>10.1 Kategorien personenbezogener Daten. 16</a></p>
+<p><a href='#_Toc55395366'>10.2 Kan&auml;le f&uuml;r die Kundenkommunikation. 17</a></p>
+<p><a href='#_Toc55395367'>10.3 Kategorien von Empf&auml;ngern. 17</a></p>
+<p><a href='#_Toc55395368'>10.4 Speicherdauer. 17</a></p>
+<p><a href='#_Toc55395369'>10.5 Herkunft der Daten. 18</a></p>
+<p><a href='#_Toc55395370'>10.6 &Uuml;bermittlung an Drittstaaten. 18</a></p>
+<p><a href='#_Toc55395371'>11 Einsatz von Dienstleistern. 18</a></p>
+<p><a href='#_Toc55395372'>12 Video&uuml;berwachung. 19</a></p>
+<p><a href='#_Toc55395373'>12.1 Zwecke der Video&uuml;berwachung. 19</a></p>
+<p><a href='#_Toc55395374'>12.2 Rechtliche Grundlagen. 19</a></p>
+<p><a href='#_Toc55395375'>12.3 Speicherdauer. 19</a></p>
+<p><a href='#_Toc55395376'>12.4 Pr&uuml;fung milderer Mittel 19</a></p>
+<p><a href='#_Toc55395377'>13 Zahlungsdienste. 20</a></p>
+<p><a href='#_Toc55395378'>13.1 Zahlungsdienste der SB-Warenh&auml;user. 20</a></p>
+<p><a href='#_Toc55395379'>13.2 Zahlungsdienste der Tankstelle. 20</a></p>
+<p><a href='#_Toc55395380'>14 Widerruf der Einwilligung. 21</a></p>
+<p><a href='#_Toc55395381'>15 Beschwerderecht bei der Aufsichtsbeh&ouml;rde. 21</a></p>
+<p><a href='#_Toc55395382'>16 Datensicherheit. 21</a></p>
+<p><a href='#_Toc55395383'>17 Disclaimer. 22</a></p>
+<p></p>
+<p></p>
+<p></p>
+<p></p>
+<p></p>
+<h1><a name='_Toc55395329'></a>1 Einleitung</h1>
+<p>Wir nehmen den Schutz personenbezogener Daten sehr ernst und damit eingeschlossen auch die Betroffenenrechte. Wir m&ouml;chten Sie mit dieser Datenschutzerkl&auml;rung dar&uuml;ber informieren, welche personenbezogenen Daten wir beim Besuch der Webseite globus.de bzw. bei der Teilnahme an unseren Kundenprogrammen oder Aktionen erheben, zu welchen Zwecken wir diese Daten verwenden und welche Rechte Ihnen in diesem Zusammenhang zustehen.</p>
+<h1><a name='_Toc55395330'></a>2 Verantwortlicher</h1>
+<p>Die Globus SB-Warenhaus Holding GmbH &amp; Co. KG ist Betreiberin der Webseite globus.de und Verantwortlicher f&uuml;r die Verarbeitung personenbezogener Daten im Sinne der deutschen und europ&auml;ischen Datenschutzbestimmungen. Die Erhebung, Verarbeitung und Nutzung Ihrer personenbezogenen Daten erfolgt in &Uuml;bereinstimmung mit den geltenden deutschen und europ&auml;ischen gesetzlichen Vorschriften.</p>
+<p>Globus SB-Warenhaus Holding GmbH &amp; Co. KG</p>
+<p>Leipziger Str. 8</p>
+<p>66606 St. Wendel</p>
+<p>Amtsgericht Saarbr&uuml;cken, HRA 80636, Sitz: St. Wendel</p>
+<p>USt-ID-Nr.: DE 138226656</p>
+<p>Telefon: 06851-9090</p>
+<p>Telefax: 06851-909600</p>
+<p>E-Mail: kundenservice@globus.de</p>
+<p>Homepage: www.globus.de</p>
+<p>Pers&ouml;nlich haftende Gesellschafterin:</p>
+<p>GLOBUS SB-Warenhaus Gesch&auml;ftsf&uuml;hrungs-GmbH</p>
+<p>Amtsgericht Saarbr&uuml;cken, HRB 80855, Sitz: St. Wendel</p>
+<p>Gesch&auml;ftsf&uuml;hrer:</p>
+<p>Jochen Baab (Sprecher), Petra Sch&auml;fer, Uwe Wamser</p>
+<h1><a name='_Toc55395331'></a>3 Datenschutzbeauftragter</h1>
+<p>Unser Datenschutzbeauftragter steht Ihnen f&uuml;r etwaige Fragen bez&uuml;glich der Erhebung, Verarbeitung oder Nutzung Ihrer personenbezogenen Daten mit folgenden Kontaktm&ouml;glichkeiten zur Verf&uuml;gung:</p>
+<p>E-Mail</p>
+<p> datenschutz@globus.de</p>
+<p>postalisch:</p>
+<p> Globus SB-Warenhaus Holding GmbH &amp; Co. KG</p>
+<p> Leipziger Stra&szlig;e 8</p>
+<p> 66606 St. Wendel</p>
+<h1><a name='_Toc55395332'></a>4 Betroffenenrechte</h1>
+<p>Betroffene Personen haben nach der europ&auml;ischen Datenschutzgrundverordnung, nachfolgend als DSGVO bezeichnet, weitreichende Rechte.</p>
+<p>Diese Rechte beinhalten</p>
+<p>(1) ein Recht auf Auskunft (Artikel 15 DSGVO),</p>
+<p>(2) ein Recht auf Berichtigung (Artikel 16 DSGVO),</p>
+<p>(3) ein Recht auf Berichtigung L&ouml;schung (Artikel 17 DSGVO),</p>
+<p>(4) ein Recht auf Berichtigung Einschr&auml;nkung (Artikel 18 DSGVO),</p>
+<p>(5) ein Recht auf Berichtigung Daten&uuml;bertragung (Artikel 20 DSGVO),</p>
+<p>(6) ein Recht auf Berichtigung und Widerruf (Artikel 21 DSGVO),</p>
+<p>(7) das Recht auf Beschwerde bei einer zust&auml;ndigen Datenschutzaufsichtsbeh&ouml;rde (Artikel 77 DSGVO i.V.m. &sect; 19 BDSG)</p>
+<p>In Bezug auf die Verarbeitung Ihrer personenbezogenen Daten bei der verantwortlichen Stelle in diesem Falle Globus.</p>
+<p>Das bedeutet, wir geben Ihnen auf Anfrage Auskunft dar&uuml;ber, welche Daten wir von Ihnen gespeichert haben und zu welchen Zwecken wir diese verwenden. Sollten Daten unrichtig sein, werden wir diese berichtigen</p>
+<p>Des Weiteren k&ouml;nnen Sie die L&ouml;schung Ihrer Daten verlangen. Daten die wir nicht l&ouml;schen k&ouml;nnen oder d&uuml;rfen, weil z.B. gesetzliche Aufbewahrungspflichten dem entgegenstehen, werden wir in der Verarbeitung einschr&auml;nken.</p>
+<p>Sie k&ouml;nnen Ihre Rechte schriftlich, per E-Mail oder &uuml;ber das Kontaktformular auf unserer Website an uns wenden. Wenn Sie f&uuml;r ein oder mehrere Kundeprogramme von Globus registriert sind, k&ouml;nnen Sie Ihre Daten auch jederzeit in Ihrem Kundenkonto auf globus.de einsehen und &auml;ndern.</p>
+<h1><a name='_Toc55395333'></a>5 Zwecke der Verarbeitung</h1>
+<p>Zu folgenden Zwecken verarbeitet Globus Ihre personenbezogenen Daten.</p>
+<h2><a name='_Toc55395334'></a>5.1 Aufgrund Ihrer Einwilligung (Art. 6 Abs. 1 Buchst. a DSGVO)</h2>
+<p>Sie als betroffene Person haben ihre Einwilligung zu der Verarbeitung der sie betreffenden personenbezogenen Daten f&uuml;r einen oder mehrere bestimmte Zwecke gegeben.</p>
+<h2><a name='_Toc55395335'></a>5.2 Erf&uuml;llung von vertraglichen Pflichten (Art. 6 Abs. 1 Buchst. b DSGVO )</h2>
+<p>Die Verarbeitung ist f&uuml;r die Erf&uuml;llung eines Vertrags, dessen Vertragspartei die betroffene Person ist, oder zur Durchf&uuml;hrung vorvertraglicher Ma&szlig;nahmen erforderlich, die auf Anfrage der betroffenen Person erfolgt.</p>
+<h2><a name='_Toc55395336'></a>5.3 Aufgrund gesetzlicher Vorgaben (Art. 6 Abs. 1 Buchst. c DSGVO)</h2>
+<p>Die Verarbeitung ist zur Erf&uuml;llung einer rechtlichen Verpflichtung erforderlich, der der Verantwortliche unterliegt.</p>
+<h2><a name='_Toc55395337'></a>5.4 Zur Wahrung berechtigter Interessen (Art. 6 Abs. 1 Buchst. f DSGVO)</h2>
+<p>Die Verarbeitung ist zur Wahrung der berechtigten Interessen des Verantwortlichen oder eines Dritten erforderlich, sofern nicht die Interessen oder Grundrechte und Grundfreiheiten der betroffenen Person, die den Schutz personenbezogener Daten erfordern, &uuml;berwiegen, insbesondere dann, wenn es sich bei der betroffenen Person um ein Kind handelt.</p>
+<h2><a name='_Toc55395338'></a>5.5 Zwecke f&uuml;r die Verarbeitung Ihrer personenbezogener Daten bei Globus</h2>
+<p>(1) Erstellung eines personalisierten Kundenprofils zur Erstellung von personalisierter Werbung</p>
+<p>(2) Versand personalisierter Newsletter und Angebote</p>
+<p>(3) Mitgliedschaft in den Globus Kundenprogrammen und Clubs</p>
+<p>(4) Fotobestellungen</p>
+<p>(5) Faltblattreklamation</p>
+<p>(6) Durchf&uuml;hrung von Reparaturauftr&auml;gen</p>
+<h1><a name='_Toc55395339'></a>6 Website</h1>
+<p>Wenn Sie unsere Webseite besuchen, speichern unsere Webserver standardm&auml;&szlig;ig und tempor&auml;r folgende Daten:</p>
+<p>(1) Ihre IP-Adresse</p>
+<p>(2) die Webseite, von der aus Sie uns besuchen</p>
+<p>(3) die Webseiten, die Sie bei uns besuchen</p>
+<p>(4) das Datum und die Dauer Ihres Besuches</p>
+<p>Diese Daten werden anonymisiert gespeichert. Nutzerprofile mit Bezug zu bestimmten oder bestimmbaren Personen werden nicht erstellt. Diese Daten ben&ouml;tigen wir f&uuml;r die Erhaltung der Funktionst&uuml;chtigkeit unserer Systeme. Dies geschieht Aufgrund eines berechtigten Interesses nach Art. 6 Abs.1 Buchstabe f der DSGVO.</p>
+<h2><a name='_Toc55395340'></a>6.1 Cookies</h2>
+<p>Auf unserer Webseite verwenden wir zwei Kategorien von Cookies</p>
+<h3><a name='_Toc55395341'></a>6.1.1 Performance Cookies</h3>
+<p>Diese erfassen Informationen dar&uuml;ber, wie Besucher unsere Webseite nutzen, z.B. welche Seiten am h&auml;ufigsten aufgerufen werden und ob Sie Fehlermeldungen von Webseiten erhalten. Alle mit diesen Cookies erhobenen Informationen sind anonym und erlauben keinen R&uuml;ckschluss auf die Person des Besuchers. Sie dienen ausschlie&szlig;lich dazu die Funktionalit&auml;t und den Service der Web-seite sicherzustellen und zu verbessern. Wir verwenden diese Cookies f&uuml;r statistische Auswertungen &uuml;ber die Nutzung unserer Webseite und die Effektivit&auml;t unserer elektronischen Werbung.</p>
+<h3><a name='_Toc55395342'></a>6.1.2 Funktionalit&auml;ts- /Personalisierungs-Cookies</h3>
+<p>Diese Cookies erm&ouml;glichen es der Webseite, sich an fr&uuml;here Angaben des Besuchers zu erinnern und einen Besucher so eindeutig zu identifizieren. Diese Cookies sind notwendig, damit wir Ihnen bestimmte Funktionen zur Verf&uuml;gung stellen k&ouml;nnen, z.B. den Zugang zu Ihrem passwortgesch&uuml;tzten Kundenkonto oder von Ihnen ausgew&auml;hlte individualisierte Ansichten oder Informationen auf unserer Webseite (z.B. die Angebote des von Ihnen gew&auml;hlten Markts). Diese Cookies beinhalten nur Informationen, die sich auf den besuch unserer Webseite und die von Ihnen vorgenommenen Einstellungen beziehen.</p>
+<p>Zur Gew&auml;hrleistung der Funktionalit&auml;t und zur bedarfsgerechten Weiterentwicklung unserer Web-seite und unserer Services erstellen wir statistische Auswertungen &uuml;ber sog. pseudonyme Nutzer-profile. Hierzu verwenden wir Google Analytics. Google Analytics verwendet Cookies (s.o.), die eine Analyse der Benutzung der Webseite durch den Besucher erm&ouml;glichen. Die durch die Cookies erzeugten Informationen werden an Server von Google in den USA &uuml;bertragen und dort gespeichert. Wir haben auf unserer Webseite die sog. IP-Anonymisierung aktiviert. Daher wird die IP-Adresse innerhalb der Europ&auml;ischen Union bzw. innerhalb des Europ&auml;ischen Wirtschaftsraums gek&uuml;rzt. Google verwendet diese Informationen um die Nutzung unserer Webseite f&uuml;r uns auszuwerten, Reports &uuml;ber die Aktivit&auml;ten auf der Webseite zusammenzustellen und weitere mit der Weiten- oder Internetnutzung zusammenh&auml;ngende Dienstleistungen f&uuml;r uns zu erbringen. Daneben verwenden wir Matomo und etracker zur Analyse unserer Webseite. Auch Matomo und etracker verwenden Cookies zur Erhebung des Benutzerverhaltens. Es erfolgt jedoch keine Datenweitergabe an Stellen au&szlig;erhalb von Globus. </p>
+<p>Die Speicherung von Cookies auf Ihrem Rechner k&ouml;nnen Sie durch entsprechende Einstellungen in der Software Ihres Web-Browsers verhindern. Der Erzhebung und Speicherung durch Google Analytics k&ouml;nnen Sie auch dadurch widersprechen, dass Sie einen Opt-Out-Cookie aktivieren, der Google anweist, die Daten nicht f&uuml;r Zwecke der Webanalyse zu verwenden. N&auml;here Informationen hierzu finden Sie auf der Webseite von Google/Browser-Add-On zur Deaktivierung von Google Analytics. Bitte beachten Sie, dass die Webanalyse nur solange unterbunden wird, wie der Opt-Out-Cookie auf Ihrem Rechner gespeichert ist.</p>
+<h2><a name='_Toc55395343'></a>6.2 Webanalysedienste</h2>
+<h3><a name='_Toc55395344'></a>6.2.1 Einsatz von Webanalysedienst etracker</h3>
+<p>Wir setzen auf unserer Seite Komponenten der etracker GmbH, Erste Brunnenstra&szlig;e 1, 20459 Hamburg, ein. Bei jedem einzelnen Aufruf unserer Seite werden durch diese Komponente Daten zu Marketing- und Optimierungszwecken gesammelt und gespeichert, aus denen sodann durch den Einsatz von Cookies (siehe Punkte 6.1) unter einem Pseudonym Nutzungsprofile erstellt werden k&ouml;nnen.</p>
+<p>Die auf diesem Wege erhobenen Daten werden ohne die gesondert erteilte Zustimmung des Besuchers nicht dazu benutzt, den Besucher unserer Website pers&ouml;nlich zu identifizieren. Zudem werden diese Daten nicht mit personenbezogenen Daten und nicht mit den unter einem Pseudonym erstellten Nutzungsprofilen zusammengef&uuml;hrt. Dieser Datenerhebung und Datenspeicherung kann jederzeit mit Wirkung f&uuml;r die Zukunft widersprochen werden.</p>
+<p>Um der Speicherung Ihrer Daten zu widersprechen, rufen Sie bitte diese Seite auf http://www.etracker.de/privacy?et=V23Jbb und folgen Sie den dortigen Anweisungen.</p>
+<h2><a name='_Toc55395345'></a>6.3 Google Anwendungen</h2>
+<h3><a name='_Toc55395346'></a>6.3.1 Google Allgemein</h3>
+<p>Wir weisen darauf hin, dass in den USA kein mit Deutschland und der EU vergleichbares Datenschutzniveau herrscht und wir in den USA f&uuml;r den Verbleib Ihrer Daten nicht garantieren k&ouml;nnen.</p>
+<p>Google verwendet die so erlangten Informationen unter anderem dazu, B&uuml;cher und andere Druckerzeugnisse zu digitalisieren sowie Dienste wie Google Street View und Google Maps zu optimieren (bspw. Hausnummern- und Stra&szlig;ennamenerkennung).</p>
+<h3><a name='_Toc55395347'></a>6.3.2 Einsatz von Google-Maps</h3>
+<p>Wir setzen auf unserer Seite die Komponente 'Google Maps' der Firma Google Inc., 1600 Amphitheatre Parkway, Mountain View, CA 94043 USA, nachfolgend &bdquo;Google&ldquo;, ein.</p>
+<p>Bei jedem einzelnen Aufruf der Komponente 'Google Maps' wird von Google ein Cookie gesetzt, um bei der Anzeige der Seite, auf der die Komponente 'Google Maps' integriert ist, Nutzereinstellungen und -daten zu verarbeiten. Dieses Cookie wird im Regelfall nicht durch das Schlie&szlig;en des Browsers gel&ouml;scht, sondern l&auml;uft nach einer bestimmten Zeit ab, soweit es nicht von Ihnen zuvor manuell gel&ouml;scht wird.</p>
+<p>Wenn Sie mit dieser Verarbeitung Ihrer Daten nicht einverstanden sind, so besteht die M&ouml;glichkeit, den Service von 'Google Maps' zu deaktivieren und auf diesem Weg die &Uuml;bertragung von Daten an Google zu verhindern. Dazu m&uuml;ssen Sie die Java-Script-Funktion in Ihrem Browser deaktivieren. Wir weisen Sie jedoch darauf hin, dass Sie in diesem Fall die 'Google Maps' nicht oder nur eingeschr&auml;nkt nutzen k&ouml;nnen.</p>
+<p>Die Nutzung von 'Google Maps' und der &uuml;ber 'Google Maps' erlangten Informationen erfolgt gem&auml;&szlig; den Google-Nutzungsbedingungen</p>
+<p>http://www.google.de/intl/de/policies/terms/regional.html</p>
+<p>sowie der zus&auml;tzlichen Gesch&auml;ftsbedingungen f&uuml;r &bdquo;Google Maps&ldquo;</p>
+<p><a href='https://www.google.com/intl/de_de/help/terms_maps.html'>https://www.google.com/intl/de_de/help/terms_maps.html</a></p>
+<h3><a name='_Toc55395348'></a>6.3.3 Einsatz von reCAPTCHA</h3>
+<p>Um Eingabeformulare auf unserer Seite zu sch&uuml;tzen, setzen wir den Dienst &bdquo;reCAPTCHA&ldquo; der Firma Google Inc., 1600 Amphitheatre Parkway, Mountain View, CA 94043 USA, nachfolgend &bdquo;Google&ldquo;, ein. Durch den Einsatz dieses Dienstes kann unterschieden werden, ob die entsprechende Eingabe menschlicher Herkunft ist oder durch automatisierte maschinelle Verarbeitung missbr&auml;uchlich erfolgt.</p>
+<p>Nach unserer Kenntnis werden die Referrer-URL, die IP-Adresse, das Verhalten der Webseitenbesucher, Informationen &uuml;ber Betriebssystem, Browser und Verweildauer, Cookies, Darstellungsanweisungen und Skripte, das Eingabeverhalten des Nutzers sowie Mausbewegungen im Bereich der &bdquo;reCAPTCHA&ldquo;-Checkbox an &bdquo;Google&ldquo; &uuml;bertragen.</p>
+<p>Die im Rahmen von &bdquo;reCAPTCHA&ldquo; &uuml;bermittelte IP-Adresse wird nicht mit anderen Daten von Google zusammengef&uuml;hrt, au&szlig;er Sie sind zum Zeitpunkt der Nutzung des &bdquo;reCAPTCHA&ldquo;-Plug-ins bei Ihrem Google-Account angemeldet. Wenn Sie diese &Uuml;bermittlung und Speicherung von Daten &uuml;ber Sie und Ihr Verhalten auf unserer Webseite durch &bdquo;Google&ldquo; unterbinden wollen, m&uuml;ssen Sie sich bei &bdquo;Google&ldquo; ausloggen und zwar bevor Sie unsere Seite besuchen bzw. das reCAPTCHA Plug-in benutzen.</p>
+<p>Die Nutzung des Dienstes &bdquo;reCAPTCHA&ldquo; erlangten Informationen erfolgt gem&auml;&szlig; den Google-Nutzungsbedingungen:</p>
+<p><a href='https://www.google.com/intl/de/policies/privacy'>https://www.google.com/intl/de/policies/privacy</a></p>
+<h3><a name='_Toc55395349'></a>6.3.4 Verwendung von Social Plug-Ins &ndash; Verweisung und Verlinkung zu sozialen Netzwerke</h3>
+<p>Auf der Seite globus.de finden Sie Schaltfl&auml;chen zu den sozialen Netzwerken &bdquo;Facebook&ldquo;, &bdquo;Instagram&ldquo; und &bdquo;YouTube&ldquo;. Die Schaltfl&auml;chen finden Sie unten auf der Startseite unter der &Uuml;berschrift &bdquo;Bleiben Sie informiert&ldquo;. Durch Verwendung dieser Schaltfl&auml;chen haben Sie die M&ouml;glichkeit zur Interaktion &uuml;ber das jeweilige soziale Netzwerk. Die &Uuml;bertragung von Daten w&auml;hrend des Besuchs unserer Webseite globus.de an das jeweilige soziale Netzwerk erfolgt erst nach Ihrer Registrierung. Hierzu werden Sie nach dem Anklicken der Schaltfl&auml;che f&uuml;r das jeweilige soziale Netzwerk auf eine Registrierungsseite gef&uuml;hrt. Alle verlinken sozialen Netzwerke haben ihren Sitz in den USA.</p>
+<p>Dort k&ouml;nnen Sie sich als bereits registrierter Nutzer mit Ihrer Benutzerkennung und Ihrem Passwort anmelden oder sich als neuer Nutzer des jeweiligen sozialen Netzwerks anmelden und Daten aus dem Besuch unserer Webseite Ihrem Benutzerkonto hinzuf&uuml;gen. F&uuml;r die Nutzung Ihrer personen-bezogenen Daten im Rahmen sozialer Netzwerke gelten die Bestimmungen des jeweiligen Betreibers. Diese k&ouml;nnen Sie jeweils nach Anklicken der entsprechenden Schaltfl&auml;che auf der Registrierungsseite einsehen.</p>
+<h3><a name='_Toc55395350'></a>6.3.5 Google Analytics</h3>
+<p>Wir setzen auf unserer Seite Google-Analytics, einen Webanalysedienst der Firma Google Inc., 1600 Amphitheatre Parkway, Mountain View, CA 94043 USA, nachfolgend &bdquo;Google&ldquo; ein. Google-Analytics verwendet sog. &bdquo;Cookies&ldquo;, Textdateien, die auf Ihrem Computer gespeichert werden und hierdurch eine Analyse der Benutzung der Website durch Sie erm&ouml;glichen.</p>
+<p>Die durch diese Cookies erzeugten Informationen, beispielsweise Zeit, Ort und H&auml;ufigkeit Ihres Webseiten-Besuchs einschlie&szlig;lich Ihrer IP-Adresse, werden an Google in den USA &uuml;bertragen und dort gespeichert.</p>
+<p>Wir verwenden auf unserer Website Google-Analytics mit einer IP-Anonymisierungsfunktion. Ihre IP-Adresse wird in diesem Fall von Google schon innerhalb der Mitgliedstaaten der Europ&auml;ischen Union oder in anderen Vertragsstaaten des Abkommens &uuml;ber den Europ&auml;ischen Wirtschaftsraum gek&uuml;rzt und dadurch anonymisiert.</p>
+<p>Google wird diese Informationen benutzen, um Ihre Nutzung unserer Seite auszuwerten, um Reports &uuml;ber die Websiteaktivit&auml;ten f&uuml;r uns zusammenzustellen und um weitere mit der Websitenutzung und der Internetnutzung verbundene Dienstleistungen zu erbringen. Auch wird Google diese Informationen gegebenenfalls an Dritte &uuml;bertragen, sofern dies gesetzlich vorgeschrieben oder soweit Dritte diese Daten im Auftrag von Google verarbeiten.</p>
+<p>Google wird, nach eigenen Angaben, in keinem Fall Ihre IP-Adresse mit anderen Daten von Google in Verbindung bringen. Sie k&ouml;nnen die Installation der Cookies durch eine entsprechende Einstellung Ihrer Browser-Software verhindern; wir weisen Sie jedoch darauf hin, dass Sie in diesem Fall gegebenenfalls nicht s&auml;mtliche Funktionen unserer Website vollumf&auml;nglich nutzen k&ouml;nnen.</p>
+<p>Rechtsgrundlage f&uuml;r diese Datenspeicherung und Nutzung ist Art. 6 Abs. 1 f) DSGVO. Globus berechtigtes Interesse f&uuml;r die Verarbeitung der personenbezogenen Daten ergibt sich aus dem Interesse, die eigene Webseite optimieren zu k&ouml;nnen</p>
+<p>Des Weiteren bietet Google f&uuml;r die g&auml;ngigsten Browser eine Deaktivierungsoption an, welche Ihnen mehr Kontrolle dar&uuml;ber gibt, welche Daten von Google erfasst und verarbeitet werden. Sollte Sie diese Option aktivieren, werden keine Informationen zum Website-Besuch an Google Analytics &uuml;bermittelt. Die Aktivierung verhindert aber nicht, dass Informationen an uns oder an andere von uns gegebenenfalls eingesetzte Webanalyse-Services &uuml;bermittelt werden. Weitere Informationen zu der von Google bereitgestellten Deaktivierungsoption sowie zu der Aktivierung dieser Option, erhalten Sie &uuml;ber erhalten Sie &uuml;ber nachfolgenden Link: <a href='https://tools.google.com/dlpage/gaoptout?hl=de'>https://tools.google.com/dlpage/gaoptout?hl=de</a></p>
+<h3><a name='_Toc55395351'></a>6.3.6 Outbrain</h3>
+<p>Diese Website verwendet die Technologie der Outbrain Inc. ('Outbrain', 39 W 13th Street New York, NY 10011 USA)). Diese erm&ouml;glicht es, auf Websites unserer Partner gezielt jene Internet User mit Werbung anzusprechen, die sich f&uuml;r unsere Inhalte interessieren und interessiert haben. Die Technologie basiert auf einer Cookie-abh&auml;ngigen Analyse des vorherigen Nutzerverhaltens. Diese Werbung erscheint nur auf Outbrain Werbepl&auml;tzen, entweder auf Werbefl&auml;chen von Outbrain Engage oder dem Outbrain Extended Network. Wenn Sie nicht m&ouml;chten, dass Ihnen interessenbezogene Werbung angezeigt wird, k&ouml;nnen Sie diese Funktion hier deaktivieren.</p>
+<p>Weitere Infos sind hier zu finden: https://lp.outbrain.com/gdpr-ready/</p>
+<h1><a name='_Toc55395352'></a>7 Globus Services</h1>
+<h2><a name='_Toc55395353'></a>7.1 Newsletter</h2>
+<p>Wir bieten Ihnen auf unserer Seite die M&ouml;glichkeit, unseren Newsletter zu abonnieren. Mit diesem Newsletter informieren wir Sie in regelm&auml;&szlig;igen Abst&auml;nden &uuml;ber aktuelle Angebote und Aktionen bei Globus. F&uuml;r den Bezug des Newsletters registrieren Sie sich bitte auf unserer Webseite unter &bdquo;Services/Newsletter&ldquo;. F&uuml;r die Registrierung ben&ouml;tigen wir Ihre Anrede, Ihren Namen und Vorname und Ihre E-Mailadresse und das entsprechende SB-Warenhaus, um Sie pers&ouml;nlich ansprechen zu k&ouml;nnen.</p>
+<p>&Uuml;ber Ihre Registrierung erhalten Sie von uns eine Best&auml;tigung per-Email. Bitte klicken Sie auf den mit dieser E-Mail versandten Link. Erst dann wird Ihre Registrierung wirksam und Sie erhalten unseren Newsletter. Sie k&ouml;nnen den Newsletter jederzeit &uuml;ber unsere Internetseite, per E-Mail an newsletter@globus.net, schriftlich an unsere Kontaktadresse (siehe Punkt 2) oder ganz einfach &uuml;ber den Link, den wir mit jedem Newsletter versenden, wieder abbestellen. Rechtsgrundlage dieser Verarbeitung ist der Artikel 6 Abs.1 Buchstabe a DSGVO.</p>
+<h2><a name='_Toc55395354'></a>7.2 Kundenprogramme</h2>
+<p>F&uuml;r die Teilnahme an unseren Kundenprogrammen gelten die jeweiligen Teilnahmebedingungen, die Sie auf unserer Webseite unter &bdquo;Services&ldquo; einsehen k&ouml;nnen. Im Rahmen dieser Teilnahmebedingungen erkl&auml;ren wir Ihnen, welche personenbezogenen Daten wir f&uuml;r das jeweilige Programm ben&ouml;tigen und zu welchen Zwecken wir diese Daten verwenden.</p>
+<p>Damit Sie bestimmte Funktionen einzelner Services nutzen k&ouml;nnen ben&ouml;tigen wir Ihre Werbeeinwilligung (siehe Punkt 5.3)</p>
+<p>F&uuml;r die einzelnen Programme k&ouml;nnen Sie sich jeweils auf unserer Webseite unter &bdquo;Services&ldquo; registrieren. Nach der Registrierung erhalten Sie eine Best&auml;tigung per E-Mail. Bitte klicken Sie auf den in der E-Mail enthaltenen Link. Erst dann wird die Registrierung wirksam. Rechtsgrundlage dieser Verarbeitung ist der Artikel 6 Abs.1 Buchstabe a DSGVO.</p>
+<p>Ihre Daten, Ihren pers&ouml;nlichen Kontostand und weitere aktuelle Informationen zu dem jeweiligen Programm k&ouml;nnen Sie jederzeit auf unserer Website unter dem jeweiligen Service oder am Serviceterminal in Ihrem SB-Warenhaus einsehen. Ihre Teilnahme k&ouml;nnen Sie jederzeit &uuml;ber die Seite des jeweiligen Services am Serviceterminal im Markt, per E-Mail an kundenservice@globus.de oder schriftlich an unsere Kontaktadresse (siehe Punkt 2) widerrufen.</p>
+<h2><a name='_Toc55395355'></a>7.3 Werbeeinwilligung</h2>
+<p>Wir w&uuml;rden Ihnen gerne auf Ihre individuellen Interessen zugeschnittene Informationen &uuml;ber Angebot und Aktionen zusenden. Mit Ihrer Werbeeinwilligung erlauben Sie uns, Ihre personenbezogenen und einkaufsbezogenen Daten zu diesem Zweck auszuwerten.</p>
+<p>Die Werbeeinwilligung hat folgenden Inhalt:</p>
+<p>&bdquo;Ich m&ouml;chte von Globus &uuml;ber Aktionen und Angebote informiert werden.</p>
+<p>Ich willige ein, dass die GLOBUS SB-Warenhaus Holding GmbH &amp; Co. KG, die Betriebsgesellschaften (GLOBUS Handelshof St. Wendel GmbH &amp; Co. KG, GLOBUS Handelshof GmbH &amp; Co. KG (Sitz Wetzlar-Dutenhofen), GLOBUS-Handelshof GmbH &amp; Co. KG (Sitz Homburg), GLOBUS-Handelshof Losheim Dr. Walter Bruch GmbH &amp; Co. KG) bzw. von Globus mit der Durchf&uuml;hrung von Werbeaktionen Beauftragte meine personen- und einkaufsbezogenen Daten ausschlie&szlig;lich zu folgenden Zwecken speichern, analysieren und verwenden darf:</p>
+<p>- Mitgliedschaft in den GLOBUS Kundenprogrammen</p>
+<p>- Erstellung eines pers&ouml;nlichen Kundenprofils</p>
+<p>- Versendung von personalisierten Angeboten, Werbung und Newslettern per Post, per E-Mail oder per Kurznachrichtendienst</p>
+<p>Eine Weitergabe an sonstige Dritte f&uuml;r deren Marktforschung oder Werbung erfolgt nicht.</p>
+<p>Ich kann diese Einwilligung jederzeit gegen&uuml;ber der Globus SB-Warenhaus Holding GmbH &amp; Co. KG, Leipziger Stra&szlig;e 8, 66606 St. Wendel, postalisch oder unter der E-Mail Adresse mein-globus@globus.de widerrufen.</p>
+<p>Globus wird meine gespeicherten Daten umgehend l&ouml;schen sobald ich dies verlange oder der Zweck f&uuml;r die Speicherung entf&auml;llt. Soweit eine weitere Speicherung, z.B. zur Erf&uuml;llung gesetzl. Aufbewahrungspflichten, erforderlich ist, werden die Daten ausschlie&szlig;lich hierf&uuml;r verwendet und f&uuml;r andere Zwecke gesperrt.</p>
+<p>Unter folgendem Link www.globus.de/datenschutz sind weitere Informationen zum Datenschutz zu finden.&ldquo;</p>
+<h2><a name='_Toc55395356'></a>7.4 Gewinnspiele, Wettbewerbe und &auml;hnliche Aktionen</h2>
+<p>Sie k&ouml;nnen auf unserer Webseite an Gewinnspielen, Wettbewerben oder &auml;hnlichen Veranstaltungen teilnehmen. Im Rahmen dieser Aktionen erheben wir personenbezogene Daten, wie Name, Anschrift, E-Mailadresse und ggfs. weitern f&uuml;r die Durchf&uuml;hrung der jeweiligen Aktion notwendige Angaben. Ihre personenbezogenen Daten, die Sie uns im Rahmen einer solchen Veranstaltung geben, verwenden wir ausschlie&szlig;lich f&uuml;r die Durchf&uuml;hrung der Veranstaltung. Bei einem Gewinn-spiel also f&uuml;r die Ermittlung und Benachrichtigung des Gewinners und Zusendung des Gewinns. Die Teilnehmerdaten werden nach Beendigung der Veranstaltung gel&ouml;scht, es sei denn, wir haben uns in den Veranstaltungsbedingungen ausdr&uuml;cklich eine weiter gehende Nutzung vorbehalten (z.B. Verwendung eingesandter Fotos, Nennung von Gewinnern in den Medien).</p>
+<h2><a name='_Toc55395357'></a>7.5 Kontaktformular</h2>
+<p>Wenn Sie mit uns Kontakt aufnehmen wollen, k&ouml;nnen Sie das Kontaktformular auf unserer Webseite auf der Seite des jeweiligen Globus-Markts verwenden. F&uuml;r die Kontaktaufnahme ben&ouml;tigen wir regelm&auml;&szlig;ig den Anlass der Kontaktaufnahme, Ihre Anrede, Ihren Namen und Ihre E-Mailadresse sowie Ihre Mitteilung. Mit weiteren Angaben, z.B. Ihrer Postanschrift oder Telefonnummer erleichtern Sie uns die Antwort, diese Angaben sind jedoch grunds&auml;tzlich freiwillig. Ihre Angaben verwenden wir zur Beantwortung Ihrer Anfrage und leiten diese an die f&uuml;r Ihr Anliegen zust&auml;ndige Stelle bzw. Markt weiter. Soweit Ihre Anfrage Leistungen Dritter, z.B. Waren oder Dienstleistungen, die nicht von Globus selbst erbracht werden, betrifft, sind Sie mit der Weiterleitung an den betreffenden Dritten einverstanden, sofern Sie der Weiterleitung nicht ausdr&uuml;cklich widersprochen haben. Ihre Daten werden nach der Bearbeitung Ihrer Anfrage gel&ouml;scht, sofern nicht aus Gr&uuml;nden der Nachweisbarkeit, der Kundenbetreuung oder aufgrund von gesetzlichen Aufbewahrungspflichten eine weiter gehende Speicherung geboten ist.</p>
+<h2><a name='_Toc55395358'></a>7.6 Ver&ouml;ffentlichung von Stellenanzeigen / Online-Stellenbewerbungen</h2>
+<p>Ihre Bewerbungsdaten werden zum Zwecke der Abwicklung des Bewerbungsverfahrens elektronisch von uns erhoben und verarbeitet. Folgt auf Ihre Bewerbung der Abschluss eines Anstellungsvertrages, so k&ouml;nnen Ihre &uuml;bermittelten Daten zum Zwecke des &uuml;blichen Organisations- und Verwaltungsprozesses unter Beachtung der einschl&auml;gigen rechtlichen Vorschriften von uns in Ihrer Personalakte gespeichert werden. Ihre Bewerbungsdaten werden von folgendem Dienstleister verarbeitet:</p>
+<p>hidden professionals GmbH</p>
+<p>Kaiserstra&szlig;e 39</p>
+<p>55116 Mainz</p>
+<p>Amtsgericht Mainz, Registernummer: HRB 42516</p>
+<p>Die Verarbeitung findet ausschlie&szlig;lich in Deutschland statt, eine Vergabe an Dritte erfolgt nicht. Die L&ouml;schung der von Ihnen &uuml;bermittelten Daten erfolgt bei Zur&uuml;ckweisung Ihrer Stellenbewerbung automatisch sechs Monate nach Bekanntgabe der Zur&uuml;ckweisung. Dies gilt nicht, wenn aufgrund gesetzlicher Erfordernisse (beispielsweise der Beweispflicht nach dem Allgemeinen Gleichbehandlungsgesetz) eine l&auml;ngere Speicherung notwendig ist oder wenn Sie einer l&auml;ngeren Speicherung in unserer Interessenten-Datenbank ausdr&uuml;cklich zugestimmt haben. Der Bewerber hat jederzeit das Recht auf Auskunft, Berichtigung, L&ouml;schung seiner Daten.</p>
+<h1><a name='_Toc55395359'></a>8 Mobile Apps</h1>
+<h2><a name='_Toc55395360'></a>8.1 Mein Globus App</h2>
+<p>F&uuml;r die Mein Globus APP verwenden wir den Trackingdienst &bdquo;Firebase&ldquo; des Anbieters Google LLC, 1600 Amphitheatre Parkway, Mountain View, CA 94043 (&bdquo;Google&ldquo;). Google Firebase verwendet Tracking-Technologien, die eine Analyse der Nutzung unserer Mein Globus APP durch Sie erm&ouml;glichen, z.B. zur Leistungs&uuml;berwachung (Performance Monitoring), f&uuml;r Fehlerprotokolle und zur Analyse des Nutzerverhaltens bspw., welche Screens betrachtet und welche Publikationen wie oft ge&ouml;ffnet wurden. Zweck der Verwendung von Firebase ist, die Nutzung unserer Mein Globus APP zu analysieren, regelm&auml;&szlig;ig zu verbessern und damit wirtschaftlicher betreiben zu k&ouml;nnen. &Uuml;ber die gewonnenen Statistiken k&ouml;nnen wir unser Angebot verbessern und f&uuml;r Sie als Nutzer interessanter ausgestalten.</p>
+<p>Rechtsgrundlage dieser Datenverarbeitung ist Art. 6 Abs. 1 S. 1 lit. f DS-GVO, da wir ein berechtigtes Interesse an der Analyse, Optimierung und dem wirtschaftlichen Betrieb unserer Mein Globus APP haben und die Datenverarbeitung zur Wahrung dieses Interesses erforderlich ist.</p>
+<p>Mit Firebase werden Informationen &uuml;ber die Benutzung unserer Mein Globus App erfasst und an Google in Irland oder in den USA &uuml;bertragen und dort gespeichert. Die Daten werden lediglich anonymisiert erhoben und an Firebase &uuml;bermittelt. Eine Verkn&uuml;pfung mit anderen Benutzerdaten erfolgt nicht.</p>
+<p>Google wird die genannten Informationen verwenden, um Ihre Nutzung unserer App auszuwerten und um weitere mit der Nutzung von Apps verbundene Dienstleistungen an uns zu erbringen.</p>
+<p>F&uuml;r die personenbezogene Daten, die in die USA &uuml;bertragen werden, hat sich Google dem EU-US Privacy Shield unterworfen: www.privacyshield.gov/participant N&auml;here Informationen zu Google Firebase und Datenschutz finden Sie unter www.google.com/policies/privacy/ oder www.firebase.com/terms/privacy-policy.html sowie firebase.google.com.</p>
+<h2><a name='_Toc55395361'></a>8.2 Mitarbeiter App</h2>
+<p>F&uuml;r die Mein Globus APP verwenden wir den Trackingdienst &bdquo;Firebase&ldquo; des Anbieters Google LLC, 1600 Amphitheatre Parkway, Mountain View, CA 94043 (&bdquo;Google&ldquo;). Google Firebase verwendet Tracking-Technologien, die eine Analyse der Nutzung unserer Mein Globus APP durch Sie erm&ouml;glichen, z.B. zur Leistungs&uuml;berwachung (Performance Monitoring), f&uuml;r Fehlerprotokolle und zur Analyse des Nutzerverhaltens bspw., welche Screens betrachtet und welche Publikationen wie oft ge&ouml;ffnet wurden. Zweck der Verwendung von Firebase ist, die Nutzung unserer Mein Globus APP zu analysieren, regelm&auml;&szlig;ig zu verbessern und damit wirtschaftlicher betreiben zu k&ouml;nnen. &Uuml;ber die gewonnenen Statistiken k&ouml;nnen wir unser Angebot verbessern und f&uuml;r Sie als Nutzer interessanter ausgestalten.</p>
+<p>Rechtsgrundlage dieser Datenverarbeitung ist Art. 6 Abs. 1 S. 1 lit. f DS-GVO, da wir ein berechtigtes Interesse an der Analyse, Optimierung und dem wirtschaftlichen Betrieb unserer Mein Globus APP haben und die Datenverarbeitung zur Wahrung dieses Interesses erforderlich ist.</p>
+<p>Mit Firebase werden Informationen &uuml;ber die Benutzung unserer Mein Globus App erfasst und an Google in Irland oder in den USA &uuml;bertragen und dort gespeichert. Die Daten werden lediglich anonymisiert erhoben und an Firebase &uuml;bermittelt. Eine Verkn&uuml;pfung mit anderen Benutzerdaten erfolgt nicht.</p>
+<p>Google wird die genannten Informationen verwenden, um Ihre Nutzung unserer App auszuwerten und um weitere mit der Nutzung von Apps verbundene Dienstleistungen an uns zu erbringen.</p>
+<p>F&uuml;r die personenbezogene Daten, die in die USA &uuml;bertragen werden, hat sich Google dem EU-US Privacy Shield unterworfen: www.privacyshield.gov/participant N&auml;here Informationen zu Google Firebase und Datenschutz finden Sie unter www.google.com/policies/privacy/ oder www.firebase.com/terms/privacy-policy.html sowie firebase.google.com.</p>
+<h1><a name='_Toc55395362'></a>9 Social Media</h1>
+<h2><a name='_Toc55395363'></a>9.1 Re-Targeting/ Interessensbasierte Online-Werbung/ Facebook-Pixel</h2>
+<p>Zwecke der Datenverarbeitung/ Rechtsgrundlagen:</p>
+<p>Wir verwenden Re-Targeting-Technologien verschiedener Anbieter. Dies erm&ouml;glicht es uns, unser Onlineangebot auf Sie zugeschnitten interessanter zu gestalten. Hierzu wird ein Cookie gesetzt, mit dem Interessendaten unter Verwendung von Pseudonymen erhoben werden. Dabei werden Informationen &uuml;ber Ihr Surfverhalten zu Marketingzwecken gesammelt, in Cookie-Textdateien auf Ihrem Computer gespeichert und anhand eines Algorithmus analysiert. Anschlie&szlig;end k&ouml;nnen gezielte Produktempfehlungen, als f&uuml;r Sie interessante personalisierte Werbebanner, zu unseren Produkten auf den Webseiten unserer Partner angezeigt werden. In keinem Fall k&ouml;nnen diese Daten dazu verwendet werden, den Besucher dieser Webseite pers&ouml;nlich zu identifizieren. Dabei werden keine unmittelbar personenbezogenen Daten verarbeitet und es werden auch keine Nutzungsprofile mit personenbezogenen Daten zusammengef&uuml;hrt.</p>
+<p>Auf dieser Website kommt auch das sogenannte Facebook-Pixel in der nicht-erweiterten Form zu Re-Targeting-Zwecken zum Einsatz. Hierbei handelt es sich um ein JavaScript, mit dem wir Handlungen auf unserer Website nachvollziehen k&ouml;nnen und auf dessen Grundlage wir Ihnen Produktinformationen, die an Ihren Interessen orientiert sind, auf www.facebook.com und den entsprechenden Unterseiten einblenden k&ouml;nnen. Details zur Funktionsweise sind auf der Website von Facebook unter https://de-de.facebook.com/business/help/449542958510885/?helpref=hc_fnav abrufbar. Das Pixel fungiert als sogenanntes Pseudonym, d.h. &uuml;ber das Setzen des Pixels erfolgt keine direkte Zuordnung zu Ihrer Person.</p>
+<p>Die Datenverarbeitung zu Re-Targeting-Zwecken erfolgt auf Grundlage des Artikel 6 Absatz 1 Buchstabe f) DSGVO. &Uuml;ber die zum Einsatz kommenden Targeting-Ma&szlig;nahmen wollen wir sicherstellen, dass Ihnen nur an Ihren tats&auml;chlichen oder vermeintlichen Interessen orientierte Werbung auf Ihren Endger&auml;ten eingeblendet wird. Sie nicht mit f&uuml;r Sie uninteressanten Werbeeinblendungen zu bel&auml;stigen, liegt dabei sowohl in Ihrem als auch in unserem Interesse.</p>
+<p>Empf&auml;nger/ Kategorien von Empf&auml;ngern:</p>
+<p>Wir setzen auf unserer Webseite Retargeting-Technologien verschiedener Anbieter ein, welche im Rahmen des Re-Targeting die oben genannten Daten verarbeiteten. Im Falle des Facebook-Pixels werden Informationen an Server der Facebook Inc. &uuml;bertragen und dort verarbeitet.</p>
+<h1><a name='_Toc55395364'></a>10 Verarbeitung von personenbezogenen Kundendaten</h1>
+<h2><a name='_Toc55395365'></a>10.1 Kategorien personenbezogener Daten</h2>
+<p>Folgende Kategorien von personenbezogenen Daten werden seitens Globus gespeichert:</p>
+<p>(1) Kundennummer</p>
+<p>(2) Kundennummer des Elternteils des Kindes</p>
+<p>(3) Kind oder Elternteil</p>
+<p>(4) Kind Name und Geburtsdatum (bei Mitgliedschaft Weltentdecker Club)</p>
+<p>(5) Geschlecht</p>
+<p>(6) Vorname</p>
+<p>(7) Nachname</p>
+<p>(8) Stra&szlig;e</p>
+<p>(9) Hausnummer</p>
+<p>(10) Stadt</p>
+<p>(11) Ortsteil</p>
+<p>(12) PLZ</p>
+<p>(13) L&auml;nderk&uuml;rzel</p>
+<p>(14) Emailadresse</p>
+<p>(15) Geburtsdatum</p>
+<p>(16) Telefonnummern</p>
+<p>(17) Kundenkartennummer</p>
+<p>(18) Datum der Werbeeinwilligung</p>
+<p>(19) Umsatz jedes Einkaufs</p>
+<p>(20) Gesamtumsatz</p>
+<p>(21) Warenkorb de Einkaufs</p>
+<p>(22) Newsletter Faltblatt ja/nein</p>
+<p>(23) Registrierungsdatum f&uuml;r den Newsletter Faltblatt</p>
+<p>(24) Tankesch&ouml;n Teilnahme ja/nein</p>
+<p>(25) Registrierungsdatum f&uuml;r Tankesch&ouml;n</p>
+<p>(26) Mein Globus Teilnahme ja/nein</p>
+<p>(27) Registrierungsdatum f&uuml;r Mein Globus</p>
+<p>(28) Weinliebhaber Club Teilnahme ja / nein</p>
+<p>(29) Registrierungsdatum f&uuml;r Weinliebhaber Club</p>
+<h2><a name='_Toc55395366'></a>10.2 Kan&auml;le f&uuml;r die Kundenkommunikation</h2>
+<p>Folgende Kan&auml;le werden seitens Globus verwendet:</p>
+<p>(1) Post</p>
+<p>(2) E-Mail</p>
+<p>(3) Kurznachrichtendienste</p>
+<h2><a name='_Toc55395367'></a>10.3 Kategorien von Empf&auml;ngern</h2>
+<p>Sollten wir seitens Globus Dienstleister einsetzen, welche im Auftrag von uns personenbezogenen Daten verarbeiten. ist in diesem Fall stellen wir sicher, dass die Dienstleister ein angemessenes Niveau bei der Verarbeitung beachten und das eine gesetzliche Grundlage hierf&uuml;r existiert.</p>
+<h2><a name='_Toc55395368'></a>10.4 Speicherdauer</h2>
+<p>Die Daten werden solange gespeichert</p>
+<p>(1) wie der Zweck der Speicherung es erfordert</p>
+<p>(2) bis der Betroffene die L&ouml;schung verlangt</p>
+<p>(3) bis die gesetzlichen Aufbewahrungsfristen, Nachweispflichten und Verj&auml;hrungsfristen erf&uuml;llt sind. Diese ergeben sich aus der Abgabenordnung (AO) und dem Handelsgesetzbuch (HGB) und betragen bis zu 10 Jahren.</p>
+<p>Daten, die nicht mehr ben&ouml;tigt werden, werden umgehend gel&ouml;scht.</p>
+<h2><a name='_Toc55395369'></a>10.5 Herkunft der Daten</h2>
+<p>Wir f&uuml;hren wenn m&ouml;glich eine Direkterhebung beim Betroffenen durch. Allerdings kann es notwendig sein, dass wir personenbezogene Daten von Ihnen verarbeiten, die wir von anderen Stellen beziehen. (z.B. Abfrage der Bonit&auml;t) Die Erhebung Ihrer personenbezogenen Daten geschieht in beiden F&auml;llen auf Grundlage der von Globus definierten Zwecken.</p>
+<h2><a name='_Toc55395370'></a>10.6 &Uuml;bermittlung an Drittstaaten</h2>
+<p>Es erfolgt keine &Uuml;bermittlung an Drittstaaten (Staaten au&szlig;erhalb des europ&auml;ischen Wirtschaftsraums, kurz EWR), die Verarbeitung der Daten findet dadurch ausschlie&szlig;lich in Europa und unter Einhaltung der Datenschutzgrundverordnung statt.</p>
+<h1><a name='_Toc55395371'></a>11 Einsatz von Dienstleistern</h1>
+<p>Wir setzen unter anderem zur Erbringung von folgender Leistungen und zur Verarbeitung Ihrer Daten Dienstleister ein:</p>
+<p>(1) f&uuml;r das Hosting unserer Website in einem sicheren Rechenzentrum</p>
+<p>(2) f&uuml;r Customer Identity Management</p>
+<p>(3) den postalischen oder elektronischen Versand von Werbung</p>
+<p>(4) die Durchf&uuml;hrung von Veranstaltungen und Gewinnspielen</p>
+<p>(5) die Pflege und Wartung von Soft- und Hardware</p>
+<p>(6) Abwicklung von Reklamationen</p>
+<p>(7) die Beantwortung von Kundenanfragen, die uns auf www.facebook.com/globus.de, https://www.youtube.com/globus und https://www.instagram.com/globus.de oder &uuml;ber das Kontaktformular auf www.globus.de gestellt werden</p>
+<p>(8) die Beantwortung von Kundenanfragen, die uns telefonisch unter unserer Kunden-Hotline erreichen</p>
+<p>Die Dienstleister verarbeiten Daten im Rahmen der sog. Auftragsverarbeitung Artikel. 28 DSGVO ausschlie&szlig;lich auf Weisung von Globus und sind zur Einhaltung der geltenden Datenschutzbestimmungen verpflichtet worden. S&auml;mtliche Dienstleister wurden von Globus sorgf&auml;ltig ausgew&auml;hlt und erhalten Zugriff auf personenbezogene Daten nur in dem Umfang und f&uuml;r die Dauer, die f&uuml;r die Erbringung der Dienstleistung erforderlich sind bzw. soweit Sie in die Datennutzung eingewilligt haben.</p>
+<p>Damit Sie sich jeweils auch in Ihrem Globus-Markt vor Ort informieren k&ouml;nnen und um die Funktionalit&auml;t der von Ihnen genutzten Services sicher zu stellen, &uuml;bermittelt die GLOBUS SB-Warenhaus Holding GmbH &amp; Co. KG Ihre personenbezogenen Daten an die Betriebsgesellschaften der GLOBUS SB-Warenh&auml;user . Die Betriebsgesellschaft ist auf der Seite des jeweiligen Globus-Markts benannt. Soweit Ihnen bestimmte Services nur in einem oder mehreren bestimmten M&auml;rkten zur Verf&uuml;gung stehen, erfolgt die &Uuml;bermittlung der Daten nur an den oder die betreffenden M&auml;rkte. </p>
+<h1><a name='_Toc55395372'></a>12 Video&uuml;berwachung</h1>
+<h2><a name='_Toc55395373'></a>12.1 Zwecke der Video&uuml;berwachung</h2>
+<p>Video&uuml;berwachung wird bei Globus zu folgenden Zwecken eingesetzt.</p>
+<p>(1) Aufkl&auml;rung und Pr&auml;vention von Straftaten mit erheblicher Gefahr f&uuml;r Leib und Leben (&Uuml;berf&auml;lle, Raub, schwere K&ouml;rperverletzung usw.)</p>
+<p>(2) Aufkl&auml;rung und Pr&auml;vention von Diebstahl/Betrug (Straftat; einschlie&szlig;lich Betrug bei Kartenzahlung)</p>
+<p>(3) Geltendmachung von Schadenersatzanspr&uuml;chen bei vors&auml;tzlich herbeigef&uuml;hrten oder grob fahrl&auml;ssig verursachten Sch&auml;den durch Kunden/Dritte (Einbruch, Sachbesch&auml;digung in erheblichem Umfang)</p>
+<p>(4) Abwehr von unberechtigten Schadensersatzanspr&uuml;chen durch Kunden/Dritte (z.B. Kunde behauptet, sein Auto wurde in der Waschstra&szlig;e besch&auml;digt)</p>
+<p>(5) Zur Aus&uuml;bung des Hausrechts</p>
+<h2>12.2 &nbsp;<a name='_Toc55395374'></a>Rechtliche Grundlagen</h2>
+<p>Artikel 6 Absatz 1 Buchstabe f und &sect;4 Absatz 1 Bundesdatenschutzgesetz</p>
+<h2><a name='_Toc55395375'></a>12.3 Speicherdauer</h2>
+<p>Bis zur Erf&uuml;llung eines der definierten Zwecke, jedoch maximal 7 Kalendertage. Eine Ausnahme sind die Waschstra&szlig;en mit 14 Tagen Speicherdauer und die Tankstellen mit 60 Tagen Speicherdauer.</p>
+<h2><a name='_Toc55395376'></a>12.4 Pr&uuml;fung milderer Mittel</h2>
+<p>Vor Einrichtung einer Video&uuml;berwachung wurde eine Interessenabw&auml;gung durchgef&uuml;hrt und gepr&uuml;ft, ob es nicht geeignetere bzw. mildere Mittel gibt.</p>
+<h1><a name='_Toc55395377'></a>13 Zahlungsdienste</h1>
+<h2><a name='_Toc55395378'></a>13.1 Zahlungsdienste der SB-Warenh&auml;user</h2>
+<p>PaySquare SE a Worldline Company (im Folgenden 'PaySquare' oder 'wir') ist ein E-Geld-Institut im Sinne des Zahlungsdiensteaufsichtsgesetzes (ZAG) und spezialisiert auf die Bereitstellung sicherer Terminals f&uuml;r den bargeldlosen Zahlungsverkehr sowie das Angebot dazugeh&ouml;riger Dienstleistungen. Unter anderem wickelt PaySquare den kartengest&uuml;tzten bargeldlosen Zahlungsverkehr f&uuml;r die Handels- und Dienstleistungsbranche im Rahmen ihrer Payment Services ab und bietet hierzu unterschiedliche Zahlverfahren an.</p>
+<p>In der Abwicklung des bargeldlosen Zahlungsverkehrs &uuml;bernimmt PaySquare dabei im Wesentlichen zwei Aufgaben f&uuml;r Globus:</p>
+<p>Zum einen handelt PaySquare als Netzbetreiber und stellt hierbei die technische Abwicklung von bargeldlosen Zahlungen &uuml;ber eine technische Infrastruktur sicher. Zentrale Elemente hierbei sind z.B. die sichere Kommunikation zwischen einem Bezahlterminal und Ihrer kartenausgebenden Bank.</p>
+<p>Dar&uuml;ber hinaus handelt PaySquare auch als sogenannter Acquirer und &uuml;bernimmt die sichere Weiterleitung und Abrechnung von Kreditkartentransaktionen mit internationalen Kartenunternehmen (sogenannte Schemes wie Visa, Mastercard, Diners Club, Discover, JCB, UPI oder American Express).</p>
+<p>Was tut PaySquare f&uuml;r Sie als Verbraucher und welche Aufgaben &uuml;bernimmt PaySquare f&uuml;r den H&auml;ndler?</p>
+<p>PaySquare erm&ouml;glicht H&auml;ndlern die sichere Akzeptanz von bargeldlosen Zahlungen von Ihnen als Verbraucher. Dabei sorgt PaySquare daf&uuml;r, dass Zahlungen, die Sie mit Ihrer Karte bei einem H&auml;ndler durchf&uuml;hren, diesem sicher und schnell gutgeschrieben werden. PaySquare kooperiert dazu mit verschiedenen Banken, die wiederum Ihr Konto f&uuml;hren.</p>
+<p>Datenschutz-Informationen zu kartengest&uuml;tzten Zahlungen gem&auml;&szlig; Art. 13, 14 der Datenschutz-Grundverordnung (DSGVO)</p>
+<p>Wenn Sie als Verbraucher mit Karte bezahlen, werden personenbezogene Daten von Ihnen ben&ouml;tigt. Unter nachfolgendem Link informieren wir Sie &uuml;ber die Einzelheiten zur Verarbeitung Ihrer personenbezogenen Daten:</p>
+<p>https://epayment.de.worldline.com/de/home/kundenservice/datenschutz-fuer-karteninhaber.html</p>
+<h2><a name='_Toc55395379'></a>13.2 Zahlungsdienste der Tankstelle</h2>
+<p>Wenn Sie mit Ihrer Karte bezahlen, erhebt der Zahlungsempf&auml;nger personenbezogene Daten mit seinem Zahlungsterminal. Zu diesen Zwecken werden Ihre Daten auch an weitere Verantwortliche, wie z.B. Ihre kartenausgebende Bank, &uuml;bermittelt.</p>
+<p>Einzelheiten zur Verarbeitung Ihrer personenbezogenen Daten finden Sie nachfolgend. Globus &uuml;bermittelt die Daten an den Netzbetreiber WEAT Electronic Datenservice GmbH. Der Netzbetreiber und die jeweiligen Zahlungsdienstleister zur Annahme und Abrechnung der Zahlungsvorg&auml;nge (z.B. Acquirer) verarbeiten die Daten weiter.</p>
+<p>Dies geschieht insbesondere zur Zahlungsabwicklung, zur Verhinderung von Kartenmissbrauch, zur Begrenzung des Risikos von Zahlungsausf&auml;llen und zu gesetzlich vorgegebenen Zwecken, wie z.B. zur Geldw&auml;schebek&auml;mpfung</p>
+<p>Detaillierte Informationen unseres Netzbetreibers zum Thema Datenschutz finden Sie unter folgendem Link:</p>
+<p>https://www.weat.de/datenschutz/</p>
+<h1><a name='_Toc55395380'></a>14 Widerruf der Einwilligung</h1>
+<p>Sie k&ouml;nnen Ihre Einwilligung in die Verwendung Ihrer Daten zu werblichen Zwecken jederzeit widerrufen. Den Widerruf k&ouml;nnen Sie schriftlich oder per E-Mail an die oben genannte Kontaktadresse richten. Sie k&ouml;nnen sich auch auf der jeweiligen Plattform eines bestimmten Services oder &uuml;ber Ihr Kundenkonto abmelden und so Ihre Einwilligung widerrufen. Wenn Sie sich nur von einzelnen Services (z.B. einem bestimmten Kundenprogramm) abmelden, bleiben Ihre Registrierungen f&uuml;r weitere Services und ggfs. hierf&uuml;r erteilte Einwilligungen in entsprechende Werbung weiterhin g&uuml;ltig.</p>
+<p>Durch Ihren Widerruf der Einwilligung wird die Rechtm&auml;&szlig;igkeit der Verarbeitung bis zum Widerruf nicht ber&uuml;hrt.</p>
+<h1><a name='_Toc55395381'></a>15 Beschwerderecht bei der Aufsichtsbeh&ouml;rde</h1>
+<p>Die f&uuml;r den Datenschutz bei uns zust&auml;ndige Aufsichtsbeh&ouml;rde ist:</p>
+<p>Unabh&auml;ngiges Datenschutzzentrum Saarland</p>
+<p>Fritz-Dobisch-Stra&szlig;e 12</p>
+<p>66111 Saarbr&uuml;cken</p>
+<p>Telefon: +49 (0) 681 94781-0</p>
+<p>Telefax: +49 (0) 681 94781-29</p>
+<p>E-Mail: poststelle@datenschutz.saarland.de</p>
+<h1><a name='_Toc55395382'></a>16 Datensicherheit</h1>
+<p>Wir setzen technische und organisatorische Ma&szlig;nahmen ein, um die von uns verwendeten personenbezogenen Daten und Informationen gegen zuf&auml;llige oder vors&auml;tzliche Manipulationen, Verlust, Zerst&ouml;rung oder gegen den Zugriff unberechtigter Personen zu sch&uuml;tzen. Unsere Sicherheitsma&szlig;nahmen werden entsprechend der technologischen Entwicklung fortlaufend verbessert.</p>
+<h1><a name='_Toc55395383'></a>17 Disclaimer</h1>
+<p>Unsere Webseiten k&ouml;nnen Links zu Webseiten anderer Anbieter enthalten, auf die sich diese Datenschutzerkl&auml;rung nicht erstreckt. </p>
+<p>Die Webseite enth&auml;lt Verlinkungen zu anderen Webseiten ('externe Links'). Diese Webseiten unterliegen der Haftung der jeweiligen Seitenbetreiber. Bei Verkn&uuml;pfung der externen Links waren keine Rechtsverst&ouml;&szlig;e ersichtlich. Auf die aktuelle und k&uuml;nftige Gestaltung der verlinkten Seiten hat der Anbieter keinen Einfluss. Die permanente &Uuml;berpr&uuml;fung der externen Links ist f&uuml;r den Anbieter ohne konkrete Hinweise auf Rechtsverst&ouml;&szlig;e nicht zumutbar. Bei Bekanntwerden von Rechtsverst&ouml;&szlig;en werden die betroffenen externen Links unverz&uuml;glich gel&ouml;scht.</p>
+</div>",""
+static full page,1,1,1,page_4,/de/Allgemeine-Geschaeftsbedingungen/,/en/Allgemeine-Geschaeftsbedingungen/,AGB,AGB,agbGlobus,agbGlobus,agbGlobus,agbGlobus,agbGlobus,agbGlobus,<h2>Allgemeine-Geschaeftsbedingungen</h2>,<h2>Allgemeine-Geschaeftsbedingungen</h2>,"<div>
+<p><strong>Allgemeine Gesch&auml;ftsbedingungen</strong></p>
+<p><strong>f&uuml;r Bestellungen &uuml;ber die Plattform </strong></p>
+<p><strong>abholservice.globus.de</strong></p>
+<p>Inhalt</p>
+<p><a href='#_Toc55463647'>1 Geltungsbereich. 2</a></p>
+<p><a href='#_Toc55463648'>2 Gegenstand des Angebots. 2</a></p>
+<p><a href='#_Toc55463649'>3 Vertragspartner. 2</a></p>
+<p><a href='#_Toc55463650'>3.1. 2</a></p>
+<p><a href='#_Toc55463651'>3.2. 3</a></p>
+<p><a href='#_Toc55463652'>3.3. 3</a></p>
+<p><a href='#_Toc55463653'>3.4. 3</a></p>
+<p><a href='#_Toc55463654'>4 Vertragsschluss. 3</a></p>
+<p><a href='#_Toc55463655'>4.1. 3</a></p>
+<p><a href='#_Toc55463656'>4.2. 4</a></p>
+<p><a href='#_Toc55463657'>4.3. 4</a></p>
+<p><a href='#_Toc55463658'>4.4. 4</a></p>
+<p><a href='#_Toc55463659'>5 Servicegeb&uuml;hr. 4</a></p>
+<p><a href='#_Toc55463660'>6 Vertragsinhalt und Ablehnungsrecht 5</a></p>
+<p><a href='#_Toc55463661'>6.1. 5</a></p>
+<p><a href='#_Toc55463662'>6.2. 5</a></p>
+<p><a href='#_Toc55463663'>6.3. 5</a></p>
+<p><a href='#_Toc55463664'>7 Abholung und Zahlungsbedingungen. 5</a></p>
+<p><a href='#_Toc55463665'>7.1. 5</a></p>
+<p><a href='#_Toc55463666'>7.2. 5</a></p>
+<p><a href='#_Toc55463667'>8 Widerrufsbelehrung. 6</a></p>
+<p><a href='#_Toc55463668'>9 Ausschluss des Widerrufsrechts. 7</a></p>
+<p><a href='#_Toc55463669'>10 Eigentumsvorbehalt. 8</a></p>
+<p><a href='#_Toc55463670'>11 Gew&auml;hrleistung. 8</a></p>
+<p><a href='#_Toc55463671'>12 Datenschutz. 8</a></p>
+<p><a href='#_Toc55463672'>13 Anzuwendendes Recht und Gerichtsstand. 8</a></p>
+<p><a href='#_Toc55463673'>14 Salvatorische Klausel 8</a></p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<h1><a name='_Toc55463647'></a>1 Geltungsbereich</h1>
+<p>F&uuml;r alle Bestellungen auf der Plattform abholservice.globus.de (nachfolgend &bdquo;Plattform&ldquo;) gelten ausschlie&szlig;lich die nachstehenden Allgemeinen Gesch&auml;ftsbedingungen (AGB).</p>
+<h1><a name='_Toc55463648'></a>2 Gegenstand des Angebots</h1>
+<p>Diese AGB regeln ausschlie&szlig;lich die Nutzung des GLOBUS Bestell-Services der GLOBUS SB-Warenhaus Betriebsgesellschaften, namentlich der GLOBUS Handelshof St. Wendel GmbH &amp; Co. KG,, der GLOBUS Handelshof GmbH &amp; Co. KG, Homburg-Ein&ouml;d, der GLOBUS Handelshof GmbH &amp; Co. KG, Wetzlar-Dutenhofen sowie der GLOBUS Handelshof Losheim Dr. Walter Bruch GmbH &amp; Co. KG (nachfolgend alle gemeinsam &bdquo;GLOBUS&ldquo;).</p>
+<p>Im Rahmen des GLOBUS Bestell-Service haben Sie die M&ouml;glichkeit, eine von Ihnen getroffene Auswahl an Waren zur Abholung bei einem GLOBUS SB-Warenhaus Ihrer Wahl zu bestellen.</p>
+<p>GLOBUS ist berechtigt, die Bestellung nicht anzunehmen, sofern Sie zum Bestellzeitpunkt das 18. Lebensjahr noch nicht vollendet haben.</p>
+<p>Durch Absenden der Bestellung erkl&auml;ren Sie, dass Sie die Waren ausschlie&szlig;lich zum privaten Gebrauch erwerben m&ouml;chten. Der GLOBUS-Bestell-Service richtet sich damit ausschlie&szlig;lich an Endverbraucher.</p>
+<h1><a name='_Toc55463649'></a>3 Vertragspartner</h1>
+<p>Ihr Vertragspartner f&uuml;r Bestellungen auf der Plattform ist:</p>
+<h2><a name='_Toc55463650'></a>3.1 &nbsp;</h2>
+<p>Bei Abholungen in folgenden GLOBUS SB-Warenh&auml;usern:</p>
+<p>Bobenheim-Roxheim, Chemnitz, G&uuml;dingen, Freilassing, Gr&uuml;nstadt, Halle, Hattersheim, Hockenheim, Hoyerswerda, Idar-Oberstein, Kaiserslautern, Koblenz-Bubenheim, K&ouml;ln-Marsdorf, Lahnstein, Leipzig-Seehausen, Limburg, Ludwigshafen, Maintal, M&uuml;hldorf, Neustadt, Neutraubling, Plattling, Rostock-Roggentin, R&uuml;sselsheim, Saarlouis, Schwandorf, Simmern, St. Wendel, Thei&szlig;en-Zeitz, V&ouml;lklingen, Wachau, W&auml;chtersbach, Weischlitz, Wiesbaden, Wiesental, Zell</p>
+<p>die</p>
+<p>GLOBUS Handelshof St. Wendel GmbH &amp; Co. KG</p>
+<p>Am Wirthemb&ouml;sch</p>
+<p>66606 St. Wendel</p>
+<h2><a name='_Toc55463651'></a>3.2 &nbsp;</h2>
+<p>Bei Abholungen in folgenden GLOBUS SB-Warenh&auml;usern:</p>
+<p>Erfurt-Linderbach, Erfurt-Mittelhausen, Forchheim, Gensingen, Gera, Hermsdorf, Homburg-Ein&ouml;d, Isserstedt, Zwickau</p>
+<p>die</p>
+<p>GLOBUS Handelshof GmbH &amp; Co. KG</p>
+<p>Neunmorgenstra&szlig;e 8 &ndash; 12</p>
+<p>66424 Homburg-Ein&ouml;d</p>
+<h2>3.3 <br /> <br /> <a name='_Toc55463652'></a></h2>
+<p>Bei Abholungen im SB-Warenhaus in Dutenhofen:</p>
+<p>die</p>
+<p>GLOBUS Handelshof GmbH &amp; Co. KG</p>
+<p>Industriestra&szlig;e 2</p>
+<p>35582 Wetzlar-Dutenhofen</p>
+<h2><a name='_Toc55463653'></a>3.4 &nbsp;</h2>
+<p>Bei Abholung im SB-Warenhaus in Losheim:</p>
+<p>die</p>
+<p>GLOBUS Handelshof Losheim Dr. Walter Bruch GmbH &amp; Co. KG</p>
+<p>Haagstra&szlig;e 60</p>
+<p>66679 Losheim am See</p>
+<h1><a name='_Toc55463654'></a>4 Vertragsschluss</h1>
+<h2><a name='_Toc55463655'></a>4.1 &nbsp;</h2>
+<p>Zum Bestellen m&uuml;ssen Sie sich online mit Ihrer E-Mail Adresse und einem von Ihnen generierten Passwort anmelden.</p>
+<p>Ihre erste Registrierung erfolgt dabei wahlweise entweder bereits vor dem Aussuchen der Ware oder vor Abschluss Ihrer Bestellung bzw. nach Anklicken des Buttons &bdquo;Zur Kasse&ldquo;. Bei dieser Registrierung werden von Ihnen verschiedene Daten ben&ouml;tigt (u.a. Name, Vorname, Adresse, Telefonnummer, E-Mail Adresse). Sie haben bei dieser Registrierung die M&ouml;glichkeit, Ihre Mein Globus Kundenkartennummer anzugeben. Zur Registrierung ist es erforderlich, dass Sie die jeweils geltenden AGB sowie die jeweils geltenden Datenschutz-Bestimmungen best&auml;tigen</p>
+<h2><a name='_Toc55463656'></a>4.2 &nbsp;</h2>
+<p>Die von Ihnen ausgew&auml;hlten Produkte k&ouml;nnen Sie durch Anklicken des &bdquo;Warenkorb&ldquo;-Buttons Ihrem pers&ouml;nlichen Warenkorb hinzuf&uuml;gen. Ihren aktuellen Warenkorb k&ouml;nnen Sie jederzeit durch Anklicken des Buttons &bdquo;Zum Warenkorb&ldquo; einsehen. Sie k&ouml;nnen Produkte jederzeit durch Anklicken des &bdquo;Entfernen&ldquo;-Button aus Ihrem Warenkorb entfernen.</p>
+<p>Wenn Sie den Inhalt Ihres Warenkorbs kaufen m&ouml;chten, klicken Sie auf den &bdquo;Zur Kasse&ldquo;-Button.</p>
+<p>Als Lieferadresse w&auml;hlen Sie das SB-Warenhaus, an welchem Sie Ihre Waren abholen m&ouml;chten.</p>
+<p>Nach Anklicken des Buttons &bdquo;Weiter&ldquo; m&uuml;ssen Sie Ihren gew&uuml;nschten Lieferzeitpunkt (Tag und Uhrzeit) angeben. Eine Bestellung ist bis zu f&uuml;nf Kalendertage im Voraus m&ouml;glich. Die Abholung kann von Montag bis Samstag in zwei verschiedenen Lieferfenstern erfolgen (10.00 bis 15.00 Uhr oder 15.00 bis 20.00 Uhr). Nach Angabe des gew&uuml;nschten Lieferzeitpunktes klicken Sie auf &bdquo;Weiter zur Zahlung&ldquo;.</p>
+<p>Als Zahlungsart kann ausschlie&szlig;lich die &bdquo;Vor-Ort-Zahlung&ldquo; ausgew&auml;hlt werden.</p>
+<p>Im Rahmen der abschlie&szlig;enden Bestellpr&uuml;fung k&ouml;nnen Sie Ihre Angaben noch einmal pr&uuml;fen und ggf. notwendige &Auml;nderungen vornehmen.</p>
+<p>Um die Bestellung abzuschlie&szlig;en klicken Sie auf &bdquo;Zahlungspflichtig bestellen&ldquo;.</p>
+<h2><a name='_Toc55463657'></a>4.3 &nbsp;</h2>
+<p>Durch Klicken des Buttons &bdquo;Zahlungspflichtig bestellen&ldquo; geben Sie eine verbindliches Angebot zum Abschluss eines Kaufvertrages &uuml;ber die in Ihrem Warenkorb enthaltenen Produkte ab.</p>
+<p>Ein Kaufvertrag kommt nicht bereits mit Eingang Ihres Angebots zustande. GLOBUS beh&auml;lt sich ausdr&uuml;cklich vor, Bestellungen abzulehnen (z.B. bei offensichtlich unrechtm&auml;&szlig;ige Bestellungen). Hier&uuml;ber werden wir Sie unverz&uuml;glich nach Eingang Ihrer Bestellung unterrichten. Wenn keine Ablehnung erfolgt, erhalten Sie eine automatisierte E-Mail, die den Eingang Ihrer Bestellung best&auml;tigt. Ein Kaufvertrag kommt hiermit noch nicht zustande.</p>
+<h2><a name='_Toc55463658'></a>4.4 &nbsp;</h2>
+<p>Sie erhalten eine E-Mail, sobald GLOBUS die von Ihnen bestellten Artikel zusammenstellt und packt.</p>
+<p>Am gew&uuml;nschten Liefertag, nachdem GLOBUS die Bestellung fertig gepackt hat, erhalten Sie au&szlig;erdem eine Lieferank&uuml;ndigungsmail. In dieser E-Mail finden Sie auch die Rechnung, eine Aufstellung aller gepackten Artikel sowie einen detaillierten Lieferstatus aller Artikel. Au&szlig;erdem finden Sie in dieser E-Mail den Abholschein (Barcode). Bitte bringen Sie diesen Abholschein zur Abholung mit. Durch diese Lieferank&uuml;ndigungsmail kommt der Kaufvertrag zustande. Zudem werden Sie in dieser E-Mail &uuml;ber das Widerrufsrecht belehrt.</p>
+<h1><a name='_Toc55463659'></a>5 Servicegeb&uuml;hr</h1>
+<p>F&uuml;r die Erbringung der Leistungen von GLOBUS nach Ziffer 4 f&auml;llt eine Servicegeb&uuml;hr in H&ouml;he von 3,99 &euro; inklusive der gesetzlichen Umsatzsteuer an.</p>
+<p>Sind Sie Kunde bei Mein Globus, betr&auml;gt die Servicegeb&uuml;hr nur 1,99 &euro; inklusive der gesetzlichen Umsatzsteuer.</p>
+<h1><a name='_Toc55463660'></a>6 Vertragsinhalt und Ablehnungsrecht</h1>
+<h2><a name='_Toc55463661'></a>6.1 &nbsp;</h2>
+<p>F&uuml;r die H&ouml;he des Kaufpreises gilt immer der Preis, der bei Abgabe der Bestellung f&uuml;r das jeweilige Produkt auf der Plattform angezeigt wurde. Nachtr&auml;gliche &Auml;nderungen des Kaufpreises bis zum Lieferzeitpunkt bleiben f&uuml;r Ihre Bestellung unber&uuml;cksichtigt.</p>
+<h2><a name='_Toc55463662'></a>6.2 &nbsp;</h2>
+<p>Bei gewichtsabh&auml;ngigen Artikeln (z.B. frische Wurst, Obst und Gem&uuml;se) kann es zu geringf&uuml;gigen Abweichungen nach oben oder unten von der in Ihrer Bestellung angegebenen Menge kommen. Sie sind damit einverstanden, dass der Kaufvertrag &uuml;ber die tats&auml;chlich durch GLOBUS zusammengestellte Menge geschlossen wird. Die tats&auml;chlich zusammengestellte Menge erfahren Sie in der Lieferank&uuml;ndigungsmail (siehe Ziffer 4.4).</p>
+<h2><a name='_Toc55463663'></a>6.3 &nbsp;</h2>
+<p>Ist ein von Ihnen bestellter Artikel nicht verf&uuml;gbar, ist GLOBUS berechtigt, entweder den Artikel bei der Bestellung nicht zu ber&uuml;cksichtigen oder den bestellten Artikel durch einen gleich- oder h&ouml;herwertigen Artikel zum Preis des von Ihnen bestellten Artikels zu ersetzen. In diesem Fall sind Sie nicht verpflichtet, diesen Ersatz-Artikel abzunehmen und zu bezahlen. Die Verf&uuml;gbarkeit sowie ggf. den Ersatz eines nicht vorhandenen Artikels erfahren Sie ebenfalls in der Lieferank&uuml;ndigungsmail (siehe Ziffer 4.4.)</p>
+<h1><a name='_Toc55463664'></a>7 Abholung und Zahlungsbedingungen</h1>
+<h2><a name='_Toc55463665'></a>7.1 &nbsp;</h2>
+<p>Die auf Grundlage Ihrer Bestellung sowie der Verf&uuml;gbarkeit von Artikeln tats&auml;chlich zusammengestellte Ware steht zu dem ausgew&auml;hlten Lieferzeitpunkt innerhalb des ausgew&auml;hlten Lieferfensters zur Abholung an der von Ihnen gew&auml;hlten Abholstation an einem GLOBUS SB-Warenhaus zur Verf&uuml;gung. Bei der Abholung ist die Vorlage des Abholscheins (Barcode) erforderlich.</p>
+<p>Wird die Ware nicht zum ausgew&auml;hlten Lieferzeitpunkt innerhalb des ausgew&auml;hlten Lieferfensters abgeholt, verf&auml;llt Ihre Bestellung.</p>
+<p>Waren werden nur in haushalts&uuml;blichen Mengen abgegeben. Die Preise enthalten die gesetzliche Umsatzsteuer.</p>
+<h2><a name='_Toc55463666'></a>7.2 &nbsp;</h2>
+<p>Die Bezahlung der Ware erfolgt ausschlie&szlig;lich vor Ort bei Abholung.</p>
+<p>Dabei haben Sie grunds&auml;tzlich die M&ouml;glichkeit, mit allen g&auml;ngigen Zahlungsmitteln zu zahlen, z.B. Barzahlung, Zahlung per EC-Karte (PIN) oder Maestro (PIN) oder per Kreditkarte (Mastercard, Visa), Bluecode.</p>
+<p>Bitte beachten Sie: Bei der Kreditkartenzahlung vor Ort ist bei Betr&auml;gen &uuml;ber 100 &euro; die Angabe einer PIN-Nummer erforderlich.</p>
+<p>Bei der Bezahlung haben Sie auch die M&ouml;glichkeit, Pfandbons, Wertgutscheine oder Mein Globus Gutscheine einzul&ouml;sen. Eine Einl&ouml;sung von Aktions-Coupons ist allerdings nicht m&ouml;glich.</p>
+<h1><a name='_Toc55463667'></a>8 Widerrufsbelehrung</h1>
+<p>Ihnen steht f&uuml;r die Bestellung &uuml;ber die Plattform ein Widerrufsrecht nach Ma&szlig;gabe der folgenden Bestimmungen zu:</p>
+<p>Widerrufsrecht:</p>
+<p>Sie haben das Recht, diesen Vertrag binnen 14 (vierzehn) Tagen ohne Angabe von Gr&uuml;nden zu widerrufen.</p>
+<p>Die Widerrufsfrist betr&auml;gt 14 Tage ab dem Tag, an dem Sie oder ein von Ihnen benannter Dritter, der nicht der Bef&ouml;rderer ist, die Waren in Besitz genommen haben bzw. hat. Um Ihr Widerrufsrecht auszu&uuml;ben, m&uuml;ssen Sie Ihrem jeweiligen Vertragspartner gem&auml;&szlig; Ziffer 3. mittels einer eindeutigen Erkl&auml;rung (z.B. ein mit der Post versandter Brief oder E-Mail an abholservice@globus.net an) &uuml;ber Ihren Entschluss, diesen Vertrag zu widerrufen, unterrichten. Sie k&ouml;nnen daf&uuml;r das unten beigef&uuml;gte Muster-Widerrufsformular verwenden, das jedoch nicht vorgeschrieben ist.</p>
+<p>Folgen des Widerrufs:</p>
+<p>Wenn Sie diesen Vertrag widerrufen, haben wir Ihnen alle Zahlungen, die wir von Ihnen erhalten haben, einschlie&szlig;lich etwaig anfallender Lieferkosten, unverz&uuml;glich und sp&auml;testens binnen 14 Tagen ab dem Tag zur&uuml;ckzuzahlen, an dem die Mitteilung &uuml;ber Ihren Widerruf dieses Vertrags bei uns eingegangen ist. F&uuml;r diese R&uuml;ckzahlung verwenden wir dasselbe Zahlungsmittel, dass Sie bei der urspr&uuml;nglichen Transaktion eingesetzt haben, es sei denn, mit Ihnen wurde ausdr&uuml;cklich etwas anderes vereinbart; in keinem Fall werden Ihnen wegen dieser R&uuml;ckzahlung Entgelte berechnet. Wir k&ouml;nnen die R&uuml;ckzahlung verweigern, bis wir die Waren wieder zur&uuml;ckerhalten haben oder bis Sie den Nachweis erbracht haben, dass Sie die Waren zur&uuml;ckgesandt haben, je nachdem, welches der fr&uuml;here Zeitpunkt ist.</p>
+<p>Sie haben die Waren unverz&uuml;glich und in jedem Fall sp&auml;testens binnen 14 Tagen ab dem Tag, an dem Sie uns &uuml;ber den Widerruf dieses Vertrags unterrichten, an o.g. Adresse zu &uuml;bergeben oder diese Adresse zur&uuml;ckzusenden. Die Frist ist gewahrt, wenn Sie die Waren vor Ablauf der Frist von 14 Tagen absenden. Sie tragen die unmittelbaren Kosten, die erforderlich sind, damit wir die Ware wieder erhalten, so z.B. auch f&uuml;r die R&uuml;cksendung der Waren. Sie m&uuml;ssen f&uuml;r einen etwaigen Wertverlust der Waren nur aufkommen, wenn dieser Wertverlust auf einen zur Pr&uuml;fung der Beschaffenheit, Eigenschaften und Funktionsweise der Waren nicht notwendigen Umgang mit ihnen zur&uuml;ckzuf&uuml;hren ist.</p>
+<p><em>__________________________________________________________________________________</em></p>
+<p><em>Muster-Widerrufsformular:</em></p>
+<p><em><u>An:</u></em></p>
+<p><em>[Vertragspartner gem&auml;&szlig; Ziffer 3.]</em></p>
+<p><em>[Adresse dieses Vertragspartners]</em></p>
+<p><em>abholservice@globus.net</em></p>
+<p>&nbsp;</p>
+<p><em>Hiermit widerrufe ich den von mir abgeschlossenen Vertrag &uuml;ber den Kauf der folgenden Bestellung:</em></p>
+<p><em>Bestellt am: ______________</em></p>
+<p><em>Erhalten am: ______________</em></p>
+<p><em>Abholnummer: ______________</em></p>
+<p><em>Bestellnummer: ______________</em></p>
+<p><em>Name des Verbrauchers: __________________________</em></p>
+<p><em>Anschrift des Verbrauchers: __________________________</em></p>
+<p><em> __________________________</em></p>
+<p><em>_______________ ___________________</em></p>
+<p><em>Datum Unterschrift </em>_________________________________________________________________________________</p>
+<h1><a name='_Toc55463668'></a>9 Ausschluss des Widerrufsrechts</h1>
+<p>Das Widerrufsrecht besteht nicht bei Waren, die nicht vorgefertigt sind und f&uuml;r deren Herstellung eine individuelle Auswahl oder Bestimmung durch den Kunden ma&szlig;geblich ist oder die eindeutig auf die pers&ouml;nlichen Bed&uuml;rfnisse des Kunden zugeschnitten sind, schnell verderblichen Waren oder Waren, deren Verfallsdatum schnell &uuml;berschritten w&uuml;rde, versiegelten Waren, die aus Gr&uuml;nden des Gesundheitsschutzes oder der Hygiene nicht zur R&uuml;ckgabe geeignet sind, wenn ihre Versiegelung nach der Lieferung entfernt wurde, Waren, wenn diese nach der Lieferung auf Grund ihrer Beschaffenheit untrennbar mit anderen G&uuml;tern vermischt wurden, Ton- oder Videoaufnahmen oder Computersoftware in einer versiegelten Packung, wenn die Versiegelung nach der Lieferung entfernt wurde, Zeitungen, Zeitschriften oder Illustrierten sowie in allen anderen in &sect; 312g Abs. 2 BGB genannten F&auml;llen. Das Widerrufsrecht erlischt bei einem Vertrag zur Erbringung von Dienstleistungen auch dann, wenn der Unternehmer die Dienstleistung vollst&auml;ndig erbracht hat und mit der Ausf&uuml;hrung der Dienstleistung erst begonnen hat, nachdem der Verbraucher dazu seine ausdr&uuml;ckliche Zustimmung gegeben hat und gleichzeitig seine Kenntnis davon best&auml;tigt hat, dass er sein Widerrufsrecht bei vollst&auml;ndiger Vertragserf&uuml;llung durch den Unternehmer verliert.</p>
+<h1><a name='_Toc55463669'></a>10 Eigentumsvorbehalt</h1>
+<p>Die Ware bleibt bis zur vollst&auml;ndigen Bezahlung Eigentum von GLOBUS.</p>
+<h1><a name='_Toc55463670'></a>11 Gew&auml;hrleistung</h1>
+<p>Es gelten die gesetzlichen Gew&auml;hrleistungsvorschriften. Von der Auslobung weiterer Garantien bleiben diese unber&uuml;hrt.</p>
+<h1><a name='_Toc55463671'></a>12 Datenschutz</h1>
+<p>Wir erheben, verarbeiten und nutzen Ihre personenbezogenen Daten, soweit dies f&uuml;r die Begr&uuml;ndung, Durchf&uuml;hrung oder Beendigung des Vertrages notwendig ist. N&auml;here Informationen zum Datenschutz finden Sie unter <a href='http://www.globus.de/datenschutz'>www.globus.de/datenschutz</a></p>
+<h1><a name='_Toc55463672'></a>13 Anzuwendendes Recht und Gerichtsstand</h1>
+<p>F&uuml;r s&auml;mtliche Streitigkeiten, die im Zusammenhang mit der Anbahnung, Ausf&uuml;hrung oder Abwicklung des Bestellservices stehen, gilt ausschlie&szlig;lich deutsches Recht unter Ausschluss des UN-Kaufrechts. Ausschlie&szlig;licher Gerichtsstand ist &ndash; soweit gesetzlich zul&auml;ssig &ndash; St. Wendel.</p>
+<h1><a name='_Toc55463673'></a>14 Salvatorische Klausel</h1>
+<p>Sollten einzelne oder mehrere Regelungen dieser AGB unwirksam sein oder werden, so ber&uuml;hrt dies die Wirksamkeit der &uuml;brigen Regelungen nicht.</p>
+</div>",""
+static full page,1,1,1,page_5,/de/impressum/,/en/impressum/,Impressum,Impressum,Impressum,Impressum,Impressum,Impressum,Impressum,Impressum,<h2>Impressum</h2>,<h2>Impressum</h2>,"<div>
+<p><strong>Betreiber dieser Internetseite ist die</strong></p>
+<p><strong>Globus SB-Warenhaus Holding GmbH &amp; Co. KG</strong></p>
+<p></p>
+<p>Leipziger Str. 8</p>
+<p>66606 St. Wendel</p>
+<p>Amtsgericht Saarbr&uuml;cken, HRA 80636, Sitz: St. Wendel</p>
+<p>USt-ID-Nr.: DE 138226656</p>
+<p><strong>Telefon:</strong> 06851-9090</p>
+<p><strong>Telefax:</strong> 06851-909600</p>
+<p><strong>E-Mail:</strong> kundenservice@globus.de</p>
+<p><strong>Homepage:</strong> www.globus.de</p>
+<p><strong>Pers&ouml;nlich haftende Gesellschafterin:</strong></p>
+<p>GLOBUS SB-Warenhaus Gesch&auml;ftsf&uuml;hrungs-GmbH</p>
+<p>Amtsgericht Saarbr&uuml;cken, HRB 80855, Sitz: St. Wendel</p>
+<p><strong>Gesch&auml;ftsf&uuml;hrer:</strong></p>
+<p>Jochen Baab (Sprecher), Petra Sch&auml;fer, Uwe Wamser</p>
+<p><strong>Datenschutzbeauftragter:</strong></p>
+<p>Jens Neufang, Leipziger Stra&szlig;e 8, 66606 St.Wendel</p>
+<p><strong>Technische Umsetzung der Webseite:</strong></p>
+<p>&copy; GLOBUS SB-Warenhaus Holding GmbH &amp; Co. KG. Alle auf der Internetpr&auml;senz www.globus.de und in der App verwendeten Texte, Fotos und grafischen Gestaltungen sind (urheber-)rechtlich gesch&uuml;tzt.</p>
+<p>Wir sind nicht bereit und nicht verpflichtet, an Streitbeilegungsverfahren vor einer Schlichtungsstelle teilzunehmen.</p>
+</div>",""
