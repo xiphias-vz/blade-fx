@@ -16,6 +16,7 @@ use Orm\Zed\MerchantSalesOrder\Persistence\SpyMerchantSalesOrderQuery;
 use Orm\Zed\PickingZone\Persistence\Map\PyzOrderPickingBlockTableMap;
 use Orm\Zed\PickingZone\Persistence\Map\PyzPickingZoneTableMap;
 use Orm\Zed\Sales\Persistence\Map\SpySalesOrderItemTableMap;
+use Orm\Zed\Sales\Persistence\Map\SpySalesShipmentTableMap;
 use Propel\Runtime\ActiveQuery\Criteria;
 use Spryker\Zed\MerchantSalesOrder\Persistence\MerchantSalesOrderRepository as SprykerMerchantSalesOrderRepository;
 
@@ -40,6 +41,49 @@ class MerchantSalesOrderRepository extends SprykerMerchantSalesOrderRepository i
 
         return $this->getFactory()->createMerchantSalesOrderMapper()
             ->mapMerchantSalesOrderEntitiesToCollectionTransfer($merchantSalesOrderEntities);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getSalesOrderItemDataByPickingDateAndPickingZone(
+        OrderCriteriaFilterTransfer $orderFilterCriteriaTransfer
+    ): array {
+        $merchantSalesOrderQuery = $this->getFactory()
+            ->createMerchantSalesOrderQuery();
+
+        $minDeliveryDateTime = (new DateTime($orderFilterCriteriaTransfer->getDeliveryDate()))
+            ->setTime(0, 0);
+        $maxDeliveryDateTime = (clone $minDeliveryDateTime)
+            ->setTime(23, 59);
+
+        return $merchantSalesOrderQuery->select([
+                SpySalesOrderItemTableMap::COL_SKU,
+                SpySalesOrderItemTableMap::COL_NAME,
+                SpySalesShipmentTableMap::COL_REQUESTED_DELIVERY_DATE,
+            ])
+            ->withColumn(sprintf('SUM(%s)', SpySalesOrderItemTableMap::COL_QUANTITY), 'quantity')
+            ->useOrderQuery()
+                ->joinSpySalesShipment()
+                ->useItemQuery()
+                    ->addJoin(
+                        SpySalesOrderItemTableMap::COL_PICK_ZONE,
+                        PyzPickingZoneTableMap::COL_NAME,
+                        Criteria::INNER_JOIN
+                    )
+                ->endUse()
+            ->endUse()
+            ->filterByRequestedDeliveryDate_Between(
+                [
+                    'min' => $minDeliveryDateTime,
+                    'max' => $maxDeliveryDateTime,
+                ]
+            )
+            ->addAnd(PyzPickingZoneTableMap::COL_ID_PICKING_ZONE, $orderFilterCriteriaTransfer->getIdPickingZone())
+            ->groupBy(['spy_sales_shipment.requested_delivery_date', 'spy_sales_order_item.sku'])
+            ->orderBy('spy_sales_shipment.requested_delivery_date')
+            ->find()
+            ->getArrayCopy();
     }
 
     /**
