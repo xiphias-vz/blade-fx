@@ -1,6 +1,8 @@
 <?php
 
 use Monolog\Logger;
+use Pyz\Service\FlysystemSftpFileSystem\Plugin\Flysystem\SftpFileSystemBuilderPlugin;
+use Pyz\Shared\CashierOrderExport\CashierOrderExportConstants;
 use Pyz\Shared\CollectNumber\CollectNumberConstants;
 use Pyz\Shared\DataImport\DataImportConstants;
 use Pyz\Shared\DummyPayment\DummyPaymentConfig;
@@ -550,12 +552,28 @@ $config[OauthConstants::ENCRYPTION_KEY] = '';
 $config[OauthConstants::OAUTH_CLIENT_IDENTIFIER] = '';
 $config[OauthConstants::OAUTH_CLIENT_SECRET] = '';
 
+// ---------- CashierOrderExport
+$config[CashierOrderExportConstants::SFTP_CASHIER_ORDER_FILES_FOLDER_KEY] = 'kasse';
+
 // ---------- FileSystem
 $config[FileSystemConstants::FILESYSTEM_SERVICE] = [
     'files' => [
         'sprykerAdapterClass' => LocalFilesystemBuilderPlugin::class,
         'root' => APPLICATION_ROOT_DIR . '/data/' . APPLICATION_STORE . '/media/',
         'path' => 'files/',
+    ],
+    'cashier_order_local' => [
+        'sprykerAdapterClass' => LocalFilesystemBuilderPlugin::class,
+        'root' => APPLICATION_ROOT_DIR . '/data/' . APPLICATION_STORE . '/export/',
+        'path' => 'files/',
+    ],
+    'globus_sftp' => [
+        'sprykerAdapterClass' => SftpFileSystemBuilderPlugin::class,
+        'host' => getenv('GLOBUS_SFTP_HOST'),
+        'port' => getenv('GLOBUS_SFTP_PORT'),
+        'username' => getenv('GLOBUS_SFTP_USERNAME'),
+        'password' => getenv('GLOBUS_SFTP_PASSWORD'),
+        'root' => getenv('GLOBUS_SFTP_ROOT'),
     ],
 ];
 
@@ -793,10 +811,10 @@ $config[StoreConstants::SAP_STORE_ID_TO_STORE_MAP] = [
 
 // ----------- Stores
 $config[StoreConstants::STORE_NAMES] = [
-    'EIN' => 'Homburg-Einöd',
+    //'EIN' => 'Homburg-Einöd',
     'KMD' => 'Köln',
-    'LPZ' => 'Leipzig',
-    'HAD' => 'Halle',
+    //'LPZ' => 'Leipzig',
+    //'HAD' => 'Halle',
 ];
 
 // ----------- Google Tag Manager

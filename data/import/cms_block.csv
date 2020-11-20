@@ -178,7 +178,9 @@ So holen Sie Ihre Ware bei der GLOBUS Click &amp; Collect Station ab
 
 <p style=""color:red;font-weight:bold;font-style:italic"">Hier folgt eine Info zur Altersprüfung</p>
 
-
-
 <p>Ihre Bestellung enthält altersbeschränkte Produkte? </p>
 Bitte bringen Sie Ihren Personalausweis zur Altersprüfung mit",
+blck-14,Kontakt EIN,Title and Content Block,@CmsBlock/template/title_and_content_block.twig,1,,,,,,,,"<p style=""margin-top:0px"">Kundenservice</p><p>Mo - Sa 10 - 20 hr</p><p>068-34-456-5</p><p>Kontakt</p>",
+blck-15,Kontakt KMD,Title and Content Block,@CmsBlock/template/title_and_content_block.twig,1,,,,,,,,"<p style=""margin-top:0px"">Kundenservice</p><p>Mo - Sa 10 - 20 hr</p><p>068-34-456-5</p><p>Kontakt</p>",
+blck-16,Kontakt LPZ	,Title and Content Block,@CmsBlock/template/title_and_content_block.twig,1,,,,,,,,"<p style=""margin-top:0px"">Kundenservice</p><p>Mo - Sa 10 - 20 hr</p><p>068-34-456-5</p><p>Kontakt</p>",
+blck-17,Kontakt HAD,Title and Content Block,@CmsBlock/template/title_and_content_block.twig,1,,,,,,,,"<p style=""margin-top:0px"">Kundenservice</p><p>Mo - Sa 10 - 20 hr</p><p>068-34-456-5</p><p>Kontakt</p>",

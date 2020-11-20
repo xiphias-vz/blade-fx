@@ -1,0 +1,31 @@
+env:
+    APPLICATION_ENV: docker
+
+command-timeout: 3600
+
+sections:
+    backup-local-demo-data-files:
+        categories:
+            command: "cp data/import/spryker/categories.csv data/import/spryker/categories.back.csv"
+
+        product-data:
+            command: "cp data/import/spryker/product_data.csv data/import/spryker/product_data.back.csv"
+
+        product-price:
+            command: "cp data/import/spryker/product_price.csv data/import/spryker/product_price.back.csv"
+
+        product-stock:
+            command: "cp data/import/spryker/product_stock.csv data/import/spryker/product_stock.back.csv"
+
+    restore-local-demo-data-files:
+        categories:
+            command: "cp data/import/spryker/categories.local.csv data/import/spryker/categories.csv"
+
+        product-data:
+            command: "cp data/import/spryker/product_data.local.csv data/import/spryker/product_data.csv"
+
+        product-price:
+            command: "cp data/import/spryker/product_price.local.csv data/import/spryker/product_price.csv"
+
+        product-stock:
+            command: "cp data/import/spryker/product_stock.local.csv data/import/spryker/product_stock.csv"

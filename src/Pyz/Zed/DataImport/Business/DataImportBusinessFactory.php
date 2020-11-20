@@ -10,6 +10,7 @@ namespace Pyz\Zed\DataImport\Business;
 use NumberFormatter;
 use Pyz\Shared\Product\ProductConfig;
 use Pyz\Zed\DataImport\Business\Model\BaseProduct\AttributesExtractorStep as BaseAttributesExtractorStep;
+use Pyz\Zed\DataImport\Business\Model\BaseProduct\Hook\ProductDepositOptionAfterImportHook;
 use Pyz\Zed\DataImport\Business\Model\BaseProduct\ProductCategoryWriterStep;
 use Pyz\Zed\DataImport\Business\Model\BaseProduct\ProductDepositOptionStep;
 use Pyz\Zed\DataImport\Business\Model\CategoryTemplate\CategoryTemplateWriterStep;
@@ -19,6 +20,7 @@ use Pyz\Zed\DataImport\Business\Model\CmsTemplate\CmsTemplateWriterStep;
 use Pyz\Zed\DataImport\Business\Model\Country\Repository\CountryRepository;
 use Pyz\Zed\DataImport\Business\Model\Currency\CurrencyWriterStep;
 use Pyz\Zed\DataImport\Business\Model\Customer\CustomerWriterStep;
+use Pyz\Zed\DataImport\Business\Model\FileDownload\SFTPDataImportFileDownloader;
 use Pyz\Zed\DataImport\Business\Model\Glossary\GlossaryWriterStep;
 use Pyz\Zed\DataImport\Business\Model\Locale\AddLocalesStep;
 use Pyz\Zed\DataImport\Business\Model\Locale\LocaleNameToIdLocaleStep;
@@ -70,6 +72,7 @@ use Spryker\Shared\Kernel\Store;
 use Spryker\Shared\ProductSearch\Code\KeyBuilder\FilterGlossaryKeyBuilder;
 use Spryker\Zed\Acl\Business\AclFacadeInterface;
 use Spryker\Zed\DataImport\Business\DataImportBusinessFactory as SprykerDataImportBusinessFactory;
+use Spryker\Zed\DataImport\Business\Model\DataImporterAfterImportInterface;
 use Spryker\Zed\DataImport\Business\Model\DataImportStep\DataImportStepInterface;
 use Spryker\Zed\DataImport\Dependency\Plugin\DataImportPluginInterface;
 use Spryker\Zed\Money\Business\MoneyFacadeInterface;
@@ -163,8 +166,17 @@ class DataImportBusinessFactory extends SprykerDataImportBusinessFactory
             ->addStep($this->createProductDepositOptionStep());
 
         $dataImporter->addDataSetStepBroker($dataSetStepBroker);
+        $dataImporter->addAfterImportHook($this->createProductDepositAfterImportHook());
 
         return $dataImporter;
+    }
+
+    /**
+     * @return \Spryker\Zed\DataImport\Business\Model\DataImporterAfterImportInterface
+     */
+    protected function createProductDepositAfterImportHook(): DataImporterAfterImportInterface
+    {
+        return new ProductDepositOptionAfterImportHook();
     }
 
     /**
@@ -752,6 +764,17 @@ class DataImportBusinessFactory extends SprykerDataImportBusinessFactory
     public function createGroupToIdGroupStep(): GroupToIdGroupStep
     {
         return new GroupToIdGroupStep();
+    }
+
+    /**
+     * @return \Pyz\Zed\DataImport\Business\Model\FileDownload\SFTPDataImportFileDownloader
+     */
+    public function createSFTPDataImportFileLoader(): SFTPDataImportFileDownloader
+    {
+        return new SFTPDataImportFileDownloader(
+            $this->getProvidedDependency(DataImportDependencyProvider::SERVICE_FLY_SYSTEM_SERVICE),
+            $this->getConfig()
+        );
     }
 
     /**

@@ -1,7 +1,7 @@
 env:
     APPLICATION_ENV: docker
 
-command-timeout: 7200
+command-timeout: 14400
 
 sections:
 
@@ -48,6 +48,9 @@ sections:
     demodata:
         import:
             command: "vendor/bin/console data:import -vvv --no-ansi || true"
+
+        sftp-based-full-import:
+            command: "vendor/bin/install -r sftp-based-full-import"
 
         import-mu:
             command: "vendor/bin/console data:import product-measurement-unit -vvv --no-ansi || true"

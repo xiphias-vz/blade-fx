@@ -19,7 +19,6 @@
 {% set isProductConcrete = data.product.idProductConcrete is not empty %}
 {% set isDisabled = data.product.idProductConcrete is empty or data.product.price is empty %}
 {% set isProductAvailable = true %}
-{% set depositCount = data.product.attributes['Anzahl Pfand'] | default(0) %}
 
 {% for index in 1..data.maxQuantity %}
     {% set options = options | merge([{
@@ -41,13 +40,8 @@
 {% set productSaleVolume = data.product.attributes['Verkaufsvolumen'] | default(null) %}
 
 {% block body %}
-    {% include molecule('tags-and-product-description', 'ProductDetailPage') with {
-        data: {
-            attributes: data.product.attributes,
-            description: data.product.description,
-            tags: data.tags,
-        },
-    } only %}
+
+    <p class="brand-text">{{ 'product.attribute.manufacturer_name' | trans}}</p>
 
     <h2 class="title title--product">{{ productName }}</h2>
 
@@ -62,11 +56,6 @@
                 }
             } only %}
         {% endwidget %}
-        {% if depositCount and data.depositPrice is not null %}
-            <div class="text-secondary">
-                {{ 'customer.order.item_price.excluding_pfand' | trans | format((data.depositPrice * depositCount) | money) }}
-            </div>
-        {% endif %}
 
         <div class="grid">
             {% if productSaleVolume %}
@@ -96,34 +85,34 @@
         {% elsewidget 'ManageProductMeasurementUnitWidget' args [data.product, isDisabled, options] only %}
         {% nowidget %}
 
-        <div class="grid grid--justify">
-            <div class="col col--sm-12 col--lg-5 spacing-bottom">
-                {% if not isDisabled %}
-                    {% include molecule('quantity-counter') with {
-                        modifiers: ['quantity-large', 'no-spacing'],
-                        data: {
-                            readOnly: true,
-                        },
-                    } only %}
-                {% else %}
-                    <input type="hidden" class="js-volume-price__quantity"/>
-                {% endif %}
+            <div class="grid grid--justify">
+                <div class="col col--sm-12 col--lg-5 spacing-bottom">
+                    {% if not isDisabled %}
+                        {% include molecule('quantity-counter') with {
+                            modifiers: ['quantity-large', 'no-spacing'],
+                            data: {
+                                readOnly: true,
+                            },
+                        } only %}
+                    {% else %}
+                        <input type="hidden" class="js-volume-price__quantity"/>
+                    {% endif %}
 
-                {% widget 'ProductDiscontinuedNoteWidget' args [data.product.sku] only %}{% endwidget %}
-            </div>
-            <div class="col col--sm-12 col--lg-7 spacing-bottom">
-                <button type="submit" class="button button--large button--expand button--alternative" {{ isDisabled ? 'disabled' }} {{ qa('add-to-cart-button') }} data-init-single-click>
-                    {% include atom('icon') with {
-                        modifiers: ['big'],
-                        data: {
-                            name: 'cart-plus',
-                        },
-                    } only %}
+                    {% widget 'ProductDiscontinuedNoteWidget' args [data.product.sku] only %}{% endwidget %}
+                </div>
+                <div class="col col--sm-12 col--lg-7 spacing-bottom">
+                    <button type="submit" class="button button--large button--expand button--alternative" {{ isDisabled ? 'disabled' }} {{ qa('add-to-cart-button') }} data-init-single-click>
+                        {% include atom('icon') with {
+                            modifiers: ['big'],
+                            data: {
+                                name: 'cart-plus',
+                            },
+                        } only %}
 
-                    {{ 'page.detail.add-to-cart' | trans }}
-                </button>
+                        {{ 'page.detail.add-to-cart' | trans }}
+                    </button>
+                </div>
             </div>
-        </div>
         {% endwidget %}
     </form>
 
@@ -131,12 +120,4 @@
         {% widget 'AvailabilityNotificationSubscriptionWidget' args [data.product] only %}{% endwidget %}
     {% endif %}
 
-    {% if isProductAvailable %}
-        {% include molecule('wishlist-selector-for-pdp', 'WishlistWidget') ignore missing with {
-            data: {
-                sku: data.product.sku,
-                idProductConcrete: data.product.idProductConcrete | default
-            }
-        } only %}
-    {% endif %}
 {% endblock %}

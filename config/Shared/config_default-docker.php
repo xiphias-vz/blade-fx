@@ -70,7 +70,7 @@ if (getenv('SPRYKER_DEBUG_ENABLED')) {
 /* end of ACL */
 
 /* ZED */
-$config[ApplicationConstants::HOST_ZED] = getenv('SPRYKER_ZED_HOST');
+$config[ApplicationConstants::HOST_ZED] = defined('HOST_ZED') ? HOST_ZED : getenv('SPRYKER_ZED_HOST');
 $config[SessionConstants::ZED_SESSION_COOKIE_NAME] = $config[ApplicationConstants::HOST_ZED];
 $config[SessionConstants::ZED_SESSION_COOKIE_DOMAIN] = getenv('SPRYKER_BE_HOST');
 $config[ApplicationConstants::ZED_TRUSTED_HOSTS]
@@ -90,7 +90,7 @@ $config[ApplicationConstants::BASE_URL_SSL_ZED] = sprintf(
 );
 $config[ZedRequestConstants::HOST_ZED_API] = sprintf(
     '%s:%d',
-    getenv('SPRYKER_ZED_HOST'),
+    defined('HOST_ZED') ? HOST_ZED : getenv('SPRYKER_ZED_HOST'),
     getenv('SPRYKER_ZED_PORT')
 );
 $config[ZedRequestConstants::BASE_URL_ZED_API] = sprintf(
@@ -304,7 +304,7 @@ $config[StorageRedisConstants::STORAGE_REDIS_PROTOCOL] = 'tcp';
 $config[StorageRedisConstants::STORAGE_REDIS_HOST] = getenv('SPRYKER_KEY_VALUE_STORE_HOST');
 $config[StorageRedisConstants::STORAGE_REDIS_PORT] = getenv('SPRYKER_KEY_VALUE_STORE_PORT');
 $config[StorageRedisConstants::STORAGE_REDIS_PASSWORD] = false;
-$config[StorageRedisConstants::STORAGE_REDIS_DATABASE] = getenv('SPRYKER_KEY_VALUE_STORE_NAMESPACE');
+$config[StorageRedisConstants::STORAGE_REDIS_DATABASE] = defined('SPRYKER_KEY_VALUE_STORE_NAMESPACE') ? SPRYKER_KEY_VALUE_STORE_NAMESPACE : getenv('SPRYKER_KEY_VALUE_STORE_NAMESPACE');
 
 // ---------- Session
 $config[SessionRedisConstants::YVES_SESSION_REDIS_PROTOCOL] = 'tcp';
