@@ -71,7 +71,9 @@ class PickerControllerRestrictionEventDispatcherPlugin extends AbstractPlugin im
      */
     protected function isPickingAvailable(Request $request): bool
     {
-        if ($request->getSession()->has($this->getConfig()->getPickingZoneSessionKey())) {
+        $selectedPickingZoneTransfer = $this->getFacade()->findPickingZoneInSession();
+
+        if ($selectedPickingZoneTransfer) {
             return true;
         }
 
@@ -80,15 +82,5 @@ class PickerControllerRestrictionEventDispatcherPlugin extends AbstractPlugin im
         }
 
         return false;
-    }
-
-    /**
-     * @param \Symfony\Component\HttpFoundation\Request $request
-     *
-     * @return bool
-     */
-    protected function isPickingZoneSelected(Request $request): bool
-    {
-        return $request->getSession()->has($this->getConfig()->getPickingZoneSessionKey());
     }
 }

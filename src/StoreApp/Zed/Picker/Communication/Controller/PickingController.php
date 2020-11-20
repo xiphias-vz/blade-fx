@@ -14,6 +14,7 @@ use Generated\Shared\Transfer\MerchantTransfer;
 use Generated\Shared\Transfer\OrderCriteriaFilterTransfer;
 use Generated\Shared\Transfer\OrderTransfer;
 use Generated\Shared\Transfer\OrderUpdateRequestTransfer;
+use Generated\Shared\Transfer\PickingZoneTransfer;
 use Generated\Shared\Transfer\UserTransfer;
 use Pyz\Shared\Messages\MessagesConfig;
 use Pyz\Shared\Oms\OmsConfig;
@@ -51,10 +52,11 @@ class PickingController extends BaseOrderPickingController
      */
     public function indexAction(Request $request)
     {
+        $pickingZoneTransfer = $this->getFacade()->findPickingZoneInSession();
         $userTransfer = $this->getCurrentUser($request);
 
         $merchantSalesOrderTransfers = $this
-            ->findMerchantSalesOrderCollectionForPicking($userTransfer)
+            ->findMerchantSalesOrderCollectionForPicking($userTransfer, $pickingZoneTransfer)
             ->getMerchantSalesOrders();
 
         $idSalesOrdersForPicking = array_keys(
@@ -75,7 +77,8 @@ class PickingController extends BaseOrderPickingController
         $requestedDeliveryDatesByIdSalesOrders = $this->getFormattedDeliveryDates($idSalesOrdersForPicking);
 
         foreach ($idSalesOrdersForPicking as $idSalesOrder) {
-            $salesOrderTransfer = $this->getFactory()->getSalesFacade()->getOrderByIdSalesOrder($idSalesOrder);
+            $salesOrderTransfer = $this->getFactory()->getSalesFacade()
+                ->findOrderByIdSalesOrderAndPickingZoneForStoreApp($idSalesOrder, $pickingZoneTransfer->getName());
             $merchantSalesOrderTransfer = $merchantSalesOrderTransfers[$idSalesOrder];
 
             $pickerUserTransfer = $this->getPickerUserTransferByMerchantSalesOrder($merchantSalesOrderTransfer);
@@ -154,9 +157,10 @@ class PickingController extends BaseOrderPickingController
         }
 
         $idSalesOrder = $request->get(PickerConfig::REQUEST_PARAM_ID_ORDER) ?? 0;
+        $pickingZoneTransfer = $this->getFacade()->findPickingZoneInSession();
 
         $salesOrderTransfer = $this->getFactory()->getSalesFacade()
-            ->findOrderByIdSalesOrderForStoreApp($idSalesOrder);
+            ->findOrderByIdSalesOrderAndPickingZoneForStoreApp($idSalesOrder, $pickingZoneTransfer->getName());
 
         $aggregatedItemTransfers = $this->getFactory()->getItemAggregator()
             ->aggregateOrderItemsQuantities($salesOrderTransfer->getItems()->getArrayCopy());
@@ -303,17 +307,21 @@ class PickingController extends BaseOrderPickingController
 
     /**
      * @param \Generated\Shared\Transfer\UserTransfer $userTransfer
+     * @param \Generated\Shared\Transfer\PickingZoneTransfer $pickingZoneTransfer
      *
      * @return \Generated\Shared\Transfer\MerchantSalesOrderCollectionTransfer
      */
-    protected function findMerchantSalesOrderCollectionForPicking(UserTransfer $userTransfer): MerchantSalesOrderCollectionTransfer
-    {
+    protected function findMerchantSalesOrderCollectionForPicking(
+        UserTransfer $userTransfer,
+        PickingZoneTransfer $pickingZoneTransfer
+    ): MerchantSalesOrderCollectionTransfer {
         $orderCriteriaFilterTransfer = (new OrderCriteriaFilterTransfer())
             ->setMerchantReferences([$userTransfer->getMerchantReference()])
             ->setStoreStatuses([
                 OmsConfig::STORE_STATE_READY_FOR_PICKING,
                 OmsConfig::STORE_STATE_PICKED,
             ])
+            ->setPickingZoneName($pickingZoneTransfer->getName())
             ->setOrderCountLimit($this->getFactory()->getConfig()->getMaxOrdersCountToDisplay());
 
         return $this->getFactory()->getMerchantSalesOrderFacade()

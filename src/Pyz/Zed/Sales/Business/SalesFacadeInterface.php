@@ -194,4 +194,21 @@ interface SalesFacadeInterface extends SprykerSalesFacadeInterface
      * @return \Generated\Shared\Transfer\OrderTransfer|null
      */
     public function findOrderByIdSalesOrderForStoreApp(int $idSalesOrder): ?OrderTransfer;
+
+    /**
+     * Specification:
+     * - Retrieves an order using sales order ID.
+     * - Filters the order's items using the given picking zone name.
+     *
+     * @api
+     *
+     * @param int $idSalesOrder
+     * @param string $pickingZoneName
+     *
+     * @return \Generated\Shared\Transfer\OrderTransfer|null
+     */
+    public function findOrderByIdSalesOrderAndPickingZoneForStoreApp(
+        int $idSalesOrder,
+        string $pickingZoneName
+    ): ?OrderTransfer;
 }

@@ -24,13 +24,13 @@ class MerchantSalesOrderRepository extends SprykerMerchantSalesOrderRepository i
      * @inheritDoc
      */
     public function findMerchantSalesOrdersByOrderFilterCriteria(
-        OrderCriteriaFilterTransfer $orderFilterCriteriaTransport
+        OrderCriteriaFilterTransfer $orderFilterCriteriaTransfer
     ): MerchantSalesOrderCollectionTransfer {
         $merchantSalesOrderQuery = $this->getFactory()
             ->createMerchantSalesOrderQuery()
             ->joinWithMerchant();
 
-        $merchantSalesOrderQuery = $this->applyOrderFilterCriteriaToSalesQuery($merchantSalesOrderQuery, $orderFilterCriteriaTransport);
+        $merchantSalesOrderQuery = $this->applyOrderFilterCriteriaToSalesQuery($merchantSalesOrderQuery, $orderFilterCriteriaTransfer);
 
         $merchantSalesOrderEntities = $merchantSalesOrderQuery->find();
 
@@ -39,52 +39,52 @@ class MerchantSalesOrderRepository extends SprykerMerchantSalesOrderRepository i
 
     /**
      * @param \Orm\Zed\MerchantSalesOrder\Persistence\SpyMerchantSalesOrderQuery $merchantSalesOrderQuery
-     * @param \Generated\Shared\Transfer\OrderCriteriaFilterTransfer $orderFilterCriteriaTransport
+     * @param \Generated\Shared\Transfer\OrderCriteriaFilterTransfer $orderFilterCriteriaTransfer
      *
      * @return \Orm\Zed\MerchantSalesOrder\Persistence\SpyMerchantSalesOrderQuery
      */
     private function applyOrderFilterCriteriaToSalesQuery(
         SpyMerchantSalesOrderQuery $merchantSalesOrderQuery,
-        OrderCriteriaFilterTransfer $orderFilterCriteriaTransport
+        OrderCriteriaFilterTransfer $orderFilterCriteriaTransfer
     ): SpyMerchantSalesOrderQuery {
-        if ($orderFilterCriteriaTransport->isPropertyModified(
+        if ($orderFilterCriteriaTransfer->isPropertyModified(
             OrderCriteriaFilterTransfer::MERCHANT_REFERENCES
         )) {
             $merchantSalesOrderQuery
                 ->useMerchantQuery()
                     ->filterByMerchantReference_In(
-                        $orderFilterCriteriaTransport->getMerchantReferences()
+                        $orderFilterCriteriaTransfer->getMerchantReferences()
                     )
                 ->endUse();
         }
 
-        if ($orderFilterCriteriaTransport->isPropertyModified(
+        if ($orderFilterCriteriaTransfer->isPropertyModified(
             OrderCriteriaFilterTransfer::STORE_STATUSES
         )) {
             $merchantSalesOrderQuery
                 ->filterByStoreStatus_In(
-                    $orderFilterCriteriaTransport->getStoreStatuses()
+                    $orderFilterCriteriaTransfer->getStoreStatuses()
                 );
         }
 
-        if ($orderFilterCriteriaTransport->isPropertyModified(
+        if ($orderFilterCriteriaTransfer->isPropertyModified(
             OrderCriteriaFilterTransfer::ID_SALES_ORDERS
         )) {
             $merchantSalesOrderQuery->filterByFkSalesOrder_In(
-                $orderFilterCriteriaTransport->getIdSalesOrders()
+                $orderFilterCriteriaTransfer->getIdSalesOrders()
             );
         }
 
-        $isAssignedIdUsersPropertyModified = $orderFilterCriteriaTransport->isPropertyModified(
+        $isAssignedIdUsersPropertyModified = $orderFilterCriteriaTransfer->isPropertyModified(
             OrderCriteriaFilterTransfer::ASSIGNED_ID_USERS
         );
         if ($isAssignedIdUsersPropertyModified) {
-            $filteredIdUsers = array_filter($orderFilterCriteriaTransport->getAssignedIdUsers());
+            $filteredIdUsers = array_filter($orderFilterCriteriaTransfer->getAssignedIdUsers());
 
             $merchantSalesOrderQuery->filterByFkUser_In($filteredIdUsers);
         }
 
-        if ($orderFilterCriteriaTransport->getAssignedIdUserCanBeNull() === true) {
+        if ($orderFilterCriteriaTransfer->getAssignedIdUserCanBeNull() === true) {
             if ($isAssignedIdUsersPropertyModified) {
                 $merchantSalesOrderQuery->_or();
             }
@@ -92,10 +92,10 @@ class MerchantSalesOrderRepository extends SprykerMerchantSalesOrderRepository i
             $merchantSalesOrderQuery->filterByFkUser(null);
         }
 
-        if ($orderFilterCriteriaTransport->isPropertyModified(
+        if ($orderFilterCriteriaTransfer->isPropertyModified(
             OrderCriteriaFilterTransfer::DELIVERY_DATE
         )) {
-            $minDeliveryDateTime = (new DateTime($orderFilterCriteriaTransport->getDeliveryDate()))
+            $minDeliveryDateTime = (new DateTime($orderFilterCriteriaTransfer->getDeliveryDate()))
                 ->setTime(0, 0);
             $maxDeliveryDateTime = (clone $minDeliveryDateTime)
                 ->setTime(23, 59);
@@ -108,12 +108,24 @@ class MerchantSalesOrderRepository extends SprykerMerchantSalesOrderRepository i
             );
         }
 
-        if ($orderFilterCriteriaTransport->isPropertyModified(
+        if ($orderFilterCriteriaTransfer->isPropertyModified(
             OrderCriteriaFilterTransfer::ORDER_COUNT_LIMIT
         )) {
             $merchantSalesOrderQuery->limit(
-                $orderFilterCriteriaTransport->getOrderCountLimit()
+                $orderFilterCriteriaTransfer->getOrderCountLimit()
             );
+        }
+
+        if ($orderFilterCriteriaTransfer->isPropertyModified(
+            OrderCriteriaFilterTransfer::PICKING_ZONE_NAME
+        )) {
+            $merchantSalesOrderQuery
+                ->useOrderQuery()
+                    ->joinItem()
+                    ->useItemQuery()
+                        ->filterByPickZone($orderFilterCriteriaTransfer->getPickingZoneName())
+                    ->endUse()
+                ->endUse();
         }
 
         $merchantSalesOrderQuery->orderByRequestedDeliveryDate();
