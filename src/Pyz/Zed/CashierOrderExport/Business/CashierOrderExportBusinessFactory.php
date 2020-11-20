@@ -7,6 +7,8 @@
 
 namespace Pyz\Zed\CashierOrderExport\Business;
 
+use Pyz\Zed\CashierOrderExport\Business\Aggregator\OrderItemAggregator;
+use Pyz\Zed\CashierOrderExport\Business\Aggregator\OrderItemAggregatorInterface;
 use Pyz\Zed\CashierOrderExport\Business\Builder\CashierOrderContentBuilder;
 use Pyz\Zed\CashierOrderExport\Business\Builder\CashierOrderContentBuilderInterface;
 use Pyz\Zed\CashierOrderExport\Business\Checker\CashierOrderExportStatusChecker;
@@ -43,7 +45,8 @@ class CashierOrderExportBusinessFactory extends AbstractBusinessFactory
     {
         return new CashierOrderExporter(
             $this->createCashierOrderWriter(),
-            $this->createCashierOrderContentBuilder()
+            $this->createCashierOrderContentBuilder(),
+            $this->createOrderItemAggregator()
         );
     }
 
@@ -124,6 +127,14 @@ class CashierOrderExportBusinessFactory extends AbstractBusinessFactory
     public function createCashierOrderExportStatusChecker(): CashierOrderExportStatusCheckerInterface
     {
         return new CashierOrderExportStatusChecker($this->getSalesFacade());
+    }
+
+    /**
+     * @return \Pyz\Zed\CashierOrderExport\Business\Aggregator\OrderItemAggregatorInterface
+     */
+    public function createOrderItemAggregator(): OrderItemAggregatorInterface
+    {
+        return new OrderItemAggregator();
     }
 
     /**
