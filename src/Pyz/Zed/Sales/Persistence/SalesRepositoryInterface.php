@@ -50,7 +50,7 @@ interface SalesRepositoryInterface extends SprykerSalesRepositoryInterface
 
     /**
      * @param int $idSalesOrder
-     * @param array $states
+     * @param string[] $states
      *
      * @return string[]
      */

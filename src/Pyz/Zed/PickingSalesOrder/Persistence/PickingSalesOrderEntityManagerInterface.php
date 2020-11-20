@@ -21,6 +21,8 @@ interface PickingSalesOrderEntityManagerInterface
 
     /**
      * @param \Generated\Shared\Transfer\PickingSalesOrderCriteriaTransfer $pickingSalesOrderCriteriaTransfer
+     *
+     * @return void
      */
     public function delete(PickingSalesOrderCriteriaTransfer $pickingSalesOrderCriteriaTransfer): void;
 }

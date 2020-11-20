@@ -44,10 +44,6 @@ class PickingSalesOrderEntityManager extends AbstractEntityManager implements Pi
             $pickingSalesOrderCriteriaTransfer
         )->find();
 
-        if (!$pickingSalesOrderEntities) {
-            return;
-        }
-
         $pickingSalesOrderEntities->delete();
     }
 
