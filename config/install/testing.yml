@@ -115,6 +115,8 @@ sections:
         update-product-labels:
             command: "vendor/bin/console product-label:relations:update"
 
+        local-env-data-reset:
+            command: "vendor/bin/install -r local-env-data-reset"
 
     queue:
         run-worker:

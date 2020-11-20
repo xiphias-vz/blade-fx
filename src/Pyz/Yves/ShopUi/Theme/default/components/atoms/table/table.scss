@@ -10,7 +10,7 @@
         &__head {
             font-weight: fw(bold);
             border-bottom: none;
-            background-color: $setting-color-gray-1;
+            background-color: $setting-color-globus-darkGray;
         }
 
         th,
@@ -20,6 +20,14 @@
             &:not(#{$name}__col--right) {
                 text-align: left;
             }
+        }
+
+        tr.table__row:nth-child(odd) {
+            background-color: $setting-color-globus-white;
+        }
+
+        tr.table__row:nth-child(even) {
+            background-color: $setting-color-globus-lightGray;
         }
 
         &__row {
