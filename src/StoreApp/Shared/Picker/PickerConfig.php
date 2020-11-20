@@ -24,6 +24,7 @@ class PickerConfig
 
     public const URL_PICKING_LIST = '/picker/picking';
     public const URL_START_ORDER_PICKING = '/picker/picking/start-order-picking';
+    public const URL_STOP_ORDER_PICKING = '/picker/picking/stop-order-picking';
     public const URL_ORDER_PICKING = '/picker/picking/order-picking';
 
     public const URL_COLLECT_BY_CUSTOMER_LIST = '/picker/collect-by-customer';

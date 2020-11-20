@@ -7,6 +7,7 @@
 
 namespace Pyz\Zed\PickingZone\Business;
 
+use Generated\Shared\Transfer\OrderPickingBlockTransfer;
 use Generated\Shared\Transfer\PickingZoneTransfer;
 
 interface PickingZoneFacadeInterface
@@ -34,4 +35,46 @@ interface PickingZoneFacadeInterface
      * @return \Generated\Shared\Transfer\PickingZoneTransfer|null
      */
     public function findPickingZoneById(int $idPickingZone): ?PickingZoneTransfer;
+
+    /**
+     * Specification:
+     * - Creates an order picking block found using OrderPickingBlock transfer.
+     * - Returns OrderPickingBlock with an actual fields data.
+     *
+     * @api
+     *
+     * @param \Generated\Shared\Transfer\OrderPickingBlockTransfer $orderPickingBlockTransfer
+     *
+     * @return \Generated\Shared\Transfer\OrderPickingBlockTransfer
+     */
+    public function createOrderPickingBlock(
+        OrderPickingBlockTransfer $orderPickingBlockTransfer
+    ): OrderPickingBlockTransfer;
+
+    /**
+     * Specification:
+     * - Requires OrderPickingBlockTransfer.idSalesOrder.
+     * - Requires OrderPickingBlockTransfer.idPickingZone.
+     * - Requires OrderPickingBlockTransfer.idUser.
+     * - Checks whether sales order picking block is available for given user.
+     *
+     * @api
+     *
+     * @param \Generated\Shared\Transfer\OrderPickingBlockTransfer $orderPickingBlockTransfer
+     *
+     * @return bool
+     */
+    public function isOrderPickingBlockAvailableForUser(OrderPickingBlockTransfer $orderPickingBlockTransfer): bool;
+
+    /**
+     * Specification:
+     * - Deletes an order picking block found using OrderPickingBlock transfer.
+     *
+     * @api
+     *
+     * @param \Generated\Shared\Transfer\OrderPickingBlockTransfer $orderPickingBlockTransfer
+     *
+     * @return void
+     */
+    public function deleteOrderPickingBlock(OrderPickingBlockTransfer $orderPickingBlockTransfer): void;
 }

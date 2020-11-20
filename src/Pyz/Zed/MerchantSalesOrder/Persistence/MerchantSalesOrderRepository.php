@@ -9,14 +9,18 @@ namespace Pyz\Zed\MerchantSalesOrder\Persistence;
 
 use DateTime;
 use Generated\Shared\Transfer\MerchantSalesOrderCollectionTransfer;
-use Generated\Shared\Transfer\MerchantSalesOrderTransfer;
 use Generated\Shared\Transfer\OrderCriteriaFilterTransfer;
+use Generated\Shared\Transfer\OrderPickingBlockTransfer;
+use Orm\Zed\MerchantSalesOrder\Persistence\Map\SpyMerchantSalesOrderTableMap;
 use Orm\Zed\MerchantSalesOrder\Persistence\SpyMerchantSalesOrderQuery;
-use Propel\Runtime\Collection\ObjectCollection;
+use Orm\Zed\PickingZone\Persistence\Map\PyzOrderPickingBlockTableMap;
+use Orm\Zed\PickingZone\Persistence\Map\PyzPickingZoneTableMap;
+use Orm\Zed\Sales\Persistence\Map\SpySalesOrderItemTableMap;
+use Propel\Runtime\ActiveQuery\Criteria;
 use Spryker\Zed\MerchantSalesOrder\Persistence\MerchantSalesOrderRepository as SprykerMerchantSalesOrderRepository;
 
 /**
- * @method \Spryker\Zed\MerchantSalesOrder\Persistence\MerchantSalesOrderPersistenceFactory getFactory()
+ * @method \Pyz\Zed\MerchantSalesOrder\Persistence\MerchantSalesOrderPersistenceFactory getFactory()
  */
 class MerchantSalesOrderRepository extends SprykerMerchantSalesOrderRepository implements MerchantSalesOrderRepositoryInterface
 {
@@ -34,7 +38,8 @@ class MerchantSalesOrderRepository extends SprykerMerchantSalesOrderRepository i
 
         $merchantSalesOrderEntities = $merchantSalesOrderQuery->find();
 
-        return $this->mapMerchantSalesOrderEntitiesToCollectionTransfer($merchantSalesOrderEntities);
+        return $this->getFactory()->createMerchantSalesOrderMapper()
+            ->mapMerchantSalesOrderEntitiesToCollectionTransfer($merchantSalesOrderEntities);
     }
 
     /**
@@ -116,47 +121,43 @@ class MerchantSalesOrderRepository extends SprykerMerchantSalesOrderRepository i
             );
         }
 
-        if ($orderFilterCriteriaTransfer->isPropertyModified(
-            OrderCriteriaFilterTransfer::PICKING_ZONE_NAME
-        )) {
+        if ($orderFilterCriteriaTransfer->isPropertyModified(OrderCriteriaFilterTransfer::ID_PICKING_ZONE)
+            && $orderFilterCriteriaTransfer->isPropertyModified(OrderCriteriaFilterTransfer::ID_USER)
+        ) {
             $merchantSalesOrderQuery
                 ->useOrderQuery()
                     ->joinItem()
                     ->useItemQuery()
-                        ->filterByPickZone($orderFilterCriteriaTransfer->getPickingZoneName())
+                        ->addJoin(
+                            SpySalesOrderItemTableMap::COL_PICK_ZONE,
+                            PyzPickingZoneTableMap::COL_NAME,
+                            Criteria::INNER_JOIN
+                        )
                     ->endUse()
-                ->endUse();
+                    ->leftJoinPyzOrderPickingBlock()
+                    ->addJoinCondition(
+                        'PyzOrderPickingBlock',
+                        sprintf(
+                            '%s = %s',
+                            PyzPickingZoneTableMap::COL_ID_PICKING_ZONE,
+                            PyzOrderPickingBlockTableMap::COL_FK_PICKING_ZONE
+                        )
+                    )
+                ->endUse()
+                ->where(sprintf(
+                    '%s = %s AND (%s = %s OR %s IS NULL)',
+                    PyzPickingZoneTableMap::COL_ID_PICKING_ZONE,
+                    $orderFilterCriteriaTransfer->getIdPickingZone(),
+                    PyzOrderPickingBlockTableMap::COL_FK_USER,
+                    $orderFilterCriteriaTransfer->getIdUser(),
+                    PyzOrderPickingBlockTableMap::COL_FK_USER
+                ))
+                ->withColumn(PyzOrderPickingBlockTableMap::COL_FK_USER, OrderPickingBlockTransfer::ID_USER)
+                ->groupBy(SpyMerchantSalesOrderTableMap::COL_ID_MERCHANT_SALES_ORDER);
         }
 
         $merchantSalesOrderQuery->orderByRequestedDeliveryDate();
 
         return $merchantSalesOrderQuery;
-    }
-
-    /**
-     * @param \Propel\Runtime\Collection\ObjectCollection|\Orm\Zed\MerchantSalesOrder\Persistence\SpyMerchantSalesOrder[] $merchantSalesOrderEntities
-     *
-     * @return \Generated\Shared\Transfer\MerchantSalesOrderCollectionTransfer
-     */
-    private function mapMerchantSalesOrderEntitiesToCollectionTransfer(
-        ObjectCollection $merchantSalesOrderEntities
-    ): MerchantSalesOrderCollectionTransfer {
-        $merchantSalesOrderCollectionTransfer = new MerchantSalesOrderCollectionTransfer();
-
-        $merchantSalesOrderMapper = $this->getFactory()->createMerchantSalesOrderMapper();
-
-        foreach ($merchantSalesOrderEntities as $merchantSalesOrderEntity) {
-            $merchantSalesOrderTransfer = $merchantSalesOrderMapper->mapMerchantSalesOrderEntityToMerchantSalesOrderTransfer(
-                $merchantSalesOrderEntity,
-                new MerchantSalesOrderTransfer()
-            );
-
-            $merchantSalesOrderCollectionTransfer->getMerchantSalesOrders()->offsetSet(
-                $merchantSalesOrderTransfer->getFkSalesOrder(),
-                $merchantSalesOrderTransfer
-            );
-        }
-
-        return $merchantSalesOrderCollectionTransfer;
     }
 }

@@ -20,6 +20,7 @@ picker.picking.order.status-action,Status/Aktion
 picker.picking.order.status.done,Erledigt
 picker.picking.order.action,Aktion
 picker.picking.order.action.start,Start
+picker.picking.order.action.stop,Entsperren
 
 picker.picking.confirmation,Fertig
 

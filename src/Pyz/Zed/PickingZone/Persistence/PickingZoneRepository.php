@@ -7,6 +7,7 @@
 
 namespace Pyz\Zed\PickingZone\Persistence;
 
+use Generated\Shared\Transfer\OrderPickingBlockTransfer;
 use Generated\Shared\Transfer\PickingZoneTransfer;
 use Spryker\Zed\Kernel\Persistence\AbstractRepository;
 
@@ -45,6 +46,33 @@ class PickingZoneRepository extends AbstractRepository implements PickingZoneRep
             ->mapPickingZoneEntityToPickingZoneTransfer(
                 $pickingZoneEntity,
                 new PickingZoneTransfer()
+            );
+    }
+
+    /**
+     * @param int $idSalesOrder
+     * @param int $idPickingZone
+     *
+     * @return \Generated\Shared\Transfer\OrderPickingBlockTransfer|null
+     */
+    public function findOrderPickingBlock(int $idSalesOrder, int $idPickingZone): ?OrderPickingBlockTransfer
+    {
+        $factory = $this->getFactory();
+        $orderPickingBlockQuery = $factory->createOrderPickingBlockQuery()
+            ->filterByFkSalesOrder($idSalesOrder)
+            ->filterByFkPickingZone($idPickingZone)
+            ->findOne();
+
+        $orderPickingBlockEntity = $orderPickingBlockQuery;
+
+        if (!$orderPickingBlockEntity) {
+            return null;
+        }
+
+        return $factory->createPickingZoneMapper()
+            ->mapOrderPickingBlockEntityToOrderPickingBlockTransfer(
+                $orderPickingBlockEntity,
+                new OrderPickingBlockTransfer()
             );
     }
 }
