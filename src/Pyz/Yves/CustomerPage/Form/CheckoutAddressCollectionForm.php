@@ -42,11 +42,12 @@ class CheckoutAddressCollectionForm extends SprykerShopCheckoutAddressCollection
     protected function addTextAreaMessage(FormBuilderInterface $builder)
     {
         $builder->add(self::OPTION_CART_NOTE, TextareaType::class, [
-            'label' => 'cart.checkout.address.abholstation.note.down',
+            'label' => ' ',
             'required' => false,
             'trim' => false,
             'attr' => [
                 'placeholder' => 'cart.checkout.address.abholstation.textarea.note',
+                'class' => 'txtarea--checkout',
             ],
         ]);
 

@@ -982,15 +982,16 @@ checkout.step.summary.overview,Übersicht,de_DE
 checkout.step.summary.sub_total,Zwischensumme,de_DE
 checkout.step.summary.sub_total,Subtotal,en_US
 checkout.step.summary.grand_total,Summe,de_DE
+checkout.step.summary.grand_total_Globus,Zwischensumme,de_DE
 checkout.step.summary.grand_total,Grand Total,en_US
 checkout.step.summary.payment,Zahlung,de_DE
 checkout.step.summary.payment,Payment,en_US
-checkout.step.summary.shipping,Service,de_DE
+checkout.step.summary.shipping,Abholzeitpunkt,de_DE
 checkout.step.summary.shipping,Shipment,en_US
 checkout.step.summary.tax,Mehrwertsteuer,de_DE
 checkout.step.summary.tax,Tax,en_US
 checkout.step.summary.total,Complete checkout,en_US
-checkout.step.summary.total,Checkout abschließen,de_DE
+checkout.step.summary.total,Bestellung abschließen,de_DE
 checkout.step.summary.shipment_costs_total,"Shipment costs (total)",en_US
 checkout.step.summary.shipment_costs_total,"Versandkosten (insgesamt)",de_DE
 checkout.step.summary.delivery_method,Zustellungsmethode,de_DE
@@ -1002,7 +1003,7 @@ checkout.step.summary.delivery_address,Delivery Address,en_US
 checkout.step.summary.products,"Products",en_US
 checkout.step.summary.products,"Produkte",de_DE
 checkout.step.place.order,Submit your order,en_US
-checkout.step.place.order,Wunscheinkauf übermitteln,de_DE
+checkout.step.place.order,Zur Kasse,de_DE
 checkout.step.payment.must_be_older_than_18_years,You must be at least 18 years old.,en_US
 checkout.step.payment.must_be_older_than_18_years,Sie müssen mindestens 18 Jahre alt sein.,de_DE
 checkout.step.success.title,Thank you.,en_US

@@ -1,8 +1,8 @@
 {% extends view('address', '@SprykerShop:CheckoutPage') %}
 
 {% define data = {
-    isBillingSameAsShippingChecked: _view.isBillingSameAsShippingChecked
-
+    isBillingSameAsShippingChecked: _view.isBillingSameAsShippingChecked,
+    merchantName: app['merchant_name'] | default,
 } %}
 
 {% block content %}
@@ -91,14 +91,21 @@
                     <div class="checkout-block">
                         <h2 class="title title--primary">{{ 'page.checkout.address.abhol-address' | trans }}</h2>
 
-                        <p class="spacing-bottom spacing-bottom--bigger">{{ 'cart.checkout.address.abholstation.note.up' | trans }}</p>
+                        <p class="spacing-bottom spacing-bottom--bigger text-color-1">{{ 'cart.checkout.address.abholstation.note.up' | trans }}</p>
 
-                        <div class="spacing-bottom spacing-bottom--bigger">
-                            <span>
-                                {{- app['merchant_name'] -}}
-                            </span>
+                        <div class="spacing-bottom spacing-bottom--bigger text-color-1">
+                            <p>Abholstation</p>
+{#                            <span>#}
+{#                                {{- app['merchant_name'] -}}#}
+{#                            </span>#}
+                            {% if data.merchantName is defined %}
+                                <span class="{{ config.name }}__text">{{ data.merchantName }}</span>
+                            {% endif %}
                         </div>
-                        <div class="spacing-bottom">
+                        <div class="text-color-1">
+                            <p>Nachricht an die Abholstation</p>
+                        </div>
+                        <div class="spacing-bottom text-color-1">
                             {{ form_row(data.form.cart_note, {
                                 placeholder: 'cart.checkout.address.abholstation.textarea.note' | trans,
                             }) }}
