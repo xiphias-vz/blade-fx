@@ -26,7 +26,7 @@ interface PickingSalesOrderFacadeInterface
 
     /**
      * Specification:
-     * - Retrieves collection of  PickingSalesOrder Transfer.
+     * - Retrieves collection of PickingSalesOrder Transfer.
      *
      * @api
      *

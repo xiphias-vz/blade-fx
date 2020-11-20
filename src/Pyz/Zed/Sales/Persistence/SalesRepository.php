@@ -9,7 +9,6 @@ namespace Pyz\Zed\Sales\Persistence;
 
 use DateTime;
 use Generated\Shared\Transfer\OrderCriteriaFilterTransfer;
-use Orm\Zed\Oms\Persistence\SpyOmsOrderItemStateQuery;
 use Orm\Zed\Payone\Persistence\Map\SpyPaymentPayoneTableMap;
 use Orm\Zed\Sales\Persistence\Map\SpySalesOrderItemTableMap;
 use Orm\Zed\Sales\Persistence\Map\SpySalesOrderTableMap;

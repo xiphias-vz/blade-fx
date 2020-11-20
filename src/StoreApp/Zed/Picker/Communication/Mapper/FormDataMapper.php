@@ -58,7 +58,6 @@ class FormDataMapper implements FormDataMapperInterface
 
     /**
      * @param array $containerIdToShelveCodeMap
-     *
      * @param \Generated\Shared\Transfer\OrderTransfer $salesOrderTransfer
      *
      * @return \Generated\Shared\Transfer\PickingSalesOrderCollectionTransfer

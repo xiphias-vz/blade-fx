@@ -14,6 +14,7 @@ use Spryker\Zed\Kernel\Business\AbstractBusinessFactory;
 /**
  * @method \Pyz\Zed\PickingSalesOrder\Persistence\PickingSalesOrderEntityManagerInterface getEntityManager()
  * @method \Pyz\Zed\PickingSalesOrder\PickingSalesOrderConfig getConfig()
+ * @method \Pyz\Zed\PickingSalesOrder\Persistence\PickingSalesOrderRepositoryInterface getRepository()
  */
 class PickingSalesOrderBusinessFactory extends AbstractBusinessFactory
 {

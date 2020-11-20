@@ -8,7 +8,6 @@
 namespace Pyz\Zed\PickingSalesOrder\Business\Writer;
 
 use Generated\Shared\Transfer\PickingSalesOrderCollectionTransfer;
-use Generated\Shared\Transfer\PickingSalesOrderTransfer;
 
 interface PickingSalesOrderWriterInterface
 {
@@ -18,11 +17,4 @@ interface PickingSalesOrderWriterInterface
      * @return void
      */
     public function updatePickingSalesOrderOrder(PickingSalesOrderCollectionTransfer $pickingSalesOrderCollectionTransfer): void;
-//
-//    /**
-//     * @param \Generated\Shared\Transfer\PickingSalesOrderTransfer $pickingSalesOrderTransfer
-//     *
-//     * @return void
-//     */
-//    public function createPickingSalesOrder(PickingSalesOrderTransfer $pickingSalesOrderTransfer): void;
 }

@@ -28,9 +28,6 @@ class PickingSalesOrderRepository extends AbstractRepository implements PickingS
         $pickingSalesOrderCollectionTransfer = (new PickingSalesOrderCollectionTransfer());
         $pickingSalesOrderQuery = $this->getFactory()
             ->createPickingSalesOrderQuery();
-//            ->joinWithSpyCountry()
-//            ->leftJoinWithSpyProductAbstract()
-//            ->joinWithSpyMerchant();
 
         $pickingSalesOrderQuery = $this->applyFilters($pickingSalesOrderQuery, $pickingSalesOrderCriteriaTransfer);
         $pyzPickingSalesOrderEntityCollection = $pickingSalesOrderQuery->find();

@@ -47,7 +47,6 @@ class SelectShelvesController extends BaseOrderPickingController
         $shelvesSelectionForm->handleRequest($request);
 
         if ($shelvesSelectionForm->isSubmitted() && $shelvesSelectionForm->isValid()) {
-
             return $this->processShelvesSelectionForm(
                 $shelvesSelectionForm,
                 $salesOrderTransfer

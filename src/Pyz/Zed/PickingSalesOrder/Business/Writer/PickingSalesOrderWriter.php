@@ -48,7 +48,7 @@ class PickingSalesOrderWriter implements PickingSalesOrderWriterInterface
      *
      * @return void
      */
-    public function createPickingSalesOrder(PickingSalesOrderTransfer $pickingSalesOrderTransfer): void
+    protected function createPickingSalesOrder(PickingSalesOrderTransfer $pickingSalesOrderTransfer): void
     {
         $this->pickingSalesOrderEntityManager->create($pickingSalesOrderTransfer);
     }

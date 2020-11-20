@@ -7,7 +7,6 @@
 
 namespace Pyz\Zed\PickingSalesOrder\Persistence;
 
-use Orm\Zed\PickingSalesOrder\Persistence\PyzPickingSalesOrder;
 use Orm\Zed\PickingSalesOrder\Persistence\PyzPickingSalesOrderQuery;
 use Pyz\Zed\PickingSalesOrder\Persistence\Propel\Mapper\PickingSalesOrderMapper;
 use Spryker\Zed\Kernel\Persistence\AbstractPersistenceFactory;
@@ -15,6 +14,7 @@ use Spryker\Zed\Kernel\Persistence\AbstractPersistenceFactory;
 /**
  * @method \Pyz\Zed\PickingSalesOrder\Persistence\PickingSalesOrderEntityManagerInterface getEntityManager()
  * @method \Pyz\Zed\PickingSalesOrder\PickingSalesOrderConfig getConfig()
+ * @method \Pyz\Zed\PickingSalesOrder\Persistence\PickingSalesOrderRepositoryInterface getRepository()
  */
 class PickingSalesOrderPersistenceFactory extends AbstractPersistenceFactory
 {
