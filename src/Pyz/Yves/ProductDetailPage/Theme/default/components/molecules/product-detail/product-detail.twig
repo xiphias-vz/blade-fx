@@ -18,10 +18,12 @@
 } %}
 
 {% block body %}
-    {% set modifiers = data.isBundle ? modifiers : modifiers | merge(['mobile', 'filter', 'desktop-border-bottom']) %}
-    {% set colClass = data.isBundle ? 'col col--sm-12' : config.name ~ '__col' %}
-    <div class="{{ component.renderClass(config.name ~ '__content', modifiers) }}">
-        {{ spyCmsBlock({ key: 'general-product-info', content: 'product.general.info'}) }}
+        {% if data.attributes['herkunftsland'] is defined %}
+            <p class="description-text-color">{{ 'product.info.additional.origin.country' | trans }}: {{ data.attributes['herkunftsland'] }}</p>
+        {% endif %}
+        {% if data.attributes['handelsklasse'] is defined %}
+            <p class="description-text-color">{{ 'product.info.additional.grading' | trans }}: {{ data.attributes['handelsklasse'] }}</p>
+        {% endif %}
         {% if data.attributes['Alkoholkontrolle erforderlich'] is defined %}
             {% if data.attributes['Alkoholkontrolle erforderlich'] == 18 %}
                 {{ spyCmsBlock({ key: 'alcohol-18'}) }}
@@ -29,12 +31,4 @@
                 {{ spyCmsBlock({ key: 'alcohol-16' }) }}
             {% endif %}
         {% endif %}
-        {% block contentText %}
-            {% include molecule('toggler-accordion') with {
-                attributes: {
-                    'trigger-class-name': config.jsName ~ '__toggler-trigger',
-                },
-            } only %}
-        {% endblock %}
-    </div>
 {% endblock %}
