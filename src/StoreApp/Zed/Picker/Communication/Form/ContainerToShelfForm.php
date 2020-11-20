@@ -34,8 +34,6 @@ class ContainerToShelfForm extends AbstractType
     {
         $this->addContainerCodeFiled($builder);
         $this->addShelfCodeFiled($builder);
-
-//        $builder->add(static::BUTTON_SUBMIT, SubmitType::class);
     }
 
     /**

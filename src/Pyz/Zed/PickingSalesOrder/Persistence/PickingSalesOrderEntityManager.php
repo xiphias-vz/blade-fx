@@ -42,8 +42,6 @@ class PickingSalesOrderEntityManager extends AbstractEntityManager implements Pi
             ->filterByContainerCode($pickingSalesOrderTransfer->getContainerCode())
             ->findOne();
 
-//        dd($pickingSalesOrderEntity->toArray(), $pickingSalesOrderTransfer->toArray());
-
         $pickingSalesOrderTransfer = $this->savePickingSalesOrder($pickingSalesOrderTransfer, $pickingSalesOrderEntity);
 
         return $pickingSalesOrderTransfer;

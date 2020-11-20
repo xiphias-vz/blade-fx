@@ -86,7 +86,7 @@ class SelectShelvesController extends BaseOrderPickingController
     ): RedirectResponse {
         $formData = $orderItemSelectionForm->getData();
 
-        $containerIdToShelveCodeMap = $this->getFactory()->getFormDataMapper()
+        $containerIdToShelfCodeMap = $this->getFactory()->getFormDataMapper()
             ->mapFormDataToSelectedQuantityMap(
                 $formData,
                 ShelvesSelectionForm::PREFIX_FIELD_CONTAINER_CODE
@@ -94,9 +94,9 @@ class SelectShelvesController extends BaseOrderPickingController
 
         $pickingSalesOrderCollectionTransfer = $this->getFactory()
             ->getFormDataMapper()
-            ->mapContainersToShelves($containerIdToShelveCodeMap, $salesOrderTransfer);
+            ->mapContainersToShelves($containerIdToShelfCodeMap, $salesOrderTransfer);
 
-        $this->getFactory()->getPickingSalesOrderFacade()->updatePickingSalesOrderOrder($pickingSalesOrderCollectionTransfer);
+        $this->getFactory()->getPickingSalesOrderFacade()->updatePickingSalesOrderCollection($pickingSalesOrderCollectionTransfer);
 
         $selectedIdSalesOrderItems = $this->getFactory()
             ->getSalesFacade()

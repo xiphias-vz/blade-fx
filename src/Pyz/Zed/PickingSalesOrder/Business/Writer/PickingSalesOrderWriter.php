@@ -45,7 +45,7 @@ class PickingSalesOrderWriter implements PickingSalesOrderWriterInterface
      *
      * @return void
      */
-    public function updatePickingSalesOrderOrder(PickingSalesOrderCollectionTransfer $pickingSalesOrderCollectionTransfer): void
+    public function updatePickingSalesOrderCollection(PickingSalesOrderCollectionTransfer $pickingSalesOrderCollectionTransfer): void
     {
         $this->getTransactionHandler()->handleTransaction(function () use ($pickingSalesOrderCollectionTransfer) {
             $this->executeUpdateTransaction($pickingSalesOrderCollectionTransfer);

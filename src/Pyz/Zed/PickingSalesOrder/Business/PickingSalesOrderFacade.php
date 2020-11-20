@@ -28,9 +28,9 @@ class PickingSalesOrderFacade extends AbstractFacade implements PickingSalesOrde
      *
      * @return void
      */
-    public function updatePickingSalesOrderOrder(PickingSalesOrderCollectionTransfer $pickingSalesOrderCollectionTransfer): void
+    public function updatePickingSalesOrderCollection(PickingSalesOrderCollectionTransfer $pickingSalesOrderCollectionTransfer): void
     {
-        $this->getFactory()->createPickingSalesOrderWriter()->updatePickingSalesOrderOrder($pickingSalesOrderCollectionTransfer);
+        $this->getFactory()->createPickingSalesOrderWriter()->updatePickingSalesOrderCollection($pickingSalesOrderCollectionTransfer);
     }
 
     /**
