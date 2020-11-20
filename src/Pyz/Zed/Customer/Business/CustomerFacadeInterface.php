@@ -19,4 +19,17 @@ interface CustomerFacadeInterface extends SprykerCustomerFacadeInterface
      * @return \Generated\Shared\Transfer\CustomerAddressResponseTransfer
      */
     public function isPostalCodeWhiteListed(CustomerAddressRequestTransfer $customerAddressRequestTransfer): CustomerAddressResponseTransfer;
+
+    /**
+     * Specification:
+     * - Finds customer by customer reference.
+     * - Sets `hasOrders` flag for the found customer to true.
+     *
+     * @api
+     *
+     * @param string $customerReference
+     *
+     * @return void
+     */
+    public function setCustomerHasOrderByCustomerReference(string $customerReference): void;
 }
