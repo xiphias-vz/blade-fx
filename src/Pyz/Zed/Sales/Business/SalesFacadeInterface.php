@@ -107,6 +107,19 @@ interface SalesFacadeInterface extends SprykerSalesFacadeInterface
 
     /**
      * Specification:
+     * - gets sales order item ids by sales order and oms order item states.
+     *
+     * @api
+     *
+     * @param int $idSalesOrder
+     * @param string[] $states
+     *
+     * @return string[]
+     */
+    public function getSalesOrderItemsIdsByIdSalesOrderAndStates(int $idSalesOrder, array $states): array;
+
+    /**
+     * Specification:
      * - save order reference.
      *
      * @api

@@ -23,6 +23,13 @@ interface PickerFacadeInterface
      *
      * @return void
      */
+    public function markOrderItemsAsContainerSelected(array $idSalesOrderItems): void;
+
+    /**
+     * @param int[] $idSalesOrderItems
+     *
+     * @return void
+     */
     public function markOrderItemsAsNotPicked(array $idSalesOrderItems): void;
 
     /**

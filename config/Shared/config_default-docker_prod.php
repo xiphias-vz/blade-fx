@@ -1,6 +1,5 @@
 <?php
 
-
 use Pyz\Shared\DataImport\DataImportConstants;
 
 require('config_default-docker.php');
