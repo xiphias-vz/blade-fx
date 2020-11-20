@@ -196,26 +196,7 @@ class CashierOrderContentBuilder implements CashierOrderContentBuilderInterface
     protected function getDepositPositionsContent(OrderTransfer $orderTransfer): string
     {
         $positionsContent = '';
-        $depositAggregationCollection = [];
-
-        foreach ($orderTransfer->getItems() as $itemTransfer) {
-            foreach ($itemTransfer->getProductOptions() as $productOption) {
-                $quantity = $productOption->getQuantity();
-                if (isset($depositAggregationCollection[$productOption->getSku()][static::QUANTITY])) {
-                    $quantity = $productOption->getQuantity() + $depositAggregationCollection[$productOption->getSku()][static::QUANTITY];
-                }
-                $depositAggregationCollection[$productOption->getSku()][static::QUANTITY] = $quantity;
-
-                $price = $productOption->getUnitGrossPrice();
-                if (isset($depositAggregationCollection[$productOption->getSku()][static::PRICE])) {
-                    $price = $productOption->getUnitGrossPrice() + $depositAggregationCollection[$productOption->getSku()][static::PRICE];
-                }
-                $depositAggregationCollection[$productOption->getSku()][static::PRICE] = $price;
-
-                $depositAggregationCollection[$productOption->getSku()][static::DEPOSIT_NAME] = $productOption->getValue();
-                $depositAggregationCollection[$productOption->getSku()][static::TAX_RATE] = $productOption->getTaxRate();
-            }
-        }
+        $depositAggregationCollection = $this->getAggregatedDepositCollection($orderTransfer);
 
         foreach ($depositAggregationCollection as $depositSkuIdentifier => $depositAggregation) {
             $positionsContent .= $this->getDepositPositionContent($orderTransfer, $depositAggregation, $depositSkuIdentifier);
@@ -263,6 +244,36 @@ class CashierOrderContentBuilder implements CashierOrderContentBuilderInterface
         );
 
         return $this->addEndingZeroSets($content, static::DEFAULT_POSITION_ENDING_ZERO_SETS);
+    }
+
+    /***
+     * @param \Generated\Shared\Transfer\OrderTransfer $orderTransfer
+     *
+     * @return array
+     */
+    protected function getAggregatedDepositCollection(OrderTransfer $orderTransfer): array
+    {
+        $depositAggregationCollection = [];
+        foreach ($orderTransfer->getItems() as $itemTransfer) {
+            foreach ($itemTransfer->getProductOptions() as $productOption) {
+                $quantity = $productOption->getQuantity();
+                if (isset($depositAggregationCollection[$productOption->getSku()][static::QUANTITY])) {
+                    $quantity = $productOption->getQuantity() + $depositAggregationCollection[$productOption->getSku()][static::QUANTITY];
+                }
+                $depositAggregationCollection[$productOption->getSku()][static::QUANTITY] = $quantity;
+
+                $price = $productOption->getUnitGrossPrice();
+                if (isset($depositAggregationCollection[$productOption->getSku()][static::PRICE])) {
+                    $price = $productOption->getUnitGrossPrice() + $depositAggregationCollection[$productOption->getSku()][static::PRICE];
+                }
+                $depositAggregationCollection[$productOption->getSku()][static::PRICE] = $price;
+
+                $depositAggregationCollection[$productOption->getSku()][static::DEPOSIT_NAME] = $productOption->getValue();
+                $depositAggregationCollection[$productOption->getSku()][static::TAX_RATE] = $productOption->getTaxRate();
+            }
+        }
+
+        return $depositAggregationCollection;
     }
 
     /**
