@@ -4,6 +4,8 @@ namespace Pyz\Zed\Sales\Business\OrderChange;
 
 use Generated\Shared\Transfer\OrderChangeRequestTransfer;
 use Generated\Shared\Transfer\OrderItemChangeRequestTransfer;
+use Orm\Zed\Sales\Persistence\SpySalesOrderChange;
+use Orm\Zed\Sales\Persistence\SpySalesOrderItem;
 use Spryker\Zed\Calculation\Business\CalculationFacadeInterface;
 use Spryker\Zed\Sales\Business\Model\Order\OrderUpdaterInterface;
 use Spryker\Zed\Sales\Business\Order\OrderHydratorInterface;
@@ -13,7 +15,7 @@ use Spryker\Zed\Sales\Persistence\SalesQueryContainerInterface;
 class OrderChangeSaver
 {
     /**
-     * @var \Spryker\Zed\Sales\Persistence\SalesQueryContainerInterface
+     * @var \Pyz\Zed\Sales\Persistence\SalesQueryContainerInterface
      */
     protected $salesQueryContainer;
 
@@ -59,9 +61,15 @@ class OrderChangeSaver
     {
         $this->salesQueryContainer->getConnection()->beginTransaction();
 
-        foreach($orderChangeRequestTransfer->getOrderItemChangeRequest() as $orderItemChangeRequest) {
-            $this->updateOrderItem($orderItemChangeRequest);
-            $this->storeOrderChange($orderItemChangeRequest);
+        foreach ($orderChangeRequestTransfer->getOrderItemChangeRequest() as $orderItemChangeRequest) {
+            $salesOrderItemEntity = $this->salesQueryContainer
+                ->querySalesOrderItem()
+                ->findOneByIdSalesOrderItem($orderItemChangeRequest->getIdSalesOrderItem());
+
+            $oldPrice = $salesOrderItemEntity->getGrossPrice();
+
+            $this->updateOrderItem($salesOrderItemEntity, $orderItemChangeRequest);
+            $this->storeOrderChange($oldPrice, $orderItemChangeRequest);
         }
 
         $this->recalculateOrder($orderChangeRequestTransfer);
@@ -78,12 +86,10 @@ class OrderChangeSaver
         $this->orderUpdater->update($orderTransfer, $orderChangeRequestTransfer->getFkSalesOrder());
     }
 
-    private function updateOrderItem(OrderItemChangeRequestTransfer $orderItemChangeRequest)
-    {
-        $salesOrderItemEntity = $this->salesQueryContainer
-            ->querySalesOrderItem()
-            ->findOneByIdSalesOrderItem($orderItemChangeRequest->getIdSalesOrderItem());
-
+    private function updateOrderItem(
+        SpySalesOrderItem $salesOrderItemEntity,
+        OrderItemChangeRequestTransfer $orderItemChangeRequest
+    ) {
         $salesOrderItemEntity->setQuantity($orderItemChangeRequest->getQuantity());
         $salesOrderItemEntity->setGrossPrice($orderItemChangeRequest->getPrice());
         $salesOrderItemEntity->setPrice($orderItemChangeRequest->getPrice());
@@ -91,8 +97,19 @@ class OrderChangeSaver
         $salesOrderItemEntity->save();
     }
 
-    private function storeOrderChange(OrderItemChangeRequestTransfer $orderItemChangeRequest)
+    /**
+     * @param int $oldPrice
+     * @param \Generated\Shared\Transfer\OrderItemChangeRequestTransfer $orderItemChangeRequest
+     *
+     * @return void
+     */
+    private function storeOrderChange(int $oldPrice, OrderItemChangeRequestTransfer $orderItemChangeRequest)
     {
-        // TODO
+        $orderChangeEntity = new SpySalesOrderChange();
+        $orderChangeEntity->setOldPrice($oldPrice);
+        $orderChangeEntity->setNewPrice($orderItemChangeRequest->getPrice());
+        $orderChangeEntity->setFkSalesOrderItem($orderItemChangeRequest->getIdSalesOrderItem());
+
+        $orderChangeEntity->save();
     }
 }

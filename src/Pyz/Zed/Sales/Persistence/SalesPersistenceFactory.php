@@ -7,6 +7,7 @@
 
 namespace Pyz\Zed\Sales\Persistence;
 
+use Orm\Zed\Sales\Persistence\SpySalesOrderChangeQuery;
 use Orm\Zed\Sales\Persistence\SpySalesShipmentQuery;
 use Spryker\Zed\Sales\Persistence\SalesPersistenceFactory as SprykerSalesPersistenceFactory;
 
@@ -25,4 +26,14 @@ class SalesPersistenceFactory extends SprykerSalesPersistenceFactory
     {
         return SpySalesShipmentQuery::create();
     }
+
+    /**
+     * @return \Orm\Zed\Sales\Persistence\SpySalesOrderChangeQuery
+     */
+    public function createSalesOrderChangeQuery(): SpySalesOrderChangeQuery
+    {
+        return SpySalesOrderChangeQuery::create();
+    }
+
+
 }

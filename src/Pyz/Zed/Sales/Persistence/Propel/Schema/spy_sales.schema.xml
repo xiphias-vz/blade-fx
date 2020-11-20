@@ -32,6 +32,7 @@
         <column name="sap_wgr" type="VARCHAR" size="255" required="false"/>
         <column name="bontext" type="VARCHAR" size="255" required="false"/>
         <column name="weight_per_unit" type="INTEGER" required="false"/>
+        <column name="new_weight" type="INTEGER" required="false"/>
         <index name="index-pick_zone">
             <index-column name="pick_zone"/>
         </index>
@@ -91,6 +92,14 @@
     <table name="spy_sales_order_address_history">
         <column name="additional_info" size="255" type="VARCHAR"/>
         <column name="floor" size="255" type="VARCHAR"/>
+    </table>
+
+    <table name="spy_sales_order_change">
+        <column name="id_sales_order_change" required="true" type="BIGINT" autoIncrement="true" primaryKey="true"/>
+        <column name="fk_sales_order_item" type="BIGINT" required="true"/>
+        <column name="old_price" type="INTEGER" required="false"/>
+        <column name="new_price" type="INTEGER" required="false"/>
+        <column name="new_weight" type="INTEGER" required="false"/>
     </table>
 
 </database>

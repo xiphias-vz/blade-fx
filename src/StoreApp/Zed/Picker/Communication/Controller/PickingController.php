@@ -282,23 +282,14 @@ class PickingController extends AbstractController
         $this->getFacade()->markOrderItemsAsPicked($selectedIdSalesOrderItems);
         $this->getFacade()->updateOrderPickingBagsCount($idSalesOrder, $pickingBagsCount);
 
-        $orderItemChangeRequestTransfer = $this->getFactory()->getFormDataMapper()
+        $orderChangeRequestTransfer = $this->getFactory()->getFormDataMapper()
             ->mapFormDataToOrderItemChangeRequest(
                 $formData,
                 $salesOrderTransfer,
                 OrderItemSelectionForm::PREFIX_FIELD_SALES_ORDER_ITEM_NEW_WEIGHT
             );
 
-        $orderChangeItem = new OrderItemChangeRequestTransfer();
-        $orderChangeItem->setIdSalesOrderItem(2);
-        $orderChangeItem->setPrice(1000);
-        $orderChangeItem->setQuantity(1);
-
-        $orderChange = new OrderChangeRequestTransfer();
-        $orderChange->addOrderItemChangeRequest($orderChangeItem);
-        $orderChange->setFkSalesOrder(1);
-
-        $this->getFactory()->getSalesFacade()->saveOrderChange($orderChange);
+        $this->getFactory()->getSalesFacade()->saveOrderChange($orderChangeRequestTransfer);
 
         return $this->redirectResponse(PickerConfig::URL_PICKING_LIST);
     }

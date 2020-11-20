@@ -7,9 +7,11 @@
 
 namespace StoreApp\Zed\Picker\Communication\Mapper;
 
+use Generated\Shared\Transfer\ItemTransfer;
 use Generated\Shared\Transfer\OrderChangeRequestTransfer;
 use Generated\Shared\Transfer\OrderItemChangeRequestTransfer;
 use Generated\Shared\Transfer\OrderTransfer;
+use InvalidArgumentException;
 
 class FormDataMapper implements FormDataMapperInterface
 {
@@ -66,8 +68,29 @@ class FormDataMapper implements FormDataMapperInterface
 
             $sku = $matches[1];
             $newWeight = $fieldValue;
+
+            $itemTransfer = $this->findItemInOrder($salesOrderTransfer, $sku);
+
+            $newPrice = $itemTransfer->getSumGrossPrice() / $itemTransfer->getWeightPerUnit() * $newWeight;
+
+            $orderItemChangeRequest->setQuantity($itemTransfer->getQuantity());
+            $orderItemChangeRequest->setPrice($newPrice);
+            $orderItemChangeRequest->setIdSalesOrderItem($itemTransfer->getIdSalesOrderItem());
+
+            $orderChangeRequest->addOrderItemChangeRequest($orderItemChangeRequest);
         }
 
         return $orderChangeRequest;
+    }
+
+    private function findItemInOrder(OrderTransfer $salesOrderTransfer, string $sku): ItemTransfer
+    {
+        foreach ($salesOrderTransfer->getItems() as $itemTransfer) {
+            if ($itemTransfer->getSku() === $sku) {
+                return $itemTransfer;
+            }
+        }
+
+        throw new InvalidArgumentException('No item found for sku ' . $sku);
     }
 }
