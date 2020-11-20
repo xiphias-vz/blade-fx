@@ -8,6 +8,7 @@
 namespace Pyz\Yves\CheckoutPage;
 
 use Pyz\Client\TimeSlot\TimeSlotClientInterface;
+use Pyz\Service\Shipment\ShipmentServiceInterface;
 use Pyz\Yves\CheckoutPage\Form\DataProvider\ShipmentFormDataProvider;
 use Pyz\Yves\CheckoutPage\Form\FormFactory;
 use Pyz\Yves\CheckoutPage\Process\StepFactory;
@@ -28,7 +29,8 @@ class CheckoutPageFactory extends SprykerShopCheckoutPageFactory
             $this->getShipmentService(),
             $this->getConfig(),
             $this->getProductBundleClient(),
-            $this->getTimeSlotClient()
+            $this->getTimeSlotClient(),
+            $this->getPyzShipmentService()
         );
     }
 
@@ -46,6 +48,14 @@ class CheckoutPageFactory extends SprykerShopCheckoutPageFactory
     public function getTimeSlotClient(): TimeSlotClientInterface
     {
         return $this->getProvidedDependency(CheckoutPageDependencyProvider::CLIENT_TIME_SLOT);
+    }
+
+    /**
+     * @return \Pyz\Service\Shipment\ShipmentServiceInterface
+     */
+    public function getPyzShipmentService(): ShipmentServiceInterface
+    {
+        return $this->getProvidedDependency(CheckoutPageDependencyProvider::PYZ_SERVICE_SHIPMENT);
     }
 
     /**

@@ -6,6 +6,14 @@
     showLangCurrencySwitches: true,
 } %}
 
+{% define hamburgerIcon = {
+    iconName: 'shop',
+    secondIconName: 'shop-filled',
+    isButton: true,
+    jsClass: 'js-header__navigation-trigger js-header__navigation-target js-page-layout-main--block-scroll-trigger icon--color-orange',
+ }
+%}
+
 {% block body %}
     <div class="{{ config.name }}__top">
         <div class="container">
@@ -41,6 +49,7 @@
                             {{ 'global.help' | trans }}
                         </a>
 
+
                         <a href="https://www.welcome.ccd.demo-spryker.com" class="link link--nav">
                             {% include atom('icon') with {
                                 modifiers: ['big'],
@@ -51,6 +60,7 @@
                             } only %}
                             {{ 'global.store_finder' | trans }}
                         </a>
+
 
                         {% if is_granted('ROLE_USER') %}
                             <a href="{{ url('logout') }}" class="link link--nav">
@@ -125,6 +135,17 @@
                             {% if data.showNavigation %}
                                 <div class="{{ config.name }}__row {{ config.name }}__navigation-top is-hidden-xl-only">
                                     {% block logoMobile %}
+                                        <button type="button" class="navigation-top-left-mobile__item button button--skinless {{ hamburgerIcon.jsClass }} button--no-inner-events">
+                                            {% block icon %}
+                                                {% include atom('icon') with {
+                                                    modifiers: ['big', 'lightOrange'],
+                                                    data: {
+                                                        name: hamburgerIcon.iconName,
+                                                    },
+                                                } only %}
+                                            {% endblock %}
+                                        </button>
+
                                         <div class="{{ config.name }}__logo">
                                             {% include molecule('logo') with {
                                                 modifiers: modifiers | merge(['header-mobile']),

@@ -1,7 +1,7 @@
 {% extends template('widget') %}
 
 {% define data = {
-    nodes: _widget.navigationTree.nodes,
+    nodes: _widget.navigationTree.nodes
 } %}
 
 {% block body %}
@@ -11,4 +11,5 @@
             nodes: data.nodes,
         },
     } only %}
+
 {% endblock %}
