@@ -23,7 +23,7 @@
                 shipping: data.forms.shipping,
                 billing: data.forms.billing,
                 items: data.forms.items,
-                bundleItems: data.forms.bundleItems,
+                bundleItems: data.forms.bundleItems
             },
             isMultipleShipmentEnabled: data.isMultipleShipmentEnabled,
             jsAddressClass: jsAddressClass,
@@ -95,7 +95,6 @@
                         <span class="{{ config.name }}__merchant">
                             {{- app['merchant_name'] -}}
                         </span>
-
 
                         <div class="{{ embed.jsAddressClass }}__billing-same-as-shipping is-hidden">
                             {{ form_row(data.form.billingSameAsShipping, {

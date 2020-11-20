@@ -44,8 +44,8 @@
 
         &__input:checked {
             & + #{$name}__box {
-                border-color: $setting-color-green;
-                background: $setting-color-green;
+                border-color: $setting-color-globus-darkOrange;
+                background: $setting-color-globus-darkOrange;
 
                 #{$name}__check {
                     opacity: 1;
@@ -59,7 +59,7 @@
         }
 
         &__input:focus + #{$name}__box {
-            border-color: $setting-color-green;
+            border-color: $setting-color-globus-darkOrange;
         }
 
         &__label {

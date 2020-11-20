@@ -70,6 +70,6 @@ class InvoiceSubForm extends AbstractSubForm
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $this->addDateOfBirth($builder);
+//        $this->addDateOfBirth($builder);
     }
 }

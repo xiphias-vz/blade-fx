@@ -20,7 +20,7 @@ use Symfony\Component\Form\FormInterface;
 
 class CheckoutAddressCollectionForm extends SprykerShopCheckoutAddressCollectionForm
 {
-    public const OPTION_MESSAGE_PICKUP = 'cart_note';
+    public const OPTION_CART_NOTE = 'cart_note';
     /**
      * @param \Symfony\Component\Form\FormBuilderInterface $builder
      * @param array $options
@@ -41,7 +41,7 @@ class CheckoutAddressCollectionForm extends SprykerShopCheckoutAddressCollection
 
     protected function addTextAreaMessage(FormBuilderInterface $builder)
     {
-        $builder->add(self::OPTION_MESSAGE_PICKUP, TextareaType::class, [
+        $builder->add(self::OPTION_CART_NOTE, TextareaType::class, [
             'label' => 'cart.checkout.address.abholstation.note.down',
             'required' => false,
             'trim' => false,
