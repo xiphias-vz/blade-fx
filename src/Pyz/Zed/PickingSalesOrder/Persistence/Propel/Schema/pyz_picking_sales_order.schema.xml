@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<database xmlns="spryker:schema-01" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" name="zed" xsi:schemaLocation="spryker:schema-01 https://static.spryker.com/schema-01.xsd"
+          namespace="Orm\Zed\PickingSalesOrder\Persistence"
+          package="src.Orm.Zed.PickingSalesOrder.Persistence">
+
+    <table name="pyz_picking_sales_order">
+        <column name="id_picking_sales_order" required="true" type="BIGINT" autoIncrement="true" primaryKey="true"/>
+        <column name="fk_sales_order" type="BIGINT" required="false" default="NULL"/>
+        <column name="container_code" type="VARCHAR" required="true"/>
+        <column name="shelf_code" required="false" type="VARCHAR" default="NULL"/>
+
+        <unique name="pyz_picking_sales_order-unique-key">
+            <unique-column name="container_code"/>
+        </unique>
+
+        <foreign-key name="pyz_picking_sales_order-fk_sales_order" foreignTable="spy_sales_order">
+            <reference local="fk_sales_order" foreign="id_sales_order"/>
+        </foreign-key>
+
+        <id-method-parameter value="pyz_picking_sales_order_pk_seq"/>
+    </table>
+
+</database>
