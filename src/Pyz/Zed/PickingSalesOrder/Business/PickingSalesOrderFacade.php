@@ -9,6 +9,7 @@ namespace Pyz\Zed\PickingSalesOrder\Business;
 
 use Generated\Shared\Transfer\PickingSalesOrderCollectionTransfer;
 use Generated\Shared\Transfer\PickingSalesOrderCriteriaTransfer;
+use Generated\Shared\Transfer\PickingSalesOrderTransfer;
 use Spryker\Zed\Kernel\Business\AbstractFacade;
 
 /**
@@ -27,9 +28,23 @@ class PickingSalesOrderFacade extends AbstractFacade implements PickingSalesOrde
      *
      * @return void
      */
-    public function updatePickingSalesOrderOrder(PickingSalesOrderCollectionTransfer $pickingSalesOrderCollectionTransfer): void
+    public function updatePickingSalesOrderCollection(PickingSalesOrderCollectionTransfer $pickingSalesOrderCollectionTransfer): void
     {
-        $this->getFactory()->createPickingSalesOrderWriter()->updatePickingSalesOrderOrder($pickingSalesOrderCollectionTransfer);
+        $this->getFactory()->createPickingSalesOrderWriter()->updatePickingSalesOrderCollection($pickingSalesOrderCollectionTransfer);
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * @api
+     *
+     * @param \Generated\Shared\Transfer\PickingSalesOrderTransfer $pickingSalesOrderTransfer
+     *
+     * @return \Generated\Shared\Transfer\PickingSalesOrderTransfer
+     */
+    public function bindContainerToShelf(PickingSalesOrderTransfer $pickingSalesOrderTransfer): PickingSalesOrderTransfer
+    {
+        return $this->getFactory()->createPickingSalesOrderWriter()->bindContainerToShelf($pickingSalesOrderTransfer);
     }
 
     /**
@@ -43,7 +58,6 @@ class PickingSalesOrderFacade extends AbstractFacade implements PickingSalesOrde
      */
     public function getPickingSalesOrderCollection(PickingSalesOrderCriteriaTransfer $pickingSalesOrderCriteriaTransfer): PickingSalesOrderCollectionTransfer
     {
-        return $this->getRepository()
-            ->getPickingSalesOrderCollection($pickingSalesOrderCriteriaTransfer);
+        return $this->getRepository()->getPickingSalesOrderCollection($pickingSalesOrderCriteriaTransfer);
     }
 }

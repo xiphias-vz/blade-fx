@@ -21,6 +21,7 @@ use Spryker\Zed\User\Business\UserFacadeInterface;
 use StoreApp\Zed\PermissionAccess\Business\PermissionAccessFacadeInterface;
 use StoreApp\Zed\Picker\Business\PickerFacadeInterface;
 use StoreApp\Zed\Picker\Communication\Aggregator\ItemAggregator;
+use StoreApp\Zed\Picker\Communication\Form\ContainerToShelfForm;
 use StoreApp\Zed\Picker\Communication\Form\DataProvider\OrderItemSelectionFormDataProvider;
 use StoreApp\Zed\Picker\Communication\Form\DataProvider\PickingZoneSelectionFormDataProvider;
 use StoreApp\Zed\Picker\Communication\Form\DataProvider\ShelvesSelectionFormDataProvider;
@@ -84,6 +85,14 @@ class PickerCommunicationFactory extends AbstractCommunicationFactory
     public function createShelvesSelectionForm(array $data, array $options): FormInterface
     {
         return $this->getFormFactory()->create(ShelvesSelectionForm::class, $data, $options);
+    }
+
+    /**
+     * @return \Symfony\Component\Form\FormInterface
+     */
+    public function createContainerToShelfForm(): FormInterface
+    {
+        return $this->getFormFactory()->create(ContainerToShelfForm::class);
     }
 
     /**

@@ -8,6 +8,7 @@
 namespace StoreApp\Zed\Picker\Communication\Controller;
 
 use Generated\Shared\Transfer\OrderTransfer;
+use Pyz\Shared\Messages\MessagesConfig;
 use Pyz\Shared\Oms\OmsConfig;
 use StoreApp\Shared\Picker\PickerConfig;
 use StoreApp\Zed\Picker\Communication\Form\ShelvesSelectionForm;
@@ -29,14 +30,29 @@ class SelectShelvesController extends BaseOrderPickingController
      */
     public function indexAction(Request $request)
     {
-        if (!$this->isValidRequest($request)) {
-            return $this->redirectResponse(PickerConfig::URL_PICKING_LIST);
-        }
-
         $idSalesOrder = $request->get(PickerConfig::REQUEST_PARAM_ID_ORDER) ?? 0;
 
         $salesOrderTransfer = $this->getFactory()->getSalesFacade()
             ->findOrderByIdSalesOrderForStoreApp($idSalesOrder);
+        $userTransfer = $this->getCurrentUser($request);
+
+        if (!$this->getFactory()->getPermissionAccessFacade()->isAccessAllowed(
+            $salesOrderTransfer,
+            $userTransfer,
+            [OmsConfig::STORE_STATE_READY_FOR_SELECTING_SHELVES]
+        )) {
+            $this->addErrorMessage(MessagesConfig::MESSAGE_PERMISSION_FAILED);
+
+            return $this->redirectResponse(PickerConfig::URL_PICKING_LIST);
+        }
+
+        if ($this->isOrderPickingStartedByAnotherUser($idSalesOrder, $userTransfer)) {
+            $this->addErrorMessage(
+                static::PICKING_ERROR_MESSAGE_ORDER_IS_BEING_PROCESSED
+            );
+
+            return $this->redirectResponse(PickerConfig::URL_PICKING_LIST);
+        }
 
         $shelvesSelectionFormDataProvider = $this->getFactory()->createShelvesSelectionFormDataProvider();
         $shelvesSelectionForm = $this->getFactory()->createShelvesSelectionForm(
@@ -70,17 +86,17 @@ class SelectShelvesController extends BaseOrderPickingController
     ): RedirectResponse {
         $formData = $orderItemSelectionForm->getData();
 
-        $containerIdToShelveCodeMap = $this->getFactory()->getFormDataMapper()
+        $containerIdToShelfCodeMap = $this->getFactory()->getFormDataMapper()
             ->mapFormDataToSelectedQuantityMap(
                 $formData,
                 ShelvesSelectionForm::PREFIX_FIELD_CONTAINER_CODE
             );
 
-        $shelveCollection = $this->getFactory()
+        $pickingSalesOrderCollectionTransfer = $this->getFactory()
             ->getFormDataMapper()
-            ->mapContainersToShelves($containerIdToShelveCodeMap, $salesOrderTransfer);
+            ->mapContainersToShelves($containerIdToShelfCodeMap, $salesOrderTransfer);
 
-        $this->getFactory()->getPickingSalesOrderFacade()->updatePickingSalesOrderOrder($shelveCollection);
+        $this->getFactory()->getPickingSalesOrderFacade()->updatePickingSalesOrderCollection($pickingSalesOrderCollectionTransfer);
 
         $selectedIdSalesOrderItems = $this->getFactory()
             ->getSalesFacade()

@@ -9,6 +9,7 @@ namespace Pyz\Zed\PickingSalesOrder\Business;
 
 use Generated\Shared\Transfer\PickingSalesOrderCollectionTransfer;
 use Generated\Shared\Transfer\PickingSalesOrderCriteriaTransfer;
+use Generated\Shared\Transfer\PickingSalesOrderTransfer;
 
 interface PickingSalesOrderFacadeInterface
 {
@@ -22,7 +23,19 @@ interface PickingSalesOrderFacadeInterface
      *
      * @return void
      */
-    public function updatePickingSalesOrderOrder(PickingSalesOrderCollectionTransfer $pickingSalesOrderCollectionTransfer): void;
+    public function updatePickingSalesOrderCollection(PickingSalesOrderCollectionTransfer $pickingSalesOrderCollectionTransfer): void;
+
+    /**
+     * Specification:
+     * - Updates PickingSalesOrder.
+     *
+     * @api
+     *
+     * @param \Generated\Shared\Transfer\PickingSalesOrderTransfer $pickingSalesOrderTransfer
+     *
+     * @return \Generated\Shared\Transfer\PickingSalesOrderTransfer
+     */
+    public function bindContainerToShelf(PickingSalesOrderTransfer $pickingSalesOrderTransfer): PickingSalesOrderTransfer;
 
     /**
      * Specification:

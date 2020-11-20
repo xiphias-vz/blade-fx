@@ -5,13 +5,12 @@
 
     <table name="pyz_picking_sales_order">
         <column name="id_picking_sales_order" required="true" type="BIGINT" autoIncrement="true" primaryKey="true"/>
-        <column name="fk_sales_order" type="BIGINT" required="true"/>
+        <column name="fk_sales_order" type="BIGINT" required="false" default="NULL"/>
         <column name="container_code" type="VARCHAR" required="true"/>
-        <column name="shelve_code" required="false" type="VARCHAR" default="NULL"/>
+        <column name="shelf_code" required="false" type="VARCHAR" default="NULL"/>
 
         <unique name="pyz_picking_sales_order-unique-key">
             <unique-column name="container_code"/>
-            <unique-column name="fk_sales_order"/>
         </unique>
 
         <foreign-key name="pyz_picking_sales_order-fk_sales_order" foreignTable="spy_sales_order">

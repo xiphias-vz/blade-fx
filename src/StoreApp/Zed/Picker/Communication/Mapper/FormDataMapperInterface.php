@@ -29,10 +29,10 @@ interface FormDataMapperInterface
     public function mapFormDataToPickingSalesOrderCollection(array $formData, OrderTransfer $salesOrderTransfer): PickingSalesOrderCollectionTransfer;
 
     /**
-     * @param array $containerIdToShelveCodeMap
+     * @param array $containerIdToShelfCodeMap
      * @param \Generated\Shared\Transfer\OrderTransfer $salesOrderTransfer
      *
      * @return \Generated\Shared\Transfer\PickingSalesOrderCollectionTransfer
      */
-    public function mapContainersToShelves(array $containerIdToShelveCodeMap, OrderTransfer $salesOrderTransfer): PickingSalesOrderCollectionTransfer;
+    public function mapContainersToShelves(array $containerIdToShelfCodeMap, OrderTransfer $salesOrderTransfer): PickingSalesOrderCollectionTransfer;
 }
