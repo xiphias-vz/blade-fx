@@ -395,7 +395,7 @@ class RegisterForm extends SprykerRegisterForm
         $builder->add(self::FIELD_PHONE_PREFIX_1, ChoiceType::class,[
             'choices' => array_flip($prefixes),
             'required' => true,
-            'label' => 'customer.register.phone',
+            'label' => false,
             'constraints' =>
             [
                 $this->createNotBlankConstraint(),

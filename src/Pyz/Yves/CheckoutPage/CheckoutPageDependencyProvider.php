@@ -10,7 +10,7 @@ namespace Pyz\Yves\CheckoutPage;
 use Generated\Shared\Transfer\PaymentTransfer;
 use Pyz\Service\User\UserServiceInterface;
 use Pyz\Yves\CustomerPage\Form\CheckoutAddressCollectionForm;
-use Pyz\Yves\CheckoutPage\Form\RegisterForm;
+use Pyz\Yves\CustomerPage\Form\RegisterForm;
 use Spryker\Shared\Nopayment\NopaymentConfig;
 use Spryker\Yves\Kernel\Container;
 use Spryker\Yves\Kernel\Plugin\Pimple;
