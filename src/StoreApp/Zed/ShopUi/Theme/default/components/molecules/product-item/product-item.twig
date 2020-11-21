@@ -12,25 +12,7 @@
 } %}
 
 {% block body %}
-    <div class="grid grid--no-wrap {{ config.name }}__card">
-        {% block leftCol %}
-            <div class="col col--middle spacing-right spacing-right--inner {{ config.name }}__action-col">
-                <div class="button button--round button--delete {{ config.name }}__decline {{ config.jsName }}__decline">
-                    {% include atom('icon') with {
-                        class: 'button__icon ' ~ config.name ~ '__close',
-                        data: {
-                            name: 'close'
-                        }
-                    } only %}
-                    {% include atom('icon') with {
-                        class: 'button__icon ' ~ config.name ~ '__undo',
-                        data: {
-                            name: 'undo'
-                        }
-                    } only %}
-                </div>
-            </div>
-        {% endblock %}
+    <div class="grid {{ config.name }}__card">
         <div class="col col--expand">
             <div class="box {{ config.name }}__info">
                 <div class="{{ config.name }}__image-wrapper">
@@ -92,16 +74,32 @@
                 {% endblock %}
             </div>
         </div>
+    </div>
+    <div class="grid grid--justify spacing-top">
+        {% block leftCol %}
+            <div class="col button button--round button--delete {{ config.name }}__decline {{ config.jsName }}__decline">
+                {% include atom('icon') with {
+                    class: 'button__icon ' ~ config.name ~ '__close',
+                    data: {
+                        name: 'close'
+                    }
+                } only %}
+                {% include atom('icon') with {
+                    class: 'button__icon ' ~ config.name ~ '__undo',
+                    data: {
+                        name: 'undo'
+                    }
+                } only %}
+            </div>
+        {% endblock %}
         {% block rightCol %}
-            <div class="col col--middle spacing-left spacing-left--inner {{ config.name }}__action-col">
-                <div class="button button--round {{ config.name }}__pick {{ config.jsName }}__accept">
-                    {% include atom('icon') with {
-                        class: 'button__icon',
-                        data: {
-                            name: 'add'
-                        }
-                    } only %}
-                </div>
+            <div class="col button button--round {{ config.name }}__pick {{ config.jsName }}__accept">
+                {% include atom('icon') with {
+                    class: 'button__icon',
+                    data: {
+                        name: 'add'
+                    }
+                } only %}
             </div>
         {% endblock %}
     </div>
