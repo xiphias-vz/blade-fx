@@ -33,6 +33,7 @@ class DataImportConfig extends SprykerDataImportConfig
     public const IMPORT_TYPE_PRODUCT_CATEGORY = 'product-category';
     public const IMPORT_TYPE_PICKING_ROUTE = 'picking-route';
     public const IMPORT_TYPE_PICKING_ZONE = 'picking-zone';
+    public const IMPORT_TYPE_PRODUCT_LOCATION = 'product-location';
     public const IMPORT_TYPE_MERCHANT_DELIVERY_POSTAL_CODE = 'merchant-delivery-postal-code';
     public const IMPORT_TYPE_MERCHANT_USER = 'merchant-user';
     public const IMPORT_TYPE_PRODUCT_STOCK = 'product-stock';
@@ -127,6 +128,14 @@ class DataImportConfig extends SprykerDataImportConfig
     public function getPickingZoneDataImporterConfiguration(): DataImporterConfigurationTransfer
     {
         return $this->buildBaseImporterConfiguration('picking_zone.csv', static::IMPORT_TYPE_PICKING_ZONE);
+    }
+
+    /**
+     * @return \Generated\Shared\Transfer\DataImporterConfigurationTransfer
+     */
+    public function getProductLocationDataImporterConfiguration(): DataImporterConfigurationTransfer
+    {
+        return $this->buildBaseImporterConfiguration('spryker/product_location.csv', static::IMPORT_TYPE_PRODUCT_LOCATION, SharedDataImportConfig::IMPORT_CSV_DELIMITER);
     }
 
     /**

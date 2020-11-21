@@ -123,8 +123,8 @@ class OrderItemSelectionForm extends AbstractType
 
         $displayNameParts[] = sprintf(
             PickerConfig::FORMAT_ORDER_ITEM_NAME,
-            $concreteAttributes[ProductConfig::KEY_PRODUCT_NUMBER],
-            $concreteAttributes[ProductConfig::KEY_ARTIKELNAME_SPRYKER]
+            $itemTransfer->getName(),
+            $itemTransfer->getSku()
         );
 
         if (isset($concreteAttributes[ProductConfig::PRODUCT_ATTRIBUTE_VARIETY])) {

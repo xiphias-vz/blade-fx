@@ -9,6 +9,8 @@ namespace Pyz\Zed\Sales\Persistence;
 
 use DateTime;
 use Generated\Shared\Transfer\OrderCriteriaFilterTransfer;
+use Generated\Shared\Transfer\QuoteTransfer;
+use Generated\Shared\Transfer\SpySalesOrderItemEntityTransfer;
 use Orm\Zed\Payone\Persistence\Map\SpyPaymentPayoneTableMap;
 use Orm\Zed\Sales\Persistence\Map\SpySalesOrderItemTableMap;
 use Orm\Zed\Sales\Persistence\Map\SpySalesOrderTableMap;
@@ -227,6 +229,35 @@ class SalesRepository extends SprykerSalesRepository implements SalesRepositoryI
             SpySalesShipmentTableMap::COL_FK_SALES_ORDER,
             SpySalesShipmentTableMap::COL_REQUESTED_DELIVERY_DATE
         );
+    }
+
+    /***
+     * @param \Generated\Shared\Transfer\QuoteTransfer $quoteTransfer
+     * @param \Generated\Shared\Transfer\SpySalesOrderItemEntityTransfer $itemEntityTransfer
+     *
+     * @return string|null
+     */
+    public function findProductSequence(QuoteTransfer $quoteTransfer, SpySalesOrderItemEntityTransfer $itemEntityTransfer): ?string
+    {
+        $quoteTransfer->requireStore();
+        $itemEntityTransfer->requireSku();
+
+        $idStock = $this->getFactory()
+            ->createStockQuery()
+            ->findOneByName($quoteTransfer->getStore()->getName())
+            ->getIdStock();
+
+        $IdProduct = $this->getFactory()
+            ->createProductQuery()
+            ->findOneBySku($itemEntityTransfer->getSku())
+            ->getIdProduct();
+
+        return $this->getFactory()
+            ->createSpyStockProductQuery()
+            ->filterByFkStock($idStock)
+            ->filterByFkProduct($IdProduct)
+            ->findOne()
+            ->getSequence();
     }
 
     /**
