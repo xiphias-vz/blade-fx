@@ -160,17 +160,13 @@
         &--hollow-border-light,
         &--hollow-gray,
         &--hollow-light {
-            background-color: $setting-color-transparent;
-            border: rem(1) solid $setting-color-globus-darkOrange;
-            color: $setting-color-globus-darkOrange;
+            background-color: $setting-color-globus-lightOrange;
+            color: $setting-color-white;
 
             &:hover,
             &:focus,
             &:active {
-                border-color: $setting-color-globus-darkOrange;
-                color: $setting-color-white;
-                background-color: $setting-color-globus-darkOrange;
-                box-shadow: none;
+                box-shadow: 0 rem(4) rem(18) $setting-color-globus-darkOrange;
             }
 
             &[disabled],
