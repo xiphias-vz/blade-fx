@@ -227,6 +227,13 @@ $review-rating-field-width: rem(154);
             }
         }
 
+        .txtarea--checkout {
+            width: 100%;
+            height: rem(250);
+            color: $setting-color-black;
+            font-size: rem(12);
+        }
+
         .label {
             display: inline-block;
             font: fw(medium) rem(12) $setting-font-family-additional;

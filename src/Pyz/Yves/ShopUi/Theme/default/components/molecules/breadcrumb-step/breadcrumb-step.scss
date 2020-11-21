@@ -9,7 +9,7 @@
             color: $setting-color-black;
 
             &:hover {
-                color: $setting-color-green;
+                color: $setting-color-globus-darkOrange;
             }
         }
 
@@ -56,7 +56,7 @@
             }
 
             #{$name}__link {
-                color: $setting-color-green;
+                color: $setting-color-globus-darkOrange;
                 text-decoration: none;
             }
         }

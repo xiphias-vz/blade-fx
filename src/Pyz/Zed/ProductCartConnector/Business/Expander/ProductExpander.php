@@ -25,8 +25,18 @@ class ProductExpander extends SprykerProductExpander implements ProductExpanderI
     {
         parent::expandItemWithProductConcrete($productConcreteTransfer, $itemTransfer);
 
+        $pickZone = '';
+
+        if (isset($productConcreteTransfer->getAttributes()[ProductConfig::KEY_PICK_ZONE_ATTRIBUTE])) {
+            $pickZone = $productConcreteTransfer->getAttributes()[ProductConfig::KEY_PICK_ZONE_ATTRIBUTE];
+        }
+
+        if (isset($productConcreteTransfer->getAttributes()[mb_strtolower(ProductConfig::KEY_PICK_ZONE_ATTRIBUTE)])) {
+            $pickZone = $productConcreteTransfer->getAttributes()[mb_strtolower(ProductConfig::KEY_PICK_ZONE_ATTRIBUTE)];
+        }
+
         $itemTransfer
-            ->setPickZone($productConcreteTransfer->getAttributes()[ProductConfig::KEY_PICK_ZONE_ATTRIBUTE] ?? '')
+            ->setPickZone($pickZone)
             ->setProductNumber($productConcreteTransfer->getProductNumber())
             ->setSapWgr($productConcreteTransfer->getAttributes()[ProductConfig::KEY_SAP_WGR] ?? '')
             ->setBonText($productConcreteTransfer->getAttributes()[ProductConfig::KEY_BON_TEXT] ?? '');

@@ -1,4 +1,7 @@
 block_key
+order-confirmation-email
+order-shipped-email
+registration-email
 blck-14
 blck-15
 blck-16

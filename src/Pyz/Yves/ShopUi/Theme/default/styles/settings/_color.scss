@@ -41,6 +41,8 @@ $setting-color-gray-17:#dddddd;
 $setting-color-black: #111;
 $setting-color-black-1: #2b2c2d;
 
+$setting-color-orange:#ea8901;
+
 $setting-color-globus-lightOrange: #ea8901;
 $setting-color-globus-darkOrange: #ce6200;
 $setting-color-globus-lightGreen: #b9dcc3;
@@ -95,6 +97,6 @@ $setting-color-actions: (
     system: $setting-color-gray-5,
     info: $setting-color-blue-info,
     warning: #f37849,
-    success: #4ac38e,
+    success: $setting-color-globus-darkOrange,
     alert: #cb3d49,
 );

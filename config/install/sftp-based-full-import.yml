@@ -9,17 +9,20 @@ sections:
             command: "vendor/bin/console data:import:files-download"
 
     import:
+        import-product-attributes:
+            command: "vendor/bin/console data:import product-attribute-key -f spryker/2.globus_articles.csv -o 1 -l 1 -vvv --no-ansi || true"
+
         import-categories:
             command: "vendor/bin/console data:import category -f spryker/categories.csv -vvv --no-ansi || true"
 
         import-product:
             command: "vendor/bin/console data:import product -f spryker/2.globus_articles.csv -vvv --no-ansi || true"
 
-        import-product-price-1004:
-            command: "vendor/bin/console data:import product-price -f spryker/4.globus_article_prices.1004.csv -vvv --no-ansi || true"
+        #import-product-price-1004:
+        #    command: "vendor/bin/console data:import product-price -f spryker/4.globus_article_prices.1004.csv -vvv --no-ansi || true"
 
-        #import-product-price-1031:
-        #    command: "vendor/bin/console data:import product-price -f spryker/4.globus_article_prices.1031.csv -vvv --no-ansi || true"
+        import-product-price-1031:
+            command: "vendor/bin/console data:import product-price -f spryker/4.globus_article_prices.1031.csv -vvv --no-ansi || true"
 
         #import-product-price-1042:
         #    command: "vendor/bin/console data:import product-price -f spryker/4.globus_article_prices.1042.csv -vvv --no-ansi || true"
@@ -27,11 +30,11 @@ sections:
         #import-product-price-1057:
         #    command: "vendor/bin/console data:import product-price -f spryker/4.globus_article_prices.1057.csv -vvv --no-ansi || true"
 
-        import-product-stock-1004:
-            command: "vendor/bin/console data:import product-stock -f spryker/5.globus_article_instock.1004.csv -vvv --no-ansi || true"
+        #import-product-stock-1004:
+        #    command: "vendor/bin/console data:import product-stock -f spryker/5.globus_article_instock.1004.csv -vvv --no-ansi || true"
 
-        #import-product-stock-1031:
-        #    command: "vendor/bin/console data:import product-stock -f spryker/5.globus_article_instock.1031.csv -vvv --no-ansi || true"
+        import-product-stock-1031:
+            command: "vendor/bin/console data:import product-stock -f spryker/5.globus_article_instock.1031.csv -vvv --no-ansi || true"
 
         #import-product-stock-1042:
         #    command: "vendor/bin/console data:import product-stock -f spryker/5.globus_article_instock.1042.csv -vvv --no-ansi || true"
@@ -71,11 +74,11 @@ sections:
         import-metzgerei-product:
             command: "vendor/bin/console data:import product -f spryker/2.globus_articles.metzgerei.csv -vvv --no-ansi || true"
 
-        import-metzgerei-product-price-1004:
-            command: "vendor/bin/console data:import product-price -f spryker/4.globus_article_prices.metzgerei.1004.csv -vvv --no-ansi || true"
+        #import-metzgerei-product-price-1004:
+        #    command: "vendor/bin/console data:import product-price -f spryker/4.globus_article_prices.metzgerei.1004.csv -vvv --no-ansi || true"
 
-        #import-metzgerei-product-price-1031:
-        #    command: "vendor/bin/console data:import product-price -f spryker/4.globus_article_prices.metzgerei.1031.csv -vvv --no-ansi || true"
+        import-metzgerei-product-price-1031:
+            command: "vendor/bin/console data:import product-price -f spryker/4.globus_article_prices.metzgerei.1031.csv -vvv --no-ansi || true"
 
         #import-metzgerei-product-price-1042:
         #    command: "vendor/bin/console data:import product-price -f spryker/4.globus_article_prices.metzgerei.1042.csv -vvv --no-ansi || true"
@@ -83,11 +86,11 @@ sections:
         #import-metzgerei-product-price-1057:
         #    command: "vendor/bin/console data:import product-price -f spryker/4.globus_article_prices.metzgerei.1057.csv -vvv --no-ansi || true"
 
-        import-metzgerei-product-stock-1004:
-            command: "vendor/bin/console data:import product-stock -f spryker/5.globus_article_instock.metzgerei.1004.csv -vvv --no-ansi || true"
+        #import-metzgerei-product-stock-1004:
+        #    command: "vendor/bin/console data:import product-stock -f spryker/5.globus_article_instock.metzgerei.1004.csv -vvv --no-ansi || true"
 
-        #import-metzgerei-product-stock-1031:
-        #    command: "vendor/bin/console data:import product-stock -f spryker/5.globus_article_instock.metzgerei.1031.csv -vvv --no-ansi || true"
+        import-metzgerei-product-stock-1031:
+            command: "vendor/bin/console data:import product-stock -f spryker/5.globus_article_instock.metzgerei.1031.csv -vvv --no-ansi || true"
 
         #import-metzgerei-product-stock-1042:
         #    command: "vendor/bin/console data:import product-stock -f spryker/5.globus_article_instock.metzgerei.1042.csv -vvv --no-ansi || true"
@@ -95,11 +98,11 @@ sections:
         #import-metzgerei-product-stock-1057:
         #    command: "vendor/bin/console data:import product-stock -f spryker/5.globus_article_instock.metzgerei.1057.csv -vvv --no-ansi || true"
 
-        import-metzgerei-product-stock-nos-1004:
-            command: "vendor/bin/console data:import product-stock -f spryker/5.globus_article_instock.NOS.1004.csv -vvv --no-ansi || true"
+        #import-metzgerei-product-stock-nos-1004:
+        #    command: "vendor/bin/console data:import product-stock -f spryker/5.globus_article_instock.NOS.1004.csv -vvv --no-ansi || true"
 
-        #import-metzgerei-product-stock-nos-1031:
-        #    command: "vendor/bin/console data:import product-stock -f spryker/5.globus_article_instock.NOS.1031.csv -vvv --no-ansi || true"
+        import-metzgerei-product-stock-nos-1031:
+            command: "vendor/bin/console data:import product-stock -f spryker/5.globus_article_instock.NOS.1031.csv -vvv --no-ansi || true"
 
         #import-metzgerei-product-stock-nos-1042:
         #    command: "vendor/bin/console data:import product-stock -f spryker/5.globus_article_instock.NOS.1042.csv -vvv --no-ansi || true"

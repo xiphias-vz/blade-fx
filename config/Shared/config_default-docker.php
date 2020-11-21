@@ -58,6 +58,10 @@ use Twig\Cache\FilesystemCache;
 
 $ZED = APPLICATION === 'STOREAPP' ? APPLICATION : 'ZED';
 
+if (APPLICATION === 'STOREAPP') {
+    putenv('SPRYKER_DEBUG_ENABLED=1');
+}
+
 /* ACL */
 if (getenv('SPRYKER_DEBUG_ENABLED')) {
     $config[AclConstants::ACL_USER_RULE_WHITELIST][] = [
@@ -70,7 +74,7 @@ if (getenv('SPRYKER_DEBUG_ENABLED')) {
 /* end of ACL */
 
 /* ZED */
-$config[ApplicationConstants::HOST_ZED] = getenv('SPRYKER_ZED_HOST');
+$config[ApplicationConstants::HOST_ZED] = defined('HOST_ZED') ? HOST_ZED : getenv('SPRYKER_ZED_HOST');
 $config[SessionConstants::ZED_SESSION_COOKIE_NAME] = $config[ApplicationConstants::HOST_ZED];
 $config[SessionConstants::ZED_SESSION_COOKIE_DOMAIN] = getenv('SPRYKER_BE_HOST');
 $config[ApplicationConstants::ZED_TRUSTED_HOSTS]
@@ -90,7 +94,7 @@ $config[ApplicationConstants::BASE_URL_SSL_ZED] = sprintf(
 );
 $config[ZedRequestConstants::HOST_ZED_API] = sprintf(
     '%s:%d',
-    getenv('SPRYKER_ZED_HOST'),
+    defined('HOST_ZED') ? HOST_ZED : getenv('SPRYKER_ZED_HOST'),
     getenv('SPRYKER_ZED_PORT')
 );
 $config[ZedRequestConstants::BASE_URL_ZED_API] = sprintf(
@@ -304,7 +308,7 @@ $config[StorageRedisConstants::STORAGE_REDIS_PROTOCOL] = 'tcp';
 $config[StorageRedisConstants::STORAGE_REDIS_HOST] = getenv('SPRYKER_KEY_VALUE_STORE_HOST');
 $config[StorageRedisConstants::STORAGE_REDIS_PORT] = getenv('SPRYKER_KEY_VALUE_STORE_PORT');
 $config[StorageRedisConstants::STORAGE_REDIS_PASSWORD] = false;
-$config[StorageRedisConstants::STORAGE_REDIS_DATABASE] = getenv('SPRYKER_KEY_VALUE_STORE_NAMESPACE');
+$config[StorageRedisConstants::STORAGE_REDIS_DATABASE] = defined('SPRYKER_KEY_VALUE_STORE_NAMESPACE') ? SPRYKER_KEY_VALUE_STORE_NAMESPACE : getenv('SPRYKER_KEY_VALUE_STORE_NAMESPACE');
 
 // ---------- Session
 $config[SessionRedisConstants::YVES_SESSION_REDIS_PROTOCOL] = 'tcp';
@@ -353,7 +357,7 @@ $config[LogConstants::LOG_FILE_PATH_YVES] = (bool)getenv('SPRYKER_DEBUG_ENABLED'
     ? $logDir . '/YVES/application.log'
     : 'php://stdout';
 $config[LogConstants::LOG_FILE_PATH_ZED] = (bool)getenv('SPRYKER_DEBUG_ENABLED')
-    ? $logDir . '/' . $ZED . '/application.log'
+    ? $logDir . '/ZED/application.log'
     : 'php://stdout';
 $config[LogConstants::LOG_FILE_PATH_GLUE] = (bool)getenv('SPRYKER_DEBUG_ENABLED')
     ? $logDir . '/GLUE/application.log'
@@ -363,7 +367,7 @@ $config[LogConstants::EXCEPTION_LOG_FILE_PATH_YVES] = (bool)getenv('SPRYKER_DEBU
     ? $logDir . '/YVES/exception.log'
     : 'php://stderr';
 $config[LogConstants::EXCEPTION_LOG_FILE_PATH_ZED] = (bool)getenv('SPRYKER_DEBUG_ENABLED')
-    ? $logDir . '/' . $ZED . '/exception.log'
+    ? $logDir . '/ZED/exception.log'
     : 'php://stderr';
 $config[LogConstants::EXCEPTION_LOG_FILE_PATH_GLUE] = (bool)getenv('SPRYKER_DEBUG_ENABLED')
     ? $logDir . '/GLUE/exception.log'

@@ -12,7 +12,7 @@
         text-align: center;
         font: fw(medium) rem(14)/1.7 $setting-font-family-additional;
         cursor: pointer;
-        background: $setting-color-globus-darkOrange;
+        background: $setting-color-globus-lightOrange;
         color: $setting-color-white;
         text-decoration: none;
         border-radius: rem(2);
@@ -25,9 +25,9 @@
         &:hover,
         &:focus,
         &:active {
-            background: $setting-color-globus-darkOrange;
+            background: $setting-color-globus-lightOrange;
             color: $setting-color-white;
-            box-shadow: 0 rem(4) rem(18) $setting-color-green-alpha-1;
+            box-shadow: 0 rem(4) rem(18) $setting-color-globus-darkOrange;
         }
 
         &:focus {
@@ -160,17 +160,13 @@
         &--hollow-border-light,
         &--hollow-gray,
         &--hollow-light {
-            background-color: $setting-color-transparent;
-            border: rem(1) solid $setting-color-green;
-            color: $setting-color-green;
+            background-color: $setting-color-globus-lightOrange;
+            color: $setting-color-white;
 
             &:hover,
             &:focus,
             &:active {
-                border-color: $setting-color-green;
-                color: $setting-color-white;
-                background-color: $setting-color-green;
-                box-shadow: none;
+                box-shadow: 0 rem(4) rem(18) $setting-color-globus-darkOrange;
             }
 
             &[disabled],
@@ -392,14 +388,14 @@
 
             &:focus {
                 background: transparent;
-                color: $setting-color-green;
+                color: $setting-color-globus-darkOrange;
                 box-shadow: 0 0 0 rem(2) $setting-color-blue-midi-alpha-1;
             }
 
             &:hover,
             &:active {
                 background: transparent;
-                color: $setting-color-green;
+                color: $setting-color-globus-darkOrange;
                 text-decoration: underline;
             }
         }
