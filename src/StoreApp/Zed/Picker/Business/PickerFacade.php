@@ -27,6 +27,15 @@ class PickerFacade extends AbstractFacade implements PickerFacadeInterface
     /**
      * @inheritDoc
      */
+    public function markOrderItemsAsContainerSelected(array $idSalesOrderItems): void
+    {
+        $this->getFactory()->createOrderUpdater()
+            ->markOrderItemsAsContainerSelected($idSalesOrderItems);
+    }
+
+    /**
+     * @inheritDoc
+     */
     public function markOrderItemsAsNotPicked(array $idSalesOrderItems): void
     {
         $this->getFactory()->createOrderUpdater()

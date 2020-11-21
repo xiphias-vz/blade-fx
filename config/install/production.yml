@@ -3,6 +3,12 @@ env:
 
 command-timeout: 1200
 
+stores:
+    - EIN
+    - KMD
+    - LPZ
+    - HAD
+
 sections:
     clean-oms:
         clear-oms-locks:
@@ -27,5 +33,4 @@ sections:
     scheduler-start:
         scheduler-setup:
             command: "vendor/bin/console scheduler:setup -vvv --no-ansi"
-ProductLocationWriterStep:
-    php:
+            stores: true

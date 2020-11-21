@@ -12,6 +12,7 @@ use Generated\Shared\Transfer\MerchantSalesOrderCollectionTransfer;
 use Generated\Shared\Transfer\MerchantSalesOrderTransfer;
 use Generated\Shared\Transfer\MerchantTransfer;
 use Generated\Shared\Transfer\OrderCriteriaFilterTransfer;
+use Generated\Shared\Transfer\OrderPickingBlockTransfer;
 use Generated\Shared\Transfer\OrderTransfer;
 use Generated\Shared\Transfer\OrderUpdateRequestTransfer;
 use Generated\Shared\Transfer\PickingZoneTransfer;
@@ -19,7 +20,6 @@ use Generated\Shared\Transfer\UserTransfer;
 use Pyz\Shared\Messages\MessagesConfig;
 use Pyz\Shared\Oms\OmsConfig;
 use Spryker\Service\UtilText\Model\Url\Url;
-use Spryker\Zed\Kernel\Communication\Controller\AbstractController;
 use StoreApp\Shared\Picker\PickerConfig;
 use StoreApp\Zed\Merchant\Communication\Plugin\EventDispatcher\MerchantProviderEventDispatcherPlugin;
 use StoreApp\Zed\Picker\Communication\Form\OrderItemSelectionForm;
@@ -30,16 +30,12 @@ use Symfony\Component\Security\Csrf\CsrfToken;
 use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
 
 /**
- * @method \StoreApp\Zed\Picker\Communication\PickerCommunicationFactory getFactory()
  * @method \StoreApp\Zed\Picker\Business\PickerFacadeInterface getFacade()
  */
-class PickingController extends AbstractController
+class PickingController extends BaseOrderPickingController
 {
     protected const REQUEST_PARAM_PICKING_BAGS_COUNT = 'quantity';
 
-    protected const PICKING_SUCCESS_MESSAGE_ORDER_PICKED = 'storeapp.picking.message.success.order-has-been-picked';
-
-    protected const PICKING_ERROR_MESSAGE_ORDER_IS_BEING_PROCESSED = 'storeapp.picking.message.error.order-is-already-being-processed';
     protected const PICKING_ERROR_MESSAGE_ORDER_FULLY_CANCELLED = 'storeapp.picking.message.error.order-is-fully-cancelled';
 
     protected const PICKING_INFO_MESSAGE_NO_ORDERS_TO_PICK = 'storeapp.picking.message.info.no-orders-to-pick';
@@ -49,6 +45,7 @@ class PickingController extends AbstractController
 
     protected const REQUEST_PARAM_CSRF_TOKEN = 'token';
     protected const FORMAT_START_PICKING_TOKEN_NAME = 'start-picking-%d';
+    protected const FORMAT_STOP_PICKING_TOKEN_NAME = 'stop-picking-%d';
 
     /**
      * @param \Symfony\Component\HttpFoundation\Request $request
@@ -86,11 +83,6 @@ class PickingController extends AbstractController
                 ->findOrderByIdSalesOrderAndPickingZoneForStoreApp($idSalesOrder, $pickingZoneTransfer->getName());
             $merchantSalesOrderTransfer = $merchantSalesOrderTransfers[$idSalesOrder];
 
-            $pickerUserTransfer = $this->getPickerUserTransferByMerchantSalesOrder($merchantSalesOrderTransfer);
-            if ($pickerUserTransfer !== null && $pickerUserTransfer->getIdUser() === $userTransfer->getIdUser()) {
-                $pickerUserTransfer = null;
-            }
-
             $pickingOrders[] = [
                 'idSalesOrder' => $idSalesOrder,
                 'reference' => $salesOrderTransfer->getOrderReference(),
@@ -98,7 +90,7 @@ class PickingController extends AbstractController
                 'itemCount' => $salesOrderTransfer->getItems()->count(),
                 'picked' => $this->isOrderPicked($merchantSalesOrderTransfer),
                 'pickedAt' => $merchantSalesOrderTransfer->getPickedAt(),
-                'isPickedBy' => $pickerUserTransfer,
+                'isPicked' => $merchantSalesOrderTransfer->getFkUser() === $userTransfer->getIdUser(),
                 'requestedDeliveryDate' => $requestedDeliveryDatesByIdSalesOrders[$idSalesOrder],
             ];
         }
@@ -126,8 +118,14 @@ class PickingController extends AbstractController
         }
 
         $userTransfer = $this->getCurrentUser($request);
+        $pickingZoneTransfer = $this->getFacade()->findPickingZoneInSession();
 
-        if ($this->isOrderPickingStartedByAnotherUser($idSalesOrder, $userTransfer)) {
+        $orderPickingBlockTransfer = (new OrderPickingBlockTransfer())
+            ->setIdSalesOrder($idSalesOrder)
+            ->setIdPickingZone($pickingZoneTransfer->getIdPickingZone())
+            ->setIdUser($userTransfer->getIdUser());
+
+        if ($this->getFactory()->getPickingZoneFacade()->isOrderPickingBlockAvailableForUser($orderPickingBlockTransfer)) {
             $this->addErrorMessage(
                 static::PICKING_ERROR_MESSAGE_ORDER_IS_BEING_PROCESSED
             );
@@ -135,10 +133,7 @@ class PickingController extends AbstractController
             return $this->redirectResponse(PickerConfig::URL_PICKING_LIST);
         }
 
-        $this->assignIdUserToSalesOrder(
-            $this->getCurrentUser($request)->getIdUser(),
-            $idSalesOrder
-        );
+        $this->getFactory()->getPickingZoneFacade()->createOrderPickingBlock($orderPickingBlockTransfer);
 
         $orderPickingPath = Url::generate(
             PickerConfig::URL_ORDER_PICKING,
@@ -155,13 +150,46 @@ class PickingController extends AbstractController
      *
      * @return array|\Symfony\Component\HttpFoundation\RedirectResponse
      */
+    public function stopOrderPickingAction(Request $request)
+    {
+        $idSalesOrder = $request->get(PickerConfig::REQUEST_PARAM_ID_ORDER);
+        $csrfTokenName = sprintf(static::FORMAT_STOP_PICKING_TOKEN_NAME, $idSalesOrder);
+
+        if (!$this->isCsrfTokenValid($csrfTokenName, $request)) {
+            $this->addErrorMessage(
+                MessagesConfig::MESSAGE_PERMISSION_FAILED
+            );
+
+            return $this->redirectResponse(PickerConfig::URL_PICKING_LIST);
+        }
+
+        $userTransfer = $this->getCurrentUser($request);
+        $pickingZoneTransfer = $this->getFacade()->findPickingZoneInSession();
+
+        $orderPickingBlockTransfer = (new OrderPickingBlockTransfer())
+            ->setIdSalesOrder($idSalesOrder)
+            ->setIdPickingZone($pickingZoneTransfer->getIdPickingZone())
+            ->setIdUser($userTransfer->getIdUser());
+
+        $this->getFactory()->getPickingZoneFacade()
+            ->deleteOrderPickingBlock($orderPickingBlockTransfer);
+
+        return $this->redirectResponse(PickerConfig::URL_PICKING_LIST);
+    }
+
+    /**
+     * @param \Symfony\Component\HttpFoundation\Request $request
+     *
+     * @return array|\Symfony\Component\HttpFoundation\RedirectResponse
+     */
     public function orderPickingAction(Request $request)
     {
         $idSalesOrder = $request->get(PickerConfig::REQUEST_PARAM_ID_ORDER) ?? 0;
-        $pickingZoneTransfer = $this->getFacade()->findPickingZoneInSession();
 
+        $pickingZoneTransfer = $this->getFacade()->findPickingZoneInSession();
         $salesOrderTransfer = $this->getFactory()->getSalesFacade()
             ->findOrderByIdSalesOrderAndPickingZoneForStoreApp($idSalesOrder, $pickingZoneTransfer->getName());
+
         $userTransfer = $this->getCurrentUser($request);
 
         if (!$this->getFactory()->getPermissionAccessFacade()->isAccessAllowed(
@@ -174,7 +202,14 @@ class PickingController extends AbstractController
             return $this->redirectResponse(PickerConfig::URL_PICKING_LIST);
         }
 
-        if ($this->isOrderPickingStartedByAnotherUser($idSalesOrder, $userTransfer)) {
+        $pickingZoneTransfer = $this->getFacade()->findPickingZoneInSession();
+
+        $orderPickingBlockTransfer = (new OrderPickingBlockTransfer())
+            ->setIdSalesOrder($idSalesOrder)
+            ->setIdPickingZone($pickingZoneTransfer->getIdPickingZone())
+            ->setIdUser($userTransfer->getIdUser());
+
+        if ($this->getFactory()->getPickingZoneFacade()->isOrderPickingBlockAvailableForUser($orderPickingBlockTransfer)) {
             $this->addErrorMessage(
                 static::PICKING_ERROR_MESSAGE_ORDER_IS_BEING_PROCESSED
             );
@@ -245,6 +280,12 @@ class PickingController extends AbstractController
                 $skuToSelectedQuantityMap
             );
 
+        $pickingSalesOrderCollectionTransfer = $this->getFactory()->getFormDataMapper()
+            ->mapFormDataToPickingSalesOrderCollection(
+                $formData,
+                $salesOrderTransfer
+            );
+
         $this->addInfoMessage(
             static::PICKING_INFO_MESSAGE_ORDER_WILL_MOVE_TO_NEXT_STAGE
         );
@@ -262,12 +303,18 @@ class PickingController extends AbstractController
             return $this->redirectResponse(PickerConfig::URL_PICKING_LIST);
         }
 
-        $this->addSuccessMessage(static::PICKING_SUCCESS_MESSAGE_ORDER_PICKED);
-
-        $this->getFacade()->markOrderItemsAsPicked($selectedIdSalesOrderItems);
+        $this->getFactory()->getPickingSalesOrderFacade()->refreshPickingSalesOrderCollection($pickingSalesOrderCollectionTransfer);
+        $this->getFacade()->markOrderItemsAsContainerSelected($selectedIdSalesOrderItems);
         $this->getFacade()->updateOrderPickingBagsCount($idSalesOrder, $pickingBagsCount);
 
-        return $this->redirectResponse(PickerConfig::URL_PICKING_LIST);
+        $orderPickingPath = Url::generate(
+            PickerConfig::URL_SELECT_SHELVES,
+            [
+                PickerConfig::REQUEST_PARAM_ID_ORDER => $idSalesOrder,
+            ]
+        )->build();
+
+        return $this->redirectResponse($orderPickingPath);
     }
 
     /**
@@ -278,22 +325,6 @@ class PickingController extends AbstractController
     protected function isOrderPicked(MerchantSalesOrderTransfer $merchantSalesOrderTransfer): bool
     {
         return $merchantSalesOrderTransfer->getStoreStatus() !== OmsConfig::STORE_STATE_READY_FOR_PICKING;
-    }
-
-    /**
-     * @param \Generated\Shared\Transfer\MerchantSalesOrderTransfer $merchantSalesOrderTransfer
-     *
-     * @return \Generated\Shared\Transfer\UserTransfer|null
-     */
-    protected function getPickerUserTransferByMerchantSalesOrder(MerchantSalesOrderTransfer $merchantSalesOrderTransfer): ?UserTransfer
-    {
-        $idUserAssignedToOrder = $merchantSalesOrderTransfer->getFkUser();
-
-        if ($idUserAssignedToOrder === null) {
-            return null;
-        }
-
-        return $this->getFactory()->getUserFacade()->getUserById($idUserAssignedToOrder);
     }
 
     /**
@@ -329,7 +360,8 @@ class PickingController extends AbstractController
                 OmsConfig::STORE_STATE_READY_FOR_PICKING,
                 OmsConfig::STORE_STATE_PICKED,
             ])
-            ->setPickingZoneName($pickingZoneTransfer->getName())
+            ->setIdPickingZone($pickingZoneTransfer->getIdPickingZone())
+            ->setIdUser($userTransfer->getIdUser())
             ->setOrderCountLimit($this->getFactory()->getConfig()->getMaxOrdersCountToDisplay());
 
         return $this->getFactory()->getMerchantSalesOrderFacade()
@@ -438,7 +470,9 @@ class PickingController extends AbstractController
             'pickingOrders' => $pickingOrders,
             'requestParamIdSalesOrder' => PickerConfig::REQUEST_PARAM_ID_ORDER,
             'urlOrderPicking' => PickerConfig::URL_START_ORDER_PICKING,
+            'urlStopOrderPicking' => PickerConfig::URL_STOP_ORDER_PICKING,
             'formatStartPickingTokenName' => static::FORMAT_START_PICKING_TOKEN_NAME,
+            'formatStopPickingTokenName' => static::FORMAT_STOP_PICKING_TOKEN_NAME,
         ];
     }
 
@@ -516,32 +550,5 @@ class PickingController extends AbstractController
     protected function getCurrentUser(Request $request): UserTransfer
     {
         return $request->attributes->get(MerchantProviderEventDispatcherPlugin::ATTRIBUTE_USER);
-    }
-
-    /**
-     * @param int $idSalesOrder
-     * @param \Generated\Shared\Transfer\UserTransfer $userTransfer
-     *
-     * @return bool
-     */
-    protected function isOrderPickingStartedByAnotherUser(int $idSalesOrder, UserTransfer $userTransfer): bool
-    {
-        $orderCriteriaFilterTransfer = (new OrderCriteriaFilterTransfer())
-            ->setIdSalesOrders([$idSalesOrder]);
-
-        $merchantSalesOrderTransfers = $this->getFactory()->getMerchantSalesOrderFacade()
-            ->findMerchantSalesOrdersByOrderFilterCriteria($orderCriteriaFilterTransfer)
-            ->getMerchantSalesOrders();
-
-        if ($merchantSalesOrderTransfers->count() !== 1) {
-            return true;
-        }
-
-        $assignedIdUser = $merchantSalesOrderTransfers[$idSalesOrder]->getFkUser();
-        if ($assignedIdUser === null || $assignedIdUser === $userTransfer->getIdUser()) {
-            return false;
-        }
-
-        return true;
     }
 }

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config>
+    <export>
+        <label>Export</label>
+        <title>Export</title>
+        <pages>
+            <picking-zone-order-export>
+                <label>Picking Zone Order Export</label>
+                <title>Picking Zone Order Expor</title>
+                <bundle>picking-zone-order-export</bundle>
+                <controller>index</controller>
+                <action>index</action>
+            </picking-zone-order-export>
+        </pages>
+    </export>
+</config>

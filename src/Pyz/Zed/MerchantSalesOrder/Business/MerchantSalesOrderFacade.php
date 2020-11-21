@@ -24,9 +24,24 @@ class MerchantSalesOrderFacade extends SprykerMerchantSalesOrderFacade implement
      * @inheritDoc
      */
     public function findMerchantSalesOrdersByOrderFilterCriteria(
-        OrderCriteriaFilterTransfer $orderFilterCriteriaTransport
+        OrderCriteriaFilterTransfer $orderFilterCriteriaTransfer
     ): MerchantSalesOrderCollectionTransfer {
-        return $this->getRepository()->findMerchantSalesOrdersByOrderFilterCriteria($orderFilterCriteriaTransport);
+        return $this->getRepository()->findMerchantSalesOrdersByOrderFilterCriteria($orderFilterCriteriaTransfer);
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * @api
+     *
+     * @param \Generated\Shared\Transfer\OrderCriteriaFilterTransfer $orderFilterCriteriaTransfer
+     *
+     * @return mixed[]
+     */
+    public function getSalesOrderItemDataByPickingDateAndPickingZone(
+        OrderCriteriaFilterTransfer $orderFilterCriteriaTransfer
+    ): array {
+        return $this->getRepository()->getSalesOrderItemDataByPickingDateAndPickingZone($orderFilterCriteriaTransfer);
     }
 
     /**

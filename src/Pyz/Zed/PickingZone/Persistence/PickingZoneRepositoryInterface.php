@@ -7,6 +7,7 @@
 
 namespace Pyz\Zed\PickingZone\Persistence;
 
+use Generated\Shared\Transfer\OrderPickingBlockTransfer;
 use Generated\Shared\Transfer\PickingZoneTransfer;
 
 interface PickingZoneRepositoryInterface
@@ -22,4 +23,12 @@ interface PickingZoneRepositoryInterface
      * @return \Generated\Shared\Transfer\PickingZoneTransfer|null
      */
     public function findPickingZoneById(int $idPickingZone): ?PickingZoneTransfer;
+
+    /**
+     * @param int $idSalesOrder
+     * @param int $idPickingZone
+     *
+     * @return \Generated\Shared\Transfer\OrderPickingBlockTransfer|null
+     */
+    public function findOrderPickingBlock(int $idSalesOrder, int $idPickingZone): ?OrderPickingBlockTransfer;
 }

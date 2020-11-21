@@ -97,6 +97,21 @@ class SalesFacade extends SprykerSalesFacade implements SalesFacadeInterface
 
     /**
      * @inheritDoc
+     *
+     * @api
+     *
+     * @param int $idSalesOrder
+     * @param string[] $states
+     *
+     * @return string[]
+     */
+    public function getSalesOrderItemsIdsByIdSalesOrderAndStates(int $idSalesOrder, array $states): array
+    {
+        return $this->getRepository()->getSalesOrderItemsIdsByIdSalesOrderAndStates($idSalesOrder, $states);
+    }
+
+    /**
+     * @inheritDoc
      */
     public function getOrdersInfoByInvoiceDateTimeRange(?DateTime $dateFrom, ?DateTime $dateTo): array
     {

@@ -12,7 +12,8 @@
     </transfer>
 
     <transfer name="OrderCriteriaFilter">
-        <property name="pickingZoneName" type="string"/>
+        <property name="idPickingZone" type="int"/>
+        <property name="idUser" type="int"/>
     </transfer>
 
     <transfer name="MerchantSalesOrderCollection">
@@ -24,6 +25,7 @@
         <property name="storeStatus" type="string"/>
         <property name="requestedDeliveryDate" type="string"/>
         <property name="fkUser" type="int"/>
+        <property name="orderPickingBlock" type="OrderPickingBlock"/>
 
         <property name="deliveredAt" type="string" />
         <property name="pickedAt" type="string" />

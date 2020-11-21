@@ -10,6 +10,7 @@ namespace Pyz\Zed\DataImport\Business;
 use NumberFormatter;
 use Pyz\Shared\Product\ProductConfig;
 use Pyz\Zed\DataImport\Business\Model\BaseProduct\AttributesExtractorStep as BaseAttributesExtractorStep;
+use Pyz\Zed\DataImport\Business\Model\BaseProduct\Hook\ProductDepositOptionAfterImportHook;
 use Pyz\Zed\DataImport\Business\Model\BaseProduct\ProductCategoryWriterStep;
 use Pyz\Zed\DataImport\Business\Model\BaseProduct\ProductDepositOptionStep;
 use Pyz\Zed\DataImport\Business\Model\CategoryTemplate\CategoryTemplateWriterStep;
@@ -73,6 +74,7 @@ use Spryker\Shared\Kernel\Store;
 use Spryker\Shared\ProductSearch\Code\KeyBuilder\FilterGlossaryKeyBuilder;
 use Spryker\Zed\Acl\Business\AclFacadeInterface;
 use Spryker\Zed\DataImport\Business\DataImportBusinessFactory as SprykerDataImportBusinessFactory;
+use Spryker\Zed\DataImport\Business\Model\DataImporterAfterImportInterface;
 use Spryker\Zed\DataImport\Business\Model\DataImportStep\DataImportStepInterface;
 use Spryker\Zed\DataImport\Dependency\Plugin\DataImportPluginInterface;
 use Spryker\Zed\Money\Business\MoneyFacadeInterface;
@@ -168,8 +170,17 @@ class DataImportBusinessFactory extends SprykerDataImportBusinessFactory
             ->addStep($this->createProductDepositOptionStep());
 
         $dataImporter->addDataSetStepBroker($dataSetStepBroker);
+        $dataImporter->addAfterImportHook($this->createProductDepositAfterImportHook());
 
         return $dataImporter;
+    }
+
+    /**
+     * @return \Spryker\Zed\DataImport\Business\Model\DataImporterAfterImportInterface
+     */
+    protected function createProductDepositAfterImportHook(): DataImporterAfterImportInterface
+    {
+        return new ProductDepositOptionAfterImportHook();
     }
 
     /**

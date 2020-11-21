@@ -18,6 +18,10 @@
                 width: calc(50% - #{$spacing-between-col});
             }
         }
+
+        .description-text-color {
+            color: $setting-color-globus-darkGray;
+        }
     }
 }
 

@@ -51,6 +51,14 @@ interface SalesRepositoryInterface extends SprykerSalesRepositoryInterface
     public function findIdOrderItemsByIdSalesOrders(array $idSalesOrders): array;
 
     /**
+     * @param int $idSalesOrder
+     * @param string[] $states
+     *
+     * @return string[]
+     */
+    public function getSalesOrderItemsIdsByIdSalesOrderAndStates(int $idSalesOrder, array $states): array;
+
+    /**
      * @param int[] $idSalesOrders
      *
      * @return string[]

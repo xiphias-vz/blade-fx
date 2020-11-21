@@ -170,6 +170,9 @@ sections:
         check-product-validity:
             command: "vendor/bin/console product:check-validity"
 
+        local-env-data-reset:
+            command: "vendor/bin/install -r local-env-data-reset"
+
     scheduler-setup:
         scheduler-setup:
             command: "vendor/bin/console scheduler:setup"
