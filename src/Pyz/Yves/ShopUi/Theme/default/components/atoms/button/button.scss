@@ -209,15 +209,15 @@
         }
 
         &--hollow-gray {
-            border-color: $setting-color-gray-9;
-            color: $setting-color-gray-9;
+            border-color: $setting-color-globus-lightOrange;
+            color: $setting-color-white;
 
             &:hover,
             &:active,
             &:focus {
-                border-color: $setting-color-gray-9;
-                color: $setting-color-gray-9;
-                background: $setting-color-alpha-6;
+                border-color: $setting-color-globus-lightOrange;
+                color: $setting-color-white;
+                background: $setting-color-globus-lightOrange;
             }
 
             &:focus {
@@ -404,7 +404,7 @@
             &:active,
             &:hover {
                 text-decoration: none;
-                color: $setting-color-gray-6;
+                color: $setting-color-globus-darkOrange;
                 box-shadow: none;
             }
         }
