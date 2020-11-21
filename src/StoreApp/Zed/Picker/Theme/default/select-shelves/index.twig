@@ -1,46 +1,31 @@
 {% extends template('page-layout-main') %}
 
+{# TODO BE need to add orderReference #}
 {% define data = {
     shelvesSelectionForm: shelvesSelectionForm,
+    orderReference: 123,
 } %}
 
+{% block header %}
+    {% embed organism('header') with {
+        modifiers: ['picking-detail'],
+        data: {
+            withoutLogo: true,
+            orderId: data.orderReference,
+            buttonUrl: false,
+            orderReference: data.orderReference,
+        },
+    } only %}
+    {% endembed %}
+{% endblock %}
+
 {% block content %}
-    {{ form_start(data.shelvesSelectionForm) }}
-    {% for fieldName in data.shelvesSelectionForm.children | keys %}
-        {% set field = attribute(data.shelvesSelectionForm.children, fieldName) %}
-        {% set itemSku = field.vars.name | split('__') | last %}
-
-        {% if field.vars.block_prefixes[1] is same as('integer') %}
-            {% embed molecule('product-item') with {
-                class: 'spacing-top spacing-top--big',
-                data: {
-                    title: field.vars.name,
-                },
-                attributes: {
-                    'data-sku': itemSku,
-                },
-                embed: {
-                    field: field,
-                },
-            } only %}
-                {% block formElement %}
-                    {{ form_row(embed.field, {
-                        attr: {
-                            class: config.jsName ~ '__quantity',
-                        }
-                    }) }}
-                {% endblock %}
-            {% endembed %}
-        {% endif %}
-    {% endfor %}
-
-    <div class="submit">
-        {{ form_widget(data.shelvesSelectionForm.buttonSubmit, {
-            label: 'store-app.form.submit-label' | trans,
-            attr: {
-                class: 'button button--combined',
+    {% include molecule('form') with {
+        data: {
+            form: data.shelvesSelectionForm,
+            submit: {
+                enable: true,
             },
-        }) }}
-    </div>
-    {{ form_end(shelvesSelectionForm) }}
+        }
+    } only %}
 {% endblock %}
