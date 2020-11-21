@@ -23,12 +23,12 @@
     {% set targetAttribute = data.targetClass ? 'data-toggle-target-class-name=' ~ data.targetClass %}
 
     {% block title %}
-        <h4 class="title title--uppercase text-break {{ component.renderClass(config.name ~ '__title', modifiers) }} {{ data.triggerClass }} {{ titleActiveClass }} {{ titleReadOnlyClass }}"
+        <h3 class="title title--h2 title--product-details active {{ data.triggerClass }} {{ titleActiveClass }} {{ titleReadOnlyClass }}"
             {{ targetAttribute }}>
             {{ data.title }}
 
             {% block arrow %}{% endblock %}
-        </h4>
+        </h3>
     {% endblock %}
 
     {% block content %}

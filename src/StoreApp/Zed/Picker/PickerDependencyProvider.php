@@ -11,6 +11,8 @@ use Pyz\Service\DateTimeWithZone\DateTimeWithZoneServiceInterface;
 use Pyz\Zed\Merchant\Business\MerchantFacadeInterface;
 use Pyz\Zed\MerchantSalesOrder\Business\MerchantSalesOrderFacadeInterface;
 use Pyz\Zed\PickingRoute\Business\PickingRouteFacadeInterface;
+use Pyz\Zed\PickingSalesOrder\Business\PickingSalesOrderFacadeInterface;
+use Pyz\Zed\PickingZone\Business\PickingZoneFacadeInterface;
 use Pyz\Zed\Sales\Business\SalesFacadeInterface;
 use Spryker\Zed\Kernel\AbstractBundleDependencyProvider;
 use Spryker\Zed\Kernel\Container;
@@ -23,14 +25,23 @@ class PickerDependencyProvider extends AbstractBundleDependencyProvider
 {
     public const FACADE_SALES = 'FACADE_SALES';
     public const FACADE_OMS = 'FACADE_OMS';
+    public const FACADE_PICKING_SALES_ORDER = 'FACADE_PICKING_SALES_ORDER';
     public const FACADE_USER = 'FACADE_USER';
     public const FACADE_MERCHANT = 'FACADE_MERCHANT';
     public const FACADE_PRODUCT = 'FACADE_PRODUCT';
     public const FACADE_PICKING_ROUTE = 'FACADE_PICKING_ROUTE';
-
-    public const SERVICE_DATE_TIME_WITH_ZONE = 'SERVICE_DATE_TIME_WITH_ZONE';
+    public const FACADE_PICKING_ZONE = 'FACADE_PICKING_ZONE';
     public const FACADE_MERCHANT_SALES_ORDER = 'FACADE_MERCHANT_SALES_ORDER';
     public const FACADE_PERMISSION_ACCESS = 'FACADE_PERMISSION_ACCESS';
+
+    public const SERVICE_DATE_TIME_WITH_ZONE = 'SERVICE_DATE_TIME_WITH_ZONE';
+
+    public const SERVICE_SESSION = 'SERVICE_SESSION';
+
+    /**
+     * @uses \Spryker\Zed\Http\Communication\Plugin\Application\HttpApplicationPlugin::SERVICE_REQUEST_STACK
+     */
+    protected const SERVICE_REQUEST_STACK = 'request_stack';
 
     /**
      * @param \Spryker\Zed\Kernel\Container $container
@@ -47,9 +58,11 @@ class PickerDependencyProvider extends AbstractBundleDependencyProvider
         $container = $this->addMerchantFacade($container);
         $container = $this->addProductFacade($container);
         $container = $this->addPickingRouteFacade($container);
+        $container = $this->addPickingZoneFacade($container);
         $container = $this->addDateTimeWithZoneService($container);
         $container = $this->addMerchantSalesOrderFacade($container);
         $container = $this->addPermissionAccessFacade($container);
+        $container = $this->addPickingSalesOrderFacade($container);
 
         return $container;
     }
@@ -66,6 +79,9 @@ class PickerDependencyProvider extends AbstractBundleDependencyProvider
         $container = $this->addSalesFacade($container);
         $container = $this->addOmsFacade($container);
         $container = $this->addUserFacade($container);
+        $container = $this->addPickingSalesOrderFacade($container);
+        $container = $this->addPickingZoneFacade($container);
+        $container = $this->addSessionService($container);
 
         return $container;
     }
@@ -93,6 +109,20 @@ class PickerDependencyProvider extends AbstractBundleDependencyProvider
     {
         $container->set(static::FACADE_OMS, function (Container $container): OmsFacadeInterface {
             return $container->getLocator()->oms()->facade();
+        });
+
+        return $container;
+    }
+
+    /**
+     * @param \Spryker\Zed\Kernel\Container $container
+     *
+     * @return \Spryker\Zed\Kernel\Container
+     */
+    private function addPickingSalesOrderFacade(Container $container): Container
+    {
+        $container->set(static::FACADE_PICKING_SALES_ORDER, function (Container $container): PickingSalesOrderFacadeInterface {
+            return $container->getLocator()->pickingSalesOrder()->facade();
         });
 
         return $container;
@@ -159,6 +189,20 @@ class PickerDependencyProvider extends AbstractBundleDependencyProvider
      *
      * @return \Spryker\Zed\Kernel\Container
      */
+    private function addPickingZoneFacade(Container $container): Container
+    {
+        $container->set(static::FACADE_PICKING_ZONE, function (Container $container): PickingZoneFacadeInterface {
+            return $container->getLocator()->pickingZone()->facade();
+        });
+
+        return $container;
+    }
+
+    /**
+     * @param \Spryker\Zed\Kernel\Container $container
+     *
+     * @return \Spryker\Zed\Kernel\Container
+     */
     private function addDateTimeWithZoneService(Container $container): Container
     {
         $container->set(static::SERVICE_DATE_TIME_WITH_ZONE, function (Container $container): DateTimeWithZoneServiceInterface {
@@ -191,6 +235,23 @@ class PickerDependencyProvider extends AbstractBundleDependencyProvider
     {
         $container->set(static::FACADE_PERMISSION_ACCESS, function (Container $container): PermissionAccessFacadeInterface {
             return $container->getLocator()->permissionAccess()->facade();
+        });
+
+        return $container;
+    }
+
+    /**
+     * @param \Spryker\Zed\Kernel\Container $container
+     *
+     * @return \Spryker\Zed\Kernel\Container
+     */
+    protected function addSessionService(Container $container)
+    {
+        $container->set(static::SERVICE_SESSION, function (Container $container) {
+            /** @var \Symfony\Component\HttpFoundation\RequestStack $requestStack */
+            $requestStack = $container->getApplicationService(static::SERVICE_REQUEST_STACK);
+
+            return $requestStack->getCurrentRequest()->getSession();
         });
 
         return $container;

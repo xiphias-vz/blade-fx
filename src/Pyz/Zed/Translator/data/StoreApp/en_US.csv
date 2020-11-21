@@ -12,6 +12,7 @@ storeapp.filiale.number.format,Filial - %d
 
 picker.activity.picking,Picking
 picker.activity.collection,Pick Up
+picker.activity.container-to-shelf,Place the container on the shelf
 
 picker.picking.order.deadline,Completion
 picker.picking.order.reference,Enter order number
@@ -20,6 +21,7 @@ picker.picking.order.status-action,Status/Action
 picker.picking.order.status.done,Done
 picker.picking.order.action,Action
 picker.picking.order.action.start,Start
+picker.picking.order.action.stop,Unblock
 
 picker.picking.confirmation,Ready
 
@@ -116,6 +118,8 @@ global.permission.failed,This action is not allowed
 
 storeapp.picking.message.error.order-is-fully-cancelled,The request purchase was canceled
 storeapp.picking.message.success.order-has-been-picked,The picking of the desired purchase is completed
+storeapp.picking.message.success.container-to-shelf,The container is tied to the shelf
+storeapp.form.container-to-shelf,Place the container on the shelf.
 collected,Picked up
 not collected, Not picked up
 

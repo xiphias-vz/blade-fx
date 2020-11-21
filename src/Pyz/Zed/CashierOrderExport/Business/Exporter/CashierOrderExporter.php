@@ -8,6 +8,7 @@
 namespace Pyz\Zed\CashierOrderExport\Business\Exporter;
 
 use Generated\Shared\Transfer\OrderTransfer;
+use Pyz\Zed\CashierOrderExport\Business\Aggregator\OrderItemAggregatorInterface;
 use Pyz\Zed\CashierOrderExport\Business\Builder\CashierOrderContentBuilderInterface;
 use Pyz\Zed\CashierOrderExport\Business\Writer\CashierOrderWriterInterface;
 
@@ -24,15 +25,23 @@ class CashierOrderExporter implements CashierOrderExporterInterface
     protected $cashierOrderContentBuilder;
 
     /**
+     * @var \Pyz\Zed\CashierOrderExport\Business\Aggregator\OrderItemAggregatorInterface
+     */
+    protected $orderItemAggregator;
+
+    /**
      * @param \Pyz\Zed\CashierOrderExport\Business\Writer\CashierOrderWriterInterface $cashierOrderWriter
      * @param \Pyz\Zed\CashierOrderExport\Business\Builder\CashierOrderContentBuilderInterface $cashierOrderContentBuilder
+     * @param \Pyz\Zed\CashierOrderExport\Business\Aggregator\OrderItemAggregatorInterface $orderItemAggregator
      */
     public function __construct(
         CashierOrderWriterInterface $cashierOrderWriter,
-        CashierOrderContentBuilderInterface $cashierOrderContentBuilder
+        CashierOrderContentBuilderInterface $cashierOrderContentBuilder,
+        OrderItemAggregatorInterface $orderItemAggregator
     ) {
         $this->cashierOrderWriter = $cashierOrderWriter;
         $this->cashierOrderContentBuilder = $cashierOrderContentBuilder;
+        $this->orderItemAggregator = $orderItemAggregator;
     }
 
     /**
@@ -42,6 +51,8 @@ class CashierOrderExporter implements CashierOrderExporterInterface
      */
     public function exportOrders(OrderTransfer $orderTransfer): OrderTransfer
     {
+        $orderTransfer = $this->orderItemAggregator->aggregateSplitItems($orderTransfer);
+
         $content = $this->cashierOrderContentBuilder->prepareContent($orderTransfer);
 
         return $this->cashierOrderWriter->write($content, $orderTransfer);

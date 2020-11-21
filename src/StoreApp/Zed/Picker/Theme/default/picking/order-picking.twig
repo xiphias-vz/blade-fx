@@ -93,36 +93,13 @@
             {% endif %}
         {% endfor %}
 
-        <div class="box spacing-y spacing-y--big">
-            <div class="grid grid--no-wrap">
-                <div class="col col--sm-5">
-                    {% include atom('thumbnail') with {
-                        modifiers: ['large'],
-                        attributes: {
-                            src: publicPath('images/spryker-bag.png'),
-                        },
-                    } only %}
-                </div>
-                <div class="col col--expand spacing-left spacing-left--big spacing-left--inner grid grid--col">
-                    <div class="box box--bordered box--spaceless box--expand spacing-bottom spacing-bottom--big">
-                        {% include atom('icon-row') with {
-                            modifiers: ['center'],
-                            data: {
-                                iconName: 'bag',
-                                rowText: 'Total bags' | trans,
-                            },
-                        } only %}
-                    </div>
-                    {% include molecule('quantity-counter') with {
-                        modifiers: ['no-spacing', 'expand'],
-                        data: {
-                            maxQuantity: data.maxPickingBags,
-                            readOnly: true,
-                        },
-                    } only %}
-                </div>
-            </div>
-        </div>
+    <h3>Containers</h3>
+
+    {{ form_row(data.pickingForm.field_sales_order_containers.vars.prototype) }}
+
+    <a href="#" class="btn btn-outline btn-primary add-another-container m-t-md">
+        <i class="fa fa-files-o"></i> {{ 'Add Container' | trans }}
+    </a>
 
     <div class="pick-products__action-wrapper">
         <div class="pick-products__action js-pick-products__action">

@@ -9,6 +9,7 @@ namespace StoreApp\Zed\Picker\Communication\Mapper;
 
 use Generated\Shared\Transfer\OrderChangeRequestTransfer;
 use Generated\Shared\Transfer\OrderTransfer;
+use Generated\Shared\Transfer\PickingSalesOrderCollectionTransfer;
 
 interface FormDataMapperInterface
 {
@@ -19,6 +20,22 @@ interface FormDataMapperInterface
      * @return int[]
      */
     public function mapFormDataToSelectedQuantityMap(array $formData, string $fieldNamePrefix): array;
+
+    /**
+     * @param array $formData
+     * @param \Generated\Shared\Transfer\OrderTransfer $salesOrderTransfer
+     *
+     * @return \Generated\Shared\Transfer\PickingSalesOrderCollectionTransfer
+     */
+    public function mapFormDataToPickingSalesOrderCollection(array $formData, OrderTransfer $salesOrderTransfer): PickingSalesOrderCollectionTransfer;
+
+    /**
+     * @param array $containerIdToShelfCodeMap
+     * @param \Generated\Shared\Transfer\OrderTransfer $salesOrderTransfer
+     *
+     * @return \Generated\Shared\Transfer\PickingSalesOrderCollectionTransfer
+     */
+    public function mapContainersToShelves(array $containerIdToShelfCodeMap, OrderTransfer $salesOrderTransfer): PickingSalesOrderCollectionTransfer;
 
     /**
      * @param array $formData

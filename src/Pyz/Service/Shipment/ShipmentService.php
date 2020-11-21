@@ -8,6 +8,7 @@
 namespace Pyz\Service\Shipment;
 
 use DateTime;
+use Generated\Shared\Transfer\QuoteTransfer;
 use Spryker\Service\Shipment\ShipmentService as SprykerShipmentService;
 
 /**
@@ -23,5 +24,19 @@ class ShipmentService extends SprykerShipmentService implements ShipmentServiceI
         return $this->getFactory()
             ->createDeliveryDateParser()
             ->parseRequestedDeliveryDate($requestedDeliveryDate);
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * @param \Generated\Shared\Transfer\QuoteTransfer $quoteTransfer
+     *
+     * @return int|null
+     */
+    public function resolveClickAndCollectShipmentPrice(QuoteTransfer $quoteTransfer): ?int
+    {
+        return $this->getFactory()
+            ->createClickAndCollectShipmentPriceResolver()
+            ->resolveShipmentPrice($quoteTransfer);
     }
 }
