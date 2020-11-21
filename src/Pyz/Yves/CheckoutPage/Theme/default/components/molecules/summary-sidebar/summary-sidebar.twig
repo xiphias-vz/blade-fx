@@ -83,7 +83,7 @@
                     <div class="{{ config.name }}__col {{ config.name }}__col--wide">
                         {% block shippingHeading %}
                             <div class="{{ config.name }}__heading">
-                                <h2 class="{{ config.name }}__title">{{ 'checkout.step.summary.shipping' | trans }}</h2>
+                                <h2 class="{{ config.name }}__title">{{ 'checkout.step.address.title' | trans }}</h2>
 
                                 {% if data.canEdit %}
                                     <a href="{{ url('checkout-shipment') }}" class="link link--darkest link--edit">
