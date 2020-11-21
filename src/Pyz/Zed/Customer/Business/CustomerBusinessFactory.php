@@ -9,6 +9,8 @@ namespace Pyz\Zed\Customer\Business;
 
 use Pyz\Service\MailCmsBlock\MailCmsBlockServiceInterface;
 use Pyz\Zed\Customer\Business\Customer\Customer;
+use Pyz\Zed\Customer\Business\Customer\CustomerWriter;
+use Pyz\Zed\Customer\Business\Customer\CustomerWriterInterface;
 use Pyz\Zed\Customer\CustomerDependencyProvider;
 use Pyz\Zed\MerchantRegion\Business\MerchantRegionFacadeInterface;
 use Spryker\Zed\Customer\Business\CustomerBusinessFactory as SprykerCustomerBusinessFactory;
@@ -16,7 +18,7 @@ use Spryker\Zed\Customer\Business\CustomerBusinessFactory as SprykerCustomerBusi
 /**
  * @method \Spryker\Zed\Customer\CustomerConfig getConfig()
  * @method \Spryker\Zed\Customer\Persistence\CustomerQueryContainerInterface getQueryContainer()
- * @method \Spryker\Zed\Customer\Persistence\CustomerEntityManagerInterface getEntityManager()
+ * @method \Pyz\Zed\Customer\Persistence\CustomerEntityManagerInterface getEntityManager()
  * @method \Spryker\Zed\Customer\Persistence\CustomerRepositoryInterface getRepository()
  */
 class CustomerBusinessFactory extends SprykerCustomerBusinessFactory
@@ -39,6 +41,14 @@ class CustomerBusinessFactory extends SprykerCustomerBusinessFactory
             $this->getMailCmsBlock(),
             $this->getMerchantRegionFacade()
         );
+    }
+
+    /**
+     * @return \Pyz\Zed\Customer\Business\Customer\CustomerWriterInterface
+     */
+    public function createCustomerWriter(): CustomerWriterInterface
+    {
+        return new CustomerWriter($this->getEntityManager());
     }
 
     /**
