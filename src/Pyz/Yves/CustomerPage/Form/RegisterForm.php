@@ -15,6 +15,7 @@ use SprykerShop\Yves\CustomerPage\Form\RegisterForm as SprykerRegisterForm;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
+use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
 use Symfony\Component\Form\Extension\Core\Type\TelType;
@@ -96,9 +97,7 @@ class RegisterForm extends SprykerRegisterForm
             ->addMobileNumber($builder)
             ->addMobilePrefixField2($builder)
             ->addPhoneField($builder)
-            ->addDayField($builder)
-            ->addMonthField($builder)
-            ->addYearField($builder)
+            ->addBirthdateGroup($builder)
             ->addAcceptTermsField($builder)
             ->addFieldRecieveNotificationsAboutProducts($builder)
             ->addAdditionalRegisterField($builder);
@@ -118,6 +117,80 @@ class RegisterForm extends SprykerRegisterForm
                 ->add('field1', TextType::class, array())
         );
 
+        return $this;
+    }
+
+    /**
+     * @param \Symfony\Component\Form\FormBuilderInterface $builder
+     *
+     * @return $this
+     */
+    protected function addBirthdateGroup(FormBuilderInterface $builder)
+    {
+        $days = [];
+        $months = [];
+        $years = [];
+
+        for($i = 1; $i<32; $i++)
+        {
+            $days[$i] = $i;
+            if($i < 13){
+                $months[$i] = $i;
+            }
+        }
+
+        $currentYear= date("Y");
+        for($i = 1900; $i<=intval($currentYear); $i++)
+        {
+            $years[$i] = $i;
+        }
+
+        $prefixes = Config::get(CustomerConstants::CUSTOMER_PHONE_PREFIX);
+        $builder->add(
+            $builder->create('datesGroup', FormType::class, array('inherit_data' => true, 'label' => 'customer.register.birthdate'))
+                ->add(static::FIELD_DAY, ChoiceType::class, array(
+                    'choices' => array_flip($days),
+                    'required' => true,
+                    'trim' => true,
+                    'label' => false,
+                    'attr' => array(
+                        'class' => 'col col--sm-12 col--lg-4',
+                        'placeholder' => 'customer.date.day'
+                    ),
+                    'constraints' =>
+                    array(
+                        $this->createNotBlankConstraint(),
+                    )
+                ))
+                ->add(static::FIELD_MONTH, ChoiceType::class,[
+                    'choices' => array_flip($months),
+                    'required' => true,
+                    'trim' => true,
+                    'label' => false,
+                    'attr' => [
+                        'class' => 'col col--sm-12 col--lg-4',
+                        'placeholder' => 'customer.date.month'
+                    ],
+                    'constraints' =>
+                        [
+                            $this->createNotBlankConstraint(),
+                        ]
+                ])
+                ->add(static::FIELD_YEAR, ChoiceType::class,[
+                    'choices' => array_flip($years),
+                    'required' => true,
+                    'trim' => true,
+                    'label' => false,
+                    'attr' => [
+                        'class' => 'col col--sm-12 col--lg-4',
+                        'placeholder' => 'customer.date.year'
+                    ],
+                    'constraints' =>
+                        [
+                            $this->createNotBlankConstraint()
+                        ]
+                ])
+        );
         return $this;
     }
 
@@ -487,9 +560,6 @@ class RegisterForm extends SprykerRegisterForm
             'trim' => true,
             'constraints' => [
                 $this->createNotBlankConstraint(),
-                new PostalCodeConstraint([
-                    'customerBaseClient' => $this->getFactory()->getBaseCustomerClient(),
-                ]),
             ],
             'attr' => [
                 'placeholder' => 'customer.registration.zip_placeholder',
@@ -598,7 +668,8 @@ class RegisterForm extends SprykerRegisterForm
     protected function AddYearField(FormBuilderInterface $builder)
     {
         $years = [];
-        for($i = 1900; $i<2101; $i++)
+        $currentYear= date("Y");
+        for($i = 1900; $i<intval($currentYear); $i++)
         {
             $years[$i] = $i;
         }
