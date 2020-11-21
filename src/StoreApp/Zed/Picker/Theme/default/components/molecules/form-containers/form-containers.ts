@@ -39,7 +39,7 @@ export default class FormContainers extends Component {
     protected addFormItem(): void {
         let formItem: string = this.formItemCandidate.replace(/__container_name__/g, String(this.formIndex));
         formItem = `<div class="${this.jsName}__form-item ${this.name}__form-item">${formItem}</div>`;
-        this.containerFormsWrapper.innerHTML += formItem;
+        this.containerFormsWrapper.insertAdjacentHTML('beforeend', formItem);
         this.formIndex += 1;
         this.containerFormsWrapper.dataset.index = String(this.formIndex);
     }
@@ -53,6 +53,6 @@ export default class FormContainers extends Component {
         formLastItem.classList.add('input-with-remove');
         formLastItemWrapper.classList.add('grid');
         formLastItemWrapper.classList.add('grid--justify');
-        formLastItemWrapper.innerHTML += deleteButton;
+        formLastItemWrapper.insertAdjacentHTML('beforeend', deleteButton);
     }
 }
