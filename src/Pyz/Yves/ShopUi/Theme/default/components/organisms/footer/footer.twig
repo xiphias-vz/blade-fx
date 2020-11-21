@@ -18,9 +18,13 @@
                     <div class="grid grid--justify grid--expand">
 
                         {% block navigation %}
-                            <div class="contact-store-info">
-                                {{ cms_block(['Kontakt KMD','Kontakt EIN','Kontakt LPZ','Kontakt HAD']) }}
-                            </div>
+                                {# Commented for later use...#}
+                                    {# <div class="contact-store-info"> #}
+                                    {# {{ cms_block(['Kontakt KMD','Kontakt EIN','Kontakt LPZ','Kontakt HAD']) }}#}
+                                {#</div>#}
+                                <div class="contact-store-info">
+                                    <p style="margin-top:0px">Kundenservice</p><p>Mo - Sa 10 - 20 hr</p><p>068-34-456-5</p><p>Kontakt</p>
+                                </div>
 
                             <div class="col col--sm-12 col--lg-8">
                                 {% include molecule('navigation-footer') with {
@@ -56,7 +60,7 @@
                             <div class="icon-container">
                                 <h3 class="title title--footer">{{ 'global.paymentProviders' | trans }}</h3>
                                 <div class="div-margin-right">
-                                    <img src="/assets/current/default/images/visa.svg" width="50px" height="50px" />
+                                    <img src={{ publicPath("/images/visa.svg")}}  width="50px" height="50px" />
                                 </div>
                                 <div>
                                     <img src="/assets/current/default/images/maestro.svg" width="50px" height="50px" />
