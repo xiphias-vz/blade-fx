@@ -58,6 +58,10 @@ use Twig\Cache\FilesystemCache;
 
 $ZED = APPLICATION === 'STOREAPP' ? APPLICATION : 'ZED';
 
+if (APPLICATION === 'STOREAPP') {
+    putenv('SPRYKER_DEBUG_ENABLED=1');
+}
+
 /* ACL */
 if (getenv('SPRYKER_DEBUG_ENABLED')) {
     $config[AclConstants::ACL_USER_RULE_WHITELIST][] = [
