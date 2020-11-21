@@ -2789,6 +2789,9 @@ checkout.step.payment.info,"A cash withdrawal only takes place when the reserved
 checkout.step.payment.info,"Eine Geldabbuchung findet erst statt, wenn die reservierten Waren in der Filiale abgeholt bzw. geliefert werden.",de_DE
 checkout.step.summary.info,"A binding order contract is only concluded when the goods are accepted. When picking up/delivering the goods, you can refuse the goods in whole or in part without incurring any costs.",en_US
 checkout.step.summary.info,"Ein verbindlicher Kaufvertrag kommt erst bei der Annahme der Ware zustande. Bei der Abholung/Lieferung kannst du die Ware ganz oder teilweise ablehnen, ohne dass dir Kosten entstehen.",de_DE
+checkout.step.summary.info.down,"*Der Vorteil der Mehrwertsteuersenkung wird Ihnen auf dem Kassenbon als Rabatt ausgewiesen.",de_DE
+checkout.step.summary.info.down1,"Sparen Sie bei der Servicegebühr!",de_DE
+checkout.step.summary.info.down2,"Jetzt die Mein Globus Kundekarte beantragen und nur 1,99€ Servicegebühr für Ihren Einkauf zahlen.",de_DE
 checkout.timeslots.info,"*We do not charge any fees if you decide not to pick up the goods at the store.",en_US
 checkout.timeslots.info,"*Wir berechnen keine Gebühren, wenn du dich dagegen entscheidest, die Waren in der Filiale abzuholen.",de_DE
 pdp.general.info,"Hinweis: Auf der Produktverpackung stehen wichtige Angaben die unbedingt gelesen und beachtet werden sollten.",de_DE

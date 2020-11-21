@@ -95,12 +95,12 @@
 
                         <div class="spacing-bottom spacing-bottom--bigger text-color-1">
                             <p>Abholstation</p>
-{#                            <span>#}
-{#                                {{- app['merchant_name'] -}}#}
-{#                            </span>#}
-                            {% if data.merchantName is defined %}
-                                <span class="{{ config.name }}__text">{{ data.merchantName }}</span>
-                            {% endif %}
+                            <span>
+                                {{- app['merchant_name'] -}}
+                            </span>
+{#                            {% if data.merchantName is defined %}#}
+{#                                <span class="{{ config.name }}__text">{{ data.merchantName }}</span>#}
+{#                            {% endif %}#}
                         </div>
                         <div class="text-color-1">
                             <p>Nachricht an die Abholstation</p>
