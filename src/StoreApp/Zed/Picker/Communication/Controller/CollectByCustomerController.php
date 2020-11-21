@@ -103,7 +103,7 @@ class CollectByCustomerController extends AbstractController
                 'collectNumber' => $salesOrderTransfer->getCollectNumber(),
                 'requestedDeliveryDate' => $requestedDeliveryDatesByIdSalesOrders[$idSalesOrder],
                 'pickedProductCount' => $pickedProductCount,
-                'pickingSalesOrders' => $pickingSalesOrders
+                'pickingSalesOrders' => $pickingSalesOrders,
             ];
         }
 

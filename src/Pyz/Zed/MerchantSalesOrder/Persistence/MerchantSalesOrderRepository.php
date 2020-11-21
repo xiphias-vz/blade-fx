@@ -14,7 +14,6 @@ use Generated\Shared\Transfer\OrderPickingBlockTransfer;
 use Orm\Zed\MerchantSalesOrder\Persistence\Map\SpyMerchantSalesOrderTableMap;
 use Orm\Zed\MerchantSalesOrder\Persistence\SpyMerchantSalesOrderQuery;
 use Orm\Zed\Oms\Persistence\Map\SpyOmsOrderItemStateTableMap;
-use Orm\Zed\Oms\Persistence\SpyOmsOrderItemState;
 use Orm\Zed\PickingZone\Persistence\Map\PyzOrderPickingBlockTableMap;
 use Orm\Zed\PickingZone\Persistence\Map\PyzPickingZoneTableMap;
 use Orm\Zed\Sales\Persistence\Map\SpySalesOrderItemTableMap;
