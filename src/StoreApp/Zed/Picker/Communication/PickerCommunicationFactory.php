@@ -11,15 +11,23 @@ use Pyz\Service\DateTimeWithZone\DateTimeWithZoneServiceInterface;
 use Pyz\Zed\Merchant\Business\MerchantFacadeInterface;
 use Pyz\Zed\MerchantSalesOrder\Business\MerchantSalesOrderFacadeInterface;
 use Pyz\Zed\PickingRoute\Business\PickingRouteFacadeInterface;
+use Pyz\Zed\PickingSalesOrder\Business\PickingSalesOrderFacadeInterface;
+use Pyz\Zed\PickingZone\Business\PickingZoneFacadeInterface;
 use Pyz\Zed\Product\Business\ProductFacadeInterface;
 use Spryker\Zed\Kernel\Communication\AbstractCommunicationFactory;
 use Spryker\Zed\Oms\Business\OmsFacadeInterface;
 use Spryker\Zed\Sales\Business\SalesFacadeInterface;
 use Spryker\Zed\User\Business\UserFacadeInterface;
 use StoreApp\Zed\PermissionAccess\Business\PermissionAccessFacadeInterface;
+use StoreApp\Zed\Picker\Business\PickerFacadeInterface;
 use StoreApp\Zed\Picker\Communication\Aggregator\ItemAggregator;
+use StoreApp\Zed\Picker\Communication\Form\ContainerToShelfForm;
 use StoreApp\Zed\Picker\Communication\Form\DataProvider\OrderItemSelectionFormDataProvider;
+use StoreApp\Zed\Picker\Communication\Form\DataProvider\PickingZoneSelectionFormDataProvider;
+use StoreApp\Zed\Picker\Communication\Form\DataProvider\ShelvesSelectionFormDataProvider;
 use StoreApp\Zed\Picker\Communication\Form\OrderItemSelectionForm;
+use StoreApp\Zed\Picker\Communication\Form\PickingZoneSelectionForm;
+use StoreApp\Zed\Picker\Communication\Form\ShelvesSelectionForm;
 use StoreApp\Zed\Picker\Communication\Mapper\FormDataMapper;
 use StoreApp\Zed\Picker\Communication\Mapper\FormDataMapperInterface;
 use StoreApp\Zed\Picker\Communication\Mapper\OrderItemsMapper;
@@ -33,6 +41,68 @@ use Symfony\Component\Form\FormInterface;
  */
 class PickerCommunicationFactory extends AbstractCommunicationFactory
 {
+    /**
+     * @return \StoreApp\Zed\Picker\Communication\Form\DataProvider\PickingZoneSelectionFormDataProvider
+     */
+    public function createPickingZoneSelectionFormDataProvider(): PickingZoneSelectionFormDataProvider
+    {
+        return new PickingZoneSelectionFormDataProvider($this->getPickingZoneFacade());
+    }
+
+    /**
+     * @param mixed[] $data
+     * @param mixed[] $options
+     *
+     * @return \Symfony\Component\Form\FormInterface
+     */
+    public function createPickingZoneSelectionForm(array $data, array $options): FormInterface
+    {
+        return $this->getFormFactory()->create(PickingZoneSelectionForm::class, $data, $options);
+    }
+
+    /**
+     * @return \StoreApp\Zed\Picker\Business\PickerFacadeInterface
+     */
+    public function getPickerFacade(): PickerFacadeInterface
+    {
+        return $this->getFacade();
+    }
+
+    /**
+     * @return \StoreApp\Zed\Picker\Communication\Form\DataProvider\ShelvesSelectionFormDataProvider
+     */
+    public function createShelvesSelectionFormDataProvider(): ShelvesSelectionFormDataProvider
+    {
+        return new ShelvesSelectionFormDataProvider($this->getPickingSalesOrderFacade());
+    }
+
+    /**
+     * @param mixed[] $data
+     * @param mixed[] $options
+     *
+     * @return \Symfony\Component\Form\FormInterface
+     */
+    public function createShelvesSelectionForm(array $data, array $options): FormInterface
+    {
+        return $this->getFormFactory()->create(ShelvesSelectionForm::class, $data, $options);
+    }
+
+    /**
+     * @return \Symfony\Component\Form\FormInterface
+     */
+    public function createContainerToShelfForm(): FormInterface
+    {
+        return $this->getFormFactory()->create(ContainerToShelfForm::class);
+    }
+
+    /**
+     * @return \Pyz\Zed\PickingSalesOrder\Business\PickingSalesOrderFacadeInterface
+     */
+    public function getPickingSalesOrderFacade(): PickingSalesOrderFacadeInterface
+    {
+        return $this->getProvidedDependency(PickerDependencyProvider::FACADE_PICKING_SALES_ORDER);
+    }
+
     /**
      * @return \Pyz\Zed\Sales\Business\SalesFacadeInterface
      */
@@ -124,6 +194,14 @@ class PickerCommunicationFactory extends AbstractCommunicationFactory
     public function getPickingRouteFacade(): PickingRouteFacadeInterface
     {
         return $this->getProvidedDependency(PickerDependencyProvider::FACADE_PICKING_ROUTE);
+    }
+
+    /**
+     * @return \Pyz\Zed\PickingZone\Business\PickingZoneFacadeInterface
+     */
+    public function getPickingZoneFacade(): PickingZoneFacadeInterface
+    {
+        return $this->getProvidedDependency(PickerDependencyProvider::FACADE_PICKING_ZONE);
     }
 
     /**

@@ -95,6 +95,21 @@ class SalesFacade extends SprykerSalesFacade implements SalesFacadeInterface
 
     /**
      * @inheritDoc
+     *
+     * @api
+     *
+     * @param int $idSalesOrder
+     * @param string[] $states
+     *
+     * @return string[]
+     */
+    public function getSalesOrderItemsIdsByIdSalesOrderAndStates(int $idSalesOrder, array $states): array
+    {
+        return $this->getRepository()->getSalesOrderItemsIdsByIdSalesOrderAndStates($idSalesOrder, $states);
+    }
+
+    /**
+     * @inheritDoc
      */
     public function getOrdersInfoByInvoiceDateTimeRange(?DateTime $dateFrom, ?DateTime $dateTo): array
     {
@@ -180,5 +195,24 @@ class SalesFacade extends SprykerSalesFacade implements SalesFacadeInterface
         return $this->getFactory()
             ->createOrderReaderForStoreApp()
             ->findOrderByIdSalesOrder($idSalesOrder);
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * @api
+     *
+     * @param int $idSalesOrder
+     * @param string $pickingZoneName
+     *
+     * @return \Generated\Shared\Transfer\OrderTransfer|null
+     */
+    public function findOrderByIdSalesOrderAndPickingZoneForStoreApp(
+        int $idSalesOrder,
+        string $pickingZoneName
+    ): ?OrderTransfer {
+        return $this->getFactory()
+            ->createOrderReaderForStoreApp()
+            ->findOrderByIdSalesOrderAndPickingZone($idSalesOrder, $pickingZoneName);
     }
 }

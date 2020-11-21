@@ -1,8 +1,12 @@
 @mixin shop-ui-footer($name: '.footer') {
     #{$name} {
         $footer-socials-width: rem(300);
-        background: $setting-color-gray-12;
+        background: $setting-color-grey-footer;
         color: $setting-color-white;
+
+        .contact-store-info .product-slider-title{
+            display: none;
+        }
 
         &__top {
             display: flex;
@@ -16,6 +20,22 @@
             }
         }
 
+        .icon-container {
+            display: block;
+
+        }
+
+        .icon-container div  {
+            display: inline-block;
+        }
+
+        .icon-container .div-margin-right {
+            margin-right: 30px;
+        }
+        .icon-container .div-margin-left   {
+            margin-left: 30px;
+        }
+
         &__logo-section {
             width: rem(90);
         }
@@ -25,9 +45,6 @@
             align-items: center;
             justify-content: center;
 
-            @include helper-breakpoint-media-min($lg-min) {
-                justify-content: flex-start;
-            }
         }
 
         &__logo-copy-text {
@@ -39,8 +56,8 @@
 
         &__bottom {
             display: block;
-            padding: 0 rem(15);
-            background: $setting-color-gray-6;
+            padding:1rem;
+            background: $setting-color-gray-17;
             color: $setting-color-white;
             position: relative;
         }
@@ -130,6 +147,7 @@
                 text-align: left;
                 margin-bottom: rem(6);
             }
+
         }
     }
 }

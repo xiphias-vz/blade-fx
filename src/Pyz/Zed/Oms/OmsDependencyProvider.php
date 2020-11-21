@@ -11,6 +11,7 @@ use Pyz\Service\DateTimeWithZone\DateTimeWithZoneServiceInterface;
 use Pyz\Zed\CancelledItems\Communication\Plugin\Oms\Command\UpdateOrderDueCancelledItemsCommandByOrderPlugin;
 use Pyz\Zed\CashierOrderExport\Communication\Plugin\Oms\Command\CashierOrderExportCommandPlugin;
 use Pyz\Zed\CashierOrderExport\Communication\Plugin\Oms\Condition\IsOrderExportedToCashierConditionPlugin;
+use Pyz\Zed\Customer\Communication\Plugin\Oms\Command\CustomerHasOrderWriterCommandPlugin;
 use Pyz\Zed\Invoice\Communication\Plugin\Oms\Command\GenerateInvoiceReferenceCommandByOrderPlugin;
 use Pyz\Zed\Invoice\Communication\Plugin\Oms\Command\SendInvoiceCommandByOrderPlugin;
 use Pyz\Zed\Invoice\Communication\Plugin\Oms\Condition\IfTimeToSendInvoiceConditionPlugin;
@@ -34,6 +35,7 @@ use Pyz\Zed\Sales\Communication\Plugin\Oms\Command\CancelStartDeliveryCommandPlu
 use Pyz\Zed\Sales\Communication\Plugin\Oms\Command\ConfirmCollectionCommandPlugin;
 use Pyz\Zed\Sales\Communication\Plugin\Oms\Command\ConfirmDeliveryCommandPlugin;
 use Pyz\Zed\Sales\Communication\Plugin\Oms\Command\ConfirmPickingCommandPlugin;
+use Pyz\Zed\Sales\Communication\Plugin\Oms\Command\ConfirmSelectingContainersCommandPlugin;
 use Pyz\Zed\Sales\Communication\Plugin\Oms\Command\MarkDeliveryCancelledByCustomerCommandPlugin;
 use Pyz\Zed\Sales\Communication\Plugin\Oms\Command\MarkDeliveryCancelledByStoreCommandPlugin;
 use Pyz\Zed\Sales\Communication\Plugin\Oms\Command\MoveToReadyForCollectionCommandPlugin;
@@ -177,6 +179,9 @@ class OmsDependencyProvider extends SprykerOmsDependencyProvider
             $commandCollection->add(new CancelByTimeoutCommandPlugin(), 'Sales/CancelByTimeout');
 
             $commandCollection->add(new CashierOrderExportCommandPlugin(), 'CashierOrderExport/OrderExport');
+
+            $commandCollection->add(new ConfirmSelectingContainersCommandPlugin(), 'Sales/ConfirmSelectingContainers');
+            $commandCollection->add(new CustomerHasOrderWriterCommandPlugin(), 'Customer/SetHasOrdersFlag');
 
             return $commandCollection;
         });

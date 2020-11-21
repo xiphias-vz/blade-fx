@@ -210,6 +210,25 @@ class SalesRepository extends SprykerSalesRepository implements SalesRepositoryI
     /**
      * @inheritDoc
      */
+    public function getSalesOrderItemsIdsByIdSalesOrderAndStates(int $idSalesOrder, array $states): array
+    {
+        $salesOrderItemQuery = $this->getFactory()
+            ->createSalesOrderItemQuery()
+            ->filterByFkSalesOrder($idSalesOrder)
+            ->useStateQuery()
+                ->filterByName_In($states)
+            ->endUse()
+            ->select([
+                SpySalesOrderItemTableMap::COL_ID_SALES_ORDER_ITEM,
+            ])
+            ->find();
+
+        return $salesOrderItemQuery->toArray();
+    }
+
+    /**
+     * @inheritDoc
+     */
     public function findRequestedDeliveryDatesByIdSalesOrders(array $idSalesOrders): array
     {
         $spySalesShipments = $this->getFactory()

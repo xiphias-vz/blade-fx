@@ -3,18 +3,27 @@ env:
 
 command-timeout: 14400
 
+stores:
+    - EIN
+    - KMD
+    - LPZ
+    - HAD
+
 sections:
 
     scheduler-clean:
         scheduler-clean:
             command: "vendor/bin/console scheduler:clean -vvv --no-ansi || true"
+            stores: true
 
     clean-storage:
         clean-storage:
             command: "vendor/bin/console storage:delete -vvv --no-ansi"
+            stores: true
 
         clean-search:
             command: "vendor/bin/console elasticsearch:index:delete -vvv --no-ansi"
+            stores: true
 
         clean-db:
             command: "vendor/bin/console propel:tables:drop -vvv --no-ansi"
@@ -22,6 +31,7 @@ sections:
     init-storage:
         setup-search-create-sources:
             command: "vendor/bin/console search:setup:sources -vvv --no-ansi"
+            stores: true
 
     init-storages-per-region:
         propel-copy-schema:
@@ -67,3 +77,4 @@ sections:
     scheduler-start:
         scheduler-setup:
             command: "vendor/bin/console scheduler:setup -vvv --no-ansi || true"
+            stores: true

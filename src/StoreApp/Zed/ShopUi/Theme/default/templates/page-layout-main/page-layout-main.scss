@@ -1,6 +1,7 @@
 @mixin shop-ui-page-layout-main($name: '.page-layout-main') {
     #{$name} {
         font-family: $setting-font-family-additional;
+        height: 100%;
 
         &--login {
             display: flex;

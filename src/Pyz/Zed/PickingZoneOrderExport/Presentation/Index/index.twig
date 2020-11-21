@@ -1,0 +1,24 @@
+{% extends '@Gui/Layout/layout.twig' %}
+
+{% set widget_title = 'picking_zone_order_export_gui.title' %}
+
+{% block head_title %}
+    {{ widget_title | trans }}
+{% endblock %}
+
+{% block section_title %}
+    {{ widget_title | trans }}
+{% endblock %}
+
+{% block content %}
+    {{ form_start(form) }}
+    {{ form_widget(form) }}
+    <input type="submit" class="btn btn-primary" value="{{ 'picking_zone_order_export_gui.field.button' | trans }}">
+    <input type="reset" value="{{ 'picking_zone_order_export_gui.field.reset' | trans }}" class="btn btn-danger reset">
+    {{ form_end(form) }}
+{% endblock %}
+
+{% block footer_js %}
+    {{ parent() }}
+    <script src="{{ assetsPath('js/zed-picking-zone-order-export-main.js') }}"></script>
+{% endblock %}
