@@ -11,15 +11,12 @@ use Spryker\Shared\DummyPayment\DummyPaymentConstants;
 use Spryker\Yves\StepEngine\Dependency\Form\AbstractSubFormType;
 use Spryker\Yves\StepEngine\Dependency\Form\SubFormInterface;
 use Spryker\Yves\StepEngine\Dependency\Form\SubFormProviderNameInterface;
-use Symfony\Component\Form\Extension\Core\Type\BirthdayType;
-use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Validator\Constraints\Callback;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
 abstract class AbstractSubForm extends AbstractSubFormType implements SubFormInterface, SubFormProviderNameInterface
 {
-    public const FIELD_DATE_OF_BIRTH = 'date_of_birth';
     public const MIN_BIRTHDAY_DATE_STRING = '-18 years';
 
     /**
@@ -28,35 +25,6 @@ abstract class AbstractSubForm extends AbstractSubFormType implements SubFormInt
     public function getProviderName()
     {
         return DummyPaymentConstants::PROVIDER_NAME;
-    }
-
-    /**
-     * @param \Symfony\Component\Form\FormBuilderInterface $builder
-     *
-     * @return \Spryker\Yves\DummyPayment\Form\AbstractSubForm
-     */
-    protected function addDateOfBirth(FormBuilderInterface $builder)
-    {
-        $builder->add(
-            self::FIELD_DATE_OF_BIRTH,
-            BirthdayType::class,
-            [
-                'label' => 'dummyPaymentInvoice.date_of_birth',
-                'required' => false,
-                'widget' => 'single_text',
-                'format' => 'dd.MM.yyyy',
-                'input' => 'string',
-                'attr' => [
-                    'placeholder' => 'customer.birth_date',
-                ],
-                'constraints' => [
-                    $this->createNotBlankConstraint(),
-                    $this->createBirthdayConstraint(),
-                ],
-            ]
-        );
-
-        return $this;
     }
 
     /**

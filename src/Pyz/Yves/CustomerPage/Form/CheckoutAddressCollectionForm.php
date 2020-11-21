@@ -39,6 +39,11 @@ class CheckoutAddressCollectionForm extends SprykerShopCheckoutAddressCollection
             ->addIsMultipleShipmentEnabledField($builder, $options);
     }
 
+    /**
+     * @param \Symfony\Component\Form\FormBuilderInterface $builder
+     *
+     * @return \SprykerShop\Yves\CustomerPage\Form\CheckoutAddressCollectionForm
+     */
     protected function addTextAreaMessage(FormBuilderInterface $builder)
     {
         $builder->add(self::OPTION_CART_NOTE, TextareaType::class, [
@@ -144,7 +149,7 @@ class CheckoutAddressCollectionForm extends SprykerShopCheckoutAddressCollection
      * @param \Symfony\Component\Form\FormBuilderInterface $builder
      * @param array $options
      *
-     * @return \SprykerShop\Yves\CustomerPage\Form\CheckoutAddressCollectionForm
+     * @return \Pyz\Yves\CustomerPage\Form\CheckoutAddressCollectionForm
      */
     protected function addItemShippingAddressSubForm(FormBuilderInterface $builder, array $options)
     {
