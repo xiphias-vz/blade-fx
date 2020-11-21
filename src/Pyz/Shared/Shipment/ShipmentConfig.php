@@ -13,6 +13,8 @@ class ShipmentConfig extends SprykerShipmentConfig
 {
     public const SHIPMENT_METHOD_CLICK_AND_COLLECT = 'click_and_collect';
     public const SHIPMENT_METHOD_DELIVERY = 'lieferung';
+    public const MAIN_GLOBUS_CUSTOMER_CLICK_AND_COLLECT_SHIPMENT_METHOD_PRICE = 199;
+    public const PROMOTION_CLICK_AND_COLLECT_SHIPMENT_METHOD_PRICE = 0;
 
     /**
      * @return bool
@@ -20,5 +22,21 @@ class ShipmentConfig extends SprykerShipmentConfig
     public function isMultiShipmentSelectionEnabled(): bool
     {
         return false;
+    }
+
+    /**
+     * @return int
+     */
+    public function getMainGlobusCustomerClickAndCollectShipmentMethodPrice(): int
+    {
+        return static::MAIN_GLOBUS_CUSTOMER_CLICK_AND_COLLECT_SHIPMENT_METHOD_PRICE;
+    }
+
+    /**
+     * @return int
+     */
+    public function getPromotionClickAndCollectShipmentMethodPrice(): int
+    {
+        return static::PROMOTION_CLICK_AND_COLLECT_SHIPMENT_METHOD_PRICE;
     }
 }

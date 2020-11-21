@@ -106,12 +106,17 @@ sections:
             command: "vendor/bin/console transfer:databuilder:generate"
 
     demodata:
+        local-env-data-restore:
+            command: "vendor/bin/install -r local-env-data-restore"
+
         import:
             command: "vendor/bin/console data:import"
 
         update-product-labels:
             command: "vendor/bin/console product-label:relations:update"
 
+        local-env-data-reset:
+            command: "vendor/bin/install -r local-env-data-reset"
 
     queue:
         run-worker:

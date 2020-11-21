@@ -140,6 +140,9 @@ sections:
             command: "vendor/bin/console setup:init-db"
 
     demodata:
+        local-env-data-restore:
+            command: "vendor/bin/install -r local-env-data-restore"
+
         import:
             command: "vendor/bin/console data:import"
 
@@ -154,6 +157,9 @@ sections:
 
         check-product-validity:
             command: "vendor/bin/console product:check-validity"
+
+        local-env-data-reset:
+            command: "vendor/bin/install -r local-env-data-reset"
 
     scheduler-setup:
         scheduler-setup:

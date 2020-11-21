@@ -11,6 +11,7 @@ use Pyz\Zed\Cache\Communication\Console\DirectoryCacheCleanerConsole;
 use Pyz\Zed\CmsPageDataImport\CmsPageDataImportConfig;
 use Pyz\Zed\Console\Communication\Plugin\ConsoleLogPlugin;
 use Pyz\Zed\DatabaseLoad\Communication\Console\DatabaseLoadTestConsole;
+use Pyz\Zed\DataImport\Communication\Console\DataImportFileManagerConsole;
 use Pyz\Zed\DataImport\DataImportConfig;
 use Pyz\Zed\Development\Communication\Console\AcceptanceCodeTestConsole;
 use Pyz\Zed\Development\Communication\Console\ApiCodeTestConsole;
@@ -235,6 +236,7 @@ class ConsoleDependencyProvider extends SprykerConsoleDependencyProvider
             new DataImportConsole(DataImportConsole::DEFAULT_NAME . ':' . DataImportConfig::IMPORT_TYPE_PRODUCT),
             new DataImportConsole(DataImportConsole::DEFAULT_NAME . ':' . DataImportConfig::IMPORT_TYPE_PRODUCT_CATEGORY),
             new DataImportConsole(DataImportConsole::DEFAULT_NAME . ':' . DataImportConfig::IMPORT_TYPE_PICKING_ROUTE),
+            new DataImportConsole(DataImportConsole::DEFAULT_NAME . ':' . DataImportConfig::IMPORT_TYPE_PICKING_ZONE),
             new DataImportConsole(DataImportConsole::DEFAULT_NAME . ':' . DataImportConfig::IMPORT_TYPE_MERCHANT_DELIVERY_POSTAL_CODE),
             new DataImportConsole(DataImportConsole::DEFAULT_NAME . ':' . DataImportConfig::IMPORT_TYPE_MERCHANT_USER),
             new DataImportConsole(DataImportConsole::DEFAULT_NAME . ':' . CmsPageDataImportConfig::IMPORT_TYPE_CMS_PAGE),
@@ -317,6 +319,7 @@ class ConsoleDependencyProvider extends SprykerConsoleDependencyProvider
             new InitVirtualHostConsole(),
             new RemoveVirtualHostConsole(),
             new DirectoryCacheCleanerConsole(),
+            new DataImportFileManagerConsole(),
         ];
 
         $propelCommands = $container->getLocator()->propel()->facade()->getConsoleCommands();

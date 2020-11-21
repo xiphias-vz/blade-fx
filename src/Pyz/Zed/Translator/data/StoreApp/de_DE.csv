@@ -12,6 +12,7 @@ storeapp.filiale.number.format,Filiale - %d
 
 picker.activity.picking,Kommissionierung
 picker.activity.collection,Abholung
+picker.activity.container-to-shelf,Stellen Sie den Behälter auf das Regal.
 
 picker.picking.order.deadline,Fertigstellung
 picker.picking.order.reference,Bestellnummer
@@ -20,6 +21,7 @@ picker.picking.order.status-action,Status/Aktion
 picker.picking.order.status.done,Erledigt
 picker.picking.order.action,Aktion
 picker.picking.order.action.start,Start
+picker.picking.order.action.stop,Entsperren
 
 picker.picking.confirmation,Fertig
 
@@ -116,6 +118,8 @@ global.permission.failed,Diese Aktion ist nicht erlaubt
 
 storeapp.picking.message.error.order-is-fully-cancelled,Der Wunscheinkauf wurde storniert
 storeapp.picking.message.success.order-has-been-picked,Die Kommissionierung der Wunscheinkauf ist abgeschlossen
+storeapp.picking.message.success.container-to-shelf,Der Behälter ist an das Regal gebunden
+storeapp.form.container-to-shelf,Stellen Sie den Behälter auf das Regal.
 collected,Abgeholt
 not collected, Nicht abgeholt
 

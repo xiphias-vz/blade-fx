@@ -133,10 +133,10 @@ class ProductConcreteWriter extends PublishAwareStep implements DataImportStepIn
     protected function removeUnnecessaryAttributes(DataSetInterface $dataSet): array
     {
         $attributes = $dataSet[static::KEY_ATTRIBUTES];
+        $attributes[ProductConfig::KEY_ARTIKELNAME_SPRYKER] = $dataSet[ProductConfig::KEY_ARTIKELNAME_SPRYKER];
         unset($attributes[ProductConfig::KEY_ACTIVE]);
         unset($attributes[ProductConfig::KEY_TAX]);
         unset($attributes[ProductConfig::KEY_MAIN_IMAGE_FILE_NAME]);
-        unset($attributes[ProductConfig::KEY_ARTIKELNAME_SPRYKER]);
         unset($attributes[ProductConfig::KEY_DESCRIPTION]);
         unset($attributes[ProductConfig::KEY_PRODUCT_NUMBER]);
         unset($attributes[ProductConfig::KEY_PRODUCT_NUMBER]);

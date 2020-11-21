@@ -14,9 +14,18 @@ use Spryker\Zed\MerchantSalesOrder\Persistence\MerchantSalesOrderRepositoryInter
 interface MerchantSalesOrderRepositoryInterface extends SprykerMerchantSalesOrderRepositoryInterface
 {
     /**
-     * @param \Generated\Shared\Transfer\OrderCriteriaFilterTransfer $orderFilterCriteriaTransport
+     * @param \Generated\Shared\Transfer\OrderCriteriaFilterTransfer $orderFilterCriteriaTransfer
      *
      * @return \Generated\Shared\Transfer\MerchantSalesOrderCollectionTransfer
      */
-    public function findMerchantSalesOrdersByOrderFilterCriteria(OrderCriteriaFilterTransfer $orderFilterCriteriaTransport): MerchantSalesOrderCollectionTransfer;
+    public function findMerchantSalesOrdersByOrderFilterCriteria(OrderCriteriaFilterTransfer $orderFilterCriteriaTransfer): MerchantSalesOrderCollectionTransfer;
+
+    /**
+     * @param \Generated\Shared\Transfer\OrderCriteriaFilterTransfer $orderFilterCriteriaTransfer
+     *
+     * @return mixed[]
+     */
+    public function getSalesOrderItemDataByPickingDateAndPickingZone(
+        OrderCriteriaFilterTransfer $orderFilterCriteriaTransfer
+    ): array;
 }

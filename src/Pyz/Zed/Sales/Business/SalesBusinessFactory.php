@@ -22,12 +22,13 @@ use Pyz\Zed\Sales\Business\Model\Order\SalesOrderChecker;
 use Pyz\Zed\Sales\Business\Model\Order\SalesOrderSaver;
 use Pyz\Zed\Sales\Business\Order\OrderHydrator;
 use Pyz\Zed\Sales\Business\Order\OrderReader;
+use Pyz\Zed\Sales\Business\Order\OrderReaderInterface;
 use Pyz\Zed\Sales\Business\OrderDate\OrderDateCheck;
 use Pyz\Zed\Sales\SalesDependencyProvider;
 use Spryker\Zed\Sales\Business\Model\Customer\CustomerOrderOverviewInterface;
 use Spryker\Zed\Sales\Business\Model\Order\OrderUpdaterInterface;
 use Spryker\Zed\Sales\Business\Order\OrderHydratorInterface;
-use Spryker\Zed\Sales\Business\Order\OrderReaderInterface;
+use Spryker\Zed\Sales\Business\Order\OrderReaderInterface as SprykerOrderReaderInterface;
 use Spryker\Zed\Sales\Business\SalesBusinessFactory as SprykerSalesBusinessFactory;
 use Spryker\Zed\Shipment\Business\ShipmentFacadeInterface;
 
@@ -118,9 +119,9 @@ class SalesBusinessFactory extends SprykerSalesBusinessFactory
     }
 
     /**
-     * @return \Spryker\Zed\Sales\Business\Order\OrderReaderInterface
+     * @return \Pyz\Zed\Sales\Business\Order\OrderReaderInterface
      */
-    public function createOrderReaderWithMultiShippingAddress(): OrderReaderInterface
+    public function createOrderReaderWithMultiShippingAddress(): SprykerOrderReaderInterface
     {
         return new OrderReader(
             $this->getQueryContainer(),
@@ -129,7 +130,7 @@ class SalesBusinessFactory extends SprykerSalesBusinessFactory
     }
 
     /**
-     * @return \Spryker\Zed\Sales\Business\Order\OrderReaderInterface
+     * @return \Pyz\Zed\Sales\Business\Order\OrderReaderInterface
      */
     public function createOrderReaderForStoreApp(): OrderReaderInterface
     {
