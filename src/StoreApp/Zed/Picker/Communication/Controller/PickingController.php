@@ -303,7 +303,7 @@ class PickingController extends BaseOrderPickingController
             return $this->redirectResponse(PickerConfig::URL_PICKING_LIST);
         }
 
-        $this->getFactory()->getPickingSalesOrderFacade()->updatePickingSalesOrderCollection($pickingSalesOrderCollectionTransfer);
+        $this->getFactory()->getPickingSalesOrderFacade()->refreshPickingSalesOrderCollection($pickingSalesOrderCollectionTransfer);
         $this->getFacade()->markOrderItemsAsContainerSelected($selectedIdSalesOrderItems);
         $this->getFacade()->updateOrderPickingBagsCount($idSalesOrder, $pickingBagsCount);
 
@@ -537,7 +537,6 @@ class PickingController extends BaseOrderPickingController
 
         return $productAttributes;
     }
-
 
     /**
      * @param \Symfony\Component\HttpFoundation\Request $request

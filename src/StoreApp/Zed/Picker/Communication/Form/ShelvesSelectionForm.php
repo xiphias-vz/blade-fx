@@ -9,7 +9,7 @@ namespace StoreApp\Zed\Picker\Communication\Form;
 
 use ArrayObject;
 use Spryker\Zed\Kernel\Communication\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -23,9 +23,9 @@ use Symfony\Component\Validator\Constraints\NotBlank;
  */
 class ShelvesSelectionForm extends AbstractType
 {
-    public const BUTTON_SUBMIT = 'buttonSubmit';
     public const OPTION_PICKING_SALES_ORDERS = 'option_order_containers';
     public const PREFIX_FIELD_CONTAINER_CODE = 'field_container_code__';
+    public const FIELD_ID_SALES_ORDER = 'field_id_sales_order';
 
     /**
      * @param \Symfony\Component\OptionsResolver\OptionsResolver $resolver
@@ -45,9 +45,23 @@ class ShelvesSelectionForm extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+        $this->addIdSalesOrder($builder);
         $this->addShelvesSelector($builder, $options);
+    }
 
-        $builder->add(static::BUTTON_SUBMIT, SubmitType::class);
+    /**
+     * @param \Symfony\Component\Form\FormBuilderInterface $builder
+     *
+     * @return $this
+     */
+    protected function addIdSalesOrder(FormBuilderInterface $builder)
+    {
+        $builder->add(
+            static::FIELD_ID_SALES_ORDER,
+            HiddenType::class
+        );
+
+        return $this;
     }
 
     /**

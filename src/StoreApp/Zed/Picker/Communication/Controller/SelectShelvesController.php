@@ -56,7 +56,7 @@ class SelectShelvesController extends BaseOrderPickingController
 
         $shelvesSelectionFormDataProvider = $this->getFactory()->createShelvesSelectionFormDataProvider();
         $shelvesSelectionForm = $this->getFactory()->createShelvesSelectionForm(
-            [],
+            $shelvesSelectionFormDataProvider->getData($salesOrderTransfer->getIdSalesOrder()),
             $shelvesSelectionFormDataProvider->getOptions($salesOrderTransfer->getIdSalesOrder())
         );
 
@@ -96,7 +96,7 @@ class SelectShelvesController extends BaseOrderPickingController
             ->getFormDataMapper()
             ->mapContainersToShelves($containerIdToShelfCodeMap, $salesOrderTransfer);
 
-        $this->getFactory()->getPickingSalesOrderFacade()->updatePickingSalesOrderCollection($pickingSalesOrderCollectionTransfer);
+        $this->getFactory()->getPickingSalesOrderFacade()->refreshPickingSalesOrderCollection($pickingSalesOrderCollectionTransfer);
 
         $selectedIdSalesOrderItems = $this->getFactory()
             ->getSalesFacade()

@@ -24,6 +24,7 @@ use Symfony\Component\HttpFoundation\Request;
 class ContainerToShelfController extends AbstractController
 {
     public const SUCCESS_MESSAGE_CONTAINER_ON_SHELF = 'storeapp.picking.message.success.container-to-shelf';
+    public const ERROR_MESSAGE_CONTAINER_WITHOUT_ORDER = 'storeapp.picking.message.error.container-without-order';
 
     /**
      * @param \Symfony\Component\HttpFoundation\Request $request
@@ -72,9 +73,15 @@ class ContainerToShelfController extends AbstractController
             ->setContainerCode($formData[ContainerToShelfForm::FIELD_CONTAINER_CODE])
             ->setShelfCode($formData[ContainerToShelfForm::FIELD_SHELF_CODE]);
 
-        $this->getFactory()
+        $pickingSalesOrderTransfer = $this->getFactory()
             ->getPickingSalesOrderFacade()
             ->bindContainerToShelf($pickingSalesOrderTransfer);
+
+        if (!$pickingSalesOrderTransfer) {
+            $this->addErrorMessage(static::ERROR_MESSAGE_CONTAINER_WITHOUT_ORDER);
+
+            return $this->redirectResponse(PickerConfig::URL_PICKING_LIST);
+        }
 
         $this->addSuccessMessage(static::SUCCESS_MESSAGE_CONTAINER_ON_SHELF);
 
