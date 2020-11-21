@@ -266,7 +266,7 @@ class SalesRepository extends SprykerSalesRepository implements SalesRepositoryI
             ->findOneByName($quoteTransfer->getStore()->getName())
             ->getIdStock();
 
-        $IdProduct = $this->getFactory()
+        $idProduct = $this->getFactory()
             ->createProductQuery()
             ->findOneBySku($itemEntityTransfer->getSku())
             ->getIdProduct();
@@ -274,7 +274,7 @@ class SalesRepository extends SprykerSalesRepository implements SalesRepositoryI
         return $this->getFactory()
             ->createSpyStockProductQuery()
             ->filterByFkStock($idStock)
-            ->filterByFkProduct($IdProduct)
+            ->filterByFkProduct($idProduct)
             ->findOne()
             ->getSequence();
     }

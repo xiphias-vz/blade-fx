@@ -16,7 +16,7 @@ use Spryker\Zed\DataImport\Business\Model\DataSet\DataSetInterface;
 
 class ProductLocationWriterStep implements DataImportStepInterface
 {
-    protected const KEY_STOCK_STORE = 'StoreID';
+    protected const KEY_STORE = 'StoreID';
     protected const KEY_SHELF = 'Regal';
     protected const KEY_SHELF_FIELD = 'Regalmeter';
     protected const KEY_SHELF_FLOR = 'Ebene';
@@ -50,9 +50,9 @@ class ProductLocationWriterStep implements DataImportStepInterface
     public function execute(DataSetInterface $dataSet): void
     {
         $sapStoreIdToStoreMap = $this->dataImportConfig->getSapStoreIdToStoreMap();
-        $storeName = $sapStoreIdToStoreMap[$dataSet[static::KEY_STOCK_STORE]];
+        $storeName = $sapStoreIdToStoreMap[$dataSet[static::KEY_STORE]];
 
-        if (!isset($sapStoreIdToStoreMap[$dataSet[static::KEY_STOCK_STORE]])) {
+        if (!isset($sapStoreIdToStoreMap[$dataSet[static::KEY_STORE]])) {
             throw new Exception('Sap store id does not exists in Spryker config map.');
         }
 
