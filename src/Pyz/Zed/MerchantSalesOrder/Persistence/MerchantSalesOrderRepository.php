@@ -13,6 +13,8 @@ use Generated\Shared\Transfer\OrderCriteriaFilterTransfer;
 use Generated\Shared\Transfer\OrderPickingBlockTransfer;
 use Orm\Zed\MerchantSalesOrder\Persistence\Map\SpyMerchantSalesOrderTableMap;
 use Orm\Zed\MerchantSalesOrder\Persistence\SpyMerchantSalesOrderQuery;
+use Orm\Zed\Oms\Persistence\Map\SpyOmsOrderItemStateTableMap;
+use Orm\Zed\Oms\Persistence\SpyOmsOrderItemState;
 use Orm\Zed\PickingZone\Persistence\Map\PyzOrderPickingBlockTableMap;
 use Orm\Zed\PickingZone\Persistence\Map\PyzPickingZoneTableMap;
 use Orm\Zed\Sales\Persistence\Map\SpySalesOrderItemTableMap;
@@ -177,6 +179,11 @@ class MerchantSalesOrderRepository extends SprykerMerchantSalesOrderRepository i
                             PyzPickingZoneTableMap::COL_NAME,
                             Criteria::INNER_JOIN
                         )
+                        ->addJoin(
+                            SpySalesOrderItemTableMap::COL_FK_OMS_ORDER_ITEM_STATE,
+                            SpyOmsOrderItemStateTableMap::COL_ID_OMS_ORDER_ITEM_STATE,
+                            Criteria::INNER_JOIN
+                        )
                     ->endUse()
                     ->leftJoinPyzOrderPickingBlock()
                     ->addJoinCondition(
@@ -189,12 +196,14 @@ class MerchantSalesOrderRepository extends SprykerMerchantSalesOrderRepository i
                     )
                 ->endUse()
                 ->where(sprintf(
-                    '%s = %s AND (%s = %s OR %s IS NULL)',
+                    '%s = %s AND (%s = %s OR %s IS NULL) AND %s = "%s"',
                     PyzPickingZoneTableMap::COL_ID_PICKING_ZONE,
                     $orderFilterCriteriaTransfer->getIdPickingZone(),
                     PyzOrderPickingBlockTableMap::COL_FK_USER,
                     $orderFilterCriteriaTransfer->getIdUser(),
-                    PyzOrderPickingBlockTableMap::COL_FK_USER
+                    PyzOrderPickingBlockTableMap::COL_FK_USER,
+                    SpyOmsOrderItemStateTableMap::COL_NAME,
+                    $orderFilterCriteriaTransfer->getStoreStatuses()[0]
                 ))
                 ->withColumn(PyzOrderPickingBlockTableMap::COL_FK_USER, OrderPickingBlockTransfer::ID_USER)
                 ->groupBy(SpyMerchantSalesOrderTableMap::COL_ID_MERCHANT_SALES_ORDER);

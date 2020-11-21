@@ -358,7 +358,6 @@ class PickingController extends BaseOrderPickingController
             ->setMerchantReferences([$userTransfer->getMerchantReference()])
             ->setStoreStatuses([
                 OmsConfig::STORE_STATE_READY_FOR_PICKING,
-                OmsConfig::STORE_STATE_PICKED,
             ])
             ->setIdPickingZone($pickingZoneTransfer->getIdPickingZone())
             ->setIdUser($userTransfer->getIdUser())

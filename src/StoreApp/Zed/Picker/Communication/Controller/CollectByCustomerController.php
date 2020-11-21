@@ -16,6 +16,7 @@ use Generated\Shared\Transfer\MerchantTransfer;
 use Generated\Shared\Transfer\OrderCriteriaFilterTransfer;
 use Generated\Shared\Transfer\OrderTransfer;
 use Generated\Shared\Transfer\OrderUpdateRequestTransfer;
+use Generated\Shared\Transfer\PickingSalesOrderCriteriaTransfer;
 use Generated\Shared\Transfer\UserTransfer;
 use Pyz\Shared\Messages\MessagesConfig;
 use Pyz\Shared\Oms\OmsConfig;
@@ -82,20 +83,27 @@ class CollectByCustomerController extends AbstractController
             $salesOrderTransfer = $this->getFactory()->getSalesFacade()->findOrderByIdSalesOrderForStoreApp($idSalesOrder);
             $collectionMerchantSalesOrder = $collectionMerchantSalesOrders[$idSalesOrder];
 
-            [$pickedProductTypes, $pickedProductCount] = $this->getPickedProductTypesAndCount($salesOrderTransfer);
+            $pickedProductCount = $this->getPickedProductCount($salesOrderTransfer);
+
+            $pickingSalesOrderCriteria = new PickingSalesOrderCriteriaTransfer();
+            $pickingSalesOrderCriteria->setIdSalesOrder($idSalesOrder);
+
+            $pickingSalesOrders = $this->getFactory()
+                ->getPickingSalesOrderFacade()
+                ->getPickingSalesOrderCollection($pickingSalesOrderCriteria)
+                ->getPickingSalesOrders();
 
             $collectionOrders[] = [
                 'idSalesOrder' => $idSalesOrder,
                 'reference' => $salesOrderTransfer->getOrderReference(),
                 'deliveryMinimumAge' => $salesOrderTransfer->getDeliveryMinimumAge(),
-                'bagsCount' => $salesOrderTransfer->getPickingBagsCount(),
                 'collectedAt' => $collectionMerchantSalesOrder->getCollectedAt(),
                 'collected' => $this->getIsOrderCollected($collectionMerchantSalesOrder),
                 'cancelled' => $this->getIsOrderCancelled($collectionMerchantSalesOrder),
                 'collectNumber' => $salesOrderTransfer->getCollectNumber(),
                 'requestedDeliveryDate' => $requestedDeliveryDatesByIdSalesOrders[$idSalesOrder],
-                'pickedProductTypes' => $pickedProductTypes,
                 'pickedProductCount' => $pickedProductCount,
+                'pickingSalesOrders' => $pickingSalesOrders
             ];
         }
 
@@ -624,20 +632,13 @@ class CollectByCustomerController extends AbstractController
     /**
      * @param \Generated\Shared\Transfer\OrderTransfer $salesOrderTransfer
      *
-     * @return array
+     * @return int
      */
-    protected function getPickedProductTypesAndCount(OrderTransfer $salesOrderTransfer): array
+    protected function getPickedProductCount(OrderTransfer $salesOrderTransfer): int
     {
         $aggregatedItemTransfers = $this->getFactory()->getItemAggregator()
             ->aggregateOrderItemsQuantities($salesOrderTransfer->getItems()->getArrayCopy());
 
-        $concreteAttributes = $this->getFactory()->getProductFacade()
-            ->getConcreteSkuToAttributesMap(
-                array_keys($aggregatedItemTransfers),
-                $salesOrderTransfer->getStore()
-            );
-
-        $pickedProductsTypes = [];
         $pickedProductsCount = 0;
 
         foreach ($salesOrderTransfer->getItems() as $itemTransfer) {
@@ -646,19 +647,9 @@ class CollectByCustomerController extends AbstractController
             }
 
             $pickedProductsCount += $itemTransfer->getQuantity();
-
-            $pickingArea = strtolower(
-                $concreteAttributes[$itemTransfer->getSku()][ProductConfig::PRODUCT_ATTRIBUTE_KEY_PICKING_AREA]
-            );
-
-            if (isset(static::PRODUCT_TYPE_ORDER[$pickingArea])) {
-                $pickedProductsTypes[self::PRODUCT_TYPE_ORDER[$pickingArea]] = $pickingArea;
-            }
         }
 
-        ksort($pickedProductsTypes);
-
-        return [$pickedProductsTypes, $pickedProductsCount];
+        return $pickedProductsCount;
     }
 
     /**
