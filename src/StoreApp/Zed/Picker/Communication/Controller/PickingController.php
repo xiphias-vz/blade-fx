@@ -303,7 +303,7 @@ class PickingController extends BaseOrderPickingController
             return $this->redirectResponse(PickerConfig::URL_PICKING_LIST);
         }
 
-        $this->getFactory()->getPickingSalesOrderFacade()->updatePickingSalesOrderCollection($pickingSalesOrderCollectionTransfer);
+        $this->getFactory()->getPickingSalesOrderFacade()->refreshPickingSalesOrderCollection($pickingSalesOrderCollectionTransfer);
         $this->getFacade()->markOrderItemsAsContainerSelected($selectedIdSalesOrderItems);
         $this->getFacade()->updateOrderPickingBagsCount($idSalesOrder, $pickingBagsCount);
 
@@ -506,10 +506,10 @@ class PickingController extends BaseOrderPickingController
      */
     protected function sortAggregatedItemTransfersByPickingOrder(array $aggregatedItemTransfers): array
     {
-        $skuToAttributesMap = $this->getSkuToAttributesMap(array_keys($aggregatedItemTransfers));
-
-        $skuToProductPickingOrderMap = $this->getFactory()->getPickingRouteFacade()
-            ->getSkuToProductPickingOrderMap($skuToAttributesMap);
+        $skuToProductPickingOrderMap = [];
+        foreach ($aggregatedItemTransfers as $sku => $aggregatedItemTransfer) {
+            $skuToProductPickingOrderMap[$sku] = (int)$aggregatedItemTransfer->getSequence();
+        }
 
         uksort(
             $aggregatedItemTransfers,

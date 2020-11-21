@@ -69,15 +69,17 @@
                             </div>
                         {% else %}
                             <div class="col col--sm-4">
-                                <a href="{{ data.buttonUrl }}" class="link link--cancel link--icon">
-                                    {% include atom('icon') with {
-                                        class: 'link__icon link__icon--cancel',
-                                        data: {
-                                            name: 'arrow-right'
-                                        }
-                                    } only %}
-                                    {{ data.buttonText }}
-                                </a>
+                                {% if data.buttonUrl %}
+                                    <a href="{{ data.buttonUrl }}" class="link link--cancel link--icon">
+                                        {% include atom('icon') with {
+                                            class: 'link__icon link__icon--cancel',
+                                            data: {
+                                                name: 'arrow-right'
+                                            }
+                                        } only %}
+                                        {{ data.buttonText }}
+                                    </a>
+                                {% endif %}
                             </div>
                             <div class="col col--sm-4 text-center">
                                 {% block middleTitle %}

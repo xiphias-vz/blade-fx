@@ -1,0 +1,20 @@
+{% extends model('component') %}
+
+{% define config = {
+    name: 'form-containers',
+    tag: 'form-containers',
+} %}
+
+{% define data = {
+    formContainers: required,
+} %}
+
+{% block body %}
+    <h3 class="spacing-bottom">Containers</h3>
+
+    {{ form_row(data.formContainers) }}
+
+    <button class="button button--small {{ config.jsName }}__add-container spacing-top--big" type="button">
+        {{ 'Add Container' | trans }}
+    </button>
+{% endblock %}

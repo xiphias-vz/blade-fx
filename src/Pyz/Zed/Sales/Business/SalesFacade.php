@@ -11,6 +11,8 @@ use DateTime;
 use Generated\Shared\Transfer\OrderCriteriaFilterTransfer;
 use Generated\Shared\Transfer\OrderTransfer;
 use Generated\Shared\Transfer\OrderUpdateRequestTransfer;
+use Generated\Shared\Transfer\QuoteTransfer;
+use Generated\Shared\Transfer\SpySalesOrderItemEntityTransfer;
 use Spryker\Zed\Sales\Business\SalesFacade as SprykerSalesFacade;
 
 /**
@@ -214,5 +216,18 @@ class SalesFacade extends SprykerSalesFacade implements SalesFacadeInterface
         return $this->getFactory()
             ->createOrderReaderForStoreApp()
             ->findOrderByIdSalesOrderAndPickingZone($idSalesOrder, $pickingZoneName);
+    }
+
+    /**
+     * @param \Generated\Shared\Transfer\QuoteTransfer $quoteTransfer
+     * @param \Generated\Shared\Transfer\SpySalesOrderItemEntityTransfer $itemEntityTransfer
+     *
+     * @return \Generated\Shared\Transfer\SpySalesOrderItemEntityTransfer
+     */
+    public function expandOrderItemWithSequence(
+        QuoteTransfer $quoteTransfer,
+        SpySalesOrderItemEntityTransfer $itemEntityTransfer
+    ): SpySalesOrderItemEntityTransfer {
+        return $this->getFactory()->createOrderItemExpander()->expandItemWithSequence($quoteTransfer, $itemEntityTransfer);
     }
 }
