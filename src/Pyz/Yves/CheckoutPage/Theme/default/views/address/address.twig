@@ -1,7 +1,8 @@
 {% extends view('address', '@SprykerShop:CheckoutPage') %}
 
 {% define data = {
-    isBillingSameAsShippingChecked: _view.isBillingSameAsShippingChecked
+    isBillingSameAsShippingChecked: _view.isBillingSameAsShippingChecked,
+    merchantName: app['merchant_name'] | default,
 } %}
 
 {% block content %}
@@ -22,7 +23,7 @@
                 shipping: data.forms.shipping,
                 billing: data.forms.billing,
                 items: data.forms.items,
-                bundleItems: data.forms.bundleItems,
+                bundleItems: data.forms.bundleItems
             },
             isMultipleShipmentEnabled: data.isMultipleShipmentEnabled,
             jsAddressClass: jsAddressClass,
@@ -36,19 +37,12 @@
                         {% set hasShippingAddresses = data.form.shippingAddress.id_customer_address is defined %}
 
                         <h2 class="title title--primary checkout-block__title-with-link">
-                            <div>{{ 'page.checkout.address.shipping-address' | trans }}</div>
-                            {% if is_granted('ROLE_USER') %}
-                                <a class="link link--checkout-manage-addresses" href="{{ url('customer/address') }}">
-                                    {{ 'page.checkout.address.manage_your_addresses' | trans }}
-                                </a>
-                            {% endif %}
+                            <div>{{ 'page.checkout.address.billing-address' | trans }}</div>
                         </h2>
-
-                        <p class="spacing-bottom spacing-bottom--bigger">{{ 'cart.checkout.address.picking.note' | trans }}</p>
 
                         {% if hasShippingAddresses %}
                             {{ form_row(embed.forms.shipping.id_customer_address, {
-                                label: 'page.checkout.address.delivery.address_select' | trans,
+                                label: 'page.checkout.address.billing.address_select' | trans,
                             }) }}
                         {% endif %}
 
@@ -88,9 +82,28 @@
 
                 <div class="col col--sm-12 col--xl-6 spacing-x spacing-x--big spacing-x--inner">
                     <div class="checkout-block">
-                        <h2 class="title title--primary">{{ 'page.checkout.address.billing-address' | trans }}</h2>
+                        <h2 class="title title--primary">{{ 'page.checkout.address.abhol-address' | trans }}</h2>
 
-                        <div class="{{ embed.jsAddressClass }}__billing-same-as-shipping">
+                        <p class="spacing-bottom spacing-bottom--bigger text-color-1">{{ 'cart.checkout.address.abholstation.note.up' | trans }}</p>
+
+                        <div class="spacing-bottom spacing-bottom--bigger text-color-1">
+                            <p>Abholstation</p>
+                            <span>
+                                {{- app['merchant_name'] -}}
+                            </span>
+{#                            {% if data.merchantName is defined %}#}
+{#                                <span class="{{ config.name }}__text">{{ data.merchantName }}</span>#}
+{#                            {% endif %}#}
+                        </div>
+                        <div class="text-color-1">
+                            <p>Nachricht an die Abholstation</p>
+                        </div>
+                        <div class="spacing-bottom text-color-1">
+                            {{ form_row(data.form.cart_note, {
+                                placeholder: 'cart.checkout.address.abholstation.textarea.note' | trans,
+                            }) }}
+                        </div>
+                        <div class="{{ embed.jsAddressClass }}__billing-same-as-shipping is-hidden">
                             {{ form_row(data.form.billingSameAsShipping, {
                                 label: 'page.checkout.address.billing-same-as-shipping' | trans,
                                 component: molecule('toggler-checkbox'),

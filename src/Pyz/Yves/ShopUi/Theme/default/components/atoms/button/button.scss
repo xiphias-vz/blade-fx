@@ -388,14 +388,14 @@
 
             &:focus {
                 background: transparent;
-                color: $setting-color-green;
+                color: $setting-color-globus-darkOrange;
                 box-shadow: 0 0 0 rem(2) $setting-color-blue-midi-alpha-1;
             }
 
             &:hover,
             &:active {
                 background: transparent;
-                color: $setting-color-green;
+                color: $setting-color-globus-darkOrange;
                 text-decoration: underline;
             }
         }
