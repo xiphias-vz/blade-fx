@@ -20,19 +20,6 @@ use Symfony\Component\Validator\Constraints\Blank;
  */
 class LoginForm extends SprykerLoginForm
 {
-    /**
-     * @param FormBuilderInterface $builder
-     * @param array $options
-     */
-    public function buildForm(FormBuilderInterface $builder, array $options)
-    {
-        $builder->setAction('/login_check');
-
-        $this
-            ->addEmailField($builder)
-            ->addPasswordField($builder);
-    }
-
     protected function addEmailField(FormBuilderInterface $builder)
     {
         $builder->add(self::FIELD_EMAIL, EmailType::class, [

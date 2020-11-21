@@ -137,14 +137,7 @@
                 loginID: document.getElementById("loginForm_email").value,
                 password: document.getElementById("loginForm_password").value,
             };
-            //alert(params.loginID);
-            //gigyaRegistrationScreen();
-            //gigyaLoginScreen();
-
-            //gigyaInitRegistration();
             gigya.accounts.login(params);
-            //setTimeout('loginUserNew()', 2000);
-            //return false;
         }
 
         function loginUserResponse(response) {
@@ -190,12 +183,9 @@
         }
 
         function gigyaRegisterUser(token) {
-            //local.mobilePhonePrefix.  profile.phones.number
-            //local.homePhonePrefix.    profile.phones.number
-            //data.salutation. Frau 0001.  Herr 0002   None 0006
-            var r1 = document.getElementsByName("registerForm[accept_notifications]")[1].checked
-            var r2 = document.getElementsByName("registerForm[accept_terms]")[1].checked
-            var r3 = document.getElementsByName("registerForm[third_party_registration]")[1].checked
+            var acceptNotifications = document.getElementsByName("registerForm[accept_notifications]")[1].checked
+            var acceptTerms = document.getElementsByName("registerForm[accept_terms]")[1].checked
+            var thirdPartyRegistration = document.getElementsByName("registerForm[third_party_registration]")[1].checked
             if (token) {
                 var regParams = {
                     email: document.getElementById("registerForm_email").value,
@@ -223,34 +213,12 @@
                             street: document.getElementById("registerForm_address1").value,
                             houseNo: document.getElementById("registerForm_address2").value
                         },
-                        salutation: '0002'/*,
-                        preferences: {
-                            terms: {
-                                general: {
-                                    isConsentGranted: r1
-                                },
-                                meinGlobus: {
-                                    isConsentGranted: r2
-                                }
-                            },
-                            marketingpermission: {
-                                letter: {
-                                    isConsentGranted: r2
-                                }
-                            }
-                        },
-                        subscriptions: {
-                            marketingPermission: {
-                                email: {
-                                    isSubscribed: r3
-                                }
-                            }
-                        },*/
+                        salutation: '0002'
                     },
                     format: "json",
                     callback: gigyaRegisterUserCallback,
                 };
-                //console.log(regParams);
+
                 gigya.accounts.register(regParams);
             }
         }
@@ -299,14 +267,13 @@
             return false;
         };
         document.getElementsByName('registerForm')[0].onsubmit = function () {
-            var r3 = document.getElementsByName("registerForm[third_party_registration]")[1].checked
-            if(r3) {
+            var thirdPartyRegistration = document.getElementsByName("registerForm[third_party_registration]")[1].checked
+            if(thirdPartyRegistration) {
                 gigyaInitRegistration();
                 return false;
             }
             else return true;
         };
-        console.log("document loaded");
     </script>
 
 {% endblock %}

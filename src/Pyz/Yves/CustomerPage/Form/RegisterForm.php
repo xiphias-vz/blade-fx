@@ -102,7 +102,23 @@ class RegisterForm extends SprykerRegisterForm
             ->addAcceptTermsField($builder)
             ->addFieldRecieveNotificationsAboutProducts($builder)
             ->addAdditionalRegisterField($builder);
-        ;
+
+    }
+
+    /**
+     * @param \Symfony\Component\Form\FormBuilderInterface $builder
+     *
+     * @return $this
+     */
+    protected function addGroup(FormBuilderInterface $builder)
+    {
+        $builder->add(
+            $builder->create('group1', FormType::class, array('inherit_data' => true))
+                ->add('email', EmailType::class, array())
+                ->add('field1', TextType::class, array())
+        );
+
+        return $this;
     }
 
     /**
