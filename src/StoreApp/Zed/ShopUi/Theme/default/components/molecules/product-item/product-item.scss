@@ -2,7 +2,7 @@ $setting-item-border-radius: rem(8);
 
 @mixin picker-product-item($name: '.product-item') {
     #{$name} {
-        margin-bottom: rem(8);
+        margin-bottom: rem(30);
 
         #{$name} {
             &__undo {
@@ -139,6 +139,17 @@ $setting-item-border-radius: rem(8);
             text-align: center;
             color: $setting-color-blue-midi;
             word-break: break-all;
+        }
+
+        &__decline,
+        &__pick {
+            padding: rem(40);
+            width: calc(50% - 5px);
+
+            .icon {
+                width: rem(24);
+                height: rem(24);
+            }
         }
     }
 }
