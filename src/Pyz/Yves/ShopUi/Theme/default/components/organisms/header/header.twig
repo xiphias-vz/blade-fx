@@ -41,16 +41,6 @@
                             {{ 'global.help' | trans }}
                         </a>
 
-                        <a href="https://www.welcome.ccd.demo-spryker.com" class="link link--nav">
-                            {% include atom('icon') with {
-                                modifiers: ['big'],
-                                class: 'link__icon',
-                                data: {
-                                    name: 'store-finder',
-                                },
-                            } only %}
-                            {{ 'global.store_finder' | trans }}
-                        </a>
 
                         {% if is_granted('ROLE_USER') %}
                             <a href="{{ url('logout') }}" class="link link--nav">

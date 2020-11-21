@@ -21,7 +21,7 @@ cart.checkout,Zum Checkout,de_DE
 cart.checkout,Checkout,en_US
 cart.empty,Der Einkaufsliste ist zur Zeit leer!,de_DE
 cart.empty,Your shopping cart is empty!,en_US
-cart.cart,Einkaufsliste,de_DE
+cart.cart,Warenkorb,de_DE
 cart.cart,Cart,en_US
 cart.total.discount,Rabatt,de_DE
 cart.total.discount,Discount,en_US
