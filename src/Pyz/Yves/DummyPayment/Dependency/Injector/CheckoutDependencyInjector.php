@@ -7,7 +7,7 @@ use Spryker\Shared\DummyPayment\DummyPaymentConfig;
 use Spryker\Yves\Checkout\CheckoutDependencyProvider;
 use Spryker\Yves\DummyPayment\Plugin\DummyPaymentCreditCardSubFormPlugin;
 use Spryker\Yves\DummyPayment\Plugin\DummyPaymentHandlerPlugin;
-use Pyz\Yves\DummyPayment\Plugin\DummyPaymentInvoiceSubFormPlugin;
+use Spryker\Yves\DummyPayment\Plugin\DummyPaymentInvoiceSubFormPlugin;
 use Spryker\Yves\Kernel\Container;
 use Spryker\Yves\Kernel\Dependency\Injector\DependencyInjectorInterface;
 use Spryker\Yves\StepEngine\Dependency\Plugin\Form\SubFormPluginCollection;

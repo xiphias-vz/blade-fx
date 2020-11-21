@@ -38,14 +38,7 @@
 
                         <h2 class="title title--primary checkout-block__title-with-link">
                             <div>{{ 'page.checkout.address.billing-address' | trans }}</div>
-{#                            {% if is_granted('ROLE_USER') %}#}
-{#                                <a class="link link--checkout-manage-addresses" href="{{ url('customer/address') }}">#}
-{#                                    {{ 'page.checkout.address.manage_your_addresses' | trans }}#}
-{#                                </a>#}
-{#                            {% endif %}#}
                         </h2>
-
-{#                      <p class="spacing-bottom spacing-bottom--bigger">{{ 'cart.checkout.address.picking.note' | trans }}</p>#}
 
                         {% if hasShippingAddresses %}
                             {{ form_row(embed.forms.shipping.id_customer_address, {

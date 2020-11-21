@@ -146,7 +146,7 @@
                                             class: 'spacing-bottom spacing-bottom--bigger' ~ fieldLayoutClass,
                                         },
                                     }) }}
-{#                                    <span>{{ 'checkout.step.summary.info' | trans }}</span>#}
+
                                 {% else %}
                                     {{ form_row(field, {
                                         rowAttr: {
@@ -167,11 +167,10 @@
                                 {{ parent() }}
                             {% endblock %}
                         {% endembed %}
-                        <div class="spacing-bottom spacing-bottom--bigger text-color-1"><span>{{ 'checkout.step.summary.info.down' | trans }}</span></div>
-                        <div class="text-color-1"><span>{{ 'checkout.step.summary.info.down1' | trans }}</span></div>
-                        <div class="text-color-1"><span>{{ 'checkout.step.summary.info.down2' | trans }}</span></div>
+                        <div class="spacing-bottom spacing-bottom--bigger text-color-1 text-normal text-spacing"><span>{{ 'checkout.step.summary.info.down' | trans }}</span></div>
+                        <div class="text-color-1 text-normal"><span>{{ 'checkout.step.summary.info.down1' | trans }}</span></div>
+                        <div class="text-color-1 text-normal"><span>{{ 'checkout.step.summary.info.down2' | trans }}</span></div>
 
-{#                        {% include molecule('payment-info', 'CartPage') ignore missing only %}#}
                     </div>
                 </div>
             </div>

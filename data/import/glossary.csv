@@ -1020,7 +1020,7 @@ checkout.step.error.text,"Versuchen Sie es bitte später noch einmal oder kontak
 checkout.step.summary.billing_address,Billing Address,en_US
 checkout.step.summary.billing_address,Rechnungsadresse,de_DE
 checkout.step.summary.merchant-name,Merchant,en_US
-checkout.step.summary.merchant-name,Filiale,de_DE
+checkout.step.summary.merchant-name,Abholstation,de_DE
 customer.password.change.success,Password change successful,en_US
 customer.password.change.success,Passwort erfolgreich geändert,de_DE
 customer.newsletter.subscribed,Newsletter subscribed,en_US
@@ -2831,7 +2831,7 @@ newsletter.subsription.subheadline,Get 10% discount on your first order and rece
 summary.forms.accept_terms.text,I hereby accept the Terms and Conditions,en_US
 summary.forms.accept_terms.text,Hiermit akzeptiere ich die AGB,de_DE
 Filiale,Branch,en_US
-Filiale,Filiale,de_DE
+Filiale,Abholstation,de_DE
 Lieferung,Delivery,en_US
 Lieferung,Lieferung,de_DE
 measurement_units.item.name,Item,en_US

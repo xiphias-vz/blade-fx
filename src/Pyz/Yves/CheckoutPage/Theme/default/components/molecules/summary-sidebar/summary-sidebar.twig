@@ -11,6 +11,7 @@
     billingAddress: null,
     payment: null,
     merchantName: app['merchant_name'] | default,
+    cartNote: _view.quoteTransfer.cartNote,
 } %}
 
 {% block body %}
@@ -20,7 +21,7 @@
                 <div class="{{ config.name }}__col {{ config.name }}__col--wide">
                     {% block addressHeading %}
                         <div class="{{ config.name }}__heading">
-                            <h2 class="{{ config.name }}__title">{{ 'checkout.step.address.title' | trans }}</h2>
+                            <h2 class="{{ config.name }}__title"></h2>
 
                             {% if data.canEdit %}
                                 <a href="{{ url('checkout-address') }}" class="link link--darkest link--edit">
@@ -44,7 +45,7 @@
                             {% set fullShippingName = address.firstName ~ ' ' ~ address.lastName %}
                             {% set fullAddress = address.address1 ~ ' ' ~ address.address2 ~ ' ' ~ (address.floor | default | trans) ~ ',' %}
 
-                            <span class="{{ config.name }}__title {{ config.name }}__title--sub">{{ 'checkout.step.summary.billing_address' | trans }}</span>
+                            <span class="{{ config.name }}__title">{{ 'checkout.step.summary.billing_address' | trans }}</span>
 
                             {% if address.company %}
                                 <span class="{{ config.name }}__text">{{ address.company }}</span>
@@ -63,13 +64,20 @@
                 {% endif %}
                 <div class="{{ config.name }}__col">
                     {% block method %}
-                        <span class="{{ config.name }}__title {{ config.name }}__title--sub">{{ data.shipment.method.carrierName | trans }}</span>
+                        <span class="{{ config.name }}__title">{{ data.shipment.method.carrierName | trans }}</span>
 
                         {% if data.merchantName is defined %}
                             <span class="{{ config.name }}__text">{{ data.merchantName }}</span>
                         {% endif %}
 
                         <span class="{{ config.name }}__text">{{ data.shipment.method.name | trans }}: {{ data.shipment.method.storeCurrencyPrice | money(true, data.shipment.method.currencyIsoCode) }}</span>
+                    {% endblock %}
+
+                    {% block message_for_picker %}
+                        <div style="margin-top: 15px">
+                            <span class="{{ config.name }}__title {{ config.name }}__title--sub">{{ 'cart.checkout.address.abholstation.note.down' | trans }}</span>
+                            <span>{{ data.cartNote }} </span>
+                        </div>
                     {% endblock %}
                 </div>
             </div>
@@ -83,7 +91,7 @@
                     <div class="{{ config.name }}__col {{ config.name }}__col--wide">
                         {% block shippingHeading %}
                             <div class="{{ config.name }}__heading">
-                                <h2 class="{{ config.name }}__title">{{ 'checkout.step.address.title' | trans }}</h2>
+                                <h2 class="{{ config.name }}__title">{{ 'checkout.step.shipment.title' | trans }}</h2>
 
                                 {% if data.canEdit %}
                                     <a href="{{ url('checkout-shipment') }}" class="link link--darkest link--edit">
@@ -103,7 +111,6 @@
                     <div class="{{ config.name }}__col">
                         {% block date %}
                             {% set splittedDeliveryDate = data.shipment.requestedDeliveryDate | split('_') %}
-
                             <span class="{{ config.name }}__text">{{  splittedDeliveryDate | first | formatDate }} - {{ splittedDeliveryDate | last }}</span>
                         {% endblock %}
                     </div>
