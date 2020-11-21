@@ -42,7 +42,7 @@ class CheckoutAddressCollectionForm extends SprykerShopCheckoutAddressCollection
     /**
      * @param \Symfony\Component\Form\FormBuilderInterface $builder
      *
-     * @return \SprykerShop\Yves\CustomerPage\Form\CheckoutAddressCollectionForm
+     * @return \Pyz\Yves\CustomerPage\Form\CheckoutAddressCollectionForm
      */
     protected function addTextAreaMessage(FormBuilderInterface $builder)
     {
