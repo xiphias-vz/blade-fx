@@ -53,7 +53,6 @@ class CustomerUserProvider extends SprykerCustomerUserProvider
                 $customerTransfer->setCity($data["profile"]["city"]);
                 $customerTransfer->setZipCode($data["profile"]["zip"]);
                 $customerTransfer->setDateOfBirth($data["profile"]["birthYear"] . '-' . $data["profile"]["birthMonth"] . '-' . $data["profile"]["birthDay"]);
-                //$customerTransfer->setGender('0');
                 $customerTransfer->setUsername($data["profile"]["email"]);
                 $customerTransfer->setPassword($_REQUEST["loginForm"]["password"]);
 
@@ -65,14 +64,7 @@ class CustomerUserProvider extends SprykerCustomerUserProvider
                 $customerTransfer->setThirdPartyRegistration(1);
 
                 $this->registerCustomer($customerTransfer);
-                /*
-                 phone_prefix_1 = "+49"
-                 mobile_phone = "24343243"
-                 phone_prefix_2 = "+49"
-                 phone = "24343243"
-                 accept_terms = true
-                 recieve_notifications = true
-                */
+
                 $customerTransfer = parent::loadCustomerByEmail($email);
                 $customerTransfer->setRegistered(date('yy-m-d'));
                 $customerTransfer->setRegistrationKey(null);
