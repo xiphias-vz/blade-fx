@@ -3,7 +3,7 @@
 {# TODO BE need to add orderReference #}
 {% define data = {
     shelvesSelectionForm: shelvesSelectionForm,
-    orderReference: 123,
+    orderReference: orderReference,
 } %}
 
 {% block header %}
@@ -20,7 +20,6 @@
 {% endblock %}
 
 {% block content %}
-    <h1> {{ data.shelvesSelectionForm.vars.data.field_id_sales_order }}</h1>
     {% include molecule('form') with {
         data: {
             form: data.shelvesSelectionForm,

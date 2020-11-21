@@ -71,6 +71,7 @@ class SelectShelvesController extends BaseOrderPickingController
 
         return [
             'shelvesSelectionForm' => $shelvesSelectionForm->createView(),
+            'orderReference' => $salesOrderTransfer->getIdSalesOrder(),
         ];
     }
 
