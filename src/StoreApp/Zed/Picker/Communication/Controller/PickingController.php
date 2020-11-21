@@ -506,10 +506,10 @@ class PickingController extends BaseOrderPickingController
      */
     protected function sortAggregatedItemTransfersByPickingOrder(array $aggregatedItemTransfers): array
     {
-        $skuToAttributesMap = $this->getSkuToAttributesMap(array_keys($aggregatedItemTransfers));
-
-        $skuToProductPickingOrderMap = $this->getFactory()->getPickingRouteFacade()
-            ->getSkuToProductPickingOrderMap($skuToAttributesMap);
+        $skuToProductPickingOrderMap = [];
+        foreach ($aggregatedItemTransfers as $sku => $aggregatedItemTransfer) {
+            $skuToProductPickingOrderMap[$sku] = (int)$aggregatedItemTransfer->getSequence();
+        }
 
         uksort(
             $aggregatedItemTransfers,

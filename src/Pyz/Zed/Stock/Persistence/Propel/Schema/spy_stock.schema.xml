@@ -5,6 +5,13 @@
         <column name="shelf_floor" type="VARCHAR" />
         <column name="shelf_field" type="VARCHAR" />
         <column name="shelf" type="VARCHAR" />
+        <column name="sequence" type="VARCHAR" />
+
+        <index name="spy_stock_product-shelf_floor-shelf_field-shelf">
+            <index-column name="shelf"/>
+            <index-column name="shelf_field"/>
+            <index-column name="shelf_floor"/>
+        </index>
     </table>
 
 </database>
