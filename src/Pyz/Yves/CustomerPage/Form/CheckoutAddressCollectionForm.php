@@ -21,6 +21,7 @@ use Symfony\Component\Form\FormInterface;
 class CheckoutAddressCollectionForm extends SprykerShopCheckoutAddressCollectionForm
 {
     public const OPTION_CART_NOTE = 'cart_note';
+
     /**
      * @param \Symfony\Component\Form\FormBuilderInterface $builder
      * @param array $options
@@ -37,7 +38,6 @@ class CheckoutAddressCollectionForm extends SprykerShopCheckoutAddressCollection
             ->addBillingAddressSubForm($builder, $options)
             ->addIsMultipleShipmentEnabledField($builder, $options);
     }
-
 
     protected function addTextAreaMessage(FormBuilderInterface $builder)
     {

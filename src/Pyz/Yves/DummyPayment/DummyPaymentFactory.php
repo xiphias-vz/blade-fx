@@ -1,12 +1,16 @@
 <?php
 
+/**
+ * This file is part of the Spryker Commerce OS.
+ * For full license information, please view the LICENSE file that was distributed with this source code.
+ */
 
 namespace Pyz\Yves\DummyPayment;
 
+use Pyz\Yves\DummyPayment\Form\InvoiceSubForm;
 use Spryker\Yves\DummyPayment\Form\CreditCardSubForm;
 use Spryker\Yves\DummyPayment\Form\DataProvider\DummyPaymentCreditCardFormDataProvider;
 use Spryker\Yves\DummyPayment\Form\DataProvider\DummyPaymentInvoiceFormDataProvider;
-use Pyz\Yves\DummyPayment\Form\InvoiceSubForm;
 use Spryker\Yves\DummyPayment\Handler\DummyPaymentHandler;
 use Spryker\Yves\Kernel\AbstractFactory;
 
