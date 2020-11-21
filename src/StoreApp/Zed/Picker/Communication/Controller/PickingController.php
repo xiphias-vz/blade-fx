@@ -506,6 +506,7 @@ class PickingController extends BaseOrderPickingController
      */
     protected function sortAggregatedItemTransfersByPickingOrder(array $aggregatedItemTransfers): array
     {
+        $skuToProductPickingOrderMap = [];
         foreach ($aggregatedItemTransfers as $sku => $aggregatedItemTransfer) {
             $skuToProductPickingOrderMap[$sku] = (int)$aggregatedItemTransfer->getSequence();
         }
