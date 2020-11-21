@@ -12,7 +12,7 @@
         text-align: center;
         font: fw(medium) rem(14)/1.7 $setting-font-family-additional;
         cursor: pointer;
-        background: $setting-color-globus-darkOrange;
+        background: $setting-color-globus-lightOrange;
         color: $setting-color-white;
         text-decoration: none;
         border-radius: rem(2);
@@ -25,9 +25,9 @@
         &:hover,
         &:focus,
         &:active {
-            background: $setting-color-globus-darkOrange;
+            background: $setting-color-globus-lightOrange;
             color: $setting-color-white;
-            box-shadow: 0 rem(4) rem(18) $setting-color-green-alpha-1;
+            box-shadow: 0 rem(4) rem(18) $setting-color-globus-darkOrange;
         }
 
         &:focus {
@@ -160,9 +160,8 @@
         &--hollow-border-light,
         &--hollow-gray,
         &--hollow-light {
-            background-color: $setting-color-transparent;
-            border: rem(1) solid $setting-color-globus-darkOrange;
-            color: $setting-color-globus-darkOrange;
+            background-color: $setting-color-globus-lightOrange;
+            color: $setting-color-white;
 
             &:hover,
             &:focus,
@@ -170,7 +169,7 @@
                 border-color: $setting-color-globus-darkOrange;
                 color: $setting-color-white;
                 background-color: $setting-color-globus-darkOrange;
-                box-shadow: none;
+                box-shadow: 0 rem(4) rem(18) $setting-color-globus-darkOrange;
             }
 
             &[disabled],

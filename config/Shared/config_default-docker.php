@@ -353,7 +353,7 @@ $config[LogConstants::LOG_FILE_PATH_YVES] = (bool)getenv('SPRYKER_DEBUG_ENABLED'
     ? $logDir . '/YVES/application.log'
     : 'php://stdout';
 $config[LogConstants::LOG_FILE_PATH_ZED] = (bool)getenv('SPRYKER_DEBUG_ENABLED')
-    ? $logDir . '/' . $ZED . '/application.log'
+    ? $logDir . '/ZED/application.log'
     : 'php://stdout';
 $config[LogConstants::LOG_FILE_PATH_GLUE] = (bool)getenv('SPRYKER_DEBUG_ENABLED')
     ? $logDir . '/GLUE/application.log'
@@ -363,7 +363,7 @@ $config[LogConstants::EXCEPTION_LOG_FILE_PATH_YVES] = (bool)getenv('SPRYKER_DEBU
     ? $logDir . '/YVES/exception.log'
     : 'php://stderr';
 $config[LogConstants::EXCEPTION_LOG_FILE_PATH_ZED] = (bool)getenv('SPRYKER_DEBUG_ENABLED')
-    ? $logDir . '/' . $ZED . '/exception.log'
+    ? $logDir . '/ZED/exception.log'
     : 'php://stderr';
 $config[LogConstants::EXCEPTION_LOG_FILE_PATH_GLUE] = (bool)getenv('SPRYKER_DEBUG_ENABLED')
     ? $logDir . '/GLUE/exception.log'
