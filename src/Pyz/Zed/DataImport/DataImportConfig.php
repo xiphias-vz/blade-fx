@@ -32,6 +32,7 @@ class DataImportConfig extends SprykerDataImportConfig
     public const IMPORT_TYPE_VITAMIN_DATA = 'vitamin-data';
     public const IMPORT_TYPE_PRODUCT_CATEGORY = 'product-category';
     public const IMPORT_TYPE_PICKING_ROUTE = 'picking-route';
+    public const IMPORT_TYPE_PICKING_ZONE = 'picking-zone';
     public const IMPORT_TYPE_MERCHANT_DELIVERY_POSTAL_CODE = 'merchant-delivery-postal-code';
     public const IMPORT_TYPE_MERCHANT_USER = 'merchant-user';
     public const IMPORT_TYPE_PRODUCT_STOCK = 'product-stock';
@@ -118,6 +119,14 @@ class DataImportConfig extends SprykerDataImportConfig
     public function getPickingRouteDataImporterConfiguration(): DataImporterConfigurationTransfer
     {
         return $this->buildBaseImporterConfiguration('spryker/pick_reihenfolge.csv', static::IMPORT_TYPE_PICKING_ROUTE);
+    }
+
+    /**
+     * @return \Generated\Shared\Transfer\DataImporterConfigurationTransfer
+     */
+    public function getPickingZoneDataImporterConfiguration(): DataImporterConfigurationTransfer
+    {
+        return $this->buildBaseImporterConfiguration('picking_zone.csv', static::IMPORT_TYPE_PICKING_ZONE);
     }
 
     /**
@@ -368,5 +377,51 @@ class DataImportConfig extends SprykerDataImportConfig
     public function getImagesHostUrl(): string
     {
         return $this->get(ProductImageConstants::IMAGES_HOST_URL, '');
+    }
+
+    /**
+     * @return array
+     */
+    public function getRegexToSprykerFileNameMap(): array
+    {
+        return [
+            '/^2\.globus_articles\.metzgerei/' => '2.globus_articles.metzgerei.csv',
+
+            '/^4\.globus_article_prices\.metzgerei\.[0-9]+_1004/' => '4.globus_article_prices.metzgerei.1004.csv',
+            '/^4\.globus_article_prices\.metzgerei\.[0-9]+_1031/' => '4.globus_article_prices.metzgerei.1031.csv',
+            '/^4\.globus_article_prices\.metzgerei\.[0-9]+_1042/' => '4.globus_article_prices.metzgerei.1042.csv',
+            '/^4\.globus_article_prices\.metzgerei\.[0-9]+_1057/' => '4.globus_article_prices.metzgerei.1057.csv',
+
+            '/^5\.globus_article_instock\.metzgerei\.[0-9]+_1004/' => '5.globus_article_instock.metzgerei.1004.csv',
+            '/^5\.globus_article_instock\.metzgerei\.[0-9]+_1031/' => '5.globus_article_instock.metzgerei.1031.csv',
+            '/^5\.globus_article_instock\.metzgerei\.[0-9]+_1042/' => '5.globus_article_instock.metzgerei.1042.csv',
+            '/^5\.globus_article_instock\.metzgerei\.[0-9]+_1057/' => '5.globus_article_instock.metzgerei.1057.csv',
+
+            '/^5\.globus_article_instock\.NOS\.[0-9]+_1004/' => '5.globus_article_instock.NOS.1004.csv',
+            '/^5\.globus_article_instock\.NOS\.[0-9]+_1031/' => '5.globus_article_instock.NOS.1031.csv',
+            '/^5\.globus_article_instock\.NOS\.[0-9]+_1042/' => '5.globus_article_instock.NOS.1042.csv',
+            '/^5\.globus_article_instock\.NOS\.[0-9]+_1057/' => '5.globus_article_instock.NOS.1057.csv',
+
+            '/^1\.globus_categories\.[0-9]+/' => 'categories.csv',
+            '/^2\.globus_articles\.[0-9]+/' => '2.globus_articles.csv',
+
+            '/^5\.globus_article_instock\.[0-9]+_1004/' => '5.globus_article_instock.1004.csv',
+            '/^5\.globus_article_instock\.[0-9]+_1031/' => '5.globus_article_instock.1031.csv',
+            '/^5\.globus_article_instock\.[0-9]+_1042/' => '5.globus_article_instock.1042.csv',
+            '/^5\.globus_article_instock\.[0-9]+_1057/' => '5.globus_article_instock.1057.csv',
+
+            '/^4\.globus_article_prices\.[0-9]+_1004/' => '4.globus_article_prices.1004.csv',
+            '/^4\.globus_article_prices\.[0-9]+_1031/' => '4.globus_article_prices.1031.csv',
+            '/^4\.globus_article_prices\.[0-9]+_1042/' => '4.globus_article_prices.1042.csv',
+            '/^4\.globus_article_prices\.[0-9]+_1057/' => '4.globus_article_prices.1057.csv',
+        ];
+    }
+
+    /**
+     * @return string
+     */
+    public function getDataImportFilesFolderName(): string
+    {
+        return $this->get(DataImportConstants::SFTP_DATA_IMPORT_FILES_FOLDER_NAME, '');
     }
 }

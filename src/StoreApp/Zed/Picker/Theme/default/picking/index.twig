@@ -7,7 +7,9 @@
     requestedDeliveryDates: requestedDeliveryDates,
     requestParamIdSalesOrder: requestParamIdSalesOrder,
     urlOrderPicking: urlOrderPicking,
+    urlStopOrderPicking: urlStopOrderPicking,
     formatStartPickingTokenName: formatStartPickingTokenName,
+    formatStopPickingTokenName: formatStopPickingTokenName,
 } %}
 
 {% block header %}
@@ -55,8 +57,10 @@
                 embed: {
                     pickingOrder: pickingOrder,
                     urlOrderPicking: data.urlOrderPicking,
+                    urlStopOrderPicking: data.urlStopOrderPicking,
                     requestParamIdSalesOrder: data.requestParamIdSalesOrder,
-                    formatStartPickingTokenName: data.formatStartPickingTokenName
+                    formatStartPickingTokenName: data.formatStartPickingTokenName,
+                    formatStopPickingTokenName: data.formatStopPickingTokenName,
                 },
                 attributes: {
                     'data-order': pickingOrder.reference | lower,
@@ -69,16 +73,21 @@
                             {{ 'picker.picking.order.status.done' | trans }}
                         </div>
                     {% else %}
-                        {% if embed.pickingOrder.isPickedBy is not null %}
-                            <div class="table-status-action__status table-status-action__status--picked">
-                                {{ 'started-by' | trans }}<br>{{ embed.pickingOrder.isPickedBy.firstName ~ ' ' ~ embed.pickingOrder.isPickedBy.lastName }}
-                            </div>
+                        {% if embed.pickingOrder.isPicked %}
+                            <form action="{{ embed.urlStopOrderPicking }}" method="post">
+                                <input type="hidden" name="{{ embed.requestParamIdSalesOrder }}" value="{{ embed.pickingOrder.idSalesOrder }}">
+                                {% set tokenName = embed.formatStopPickingTokenName | format(embed.pickingOrder.idSalesOrder) %}
+                                <input type="hidden" name="token" value="{{ csrf_token(tokenName) }}">
+                                <button type="submit" class="button button--small button--table button--expand button--warning">
+                                    {{ 'picker.picking.order.action.stop' | trans }}
+                                </button>
+                            </form>
                         {% else %}
                             <form action="{{ embed.urlOrderPicking }}" method="post">
                                 <input type="hidden" name="{{ embed.requestParamIdSalesOrder }}" value="{{ embed.pickingOrder.idSalesOrder }}">
                                 {% set tokenName = embed.formatStartPickingTokenName | format(embed.pickingOrder.idSalesOrder) %}
                                 <input type="hidden" name="token" value="{{ csrf_token(tokenName) }}">
-                                <button type="submit" class="button button button--small button--table button--expand">
+                                <button type="submit" class="button button--small button--table button--expand">
                                     {{ 'picker.picking.order.action.start' | trans }}
                                 </button>
                             </form>

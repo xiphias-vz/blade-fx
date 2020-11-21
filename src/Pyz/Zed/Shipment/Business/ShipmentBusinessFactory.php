@@ -8,14 +8,16 @@
 namespace Pyz\Zed\Shipment\Business;
 
 use Pyz\Zed\Shipment\Business\Expander\QuoteShipmentExpander;
+use Pyz\Zed\Shipment\Business\ShipmentMethod\MethodPriceReader;
 use Spryker\Zed\Shipment\Business\Expander\QuoteShipmentExpanderInterface;
 use Spryker\Zed\Shipment\Business\ShipmentBusinessFactory as SprykerShipmentBusinessFactory;
+use Spryker\Zed\Shipment\Business\ShipmentMethod\MethodPriceReaderInterface;
 
 /**
  * @method \Spryker\Zed\Shipment\Persistence\ShipmentQueryContainerInterface getQueryContainer()
  * @method \Spryker\Zed\Shipment\Persistence\ShipmentEntityManagerInterface getEntityManager()
- * @method \Spryker\Zed\Shipment\ShipmentConfig getConfig()
  * @method \Spryker\Zed\Shipment\Persistence\ShipmentRepositoryInterface getRepository()
+ * @method \Pyz\Service\Shipment\ShipmentServiceInterface getShipmentService()
  */
 class ShipmentBusinessFactory extends SprykerShipmentBusinessFactory
 {
@@ -31,6 +33,20 @@ class ShipmentBusinessFactory extends SprykerShipmentBusinessFactory
             $this->createShipmentMapper(),
             $this->getCalculationFacade(),
             $this->getShipmentGroupsSanitizerPlugins()
+        );
+    }
+
+    /**
+     * @return \Spryker\Zed\Shipment\Business\ShipmentMethod\MethodPriceReaderInterface
+     */
+    public function createShipmentMethodPriceReader(): MethodPriceReaderInterface
+    {
+        return new MethodPriceReader(
+            $this->getPricePlugins(),
+            $this->getStoreFacade(),
+            $this->getRepository(),
+            $this->getCurrencyFacade(),
+            $this->getShipmentService()
         );
     }
 }

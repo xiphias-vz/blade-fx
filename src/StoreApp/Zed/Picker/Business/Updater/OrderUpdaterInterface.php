@@ -21,6 +21,13 @@ interface OrderUpdaterInterface
      *
      * @return void
      */
+    public function markOrderItemsAsContainerSelected(array $idOrderItems): void;
+
+    /**
+     * @param int[] $idOrderItems
+     *
+     * @return void
+     */
     public function markOrderItemsAsNotPicked(array $idOrderItems): void;
 
     /**

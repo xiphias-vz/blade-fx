@@ -7,6 +7,8 @@
 
 namespace StoreApp\Zed\Picker\Business;
 
+use Generated\Shared\Transfer\PickingZoneTransfer;
+
 interface PickerFacadeInterface
 {
     /**
@@ -15,6 +17,13 @@ interface PickerFacadeInterface
      * @return void
      */
     public function markOrderItemsAsPicked(array $idSalesOrderItems): void;
+
+    /**
+     * @param int[] $idSalesOrderItems
+     *
+     * @return void
+     */
+    public function markOrderItemsAsContainerSelected(array $idSalesOrderItems): void;
 
     /**
      * @param int[] $idSalesOrderItems
@@ -45,4 +54,27 @@ interface PickerFacadeInterface
      * @return void
      */
     public function markOrderItemsAsCanceledByCustomer(array $idSalesOrderItems): void;
+
+    /**
+     * Specification:
+     * - Returns a selected picking zone from current session.
+     * - Returns NULL if a picking zone is not yet selected.
+     *
+     * @api
+     *
+     * @return \Generated\Shared\Transfer\PickingZoneTransfer|null
+     */
+    public function findPickingZoneInSession(): ?PickingZoneTransfer;
+
+    /**
+     * Specification:
+     * - Saves the given picking zone ID in current session.
+     *
+     * @api
+     *
+     * @param int $idPickingZone
+     *
+     * @return void
+     */
+    public function savePickingZoneInSession(int $idPickingZone): void;
 }

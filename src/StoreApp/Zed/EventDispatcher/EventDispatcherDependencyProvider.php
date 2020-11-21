@@ -27,6 +27,7 @@ use Spryker\Zed\Twig\Communication\Plugin\EventDispatcher\TwigEventDispatcherPlu
 use Spryker\Zed\ZedRequest\Communication\Plugin\EventDispatcher\GatewayControllerEventDispatcherPlugin;
 use StoreApp\Zed\Auth\Communication\Plugin\EventDispatcher\ControllerRestrictionEventDispatcherPlugin;
 use StoreApp\Zed\Merchant\Communication\Plugin\EventDispatcher\MerchantProviderEventDispatcherPlugin;
+use StoreApp\Zed\Picker\Communication\Plugin\EventDispatcher\PickerControllerRestrictionEventDispatcherPlugin;
 
 class EventDispatcherDependencyProvider extends SprykerEventDispatcherDependencyProvider
 {
@@ -55,6 +56,7 @@ class EventDispatcherDependencyProvider extends SprykerEventDispatcherDependency
             new SaveSessionEventDispatcherPlugin(),
             new MerchantProviderEventDispatcherPlugin(),
             new ControllerRestrictionEventDispatcherPlugin(),
+            new PickerControllerRestrictionEventDispatcherPlugin(),
         ];
     }
 }

@@ -434,7 +434,8 @@ global.benefit.warranty,3 Jahre Garantie,de_DE
 global.benefit.warranty,3 Years Warranty,en_US
 global.benefit.competitive_prices,Günstige Preise,de_DE
 global.benefit.competitive_prices,Competitive Prices,en_US
-global.help,Hilfe,de_DE
+global.help,Fragen? Kundenservice,de_DE
+global.importInfo,Wichtige Informationen,de_DE
 global.help,Help,en_US
 global.store_finder,Filialen,de_DE
 global.store_finder,Store Finder,en_US
@@ -807,7 +808,7 @@ customer.profile,Mein Account,de_DE
 customer.profile.title,My Account,en_US
 customer.profile.title,Mein Konto,de_DE
 customer.profile.link,My Profile,en_US
-customer.profile.link,Mein Profil,de_DE
+customer.profile.link,Mein Konto,de_DE
 customer.profile.update,Update Profile,en_US
 customer.profile.update,Profil bearbeiten,de_DE
 customer.profile.delete,Delete Account,en_US
@@ -1001,11 +1002,11 @@ checkout.step.place.order,Wunscheinkauf übermitteln,de_DE
 checkout.step.payment.must_be_older_than_18_years,You must be at least 18 years old.,en_US
 checkout.step.payment.must_be_older_than_18_years,Sie müssen mindestens 18 Jahre alt sein.,de_DE
 checkout.step.success.title,Thank you.,en_US
-checkout.step.success.title,Vielen Dank!,de_DE
+checkout.step.success.title,Vielen Dank fur Ihren Einkauf!,de_DE
 checkout.step.success.text,Your order has been placed successfully. You will get the order confirmation email in a few minutes. You can check and track your order in Your Account.,en_US
-checkout.step.success.text,Dein Wunscheinkauf ist erfolgreich bei uns eingegangen. Die Bestätigung wurde soeben per E-Mail versendet. In deinem Benutzerkonto kannst du deinen Wunscheinkauf überprüfen und nachverfolgen.                                                                            ,de_DE
+checkout.step.success.text,Ihre Bestellung ist erfolgreich in unserem Abholmarkt eingegangen.,de_DE
 checkout.step.success.link,"Go to ""My Account""",en_US
-checkout.step.success.link,"Zum Benutzerkonto",de_DE
+checkout.step.success.link,"Zum meinem Konto",de_DE
 checkout.step.error.title,Your order has not been placed.,en_US
 checkout.step.error.title,"Lieber Kunde, Ihre Bestellung konnte leider nicht platziert werden.",de_DE
 checkout.step.error.text,Something went wrong. Sorry.,en_US
@@ -2405,6 +2406,7 @@ agent.confirm_user_selection,Confirm,en_US
 agent.confirm_user_selection,Bestätigen,de_DE
 agent.login.email,Email,en_US
 agent.login.email,E-Mail,de_DE
+global.paymentProviders,Zahlarten bei Abholung,de_DE
 agent.login.password,Password,en_US
 agent.login.password,Passwort,de_DE
 agent.control_bar.username,Agent:,en_US
@@ -2437,8 +2439,9 @@ footer.logo.link.imprint,https://spryker.com/imprint/,en_US
 footer.logo.link.imprint,https://spryker.com/imprint/?lang=de,de_DE
 footer.providers__title,Shipment and Payment,en_US
 footer.providers__title,Zahlung und Versand,de_DE
-footer.categories,Kategorien,de_DE
+footer.categories,Gut zu wissen,de_DE
 footer.categories,Categories,en_US
+footer.globus,Globus,de_DE
 footer.sortiment,INFOS,de_DE
 footer.sortiment,INFOS,en_US
 page.product.details.slider_image,Product Image,en_US

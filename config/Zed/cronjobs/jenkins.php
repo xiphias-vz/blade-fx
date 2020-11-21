@@ -54,23 +54,21 @@ $jobs[] = [
 ];
 
 /* Oms */
-for ($i = 1; $i <= 1; $i++) {
-    $jobs[] = [
-        'name' => 'check-oms-conditions-' . $i,
-        'command' => '$PHP_BIN vendor/bin/console oms:check-condition -p ' . $i,
-        'schedule' => '* * * * *',
-        'enable' => true,
-        'stores' => $allStores,
-    ];
+$jobs[] = [
+    'name' => 'check-oms-conditions',
+    'command' => '$PHP_BIN vendor/bin/console oms:check-condition',
+    'schedule' => '* * * * *',
+    'enable' => true,
+    'stores' => $allStores,
+];
 
-    $jobs[] = [
-        'name' => 'check-oms-timeouts-' . $i,
-        'command' => '$PHP_BIN vendor/bin/console oms:check-timeout -p ' . $i,
-        'schedule' => '* * * * *',
-        'enable' => true,
-        'stores' => $allStores,
-    ];
-}
+$jobs[] = [
+    'name' => 'check-oms-timeouts',
+    'command' => '$PHP_BIN vendor/bin/console oms:check-timeout',
+    'schedule' => '* * * * *',
+    'enable' => true,
+    'stores' => $allStores,
+];
 
 $jobs[] = [
     'name' => 'clear-oms-locks',
@@ -154,5 +152,13 @@ $jobs[] = [
     'command' => '$PHP_BIN vendor/bin/console data:import merchant',
     'schedule' => '0 0 * * *',
     'enable' => false,
+    'stores' => $allStores,
+];
+
+$jobs[] = [
+    'name' => 'data-import-full',
+    'command' => 'vendor/bin/install -r sftp-based-full-import',
+    'schedule' => '0 0 * * *',
+    'enable' => true,
     'stores' => $allStores,
 ];

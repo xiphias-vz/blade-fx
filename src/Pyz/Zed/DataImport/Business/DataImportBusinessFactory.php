@@ -10,6 +10,7 @@ namespace Pyz\Zed\DataImport\Business;
 use NumberFormatter;
 use Pyz\Shared\Product\ProductConfig;
 use Pyz\Zed\DataImport\Business\Model\BaseProduct\AttributesExtractorStep as BaseAttributesExtractorStep;
+use Pyz\Zed\DataImport\Business\Model\BaseProduct\Hook\ProductDepositOptionAfterImportHook;
 use Pyz\Zed\DataImport\Business\Model\BaseProduct\ProductCategoryWriterStep;
 use Pyz\Zed\DataImport\Business\Model\BaseProduct\ProductDepositOptionStep;
 use Pyz\Zed\DataImport\Business\Model\CategoryTemplate\CategoryTemplateWriterStep;
@@ -19,6 +20,7 @@ use Pyz\Zed\DataImport\Business\Model\CmsTemplate\CmsTemplateWriterStep;
 use Pyz\Zed\DataImport\Business\Model\Country\Repository\CountryRepository;
 use Pyz\Zed\DataImport\Business\Model\Currency\CurrencyWriterStep;
 use Pyz\Zed\DataImport\Business\Model\Customer\CustomerWriterStep;
+use Pyz\Zed\DataImport\Business\Model\FileDownload\SFTPDataImportFileDownloader;
 use Pyz\Zed\DataImport\Business\Model\Glossary\GlossaryWriterStep;
 use Pyz\Zed\DataImport\Business\Model\Locale\AddLocalesStep;
 use Pyz\Zed\DataImport\Business\Model\Locale\LocaleNameToIdLocaleStep;
@@ -31,6 +33,7 @@ use Pyz\Zed\DataImport\Business\Model\Navigation\NavigationWriterStep;
 use Pyz\Zed\DataImport\Business\Model\NavigationNode\NavigationNodeValidityDatesStep;
 use Pyz\Zed\DataImport\Business\Model\NavigationNode\NavigationNodeWriterStep;
 use Pyz\Zed\DataImport\Business\Model\PickingRoute\PickingRouteWriterStep;
+use Pyz\Zed\DataImport\Business\Model\PickingZone\PickingZoneWriterStep;
 use Pyz\Zed\DataImport\Business\Model\PostalCode\PostalCodeWriterStep;
 use Pyz\Zed\DataImport\Business\Model\Product\ProductLocalizedAttributesExtractorStep;
 use Pyz\Zed\DataImport\Business\Model\Product\Repository\ProductRepository;
@@ -70,6 +73,7 @@ use Spryker\Shared\Kernel\Store;
 use Spryker\Shared\ProductSearch\Code\KeyBuilder\FilterGlossaryKeyBuilder;
 use Spryker\Zed\Acl\Business\AclFacadeInterface;
 use Spryker\Zed\DataImport\Business\DataImportBusinessFactory as SprykerDataImportBusinessFactory;
+use Spryker\Zed\DataImport\Business\Model\DataImporterAfterImportInterface;
 use Spryker\Zed\DataImport\Business\Model\DataImportStep\DataImportStepInterface;
 use Spryker\Zed\DataImport\Dependency\Plugin\DataImportPluginInterface;
 use Spryker\Zed\Money\Business\MoneyFacadeInterface;
@@ -116,7 +120,8 @@ class DataImportBusinessFactory extends SprykerDataImportBusinessFactory
             ->addDataImporter($this->getPriceImporter())
             ->addDataImporter($this->getProductStockWriterStep())
             ->addDataImporter($this->createPostalCodeImporter())
-            ->addDataImporter($this->createPickingRouteImporter());
+            ->addDataImporter($this->createPickingRouteImporter())
+            ->addDataImporter($this->createPickingZoneImporter());
 
         $dataImporterCollection->addDataImporterPlugins($this->getDataImporterPlugins());
 
@@ -163,8 +168,17 @@ class DataImportBusinessFactory extends SprykerDataImportBusinessFactory
             ->addStep($this->createProductDepositOptionStep());
 
         $dataImporter->addDataSetStepBroker($dataSetStepBroker);
+        $dataImporter->addAfterImportHook($this->createProductDepositAfterImportHook());
 
         return $dataImporter;
+    }
+
+    /**
+     * @return \Spryker\Zed\DataImport\Business\Model\DataImporterAfterImportInterface
+     */
+    protected function createProductDepositAfterImportHook(): DataImporterAfterImportInterface
+    {
+        return new ProductDepositOptionAfterImportHook();
     }
 
     /**
@@ -755,6 +769,17 @@ class DataImportBusinessFactory extends SprykerDataImportBusinessFactory
     }
 
     /**
+     * @return \Pyz\Zed\DataImport\Business\Model\FileDownload\SFTPDataImportFileDownloader
+     */
+    public function createSFTPDataImportFileLoader(): SFTPDataImportFileDownloader
+    {
+        return new SFTPDataImportFileDownloader(
+            $this->getProvidedDependency(DataImportDependencyProvider::SERVICE_FLY_SYSTEM_SERVICE),
+            $this->getConfig()
+        );
+    }
+
+    /**
      * @return \Pyz\Zed\DataImport\Business\Model\MerchantDeliveryPostalCode\MerchantDeliveryPostalCodeWriterStep
      */
     protected function createMerchantDeliveryPostalCodeWriterStep()
@@ -965,11 +990,34 @@ class DataImportBusinessFactory extends SprykerDataImportBusinessFactory
     }
 
     /**
+     * @return \Spryker\Zed\DataImport\Business\Model\DataImporterAfterImportAwareInterface|\Spryker\Zed\DataImport\Business\Model\DataImporterBeforeImportAwareInterface|\Spryker\Zed\DataImport\Business\Model\DataImporterInterface|\Spryker\Zed\DataImport\Business\Model\DataSet\DataSetStepBrokerAwareInterface
+     */
+    protected function createPickingZoneImporter()
+    {
+        $dataImporter = $this->getCsvDataImporterFromConfig($this->getConfig()->getPickingZoneDataImporterConfiguration());
+
+        $dataSetStepBroker = $this->createTransactionAwareDataSetStepBroker();
+        $dataSetStepBroker->addStep($this->createPickingZoneWriterStep());
+
+        $dataImporter->addDataSetStepBroker($dataSetStepBroker);
+
+        return $dataImporter;
+    }
+
+    /**
      * @return \Pyz\Zed\DataImport\Business\Model\PickingRoute\PickingRouteWriterStep
      */
     protected function createPickingRouteWriterStep(): PickingRouteWriterStep
     {
         return new PickingRouteWriterStep();
+    }
+
+    /**
+     * @return \Pyz\Zed\DataImport\Business\Model\PickingZone\PickingZoneWriterStep
+     */
+    protected function createPickingZoneWriterStep(): PickingZoneWriterStep
+    {
+        return new PickingZoneWriterStep();
     }
 
     /**
