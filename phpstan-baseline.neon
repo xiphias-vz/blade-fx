@@ -154,4 +154,3 @@ parameters:
             message: "#^Call to an undefined method SprykerShop\\\\Yves\\\\CustomerPage\\\\Form\\\\GuestForm\\:\\:addAddress1Field\\(\\)\\.$#"
             count: 1
             path: src/Pyz/Yves/CustomerPage/Form/GuestForm.php
-
