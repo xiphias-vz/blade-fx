@@ -44,7 +44,7 @@
 
             <transition happy="true">
                 <source>ready for selecting shelves</source>
-                <target>ready for cashier order export</target>
+                <target>picked</target>
                 <event>confirm picking</event>
             </transition>
 
