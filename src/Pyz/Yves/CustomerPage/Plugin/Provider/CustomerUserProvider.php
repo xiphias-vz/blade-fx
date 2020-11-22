@@ -26,9 +26,9 @@ class CustomerUserProvider extends SprykerCustomerUserProvider
     /**
      * @param string $email
      *
-     * @return \Generated\Shared\Transfer\CustomerTransfer
      * @throws \Symfony\Component\Security\Core\Exception\AuthenticationException
      *
+     * @return \Generated\Shared\Transfer\CustomerTransfer
      */
     protected function loadCustomerByEmail($email)
     {
@@ -137,5 +137,4 @@ class CustomerUserProvider extends SprykerCustomerUserProvider
     {
         return new ShopContextResolver($this->getApplication());
     }
-
 }
