@@ -23,6 +23,14 @@ interface FormDataMapperInterface
 
     /**
      * @param array $formData
+     * @param string $fieldNamePrefix
+     *
+     * @return int[]
+     */
+    public function mapFormDataToSelectedWeightMap(array $formData, string $fieldNamePrefix): array;
+
+    /**
+     * @param array $formData
      * @param \Generated\Shared\Transfer\OrderTransfer $salesOrderTransfer
      *
      * @return \Generated\Shared\Transfer\PickingSalesOrderCollectionTransfer

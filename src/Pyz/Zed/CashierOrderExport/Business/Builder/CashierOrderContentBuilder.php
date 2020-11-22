@@ -395,6 +395,10 @@ class CashierOrderContentBuilder implements CashierOrderContentBuilderInterface
      */
     protected function getDecimalViewOfItemQuantity(ItemTransfer $itemTransfer): ?int
     {
+        if ($itemTransfer->getNewWeight()) {
+            return $itemTransfer->getNewWeight();
+        }
+
         $itemQuantity = $itemTransfer->getQuantity();
 
         if (!$itemQuantity) {

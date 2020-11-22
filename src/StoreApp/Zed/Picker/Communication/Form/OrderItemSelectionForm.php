@@ -89,7 +89,7 @@ class OrderItemSelectionForm extends AbstractType
                 IntegerType::class,
                 [
                     'required' => true,
-                    'label' => '', //$this->getItemDisplayName($itemTransfer, $options),
+                    'label' => $this->getItemDisplayName($itemTransfer, $options),
                     'data' => 0,
                     'attr' => [
                         'max' => $itemTransfer->getQuantity(),
@@ -113,6 +113,7 @@ class OrderItemSelectionForm extends AbstractType
                             'min' => $weight * 0.8,
                             'max' => $weight * 1.2,
                         ],
+                        'label' => 'storeapp.new_weight',
                         'constraints' => [
                             new NotBlank(),
                         ],

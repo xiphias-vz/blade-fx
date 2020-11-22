@@ -44,6 +44,30 @@ class FormDataMapper implements FormDataMapperInterface
 
     /**
      * @param array $formData
+     * @param string $fieldNamePrefix
+     *
+     * @return int[]
+     */
+    public function mapFormDataToSelectedWeightMap(array $formData, string $fieldNamePrefix): array
+    {
+        $skuToWeightMap = [];
+
+        $pattern = '/' . $fieldNamePrefix . '(.+)/';
+
+        foreach ($formData as $fieldName => $fieldValue) {
+            $matches = [];
+            if (preg_match($pattern, $fieldName, $matches) === false || empty($matches)) {
+                continue;
+            }
+
+            $skuToWeightMap[$matches[1]] = $fieldValue;
+        }
+
+        return $skuToWeightMap;
+    }
+
+    /**
+     * @param array $formData
      * @param \Generated\Shared\Transfer\OrderTransfer $salesOrderTransfer
      *
      * @return \Generated\Shared\Transfer\PickingSalesOrderCollectionTransfer
@@ -94,7 +118,6 @@ class FormDataMapper implements FormDataMapperInterface
         OrderTransfer $salesOrderTransfer,
         string $fieldNamePrefix
     ): OrderChangeRequestTransfer {
-
         $orderChangeRequest = new OrderChangeRequestTransfer();
         $orderChangeRequest->setFkSalesOrder($salesOrderTransfer->getIdSalesOrder());
 
@@ -118,6 +141,7 @@ class FormDataMapper implements FormDataMapperInterface
 
             $orderItemChangeRequest->setQuantity($itemTransfer->getQuantity());
             $orderItemChangeRequest->setPrice($newPrice);
+            $orderItemChangeRequest->setNewWeight($newWeight);
             $orderItemChangeRequest->setIdSalesOrderItem($itemTransfer->getIdSalesOrderItem());
 
             $orderChangeRequest->addOrderItemChangeRequest($orderItemChangeRequest);
@@ -126,14 +150,38 @@ class FormDataMapper implements FormDataMapperInterface
         return $orderChangeRequest;
     }
 
+    /**
+     * @param \Generated\Shared\Transfer\OrderTransfer $salesOrderTransfer
+     * @param string $sku
+     *
+     * @throws \InvalidArgumentException
+     *
+     * @return \Generated\Shared\Transfer\ItemTransfer
+     */
     private function findItemInOrder(OrderTransfer $salesOrderTransfer, string $sku): ItemTransfer
     {
+        $sumQuantity = 0;
+        $sumPrice = 0;
+        $selectedItemTransfer = null;
+
         foreach ($salesOrderTransfer->getItems() as $itemTransfer) {
             if ($itemTransfer->getSku() === $sku) {
-                return $itemTransfer;
+                $sumQuantity += $itemTransfer->getQuantity();
+                $sumPrice += $itemTransfer->getSumGrossPrice();
+            }
+
+            if ($itemTransfer->getSku() === $sku && $itemTransfer->getCanceledAmount() === 0) {
+                $selectedItemTransfer = $itemTransfer;
             }
         }
 
-        throw new InvalidArgumentException('No item found for sku ' . $sku);
+        if (!$selectedItemTransfer) {
+            throw new InvalidArgumentException('No item found for sku ' . $sku);
+        }
+
+        $selectedItemTransfer->setQuantity($sumQuantity);
+        $selectedItemTransfer->setSumGrossPrice($sumPrice);
+
+        return $selectedItemTransfer;
     }
 }

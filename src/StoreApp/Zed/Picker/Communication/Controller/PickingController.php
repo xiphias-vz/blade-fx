@@ -11,9 +11,7 @@ use Generated\Shared\Transfer\ItemTransfer;
 use Generated\Shared\Transfer\MerchantSalesOrderCollectionTransfer;
 use Generated\Shared\Transfer\MerchantSalesOrderTransfer;
 use Generated\Shared\Transfer\MerchantTransfer;
-use Generated\Shared\Transfer\OrderChangeRequestTransfer;
 use Generated\Shared\Transfer\OrderCriteriaFilterTransfer;
-use Generated\Shared\Transfer\OrderItemChangeRequestTransfer;
 use Generated\Shared\Transfer\OrderPickingBlockTransfer;
 use Generated\Shared\Transfer\OrderTransfer;
 use Generated\Shared\Transfer\OrderUpdateRequestTransfer;
@@ -293,10 +291,17 @@ class PickingController extends BaseOrderPickingController
                 OrderItemSelectionForm::PREFIX_FIELD_SALES_ORDER_ITEM_SKU
             );
 
+        $skuToWeightMap = $this->getFactory()->getFormDataMapper()
+            ->mapFormDataToSelectedWeightMap(
+                $formData,
+                OrderItemSelectionForm::PREFIX_FIELD_SALES_ORDER_ITEM_NEW_WEIGHT
+            );
+
         $orderItemStatusesTransfer = $this->getFactory()->getOrderItemsMapper()
             ->mapOrderItemsToOrderItemStatuses(
                 $salesOrderTransfer,
-                $skuToSelectedQuantityMap
+                $skuToSelectedQuantityMap,
+                $skuToWeightMap
             );
 
         $pickingSalesOrderCollectionTransfer = $this->getFactory()->getFormDataMapper()

@@ -101,6 +101,8 @@
         <column name="old_price" type="INTEGER" required="false"/>
         <column name="new_price" type="INTEGER" required="false"/>
         <column name="new_weight" type="INTEGER" required="false"/>
+
+        <behavior name="timestampable"/>
     </table>
 
 </database>

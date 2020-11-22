@@ -1,12 +1,16 @@
 <?php
 
+/**
+ * This file is part of the Spryker Commerce OS.
+ * For full license information, please view the LICENSE file that was distributed with this source code.
+ */
+
 namespace Pyz\Zed\Sales\Business\OrderChange;
 
 use Generated\Shared\Transfer\OrderChangeRequestTransfer;
 use Generated\Shared\Transfer\OrderItemChangeRequestTransfer;
 use Orm\Zed\Sales\Persistence\SpySalesOrderChange;
 use Orm\Zed\Sales\Persistence\SpySalesOrderItem;
-use Spryker\Zed\Calculation\Business\CalculationFacadeInterface;
 use Spryker\Zed\Sales\Business\Model\Order\OrderUpdaterInterface;
 use Spryker\Zed\Sales\Business\Order\OrderHydratorInterface;
 use Spryker\Zed\Sales\Dependency\Facade\SalesToCalculationInterface;
@@ -77,6 +81,11 @@ class OrderChangeSaver
         return $this->salesQueryContainer->getConnection()->commit();
     }
 
+    /**
+     * @param \Generated\Shared\Transfer\OrderChangeRequestTransfer $orderChangeRequestTransfer
+     *
+     * @return void
+     */
     private function recalculateOrder(OrderChangeRequestTransfer $orderChangeRequestTransfer)
     {
         $orderTransfer = $this->orderHydrator->hydrateOrderTransferFromPersistenceByIdSalesOrder(
@@ -86,6 +95,12 @@ class OrderChangeSaver
         $this->orderUpdater->update($orderTransfer, $orderChangeRequestTransfer->getFkSalesOrder());
     }
 
+    /**
+     * @param \Orm\Zed\Sales\Persistence\SpySalesOrderItem $salesOrderItemEntity
+     * @param \Generated\Shared\Transfer\OrderItemChangeRequestTransfer $orderItemChangeRequest
+     *
+     * @return void
+     */
     private function updateOrderItem(
         SpySalesOrderItem $salesOrderItemEntity,
         OrderItemChangeRequestTransfer $orderItemChangeRequest
@@ -108,6 +123,7 @@ class OrderChangeSaver
         $orderChangeEntity = new SpySalesOrderChange();
         $orderChangeEntity->setOldPrice($oldPrice);
         $orderChangeEntity->setNewPrice($orderItemChangeRequest->getPrice());
+        $orderChangeEntity->setNewWeight($orderItemChangeRequest->getNewWeight());
         $orderChangeEntity->setFkSalesOrderItem($orderItemChangeRequest->getIdSalesOrderItem());
 
         $orderChangeEntity->save();
