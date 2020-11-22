@@ -97,101 +97,13 @@ class RegisterForm extends SprykerRegisterForm
             ->addMobileNumber($builder)
             ->addMobilePrefixField2($builder)
             ->addPhoneField($builder)
-            ->addBirthdateGroup($builder)
+            ->addDayField($builder)
+            ->addMonthField($builder)
+            ->addYearField($builder)
             ->addAcceptTermsField($builder)
             ->addFieldRecieveNotificationsAboutProducts($builder)
             ->addAdditionalRegisterField($builder);
 
-    }
-
-    /**
-     * @param \Symfony\Component\Form\FormBuilderInterface $builder
-     *
-     * @return $this
-     */
-    protected function addGroup(FormBuilderInterface $builder)
-    {
-        $builder->add(
-            $builder->create('group1', FormType::class, array('inherit_data' => true))
-                ->add('email', EmailType::class, array())
-                ->add('field1', TextType::class, array())
-        );
-
-        return $this;
-    }
-
-    /**
-     * @param \Symfony\Component\Form\FormBuilderInterface $builder
-     *
-     * @return $this
-     */
-    protected function addBirthdateGroup(FormBuilderInterface $builder)
-    {
-        $days = [];
-        $months = [];
-        $years = [];
-
-        for($i = 1; $i<32; $i++)
-        {
-            $days[$i] = $i;
-            if($i < 13){
-                $months[$i] = $i;
-            }
-        }
-
-        $currentYear= date("Y");
-        for($i = 1900; $i<=intval($currentYear); $i++)
-        {
-            $years[$i] = $i;
-        }
-
-        $prefixes = Config::get(CustomerConstants::CUSTOMER_PHONE_PREFIX);
-        $builder->add(
-            $builder->create('datesGroup', FormType::class, array('inherit_data' => true, 'label' => 'customer.register.birthdate'))
-                ->add(static::FIELD_DAY, ChoiceType::class, array(
-                    'choices' => array_flip($days),
-                    'required' => true,
-                    'trim' => true,
-                    'label' => false,
-                    'attr' => array(
-                        'class' => 'col col--sm-12 col--lg-4',
-                        'placeholder' => 'customer.date.day'
-                    ),
-                    'constraints' =>
-                    array(
-                        $this->createNotBlankConstraint(),
-                    )
-                ))
-                ->add(static::FIELD_MONTH, ChoiceType::class,[
-                    'choices' => array_flip($months),
-                    'required' => true,
-                    'trim' => true,
-                    'label' => false,
-                    'attr' => [
-                        'class' => 'col col--sm-12 col--lg-4',
-                        'placeholder' => 'customer.date.month'
-                    ],
-                    'constraints' =>
-                        [
-                            $this->createNotBlankConstraint(),
-                        ]
-                ])
-                ->add(static::FIELD_YEAR, ChoiceType::class,[
-                    'choices' => array_flip($years),
-                    'required' => true,
-                    'trim' => true,
-                    'label' => false,
-                    'attr' => [
-                        'class' => 'col col--sm-12 col--lg-4',
-                        'placeholder' => 'customer.date.year'
-                    ],
-                    'constraints' =>
-                        [
-                            $this->createNotBlankConstraint()
-                        ]
-                ])
-        );
-        return $this;
     }
 
     /**
@@ -313,7 +225,7 @@ class RegisterForm extends SprykerRegisterForm
     {
         $builder->add(self::FIELD_ACCEPT_TERMS, CheckboxType::class, [
             'label' => 'register.accept_terms',
-            'mapped' => true,
+            'mapped' => false,
             'required' => true,
             'constraints' => [
                 $this->createNotBlankConstraint(),
@@ -669,7 +581,7 @@ class RegisterForm extends SprykerRegisterForm
     {
         $years = [];
         $currentYear= date("Y");
-        for($i = 1900; $i<intval($currentYear); $i++)
+        for($i = intval($currentYear); $i>=1900; $i--)
         {
             $years[$i] = $i;
         }

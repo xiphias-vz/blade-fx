@@ -9,8 +9,15 @@ namespace Pyz\Yves\CustomerPage\Plugin\Provider;
 
 use Elastica\JSON;
 use Generated\Shared\Transfer\CustomerTransfer;
+use PHPUnit\Exception;
+use Pyz\Yves\MerchantSwitcherWidget\Plugin\Application\CurrentMerchantApplicationPlugin;
+use RuntimeException;
 use SprykerShop\Yves\CustomerPage\Plugin\Provider\CustomerUserProvider as SprykerCustomerUserProvider;
+
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
+use SprykerShop\Yves\MerchantSwitcherWidget\Widget\MerchantSwitcherSelectorFormWidget as SprykerMerchantSwitcherSelectorFormWidget;
+use Spryker\Shared\Kernel;
+use Pyz\Yves\MerchantSwitcherWidget\Resolver\ShopContextResolver;
 
 /**
  * @method \SprykerShop\Yves\CustomerPage\CustomerPageFactory getFactory()
@@ -18,6 +25,13 @@ use Symfony\Component\Security\Core\Exception\AuthenticationException;
 class CustomerUserProvider extends SprykerCustomerUserProvider
 {
     public const ERROR_NOT_VERIFIED_CUSTOMER = 'ERROR_NOT_VERIFIED_CUSTOMER';
+    private const API_KEY = '3_IVfYuFFTkEygbMQjcP8LamKwRZBH4_qjl-EAGSvZJPGTAL59E9yUPdTxqLCyofkZ';
+    private $shopContextResolver;
+
+    public function __construct(ShopContextResolver $shopContextResolver)
+    {
+        $this->shopContextResolver = $shopContextResolver;
+    }
 
     /**
      * @param string $email
@@ -28,47 +42,53 @@ class CustomerUserProvider extends SprykerCustomerUserProvider
      */
     protected function loadCustomerByEmail($email)
     {
+
         $data = null;
-        if (!empty($_REQUEST["loginForm"]["data"])) {
-            $data = JSON::parse($_REQUEST["loginForm"]["data"]);
+        $pass = null;
+        if (!empty($_POST["loginForm"]["data"])) {
+            $data = JSON::parse($_POST["loginForm"]["data"]);
+            $pass = $_POST["loginForm"]["password"];
         }
 
         try {
             $customerTransfer = parent::loadCustomerByEmail($email);
             if (!empty($data)) {
-                if ($data["src"] == "CDC") {
+                if ($data["src"] == "CDC" && $this->isAuthorizedInCdc($email, $pass)) {
                     $user = $this->getFactory()->createSecurityUser($customerTransfer);
                     $encoder = $this->getContainer()->get('security.encoder_factory');
-                    $encodedPass = $encoder->getEncoder($user)->encodePassword($_REQUEST["loginForm"]["password"], $user->getSalt());
-                    $customerTransfer->setPassword($encodedPass);
-                    $this->getFactory()->getCustomerClient()->updateCustomer($customerTransfer);
+                    $encodedPass = $encoder->getEncoder($user)->encodePassword($pass, $user->getSalt());
+                    if ($customerTransfer->getPassword() != $encodedPass) {
+                        $customerTransfer->setPassword($encodedPass);
+                        $this->getFactory()->getCustomerClient()->updateCustomer($customerTransfer);
+                    }
                 }
             }
         } catch (AuthenticationException $e) {
             if (!empty($data)) {
-                $customerTransfer = new CustomerTransfer();
-                $customerTransfer->setEmail($data["profile"]["email"]);
-                $customerTransfer->setFirstName($data["profile"]["firstName"]);
-                $customerTransfer->setLastName($data["profile"]["lastName"]);
-                $customerTransfer->setCity($data["profile"]["city"]);
-                $customerTransfer->setZipCode($data["profile"]["zip"]);
-                $customerTransfer->setDateOfBirth($data["profile"]["birthYear"] . '-' . $data["profile"]["birthMonth"] . '-' . $data["profile"]["birthDay"]);
-                $customerTransfer->setUsername($data["profile"]["email"]);
-                $customerTransfer->setPassword($_REQUEST["loginForm"]["password"]);
+                if ($data["src"] == "CDC" && $this->isAuthorizedInCdc($email, $pass)) {
+                    $customerTransfer = new CustomerTransfer();
+                    $customerTransfer->setEmail($data["profile"]["email"]);
+                    $customerTransfer->setFirstName($data["profile"]["firstName"]);
+                    $customerTransfer->setLastName($data["profile"]["lastName"]);
+                    $customerTransfer->setCity($data["profile"]["city"]);
+                    $customerTransfer->setZipCode($data["profile"]["zip"]);
+                    $customerTransfer->setDateOfBirth($data["profile"]["birthYear"] . '-' . $data["profile"]["birthMonth"] . '-' . $data["profile"]["birthDay"]);
+                    $customerTransfer->setUsername($data["profile"]["email"]);
+                    $customerTransfer->setPassword($pass);
 
-                $customerTransfer->setSalutation('Mr');
-                $customerTransfer->setAddress1($data["data"]["address"]["street"]);
-                $customerTransfer->setAddress2($data["profile"]["zip"]);
-                $customerTransfer->setMerchantReference($_COOKIE["merchant_switcher_selector-merchant_reference"]);
-                $customerTransfer->setCustomerReference($_COOKIE["current_store"]);
-                $customerTransfer->setThirdPartyRegistration(1);
+                    $customerTransfer->setAddress1($data["data"]["address"]["street"]);
+                    $customerTransfer->setAddress2($data["profile"]["zip"]);
+                    $customerTransfer->setMerchantReference($this->shopContextResolver->resolve()->getMerchantReference());
+                    $customerTransfer->setCustomerReference($this->getFactory()->getStore()->getStoreName());
+                    $customerTransfer->setThirdPartyRegistration(true);
+                    $this->registerCustomer($customerTransfer);
 
-                $this->registerCustomer($customerTransfer);
+                    $customerTransfer = parent::loadCustomerByEmail($email);
+                    $customerTransfer->setRegistered(date('yy-m-d'));
+                    $customerTransfer->setRegistrationKey(null);
+                    $this->getFactory()->getCustomerClient()->updateCustomer($customerTransfer);
 
-                $customerTransfer = parent::loadCustomerByEmail($email);
-                $customerTransfer->setRegistered(date('yy-m-d'));
-                $customerTransfer->setRegistrationKey(null);
-                $this->getFactory()->getCustomerClient()->updateCustomer($customerTransfer);
+                }
             }
         }
 
@@ -77,6 +97,28 @@ class CustomerUserProvider extends SprykerCustomerUserProvider
         }
 
         return $customerTransfer;
+    }
+
+    protected function isAuthorizedInCdc($username, $pass): bool
+    {
+        $url = "https://accounts.eu1.gigya.com/accounts.login?apiKey=" . self::API_KEY;
+        $data = array('loginID' => $username, 'password' => $pass);
+        $options = array(
+            'http' => array(
+                'header' => "Content-type: application/x-www-form-urlencoded\r\n",
+                'method' => 'POST',
+                'content' => http_build_query($data)
+            )
+        );
+        $context = stream_context_create($options);
+        $result = file_get_contents($url, false, $context);
+        $result = JSON::parse($result);
+
+        if ($result["errorCode"] == 0) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     /**

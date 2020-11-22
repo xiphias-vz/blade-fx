@@ -10,6 +10,7 @@ namespace Pyz\Yves\CustomerPage;
 use Generated\Shared\Transfer\PdfParametersTransfer;
 use Pyz\Client\Customer\CustomerClientInterface;
 use Pyz\Client\MerchantSearch\MerchantSearchClientInterface;
+use Pyz\Client\MerchantStorage\MerchantStorageClientInterface;
 use Pyz\Client\OrderDetail\OrderDetailClientInterface;
 use Pyz\Client\Pdf\PdfClientInterface;
 use Pyz\Client\SalesOrderActions\SalesOrderActionsClientInterface;
@@ -23,6 +24,8 @@ use Pyz\Yves\CustomerPage\Plugin\Provider\CustomerAuthenticationFailureHandler;
 use Pyz\Yves\CustomerPage\Plugin\Provider\CustomerAuthenticationSuccessHandler;
 use Pyz\Yves\CustomerPage\Plugin\Provider\CustomerUserProvider;
 use Pyz\Yves\MerchantSwitcherWidget\Plugin\SelectedMerchantCookiePlugin;
+use Pyz\Yves\MerchantSwitcherWidget\Reader\MerchantShopContextReader;
+use Pyz\Yves\MerchantSwitcherWidget\Resolver\ShopContextResolver;
 use Pyz\Yves\ShopApplication\ShopApplicationDependencyProvider;
 use Spryker\Client\Session\SessionClientInterface;
 use Spryker\Yves\Kernel\Plugin\Pimple;
@@ -197,6 +200,27 @@ class CustomerPageFactory extends SprykerShopCustomerPageFactory
      */
     public function createCustomerUserProvider()
     {
-        return new CustomerUserProvider();
+        return new CustomerUserProvider($this->createShopContextResolver());
+    }
+
+    public function createMerchantShopContextReader(): MerchantShopContextReader
+    {
+        return new MerchantShopContextReader(
+            $this->createShopContextResolver(),
+            $this->getMerchantStorageClient()
+        );
+    }
+    /**
+     * @return \Pyz\Yves\MerchantSwitcherWidget\Resolver\ShopContextResolver
+     */
+    public function createShopContextResolver(): ShopContextResolver
+    {
+        return new ShopContextResolver($this->getApplication());
+    }
+
+    public function getMerchantStorageClient(): MerchantStorageClientInterface
+    {
+        return $this->getProvidedDependency(MerchantSwitcherWidgetDependencyProvider::CLIENT_MERCHANT_STORAGE);
     }
 }
+
