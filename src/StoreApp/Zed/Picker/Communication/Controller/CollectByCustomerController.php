@@ -104,6 +104,7 @@ class CollectByCustomerController extends AbstractController
                 'requestedDeliveryDate' => $requestedDeliveryDatesByIdSalesOrders[$idSalesOrder],
                 'pickedProductCount' => $pickedProductCount,
                 'pickingSalesOrders' => $pickingSalesOrders,
+                'cartNote' => $salesOrderTransfer->getCartNote(),
             ];
         }
 

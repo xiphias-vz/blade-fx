@@ -81,13 +81,6 @@
                                 text: 'Order ID' | trans ~ ': ' ~ data.reference
                             }
                         } only %}
-                    {% else %}
-                        <form action="{{ embed.urlCollectByCustomerDetails }}">
-                            <input type="hidden" name="{{ embed.paramIdSalesOrder }}" value="{{ embed.collectionOrder.idSalesOrder }}">
-                            <button type="submit" class="button button--small button--table button--expand button--hollow">
-                                {{ 'Order ID' | trans }}: {{ data.reference }}<br/>
-                            </button>
-                        </form>
                     {% endif %}
                 {% endblock %}
 
@@ -100,30 +93,7 @@
                         </div>
 
                         <div class="col col--right">
-                            {% set isCheckAge = embed.collectionOrder.deliveryMinimumAge > 0 %}
-
-                            {% embed atom('icon-row') with {
-                                modifiers: ['round', 'center', 'age'] | merge(isCheckAge ? ['error'] : []),
-                                data: {
-                                    iconName: 'user-account'
-                                },
-                                embed: {
-                                    isCheckAge: isCheckAge,
-                                    deliveryMinimumAge: embed.collectionOrder.deliveryMinimumAge
-                                }
-                            } only %}
-                                {% block text %}
-                                    {% if embed.isCheckAge %}
-                                        {{- embed.deliveryMinimumAge -}}+
-                                    {% else %}
-                                        {% include atom('icon') with {
-                                            data: {
-                                                name: 'check'
-                                            }
-                                        } only %}
-                                    {% endif %}
-                                {% endblock %}
-                            {% endembed %}
+                            {{ embed.collectionOrder.cartNote }}
                         </div>
 
                         <div class="col col--sm-12 spacing-top">
