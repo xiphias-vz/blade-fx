@@ -515,8 +515,6 @@ class RegisterForm extends SprykerRegisterForm
             'label' => false,
             'required' => false,
             'trim' => true,
-            'attr' => [
-            ],
             'constraints' => [
                 ProfileForm::createSafeStringRegexConstraint(),
             ],

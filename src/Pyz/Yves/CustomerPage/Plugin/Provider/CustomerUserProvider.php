@@ -53,6 +53,9 @@ class CustomerUserProvider extends SprykerCustomerUserProvider
                     }
                 }
             }
+            if ($customerTransfer->getRegistrationKey() !== null) {
+                throw new AuthenticationException(self::ERROR_NOT_VERIFIED_CUSTOMER);
+            }
         } catch (AuthenticationException $e) {
             if (!empty($data)) {
                 if ($data["src"] == "CDC" && $this->isAuthorizedInCdc($email, $pass)) {
@@ -84,10 +87,6 @@ class CustomerUserProvider extends SprykerCustomerUserProvider
             } else {
                 throw new AuthenticationException(self::ERROR_NOT_VERIFIED_CUSTOMER);
             }
-        }
-
-        if (is_null($customerTransfer) || $customerTransfer->getRegistrationKey() !== null) {
-            throw new AuthenticationException(self::ERROR_NOT_VERIFIED_CUSTOMER);
         }
 
         return $customerTransfer;

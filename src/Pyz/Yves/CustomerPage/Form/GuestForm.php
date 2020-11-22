@@ -24,6 +24,8 @@ class GuestForm extends SprykerGuestForm
     public const FIELD_PHONE = 'phone';
 
     /**
+     * @param FormBuilderInterface $builder
+     * @param array $options
      * @return void
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
@@ -149,9 +151,8 @@ class GuestForm extends SprykerGuestForm
             'constraints' => [
                 $this->createNotBlankConstraint(),
                 new PostalCodeConstraint([
-                    'customerBaseClient' => $this->getFactory()->getBaseCustomerClient(),
-                ]),
-            ],
+                    'customerBaseClient' => $this->getFactory()->createCustomerFormFactory()->getCustomerClient(),
+                ]),           ],
             'attr' => [
                 'placeholder' => 'customer.registration.zip_placeholder',
             ],
