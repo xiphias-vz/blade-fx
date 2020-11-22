@@ -21,7 +21,7 @@
         <foreign-key name="pyz_picking_sales_order-fk_picking_zone" foreignTable="pyz_picking_zone" phpName="PickingZone">
             <reference local="fk_picking_zone" foreign="id_picking_zone"/>
         </foreign-key>
-        <index name="index-pyz_order_picking_block-fk_picking_zone">
+        <index name="index-picking_sales_order-fk_picking_zone">
             <index-column name="fk_picking_zone"/>
         </index>
 
