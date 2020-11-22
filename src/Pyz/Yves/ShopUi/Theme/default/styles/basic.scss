@@ -8,3 +8,8 @@
 @include basic-reset;
 @include basic-typography;
 @include basic-grid;
+
+a {
+    color: #71747c; }
+a:hover {
+    color: $setting-color-globus-lightOrange; }
