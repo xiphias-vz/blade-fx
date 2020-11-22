@@ -15,7 +15,7 @@
             width: rem(20);
             min-width: rem(20);
             height: rem(20);
-            border: rem(2) solid $setting-color-globus-lightOrange;
+            border: rem(2) solid $setting-color-checkbox-border;
             border-radius: rem(2);
             background-color: $setting-color-white;
             margin-right: rem(8);
@@ -45,7 +45,7 @@
         &__input:checked {
             & + #{$name}__box {
                 border-color: $setting-color-globus-darkOrange;
-                background: $setting-color-globus-lightOrange;
+                background: $setting-color-globus-darkOrange;
 
                 #{$name}__check {
                     opacity: 1;
@@ -59,7 +59,7 @@
         }
 
         &__input:focus + #{$name}__box {
-            border-color: $setting-color-globus-lightOrange;
+            border-color: $setting-color-globus-darkOrange;
         }
 
         &__label {

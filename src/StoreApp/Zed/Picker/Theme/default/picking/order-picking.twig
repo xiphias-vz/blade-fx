@@ -74,87 +74,85 @@
             {% endif %}
         {% endfor %}
 
-    <h3>Containers</h3>
+        {% include molecule('form-containers', 'Picker') with {
+            data: {
+                formContainers: data.pickingForm.field_sales_order_containers,
+            },
+        } only %}
 
-    {{ form_row(data.pickingForm.field_sales_order_containers.vars.prototype) }}
-
-    <a href="#" class="btn btn-outline btn-primary add-another-container m-t-md">
-        <i class="fa fa-files-o"></i> {{ 'Add Container' | trans }}
-    </a>
-
-    <div class="pick-products__action-wrapper">
-        <div class="pick-products__action js-pick-products__action">
-            {% embed molecule('popup-ui') with {
-                data: {
-                    buttons: {
-                        submit: {
-                            isButton: true,
-                            additionalClass: 'js-pick-products__submit',
+        <div class="pick-products__action-wrapper">
+            <div class="pick-products__action js-pick-products__action">
+                {% embed molecule('popup-ui') with {
+                    data: {
+                        buttons: {
+                            submit: {
+                                isButton: true,
+                                additionalClass: 'js-pick-products__submit',
+                            },
                         },
                     },
-                },
-                embed: {
-                    collectNumber: data.collectNumber,
-                },
-            } only %}
-                {% block content %}
-                    <div class="grid grid--center">
-                        <div class="col--sm-8">
-                            {% embed atom('app-label') with {
-                                class: 'spacing-right',
-                                modifiers: ['picked', 'count'],
-                            } only %}
-                                {% block body %}
-                                    <span class="js-pick-products__picked">0</span>
-                                {% endblock %}
-                            {% endembed %}
-                            {{ 'picked' | trans }}
+                    embed: {
+                        collectNumber: data.collectNumber,
+                    },
+                } only %}
+                    {% block content %}
+                        <div class="grid grid--center">
+                            <div class="col--sm-8">
+                                {% embed atom('app-label') with {
+                                    class: 'spacing-right',
+                                    modifiers: ['picked', 'count'],
+                                } only %}
+                                    {% block body %}
+                                        <span class="js-pick-products__picked">0</span>
+                                    {% endblock %}
+                                {% endembed %}
+                                {{ 'picked' | trans }}
+                            </div>
                         </div>
-                    </div>
-                    <div class="grid grid--center spacing-y">
-                        <div class="col--sm-8">
-                            {% embed atom('app-label') with {
-                                class: 'spacing-right',
-                                modifiers: ['not-found', 'count'],
-                            } only %}
-                                {% block body %}
-                                    <span class="js-pick-products__not-picked">0</span>
-                                {% endblock %}
-                            {% endembed %}
-                            {{ 'not found' | trans }}
+                        <div class="grid grid--center spacing-y">
+                            <div class="col--sm-8">
+                                {% embed atom('app-label') with {
+                                    class: 'spacing-right',
+                                    modifiers: ['not-found', 'count'],
+                                } only %}
+                                    {% block body %}
+                                        <span class="js-pick-products__not-picked">0</span>
+                                    {% endblock %}
+                                {% endembed %}
+                                {{ 'not found' | trans }}
+                            </div>
                         </div>
-                    </div>
-                    <div class="grid grid--center spacing-bottom spacing-bottom--big">
-                        <div class="col--sm-8">
-                            {% embed atom('app-label') with {
-                                class: 'spacing-right',
-                                modifiers: ['bordered', 'count'],
-                            } only %}
-                                {% block body %}
-                                    <span class="js-pick-products__bags">1</span>
-                                {% endblock %}
-                            {% endembed %}
-                            {{ 'bags' | trans }}
+                        <div class="grid grid--center spacing-bottom spacing-bottom--big">
+                            <div class="col--sm-8">
+                                {% embed atom('app-label') with {
+                                    class: 'spacing-right',
+                                    modifiers: ['bordered', 'count'],
+                                } only %}
+                                    {% block body %}
+                                        <span class="js-pick-products__bags">1</span>
+                                    {% endblock %}
+                                {% endembed %}
+                                {{ 'bags' | trans }}
+                            </div>
                         </div>
-                    </div>
-                    {% if embed.collectNumber %}
-                        <div class="text-center spacing-top--big">
-                            <p class="text-bold spacing-bottom">{{ 'Collect Number' | trans }}: {{ embed.collectNumber }}</p>
-                        </div>
-                    {% endif %}
-                {% endblock %}
+                        {% if embed.collectNumber %}
+                            <div class="text-center spacing-top--big">
+                                <p class="text-bold spacing-bottom">{{ 'Collect Number' | trans }}: {{ embed.collectNumber }}</p>
+                            </div>
+                        {% endif %}
+                    {% endblock %}
 
-                {% block button %}
-                    <div class="text-center">
-                        <div class="button button--expand button--disabled js-pick-products__submit-button {{ config.jsName }}__open">
-                            {{ 'picker.picking.confirmation' | trans }}
+                    {% block button %}
+                        <div class="text-center">
+                            <div class="button button--expand button--disabled js-pick-products__submit-button {{ config.jsName }}__open">
+                                {{ 'picker.picking.confirmation' | trans }}
+                            </div>
                         </div>
-                    </div>
-                {% endblock %}
-            {% endembed %}
+                    {% endblock %}
+                {% endembed %}
+            </div>
         </div>
-    </div>
 
-    <input type="hidden" name="{{ data.requestParamIdSalesOrder }}" value="{{ data.idSalesOrder }}">
+        <input type="hidden" name="{{ data.requestParamIdSalesOrder }}" value="{{ data.idSalesOrder }}">
     {{ form_end(data.pickingForm) }}
 {% endblock content %}

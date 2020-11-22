@@ -1,8 +1,8 @@
 <?xml version="1.0"?>
 <statemachine
-        xmlns="spryker:oms-01"
-        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-        xsi:schemaLocation="spryker:oms-01 http://static.spryker.com/oms-01.xsd">
+    xmlns="spryker:oms-01"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="spryker:oms-01 http://static.spryker.com/oms-01.xsd">
 
     <process name="StorePicking01">
         <subprocesses>
@@ -30,26 +30,8 @@
         </states>
 
         <transitions>
-            <transition>
-                <source>new</source>
-                <target>started order processing</target>
-                <event>TEST manual skip to processing</event>
-            </transition>
-
-            <transition happy="true" condition="can start picking">
-                <source>started order processing</source>
-                <target>ready to start picking</target>
-                <event>pass 10 minutes</event>
-            </transition>
-
-            <transition>
-                <source>started order processing</source>
-                <target>ready to start picking</target>
-                <event>TEST manual skip to picking</event>
-            </transition>
-
             <transition happy="true">
-                <source>ready to start picking</source>
+                <source>new</source>
                 <target>ready for picking</target>
                 <event>move to ready for picking</event>
             </transition>
@@ -146,10 +128,8 @@
             <event name="cancel due to not in stock" manual="true"/>
             <event name="process cancelled due to not in stock" onEnter="true" command="Oms/CancelDueToNotInStock"/>
             <event name="close order" manual="true"/>
-            <event name="export cashier order" manual="true" command="CashierOrderExport/OrderExport"/>
+            <event name="export cashier order" onEnter="true" command="CashierOrderExport/OrderExport"/>
             <event name="cashier order export retry" manual="true"/>
-            <event name="TEST manual skip to processing" manual="true"/>
-            <event name="TEST manual skip to picking" manual="true"/>
         </events>
     </process>
 

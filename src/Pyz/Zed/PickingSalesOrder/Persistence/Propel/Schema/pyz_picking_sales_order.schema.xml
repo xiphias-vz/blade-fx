@@ -5,7 +5,7 @@
 
     <table name="pyz_picking_sales_order">
         <column name="id_picking_sales_order" required="true" type="BIGINT" autoIncrement="true" primaryKey="true"/>
-        <column name="fk_sales_order" type="BIGINT" required="false" default="NULL"/>
+        <column name="fk_sales_order" type="BIGINT" required="true"/>
         <column name="container_code" type="VARCHAR" required="true"/>
         <column name="shelf_code" required="false" type="VARCHAR" default="NULL"/>
 

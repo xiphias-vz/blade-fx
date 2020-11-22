@@ -17,8 +17,7 @@
     {%- set label = (label | default('')) | trans -%}
 
     {%- set attr = attr | merge({
-        class: ('textarea textarea--expand' ~ (errors is not empty ? ' textarea--error' : ' ') ~ (attr.class | default(''))) | trim,
-        placeholder: ''
+        class: ('textarea textarea--expand' ~ (errors is not empty ? ' textarea--error' : ' ') ~ (attr.class | default(''))) | trim
     }) -%}
 
     <textarea {{ block('widget_attributes') }}>{% if value is not empty %}{{ value }}{% endif %}</textarea>

@@ -21,6 +21,7 @@ class OmsConfig extends SprykerOmsConfig
     public const STORE_STATE_READY_FOR_SELECTING_SHELVES = 'ready for selecting shelves';
     public const STORE_STATE_PICKED = 'picked';
     public const STORE_STATE_CANCELLED_NOT_IN_STOCK = 'cancelled due to not in stock';
+    public const STORE_STATE_CASHIER_ORDER_EXPORTING_FAIL = 'cashier order exporting fail';
 
     public const STORE_EVENT_CONFIRM_PICKING = 'confirm picking';
     public const STORE_EVENT_CONFIRM_SELECTING_CONTAINERS = 'confirm selecting containers';

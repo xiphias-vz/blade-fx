@@ -50,18 +50,6 @@
                         </a>
 
 
-                        <a href="https://www.welcome.ccd.demo-spryker.com" class="link link--nav">
-                            {% include atom('icon') with {
-                                modifiers: ['big'],
-                                class: 'link__icon',
-                                data: {
-                                    name: 'store-finder',
-                                },
-                            } only %}
-                            {{ 'global.store_finder' | trans }}
-                        </a>
-
-
                         {% if is_granted('ROLE_USER') %}
                             <a href="{{ url('logout') }}" class="link link--nav">
                                 {% include atom('icon') with {
@@ -93,7 +81,7 @@
                                     <div class="col is-hidden-sm-lg">
                                         <div class="{{ config.name }}__navigation-button-container">
                                             <button
-                                                class="button button--with-icon button--expand button--ghost {{ config.jsName }}__navigation-trigger js-page-layout-main--block-scroll-trigger">
+                                                class="button button--with-icon button--expand button--ghost {{ config.jsName }}__navigation-trigger js-page-layout-main--block-scroll-trigger" style="box-shadow: none !important;">
                                                 {% include atom('icon') with {
                                                     class: 'button__icon ' ~ config.jsName ~ '__navigation-target',
                                                     modifiers: ['big', 'with-stroke'],
