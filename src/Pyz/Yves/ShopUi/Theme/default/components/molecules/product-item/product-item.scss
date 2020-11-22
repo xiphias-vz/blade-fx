@@ -18,6 +18,12 @@
         &__image-wrap {
             position: relative;
             overflow: hidden;
+
+            a {
+                &:hover {
+                   color:$setting-color-globus-darkOrange;
+                }
+            }
         }
 
         &__overlay {

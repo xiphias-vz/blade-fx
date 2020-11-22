@@ -27,7 +27,7 @@
         &:active {
             background: $setting-color-globus-lightOrange;
             color: $setting-color-white;
-            box-shadow: 0 rem(4) rem(18) $setting-color-globus-darkOrange;
+            box-shadow: 0 rem(4) rem(18) $setting-color-globus-darkOrange !important;
         }
 
         &:focus {
@@ -469,7 +469,7 @@
         }
 
         &--alternative {
-            background-color: $setting-color-alt;
+            background-color: $setting-color-globus-lightOrange !important;
             border-color: $setting-color-alt;
             color: $setting-color-white;
 
