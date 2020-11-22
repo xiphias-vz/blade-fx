@@ -829,3 +829,13 @@ $config[\Pyz\Shared\Customer\CustomerConstants::CUSTOMER_PHONE_PREFIX] =
 [
     '+49' => 'customer.registration.phone.prefix_placeholder',
 ];
+
+$config[\Pyz\Shared\Customer\CustomerConstants::CDC_API_KEY] =
+    [
+        'cdcApiKey' => '3_IVfYuFFTkEygbMQjcP8LamKwRZBH4_qjl-EAGSvZJPGTAL59E9yUPdTxqLCyofkZ',
+    ];
+
+$config[\Pyz\Shared\Customer\CustomerConstants::CDC_API_URL] =
+    [
+        'cdcApiUrl' => 'https://accounts.eu1.gigya.com/',
+    ];

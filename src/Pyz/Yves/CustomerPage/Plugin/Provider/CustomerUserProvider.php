@@ -9,7 +9,9 @@ namespace Pyz\Yves\CustomerPage\Plugin\Provider;
 
 use Elastica\JSON;
 use Generated\Shared\Transfer\CustomerTransfer;
+use Pyz\Shared\Customer\CustomerConstants;
 use Pyz\Yves\MerchantSwitcherWidget\Resolver\ShopContextResolver;
+use Spryker\Shared\Config\Config;
 use SprykerShop\Yves\CustomerPage\Plugin\Provider\CustomerUserProvider as SprykerCustomerUserProvider;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
 
@@ -19,25 +21,20 @@ use Symfony\Component\Security\Core\Exception\AuthenticationException;
 class CustomerUserProvider extends SprykerCustomerUserProvider
 {
     public const ERROR_NOT_VERIFIED_CUSTOMER = 'ERROR_NOT_VERIFIED_CUSTOMER';
-    private const API_KEY = '3_IVfYuFFTkEygbMQjcP8LamKwRZBH4_qjl-EAGSvZJPGTAL59E9yUPdTxqLCyofkZ';
-    private $shopContextResolver;
-
-    public function __construct(ShopContextResolver $shopContextResolver)
-    {
-        $this->shopContextResolver = $shopContextResolver;
-    }
+    //private const API_KEY = '3_IVfYuFFTkEygbMQjcP8LamKwRZBH4_qjl-EAGSvZJPGTAL59E9yUPdTxqLCyofkZ';
 
     /**
      * @param string $email
      *
+     * @return \Generated\Shared\Transfer\CustomerTransfer
      * @throws \Symfony\Component\Security\Core\Exception\AuthenticationException
      *
-     * @return \Generated\Shared\Transfer\CustomerTransfer
      */
     protected function loadCustomerByEmail($email)
     {
         $data = null;
         $pass = null;
+        $customerTransfer = null;
         if (!empty($_POST["loginForm"]["data"])) {
             $data = JSON::parse($_POST["loginForm"]["data"]);
             $pass = $_POST["loginForm"]["password"];
@@ -71,7 +68,8 @@ class CustomerUserProvider extends SprykerCustomerUserProvider
 
                     $customerTransfer->setAddress1($data["data"]["address"]["street"]);
                     $customerTransfer->setAddress2($data["profile"]["zip"]);
-                    $customerTransfer->setMerchantReference($this->shopContextResolver->resolve()->getMerchantReference());
+
+                    $customerTransfer->setMerchantReference($this->createShopContextResolver()->resolve()->getMerchantReference());
                     $customerTransfer->setCustomerReference($this->getFactory()->getStore()->getStoreName());
                     $customerTransfer->setThirdPartyRegistration(true);
                     $this->registerCustomer($customerTransfer);
@@ -80,11 +78,15 @@ class CustomerUserProvider extends SprykerCustomerUserProvider
                     $customerTransfer->setRegistered(date('yy-m-d'));
                     $customerTransfer->setRegistrationKey(null);
                     $this->getFactory()->getCustomerClient()->updateCustomer($customerTransfer);
+                } else {
+                    throw new AuthenticationException(self::ERROR_NOT_VERIFIED_CUSTOMER);
                 }
+            } else {
+                throw new AuthenticationException(self::ERROR_NOT_VERIFIED_CUSTOMER);
             }
         }
 
-        if ($customerTransfer->getRegistrationKey() !== null) {
+        if (is_null($customerTransfer) || $customerTransfer->getRegistrationKey() !== null) {
             throw new AuthenticationException(self::ERROR_NOT_VERIFIED_CUSTOMER);
         }
 
@@ -93,7 +95,9 @@ class CustomerUserProvider extends SprykerCustomerUserProvider
 
     protected function isAuthorizedInCdc($username, $pass): bool
     {
-        $url = "https://accounts.eu1.gigya.com/accounts.login?apiKey=" . self::API_KEY;
+        $apiKey = Config::get(CustomerConstants::CDC_API_KEY);
+        $urlPrefix = Config::get(CustomerConstants::CDC_API_URL);
+        $url = array_shift($urlPrefix) . "accounts.login?apiKey=" . array_shift($apiKey);
         $data = ['loginID' => $username, 'password' => $pass];
         $options = [
             'http' => [
@@ -125,4 +129,13 @@ class CustomerUserProvider extends SprykerCustomerUserProvider
             ->getAuthenticationHandler()
             ->registerCustomer($customerTransfer);
     }
+
+    /**
+     * @return \Pyz\Yves\MerchantSwitcherWidget\Resolver\ShopContextResolver
+     */
+    private function createShopContextResolver(): ShopContextResolver
+    {
+        return new ShopContextResolver($this->getApplication());
+    }
+
 }
