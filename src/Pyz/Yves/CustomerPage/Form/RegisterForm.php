@@ -369,6 +369,11 @@ class RegisterForm extends SprykerRegisterForm
         return $this;
     }
 
+    /**
+     * @param \Symfony\Component\Form\FormBuilderInterface $builder
+     *
+     * @return $this
+     */
     protected function addCountryField(FormBuilderInterface $builder)
     {
         $countries = Config::get(CustomerConstants::CUSTOMER_COUNTRY);
@@ -385,6 +390,11 @@ class RegisterForm extends SprykerRegisterForm
         return $this;
     }
 
+    /**
+     * @param \Symfony\Component\Form\FormBuilderInterface $builder
+     *
+     * @return $this
+     */
     protected function addMobilePrefixField1(FormBuilderInterface $builder)
     {
         $prefixes = Config::get(CustomerConstants::CUSTOMER_PHONE_PREFIX);
@@ -401,6 +411,11 @@ class RegisterForm extends SprykerRegisterForm
         return $this;
     }
 
+    /**
+     * @param \Symfony\Component\Form\FormBuilderInterface $builder
+     *
+     * @return $this
+     */
     protected function addMobilePrefixField2(FormBuilderInterface $builder)
     {
         $prefixes = Config::get(CustomerConstants::CUSTOMER_PHONE_PREFIX);
@@ -417,6 +432,11 @@ class RegisterForm extends SprykerRegisterForm
         return $this;
     }
 
+    /**
+     * @param \Symfony\Component\Form\FormBuilderInterface $builder
+     *
+     * @return $this
+     */
     protected function addMobileNumber(FormBuilderInterface $builder)
     {
         $builder->add(self::FIELD_MOBILE_PHONE, TextType::class, [
@@ -527,6 +547,11 @@ class RegisterForm extends SprykerRegisterForm
         return $this;
     }
 
+    /**
+     * @param \Symfony\Component\Form\FormBuilderInterface $builder
+     *
+     * @return $this
+     */
     protected function addDayField(FormBuilderInterface $builder)
     {
         $days = [];
@@ -550,6 +575,11 @@ class RegisterForm extends SprykerRegisterForm
         return $this;
     }
 
+    /**
+     * @param \Symfony\Component\Form\FormBuilderInterface $builder
+     *
+     * @return $this
+     */
     protected function addMonthField(FormBuilderInterface $builder)
     {
         $months = [];
@@ -573,6 +603,11 @@ class RegisterForm extends SprykerRegisterForm
         return $this;
     }
 
+    /**
+     * @param \Symfony\Component\Form\FormBuilderInterface $builder
+     *
+     * @return $this
+     */
     protected function AddYearField(FormBuilderInterface $builder)
     {
         $years = [];

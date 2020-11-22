@@ -38,6 +38,10 @@ class LoginForm extends SprykerLoginForm
             ->addDataField($builder);
     }
 
+    /**
+     * @param FormBuilderInterface $builder
+     * @return $this|LoginForm
+     */
     protected function addEmailField(FormBuilderInterface $builder)
     {
         $builder->add(self::FIELD_EMAIL, EmailType::class, [
@@ -90,6 +94,9 @@ class LoginForm extends SprykerLoginForm
         return $this;
     }
 
+    /**
+     * @return Blank
+     */
     protected function createBlankConstraint(): Blank
     {
         return new Blank();
