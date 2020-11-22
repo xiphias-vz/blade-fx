@@ -185,7 +185,7 @@ class ProductDepositOptionStep extends PublishAwareStep implements DataImportSte
                 ->filterByIdTaxSet($this->getIdTaxSet(static::DEPOSITS_TAX_SET))
                 ->findOne();
 
-            $grossPrice = (float)$dataSet[static::KEY_DEPOSIT_AMOUNT] * 100;
+            $grossPrice = ((float)$dataSet[static::KEY_DEPOSIT_AMOUNT] * (int)$dataSet[static::KEY_DEPOSIT_COUNT]) * 100;
             $netPrice = $grossPrice / ($taxSetEntity->getSpyTaxRates()[0]->getRate() / 100 + 1);
 
             $priceEntity
