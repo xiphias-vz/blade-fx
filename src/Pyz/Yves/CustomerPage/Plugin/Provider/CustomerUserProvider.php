@@ -93,8 +93,8 @@ class CustomerUserProvider extends SprykerCustomerUserProvider
     }
 
     /**
-     * @param $username
-     * @param $pass
+     * @param string $username
+     * @param string $pass
      * @return bool
      * @throws \Exception
      */

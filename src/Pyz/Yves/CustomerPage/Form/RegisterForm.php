@@ -42,7 +42,7 @@ class RegisterForm extends SprykerRegisterForm
     public const FIELD_PHONE_PREFIX_1 = 'phone_prefix';
     public const FIELD_PHONE_PREFIX_2 = 'mobile_phone_prefix';
     public const FIELD_MOBILE_PHONE = 'mobile_phone_number';
-    public const FIELD_RECIEVE_NOTIFICATIONS = 'accept_notifications';
+    public const FIELD_RECEIVE_NOTIFICATIONS = 'accept_notifications';
     public const FIELD_DAY = 'birth_day';
     public const FIELD_MONTH = 'birth_month';
     public const FIELD_YEAR = 'birth_year';
@@ -95,7 +95,7 @@ class RegisterForm extends SprykerRegisterForm
             ->addMonthField($builder)
             ->addYearField($builder)
             ->addAcceptTermsField($builder)
-            ->addFieldRecieveNotificationsAboutProducts($builder)
+            ->addFieldReceiveNotificationsAboutProducts($builder)
             ->addAdditionalRegisterField($builder);
     }
 
@@ -249,9 +249,9 @@ class RegisterForm extends SprykerRegisterForm
      *
      * @return $this
      */
-    protected function addFieldRecieveNotificationsAboutProducts(FormBuilderInterface $builder)
+    protected function addFieldReceiveNotificationsAboutProducts(FormBuilderInterface $builder)
     {
-        $builder->add(self::FIELD_RECIEVE_NOTIFICATIONS, CheckboxType::class, [
+        $builder->add(self::FIELD_RECEIVE_NOTIFICATIONS, CheckboxType::class, [
            'label' => 'forms.recieve_notifications',
            'mapped' => true,
             'required' => false,
@@ -608,7 +608,7 @@ class RegisterForm extends SprykerRegisterForm
      *
      * @return $this
      */
-    protected function AddYearField(FormBuilderInterface $builder)
+    protected function addYearField(FormBuilderInterface $builder)
     {
         $years = [];
         $currentYear = date("Y");
