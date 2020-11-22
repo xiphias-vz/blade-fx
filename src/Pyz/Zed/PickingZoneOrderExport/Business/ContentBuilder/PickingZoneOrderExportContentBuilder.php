@@ -115,7 +115,7 @@ class PickingZoneOrderExportContentBuilder implements PickingZoneOrderExportCont
 
         return sprintf(
             self::FILE_NAME_FORMAT,
-            implode(PickingZoneOrderExportConfig::FILE_NAME_DELIMITER, $filenameFragments)
+            implode('-', $filenameFragments)
         );
     }
 }

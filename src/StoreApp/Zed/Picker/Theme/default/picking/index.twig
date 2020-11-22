@@ -68,30 +68,24 @@
                 }
             } only %}
                 {% block action %}
-                    {% if embed.pickingOrder.picked %}
-                        <div class="table-status-action__status table-status-action__status--done">
-                            {{ 'picker.picking.order.status.done' | trans }}
-                        </div>
+                    {% if embed.pickingOrder.isPicked %}
+                        <form action="{{ embed.urlStopOrderPicking }}" method="post">
+                            <input type="hidden" name="{{ embed.requestParamIdSalesOrder }}" value="{{ embed.pickingOrder.idSalesOrder }}">
+                            {% set tokenName = embed.formatStopPickingTokenName | format(embed.pickingOrder.idSalesOrder) %}
+                            <input type="hidden" name="token" value="{{ csrf_token(tokenName) }}">
+                            <button type="submit" class="button button--small button--table button--expand button--warning">
+                                {{ 'picker.picking.order.action.stop' | trans }}
+                            </button>
+                        </form>
                     {% else %}
-                        {% if embed.pickingOrder.isPicked %}
-                            <form action="{{ embed.urlStopOrderPicking }}" method="post">
-                                <input type="hidden" name="{{ embed.requestParamIdSalesOrder }}" value="{{ embed.pickingOrder.idSalesOrder }}">
-                                {% set tokenName = embed.formatStopPickingTokenName | format(embed.pickingOrder.idSalesOrder) %}
-                                <input type="hidden" name="token" value="{{ csrf_token(tokenName) }}">
-                                <button type="submit" class="button button--small button--table button--expand button--warning">
-                                    {{ 'picker.picking.order.action.stop' | trans }}
-                                </button>
-                            </form>
-                        {% else %}
-                            <form action="{{ embed.urlOrderPicking }}" method="post">
-                                <input type="hidden" name="{{ embed.requestParamIdSalesOrder }}" value="{{ embed.pickingOrder.idSalesOrder }}">
-                                {% set tokenName = embed.formatStartPickingTokenName | format(embed.pickingOrder.idSalesOrder) %}
-                                <input type="hidden" name="token" value="{{ csrf_token(tokenName) }}">
-                                <button type="submit" class="button button--small button--table button--expand">
-                                    {{ 'picker.picking.order.action.start' | trans }}
-                                </button>
-                            </form>
-                        {% endif %}
+                        <form action="{{ embed.urlOrderPicking }}" method="post">
+                            <input type="hidden" name="{{ embed.requestParamIdSalesOrder }}" value="{{ embed.pickingOrder.idSalesOrder }}">
+                            {% set tokenName = embed.formatStartPickingTokenName | format(embed.pickingOrder.idSalesOrder) %}
+                            <input type="hidden" name="token" value="{{ csrf_token(tokenName) }}">
+                            <button type="submit" class="button button--small button--table button--expand">
+                                {{ 'picker.picking.order.action.start' | trans }}
+                            </button>
+                        </form>
                     {% endif %}
                 {% endblock %}
             {% endembed %}

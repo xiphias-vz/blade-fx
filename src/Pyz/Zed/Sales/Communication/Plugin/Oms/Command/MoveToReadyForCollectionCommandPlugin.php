@@ -7,6 +7,8 @@
 
 namespace Pyz\Zed\Sales\Communication\Plugin\Oms\Command;
 
+use Generated\Shared\Transfer\ItemTransfer;
+use Generated\Shared\Transfer\OrderTransfer;
 use Generated\Shared\Transfer\OrderUpdateRequestTransfer;
 use Orm\Zed\Sales\Persistence\SpySalesOrder;
 use Pyz\Shared\Oms\OmsConfig;
@@ -32,6 +34,13 @@ class MoveToReadyForCollectionCommandPlugin extends AbstractPlugin implements Co
      */
     public function run(array $orderItems, SpySalesOrder $orderEntity, ReadOnlyArrayObject $data): array
     {
+        $orderTransfer = $this->getFacade()
+            ->getOrderByIdSalesOrder($orderEntity->getIdSalesOrder());
+
+        if (!$this->isAllItemsReadyForCollection($orderItems, $orderTransfer)) {
+            return [];
+        }
+
         $orderUpdateRequestTransfer = (new OrderUpdateRequestTransfer())
             ->setStoreStatus(OmsConfig::STORE_STATE_READY_FOR_COLLECT_BY_CUSTOMER);
 
@@ -41,5 +50,52 @@ class MoveToReadyForCollectionCommandPlugin extends AbstractPlugin implements Co
         );
 
         return [];
+    }
+
+    /**
+     * @param array $omsTriggeredOrderItems
+     * @param \Generated\Shared\Transfer\OrderTransfer $orderTransfer
+     *
+     * @return bool
+     */
+    protected function isAllItemsReadyForCollection(array $omsTriggeredOrderItems, OrderTransfer $orderTransfer): bool
+    {
+        $omsTriggeredOrderItemIds = [];
+
+        foreach ($omsTriggeredOrderItems as $omsTriggeredOrderItem) {
+            $omsTriggeredOrderItemIds[] = $omsTriggeredOrderItem->getIdSalesOrderItem();
+        }
+
+        foreach ($orderTransfer->getItems() as $itemTransfer) {
+            if (in_array($itemTransfer->getIdSalesOrderItem(), $omsTriggeredOrderItemIds)) {
+                continue;
+            }
+
+            if ($this->isItemReadyForCollection($itemTransfer)) {
+                continue;
+            }
+
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
+     * @param \Generated\Shared\Transfer\ItemTransfer $itemTransfer
+     *
+     * @return bool
+     */
+    protected function isItemReadyForCollection(ItemTransfer $itemTransfer): bool
+    {
+        $itemStateName = $itemTransfer->getState()->getName();
+
+        if ($itemStateName === OmsConfig::STORE_STATE_READY_FOR_COLLECT_BY_CUSTOMER
+            || $itemStateName === OmsConfig::STATE_CANCELLED
+        ) {
+            return true;
+        }
+
+        return false;
     }
 }
