@@ -120,6 +120,7 @@ class FormDataMapper implements FormDataMapperInterface
     /**
      * @param array $formData
      * @param \Generated\Shared\Transfer\OrderTransfer $salesOrderTransfer
+     * @param array $selectedIdSalesOrderItems
      * @param string $fieldNamePrefix
      *
      * @return \Generated\Shared\Transfer\OrderChangeRequestTransfer
@@ -127,6 +128,7 @@ class FormDataMapper implements FormDataMapperInterface
     public function mapFormDataToOrderItemChangeRequest(
         array $formData,
         OrderTransfer $salesOrderTransfer,
+        array $selectedIdSalesOrderItems,
         string $fieldNamePrefix
     ): OrderChangeRequestTransfer {
         $orderChangeRequest = new OrderChangeRequestTransfer();
@@ -146,7 +148,7 @@ class FormDataMapper implements FormDataMapperInterface
             $sku = $matches[1];
             $newWeight = $fieldValue;
 
-            $itemTransfer = $this->findItemInOrder($salesOrderTransfer, $sku);
+            $itemTransfer = $this->findItemInOrder($salesOrderTransfer, $sku, $selectedIdSalesOrderItems);
 
             $newPrice = $itemTransfer->getSumGrossPrice() / $itemTransfer->getWeightPerUnit() * $newWeight;
 
@@ -164,24 +166,28 @@ class FormDataMapper implements FormDataMapperInterface
     /**
      * @param \Generated\Shared\Transfer\OrderTransfer $salesOrderTransfer
      * @param string $sku
-     *
-     * @throws \InvalidArgumentException
+     * @param array $selectedIdSalesOrderItems
      *
      * @return \Generated\Shared\Transfer\ItemTransfer
      */
-    private function findItemInOrder(OrderTransfer $salesOrderTransfer, string $sku): ItemTransfer
-    {
+    private function findItemInOrder(
+        OrderTransfer $salesOrderTransfer,
+        string $sku,
+        array $selectedIdSalesOrderItems
+    ): ItemTransfer {
         $sumQuantity = 0;
         $sumPrice = 0;
+        $sumWeightPerUnit = 0;
         $selectedItemTransfer = null;
 
         foreach ($salesOrderTransfer->getItems() as $itemTransfer) {
             if ($itemTransfer->getSku() === $sku) {
                 $sumQuantity += $itemTransfer->getQuantity();
                 $sumPrice += $itemTransfer->getSumGrossPrice();
+                $sumWeightPerUnit += $itemTransfer->getWeightPerUnit();
             }
 
-            if ($itemTransfer->getSku() === $sku && $itemTransfer->getCanceledAmount() === 0) {
+            if ($itemTransfer->getSku() === $sku && in_array($itemTransfer->getIdSalesOrderItem(), $selectedIdSalesOrderItems)) {
                 $selectedItemTransfer = $itemTransfer;
             }
         }
@@ -192,6 +198,7 @@ class FormDataMapper implements FormDataMapperInterface
 
         $selectedItemTransfer->setQuantity($sumQuantity);
         $selectedItemTransfer->setSumGrossPrice($sumPrice);
+        $selectedItemTransfer->setWeightPerUnit($sumWeightPerUnit);
 
         return $selectedItemTransfer;
     }

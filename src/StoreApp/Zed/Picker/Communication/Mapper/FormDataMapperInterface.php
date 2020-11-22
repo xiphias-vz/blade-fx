@@ -59,6 +59,7 @@ interface FormDataMapperInterface
     /**
      * @param array $formData
      * @param \Generated\Shared\Transfer\OrderTransfer $salesOrderTransfer
+     * @param array $selectedIdSalesOrderItems
      * @param string $fieldNamePrefix
      *
      * @return \Generated\Shared\Transfer\OrderChangeRequestTransfer
@@ -66,6 +67,7 @@ interface FormDataMapperInterface
     public function mapFormDataToOrderItemChangeRequest(
         array $formData,
         OrderTransfer $salesOrderTransfer,
+        array $selectedIdSalesOrderItems,
         string $fieldNamePrefix
     ): OrderChangeRequestTransfer;
 }

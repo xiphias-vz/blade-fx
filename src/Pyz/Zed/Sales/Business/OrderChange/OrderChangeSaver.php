@@ -106,7 +106,7 @@ class OrderChangeSaver
         OrderItemChangeRequestTransfer $orderItemChangeRequest
     ) {
         $salesOrderItemEntity->setQuantity($orderItemChangeRequest->getQuantity());
-        $salesOrderItemEntity->setGrossPrice($orderItemChangeRequest->getPrice());
+        $salesOrderItemEntity->setPriceToPayAggregation($orderItemChangeRequest->getPrice());
         $salesOrderItemEntity->setPrice($orderItemChangeRequest->getPrice());
 
         $salesOrderItemEntity->save();

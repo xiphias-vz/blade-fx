@@ -340,6 +340,7 @@ class PickingController extends BaseOrderPickingController
             ->mapFormDataToOrderItemChangeRequest(
                 $formData,
                 $salesOrderTransfer,
+                $selectedIdSalesOrderItems,
                 OrderItemSelectionForm::PREFIX_FIELD_SALES_ORDER_ITEM_NEW_WEIGHT
             );
 
