@@ -8,6 +8,7 @@
         <property name="containerCode" type="string"/>
         <property name="shelfCode" type="string"/>
         <property name="idSalesOrder" type="int"/>
+        <property name="idPickingZone" type="int"/>
     </transfer>
 
     <transfer name="PickingSalesOrderCollection">
@@ -16,6 +17,7 @@
 
     <transfer name="PickingSalesOrderCriteria">
         <property name="idSalesOrder" type="int"/>
+        <property name="idPickingZone" type="int"/>
         <property name="containerCodes" type="string[]" singular="containerCode"/>
     </transfer>
 
