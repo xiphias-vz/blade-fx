@@ -32,6 +32,7 @@ use Pyz\Zed\DataImport\Business\Model\Navigation\NavigationWriterStep;
 use Pyz\Zed\DataImport\Business\Model\NavigationNode\NavigationNodeValidityDatesStep;
 use Pyz\Zed\DataImport\Business\Model\NavigationNode\NavigationNodeWriterStep;
 use Pyz\Zed\DataImport\Business\Model\PickingRoute\PickingRouteWriterStep;
+use Pyz\Zed\DataImport\Business\Model\PickingZone\PickingZoneWriterStep;
 use Pyz\Zed\DataImport\Business\Model\PostalCode\PostalCodeWriterStep;
 use Pyz\Zed\DataImport\Business\Model\Product\ProductLocalizedAttributesExtractorStep;
 use Pyz\Zed\DataImport\Business\Model\Product\Repository\ProductRepository;
@@ -43,6 +44,7 @@ use Pyz\Zed\DataImport\Business\Model\ProductAttributeKey\ProductAttributeKeyWri
 use Pyz\Zed\DataImport\Business\Model\ProductConcrete\ProductConcreteWriter;
 use Pyz\Zed\DataImport\Business\Model\ProductLabel\Hook\ProductLabelAfterImportPublishHook;
 use Pyz\Zed\DataImport\Business\Model\ProductLabel\ProductLabelWriterStep;
+use Pyz\Zed\DataImport\Business\Model\ProductLocation\ProductLocationWriterStep;
 use Pyz\Zed\DataImport\Business\Model\ProductManagementAttribute\ProductManagementAttributeWriter;
 use Pyz\Zed\DataImport\Business\Model\ProductManagementAttribute\ProductManagementLocalizedAttributesExtractorStep;
 use Pyz\Zed\DataImport\Business\Model\ProductOption\ProductOptionWriterStep;
@@ -117,7 +119,9 @@ class DataImportBusinessFactory extends SprykerDataImportBusinessFactory
             ->addDataImporter($this->getPriceImporter())
             ->addDataImporter($this->getProductStockWriterStep())
             ->addDataImporter($this->createPostalCodeImporter())
-            ->addDataImporter($this->createPickingRouteImporter());
+            ->addDataImporter($this->createPickingRouteImporter())
+            ->addDataImporter($this->createPickingZoneImporter())
+            ->addDataImporter($this->createProductLocationImporter());
 
         $dataImporterCollection->addDataImporterPlugins($this->getDataImporterPlugins());
 
@@ -977,11 +981,57 @@ class DataImportBusinessFactory extends SprykerDataImportBusinessFactory
     }
 
     /**
+     * @return \Spryker\Zed\DataImport\Business\Model\DataImporterAfterImportAwareInterface|\Spryker\Zed\DataImport\Business\Model\DataImporterBeforeImportAwareInterface|\Spryker\Zed\DataImport\Business\Model\DataImporterInterface|\Spryker\Zed\DataImport\Business\Model\DataSet\DataSetStepBrokerAwareInterface
+     */
+    protected function createPickingZoneImporter()
+    {
+        $dataImporter = $this->getCsvDataImporterFromConfig($this->getConfig()->getPickingZoneDataImporterConfiguration());
+
+        $dataSetStepBroker = $this->createTransactionAwareDataSetStepBroker();
+        $dataSetStepBroker->addStep($this->createPickingZoneWriterStep());
+
+        $dataImporter->addDataSetStepBroker($dataSetStepBroker);
+
+        return $dataImporter;
+    }
+
+    /**
      * @return \Pyz\Zed\DataImport\Business\Model\PickingRoute\PickingRouteWriterStep
      */
     protected function createPickingRouteWriterStep(): PickingRouteWriterStep
     {
         return new PickingRouteWriterStep();
+    }
+
+    /**
+     * @return \Spryker\Zed\DataImport\Business\Model\DataImporterAfterImportAwareInterface|\Spryker\Zed\DataImport\Business\Model\DataImporterBeforeImportAwareInterface|\Spryker\Zed\DataImport\Business\Model\DataImporterInterface|\Spryker\Zed\DataImport\Business\Model\DataSet\DataSetStepBrokerAwareInterface
+     */
+    protected function createProductLocationImporter()
+    {
+        $dataImporter = $this->getCsvDataImporterFromConfig($this->getConfig()->getProductLocationDataImporterConfiguration());
+
+        $dataSetStepBroker = $this->createTransactionAwareDataSetStepBroker();
+        $dataSetStepBroker->addStep($this->createProductLocationWriterStep());
+
+        $dataImporter->addDataSetStepBroker($dataSetStepBroker);
+
+        return $dataImporter;
+    }
+
+    /**
+     * @return \Pyz\Zed\DataImport\Business\Model\ProductLocation\ProductLocationWriterStep
+     */
+    protected function createProductLocationWriterStep(): ProductLocationWriterStep
+    {
+        return new ProductLocationWriterStep($this->getConfig());
+    }
+
+    /**
+     * @return \Pyz\Zed\DataImport\Business\Model\PickingZone\PickingZoneWriterStep
+     */
+    protected function createPickingZoneWriterStep(): PickingZoneWriterStep
+    {
+        return new PickingZoneWriterStep();
     }
 
     /**

@@ -17,6 +17,7 @@ use Pyz\Zed\Product\Business\ProductFacadeInterface;
 use Pyz\Zed\Sales\Communication\Plugin\MinimumAgeOrderExpanderPlugin;
 use Pyz\Zed\Sales\Communication\Plugin\OrderItemAttributesExpanderPreSavePlugin;
 use Pyz\Zed\Sales\Communication\Plugin\OrderItemPickZoneExpanderPreSavePlugin;
+use Pyz\Zed\Sales\Communication\Plugin\OrderItemSequenceExpanderPreSavePlugin;
 use Pyz\Zed\Sales\Communication\Plugin\OrderStatusHydratorOrderPlugin;
 use Pyz\Zed\Sales\Communication\Plugin\ProductNumberOrderItemExpanderPreSavePlugin;
 use Pyz\Zed\TimeSlot\Communication\Plugin\TimeSlotStorageWriterPostSavePlugin;
@@ -189,6 +190,7 @@ class SalesDependencyProvider extends SprykerSalesDependencyProvider
             new IsQuantitySplittableOrderItemExpanderPreSavePlugin(),
             new OrderItemPickZoneExpanderPreSavePlugin(),
             new OrderItemAttributesExpanderPreSavePlugin(),
+            new OrderItemSequenceExpanderPreSavePlugin(),
         ];
     }
 

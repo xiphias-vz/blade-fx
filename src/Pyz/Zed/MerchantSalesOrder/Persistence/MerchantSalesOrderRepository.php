@@ -9,14 +9,20 @@ namespace Pyz\Zed\MerchantSalesOrder\Persistence;
 
 use DateTime;
 use Generated\Shared\Transfer\MerchantSalesOrderCollectionTransfer;
-use Generated\Shared\Transfer\MerchantSalesOrderTransfer;
 use Generated\Shared\Transfer\OrderCriteriaFilterTransfer;
+use Generated\Shared\Transfer\OrderPickingBlockTransfer;
+use Orm\Zed\MerchantSalesOrder\Persistence\Map\SpyMerchantSalesOrderTableMap;
 use Orm\Zed\MerchantSalesOrder\Persistence\SpyMerchantSalesOrderQuery;
-use Propel\Runtime\Collection\ObjectCollection;
+use Orm\Zed\Oms\Persistence\Map\SpyOmsOrderItemStateTableMap;
+use Orm\Zed\PickingZone\Persistence\Map\PyzOrderPickingBlockTableMap;
+use Orm\Zed\PickingZone\Persistence\Map\PyzPickingZoneTableMap;
+use Orm\Zed\Sales\Persistence\Map\SpySalesOrderItemTableMap;
+use Orm\Zed\Sales\Persistence\Map\SpySalesShipmentTableMap;
+use Propel\Runtime\ActiveQuery\Criteria;
 use Spryker\Zed\MerchantSalesOrder\Persistence\MerchantSalesOrderRepository as SprykerMerchantSalesOrderRepository;
 
 /**
- * @method \Spryker\Zed\MerchantSalesOrder\Persistence\MerchantSalesOrderPersistenceFactory getFactory()
+ * @method \Pyz\Zed\MerchantSalesOrder\Persistence\MerchantSalesOrderPersistenceFactory getFactory()
  */
 class MerchantSalesOrderRepository extends SprykerMerchantSalesOrderRepository implements MerchantSalesOrderRepositoryInterface
 {
@@ -24,67 +30,111 @@ class MerchantSalesOrderRepository extends SprykerMerchantSalesOrderRepository i
      * @inheritDoc
      */
     public function findMerchantSalesOrdersByOrderFilterCriteria(
-        OrderCriteriaFilterTransfer $orderFilterCriteriaTransport
+        OrderCriteriaFilterTransfer $orderFilterCriteriaTransfer
     ): MerchantSalesOrderCollectionTransfer {
         $merchantSalesOrderQuery = $this->getFactory()
             ->createMerchantSalesOrderQuery()
             ->joinWithMerchant();
 
-        $merchantSalesOrderQuery = $this->applyOrderFilterCriteriaToSalesQuery($merchantSalesOrderQuery, $orderFilterCriteriaTransport);
+        $merchantSalesOrderQuery = $this->applyOrderFilterCriteriaToSalesQuery($merchantSalesOrderQuery, $orderFilterCriteriaTransfer);
 
         $merchantSalesOrderEntities = $merchantSalesOrderQuery->find();
 
-        return $this->mapMerchantSalesOrderEntitiesToCollectionTransfer($merchantSalesOrderEntities);
+        return $this->getFactory()->createMerchantSalesOrderMapper()
+            ->mapMerchantSalesOrderEntitiesToCollectionTransfer($merchantSalesOrderEntities);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getSalesOrderItemDataByPickingDateAndPickingZone(
+        OrderCriteriaFilterTransfer $orderFilterCriteriaTransfer
+    ): array {
+        $merchantSalesOrderQuery = $this->getFactory()
+            ->createMerchantSalesOrderQuery();
+
+        $minDeliveryDateTime = (new DateTime($orderFilterCriteriaTransfer->getDeliveryDate()))
+            ->setTime(0, 0);
+        $maxDeliveryDateTime = (clone $minDeliveryDateTime)
+            ->setTime(23, 59);
+
+        return $merchantSalesOrderQuery->select([
+                SpySalesOrderItemTableMap::COL_SKU,
+                SpySalesOrderItemTableMap::COL_NAME,
+                SpySalesShipmentTableMap::COL_REQUESTED_DELIVERY_DATE,
+            ])
+            ->withColumn(sprintf('SUM(%s)', SpySalesOrderItemTableMap::COL_QUANTITY), 'quantity')
+            ->useOrderQuery()
+                ->joinSpySalesShipment()
+                ->useItemQuery()
+                    ->addJoin(
+                        SpySalesOrderItemTableMap::COL_PICK_ZONE,
+                        PyzPickingZoneTableMap::COL_NAME,
+                        Criteria::INNER_JOIN
+                    )
+                ->endUse()
+            ->endUse()
+            ->filterByRequestedDeliveryDate_Between(
+                [
+                    'min' => $minDeliveryDateTime,
+                    'max' => $maxDeliveryDateTime,
+                ]
+            )
+            ->addAnd(PyzPickingZoneTableMap::COL_ID_PICKING_ZONE, $orderFilterCriteriaTransfer->getIdPickingZone())
+            ->groupBy(['spy_sales_shipment.requested_delivery_date', 'spy_sales_order_item.sku'])
+            ->orderBy('spy_sales_shipment.requested_delivery_date')
+            ->find()
+            ->getArrayCopy();
     }
 
     /**
      * @param \Orm\Zed\MerchantSalesOrder\Persistence\SpyMerchantSalesOrderQuery $merchantSalesOrderQuery
-     * @param \Generated\Shared\Transfer\OrderCriteriaFilterTransfer $orderFilterCriteriaTransport
+     * @param \Generated\Shared\Transfer\OrderCriteriaFilterTransfer $orderFilterCriteriaTransfer
      *
      * @return \Orm\Zed\MerchantSalesOrder\Persistence\SpyMerchantSalesOrderQuery
      */
     private function applyOrderFilterCriteriaToSalesQuery(
         SpyMerchantSalesOrderQuery $merchantSalesOrderQuery,
-        OrderCriteriaFilterTransfer $orderFilterCriteriaTransport
+        OrderCriteriaFilterTransfer $orderFilterCriteriaTransfer
     ): SpyMerchantSalesOrderQuery {
-        if ($orderFilterCriteriaTransport->isPropertyModified(
+        if ($orderFilterCriteriaTransfer->isPropertyModified(
             OrderCriteriaFilterTransfer::MERCHANT_REFERENCES
         )) {
             $merchantSalesOrderQuery
                 ->useMerchantQuery()
                     ->filterByMerchantReference_In(
-                        $orderFilterCriteriaTransport->getMerchantReferences()
+                        $orderFilterCriteriaTransfer->getMerchantReferences()
                     )
                 ->endUse();
         }
 
-        if ($orderFilterCriteriaTransport->isPropertyModified(
+        if ($orderFilterCriteriaTransfer->isPropertyModified(
             OrderCriteriaFilterTransfer::STORE_STATUSES
         )) {
             $merchantSalesOrderQuery
                 ->filterByStoreStatus_In(
-                    $orderFilterCriteriaTransport->getStoreStatuses()
+                    $orderFilterCriteriaTransfer->getStoreStatuses()
                 );
         }
 
-        if ($orderFilterCriteriaTransport->isPropertyModified(
+        if ($orderFilterCriteriaTransfer->isPropertyModified(
             OrderCriteriaFilterTransfer::ID_SALES_ORDERS
         )) {
             $merchantSalesOrderQuery->filterByFkSalesOrder_In(
-                $orderFilterCriteriaTransport->getIdSalesOrders()
+                $orderFilterCriteriaTransfer->getIdSalesOrders()
             );
         }
 
-        $isAssignedIdUsersPropertyModified = $orderFilterCriteriaTransport->isPropertyModified(
+        $isAssignedIdUsersPropertyModified = $orderFilterCriteriaTransfer->isPropertyModified(
             OrderCriteriaFilterTransfer::ASSIGNED_ID_USERS
         );
         if ($isAssignedIdUsersPropertyModified) {
-            $filteredIdUsers = array_filter($orderFilterCriteriaTransport->getAssignedIdUsers());
+            $filteredIdUsers = array_filter($orderFilterCriteriaTransfer->getAssignedIdUsers());
 
             $merchantSalesOrderQuery->filterByFkUser_In($filteredIdUsers);
         }
 
-        if ($orderFilterCriteriaTransport->getAssignedIdUserCanBeNull() === true) {
+        if ($orderFilterCriteriaTransfer->getAssignedIdUserCanBeNull() === true) {
             if ($isAssignedIdUsersPropertyModified) {
                 $merchantSalesOrderQuery->_or();
             }
@@ -92,10 +142,10 @@ class MerchantSalesOrderRepository extends SprykerMerchantSalesOrderRepository i
             $merchantSalesOrderQuery->filterByFkUser(null);
         }
 
-        if ($orderFilterCriteriaTransport->isPropertyModified(
+        if ($orderFilterCriteriaTransfer->isPropertyModified(
             OrderCriteriaFilterTransfer::DELIVERY_DATE
         )) {
-            $minDeliveryDateTime = (new DateTime($orderFilterCriteriaTransport->getDeliveryDate()))
+            $minDeliveryDateTime = (new DateTime($orderFilterCriteriaTransfer->getDeliveryDate()))
                 ->setTime(0, 0);
             $maxDeliveryDateTime = (clone $minDeliveryDateTime)
                 ->setTime(23, 59);
@@ -108,43 +158,58 @@ class MerchantSalesOrderRepository extends SprykerMerchantSalesOrderRepository i
             );
         }
 
-        if ($orderFilterCriteriaTransport->isPropertyModified(
+        if ($orderFilterCriteriaTransfer->isPropertyModified(
             OrderCriteriaFilterTransfer::ORDER_COUNT_LIMIT
         )) {
             $merchantSalesOrderQuery->limit(
-                $orderFilterCriteriaTransport->getOrderCountLimit()
+                $orderFilterCriteriaTransfer->getOrderCountLimit()
             );
+        }
+
+        if ($orderFilterCriteriaTransfer->isPropertyModified(OrderCriteriaFilterTransfer::ID_PICKING_ZONE)
+            && $orderFilterCriteriaTransfer->isPropertyModified(OrderCriteriaFilterTransfer::ID_USER)
+        ) {
+            $merchantSalesOrderQuery
+                ->useOrderQuery()
+                    ->joinItem()
+                    ->useItemQuery()
+                        ->addJoin(
+                            SpySalesOrderItemTableMap::COL_PICK_ZONE,
+                            PyzPickingZoneTableMap::COL_NAME,
+                            Criteria::INNER_JOIN
+                        )
+                        ->addJoin(
+                            SpySalesOrderItemTableMap::COL_FK_OMS_ORDER_ITEM_STATE,
+                            SpyOmsOrderItemStateTableMap::COL_ID_OMS_ORDER_ITEM_STATE,
+                            Criteria::INNER_JOIN
+                        )
+                    ->endUse()
+                    ->leftJoinPyzOrderPickingBlock()
+                    ->addJoinCondition(
+                        'PyzOrderPickingBlock',
+                        sprintf(
+                            '%s = %s',
+                            PyzPickingZoneTableMap::COL_ID_PICKING_ZONE,
+                            PyzOrderPickingBlockTableMap::COL_FK_PICKING_ZONE
+                        )
+                    )
+                ->endUse()
+                ->where(sprintf(
+                    '%s = %s AND (%s = %s OR %s IS NULL) AND %s = "%s"',
+                    PyzPickingZoneTableMap::COL_ID_PICKING_ZONE,
+                    $orderFilterCriteriaTransfer->getIdPickingZone(),
+                    PyzOrderPickingBlockTableMap::COL_FK_USER,
+                    $orderFilterCriteriaTransfer->getIdUser(),
+                    PyzOrderPickingBlockTableMap::COL_FK_USER,
+                    SpyOmsOrderItemStateTableMap::COL_NAME,
+                    $orderFilterCriteriaTransfer->getStoreStatuses()[0]
+                ))
+                ->withColumn(PyzOrderPickingBlockTableMap::COL_FK_USER, OrderPickingBlockTransfer::ID_USER)
+                ->groupBy(SpyMerchantSalesOrderTableMap::COL_ID_MERCHANT_SALES_ORDER);
         }
 
         $merchantSalesOrderQuery->orderByRequestedDeliveryDate();
 
         return $merchantSalesOrderQuery;
-    }
-
-    /**
-     * @param \Propel\Runtime\Collection\ObjectCollection|\Orm\Zed\MerchantSalesOrder\Persistence\SpyMerchantSalesOrder[] $merchantSalesOrderEntities
-     *
-     * @return \Generated\Shared\Transfer\MerchantSalesOrderCollectionTransfer
-     */
-    private function mapMerchantSalesOrderEntitiesToCollectionTransfer(
-        ObjectCollection $merchantSalesOrderEntities
-    ): MerchantSalesOrderCollectionTransfer {
-        $merchantSalesOrderCollectionTransfer = new MerchantSalesOrderCollectionTransfer();
-
-        $merchantSalesOrderMapper = $this->getFactory()->createMerchantSalesOrderMapper();
-
-        foreach ($merchantSalesOrderEntities as $merchantSalesOrderEntity) {
-            $merchantSalesOrderTransfer = $merchantSalesOrderMapper->mapMerchantSalesOrderEntityToMerchantSalesOrderTransfer(
-                $merchantSalesOrderEntity,
-                new MerchantSalesOrderTransfer()
-            );
-
-            $merchantSalesOrderCollectionTransfer->getMerchantSalesOrders()->offsetSet(
-                $merchantSalesOrderTransfer->getFkSalesOrder(),
-                $merchantSalesOrderTransfer
-            );
-        }
-
-        return $merchantSalesOrderCollectionTransfer;
     }
 }

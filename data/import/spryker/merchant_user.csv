@@ -1,3 +1,7 @@
 first_name;last_name;username;password;locale_name;group;merchant_reference
-Picker;Spryker;picker@spryker.com;change123;de_DE;picker_group;Germany_1031_50858
-Delivery;Spryker;delivery@spryker.com;change123;de_DE;delivery_group;Germany_1031_50858
+Picker;Spryker;picker@spryker.com;yzLp66dq;de_DE;picker_group;1031
+Helene;Steffen;h.steffen@globus.net;yzLp66dq;de_DE;picker_group;1031
+Fatih;Tuerkyilmaz;f.tuerkyilmaz@globus.net;yzLp66dq;de_DE;picker_group;1031
+Bernd;Erdreich;b.erdreich@globus.net;yzLp66dq;de_DE;picker_group;1031
+Simon;Baeumchen;s.baeumchen@globus.net;yzLp66dq;de_DE;picker_group;1031
+Anja;Weirich;a.weirich@globus.net;yzLp66dq;de_DE;picker_group;1031

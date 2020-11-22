@@ -11,7 +11,12 @@
 {% block body %}
     {% for optionGroup in data.optionGroups %}
         {% if optionGroup.getProductOptionValues[0] %}
+            <div class="text-secondary">
+                {% set deposit = optionGroup.getProductOptionValues[0].getPrices['EUR']['GROSS_MODE']['amount'] ?? 0 %}
+                {{ 'customer.order.item_price.excluding_pfand' | trans | format((deposit) | money) }}
+            </div>
             <input name="product-option['{{ optionGroup.name}}']" value="{{ optionGroup.getProductOptionValues[0].getIdProductOptionValue }}" type="hidden">
         {% endif %}
     {% endfor %}
+    </br>
 {% endblock %}

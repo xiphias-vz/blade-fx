@@ -11,6 +11,8 @@ use DateTime;
 use Generated\Shared\Transfer\OrderCriteriaFilterTransfer;
 use Generated\Shared\Transfer\OrderTransfer;
 use Generated\Shared\Transfer\OrderUpdateRequestTransfer;
+use Generated\Shared\Transfer\QuoteTransfer;
+use Generated\Shared\Transfer\SpySalesOrderItemEntityTransfer;
 use Spryker\Zed\Sales\Business\SalesFacadeInterface as SprykerSalesFacadeInterface;
 
 interface SalesFacadeInterface extends SprykerSalesFacadeInterface
@@ -107,6 +109,19 @@ interface SalesFacadeInterface extends SprykerSalesFacadeInterface
 
     /**
      * Specification:
+     * - gets sales order item ids by sales order and oms order item states.
+     *
+     * @api
+     *
+     * @param int $idSalesOrder
+     * @param string[] $states
+     *
+     * @return string[]
+     */
+    public function getSalesOrderItemsIdsByIdSalesOrderAndStates(int $idSalesOrder, array $states): array;
+
+    /**
+     * Specification:
      * - save order reference.
      *
      * @api
@@ -181,4 +196,32 @@ interface SalesFacadeInterface extends SprykerSalesFacadeInterface
      * @return \Generated\Shared\Transfer\OrderTransfer|null
      */
     public function findOrderByIdSalesOrderForStoreApp(int $idSalesOrder): ?OrderTransfer;
+
+    /**
+     * Specification:
+     * - Retrieves an order using sales order ID.
+     * - Filters the order's items using the given picking zone name.
+     *
+     * @api
+     *
+     * @param int $idSalesOrder
+     * @param string $pickingZoneName
+     *
+     * @return \Generated\Shared\Transfer\OrderTransfer|null
+     */
+    public function findOrderByIdSalesOrderAndPickingZoneForStoreApp(
+        int $idSalesOrder,
+        string $pickingZoneName
+    ): ?OrderTransfer;
+
+    /**
+     * @param \Generated\Shared\Transfer\QuoteTransfer $quoteTransfer
+     * @param \Generated\Shared\Transfer\SpySalesOrderItemEntityTransfer $itemEntityTransfer
+     *
+     * @return \Generated\Shared\Transfer\SpySalesOrderItemEntityTransfer
+     */
+    public function expandOrderItemWithSequence(
+        QuoteTransfer $quoteTransfer,
+        SpySalesOrderItemEntityTransfer $itemEntityTransfer
+    ): SpySalesOrderItemEntityTransfer;
 }

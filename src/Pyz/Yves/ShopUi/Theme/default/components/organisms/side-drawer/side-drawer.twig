@@ -12,13 +12,7 @@
             <div class="{{ config.name }}__top-bar grid grid--middle spacing-left spacing-left--inner">
                 {% block widgets %}
                     {% widget 'StoreSwitcherWidget' %}{% endwidget %}
-                    {% widget 'LanguageSwitcherWidget' args [app.request.pathInfo, app.request.queryString, app.request.requestUri] only %}
-                        {% block body %}
-                            <div class="link link--nav">
-                                {{ parent() }}
-                            </div>
-                        {% endblock %}
-                    {% endwidget %}
+
                 {% endblock %}
 
                 {% block close %}

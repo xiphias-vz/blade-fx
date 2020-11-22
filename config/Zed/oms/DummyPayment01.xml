@@ -103,7 +103,7 @@
         <events>
             <event name="authorize" onEnter="true"/>
             <event name="pay" manual="true" timeout="1 hour" command="DummyPayment/Pay"/>
-            <event name="confirm" onEnter="true"/>
+            <event name="confirm" onEnter="true" command="Customer/SetHasOrdersFlag"/>
             <event name="wait for cancellation deadline" timeout="1 second"/>
             <event name="release time slot" onEnter="true" command="TimeSlot/Release"/>
             <event name="cancel by customer" manual="true" command="OrderCancelByCustomer"/>
