@@ -53,7 +53,7 @@ class ProductPageSearchQueryContainer extends SprykerProductPageSearchQueryConta
     public function queryProductAbstractLocalizedEntitiesByProductAbstractIdsAndStore(array $productAbstractIds, StoreTransfer $storeTransfer): SpyProductAbstractLocalizedAttributesQuery
     {
         $query = parent::queryProductAbstractLocalizedEntitiesByProductAbstractIdsAndStore($productAbstractIds, $storeTransfer);
-        //TODO: do not consider out of stock, since we do not use this field.
+        //TODO: do not consider out is_never_of_stock, since we do not use this field.
         $query
             ->addJoin(SpyProductAbstractTableMap::COL_SKU, SpyAvailabilityAbstractTableMap::COL_ABSTRACT_SKU, Criteria::INNER_JOIN)
             ->where(SpyAvailabilityAbstractTableMap::COL_FK_STORE . ' = ' . $storeTransfer->getIdStore() . ' AND ' . SpyAvailabilityAbstractTableMap::COL_QUANTITY . '>' . 0);
