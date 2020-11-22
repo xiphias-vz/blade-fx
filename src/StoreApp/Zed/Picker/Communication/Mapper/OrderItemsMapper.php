@@ -22,7 +22,7 @@ class OrderItemsMapper implements OrderItemsMapperInterface
     public function mapOrderItemsToOrderItemStatuses(
         OrderTransfer $salesOrderTransfer,
         array $skuToPickedQuantityMap,
-        array $skuToWeightMap
+        array $skuToWeightMap = []
     ): OrderItemStatusesTransfer {
         $orderItemPickingStatusesTransfer = new OrderItemStatusesTransfer();
 

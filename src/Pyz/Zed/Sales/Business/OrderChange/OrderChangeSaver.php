@@ -19,7 +19,7 @@ use Spryker\Zed\Sales\Persistence\SalesQueryContainerInterface;
 class OrderChangeSaver
 {
     /**
-     * @var \Pyz\Zed\Sales\Persistence\SalesQueryContainerInterface
+     * @var \Spryker\Zed\Sales\Persistence\SalesQueryContainerInterface
      */
     protected $salesQueryContainer;
 
