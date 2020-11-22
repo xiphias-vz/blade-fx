@@ -22,6 +22,12 @@
                 width:150px;
                 height:auto;
             }
+
+            a {
+                &:hover {
+                   color:$setting-color-globus-darkOrange;
+                }
+            }
         }
 
         &__overlay {
@@ -112,7 +118,6 @@
                 min-height: rem(41);
             }
         }
-
 
         &__name {
             text-decoration: none;

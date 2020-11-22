@@ -1414,7 +1414,7 @@ dummyPaymentCreditCard.card_security_code,CVC,de_DE
 dummyPaymentCreditCard.hidden_numbers,*********,en_US
 dummyPaymentCreditCard.hidden_numbers,*********,de_DE
 DummyPaymentInvoice,Invoice,en_US
-DummyPaymentInvoice,Auf Rechnung,de_DE
+DummyPaymentInvoice,Zahlung bei Abholung (nur Kartenzahlung möglich),de_DE
 invoice,Invoice,en_US
 invoice,Auf Rechnung,de_DE
 dummyPaymentInvoice.invoice,Pay with invoice:,en_US
