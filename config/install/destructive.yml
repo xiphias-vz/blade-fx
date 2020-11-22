@@ -62,6 +62,18 @@ sections:
         sftp-based-full-import:
             command: "vendor/bin/install -r sftp-based-full-import"
 
+#        import-product-location-1004:
+#            command: "vendor/bin/console data:import product-location -f spryker/90.globus_article_location.03_1004.csv -vvv --no-ansi || true"
+
+        import-product-location-1031:
+            command: "vendor/bin/console data:import product-location -f spryker/90.globus_article_location.03_1031.csv -vvv --no-ansi || true"
+
+#        import-product-location-1042:
+#            command: "vendor/bin/console data:import product-location -f spryker/90.globus_article_location.03_1042.csv -vvv --no-ansi || true"
+#
+#        import-product-location-1057:
+#            command: "vendor/bin/console data:import product-location -f spryker/90.globus_article_location.03_1057.csv -vvv --no-ansi || true"
+
         import-mu:
             command: "vendor/bin/console data:import product-measurement-unit -vvv --no-ansi || true"
 

@@ -28,9 +28,9 @@ class PickingSalesOrderFacade extends AbstractFacade implements PickingSalesOrde
      *
      * @return void
      */
-    public function updatePickingSalesOrderCollection(PickingSalesOrderCollectionTransfer $pickingSalesOrderCollectionTransfer): void
+    public function refreshPickingSalesOrderCollection(PickingSalesOrderCollectionTransfer $pickingSalesOrderCollectionTransfer): void
     {
-        $this->getFactory()->createPickingSalesOrderWriter()->updatePickingSalesOrderCollection($pickingSalesOrderCollectionTransfer);
+        $this->getFactory()->createPickingSalesOrderWriter()->refreshPickingSalesOrderCollection($pickingSalesOrderCollectionTransfer);
     }
 
     /**
@@ -40,9 +40,9 @@ class PickingSalesOrderFacade extends AbstractFacade implements PickingSalesOrde
      *
      * @param \Generated\Shared\Transfer\PickingSalesOrderTransfer $pickingSalesOrderTransfer
      *
-     * @return \Generated\Shared\Transfer\PickingSalesOrderTransfer
+     * @return \Generated\Shared\Transfer\PickingSalesOrderTransfer|null
      */
-    public function bindContainerToShelf(PickingSalesOrderTransfer $pickingSalesOrderTransfer): PickingSalesOrderTransfer
+    public function bindContainerToShelf(PickingSalesOrderTransfer $pickingSalesOrderTransfer): ?PickingSalesOrderTransfer
     {
         return $this->getFactory()->createPickingSalesOrderWriter()->bindContainerToShelf($pickingSalesOrderTransfer);
     }

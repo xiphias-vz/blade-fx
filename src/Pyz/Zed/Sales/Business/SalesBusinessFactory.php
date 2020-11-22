@@ -25,6 +25,7 @@ use Pyz\Zed\Sales\Business\Order\OrderReader;
 use Pyz\Zed\Sales\Business\Order\OrderReaderInterface;
 use Pyz\Zed\Sales\Business\OrderChange\OrderChangeSaver;
 use Pyz\Zed\Sales\Business\OrderDate\OrderDateCheck;
+use Pyz\Zed\Sales\Business\OrderItem\OrderItemExpander;
 use Pyz\Zed\Sales\SalesDependencyProvider;
 use Spryker\Zed\Sales\Business\Model\Customer\CustomerOrderOverviewInterface;
 use Spryker\Zed\Sales\Business\Model\Order\OrderUpdaterInterface;
@@ -243,5 +244,13 @@ class SalesBusinessFactory extends SprykerSalesBusinessFactory
         return new OrderReferenceGenerator(
             $this->getConfig()->getOrderReferenceDefaults()
         );
+    }
+
+    /**
+     * @return \Pyz\Zed\Sales\Business\OrderItem\OrderItemExpander
+     */
+    public function createOrderItemExpander(): OrderItemExpander
+    {
+        return new OrderItemExpander($this->getRepository());
     }
 }

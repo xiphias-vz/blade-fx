@@ -30,6 +30,7 @@
         <property name="sapWgr" type="string"/>
         <property name="bonText" type="string"/>
         <property name="weightPerUnit" type="int"/>
+        <property name="sequence" type="string"/>
     </transfer>
 
     <transfer name="ProductConcrete">

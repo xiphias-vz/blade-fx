@@ -139,7 +139,7 @@ class OrderItemSelectionForm extends AbstractType
                 'entry_type' => OrderItemContainerForm::class,
                 'allow_add' => true,
                 'allow_delete' => true,
-                'label' => 'Containers',
+                'label' => false,
                 'entry_options' => [
                     'label' => 'Container',
                 ],

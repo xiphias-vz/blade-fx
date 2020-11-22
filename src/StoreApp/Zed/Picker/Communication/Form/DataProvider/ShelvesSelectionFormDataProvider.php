@@ -30,6 +30,18 @@ class ShelvesSelectionFormDataProvider
     /**
      * @param int $idSalesOrder
      *
+     * @return array
+     */
+    public function getData(int $idSalesOrder): array
+    {
+        return [
+            ShelvesSelectionForm::FIELD_ID_SALES_ORDER => $idSalesOrder,
+        ];
+    }
+
+    /**
+     * @param int $idSalesOrder
+     *
      * @return mixed[]
      */
     public function getOptions(int $idSalesOrder): array

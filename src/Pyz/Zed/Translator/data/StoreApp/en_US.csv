@@ -119,6 +119,7 @@ global.permission.failed,This action is not allowed
 storeapp.picking.message.error.order-is-fully-cancelled,The request purchase was canceled
 storeapp.picking.message.success.order-has-been-picked,The picking of the desired purchase is completed
 storeapp.picking.message.success.container-to-shelf,The container is tied to the shelf
+storeapp.picking.message.error.container-without-order,The container without order
 storeapp.form.container-to-shelf,Place the container on the shelf.
 collected,Picked up
 not collected, Not picked up
@@ -140,3 +141,5 @@ customer.address.floor.8,>=8. Floor
 
 storeapp.delivery.message.success.order-successfully-delivered,Order successfully delivered
 storeapp.delivery.message.success.order-not-delivered,Order could not be delivered
+
+forms.submit-btn,Submit
