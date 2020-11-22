@@ -210,6 +210,7 @@ class CustomerPageFactory extends SprykerShopCustomerPageFactory
             $this->getMerchantStorageClient()
         );
     }
+
     /**
      * @return \Pyz\Yves\MerchantSwitcherWidget\Resolver\ShopContextResolver
      */
@@ -223,4 +224,3 @@ class CustomerPageFactory extends SprykerShopCustomerPageFactory
         return $this->getProvidedDependency(MerchantSwitcherWidgetDependencyProvider::CLIENT_MERCHANT_STORAGE);
     }
 }
-

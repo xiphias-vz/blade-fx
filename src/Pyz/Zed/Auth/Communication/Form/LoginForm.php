@@ -1,5 +1,10 @@
 <?php
 
+/**
+ * This file is part of the Spryker Commerce OS.
+ * For full license information, please view the LICENSE file that was distributed with this source code.
+ */
+
 namespace Pyz\Zed\Auth\Communication\Form;
 
 use Spryker\Zed\Auth\Communication\Form\LoginForm as SprykerLoginForm;
@@ -15,8 +20,10 @@ class LoginForm extends SprykerLoginForm
     public const FIELD_CHECKBOX = 'checkbox';
 
     /**
-     * @param FormBuilderInterface $builder
+     * @param \Symfony\Component\Form\FormBuilderInterface $builder
      * @param array $options
+     *
+     * @return void
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
@@ -27,8 +34,9 @@ class LoginForm extends SprykerLoginForm
     }
 
     /**
-     * @param FormBuilderInterface $builder
-     * @return $this|LoginForm
+     * @param \Symfony\Component\Form\FormBuilderInterface $builder
+     *
+     * @return $this|$this
      */
     protected function addUserNameField(FormBuilderInterface $builder)
     {
@@ -66,9 +74,9 @@ class LoginForm extends SprykerLoginForm
     public function addCheckboxField(FormBuilderInterface $builder)
     {
         $builder
-            ->add(self::FIELD_CHECKBOX, CheckboxType::class,[
+            ->add(self::FIELD_CHECKBOX, CheckboxType::class, [
             ]);
+
         return $this;
     }
-
 }

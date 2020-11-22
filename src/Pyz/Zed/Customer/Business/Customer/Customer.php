@@ -143,6 +143,7 @@ class Customer extends SprykerCustomer
     {
         return $customerTransfer->getThirdPartyRegistration() === true;
     }
+
     /**
      * @param \Generated\Shared\Transfer\CustomerTransfer $customerTransfer
      *

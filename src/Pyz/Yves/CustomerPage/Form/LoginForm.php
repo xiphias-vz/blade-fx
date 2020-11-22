@@ -8,10 +8,9 @@
 namespace Pyz\Yves\CustomerPage\Form;
 
 use SprykerShop\Yves\CustomerPage\Form\LoginForm as SprykerLoginForm;
-use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
-use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
+use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Validator\Constraints\Blank;
 
@@ -52,6 +51,7 @@ class LoginForm extends SprykerLoginForm
                 'placeholder' => 'customer.login.email_placeholder',
             ],
         ]);
+
         return $this;
     }
 

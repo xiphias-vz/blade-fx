@@ -1,18 +1,19 @@
 <?php
 
+/**
+ * This file is part of the Spryker Commerce OS.
+ * For full license information, please view the LICENSE file that was distributed with this source code.
+ */
 
 namespace Pyz\Yves\CustomerPage\Form;
 
-use PhpParser\Node\Stmt\Label;
 use Pyz\Yves\CustomerPage\Form\Constraints\PostalCodeConstraint;
 use SprykerShop\Yves\CustomerPage\Form\GuestForm as SprykerGuestForm;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
-use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Validator\Constraints\Callback;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
-
 
 class GuestForm extends SprykerGuestForm
 {
@@ -22,6 +23,9 @@ class GuestForm extends SprykerGuestForm
     public const FIELD_CITY = 'city';
     public const FIELD_PHONE = 'phone';
 
+    /**
+     * @return void
+     */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $this
@@ -36,6 +40,7 @@ class GuestForm extends SprykerGuestForm
             ->addPhoneField($builder)
             ->addIsGuestField($builder);
     }
+
     protected function addFirstNameField(FormBuilderInterface $builder)
     {
         $builder->add(self::FIELD_FIRST_NAME, TextType::class, [
@@ -43,9 +48,9 @@ class GuestForm extends SprykerGuestForm
             'constraints' => [
                 $this->createNotBlankConstraint(),
             ],
-            'attr'=>
+            'attr' =>
             [
-                'placeholder'=> 'customer.first_name',
+                'placeholder' => 'customer.first_name',
             ],
         ]);
 
@@ -64,21 +69,22 @@ class GuestForm extends SprykerGuestForm
             'constraints' => [
                 $this->createNotBlankConstraint(),
             ],
-            'attr'=>
+            'attr' =>
             [
-                'placeholder'=> 'customer.last_name',
+                'placeholder' => 'customer.last_name',
             ],
         ]);
 
         return $this;
     }
+
     protected function addEmailField(FormBuilderInterface $builder)
     {
         $builder->add(self::FIELD_EMAIL, EmailType::class, [
             'label' => 'auth.email',
             'attr' =>
             [
-                'placeholder'=> 'customer.profile.email',
+                'placeholder' => 'customer.profile.email',
             ],
             'constraints' => [
                 $this->createNotBlankConstraint(),
@@ -98,6 +104,7 @@ class GuestForm extends SprykerGuestForm
 
         return $this;
     }
+
     protected function addAddress1Field(FormBuilderInterface $builder)
     {
         $builder->add(self::FIELD_ADDRESS_1, TextType::class, [
@@ -189,5 +196,4 @@ class GuestForm extends SprykerGuestForm
 
         return $this;
     }
-
 }

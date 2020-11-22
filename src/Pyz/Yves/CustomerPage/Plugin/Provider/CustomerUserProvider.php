@@ -9,15 +9,9 @@ namespace Pyz\Yves\CustomerPage\Plugin\Provider;
 
 use Elastica\JSON;
 use Generated\Shared\Transfer\CustomerTransfer;
-use PHPUnit\Exception;
-use Pyz\Yves\MerchantSwitcherWidget\Plugin\Application\CurrentMerchantApplicationPlugin;
-use RuntimeException;
-use SprykerShop\Yves\CustomerPage\Plugin\Provider\CustomerUserProvider as SprykerCustomerUserProvider;
-
-use Symfony\Component\Security\Core\Exception\AuthenticationException;
-use SprykerShop\Yves\MerchantSwitcherWidget\Widget\MerchantSwitcherSelectorFormWidget as SprykerMerchantSwitcherSelectorFormWidget;
-use Spryker\Shared\Kernel;
 use Pyz\Yves\MerchantSwitcherWidget\Resolver\ShopContextResolver;
+use SprykerShop\Yves\CustomerPage\Plugin\Provider\CustomerUserProvider as SprykerCustomerUserProvider;
+use Symfony\Component\Security\Core\Exception\AuthenticationException;
 
 /**
  * @method \SprykerShop\Yves\CustomerPage\CustomerPageFactory getFactory()
@@ -36,13 +30,12 @@ class CustomerUserProvider extends SprykerCustomerUserProvider
     /**
      * @param string $email
      *
-     * @return \Generated\Shared\Transfer\CustomerTransfer
      * @throws \Symfony\Component\Security\Core\Exception\AuthenticationException
      *
+     * @return \Generated\Shared\Transfer\CustomerTransfer
      */
     protected function loadCustomerByEmail($email)
     {
-
         $data = null;
         $pass = null;
         if (!empty($_POST["loginForm"]["data"])) {
@@ -87,7 +80,6 @@ class CustomerUserProvider extends SprykerCustomerUserProvider
                     $customerTransfer->setRegistered(date('yy-m-d'));
                     $customerTransfer->setRegistrationKey(null);
                     $this->getFactory()->getCustomerClient()->updateCustomer($customerTransfer);
-
                 }
             }
         }
@@ -102,14 +94,14 @@ class CustomerUserProvider extends SprykerCustomerUserProvider
     protected function isAuthorizedInCdc($username, $pass): bool
     {
         $url = "https://accounts.eu1.gigya.com/accounts.login?apiKey=" . self::API_KEY;
-        $data = array('loginID' => $username, 'password' => $pass);
-        $options = array(
-            'http' => array(
+        $data = ['loginID' => $username, 'password' => $pass];
+        $options = [
+            'http' => [
                 'header' => "Content-type: application/x-www-form-urlencoded\r\n",
                 'method' => 'POST',
-                'content' => http_build_query($data)
-            )
-        );
+                'content' => http_build_query($data),
+            ],
+        ];
         $context = stream_context_create($options);
         $result = file_get_contents($url, false, $context);
         $result = JSON::parse($result);
@@ -133,6 +125,4 @@ class CustomerUserProvider extends SprykerCustomerUserProvider
             ->getAuthenticationHandler()
             ->registerCustomer($customerTransfer);
     }
-
-
 }
