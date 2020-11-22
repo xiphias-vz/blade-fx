@@ -71,16 +71,6 @@
                 } only %}
                 {{ 'picker.collect-by-customer.details.not-found-items' | trans }}
             </div>
-            <div class="col col--sm-6">
-                {% include atom('app-label') with {
-                    class: 'spacing-right spacing-right--small',
-                    modifiers: ['bordered', 'count'],
-                    data: {
-                        text: data.collectOrder.bagsCount
-                    }
-                } only %}
-                {{ 'picker.collect-by-customer.details.bags' | trans }}
-            </div>
             <div class="col spacing-top">
                 {% if data.collectOrder.deliveryMinimumAge > 0 %}
                     {% embed atom('icon-row') with {

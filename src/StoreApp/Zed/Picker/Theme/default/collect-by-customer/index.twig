@@ -54,7 +54,6 @@
                     reference: collectionOrder.reference,
                     collectNumber: collectionOrder.collectNumber,
                     productsCount: collectionOrder.pickedProductCount,
-                    bagsCount: collectionOrder.bagsCount,
                     date: collectionOrder.requestedDeliveryDate | split(' ') | first | date('d/m/Y'),
                     deadline: collectionOrder.requestedDeliveryDate | split(' ') | last ~ ' ' ~ 'hour' | trans
                 },
@@ -95,14 +94,11 @@
                 {% block additionalFields %}
                     <div class="grid grid--expand">
                         <div class="col">
-                            {% include atom('icon-row') with {
-                                modifiers: ['round'],
-                                data: {
-                                    iconName: 'bag',
-                                    rowText: data.bagsCount ~ ' ' ~ 'picker.collect-by-customer.order.bags' | trans
-                                }
-                            } only %}
+                            {% for pickingSalesOrder in embed.collectionOrder.pickingSalesOrders %}
+                                {{ pickingSalesOrder.containerCode }} -> {{ pickingSalesOrder.shelfCode }}<br />
+                            {% endfor %}
                         </div>
+
                         <div class="col col--right">
                             {% set isCheckAge = embed.collectionOrder.deliveryMinimumAge > 0 %}
 
