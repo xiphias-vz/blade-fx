@@ -24,6 +24,12 @@
     .spelling-suggestion {
         padding-top: rem(30);
         width: 100%;
+
+        a {
+            &:hover {
+                color: $setting-color-globus-lightOrange;
+            }
+        }
     }
 
     @include helper-breakpoint-media-max($lg-max) {
