@@ -168,6 +168,8 @@ class FormDataMapper implements FormDataMapperInterface
      * @param string $sku
      * @param array $selectedIdSalesOrderItems
      *
+     * @throws \InvalidArgumentException
+     *
      * @return \Generated\Shared\Transfer\ItemTransfer
      */
     private function findItemInOrder(
