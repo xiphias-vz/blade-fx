@@ -236,10 +236,12 @@ class ConsoleDependencyProvider extends SprykerConsoleDependencyProvider
             new DataImportConsole(DataImportConsole::DEFAULT_NAME . ':' . DataImportConfig::IMPORT_TYPE_PRODUCT),
             new DataImportConsole(DataImportConsole::DEFAULT_NAME . ':' . DataImportConfig::IMPORT_TYPE_PRODUCT_CATEGORY),
             new DataImportConsole(DataImportConsole::DEFAULT_NAME . ':' . DataImportConfig::IMPORT_TYPE_PICKING_ROUTE),
+            new DataImportConsole(DataImportConsole::DEFAULT_NAME . ':' . DataImportConfig::IMPORT_TYPE_PICKING_ZONE),
             new DataImportConsole(DataImportConsole::DEFAULT_NAME . ':' . DataImportConfig::IMPORT_TYPE_MERCHANT_DELIVERY_POSTAL_CODE),
             new DataImportConsole(DataImportConsole::DEFAULT_NAME . ':' . DataImportConfig::IMPORT_TYPE_MERCHANT_USER),
             new DataImportConsole(DataImportConsole::DEFAULT_NAME . ':' . CmsPageDataImportConfig::IMPORT_TYPE_CMS_PAGE),
             new DataImportConsole(DataImportConsole::DEFAULT_NAME . ':' . DataImportConfig::IMPORT_POSTAL_CODE),
+            new DataImportConsole(DataImportConsole::DEFAULT_NAME . ':' . DataImportConfig::IMPORT_TYPE_PRODUCT_LOCATION),
             new DataImportConsole(DataImportConsole::DEFAULT_NAME . ':' . MerchantDataImportConfig::IMPORT_TYPE_MERCHANT),
             new DataImportConsole(DataImportConsole::DEFAULT_NAME . ':' . DataImportConfig::IMPORT_PRODUCT_MANAGEMENT_ATTRIBUTE),
 

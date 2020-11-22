@@ -48,6 +48,18 @@ class OrderUpdater implements OrderUpdaterInterface
     /**
      * @inheritDoc
      */
+    public function markOrderItemsAsContainerSelected(array $idOrderItems): void
+    {
+        $this->triggerOmsEvent(
+            $idOrderItems,
+            OmsConfig::STORE_EVENT_CONFIRM_SELECTING_CONTAINERS,
+            []
+        );
+    }
+
+    /**
+     * @inheritDoc
+     */
     public function markOrderItemsAsNotPicked(array $idOrderItems): void
     {
         $this->triggerOmsEvent(

@@ -1,0 +1,37 @@
+{% extends template('page-layout-main') %}
+
+{% define data = {
+    form: containerToShelfForm,
+    merchant: merchant,
+    activities: activities
+} %}
+
+{% block header %}
+    {% include organism('header') with {
+        data: {
+            headerLocationTitle: 'asd',
+        }
+    } only %}
+{% endblock %}
+
+{% block content %}
+    <ul class="list list--inline spacing-bottom">
+        {% for activity in data.activities %}
+            <li class="list__item">
+                <a class="button button--tab {% if app.request.pathinfo == activity.path %}button--active-tab{% endif %}" href="{{ activity.path }}">{{ activity.name | trans }}</a>
+            </li>
+        {% endfor %}
+    </ul>
+
+    <div class="box">
+        {% include molecule('form') with {
+            data: {
+                title: 'storeapp.form.container-to-shelf' | trans,
+                form: data.form,
+                submit: {
+                    enable: true
+                },
+            }
+        } only %}
+    </div>
+{% endblock %}

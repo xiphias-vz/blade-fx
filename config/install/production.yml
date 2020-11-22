@@ -3,6 +3,12 @@ env:
 
 command-timeout: 1200
 
+stores:
+    - EIN
+    - KMD
+    - LPZ
+    - HAD
+
 sections:
     clean-oms:
         clear-oms-locks:
@@ -24,6 +30,11 @@ sections:
         propel-migration-cleanup:
             command: "vendor/bin/console propel:migration:delete -vvv --no-ansi"
 
+    glossary:
+        glossary-import:
+            command: "vendor/bin/console data:import glossary"
+
     scheduler-start:
         scheduler-setup:
             command: "vendor/bin/console scheduler:setup -vvv --no-ansi"
+            stores: true

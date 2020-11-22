@@ -4,16 +4,35 @@
     name: 'copyright-build-with',
 } %}
 
+{% define data = {
+    showNavigation: true,
+} %}
+
+
+
 {% block body %}
-    <span class="{{ config.name }}__text">{{ 'global.build_with' | trans }}</span>
-    <a class="{{ config.name }}__link" href="{{ 'global.build_with.link' | trans }}" target="_blank">
-        {% include atom('icon') with {
-            modifiers: ['copyright'],
+    <div class="data-protection col col--sm-12 col--lg-8">
+        {% include molecule('navigation-inline-links') with {
+            class: config.name ~ '__navigation',
             data: {
-                name: 'build-with-logo',
+                items: [
+
+                    {
+                        title:'global.importInfo',
+                        isShow:data.showNavigation,
+                        templates: [
+                        {
+                            template: 'navigation-legal-information',
+                            menu: 'FOOTER_NAVIGATION',
+                        },
+                    ],
+                    },
+
+                ],
             },
         } only %}
-    </a>
-
-    {% include molecule('scroll-to-top') only %}
+    </div>
+    <div class="div-footer-right-text">
+        <p style="margin:0px">Alle Preise verstehen sich inklusive Mehrwertsteuer und zzgl. Servicegebühr</p>
+    </div>
 {% endblock %}

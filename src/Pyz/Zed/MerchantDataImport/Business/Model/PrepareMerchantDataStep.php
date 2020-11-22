@@ -40,9 +40,7 @@ class PrepareMerchantDataStep implements DataImportStepInterface
      */
     private function generateMerchantKey(DataSetInterface $dataSet): string
     {
-        return $dataSet[MerchantDataSetInterface::REGION_NAME] . '_' .
-            $dataSet[MerchantDataSetInterface::FILIAL_NUMBER] . '_' .
-            $dataSet[MerchantDataSetInterface::ZIP_CODE];
+        return $dataSet[MerchantDataSetInterface::FILIAL_NUMBER];
     }
 
     /**
@@ -52,9 +50,7 @@ class PrepareMerchantDataStep implements DataImportStepInterface
      */
     private function generateMerchantReference(DataSetInterface $dataSet): string
     {
-        return $dataSet[MerchantDataSetInterface::REGION_NAME] . '_' .
-            $dataSet[MerchantDataSetInterface::FILIAL_NUMBER] . '_' .
-            $dataSet[MerchantDataSetInterface::ZIP_CODE];
+        return $dataSet[MerchantDataSetInterface::FILIAL_NUMBER];
     }
 
     /**

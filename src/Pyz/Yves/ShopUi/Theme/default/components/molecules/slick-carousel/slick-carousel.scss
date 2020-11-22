@@ -153,9 +153,9 @@
 
                 /* stylelint-disable selector-max-combinators, selector-max-compound-selectors */
                 #{$name}__input:checked + #{$name}__slot-label {
-                    border-color: $setting-color-green;
+                    border-color: $setting-color-globus-darkOrange;
                     color: $setting-color-white;
-                    background-color: $setting-color-green;
+                    background-color: $setting-color-globus-darkOrange;
                     position: relative;
 
                     &::after {
@@ -185,8 +185,8 @@
 
                     &:hover {
                         cursor: pointer;
-                        color: $setting-color-green;
-                        border-color: $setting-color-green;
+                        color: $setting-color-globus-darkOrange;
+                        border-color: $setting-color-globus-darkOrange;
                         background: $setting-color-white;
                     }
                 }

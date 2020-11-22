@@ -1,0 +1,31 @@
+{% extends template('page-layout-main') %}
+
+{# TODO BE need to add orderReference #}
+{% define data = {
+    shelvesSelectionForm: shelvesSelectionForm,
+    orderReference: orderReference,
+} %}
+
+{% block header %}
+    {% embed organism('header') with {
+        modifiers: ['picking-detail'],
+        data: {
+            withoutLogo: true,
+            orderId: data.orderReference,
+            buttonUrl: false,
+            orderReference: data.orderReference,
+        },
+    } only %}
+    {% endembed %}
+{% endblock %}
+
+{% block content %}
+    {% include molecule('form') with {
+        data: {
+            form: data.shelvesSelectionForm,
+            submit: {
+                enable: true,
+            },
+        }
+    } only %}
+{% endblock %}

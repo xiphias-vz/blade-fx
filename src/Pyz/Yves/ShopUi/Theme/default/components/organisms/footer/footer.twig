@@ -6,39 +6,48 @@
 } %}
 
 {% define data = {
-    showNavigation: true
+    showNavigation: true,
 } %}
 
 {% block body %}
     {% block footerTop %}
+
         <div class="container">
             <div class="{{ config.name }}__top">
                 <div class="{{ config.name }}__content">
                     <div class="grid grid--justify grid--expand">
+
                         {% block navigation %}
-                            <div class="col col--sm-12 col--lg-9">
+                                {# Commented for later use...#}
+                                    {# <div class="contact-store-info"> #}
+                                    {# {{ cms_block(['Kontakt KMD','Kontakt EIN','Kontakt LPZ','Kontakt HAD']) }}#}
+                                {#</div>#}
+                                <div class="contact-store-info">
+                                    <p style="margin-top:0px">Kundenservice</p><p>Mo - Sa 10 - 20 hr</p><p>02234275322</p><p>Kontakt</p>
+                                </div>
+
+                            <div class="col col--sm-12 col--lg-8">
                                 {% include molecule('navigation-footer') with {
                                     class: config.name ~ '__navigation',
                                     data: {
                                         items: [
                                             {
-                                                title: 'footer.help',
-                                                isShow: data.showNavigation,
-                                                templates: [
-                                                    {
-                                                        template: 'navigation-footer',
-                                                        menu: 'FOOTER_NAVIGATION',
-                                                    },
-                                                ],
-                                            },
-                                            {
                                                 title: 'footer.categories',
                                                 templates: [
-                                                    {
-                                                        template: 'navigation-footer',
-                                                        menu: 'FOOTER_NAVIGATION_CATEGORIES',
-                                                    },
-                                                ],
+                                                {
+                                                    template: 'navigation-footer',
+                                                    menu: 'FOOTER_NAVIGATION_CATEGORIES',
+                                                },
+                                            ],
+                                            },
+                                            {
+                                                title: 'footer.globus',
+                                                templates: [
+                                                {
+                                                    template: 'navigation-footer',
+                                                    menu: 'NAVIGATION_FOOTER_ELEMENT',
+                                                },
+                                            ],
                                             }
                                         ],
                                     },
@@ -46,25 +55,42 @@
                             </div>
                         {% endblock %}
 
-                        {% block socials %}
-                            <div class="col col--sm-12 col--lg-2">
-                                <h5 class="title title--footer">{{ 'global.contact_us' | trans }}</h5>
-                                <div class="{{ config.name }}__contact-info">
-                                    <a class="{{ config.name }}__contact-info-item" href="tel:{{ 'global.phone.number' | trans }}">
-                                        {{ 'global.phone.number' | trans }}
-                                    </a>
-                                    <a class="{{ config.name }}__contact-info-item" href="mailto:info@spryker.com">
-                                        {{ 'global.email' | trans }}
-                                    </a>
-                                </div>
 
-                                <div class="{{ config.name }}__socials">
-                                    <div class="{{ config.name }}__socials-holder">
-                                        {% widget 'NavigationWidget' args ['SOCIAL_LINKS', 'navigation-socials'] %}{% endwidget %}
-                                    </div>
+                        {% block payments %}
+                            <div class="icon-container">
+                                <h3 class="title title--footer">{{ 'global.paymentProviders' | trans }}</h3>
+                                <div class="div-margin-right">
+                                    <img src={{ publicPath("/images/visa.svg")}}  width="50px" height="50px" />
+                                </div>
+                                <div>
+                                    <img src={{ publicPath("/images/maestro.svg")}}  width="50px" height="50px" />
+                                </div>
+                                <div class="div-margin-left">
+                                    <img src={{ publicPath("/images/vpay.svg")}}  width="50px" height="50px" />
+                                </div>
+                                <br/>
+                                <div style="margin-right: 20px">
+                                    <img src={{ publicPath("/images/google_pay.svg")}}  width="50px" height="50px" />
+                                </div>
+                                <div>
+                                    <img src={{ publicPath("/images/mastercard.svg")}}  width="70px" height="50px" />
+                                </div>
+                                <div style="margin-left: 20px">
+                                    <img src={{ publicPath("/images/apple_pay.svg")}}  width="50px" height="50px" />
+                                </div>
+                                <br/>
+                                <div class="div-margin-right">
+                                    <img src={{ publicPath("/images/americanexpress.svg")}}  width="50px" height="50px" />
+                                </div>
+                                <div>
+                                    <img src={{ publicPath("/images/girocard.svg")}}  width="50px" height="50px" />
+                                </div>
+                                <div class="div-margin-left" style="position: relative;top:-15px">
+                                    <img src={{ publicPath("/images/bluecode.png")}}  width="60px" height="20px" />
                                 </div>
                             </div>
                         {% endblock %}
+
                     </div>
                 </div>
             </div>

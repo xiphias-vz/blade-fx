@@ -22,6 +22,10 @@ $search-tab-border: rem(1) solid $setting-color-lighter;
                 position: relative;
                 background-color: $setting-color-white;
 
+                &:hover  {
+                   color: $setting-color-globus-darkOrange;
+                }
+
                 &::after {
                     content: '';
                     position: absolute;

@@ -41,11 +41,42 @@ class ConfirmPickingCommandPlugin extends AbstractPlugin implements CommandByOrd
             ->setFkUser(null)
             ->setPickedAt($currentDateTimeInStoreTimeZone);
 
-        $this->getFactory()->getMerchantSalesOrderFacade()->updateOrderWithOrderUpdateRequest(
-            $orderEntity->getIdSalesOrder(),
-            $orderUpdateRequestTransfer
-        );
+        if ($this->areAllItemsPicked($orderItems, $orderEntity->getIdSalesOrder())) {
+            $this->getFactory()->getMerchantSalesOrderFacade()->updateOrderWithOrderUpdateRequest(
+                $orderEntity->getIdSalesOrder(),
+                $orderUpdateRequestTransfer
+            );
+        }
 
         return [];
+    }
+
+    /**
+     * @param \Orm\Zed\Sales\Persistence\SpySalesOrderItem[] $orderItems
+     * @param int $idSalesOrder
+     *
+     * @return bool
+     */
+    private function areAllItemsPicked(array $orderItems, $idSalesOrder)
+    {
+        $currentOrderItemIds = [];
+
+        foreach ($orderItems as $orderItem) {
+            $currentOrderItemIds[] = $orderItem->getIdSalesOrderItem();
+        }
+
+        $orderTransfer = $this->getFacade()->getOrderByIdSalesOrder($idSalesOrder);
+
+        foreach ($orderTransfer->getItems() as $itemTransfer) {
+            if (in_array($itemTransfer->getIdSalesOrderItem(), $currentOrderItemIds)) {
+                continue;
+            }
+
+            if ($itemTransfer->getState()->getName() !== OmsConfig::STORE_STATE_PICKED) {
+                return false;
+            }
+        }
+
+        return true;
     }
 }

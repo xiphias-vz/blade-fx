@@ -8,8 +8,8 @@ $header-sticky-height: rem(69, number);
         z-index: $setting-zi-header;
 
         &__top {
-            background: $setting-color-white;
-            color: $setting-color-gray-13;
+            background: $setting-color-globus-white;
+            color: $setting-color-globus-lightGray;
             display: none;
 
             @include helper-breakpoint-media-min($xl-min) {
@@ -19,7 +19,7 @@ $header-sticky-height: rem(69, number);
         }
 
         &__row {
-            padding: 0 rem(20) 0 rem(70);
+            padding: 0 rem(20) 0 rem(100);
 
             @include helper-breakpoint-media-min($xl-min) {
                 padding: 0;
@@ -40,8 +40,8 @@ $header-sticky-height: rem(69, number);
             top: 0;
             right: 0;
             padding: rem(14) 0;
-            background: $setting-color-gray-14;
-            border-top: rem(5) solid $setting-color-gray-14;
+            background: $setting-color-globus-lightGray;
+            border-top: rem(5) solid $setting-color-globus-lightGray;
             z-index: $setting-zi-header + 1;
 
             @include helper-breakpoint-media-min($xl-min) {
@@ -78,7 +78,7 @@ $header-sticky-height: rem(69, number);
                 right: 0;
                 padding: rem(12) rem(16) rem(12) rem(20);
                 margin-top: rem(7);
-                background: $setting-color-gray-14;
+                background: $setting-color-globus-lightGray;
             }
         }
 
@@ -93,9 +93,9 @@ $header-sticky-height: rem(69, number);
             width: 100%;
             bottom: 0;
             border-top: rem(8) solid $setting-color-globus-lightOrange;
-            background: $setting-color-gray-14;
+            background: $setting-color-globus-lightGray;
             z-index: $setting-zi-header + 1;
-            box-shadow: 0 rem(2) 0 $setting-color-gray-14;
+            box-shadow: 0 rem(2) 0 $setting-color-globus-lightGray;
             display: flex;
             flex-direction: column;
 
@@ -106,7 +106,7 @@ $header-sticky-height: rem(69, number);
                 display: block;
                 width: rem(345);
                 height: calc(100vh - #{$header-height});
-                box-shadow: 0 ($header-height - $header-sticky-height) 0 $setting-color-gray-14;
+                box-shadow: 0 ($header-height - $header-sticky-height) 0 $setting-color-globus-lightGray;
                 // Move scrollbar to the left side
                 transform: scaleX(-1);
             }
@@ -129,7 +129,7 @@ $header-sticky-height: rem(69, number);
 
         &__navigation-title {
             position: relative;
-            color: $setting-color-gray-6;
+            color: $setting-color-globus-darkGray;
             text-align: center;
             padding: rem(22) rem(20);
             box-shadow: 0 rem(2) rem(12) 0 $setting-color-alpha-8;
@@ -144,7 +144,7 @@ $header-sticky-height: rem(69, number);
         &__secure-block {
             font: fw(regular) rem(13)/rem(16) $setting-font-family-additional;
             letter-spacing: rem(0.1);
-            color: $setting-color-white;
+            color: $setting-color-globus-white;
             display: flex;
             align-items: center;
             padding-left: rem(5);
@@ -174,8 +174,14 @@ $header-sticky-height: rem(69, number);
 
         &__logo {
             position: fixed;
-            left: rem(15);
+            left: rem(60);
             top: rem(5);
+        }
+
+        .navigation-top-left-mobile__item {
+            position: fixed;
+            left: rem(0);
+            top: rem(15);
         }
 
         @content;
