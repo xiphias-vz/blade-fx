@@ -98,7 +98,7 @@ class CustomerUserProvider extends SprykerCustomerUserProvider
         $apiKey = Config::get(CustomerConstants::CDC_API_KEY);
         $apiSecretKey = Config::get(CustomerConstants::CDC_API_SECRET_KEY);
         $urlPrefix = Config::get(CustomerConstants::CDC_API_URL);
-        $url = array_shift($urlPrefix) . "accounts.login?apiKey=" . array_shift($apiKey) . "&secret=" . array_shift($apiSecretKey);
+        $url = array_shift($urlPrefix) . "accounts.login?apiKey=" . array_shift($apiKey) . "&sec=" . array_shift($apiSecretKey);
         $data = ['loginID' => $username, 'password' => $pass];
         $options = [
             'http' => [

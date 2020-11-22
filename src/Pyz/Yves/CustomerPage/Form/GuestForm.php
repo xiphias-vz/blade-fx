@@ -184,8 +184,6 @@ class GuestForm extends SprykerGuestForm
             'label' => 'customer.phone.checkout.guest',
             'required' => false,
             'trim' => true,
-            'attr' => [
-            ],
             'constraints' => [
                 ProfileForm::createSafeStringRegexConstraint(),
             ],
