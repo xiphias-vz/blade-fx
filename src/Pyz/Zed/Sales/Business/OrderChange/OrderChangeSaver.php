@@ -105,7 +105,6 @@ class OrderChangeSaver
         SpySalesOrderItem $salesOrderItemEntity,
         OrderItemChangeRequestTransfer $orderItemChangeRequest
     ) {
-        $salesOrderItemEntity->setQuantity($orderItemChangeRequest->getQuantity());
         $salesOrderItemEntity->setPriceToPayAggregation($orderItemChangeRequest->getPrice());
         $salesOrderItemEntity->setPrice($orderItemChangeRequest->getPrice());
 
