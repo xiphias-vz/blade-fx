@@ -61,6 +61,8 @@ class ProductDepositOptionStep extends PublishAwareStep implements DataImportSte
 
     protected const DEPOSITS_TAX_SET = 'STANDARD';
 
+    protected const DEFAULT_DEPOSIT_AMOUNT_MULTIPLIER = 100;
+
     /**
      * @var array
      */
@@ -185,7 +187,7 @@ class ProductDepositOptionStep extends PublishAwareStep implements DataImportSte
                 ->filterByIdTaxSet($this->getIdTaxSet(static::DEPOSITS_TAX_SET))
                 ->findOne();
 
-            $grossPrice = ((float)$dataSet[static::KEY_DEPOSIT_AMOUNT] * (int)$dataSet[static::KEY_DEPOSIT_COUNT]) * 100;
+            $grossPrice = ((float)$dataSet[static::KEY_DEPOSIT_AMOUNT] * (int)$dataSet[static::KEY_DEPOSIT_COUNT] ?? 1) * static::DEFAULT_DEPOSIT_AMOUNT_MULTIPLIER;
             $netPrice = $grossPrice / ($taxSetEntity->getSpyTaxRates()[0]->getRate() / 100 + 1);
 
             $priceEntity
