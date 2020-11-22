@@ -44,7 +44,7 @@
 
             <transition happy="true">
                 <source>ready for selecting shelves</source>
-                <target>ready for cashier order export</target>
+                <target>picked</target>
                 <event>confirm picking</event>
             </transition>
 
@@ -128,7 +128,7 @@
             <event name="cancel due to not in stock" manual="true"/>
             <event name="process cancelled due to not in stock" onEnter="true" command="Oms/CancelDueToNotInStock"/>
             <event name="close order" manual="true"/>
-            <event name="export cashier order" manual="true" command="CashierOrderExport/OrderExport"/>
+            <event name="export cashier order" onEnter="true" command="CashierOrderExport/OrderExport"/>
             <event name="cashier order export retry" manual="true"/>
         </events>
     </process>

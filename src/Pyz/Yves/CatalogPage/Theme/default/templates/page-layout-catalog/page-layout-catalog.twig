@@ -1,5 +1,4 @@
 {% extends template('page-layout-catalog', '@SprykerShop:CatalogPage') %}
-
 {% define data = {
     products: _view.products,
     facets: _view.facets,
@@ -12,7 +11,6 @@
     metaDescription: _view.pageDescription | default,
     metaKeywords: _view.pageKeywords | default,
     sort: _view.sort,
-
     pagination: {
         parameters: app.request.query.all(),
         currentPage: _view.pagination.currentPage,
@@ -24,7 +22,6 @@
         currentItemsPerPage: _view.pagination.currentItemsPerPage,
     },
 } %}
-
 {% block container %}
     {% block breadcrumbs %}
         {% set breadcrumbSteps = _self.renderBreadcrumbSteps(data.category, false, data.filterPath) %}
@@ -45,23 +42,23 @@
             </div>
         </div>
     {% endblock %}
-
     {% block title %}
         <div class="container">
-            <div class="container__inner spacing-bottom spacing-bottom--inner spacing-bottom--bigger">
-                <div class="box">
+            <div class="container__inner spacing-bottom spacing-bottom--inner spacing-bottom--bigger is-hidden-lg-only">
+                <div class="box is-hidden-sm-md">
                     <h1 class="spacing-bottom spacing-bottom--inner">{{ data.title }}</h1>
-                    <span class="text-secondary text-medium">{{ 'catalog.itemsFound' | trans({ '%numFound%': data.pagination.numFound }) }}</span>
+                    <span class="text-secondary text-medium ">{{ 'catalog.itemsFound' | trans({ '%numFound%': data.pagination.numFound }) }}</span>
                 </div>
+            </div>
+            <div class="box__mobile is-hidden-lg-only">
+                <h1 class="spacing-bottom spacing-bottom--inner" style="margin-left: 1rem">{{ data.title }}</h1>
             </div>
         </div>
     {% endblock %}
-
     <div class="container">
         <main class="container__inner">
             {% block content %}
                 {% set catalogJsName = 'js-catalog' %}
-
                 {% include molecule('window-location-applicator', 'CatalogPage') with {
                     attributes: {
                         'form-class-name': catalogJsName ~ '__form',
@@ -69,7 +66,6 @@
                         'sort-trigger-class-name': catalogJsName ~ '__sort-trigger',
                     },
                 } only %}
-
                 <form method="GET" class="grid js-catalog-filter-target js-form-input-default-value-disabler__catalog-form {{ catalogJsName }}__form">
                     {% block form %}
                         <div class="col col--sm-12 col--xl-3 catalog-left-side">
@@ -87,7 +83,6 @@
                                 } only %}
                             {% endblock %}
                         </div>
-
                         <div class="col col--sm-12 col--xl-9 catalog-right-side">
                             <button type="button" class="button button--hollow button--expand spacing-y spacing-y--big is-hidden-xl-only js-catalog-toggler-click__trigger">
                                 {%- include atom('icon') with {
@@ -108,13 +103,11 @@
                                         {% block noResults %}{{ parent() }}{% endblock %}
                                     {% endif %}
                                 </div>
-
                                 {% include molecule('pagination') with {
                                     data: data.pagination
                                 } only %}
                             {% endblock %}
                         </div>
-
                         {% include molecule('toggler-click') with {
                             attributes: {
                                 'trigger-class-name': 'js-catalog-toggler-click__trigger',
@@ -122,7 +115,6 @@
                                 'class-to-toggle': 'show-filter',
                             },
                         } only %}
-
                         {% include molecule('toggler-click') with {
                             attributes: {
                                 'trigger-class-name': 'js-catalog-toggler-click__trigger',
@@ -130,7 +122,6 @@
                                 'class-to-toggle': 'is-not-scrollable-on-mobile-tablet',
                             },
                         } only %}
-
                         {% include molecule('form-input-default-value-disabler') with {
                             attributes: {
                                 'form-selector': '.js-form-input-default-value-disabler__catalog-form',
@@ -140,17 +131,14 @@
                     {% endblock %}
                 </form>
             {% endblock %}
-
             {% macro renderBreadcrumbSteps(categoryNode, isLastLeaf, filterPath) %}
                 {% import _self as self %}
                 {% set categoryUrl = categoryNode.url | default %}
                 {% set categoryUrl = filterPath is not empty ? url(filterPath, {categoryPath: categoryUrl | trimLocale}) : categoryUrl %}
                 {% set categoryLabel = categoryNode.name | default %}
                 {% set categoryPatrentNodes = categoryNode.parents | default(null) %}
-
                 {% if categoryPatrentNodes is not empty %}
                     {{ self.renderBreadcrumbSteps(categoryPatrentNodes | first, false, filterPath) }}
-
                     {% if not isLastLeaf %}
                         {% include molecule('breadcrumb-step') with {
                             data: {

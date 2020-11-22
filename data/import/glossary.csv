@@ -33,6 +33,9 @@ cart.sales-order-threshold,Mindestbetrag,de_DE
 cart.sales-order-threshold,Minimum Order Value,en_US
 checkout.sales-order-threshold,Mindestbetrag,de_DE
 checkout.sales-order-threshold,Minimum Order Value,en_US
+cart.checkout.address.abholstation.note.up,Ich hole meine Bestellung an der Abholstation am gewählten Standort ab,de_DE
+cart.checkout.address.abholstation.note.down,Nachricht an die Abholstation,de_DE
+cart.checkout.address.abholstation.textarea.note,Kein Interesse an Ersatzprodukten? Was auch immer bei Ihrem aktuellen Einkauf wichtig ist. Sagen Sie es uns einfach.,de_DE
 sales-order-threshold.expense.name,Zuschlag,de_DE
 sales-order-threshold.expense.name,Surcharge,en_US
 cart.item_quantity,Anzahl,de_DE
@@ -97,6 +100,7 @@ page.checkout.address.name,Name,de_DE
 page.checkout.address.name,Name,en_US
 page.checkout.address.billing-address,Rechnungsadresse,de_DE
 page.checkout.address.billing-address,Billing Address,en_US
+page.checkout.address.abhol-address,Abholstation,de_DE
 page.checkout.address.billing-isnt-shipping-address,Abweichende Lieferadresse,de_DE
 page.checkout.address.billing-isnt-shipping-address,Different Delivery Address,en_US
 page.checkout.address.shipping-address,Lieferadresse,de_DE
@@ -120,7 +124,7 @@ page.checkout.address.option_group.company_business_unit,Addresse der Geschäfts
 page.checkout.address.delivery.address_select,Select a delivery address,en_US
 page.checkout.address.delivery.address_select,Wähle eine Lieferadresse,de_DE
 page.checkout.address.billing.address_select,Select a billing address,en_US
-page.checkout.address.billing.address_select,Wählen Sie eine Rechnungsadresse,de_DE
+page.checkout.address.billing.address_select,Wählen Sie Ihre Rechnungsadresse,de_DE
 page.checkout.address.manage_your_addresses,"Manage your addresses",en_US
 page.checkout.address.manage_your_addresses,"Verwalte deine Adressen",de_DE
 page.checkout.address.address_select.label,Select a delivery address,en_US
@@ -944,9 +948,10 @@ checkout.customer.auth_as_login,Anmelden,de_DE
 checkout.step.customer.title,Login,en_US
 checkout.step.customer.title,Anmelden,de_DE
 checkout.step.address.title,Address,en_US
-checkout.step.address.title,Adresse,de_DE
+checkout.step.address.title,Abholstation,de_DE
 checkout.step.shipment.title,Shipment,en_US
-checkout.step.shipment.title,Service,de_DE
+checkout.step.shipment.title,Abholzeitpunkt,de_DE
+checkout.step.shipment.note,Bitte beachten Sie: Aufgrund von Kapazitätenengpässen sind eventuell leider nicht immer alle Lieferfenster verfügbar,de_DE
 checkout.step.shipment.provider.a,DHL,en_US
 checkout.step.shipment.provider.a,DHL,de_DE
 checkout.step.shipment.provider.b,Hermes,en_US
@@ -978,15 +983,16 @@ checkout.step.summary.overview,Übersicht,de_DE
 checkout.step.summary.sub_total,Zwischensumme,de_DE
 checkout.step.summary.sub_total,Subtotal,en_US
 checkout.step.summary.grand_total,Summe,de_DE
+checkout.step.summary.grand_total_Globus,Zwischensumme,de_DE
 checkout.step.summary.grand_total,Grand Total,en_US
 checkout.step.summary.payment,Zahlung,de_DE
 checkout.step.summary.payment,Payment,en_US
-checkout.step.summary.shipping,Service,de_DE
+checkout.step.summary.shipping,Abholzeitpunkt,de_DE
 checkout.step.summary.shipping,Shipment,en_US
 checkout.step.summary.tax,Mehrwertsteuer,de_DE
 checkout.step.summary.tax,Tax,en_US
 checkout.step.summary.total,Complete checkout,en_US
-checkout.step.summary.total,Checkout abschließen,de_DE
+checkout.step.summary.total,Bestellung abschließen,de_DE
 checkout.step.summary.shipment_costs_total,"Shipment costs (total)",en_US
 checkout.step.summary.shipment_costs_total,"Versandkosten (insgesamt)",de_DE
 checkout.step.summary.delivery_method,Zustellungsmethode,de_DE
@@ -998,7 +1004,7 @@ checkout.step.summary.delivery_address,Delivery Address,en_US
 checkout.step.summary.products,"Products",en_US
 checkout.step.summary.products,"Produkte",de_DE
 checkout.step.place.order,Submit your order,en_US
-checkout.step.place.order,Wunscheinkauf übermitteln,de_DE
+checkout.step.place.order,Zur Kasse,de_DE
 checkout.step.payment.must_be_older_than_18_years,You must be at least 18 years old.,en_US
 checkout.step.payment.must_be_older_than_18_years,Sie müssen mindestens 18 Jahre alt sein.,de_DE
 checkout.step.success.title,Thank you.,en_US
@@ -1014,7 +1020,7 @@ checkout.step.error.text,"Versuchen Sie es bitte später noch einmal oder kontak
 checkout.step.summary.billing_address,Billing Address,en_US
 checkout.step.summary.billing_address,Rechnungsadresse,de_DE
 checkout.step.summary.merchant-name,Merchant,en_US
-checkout.step.summary.merchant-name,Filiale,de_DE
+checkout.step.summary.merchant-name,Abholstation,de_DE
 customer.password.change.success,Password change successful,en_US
 customer.password.change.success,Passwort erfolgreich geändert,de_DE
 customer.newsletter.subscribed,Newsletter subscribed,en_US
@@ -1408,7 +1414,7 @@ dummyPaymentCreditCard.card_security_code,CVC,de_DE
 dummyPaymentCreditCard.hidden_numbers,*********,en_US
 dummyPaymentCreditCard.hidden_numbers,*********,de_DE
 DummyPaymentInvoice,Invoice,en_US
-DummyPaymentInvoice,Auf Rechnung,de_DE
+DummyPaymentInvoice,Zahlung bei Abholung (nur Kartenzahlung möglich),de_DE
 invoice,Invoice,en_US
 invoice,Auf Rechnung,de_DE
 dummyPaymentInvoice.invoice,Pay with invoice:,en_US
@@ -2754,7 +2760,7 @@ product.detail.online_availability,Availability in the store:,en_US
 product.detail.online_availability,Verfügbarkeit in der Filiale:,de_DE
 product.detail.in_stock,Available,en_US
 product.detail.in_stock,Verfügbar,de_DE
-checkout.timeslots.title,"Wähle ein für dich passendes Zeitfenster aus.",de_DE
+checkout.timeslots.title,"Unsere verfügbaren Abholzeiten:",de_DE
 checkout.timeslots.title,Time slots,en_US
 customer.profile.shipment.only_picking_available,"Only Click & Collect is possible at the selected branch, not home delivery.",en_US
 customer.profile.shipment.only_picking_available,"Bei der gewählten Filiale ist nur Click & Collect möglich und nicht die Lieferung nach Hause.",de_DE
@@ -2786,6 +2792,9 @@ checkout.step.payment.info,"A cash withdrawal only takes place when the reserved
 checkout.step.payment.info,"Eine Geldabbuchung findet erst statt, wenn die reservierten Waren in der Filiale abgeholt bzw. geliefert werden.",de_DE
 checkout.step.summary.info,"A binding order contract is only concluded when the goods are accepted. When picking up/delivering the goods, you can refuse the goods in whole or in part without incurring any costs.",en_US
 checkout.step.summary.info,"Ein verbindlicher Kaufvertrag kommt erst bei der Annahme der Ware zustande. Bei der Abholung/Lieferung kannst du die Ware ganz oder teilweise ablehnen, ohne dass dir Kosten entstehen.",de_DE
+checkout.step.summary.info.down,"*Der Vorteil der Mehrwertsteuersenkung wird Ihnen auf dem Kassenbon als Rabatt ausgewiesen.",de_DE
+checkout.step.summary.info.down1,"Sparen Sie bei der Servicegebühr!",de_DE
+checkout.step.summary.info.down2,"Jetzt die Mein Globus Kundekarte beantragen und nur 1,99€ Servicegebühr für Ihren Einkauf zahlen.",de_DE
 checkout.timeslots.info,"*We do not charge any fees if you decide not to pick up the goods at the store.",en_US
 checkout.timeslots.info,"*Wir berechnen keine Gebühren, wenn du dich dagegen entscheidest, die Waren in der Filiale abzuholen.",de_DE
 pdp.general.info,"Hinweis: Auf der Produktverpackung stehen wichtige Angaben die unbedingt gelesen und beachtet werden sollten.",de_DE
@@ -2796,6 +2805,7 @@ customer.order.delete.cancel,Cancel,en_US
 customer.order.delete.cancel,Abbrechen,de_DE
 cart.checkout.address.picking.note,"Please provide a delivery address, even if you decide to pick up your order at the store.",en_US
 cart.checkout.address.picking.note,"Bitte gebe eine Lieferadresse an, selbst wenn du dich für die Abholung in der Filiale entscheidest.",de_DE
+cart.checkout.address.billing.note,"Wähle Sie Ihre Billingadresse",de_DE
 global.build_with,Erstellt mit,de_DE
 global.build_with,Build with,en_US
 global.build_with.link,https://spryker.com/?lang=de,de_DE
@@ -2821,7 +2831,7 @@ newsletter.subsription.subheadline,Get 10% discount on your first order and rece
 summary.forms.accept_terms.text,I hereby accept the Terms and Conditions,en_US
 summary.forms.accept_terms.text,Hiermit akzeptiere ich die AGB,de_DE
 Filiale,Branch,en_US
-Filiale,Filiale,de_DE
+Filiale,Abholstation,de_DE
 Lieferung,Delivery,en_US
 Lieferung,Lieferung,de_DE
 measurement_units.item.name,Item,en_US

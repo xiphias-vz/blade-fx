@@ -42,7 +42,7 @@
             {% set isSlickInitOnLoad = true %}
         {% endif %}
 
-        <h4 class="{{ config.name }}__title title title--shipment">{{ 'checkout.timeslots.title' | trans }}</h4>
+        <h4 class="{{ config.name }}__title title title--shipment text-color-1">{{ 'checkout.timeslots.title' | trans }}</h4>
 
         <div class="js-delivery-type-{{ loop.index ~ '-' ~ shipmentSelectionIndex }}">
             {% embed molecule('slick-carousel') with {
