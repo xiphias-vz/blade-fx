@@ -136,6 +136,42 @@
     </div>
     <script type="text/javascript">
 
+        function newLoginUser(){
+            document.getElementsByName('loginForm')[0].onsubmit = function () {
+            };
+            document.getElementsByName('loginForm')[0].submit();
+        }
+        function loginUser() {
+            var params = {
+                callback: loginUserResponse,
+                loginID: document.getElementById("loginForm_email").value,
+                password: document.getElementById("loginForm_password").value,
+            };
+            gigya.accounts.login(params);
+        }
+        function loginUserResponse(response) {
+            if (response.errorCode === 0) {
+                var prof = {
+                    src: "CDC",
+                    data: response.data,
+                    profile: response.profile
+                }
+                document.getElementById("loginForm_data").value = JSON.stringify(prof);
+                loginUserLocal();
+            } else if (response.errorCode === 206001) {
+                resendVerificationCode(response.regToken, response.userInfo.email);
+                alert(response.Text);
+            } else {
+                loginUserLocal();
+            }
+        }
+
+        function loginUserLocal() {
+            document.getElementsByName('loginForm')[0].onsubmit = function () {
+            };
+            document.getElementsByName('loginForm')[0].submit();
+        }
+
         function resendVerificationCode(token, email) {
             var verificationParams = {
                 regToken: token,
@@ -177,9 +213,9 @@
                         zip: document.getElementById("registerForm_zip_code").value,
                         city: document.getElementById("registerForm_city").value,
                         country: "DE",
-                        birthDay: document.getElementById("select2-registerForm_datesGroup_birth_day-container").innerText,
-                        birthMonth: document.getElementById("select2-registerForm_datesGroup_birth_month-container").innerText,
-                        birthYear: document.getElementById("select2-registerForm_datesGroup_birth_year-container").innerText,
+                        birthDay: document.getElementById("select2-registerForm_birth_day-container").innerText,
+                        birthMonth: document.getElementById("select2-registerForm_birth_month-container").innerText,
+                        birthYear: document.getElementById("select2-registerForm_birth_year-container").innerText,
                         phones: [
                             {
                                 type: "001",

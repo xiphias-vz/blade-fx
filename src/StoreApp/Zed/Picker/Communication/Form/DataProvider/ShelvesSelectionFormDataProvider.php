@@ -41,25 +41,31 @@ class ShelvesSelectionFormDataProvider
 
     /**
      * @param int $idSalesOrder
+     * @param int $idPickingZone
      *
      * @return mixed[]
      */
-    public function getOptions(int $idSalesOrder): array
+    public function getOptions(int $idSalesOrder, int $idPickingZone): array
     {
-        $options[ShelvesSelectionForm::OPTION_PICKING_SALES_ORDERS] = $this->getPickingSalesOrders($idSalesOrder);
+        $options[ShelvesSelectionForm::OPTION_PICKING_SALES_ORDERS] = $this->getPickingSalesOrders(
+            $idSalesOrder,
+            $idPickingZone
+        );
 
         return $options;
     }
 
     /**
      * @param int $idSalesOrder
+     * @param int $idPickingZone
      *
      * @return \ArrayObject|\Generated\Shared\Transfer\PickingSalesOrderTransfer[]
      */
-    protected function getPickingSalesOrders(int $idSalesOrder): ArrayObject
+    protected function getPickingSalesOrders(int $idSalesOrder, int $idPickingZone): ArrayObject
     {
         $pickingSalesOrderCriteriaTransfer = (new PickingSalesOrderCriteriaTransfer())
-            ->setIdSalesOrder($idSalesOrder);
+            ->setIdSalesOrder($idSalesOrder)
+            ->setIdPickingZone($idPickingZone);
 
         return $this->pickingSalesOrderFacade
             ->getPickingSalesOrderCollection($pickingSalesOrderCriteriaTransfer)

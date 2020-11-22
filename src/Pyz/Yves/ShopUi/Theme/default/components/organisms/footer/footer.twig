@@ -18,9 +18,13 @@
                     <div class="grid grid--justify grid--expand">
 
                         {% block navigation %}
-                            <div class="contact-store-info">
-                                {{ cms_block(['Kontakt KMD','Kontakt EIN','Kontakt LPZ','Kontakt HAD']) }}
-                            </div>
+                                {# Commented for later use...#}
+                                    {# <div class="contact-store-info"> #}
+                                    {# {{ cms_block(['Kontakt KMD','Kontakt EIN','Kontakt LPZ','Kontakt HAD']) }}#}
+                                {#</div>#}
+                                <div class="contact-store-info">
+                                    <p style="margin-top:0px">Kundenservice</p><p>Mo - Sa 10 - 20 hr</p><p>02234-275322</p><p>Kontakt</p>
+                                </div>
 
                             <div class="col col--sm-12 col--lg-8">
                                 {% include molecule('navigation-footer') with {
@@ -56,33 +60,33 @@
                             <div class="icon-container">
                                 <h3 class="title title--footer">{{ 'global.paymentProviders' | trans }}</h3>
                                 <div class="div-margin-right">
-                                    <img src="/assets/current/default/images/visa.svg" width="50px" height="50px" />
+                                    <img src={{ publicPath("/images/visa.svg")}}  width="50px" height="50px" />
                                 </div>
                                 <div>
-                                    <img src="/assets/current/default/images/maestro.svg" width="50px" height="50px" />
+                                    <img src={{ publicPath("/images/maestro.svg")}}  width="50px" height="50px" />
                                 </div>
                                 <div class="div-margin-left">
-                                    <img src="/assets/current/default/images/vpay.svg" width="50px" height="50px" />
+                                    <img src={{ publicPath("/images/vpay.svg")}}  width="50px" height="50px" />
                                 </div>
                                 <br/>
                                 <div style="margin-right: 20px">
-                                    <img src="/assets/current/default/images/google_pay.svg" width="50px" height="50px" />
+                                    <img src={{ publicPath("/images/google_pay.svg")}}  width="50px" height="50px" />
                                 </div>
                                 <div>
-                                    <img src="/assets/current/default/images/mastercard.svg" width="70px" height="50px" />
+                                    <img src={{ publicPath("/images/mastercard.svg")}}  width="70px" height="50px" />
                                 </div>
                                 <div style="margin-left: 20px">
-                                    <img src="/assets/current/default/images/apple_pay.svg" width="50px" height="50px" />
+                                    <img src={{ publicPath("/images/apple_pay.svg")}}  width="50px" height="50px" />
                                 </div>
                                 <br/>
                                 <div class="div-margin-right">
-                                    <img src="/assets/current/default/images/americanexpress.svg" width="50px" height="50px" />
+                                    <img src={{ publicPath("/images/americanexpress.svg")}}  width="50px" height="50px" />
                                 </div>
                                 <div>
-                                    <img src="/assets/current/default/images/girocard.svg" width="50px" height="50px" />
+                                    <img src={{ publicPath("/images/girocard.svg")}}  width="50px" height="50px" />
                                 </div>
                                 <div class="div-margin-left" style="position: relative;top:-15px">
-                                    <img src="/assets/current/default/images/bluecode.png" width="60px" height="20px" />
+                                    <img src={{ publicPath("/images/bluecode.png")}}  width="60px" height="20px" />
                                 </div>
                             </div>
                         {% endblock %}

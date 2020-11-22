@@ -57,6 +57,10 @@ class PickingSalesOrderRepository extends AbstractRepository implements PickingS
             $pyzPickingSalesOrderQuery->filterByFkSalesOrder($pickingSalesOrderCriteriaTransfer->getIdSalesOrder());
         }
 
+        if (!empty($pickingSalesOrderCriteriaTransfer->getIdPickingZone())) {
+            $pyzPickingSalesOrderQuery->filterByFkPickingZone($pickingSalesOrderCriteriaTransfer->getIdPickingZone());
+        }
+
         if (!empty($pickingSalesOrderCriteriaTransfer->getContainerCodes())) {
             $pyzPickingSalesOrderQuery->filterByContainerCode_In($pickingSalesOrderCriteriaTransfer->getContainerCodes());
         }

@@ -10,6 +10,7 @@ namespace StoreApp\Zed\Picker\Communication\Mapper;
 use Generated\Shared\Transfer\OrderTransfer;
 use Generated\Shared\Transfer\PickingSalesOrderCollectionTransfer;
 use Generated\Shared\Transfer\PickingSalesOrderTransfer;
+use Generated\Shared\Transfer\PickingZoneTransfer;
 use StoreApp\Zed\Picker\Communication\Form\OrderItemSelectionForm;
 
 class FormDataMapper implements FormDataMapperInterface
@@ -41,15 +42,20 @@ class FormDataMapper implements FormDataMapperInterface
     /**
      * @param array $formData
      * @param \Generated\Shared\Transfer\OrderTransfer $salesOrderTransfer
+     * @param \Generated\Shared\Transfer\PickingZoneTransfer $pickingZoneTransfer
      *
      * @return \Generated\Shared\Transfer\PickingSalesOrderCollectionTransfer
      */
-    public function mapFormDataToPickingSalesOrderCollection(array $formData, OrderTransfer $salesOrderTransfer): PickingSalesOrderCollectionTransfer
-    {
+    public function mapFormDataToPickingSalesOrderCollection(
+        array $formData,
+        OrderTransfer $salesOrderTransfer,
+        PickingZoneTransfer $pickingZoneTransfer
+    ): PickingSalesOrderCollectionTransfer {
         $pickingSalesOrderCollectionTransfer = new PickingSalesOrderCollectionTransfer();
         foreach ($formData[OrderItemSelectionForm::FIELD_SALES_ORDER_CONTAINERS] as $pickingSalesOrderTransfer) {
             /** @var \Generated\Shared\Transfer\PickingSalesOrderTransfer $pickingSalesOrderTransfer */
             $pickingSalesOrderTransfer->setIdSalesOrder($salesOrderTransfer->getIdSalesOrder());
+            $pickingSalesOrderTransfer->setIdPickingZone($pickingZoneTransfer->getIdPickingZone());
             $pickingSalesOrderCollectionTransfer->addPickingSalesOrder($pickingSalesOrderTransfer);
         }
 
@@ -59,11 +65,15 @@ class FormDataMapper implements FormDataMapperInterface
     /**
      * @param array $containerIdToShelfCodeMap
      * @param \Generated\Shared\Transfer\OrderTransfer $salesOrderTransfer
+     * @param \Generated\Shared\Transfer\PickingZoneTransfer $pickingZoneTransfer
      *
      * @return \Generated\Shared\Transfer\PickingSalesOrderCollectionTransfer
      */
-    public function mapContainersToShelves(array $containerIdToShelfCodeMap, OrderTransfer $salesOrderTransfer): PickingSalesOrderCollectionTransfer
-    {
+    public function mapContainersToShelves(
+        array $containerIdToShelfCodeMap,
+        OrderTransfer $salesOrderTransfer,
+        PickingZoneTransfer $pickingZoneTransfer
+    ): PickingSalesOrderCollectionTransfer {
         $pickingSalesOrderCollectionTransfer = new PickingSalesOrderCollectionTransfer();
 
         foreach ($containerIdToShelfCodeMap as $containerCode => $shelfCode) {
@@ -71,6 +81,7 @@ class FormDataMapper implements FormDataMapperInterface
             $pickingSalesOrderTransfer->setContainerCode($containerCode);
             $pickingSalesOrderTransfer->setShelfCode($shelfCode);
             $pickingSalesOrderTransfer->setIdSalesOrder($salesOrderTransfer->getIdSalesOrder());
+            $pickingSalesOrderTransfer->setIdPickingZone($pickingZoneTransfer->getIdPickingZone());
 
             $pickingSalesOrderCollectionTransfer->addPickingSalesOrder($pickingSalesOrderTransfer);
         }

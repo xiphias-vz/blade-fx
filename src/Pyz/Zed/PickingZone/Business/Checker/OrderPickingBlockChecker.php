@@ -42,13 +42,13 @@ class OrderPickingBlockChecker implements OrderPickingBlockCheckerInterface
         );
 
         if (!$foundOrderPickingBlockTransfer) {
-            return false;
+            return true;
         }
 
         if ($foundOrderPickingBlockTransfer->getIdUser() === $orderPickingBlockTransfer->getIdUser()) {
-            return false;
+            return true;
         }
 
-        return true;
+        return false;
     }
 }

@@ -12,7 +12,7 @@
 
         &__input:checked + #{$name}__box {
             background-color: $setting-color-main;
-            border-color: $setting-color-globus-lightOrange;
+            border-color: $setting-color-main;
 
             #{$name}__check {
                 opacity: 1;
@@ -62,7 +62,7 @@
             &:hover,
             &:focus {
                 #{$name}__box {
-                    border-color: $setting-color-globus-lightOrange;
+                    border-color: $setting-color-globus-darkOrange;
                 }
             }
 
@@ -72,7 +72,7 @@
                 &:checked {
                     & + #{$name}__box {
                         background-color: $setting-color-white;
-                        border-color: $setting-color-globus-lightOrange;
+                        border-color: $setting-color-globus-darkOrange;
                     }
 
                     & ~ #{$name}__check {
@@ -130,7 +130,7 @@
 
                 & + #{$name}__box {
                     background-color: $setting-color-transparent;
-                    border-color: $setting-color-globus-lightOrange;
+                    border-color: $setting-color-globus-darkOrange;
                 }
 
                 & ~ #{$name}__label {
@@ -182,7 +182,7 @@
             &:hover,
             &:focus {
                 #{$name}__box {
-                    border-color: $setting-color-globus-lightOrange;
+                    border-color: $setting-color-gray-4;
                 }
             }
 
@@ -205,7 +205,7 @@
                         color: $setting-color-gray-6;
 
                         &::before {
-                            border: rem(5) solid $setting-color-green;
+                            border: rem(5) solid $setting-color-globus-darkOrange;
                         }
                     }
                 }

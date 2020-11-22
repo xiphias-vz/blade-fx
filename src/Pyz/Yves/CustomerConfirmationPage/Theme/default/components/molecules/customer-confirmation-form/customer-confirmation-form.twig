@@ -184,7 +184,15 @@
                                         <li class="list__item">{{ 'customer-confirmation.phone.validation-error' | trans }}</li>
                                     </ul>
                                 </div>
-                            {% elseif fieldName == 'phone_prefix_2' %}
+                                {% elseif fieldName == 'phone_prefix_2' %}
+                                {{ form_row(field, {
+                                    rowAttr: {
+                                        label: 'something',
+                                        class: 'form__field ' ~ fieldLayoutClass,
+                                    },
+                                }) }}
+                            {% elseif fieldName == 'day' %}
+                                <div><label>{{ 'customer.register.birthdate' | trans }}</label></div>
                                 {{ form_row(field, {
                                     rowAttr: {
                                         label: 'something',

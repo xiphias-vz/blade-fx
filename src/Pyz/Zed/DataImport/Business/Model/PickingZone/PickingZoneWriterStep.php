@@ -22,12 +22,12 @@ class PickingZoneWriterStep implements DataImportStepInterface
      */
     public function execute(DataSetInterface $dataSet): void
     {
-        $pyzPickingRoute = PyzPickingZoneQuery::create()
+        $pickingZoneQuery = PyzPickingZoneQuery::create()
             ->filterByName($dataSet[static::KEY_PICKING_ZONE_NAME])
             ->findOneOrCreate();
 
-        if ($pyzPickingRoute->isNew() || $pyzPickingRoute->isModified()) {
-            $pyzPickingRoute->save();
+        if ($pickingZoneQuery->isNew() || $pickingZoneQuery->isModified()) {
+            $pickingZoneQuery->save();
         }
     }
 }
