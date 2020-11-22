@@ -839,3 +839,8 @@ $config[\Pyz\Shared\Customer\CustomerConstants::CDC_API_URL] =
     [
         'cdcApiUrl' => 'https://accounts.eu1.gigya.com/',
     ];
+
+$config[\Pyz\Shared\Customer\CustomerConstants::CDC_API_SECRET_KEY] =
+    [
+        'cdcApiSecretKey' => '',
+    ];
