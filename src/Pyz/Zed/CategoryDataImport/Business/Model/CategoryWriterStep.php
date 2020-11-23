@@ -46,7 +46,7 @@ class CategoryWriterStep extends SprykerCategoryWriterStep
     /**
      * @var array
      */
-    public static $idCategoryBuffer = [];
+    protected static $idCategoryBuffer = [];
 
     /**
      * @var array
