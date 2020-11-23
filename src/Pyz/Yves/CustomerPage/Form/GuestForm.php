@@ -24,8 +24,9 @@ class GuestForm extends SprykerGuestForm
     public const FIELD_PHONE = 'phone';
 
     /**
-     * @param FormBuilderInterface $builder
+     * @param \Symfony\Component\Form\FormBuilderInterface $builder
      * @param array $options
+     *
      * @return void
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
@@ -43,6 +44,11 @@ class GuestForm extends SprykerGuestForm
             ->addIsGuestField($builder);
     }
 
+    /**
+     * @param \Symfony\Component\Form\FormBuilderInterface $builder
+     *
+     * @return \SprykerShop\Yves\CustomerPage\Form\GuestForm
+     */
     protected function addFirstNameField(FormBuilderInterface $builder)
     {
         $builder->add(self::FIELD_FIRST_NAME, TextType::class, [
@@ -80,6 +86,11 @@ class GuestForm extends SprykerGuestForm
         return $this;
     }
 
+    /**
+     * @param \Symfony\Component\Form\FormBuilderInterface $builder
+     *
+     * @return \SprykerShop\Yves\CustomerPage\Form\GuestForm
+     */
     protected function addEmailField(FormBuilderInterface $builder)
     {
         $builder->add(self::FIELD_EMAIL, EmailType::class, [
@@ -107,6 +118,11 @@ class GuestForm extends SprykerGuestForm
         return $this;
     }
 
+    /**
+     * @param \Symfony\Component\Form\FormBuilderInterface $builder
+     *
+     * @return \SprykerShop\Yves\CustomerPage\Form\GuestForm
+     */
     protected function addAddress1Field(FormBuilderInterface $builder)
     {
         $builder->add(self::FIELD_ADDRESS_1, TextType::class, [
@@ -125,6 +141,11 @@ class GuestForm extends SprykerGuestForm
         return $this;
     }
 
+    /**
+     * @param \Symfony\Component\Form\FormBuilderInterface $builder
+     *
+     * @return \SprykerShop\Yves\CustomerPage\Form\GuestForm
+     */
     protected function addAddress2Field(FormBuilderInterface $builder)
     {
         $builder->add(self::FIELD_ADDRESS_2, TextType::class, [
@@ -142,6 +163,11 @@ class GuestForm extends SprykerGuestForm
         return $this;
     }
 
+    /**
+     * @param \Symfony\Component\Form\FormBuilderInterface $builder
+     *
+     * @return \SprykerShop\Yves\CustomerPage\Form\GuestForm
+     */
     protected function addZipCodeField(FormBuilderInterface $builder)
     {
         $builder->add(self::FIELD_ZIP_CODE, TextType::class, [
@@ -152,7 +178,7 @@ class GuestForm extends SprykerGuestForm
                 $this->createNotBlankConstraint(),
                 new PostalCodeConstraint([
                     'customerBaseClient' => $this->getFactory()->createCustomerFormFactory()->getCustomerClient(),
-                ]),           ],
+                ])           ],
             'attr' => [
                 'placeholder' => 'customer.registration.zip_placeholder',
             ],
@@ -161,6 +187,11 @@ class GuestForm extends SprykerGuestForm
         return $this;
     }
 
+    /**
+     * @param \Symfony\Component\Form\FormBuilderInterface $builder
+     *
+     * @return \SprykerShop\Yves\CustomerPage\Form\GuestForm
+     */
     protected function addCityField(FormBuilderInterface $builder)
     {
         $builder->add(self::FIELD_CITY, TextType::class, [
@@ -179,6 +210,11 @@ class GuestForm extends SprykerGuestForm
         return $this;
     }
 
+    /**
+     * @param \Symfony\Component\Form\FormBuilderInterface $builder
+     *
+     * @return \SprykerShop\Yves\CustomerPage\Form\GuestForm
+     */
     protected function addPhoneField(FormBuilderInterface $builder)
     {
         $builder->add(static::FIELD_PHONE, TextType::class, [

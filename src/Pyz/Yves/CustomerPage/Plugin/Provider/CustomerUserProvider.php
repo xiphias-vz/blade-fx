@@ -92,6 +92,12 @@ class CustomerUserProvider extends SprykerCustomerUserProvider
         return $customerTransfer;
     }
 
+    /**
+     * @param string $username
+     * @param string $pass
+     *
+     * @return bool
+     */
     protected function isAuthorizedInCdc($username, $pass): bool
     {
         $apiKey = Config::get(CustomerConstants::CDC_API_KEY);

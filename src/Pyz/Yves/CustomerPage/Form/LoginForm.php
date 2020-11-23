@@ -38,6 +38,11 @@ class LoginForm extends SprykerLoginForm
             ->addDataField($builder);
     }
 
+    /**
+     * @param \Symfony\Component\Form\FormBuilderInterface $builder
+     *
+     * @return $this
+     */
     protected function addEmailField(FormBuilderInterface $builder)
     {
         $builder->add(self::FIELD_EMAIL, EmailType::class, [
@@ -90,6 +95,9 @@ class LoginForm extends SprykerLoginForm
         return $this;
     }
 
+    /**
+     * @return \Symfony\Component\Validator\Constraints\Blank
+     */
     protected function createBlankConstraint(): Blank
     {
         return new Blank();

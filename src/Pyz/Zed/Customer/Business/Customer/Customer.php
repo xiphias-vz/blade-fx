@@ -139,6 +139,11 @@ class Customer extends SprykerCustomer
         return $customerTransfer->getFirstName() === 'test order';
     }
 
+    /**
+     * @param \Generated\Shared\Transfer\CustomerTransfer $customerTransfer
+     *
+     * @return bool
+     */
     protected function isThirdPartyRegistration(CustomerTransfer $customerTransfer): bool
     {
         return $customerTransfer->getThirdPartyRegistration() === true;
