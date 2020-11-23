@@ -169,7 +169,7 @@
                     {% endblock %}
 
                     {% block addToBlock %}
-                        <div class="text-center is-hidden-sm-only">
+                        <div class="add-to-cart-btn">
                             <a href="{{ addAjaxUrl }}"
                                class="
                                     button button--with-icon button--middle-icon
@@ -190,7 +190,9 @@
                                         name: 'cart-plus',
                                     },
                                 } only %}
-                                {{- 'page.detail.add-to-cart' | trans -}}
+                                <div class="add-details-to-cart-text-holder">
+                                    {{- 'page.detail.add-to-cart' | trans -}}
+                                </div>
                             </a>
                         </div>
                     {% endblock %}

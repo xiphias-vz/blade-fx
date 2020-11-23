@@ -2,4 +2,4 @@ tax_set_name,country_name,tax_rate_name,tax_rate_percent
 STANDARD,Germany,Germany Standard,16
 LOW,Germany,Germany Reduced,5
 ZERO,Germany,Germany Taxfree,0
-Shipment Taxes,Germany,Germany Shipment Tax,19
+Shipment Taxes,Germany,Germany Shipment Tax,16

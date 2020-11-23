@@ -9,8 +9,10 @@ namespace Pyz\Yves\CustomerPage\Form;
 
 use SprykerShop\Yves\CustomerPage\Form\LoginForm as SprykerLoginForm;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Validator\Constraints\Blank;
 
 /**
  * @method \Pyz\Yves\CustomerPage\CustomerPageFactory getFactory()
@@ -18,6 +20,24 @@ use Symfony\Component\Form\FormBuilderInterface;
  */
 class LoginForm extends SprykerLoginForm
 {
+    public const FIELD_DATA = 'data';
+
+    /**
+     * @param \Symfony\Component\Form\FormBuilderInterface $builder
+     * @param array $options
+     *
+     * @return void
+     */
+    public function buildForm(FormBuilderInterface $builder, array $options)
+    {
+        $builder->setAction('/login_check');
+
+        $this
+            ->addEmailField($builder)
+            ->addPasswordField($builder)
+            ->addDataField($builder);
+    }
+
     /**
      * @param \Symfony\Component\Form\FormBuilderInterface $builder
      *
@@ -58,5 +78,28 @@ class LoginForm extends SprykerLoginForm
         ]);
 
         return $this;
+    }
+
+    /**
+     * @param \Symfony\Component\Form\FormBuilderInterface $builder
+     *
+     * @return $this
+     */
+    protected function addDataField(FormBuilderInterface $builder)
+    {
+        $builder->add(self::FIELD_DATA, HiddenType::class, [
+            'constraints' => $this->createNotBlankConstraint(),
+            'mapped' => false,
+        ]);
+
+        return $this;
+    }
+
+    /**
+     * @return \Symfony\Component\Validator\Constraints\Blank
+     */
+    protected function createBlankConstraint(): Blank
+    {
+        return new Blank();
     }
 }

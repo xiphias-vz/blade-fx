@@ -33,12 +33,6 @@
         </states>
 
         <transitions>
-            <transition happy="true">
-                <source>new</source>
-                <target>paid</target>
-                <event>pass 1 second</event>
-            </transition>
-
             <transition>
                 <source>new</source>
                 <target>cancelled by customer</target>
@@ -46,7 +40,7 @@
             </transition>
 
             <transition happy="true">
-                <source>paid</source>
+                <source>new</source>
                 <target>confirmed</target>
                 <event>confirm</event>
             </transition>

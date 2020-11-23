@@ -18,6 +18,10 @@
         &__image-wrap {
             position: relative;
             overflow: hidden;
+            @include helper-breakpoint-media-max($sm-max) {
+                width:150px;
+                height:auto;
+            }
 
             a {
                 &:hover {
@@ -62,6 +66,9 @@
             position: relative;
             display: flex;
             flex-direction: column;
+            @include helper-breakpoint-media-max($sm-max) {
+                flex-direction: row;
+            }
             height: 100%;
             color: $setting-color-black;
             background: $setting-color-white;
@@ -95,7 +102,9 @@
 
         &__content-top {
             flex-grow: 1;
-
+            @include helper-breakpoint-media-max($sm-max) {
+                padding-top: 20px;
+            }
             @include helper-breakpoint-media-min($md-min) {
                 padding-bottom: rem(20);
             }
@@ -124,15 +133,50 @@
             }
         }
 
+        .add-to-cart-btn {
+            @include helper-breakpoint-media-max($sm-max) {
+                text-align: right;
+                a {
+                    justify-content: center;
+                    width: 50px;
+                    min-width: 40px;
+                    padding:20px;
+                    border-radius: 50%;
+                    height: 50px;
+                    .add-details-to-cart-text-holder {
+                        display: none;
+                    }
+                    .icon {
+                        margin: 0px;
+                    }
+                }
+            }
+        }
+
         &__info-more {
             display: flex;
             justify-content: space-between;
             margin: 0 rem(-4);
             align-items: flex-end;
+            @include helper-breakpoint-media-max($sm-max) {
+                flex-direction: column;
+                align-items: flex-start;
+            }
         }
 
         &__info-more-col {
             padding: 0 rem(4);
+        }
+
+        &__info-more-col:nth-child(1) {
+            color:gray;
+        }
+
+        &__info-more-col:nth-child(2) {
+            @include helper-breakpoint-media-max($sm-max) {
+                margin-top: 10px;
+                font-weight: bold;
+            }
         }
 
         &__sale-volume {

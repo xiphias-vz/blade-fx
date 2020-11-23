@@ -8,7 +8,11 @@
 namespace Pyz\Zed\ProductPageSearch\Persistence;
 
 use Generated\Shared\Transfer\ProductConcretePageSearchTransfer;
+use Generated\Shared\Transfer\StoreTransfer;
+use Orm\Zed\Availability\Persistence\Map\SpyAvailabilityAbstractTableMap;
+use Orm\Zed\Product\Persistence\Map\SpyProductAbstractTableMap;
 use Orm\Zed\Product\Persistence\Map\SpyProductTableMap;
+use Orm\Zed\Product\Persistence\SpyProductAbstractLocalizedAttributesQuery;
 use Orm\Zed\ProductPageSearch\Persistence\Map\SpyProductConcretePageSearchTableMap;
 use Orm\Zed\ProductPageSearch\Persistence\SpyProductConcretePageSearchQuery;
 use Spryker\Zed\ProductPageSearch\Persistence\ProductPageSearchQueryContainer as SprykerProductPageSearchQueryContainer;
@@ -30,6 +34,29 @@ class ProductPageSearchQueryContainer extends SprykerProductPageSearchQueryConta
             ->createProductConcretePageSearchQuery()
             ->addJoin(SpyProductConcretePageSearchTableMap::COL_FK_PRODUCT, SpyProductTableMap::COL_ID_PRODUCT, Criteria::INNER_JOIN)
             ->withColumn(SpyProductTableMap::COL_FK_PRODUCT_ABSTRACT, ProductConcretePageSearchTransfer::FK_PRODUCT_ABSTRACT);
+
+        return $query;
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * @api
+     *
+     * @module Product
+     *
+     * @param int[] $productAbstractIds
+     * @param \Generated\Shared\Transfer\StoreTransfer $storeTransfer
+     *
+     * @return \Orm\Zed\Product\Persistence\SpyProductAbstractLocalizedAttributesQuery
+     */
+    public function queryProductAbstractLocalizedEntitiesByProductAbstractIdsAndStore(array $productAbstractIds, StoreTransfer $storeTransfer): SpyProductAbstractLocalizedAttributesQuery
+    {
+        $query = parent::queryProductAbstractLocalizedEntitiesByProductAbstractIdsAndStore($productAbstractIds, $storeTransfer);
+        //TODO: do not consider out is_never_of_stock, since we do not use this field.
+        $query
+            ->addJoin(SpyProductAbstractTableMap::COL_SKU, SpyAvailabilityAbstractTableMap::COL_ABSTRACT_SKU, Criteria::INNER_JOIN)
+            ->where(SpyAvailabilityAbstractTableMap::COL_FK_STORE . ' = ' . $storeTransfer->getIdStore() . ' AND ' . SpyAvailabilityAbstractTableMap::COL_QUANTITY . '>' . 0);
 
         return $query;
     }
