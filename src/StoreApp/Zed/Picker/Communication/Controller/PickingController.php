@@ -240,7 +240,7 @@ class PickingController extends BaseOrderPickingController
         $pickingFormWeightKeys = [];
 
         foreach ($orderItemSelectionForm->all() as $item) {
-            if (strpos($item->getName(), OrderItemSelectionForm::PREFIX_FIELD_SALES_ORDER_ITEM_SKU) !== false) {
+            if (strpos($item->getName(), OrderItemSelectionForm::PREFIX_FIELD_SALES_ORDER_ITEM_SKU) === 0) {
                 $pickingFormSkuKeys[] = $item->getName();
             }
 
