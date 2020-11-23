@@ -6,6 +6,8 @@
     collectNumber: collectNumber,
     itemsCount: itemsCount,
     pickingForm: pickingForm,
+    pickingFormSkuKeys: pickingFormSkuKeys,
+    pickingFormWeightKeys: pickingFormWeightKeys,
     itemImageUrls: itemImageUrls,
     requestParamIdSalesOrder: requestParamIdSalesOrder,
     idSalesOrder: idSalesOrder,
@@ -44,9 +46,15 @@
     {{ form_start(data.pickingForm, {
         attr: { class: 'form js-submit-form-handler__form spacing-top spacing-top--inner' }
     }) }}
-        {% for fieldName in data.pickingForm.children | keys %}
+        {% for fieldName in pickingFormSkuKeys %}
             {% set field = attribute(data.pickingForm.children, fieldName) %}
             {% set itemSku = field.vars.name | split('__') | last %}
+
+            {% if pickingFormWeightKeys[itemSku] is defined %}
+                {% set weightField = attribute(data.pickingForm.children, pickingFormWeightKeys[itemSku]) %}
+            {% else %}
+                {% set weightField = null %}
+            {% endif %}
 
             {% if field.vars.block_prefixes[1] is same as('integer') %}
                 {% embed molecule('product-item') with {
@@ -61,6 +69,7 @@
                     },
                     embed: {
                         field: field,
+                        weightField: weightField,
                     },
                 } only %}
                     {% block formElement %}
@@ -69,6 +78,16 @@
                                 class: config.jsName ~ '__quantity',
                             }
                         }) }}
+                    {% endblock %}
+
+                    {% block formElementWeight %}
+                        {% if embed.weightField %}
+                            {{ form_row(embed.weightField, {
+                                attr: {
+                                    class: config.jsName ~ '__weight',
+                                }
+                            }) }}
+                        {% endif %}
                     {% endblock %}
                 {% endembed %}
             {% endif %}
