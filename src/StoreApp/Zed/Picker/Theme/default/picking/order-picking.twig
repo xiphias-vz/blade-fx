@@ -5,6 +5,7 @@
     maxPickingBags: maxPickingBags,
     collectNumber: collectNumber,
     itemsCount: itemsCount,
+    itemsToShelfMap: itemsToShelfMap,
     pickingForm: pickingForm,
     pickingFormSkuKeys: pickingFormSkuKeys,
     pickingFormWeightKeys: pickingFormWeightKeys,
@@ -61,6 +62,7 @@
                     class: 'spacing-top spacing-top--big',
                     data: {
                         imageUrl: data.itemImageUrls[itemSku],
+                        shelfData: data.itemsToShelfMap[itemSku],
                         title: field.vars.label,
                         productsCount: field.vars.attr.max
                     },
