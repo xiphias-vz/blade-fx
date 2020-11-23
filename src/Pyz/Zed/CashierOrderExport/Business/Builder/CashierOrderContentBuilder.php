@@ -47,7 +47,7 @@ class CashierOrderContentBuilder implements CashierOrderContentBuilderInterface
     protected const DEFAULT_EMPTY_OPERATOR_NUMBER = '0000';
     protected const DEFAULT_ANDERUNGS_NUMBER = '02';
     protected const DEFAULT_SERVICE_FEE_POSITION_NAME = 'Abholung            ';
-    protected const DEFAULT_SERVICE_FEE_FEE_NUMBER = '00000000000000000002';
+    protected const DEFAULT_SERVICE_FEE_FEE_NUMBER = '00000000000000000001';
     protected const DEFAULT_SERVICE_FEE_FEE_QUANTITY = '00000000000000001000';
     protected const DEFAULT_EMPTY_NUMBER = '00000000000000000000';
 
