@@ -32,6 +32,9 @@
         <property name="bonText" type="string"/>
         <property name="weightPerUnit" type="int"/>
         <property name="sequence" type="string"/>
+        <property name="shelf" type="string"/>
+        <property name="shelfFloor" type="string"/>
+        <property name="shelfField" type="string"/>
     </transfer>
 
     <transfer name="ProductConcrete">
