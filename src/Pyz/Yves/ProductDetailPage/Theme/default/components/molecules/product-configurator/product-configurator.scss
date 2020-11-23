@@ -34,6 +34,14 @@
             }
         }
 
+        .text-block {
+            display: block !important;
+        }
+
+        .align-right {
+            float: right;
+        }
+
         @content;
     }
 }
