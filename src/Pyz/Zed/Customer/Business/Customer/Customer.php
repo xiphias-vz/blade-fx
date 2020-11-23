@@ -140,7 +140,8 @@ class Customer extends SprykerCustomer
     }
 
     /**
-     * @param CustomerTransfer $customerTransfer
+     * @param \Generated\Shared\Transfer\CustomerTransfer $customerTransfer
+     *
      * @return bool
      */
     protected function isThirdPartyRegistration(CustomerTransfer $customerTransfer): bool

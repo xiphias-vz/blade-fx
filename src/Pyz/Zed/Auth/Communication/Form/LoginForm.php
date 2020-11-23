@@ -36,7 +36,7 @@ class LoginForm extends SprykerLoginForm
     /**
      * @param \Symfony\Component\Form\FormBuilderInterface $builder
      *
-     * @return $this|$this
+     * @return $this
      */
     protected function addUserNameField(FormBuilderInterface $builder)
     {
@@ -54,6 +54,11 @@ class LoginForm extends SprykerLoginForm
         return $this;
     }
 
+    /**
+     * @param \Symfony\Component\Form\FormBuilderInterface $builder
+     *
+     * @return $this
+     */
     protected function addPasswordField(FormBuilderInterface $builder)
     {
         $builder
@@ -71,6 +76,11 @@ class LoginForm extends SprykerLoginForm
         return $this;
     }
 
+    /**
+     * @param \Symfony\Component\Form\FormBuilderInterface $builder
+     *
+     * @return $this
+     */
     public function addCheckboxField(FormBuilderInterface $builder)
     {
         $builder

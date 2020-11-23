@@ -95,8 +95,8 @@ class CustomerUserProvider extends SprykerCustomerUserProvider
     /**
      * @param string $username
      * @param string $pass
+     *
      * @return bool
-     * @throws \Exception
      */
     protected function isAuthorizedInCdc($username, $pass): bool
     {
