@@ -2997,4 +2997,5 @@ checkout.customer.register_as_guest,Als Gast bestellen,de_DE
 customer.phone.checkout.guest,Telefon,de_DE
 mobile.phone.number,Mobiltelefon,de_DE
 customer.land.phone,Fastnetz,de_DE
-customer.register.birthdate,Geburtstag (TT/MM/YYYY),de_DE
+customer.register.birthdate.title,"Geburtstag (TT/MM/YYYY)",de_DE
+customer.register.telefon.title,Telefon (mindenstens 1 Angabe Ist Pflicht),de_DE
