@@ -32,6 +32,10 @@
             width: rem(64);
             height: auto;
             margin-top: rem(12);
+
+            @include helper-breakpoint-media-max($sm-max) {
+               margin-top: 0px;
+            }
         }
 
         &--login {

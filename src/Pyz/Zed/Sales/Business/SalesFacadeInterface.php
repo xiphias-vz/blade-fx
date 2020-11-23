@@ -8,6 +8,7 @@
 namespace Pyz\Zed\Sales\Business;
 
 use DateTime;
+use Generated\Shared\Transfer\OrderChangeRequestTransfer;
 use Generated\Shared\Transfer\OrderCriteriaFilterTransfer;
 use Generated\Shared\Transfer\OrderTransfer;
 use Generated\Shared\Transfer\OrderUpdateRequestTransfer;
@@ -170,6 +171,18 @@ interface SalesFacadeInterface extends SprykerSalesFacadeInterface
      * @return bool
      */
     public function updateOrderWithOrderUpdateRequest(int $idSalesOrder, OrderUpdateRequestTransfer $orderUpdateRequestTransfer): bool;
+
+    /**
+     * Specification:
+     * - update order items with new values
+     *
+     * @api
+     *
+     * @param \Generated\Shared\Transfer\OrderChangeRequestTransfer $orderChangeRequestTransfer
+     *
+     * @return bool
+     */
+    public function saveOrderChange(OrderChangeRequestTransfer $orderChangeRequestTransfer);
 
     /**
      * Specification:

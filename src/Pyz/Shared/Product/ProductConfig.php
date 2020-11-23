@@ -47,4 +47,6 @@ class ProductConfig extends SprykerProductConfigAlias
     public const KEY_PICK_ZONE_ATTRIBUTE = 'Pickzone';
     public const KEY_SAP_WGR = 'sapwgr';
     public const KEY_BON_TEXT = 'bontext';
+
+    public const KEY_WEIGHT_PER_ITEM = 'einzelgewicht';
 }

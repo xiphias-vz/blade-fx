@@ -29,9 +29,15 @@ class OrderItemSelectionForm extends AbstractType
     public const FIELD_SALES_ORDER_CONTAINERS = 'field_sales_order_containers';
 
     public const PREFIX_FIELD_SALES_ORDER_ITEM_SKU = 'field_sales_order_item_sku__';
+    public const PREFIX_FIELD_SALES_ORDER_ITEM_NEW_WEIGHT = 'field_sales_order_item_new_weight__';
 
     public const OPTION_SALES_ORDER_ITEMS = 'option_sales_order_items';
     public const OPTION_ITEM_ATTRIBUTES = 'OPTION_ITEM_ATTRIBUTES';
+
+    /**
+     * The new weight can be different from original only by 20%
+     */
+    protected const ALLOWED_DEVIATION_FROM_THE_ORIGINAL_WEIGHT = 0.2;
 
     /**
      * @param \Symfony\Component\OptionsResolver\OptionsResolver $resolver
@@ -98,6 +104,27 @@ class OrderItemSelectionForm extends AbstractType
                     ],
                 ]
             );
+
+            if ($itemTransfer->getWeightPerUnit()) {
+                $weight = $itemTransfer->getWeightPerUnit() * $itemTransfer->getQuantity();
+
+                $builder->add(
+                    static::PREFIX_FIELD_SALES_ORDER_ITEM_NEW_WEIGHT . $itemTransfer->getSku(),
+                    IntegerType::class,
+                    [
+                        'required' => true,
+                        'data' => $weight,
+                        'attr' => [
+                            'min' => $weight * (1 - self::ALLOWED_DEVIATION_FROM_THE_ORIGINAL_WEIGHT),
+                            'max' => $weight * (1 + self::ALLOWED_DEVIATION_FROM_THE_ORIGINAL_WEIGHT),
+                        ],
+                        'label' => 'storeapp.new_weight',
+                        'constraints' => [
+                            new NotBlank(),
+                        ],
+                    ]
+                );
+            }
         }
 
         return $this;
