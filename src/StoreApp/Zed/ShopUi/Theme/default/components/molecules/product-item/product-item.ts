@@ -145,7 +145,7 @@ export default class ProductItem extends Component {
     }
 
     protected get quantityFieldSelector(): string {
-        return `input[type="number"]`;
+        return `input[type="number"].js-product-item__quantity`;
     }
 
     protected get quantityOutputSelector(): string {

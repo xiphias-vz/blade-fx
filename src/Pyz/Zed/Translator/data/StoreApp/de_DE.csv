@@ -143,3 +143,5 @@ storeapp.delivery.message.success.order-successfully-delivered,Bestellung erfolg
 storeapp.delivery.message.success.order-not-delivered,Bestellung konnte nicht geliefert werden
 
 forms.submit-btn,Speichern
+
+storeapp.new_weight,Gewicht (gr)
