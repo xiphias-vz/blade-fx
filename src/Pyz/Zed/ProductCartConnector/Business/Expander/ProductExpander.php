@@ -15,6 +15,9 @@ use Spryker\Zed\ProductCartConnector\Business\Expander\ProductExpanderInterface;
 
 class ProductExpander extends SprykerProductExpander implements ProductExpanderInterface
 {
+    protected const KILOGRAM = 'kg';
+    protected const GRAM = 'g';
+
     /**
      * @param \Generated\Shared\Transfer\ProductConcreteTransfer $productConcreteTransfer
      * @param \Generated\Shared\Transfer\ItemTransfer $itemTransfer
@@ -35,10 +38,27 @@ class ProductExpander extends SprykerProductExpander implements ProductExpanderI
             $pickZone = $productConcreteTransfer->getAttributes()[mb_strtolower(ProductConfig::KEY_PICK_ZONE_ATTRIBUTE)];
         }
 
+        $weightPerUnit = $this->calculateWeightPerItem($productConcreteTransfer->getAttributes());
+
         $itemTransfer
             ->setPickZone($pickZone)
+            ->setWeightPerUnit($weightPerUnit)
             ->setProductNumber($productConcreteTransfer->getProductNumber())
             ->setSapWgr($productConcreteTransfer->getAttributes()[ProductConfig::KEY_SAP_WGR] ?? '')
             ->setBonText($productConcreteTransfer->getAttributes()[ProductConfig::KEY_BON_TEXT] ?? '');
+    }
+
+    /**
+     * @param array $attributes
+     *
+     * @return int|null
+     */
+    protected function calculateWeightPerItem(array $attributes): ?int
+    {
+        if (!isset($attributes[ProductConfig::KEY_WEIGHT_PER_ITEM])) {
+            return null;
+        }
+
+        return $attributes[ProductConfig::KEY_WEIGHT_PER_ITEM] * 1000;
     }
 }

@@ -9,7 +9,6 @@ namespace StoreApp\Zed\Picker\Communication\Controller;
 
 use Generated\Shared\Transfer\ItemTransfer;
 use Generated\Shared\Transfer\MerchantSalesOrderCollectionTransfer;
-use Generated\Shared\Transfer\MerchantSalesOrderTransfer;
 use Generated\Shared\Transfer\MerchantTransfer;
 use Generated\Shared\Transfer\OrderCriteriaFilterTransfer;
 use Generated\Shared\Transfer\OrderPickingBlockTransfer;
@@ -46,6 +45,11 @@ class PickingController extends BaseOrderPickingController
     protected const REQUEST_PARAM_CSRF_TOKEN = 'token';
     protected const FORMAT_START_PICKING_TOKEN_NAME = 'start-picking-%d';
     protected const FORMAT_STOP_PICKING_TOKEN_NAME = 'stop-picking-%d';
+
+    protected const OMS_ORDER_STATUSES_FOR_PICKING_PROCESS = [
+        OmsConfig::STORE_STATE_READY_FOR_PICKING,
+        OmsConfig::STORE_STATE_READY_FOR_SELECTING_SHELVES,
+    ];
 
     /**
      * @param \Symfony\Component\HttpFoundation\Request $request
@@ -88,10 +92,9 @@ class PickingController extends BaseOrderPickingController
                 'reference' => $salesOrderTransfer->getOrderReference(),
                 'collectNumber' => $salesOrderTransfer->getCollectNumber(),
                 'itemCount' => $salesOrderTransfer->getItems()->count(),
-                'picked' => $this->isOrderPicked($merchantSalesOrderTransfer),
-                'pickedAt' => $merchantSalesOrderTransfer->getPickedAt(),
                 'isPicked' => $merchantSalesOrderTransfer->getFkUser() === $userTransfer->getIdUser(),
                 'requestedDeliveryDate' => $requestedDeliveryDatesByIdSalesOrders[$idSalesOrder],
+                'cartNote' => $salesOrderTransfer->getCartNote(),
             ];
         }
 
@@ -120,12 +123,7 @@ class PickingController extends BaseOrderPickingController
         $userTransfer = $this->getCurrentUser($request);
         $pickingZoneTransfer = $this->getFacade()->findPickingZoneInSession();
 
-        $orderPickingBlockTransfer = (new OrderPickingBlockTransfer())
-            ->setIdSalesOrder($idSalesOrder)
-            ->setIdPickingZone($pickingZoneTransfer->getIdPickingZone())
-            ->setIdUser($userTransfer->getIdUser());
-
-        if ($this->getFactory()->getPickingZoneFacade()->isOrderPickingBlockAvailableForUser($orderPickingBlockTransfer)) {
+        if (!$this->isOrderPickingBlockAvailableForUser($idSalesOrder, $userTransfer, $pickingZoneTransfer)) {
             $this->addErrorMessage(
                 static::PICKING_ERROR_MESSAGE_ORDER_IS_BEING_PROCESSED
             );
@@ -133,6 +131,10 @@ class PickingController extends BaseOrderPickingController
             return $this->redirectResponse(PickerConfig::URL_PICKING_LIST);
         }
 
+        $orderPickingBlockTransfer = (new OrderPickingBlockTransfer())
+            ->setIdSalesOrder($idSalesOrder)
+            ->setIdPickingZone($pickingZoneTransfer->getIdPickingZone())
+            ->setIdUser($userTransfer->getIdUser());
         $this->getFactory()->getPickingZoneFacade()->createOrderPickingBlock($orderPickingBlockTransfer);
 
         $orderPickingPath = Url::generate(
@@ -195,7 +197,7 @@ class PickingController extends BaseOrderPickingController
         if (!$this->getFactory()->getPermissionAccessFacade()->isAccessAllowed(
             $salesOrderTransfer,
             $userTransfer,
-            [OmsConfig::STORE_STATE_READY_FOR_PICKING]
+            static::OMS_ORDER_STATUSES_FOR_PICKING_PROCESS
         )) {
             $this->addErrorMessage(MessagesConfig::MESSAGE_PERMISSION_FAILED);
 
@@ -204,12 +206,7 @@ class PickingController extends BaseOrderPickingController
 
         $pickingZoneTransfer = $this->getFacade()->findPickingZoneInSession();
 
-        $orderPickingBlockTransfer = (new OrderPickingBlockTransfer())
-            ->setIdSalesOrder($idSalesOrder)
-            ->setIdPickingZone($pickingZoneTransfer->getIdPickingZone())
-            ->setIdUser($userTransfer->getIdUser());
-
-        if ($this->getFactory()->getPickingZoneFacade()->isOrderPickingBlockAvailableForUser($orderPickingBlockTransfer)) {
+        if (!$this->isOrderPickingBlockAvailableForUser($idSalesOrder, $userTransfer, $pickingZoneTransfer)) {
             $this->addErrorMessage(
                 static::PICKING_ERROR_MESSAGE_ORDER_IS_BEING_PROCESSED
             );
@@ -240,12 +237,29 @@ class PickingController extends BaseOrderPickingController
             );
         }
 
+        $pickingFormSkuKeys = [];
+        $pickingFormWeightKeys = [];
+
+        foreach ($orderItemSelectionForm->all() as $item) {
+            if (strpos($item->getName(), OrderItemSelectionForm::PREFIX_FIELD_SALES_ORDER_ITEM_SKU) === 0) {
+                $pickingFormSkuKeys[] = $item->getName();
+            }
+
+            if (strpos($item->getName(), OrderItemSelectionForm::PREFIX_FIELD_SALES_ORDER_ITEM_NEW_WEIGHT) !== false) {
+                $nameParts = explode('__', $item->getName());
+                $sku = end($nameParts);
+                $pickingFormWeightKeys[$sku] = $item->getName();
+            }
+        }
+
         return [
             'merchant' => $this->getMerchantFromRequest($request),
             'maxPickingBags' => $this->getFactory()->getConfig()->getMaxPickingBags(),
             'itemsCount' => $this->getItemsCount($aggregatedItemTransfers),
             'itemImageUrls' => $this->getSkuToImageMapFromItemTransfers($aggregatedItemTransfers),
             'pickingForm' => $orderItemSelectionForm->createView(),
+            'pickingFormSkuKeys' => $pickingFormSkuKeys,
+            'pickingFormWeightKeys' => $pickingFormWeightKeys,
             'requestParamIdSalesOrder' => PickerConfig::REQUEST_PARAM_ID_ORDER,
             'idSalesOrder' => $idSalesOrder,
             'orderReference' => $salesOrderTransfer->getOrderReference(),
@@ -274,16 +288,25 @@ class PickingController extends BaseOrderPickingController
                 OrderItemSelectionForm::PREFIX_FIELD_SALES_ORDER_ITEM_SKU
             );
 
+        $skuToWeightMap = $this->getFactory()->getFormDataMapper()
+            ->mapFormDataToSelectedWeightMap(
+                $formData,
+                OrderItemSelectionForm::PREFIX_FIELD_SALES_ORDER_ITEM_NEW_WEIGHT
+            );
+
         $orderItemStatusesTransfer = $this->getFactory()->getOrderItemsMapper()
             ->mapOrderItemsToOrderItemStatuses(
                 $salesOrderTransfer,
-                $skuToSelectedQuantityMap
+                $skuToSelectedQuantityMap,
+                $skuToWeightMap
             );
 
+        $pickingZoneTransfer = $this->getFacade()->findPickingZoneInSession();
         $pickingSalesOrderCollectionTransfer = $this->getFactory()->getFormDataMapper()
             ->mapFormDataToPickingSalesOrderCollection(
                 $formData,
-                $salesOrderTransfer
+                $salesOrderTransfer,
+                $pickingZoneTransfer
             );
 
         $this->addInfoMessage(
@@ -314,17 +337,19 @@ class PickingController extends BaseOrderPickingController
             ]
         )->build();
 
-        return $this->redirectResponse($orderPickingPath);
-    }
+        $orderChangeRequestTransfer = $this->getFactory()->getFormDataMapper()
+            ->mapFormDataToOrderItemChangeRequest(
+                $formData,
+                $salesOrderTransfer,
+                $selectedIdSalesOrderItems,
+                OrderItemSelectionForm::PREFIX_FIELD_SALES_ORDER_ITEM_NEW_WEIGHT
+            );
 
-    /**
-     * @param \Generated\Shared\Transfer\MerchantSalesOrderTransfer $merchantSalesOrderTransfer
-     *
-     * @return bool
-     */
-    protected function isOrderPicked(MerchantSalesOrderTransfer $merchantSalesOrderTransfer): bool
-    {
-        return $merchantSalesOrderTransfer->getStoreStatus() !== OmsConfig::STORE_STATE_READY_FOR_PICKING;
+        if ($orderChangeRequestTransfer->getOrderItemChangeRequest()->count() > 0) {
+            $this->getFactory()->getSalesFacade()->saveOrderChange($orderChangeRequestTransfer);
+        }
+
+        return $this->redirectResponse($orderPickingPath);
     }
 
     /**
@@ -356,7 +381,7 @@ class PickingController extends BaseOrderPickingController
     ): MerchantSalesOrderCollectionTransfer {
         $orderCriteriaFilterTransfer = (new OrderCriteriaFilterTransfer())
             ->setMerchantReferences([$userTransfer->getMerchantReference()])
-            ->setStoreStatuses([
+            ->setItemStatuses([
                 OmsConfig::STORE_STATE_READY_FOR_PICKING,
             ])
             ->setIdPickingZone($pickingZoneTransfer->getIdPickingZone())

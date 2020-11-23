@@ -14,7 +14,6 @@ use Pyz\Zed\Sales\Business\InvoiceOrder\InvoiceSalesOrderReader;
 use Pyz\Zed\Sales\Business\Model\Customer\PaginatedCustomerOrderOverview;
 use Pyz\Zed\Sales\Business\Model\Order\MinimumAgeHydrator;
 use Pyz\Zed\Sales\Business\Model\Order\MinimumAgeHydratorInterface;
-use Pyz\Zed\Sales\Business\Model\Order\OrderReferenceGenerator;
 use Pyz\Zed\Sales\Business\Model\Order\OrderStatusHydrator;
 use Pyz\Zed\Sales\Business\Model\Order\OrderStatusHydratorInterface;
 use Pyz\Zed\Sales\Business\Model\Order\OrderUpdater;
@@ -23,6 +22,7 @@ use Pyz\Zed\Sales\Business\Model\Order\SalesOrderSaver;
 use Pyz\Zed\Sales\Business\Order\OrderHydrator;
 use Pyz\Zed\Sales\Business\Order\OrderReader;
 use Pyz\Zed\Sales\Business\Order\OrderReaderInterface;
+use Pyz\Zed\Sales\Business\OrderChange\OrderChangeSaver;
 use Pyz\Zed\Sales\Business\OrderDate\OrderDateCheck;
 use Pyz\Zed\Sales\Business\OrderItem\OrderItemExpander;
 use Pyz\Zed\Sales\SalesDependencyProvider;
@@ -64,6 +64,19 @@ class SalesBusinessFactory extends SprykerSalesBusinessFactory
     public function createOrderUpdater(): OrderUpdaterInterface
     {
         return new OrderUpdater($this->getQueryContainer());
+    }
+
+    /**
+     * @return \Pyz\Zed\Sales\Business\OrderChange\OrderChangeSaver
+     */
+    public function createOrderChangeSaver()
+    {
+        return new OrderChangeSaver(
+            $this->getQueryContainer(),
+            $this->createOrderHydratorWithMultiShippingAddress(),
+            $this->createOrderUpdater(),
+            $this->getCalculationFacade()
+        );
     }
 
     /**
@@ -219,16 +232,6 @@ class SalesBusinessFactory extends SprykerSalesBusinessFactory
     {
         return new OrderDateCheck(
             $this->getDateTimeWithZoneService()
-        );
-    }
-
-    /**
-     * @return \Spryker\Zed\Sales\Business\Model\Order\OrderReferenceGeneratorInterface
-     */
-    public function createReferenceGenerator()
-    {
-        return new OrderReferenceGenerator(
-            $this->getConfig()->getOrderReferenceDefaults()
         );
     }
 

@@ -676,7 +676,7 @@ $config[TimeSlotConstants::SHIPMENT_TIME_SLOTS] = [
 
 $config[TimeSlotConstants::SAME_DAY_SHIPMENT_TIME_SLOTS] = [
     ShipmentConfig::SHIPMENT_METHOD_CLICK_AND_COLLECT => [
-        'EIN' => [
+        'KMD' => [
             '09:00' => [
                 '12:00-14:00',
                 '14:00-16:00',
@@ -688,7 +688,7 @@ $config[TimeSlotConstants::SAME_DAY_SHIPMENT_TIME_SLOTS] = [
         ],
     ],
     ShipmentConfig::SHIPMENT_METHOD_DELIVERY => [
-        'EIN' => [
+        'KMD' => [
             '09:00' => [
                 '12:00-14:00',
                 '14:00-16:00',
@@ -819,3 +819,28 @@ $config[StoreConstants::STORE_NAMES] = [
 
 // ----------- Google Tag Manager
 $config[GoogleTagManagerConstants::CONTAINER_ID] = 'GTM-KN8QSGS';
+
+// ---------- Customer dropdowns
+$config[\Pyz\Shared\Customer\CustomerConstants::CUSTOMER_COUNTRY] = [
+    60 => 'customer.registration.country_placeholder',
+];
+
+$config[\Pyz\Shared\Customer\CustomerConstants::CUSTOMER_PHONE_PREFIX] =
+[
+    '+49' => 'customer.registration.phone.prefix_placeholder',
+];
+
+$config[\Pyz\Shared\Customer\CustomerConstants::CDC_API_KEY] =
+    [
+        'cdcApiKey' => '3_IVfYuFFTkEygbMQjcP8LamKwRZBH4_qjl-EAGSvZJPGTAL59E9yUPdTxqLCyofkZ',
+    ];
+
+$config[\Pyz\Shared\Customer\CustomerConstants::CDC_API_URL] =
+    [
+        'cdcApiUrl' => 'https://accounts.eu1.gigya.com/',
+    ];
+
+$config[\Pyz\Shared\Customer\CustomerConstants::CDC_API_SECRET_KEY] =
+    [
+        'cdcApiSecretKey' => '',
+    ];

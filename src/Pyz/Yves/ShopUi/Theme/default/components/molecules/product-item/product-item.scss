@@ -7,6 +7,11 @@
             padding: 0 rem(15) rem(30);
         }
 
+        @include helper-breakpoint-media-max($sm-max) {
+            padding: 0 rem(15) 0 rem(15) ;
+            margin-bottom: 15px;
+        }
+
         &--catalog {
             padding-bottom: rem(15);
 
@@ -18,6 +23,10 @@
         &__image-wrap {
             position: relative;
             overflow: hidden;
+            @include helper-breakpoint-media-max($sm-max) {
+                width:150px;
+                height:auto;
+            }
 
             a {
                 &:hover {
@@ -62,10 +71,13 @@
             position: relative;
             display: flex;
             flex-direction: column;
+            @include helper-breakpoint-media-max($sm-max) {
+                flex-direction: row;
+            }
             height: 100%;
             color: $setting-color-black;
             background: $setting-color-white;
-            padding-bottom: rem(20);
+            padding-bottom: rem(14);
             border-radius: rem(2);
             border: rem(1) solid $setting-color-gray-1;
 
@@ -91,11 +103,16 @@
             flex-direction: column;
             padding: 0 rem(20);
             flex-grow: 1;
+            @include helper-breakpoint-media-max($sm-max) {
+               width:100%;
+            }
         }
 
         &__content-top {
             flex-grow: 1;
-
+            @include helper-breakpoint-media-max($sm-max) {
+                padding-top: 20px;
+            }
             @include helper-breakpoint-media-min($md-min) {
                 padding-bottom: rem(20);
             }
@@ -122,6 +139,34 @@
                 color: $setting-color-globus-darkOrange;
                 text-decoration: none;
             }
+
+            @include helper-breakpoint-media-max($sm-max) {
+               font-size: rem(14);
+            }
+        }
+
+        .add-to-cart-btn {
+            @include helper-breakpoint-media-max($sm-max) {
+                text-align: right;
+                position: relative;
+                top:0px;
+                right:-5px;
+                a {
+                    justify-content: center;
+                    width: 30px;
+                    min-width: 30px;
+                    padding:15px;
+                    border-radius: 50%;
+                    height: 30px;
+                    .add-details-to-cart-text-holder {
+                        display: none;
+                    }
+                    .icon {
+                        width: 15px;
+                        margin: 0px;
+                    }
+                }
+            }
         }
 
         &__info-more {
@@ -129,10 +174,25 @@
             justify-content: space-between;
             margin: 0 rem(-4);
             align-items: flex-end;
+            @include helper-breakpoint-media-max($sm-max) {
+                flex-direction: column;
+                align-items: flex-start;
+            }
         }
 
         &__info-more-col {
             padding: 0 rem(4);
+        }
+
+        &__info-more-col:nth-child(1) {
+            color:gray;
+        }
+
+        &__info-more-col:nth-child(2) {
+            @include helper-breakpoint-media-max($sm-max) {
+                margin-top: 10px;
+                font-weight: bold;
+            }
         }
 
         &__sale-volume {

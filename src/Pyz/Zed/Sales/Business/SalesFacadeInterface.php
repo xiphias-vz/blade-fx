@@ -8,6 +8,7 @@
 namespace Pyz\Zed\Sales\Business;
 
 use DateTime;
+use Generated\Shared\Transfer\OrderChangeRequestTransfer;
 use Generated\Shared\Transfer\OrderCriteriaFilterTransfer;
 use Generated\Shared\Transfer\OrderTransfer;
 use Generated\Shared\Transfer\OrderUpdateRequestTransfer;
@@ -121,6 +122,24 @@ interface SalesFacadeInterface extends SprykerSalesFacadeInterface
     public function getSalesOrderItemsIdsByIdSalesOrderAndStates(int $idSalesOrder, array $states): array;
 
     /**
+     *  Specification:
+     * - Retrieves sales order item IDs using given ID sales order, ID picking zone and OMS order item states.
+     *
+     * @api
+     *
+     * @param int $idSalesOrder
+     * @param int $idPickingZone
+     * @param string[] $states
+     *
+     * @return string[]
+     */
+    public function getSalesOrderItemsIdsByIdSalesOrderAndPickingZoneAndStates(
+        int $idSalesOrder,
+        int $idPickingZone,
+        array $states
+    ): array;
+
+    /**
      * Specification:
      * - save order reference.
      *
@@ -152,6 +171,18 @@ interface SalesFacadeInterface extends SprykerSalesFacadeInterface
      * @return bool
      */
     public function updateOrderWithOrderUpdateRequest(int $idSalesOrder, OrderUpdateRequestTransfer $orderUpdateRequestTransfer): bool;
+
+    /**
+     * Specification:
+     * - update order items with new values
+     *
+     * @api
+     *
+     * @param \Generated\Shared\Transfer\OrderChangeRequestTransfer $orderChangeRequestTransfer
+     *
+     * @return bool
+     */
+    public function saveOrderChange(OrderChangeRequestTransfer $orderChangeRequestTransfer);
 
     /**
      * Specification:

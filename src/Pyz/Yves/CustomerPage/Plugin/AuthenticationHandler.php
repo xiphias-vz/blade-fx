@@ -8,6 +8,7 @@
 namespace Pyz\Yves\CustomerPage\Plugin;
 
 use Generated\Shared\Transfer\CustomerTransfer;
+use Pyz\Yves\MerchantSwitcherWidget\Resolver\ShopContextResolver;
 use SprykerShop\Yves\CustomerPage\Plugin\AuthenticationHandler as SprykerAuthenticationHandler;
 
 /**
@@ -24,6 +25,7 @@ class AuthenticationHandler extends SprykerAuthenticationHandler
      */
     public function registerCustomer(CustomerTransfer $customerTransfer)
     {
+        $customerTransfer->setMerchantReference($this->createShopContextResolver()->resolve()->getMerchantReference());
         $customerResponseTransfer = parent::registerCustomer($customerTransfer);
 
         $customerResponseTransfer->setIsSuccess(true);
@@ -42,5 +44,13 @@ class AuthenticationHandler extends SprykerAuthenticationHandler
      */
     protected function loginAfterSuccessfulRegistration(CustomerTransfer $customerTransfer)
     {
+    }
+
+    /**
+     * @return \Pyz\Yves\MerchantSwitcherWidget\Resolver\ShopContextResolver
+     */
+    public function createShopContextResolver(): ShopContextResolver
+    {
+        return new ShopContextResolver($this->getApplication());
     }
 }

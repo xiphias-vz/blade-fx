@@ -7,14 +7,14 @@
 
 namespace Pyz\Yves\CustomerPage\Form;
 
-use Pyz\Yves\CustomerPage\Form\Constraints\PostalCodeConstraint;
+use Pyz\Shared\Customer\CustomerConstants;
+use Spryker\Shared\Config\Config;
 use SprykerShop\Yves\CustomerPage\Form\RegisterForm as SprykerRegisterForm;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
-use Symfony\Component\Form\Extension\Core\Type\TelType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Validator\Constraint;
@@ -36,7 +36,16 @@ class RegisterForm extends SprykerRegisterForm
     public const FIELD_ADDITIONAL_INFORMATION = 'additional_info';
     public const FIELD_PHONE = 'phone';
     public const FIELD_MERCHANT = 'merchant_reference';
+    public const FIELD_ADDITIONAL_REGISTER = 'third_party_registration';
     public const FORM_NAME = self::BLOCK_PREFIX;
+    public const FIELD_COUNTRY = 'country';
+    public const FIELD_PHONE_PREFIX_1 = 'phone_prefix';
+    public const FIELD_PHONE_PREFIX_2 = 'mobile_phone_prefix';
+    public const FIELD_MOBILE_PHONE = 'mobile_phone_number';
+    public const FIELD_RECEIVE_NOTIFICATIONS = 'accept_notifications';
+    public const FIELD_DAY = 'birth_day';
+    public const FIELD_MONTH = 'birth_month';
+    public const FIELD_YEAR = 'birth_year';
 
     protected const VALIDATION_ADDRESS_NUMBER_MESSAGE = 'validation.address_number';
     protected const VALIDATION_NOT_BLANK_MESSAGE = 'validation.not_blank';
@@ -64,22 +73,30 @@ class RegisterForm extends SprykerRegisterForm
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $this
+            ->addEmailField($builder)
+            ->addPasswordField($builder, $options)
             ->addSalutationField($builder)
             ->addFirstNameField($builder)
-            ->addLastNameField($builder)
-            ->addEmailField($builder)
-            ->addPasswordField($builder, $options);
+            ->addLastNameField($builder);
 
         $this
             ->addAddress1Field($builder, $options)
             ->addAddress2Field($builder, $options)
-            ->addFloorLevelField($builder)
-            ->addAdditionalInformationField($builder)
             ->addZipCodeField($builder, $options)
             ->addCityField($builder, $options)
-            ->addMerchantField($builder)
+            ->addCountryField($builder)
+            ->addMobilePrefixField1($builder)
+            ->addMobileNumber($builder)
+            ->addMobilePrefixField2($builder)
             ->addPhoneField($builder)
+            ->addDayField($builder)
+            ->addMonthField($builder)
+            ->addYearField($builder)
             ->addAcceptTermsField($builder);
+
+        $this
+            ->addFieldReceiveNotificationsAboutProducts($builder)
+            ->addAdditionalRegisterField($builder);
     }
 
     /**
@@ -200,12 +217,44 @@ class RegisterForm extends SprykerRegisterForm
     protected function addAcceptTermsField(FormBuilderInterface $builder)
     {
         $builder->add(self::FIELD_ACCEPT_TERMS, CheckboxType::class, [
-            'label' => 'forms.accept_terms',
+            'label' => 'register.accept_terms',
             'mapped' => false,
             'required' => true,
             'constraints' => [
                 $this->createNotBlankConstraint(),
             ],
+        ]);
+
+        return $this;
+    }
+
+    /**
+     * @param \Symfony\Component\Form\FormBuilderInterface $builder
+     *
+     * @return $this
+     */
+    protected function addAdditionalRegisterField(FormBuilderInterface $builder)
+    {
+        $builder->add(self::FIELD_ADDITIONAL_REGISTER, CheckboxType::class, [
+            'label' => 'forms.additional_register',
+            'mapped' => true,
+            'required' => false,
+        ]);
+
+        return $this;
+    }
+
+    /**
+     * @param \Symfony\Component\Form\FormBuilderInterface $builder
+     *
+     * @return $this
+     */
+    protected function addFieldReceiveNotificationsAboutProducts(FormBuilderInterface $builder)
+    {
+        $builder->add(self::FIELD_RECEIVE_NOTIFICATIONS, CheckboxType::class, [
+           'label' => 'forms.recieve_notifications',
+           'mapped' => true,
+            'required' => false,
         ]);
 
         return $this;
@@ -325,6 +374,94 @@ class RegisterForm extends SprykerRegisterForm
      *
      * @return $this
      */
+    protected function addCountryField(FormBuilderInterface $builder)
+    {
+        $countries = Config::get(CustomerConstants::CUSTOMER_COUNTRY);
+        $builder->add(self::FIELD_COUNTRY, ChoiceType::class, [
+            'choices' => array_flip($countries),
+            'required' => true,
+            'label' => 'customer.address.country',
+            'constraints' =>
+            [
+                $this->createNotBlankConstraint(),
+            ],
+        ]);
+
+        return $this;
+    }
+
+    /**
+     * @param \Symfony\Component\Form\FormBuilderInterface $builder
+     *
+     * @return $this
+     */
+    protected function addMobilePrefixField1(FormBuilderInterface $builder)
+    {
+        $prefixes = Config::get(CustomerConstants::CUSTOMER_PHONE_PREFIX);
+        $builder->add(self::FIELD_PHONE_PREFIX_1, ChoiceType::class, [
+            'choices' => array_flip($prefixes),
+            'required' => false,
+            'label' => false,
+            'constraints' =>
+            [
+                $this->createNotBlankConstraint(),
+            ],
+        ]);
+
+        return $this;
+    }
+
+    /**
+     * @param \Symfony\Component\Form\FormBuilderInterface $builder
+     *
+     * @return $this
+     */
+    protected function addMobilePrefixField2(FormBuilderInterface $builder)
+    {
+        $prefixes = Config::get(CustomerConstants::CUSTOMER_PHONE_PREFIX);
+        $builder->add(self::FIELD_PHONE_PREFIX_2, ChoiceType::class, [
+            'choices' => array_flip($prefixes),
+            'required' => false,
+            'label' => false,
+            'constraints' =>
+                [
+                    $this->createNotBlankConstraint(),
+                ],
+        ]);
+
+        return $this;
+    }
+
+    /**
+     * @param \Symfony\Component\Form\FormBuilderInterface $builder
+     *
+     * @return $this
+     */
+    protected function addMobileNumber(FormBuilderInterface $builder)
+    {
+        $builder->add(self::FIELD_MOBILE_PHONE, TextType::class, [
+            'required' => false,
+            'trim' => true,
+            'label' => false,
+            'constraints' =>
+            [
+                $this->createNotBlankConstraint(),
+                ProfileForm::createSafeStringRegexConstraint(),
+            ],
+            'attr' =>
+                [
+                    'placeholder' => 'mobile.phone.number',
+                ],
+        ]);
+
+        return $this;
+    }
+
+    /**
+     * @param \Symfony\Component\Form\FormBuilderInterface $builder
+     *
+     * @return $this
+     */
     protected function addAdditionalInformationField(FormBuilderInterface $builder)
     {
         $builder->add(self::FIELD_ADDITIONAL_INFORMATION, TextType::class, [
@@ -353,9 +490,6 @@ class RegisterForm extends SprykerRegisterForm
             'trim' => true,
             'constraints' => [
                 $this->createNotBlankConstraint(),
-                new PostalCodeConstraint([
-                    'customerBaseClient' => $this->getFactory()->getBaseCustomerClient(),
-                ]),
             ],
             'attr' => [
                 'placeholder' => 'customer.registration.zip_placeholder',
@@ -397,16 +531,101 @@ class RegisterForm extends SprykerRegisterForm
      */
     protected function addPhoneField(FormBuilderInterface $builder)
     {
-        $builder->add(static::FIELD_PHONE, TelType::class, [
-            'label' => 'customer.address.phone',
+        $builder->add(static::FIELD_PHONE, TextType::class, [
+            'label' => false,
+            'required' => false,
+            'trim' => true,
+            'constraints' => [
+                ProfileForm::createSafeStringRegexConstraint(),
+            ],
+            'attr' =>
+            [
+                'placeholder' => 'customer.land.phone',
+            ],
+        ]);
+
+        return $this;
+    }
+
+    /**
+     * @param \Symfony\Component\Form\FormBuilderInterface $builder
+     *
+     * @return $this
+     */
+    protected function addDayField(FormBuilderInterface $builder)
+    {
+        $days = [];
+        for ($i = 1; $i < 32; $i++) {
+            $days[$i] = $i;
+        }
+        $builder->add(static::FIELD_DAY, ChoiceType::class, [
+            'choices' => array_flip($days),
             'required' => true,
             'trim' => true,
+            'label' => false,
             'attr' => [
-                'placeholder' => 'customer.registration.phone_placeholder',
+                'placeholder' => 'customer.date.day',
             ],
-            'constraints' => [
+            'constraints' =>
+            [
                 $this->createNotBlankConstraint(),
-                ProfileForm::createSafeStringRegexConstraint(),
+            ],
+        ]);
+
+        return $this;
+    }
+
+    /**
+     * @param \Symfony\Component\Form\FormBuilderInterface $builder
+     *
+     * @return $this
+     */
+    protected function addMonthField(FormBuilderInterface $builder)
+    {
+        $months = [];
+        for ($i = 1; $i < 13; $i++) {
+            $months[$i] = $i;
+        }
+        $builder->add(static::FIELD_MONTH, ChoiceType::class, [
+            'choices' => array_flip($months),
+            'required' => true,
+            'trim' => true,
+            'label' => false,
+            'attr' => [
+                'placeholder' => 'customer.date.month',
+            ],
+            'constraints' =>
+                [
+                    $this->createNotBlankConstraint(),
+                ],
+        ]);
+
+        return $this;
+    }
+
+    /**
+     * @param \Symfony\Component\Form\FormBuilderInterface $builder
+     *
+     * @return $this
+     */
+    protected function addYearField(FormBuilderInterface $builder)
+    {
+        $years = [];
+        $currentYear = date("Y");
+        for ($i = (int)$currentYear; $i >= 1900; $i--) {
+            $years[$i] = $i;
+        }
+        $builder->add(static::FIELD_YEAR, ChoiceType::class, [
+            'choices' => array_flip($years),
+            'required' => true,
+            'trim' => true,
+            'label' => false,
+            'attr' => [
+                'placeholder' => 'customer.date.year',
+            ],
+            'constraints' =>
+            [
+                $this->createNotBlankConstraint(),
             ],
         ]);
 

@@ -4,6 +4,10 @@
         flex-flow: row wrap;
         padding: rem(20) 0;
 
+        @include helper-breakpoint-media-max($sm-max) {
+           padding: 0px;
+        }
+
         &--bottom {
             border-bottom: none;
             border-top: rem(1) solid $setting-color-gray-3;

@@ -28,7 +28,9 @@
         <property name="productNumber" type="string"/>
         <property name="pickZone" type="string"/>
         <property name="sapWgr" type="string"/>
+        <property name="newWeight" type="int"/>
         <property name="bonText" type="string"/>
+        <property name="weightPerUnit" type="int"/>
         <property name="sequence" type="string"/>
     </transfer>
 
@@ -56,6 +58,18 @@
         <property name="pickedAt" type="string"/>
         <property name="collectedAt" type="string"/>
         <property name="deliveredAt" type="string"/>
+    </transfer>
+
+    <transfer name="OrderChangeRequest">
+        <property name="fkSalesOrder" type="int"/>
+        <property name="orderItemChangeRequest" type="OrderItemChangeRequest[]"/>
+    </transfer>
+
+    <transfer name="OrderItemChangeRequest">
+        <property name="idSalesOrderItem" type="int"/>
+        <property name="quantity" type="int"/>
+        <property name="newWeight" type="int"/>
+        <property name="price" type="int"/>
     </transfer>
 
 </transfers>

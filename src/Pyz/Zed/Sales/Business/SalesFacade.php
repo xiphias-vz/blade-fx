@@ -8,6 +8,7 @@
 namespace Pyz\Zed\Sales\Business;
 
 use DateTime;
+use Generated\Shared\Transfer\OrderChangeRequestTransfer;
 use Generated\Shared\Transfer\OrderCriteriaFilterTransfer;
 use Generated\Shared\Transfer\OrderTransfer;
 use Generated\Shared\Transfer\OrderUpdateRequestTransfer;
@@ -111,6 +112,26 @@ class SalesFacade extends SprykerSalesFacade implements SalesFacadeInterface
     }
 
     /**
+     * {@inheritDoc}
+     *
+     * @api
+     *
+     * @param int $idSalesOrder
+     * @param int $idPickingZone
+     * @param string[] $states
+     *
+     * @return string[]
+     */
+    public function getSalesOrderItemsIdsByIdSalesOrderAndPickingZoneAndStates(
+        int $idSalesOrder,
+        int $idPickingZone,
+        array $states
+    ): array {
+        return $this->getRepository()
+            ->getSalesOrderItemsIdsByIdSalesOrderAndPickingZoneAndStates($idSalesOrder, $idPickingZone, $states);
+    }
+
+    /**
      * @inheritDoc
      */
     public function getOrdersInfoByInvoiceDateTimeRange(?DateTime $dateFrom, ?DateTime $dateTo): array
@@ -136,6 +157,18 @@ class SalesFacade extends SprykerSalesFacade implements SalesFacadeInterface
     {
         return $this->getEntityManager()
             ->updateOrderWithOrderUpdateRequest($idSalesOrder, $orderUpdateRequestTransfer);
+    }
+
+    /**
+     * @param \Generated\Shared\Transfer\OrderChangeRequestTransfer $orderChangeRequestTransfer
+     *
+     * @return bool
+     */
+    public function saveOrderChange(OrderChangeRequestTransfer $orderChangeRequestTransfer)
+    {
+        return $this->getFactory()
+            ->createOrderChangeSaver()
+            ->saveOrderChange($orderChangeRequestTransfer);
     }
 
     /**

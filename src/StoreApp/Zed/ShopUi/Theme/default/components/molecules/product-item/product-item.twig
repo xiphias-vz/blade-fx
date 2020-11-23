@@ -44,7 +44,7 @@
                     } only %}
                 </div>
                 {% block quantity %}
-                    {% if data.productsCount > 1 %}
+                    {% if data.productsCount >= 1 %}
                         <div class="{{ config.name }}__quantity">
                             <div class="{{ config.jsName }}__minus {{ config.name }}__minus spacing-right spacing-right--inner">
                                 {% include atom('icon') with {
@@ -72,6 +72,8 @@
                         {% block formElement %}{% endblock %}
                     </div>
                 {% endblock %}
+
+                {% block formElementWeight %}{% endblock %}
             </div>
         </div>
     </div>
