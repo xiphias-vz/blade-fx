@@ -41,16 +41,22 @@ class CategoryWriterStep extends SprykerCategoryWriterStep
     public const NAVIGATION_MODE_DESKTOP = 'MAIN_NAVIGATION_DESKTOP';
 
     protected const ROOT = 'cls_pim_de_cus_class';
+    protected const ROOT_NAME = 'DE - Kunden Produkt Hierarchie';
 
     /**
      * @var array
      */
-    protected static $idCategoryBuffer = [];
+    public static $idCategoryBuffer = [];
 
     /**
      * @var array
      */
     protected static $idCategoryTemplateBuffer = [];
+
+    /**
+     * @var bool
+     */
+    protected static $isRootImported = false;
 
     /**
      * @var array
@@ -64,7 +70,20 @@ class CategoryWriterStep extends SprykerCategoryWriterStep
      */
     public function execute(DataSetInterface $dataSet)
     {
-        parent::execute($dataSet);
+        if ($dataSet[static::KEY_PARENT_CATEGORY_KEY] === static::ROOT && !static::$isRootImported) {
+            $dataSetRootCategory = clone $dataSet;
+            $dataSetRootCategory[static::KEY_CATEGORY_KEY] = static::ROOT;
+            $dataSetRootCategory[static::KEY_PARENT_CATEGORY_KEY] = null;
+            $dataSetRootCategory[static::KEY_NAME] = static::ROOT_NAME;
+
+            $this->execute($dataSetRootCategory);
+        }
+
+        $categoryEntity = $this->findOrCreateCategory($dataSet);
+        $this->findOrCreateAttributes($categoryEntity, $dataSet);
+        $categoryNodeEntity = $this->findOrCreateNode($categoryEntity, $dataSet);
+
+        $this->categoryReader->addCategory($categoryEntity, $categoryNodeEntity);
     }
 
     /**
@@ -182,6 +201,7 @@ class CategoryWriterStep extends SprykerCategoryWriterStep
 
         if ($dataSet[static::KEY_CATEGORY_KEY] === static::ROOT) {
             $categoryNodeEntity->setIsRoot(true);
+            static::$isRootImported = true;
         }
 
         $idParentCategoryNode = $this->getParentCategoryId($dataSet, $dataSet['locales']['de_DE']);
