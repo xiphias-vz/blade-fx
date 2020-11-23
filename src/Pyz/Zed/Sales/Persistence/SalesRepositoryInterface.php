@@ -8,6 +8,8 @@
 namespace Pyz\Zed\Sales\Persistence;
 
 use Generated\Shared\Transfer\OrderCriteriaFilterTransfer;
+use Generated\Shared\Transfer\QuoteTransfer;
+use Generated\Shared\Transfer\SpySalesOrderItemEntityTransfer;
 use Spryker\Zed\Sales\Persistence\SalesRepositoryInterface as SprykerSalesRepositoryInterface;
 
 interface SalesRepositoryInterface extends SprykerSalesRepositoryInterface
@@ -57,9 +59,30 @@ interface SalesRepositoryInterface extends SprykerSalesRepositoryInterface
     public function getSalesOrderItemsIdsByIdSalesOrderAndStates(int $idSalesOrder, array $states): array;
 
     /**
+     * @param int $idSalesOrder
+     * @param int $idPickingZone
+     * @param string[] $states
+     *
+     * @return string[]
+     */
+    public function getSalesOrderItemsIdsByIdSalesOrderAndPickingZoneAndStates(
+        int $idSalesOrder,
+        int $idPickingZone,
+        array $states
+    ): array;
+
+    /**
      * @param int[] $idSalesOrders
      *
      * @return string[]
      */
     public function findRequestedDeliveryDatesByIdSalesOrders(array $idSalesOrders): array;
+
+    /***
+     * @param \Generated\Shared\Transfer\QuoteTransfer $quoteTransfer
+     * @param \Generated\Shared\Transfer\SpySalesOrderItemEntityTransfer $itemEntityTransfer
+     *
+     * @return string|null
+     */
+    public function findProductSequence(QuoteTransfer $quoteTransfer, SpySalesOrderItemEntityTransfer $itemEntityTransfer): ?string;
 }

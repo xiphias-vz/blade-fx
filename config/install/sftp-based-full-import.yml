@@ -9,6 +9,12 @@ sections:
             command: "vendor/bin/console data:import:files-download"
 
     import:
+        import-product-attributes:
+            command: "vendor/bin/console data:import product-attribute-key -f spryker/2.globus_articles.csv -o 1 -l 1 -vvv --no-ansi || true"
+
+        import-root-categories:
+            command: "vendor/bin/console data:import category -f spryker/root_category.csv -vvv --no-ansi || true"
+
         import-categories:
             command: "vendor/bin/console data:import category -f spryker/categories.csv -vvv --no-ansi || true"
 

@@ -105,24 +105,4 @@ class SummaryStep extends SprykerSummaryStep
 
         return true;
     }
-
-    /**
-     * @param \Spryker\Shared\Kernel\Transfer\AbstractTransfer $quoteTransfer
-     *
-     * @return bool
-     */
-    public function postCondition(AbstractTransfer $quoteTransfer)
-    {
-        return parent::postCondition($quoteTransfer) && $this->isTermsApprovalSet($quoteTransfer);
-    }
-
-    /**
-     * @param \Generated\Shared\Transfer\QuoteTransfer $quoteTransfer
-     *
-     * @return bool
-     */
-    protected function isTermsApprovalSet(QuoteTransfer $quoteTransfer): bool
-    {
-        return $quoteTransfer->getTermsApproval() !== false;
-    }
 }

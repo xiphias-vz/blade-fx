@@ -36,6 +36,11 @@
         }
 
         &__image {
+            @include helper-breakpoint-media-max($sm-max) {
+                margin: 0px auto;
+            }
+
+
             &--cart-bundle {
                 max-height: calc(100% - #{rem(10)});
                 max-width: calc(100% - #{rem(10)});

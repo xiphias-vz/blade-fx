@@ -54,7 +54,6 @@
                     reference: collectionOrder.reference,
                     collectNumber: collectionOrder.collectNumber,
                     productsCount: collectionOrder.pickedProductCount,
-                    bagsCount: collectionOrder.bagsCount,
                     date: collectionOrder.requestedDeliveryDate | split(' ') | first | date('d/m/Y'),
                     deadline: collectionOrder.requestedDeliveryDate | split(' ') | last ~ ' ' ~ 'hour' | trans
                 },
@@ -82,52 +81,19 @@
                                 text: 'Order ID' | trans ~ ': ' ~ data.reference
                             }
                         } only %}
-                    {% else %}
-                        <form action="{{ embed.urlCollectByCustomerDetails }}">
-                            <input type="hidden" name="{{ embed.paramIdSalesOrder }}" value="{{ embed.collectionOrder.idSalesOrder }}">
-                            <button type="submit" class="button button--small button--table button--expand button--hollow">
-                                {{ 'Order ID' | trans }}: {{ data.reference }}<br/>
-                            </button>
-                        </form>
                     {% endif %}
                 {% endblock %}
 
                 {% block additionalFields %}
                     <div class="grid grid--expand">
                         <div class="col">
-                            {% include atom('icon-row') with {
-                                modifiers: ['round'],
-                                data: {
-                                    iconName: 'bag',
-                                    rowText: data.bagsCount ~ ' ' ~ 'picker.collect-by-customer.order.bags' | trans
-                                }
-                            } only %}
+                            {% for pickingSalesOrder in embed.collectionOrder.pickingSalesOrders %}
+                                {{ pickingSalesOrder.containerCode }} -> {{ pickingSalesOrder.shelfCode }}<br />
+                            {% endfor %}
                         </div>
-                        <div class="col col--right">
-                            {% set isCheckAge = embed.collectionOrder.deliveryMinimumAge > 0 %}
 
-                            {% embed atom('icon-row') with {
-                                modifiers: ['round', 'center', 'age'] | merge(isCheckAge ? ['error'] : []),
-                                data: {
-                                    iconName: 'user-account'
-                                },
-                                embed: {
-                                    isCheckAge: isCheckAge,
-                                    deliveryMinimumAge: embed.collectionOrder.deliveryMinimumAge
-                                }
-                            } only %}
-                                {% block text %}
-                                    {% if embed.isCheckAge %}
-                                        {{- embed.deliveryMinimumAge -}}+
-                                    {% else %}
-                                        {% include atom('icon') with {
-                                            data: {
-                                                name: 'check'
-                                            }
-                                        } only %}
-                                    {% endif %}
-                                {% endblock %}
-                            {% endembed %}
+                        <div class="col col--right">
+                            {{ embed.collectionOrder.cartNote }}
                         </div>
 
                         <div class="col col--sm-12 spacing-top">

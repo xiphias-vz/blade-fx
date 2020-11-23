@@ -165,6 +165,19 @@ class MerchantSalesOrderRepository extends SprykerMerchantSalesOrderRepository i
             );
         }
 
+        if ($orderFilterCriteriaTransfer->isPropertyModified(
+            OrderCriteriaFilterTransfer::ITEM_STATUSES
+        )) {
+            $merchantSalesOrderQuery
+                ->useOrderQuery()
+                    ->useItemQuery()
+                        ->useStateQuery()
+                            ->filterByName_In($orderFilterCriteriaTransfer->getItemStatuses())
+                        ->endUse()
+                    ->endUse()
+                ->endUse();
+        }
+
         if ($orderFilterCriteriaTransfer->isPropertyModified(OrderCriteriaFilterTransfer::ID_PICKING_ZONE)
             && $orderFilterCriteriaTransfer->isPropertyModified(OrderCriteriaFilterTransfer::ID_USER)
         ) {

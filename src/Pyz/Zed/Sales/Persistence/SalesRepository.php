@@ -9,7 +9,10 @@ namespace Pyz\Zed\Sales\Persistence;
 
 use DateTime;
 use Generated\Shared\Transfer\OrderCriteriaFilterTransfer;
+use Generated\Shared\Transfer\QuoteTransfer;
+use Generated\Shared\Transfer\SpySalesOrderItemEntityTransfer;
 use Orm\Zed\Payone\Persistence\Map\SpyPaymentPayoneTableMap;
+use Orm\Zed\PickingZone\Persistence\Map\PyzPickingZoneTableMap;
 use Orm\Zed\Sales\Persistence\Map\SpySalesOrderItemTableMap;
 use Orm\Zed\Sales\Persistence\Map\SpySalesOrderTableMap;
 use Orm\Zed\Sales\Persistence\Map\SpySalesShipmentTableMap;
@@ -227,6 +230,38 @@ class SalesRepository extends SprykerSalesRepository implements SalesRepositoryI
     }
 
     /**
+     * @param int $idSalesOrder
+     * @param int $idPickingZone
+     * @param string[] $states
+     *
+     * @return string[]
+     */
+    public function getSalesOrderItemsIdsByIdSalesOrderAndPickingZoneAndStates(
+        int $idSalesOrder,
+        int $idPickingZone,
+        array $states
+    ): array {
+        $salesOrderItemQuery = $this->getFactory()
+            ->createSalesOrderItemQuery()
+            ->addJoin(
+                SpySalesOrderItemTableMap::COL_PICK_ZONE,
+                PyzPickingZoneTableMap::COL_NAME,
+                Criteria::INNER_JOIN
+            )
+            ->filterByFkSalesOrder($idSalesOrder)
+            ->addAnd(PyzPickingZoneTableMap::COL_ID_PICKING_ZONE, $idPickingZone)
+            ->useStateQuery()
+                ->filterByName_In($states)
+            ->endUse()
+            ->select([
+                SpySalesOrderItemTableMap::COL_ID_SALES_ORDER_ITEM,
+            ])
+            ->find();
+
+        return $salesOrderItemQuery->toArray();
+    }
+
+    /**
      * @inheritDoc
      */
     public function findRequestedDeliveryDatesByIdSalesOrders(array $idSalesOrders): array
@@ -246,6 +281,35 @@ class SalesRepository extends SprykerSalesRepository implements SalesRepositoryI
             SpySalesShipmentTableMap::COL_FK_SALES_ORDER,
             SpySalesShipmentTableMap::COL_REQUESTED_DELIVERY_DATE
         );
+    }
+
+    /***
+     * @param \Generated\Shared\Transfer\QuoteTransfer $quoteTransfer
+     * @param \Generated\Shared\Transfer\SpySalesOrderItemEntityTransfer $itemEntityTransfer
+     *
+     * @return string|null
+     */
+    public function findProductSequence(QuoteTransfer $quoteTransfer, SpySalesOrderItemEntityTransfer $itemEntityTransfer): ?string
+    {
+        $quoteTransfer->requireStore();
+        $itemEntityTransfer->requireSku();
+
+        $idStock = $this->getFactory()
+            ->createStockQuery()
+            ->findOneByName($quoteTransfer->getStore()->getName())
+            ->getIdStock();
+
+        $idProduct = $this->getFactory()
+            ->createProductQuery()
+            ->findOneBySku($itemEntityTransfer->getSku())
+            ->getIdProduct();
+
+        return $this->getFactory()
+            ->createSpyStockProductQuery()
+            ->filterByFkStock($idStock)
+            ->filterByFkProduct($idProduct)
+            ->findOne()
+            ->getSequence();
     }
 
     /**

@@ -45,21 +45,34 @@ class PickingSalesOrderWriter implements PickingSalesOrderWriterInterface
      *
      * @return void
      */
-    public function updatePickingSalesOrderCollection(PickingSalesOrderCollectionTransfer $pickingSalesOrderCollectionTransfer): void
+    public function refreshPickingSalesOrderCollection(PickingSalesOrderCollectionTransfer $pickingSalesOrderCollectionTransfer): void
     {
         $this->getTransactionHandler()->handleTransaction(function () use ($pickingSalesOrderCollectionTransfer) {
-            $this->executeUpdateTransaction($pickingSalesOrderCollectionTransfer);
+            $this->executeRefreshTransaction($pickingSalesOrderCollectionTransfer);
         });
     }
 
     /**
      * @param \Generated\Shared\Transfer\PickingSalesOrderTransfer $pickingSalesOrderTransfer
      *
-     * @return void
+     * @return \Generated\Shared\Transfer\PickingSalesOrderTransfer|null
      */
-    protected function createPickingSalesOrder(PickingSalesOrderTransfer $pickingSalesOrderTransfer): void
+    public function bindContainerToShelf(PickingSalesOrderTransfer $pickingSalesOrderTransfer): ?PickingSalesOrderTransfer
     {
-        $this->pickingSalesOrderEntityManager->create($pickingSalesOrderTransfer);
+        $pickingSalesOrderCriteriaTransfer = (new PickingSalesOrderCriteriaTransfer())
+            ->addContainerCode($pickingSalesOrderTransfer->getContainerCode());
+
+        $pickingSalesOrders = $this->pickingSalesOrderRepository
+            ->getPickingSalesOrderCollection($pickingSalesOrderCriteriaTransfer)
+            ->getPickingSalesOrders();
+
+        if (!$pickingSalesOrders->count()) {
+            return null;
+        }
+
+        $pickingSalesOrderTransfer = $pickingSalesOrders->offsetGet(0)->setShelfCode($pickingSalesOrderTransfer->getShelfCode());
+
+        return $this->pickingSalesOrderEntityManager->update($pickingSalesOrderTransfer);
     }
 
     /**
@@ -67,7 +80,7 @@ class PickingSalesOrderWriter implements PickingSalesOrderWriterInterface
      *
      * @return void
      */
-    protected function executeUpdateTransaction(PickingSalesOrderCollectionTransfer $pickingSalesOrderCollectionTransfer): void
+    protected function executeRefreshTransaction(PickingSalesOrderCollectionTransfer $pickingSalesOrderCollectionTransfer): void
     {
         $containerCodes = [];
         foreach ($pickingSalesOrderCollectionTransfer->getPickingSalesOrders() as $pickingSalesOrderTransfer) {
@@ -79,7 +92,7 @@ class PickingSalesOrderWriter implements PickingSalesOrderWriterInterface
 
         $this->pickingSalesOrderEntityManager->delete($pickingSalesOrderCriteriaTransfer);
 
-        $this->executeCreateTransaction($pickingSalesOrderCollectionTransfer);
+        $this->createPickingSalesOrders($pickingSalesOrderCollectionTransfer);
     }
 
     /**
@@ -87,33 +100,10 @@ class PickingSalesOrderWriter implements PickingSalesOrderWriterInterface
      *
      * @return void
      */
-    protected function executeCreateTransaction(PickingSalesOrderCollectionTransfer $pickingSalesOrderCollectionTransfer): void
+    protected function createPickingSalesOrders(PickingSalesOrderCollectionTransfer $pickingSalesOrderCollectionTransfer): void
     {
         foreach ($pickingSalesOrderCollectionTransfer->getPickingSalesOrders() as $pickingSalesOrderTransfer) {
-            $this->createPickingSalesOrder($pickingSalesOrderTransfer);
+            $this->pickingSalesOrderEntityManager->create($pickingSalesOrderTransfer);
         }
-    }
-
-    /**
-     * @param \Generated\Shared\Transfer\PickingSalesOrderTransfer $pickingSalesOrderTransfer
-     *
-     * @return \Generated\Shared\Transfer\PickingSalesOrderTransfer
-     */
-    public function bindContainerToShelf(PickingSalesOrderTransfer $pickingSalesOrderTransfer): PickingSalesOrderTransfer
-    {
-        $pickingSalesOrderCriteriaTransfer = (new PickingSalesOrderCriteriaTransfer())
-            ->addContainerCode($pickingSalesOrderTransfer->getContainerCode());
-
-        $pickingSalesOrders = $this->pickingSalesOrderRepository
-            ->getPickingSalesOrderCollection($pickingSalesOrderCriteriaTransfer)
-            ->getPickingSalesOrders();
-
-        if (!$pickingSalesOrders->count()) {
-            return $this->pickingSalesOrderEntityManager->create($pickingSalesOrderTransfer);
-        }
-
-        $pickingSalesOrderTransfer = $pickingSalesOrders[0]->setShelfCode($pickingSalesOrderTransfer->getShelfCode());
-
-        return $this->pickingSalesOrderEntityManager->update($pickingSalesOrderTransfer);
     }
 }

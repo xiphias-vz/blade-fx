@@ -52,6 +52,9 @@
         }
 
         &__link {
+            &:hover  {
+                color:$setting-color-globus-darkOrange;
+            }
             &--side-drawer {
                 text-transform: uppercase;
                 font: fw(medium) rem(13) $setting-font-family-additional;
@@ -103,7 +106,7 @@
 
                 &--active {
                     background: $setting-color-white;
-                    border-left: rem(4) solid $setting-color-green;
+                    border-left: rem(4) solid $setting-color-globus-lightOrange;
 
                     & > #{$name}__link {
                         color: $setting-color-gray-6;

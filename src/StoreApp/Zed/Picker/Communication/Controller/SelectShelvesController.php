@@ -8,6 +8,7 @@
 namespace StoreApp\Zed\Picker\Communication\Controller;
 
 use Generated\Shared\Transfer\OrderTransfer;
+use Generated\Shared\Transfer\PickingZoneTransfer;
 use Pyz\Shared\Messages\MessagesConfig;
 use Pyz\Shared\Oms\OmsConfig;
 use StoreApp\Shared\Picker\PickerConfig;
@@ -31,6 +32,7 @@ class SelectShelvesController extends BaseOrderPickingController
     public function indexAction(Request $request)
     {
         $idSalesOrder = $request->get(PickerConfig::REQUEST_PARAM_ID_ORDER) ?? 0;
+        $pickingZoneTransfer = $this->getFacade()->findPickingZoneInSession();
 
         $salesOrderTransfer = $this->getFactory()->getSalesFacade()
             ->findOrderByIdSalesOrderForStoreApp($idSalesOrder);
@@ -46,7 +48,7 @@ class SelectShelvesController extends BaseOrderPickingController
             return $this->redirectResponse(PickerConfig::URL_PICKING_LIST);
         }
 
-        if ($this->isOrderPickingStartedByAnotherUser($idSalesOrder, $userTransfer)) {
+        if (!$this->isOrderPickingBlockAvailableForUser($idSalesOrder, $userTransfer, $pickingZoneTransfer)) {
             $this->addErrorMessage(
                 static::PICKING_ERROR_MESSAGE_ORDER_IS_BEING_PROCESSED
             );
@@ -56,8 +58,11 @@ class SelectShelvesController extends BaseOrderPickingController
 
         $shelvesSelectionFormDataProvider = $this->getFactory()->createShelvesSelectionFormDataProvider();
         $shelvesSelectionForm = $this->getFactory()->createShelvesSelectionForm(
-            [],
-            $shelvesSelectionFormDataProvider->getOptions($salesOrderTransfer->getIdSalesOrder())
+            $shelvesSelectionFormDataProvider->getData($salesOrderTransfer->getIdSalesOrder()),
+            $shelvesSelectionFormDataProvider->getOptions(
+                $salesOrderTransfer->getIdSalesOrder(),
+                $pickingZoneTransfer->getIdPickingZone()
+            )
         );
 
         $shelvesSelectionForm->handleRequest($request);
@@ -65,24 +70,28 @@ class SelectShelvesController extends BaseOrderPickingController
         if ($shelvesSelectionForm->isSubmitted() && $shelvesSelectionForm->isValid()) {
             return $this->processShelvesSelectionForm(
                 $shelvesSelectionForm,
-                $salesOrderTransfer
+                $salesOrderTransfer,
+                $pickingZoneTransfer
             );
         }
 
         return [
             'shelvesSelectionForm' => $shelvesSelectionForm->createView(),
+            'orderReference' => $salesOrderTransfer->getIdSalesOrder(),
         ];
     }
 
     /**
      * @param \Symfony\Component\Form\FormInterface $orderItemSelectionForm
      * @param \Generated\Shared\Transfer\OrderTransfer $salesOrderTransfer
+     * @param \Generated\Shared\Transfer\PickingZoneTransfer $pickingZoneTransfer
      *
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
     protected function processShelvesSelectionForm(
         FormInterface $orderItemSelectionForm,
-        OrderTransfer $salesOrderTransfer
+        OrderTransfer $salesOrderTransfer,
+        PickingZoneTransfer $pickingZoneTransfer
     ): RedirectResponse {
         $formData = $orderItemSelectionForm->getData();
 
@@ -94,14 +103,20 @@ class SelectShelvesController extends BaseOrderPickingController
 
         $pickingSalesOrderCollectionTransfer = $this->getFactory()
             ->getFormDataMapper()
-            ->mapContainersToShelves($containerIdToShelfCodeMap, $salesOrderTransfer);
+            ->mapContainersToShelves(
+                $containerIdToShelfCodeMap,
+                $salesOrderTransfer,
+                $pickingZoneTransfer
+            );
 
-        $this->getFactory()->getPickingSalesOrderFacade()->updatePickingSalesOrderCollection($pickingSalesOrderCollectionTransfer);
+        $this->getFactory()->getPickingSalesOrderFacade()
+            ->refreshPickingSalesOrderCollection($pickingSalesOrderCollectionTransfer);
 
         $selectedIdSalesOrderItems = $this->getFactory()
             ->getSalesFacade()
-            ->getSalesOrderItemsIdsByIdSalesOrderAndStates(
+            ->getSalesOrderItemsIdsByIdSalesOrderAndPickingZoneAndStates(
                 $salesOrderTransfer->getIdSalesOrder(),
+                $pickingZoneTransfer->getIdPickingZone(),
                 [OmsConfig::STORE_STATE_READY_FOR_SELECTING_SHELVES]
             );
 

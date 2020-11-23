@@ -227,19 +227,25 @@ $review-rating-field-width: rem(154);
             }
         }
 
+        .txtarea--checkout {
+            width: 100%;
+            height: rem(250);
+            color: $setting-color-black;
+            font-size: rem(12);
+        }
+
         .label {
             display: inline-block;
             font: fw(medium) rem(12) $setting-font-family-additional;
             margin-bottom: rem(6);
             letter-spacing: rem(0.1);
             color: $setting-color-gray-6;
-            text-transform: uppercase;
 
             &--required {
                 &::after {
                     content: '*';
                     margin-left: rem(3);
-                    color: $setting-color-main;
+                    color: $setting-color-globus-lightOrange;
                 }
             }
         }

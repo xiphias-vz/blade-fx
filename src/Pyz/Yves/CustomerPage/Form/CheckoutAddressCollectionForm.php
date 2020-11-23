@@ -12,6 +12,7 @@ use Generated\Shared\Transfer\ItemTransfer;
 use Generated\Shared\Transfer\QuoteTransfer;
 use SprykerShop\Yves\CustomerPage\Form\CheckoutAddressCollectionForm as SprykerShopCheckoutAddressCollectionForm;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
@@ -19,6 +20,8 @@ use Symfony\Component\Form\FormInterface;
 
 class CheckoutAddressCollectionForm extends SprykerShopCheckoutAddressCollectionForm
 {
+    public const OPTION_CART_NOTE = 'cart_note';
+
     /**
      * @param \Symfony\Component\Form\FormBuilderInterface $builder
      * @param array $options
@@ -30,9 +33,30 @@ class CheckoutAddressCollectionForm extends SprykerShopCheckoutAddressCollection
         $this
             ->addShippingAddressSubForm($builder, $options)
             ->addItemShippingAddressSubForm($builder, $options)
+            ->addTextAreaMessage($builder)
             ->addSameAsShippingCheckboxField($builder)
             ->addBillingAddressSubForm($builder, $options)
             ->addIsMultipleShipmentEnabledField($builder, $options);
+    }
+
+    /**
+     * @param \Symfony\Component\Form\FormBuilderInterface $builder
+     *
+     * @return $this
+     */
+    protected function addTextAreaMessage(FormBuilderInterface $builder)
+    {
+        $builder->add(self::OPTION_CART_NOTE, TextareaType::class, [
+            'label' => ' ',
+            'required' => false,
+            'trim' => false,
+            'attr' => [
+                'placeholder' => 'cart.checkout.address.abholstation.textarea.note',
+                'class' => 'txtarea--checkout',
+            ],
+        ]);
+
+        return $this;
     }
 
     /**
@@ -125,7 +149,7 @@ class CheckoutAddressCollectionForm extends SprykerShopCheckoutAddressCollection
      * @param \Symfony\Component\Form\FormBuilderInterface $builder
      * @param array $options
      *
-     * @return \SprykerShop\Yves\CustomerPage\Form\CheckoutAddressCollectionForm
+     * @return $this
      */
     protected function addItemShippingAddressSubForm(FormBuilderInterface $builder, array $options)
     {

@@ -144,3 +144,18 @@ parameters:
 			message: "#^Call to an undefined method Generated\\\\Zed\\\\Ide\\\\AutoCompletion\\|Spryker\\\\Shared\\\\Kernel\\\\LocatorLocatorInterface\\:\\:permissionAccess\\(\\)\\.$#"
 			count: 1
 			path: src/StoreApp/Zed/Picker/PickerDependencyProvider.php
+
+		-
+			message: "#^Call to an undefined method SprykerShop\\\\Yves\\\\CustomerPage\\\\Form\\\\CheckoutAddressCollectionForm\\:\\:addTextAreaMessage\\(\\)\\.$#"
+			count: 1
+			path: src/Pyz/Yves/CustomerPage/Form/CheckoutAddressCollectionForm.php
+
+		-
+			message: "#^Call to an undefined method SprykerShop\\\\Yves\\\\CustomerPage\\\\Form\\\\GuestForm\\:\\:addAddress1Field\\(\\)\\.$#"
+			count: 1
+			path: src/Pyz/Yves/CustomerPage/Form/GuestForm.php
+
+		-
+			message: "#^Call to an undefined method SprykerShop\\\\Yves\\\\CustomerPage\\\\Form\\\\RegisterForm\\:\\:addFieldReceiveNotificationsAboutProducts\\(\\)\\.$#"
+			count: 1
+			path: src/Pyz/Yves/CustomerPage/Form/RegisterForm.php
