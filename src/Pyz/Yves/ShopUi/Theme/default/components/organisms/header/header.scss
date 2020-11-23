@@ -182,6 +182,7 @@ $header-sticky-height: rem(69, number);
             position: fixed;
             left: rem(0);
             top: rem(15);
+            background-color: transparent;
         }
 
         @content;
