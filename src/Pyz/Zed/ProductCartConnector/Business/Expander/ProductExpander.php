@@ -55,18 +55,10 @@ class ProductExpander extends SprykerProductExpander implements ProductExpanderI
      */
     protected function calculateWeightPerItem(array $attributes): ?int
     {
-        if (!isset($attributes[ProductConfig::KEY_MEASUREMENT_UNIT])) {
+        if (!isset($attributes[ProductConfig::KEY_WEIGHT_PER_ITEM])) {
             return null;
         }
 
-        if ($attributes[ProductConfig::KEY_MEASUREMENT_UNIT] === self::GRAM) {
-            return (int)$attributes[ProductConfig::KEY_WEIGHT_PER_ITEM];
-        }
-
-        if ($attributes[ProductConfig::KEY_MEASUREMENT_UNIT] === self::KILOGRAM) {
-            return (int)$attributes[ProductConfig::KEY_WEIGHT_PER_ITEM] * 1000;
-        }
-
-        return null;
+        return $attributes[ProductConfig::KEY_WEIGHT_PER_ITEM] * 1000;
     }
 }

@@ -137,8 +137,6 @@ class FormDataMapper implements FormDataMapperInterface
         $pattern = '/' . $fieldNamePrefix . '(.+)/';
 
         foreach ($formData as $fieldName => $fieldValue) {
-            $matches = [];
-
             if (preg_match($pattern, $fieldName, $matches) === false || empty($matches)) {
                 continue;
             }

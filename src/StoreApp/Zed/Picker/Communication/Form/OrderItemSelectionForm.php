@@ -35,6 +35,11 @@ class OrderItemSelectionForm extends AbstractType
     public const OPTION_ITEM_ATTRIBUTES = 'OPTION_ITEM_ATTRIBUTES';
 
     /**
+     * The new weight can be different from original only by 20%
+     */
+    protected const ALLOWED_DEVIATION_FROM_THE_ORIGINAL_WEIGHT = 0.2;
+
+    /**
      * @param \Symfony\Component\OptionsResolver\OptionsResolver $resolver
      *
      * @return void
@@ -110,8 +115,8 @@ class OrderItemSelectionForm extends AbstractType
                         'required' => true,
                         'data' => $weight,
                         'attr' => [
-                            'min' => $weight * 0.8,
-                            'max' => $weight * 1.2,
+                            'min' => $weight * (1 - self::ALLOWED_DEVIATION_FROM_THE_ORIGINAL_WEIGHT),
+                            'max' => $weight * (1 + self::ALLOWED_DEVIATION_FROM_THE_ORIGINAL_WEIGHT),
                         ],
                         'label' => 'storeapp.new_weight',
                         'constraints' => [

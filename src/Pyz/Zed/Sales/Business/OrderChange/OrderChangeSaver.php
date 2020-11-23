@@ -63,6 +63,10 @@ class OrderChangeSaver
      */
     public function saveOrderChange(OrderChangeRequestTransfer $orderChangeRequestTransfer)
     {
+        if ($orderChangeRequestTransfer->getOrderItemChangeRequest()->count() === 0) {
+            return false;
+        }
+
         $this->salesQueryContainer->getConnection()->beginTransaction();
 
         foreach ($orderChangeRequestTransfer->getOrderItemChangeRequest() as $orderItemChangeRequest) {

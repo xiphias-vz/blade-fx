@@ -344,7 +344,9 @@ class PickingController extends BaseOrderPickingController
                 OrderItemSelectionForm::PREFIX_FIELD_SALES_ORDER_ITEM_NEW_WEIGHT
             );
 
-        $this->getFactory()->getSalesFacade()->saveOrderChange($orderChangeRequestTransfer);
+        if ($orderChangeRequestTransfer->getOrderItemChangeRequest()->count() > 0) {
+            $this->getFactory()->getSalesFacade()->saveOrderChange($orderChangeRequestTransfer);
+        }
 
         return $this->redirectResponse($orderPickingPath);
     }
