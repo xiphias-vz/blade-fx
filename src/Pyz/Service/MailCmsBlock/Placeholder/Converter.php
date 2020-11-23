@@ -37,7 +37,10 @@ class Converter
      */
     public function convertNewLineToBr(string $text): string
     {
-        if (isEmpty($text)) return '';
+        if (empty($text)) {
+            return '';
+        }
+
         return str_replace(PHP_EOL, '<br/>', $text);
     }
 
