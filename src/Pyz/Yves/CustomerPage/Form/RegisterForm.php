@@ -77,7 +77,9 @@ class RegisterForm extends SprykerRegisterForm
             ->addPasswordField($builder, $options)
             ->addSalutationField($builder)
             ->addFirstNameField($builder)
-            ->addLastNameField($builder)
+            ->addLastNameField($builder);
+
+        $this
             ->addAddress1Field($builder, $options)
             ->addAddress2Field($builder, $options)
             ->addZipCodeField($builder, $options)
@@ -90,7 +92,9 @@ class RegisterForm extends SprykerRegisterForm
             ->addDayField($builder)
             ->addMonthField($builder)
             ->addYearField($builder)
-            ->addAcceptTermsField($builder)
+            ->addAcceptTermsField($builder);
+
+        $this
             ->addFieldReceiveNotificationsAboutProducts($builder)
             ->addAdditionalRegisterField($builder);
     }
