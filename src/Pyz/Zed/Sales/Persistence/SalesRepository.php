@@ -11,12 +11,14 @@ use DateTime;
 use Generated\Shared\Transfer\OrderCriteriaFilterTransfer;
 use Generated\Shared\Transfer\QuoteTransfer;
 use Generated\Shared\Transfer\SpySalesOrderItemEntityTransfer;
+use Generated\Shared\Transfer\SpyStockProductEntityTransfer;
 use Orm\Zed\Payone\Persistence\Map\SpyPaymentPayoneTableMap;
 use Orm\Zed\PickingZone\Persistence\Map\PyzPickingZoneTableMap;
 use Orm\Zed\Sales\Persistence\Map\SpySalesOrderItemTableMap;
 use Orm\Zed\Sales\Persistence\Map\SpySalesOrderTableMap;
 use Orm\Zed\Sales\Persistence\Map\SpySalesShipmentTableMap;
 use Orm\Zed\Sales\Persistence\SpySalesOrderQuery;
+use Orm\Zed\Stock\Persistence\SpyStockProduct;
 use Propel\Runtime\ActiveQuery\Criteria;
 use Spryker\Zed\Sales\Persistence\SalesRepository as SprykerSalesRepository;
 
@@ -283,14 +285,16 @@ class SalesRepository extends SprykerSalesRepository implements SalesRepositoryI
         );
     }
 
-    /***
+    /**
      * @param \Generated\Shared\Transfer\QuoteTransfer $quoteTransfer
      * @param \Generated\Shared\Transfer\SpySalesOrderItemEntityTransfer $itemEntityTransfer
      *
-     * @return string|null
+     * @return \Orm\Zed\Stock\Persistence\SpyStockProduct|null
      */
-    public function findProductSequence(QuoteTransfer $quoteTransfer, SpySalesOrderItemEntityTransfer $itemEntityTransfer): ?string
-    {
+    public function findStockProduct(
+        QuoteTransfer $quoteTransfer,
+        SpySalesOrderItemEntityTransfer $itemEntityTransfer
+    ): ?SpyStockProduct {
         $quoteTransfer->requireStore();
         $itemEntityTransfer->requireSku();
 
@@ -308,8 +312,7 @@ class SalesRepository extends SprykerSalesRepository implements SalesRepositoryI
             ->createSpyStockProductQuery()
             ->filterByFkStock($idStock)
             ->filterByFkProduct($idProduct)
-            ->findOne()
-            ->getSequence();
+            ->findOne();
     }
 
     /**

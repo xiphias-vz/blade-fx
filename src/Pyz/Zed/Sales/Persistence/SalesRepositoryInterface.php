@@ -10,6 +10,8 @@ namespace Pyz\Zed\Sales\Persistence;
 use Generated\Shared\Transfer\OrderCriteriaFilterTransfer;
 use Generated\Shared\Transfer\QuoteTransfer;
 use Generated\Shared\Transfer\SpySalesOrderItemEntityTransfer;
+use Generated\Shared\Transfer\SpyStockProductEntityTransfer;
+use Orm\Zed\Stock\Persistence\SpyStockProduct;
 use Spryker\Zed\Sales\Persistence\SalesRepositoryInterface as SprykerSalesRepositoryInterface;
 
 interface SalesRepositoryInterface extends SprykerSalesRepositoryInterface
@@ -78,11 +80,14 @@ interface SalesRepositoryInterface extends SprykerSalesRepositoryInterface
      */
     public function findRequestedDeliveryDatesByIdSalesOrders(array $idSalesOrders): array;
 
-    /***
+    /**
      * @param \Generated\Shared\Transfer\QuoteTransfer $quoteTransfer
      * @param \Generated\Shared\Transfer\SpySalesOrderItemEntityTransfer $itemEntityTransfer
      *
-     * @return string|null
+     * @return \Orm\Zed\Stock\Persistence\SpyStockProduct|null
      */
-    public function findProductSequence(QuoteTransfer $quoteTransfer, SpySalesOrderItemEntityTransfer $itemEntityTransfer): ?string;
+    public function findStockProduct(
+        QuoteTransfer $quoteTransfer,
+        SpySalesOrderItemEntityTransfer $itemEntityTransfer
+    ): ?SpyStockProduct;
 }

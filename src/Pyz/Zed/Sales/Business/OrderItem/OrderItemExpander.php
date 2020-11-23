@@ -32,12 +32,18 @@ class OrderItemExpander
      *
      * @return \Generated\Shared\Transfer\SpySalesOrderItemEntityTransfer
      */
-    public function expandItemWithSequence(
+    public function expandItemWithStockProductData(
         QuoteTransfer $quoteTransfer,
         SpySalesOrderItemEntityTransfer $itemEntityTransfer
     ): SpySalesOrderItemEntityTransfer {
-        return $itemEntityTransfer->setSequence(
-            $this->salesRepository->findProductSequence($quoteTransfer, $itemEntityTransfer)
-        );
+        $stockProduct = $this->salesRepository->findStockProduct($quoteTransfer, $itemEntityTransfer);
+
+        $itemEntityTransfer
+            ->setSequence($stockProduct->getSequence())
+            ->setShelf($stockProduct->getShelf())
+            ->setShelfFloor($stockProduct->getShelfFloor())
+            ->setShelfField($stockProduct->getShelfField());
+
+        return $itemEntityTransfer;
     }
 }
