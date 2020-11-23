@@ -20,6 +20,7 @@ class SalesConfig extends SprykerSalesConfig
     public const DEFAULT_OMS_PROCESS_WORKER_NUMBER = 10;
 
     protected const DEFAULT_ORDER_CANCELLATION_ALLOWED_PERIOD = '+1 day';
+    protected const DEFAULT_ORDER_REFERENCE_PADDING = 9;
 
     protected const ORDER_STATE_MAP = [
         OmsConfig::STATE_NEW => OmsConfig::STATE_NEW,
@@ -130,9 +131,7 @@ class SalesConfig extends SprykerSalesConfig
         $sequenceNumberSettingsTransfer = new SequenceNumberSettingsTransfer();
 
         $sequenceNumberSettingsTransfer->setName(SalesConstants::NAME_ORDER_REFERENCE);
-        $sequenceNumberSettingsTransfer->setPrefix(
-            $this->get(SalesConstants::ENVIRONMENT_PREFIX)
-        );
+        $sequenceNumberSettingsTransfer->setPadding(static::DEFAULT_ORDER_REFERENCE_PADDING);
 
         return $sequenceNumberSettingsTransfer;
     }
