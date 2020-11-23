@@ -53,6 +53,10 @@ $header-sticky-height: rem(69, number);
                     position: fixed;
                 }
             }
+
+            @include helper-breakpoint-media-max($sm-max) {
+               padding: 0px 0px 3px 0px;
+            }
         }
 
         &__container {
@@ -182,6 +186,10 @@ $header-sticky-height: rem(69, number);
             position: fixed;
             left: rem(0);
             top: rem(15);
+
+            @include helper-breakpoint-media-max($sm-max) {
+               top:0px;
+            }
         }
 
         @content;
