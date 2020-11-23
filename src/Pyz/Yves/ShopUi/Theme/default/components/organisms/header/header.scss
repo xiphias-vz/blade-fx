@@ -180,8 +180,15 @@ $header-sticky-height: rem(69, number);
 
         .navigation-top-left-mobile__item {
             position: fixed;
-            left: rem(0);
-            top: rem(15);
+            left: rem(20);
+            top: rem(25);
+            background-color: transparent;
+        }
+
+        .navigation-top-left-close-mobile__item {
+            position: fixed;
+            left: rem(20);
+            top: rem(25);
             background-color: transparent;
         }
 
