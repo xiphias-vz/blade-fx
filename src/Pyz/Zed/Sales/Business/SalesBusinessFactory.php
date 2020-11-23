@@ -14,7 +14,6 @@ use Pyz\Zed\Sales\Business\InvoiceOrder\InvoiceSalesOrderReader;
 use Pyz\Zed\Sales\Business\Model\Customer\PaginatedCustomerOrderOverview;
 use Pyz\Zed\Sales\Business\Model\Order\MinimumAgeHydrator;
 use Pyz\Zed\Sales\Business\Model\Order\MinimumAgeHydratorInterface;
-use Pyz\Zed\Sales\Business\Model\Order\OrderReferenceGenerator;
 use Pyz\Zed\Sales\Business\Model\Order\OrderStatusHydrator;
 use Pyz\Zed\Sales\Business\Model\Order\OrderStatusHydratorInterface;
 use Pyz\Zed\Sales\Business\Model\Order\OrderUpdater;
@@ -219,16 +218,6 @@ class SalesBusinessFactory extends SprykerSalesBusinessFactory
     {
         return new OrderDateCheck(
             $this->getDateTimeWithZoneService()
-        );
-    }
-
-    /**
-     * @return \Spryker\Zed\Sales\Business\Model\Order\OrderReferenceGeneratorInterface
-     */
-    public function createReferenceGenerator()
-    {
-        return new OrderReferenceGenerator(
-            $this->getConfig()->getOrderReferenceDefaults()
         );
     }
 
