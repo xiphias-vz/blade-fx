@@ -94,6 +94,7 @@ class PickingController extends BaseOrderPickingController
                 'itemCount' => $salesOrderTransfer->getItems()->count(),
                 'isPicked' => $merchantSalesOrderTransfer->getFkUser() === $userTransfer->getIdUser(),
                 'requestedDeliveryDate' => $requestedDeliveryDatesByIdSalesOrders[$idSalesOrder],
+                'cartNote' => $salesOrderTransfer->getCartNote(),
             ];
         }
 
