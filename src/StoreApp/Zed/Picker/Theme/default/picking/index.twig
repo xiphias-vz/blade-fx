@@ -88,6 +88,14 @@
                         </form>
                     {% endif %}
                 {% endblock %}
+
+                {% block additionalContent %}
+                    <div class="grid grid--expand">
+                        <div class="col col--right">
+                            {{ embed.pickingOrder.cartNote }}
+                        </div>
+                    </div>
+                {% endblock %}
             {% endembed %}
         {% endfor %}
     </div>

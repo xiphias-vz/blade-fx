@@ -15,6 +15,12 @@
             <state name="collection cancelled by store" >
                 <flag>cancelled</flag>
             </state>
+
+            <!-- Move to sub-process and make it automatic? -->
+            <state name="cashier order exporting"/>
+            <state name="cashier order exporting fail"/>
+            <state name="cashier order exported"/>
+            <!-- -->
         </states>
 
         <transitions>
@@ -23,6 +29,38 @@
                 <target>ready for collection</target>
                 <event>move to ready for collection</event>
             </transition>
+
+            <!-- Move to sub-process and make it automatic? -->
+            <transition>
+                <source>ready for collection</source>
+                <target>cashier order exporting</target>
+                <event>export cashier order</event>
+            </transition>
+
+            <transition happy="true" condition="is order exported to cashier">
+                <source>cashier order exporting</source>
+                <target>cashier order exported</target>
+                <event>pass</event>
+            </transition>
+
+            <transition happy="true">
+                <source>cashier order exported</source>
+                <target>collected by customer</target>
+                <event>confirm collection</event>
+            </transition>
+
+            <transition>
+                <source>cashier order exporting</source>
+                <target>cashier order exporting fail</target>
+                <event>pass</event>
+            </transition>
+
+            <transition>
+                <source>cashier order exporting fail</source>
+                <target>ready for collection</target>
+                <event>cashier order export retry</event>
+            </transition>
+            <!-- END of cashier section-->
 
             <transition happy="true">
                 <source>ready for collection</source>
@@ -62,6 +100,9 @@
             <event name="process collection cancelled by customer" onEnter="true" command="Oms/CancelCollectionByCustomer"/>
             <event name="cancel collection by store" manual="true"/>
             <event name="process collection cancelled by store" onEnter="true" command="Oms/CancelCollectionByStore"/>
+
+            <event name="export cashier order" manual="true" command="CashierOrderExport/OrderExport"/>
+            <event name="cashier order export retry" manual="true"/>
         </events>
     </process>
 </statemachine>
