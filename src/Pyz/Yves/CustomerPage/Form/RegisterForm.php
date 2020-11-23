@@ -74,14 +74,10 @@ class RegisterForm extends SprykerRegisterForm
     {
         $this
             ->addEmailField($builder)
-            ->addPasswordField($builder, $options);
-
-        $this
+            ->addPasswordField($builder, $options)
             ->addSalutationField($builder)
             ->addFirstNameField($builder)
-            ->addLastNameField($builder);
-
-        $this
+            ->addLastNameField($builder)
             ->addAddress1Field($builder, $options)
             ->addAddress2Field($builder, $options)
             ->addZipCodeField($builder, $options)

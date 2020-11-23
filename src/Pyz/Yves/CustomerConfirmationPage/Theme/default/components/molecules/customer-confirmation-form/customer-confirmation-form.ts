@@ -20,7 +20,7 @@ export default class CustomerConfirmationForm extends Component {
         this.phoneHintHolder = <HTMLElement>this.getElementsByClassName(`${this.jsName}__phone-criteria`)[0];
         this.phoneErrorMessage = <HTMLElement>this.getElementsByClassName(`${this.jsName}__phone-error`)[0];
         this.submitButton = <HTMLButtonElement>this.getElementsByClassName(`${this.jsName}__submit-button`)[0];
-        this.customerConfirmationForm = <HTMLFormElement>this.getElementsByClassName(`${this.jsName}__form`)[0];
+        this.customerConfirmationForm = <HTMLFormElement>this.getElementsByClassName(`${this.jsName}__form`)[0].children[0];
 
         this.mapEvents();
     }
@@ -59,7 +59,7 @@ export default class CustomerConfirmationForm extends Component {
 
     protected submitCustomerConfirmationForm(event: Event): void {
         const isPhoneNumberValid = this.isPhoneNumberValid();
-
+        debugger;
         if (isPhoneNumberValid) {
             this.customerConfirmationForm.submit();
 
