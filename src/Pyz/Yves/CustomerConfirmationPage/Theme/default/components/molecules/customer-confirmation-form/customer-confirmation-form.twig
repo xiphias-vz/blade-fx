@@ -163,19 +163,25 @@
                                     {{ 'customer-confirmation.new.password.criteria' | trans | raw }}
                                 </div>
                             {% elseif fieldName == 'phone_prefix' %}
-                                <label for="phone_prefix" class="margin-telefon-title">{{ 'customer.register.telefon.title' | trans }}</label>
-                                {{ form_row(field, {
-                                    rowAttr: {
-                                        class: 'form__field ' ~ fieldLayoutClass,
-                                    },
-                                }) }}
+                                {% if data.form.vars.full_name == 'registerForm' %}
+                                    <label for="phone_prefix" class="margin-telefon-title">{{ 'customer.register.telefon.title' | trans }}</label>
+                                    {{ form_row(field, {
+                                        rowAttr: {
+                                            class: 'form__field ' ~ fieldLayoutClass,
+                                        },
+                                    }) }}
+                                {% endif %}
                             {% elseif fieldName == 'birth_day' %}
-                                <label for="birth_day" class="margin-telefon-title">{{ 'customer.register.birthdate.title' | trans }} &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;</label>
-                                {{ form_row(field, {
-                                    rowAttr: {
-                                        class: 'form__field ' ~ fieldLayoutClass,
-                                    },
-                                }) }}
+                                {% if data.form.vars.full_name == 'registerForm' %}
+                                    <div class="col--lg-12 col--md-12 col--sm-12">
+                                        <label for="birth_day" class="margin-telefon-title">{{ 'customer.register.birthdate.title' | trans }}</label>
+                                    </div>
+                                    {{ form_row(field, {
+                                        rowAttr: {
+                                            class: 'form__field ' ~ fieldLayoutClass,
+                                        },
+                                    }) }}
+                                {% endif %}
                             {% elseif fieldName == 'phone' %}
                                 {{ form_row(field, {
                                     rowAttr: {

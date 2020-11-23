@@ -59,6 +59,7 @@ export default class CustomerConfirmationForm extends Component {
 
     protected submitCustomerConfirmationForm(event: Event): void {
         const isPhoneNumberValid = this.isPhoneNumberValid();
+
         if (isPhoneNumberValid) {
             this.customerConfirmationForm.submit();
 
