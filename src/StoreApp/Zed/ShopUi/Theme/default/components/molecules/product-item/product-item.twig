@@ -31,9 +31,9 @@
                 </div>
                 <div class="{{ config.name }}__title">
                     {% block shelf %}
-                        {{ 'picking.app.shelf' | trans }} {{ data.shelfData['shelf'] }}
-                        {{ 'picking.app.shelf_floor' | trans }} {{ data.shelfData['shelfFloor'] }}
-                        {{ 'picking.app.shelf_field' | trans }} {{ data.shelfData['shelfField'] }}
+                        {{ 'picking.app.shelf' | trans }} {{ data.shelfData['shelf'] ?? ''}}
+                        {{ 'picking.app.shelf_floor' | trans }} {{ data.shelfData['shelfFloor'] ?? ''}}
+                        {{ 'picking.app.shelf_field' | trans }} {{ data.shelfData['shelfField'] ?? ''}}
                     {% endblock %}
                 </div>
                 <div class="{{ config.name }}__status">
