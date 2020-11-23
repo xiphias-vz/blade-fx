@@ -134,7 +134,7 @@ class Customer extends SprykerCustomer
      *
      * @return bool
      */
-    protected function isTestCustomer(CustomerTransfer $customerTransfer)
+    protected function isTestCustomer(CustomerTransfer $customerTransfer): bool
     {
         return $customerTransfer->getFirstName() === 'test order';
     }

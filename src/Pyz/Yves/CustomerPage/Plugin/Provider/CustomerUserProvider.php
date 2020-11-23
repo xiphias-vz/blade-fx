@@ -10,7 +10,6 @@ namespace Pyz\Yves\CustomerPage\Plugin\Provider;
 use Elastica\JSON;
 use Generated\Shared\Transfer\CustomerTransfer;
 use Pyz\Shared\Customer\CustomerConstants;
-use Pyz\Yves\MerchantSwitcherWidget\Resolver\ShopContextResolver;
 use Spryker\Shared\Config\Config;
 use SprykerShop\Yves\CustomerPage\Plugin\Provider\CustomerUserProvider as SprykerCustomerUserProvider;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
@@ -72,7 +71,6 @@ class CustomerUserProvider extends SprykerCustomerUserProvider
                     $customerTransfer->setAddress1($data["data"]["address"]["street"]);
                     $customerTransfer->setAddress2($data["profile"]["zip"]);
 
-                    $customerTransfer->setMerchantReference($this->createShopContextResolver()->resolve()->getMerchantReference());
                     $customerTransfer->setCustomerReference($this->getFactory()->getStore()->getStoreName());
                     $customerTransfer->setThirdPartyRegistration(true);
                     $this->registerCustomer($customerTransfer);
@@ -134,13 +132,5 @@ class CustomerUserProvider extends SprykerCustomerUserProvider
             ->getFactory()
             ->getAuthenticationHandler()
             ->registerCustomer($customerTransfer);
-    }
-
-    /**
-     * @return \Pyz\Yves\MerchantSwitcherWidget\Resolver\ShopContextResolver
-     */
-    private function createShopContextResolver(): ShopContextResolver
-    {
-        return new ShopContextResolver($this->getApplication());
     }
 }
