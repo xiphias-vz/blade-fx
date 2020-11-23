@@ -256,6 +256,7 @@ class PickingController extends BaseOrderPickingController
             'merchant' => $this->getMerchantFromRequest($request),
             'maxPickingBags' => $this->getFactory()->getConfig()->getMaxPickingBags(),
             'itemsCount' => $this->getItemsCount($aggregatedItemTransfers),
+            'itemsToShelfMap' => $this->getItemsToShelfMap($aggregatedItemTransfers),
             'itemImageUrls' => $this->getSkuToImageMapFromItemTransfers($aggregatedItemTransfers),
             'pickingForm' => $orderItemSelectionForm->createView(),
             'pickingFormSkuKeys' => $pickingFormSkuKeys,
@@ -426,6 +427,25 @@ class PickingController extends BaseOrderPickingController
             },
             0
         );
+    }
+
+    /**
+     * @param \Generated\Shared\Transfer\ItemTransfer[] $itemTransfers
+     *
+     * @return array
+     */
+    protected function getItemsToShelfMap(array $itemTransfers): array
+    {
+        $itemsToShelfMap = [];
+        foreach ($itemTransfers as $itemTransfer) {
+            $itemsToShelfMap[$itemTransfer->getSku()] = [
+                ItemTransfer::SHELF => $itemTransfer->getShelf(),
+                ItemTransfer::SHELF_FLOOR => $itemTransfer->getShelfFloor(),
+                ItemTransfer::SHELF_FIELD => $itemTransfer->getShelfField(),
+            ];
+        }
+
+        return $itemsToShelfMap;
     }
 
     /**

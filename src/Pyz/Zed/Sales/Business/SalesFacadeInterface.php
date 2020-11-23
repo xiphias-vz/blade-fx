@@ -251,7 +251,7 @@ interface SalesFacadeInterface extends SprykerSalesFacadeInterface
      *
      * @return \Generated\Shared\Transfer\SpySalesOrderItemEntityTransfer
      */
-    public function expandOrderItemWithSequence(
+    public function expandItemWithStockProductData(
         QuoteTransfer $quoteTransfer,
         SpySalesOrderItemEntityTransfer $itemEntityTransfer
     ): SpySalesOrderItemEntityTransfer;

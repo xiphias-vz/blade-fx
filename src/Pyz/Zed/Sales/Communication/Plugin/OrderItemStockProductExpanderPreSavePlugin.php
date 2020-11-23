@@ -18,7 +18,7 @@ use Spryker\Zed\SalesExtension\Dependency\Plugin\OrderItemExpanderPreSavePluginI
  * @method \Pyz\Zed\Sales\Communication\SalesCommunicationFactory getFactory()
  * @method \Pyz\Zed\Sales\SalesConfig getConfig()
  */
-class OrderItemSequenceExpanderPreSavePlugin extends AbstractPlugin implements OrderItemExpanderPreSavePluginInterface
+class OrderItemStockProductExpanderPreSavePlugin extends AbstractPlugin implements OrderItemExpanderPreSavePluginInterface
 {
     /**
      * {@inheritDoc}
@@ -38,7 +38,7 @@ class OrderItemSequenceExpanderPreSavePlugin extends AbstractPlugin implements O
         ItemTransfer $itemTransfer,
         SpySalesOrderItemEntityTransfer $salesOrderItemEntity
     ): SpySalesOrderItemEntityTransfer {
-        $this->getFacade()->expandOrderItemWithSequence($quoteTransfer, $salesOrderItemEntity);
+        $this->getFacade()->expandItemWithStockProductData($quoteTransfer, $salesOrderItemEntity);
 
         return $salesOrderItemEntity;
     }
