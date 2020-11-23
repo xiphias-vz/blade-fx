@@ -199,5 +199,4 @@ class CustomerPageFactory extends SprykerShopCustomerPageFactory
     {
         return new CustomerUserProvider();
     }
-
 }

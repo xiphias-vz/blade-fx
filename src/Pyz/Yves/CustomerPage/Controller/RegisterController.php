@@ -129,5 +129,4 @@ class RegisterController extends SprykerShopRegisterController
 
         return $customerTransfer;
     }
-
 }

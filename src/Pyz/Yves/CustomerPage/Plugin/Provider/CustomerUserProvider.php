@@ -133,5 +133,4 @@ class CustomerUserProvider extends SprykerCustomerUserProvider
             ->getAuthenticationHandler()
             ->registerCustomer($customerTransfer);
     }
-
 }
