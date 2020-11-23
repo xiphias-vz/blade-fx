@@ -12,7 +12,7 @@ use Propel\Runtime\ActiveQuery\Criteria;
 use Spryker\Zed\Sales\Persistence\SalesQueryContainer as SprykerSalesQueryContainer;
 
 /**
- * @method \Spryker\Zed\Sales\Persistence\SalesPersistenceFactory getFactory()
+ * @method \Pyz\Zed\Sales\Persistence\SalesPersistenceFactory getFactory()
  */
 class SalesQueryContainer extends SprykerSalesQueryContainer
 {
@@ -80,5 +80,14 @@ class SalesQueryContainer extends SprykerSalesQueryContainer
                 ->endUse();
 
         return $query;
+    }
+
+    /**
+     * @return \Orm\Zed\Sales\Persistence\SpySalesOrderChangeQuery
+     */
+    public function querySalesOrderChange()
+    {
+        return $this->getFactory()
+            ->createSalesOrderChangeQuery();
     }
 }

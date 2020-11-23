@@ -7,6 +7,7 @@
 
 namespace StoreApp\Zed\Picker\Communication\Mapper;
 
+use Generated\Shared\Transfer\OrderChangeRequestTransfer;
 use Generated\Shared\Transfer\OrderTransfer;
 use Generated\Shared\Transfer\PickingSalesOrderCollectionTransfer;
 use Generated\Shared\Transfer\PickingZoneTransfer;
@@ -20,6 +21,14 @@ interface FormDataMapperInterface
      * @return int[]
      */
     public function mapFormDataToSelectedQuantityMap(array $formData, string $fieldNamePrefix): array;
+
+    /**
+     * @param array $formData
+     * @param string $fieldNamePrefix
+     *
+     * @return int[]
+     */
+    public function mapFormDataToSelectedWeightMap(array $formData, string $fieldNamePrefix): array;
 
     /**
      * @param array $formData
@@ -46,4 +55,19 @@ interface FormDataMapperInterface
         OrderTransfer $salesOrderTransfer,
         PickingZoneTransfer $pickingZoneTransfer
     ): PickingSalesOrderCollectionTransfer;
+
+    /**
+     * @param array $formData
+     * @param \Generated\Shared\Transfer\OrderTransfer $salesOrderTransfer
+     * @param array $selectedIdSalesOrderItems
+     * @param string $fieldNamePrefix
+     *
+     * @return \Generated\Shared\Transfer\OrderChangeRequestTransfer
+     */
+    public function mapFormDataToOrderItemChangeRequest(
+        array $formData,
+        OrderTransfer $salesOrderTransfer,
+        array $selectedIdSalesOrderItems,
+        string $fieldNamePrefix
+    ): OrderChangeRequestTransfer;
 }

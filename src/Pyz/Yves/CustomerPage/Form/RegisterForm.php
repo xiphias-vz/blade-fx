@@ -74,9 +74,7 @@ class RegisterForm extends SprykerRegisterForm
     {
         $this
             ->addEmailField($builder)
-            ->addPasswordField($builder, $options);
-
-        $this
+            ->addPasswordField($builder, $options)
             ->addSalutationField($builder)
             ->addFirstNameField($builder)
             ->addLastNameField($builder);
@@ -94,7 +92,9 @@ class RegisterForm extends SprykerRegisterForm
             ->addDayField($builder)
             ->addMonthField($builder)
             ->addYearField($builder)
-            ->addAcceptTermsField($builder)
+            ->addAcceptTermsField($builder);
+
+        $this
             ->addFieldReceiveNotificationsAboutProducts($builder)
             ->addAdditionalRegisterField($builder);
     }
@@ -400,7 +400,7 @@ class RegisterForm extends SprykerRegisterForm
         $prefixes = Config::get(CustomerConstants::CUSTOMER_PHONE_PREFIX);
         $builder->add(self::FIELD_PHONE_PREFIX_1, ChoiceType::class, [
             'choices' => array_flip($prefixes),
-            'required' => true,
+            'required' => false,
             'label' => false,
             'constraints' =>
             [
@@ -440,7 +440,7 @@ class RegisterForm extends SprykerRegisterForm
     protected function addMobileNumber(FormBuilderInterface $builder)
     {
         $builder->add(self::FIELD_MOBILE_PHONE, TextType::class, [
-            'required' => true,
+            'required' => false,
             'trim' => true,
             'label' => false,
             'constraints' =>

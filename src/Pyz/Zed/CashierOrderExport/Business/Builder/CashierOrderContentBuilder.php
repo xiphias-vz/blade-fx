@@ -15,9 +15,9 @@ use Spryker\Shared\Shipment\ShipmentConfig;
 
 class CashierOrderContentBuilder implements CashierOrderContentBuilderInterface
 {
-    protected const HEADER_MASK = '%s%s%s%s%s%s%s%s%s%s%s%020u%s%s%s%020u%s%020u%s%s%s%s%s%020s%s%s';
+    protected const HEADER_MASK = '%s%s%s%s%s%s%s%s%s%s%s%020s%s%s%s%020u%s%020u%s%s%s%s%s%020s%s%s';
     protected const DEFAULT_HEADER_ENDING_ZERO_SETS = 7;
-    protected const POSITION_MASK = '%s%s%s%s%s%s%s%s%s%s%s%020u%s%020s%s%-20.20s%s%020s%s%020s%s%020s%s%020s';
+    protected const POSITION_MASK = '%s%s%s%s%s%s%s%s%s%s%s%020s%s%020s%s%-20.20s%s%020s%s%020s%s%020s%s%020s';
     protected const DEFAULT_POSITION_ENDING_ZERO_SETS = 8;
 
     protected const HEADER_KEY_IDENTIFIER = '1070';
@@ -47,7 +47,7 @@ class CashierOrderContentBuilder implements CashierOrderContentBuilderInterface
     protected const DEFAULT_EMPTY_OPERATOR_NUMBER = '0000';
     protected const DEFAULT_ANDERUNGS_NUMBER = '02';
     protected const DEFAULT_SERVICE_FEE_POSITION_NAME = 'Abholung            ';
-    protected const DEFAULT_SERVICE_FEE_FEE_NUMBER = '00000000000000000002';
+    protected const DEFAULT_SERVICE_FEE_FEE_NUMBER = '00000000000000000001';
     protected const DEFAULT_SERVICE_FEE_FEE_QUANTITY = '00000000000000001000';
     protected const DEFAULT_EMPTY_NUMBER = '00000000000000000000';
 
@@ -104,7 +104,7 @@ class CashierOrderContentBuilder implements CashierOrderContentBuilderInterface
              static::HEADER_KEY_IDENTIFIER,
              static::DEFAULT_ANDERUNGS_NUMBER,
              static::ORDER_KEY_IDENTIFIER,
-             $orderTransfer->getIdSalesOrder() ?? static::DEFAULT_EMPTY_NUMBER,
+             $orderTransfer->getOrderReference() ?? static::DEFAULT_EMPTY_NUMBER,
              static::ACCOUNT_NUMBER_IDENTIFIER,
              static::DEFAULT_EMPTY_NUMBER,
              static::CUSTOMER_KEY_IDENTIFIER,
@@ -180,7 +180,7 @@ class CashierOrderContentBuilder implements CashierOrderContentBuilderInterface
             static::POSITION_KEY_IDENTIFIER,
             static::DEFAULT_ANDERUNGS_NUMBER,
             static::ORDER_KEY_IDENTIFIER,
-            $orderTransfer->getIdSalesOrder() ?? static::DEFAULT_EMPTY_NUMBER,
+            $orderTransfer->getOrderReference() ?? static::DEFAULT_EMPTY_NUMBER,
             static::ORDER_ITEM_EAN_IDENTIFIER,
             $itemTransfer->getProductNumber() ?? static::DEFAULT_EMPTY_NUMBER,
             static::ORDER_ITEM_NAME_IDENTIFIER,
@@ -218,7 +218,7 @@ class CashierOrderContentBuilder implements CashierOrderContentBuilderInterface
             static::POSITION_KEY_IDENTIFIER,
             static::DEFAULT_ANDERUNGS_NUMBER,
             static::ORDER_KEY_IDENTIFIER,
-            $orderTransfer->getIdSalesOrder() ?? static::DEFAULT_EMPTY_NUMBER,
+            $orderTransfer->getOrderReference() ?? static::DEFAULT_EMPTY_NUMBER,
             static::ORDER_ITEM_EAN_IDENTIFIER,
             $this->getCashierNumberServiceFee($orderTransfer),
             static::ORDER_ITEM_NAME_IDENTIFIER,
@@ -275,7 +275,7 @@ class CashierOrderContentBuilder implements CashierOrderContentBuilderInterface
             static::POSITION_KEY_IDENTIFIER,
             static::DEFAULT_ANDERUNGS_NUMBER,
             static::ORDER_KEY_IDENTIFIER,
-            $orderTransfer->getIdSalesOrder() ?? static::DEFAULT_EMPTY_NUMBER,
+            $orderTransfer->getOrderReference() ?? static::DEFAULT_EMPTY_NUMBER,
             static::ORDER_ITEM_EAN_IDENTIFIER,
             $this->extractPluFromProductDepositSku($depositSkuIdentifier) ?? static::DEFAULT_EMPTY_NUMBER,
             static::ORDER_ITEM_NAME_IDENTIFIER,
@@ -395,6 +395,10 @@ class CashierOrderContentBuilder implements CashierOrderContentBuilderInterface
      */
     protected function getDecimalViewOfItemQuantity(ItemTransfer $itemTransfer): ?int
     {
+        if ($itemTransfer->getNewWeight()) {
+            return $itemTransfer->getNewWeight();
+        }
+
         $itemQuantity = $itemTransfer->getQuantity();
 
         if (!$itemQuantity) {

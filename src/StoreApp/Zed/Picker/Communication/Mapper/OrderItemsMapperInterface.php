@@ -15,11 +15,13 @@ interface OrderItemsMapperInterface
     /**
      * @param \Generated\Shared\Transfer\OrderTransfer $salesOrderTransfer
      * @param int[] $skuToPickedQuantityMap
+     * @param int[] $skuToWeightMap
      *
      * @return \Generated\Shared\Transfer\OrderItemStatusesTransfer
      */
     public function mapOrderItemsToOrderItemStatuses(
         OrderTransfer $salesOrderTransfer,
-        array $skuToPickedQuantityMap
+        array $skuToPickedQuantityMap,
+        array $skuToWeightMap = []
     ): OrderItemStatusesTransfer;
 }
