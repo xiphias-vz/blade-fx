@@ -2998,3 +2998,6 @@ customer.phone.checkout.guest,Telefon,de_DE
 mobile.phone.number,Mobiltelefon,de_DE
 customer.land.phone,Fastnetz,de_DE
 customer.register.birthdate,Geburtstag (TT/MM/YYYY),de_DE
+picking.app.shelf,"Regal: ",de_DE
+picking.app.shelf_floor,"Regalboden: ",de_DE
+picking.app.shelf_field,"Regalfeld: ",de_DE

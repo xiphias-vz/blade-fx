@@ -10,7 +10,6 @@ namespace Pyz\Zed\Sales\Persistence;
 use Generated\Shared\Transfer\OrderCriteriaFilterTransfer;
 use Generated\Shared\Transfer\QuoteTransfer;
 use Generated\Shared\Transfer\SpySalesOrderItemEntityTransfer;
-use Generated\Shared\Transfer\SpyStockProductEntityTransfer;
 use Orm\Zed\Stock\Persistence\SpyStockProduct;
 use Spryker\Zed\Sales\Persistence\SalesRepositoryInterface as SprykerSalesRepositoryInterface;
 
