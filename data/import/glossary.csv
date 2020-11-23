@@ -1,4 +1,5 @@
 key,translation,locale
+
 cart.remove.items.success,Produkte wurden erfolgreich aus der Einkaufsliste entfernt.,de_DE
 cart.remove.items.success,Products were removed successfully,en_US
 cart.add.items.error.text,Something went wrong. Sorry.,en_US
@@ -74,7 +75,7 @@ auth.password-forgot,Vergessen?,de_DE
 auth.password-forgot,Forgotten?,en_US
 auth.email,E-mail-Addresse,de_DE
 auth.email,E-mail,en_US
-auth.register,Registrieren,de_DE
+auth.register,Senden,de_DE
 auth.register,Register,en_US
 auth.im-new-customer,Ich bin Neukunde,de_DE
 auth.im-new-customer,New Customer,en_US
@@ -470,9 +471,11 @@ customer.register,Registrieren,de_DE
 customer.login,Login,en_US
 customer.login,Anmelden,de_DE
 customer.login.email,Email,en_US
-customer.login.email,E-Mail-Addresse,de_DE
+customer.login.email,E-Mail Adresse oder Kundenkartennummer,de_DE
 customer.login.password,Password,en_US
 customer.login.password,Passwort,de_DE
+customer.login.checkbox,Test checkbox,en_US
+customer.login.checkbox,Testen die checkbox,de_DE
 customer.login.title,Access your account,en_US
 customer.login.title,Ich bin bereits Kunde,de_DE
 customer.registration.title,Create account,en_US
@@ -542,7 +545,7 @@ customer.address.zip_code,PLZ,de_DE
 customer.address.zip_code_invalid,"Dear customer, unfortunately we cannot serve you in your area.",en_US
 customer.address.zip_code_invalid,"Sehr geehrter Kunde, leider können wir Sie in Ihrer Nähe nicht bedienen.",de_DE
 customer.address.city,City,en_US
-customer.address.city,Stadt,de_DE
+customer.address.city,Ort,de_DE
 customer.address.country,Country,en_US
 customer.address.country,Land,de_DE
 customer.address.phone,Phone,en_US
@@ -881,6 +884,8 @@ forms.confirm-password,Confirm Password,en_US
 forms.confirm-password,Passwort bestätigen,de_DE
 forms.accept_terms,"I agree to the <a href='/en/gtc-online-purchase' target='_blank'>AGB</a> and <a href='/en/privacy' target='_blank'>Privacy policy</a> to.",en_US
 forms.accept_terms,"Ich stimme den <a href='/de/agb-online-kauf' target='_blank'>AGB</a> und den <a href='/de/datenschutz/' target='_blank'>Datenschutzbestimmungen</a> zu.",de_DE
+forms.additional_register,"Ja, Ich möchte radio",en_US
+forms.recieve_notifications,"Ja, ich möchte über Produkte und Angebote informiert werder. Ich stimme hiermit den <a href='/de/agb-online-kauf' style='color:#ea8901; text-decoration:none' target='_blank'>Bedingungen der Werbeeinwilligung </a>zu.",de_DE
 address.salutation,Salutation,en_US
 address.salutation,Anrede,de_DE
 email.orderEmail.salutationMale,Mr.,en_US
@@ -914,7 +919,7 @@ customer.email.format.invalid,Ungültiges E-Mail-Adressformat.,de_DE
 customer.password.recovery.mail.sent,"If there is an account associated with this email address, you will receive an email with further instructions",en_US
 customer.password.recovery.mail.sent,"Falls ein Konto für diese E-Mailadresse existiert, erhältst du hierüber gleich weitere Anweisungen",de_DE
 customer.address.number,House Number,en_US
-customer.address.number,Nummer,de_DE
+customer.address.number,Hausnummer,de_DE
 customer.address.save_new_address,Save new address to address book,en_US
 customer.address.save_new_address,Neue Adresse in Adressbuch speichern,de_DE
 countries.iso.AT,Austria,en_US
@@ -942,7 +947,8 @@ checkout.customer.order_as_guest,Als Gast bestellen,de_DE
 checkout.customer.auth_as_user,Sign Up,en_US
 checkout.customer.auth_as_user,Registrieren,de_DE
 checkout.customer.auth_as_guest,Buy as Guest,en_US
-checkout.customer.auth_as_guest,Gastbestellung,de_DE
+checkout.customer.auth_as_guest,Als Gast bestellen,de_DE
+checkout.customer.submit_as_guest,Weiter,de_DE
 checkout.customer.auth_as_login,Login,en_US
 checkout.customer.auth_as_login,Anmelden,de_DE
 checkout.step.customer.title,Login,en_US
@@ -2714,45 +2720,45 @@ payone.order.payment_details,Payment details,en_US
 payone.order.payment_details,Zahlungsdetails,de_DE
 catalog.sort.by,Sort By,en_US
 catalog.sort.by,Sortieren nach,de_DE
-customer.login_subtext,Bereits angemeldet?,de_DE
+customer.login_subtext,Schon ein Mein Globus Konto?,de_DE
 customer.login_subtext,Already registered?,en_US
-customer.login.email_placeholder,E-Mail-Addresse eingeben,de_DE
+customer.login.email_placeholder,Kundenkartennummer oder E-Mail eingeben,de_DE
 customer.login.email_placeholder,Enter E-Mail address,en_US
 customer.login.password_placeholder,Passwort eingeben,de_DE
 customer.login.password_placeholder,Enter password,en_US
 customer.signup_subtext,New to Spryker?,en_US
-customer.signup_subtext,Neu bei Spryker?,de_DE
-customer.registration.first_name_placeholder,Vorname eingeben,de_DE
+customer.signup_subtext,Neu bei Abholservice?,de_DE
+customer.registration.first_name_placeholder,Vorname,de_DE
 customer.registration.first_name_placeholder,Enter first name,en_US
-customer.registration.last_name_placeholder,Nachname eingeben,de_DE
+customer.registration.last_name_placeholder,Nachname,de_DE
 customer.registration.last_name_placeholder,Enter last name,en_US
-customer.registration.email_placeholder,E-Mail-Adresse eingeben,de_DE
+customer.registration.email_placeholder,E-Mail,de_DE
 customer.registration.email_placeholder,Enter E-Mail address,en_US
 customer.registration.password_placeholder,Passwort eingeben,de_DE
 customer.registration.password_placeholder,Enter password,en_US
-customer.registration.confirm_password_placeholder,Passwort nochmals eingeben,de_DE
+customer.registration.confirm_password_placeholder,Passwort bestätigen,de_DE
 customer.registration.confirm_password_placeholder,Repeat password,en_US
-customer.registration.address1_placeholder,Straße eingeben,de_DE
+customer.registration.address1_placeholder,Straße,de_DE
 customer.registration.address1_placeholder,Enter street ,en_US
-customer.registration.address2_placeholder,Hausnummer eingeben,de_DE
+customer.registration.address2_placeholder,Hausnummer,de_DE
 customer.registration.address2_placeholder,Enter house number,en_US
 customer.registration.floor_placeholder,Etage wählen,de_DE
 customer.registration.floor_placeholder,Select floor,en_US
-customer.registration.zip_placeholder,Postleitzahl eingeben,de_DE
+customer.registration.zip_placeholder,PLZ,de_DE
 customer.registration.zip_placeholder,Enter postcode,en_US
-customer.registration.city_placeholder,Stadt eingeben,de_DE
+customer.registration.city_placeholder,Ort,de_DE
 customer.registration.city_placeholder,Enter city,en_US
 customer.registration.phone_placeholder,Enter phone number,en_US
 customer.registration.phone_placeholder,Telefonnummer eingeben,de_DE
-customer.registration.benefit_title,"Neues Spryker Konto erstellen.",de_DE
+customer.registration.benefit_title,"Neues Mein Globus Konto erstellen.",de_DE
 customer.registration.benefit_title,"Create a new Spryker account.",en_US
-customer.registration.benefit_message,"Erstelle jetzt dein Spryker Konto und teste unseren Service.",de_DE
+customer.registration.benefit_message,"Erstellen Sie jetzt Ihr Mein Globus Konto und testen Sie unseren Abholservice",de_DE
 customer.registration.benefit_message,"Create your Spryker account now and test our service.",en_US
-customer.registration.benefit_1,"Aus über 1.000 Artikeln auswählen",de_DE
+customer.registration.benefit_1,"Aus über 9.000 Artikeln auswählen",de_DE
 customer.registration.benefit_1,"Choose from over 1,000 articles",en_US
-customer.registration.benefit_2,"Einkaufslisten mit einem Klick erstellen",de_DE
+customer.registration.benefit_2,"Bequem von zuhause bestellen und abholen",de_DE
 customer.registration.benefit_2,"Create cart with one click",en_US
-customer.registration.benefit_3,"Zeitfenster von Mo-Sa frei wählbar",de_DE
+customer.registration.benefit_3,"Eigene Einkaufslisten ertellen",de_DE
 customer.registration.benefit_3,"Time slot from Mo-Sa freely selectable",en_US
 customer.registration.benefit_4,"Kostenlos für Food Shop Mitarbeiterinnen und Mitarbeiter",de_DE
 customer.registration.benefit_4,"Free of charge for Spryker employees",en_US
@@ -2982,3 +2988,13 @@ Glutenfrei,Gluten free,en_US
 Glutenfrei,Glutenfrei,de_DE
 Vegetarisch,Vegetarian,en_US
 Vegetarisch,Vegetarisch,de_DE
+register.accept_terms,Ich habe die <a href='/de/agb-online-kauf' style='color:#ea8901; text-decoration:none' target='_blank'>Datenschutzbedingungen</a> gelesen und akzeptiere diese.*,de_DE
+customer.registration.country_placeholder,Deutschland,de_DE
+customer.registration.phone.prefix_placeholder,DE +49,de_DE
+customer.register.phone,Telefon (mindestens 1 Angabe Ist Pflicht),de_DE
+forms.additional_register,"Ja, ich möchte über am <a href='/de/agb-online-kauf' style='color:#ea8901; text-decoration:none' target='_blank'>Mein Globus-Programm</a> teilnehmen, um corteile wie z.B. Punkte sammeln, Tankeschön und Scan&Go nutzen zu können. Ich habe die allgemeinen <a href='/de/agb-online-kauf' style='color:#ea8901; text-decoration:none' target='_blank'>Teilnahmebedingungen</a> zum Mein Globus-Programm gelesen und akzeptiere diese.",de_DE
+checkout.customer.register_as_guest,Als Gast bestellen,de_DE
+customer.phone.checkout.guest,Telefon,de_DE
+mobile.phone.number,Mobiltelefon,de_DE
+customer.land.phone,Fastnetz,de_DE
+customer.register.birthdate,Geburtstag (TT/MM/YYYY),de_DE

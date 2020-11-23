@@ -2,9 +2,16 @@
 
 {% define data = {
     isLogin: false,
+    scriptSrc: 'https://cdns.us1.gigya.com/js/gigya.js?apikey=3_IVfYuFFTkEygbMQjcP8LamKwRZBH4_qjl-EAGSvZJPGTAL59E9yUPdTxqLCyofkZ'
 } %}
 
 {% block container %}
+    {% include molecule('script-loader') with {
+        attributes: {
+            src: data.scriptSrc
+        }
+    } only %}
+
     <div class="page-layout-customer page-layout-customer--login-wrap">
         <div class="page-layout-customer__form-wrap">
             <div class="list-switches">
@@ -67,7 +74,7 @@
                                 class: 'form__action--login button button--large button--expand',
                             },
                             options: {
-                                attr: null,
+                                attr: null
                             },
                         },
                         modifiers: ['grid-indent', 'login', 'checkout-actions'],
@@ -122,4 +129,155 @@
             </div>
         </div>
     </div>
+    <script type="text/javascript">
+
+        function newLoginUser(){
+            document.getElementsByName('loginForm')[0].onsubmit = function () {
+            };
+            document.getElementsByName('loginForm')[0].submit();
+        }
+        function loginUser() {
+            var params = {
+                callback: loginUserResponse,
+                loginID: document.getElementById("loginForm_email").value,
+                password: document.getElementById("loginForm_password").value,
+            };
+            gigya.accounts.login(params);
+        }
+        function loginUserResponse(response) {
+            if (response.errorCode === 0) {
+                var prof = {
+                    src: "CDC",
+                    data: response.data,
+                    profile: response.profile
+                }
+                document.getElementById("loginForm_data").value = JSON.stringify(prof);
+                loginUserLocal();
+            } else if (response.errorCode === 206001) {
+                resendVerificationCode(response.regToken, response.userInfo.email);
+                alert(response.Text);
+            } else {
+                loginUserLocal();
+            }
+        }
+
+        function loginUserLocal() {
+            document.getElementsByName('loginForm')[0].onsubmit = function () {
+            };
+            document.getElementsByName('loginForm')[0].submit();
+        }
+
+        function resendVerificationCode(token, email) {
+            var verificationParams = {
+                regToken: token,
+                email: email
+            };
+            gigya.accounts.resendVerificationCode(verificationParams);
+        }
+
+        function gigyaInitRegistration() {
+            var params = {
+                isLite: false,
+                callback: gigyaInitRegistrationCallback,
+            };
+            gigya.accounts.initRegistration(params);
+        }
+
+        function gigyaInitRegistrationCallback(response) {
+            if (response.errorCode == 0) {
+                var token = response.regToken;
+                gigyaRegisterUser(token);
+            } else {
+                alert("There was an error!");
+            }
+        }
+
+        function gigyaRegisterUser(token) {
+            var acceptNotifications = document.getElementsByName("registerForm[accept_notifications]")[1].checked
+            var acceptTerms = document.getElementsByName("registerForm[accept_terms]")[1].checked
+            var thirdPartyRegistration = document.getElementsByName("registerForm[third_party_registration]")[1].checked
+            if (token) {
+                var regParams = {
+                    email: document.getElementById("registerForm_email").value,
+                    password: document.getElementById("registerForm_password_pass").value,
+                    regToken: token,
+                    finalizeRegistration: true,
+                    profile: {
+                        firstName: document.getElementById("registerForm_first_name").value,
+                        lastName: document.getElementById("registerForm_last_name").value,
+                        zip: document.getElementById("registerForm_zip_code").value,
+                        city: document.getElementById("registerForm_city").value,
+                        country: "DE",
+                        birthDay: document.getElementById("select2-registerForm_birth_day-container").innerText,
+                        birthMonth: document.getElementById("select2-registerForm_birth_month-container").innerText,
+                        birthYear: document.getElementById("select2-registerForm_birth_year-container").innerText,
+                        phones: [
+                            {
+                                type: "001",
+                                number: document.getElementById("registerForm_mobile_phone_number").value
+                            }
+                        ]
+                    },
+                    data: {
+                        address: {
+                            street: document.getElementById("registerForm_address1").value,
+                            houseNo: document.getElementById("registerForm_address2").value
+                        },
+                        salutation: '0002'
+                    },
+                    format: "json",
+                    callback: gigyaRegisterUserCallback,
+                };
+
+                gigya.accounts.register(regParams);
+            }
+        }
+
+        function gigyaRegisterUserCallback(response) {
+            if (response.errorCode == 0) {
+                console.log(response);
+            } else {
+                console.log(response);
+                alert("There was an error!");
+            }
+        }
+
+        function showRegister() {
+            var togg = document.getElementById('register');
+            togg.targets.forEach((element) => {
+                if (togg.addClass) {
+                    element.classList.remove(togg.classToToggle);
+                }
+                element.classList.add(togg.classToToggle);
+            });
+        }
+
+        function gigyaRegistrationScreen() {
+            gigya.accounts.showScreenSet({
+                screenSet: 'CCCustomer-RegistrationLogin',
+                startScreen: 'gigya-register-screen'
+            });
+        }
+
+        function gigyaLoginScreen() {
+            gigya.accounts.showScreenSet({
+                screenSet: 'CCCustomer-RegistrationLogin',
+                startScreen: 'gigya-login-screen'
+            });
+        }
+
+        document.getElementsByName('loginForm')[0].onsubmit = function () {
+            loginUser();
+            return false;
+        };
+        document.getElementsByName('registerForm')[0].onsubmit = function () {
+            var thirdPartyRegistration = document.getElementsByName("registerForm[third_party_registration]")[1].checked
+            if(thirdPartyRegistration) {
+                gigyaInitRegistration();
+                return false;
+            }
+            else return true;
+        };
+    </script>
+
 {% endblock %}
