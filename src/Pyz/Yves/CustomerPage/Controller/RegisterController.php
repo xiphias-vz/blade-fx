@@ -13,7 +13,6 @@ use Pyz\Shared\DataDog\DataDogConfig;
 use Pyz\Yves\CheckoutPage\Plugin\Router\CheckoutPageRouteProviderPlugin;
 use Pyz\Yves\CustomerPage\Form\RegisterForm;
 use Pyz\Yves\CustomerPage\Plugin\Router\CustomerPageRouteProviderPlugin;
-use Pyz\Yves\MerchantSwitcherWidget\Resolver\ShopContextResolver;
 use Spryker\Shared\Customer\Code\Messages;
 use SprykerShop\Yves\CustomerPage\Controller\RegisterController as SprykerShopRegisterController;
 use SprykerShop\Yves\CustomerPage\Plugin\Provider\CustomerPageControllerProvider;
@@ -45,10 +44,7 @@ class RegisterController extends SprykerShopRegisterController
 
         if ($registerForm->isSubmitted()) {
             if ($registerForm->isValid()) {
-                $data = $registerForm->getData();
-                $data['merchantReference'] = $this->createShopContextResolver()->resolve()->getMerchantReference();
-
-                $customerResponseTransfer = $this->registerCustomer($data);
+                $customerResponseTransfer = $this->registerCustomer($registerForm->getData());
 
                 if ($customerResponseTransfer->getIsSuccess()) {
                     $this->getFactory()->getDataDogService()->increment([
@@ -134,11 +130,4 @@ class RegisterController extends SprykerShopRegisterController
         return $customerTransfer;
     }
 
-    /**
-     * @return \Pyz\Yves\MerchantSwitcherWidget\Resolver\ShopContextResolver
-     */
-    private function createShopContextResolver(): ShopContextResolver
-    {
-        return new ShopContextResolver($this->getApplication());
-    }
 }
