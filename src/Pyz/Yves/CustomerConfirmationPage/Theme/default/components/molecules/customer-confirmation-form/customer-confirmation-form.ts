@@ -10,6 +10,7 @@ export default class CustomerConfirmationForm extends Component {
     protected phoneErrorMessage: HTMLElement;
     protected submitButton: HTMLButtonElement;
     protected customerConfirmationForm: HTMLFormElement;
+    protected thirdPartyRegistration: HTMLInputElement;
 
     protected readyCallback(): void {}
 
@@ -20,15 +21,15 @@ export default class CustomerConfirmationForm extends Component {
         this.phoneHintHolder = <HTMLElement>this.getElementsByClassName(`${this.jsName}__phone-criteria`)[0];
         this.phoneErrorMessage = <HTMLElement>this.getElementsByClassName(`${this.jsName}__phone-error`)[0];
         this.submitButton = <HTMLButtonElement>this.getElementsByClassName(`${this.jsName}__submit-button`)[0];
+        this.thirdPartyRegistration = <HTMLInputElement>document.getElementsByName("registerForm[third_party_registration]")[1];
         this.customerConfirmationForm = <HTMLFormElement>this.getElementsByClassName(`${this.jsName}__form`)[0].children[0];
-
         this.mapEvents();
     }
 
     protected mapEvents(): void {
         if (this.newPasswordInput) {
             this.newPasswordInput.addEventListener('focus', () => this.showElement(this.passwordHintHolder));
-            this.newPasswordInput.addEventListener('blur', () => this.hideElement(this.passwordHintHolder));
+            this.newPasswordInput.addEventListener('blur', () => this.hideElement(this.passwordHintHolder))
         }
 
         if (this.phoneInput) {
@@ -40,6 +41,7 @@ export default class CustomerConfirmationForm extends Component {
         if (this.submitButton) {
             this.submitButton.addEventListener('click', (event: Event) => this.submitCustomerConfirmationForm(event));
         }
+
     }
 
     protected showElement(element: HTMLElement): void {
@@ -59,10 +61,13 @@ export default class CustomerConfirmationForm extends Component {
 
     protected submitCustomerConfirmationForm(event: Event): void {
         const isPhoneNumberValid = this.isPhoneNumberValid();
-
         if (isPhoneNumberValid) {
-            this.customerConfirmationForm.submit();
-
+            if(this.thirdPartyRegistration.checked) {
+                event.preventDefault();
+                this.gigyaInitRegistration();
+            } else {
+                this.customerConfirmationForm.submit();
+            }
             return;
         }
 
@@ -80,5 +85,26 @@ export default class CustomerConfirmationForm extends Component {
 
     protected get phoneSelector(): string {
         return this.getAttribute('phone-selector');
+    }
+
+    protected gigyaInitRegistration(): void {
+        let params = {
+            isLite: false,
+            callback: this.gigyaInitRegistrationCallback,
+        };
+        try {
+            gigya.accounts.initRegistration(params);
+        } catch (e) {
+            alert(e);
+        }
+    }
+
+    protected gigyaInitRegistrationCallback(response): void {
+        if (response.errorCode == 0) {
+            let token = response.regToken;
+            gigyaRegisterUser(token);
+        } else {
+            alert("There was an error!");
+        }
     }
 }

@@ -411,7 +411,7 @@ class DataImportConfig extends SprykerDataImportConfig
             '/^5\.globus_article_instock\.NOS\.[0-9]+_1042/' => '5.globus_article_instock.NOS.1042.csv',
             '/^5\.globus_article_instock\.NOS\.[0-9]+_1057/' => '5.globus_article_instock.NOS.1057.csv',
 
-            '/^1\.globus_categories\.[0-9]+/' => 'categories.csv',
+            '/^1\.globus_categories\.[0-9]+/' => '1.globus_categories.csv',
             '/^2\.globus_articles\.[0-9]+/' => '2.globus_articles.csv',
 
             '/^5\.globus_article_instock\.[0-9]+_1004/' => '5.globus_article_instock.1004.csv',

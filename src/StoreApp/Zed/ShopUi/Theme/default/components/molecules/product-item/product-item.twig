@@ -34,6 +34,7 @@
                         {{ 'picking.app.shelf' | trans }} {{ data.shelfData['shelf'] ?? ''}}
                         {{ 'picking.app.shelf_floor' | trans }} {{ data.shelfData['shelfFloor'] ?? ''}}
                         {{ 'picking.app.shelf_field' | trans }} {{ data.shelfData['shelfField'] ?? ''}}
+                        {{ 'picking.app.price' | trans }} {{ data.shelfData['sumPrice'] ?? ''}}
                     {% endblock %}
                 </div>
                 <div class="{{ config.name }}__status">

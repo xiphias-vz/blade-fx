@@ -16,7 +16,6 @@
                                         {{ orderItem.name }}
                                     </div>
                                     <div style='font: bold 13px Helvetica, sans-serif; color: #494949 !important;'>
-                                        {{ orderItem.locale.localeName }}
                                         {{ 'mail.order.confirmation.item.quantity' | trans({}, null, orderLocale) }}: {{ orderItem.quantity }}
                                     </div>
                                     {% for orderItemOption in orderItem.productOptions %}
