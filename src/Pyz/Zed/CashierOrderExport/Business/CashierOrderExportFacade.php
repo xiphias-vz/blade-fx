@@ -39,4 +39,16 @@ class CashierOrderExportFacade extends AbstractFacade implements CashierOrderExp
     {
         return $this->getFactory()->createCashierOrderExportStatusChecker()->isOrderExportedSuccessfully($orderId);
     }
+
+    /**
+     * {@inheritDoc}
+     *
+     * @param \Generated\Shared\Transfer\OrderTransfer $orderTransfer
+     *
+     * @return bool
+     */
+    public function checkIsAllItemsReadyForExport(OrderTransfer $orderTransfer): bool
+    {
+        return $this->getFactory()->createCashierOrderExportReadinessChecker()->checkIsAllItemsReadyForExport($orderTransfer);
+    }
 }

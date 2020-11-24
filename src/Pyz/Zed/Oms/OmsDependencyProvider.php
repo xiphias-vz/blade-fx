@@ -11,6 +11,7 @@ use Pyz\Service\DateTimeWithZone\DateTimeWithZoneServiceInterface;
 use Pyz\Zed\CancelledItems\Communication\Plugin\Oms\Command\UpdateOrderDueCancelledItemsCommandByOrderPlugin;
 use Pyz\Zed\CashierOrderExport\Communication\Plugin\Oms\Command\CashierOrderExportCommandPlugin;
 use Pyz\Zed\CashierOrderExport\Communication\Plugin\Oms\Condition\IsOrderExportedToCashierConditionPlugin;
+use Pyz\Zed\CashierOrderExport\Communication\Plugin\Oms\Condition\WaitAllItemsInPickedOrCanceledStateConditionPlugin;
 use Pyz\Zed\Customer\Communication\Plugin\Oms\Command\CustomerHasOrderWriterCommandPlugin;
 use Pyz\Zed\Invoice\Communication\Plugin\Oms\Command\GenerateInvoiceReferenceCommandByOrderPlugin;
 use Pyz\Zed\Invoice\Communication\Plugin\Oms\Command\SendInvoiceCommandByOrderPlugin;
@@ -230,6 +231,7 @@ class OmsDependencyProvider extends SprykerOmsDependencyProvider
 
             //Cashier
             $conditionCollection->add(new IsOrderExportedToCashierConditionPlugin(), 'is order exported to cashier');
+            $conditionCollection->add(new WaitAllItemsInPickedOrCanceledStateConditionPlugin(), 'wait all items in picked or canceled state');
 
             return $conditionCollection;
         });
