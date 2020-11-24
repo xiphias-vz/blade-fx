@@ -108,6 +108,19 @@ class ProductPriceWriterStep extends PublishAwareStep implements DataImportStepI
             $dataSet[PriceProductDataSet::ID_PRODUCT_ABSTRACT] = $productAbstractEntity->getIdProductAbstract();
             $dataSet[ProductAbstractWriterStep::IS_PRODUCT_CONCRETE] = false;
 
+            $productAbstractEntityAttributes = json_decode($productAbstractEntity->getAttributes(), true);
+
+            if (isset($productAbstractEntityAttributes[ProductConfig::KEY_WEIGHT_PER_ITEM])) {
+                $priceMultiplier = $productAbstractEntityAttributes[ProductConfig::KEY_WEIGHT_PER_ITEM];
+                $pricePerKg = $dataSet[ProductConfig::KEY_PRICE];
+
+                $productAbstractEntityAttributes[ProductConfig::PRICE_PER_KG] = $pricePerKg;
+                $dataSet[ProductConfig::KEY_PRICE] = $priceMultiplier * $pricePerKg;
+
+                $productAbstractEntity->setAttributes(json_encode($productAbstractEntityAttributes));
+                $productAbstractEntity->save();
+            }
+
             if (!empty($dataSet[ProductConfig::KEY_PRICE_FROM]) && !empty($dataSet[ProductConfig::KEY_PRICE_TO])) {
                 $this->savePriceProductSchedule($dataSet, ProductPriceSaver::PRICE_TYPE_DEFAULT, ProductConfig::KEY_PSEUDO_PRICE);
                 $this->savePriceProductSchedule($dataSet, ProductPriceSaver::PRICE_TYPE_ORIGINAL, ProductConfig::KEY_PRICE);
