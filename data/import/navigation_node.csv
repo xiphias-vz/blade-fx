@@ -1,7 +1,7 @@
 navigation_key,node_key,parent_node_key,node_type,title.en_US,url.en_US,css_class.en_US,title.de_DE,url.de_DE,css_class.de_DE,valid_from,valid_to,position
 NAVIGATION_FOOTER_ELEMENT,node_key_162,,cms_page,About us,/en/ueberuns/,category-4,Über uns,/de/ueberuns,category-4,,,4
 FOOTER_NAVIGATION_CATEGORIES,node_key_165,,external_url,Garden & Outdoor,/en/garden-&-outdoor,category-7,Fragen und Antworten,https://globus.zendesk.com/hc/de,category-7,,,2
-FOOTER_NAVIGATION_CATEGORIES,node_key_166,,cms_page,Abholeservice,/en/abholservice,category-8,Abholservice,/de/abholservice,category-8,,,3
+FOOTER_NAVIGATION_CATEGORIES,node_key_166,,cms_page,Abholservice,/en/abholservice,category-8,Abholservice,/de/abholservice,category-8,,,3
 FOOTER_NAVIGATION_CATEGORIES,node_key_167,,cms_page,Directions,/en/anfart,,Anfart,/de/anfart,category-9,,,4
 FOOTER_NAVIGATION,node_key_34,,cms_page,GTC,/en/Allgemeine-Geschaeftsbedingungen/,,Allgemeine Geschäftsbedingungen,/de/Allgemeine-Geschaeftsbedingungen/,,,,2
 FOOTER_NAVIGATION,node_key_35,,cms_page,Data privacy,/en/privacy,,Datenschutz,/de/datenschutz/,,,,3
