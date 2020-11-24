@@ -12,8 +12,9 @@ use Spryker\Zed\Kernel\Communication\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\Callback;
 use Symfony\Component\Validator\Constraints\Length;
-use Symfony\Component\Validator\Constraints\NotBlank;
+use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
 /**
  * @method \StoreApp\Zed\Picker\PickerConfig getConfig()
@@ -61,7 +62,27 @@ class OrderItemContainerForm extends AbstractType
                 'required' => false,
                 'label' => false,
                 'constraints' => [
-                    new NotBlank(),
+                    new Callback([
+                        'callback' => function ($dataFrom, ExecutionContextInterface $context) {
+                            $data = $context->getRoot()->getData();
+                            $overallQuantity = 0;
+                            foreach ($data as $itemKey => $itemValue) {
+                                if (strstr($itemKey, OrderItemSelectionForm::PREFIX_FIELD_SALES_ORDER_ITEM_SKU)) {
+                                    $overallQuantity += $itemValue;
+                                }
+                            }
+
+                            if ($overallQuantity === 0) {
+                                return;
+                            }
+
+                            foreach ($data[OrderItemSelectionForm::FIELD_SALES_ORDER_CONTAINERS] as $container) {
+                                if (!$container[PickingSalesOrderTransfer::CONTAINER_CODE]) {
+                                    $context->addViolation('Dieser Wert sollte nicht leer sein.');
+                                }
+                            }
+                        },
+                    ]),
                     new Length(['min' => 4]),
                 ],
             ]
