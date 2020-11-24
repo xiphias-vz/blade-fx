@@ -60,6 +60,10 @@
             background: $setting-color-gray-17;
             color: $setting-color-white;
             position: relative;
+
+            @include helper-breakpoint-media-max($sm-max)  {
+               padding:0px;
+            }
         }
 
         &__content {
