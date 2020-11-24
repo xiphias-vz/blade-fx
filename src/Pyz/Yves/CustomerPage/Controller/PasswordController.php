@@ -7,11 +7,14 @@
 
 namespace Pyz\Yves\CustomerPage\Controller;
 
-use Generated\Shared\Transfer\CustomerTransfer;
+use Elastica\JSON;
 use Pyz\Yves\CustomerPage\Form\ForgottenPasswordForm;
 use Spryker\Shared\Customer\Code\Messages;
 use SprykerShop\Yves\CustomerPage\Controller\PasswordController as SprykerPasswordController;
 use Symfony\Component\HttpFoundation\Request;
+use Generated\Shared\Transfer\CustomerTransfer;
+use Pyz\Shared\Customer\CustomerConstants;
+use Spryker\Shared\Config\Config;
 
 /**
  * @method \Pyz\Yves\CustomerPage\CustomerPageFactory getFactory()
@@ -31,26 +34,66 @@ class PasswordController extends SprykerPasswordController
             ->getForgottenPasswordForm()
             ->handleRequest($request);
 
-        if ($form->isSubmitted()) {
-            if ($form->isValid()) {
-                $customerTransfer = new CustomerTransfer();
-                $customerTransfer->fromArray($form->getData());
+        $apiKey = Config::get(CustomerConstants::CDC_API_KEY);
+        $apiSecretKey = Config::get(CustomerConstants::CDC_API_SECRET_KEY);
+        $urlPrefix = Config::get(CustomerConstants::CDC_API_URL);
+        $username = $form->getViewData()["email"];
 
-                $customerResponseTransfer = $this->sendPasswordRestoreMail($customerTransfer);
-                $this->processResponseErrors($customerResponseTransfer);
+        $url = array_shift($urlPrefix) . "accounts.resetPassword?apiKey=" . array_shift($apiKey) . "&sec=" . array_shift($apiSecretKey);
+        $data = ['loginID' => $username];
+        if($data['loginID'] != null)  {
 
-                if ($customerResponseTransfer->getIsSuccess()) {
-                    $this->addSuccessMessage(Messages::CUSTOMER_PASSWORD_RECOVERY_MAIL_SENT);
+            $options = [
+                'http' => [
+                    'header' => "Content-type: application/x-www-form-urlencoded\r\n",
+                    'method' => 'POST',
+                    'content' => http_build_query($data),
+                ],
+            ];
+            $context = stream_context_create($options);
+            $result = file_get_contents($url, false, $context);
+            $result = JSON::parse($result);
+
+            if ($result["errorCode"] == 0) {
+                $this->addSuccessMessage(Messages::CUSTOMER_PASSWORD_RECOVERY_MAIL_SENT);
+                return [
+                    'form' => $form->createView(),
+                ];
+            }
+            else {
+
+                if ($form->isSubmitted()) {
+                    if ($form->isValid()) {
+                        $customerTransfer = new CustomerTransfer();
+                        $customerTransfer->fromArray($form->getData());
+
+                        $customerResponseTransfer = $this->sendPasswordRestoreMail($customerTransfer);
+                        $this->processResponseErrors($customerResponseTransfer);
+
+                        if ($customerResponseTransfer->getIsSuccess()) {
+                            $this->addSuccessMessage(Messages::CUSTOMER_PASSWORD_RECOVERY_MAIL_SENT);
+                        }
+                    }
+
+                    $this->getFactory()
+                        ->getCsrfTokenManager()
+                        ->refreshToken(ForgottenPasswordForm::FORM_NAME);
+
+
                 }
+                return [
+                    'form' => $form->createView(),
+                ];
             }
 
-            $this->getFactory()
-                ->getCsrfTokenManager()
-                ->refreshToken(ForgottenPasswordForm::FORM_NAME);
+
+        }
+        else  {
+            return [
+                'form' => $form->createView(),
+            ];
         }
 
-        return [
-            'form' => $form->createView(),
-        ];
+
     }
 }
