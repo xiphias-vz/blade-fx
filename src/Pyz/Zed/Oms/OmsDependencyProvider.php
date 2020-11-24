@@ -24,6 +24,7 @@ use Pyz\Zed\Oms\Communication\Plugin\Oms\Command\SendOrderCancelledEmailCommandB
 use Pyz\Zed\Oms\Communication\Plugin\Oms\Command\SendOrderRefundedCommandByOrderPlugin;
 use Pyz\Zed\Oms\Communication\Plugin\Oms\Condition\Is1DayPassedConditionPlugin;
 use Pyz\Zed\Oms\Communication\Plugin\Oms\Condition\IsOrderCancelledCondition;
+use Pyz\Zed\Oms\Communication\Plugin\Oms\Condition\IsOrderShippedMailAwaitsCondition;
 use Pyz\Zed\Oms\Communication\Plugin\Oms\Condition\TrueConditionPlugin;
 use Pyz\Zed\Payone\Communication\Plugin\Oms\Command\CancelCommandPlugin;
 use Pyz\Zed\Payone\Communication\Plugin\Oms\Command\CancelRemainingAmountCommandByOrderPlugin;
@@ -230,6 +231,7 @@ class OmsDependencyProvider extends SprykerOmsDependencyProvider
 
             //Cashier
             $conditionCollection->add(new IsOrderExportedToCashierConditionPlugin(), 'is order exported to cashier');
+            $conditionCollection->add(new IsOrderShippedMailAwaitsCondition(), 'is order in shipped mail awaits');
 
             return $conditionCollection;
         });

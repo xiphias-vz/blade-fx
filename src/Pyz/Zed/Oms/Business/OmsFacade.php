@@ -106,4 +106,16 @@ class OmsFacade extends SprykerOmsFacade implements OmsFacadeInterface
             ->createOrderStateMachineFinder()
             ->isOrderFlaggedCancelled($idOrder);
     }
+
+    /**
+     * @param int $idOrder
+     *
+     * @return bool
+     */
+    public function isOrderFlaggedShippedMailAwaits($idOrder): bool
+    {
+        return $this->getFactory()
+            ->createOrderStateMachineFinder()
+            ->isOrderFlaggedShippedMailAwaits($idOrder);
+    }
 }

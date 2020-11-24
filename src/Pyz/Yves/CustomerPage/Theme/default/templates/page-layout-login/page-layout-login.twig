@@ -175,23 +175,6 @@
             gigya.accounts.resendVerificationCode(verificationParams);
         }
 
-        function gigyaInitRegistration() {
-            var params = {
-                isLite: false,
-                callback: gigyaInitRegistrationCallback,
-            };
-            gigya.accounts.initRegistration(params);
-        }
-
-        function gigyaInitRegistrationCallback(response) {
-            if (response.errorCode == 0) {
-                var token = response.regToken;
-                gigyaRegisterUser(token);
-            } else {
-                alert("There was an error!");
-            }
-        }
-
         function gigyaRegisterUser(token) {
             var acceptNotifications = document.getElementsByName("registerForm[accept_notifications]")[1].checked
             var acceptTerms = document.getElementsByName("registerForm[accept_terms]")[1].checked
@@ -223,7 +206,9 @@
                             street: document.getElementById("registerForm_address1").value,
                             houseNo: document.getElementById("registerForm_address2").value
                         },
-                        salutation: '0002'
+                        salutation: '0002',
+                        preferredStore: '',
+                        origin: ''
                     },
                     format: "json",
                     callback: gigyaRegisterUserCallback,
@@ -238,7 +223,9 @@
                 console.log(response);
             } else {
                 console.log(response);
-                alert("There was an error!");
+                var r = "";
+                response.validationErrors.forEach(x=> r += x.message);
+                alert(r);
             }
         }
 
@@ -270,14 +257,7 @@
             loginUser();
             return false;
         };
-        document.getElementsByName('registerForm')[0].onsubmit = function () {
-            var thirdPartyRegistration = document.getElementsByName("registerForm[third_party_registration]")[1].checked
-            if(thirdPartyRegistration) {
-                gigyaInitRegistration();
-                return false;
-            }
-            else return true;
-        };
+
     </script>
 
 {% endblock %}

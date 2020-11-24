@@ -83,6 +83,7 @@ class MailDependencyProvider extends SprykerMailDependencyProvider
                 [
                     CustomerInvoiceMailTypePlugin::MAIL_TYPE,
                     OrderConfirmationMailTypePlugin::MAIL_TYPE,
+                    OrderShippedMailTypePlugin::MAIL_TYPE,
                     RegistrationMailTypePlugin::MAIL_TYPE,
                     RestorePasswordMailTypePlugin::MAIL_TYPE,
                     CustomerRestorePasswordMailTypePlugin::MAIL_TYPE,

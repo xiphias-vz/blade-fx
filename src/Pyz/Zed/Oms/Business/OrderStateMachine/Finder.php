@@ -112,4 +112,14 @@ class Finder extends SprykerFinder implements FinderInterface
     {
         return $this->isOrderFlaggedAll($idOrder, OmsConfig::STATE_TYPE_FLAG_CANCELLED);
     }
+
+    /**
+     * @param int $idOrder
+     *
+     * @return bool
+     */
+    public function isOrderFlaggedShippedMailAwaits($idOrder): bool
+    {
+        return $this->isOrderFlaggedAll($idOrder, OmsConfig::STATE_TYPE_FLAG_SHIPPED_MAIL_AWAITS);
+    }
 }
