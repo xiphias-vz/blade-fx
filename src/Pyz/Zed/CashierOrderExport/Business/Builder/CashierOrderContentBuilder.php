@@ -20,6 +20,9 @@ class CashierOrderContentBuilder implements CashierOrderContentBuilderInterface
     protected const POSITION_MASK = '%s%s%s%s%s%s%s%s%s%s%s%020s%s%020s%s%-20.20s%s%020s%s%020s%s%020s%s%020s';
     protected const DEFAULT_POSITION_ENDING_ZERO_SETS = 8;
 
+    protected const UMLAUTS_REPLACE_FROM = ['ä', 'ö', 'ü', 'ß', 'Ä', 'Ö', 'Ü'];
+    protected const UMLAUTS_REPLACE_TO = ['ae', 'oe', 'ue', 'ss', 'Ae', 'Oe', 'Ue'];
+
     protected const HEADER_KEY_IDENTIFIER = '1070';
     protected const POSITION_KEY_IDENTIFIER = '1071';
     protected const ORDER_KEY_IDENTIFIER = '0034';
@@ -184,7 +187,7 @@ class CashierOrderContentBuilder implements CashierOrderContentBuilderInterface
             static::ORDER_ITEM_EAN_IDENTIFIER,
             $itemTransfer->getProductNumber() ?? static::DEFAULT_EMPTY_NUMBER,
             static::ORDER_ITEM_NAME_IDENTIFIER,
-            $itemTransfer->getBonText() ?? $itemTransfer->getName(),
+            $this->getItemName($itemTransfer),
             static::ORDER_ITEM_PRICE_IDENTIFIER,
             $itemTransfer->getSumPrice() ?? static::DEFAULT_EMPTY_NUMBER,
             static::ORDER_ITEM_WGR_LINK_IDENTIFIER,
@@ -395,6 +398,10 @@ class CashierOrderContentBuilder implements CashierOrderContentBuilderInterface
      */
     protected function getDecimalViewOfItemQuantity(ItemTransfer $itemTransfer): ?int
     {
+        if ($itemTransfer->getNewWeight()) {
+            return $itemTransfer->getNewWeight();
+        }
+
         $itemQuantity = $itemTransfer->getQuantity();
 
         if (!$itemQuantity) {
@@ -402,5 +409,27 @@ class CashierOrderContentBuilder implements CashierOrderContentBuilderInterface
         }
 
         return $itemQuantity * static::DEFAULT_ITEM_QUANTITY_MULTIPLIER;
+    }
+
+    /**
+     * @param \Generated\Shared\Transfer\ItemTransfer $itemTransfer
+     *
+     * @return string
+     */
+    protected function getItemName(ItemTransfer $itemTransfer): string
+    {
+        $itemName = $itemTransfer->getBonText() ?? $itemTransfer->getName();
+
+        return $this->sanitizeItemNameFromUmlauts($itemName);
+    }
+
+    /**
+     * @param string $itemName
+     *
+     * @return string
+     */
+    protected function sanitizeItemNameFromUmlauts(string $itemName): string
+    {
+        return str_replace(static::UMLAUTS_REPLACE_FROM, static::UMLAUTS_REPLACE_TO, $itemName);
     }
 }

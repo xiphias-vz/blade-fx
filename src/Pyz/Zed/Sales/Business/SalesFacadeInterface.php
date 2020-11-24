@@ -8,6 +8,7 @@
 namespace Pyz\Zed\Sales\Business;
 
 use DateTime;
+use Generated\Shared\Transfer\OrderChangeRequestTransfer;
 use Generated\Shared\Transfer\OrderCriteriaFilterTransfer;
 use Generated\Shared\Transfer\OrderTransfer;
 use Generated\Shared\Transfer\OrderUpdateRequestTransfer;
@@ -173,6 +174,18 @@ interface SalesFacadeInterface extends SprykerSalesFacadeInterface
 
     /**
      * Specification:
+     * - update order items with new values
+     *
+     * @api
+     *
+     * @param \Generated\Shared\Transfer\OrderChangeRequestTransfer $orderChangeRequestTransfer
+     *
+     * @return bool
+     */
+    public function saveOrderChange(OrderChangeRequestTransfer $orderChangeRequestTransfer);
+
+    /**
+     * Specification:
      * - Retrieve all requested delivery dates for given sales order
      *
      * @api
@@ -238,7 +251,7 @@ interface SalesFacadeInterface extends SprykerSalesFacadeInterface
      *
      * @return \Generated\Shared\Transfer\SpySalesOrderItemEntityTransfer
      */
-    public function expandOrderItemWithSequence(
+    public function expandItemWithStockProductData(
         QuoteTransfer $quoteTransfer,
         SpySalesOrderItemEntityTransfer $itemEntityTransfer
     ): SpySalesOrderItemEntityTransfer;

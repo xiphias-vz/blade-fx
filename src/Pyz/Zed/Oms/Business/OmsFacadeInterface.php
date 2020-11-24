@@ -86,4 +86,11 @@ interface OmsFacadeInterface extends SprykerOmsFacadeInterface
      * @return bool
      */
     public function isOrderFlaggedCancelled($idOrder): bool;
+
+    /**
+     * @param int $idOrder
+     *
+     * @return bool
+     */
+    public function isOrderFlaggedShippedMailAwaits($idOrder): bool;
 }

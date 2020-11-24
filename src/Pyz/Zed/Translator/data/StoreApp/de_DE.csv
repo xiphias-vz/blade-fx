@@ -143,3 +143,10 @@ storeapp.delivery.message.success.order-successfully-delivered,Bestellung erfolg
 storeapp.delivery.message.success.order-not-delivered,Bestellung konnte nicht geliefert werden
 
 forms.submit-btn,Speichern
+
+storeapp.new_weight,Gewicht (gr)
+
+picking.app.shelf,"Regal: "
+picking.app.shelf_floor,"Regalboden: "
+picking.app.shelf_field,"Regalfeld: "
+picking.app.price,"Preis: "

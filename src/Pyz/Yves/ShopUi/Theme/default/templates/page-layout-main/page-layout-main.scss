@@ -4,11 +4,27 @@
             display: flex;
             flex-direction: column;
             flex-grow: 1;
+
+
         }
 
         &__content {
             flex-grow: 1;
             flex-shrink: 0;
+
+            .spacing-bottom--inner.spacing-bottom--bigger {
+                @include helper-breakpoint-media-max($sm-max) {
+                    padding-bottom: 5px;
+                }
+            }
+
+            .spacing-y--big {
+                @include helper-breakpoint-media-max($sm-max) {
+                    margin-top:0px;
+                    margin-bottom: 10px;
+                }
+            }
+
         }
 
         &__content-pdp {
@@ -44,6 +60,8 @@
             }
         }
 
+
+
         &--error {
             #{$name}__content {
                 background: url('../images/welcome.jpg') no-repeat center top / 100% auto;
@@ -52,6 +70,8 @@
             .title--general {
                 color: $setting-color-white;
             }
+
+
 
             #{$name}__main {
                 background: $setting-color-gray-16;

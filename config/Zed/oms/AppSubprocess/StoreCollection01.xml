@@ -6,7 +6,11 @@
 
     <process name="Collection01">
         <states>
-            <state name="collection process" />
+            <state name="collection process">
+                <flag>shipped mail awaits</flag>
+            </state>
+            <state name="shipped mail sending" />
+            <state name="shipped mail sent" />
             <state name="ready for collection" />
             <state name="collected by customer" />
             <state name="collection cancelled by customer" >
@@ -18,8 +22,19 @@
         </states>
 
         <transitions>
-            <transition>
+            <transition condition="is order in shipped mail awaits">
                 <source>collection process</source>
+                <target>shipped mail sending</target>
+            </transition>
+
+            <transition happy="true">
+                <source>shipped mail sending</source>
+                <target>shipped mail sent</target>
+                <event>send shipped mail</event>
+            </transition>
+
+            <transition happy="true">
+                <source>shipped mail sent</source>
                 <target>ready for collection</target>
                 <event>move to ready for collection</event>
             </transition>
@@ -56,6 +71,7 @@
         </transitions>
 
         <events>
+            <event name="send shipped mail" onEnter="true" command="Oms/SendOrderShipped"/>
             <event name="move to ready for collection" onEnter="true" command="Sales/MoveToReadyForCollection"/>
             <event name="confirm collection" manual="true" command="Sales/ConfirmCollection"/>
             <event name="cancel collection by customer" manual="true"/>

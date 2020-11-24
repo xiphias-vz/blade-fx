@@ -1,40 +1,40 @@
 {% extends model('component') %}
 
-{% define config = {
-    name: 'pet-feeding-table',
-} %}
+ {% define config = {
+     name: 'pet-feeding-table',
+ } %}
 
-{% define data = {
-    attributes: required,
-    petColumns: required,
-    petRows: required,
-    rowData: required,
-    triggerClassName: ''
-} %}
+ {% define data = {
+     attributes: required,
+     petColumns: required,
+     petRows: required,
+     rowData: required,
+     triggerClassName: ''
+ } %}
 
 {% block class -%}
     {{ parent() }}
 {%- endblock %}
 
 {% block body %}
-            <div class="is-scrollable-x spacing-bottom">
-                <table class="table table--expand">
-                    <thead>
-                        {% for column in data.petColumns %}
-                            <th class="{{ config.name }}__col">{{ column }}</th>
-                        {% endfor %}
-                    </thead>
-                    <tbody>
+    <div class="is-scrollable-x spacing-bottom">
+        <table class="table table--expand">
+            <thead>
+            {% for column in data.petColumns %}
+                <th class="{{ config.name }}__col">{{ column }}</th>
+            {% endfor %}
+            </thead>
+            <tbody>
 
-                        {% for row in 0..data.petRows %}
-                            <tr class="table__row table__row--with-border">
-                                {% for item in data.rowData %}
-                                    <td>{{ item }}</td>
-                                {% endfor %}
-                            </tr>
-                        {% endfor %}
+            {% for row in 0..data.petRows-1 %}
+                <tr class="table__row table__row--with-border">
+                    {% for item in data.rowData[row] %}
+                        <td>{{ item }}</td>
+                    {% endfor %}
+                </tr>
+            {% endfor %}
 
-                    </tbody>
-                </table>
-            </div>
+            </tbody>
+        </table>
+    </div>
 {% endblock %}

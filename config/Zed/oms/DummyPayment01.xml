@@ -22,6 +22,7 @@
             <state name="paid">
                 <flag>cancellable by customer</flag>
             </state>
+            <state name="confirm mail sending"/>
             <state name="confirmed">
                 <flag>cancellable by customer</flag>
             </state>
@@ -42,6 +43,12 @@
 
             <transition happy="true">
                 <source>new</source>
+                <target>confirm mail sending</target>
+                <event>send confirm mail</event>
+            </transition>
+
+            <transition happy="true">
+                <source>confirm mail sending</source>
                 <target>confirmed</target>
                 <event>confirm</event>
             </transition>
@@ -98,6 +105,7 @@
         <events>
             <event name="authorize" onEnter="true"/>
             <event name="pay" manual="true" timeout="1 hour" command="DummyPayment/Pay"/>
+            <event name="send confirm mail" onEnter="true" command="Oms/SendOrderConfirmation"/>
             <event name="confirm" onEnter="true" command="Customer/SetHasOrdersFlag"/>
             <event name="wait for cancellation deadline" timeout="1 second"/>
             <event name="release time slot" onEnter="true" command="TimeSlot/Release"/>

@@ -32,9 +32,9 @@ class OrderItemAggregator implements OrderItemAggregatorInterface
             $currentIndexedItem = $itemsIndexedBySku[$currentItemIndex] ?? null;
 
             if ($currentIndexedItem) {
-                $itemsIndexedBySku[$currentItemIndex] = $this->addQuantityToItem(
+                $itemsIndexedBySku[$currentItemIndex] = $this->combineItems(
                     $currentIndexedItem,
-                    $itemTransfer->getQuantity()
+                    $itemTransfer
                 );
 
                 continue;
@@ -47,15 +47,15 @@ class OrderItemAggregator implements OrderItemAggregatorInterface
     }
 
     /**
-     * @param \Generated\Shared\Transfer\ItemTransfer $itemTransfer
-     * @param int $quantity
+     * @param \Generated\Shared\Transfer\ItemTransfer $itemTransferOne
+     * @param \Generated\Shared\Transfer\ItemTransfer $itemTransferTwo
      *
      * @return \Generated\Shared\Transfer\ItemTransfer
      */
-    protected function addQuantityToItem(ItemTransfer $itemTransfer, int $quantity): ItemTransfer
+    protected function combineItems(ItemTransfer $itemTransferOne, ItemTransfer $itemTransferTwo): ItemTransfer
     {
-        $newItemQuantity = $itemTransfer->getQuantity() + $quantity;
+        $itemTransferOne->setQuantity($itemTransferOne->getQuantity() + $itemTransferTwo->getQuantity());
 
-        return $itemTransfer->setQuantity($newItemQuantity);
+        return $itemTransferOne;
     }
 }

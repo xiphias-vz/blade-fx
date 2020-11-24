@@ -81,8 +81,4 @@
             {{ 'cart.checkout' | trans }}
         </a>
     {% endif %}
-
-    {% block additional %}
-        {% include molecule('payment-info', 'CartPage') only %}
-    {% endblock %}
 {% endblock %}

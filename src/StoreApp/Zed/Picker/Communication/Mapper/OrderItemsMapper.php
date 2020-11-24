@@ -15,14 +15,16 @@ class OrderItemsMapper implements OrderItemsMapperInterface
     /**
      * @param \Generated\Shared\Transfer\OrderTransfer $salesOrderTransfer
      * @param int[] $skuToPickedQuantityMap
+     * @param int[] $skuToWeightMap
      *
      * @return \Generated\Shared\Transfer\OrderItemStatusesTransfer
      */
     public function mapOrderItemsToOrderItemStatuses(
         OrderTransfer $salesOrderTransfer,
-        array $skuToPickedQuantityMap
+        array $skuToPickedQuantityMap,
+        array $skuToWeightMap = []
     ): OrderItemStatusesTransfer {
-        $orderItemPickingStatussesTransfer = new OrderItemStatusesTransfer();
+        $orderItemPickingStatusesTransfer = new OrderItemStatusesTransfer();
 
         foreach ($salesOrderTransfer->getItems() as $itemTransfer) {
             $itemSku = $itemTransfer->getSku();
@@ -30,8 +32,15 @@ class OrderItemsMapper implements OrderItemsMapperInterface
                 continue;
             }
 
+            // In case weight is given, we keep only one of requested items
+            if (isset($skuToWeightMap[$itemSku])) {
+                $skuToPickedQuantityMap[$itemSku] = 1;
+
+                unset($skuToWeightMap[$itemSku]);
+            }
+
             if ($skuToPickedQuantityMap[$itemSku] > 0) {
-                $orderItemPickingStatussesTransfer->addSelectedOrderItemId(
+                $orderItemPickingStatusesTransfer->addSelectedOrderItemId(
                     $itemTransfer->getIdSalesOrderItem()
                 );
 
@@ -39,11 +48,11 @@ class OrderItemsMapper implements OrderItemsMapperInterface
                 continue;
             }
 
-            $orderItemPickingStatussesTransfer->addnotSelectedOrderItemId(
+            $orderItemPickingStatusesTransfer->addnotSelectedOrderItemId(
                 $itemTransfer->getIdSalesOrderItem()
             );
         }
 
-        return $orderItemPickingStatussesTransfer;
+        return $orderItemPickingStatusesTransfer;
     }
 }

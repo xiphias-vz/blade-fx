@@ -237,12 +237,30 @@ class PickingController extends BaseOrderPickingController
             );
         }
 
+        $pickingFormSkuKeys = [];
+        $pickingFormWeightKeys = [];
+
+        foreach ($orderItemSelectionForm->all() as $item) {
+            if (strpos($item->getName(), OrderItemSelectionForm::PREFIX_FIELD_SALES_ORDER_ITEM_SKU) === 0) {
+                $pickingFormSkuKeys[] = $item->getName();
+            }
+
+            if (strpos($item->getName(), OrderItemSelectionForm::PREFIX_FIELD_SALES_ORDER_ITEM_NEW_WEIGHT) !== false) {
+                $nameParts = explode('__', $item->getName());
+                $sku = end($nameParts);
+                $pickingFormWeightKeys[$sku] = $item->getName();
+            }
+        }
+
         return [
             'merchant' => $this->getMerchantFromRequest($request),
             'maxPickingBags' => $this->getFactory()->getConfig()->getMaxPickingBags(),
             'itemsCount' => $this->getItemsCount($aggregatedItemTransfers),
+            'itemsToShelfMap' => $this->getItemsToShelfMap($aggregatedItemTransfers),
             'itemImageUrls' => $this->getSkuToImageMapFromItemTransfers($aggregatedItemTransfers),
             'pickingForm' => $orderItemSelectionForm->createView(),
+            'pickingFormSkuKeys' => $pickingFormSkuKeys,
+            'pickingFormWeightKeys' => $pickingFormWeightKeys,
             'requestParamIdSalesOrder' => PickerConfig::REQUEST_PARAM_ID_ORDER,
             'idSalesOrder' => $idSalesOrder,
             'orderReference' => $salesOrderTransfer->getOrderReference(),
@@ -271,10 +289,17 @@ class PickingController extends BaseOrderPickingController
                 OrderItemSelectionForm::PREFIX_FIELD_SALES_ORDER_ITEM_SKU
             );
 
+        $skuToWeightMap = $this->getFactory()->getFormDataMapper()
+            ->mapFormDataToSelectedWeightMap(
+                $formData,
+                OrderItemSelectionForm::PREFIX_FIELD_SALES_ORDER_ITEM_NEW_WEIGHT
+            );
+
         $orderItemStatusesTransfer = $this->getFactory()->getOrderItemsMapper()
             ->mapOrderItemsToOrderItemStatuses(
                 $salesOrderTransfer,
-                $skuToSelectedQuantityMap
+                $skuToSelectedQuantityMap,
+                $skuToWeightMap
             );
 
         $pickingZoneTransfer = $this->getFacade()->findPickingZoneInSession();
@@ -312,6 +337,18 @@ class PickingController extends BaseOrderPickingController
                 PickerConfig::REQUEST_PARAM_ID_ORDER => $idSalesOrder,
             ]
         )->build();
+
+        $orderChangeRequestTransfer = $this->getFactory()->getFormDataMapper()
+            ->mapFormDataToOrderItemChangeRequest(
+                $formData,
+                $salesOrderTransfer,
+                $selectedIdSalesOrderItems,
+                OrderItemSelectionForm::PREFIX_FIELD_SALES_ORDER_ITEM_NEW_WEIGHT
+            );
+
+        if ($orderChangeRequestTransfer->getOrderItemChangeRequest()->count() > 0) {
+            $this->getFactory()->getSalesFacade()->saveOrderChange($orderChangeRequestTransfer);
+        }
 
         return $this->redirectResponse($orderPickingPath);
     }
@@ -390,6 +427,26 @@ class PickingController extends BaseOrderPickingController
             },
             0
         );
+    }
+
+    /**
+     * @param \Generated\Shared\Transfer\ItemTransfer[] $itemTransfers
+     *
+     * @return array
+     */
+    protected function getItemsToShelfMap(array $itemTransfers): array
+    {
+        $itemsToShelfMap = [];
+        foreach ($itemTransfers as $itemTransfer) {
+            $itemsToShelfMap[$itemTransfer->getSku()] = [
+                ItemTransfer::SHELF => $itemTransfer->getShelf(),
+                ItemTransfer::SHELF_FLOOR => $itemTransfer->getShelfFloor(),
+                ItemTransfer::SHELF_FIELD => $itemTransfer->getShelfField(),
+                ItemTransfer::SUM_PRICE => $itemTransfer->getSumPrice(),
+            ];
+        }
+
+        return $itemsToShelfMap;
     }
 
     /**
