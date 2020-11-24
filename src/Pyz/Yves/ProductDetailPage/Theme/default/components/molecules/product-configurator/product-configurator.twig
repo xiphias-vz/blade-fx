@@ -48,13 +48,7 @@
         </span>
     {% endif %}
 
-    <h2 class="title title--product">{{ productName }} - {{ productSaleVolume|round(2, 'floor') }} {{ data.product.attributes["grundpreismasseinheit"] }}</h2>
-
-    {% if data.product.attributes.einzelgewicht is defined %}
-        <div class="text-secondary text-block">
-            {{ 'Einzelgewicht: ' }} {{ data.product.attributes.einzelgewicht }}
-        </div>
-    {% endif %}
+    <h2 class="title title--product">{{ productName }} - {% if data.product.attributes.einzelgewicht is defined %} {{ data.product.attributes.einzelgewicht|replace('.', ',') }} {% else %} {{ productSaleVolume|round(2, 'floor') }} {% endif %}  {{ data.product.attributes["grundpreismasseinheit"] }}</h2>
 
     <div class="{{ config.name }}__info">
 
@@ -65,7 +59,7 @@
                     modifiers: ['pdp'],
                     data: {
                         amount: data.product.price,
-                        originalAmount: data.product.prices.ORIGINAL is not defined ? null : data.product.prices.ORIGINAL
+                        originalAmount: data.product.prices.ORIGINAL is not defined ? null : data.product.prices.ORIGINAL,
                     }
                 } only %}
             {% endwidget %}
@@ -73,17 +67,34 @@
 
         {% if data.product.attributes["grundpreismasseinheit"] is defined and productSaleVolume is defined %}
             <div class="text-secondary">
-                {{ (data.product.price / productSaleVolume) | round(2, 'floor') }}€/{{ data.product.attributes["grundpreismasseinheit"] }}
+{#                {{ (data.product.price / productSaleVolume) / 100 | round(2, 'floor') }}€/{{ data.product.attributes["grundpreismasseinheit"] }}#}
             </div>
         {% endif %}
 
         <div class="grid">
 
-            {% if productSaleVolume is defined %}
-                <div class="text-secondary">
-                    {{ productSaleVolume | round(2, 'floor') }} {{ productSaleUnit }}
-                </div>
-            {% endif %}
+            <div class="text-secondary">
+                {% if data.product.attributes.einzelgewicht is defined %}
+
+                    {{ data.product.price / 100 | replace('.', ',')}} €/{{ data.product.attributes.grundpreisinhalt|round(2, 'floor') }} {{ data.product.attributes.grundpreismasseinheit }}
+
+                {% endif %}
+            </div>
+
+{#            {% if data.product.attributes.einzelgewicht is defined %}#}
+{#                <div class="text-secondary">#}
+{#                    {{ data.product.attributes.einzelgewicht }} {{ productSaleUnit }}#}
+{#                </div>#}
+{#            {% else %}#}
+{#                <div class="text-secondary">#}
+{#                    {{  productSaleVolume|round(2, 'floor') }} {{ productSaleUnit }}#}
+{#                        {{ (data.product.price * (productSaleVolume|round(2, 'floor') / data.product.attributes.einzelgewicht )) }}#}
+{#                </div>#}
+{#            {% endif %}#}
+
+{#            <div class="text-secondary">#}
+{#                {{ (data.product.price / (productSaleVolume / data.product.attributes.einzelgewicht )) }}#}
+{#            </div>#}
 
         </div>
     </div>
