@@ -89,7 +89,7 @@ class CatalogDependencyProvider extends SprykerCatalogDependencyProvider
             new IsActiveQueryExpanderPlugin(),
             new IsActiveInDateRangeQueryExpanderPlugin(),
             new OrderHistoryBoostingQueryExpanderPlugin(),
-//            new ProductPriceQueryExpanderPlugin(),
+            new ProductPriceQueryExpanderPlugin(),
 
             /**
              * FacetQueryExpanderPlugin needs to be after other query expanders which filters down the results.
