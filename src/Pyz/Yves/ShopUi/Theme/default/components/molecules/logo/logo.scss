@@ -5,6 +5,7 @@
         &__image {
             width: 100%;
             max-height: inherit;
+            margin-left: rem(5px);
         }
 
         &__link {
@@ -28,8 +29,8 @@
         }
 
         &__image--header-mobile {
-            width: rem(54);
-            height: rem(40);
+            width: rem(64);
+            height: auto;
             margin-top: rem(12);
 
             @include helper-breakpoint-media-max($sm-max) {

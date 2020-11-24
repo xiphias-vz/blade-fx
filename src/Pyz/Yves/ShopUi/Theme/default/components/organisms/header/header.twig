@@ -8,10 +8,18 @@
 
 {% define hamburgerIcon = {
     iconName: 'shop',
-    secondIconName: 'shop-filled',
+    secondIconName: 'shop',
     isButton: true,
-    jsClass: 'js-header__navigation-trigger js-header__navigation-target js-page-layout-main--block-scroll-trigger icon--color-orange',
+    jsClass: 'js-header__navigation-trigger js-page-layout-main--block-scroll-trigger icon--color-orange',
  }
+%}
+
+{% define close = {
+    iconName: 'close',
+    secondIconName: '',
+    isButton: true,
+    jsClass: 'js-header__navigation-trigger js-page-layout-main--block-scroll-trigger icon--color-black is-hidden',
+}
 %}
 
 {% block body %}
@@ -122,18 +130,20 @@
 
                             {% if data.showNavigation %}
                                 <div class="{{ config.name }}__row {{ config.name }}__navigation-top is-hidden-xl-only">
-                                    {% block logoMobile %}
-                                        <button type="button" class="navigation-top-left-mobile__item button button--skinless {{ hamburgerIcon.jsClass }} button--no-inner-events">
-                                            {% block icon %}
-                                                {% include atom('icon') with {
-                                                    modifiers: ['big', 'lightOrange'],
-                                                    data: {
-                                                        name: hamburgerIcon.iconName,
-                                                    },
-                                                } only %}
-                                            {% endblock %}
-                                        </button>
 
+                                    <button type="button" class="navigation-top-left-mobile__item  {{ hamburgerIcon.jsClass }} button--no-inner-events">
+                                        {% block icon %}
+                                            {% include atom('icon') with {
+                                                modifiers: ['big', 'lightOrange'],
+                                                data: {
+                                                    name: hamburgerIcon.iconName,
+                                                },
+                                            } only %}
+                                        {% endblock %}
+                                    </button>
+
+
+                                    {% block logoMobile %}
                                         <div class="{{ config.name }}__logo">
                                             {% include molecule('logo') with {
                                                 modifiers: modifiers | merge(['header-mobile']),

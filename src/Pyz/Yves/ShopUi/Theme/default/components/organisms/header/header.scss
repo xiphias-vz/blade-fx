@@ -184,12 +184,10 @@ $header-sticky-height: rem(69, number);
 
         .navigation-top-left-mobile__item {
             position: fixed;
-            left: rem(0);
+            left: rem(20);
             top: rem(15);
+            background-color: transparent;
 
-            @include helper-breakpoint-media-max($sm-max) {
-               top:0px;
-            }
         }
 
         @content;
