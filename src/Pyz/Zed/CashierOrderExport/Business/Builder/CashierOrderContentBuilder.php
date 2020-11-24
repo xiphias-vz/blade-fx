@@ -306,6 +306,9 @@ class CashierOrderContentBuilder implements CashierOrderContentBuilderInterface
     {
         $depositAggregationCollection = [];
         foreach ($orderTransfer->getItems() as $itemTransfer) {
+            if ($itemTransfer->getCanceledAmount()) {
+                continue;
+            }
             foreach ($itemTransfer->getProductOptions() as $productOption) {
                 $quantity = $productOption->getQuantity();
                 if (isset($depositAggregationCollection[$productOption->getSku()][static::QUANTITY])) {
