@@ -12,10 +12,6 @@
     metaKeywords: _view.product.metaKeywords | default,
     tags: _view.tags,
     vitamins: _view.vitamins,
-    petCols: _view.petColumns,
-    petRows: _view.petRows,
-    rowData: _view.rowData,
-
     depositPrice: _view.depositPrice,
 } %}
 
@@ -173,9 +169,9 @@
                             {% include molecule('pet-feeding-table', 'ProductDetailPage') with {
                                 data: {
                                     attributes: data.product.attributes,
-                                    petColumns: data.petCols,
-                                    petRows: data.petRows,
-                                    rowData: data.rowData,
+                                    petColumns: _view.petColumns,
+                                    petRows: _view.petRows,
+                                    rowData: _view.rowData,
                                 },
                             } only %}
                     {% endblock %}

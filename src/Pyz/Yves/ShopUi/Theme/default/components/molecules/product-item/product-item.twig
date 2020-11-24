@@ -13,8 +13,8 @@
     image: data.product.images is defined ? data.product.images.0.externalUrlSmall | default,
     idProductAbstract: data.product.idProductAbstract | default,
     currencyIsoCode: null,
-    productSaleUnit: data.product.attributes.Verkaufseinheit | default(null),
-    productSaleVolume: data.product.attributes.Verkaufsvolumen | default(null),
+    productSaleUnit: data.product.attributes.grundpreisinhalt | default(null),
+    productSaleVolume: data.product.attributes.verpackungseinheit | default(null),
     depositPrice: data.depositPrice | default(null),
 } %}
 
