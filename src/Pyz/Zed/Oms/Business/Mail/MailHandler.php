@@ -24,6 +24,7 @@ use Spryker\Service\UtilDateTime\UtilDateTimeServiceInterface;
 use Spryker\Shared\Shipment\ShipmentConfig;
 use Spryker\Zed\Money\Business\MoneyFacadeInterface;
 use Spryker\Zed\Oms\Business\Mail\MailHandler as SprykerMailHandler;
+use Spryker\Zed\Oms\Communication\Plugin\Mail\OrderShippedMailTypePlugin;
 use Spryker\Zed\Oms\Dependency\Facade\OmsToMailInterface;
 use Spryker\Zed\Oms\Dependency\Facade\OmsToSalesInterface;
 use Spryker\Zed\Translator\Business\TranslatorFacadeInterface;
@@ -129,6 +130,27 @@ class MailHandler extends SprykerMailHandler
         $mailTransfer->setType(OrderConfirmationMailTypePlugin::MAIL_TYPE);
         $mailTransfer->setLocale($orderTransfer->getLocale());
         $mailTransfer->setCmsBlockName(CmsBlockConfig::CMS_BLOCK_EMAIL_ORDER_CONFIRMATION);
+        $mailTransfer->setCmsBlockPlaceholders(
+            $this->getCmsBlockPlaceholders($orderTransfer)
+        );
+
+        $this->mailFacade->handleMail($mailTransfer);
+    }
+
+    /**
+     * @param \Orm\Zed\Sales\Persistence\SpySalesOrder $salesOrderEntity
+     *
+     * @return void
+     */
+    public function sendOrderShippedMail(SpySalesOrder $salesOrderEntity)
+    {
+        $orderTransfer = $this->getOrderTransfer($salesOrderEntity);
+
+        $mailTransfer = new MailTransfer();
+        $mailTransfer->setOrder($orderTransfer);
+        $mailTransfer->setType(OrderShippedMailTypePlugin::MAIL_TYPE);
+        $mailTransfer->setLocale($orderTransfer->getLocale());
+        $mailTransfer->setCmsBlockName(CmsBlockConfig::CMS_BLOCK_EMAIL_ORDER_SHIPPED);
         $mailTransfer->setCmsBlockPlaceholders(
             $this->getCmsBlockPlaceholders($orderTransfer)
         );
