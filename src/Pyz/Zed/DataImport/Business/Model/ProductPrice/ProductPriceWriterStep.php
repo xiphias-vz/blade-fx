@@ -118,7 +118,7 @@ class ProductPriceWriterStep extends PublishAwareStep implements DataImportStepI
                 $integerPricePerKg = $this->moneyFacade->convertDecimalToInteger($parsedPricePerKg);
 
                 $productAbstractEntityAttributes[ProductConfig::PRICE_PER_KG] = $integerPricePerKg;
-                $multipliedPrice = (int) round($priceMultiplier * $integerPricePerKg);
+                $multipliedPrice = (int)round($priceMultiplier * $integerPricePerKg);
                 $multipliedPriceDecimal = $this->moneyFacade->convertIntegerToDecimal($multipliedPrice);
 
                 $dataSet[ProductConfig::KEY_PRICE] = str_replace('.', ',', $multipliedPriceDecimal);
