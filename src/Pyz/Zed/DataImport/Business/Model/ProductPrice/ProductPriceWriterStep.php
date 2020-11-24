@@ -114,8 +114,14 @@ class ProductPriceWriterStep extends PublishAwareStep implements DataImportStepI
                 $priceMultiplier = $productAbstractEntityAttributes[ProductConfig::KEY_WEIGHT_PER_ITEM];
                 $pricePerKg = $dataSet[ProductConfig::KEY_PRICE];
 
-                $productAbstractEntityAttributes[ProductConfig::PRICE_PER_KG] = $pricePerKg;
-                $dataSet[ProductConfig::KEY_PRICE] = $priceMultiplier * $pricePerKg;
+                $parsedPricePerKg = $this->numberFormatter->parse(trim($pricePerKg));
+                $integerPricePerKg = $this->moneyFacade->convertDecimalToInteger($parsedPricePerKg);
+
+                $productAbstractEntityAttributes[ProductConfig::PRICE_PER_KG] = $integerPricePerKg;
+                $multipliedPrice = (int) round($priceMultiplier * $integerPricePerKg);
+                $multipliedPriceDecimal = $this->moneyFacade->convertIntegerToDecimal($multipliedPrice);
+
+                $dataSet[ProductConfig::KEY_PRICE] = str_replace('.', ',', $multipliedPriceDecimal);
 
                 $productAbstractEntity->setAttributes(json_encode($productAbstractEntityAttributes));
                 $productAbstractEntity->save();
