@@ -38,6 +38,7 @@ use Spryker\Client\SearchElasticsearch\Plugin\ResultFormatter\PaginatedResultFor
 use Spryker\Client\SearchElasticsearch\Plugin\ResultFormatter\SortedResultFormatterPlugin;
 use Spryker\Client\SearchElasticsearch\Plugin\ResultFormatter\SpellingSuggestionResultFormatterPlugin;
 use Spryker\Client\SearchElasticsearch\Plugin\ResultFormatter\SuggestionByTypeResultFormatterPlugin;
+use Spryker\Client\CatalogPriceProductConnector\Plugin\ProductPriceQueryExpanderPlugin;
 
 class CatalogDependencyProvider extends SprykerCatalogDependencyProvider
 {
@@ -88,6 +89,7 @@ class CatalogDependencyProvider extends SprykerCatalogDependencyProvider
             new IsActiveQueryExpanderPlugin(),
             new IsActiveInDateRangeQueryExpanderPlugin(),
             new OrderHistoryBoostingQueryExpanderPlugin(),
+            new ProductPriceQueryExpanderPlugin(),
 
             /**
              * FacetQueryExpanderPlugin needs to be after other query expanders which filters down the results.
@@ -125,6 +127,7 @@ class CatalogDependencyProvider extends SprykerCatalogDependencyProvider
             new IsActiveQueryExpanderPlugin(),
             new IsActiveInDateRangeQueryExpanderPlugin(),
             new OrderHistoryBoostingQueryExpanderPlugin(),
+            new ProductPriceQueryExpanderPlugin(),
         ];
     }
 
@@ -152,6 +155,7 @@ class CatalogDependencyProvider extends SprykerCatalogDependencyProvider
             new IsActiveQueryExpanderPlugin(),
             new IsActiveInDateRangeQueryExpanderPlugin(),
             new OrderHistoryBoostingQueryExpanderPlugin(),
+            new ProductPriceQueryExpanderPlugin(),
         ];
     }
 
