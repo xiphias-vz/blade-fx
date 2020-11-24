@@ -10,6 +10,7 @@ namespace Pyz\Zed\CashierOrderExport\Business\Aggregator;
 use ArrayObject;
 use Generated\Shared\Transfer\ItemTransfer;
 use Generated\Shared\Transfer\OrderTransfer;
+use Pyz\Shared\Oms\OmsConfig;
 
 class OrderItemAggregator implements OrderItemAggregatorInterface
 {
@@ -23,6 +24,10 @@ class OrderItemAggregator implements OrderItemAggregatorInterface
         $itemsIndexedBySku = [];
 
         foreach ($orderTransfer->getItems() as $itemTransfer) {
+            if ($itemTransfer->getState()->getName() === OmsConfig::STATE_CANCELLED) {
+                continue;
+            }
+
             $currentIndexedItem = $itemsIndexedBySku[$itemTransfer->getSku()] ?? null;
 
             if ($currentIndexedItem) {
