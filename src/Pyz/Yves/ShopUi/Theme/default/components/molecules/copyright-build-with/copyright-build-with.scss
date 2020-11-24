@@ -28,6 +28,20 @@
             display: flex;
         }
 
+        .data-protection   {
+            @include helper-breakpoint-media-max($sm-max)  {
+                width: 100%;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                margin-bottom: 10px;
+                font-size: 10px;
+            }
+            @include helper-breakpoint-media-max($xs-max){
+                font-size: 7px;
+            }
+        }
+
         .data-protection .title  {
             display: none;
             @include helper-breakpoint-media-max($sm-max)  {
