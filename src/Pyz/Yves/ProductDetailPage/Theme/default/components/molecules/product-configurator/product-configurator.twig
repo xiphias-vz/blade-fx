@@ -73,7 +73,7 @@
 
         {% if data.product.attributes["grundpreismasseinheit"] is defined and data.product.attributes["grundpreisinhalt"] is defined %}
             <div class="text-secondary">
-                {{ (data.product.price // data.product.attributes["grundpreisinhalt"])|round(2, 'floor') }}€ / {{ data.product.attributes["grundpreismasseinheit"] }}
+                {{ (data.product.price / data.product.attributes["grundpreisinhalt"]) | round(2, 'floor') }}€/ { data.product.attributes["grundpreismasseinheit"] }}
             </div>
         {% endif %}
 
@@ -81,13 +81,13 @@
 
             {% if productSaleVolume is defined %}
                 <div class="text-secondary">
-                    {{ productSaleVolume | replace('.', ',') }} {{ productSaleUnit }}
+                    {{ productSaleVolume | round(2, 'floor') }} {{ productSaleUnit }}
                 </div>
             {% endif %}
 
-            <div class="spacing-left text-secondary">
-                {% widget 'ProductComparativePriceWidget' args [data.product.price, productSaleUnit, productSaleVolume] only %}{% endwidget %}
-            </div>
+{#            <div class="spacing-left text-secondary">#}
+{#                {% widget 'ProductComparativePriceWidget' args [data.product.price, productSaleUnit, productSaleVolume] only %}{% endwidget %}#}
+{#            </div>#}
         </div>
     </div>
     {% include molecule('variant-configurator', 'ProductDetailPage') with {
