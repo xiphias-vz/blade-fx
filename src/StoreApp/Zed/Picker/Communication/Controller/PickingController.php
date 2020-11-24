@@ -442,6 +442,7 @@ class PickingController extends BaseOrderPickingController
                 ItemTransfer::SHELF => $itemTransfer->getShelf(),
                 ItemTransfer::SHELF_FLOOR => $itemTransfer->getShelfFloor(),
                 ItemTransfer::SHELF_FIELD => $itemTransfer->getShelfField(),
+                ItemTransfer::SUM_PRICE => $itemTransfer->getSumPrice(),
             ];
         }
 

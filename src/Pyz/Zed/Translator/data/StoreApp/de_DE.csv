@@ -149,3 +149,4 @@ storeapp.new_weight,Gewicht (gr)
 picking.app.shelf,"Regal: "
 picking.app.shelf_floor,"Regalboden: "
 picking.app.shelf_field,"Regalfeld: "
+picking.app.price,"Preis: "
