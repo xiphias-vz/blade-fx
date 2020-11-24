@@ -48,7 +48,7 @@
         </span>
     {% endif %}
 
-    <h2 class="title title--product">{{ productName }} - {{ data.product.attributes["grundpreisinhalt"]|round(2, 'floor') }} {{ data.product.attributes["grundpreismasseinheit"] }}</h2>
+    <h2 class="title title--product">{{ productName }} - {{ productSaleVolume|round(2, 'floor') }} {{ data.product.attributes["grundpreismasseinheit"] }}</h2>
 
     {% if data.product.attributes.einzelgewicht is defined %}
         <div class="text-secondary text-block">
@@ -71,9 +71,9 @@
             {% endwidget %}
         </div>
 
-        {% if data.product.attributes["grundpreismasseinheit"] is defined and data.product.attributes["grundpreisinhalt"] is defined %}
+        {% if data.product.attributes["grundpreismasseinheit"] is defined and productSaleVolume is defined %}
             <div class="text-secondary">
-                {{ (data.product.price / data.product.attributes["grundpreisinhalt"]) | round(2, 'floor') }}€/{ data.product.attributes["grundpreismasseinheit"] }}
+                {{ (data.product.price / productSaleVolume) | round(2, 'floor') }}€/{ data.product.attributes["grundpreismasseinheit"] }}
             </div>
         {% endif %}
 
