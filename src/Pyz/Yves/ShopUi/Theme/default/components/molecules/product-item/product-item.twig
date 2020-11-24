@@ -55,7 +55,7 @@
                             {% block imageLink %}
                                     <a href="{{ data.url }}">
 
-                                            {{ _self.thumbnail(data.image, data.name, extraClass, modifiers, data.idProductAbstract) }}
+                                        {{ _self.thumbnail(data.image, data.name, extraClass, modifiers, data.idProductAbstract) }}
 
                                     </a>
                             {% endblock %}
@@ -123,14 +123,11 @@
                                                         {% if data.productSaleUnit and data.productSaleVolume %}
                                                             <div class="{{ config.name }}__sale-volume">
                                                                 {% if data.product.attributes.einzelgewicht is defined %}
-
-                                                                    {{ data.product.price / 100 | replace('.', ',')}} €/{{ data.productSaleVolume | round(2, 'floor') }} {{ data.basePriceUnit | replace('.', ',') }}
-
+                                                                    {{ (data.product.price / 100 | replace('.', ',') / data.basePriceUnit) | round(2, 'floor') }} €
+                                                                {% else %}
+                                                                    {{ ((data.product.price / 100 | replace('.', ',') / data.productSaleVolume)) | round(2, 'floor') }} €/ 1 {{ data.basePriceUnit }}
                                                                 {% endif %}
-
-{#                                                                {% widget 'ProductComparativePriceWidget' args [data.product.prices.DEFAULT | default(null), data.productSaleUnit, data.productSaleVolume] only %}{% endwidget %}#}
                                                             </div>
-
                                                         {% endif %}
                                                     </div>
                                                 {% endblock %}

@@ -74,11 +74,11 @@
         <div class="grid">
 
             <div class="text-secondary">
-                {% if data.product.attributes.einzelgewicht is defined %}
+{#                {% if data.product.attributes.einzelgewicht is defined %}#}
 
                     {{ data.product.price / 100 | replace('.', ',')}} €/{{ data.product.attributes.grundpreisinhalt|round(2, 'floor') }} {{ data.product.attributes.grundpreismasseinheit }}
 
-                {% endif %}
+{#                {% endif %}#}
             </div>
 
 {#            {% if data.product.attributes.einzelgewicht is defined %}#}
