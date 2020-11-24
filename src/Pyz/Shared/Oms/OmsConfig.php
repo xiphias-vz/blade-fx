@@ -15,6 +15,7 @@ class OmsConfig extends SprykerOmsConfig
 
     public const STATE_TYPE_FLAG_CANCELLABLE_BY_CUSTOMER = 'cancellable by customer';
     public const STATE_TYPE_FLAG_CANCELLED = 'cancelled';
+    public const STATE_TYPE_FLAG_SHIPPED_MAIL_AWAITS = 'shipped mail awaits';
     public const EVENT_ORDER_CANCEL_BY_CUSTOMER = 'cancel by customer';
 
     public const STORE_STATE_READY_FOR_PICKING = 'ready for picking';

@@ -16,5 +16,6 @@ class CmsBlockConfig extends SprykerCmsBlockConfig
     public const CMS_BLOCK_EMAIL_RESTORED_PASSWORD = 'Restored password email';
     public const CMS_BLOCK_EMAIL_ORDER_CANCELLED = 'Order cancelled email';
     public const CMS_BLOCK_EMAIL_ORDER_REFUNDED = 'Order refunded email';
-    public const CMS_BLOCK_EMAIL_ORDER_CONFIRMATION = "Order confirmation email";
+    public const CMS_BLOCK_EMAIL_ORDER_CONFIRMATION = 'Order confirmation email';
+    public const CMS_BLOCK_EMAIL_ORDER_SHIPPED = 'Order shipped email';
 }

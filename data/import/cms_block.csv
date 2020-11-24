@@ -133,7 +133,7 @@ order-shipped-email,Order shipped email,Email content Block,@CmsBlock/template/c
 
 <h1 style=""color:green;font-weight: normal"">Bestellnummer</h1>
 
-<p>Hallo {{ firstName }},</p>
+<p>Hallo {{firstName}},</p>
 <p>gute Neuigkeiten: Ihre Bestellung wurde gerade von unserem Globus-Shopper entsprechend Ihrer Einkaufsliste abgewickelt und kann zu Ihrem gewünschten Zeitpunkt in der <span style=""color:orange;font-weight: bold"">GLOBUS Click &amp; Collect Station </span>abgeholt werden.
   Alle Infos dazu finden Sie weiter unten.</p>
 
@@ -146,11 +146,11 @@ Danke für Ihren Einkauf &amp; bis zum nächsten Mal
 
 <div style=""display:flex;"">
   <div style=""margin-right:50px"">
-    {{ shipmentDeliveryTime }}
+    {{monthOfDelivery}} {{dayOfDelivery}}, {{beginDeliveryTimeSlot}}-{{endDeliveryTimeSlot}}
   </div>
   <div>
      <span style=""font-weight:bold"">Globus Abholstation Einöd</span><br>
-     {{ merchantName }}
+     {{merchantName}}
   </div>
 </div>
 <p style=""color:red;font-weight:bold;font-style:italic"">Hier folgt ein Erklörungstext:</p>
