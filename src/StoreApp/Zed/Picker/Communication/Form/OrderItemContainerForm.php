@@ -78,7 +78,7 @@ class OrderItemContainerForm extends AbstractType
                             }
 
                             foreach ($data[OrderItemSelectionForm::FIELD_SALES_ORDER_CONTAINERS] as $container) {
-                                if ($container[PickingSalesOrderTransfer::CONTAINER_CODE]) {
+                                if (!$container[PickingSalesOrderTransfer::CONTAINER_CODE]) {
                                     $context->addViolation('Dieser Wert sollte nicht leer sein.');
                                 }
                             }
