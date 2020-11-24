@@ -124,7 +124,7 @@
                                                         {% if data.productSaleUnit and data.productSaleVolume %}
                                                             <div class="{{ config.name }}__sale-volume">
                                                                 {% if data.product.attributes.einzelgewicht is defined %}
-                                                                    {{ (data.product.price / 100 | replace('.', ',') / data.basePriceUnit) | round(2, 'common') }} €
+                                                                    {{ (data.product.price / 100) | round(2, 'common') }} € / {{ data.basicUnit }} {{ data.basePriceUnit }}
                                                                 {% else %}
                                                                     {{ (((data.product.price / 100) / data.productSaleVolume)) | round(2, 'common') | replace('.', ',') }} €/  {{ data.basicUnit }} {{ data.basePriceUnit }}
                                                                 {% endif %}

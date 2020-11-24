@@ -74,16 +74,13 @@
         <div class="grid">
 
             <div class="text-secondary">
-{#                {% if data.product.attributes.einzelgewicht is defined %}#}
 
-                {% if data.product.attributes.einzelgewicht is defined %}
-                    {{ (data.product.price / 100 | replace('.', ',') / data.product.attributes.grundpreismasseinheit) | round(2, 'common') }} €
+                {% if data.product.attributes.preis_pro_kg is defined %}
+                    {{ (data.product.attributes.preis_pro_kg / 100 | replace('.', ',') / data.product.attributes.grundpreismasseinheit) | round(2, 'common') }} €
                 {% else %}
                     {{ (((data.product.price / 100) / data.product.attributes.grundpreisinhalt)) | round(2, 'common') | replace('.', ',') }} €/  {{ data.product.attributes.grundeinheit }} {{ data.product.attributes.grundpreismasseinheit }}
                 {% endif %}
-{#                    {{ data.product.price / 100 | replace('.', ',')}} €/{{ data.product.attributes.grundpreisinhalt|round(2, 'floor') }} {{ data.product.attributes.grundpreismasseinheit }}#}
 
-{#                {% endif %}#}
             </div>
 
 {#            {% if data.product.attributes.einzelgewicht is defined %}#}
