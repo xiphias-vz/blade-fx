@@ -8,13 +8,13 @@
 namespace Pyz\Yves\CustomerPage\Controller;
 
 use Elastica\JSON;
+use Generated\Shared\Transfer\CustomerTransfer;
+use Pyz\Shared\Customer\CustomerConstants;
 use Pyz\Yves\CustomerPage\Form\ForgottenPasswordForm;
+use Spryker\Shared\Config\Config;
 use Spryker\Shared\Customer\Code\Messages;
 use SprykerShop\Yves\CustomerPage\Controller\PasswordController as SprykerPasswordController;
 use Symfony\Component\HttpFoundation\Request;
-use Generated\Shared\Transfer\CustomerTransfer;
-use Pyz\Shared\Customer\CustomerConstants;
-use Spryker\Shared\Config\Config;
 
 /**
  * @method \Pyz\Yves\CustomerPage\CustomerPageFactory getFactory()
@@ -41,8 +41,7 @@ class PasswordController extends SprykerPasswordController
 
         $url = array_shift($urlPrefix) . "accounts.resetPassword?apiKey=" . array_shift($apiKey) . "&sec=" . array_shift($apiSecretKey);
         $data = ['loginID' => $username];
-        if($data['loginID'] != null)  {
-
+        if ($data['loginID'] != null) {
             $options = [
                 'http' => [
                     'header' => "Content-type: application/x-www-form-urlencoded\r\n",
@@ -56,12 +55,11 @@ class PasswordController extends SprykerPasswordController
 
             if ($result["errorCode"] == 0) {
                 $this->addSuccessMessage(Messages::CUSTOMER_PASSWORD_RECOVERY_MAIL_SENT);
+
                 return [
                     'form' => $form->createView(),
                 ];
-            }
-            else {
-
+            } else {
                 if ($form->isSubmitted()) {
                     if ($form->isValid()) {
                         $customerTransfer = new CustomerTransfer();
@@ -78,22 +76,16 @@ class PasswordController extends SprykerPasswordController
                     $this->getFactory()
                         ->getCsrfTokenManager()
                         ->refreshToken(ForgottenPasswordForm::FORM_NAME);
-
-
                 }
+
                 return [
                     'form' => $form->createView(),
                 ];
             }
-
-
-        }
-        else  {
+        } else {
             return [
                 'form' => $form->createView(),
             ];
         }
-
-
     }
 }
