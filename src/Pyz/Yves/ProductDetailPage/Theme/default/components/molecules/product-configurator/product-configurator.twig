@@ -73,7 +73,7 @@
 
         {% if data.product.attributes["grundpreismasseinheit"] is defined and productSaleVolume is defined %}
             <div class="text-secondary">
-                {{ (data.product.price / productSaleVolume) | round(2, 'floor') }}€/{ data.product.attributes["grundpreismasseinheit"] }}
+                {{ (data.product.price / productSaleVolume) | round(2, 'floor') }}€/{{ data.product.attributes["grundpreismasseinheit"] }}
             </div>
         {% endif %}
 
