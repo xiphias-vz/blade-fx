@@ -9,6 +9,8 @@ namespace Pyz\Yves\CustomerPage\Form;
 
 use Pyz\Yves\CustomerPage\Form\Constraints\PostalCodeConstraint;
 use SprykerShop\Yves\CustomerPage\Form\CheckoutAddressForm as SprykerShopCheckoutAddressForm;
+use Symfony\Component\Form\CallbackTransformer;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\TelType;
@@ -149,6 +151,26 @@ class CheckoutAddressForm extends SprykerShopCheckoutAddressForm
      * @param \Symfony\Component\Form\FormBuilderInterface $builder
      * @param array $options
      *
+     * @return SprykerShopCheckoutAddressForm
+     */
+    protected function addIsAddressSavingSkippedField(FormBuilderInterface $builder, array $options)
+    {
+        if (!$options[static::OPTION_IS_CUSTOMER_LOGGED_IN]) {
+            return $this;
+        }
+
+        $builder->add(static::FIELD_IS_ADDRESS_SAVING_SKIPPED, CheckboxType::class, [
+            'label' => static::GLOSSARY_KEY_SAVE_NEW_ADDRESS,
+            'required' => false,
+        ]);
+
+        return $this;
+    }
+
+    /**
+     * @param \Symfony\Component\Form\FormBuilderInterface $builder
+     * @param array $options
+     *
      * @return $this
      */
     protected function addZipCodeField(FormBuilderInterface $builder, array $options)
@@ -162,10 +184,6 @@ class CheckoutAddressForm extends SprykerShopCheckoutAddressForm
             ],
             'constraints' => [
                 $this->createNotBlankConstraint($options),
-                new PostalCodeConstraint([
-                    'customerBaseClient' => $this->getFactory()->getBaseCustomerClient(),
-                    'groups' => $options[static::OPTION_VALIDATION_GROUP],
-                ]),
             ],
         ]);
 
