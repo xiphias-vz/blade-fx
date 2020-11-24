@@ -7,9 +7,7 @@
 
 namespace Pyz\Yves\CustomerPage\Form;
 
-use Pyz\Yves\CustomerPage\Form\Constraints\PostalCodeConstraint;
 use SprykerShop\Yves\CustomerPage\Form\CheckoutAddressForm as SprykerShopCheckoutAddressForm;
-use Symfony\Component\Form\CallbackTransformer;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
@@ -151,7 +149,7 @@ class CheckoutAddressForm extends SprykerShopCheckoutAddressForm
      * @param \Symfony\Component\Form\FormBuilderInterface $builder
      * @param array $options
      *
-     * @return SprykerShopCheckoutAddressForm
+     * @return $this
      */
     protected function addIsAddressSavingSkippedField(FormBuilderInterface $builder, array $options)
     {
