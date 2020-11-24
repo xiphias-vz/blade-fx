@@ -41,6 +41,7 @@ class OrderItemAttributesExpanderPreSavePlugin extends AbstractPlugin implements
         $salesOrderItemEntity->setSapWgr($itemTransfer->getSapWgr());
         $salesOrderItemEntity->setBontext($itemTransfer->getBonText());
         $salesOrderItemEntity->setWeightPerUnit($itemTransfer->getWeightPerUnit());
+        $salesOrderItemEntity->setPricePerKg($itemTransfer->getPricePerKg());
 
         return $salesOrderItemEntity;
     }
