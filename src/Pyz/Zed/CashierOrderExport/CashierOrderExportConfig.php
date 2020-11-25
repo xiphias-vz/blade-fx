@@ -30,6 +30,13 @@ class CashierOrderExportConfig extends AbstractBundleConfig
         '0' => '00000002070000573031',
     ];
 
+    protected const SFTP_STORE_TO_FOLDER_NAME_MAP = [
+        'KMD' => '/1031',
+        'EIN' => '/1004',
+        'LPZ' => '/1042',
+        'HAD' => '/1057',
+    ];
+
     /**
      * @return string
      */
@@ -76,6 +83,14 @@ class CashierOrderExportConfig extends AbstractBundleConfig
     public function getTaxRateToSapItemTaxIdMap(): array
     {
         return static::TAX_RATE_TO_SAP_ITEM_TAX_ID_MAP;
+    }
+
+    /**
+     * @return array
+     */
+    public function getSftpStoreToFolderNameMap(): array
+    {
+        return static::SFTP_STORE_TO_FOLDER_NAME_MAP;
     }
 
     /**

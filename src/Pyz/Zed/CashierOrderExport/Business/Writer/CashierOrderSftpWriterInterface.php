@@ -11,9 +11,9 @@ interface CashierOrderSftpWriterInterface
 {
     /**
      * @param string $archiveFileName
-     * @param string $archiveRemoteFilePat
+     * @param string $archiveRemoteFilePath
      *
      * @return void
      */
-    public function sendFileToFtp(string $archiveFileName, string $archiveRemoteFilePat): void;
+    public function sendFileToFtp(string $archiveFileName, string $archiveRemoteFilePath): void;
 }
