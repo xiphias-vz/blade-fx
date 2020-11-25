@@ -2,6 +2,24 @@
 
 use Pyz\Shared\CashierOrderExport\CashierOrderExportConstants;
 use Pyz\Shared\DataImport\DataImportConstants;
+use Pyz\Shared\Customer\CustomerConstants;
+
+$config[CustomerConstants::CDC_API_KEY] =
+    [
+        'cdcApiKey' => '3_IVfYuFFTkEygbMQjcP8LamKwRZBH4_qjl-EAGSvZJPGTAL59E9yUPdTxqLCyofkZ',
+    ];
+
+$config[CustomerConstants::CDC_API_URL] =
+    [
+        'cdcApiUrl' => 'https://accounts.eu1.gigya.com/',
+    ];
+
+$config[CustomerConstants::CDC_API_SECRET_KEY] =
+    [
+        'cdcApiSecretKey' => 'YesMHgZMlmiL7a29KUa+vkuvv7TL1OOt',
+    ];
+
+$config[CustomerConstants::CDC_API_USER_KEY] = 'ANlYRW74tD6V';
 
 require('config_default-docker.php');
 

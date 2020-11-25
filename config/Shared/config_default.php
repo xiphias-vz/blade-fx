@@ -840,3 +840,5 @@ $config[\Pyz\Shared\Customer\CustomerConstants::CDC_API_SECRET_KEY] =
     [
         'cdcApiSecretKey' => '',
     ];
+
+$config[\Pyz\Shared\Customer\CustomerConstants::CDC_API_USER_KEY] = 'AOOFJuSjBzxx';
