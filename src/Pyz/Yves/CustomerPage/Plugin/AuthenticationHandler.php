@@ -38,7 +38,6 @@ class AuthenticationHandler extends SprykerAuthenticationHandler
         }
         if ($isAuthorized) {
             $customerResponseTransfer = parent::registerCustomer($customerTransfer);
-            $customerResponseTransfer->setIsSuccess(true);
         }
 
         $this->getFactory()
