@@ -8,9 +8,7 @@
 namespace Pyz\Yves\CustomerPage\Controller;
 
 use Elastica\JSON;
-use Generated\Shared\Transfer\CustomerTransfer;
 use Pyz\Shared\Customer\CustomerConstants;
-use Pyz\Yves\CustomerPage\Form\ForgottenPasswordForm;
 use Spryker\Shared\Config\Config;
 use Spryker\Shared\Customer\Code\Messages;
 use SprykerShop\Yves\CustomerPage\Controller\PasswordController as SprykerPasswordController;
@@ -55,33 +53,13 @@ class PasswordController extends SprykerPasswordController
 
             if ($result["errorCode"] == 0) {
                 $this->addSuccessMessage(Messages::CUSTOMER_PASSWORD_RECOVERY_MAIL_SENT);
-
-                return [
-                    'form' => $form->createView(),
-                ];
             } else {
-                if ($form->isSubmitted()) {
-                    if ($form->isValid()) {
-                        $customerTransfer = new CustomerTransfer();
-                        $customerTransfer->fromArray($form->getData());
-
-                        $customerResponseTransfer = $this->sendPasswordRestoreMail($customerTransfer);
-                        $this->processResponseErrors($customerResponseTransfer);
-
-                        if ($customerResponseTransfer->getIsSuccess()) {
-                            $this->addSuccessMessage(Messages::CUSTOMER_PASSWORD_RECOVERY_MAIL_SENT);
-                        }
-                    }
-
-                    $this->getFactory()
-                        ->getCsrfTokenManager()
-                        ->refreshToken(ForgottenPasswordForm::FORM_NAME);
-                }
-
-                return [
-                    'form' => $form->createView(),
-                ];
+                $this->addErrorMessage(Messages::CUSTOMER_EMAIL_INVALID);
             }
+
+            return [
+                'form' => $form->createView(),
+            ];
         } else {
             return [
                 'form' => $form->createView(),
