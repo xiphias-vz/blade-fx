@@ -81,6 +81,7 @@ class SalesDependencyProvider extends SprykerSalesDependencyProvider
 
         $container = $this->addDateTimeWithZoneService($container);
         $container = $this->addMerchantSalesOrderFacade($container);
+        $container = $this->addBaseOmsFacade($container);
 
         return $container;
     }

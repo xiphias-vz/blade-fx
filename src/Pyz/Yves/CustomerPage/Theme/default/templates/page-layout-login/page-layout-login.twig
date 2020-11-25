@@ -191,9 +191,9 @@
                         zip: document.getElementById("registerForm_zip_code").value,
                         city: document.getElementById("registerForm_city").value,
                         country: "DE",
-                        birthDay: document.getElementById("select2-registerForm_birth_day-container").innerText,
-                        birthMonth: document.getElementById("select2-registerForm_birth_month-container").innerText,
-                        birthYear: document.getElementById("select2-registerForm_birth_year-container").innerText,
+                        birthDay: document.getElementsByName("registerForm[birth_day]")[0].value,
+                        birthMonth: document.getElementsByName("registerForm[birth_month]")[0].value,
+                        birthYear: document.getElementsByName("registerForm[birth_year]")[0].value,
                         phones: [
                             {
                                 type: "001",
