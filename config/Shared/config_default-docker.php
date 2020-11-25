@@ -57,6 +57,7 @@ use SprykerShop\Shared\WebProfilerWidget\WebProfilerWidgetConstants;
 use Twig\Cache\FilesystemCache;
 
 $ZED = APPLICATION === 'STOREAPP' ? APPLICATION : 'ZED';
+$ERROR_PAGE_APP_FOLDER = APPLICATION === 'StoreApp' ? APPLICATION : 'Zed';
 
 if (APPLICATION === 'STOREAPP') {
     putenv('SPRYKER_DEBUG_ENABLED=1');
@@ -133,7 +134,7 @@ $config[SessionConstants::ZED_SESSION_COOKIE_SECURE]
     = $config[SessionConstants::ZED_SSL_ENABLED] = true;
 
 $config[ErrorHandlerConstants::DISPLAY_ERRORS] = (bool)getenv('SPRYKER_DEBUG_ENABLED');
-$config[ErrorHandlerConstants::ZED_ERROR_PAGE] = APPLICATION_ROOT_DIR . '/public/' . $ZED . '/errorpage/5xx.html';
+$config[ErrorHandlerConstants::ZED_ERROR_PAGE] = APPLICATION_ROOT_DIR . '/public/' . $ERROR_PAGE_APP_FOLDER . '/errorpage/5xx.html';
 $config[ErrorHandlerConstants::ERROR_RENDERER] = getenv('SPRYKER_DEBUG_ENABLED') ? WebExceptionErrorRenderer::class : WebHtmlErrorRenderer::class;
 
 /* End ZED */
