@@ -423,10 +423,6 @@ class RegisterForm extends SprykerRegisterForm
             'choices' => array_flip($prefixes),
             'required' => false,
             'label' => false,
-            'constraints' =>
-                [
-                    $this->createNotBlankConstraint(),
-                ],
         ]);
 
         return $this;
@@ -443,11 +439,6 @@ class RegisterForm extends SprykerRegisterForm
             'required' => false,
             'trim' => true,
             'label' => false,
-            'constraints' =>
-            [
-                $this->createNotBlankConstraint(),
-                ProfileForm::createSafeStringRegexConstraint(),
-            ],
             'attr' =>
                 [
                     'placeholder' => 'mobile.phone.number',
