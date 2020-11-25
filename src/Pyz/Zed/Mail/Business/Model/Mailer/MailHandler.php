@@ -58,7 +58,9 @@ class MailHandler extends SprykerMailHandler implements MailHandlerInterface
         } catch (Swift_SwiftException $swiftException) {
             $this->getLogger()->error('E-mail send failed', [
                 'code' => $swiftException->getCode(),
-                'mail' => $mailTransfer->getTemplateName(),
+                'message' => $swiftException->getMessage(),
+                'trace' => $swiftException->getTraceAsString(),
+                'mail' => $mailTransfer->getType(),
             ]);
         }
     }
