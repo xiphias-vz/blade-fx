@@ -19,4 +19,5 @@ interface CustomerConstants
     public const CDC_API_KEY = 'CDC_API_KEY';
     public const CDC_API_URL = 'CDC_API_URL';
     public const CDC_API_SECRET_KEY = 'CDC_API_SECRET_KEY';
+    public const CDC_API_USER_KEY = 'CDC_API_USER_KEY';
 }

@@ -20,7 +20,6 @@ use Symfony\Component\Security\Core\Exception\AuthenticationException;
 class CustomerUserProvider extends SprykerCustomerUserProvider
 {
     public const ERROR_NOT_VERIFIED_CUSTOMER = 'ERROR_NOT_VERIFIED_CUSTOMER';
-    //private const API_KEY = '3_IVfYuFFTkEygbMQjcP8LamKwRZBH4_qjl-EAGSvZJPGTAL59E9yUPdTxqLCyofkZ';
 
     /**
      * @param string $email
@@ -31,60 +30,44 @@ class CustomerUserProvider extends SprykerCustomerUserProvider
      */
     protected function loadCustomerByEmail($email)
     {
-        $data = null;
-        $pass = null;
+        $pass = $_POST["loginForm"]["password"];
+        $data = $this->getCdcAuthorization($email, $pass);
         $customerTransfer = null;
-        if (!empty($_POST["loginForm"]["data"])) {
-            $data = JSON::parse($_POST["loginForm"]["data"]);
-            $pass = $_POST["loginForm"]["password"];
-        }
 
-        try {
-            $customerTransfer = parent::loadCustomerByEmail($email);
-            if (!empty($data)) {
-                if ($data["src"] == "CDC" && $this->isAuthorizedInCdc($email, $pass)) {
-                    $user = $this->getFactory()->createSecurityUser($customerTransfer);
-                    $encoder = $this->getContainer()->get('security.encoder_factory');
-                    $encodedPass = $encoder->getEncoder($user)->encodePassword($pass, $user->getSalt());
-                    if ($customerTransfer->getPassword() != $encodedPass) {
-                        $customerTransfer->setPassword($encodedPass);
-                        $this->getFactory()->getCustomerClient()->updateCustomer($customerTransfer);
-                    }
-                }
-            }
-            if ($customerTransfer->getRegistrationKey() !== null) {
-                throw new AuthenticationException(self::ERROR_NOT_VERIFIED_CUSTOMER);
-            }
-        } catch (AuthenticationException $e) {
-            if (!empty($data)) {
-                if ($data["src"] == "CDC" && $this->isAuthorizedInCdc($email, $pass)) {
-                    $customerTransfer = new CustomerTransfer();
-                    $customerTransfer->setEmail($data["profile"]["email"]);
-                    $customerTransfer->setFirstName($data["profile"]["firstName"]);
-                    $customerTransfer->setLastName($data["profile"]["lastName"]);
-                    $customerTransfer->setCity($data["profile"]["city"]);
-                    $customerTransfer->setZipCode($data["profile"]["zip"]);
-                    $customerTransfer->setDateOfBirth($data["profile"]["birthYear"] . '-' . $data["profile"]["birthMonth"] . '-' . $data["profile"]["birthDay"]);
-                    $customerTransfer->setUsername($data["profile"]["email"]);
-                    $customerTransfer->setPassword($pass);
-
-                    $customerTransfer->setAddress1($data["data"]["address"]["street"]);
-                    $customerTransfer->setAddress2($data["profile"]["zip"]);
-
-                    $customerTransfer->setCustomerReference($this->getFactory()->getStore()->getStoreName());
-                    $customerTransfer->setThirdPartyRegistration(true);
-                    $this->registerCustomer($customerTransfer);
-
-                    $customerTransfer = parent::loadCustomerByEmail($email);
-                    $customerTransfer->setRegistered(date('yy-m-d'));
-                    $customerTransfer->setRegistrationKey(null);
+        if ($data["errorCode"] == 0) {
+            try {
+                $customerTransfer = parent::loadCustomerByEmail($email);
+                $user = $this->getFactory()->createSecurityUser($customerTransfer);
+                $encoder = $this->getContainer()->get('security.encoder_factory');
+                $encodedPass = $encoder->getEncoder($user)->encodePassword($pass, $user->getSalt());
+                if ($customerTransfer->getPassword() != $encodedPass) {
+                    $customerTransfer->setPassword($encodedPass);
                     $this->getFactory()->getCustomerClient()->updateCustomer($customerTransfer);
-                } else {
-                    throw new AuthenticationException(self::ERROR_NOT_VERIFIED_CUSTOMER);
                 }
-            } else {
-                throw new AuthenticationException(self::ERROR_NOT_VERIFIED_CUSTOMER);
+            } catch (AuthenticationException $e) {
+                $customerTransfer = new CustomerTransfer();
+                $customerTransfer->setEmail($data["profile"]["email"]);
+                $customerTransfer->setFirstName($data["profile"]["firstName"]);
+                $customerTransfer->setLastName($data["profile"]["lastName"]);
+                $customerTransfer->setCity($data["profile"]["city"]);
+                $customerTransfer->setZipCode($data["profile"]["zip"]);
+                $customerTransfer->setBirthDay($data["profile"]["birthDay"]);
+                $customerTransfer->setBirthMonth($data["profile"]["birthMonth"]);
+                $customerTransfer->setBirthYear($data["profile"]["birthYear"]);
+                $customerTransfer->setDateOfBirth($data["profile"]["birthYear"] . '-' . $data["profile"]["birthMonth"] . '-' . $data["profile"]["birthDay"]);
+                $customerTransfer->setUsername($data["profile"]["email"]);
+                $customerTransfer->setPassword($pass);
+                $customerTransfer->setCustomerReference($this->getFactory()->getStore()->getStoreName());
+                $this->registerCustomer($customerTransfer);
+
+                $customerTransfer = parent::loadCustomerByEmail($email);
+                $customerTransfer->setRegistered(date('yy-m-d'));
+                $customerTransfer->setRegistrationKey(null);
+                $customerTransfer->setThirdPartyRegistration(true);
+                $this->getFactory()->getCustomerClient()->updateCustomer($customerTransfer);
             }
+        } else {
+            throw new AuthenticationException(self::ERROR_NOT_VERIFIED_CUSTOMER);
         }
 
         return $customerTransfer;
@@ -94,9 +77,9 @@ class CustomerUserProvider extends SprykerCustomerUserProvider
      * @param string $username
      * @param string $pass
      *
-     * @return bool
+     * @return array
      */
-    protected function isAuthorizedInCdc($username, $pass): bool
+    protected function getCdcAuthorization($username, $pass): array
     {
         $apiKey = Config::get(CustomerConstants::CDC_API_KEY);
         $apiSecretKey = Config::get(CustomerConstants::CDC_API_SECRET_KEY);
@@ -112,13 +95,8 @@ class CustomerUserProvider extends SprykerCustomerUserProvider
         ];
         $context = stream_context_create($options);
         $result = file_get_contents($url, false, $context);
-        $result = JSON::parse($result);
 
-        if ($result["errorCode"] == 0) {
-            return true;
-        } else {
-            return false;
-        }
+        return JSON::parse($result);
     }
 
     /**

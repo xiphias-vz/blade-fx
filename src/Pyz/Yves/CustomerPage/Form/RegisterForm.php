@@ -36,13 +36,11 @@ class RegisterForm extends SprykerRegisterForm
     public const FIELD_ADDITIONAL_INFORMATION = 'additional_info';
     public const FIELD_PHONE = 'phone';
     public const FIELD_MERCHANT = 'merchant_reference';
-    public const FIELD_ADDITIONAL_REGISTER = 'third_party_registration';
     public const FORM_NAME = self::BLOCK_PREFIX;
     public const FIELD_COUNTRY = 'country';
     public const FIELD_PHONE_PREFIX_1 = 'phone_prefix';
     public const FIELD_PHONE_PREFIX_2 = 'mobile_phone_prefix';
     public const FIELD_MOBILE_PHONE = 'mobile_phone_number';
-    public const FIELD_RECEIVE_NOTIFICATIONS = 'accept_notifications';
     public const FIELD_DAY = 'birth_day';
     public const FIELD_MONTH = 'birth_month';
     public const FIELD_YEAR = 'birth_year';
@@ -93,10 +91,6 @@ class RegisterForm extends SprykerRegisterForm
             ->addMonthField($builder)
             ->addYearField($builder)
             ->addAcceptTermsField($builder);
-
-        $this
-            ->addFieldReceiveNotificationsAboutProducts($builder)
-            ->addAdditionalRegisterField($builder);
     }
 
     /**
@@ -223,38 +217,6 @@ class RegisterForm extends SprykerRegisterForm
             'constraints' => [
                 $this->createNotBlankConstraint(),
             ],
-        ]);
-
-        return $this;
-    }
-
-    /**
-     * @param \Symfony\Component\Form\FormBuilderInterface $builder
-     *
-     * @return $this
-     */
-    protected function addAdditionalRegisterField(FormBuilderInterface $builder)
-    {
-        $builder->add(self::FIELD_ADDITIONAL_REGISTER, CheckboxType::class, [
-            'label' => 'forms.additional_register',
-            'mapped' => true,
-            'required' => false,
-        ]);
-
-        return $this;
-    }
-
-    /**
-     * @param \Symfony\Component\Form\FormBuilderInterface $builder
-     *
-     * @return $this
-     */
-    protected function addFieldReceiveNotificationsAboutProducts(FormBuilderInterface $builder)
-    {
-        $builder->add(self::FIELD_RECEIVE_NOTIFICATIONS, CheckboxType::class, [
-           'label' => 'forms.recieve_notifications',
-           'mapped' => true,
-            'required' => false,
         ]);
 
         return $this;
