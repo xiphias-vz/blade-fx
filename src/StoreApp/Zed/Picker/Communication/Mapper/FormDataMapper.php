@@ -148,7 +148,7 @@ class FormDataMapper implements FormDataMapperInterface
 
             $itemTransfer = $this->findItemInOrder($salesOrderTransfer, $sku, $selectedIdSalesOrderItems);
 
-            $newPrice = $itemTransfer->getSumGrossPrice() / $itemTransfer->getWeightPerUnit() * $newWeight;
+            $newPrice = (int)($newWeight * $itemTransfer->getPricePerKg() / 1000);
 
             $orderItemChangeRequest->setQuantity($itemTransfer->getQuantity());
             $orderItemChangeRequest->setPrice($newPrice);

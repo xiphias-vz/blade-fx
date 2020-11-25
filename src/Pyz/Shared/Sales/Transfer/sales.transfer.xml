@@ -29,8 +29,9 @@
         <property name="pickZone" type="string"/>
         <property name="sapWgr" type="string"/>
         <property name="newWeight" type="int"/>
-        <property name="bonText" type="string"/>
+        <property name="bontext" type="string"/>
         <property name="weightPerUnit" type="int"/>
+        <property name="pricePerKg" type="int"/>
         <property name="sequence" type="string"/>
         <property name="shelf" type="string"/>
         <property name="shelfFloor" type="string"/>
