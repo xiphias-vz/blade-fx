@@ -54,8 +54,6 @@ class OrderItemAggregator implements OrderItemAggregatorInterface
      */
     protected function combineItems(ItemTransfer $itemTransferOne, ItemTransfer $itemTransferTwo): ItemTransfer
     {
-        $itemTransferOne->setQuantity($itemTransferOne->getQuantity() + $itemTransferTwo->getQuantity());
-
-        return $itemTransferOne;
+        return $itemTransferOne->setQuantity($itemTransferOne->getQuantity() + $itemTransferTwo->getQuantity());
     }
 }
