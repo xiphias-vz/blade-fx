@@ -43,7 +43,7 @@ class ProductExpander extends SprykerProductExpander implements ProductExpanderI
             ->setPricePerKg($productConcreteTransfer->getAttributes()[ProductConfig::PRICE_PER_KG] ?? null)
             ->setProductNumber($productConcreteTransfer->getProductNumber())
             ->setSapWgr($productConcreteTransfer->getAttributes()[ProductConfig::KEY_SAP_WGR] ?? '')
-            ->setBonText($productConcreteTransfer->getAttributes()[ProductConfig::KEY_BON_TEXT] ?? '');
+            ->setBontext($productConcreteTransfer->getAttributes()[ProductConfig::KEY_BON_TEXT] ?? '');
     }
 
     /**
