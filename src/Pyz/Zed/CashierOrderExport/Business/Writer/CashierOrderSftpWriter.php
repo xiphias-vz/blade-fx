@@ -38,11 +38,11 @@ class CashierOrderSftpWriter implements CashierOrderSftpWriterInterface
 
     /**
      * @param string $archiveFileName
-     * @param string $archiveRemoteFilePat
+     * @param string $archiveRemoteFilePath
      *
      * @return void
      */
-    public function sendFileToFtp(string $archiveFileName, string $archiveRemoteFilePat): void
+    public function sendFileToFtp(string $archiveFileName, string $archiveRemoteFilePath): void
     {
         $content = $this->fileSystemService->read(
             (new FileSystemQueryTransfer())
@@ -53,7 +53,7 @@ class CashierOrderSftpWriter implements CashierOrderSftpWriterInterface
         $this->fileSystemService->write(
             (new FileSystemContentTransfer())
                 ->setContent($content)
-                ->setPath($archiveRemoteFilePat)
+                ->setPath($archiveRemoteFilePath)
                 ->setFileSystemName($this->cashierOrderExportConfig->getSftpFileSystemServiceProviderKey())
         );
     }
