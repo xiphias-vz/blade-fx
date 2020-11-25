@@ -65,9 +65,9 @@ class AuthenticationHandler extends SprykerAuthenticationHandler
     }
 
     /**
-     * @param $action
-     * @param $method
-     * @param $postData
+     * @param string $action
+     * @param string $method
+     * @param array $postData
      *
      * @return array
      */
@@ -179,8 +179,8 @@ class AuthenticationHandler extends SprykerAuthenticationHandler
     }
 
     /**
-     * @param $username
-     * @param $pass
+     * @param string $username
+     * @param string $pass
      *
      * @return bool
      */
