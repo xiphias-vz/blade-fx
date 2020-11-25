@@ -8,7 +8,7 @@ image: spryker/php:7.3-DRAFT-new-relic
 
 composer:
     mode: --no-dev
-    autoload: ''
+    autoload: --classmap-authoritative
 
 assets:
     mode: production
