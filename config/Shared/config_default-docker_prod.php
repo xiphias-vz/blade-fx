@@ -6,7 +6,7 @@ use Pyz\Shared\Customer\CustomerConstants;
 
 $config[CustomerConstants::CDC_API_KEY] =
     [
-        'cdcApiKey' => '3_IVfYuFFTkEygbMQjcP8LamKwRZBH4_qjl-EAGSvZJPGTAL59E9yUPdTxqLCyofkZ',
+        'cdcApiKey' => '3_wl5i8R3NLRDouqi3h5JHx1vGlL013YpD4w6BT5rwrK9AmU17UpQszRHbLKiMNitq',
     ];
 
 $config[CustomerConstants::CDC_API_URL] =
