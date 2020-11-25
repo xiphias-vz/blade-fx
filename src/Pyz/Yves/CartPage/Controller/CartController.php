@@ -9,6 +9,7 @@ namespace Pyz\Yves\CartPage\Controller;
 
 use Generated\Shared\Transfer\ItemTransfer;
 use Generated\Shared\Transfer\OrderDetailRequestTransfer;
+use Generated\Shared\Transfer\ProductViewTransfer;
 use Generated\Shared\Transfer\QuoteTransfer;
 use Pyz\Shared\Messages\MessagesConfig;
 use Pyz\Shared\OrderDetail\OrderDetailConstants;
@@ -128,14 +129,18 @@ class CartController extends SprykerCartController
         }
 
         $quantity = $request->get('quantity', 1);
-        $productConcreteSku = $this->resolveProductConcreteSkuFromProductAbstractId($productAbstractId);
+        $productViewTransfer = $this->getFactory()
+            ->getProductStorageClient()
+            ->findProductAbstractViewTransfer($productAbstractId, $this->getLocale());
+
+        $productConcreteSku = $this->resolveProductConcreteSkuFromProductAbstractId($productViewTransfer);
         $itemTransfer = (new ItemTransfer())
             ->setSku($productConcreteSku)
             ->setQuantity($quantity);
 
         $depositProductOptions = $this->getFactory()
             ->getDepositProductOptionClient()
-            ->getDepositProductOptionsByIdProductAbstract($productAbstractId);
+            ->getDepositProductOptionsByIdProductAbstract($productAbstractId, $productViewTransfer);
 
         $this->addProductOptions($depositProductOptions, $itemTransfer);
         $itemTransfer = $this->executePreAddToCartPlugins($itemTransfer, $request->request->all());
@@ -249,20 +254,16 @@ class CartController extends SprykerCartController
     }
 
     /**
-     * @param int $productAbstractId
+     * @param \Generated\Shared\Transfer\ProductViewTransfer $productViewTransfer
      *
      * @return string|null
      */
-    protected function resolveProductConcreteSkuFromProductAbstractId(int $productAbstractId): ?string
+    protected function resolveProductConcreteSkuFromProductAbstractId(ProductViewTransfer $productViewTransfer): ?string
     {
-        $productData = $this->getFactory()
-            ->getProductStorageClient()
-            ->findProductAbstractViewTransfer($productAbstractId, $this->getLocale());
-
-        $productConcreteIds = $productData->getAttributeMap()->getProductConcreteIds();
+        $productConcreteIds = $productViewTransfer->getAttributeMap()->getProductConcreteIds();
 
         if (count($productConcreteIds) === 1) {
-            return $productData->getSku();
+            return $productViewTransfer->getSku();
         }
 
         return array_key_first($productConcreteIds);
