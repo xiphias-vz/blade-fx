@@ -39,7 +39,7 @@ class OrderItemAttributesExpanderPreSavePlugin extends AbstractPlugin implements
         SpySalesOrderItemEntityTransfer $salesOrderItemEntity
     ): SpySalesOrderItemEntityTransfer {
         $salesOrderItemEntity->setSapWgr($itemTransfer->getSapWgr());
-        $salesOrderItemEntity->setBontext($itemTransfer->getBonText());
+        $salesOrderItemEntity->setBontext($itemTransfer->getBontext());
         $salesOrderItemEntity->setWeightPerUnit($itemTransfer->getWeightPerUnit());
         $salesOrderItemEntity->setPricePerKg($itemTransfer->getPricePerKg());
 
