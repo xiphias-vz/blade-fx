@@ -11,6 +11,9 @@ use Generated\Shared\Transfer\PriceProductCriteriaTransfer;
 use Generated\Shared\Transfer\PriceProductTransfer;
 use Spryker\Zed\PriceProduct\Business\Model\Reader as SprykerReader;
 
+/**
+ * Once price resolving bug will be fixed in core the override of resolveProductPriceByPriceProductCriteria should be removed.
+ */
 class Reader extends SprykerReader
 {
     /**
