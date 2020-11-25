@@ -317,7 +317,8 @@ class CashierOrderContentBuilder implements CashierOrderContentBuilderInterface
                 continue;
             }
             foreach ($itemTransfer->getProductOptions() as $productOption) {
-                $depositAggregationCollection[$productOption->getSku()][static::QUANTITY] = $itemTransfer->getQuantity();
+                $currentQuantity = $depositAggregationCollection[$productOption->getSku()][static::QUANTITY] ?? static::DEFAULT_POSITIONS_QUANTITY;
+                $depositAggregationCollection[$productOption->getSku()][static::QUANTITY] = $itemTransfer->getQuantity() + $currentQuantity;
                 $depositAggregationCollection[$productOption->getSku()][static::PRICE] = $productOption->getUnitGrossPrice();
                 $depositAggregationCollection[$productOption->getSku()][static::DEPOSIT_NAME] = $productOption->getValue();
                 $depositAggregationCollection[$productOption->getSku()][static::TAX_RATE] = $productOption->getTaxRate();
@@ -436,7 +437,7 @@ class CashierOrderContentBuilder implements CashierOrderContentBuilderInterface
      */
     protected function getItemName(ItemTransfer $itemTransfer): string
     {
-        $itemName = $itemTransfer->getBonText() ?? $itemTransfer->getName();
+        $itemName = $itemTransfer->getBontext() ?? $itemTransfer->getName();
 
         return $this->sanitizeItemNameFromUmlauts($itemName);
     }
