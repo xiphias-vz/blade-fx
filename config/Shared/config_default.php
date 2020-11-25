@@ -551,7 +551,6 @@ $config[OauthConstants::ENCRYPTION_KEY] = '';
 $config[OauthConstants::OAUTH_CLIENT_IDENTIFIER] = '';
 $config[OauthConstants::OAUTH_CLIENT_SECRET] = '';
 
-
 // ---------- FileSystem
 $config[FileSystemConstants::FILESYSTEM_SERVICE] = [
     'files' => [
