@@ -16,7 +16,7 @@ class CashierOrderFileNameResolver implements CashierOrderFileNameResolverInterf
     protected const EXPORT_FILE_NAME_DEFAULT_PREFIX = 'GN_';
     protected const EXPORT_FILE_NAME_DATE_FORMAT = 'Ymd-His';
     protected const EXPORT_FILE_DEFAULT_NAME = 'order.txt';
-    protected const EXPORT_FILE_REMOTE_FILE_PATH_FORMAT = '%s%s/%s';
+    protected const EXPORT_FILE_REMOTE_FILE_PATH_FORMAT = '%s/%s/%s';
     protected const EXPORT_ARCHIVE_FILE_NAME_FORMAT = '%s%s%s';
     protected const EXPORT_ARCHIVE_FILE_EXTENSION = '.zip';
 
@@ -78,14 +78,23 @@ class CashierOrderFileNameResolver implements CashierOrderFileNameResolverInterf
      */
     public function resolveCashierOrderExportArchiveRemoteFilePath(string $fileName, string $store): string
     {
-        $storeToFolderMap = $this->cashierOrderExportConfig->getSftpStoreToFolderNameMap();
-        $folderName = $storeToFolderMap[$store] ?? '';
-
         return sprintf(
             static::EXPORT_FILE_REMOTE_FILE_PATH_FORMAT,
             $this->cashierOrderExportConfig->getDefaultRemoteCashierExportDirectoryPath(),
-            $folderName,
+            $this->getSapStoreId($store),
             $fileName
         );
+    }
+
+    /**
+     * @param string $store
+     *
+     * @return int
+     */
+    protected function getSapStoreId(string $store): int
+    {
+        $sapStoreIdToStoreMap = $this->cashierOrderExportConfig->getSapStoreIdToStoreMap();
+
+        return array_search($store, $sapStoreIdToStoreMap);
     }
 }
