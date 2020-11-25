@@ -20,6 +20,7 @@
             </state>
             <state name="cancelled" >
                 <flag>cancelled</flag>
+                <flag>shipped mail awaits</flag>
             </state>
             <state name="have to send Email order cancelled" >
                 <flag>cancelled</flag>
