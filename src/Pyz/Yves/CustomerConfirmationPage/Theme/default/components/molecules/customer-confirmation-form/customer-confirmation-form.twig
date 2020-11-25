@@ -18,7 +18,7 @@
     isCancelEnabled: false,
     cancelUrl: url('customer/address'),
     passwordFieldName: '[password][pass]',
-    phoneFieldName: '[shipping_address][phone]',
+    phoneFieldName: '[mobile_phone_number]',
     cancelClass: '',
     submitClass: 'form__action--login button button--large button--expand',
 } %}
@@ -163,11 +163,25 @@
                                     {{ 'customer-confirmation.new.password.criteria' | trans | raw }}
                                 </div>
                             {% elseif fieldName == 'phone_prefix' %}
-                                {{ form_row(field, {
-                                    rowAttr: {
-                                        class: 'form__field ' ~ fieldLayoutClass,
-                                    },
-                                }) }}
+                                {% if data.form.vars.full_name == 'registerForm' %}
+                                    <label for="phone_prefix" class="margin-telefon-title">{{ 'customer.register.telefon.title' | trans }}</label>
+                                    {{ form_row(field, {
+                                        rowAttr: {
+                                            class: 'form__field ' ~ fieldLayoutClass,
+                                        },
+                                    }) }}
+                                {% endif %}
+                            {% elseif fieldName == 'birth_day' %}
+                                {% if data.form.vars.full_name == 'registerForm' %}
+                                    <div class="col--lg-12 col--md-12 col--sm-12">
+                                        <label for="birth_day" class="margin-telefon-title">{{ 'customer.register.birthdate.title' | trans }}</label>
+                                    </div>
+                                    {{ form_row(field, {
+                                        rowAttr: {
+                                            class: 'form__field ' ~ fieldLayoutClass,
+                                        },
+                                    }) }}
+                                {% endif %}
                             {% elseif fieldName == 'phone' %}
                                 {{ form_row(field, {
                                     rowAttr: {
@@ -184,21 +198,13 @@
                                         <li class="list__item">{{ 'customer-confirmation.phone.validation-error' | trans }}</li>
                                     </ul>
                                 </div>
-                                {% elseif fieldName == 'phone_prefix_2' %}
-                                {{ form_row(field, {
-                                    rowAttr: {
-                                        label: 'something',
-                                        class: 'form__field ' ~ fieldLayoutClass,
-                                    },
-                                }) }}
-                            {% elseif fieldName == 'day' %}
-                                <div><label>{{ 'customer.register.birthdate' | trans }}</label></div>
-                                {{ form_row(field, {
-                                    rowAttr: {
-                                        label: 'something',
-                                        class: 'form__field ' ~ fieldLayoutClass,
-                                    },
-                                }) }}
+                            {% elseif fieldName == 'phone_prefix_2' %}
+                            {{ form_row(field, {
+                                rowAttr: {
+                                    label: 'something',
+                                    class: 'form__field ' ~ fieldLayoutClass,
+                                },
+                            }) }}
 
                             {% else %}
                                 {{ form_row(field, {

@@ -4,6 +4,10 @@
             margin: 0;
         }
 
+        @include helper-breakpoint-media-max($sm-max) {
+            height: 6rem;
+        }
+
         &--with-overlay {
             position: relative;
             overflow: hidden;

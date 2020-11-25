@@ -8,6 +8,7 @@
 namespace Pyz\Zed\Sales\Business;
 
 use DateTime;
+use Generated\Shared\Transfer\OrderChangeRequestTransfer;
 use Generated\Shared\Transfer\OrderCriteriaFilterTransfer;
 use Generated\Shared\Transfer\OrderTransfer;
 use Generated\Shared\Transfer\OrderUpdateRequestTransfer;
@@ -159,6 +160,18 @@ class SalesFacade extends SprykerSalesFacade implements SalesFacadeInterface
     }
 
     /**
+     * @param \Generated\Shared\Transfer\OrderChangeRequestTransfer $orderChangeRequestTransfer
+     *
+     * @return bool
+     */
+    public function saveOrderChange(OrderChangeRequestTransfer $orderChangeRequestTransfer)
+    {
+        return $this->getFactory()
+            ->createOrderChangeSaver()
+            ->saveOrderChange($orderChangeRequestTransfer);
+    }
+
+    /**
      * @inheritDoc
      */
     public function findIdOrderItemsByIdSalesOrders(array $idSalesOrders): array
@@ -244,10 +257,10 @@ class SalesFacade extends SprykerSalesFacade implements SalesFacadeInterface
      *
      * @return \Generated\Shared\Transfer\SpySalesOrderItemEntityTransfer
      */
-    public function expandOrderItemWithSequence(
+    public function expandItemWithStockProductData(
         QuoteTransfer $quoteTransfer,
         SpySalesOrderItemEntityTransfer $itemEntityTransfer
     ): SpySalesOrderItemEntityTransfer {
-        return $this->getFactory()->createOrderItemExpander()->expandItemWithSequence($quoteTransfer, $itemEntityTransfer);
+        return $this->getFactory()->createOrderItemExpander()->expandItemWithStockProductData($quoteTransfer, $itemEntityTransfer);
     }
 }

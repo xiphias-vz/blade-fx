@@ -10,6 +10,7 @@ namespace Pyz\Zed\CashierOrderExport\Business\Aggregator;
 use ArrayObject;
 use Generated\Shared\Transfer\ItemTransfer;
 use Generated\Shared\Transfer\OrderTransfer;
+use Pyz\Shared\Oms\OmsConfig;
 
 class OrderItemAggregator implements OrderItemAggregatorInterface
 {
@@ -23,12 +24,16 @@ class OrderItemAggregator implements OrderItemAggregatorInterface
         $itemsIndexedBySku = [];
 
         foreach ($orderTransfer->getItems() as $itemTransfer) {
+            if ($itemTransfer->getState()->getName() === OmsConfig::STATE_CANCELLED) {
+                continue;
+            }
+
             $currentIndexedItem = $itemsIndexedBySku[$itemTransfer->getSku()] ?? null;
 
             if ($currentIndexedItem) {
-                $itemsIndexedBySku[$itemTransfer->getSku()] = $this->addQuantityToItem(
+                $itemsIndexedBySku[$itemTransfer->getSku()] = $this->combineItems(
                     $currentIndexedItem,
-                    $itemTransfer->getQuantity()
+                    $itemTransfer
                 );
 
                 continue;
@@ -41,15 +46,13 @@ class OrderItemAggregator implements OrderItemAggregatorInterface
     }
 
     /**
-     * @param \Generated\Shared\Transfer\ItemTransfer $itemTransfer
-     * @param int $quantity
+     * @param \Generated\Shared\Transfer\ItemTransfer $itemTransferOne
+     * @param \Generated\Shared\Transfer\ItemTransfer $itemTransferTwo
      *
      * @return \Generated\Shared\Transfer\ItemTransfer
      */
-    protected function addQuantityToItem(ItemTransfer $itemTransfer, int $quantity): ItemTransfer
+    protected function combineItems(ItemTransfer $itemTransferOne, ItemTransfer $itemTransferTwo): ItemTransfer
     {
-        $newItemQuantity = $itemTransfer->getQuantity() + $quantity;
-
-        return $itemTransfer->setQuantity($newItemQuantity);
+        return $itemTransferOne->setQuantity($itemTransferOne->getQuantity() + $itemTransferTwo->getQuantity());
     }
 }

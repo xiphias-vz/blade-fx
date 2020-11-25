@@ -5,6 +5,7 @@
 
     <transfer name="Order">
         <property name="isCashierExportSuccess" type="bool"/>
+        <property name="cashierPositionsQantity" type="int"/>
     </transfer>
 
 </transfers>

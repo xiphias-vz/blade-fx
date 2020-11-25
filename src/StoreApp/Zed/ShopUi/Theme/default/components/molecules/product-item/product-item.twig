@@ -29,6 +29,14 @@
                         {{ data.productsCount }} x {{ data.title }}
                     {% endblock %}
                 </div>
+                <div class="{{ config.name }}__title">
+                    {% block shelf %}
+                        {{ 'picking.app.shelf' | trans }} {{ data.shelfData['shelf'] ?? ''}}
+                        {{ 'picking.app.shelf_floor' | trans }} {{ data.shelfData['shelfFloor'] ?? ''}}
+                        {{ 'picking.app.shelf_field' | trans }} {{ data.shelfData['shelfField'] ?? ''}}
+                        {{ 'picking.app.price' | trans }} {{ data.shelfData['sumPrice'] ?? ''}}
+                    {% endblock %}
+                </div>
                 <div class="{{ config.name }}__status">
                     {% include atom('icon') with {
                         class: config.name ~ '__icon-close',
@@ -44,7 +52,7 @@
                     } only %}
                 </div>
                 {% block quantity %}
-                    {% if data.productsCount > 1 %}
+                    {% if data.productsCount >= 1 %}
                         <div class="{{ config.name }}__quantity">
                             <div class="{{ config.jsName }}__minus {{ config.name }}__minus spacing-right spacing-right--inner">
                                 {% include atom('icon') with {
@@ -72,6 +80,8 @@
                         {% block formElement %}{% endblock %}
                     </div>
                 {% endblock %}
+
+                {% block formElementWeight %}{% endblock %}
             </div>
         </div>
     </div>

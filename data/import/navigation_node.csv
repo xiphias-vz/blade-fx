@@ -1,8 +1,17 @@
 navigation_key,node_key,parent_node_key,node_type,title.en_US,url.en_US,css_class.en_US,title.de_DE,url.de_DE,css_class.de_DE,valid_from,valid_to,position
-NAVIGATION_FOOTER_ELEMENT,node_key_162,,external_url,About us,https://abholservice.globus.de/Ueber-uns/,category-4,Über uns,https://abholservice.globus.de/Ueber-uns/,category-4,,,4
+NAVIGATION_FOOTER_ELEMENT,node_key_162,,cms_page,About us,/en/ueberuns/,category-4,Über uns,/de/ueberuns,category-4,,,4
 FOOTER_NAVIGATION_CATEGORIES,node_key_165,,external_url,Garden & Outdoor,/en/garden-&-outdoor,category-7,Fragen und Antworten,https://globus.zendesk.com/hc/de,category-7,,,2
-FOOTER_NAVIGATION_CATEGORIES,node_key_166,,external_url,Medicine Cabinet,/en/medicine,category-8,Abholeservice,https://abholservice.globus.de/abholservice/,category-8,,,3
-FOOTER_NAVIGATION_CATEGORIES,node_key_167,,external_url,Directions,https://abholservice.globus.de/anfahrt/,,Anfart,https://abholservice.globus.de/anfahrt/,category-9,,,4
-FOOTER_NAVIGATION,node_key_34,,cms_page,GTC,/en/Allgemeine-Geschaeftsbedingungen/,,AGB,/de/Allgemeine-Geschaeftsbedingungen/,,,,2
+FOOTER_NAVIGATION_CATEGORIES,node_key_166,,cms_page,Abholservice,/en/abholservice,category-8,Abholservice,/de/abholservice,category-8,,,3
+FOOTER_NAVIGATION_CATEGORIES,node_key_167,,cms_page,Directions,/en/anfart,,Anfart,/de/anfart,category-9,,,4
+FOOTER_NAVIGATION,node_key_34,,cms_page,GTC,/en/Allgemeine-Geschaeftsbedingungen/,,Allgemeine Geschäftsbedingungen,/de/Allgemeine-Geschaeftsbedingungen/,,,,2
 FOOTER_NAVIGATION,node_key_35,,cms_page,Data privacy,/en/privacy,,Datenschutz,/de/datenschutz/,,,,3
 FOOTER_NAVIGATION,node_key_50,,cms_page,Imprint,/en/imprint,,Impressum,/de/impressum/,,,,4
+POPULAR_CATEGORIES,node_key_168,,cms_page,"","","",Obst & Gemüse,/de/obst-&-gemüse,category-11,,,5
+POPULAR_CATEGORIES,node_key_169,,cms_page,"",,"",Frische Produkte,/de/frische-produkte,category-12,,,6
+POPULAR_CATEGORIES,node_key_170,,cms_page,,,"",Vorratsschrank,/de/vorratsschrank,category-13,,,7
+POPULAR_CATEGORIES,node_key_171,,cms_page,,,"",Getränke,/de/getränke,category-14,,,8
+POPULAR_CATEGORIES,node_key_172,,cms_page,,,"",Fisch & Fleisch,/de/fisch-&-fleisch,category-15,,,9
+POPULAR_CATEGORIES,node_key_173,,cms_page,,,"",Fertiggerichte & Tiefkühl,/de/fertiggerichte-&-tiefkühl,category-16,,,10
+POPULAR_CATEGORIES,node_key_174,,cms_page,,,"",Baby & Schwangerschaft,/de/baby-&-schwangerschaft,category-17,,,11
+POPULAR_CATEGORIES,node_key_175,,cms_page,,,"",Körperpflege & Kosmetik,/de/körperpflege-&-kosmetik,category-18,,,12
+POPULAR_CATEGORIES,node_key_176,,cms_page,,,"",Haushalt,/de/haushalt,category-19,,,13

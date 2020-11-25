@@ -17,6 +17,7 @@ use Orm\Zed\Sales\Persistence\Map\SpySalesOrderItemTableMap;
 use Orm\Zed\Sales\Persistence\Map\SpySalesOrderTableMap;
 use Orm\Zed\Sales\Persistence\Map\SpySalesShipmentTableMap;
 use Orm\Zed\Sales\Persistence\SpySalesOrderQuery;
+use Orm\Zed\Stock\Persistence\SpyStockProduct;
 use Propel\Runtime\ActiveQuery\Criteria;
 use Spryker\Zed\Sales\Persistence\SalesRepository as SprykerSalesRepository;
 
@@ -283,14 +284,16 @@ class SalesRepository extends SprykerSalesRepository implements SalesRepositoryI
         );
     }
 
-    /***
+    /**
      * @param \Generated\Shared\Transfer\QuoteTransfer $quoteTransfer
      * @param \Generated\Shared\Transfer\SpySalesOrderItemEntityTransfer $itemEntityTransfer
      *
-     * @return string|null
+     * @return \Orm\Zed\Stock\Persistence\SpyStockProduct|null
      */
-    public function findProductSequence(QuoteTransfer $quoteTransfer, SpySalesOrderItemEntityTransfer $itemEntityTransfer): ?string
-    {
+    public function findStockProduct(
+        QuoteTransfer $quoteTransfer,
+        SpySalesOrderItemEntityTransfer $itemEntityTransfer
+    ): ?SpyStockProduct {
         $quoteTransfer->requireStore();
         $itemEntityTransfer->requireSku();
 
@@ -308,8 +311,7 @@ class SalesRepository extends SprykerSalesRepository implements SalesRepositoryI
             ->createSpyStockProductQuery()
             ->filterByFkStock($idStock)
             ->filterByFkProduct($idProduct)
-            ->findOne()
-            ->getSequence();
+            ->findOne();
     }
 
     /**

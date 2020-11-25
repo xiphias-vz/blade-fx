@@ -35,10 +35,28 @@ class ProductExpander extends SprykerProductExpander implements ProductExpanderI
             $pickZone = $productConcreteTransfer->getAttributes()[mb_strtolower(ProductConfig::KEY_PICK_ZONE_ATTRIBUTE)];
         }
 
+        $weightPerUnit = $this->calculateWeightPerItem($productConcreteTransfer->getAttributes());
+
         $itemTransfer
             ->setPickZone($pickZone)
+            ->setWeightPerUnit($weightPerUnit)
+            ->setPricePerKg($productConcreteTransfer->getAttributes()[ProductConfig::PRICE_PER_KG] ?? null)
             ->setProductNumber($productConcreteTransfer->getProductNumber())
             ->setSapWgr($productConcreteTransfer->getAttributes()[ProductConfig::KEY_SAP_WGR] ?? '')
-            ->setBonText($productConcreteTransfer->getAttributes()[ProductConfig::KEY_BON_TEXT] ?? '');
+            ->setBontext($productConcreteTransfer->getAttributes()[ProductConfig::KEY_BON_TEXT] ?? '');
+    }
+
+    /**
+     * @param array $attributes
+     *
+     * @return int|null
+     */
+    protected function calculateWeightPerItem(array $attributes): ?int
+    {
+        if (!isset($attributes[ProductConfig::KEY_WEIGHT_PER_ITEM])) {
+            return null;
+        }
+
+        return $attributes[ProductConfig::KEY_WEIGHT_PER_ITEM] * 1000;
     }
 }

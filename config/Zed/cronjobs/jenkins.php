@@ -160,5 +160,5 @@ $jobs[] = [
     'command' => 'vendor/bin/install -r sftp-based-full-import',
     'schedule' => '0 0 * * *',
     'enable' => true,
-    'stores' => $allStores,
+    'stores' => ['EIN'],
 ];

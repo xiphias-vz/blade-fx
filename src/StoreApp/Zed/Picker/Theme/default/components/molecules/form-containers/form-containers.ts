@@ -12,7 +12,9 @@ export default class FormContainers extends Component {
         this.formItemCandidate = this.containerFormsWrapper.dataset.prototype;
         this.formIndex = 0;
 
-        this.addFormItem();
+        if (this.containerFormsWrapper.innerHTML === "") {
+            this.addFormItem();
+        }
         this.mapEvents();
     }
 
