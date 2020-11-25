@@ -9,7 +9,7 @@ namespace Pyz\Zed\Mail\Business\Model\Mailer;
 
 use Generated\Shared\Transfer\MailTransfer;
 use Pyz\Service\DataDog\DataDogServiceInterface;
-use Pyz\Shared\DataDog\DataDogConfig;
+use Spryker\Shared\Log\LoggerTrait;
 use Spryker\Zed\Mail\Business\Model\Mail\Builder\MailBuilderInterface;
 use Spryker\Zed\Mail\Business\Model\Mail\MailTypeCollectionGetInterface;
 use Spryker\Zed\Mail\Business\Model\Mailer\MailHandler as SprykerMailHandler;
@@ -19,6 +19,8 @@ use Swift_SwiftException;
 
 class MailHandler extends SprykerMailHandler implements MailHandlerInterface
 {
+    use LoggerTrait;
+
     /**
      * @var \Pyz\Service\DataDog\DataDogServiceInterface
      */
@@ -54,9 +56,11 @@ class MailHandler extends SprykerMailHandler implements MailHandlerInterface
                 $provider->sendMail($mailTransfer);
             }
         } catch (Swift_SwiftException $swiftException) {
-            $this->dataDogService->increment([
-                DataDogConfig::DATA_DOG_EMAIL_FAILED,
-                [DataDogConfig::DATA_DOG_EMAIL_FAIL_CODE => $swiftException->getCode()],
+            $this->getLogger()->error('E-mail send failed', [
+                'code' => $swiftException->getCode(),
+                'message' => $swiftException->getMessage(),
+                'trace' => $swiftException->getTraceAsString(),
+                'mail' => $mailTransfer->getType(),
             ]);
         }
     }

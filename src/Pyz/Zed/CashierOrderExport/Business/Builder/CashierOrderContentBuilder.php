@@ -40,6 +40,7 @@ class CashierOrderContentBuilder implements CashierOrderContentBuilderInterface
     protected const ORDER_ITEM_TAX_IDENTIFIER = '0005';
     protected const ORDER_ITEM_QUANTITY_IDENTIFIER = '0059';
 
+    protected const DEFAULT_POSITIONS_QUANTITY = 0;
     protected const DEFAULT_ITEM_QUANTITY_MULTIPLIER = 1000;
     protected const DEFAULT_DATE_FORMAT = 'YmdHi';
     protected const DEFAULT_COMPANY_NUMBER = '0000';
@@ -79,10 +80,10 @@ class CashierOrderContentBuilder implements CashierOrderContentBuilderInterface
      */
     public function prepareContent(OrderTransfer $orderTransfer): string
     {
-        $headerContent = $this->getHeaderContent($orderTransfer);
         $positionsContent = $this->getPositionsContent($orderTransfer);
         $serviceFeeContent = $this->getServiceFeeContent($orderTransfer);
         $depositPositionsContent = $this->getDepositPositionsContent($orderTransfer);
+        $headerContent = $this->getHeaderContent($orderTransfer);
 
         return $headerContent . $positionsContent . $serviceFeeContent . $depositPositionsContent;
     }
@@ -119,7 +120,7 @@ class CashierOrderContentBuilder implements CashierOrderContentBuilderInterface
              static::ORDER_PAYMENT_TYPE_IDENTIFIER,
              static::DEFAULT_EMPTY_NUMBER,
              static::ORDER_ITEMS_COUNT_IDENTIFIER,
-             $orderTransfer->getItems()->count() ?? static::DEFAULT_EMPTY_NUMBER,
+             $orderTransfer->getCashierPositionsQantity() ?? static::DEFAULT_EMPTY_NUMBER,
              static::ORDER_PAYMENT_SUM_IDENTIFIER,
              static::DEFAULT_EMPTY_NUMBER
          );
@@ -198,6 +199,8 @@ class CashierOrderContentBuilder implements CashierOrderContentBuilderInterface
             $this->getDecimalViewOfItemQuantity($itemTransfer) ?? static::DEFAULT_EMPTY_NUMBER
         );
 
+        $this->incrementCashierOrderPositionsQuantity($orderTransfer);
+
         return $this->addEndingZeroSets($content, static::DEFAULT_POSITION_ENDING_ZERO_SETS);
     }
 
@@ -206,7 +209,7 @@ class CashierOrderContentBuilder implements CashierOrderContentBuilderInterface
      *
      * @return string
      */
-    protected function getServiceFeeContent(OrderTransfer $orderTransfer)
+    protected function getServiceFeeContent(OrderTransfer $orderTransfer): string
     {
         $content = sprintf(
             static::POSITION_MASK,
@@ -235,6 +238,8 @@ class CashierOrderContentBuilder implements CashierOrderContentBuilderInterface
             static::ORDER_ITEM_QUANTITY_IDENTIFIER,
             static::DEFAULT_SERVICE_FEE_FEE_QUANTITY
         );
+
+        $this->incrementCashierOrderPositionsQuantity($orderTransfer);
 
         return $this->addEndingZeroSets($content, static::DEFAULT_POSITION_ENDING_ZERO_SETS);
     }
@@ -294,6 +299,8 @@ class CashierOrderContentBuilder implements CashierOrderContentBuilderInterface
             ($depositAggregation[static::QUANTITY] * 1000) ?? static::DEFAULT_EMPTY_NUMBER
         );
 
+        $this->incrementCashierOrderPositionsQuantity($orderTransfer);
+
         return $this->addEndingZeroSets($content, static::DEFAULT_POSITION_ENDING_ZERO_SETS);
     }
 
@@ -306,13 +313,12 @@ class CashierOrderContentBuilder implements CashierOrderContentBuilderInterface
     {
         $depositAggregationCollection = [];
         foreach ($orderTransfer->getItems() as $itemTransfer) {
+            if ($itemTransfer->getCanceledAmount()) {
+                continue;
+            }
             foreach ($itemTransfer->getProductOptions() as $productOption) {
-                $quantity = $productOption->getQuantity();
-                if (isset($depositAggregationCollection[$productOption->getSku()][static::QUANTITY])) {
-                    $quantity = $productOption->getQuantity() + $depositAggregationCollection[$productOption->getSku()][static::QUANTITY];
-                }
-
-                $depositAggregationCollection[$productOption->getSku()][static::QUANTITY] = $quantity;
+                $currentQuantity = $depositAggregationCollection[$productOption->getSku()][static::QUANTITY] ?? static::DEFAULT_POSITIONS_QUANTITY;
+                $depositAggregationCollection[$productOption->getSku()][static::QUANTITY] = $itemTransfer->getQuantity() + $currentQuantity;
                 $depositAggregationCollection[$productOption->getSku()][static::PRICE] = $productOption->getUnitGrossPrice();
                 $depositAggregationCollection[$productOption->getSku()][static::DEPOSIT_NAME] = $productOption->getValue();
                 $depositAggregationCollection[$productOption->getSku()][static::TAX_RATE] = $productOption->getTaxRate();
@@ -412,13 +418,26 @@ class CashierOrderContentBuilder implements CashierOrderContentBuilderInterface
     }
 
     /**
+     * @param \Generated\Shared\Transfer\OrderTransfer $orderTransfer
+     *
+     * @return \Generated\Shared\Transfer\OrderTransfer
+     */
+    protected function incrementCashierOrderPositionsQuantity(OrderTransfer $orderTransfer): OrderTransfer
+    {
+        $currentCashierOrderPositionsQuantity = $orderTransfer->getCashierPositionsQantity() ?? static::DEFAULT_POSITIONS_QUANTITY;
+        $incrementedCashierOrderPositionsQuantity = ++$currentCashierOrderPositionsQuantity;
+
+        return $orderTransfer->setCashierPositionsQantity($incrementedCashierOrderPositionsQuantity);
+    }
+
+    /**
      * @param \Generated\Shared\Transfer\ItemTransfer $itemTransfer
      *
      * @return string
      */
     protected function getItemName(ItemTransfer $itemTransfer): string
     {
-        $itemName = $itemTransfer->getBonText() ?? $itemTransfer->getName();
+        $itemName = $itemTransfer->getBontext() ?? $itemTransfer->getName();
 
         return $this->sanitizeItemNameFromUmlauts($itemName);
     }
