@@ -7,6 +7,9 @@
 
 namespace Pyz\Client\DepositProductOption\DepositProductOption;
 
+use Generated\Shared\Transfer\ProductAbstractOptionStorageTransfer;
+use Generated\Shared\Transfer\ProductOptionGroupStorageTransfer;
+use Generated\Shared\Transfer\ProductViewTransfer;
 use Spryker\Client\ProductOptionStorage\ProductOptionStorageClientInterface;
 
 class DepositProductOptionReader implements DepositProductOptionReaderInterface
@@ -28,10 +31,11 @@ class DepositProductOptionReader implements DepositProductOptionReaderInterface
 
     /**
      * @param int $idProductAbstract
+     * @param \Generated\Shared\Transfer\ProductViewTransfer|null $productViewTransfer
      *
      * @return array
      */
-    public function getDepositProductOptionsByIdProductAbstract(int $idProductAbstract): array
+    public function getDepositProductOptionsByIdProductAbstract(int $idProductAbstract, ?ProductViewTransfer $productViewTransfer): array
     {
         $options = [];
 
@@ -40,6 +44,7 @@ class DepositProductOptionReader implements DepositProductOptionReaderInterface
         }
 
         $productAbstractOptionStorageTransfer = $this->productOptionStorageClient->getProductOptionsForCurrentStore($idProductAbstract);
+        $productAbstractOptionStorageTransfer = $this->getFilteredProductOptions($productViewTransfer, $productAbstractOptionStorageTransfer);
 
         if ($productAbstractOptionStorageTransfer === null
             || $productAbstractOptionStorageTransfer->getProductOptionGroups()->count() === 0
@@ -54,5 +59,51 @@ class DepositProductOptionReader implements DepositProductOptionReaderInterface
         }
 
         return $options;
+    }
+
+    /**
+     * @param \Generated\Shared\Transfer\ProductViewTransfer $productViewTransfer
+     * @param \Generated\Shared\Transfer\ProductAbstractOptionStorageTransfer|null $productAbstractOptionStorageTransfer
+     *
+     * @return \Generated\Shared\Transfer\ProductAbstractOptionStorageTransfer|null
+     */
+    protected function getFilteredProductOptions(
+        ProductViewTransfer $productViewTransfer,
+        ?ProductAbstractOptionStorageTransfer $productAbstractOptionStorageTransfer = null
+    ) {
+        if (!$productAbstractOptionStorageTransfer) {
+            return null;
+        }
+
+        $productAttributes = $productViewTransfer['attributes'];
+        $currentProductOptionSkuPfand1 = 'OP_product_deposit_' .
+            $productAttributes['pfand_1_sapnumber'] . '_' .
+            $productAttributes['pfand_1_plu'] . '_' .
+            $productAttributes['pfand_1_count'];
+
+        $currentProductOptionSkuPfand2 = 'OP_product_deposit_' .
+            $productAttributes['pfand_2_sapnumber'] . '_' .
+            $productAttributes['pfand_2_plu'] . '_' .
+            $productAttributes['pfand_2_count'];
+
+        $filteredProductAbstractOptionStorageTransfer = new ProductAbstractOptionStorageTransfer();
+
+        foreach ($productAbstractOptionStorageTransfer->getProductOptionGroups() as $productOptionGroup) {
+            $filteredProductOptionGroup = new ProductOptionGroupStorageTransfer();
+            $filteredProductOptionGroup->setName($productOptionGroup->getName());
+
+            foreach ($productOptionGroup->getProductOptionValues() as $productOptionValue) {
+                if ($productOptionValue->getSku() === $currentProductOptionSkuPfand1) {
+                    $filteredProductOptionGroup->addProductOptionValue($productOptionValue);
+                }
+
+                if ($productOptionValue->getSku() === $currentProductOptionSkuPfand2) {
+                    $filteredProductOptionGroup->addProductOptionValue($productOptionValue);
+                }
+            }
+            $filteredProductAbstractOptionStorageTransfer->addProductOptionGroup($filteredProductOptionGroup);
+        }
+
+        return $filteredProductAbstractOptionStorageTransfer;
     }
 }
