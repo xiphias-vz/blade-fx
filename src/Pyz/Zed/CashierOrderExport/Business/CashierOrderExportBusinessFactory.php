@@ -11,6 +11,8 @@ use Pyz\Zed\CashierOrderExport\Business\Aggregator\OrderItemAggregator;
 use Pyz\Zed\CashierOrderExport\Business\Aggregator\OrderItemAggregatorInterface;
 use Pyz\Zed\CashierOrderExport\Business\Builder\CashierOrderContentBuilder;
 use Pyz\Zed\CashierOrderExport\Business\Builder\CashierOrderContentBuilderInterface;
+use Pyz\Zed\CashierOrderExport\Business\Checker\CashierOrderExportReadinessChecker;
+use Pyz\Zed\CashierOrderExport\Business\Checker\CashierOrderExportReadinessCheckerInterface;
 use Pyz\Zed\CashierOrderExport\Business\Checker\CashierOrderExportStatusChecker;
 use Pyz\Zed\CashierOrderExport\Business\Checker\CashierOrderExportStatusCheckerInterface;
 use Pyz\Zed\CashierOrderExport\Business\Checker\CashierOrderFileChecker;
@@ -48,6 +50,14 @@ class CashierOrderExportBusinessFactory extends AbstractBusinessFactory
             $this->createCashierOrderContentBuilder(),
             $this->createOrderItemAggregator()
         );
+    }
+
+    /**
+     * @return \Pyz\Zed\CashierOrderExport\Business\Checker\CashierOrderExportReadinessCheckerInterface
+     */
+    public function createCashierOrderExportReadinessChecker(): CashierOrderExportReadinessCheckerInterface
+    {
+        return new CashierOrderExportReadinessChecker();
     }
 
     /**

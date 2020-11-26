@@ -34,4 +34,15 @@ interface CashierOrderExportFacadeInterface
      * @return bool
      */
     public function checkIsOrderExportedToCashierSuccessfully(int $orderId): bool;
+
+    /**
+     * Specification:
+     * - Checks is order items in state `\Pyz\Shared\Oms\OmsConfig::STORE_STATE_COLLECTION_PROCESS` or `\Pyz\Shared\Oms\OmsConfig::STORE_STATE_COLLECTION_PROCESS`.
+     * - Returns true if yes or false otherwise.
+     *
+     * @param \Generated\Shared\Transfer\OrderTransfer $orderTransfer
+     *
+     * @return bool
+     */
+    public function checkIsAllItemsReadyForExport(OrderTransfer $orderTransfer): bool;
 }

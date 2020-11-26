@@ -7,10 +7,8 @@
 
 namespace Pyz\Zed\CashierOrderExport\Communication\Plugin\Oms\Command;
 
-use Generated\Shared\Transfer\ItemTransfer;
 use Generated\Shared\Transfer\OrderTransfer;
 use Orm\Zed\Sales\Persistence\SpySalesOrder;
-use Pyz\Shared\Oms\OmsConfig;
 use Spryker\Zed\Kernel\Communication\AbstractPlugin;
 use Spryker\Zed\Oms\Business\Util\ReadOnlyArrayObject;
 use Spryker\Zed\Oms\Dependency\Plugin\Command\CommandByOrderInterface;
@@ -40,12 +38,6 @@ class CashierOrderExportCommandPlugin extends AbstractPlugin implements CommandB
             ->getSalesFacade()
             ->getOrderByIdSalesOrder($orderEntity->getIdSalesOrder());
 
-        if (!$this->isAllItemsReadyForExport($orderItems, $orderTransfer)) {
-            $this->updateOrder($orderTransfer->setIsCashierExportSuccess(true));
-
-            return [];
-        }
-
         $orderTransfer = $this->getFacade()->exportOrders($orderTransfer);
         $this->updateOrder($orderTransfer);
 
@@ -62,53 +54,5 @@ class CashierOrderExportCommandPlugin extends AbstractPlugin implements CommandB
         $this->getFactory()
             ->getSalesFacade()
             ->updateOrder($orderTransfer, $orderTransfer->getIdSalesOrder());
-    }
-
-    /**
-     * @param array $omsTriggeredOrderItems
-     * @param \Generated\Shared\Transfer\OrderTransfer $orderTransfer
-     *
-     * @return bool
-     */
-    protected function isAllItemsReadyForExport(array $omsTriggeredOrderItems, OrderTransfer $orderTransfer): bool
-    {
-        $omsTriggeredOrderItemIds = [];
-
-        foreach ($omsTriggeredOrderItems as $omsTriggeredOrderItem) {
-            $omsTriggeredOrderItemIds[] = $omsTriggeredOrderItem->getIdSalesOrderItem();
-        }
-
-        foreach ($orderTransfer->getItems() as $itemTransfer) {
-            if (in_array($itemTransfer->getIdSalesOrderItem(), $omsTriggeredOrderItemIds)) {
-                continue;
-            }
-
-            if ($this->isItemReadyForExport($itemTransfer)) {
-                continue;
-            }
-
-            return false;
-        }
-
-        return true;
-    }
-
-    /**
-     * @param \Generated\Shared\Transfer\ItemTransfer $itemTransfer
-     *
-     * @return bool
-     */
-    protected function isItemReadyForExport(ItemTransfer $itemTransfer): bool
-    {
-        $itemStateName = $itemTransfer->getState()->getName();
-
-        if ($itemStateName === OmsConfig::STORE_STATE_PICKED
-            || $itemStateName === OmsConfig::STATE_CANCELLED
-            || $itemStateName === OmsConfig::STORE_STATE_CASHIER_ORDER_EXPORTING_FAIL
-        ) {
-            return true;
-        }
-
-        return false;
     }
 }

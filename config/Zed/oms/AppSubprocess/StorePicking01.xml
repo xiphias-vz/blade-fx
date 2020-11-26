@@ -6,7 +6,7 @@
 
     <process name="StorePicking01">
         <subprocesses>
-            <process>StoreCollection</process>
+            <process>CashierExport</process>
             <process>StoreDelivery</process>
         </subprocesses>
 
@@ -70,9 +70,9 @@
                 <event>process cancelled due to not in stock</event>
             </transition>
 
-            <transition happy="true" condition="is for collection">
+            <transition>
                 <source>picked</source>
-                <target>collection process</target>
+                <target>cashier export process</target>
                 <event>pass</event>
             </transition>
 
@@ -104,8 +104,7 @@
             <event name="close order" manual="true"/>
         </events>
     </process>
-
-    <process name="StoreCollection" file="StoreCollection01.xml"/>
+    <process name="CashierExport" file="CashierExport01.xml"/>
     <process name="StoreDelivery" file="StoreDelivery01.xml"/>
 
 </statemachine>

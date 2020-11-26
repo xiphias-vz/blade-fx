@@ -28,10 +28,11 @@ class OrderItemAggregator implements OrderItemAggregatorInterface
                 continue;
             }
 
-            $currentIndexedItem = $itemsIndexedBySku[$itemTransfer->getSku()] ?? null;
+            $currentItemIndex = $itemTransfer->getSku();
+            $currentIndexedItem = $itemsIndexedBySku[$currentItemIndex] ?? null;
 
             if ($currentIndexedItem) {
-                $itemsIndexedBySku[$itemTransfer->getSku()] = $this->combineItems(
+                $itemsIndexedBySku[$currentItemIndex] = $this->combineItems(
                     $currentIndexedItem,
                     $itemTransfer
                 );
@@ -39,7 +40,7 @@ class OrderItemAggregator implements OrderItemAggregatorInterface
                 continue;
             }
 
-            $itemsIndexedBySku[$itemTransfer->getSku()] = $itemTransfer;
+            $itemsIndexedBySku[$currentItemIndex] = $itemTransfer;
         }
 
         return $orderTransfer->setItems(new ArrayObject($itemsIndexedBySku));

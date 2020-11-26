@@ -1,0 +1,66 @@
+<?xml version="1.0"?>
+<statemachine
+        xmlns="spryker:oms-01"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="spryker:oms-01 http://static.spryker.com/oms-01.xsd">
+
+    <process name="CashierExport01">
+
+        <subprocesses>
+            <process>StoreCollection</process>
+        </subprocesses>
+
+        <states>
+            <state name="cashier order exporting"/>
+            <state name="cashier export process"/>
+            <state name="ready for cashier export"/>
+            <state name="wait all items in picked or canceled state" />
+            <state name="cashier order exporting fail"/>
+            <state name="cashier order exported"/>
+        </states>
+
+        <transitions>
+            <transition happy="true" condition="wait all items in picked or canceled state">
+                <source>cashier export process</source>
+                <target>ready for cashier export</target>
+            </transition>
+
+            <transition>
+                <source>ready for cashier export</source>
+                <target>cashier order exporting</target>
+                <event>export cashier order</event>
+            </transition>
+
+            <transition happy="true" condition="is order exported to cashier">
+                <source>cashier order exporting</source>
+                <target>cashier order exported</target>
+                <event>pass</event>
+            </transition>
+
+            <transition>
+                <source>cashier order exporting</source>
+                <target>cashier order exporting fail</target>
+                <event>pass</event>
+            </transition>
+
+            <transition happy="true" condition="is for collection">
+                <source>cashier order exported</source>
+                <target>collection process</target>
+                <event>pass</event>
+            </transition>
+
+            <transition>
+                <source>cashier order exporting fail</source>
+                <target>cashier export process</target>
+                <event>cashier order export retry</event>
+            </transition>
+        </transitions>
+
+        <events>
+            <event name="export cashier order" onEnter="true" command="CashierOrderExport/OrderExport"/>
+            <event name="cashier order export retry" manual="true"/>
+        </events>
+    </process>
+
+    <process name="StoreCollection" file="StoreCollection01.xml"/>
+</statemachine>
