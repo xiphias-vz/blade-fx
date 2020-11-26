@@ -21,7 +21,7 @@
             {{ data.noPriceText }}
         {%- else -%}
             <span class="{{ component.renderClass(config.name ~ '__amount', modifiers) }}">
-                {{ data.amount | money }} {{ data.originalAmount | money }}
+                {{ data.amount | money }}
             </span>
         {%- endif -%}
 
