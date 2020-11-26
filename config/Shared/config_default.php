@@ -842,3 +842,6 @@ $config[\Pyz\Shared\Customer\CustomerConstants::CDC_API_SECRET_KEY] =
     ];
 
 $config[\Pyz\Shared\Customer\CustomerConstants::CDC_API_USER_KEY] = 'AOOFJuSjBzxx';
+
+// ----------Customer profile URL
+$config[\Pyz\Shared\Customer\CustomerConstants::CUSTOMER_PROFILE_URL] = 'https://www.globus.de/kundenprogramme/mein-globus/kontoverwaltung.php';

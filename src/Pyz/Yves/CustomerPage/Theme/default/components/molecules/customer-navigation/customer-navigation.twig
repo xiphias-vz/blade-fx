@@ -7,7 +7,8 @@
 
 {% define data = {
     activePage: required,
-    activeEntityId: required
+    activeEntityId: required,
+    customerProfileUrl: app.customerProfileUrl,
 } %}
 
 {%- macro isActive(page, activePage) -%}
@@ -23,7 +24,7 @@
                data-id="sidebar-overview">{{ 'customer.account.overview' | trans }}</a>
         </li>
         <li class="{{ component.renderClass('menu__item', modifiers) }} {{macros.isActive('profile', data.activePage)}}">
-            <a class="{{ component.renderClass('menu__link', modifiers) }}" href="https://www.globus.de/kundenprogramme/mein-globus/kontoverwaltung.php"
+            <a class="{{ component.renderClass('menu__link', modifiers) }}" href="{{ data.customerProfileUrl }}"
                target="_blank" data-id="sidebar-profile">{{ 'customer.account.profile_data' | trans }}</a>
         </li>
         <li class="{{ component.renderClass('menu__item', modifiers) }} {{macros.isActive('address', data.activePage)}}">
