@@ -31,15 +31,24 @@ class ProductOptionConfiguratorWidget extends SprykerProductOptionConfiguratorWi
         }
 
         $productAttributes = $productViewTransfer['attributes'];
-        $currentProductOptionSkuPfand1 = 'OP_product_deposit_' .
-            $productAttributes['pfand_1_sapnumber'] . '_' .
-            $productAttributes['pfand_1_plu'] . '_' .
-            $productAttributes['pfand_1_count'];
 
-        $currentProductOptionSkuPfand2 = 'OP_product_deposit_' .
-            $productAttributes['pfand_2_sapnumber'] . '_' .
-            $productAttributes['pfand_2_plu'] . '_' .
-            $productAttributes['pfand_2_count'];
+        $currentProductOptionSkuPfand1 = null;
+
+        if (isset($productAttributes['pfand_1_plu'])) {
+            $currentProductOptionSkuPfand1 = 'OP_product_deposit_' .
+                $productAttributes['pfand_1_sapnumber'] . '_' .
+                $productAttributes['pfand_1_plu'] . '_' .
+                $productAttributes['pfand_1_count'];
+        }
+
+        $currentProductOptionSkuPfand2 = null;
+
+        if (isset($productAttributes['pfand_2_plu'])) {
+            $currentProductOptionSkuPfand2 = 'OP_product_deposit_' .
+                $productAttributes['pfand_2_sapnumber'] . '_' .
+                $productAttributes['pfand_2_plu'] . '_' .
+                $productAttributes['pfand_2_count'];
+        }
 
         $filteredProductAbstractOptionStorageTransfer = new ProductAbstractOptionStorageTransfer();
 
