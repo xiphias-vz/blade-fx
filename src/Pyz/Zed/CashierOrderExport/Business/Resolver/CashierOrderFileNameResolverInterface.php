@@ -28,8 +28,9 @@ interface CashierOrderFileNameResolverInterface
 
     /**
      * @param string $fileName
+     * @param string $store
      *
      * @return string
      */
-    public function resolveCashierOrderExportArchiveRemoteFilePath(string $fileName): string;
+    public function resolveCashierOrderExportArchiveRemoteFilePath(string $fileName, string $store): string;
 }

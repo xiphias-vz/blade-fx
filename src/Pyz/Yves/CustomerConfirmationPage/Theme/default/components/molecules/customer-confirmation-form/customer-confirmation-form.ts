@@ -70,13 +70,8 @@ export default class CustomerConfirmationForm extends Component {
 
     protected submitCustomerConfirmationForm(event: Event): void {
         const isPhoneNumberValid = this.isPhoneNumberValid();
-        if (isPhoneNumberValid) {
-            if(this.thirdPartyRegistration.checked) {
-                event.preventDefault();
-                this.gigyaInitRegistration();
-            } else {
-                this.customerConfirmationForm.submit();
-            }
+        if (isPhoneNumberValid && this.thirdPartyRegistration.checked) {
+            this.customerConfirmationForm.submit();
             return;
         }
 
@@ -102,26 +97,5 @@ export default class CustomerConfirmationForm extends Component {
         let prefix: HTMLSelectElement = target.id.includes("mobile") ? this.phonePrefix: this.mobilePrefix;
         if(prefix.value.length > 0 && target.value.length > 0 && !target.value.startsWith(prefix.value))
             target.value = prefix.value + target.value;
-    }
-
-    protected gigyaInitRegistration(): void {
-        let params = {
-            isLite: false,
-            callback: this.gigyaInitRegistrationCallback,
-        };
-        try {
-            gigya.accounts.initRegistration(params);
-        } catch (e) {
-            alert(e);
-        }
-    }
-
-    protected gigyaInitRegistrationCallback(response): void {
-        if (response.errorCode == 0) {
-            let token = response.regToken;
-            gigyaRegisterUser(token);
-        } else {
-            alert("There was an error!");
-        }
     }
 }

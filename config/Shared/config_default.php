@@ -2,7 +2,6 @@
 
 use Monolog\Logger;
 use Pyz\Service\FlysystemSftpFileSystem\Plugin\Flysystem\SftpFileSystemBuilderPlugin;
-use Pyz\Shared\CashierOrderExport\CashierOrderExportConstants;
 use Pyz\Shared\CollectNumber\CollectNumberConstants;
 use Pyz\Shared\DataImport\DataImportConstants;
 use Pyz\Shared\DummyPayment\DummyPaymentConfig;
@@ -552,9 +551,6 @@ $config[OauthConstants::ENCRYPTION_KEY] = '';
 $config[OauthConstants::OAUTH_CLIENT_IDENTIFIER] = '';
 $config[OauthConstants::OAUTH_CLIENT_SECRET] = '';
 
-// ---------- CashierOrderExport
-$config[CashierOrderExportConstants::SFTP_CASHIER_ORDER_FILES_FOLDER_KEY] = 'kasse';
-
 // ---------- FileSystem
 $config[FileSystemConstants::FILESYSTEM_SERVICE] = [
     'files' => [
@@ -844,3 +840,5 @@ $config[\Pyz\Shared\Customer\CustomerConstants::CDC_API_SECRET_KEY] =
     [
         'cdcApiSecretKey' => '',
     ];
+
+$config[\Pyz\Shared\Customer\CustomerConstants::CDC_API_USER_KEY] = 'AOOFJuSjBzxx';
