@@ -18,7 +18,7 @@ cart.shipping,Service,de_DE
 cart.shipping,Shipping,en_US
 cart.total,Gesamt,de_DE
 cart.total,Total,en_US
-cart.checkout,Zum Checkout,de_DE
+cart.checkout,Zur Kasse,de_DE
 cart.checkout,Checkout,en_US
 cart.empty,Der Einkaufsliste ist zur Zeit leer!,de_DE
 cart.empty,Your shopping cart is empty!,en_US
@@ -393,7 +393,7 @@ global.search.suggestion.no_result,Nichts gefunden…,de_DE
 global.search.suggestion.no_result,Nothing found…,en_US
 global.search.suggestion.see_all_products,Alle Produkte anzeigen,de_DE
 global.search.suggestion.see_all_products,See all products,en_US
-global.shop,Spryker Click&Collect&Delivery Shop,de_DE
+global.shop,Globus Abholservice,de_DE
 global.shop,Spryker Click&Collect&Delivery Shop,en_US
 global.spryker.motto,Qualitäts-Technologie,de_DE
 global.spryker.motto,technology with quality,en_US
@@ -588,7 +588,7 @@ customer.authorization.success,Registration Successful,en_US
 customer.authorization.success,Registrierung erfolgreich.,de_DE
 customer.authorization.failed,Authentifikation fehlgeschlagen.,de_DE
 customer.authorization.failed,Authentication failed.,en_US
-customer.registration.success,"Herzlich Willkommen in Ihrem Spryker Click&Collect&Delivery Shop Kundenkonto. Ihre Registrierung war erfolgreich.",de_DE
+customer.registration.success,"Herzlich Willkommen in Ihrem Globus Abholservice Kundenkonto. Ihre Registrierung war erfolgreich.",de_DE
 customer.registration.success,"Welcome to your Spryker Shop customer account. Your registration was successful.",en_US
 customer.profile.change.success,Profile was successfully saved,en_US
 customer.profile.change.success,Profil wurde erfolgreich gespeichert.,de_DE
@@ -1000,7 +1000,7 @@ checkout.step.summary.tax,Tax,en_US
 checkout.step.summary.total,Complete checkout,en_US
 checkout.step.summary.total,Bestellung abschließen,de_DE
 checkout.step.summary.shipment_costs_total,"Shipment costs (total)",en_US
-checkout.step.summary.shipment_costs_total,"Versandkosten (insgesamt)",de_DE
+checkout.step.summary.shipment_costs_total,"Servicegebühr",de_DE
 checkout.step.summary.delivery_method,Zustellungsmethode,de_DE
 checkout.step.summary.delivery_method,Delivery method,en_US
 checkout.step.summary.requested_delivery_date,Angefordertes Lieferdatum,de_DE
@@ -1010,7 +1010,7 @@ checkout.step.summary.delivery_address,Delivery Address,en_US
 checkout.step.summary.products,"Products",en_US
 checkout.step.summary.products,"Produkte",de_DE
 checkout.step.place.order,Submit your order,en_US
-checkout.step.place.order,Zur Kasse,de_DE
+checkout.step.place.order,Kostenpflichtig bestellen,de_DE
 checkout.step.payment.must_be_older_than_18_years,You must be at least 18 years old.,en_US
 checkout.step.payment.must_be_older_than_18_years,Sie müssen mindestens 18 Jahre alt sein.,de_DE
 checkout.step.success.title,Thank you.,en_US
@@ -1242,7 +1242,7 @@ cart.pre.check.availability.failed,Zurzeit haben wir von %sku% nur %stock% Stüc
 cart.pre.check.availability.failed.empty,Item %sku% no longer available.,en_US
 cart.pre.check.availability.failed.empty,Das Produkt mit sku '%sku%' ist zurzeit nicht verfügbar.,de_DE
 mail.sender.name,globus-staging-No-Reply,en_US
-mail.sender.name,globus-staging-No-Reply,de_DE
+mail.sender.name,Globus Abholservice,de_DE
 mail.sender.email,noreply@gl-stg.cloud.spryker.toys,en_US
 mail.sender.email,noreply@gl-stg.cloud.spryker.toys,de_DE
 mail.company.status.subject,"Your company has changed status",en_US
@@ -2612,9 +2612,9 @@ day-of-week.short.n.6,Sat.,en_US
 day-of-week.short.n.6,Sa,de_DE
 mail.customer.survey.subject,How did you like it?,en_US
 mail.customer.survey.subject,Wie hat es dir gefallen?,de_DE
-mail.customer.invoice.subject,Spryker Click&Collect&Delivery Shop: Rechnung %invoiceReference%,de_DE
+mail.customer.invoice.subject,Globus Abholservice: Rechnung %invoiceReference%,de_DE
 mail.customer.invoice.subject,Spryker Click&Collect&Delivery Shop: Invoice %invoiceReference%,en_US
-mail.registration.subject,"Vielen Dank für deine Anmeldung im Spryker Click&Collect&Delivery Shop!",de_DE
+mail.registration.subject,"Vielen Dank für deine Anmeldung beim Globus Abholservice!",de_DE
 mail.registration.subject,"Thank you for your registration in the Spryker Click&Collect&Delivery Shop!",en_US
 cart.clear,Einkaufsliste löschen,de_DE
 cart.clear,Delete cart,en_US
