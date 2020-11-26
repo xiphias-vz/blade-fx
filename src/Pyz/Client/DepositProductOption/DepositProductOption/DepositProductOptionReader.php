@@ -76,10 +76,15 @@ class DepositProductOptionReader implements DepositProductOptionReaderInterface
         }
 
         $productAttributes = $productViewTransfer['attributes'];
-        $currentProductOptionSkuPfand1 = 'OP_product_deposit_' .
-            $productAttributes['pfand_1_sapnumber'] . '_' .
-            $productAttributes['pfand_1_plu'] . '_' .
-            $productAttributes['pfand_1_count'];
+
+        $currentProductOptionSkuPfand1 = null;
+
+        if (isset($productAttributes['pfand_1_plu'])) {
+            $currentProductOptionSkuPfand1 = 'OP_product_deposit_' .
+                $productAttributes['pfand_1_sapnumber'] . '_' .
+                $productAttributes['pfand_1_plu'] . '_' .
+                $productAttributes['pfand_1_count'];
+        }
 
         $currentProductOptionSkuPfand2 = null;
 
