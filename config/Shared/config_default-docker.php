@@ -56,7 +56,7 @@ use SprykerShop\Shared\ShopApplication\ShopApplicationConstants;
 use SprykerShop\Shared\WebProfilerWidget\WebProfilerWidgetConstants;
 use Twig\Cache\FilesystemCache;
 
-$ZED = APPLICATION === 'STOREAPP' ? APPLICATION : 'ZED';
+$ZED = APPLICATION === 'STOREAPP' ? 'StoreApp' : 'Zed';
 
 if (APPLICATION === 'STOREAPP') {
     putenv('SPRYKER_DEBUG_ENABLED=1');
