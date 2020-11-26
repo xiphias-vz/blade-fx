@@ -5,6 +5,10 @@
     @include shop-ui-radio($name);
 
     #{$name} {
+        & {
+            text-align: center;
+        }
+
         &__box {
             width: rem(16);
             height: rem(16);
@@ -26,7 +30,7 @@
             display: block;
 
             #{$name}__container {
-                padding: rem(25) rem(24) rem(23);
+                padding: rem(12) rem(10);
                 position: relative;
                 cursor: pointer;
                 white-space: nowrap;
@@ -237,9 +241,19 @@
             }
         }
 
-        @media only screen and (min-width: 0) and (max-width: 549px) {
+        @media only screen and (min-width: 341px) and (max-width: 549px) {
             &__label {
                 font-size: rem(12) !important;
+            }
+        }
+
+        @media only screen and (min-width: 0) and (max-width: 340px) {
+            & {
+                max-width: rem(89);
+            }
+
+            &__label {
+                font-size: rem(9) !important;
             }
         }
     }
