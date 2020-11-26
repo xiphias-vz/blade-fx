@@ -80,8 +80,8 @@ class CashierOrderWriter implements CashierOrderWriterInterface
         $archiveFileName = $this->cashierOrderFilePathResolver->resolveCashierOrderExportArchiveFileName();
         $archiveFilePath = $this->cashierOrderFilePathResolver->resolveCashierOrderExportArchiveFilePath($archiveFileName);
         $fileName = $this->cashierOrderFilePathResolver->resolveCashierOrderExportFileName();
-        $archiveRemoteFilePat = $this->cashierOrderFilePathResolver
-            ->resolveCashierOrderExportArchiveRemoteFilePath($archiveFileName);
+        $archiveRemoteFilePath = $this->cashierOrderFilePathResolver
+            ->resolveCashierOrderExportArchiveRemoteFilePath($archiveFileName, $orderTransfer->getStore());
 
         if ($this->cashierOrderFileChecker->isFileExist($archiveFilePath)) {
             $this->logError(static::FILE_EXIST_FAIL_MESSAGE, $archiveFileName);
@@ -91,7 +91,7 @@ class CashierOrderWriter implements CashierOrderWriterInterface
 
         try {
             $this->cashierOrderArchiveWriter->addContentToArchive($archiveFilePath, $fileName, $content);
-            $this->cashierOrderSftpWriter->sendFileToFtp($archiveFileName, $archiveRemoteFilePat);
+            $this->cashierOrderSftpWriter->sendFileToFtp($archiveFileName, $archiveRemoteFilePath);
             $this->cashierOrderDeleter->delete($archiveFileName);
         } catch (Exception $exception) {
             $this->logError(static::FILE_CREATE_FAIL_MESSAGE, $archiveFileName, $exception->getTrace());

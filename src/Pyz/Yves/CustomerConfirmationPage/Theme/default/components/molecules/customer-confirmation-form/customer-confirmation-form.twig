@@ -114,21 +114,25 @@
 
                     {% if data.form.vars.full_name == 'registerForm[customer]' %}
                         {% set layout = {
-                            'email': 'col col--order-1 col--sm-6',
-                            'salutation': 'col col--sm-12 col--md-6',
-                            'first_name': 'col col--sm-12 col--md-4',
-                            'last_name': 'col col--sm-12 col--md-4',
-                            'password': 'col col--order-1 col--sm-12 col--md-6',
-                            'confirm': 'col col--order-1 col--sm-12 col--md-6',
-                            'address1': 'col col--order-1 col--sm-12 col--md-8',
-                            'address2': 'col col--order-1 col--sm-12 col--md-4',
-                            'floor': 'col col--order-1 col--sm-12 col--md-4',
-                            'zip_code': 'col col--order-1 col--sm-12 col--md-4',
-                            'city': 'col col--order-1 col--sm-12 col--md-4',
-                            'additional_info': 'col col--order-2 col--sm-12',
-                            'merchant_reference': 'col col--order-2 col--sm-12',
-                            'phone': 'col col--order-2 col--sm-12',
-                            'accept_terms': 'col col--order-2 col--sm-12',
+                            'email': 'col col--order-1 col--sm-4',
+                            'password': 'col col--order-1 col--sm-12 col--md-4',
+                            'confirm': 'col col--order-1 col--sm-12 col--md-4',
+                            'salutation': 'col col--order-2 col--sm-12 col--md-4',
+                            'first_name': 'col col--order-2 col--sm-12 col--md-4',
+                            'last_name': 'col col--order-2 col--sm-12 col--md-4',
+                            'address1': 'col col--order-2 col--sm-12 col--md-8',
+                            'address2': 'col col--order-2 col--sm-12 col--md-4',
+                            'country': 'col col--order-2 col--sm-12 col--md-4',
+                            'phone_prefix': 'col col--order-3 col--sm-12 col--md-3',
+                            'mobile_phone_number': 'col col--order-3 col--sm-12 col--md-9',
+                            'mobile_phone_prefix': 'col col--order-3 col--sm-12 col--md-3',
+                            'phone': 'col col--order-3 col--sm-12 col--md-9',
+                            'birth_day': 'col col--order-3 col--sm-12 col--md-4',
+                            'birth_month': 'col col--order-3 col--sm-12 col--md-4',
+                            'birth_year': 'col col--order-3 col--sm-12 col--md-4',
+                            'additional_info': 'col col--order-4 col--sm-12',
+                            'merchant_reference': 'col col--order-4 col--sm-12',
+                            'accept_terms': 'col col--order-6 col--sm-12',
                         } %}
                     {% endif %}
 
@@ -156,7 +160,7 @@
                                 {% set passwordCriteriaFieldLayoutClass = 'form__field col col--sm-12' %}
 
                                 {% if data.form.vars.full_name == 'registerForm[customer]' %}
-                                    {% set passwordCriteriaFieldLayoutClass = 'form__field col col--order-1 col--sm-12 col--md-6' %}
+                                    {% set passwordCriteriaFieldLayoutClass = 'form__field col col--order-1 col--sm-12 col--md-12' %}
                                 {% endif %}
 
                                 <div class="{{ embed.jsName }}__password-criteria {{ passwordCriteriaFieldLayoutClass }} is-hidden">
@@ -165,6 +169,15 @@
                             {% elseif fieldName == 'phone_prefix' %}
                                 {% if data.form.vars.full_name == 'registerForm' %}
                                     <label for="phone_prefix" class="margin-telefon-title">{{ 'customer.register.telefon.title' | trans }}</label>
+                                    {{ form_row(field, {
+                                        rowAttr: {
+                                            class: 'form__field ' ~ fieldLayoutClass,
+                                        },
+                                    }) }}
+                                {% elseif data.form.vars.full_name == 'registerForm[customer]' %}
+                                    <div class="col col--order-3 col--lg-12 col--md-12 col--sm-12">
+                                        <label for="phone_prefix" class="margin-telefon-title">{{ 'customer.register.telefon.title' | trans }}</label>
+                                    </div>
                                     {{ form_row(field, {
                                         rowAttr: {
                                             class: 'form__field ' ~ fieldLayoutClass,
@@ -181,7 +194,17 @@
                                             class: 'form__field ' ~ fieldLayoutClass,
                                         },
                                     }) }}
+                                {% elseif data.form.vars.full_name == 'registerForm[customer]' %}
+                                    <div class="col col--order-3 col--lg-12 col--md-12 col--sm-12">
+                                        <label for="birth_day" class="margin-telefon-title">{{ 'customer.register.birthdate.title' | trans }}</label>
+                                    </div>
+                                    {{ form_row(field, {
+                                        rowAttr: {
+                                            class: 'form__field ' ~ fieldLayoutClass,
+                                        },
+                                    }) }}
                                 {% endif %}
+
                             {% elseif fieldName == 'phone' %}
                                 {{ form_row(field, {
                                     rowAttr: {
@@ -199,12 +222,12 @@
                                     </ul>
                                 </div>
                             {% elseif fieldName == 'phone_prefix_2' %}
-                            {{ form_row(field, {
-                                rowAttr: {
-                                    label: 'something',
-                                    class: 'form__field ' ~ fieldLayoutClass,
-                                },
-                            }) }}
+                                {{ form_row(field, {
+                                    rowAttr: {
+                                        label: 'something',
+                                        class: 'form__field ' ~ fieldLayoutClass,
+                                    },
+                                }) }}
 
                             {% else %}
                                 {{ form_row(field, {

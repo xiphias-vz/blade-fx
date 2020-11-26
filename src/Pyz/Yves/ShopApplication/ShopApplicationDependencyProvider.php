@@ -7,12 +7,14 @@
 
 namespace Pyz\Yves\ShopApplication;
 
+use Pyz\Yves\CustomerPage\Plugin\Application\CustomerPageApplicationPlugin;
 use Pyz\Yves\GoogleTagManager\Plugin\Application\GoogleTagManagerIdApplicationPlugin;
 use Pyz\Yves\LanguageSwitcherWidget\Widget\LanguageSwitcherWidget;
 use Pyz\Yves\MerchantSwitcherWidget\Plugin\Application\CurrentMerchantApplicationPlugin;
 use Pyz\Yves\MerchantSwitcherWidget\Widget\MerchantSwitcherSelectorFormWidget;
 use Pyz\Yves\Messenger\Plugin\Application\FlashMessengerApplicationPlugin;
 use Pyz\Yves\ProductComparativePriceWidget\Widget\ProductComparativePriceWidget;
+use Pyz\Yves\ProductOptionWidget\Widget\ProductOptionConfiguratorWidget;
 use Pyz\Yves\ProductRelationWidget\Widget\UpSellingProductsWidget;
 use Pyz\Yves\ProductSetWidget\Widget\ProductSetIdsWidget;
 use Pyz\Yves\ProductWidget\Widget\CatalogPageProductWidget;
@@ -56,7 +58,6 @@ use SprykerShop\Yves\ProductLabelWidget\Widget\ProductAbstractLabelWidget;
 use SprykerShop\Yves\ProductLabelWidget\Widget\ProductConcreteLabelWidget;
 use SprykerShop\Yves\ProductMeasurementUnitWidget\Widget\CartProductMeasurementUnitQuantitySelectorWidget;
 use SprykerShop\Yves\ProductMeasurementUnitWidget\Widget\ManageProductMeasurementUnitWidget;
-use SprykerShop\Yves\ProductOptionWidget\Widget\ProductOptionConfiguratorWidget;
 use SprykerShop\Yves\ProductPackagingUnitWidget\Widget\ProductPackagingUnitWidget;
 use SprykerShop\Yves\ProductRelationWidget\Widget\SimilarProductsWidget;
 use SprykerShop\Yves\ProductReplacementForWidget\Widget\ProductReplacementForListWidget;
@@ -151,6 +152,7 @@ class ShopApplicationDependencyProvider extends SprykerShopApplicationDependency
             new ShopContextApplicationPlugin(),
             new CurrentMerchantApplicationPlugin(),
             new GoogleTagManagerIdApplicationPlugin(),
+            new CustomerPageApplicationPlugin(),
         ];
 
         if (class_exists(WebProfilerApplicationPlugin::class)) {

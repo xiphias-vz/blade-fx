@@ -7,12 +7,15 @@
 
 namespace Pyz\Client\DepositProductOption\DepositProductOption;
 
+use Generated\Shared\Transfer\ProductViewTransfer;
+
 interface DepositProductOptionReaderInterface
 {
     /**
      * @param int $idProductAbstract
+     * @param \Generated\Shared\Transfer\ProductViewTransfer|null $productViewTransfer
      *
      * @return array
      */
-    public function getDepositProductOptionsByIdProductAbstract(int $idProductAbstract): array;
+    public function getDepositProductOptionsByIdProductAbstract(int $idProductAbstract, ?ProductViewTransfer $productViewTransfer): array;
 }

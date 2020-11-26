@@ -46,6 +46,8 @@ class ProductPriceWriterStep extends PublishAwareStep implements DataImportStepI
      */
     protected static $idPriceTypeBuffer = [];
 
+    protected const ZERO_PSEUDO_PRICE = "0,00";
+
     /**
      * @var \NumberFormatter
      */
@@ -127,9 +129,12 @@ class ProductPriceWriterStep extends PublishAwareStep implements DataImportStepI
                 $productAbstractEntity->save();
             }
 
-            if (!empty($dataSet[ProductConfig::KEY_PRICE_FROM]) && !empty($dataSet[ProductConfig::KEY_PRICE_TO])) {
-                $this->savePriceProductSchedule($dataSet, ProductPriceSaver::PRICE_TYPE_DEFAULT, ProductConfig::KEY_PSEUDO_PRICE);
-                $this->savePriceProductSchedule($dataSet, ProductPriceSaver::PRICE_TYPE_ORIGINAL, ProductConfig::KEY_PRICE);
+            if (!empty($dataSet[ProductConfig::KEY_PRICE_FROM]) &&
+                !empty($dataSet[ProductConfig::KEY_PRICE_TO]) &&
+                $dataSet[ProductConfig::KEY_PSEUDO_PRICE] !== static::ZERO_PSEUDO_PRICE
+            ) {
+                $this->savePriceProductSchedule($dataSet, ProductPriceSaver::PRICE_TYPE_DEFAULT, ProductConfig::KEY_PRICE);
+                $this->savePriceProductSchedule($dataSet, ProductPriceSaver::PRICE_TYPE_ORIGINAL, ProductConfig::KEY_PSEUDO_PRICE);
 
                 return;
             }
