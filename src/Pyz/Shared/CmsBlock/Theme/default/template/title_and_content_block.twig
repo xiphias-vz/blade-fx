@@ -2,17 +2,9 @@
     <!-- CMS_BLOCK_PLACEHOLDER : "title" -->
     <!-- CMS_BLOCK_PLACEHOLDER : "content" -->
 
-    <div class="container">
-        <div class="product-slider-title">
-            <h1 class="title title--h2 title--regular">{{ spyCmsBlockPlaceholder('title') | raw }}</h1>
-        </div>
-
-        <div class="grid">
-            <div class="col col--sm-12">
-            <div class="col col--sm-12 title-and-content-holder">
+            <div class="title-and-content-holder">
                 <div class="title-holder">{{ spyCmsBlockPlaceholder('title') | raw }}</div>
                 {{ spyCmsBlockPlaceholder('content') | raw }}
             </div>
-        </div>
-    </div>
+
 {% endblock %}

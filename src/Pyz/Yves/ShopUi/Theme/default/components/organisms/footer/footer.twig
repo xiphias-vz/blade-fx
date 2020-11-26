@@ -16,12 +16,11 @@
             <div class="{{ config.name }}__top">
                 <div class="{{ config.name }}__content">
                     <div class="grid grid--justify grid--expand">
+                        <div class="contact-store-info">
+                            {{ cms_block(['Store Contact Information']) }}
+                        </div>
 
                         {% block navigation %}
-                                <div class="contact-store-info">
-                                     {{ cms_block(['Store Contact Information']) }}
-                                </div>
-
                             <div class="col col--sm-12 col--lg-8">
                                 {% include molecule('navigation-footer') with {
                                     class: config.name ~ '__navigation',
