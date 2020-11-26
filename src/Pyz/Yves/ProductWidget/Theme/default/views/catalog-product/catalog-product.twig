@@ -15,7 +15,7 @@
         {% set class = 'col col--sm-12' %}
     {% endif %}
 
-    {% set image = data.product.images ? data.product.images | last %}
+    {% set image = data.product.images ? data.product.images | first %}
 
     {% embed productTemplate with {
         productTemplate: productTemplate,
