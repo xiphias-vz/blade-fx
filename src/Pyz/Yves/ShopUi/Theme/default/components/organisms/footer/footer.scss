@@ -4,8 +4,17 @@
         background: $setting-color-grey-footer;
         color: $setting-color-white;
 
-        .contact-store-info .product-slider-title{
-            display: none;
+        .title-and-content-holder {
+            .title-holder p {
+                margin-top: 0px;
+                color:#fff;
+            }
+            p {
+                color:#d4d5d7;
+            }
+            a {
+                color:#d4d5d7 !important;
+            }
         }
 
         &__top {
