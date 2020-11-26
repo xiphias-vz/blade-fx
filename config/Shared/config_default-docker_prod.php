@@ -1,8 +1,8 @@
 <?php
 
 use Pyz\Shared\CashierOrderExport\CashierOrderExportConstants;
-use Pyz\Shared\DataImport\DataImportConstants;
 use Pyz\Shared\Customer\CustomerConstants;
+use Pyz\Shared\DataImport\DataImportConstants;
 
 $config[CustomerConstants::CDC_API_KEY] =
     [

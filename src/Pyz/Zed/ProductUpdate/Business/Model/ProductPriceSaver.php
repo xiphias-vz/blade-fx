@@ -119,6 +119,7 @@ class ProductPriceSaver
 
         $grossPrice = $this->getProductPriceByStore($dataSet, $priceField);
         $priceProductStoreEntity->setGrossPrice($grossPrice);
+        $priceProductStoreEntity->setNetPrice(null);
         $priceProductStoreEntity->setPriceData('[]');
         $priceProductStoreEntity->setPriceDataChecksum($grossPrice);
 
