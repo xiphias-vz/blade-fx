@@ -111,6 +111,10 @@ class OrderChangeSaver
     ) {
         $salesOrderItemEntity->setPriceToPayAggregation($orderItemChangeRequest->getPrice());
         $salesOrderItemEntity->setPrice($orderItemChangeRequest->getPrice());
+        $salesOrderItemEntity->setSubtotalAggregation($orderItemChangeRequest->getPrice());
+        $salesOrderItemEntity->setGrossPrice($orderItemChangeRequest->getPrice());
+
+        $salesOrderItemEntity->setNewWeight($orderItemChangeRequest->getNewWeight());
 
         $salesOrderItemEntity->save();
     }

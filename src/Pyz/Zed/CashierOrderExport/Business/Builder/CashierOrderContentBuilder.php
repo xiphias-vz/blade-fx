@@ -190,7 +190,7 @@ class CashierOrderContentBuilder implements CashierOrderContentBuilderInterface
             static::ORDER_ITEM_NAME_IDENTIFIER,
             $this->getItemName($itemTransfer),
             static::ORDER_ITEM_PRICE_IDENTIFIER,
-            $itemTransfer->getSumPrice() ?? static::DEFAULT_EMPTY_NUMBER,
+            $this->getItemPrice($itemTransfer) ?? static::DEFAULT_EMPTY_NUMBER,
             static::ORDER_ITEM_WGR_LINK_IDENTIFIER,
             $itemTransfer->getSapWgr() ?? static::DEFAULT_EMPTY_NUMBER,
             static::ORDER_ITEM_TAX_IDENTIFIER,
@@ -450,5 +450,19 @@ class CashierOrderContentBuilder implements CashierOrderContentBuilderInterface
     protected function sanitizeItemNameFromUmlauts(string $itemName): string
     {
         return str_replace(static::UMLAUTS_REPLACE_FROM, static::UMLAUTS_REPLACE_TO, $itemName);
+    }
+
+    /**
+     * @param \Generated\Shared\Transfer\ItemTransfer $itemTransfer
+     *
+     * @return int
+     */
+    protected function getItemPrice(ItemTransfer $itemTransfer)
+    {
+        if ($itemTransfer->getPricePerKg()) {
+            return $itemTransfer->getPricePerKg();
+        }
+
+        return $itemTransfer->getSumPrice();
     }
 }
