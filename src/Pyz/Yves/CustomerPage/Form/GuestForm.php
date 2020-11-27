@@ -7,7 +7,6 @@
 
 namespace Pyz\Yves\CustomerPage\Form;
 
-use Pyz\Yves\CustomerPage\Form\Constraints\PostalCodeConstraint;
 use SprykerShop\Yves\CustomerPage\Form\GuestForm as SprykerGuestForm;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
