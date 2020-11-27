@@ -649,6 +649,7 @@ $config[TimeSlotConstants::HOLIDAYS] = [
     '2020-04-20',
     '2020-05-01',
     '2020-05-21',
+    '2020-11-28', //temporary, remove after this day past
 ];
 
 $config[TimeSlotConstants::MAX_SHOW_DAYS] = 5;
