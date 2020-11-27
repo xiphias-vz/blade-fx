@@ -176,9 +176,7 @@ class GuestForm extends SprykerGuestForm
             'trim' => true,
             'constraints' => [
                 $this->createNotBlankConstraint(),
-                new PostalCodeConstraint([
-                    'customerBaseClient' => $this->getFactory()->createCustomerFormFactory()->getCustomerClient(),
-                ])           ],
+            ],
             'attr' => [
                 'placeholder' => 'customer.registration.zip_placeholder',
             ],
