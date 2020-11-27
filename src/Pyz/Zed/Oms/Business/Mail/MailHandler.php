@@ -238,6 +238,7 @@ class MailHandler extends SprykerMailHandler
                 'divisionZipCode' => $orderTransfer->getMerchantRegion()->getZipCode(),
                 'divisionTown' => $orderTransfer->getMerchantRegion()->getCity(),
                 'divisionFooter' => $this->mailCmsBlockService->convertNewLineToBr($orderTransfer->getMerchantRegion()->getFooterText()),
+                'dateOfOrder' => $orderTransfer->getCreatedAt(),
             ];
 
         return $this->mailCmsBlockService->convertArrayToPlaceholders($params);
