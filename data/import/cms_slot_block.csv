@@ -1,1 +1,3 @@
 template_path,slot_key,block_key,position,conditions.productCategory.all,conditions.productCategory.skus,conditions.productCategory.category_key,conditions.category.all,conditions.category.category_key,conditions.cms_page.all,conditions.cms_page.page_key
+"@HomePage/views/home/home.twig",slt-2,blck-9,1,,,,,,,
+"@HomePage/views/home/home.twig",slt-3,home-promotions-products,2,,,,,,,
