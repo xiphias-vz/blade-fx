@@ -115,8 +115,6 @@ class ProductPriceWriterStep extends PublishAwareStep implements DataImportStepI
             $productConcreteEntity = $productAbstractEntity->getSpyProducts()[0];
             $productConcreteEntityAttributes = json_decode($productConcreteEntity->getAttributes(), true);
 
-            var_dump($productConcreteEntityAttributes);
-
             if (isset($productAbstractEntityAttributes[ProductConfig::KEY_WEIGHT_PER_ITEM])) {
                 $priceMultiplier = $productAbstractEntityAttributes[ProductConfig::KEY_WEIGHT_PER_ITEM];
                 $pricePerKg = $dataSet[ProductConfig::KEY_PRICE];
