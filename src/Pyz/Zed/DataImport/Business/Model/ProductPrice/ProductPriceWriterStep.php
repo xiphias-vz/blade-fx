@@ -112,6 +112,11 @@ class ProductPriceWriterStep extends PublishAwareStep implements DataImportStepI
 
             $productAbstractEntityAttributes = json_decode($productAbstractEntity->getAttributes(), true);
 
+            $productConcreteEntity = $productAbstractEntity->getSpyProducts()[0];
+            $productConcreteEntityAttributes = json_decode($productConcreteEntity->getAttributes(), true);
+
+            var_dump($productConcreteEntityAttributes);
+
             if (isset($productAbstractEntityAttributes[ProductConfig::KEY_WEIGHT_PER_ITEM])) {
                 $priceMultiplier = $productAbstractEntityAttributes[ProductConfig::KEY_WEIGHT_PER_ITEM];
                 $pricePerKg = $dataSet[ProductConfig::KEY_PRICE];
@@ -120,6 +125,8 @@ class ProductPriceWriterStep extends PublishAwareStep implements DataImportStepI
                 $integerPricePerKg = $this->moneyFacade->convertDecimalToInteger($parsedPricePerKg);
 
                 $productAbstractEntityAttributes[ProductConfig::PRICE_PER_KG] = $integerPricePerKg;
+                $productConcreteEntityAttributes[ProductConfig::PRICE_PER_KG] = $integerPricePerKg;
+
                 $multipliedPrice = (int)round($priceMultiplier * $integerPricePerKg);
                 $multipliedPriceDecimal = $this->moneyFacade->convertIntegerToDecimal($multipliedPrice);
 
@@ -127,6 +134,9 @@ class ProductPriceWriterStep extends PublishAwareStep implements DataImportStepI
 
                 $productAbstractEntity->setAttributes(json_encode($productAbstractEntityAttributes));
                 $productAbstractEntity->save();
+
+                $productConcreteEntity->setAttributes(json_encode($productConcreteEntityAttributes));
+                $productConcreteEntity->save();
             }
 
             if (!empty($dataSet[ProductConfig::KEY_PRICE_FROM]) &&
