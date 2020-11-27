@@ -649,20 +649,21 @@ $config[TimeSlotConstants::HOLIDAYS] = [
     '2020-04-20',
     '2020-05-01',
     '2020-05-21',
+    '2020-11-28', //temporary, remove after this day past
 ];
 
 $config[TimeSlotConstants::MAX_SHOW_DAYS] = 5;
 
 $config[TimeSlotConstants::SHIPMENT_TIME_SLOTS] = [
     ShipmentConfig::SHIPMENT_METHOD_CLICK_AND_COLLECT => [
-        '10:00-12:00',
+//        '10:00-12:00', //temporary, remove after 2020-11-30 past
         '12:00-14:00',
         '14:00-16:00',
         '16:00-18:00',
         '18:00-20:00',
     ],
     ShipmentConfig::SHIPMENT_METHOD_DELIVERY => [
-        '10:00-12:00',
+        //'10:00-12:00', //temporary, remove after 2020-11-30 past
         '12:00-14:00',
         '14:00-16:00',
         '16:00-18:00',
