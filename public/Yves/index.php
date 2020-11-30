@@ -28,7 +28,8 @@ $currentStore = $_COOKIE['current_store'] ?? null;
 
 // Temporary KMD is a main shop
 if (!$currentStore || !in_array($currentStore, $allStores)) {
-    $currentStore = 'KMD';
+    header('Location:' . $storeConfig['WELCOME']);
+    setcookie('current_store', 'KMD', time() + 86400, "/");
 }
 
 define('APPLICATION_STORE', $currentStore);
