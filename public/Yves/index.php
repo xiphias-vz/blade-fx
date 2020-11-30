@@ -31,12 +31,9 @@ if (!$currentStore || !in_array($currentStore, $allStores)) {
     if ($checkCookie != "0") {
         header('Location:' . $storeConfig['WELCOME']);
         exit();
-    } else {
-        $currentStore = $_GET['store'] ?? null;
-        if (!$currentStore) {
-            $currentStore = "KMD";
-        }
     }
+
+    $currentStore = $_GET['store'] ?? 'KMD';
 }
 
 define('APPLICATION_STORE', $currentStore);
