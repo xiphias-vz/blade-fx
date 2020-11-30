@@ -36,8 +36,7 @@ class OmsQueryContainer extends SprykerOmsQueryContainer implements OmsQueryCont
         }
 
         if ($storeName) {
-            // due to EIN store name
-            //$query->filterByStore($storeName);
+            $query->filterByStore($storeName);
         }
 
         if ($limit !== null) {
