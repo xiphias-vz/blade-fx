@@ -209,6 +209,7 @@ class MailHandler extends SprykerMailHandler
         OrderTransfer $orderTransfer
     ): array {
         $totals = $orderTransfer->getTotals();
+        $dateOfOrder = $this->dateTimeWithZoneService->getDateTimeInStoreTimeZone($orderTransfer->getCreatedAt());
 
         $deliveryDateInterval = $this->mailCmsBlockService->getDeliveryDate($orderTransfer);
         [$deliveryDate, $timeInterval] = explode(' ', $deliveryDateInterval);
@@ -238,6 +239,7 @@ class MailHandler extends SprykerMailHandler
                 'divisionZipCode' => $orderTransfer->getMerchantRegion()->getZipCode(),
                 'divisionTown' => $orderTransfer->getMerchantRegion()->getCity(),
                 'divisionFooter' => $this->mailCmsBlockService->convertNewLineToBr($orderTransfer->getMerchantRegion()->getFooterText()),
+                'dateOfOrder' => $dateOfOrder->format("d.m.Y"),
             ];
 
         return $this->mailCmsBlockService->convertArrayToPlaceholders($params);
