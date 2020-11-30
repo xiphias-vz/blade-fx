@@ -39,8 +39,7 @@ class Global {
         const selectValue = this.select.value;
         const store = Object.keys(shops).find(store => selectValue === store);
         const storeUrlPart = shops[store].link;
-        const checkCookieFlag = '&check-cookie=false';
-        window.location.href = domainNew+storeUrlPart+checkCookieFlag;
+        window.location.href = domainNew+storeUrlPart;
     }
 
     async getJson(url) {
