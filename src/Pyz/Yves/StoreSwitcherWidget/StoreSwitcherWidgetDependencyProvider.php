@@ -14,6 +14,8 @@ use Spryker\Yves\Kernel\Container;
 class StoreSwitcherWidgetDependencyProvider extends AbstractBundleDependencyProvider
 {
     public const STORE = 'STORE';
+    public const CLIENT_QUOTE = 'CLIENT_QUOTE';
+    public const CLIENT_STORE = 'CLIENT_STORE';
 
     /**
      * @param \Spryker\Yves\Kernel\Container $container
@@ -25,6 +27,8 @@ class StoreSwitcherWidgetDependencyProvider extends AbstractBundleDependencyProv
         $container = parent::provideDependencies($container);
 
         $container = $this->addStore($container);
+        $container = $this->addQuoteClient($container);
+        $container = $this->addStoreClient($container);
 
         return $container;
     }
@@ -39,6 +43,34 @@ class StoreSwitcherWidgetDependencyProvider extends AbstractBundleDependencyProv
         $container[static::STORE] = function () {
             return Store::getInstance();
         };
+
+        return $container;
+    }
+
+    /**
+     * @param \Spryker\Yves\Kernel\Container $container
+     *
+     * @return \Spryker\Yves\Kernel\Container
+     */
+    protected function addQuoteClient(Container $container): Container
+    {
+        $container->set(static::CLIENT_QUOTE, function (Container $container) {
+            return $container->getLocator()->quote()->client();
+        });
+
+        return $container;
+    }
+
+    /**
+     * @param \Spryker\Yves\Kernel\Container $container
+     *
+     * @return \Spryker\Yves\Kernel\Container
+     */
+    protected function addStoreClient(Container $container): Container
+    {
+        $container->set(static::CLIENT_STORE, function (Container $container) {
+            return $container->getLocator()->store()->client();
+        });
 
         return $container;
     }

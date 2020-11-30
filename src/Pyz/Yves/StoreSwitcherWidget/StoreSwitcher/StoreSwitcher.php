@@ -7,12 +7,34 @@
 
 namespace Pyz\Yves\StoreSwitcherWidget\StoreSwitcher;
 
+use Spryker\Client\Quote\QuoteClientInterface;
+use Spryker\Client\Store\StoreClientInterface;
 use Symfony\Component\HttpFoundation\Cookie;
 use Symfony\Component\HttpFoundation\Response;
 
 class StoreSwitcher
 {
     public const COOKIE_STORE_IDENTIFIER = 'current_store';
+
+    /**
+     * @var \Spryker\Client\Store\StoreClientInterface
+     */
+    protected $storeClient;
+
+    /**
+     * @var \Spryker\Client\Quote\QuoteClientInterface
+     */
+    protected $quoteClient;
+
+    /**
+     * @param \Spryker\Client\Quote\QuoteClientInterface $quoteClient
+     * @param \Spryker\Client\Store\StoreClientInterface $storeClient
+     */
+    public function __construct(QuoteClientInterface $quoteClient, StoreClientInterface $storeClient)
+    {
+        $this->quoteClient = $quoteClient;
+        $this->storeClient = $storeClient;
+    }
 
     /**
      * @param string $store
@@ -24,6 +46,21 @@ class StoreSwitcher
     {
         $response->headers->setCookie(new Cookie(static::COOKIE_STORE_IDENTIFIER, $store));
 
+        $this->switchStoreInQuote($store);
+
         return $response;
+    }
+
+    /**
+     * @param string $storeName
+     *
+     * @return void
+     */
+    public function switchStoreInQuote(string $storeName): void
+    {
+        $quoteTransfer = $this->quoteClient->getQuote();
+        $store = $this->storeClient->getStoreByName($storeName);
+
+        $this->quoteClient->setQuote($quoteTransfer->setStore($store));
     }
 }

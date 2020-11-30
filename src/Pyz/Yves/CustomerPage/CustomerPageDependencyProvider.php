@@ -121,7 +121,7 @@ class CustomerPageDependencyProvider extends SprykerShopCustomerPageDependencyPr
     {
         return [
             new MerchantSwitchCartAfterCustomerAuthenticationSuccessPlugin(),
-            new SetMerchantCookieAfterCustomerAuthenticationSuccessPlugin(),
+//            new SetMerchantCookieAfterCustomerAuthenticationSuccessPlugin(),
         ];
     }
 

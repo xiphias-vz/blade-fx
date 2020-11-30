@@ -21,7 +21,7 @@ class ShopContextDependencyProvider extends SprykerShopContextDependencyProvider
     {
         return [
             new MerchantShopContextExpanderPlugin(),
-            new MerchantReferenceShopContextExpanderPlugin(),
+//            new MerchantReferenceShopContextExpanderPlugin(),
             new StoreShopContextExpanderPlugin(),
         ];
     }
