@@ -215,6 +215,7 @@ class MailHandler extends SprykerMailHandler
         [$deliveryDate, $timeInterval] = explode(' ', $deliveryDateInterval);
         [$timeFrom, $timeTo] = explode('-', $timeInterval);
         $orderDateTime = $this->dateTimeWithZoneService->getDateTimeInStoreTimeZone($deliveryDate);
+        $orderDateTime = is_null($orderDateTime) ? date("d.m.Y") : $orderDateTime;
 
         $params = $orderTransfer->getCustomer()->modifiedToArray(true, true)
             + $orderTransfer->modifiedToArray(true, true)
