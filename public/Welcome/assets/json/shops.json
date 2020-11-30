@@ -1,4 +1,7 @@
 {
   "0": {"name": "Bitte Abholstation wählen", "link": "#"},
-  "KMD": {"name": "Köln", "link": "store/switch?store=KMD&referer-url=/"}
+  "EIN": {"name": "Homburg-Einöd", "link": "store/switch?store=EIN&referer-url=/"},
+  "KMD": {"name": "Köln", "link": "store/switch?store=KMD&referer-url=/"},
+  "LPZ": {"name": "Leipzig","link": "store/switch?store=LPZ&referer-url=/"},
+  "HAD": {"name": "Halle", "link": "store/switch?store=HAD&referer-url=/"}
 }
