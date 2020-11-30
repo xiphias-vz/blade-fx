@@ -51,21 +51,6 @@
                                     },
                                 } only %}
                             </li>
-
-                            <li class="list-switches__item">
-                                {% include molecule('toggler-radio') with {
-                                    data: {
-                                        label: 'checkout.customer.auth_as_guest' | trans
-                                    },
-                                    attributes: {
-                                        id: 'guest',
-                                        checked: data.isGuest,
-                                        name: 'checkoutProceedAs',
-                                        'target-class-name': 'js-login__guest',
-                                    },
-                                    class: 'toggler-radio--with-bg'
-                                } only %}
-                            </li>
                         </ul>
                     </div>
                 {% endblock %}
