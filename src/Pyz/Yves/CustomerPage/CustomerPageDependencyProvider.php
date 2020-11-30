@@ -14,7 +14,6 @@ use Pyz\Service\DataDog\DataDogServiceInterface;
 use Pyz\Service\User\UserServiceInterface;
 use Pyz\Yves\CustomerPage\Plugin\AuthenticationHandler;
 use Pyz\Yves\CustomerPage\Plugin\RegistrationCheckoutAuthenticationHandlerPlugin;
-use Pyz\Yves\MerchantSwitcherWidget\Plugin\CustomerPage\SetMerchantCookieAfterCustomerAuthenticationSuccessPlugin;
 use Pyz\Yves\MerchantSwitcherWidget\Plugin\SelectedMerchantCookiePlugin;
 use Spryker\Client\Session\SessionClientInterface;
 use Spryker\Yves\Kernel\Container;
@@ -121,7 +120,7 @@ class CustomerPageDependencyProvider extends SprykerShopCustomerPageDependencyPr
     {
         return [
             new MerchantSwitchCartAfterCustomerAuthenticationSuccessPlugin(),
-            new SetMerchantCookieAfterCustomerAuthenticationSuccessPlugin(),
+//            new SetMerchantCookieAfterCustomerAuthenticationSuccessPlugin(),
         ];
     }
 

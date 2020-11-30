@@ -8,6 +8,8 @@
 namespace Pyz\Yves\StoreSwitcherWidget;
 
 use Pyz\Yves\StoreSwitcherWidget\StoreSwitcher\StoreSwitcher;
+use Spryker\Client\Quote\QuoteClientInterface;
+use Spryker\Client\Store\StoreClientInterface;
 use Spryker\Yves\Kernel\AbstractFactory;
 
 class StoreSwitcherWidgetFactory extends AbstractFactory
@@ -25,6 +27,22 @@ class StoreSwitcherWidgetFactory extends AbstractFactory
      */
     public function getStoreSwitcher()
     {
-        return new StoreSwitcher();
+        return new StoreSwitcher($this->getQuoteClient(), $this->getStoreClient());
+    }
+
+    /**
+     * @return \Spryker\Client\Quote\QuoteClientInterface
+     */
+    public function getQuoteClient(): QuoteClientInterface
+    {
+        return $this->getProvidedDependency(StoreSwitcherWidgetDependencyProvider::CLIENT_QUOTE);
+    }
+
+    /**
+     * @return \Spryker\Client\Store\StoreClientInterface
+     */
+    public function getStoreClient(): StoreClientInterface
+    {
+        return $this->getProvidedDependency(StoreSwitcherWidgetDependencyProvider::CLIENT_STORE);
     }
 }
