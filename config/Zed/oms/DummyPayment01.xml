@@ -125,6 +125,5 @@
     <process name="Cancellation" file="Subprocess/Cancellation01.xml"/>
     <process name="StorePicking" file="AppSubprocess/StorePicking01.xml"/>
     <process name="Invoice" file="Subprocess/Invoice01.xml"/>
-    <process name="CashierExport" file="CashierExport01.xml"/>
 
 </statemachine>
