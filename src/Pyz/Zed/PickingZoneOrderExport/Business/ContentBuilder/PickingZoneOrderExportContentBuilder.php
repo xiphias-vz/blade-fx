@@ -22,6 +22,9 @@ class PickingZoneOrderExportContentBuilder implements PickingZoneOrderExportCont
 {
     protected const FILE_NAME_FORMAT = 'Picking Zone: %s';
 
+    protected const DEFAULT_PRICE_DIVISION = 100;
+    protected const DEFAULT_PRICE_CURRENCY = 'EUR';
+
     /**
      * @var \Pyz\Zed\PickingZone\Business\PickingZoneFacadeInterface
      */
@@ -70,8 +73,11 @@ class PickingZoneOrderExportContentBuilder implements PickingZoneOrderExportCont
             $this->translatorFacade->trans('picking_zone_order_export.column.time_slot'),
             $this->translatorFacade->trans('picking_zone_order_export.column.article'),
             $this->translatorFacade->trans('picking_zone_order_export.column.total_amount'),
-            //$this->translatorFacade->trans('picking_zone_order_export.column.location'),
+            $this->translatorFacade->trans('picking_zone_order_export.column.shelf'),
+            $this->translatorFacade->trans('picking_zone_order_export.column.shelf_floor'),
+            $this->translatorFacade->trans('picking_zone_order_export.column.shelf_field'),
             $this->translatorFacade->trans('picking_zone_order_export.column.ean'),
+            $this->translatorFacade->trans('picking_zone_order_export.column.price'),
         ]);
 
         $readyForPickingOrderCriteriaFilterTransfer = (new OrderCriteriaFilterTransfer())
@@ -92,8 +98,11 @@ class PickingZoneOrderExportContentBuilder implements PickingZoneOrderExportCont
                 $deliveryDate[1],
                 $salesOrderItemData[SpySalesOrderItemTableMap::COL_NAME],
                 $salesOrderItemData['quantity'],
-                // location value here
+                $salesOrderItemData[SpySalesOrderItemTableMap::COL_SHELF],
+                $salesOrderItemData[SpySalesOrderItemTableMap::COL_SHELF_FLOOR],
+                $salesOrderItemData[SpySalesOrderItemTableMap::COL_SHELF_FIELD],
                 $salesOrderItemData[SpySalesOrderItemTableMap::COL_SKU],
+                ($salesOrderItemData[SpySalesOrderItemTableMap::COL_PRICE] / static::DEFAULT_PRICE_DIVISION) . ' ' . static::DEFAULT_PRICE_CURRENCY,
             ]);
         }
 
