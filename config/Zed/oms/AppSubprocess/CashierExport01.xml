@@ -63,4 +63,5 @@
     </process>
 
     <process name="StoreCollection" file="StoreCollection01.xml"/>
+
 </statemachine>

@@ -104,6 +104,7 @@
             <event name="close order" manual="true"/>
         </events>
     </process>
+
     <process name="CashierExport" file="CashierExport01.xml"/>
     <process name="StoreDelivery" file="StoreDelivery01.xml"/>
 
