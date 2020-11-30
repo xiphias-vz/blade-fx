@@ -17,7 +17,7 @@ $welcomeMap =
 [
     'local' => 'https://www.welcome.shop.globus.local/',
     'stage' => 'https://www.welcome.gl-stg.cloud.spryker.toys/',
-    'prod'  => 'https://welcome.shop.globus.de/',
+    'prod' => 'https://welcome.shop.globus.de/',
 ];
 
 $zedMap = [
@@ -45,7 +45,7 @@ $zedMap = [
 
 return [
 
-    'WELCOME'=> $welcomeMap[$environment],
+    'WELCOME' => $welcomeMap[$environment],
     'EIN' => [
         'key_value_store_namespace' => 1,
         'zed' => $zedMap['EIN'][$environment],
