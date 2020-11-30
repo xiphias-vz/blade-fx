@@ -9,3 +9,7 @@ picking_zone_order_export.column.article,Artikel
 picking_zone_order_export.column.total_amount,Gesamtbetrag bestellt
 picking_zone_order_export.column.location,Ort
 picking_zone_order_export.column.ean,EAN
+picking_zone_order_export.column.price,Preis
+picking_zone_order_export.column.shelf,Regal
+picking_zone_order_export.column.shelf_floor,Regalboden
+picking_zone_order_export.column.shelf_field,Regalfeld

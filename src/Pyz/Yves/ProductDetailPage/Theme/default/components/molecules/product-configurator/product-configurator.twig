@@ -67,6 +67,7 @@
         </div>
 
         <div class="grid">
+            {% if data.product.attributes.grundpreisinhalt > 0 %}
             <div class="text-secondary">
 
                 {% if data.preisProKg is not null and data.product.attributes.grundeinheit > 0 %}
@@ -78,7 +79,7 @@
                 {% endif %}
 
             </div>
-
+            {% endif %}
         </div>
     </div>
     {% include molecule('variant-configurator', 'ProductDetailPage') with {
