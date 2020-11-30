@@ -13,6 +13,12 @@ if ($applicationEnv === 'docker_prod') {
 } else {
     $environment = 'local';
 }
+$welcomeMap =
+[
+    'local' => 'https://www.welcome.shop.globus.local/',
+    'stage' => 'https://www.welcome.gl-stg.cloud.spryker.toys/',
+    'prod' => 'https://welcome.shop.globus.de/',
+];
 
 $zedMap = [
     'EIN' => [
@@ -38,6 +44,8 @@ $zedMap = [
 ];
 
 return [
+
+    'WELCOME' => $welcomeMap[$environment],
     'EIN' => [
         'key_value_store_namespace' => 1,
         'zed' => $zedMap['EIN'][$environment],

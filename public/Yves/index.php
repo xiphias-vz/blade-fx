@@ -25,10 +25,15 @@ $allStores = array_keys($stores);
 $storeConfig = require(APPLICATION_ROOT_DIR . '/config/Shared/store_config.php');
 
 $currentStore = $_COOKIE['current_store'] ?? null;
+$checkCookie = $_GET['check-cookie'] ?? null;
 
-// Temporary KMD is a main shop
 if (!$currentStore || !in_array($currentStore, $allStores)) {
-    $currentStore = 'KMD';
+    if ($checkCookie != "0") {
+        header('Location:' . $storeConfig['WELCOME']);
+        exit();
+    }
+
+    $currentStore = $_GET['store'] ?? 'KMD';
 }
 
 define('APPLICATION_STORE', $currentStore);
