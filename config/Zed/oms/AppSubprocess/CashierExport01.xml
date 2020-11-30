@@ -5,6 +5,11 @@
         xsi:schemaLocation="spryker:oms-01 http://static.spryker.com/oms-01.xsd">
 
     <process name="CashierExport01">
+
+        <subprocesses>
+            <process>StoreCollection</process>
+        </subprocesses>
+
         <states>
             <state name="cashier order exporting"/>
             <state name="cashier export process"/>
@@ -56,4 +61,7 @@
             <event name="cashier order export retry" manual="true"/>
         </events>
     </process>
+
+    <process name="StoreCollection" file="StoreCollection01.xml"/>
+
 </statemachine>
