@@ -129,15 +129,19 @@ groups:
                         <<: *frontend-auth
                     zed.ein.gl-stg.cloud.spryker.toys:
                         store: EIN
+                        <<: *frontend-auth
                         primal: true
                     zed.kmd.gl-stg.cloud.spryker.toys:
                         store: KMD
+                        <<: *frontend-auth
                         primal: true
                     zed.lpz.gl-stg.cloud.spryker.toys:
                         store: LPZ
+                        <<: *frontend-auth
                         primal: true
                     zed.had.gl-stg.cloud.spryker.toys:
                         store: HAD
+                        <<: *frontend-auth
                         primal: true
 
                     pick.ein.gl-stg.cloud.spryker.toys:
