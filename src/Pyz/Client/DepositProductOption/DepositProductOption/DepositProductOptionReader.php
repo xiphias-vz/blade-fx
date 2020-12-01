@@ -53,7 +53,9 @@ class DepositProductOptionReader implements DepositProductOptionReaderInterface
         }
 
         foreach ($productAbstractOptionStorageTransfer->getProductOptionGroups() as $productOptionGroupStorageTransfer) {
-            if (strpos($productOptionGroupStorageTransfer->getName(), static::PRODUCT_GROUP_DEPOSIT) === 0) {
+            if (strpos($productOptionGroupStorageTransfer->getName(), static::PRODUCT_GROUP_DEPOSIT) === 0 &&
+                isset($productOptionGroupStorageTransfer->getProductOptionValues()[0])
+            ) {
                 $options[] = $productOptionGroupStorageTransfer->getProductOptionValues()[0]->getIdProductOptionValue();
             }
         }
