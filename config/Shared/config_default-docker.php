@@ -25,7 +25,7 @@ use Spryker\Shared\HealthCheck\HealthCheckConstants;
 use Spryker\Shared\Http\HttpConstants;
 use Spryker\Shared\Kernel\KernelConstants;
 use Spryker\Shared\Log\LogConstants;
-use Spryker\Shared\Mail\MailConstants;
+use Pyz\Shared\Mail\MailConstants;
 use Spryker\Shared\Newsletter\NewsletterConstants;
 use Spryker\Shared\ProductManagement\ProductManagementConstants;
 use Spryker\Shared\Propel\PropelConstants;
@@ -330,6 +330,8 @@ $config[MailConstants::SMTP_AUTH_MODE] = getenv('SPRYKER_SMTP_AUTH_MODE') ?: '';
 $config[MailConstants::SMTP_ENCRYPTION] = getenv('SPRYKER_SMTP_ENCRYPTION') ?: '';
 $config[MailConstants::SMTP_USERNAME] = getenv('SPRYKER_SMTP_USERNAME') ?: '';
 $config[MailConstants::SMTP_PASSWORD] = getenv('SPRYKER_SMTP_PASSWORD') ?: '';
+$config[MailConstants::DEFAULT_EMAIL_SENDER_EMAIL] = getenv('SPRYKER_MAIL_SENDER_EMAIL') ?: '';
+$config[MailConstants::DEFAULT_EMAIL_SENDER_NAME] = getenv('SPRYKER_MAIL_SENDER_NAME') ?: '';
 /* End Mail */
 
 /* Logging */

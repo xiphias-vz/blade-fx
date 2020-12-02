@@ -35,7 +35,8 @@ class MailBusinessFactory extends SprykerMailBusinessFactory
             $this->createMailBuilder(),
             $this->getMailTypeCollection(),
             $this->getMailProviderCollection(),
-            $this->getDataDogService()
+            $this->getDataDogService(),
+            $this->getConfig()
         );
     }
 

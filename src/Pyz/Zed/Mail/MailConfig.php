@@ -7,11 +7,27 @@
 
 namespace Pyz\Zed\Mail;
 
-use Spryker\Shared\Mail\MailConstants;
+use Pyz\Shared\Mail\MailConstants;
 use Spryker\Zed\Mail\MailConfig as SprykerMailConfig;
 
 class MailConfig extends SprykerMailConfig
 {
+    /**
+     * @return string
+     */
+    public function getDefaultEmailSenderEmail(): string
+    {
+        return $this->get(MailConstants::DEFAULT_EMAIL_SENDER_EMAIL);
+    }
+
+    /**
+     * @return string
+     */
+    public function getDefaultEmailSenderName(): string
+    {
+        return $this->get(MailConstants::DEFAULT_EMAIL_SENDER_NAME);
+    }
+
     /**
      * @return string
      */

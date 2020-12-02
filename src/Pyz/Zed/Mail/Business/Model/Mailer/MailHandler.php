@@ -9,6 +9,7 @@ namespace Pyz\Zed\Mail\Business\Model\Mailer;
 
 use Generated\Shared\Transfer\MailTransfer;
 use Pyz\Service\DataDog\DataDogServiceInterface;
+use Pyz\Zed\Mail\MailConfig;
 use Spryker\Shared\Log\LoggerTrait;
 use Spryker\Zed\Mail\Business\Model\Mail\Builder\MailBuilderInterface;
 use Spryker\Zed\Mail\Business\Model\Mail\MailTypeCollectionGetInterface;
@@ -27,19 +28,27 @@ class MailHandler extends SprykerMailHandler implements MailHandlerInterface
     protected $dataDogService;
 
     /**
+     * @var \Pyz\Zed\Mail\MailConfig
+     */
+    protected $mailConfig;
+
+    /**
      * @param \Spryker\Zed\Mail\Business\Model\Mail\Builder\MailBuilderInterface $mailBuilder
      * @param \Spryker\Zed\Mail\Business\Model\Mail\MailTypeCollectionGetInterface $mailCollection
      * @param \Spryker\Zed\Mail\Business\Model\Provider\MailProviderCollectionGetInterface $mailProviderCollection
      * @param \Pyz\Service\DataDog\DataDogServiceInterface $dataDogService
+     * @param \Pyz\Zed\Mail\MailConfig $mailConfig
      */
     public function __construct(
         MailBuilderInterface $mailBuilder,
         MailTypeCollectionGetInterface $mailCollection,
         MailProviderCollectionGetInterface $mailProviderCollection,
-        DataDogServiceInterface $dataDogService
+        DataDogServiceInterface $dataDogService,
+        MailConfig $mailConfig
     ) {
         parent::__construct($mailBuilder, $mailCollection, $mailProviderCollection);
         $this->dataDogService = $dataDogService;
+        $this->mailConfig = $mailConfig;
     }
 
     /**
@@ -49,6 +58,7 @@ class MailHandler extends SprykerMailHandler implements MailHandlerInterface
      */
     protected function sendMail(MailTransfer $mailTransfer)
     {
+        $mailTransfer = $this->useDefaultSender($mailTransfer);
         $mailProviders = $this->getMailProviderByMailType($mailTransfer);
 
         try {
@@ -63,5 +73,24 @@ class MailHandler extends SprykerMailHandler implements MailHandlerInterface
                 'mail' => $mailTransfer->getType(),
             ]);
         }
+    }
+
+    /**
+     * @param \Generated\Shared\Transfer\MailTransfer $mailTransfer
+     *
+     * @return \Generated\Shared\Transfer\MailTransfer
+     */
+    protected function useDefaultSender(MailTransfer $mailTransfer)
+    {
+        $mailSender = $mailTransfer->getSender();
+        $defaultEmailSenderEmail = $this->mailConfig->getDefaultEmailSenderEmail();
+        $defaultEmailSenderName = $this->mailConfig->getDefaultEmailSenderName();
+
+        if ($defaultEmailSenderEmail && $defaultEmailSenderName) {
+            $mailSender->setEmail($defaultEmailSenderEmail);
+            $mailSender->setName($defaultEmailSenderName);
+        }
+
+        return $mailTransfer->setSender($mailSender);
     }
 }
