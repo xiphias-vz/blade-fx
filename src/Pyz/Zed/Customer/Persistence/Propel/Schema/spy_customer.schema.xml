@@ -19,5 +19,6 @@
         <column name="birth_year" type="VARCHAR" />
         <column name="accept_notifications" type="BOOLEAN" />
         <column name="has_orders" type="BOOLEAN"/>
+        <column name="my_globus_card" size="255" type="VARCHAR"/>
     </table>
 </database>

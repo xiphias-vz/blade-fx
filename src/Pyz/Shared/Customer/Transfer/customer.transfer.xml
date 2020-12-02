@@ -28,6 +28,7 @@
         <property name="acceptNotifications" type="bool"/>
         <property name="acceptTerms" type="bool"/>
         <property name="hasOrders" type="bool"/>
+        <property name="myGlobusCard" type="string"/>
     </transfer>
 
     <transfer name="CustomerAddressResponse">
