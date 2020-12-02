@@ -20,6 +20,7 @@
         border-bottom-right-radius: rem(4);
         border-top: rem(1) solid $setting-color-input-border-focus;
         background: $setting-color-white;
+        max-height: 60vh;
         overflow-y: auto;
         overflow-x: hidden;
     }
