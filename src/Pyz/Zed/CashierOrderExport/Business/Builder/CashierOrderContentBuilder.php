@@ -17,8 +17,9 @@ class CashierOrderContentBuilder implements CashierOrderContentBuilderInterface
 {
     protected const HEADER_MASK = '%s%s%s%s%s%s%s%s%s%s%s%020s%s%s%s%020u%s%020u%s%s%s%s%s%020s%s%s';
     protected const DEFAULT_HEADER_ENDING_ZERO_SETS = 7;
-    protected const POSITION_MASK = '%s%s%s%s%s%s%s%s%s%s%s%020s%s%020s%s%-20.20s%s%020s%s%020s%s%020s%s%020s';
+    protected const POSITION_MASK = '%s%s%s%s%s%s%s%s%s%s%s%020s%s%020s%s%s%s%020s%s%020s%s%020s%s%020s';
     protected const DEFAULT_POSITION_ENDING_ZERO_SETS = 8;
+    protected const DEFAULT_VALUE_LENGTH = 20;
 
     protected const UMLAUTS_REPLACE_FROM = ['ä', 'ö', 'ü', 'ß', 'Ä', 'Ö', 'Ü'];
     protected const UMLAUTS_REPLACE_TO = ['ae', 'oe', 'ue', 'ss', 'Ae', 'Oe', 'Ue'];
@@ -228,7 +229,7 @@ class CashierOrderContentBuilder implements CashierOrderContentBuilderInterface
             static::ORDER_ITEM_EAN_IDENTIFIER,
             $this->getCashierNumberServiceFee($orderTransfer),
             static::ORDER_ITEM_NAME_IDENTIFIER,
-            static::DEFAULT_SERVICE_FEE_POSITION_NAME,
+            $this->applyLength(static::DEFAULT_SERVICE_FEE_POSITION_NAME),
             static::ORDER_ITEM_PRICE_IDENTIFIER,
             $this->getShipmentExpensePrice($orderTransfer),
             static::ORDER_ITEM_WGR_LINK_IDENTIFIER,
@@ -287,7 +288,7 @@ class CashierOrderContentBuilder implements CashierOrderContentBuilderInterface
             static::ORDER_ITEM_EAN_IDENTIFIER,
             $this->extractPluFromProductDepositSku($depositSkuIdentifier) ?? static::DEFAULT_EMPTY_NUMBER,
             static::ORDER_ITEM_NAME_IDENTIFIER,
-            $depositAggregation[static::DEPOSIT_NAME],
+            $this->applyLength($depositAggregation[static::DEPOSIT_NAME]),
             static::ORDER_ITEM_PRICE_IDENTIFIER,
             $depositAggregation[static::PRICE] ?? static::DEFAULT_EMPTY_NUMBER,
             static::ORDER_ITEM_WGR_LINK_IDENTIFIER,
@@ -439,7 +440,22 @@ class CashierOrderContentBuilder implements CashierOrderContentBuilderInterface
     {
         $itemName = $itemTransfer->getBontext() ?? $itemTransfer->getName();
 
-        return $this->sanitizeItemNameFromUmlauts($itemName);
+        $itemName = $this->sanitizeItemNameFromUmlauts($itemName);
+
+        return $this->applyLength($itemName);
+    }
+
+    /**
+     * @param string $name
+     *
+     * @return string
+     */
+    protected function applyLength(string $name): string
+    {
+        $name = mb_substr($name, 0, static::DEFAULT_VALUE_LENGTH);
+        $bytesVsCharsDiff = strlen($name) - mb_strlen($name);
+
+        return str_pad($name, static::DEFAULT_VALUE_LENGTH + $bytesVsCharsDiff);
     }
 
     /**
