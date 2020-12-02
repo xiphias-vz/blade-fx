@@ -13,6 +13,7 @@ use Generated\Shared\Transfer\FileSystemListTransfer;
 use Generated\Shared\Transfer\FileSystemQueryTransfer;
 use Generated\Shared\Transfer\FileSystemResourceTransfer;
 use Pyz\Zed\DataImport\DataImportConfig;
+use Spryker\Service\FileSystem\Dependency\Exception\FileSystemWriteException;
 use Spryker\Service\FileSystem\FileSystemService;
 use Spryker\Shared\Log\LoggerTrait;
 
@@ -116,17 +117,43 @@ class SFTPDataImportFileDownloader
             '/' .
             $resourceTransfer->getBasename();
 
+        try {
+            $this->copyFile($resourceTransfer->getPath(), $destinationPath);
+        } catch (FileSystemWriteException $e) {
+            $this->deleteFile($destinationPath);
+            $this->copyFile($resourceTransfer->getPath(), $destinationPath);
+        }
+
+        $this->deleteFile($resourceTransfer->getPath());
+    }
+
+    /**
+     * @param string $sourcePath
+     * @param string $destinationPath
+     *
+     * @return void
+     */
+    protected function copyFile(string $sourcePath, string $destinationPath): void
+    {
         $this->fileSystemService->copy(
             (new FileSystemCopyTransfer())
                 ->setFileSystemName(static::SFTP_FILE_SYSTEM_NAME)
                 ->setDestinationPath($destinationPath)
-                ->setSourcePath($resourceTransfer->getPath())
+                ->setSourcePath($sourcePath)
         );
+    }
 
+    /**
+     * @param string $path
+     *
+     * @return void
+     */
+    protected function deleteFile(string $path): void
+    {
         $this->fileSystemService->delete(
             (new FileSystemDeleteTransfer())
                 ->setFileSystemName(static::SFTP_FILE_SYSTEM_NAME)
-                ->setPath($resourceTransfer->getPath())
+                ->setPath($path)
         );
     }
 
