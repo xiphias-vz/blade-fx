@@ -9,6 +9,7 @@ namespace Pyz\Zed\DataImport\Business\Model\ProductStock;
 
 use Exception;
 use Orm\Zed\Product\Persistence\SpyProductQuery;
+use Orm\Zed\Stock\Persistence\Map\SpyStockProductTableMap;
 use Orm\Zed\Stock\Persistence\SpyStockProductQuery;
 use Orm\Zed\Stock\Persistence\SpyStockQuery;
 use Orm\Zed\Stock\Persistence\SpyStockStoreQuery;
@@ -18,6 +19,7 @@ use Pyz\Zed\DataImport\DataImportConfig;
 use Spryker\Zed\DataImport\Business\Model\DataImportStep\DataImportStepInterface;
 use Spryker\Zed\DataImport\Business\Model\DataImportStep\PublishAwareStep;
 use Spryker\Zed\DataImport\Business\Model\DataSet\DataSetInterface;
+use Spryker\Zed\Product\Dependency\ProductEvents;
 
 class ProductStockWriterStep extends PublishAwareStep implements DataImportStepInterface
 {
@@ -87,6 +89,12 @@ class ProductStockWriterStep extends PublishAwareStep implements DataImportStepI
                 ->setShelfField($dataSet[static::KEY_STOCK_SHELF_FIELD] ? : $stockProductEntity->getShelfField())
                 ->setShelfFloor($dataSet[static::KEY_STOCK_SHELF_FLOR] ? : $stockProductEntity->getShelfFloor())
                 ->setIsNeverOutOfStock(false);
+
+            $quantityModified = $stockProductEntity->isModified() && in_array(SpyStockProductTableMap::COL_QUANTITY, $stockProductEntity->getModifiedColumns());
+
+            if ($quantityModified || $stockProductEntity->isNew()) {
+                $this->addPublishEvents(ProductEvents::PRODUCT_ABSTRACT_PUBLISH, $productEntity->getFkProductAbstract());
+            }
 
             $stockProductEntity->save();
 
