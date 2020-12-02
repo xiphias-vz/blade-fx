@@ -113,7 +113,7 @@ class CashierOrderContentBuilder implements CashierOrderContentBuilderInterface
              static::ACCOUNT_NUMBER_IDENTIFIER,
              static::DEFAULT_EMPTY_NUMBER,
              static::CUSTOMER_KEY_IDENTIFIER,
-             $orderTransfer->getCustomer()->getIdCustomer() ?? static::DEFAULT_EMPTY_NUMBER,
+             $orderTransfer->getCustomer()->getMyGlobusCard() ?? static::DEFAULT_EMPTY_NUMBER,
              static::ORDER_TOTAL_KEY_IDENTIFIER,
              $orderTransfer->getTotals()->getGrandTotal() ?? static::DEFAULT_EMPTY_NUMBER,
              static::ORDER_PAYMENT_STATE_IDENTIFIER,
