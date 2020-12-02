@@ -1,6 +1,3 @@
-env:
-    APPLICATION_ENV: docker_dev
-
 command-timeout: 14400
 
 sections:
