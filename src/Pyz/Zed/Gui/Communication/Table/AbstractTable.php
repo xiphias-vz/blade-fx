@@ -124,4 +124,15 @@ abstract class AbstractTable extends SprykerAbstractTable
             __DIR__ . '/../../Presentation/Table/',
         ];
     }
+
+    /**
+     * @return string[]
+     */
+    protected function getTwigPaths()
+    {
+        $corePath = parent::getTwigPaths();
+        $projectPath = $this->getPyzTwigPaths();
+
+        return array_merge($projectPath, $corePath);
+    }
 }
