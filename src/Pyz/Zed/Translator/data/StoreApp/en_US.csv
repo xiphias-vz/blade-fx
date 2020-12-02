@@ -143,3 +143,4 @@ storeapp.delivery.message.success.order-successfully-delivered,Order successfull
 storeapp.delivery.message.success.order-not-delivered,Order could not be delivered
 
 forms.submit-btn,Submit
+picking.app.weight_per_unit,"Weight per unit: "

@@ -26,15 +26,23 @@
                 </div>
                 <div class="{{ config.name }}__title">
                     {% block title %}
-                        {{ data.productsCount }} x {{ data.title }}
+                        {{ data.title }}
                     {% endblock %}
                 </div>
                 <div class="{{ config.name }}__title">
                     {% block shelf %}
-                        {{ 'picking.app.shelf' | trans }} {{ data.shelfData['shelf'] ?? ''}}
-                        {{ 'picking.app.shelf_floor' | trans }} {{ data.shelfData['shelfFloor'] ?? ''}}
-                        {{ 'picking.app.shelf_field' | trans }} {{ data.shelfData['shelfField'] ?? ''}}
-                        {{ 'picking.app.price' | trans }} {{ data.shelfData['sumPrice'] ?? ''}}
+                        {% set sumPrice = data.shelfData['sumPrice'] ?? '' %}
+                        {{ 'picking.app.shelf' | trans }} {{ data.shelfData['shelf'] ?? ''}} <br/>
+                        {{ 'picking.app.shelf_floor' | trans }} {{ data.shelfData['shelfFloor'] ?? ''}} <br/>
+                        {{ 'picking.app.shelf_field' | trans }} {{ data.shelfData['shelfField'] ?? ''}} <br/>
+                        {{ 'picking.app.price' | trans }} {{ sumPrice | money}} <br/>
+                    {% endblock %}
+                </div>
+                <div class="{{ config.name }}__title">
+                    {% block attributes %}
+                        {% if (data.productAttributes['weightPerUnit']) %}
+                            {{ 'picking.app.weight_per_unit' | trans }} {{  data.productAttributes['weightPerUnit']}} gr<br/>
+                        {% endif %}
                     {% endblock %}
                 </div>
                 <div class="{{ config.name }}__status">

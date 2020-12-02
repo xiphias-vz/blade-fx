@@ -257,6 +257,7 @@ class PickingController extends BaseOrderPickingController
             'maxPickingBags' => $this->getFactory()->getConfig()->getMaxPickingBags(),
             'itemsCount' => $this->getItemsCount($aggregatedItemTransfers),
             'itemsToShelfMap' => $this->getItemsToShelfMap($aggregatedItemTransfers),
+            'itemsToProductAttributesMap' => $this->getItemsToProductAttributesMap($aggregatedItemTransfers),
             'itemImageUrls' => $this->getSkuToImageMapFromItemTransfers($aggregatedItemTransfers),
             'pickingForm' => $orderItemSelectionForm->createView(),
             'pickingFormSkuKeys' => $pickingFormSkuKeys,
@@ -447,6 +448,23 @@ class PickingController extends BaseOrderPickingController
         }
 
         return $itemsToShelfMap;
+    }
+
+    /**
+     * @param \Generated\Shared\Transfer\ItemTransfer[] $itemTransfers
+     *
+     * @return array
+     */
+    protected function getItemsToProductAttributesMap(array $itemTransfers): array
+    {
+        $itemsToProductAttributesMap = [];
+        foreach ($itemTransfers as $itemTransfer) {
+            $itemsToProductAttributesMap[$itemTransfer->getSku()] = [
+                ItemTransfer::WEIGHT_PER_UNIT => $itemTransfer->getWeightPerUnit(),
+            ];
+        }
+
+        return $itemsToProductAttributesMap;
     }
 
     /**

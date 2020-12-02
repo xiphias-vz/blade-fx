@@ -6,6 +6,7 @@
     collectNumber: collectNumber,
     itemsCount: itemsCount,
     itemsToShelfMap: itemsToShelfMap,
+    itemsToProductAttributesMap: itemsToProductAttributesMap,
     pickingForm: pickingForm,
     pickingFormSkuKeys: pickingFormSkuKeys,
     pickingFormWeightKeys: pickingFormWeightKeys,
@@ -63,6 +64,7 @@
                     data: {
                         imageUrl: data.itemImageUrls[itemSku],
                         shelfData: data.itemsToShelfMap[itemSku],
+                        productAttributes: data.itemsToProductAttributesMap[itemSku],
                         title: field.vars.label,
                         productsCount: field.vars.attr.max
                     },
