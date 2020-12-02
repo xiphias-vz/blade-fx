@@ -28,10 +28,11 @@ $currentStore = $_COOKIE['current_store'] ?? null;
 $checkCookie = $_GET['check-cookie'] ?? null;
 
 if (!$currentStore || !in_array($currentStore, $allStores)) {
-    if ($checkCookie != "0") {
-        header('Location:' . $storeConfig['WELCOME']);
-        exit();
-    }
+// TODO: turn back for multi-store support
+//    if ($checkCookie != "0") {
+//        header('Location:' . $storeConfig['WELCOME']);
+//        exit();
+//    }
 
     $currentStore = $_GET['store'] ?? 'KMD';
 }

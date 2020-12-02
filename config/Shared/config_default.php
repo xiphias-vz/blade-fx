@@ -806,11 +806,12 @@ $config[StoreConstants::SAP_STORE_ID_TO_STORE_MAP] = [
 ];
 
 // ----------- Stores
+// TODO: turn back for multi-store support
 $config[StoreConstants::STORE_NAMES] = [
-    'EIN' => 'Homburg-Einöd',
+    //'EIN' => 'Homburg-Einöd',
     'KMD' => 'Köln',
-    'LPZ' => 'Leipzig',
-    'HAD' => 'Halle',
+    //'LPZ' => 'Leipzig',
+    //'HAD' => 'Halle',
 ];
 
 // ----------- Google Tag Manager
