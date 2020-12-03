@@ -184,7 +184,7 @@ class AuthenticationHandler extends SprykerAuthenticationHandler
      *
      * @return bool
      */
-    protected function getCdcAuthorization($username, $pass): bool
+    protected function getCdcAuthorization(string $username, string $pass): bool
     {
         $postData = ['loginID' => $username, 'password' => $pass];
         $result = $this->executeCdcApiCall('accounts.login', 'POST', $postData);
@@ -194,5 +194,17 @@ class AuthenticationHandler extends SprykerAuthenticationHandler
         } else {
             return false;
         }
+    }
+
+    /**
+     * @param string $uid
+     *
+     * @return array
+     */
+    protected function getCdcAccountInfo(string $uid): array
+    {
+        $postData = ['UID' => $uid, 'include' => 'profile, data, subscriptions, preferences'];
+
+        return $this->executeCdcApiCall('accounts.getAccountInfo', 'POST', $postData);
     }
 }

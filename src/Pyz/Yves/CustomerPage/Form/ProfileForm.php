@@ -10,6 +10,7 @@ namespace Pyz\Yves\CustomerPage\Form;
 use SprykerShop\Yves\CustomerPage\Form\ProfileForm as SprykerProfileForm;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Validator\Constraint;
@@ -22,6 +23,24 @@ class ProfileForm extends SprykerProfileForm
     private const MESSAGE_NOT_SAFE_STRING = 'general.error.message.field_contain_not_valid_characters';
     private const VALIDATION_MIN_LENGTH_MESSAGE = 'validation.min_length';
     private const OPTION_VALIDATION_GROUP = 'validation_group';
+    private const FIELD_DATA = 'data';
+
+    /**
+     * @param \Symfony\Component\Form\FormBuilderInterface $builder
+     * @param array $options
+     *
+     * @return void
+     */
+    public function buildForm(FormBuilderInterface $builder, array $options)
+    {
+        $this
+            ->addSalutationField($builder)
+            ->addFirstNameField($builder)
+            ->addLastNameField($builder)
+            ->addEmailField($builder);
+
+        $this->addDataField($builder);
+    }
 
     /**
      * @param \Symfony\Component\Form\FormBuilderInterface $builder
@@ -75,6 +94,21 @@ class ProfileForm extends SprykerProfileForm
                 $this->createMinLengthConstraint($options),
                 self::createSafeStringRegexConstraint($options),
             ],
+        ]);
+
+        return $this;
+    }
+
+    /**
+     * @param \Symfony\Component\Form\FormBuilderInterface $builder
+     *
+     * @return $this
+     */
+    protected function addDataField(FormBuilderInterface $builder)
+    {
+        $builder->add(self::FIELD_DATA, HiddenType::class, [
+            'constraints' => $this->createNotBlankConstraint(),
+            'mapped' => true,
         ]);
 
         return $this;

@@ -1,72 +1,107 @@
 {% extends view('address', '@SprykerShop:CustomerPage') %}
 
+{% define data = {
+    scriptSrc: app.customerCDCApiUrl
+} %}
+
 {% block pageTitle %}
     <div class="grid grid--justify grid--middle">
         <div class="col">
             {{ parent() }}
         </div>
     </div>
-
 {% endblock %}
 
 {% block customerContent %}
-    <div class="grid grid-justify spacing-bottom spacing-bottom--biggest">
-        {% for address in data.addresses %}
-            {% set itemClass = loop.index % 2 ? 'page-layout-customer__col-first' : 'page-layout-customer__col-last' %}
-            <div class="col--lg-6 col--sm-12">
-                <div class="{{ itemClass }} box">
-                    {% embed molecule('title-box', 'CustomerPage') with {
-                        modifiers: ['borderless'],
-                        data: {
-                            title: 'customer.account.address' | trans | capitalize,
-                        },
-                        embed: {
-                            address: address,
-                        },
-                    } only %}
-                        {% block additionalContent %}
-                            <ul class="menu menu--inline menu--customer-account float-right">
-                                <li class="menu__item">
-                                    <a class="link link--darkest link--edit" href="{{ url('customer/address/update', {'id': embed.address.idCustomerAddress }) }}">
-                                        {% include molecule('icon-tooltip') with {
-                                            modifiers: ['medium-up'],
-                                            data: {
-                                                icon: 'edit',
-                                                text: 'customer.profile.address.edit' | trans,
-                                            },
-                                        } only %}
-                                    </a>
-                                </li>
 
-                                <li class="menu__item">
-                                    <form action="{{ url('customer/address/delete') }}" method="post">
-                                        <input type="hidden" name="id" value="{{ embed.address.idCustomerAddress }}">
-                                        <input type="hidden" name="token" value="{{ csrf_token('address-delete') }}">
-                                        <button class="link link--darkest link--edit">
-                                            {% include molecule('icon-tooltip') with {
-                                                modifiers: ['medium-up'],
-                                                data: {
-                                                    icon: 'bin',
-                                                    text: 'customer.profile.address.delete' | trans,
-                                                },
-                                            } only %}
-                                        </button>
-                                    </form>
-                                </li>
-                            </ul>
-                        {% endblock %}
-                    {% endembed %}
+    <script language="JavaScript" src="{{ data.scriptSrc }}"></script>
+    <div class="grid grid-justify spacing-bottom spacing-bottom--biggest" id="customer-password-change">
 
-                    {% include molecule('display-address') with {
-                        class: 'menu',
-                        data: {
-                            address: address,
-                            showAddressLabel: true,
-                        },
-                    } only %}
-                </div>
-            </div>
-        {% endfor %}
     </div>
-    <a class="button" href="{{ url('customer/address/new') }}" {{ qa('customer-add-new-address') }}>{{ 'customer.account.button.add_new_address' | trans }}</a>
+
+{#    <div class="grid grid-justify spacing-bottom spacing-bottom--biggest">#}
+{#        {% for address in data.addresses %}#}
+{#            {% set itemClass = loop.index % 2 ? 'page-layout-customer__col-first' : 'page-layout-customer__col-last' %}#}
+{#            <div class="col--lg-6 col--sm-12">#}
+{#                <div class="{{ itemClass }} box">#}
+{#                    {% embed molecule('title-box', 'CustomerPage') with {#}
+{#                        modifiers: ['borderless'],#}
+{#                        data: {#}
+{#                            title: 'customer.account.address' | trans | capitalize,#}
+{#                        },#}
+{#                        embed: {#}
+{#                            address: address,#}
+{#                        },#}
+{#                    } only %}#}
+{#                        {% block additionalContent %}#}
+{#                            <ul class="menu menu--inline menu--customer-account float-right">#}
+{#                                <li class="menu__item">#}
+{#                                    <a class="link link--darkest link--edit" href="{{ url('customer/address/update', {'id': embed.address.idCustomerAddress }) }}">#}
+{#                                        {% include molecule('icon-tooltip') with {#}
+{#                                            modifiers: ['medium-up'],#}
+{#                                            data: {#}
+{#                                                icon: 'edit',#}
+{#                                                text: 'customer.profile.address.edit' | trans,#}
+{#                                            },#}
+{#                                        } only %}#}
+{#                                    </a>#}
+{#                                </li>#}
+
+{#                                <li class="menu__item">#}
+{#                                    <form action="{{ url('customer/address/delete') }}" method="post">#}
+{#                                        <input type="hidden" name="id" value="{{ embed.address.idCustomerAddress }}">#}
+{#                                        <input type="hidden" name="token" value="{{ csrf_token('address-delete') }}">#}
+{#                                        <button class="link link--darkest link--edit">#}
+{#                                            {% include molecule('icon-tooltip') with {#}
+{#                                                modifiers: ['medium-up'],#}
+{#                                                data: {#}
+{#                                                    icon: 'bin',#}
+{#                                                    text: 'customer.profile.address.delete' | trans,#}
+{#                                                },#}
+{#                                            } only %}#}
+{#                                        </button>#}
+{#                                    </form>#}
+{#                                </li>#}
+{#                            </ul>#}
+{#                        {% endblock %}#}
+{#                    {% endembed %}#}
+
+{#                    {% include molecule('display-address') with {#}
+{#                        class: 'menu',#}
+{#                        data: {#}
+{#                            address: address,#}
+{#                            showAddressLabel: true,#}
+{#                        },#}
+{#                    } only %}#}
+{#                </div>#}
+{#            </div>#}
+{#        {% endfor %}#}
+{#    </div>#}
+{#    <a class="button" href="{{ url('customer/address/new') }}" {{ qa('customer-add-new-address') }}>{{ 'customer.account.button.add_new_address' | trans }}</a>#}
+
+
+    <script type="text/javascript">
+        function gigyaPasswordChangeScreen() {
+            gigya.accounts.showScreenSet({
+                screenSet: 'CCCustomer-PasswordChange',
+                startScreen: 'gigya-password-change-required-screen',
+                containerID: 'customer-password-change',
+                "onAfterScreenLoad": function(event) {
+
+                },
+                "onBeforeSubmit": function(event) {
+
+                },
+                "onAfterSubmit": function(event) {
+                    if(event.response.errorCode == 0 && event.screen === 'gigya-password-change-required-screen') {
+                        document.querySelector("#profileForm_data").value = JSON.stringify(event);
+                        document.querySelector("form[name='profileForm']").submit();
+                    }
+                }
+            });
+        }
+
+        gigyaPasswordChangeScreen();
+    </script>
+
 {% endblock %}

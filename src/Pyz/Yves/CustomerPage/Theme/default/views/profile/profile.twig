@@ -1,8 +1,30 @@
 {% extends view('profile', '@SprykerShop:CustomerPage') %}
 
+{% define data = {
+    scriptSrc: app.customerCDCApiUrl
+} %}
+
 {% block customerContent %}
+    <style type="text/css">
+        .gigya-screen, .gigya-screen * {
+            font-family: "Fra Sans", "Open Sans", Arial, "Lucida Grande", sans-serif;
+        }
+        .gigya-screen .gigya-label-text{
+            font-family: "Fra Sans", "Open Sans", Arial, "Lucida Grande", sans-serif;
+        }
+        .gigya-screen.landscape {
+            padding-top: 0;
+        }
+        .gigya-screen .gigya-composite-control.gigya-composite-control-label, .gigya-screen .gigya-composite-control.gigya-composite-control-link {
+            display: none;
+        }
+    </style>
+    <script language="JavaScript" src="{{ data.scriptSrc }}"></script>
     <div class="grid grid--justify grid--stretch">
-        <div class="col--lg-6 col--sm-12 spacing-bottom spacing-bottom--biggest">
+        <div class="col--lg-6 col--sm-12 spacing-bottom spacing-bottom--biggest" id="customer-profile-form">
+
+        </div>
+        <div class="col--lg-6 col--sm-12 spacing-bottom spacing-bottom--biggest" style="display: none">
             {% include molecule('customer-form', 'CustomerPage') with {
                 class: 'page-layout-customer__col-first box',
                 modifiers: ['customer-overview'],
@@ -21,7 +43,7 @@
             } only %}
         </div>
 
-        <div class="col--lg-6 col--sm-12 spacing-bottom spacing-bottom--biggest">
+        <div class="col--lg-6 col--sm-12 spacing-bottom spacing-bottom--biggest" style="display: none">
             {% include molecule('customer-confirmation-form', 'CustomerConfirmationPage') ignore missing with {
                 modifiers: ['borderless'],
                 class: 'page-layout-customer__col-last box',
@@ -39,7 +61,7 @@
             } only %}
         </div>
 
-        <div class="col--sm-12 box">
+        <div class="col--sm-12 box" style="display: none">
             {% include molecule('title-box', 'CustomerPage') with {
                 modifiers: ['borderless'],
                 data: {
@@ -53,4 +75,23 @@
             </div>
         </div>
     </div>
+
+    <script type="text/javascript">
+        function gigyaProfileScreen() {
+            gigya.accounts.showScreenSet({
+                screenSet: 'CCCustomer-ProfileUpdate',
+                startScreen: 'globus-profile-update-screen',
+                containerID: 'customer-profile-form',
+                "onAfterSubmit": function(event) {
+                    if(event.response.errorCode == 0 && event.screen === 'globus-profile-update-screen') {
+                        document.querySelector("#profileForm_data").value = JSON.stringify(event);
+                        document.querySelector("form[name='profileForm']").submit();
+                    }
+                }
+            });
+        }
+
+        gigyaProfileScreen();
+    </script>
+
 {% endblock %}

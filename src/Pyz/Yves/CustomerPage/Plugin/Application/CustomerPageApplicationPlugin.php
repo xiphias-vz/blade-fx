@@ -17,6 +17,7 @@ use Spryker\Yves\Kernel\AbstractPlugin;
 class CustomerPageApplicationPlugin extends AbstractPlugin implements ApplicationPluginInterface
 {
     public const CUSTOMER_PROFILE_URL = 'customerProfileUrl';
+    public const CUSTOMER_CDC_API_URL = 'customerCDCApiUrl';
 
     /**
      * @param \Spryker\Service\Container\ContainerInterface $container
@@ -26,6 +27,7 @@ class CustomerPageApplicationPlugin extends AbstractPlugin implements Applicatio
     public function provide(ContainerInterface $container): ContainerInterface
     {
         $container = $this->getCustomerProfileUrl($container);
+        $container = $this->getCDCApiUrl($container);
 
         return $container;
     }
@@ -39,6 +41,20 @@ class CustomerPageApplicationPlugin extends AbstractPlugin implements Applicatio
     {
         $container->set(static::CUSTOMER_PROFILE_URL, function () {
             return $this->getConfig()->getCustomerProfileUrl();
+        });
+
+        return $container;
+    }
+
+    /**
+     * @param \Spryker\Service\Container\ContainerInterface $container
+     *
+     * @return \Spryker\Service\Container\ContainerInterface
+     */
+    protected function getCDCApiUrl(ContainerInterface $container): ContainerInterface
+    {
+        $container->set(static::CUSTOMER_CDC_API_URL, function () {
+            return $this->getConfig()->getCDCApiUrl();
         });
 
         return $container;

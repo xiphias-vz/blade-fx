@@ -15,6 +15,7 @@ $config[CustomerConstants::CDC_API_KEY] =
 $config[CustomerConstants::CDC_API_URL] =
     [
         'cdcApiUrl' => 'https://accounts.eu1.gigya.com/',
+        'cdcScreensUrl' => 'https://cdns.us1.gigya.com/js/gigya.js',
     ];
 
 $config[CustomerConstants::CDC_API_SECRET_KEY] =

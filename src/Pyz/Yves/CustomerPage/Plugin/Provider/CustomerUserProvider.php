@@ -10,6 +10,8 @@ namespace Pyz\Yves\CustomerPage\Plugin\Provider;
 use Elastica\JSON;
 use Generated\Shared\Transfer\CustomerTransfer;
 use Pyz\Shared\Customer\CustomerConstants;
+use Pyz\Yves\CustomerPage\Controller\ProfileController;
+use Pyz\Yves\CustomerPage\Plugin\Application\CustomerTransferCustom;
 use Spryker\Shared\Config\Config;
 use SprykerShop\Yves\CustomerPage\Plugin\Provider\CustomerUserProvider as SprykerCustomerUserProvider;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
@@ -31,12 +33,15 @@ class CustomerUserProvider extends SprykerCustomerUserProvider
     protected function loadCustomerByEmail($email)
     {
         $pass = $_POST["loginForm"]["password"];
-        $data = $this->getCdcAuthorization($email, $pass);
+        $authCheck = $this->getCdcAuthorization($email, $pass);
         $customerTransfer = null;
 
-        if ($data["errorCode"] == 0) {
+        if ($authCheck["errorCode"] == 0) {
+            $data = $_POST["loginForm"]["data"];
+            $customerTransferCustom = new CustomerTransferCustom();
             try {
                 $customerTransfer = parent::loadCustomerByEmail($email);
+                $customerTransfer = $customerTransferCustom->fromProfileEvent($data, $customerTransfer);
                 $user = $this->getFactory()->createSecurityUser($customerTransfer);
                 $encoder = $this->getContainer()->get('security.encoder_factory');
                 $encodedPass = $encoder->getEncoder($user)->encodePassword($pass, $user->getSalt());
@@ -44,18 +49,11 @@ class CustomerUserProvider extends SprykerCustomerUserProvider
                     $customerTransfer->setPassword($encodedPass);
                     $this->getFactory()->getCustomerClient()->updateCustomer($customerTransfer);
                 }
+                $profile = new ProfileController();
+                $profile->processProfileUpdateByTransfer($customerTransfer, false);
             } catch (AuthenticationException $e) {
-                $customerTransfer = new CustomerTransfer();
-                $customerTransfer->setEmail($data["profile"]["email"]);
-                $customerTransfer->setFirstName($data["profile"]["firstName"]);
-                $customerTransfer->setLastName($data["profile"]["lastName"]);
-                $customerTransfer->setCity($data["profile"]["city"]);
-                $customerTransfer->setZipCode($data["profile"]["zip"]);
-                $customerTransfer->setBirthDay($data["profile"]["birthDay"]);
-                $customerTransfer->setBirthMonth($data["profile"]["birthMonth"]);
-                $customerTransfer->setBirthYear($data["profile"]["birthYear"]);
-                $customerTransfer->setDateOfBirth($data["profile"]["birthYear"] . '-' . $data["profile"]["birthMonth"] . '-' . $data["profile"]["birthDay"]);
-                $customerTransfer->setUsername($data["profile"]["email"]);
+                $customerTransfer = $customerTransferCustom->fromProfileEvent($data);
+                $customerTransfer->setUsername($email);
                 $customerTransfer->setPassword($pass);
                 $customerTransfer->setCustomerReference($this->getFactory()->getStore()->getStoreName());
                 $this->registerCustomer($customerTransfer);

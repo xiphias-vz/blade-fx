@@ -4,7 +4,6 @@
     isGuest: _view.guestForm.vars.value and (_view.guestForm.vars.value.customer and _view.guestForm.vars.value.customer.isGuest),
     isLogin: _view.loginForm.vars.value and not (_view.guestForm.vars.value and (_view.guestForm.vars.value.customer and _view.guestForm.vars.value.customer.isGuest)),
 
-
     forms: {
         registration: _view.registerForm,
         customer: _view.registerForm.customer,
@@ -12,10 +11,29 @@
         customerGuest: _view.guestForm.customer,
         login: _view.loginForm
     },
-    title: 'global.login' | trans
+    title: 'global.login' | trans,
+    scriptSrc: app.customerCDCApiUrl
 } %}
 
 {% block containerContent %}
+    <script language="JavaScript" src="{{ data.scriptSrc }}"></script>
+
+    <style type="text/css">
+        .gigya-screen-content div.gigya-screen.landscape {
+            padding: 0;
+        }
+        .gigya-screen, .gigya-screen * {
+            margin: 0;
+            font-family: "Fra Sans", "Open Sans", Arial, "Lucida Grande", sans-serif;
+        }
+        .gigya-screen .gigya-label-text{
+            font-family: "Fra Sans", "Open Sans", Arial, "Lucida Grande", sans-serif;
+        }
+        .gigya-screen-caption {
+            display: none;
+        }
+    </style>
+
     <div class="grid grid--center">
         <div class="col col--sm-12 col--md-9 col--xl-9">
             <div class="box box--checkout">
@@ -99,65 +117,96 @@
                     {% endblock %}
                 {% endembed %}
 
-                {% block content %}
-                    {% embed molecule('form') with {
-                        class: 'register-form js-login__register' ~ (data.isGuest or data.isLogin? ' is-hidden' : ''),
-                        modifiers: ['checkout-actions'],
-                        data: {
-                            form: data.forms.registration,
-                            submit: {
-                                enable: true,
-                                text: 'checkout.customer.auth_as_user' | trans,
-                                class: 'form__action--checkout col col--middle button button--expand-tablet button--large',
-                            },
-                        },
-                        embed: {
-                            forms: {
-                                customer: data.forms.customer,
-                            },
-                        },
-                        qa: 'register-form'
-                    } only %}
-                        {% block fields %}
-                            {% include molecule('customer-confirmation-form', 'CustomerConfirmationPage') ignore missing with {
-                                modifiers: ['checkout-actions', 'grid-sm-indent'],
-                                data: {
-                                    form: embed.forms.customer,
-                                    isSubmitEnabled: false,
-                                    enableStart: false,
-                                    enableEnd: false,
-                                },
-                            } only %}
-                        {% endblock %}
-                    {% endembed %}
+                <div id="checkoutCustomerLogin" class="js-login__login{{ (data.isLogin ? '' : ' is-hidden') }}">
 
-                    {% embed molecule('form') with {
-                        class: 'js-login__login' ~ (data.isLogin ? '' : ' is-hidden'),
-                        modifiers: ['login', 'checkout-actions', 'grid-sm-indent'],
-                        data: {
-                            form: data.forms.login,
-                            layout: {
-                                email: 'col col--sm-12',
-                                password: 'col col--sm-12',
-                            },
-                            submit: {
-                                enable: true,
-                                text: 'forms.submit.login' | trans,
-                                class: 'form__action--checkout col col--middle button button--expand-tablet button--large',
-                            },
-                            cancel: {
-                                enable: true,
-                            },
-                        },
-                    } only %}
-                        {% block cancel %}
-                            <a href="{{ url('password/forgotten') }}" class="col col--middle link link--login-forgot-password" {{qa('customer-forgot-password-link')}}>
-                                {{ 'forms.forgot-password' | trans~'?' }}
-                            </a>
-                        {% endblock %}
-                    {% endembed %}
-                {% endblock %}
+                </div>
+
+                <div id="checkoutCustomerRegister" class="register-form js-login__register{{ (data.isGuest or data.isLogin? ' is-hidden' : '') }} ">
+
+                </div>
+
+                <div style="display: none">
+
+                                {% block content %}
+                                    {% embed molecule('form') with {
+                                        class: 'js-login__login' ~ (data.isLogin ? '' : ' is-hidden'),
+                                        modifiers: ['login', 'checkout-actions', 'grid-sm-indent'],
+                                        data: {
+                                            form: data.forms.login,
+                                            layout: {
+                                                email: 'col col--sm-12',
+                                                password: 'col col--sm-12',
+                                            },
+                                            submit: {
+                                                enable: true,
+                                                text: 'forms.submit.login' | trans,
+                                                class: 'form__action--checkout col col--middle button button--expand-tablet button--large',
+                                            },
+                                            cancel: {
+                                                enable: true,
+                                            },
+                                        },
+                                    } only %}
+                                    {% endembed %}
+                                {% endblock %}
+
+                </div>
+
             </div>
         </div>
     </div>
+
+    <script type="text/javascript">
+        function gigyaRegistrationScreen() {
+            var params = {
+                screenSet: 'CCCustomer-RegistrationLogin',
+                startScreen: 'gigya-register-screen',
+                containerID: 'checkoutCustomerRegister',
+                // context: '<the-number-of-the-Globus-store>'
+                "onBeforeSubmit": function(event) {
+                    document.querySelector("#loginForm_password.input").value = document.querySelector(".gigya-register-form input[type='password'][data-gigya-placeholder]").value;
+                },
+                "onAfterSubmit": function(event) {
+                    if(event.response.errorCode == 0) {
+                        document.querySelector("#loginForm_email.input").value = event.profile.email;
+                        document.querySelector("#loginForm_data").value = JSON.stringify(event);
+                        document.getElementsByName("loginForm")[0].submit();
+                        //alert(JSON.stringify(event));
+                    }
+                }
+            }
+            gigya.accounts.showScreenSet( params );
+        }
+
+        function gigyaLoginScreen() {
+            gigya.accounts.showScreenSet({
+                screenSet: 'CCCustomer-RegistrationLogin',
+                startScreen: 'gigya-login-screen',
+                containerID: 'checkoutCustomerLogin',
+                "onAfterScreenLoad": function(event) {
+                    var lnk = document.getElementsByClassName('globus_register_link');
+                    lnk[0].setAttribute("href", "/register");
+                    lnk[0].removeAttribute("target");
+                    lnk[1].removeAttribute("target");
+                    lnk[1].setAttribute("href", "javascript: document.getElementsByClassName('js-toggler-radio__trigger')[1].click()")
+                },
+                "onBeforeSubmit": function(event) {
+                    if(event.response.errorCode == 0 && event.screen === 'gigya-login-screen')
+                        document.querySelector("#loginForm_password.input").value = document.querySelector(".gigya-input-password.gigya-show-checkmark.gigya-valid").value;
+                },
+                "onAfterSubmit": function(event) {
+                    if(event.response.errorCode == 0 && event.screen === 'gigya-login-screen') {
+                        document.querySelector("#loginForm_email.input").value = event.profile.email;
+                        document.querySelector("#loginForm_data").value = JSON.stringify(event);
+                        document.getElementsByName("loginForm")[0].submit();
+                    }
+                }
+            });
+        }
+
+        gigyaRegistrationScreen();
+        gigyaLoginScreen();
+    </script>
+
 {% endblock %}
+

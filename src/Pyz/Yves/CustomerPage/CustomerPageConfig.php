@@ -19,4 +19,15 @@ class CustomerPageConfig extends SprykerCustomerPageConfig
     {
         return $this->get(CustomerConstants::CUSTOMER_PROFILE_URL);
     }
+
+    /**
+     * @return string
+     */
+    public function getCDCApiUrl(): string
+    {
+        $url = $this->get(CustomerConstants::CDC_API_URL);
+        $apiKey = $this->get(CustomerConstants::CDC_API_KEY);
+
+        return $url["cdcScreensUrl"] . '?apikey=' . array_shift($apiKey);
+    }
 }

@@ -1,11 +1,56 @@
 {% extends template('page-layout-login', '@SprykerShop:CustomerPage') %}
 
 {% define data = {
-    isLogin: false
+    isLogin: false,
+    scriptSrc: app.customerCDCApiUrl
 } %}
 
 {% block container %}
+    <script language="JavaScript" src="{{ data.scriptSrc }}"></script>
+    <style>
+        .gigya-screen, .gigya-screen * {
+            font-family: "Fra Sans", "Open Sans", Arial, "Lucida Grande", sans-serif;
+        }
+        .gigya-screen .gigya-label-text{
+            font-family: "Fra Sans", "Open Sans", Arial, "Lucida Grande", sans-serif;
+        }
+        .gigya-screen.landscape .gigya-layout-row.with-divider {
+            display: -webkit-box;
+            display: -ms-flexbox;
+            display: flex;
+            flex-direction: column;
+        }
+        .gigya-screen.landscape .gigya-layout-row.with-divider>.gigya-layout-cell.with-divider {
+            margin-top: 41px;
+            width: 87px;
+            background-repeat: repeat-y;
+            display: none;
+        }
 
+        .gigya-screen-content div.gigya-screen.landscape {
+             padding-left: 0;
+             padding-right: 0;
+             width: auto;
+        }
+        .gigya-screen.landscape {
+              padding-top: 0;
+         }
+        .gigya-screen .gigya-composite-control.gigya-composite-control-header {
+            padding-bottom: 26px;
+            display: none;
+        }
+
+        h1.gigya-screen-caption {
+            border-bottom: 1px solid #dbdbdb;
+            font-size: 16px;
+            font-weight: bold;
+            color: #333;
+            padding-bottom: 5px;
+            padding-top: 5px;
+            margin: 0 auto;
+            display: none;
+        }
+    </style>
     <div class="page-layout-customer page-layout-customer--login-wrap">
         <div class="page-layout-customer__form-wrap">
             <div class="list-switches">
@@ -58,7 +103,9 @@
                 </ul>
             </div>
             <div class="js-customer-page-login {{ not data.isLogin ? 'is-hidden' }} grid">
-                <div class="col col--sm-12 col--lg-6 spacing spacing--bigger spacing--inner">
+                <div class="col col--sm-12 col--lg-6 spacing spacing--bigger spacing--inner" id="page-layout-customer_login">
+                </div>
+                <div style="display: none">
                     {% include molecule('form') with {
                         data: {
                             form: data.forms.login,
@@ -73,11 +120,6 @@
                         },
                         modifiers: ['grid-indent', 'login', 'checkout-actions'],
                     } only %}
-                    <div class="text-center">
-                        <a href="{{ url('password/forgotten') }}" class="button button--link button--skinless spacing-top spacing-top--big" {{qa('customer-forgot-password-link')}}>
-                            {{ 'forms.forgot-password' | trans~'?' }}
-                        </a>
-                    </div>
                 </div>
 
                 <div class="col col--sm-12 col--lg-6 spacing spacing--bigger spacing--inner is-hidden-sm-md">
@@ -110,19 +152,66 @@
                     </ul>
                 </div>
 
-                <div class="col col--sm-12 col--lg-6 spacing spacing--bigger spacing--inner">
-                    {% include molecule('customer-confirmation-form', 'CustomerConfirmationPage') ignore missing with {
-                        modifiers: ['grid-indent', 'login', 'checkout-actions'],
-                        data: {
-                            form: data.forms.register,
-                            formAction: url('register'),
-                            submitButtonText: 'checkout.customer.auth_as_user',
-                        },
-                    } only %}
+                <div class="col col--sm-12 col--lg-6 spacing spacing--bigger spacing--inner"  id="page-layout-customer_register">
 
                 </div>
             </div>
         </div>
     </div>
+    <script type="text/javascript">
+
+        function gigyaRegistrationScreen() {
+            var params = {
+                screenSet: 'CCCustomer-RegistrationLogin',
+                startScreen: 'gigya-register-screen',
+                containerID: 'page-layout-customer_register',
+                // context: '<the-number-of-the-Globus-store>'
+                "onBeforeSubmit": function(event) {
+                    document.querySelector("#loginForm_password.input").value = document.querySelector(".gigya-register-form input[type='password'][data-gigya-placeholder]").value;
+                },
+                "onAfterSubmit": function(event) {
+                    if(event.response.errorCode == 0 && event.screen === 'gigya-register-screen') {
+                        document.querySelector("#loginForm_email.input").value = event.profile.email;
+                        document.querySelector("#loginForm_data").value = JSON.stringify(event);
+                        document.getElementsByName("loginForm")[0].submit();
+                        //alert(JSON.stringify(event));
+                    }
+                }
+            }
+            gigya.accounts.showScreenSet( params );
+        }
+
+        function gigyaLoginScreen() {
+            gigya.accounts.showScreenSet({
+                screenSet: 'CCCustomer-RegistrationLogin',
+                startScreen: 'gigya-login-screen',
+                containerID: 'page-layout-customer_login',
+                "onAfterScreenLoad": function(event) {
+                    //gigya-composite-control gigya-composite-control-link
+                    var lnk = document.getElementsByClassName('globus_register_link');
+                    lnk[0].setAttribute("href", "/register");
+                    lnk[0].removeAttribute("target");
+                    //lnk[1].setAttribute("href", "/register");
+                    lnk[1].removeAttribute("target");
+                    lnk[1].setAttribute("href", "javascript: document.getElementsByName('accountLoginSwitcher')[3].click()")
+                },
+                "onBeforeSubmit": function(event) {
+                    if(event.screen === 'gigya-login-screen')
+                        document.querySelector("#loginForm_password.input").value = document.querySelector(".gigya-input-password.gigya-show-checkmark.gigya-valid").value;
+                },
+                "onAfterSubmit": function(event) {
+                    if(event.response.errorCode == 0 && event.screen === 'gigya-login-screen') {
+                        document.querySelector("#loginForm_email.input").value = event.profile.email;
+                        document.querySelector("#loginForm_data").value = JSON.stringify(event);
+                        document.getElementsByName("loginForm")[0].submit();
+                    }
+                }
+            });
+        }
+
+        gigyaRegistrationScreen();
+        gigyaLoginScreen();
+
+    </script>
 
 {% endblock %}

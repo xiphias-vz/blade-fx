@@ -10,6 +10,7 @@ namespace Pyz\Yves\CheckoutPage;
 use Generated\Shared\Transfer\PaymentTransfer;
 use Pyz\Yves\CustomerPage\Form\CheckoutAddressCollectionForm;
 use Pyz\Yves\CustomerPage\Form\GuestForm;
+use Pyz\Yves\CustomerPage\Form\LoginForm;
 use Pyz\Yves\CustomerPage\Form\RegisterForm;
 use Spryker\Shared\Nopayment\NopaymentConfig;
 use Spryker\Yves\Kernel\Container;
@@ -27,7 +28,6 @@ use SprykerShop\Yves\CheckoutPage\CheckoutPageDependencyProvider as SprykerShopC
 use SprykerShop\Yves\CheckoutPage\Dependency\Client\CheckoutPageToProductBundleClientInterface;
 use SprykerShop\Yves\CheckoutPage\Dependency\Client\CheckoutPageToShipmentClientInterface;
 use SprykerShop\Yves\CustomerPage\Form\CustomerCheckoutForm;
-use SprykerShop\Yves\CustomerPage\Form\LoginForm;
 use SprykerShop\Yves\CustomerPage\Plugin\CheckoutPage\CheckoutAddressFormDataProviderPlugin;
 use SprykerShop\Yves\CustomerPage\Plugin\CheckoutPage\CustomerAddressExpanderPlugin;
 use SprykerShop\Yves\CustomerPage\Plugin\CustomerStepHandler;
