@@ -30,6 +30,31 @@ class Finder extends SprykerFinder implements FinderInterface
 
     /**
      * @param int $idOrder
+     * @param string $flag
+     *
+     * @throws \Exception
+     *
+     * @return bool
+     */
+    public function isOrderFlaggedAll($idOrder, $flag)
+    {
+        $order = $this->queryContainer
+            ->querySalesOrderById($idOrder)
+            ->findOne();
+
+        if ($order === null) {
+            throw new Exception('Order not found for id ' . $idOrder);
+        }
+
+        $order->reload(true);
+
+        $flaggedOrderItems = $this->getItemsByFlag($order, $flag, true);
+
+        return $flaggedOrderItems && (count($flaggedOrderItems) === count($order->getItems()));
+    }
+
+    /**
+     * @param int $idOrder
      * @param string[] $requiredFlags
      * @param string[] $optionalFlags
      *
