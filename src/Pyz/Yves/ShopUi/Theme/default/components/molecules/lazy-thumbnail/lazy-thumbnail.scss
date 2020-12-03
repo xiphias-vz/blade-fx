@@ -6,6 +6,7 @@
 
         @include helper-breakpoint-media-max($sm-max) {
             height: 6rem;
+            top: 2rem;
         }
 
         &--with-overlay {

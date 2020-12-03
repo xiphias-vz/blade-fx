@@ -1,7 +1,27 @@
-{% extends view('product-label-group', '@SprykerShop:ProductLabelWidget') %}
+{% extends template('widget') %}
+
+{% define data = {
+    dictionary: _widget.productLabelDictionaryItemTransfers,
+    parentJsName: '',
+} %}
+
+{% set labels = labels | default([]) %}
+{% set labelMappings = {
+    'SALE': '%'
+} %}
+
+{% for item in data.dictionary %}
+    {% set labels = labels | merge([{
+        text: labelMappings[item.getKey()] is defined ? labelMappings[item.getKey()] : item.getKey(),
+        type: (item.getFrontEndReference() | lower | replace(' ', '-')) | default,
+    }]) %}
+{% endfor %}
 
 {% block body %}
-    {% if labels is not empty %}
-       {{ parent() }}
-    {% endif %}
+    {% include molecule('label-group', 'ProductLabelWidget') with {
+        data: {
+            labels: labels,
+            parentJsName: data.parentJsName,
+        },
+    } only %}
 {% endblock %}
