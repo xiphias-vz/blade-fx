@@ -4,6 +4,14 @@
     {{ parent() }} page-layout-main--error
 {%- endblock %}
 
+{% define data = {
+    buttonClass: 'button',
+    fieldName: '',
+    fieldValue: '',
+    homePage: '',
+    customerContact: 'https://globus.zendesk.com/hc/de/requests/new',
+} %}
+
 {% block pageInfo %}{% endblock %}
 
 {% block content %}
@@ -11,20 +19,17 @@
         <a href="{{ path('home') }}" class="link">{{ 'error_page.home_link' | trans }}</a>
     {%- endset %}
     <div>
-        <div class="page-layout-main__icon">
-            {% include atom('icon') with {
-                modifiers: ['bigger'],
-                data: {
-                    name: 'attention',
-                },
-            } only %}
-        </div>
         <h1 class="title title--general">{{ 'error_page.title' | trans }}</h1>
-        <p>
-            {{- 'error_page.text' | trans({
-                "%link%": link,
-            }) | raw -}}
-        </p>
+        <p class="title title--general spacing-bottom--big" style="margin-top: 2%">{{ 'error_page.second_title' | trans }}</p>
+        <p style="margin-top: 5%">{{'error_page.text' | trans}}</p>
+        <a class="{{ data.buttonClass }}" style="margin-top: 2%" href="/">
+            {{ 'error_page.button_home' | trans}}
+        </a>
+        <p style="margin-top: 2%">{{'error_page.second_text' | trans}}</p>
+        <p>{{'error_page.third_text' | trans}}</p>
+        <a class="{{ data.buttonClass }}" style="margin-top: 2%" href="{{ data.customerContact }}" target="_blank">
+                {{ 'error_page.button_contact' | trans}}
+        </a>
     </div>
 {% endblock %}
 

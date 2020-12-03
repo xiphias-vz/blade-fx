@@ -9,7 +9,7 @@ html {
 }
 
 body {
-    color: #4a4a4a;
+    color: #fff;
     background: #fff;
     font: 400 0.9375rem/1.5 'Spryker Office', sans-serif;
     margin: 0;
@@ -37,7 +37,7 @@ body {
 }
 
 a {
-    color: #344384;
+    color: #fff;
 }
 
 a:hover,
@@ -63,28 +63,17 @@ p {
 }
 
 .header {
-    position: relative;
-    background: #344384;
-    min-height: 5.5rem;
-    border-top: 2.5rem solid #00005f;
-}
-
-.logo {
-    position: absolute;
-    top: -2.75rem;
-    left: 50%;
-    margin-left: -2.8125rem;
-    height: 6.75rem;
-    width: 5.625rem;
-    overflow: hidden;
+    max-width: 75.25rem;
+    margin: auto;
+    width: 100%;
+    padding: .62rem .9375rem;
+    text-align: left;
 }
 
 .logo__image {
-    position: absolute;
-    left: 0;
-    bottom: 0;
-    width: 100%;
-    max-height: inherit;
+    display: inline-block;
+    vertical-align: top;
+    width: 10rem;
 }
 
 .content {
@@ -94,24 +83,17 @@ p {
     -ms-flex-negative: 0;
     flex-shrink: 0;
     padding: 2.875rem 0;
-    background: url("./error-page_background.jpg") no-repeat center top/100% auto;
-}
-
-@media only screen and (min-width: 992px) {
-    .content {
-        background-image: url("./error-page_background@2x.jpg");
-        padding: 5.75rem 0;
-    }
+    background: url("./background-orange.jpg") no-repeat center top/100% auto;
 }
 
 .container {
     box-sizing: border-box;
     min-height: 22rem;
-    max-width: 75.25rem;
+    max-width: 50rem;
     margin: auto;
     padding: 1.25rem;
     background: #fff;
-    border-top: 0.5rem solid #ffc800;
+    color: black;
     display: -webkit-box;
     display: -ms-flexbox;
     display: flex;
@@ -131,14 +113,67 @@ p {
 @media only screen and (min-width: 769px) {
     .container {
         padding: 1.875rem;
+        border: 2px solid #ea8901;
+        border-top-width: 5px;
+    }
+    .button
+    {
+        display: inline-block;
+        padding: 1rem 3rem;
+        border: none;
+        min-width: 3rem;
+        max-width: 9rem;
+        text-align: center;
+        cursor: pointer;
+        background:  #ea8901;
+        color: white;
+        text-decoration: none;
+        border-radius: 2px;
+        transform: translate(100%);
+    }
+}
+
+@media only screen and (max-width: 769px) {
+    .container {
+        padding: 1.875rem;
+        border: 2px solid #ea8901;
+        border-top-width: 5px;
+    }
+
+    .button{
+        display: inline-block;
+        padding: 1rem 3rem;
+        border: none;
+        min-width: 3rem;
+        max-width: 9rem;
+        text-align: center;
+        cursor: pointer;
+        background:  #ea8901;
+        color: white;
+        text-decoration: none;
+        border-radius: 2px;
+        transform: translate(22%);
     }
 }
 
 .title {
-    font: 700 1.125rem/1.2 "Spryker OT", sans-serif;
-    color: #00005f;
+    font: 400 0.9375rem/1.5 'Spryker Office', sans-serif;
+    color: black;
     margin: 0 0 1rem;
     padding: 0;
+    font-weight: bold;
+}
+
+.button:active
+{
+    background: #ea8901;
+    color: white;
+    box-shadow: #ce6200;
+}
+
+.button:focus{
+    background: #ce6200;
+    color: white;
 }
 
 @media only screen and (min-width: 769px) {
@@ -169,7 +204,7 @@ p {
     -ms-flex-align: center;
     align-items: center;
     border-radius: 50%;
-    background: #ffc800;
+    background: #fff;
     width: 3.875rem;
     height: 3.875rem;
     margin-bottom: 1.875rem;
@@ -178,7 +213,7 @@ p {
 
 .text-alt {
     font-weight: bold;
-    color: #00005f;
+    color: #fff;
 }
 
 .email-container {

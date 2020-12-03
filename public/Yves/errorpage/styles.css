@@ -73,7 +73,7 @@ p {
 .logo__image {
     display: inline-block;
     vertical-align: top;
-    width: 14.5rem;
+    width: 10rem;
 }
 
 .content {
@@ -83,7 +83,7 @@ p {
     -ms-flex-negative: 0;
     flex-shrink: 0;
     padding: 2.875rem 0;
-    background: url("./welcome.jpg") no-repeat center top/100% auto;
+    background: url("./background-orange.jpg") no-repeat center top/100% auto;
 }
 
 .container {
@@ -92,7 +92,8 @@ p {
     max-width: 50rem;
     margin: auto;
     padding: 1.25rem;
-    background: #b7bec9;
+    background: #fff;
+    color: black;
     display: -webkit-box;
     display: -ms-flexbox;
     display: flex;
@@ -112,14 +113,67 @@ p {
 @media only screen and (min-width: 769px) {
     .container {
         padding: 1.875rem;
+        border: 2px solid #ea8901;
+        border-top-width: 5px;
+    }
+    .button
+    {
+        display: inline-block;
+        padding: 1rem 3rem;
+        border: none;
+        min-width: 3rem;
+        max-width: 9rem;
+        text-align: center;
+        cursor: pointer;
+        background:  #ea8901;
+        color: white;
+        text-decoration: none;
+        border-radius: 2px;
+        transform: translate(100%);
+    }
+}
+
+@media only screen and (max-width: 769px) {
+    .container {
+        padding: 1.875rem;
+        border: 2px solid #ea8901;
+        border-top-width: 5px;
+    }
+
+    .button{
+        display: inline-block;
+        padding: 1rem 3rem;
+        border: none;
+        min-width: 3rem;
+        max-width: 9rem;
+        text-align: center;
+        cursor: pointer;
+        background:  #ea8901;
+        color: white;
+        text-decoration: none;
+        border-radius: 2px;
+        transform: translate(22%);
     }
 }
 
 .title {
     font: 400 0.9375rem/1.5 'Spryker Office', sans-serif;
-    color: #fff;
+    color: black;
     margin: 0 0 1rem;
     padding: 0;
+    font-weight: bold;
+}
+
+.button:active
+{
+    background: #ea8901;
+    color: white;
+    box-shadow: #ce6200;
+}
+
+.button:focus{
+    background: #ce6200;
+    color: white;
 }
 
 @media only screen and (min-width: 769px) {
