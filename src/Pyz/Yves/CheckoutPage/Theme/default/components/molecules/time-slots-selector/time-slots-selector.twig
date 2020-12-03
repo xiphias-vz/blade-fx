@@ -33,6 +33,8 @@
     {% set shipmentSelection = data.shipment.shipmentSelection %}
     {% set shipmentSelectionIndex = shipmentSelection.vars.value %}
 
+    <h4 class="{{ config.name }}__title title title--shipment text-color-1">{{ 'checkout.timeslots.title' | trans }}</h4>
+
     {%  for shimpentMethodIndex, shipmentMethod in data.shipmentMethods %}
         {% set timeSlots = shipmentMethod.timeSlots | first %}
         {% set isSlickInitOnLoad = loop.index == shipmentSelectionIndex %}
@@ -41,8 +43,6 @@
         {% if isFirstTimeEnter %}
             {% set isSlickInitOnLoad = true %}
         {% endif %}
-
-        <h4 class="{{ config.name }}__title title title--shipment text-color-1">{{ 'checkout.timeslots.title' | trans }}</h4>
 
         <div class="js-delivery-type-{{ loop.index ~ '-' ~ shipmentSelectionIndex }}">
             {% embed molecule('slick-carousel') with {
