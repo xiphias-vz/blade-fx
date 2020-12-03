@@ -8,7 +8,6 @@
 namespace Pyz\Yves\CustomerPage\Plugin\Application;
 
 use Elastica\JSON;
-use Exception;
 use Generated\Shared\Transfer\CustomerTransfer;
 
 /**
@@ -33,42 +32,42 @@ class CustomerTransferCustom
         $data = JSON::parse($eventData);
 
         $customerTransfer->setEmail($data["profile"]["email"])
-            ->setFirstName($data["profile"]["firstName"])
-            ->setLastName($data["profile"]["lastName"])
-            ->setCity($data["profile"]["city"])
-            ->setZipCode($data["profile"]["zip"])
-            ->setBirthDay($data["profile"]["birthDay"])
-            ->setBirthMonth($data["profile"]["birthMonth"])
-            ->setBirthYear($data["profile"]["birthYear"])
+            ->setFirstName($this->getValue($data["profile"], "firstName"))
+            ->setLastName($this->getValue($data["profile"], "lastName"))
+            ->setCity($this->getValue($data["profile"], "city"))
+            ->setZipCode($this->getValue($data["profile"], "zip"))
+            ->setBirthDay($this->getValue($data["profile"], "birthDay"))
+            ->setBirthMonth($this->getValue($data["profile"], "birthMonth"))
+            ->setBirthYear($this->getValue($data["profile"], "birthYear"))
             ->setDateOfBirth($data["profile"]["birthYear"] . '-' . $data["profile"]["birthMonth"] . '-' . $data["profile"]["birthDay"])
-            ->setUsername($data["profile"]["email"])
-            ->setGender($this->getMapGender($data["profile"]["gender"]))
-            ->setSalutation($this->getMapSalutation($data["data"]["salutation"]))
-            ->setAddress1($data["data"]["address"]["street"])
-            ->setAddress2($data["data"]["address"]["houseNo"])
-            ->setCity($data["profile"]["city"])
-            ->setZipCode($data["profile"]["zip"])
-            ->setCountry($data["profile"]["country"]);
+            ->setUsername($this->getValue($data["profile"], "email"))
+            ->setGender($this->getMapGender($this->getValue($data["profile"], "gender")))
+            ->setSalutation($this->getMapSalutation($this->getValue($data["data"], "salutation")))
+            ->setAddress1($this->getValue($data["data"]["address"], "street"))
+            ->setAddress2($this->getValue($data["data"]["address"], "houseNo"))
+            ->setCity($this->getValue($data["profile"], "city"))
+            ->setZipCode($this->getValue($data["profile"], "zip"))
+            ->setCountry($this->getValue($data["profile"], "country"));
 
         if (array_key_exists("cardID", $data["data"])) {
             $customerTransfer->setMyGlobusCard($data["data"]["cardID"]);
         }
 
-        try {
+        if (array_key_exists("preferences", $data)) {
             if (array_key_exists("terms.meinGlobus", $data["preferences"])) {
                 $customerTransfer->setThirdPartyRegistration($data["preferences"]["terms.meinGlobus"]["isConsentGranted"]);
-            } else {
-                $customerTransfer->setThirdPartyRegistration($data["preferences"]["terms"]["meinGlobus"]["isConsentGranted"]);
+            } elseif (array_key_exists("terms", $data["preferences"])) {
+                if (array_key_exists("meinGlobus", $data["preferences"]["terms"])) {
+                    $customerTransfer->setThirdPartyRegistration($data["preferences"]["terms"]["meinGlobus"]["isConsentGranted"]);
+                }
             }
-        } catch (Exception $ex) {
         }
 
         if (array_key_exists("phones", $data["profile"])) {
             $phones = $data["profile"]["phones"];
-            try {
+            if (array_key_exists("number", $phones)) {
                 $customerTransfer->setPhone(count($phones) > 0 ? $phones[0]["number"] : '')
                     ->setMobilePhoneNumber(count($phones) > 1 ? $phones[1]["number"] : '');
-            } catch (Exception $ex) {
             }
         }
 
@@ -107,5 +106,20 @@ class CustomerTransferCustom
         ];
 
         return array_key_exists($gender, $mapGender) ? $mapGender[$gender] : null;
+    }
+
+    /**
+     * @param array $array
+     * @param string $name
+     *
+     * @return string|null
+     */
+    private function getValue(array $array, string $name): ?string
+    {
+        if (array_key_exists($name, $array)) {
+            return $array[$name];
+        }
+
+        return null;
     }
 }

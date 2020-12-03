@@ -4,6 +4,7 @@
     isGuest: _view.guestForm.vars.value and (_view.guestForm.vars.value.customer and _view.guestForm.vars.value.customer.isGuest),
     isLogin: _view.loginForm.vars.value and not (_view.guestForm.vars.value and (_view.guestForm.vars.value.customer and _view.guestForm.vars.value.customer.isGuest)),
 
+
     forms: {
         registration: _view.registerForm,
         customer: _view.registerForm.customer,
@@ -171,7 +172,6 @@
                         document.querySelector("#loginForm_email.input").value = event.profile.email;
                         document.querySelector("#loginForm_data").value = JSON.stringify(event);
                         document.getElementsByName("loginForm")[0].submit();
-                        //alert(JSON.stringify(event));
                     }
                 }
             }
@@ -191,7 +191,7 @@
                     lnk[1].setAttribute("href", "javascript: document.getElementsByClassName('js-toggler-radio__trigger')[1].click()")
                 },
                 "onBeforeSubmit": function(event) {
-                    if(event.response.errorCode == 0 && event.screen === 'gigya-login-screen')
+                    if(event.screen === 'gigya-login-screen')
                         document.querySelector("#loginForm_password.input").value = document.querySelector(".gigya-input-password.gigya-show-checkmark.gigya-valid").value;
                 },
                 "onAfterSubmit": function(event) {
@@ -209,4 +209,3 @@
     </script>
 
 {% endblock %}
-
