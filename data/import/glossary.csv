@@ -20,7 +20,7 @@ cart.total,Gesamt,de_DE
 cart.total,Total,en_US
 cart.checkout,Zur Kasse,de_DE
 cart.checkout,Checkout,en_US
-cart.empty,Der Einkaufsliste ist zur Zeit leer!,de_DE
+cart.empty,Ihr Warenkorb ist zurzeit leer.,de_DE
 cart.empty,Your shopping cart is empty!,en_US
 cart.cart,Warenkorb,de_DE
 cart.cart,Cart,en_US
@@ -481,7 +481,7 @@ customer.login.title,Ich bin bereits Kunde,de_DE
 customer.registration.title,Create account,en_US
 customer.registration.title,Ich bin Neukunde,de_DE
 customer.account.no_order,No orders at the moment,en_US
-customer.account.no_order,Keine Wunscheinkäufe,de_DE
+customer.account.no_order,Keine Bestellungen,de_DE
 customer.account,Customer Account,en_US
 customer.account,Mein Konto,de_DE
 customer.account.contact,Contact,en_US
@@ -493,7 +493,7 @@ customer.account.profile_data,Benutzerdaten,de_DE
 customer.account.address,Addresses,en_US
 customer.account.address,Adresse,de_DE
 customer.account.order_history,Orders History,en_US
-customer.account.order_history,Wunscheinkäufe,de_DE
+customer.account.order_history,Bestellungen,de_DE
 customer.account.newsletter,Newsletter,en_US
 customer.account.newsletter,Newsletter,de_DE
 customer.account.last_orders,Last Orders,en_US
@@ -619,7 +619,7 @@ customer.order.collect_time,Time slot,en_US
 customer.order.view_all,View All,en_US
 customer.order.view_all,Alle anzeigen,de_DE
 customer.order.all_orders,View orders,en_US
-customer.order.all_orders,Alle Wunscheinkäufe anzeigen,de_DE
+customer.order.all_orders,Alle Bestellungen anzeigen,de_DE
 customer.order.total,Total,en_US
 customer.order.total,Gesamtsumme,de_DE
 customer.order.view_order,View Order,en_US
@@ -1014,7 +1014,7 @@ checkout.step.place.order,Kostenpflichtig bestellen,de_DE
 checkout.step.payment.must_be_older_than_18_years,You must be at least 18 years old.,en_US
 checkout.step.payment.must_be_older_than_18_years,Sie müssen mindestens 18 Jahre alt sein.,de_DE
 checkout.step.success.title,Thank you.,en_US
-checkout.step.success.title,Vielen Dank fur Ihren Einkauf!,de_DE
+checkout.step.success.title,Vielen Dank für Ihren Einkauf!,de_DE
 checkout.step.success.text,Your order has been placed successfully. You will get the order confirmation email in a few minutes. You can check and track your order in Your Account.,en_US
 checkout.step.success.text,Ihre Bestellung ist erfolgreich in unserem Abholmarkt eingegangen.,de_DE
 checkout.step.success.link,"Go to ""My Account""",en_US
@@ -2377,7 +2377,7 @@ cameras.category.link,/de/kameras-&-camcorder/digitale-kameras,de_DE
 samsung.search.link,/en/search?q=samsung,en_US
 samsung.search.link,/de/search?q=samsung,de_DE
 cart.title_content,In Your Cart,en_US
-cart.title_content,Auf deiner Einkaufsliste,de_DE
+cart.title_content,Auf deiner Warenkorb,de_DE
 cart.title_sidebar,Continue to Checkout,en_US
 cart.title_sidebar,Weiter zum Checkout,de_DE
 cart.note-title,Cart Note,en_US
@@ -2616,7 +2616,7 @@ mail.customer.invoice.subject,Globus Abholservice: Rechnung %invoiceReference%,d
 mail.customer.invoice.subject,Spryker Click&Collect&Delivery Shop: Invoice %invoiceReference%,en_US
 mail.registration.subject,"Vielen Dank für deine Anmeldung beim Globus Abholservice!",de_DE
 mail.registration.subject,"Thank you for your registration in the Spryker Click&Collect&Delivery Shop!",en_US
-cart.clear,Einkaufsliste löschen,de_DE
+cart.clear,Warenkorb löschen,de_DE
 cart.clear,Delete cart,en_US
 mail.order-cancelled.subject,Deine Wunscheinkauf wurde storniert,de_DE
 mail.order-cancelled.subject,Your order has been cancelled,en_US
