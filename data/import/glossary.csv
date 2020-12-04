@@ -497,7 +497,7 @@ customer.account.order_history,Bestellungen,de_DE
 customer.account.newsletter,Newsletter,en_US
 customer.account.newsletter,Newsletter,de_DE
 customer.account.last_orders,Last Orders,en_US
-customer.account.last_orders,Meine letzten Wunscheinkäufe,de_DE
+customer.account.last_orders,Meine letzten Bestellungen,de_DE
 customer.account.default_billing_address,Default Billing Address,en_US
 customer.account.default_billing_address,Standard Rechnungsadresse,de_DE
 customer.account.please_specify_billing_address,Please Specify Billing Address,en_US
@@ -1018,7 +1018,7 @@ checkout.step.success.title,Vielen Dank für Ihren Einkauf!,de_DE
 checkout.step.success.text,Your order has been placed successfully. You will get the order confirmation email in a few minutes. You can check and track your order in Your Account.,en_US
 checkout.step.success.text,Ihre Bestellung ist erfolgreich in unserem Abholmarkt eingegangen.,de_DE
 checkout.step.success.link,"Go to ""My Account""",en_US
-checkout.step.success.link,"Zum meinem Konto",de_DE
+checkout.step.success.link,"Zu meinem Konto",de_DE
 checkout.step.error.title,Your order has not been placed.,en_US
 checkout.step.error.title,"Lieber Kunde, Ihre Bestellung konnte leider nicht platziert werden.",de_DE
 checkout.step.error.text,Something went wrong. Sorry.,en_US
