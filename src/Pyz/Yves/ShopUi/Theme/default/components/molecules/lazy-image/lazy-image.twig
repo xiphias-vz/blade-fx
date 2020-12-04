@@ -14,6 +14,8 @@
     loading: 'lazy',
 } %}
 
+{% set defaultImage = publicPath("/images/kein_bild_vorhanden.png") %}
+
 {% block attributes %}{% endblock %}
 
 {% block extraClass %}
@@ -29,7 +31,13 @@
         {% set attributesWithoutSrc = attributes | merge({'src': ''}) %}
 
         {% if data.isImage %}
-            <img class="{{ data.imageClasses }} {{ config.jsName }}__content is-invisible" data-src="{{ attributes.src }}" {{ component.renderAttributes(attributesWithoutSrc) }}>
+            {% if attributes.src is defined %}
+                {% if attributes.src is not empty %}
+                    <img class="{{ data.imageClasses }} {{ config.jsName }}__content is-invisible" data-src="{{ attributes.src }}" {{ component.renderAttributes(attributesWithoutSrc) }}>
+                {% else %}
+                    <img class="{{ data.imageClasses }} {{ config.jsName }}__content is-invisible" data-src="{{ defaultImage }}" {{ component.renderAttributes(attributesWithoutSrc) }}>
+                {% endif %}
+            {% endif %}
         {% else %}
             <div class="{{ data.imageClasses }} {{ config.jsName }}__content is-invisible" data-background-image="{{ attributes.src }}"></div>
         {% endif %}
@@ -44,4 +52,8 @@
             {% endif %}
         </noscript>
     {% endblock %}
+
+    <script type="text/javascript">
+        document.querySelector(".lazy-thumbnail__image").onerror = function(){document.querySelector(".lazy-thumbnail__image").src = '{{ defaultImage }}' };
+    </script>
 {% endblock %}

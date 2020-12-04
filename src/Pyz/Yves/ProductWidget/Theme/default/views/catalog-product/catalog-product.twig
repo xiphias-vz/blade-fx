@@ -6,6 +6,8 @@
     depositPrice: _widget.depositPrice,
 } %}
 
+{% set image = publicPath("/images/kein_bild_vorhanden.png") %}
+
 {% block body %}
     {% set productTemplate = molecule('product-item') %}
     {% set class = 'col--sm-12 col--md-6 col--lg-4' %}
@@ -15,18 +17,23 @@
         {% set class = 'col col--sm-12' %}
     {% endif %}
 
-    {% set image = data.product.images ? data.product.images | first %}
+    {% if data.product.images is defined %}
+        {% set firstImage = data.product.images | first %}
+        {% if firstImage.external_url_small is not empty %}
+            {% set image = firstImage.external_url_small %}
+        {% endif %}
+    {% endif %}
 
     {% embed productTemplate with {
         productTemplate: productTemplate,
         class: class,
         data: {
-            product: data.product,
-            name: data.product.abstract_name,
-            idProductAbstract: data.product.id_product_abstract,
-            image: image.external_url_small,
-            depositPrice: data.depositPrice,
-        },
+        product: data.product,
+        name: data.product.abstract_name,
+        idProductAbstract: data.product.id_product_abstract,
+        image: image,
+        depositPrice: data.depositPrice,
+    },
     } only %}
         {% block productAbstractLabels %}
             {% widget 'ProductConcreteLabelWidget' args [data.product.id_product_labels] only %}{% endwidget %}

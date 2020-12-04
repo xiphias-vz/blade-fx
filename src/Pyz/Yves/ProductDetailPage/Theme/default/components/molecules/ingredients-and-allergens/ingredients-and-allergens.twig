@@ -11,21 +11,21 @@
 } %}
 
 {% block class -%}
-    grid {{ parent() }}
+    {{ parent() }}
 {%- endblock %}
 
 {% block body %}
-                    {% if data.productAttributes['zutaten'] is defined %}
-                        <div class="spacing-bottom spacing-bottom--bigger"><strong>{{ 'product.info.ingredients' | trans }}:</strong> {{ data.productAttributes['zutaten'] }}</div>
-                    {% endif %}
+            {% if data.productAttributes['zutaten'] is defined %}
+                <div class="spacing-bottom spacing-bottom--bigger"><strong>{{ 'product.info.ingredients' | trans }}:</strong> {{ data.productAttributes['zutaten'] }}</div>
+            {% endif %}
 
-                    {% if data.productAttributes['entallerg'] is defined or data.productAttributes['mentallerg'] is defined %}
-                        <strong>{{ 'product.info.alergens' | trans }}:</strong>
-                    {% endif %}
-                    {% if data.productAttributes['entallerg'] is defined %}
-                        <div class="spacing-bottom spacing-bottom--bigger"><strong>Enthaltene Allergene:</strong> {{ data.productAttributes['entallerg'] }}</div>
-                    {% endif %}
-                    {% if data.productAttributes['mentallerg'] is defined %}
-                        <div class="spacing-bottom spacing-bottom--bigger"><strong>Moglisch enthaltene Allergene:</strong> {{ data.productAttributes['mentallerg'] }}</div>
-                    {% endif %}
+            {% if data.productAttributes['entallerg'] is defined or data.productAttributes['mentallerg'] is defined %}
+                <strong>{{ 'product.info.alergens' | trans }}:</strong>
+            {% endif %}
+            {% if data.productAttributes['entallerg'] is defined %}
+                <div class="spacing-bottom spacing-bottom--bigger"><strong>Enthaltene Allergene:</strong> {{ data.productAttributes['entallerg'] }}</div>
+            {% endif %}
+            {% if data.productAttributes['mentallerg'] is defined %}
+                <div class="spacing-bottom spacing-bottom--bigger"><strong>Moglisch enthaltene Allergene:</strong> {{ data.productAttributes['mentallerg'] }}</div>
+            {% endif %}
 {% endblock %}
