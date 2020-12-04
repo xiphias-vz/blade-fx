@@ -1,7 +1,5 @@
 {
   "0": {"name": "Bitte Abholstation wählen", "link": "#"},
   "EIN": {"name": "Homburg-Einöd", "link": "store/switch?store=EIN&referer-url=/&check-cookie=0"},
-  "KMD": {"name": "Köln", "link": "store/switch?store=KMD&referer-url=/&check-cookie=0"},
-  "LPZ": {"name": "Leipzig","link": "store/switch?store=LPZ&referer-url=/&check-cookie=0"},
-  "HAD": {"name": "Halle", "link": "store/switch?store=HAD&referer-url=/&check-cookie=0"}
+  "KMD": {"name": "Köln", "link": "store/switch?store=KMD&referer-url=/&check-cookie=0"}
 }
