@@ -12,11 +12,13 @@ use Pyz\Client\TimeSlot\TimeSlotClientInterface;
 use Pyz\Yves\CheckoutPage\CheckoutPageDependencyProvider;
 use Pyz\Yves\CheckoutPage\Process\Steps\AddressStep;
 use Pyz\Yves\CheckoutPage\Process\Steps\CustomerStep;
+use Pyz\Yves\CheckoutPage\Process\Steps\PaymentStep;
 use Pyz\Yves\CheckoutPage\Process\Steps\PlaceOrderStep;
 use Pyz\Yves\CheckoutPage\Process\Steps\ShipmentStep\PostConditionChecker as ShipmentStepPostConditionChecker;
 use Pyz\Yves\CheckoutPage\Process\Steps\SuccessStep;
 use Pyz\Yves\CheckoutPage\Process\Steps\SummaryStep;
 use Pyz\Yves\ShopApplication\ShopApplicationDependencyProvider;
+use Spryker\Yves\StepEngine\Process\StepCollection;
 use SprykerShop\Yves\CheckoutPage\Plugin\Provider\CheckoutPageControllerProvider;
 use SprykerShop\Yves\CheckoutPage\Process\StepFactory as SprykerShopStepFactory;
 use SprykerShop\Yves\CheckoutPage\Process\Steps\AddressStep as SprykerAddressStep;
@@ -25,6 +27,29 @@ use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
 
 class StepFactory extends SprykerShopStepFactory
 {
+    /**
+     * @return \Spryker\Yves\StepEngine\Process\StepCollectionInterface
+     */
+    public function createStepCollection()
+    {
+        $stepCollection = new StepCollection(
+            $this->getUrlGenerator(),
+            CheckoutPageControllerProvider::CHECKOUT_ERROR
+        );
+
+        $stepCollection
+            ->addStep($this->createEntryStep())
+            ->addStep($this->createCustomerStep())
+            ->addStep($this->createAddressStep())
+            ->addStep($this->createShipmentStep())
+            ->addStep($this->createPaymentStep())
+            ->addStep($this->createSummaryStep())
+            ->addStep($this->createPlaceOrderStep())
+            ->addStep($this->createSuccessStep());
+
+        return $stepCollection;
+    }
+
     /**
      * @return \Pyz\Yves\CheckoutPage\Process\Steps\AddressStep|\SprykerShop\Yves\CheckoutPage\Process\Steps\AddressStep
      */
@@ -74,6 +99,22 @@ class StepFactory extends SprykerShopStepFactory
     public function getCsrfTokenManager(): CsrfTokenManagerInterface
     {
         return $this->getApplication()->get(ShopApplicationDependencyProvider::SERVICE_FORM_CSRF_PROVIDER);
+    }
+
+    /**
+     * @return \Pyz\Yves\CheckoutPage\Process\Steps\PaymentStep
+     */
+    public function createPaymentStep()
+    {
+        return new PaymentStep(
+            $this->getPaymentClient(),
+            $this->getPaymentMethodHandler(),
+            CheckoutPageControllerProvider::CHECKOUT_PAYMENT,
+            $this->getConfig()->getEscapeRoute(),
+            $this->getFlashMessenger(),
+            $this->getCalculationClient(),
+            $this->getCheckoutPaymentStepEnterPreCheckPlugins()
+        );
     }
 
     /**
