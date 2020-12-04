@@ -23,6 +23,7 @@ export default class ProductItem extends Component {
     protected $declineButton: $;
     protected $quantityField: $;
     protected $quantityOutput: $;
+    protected $weightField: $;
 
     protected readyCallback(): void {}
 
@@ -33,12 +34,14 @@ export default class ProductItem extends Component {
         this.$acceptButton = this.$this.find(this.acceptButtonSelector);
         this.$declineButton = this.$this.find(this.declineButtonSelector);
         this.$quantityField = this.$this.find(this.quantityFieldSelector);
+        this.$weightField = this.$this.find(this.weightInputFieldSelector);
         this.$quantityOutput = this.$this.find(this.quantityOutputSelector);
 
         this.mapEvents();
     }
 
     protected mapEvents(): void {
+        this.$weightField.on('focusout', () => this.validateWeightInput());
         this.$minusButton.on('click', () => this.clickCounterHandler());
         this.$plusButton.on('click', () => this.clickCounterHandler(true));
         this.$acceptButton.on('click', () => this.acceptClickHandler());
@@ -80,6 +83,31 @@ export default class ProductItem extends Component {
 
         this.updateQuantityInput(inputValue);
         this.pickProducts.updateStorageItem(this);
+    }
+
+    protected validateWeightInput(): void {
+        const inputWeightValue = Number(this.$weightField.val());
+        const inputWeightMax = Number(this.$weightField.attr('max'));
+        const inputWeightMin = Number(this.$weightField.attr('min'));
+        const errorMessageSpanIndex = 2;
+
+        if (this.$weightField[0].parentNode.children.item(errorMessageSpanIndex)) {
+            this.$weightField[0].parentNode.children.item(errorMessageSpanIndex).remove();
+        }
+
+        if (inputWeightValue > inputWeightMax) {
+            const span = document.createElement('span');
+            span.innerHTML = `Der Eingabewert sollte nicht größer als sein ${inputWeightMax}`;
+            span.style.color = 'red';
+            this.$weightField[0].parentNode.appendChild(span);
+        }
+
+        if (inputWeightValue < inputWeightMin) {
+            const span = document.createElement('span');
+            span.innerHTML = `Der Eingabewert sollte nicht kleiner als sein ${inputWeightMin}`;
+            span.style.color = 'red';
+            this.$weightField[0].parentNode.appendChild(span);
+        }
     }
 
     protected updateQuantityInput(value: number): void {
@@ -150,6 +178,10 @@ export default class ProductItem extends Component {
 
     protected get quantityOutputSelector(): string {
         return `.${this.jsName}__quantity-output`;
+    }
+
+    protected get weightInputFieldSelector(): string {
+        return `input[type="number"].js-product-item__weight`;
     }
 
     protected get pickedCLass(): string {
