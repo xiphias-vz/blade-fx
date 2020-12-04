@@ -42,7 +42,7 @@
                     <div class="list-switches list-switches--checkout">
                         <ul class="list-switches__list list-switches--register-type">
                             <li class="list-switches__item">
-                                {% include molecule('toggler-radio') with {
+                                {% embed molecule('toggler-radio') with {
                                     modifiers: ['checkout', 'with-bg'],
                                     data: {
                                         label: 'checkout.customer.auth_as_login' | trans
@@ -54,10 +54,17 @@
                                         'target-class-name': 'js-login__login',
                                     },
                                 } only %}
+                                    {% block labelContainer %}
+                                        <span class="toggler-radio__subtext">
+                                             {{ 'customer.login_subtext' | trans }}
+                                             </span>
+                                        {{ parent() }}
+                                    {% endblock %}
+                                {% endembed %}
                             </li>
 
                             <li class="list-switches__item">
-                                {% include molecule('toggler-radio') with {
+                                {% embed molecule('toggler-radio') with {
                                     modifiers: ['checkout', 'with-bg'],
                                     data: {
                                         label: 'checkout.customer.auth_as_user' | trans,
@@ -69,6 +76,14 @@
                                         'target-class-name': 'js-login__register',
                                     },
                                 } only %}
+                                    {% block labelContainer %}
+                                        <span class="toggler-radio__subtext">
+                                                 {{ 'customer.signup_subtext' | trans }}
+                                                 </span>
+                                        {{ parent() }}
+                                    {% endblock %}
+                                {% endembed %}
+
                             </li>
                         </ul>
                     </div>
