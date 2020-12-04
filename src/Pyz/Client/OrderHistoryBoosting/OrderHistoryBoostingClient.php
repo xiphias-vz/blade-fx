@@ -24,6 +24,10 @@ class OrderHistoryBoostingClient extends AbstractClient implements OrderHistoryB
     {
         $customerTransfer = $this->getFactory()->getCustomerClient()->getCustomer();
 
+        if (!$customerTransfer) {
+            return;
+        }
+
         $previouslyBoughtSkus = $customerTransfer->getPreviouslyBoughtSkus();
         if ($previouslyBoughtSkus === null) {
             $previouslyBoughtSkus = [];

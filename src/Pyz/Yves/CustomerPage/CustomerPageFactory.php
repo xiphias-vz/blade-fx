@@ -77,6 +77,7 @@ class CustomerPageFactory extends SprykerShopCustomerPageFactory
     {
         return [
             $this->getLoginCheckoutAuthenticationHandlerPlugin(),
+            $this->getGuestCheckoutAuthenticationHandlerPlugin(),
             $this->getRegistrationAuthenticationHandlerPlugin(),
         ];
     }

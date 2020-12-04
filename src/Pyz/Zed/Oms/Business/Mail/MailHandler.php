@@ -216,31 +216,42 @@ class MailHandler extends SprykerMailHandler
         [$timeFrom, $timeTo] = explode('-', $timeInterval);
         $orderDateTime = $this->dateTimeWithZoneService->getDateTimeInStoreTimeZone($deliveryDate);
 
-        $params = $orderTransfer->getCustomer()->modifiedToArray(true, true)
-            + $orderTransfer->modifiedToArray(true, true)
-            + [
-                'totalPriceOfTheOrder' => $this->getMoneyValue($totals->getGrandTotal()),
-                'subtotalPriceOfTheOrder' => $this->getMoneyValue($totals->getSubtotal()),
-                'vat' => $this->getMoneyValue($totals->getTaxTotal()->getAmount()),
-                'deliveryDate' => $this->mailCmsBlockService->getDeliveryDate($orderTransfer),
-                'deliveryCost' => $this->getShipmentMoneyValue($orderTransfer),
-                'productList' => $this->getProductList($orderTransfer),
-                'baseUrlYves' => $this->config->getBaseUrlYves(),
-                'collectNumberOfTheOrder' => $this->getCollectNumber($orderTransfer),
-                'weekdayOfDelivery' => $this->translatorFacade->trans(InvoiceMailer::TRANSLATION_WEEK_PREFIX . $orderDateTime->format("w")),
-                'dayOfDelivery' => $orderDateTime->format("d"),
-                'monthOfDelivery' => $this->translatorFacade->trans(InvoiceMailer::TRANSLATION_MONTH_PREFIX . $orderDateTime->format("m")),
-                'beginDeliveryTimeSlot' => $timeFrom,
-                'endDeliveryTimeSlot' => $timeTo,
-                'storeAddress' => $orderTransfer->getMerchantName(),
-                'divisionSubDomain' => $this->config->getBaseUrlYves(),
-                'divisionLongName' => $orderTransfer->getMerchantRegion()->getRegionName(),
-                'divisionStreet' => $orderTransfer->getMerchantRegion()->getStreet(),
-                'divisionZipCode' => $orderTransfer->getMerchantRegion()->getZipCode(),
-                'divisionTown' => $orderTransfer->getMerchantRegion()->getCity(),
-                'divisionFooter' => $this->mailCmsBlockService->convertNewLineToBr($orderTransfer->getMerchantRegion()->getFooterText()),
-                'dateOfOrder' => $dateOfOrder->format("d.m.Y"),
+        $params = [
+            'totalPriceOfTheOrder' => $this->getMoneyValue($totals->getGrandTotal()),
+            'subtotalPriceOfTheOrder' => $this->getMoneyValue($totals->getSubtotal()),
+            'vat' => $this->getMoneyValue($totals->getTaxTotal()->getAmount()),
+            'deliveryDate' => $this->mailCmsBlockService->getDeliveryDate($orderTransfer),
+            'deliveryCost' => $this->getShipmentMoneyValue($orderTransfer),
+            'productList' => $this->getProductList($orderTransfer),
+            'baseUrlYves' => $this->config->getBaseUrlYves(),
+            'collectNumberOfTheOrder' => $this->getCollectNumber($orderTransfer),
+            'weekdayOfDelivery' => $this->translatorFacade->trans(InvoiceMailer::TRANSLATION_WEEK_PREFIX . $orderDateTime->format("w")),
+            'dayOfDelivery' => $orderDateTime->format("d"),
+            'monthOfDelivery' => $this->translatorFacade->trans(InvoiceMailer::TRANSLATION_MONTH_PREFIX . $orderDateTime->format("m")),
+            'beginDeliveryTimeSlot' => $timeFrom,
+            'endDeliveryTimeSlot' => $timeTo,
+            'storeAddress' => $orderTransfer->getMerchantName(),
+            'divisionSubDomain' => $this->config->getBaseUrlYves(),
+            'divisionLongName' => $orderTransfer->getMerchantRegion()->getRegionName(),
+            'divisionStreet' => $orderTransfer->getMerchantRegion()->getStreet(),
+            'divisionZipCode' => $orderTransfer->getMerchantRegion()->getZipCode(),
+            'divisionTown' => $orderTransfer->getMerchantRegion()->getCity(),
+            'divisionFooter' => $this->mailCmsBlockService->convertNewLineToBr($orderTransfer->getMerchantRegion()->getFooterText()),
+            'dateOfOrder' => $dateOfOrder->format("d.m.Y"),
+        ];
+
+        if ($orderTransfer->getCustomer() !== null) {
+            $params = array_merge($params, $orderTransfer->getCustomer()->modifiedToArray(true, true)
+                + $orderTransfer->modifiedToArray(true, true));
+        } else {
+            $guestParams = [
+                'firstName' => $orderTransfer->getFirstName(),
+                'lastName' => $orderTransfer->getLastName(),
+                'orderReference' => $orderTransfer->getOrderReference(),
+                'merchantName' => $orderTransfer->getMerchantName(),
             ];
+            $params = array_merge($params, $guestParams);
+        }
 
         return $this->mailCmsBlockService->convertArrayToPlaceholders($params);
     }

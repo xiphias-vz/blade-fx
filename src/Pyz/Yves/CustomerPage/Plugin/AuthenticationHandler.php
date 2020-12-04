@@ -33,6 +33,7 @@ class AuthenticationHandler extends SprykerAuthenticationHandler
         $customerTransfer->setMerchantReference($this->createShopContextResolver()->resolve()->getMerchantReference());
         $isAuthorized = $this->getCdcAuthorization($customerTransfer->getEmail(), $customerTransfer->getPassword());
         $customerResponseTransfer->setIsSuccess($isAuthorized);
+
         if (!$isAuthorized) {
             $isAuthorized = $this->registerCdcUser($customerTransfer);
         }
@@ -54,6 +55,11 @@ class AuthenticationHandler extends SprykerAuthenticationHandler
      */
     protected function loginAfterSuccessfulRegistration(CustomerTransfer $customerTransfer)
     {
+        $token = $this->getFactory()->createUsernamePasswordToken($customerTransfer);
+
+        $this->getFactory()
+            ->createCustomerAuthenticator()
+            ->authenticateCustomer($customerTransfer, $token);
     }
 
     /**

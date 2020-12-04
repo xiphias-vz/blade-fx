@@ -85,89 +85,105 @@
                                 {% endembed %}
 
                             </li>
+
+                            <li class="list-switches__item">
+                                {% include molecule('toggler-radio') with {
+                                    data: {
+                                        label: 'checkout.customer.auth_as_guest' | trans
+                                    },
+                                    attributes: {
+                                        id: 'guest',
+                                        checked: data.isGuest,
+                                        name: 'checkoutProceedAs',
+                                        'target-class-name': 'js-login__guest',
+                                    },
+                                    class: 'toggler-radio--with-bg'
+                                } only %}
+                            </li>
                         </ul>
                     </div>
                 {% endblock %}
-                {% embed molecule('form') with {
-                    class: 'register-form js-login__guest' ~ (data.isGuest ? '' : ' is-hidden'),
-                    modifiers: ['login', 'checkout-actions'],
-                    data: {
-                    form: data.forms.guest,
-                    submit: {
-                        enable: true,
-                        text: 'checkout.customer.submit_as_guest' | trans,
-                        class: 'form__action--checkout col col--middle button button--expand-tablet button--large'
-                    }
-                },
-                    embed: {
-                    forms: {
-                        customerGuest: data.forms.customerGuest
-                    }
-                }
-                    } only %}
-                    {% block fields %}
-                        {% include molecule('form') with {
-                            modifiers: ['login', 'checkout-actions', 'grid-indent'],
-                            data: {
-                                class: 'col col--sm-6',
-                                form: embed.forms.customerGuest,
-                                enableStart: false,
-                                enableEnd: false,
+                {% block content %}
+                    <div id="checkoutCustomerLogin" class="js-login__login{{ (data.isLogin ? '' : ' is-hidden') }}">
+
+                    </div>
+
+                    <div id="checkoutCustomerRegister" class="register-form js-login__register{{ (data.isGuest or data.isLogin? ' is-hidden' : '') }} ">
+
+                    </div>
+
+                    <div style="display: none">
+
+                            {% embed molecule('form') with {
+                                class: 'js-login__login' ~ (data.isLogin ? '' : ' is-hidden'),
+                                modifiers: ['login', 'checkout-actions', 'grid-sm-indent'],
+                                data: {
+                                form: data.forms.login,
                                 layout: {
-                                    salutation: 'col col--sm-12 col--md-6',
-                                    first_name: 'col col--sm-12 col--md-6',
-                                    last_name: 'col col--sm-12 col--md-6',
-                                    address1: 'col col--sm-12 col--md-8',
-                                    address2: 'col col--sm-12 col--md-4',
-                                    zip_code: 'col col--sm-12 col--md-3',
-                                    city: 'col col--sm-12 col--md-9',
+                                    email: 'col col--sm-12',
+                                    password: 'col col--sm-12',
                                 },
                                 submit: {
-                                    enable: false
+                                    enable: true,
+                                    text: 'forms.submit.login' | trans,
+                                    class: 'form__action--checkout col col--middle button button--expand-tablet button--large',
                                 },
                                 cancel: {
-                                    enable: false
-                                }
-                            }
+                                    enable: true,
+                                },
+                            },
+                                } only %}
+                            {% endembed %}
+
+                    </div>
+
+
+
+                    {% embed molecule('form') with {
+                        class: 'register-form js-login__guest' ~ (data.isGuest ? '' : ' is-hidden'),
+                        modifiers: ['login', 'checkout-actions'],
+                        data: {
+                        form: data.forms.guest,
+                        submit: {
+                            enable: true,
+                            text: 'checkout.customer.submit_as_guest' | trans,
+                            class: 'col col--middle button button--expand-tablet button--large'
+                        }
+                    },
+                        embed: {
+                        forms: {
+                            customerGuest: data.forms.customerGuest
+                        }
+                    }
                         } only %}
-                    {% endblock %}
-                {% endembed %}
-
-                <div id="checkoutCustomerLogin" class="js-login__login{{ (data.isLogin ? '' : ' is-hidden') }}">
-
-                </div>
-
-                <div id="checkoutCustomerRegister" class="register-form js-login__register{{ (data.isGuest or data.isLogin? ' is-hidden' : '') }} ">
-
-                </div>
-
-                <div style="display: none">
-
-                                {% block content %}
-                                    {% embed molecule('form') with {
-                                        class: 'js-login__login' ~ (data.isLogin ? '' : ' is-hidden'),
-                                        modifiers: ['login', 'checkout-actions', 'grid-sm-indent'],
-                                        data: {
-                                            form: data.forms.login,
-                                            layout: {
-                                                email: 'col col--sm-12',
-                                                password: 'col col--sm-12',
-                                            },
-                                            submit: {
-                                                enable: true,
-                                                text: 'forms.submit.login' | trans,
-                                                class: 'form__action--checkout col col--middle button button--expand-tablet button--large',
-                                            },
-                                            cancel: {
-                                                enable: true,
-                                            },
-                                        },
-                                    } only %}
-                                    {% endembed %}
-                                {% endblock %}
-
-                </div>
-
+                        {% block fields %}
+                            {% include molecule('form') with {
+                                modifiers: ['login', 'checkout-actions', 'grid-indent'],
+                                data: {
+                                    class: 'col col--sm-6',
+                                    form: embed.forms.customerGuest,
+                                    enableStart: false,
+                                    enableEnd: false,
+                                    layout: {
+                                        salutation: 'col col--sm-12 col--md-6',
+                                        first_name: 'col col--sm-12 col--md-6',
+                                        last_name: 'col col--sm-12 col--md-6',
+                                        address1: 'col col--sm-12 col--md-8',
+                                        address2: 'col col--sm-12 col--md-4',
+                                        zip_code: 'col col--sm-12 col--md-3',
+                                        city: 'col col--sm-12 col--md-9',
+                                    },
+                                    submit: {
+                                        enable: false
+                                    },
+                                    cancel: {
+                                        enable: false
+                                    }
+                                }
+                            } only %}
+                        {% endblock %}
+                    {% endembed %}
+                {% endblock %}
             </div>
         </div>
     </div>

@@ -54,6 +54,10 @@ class CustomerStep extends SprykerShopCustomerStep
             return false;
         }
 
+        if ($quoteTransfer->getCustomer()->getIsGuest()) {
+            return true;
+        }
+
         //todo: remove Test guest orders
         if ($quoteTransfer->getCustomer()->getFirstName() === 'test order') {
             return true;

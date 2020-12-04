@@ -34,9 +34,9 @@ class CustomerHasOrderWriterCommandPlugin extends AbstractPlugin implements Comm
      */
     public function run(array $orderItems, SpySalesOrder $orderEntity, ReadOnlyArrayObject $data)
     {
-        $orderEntity->getCustomerReference();
-
-        $this->getFacade()->setCustomerHasOrderByCustomerReference($orderEntity->getCustomerReference());
+        if ($orderEntity->getCustomerReference() !== null) {
+            $this->getFacade()->setCustomerHasOrderByCustomerReference($orderEntity->getCustomerReference());
+        }
 
         return [];
     }
