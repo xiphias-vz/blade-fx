@@ -33,6 +33,14 @@
         .gigya-screen-caption {
             display: none;
         }
+        .gigya-screen a
+        {
+            color: grey !important;
+        }
+        .globus_register_link
+        {
+            display: none !important;
+        }
     </style>
 
     <div class="grid grid--center">
@@ -87,7 +95,7 @@
                             </li>
 
                             <li class="list-switches__item">
-                                {% include molecule('toggler-radio') with {
+                                {% embed molecule('toggler-radio') with {
                                     data: {
                                         label: 'checkout.customer.auth_as_guest' | trans
                                     },
@@ -99,6 +107,11 @@
                                     },
                                     class: 'toggler-radio--with-bg'
                                 } only %}
+                                    {% block labelContainer %}
+                                        <span class="toggler-radio__subtext">&nbsp;</span>
+                                        {{ parent() }}
+                                    {% endblock %}
+                                {% endembed %}
                             </li>
                         </ul>
                     </div>
