@@ -11,6 +11,8 @@ use Spryker\Zed\Auth\AuthConfig as SprykerAuthConfig;
 
 class AuthConfig extends SprykerAuthConfig
 {
+    public const DEFAULT_URL_REDIRECT = '/';
+
     /**
      * Returns the list of controller uri fragments per module to be checked by `ControllerRestrictionEventDispatcherPlugin`.
      *

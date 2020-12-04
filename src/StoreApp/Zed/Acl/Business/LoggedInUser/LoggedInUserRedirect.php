@@ -7,6 +7,7 @@
 
 namespace StoreApp\Zed\Acl\Business\LoggedInUser;
 
+use Generated\Shared\Transfer\UserTransfer;
 use Pyz\Shared\Acl\AclConstants;
 use Spryker\Zed\Acl\Business\Model\GroupInterface;
 use Spryker\Zed\Acl\Dependency\Facade\AclToUserInterface;
@@ -45,8 +46,7 @@ class LoggedInUserRedirect
     {
         $currentUserTransfer = $this->userFacade->getCurrentUser();
 
-        $pickerGroupTransfer = $this->group->getByName(AclConstants::PICKER_GROUP);
-        if ($this->group->hasUser($pickerGroupTransfer->getIdAclGroup(), $currentUserTransfer->getIdUser())) {
+        if ($this->hasValidAclGroup($currentUserTransfer)) {
             return static::URL_PICKER;
         }
 
@@ -56,5 +56,19 @@ class LoggedInUserRedirect
         }
 
         return null;
+    }
+
+    /**
+     * @param \Generated\Shared\Transfer\UserTransfer $currentUserTransfer
+     *
+     * @return bool
+     */
+    protected function hasValidAclGroup(UserTransfer $currentUserTransfer): bool
+    {
+        $pickerGroupId = $this->group->getByName(AclConstants::PICKER_GROUP)->getIdAclGroup();
+        $rootGroupId = $this->group->getByName(AclConstants::ROOT_GROUP)->getIdAclGroup();
+        $currentUserId = $currentUserTransfer->getIdUser();
+
+        return $this->group->hasUser($pickerGroupId, $currentUserId) || $this->group->hasUser($rootGroupId, $currentUserId);
     }
 }
