@@ -48,7 +48,7 @@ $jobs[] = [
 $jobs[] = [
     'name' => 'apply-price-product-schedule',
     'command' => '$PHP_BIN vendor/bin/console price-product-schedule:apply',
-    'schedule' => '0 6 * * *',
+    'schedule' => '1 4,5,6,7,8 * * *',
     'enable' => true,
     'stores' => $allStores,
 ];
