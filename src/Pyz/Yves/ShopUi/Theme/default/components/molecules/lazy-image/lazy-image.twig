@@ -55,7 +55,7 @@
 
     <script type="text/javascript">
         document.querySelector(".lazy-thumbnail__image").onerror = function(args){
-            args.currentTarget = '{{ defaultImage }}'
+            args.currentTarget.src = '{{ defaultImage }}';
         };
     </script>
 {% endblock %}
