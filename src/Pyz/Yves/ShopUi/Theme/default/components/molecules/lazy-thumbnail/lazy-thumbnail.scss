@@ -1,4 +1,8 @@
 @mixin shop-ui-lazy-thumbnail($name: '.lazy-thumbnail') {
+    @media only screen and (max-width: 575px) {
+        .lazy-thumbnail {
+            top: 2.4rem !important; }
+    }
     @include shop-ui-thumbnail($name) {
         &--no-margin {
             margin: 0;
