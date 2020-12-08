@@ -96,17 +96,17 @@
 
                             <li class="list-switches__item">
                                 {% embed molecule('toggler-radio') with {
+                                    modifiers: ['checkout', 'with-bg'],
                                     data: {
                                         label: 'checkout.customer.auth_as_guest' | trans
                                     },
                                     attributes: {
-                                        id: 'guest',
-                                        checked: data.isGuest,
-                                        name: 'checkoutProceedAs',
-                                        'target-class-name': 'js-login__guest',
-                                    },
-                                    class: 'toggler-radio--with-bg'
-                                } only %}
+                                    id: 'guest',
+                                    checked: data.isGuest,
+                                    name: 'checkoutProceedAs',
+                                    'target-class-name': 'js-login__guest',
+                                },
+                                    } only %}
                                     {% block labelContainer %}
                                         <span class="toggler-radio__subtext">&nbsp;</span>
                                         {{ parent() }}
@@ -150,8 +150,6 @@
 
                     </div>
 
-
-
                     {% embed molecule('form') with {
                         class: 'register-form js-login__guest' ~ (data.isGuest ? '' : ' is-hidden'),
                         modifiers: ['login', 'checkout-actions'],
@@ -177,15 +175,6 @@
                                     form: embed.forms.customerGuest,
                                     enableStart: false,
                                     enableEnd: false,
-                                    layout: {
-                                        salutation: 'col col--sm-12 col--md-6',
-                                        first_name: 'col col--sm-12 col--md-6',
-                                        last_name: 'col col--sm-12 col--md-6',
-                                        address1: 'col col--sm-12 col--md-8',
-                                        address2: 'col col--sm-12 col--md-4',
-                                        zip_code: 'col col--sm-12 col--md-3',
-                                        city: 'col col--sm-12 col--md-9',
-                                    },
                                     submit: {
                                         enable: false
                                     },
