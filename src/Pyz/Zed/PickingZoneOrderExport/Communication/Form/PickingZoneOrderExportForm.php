@@ -23,10 +23,12 @@ use Symfony\Component\Validator\Constraints\NotBlank;
 class PickingZoneOrderExportForm extends AbstractType
 {
     public const FIELD_PICKING_ZONE_ID = 'picking_zone_id';
+    public const FIELD_PICKING_STORE = 'picking_store';
     public const FIELD_PICKING_DATE = 'picking_date';
     public const VALIDITY_DATE_FORMAT = 'yyyy-MM-dd';
 
     public const OPTION_PICKING_ZONES = 'option_picking_zones';
+    public const OPTION_PICKING_STORES = 'option_picking_stores';
 
     /**
      * @param \Symfony\Component\OptionsResolver\OptionsResolver $resolver
@@ -36,6 +38,7 @@ class PickingZoneOrderExportForm extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setRequired(static::OPTION_PICKING_ZONES);
+        $resolver->setRequired(static::OPTION_PICKING_STORES);
     }
 
     /**
@@ -48,6 +51,7 @@ class PickingZoneOrderExportForm extends AbstractType
     {
         $this
             ->addPickingZoneField($builder, $options)
+            ->addPickingStoreField($builder, $options)
             ->addPickingDateField($builder);
     }
 
@@ -68,6 +72,32 @@ class PickingZoneOrderExportForm extends AbstractType
                 'multiple' => false,
                 'required' => true,
                 'choices' => array_flip($options[static::OPTION_PICKING_ZONES]),
+                'constraints' => [
+                    new NotBlank(),
+                ],
+            ]
+        );
+
+        return $this;
+    }
+
+    /**
+     * @param \Symfony\Component\Form\FormBuilderInterface $builder
+     * @param mixed[] $options
+     *
+     * @return $this
+     */
+    protected function addPickingStoreField(FormBuilderInterface $builder, array $options)
+    {
+        $builder->add(
+            static::FIELD_PICKING_STORE,
+            ChoiceType::class,
+            [
+                'label' => 'picking_zone_order_export_gui.field.picking_store',
+                'expanded' => false,
+                'multiple' => false,
+                'required' => true,
+                'choices' => $options[static::OPTION_PICKING_STORES],
                 'constraints' => [
                     new NotBlank(),
                 ],

@@ -9,6 +9,7 @@ namespace Pyz\Zed\PickingZoneOrderExport\Communication\Form\DataProvider;
 
 use Pyz\Zed\PickingZone\Business\PickingZoneFacadeInterface;
 use Pyz\Zed\PickingZoneOrderExport\Communication\Form\PickingZoneOrderExportForm;
+use Spryker\Shared\Kernel\Store;
 
 class PickingZoneOrderExportFormDataProvider
 {
@@ -31,6 +32,7 @@ class PickingZoneOrderExportFormDataProvider
     public function getOptions(): array
     {
         $options[PickingZoneOrderExportForm::OPTION_PICKING_ZONES] = $this->getPickingZones();
+        $options[PickingZoneOrderExportForm::OPTION_PICKING_STORES] = $this->getPickingStores();
 
         return $options;
     }
@@ -48,5 +50,19 @@ class PickingZoneOrderExportFormDataProvider
         }
 
         return $pickingZones;
+    }
+
+    /**
+     * @return string[]
+     */
+    protected function getPickingStores(): array
+    {
+        $pickingStores = [];
+
+        foreach (Store::getInstance()->getAllowedStores() as $allowedStore) {
+            $pickingStores[$allowedStore] = $allowedStore;
+        }
+
+        return $pickingStores;
     }
 }

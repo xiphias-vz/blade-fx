@@ -57,11 +57,12 @@ class PickingZoneOrderExportContentBuilder implements PickingZoneOrderExportCont
 
     /**
      * @param int $idPickingZone
+     * @param string $pickingStore
      * @param \DateTime $datePicking
      *
      * @return \Generated\Shared\Transfer\ExportContentsTransfer
      */
-    public function generateContent(int $idPickingZone, DateTime $datePicking): ExportContentsTransfer
+    public function generateContent(int $idPickingZone, string $pickingStore, DateTime $datePicking): ExportContentsTransfer
     {
         $pickingZoneTransfer = $this->pickingZoneFacade->findPickingZoneById($idPickingZone);
 
@@ -82,6 +83,7 @@ class PickingZoneOrderExportContentBuilder implements PickingZoneOrderExportCont
 
         $readyForPickingOrderCriteriaFilterTransfer = (new OrderCriteriaFilterTransfer())
             ->setIdPickingZone($pickingZoneTransfer->getIdPickingZone())
+            ->setPickingStore($pickingStore)
             ->setDeliveryDate($datePicking->format('c'));
 
         $salesOrderItems = $this->merchantSalesOrderFacade

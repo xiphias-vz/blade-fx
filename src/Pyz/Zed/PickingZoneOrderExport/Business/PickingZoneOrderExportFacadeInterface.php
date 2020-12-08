@@ -20,12 +20,14 @@ interface PickingZoneOrderExportFacadeInterface
      * @api
      *
      * @param int $idPickingZone
+     * @param string $pickingStore
      * @param \DateTime $datePicking
      *
      * @return \Generated\Shared\Transfer\ExportContentsTransfer
      */
     public function generatePickingZoneOrderExportContent(
         int $idPickingZone,
+        string $pickingStore,
         DateTime $datePicking
     ): ExportContentsTransfer;
 

@@ -84,6 +84,7 @@ class MerchantSalesOrderRepository extends SprykerMerchantSalesOrderRepository i
                 ]
             )
             ->addAnd(PyzPickingZoneTableMap::COL_ID_PICKING_ZONE, $orderFilterCriteriaTransfer->getIdPickingZone())
+            ->addAnd(SpySalesOrderItemTableMap::COL_STORE, $orderFilterCriteriaTransfer->getPickingStore())
             ->groupBy(['spy_sales_shipment.requested_delivery_date', 'spy_sales_order_item.sku'])
             ->orderBy('spy_sales_shipment.requested_delivery_date')
             ->find()

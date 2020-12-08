@@ -13,6 +13,7 @@
 
     <transfer name="OrderCriteriaFilter">
         <property name="idPickingZone" type="int"/>
+        <property name="pickingStore" type="string"/>
         <property name="idUser" type="int"/>
         <property name="itemStatuses" type="string[]" singular="itemStatus"/>
     </transfer>

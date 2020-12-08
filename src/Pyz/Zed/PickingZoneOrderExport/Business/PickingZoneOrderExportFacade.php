@@ -18,22 +18,25 @@ use Symfony\Component\HttpFoundation\Response;
 class PickingZoneOrderExportFacade extends AbstractFacade implements PickingZoneOrderExportFacadeInterface
 {
     /**
-     * {@inheritDoc}
+     * Specification:
+     * - Generates content for picking zone order export.
      *
      * @api
      *
      * @param int $idPickingZone
+     * @param string $pickingStore
      * @param \DateTime $datePicking
      *
      * @return \Generated\Shared\Transfer\ExportContentsTransfer
      */
     public function generatePickingZoneOrderExportContent(
         int $idPickingZone,
+        string $pickingStore,
         DateTime $datePicking
     ): ExportContentsTransfer {
         return $this->getFactory()
             ->createPickingZoneOrderExportContentBuilder()
-            ->generateContent($idPickingZone, $datePicking);
+            ->generateContent($idPickingZone, $pickingStore, $datePicking);
     }
 
     /**
