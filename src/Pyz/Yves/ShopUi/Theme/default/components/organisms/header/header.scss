@@ -190,6 +190,15 @@ $header-sticky-height: rem(69, number);
 
         }
 
+        @media only screen and (min-width: 576px) and (max-width: 991px) {
+            .tablet-style {
+                position: fixed;
+                left: 1.25rem;
+                top: rem(25);
+                background-color: transparent;
+            }
+        }
+
         @content;
     }
 }

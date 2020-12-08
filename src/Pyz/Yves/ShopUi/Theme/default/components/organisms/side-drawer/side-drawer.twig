@@ -50,7 +50,7 @@
                             } only %}
                             {{ 'customer.profile.link' | trans }}
                         </a>
-                        <a href="{{ 'page.faq.url' | trans }}" class="{{ config.name }}__navigation-item link link--reset-focus">
+                        <a href="{{ 'page.fragen.url' | trans }}" class="{{ config.name }}__navigation-item link link--reset-focus" target="_blank">
                             {% include atom('icon') with {
                                 modifiers: ['small'],
                                 class: 'link__icon',
@@ -59,17 +59,6 @@
                                 },
                             } only %}
                             {{ 'global.help' | trans }}
-                        </a>
-                        <a href="https://www.welcome.ccd.demo-spryker.com"
-                           class="{{ config.name }}__navigation-item link link--reset-focus">
-                            {% include atom('icon') with {
-                                modifiers: ['small'],
-                                class: 'link__icon',
-                                data: {
-                                    name: 'store-finder',
-                                },
-                            } only %}
-                            {{ 'global.store_finder' | trans }}
                         </a>
 
                         {% if is_granted('ROLE_USER') %}
