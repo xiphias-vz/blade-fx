@@ -37,6 +37,8 @@
     </a>
 
     <script type="text/javascript">
-        document.querySelector(".image-gallery__image").onerror = function(){document.querySelector(".image-gallery__image").src = '{{ defaultImage }}' };
+        document.querySelector(".image-gallery__image").onerror = function(args){
+            args.currentTarget.src = '{{ defaultImage }}';
+        };
     </script>
 {% endblock %}
