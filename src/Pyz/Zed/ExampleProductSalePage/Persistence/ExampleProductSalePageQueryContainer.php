@@ -72,18 +72,15 @@ class ExampleProductSalePageQueryContainer extends AbstractQueryContainer implem
                     ->endUse()
                 ->endUse()
             ->endUse()
-            ->addAnd('priceProductDefaultOriginal.id_price_product_default', null, Criteria::ISNOTNULL)
-            ->addAnd('priceProductDefaultDefault.id_price_product_default', null, Criteria::ISNOTNULL)
             ->addJoinCondition('priceProductStoreDefault', 'priceProductStoreOrigin.fk_store = priceProductStoreDefault.fk_store')
             ->addJoinCondition('priceProductStoreDefault', 'priceProductStoreOrigin.fk_currency = priceProductStoreDefault.fk_currency');
 
         $orCriterion = $this->getBasicModelCriterion(
             $productLabelProductAbstractQuery,
-            'priceProductStoreOrigin.gross_price < priceProductStoreDefault.gross_price',
+            'priceProductStoreOrigin.gross_price <= priceProductStoreDefault.gross_price',
             'priceProductStoreOrigin.gross_price'
         );
-        $orCriterion->addOr($productLabelProductAbstractQuery->getNewCriterion('priceProductStoreOrigin.gross_price', null, Criteria::ISNULL));
-        $orCriterion->addOr($productLabelProductAbstractQuery->getNewCriterion('priceProductStoreDefault.gross_price', null, Criteria::ISNULL));
+
         $productLabelProductAbstractQuery->addAnd($orCriterion);
 
         return $productLabelProductAbstractQuery;
