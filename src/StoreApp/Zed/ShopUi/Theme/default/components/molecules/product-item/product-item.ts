@@ -89,24 +89,15 @@ export default class ProductItem extends Component {
         const inputWeightValue = Number(this.$weightField.val());
         const inputWeightMax = Number(this.$weightField.attr('max'));
         const inputWeightMin = Number(this.$weightField.attr('min'));
-        const errorMessageSpanIndex = 2;
-
-        if (this.$weightField[0].parentNode.children.item(errorMessageSpanIndex)) {
-            this.$weightField[0].parentNode.children.item(errorMessageSpanIndex).remove();
-        }
 
         if (inputWeightValue > inputWeightMax) {
-            const span = document.createElement('span');
-            span.innerHTML = `Der Eingabewert sollte nicht größer als sein ${inputWeightMax}`;
-            span.style.color = 'red';
-            this.$weightField[0].parentNode.appendChild(span);
+            alert(`Der Eingabewert sollte nicht größer als sein ${inputWeightMax}`);
+            this.$weightField.val(this.$weightField.attr('value'));
         }
 
         if (inputWeightValue < inputWeightMin) {
-            const span = document.createElement('span');
-            span.innerHTML = `Der Eingabewert sollte nicht kleiner als sein ${inputWeightMin}`;
-            span.style.color = 'red';
-            this.$weightField[0].parentNode.appendChild(span);
+            alert(`Der Eingabewert sollte nicht kleiner als sein ${inputWeightMin}`);
+            this.$weightField.val(this.$weightField.attr('value'));
         }
     }
 
