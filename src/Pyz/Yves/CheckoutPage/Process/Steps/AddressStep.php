@@ -35,6 +35,11 @@ class AddressStep extends SprykerAddressStep
      */
     public function execute(Request $request, AbstractTransfer $quoteTransfer)
     {
+        if (!$this->executeCheckoutAddressStepEnterPreCheckPlugins($quoteTransfer)) {
+            return $quoteTransfer;
+        }
+        $quoteTransfer = $this->stepExecutor->execute($request, $quoteTransfer);
+
         if ($quoteTransfer->getCustomer() != null && $quoteTransfer->getCustomer()->getIsGuest()) {
             $billingAddress = $quoteTransfer->getBillingAddress();
             $newCustomer = $quoteTransfer->getCustomer();
@@ -48,11 +53,6 @@ class AddressStep extends SprykerAddressStep
 
             $quoteTransfer->setCustomer($newCustomer);
         }
-
-        if (!$this->executeCheckoutAddressStepEnterPreCheckPlugins($quoteTransfer)) {
-            return $quoteTransfer;
-        }
-        $quoteTransfer = $this->stepExecutor->execute($request, $quoteTransfer);
 
         return $this->calculationClient->recalculate($quoteTransfer);
     }
