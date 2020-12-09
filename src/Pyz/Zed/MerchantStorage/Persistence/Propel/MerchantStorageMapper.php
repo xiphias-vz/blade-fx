@@ -82,12 +82,29 @@ class MerchantStorageMapper
                 MerchantTransfer::NAME => $merchant->getName(),
                 MerchantTransfer::MERCHANT_REFERENCE => $merchant->getMerchantReference(),
                 MerchantTransfer::PICKING_CAPACITY_PER_SLOT => $merchant->getPickingCapacityPerSlot(),
-                MerchantTransfer::DELIVERY_CAPACITY_PER_SLOT => $merchant->getDeliveryCapacityPerSlot(),
+                MerchantTransfer::WEEK_DAYS_TIME_SLOTS => $merchant->getWeekDaysTimeSlotsRaw(),
                 MerchantTransfer::DELIVERY_POSTAL_CODES => $merchant->getDeliveryPostalCodes(),
             ];
         }
 
         return $merchantsListStorage->setData($merchants)->setStore($merchantCollectionTransfer->getStoreName());
+    }
+
+    /**
+     * @param \Propel\Runtime\Collection\ObjectCollection $timeSlots
+     *
+     * @return array
+     */
+    public function mapTimeslotEntitiesToWeekDaysTimeSlotsTransferRaw(ObjectCollection $timeSlots): array
+    {
+        $timeSlotsIndexedByDay = [];
+
+        foreach ($timeSlots as $timeSlot) {
+            /** @var \Orm\Zed\TimeSlot\Persistence\PyzTimeSlot $timeSlot */
+            $timeSlotsIndexedByDay[$timeSlot->getDay()][$timeSlot->getTimeSlot()] = $timeSlot->getCapacity();
+        }
+
+        return $timeSlotsIndexedByDay;
     }
 
     /**

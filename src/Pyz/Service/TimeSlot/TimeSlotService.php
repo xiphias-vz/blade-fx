@@ -21,12 +21,16 @@ class TimeSlotService extends AbstractService implements TimeSlotServiceInterfac
      *
      * @param \Generated\Shared\Transfer\ShipmentMethodTransfer $shipmentMethodTransfer
      * @param \Generated\Shared\Transfer\MerchantTransfer $merchantTransfer
+     * @param string $currentDate
+     * @param string $timeSlot
      *
      * @return int|null
      */
-    public function getMerchantCapacityByShipmentMethod(
+    public function getMerchantTimeSlotCapacity(
         ShipmentMethodTransfer $shipmentMethodTransfer,
-        MerchantTransfer $merchantTransfer
+        MerchantTransfer $merchantTransfer,
+        string $currentDate,
+        string $timeSlot
     ): ?int {
         if ($merchantTransfer->getDeliveryCapacityPerSlot()
             && $shipmentMethodTransfer->getShipmentMethodKey() === ShipmentConfig::SHIPMENT_METHOD_DELIVERY
@@ -34,12 +38,39 @@ class TimeSlotService extends AbstractService implements TimeSlotServiceInterfac
             return $merchantTransfer->getDeliveryCapacityPerSlot();
         }
 
-        if ($merchantTransfer->getPickingCapacityPerSlot()
-            && $shipmentMethodTransfer->getShipmentMethodKey() === ShipmentConfig::SHIPMENT_METHOD_CLICK_AND_COLLECT
-        ) {
-            return $merchantTransfer->getPickingCapacityPerSlot();
+        if ($shipmentMethodTransfer->getShipmentMethodKey() === ShipmentConfig::SHIPMENT_METHOD_CLICK_AND_COLLECT) {
+            return $this->getClickAndCollectCapacity($merchantTransfer, $currentDate, $timeSlot);
         }
 
         return static::ZERO_CAPACITY;
+    }
+
+    /**
+     * @param \Generated\Shared\Transfer\MerchantTransfer $merchantTransfer
+     * @param string $currentDate
+     * @param string $timeSlot
+     *
+     * @return int
+     */
+    protected function getClickAndCollectCapacity(MerchantTransfer $merchantTransfer, string $currentDate, string $timeSlot): int
+    {
+        $weekDaysTimeSlotsTransfer = $merchantTransfer->getWeekDaysTimeSlots();
+        $dayOfWeek = date('l', strtotime($currentDate));
+
+        foreach ($weekDaysTimeSlotsTransfer as $weekDayTimeSlotsTransfer) {
+            if ($weekDayTimeSlotsTransfer->getWeekDayName() !== $dayOfWeek) {
+                continue;
+            }
+
+            foreach ($weekDayTimeSlotsTransfer->getTimeSlotsCapacity() as $timeSlotCapacityTransfer) {
+                if ($timeSlotCapacityTransfer->getTimeSlot() !== $timeSlot) {
+                    continue;
+                }
+
+                return $timeSlotCapacityTransfer->getCapacity();
+            }
+        }
+
+        return $merchantTransfer->getPickingCapacityPerSlot();
     }
 }

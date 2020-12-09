@@ -64,6 +64,7 @@ use Pyz\Zed\DataImport\Business\Model\Store\StoreReader;
 use Pyz\Zed\DataImport\Business\Model\Store\StoreWriterStep;
 use Pyz\Zed\DataImport\Business\Model\Tax\TaxSetNameToIdTaxSetStep;
 use Pyz\Zed\DataImport\Business\Model\Tax\TaxWriterStep;
+use Pyz\Zed\DataImport\Business\Model\TimeSlotCapacity\TimeSlotWriterStep;
 use Pyz\Zed\DataImport\DataImportDependencyProvider;
 use Pyz\Zed\MerchantRegion\Communication\Plugin\DataImport\MerchantRegionDataImportPlugin;
 use Pyz\Zed\ProductUpdate\Business\ProductUpdateFacadeInterface;
@@ -128,7 +129,8 @@ class DataImportBusinessFactory extends SprykerDataImportBusinessFactory
         $dataImporterCollection
             ->addDataImporter($this->createNavigationNodeImporter())
             ->addDataImporter($this->getMerchantDeliveryPostalCodeImporter())
-            ->addDataImporter($this->getMerchantUserImporter());
+            ->addDataImporter($this->getMerchantUserImporter())
+            ->addDataImporter($this->getTimeSlotImporter());
 
         return $dataImporterCollection;
     }
@@ -736,6 +738,21 @@ class DataImportBusinessFactory extends SprykerDataImportBusinessFactory
     }
 
     /**
+     * @return \Spryker\Zed\DataImport\Business\Model\DataImporterInterface|\Spryker\Zed\DataImport\Business\Model\DataSet\DataSetStepBrokerAwareInterface
+     */
+    protected function getTimeSlotImporter()
+    {
+        $dataImporter = $this->getCsvDataImporterFromConfig($this->getConfig()->getTimeSlotImporterConfiguration());
+
+        $dataSetStepBroker = $this->createTransactionAwareDataSetStepBroker();
+        $dataSetStepBroker->addStep($this->createTimeSlotWriterStep());
+
+        $dataImporter->addDataSetStepBroker($dataSetStepBroker);
+
+        return $dataImporter;
+    }
+
+    /**
      * @return \Pyz\Zed\DataImport\Business\Model\MerchantUser\MerchantUserWriterStep
      */
     public function createMerchantUserWriterStep(): MerchantUserWriterStep
@@ -749,6 +766,14 @@ class DataImportBusinessFactory extends SprykerDataImportBusinessFactory
     public function createMerchantReferenceToIdMerchantStep(): MerchantReferenceToIdMerchantStep
     {
         return new MerchantReferenceToIdMerchantStep();
+    }
+
+    /**
+     * @return \Pyz\Zed\DataImport\Business\Model\TimeSlotCapacity\TimeSlotWriterStep
+     */
+    public function createTimeSlotWriterStep(): TimeSlotWriterStep
+    {
+        return new TimeSlotWriterStep();
     }
 
     /**

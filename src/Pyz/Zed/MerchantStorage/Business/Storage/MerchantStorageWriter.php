@@ -87,6 +87,7 @@ class MerchantStorageWriter implements MerchantStorageWriterInterface
         foreach ($storeIds as $idStore) {
             $merchantCollectionTransfer = $this->merchantStorageRepository->getMerchants(
                 (new MerchantCriteriaFilterTransfer())->setIdStore($idStore)
+                ->setWithTimeSlots(true)
             );
             $this->merchantStorageEntityManager->saveMerchantsList($merchantCollectionTransfer);
         }

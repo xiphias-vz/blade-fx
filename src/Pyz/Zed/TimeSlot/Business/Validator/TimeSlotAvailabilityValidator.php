@@ -90,6 +90,7 @@ class TimeSlotAvailabilityValidator implements TimeSlotAvailabilityValidatorInte
             ->findOne(
                 (new MerchantCriteriaFilterTransfer())
                     ->setWithDeliveryPostalCodes(true)
+                    ->setWithTimeSlots(true)
                     ->setMerchantReference($quoteTransfer->getMerchantReference())
             );
 
@@ -112,9 +113,13 @@ class TimeSlotAvailabilityValidator implements TimeSlotAvailabilityValidatorInte
                     ->setExcludeCancelledOrders(true)
             ));
 
-        $merchantCapacity = $this->timeSlotService->getMerchantCapacityByShipmentMethod(
+        [$currentDate, $timeSlot] = explode('_', $currentShipmentTransfer->getRequestedDeliveryDate());
+
+        $merchantCapacity = $this->timeSlotService->getMerchantTimeSlotCapacity(
             $currentShipmentMethodTransfer,
-            $currentMerchantTransfer
+            $currentMerchantTransfer,
+            $currentDate,
+            $timeSlot
         );
 
         return $timeSlotOrdersCount < $merchantCapacity;

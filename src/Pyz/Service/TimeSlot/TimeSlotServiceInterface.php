@@ -20,11 +20,15 @@ interface TimeSlotServiceInterface
      *
      * @param \Generated\Shared\Transfer\ShipmentMethodTransfer $shipmentMethodTransfer
      * @param \Generated\Shared\Transfer\MerchantTransfer $merchantTransfer
+     * @param string $currentDate
+     * @param string $timeSlot
      *
      * @return int|null
      */
-    public function getMerchantCapacityByShipmentMethod(
+    public function getMerchantTimeSlotCapacity(
         ShipmentMethodTransfer $shipmentMethodTransfer,
-        MerchantTransfer $merchantTransfer
+        MerchantTransfer $merchantTransfer,
+        string $currentDate,
+        string $timeSlot
     ): ?int;
 }

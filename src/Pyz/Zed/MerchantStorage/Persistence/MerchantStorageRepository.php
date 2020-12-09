@@ -11,6 +11,7 @@ use Generated\Shared\Transfer\MerchantCollectionTransfer;
 use Generated\Shared\Transfer\MerchantCriteriaFilterTransfer;
 use Orm\Zed\Merchant\Persistence\Map\SpyMerchantTableMap;
 use Orm\Zed\Merchant\Persistence\SpyMerchantQuery;
+use Orm\Zed\TimeSlot\Persistence\PyzTimeSlotQuery;
 use Propel\Runtime\ActiveQuery\Criteria;
 use Spryker\Zed\Kernel\Persistence\AbstractRepository;
 
@@ -43,6 +44,18 @@ class MerchantStorageRepository extends AbstractRepository implements MerchantSt
         if ($merchantCriteriaFilterTransfer->getIdStore() && $merchantCollectionTransfer->getMerchants()->count()) {
             $merchantTransfer = $merchantCollectionTransfer->getMerchants()[0];
             $merchantCollectionTransfer->setStoreName($merchantTransfer->getStoreName());
+        }
+
+        if ($merchantCriteriaFilterTransfer->getWithTimeSlots()) {
+            foreach ($merchantCollectionTransfer->getMerchants() as $merchantTransfer) {
+                $timeslotEntities = PyzTimeSlotQuery::create()->filterByMerchantReference($merchantTransfer->getMerchantReference())->find();
+
+                $weekDaysTimeSlotsRaw = $this->getFactory()
+                    ->createMerchantStorageMapper()
+                    ->mapTimeslotEntitiesToWeekDaysTimeSlotsTransferRaw($timeslotEntities);
+
+                $merchantTransfer->setWeekDaysTimeSlotsRaw($weekDaysTimeSlotsRaw);
+            }
         }
 
         return $merchantCollectionTransfer;

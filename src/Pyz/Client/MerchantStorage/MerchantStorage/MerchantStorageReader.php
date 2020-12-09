@@ -10,6 +10,7 @@ namespace Pyz\Client\MerchantStorage\MerchantStorage;
 use Generated\Shared\Transfer\MerchantCollectionTransfer;
 use Generated\Shared\Transfer\MerchantTransfer;
 use Generated\Shared\Transfer\SynchronizationDataTransfer;
+use Pyz\Client\MerchantStorage\Mapper\MerchantStorageMapperInterface;
 use Pyz\Shared\MerchantStorage\MerchantStorageConfig as MerchantStorageMerchantStorageConfig;
 use Spryker\Client\Storage\StorageClientInterface;
 use Spryker\Client\Store\StoreClientInterface;
@@ -33,15 +34,26 @@ class MerchantStorageReader implements MerchantStorageReaderInterface
     protected $storeClient;
 
     /**
+     * @var \Pyz\Client\MerchantStorage\Mapper\MerchantStorageMapperInterface
+     */
+    protected $merchantStorageMapper;
+
+    /**
      * @param \Spryker\Service\Synchronization\SynchronizationServiceInterface $synchronizationService
      * @param \Spryker\Client\Storage\StorageClientInterface $storageClient
      * @param \Spryker\Client\Store\StoreClientInterface $storeClient
+     * @param \Pyz\Client\MerchantStorage\Mapper\MerchantStorageMapperInterface $merchantStorageMapper
      */
-    public function __construct(SynchronizationServiceInterface $synchronizationService, StorageClientInterface $storageClient, StoreClientInterface $storeClient)
-    {
+    public function __construct(
+        SynchronizationServiceInterface $synchronizationService,
+        StorageClientInterface $storageClient,
+        StoreClientInterface $storeClient,
+        MerchantStorageMapperInterface $merchantStorageMapper
+    ) {
         $this->synchronizationService = $synchronizationService;
         $this->storageClient = $storageClient;
         $this->storeClient = $storeClient;
+        $this->merchantStorageMapper = $merchantStorageMapper;
     }
 
     /**
@@ -61,7 +73,9 @@ class MerchantStorageReader implements MerchantStorageReaderInterface
         if ($merchants) {
             foreach ($merchants as $merchant) {
                 if (is_array($merchant)) {
-                    $merchantCollectionTransfer->addMerchants((new MerchantTransfer())->fromArray($merchant));
+                    $merchantCollectionTransfer->addMerchants(
+                        $this->merchantStorageMapper->mapMerchantStorageDataToMerchantTransfer($merchant, new MerchantTransfer())
+                    );
                 }
             }
         }

@@ -65,6 +65,7 @@ class DataImportConfig extends SprykerDataImportConfig
     public const IMPORT_TYPE_STORE = 'store';
     public const IMPORT_POSTAL_CODE = 'postal-code';
     public const IMPORT_PRODUCT_MANAGEMENT_ATTRIBUTE = 'product-management-attribute';
+    public const IMPORT_TIME_SLOT = 'time-slot';
 
     /**
      * @return \Generated\Shared\Transfer\DataImporterConfigurationTransfer
@@ -370,6 +371,14 @@ class DataImportConfig extends SprykerDataImportConfig
     public function getMerchantUserImporterConfiguration(): DataImporterConfigurationTransfer
     {
         return $this->buildBaseImporterConfiguration('spryker/merchant_user.csv', static::IMPORT_TYPE_MERCHANT_USER);
+    }
+
+    /**
+     * @return \Generated\Shared\Transfer\DataImporterConfigurationTransfer
+     */
+    public function getTimeSlotImporterConfiguration(): DataImporterConfigurationTransfer
+    {
+        return $this->buildBaseImporterConfiguration('time_slot.csv', static::IMPORT_TIME_SLOT);
     }
 
     /**

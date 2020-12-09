@@ -9,6 +9,7 @@ namespace Pyz\Zed\MerchantStorage\Persistence;
 
 use Orm\Zed\Merchant\Persistence\SpyMerchantQuery;
 use Orm\Zed\MerchantStorage\Persistence\PyzMerchantsListStorageQuery;
+use Orm\Zed\TimeSlot\Persistence\PyzTimeSlotQuery;
 use Pyz\Zed\MerchantStorage\Persistence\Propel\MerchantStorageMapper;
 use Spryker\Zed\Kernel\Persistence\AbstractPersistenceFactory;
 
@@ -41,5 +42,13 @@ class MerchantStoragePersistenceFactory extends AbstractPersistenceFactory
     public function createMerchantsListStorageQuery(): PyzMerchantsListStorageQuery
     {
         return new PyzMerchantsListStorageQuery();
+    }
+
+    /**
+     * @return \Orm\Zed\TimeSlot\Persistence\PyzTimeSlotQuery
+     */
+    public function createTimeSlotQuery(): PyzTimeSlotQuery
+    {
+        return new PyzTimeSlotQuery();
     }
 }

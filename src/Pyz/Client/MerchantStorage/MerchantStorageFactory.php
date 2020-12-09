@@ -7,6 +7,8 @@
 
 namespace Pyz\Client\MerchantStorage;
 
+use Pyz\Client\MerchantStorage\Mapper\MerchantStorageMapper;
+use Pyz\Client\MerchantStorage\Mapper\MerchantStorageMapperInterface;
 use Pyz\Client\MerchantStorage\MerchantStorage\MerchantStorageReader;
 use Pyz\Client\MerchantStorage\MerchantStorage\MerchantStorageReaderInterface;
 use Spryker\Client\Kernel\AbstractFactory;
@@ -48,7 +50,16 @@ class MerchantStorageFactory extends AbstractFactory
         return new MerchantStorageReader(
             $this->getSynchronizationService(),
             $this->getStorageClient(),
-            $this->getStoreClient()
+            $this->getStoreClient(),
+            $this->createMerchantStorageMapper()
         );
+    }
+
+    /**
+     * @return \Pyz\Client\MerchantStorage\Mapper\MerchantStorageMapperInterface
+     */
+    public function createMerchantStorageMapper(): MerchantStorageMapperInterface
+    {
+        return new MerchantStorageMapper();
     }
 }

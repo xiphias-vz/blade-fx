@@ -257,7 +257,7 @@ class ShipmentTimeSlotsExpander implements ShipmentSlotsExpanderInterface
             return false;
         }
 
-        return $this->timeSlotService->getMerchantCapacityByShipmentMethod($shipmentMethodTransfer, $currentMerchant) > static::ZERO_CAPACITY;
+        return true;
     }
 
     /**
@@ -281,7 +281,14 @@ class ShipmentTimeSlotsExpander implements ShipmentSlotsExpanderInterface
                 sprintf(SharedTimeSlotConfig::TIME_SLOT_DATE_TIME_CONC_FORMAT, $currentDate, $timeSlot)
             );
 
-            if ($this->timeSlotService->getMerchantCapacityByShipmentMethod($shipmentMethodTransfer, $merchantTransfer) <= $timeSlotOrdersCount) {
+            $merchantTimeSlotCapacity = $this->timeSlotService->getMerchantTimeSlotCapacity(
+                $shipmentMethodTransfer,
+                $merchantTransfer,
+                $currentDate,
+                $timeSlot
+            );
+
+            if ($merchantTimeSlotCapacity <= $timeSlotOrdersCount) {
                 unset($timeSlotTemplate[$key]);
             }
         }

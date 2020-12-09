@@ -7,5 +7,25 @@
         <property name="timeSlots" type="array"/>
     </transfer>
 
+    <transfer name="WeekDayTimeSlots">
+        <property name="weekDayName" type="string"/>
+        <property name="timeSlotsCapacity" type="TimeSlotCapacity[]"/>
+    </transfer>
+
+    <transfer name="TimeSlotCapacity">
+        <property name="merchantReference" type="string"/>
+        <property name="day" type="string"/>
+        <property name="timeSlot" type="string"/>
+        <property name="capacity" type="int"/>
+    </transfer>
+
+    <transfer name="Merchant">
+        <property name="weekDaysTimeSlots" type="WeekDayTimeSlots[]"/>
+        <property name="weekDaysTimeSlotsRaw" type="array"/>
+    </transfer>
+
+    <transfer name="MerchantCriteriaFilter">
+        <property name="withTimeSlots" type="bool"/>
+    </transfer>
 
 </transfers>

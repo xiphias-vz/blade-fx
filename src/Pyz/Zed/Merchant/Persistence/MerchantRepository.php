@@ -11,11 +11,12 @@ use Generated\Shared\Transfer\MerchantCriteriaFilterTransfer;
 use Generated\Shared\Transfer\MerchantTransfer;
 use Orm\Zed\Merchant\Persistence\Map\SpyMerchantTableMap;
 use Orm\Zed\PostalCode\Persistence\Map\PyzPostalCodeTableMap;
+use Orm\Zed\TimeSlot\Persistence\PyzTimeSlotQuery;
 use Propel\Runtime\ActiveQuery\Criteria;
 use Spryker\Zed\Merchant\Persistence\MerchantRepository as SprykerMerchantRepository;
 
 /**
- * @method \Spryker\Zed\Merchant\Persistence\MerchantPersistenceFactory getFactory()
+ * @method \Pyz\Zed\Merchant\Persistence\MerchantPersistenceFactory getFactory()
  */
 class MerchantRepository extends SprykerMerchantRepository implements MerchantRepositoryInterface
 {
@@ -65,8 +66,20 @@ class MerchantRepository extends SprykerMerchantRepository implements MerchantRe
             return null;
         }
 
-        return $this->getFactory()
-            ->createPropelMerchantMapper()
+        $merchantTransfer = $this->getFactory()
+            ->pyzCreatePropelMerchantMapper()
             ->mapMerchantEntityToMerchantTransfer($merchantEntity, new MerchantTransfer());
+
+        if ($merchantCriteriaFilterTransfer->getWithTimeSlots()) {
+            $timeslotEntities = PyzTimeSlotQuery::create()->filterByMerchantReference($merchantTransfer->getMerchantReference())->find();
+
+            $weekDaysTimeSlotsTransfer = $this->getFactory()
+                ->pyzCreatePropelMerchantMapper()
+                ->mapTimeslotEntitiesToWeekDaysTimeSlotsTransfer($timeslotEntities);
+
+            $merchantTransfer->setWeekDaysTimeSlots($weekDaysTimeSlotsTransfer);
+        }
+
+        return $merchantTransfer;
     }
 }
