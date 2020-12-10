@@ -15,7 +15,6 @@ use Elastica\Query\Term;
 use Generated\Shared\Search\PageIndexMap;
 use Generated\Shared\Transfer\SearchContextTransfer;
 use Spryker\Client\Kernel\AbstractPlugin;
-use Spryker\Client\ProductLabel\Plugin\ProductLabelFacetConfigTransferBuilderPlugin;
 use Spryker\Client\Search\Dependency\Plugin\QueryInterface;
 use Spryker\Client\SearchExtension\Dependency\Plugin\SearchContextAwareQueryInterface;
 
@@ -120,7 +119,7 @@ class SaleSearchQueryPlugin extends AbstractPlugin implements QueryInterface, Se
         $saleProductsFilter = new Nested();
         $saleProductsFilter
             ->setQuery($saleProductsQuery)
-            ->setPath(PageIndexMap::STRING_FACET);
+            ->setPath(PageIndexMap::INTEGER_FACET);
 
         return $saleProductsFilter;
     }
@@ -130,27 +129,33 @@ class SaleSearchQueryPlugin extends AbstractPlugin implements QueryInterface, Se
      */
     protected function createSaleProductsQuery()
     {
-        $localeName = $this->getFactory()
-            ->getStore()
-            ->getCurrentLocale();
-        $labelName = $this->getFactory()
-            ->getConfig()
-            ->getLabelSaleName();
-
-        $storageProductLabelTransfer = $this->getFactory()
-            ->getProductLabelStorageClient()
-            ->findLabelByName($labelName, $localeName);
-
-        $labelId = $storageProductLabelTransfer ? $storageProductLabelTransfer->getIdProductLabel() : 0;
-
+        //TODO: temporary solution until we install spryker/product-label: 3.0.0
+//        $localeName = $this->getFactory()
+//            ->getStore()
+//            ->getCurrentLocale();
+//        $labelName = $this->getFactory()
+//            ->getConfig()
+//            ->getLabelSaleName();
+//
+//        $storageProductLabelTransfer = $this->getFactory()
+//            ->getProductLabelStorageClient()
+//            ->findLabelByName($labelName, $localeName);
+//
+//        $labelId = $storageProductLabelTransfer ? $storageProductLabelTransfer->getIdProductLabel() : 0;
         $newProductsBoolQuery = new BoolQuery();
+//        $stringFacetFieldFilter = $this->createStringFacetFieldFilter(ProductLabelFacetConfigTransferBuilderPlugin::NAME);
+//        $stringFacetValueFilter = $this->createStringFacetValueFilter($labelId);
 
-        $stringFacetFieldFilter = $this->createStringFacetFieldFilter(ProductLabelFacetConfigTransferBuilderPlugin::NAME);
-        $stringFacetValueFilter = $this->createStringFacetValueFilter($labelId);
+
+//        $newProductsBoolQuery
+//            ->addFilter($stringFacetFieldFilter)
+//            ->addFilter($stringFacetValueFilter);
+
+        $termQuery = new Term();
+        $termQuery->setTerm(PageIndexMap::INTEGER_FACET_FACET_NAME, 'price-ORIGINAL-EUR-GROSS_MODE');
 
         $newProductsBoolQuery
-            ->addFilter($stringFacetFieldFilter)
-            ->addFilter($stringFacetValueFilter);
+            ->addFilter($termQuery);
 
         return $newProductsBoolQuery;
     }

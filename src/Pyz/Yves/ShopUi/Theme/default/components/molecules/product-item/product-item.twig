@@ -73,15 +73,30 @@
         {% endblock %}
 
         {% block labels %}
-            {% if data.idProductAbstract %}
-                {% block productAbstractLabels %}
-                    {% widget 'ProductAbstractLabelWidget' args [data.idProductAbstract] with {
-                        data: {
-                            parentJsName: config.jsName,
-                        },
-                    } only %}{% endwidget %}
-                {% endblock %}
+            {% if (data.product.prices['ORIGINAL'] is defined and data.product.prices['DEFAULT'] < data.product.prices['ORIGINAL']) %}
+                {% set labels = labels | default([]) %}
+
+                {% set labels = labels | merge([{
+                    text: '%',
+                    type: 'highlight',
+                }]) %}
+
+                {% include molecule('label-group', 'ProductLabelWidget') with {
+                    data: {
+                        labels: labels,
+                        parentJsName: '',
+                    },
+                } only %}
             {% endif %}
+{#            {% if data.idProductAbstract %}#}
+{#                {% block productAbstractLabels %}#}
+{#                    {% widget 'ProductAbstractLabelWidget' args [data.idProductAbstract] with {#}
+{#                        data: {#}
+{#                            parentJsName: config.jsName,#}
+{#                        },#}
+{#                    } only %}{% endwidget %}#}
+{#                {% endblock %}#}
+{#            {% endif %}#}
         {% endblock %}
 
         {% block groups %}
