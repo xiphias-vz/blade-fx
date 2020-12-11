@@ -21,9 +21,8 @@
         <div class="container">
             <div class="container__inner">
                 {% block content %}
-                    <div class="spacing-bottom spacing-bottom--bigger">
-                        {{- spyCmsBlock({ keys: ['home-promotions-products']}) -}}
-                    </div>
+
+                    {% cms_slot 'slt-3' %}
 
                     <div class="spacing-bottom spacing-bottom--biggest">
                         {% widget 'NavigationWidget' args ['POPULAR_CATEGORIES', 'navigation-categories'] %}{% endwidget %}

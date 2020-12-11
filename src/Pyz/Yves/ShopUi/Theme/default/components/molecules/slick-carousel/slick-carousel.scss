@@ -36,7 +36,7 @@
             }
 
             .slick-prev {
-                left: rem(20);
+                left: rem(-30);
                 transform: rotate(180deg);
 
                 @include helper-breakpoint-media-max($sm-max) {
@@ -45,7 +45,7 @@
             }
 
             .slick-next {
-                right: rem(20);
+                right: rem(-30);
 
                 @include helper-breakpoint-media-max($sm-max) {
                     right: rem(15);
