@@ -41,8 +41,9 @@ class MerchantStorageMapper implements MerchantStorageMapperInterface
         MerchantTransfer $merchantTransfer
     ): MerchantTransfer {
         $merchantTransfer->setWeekDaysTimeSlots(new ArrayObject());
+        $weekDaysTimeSlots = $merchantStorageData[MerchantTransfer::WEEK_DAYS_TIME_SLOTS] ?? [];
 
-        foreach ($merchantStorageData[MerchantTransfer::WEEK_DAYS_TIME_SLOTS] as $dayName => $weekDayTimeSlots) {
+        foreach ($weekDaysTimeSlots as $dayName => $weekDayTimeSlots) {
             $weekDayTimeSlotsTransfer = (new WeekDayTimeSlotsTransfer())->setWeekDayName($dayName);
 
             foreach ($weekDayTimeSlots as $timeSlot => $capacity) {
