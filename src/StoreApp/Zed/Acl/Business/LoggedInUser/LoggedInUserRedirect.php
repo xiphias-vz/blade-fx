@@ -67,8 +67,11 @@ class LoggedInUserRedirect
     {
         $pickerGroupId = $this->group->getByName(AclConstants::PICKER_GROUP)->getIdAclGroup();
         $rootGroupId = $this->group->getByName(AclConstants::ROOT_GROUP)->getIdAclGroup();
+        $supervisorGroupId = $this->group->getByName(AclConstants::SUPERVISOR_GROUP)->getIdAclGroup();
         $currentUserId = $currentUserTransfer->getIdUser();
 
-        return $this->group->hasUser($pickerGroupId, $currentUserId) || $this->group->hasUser($rootGroupId, $currentUserId);
+        return $this->group->hasUser($pickerGroupId, $currentUserId)
+            || $this->group->hasUser($rootGroupId, $currentUserId)
+            || $this->group->hasUser($supervisorGroupId, $currentUserId);
     }
 }

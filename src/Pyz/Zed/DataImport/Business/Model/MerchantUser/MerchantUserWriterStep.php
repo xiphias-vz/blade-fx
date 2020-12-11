@@ -70,6 +70,7 @@ class MerchantUserWriterStep implements DataImportStepInterface
         $userTransfer = $this->getUser($dataSet);
         $userTransfer = $this->saveUser($dataSet, $userTransfer);
 
+        $this->truncateUserToGroups($userTransfer->getIdUser(), $dataSet[static::KEY_ID_GROUP]);
         $this->addUserToGroup($userTransfer->getIdUser(), $dataSet[static::KEY_ID_GROUP]);
     }
 
@@ -139,6 +140,25 @@ class MerchantUserWriterStep implements DataImportStepInterface
         }
 
         $this->aclFacade->addUserToGroup($idUser, $idGroup);
+    }
+
+    /**
+     * @param int $idUser
+     * @param int $idGroup
+     *
+     * @return void
+     */
+    protected function truncateUserToGroups(int $idUser, int $idGroup): void
+    {
+        $userGroups = $this->aclFacade->getUserGroups($idUser);
+
+        foreach ($userGroups->getGroups() as $userGroup) {
+            if ($userGroup->getIdAclGroup() === $idGroup) {
+                continue;
+            }
+
+            $this->aclFacade->removeUserFromGroup($idUser, $userGroup->getIdAclGroup());
+        }
     }
 
     /**

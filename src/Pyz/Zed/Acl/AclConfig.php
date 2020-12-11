@@ -36,6 +36,9 @@ class AclConfig extends SprykerAclConfig
         $groups[] = [
             'name' => AclConstants::PICKER_GROUP,
         ];
+        $groups[] = [
+            'name' => AclConstants::SUPERVISOR_GROUP,
+        ];
 
         return $groups;
     }
@@ -54,6 +57,10 @@ class AclConfig extends SprykerAclConfig
         $roles[] = [
             'name' => AclConstants::PICKER_ROLE,
             'group' => AclConstants::PICKER_GROUP,
+        ];
+        $roles[] = [
+            'name' => AclConstants::SUPERVISOR_ROLE,
+            'group' => AclConstants::SUPERVISOR_GROUP,
         ];
 
         return $roles;
@@ -93,6 +100,34 @@ class AclConfig extends SprykerAclConfig
             'action' => AclConstants::VALIDATOR_WILDCARD,
             'type' => AclConstants::ALLOW,
             'role' => AclConstants::DELIVERY_ROLE,
+        ];
+        $rules[] = [
+            'bundle' => AclConstants::MODULE_SALES,
+            'controller' => AclConstants::VALIDATOR_WILDCARD,
+            'action' => AclConstants::VALIDATOR_WILDCARD,
+            'type' => AclConstants::ALLOW,
+            'role' => AclConstants::SUPERVISOR_ROLE,
+        ];
+        $rules[] = [
+            'bundle' => AclConstants::MODULE_PICKING_ZONE_ORDER_EXPORT,
+            'controller' => AclConstants::VALIDATOR_WILDCARD,
+            'action' => AclConstants::VALIDATOR_WILDCARD,
+            'type' => AclConstants::ALLOW,
+            'role' => AclConstants::SUPERVISOR_ROLE,
+        ];
+        $rules[] = [
+            'bundle' => AclConstants::MODULE_PICKER,
+            'controller' => AclConstants::VALIDATOR_WILDCARD,
+            'action' => AclConstants::VALIDATOR_WILDCARD,
+            'type' => AclConstants::ALLOW,
+            'role' => AclConstants::SUPERVISOR_ROLE,
+        ];
+        $rules[] = [
+            'bundle' => 'error',
+            'controller' => AclConstants::VALIDATOR_WILDCARD,
+            'action' => AclConstants::VALIDATOR_WILDCARD,
+            'type' => AclConstants::ALLOW,
+            'role' => AclConstants::SUPERVISOR_ROLE,
         ];
 
         return $rules;

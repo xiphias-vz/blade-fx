@@ -1,0 +1,23 @@
+{% extends '@Sales/Layout/layout.twig' %}
+
+{% block section_title %}
+    {{ 'Overview of Orders' | trans }}
+{% endblock %}
+
+{% block content %}
+    {% set currentPath = path(app.request.attributes.get('_route')) %}
+
+    {% embed '@Gui/Partials/widget.twig' with { widget_title: 'List of orders' | trans } %}
+
+        {% block widget_content %}
+            <a href="{{ currentPath }}"><button>Clear Filters</button></a>
+            <a href="{{ currentPath ~ '?day-range-filter=today' }}"><button>Filter by Today</button></a>
+            <a href="{{ currentPath ~ '?day-range-filter=tomorrow' }}"><button>Filter by Tomorrow</button></a>
+
+            {{ orders | raw }}
+
+        {% endblock %}
+
+    {% endembed %}
+
+{% endblock %}

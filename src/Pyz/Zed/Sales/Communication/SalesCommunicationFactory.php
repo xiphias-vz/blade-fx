@@ -13,6 +13,7 @@ use Pyz\Zed\Oms\Business\OmsFacadeInterface;
 use Pyz\Zed\Sales\Communication\Table\OrdersTable;
 use Pyz\Zed\Sales\Communication\Table\OrdersTableQueryBuilder;
 use Pyz\Zed\Sales\SalesDependencyProvider;
+use Spryker\Zed\Acl\Business\AclFacadeInterface;
 use Spryker\Zed\Sales\Communication\SalesCommunicationFactory as SprykerSalesCommunicationFactory;
 use Spryker\Zed\Sales\SalesDependencyProvider as SprykerSalesDependencyProvider;
 
@@ -29,6 +30,8 @@ class SalesCommunicationFactory extends SprykerSalesCommunicationFactory
             $this->getProvidedDependency(SalesDependencyProvider::SERVICE_UTIL_SANITIZE),
             $this->getProvidedDependency(SalesDependencyProvider::SERVICE_DATE_FORMATTER),
             $this->getProvidedDependency(SalesDependencyProvider::FACADE_CUSTOMER),
+            $this->getUserFacade(),
+            $this->getAclFacade(),
             $this->getSalesTablePlugins()
         );
     }
@@ -63,5 +66,13 @@ class SalesCommunicationFactory extends SprykerSalesCommunicationFactory
     public function getBaseOmsFacade(): OmsFacadeInterface
     {
         return $this->getProvidedDependency(SalesDependencyProvider::BASE_FACADE_OMS);
+    }
+
+    /**
+     * @return \Spryker\Zed\Acl\Business\AclFacadeInterface
+     */
+    public function getAclFacade(): AclFacadeInterface
+    {
+        return $this->getProvidedDependency(SalesDependencyProvider::FACADE_ACL);
     }
 }

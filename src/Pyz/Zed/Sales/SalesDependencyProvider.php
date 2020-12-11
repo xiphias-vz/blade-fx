@@ -21,6 +21,7 @@ use Pyz\Zed\Sales\Communication\Plugin\OrderItemStockProductExpanderPreSavePlugi
 use Pyz\Zed\Sales\Communication\Plugin\OrderStatusHydratorOrderPlugin;
 use Pyz\Zed\Sales\Communication\Plugin\ProductNumberOrderItemExpanderPreSavePlugin;
 use Pyz\Zed\TimeSlot\Communication\Plugin\TimeSlotStorageWriterPostSavePlugin;
+use Spryker\Zed\Acl\Business\AclFacadeInterface;
 use Spryker\Zed\Customer\Communication\Plugin\Sales\CustomerOrderHydratePlugin;
 use Spryker\Zed\Discount\Communication\Plugin\Sales\DiscountOrderHydratePlugin;
 use Spryker\Zed\Kernel\Container;
@@ -48,6 +49,7 @@ class SalesDependencyProvider extends SprykerSalesDependencyProvider
     public const BASE_FACADE_OMS = 'BASE_FACADE_OMS';
     public const SERVICE_DATE_TIME_WITH_ZONE = 'SERVICE_DATE_TIME_WITH_ZONE';
     public const FACADE_PRODUCT = 'FACADE_PRODUCT';
+    public const FACADE_ACL = 'FACADE_ACL';
 
     public const FACADE_MERCHANT_SALES_ORDER = 'FACADE_MERCHANT_SALES_ORDER';
     public const HYDRATE_ORDER_PLUGINS_FOR_STORE_APP = 'HYDRATE_ORDER_PLUGINS_FOR_STORE_APP';
@@ -82,6 +84,7 @@ class SalesDependencyProvider extends SprykerSalesDependencyProvider
         $container = $this->addDateTimeWithZoneService($container);
         $container = $this->addMerchantSalesOrderFacade($container);
         $container = $this->addBaseOmsFacade($container);
+        $container = $this->addAclFacade($container);
 
         return $container;
     }
@@ -109,6 +112,20 @@ class SalesDependencyProvider extends SprykerSalesDependencyProvider
     {
         $container->set(static::FACADE_PRODUCT, function (Container $container): ProductFacadeInterface {
             return $container->getLocator()->product()->facade();
+        });
+
+        return $container;
+    }
+
+    /**
+     * @param \Spryker\Zed\Kernel\Container $container
+     *
+     * @return \Spryker\Zed\Kernel\Container
+     */
+    protected function addAclFacade(Container $container): Container
+    {
+        $container->set(static::FACADE_ACL, function (Container $container): AclFacadeInterface {
+            return $container->getLocator()->acl()->facade();
         });
 
         return $container;
