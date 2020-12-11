@@ -18,6 +18,7 @@ class CustomerPageRouteProviderPlugin extends SprykerCustomerPageRouteProviderPl
 
     protected const ROUTE_CUSTOMER_ORDER_CANCEL = 'customer/order/cancel';
     protected const ROUTE_CUSTOMER_REGISTRATION_CONFIRM = 'register/confirm';
+    protected const ROUTE_CUSTOMER_PASSWORD_CHANGE = 'password/change';
 
     /**
      * Specification:
@@ -36,6 +37,7 @@ class CustomerPageRouteProviderPlugin extends SprykerCustomerPageRouteProviderPl
         $routeCollection = $this->addInvoiceRoute($routeCollection);
         $routeCollection = $this->addCustomerOrderCancellationRoute($routeCollection);
         $routeCollection = $this->addCustomerRegisterConfirmRoute($routeCollection);
+        $routeCollection = $this->addCustomerPasswordChangeRoute($routeCollection);
 
         return $routeCollection;
     }
@@ -75,6 +77,19 @@ class CustomerPageRouteProviderPlugin extends SprykerCustomerPageRouteProviderPl
     {
         $route = $this->buildRoute('/register/confirm', 'CustomerPage', 'Register', 'confirmAction');
         $routeCollection->add(static::ROUTE_CUSTOMER_REGISTRATION_CONFIRM, $route);
+
+        return $routeCollection;
+    }
+
+    /**
+     * @param \Spryker\Yves\Router\Route\RouteCollection $routeCollection
+     *
+     * @return \Spryker\Yves\Router\Route\RouteCollection
+     */
+    protected function addCustomerPasswordChangeRoute(RouteCollection $routeCollection): RouteCollection
+    {
+        $route = $this->buildRoute('/password/change', 'CustomerPage', 'Password', 'passwordChange');
+        $routeCollection->add(static::ROUTE_CUSTOMER_PASSWORD_CHANGE, $route);
 
         return $routeCollection;
     }

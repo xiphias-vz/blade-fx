@@ -497,7 +497,7 @@ customer.account.order_history,Bestellungen,de_DE
 customer.account.newsletter,Newsletter,en_US
 customer.account.newsletter,Newsletter,de_DE
 customer.account.last_orders,Last Orders,en_US
-customer.account.last_orders,Meine letzten Bestellungen,de_DE
+customer.account.last_orders,Meine letzten Wunscheinkäufe,de_DE
 customer.account.default_billing_address,Default Billing Address,en_US
 customer.account.default_billing_address,Standard Rechnungsadresse,de_DE
 customer.account.please_specify_billing_address,Please Specify Billing Address,en_US
@@ -1018,7 +1018,7 @@ checkout.step.success.title,Vielen Dank für Ihren Einkauf!,de_DE
 checkout.step.success.text,Your order has been placed successfully. You will get the order confirmation email in a few minutes. You can check and track your order in Your Account.,en_US
 checkout.step.success.text,Ihre Bestellung ist erfolgreich in unserem Abholmarkt eingegangen.,de_DE
 checkout.step.success.link,"Go to ""My Account""",en_US
-checkout.step.success.link,"Zu meinem Konto",de_DE
+checkout.step.success.link,"Zum meinem Konto",de_DE
 checkout.step.error.title,Your order has not been placed.,en_US
 checkout.step.error.title,"Lieber Kunde, Ihre Bestellung konnte leider nicht platziert werden.",de_DE
 checkout.step.error.text,Something went wrong. Sorry.,en_US
@@ -2377,7 +2377,7 @@ cameras.category.link,/de/kameras-&-camcorder/digitale-kameras,de_DE
 samsung.search.link,/en/search?q=samsung,en_US
 samsung.search.link,/de/search?q=samsung,de_DE
 cart.title_content,In Your Cart,en_US
-cart.title_content,In Ihrem Warenkorb,de_DE
+cart.title_content,Auf deiner Warenkorb,de_DE
 cart.title_sidebar,Continue to Checkout,en_US
 cart.title_sidebar,Weiter zum Checkout,de_DE
 cart.note-title,Cart Note,en_US
@@ -3005,4 +3005,4 @@ error_page.second_text,Dürfen wir Ihnen direkt behilflich sein?,de_DE
 error_page.third_text,Gerne können Sie uns anrufen oder eine E-Mail schreiben:,de_DE
 error_page.button_home,Zur Startseite,de_DE
 error_page.button_contact,Kontakt aufnehmen,de_DE
-
+customer.account.passwordChange,Passwortänderung,de_DE

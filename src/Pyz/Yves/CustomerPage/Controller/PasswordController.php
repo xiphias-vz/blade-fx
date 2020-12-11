@@ -66,4 +66,14 @@ class PasswordController extends SprykerPasswordController
             ];
         }
     }
+
+    /**
+     * @param \Symfony\Component\HttpFoundation\Request $request
+     *
+     * @return \Spryker\Yves\Kernel\View\View
+     */
+    public function passwordChangeAction(Request $request)
+    {
+        return $this->view([], [], '@CustomerPage/views/password-change/password-change.twig');
+    }
 }
