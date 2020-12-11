@@ -40,7 +40,7 @@
                 transform: rotate(180deg);
 
                 @include helper-breakpoint-media-max($sm-max) {
-                    left: rem(15);
+                    left: rem(-8);
                 }
             }
 
@@ -48,7 +48,7 @@
                 right: rem(-30);
 
                 @include helper-breakpoint-media-max($sm-max) {
-                    right: rem(15);
+                    right: rem(-8);
                 }
             }
         }
