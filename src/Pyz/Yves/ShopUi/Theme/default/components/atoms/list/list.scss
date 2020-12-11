@@ -1,4 +1,12 @@
 @include shop-ui-list {
+
+    .registration-link-redirect {
+        margin-top:15px;
+        cursor: pointer;
+        color:$setting-color-globus-darkOrange;
+        text-decoration: underline;
+    }
+
     &__item--check-bullet {
         position: relative;
         padding: rem(8) 0 rem(8) rem(40);

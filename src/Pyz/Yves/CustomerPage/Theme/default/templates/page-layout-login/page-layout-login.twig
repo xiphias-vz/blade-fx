@@ -58,6 +58,7 @@
         {
             display: none !important;
         }
+
     </style>
     <div class="page-layout-customer page-layout-customer--login-wrap">
         <div class="page-layout-customer__form-wrap">
@@ -134,13 +135,17 @@
                     <strong>
                         {{ 'customer.registration.benefit_title' | trans }}
                     </strong>
-                    <p class="spacing-y spacing-y--bigger">
+                    <p>
                         {{ 'customer.registration.benefit_message' | trans }}
                     </p>
                     <ul class="list">
                         <li class="list__item list__item--check-bullet">{{ 'customer.registration.benefit_1' | trans }}</li>
                         <li class="list__item list__item--check-bullet">{{ 'customer.registration.benefit_2' | trans }}</li>
+                        <li class="list__item list__item--check-bullet">{{ 'customer.registration.benefit_5' | trans }}</li>
                         <li class="list__item list__item--check-bullet">{{ 'customer.registration.benefit_3' | trans }}</li>
+                        <li class="registration-link-redirect" onclick="GoToRegistration()">
+                            {{ 'customer.registration.link.redirect' | trans }}
+                        </li>
                     </ul>
                 </div>
             </div>
@@ -148,14 +153,15 @@
             <div class="js-customer-page-login-register {{ data.isLogin ? ' is-hidden' }} grid">
                 <div class="col col--sm-12 col--lg-6 spacing spacing--bigger spacing--inner is-hidden-sm-md">
                     <strong>
-                        {{ 'customer.registration.benefit_title' | trans }}
+                        {{ 'customer.registration.benefit_title_2' | trans }}
                     </strong>
-                    <p class="spacing-y spacing-y--bigger">
-                        {{ 'customer.registration.benefit_message' | trans }}
+                    <p>
+                        {{ 'customer.registration.benefit_message_2' | trans }}:
                     </p>
                     <ul class="list">
                         <li class="list__item list__item--check-bullet">{{ 'customer.registration.benefit_1' | trans }}</li>
                         <li class="list__item list__item--check-bullet">{{ 'customer.registration.benefit_2' | trans }}</li>
+                        <li class="list__item list__item--check-bullet">{{ 'customer.registration.benefit_5' | trans }}</li>
                         <li class="list__item list__item--check-bullet">{{ 'customer.registration.benefit_3' | trans }}</li>
                     </ul>
                 </div>
@@ -187,6 +193,10 @@
                 }
             }
             gigya.accounts.showScreenSet( params );
+        }
+
+        function GoToRegistration() {
+            document.getElementsByName('accountLoginSwitcher')[3].click();
         }
 
         function gigyaLoginScreen() {

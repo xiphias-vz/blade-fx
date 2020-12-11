@@ -2750,18 +2750,22 @@ customer.registration.city_placeholder,Ort,de_DE
 customer.registration.city_placeholder,Enter city,en_US
 customer.registration.phone_placeholder,Enter phone number,en_US
 customer.registration.phone_placeholder,Telefonnummer eingeben,de_DE
-customer.registration.benefit_title,"Neues Mein Globus Konto erstellen.",de_DE
+customer.registration.benefit_title,"Einfach hier mit Ihren Mein Globus Zugangsdaten anmelden und bestellen.",de_DE
 customer.registration.benefit_title,"Create a new Spryker account.",en_US
-customer.registration.benefit_message,"Erstellen Sie jetzt Ihr Mein Globus Konto und testen Sie unseren Abholservice",de_DE
+customer.registration.benefit_title_2,"Hier ganz einfach ein neues Konto erstellen und direkt loslegen.",de_DE
+customer.registration.benefit_message,"Ihre Vorteile:",de_DE
 customer.registration.benefit_message,"Create your Spryker account now and test our service.",en_US
-customer.registration.benefit_1,"Aus über 9.000 Artikeln auswählen",de_DE
+customer.registration.benefit_message_2,"Ihre Vorteile als Mein Globus Kunde",de_DE
+customer.registration.benefit_1,"Aus über 11.000 Artikeln auswählen",de_DE
+customer.registration.link.redirect,"Sind Sie neu hier? Hier gehts zur Registrierung",de_DE
 customer.registration.benefit_1,"Choose from over 1,000 articles",en_US
-customer.registration.benefit_2,"Bequem von zuhause bestellen und abholen",de_DE
+customer.registration.benefit_2,"Bequem von zuhause bestellen, im Markt abholen",de_DE
 customer.registration.benefit_2,"Create cart with one click",en_US
-customer.registration.benefit_3,"Eigene Einkaufslisten ertellen",de_DE
+customer.registration.benefit_3,"Kontaktlos einkaufen & bezahlen",de_DE
 customer.registration.benefit_3,"Time slot from Mo-Sa freely selectable",en_US
 customer.registration.benefit_4,"Kostenlos für Food Shop Mitarbeiterinnen und Mitarbeiter",de_DE
 customer.registration.benefit_4,"Free of charge for Spryker employees",en_US
+customer.registration.benefit_5,"Ganz einfach Punkte sammeln",de_DE
 product.detail.online_availability,Availability in the store:,en_US
 product.detail.online_availability,Verfügbarkeit in der Filiale:,de_DE
 product.detail.in_stock,Available,en_US
