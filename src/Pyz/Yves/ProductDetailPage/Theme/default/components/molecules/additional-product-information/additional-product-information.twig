@@ -29,8 +29,8 @@
                 {% if data.productAttributes['inverkehrbringer'] is defined %}
                     <div><strong>Inverkehrbringer (Hersteller):</strong> {{ data.productAttributes['inverkehrbringer'] }}</div>
                 {% endif %}
-                {% if data.productAttributes['verwendungshinweise'] is defined %}
-                    <div><strong>{{ 'product.info.additional.hints' | trans }}:</strong> {{ data.productAttributes['verwendungshinweise'] }}</div>
-                {% endif %}
+
+                <div><strong>{{ 'product.info.additional.hints' | trans }}:</strong> {{  'product.info.additional.hintsText' | trans }}</div>
+
 
 {% endblock %}
