@@ -11,6 +11,7 @@ use Elastica\Query;
 use Elastica\Query\AbstractQuery;
 use Elastica\Query\BoolQuery;
 use Elastica\Query\Nested;
+use Elastica\Query\Script;
 use Elastica\Query\Term;
 use Generated\Shared\Search\PageIndexMap;
 use Generated\Shared\Transfer\SearchContextTransfer;
@@ -101,10 +102,10 @@ class SaleSearchQueryPlugin extends AbstractPlugin implements QueryInterface, Se
      */
     protected function createSearchQuery()
     {
-        $saleProductsFilter = $this->createSaleProductsFilter();
-
+//        $saleProductsFilter = $this->createSaleProductsFilter();
+        $scriptQueryFilter = new Script("return doc['search-result-data.prices.EUR.GROSS_MODE.DEFAULT'].value < doc['search-result-data.prices.EUR.GROSS_MODE.ORIGINAL'].value");
         $boolQuery = new BoolQuery();
-        $boolQuery->addFilter($saleProductsFilter);
+        $boolQuery->addFilter($scriptQueryFilter);
 
         return $this->createQuery($boolQuery);
     }
