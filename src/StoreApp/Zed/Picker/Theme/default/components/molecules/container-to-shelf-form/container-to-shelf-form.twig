@@ -1,0 +1,25 @@
+{% extends model('component') %}
+
+{% define config = {
+    name: 'container-to-shelf-form',
+    tag: 'container-to-shelf-form',
+} %}
+
+{% define data = {
+    form: required,
+} %}
+
+{% block body %}
+    <div class="box">
+        {% include molecule('form') with {
+            data: {
+                title: 'storeapp.form.container-to-shelf' | trans,
+                form: data.form,
+                submit: {
+                    enable: true
+                },
+            }
+        } only %}
+    </div>
+{% endblock %}
+

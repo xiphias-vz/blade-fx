@@ -81,7 +81,6 @@ class ShelvesSelectionForm extends AbstractType
                 [
                     'required' => true,
                     'label' => sprintf('Container ID (%s)', $pickingSalesOrderTransfer->getContainerCode()),
-                    'data' => 0,
                     'constraints' => [
                         new NotBlank(),
                         new Length(['min' => 4]),

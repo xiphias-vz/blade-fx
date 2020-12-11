@@ -20,12 +20,9 @@
 {% endblock %}
 
 {% block content %}
-    {% include molecule('form') with {
+    {% include molecule('select-shelves-form', 'Picker') with {
         data: {
-            form: data.shelvesSelectionForm,
-            submit: {
-                enable: true,
-            },
-        }
+            form: data.shelvesSelectionForm
+        },
     } only %}
 {% endblock %}

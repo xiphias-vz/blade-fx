@@ -1,0 +1,22 @@
+{% extends model('component') %}
+
+{% define config = {
+    name: 'select-shelves-form',
+    tag: 'select-shelves-form',
+} %}
+
+{% define data = {
+    form: required,
+} %}
+
+{% block body %}
+    {% include molecule('form') with {
+        data: {
+            form: data.form,
+            submit: {
+                enable: true,
+            },
+        }
+    } only %}
+{% endblock %}
+

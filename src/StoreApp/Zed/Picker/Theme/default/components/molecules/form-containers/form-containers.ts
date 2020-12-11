@@ -1,5 +1,8 @@
 import Component from 'ShopUi/models/component';
 
+/**
+ * TODO: move the logic for scanner to a separate molecule
+ */
 export default class FormContainers extends Component {
     containerFormsWrapper: HTMLElement;
     addFormButton: HTMLButtonElement;

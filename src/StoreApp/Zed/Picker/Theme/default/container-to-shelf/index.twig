@@ -2,7 +2,6 @@
 
 {% define data = {
     form: containerToShelfForm,
-    merchant: merchant,
     activities: activities
 } %}
 
@@ -23,15 +22,9 @@
         {% endfor %}
     </ul>
 
-    <div class="box">
-        {% include molecule('form') with {
-            data: {
-                title: 'storeapp.form.container-to-shelf' | trans,
-                form: data.form,
-                submit: {
-                    enable: true
-                },
-            }
-        } only %}
-    </div>
+    {% include molecule('container-to-shelf-form', 'Picker') with {
+        data: {
+            form: data.form
+        },
+    } only %}
 {% endblock %}
