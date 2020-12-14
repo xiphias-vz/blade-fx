@@ -19,6 +19,7 @@ use Pyz\Zed\DataImport\Business\Model\CmsTemplate\CmsTemplateWriterStep;
 use Pyz\Zed\DataImport\Business\Model\Country\Repository\CountryRepository;
 use Pyz\Zed\DataImport\Business\Model\Currency\CurrencyWriterStep;
 use Pyz\Zed\DataImport\Business\Model\Customer\CustomerWriterStep;
+use Pyz\Zed\DataImport\Business\Model\DataImporterCollection;
 use Pyz\Zed\DataImport\Business\Model\FileDownload\SFTPDataImportFileDownloader;
 use Pyz\Zed\DataImport\Business\Model\Glossary\GlossaryWriterStep;
 use Pyz\Zed\DataImport\Business\Model\Locale\AddLocalesStep;
@@ -146,6 +147,20 @@ class DataImportBusinessFactory extends SprykerDataImportBusinessFactory
             $this->getProductUpdateFacade(),
             $this->getConfig()
         );
+    }
+
+    /**
+     * @return \Spryker\Zed\DataImport\Business\Model\DataImporterPluginCollectionInterface|\Spryker\Zed\DataImport\Business\Model\DataImporterCollectionInterface
+     */
+    public function createDataImporterCollection()
+    {
+        $dataImporterCollection = new DataImporterCollection(
+            $this->getDataImportBeforeImportHookPlugins(),
+            $this->getDataImportAfterImportHookPlugins(),
+            $this->getConfig()
+        );
+
+        return $dataImporterCollection;
     }
 
     /**
