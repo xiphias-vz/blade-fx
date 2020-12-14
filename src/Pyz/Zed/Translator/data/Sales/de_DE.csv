@@ -33,3 +33,9 @@ Time slot,Abholzeitfenster
 Merchant Address, Filiale Adresse
 Merchant Region Number, Division Nummer
 Merchant Number, Filiale Nummer
+checkout.order.order-pickZone, Kommissionierzone
+checkout.order.product-quantity, Menge
+checkout.order.nr, Nr
+checkout.order.ean, EAN
+checkout.order.artikel, Artikel
+checkout.order.preis, Preis

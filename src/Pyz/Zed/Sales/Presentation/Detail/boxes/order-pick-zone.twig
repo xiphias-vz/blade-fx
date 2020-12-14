@@ -1,0 +1,38 @@
+{% embed '@Gui/Partials/widget.twig' with { widget_title: 'checkout.order.order-pickZone' | trans } %}
+    {% block widget_content %}
+        <div class="row">
+
+                <div class="bottom-indent">
+                    {% if pickZones is not null %}
+                        {% for key,pickZone in pickZones %}
+
+                            <h3><b>{{ pickZone }}</b></h3>
+
+                            <table class="footable table toggle-arrow-tiny" data-qa="order-item-list">
+                                <thead>
+                                <tr class="text-left">
+                                    <th>{{ 'checkout.order.product-quantity' | trans }}</th>
+                                    <th>{{ 'checkout.order.nr' | trans }}</th>
+                                    <th>{{ 'checkout.order.ean' | trans }}</th>
+                                    <th>{{ 'checkout.order.artikel' | trans }}</th>
+                                    <th>{{ 'checkout.order.preis' | trans }}</th>
+                                </tr>
+                                </thead>
+
+                                {% for item in itemDataArray[key] %}
+                                    <tr>
+                                        <td><div><p>{{ item.quantity }}</p></div></td>
+                                        <td><div><p>{{ item.id }}</p></div></td>
+                                        <td><div><p>{{ item.sku }}</p></div></td>
+                                        <td><div><p>{{ item.name }}</p></div></td>
+                                        <td><div>{{ item.sumPrice | money(true, order.currencyIsoCode) }}</div></td>
+                                    </tr>
+                                {% endfor %}
+                            </table>
+                        {% endfor %}
+                    {% endif %}
+                </div>
+
+        </div>
+    {% endblock %}
+{% endembed %}
