@@ -375,7 +375,7 @@ class CashierOrderContentBuilder implements CashierOrderContentBuilderInterface
         $serviceFeeToServiceFeeCashierNumber = $this->cashierOrderExportConfig->getServiceFeeToServiceFeeCashierNumber();
         $currentOrderShipmentExpensePrice = $this->getShipmentExpensePrice($orderTransfer);
 
-        if (!$currentOrderShipmentExpensePrice) {
+        if ($currentOrderShipmentExpensePrice === null) {
             return static::DEFAULT_EMPTY_NUMBER;
         }
 
