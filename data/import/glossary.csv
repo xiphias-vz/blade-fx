@@ -373,7 +373,7 @@ global.order.descendent,Z_A,de_DE
 global.order.descendent,Z-A,en_US
 global.close,Schließen,de_DE
 global.close,Close,en_US
-global.search,Suchen,de_DE
+global.search,Produkte Suchen,de_DE
 global.search,Search,en_US
 global.search.results,Suchergebnisse,de_DE
 global.search.results,Search Results,en_US
@@ -1371,6 +1371,7 @@ invoice.order.address.shipping,Shipping address,en_US
 invoice.order.address.shipping,Lieferadresse,de_DE
 invoice.header,Invoice,en_US
 invoice.header,Rechnung,de_DE
+mein.markt.label,Mein Markt,de_DE
 invoice.order.number,Order reference,en_US
 invoice.order.number,Nummer,de_DE
 invoice.customer.number,Customer reference,en_US

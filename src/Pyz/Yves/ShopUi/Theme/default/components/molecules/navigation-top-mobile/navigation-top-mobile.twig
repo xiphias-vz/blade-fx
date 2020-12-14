@@ -10,6 +10,7 @@
     searchUrl: path('search'),
     cartQuantity: app['cart.quantity'] | default,
     cartAmount: app['cart.amount'] | default,
+    showStoreSwitches:true,
 } %}
 
 {% block body %}
@@ -17,7 +18,7 @@
         {
             iconName: 'search',
             isButton: true,
-            jsClass: 'js-suggest-search--trigger icon--color-orange',
+            jsClass: 'js-suggest-search--trigger icon--color-orange remove-search-icon-header',
         },
         {
             iconName: 'wishlist',
@@ -37,7 +38,13 @@
     ] %}
 
     <nav>
+        <span class="my-market-title">{{ 'mein.markt.label' | trans }}:</span>
         <ul class="grid grid--middle grid--justify">
+            {% if data.showStoreSwitches %}
+                <div class="store-widget-holder">
+                    {% widget 'StoreSwitcherWidget' %}{% endwidget %}
+                </div>
+            {% endif %}
             {% for item in items if item.isVisibleForAuthorized ?? true %}
                 {% if item.isCart ?? false %}
                     {% embed molecule('navigation-top-mobile-item') with {

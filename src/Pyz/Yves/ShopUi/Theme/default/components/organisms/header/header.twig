@@ -41,11 +41,9 @@
                     </div>
 
                     <div class="col col--no-shrink grid grid--no-wrap grid--middle">
-
                         {% if data.showStoreSwitches %}
                             {% widget 'StoreSwitcherWidget' %}{% endwidget %}
                         {% endif %}
-
                         <a href="{{ 'page.fragen.url' | trans }}" class="link link--nav" target="_blank">
                             {% include atom('icon') with {
                                 modifiers: ['big'],
@@ -84,7 +82,7 @@
                     {% block contentHolder %}
                         <div class="container {{ config.name }}__container">
                             <div
-                                class="{{ config.name }}__row {{ config.name }}__navigation-top {{ config.name }}__search-bar grid grid--middle grid--justify js-suggest-search--target is-hidden-sm-lg">
+                                class="{{ config.name }}__row {{ config.name }}__navigation-top {{ config.name }}__search-bar grid grid--middle grid--justify js-suggest-search--target">
                                 {% if data.showNavigation %}
                                     <div class="col is-hidden-sm-lg">
                                         <div class="{{ config.name }}__navigation-button-container">
@@ -183,6 +181,7 @@
             {% endblock %}
         </div>
     {% endblock %}
+
 
     {% block services %}
         {% include molecule('sticky-element') with {

@@ -34,7 +34,11 @@
             margin-top: rem(12);
 
             @include helper-breakpoint-media-max($sm-max) {
-               margin-top: 0px;
+                width: 3rem;
+            }
+
+            @include helper-breakpoint-media-max($lg-max) {
+               margin-top: 11px;
             }
         }
 

@@ -5,6 +5,10 @@
         border-radius: rem(4);
         font: fw(medium) rem(14)/rem(18) $setting-font-family;
         padding: rem(15) rem(60);
+        @include helper-breakpoint-media-max($sm-max) {
+            padding: .9375rem 4.75rem .9375rem 2rem;
+        }
+
     }
 
     &__clear {
@@ -13,6 +17,10 @@
         right: 0;
         bottom: 0;
         z-index: $setting-zi-navigation-top;
+
+        @include helper-breakpoint-media-max($sm-max) {
+            right:40px;
+        }
     }
 
     &__submit {
@@ -21,5 +29,10 @@
         top: 0;
         bottom: 0;
         z-index: $setting-zi-navigation-top;
+
+        @include helper-breakpoint-media-max($sm-max) {
+            left:unset;
+            right:0px;
+        }
     }
 }

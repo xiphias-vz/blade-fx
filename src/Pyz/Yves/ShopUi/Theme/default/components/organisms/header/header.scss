@@ -34,11 +34,8 @@ $header-sticky-height: rem(69, number);
             }
         }
 
+
         &__middle {
-            position: fixed;
-            left: 0;
-            top: 0;
-            right: 0;
             padding: rem(14) 0;
             background: $setting-color-globus-lightGray;
             border-top: rem(5) solid $setting-color-globus-lightGray;
@@ -48,14 +45,18 @@ $header-sticky-height: rem(69, number);
                 position: relative;
             }
 
-            &--sticky {
-                @include helper-breakpoint-media-min($xl-min) {
+            @include helper-breakpoint-media-max($md-max) {
+                padding: 0px 0px 3px 0px;
+                transition: top 0.3s;
+                top:-120px;
+                background: #FFFFFF;
+                &--sticky {
                     position: fixed;
-                }
-            }
+                    left: 0;
+                    top: 0;
+                    right: 0;
 
-            @include helper-breakpoint-media-max($sm-max) {
-               padding: 0px 0px 3px 0px;
+                }
             }
         }
 
@@ -81,8 +82,12 @@ $header-sticky-height: rem(69, number);
                 top: 100%;
                 right: 0;
                 padding: rem(12) rem(16) rem(12) rem(20);
-                margin-top: rem(7);
+                margin-top: 0;
                 background: $setting-color-globus-lightGray;
+            }
+            @include helper-breakpoint-media-max($sm-max) {
+                padding: 0px;
+                border:1px solid #D3D3D3;
             }
         }
 
@@ -180,6 +185,13 @@ $header-sticky-height: rem(69, number);
             position: fixed;
             left: rem(60);
             top: rem(5);
+
+            @include helper-breakpoint-media-max($lg-max) {
+                position: absolute;
+                top:0px;
+                left:45px;
+                margin-top: 5px;
+            }
         }
 
         .navigation-top-left-mobile__item {
@@ -187,7 +199,11 @@ $header-sticky-height: rem(69, number);
             left: rem(20);
             top: rem(15);
             background-color: transparent;
-
+            @include helper-breakpoint-media-max($lg-max) {
+                position: absolute;
+                top: 21px;
+                left: 10px;
+            }
         }
 
         @media only screen and (min-width: 576px) and (max-width: 991px) {

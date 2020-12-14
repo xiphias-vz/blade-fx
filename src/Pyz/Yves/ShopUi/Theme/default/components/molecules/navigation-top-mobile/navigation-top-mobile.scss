@@ -2,6 +2,30 @@
     #{$name} {
        nav {
            margin-left: rem(70);
+
+           .my-market-title {
+               position: relative;
+               top: 13px;
+               color: gray;
+               left: 11px;
+           }
+
+           .store-widget-holder {
+               .custom-select__select--header {
+                   color: #71747c;
+                   background: #f7f7f7;
+                   border:none;
+                   padding: 0 1.875rem 0 0.6875rem;
+
+                   @include helper-breakpoint-media-max($lg-max) {
+                       background: #ffffff;
+                   }
+               }
+           }
+
+           @include helper-breakpoint-media-max($sm-max) {
+               margin-left:0px;
+           }
        }
     }
 }

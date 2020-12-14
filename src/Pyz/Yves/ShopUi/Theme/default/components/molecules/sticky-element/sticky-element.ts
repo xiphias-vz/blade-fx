@@ -2,6 +2,9 @@ import Component from 'ShopUi/models/component';
 
 export default class StickyElement extends Component {
     protected targets: HTMLElement[];
+    protected  previousScrollPosition: number  = window.pageYOffset;
+    protected  windowSize: number = window.screen.width;
+    protected  currentScrollPosition: number;
 
     protected readyCallback(): void {}
 
@@ -23,8 +26,15 @@ export default class StickyElement extends Component {
     }
 
     protected targetHandler(target: HTMLElement): void {
-        const isSticky = window.pageYOffset > this.getActiveOffset(target);
-        target.classList.toggle(this.toggleClass, isSticky);
+
+        this.currentScrollPosition = window.pageYOffset;
+        if(this.previousScrollPosition > this.currentScrollPosition) {
+            target.classList.toggle(this.toggleClass, true);
+        }
+        else {
+            target.classList.toggle(this.toggleClass, false);
+        }
+        this.previousScrollPosition = this.currentScrollPosition;
     }
 
     protected getActiveOffset(target: HTMLElement): number {

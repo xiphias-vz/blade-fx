@@ -12,6 +12,10 @@
             flex-grow: 1;
             flex-shrink: 0;
 
+            @include helper-breakpoint-media-max($sm-max)  {
+                margin-top:80px;
+            }
+
             .spacing-bottom--inner.spacing-bottom--bigger {
                 @include helper-breakpoint-media-max($sm-max) {
                     padding-bottom: 5px;

@@ -1,7 +1,10 @@
 @mixin shop-ui-navigation-top-mobile-item ($name: '.navigation-top-mobile-item') {
+
+    .remove-search-icon-header {
+        display: none;
+    }
     #{$name} {
         &__item {
-            display: inline-block;
             padding: rem(8);
             color: $setting-color-globus-lightOrange;
         }
