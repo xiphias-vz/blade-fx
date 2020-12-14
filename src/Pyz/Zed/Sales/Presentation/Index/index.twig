@@ -13,6 +13,9 @@
             <a href="{{ currentPath }}"><button>Clear Filters</button></a>
             <a href="{{ currentPath ~ '?day-range-filter=today' }}"><button>Filter by Today</button></a>
             <a href="{{ currentPath ~ '?day-range-filter=tomorrow' }}"><button>Filter by Tomorrow</button></a>
+            {% for merchantId, merchantName in merchantFilterButtonsData  %}
+                <a href="{{ currentPath ~ '?merchant-reference-filter=' ~ merchantId }}"><button>Filter by {{ merchantName }}</button></a>
+            {% endfor %}
 
             {{ orders | raw }}
 

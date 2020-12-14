@@ -17,10 +17,13 @@ use Spryker\Zed\Acl\Business\AclFacadeInterface;
 use Spryker\Zed\Sales\Communication\SalesCommunicationFactory as SprykerSalesCommunicationFactory;
 use Spryker\Zed\Sales\SalesDependencyProvider as SprykerSalesDependencyProvider;
 
+/**
+ * @method \Pyz\Zed\Sales\SalesConfig getConfig()
+ **/
 class SalesCommunicationFactory extends SprykerSalesCommunicationFactory
 {
     /**
-     * @return \Spryker\Zed\Sales\Communication\Table\OrdersTable
+     * @return \Pyz\Zed\Sales\Communication\Table\OrdersTable
      */
     public function createOrdersTable()
     {
@@ -32,12 +35,13 @@ class SalesCommunicationFactory extends SprykerSalesCommunicationFactory
             $this->getProvidedDependency(SalesDependencyProvider::FACADE_CUSTOMER),
             $this->getUserFacade(),
             $this->getAclFacade(),
+            $this->getConfig(),
             $this->getSalesTablePlugins()
         );
     }
 
     /**
-     * @return \Spryker\Zed\Sales\Communication\Table\OrdersTableQueryBuilderInterface
+     * @return \Pyz\Zed\Sales\Communication\Table\OrdersTableQueryBuilderInterface
      */
     protected function createOrdersTableQueryBuilder()
     {

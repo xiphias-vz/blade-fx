@@ -7,11 +7,12 @@
 
 namespace Pyz\Zed\Sales\Communication\Table;
 
+use DateTime;
 use Orm\Zed\Sales\Persistence\Map\SpySalesShipmentTableMap;
 use Orm\Zed\Sales\Persistence\SpySalesOrderQuery;
 use Spryker\Zed\Sales\Communication\Table\OrdersTableQueryBuilder as SprykerOrdersTableQueryBuilder;
 
-class OrdersTableQueryBuilder extends SprykerOrdersTableQueryBuilder
+class OrdersTableQueryBuilder extends SprykerOrdersTableQueryBuilder implements OrdersTableQueryBuilderInterface
 {
     public const FIELD_REQUESTED_DELIVERY_DATE = 'requested_delivery_date';
 
@@ -49,5 +50,30 @@ class OrdersTableQueryBuilder extends SprykerOrdersTableQueryBuilder
             ->endUse();
 
         return $query;
+    }
+
+    /**
+     * @param \Orm\Zed\Sales\Persistence\SpySalesOrderQuery $query
+     * @param \DateTime $dateTime
+     *
+     * @return \Orm\Zed\Sales\Persistence\SpySalesOrderQuery
+     */
+    public function applyDayRangeFilter(SpySalesOrderQuery $query, DateTime $dateTime): SpySalesOrderQuery
+    {
+        return $query
+            ->useSpySalesShipmentQuery()
+                ->filterByRequestedDeliveryDate_Like(sprintf('%s%%', $dateTime->format('Y-m-d')))
+            ->endUse();
+    }
+
+    /**
+     * @param \Orm\Zed\Sales\Persistence\SpySalesOrderQuery $query
+     * @param string $merchantReference
+     *
+     * @return \Orm\Zed\Sales\Persistence\SpySalesOrderQuery
+     */
+    public function applyMerchantReferenceFilter(SpySalesOrderQuery $query, string $merchantReference): SpySalesOrderQuery
+    {
+        return $query->filterByMerchantReference($merchantReference);
     }
 }

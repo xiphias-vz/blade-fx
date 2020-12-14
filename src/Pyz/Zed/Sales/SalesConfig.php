@@ -13,6 +13,7 @@ use Generated\Shared\Transfer\SequenceNumberSettingsTransfer;
 use Pyz\Shared\Oms\OmsConfig;
 use Pyz\Shared\Oms\OmsConstants;
 use Pyz\Shared\Sales\SalesConstants;
+use Pyz\Shared\Store\StoreConstants;
 use Spryker\Zed\Sales\SalesConfig as SprykerSalesConfig;
 
 class SalesConfig extends SprykerSalesConfig
@@ -148,5 +149,13 @@ class SalesConfig extends SprykerSalesConfig
         }
 
         return OmsConfig::STATE_IN_PROCESSING;
+    }
+
+    /**
+     * @return array
+     */
+    public function getSapStoreIdToStoreMap(): array
+    {
+        return $this->get(StoreConstants::SAP_STORE_ID_TO_STORE_MAP);
     }
 }

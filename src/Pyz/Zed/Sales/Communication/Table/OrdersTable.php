@@ -13,11 +13,11 @@ use Orm\Zed\Sales\Persistence\Map\SpySalesOrderAddressTableMap;
 use Orm\Zed\Sales\Persistence\Map\SpySalesOrderTableMap;
 use Orm\Zed\Sales\Persistence\Map\SpySalesShipmentTableMap;
 use Pyz\Shared\Acl\AclConstants;
+use Pyz\Zed\Sales\SalesConfig;
 use Spryker\Service\UtilDateTime\UtilDateTimeServiceInterface;
 use Spryker\Zed\Acl\Business\AclFacadeInterface;
 use Spryker\Zed\Gui\Communication\Table\TableConfiguration;
 use Spryker\Zed\Sales\Communication\Table\OrdersTable as SprykerOrdersTable;
-use Spryker\Zed\Sales\Communication\Table\OrdersTableQueryBuilderInterface;
 use Spryker\Zed\Sales\Dependency\Facade\SalesToCustomerInterface;
 use Spryker\Zed\Sales\Dependency\Facade\SalesToMoneyInterface;
 use Spryker\Zed\Sales\Dependency\Facade\SalesToUserInterface;
@@ -28,10 +28,17 @@ class OrdersTable extends SprykerOrdersTable
     public const REQUESTED_DELIVERY_DATE = 'requested_delivery_date';
     public const ADDRESS_PHONE = 'BillingAddress';
     public const DAY_RANGE_FILTER = 'day-range-filter';
+    public const MERCHANT_REFERENCE_FILTER = 'merchant-reference-filter';
 
     protected const TIMESLOT_DELIMITER = '_';
     protected const TIMESLOT_DELIMITER_REPLACEMENT = ' ';
     protected const TIMESLOT_SEARCHABLE_FIELD_PATTERN = 'REPLACE(%s, \'%s\', \'%s\')';
+
+    /**
+     * @var \Pyz\Zed\Sales\Communication\Table\OrdersTableQueryBuilderInterface
+     */
+    protected $queryBuilder;
+
     /**
      * @var \Spryker\Zed\Sales\Dependency\Facade\SalesToUserInterface
      */
@@ -43,13 +50,19 @@ class OrdersTable extends SprykerOrdersTable
     protected $aclFacade;
 
     /**
-     * @param \Spryker\Zed\Sales\Communication\Table\OrdersTableQueryBuilderInterface $queryBuilder
+     * @var \Pyz\Zed\Sales\SalesConfig
+     */
+    protected $salesConfig;
+
+    /**
+     * @param \Pyz\Zed\Sales\Communication\Table\OrdersTableQueryBuilderInterface $queryBuilder
      * @param \Spryker\Zed\Sales\Dependency\Facade\SalesToMoneyInterface $moneyFacade
      * @param \Spryker\Zed\Sales\Dependency\Service\SalesToUtilSanitizeInterface $sanitizeService
      * @param \Spryker\Service\UtilDateTime\UtilDateTimeServiceInterface $utilDateTimeService
      * @param \Spryker\Zed\Sales\Dependency\Facade\SalesToCustomerInterface $customerFacade
      * @param \Spryker\Zed\Sales\Dependency\Facade\SalesToUserInterface $userFacade
      * @param \Spryker\Zed\Acl\Business\AclFacadeInterface $aclFacade
+     * @param \Pyz\Zed\Sales\SalesConfig $salesConfig
      * @param \Spryker\Zed\SalesExtension\Dependency\Plugin\SalesTablePluginInterface[] $salesTablePlugins
      */
     public function __construct(
@@ -60,6 +73,7 @@ class OrdersTable extends SprykerOrdersTable
         SalesToCustomerInterface $customerFacade,
         SalesToUserInterface $userFacade,
         AclFacadeInterface $aclFacade,
+        SalesConfig $salesConfig,
         array $salesTablePlugins
     ) {
         parent::__construct(
@@ -73,6 +87,7 @@ class OrdersTable extends SprykerOrdersTable
 
         $this->userFacade = $userFacade;
         $this->aclFacade = $aclFacade;
+        $this->salesConfig = $salesConfig;
     }
 
     /**
@@ -88,6 +103,21 @@ class OrdersTable extends SprykerOrdersTable
     }
 
     /**
+     * @return array
+     */
+    public function getMerchantFilterButtonsData()
+    {
+        $currentUser = $this->userFacade->getCurrentUser();
+        $isCurrentUserSupervisor = $this->isCurrentUserSupervisor($currentUser);
+
+        if (!$isCurrentUserSupervisor) {
+            return $this->getMerchantsIdToNameMap();
+        }
+
+        return [];
+    }
+
+    /**
      * @param \Spryker\Zed\Gui\Communication\Table\TableConfiguration $config
      *
      * @return array
@@ -98,6 +128,29 @@ class OrdersTable extends SprykerOrdersTable
         $queryResults = $this->runQuery($query, $config);
 
         return $this->formatQueryData($queryResults);
+    }
+
+    /**
+     * @return \Orm\Zed\Sales\Persistence\SpySalesOrderQuery
+     */
+    protected function buildQuery()
+    {
+        $query = parent::buildQuery();
+        $dayRangeFilter = $this->request->query->get(static::DAY_RANGE_FILTER);
+        $merchantReferenceFilter = $this->request->query->get(static::MERCHANT_REFERENCE_FILTER);
+        $currentUser = $this->userFacade->getCurrentUser();
+        $isCurrentUserSupervisor = $this->isCurrentUserSupervisor($currentUser);
+
+        if ($dayRangeFilter) {
+            $query = $this->queryBuilder->applyDayRangeFilter($query, new DateTime($dayRangeFilter));
+        }
+
+        if ($isCurrentUserSupervisor || $merchantReferenceFilter) {
+            $merchantReference = $isCurrentUserSupervisor ? $currentUser->getMerchantReference() : $merchantReferenceFilter;
+            $query = $this->queryBuilder->applyMerchantReferenceFilter($query, $merchantReference);
+        }
+
+        return $query;
     }
 
     /**
@@ -154,26 +207,35 @@ class OrdersTable extends SprykerOrdersTable
      */
     protected function persistFilters(TableConfiguration $config)
     {
-        $idOrderItemProcess = $this->request->query->getInt(static::ID_ORDER_ITEM_PROCESS);
-        $dayRangeFilter = $this->request->query->get(static::DAY_RANGE_FILTER);
-        if ($idOrderItemProcess) {
-            $idOrderItemState = $this->request->query->getInt(static::ID_ORDER_ITEM_STATE);
-            $filter = $this->request->query->get(static::FILTER);
+        $filters = [
+            static::ID_ORDER_ITEM_PROCESS => $this->request->query->getInt(static::ID_ORDER_ITEM_PROCESS),
+            static::DAY_RANGE_FILTER => $this->request->query->get(static::DAY_RANGE_FILTER),
+            static::MERCHANT_REFERENCE_FILTER => $this->request->query->get(static::MERCHANT_REFERENCE_FILTER),
+            static::ID_ORDER_ITEM_STATE => $this->request->query->getInt(static::ID_ORDER_ITEM_STATE),
+            static::FILTER => $this->request->query->get(static::FILTER),
+        ];
 
-            $config->setUrl(
-                sprintf(
-                    'table?id-order-item-process=%s&id-order-item-state=%s&filter=%s&day-range-filter=%s',
-                    $idOrderItemProcess,
-                    $idOrderItemState,
-                    $filter,
-                    $dayRangeFilter
-                )
-            );
+        $sanitizedFilers = array_filter($filters);
+
+        $queryFilters = http_build_query($sanitizedFilers);
+
+        if ($queryFilters) {
+            $config->setUrl(sprintf('table?%s', $queryFilters));
+        }
+    }
+
+    /**
+     * @return array
+     */
+    protected function getMerchantsIdToNameMap(): array
+    {
+        $merchantFilterButtonsData = [];
+
+        foreach ($this->salesConfig->getSapStoreIdToStoreMap() as $sapStoreId => $sapStoreName) {
+            $merchantFilterButtonsData[$sapStoreId] = $sapStoreName;
         }
 
-        if ($dayRangeFilter) {
-            $config->setUrl(sprintf('table?day-range-filter=%s', $dayRangeFilter));
-        }
+        return $merchantFilterButtonsData;
     }
 
     /**
@@ -184,20 +246,8 @@ class OrdersTable extends SprykerOrdersTable
     protected function formatQueryData(array $queryResults)
     {
         $results = [];
-        $dayRangeFilter = $this->request->query->get(static::DAY_RANGE_FILTER);
-
-        $currentUser = $this->userFacade->getCurrentUser();
-        $isCurrentUserSupervisor = $this->isCurrentUserSupervisor($currentUser);
 
         foreach ($queryResults as $item) {
-            if ($dayRangeFilter && !$this->hasApplicableDateForDayRangeFilter($item, $dayRangeFilter)) {
-                continue;
-            }
-
-            if ($isCurrentUserSupervisor && !$this->userHasApplicableMerchantReference($item, $currentUser)) {
-                continue;
-            }
-
             $itemLine = [
                 SpySalesOrderTableMap::COL_ID_SALES_ORDER => $item[SpySalesOrderTableMap::COL_ID_SALES_ORDER],
                 SpySalesOrderTableMap::COL_ORDER_REFERENCE => $item[SpySalesOrderTableMap::COL_ORDER_REFERENCE],
@@ -223,17 +273,6 @@ class OrdersTable extends SprykerOrdersTable
     }
 
     /**
-     * @param array $item
-     * @param \Generated\Shared\Transfer\UserTransfer $currentUser
-     *
-     * @return bool
-     */
-    protected function userHasApplicableMerchantReference(array $item, UserTransfer $currentUser): bool
-    {
-        return $item[SpySalesOrderTableMap::COL_MERCHANT_REFERENCE] === $currentUser->getMerchantReference();
-    }
-
-    /**
      * @param \Generated\Shared\Transfer\UserTransfer $currentUser
      *
      * @return bool
@@ -249,20 +288,6 @@ class OrdersTable extends SprykerOrdersTable
         }
 
         return false;
-    }
-
-    /**
-     * @param array $item
-     * @param string $dayRangeFilter
-     *
-     * @return bool
-     */
-    protected function hasApplicableDateForDayRangeFilter(array $item, string $dayRangeFilter): bool
-    {
-        $timeSlotDate = explode('_', $item[static::REQUESTED_DELIVERY_DATE])[0];
-        $orderDate = DateTime::createFromFormat('Y-m-d', $timeSlotDate)->modify('midnight');
-
-        return $orderDate == new DateTime($dayRangeFilter);
     }
 
     /**
