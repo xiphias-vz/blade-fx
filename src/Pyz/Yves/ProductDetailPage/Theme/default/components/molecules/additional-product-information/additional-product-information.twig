@@ -12,7 +12,7 @@
 {% block body %}
 
                 {% if data.product['idProductConcrete'] is defined %}
-                    <div><strong>Art.Nr:</strong> {{ data.product['idProductConcrete'] }}</div>
+                    <div><strong>{{ 'product.info.additional.article_number' | trans }}:</strong> {{ data.product['idProductConcrete'] }}</div>
                 {% endif %}
                 {% if data.product['sku'] is defined %}
                     <div><strong>EAN/GTIN:</strong> {{ data.product['sku'] }}</div>
@@ -21,16 +21,16 @@
                     <div><strong>{{ 'product.info.additional.alcohol' | trans }}:</strong> {{ data.productAttributes['alkgeh'] }}</div>
                 {% endif %}
                 {% if data.productAttributes['fsk'] is defined %}
-                    <div><strong>Altersbeschränkung :</strong> {{ data.productAttributes['fsk'] }}</div>
+                    <div><strong>{{ 'product.info.additional.age_restriction' | trans }}:</strong> {{ data.productAttributes['fsk'] }}</div>
                 {% endif %}
                 {% if data.productAttributes['bio'] is defined %}
-                    <div><strong>Bio:</strong> {{ data.productAttributes['bio'] }}</div>
+                    <div><strong>{{ 'product.info.additional.bio' | trans }}:</strong> {{ data.productAttributes['bio'] }}</div>
                 {% endif %}
                 {% if data.productAttributes['inverkehrbringer'] is defined %}
                     <div><strong>Inverkehrbringer (Hersteller):</strong> {{ data.productAttributes['inverkehrbringer'] }}</div>
                 {% endif %}
 
-                <div><strong>{{ 'product.info.additional.hints' | trans }}:</strong> {{  'product.info.additional.hintsText' | trans }}</div>
+    <br/><div><strong>{{ 'product.info.additional.hints' | trans }}:</strong> {{  'product.info.additional.hintsText' | trans }}</div>
 
 
 {% endblock %}

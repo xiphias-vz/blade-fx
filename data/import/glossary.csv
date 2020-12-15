@@ -2661,6 +2661,9 @@ product.info.additional.grading,Commercial class,en_US
 product.info.additional.grading,Handelsklasse,de_DE
 product.info.additional.alcohol,Alcohol content,en_US
 product.info.additional.alcohol,Alkoholgehalt,de_DE
+product.info.additional.article_number,"Art.Nr",de_DE
+product.info.additional.age_restriction,"Altersbeschränkung",de_DE
+product.info.additional.bio,"Bio",de_DE
 product.info.additional.hints,Notes,en_US
 product.info.additional.hints,Hinweise,de_DE
 product.info.additional.hintsText,"Bei der Abholung Ihrer Bestellung haben Sie die Gelegenheit die Artikel vor dem Bezahlvorgang zu überprüfen. Die tatsächliche Verpackung kann von der hier abgebildeten abweichen. Wir empfehlen Ihnen, sich vor Gebrauch, die auf der Ware angebrachten Etiketten, Warnhinweise und Anleitungen durchzulesen. Für weiterführende Informationen über Nährwertangaben, Zutaten, Pflichtinformationen gemäß Lebensmittel-Informationsverordnung etc. wenden Sie sich bitte an unseren Kundenservice. Bei Wiegeartikeln zahlen Sie bei der Abholung die tatsächlich gewogene Menge. Der zu zahlende Betrag kann somit von dem im Shop angegebenen Warenpreis abweichen. Für die Berechnung online dient ein Durchschnittsgewicht des jeweiligen Produktes als Grundlage.",de_DE
