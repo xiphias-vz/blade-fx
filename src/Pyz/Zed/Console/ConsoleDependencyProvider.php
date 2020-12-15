@@ -7,6 +7,7 @@
 
 namespace Pyz\Zed\Console;
 
+use Pyz\Zed\Acl\Communication\Console\AclInstallConsole;
 use Pyz\Zed\Cache\Communication\Console\DirectoryCacheCleanerConsole;
 use Pyz\Zed\CmsPageDataImport\CmsPageDataImportConfig;
 use Pyz\Zed\Console\Communication\Plugin\ConsoleLogPlugin;
@@ -322,6 +323,8 @@ class ConsoleDependencyProvider extends SprykerConsoleDependencyProvider
             new RemoveVirtualHostConsole(),
             new DirectoryCacheCleanerConsole(),
             new DataImportFileManagerConsole(),
+
+            new AclInstallConsole(),
         ];
 
         $propelCommands = $container->getLocator()->propel()->facade()->getConsoleCommands();
