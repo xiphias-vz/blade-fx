@@ -33,13 +33,17 @@
             height: auto;
             margin-top: rem(12);
 
-            @include helper-breakpoint-media-max($sm-max) {
-                width: 3rem;
+            @include helper-breakpoint-media-max($md-max) {
+                margin-top: 6px;
+                margin-left: 6px;
             }
 
-            @include helper-breakpoint-media-max($lg-max) {
-               margin-top: 11px;
+            @include helper-breakpoint-media-max($sm-max) {
+                width: 3rem;
+                margin-top: 11px;
+                margin-left: 0px;
             }
+
         }
 
         &--login {
