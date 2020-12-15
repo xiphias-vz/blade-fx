@@ -8,6 +8,12 @@
             padding: rem(8);
             color: $setting-color-globus-lightOrange;
         }
+        @include helper-breakpoint-media-max($xxs-max) {
+            .icon {
+                width:1.3rem;
+            }
+        }
+
     }
 }
 

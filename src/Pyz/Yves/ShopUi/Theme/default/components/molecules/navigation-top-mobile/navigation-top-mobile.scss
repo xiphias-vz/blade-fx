@@ -20,6 +20,10 @@
                    @include helper-breakpoint-media-max($lg-max) {
                        background: #ffffff;
                    }
+
+                   @include helper-breakpoint-media-max($xxs-max) {
+                       width:100px;
+                   }
                }
            }
 
