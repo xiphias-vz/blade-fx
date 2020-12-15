@@ -7,31 +7,56 @@
 
 namespace Pyz\Zed\DataImport\Business\Model;
 
+use Generated\Shared\Transfer\DataImporterConfigurationTransfer;
+use ReflectionClass;
 use Spryker\Zed\DataImport\Business\Model\DataImporterCollection as SprykerDataImporterCollection;
 
 class DataImporterCollection extends SprykerDataImporterCollection
 {
     /**
-     * @return void
+     * {@inheritDoc}
+     *
+     * @param \Generated\Shared\Transfer\DataImporterConfigurationTransfer|null $dataImporterConfigurationTransfer
+     *
+     * @return \Generated\Shared\Transfer\DataImporterReportTransfer
      */
-    public function afterImport()
+    public function import(?DataImporterConfigurationTransfer $dataImporterConfigurationTransfer = null)
     {
-        echo 'After import hooks starts:' . date('Y-m-d H:i:s') . PHP_EOL;
-        $startAfterImportHooks = microtime(true);
+        $importType = $this->getCurrentImportType($dataImporterConfigurationTransfer);
+        $dataImporterReportTransfer = $this->prepareDataImporterReport($importType);
+        $dataImporters = $this->getDataImportersByImportGroup($dataImporterConfigurationTransfer);
 
-        foreach ($this->afterImportHooks as $afterImportHook) {
-            echo ' ' . PHP_EOL;
-            echo get_class($afterImportHook) . PHP_EOL;
-            echo 'Start: ' . date('Y-m-d H:i:s') . PHP_EOL;
-            $start = microtime(true);
-            $afterImportHook->afterImport();
-            echo 'Finish: ' . date('Y-m-d H:i:s') . PHP_EOL;
-            echo 'Took: ' . round((microtime(true) - $start), 3) . ' seconds' . PHP_EOL;
-            echo 'Took: ' . round((microtime(true) - $start), 3) / 60 . ' minutes' . PHP_EOL;
-            echo ' ' . PHP_EOL;
+        $this->beforeImport();
+
+        if ($importType !== $this->getImportType()) {
+            $this->executeDataImporter(
+                $dataImporters[$importType],
+                $dataImporterReportTransfer,
+                $dataImporterConfigurationTransfer
+            );
+
+            if (!empty($dataImporterConfigurationTransfer->getAfterImportHooksToSkip())) {
+                foreach ($this->afterImportHooks as $afterImportHook) {
+                    $afterImportHookName = (new ReflectionClass($afterImportHook))->getShortName();
+
+                    if (in_array($afterImportHookName, $dataImporterConfigurationTransfer->getAfterImportHooksToSkip())) {
+                        continue;
+                    }
+                    $afterImportHook->afterImport();
+                }
+
+                return $dataImporterReportTransfer;
+            }
+
+            $this->afterImport();
+
+            return $dataImporterReportTransfer;
         }
-        echo 'After import hooks finished:' . date('Y-m-d H:i:s') . PHP_EOL;
-        echo '# Took: ' . round((microtime(true) - $startAfterImportHooks), 3) . ' seconds' . PHP_EOL;
-        echo '# Took: ' . round((microtime(true) - $startAfterImportHooks), 3) / 60 . ' minutes' . PHP_EOL;
+
+        $this->runDataImporters($dataImporters, $dataImporterReportTransfer, $dataImporterConfigurationTransfer);
+
+        $this->afterImport();
+
+        return $dataImporterReportTransfer;
     }
 }
