@@ -215,7 +215,7 @@
         }
 
         &--product-details {
-            padding: rem(20) 0;
+            padding: rem(16) rem(10);
             cursor: pointer;
             position: relative;
 
@@ -231,13 +231,12 @@
             }
 
             &:hover {
-                color: $setting-color-globus-darkGray;
+                color: $setting-color-globus-black;
             }
 
             &.active {
-                color: $setting-color-globus-darkGray;
+                color: $setting-color-globus-black;
                 border-color: $setting-color-globus-darkGray;
-                margin-bottom: rem(25);
 
                 & + div {
                     margin-bottom: rem(15);
