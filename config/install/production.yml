@@ -32,7 +32,7 @@ sections:
 
     glossary:
         glossary-import:
-            command: "vendor/bin/console data:import glossary -vvv --no-ansi || true"
+            command: "vendor/bin/console data:import glossary -a UpdateAvailabilityAfterImportPlugin -vvv --no-ansi || true"
 
     scheduler-start:
         scheduler-setup:
