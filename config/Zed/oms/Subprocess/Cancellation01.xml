@@ -28,7 +28,6 @@
             <state name="email order cancelled sent" >
                 <flag>cancelled</flag>
             </state>
-            <state name="collection cancelled by timeout" />
             <state name="delivery cancelled by timeout" />
             <state name="cancelled by timeout" >
                 <flag>cancelled</flag>
@@ -91,18 +90,6 @@
                 <source>cancelled by timeout</source>
                 <target>cancellation process</target>
                 <event>pass</event>
-            </transition>
-
-            <transition condition="Sales/IsExpiredOrder">
-                <source>ready for collection</source>
-                <target>collection cancelled by timeout</target>
-                <event>pass 10 minutes</event>
-            </transition>
-
-            <transition>
-                <source>collection cancelled by timeout</source>
-                <target>cancelled by timeout</target>
-                <event>cancel by timeout</event>
             </transition>
 
             <transition condition="Sales/IsExpiredOrder">

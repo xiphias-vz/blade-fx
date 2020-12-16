@@ -22,9 +22,6 @@
                 <flag>cancelled</flag>
                 <flag>shipped mail awaits</flag>
             </state>
-            <state name="picking cancelled by timeout">
-                <flag>cancelled</flag>
-            </state>
         </states>
 
         <transitions>
@@ -44,18 +41,6 @@
                 <source>ready for selecting shelves</source>
                 <target>picked</target>
                 <event>confirm picking</event>
-            </transition>
-
-            <transition condition="Sales/IsExpiredOrder">
-                <source>ready for picking</source>
-                <target>picking cancelled by timeout</target>
-                <event>pass 10 minutes</event>
-            </transition>
-
-            <transition>
-                <source>picking cancelled by timeout</source>
-                <target>cancelled by timeout</target>
-                <event>cancel by timeout</event>
             </transition>
 
             <transition>
