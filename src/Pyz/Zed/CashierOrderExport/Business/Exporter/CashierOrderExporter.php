@@ -53,6 +53,10 @@ class CashierOrderExporter implements CashierOrderExporterInterface
     {
         $orderTransfer = $this->orderItemAggregator->aggregateSplitItems($orderTransfer);
 
+        if ($orderTransfer->getIsCashierExportSuccess()) {
+            return $orderTransfer;
+        }
+
         $content = $this->cashierOrderContentBuilder->prepareContent($orderTransfer);
 
         return $this->cashierOrderWriter->write($content, $orderTransfer);

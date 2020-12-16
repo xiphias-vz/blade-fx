@@ -20,13 +20,8 @@
         </states>
 
         <transitions>
-            <transition happy="true" condition="wait all items in picked or canceled state">
-                <source>cashier export process</source>
-                <target>ready for cashier export</target>
-            </transition>
-
             <transition>
-                <source>ready for cashier export</source>
+                <source>cashier export process</source>
                 <target>cashier order exporting</target>
                 <event>export cashier order</event>
             </transition>

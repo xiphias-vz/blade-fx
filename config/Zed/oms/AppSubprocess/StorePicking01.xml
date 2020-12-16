@@ -70,16 +70,9 @@
                 <event>process cancelled due to not in stock</event>
             </transition>
 
-            <transition>
+            <transition happy="true" condition="wait all items in picked or canceled state">
                 <source>picked</source>
                 <target>cashier export process</target>
-                <event>pass</event>
-            </transition>
-
-            <transition>
-                <source>picked</source>
-                <target>delivery process</target>
-                <event>pass</event>
             </transition>
 
             <transition happy="true">
