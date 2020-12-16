@@ -109,52 +109,43 @@ groups:
             Welcome:
                 application: static
                 endpoints:
-                    www.welcome.gl-stg.cloud.spryker.toys:
+                    welcome.shop-t.globus.de:
                         entry-point: Welcome
             Yves:
                 application: yves
                 endpoints:
-                    www.gl-stg.cloud.spryker.toys:
+                    shop-t.globus.de:
                         store: EIN
             Glue:
                 application: glue
                 endpoints:
-                    glue.gl-stg.cloud.spryker.toys:
+                    api.shop-t.globus.de:
                         store: EIN
             Zed:
                 application: zed
                 endpoints:
-                    backoffice.gl-stg.cloud.spryker.toys:
+                    backoffice.shop-t.globus.de:
                         store: EIN
                         <<: *frontend-auth
-                    zed.ein.gl-stg.cloud.spryker.toys:
+                    zed.ein.shop-t.globus.de:
                         store: EIN
                         <<: *frontend-auth
                         primal: true
-                    zed.kmd.gl-stg.cloud.spryker.toys:
+                    zed.kmd.shop-t.globus.de:
                         store: KMD
                         <<: *frontend-auth
                         primal: true
-                    zed.lpz.gl-stg.cloud.spryker.toys:
+                    zed.lpz.shop-t.globus.de:
                         store: LPZ
                         <<: *frontend-auth
                         primal: true
-                    zed.had.gl-stg.cloud.spryker.toys:
+                    zed.had.shop-t.globus.de:
                         store: HAD
                         <<: *frontend-auth
                         primal: true
 
-                    pick.ein.gl-stg.cloud.spryker.toys:
+                    pick.shop-t.globus.de:
                         store: EIN
-                        entry-point: StoreApp
-                    pick.kmd.gl-stg.cloud.spryker.toys:
-                        store: KMD
-                        entry-point: StoreApp
-                    pick.lpz.gl-stg.cloud.spryker.toys:
-                        store: LPZ
-                        entry-point: StoreApp
-                    pick.had.gl-stg.cloud.spryker.toys:
-                        store: HAD
                         entry-point: StoreApp
 
 services:
@@ -173,7 +164,7 @@ services:
             username: "spryker"
             password: "secret"
         endpoints:
-            queue.globus-stg.cloud.spryker.toys:
+            queue.shop-t.globus.de:
             localhost:5672:
                 protocol: tcp
     session:
@@ -192,11 +183,11 @@ services:
     scheduler:
         engine: jenkins
         endpoints:
-            scheduler.globus-stg.cloud.spryker.toys:
+            scheduler.shop-t.globus.de:
     mail_catcher:
         engine: mailhog
         endpoints:
-            mail.globus-stg.cloud.spryker.toys:
+            mail.shop-t.globus.de:
 
 docker:
 
