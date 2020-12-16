@@ -16,29 +16,29 @@ if ($applicationEnv === 'docker_prod') {
 $welcomeMap =
 [
     'local' => 'https://www.welcome.shop.globus.local/',
-    'stage' => 'https://www.welcome.gl-stg.cloud.spryker.toys/',
+    'stage' => 'https://welcome.shop-t.globus.de/',
     'prod' => 'https://welcome.shop.globus.de/',
 ];
 
 $zedMap = [
     'EIN' => [
         'local' => 'zed.ein.shop.globus.local',
-        'stage' => 'zed.ein.gl-stg.cloud.spryker.toys',
+        'stage' => 'zed.ein.shop-t.globus.de',
         'prod' => 'zed.ein.shop.globus.de',
     ],
     'KMD' => [
         'local' => 'zed.kmd.shop.globus.local',
-        'stage' => 'zed.kmd.gl-stg.cloud.spryker.toys',
+        'stage' => 'zed.kmd.shop-t.globus.de',
         'prod' => 'zed.kmd.shop.globus.de',
     ],
     'LPZ' => [
         'local' => 'zed.lpz.shop.globus.local',
-        'stage' => 'zed.lpz.gl-stg.cloud.spryker.toys',
+        'stage' => 'zed.lpz.shop-t.globus.de',
         'prod' => 'zed.lpz.shop.globus.de',
     ],
     'HAD' => [
         'local' => 'zed.had.shop.globus.local',
-        'stage' => 'zed.had.gl-stg.cloud.spryker.toys',
+        'stage' => 'zed.had.shop-t.globus.de',
         'prod' => 'zed.had.shop.globus.de',
     ],
 ];
