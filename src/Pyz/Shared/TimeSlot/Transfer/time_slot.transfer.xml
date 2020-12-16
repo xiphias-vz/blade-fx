@@ -12,9 +12,15 @@
         <property name="timeSlotsCapacity" type="TimeSlotCapacity[]"/>
     </transfer>
 
+    <transfer name="DateTimeSlots">
+        <property name="Date" type="string"/>
+        <property name="timeSlotsCapacity" type="TimeSlotCapacity[]"/>
+    </transfer>
+
     <transfer name="TimeSlotCapacity">
         <property name="merchantReference" type="string"/>
         <property name="day" type="string"/>
+        <property name="date" type="string"/>
         <property name="timeSlot" type="string"/>
         <property name="capacity" type="int"/>
     </transfer>
@@ -22,6 +28,8 @@
     <transfer name="Merchant">
         <property name="weekDaysTimeSlots" type="WeekDayTimeSlots[]"/>
         <property name="weekDaysTimeSlotsRaw" type="array"/>
+        <property name="dateTimeSlots" type="DateTimeSlots[]"/>
+        <property name="dateTimeSlotsRaw" type="array"/>
     </transfer>
 
     <transfer name="MerchantCriteriaFilter">

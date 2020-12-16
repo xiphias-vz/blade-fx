@@ -8,6 +8,7 @@
 namespace Pyz\Zed\Merchant\Persistence\Propel\Mapper;
 
 use ArrayObject;
+use Generated\Shared\Transfer\DateTimeSlotsTransfer;
 use Generated\Shared\Transfer\MerchantTransfer;
 use Generated\Shared\Transfer\TimeSlotCapacityTransfer;
 use Generated\Shared\Transfer\WeekDayTimeSlotsTransfer;
@@ -18,6 +19,8 @@ use Spryker\Zed\Merchant\Persistence\Propel\Mapper\MerchantMapper as SprykerMerc
 
 class MerchantMapper extends SprykerMerchantMapper implements MerchantMapperInterface
 {
+    protected const TIME_SLOT_DATE_TIME_FORMAT = 'Y-m-d';
+
     /**
      * @param \Orm\Zed\Merchant\Persistence\SpyMerchant $spyMerchant
      * @param \Generated\Shared\Transfer\MerchantTransfer $merchantTransfer
@@ -49,11 +52,9 @@ class MerchantMapper extends SprykerMerchantMapper implements MerchantMapperInte
      */
     public function mapTimeslotEntitiesToWeekDaysTimeSlotsTransfer(ObjectCollection $timeSlots): ArrayObject
     {
-        $timeSlotsIndexedByDay = $this->getTimeSlotsIndexedByDay($timeSlots);
-
         $weekDaysTimeSlotsTransfer = new ArrayObject();
 
-        foreach ($timeSlotsIndexedByDay as $dayName => $weekDayTimeSlots) {
+        foreach ($this->getTimeSlotsIndexedByDay($timeSlots) as $dayName => $weekDayTimeSlots) {
             $weekDayTimeSlotsTransfer = (new WeekDayTimeSlotsTransfer())->setWeekDayName($dayName);
 
             foreach ($weekDayTimeSlots as $timeSlot => $capacity) {
@@ -71,6 +72,52 @@ class MerchantMapper extends SprykerMerchantMapper implements MerchantMapperInte
     /**
      * @param \Propel\Runtime\Collection\ObjectCollection $timeSlots
      *
+     * @return \ArrayObject
+     */
+    public function mapTimeslotEntitiesToDateTimeSlotsTransfer(ObjectCollection $timeSlots): ArrayObject
+    {
+        $datesTimeSlotsTransfer = new ArrayObject();
+
+        foreach ($this->getTimeSlotsIndexedByDate($timeSlots) as $date => $dateTimeSlots) {
+            $dateTimeSlotsTransfer = (new DateTimeSlotsTransfer())->setDate($date);
+
+            foreach ($dateTimeSlots as $timeSlot => $capacity) {
+                $dateTimeSlotsTransfer->addTimeSlotsCapacity(
+                    (new TimeSlotCapacityTransfer())->setTimeSlot($timeSlot)->setCapacity($capacity)
+                );
+            }
+
+            $datesTimeSlotsTransfer->append($dateTimeSlotsTransfer);
+        }
+
+        return $datesTimeSlotsTransfer;
+    }
+
+    /**
+     * @param \Propel\Runtime\Collection\ObjectCollection $timeSlots
+     *
+     * @return array
+     */
+    protected function getTimeSlotsIndexedByDate(ObjectCollection $timeSlots): array
+    {
+        $timeSlotsIndexedByDate = [];
+
+        foreach ($timeSlots as $timeSlot) {
+            if (!$timeSlot->getDate()) {
+                continue;
+            }
+
+            /** @var \Orm\Zed\TimeSlot\Persistence\PyzTimeSlot $timeSlot */
+            $dateIndex = $timeSlot->getDate()->format(static::TIME_SLOT_DATE_TIME_FORMAT);
+            $timeSlotsIndexedByDate[$dateIndex][$timeSlot->getTimeSlot()] = $timeSlot->getCapacity();
+        }
+
+        return $timeSlotsIndexedByDate;
+    }
+
+    /**
+     * @param \Propel\Runtime\Collection\ObjectCollection $timeSlots
+     *
      * @return array
      */
     protected function getTimeSlotsIndexedByDay(ObjectCollection $timeSlots): array
@@ -78,6 +125,10 @@ class MerchantMapper extends SprykerMerchantMapper implements MerchantMapperInte
         $timeSlotsIndexedByDay = [];
 
         foreach ($timeSlots as $timeSlot) {
+            if ($timeSlot->getDate()) {
+                continue;
+            }
+
             /** @var \Orm\Zed\TimeSlot\Persistence\PyzTimeSlot $timeSlot */
             $timeSlotsIndexedByDay[$timeSlot->getDay()][$timeSlot->getTimeSlot()] = $timeSlot->getCapacity();
         }

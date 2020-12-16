@@ -15,6 +15,8 @@ use Propel\Runtime\Collection\ObjectCollection;
 
 class MerchantStorageMapper
 {
+    protected const TIME_SLOT_DATE_TIME_FORMAT = 'Y-m-d';
+
     /**
      * @param \Propel\Runtime\Collection\ObjectCollection|\Orm\Zed\Merchant\Persistence\SpyMerchant[] $merchantEntities
      * @param \Generated\Shared\Transfer\MerchantCollectionTransfer $merchantCollectionTransfer
@@ -83,6 +85,7 @@ class MerchantStorageMapper
                 MerchantTransfer::MERCHANT_REFERENCE => $merchant->getMerchantReference(),
                 MerchantTransfer::PICKING_CAPACITY_PER_SLOT => $merchant->getPickingCapacityPerSlot(),
                 MerchantTransfer::WEEK_DAYS_TIME_SLOTS => $merchant->getWeekDaysTimeSlotsRaw(),
+                MerchantTransfer::DATE_TIME_SLOTS => $merchant->getDateTimeSlotsRaw(),
                 MerchantTransfer::DELIVERY_POSTAL_CODES => $merchant->getDeliveryPostalCodes(),
             ];
         }
@@ -101,10 +104,36 @@ class MerchantStorageMapper
 
         foreach ($timeSlots as $timeSlot) {
             /** @var \Orm\Zed\TimeSlot\Persistence\PyzTimeSlot $timeSlot */
+            if ($timeSlot->getDate()) {
+                continue;
+            }
+
             $timeSlotsIndexedByDay[$timeSlot->getDay()][$timeSlot->getTimeSlot()] = $timeSlot->getCapacity();
         }
 
         return $timeSlotsIndexedByDay;
+    }
+
+    /**
+     * @param \Propel\Runtime\Collection\ObjectCollection $timeSlots
+     *
+     * @return array
+     */
+    public function mapTimeslotEntitiesToDateTimeSlotsTransferRaw(ObjectCollection $timeSlots): array
+    {
+        $timeSlotsIndexedByDate = [];
+
+        foreach ($timeSlots as $timeSlot) {
+            /** @var \Orm\Zed\TimeSlot\Persistence\PyzTimeSlot $timeSlot */
+            if (!$timeSlot->getDate()) {
+                continue;
+            }
+
+            $dateIndex = $timeSlot->getDate()->format(static::TIME_SLOT_DATE_TIME_FORMAT);
+            $timeSlotsIndexedByDate[$dateIndex][$timeSlot->getTimeSlot()] = $timeSlot->getCapacity();
+        }
+
+        return $timeSlotsIndexedByDate;
     }
 
     /**

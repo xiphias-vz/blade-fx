@@ -7,6 +7,7 @@
 
 namespace Pyz\Zed\DataImport\Business\Model\TimeSlotCapacity;
 
+use DateTime;
 use Generated\Shared\Transfer\TimeSlotCapacityTransfer;
 use Orm\Zed\Merchant\Persistence\SpyMerchantQuery;
 use Orm\Zed\TimeSlot\Persistence\PyzTimeSlotQuery;
@@ -21,12 +22,12 @@ class TimeSlotWriterStep extends PublishAwareStep implements DataImportStepInter
 {
     protected const MERCHANT_REFERENCE = 'merchant_reference';
     protected const DAY = 'day';
+    protected const DATE = 'date';
     protected const TIME_SLOT = 'time_slot';
     protected const CAPACITY = 'capacity';
 
     protected const REQUIRED_DATA_SET_KEYS = [
         self::MERCHANT_REFERENCE,
-        self::DAY,
         self::TIME_SLOT,
     ];
 
@@ -85,7 +86,10 @@ class TimeSlotWriterStep extends PublishAwareStep implements DataImportStepInter
         DataSetInterface $dataSet,
         TimeSlotCapacityTransfer $timeSlotCapacityTransfer
     ): TimeSlotCapacityTransfer {
-        return $timeSlotCapacityTransfer->fromArray($dataSet->getArrayCopy(), true);
+        $timeSlotCapacityTransfer->fromArray($dataSet->getArrayCopy(), true);
+        $timeSlotCapacityTransfer->setDate($dataSet[static::DATE]);
+
+        return $timeSlotCapacityTransfer;
     }
 
     /**
@@ -95,13 +99,18 @@ class TimeSlotWriterStep extends PublishAwareStep implements DataImportStepInter
      */
     protected function saveTimeSlotCapacity(TimeSlotCapacityTransfer $timeSlotCapacityTransfer): void
     {
+        $timeslotDay = $timeSlotCapacityTransfer->getDate() ?
+            DateTime::createFromFormat('Y-m-d', $timeSlotCapacityTransfer->getDate()) : null;
+
         $pyzTimeSlotEntity = PyzTimeSlotQuery::create()
             ->filterByDay($timeSlotCapacityTransfer->getDay())
             ->filterByTimeSlot($timeSlotCapacityTransfer->getTimeSlot())
             ->filterByMerchantReference($timeSlotCapacityTransfer->getMerchantReference())
+            ->filterByDate($timeslotDay)
             ->findOneOrCreate();
 
         $pyzTimeSlotEntity->setCapacity($timeSlotCapacityTransfer->getCapacity() ?? static::DEFAULT_CAPACITY);
+        $pyzTimeSlotEntity->setDate($timeslotDay);
 
         if ($pyzTimeSlotEntity->isNew() || $pyzTimeSlotEntity->isModified()) {
             $pyzTimeSlotEntity->save();
@@ -116,12 +125,18 @@ class TimeSlotWriterStep extends PublishAwareStep implements DataImportStepInter
     /**
      * @param \Spryker\Zed\DataImport\Business\Model\DataSet\DataSetInterface $dataSet
      *
+     * @throws \Spryker\Zed\DataImport\Business\Exception\InvalidDataException
+     *
      * @return void
      */
     protected function validateDataSet(DataSetInterface $dataSet): void
     {
         foreach (static::REQUIRED_DATA_SET_KEYS as $requiredDataSetKey) {
             $this->validateRequireDataSetByKey($dataSet, $requiredDataSetKey);
+        }
+
+        if (!$dataSet[static::DAY] && !$dataSet[static::DATE]) {
+            throw new InvalidDataException('"' . static::DAY . 'or' . static::DATE . '" must be set.');
         }
     }
 

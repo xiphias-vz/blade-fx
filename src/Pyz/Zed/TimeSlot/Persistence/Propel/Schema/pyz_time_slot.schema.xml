@@ -8,7 +8,8 @@
     <table name="pyz_time_slot">
         <column name="id_time_slot" required="true" type="INTEGER" primaryKey="true" autoIncrement="true"/>
         <column name="merchant_reference" type="VARCHAR" required="true"/>
-        <column name="day" type="VARCHAR" required="true"/>
+        <column name="day" type="VARCHAR" required="false"/>
+        <column name="date" type="DATE"/>
         <column name="time_slot" type="VARCHAR" required="true"/>
         <column name="capacity" type="INTEGER" defaultValue="0" required="true"/>
     </table>

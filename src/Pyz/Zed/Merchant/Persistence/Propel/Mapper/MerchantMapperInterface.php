@@ -63,4 +63,11 @@ interface MerchantMapperInterface extends SprykerMerchantMapperInterface
      * @return \ArrayObject
      */
     public function mapTimeslotEntitiesToWeekDaysTimeSlotsTransfer(ObjectCollection $timeSlots): ArrayObject;
+
+    /**
+     * @param \Propel\Runtime\Collection\ObjectCollection $timeSlots
+     *
+     * @return \ArrayObject
+     */
+    public function mapTimeslotEntitiesToDateTimeSlotsTransfer(ObjectCollection $timeSlots): ArrayObject;
 }

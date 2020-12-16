@@ -73,11 +73,15 @@ class MerchantRepository extends SprykerMerchantRepository implements MerchantRe
         if ($merchantCriteriaFilterTransfer->getWithTimeSlots()) {
             $timeslotEntities = PyzTimeSlotQuery::create()->filterByMerchantReference($merchantTransfer->getMerchantReference())->find();
 
-            $weekDaysTimeSlotsTransfer = $this->getFactory()
-                ->pyzCreatePropelMerchantMapper()
-                ->mapTimeslotEntitiesToWeekDaysTimeSlotsTransfer($timeslotEntities);
+            $merchantTransfer->setWeekDaysTimeSlots(
+                $this->getFactory()->pyzCreatePropelMerchantMapper()
+                    ->mapTimeslotEntitiesToWeekDaysTimeSlotsTransfer($timeslotEntities)
+            );
 
-            $merchantTransfer->setWeekDaysTimeSlots($weekDaysTimeSlotsTransfer);
+            $merchantTransfer->setDateTimeSlots(
+                $this->getFactory()->pyzCreatePropelMerchantMapper()
+                    ->mapTimeslotEntitiesToDateTimeSlotsTransfer($timeslotEntities)
+            );
         }
 
         return $merchantTransfer;

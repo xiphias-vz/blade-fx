@@ -14,7 +14,7 @@ interface TimeSlotServiceInterface
 {
     /**
      * Specification:
-     *  - Returns merchant capacity by shipment method
+     *  - Returns merchant capacity
      *
      * @api
      *
