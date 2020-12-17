@@ -128,10 +128,14 @@
                                 {% block name %}
                                     {% if data.name and data.url %}
 
-                                        {% if productSupplier %}
+                                        {% if productSupplier and productSaleVolume and productSaleUnit %}
                                             {% set fullname = productSupplier ~ " - " ~ data.name ~ " - " ~ productSaleVolume|round(2, 'floor') ~  ' ' ~ productSaleUnit %}
-                                        {% else %}
+                                        {% elseif productSaleVolume and productSaleUnit %}
                                             {% set fullname = data.name ~ " - " ~ productSaleVolume|round(2, 'floor') ~  ' ' ~ productSaleUnit %}
+                                        {% elseif productSupplier %}
+                                            {% set fullname = productSupplier ~ " - " ~ data.name %}
+                                        {% else %}
+                                            {% set fullname = data.name %}
                                         {% endif %}
 
                                         {% block link %}
