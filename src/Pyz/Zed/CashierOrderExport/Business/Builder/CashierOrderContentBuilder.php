@@ -20,9 +20,11 @@ class CashierOrderContentBuilder implements CashierOrderContentBuilderInterface
     protected const POSITION_MASK = '%s%s%s%s%s%s%s%s%s%s%s%020s%s%020s%s%s%s%020s%s%020s%s%020s%s%020s';
     protected const DEFAULT_POSITION_ENDING_ZERO_SETS = 8;
     protected const DEFAULT_VALUE_LENGTH = 20;
-
     protected const UMLAUTS_REPLACE_FROM = ['ä', 'ö', 'ü', 'ß', 'Ä', 'Ö', 'Ü'];
     protected const UMLAUTS_REPLACE_TO = ['ae', 'oe', 'ue', 'ss', 'Ae', 'Oe', 'Ue'];
+    protected const PICKING_ZONE_TO_PRODUCT_NUMBER_MAPPER = [
+        'Metzgerei' => '210602',
+    ];
 
     protected const HEADER_KEY_IDENTIFIER = '1070';
     protected const POSITION_KEY_IDENTIFIER = '1071';
@@ -187,7 +189,7 @@ class CashierOrderContentBuilder implements CashierOrderContentBuilderInterface
             static::ORDER_KEY_IDENTIFIER,
             $orderTransfer->getOrderReference() ?? static::DEFAULT_EMPTY_NUMBER,
             static::ORDER_ITEM_EAN_IDENTIFIER,
-            $itemTransfer->getProductNumber() ?? static::DEFAULT_EMPTY_NUMBER,
+            $this->getItemProductNumber($itemTransfer) ?? static::DEFAULT_EMPTY_NUMBER,
             static::ORDER_ITEM_NAME_IDENTIFIER,
             $this->getItemName($itemTransfer),
             static::ORDER_ITEM_PRICE_IDENTIFIER,
@@ -480,5 +482,15 @@ class CashierOrderContentBuilder implements CashierOrderContentBuilderInterface
         }
 
         return $itemTransfer->getSumPrice();
+    }
+
+    /**
+     * @param \Generated\Shared\Transfer\ItemTransfer $itemTransfer
+     *
+     * @return string|null
+     */
+    protected function getItemProductNumber(ItemTransfer $itemTransfer): ?string
+    {
+        return static::PICKING_ZONE_TO_PRODUCT_NUMBER_MAPPER[$itemTransfer->getPickZone()] ?? $itemTransfer->getProductNumber();
     }
 }
