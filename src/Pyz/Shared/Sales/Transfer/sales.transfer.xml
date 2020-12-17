@@ -22,6 +22,7 @@
         <property name="merchantName" type="string"/>
         <property name="deliveryMinimumAge" type="int"/>
         <property name="requestedDeliveryDate" type="string"/>
+        <property name="pickingSalesOrderCollection" type="PickingSalesOrderCollection"/>
     </transfer>
 
     <transfer name="Item">

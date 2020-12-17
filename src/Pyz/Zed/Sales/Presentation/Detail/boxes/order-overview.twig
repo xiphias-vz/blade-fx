@@ -14,6 +14,10 @@
                         <dd>{{ order.createdAt | formatDateTime }}</dd>
                         <dt>{{ 'Unique Product Quantity' | trans }}</dt>
                         <dd>{{ order.uniqueProductQuantity }}</dd>
+                        <dt>{{ 'Container Code -> Shelf Code' | trans }}</dt>
+                        {% for pickingSalesOrder in order.pickingSalesOrderCollection.pickingSalesOrders %}
+                            <dd>{{ pickingSalesOrder.containerCode ~ ' -> ' ~ pickingSalesOrder.shelfCode}}</dd>
+                        {% endfor %}
                         <hr>
                         <dt>{{ 'Merchant Address' | trans }}</dt>
                         <dd>{{ order.merchantName }}</dd>

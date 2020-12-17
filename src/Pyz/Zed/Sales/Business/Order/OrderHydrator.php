@@ -11,6 +11,8 @@ use Generated\Shared\Transfer\ItemStateTransfer;
 use Generated\Shared\Transfer\ItemTransfer;
 use Generated\Shared\Transfer\LocaleTransfer;
 use Generated\Shared\Transfer\OrderTransfer;
+use Generated\Shared\Transfer\PickingSalesOrderCollectionTransfer;
+use Generated\Shared\Transfer\PickingSalesOrderTransfer;
 use Orm\Zed\Oms\Persistence\SpyOmsOrderItemStateHistory;
 use Orm\Zed\Sales\Persistence\SpySalesOrder;
 use Orm\Zed\Sales\Persistence\SpySalesOrderItem;
@@ -168,6 +170,7 @@ class OrderHydrator extends SprykerOrderHydrator
     {
         $orderTransfer = parent::applyOrderTransferHydrators($orderEntity);
         $orderTransfer->setLocale((new LocaleTransfer())->fromArray($orderEntity->getLocale()->toArray()));
+        $orderTransfer->setPickingSalesOrderCollection($this->getPickingSalesOrderCollection($orderEntity));
 
         if ($orderEntity->hasVirtualColumn(static::COL_ITEM_STATE_NAMES)) {
             $orderState = $this->groupItemStateNames($orderEntity->getVirtualColumn(static::COL_ITEM_STATE_NAMES));
@@ -176,6 +179,24 @@ class OrderHydrator extends SprykerOrderHydrator
         }
 
         return $orderTransfer;
+    }
+
+    /**
+     * @param \Orm\Zed\Sales\Persistence\SpySalesOrder $orderEntity
+     *
+     * @return \Generated\Shared\Transfer\PickingSalesOrderCollectionTransfer
+     */
+    protected function getPickingSalesOrderCollection(SpySalesOrder $orderEntity): PickingSalesOrderCollectionTransfer
+    {
+        $pickingSalesOrderCollection = new PickingSalesOrderCollectionTransfer();
+
+        foreach ($orderEntity->getPyzPickingSalesOrders() as $pyzPickingSalesOrder) {
+            $pickingSalesOrderCollection->addPickingSalesOrder(
+                (new PickingSalesOrderTransfer())->fromArray($pyzPickingSalesOrder->toArray(), true)
+            );
+        }
+
+        return $pickingSalesOrderCollection;
     }
 
     /**

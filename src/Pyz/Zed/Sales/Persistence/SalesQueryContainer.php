@@ -66,6 +66,7 @@ class SalesQueryContainer extends SprykerSalesQueryContainer
         $query = $this->getFactory()->createSalesOrderQuery()
             ->setModelAlias('order')
             ->filterByIdSalesOrder($idSalesOrder)
+            ->leftJoinWithPyzPickingSalesOrder()
             ->innerJoinWith('order.BillingAddress billingAddress')
             ->innerJoinWith('billingAddress.Country billingCountry')
             ->leftJoinWith('order.ShippingAddress shippingAddress')
