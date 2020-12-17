@@ -7,13 +7,15 @@
     metaDescription: '',
     metaKeywords: '',
     markt: app.store,
-    googleTagMangerId: app.googleTagManagerId
+    googleTagMangerId: app.googleTagManagerId,
+    cookieBotId: app.domainGroupId
 } %}
 
 {% block template %}
     <!doctype html>
     <html lang="{{ data.locale }}">
     <head>
+        <script id="Cookiebot" src="https://consent.cookiebot.com/uc.js" data-cbid="{{ data.cookieBotId }}" data-blockingmode="auto" type="text/javascript"></script>
         {% if is_granted('IS_AUTHENTICATED_FULLY') %}
             <script>
                 dataLayer = [{
@@ -99,8 +101,9 @@
 
         <script type="module" src="{{publicPath('js/yves_default.vendor.esm.js')}}" crossorigin></script>
         <script type="module" src="{{publicPath('js/yves_default.app.esm.js')}}" crossorigin></script>
-    {% endblock %}
 
+        <script id="CookieDeclaration" src="https://consent.cookiebot.com/{{ data.cookieBotId }}/cd.js" type="text/javascript" async></script>
+    {% endblock %}
 
     </body>
     </html>

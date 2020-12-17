@@ -7,6 +7,7 @@
 
 namespace Pyz\Yves\ShopApplication;
 
+use Pyz\Yves\CookieBot\Plugin\Application\CookieBotApplicationPlugin;
 use Pyz\Yves\CustomerPage\Plugin\Application\CustomerPageApplicationPlugin;
 use Pyz\Yves\GoogleTagManager\Plugin\Application\GoogleTagManagerIdApplicationPlugin;
 use Pyz\Yves\LanguageSwitcherWidget\Widget\LanguageSwitcherWidget;
@@ -153,6 +154,7 @@ class ShopApplicationDependencyProvider extends SprykerShopApplicationDependency
             new CurrentMerchantApplicationPlugin(),
             new GoogleTagManagerIdApplicationPlugin(),
             new CustomerPageApplicationPlugin(),
+            new CookieBotApplicationPlugin(),
         ];
 
         if (class_exists(WebProfilerApplicationPlugin::class)) {

@@ -846,3 +846,6 @@ $config[\Pyz\Shared\Customer\CustomerConstants::CDC_API_USER_KEY] = 'AOOFJuSjBzx
 
 // ----------Customer profile URL
 $config[\Pyz\Shared\Customer\CustomerConstants::CUSTOMER_PROFILE_URL] = 'https://www.globus.de/kundenprogramme/mein-globus/kontoverwaltung.php';
+
+// ----------- Cookiebot
+$config[\Pyz\Shared\CookieBot\CookieBotConstants::DOMAIN_GROUP_ID] = '4bae1e02-80b1-43ac-881c-aba9593b2331';
