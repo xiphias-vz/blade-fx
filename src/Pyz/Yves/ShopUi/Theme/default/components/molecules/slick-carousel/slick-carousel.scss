@@ -15,7 +15,7 @@
 
             .slick-arrow {
                 position: absolute;
-                top: rem(165);
+                top: rem(152);
                 font-size: 0;
                 width: rem(30);
                 height: rem(30);
@@ -25,7 +25,7 @@
                 opacity: 0.7;
 
                 @include helper-breakpoint-media-max($sm-max) {
-                    top: rem(125);
+                    top: rem(66);
                 }
 
                 &:hover {
@@ -39,6 +39,10 @@
                 left: rem(-30);
                 transform: rotate(180deg);
 
+                @include helper-breakpoint-media-max($xl-max) {
+                    left: rem(-16);
+                }
+
                 @include helper-breakpoint-media-max($sm-max) {
                     left: rem(-8);
                 }
@@ -46,6 +50,10 @@
 
             .slick-next {
                 right: rem(-30);
+
+                @include helper-breakpoint-media-max($xl-max) {
+                    right: rem(-16);
+                }
 
                 @include helper-breakpoint-media-max($sm-max) {
                     right: rem(-8);
