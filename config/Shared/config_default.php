@@ -839,7 +839,7 @@ $config[\Pyz\Shared\Customer\CustomerConstants::CDC_API_URL] =
 
 $config[\Pyz\Shared\Customer\CustomerConstants::CDC_API_SECRET_KEY] =
     [
-        'cdcApiSecretKey' => '',
+        'cdcApiSecretKey' => 'QA8hv1Pds/oi0VvwDycD312CjL6gNmW',
     ];
 
 $config[\Pyz\Shared\Customer\CustomerConstants::CDC_API_USER_KEY] = 'AOOFJuSjBzxx';

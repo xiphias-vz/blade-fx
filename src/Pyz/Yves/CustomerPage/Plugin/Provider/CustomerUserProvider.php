@@ -64,6 +64,12 @@ class CustomerUserProvider extends SprykerCustomerUserProvider
                 $customerTransfer->setThirdPartyRegistration(true);
                 $this->getFactory()->getCustomerClient()->updateCustomer($customerTransfer);
             }
+
+            $data = JSON::parse($data);
+
+            if ($data["screen"] === "gigya-register-screen") {
+                $this->sendCdcMailForRegistration($data["response"]["UID"]);
+            }
         } else {
             throw new AuthenticationException(self::ERROR_NOT_VERIFIED_CUSTOMER);
         }
@@ -84,6 +90,32 @@ class CustomerUserProvider extends SprykerCustomerUserProvider
         $urlPrefix = Config::get(CustomerConstants::CDC_API_URL);
         $url = array_shift($urlPrefix) . "accounts.login?apiKey=" . array_shift($apiKey) . "&sec=" . array_shift($apiSecretKey);
         $data = ['loginID' => $username, 'password' => $pass];
+        $options = [
+            'http' => [
+                'header' => "Content-type: application/x-www-form-urlencoded\r\n",
+                'method' => 'POST',
+                'content' => http_build_query($data),
+            ],
+        ];
+        $context = stream_context_create($options);
+        $result = file_get_contents($url, false, $context);
+
+        return JSON::parse($result);
+    }
+
+    /**
+     * @param string $uid
+     *
+     * @return array
+     */
+    protected function sendCdcMailForRegistration($uid): array
+    {
+        $apiKey = Config::get(CustomerConstants::CDC_API_KEY);
+        $apiSecretKey = Config::get(CustomerConstants::CDC_API_SECRET_KEY);
+        $apiUserKey = Config::get(CustomerConstants::CDC_API_USER_KEY);
+        $urlPrefix = Config::get(CustomerConstants::CDC_API_URL);
+        $url = array_shift($urlPrefix) . "accounts.resendVerificationCode?apiKey=" . array_shift($apiKey) . "&secret=" . array_shift($apiSecretKey) . "&userKey=" . $apiUserKey;
+        $data = ['UID' => $uid];
         $options = [
             'http' => [
                 'header' => "Content-type: application/x-www-form-urlencoded\r\n",

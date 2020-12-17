@@ -20,10 +20,10 @@ $config[CustomerConstants::CDC_API_URL] =
 
 $config[CustomerConstants::CDC_API_SECRET_KEY] =
     [
-        'cdcApiSecretKey' => 'QA8hv1Pds/oi0VvwDycD312CjL6gNmW',
+        'cdcApiSecretKey' => 'hX8Z8bpIrEsn6zLCRrXgPTPp5Qqm8SZx',
     ];
 
-$config[CustomerConstants::CDC_API_USER_KEY] = 'AOOFJuSjBzxx';
+$config[CustomerConstants::CDC_API_USER_KEY] = 'AEcgHRqmuKaV';
 
 require('config_default-docker.php');
 
