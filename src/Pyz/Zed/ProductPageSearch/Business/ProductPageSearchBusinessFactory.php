@@ -7,7 +7,10 @@
 
 namespace Pyz\Zed\ProductPageSearch\Business;
 
+use Pyz\Zed\ProductPageSearch\Business\DataMapper\ProductAbstractSearchDataMapper;
 use Pyz\Zed\ProductPageSearch\Business\Publisher\ProductAbstractPagePublisher;
+use Spryker\Zed\ProductPageSearch\Business\DataMapper\AbstractProductSearchDataMapper;
+use Spryker\Zed\ProductPageSearch\Business\Mapper\ProductPageSearchMapper;
 use Spryker\Zed\ProductPageSearch\Business\ProductPageSearchBusinessFactory as SprykerProductPageSearchBusinessFactory;
 
 class ProductPageSearchBusinessFactory extends SprykerProductPageSearchBusinessFactory
@@ -24,6 +27,31 @@ class ProductPageSearchBusinessFactory extends SprykerProductPageSearchBusinessF
             $this->createProductPageMapper(),
             $this->createProductPageWriter(),
             $this->getStoreFacade()
+        );
+    }
+
+    /**
+     * @return \Spryker\Zed\ProductPageSearch\Business\Mapper\ProductPageSearchMapper
+     */
+    protected function createProductPageMapper()
+    {
+        return new ProductPageSearchMapper(
+            $this->createProductPageAttribute(),
+            $this->createProductAbstractSearchDataMapper(),
+            $this->getUtilEncoding()
+        );
+    }
+
+    /**
+     * @return \Pyz\Zed\ProductPageSearch\Business\DataMapper\ProductAbstractSearchDataMapper
+     */
+    public function createProductAbstractSearchDataMapper(): AbstractProductSearchDataMapper
+    {
+        return new ProductAbstractSearchDataMapper(
+            $this->createPageMapBuilder(),
+            $this->getSearchFacade(),
+            $this->getProductSearchFacade(),
+            $this->getProductAbstractMapExpanderPlugins()
         );
     }
 }
