@@ -15,7 +15,7 @@
     <!doctype html>
     <html lang="{{ data.locale }}">
     <head>
-        <script id="Cookiebot" src="https://consent.cookiebot.com/uc.js" data-cbid="{{ data.cookieBotId }}" data-blockingmode="auto" type="text/javascript"></script>
+        <script id="Cookiebot" src="https://consent.cookiebot.com/uc.js" data-cbid="{{ data.cookieBotId }}" type="text/javascript" async></script>
         {% if is_granted('IS_AUTHENTICATED_FULLY') %}
             <script>
                 dataLayer = [{
