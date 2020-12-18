@@ -443,6 +443,7 @@ class CashierOrderContentBuilder implements CashierOrderContentBuilderInterface
         $itemName = $itemTransfer->getBontext() ?? $itemTransfer->getName();
 
         $itemName = $this->sanitizeItemNameFromUmlauts($itemName);
+        $itemName = $this->sanitizeItemNameFromNotSupportedChars($itemName);
 
         return $this->applyLength($itemName);
     }
@@ -468,6 +469,21 @@ class CashierOrderContentBuilder implements CashierOrderContentBuilderInterface
     protected function sanitizeItemNameFromUmlauts(string $itemName): string
     {
         return str_replace(static::UMLAUTS_REPLACE_FROM, static::UMLAUTS_REPLACE_TO, $itemName);
+    }
+
+    /**
+     * @param string $itemName
+     *
+     * @return string
+     */
+    protected function sanitizeItemNameFromNotSupportedChars(string $itemName): string
+    {
+        $itemNameInSupportedEncoding = mb_convert_encoding(
+            $itemName,
+            $this->cashierOrderExportConfig->getCashierFileSupportedEncoding()
+        );
+
+        return str_replace('?', '', $itemNameInSupportedEncoding);
     }
 
     /**
