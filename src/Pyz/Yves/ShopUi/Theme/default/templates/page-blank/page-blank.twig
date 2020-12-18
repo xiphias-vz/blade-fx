@@ -32,7 +32,7 @@
             </script>
         {% endif %}
         <!-- Google Tag Manager -->
-        <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+        <script type="text/javascript" data-cookieconsent="statistics">(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
                     new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
                 j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
                 'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
@@ -101,8 +101,6 @@
 
         <script type="module" src="{{publicPath('js/yves_default.vendor.esm.js')}}" crossorigin></script>
         <script type="module" src="{{publicPath('js/yves_default.app.esm.js')}}" crossorigin></script>
-
-        <script id="CookieDeclaration" src="https://consent.cookiebot.com/{{ data.cookieBotId }}/cd.js" type="text/javascript" async></script>
     {% endblock %}
 
     </body>
