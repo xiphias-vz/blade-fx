@@ -33,9 +33,9 @@
         {% if data.isImage %}
             {% if attributes.src is defined %}
                 {% if attributes.src is not empty %}
-                    <img class="{{ data.imageClasses }} {{ config.jsName }}__content is-invisible" data-src="{{ attributes.src }}" {{ component.renderAttributes(attributesWithoutSrc) }}>
+                    <img onerror="this.src = '{{ defaultImage }}'" class="{{ data.imageClasses }} {{ config.jsName }}__content is-invisible" data-src="{{ attributes.src }}" {{ component.renderAttributes(attributesWithoutSrc) }}>
                 {% else %}
-                    <img class="{{ data.imageClasses }} {{ config.jsName }}__content is-invisible" data-src="{{ defaultImage }}" {{ component.renderAttributes(attributesWithoutSrc) }}>
+                    <img onerror="this.src = '{{ defaultImage }}'" class="{{ data.imageClasses }} {{ config.jsName }}__content is-invisible" data-src="{{ defaultImage }}" {{ component.renderAttributes(attributesWithoutSrc) }}>
                 {% endif %}
             {% endif %}
         {% else %}
@@ -46,16 +46,11 @@
     {% block noscriptImage %}
         <noscript>
             {% if data.isImage %}
-                <img class="{{ data.imageClasses }}" {{ component.renderAttributes(attributes) }}>
+                <img onerror="this.src = '{{ defaultImage }}'" class="{{ data.imageClasses }}" {{ component.renderAttributes(attributes) }}>
             {% else %}
                 <div class="{{ data.imageClasses }} {{ config.name }}__bg-fallback" style="background-image: url({{ attributes.src }})"></div>
             {% endif %}
         </noscript>
     {% endblock %}
 
-    <script type="text/javascript">
-        document.querySelector(".lazy-thumbnail__image").onerror = function(args){
-            args.currentTarget.src = '{{ defaultImage }}';
-        };
-    </script>
 {% endblock %}
