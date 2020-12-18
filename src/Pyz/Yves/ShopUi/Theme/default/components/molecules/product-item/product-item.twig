@@ -25,9 +25,9 @@
 
 {%- block extraClass %}{% endblock -%}
 
-{% set productSaleUnit = data.product.grundpreismasseinheit | default(null) %}
-{% set productSupplier = data.product.supplier | default(null) %}
-{% set productSaleVolume = data.product.grundpreisinhalt | default(null) %}
+{% set productSaleUnit = data.product.attributes.grundpreismasseinheit | default(null) %}
+{% set productSupplier = data.product.attributes.supplier | default(null) %}
+{% set productSaleVolume = data.product.attributes.grundpreisinhalt | default(null) %}
 
 {% block body %}
     <div class="{{ component.renderClass(config.name ~ '__container', modifiers) }}">
