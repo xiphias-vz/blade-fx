@@ -38,6 +38,8 @@ class ClickAndCollectShipmentPriceResolver implements ShipmentPriceResolverInter
 
         if ($quoteTransfer->getCustomer()->getThirdPartyRegistration()) {
             return $this->shipmentConfig->getMainGlobusCustomerClickAndCollectShipmentMethodPrice();
+        } elseif ($quoteTransfer->getCustomer()->getIsGuest()) {
+            return $this->shipmentConfig->getGuestCustomerClickAndCollectShipmentMethodPrice();
         }
 
         return null;

@@ -17,6 +17,14 @@ class ShipmentConfig extends AbstractBundleConfig
     /**
      * @return int
      */
+    public function getGuestCustomerClickAndCollectShipmentMethodPrice(): int
+    {
+        return $this->getSharedConfig()->getGuestCustomerClickAndCollectShipmentMethodPrice();
+    }
+
+    /**
+     * @return int
+     */
     public function getMainGlobusCustomerClickAndCollectShipmentMethodPrice(): int
     {
         return $this->getSharedConfig()->getMainGlobusCustomerClickAndCollectShipmentMethodPrice();
