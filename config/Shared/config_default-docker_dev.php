@@ -9,7 +9,7 @@ $config[ProductImageConstants::IMAGES_HOST_URL] = 'https://globus-staging-produc
 
 $config[CustomerConstants::CDC_API_KEY] =
     [
-        'cdcApiKey' => '3_IVfYuFFTkEygbMQjcP8LamKwRZBH4_qjl-EAGSvZJPGTAL59E9yUPdTxqLCyofkZ',
+        'cdcApiKey' => '3_cO6ShorZ5e1MqRhpb214jt1gWEX45qnI0_vO8ioUNl7z1FIA-ogdd4Ii9LnL6eTc',
     ];
 
 $config[CustomerConstants::CDC_API_URL] =
@@ -20,10 +20,10 @@ $config[CustomerConstants::CDC_API_URL] =
 
 $config[CustomerConstants::CDC_API_SECRET_KEY] =
     [
-        'cdcApiSecretKey' => 'hX8Z8bpIrEsn6zLCRrXgPTPp5Qqm8SZx',
+        'cdcApiSecretKey' => 'QA8hvf1Pds/oi0VvwDycD312CjL6gNmW',
     ];
 
-$config[CustomerConstants::CDC_API_USER_KEY] = 'AEcgHRqmuKaV';
+$config[CustomerConstants::CDC_API_USER_KEY] = 'AOOFJuSjBzxx';
 
 require('config_default-docker.php');
 

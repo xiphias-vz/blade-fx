@@ -828,7 +828,7 @@ $config[\Pyz\Shared\Customer\CustomerConstants::CUSTOMER_PHONE_PREFIX] =
 
 $config[\Pyz\Shared\Customer\CustomerConstants::CDC_API_KEY] =
     [
-        'cdcApiKey' => '3_IVfYuFFTkEygbMQjcP8LamKwRZBH4_qjl-EAGSvZJPGTAL59E9yUPdTxqLCyofkZ',
+        'cdcApiKey' => '3_cO6ShorZ5e1MqRhpb214jt1gWEX45qnI0_vO8ioUNl7z1FIA-ogdd4Ii9LnL6eTc',
     ];
 
 $config[\Pyz\Shared\Customer\CustomerConstants::CDC_API_URL] =
@@ -839,7 +839,7 @@ $config[\Pyz\Shared\Customer\CustomerConstants::CDC_API_URL] =
 
 $config[\Pyz\Shared\Customer\CustomerConstants::CDC_API_SECRET_KEY] =
     [
-        'cdcApiSecretKey' => 'QA8hv1Pds/oi0VvwDycD312CjL6gNmW',
+        'cdcApiSecretKey' => 'QA8hvf1Pds/oi0VvwDycD312CjL6gNmW',
     ];
 
 $config[\Pyz\Shared\Customer\CustomerConstants::CDC_API_USER_KEY] = 'AOOFJuSjBzxx';
