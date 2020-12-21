@@ -16,3 +16,6 @@ sections:
 
         product-stock:
             command: "rm -rf data/import/spryker/product_stock.csv && mv data/import/spryker/product_stock.back.csv data/import/spryker/product_stock.csv"
+
+        time-slot:
+            command: "rm -rf data/import/spryker/time_slot.csv && mv data/import/spryker/time_slot.back.csv data/import/spryker/time_slot.csv"

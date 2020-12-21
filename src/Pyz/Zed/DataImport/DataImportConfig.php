@@ -378,7 +378,7 @@ class DataImportConfig extends SprykerDataImportConfig
      */
     public function getTimeSlotImporterConfiguration(): DataImporterConfigurationTransfer
     {
-        return $this->buildBaseImporterConfiguration('time_slot.csv', static::IMPORT_TIME_SLOT);
+        return $this->buildBaseImporterConfiguration('spryker/time_slot.csv', static::IMPORT_TIME_SLOT);
     }
 
     /**
@@ -421,6 +421,7 @@ class DataImportConfig extends SprykerDataImportConfig
             '/^5\.globus_article_instock\.NOS\.[0-9]+_1057/' => '5.globus_article_instock.NOS.1057.csv',
 
             '/^1\.globus_categories\.[0-9]+/' => '1.globus_categories.csv',
+            '/^1\.globus_time_slot/' => '1.globus_time_slot.csv',
             '/^2\.globus_articles\.[0-9]+/' => '2.globus_articles.csv',
 
             '/^5\.globus_article_instock\.[0-9]+_1004/' => '5.globus_article_instock.1004.csv',

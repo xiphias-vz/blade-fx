@@ -39,6 +39,9 @@ sections:
         import-product-stock-1057:
             command: "vendor/bin/console data:import product-stock -f spryker/5.globus_article_instock.1057.csv -a UpdateAvailabilityAfterImportPlugin -vvv --no-ansi || true"
 
+        import-time-slot:
+            command: "vendor/bin/console data:import time-slot -f spryker/1.globus_time_slot.csv -a UpdateAvailabilityAfterImportPlugin -vvv --no-ansi || true"
+
     reset:
         reset-categories:
             command: "cp data/import/spryker/categories.csv data/import/spryker/1.globus_categories.csv"
@@ -69,6 +72,9 @@ sections:
 
         reset-product-stock-1057:
             command: "cp data/import/spryker/product_stock.csv data/import/spryker/5.globus_article_instock.1057.csv"
+
+        reset-time-slot:
+            command: "cp data/import/spryker/time_slot.csv data/import/spryker/1.globus_time_slot.csv"
 
     import-metzgerei:
         import-metzgerei-product:

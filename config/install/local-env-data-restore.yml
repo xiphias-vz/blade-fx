@@ -17,6 +17,9 @@ sections:
         product-stock:
             command: "cp data/import/spryker/product_stock.csv data/import/spryker/product_stock.back.csv"
 
+        time-slot:
+            command: "cp data/import/spryker/time_slot.csv data/import/spryker/time_slot.back.csv"
+
     restore-local-demo-data-files:
         categories:
             command: "cp data/import/spryker/categories.local.csv data/import/spryker/categories.csv"
@@ -29,3 +32,6 @@ sections:
 
         product-stock:
             command: "cp data/import/spryker/product_stock.local.csv data/import/spryker/product_stock.csv"
+
+        time-slot:
+            command: "cp data/import/spryker/time_slot.local.csv data/import/spryker/time_slot.csv"
