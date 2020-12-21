@@ -7,6 +7,7 @@ picking_zone_order_export.column.picking_date,Kommissionierdatum
 picking_zone_order_export.column.time_slot,Zeitfenster
 picking_zone_order_export.column.article,Artikel
 picking_zone_order_export.column.total_amount,Gesamtbetrag bestellt
+picking_zone_order_export.column.weight_per_unit,Durchschnittsgewicht
 picking_zone_order_export.column.location,Ort
 picking_zone_order_export.column.ean,EAN
 picking_zone_order_export.column.price,Preis

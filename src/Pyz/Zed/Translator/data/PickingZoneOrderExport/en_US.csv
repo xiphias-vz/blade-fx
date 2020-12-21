@@ -6,7 +6,8 @@ picking_zone_order_export_gui.field.reset,Reset
 picking_zone_order_export.column.picking_date,Picking Date
 picking_zone_order_export.column.time_slot,Time slot
 picking_zone_order_export.column.article,Article
-picking_zone_order_export.column.total_amount,Total amount ordered
+picking_zone_order_export.column.total_amount,Total amount ordered,
+picking_zone_order_export.column.weight_per_unit,Average weight
 picking_zone_order_export.column.location,Location
 picking_zone_order_export.column.ean,EAN
 picking_zone_order_export.column.price,Price
