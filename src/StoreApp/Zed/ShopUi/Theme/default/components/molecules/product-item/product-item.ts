@@ -41,10 +41,23 @@ export default class ProductItem extends Component {
     }
 
     protected mapEvents(): void {
-        this.$weightField.on('focusout', () => this.validateWeightInput());
+        let checkIfWeightCorrect = true;
+        this.$weightField.on('focusout', () =>
+        {
+            checkIfWeightCorrect = this.validateWeightInput();
+            if (!checkIfWeightCorrect) {
+                this.$weightField.val(this.$weightField.attr('value'));
+                this.$weightField.focus();
+            }
+        });
         this.$minusButton.on('click', () => this.clickCounterHandler());
         this.$plusButton.on('click', () => this.clickCounterHandler(true));
-        this.$acceptButton.on('click', () => this.acceptClickHandler());
+        this.$acceptButton.on('click', () =>
+        {
+            if (checkIfWeightCorrect) {
+                this.acceptClickHandler()
+            }
+        });
         this.$declineButton.on('click', () => {
             if (this.isAccepted || this.isDeclined || this.isNotFullyAccepted) {
                 this.revertView();
@@ -85,19 +98,24 @@ export default class ProductItem extends Component {
         this.pickProducts.updateStorageItem(this);
     }
 
-    protected validateWeightInput(): void {
+    protected validateWeightInput(): boolean {
         const inputWeightValue = Number(this.$weightField.val());
         const inputWeightMax = Number(this.$weightField.attr('max'));
         const inputWeightMin = Number(this.$weightField.attr('min'));
 
         if (inputWeightValue > inputWeightMax) {
-            alert(`Der Eingabewert sollte nicht größer als sein ${inputWeightMax}`);
-            this.$weightField.val(this.$weightField.attr('value'));
-        }
+            alert(`Der Eingabewert sollte nicht größer als ${inputWeightMax} sein`);
 
+            return false;
+        }
         if (inputWeightValue < inputWeightMin) {
-            alert(`Der Eingabewert sollte nicht kleiner als sein ${inputWeightMin}`);
-            this.$weightField.val(this.$weightField.attr('value'));
+            alert(`Der Eingabewert sollte nicht kleiner als ${inputWeightMin} sein`);
+
+            return false;
+        }
+        else {
+
+            return true;
         }
     }
 
