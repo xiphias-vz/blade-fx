@@ -48,6 +48,12 @@
     {{ form_start(data.pickingForm, {
         attr: { class: 'form js-submit-form-handler__form spacing-top spacing-top--inner' }
     }) }}
+        {% include molecule('form-containers', 'Picker') with {
+            data: {
+                formContainers: data.pickingForm.field_sales_order_containers,
+            },
+        } only %}
+
         {% for fieldName in pickingFormSkuKeys %}
             {% set field = attribute(data.pickingForm.children, fieldName) %}
             {% set itemSku = field.vars.name | split('__') | last %}
@@ -96,12 +102,6 @@
                 {% endembed %}
             {% endif %}
         {% endfor %}
-
-        {% include molecule('form-containers', 'Picker') with {
-            data: {
-                formContainers: data.pickingForm.field_sales_order_containers,
-            },
-        } only %}
 
         <div class="pick-products__action-wrapper">
             <div class="pick-products__action js-pick-products__action">

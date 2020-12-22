@@ -24,6 +24,7 @@ export default class FormContainers extends Component {
         }
         this.mapEvents();
         this.mapEventsForItems();
+        this.focusFirstContainerInputElement();
     }
 
     protected mapEvents(): void {
@@ -88,5 +89,11 @@ export default class FormContainers extends Component {
         formLastItemWrapper.classList.add('grid');
         formLastItemWrapper.classList.add('grid--justify');
         formLastItemWrapper.insertAdjacentHTML('beforeend', deleteButton);
+    }
+
+    protected focusFirstContainerInputElement(): void
+    {
+        let element = document.getElementById('order_item_selection_form_field_sales_order_containers_0_container_code');
+        element.focus();
     }
 }
