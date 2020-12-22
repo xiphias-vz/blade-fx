@@ -62,6 +62,7 @@ class MerchantSalesOrderRepository extends SprykerMerchantSalesOrderRepository i
                 SpySalesOrderItemTableMap::COL_NAME,
                 SpySalesShipmentTableMap::COL_REQUESTED_DELIVERY_DATE,
                 SpySalesOrderItemTableMap::COL_PRICE,
+                SpySalesOrderItemTableMap::COL_WEIGHT_PER_UNIT,
                 SpySalesOrderItemTableMap::COL_SHELF,
                 SpySalesOrderItemTableMap::COL_SHELF_FLOOR,
                 SpySalesOrderItemTableMap::COL_SHELF_FIELD,

@@ -101,7 +101,7 @@ class PickingZoneOrderExportContentBuilder implements PickingZoneOrderExportCont
                 $deliveryDate[1],
                 $salesOrderItemData[SpySalesOrderItemTableMap::COL_NAME],
                 $salesOrderItemData['quantity'],
-                $salesOrderItemData[SpySalesOrderItemTableMap::COL_WEIGHT_PER_UNIT],
+                $salesOrderItemData[SpySalesOrderItemTableMap::COL_WEIGHT_PER_UNIT] ?? '',
                 $salesOrderItemData[SpySalesOrderItemTableMap::COL_SHELF],
                 $salesOrderItemData[SpySalesOrderItemTableMap::COL_SHELF_FLOOR],
                 $salesOrderItemData[SpySalesOrderItemTableMap::COL_SHELF_FIELD],
