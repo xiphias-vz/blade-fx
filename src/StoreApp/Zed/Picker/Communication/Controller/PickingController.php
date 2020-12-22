@@ -461,6 +461,9 @@ class PickingController extends BaseOrderPickingController
         foreach ($itemTransfers as $itemTransfer) {
             $itemsToProductAttributesMap[$itemTransfer->getSku()] = [
                 ItemTransfer::WEIGHT_PER_UNIT => $itemTransfer->getWeightPerUnit(),
+                ItemTransfer::BRAND => $itemTransfer->getBrand(),
+                ItemTransfer::BASE_PRICE_CONTENT => $itemTransfer->getBasePriceContent(),
+                ItemTransfer::BASE_PRICE_UNIT => $itemTransfer->getBasePriceUnit(),
             ];
         }
 

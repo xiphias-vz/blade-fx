@@ -37,6 +37,9 @@
         <property name="shelf" type="string"/>
         <property name="shelfFloor" type="string"/>
         <property name="shelfField" type="string"/>
+        <property name="brand" type="string"/>
+        <property name="basePriceContent" type="int"/>
+        <property name="basePriceUnit" type="string"/>
     </transfer>
 
     <transfer name="ProductConcrete">

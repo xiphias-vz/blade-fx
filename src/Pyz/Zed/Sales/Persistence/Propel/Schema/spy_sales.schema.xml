@@ -38,6 +38,9 @@
         <column name="weight_per_unit" type="INTEGER" required="false"/>
         <column name="price_per_kg" type="INTEGER" required="false"/>
         <column name="new_weight" type="INTEGER" required="false"/>
+        <column name="brand" type="VARCHAR" size="255" required="false"/>
+        <column name="base_price_content" type="INTEGER" required="false"/>
+        <column name="base_price_unit" type="VARCHAR" size="255" required="false"/>
         <index name="index-pick_zone">
             <index-column name="pick_zone"/>
         </index>

@@ -20,6 +20,8 @@ use Spryker\Zed\SalesExtension\Dependency\Plugin\OrderItemExpanderPreSavePluginI
  */
 class OrderItemAttributesExpanderPreSavePlugin extends AbstractPlugin implements OrderItemExpanderPreSavePluginInterface
 {
+    public const DEFAULT_PRICE_MULTIPLICATION = 100;
+
     /**
      * {@inheritDoc}
      * Specification:
@@ -42,6 +44,9 @@ class OrderItemAttributesExpanderPreSavePlugin extends AbstractPlugin implements
         $salesOrderItemEntity->setBontext($itemTransfer->getBontext());
         $salesOrderItemEntity->setWeightPerUnit($itemTransfer->getWeightPerUnit());
         $salesOrderItemEntity->setPricePerKg($itemTransfer->getPricePerKg());
+        $salesOrderItemEntity->setBrand($itemTransfer->getBrand());
+        $salesOrderItemEntity->setBasePriceContent($itemTransfer->getBasePriceContent() * self::DEFAULT_PRICE_MULTIPLICATION);
+        $salesOrderItemEntity->setBasePriceUnit($itemTransfer->getBasePriceUnit());
 
         return $salesOrderItemEntity;
     }
