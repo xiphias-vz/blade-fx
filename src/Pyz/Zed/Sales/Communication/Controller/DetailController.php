@@ -15,7 +15,7 @@ use Symfony\Component\HttpFoundation\Request;
 
 /**
  * @method \Spryker\Zed\Sales\Communication\SalesCommunicationFactory getFactory()
- * @method \Spryker\Zed\Sales\Business\SalesFacadeInterface getFacade()
+ * @method \Pyz\Zed\Sales\Business\SalesFacadeInterface getFacade()
  * @method \Spryker\Zed\Sales\Persistence\SalesQueryContainerInterface getQueryContainer()
  * @method \Spryker\Zed\Sales\Persistence\SalesRepositoryInterface getRepository()
  */
@@ -30,7 +30,7 @@ class DetailController extends SprykerDetailController
     {
         $idSalesOrder = $this->castId($request->query->getInt(SalesConfig::PARAM_ID_SALES_ORDER));
 
-        $orderTransfer = $this->getFacade()->findOrderByIdSalesOrder($idSalesOrder);
+        $orderTransfer = $this->getFacade()->findOrderWithPickingSalesOrdersByIdSalesOrder($idSalesOrder);
 
         if ($orderTransfer === null) {
             $this->addErrorMessage('Sales order #%d not found.', ['%d' => $idSalesOrder]);

@@ -14,7 +14,7 @@ use Spryker\Zed\Sales\Persistence\SalesQueryContainer as SprykerSalesQueryContai
 /**
  * @method \Pyz\Zed\Sales\Persistence\SalesPersistenceFactory getFactory()
  */
-class SalesQueryContainer extends SprykerSalesQueryContainer
+class SalesQueryContainer extends SprykerSalesQueryContainer implements SalesQueryContainerInterface
 {
     /**
      * Order item state history is joined as a part of temp UI optimization and
@@ -66,7 +66,6 @@ class SalesQueryContainer extends SprykerSalesQueryContainer
         $query = $this->getFactory()->createSalesOrderQuery()
             ->setModelAlias('order')
             ->filterByIdSalesOrder($idSalesOrder)
-            ->leftJoinWithPyzPickingSalesOrder()
             ->innerJoinWith('order.BillingAddress billingAddress')
             ->innerJoinWith('billingAddress.Country billingCountry')
             ->leftJoinWith('order.ShippingAddress shippingAddress')
@@ -79,6 +78,37 @@ class SalesQueryContainer extends SprykerSalesQueryContainer
                         ->orderByIdOmsOrderItemStateHistory(Criteria::DESC)
                     ->endUse()
                 ->endUse();
+
+        return $query;
+    }
+
+    /**
+     * @api
+     *
+     * @param int $idSalesOrder
+     *
+     * @throws \Spryker\Zed\Propel\Business\Exception\AmbiguousComparisonException
+     *
+     * @return \Orm\Zed\Sales\Persistence\SpySalesOrderQuery
+     */
+    public function querySalesOrderDetailsWithPickingSalesOrder($idSalesOrder): SpySalesOrderQuery
+    {
+        $query = $this->getFactory()->createSalesOrderQuery()
+            ->setModelAlias('order')
+            ->filterByIdSalesOrder($idSalesOrder)
+            ->leftJoinWithPyzPickingSalesOrder()
+            ->innerJoinWith('order.BillingAddress billingAddress')
+            ->innerJoinWith('billingAddress.Country billingCountry')
+            ->leftJoinWith('order.ShippingAddress shippingAddress')
+            ->leftJoinWith('shippingAddress.Country shippingCountry')
+            ->joinWithItem()
+                ->useItemQuery()
+                    ->joinWithStateHistory()
+                    ->useStateHistoryQuery()
+                        ->leftJoinWithState()
+                        ->orderByIdOmsOrderItemStateHistory(Criteria::DESC)
+                ->endUse()
+            ->endUse();
 
         return $query;
     }

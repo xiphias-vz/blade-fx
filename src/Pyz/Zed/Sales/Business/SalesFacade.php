@@ -238,6 +238,22 @@ class SalesFacade extends SprykerSalesFacade implements SalesFacadeInterface
      * @api
      *
      * @param int $idSalesOrder
+     *
+     * @return \Generated\Shared\Transfer\OrderTransfer|null
+     */
+    public function findOrderWithPickingSalesOrdersByIdSalesOrder(int $idSalesOrder): ?OrderTransfer
+    {
+        return $this->getFactory()
+            ->createOrderReaderWithMultiShippingAddress()
+            ->findOrderWithPickingSalesOrdersByIdSalesOrder($idSalesOrder);
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * @api
+     *
+     * @param int $idSalesOrder
      * @param string $pickingZoneName
      *
      * @return \Generated\Shared\Transfer\OrderTransfer|null

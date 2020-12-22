@@ -19,4 +19,11 @@ interface OrderReaderInterface extends SprykerOrderReaderInterface
      * @return \Generated\Shared\Transfer\OrderTransfer|null
      */
     public function findOrderByIdSalesOrderAndPickingZone(int $idSalesOrder, string $pickingZoneName): ?OrderTransfer;
+
+    /**
+     * @param int $idSalesOrder
+     *
+     * @return \Generated\Shared\Transfer\OrderTransfer|null
+     */
+    public function findOrderWithPickingSalesOrdersByIdSalesOrder(int $idSalesOrder): ?OrderTransfer;
 }

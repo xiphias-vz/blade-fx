@@ -15,6 +15,7 @@ use Spryker\Zed\SalesExtension\Dependency\Plugin\OrderExpanderPluginInterface;
  * @method \Pyz\Zed\Sales\Business\SalesFacadeInterface getFacade()
  * @method \Pyz\Zed\Sales\SalesConfig getConfig()
  * @method \Pyz\Zed\Sales\Communication\SalesCommunicationFactory getFactory()
+ * @method \Pyz\Zed\Sales\Persistence\SalesQueryContainerInterface getQueryContainer()
  */
 class MinimumAgeOrderExpanderPlugin extends AbstractPlugin implements OrderExpanderPluginInterface
 {

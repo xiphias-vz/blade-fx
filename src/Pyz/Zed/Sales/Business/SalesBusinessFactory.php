@@ -35,6 +35,7 @@ use Spryker\Zed\Shipment\Business\ShipmentFacadeInterface;
 
 /**
  * @method \Pyz\Zed\Sales\Persistence\SalesRepositoryInterface getRepository()
+ * @method \Pyz\Zed\Sales\Persistence\SalesQueryContainerInterface getQueryContainer()
  * @method \Pyz\Zed\Sales\SalesConfig getConfig()
  */
 class SalesBusinessFactory extends SprykerSalesBusinessFactory
@@ -139,7 +140,8 @@ class SalesBusinessFactory extends SprykerSalesBusinessFactory
     {
         return new OrderReader(
             $this->getQueryContainer(),
-            $this->createOrderHydratorWithMultiShippingAddress()
+            $this->createOrderHydratorWithMultiShippingAddress(),
+            $this->getQueryContainer()
         );
     }
 
@@ -150,7 +152,8 @@ class SalesBusinessFactory extends SprykerSalesBusinessFactory
     {
         return new OrderReader(
             $this->getQueryContainer(),
-            $this->createOrderHydratorForStoreApp()
+            $this->createOrderHydratorForStoreApp(),
+            $this->getQueryContainer()
         );
     }
 
