@@ -45,7 +45,7 @@ class TimeSlotService extends AbstractService implements TimeSlotServiceInterfac
             }
 
             $weekDayCapacity = $this->getWeekDayTimeSlotCapacity($merchantTransfer, $currentDate, $timeSlot);
-            if ($weekDayCapacity) {
+            if ($weekDayCapacity !== null) {
                 return $weekDayCapacity;
             }
 
