@@ -7,6 +7,7 @@
 
 namespace Pyz\Zed\Oms\Communication\Console;
 
+use Propel\Runtime\Propel;
 use Spryker\Zed\Oms\Communication\Console\CheckConditionConsole as SprykerCheckConditionConsole;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -41,11 +42,13 @@ class CheckConditionConsole extends SprykerCheckConditionConsole
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
+        Propel::disableInstancePooling();
         $processId = null;
         if ($input->getOption(static::PROCESS_ID)) {
             $processId = (int)$input->getOption(static::PROCESS_ID);
         }
 
         $this->getFacade()->checkConditions([], $processId);
+        Propel::enableInstancePooling();
     }
 }
