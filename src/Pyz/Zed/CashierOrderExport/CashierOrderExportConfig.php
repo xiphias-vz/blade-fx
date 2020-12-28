@@ -22,6 +22,8 @@ class CashierOrderExportConfig extends AbstractBundleConfig
     protected const TAX_RATE_TO_SAP_ITEM_TAX_ID_MAP = [
         '16.00' => '1',
         '5.00' => '2',
+        '19.00' => '1',
+        '7.00' => '2',
         '0' => '0',
     ];
 
