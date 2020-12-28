@@ -1,7 +1,9 @@
 @mixin catalog-page-sort($name: '.sort') {
     #{$name} {
+        width: 100%;
+
         @include helper-breakpoint-media-min($xl-min) {
-            padding: rem(20) 0 rem(27);
+            padding: 0 0 rem(27);
         }
 
         &__results {

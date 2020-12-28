@@ -11,5 +11,6 @@ use Spryker\Client\Catalog\CatalogConfig as SprykerCatalogConfig;
 
 class CatalogConfig extends SprykerCatalogConfig
 {
-    protected const PAGINATION_CATALOG_SEARCH_DEFAULT_ITEMS_PER_PAGE = 12;
+    protected const PAGINATION_CATALOG_SEARCH_DEFAULT_ITEMS_PER_PAGE = 24;
+    protected const PAGINATION_CATALOG_SEARCH_VALID_ITEMS_PER_PAGE = [24, 48, 72];
 }

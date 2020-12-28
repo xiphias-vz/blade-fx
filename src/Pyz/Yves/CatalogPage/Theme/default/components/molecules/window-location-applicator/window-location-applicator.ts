@@ -20,4 +20,20 @@ export default class WindowLocationApplicator extends WindowLocationApplicatorCo
     protected get sortTriggerClassName(): string {
         return this.getAttribute('sort-trigger-class-name');
     }
+
+    protected getQueryString(categoryUrl: string = window.location.pathname): void {
+        const formData = new FormData(this.form);
+        const data = new URLSearchParams(<URLSearchParams>formData);
+        formData.forEach((value: string, key: string) => {
+            if (value.length) {
+                return;
+            }
+
+            data.delete(key);
+        });
+        var handledData = data.toString();
+
+        this.setWindowLocation(categoryUrl, handledData);
+
+    }
 }

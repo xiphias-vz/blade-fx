@@ -50,6 +50,12 @@
             border: none;
         }
 
+        &--custom {
+            padding: rem(15) rem(25) !important;
+            background-color: white !important;
+            border: rem(1) solid black !important;
+        }
+
         @content;
     }
 }
