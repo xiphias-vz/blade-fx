@@ -20,6 +20,20 @@ $button-radius: rem(10);
             color: $setting-color-white;
         }
 
+        &.btn-section {
+            margin-bottom: 10px;
+            min-width: 300px;
+            &:nth-child(1) {
+                background: #1BBEA0;
+            }
+            &:nth-child(2) {
+                background: #B8DCC3;
+            }
+            &:nth-child(3) {
+                background: #EA8801;
+            }
+        }
+
         &--large {
             padding: rem(11) rem(15) rem(13);
             border-radius: rem(25);

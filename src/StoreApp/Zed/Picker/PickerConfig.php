@@ -55,6 +55,16 @@ class PickerConfig extends AbstractBundleConfig
      *
      * @return string
      */
+    public function getDiffSectionsUri(): string
+    {
+        return '/picker/diff-sections';
+    }
+
+    /**
+     * @api
+     *
+     * @return string
+     */
     public function getSelectPickingZoneUri(): string
     {
         return '/picker/select-picking-zone';

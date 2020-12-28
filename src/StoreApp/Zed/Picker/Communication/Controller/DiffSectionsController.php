@@ -9,19 +9,20 @@ namespace StoreApp\Zed\Picker\Communication\Controller;
 
 use Spryker\Zed\Kernel\Communication\Controller\AbstractController;
 use StoreApp\Shared\Picker\PickerConfig;
-use Symfony\Component\HttpFoundation\RedirectResponse;
 
 /**
  * @method \StoreApp\Zed\Picker\Communication\PickerCommunicationFactory getFactory()
  * @method \StoreApp\Zed\Picker\Business\PickerFacadeInterface getFacade()
  */
-class IndexController extends AbstractController
+class DiffSectionsController extends AbstractController
 {
     /**
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     * @return array|\Symfony\Component\HttpFoundation\RedirectResponse
      */
-    public function indexAction(): RedirectResponse
+    public function indexAction()
     {
-        return $this->redirectResponse(PickerConfig::URL_DIFF_SECTIONS);
+        return [
+            'activities' => PickerConfig::ACTIVITIES,
+        ];
     }
 }

@@ -17,15 +17,15 @@ class PickerConfig
             'path' => self::URL_PICKING_LIST,
         ],
         [
-            'name' => 'picker.activity.collection',
-            'path' => self::URL_COLLECT_BY_CUSTOMER_LIST,
-        ],
-        [
             'name' => 'picker.activity.container-to-shelf',
             'path' => self::URL_CONTAINER_TO_SHELF,
         ],
+        [
+            'name' => 'picker.activity.collection',
+            'path' => self::URL_COLLECT_BY_CUSTOMER_LIST,
+        ],
     ];
-
+    public const URL_DIFF_SECTIONS = '/picker/diff-sections';
     public const URL_PICKING_LIST = '/picker/picking';
     public const URL_SELECT_SHELVES = '/picker/select-shelves';
     public const URL_START_ORDER_PICKING = '/picker/picking/start-order-picking';

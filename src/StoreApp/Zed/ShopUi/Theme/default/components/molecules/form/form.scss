@@ -3,6 +3,12 @@
     $review-rating-field-width: rem(154);
 
     #{$name} {
+        &.btn-holder {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
         &__field {
             padding: 0 rem(16) rem(16);
 
