@@ -9,10 +9,11 @@
     imageUrl: '',
     title: '',
     productsCount: 1,
+    itemSku: '',
 } %}
 
 {% block body %}
-    <div class="grid {{ config.name }}__card">
+    <div class="grid {{ config.name }}__card" data-sku="{{ data.itemSku }}">
         <div class="col col--expand">
             <div class="box {{ config.name }}__info">
                 <div class="{{ config.name }}__image-wrapper">

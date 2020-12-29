@@ -210,6 +210,6 @@ export default class ProductItem extends Component {
     }
 
     get sku(): string {
-        return String(this.dataset.sku);
+        return String(this.$this.find(`div.product-item__card`).attr('data-sku'));
     }
 }
