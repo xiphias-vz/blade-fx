@@ -113,7 +113,7 @@
                                     {% endif %}
                                 </div>
 
-                                <div class="col col--sm-12 col--md-12 col--lg-4 menu--inline">
+                                <div class="col col--sm-12 col--md-12 col--lg-5 menu--inline">
                                     {% include molecule('pagination') with {
                                         data: data.pagination
                                     } only %}
@@ -188,6 +188,6 @@
             firstSortElement.setAttribute("disabled", "disabled");
             secondSortElement.removeAttribute("disabled");
         })
-        
+
     </script>
 {% endblock %}
