@@ -7,17 +7,17 @@
 
 namespace Pyz\Zed\CashierOrderExport\Business\Checker;
 
-use Spryker\Zed\Sales\Business\SalesFacadeInterface;
+use Pyz\Zed\Sales\Business\SalesFacadeInterface;
 
 class CashierOrderExportStatusChecker implements CashierOrderExportStatusCheckerInterface
 {
     /**
-     * @var \Spryker\Zed\Sales\Business\SalesFacadeInterface
+     * @var \Pyz\Zed\Sales\Business\SalesFacadeInterface
      */
     protected $salesFacade;
 
     /**
-     * @param \Spryker\Zed\Sales\Business\SalesFacadeInterface $salesFacade
+     * @param \Pyz\Zed\Sales\Business\SalesFacadeInterface $salesFacade
      */
     public function __construct(SalesFacadeInterface $salesFacade)
     {
@@ -31,7 +31,7 @@ class CashierOrderExportStatusChecker implements CashierOrderExportStatusChecker
      */
     public function isOrderExportedSuccessfully(int $orderId): bool
     {
-        $orderTransfer = $this->salesFacade->getOrderByIdSalesOrder($orderId);
+        $orderTransfer = $this->salesFacade->getOrderByIdSalesOrderWithoutExpand($orderId);
 
         return $orderTransfer->getIsCashierExportSuccess() ?? false;
     }
