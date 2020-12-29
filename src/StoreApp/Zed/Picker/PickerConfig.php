@@ -37,6 +37,9 @@ class PickerConfig extends AbstractBundleConfig
     {
         return [
             'select-picking-zone',
+            'diff-sections',
+            'collect-by-customer',
+            'container-to-shelf',
         ];
     }
 
@@ -58,16 +61,6 @@ class PickerConfig extends AbstractBundleConfig
     public function getDiffSectionsUri(): string
     {
         return '/picker/diff-sections';
-    }
-
-    /**
-     * @api
-     *
-     * @return string
-     */
-    public function getSelectPickingZoneUri(): string
-    {
-        return '/picker/select-picking-zone';
     }
 
     /**

@@ -27,11 +27,13 @@
                 <div class="container__inner">
                     <div class="grid grid--middle grid--no-wrap {{ config.name }}__content">
                         {% if not data.withoutLogo %}
-                            <div class="col col--bottom">
-                                {% include molecule('logo') with {
-                                    modifiers: ['header']
-                                } only %}
-                            </div>
+                            <a href="/picker/diff-sections">
+                                <div class="col col--bottom">
+                                    {% include molecule('logo') with {
+                                        modifiers: ['header']
+                                    } only %}
+                                </div>
+                            </a>
                             <div class="col col--expand text-right">
                                 {% block selectPickingZone %}
                                     {% widget 'SelectPickingZoneWidget' only %}{% endwidget %}

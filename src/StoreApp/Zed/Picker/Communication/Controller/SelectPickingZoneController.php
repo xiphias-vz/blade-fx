@@ -39,7 +39,7 @@ class SelectPickingZoneController extends AbstractController
                 $pickingZoneSelectionForm->getData()[PickingZoneSelectionForm::FIELD_PICKING_ZONE]
             );
 
-            return $this->redirectResponse($factory->getConfig()->getDiffSectionsUri());
+            return $this->redirectResponse($factory->getConfig()->getPickingUri());
         }
 
         return [

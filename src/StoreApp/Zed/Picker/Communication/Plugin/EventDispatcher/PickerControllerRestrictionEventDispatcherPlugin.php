@@ -56,7 +56,7 @@ class PickerControllerRestrictionEventDispatcherPlugin extends AbstractPlugin im
         }
 
         if (!$this->isPickingAvailable($request)) {
-            $event->setResponse(new RedirectResponse($this->getConfig()->getSelectPickingZoneUri()));
+            $event->setResponse(new RedirectResponse($this->getConfig()->getDiffSectionsUri()));
 
             return $event;
         }

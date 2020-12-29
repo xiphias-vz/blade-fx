@@ -22,7 +22,7 @@ class DiffSectionsController extends AbstractController
     public function indexAction()
     {
         return [
-            'activities' => PickerConfig::ACTIVITIES,
+            'activities' => PickerConfig::SECTIONS,
         ];
     }
 }
