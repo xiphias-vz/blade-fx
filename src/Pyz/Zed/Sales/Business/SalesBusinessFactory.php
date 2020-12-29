@@ -20,6 +20,7 @@ use Pyz\Zed\Sales\Business\Model\Order\OrderUpdater;
 use Pyz\Zed\Sales\Business\Model\Order\SalesOrderChecker;
 use Pyz\Zed\Sales\Business\Model\Order\SalesOrderSaver;
 use Pyz\Zed\Sales\Business\Order\OrderHydrator;
+use Pyz\Zed\Sales\Business\Order\OrderHydratorInterface as PyzOrderHydratorInterface;
 use Pyz\Zed\Sales\Business\Order\OrderReader;
 use Pyz\Zed\Sales\Business\Order\OrderReaderInterface;
 use Pyz\Zed\Sales\Business\OrderChange\OrderChangeSaver;
@@ -180,6 +181,19 @@ class SalesBusinessFactory extends SprykerSalesBusinessFactory
             $this->getOmsFacade(),
             $this->getConfig(),
             $this->getHydrateOrderForStoreAppPlugins()
+        );
+    }
+
+    /**
+     * @return \Pyz\Zed\Sales\Business\Order\OrderHydratorInterface
+     */
+    public function createOrderHydratorForCashier(): PyzOrderHydratorInterface
+    {
+        return new OrderHydrator(
+            $this->getQueryContainer(),
+            $this->getOmsFacade(),
+            $this->getConfig(),
+            $this->getHydrateOrderPlugins()
         );
     }
 

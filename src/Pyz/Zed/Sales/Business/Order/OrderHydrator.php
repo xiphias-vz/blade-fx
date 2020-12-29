@@ -22,7 +22,7 @@ use Spryker\Zed\Sales\Business\Order\OrderHydrator as SprykerOrderHydrator;
 use Spryker\Zed\Sales\Dependency\Facade\SalesToOmsInterface;
 use Spryker\Zed\Sales\Persistence\SalesQueryContainerInterface;
 
-class OrderHydrator extends SprykerOrderHydrator
+class OrderHydrator extends SprykerOrderHydrator implements OrderHydratorInterface
 {
     protected const COL_ITEM_STATE_NAMES = 'COL_ITEM_STATE_NAMES';
 
@@ -125,6 +125,35 @@ class OrderHydrator extends SprykerOrderHydrator
     public function hydrateOrderTransferFromPersistenceBySalesOrder(SpySalesOrder $orderEntity): OrderTransfer
     {
         return $this->createOrderTransfer($orderEntity);
+    }
+
+    /**
+     * @param int $idSalesOrder
+     *
+     * @throws \Spryker\Zed\Sales\Business\Exception\InvalidSalesOrderException
+     *
+     * @return \Generated\Shared\Transfer\OrderTransfer
+     */
+    public function getOrderByIdSalesOrderWithoutExpand(int $idSalesOrder): OrderTransfer
+    {
+        $orderEntity = $this->queryContainer
+            ->querySalesOrderDetailsWithoutShippingAddress($idSalesOrder)
+            ->find()
+            ->getFirst();
+
+        if ($orderEntity === null) {
+            throw new InvalidSalesOrderException(
+                sprintf(
+                    'Order could not be found for ID %s',
+                    $idSalesOrder
+                )
+            );
+        }
+
+        $orderTransfer = $this->hydrateBaseOrderTransfer($orderEntity);
+        $this->hydrateOrderItemsToOrderTransfer($orderEntity, $orderTransfer);
+
+        return $orderTransfer;
     }
 
     /**

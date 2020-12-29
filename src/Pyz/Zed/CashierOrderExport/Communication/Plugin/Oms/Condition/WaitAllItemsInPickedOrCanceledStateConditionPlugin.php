@@ -26,7 +26,7 @@ class WaitAllItemsInPickedOrCanceledStateConditionPlugin extends AbstractConditi
      */
     public function check(SpySalesOrderItem $orderItem)
     {
-        $orderTransfer = $this->getFactory()->getSalesFacade()->getOrderByIdSalesOrder($orderItem->getFkSalesOrder());
+        $orderTransfer = $this->getFactory()->getSalesFacade()->getOrderByIdSalesOrderWithoutExpand($orderItem->getFkSalesOrder());
 
         return $this->getFacade()->checkIsAllItemsReadyForExport($orderTransfer);
     }

@@ -10,7 +10,7 @@ namespace Pyz\Zed\CashierOrderExport\Persistence;
 use Spryker\Zed\Kernel\Persistence\AbstractRepository;
 
 /**
- * @method \Spryker\Zed\CashierOrderExport\Persistence\CashierOrderExportPersistenceFactory getFactory()
+ * @method \Pyz\Zed\CashierOrderExport\Persistence\CashierOrderExportPersistenceFactory getFactory()
  */
 class CashierOrderExportRepository extends AbstractRepository implements CashierOrderExportRepositoryInterface
 {

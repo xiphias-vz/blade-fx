@@ -279,4 +279,16 @@ class SalesFacade extends SprykerSalesFacade implements SalesFacadeInterface
     ): SpySalesOrderItemEntityTransfer {
         return $this->getFactory()->createOrderItemExpander()->expandItemWithStockProductData($quoteTransfer, $itemEntityTransfer);
     }
+
+    /**
+     * @param int $idSalesOrder
+     *
+     * @return \Generated\Shared\Transfer\OrderTransfer
+     */
+    public function getOrderByIdSalesOrderWithoutExpand($idSalesOrder)
+    {
+        return $this->getFactory()
+            ->createOrderHydratorForCashier()
+            ->getOrderByIdSalesOrderWithoutExpand($idSalesOrder);
+    }
 }

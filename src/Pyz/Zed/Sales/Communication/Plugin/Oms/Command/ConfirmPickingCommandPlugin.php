@@ -66,7 +66,7 @@ class ConfirmPickingCommandPlugin extends AbstractPlugin implements CommandByOrd
             $currentOrderItemIds[] = $orderItem->getIdSalesOrderItem();
         }
 
-        $orderTransfer = $this->getFacade()->getOrderByIdSalesOrder($idSalesOrder);
+        $orderTransfer = $this->getFacade()->getOrderByIdSalesOrderWithoutExpand($idSalesOrder);
 
         foreach ($orderTransfer->getItems() as $itemTransfer) {
             if (in_array($itemTransfer->getIdSalesOrderItem(), $currentOrderItemIds)) {

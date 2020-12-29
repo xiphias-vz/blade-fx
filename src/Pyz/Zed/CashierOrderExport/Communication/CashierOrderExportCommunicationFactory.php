@@ -18,7 +18,7 @@ use Spryker\Zed\Kernel\Communication\AbstractCommunicationFactory;
 class CashierOrderExportCommunicationFactory extends AbstractCommunicationFactory
 {
     /**
-     * @return \Spryker\Zed\Sales\Business\SalesFacadeInterface
+     * @return \Pyz\Zed\Sales\Business\SalesFacadeInterface
      */
     public function getSalesFacade()
     {
