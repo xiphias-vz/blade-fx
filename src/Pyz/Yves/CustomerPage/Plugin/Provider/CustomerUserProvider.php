@@ -115,8 +115,8 @@ class CustomerUserProvider extends SprykerCustomerUserProvider
         $apiSecretKey = Config::get(CustomerConstants::CDC_API_SECRET_KEY);
         $apiUserKey = Config::get(CustomerConstants::CDC_API_USER_KEY);
         $urlPrefix = Config::get(CustomerConstants::CDC_API_URL);
-        $url = array_shift($urlPrefix) . "accounts.resendVerificationCode?apiKey=" . array_shift($apiKey) . "&secret=" . array_shift($apiSecretKey) . "&userKey=" . $apiUserKey;
-        $data = ['UID' => $uid];
+        $url = array_shift($urlPrefix) . "accounts.resendVerificationCode";
+        $data = ['apiKey' => array_shift($apiKey), 'secret' => array_shift($apiSecretKey), 'userKey' => $apiUserKey, 'UID' => $uid];
         $options = [
             'http' => [
                 'header' => "Content-type: application/x-www-form-urlencoded\r\n",
@@ -142,8 +142,8 @@ class CustomerUserProvider extends SprykerCustomerUserProvider
         $apiSecretKey = Config::get(CustomerConstants::CDC_API_SECRET_KEY);
         $apiUserKey = Config::get(CustomerConstants::CDC_API_USER_KEY);
         $urlPrefix = Config::get(CustomerConstants::CDC_API_URL);
-        $url = array_shift($urlPrefix) . "accounts.setAccountInfo?apiKey=" . array_shift($apiKey) . "&secret=" . array_shift($apiSecretKey) . "&userKey=" . $apiUserKey;
-        $data = ['UID' => $uid, 'httpStatusCodes' => true, 'data' => '{"preferredStore":"' . $merchantReference . '"}'];
+        $url = array_shift($urlPrefix) . "accounts.setAccountInfo";
+        $data = ['apiKey' => array_shift($apiKey), 'secret' => array_shift($apiSecretKey), 'userKey' => $apiUserKey, 'UID' => $uid, 'httpStatusCodes' => true, 'data' => '{"preferredStore":"' . $merchantReference . '"}'];
         $options = [
             'http' => [
                 'header' => "Content-type: application/x-www-form-urlencoded\r\n",
