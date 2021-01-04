@@ -29,6 +29,7 @@ class OrdersTable extends SprykerOrdersTable
     public const ADDRESS_PHONE = 'BillingAddress';
     public const DAY_RANGE_FILTER = 'day-range-filter';
     public const MERCHANT_REFERENCE_FILTER = 'merchant-reference-filter';
+    public const DATE_RANGE_FILTER = 'date-range-filter';
 
     protected const TIMESLOT_DELIMITER = '_';
     protected const TIMESLOT_DELIMITER_REPLACEMENT = ' ';
@@ -138,11 +139,16 @@ class OrdersTable extends SprykerOrdersTable
         $query = parent::buildQuery();
         $dayRangeFilter = $this->request->query->get(static::DAY_RANGE_FILTER);
         $merchantReferenceFilter = $this->request->query->get(static::MERCHANT_REFERENCE_FILTER);
+        $dateRangeFilter = $this->request->query->get(static::DATE_RANGE_FILTER);
         $currentUser = $this->userFacade->getCurrentUser();
         $isCurrentUserSupervisor = $this->isCurrentUserSupervisor($currentUser);
 
         if ($dayRangeFilter) {
             $query = $this->queryBuilder->applyDayRangeFilter($query, new DateTime($dayRangeFilter));
+        }
+
+        if ($dateRangeFilter) {
+            $query = $this->queryBuilder->applyDayRangeFilter($query, new DateTime($dateRangeFilter));
         }
 
         if ($isCurrentUserSupervisor || $merchantReferenceFilter) {
@@ -210,6 +216,7 @@ class OrdersTable extends SprykerOrdersTable
         $filters = [
             static::ID_ORDER_ITEM_PROCESS => $this->request->query->getInt(static::ID_ORDER_ITEM_PROCESS),
             static::DAY_RANGE_FILTER => $this->request->query->get(static::DAY_RANGE_FILTER),
+            static::DATE_RANGE_FILTER => $this->request->query->get(static::DATE_RANGE_FILTER),
             static::MERCHANT_REFERENCE_FILTER => $this->request->query->get(static::MERCHANT_REFERENCE_FILTER),
             static::ID_ORDER_ITEM_STATE => $this->request->query->getInt(static::ID_ORDER_ITEM_STATE),
             static::FILTER => $this->request->query->get(static::FILTER),

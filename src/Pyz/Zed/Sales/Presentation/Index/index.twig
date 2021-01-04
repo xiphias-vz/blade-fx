@@ -10,12 +10,17 @@
     {% embed '@Gui/Partials/widget.twig' with { widget_title: 'List of orders' | trans } %}
 
         {% block widget_content %}
+
             <a href="{{ currentPath }}"><button>Clear Filters</button></a>
             <a href="{{ currentPath ~ '?day-range-filter=today' }}"><button>Filter by Today</button></a>
             <a href="{{ currentPath ~ '?day-range-filter=tomorrow' }}"><button>Filter by Tomorrow</button></a>
             {% for merchantId, merchantName in merchantFilterButtonsData  %}
                 <a href="{{ currentPath ~ '?merchant-reference-filter=' ~ merchantId }}"><button>Filter by {{ merchantName }}</button></a>
             {% endfor %}
+            <div style="margin: 10px 0px 10px 0px;">
+                <label for="pickup-time-window">Abholzeitfenster:</label><br/>
+                <input type="date" id="pickup-time-window" onchange="handleDateRange(this)" style="outline: none"/>
+            </div>
 
             {{ orders | raw }}
 
@@ -23,4 +28,21 @@
 
     {% endembed %}
 
+    <script>
+
+        const queryParams = new URLSearchParams(window.location.search);
+
+        function handleDateRange(current) {
+            queryParams.set("date-range-filter", current.value);
+            let redirectLink = location.pathname+'?'+queryParams.toString();
+            window.location = redirectLink;
+        }
+        window.onload = function() {
+            let datepicker = document.querySelector("#pickup-time-window");
+            let dtValue = queryParams.get("date-range-filter");
+            datepicker.value = dtValue;
+        }
+    </script>
+
 {% endblock %}
+
