@@ -115,11 +115,18 @@ class ProductPriceSaver
             ->filterByFkStore($this->getIdStoreByName($dataSet[PriceProductDataSet::KEY_STORE]))
             ->filterByFkCurrency($this->getIdCurrencyByCode('EUR'))
             ->filterByFkPriceProduct($productPriceEntity->getPrimaryKey())
-            ->findOneOrCreate();
+            ->joinPriceProductDefault()
+            ->findOne();
+
+        if (!$priceProductStoreEntity) {
+            $priceProductStoreEntity = (new SpyPriceProductStore())
+                ->setFkStore($this->getIdStoreByName($dataSet[PriceProductDataSet::KEY_STORE]))
+                ->setFkCurrency($this->getIdCurrencyByCode('EUR'))
+                ->setFkPriceProduct($productPriceEntity->getPrimaryKey());
+        }
 
         $grossPrice = $this->getProductPriceByStore($dataSet, $priceField);
         $priceProductStoreEntity->setGrossPrice($grossPrice);
-        $priceProductStoreEntity->setNetPrice(null);
         $priceProductStoreEntity->setPriceData('[]');
         $priceProductStoreEntity->setPriceDataChecksum($grossPrice);
 

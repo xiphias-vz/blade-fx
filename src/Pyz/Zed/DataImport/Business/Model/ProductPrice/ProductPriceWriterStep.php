@@ -144,7 +144,7 @@ class ProductPriceWriterStep extends PublishAwareStep implements DataImportStepI
                 $this->savePriceProductSchedule($dataSet, ProductPriceSaver::PRICE_TYPE_DEFAULT, ProductConfig::KEY_PRICE);
                 $this->savePriceProductSchedule($dataSet, ProductPriceSaver::PRICE_TYPE_ORIGINAL, ProductConfig::KEY_PSEUDO_PRICE);
 
-                return;
+                continue;
             }
 
             $this->productUpdateFacade->saveSinglePrice($dataSet, ProductPriceSaver::PRICE_TYPE_DEFAULT, ProductConfig::KEY_PRICE);
