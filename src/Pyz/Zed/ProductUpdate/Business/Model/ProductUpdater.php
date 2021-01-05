@@ -124,7 +124,8 @@ class ProductUpdater
                 $this->productPriceSaver->saveSinglePrice(
                     $productDataSet,
                     ProductPriceSaver::PRICE_TYPE_DEFAULT,
-                    ProductConfig::KEY_PRICE
+                    ProductConfig::KEY_PRICE,
+                    ProductConfig::KEY_PRICE_PER_KG
                 );
                 $result[] = sprintf('Updated Prices for Abstract Product with ID %s in the store %s', $productAbstractId, $storeName);
             }

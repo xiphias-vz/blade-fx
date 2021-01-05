@@ -36,17 +36,16 @@ class ProductExpander extends SprykerProductExpander implements ProductExpanderI
         }
 
         $weightPerUnit = $this->calculateWeightPerItem($productConcreteTransfer->getAttributes());
-
         $itemTransfer
-            ->setPickZone($pickZone)
-            ->setWeightPerUnit($weightPerUnit)
-            ->setPricePerKg($productConcreteTransfer->getAttributes()[ProductConfig::PRICE_PER_KG] ?? null)
-            ->setProductNumber($productConcreteTransfer->getProductNumber())
-            ->setSapWgr($productConcreteTransfer->getAttributes()[ProductConfig::KEY_SAP_WGR] ?? '')
-            ->setBontext($productConcreteTransfer->getAttributes()[ProductConfig::KEY_BON_TEXT] ?? '')
-            ->setBrand($productConcreteTransfer->getAttributes()[ProductConfig::KEY_BRAND] ?? '')
-            ->setBasePriceContent($productConcreteTransfer->getAttributes()[ProductConfig::KEY_BASE_PRICE_CONTENT] ?? '')
-            ->setBasePriceUnit($productConcreteTransfer->getAttributes()[ProductConfig::KEY_BASE_PRICE_UNIT] ?? '');
+        ->setPickZone($pickZone)
+        ->setWeightPerUnit($weightPerUnit)
+        ->setPricePerKg($itemTransfer->getPriceProduct()->getMoneyValue()->getPricePerKg() ?? null)
+        ->setProductNumber($productConcreteTransfer->getProductNumber())
+        ->setSapWgr($productConcreteTransfer->getAttributes()[ProductConfig::KEY_SAP_WGR] ?? '')
+        ->setBontext($productConcreteTransfer->getAttributes()[ProductConfig::KEY_BON_TEXT] ?? '')
+        ->setBrand($productConcreteTransfer->getAttributes()[ProductConfig::KEY_BRAND] ?? '')
+        ->setBasePriceContent($productConcreteTransfer->getAttributes()[ProductConfig::KEY_BASE_PRICE_CONTENT] ?? '')
+        ->setBasePriceUnit($productConcreteTransfer->getAttributes()[ProductConfig::KEY_BASE_PRICE_UNIT] ?? '');
     }
 
     /**

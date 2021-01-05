@@ -74,10 +74,13 @@ class ProductController extends SprykerShopProductController
 
         $viewData['product'] = $productViewTransfer;
         $viewData['vitamins'] = $this->getVitaminData($productViewTransfer);
-        if (array_key_exists('preis_pro_kg', $productData["attributes"])) {
-            $viewData['preisProKg'] = $productData["attributes"]['preis_pro_kg'];
+
+        if ($viewData['product']['pricePerKg'] != null) {
+            $viewData['pricePerKg'] = $viewData['product']['pricePerKg'];
+        } elseif (array_key_exists('preis_pro_kg', $productData["attributes"])) {
+            $viewData['pricePerKg'] = $productData["attributes"]['preis_pro_kg'];
         } else {
-            $viewData['preisProKg'] = null;
+            $viewData['pricePerKg'] = null;
         }
 
         if (array_key_exists('pet_feeding_table', $productViewTransfer["attributes"])) {

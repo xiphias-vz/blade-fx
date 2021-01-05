@@ -25,8 +25,9 @@ interface ProductUpdateFacadeInterface
      * @param \Spryker\Zed\DataImport\Business\Model\DataSet\DataSetInterface $productData
      * @param string $priceType
      * @param string $priceField
+     * @param string|null $pricePerKgField
      *
      * @return void
      */
-    public function saveSinglePrice(DataSetInterface $productData, string $priceType, string $priceField): void;
+    public function saveSinglePrice(DataSetInterface $productData, string $priceType, string $priceField, ?string $pricePerKgField = null): void;
 }

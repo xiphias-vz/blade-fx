@@ -39,6 +39,7 @@ class ProductConfig extends SprykerProductConfigAlias
     public const KEY_TAX = 'tax';
     public const KEY_MAIN_IMAGE_FILE_NAME = 'mainimage_filename';
     public const KEY_PRICE = 'price';
+    public const KEY_PRICE_PER_KG = 'priceperkg';
     public const KEY_PRICE_PROMOTION = 'promotion';
     public const KEY_PRICE_FROM = 'promotionstart';
     public const KEY_PRICE_TO = 'promotionend';

@@ -118,23 +118,26 @@ class ProductPriceWriterStep extends PublishAwareStep implements DataImportStepI
             if (isset($productAbstractEntityAttributes[ProductConfig::KEY_WEIGHT_PER_ITEM])) {
                 $priceMultiplier = $productAbstractEntityAttributes[ProductConfig::KEY_WEIGHT_PER_ITEM];
                 $pricePerKg = $dataSet[ProductConfig::KEY_PRICE];
+                $dataSet[ProductConfig::PRICE_PER_KG] = $pricePerKg;
 
                 $parsedPricePerKg = $this->numberFormatter->parse(trim($pricePerKg));
                 $integerPricePerKg = $this->moneyFacade->convertDecimalToInteger($parsedPricePerKg);
-
-                $productAbstractEntityAttributes[ProductConfig::PRICE_PER_KG] = $integerPricePerKg;
-                $productConcreteEntityAttributes[ProductConfig::PRICE_PER_KG] = $integerPricePerKg;
 
                 $multipliedPrice = (int)round($priceMultiplier * $integerPricePerKg);
                 $multipliedPriceDecimal = $this->moneyFacade->convertIntegerToDecimal($multipliedPrice);
 
                 $dataSet[ProductConfig::KEY_PRICE] = str_replace('.', ',', $multipliedPriceDecimal);
 
+                $this->productUpdateFacade->saveSinglePrice($dataSet, ProductPriceSaver::PRICE_TYPE_DEFAULT, ProductConfig::KEY_PRICE, ProductConfig::PRICE_PER_KG);
+
+                //TODO: clarify
                 $productAbstractEntity->setAttributes(json_encode($productAbstractEntityAttributes));
                 $productAbstractEntity->save();
 
                 $productConcreteEntity->setAttributes(json_encode($productConcreteEntityAttributes));
                 $productConcreteEntity->save();
+
+                continue;
             }
 
             if (!empty($dataSet[ProductConfig::KEY_PRICE_FROM]) &&

@@ -7,7 +7,9 @@
 
 namespace Pyz\Zed\PriceProduct\Business;
 
+use Pyz\Zed\PriceProduct\Business\Model\PriceGrouper;
 use Pyz\Zed\PriceProduct\Business\Model\Reader;
+use Spryker\Zed\PriceProduct\Business\Model\PriceGrouperInterface;
 use Spryker\Zed\PriceProduct\Business\Model\ReaderInterface;
 use Spryker\Zed\PriceProduct\Business\PriceProductBusinessFactory as SprykerPriceProductBusinessFactory;
 
@@ -33,6 +35,18 @@ class PriceProductBusinessFactory extends SprykerPriceProductBusinessFactory
             $this->createPriceProductMapper(),
             $this->getConfig(),
             $this->getPriceProductService()
+        );
+    }
+
+    /**
+     * @return \Spryker\Zed\PriceProduct\Business\Model\PriceGrouperInterface
+     */
+    public function createPriceGrouper(): PriceGrouperInterface
+    {
+        return new PriceGrouper(
+            $this->createReaderModel(),
+            $this->createPriceProductMapper(),
+            $this->getConfig()
         );
     }
 }

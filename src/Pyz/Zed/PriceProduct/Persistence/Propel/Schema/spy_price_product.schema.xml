@@ -25,6 +25,7 @@
     </table>
 
     <table name="spy_price_product_store">
+        <column name="price_per_kg" type="INTEGER"/>
         <behavior name="event">
             <parameter name="spy_price_product_store_all" column="*"/>
         </behavior>

@@ -72,12 +72,13 @@ class ProductPriceSaver
      * @param \Spryker\Zed\DataImport\Business\Model\DataSet\DataSetInterface $dataSet
      * @param string $priceType
      * @param string $priceField
+     * @param string|null $pricePerKg
      *
      * @return void
      */
-    public function saveSinglePrice(DataSetInterface $dataSet, string $priceType, string $priceField)
+    public function saveSinglePrice(DataSetInterface $dataSet, string $priceType, string $priceField, ?string $pricePerKg = null)
     {
-        $priceProductStoreEntity = $this->createPriceProductStoreEntityByPriceType($dataSet, $priceType, $priceField);
+        $priceProductStoreEntity = $this->createPriceProductStoreEntityByPriceType($dataSet, $priceType, $priceField, $pricePerKg);
         $this->savePriceProductDefault($priceProductStoreEntity->getPrimaryKey());
     }
 
@@ -85,10 +86,11 @@ class ProductPriceSaver
      * @param \Spryker\Zed\DataImport\Business\Model\DataSet\DataSetInterface $dataSet
      * @param string $priceType
      * @param string $priceField
+     * @param string|null $pricePerKg
      *
      * @return \Orm\Zed\PriceProduct\Persistence\SpyPriceProductStore
      */
-    private function createPriceProductStoreEntityByPriceType(DataSetInterface $dataSet, string $priceType, string $priceField): SpyPriceProductStore
+    private function createPriceProductStoreEntityByPriceType(DataSetInterface $dataSet, string $priceType, string $priceField, ?string $pricePerKg = null): SpyPriceProductStore
     {
         $priceProductQuery = SpyPriceProductQuery::create();
         $priceProductQuery->filterByFkPriceType($this->getIdPriceTypeByName($priceType));
@@ -126,7 +128,12 @@ class ProductPriceSaver
         }
 
         $grossPrice = $this->getProductPriceByStore($dataSet, $priceField);
+        if ($pricePerKg) {
+            $perKgPrice = $this->getProductPricePerKgByStore($dataSet, $pricePerKg);
+            $priceProductStoreEntity->setPricePerKg($perKgPrice);
+        }
         $priceProductStoreEntity->setGrossPrice($grossPrice);
+        $priceProductStoreEntity->setNetPrice(null);
         $priceProductStoreEntity->setPriceData('[]');
         $priceProductStoreEntity->setPriceDataChecksum($grossPrice);
 
@@ -161,6 +168,30 @@ class ProductPriceSaver
             throw new InvalidDataException(
                 sprintf('Product price "%s" for ID %s is not a number.', $dataSet[$priceField], $dataSet[PriceProductDataSet::ID_PRODUCT_ABSTRACT])
             );
+        }
+
+        return $this->moneyFacade->convertDecimalToInteger($parsedPrice);
+    }
+
+    /**
+     * @param \Spryker\Zed\DataImport\Business\Model\DataSet\DataSetInterface $dataSet
+     * @param string $pricePerKg
+     *
+     * @return int|null
+     */
+    private function getProductPricePerKgByStore(DataSetInterface $dataSet, string $pricePerKg)
+    {
+        $priceValue = $dataSet[$pricePerKg];
+        if ($dataSet->offsetExists(StoreSpecificAttributeExtractorStep::KEY_STORE_SPECIFIC_ATTRIBUTES)) {
+            $storeSpecificAttributes = $dataSet[StoreSpecificAttributeExtractorStep::KEY_STORE_SPECIFIC_ATTRIBUTES];
+            $storeName = $dataSet[PriceProductDataSet::KEY_STORE];
+            if (!empty($storeSpecificAttributes[$storeName][$pricePerKg])) {
+                $priceValue = $storeSpecificAttributes[$storeName][$pricePerKg];
+            }
+        }
+        $parsedPrice = $this->numberFormatter->parse(trim($priceValue));
+        if ($parsedPrice === false) {
+            return null;
         }
 
         return $this->moneyFacade->convertDecimalToInteger($parsedPrice);

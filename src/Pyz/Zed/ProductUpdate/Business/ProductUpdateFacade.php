@@ -32,13 +32,14 @@ class ProductUpdateFacade extends AbstractFacade implements ProductUpdateFacadeI
      * @param \Spryker\Zed\DataImport\Business\Model\DataSet\DataSetInterface $productData
      * @param string $priceType
      * @param string $priceField
+     * @param string|null $pricePerKg
      *
      * @return void
      */
-    public function saveSinglePrice(DataSetInterface $productData, string $priceType, string $priceField): void
+    public function saveSinglePrice(DataSetInterface $productData, string $priceType, string $priceField, ?string $pricePerKg = null): void
     {
         $this->getFactory()
             ->createProductPriceSaver()
-            ->saveSinglePrice($productData, $priceType, $priceField);
+            ->saveSinglePrice($productData, $priceType, $priceField, $pricePerKg);
     }
 }
