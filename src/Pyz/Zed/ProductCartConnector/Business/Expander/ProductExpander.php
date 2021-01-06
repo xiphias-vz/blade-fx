@@ -36,10 +36,16 @@ class ProductExpander extends SprykerProductExpander implements ProductExpanderI
         }
 
         $weightPerUnit = $this->calculateWeightPerItem($productConcreteTransfer->getAttributes());
+
+        $pricePerKg = null;
+        if ($itemTransfer->getPriceProduct() && $itemTransfer->getPriceProduct()->getMoneyValue()) {
+            $pricePerKg = $itemTransfer->getPriceProduct()->getMoneyValue()->getPricePerKg();
+        }
+
         $itemTransfer
         ->setPickZone($pickZone)
         ->setWeightPerUnit($weightPerUnit)
-        ->setPricePerKg($itemTransfer->getPriceProduct()->getMoneyValue()->getPricePerKg() ?? null)
+        ->setPricePerKg($pricePerKg)
         ->setProductNumber($productConcreteTransfer->getProductNumber())
         ->setSapWgr($productConcreteTransfer->getAttributes()[ProductConfig::KEY_SAP_WGR] ?? '')
         ->setBontext($productConcreteTransfer->getAttributes()[ProductConfig::KEY_BON_TEXT] ?? '')
