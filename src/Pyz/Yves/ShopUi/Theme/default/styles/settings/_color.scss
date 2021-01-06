@@ -100,3 +100,23 @@ $setting-color-actions: (
     success: $setting-color-globus-darkOrange,
     alert: #cb3d49,
 );
+
+/**
+ * Defines a default image overlay color. Usage: images with overlay - lazy-image.
+ */
+$setting-color-image-overlay: rgba($setting-color-black, 0.05) !default;
+
+/**
+ * Defines a light shade color. Usage: elements' background, borders and text.
+ */
+$setting-color-light: #dadada !default;
+
+/**
+ * Defines a lighter shade color. Usage: elements' background, borders and text.
+ */
+$setting-color-lighter: #f0f0f0 !default;
+
+/**
+ * Defines the lightest shade color. Usage: elements' background, borders and text.
+ */
+$setting-color-lightest: #f4f4f4 !default;

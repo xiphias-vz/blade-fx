@@ -24,9 +24,33 @@
 
                     {% cms_slot 'slt-3' %}
 
+                    {% embed organism('section') with {
+                        modifiers: ['secondary', 'full-width'],
+                        class: 'spacing-top spacing-top--inner spacing-top--big',
+                        } only %}
+                        {% block inner %}
+                            <div class="grid grid--left grid--middle">
+                                {% cms_slot '3-elements-slt-in-frame-grid-content' %}
+                            </div>
+                        {% endblock %}
+                    {% endembed %}
+
+                    {% cms_slot 'slt-1st-in-frame' %}
+
                     <div class="spacing-bottom spacing-bottom--biggest">
                         {% widget 'NavigationWidget' args ['POPULAR_CATEGORIES', 'navigation-categories'] %}{% endwidget %}
                     </div>
+
+                    {% embed organism('section') with {
+                        modifiers: ['secondary', 'full-width'],
+                        class: 'spacing-top spacing-top--inner spacing-top--big',
+                        } only %}
+                        {% block inner %}
+                            <div class="grid grid--left grid--middle">
+                                {% cms_slot '4-elements-slt-in-frame-grid-content' %}
+                            </div>
+                        {% endblock %}
+                    {% endembed %}
 
                 {% endblock %}
             </div>
