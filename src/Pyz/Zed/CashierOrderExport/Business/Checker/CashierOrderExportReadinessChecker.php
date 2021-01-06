@@ -38,7 +38,10 @@ class CashierOrderExportReadinessChecker implements CashierOrderExportReadinessC
     {
         $itemStateName = $itemTransfer->getState()->getName();
 
-        if ($itemStateName === OmsConfig::STORE_STATE_PICKED || $itemStateName === OmsConfig::STATE_CANCELLED) {
+        if ($itemStateName === OmsConfig::STORE_STATE_PICKED ||
+            $itemStateName === OmsConfig::STATE_CANCELLED ||
+            $itemStateName === OmsConfig::STATE_COLLECTION_PROCESS
+        ) {
             return true;
         }
 

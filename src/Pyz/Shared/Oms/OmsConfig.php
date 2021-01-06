@@ -57,4 +57,5 @@ class OmsConfig extends SprykerOmsConfig
     public const STATE_INVALID = 'invalid';
     public const STATE_COMPLETED = 'completed';
     public const STATE_CANCELLED_BY_CUSTOMER = 'cancelled by customer';
+    public const STATE_COLLECTION_PROCESS = 'collection process';
 }
