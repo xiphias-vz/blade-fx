@@ -16,6 +16,11 @@
     }
 
     .catalog-right-side {
+        #firstSortElement, #secondSortElement {
+            @include helper-breakpoint-media-max($lg-max)  {
+                margin-bottom:15px;
+            }
+        }
         @include helper-breakpoint-media-min($xl-min) {
             padding: rem(10) 0 rem(80) rem(15);
         }

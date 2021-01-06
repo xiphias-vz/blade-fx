@@ -93,7 +93,7 @@
                             {% block catalogContent %}
                                 <div class="grid">
                                     <div id="firstSortElement" class="col col--sm-12">
-                                        {% include molecule('sort', 'CatalogPage') with {
+                                        {% include molecule('sort-number-products', 'CatalogPage') with {
                                             data: {
                                                 pagination: data.pagination,
                                                 sort: data.sort,
@@ -113,14 +113,14 @@
                                     {% endif %}
                                 </div>
 
-                                <div class="col col--sm-12 col--md-12 col--lg-5 menu--inline">
+                                <div class="col col--sm-12 col--md-12 col--lg-12 menu--inline">
                                     {% include molecule('pagination') with {
                                         data: data.pagination
                                     } only %}
                                 </div>
 
                                 <div id="secondSortElement" class="col col--sm-12 float-right col--md-2 menu--inline">
-                                    {% include molecule('sort', 'CatalogPage') with {
+                                    {% include molecule('sort-number-products', 'CatalogPage') with {
                                         data: {
                                             pagination: data.pagination,
                                             sort: data.sort,
@@ -174,20 +174,4 @@
             {% endmacro %}
         </main>
     </div>
-
-    <script type="text/javascript">
-        let firstSortElement = document.querySelector("#firstSortElement select");
-        let secondSortElement = document.querySelector("#secondSortElement select");
-
-        firstSortElement.parentElement.addEventListener("mouseover", () => {
-            firstSortElement.removeAttribute("disabled");
-            secondSortElement.setAttribute("disabled", "disabled");
-        })
-
-        secondSortElement.parentElement.addEventListener("mouseover", () => {
-            firstSortElement.setAttribute("disabled", "disabled");
-            secondSortElement.removeAttribute("disabled");
-        })
-
-    </script>
 {% endblock %}

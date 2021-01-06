@@ -1,0 +1,49 @@
+{% extends molecule('sort', '@SprykerShop:CatalogPage') %}
+
+{% define data = {
+    pagination: {},
+    sort: {}
+} %}
+
+{% block body %}
+    <div class="grid grid--justify grid--right">
+
+        <div class="col col--lg-10 col--xl-10">
+            <div class="grid grid--right">
+                {% block selects %}
+                    <div class="col col--sm-12 col--md-12" data-block-to="js-filter-section__sorting" data-breakpoint="769">
+                        {% embed molecule('custom-select') with {
+                            modifiers: ['hollow'],
+                            class: 'float-right',
+                            attributes: {
+                                name: 'ipp',
+                                'config-theme': 'secondary',
+                            },
+                            embed: {
+                                pagination: data.pagination,
+                                parentJsName: data.parentJsName,
+                            },
+                        } only %}
+                            {% block selectClass %}{{ parent() }} {{ embed.parentJsName ? embed.parentJsName ~ '__sort-trigger' }}{% endblock %}
+
+                            {% block options %}
+                                {% for limit in embed.pagination.config.validItemsPerPageOptions %}
+                                    {% set selectedAttribute = (limit == embed.pagination.currentItemsPerPage) ? 'selected' %}
+
+                                    <option value="{{ limit }}" {{ selectedAttribute }}>{{ limit }}</option>
+                                {% endfor %}
+                            {% endblock %}
+                        {% endembed %}
+                    </div>
+
+                {% endblock %}
+            </div>
+        </div>
+    </div>
+
+    {% include molecule('breakpoint-dependent-block-placer') with {
+        attributes: {
+            'block-class-name': config.jsName ~ '__filter',
+        },
+    } only %}
+{% endblock %}
