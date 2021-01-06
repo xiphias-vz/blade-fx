@@ -61,9 +61,19 @@
                 }
             } only %}
                 {% block slides %}
+                    {% set daysInTheWeek =  {
+                            1: 'Montag',
+                            2: 'Dienstag',
+                            3: 'Mittwoch',
+                            4: 'Donnerstag',
+                            5: 'Freitag',
+                            6: 'Samstag',
+                            7: 'Sonntag'
+                    }%}
                     {% for day, hours in data.slides if hours | length > 0 %}
+                        {% set dayOfTheWeek = day |date('w') %}
                         <div class="{{ config.name }}__column spacing-bottom spacing-bottom--biggest">
-                            <div class="{{ config.name }}__date">{{ day | formatDate }}</div>
+                            <div class="{{ config.name }}__date">{{ daysInTheWeek[dayOfTheWeek] }}, {{ day | date("d.m.y") }}</div>
                             {% set parentIndex = 'day-' ~ loop.index %}
                             {% for hour in hours %}
                                 <div class="{{ config.name }}__slot">
