@@ -17,7 +17,7 @@ class CashierOrderFileNameResolver implements CashierOrderFileNameResolverInterf
     protected const EXPORT_FILE_NAME_DATE_FORMAT = 'Ymd-His';
     protected const EXPORT_FILE_DEFAULT_NAME = 'order.txt';
     protected const EXPORT_FILE_REMOTE_FILE_PATH_FORMAT = '%s/%s/%s';
-    protected const EXPORT_ARCHIVE_FILE_NAME_FORMAT = '%s%s%s';
+    protected const EXPORT_ARCHIVE_FILE_NAME_FORMAT = '%s%s_%s%s';
     protected const EXPORT_ARCHIVE_FILE_EXTENSION = '.zip';
 
     /**
@@ -58,14 +58,17 @@ class CashierOrderFileNameResolver implements CashierOrderFileNameResolverInterf
     }
 
     /**
+     * @param int $idSalesOrder
+     *
      * @return string
      */
-    public function resolveCashierOrderExportArchiveFileName(): string
+    public function resolveCashierOrderExportArchiveFileName(int $idSalesOrder): string
     {
         return sprintf(
             static::EXPORT_ARCHIVE_FILE_NAME_FORMAT,
             static::EXPORT_FILE_NAME_DEFAULT_PREFIX,
             (new DateTime())->format(static::EXPORT_FILE_NAME_DATE_FORMAT),
+            $idSalesOrder,
             static::EXPORT_ARCHIVE_FILE_EXTENSION
         );
     }

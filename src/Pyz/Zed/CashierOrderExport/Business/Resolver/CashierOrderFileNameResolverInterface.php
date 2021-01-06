@@ -22,9 +22,11 @@ interface CashierOrderFileNameResolverInterface
     public function resolveCashierOrderExportArchiveFilePath(string $cashierOrderExportArchiveFileName): string;
 
     /**
+     * @param int $idSalesOrder
+     *
      * @return string
      */
-    public function resolveCashierOrderExportArchiveFileName(): string;
+    public function resolveCashierOrderExportArchiveFileName(int $idSalesOrder): string;
 
     /**
      * @param string $fileName
