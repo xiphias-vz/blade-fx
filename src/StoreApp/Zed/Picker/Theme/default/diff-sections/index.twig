@@ -6,11 +6,9 @@
 
 
  {% block header %}
-     {% include organism('header') with {
-         data: {
-             headerLocationTitle: '',
-         }
-     } only %}
+     {% embed organism('header') only %}
+         {% block selectPickingZone %}{% endblock %}
+     {% endembed %}
  {% endblock %}
 
 

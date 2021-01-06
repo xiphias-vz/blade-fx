@@ -16,6 +16,10 @@
         top: 50%;
         left: 0;
         transform: translate(0, -50%);
+        @include helper-breakpoint-media-max($sm-max) {
+            width: 1.2rem;
+            margin-top: 5px;
+        }
 
         &--cancel {
             transform: rotate(180deg) translate(0, 50%);

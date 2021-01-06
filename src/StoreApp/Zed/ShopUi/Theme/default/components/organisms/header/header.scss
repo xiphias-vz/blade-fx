@@ -49,6 +49,9 @@
 
         &__content {
             height: rem(63);
+            @include helper-breakpoint-media-max($sm-max) {
+               height: 2rem;
+            }
         }
 
         &__logout {

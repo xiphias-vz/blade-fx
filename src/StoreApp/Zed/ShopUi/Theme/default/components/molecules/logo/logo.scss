@@ -22,6 +22,10 @@
                     position: absolute;
                     top: 0;
                     left: 0;
+                    @include helper-breakpoint-media-max($sm-max) {
+                        width: 60px;
+                        top:15px;
+                    }
                 }
             }
         }
