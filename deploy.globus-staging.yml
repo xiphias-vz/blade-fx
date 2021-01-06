@@ -148,6 +148,13 @@ groups:
                         store: EIN
                         entry-point: StoreApp
 
+                    shop-t.globus.de:
+                        store: EIN
+                        <<: *frontend-auth
+                    welcome.shop-t.globus.de:
+                        store: EIN
+                        <<: *frontend-auth
+
 services:
     database:
         engine: mysql
