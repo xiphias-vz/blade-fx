@@ -849,3 +849,14 @@ $config[\Pyz\Shared\Customer\CustomerConstants::CUSTOMER_PROFILE_URL] = 'https:/
 
 // ----------- Cookiebot
 $config[\Pyz\Shared\CookieBot\CookieBotConstants::DOMAIN_GROUP_ID] = '4bae1e02-80b1-43ac-881c-aba9593b2331';
+
+// ----------- Days in the week abbr
+$config[PickerConstants::DAYS_IN_THE_WEEK] = [
+    '1' => 'MO',
+    '2' => 'DI',
+    '3' => 'MI',
+    '4' => 'DO',
+    '5' => 'FR',
+    '6' => 'SA',
+    '7' => 'SO'
+];

@@ -4,10 +4,16 @@
     currentPickingZone: _widget.currentPickingZone,
 } %}
 
+{% define config = {
+    name: 'picking-zone-selector',
+} %}
+
 {% block body %}
     {% if data.currentPickingZone %}
-        <a href="/picker/select-picking-zone" class="button">
-            {{ data.currentPickingZone.name }}
-        </a>
+        {% include molecule('picking-zone-link', 'Picker') with {
+            data: {
+                currentPickingZone: data.currentPickingZone,
+            },
+        } only %}
     {% endif %}
 {% endblock %}

@@ -11,4 +11,5 @@ interface PickerConstants
 {
     public const MAX_PICKING_BAGS = 'PICKER:MAX_PICKING_BAGS';
     public const MAX_ORDERS_COUNT_TO_DISPLAY = 'PICKER:MAX_ORDERS_COUNT_TO_DISPLAY';
+    public const DAYS_IN_THE_WEEK = 'DAYS_IN_THE_WEEK';
 }

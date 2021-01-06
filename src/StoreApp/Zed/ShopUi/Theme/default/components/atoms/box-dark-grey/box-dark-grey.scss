@@ -1,0 +1,72 @@
+@mixin shop-ui-box($name: '.box-dark-grey') {
+    #{$name} {
+        padding: rem(16);
+        border-radius: rem(8);
+        background: $setting-color-gray-3;
+
+        &__content {
+            padding: rem(16);
+            background: $setting-color-white;
+        }
+
+        &__bottom {
+            padding: rem(4) rem(16);
+            margin: rem(16) rem(-16) 0;
+            background: $setting-color-white;
+            border-radius: 0 0 rem(8) rem(8);
+            overflow: hidden;
+
+            &--spaceless {
+                padding: 0;
+            }
+        }
+
+        &--with-bottom {
+            padding-bottom: 0;
+        }
+
+        &--bordered {
+            border: rem(1) solid $setting-color-gray-3;
+        }
+
+        &--success {
+            border: rem(1) solid map-get($setting-color-actions, success);
+        }
+
+        &--alert {
+            border: rem(1) solid map-get($setting-color-actions, alert);
+        }
+
+        &--spaceless {
+            padding: rem(8);
+        }
+
+        &--expand {
+            width: 100%;
+        }
+
+        &--white {
+            background: $setting-color-white;
+        }
+
+        &--actions {
+            min-height: rem(70);
+        }
+
+        &--bottom-fixed {
+            padding: 0;
+            background-color: transparent;
+
+            #{$name} {
+                &__content {
+                    position: fixed;
+                    left: 0;
+                    bottom: 0;
+                    width: 100%;
+                }
+            }
+        }
+    }
+}
+
+@include shop-ui-box();

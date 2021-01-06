@@ -50,10 +50,8 @@ $setting-item-border-radius: rem(8);
 
         &__time {
             padding: 0 0 rem(12);
-            font-size: rem(20);
-            font-weight: fw(bold);
             line-height: rem(25);
-            color: $setting-color-gray-6;
+            color: $setting-color-gray-11;
         }
 
         &__collect {
@@ -67,9 +65,12 @@ $setting-item-border-radius: rem(8);
 
         &__id {
             padding: rem(3) rem(5) rem(5);
-            border: rem(1) solid $setting-color-gray-3;
-            line-height: 1;
-            border-radius: $setting-item-border-radius;
+            font-weight: bold;
+        }
+
+        &__name
+        {
+            color: $setting-color-gray-11;
         }
     }
 }

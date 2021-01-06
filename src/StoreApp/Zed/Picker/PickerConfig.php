@@ -29,6 +29,14 @@ class PickerConfig extends AbstractBundleConfig
     }
 
     /**
+     * @return array
+     */
+    public function getDaysInTheWeek(): array
+    {
+        return $this->get(PickerConstants::DAYS_IN_THE_WEEK);
+    }
+
+    /**
      * @api
      *
      * @return mixed[]

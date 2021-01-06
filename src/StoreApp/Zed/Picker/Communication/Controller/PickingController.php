@@ -30,6 +30,7 @@ use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
 
 /**
  * @method \StoreApp\Zed\Picker\Business\PickerFacadeInterface getFacade()
+ * @method \StoreApp\Zed\Picker\Communication\PickerCommunicationFactory getFactory()
  */
 class PickingController extends BaseOrderPickingController
 {
@@ -82,19 +83,32 @@ class PickingController extends BaseOrderPickingController
 
         $requestedDeliveryDatesByIdSalesOrders = $this->getFormattedDeliveryDates($idSalesOrdersForPicking);
 
+        $daysInTheWeek = $this->getFactory()->getConfig()->getDaysInTheWeek();
+
         foreach ($idSalesOrdersForPicking as $idSalesOrder) {
             $salesOrderTransfer = $this->getFactory()->getSalesFacade()
                 ->findOrderByIdSalesOrderAndPickingZoneForStoreApp($idSalesOrder, $pickingZoneTransfer->getName());
             $merchantSalesOrderTransfer = $merchantSalesOrderTransfers[$idSalesOrder];
+            $fullOrderTransfer = $this->getFactory()->getSalesFacade()
+                ->findOrderByIdSalesOrderForStoreApp($idSalesOrder);
+            $dayOfTheWeek = '';
+            if ($requestedDeliveryDatesByIdSalesOrders[$idSalesOrder]) {
+                $deliveryDate = str_split($requestedDeliveryDatesByIdSalesOrders[$idSalesOrder], 10);
+                $dayInTheWeek = date('w', strtotime($deliveryDate[0]));
+                $dayOfTheWeek = $daysInTheWeek[$dayInTheWeek];
+            }
 
             $pickingOrders[] = [
                 'idSalesOrder' => $idSalesOrder,
                 'reference' => $salesOrderTransfer->getOrderReference(),
                 'collectNumber' => $salesOrderTransfer->getCollectNumber(),
                 'itemCount' => $salesOrderTransfer->getItems()->count(),
+                'totalItemCount' => $fullOrderTransfer->getItems()->count(),
                 'isPicked' => $merchantSalesOrderTransfer->getFkUser() === $userTransfer->getIdUser(),
                 'requestedDeliveryDate' => $requestedDeliveryDatesByIdSalesOrders[$idSalesOrder],
                 'cartNote' => $salesOrderTransfer->getCartNote(),
+                'customerFullName' => $salesOrderTransfer->getFirstName() . ' ' . $salesOrderTransfer->getLastName(),
+                'dayOfTheWeek' => $dayOfTheWeek,
             ];
         }
 

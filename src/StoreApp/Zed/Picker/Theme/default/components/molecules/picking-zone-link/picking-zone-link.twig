@@ -1,0 +1,15 @@
+{% extends model('component') %}
+
+{% define config = {
+    name: 'picking-zone-link',
+} %}
+
+{% define data = {
+    currentPickingZone: required,
+} %}
+
+{% block body %}
+    <a href="/picker/select-picking-zone" class="{{ config.name }}__link">
+        {{ data.currentPickingZone.name }}
+    </a>
+{% endblock %}

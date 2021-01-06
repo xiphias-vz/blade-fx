@@ -35,7 +35,8 @@
         }
 
         &__header-top {
-            min-height: rem(60);
+            min-height: rem(50);
+            height: rem(50);
             padding: rem(8) 0;
             background: $setting-color-white;
             color: $setting-color-gray-10;
@@ -63,7 +64,39 @@
             padding-bottom: rem(3);
             font-weight: fw(bold);
         }
+        .container_header
+        {
+            margin-top: -1%;
+        }
 
+        @media only screen and (max-width: 35.9375rem)
+        {
+            .container_header
+            {
+                margin-top: -4%;
+            }
+        }
+
+        .text-middle {
+            &__lighterGreen {
+                color: $setting-color-pickingApp-lighterGreen;
+                font-weight: fw(black);
+            }
+
+
+
+            &__darkerGreen {
+                color: $setting-color-pickingApp-darkerGreen;
+                font-weight: fw(black);
+            }
+
+
+
+            &__lightOrange {
+                color: $setting-color-pickingApp-lightOrange;
+                font-weight: fw(black);
+            }
+        }
         @content;
     }
 }
