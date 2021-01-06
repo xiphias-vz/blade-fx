@@ -111,11 +111,15 @@ groups:
                 endpoints:
                     welcome.shop-t.globus.de:
                         entry-point: Welcome
+                        <<: *frontend-auth
+
             Yves:
                 application: yves
                 endpoints:
                     shop-t.globus.de:
                         store: EIN
+                        <<: *frontend-auth
+
             Glue:
                 application: glue
                 endpoints:
@@ -147,13 +151,6 @@ groups:
                     pick.shop-t.globus.de:
                         store: EIN
                         entry-point: StoreApp
-
-                    shop-t.globus.de:
-                        store: EIN
-                        <<: *frontend-auth
-                    welcome.shop-t.globus.de:
-                        store: EIN
-                        <<: *frontend-auth
 
 services:
     database:
