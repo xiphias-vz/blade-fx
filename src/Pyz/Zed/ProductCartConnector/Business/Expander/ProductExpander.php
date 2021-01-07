@@ -42,6 +42,8 @@ class ProductExpander extends SprykerProductExpander implements ProductExpanderI
             $pricePerKg = $itemTransfer->getPriceProduct()->getMoneyValue()->getPricePerKg();
         }
 
+        $pricePerKg = $pricePerKg ?: ($productConcreteTransfer->getAttributes()[ProductConfig::PRICE_PER_KG] ?? null);
+
         $itemTransfer
         ->setPickZone($pickZone)
         ->setWeightPerUnit($weightPerUnit)
