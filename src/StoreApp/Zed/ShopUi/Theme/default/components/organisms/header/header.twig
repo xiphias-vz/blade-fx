@@ -86,15 +86,21 @@
                                                 name: 'arrow-right'
                                             }
                                         } only %}
-                                        {{ data.buttonText }}
+                                        <div class="link__header__title">
+                                            {{ data.buttonText }}
+                                        </div>
                                     </a>
                                 {% endif %}
                             </div>
-                            <div class="col col--expand text-left">
-                                {% block selectPickingZone %}
-                                    {% widget 'SelectPickingZoneWidget' only %}{% endwidget %}
-                                {% endblock %}
-                            </div>
+                                <div class="col col--expand text-left">
+                                    <div class="link">
+                                        <div class="link__header__zone">
+                                            {% block selectPickingZone %}
+                                                {% widget 'SelectPickingZoneWidget' only %}{% endwidget %}
+                                            {% endblock %}
+                                        </div>
+                                    </div>
+                                 </div>
                             <div class="col {{ config.name }}__logout text-right">
                                 <a href="/auth/logout" class="link link--icon link--logout">
                                     {% include atom('icon') with {

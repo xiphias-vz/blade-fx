@@ -55,4 +55,17 @@
             color: $setting-color-gray-6;
         }
     }
+
+    @media only screen and (max-width: 480px) {
+        .link__header__title
+        {
+            margin-top:25% !important;
+        }
+
+        .link__header__zone
+        {
+            margin-top:25% !important;
+        }
+
+    }
 }

@@ -6,8 +6,6 @@
         margin: 0 auto;
 
         &__image {
-            height: 65%;
-            margin-top:13%;
             max-height: inherit;
         }
 
@@ -22,9 +20,11 @@
                     position: absolute;
                     top: 0;
                     left: 0;
+                    height: 65%;
+                    margin-top:13%;
                     @include helper-breakpoint-media-max($sm-max) {
                         width: 60px;
-                        top:15px;
+                        top:11px;
                     }
                 }
             }
