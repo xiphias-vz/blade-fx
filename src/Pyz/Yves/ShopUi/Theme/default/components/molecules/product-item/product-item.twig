@@ -17,8 +17,9 @@
     productSaleVolume: data.product.attributes.grundpreisinhalt | default(null),
     basicUnit: data.product.attributes.grundeinheit | default(null),
     basePriceUnit: data.product.attributes.grundpreismasseinheit | default(null),
-    preisProKg: data.product.attributes.preis_pro_kg | default(null),
+    preisProKg: data.product.attributes.pricePerKg | default(null),
     depositPrice: data.depositPrice | default(null),
+    einzelgewicht: data.product.attributes.einzelgewicht | default(null),
 } %}
 
 {% set addAjaxUrl = path("cart/add-ajax", { "productAbstractId": data.product.id_product_abstract ?? data.product.idProductAbstract }) %}
@@ -130,8 +131,14 @@
 
                                         {% if productSupplier and productSaleVolume and productSaleUnit %}
                                             {% set fullname = productSupplier ~ " - " ~ data.name ~ " - " ~ productSaleVolume|round(2, 'floor') ~  ' ' ~ productSaleUnit %}
+                                            {% if data.einzelgewicht %}
+                                                {% set fullname = productSupplier ~ " - " ~ data.name ~ " - " ~ data.einzelgewicht|round(2, 'floor') ~  ' ' ~ productSaleUnit %}
+                                            {% endif %}
                                         {% elseif productSaleVolume and productSaleUnit %}
                                             {% set fullname = data.name ~ " - " ~ productSaleVolume|round(2, 'floor') ~  ' ' ~ productSaleUnit %}
+                                            {% if data.einzelgewicht %}
+                                                {% set fullname = data.name ~ " - " ~ data.einzelgewicht|round(2, 'floor') ~  ' ' ~ productSaleUnit %}
+                                            {% endif %}
                                         {% elseif productSupplier %}
                                             {% set fullname = productSupplier ~ " - " ~ data.name %}
                                         {% else %}
