@@ -36,7 +36,8 @@ export default class ProductItem extends Component {
         this.$quantityField = this.$this.find(this.quantityFieldSelector);
         this.$weightField = this.$this.find(this.weightInputFieldSelector);
         this.$quantityOutput = this.$this.find(this.quantityOutputSelector);
-
+        this.weightMax = Number(this.$weightField.attr('max'));
+        this.weightMin = Number(this.$weightField.attr('min'));
         this.mapEvents();
     }
 
@@ -102,7 +103,6 @@ export default class ProductItem extends Component {
         const inputWeightValue = Number(this.$weightField.val());
         const inputWeightMax = Number(this.$weightField.attr('max'));
         const inputWeightMin = Number(this.$weightField.attr('min'));
-
         if (inputWeightValue > inputWeightMax) {
             alert(`Der Eingabewert sollte nicht größer als ${inputWeightMax} sein`);
 
@@ -150,9 +150,19 @@ export default class ProductItem extends Component {
         this.updateQuantityInput(0);
         this.$this.addClass(this.notPickedCLass);
         this.pickProducts.update();
+
+        this.$weightField.removeAttr('min');
+        this.$weightField.removeAttr('max');
+        this.$weightField.removeAttr('required');
+
     }
 
     protected revertView(): void {
+
+        this.$weightField.attr('min', this.weightMin);
+        this.$weightField.attr('max', this.weightMax);
+        this.$weightField.attr('required', "required");
+
         this.isAccepted = false;
         this.isDeclined = false;
         this.isNotFullyAccepted = false;
