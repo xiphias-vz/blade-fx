@@ -49,7 +49,7 @@
         </span>
     {% endif %}
 
-    <h2 class="title title--product">{{ productName }} - {% if data.product.attributes.einzelgewicht is defined %} {{ data.product.attributes.einzelgewicht|replace('.', ',') }} {% else %} {{ productSaleVolume|round(2, 'floor') }} {% endif %}  {{ data.product.attributes["grundpreismasseinheit"] }}</h2>
+    <h2 class="title title--product">{{ productName }} - {% if data.product.attributes["sap_unit"] == "ST" %} ca. {% endif %} {% if data.product.attributes.einzelgewicht is defined %} {{ data.product.attributes.einzelgewicht|replace('.', ',') }} {% else %} {{ productSaleVolume|round(2, 'floor') }} {% endif %}  {{ data.product.attributes["grundpreismasseinheit"] }}</h2>
 
     <div class="{{ config.name }}__info">
 
