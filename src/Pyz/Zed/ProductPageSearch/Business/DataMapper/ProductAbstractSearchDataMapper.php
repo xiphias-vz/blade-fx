@@ -24,12 +24,17 @@ class ProductAbstractSearchDataMapper extends SprykerProductAbstractSearchDataMa
         $pageMapTransfer = parent::buildPageMap($data, $localeTransfer);
 
         $einzelgewicht = null;
-        if ($data['attributes']['einzelgewicht']) {
+        if (isset($data['attributes']['einzelgewicht'])) {
             $einzelgewicht = $data['attributes']['einzelgewicht'];
-        } elseif ($data['attributes']['einzelgewicht'][0]) {
+        } elseif (isset($data['attributes']['einzelgewicht'][0])) {
             $einzelgewicht = $data['attributes']['einzelgewicht'][0];
         } else {
             $einzelgewicht = null;
+        }
+
+        $pricePerKg = null;
+        if (isset($data['prices']['EUR']['PRICE_PER_KG']['DEFAULT'])) {
+            $pricePerKg = $data['prices']['EUR']['PRICE_PER_KG']['DEFAULT'];
         }
 
         /**
@@ -39,9 +44,17 @@ class ProductAbstractSearchDataMapper extends SprykerProductAbstractSearchDataMa
             ->addSearchResultData($pageMapTransfer, 'supplier', $data['attributes']['supplier'][0] ?? null)
             ->addSearchResultData($pageMapTransfer, 'grundpreisinhalt', $data['attributes']['grundpreisinhalt'][0] ?? null)
             ->addSearchResultData($pageMapTransfer, 'grundpreismasseinheit', $data['attributes']['grundpreismasseinheit'][0] ?? null)
-            ->addSearchResultData($pageMapTransfer, 'verpackungseinheit', $data['attributes']['verpackungseinheit'][0] ?? null)
-            ->addSearchResultData($pageMapTransfer, 'einzelgewicht', $einzelgewicht)
-            ->addSearchResultData($pageMapTransfer, 'pricePerKg', $data['prices']['EUR']['PRICE_PER_KG']['DEFAULT'] ?? null);
+            ->addSearchResultData($pageMapTransfer, 'verpackungseinheit', $data['attributes']['verpackungseinheit'][0] ?? null);
+
+        if ($einzelgewicht != null) {
+            $this->pageMapBuilder
+                ->addSearchResultData($pageMapTransfer, 'einzelgewicht', $einzelgewicht);
+        }
+
+        if ($pricePerKg != null) {
+            $this->pageMapBuilder
+                ->addSearchResultData($pageMapTransfer, 'pricePerKg', $pricePerKg);
+        }
 
         return $pageMapTransfer;
     }
