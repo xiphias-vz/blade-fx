@@ -39,7 +39,8 @@ class TimeSlotBusinessFactory extends AbstractBusinessFactory
             $this->getSynchronizationService(),
             $this->getStorageClient(),
             $this->getStoreClient(),
-            $this->getTimeSlotStorageService()
+            $this->getTimeSlotStorageService(),
+            $this->getSalesFacade()
         );
     }
 

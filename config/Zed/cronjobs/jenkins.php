@@ -163,6 +163,15 @@ $jobs[] = [
     'stores' => ['EIN'],
 ];
 
+/* Timeslot check */
+$jobs[] = [
+    'name' => 'timeslot-check',
+    'command' => '$PHP_BIN vendor/bin/console timeslot:check',
+    'schedule' => '0 * * * *',
+    'enable' => true,
+    'stores' => $allStores,
+];
+
 // @TODO remove after 2021-01-01
 $jobs[] = [
     'name' => 'update taxes',
