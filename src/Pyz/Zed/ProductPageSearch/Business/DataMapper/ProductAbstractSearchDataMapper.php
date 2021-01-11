@@ -10,7 +10,6 @@ namespace Pyz\Zed\ProductPageSearch\Business\DataMapper;
 use Generated\Shared\Transfer\LocaleTransfer;
 use Generated\Shared\Transfer\PageMapTransfer;
 use Spryker\Zed\ProductPageSearch\Business\DataMapper\ProductAbstractSearchDataMapper as SprykerProductAbstractSearchDataMapper;
-use Symfony\Component\Config\Definition\Exception\Exception;
 
 class ProductAbstractSearchDataMapper extends SprykerProductAbstractSearchDataMapper
 {
@@ -27,23 +26,20 @@ class ProductAbstractSearchDataMapper extends SprykerProductAbstractSearchDataMa
         $einzelgewicht = null;
         $pricePerKg = null;
 
-        try {
-            if (isset($data['attributes']['einzelgewicht'])) {
-                $einzelgewicht = $data['attributes']['einzelgewicht'];
-            } elseif (isset($data['attributes']['einzelgewicht'][0])) {
-                $einzelgewicht = $data['attributes']['einzelgewicht'][0];
-            } else {
-                $einzelgewicht = null;
-            }
+        if (isset($data['attributes']['einzelgewicht'])) {
+            $einzelgewicht = $data['attributes']['einzelgewicht'];
+        } elseif (isset($data['attributes']['einzelgewicht'][0])) {
+            $einzelgewicht = $data['attributes']['einzelgewicht'][0];
+        } else {
+            $einzelgewicht = null;
+        }
 
-            /**
-             * TODO: FETCH CURRENCY
-             */
+        /**
+         * TODO: FETCH CURRENCY
+         */
 
-            if (isset($data['prices']['EUR']['PRICE_PER_KG']['DEFAULT'])) {
-                $pricePerKg = $data['prices']['EUR']['PRICE_PER_KG']['DEFAULT'];
-            }
-        } catch (Exception $e) {
+        if (isset($data['prices']['EUR']['PRICE_PER_KG']['DEFAULT'])) {
+            $pricePerKg = $data['prices']['EUR']['PRICE_PER_KG']['DEFAULT'];
         }
 
         $supplier = null;
@@ -66,36 +62,28 @@ class ProductAbstractSearchDataMapper extends SprykerProductAbstractSearchDataMa
             $verpackungseinheit = $data['attributes']['verpackungseinheit'][0];
         }
 
-        if ($einzelgewicht != null) {
-            $this->pageMapBuilder
-                ->addSearchResultData($pageMapTransfer, 'einzelgewicht', $einzelgewicht);
-        }
-
-        if ($pricePerKg != null) {
-            $this->pageMapBuilder
-                ->addSearchResultData($pageMapTransfer, 'pricePerKg', $pricePerKg);
-        }
-
-        if ($supplier != null) {
-            $this->pageMapBuilder
-                ->addSearchResultData($pageMapTransfer, 'supplier', $supplier);
-        }
-
-        if ($grundpreisinhalt != null) {
-            $this->pageMapBuilder
-                ->addSearchResultData($pageMapTransfer, 'grundpreisinhalt', $grundpreisinhalt);
-        }
-
-        if ($grundpreismasseinheit != null) {
-            $this->pageMapBuilder
-                ->addSearchResultData($pageMapTransfer, 'grundpreismasseinheit', $grundpreismasseinheit);
-        }
-
-        if ($verpackungseinheit != null) {
-            $this->pageMapBuilder
-                ->addSearchResultData($pageMapTransfer, 'verpackungseinheit', $verpackungseinheit);
-        }
+        $this->addIfNotNull($einzelgewicht, 'einzelgewicht', $pageMapTransfer);
+        $this->addIfNotNull($pricePerKg, 'pricePerKg', $pageMapTransfer);
+        $this->addIfNotNull($supplier, 'supplier', $pageMapTransfer);
+        $this->addIfNotNull($grundpreisinhalt, 'grundpreisinhalt', $pageMapTransfer);
+        $this->addIfNotNull($grundpreismasseinheit, 'grundpreismasseinheit', $pageMapTransfer);
+        $this->addIfNotNull($verpackungseinheit, 'verpackungseinheit', $pageMapTransfer);
 
         return $pageMapTransfer;
+    }
+
+    /**
+     * @param string|null $value
+     * @param string $name
+     * @param \Generated\Shared\Transfer\PageMapTransfer $pageMapTransfer
+     *
+     * @return void
+     */
+    public function addIfNotNull(?string $value, string $name, PageMapTransfer $pageMapTransfer)
+    {
+        if ($value != null) {
+            $this->pageMapBuilder
+                ->addSearchResultData($pageMapTransfer, $name, $value);
+        }
     }
 }
