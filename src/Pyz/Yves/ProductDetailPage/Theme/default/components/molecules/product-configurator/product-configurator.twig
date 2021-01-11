@@ -41,7 +41,23 @@
 {% set productSaleVolume = data.product.attributes['grundpreisinhalt'] | default(null) %}
 
 {% block body %}
-
+    <script type="text/javascript">
+            window.dataLayer = window.dataLayer || [];
+            window.dataLayer.push({
+                'event': 'view_item',
+                'ecommerce':
+                    {
+                        'items':[{
+                            'item_id': '{{ data.product.idProductAbstract }}',
+                            'item_name': '{{ data.product.name }}',
+                            'item_sku': '{{ data.product.sku }}',
+                            'item_url': '{{ data.product.url }}',
+                            'product_price': '{{ data.product.price / 100 }}',
+                            'product_currency': '{{ data.product.currentProductPrice.currency.code }}',
+                        }],
+                    }
+            });
+    </script>
     <span class="brand-text">{{ 'product.attribute.manufacturer_name' | trans}}: </span>
     {% if data.product.attributes['supplier'] %}
         <span>
@@ -52,7 +68,6 @@
     <h2 class="title title--product">{{ productName }} - {% if data.product.attributes["sap_unit"] == "ST" %} ca. {% endif %} {% if data.product.attributes.einzelgewicht is defined %} {{ data.product.attributes.einzelgewicht|replace('.', ',') }} {% else %} {{ productSaleVolume|round(2, 'floor') }} {% endif %}  {{ data.product.attributes["grundpreismasseinheit"] }}</h2>
 
     <div class="{{ config.name }}__info">
-
         <div class="align-right">
             {% widget 'ProductPriceVolumeWidget' args [data.product] only %}
             {% nowidget %}

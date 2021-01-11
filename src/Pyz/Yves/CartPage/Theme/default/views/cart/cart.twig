@@ -57,6 +57,20 @@
 
 
                     {% for cartItem in data.cartItems %}
+                        <script type="text/javascript">
+                            window.shoppingCartItem = window.shoppingCartItem || [];
+                            window.shoppingCartItem.push({
+                                'item':
+                                    [{
+                                        'item_id': '{{ cartItem.idProductAbstract }}',
+                                        'item_sku': '{{ cartItem.sku }}',
+                                        'item_name': '{{ cartItem.name | escape('js') }}',
+                                        'item_unit_gross_price': '{{ cartItem.unitGrossPrice is defined ?  cartItem.unitGrossPrice / 100 : null  }}',
+                                        'item_sum_gross_price': '{{ cartItem.sumGrossPrice is defined ?  cartItem.sumGrossPrice / 100 : null  }}',
+                                        'item_quantity': '{{ cartItem.quantity }}',
+                                    }],
+                            });
+                        </script>
                         {% include molecule('product-card-item') with {
                             data: {
                                 product: data.cart,
@@ -87,4 +101,29 @@
         </div>
     {% endif %}
     {% widget 'UpSellingProductsWidget' args [data.cart] only %}{% endwidget %}
+    <script type="text/javascript">
+        window.dataLayer = window.dataLayer || [];
+        var items = window.shoppingCartItem;
+        if( items != null)
+        {
+            window.dataLayer.push({
+                'event:':'shopping_cart',
+                'ecommerce':
+                    {
+                        items
+                    }
+            });
+        }
+
+        function beginCheckout()
+        {
+            window.dataLayer.push({
+                'event:':'begin_checkout',
+                'ecommerce':
+                    {
+                        items
+                    }
+            });
+        }
+    </script>
 {% endblock %}

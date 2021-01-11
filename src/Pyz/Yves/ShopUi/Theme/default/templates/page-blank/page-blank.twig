@@ -18,14 +18,14 @@
         <script id="Cookiebot" src="https://consent.cookiebot.com/uc.js" data-cbid="{{ data.cookieBotId }}" type="text/javascript" async></script>
         {% if is_granted('IS_AUTHENTICATED_FULLY') %}
             <script>
-                dataLayer = [{
+                window.dataLayer = [{
                     'isloggedin': 'true',
                     'markt': '{{ data.markt }}'
                 }];
             </script>
         {% else %}
             <script>
-                dataLayer = [{
+                window.dataLayer = [{
                     'isloggedin': 'false',
                     'markt': '{{ data.markt }}'
                 }];

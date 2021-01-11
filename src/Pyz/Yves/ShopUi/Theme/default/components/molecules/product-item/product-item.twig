@@ -147,12 +147,32 @@
 
                                         {% block link %}
                                             <div class="{{ config.name }}__info">
-                                                <a href="{{ data.url }}" class="{{ config.name }}__name">
+                                                <a href="{{ data.url }}" class="{{ config.name }}__name" onclick="productClicked()">
                                                     {% block linkName %}
                                                         {{- fullname -}}
                                                     {% endblock %}
                                                 </a>
                                             </div>
+                                            <script type="text/javascript">
+                                                function productClicked()
+                                                {
+                                                    window.dataLayer = window.dataLayer || [];
+                                                    window.dataLayer.push({
+                                                        'event': 'select_item',
+                                                        'ecommerce':
+                                                            {
+                                                                'items':
+                                                                    [{
+                                                                        'item_id': '{{ data.idProductAbstract }}',
+                                                                        'item_sku': '{{ data.sku }}',
+                                                                        'item_title': '{{ data.name | escape('js') }}',
+                                                                        'item_price': '{{ data.product.prices.ORIGINAL is defined ? data.product.prices.ORIGINAL / 100 : null  }}',
+                                                                        'item_csrf_token': '{{ csrf_token('add-to-cart-ajax') }}'
+                                                                    }],
+                                                            }
+                                                    });
+                                                }
+                                            </script>
                                         {% endblock %}
 
                                         {% block productDataContainer %}
@@ -240,9 +260,36 @@
                                 </div>
                             </a>
                         </div>
+                    <script type="text/javascript">
+                        window.catalogList = window.catalogList || [];
+                        window.catalogList.push({
+                            'item':
+                                [{
+                                    'item_id': '{{ data.idProductAbstract }}',
+                                    'item_sku': '{{ data.sku }}',
+                                    'item_title': '{{ data.name | escape('js') }}',
+                                    'item_price': '{{ data.product.prices.ORIGINAL is defined ? data.product.prices.ORIGINAL / 100 : null  }}',
+                                    'item_csrf_token': '{{ csrf_token('add-to-cart-ajax') }}'
+                                }],
+                        });
+                    </script>
                     {% endblock %}
                 {% endblock %}
             </div>
         {% endblock %}
     </div>
+    <script type="text/javascript">
+        window.dataLayer = window.dataLayer || [];
+        var items = window.catalogList;
+        if(items != null)
+        {
+            window.dataLayer.push({
+                event: 'view_item_list',
+                ecommerce:
+                    {
+                        items
+                    }
+            });
+        }
+    </script>
 {% endblock %}
