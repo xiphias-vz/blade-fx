@@ -15,6 +15,7 @@ export default class ContainerToShelfForm extends Component {
         this.form.addEventListener('keypress', (event: KeyboardEvent) => this.formKeyPressHandler(event));
 
         this.mapEventsForInputs();
+        this.focusFirstContainerID();
     }
 
     protected mapEventsForInputs(): void {
@@ -30,6 +31,19 @@ export default class ContainerToShelfForm extends Component {
 
         // force removing of barcode prefix
         (<HTMLInputElement>event.target).value = originalValue.replace(this.barcodePrefix, '');
+
+        //check if shelf Id starts with capital letter
+        let textLen = (<HTMLInputElement>event.target).value.length;
+        let reg = new RegExp (/^[A-Z]+$/g);
+        let regTest = reg.test(originalValue);
+        if((<HTMLInputElement>event.target).id == 'container_to_shelf_form_shelf_code' && !regTest && textLen == 1)
+        {
+            originalValue = originalValue.slice(0, -1);
+            (<HTMLInputElement>event.target).value ="";
+            alert('Der erste Buchstabe muss Großbuchstaben sein');
+        }
+
+
     }
 
     protected formKeyPressHandler(event: KeyboardEvent): void {
@@ -37,5 +51,11 @@ export default class ContainerToShelfForm extends Component {
         if (event.key == 'Enter') {
             event.preventDefault();
         }
+    }
+
+    protected focusFirstContainerID(): void
+    {
+        let element = document.getElementById('container_to_shelf_form_container_code');
+        element.focus();
     }
 }

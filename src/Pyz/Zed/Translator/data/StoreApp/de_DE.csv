@@ -123,6 +123,7 @@ storeapp.picking.message.error.container-without-order,Container ohne Bestellung
 storeapp.form.container-to-shelf,Stellen Sie den Behälter auf das Regal.
 collected,Abgeholt
 not collected, Nicht abgeholt
+storeapp.form.container-assign,Lagerplatz zuweisen
 
 storeapp.delivery.message.info.not-all-selected-orders-were-processed,Nicht alle ausgewählten Bestellungen konnten gestartet werden
 of,von
@@ -142,7 +143,7 @@ customer.address.floor.8,>=8. OG
 storeapp.delivery.message.success.order-successfully-delivered,Bestellung erfolgreich geliefert
 storeapp.delivery.message.success.order-not-delivered,Bestellung konnte nicht geliefert werden
 
-forms.submit-btn,Speichern
+forms.submit-btn,Bestätigen
 
 storeapp.new_weight,Gewicht (gr)
 
@@ -151,3 +152,4 @@ picking.app.shelf_floor,"Regalboden: "
 picking.app.shelf_field,"Regalfeld: "
 picking.app.price,"Preis: "
 picking.app.weight_per_unit,"Gewicht pro Einheit: "
+picking.app.error_shelfID_wrong_letter,"Der erste Buchstabe muss Großbuchstaben sein"

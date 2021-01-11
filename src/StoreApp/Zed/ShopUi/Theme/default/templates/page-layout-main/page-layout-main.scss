@@ -54,6 +54,18 @@
             }
         }
     }
+
+    .margin-top-shelf{
+        margin-top: rem(16);
+    }
+
+    .padding-shelf{
+        padding: rem(16);
+    }
+
+    .span-font-weight{
+        font-weight: bold;
+    }
 }
 
 @include shop-ui-page-layout-main();
