@@ -140,14 +140,18 @@ class ProductPriceWriterStep extends PublishAwareStep implements DataImportStepI
                 continue;
             }
 
-            if (!empty($dataSet[ProductConfig::KEY_PRICE_FROM]) &&
-                !empty($dataSet[ProductConfig::KEY_PRICE_TO]) &&
-                $dataSet[ProductConfig::KEY_PSEUDO_PRICE] !== static::ZERO_PSEUDO_PRICE
-            ) {
-                $this->savePriceProductSchedule($dataSet, ProductPriceSaver::PRICE_TYPE_DEFAULT, ProductConfig::KEY_PRICE);
-                $this->savePriceProductSchedule($dataSet, ProductPriceSaver::PRICE_TYPE_ORIGINAL, ProductConfig::KEY_PSEUDO_PRICE);
+            if (!empty($dataSet[ProductConfig::KEY_PRICE_FROM])) {
+                if (date("D", strtotime($dataSet[ProductConfig::KEY_PRICE_FROM])) === 'Mon') {
+                    $dataSet[ProductConfig::KEY_PRICE_FROM] = date('Y-m-d', strtotime($dataSet[ProductConfig::KEY_PRICE_FROM] . " -1 days"));
+                }
 
-                continue;
+                if (!empty($dataSet[ProductConfig::KEY_PRICE_TO]) &&
+                    $dataSet[ProductConfig::KEY_PSEUDO_PRICE] !== static::ZERO_PSEUDO_PRICE) {
+                    $this->savePriceProductSchedule($dataSet, ProductPriceSaver::PRICE_TYPE_DEFAULT, ProductConfig::KEY_PRICE);
+                    $this->savePriceProductSchedule($dataSet, ProductPriceSaver::PRICE_TYPE_ORIGINAL, ProductConfig::KEY_PSEUDO_PRICE);
+
+                    continue;
+                }
             }
 
             $this->productUpdateFacade->saveSinglePrice($dataSet, ProductPriceSaver::PRICE_TYPE_DEFAULT, ProductConfig::KEY_PRICE);
