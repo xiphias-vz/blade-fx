@@ -145,6 +145,7 @@ class MailHandler extends SprykerMailHandler
     public function sendOrderShippedMail(SpySalesOrder $salesOrderEntity)
     {
         $orderTransfer = $this->getOrderTransfer($salesOrderEntity);
+        $orderTransfer = $this->expandWithItemGroups($orderTransfer);
 
         $mailTransfer = new MailTransfer();
         $mailTransfer->setOrder($orderTransfer);
@@ -250,16 +251,16 @@ class MailHandler extends SprykerMailHandler
                 'address2' => $orderTransfer->getBillingAddress()->getAddress2(),
                 'zipCode' => $orderTransfer->getBillingAddress()->getZipCode(),
                 'city' => $orderTransfer->getBillingAddress()->getCity(),
-                'phone' => $orderTransfer->getBillingAddress()->getCity(),
+                'phone' => $orderTransfer->getBillingAddress()->getPhone(),
             ];
             $params = array_merge($params, $addressParams);
         } else {
             $addressParams = [
-                'address1' => '',
-                'address2' => '',
-                'zipCode' => '',
-                'city' => '',
-                'phone' => '',
+                'address1' => ' ',
+                'address2' => ' ',
+                'zipCode' => ' ',
+                'city' => ' ',
+                'phone' => ' ',
             ];
             $params = array_merge($params, $addressParams);
         }
