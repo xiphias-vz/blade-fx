@@ -30,36 +30,25 @@ export default class ContainerToShelfForm extends Component {
         let originalValue = (<HTMLInputElement>event.target).value;
 
         // force removing of barcode prefix
-        (<HTMLInputElement>event.target).value = originalValue.replace(this.barcodePrefix, '');
+        let replacedValue = originalValue.replace(this.barcodePrefix, '');
+        (<HTMLInputElement>event.target).value = replacedValue;
 
         //check if shelf Id starts with capital letter
-        let textLen = (<HTMLInputElement>event.target).value.length;
+        let firstChar = (replacedValue.charAt(0));
         let reg = new RegExp (/^[A-Z]+$/g);
-        let regTest = reg.test(originalValue);
+        let regTest = reg.test(firstChar);
 
-        //This is just for test for Lars to check what is receiving from his scanner needs to be removed
-        if((<HTMLInputElement>event.target).id == 'container_to_shelf_form_shelf_code')
-        {
-            alert('originalValue  ' + originalValue);
-        }
-        //This is just for test for Lars to check what is receiving from his scanner needs to be removed
-
-        if((<HTMLInputElement>event.target).id == 'container_to_shelf_form_shelf_code' && !regTest && textLen == 1)
+        if((<HTMLInputElement>event.target).id == 'container_to_shelf_form_shelf_code' && !regTest)
         {
             (<HTMLInputElement>event.target).value = "";
             alert('Der erste Buchstabe muss Großbuchstaben sein');
         }
-
-
     }
 
     protected formKeyPressHandler(event: KeyboardEvent): void {
         // Enter key forces the whole form to submit, we want to prevent that for barcode scanner
         if (event.key == 'Enter') {
             event.preventDefault();
-
-            let element = document.getElementById('container_to_shelf_form_shelf_code');
-            element.focus();
         }
     }
 
