@@ -223,6 +223,34 @@ class CollectByCustomerController extends AbstractController
             ->getPickingSalesOrderCollection($pickingSalesOrderCriteria)
             ->getPickingSalesOrders();
 
+        $notFound = [];
+        foreach ($collectOrderTransfer->getNotFoundItems() as $item1 => $value1) {
+             $value1["imageUrl"] = 1;
+             array_push($notFound, $value1);
+        }
+
+        $pickedItems = [];
+        foreach ($collectOrderTransfer->getPickedItems() as $item2 => $value2) {
+            array_push($pickedItems, $value2);
+        }
+
+        foreach ($pickedItems as $item3 => $value3) {
+            foreach ($notFound as $item3 => $valueNotFound) {
+                if ($valueNotFound["sku"] == $value3["sku"]) {
+                    foreach ($notFound as $key => $val) {
+                        if ($val["sku"] === $value3["sku"]) {
+                            $notFound[$key]["imageUrl"] = $value3["quantity"] + $valueNotFound["quantity"];
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+
+        foreach ($notFound as $item4) {
+            $item3["quantity"] = $item4["imageUrl"] - $item4["quantity"];
+        }
+
         return [
             'merchant' => $this->getMerchantFromRequest($request),
             'collectDetailsForm' => $orderItemSelectionForm->createView(),
@@ -242,7 +270,7 @@ class CollectByCustomerController extends AbstractController
             'cartNote' => $salesOrderTransfer->getCartNote(),
             'collectedAt' => $salesOrderTransfer->getMerchantSalesOrder()->getCollectedAt(),
             'pickingSalesOrders' => $pickingSalesOrders,
-            'notfFoundItems' => $collectOrderTransfer->getNotFoundItems(),
+            'pickedAndNotFoundItems' => $notFound,
         ];
     }
 

@@ -158,3 +158,4 @@ picking.app.weight_per_unit,"Gewicht pro Einheit: "
 picking.app.error_shelfID_wrong_letter,"Der erste Buchstabe muss Großbuchstaben sein"
 
 storeapp.picking.barcode, Barcode
+storeapp.picking.MissingArticle, Fehlartikel

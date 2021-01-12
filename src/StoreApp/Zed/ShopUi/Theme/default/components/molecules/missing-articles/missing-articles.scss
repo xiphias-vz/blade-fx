@@ -1,0 +1,18 @@
+@mixin missing-articles($name: '.missing-articles') {
+    #{$name} {
+        .productName {
+            font-weight: bold;
+        }
+
+        .pickedProducts {
+            color: red;
+        }
+
+        .quantity {
+            float: right;
+        }
+
+    }
+}
+
+@include missing-articles();

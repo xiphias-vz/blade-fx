@@ -1,0 +1,27 @@
+{% extends model('component') %}
+
+{% define config = {
+    name: 'missing-articles',
+} %}
+
+{% define data = {
+    missingArticles: required
+} %}
+
+{% block body %}
+    <div>
+        <span>{{ 'storeapp.picking.MissingArticle' | trans }}</span><br/>
+
+        <div class="container">
+
+                {% for missingArticle in data.missingArticles %}
+                    <div class="row">
+                        <span class="productName col--md-6">{{ missingArticle.name|split('-')[1] }}</span>
+                        <span class="col--md-3">&nbsp;</span>
+                        <span class="quantity col--md-3">{{ missingArticle.imageUrl }} | <span class="pickedProducts">{{ missingArticle.quantity }}</span></span>
+                    </div>
+                {% endfor %}
+
+        </div>
+    </div>
+{% endblock %}

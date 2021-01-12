@@ -149,3 +149,4 @@ forms.submit-btn,Submit
 picking.app.weight_per_unit,"Weight per unit: "
 
 storeapp.picking.barcode, Barcode
+storeapp.picking.MissingArticle, Missing article

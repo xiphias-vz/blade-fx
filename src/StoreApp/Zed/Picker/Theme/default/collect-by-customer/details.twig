@@ -18,7 +18,8 @@
     cancelled: cancelled,
     cartNote: cartNote,
     collectedAt: collectedAt,
-    pickingSalesOrders: pickingSalesOrders
+    pickingSalesOrders: pickingSalesOrders,
+    pickedAndNotFoundItems: pickedAndNotFoundItems
 } %}
 
 {% set pickedItemCount = data.collectOrder.pickedItemsCount %}
@@ -74,7 +75,8 @@
                 idSalesOrder: data.idSalesOrder,
                 pickingSalesOrders: pickingSalesOrders,
                 fullName: fullName,
-                orderReference: orderReference
+                orderReference: orderReference,
+                pickedAndNotFoundItems: pickedAndNotFoundItems
             }
         } only %}
             {% block action %}{% endblock %}
@@ -93,32 +95,18 @@
 
             {% block additionalFields %}
 
-                {% for fieldName in embed.collectDetailsForm.children | keys %}
-                    {% set field = attribute(embed.collectDetailsForm.children, fieldName) %}
-                    {% set itemSku = field.vars.name | split('__') | last %}
-
-                {% endfor %}
-
-                {% for item in embed.collectOrder.notFoundItems %}
-                    {% embed molecule('product-item') with {
-                        config: {
-                            tag: 'div',
-                        },
-                        modifiers: ['not-picked'],
-                        data: {
-                            imageUrl: item.imageUrl,
-                            title: item.name,
-                            productsCount: item.quantity,
-                        },
-                    } only %}
-                        {% block leftCol %}{% endblock %}
-                        {% block rightCol %}{% endblock %}
-                        {% block quantity %}{% endblock %}
-                    {% endembed %}
-                {% endfor %}
-
                 <input type="hidden" name="{{ embed.paramIdSalesOrder }}" value="{{ embed.idSalesOrder }}">
 
+                </div>
+                <div>
+                    {% if embed.pickedAndNotFoundItems|length > 0 %}
+                        {% include molecule('missing-articles') with {
+                            data: {
+                                missingArticles: embed.pickedAndNotFoundItems,
+                                collectOrder: embed.collectOrder
+                            },
+                        } only %}
+                    {% endif %}
                 </div>
                 <div>
                     {% include molecule('customer-info') with {
@@ -239,9 +227,7 @@
                 </div>
 
             {% endblock %}
-            {% block additionalContent %}
 
-            {% endblock %}
 
         {% endembed %}
     </div>
