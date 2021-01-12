@@ -32,6 +32,10 @@ class OrderItemsMapper implements OrderItemsMapperInterface
                 continue;
             }
 
+            if (isset($skuToWeightMap[$itemSku])) {
+                unset($skuToWeightMap[$itemSku]);
+            }
+
             if ($skuToPickedQuantityMap[$itemSku] > 0) {
                 $orderItemPickingStatusesTransfer->addSelectedOrderItemId(
                     $itemTransfer->getIdSalesOrderItem()
