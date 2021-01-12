@@ -36,12 +36,21 @@ export default class ContainerToShelfForm extends Component {
         let textLen = (<HTMLInputElement>event.target).value.length;
         let reg = new RegExp (/^[A-Z]+$/g);
         let regTest = reg.test(originalValue);
+
+        //This is just for test for Lars to check what is receiving from his scanner needs to be removed
+        if((<HTMLInputElement>event.target).id == 'container_to_shelf_form_shelf_code')
+        {
+            alert('originalValue  ' + originalValue);
+        }
+        //This is just for test for Lars to check what is receiving from his scanner needs to be removed
+
         if((<HTMLInputElement>event.target).id == 'container_to_shelf_form_shelf_code' && !regTest && textLen == 1)
         {
-            originalValue = originalValue.slice(0, -1);
-            (<HTMLInputElement>event.target).value = originalValue;
+            (<HTMLInputElement>event.target).value = "";
             alert('Der erste Buchstabe muss Großbuchstaben sein');
         }
+
+
     }
 
     protected formKeyPressHandler(event: KeyboardEvent): void {
