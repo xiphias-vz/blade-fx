@@ -2,7 +2,7 @@ global.spryker.shop,Store App
 forms.submit.login,Login
 Username,User Name
 Password,Password
-hour,Hour
+hour,Uhr
 back,Back
 Filial-App,Store-App
 Forgot password?, Forgot password?
@@ -34,6 +34,7 @@ picker.collect-by-customer.order.product-types,Typen
 picker.collect-by-customer.order.status-action,Status/Aktion
 
 picker.collect-by-customer.order.confirm-collection,Abholung bestätigen
+picker.collect-by-customer.order.open-detail-confirm-collection,Zur Abholung
 picker.collect-by-customer.order.collection-details,Wunscheinkauf
 picker.collect-by-customer.order.cancel-collection,Stornieren
 
@@ -81,6 +82,7 @@ picker.collect-by-customer.details.picked-items,Eingepackt
 picker.collect-by-customer.details.not-found-items,Nicht gefunden
 picker.collect-by-customer.details.frozen,Produkte sind im Gefrierschrank
 picker.collect-by-customer.details.chilled,Produkte sind im Kühlschrank
+picker.collect-by-customer.details.containers,Container
 
 delivery.at,bei
 delivery.confirm,Bestätigen

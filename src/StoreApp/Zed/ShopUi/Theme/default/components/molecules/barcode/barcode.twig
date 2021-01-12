@@ -1,0 +1,20 @@
+{% extends model('component') %}
+
+{% define config = {
+    name: 'barcode',
+    barcodePrefix: 97400
+} %}
+
+{% define data = {
+    orderReference: ''
+} %}
+
+{% block body %}
+    <div class="white--box">
+        {% if data.orderReference is not empty %}
+            <p class="barcode--text">{{ config.barcodePrefix }}{{ data.orderReference }}</p>
+        {% else %}
+            <p>Barcode</p>
+        {% endif %}
+    </div>
+{% endblock %}

@@ -44,9 +44,9 @@ export default class OrderSearch extends Component {
         this.$searchItems.each((index: number, searchItem: HTMLElement) => {
             const $searchItem = $(searchItem);
             const isMatchByOrder = $searchItem.data('order').indexOf(this.currentInputValue) >= 0;
-            const isMatchByTime = this.isTimeActive && $searchItem.data('time').indexOf(this.currentSelectValue) >= 0;
+            const isMatchByReference = $searchItem.data('reference').indexOf(this.currentInputValue) >= 0;
 
-            if (isMatchByOrder && isMatchByTime) {
+            if (isMatchByOrder || isMatchByReference) {
                 $searchItem.show();
 
                 return;

@@ -10,6 +10,15 @@
     collectNumber: collectNumber,
     urlCollectByCustomerConfirmation: urlCollectByCustomerConfirmation,
     urlCollectByCustomerCancellation: urlCollectByCustomerCancellation,
+    requestedDeliveryDate: requestedDeliveryDate,
+    pickedProductCount: pickedProductCount,
+    dayOfTheWeek: dayOfTheWeek,
+    fullName: fullName,
+    collected: collected,
+    cancelled: cancelled,
+    cartNote: cartNote,
+    collectedAt: collectedAt,
+    pickingSalesOrders: pickingSalesOrders
 } %}
 
 {% set pickedItemCount = data.collectOrder.pickedItemsCount %}
@@ -18,231 +27,220 @@
 
 {% block header %}
     {% include organism('header') with {
-        modifiers: ['product-type'],
+        modifiers: ['produccollectDetailsFormact-type'],
         data: {
             withoutLogo: true,
             orderReference: data.orderReference,
             collectNumber: data.collectNumber,
             buttonUrl: '/picker/collect-by-customer',
             orderTime: '',
+            titleColor: 'lightOrange',
+            headerLocationTitle: collectNumber
         },
     } only %}
 {% endblock %}
 
-{% block contentClass %}container--expand{% endblock %}
-
 {% block content %}
-    {% include molecule('product-type') with {
-        class: 'spacing-bottom spacing-bottom--big',
-        modifiers: ['small', 'center', 'wrested'],
-        data: {
-            productTypes: data.collectOrder.pickedProductTypes | default(),
-        }
-    } only %}
-    <div class="container">
-        <div class="grid grid--center spacing-bottom spacing-bottom--big">
-            <div class="col col--sm-6 spacing-bottom">
-                {% include atom('app-label') with {
-                    class: 'spacing-right spacing-right--small',
-                    modifiers: ['overal', 'count'],
-                    data: {
-                        text: totalItemCount
-                    }
-                } only %}
-                {{ 'picker.collect-by-customer.details.products' | trans }}
-            </div>
-            <div class="col col--sm-6 spacing-bottom">
-                {% include atom('app-label') with {
-                    class: 'spacing-right spacing-right--small',
-                    modifiers: ['picked', 'count'],
-                    data: {
-                        text: pickedItemCount
-                    }
-                } only %}
-                {{ 'picker.collect-by-customer.details.picked-items' | trans }}
-            </div>
-            <div class="col col--sm-6">
-                {% include atom('app-label') with {
-                    class: 'spacing-right spacing-right--small',
-                    modifiers: ['not-found', 'count'],
-                    data: {
-                        text: notFoundItemCount
-                    }
-                } only %}
-                {{ 'picker.collect-by-customer.details.not-found-items' | trans }}
-            </div>
-            <div class="col spacing-top">
-                {% if data.collectOrder.deliveryMinimumAge > 0 %}
-                    {% embed atom('icon-row') with {
-                        modifiers: ['round', 'center', 'age', 'error'],
-                        data: {
-                            iconName: 'user-account'
-                        },
-                        embed: {
-                            deliveryMinimumAge: data.collectOrder.deliveryMinimumAge
-                        }
-                    } only %}
-                        {% block text %}
-                            {{- embed.deliveryMinimumAge -}}+
-                        {% endblock %}
-                    {% endembed %}
-                {% endif %}
-            </div>
-        </div>
-        {% embed molecule('pick-products') with {
+    <div class="spacing-y">
+        {% set isCollectionOrderFinished = data.collected or data.cancelled %}
+        {% embed molecule('order-item-abholung') with {
+            class: 'js-order-search__item',
+            modifiers: ['picked', 'expanded', 'with-bottom', 'bordered'],
             data: {
-                productsLength: pickedItemCount,
+                reference: data.orderReference,
+                collectNumber: data.collectNumber,
+                productsCount: data.pickedProductCount,
+                date: data.requestedDeliveryDate | split(' ') | first | date('d/m/Y'),
+                deadline: data.requestedDeliveryDate | split(' ') | last ~ ' ' ~ 'hour' | trans,
+                dayOfTheWeek: data.dayOfTheWeek,
+                detailPage: true
             },
             attributes: {
-                'products-count': pickedItemCount,
-                'order-id': data.orderReference
+                'data-order': data.collectNumber | lower,
+                'data-reference': data.orderReference | lower,
+                'data-time': data.requestedDeliveryDate | split(' ') | last,
+            },
+            embed: {
+                collectDetailsForm: collectDetailsForm,
+                collectOrder: data.collectOrder,
+                collectionOrder: data,
+                paramIdSalesOrder: data.paramIdSalesOrder,
+                urlCollectByCustomerCancellation: data.urlCollectByCustomerCancellation,
+                urlCollectByCustomerConfirmation: data.urlCollectByCustomerConfirmation,
+                isCollectionOrderFinished: isCollectionOrderFinished,
+                collectedAt: data.collectedAt,
+                cartNote: data.cartNote,
+                orderReference: data.orderReference,
+                idSalesOrder: data.idSalesOrder,
+                pickingSalesOrders: pickingSalesOrders,
+                fullName: fullName,
+                orderReference: orderReference
             }
         } only %}
-            {% block body %}
-                <div class="grid grid--middle text-center spacing-y spacing-y--big spacing-y--inner">
-                    <div class="col col--sm-4">
-                        {% embed atom('app-label') with {
-                            modifiers: ['not-found', 'product'],
-                            data: {
-                                text: 'not collected' | trans,
-                            },
-                            embed: {
-                                jsName: config.jsName,
-                            }
-                        } only %}
-                            {% block body %}
-                                <span class="{{ embed.jsName }}__not-picked">0</span> {{ data.text }}
-                            {% endblock %}
-                        {% endembed %}
-                    </div>
-                    <div class="col col--sm-4">
-                        <strong>
-                            {{ data.productsLength }} {{ 'products' | trans }}
-                        </strong>
-                    </div>
-                    <div class="col col--sm-4">
-                        {% embed atom('app-label') with {
-                            modifiers: ['picked', 'product'],
-                            data: {
-                                text: 'collected' | trans,
-                            },
-                            embed: {
-                                jsName: config.jsName,
-                            }
-                        } only %}
-                            {% block body %}
-                                <span class="{{ embed.jsName }}__picked">0</span> {{ data.text }}
-                            {% endblock %}
-                        {% endembed %}
-                    </div>
+            {% block action %}{% endblock %}
+
+            {% block orderReference %}
+                {% if embed.isCollectionOrderFinished %}
+                    {% include atom('app-label') with {
+                        class: 'text-center',
+                        modifiers: ['reference'],
+                        data: {
+                            text: 'Order ID' | trans ~ ': ' ~ embed.orderReference
+                        }
+                    } only %}
+                {% endif %}
+            {% endblock %}
+
+            {% block additionalFields %}
+
+                {% for fieldName in embed.collectDetailsForm.children | keys %}
+                    {% set field = attribute(embed.collectDetailsForm.children, fieldName) %}
+                    {% set itemSku = field.vars.name | split('__') | last %}
+
+                {% endfor %}
+
+                {% for item in embed.collectOrder.notFoundItems %}
+                    {% embed molecule('product-item') with {
+                        config: {
+                            tag: 'div',
+                        },
+                        modifiers: ['not-picked'],
+                        data: {
+                            imageUrl: item.imageUrl,
+                            title: item.name,
+                            productsCount: item.quantity,
+                        },
+                    } only %}
+                        {% block leftCol %}{% endblock %}
+                        {% block rightCol %}{% endblock %}
+                        {% block quantity %}{% endblock %}
+                    {% endembed %}
+                {% endfor %}
+
+                <input type="hidden" name="{{ embed.paramIdSalesOrder }}" value="{{ embed.idSalesOrder }}">
+
+                </div>
+                <div>
+                    {% include molecule('customer-info') with {
+                        data: {
+                            fullName: embed.fullName,
+                            customerCartNote: embed.cartNote,
+                        },
+                    } only %}
+                </div>
+                <div>
+                    {% include molecule('barcode') with {
+                        data: {
+                            orderReference: embed.orderReference,
+                        },
+                    } only %}
+                </div>
+
+            {% endblock %}
+
+            {% block additionalContent %}
+                <div class="box__bottom">
+                    {% if not embed.isCollectionOrderFinished %}
+                        <div class="grid grid--middle spacing-y">
+                            <div class="col col--sm-6 spacing-right spacing-right--inner">
+                                <form action="{{ embed.urlCollectByCustomerCancellation }}" method="POST" class="js-submit-form-handler__form">
+                                    <input type="hidden" name="{{ embed.paramIdSalesOrder }}" value="{{ embed.idSalesOrder }}">
+
+                                        {% embed molecule('popup-ui') with {
+                                            data: {
+                                                title: 'Not picked up!' | trans,
+                                                buttons: {
+                                                    submit: {
+                                                        isButton: true,
+                                                    }
+                                                }
+                                            },
+                                            embed: {
+                                                reference: data.reference,
+                                            },
+                                        } only %}
+                                            {% block content %}
+                                                <div class="text-center spacing-bottom">
+                                                    {{ 'Order %order% hasn’t been picked up' | trans | replace({'%order%': embed.reference}) }}
+                                                </div>
+                                            {% endblock %}
+
+                                            {% block button %}
+                                                <div class="text-center">
+                                                    <div class="button button--small button--table button--expand button--hollow">
+                                                        {{ 'picker.collect-by-customer.order.open-detail-confirm-collection' | trans }}
+                                                    </div>
+                                                </div>
+                                            {% endblock %}
+
+                                        {% endembed %}
+                                </form>
+                            </div>
+                            <div class="col col--sm-6 spacing-left spacing-left--inner">
+                                <form action="{{ embed.urlCollectByCustomerConfirmation }}" method="POST" class="js-submit-form-handler__form">
+                                    <input type="hidden" name="{{ embed.paramIdSalesOrder }}" value="{{ embed.idSalesOrder }}">
+
+                                    {% embed molecule('popup-ui') with {
+                                        data: {
+                                            title: 'Picked up!' | trans,
+                                            buttons: {
+                                                submit: {
+                                                    isButton: true,
+                                                }
+                                            }
+                                        },
+                                        embed: {
+                                            reference: embed.orderReference,
+                                        },
+                                    } only %}
+                                        {% block content %}
+                                            <div class="text-center spacing-bottom">
+                                                {{ 'Order %order% has been picked up' | trans | replace({'%order%': embed.reference}) }}
+                                            </div>
+                                        {% endblock %}
+
+                                        {% block button %}
+                                            <div class="text-center">
+                                                <div class="button button--small button--table button--expand js-pick-products__submit-button {{ config.jsName }}__open">
+                                                    {{ 'picker.collect-by-customer.order.confirm-collection' | trans }}
+                                                </div>
+                                            </div>
+                                        {% endblock %}
+                                    {% endembed %}
+                                </form>
+                            </div>
+                        </div>
+                    {% endif %}
+
+                    {% if embed.collectionOrder.collected %}
+                        <div class="grid grid--justify grid--middle">
+                            <div class="col">
+                                {{ embed.collectedAt | date('H:i') }} {{ 'hour' | trans }}
+                            </div>
+                            <div class="col">
+                                {% include atom('app-label') with {
+                                    modifiers: ['success'],
+                                    data: {
+                                        text: 'picker.collect-by-customer.order.status.collected' | trans
+                                    }
+                                } only %}
+                            </div>
+                        </div>
+                    {% elseif embed.collectionOrder.cancelled %}
+                        <div class="grid grid--justify grid--middle">
+                            <div class="col"></div>
+                            <div class="col">
+                                {% include atom('app-label') with {
+                                    modifiers: ['info'],
+                                    data: {
+                                        text: 'picker.collect-by-customer.order.status.cancelled' | trans
+                                    }
+                                } only %}
+                            </div>
+                        </div>
+                    {% endif %}
                 </div>
             {% endblock %}
         {% endembed %}
-
-        {{ form_start(data.collectDetailsForm, {
-            attr: { class: 'form js-submit-form-handler__form' }
-        }) }}
-        {% for fieldName in data.collectDetailsForm.children | keys %}
-            {% set field = attribute(data.collectDetailsForm.children, fieldName) %}
-            {% set itemSku = field.vars.name | split('__') | last %}
-
-            {% if field.vars.block_prefixes[1] is same as('integer') %}
-                {% embed molecule('product-item') with {
-                    data: {
-                        imageUrl: data.collectOrder.pickedItems[itemSku].imageUrl,
-                        title: field.vars.label,
-                        productsCount: field.vars.attr.max,
-                        itemSku: itemSku,
-                    },
-                    attributes: {
-                        'data-sku': itemSku,
-                    },
-                    embed: {
-                        field: field,
-                    }
-                } only %}
-                    {% block formElement %}
-                        {{ form_row(embed.field, {
-                            attr: {
-                                class: config.jsName ~ '__quantity',
-                            }
-                        }) }}
-                    {% endblock %}
-                {% endembed %}
-            {% endif %}
-        {% endfor %}
-
-        {% for item in data.collectOrder.notFoundItems %}
-            {% embed molecule('product-item') with {
-                config: {
-                    tag: 'div',
-                },
-                modifiers: ['not-picked'],
-                data: {
-                    imageUrl: item.imageUrl,
-                    title: item.name,
-                    productsCount: item.quantity,
-                },
-            } only %}
-                {% block leftCol %}{% endblock %}
-                {% block rightCol %}{% endblock %}
-                {% block quantity %}{% endblock %}
-            {% endembed %}
-        {% endfor %}
-
-        <div class="pick-products__action-wrapper">
-            <div class="pick-products__action js-pick-products__action">
-                {% embed molecule('popup-ui') with {
-                    data: {
-                        buttons: {
-                            submit: {
-                                isButton: true,
-                                additionalClass: 'js-pick-products__submit'
-                            }
-                        }
-                    }
-                } only %}
-                    {% block content %}
-                        <div class="grid grid--center">
-                            <div class="col--sm-8">
-                                {% embed atom('app-label') with {
-                                    class: 'spacing-right',
-                                    modifiers: ['picked', 'count'],
-                                } only %}
-                                    {% block body %}
-                                        <span class="js-pick-products__picked">0</span>
-                                    {% endblock %}
-                                {% endembed %}
-                                {{ 'collected' | trans }}
-                            </div>
-                        </div>
-                        <div class="grid grid--center spacing-y">
-                            <div class="col--sm-8">
-                                {% embed atom('app-label') with {
-                                    class: 'spacing-right',
-                                    modifiers: ['not-found', 'count'],
-                                } only %}
-                                    {% block body %}
-                                        <span class="js-pick-products__not-picked">0</span>
-                                    {% endblock %}
-                                {% endembed %}
-                                {{ 'not collected' | trans }}
-                            </div>
-                        </div>
-                    {% endblock %}
-
-                    {% block button %}
-                        <div class="text-center">
-                            <div class="button button--expand button--disabled js-pick-products__submit-button {{ config.jsName }}__open">
-                                {{ 'picker.collect-by-customer.order.confirm-collection' | trans }}
-                            </div>
-                        </div>
-                    {% endblock %}
-                {% endembed %}
-            </div>
-        </div>
-
-        <input type="hidden" name="{{ data.paramIdSalesOrder }}" value="{{ data.idSalesOrder }}">
-        {{ form_end(data.collectDetailsForm) }}
     </div>
 {% endblock content %}

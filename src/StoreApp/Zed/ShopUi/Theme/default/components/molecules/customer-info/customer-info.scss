@@ -1,11 +1,16 @@
 @mixin shop-ui-customer-info($name: '.customer-info') {
     #{$name} {
         &__content {
-            padding-left: rem(20);
-            font-size: rem(18);
+            margin: rem(10);
+            padding: rem(20);
+            font-size: rem(14);
             font-weight: fw(bold);
             letter-spacing: rem(0.5);
             line-height: 1.3em;
+            color: #9f9f9f;
+            background-color: #dedede;
+            position: relative;
+            width: 100%;
         }
     }
 }

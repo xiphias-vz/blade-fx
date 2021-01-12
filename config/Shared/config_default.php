@@ -858,5 +858,5 @@ $config[PickerConstants::DAYS_IN_THE_WEEK] = [
     '4' => 'DO',
     '5' => 'FR',
     '6' => 'SA',
-    '7' => 'SO'
+    '7' => 'SO',
 ];

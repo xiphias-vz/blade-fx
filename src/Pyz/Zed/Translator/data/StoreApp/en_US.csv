@@ -34,6 +34,7 @@ picker.collect-by-customer.order.product-types,Types
 picker.collect-by-customer.order.status-action,Status/ACtion
 
 picker.collect-by-customer.order.confirm-collection,Confirm pickup
+picker.collect-by-customer.order.open-detail-confirm-collection,For pickup
 picker.collect-by-customer.order.collection-details,Wish purchase
 picker.collect-by-customer.order.cancel-collection,Cancel
 
@@ -81,6 +82,7 @@ picker.collect-by-customer.details.picked-items,Packed
 picker.collect-by-customer.details.not-found-items,Not found
 picker.collect-by-customer.details.frozen,Products are in the freezer
 picker.collect-by-customer.details.chilled,Products are in the fridge
+picker.collect-by-customer.details.containers,containers
 
 delivery.at,at
 delivery.confirm,Confirm

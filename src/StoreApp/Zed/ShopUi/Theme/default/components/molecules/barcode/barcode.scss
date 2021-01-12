@@ -1,0 +1,15 @@
+@mixin barcode($name: '.barcode') {
+    #{$name} {
+        .white--box {
+           background-color: white;
+        }
+
+        .barcode--text {
+            font-family: 'Free 3 of 9 Extended';
+            text-align: center;
+            font-size: rem(40);
+        }
+    }
+}
+
+@include barcode();

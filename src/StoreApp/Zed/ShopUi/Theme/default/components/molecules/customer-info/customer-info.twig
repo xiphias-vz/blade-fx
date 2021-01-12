@@ -5,28 +5,15 @@
 } %}
 
 {% define data = {
-    firstName: required,
-    lastName: required,
-    address1: required,
-    address2: required,
-    zipCode: required,
-    phone: required
+    fullName: required,
+    customerCartNote: ''
 } %}
 
 {% block body %}
     <div class="grid grid--middle">
-        <div class="col {{ config.name }}__icon">
-            {% include atom('icon') with {
-                modifiers: ['biggest'],
-                data: {
-                    name: 'user'
-                }
-            } only %}
-        </div>
         <div class="col {{ config.name }}__content">
-            <div>{{ data.firstName }} {{ data.lastName }}</div>
-            <div>{{ data.address1 }} {{ data.address2 }}</div>
-            <div>{{ data.zipCode }}/{{ data.phone }}</div>
+            <div>{{ data.fullName }}</div>
+            <div>{{ data.customerCartNote }}</div>
         </div>
     </div>
 {% endblock %}

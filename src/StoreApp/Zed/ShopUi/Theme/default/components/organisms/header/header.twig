@@ -1,8 +1,11 @@
 {% extends model('component') %}
 
+
+
 {% define config = {
     name: 'header',
 } %}
+
 
 {% define data = {
     headerLocationTitle: '',
@@ -22,6 +25,8 @@
     {% endif %}
 {% endblock %}
 
+
+
 {% block body %}
     <header class="{{ config.name }}__header">
         <div class="{{ config.name }}__header-top">
@@ -39,7 +44,6 @@
                             <div class="col col--expand text-right">
                                 {{ data.headerLocationTitle }}
                             </div>
-
                             <div class="col {{ config.name }}__logout text-right">
                                 <a href="/auth/logout" class="link link--icon link--logout">
                                     {% include atom('icon') with {

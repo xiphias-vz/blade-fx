@@ -93,6 +93,12 @@ class CollectByCustomerController extends AbstractController
                 ->getPickingSalesOrderCollection($pickingSalesOrderCriteria)
                 ->getPickingSalesOrders();
 
+            $daysInTheWeek = $this->getFactory()->getConfig()->getDaysInTheWeek();
+
+            $deliveryDate = str_split($requestedDeliveryDatesByIdSalesOrders[$idSalesOrder], 10);
+            $dayInTheWeek = date('w', strtotime($deliveryDate[0]));
+            $dayOfTheWeek = $daysInTheWeek[$dayInTheWeek];
+
             $collectionOrders[] = [
                 'idSalesOrder' => $idSalesOrder,
                 'reference' => $salesOrderTransfer->getOrderReference(),
@@ -105,6 +111,8 @@ class CollectByCustomerController extends AbstractController
                 'pickedProductCount' => $pickedProductCount,
                 'pickingSalesOrders' => $pickingSalesOrders,
                 'cartNote' => $salesOrderTransfer->getCartNote(),
+                'dayOfTheWeek' => $dayOfTheWeek,
+                'fullName' => $salesOrderTransfer->getFirstName() . " " . $salesOrderTransfer->getLastName(),
             ];
         }
 
@@ -199,6 +207,20 @@ class CollectByCustomerController extends AbstractController
         );
 
         $collectOrderTransfer = $this->hydrateCollectOrderWithProductInfo($collectOrderTransfer);
+        $pickedProductCount = $this->getPickedProductCount($salesOrderTransfer);
+
+        $requestedDeliveryDatesByIdSalesOrders = $this->getFormattedDeliveryDates([$idSalesOrder]);
+        $daysInTheWeek = $this->getFactory()->getConfig()->getDaysInTheWeek();
+        $deliveryDate = str_split($requestedDeliveryDatesByIdSalesOrders[$idSalesOrder], 10);
+        $dayInTheWeek = date('w', strtotime($deliveryDate[0]));
+        $dayOfTheWeek = $daysInTheWeek[$dayInTheWeek];
+
+        $pickingSalesOrderCriteria = new PickingSalesOrderCriteriaTransfer();
+        $pickingSalesOrderCriteria->setIdSalesOrder($idSalesOrder);
+        $pickingSalesOrders = $this->getFactory()
+            ->getPickingSalesOrderFacade()
+            ->getPickingSalesOrderCollection($pickingSalesOrderCriteria)
+            ->getPickingSalesOrders();
 
         return [
             'merchant' => $this->getMerchantFromRequest($request),
@@ -208,8 +230,17 @@ class CollectByCustomerController extends AbstractController
             'idSalesOrder' => $salesOrderTransfer->getIdSalesOrder(),
             'orderReference' => $salesOrderTransfer->getOrderReference(),
             'collectNumber' => $salesOrderTransfer->getCollectNumber(),
+            'collected' => $this->getIsOrderCollected($salesOrderTransfer->getMerchantSalesOrder()),
+            'cancelled' => $this->getIsOrderCancelled($salesOrderTransfer->getMerchantSalesOrder()),
             'urlCollectByCustomerCancellation' => PickerConfig::URL_COLLECT_BY_CUSTOMER_CANCELLATION,
             'urlCollectByCustomerConfirmation' => PickerConfig::URL_COLLECT_BY_CUSTOMER_CONFIRMATION,
+            'requestedDeliveryDate' => $requestedDeliveryDatesByIdSalesOrders[$idSalesOrder],
+            'pickedProductCount' => $pickedProductCount,
+            'dayOfTheWeek' => $dayOfTheWeek,
+            'fullName' => $salesOrderTransfer->getFirstName() . " " . $salesOrderTransfer->getLastName(),
+            'cartNote' => $salesOrderTransfer->getCartNote(),
+            'collectedAt' => $salesOrderTransfer->getMerchantSalesOrder()->getCollectedAt(),
+            'pickingSalesOrders' => $pickingSalesOrders,
         ];
     }
 
