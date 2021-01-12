@@ -26,10 +26,10 @@ class ProductAbstractSearchDataMapper extends SprykerProductAbstractSearchDataMa
         $einzelgewicht = null;
         $pricePerKg = null;
 
-        if (isset($data['attributes']['einzelgewicht'])) {
-            $einzelgewicht = $data['attributes']['einzelgewicht'];
-        } elseif (isset($data['attributes']['einzelgewicht'][0])) {
+        if (isset($data['attributes']['einzelgewicht'][0])) {
             $einzelgewicht = $data['attributes']['einzelgewicht'][0];
+        } elseif (isset($data['attributes']['einzelgewicht'])) {
+            $einzelgewicht = $data['attributes']['einzelgewicht'];
         } else {
             $einzelgewicht = null;
         }

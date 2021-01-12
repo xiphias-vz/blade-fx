@@ -20,7 +20,7 @@
     preisProKg: data.product.attributes.preis_pro_kg | default(null),
     pricePerKg: data.product.pricePerKg | default(null),
     depositPrice: data.depositPrice | default(null),
-    einzelgewicht: data.product.einzelgewicht | default(null),
+    einzelgewicht: data.product.attributes.einzelgewicht | default(null),
 } %}
 
 {% set addAjaxUrl = path("cart/add-ajax", { "productAbstractId": data.product.id_product_abstract ?? data.product.idProductAbstract }) %}
