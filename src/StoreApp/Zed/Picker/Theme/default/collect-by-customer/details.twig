@@ -125,6 +125,7 @@
                         data: {
                             fullName: embed.fullName,
                             customerCartNote: embed.cartNote,
+                            isDetailPage: true
                         },
                     } only %}
                 </div>
@@ -135,10 +136,6 @@
                         },
                     } only %}
                 </div>
-
-            {% endblock %}
-
-            {% block additionalContent %}
                 <div class="box__bottom">
                     {% if not embed.isCollectionOrderFinished %}
                         <div class="grid grid--middle spacing-y">
@@ -146,34 +143,34 @@
                                 <form action="{{ embed.urlCollectByCustomerCancellation }}" method="POST" class="js-submit-form-handler__form">
                                     <input type="hidden" name="{{ embed.paramIdSalesOrder }}" value="{{ embed.idSalesOrder }}">
 
-                                        {% embed molecule('popup-ui') with {
-                                            data: {
-                                                title: 'Not picked up!' | trans,
-                                                buttons: {
-                                                    submit: {
-                                                        isButton: true,
-                                                    }
+                                    {% embed molecule('popup-ui') with {
+                                        data: {
+                                            title: 'Not picked up!' | trans,
+                                            buttons: {
+                                                submit: {
+                                                    isButton: true,
                                                 }
-                                            },
-                                            embed: {
-                                                reference: data.reference,
-                                            },
-                                        } only %}
-                                            {% block content %}
-                                                <div class="text-center spacing-bottom">
-                                                    {{ 'Order %order% hasn’t been picked up' | trans | replace({'%order%': embed.reference}) }}
-                                                </div>
-                                            {% endblock %}
+                                            }
+                                        },
+                                        embed: {
+                                            reference: data.reference,
+                                        },
+                                    } only %}
+                                        {% block content %}
+                                            <div class="text-center spacing-bottom">
+                                                {{ 'Order %order% hasn’t been picked up' | trans | replace({'%order%': embed.reference}) }}
+                                            </div>
+                                        {% endblock %}
 
-                                            {% block button %}
-                                                <div class="text-center">
-                                                    <div class="button button--small button--table button--expand button--hollow">
-                                                        {{ 'picker.collect-by-customer.order.open-detail-confirm-collection' | trans }}
-                                                    </div>
+                                        {% block button %}
+                                            <div class="text-center">
+                                                <div class="button button--small button--table button--expand button--hollow">
+                                                    {{ 'picker.collect-by-customer.order.cancel-collection' | trans }}
                                                 </div>
-                                            {% endblock %}
+                                            </div>
+                                        {% endblock %}
 
-                                        {% endembed %}
+                                    {% endembed %}
                                 </form>
                             </div>
                             <div class="col col--sm-6 spacing-left spacing-left--inner">
@@ -240,7 +237,12 @@
                         </div>
                     {% endif %}
                 </div>
+
             {% endblock %}
+            {% block additionalContent %}
+
+            {% endblock %}
+
         {% endembed %}
     </div>
 {% endblock content %}

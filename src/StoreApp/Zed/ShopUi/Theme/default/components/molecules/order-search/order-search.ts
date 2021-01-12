@@ -43,14 +43,27 @@ export default class OrderSearch extends Component {
     protected searchItems(): void {
         this.$searchItems.each((index: number, searchItem: HTMLElement) => {
             const $searchItem = $(searchItem);
-            const isMatchByOrder = $searchItem.data('order').indexOf(this.currentInputValue) >= 0;
-            const isMatchByReference = $searchItem.data('reference').indexOf(this.currentInputValue) >= 0;
+            const $inputValue = this.currentInputValue;
+            const isMatchByOrder = $searchItem.data('order').indexOf($inputValue) >= 0;
+            const isMatchByReference = $searchItem.data('reference').indexOf($inputValue) >= 0;
+            const isNotReadyForCollection = $searchItem.data('pickupstatus') != "ready for collection";
+            const numOfCharacters = $inputValue.length;
 
-            if (isMatchByOrder || isMatchByReference) {
-                $searchItem.show();
+            if (isMatchByOrder || isMatchByReference || $inputValue == '') {
+                if(isNotReadyForCollection) {
+                    alert("Bestellung in Bearbeitung");
+                }
+                else{
+                    $searchItem.show();
 
-                return;
+                    return;
+                }
             }
+            else if(numOfCharacters == 9) {
+                alert("Unbekannte Bestellung");
+            }
+
+
 
             $searchItem.hide();
         });

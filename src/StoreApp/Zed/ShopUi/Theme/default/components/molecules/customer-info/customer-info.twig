@@ -6,12 +6,17 @@
 
 {% define data = {
     fullName: required,
-    customerCartNote: ''
+    customerCartNote: '',
+    isDetailPage: false
 } %}
 
 {% block body %}
     <div class="grid grid--middle">
         <div class="col {{ config.name }}__content">
+            {% if data.isDetailPage == true %}
+                <span class="{{ config.name }}__title">{{ 'customer.comment' | trans }}</span><br/>
+            {% endif %}
+
             <div>{{ data.fullName }}</div>
             <div>{{ data.customerCartNote }}</div>
         </div>

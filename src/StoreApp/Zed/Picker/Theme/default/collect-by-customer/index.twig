@@ -52,10 +52,12 @@
                     date: collectionOrder.requestedDeliveryDate | split(' ') | first | date('d/m/Y'),
                     deadline: collectionOrder.requestedDeliveryDate | split(' ') | last ~ ' ' ~ 'hour' | trans,
                     dayOfTheWeek: collectionOrder.dayOfTheWeek,
-                    fullName: collectionOrder.fullName
+                    fullName: collectionOrder.fullName,
+                    pickupStatus: collectionOrder.pickupStatus
                 },
                 attributes: {
                     'data-order': collectionOrder.collectNumber | lower,
+                    'data-pickupstatus': collectionOrder.pickupStatus | lower,
                     'data-reference': collectionOrder.reference | lower,
                     'data-time': collectionOrder.requestedDeliveryDate | split(' ') | last,
                 },
@@ -83,19 +85,6 @@
                 {% endblock %}
 
                 {% block additionalFields %}
-                    <div>
-                        {% include molecule('customer-info') with {
-                            data: {
-                                fullName: data.fullName,
-                                customerCartNote: embed.collectionOrder.cartNote,
-                            },
-                        } only %}
-                    </div>
-
-                    <div>
-                        {{ embed.collectionOrder.pickingSalesOrders | length }} {{ 'picker.collect-by-customer.details.containers' | trans }}
-                    </div>
-
                     <div class="grid grid--expand">
                         <div class="col col--sm-12 spacing-top">
                             {% include molecule('product-type') with {
@@ -110,6 +99,20 @@
                 {% endblock %}
 
                 {% block additionalContent %}
+                    <div class="customerInfo">
+                        {% include molecule('customer-info') with {
+                            data: {
+                                fullName: data.fullName,
+                                customerCartNote: embed.collectionOrder.cartNote,
+                                isDetailPage: false
+                            },
+                        } only %}
+                    </div>
+
+                    <div class="containers">
+                        {{ embed.collectionOrder.pickingSalesOrders | length }} {{ 'picker.collect-by-customer.details.containers' | trans }}
+                    </div>
+
                     <div class="box__bottom">
                         {% if not embed.isCollectionOrderFinished %}
                             <div class="grid grid--middle spacing-y">

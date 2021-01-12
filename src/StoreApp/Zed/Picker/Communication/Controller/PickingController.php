@@ -109,6 +109,7 @@ class PickingController extends BaseOrderPickingController
                 'cartNote' => $salesOrderTransfer->getCartNote(),
                 'customerFullName' => $salesOrderTransfer->getFirstName() . ' ' . $salesOrderTransfer->getLastName(),
                 'dayOfTheWeek' => $dayOfTheWeek,
+                'pickupStatus' => $merchantSalesOrderTransfer->getStoreStatus(),
             ];
         }
 

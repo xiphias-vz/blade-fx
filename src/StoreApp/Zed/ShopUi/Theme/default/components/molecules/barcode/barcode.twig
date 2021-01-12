@@ -14,7 +14,7 @@
         {% if data.orderReference is not empty %}
             <p class="barcode--text">{{ config.barcodePrefix }}{{ data.orderReference }}</p>
         {% else %}
-            <p>Barcode</p>
+            <p>{{ 'storeapp.picking.barcode' | trans }}</p>
         {% endif %}
     </div>
 {% endblock %}

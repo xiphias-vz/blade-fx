@@ -61,7 +61,9 @@
                     formatStopPickingTokenName: data.formatStopPickingTokenName,
                 },
                 attributes: {
-                    'data-order': pickingOrder.reference | lower,
+                    'data-order': pickingOrder.collectNumber | lower,
+                    'data-pickupstatus': pickingOrder.pickupStatus | lower,
+                    'data-reference': pickingOrder.reference | lower,
                     'data-time': pickingOrder.requestedDeliveryDate | split(' ') | last,
                 }
             } only %}

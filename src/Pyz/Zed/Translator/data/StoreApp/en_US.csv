@@ -130,6 +130,7 @@ storeapp.delivery.message.info.not-all-selected-orders-were-processed,Not all se
 of,of
 storeapp.login.access.denied,"Dear user, your user account does not seem to have a branch assigned. Please contact the shop administration."
 
+customer.comment, Customer comment
 customer.address.floor.ug,UG
 customer.address.floor.eg,EG
 customer.address.floor.1,1. Floor
@@ -146,3 +147,5 @@ storeapp.delivery.message.success.order-not-delivered,Order could not be deliver
 
 forms.submit-btn,Submit
 picking.app.weight_per_unit,"Weight per unit: "
+
+storeapp.picking.barcode, Barcode

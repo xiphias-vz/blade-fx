@@ -131,6 +131,7 @@ storeapp.delivery.message.info.not-all-selected-orders-were-processed,Nicht alle
 of,von
 storeapp.login.access.denied,"Lieber Benutzer, Ihr Benutzerkonto scheint keine Filiale zugewiesen zu haben. Bitte kontaktieren Sie die Shop-Administration."
 
+customer.comment, Kundenkommentar
 customer.address.floor.ug,UG
 customer.address.floor.eg,EG
 customer.address.floor.1,1. OG
@@ -155,3 +156,5 @@ picking.app.shelf_field,"Regalfeld: "
 picking.app.price,"Preis: "
 picking.app.weight_per_unit,"Gewicht pro Einheit: "
 picking.app.error_shelfID_wrong_letter,"Der erste Buchstabe muss Großbuchstaben sein"
+
+storeapp.picking.barcode, Barcode

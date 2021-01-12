@@ -113,6 +113,7 @@ class CollectByCustomerController extends AbstractController
                 'cartNote' => $salesOrderTransfer->getCartNote(),
                 'dayOfTheWeek' => $dayOfTheWeek,
                 'fullName' => $salesOrderTransfer->getFirstName() . " " . $salesOrderTransfer->getLastName(),
+                'pickupStatus' => $collectionMerchantSalesOrder->getStoreStatus(),
             ];
         }
 
@@ -241,6 +242,7 @@ class CollectByCustomerController extends AbstractController
             'cartNote' => $salesOrderTransfer->getCartNote(),
             'collectedAt' => $salesOrderTransfer->getMerchantSalesOrder()->getCollectedAt(),
             'pickingSalesOrders' => $pickingSalesOrders,
+            'notfFoundItems' => $collectOrderTransfer->getNotFoundItems(),
         ];
     }
 
