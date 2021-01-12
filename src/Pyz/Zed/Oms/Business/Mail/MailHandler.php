@@ -231,6 +231,7 @@ class MailHandler extends SprykerMailHandler
             'beginDeliveryTimeSlot' => $timeFrom,
             'endDeliveryTimeSlot' => $timeTo,
             'storeAddress' => $orderTransfer->getMerchantName(),
+
             'divisionSubDomain' => $this->config->getBaseUrlYves(),
             'divisionLongName' => $orderTransfer->getMerchantRegion()->getRegionName(),
             'divisionStreet' => $orderTransfer->getMerchantRegion()->getStreet(),
@@ -238,6 +239,10 @@ class MailHandler extends SprykerMailHandler
             'divisionTown' => $orderTransfer->getMerchantRegion()->getCity(),
             'divisionFooter' => $this->mailCmsBlockService->convertNewLineToBr($orderTransfer->getMerchantRegion()->getFooterText()),
             'dateOfOrder' => $dateOfOrder->format("d.m.Y"),
+            'discountTotal' => $this->getMoneyValue($totals->getDiscountTotal()),
+            'sumOptions' => $this->getMoneyValue($this->getSumOptions($orderTransfer)),
+            'tax7' => $this->getMoneyValue($this->getSumTaxes($orderTransfer, '7')),
+            'tax19' => $this->getMoneyValue($this->getSumTaxes($orderTransfer, '19')),
         ];
 
         if ($orderTransfer->getCustomer() !== null) {
@@ -249,6 +254,14 @@ class MailHandler extends SprykerMailHandler
                 'lastName' => $orderTransfer->getLastName(),
                 'orderReference' => $orderTransfer->getOrderReference(),
                 'merchantName' => $orderTransfer->getMerchantName(),
+                'address1' => $orderTransfer->getBillingAddress()->getAddress1(),
+                'address2' => $orderTransfer->getBillingAddress()->getAddress2(),
+                'zipCode' => $orderTransfer->getBillingAddress()->getZipCode(),
+                'city' => $orderTransfer->getBillingAddress()->getCity(),
+                'phone' => $orderTransfer->getBillingAddress()->getCity(),
+                'email' => $orderTransfer->getEmail(),
+                'salutation' => $orderTransfer->getSalutation(),
+
             ];
             $params = array_merge($params, $guestParams);
         }
@@ -318,5 +331,38 @@ class MailHandler extends SprykerMailHandler
             $this->config->getOrderConfirmationCollectNumberTemplate(),
             ['order' => $orderTransfer]
         );
+    }
+
+    /**
+     * @param \Generated\Shared\Transfer\OrderTransfer $orderTransfer
+     *
+     * @return int
+     */
+    protected function getSumOptions(OrderTransfer $orderTransfer): int
+    {
+        $sumOptions = 0;
+        foreach ($orderTransfer->getItems() as $itemTransfer) {
+            $sumOptions += $itemTransfer["sumProductOptionPriceAggregation"];
+        }
+
+        return $sumOptions;
+    }
+
+    /**
+     * @param \Generated\Shared\Transfer\OrderTransfer $orderTransfer
+     * @param string $tax
+     *
+     * @return int
+     */
+    protected function getSumTaxes(OrderTransfer $orderTransfer, string $tax): int
+    {
+        $result = 0;
+        foreach ($orderTransfer->getItems() as $itemTransfer) {
+            if ($tax == $itemTransfer["taxRate"]) {
+                $result += $itemTransfer["sumTaxAmountFullAggregation"];
+            }
+        }
+
+        return $result;
     }
 }
