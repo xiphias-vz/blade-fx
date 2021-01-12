@@ -30,16 +30,16 @@ export default class SelectShelvesForm extends Component {
         let originalValue = (<HTMLInputElement>event.target).value;
 
         // force removing of barcode prefix
-        (<HTMLInputElement>event.target).value = originalValue.replace(this.barcodePrefix, '');
+        let replacedValue = originalValue.replace(this.barcodePrefix, '');
+        (<HTMLInputElement>event.target).value = replacedValue;
 
         //check if shelf Id starts with capital letter
-        let textLen = (<HTMLInputElement>event.target).value.length;
+        let firstChar = (replacedValue.charAt(0));
         let reg = new RegExp (/^[A-Z]+$/g);
-        let regTest = reg.test(originalValue);
-        if(!regTest && textLen == 1)
+        let regTest = reg.test(firstChar);
+        if(!regTest)
         {
-            originalValue = originalValue.slice(0, -1);
-            (<HTMLInputElement>event.target).value = originalValue;
+            (<HTMLInputElement>event.target).value = "";
             alert('Der erste Buchstabe muss Großbuchstaben sein');
         }
     }
