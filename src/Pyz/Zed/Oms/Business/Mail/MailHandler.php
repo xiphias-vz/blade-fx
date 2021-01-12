@@ -231,7 +231,6 @@ class MailHandler extends SprykerMailHandler
             'beginDeliveryTimeSlot' => $timeFrom,
             'endDeliveryTimeSlot' => $timeTo,
             'storeAddress' => $orderTransfer->getMerchantName(),
-
             'divisionSubDomain' => $this->config->getBaseUrlYves(),
             'divisionLongName' => $orderTransfer->getMerchantRegion()->getRegionName(),
             'divisionStreet' => $orderTransfer->getMerchantRegion()->getStreet(),
@@ -245,6 +244,26 @@ class MailHandler extends SprykerMailHandler
             'tax19' => $this->getMoneyValue($this->getSumTaxes($orderTransfer, '19')),
         ];
 
+        if ($orderTransfer->getBillingAddress() !== null) {
+            $addressParams = [
+                'address1' => $orderTransfer->getBillingAddress()->getAddress1(),
+                'address2' => $orderTransfer->getBillingAddress()->getAddress2(),
+                'zipCode' => $orderTransfer->getBillingAddress()->getZipCode(),
+                'city' => $orderTransfer->getBillingAddress()->getCity(),
+                'phone' => $orderTransfer->getBillingAddress()->getCity(),
+            ];
+            $params = array_merge($params, $addressParams);
+        } else {
+            $addressParams = [
+                'address1' => '',
+                'address2' => '',
+                'zipCode' => '',
+                'city' => '',
+                'phone' => '',
+            ];
+            $params = array_merge($params, $addressParams);
+        }
+
         if ($orderTransfer->getCustomer() !== null) {
             $params = array_merge($params, $orderTransfer->getCustomer()->modifiedToArray(true, true)
                 + $orderTransfer->modifiedToArray(true, true));
@@ -254,14 +273,8 @@ class MailHandler extends SprykerMailHandler
                 'lastName' => $orderTransfer->getLastName(),
                 'orderReference' => $orderTransfer->getOrderReference(),
                 'merchantName' => $orderTransfer->getMerchantName(),
-                'address1' => $orderTransfer->getBillingAddress()->getAddress1(),
-                'address2' => $orderTransfer->getBillingAddress()->getAddress2(),
-                'zipCode' => $orderTransfer->getBillingAddress()->getZipCode(),
-                'city' => $orderTransfer->getBillingAddress()->getCity(),
-                'phone' => $orderTransfer->getBillingAddress()->getCity(),
                 'email' => $orderTransfer->getEmail(),
                 'salutation' => $orderTransfer->getSalutation(),
-
             ];
             $params = array_merge($params, $guestParams);
         }
