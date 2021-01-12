@@ -49,6 +49,9 @@ export default class ContainerToShelfForm extends Component {
         // Enter key forces the whole form to submit, we want to prevent that for barcode scanner
         if (event.key == 'Enter') {
             event.preventDefault();
+
+            let element = document.getElementById('container_to_shelf_form_shelf_code');
+            element.focus();
         }
     }
 
