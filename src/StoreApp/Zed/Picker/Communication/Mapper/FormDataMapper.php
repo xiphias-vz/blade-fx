@@ -122,6 +122,7 @@ class FormDataMapper implements FormDataMapperInterface
      * @param \Generated\Shared\Transfer\OrderTransfer $salesOrderTransfer
      * @param array $selectedIdSalesOrderItems
      * @param string $fieldNamePrefix
+     * @param string $fieldItemsSkuPrefix
      *
      * @return \Generated\Shared\Transfer\OrderChangeRequestTransfer
      */
@@ -129,33 +130,33 @@ class FormDataMapper implements FormDataMapperInterface
         array $formData,
         OrderTransfer $salesOrderTransfer,
         array $selectedIdSalesOrderItems,
-        string $fieldNamePrefix
+        string $fieldNamePrefix,
+        string $fieldItemsSkuPrefix
     ): OrderChangeRequestTransfer {
         $orderChangeRequest = new OrderChangeRequestTransfer();
         $orderChangeRequest->setFkSalesOrder($salesOrderTransfer->getIdSalesOrder());
 
         $pattern = '/' . $fieldNamePrefix . '(.+)/';
+        $patternQuantity = '/' . $fieldItemsSkuPrefix . '(.+)/';
 
         foreach ($formData as $fieldName => $fieldValue) {
-            if (preg_match($pattern, $fieldName, $matches) === false || empty($matches)) {
+            if (preg_match($pattern, $fieldName, $matches) === false || empty($matches) ||
+                preg_match($patternQuantity, $fieldName, $matches) === false || empty($matches)
+            ) {
                 continue;
             }
 
             $orderItemChangeRequest = new OrderItemChangeRequestTransfer();
 
-            $sku = $matches[1];
-            $newWeight = $fieldValue;
-
-            $itemTransfer = $this->findItemInOrder($salesOrderTransfer, $sku, $selectedIdSalesOrderItems);
-
-            $newPrice = round($newWeight * $itemTransfer->getPricePerKg() / 1000);
-
-            $orderItemChangeRequest->setQuantity($itemTransfer->getQuantity());
-            $orderItemChangeRequest->setPrice($newPrice);
-            $orderItemChangeRequest->setNewWeight($newWeight);
-            $orderItemChangeRequest->setIdSalesOrderItem($itemTransfer->getIdSalesOrderItem());
-
-            $orderChangeRequest->addOrderItemChangeRequest($orderItemChangeRequest);
+             $sku = $matches[1];
+             $newWeight = $fieldValue;
+             $itemTransfer = $this->findItemInOrder($salesOrderTransfer, $sku, $selectedIdSalesOrderItems);
+             $newPrice = round($newWeight * $itemTransfer->getPricePerKg() / 1000);
+             $orderItemChangeRequest->setQuantity($itemTransfer->getQuantity());
+             $orderItemChangeRequest->setPrice($newPrice);
+             $orderItemChangeRequest->setNewWeight($newWeight);
+             $orderItemChangeRequest->setIdSalesOrderItem($itemTransfer->getIdSalesOrderItem());
+             $orderChangeRequest->addOrderItemChangeRequest($orderItemChangeRequest);
         }
 
         return $orderChangeRequest;
@@ -195,7 +196,6 @@ class FormDataMapper implements FormDataMapperInterface
         if (!$selectedItemTransfer) {
             throw new InvalidArgumentException('No item found for sku ' . $sku);
         }
-
         $selectedItemTransfer->setQuantity($sumQuantity);
         $selectedItemTransfer->setSumGrossPrice($sumPrice);
         $selectedItemTransfer->setWeightPerUnit($sumWeightPerUnit);

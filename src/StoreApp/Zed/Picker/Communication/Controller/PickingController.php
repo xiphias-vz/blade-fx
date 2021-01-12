@@ -359,7 +359,8 @@ class PickingController extends BaseOrderPickingController
                 $formData,
                 $salesOrderTransfer,
                 $selectedIdSalesOrderItems,
-                OrderItemSelectionForm::PREFIX_FIELD_SALES_ORDER_ITEM_NEW_WEIGHT
+                OrderItemSelectionForm::PREFIX_FIELD_SALES_ORDER_ITEM_NEW_WEIGHT,
+                OrderItemSelectionForm::PREFIX_FIELD_SALES_ORDER_ITEM_SKU
             );
 
         if ($orderChangeRequestTransfer->getOrderItemChangeRequest()->count() > 0) {
