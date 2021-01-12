@@ -20,7 +20,7 @@
     preisProKg: data.product.attributes.preis_pro_kg | default(null),
     pricePerKg: data.product.pricePerKg | default(null),
     depositPrice: data.depositPrice | default(null),
-    einzelgewicht: data.product.attributes.einzelgewicht | default(null),
+    einzelgewicht: data.product.einzelgewicht | default(null),
 } %}
 
 {% set addAjaxUrl = path("cart/add-ajax", { "productAbstractId": data.product.id_product_abstract ?? data.product.idProductAbstract }) %}
@@ -182,7 +182,6 @@
                                                     <div class="{{ config.name }}__info-more-col">
                                                         {% if data.productSaleUnit and data.productSaleVolume > 0 %}
                                                             <div class="{{ config.name }}__sale-volume">
-
                                                                 {% if data.pricePerKg is not null and data.basicUnit > 0 %}
                                                                     {{(data.pricePerKg / 100 ) | round(2, 'common') | replace('.', ',') }} €/{{ data.basePriceUnit }}
                                                                 {% elseif data.pricePerKg is null and data.preisProKg is not null and data.basicUnit > 0 %}
