@@ -39,17 +39,18 @@ export default class ContainerToShelfForm extends Component {
         if((<HTMLInputElement>event.target).id == 'container_to_shelf_form_shelf_code' && !regTest && textLen == 1)
         {
             originalValue = originalValue.slice(0, -1);
-            (<HTMLInputElement>event.target).value ="";
+            (<HTMLInputElement>event.target).value = originalValue;
             alert('Der erste Buchstabe muss Großbuchstaben sein');
         }
-
-
     }
 
     protected formKeyPressHandler(event: KeyboardEvent): void {
         // Enter key forces the whole form to submit, we want to prevent that for barcode scanner
         if (event.key == 'Enter') {
             event.preventDefault();
+
+            let element = document.getElementById('container_to_shelf_form_shelf_code');
+            element.focus();
         }
     }
 
