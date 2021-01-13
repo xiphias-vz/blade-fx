@@ -41,32 +41,42 @@ export default class OrderSearch extends Component {
     }
 
     protected searchItems(): void {
+        let orderInProgress = 0;
+        let itemsFound = 0;
+        let numOfCharacters = 0;
+
         this.$searchItems.each((index: number, searchItem: HTMLElement) => {
             const $searchItem = $(searchItem);
             const $inputValue = this.currentInputValue;
-            const isMatchByOrder = $searchItem.data('order').indexOf($inputValue) >= 0;
-            const isMatchByReference = $searchItem.data('reference').indexOf($inputValue) >= 0;
-            const isNotReadyForCollection = $searchItem.data('pickupstatus') != "ready for collection";
-            const numOfCharacters = $inputValue.length;
+            if($inputValue==='') {
+                $searchItem.show();
+                itemsFound++;
+            } else {
+                const isMatchByOrder = $searchItem.data('order').indexOf($inputValue) >= 0;
+                const isMatchByReference = $searchItem.data('reference').indexOf($inputValue) >= 0;
+                const isNotReadyForCollection = $searchItem.data('pickupstatus') != "ready for collection";
+                numOfCharacters = $inputValue.length;
+                $searchItem.hide();
 
-            if (isMatchByOrder || isMatchByReference || $inputValue == '') {
-                if(isNotReadyForCollection) {
-                    alert("Bestellung in Bearbeitung");
-                }
-                else{
-                    $searchItem.show();
-
-                    return;
+                if (isMatchByOrder || isMatchByReference || $inputValue == '') {
+                    if(isNotReadyForCollection) {
+                        orderInProgress++;
+                    }
+                    else{
+                        $searchItem.show();
+                        itemsFound++;
+                    }
                 }
             }
-            else if(numOfCharacters == 9) {
+        });
+
+        if(itemsFound === 0){
+            if((orderInProgress === 1)) {
+                alert("Bestellung in Bearbeitung");
+            } else if(numOfCharacters === 9){
                 alert("Unbekannte Bestellung");
             }
-
-
-
-            $searchItem.hide();
-        });
+        }
     }
 
     get inputSelector(): string {
