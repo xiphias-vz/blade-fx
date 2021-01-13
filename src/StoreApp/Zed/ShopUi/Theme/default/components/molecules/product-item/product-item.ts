@@ -126,6 +126,11 @@ export default class ProductItem extends Component {
     }
 
     protected acceptClickHandler(): void {
+
+        this.$weightField.removeAttr('min');
+        this.$weightField.removeAttr('max');
+        this.$weightField.removeAttr('required');
+
         if (this.currentValue === 0) {
             this.updateQuantityInput(this.maxQuantity);
         }
