@@ -251,7 +251,7 @@ class MailHandler extends SprykerMailHandler
                 'address2' => $orderTransfer->getBillingAddress()->getAddress2(),
                 'zipCode' => $orderTransfer->getBillingAddress()->getZipCode(),
                 'city' => $orderTransfer->getBillingAddress()->getCity(),
-                'phone' => $orderTransfer->getBillingAddress()->getPhone(),
+                'phone' => $orderTransfer->getBillingAddress()->getPhone() ?: ' ',
             ];
             $params = array_merge($params, $addressParams);
         } else {
@@ -275,8 +275,31 @@ class MailHandler extends SprykerMailHandler
                 'orderReference' => $orderTransfer->getOrderReference(),
                 'merchantName' => $orderTransfer->getMerchantName(),
                 'email' => $orderTransfer->getEmail(),
-                'salutation' => $orderTransfer->getSalutation(),
             ];
+
+            if ($orderTransfer->getSalutation() == 'Mr') {
+                $salutationParams = [
+                    'salutationPrefix' => 'Lieber',
+                    'salutation' => $orderTransfer->getSalutation(),
+                ];
+            } elseif ($orderTransfer->getSalutation() == 'Ms') {
+                $salutationParams = [
+                    'salutationPrefix' => 'Liebe',
+                    'salutation' => $orderTransfer->getSalutation(),
+                ];
+            } elseif ($orderTransfer->getSalutation() == 'Divers') {
+                $salutationParams = [
+                    'salutationPrefix' => '',
+                    'salutation' => '',
+                ];
+            } else {
+                $salutationParams = [
+                    'salutationPrefix' => '',
+                    'salutation' => $orderTransfer->getSalutation(),
+                ];
+            }
+
+            $guestParams = array_merge($guestParams, $salutationParams);
             $params = array_merge($params, $guestParams);
         }
 
