@@ -25,6 +25,7 @@ class ContainerToShelfController extends AbstractController
 {
     public const SUCCESS_MESSAGE_CONTAINER_ON_SHELF = 'storeapp.picking.message.success.container-to-shelf';
     public const ERROR_MESSAGE_CONTAINER_WITHOUT_ORDER = 'storeapp.picking.message.error.container-without-order';
+    public const URL_CONTAINER_TO_SHELF = 'picker/container-to-shelf';
 
     /**
      * @param \Symfony\Component\HttpFoundation\Request $request
@@ -38,6 +39,13 @@ class ContainerToShelfController extends AbstractController
         $containerToShelfForm->handleRequest($request);
 
         if ($containerToShelfForm->isSubmitted() && $containerToShelfForm->isValid()) {
+            $dataFo = $containerToShelfForm->getData();
+            $contCode = $dataFo['container_code'];
+            $shelfCode = $dataFo['shelf_code'];
+
+            $getCode = new PickingSalesOrderTransfer();
+            $picingLists = $getCode->getContainerCode();
+
             return $this->processContainerToShelfForm(
                 $containerToShelfForm
             );
@@ -80,11 +88,11 @@ class ContainerToShelfController extends AbstractController
         if (!$pickingSalesOrderTransfer) {
             $this->addErrorMessage(static::ERROR_MESSAGE_CONTAINER_WITHOUT_ORDER);
 
-            return $this->redirectResponse(PickerConfig::URL_PICKING_LIST);
+            return $this->redirectResponse(PickerConfig::URL_CONTAINER_TO_SHELF);
         }
 
         $this->addSuccessMessage(static::SUCCESS_MESSAGE_CONTAINER_ON_SHELF);
 
-        return $this->redirectResponse(PickerConfig::URL_PICKING_LIST);
+        return $this->redirectResponse(PickerConfig::URL_CONTAINER_TO_SHELF);
     }
 }

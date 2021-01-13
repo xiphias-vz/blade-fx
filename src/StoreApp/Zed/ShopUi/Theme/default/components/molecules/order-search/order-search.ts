@@ -41,42 +41,54 @@ export default class OrderSearch extends Component {
     }
 
     protected searchItems(): void {
-        let orderInProgress = 0;
         let itemsFound = 0;
         let numOfCharacters = 0;
 
         this.$searchItems.each((index: number, searchItem: HTMLElement) => {
-            const $searchItem = $(searchItem);
             const $inputValue = this.currentInputValue;
-            if($inputValue==='') {
-                $searchItem.show();
-                itemsFound++;
-            } else {
-                const isMatchByOrder = $searchItem.data('order').indexOf($inputValue) >= 0;
-                const isMatchByReference = $searchItem.data('reference').indexOf($inputValue) >= 0;
-                const isNotReadyForCollection = $searchItem.data('pickupstatus') != "ready for collection";
+            const $searchItem = $(searchItem);
+            const isMatchByOrder = $searchItem.data('order').indexOf($inputValue) >= 0;
+            const isMatchByReference = $searchItem.data('reference').indexOf($inputValue) >= 0;
+            const isNotReadyForCollection = $searchItem.data('pickupstatus') != "ready for collection";
+
+                if($inputValue==='') {
+                    $searchItem.show();
+                    itemsFound++;
+                } else {
                 numOfCharacters = $inputValue.length;
                 $searchItem.hide();
 
-                if (isMatchByOrder || isMatchByReference || $inputValue == '') {
-                    if(isNotReadyForCollection) {
-                        orderInProgress++;
+                if (isMatchByOrder || isMatchByReference) {
+                    itemsFound++;
+
+                    if(numOfCharacters === 9){
+                        if(isMatchByReference){
+                            if(isNotReadyForCollection){
+                                alert("Bestellung in Bearbeitung");
+                            }
+                        }
                     }
-                    else{
-                        $searchItem.show();
-                        itemsFound++;
+                    else if(numOfCharacters > 4){
+                        if(isMatchByOrder){
+                            if(isNotReadyForCollection){
+                                alert("Bestellung in Bearbeitung");
+                            }
+                        }
                     }
+
                 }
-            }
+
+                if(itemsFound != 0){
+                    $searchItem.show();
+                }
+             }
+
         });
 
         if(itemsFound === 0){
-            if((orderInProgress === 1)) {
-                alert("Bestellung in Bearbeitung");
-            } else if(numOfCharacters === 9){
-                alert("Unbekannte Bestellung");
-            }
+            alert("Unbekannte Bestellung");
         }
+
     }
 
     get inputSelector(): string {

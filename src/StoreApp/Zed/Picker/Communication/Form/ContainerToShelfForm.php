@@ -44,7 +44,7 @@ class ContainerToShelfForm extends AbstractType
     protected function addContainerCodeFiled(FormBuilderInterface $builder)
     {
         $builder->add(static::FIELD_CONTAINER_CODE, TextType::class, [
-            'label' => 'Container ID',
+            'label' => 'Scan/Eingabe Container',
             'required' => true,
             'constraints' => [
                 new NotBlank(),
