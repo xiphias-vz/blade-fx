@@ -16,6 +16,7 @@ use Orm\Zed\ProductImage\Persistence\SpyProductImageQuery;
 use Orm\Zed\ProductImage\Persistence\SpyProductImageSet;
 use Orm\Zed\ProductImage\Persistence\SpyProductImageSetQuery;
 use Orm\Zed\ProductImage\Persistence\SpyProductImageSetToProductImageQuery;
+use Orm\Zed\Tax\Persistence\Map\SpyTaxRateTableMap;
 use Orm\Zed\Tax\Persistence\SpyTaxRateQuery;
 use Orm\Zed\Url\Persistence\SpyUrlQuery;
 use Propel\Runtime\ActiveQuery\Criteria;
@@ -45,6 +46,8 @@ class ProductAbstractWriterStep extends PublishAwareStep implements DataImportSt
     public const KEY_LOCALES = 'locales';
     public const ID_PRODUCT_ABSTRACT = 'id_product_abstract';
     public const IS_PRODUCT_CONCRETE = 'Concrete';
+
+    protected const SHIPMENT_TAX_RATE_NAME = 'Germany Shipment Tax';
 
     /**
      * @var \Pyz\Zed\DataImport\Business\Model\Product\Repository\ProductRepository
@@ -373,6 +376,8 @@ class ProductAbstractWriterStep extends PublishAwareStep implements DataImportSt
         if (!isset(static::$idTaxSetBuffer[$taxRate])) {
             static::$idTaxSetBuffer[$taxRate] = SpyTaxRateQuery::create()
                 ->filterByRate($taxRate)
+                ->_and()
+                ->where(SpyTaxRateTableMap::COL_NAME . Criteria::NOT_EQUAL . "'" . static::SHIPMENT_TAX_RATE_NAME . "'")
                 ->joinWithSpyTaxSetTax()
                 ->find()
                 ->getFirst()

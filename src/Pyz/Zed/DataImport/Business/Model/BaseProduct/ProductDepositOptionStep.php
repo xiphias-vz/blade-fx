@@ -59,7 +59,7 @@ class ProductDepositOptionStep extends PublishAwareStep implements DataImportSte
 
     protected const DEFAULT_DEPOSIT_NAME = 'Pfand';
 
-    protected const DEPOSITS_TAX_SET = 'STANDARD';
+    protected const DEPOSITS_TAX_SET = 'STANDARD_NEW';
 
     protected const DEFAULT_DEPOSIT_AMOUNT_MULTIPLIER = 100;
     protected const DEFAULT_DEPOSIT_COUNT = 1;

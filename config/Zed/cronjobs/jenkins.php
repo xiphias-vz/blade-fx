@@ -171,12 +171,3 @@ $jobs[] = [
     'enable' => true,
     'stores' => $allStores,
 ];
-
-// @TODO remove after 2021-01-01
-$jobs[] = [
-    'name' => 'update taxes',
-    'command' => '$PHP_BIN vendor/bin/console data:import:tax',
-    'schedule' => '0 0 1 1 *',
-    'enable' => true,
-    'stores' => $allStores,
-];
