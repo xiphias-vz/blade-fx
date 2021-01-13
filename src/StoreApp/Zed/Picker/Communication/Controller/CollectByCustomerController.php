@@ -248,7 +248,7 @@ class CollectByCustomerController extends AbstractController
         }
 
         foreach ($notFound as $item4) {
-            $item3["quantity"] = $item4["imageUrl"] - $item4["quantity"];
+            $item4["quantity"] = $item4["imageUrl"] - $item4["quantity"];
         }
 
         return [
