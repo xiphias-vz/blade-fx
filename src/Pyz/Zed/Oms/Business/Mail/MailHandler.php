@@ -247,10 +247,10 @@ class MailHandler extends SprykerMailHandler
 
         if ($orderTransfer->getBillingAddress() !== null) {
             $addressParams = [
-                'address1' => $orderTransfer->getBillingAddress()->getAddress1(),
-                'address2' => $orderTransfer->getBillingAddress()->getAddress2(),
-                'zipCode' => $orderTransfer->getBillingAddress()->getZipCode(),
-                'city' => $orderTransfer->getBillingAddress()->getCity(),
+                'address1' => $orderTransfer->getBillingAddress()->getAddress1() ?: ' ',
+                'address2' => $orderTransfer->getBillingAddress()->getAddress2() ?: ' ',
+                'zipCode' => $orderTransfer->getBillingAddress()->getZipCode() ?: ' ',
+                'city' => $orderTransfer->getBillingAddress()->getCity() ?: ' ',
                 'phone' => $orderTransfer->getBillingAddress()->getPhone() ?: ' ',
             ];
             $params = array_merge($params, $addressParams);
@@ -265,16 +265,12 @@ class MailHandler extends SprykerMailHandler
             $params = array_merge($params, $addressParams);
         }
 
-        if ($orderTransfer->getCustomer() !== null) {
-            $params = array_merge($params, $orderTransfer->getCustomer()->modifiedToArray(true, true)
-                + $orderTransfer->modifiedToArray(true, true));
-        } else {
             $guestParams = [
-                'firstName' => $orderTransfer->getFirstName(),
-                'lastName' => $orderTransfer->getLastName(),
+                'firstName' => $orderTransfer->getFirstName() ?: ' ',
+                'lastName' => $orderTransfer->getLastName() ?: ' ',
                 'orderReference' => $orderTransfer->getOrderReference(),
-                'merchantName' => $orderTransfer->getMerchantName(),
-                'email' => $orderTransfer->getEmail(),
+                'merchantName' => $orderTransfer->getMerchantName() ?: ' ',
+                'email' => $orderTransfer->getEmail() ?: ' ',
             ];
 
             if ($orderTransfer->getSalutation() == 'Mr') {
@@ -301,9 +297,9 @@ class MailHandler extends SprykerMailHandler
 
             $guestParams = array_merge($guestParams, $salutationParams);
             $params = array_merge($params, $guestParams);
-        }
 
-        return $this->mailCmsBlockService->convertArrayToPlaceholders($params);
+
+            return $this->mailCmsBlockService->convertArrayToPlaceholders($params);
     }
 
     /**
