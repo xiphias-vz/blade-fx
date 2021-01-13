@@ -4,15 +4,10 @@ $setting-font-family-code: 'Menlo', monospace;
 $setting-font-size-base: 16px;
 
 @font-face {
-    font-family: 'Free 3 of 9 Extended';
-    src: url('../fonts/Free3of9Extended.eot');
-    src: url('../fonts/Free3of9Extended.eot?#iefix') format('embedded-opentype'),
-    url('../fonts/Free3of9Extended.ttf') format('truetype'),
-    url('../fonts/Free3of9Extended.woff') format('woff'),
-    url('../fonts/Free3of9Extended.woff2') format('woff2');
-    font-weight: normal;
-    font-style: normal;
-    font-display: swap;
+    font-family: IDAutomationHC39;
+    src:url("../fonts/IDAutomationHC39M.woff");
+    font-weight:normal;
+    font-style:normal;
 }
 
 $setting-font-size: (
