@@ -57,6 +57,7 @@ class ContainerToShelfController extends AbstractController
                     'containerToShelfForm' => $containerToShelfForm->createView(),
                     'merchant' => $this->getMerchantFromRequest($request),
                     'activities' => PickerConfig::ACTIVITIES,
+                    'listOfContainers' => json_encode($listOfContainers),
                 ];
             } elseif ($ItExists) {
                 return [
@@ -66,13 +67,15 @@ class ContainerToShelfController extends AbstractController
                     'containerToShelfForm' => $containerToShelfForm->createView(),
                     'merchant' => $this->getMerchantFromRequest($request),
                     'activities' => PickerConfig::ACTIVITIES,
+                    'listOfContainers' => json_encode($listOfContainers),
                 ];
             } else {
                 return $this->processContainerToShelfForm(
                     $containerToShelfForm,
                     $request,
                     $containerIdCodeInput,
-                    $shelfIdCodeInput
+                    $shelfIdCodeInput,
+                    $listOfContainers
                 );
             }
         }
@@ -100,10 +103,11 @@ class ContainerToShelfController extends AbstractController
      * @param \Symfony\Component\HttpFoundation\Request $request
      * @param string $containerIdCodeInput
      * @param string $shelfIdCodeInput
+     * @param array $listOfContainers
      *
      * @return array
      */
-    protected function processContainerToShelfForm(FormInterface $containerToShelfForm, Request $request, string $containerIdCodeInput, string $shelfIdCodeInput): array //RedirectResponse
+    protected function processContainerToShelfForm(FormInterface $containerToShelfForm, Request $request, string $containerIdCodeInput, string $shelfIdCodeInput, array $listOfContainers): array //RedirectResponse
     {
         $formData = $containerToShelfForm->getData();
 
@@ -122,6 +126,7 @@ class ContainerToShelfController extends AbstractController
             'containerToShelfForm' => $containerToShelfForm->createView(),
             'merchant' => $this->getMerchantFromRequest($request),
             'activities' => PickerConfig::ACTIVITIES,
+            'listOfContainers' => json_encode($listOfContainers),
         ];
     }
 }
