@@ -46,8 +46,11 @@ class OmsQueryContainer extends SprykerOmsQueryContainer implements OmsQueryCont
                 ->limit($limit);
 
             $salesOrderIds = $query->find()->getData();
-            $query = parent::querySalesOrderItemsByState($states, $processName)
-                ->filterByFkSalesOrder_In($salesOrderIds);
+            $query = parent::querySalesOrderItemsByState($states, $processName);
+
+            if (!empty($salesOrderIds)) {
+                $query->filterByFkSalesOrder_In($salesOrderIds);
+            }
         }
 
         return $query;
