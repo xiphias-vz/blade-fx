@@ -59,10 +59,15 @@ class CollectByCustomerController extends AbstractController
     {
         $userTransfer = $this->getCurrentUser($request);
 
-        $readyForCollectionMerchantSalesOrderTransfers = $this->findReadyForCollectionMerchantSalesOrders($userTransfer);
-        $collectedOrCancelledMerchantSalesOrderTransfers = $this->findCollectedOrCancelledMerchantSalesOrders($userTransfer);
+        $newArray = [];
+        $allBeforeReadyToCollectMerchantOrderTransfers = $this->findAllBeforeReadyToCollectMerchantSalesOrders($userTransfer);
+        foreach ($allBeforeReadyToCollectMerchantOrderTransfers as $order) {
+            array_push($newArray, ["storeStatus" => $order["storeStatus"], "orderReference" => $order["merchantSalesOrderReference"]]);
+        }
 
-        $collectionMerchantSalesOrders = $readyForCollectionMerchantSalesOrderTransfers + $collectedOrCancelledMerchantSalesOrderTransfers;
+        $readyForCollectionMerchantSalesOrderTransfers = $this->findReadyForCollectionMerchantSalesOrders($userTransfer);
+
+        $collectionMerchantSalesOrders = $readyForCollectionMerchantSalesOrderTransfers;
 
         $idSalesOrdersForCollection = array_keys($collectionMerchantSalesOrders);
 
@@ -114,6 +119,7 @@ class CollectByCustomerController extends AbstractController
                 'dayOfTheWeek' => $dayOfTheWeek,
                 'fullName' => $salesOrderTransfer->getFirstName() . " " . $salesOrderTransfer->getLastName(),
                 'pickupStatus' => $collectionMerchantSalesOrder->getStoreStatus(),
+                'ordersBeforeReadyToCollectStatus' => json_encode($newArray),
             ];
         }
 
@@ -740,6 +746,30 @@ class CollectByCustomerController extends AbstractController
                 $userTransfer->getMerchantReference(),
             ])
             ->setStoreStatuses([
+                OmsConfig::STORE_STATE_READY_FOR_COLLECT_BY_CUSTOMER,
+            ])
+            ->setOrderCountLimit(
+                $this->getFactory()->getConfig()->getMaxOrdersCountToDisplay()
+            );
+
+        return $merchantSalesOrderCollectionTransfer = $this->getFactory()->getMerchantSalesOrderFacade()
+            ->findMerchantSalesOrdersByOrderFilterCriteria($orderCriteriaFilterTransfer)
+            ->getMerchantSalesOrders()
+            ->getArrayCopy();
+    }
+
+    /**
+     * @param \Generated\Shared\Transfer\UserTransfer $userTransfer
+     *
+     * @return \Generated\Shared\Transfer\MerchantSalesOrderTransfer[]
+     */
+    protected function findAllBeforeReadyToCollectMerchantSalesOrders(UserTransfer $userTransfer): array
+    {
+        $orderCriteriaFilterTransfer = (new OrderCriteriaFilterTransfer())
+            ->setMerchantReferences([
+                $userTransfer->getMerchantReference(),
+            ])
+            ->setStoreStatuses([
                 OmsConfig::STATE_TYPE_FLAG_CANCELLABLE_BY_CUSTOMER,
                 OmsConfig::STATE_TYPE_FLAG_CANCELLED,
                 OmsConfig::STATE_TYPE_FLAG_SHIPPED_MAIL_AWAITS,
@@ -754,11 +784,7 @@ class CollectByCustomerController extends AbstractController
                 OmsConfig::STORE_EVENT_CONFIRM_PICKING,
                 OmsConfig::STORE_EVENT_CONFIRM_SELECTING_CONTAINERS,
                 OmsConfig::STORE_EVENT_CANCEL_NOT_IN_STOCK,
-                OmsConfig::STORE_STATE_READY_FOR_COLLECT_BY_CUSTOMER,
-            ])
-            ->setOrderCountLimit(
-                $this->getFactory()->getConfig()->getMaxOrdersCountToDisplay()
-            );
+            ]);
 
         return $merchantSalesOrderCollectionTransfer = $this->getFactory()->getMerchantSalesOrderFacade()
             ->findMerchantSalesOrdersByOrderFilterCriteria($orderCriteriaFilterTransfer)

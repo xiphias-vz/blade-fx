@@ -60,6 +60,7 @@
                     'data-order': collectionOrder.collectNumber | lower,
                     'data-pickupstatus': collectionOrder.pickupStatus | lower,
                     'data-reference': collectionOrder.reference | lower,
+                    'data-ordersBeforeReadyToCollectStatus': collectionOrder.ordersBeforeReadyToCollectStatus,
                     'data-time': collectionOrder.requestedDeliveryDate | split(' ') | last
                 },
                 embed: {

@@ -125,15 +125,16 @@
                     var input = document.getElementById('containerInput');
                     input.addEventListener("change", function()
                     {
-                       var inputValue = document.getElementById("containerInput").value;
+                        var inputValue = document.getElementById("containerInput").value;
                         var id = document.getElementsByClassName('checkbox__input');
                         var containerExists = false;
 
+                        var barcode = inputValue.substring(4);
                         for(i= 0; i< id.length; i++)
                         {
                             containerId = id[i].attributes[2].value;
 
-                            if(inputValue == containerId)
+                            if(barcode == containerId)
                             {
                                 id[i].checked = true;
                                 containerExists = true;
@@ -144,6 +145,7 @@
                         {
                             alert("This container is not part of the order!");
                         }
+                        document.getElementById("containerInput").value = "";
 
                     });
                 </script>
@@ -202,7 +204,7 @@
 
                                         {% block button %}
                                             <div class="text-center">
-                                                <div class="button button--small button--table button--expand button--hollow js-pick-products__submit-button {{ config.jsName }}__open">
+                                                <div class="button button--small button--table button--expand button--hollow js-pick-products__submit-button btn--cancellation {{ config.jsName }}__open">
                                                     {{ 'picker.collect-by-customer.order.cancel-collection' | trans }}
                                                 </div>
                                             </div>
@@ -220,9 +222,10 @@
                                             title: 'Picked up!' | trans,
                                             buttons: {
                                                 submit: {
-                                                    isButton: true,
+                                                    isButton: true
                                                 }
-                                            }
+                                            },
+                                            id: 'confirmBtn'
                                         },
                                         embed: {
                                             reference: embed.orderReference,
@@ -236,13 +239,13 @@
 
                                         {% block button %}
                                             <div class="text-center">
-                                               <div class="button button--small button--table button--expand js-pick-products__submit-button"> {# Removed {{ config.jsName }}__open from class name#}
+                                               <div class="button button--small button--table button--expand js-pick-products__submit-button btn--submit {{ config.jsName }}__open">
                                                     {{ 'picker.collect-by-customer.order.confirm-collection' | trans }}
                                                 </div>
                                             </div>
                                         <script>
-                                            var submitButton = document.getElementsByClassName('button button--small button--table button--expand js-pick-products__submit-button');
-                                            submitButton[1].addEventListener('click', function()
+                                            var submitButton = document.getElementsByClassName('button button--small button--table button--expand js-pick-products__submit-button btn--submit');
+                                            submitButton[0].addEventListener('click', function(event)
                                             {
                                                 var id = document.getElementsByClassName('checkbox__input');
                                                 var data;
@@ -256,13 +259,11 @@
                                                         break;
                                                     }
                                                 }
-                                                if(error == false)
-                                                {
-                                                     document.querySelector(".popup-ui__overlay").style.display = "block";
-                                                    //TODO: OPEN MODAL-- MODAL WAS OPENED BY ADDING CLASS ON LINE 204 BEFORE  / THERE WAS COMMENT
-                                                }else
+
+                                                if(error == true)
                                                 {
                                                     alert("Container fehlen");
+                                                    document.getElementsByClassName("link--close")[1].click();
                                                 }
                                             });
                                         </script>

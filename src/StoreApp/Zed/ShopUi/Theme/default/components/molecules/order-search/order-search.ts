@@ -46,6 +46,7 @@ export default class OrderSearch extends Component {
     }
 
     protected searchItems(): void {
+        let itemsWithOtherStatus = 0;
         let itemsFound = 0;
         let numOfCharacters = 0;
         let numberOfReady = 0;
@@ -57,50 +58,40 @@ export default class OrderSearch extends Component {
             const $searchItem = $(searchItem);
             const isMatchByOrder = $searchItem.data('order').indexOf($inputValue) >= 0;
             const isMatchByReference = $searchItem.data('reference').indexOf($inputValue) >= 0;
-            const isReadyForCollection = $searchItem.data('pickupstatus') == statusType || statusType === 'no filter';
+            const ordersBeforeReadyToCollectStatus = $searchItem.data('ordersbeforereadytocollectstatus');
 
             if($inputValue==='') {
-                if(isReadyForCollection){
-                    $searchItem.show();
-                    itemsFound++;
-                }
-                else{
-                    $searchItem.hide();
-                }
+                $searchItem.show();
+                itemsFound++;
             } else {
                 numOfCharacters = $inputValue.length;
                 $searchItem.hide();
 
                 if (isMatchByOrder || isMatchByReference) {
                     numberOfNotReady++;
-                    if(isReadyForCollection){
-                        $searchItem.show();
-                        itemsFound++;
-                    }
 
-                    if(numOfCharacters === 9){
-                        if(isMatchByReference){
-                            if(isReadyForCollection){
-                                numberOfReady++;
-                            }
+                    $searchItem.show();
+                    itemsFound++;
+
+                }
+                else {
+                    $.map(ordersBeforeReadyToCollectStatus, function(v) {
+                        if(v["orderReference"].indexOf($inputValue) >= 0){
+                            itemsWithOtherStatus++;
                         }
-                    }
-                    else if(numOfCharacters > 4){
-                        if(isMatchByOrder){
-                            if(isReadyForCollection){
-                                numberOfReady++;
-                            }
-                        }
-                    }
+                    })
+
                 }
              }
         });
 
-        if(numberOfReady > 0){
-            alert("Bestellung in Bearbeitung");
-        }
-        else if(itemsFound === 0){
-            alert("Unbekannte Bestellung");
+        if(itemsFound === 0){
+            if(itemsWithOtherStatus > 0){
+                alert("Bestellung in Bearbeitung");
+            }
+            else{
+                alert("Unbekannte Bestellung");
+            }
         }
 
     }

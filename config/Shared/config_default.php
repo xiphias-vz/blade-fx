@@ -704,7 +704,7 @@ $config[CollectNumberConstants::COLLECT_NUMBER_DIGITS_BASE] = 10;
 
 // Picker
 $config[PickerConstants::MAX_PICKING_BAGS] = 20;
-$config[PickerConstants::MAX_ORDERS_COUNT_TO_DISPLAY] = 100;
+$config[PickerConstants::MAX_ORDERS_COUNT_TO_DISPLAY] = 250;
 
 // ---------- Yves host
 $config[ApplicationConstants::HOST_YVES] = sprintf('www.%s.%s.local', $APPLICATION_STORE_LOWER_CASE, $domain);

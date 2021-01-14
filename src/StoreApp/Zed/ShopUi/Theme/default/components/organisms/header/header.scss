@@ -50,7 +50,7 @@
         &__content {
             height: rem(63);
             @include helper-breakpoint-media-max($sm-max) {
-               height: 2rem;
+               height: 3rem;
             }
         }
 
@@ -78,6 +78,12 @@
             {
                 margin-top: -4%;
             }
+
+            .header__location-title
+            {
+                margin-top:6% !important;
+            }
+
         }
 
         .text-middle {
