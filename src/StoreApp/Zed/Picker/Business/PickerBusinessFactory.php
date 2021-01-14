@@ -7,10 +7,14 @@
 
 namespace StoreApp\Zed\Picker\Business;
 
+use Orm\Zed\PickingSalesOrder\Persistence\PyzPickingSalesOrderQuery;
+use Pyz\Zed\PickingSalesOrder\Persistence\Propel\Mapper\PickingSalesOrderMapper;
 use Pyz\Zed\PickingZone\Business\PickingZoneFacadeInterface;
 use Spryker\Zed\Kernel\Business\AbstractBusinessFactory;
 use Spryker\Zed\Oms\Business\OmsFacadeInterface;
 use Spryker\Zed\Sales\Business\SalesFacadeInterface;
+use StoreApp\Zed\Picker\Business\Reader\ContainerReader;
+use StoreApp\Zed\Picker\Business\Reader\ContainerReaderInterface;
 use StoreApp\Zed\Picker\Business\Reader\PickingZoneReader;
 use StoreApp\Zed\Picker\Business\Reader\PickingZoneReaderInterface;
 use StoreApp\Zed\Picker\Business\Updater\OrderUpdater;
@@ -89,5 +93,25 @@ class PickerBusinessFactory extends AbstractBusinessFactory
     public function getSessionService(): Session
     {
         return $this->getProvidedDependency(PickerDependencyProvider::SERVICE_SESSION);
+    }
+
+    /**
+     * @return \StoreApp\Zed\Picker\Business\Reader\ContainerReaderInterface
+     */
+    public function createContainerReader(): ContainerReaderInterface
+    {
+        return new ContainerReader(
+            new PyzPickingSalesOrderQuery(),
+            $this->getSalesFacade(),
+            $this
+        );
+    }
+
+    /**
+     * @return \Pyz\Zed\PickingSalesOrder\Persistence\Propel\Mapper\PickingSalesOrderMapper
+     */
+    public function createPickingSalesOrderMapper(): PickingSalesOrderMapper
+    {
+        return new PickingSalesOrderMapper();
     }
 }

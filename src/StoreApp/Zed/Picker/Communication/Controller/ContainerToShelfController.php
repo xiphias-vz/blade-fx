@@ -14,7 +14,6 @@ use StoreApp\Shared\Picker\PickerConfig;
 use StoreApp\Zed\Merchant\Communication\Plugin\EventDispatcher\MerchantProviderEventDispatcherPlugin;
 use StoreApp\Zed\Picker\Communication\Form\ContainerToShelfForm;
 use Symfony\Component\Form\FormInterface;
-use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
@@ -35,20 +34,46 @@ class ContainerToShelfController extends AbstractController
     public function indexAction(Request $request)
     {
         $containerToShelfForm = $this->getFactory()->createContainerToShelfForm();
-
         $containerToShelfForm->handleRequest($request);
 
         if ($containerToShelfForm->isSubmitted() && $containerToShelfForm->isValid()) {
-            $dataFo = $containerToShelfForm->getData();
-            $contCode = $dataFo['container_code'];
-            $shelfCode = $dataFo['shelf_code'];
+            $dataInputForm = $containerToShelfForm->getData();
+            $containerIdCodeInput = $dataInputForm['container_code'];
+            $shelfIdCodeInput = $dataInputForm['shelf_code'];
+            $containerStatusShelfs = $this->getFactory()->getPickerBusinessFactory()->createContainerReader()->getContainerShelfs($containerIdCodeInput);
+            $existingContainerInPicking = count($containerStatusShelfs);
 
-            $getCode = new PickingSalesOrderTransfer();
-            $picingLists = $getCode->getContainerCode();
+            $ItExists = false;
+            foreach ($containerStatusShelfs as $property => $value) {
+                if ($value["ShelfCode"] == $shelfIdCodeInput) {
+                    $ItExists = true;
+                }
+            }
 
-            return $this->processContainerToShelfForm(
-                $containerToShelfForm
-            );
+            if ($existingContainerInPicking == 0) {
+                return [
+                    'isErrorTrue' => true,
+                    'containerToShelfForm' => $containerToShelfForm->createView(),
+                    'merchant' => $this->getMerchantFromRequest($request),
+                    'activities' => PickerConfig::ACTIVITIES,
+                ];
+            } elseif ($ItExists) {
+                return [
+                    'isUpdated' => $ItExists,
+                    'containerId' => $containerIdCodeInput,
+                    'shelfId' => $shelfIdCodeInput,
+                    'containerToShelfForm' => $containerToShelfForm->createView(),
+                    'merchant' => $this->getMerchantFromRequest($request),
+                    'activities' => PickerConfig::ACTIVITIES,
+                ];
+            } else {
+                return $this->processContainerToShelfForm(
+                    $containerToShelfForm,
+                    $request,
+                    $containerIdCodeInput,
+                    $shelfIdCodeInput
+                );
+            }
         }
 
         return [
@@ -70,10 +95,13 @@ class ContainerToShelfController extends AbstractController
 
     /**
      * @param \Symfony\Component\Form\FormInterface $containerToShelfForm
+     * @param \Symfony\Component\HttpFoundation\Request $request
+     * @param string $containerIdCodeInput
+     * @param string $shelfIdCodeInput
      *
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     * @return array
      */
-    protected function processContainerToShelfForm(FormInterface $containerToShelfForm): RedirectResponse
+    protected function processContainerToShelfForm(FormInterface $containerToShelfForm, Request $request, string $containerIdCodeInput, string $shelfIdCodeInput): array //RedirectResponse
     {
         $formData = $containerToShelfForm->getData();
 
@@ -85,14 +113,13 @@ class ContainerToShelfController extends AbstractController
             ->getPickingSalesOrderFacade()
             ->bindContainerToShelf($pickingSalesOrderTransfer);
 
-        if (!$pickingSalesOrderTransfer) {
-            $this->addErrorMessage(static::ERROR_MESSAGE_CONTAINER_WITHOUT_ORDER);
-
-            return $this->redirectResponse(PickerConfig::URL_CONTAINER_TO_SHELF);
-        }
-
-        $this->addSuccessMessage(static::SUCCESS_MESSAGE_CONTAINER_ON_SHELF);
-
-        return $this->redirectResponse(PickerConfig::URL_CONTAINER_TO_SHELF);
+        return [
+            'isSuccess' => true,
+            'containerId' => $containerIdCodeInput,
+            'shelfId' => $shelfIdCodeInput,
+            'containerToShelfForm' => $containerToShelfForm->createView(),
+            'merchant' => $this->getMerchantFromRequest($request),
+            'activities' => PickerConfig::ACTIVITIES,
+        ];
     }
 }

@@ -7,26 +7,69 @@
 
 namespace StoreApp\Zed\Picker\Business\Reader;
 
+use Generated\Shared\Transfer\PickingSalesOrderCollectionTransfer;
 use Generated\Shared\Transfer\PickingSalesOrderCriteriaTransfer;
+use Generated\Shared\Transfer\PickingSalesOrderTransfer;
 use Orm\Zed\PickingSalesOrder\Persistence\PyzPickingSalesOrderQuery;
+use Spryker\Zed\Sales\Business\SalesFacadeInterface;
+use StoreApp\Zed\Picker\Business\PickerBusinessFactory;
 
-class ContainerReader
+class ContainerReader implements ContainerReaderInterface
 {
     /**
+     * @var \Orm\Zed\PickingSalesOrder\Persistence\PyzPickingSalesOrderQuery $pyzPickingSalesOrderQuery
+     */
+    protected $pyzPickingSalesOrderQuery;
+
+    /**
+     * @var \Spryker\Zed\Sales\Business\SalesFacadeInterface $salesFacade
+     */
+    protected $salesFacade;
+
+    /**
+     * @var \StoreApp\Zed\Picker\Business\PickerBusinessFactory $factory
+     */
+    protected $factory;
+
+    /**
      * @param \Orm\Zed\PickingSalesOrder\Persistence\PyzPickingSalesOrderQuery $pyzPickingSalesOrderQuery
+     * @param \Spryker\Zed\Sales\Business\SalesFacadeInterface $salesFacade
+     * @param \StoreApp\Zed\Picker\Business\PickerBusinessFactory $factory
+     */
+    public function __construct(
+        PyzPickingSalesOrderQuery $pyzPickingSalesOrderQuery,
+        SalesFacadeInterface $salesFacade,
+        PickerBusinessFactory $factory
+    ) {
+        $this->pyzPickingSalesOrderQuery = $pyzPickingSalesOrderQuery;
+        $this->salesFacade = $salesFacade;
+        $this->factory = $factory;
+    }
+
+    /**
      * @param \Generated\Shared\Transfer\PickingSalesOrderCriteriaTransfer $pickingSalesOrderCriteriaTransfer
      *
-     * @return \Orm\Zed\PickingSalesOrder\Persistence\PyzPickingSalesOrderQuery
+     * @return \Generated\Shared\Transfer\PickingSalesOrderCollectionTransfer
      */
     public function getContainerCodes(
-        PyzPickingSalesOrderQuery $pyzPickingSalesOrderQuery,
         PickingSalesOrderCriteriaTransfer $pickingSalesOrderCriteriaTransfer
-    ): PyzPickingSalesOrderQuery {
+    ): PickingSalesOrderCollectionTransfer {
+        $pickingSalesOrderCollectionTransfer = (new PickingSalesOrderCollectionTransfer());
+
         if (!empty($pickingSalesOrderCriteriaTransfer->getContainerCodes())) {
-            $pyzPickingSalesOrderQuery->filterByContainerCode_In($pickingSalesOrderCriteriaTransfer->getContainerCodes());
+            $pickingSalesOrderQuery = $this->pyzPickingSalesOrderQuery->filterByContainerCode_In($pickingSalesOrderCriteriaTransfer->getContainerCodes());
+            $pyzPickingSalesOrderEntityCollection = $pickingSalesOrderQuery->find();
+
+            foreach ($pyzPickingSalesOrderEntityCollection as $pyzPickingSalesOrderEntity) {
+                $pickingSalesOrderTransfer = $this->factory
+                    ->createPickingSalesOrderMapper()
+                    ->mapPickingSalesOrderEntityToPickingSalesOrderTransfer($pyzPickingSalesOrderEntity, new PickingSalesOrderTransfer());
+
+                $pickingSalesOrderCollectionTransfer->addPickingSalesOrder($pickingSalesOrderTransfer);
+            }
         }
 
-        return $pyzPickingSalesOrderQuery;
+        return $pickingSalesOrderCollectionTransfer;
     }
 
     /**
@@ -37,7 +80,14 @@ class ContainerReader
      */
     public function checkContainerUse(string $ContainerId, string $orderId): bool
     {
-        return true;
+        $pickingContainerOrders = $this->pyzPickingSalesOrderQuery->findByContainerCode($ContainerId);
+        foreach ($pickingContainerOrders->toArray() as $order) {
+            if ($order['FkSalesOrder'] != $orderId) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     /**
@@ -47,8 +97,27 @@ class ContainerReader
      */
     public function getContainersByOrderId(string $orderId): array
     {
-        $listContainers = ["A01-01-01" => "25015001", "A01-01-02" => "25015001", "A01-01-03" => "25015001"];
+        $pickingSalesOrderCollectionTransfer = (new PickingSalesOrderCollectionTransfer());
+        $pickingSalesOrders = $this->pyzPickingSalesOrderQuery->findByFkSalesOrder($orderId)->getData();
 
-        return $listContainers;
+        foreach ($pickingSalesOrders as $pyzPickingSalesOrderEntity) {
+            $pickingSalesOrderTransfer = $this->factory
+                ->createPickingSalesOrderMapper()
+                ->mapPickingSalesOrderEntityToPickingSalesOrderTransfer($pyzPickingSalesOrderEntity, new PickingSalesOrderTransfer());
+
+            $pickingSalesOrderCollectionTransfer->addPickingSalesOrder($pickingSalesOrderTransfer);
+        }
+
+        return $pickingSalesOrderCollectionTransfer->toArray();
+    }
+
+    /**
+     * @param string $ContainerId
+     *
+     * @return array (IdPickingSalesOrder, FkSalesOrder, FkPickingZone, ContainerCode, ShelfCode)
+     */
+    public function getContainerShelfs(string $ContainerId): array
+    {
+        return $this->pyzPickingSalesOrderQuery->findByContainerCode($ContainerId)->toArray();
     }
 }

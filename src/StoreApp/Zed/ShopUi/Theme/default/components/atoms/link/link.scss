@@ -44,6 +44,12 @@
         text-decoration: none;
     }
 
+    &--error {
+        background-color: $setting-color-white;
+        height: 3rem;
+        padding: 1rem;
+    }
+
     &--logout {
         width: rem(24);
         height: rem(24);

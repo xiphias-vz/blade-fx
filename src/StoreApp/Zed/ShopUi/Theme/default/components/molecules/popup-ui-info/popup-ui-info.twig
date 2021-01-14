@@ -1,0 +1,60 @@
+{% extends model('component') %}
+
+{% define config = {
+    name: 'popup-ui-info',
+    tag: 'popup-ui-info'
+} %}
+
+{% define data = {
+    isUpdated: data.isUpdated,
+    containerId: data.containerId,
+    shelfId: data.shelfId,
+    title: 'Confirm your work!' | trans,
+    buttons: {
+        submit: {
+            title: 'Confirm' | trans,
+            isButton: false,
+            url: '/',
+            blank: false,
+            additionalClass: ''
+        },
+        cancel: {
+            title: 'Cancel' | trans
+        }
+    }
+} %}
+
+{% define attributes = {
+    'close-on-submit': true
+} %}
+
+{% block body %}
+    <div class="{{ config.name }}__overlay update-holder" update= {{ data.isUpdated }}>
+        <div class="{{ config.name }}__container">
+            <div class="closeInfoMessage">
+                {% block cancelButton %}
+                    <span href="#" class="link link--close {{ config.jsName }}__close">
+                              x
+                            </span>
+                {% endblock %}
+            </div>
+            <div class="{{ config.name }}__content">
+                {% block content %}{% endblock %}
+
+                {% block popupActions %}
+                    <div>
+                        Container: <strong>{{ data.containerId }}</strong>
+                    </div>
+                    <div>
+                        Lagerplatz: <strong>{{ data.shelfId }}</strong>
+                    </div>
+                    <div>
+                        <strong>bereits zugeordnet</strong>
+                    </div>
+
+                {% endblock %}
+            </div>
+        </div>
+    </div>
+    {% block button %}{% endblock %}
+{% endblock %}

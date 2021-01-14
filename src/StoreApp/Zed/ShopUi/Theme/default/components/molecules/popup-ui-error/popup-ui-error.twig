@@ -1,0 +1,50 @@
+{% extends model('component') %}
+
+{% define config = {
+    name: 'popup-ui-error',
+    tag: 'popup-ui-error'
+} %}
+
+{% define data = {
+    isErrorTrue: data.isErrorTrue,
+    title: 'Confirm your work!' | trans,
+    buttons: {
+        submit: {
+            title: 'Confirm' | trans,
+            isButton: false,
+            url: '/',
+            blank: false,
+            additionalClass: ''
+        },
+        cancel: {
+            title: 'message.submit_link' | trans
+        }
+    }
+} %}
+
+{% define attributes = {
+    'close-on-submit': true
+} %}
+
+{% block body %}
+    <div class="{{ config.name }}__overlay error-holder" error={{ data.isErrorTrue }}>
+        <div class="{{ config.name }}__container">
+
+            <div class="{{ config.name }}__content">
+                {% block content %}{% endblock %}
+
+                {% block popupActions %}
+
+                    <div class="text-center spacing-top spacing-top--big">
+                        {% block cancelButton %}
+                            <a href="#" class="link link--error button button--expand error-button-hover {{ config.jsName }}__close">
+                                {{ data.buttons.cancel.title }}
+                            </a>
+                        {% endblock %}
+                    </div>
+                {% endblock %}
+            </div>
+        </div>
+    </div>
+    {% block button %}{% endblock %}
+{% endblock %}

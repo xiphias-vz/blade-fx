@@ -1,0 +1,59 @@
+$setting-popup-spacing-x: rem(24);
+$setting-popup-spacing-y: rem(16);
+
+@mixin shop-ui-popup-ui-success($name: '.popup-success-ui') {
+    #{$name} {
+        &--show {
+            #{$name} {
+                &__overlay {
+                    display: flex;
+                    flex-direction: row;
+                }
+            }
+        }
+
+        &__overlay {
+            display: none;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            height: 100%;
+            padding: rem(15);
+            background-color: rgba($setting-color-globus-lightGreen, 0.7);
+        }
+
+        &__container {
+            flex-grow: 1;
+
+
+            .closeSuccessMessage {
+                position: relative;
+                top:-15px;
+                .link--close {
+                    position: absolute;
+                    right: 0px;
+                    font-size: 24px;
+                    font-weight: bold;
+                }
+            }
+        }
+
+        &__title {
+            padding: $setting-popup-spacing-y $setting-popup-spacing-x;
+            font: fw(bold) rem(18) $setting-font-family-additional;
+            text-align: center;
+            border-bottom: rem(1) solid $setting-color-gray-3;
+        }
+
+        &__content {
+
+            .success-message {
+                display: flex;
+                flex-direction: row;
+                justify-content: space-between;
+            }
+        }
+    }
+}
+
+@include shop-ui-popup-ui-success();

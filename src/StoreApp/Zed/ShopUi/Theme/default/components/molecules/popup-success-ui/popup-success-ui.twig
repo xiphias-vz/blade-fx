@@ -1,0 +1,57 @@
+{% extends model('component') %}
+
+{% define config = {
+    name: 'popup-success-ui',
+    tag: 'popup-success-ui'
+} %}
+
+{% define data = {
+    isSuccess: data.isSuccess,
+    containerId: data.containerId,
+    shelfId: data.shelfId,
+    title: 'Confirm your work!' | trans,
+    buttons: {
+        submit: {
+            title: 'Confirm' | trans,
+            isButton: false,
+            url: '/',
+            blank: false,
+            additionalClass: ''
+        },
+        cancel: {
+            title: 'Cancel' | trans
+        }
+    }
+} %}
+
+{% define attributes = {
+    'close-on-submit': true
+} %}
+
+{% block body %}
+    <div class="{{ config.name }}__overlay success-holder" success={{ data.isSuccess }}>
+        <div class="{{ config.name }}__container">
+            <div class="closeSuccessMessage">
+                {% block cancelButton %}
+                    <span href="#" class="link link--close {{ config.jsName }}__close">
+                              x
+                            </span>
+                {% endblock %}
+            </div>
+            <div class="{{ config.name }}__content">
+                {% block content %}{% endblock %}
+
+                {% block popupActions %}
+                    <div class="clearfix"></div>
+                    <div class="success-message">
+                        <p>
+                            <strong>{{ data.containerId }}</strong> wurde <strong>{{ data.shelfId }}</strong> zugeordnet
+                        </p>
+                    </div>
+
+                {% endblock %}
+            </div>
+        </div>
+    </div>
+    {% block button %}{% endblock %}
+{% endblock %}

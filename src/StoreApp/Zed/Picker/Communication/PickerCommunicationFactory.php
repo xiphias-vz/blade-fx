@@ -19,6 +19,7 @@ use Spryker\Zed\Oms\Business\OmsFacadeInterface;
 use Spryker\Zed\Sales\Business\SalesFacadeInterface;
 use Spryker\Zed\User\Business\UserFacadeInterface;
 use StoreApp\Zed\PermissionAccess\Business\PermissionAccessFacadeInterface;
+use StoreApp\Zed\Picker\Business\PickerBusinessFactory;
 use StoreApp\Zed\Picker\Business\PickerFacadeInterface;
 use StoreApp\Zed\Picker\Communication\Aggregator\ItemAggregator;
 use StoreApp\Zed\Picker\Communication\Form\ContainerToShelfForm;
@@ -226,5 +227,13 @@ class PickerCommunicationFactory extends AbstractCommunicationFactory
     public function getPermissionAccessFacade(): PermissionAccessFacadeInterface
     {
         return $this->getProvidedDependency(PickerDependencyProvider::FACADE_PERMISSION_ACCESS);
+    }
+
+    /**
+     * @return \StoreApp\Zed\Picker\Business\PickerBusinessFactory
+     */
+    public function getPickerBusinessFactory(): PickerBusinessFactory
+    {
+        return new PickerBusinessFactory();
     }
 }

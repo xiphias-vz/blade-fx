@@ -298,7 +298,6 @@ class MailHandler extends SprykerMailHandler
             $guestParams = array_merge($guestParams, $salutationParams);
             $params = array_merge($params, $guestParams);
 
-
             return $this->mailCmsBlockService->convertArrayToPlaceholders($params);
     }
 

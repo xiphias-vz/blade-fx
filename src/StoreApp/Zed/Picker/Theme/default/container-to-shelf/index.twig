@@ -2,7 +2,12 @@
 
 {% define data = {
     form: containerToShelfForm,
-    activities: activities
+    activities: activities,
+    isErrorTrue: isErrorTrue | default(null),
+    isSuccess: isSuccess | default(null),
+    isUpdated: isUpdated | default(null),
+    containerId: containerId | default(null),
+    shelfId: shelfId | default(null),
 } %}
 
 {% block header %}
@@ -16,6 +21,72 @@
 {% endblock %}
 
 {% block content %}
+    {% embed molecule('popup-success-ui') with {
+        data: {
+            isSuccess: data.isSuccess,
+            containerId: data.containerId,
+            shelfId: data.shelfId,
+            buttons: {
+                submit: {
+                    isButton: true,
+                    additionalClass: 'js-pick-products__submit',
+                },
+            },
+        },
+    } only %}
+    {% endembed %}
+    {% embed molecule('popup-ui-info') with {
+        data: {
+            isUpdated: data.isUpdated,
+            containerId: data.containerId,
+            shelfId: data.shelfId,
+            buttons: {
+                submit: {
+                    isButton: true,
+                    additionalClass: 'js-pick-products__submit',
+                },
+            },
+        },
+    } only %}
+    {% endembed %}
+            {% embed molecule('popup-ui-error') with {
+                data: {
+                    isErrorTrue: data.isErrorTrue,
+                    buttons: {
+                        submit: {
+                            isButton: true,
+                            additionalClass: 'js-pick-products__submit',
+                        },
+                    },
+                },
+            } only %}
+                {% block content %}
+                    <div class="grid grid--top spacing-y">
+                        <div class="col--sm-12 error-header">
+                                <span>Fehler</span>
+                        </div>
+                    </div>
+                    <div class="row" style="margin-bottom:5px;">
+                        <hr style="width: 100%; margin: 20px auto; height: 2px; background-color: white;" />
+                    </div>
+                    <div class="grid grid--center">
+                        <div class="col--sm-12">
+                            {{ 'storeapp.picking.message.error.container-not-known' | trans }}
+                        </div>
+                    </div>
+                    <div class="grid grid--center spacing-y">
+                        <div class="col--sm-8">
+
+                        </div>
+                    </div>
+                    <div class="grid grid--center spacing-bottom spacing-bottom--big">
+                        <div class="col--sm-8">
+
+                        </div>
+                    </div>
+                {% endblock %}
+            {% endembed %}
+
 
     <div class="margin-top-shelf">
 
