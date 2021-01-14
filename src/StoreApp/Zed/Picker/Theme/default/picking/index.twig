@@ -24,6 +24,7 @@
 
 {% block content %}
     <div class="spacing-y">
+        <div style="display: none;" id="sourcetwig" datatype="no filter" datasrc="picking"></div>
         {% set timeOptions = [] %}
 
         {% for time in data.requestedDeliveryDates %}

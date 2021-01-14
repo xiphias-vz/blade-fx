@@ -1,0 +1,7 @@
+@mixin shop-ui-container-checkboxes($name: '.container-checkboxes') {
+    #{$name} {
+
+    }
+}
+
+@include shop-ui-container-checkboxes();

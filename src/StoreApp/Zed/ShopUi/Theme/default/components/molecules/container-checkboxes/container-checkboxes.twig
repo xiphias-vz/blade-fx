@@ -1,0 +1,24 @@
+{% extends model('component') %}
+
+{% define config = {
+    name: 'container-checkboxes'
+} %}
+
+{% define data = {
+    listContainers: required
+} %}
+
+{% block body %}
+    <div class="grid grid--middle">
+        {% for container in data.listContainers %}
+            <div class="col col--md-12">
+                {% include atom('checkbox') with {
+                    data: {
+                        label: container.shelf_code ~ ' > ' ~ container.container_code,
+                        containerID: container.container_code
+                    },
+                } only %}
+            </div>
+        {% endfor %}
+    </div>
+{% endblock %}

@@ -19,7 +19,9 @@
     cartNote: cartNote,
     collectedAt: collectedAt,
     pickingSalesOrders: pickingSalesOrders,
-    pickedAndNotFoundItems: pickedAndNotFoundItems
+    pickedAndNotFoundItems: pickedAndNotFoundItems,
+    containerInfo: containerInfo,
+    containerNumber: containerNumber,
 } %}
 
 {% set pickedItemCount = data.collectOrder.pickedItemsCount %}
@@ -54,7 +56,9 @@
                 date: data.requestedDeliveryDate | split(' ') | first | date('d/m/Y'),
                 deadline: data.requestedDeliveryDate | split(' ') | last ~ ' ' ~ 'hour' | trans,
                 dayOfTheWeek: data.dayOfTheWeek,
-                detailPage: true
+                detailPage: true,
+                containerInfo: data.containerInfo,
+                containerNumber: data.containerNumber,
             },
             attributes: {
                 'data-order': data.collectNumber | lower,
@@ -76,7 +80,10 @@
                 pickingSalesOrders: pickingSalesOrders,
                 fullName: fullName,
                 orderReference: orderReference,
-                pickedAndNotFoundItems: pickedAndNotFoundItems
+                pickedAndNotFoundItems: pickedAndNotFoundItems,
+                containerInfo: data.containerInfo,
+                containerNumber: data.containerNumber
+
             }
         } only %}
             {% block action %}{% endblock %}
@@ -98,6 +105,48 @@
                 <input type="hidden" name="{{ embed.paramIdSalesOrder }}" value="{{ embed.idSalesOrder }}">
 
                 </div>
+                <div style="font-weight: bold">
+                   {{ embed.containerNumber }} {{ 'picker.collect-by-customer.details.containers' | trans }}
+                </div>
+                <br />
+                <div>
+                    {% include molecule('container-checkboxes') with {
+                        data: {
+                            listContainers: embed.containerInfo
+                        },
+                    } only %}
+                </div>
+                <br />
+                <div>
+                    <label class="label">{{ 'picker.collect-by-customer.details.containers' | trans }}</label>
+                    <input id="containerInput" class="input input--expand" type="text" />
+                </div>
+                <script>
+                    var input = document.getElementById('containerInput');
+                    input.addEventListener("change", function()
+                    {
+                       var inputValue = document.getElementById("containerInput").value;
+                        var id = document.getElementsByClassName('checkbox__input');
+                        var containerExists = false;
+
+                        for(i= 0; i< id.length; i++)
+                        {
+                            containerId = id[i].attributes[2].value;
+
+                            if(inputValue == containerId)
+                            {
+                                id[i].checked = true;
+                                containerExists = true;
+                                break;
+                            }
+                        }
+                        if(containerExists == false)
+                        {
+                            alert("This container is not part of the order!");
+                        }
+
+                    });
+                </script>
                 <div>
                     {% if embed.pickedAndNotFoundItems|length > 0 %}
                         {% include molecule('missing-articles') with {
@@ -108,6 +157,7 @@
                         } only %}
                     {% endif %}
                 </div>
+
                 <div>
                     {% include molecule('customer-info') with {
                         data: {
@@ -152,7 +202,7 @@
 
                                         {% block button %}
                                             <div class="text-center">
-                                                <div class="button button--small button--table button--expand button--hollow">
+                                                <div class="button button--small button--table button--expand button--hollow js-pick-products__submit-button {{ config.jsName }}__open">
                                                     {{ 'picker.collect-by-customer.order.cancel-collection' | trans }}
                                                 </div>
                                             </div>
@@ -186,10 +236,36 @@
 
                                         {% block button %}
                                             <div class="text-center">
-                                                <div class="button button--small button--table button--expand js-pick-products__submit-button {{ config.jsName }}__open">
+                                               <div class="button button--small button--table button--expand js-pick-products__submit-button"> {# Removed {{ config.jsName }}__open from class name#}
                                                     {{ 'picker.collect-by-customer.order.confirm-collection' | trans }}
                                                 </div>
                                             </div>
+                                        <script>
+                                            var submitButton = document.getElementsByClassName('button button--small button--table button--expand js-pick-products__submit-button');
+                                            submitButton[1].addEventListener('click', function()
+                                            {
+                                                var id = document.getElementsByClassName('checkbox__input');
+                                                var data;
+                                                var error = false;
+                                                for(i= 0; i< id.length; i++)
+                                                {
+                                                    data = id[i].checked;
+                                                    if(data == false)
+                                                    {
+                                                        error = true;
+                                                        break;
+                                                    }
+                                                }
+                                                if(error == false)
+                                                {
+                                                     document.querySelector(".popup-ui__overlay").style.display = "block";
+                                                    //TODO: OPEN MODAL-- MODAL WAS OPENED BY ADDING CLASS ON LINE 204 BEFORE  / THERE WAS COMMENT
+                                                }else
+                                                {
+                                                    alert("Container fehlen");
+                                                }
+                                            });
+                                        </script>
                                         {% endblock %}
                                     {% endembed %}
                                 </form>
@@ -225,10 +301,8 @@
                         </div>
                     {% endif %}
                 </div>
-
             {% endblock %}
-
-
         {% endembed %}
     </div>
+
 {% endblock content %}

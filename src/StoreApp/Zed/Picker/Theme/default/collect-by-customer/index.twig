@@ -23,6 +23,7 @@
 
 {% block content %}
     <div class="spacing-y">
+        <div style="display: none;" id="sourcetwig" datatype="ready for collection" datasrc="collect-by-customer"></div>
 
         {% set timeOptions = [] %}
 
@@ -59,7 +60,7 @@
                     'data-order': collectionOrder.collectNumber | lower,
                     'data-pickupstatus': collectionOrder.pickupStatus | lower,
                     'data-reference': collectionOrder.reference | lower,
-                    'data-time': collectionOrder.requestedDeliveryDate | split(' ') | last,
+                    'data-time': collectionOrder.requestedDeliveryDate | split(' ') | last
                 },
                 embed: {
                     collectionOrder: collectionOrder,

@@ -12,7 +12,7 @@
 
 {% define attributes = {
     type: 'checkbox',
-    container: data.containerID,
+    id: data.containerID,
 } %}
 
 {% set disabled = attributes['disabled'] | default(false) %}
@@ -23,8 +23,7 @@
 
 {% block body %}
     <label class="{{ component.renderClass(config.name ~ '__container', modifiers) }}" {{ qa('label') }}>
-        <input class="{{ config.name }}__input {% block inputClass %}{% endblock %}" {{ block('attributes') }}/>
-
+        <input  class="{{ config.name }}__input {% block inputClass %}{% endblock %}" {{ block('attributes') }}"/>
         <span class="{{ component.renderClass(config.name ~ '__box', modifiers) }}">
             {% include atom('icon') with {
                 class: component.renderClass(config.name ~ '__check', modifiers),

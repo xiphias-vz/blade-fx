@@ -19,6 +19,11 @@ export default class OrderSearch extends Component {
         this.$select = <$>$(this).find(this.selectSelector);
 
         this.mapEvents();
+        document.body.onload = function() {
+            document.querySelector(".js-order-search__input").focus();
+            var evt = new KeyboardEvent('keydown', {'key':'a'});
+            document.dispatchEvent(evt);
+        };
     }
 
     protected mapEvents(): void {
@@ -43,49 +48,58 @@ export default class OrderSearch extends Component {
     protected searchItems(): void {
         let itemsFound = 0;
         let numOfCharacters = 0;
+        let numberOfReady = 0;
+        let numberOfNotReady = 0;
+        const $inputValue = this.currentInputValue;
+        let statusType = document.querySelector("#sourcetwig").getAttribute("datatype");
 
         this.$searchItems.each((index: number, searchItem: HTMLElement) => {
-            const $inputValue = this.currentInputValue;
             const $searchItem = $(searchItem);
             const isMatchByOrder = $searchItem.data('order').indexOf($inputValue) >= 0;
             const isMatchByReference = $searchItem.data('reference').indexOf($inputValue) >= 0;
-            const isNotReadyForCollection = $searchItem.data('pickupstatus') != "ready for collection";
+            const isReadyForCollection = $searchItem.data('pickupstatus') == statusType || statusType === 'no filter';
 
-                if($inputValue==='') {
+            if($inputValue==='') {
+                if(isReadyForCollection){
                     $searchItem.show();
                     itemsFound++;
-                } else {
+                }
+                else{
+                    $searchItem.hide();
+                }
+            } else {
                 numOfCharacters = $inputValue.length;
                 $searchItem.hide();
 
                 if (isMatchByOrder || isMatchByReference) {
-                    itemsFound++;
+                    numberOfNotReady++;
+                    if(isReadyForCollection){
+                        $searchItem.show();
+                        itemsFound++;
+                    }
 
                     if(numOfCharacters === 9){
                         if(isMatchByReference){
-                            if(isNotReadyForCollection){
-                                alert("Bestellung in Bearbeitung");
+                            if(isReadyForCollection){
+                                numberOfReady++;
                             }
                         }
                     }
                     else if(numOfCharacters > 4){
                         if(isMatchByOrder){
-                            if(isNotReadyForCollection){
-                                alert("Bestellung in Bearbeitung");
+                            if(isReadyForCollection){
+                                numberOfReady++;
                             }
                         }
                     }
-
-                }
-
-                if(itemsFound != 0){
-                    $searchItem.show();
                 }
              }
-
         });
 
-        if(itemsFound === 0){
+        if(numberOfReady > 0){
+            alert("Bestellung in Bearbeitung");
+        }
+        else if(itemsFound === 0){
             alert("Unbekannte Bestellung");
         }
 

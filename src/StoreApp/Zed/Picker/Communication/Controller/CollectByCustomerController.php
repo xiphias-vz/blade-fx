@@ -228,7 +228,9 @@ class CollectByCustomerController extends AbstractController
              $value1["imageUrl"] = 1;
              array_push($notFound, $value1);
         }
-
+        $containerInfo = $this->getFactory()->getPickerBusinessFactory()->createContainerReader()->getContainersByOrderId($idSalesOrder);
+        $containerInfo = $containerInfo['picking_sales_orders'];
+        $containerNumber = count($containerInfo);
         $pickedItems = [];
         foreach ($collectOrderTransfer->getPickedItems() as $item2 => $value2) {
             array_push($pickedItems, $value2);
@@ -271,6 +273,8 @@ class CollectByCustomerController extends AbstractController
             'collectedAt' => $salesOrderTransfer->getMerchantSalesOrder()->getCollectedAt(),
             'pickingSalesOrders' => $pickingSalesOrders,
             'pickedAndNotFoundItems' => $notFound,
+            'containerInfo' => $containerInfo,
+            'containerNumber' => $containerNumber,
         ];
     }
 
@@ -736,6 +740,20 @@ class CollectByCustomerController extends AbstractController
                 $userTransfer->getMerchantReference(),
             ])
             ->setStoreStatuses([
+                OmsConfig::STATE_TYPE_FLAG_CANCELLABLE_BY_CUSTOMER,
+                OmsConfig::STATE_TYPE_FLAG_CANCELLED,
+                OmsConfig::STATE_TYPE_FLAG_SHIPPED_MAIL_AWAITS,
+                OmsConfig::EVENT_ORDER_CANCEL_BY_CUSTOMER,
+                OmsConfig::STORE_STATE_READY_FOR_PICKING,
+                OmsConfig::STORE_STATE_READY_FOR_SELECTING_SHELVES,
+                OmsConfig::STORE_STATE_READY_FOR_CASHIER_ORDER_EXPORT,
+                OmsConfig::STORE_STATE_PICKED,
+                OmsConfig::STORE_STATE_CANCELLED_NOT_IN_STOCK,
+                OmsConfig::STORE_STATE_CASHIER_ORDER_EXPORTING_FAIL,
+                OmsConfig::STORE_STATE_CASHIER_EXPORT_PROCESS,
+                OmsConfig::STORE_EVENT_CONFIRM_PICKING,
+                OmsConfig::STORE_EVENT_CONFIRM_SELECTING_CONTAINERS,
+                OmsConfig::STORE_EVENT_CANCEL_NOT_IN_STOCK,
                 OmsConfig::STORE_STATE_READY_FOR_COLLECT_BY_CUSTOMER,
             ])
             ->setOrderCountLimit(
