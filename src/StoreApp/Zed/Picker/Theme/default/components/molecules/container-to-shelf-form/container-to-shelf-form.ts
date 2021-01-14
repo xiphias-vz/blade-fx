@@ -69,7 +69,7 @@ export default class ContainerToShelfForm extends Component {
 
             let isMatchByOrder = [];
             const $searchFields = <$>$(document).find(this.searchItemsListSelector)
-            const $inputValue = (<HTMLInputElement>event.target).value;
+            const $inputValue = (<HTMLInputElement>document.getElementById('container_to_shelf_form_container_code')).value;
             $searchFields.each((index: number, searchItem: HTMLElement) => {
                 const $searchItem = $(searchItem);
                 isMatchByOrder = $searchItem.data('listofcontainers');
@@ -85,10 +85,16 @@ export default class ContainerToShelfForm extends Component {
             if (flag == 0)
             {
                 this.popUpUiError.classList.add('popup-ui-error--show');
+                this.clearInputFields();
             }
-
-            let element = document.getElementById('container_to_shelf_form_shelf_code');
-            element.focus();
+            if (flag==0){
+                let element = document.getElementById('container_to_shelf_form_container_code');
+                element.focus();
+            }
+            else{
+                let element = document.getElementById('container_to_shelf_form_shelf_code');
+                element.focus();
+            }
         }
     }
 
