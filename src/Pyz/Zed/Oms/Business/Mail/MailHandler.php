@@ -245,6 +245,18 @@ class MailHandler extends SprykerMailHandler
             'tax19' => $this->getMoneyValue($this->getSumTaxes($orderTransfer, '19')),
         ];
 
+        if ($orderTransfer->getMerchantReference() == 1004) {
+            $merchantReference = [
+                'footerAddress' => 'GLOBUS Handelshof GmbH & Co. KG <br> Neunmorgenstraße 8 – 12 <br> 66424 Homburg-Einöd <br> Amtsgericht Saarbrücken: HRB 80397 <br>',
+            ];
+            $params = array_merge($params, $merchantReference);
+        } else {
+            $merchantReference = [
+                'footerAddress' => 'GLOBUS Handelshof St. Wendel GmbH & Co. KG <br> Am Wirthembösch <br> 66606 St. Wendel <br> Amtsgericht Saarbrücken, HRA 80636 <br>',
+            ];
+            $params = array_merge($params, $merchantReference);
+        }
+
         if ($orderTransfer->getBillingAddress() !== null) {
             $addressParams = [
                 'address1' => $orderTransfer->getBillingAddress()->getAddress1() ?: ' ',
