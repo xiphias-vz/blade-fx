@@ -276,12 +276,12 @@ class MailHandler extends SprykerMailHandler
             if ($orderTransfer->getSalutation() == 'Mr') {
                 $salutationParams = [
                     'salutationPrefix' => 'Lieber',
-                    'salutation' => $orderTransfer->getSalutation(),
+                    'salutation' => 'Herr',
                 ];
             } elseif ($orderTransfer->getSalutation() == 'Ms') {
                 $salutationParams = [
                     'salutationPrefix' => 'Liebe',
-                    'salutation' => $orderTransfer->getSalutation(),
+                    'salutation' => 'Frau',
                 ];
             } elseif ($orderTransfer->getSalutation() == 'Divers') {
                 $salutationParams = [
