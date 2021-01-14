@@ -7,12 +7,12 @@ import $ from 'jquery/dist/jquery';
 export default class ContainerToShelfForm extends Component {
 
     form: HTMLFormElement;
-    //protected $searchContanierList: $;
     protected barcodePrefix: string = '/x11';
 
     protected readyCallback(): void {
         this.form = <HTMLFormElement>this.getElementsByTagName('form')[0];
-
+        this.popUpUiError = this.parentElement.previousElementSibling;
+        console.log(this.popUpUiError);
         this.form.addEventListener('keypress', (event: KeyboardEvent) => this.formKeyPressHandler(event));
         this.$isSuccess = this.querySelector('.box').getAttribute('isSuccess');
 
@@ -84,7 +84,7 @@ export default class ContainerToShelfForm extends Component {
             });
             if (flag == 0)
             {
-                alert('Container ID nicht bekannt');
+                this.popUpUiError.classList.add('popup-ui-error--show');
             }
 
             let element = document.getElementById('container_to_shelf_form_shelf_code');

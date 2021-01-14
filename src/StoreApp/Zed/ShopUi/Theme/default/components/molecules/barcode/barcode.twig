@@ -2,7 +2,7 @@
 
 {% define config = {
     name: 'barcode',
-    barcodePrefix: 97400
+    barcodePrefix: 9740
 } %}
 
 {% define data = {
@@ -12,7 +12,7 @@
 {% block body %}
     <div class="white--box">
         {% if data.orderReference is not empty %}
-            <p class="barcode--text">{{ config.barcodePrefix }}{{ data.orderReference }}</p>
+            <p class="barcode--text">*{{ config.barcodePrefix }}{{ data.orderReference }}*</p>
         {% else %}
             <p>{{ 'storeapp.picking.barcode' | trans }}</p>
         {% endif %}
