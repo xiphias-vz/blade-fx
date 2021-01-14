@@ -8,6 +8,7 @@
     isUpdated: isUpdated | default(null),
     containerId: containerId | default(null),
     shelfId: shelfId | default(null),
+    listOfContainers: listOfContainers | default(null),
 } %}
 
 {% block header %}
@@ -93,8 +94,13 @@
         <div class="padding-shelf"><span class="span-font-weight"> {{ 'storeapp.form.container-assign' | trans }} </span></div>
 
         {% include molecule('container-to-shelf-form', 'Picker') with {
+            class: 'js-order-search__item',
             data: {
-                form: data.form
+                form: data.form,
+                isSuccess: data.isSuccess,
+            },
+            attributes: {
+                'data-listOfContainers': data.listOfContainers
             },
         } only %}
     </div>

@@ -30,4 +30,9 @@ interface ContainerReaderInterface
      * @return array
      */
     public function getContainerShelfs(string $ContainerId): array;
+
+    /**
+     * @return array
+     */
+    public function getUsedContainers(): array;
 }

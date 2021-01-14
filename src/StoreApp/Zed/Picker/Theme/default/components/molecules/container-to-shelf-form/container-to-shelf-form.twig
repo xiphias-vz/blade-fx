@@ -2,15 +2,21 @@
 
 {% define config = {
     name: 'container-to-shelf-form',
+    jsName: 'js-order-search',
     tag: 'container-to-shelf-form',
 } %}
 
 {% define data = {
     form: required,
+    isSuccess: data.isSuccess
+} %}
+
+{% define attributes = {
+    'search-item-class': config.jsName ~ '__item'
 } %}
 
 {% block body %}
-    <div class="box">
+    <div class="box" isSuccess = {{ data.isSuccess }}>
         {% include molecule('form') with {
             data: {
                 form: data.form,

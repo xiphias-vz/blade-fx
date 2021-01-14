@@ -11,6 +11,7 @@ use Generated\Shared\Transfer\PickingSalesOrderCollectionTransfer;
 use Generated\Shared\Transfer\PickingSalesOrderCriteriaTransfer;
 use Generated\Shared\Transfer\PickingSalesOrderTransfer;
 use Orm\Zed\PickingSalesOrder\Persistence\PyzPickingSalesOrderQuery;
+use Orm\Zed\Sales\Persistence\Map\SpySalesOrderTableMap;
 use Spryker\Zed\Sales\Business\SalesFacadeInterface;
 use StoreApp\Zed\Picker\Business\PickerBusinessFactory;
 
@@ -119,5 +120,17 @@ class ContainerReader implements ContainerReaderInterface
     public function getContainerShelfs(string $ContainerId): array
     {
         return $this->pyzPickingSalesOrderQuery->findByContainerCode($ContainerId)->toArray();
+    }
+
+    /**
+     * @return array
+     */
+    public function getUsedContainers(): array
+    {
+        return $this->pyzPickingSalesOrderQuery
+            ->joinSpySalesOrder()
+            ->where(SpySalesOrderTableMap::COL_INVOICE_REFERENCE . ' is null')
+            ->find()
+            ->toArray();
     }
 }

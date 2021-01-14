@@ -35,6 +35,7 @@ class ContainerToShelfController extends AbstractController
     {
         $containerToShelfForm = $this->getFactory()->createContainerToShelfForm();
         $containerToShelfForm->handleRequest($request);
+        $listOfContainers = $this->getFactory()->getPickerBusinessFactory()->createContainerReader()->getUsedContainers();
 
         if ($containerToShelfForm->isSubmitted() && $containerToShelfForm->isValid()) {
             $dataInputForm = $containerToShelfForm->getData();
@@ -80,6 +81,7 @@ class ContainerToShelfController extends AbstractController
             'containerToShelfForm' => $containerToShelfForm->createView(),
             'merchant' => $this->getMerchantFromRequest($request),
             'activities' => PickerConfig::ACTIVITIES,
+            'listOfContainers' => json_encode($listOfContainers),
         ];
     }
 
