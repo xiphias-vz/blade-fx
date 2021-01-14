@@ -1275,7 +1275,7 @@ mail.newsletter.unsubscribed.subject,"Schade, dass du uns verlässt",de_DE
 mail.newsletter.unsubscribed.subject,Sorry to see you go…,en_US
 mail.newsletter.unsubscribed.text,"Your email address has been unsubscribed from newsletter, but you can always manage your subscription in your customer profile.",en_US
 mail.newsletter.unsubscribed.text,Deine E-Mailadresse wurde vom Newsletter abgemeldet. Du kannst dich jeder Zeit wieder über dein Kundenkonto anmelden.,de_DE
-mail.order.confirmation.subject,Vielen Dank für deine Bestellung in unserem Shop!,de_DE
+mail.order.confirmation.subject,Vielen Dank für Ihre Bestellung in unserem Shop!,de_DE
 mail.order.confirmation.subject,Thank you for your order in our shop!,en_US
 mail.order.confirmation.salutation,Hallo,de_DE
 mail.order.confirmation.salutation,Hello,en_US
