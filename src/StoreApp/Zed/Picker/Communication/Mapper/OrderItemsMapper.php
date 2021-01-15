@@ -32,7 +32,10 @@ class OrderItemsMapper implements OrderItemsMapperInterface
                 continue;
             }
 
+            // In case weight is given, we keep only one of requested items
             if (isset($skuToWeightMap[$itemSku])) {
+                $skuToPickedQuantityMap[$itemSku] = 1;
+
                 unset($skuToWeightMap[$itemSku]);
             }
 

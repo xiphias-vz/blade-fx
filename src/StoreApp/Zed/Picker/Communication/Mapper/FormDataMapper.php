@@ -122,7 +122,6 @@ class FormDataMapper implements FormDataMapperInterface
      * @param \Generated\Shared\Transfer\OrderTransfer $salesOrderTransfer
      * @param array $selectedIdSalesOrderItems
      * @param string $fieldNamePrefix
-     * @param string $fieldItemsSkuPrefix
      *
      * @return \Generated\Shared\Transfer\OrderChangeRequestTransfer
      */
@@ -130,45 +129,33 @@ class FormDataMapper implements FormDataMapperInterface
         array $formData,
         OrderTransfer $salesOrderTransfer,
         array $selectedIdSalesOrderItems,
-        string $fieldNamePrefix,
-        string $fieldItemsSkuPrefix
+        string $fieldNamePrefix
     ): OrderChangeRequestTransfer {
         $orderChangeRequest = new OrderChangeRequestTransfer();
         $orderChangeRequest->setFkSalesOrder($salesOrderTransfer->getIdSalesOrder());
 
-        $patternWeight = '/' . $fieldNamePrefix . '(.+)/';
-        $patternQuantity = '/' . $fieldItemsSkuPrefix . '(.+)/';
+        $pattern = '/' . $fieldNamePrefix . '(.+)/';
 
         foreach ($formData as $fieldName => $fieldValue) {
-            if (preg_match($patternWeight, $fieldName, $matchesWeight) !== false && !empty($matchesWeight)) {
-                $orderItemChangeRequest = new OrderItemChangeRequestTransfer();
-
-                $sku = $matchesWeight[1];
-                $newWeight = $fieldValue;
-                $itemTransfer = $this->findItemInOrder($salesOrderTransfer, $sku, $selectedIdSalesOrderItems);
-                $newPrice = round($newWeight * $itemTransfer->getPricePerKg() / 1000);
-                $orderItemChangeRequest->setQuantity($itemTransfer->getQuantity());
-                $orderItemChangeRequest->setPrice($newPrice);
-                $orderItemChangeRequest->setNewWeight($newWeight);
-                $orderItemChangeRequest->setIdSalesOrderItem($itemTransfer->getIdSalesOrderItem());
-                $orderChangeRequest->addOrderItemChangeRequest($orderItemChangeRequest);
+            if (preg_match($pattern, $fieldName, $matches) === false || empty($matches)) {
+                continue;
             }
 
-            if (preg_match($patternQuantity, $fieldName, $matchesQuantity) !== false && !empty($matchesQuantity)) {
-                $orderItemChangeRequest = new OrderItemChangeRequestTransfer();
+            $orderItemChangeRequest = new OrderItemChangeRequestTransfer();
 
-                $sku = $matchesQuantity[1];
-                $newWeight = $fieldValue;
-                $itemTransfer = $this->findItemInOrder($salesOrderTransfer, $sku, $selectedIdSalesOrderItems);
-                $newPrice = round($newWeight * $itemTransfer->getPricePerKg() / 1000);
-                $orderItemChangeRequest->setQuantity($itemTransfer->getQuantity());
-                $orderItemChangeRequest->setPrice($newPrice);
-                $orderItemChangeRequest->setNewWeight($newWeight);
-                $orderItemChangeRequest->setIdSalesOrderItem($itemTransfer->getIdSalesOrderItem());
-                $orderChangeRequest->addOrderItemChangeRequest($orderItemChangeRequest);
-            }
+            $sku = $matches[1];
+            $newWeight = $fieldValue;
 
-            continue;
+            $itemTransfer = $this->findItemInOrder($salesOrderTransfer, $sku, $selectedIdSalesOrderItems);
+
+            $newPrice = round($newWeight * $itemTransfer->getPricePerKg() / 1000);
+
+            $orderItemChangeRequest->setQuantity($itemTransfer->getQuantity());
+            $orderItemChangeRequest->setPrice($newPrice);
+            $orderItemChangeRequest->setNewWeight($newWeight);
+            $orderItemChangeRequest->setIdSalesOrderItem($itemTransfer->getIdSalesOrderItem());
+
+            $orderChangeRequest->addOrderItemChangeRequest($orderItemChangeRequest);
         }
 
         return $orderChangeRequest;
@@ -208,6 +195,7 @@ class FormDataMapper implements FormDataMapperInterface
         if (!$selectedItemTransfer) {
             throw new InvalidArgumentException('No item found for sku ' . $sku);
         }
+
         $selectedItemTransfer->setQuantity($sumQuantity);
         $selectedItemTransfer->setSumGrossPrice($sumPrice);
         $selectedItemTransfer->setWeightPerUnit($sumWeightPerUnit);
