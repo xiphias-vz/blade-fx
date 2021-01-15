@@ -136,27 +136,39 @@ class FormDataMapper implements FormDataMapperInterface
         $orderChangeRequest = new OrderChangeRequestTransfer();
         $orderChangeRequest->setFkSalesOrder($salesOrderTransfer->getIdSalesOrder());
 
-        $pattern = '/' . $fieldNamePrefix . '(.+)/';
+        $patternWeight = '/' . $fieldNamePrefix . '(.+)/';
         $patternQuantity = '/' . $fieldItemsSkuPrefix . '(.+)/';
 
         foreach ($formData as $fieldName => $fieldValue) {
-            if (preg_match($pattern, $fieldName, $matches) === false || empty($matches) ||
-                preg_match($patternQuantity, $fieldName, $matches) === false || empty($matches)
-            ) {
-                continue;
+            if (preg_match($patternWeight, $fieldName, $matchesWeight) !== false && !empty($matchesWeight)) {
+                $orderItemChangeRequest = new OrderItemChangeRequestTransfer();
+
+                $sku = $matchesWeight[1];
+                $newWeight = $fieldValue;
+                $itemTransfer = $this->findItemInOrder($salesOrderTransfer, $sku, $selectedIdSalesOrderItems);
+                $newPrice = round($newWeight * $itemTransfer->getPricePerKg() / 1000);
+                $orderItemChangeRequest->setQuantity($itemTransfer->getQuantity());
+                $orderItemChangeRequest->setPrice($newPrice);
+                $orderItemChangeRequest->setNewWeight($newWeight);
+                $orderItemChangeRequest->setIdSalesOrderItem($itemTransfer->getIdSalesOrderItem());
+                $orderChangeRequest->addOrderItemChangeRequest($orderItemChangeRequest);
             }
 
-            $orderItemChangeRequest = new OrderItemChangeRequestTransfer();
+            if (preg_match($patternQuantity, $fieldName, $matchesQuantity) !== false && !empty($matchesQuantity)) {
+                $orderItemChangeRequest = new OrderItemChangeRequestTransfer();
 
-             $sku = $matches[1];
-             $newWeight = $fieldValue;
-             $itemTransfer = $this->findItemInOrder($salesOrderTransfer, $sku, $selectedIdSalesOrderItems);
-             $newPrice = round($newWeight * $itemTransfer->getPricePerKg() / 1000);
-             $orderItemChangeRequest->setQuantity($itemTransfer->getQuantity());
-             $orderItemChangeRequest->setPrice($newPrice);
-             $orderItemChangeRequest->setNewWeight($newWeight);
-             $orderItemChangeRequest->setIdSalesOrderItem($itemTransfer->getIdSalesOrderItem());
-             $orderChangeRequest->addOrderItemChangeRequest($orderItemChangeRequest);
+                $sku = $matchesQuantity[1];
+                $newWeight = $fieldValue;
+                $itemTransfer = $this->findItemInOrder($salesOrderTransfer, $sku, $selectedIdSalesOrderItems);
+                $newPrice = round($newWeight * $itemTransfer->getPricePerKg() / 1000);
+                $orderItemChangeRequest->setQuantity($itemTransfer->getQuantity());
+                $orderItemChangeRequest->setPrice($newPrice);
+                $orderItemChangeRequest->setNewWeight($newWeight);
+                $orderItemChangeRequest->setIdSalesOrderItem($itemTransfer->getIdSalesOrderItem());
+                $orderChangeRequest->addOrderItemChangeRequest($orderItemChangeRequest);
+            }
+
+            continue;
         }
 
         return $orderChangeRequest;
