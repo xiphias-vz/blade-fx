@@ -38,7 +38,7 @@
                 {% block popupActions %}
                     {% block confirmButton %}
                         {% if data.buttons.submit.isButton %}
-                            <button type="submit" class="button button--expand {{ data.buttons.submit.additionalClass }} {{ config.jsName }}__submit">
+                            <button type="submit" class="button button--expand {{ data.buttons.submit.additionalClass }} {{ config.jsName }}__submit submit-confirmation">
                                 {{ data.buttons.submit.title }}
                             </button>
                         {% else %}
@@ -47,13 +47,11 @@
                             </a>
                         {% endif %}
                     {% endblock %}
-                    <div class="text-center spacing-top spacing-top--big">
                         {% block cancelButton %}
-                            <a href="#" class="link link--close {{ config.jsName }}__close">
+                            <a href="#" class="link link--close text-center spacing-top spacing-top--big cancel-confirmation {{ config.jsName }}__close">
                                 {{ data.buttons.cancel.title }}
                             </a>
                         {% endblock %}
-                    </div>
                 {% endblock %}
             </div>
         </div>

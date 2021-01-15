@@ -1,0 +1,15 @@
+{% extends model('component') %}
+
+{% define config = {
+    name: 'store-app-label',
+} %}
+
+{% define data = {
+    text: ''
+} %}
+
+{% block body %}
+    {{ data.text | nl2br }}
+{% endblock %}
+
+

@@ -1,0 +1,65 @@
+@mixin shop-ui-app-label($name: '.store-app-label') {
+    #{$name} {
+        display: inline-block;
+        padding: 0;
+        font-size: rem(14);
+        line-height: 1;
+        word-break: break-word;
+        border-radius: rem(8);
+        border: rem(1) solid transparent;
+
+
+        &--not-found {
+            color: $setting-color-brown-lightDark;
+        }
+
+        &--picked {
+            color: $setting-color-green;
+        }
+
+
+        &--overal {
+            background: $setting-color-blue-light-alpha-1;
+        }
+
+        &--product {
+            min-width: rem(106);
+            padding: rem(4) rem(2) rem(6);
+        }
+
+        &--delivered {
+            background: map-get($setting-color-actions, success);
+            color: $setting-color-white;
+        }
+
+        &--expand {
+            width: 100%;
+            text-align: center;
+        }
+
+        &--order {
+            border-color: $setting-color-gray-3;
+            color: $setting-color-gray-5;
+            background: $setting-color-gray-2;
+        }
+
+        &--success {
+            background: map-get($setting-color-actions, success);
+            color: $setting-color-white;
+        }
+
+        &--info {
+            background: $setting-color-gray-2;
+            color: $setting-color-gray-6;
+        }
+
+        &--reference {
+            padding: rem(5) rem(6) rem(7);
+            border: rem(1) solid $setting-color-gray-4;
+            color: $setting-color-gray-4;
+            background: $setting-color-white;
+        }
+    }
+}
+
+@include shop-ui-app-label();

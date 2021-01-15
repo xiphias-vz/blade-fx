@@ -27,8 +27,8 @@ $setting-color-blue-info: #b3e4f8;
 
 $setting-color-green: #1bbea0;
 $setting-color-green-alpha-1: rgba($setting-color-green, 0.6);
-
 $setting-color-white: #fff;
+$setting-color-white-1:rgb(247,247,247);
 $setting-color-gray-1: #f5f5f5;
 $setting-color-gray-2: #ededed;
 $setting-color-gray-3: #dedede;
@@ -47,6 +47,7 @@ $setting-color-pickingApp-lighterGreen: #B8DCC3;
 $setting-color-pickingApp-darkerGreen: #1BBEA0;
 $setting-color-pickingApp-lightOrange: $setting-color-globus-lightOrange;
 
+
 //$setting-color-green: #1e8813;
 //Picking App colors
 $setting-color-pickingApp-lighterGreen: #B8DCC3;
@@ -55,6 +56,7 @@ $setting-color-pickingApp-lightOrange: $setting-color-globus-lightOrange;
 $setting-color-red: #fe4e4e;
 
 $setting-color-brown: #d55400;
+$setting-color-brown-lightDark: rgb(205, 128, 108);
 
 // Main colors
 $setting-color-main: $setting-color-globus-lightOrange;

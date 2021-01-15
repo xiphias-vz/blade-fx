@@ -2,6 +2,11 @@
     #{$name} {
         &__action-wrapper {
             min-height: rem(56);
+
+            .popup-ui__content {
+                padding:0px;
+                margin-bottom: 2.7rem;
+            }
         }
 
         &__action {

@@ -117,53 +117,93 @@
                     },
                     embed: {
                         collectNumber: data.collectNumber,
+                        itemsCount: data.itemsCount,
                     },
                 } only %}
                     {% block content %}
                         <div class="grid grid--center">
-                            <div class="col--sm-8">
-                                {% embed atom('app-label') with {
-                                    class: 'spacing-right',
-                                    modifiers: ['picked', 'count'],
-                                } only %}
-                                    {% block body %}
-                                        <span class="js-pick-products__picked">0</span>
-                                    {% endblock %}
-                                {% endembed %}
-                                {{ 'picked' | trans }}
+                            <div class="total-articles grid">
+                                <p class="total-amount">{{ embed.itemsCount }}</p>
+                                <p>{{ 'Artikel' | trans }}</p>
                             </div>
                         </div>
-                        <div class="grid grid--center spacing-y">
-                            <div class="col--sm-8">
-                                {% embed atom('app-label') with {
-                                    class: 'spacing-right',
-                                    modifiers: ['not-found', 'count'],
-                                } only %}
-                                    {% block body %}
-                                        <span class="js-pick-products__not-picked">0</span>
-                                    {% endblock %}
-                                {% endembed %}
-                                {{ 'not found' | trans }}
+                        <div class="store-app-label-holder">
+                            <div class="grid grid--center spacing-y-label">
+                                <div class="col--sm-12 grid">
+                                    <table>
+                                        <tr>
+                                            <td class="item-quantity">
+                                                {% embed atom('store-app-label') with {
+                                                    modifiers: ['picked', 'count'],
+                                                } only %}
+                                                    {% block body %}
+                                                        <span class="js-pick-products__picked">0</span>
+                                                    {% endblock %}
+                                                {% endembed %}
+                                            </td>
+                                            <td>
+                                                <div class="label-text-green">
+                                                    {{ 'picked' | trans }}
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </div>
                             </div>
+                            <div class="grid grid--center spacing-y-label">
+                                <div class="col--sm-12 grid">
+                                    <table>
+                                        <tr>
+                                            <td class="item-quantity">
+                                                {% embed atom('store-app-label') with {
+                                                    modifiers: ['not-found', 'count'],
+                                                } only %}
+                                                    {% block body %}
+                                                        <span class="js-pick-products__not-picked">0</span>
+                                                    {% endblock %}
+                                                {% endembed %}
+                                            </td>
+                                            <td>
+                                                <div class="label-text-brown">
+                                                    {{ 'not found' | trans }}
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </table>
+
+                                </div>
+                            </div>
+                            <div class="grid grid--center spacing-bottom spacing-bottom--big">
+                                <div class="col--sm-12 grid">
+                                    <table>
+                                        <tr>
+                                            <td class="item-quantity">
+                                                {% embed atom('store-app-label') with {
+                                                    modifiers: ['bordered', 'count'],
+                                                } only %}
+                                                    {% block body %}
+                                                        <span class="js-pick-products__bags">1</span>
+                                                    {% endblock %}
+                                                {% endembed %}
+                                            </td>
+                                            <td>
+                                                <div class="label-text">
+                                                    {{ 'bags' | trans }}
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </div>
+
                         </div>
-                        <div class="grid grid--center spacing-bottom spacing-bottom--big">
-                            <div class="col--sm-8">
-                                {% embed atom('app-label') with {
-                                    class: 'spacing-right',
-                                    modifiers: ['bordered', 'count'],
-                                } only %}
-                                    {% block body %}
-                                        <span class="js-pick-products__bags">1</span>
-                                    {% endblock %}
-                                {% endembed %}
-                                {{ 'bags' | trans }}
-                            </div>
+                        <div class="horizontal-spacing">
+                            {% if embed.collectNumber %}
+                                <div class="text-center spacing-top--big">
+                                    <p class="text-bold spacing-bottom">{{ 'Collect Number' | trans }}: {{ embed.collectNumber }}</p>
+                                </div>
+                            {% endif %}
                         </div>
-                        {% if embed.collectNumber %}
-                            <div class="text-center spacing-top--big">
-                                <p class="text-bold spacing-bottom">{{ 'Collect Number' | trans }}: {{ embed.collectNumber }}</p>
-                            </div>
-                        {% endif %}
                     {% endblock %}
 
                     {% block button %}

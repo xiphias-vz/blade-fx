@@ -29,11 +29,42 @@ $setting-popup-spacing-y: rem(16);
             flex-grow: 1;
             max-width: rem(320);
             background: $setting-color-white;
-            border-radius: rem(8);
+            border-radius: rem(24);
+
+            .store-app-label-holder {
+                background: $setting-color-white-1;
+
+                .spacing-y-label {
+                    margin-top: 0.2rem;
+                    margin-bottom: 0.2rem;
+                }
+                table {
+                    .item-quantity {
+                        width: 60px;
+                        text-align: right;
+                    }
+                }
+
+                .label-text{
+                    padding-left: 5px;
+                }
+
+                .label-text-green {
+                    color:$setting-color-green;
+                    padding-left: 5px;
+                }
+                .label-text-brown {
+                    color:$setting-color-brown;
+                    padding-left: 5px;
+                }
+            }
+            .horizontal-spacing {
+                margin-bottom: 15px;
+            }
         }
 
         &__title {
-            padding: $setting-popup-spacing-y $setting-popup-spacing-x;
+            padding: 0.9rem 1.5rem 0.5rem;
             font: fw(bold) rem(18) $setting-font-family-additional;
             text-align: center;
             border-bottom: rem(1) solid $setting-color-gray-3;
@@ -41,6 +72,39 @@ $setting-popup-spacing-y: rem(16);
 
         &__content {
             padding: $setting-popup-spacing-y $setting-popup-spacing-x;
+
+            .horizontal-spacing {
+               p {
+                   padding: 0px 35px;
+                   text-align: left;
+               }
+            }
+            .total-articles {
+                width: 100%;
+                padding:0.5rem 2.7rem 0rem;
+                font-weight: bold;
+                font-size: 18px;
+                align-items: center;
+
+                .total-amount {
+                    padding: 0px 5px 0px 9px;
+                }
+            }
+
+            .submit-confirmation {
+                width: 80%;
+                margin: 0px auto;
+                display: block;
+            }
+
+            .cancel-confirmation {
+                padding: 10px;
+                border: 1px solid $setting-color-green;
+                display: block;
+                width: 80%;
+                margin: 10px auto;
+                border-radius: 0.5rem;
+            }
         }
     }
 }
