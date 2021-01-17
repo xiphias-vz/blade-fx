@@ -57,20 +57,6 @@
 
 
                     {% for cartItem in data.cartItems %}
-                        <script type="text/javascript">
-                            window.shoppingCartItem = window.shoppingCartItem || [];
-                            window.shoppingCartItem.push({
-                                'item':
-                                    [{
-                                        'item_id': '{{ cartItem.idProductAbstract }}',
-                                        'item_sku': '{{ cartItem.sku }}',
-                                        'item_name': '{{ cartItem.name | escape('js') }}',
-                                        'item_unit_gross_price': '{{ cartItem.unitGrossPrice is defined ?  cartItem.unitGrossPrice / 100 : null  }}',
-                                        'item_sum_gross_price': '{{ cartItem.sumGrossPrice is defined ?  cartItem.sumGrossPrice / 100 : null  }}',
-                                        'item_quantity': '{{ cartItem.quantity }}',
-                                    }],
-                            });
-                        </script>
                         {% include molecule('product-card-item') with {
                             data: {
                                 product: data.cart,
@@ -78,6 +64,42 @@
                                 attributes: data.attributes[cartItem.sku] | default([]),
                             },
                         } only %}
+                        <script>
+                            window.shoppingCartList = window.shoppingCartList || [];
+                            window.shoppingCartList.push({
+                                'name': '{{ cartItem.name | escape('js') }}',
+                                'id': '{{ cartItem.id }}',
+                                'sku': '{{ cartItem.sku }}',
+                                'price': '{{ cartItem.unitGrossPrice is defined ? cartItem.unitGrossPrice / 100 : null }}',
+                                'url' : '{{ cartItem.url }}',
+                                'quantity': '{{ cartItem.quantity }}'
+                            });
+
+                            function beginCheckout(actionUrl)
+                            {
+                                window.dataLayer = window.dataLayer || [];
+                                var products =  window.shoppingCartList;
+                                window.dataLayer.push({
+                                    'event': 'eec.checkout',
+                                    'ecommerce':
+                                        {
+                                            'checkout':
+                                                {
+                                                    'actionField':
+                                                        {
+                                                            'step': '1'
+                                                        }
+                                                },
+                                            products,
+                                        },
+                                    'eventCallback': function()
+                                    {
+                                        document.location = actionUrl;
+                                    }
+                                });
+                            }
+
+                        </script>
                     {% endfor %}
 
                     {% widget 'CartDiscountPromotionProductListWidget' args [data.cart, data.request] only %}{% endwidget %}
@@ -101,29 +123,4 @@
         </div>
     {% endif %}
     {% widget 'UpSellingProductsWidget' args [data.cart] only %}{% endwidget %}
-    <script type="text/javascript">
-        window.dataLayer = window.dataLayer || [];
-        var items = window.shoppingCartItem;
-        if( items != null)
-        {
-            window.dataLayer.push({
-                'event:':'shopping_cart',
-                'ecommerce':
-                    {
-                        items
-                    }
-            });
-        }
-
-        function beginCheckout()
-        {
-            window.dataLayer.push({
-                'event:':'begin_checkout',
-                'ecommerce':
-                    {
-                        items
-                    }
-            });
-        }
-    </script>
 {% endblock %}

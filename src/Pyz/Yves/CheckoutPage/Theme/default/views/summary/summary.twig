@@ -11,7 +11,6 @@
 
 {% block content %}
     {% set isGiftCardExists = null %}
-
     {% for shipmentGroup in data.shipmentGroups %}
         <article class="checkout-block checkout-block--summary grid grid--indent">
             <div class="col col--spaced-lg col--sm-12 col--xl-8">
@@ -44,18 +43,6 @@
                     {% for item in shipmentGroup.cartItems %}
                         {% set cartItem = item.bundleProduct ?? item %}
                         {% set isGiftCardExists = cartItem.giftCardMetadata is not null and cartItem.giftCardMetadata.isGiftCard %}
-                       <script type="text/javascript">
-                           window.checkoutItems = window.checkoutItems || [];
-                           window.checkoutItems.push({
-                               'item':
-                               [{
-                                   'item_id': '{{ cartItem.id }}',
-                                   'item_sku': '{{ cartItem.sku }}',
-                                   'item_url': '{{ cartItem.url  }}',
-                                   'item_quantity': '{{ cartItem.quantity }}',
-                               }],
-                           });
-                       </script>
                         {% embed molecule('product-card-item') with {
                             modifiers: ['summary'],
                             data: {
@@ -186,18 +173,4 @@
             </div>
         </article>
     {% endfor %}
-    <script type="text/javascript">
-        window.dataLayer = window.dataLayer || [];
-        var items = window.checkoutItems;
-        if(items != null)
-        {
-            window.dataLayer.push({
-                'event': 'checkout',
-                'ecommerce':
-                    {
-                        items
-                    }
-            });
-        }
-    </script>
 {% endblock %}

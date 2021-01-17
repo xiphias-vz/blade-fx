@@ -160,7 +160,9 @@
                                         <input type="hidden" name="token" value="{{ csrf_token('change-cart') }}">
                                         <button
                                             class="{{ component.renderClass(config.name ~ '__remove', modifiers) }} link link--darkest link--edit"
-                                            value="{{- 'product_cart_item.remove' | trans | raw -}}">
+                                            value="{{- 'product_cart_item.remove' | trans | raw -}}"
+                                            onclick="productRemoveFromCart('{{ data.productItem.id }}','{{ data.productItem.name }}','{{ data.productItem.sku }}','{{ data.productItem.quantity }}','{{ data.productItem.unitGrossPrice is defined ? data.productItem.unitGrossPrice / 100 : null }}')">
+
                                             {% include atom('icon') with {
                                                 data: {
                                                     name: 'bin',
@@ -169,6 +171,27 @@
                                         </button>
                                     </form>
                                 {% endif %}
+                                <script>
+                                    function productRemoveFromCart(productId, productName, productSku, productQuantity,productPrice)
+                                    {
+                                        window.dataLayer = window.dataLayer || [];
+                                        window.dataLayer.push({
+                                            'event': 'eec.removeFromCart',
+                                            'ecommerce':{
+                                                'click':{
+                                                    'actionField': {'list':'ShoppingCart'},
+                                                    'products': [{
+                                                        'id': productId,
+                                                        'name': productName,
+                                                        'sku': productSku,
+                                                        'quantity': productQuantity,
+                                                        'price': productPrice,
+                                                    }]
+                                                }
+                                            },
+                                        });
+                                    }
+                                </script>
                             {% endblock %}
                         </div>
                     {% endblock %}

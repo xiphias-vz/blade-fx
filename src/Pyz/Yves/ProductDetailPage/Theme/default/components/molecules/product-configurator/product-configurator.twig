@@ -44,17 +44,18 @@
     <script type="text/javascript">
             window.dataLayer = window.dataLayer || [];
             window.dataLayer.push({
-                'event': 'view_item',
+                'event':'eec.PDP',
                 'ecommerce':
                     {
-                        'items':[{
-                            'item_id': '{{ data.product.idProductAbstract }}',
-                            'item_name': '{{ data.product.name }}',
-                            'item_sku': '{{ data.product.sku }}',
-                            'item_url': '{{ data.product.url }}',
-                            'product_price': '{{ data.product.price / 100 }}',
-                            'product_currency': '{{ data.product.currentProductPrice.currency.code }}',
-                        }],
+                        'detail':
+                            {
+                                'products':[{
+                                    'name': '{{ data.product.name }}',
+                                    'id': '{{ data.product.idProductAbstract }}',
+                                    'sku': '{{ data.product.sku }}',
+                                    'list': 'PDP',
+                                }],
+                            },
                     }
             });
     </script>

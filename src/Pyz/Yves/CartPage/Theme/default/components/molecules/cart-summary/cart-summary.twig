@@ -77,8 +77,8 @@
 
     {% if canProceedToCheckout %}
         <a class="button button--expand"
-           onclick="beginCheckout()"
-           href="{{ url('checkout-index') }}" {{ qa('cart-go-to-checkout') }}>
+           onclick="beginCheckout('{{ url('checkout-index') }}')"
+           href="#" {{ qa('cart-go-to-checkout') }}>
             {{ 'cart.checkout' | trans }}
         </a>
     {% endif %}

@@ -44,6 +44,9 @@ class SuccessStep extends SprykerSuccessStep
         $data['requestedDeliveryDate'] = $this->copyQuoteTransfer->getShipment()->getRequestedDeliveryDate();
         $data['deliveryMethodKey'] = $this->copyQuoteTransfer->getShipment()->getMethod()->getShipmentMethodKey();
         $data['orderReference'] = $this->copyQuoteTransfer->getOrderReference();
+        $data['items'] = $this->copyQuoteTransfer->getItems();
+        $data['totals'] = $this->copyQuoteTransfer->getTotals();
+        $data['payments'] = $this->copyQuoteTransfer->getPayments();
 
         return $data;
     }

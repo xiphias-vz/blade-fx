@@ -6,7 +6,10 @@
     collectNumber: '',
     requestedDeliveryDate: '',
     deliveryMethodKey: '',
-    orderReference:''
+    orderReference:'',
+    items: '',
+    totals: '',
+    payments: '',
 } %}
 
 {%- block class -%}{{ parent() }} page-layout-main--success-page{%- endblock -%}
@@ -34,4 +37,27 @@
             {% endif %}
         </div>
     </div>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        window.dataLayer.push({
+            'event':'eec.purchase',
+            'ecommerce':
+                {
+                    'currencyCode': 'EUR',
+                    'purchase':
+                        {
+                            'actionField': {
+                                'id': '{{ data.orderReference }}',
+                                'subtotal': '{{ data.totals.subtotal is defined ? data.totals.subtotal / 100 : null }}',
+                                'expenseTotal': '{{ data.totals.expenseTotal is defined ? data.totals.expenseTotal / 100 : null }}',
+                                'priceToPay': '{{ data.totals.priceToPay is defined ? data.totals.priceToPay / 100 : null  }}',
+                                'grandTotal': '{{ data.totals.grandTotal is defined ? data.totals.grandTotal / 100 : null  }}',
+                                'discountTotal' : '{{ data.totals.discountTotal is defined ? data.totals.discountTotal / 100 : null }}',
+                                'netTotal' : '{{ data.totals.netTotal is defined ? data.totals.netTotal / 100 : null }}',
+                                'refundTotal' : '{{ data.totals.refundTotal is defined ? data.totals.refundTotal / 100 : null }}',
+                            },
+                        }
+                }
+        });
+    </script>
 {% endblock %}
