@@ -12,26 +12,24 @@ export default class ContainerToShelfForm extends Component {
     protected readyCallback(): void {
         this.form = <HTMLFormElement>this.getElementsByTagName('form')[0];
         this.popUpUiError = this.parentElement.previousElementSibling;
-        console.log(this.popUpUiError);
-        this.form.addEventListener('keypress', (event: KeyboardEvent) => this.formKeyPressHandler(event));
-        this.$isSuccess = this.querySelector('.box').getAttribute('isSuccess');
 
-        if(this.$isSuccess == '1') {
+        let isTestSucces = document.querySelector('.js-is-succes').getAttribute('isSuccess');
+        if (isTestSucces) {
             this.clearInputFields();
         }
+        this.form.addEventListener('keypress', (event: KeyboardEvent) => this.formKeyPressHandler(event));
+
         this.mapEventsForInputs();
         this.focusFirstContainerID();
     }
-
-    // protected init(): void {
-    //     this.$searchContanierList = <$>$(document).find(this.searchItemsListSelector);
-    // }
 
     protected clearInputFields() {
         let formItems = <HTMLElement[]> Array.from(document.getElementsByTagName('input'));
 
         formItems.forEach((element: HTMLInputElement) => {
-            element.value = "";
+            if (element.id != 'container_to_shelf_form__token'){
+                element.value = "";
+            }
         });
     }
 
@@ -40,6 +38,9 @@ export default class ContainerToShelfForm extends Component {
 
         formItems.forEach((element: HTMLInputElement) => {
             element.addEventListener('input', (event: KeyboardEvent) => this.onFormItemChange(event));
+            if (element.id == 'container_to_shelf_form_container_code'){
+                element.addEventListener('focusout', (event: FocusEvent) => this.formFocusOutHandler(event));
+            }
         });
     }
 
@@ -55,11 +56,12 @@ export default class ContainerToShelfForm extends Component {
         let reg = new RegExp (/^[A-Z]+$/g);
         let regTest = reg.test(firstChar);
 
-        if((<HTMLInputElement>event.target).id == 'container_to_shelf_form_shelf_code' && !regTest)
+        if(replacedValue != "" && (<HTMLInputElement>event.target).id == 'container_to_shelf_form_shelf_code' && !regTest)
         {
             (<HTMLInputElement>event.target).value = "";
             alert('Der erste Buchstabe muss Großbuchstaben sein');
         }
+
     }
 
     protected formKeyPressHandler(event: KeyboardEvent): void {
@@ -67,31 +69,45 @@ export default class ContainerToShelfForm extends Component {
         if (event.key == 'Enter') {
             event.preventDefault();
 
-            let isMatchByOrder = [];
-            const $searchFields = <$>$(document).find(this.searchItemsListSelector)
-            const $inputValue = (<HTMLInputElement>document.getElementById('container_to_shelf_form_container_code')).value;
+            let element = document.getElementById('container_to_shelf_form_shelf_code');
+            element.focus();
+
+            this.checkContainerId();
+        }
+    }
+
+    protected formFocusOutHandler(event: FocusEvent): void {
+        //event to trigger check Container Id code on focus out
+        if (event.type == 'focusout' && event.currentTarget.id == 'container_to_shelf_form_container_code'){
+            this.checkContainerId();
+        }
+    }
+
+    protected checkContainerId(): void
+    {
+        let isMatchByOrder = [];
+        const $searchFields = <$>$(document).find(this.searchItemsListSelector);
+        const $inputValue = (<HTMLInputElement>document.getElementById('container_to_shelf_form_container_code')).value;
+        if ($inputValue != "") {
             $searchFields.each((index: number, searchItem: HTMLElement) => {
                 const $searchItem = $(searchItem);
                 isMatchByOrder = $searchItem.data('listofcontainers');
             });
             let flag = 0;
-            $.each(isMatchByOrder, function(i, val){
-                if (val['ContainerCode'] ==  $inputValue)
-                {
+            $.each(isMatchByOrder, function(i, val) {
+                if (val['ContainerCode'] == $inputValue && $inputValue != "") {
                     flag = 1;
                     return;
                 }
             });
-            if (flag == 0)
-            {
+            if (flag == 0) {
                 this.popUpUiError.classList.add('popup-ui-error--show');
                 this.clearInputFields();
             }
-            if (flag==0){
+            if (flag == 0) {
                 let element = document.getElementById('container_to_shelf_form_container_code');
                 element.focus();
-            }
-            else{
+            } else {
                 let element = document.getElementById('container_to_shelf_form_shelf_code');
                 element.focus();
             }
@@ -102,6 +118,10 @@ export default class ContainerToShelfForm extends Component {
     {
         let element = document.getElementById('container_to_shelf_form_container_code');
         element.focus();
+    }
+
+    get getIsSuccess(): string {
+        return `.${this.getAttribute('isSuccess')}`;
     }
 
     get searchItemsListSelector(): string {

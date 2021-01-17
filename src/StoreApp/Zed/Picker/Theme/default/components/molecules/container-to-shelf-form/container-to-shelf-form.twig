@@ -16,7 +16,7 @@
 } %}
 
 {% block body %}
-    <div class="box" isSuccess = {{ data.isSuccess }}>
+    <div class="box js-is-succes" isSuccess="{{ data.isSuccess }}">
         {% include molecule('form') with {
             data: {
                 form: data.form,
