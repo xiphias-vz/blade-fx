@@ -1,21 +1,30 @@
 @mixin shop-ui-navigation-top-mobile ($name: '.navigation-top-mobile') {
     #{$name} {
        nav {
+           ul {
+               @include helper-breakpoint-media-max($lg-max){
+                   margin-top: -10px;
+                   li {
+                       margin-top: -3px;
+                   }
+               }
+           }
            margin-left: rem(70);
 
            .my-market-title {
                position: relative;
-               top: 13px;
-               color: gray;
+               top: 5px;
+               color: black;
                left: 11px;
+               font-size:13px;
            }
 
            .store-widget-holder {
                .custom-select__select--header {
-                   color: #71747c;
+                   color: #71747c !important;
                    background: #f7f7f7;
-                   border:none;
-                   padding: 0 1.875rem 0 0.6875rem;
+                   border:none !important;
+                   padding: 0 1.125rem 0 0.6875rem !important;
 
                    @include helper-breakpoint-media-max($lg-max) {
                        background: #ffffff;
@@ -23,6 +32,12 @@
 
                    @include helper-breakpoint-media-max($xxs-max) {
                        width:100px;
+                   }
+               }
+
+               .store-switcher {
+                   @include helper-breakpoint-media-max($sm-max) {
+                       margin-top:5px;
                    }
                }
            }

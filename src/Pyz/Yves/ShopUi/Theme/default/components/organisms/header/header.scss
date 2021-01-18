@@ -37,7 +37,7 @@ $header-sticky-height: rem(69, number);
 
         &__middle {
             padding: rem(14) 0;
-            background: $setting-color-globus-lightGray;
+            background: white;
             border-top: rem(5) solid $setting-color-globus-lightGray;
             z-index: $setting-zi-header + 1;
 
@@ -88,6 +88,7 @@ $header-sticky-height: rem(69, number);
             @include helper-breakpoint-media-max($sm-max) {
                 padding: 0px;
                 border:1px solid #D3D3D3;
+                box-shadow: 0px 3px 10px #D3D3D3;
             }
         }
 
@@ -186,11 +187,11 @@ $header-sticky-height: rem(69, number);
             left: rem(60);
             top: rem(5);
 
-            @include helper-breakpoint-media-max($lg-max) {
+            @include helper-breakpoint-media-max($md-max) {
                 position: absolute;
                 top:0px;
                 left:45px;
-                margin-top: 5px;
+                margin-top: 0px;
             }
         }
 
@@ -199,9 +200,9 @@ $header-sticky-height: rem(69, number);
             left: rem(20);
             top: rem(15);
             background-color: transparent;
-            @include helper-breakpoint-media-max($lg-max) {
+            @include helper-breakpoint-media-max($md-max) {
                 position: absolute;
-                top: 21px;
+                top: 16px;
                 left: 10px;
             }
         }
