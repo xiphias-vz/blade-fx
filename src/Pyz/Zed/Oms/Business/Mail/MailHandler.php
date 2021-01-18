@@ -221,7 +221,7 @@ class MailHandler extends SprykerMailHandler
             'totalPriceOfTheOrder' => $this->getMoneyValue($totals->getGrandTotal()),
             'subtotalPriceOfTheOrder' => $this->getMoneyValue($totals->getSubtotal()),
             'vat' => $this->getMoneyValue($totals->getTaxTotal()->getAmount()),
-            'deliveryDate' => $this->mailCmsBlockService->getDeliveryDate($orderTransfer),
+            'deliveryDate' => $this->dateTimeWithZoneService->getDateTimeInStoreTimeZone($deliveryDate)->format("d.m.Y") . " " . $timeInterval,
             'deliveryCost' => $this->getShipmentMoneyValue($orderTransfer),
             'productList' => $this->getProductList($orderTransfer),
             'baseUrlYves' => $this->config->getBaseUrlYves(),
