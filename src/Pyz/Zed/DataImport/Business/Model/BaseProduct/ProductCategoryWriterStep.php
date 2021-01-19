@@ -28,17 +28,23 @@ class ProductCategoryWriterStep extends PublishAwareStep implements DataImportSt
      */
     public function execute(DataSetInterface $dataSet): void
     {
+        $categoryId = $dataSet[self::KEY_CATEGORY_KEY];
+        $listId = explode(";", $categoryId);
+        foreach ($listId as $value) {
+            $dataSet[self::KEY_CATEGORY_KEY] = $value;
+
             $productCategoryEntity = SpyProductCategoryQuery::create()
                 ->filterByFkProductAbstract($dataSet[ProductAbstractWriterStep::ID_PRODUCT_ABSTRACT])
                 ->filterByFkCategory($this->getCategoryId($dataSet))
                 ->findOneOrCreate();
 
-        if ($productCategoryEntity->isNew() || $productCategoryEntity->isModified()) {
-            $productCategoryEntity->save();
-        }
+            if ($productCategoryEntity->isNew() || $productCategoryEntity->isModified()) {
+                $productCategoryEntity->save();
+            }
 
-            $this->addPublishEvents(ProductCategoryEvents::PRODUCT_CATEGORY_PUBLISH, $dataSet[ProductAbstractWriterStep::ID_PRODUCT_ABSTRACT]);
-            $this->addPublishEvents(ProductEvents::PRODUCT_ABSTRACT_PUBLISH, $dataSet[ProductAbstractWriterStep::ID_PRODUCT_ABSTRACT]);
+                $this->addPublishEvents(ProductCategoryEvents::PRODUCT_CATEGORY_PUBLISH, $dataSet[ProductAbstractWriterStep::ID_PRODUCT_ABSTRACT]);
+                $this->addPublishEvents(ProductEvents::PRODUCT_ABSTRACT_PUBLISH, $dataSet[ProductAbstractWriterStep::ID_PRODUCT_ABSTRACT]);
+        }
     }
 
     /**
