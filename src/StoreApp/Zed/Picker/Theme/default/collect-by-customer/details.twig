@@ -121,7 +121,7 @@
                 <br />
                 <div>
                     <label class="label">{{ 'picker.collect-by-customer.details.containers' | trans }}</label>
-                    <input id="containerInput" class="input input--expand" type="text" />
+                    <input id="containerInput" class="input input--expand" type="text" autofocus />
                 </div>
                 <script>
                     var input = document.getElementById('containerInput');
@@ -130,8 +130,8 @@
                         var inputValue = document.getElementById("containerInput").value;
                         var id = document.getElementsByClassName('checkbox__input');
                         var containerExists = false;
+                        var barcode = inputValue.replace('/x11', '').replace('/X11', '');
 
-                        var barcode = inputValue.substring(4);
                         for(i= 0; i< id.length; i++)
                         {
                             containerId = id[i].attributes[2].value;

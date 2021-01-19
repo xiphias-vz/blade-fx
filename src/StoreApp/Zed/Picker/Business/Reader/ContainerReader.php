@@ -99,7 +99,9 @@ class ContainerReader implements ContainerReaderInterface
     public function getContainersByOrderId(string $orderId): array
     {
         $pickingSalesOrderCollectionTransfer = (new PickingSalesOrderCollectionTransfer());
-        $pickingSalesOrders = $this->pyzPickingSalesOrderQuery->findByFkSalesOrder($orderId)->getData();
+        $pickingSalesOrders = $this->pyzPickingSalesOrderQuery
+            ->orderByContainerCode()
+            ->findByFkSalesOrder($orderId)->getData();
 
         foreach ($pickingSalesOrders as $pyzPickingSalesOrderEntity) {
             $pickingSalesOrderTransfer = $this->factory

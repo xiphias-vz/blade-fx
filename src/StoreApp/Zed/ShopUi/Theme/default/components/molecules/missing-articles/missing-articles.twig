@@ -16,7 +16,7 @@
 
                 {% for missingArticle in data.missingArticles %}
                     <div class="row">
-                        <span class="productName col--md-6">{{ missingArticle.name|split('-')[1] }}</span>
+                        <span class="productName col--md-6">{{ missingArticle.name }}</span>
                         <span class="col--md-3">&nbsp;</span>
                         <span class="quantity col--md-3">{{ missingArticle.imageUrl }} | <span class="pickedProducts">{{ missingArticle.quantity }}</span></span>
                     </div>
