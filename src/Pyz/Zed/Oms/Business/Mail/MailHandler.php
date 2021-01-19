@@ -117,7 +117,7 @@ class MailHandler extends SprykerMailHandler
      */
     public function sendOrderConfirmationMail(SpySalesOrder $salesOrderEntity)
     {
-        //todo: remove Test Orders
+         //todo: remove Test Orders
         if ($salesOrderEntity->getIsTest()) {
             return;
         }
@@ -209,7 +209,6 @@ class MailHandler extends SprykerMailHandler
     protected function getCmsBlockPlaceholders(
         OrderTransfer $orderTransfer
     ): array {
-        $totals = $orderTransfer->getTotals();
         $dateOfOrder = $this->dateTimeWithZoneService->getDateTimeInStoreTimeZone($orderTransfer->getCreatedAt());
 
         $deliveryDateInterval = $this->mailCmsBlockService->getDeliveryDate($orderTransfer);
@@ -217,9 +216,17 @@ class MailHandler extends SprykerMailHandler
         [$timeFrom, $timeTo] = explode('-', $timeInterval);
         $orderDateTime = $this->dateTimeWithZoneService->getDateTimeInStoreTimeZone($deliveryDate);
 
+        $items = $orderTransfer->getItems();
+        $itemsCanceled = $this->getCanceledProductListItems($orderTransfer);
+        $itemsShipped = $this->getShippedProductListItems($orderTransfer);
+
+        $orderTransfer->setItems($itemsShipped);
+        $orderTransfer = $this->expandWithItemGroups($orderTransfer);
+        $totals = $orderTransfer->getTotals();
+
         $params = [
             'totalPriceOfTheOrder' => $this->getMoneyValue($totals->getGrandTotal()),
-            'subtotalPriceOfTheOrder' => $this->getMoneyValue($totals->getSubtotal()),
+            'subtotalPriceOfTheOrder' => $this->getMoneyValue($totals->getSubtotal() - $totals->getCanceledTotal()),
             'vat' => $this->getMoneyValue($totals->getTaxTotal()->getAmount()),
             'deliveryDate' => $this->dateTimeWithZoneService->getDateTimeInStoreTimeZone($deliveryDate)->format("d.m.Y") . " " . $timeInterval,
             'deliveryCost' => $this->getShipmentMoneyValue($orderTransfer),
@@ -243,7 +250,14 @@ class MailHandler extends SprykerMailHandler
             'sumOptions' => $this->getMoneyValue($this->getSumOptions($orderTransfer)),
             'tax7' => $this->getMoneyValue($this->getSumTaxes($orderTransfer, '7')),
             'tax19' => $this->getMoneyValue($this->getSumTaxes($orderTransfer, '19')),
+            'shippedProductList' => $this->getShippedProductList($orderTransfer, $itemsShipped),
+            'canceledProductList' => $this->getCanceledProductList($orderTransfer, $itemsCanceled),
+
         ];
+        $orderTransfer->setItems($items);
+        if ($items->count() > 0) {
+            $orderTransfer = $this->expandWithItemGroups($orderTransfer);
+        }
 
         if ($orderTransfer->getMerchantReference() == 1004) {
             $merchantReference = [
@@ -366,6 +380,44 @@ class MailHandler extends SprykerMailHandler
 
     /**
      * @param \Generated\Shared\Transfer\OrderTransfer $orderTransfer
+     * @param \ArrayObject $items
+     *
+     * @return string
+     */
+    protected function getShippedProductList(OrderTransfer $orderTransfer, ArrayObject $items): string
+    {
+        $orderTransfer->setItems($items);
+        if ($items->count() > 0) {
+            $orderTransfer = $this->expandWithItemGroups($orderTransfer);
+        }
+
+        return $this->twigEnvironment->render(
+            $this->config->getOrderShippedProductListTemplate(),
+            ['order' => $orderTransfer]
+        );
+    }
+
+    /**
+     * @param \Generated\Shared\Transfer\OrderTransfer $orderTransfer
+     * @param \ArrayObject $items
+     *
+     * @return string
+     */
+    protected function getCanceledProductList(OrderTransfer $orderTransfer, ArrayObject $items): string
+    {
+        $orderTransfer->setItems($items);
+        if ($items->count() > 0) {
+            $orderTransfer = $this->expandWithItemGroups($orderTransfer);
+        }
+
+        return $this->twigEnvironment->render(
+            $this->config->getOrderShippedProductListTemplate(),
+            ['order' => $orderTransfer]
+        );
+    }
+
+    /**
+     * @param \Generated\Shared\Transfer\OrderTransfer $orderTransfer
      *
      * @return string
      */
@@ -386,7 +438,9 @@ class MailHandler extends SprykerMailHandler
     {
         $sumOptions = 0;
         foreach ($orderTransfer->getItems() as $itemTransfer) {
-            $sumOptions += $itemTransfer["sumProductOptionPriceAggregation"];
+            if ((int)$itemTransfer->getCanceledAmount() < 1) {
+                $sumOptions += $itemTransfer["sumProductOptionPriceAggregation"];
+            }
         }
 
         return $sumOptions;
@@ -402,11 +456,50 @@ class MailHandler extends SprykerMailHandler
     {
         $result = 0;
         foreach ($orderTransfer->getItems() as $itemTransfer) {
-            if ($tax == $itemTransfer["taxRate"]) {
+            if ($itemTransfer->getCanceledAmount() == null) {
+                $itemTransfer->setCanceledAmount(0);
+            }
+            if ($tax == $itemTransfer["taxRate"] && $itemTransfer->getCanceledAmount() < 1) {
                 $result += $itemTransfer["sumTaxAmountFullAggregation"];
             }
         }
 
         return $result;
+    }
+
+    /**
+     * @param \Generated\Shared\Transfer\OrderTransfer $orderTransfer
+     *
+     * @return \ArrayObject
+     */
+    protected function getCanceledProductListItems(OrderTransfer $orderTransfer): ArrayObject
+    {
+        $items = new ArrayObject();
+        foreach ($orderTransfer->getItems() as $itemTransfer) {
+            if ($itemTransfer["canceledAmount"] > 0) {
+                $itemTransfer->setCanceledAmount(1);
+                $items->append($itemTransfer);
+            }
+        }
+
+        return $items;
+    }
+
+    /**
+     * @param \Generated\Shared\Transfer\OrderTransfer $orderTransfer
+     *
+     * @return \ArrayObject
+     */
+    protected function getShippedProductListItems(OrderTransfer $orderTransfer): ArrayObject
+    {
+        $items = new ArrayObject();
+        foreach ($orderTransfer->getItems() as $itemTransfer) {
+            if ($itemTransfer->getCanceledAmount() > 0) {
+            } else {
+                $items->append($itemTransfer);
+            }
+        }
+
+        return $items;
     }
 }
