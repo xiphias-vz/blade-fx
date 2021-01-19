@@ -18,10 +18,9 @@
             #{$name} {
                 &__image {
                     position: absolute;
-                    top: 0;
+                    top: 10px;
                     left: 0;
                     height: 65%;
-                    margin-top:13%;
                     @include helper-breakpoint-media-max($sm-max) {
                         width: 60px;
                         top:11px;

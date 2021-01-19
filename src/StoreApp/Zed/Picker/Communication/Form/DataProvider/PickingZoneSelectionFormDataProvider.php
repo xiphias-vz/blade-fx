@@ -48,18 +48,10 @@ class PickingZoneSelectionFormDataProvider
     }
 
     /**
-     * @return string[]
+     * @return array
      */
     protected function getPickingZones(): array
     {
-        $pickingZoneTransfers = $this->pickingZoneFacade->getPickingZones();
-
-        $pickingZones = [];
-
-        foreach ($pickingZoneTransfers as $pickingZoneTransfer) {
-            $pickingZones[$pickingZoneTransfer->getIdPickingZone()] = $pickingZoneTransfer->getName();
-        }
-
-        return $pickingZones;
+        return $this->pickingZoneFacade->getPickingZones();
     }
 }

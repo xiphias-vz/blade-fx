@@ -5,9 +5,13 @@
 } %}
 
 {% block header %}
-    {% embed organism('header') only %}
-        {% block selectPickingZone %}{% endblock %}
-    {% endembed %}
+    {% include organism('header') with {
+        data: {
+            headerLocationTitle: 'Zone auswählen',
+            withoutLogo: true,
+            titleColor: 'darkerGreen'
+        }
+    } only %}
 {% endblock %}
 
 {% block content %}
