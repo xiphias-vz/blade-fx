@@ -22,6 +22,7 @@ use StoreApp\Zed\PermissionAccess\Business\PermissionAccessFacadeInterface;
 use StoreApp\Zed\Picker\Business\PickerBusinessFactory;
 use StoreApp\Zed\Picker\Business\PickerFacadeInterface;
 use StoreApp\Zed\Picker\Communication\Aggregator\ItemAggregator;
+use StoreApp\Zed\Picker\Communication\BarcodeGenerator\BarcodeGenerator;
 use StoreApp\Zed\Picker\Communication\Form\ContainerToShelfForm;
 use StoreApp\Zed\Picker\Communication\Form\DataProvider\OrderItemSelectionFormDataProvider;
 use StoreApp\Zed\Picker\Communication\Form\DataProvider\PickingZoneSelectionFormDataProvider;
@@ -235,5 +236,13 @@ class PickerCommunicationFactory extends AbstractCommunicationFactory
     public function getPickerBusinessFactory(): PickerBusinessFactory
     {
         return new PickerBusinessFactory();
+    }
+
+    /**
+     * @return \StoreApp\Zed\Picker\Communication\BarcodeGenerator\BarcodeGenerator
+     */
+    public function getBarcodeGenerator(): BarcodeGenerator
+    {
+        return new BarcodeGenerator();
     }
 }

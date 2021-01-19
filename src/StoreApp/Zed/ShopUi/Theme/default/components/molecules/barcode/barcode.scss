@@ -2,14 +2,13 @@
     #{$name} {
         .white--box {
            background-color: white;
-            padding: rem(25);
+            padding-top: rem(20);
         }
 
         .barcode--text {
-            font-family: IDAutomationHC39;
+            font-family: LibreBarcode128;
             text-align: center;
-            font-size: rem(15);
-            height: rem(20);
+            font-size: rem(72);
         }
     }
 }

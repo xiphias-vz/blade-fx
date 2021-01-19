@@ -95,6 +95,24 @@ class SalesRepository extends SprykerSalesRepository implements SalesRepositoryI
     }
 
     /**
+     * @inheritDoc
+     */
+    public function findSalesOrdersReferenceByOrderFilterCriteria(OrderCriteriaFilterTransfer $orderFilterCriteriaTransport): array
+    {
+        $salesOrderQuery = $this->getFactory()->createSalesOrderQuery();
+        $salesOrderQuery = $this->applyOrderFilterCriteriaToSalesQuery($salesOrderQuery, $orderFilterCriteriaTransport);
+
+        return $salesOrderQuery
+            ->select([
+                SpySalesOrderTableMap::COL_ID_SALES_ORDER,
+                SpySalesOrderTableMap::COL_ORDER_REFERENCE,
+                SpySalesOrderTableMap::COL_COLLECT_NUMBER,
+            ])
+            ->find()
+            ->toArray();
+    }
+
+    /**
      * @param \Orm\Zed\Sales\Persistence\SpySalesOrderQuery $salesOrderQuery
      * @param \Generated\Shared\Transfer\OrderCriteriaFilterTransfer $orderFilterCriteriaTransport
      *

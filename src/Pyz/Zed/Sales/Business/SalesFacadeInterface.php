@@ -44,6 +44,13 @@ interface SalesFacadeInterface extends SprykerSalesFacadeInterface
     public function findIdSalesOrdersByOrderFilterCriteria(OrderCriteriaFilterTransfer $orderFilterCriteriaTransport): array;
 
     /**
+     * @param \Generated\Shared\Transfer\OrderCriteriaFilterTransfer $orderFilterCriteriaTransport
+     *
+     * @return array
+     */
+    public function findSalesOrdersReferenceByOrderFilterCriteria(OrderCriteriaFilterTransfer $orderFilterCriteriaTransport): array;
+
+    /**
      * Specification:
      * - Updates the order status
      *

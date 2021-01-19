@@ -153,6 +153,15 @@ class SalesFacade extends SprykerSalesFacade implements SalesFacadeInterface
     /**
      * @inheritDoc
      */
+    public function findSalesOrdersReferenceByOrderFilterCriteria(
+        OrderCriteriaFilterTransfer $orderFilterCriteriaTransport
+    ): array {
+        return $this->getRepository()->findSalesOrdersReferenceByOrderFilterCriteria($orderFilterCriteriaTransport);
+    }
+
+    /**
+     * @inheritDoc
+     */
     public function updateOrderWithOrderUpdateRequest(int $idSalesOrder, OrderUpdateRequestTransfer $orderUpdateRequestTransfer): bool
     {
         return $this->getEntityManager()

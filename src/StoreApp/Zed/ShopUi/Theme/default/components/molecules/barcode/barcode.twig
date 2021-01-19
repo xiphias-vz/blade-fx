@@ -1,18 +1,17 @@
 {% extends model('component') %}
 
 {% define config = {
-    name: 'barcode',
-    barcodePrefix: 9740
+    name: 'barcode'
 } %}
 
 {% define data = {
-    orderReference: ''
+    encodedBarcode: ''
 } %}
 
 {% block body %}
     <div class="white--box">
-        {% if data.orderReference is not empty %}
-            <p class="barcode--text">*{{ config.barcodePrefix }}{{ data.orderReference }}*</p>
+        {% if data.encodedBarcode is not empty %}
+            <p class="barcode--text">{{ data.encodedBarcode }}</p>
         {% else %}
             <p>{{ 'storeapp.picking.barcode' | trans }}</p>
         {% endif %}

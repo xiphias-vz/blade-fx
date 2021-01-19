@@ -18,6 +18,7 @@ use Generated\Shared\Transfer\OrderTransfer;
 use Generated\Shared\Transfer\OrderUpdateRequestTransfer;
 use Generated\Shared\Transfer\PickingSalesOrderCriteriaTransfer;
 use Generated\Shared\Transfer\UserTransfer;
+use Orm\Zed\Sales\Persistence\Map\SpySalesOrderTableMap;
 use Pyz\Shared\Messages\MessagesConfig;
 use Pyz\Shared\Oms\OmsConfig;
 use Pyz\Shared\Product\ProductConfig;
@@ -62,7 +63,7 @@ class CollectByCustomerController extends AbstractController
         $newArray = [];
         $allBeforeReadyToCollectMerchantOrderTransfers = $this->findAllBeforeReadyToCollectMerchantSalesOrders($userTransfer);
         foreach ($allBeforeReadyToCollectMerchantOrderTransfers as $order) {
-            array_push($newArray, ["storeStatus" => $order["storeStatus"], "orderReference" => $order["merchantSalesOrderReference"]]);
+            array_push($newArray, ["collectNumber" => $order[SpySalesOrderTableMap::COL_COLLECT_NUMBER], "orderReference" => $order[SpySalesOrderTableMap::COL_ORDER_REFERENCE]]);
         }
 
         $readyForCollectionMerchantSalesOrderTransfers = $this->findReadyForCollectionMerchantSalesOrders($userTransfer);
@@ -281,6 +282,7 @@ class CollectByCustomerController extends AbstractController
             'pickedAndNotFoundItems' => $notFound,
             'containerInfo' => $containerInfo,
             'containerNumber' => $containerNumber,
+            'encodedBarcode' => $this->getFactory()->getBarcodeGenerator()->getEncodedBarcode($salesOrderTransfer->getOrderReference()),
         ];
     }
 
@@ -769,7 +771,7 @@ class CollectByCustomerController extends AbstractController
             ->setMerchantReferences([
                 $userTransfer->getMerchantReference(),
             ])
-            ->setStoreStatuses([
+            ->setItemStatuses([
                 OmsConfig::STATE_TYPE_FLAG_CANCELLABLE_BY_CUSTOMER,
                 OmsConfig::STATE_TYPE_FLAG_CANCELLED,
                 OmsConfig::STATE_TYPE_FLAG_SHIPPED_MAIL_AWAITS,
@@ -786,10 +788,9 @@ class CollectByCustomerController extends AbstractController
                 OmsConfig::STORE_EVENT_CANCEL_NOT_IN_STOCK,
             ]);
 
-        return $merchantSalesOrderCollectionTransfer = $this->getFactory()->getMerchantSalesOrderFacade()
-            ->findMerchantSalesOrdersByOrderFilterCriteria($orderCriteriaFilterTransfer)
-            ->getMerchantSalesOrders()
-            ->getArrayCopy();
+        return $this->getFactory()
+            ->getSalesFacade()
+            ->findSalesOrdersReferenceByOrderFilterCriteria($orderCriteriaFilterTransfer);
     }
 
     /**

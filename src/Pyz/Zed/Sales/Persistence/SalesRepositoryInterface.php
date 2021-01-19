@@ -30,6 +30,13 @@ interface SalesRepositoryInterface extends SprykerSalesRepositoryInterface
     public function findIdSalesOrdersByOrderFilterCriteria(OrderCriteriaFilterTransfer $orderFilterCriteriaTransport): array;
 
     /**
+     * @param \Generated\Shared\Transfer\OrderCriteriaFilterTransfer $orderFilterCriteriaTransport
+     *
+     * @return array
+     */
+    public function findSalesOrdersReferenceByOrderFilterCriteria(OrderCriteriaFilterTransfer $orderFilterCriteriaTransport): array;
+
+    /**
      * @param string $customerReference
      * @param int $idSalesOrder
      *

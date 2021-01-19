@@ -51,13 +51,13 @@ export default class OrderSearch extends Component {
         let numOfCharacters = 0;
         let numberOfReady = 0;
         let numberOfNotReady = 0;
-        const $inputValue = this.currentInputValue;
+        const $inputValue = this.currentInputValue.toUpperCase();
         let statusType = document.querySelector("#sourcetwig").getAttribute("datatype");
 
         this.$searchItems.each((index: number, searchItem: HTMLElement) => {
             const $searchItem = $(searchItem);
-            const isMatchByOrder = $searchItem.data('order').indexOf($inputValue) >= 0;
-            const isMatchByReference = $searchItem.data('reference').indexOf($inputValue) >= 0;
+            const isMatchByOrder = $searchItem.data('order').toUpperCase().indexOf($inputValue) >= 0;
+            const isMatchByReference = $searchItem.data('reference').toUpperCase().indexOf($inputValue) >= 0;
             const ordersBeforeReadyToCollectStatus = $searchItem.data('ordersbeforereadytocollectstatus');
 
             if($inputValue==='') {
@@ -76,7 +76,7 @@ export default class OrderSearch extends Component {
                 }
                 else {
                     $.map(ordersBeforeReadyToCollectStatus, function(v) {
-                        if(v["orderReference"].indexOf($inputValue) >= 0){
+                        if(v["orderReference"].indexOf($inputValue) >= 0 || v["collectNumber"].indexOf($inputValue) >= 0){
                             itemsWithOtherStatus++;
                         }
                     })
