@@ -259,6 +259,7 @@ class CollectByCustomerController extends AbstractController
         foreach ($notFound as $item4) {
             $item4["quantity"] = $item4["imageUrl"] - $item4["quantity"];
             $item4['name'] = str_replace($item4["sku"] . ' - ', "", $item4["name"]);
+            $item4['name'] = substr($item4["name"], 0, 25);
         }
 
         return [
