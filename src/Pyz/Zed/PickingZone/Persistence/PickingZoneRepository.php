@@ -10,7 +10,6 @@ namespace Pyz\Zed\PickingZone\Persistence;
 use Generated\Shared\Transfer\OrderPickingBlockTransfer;
 use Generated\Shared\Transfer\PickingZoneTransfer;
 use Orm\Zed\Oms\Persistence\Map\SpyOmsOrderItemStateTableMap;
-use Orm\Zed\PickingSalesOrder\Persistence\Map\PyzPickingSalesOrderTableMap;
 use Orm\Zed\PickingZone\Persistence\Map\PyzPickingZoneTableMap;
 use Orm\Zed\Sales\Persistence\Map\SpySalesOrderItemTableMap;
 use Orm\Zed\Sales\Persistence\Map\SpySalesOrderTableMap;
@@ -93,11 +92,10 @@ class PickingZoneRepository extends AbstractRepository implements PickingZoneRep
         return $this->getFactory()->createPickingZoneQuery()
             ->select([PyzPickingZoneTableMap::COL_ID_PICKING_ZONE, PyzPickingZoneTableMap::COL_NAME])
             ->withColumn('COUNT(DISTINCT ' . SpySalesOrderTableMap::COL_ID_SALES_ORDER . ')', 'orderCount')
-            ->leftJoinPyzPickingSalesOrder()
-            ->addJoin(PyzPickingSalesOrderTableMap::COL_FK_SALES_ORDER, SpySalesOrderTableMap::COL_ID_SALES_ORDER, Criteria::LEFT_JOIN)
-            ->addJoin(SpySalesOrderTableMap::COL_ID_SALES_ORDER, SpySalesOrderItemTableMap::COL_FK_SALES_ORDER, Criteria::LEFT_JOIN)
+            ->addJoin(PyzPickingZoneTableMap::COL_NAME, SpySalesOrderItemTableMap::COL_PICK_ZONE, Criteria::LEFT_JOIN)
+            ->addJoin(SpySalesOrderItemTableMap::COL_FK_SALES_ORDER, SpySalesOrderTableMap::COL_ID_SALES_ORDER, Criteria::LEFT_JOIN)
             ->addJoin(
-                [SpySalesOrderItemTableMap::COL_FK_OMS_ORDER_ITEM_STATE, SpyOmsOrderItemStateTableMap::COL_NAME],
+                [SpySalesOrderItemTableMap::COL_FK_OMS_ORDER_ITEM_STATE, SpyOmsOrderItemStateTableMap::COL_ID_OMS_ORDER_ITEM_STATE],
                 [SpyOmsOrderItemStateTableMap::COL_ID_OMS_ORDER_ITEM_STATE, '\'' . OmsConfig::STORE_STATE_READY_FOR_PICKING . '\''],
                 Criteria::LEFT_JOIN
             )
