@@ -42,6 +42,9 @@ sections:
         import-time-slot:
             command: "vendor/bin/console data:import time-slot -f spryker/1.globus_time_slot.csv -a UpdateAvailabilityAfterImportPlugin -vvv --no-ansi || true"
 
+        import-alternative-ean:
+            command: "vendor/bin/console data:import alternative-ean -f spryker/99.globus_article_gtins.csv -a UpdateAvailabilityAfterImportPlugin -vvv --no-ansi || true"
+
     reset:
         reset-categories:
             command: "cp data/import/spryker/categories.csv data/import/spryker/1.globus_categories.csv"
@@ -75,6 +78,9 @@ sections:
 
         reset-time-slot:
             command: "cp data/import/spryker/time_slot.csv data/import/spryker/1.globus_time_slot.csv"
+
+        reset-alternative-ean:
+            command: "cp data/import/spryker/alternative_ean.csv data/import/spryker/99.globus_article_gtins.csv"
 
     import-metzgerei:
         import-metzgerei-product:

@@ -66,6 +66,7 @@ class DataImportConfig extends SprykerDataImportConfig
     public const IMPORT_POSTAL_CODE = 'postal-code';
     public const IMPORT_PRODUCT_MANAGEMENT_ATTRIBUTE = 'product-management-attribute';
     public const IMPORT_TIME_SLOT = 'time-slot';
+    public const IMPORT_ALTERNATIVE_EAN = 'alternative-ean';
 
     /**
      * @return \Generated\Shared\Transfer\DataImporterConfigurationTransfer
@@ -382,6 +383,14 @@ class DataImportConfig extends SprykerDataImportConfig
     }
 
     /**
+     * @return \Generated\Shared\Transfer\DataImporterConfigurationTransfer
+     */
+    public function getAlternativeEanImporterConfiguration(): DataImporterConfigurationTransfer
+    {
+        return $this->buildBaseImporterConfiguration('spryker/alternative_ean.csv', static::IMPORT_ALTERNATIVE_EAN, SharedDataImportConfig::IMPORT_CSV_PIPE_DELIMITER);
+    }
+
+    /**
      * @return array
      */
     public function getSapStoreIdToStoreMap(): array
@@ -423,6 +432,7 @@ class DataImportConfig extends SprykerDataImportConfig
             '/^1\.globus_categories\.[0-9]+/' => '1.globus_categories.csv',
             '/^1\.globus_time_slot/' => '1.globus_time_slot.csv',
             '/^2\.globus_articles\.[0-9]+/' => '2.globus_articles.csv',
+            '/^99\.globus_article_gtins\.[0-9]+/' => '99.globus_article_gtins.csv',
 
             '/^5\.globus_article_instock\.[0-9]+_1004/' => '5.globus_article_instock.1004.csv',
             '/^5\.globus_article_instock\.[0-9]+_1031/' => '5.globus_article_instock.1031.csv',

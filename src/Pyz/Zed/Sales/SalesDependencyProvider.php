@@ -8,6 +8,7 @@
 namespace Pyz\Zed\Sales;
 
 use Pyz\Service\DateTimeWithZone\DateTimeWithZoneServiceInterface;
+use Pyz\Zed\AlternativeEan\Communication\Plugin\OrderItemAlternativeEanExpanderPreSavePlugin;
 use Pyz\Zed\Merchant\Communication\Plugin\MerchantOrderExpanderPreSavePlugin;
 use Pyz\Zed\MerchantRegion\Communication\Plugin\Sales\MerchantRegionOrderExpanderPlugin;
 use Pyz\Zed\MerchantSalesOrder\Business\MerchantSalesOrderFacadeInterface;
@@ -209,6 +210,7 @@ class SalesDependencyProvider extends SprykerSalesDependencyProvider
             new OrderItemPickZoneExpanderPreSavePlugin(),
             new OrderItemAttributesExpanderPreSavePlugin(),
             new OrderItemStockProductExpanderPreSavePlugin(),
+            new OrderItemAlternativeEanExpanderPreSavePlugin(),
         ];
     }
 

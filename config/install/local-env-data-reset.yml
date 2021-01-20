@@ -19,3 +19,6 @@ sections:
 
         time-slot:
             command: "rm -rf data/import/spryker/time_slot.csv && mv data/import/spryker/time_slot.back.csv data/import/spryker/time_slot.csv"
+
+        alternative-ean:
+            command: "rm -rf data/import/spryker/alternative_ean.csv && mv data/import/spryker/alternative_ean.back.csv data/import/spryker/alternative_ean.csv"

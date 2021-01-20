@@ -7,6 +7,7 @@
 
 namespace StoreApp\Zed\Picker\Communication\Controller;
 
+use phpDocumentor\GraphViz\Exception;
 use Spryker\Zed\Kernel\Communication\Controller\AbstractController;
 use StoreApp\Zed\Picker\Communication\Form\PickingZoneSelectionForm;
 use Symfony\Component\HttpFoundation\Request;
@@ -35,9 +36,12 @@ class SelectPickingZoneController extends AbstractController
         $pickingZoneSelectionForm->handleRequest($request);
 
         if ($pickingZoneSelectionForm->isSubmitted() && $pickingZoneSelectionForm->isValid()) {
-            $this->getFacade()->savePickingZoneInSession(
-                $pickingZoneSelectionForm->getData()[PickingZoneSelectionForm::FIELD_PICKING_ZONE]
-            );
+            try {
+                $this->getFacade()->savePickingZoneInSession(
+                    $pickingZoneSelectionForm->getData()[PickingZoneSelectionForm::FIELD_PICKING_ZONE]
+                );
+            } catch (Exception $ex) {
+            }
 
             return $this->redirectResponse($factory->getConfig()->getPickingUri());
         }

@@ -10,13 +10,15 @@ export default class FormContainers extends Component {
     formItemCandidate: string;
     formIndex: number;
     form: HTMLFormElement;
-    //public $popUpUiInfo: $;
-
+    orderId: HTMLInputElement;
     protected barcodePrefix: string = '/x11';
+    protected savedInputValue: string;
+    protected savedInputId: string;
 
     protected readyCallback(): void {
         this.popUpUiError = <HTMLElement>document.getElementsByClassName('popup-ui-error')[0];
         this.popUpUiInfo = <HTMLElement>document.getElementsByClassName('popup-ui-info')[0];
+        this.orderId = <HTMLInputElement>document.getElementById('idOrder');
         this.containerFormsWrapper = <HTMLElement>document.getElementById('order_item_selection_form_field_sales_order_containers');
         this.addFormButton = <HTMLButtonElement>this.getElementsByClassName(`${this.jsName}__add-container`)[0];
         this.formItemCandidate = this.containerFormsWrapper.dataset.prototype;
@@ -40,6 +42,15 @@ export default class FormContainers extends Component {
     }
 
     protected onTriggerAddFormButtonClick(): void {
+
+        if (this.savedInputValue != ""){
+            this.checkContainerId(this.savedInputValue, this.savedInputId)
+        }
+    }
+
+    protected addNewContainerForm(): void {
+        this.savedInputValue = "";
+        this.savedInputId = "";
         this.addFormItem();
         this.mapEventsForItems();
     }
@@ -55,8 +66,7 @@ export default class FormContainers extends Component {
         else if(eventTarget.classList.contains(`${this.jsName}__add`)) {
             eventTarget
                 .closest(`.${this.jsName}__form-item`);
-
-                //TODO:ADD EVENT
+                this.onTriggerAddFormButtonClick();
         }
     }
 
@@ -84,7 +94,8 @@ export default class FormContainers extends Component {
         if (event.key == 'Enter') {
             event.preventDefault();
             let inputValue = (<HTMLInputElement>event.target).value;
-            this.checkContainerId(inputValue);
+            let inputId = (<HTMLInputElement>event.target).id;
+            this.checkContainerId(inputValue, inputId);
         }
     }
 
@@ -93,6 +104,8 @@ export default class FormContainers extends Component {
 
         // force removing of barcode prefix
         (<HTMLInputElement>event.target).value = originalValue.replace(this.barcodePrefix, '');
+        this.savedInputValue = originalValue;
+        this.savedInputId = (<HTMLInputElement>event.target).id;
     }
 
     protected decorateAdditionalForm(): void {
@@ -123,13 +136,21 @@ export default class FormContainers extends Component {
         formLastItemWrapper.classList.add('grid--justify');
         formLastItemWrapper.insertAdjacentHTML('beforeend', checkButton);
         formLastItemWrapper.insertAdjacentHTML('beforeend', deleteButton);
+        formLastItem.focus();
     }
 
-    protected checkContainerId(inputValue): void
+    protected checkContainerId(inputValue, inputId): void
     {
+        if (inputValue.length != 8)
+        {
+            this.popUpUiError.querySelector("#firstBlock").innerHTML = `Container-ID muss 8 Zeichen haben`;
+            this.popUpUiError.querySelector("#secondBlock").innerHTML = ``;
+            this.popUpUiError.classList.add('popup-ui-error--show');
+        }
+        else{
+        let checkCurrentOrderId = this.orderId.value;
         let isMatchByOrder = [];
         const $searchFields = <$>$(document).find(this.searchItemsListSelector);
-        //const $inputValue = (<HTMLInputElement>document.getElementById('container_to_shelf_form_container_code')).value;
         const $inputValue = inputValue;
         if ($inputValue != "") {
             $searchFields.each((index: number, searchItem: HTMLElement) => {
@@ -139,15 +160,30 @@ export default class FormContainers extends Component {
             let flag = 0;
             let valueFirstBlock = "";
             let valueSecondBlock = "";
+            let valueContainerOnCustomer = "";
             $.each(isMatchByOrder, function(i, val) {
-                if (val['ContainerCode'] == $inputValue && $inputValue != "") {
+                if (val['ContainerCode'] == $inputValue && $inputValue != "" && val["FkSalesOrder"] != checkCurrentOrderId) {
+                    valueFirstBlock = val['ContainerCode'];
+                    valueSecondBlock = val['FkSalesOrder'];
+                    valueContainerOnCustomer = "";
+                    flag = 1;
+                    return;
+                }
+                else if (val['ContainerCode'] == $inputValue && $inputValue != "" && val["FkSalesOrder"] == checkCurrentOrderId) {
                     valueFirstBlock = val['ContainerCode'];
                     valueSecondBlock = val['ShelfCode'];
-                    flag = 1;
+                    flag = 2;
                     return;
                 }
             });
              if (flag == 1) {
+                 document.getElementById(inputId).value = "";
+                 this.popUpUiError.querySelector("#firstBlock").innerHTML = `Container: <strong>${ valueFirstBlock }</strong>`;
+                 this.popUpUiError.querySelector("#secondBlock").innerHTML = `Bereits Für Kunde <strong>${ valueContainerOnCustomer }</strong> <br> Bestellung: <strong>${ valueSecondBlock }</strong> genutzt`;
+                 this.popUpUiError.classList.add('popup-ui-error--show');
+             }
+             else if (flag == 2){
+                 document.getElementById(inputId).value = "";
                  this.popUpUiInfo.querySelector("#firstBlock").innerHTML = `Container: <strong>${ valueFirstBlock }</strong>`;
                  this.popUpUiInfo.querySelector("#secondBlock").innerHTML = `Lagerplatz: <strong>${ valueSecondBlock }</strong>`;
                  this.popUpUiInfo.classList.add('popup-ui-info--show');
@@ -156,21 +192,9 @@ export default class FormContainers extends Component {
                  }, 5000)
              }
              else {
-                 this.onTriggerAddFormButtonClick();
+                 this.addNewContainerForm();
              }
-
-            // if (flag == 0) {
-            //
-            //     this.popUpUiError.querySelector("#firstBlock").innerHTML = `Container: 25011054`;
-            //     this.popUpUiError.querySelector("#secondBlock").innerHTML = `Bereits Für Kunde Mihael Blažek <br> Bestellung: 654987 genutzt`;
-            //     this.popUpUiError.classList.add('popup-ui-error--show');
-            //
-            //     let element = document.getElementById('container_to_shelf_form_container_code');
-            //     element.focus();
-            // } else {
-            //     let element = document.getElementById('container_to_shelf_form_shelf_code');
-            //     element.focus();
-            // }
+        }
         }
     }
 

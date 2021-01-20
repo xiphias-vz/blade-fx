@@ -20,6 +20,9 @@ sections:
         time-slot:
             command: "cp data/import/spryker/time_slot.csv data/import/spryker/time_slot.back.csv"
 
+        alternative-ean:
+            command: "cp data/import/spryker/alternative_ean.csv data/import/spryker/alternative_ean.back.csv"
+
     restore-local-demo-data-files:
         categories:
             command: "cp data/import/spryker/categories.local.csv data/import/spryker/categories.csv"
@@ -35,3 +38,6 @@ sections:
 
         time-slot:
             command: "cp data/import/spryker/time_slot.local.csv data/import/spryker/time_slot.csv"
+
+        alternative-ean:
+            command: "cp data/import/spryker/alternative_ean.local.csv data/import/spryker/alternative_ean.csv"

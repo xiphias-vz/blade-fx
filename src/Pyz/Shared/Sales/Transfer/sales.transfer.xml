@@ -34,6 +34,7 @@
         <property name="weightPerUnit" type="int"/>
         <property name="pricePerKg" type="int"/>
         <property name="sequence" type="string"/>
+        <property name="alternativeEan" type="string"/>
         <property name="shelf" type="string"/>
         <property name="shelfFloor" type="string"/>
         <property name="shelfField" type="string"/>

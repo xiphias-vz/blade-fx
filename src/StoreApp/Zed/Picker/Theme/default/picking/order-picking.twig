@@ -5,11 +5,13 @@
     maxPickingBags: maxPickingBags,
     collectNumber: collectNumber,
     itemsCount: itemsCount,
+    itemsToShelfMap: itemsToShelfMap,
+    itemsToAlternativeEanMap: itemsToAlternativeEanMap,
+    itemsToProductAttributesMap: itemsToProductAttributesMap,
     pickingForm: pickingForm,
     pickingFormSkuKeys: pickingFormSkuKeys,
     pickingFormWeightKeys: pickingFormWeightKeys,
     itemsToShelfMap: itemsToShelfMap,
-    itemsToProductAttributesMap: itemsToProductAttributesMap,
     itemImageUrls: itemImageUrls,
     requestParamIdSalesOrder: requestParamIdSalesOrder,
     idSalesOrder: idSalesOrder,
@@ -20,7 +22,8 @@
     ordersCount: ordersCount,
     ordersInfo: ordersInfo,
     urlContainerSelect: urlContainerSelect,
-    orderItemCounter: orderItemCounter
+    orderItemCounter: orderItemCounter,
+    itemsCount: itemsCount
 } %}
 
 {% block header %}
@@ -60,6 +63,7 @@
         {% set tokenName = data.formatStartPickingTokenName | format(data.idSalesOrder) %}
         <input type="hidden" name="token" value="{{ csrf_token(tokenName) }}">
         <input type="hidden" name="counter" value="{{ data.orderItemCounter }}">
+        <input type="hidden" name="itemsCount" value="{{ data.itemsCount }}">
 
             {% set field = attribute(data.pickingForm.children, data.pickingFormSkuKeys | first) %}
             {% set itemSku = field.vars.name | split('__') | last %}
@@ -76,9 +80,17 @@
                     data: {
                         imageUrl: data.itemImageUrls,
                         shelfData: data.itemsToShelfMap,
-                        productAttributes: data.itemsToProductAttributesMap,
                         title: field.vars.label,
                         productsCount: field.vars.attr.max,
+                        itemSku: itemSku,
+                        itemsToShelfMap: itemsToShelfMap,
+                        itemsToProductAttributesMap: data.itemsToProductAttributesMap,
+                        field: field,
+                        urlContainerSelect: urlContainerSelect,
+                        collectNumber: collectNumber,
+                        itemsCount: itemsCount,
+                        idSalesOrder: data.idSalesOrder,
+                        alternativeEanData: data.itemsToAlternativeEanMap,
                         itemSku: itemSku,
                         itemsToShelfMap: itemsToShelfMap,
                         itemsToProductAttributesMap: itemsToProductAttributesMap,
@@ -102,16 +114,6 @@
                                 class: config.jsName ~ '__quantity',
                             }
                         }) }}
-                    {% endblock %}
-
-                    {% block formElementWeight %}
-                        {% if embed.weightField %}
-                            {{ form_row(embed.weightField, {
-                                attr: {
-                                    class: config.jsName ~ '__weight',
-                                }
-                            }) }}
-                        {% endif %}
                     {% endblock %}
                 {% endembed %}
             {% endif %}

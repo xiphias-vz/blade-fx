@@ -36,7 +36,7 @@
                     },
                 } only %}
             <br />
-            <input type="hidden" name="{{ data.requestParamIdSalesOrder }}" value="{{ pickingOrder.idSalesOrder }}">
+            <input id="{{ data.requestParamIdSalesOrder }}" type="hidden" name="{{ data.requestParamIdSalesOrder }}" value="{{ pickingOrder.idSalesOrder }}">
             {% set tokenName = data.formatStartPickingTokenName | format(pickingOrder.idSalesOrder) %}
             <input type="hidden" name="token" value="{{ csrf_token(tokenName) }}">
             <input type="hidden" name="containers" value="">

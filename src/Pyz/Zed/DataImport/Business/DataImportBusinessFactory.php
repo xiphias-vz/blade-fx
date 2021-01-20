@@ -9,6 +9,7 @@ namespace Pyz\Zed\DataImport\Business;
 
 use NumberFormatter;
 use Pyz\Shared\Product\ProductConfig;
+use Pyz\Zed\DataImport\Business\Model\AlternativeEan\AlternativeEanWriterStep;
 use Pyz\Zed\DataImport\Business\Model\BaseProduct\AttributesExtractorStep as BaseAttributesExtractorStep;
 use Pyz\Zed\DataImport\Business\Model\BaseProduct\ProductCategoryWriterStep;
 use Pyz\Zed\DataImport\Business\Model\BaseProduct\ProductDepositOptionStep;
@@ -131,7 +132,8 @@ class DataImportBusinessFactory extends SprykerDataImportBusinessFactory
             ->addDataImporter($this->createNavigationNodeImporter())
             ->addDataImporter($this->getMerchantDeliveryPostalCodeImporter())
             ->addDataImporter($this->getMerchantUserImporter())
-            ->addDataImporter($this->getTimeSlotImporter());
+            ->addDataImporter($this->getTimeSlotImporter())
+            ->addDataImporter($this->getAlternativeEanImporter());
 
         return $dataImporterCollection;
     }
@@ -768,6 +770,21 @@ class DataImportBusinessFactory extends SprykerDataImportBusinessFactory
     }
 
     /**
+     * @return \Spryker\Zed\DataImport\Business\Model\DataImporterInterface|\Spryker\Zed\DataImport\Business\Model\DataSet\DataSetStepBrokerAwareInterface
+     */
+    protected function getAlternativeEanImporter()
+    {
+        $dataImporter = $this->getCsvDataImporterFromConfig($this->getConfig()->getAlternativeEanImporterConfiguration());
+
+        $dataSetStepBroker = $this->createTransactionAwareDataSetStepBroker();
+        $dataSetStepBroker->addStep($this->createAlternativeEanWriterStep());
+
+        $dataImporter->addDataSetStepBroker($dataSetStepBroker);
+
+        return $dataImporter;
+    }
+
+    /**
      * @return \Pyz\Zed\DataImport\Business\Model\MerchantUser\MerchantUserWriterStep
      */
     public function createMerchantUserWriterStep(): MerchantUserWriterStep
@@ -789,6 +806,14 @@ class DataImportBusinessFactory extends SprykerDataImportBusinessFactory
     public function createTimeSlotWriterStep(): TimeSlotWriterStep
     {
         return new TimeSlotWriterStep();
+    }
+
+    /**
+     * @return \Pyz\Zed\DataImport\Business\Model\AlternativeEan\AlternativeEanWriterStep
+     */
+    public function createAlternativeEanWriterStep(): AlternativeEanWriterStep
+    {
+        return new AlternativeEanWriterStep();
     }
 
     /**

@@ -15,8 +15,6 @@ export default class ProductItem extends Component {
     isAccepted = false;
     isNotFullyAccepted = false;
     isDeclined = false;
-    weightMax = 0;
-    weightMin = 0;
     protected debounceDelay = 300;
     protected pickProducts: PickProducts;
     protected $minusButton: $;
@@ -26,11 +24,12 @@ export default class ProductItem extends Component {
     protected $quantityField: $;
     protected $quantityOutput: $;
     protected $weightField: $;
+    eanInputFieldWrapper: HTMLElement;
+    popUp: HTMLElement;
+    btnSubmitPick: HTMLElement;
+
 
     protected readyCallback(): void {
-        this.form.addEventListener('keypress', (event: KeyboardEvent) => this.formKeyPressHandler(event));
-
-        this.focusFirstEanField();
     }
 
     protected init(): void {
@@ -44,7 +43,12 @@ export default class ProductItem extends Component {
         this.$quantityOutput = this.$this.find(this.quantityOutputSelector);
         this.weightMax = Number(this.$weightField.attr('max'));
         this.weightMin = Number(this.$weightField.attr('min'));
+        this.eanInputFieldWrapper = <HTMLElement>document.getElementById('eanScannenDiv');
+        this.eanInputFieldWrapper.addEventListener('keypress', (event: KeyboardEvent) => this.formKeyPressHandler(event));
+        this.popUp = <HTMLElement>document.getElementsByClassName('popup-ui')[0];
+        this.btnSubmitPick = <HTMLElement>document.getElementById('btnSubmitPick');
         this.mapEvents();
+        this.focusFirstEanField();
     }
 
     protected mapEvents(): void {
@@ -74,6 +78,16 @@ export default class ProductItem extends Component {
 
             this.declineClickHandler();
         });
+        this.btnSubmitPick.onclick = this._onSubmitClick;
+    }
+    _onSubmitClick(event: MouseEvent) {
+        const items = Number((<HTMLInputElement>document.getElementsByName("itemsCount")[0]).value);
+        const count = Number((<HTMLInputElement>document.getElementsByName("counter")[0]).value);
+        if(items === count) {
+            event.view.document.querySelector('popup-ui').classList.add('popup-ui--show');
+        } else {
+            event.view.document.forms['order_item_selection_form'].submit();
+        }
     }
 
     async updateItem(item: StorageItem): Promise<void> {
@@ -109,6 +123,7 @@ export default class ProductItem extends Component {
         const inputWeightValue = Number(this.$weightField.val());
         const inputWeightMax = Number(this.$weightField.attr('max'));
         const inputWeightMin = Number(this.$weightField.attr('min'));
+
         if (inputWeightValue > inputWeightMax) {
             alert(`Der Eingabewert sollte nicht größer als ${inputWeightMax} sein`);
 
@@ -126,25 +141,60 @@ export default class ProductItem extends Component {
 
     protected formKeyPressHandler(event: KeyboardEvent): void {
         // enter key forces the whole form to submit, we want to prevent that for barcode scanner
+
         if (event.key == 'Enter') {
             event.preventDefault();
-
             const $inputValue = (<HTMLInputElement>document.getElementById('txt_ean_scannen')).value;
             const $eanPrefix = Number($inputValue.substr(0,2));
-            const $plu = $inputValue.substr(2,4);
-            const $value = $inputValue.substr(7,5);
-            let weight = 0;
-            let price = 0;
 
-            if ($eanPrefix > 24 && $eanPrefix < 29) // weight
-            {
-                weight = Number($value);
-            }else if ($eanPrefix > 20 && $eanPrefix < 25) // price
-            {
-                price = Number($value);
+            const $pricePerKg = $('#ean').data('priceperkg');
+            const $ean = $('#ean').data('ean');
+
+            const $selForWeightElement = $(".js-product-item__weight");
+            let valueOfWeightElement = $selForWeightElement.val();
+
+            const $selForQuantityElement = $(".js-product-item__quantity");
+            let valueOfQuantityElement = $selForQuantityElement.val();
+
+            if(Number($inputValue) === $ean){
+                this.step30();
+            }
+            else {
+                    alert("Error");
+                    const element = <HTMLInputElement>document.getElementById('txt_ean_scannen');
+                    element.value = "";
+                    this.focusFirstEanField();
+            }
+
+            if($eanPrefix <= 24 && $eanPrefix >= 21){
+                let priceOfProduct = $inputValue.substr(7,4);
+                let calculatedPrice = priceOfProduct / $pricePerKg;
+                $(".js-product-item__weight").val(calculatedPrice);
+
+                this.step20($selForQuantityElement, $inputValue, valueOfWeightElement, valueOfQuantityElement);
+            }
+            else if($eanPrefix <= 29 && $eanPrefix >= 25){
+                let priceWeightOfProduct = $inputValue.substr(7,4);
+                $selForWeightElement.val(valueOfWeightElement + priceWeightOfProduct);
+
+                this.step20($selForQuantityElement, $inputValue, valueOfWeightElement, valueOfQuantityElement);
+            }
+            else{
+                this.step30();
             }
 
         }
+    }
+
+    protected step20(quantityElement, scannedBarcodeValue, valueOfWeightElement, valueOfQuantityElement): void {
+        this.step30();
+    }
+
+    protected step30(): void {
+        this.clickCounterHandler(true);
+        const element = <HTMLInputElement>document.getElementById('txt_ean_scannen');
+        element.value = "";
+        this.focusFirstEanField();
     }
 
     protected updateQuantityInput(value: number): void {

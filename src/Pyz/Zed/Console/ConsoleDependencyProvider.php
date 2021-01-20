@@ -247,6 +247,7 @@ class ConsoleDependencyProvider extends SprykerConsoleDependencyProvider
             new DataImportConsole(DataImportConsole::DEFAULT_NAME . ':' . MerchantDataImportConfig::IMPORT_TYPE_MERCHANT),
             new DataImportConsole(DataImportConsole::DEFAULT_NAME . ':' . DataImportConfig::IMPORT_PRODUCT_MANAGEMENT_ATTRIBUTE),
             new DataImportConsole(DataImportConsole::DEFAULT_NAME . ':' . DataImportConfig::IMPORT_TIME_SLOT),
+            new DataImportConsole(DataImportConsole::DEFAULT_NAME . ':' . DataImportConfig::IMPORT_ALTERNATIVE_EAN),
 
             // Publish and Synchronization
             new EventBehaviorTriggerTimeoutConsole(),
