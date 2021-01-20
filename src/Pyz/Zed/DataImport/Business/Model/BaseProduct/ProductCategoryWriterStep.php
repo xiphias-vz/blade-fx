@@ -30,20 +30,22 @@ class ProductCategoryWriterStep extends PublishAwareStep implements DataImportSt
     {
         $categoryId = $dataSet[self::KEY_CATEGORY_KEY];
         $listId = explode(";", $categoryId);
+        $productOrder = 0;
         foreach ($listId as $value) {
             $dataSet[self::KEY_CATEGORY_KEY] = $value;
 
             $productCategoryEntity = SpyProductCategoryQuery::create()
                 ->filterByFkProductAbstract($dataSet[ProductAbstractWriterStep::ID_PRODUCT_ABSTRACT])
                 ->filterByFkCategory($this->getCategoryId($dataSet))
-                ->findOneOrCreate();
+                ->findOneOrCreate()
+                ->setProductOrder($productOrder);
 
             if ($productCategoryEntity->isNew() || $productCategoryEntity->isModified()) {
                 $productCategoryEntity->save();
             }
-
                 $this->addPublishEvents(ProductCategoryEvents::PRODUCT_CATEGORY_PUBLISH, $dataSet[ProductAbstractWriterStep::ID_PRODUCT_ABSTRACT]);
                 $this->addPublishEvents(ProductEvents::PRODUCT_ABSTRACT_PUBLISH, $dataSet[ProductAbstractWriterStep::ID_PRODUCT_ABSTRACT]);
+            $productOrder++;
         }
     }
 
