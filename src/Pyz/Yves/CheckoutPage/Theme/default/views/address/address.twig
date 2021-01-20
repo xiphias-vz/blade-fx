@@ -31,6 +31,22 @@
         },
     } only %}
         {% block fieldset %}
+            <script>
+                window.dataLayer.push({
+                    'event': 'eec.checkout',
+                    'ecommerce':
+                        {
+                            'checkout':
+                                {
+                                    'actionField':
+                                        {
+                                            'step': '2',
+                                            'option': 'Abholstation',
+                                        }
+                                },
+                        },
+                });
+            </script>
             <div class="{{ config.name }}__fields grid grid--indent">
                 <div class="col col--sm-12 col--xl-6 spacing-x spacing-x--big spacing-x--inner spacing-bottom spacing-bottom--bigger">
                     <div class="checkout-block">

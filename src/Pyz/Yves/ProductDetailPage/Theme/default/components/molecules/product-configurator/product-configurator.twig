@@ -53,6 +53,7 @@
                                     'name': '{{ data.product.name }}',
                                     'id': '{{ data.product.idProductAbstract }}',
                                     'sku': '{{ data.product.sku }}',
+                                    'price': '{{ data.product.prices.DEFAULT is not defined ? null : data.product.prices.DEFAULT /100}}',
                                     'list': 'PDP',
                                 }],
                             },

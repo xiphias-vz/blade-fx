@@ -202,6 +202,7 @@
                 },
                 "onAfterSubmit": function(event) {
                     if(event.response.errorCode == 0) {
+                        checkoutStep('registration');
                         document.querySelector("#loginForm_email.input").value = event.profile.email;
                         document.querySelector("#loginForm_data").value = JSON.stringify(event);
                         document.getElementsByName("loginForm")[0].submit();
@@ -229,6 +230,7 @@
                 },
                 "onAfterSubmit": function(event) {
                     if(event.response.errorCode == 0 && event.screen === 'gigya-login-screen') {
+                        checkoutStep('login');
                         document.querySelector("#loginForm_email.input").value = event.profile.email;
                         document.querySelector("#loginForm_data").value = JSON.stringify(event);
                         document.getElementsByName("loginForm")[0].submit();
@@ -237,8 +239,36 @@
             });
         }
 
+        function checkoutStep(option)
+        {
+            window.dataLayer.push({
+                'event': 'eec.checkout',
+                'ecommerce':
+                    {
+                        'checkout':
+                            {
+                                'actionField':
+                                    {
+                                        'step': '1',
+                                        'option': option,
+                                    }
+                            },
+                    },
+            });
+        }
+
         gigyaRegistrationScreen();
         gigyaLoginScreen();
+
+        var buttons = document.getElementsByTagName('button');
+        if(buttons != null)
+        {
+            buttons[1].addEventListener('click', function()
+            {
+                checkoutStep('guestCheckout');
+            });
+        }
+
     </script>
 
 {% endblock %}

@@ -31,6 +31,22 @@
 
             <div class="col col--spaced-lg col--sm-12 col--xl-4">
                 <div class="checkout-block__summary">
+                    <script>
+                        window.dataLayer.push({
+                            'event': 'eec.checkout',
+                            'ecommerce':
+                                {
+                                    'checkout':
+                                        {
+                                            'actionField':
+                                                {
+                                                    'step': '4',
+                                                    'option': 'Übersicht',
+                                                }
+                                        },
+                                },
+                        });
+                    </script>
                     <div class="checkout-block__title">
                         <span>{{ 'checkout.order.overview' | trans }}</span>
                         <span class="checkout-block__title-counter">

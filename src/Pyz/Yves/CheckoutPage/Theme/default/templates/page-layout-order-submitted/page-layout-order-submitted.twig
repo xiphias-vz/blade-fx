@@ -19,6 +19,22 @@
 {% block title %}{% endblock %}
 
 {% block content %}
+    {% for item in data.items %}
+        <script>
+            window.purchaseItems = window.purchaseItems || [];
+            window.purchaseItems.push({
+                    'name': '{{ item.name | escape('js') }}',
+                    'id': '{{ item.id }}',
+                    'sku': '{{ item.sku }}',
+                    'unitGrossPrice': '{{ item.unitGrossPrice is defined ? item.unitGrossPrice / 100 : null }}',
+                    'sumGrossPrice': '{{ item.sumGrossPrice is defined ? item.sumGrossPrice / 100 : null }}',
+                    'url' : '{{ item.url }}',
+                    'quantity': '{{ item.quantity }}',
+                    'brand': '{{ item.brand }}',
+            }
+            );
+        </script>
+    {% endfor %}
     <div class="page-layout-checkout success-page text-center">
         <div class="success-page__container container">
             <h1 class="title">{{ data.title }}</h1>
@@ -38,26 +54,28 @@
         </div>
     </div>
     <script>
-        window.dataLayer = window.dataLayer || [];
-        window.dataLayer.push({
-            'event':'eec.purchase',
-            'ecommerce':
-                {
-                    'currencyCode': 'EUR',
-                    'purchase':
-                        {
-                            'actionField': {
-                                'id': '{{ data.orderReference }}',
-                                'subtotal': '{{ data.totals.subtotal is defined ? data.totals.subtotal / 100 : null }}',
-                                'expenseTotal': '{{ data.totals.expenseTotal is defined ? data.totals.expenseTotal / 100 : null }}',
-                                'priceToPay': '{{ data.totals.priceToPay is defined ? data.totals.priceToPay / 100 : null  }}',
-                                'grandTotal': '{{ data.totals.grandTotal is defined ? data.totals.grandTotal / 100 : null  }}',
-                                'discountTotal' : '{{ data.totals.discountTotal is defined ? data.totals.discountTotal / 100 : null }}',
-                                'netTotal' : '{{ data.totals.netTotal is defined ? data.totals.netTotal / 100 : null }}',
-                                'refundTotal' : '{{ data.totals.refundTotal is defined ? data.totals.refundTotal / 100 : null }}',
-                            },
-                        }
-                }
-        });
+            window.dataLayer = window.dataLayer || [];
+            var products = window.purchaseItems;
+            window.dataLayer.push({
+                'event':'eec.purchase',
+                'ecommerce':
+                    {
+                        'currencyCode': 'EUR',
+                        'purchase':
+                            {
+                                'actionField': {
+                                    'id': '{{ data.orderReference }}',
+                                    'subtotal': '{{ data.totals.subtotal is defined ? data.totals.subtotal / 100 : null }}',
+                                    'expenseTotal': '{{ data.totals.expenseTotal is defined ? data.totals.expenseTotal / 100 : null }}',
+                                    'priceToPay': '{{ data.totals.priceToPay is defined ? data.totals.priceToPay / 100 : null  }}',
+                                    'grandTotal': '{{ data.totals.grandTotal is defined ? data.totals.grandTotal / 100 : null  }}',
+                                    'discountTotal' : '{{ data.totals.discountTotal is defined ? data.totals.discountTotal / 100 : null }}',
+                                    'netTotal' : '{{ data.totals.netTotal is defined ? data.totals.netTotal / 100 : null }}',
+                                    'refundTotal' : '{{ data.totals.refundTotal is defined ? data.totals.refundTotal / 100 : null }}',
+                                },
+                               products,
+                            }
+                    }
+            });
     </script>
 {% endblock %}

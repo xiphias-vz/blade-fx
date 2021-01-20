@@ -50,6 +50,22 @@
                     </article>
                 {% endfor %}
             </div>
+            <script>
+                window.dataLayer.push({
+                    'event': 'eec.checkout',
+                    'ecommerce':
+                        {
+                            'checkout':
+                                {
+                                    'actionField':
+                                        {
+                                            'step': '3',
+                                            'option': 'Abholzeitpunkt',
+                                        }
+                                },
+                        },
+                });
+            </script>
         {% endblock %}
         {% block actions %}
             <div class="{{ config.name }}__actions">
