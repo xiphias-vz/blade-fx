@@ -10,6 +10,7 @@
     urlStopOrderPicking: urlStopOrderPicking,
     formatStartPickingTokenName: formatStartPickingTokenName,
     formatStopPickingTokenName: formatStopPickingTokenName,
+    urlContainerSelect: urlContainerSelect
 } %}
 
 {% block header %}
@@ -55,7 +56,7 @@
                 },
                 embed: {
                     pickingOrder: pickingOrder,
-                    urlOrderPicking: data.urlOrderPicking,
+                    urlContainerSelect: data.urlContainerSelect,
                     urlStopOrderPicking: data.urlStopOrderPicking,
                     requestParamIdSalesOrder: data.requestParamIdSalesOrder,
                     formatStartPickingTokenName: data.formatStartPickingTokenName,
@@ -79,7 +80,7 @@
                             </button>
                         </form>
                     {% else %}
-                        <form action="{{ embed.urlOrderPicking }}" method="post">
+                        <form action="{{ embed.urlContainerSelect }}" method="post">
                             <input type="hidden" name="{{ embed.requestParamIdSalesOrder }}" value="{{ embed.pickingOrder.idSalesOrder }}">
                             {% set tokenName = embed.formatStartPickingTokenName | format(embed.pickingOrder.idSalesOrder) %}
                             <input type="hidden" name="token" value="{{ csrf_token(tokenName) }}">

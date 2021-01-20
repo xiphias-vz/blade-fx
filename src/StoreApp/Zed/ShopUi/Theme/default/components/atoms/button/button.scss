@@ -5,8 +5,8 @@ $button-radius: rem(10);
         @include helper-font-weight(bold);
         position: relative;
         display: inline-block;
-        max-width: rem(390);
         padding: rem(11) rem(15);
+        max-width: rem(390);
         font: fw(medium) rem(14)/1.7 $setting-font-family-additional;
         text-align: center;
         text-decoration: none;
@@ -153,6 +153,10 @@ $button-radius: rem(10);
             }
         }
 
+        &--container {
+            max-width: 100% !important;
+        }
+
         &--warning {
             background: lighten($setting-color-brown, 25%);
             color: $setting-color-black;
@@ -232,8 +236,18 @@ $button-radius: rem(10);
             }
         }
 
+        &--circle
+        {
+            border-radius: rem(25);
+        }
+
         &--light {
             background: $setting-color-white;
+        }
+
+        &--grey
+        {
+            background-color: $setting-color-gray-3;
         }
 
         &--big {

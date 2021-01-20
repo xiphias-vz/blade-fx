@@ -1,0 +1,58 @@
+{% extends model('component') %}
+
+{% define config = {
+    name: 'container-select',
+} %}
+
+{% define data = {
+    containerInfo: containerInfo | default(null),
+    pickingForm: pickingForm | default(null),
+    listOfUsedContainers: listOfUsedContainers | default(null),
+} %}
+
+{% block body %}
+    {% embed molecule('popup-ui-info') with {
+        data: {
+            isUpdated: 0,
+            containerId: '25015001',
+            shelfId: 'A001-001-01',
+            buttons: {
+                submit: {
+                    isButton: true,
+                    additionalClass: 'js-pick-products__submit',
+                },
+            },
+        },
+    } only %}
+    {% endembed %}
+    <div class="{{ component.renderClass('box', modifiers) }}">
+        <div class="grid grid--justify grid--stretch {{ config.name }}__content">
+            <div class="col {{ config.name }}__left-col" style="font-weight: bold">
+                {{ 'picking.app.containers.select.title' | trans }}
+            </div>
+            <div class="col {{ config.name }}__right-col">
+                <button type="button" onclick="location.href='/picker/picking';" class="{{ config.name }}__delete button button--delete button--delete-bigger col"><svg class="icon button__icon"><use xlink:href="#:close"></use></svg></button>
+            </div>
+        </div>
+        <div id="listOfContainers">
+            {% for container in data.containerInfo %}
+                {% if container.shelf_code is not null %}
+                    <p style="font-weight: bold; display:inline;"> {{ container.container_code }}</p>  ->  <p style="display:inline">{{ container.shelf_code}}</p>
+                    <br/>
+                {% else  %}
+                     <p style="font-weight: bold; display:inline;"> {{ container.container_code }}</p>
+                     <br/>
+                {% endif %}
+            {% endfor %}
+        </div>
+        {% include molecule('form-containers', 'Picker') with {
+            class: 'js-used-container-search__item',
+            data: {
+                formContainers: data.pickingForm.field_sales_order_containers,
+            },
+            attributes: {
+                'data-listOfUsedContainers': data.listOfUsedContainers
+            },
+        } only %}
+    </div>
+{% endblock %}

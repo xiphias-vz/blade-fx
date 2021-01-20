@@ -1,6 +1,6 @@
 $setting-item-border-radius: rem(8);
 
-@mixin picker-order-item($name: '.order-item') {
+@mixin picker-container-select($name: '.container-select') {
     #{$name} {
         margin-bottom: rem(8);
 
@@ -16,6 +16,10 @@ $setting-item-border-radius: rem(8);
                     padding-top: rem(3);
                 }
             }
+        }
+
+        &--title {
+            font-weight: bold;
         }
 
         &--expanded {
@@ -74,7 +78,14 @@ $setting-item-border-radius: rem(8);
             color: $setting-color-gray-11;
         }
 
+        .hr-line-solid {
+            border-bottom: 1px solid black;
+            background-color: rgba(0, 0, 0, 0);
+            border-style: solid !important;
+            margin-top: 15px;
+            margin-bottom: 15px;
+        }
     }
 }
 
-@include picker-order-item();
+@include picker-container-select();

@@ -3,14 +3,30 @@
 {% define config = {
     name: 'form-containers',
     tag: 'form-containers',
+    jsName1: 'js-used-container-search',
 } %}
 
 {% define data = {
     formContainers: required,
 } %}
 
+{% define attributes = {
+    'used-container-search-class': config.jsName1 ~ '__item'
+} %}
+
 {% block body %}
-    <h3 class="spacing-bottom">Containers</h3>
+    {% embed molecule('popup-ui-error') with {
+        data: {
+            isErrorTrue: 0,
+            buttons: {
+                submit: {
+                    isButton: true,
+                    additionalClass: 'js-pick-products__submit',
+                },
+            },
+        },
+    } only %}
+    {% endembed %}
 
     {{ form_row(data.formContainers) }}
 

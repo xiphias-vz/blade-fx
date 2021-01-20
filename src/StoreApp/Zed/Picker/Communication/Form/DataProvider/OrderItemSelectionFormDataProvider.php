@@ -65,6 +65,30 @@ class OrderItemSelectionFormDataProvider
      * @param \Generated\Shared\Transfer\ItemTransfer[] $itemTransfers
      * @param string $storeName
      *
+     * @return array
+     */
+    public function getOptionsForOneOrder(array $itemTransfers, string $storeName): array
+    {
+        $options = [
+            OrderItemSelectionForm::OPTION_SALES_ORDER_ITEMS => [],
+            OrderItemSelectionForm::OPTION_ITEM_ATTRIBUTES => [],
+        ];
+
+        if ($itemTransfers !== null) {
+            $options[OrderItemSelectionForm::OPTION_SALES_ORDER_ITEMS] = $itemTransfers;
+            $options[OrderItemSelectionForm::OPTION_ITEM_ATTRIBUTES] = $this->getOneProductAttributes(
+                $itemTransfers,
+                $storeName
+            );
+        }
+
+        return $options;
+    }
+
+    /**
+     * @param \Generated\Shared\Transfer\ItemTransfer[] $itemTransfers
+     * @param string $storeName
+     *
      * @return string[][]
      */
     protected function getProductAttributes(array $itemTransfers, string $storeName): array
@@ -72,5 +96,18 @@ class OrderItemSelectionFormDataProvider
         $skus = array_keys($itemTransfers);
 
         return $this->productFacade->getConcreteSkuToAttributesMap($skus, $storeName);
+    }
+
+    /**
+     * @param \Generated\Shared\Transfer\ItemTransfer[] $itemTransfers
+     * @param string $storeName
+     *
+     * @return string[][]
+     */
+    protected function getOneProductAttributes(array $itemTransfers, string $storeName): array
+    {
+        $skus = $itemTransfers[0]["sku"];
+
+        return $this->productFacade->getConcreteSkuToAttributesMap([$skus], $storeName);
     }
 }

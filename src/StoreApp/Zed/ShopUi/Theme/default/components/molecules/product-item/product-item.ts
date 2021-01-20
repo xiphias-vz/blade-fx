@@ -15,6 +15,8 @@ export default class ProductItem extends Component {
     isAccepted = false;
     isNotFullyAccepted = false;
     isDeclined = false;
+    weightMax = 0;
+    weightMin = 0;
     protected debounceDelay = 300;
     protected pickProducts: PickProducts;
     protected $minusButton: $;
@@ -25,7 +27,11 @@ export default class ProductItem extends Component {
     protected $quantityOutput: $;
     protected $weightField: $;
 
-    protected readyCallback(): void {}
+    protected readyCallback(): void {
+        this.form.addEventListener('keypress', (event: KeyboardEvent) => this.formKeyPressHandler(event));
+
+        this.focusFirstEanField();
+    }
 
     protected init(): void {
         this.pickProducts = <PickProducts>document.getElementsByTagName('pick-products')[0];
@@ -36,7 +42,8 @@ export default class ProductItem extends Component {
         this.$quantityField = this.$this.find(this.quantityFieldSelector);
         this.$weightField = this.$this.find(this.weightInputFieldSelector);
         this.$quantityOutput = this.$this.find(this.quantityOutputSelector);
-
+        this.weightMax = Number(this.$weightField.attr('max'));
+        this.weightMin = Number(this.$weightField.attr('min'));
         this.mapEvents();
     }
 
@@ -55,7 +62,7 @@ export default class ProductItem extends Component {
         this.$acceptButton.on('click', () =>
         {
             if (checkIfWeightCorrect) {
-                this.acceptClickHandler()
+                this.acceptClickHandler();
             }
         });
         this.$declineButton.on('click', () => {
@@ -102,7 +109,6 @@ export default class ProductItem extends Component {
         const inputWeightValue = Number(this.$weightField.val());
         const inputWeightMax = Number(this.$weightField.attr('max'));
         const inputWeightMin = Number(this.$weightField.attr('min'));
-
         if (inputWeightValue > inputWeightMax) {
             alert(`Der Eingabewert sollte nicht größer als ${inputWeightMax} sein`);
 
@@ -112,10 +118,32 @@ export default class ProductItem extends Component {
             alert(`Der Eingabewert sollte nicht kleiner als ${inputWeightMin} sein`);
 
             return false;
-        }
-        else {
+        }else {
 
             return true;
+        }
+    }
+
+    protected formKeyPressHandler(event: KeyboardEvent): void {
+        // enter key forces the whole form to submit, we want to prevent that for barcode scanner
+        if (event.key == 'Enter') {
+            event.preventDefault();
+
+            const $inputValue = (<HTMLInputElement>document.getElementById('txt_ean_scannen')).value;
+            const $eanPrefix = Number($inputValue.substr(0,2));
+            const $plu = $inputValue.substr(2,4);
+            const $value = $inputValue.substr(7,5);
+            let weight = 0;
+            let price = 0;
+
+            if ($eanPrefix > 24 && $eanPrefix < 29) // weight
+            {
+                weight = Number($value);
+            }else if ($eanPrefix > 20 && $eanPrefix < 25) // price
+            {
+                price = Number($value);
+            }
+
         }
     }
 
@@ -126,6 +154,11 @@ export default class ProductItem extends Component {
     }
 
     protected acceptClickHandler(): void {
+
+        this.$weightField.removeAttr('min');
+        this.$weightField.removeAttr('max');
+        this.$weightField.removeAttr('required');
+
         if (this.currentValue === 0) {
             this.updateQuantityInput(this.maxQuantity);
         }
@@ -150,9 +183,19 @@ export default class ProductItem extends Component {
         this.updateQuantityInput(0);
         this.$this.addClass(this.notPickedCLass);
         this.pickProducts.update();
+
+        this.$weightField.removeAttr('min');
+        this.$weightField.removeAttr('max');
+        this.$weightField.removeAttr('required');
+
     }
 
     protected revertView(): void {
+
+        this.$weightField.attr('min', this.weightMin);
+        this.$weightField.attr('max', this.weightMax);
+        this.$weightField.attr('required', "required");
+
         this.isAccepted = false;
         this.isDeclined = false;
         this.isNotFullyAccepted = false;
@@ -163,6 +206,12 @@ export default class ProductItem extends Component {
 
     protected isValueInRange(inputValue: number): boolean {
         return inputValue <= this.maxQuantity && inputValue >= 0;
+    }
+
+    protected focusFirstEanField(): void
+    {
+        const element = <HTMLInputElement>document.getElementById('txt_ean_scannen');
+        element.focus();
     }
 
     protected get minusButtonSelector(): string {

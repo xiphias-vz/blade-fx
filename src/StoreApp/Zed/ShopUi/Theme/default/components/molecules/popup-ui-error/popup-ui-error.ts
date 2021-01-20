@@ -13,7 +13,7 @@ export default class PopupUiError extends Component {
         this.$closeButton = this.$this.find(this.closeButtonSelector);
         this.$submitButton = this.$this.find(this.submitButtonSelector);
         this.$isErrorTrue = this.$this.find('.error-holder');
-
+        console.log(1);
         this.mapEvents();
     }
 

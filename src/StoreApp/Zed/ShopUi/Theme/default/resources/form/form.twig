@@ -6,7 +6,7 @@
     {%- set label = (label | default('')) | trans -%}
 
     {%- set attr = attr | merge({
-        class: ('input input--expand' ~ (errors is not empty ? ' input--error' : ' ') ~ (attr.class | default(''))) | trim,
+        class: ('input input--expand' ~ (errors is not empty ? ' input--error ' : ' ') ~ (attr.class | default(''))) | trim,
         type: type | default('text')
     }) -%}
 
@@ -17,7 +17,7 @@
     {%- set label = (label | default('')) | trans -%}
 
     {%- set attr = attr | merge({
-        class: ('textarea textarea--expand' ~ (errors is not empty ? ' textarea--error' : ' ') ~ (attr.class | default(''))) | trim,
+        class: ('textarea textarea--expand' ~ (errors is not empty ? ' textarea--error ' : ' ') ~ (attr.class | default(''))) | trim,
         placeholder: ''
     }) -%}
 

@@ -45,6 +45,7 @@ class PickerConfig
     public const URL_DIFF_SECTIONS = '/picker/diff-sections';
     public const URL_PICKING_LIST = '/picker/picking';
     public const URL_SELECT_SHELVES = '/picker/select-shelves';
+    public const URL_SELECT_CONTAINERS = '/picker/picking/select-containers';
     public const URL_START_ORDER_PICKING = '/picker/picking/start-order-picking';
     public const URL_STOP_ORDER_PICKING = '/picker/picking/stop-order-picking';
     public const URL_ORDER_PICKING = '/picker/picking/order-picking';

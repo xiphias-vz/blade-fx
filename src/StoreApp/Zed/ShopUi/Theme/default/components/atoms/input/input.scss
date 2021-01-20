@@ -42,4 +42,10 @@
     &--search {
         border-radius: rem(4);
     }
+
+    &--expand
+    {
+        display: block;
+        width: 100%;
+    }
 }

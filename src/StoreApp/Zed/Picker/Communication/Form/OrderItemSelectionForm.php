@@ -146,13 +146,14 @@ class OrderItemSelectionForm extends AbstractType
                 'allow_add' => true,
                 'allow_delete' => true,
                 'label' => false,
+                'required' => false,
                 'entry_options' => [
-                    'label' => 'Container',
+                    'label' => 'Box hinzufügen',
                 ],
                 'prototype' => true,
                 'prototype_name' => '__container_name__',
                 'constraints' => [
-                    new NotBlank(),
+            //                    new NotBlank(),
                 ],
             ]
         );

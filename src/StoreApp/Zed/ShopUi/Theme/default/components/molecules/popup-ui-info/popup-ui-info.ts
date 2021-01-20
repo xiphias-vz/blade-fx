@@ -23,9 +23,9 @@ export default class PopupUiError extends Component {
             this.$submitButton.on('click', () => this.triggerPopup());
         }
 
-        if(this.$updateButton.attr('update') == 1) {
-            this.triggerPopupWithAnimation();
-        }
+         if(this.$updateButton.attr('update') == 1) {
+             this.triggerPopupWithAnimation();
+         }
 
     }
     public triggerPopupWithAnimation(event?: Event) : void {

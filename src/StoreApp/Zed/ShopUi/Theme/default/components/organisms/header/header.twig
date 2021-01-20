@@ -16,7 +16,8 @@
     buttonUrl: '/',
     buttonText: 'Cancel' | trans,
     titleColor: '',
-    pickingZone: false
+    pickingZone: false,
+    containerSelect: false,
 } %}
 
 {% block extraClass %}
@@ -54,6 +55,44 @@
                                         }
                                     } only %}
                                     &nbsp;
+                                </a>
+                            </div>
+                        {% elseif data.containerSelect %}
+                            <div class="col col--sm-5">
+                                {% if data.buttonUrl %}
+                                    <a href="{{ data.buttonUrl }}" class="link link--cancel link--icon">
+                                        {% include atom('icon') with {
+                                            class: 'link__icon link__icon--cancel',
+                                            data: {
+                                                name: 'arrow-right'
+                                            }
+                                        } only %}
+                                        <div class="link__header__title">
+                                            {{ data.buttonText }}
+                                        </div>
+                                    </a>
+                                {% endif %}
+                            </div>
+                            <div class="col col--expand text-left">
+                                <div class="link">
+                                    <div class="link__header__container">
+                                        {% block orderReference %}
+                                            <div class="{{ config.name }}__id">
+                                                {{ 'ID' }}: {{ data.orderReference }}
+                                            </div>
+                                        {% endblock %}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col {{ config.name }}__logout text-right">
+                                <a href="/auth/logout" class="link link--icon link--logout">
+                                    {% include atom('icon') with {
+                                        modifiers: ['big'],
+                                        class: 'link__icon',
+                                        data: {
+                                            name: 'logout'
+                                        }
+                                    } only %}                                    &nbsp;
                                 </a>
                             </div>
                         {% elseif data.pickingZone %}

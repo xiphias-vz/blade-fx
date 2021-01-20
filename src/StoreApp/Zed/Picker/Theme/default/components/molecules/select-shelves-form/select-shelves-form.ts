@@ -1,4 +1,5 @@
 import Component from 'ShopUi/models/component';
+import $ from 'jquery/dist/jquery';
 
 /**
  * TODO: move this logic for scanner to a separate molecule
@@ -6,6 +7,7 @@ import Component from 'ShopUi/models/component';
 export default class SelectShelvesForm extends Component {
 
     form: HTMLFormElement;
+    btn: HTMLButtonElement;
 
     protected barcodePrefix: string = '/x11';
 
@@ -13,9 +15,11 @@ export default class SelectShelvesForm extends Component {
         this.form = <HTMLFormElement>this.getElementsByTagName('form')[0];
 
         this.form.addEventListener('keypress', (event: KeyboardEvent) => this.formKeyPressHandler(event));
+        $(".button--success")[0].click(submitButtonHandler);
 
         this.mapEventsForInputs();
         this.focusInputElement();
+        this.removeLogout();
     }
 
     protected mapEventsForInputs(): void {
@@ -28,6 +32,11 @@ export default class SelectShelvesForm extends Component {
 
     protected onFormItemChange(event: KeyboardEvent): void {
         let originalValue = (<HTMLInputElement>event.target).value;
+
+        if(originalValue == ""){
+            event.preventDefault();
+            alert("Es werden nicht alle Felder eingegeben!");
+        }
 
         // force removing of barcode prefix
         let replacedValue = originalValue.replace(this.barcodePrefix, '');
@@ -49,6 +58,23 @@ export default class SelectShelvesForm extends Component {
         if (event.key == 'Enter') {
             event.preventDefault();
         }
+    }
+
+    protected removeLogout(): void
+    {
+        let btnDiv = $('.header__logout')[0];
+        btnDiv.remove();
+    }
+
+    protected submitButtonHandler(event: MouseEvent): void {
+
+        let formItems = <HTMLElement[]> Array.from(document.getElementsByTagName('input'));
+        formItems.forEach((element: HTMLInputElement) => {
+            if(element.value == ""){
+                event.preventDefault();
+                alert("Es werden nicht alle Felder eingegeben!");
+            }
+        });
     }
 
     protected focusInputElement(): void

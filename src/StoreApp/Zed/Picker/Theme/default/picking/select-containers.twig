@@ -1,0 +1,49 @@
+{% extends template('page-layout-main') %}
+
+{% define data = {
+    pickingOrders: pickingOrders,
+    merchant: merchant,
+    containerInfo: containerInfo,
+    urlOrderPicking: urlOrderPicking,
+    requestParamIdSalesOrder: requestParamIdSalesOrder,
+    formatStartPickingTokenName: formatStartPickingTokenName,
+    formatStopPickingTokenName: formatStopPickingTokenName,
+    pickingForm: pickingForm,
+    urlContainerSelect: urlContainerSelect
+} %}
+
+{% block header %}
+    {% for pickingOrder in data.pickingOrders %}
+        {% include organism('header') with {
+            data: {
+                headerLocationTitle: data.merchant.name,
+                withoutLogo: true,
+                containerSelect: true,
+                orderReference: pickingOrder.reference,
+            }
+        } only %}
+    {% endfor %}
+{% endblock %}
+
+{% block content %}
+        <form action="{{ data.urlContainerSelect }}" method="post" id="containersSelectForm">
+            {% for pickingOrder in data.pickingOrders %}
+                {% include molecule('container-select') with {
+                    data: {
+                        containerInfo: data.containerInfo,
+                        pickingForm: data.pickingForm,
+                        listOfUsedContainers: pickingOrder.listOfUsedContainers,
+                    },
+                } only %}
+            <br />
+            <input type="hidden" name="{{ data.requestParamIdSalesOrder }}" value="{{ pickingOrder.idSalesOrder }}">
+            {% set tokenName = data.formatStartPickingTokenName | format(pickingOrder.idSalesOrder) %}
+            <input type="hidden" name="token" value="{{ csrf_token(tokenName) }}">
+            <input type="hidden" name="containers" value="">
+                <button type="submit" class="button button--small button--table button--container button--expand">
+                    {{ 'picking.app.containers.continue' | trans }}
+                </button>
+            {% endfor %}
+        </form>
+{% endblock %}
+

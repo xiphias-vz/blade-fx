@@ -1,0 +1,65 @@
+{% extends model('component') %}
+
+{% define config = {
+    name: 'additional-order-buttons',
+    tag: 'additional-order-buttons',
+} %}
+
+{% define data = {
+    idSalesOrder: required,
+    urlContainerSelect: required
+} %}
+
+{% block body %}
+
+    <div class="grid grid--justify spacing-top">
+        {% block leftColBottom %}
+            <div class="col button button--disabled button--round button--ubersicht">
+                    <span class="col--md-4">
+                        {% include atom('icon') with {
+                            data: {
+                                name: 'overview',
+                                rowText: 'Übersicht'
+                            }
+                        } only %}
+                    </span>
+                <span class="col--md-8">Übersicht</span>
+            </div>
+        {% endblock %}
+        {% block midColBottom %}
+            <div class="col button button--disabled button--round button--posListe">
+                                <span class="col--md-4">
+                                    {% include atom('icon') with {
+                                        data: {
+                                            name: 'posliste',
+                                            rowText: 'Pos. Liste'
+                                        }
+                                    } only %}
+                                </span>
+                <span class="col--md-8">Pos. Liste</span>
+            </div>
+        {% endblock %}
+        {% block rightColBottom %}
+            <div class="col button button--round button--addContainers">
+                {% set tokenName = 'start-picking-%d' | format(data.idSalesOrder) %}
+                <form action="{{ data.urlContainerSelect }}" method="post" id="redirectToContainerSelectForm">
+                    <input type="hidden" name="idOrder" value="{{ data.idSalesOrder }}">
+                    <input type="hidden" name="token" value="{{ csrf_token(tokenName) }}">
+                    <button type="submit" id="redirectBtn">
+                      <span class="col--md-4">
+                            {% include atom('icon') with {
+                                data: {
+                                    name: 'addcontainer',
+                                    rowText: 'Add Cont.'
+                                }
+                            } only %}
+                        </span>
+
+                        <span class="col--md-8">Add Containers</span>
+                    </button>
+                </form>
+            </div>
+        {% endblock %}
+    </div>
+
+{% endblock %}

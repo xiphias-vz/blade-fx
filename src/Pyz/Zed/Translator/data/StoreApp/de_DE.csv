@@ -161,3 +161,7 @@ picking.app.error_shelfID_wrong_letter,"Der erste Buchstabe muss Großbuchstaben
 storeapp.picking.barcode, Barcode
 storeapp.picking.MissingArticle, Fehlartikel
 storeapp.picking.message.error.container-not-known, Container ID nicht bekant
+
+picking.app.containers.select.title,Packstücke
+picking.app.containers.add.container,Container hinzufügen
+picking.app.containers.continue,Weiter
