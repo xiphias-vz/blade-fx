@@ -40,10 +40,21 @@
                                                         <tr style="border-collapse:collapse">
                                                             <td style="padding:0;Margin:0;width:100px;text-align:center" class="orderSumPrice">
                                                                 {% if orderItem.canceledAmount > 0 %}
-                                                                    {{ orderItem.canceledAmount }} / {{ orderItem.quantity }}
-                                                                {% else %}
-                                                                    {{ orderItem.quantity }}
+                                                                    {% set availableItems =  orderItem.canceledAmount - orderItem.quantity  %}
+                                                                    {% if(availableItems != 0) %}
+                                                                        {{ orderItem.quantity }} / {{ orderItem.canceledAmount }}
+                                                                        {% if (itemStatus == 'canceled') %}
+                                                                            <br>
+                                                                            <span style="font-size:10px;">Nur noch {{ availableItems }} Artikel verfügbar</span>
+                                                                        {% else %}
+                                                                            <br>
+                                                                            <span style="font-size:10px;">Nur noch {{ orderItem.quantity }}  Artikel verfügbar</span>
+                                                                        {% endif %}
+                                                                    {% else %}
+                                                                        {{ orderItem.canceledAmount }}
+                                                                    {% endif %}
                                                                 {% endif %}
+
                                                             </td>
                                                             <td style="padding:0;Margin:0;text-align:center" class="orderSumPrice">
                                                                 {{ orderItem.unitGrossPrice | money(true, order.currencyIsoCode) }}

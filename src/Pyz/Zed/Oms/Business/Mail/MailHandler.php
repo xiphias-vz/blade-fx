@@ -220,6 +220,31 @@ class MailHandler extends SprykerMailHandler
         $itemsCanceled = $this->getCanceledProductListItems($orderTransfer);
         $itemsShipped = $this->getShippedProductListItems($orderTransfer);
 
+        $orderTransfer->setItems($itemsCanceled);
+        $orderTransfer = $this->expandWithItemGroups($orderTransfer);
+        $itemsGroupsCanceled = $orderTransfer->getItemGroups();
+
+        $orderTransfer->setItems($itemsShipped);
+        $orderTransfer = $this->expandWithItemGroups($orderTransfer);
+        $itemsGroupsShipped = $orderTransfer->getItemGroups();
+
+        $orderTransfer->setItems($items);
+        $orderTransfer = $this->expandWithItemGroups($orderTransfer);
+
+        foreach ($orderTransfer->getItemGroups() as $grp) {
+            $sku = $grp['sku'];
+            foreach ($itemsGroupsShipped as $grpShipped) {
+                if ($grpShipped['sku'] == $sku) {
+                    $grpShipped['canceledAmount'] = $grp['quantity'];
+                }
+            }
+            foreach ($itemsGroupsCanceled as $grpCanceled) {
+                if ($grpCanceled['sku'] == $sku) {
+                    $grpCanceled['canceledAmount'] = $grp['quantity'];
+                }
+            }
+        }
+
         $orderTransfer->setItems($itemsShipped);
         $orderTransfer = $this->expandWithItemGroups($orderTransfer);
         $totals = $orderTransfer->getTotals();
@@ -250,10 +275,11 @@ class MailHandler extends SprykerMailHandler
             'sumOptions' => $this->getMoneyValue($this->getSumOptions($orderTransfer)),
             'tax7' => $this->getMoneyValue($this->getSumTaxes($orderTransfer, '7')),
             'tax19' => $this->getMoneyValue($this->getSumTaxes($orderTransfer, '19')),
-            'shippedProductList' => $this->getShippedProductList($orderTransfer, $itemsShipped),
-            'canceledProductList' => $this->getCanceledProductList($orderTransfer, $itemsCanceled),
-
+            'collectNumber' => $orderTransfer->getCollectNumber(),
+            'shippedProductList' => $this->getShippedProductList($orderTransfer, $itemsGroupsShipped, 'shipped'),
+            'canceledProductList' => $this->getShippedProductList($orderTransfer, $itemsGroupsCanceled, 'canceled'),
         ];
+
         $orderTransfer->setItems($items);
         if ($items->count() > 0) {
             $orderTransfer = $this->expandWithItemGroups($orderTransfer);
@@ -380,39 +406,18 @@ class MailHandler extends SprykerMailHandler
 
     /**
      * @param \Generated\Shared\Transfer\OrderTransfer $orderTransfer
-     * @param \ArrayObject $items
+     * @param \ArrayObject $itemsGroups
+     * @param string $itemStatus
      *
      * @return string
      */
-    protected function getShippedProductList(OrderTransfer $orderTransfer, ArrayObject $items): string
+    protected function getShippedProductList(OrderTransfer $orderTransfer, ArrayObject $itemsGroups, string $itemStatus): string
     {
-        $orderTransfer->setItems($items);
-        if ($items->count() > 0) {
-            $orderTransfer = $this->expandWithItemGroups($orderTransfer);
-        }
+        $orderTransfer = $orderTransfer->setItemGroups($itemsGroups);
 
         return $this->twigEnvironment->render(
             $this->config->getOrderShippedProductListTemplate(),
-            ['order' => $orderTransfer]
-        );
-    }
-
-    /**
-     * @param \Generated\Shared\Transfer\OrderTransfer $orderTransfer
-     * @param \ArrayObject $items
-     *
-     * @return string
-     */
-    protected function getCanceledProductList(OrderTransfer $orderTransfer, ArrayObject $items): string
-    {
-        $orderTransfer->setItems($items);
-        if ($items->count() > 0) {
-            $orderTransfer = $this->expandWithItemGroups($orderTransfer);
-        }
-
-        return $this->twigEnvironment->render(
-            $this->config->getOrderShippedProductListTemplate(),
-            ['order' => $orderTransfer]
+            [ 'order' => $orderTransfer, 'itemStatus' => $itemStatus]
         );
     }
 
