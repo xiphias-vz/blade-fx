@@ -178,7 +178,10 @@ class PickingController extends BaseOrderPickingController
                 ->setIdSalesOrder($idSalesOrder)
                 ->setIdPickingZone($pickingZoneTransfer->getIdPickingZone())
                 ->setIdUser($userTransfer->getIdUser());
-            $this->getFactory()->getPickingZoneFacade()->createOrderPickingBlock($orderPickingBlockTransfer);
+            try {
+                $this->getFactory()->getPickingZoneFacade()->createOrderPickingBlock($orderPickingBlockTransfer);
+            } catch (Exception $ex) {
+            }
 
             $formData = $orderItemSelectionForm->getData();
 
@@ -437,10 +440,10 @@ class PickingController extends BaseOrderPickingController
             $notPickedItemsCount += count($notPickedItems);
 
             $this->getFacade()->markOrderItemsAsNotPicked($notPickedItems);
-            $this->getFacade()->markOrderItemsAsPicked($pickedItems);
+            $this->getFacade()->markOrderItemsAsContainerSelected($pickedItems);
             $this->getFacade()->updateOrderPickingBagsCount($idSalesOrder, $pickingBagsCount);
 
-            if ($nextSku == '*' && $counter > $arrayLength) {
+            if ($nextSku == '*') {
                 $orderPickingPath = Url::generate(
                     PickerConfig::URL_SELECT_SHELVES,
                     [

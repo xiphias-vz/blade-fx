@@ -15,7 +15,8 @@ export default class SelectShelvesForm extends Component {
         this.form = <HTMLFormElement>this.getElementsByTagName('form')[0];
 
         this.form.addEventListener('keypress', (event: KeyboardEvent) => this.formKeyPressHandler(event));
-        $(".button--success")[0].click(submitButtonHandler);
+        this.form.addEventListener('click', (event: MouseEvent) => this.submitButtonHandler(event));
+        //$(".button--success")[0].click(this.submitButtonHandler);
 
         this.mapEventsForInputs();
         this.focusInputElement();
@@ -32,11 +33,6 @@ export default class SelectShelvesForm extends Component {
 
     protected onFormItemChange(event: KeyboardEvent): void {
         let originalValue = (<HTMLInputElement>event.target).value;
-
-        if(originalValue == ""){
-            event.preventDefault();
-            alert("Es werden nicht alle Felder eingegeben!");
-        }
 
         // force removing of barcode prefix
         let replacedValue = originalValue.replace(this.barcodePrefix, '');
