@@ -48,7 +48,7 @@ export default class ProductItem extends Component {
         this.eanInputFieldWrapper = <HTMLElement>document.getElementById('eanScannenDiv');
         this.eanInputFieldWrapper.addEventListener('keypress', (event: KeyboardEvent) => this.formKeyPressHandler(event));
         this.popUp = <HTMLElement>document.getElementsByClassName('popup-ui')[0];
-        this.btnSubmitPick = <HTMLElement>this.$this.querySelector('#btnSubmitPick');
+        this.btnSubmitPick = <HTMLElement>document.querySelector('#btnSubmitPick');
         this.mapEvents();
         this.focusFirstEanField();
     }
