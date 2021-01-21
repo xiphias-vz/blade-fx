@@ -278,6 +278,8 @@ class MailHandler extends SprykerMailHandler
             'collectNumber' => $orderTransfer->getCollectNumber(),
             'shippedProductList' => $this->getShippedProductList($orderTransfer, $itemsGroupsShipped, 'shipped'),
             'canceledProductList' => $this->getShippedProductList($orderTransfer, $itemsGroupsCanceled, 'canceled'),
+            'orderReference' => $orderTransfer->getOrderReference(),
+            'merchantName' => $orderTransfer->getMerchantName() ?: ' ',
         ];
 
         $orderTransfer->setItems($items);
@@ -304,8 +306,13 @@ class MailHandler extends SprykerMailHandler
                 'zipCode' => $orderTransfer->getBillingAddress()->getZipCode() ?: ' ',
                 'city' => $orderTransfer->getBillingAddress()->getCity() ?: ' ',
                 'phone' => $orderTransfer->getBillingAddress()->getPhone() ?: ' ',
+                'firstName' => $orderTransfer->getBillingAddress()->getFirstName() ?: ' ',
+                'lastName' => $orderTransfer->getBillingAddress()->getLastName() ?: ' ',
+                'email' => $orderTransfer->getBillingAddress()->getEmail() ?: $orderTransfer->getEmail() ?: ' ',
             ];
             $params = array_merge($params, $addressParams);
+            $salutationParams = $this->getSalutationParams($orderTransfer->getBillingAddress()->getSalutation() ?: ' ');
+            $params = array_merge($params, $salutationParams);
         } else {
             $addressParams = [
                 'address1' => ' ',
@@ -313,44 +320,48 @@ class MailHandler extends SprykerMailHandler
                 'zipCode' => ' ',
                 'city' => ' ',
                 'phone' => ' ',
-            ];
-            $params = array_merge($params, $addressParams);
-        }
-
-            $guestParams = [
                 'firstName' => $orderTransfer->getFirstName() ?: ' ',
                 'lastName' => $orderTransfer->getLastName() ?: ' ',
-                'orderReference' => $orderTransfer->getOrderReference(),
-                'merchantName' => $orderTransfer->getMerchantName() ?: ' ',
                 'email' => $orderTransfer->getEmail() ?: ' ',
             ];
+            $params = array_merge($params, $addressParams);
+            $salutationParams = $this->getSalutationParams($orderTransfer->getSalutation() ?: ' ');
+            $params = array_merge($params, $salutationParams);
+        }
 
-            if ($orderTransfer->getSalutation() == 'Mr') {
-                $salutationParams = [
-                    'salutationPrefix' => 'Lieber',
-                    'salutation' => 'Herr',
-                ];
-            } elseif ($orderTransfer->getSalutation() == 'Ms') {
-                $salutationParams = [
-                    'salutationPrefix' => 'Liebe',
-                    'salutation' => 'Frau',
-                ];
-            } elseif ($orderTransfer->getSalutation() == 'Divers') {
-                $salutationParams = [
-                    'salutationPrefix' => '',
-                    'salutation' => '',
-                ];
-            } else {
-                $salutationParams = [
-                    'salutationPrefix' => '',
-                    'salutation' => $orderTransfer->getSalutation(),
-                ];
-            }
+        return $this->mailCmsBlockService->convertArrayToPlaceholders($params);
+    }
 
-            $guestParams = array_merge($guestParams, $salutationParams);
-            $params = array_merge($params, $guestParams);
+    /**
+     * @param string $salutation
+     *
+     * @return array
+     */
+    protected function getSalutationParams(string $salutation): array
+    {
+        if ($salutation == 'Mr') {
+            $salutationParams = [
+                'salutationPrefix' => 'Lieber',
+                'salutation' => 'Herr',
+            ];
+        } elseif ($salutation == 'Ms') {
+            $salutationParams = [
+                'salutationPrefix' => 'Liebe',
+                'salutation' => 'Frau',
+            ];
+        } elseif ($salutation == 'Divers') {
+            $salutationParams = [
+                'salutationPrefix' => '',
+                'salutation' => '',
+            ];
+        } else {
+            $salutationParams = [
+                'salutationPrefix' => '',
+                'salutation' => $salutation,
+            ];
+        }
 
-            return $this->mailCmsBlockService->convertArrayToPlaceholders($params);
+        return $salutationParams;
     }
 
     /**
