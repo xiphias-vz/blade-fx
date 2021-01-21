@@ -16,6 +16,7 @@ export default class FormContainers extends Component {
     orderId: HTMLInputElement;
     containerCountData: string;
     containerCount: number;
+    countInputedContainers: number = 0;
     protected barcodePrefix: string = '/x11';
     protected savedInputValue: string = "";
     protected savedInputId: string = "";
@@ -71,7 +72,7 @@ export default class FormContainers extends Component {
     }
 
     protected onTriggerSubmitButtonClick(): void {
-        if (this.savedInputValue == "" && this.containerCount == 0){
+        if (this.countInputedContainers == 0 && this.containerCount == 0){
             this.popUpUiError.querySelector("#firstBlock").innerHTML = `Container-ID muss eingestellt werden`;
             this.popUpUiError.querySelector("#secondBlock").innerHTML = ``;
             this.popUpUiError.classList.add('popup-ui-error--show');
@@ -225,6 +226,7 @@ export default class FormContainers extends Component {
                  }, 5000)
              }
              else {
+                 this.countInputedContainers = this.countInputedContainers +1;
                  this.addNewContainerForm();
              }
         }
