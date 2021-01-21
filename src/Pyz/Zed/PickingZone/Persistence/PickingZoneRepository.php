@@ -91,11 +91,11 @@ class PickingZoneRepository extends AbstractRepository implements PickingZoneRep
     {
         return $this->getFactory()->createPickingZoneQuery()
             ->select([PyzPickingZoneTableMap::COL_ID_PICKING_ZONE, PyzPickingZoneTableMap::COL_NAME])
-            ->withColumn('COUNT(DISTINCT ' . SpySalesOrderTableMap::COL_ID_SALES_ORDER . ')', 'orderCount')
+            ->withColumn('COUNT(DISTINCT ' . SpyOmsOrderItemStateTableMap::COL_NAME . ')', 'orderCount')
             ->addJoin(PyzPickingZoneTableMap::COL_NAME, SpySalesOrderItemTableMap::COL_PICK_ZONE, Criteria::LEFT_JOIN)
             ->addJoin(SpySalesOrderItemTableMap::COL_FK_SALES_ORDER, SpySalesOrderTableMap::COL_ID_SALES_ORDER, Criteria::LEFT_JOIN)
             ->addJoin(
-                [SpySalesOrderItemTableMap::COL_FK_OMS_ORDER_ITEM_STATE, SpyOmsOrderItemStateTableMap::COL_ID_OMS_ORDER_ITEM_STATE],
+                [SpySalesOrderItemTableMap::COL_FK_OMS_ORDER_ITEM_STATE, SpyOmsOrderItemStateTableMap::COL_NAME],
                 [SpyOmsOrderItemStateTableMap::COL_ID_OMS_ORDER_ITEM_STATE, '\'' . OmsConfig::STORE_STATE_READY_FOR_PICKING . '\''],
                 Criteria::LEFT_JOIN
             )
