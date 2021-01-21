@@ -8,6 +8,7 @@
     containerInfo: containerInfo | default(null),
     pickingForm: pickingForm | default(null),
     listOfUsedContainers: listOfUsedContainers | default(null),
+    containerCount: containerCount | default(null),
 } %}
 
 {% block body %}
@@ -45,13 +46,16 @@
                 {% endif %}
             {% endfor %}
         </div>
+
         {% include molecule('form-containers', 'Picker') with {
             class: 'js-used-container-search__item',
             data: {
                 formContainers: data.pickingForm.field_sales_order_containers,
+                containerCount: data.containerCount,
             },
             attributes: {
-                'data-listOfUsedContainers': data.listOfUsedContainers
+                'data-listOfUsedContainers': data.listOfUsedContainers,
+
             },
         } only %}
     </div>

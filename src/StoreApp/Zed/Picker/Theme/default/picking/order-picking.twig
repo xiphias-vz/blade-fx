@@ -23,7 +23,9 @@
     ordersInfo: ordersInfo,
     urlContainerSelect: urlContainerSelect,
     orderItemCounter: orderItemCounter,
-    itemsCount: itemsCount
+    itemsCount: itemsCount,
+    pickedItemsCount: pickedItemsCount,
+    notPickedItemsCount: notPickedItemsCount
 } %}
 
 {% block header %}
@@ -64,6 +66,8 @@
         <input type="hidden" name="token" value="{{ csrf_token(tokenName) }}">
         <input type="hidden" name="counter" value="{{ data.orderItemCounter }}">
         <input type="hidden" name="itemsCount" value="{{ data.itemsCount }}">
+        <input type="hidden" name="pickedItemsCount" value="{{ data.pickedItemsCount }}">
+        <input type="hidden" name="notPickedItemsCount" value="{{ data.notPickedItemsCount }}">
 
             {% set field = attribute(data.pickingForm.children, data.pickingFormSkuKeys | first) %}
             {% set itemSku = field.vars.name | split('__') | last %}
@@ -99,6 +103,8 @@
                         collectNumber: collectNumber,
                         itemsCount: itemsCount,
                         idSalesOrder: data.idSalesOrder,
+                        pickedItemsCount: pickedItemsCount,
+                        notPickedItemsCount: notPickedItemsCount,
                     },
                     attributes: {
                         'data-sku': itemSku,

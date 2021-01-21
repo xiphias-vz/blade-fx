@@ -23,7 +23,7 @@ picker.picking.order.action,Aktion
 picker.picking.order.action.start,Start
 picker.picking.order.action.stop,Entsperren
 
-picker.picking.confirmation,Fertig
+picker.picking.confirmation,Weiter
 
 picker.collect-by-customer.order.collect-interval,Abholfenster
 picker.collect-by-customer.order.reference,Bestellnummer

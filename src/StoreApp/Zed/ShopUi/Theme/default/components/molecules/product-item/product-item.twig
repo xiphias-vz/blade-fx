@@ -17,6 +17,8 @@
     collectNumber: 0,
     itemsCount: 1,
     idSalesOrder: 0,
+    pickedItemsCount: pickedItemsCount|default(null),
+    notPickedItemsCount: notPickedItemsCount|default(null)
 } %}
 
 {% set shelfData = data.itemsToShelfMap[data.itemSku] %}

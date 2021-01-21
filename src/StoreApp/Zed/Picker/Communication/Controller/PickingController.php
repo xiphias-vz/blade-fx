@@ -7,6 +7,7 @@
 
 namespace StoreApp\Zed\Picker\Communication\Controller;
 
+use Exception;
 use Generated\Shared\Transfer\ItemTransfer;
 use Generated\Shared\Transfer\MerchantSalesOrderCollectionTransfer;
 use Generated\Shared\Transfer\MerchantTransfer;
@@ -183,15 +184,20 @@ class PickingController extends BaseOrderPickingController
 
             $containers = $formData['field_sales_order_containers'];
             foreach ($containers as $container) {
-                $containerEntity = PyzPickingSalesOrderQuery::create()
-                    ->filterByFkSalesOrder($idSalesOrder)
-                    ->filterByContainerCode($container['containerCode'])
-                    ->filterByFkPickingZone($pickingZoneTransfer->getIdPickingZone())
-                    ->findOneOrCreate();
-                $containerEntity->setContainerCode($container['containerCode']);
+                try {
+                    if (!empty($container['containerCode'])) {
+                        $containerEntity = PyzPickingSalesOrderQuery::create()
+                            ->filterByFkSalesOrder($idSalesOrder)
+                            ->filterByContainerCode($container['containerCode'])
+                            ->filterByFkPickingZone($pickingZoneTransfer->getIdPickingZone())
+                            ->findOneOrCreate();
+                        $containerEntity->setContainerCode($container['containerCode']);
 
-                if ($containerEntity->isModified() || $containerEntity->isNew()) {
-                    $containerEntity->save();
+                        if ($containerEntity->isModified() || $containerEntity->isNew()) {
+                            $containerEntity->save();
+                        }
+                    }
+                } catch (Exception $ex) {
                 }
             }
             $orderPickingPath = Url::generate(
@@ -313,11 +319,15 @@ class PickingController extends BaseOrderPickingController
         $orderItemSelectionForm = "";
         $skuToSelectedQuantity = 1;
         $skuToWeight = 0;
+        $pickedItemsCount = 0;
+        $notPickedItemsCount = 0;
 
         if ($request->request->count() == 0) {
             $counter = 1;
         } else {
             $counter = $request->request->get('counter') + 1;
+            $pickedItemsCount = $request->request->get('pickedItemsCount');
+            $notPickedItemsCount = $request->request->get('nonPickedItemsCount');
             $key = key($request->request->get('order_item_selection_form'));
             $skuFromRequest = explode('__', $key)[1];
             $skuToSelectedQuantity = $request->request->get('order_item_selection_form')[$key];
@@ -423,17 +433,22 @@ class PickingController extends BaseOrderPickingController
                     }
                 }
             }
+            $pickedItemsCount += count($pickedItems);
+            $notPickedItemsCount += count($notPickedItems);
 
             $this->getFacade()->markOrderItemsAsNotPicked($notPickedItems);
-            $this->getFacade()->markOrderItemsAsNotPicked($pickedItems);
+            $this->getFacade()->markOrderItemsAsPicked($pickedItems);
             $this->getFacade()->updateOrderPickingBagsCount($idSalesOrder, $pickingBagsCount);
 
             if ($nextSku == '*' && $counter > $arrayLength) {
-                return $this->processOrderPickingForm(
-                    $orderItemSelectionForm,
-                    $pickingBagsCount,
-                    $salesOrderTransfer
-                );
+                $orderPickingPath = Url::generate(
+                    PickerConfig::URL_SELECT_SHELVES,
+                    [
+                        PickerConfig::REQUEST_PARAM_ID_ORDER => $idSalesOrder,
+                    ]
+                )->build();
+
+                return $this->redirectResponse($orderPickingPath);
             }
         }
 
@@ -474,6 +489,8 @@ class PickingController extends BaseOrderPickingController
             'urlContainerSelect' => PickerConfig::URL_SELECT_CONTAINERS,
             'orderItemCounter' => $counter,
             'itemsCount' => $arrayLength,
+            'pickedItemsCount' => $pickedItemsCount,
+            'notPickedItemsCount' => $notPickedItemsCount,
         ];
     }
 
@@ -663,10 +680,10 @@ class PickingController extends BaseOrderPickingController
     protected function getItemsAlternativeEanMap(object $itemTransfer): string
     {
         $alternativeEan = "";
-        //TODO enable after alternative ean implementation
-//        if ($itemTransfer->getAlternativeEan() !== null) {
-//            $alternativeEan = $itemTransfer->getAlternativeEan();
-//        }
+
+        if ($itemTransfer->getAlternativeEan() !== null) {
+            $alternativeEan = $itemTransfer->getAlternativeEan();
+        }
 
         return $alternativeEan;
     }

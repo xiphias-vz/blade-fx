@@ -7,13 +7,18 @@ import $ from 'jquery/dist/jquery';
 export default class FormContainers extends Component {
     containerFormsWrapper: HTMLElement;
     addFormButton: HTMLButtonElement;
+    closeButtonError: HTMLButtonElement;
+    submitButtonContainers: HTMLButtonElement;
     formItemCandidate: string;
     formIndex: number;
     form: HTMLFormElement;
+    fullForm: HTMLFormElement;
     orderId: HTMLInputElement;
+    containerCountData: string;
+    containerCount: number;
     protected barcodePrefix: string = '/x11';
-    protected savedInputValue: string;
-    protected savedInputId: string;
+    protected savedInputValue: string = "";
+    protected savedInputId: string = "";
 
     protected readyCallback(): void {
         this.popUpUiError = <HTMLElement>document.getElementsByClassName('popup-ui-error')[0];
@@ -21,14 +26,18 @@ export default class FormContainers extends Component {
         this.orderId = <HTMLInputElement>document.getElementById('idOrder');
         this.containerFormsWrapper = <HTMLElement>document.getElementById('order_item_selection_form_field_sales_order_containers');
         this.addFormButton = <HTMLButtonElement>this.getElementsByClassName(`${this.jsName}__add-container`)[0];
+        this.closeButtonError = <HTMLButtonElement>this.getElementsByClassName(`js-popup-ui-error__close`)[0];
         this.formItemCandidate = this.containerFormsWrapper.dataset.prototype;
         this.formIndex = 0;
+        this.fullForm = <HTMLFormElement>document.getElementById('containersSelectForm');
         this.form = <HTMLFormElement>document.getElementsByClassName('submit-form-handler')[0];
+        this.containerCountData = document.querySelector('.js-container-count');
+        this.containerCount = this.containerCountData.dataset.containerCount;
+        this.submitButtonContainers = <HTMLButtonElement>document.getElementById('submitSelectedContainers');
 
         if (this.containerFormsWrapper.innerHTML === "") {
             this.addFormItem();
         }
-
 
         this.focusFirstContainerInputElement();
         this.mapEvents();
@@ -37,6 +46,8 @@ export default class FormContainers extends Component {
 
     protected mapEvents(): void {
         this.addFormButton.addEventListener('click', () => this.onTriggerAddFormButtonClick());
+        this.closeButtonError.addEventListener('click', () => this.onTriggerSetFocusErrorButtonClick());
+        this.submitButtonContainers.addEventListener('click', () => this.onTriggerSubmitButtonClick());
         this.containerFormsWrapper.addEventListener('click', (event: Event) => this.deleteFormItem(event));
         this.form.addEventListener('keypress', (event: KeyboardEvent) => this.formKeyPressHandler(event));
     }
@@ -45,6 +56,28 @@ export default class FormContainers extends Component {
 
         if (this.savedInputValue != ""){
             this.checkContainerId(this.savedInputValue, this.savedInputId)
+        }
+        else {
+            this.addNewContainerForm();
+        }
+    }
+
+    protected onTriggerSetFocusErrorButtonClick(): void {
+        if (this.savedInputId != "")
+        {
+        let element = document.getElementById(this.savedInputId);
+        element.focus();
+        }
+    }
+
+    protected onTriggerSubmitButtonClick(): void {
+        if (this.savedInputValue == "" && this.containerCount == 0){
+            this.popUpUiError.querySelector("#firstBlock").innerHTML = `Container-ID muss eingestellt werden`;
+            this.popUpUiError.querySelector("#secondBlock").innerHTML = ``;
+            this.popUpUiError.classList.add('popup-ui-error--show');
+        }
+        else {
+            this.fullForm.submit();
         }
     }
 

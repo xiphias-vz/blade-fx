@@ -258,6 +258,22 @@ $setting-item-border-radius: rem(8);
             height: 100%;
         }
 
+        .barcodeAndWeightContainer {
+            background-color: #dedede;
+            height: rem(50);
+            padding: rem(5);
+            margin: rem(10) 0;
+        }
+
+        div[class^="bawContainerRemove"]{
+            padding: rem(10) rem(30);
+        }
+
+        .bawContainerButton {
+            background-color: #dedede;
+            cursor: pointer;
+        }
+
     }
 }
 

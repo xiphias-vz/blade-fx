@@ -33,6 +33,7 @@
                         containerInfo: data.containerInfo,
                         pickingForm: data.pickingForm,
                         listOfUsedContainers: pickingOrder.listOfUsedContainers,
+                        containerCount: pickingOrder.containerCount
                     },
                 } only %}
             <br />
@@ -40,7 +41,7 @@
             {% set tokenName = data.formatStartPickingTokenName | format(pickingOrder.idSalesOrder) %}
             <input type="hidden" name="token" value="{{ csrf_token(tokenName) }}">
             <input type="hidden" name="containers" value="">
-                <button type="submit" class="button button--small button--table button--container button--expand">
+                <button id="submitSelectedContainers" type="button" class="button button--small button--table button--container button--expand">
                     {{ 'picking.app.containers.continue' | trans }}
                 </button>
             {% endfor %}
