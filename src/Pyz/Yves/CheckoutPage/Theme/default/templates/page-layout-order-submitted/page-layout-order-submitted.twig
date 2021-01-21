@@ -26,9 +26,7 @@
                     'name': '{{ item.name | escape('js') }}',
                     'id': '{{ item.id }}',
                     'sku': '{{ item.sku }}',
-                    'unitGrossPrice': '{{ item.unitGrossPrice is defined ? item.unitGrossPrice / 100 : null }}',
-                    'sumGrossPrice': '{{ item.sumGrossPrice is defined ? item.sumGrossPrice / 100 : null }}',
-                    'url' : '{{ item.url }}',
+                    'price': '{{ item.unitGrossPrice is defined ? item.unitGrossPrice / 100 : null }}',
                     'quantity': '{{ item.quantity }}',
                     'brand': '{{ item.brand }}',
             }
@@ -65,13 +63,9 @@
                             {
                                 'actionField': {
                                     'id': '{{ data.orderReference }}',
-                                    'subtotal': '{{ data.totals.subtotal is defined ? data.totals.subtotal / 100 : null }}',
-                                    'expenseTotal': '{{ data.totals.expenseTotal is defined ? data.totals.expenseTotal / 100 : null }}',
-                                    'priceToPay': '{{ data.totals.priceToPay is defined ? data.totals.priceToPay / 100 : null  }}',
-                                    'grandTotal': '{{ data.totals.grandTotal is defined ? data.totals.grandTotal / 100 : null  }}',
-                                    'discountTotal' : '{{ data.totals.discountTotal is defined ? data.totals.discountTotal / 100 : null }}',
-                                    'netTotal' : '{{ data.totals.netTotal is defined ? data.totals.netTotal / 100 : null }}',
-                                    'refundTotal' : '{{ data.totals.refundTotal is defined ? data.totals.refundTotal / 100 : null }}',
+                                    'shipping': '{{ data.totals.expenseTotal is defined ? data.totals.expenseTotal / 100 : null }}',
+                                    'revenue': '{{ data.totals.grandTotal is defined ? data.totals.grandTotal / 100 : null  }}',
+                                    'tax' : '{{ data.totals.taxTotal.amount is defined ? data.totals.taxTotal.amount / 100 : null }}', //TODO: Add tax
                                 },
                                products,
                             }

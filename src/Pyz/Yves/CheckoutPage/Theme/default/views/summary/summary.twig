@@ -10,6 +10,19 @@
 } %}
 
 {% block content %}
+    {% for item in data.cart.items %}
+        <script>
+            window.shoppingCartCheckoutList = window.shoppingCartCheckoutList || [];
+            window.shoppingCartCheckoutList.push({
+                'name': '{{ item.name | escape('js') }}',
+                'id': '{{ item.id }}',
+                'sku': '{{ item.sku }}',
+                'price': '{{ item.unitGrossPrice is defined ? item.unitGrossPrice / 100 : null }}',
+                'quantity': '{{ item.quantity }}',
+                'brand': '{{ item.brand}}'
+            });
+        </script>
+    {% endfor %}
     {% set isGiftCardExists = null %}
     {% for shipmentGroup in data.shipmentGroups %}
         <article class="checkout-block checkout-block--summary grid grid--indent">
@@ -32,6 +45,7 @@
             <div class="col col--spaced-lg col--sm-12 col--xl-4">
                 <div class="checkout-block__summary">
                     <script>
+                        var products = window.shoppingCartCheckoutList;
                         window.dataLayer.push({
                             'event': 'eec.checkout',
                             'ecommerce':
@@ -42,6 +56,21 @@
                                                 {
                                                     'step': '4',
                                                     'option': 'Übersicht',
+                                                },
+                                            products,
+                                        },
+                                },
+                        });
+                        window.dataLayer.push({
+                            'event': 'eec.checkoutOption',
+                            'ecommerce':
+                                {
+                                    'checkout_option':
+                                        {
+                                            'actionField':
+                                                {
+                                                    'step': '4',
+                                                    'option': '{{data.cart.shipment.requestedDeliveryDate}}',
                                                 }
                                         },
                                 },

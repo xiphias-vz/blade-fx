@@ -54,8 +54,6 @@
                             </form>
                         </span>
                     </div>
-
-
                     {% for cartItem in data.cartItems %}
                         {% include molecule('product-card-item') with {
                             data: {
@@ -71,10 +69,9 @@
                                 'id': '{{ cartItem.id }}',
                                 'sku': '{{ cartItem.sku }}',
                                 'price': '{{ cartItem.unitGrossPrice is defined ? cartItem.unitGrossPrice / 100 : null }}',
-                                'url' : '{{ cartItem.url }}',
-                                'quantity': '{{ cartItem.quantity }}'
+                                'quantity': '{{ cartItem.quantity }}',
+                                'brand': '{{ cartItem.concreteAttributes.supplier }}'
                             });
-
                             function beginCheckout(actionUrl)
                             {
                                 window.dataLayer = window.dataLayer || [];
