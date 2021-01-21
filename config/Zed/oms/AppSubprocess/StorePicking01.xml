@@ -42,6 +42,11 @@
                 <target>picked</target>
                 <event>confirm picking</event>
             </transition>
+            <transition>
+                <source>picked</source>
+                <target>ready for picking</target>
+                <event>Zurücksetzen</event>
+            </transition>
 
             <transition>
                 <source>ready for picking</source>
@@ -76,6 +81,7 @@
         <events>
             <event name="move to ready for picking" onEnter="true" command="Sales/MoveToReadyForPicking"/>
             <event name="confirm selecting containers" manual="true" command="Sales/ConfirmSelectingContainers"/>
+            <event name="Zurücksetzen" manual="true" command="Sales/ResetPickZone" />
             <event name="confirm picking" manual="true" command="Sales/ConfirmPicking"/>
             <event name="cancel due to not in stock" manual="true"/>
             <event name="process cancelled due to not in stock" onEnter="true" command="Oms/CancelDueToNotInStock"/>

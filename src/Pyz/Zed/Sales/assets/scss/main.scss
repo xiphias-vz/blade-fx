@@ -202,6 +202,30 @@ a.edit_billing_address {
     margin-left: 5px;
 }
 
+.grid {
+    display: flex;
+}
+.reset-picking-zone .btn-primary {
+    background: transparent;
+    color:#1BBEA0;
+    border: none;
+    font-weight:bold;
+    padding-left: 4px;
+    &:focus {
+        background: none;
+        color:#1BBEA0;
+        border: none;
+        font-weight:bold;
+    }
+}
+.reset-icon {
+    width: 20px;
+    padding-top: 4px;
+    margin-left: 10px;
+    margin-right: 0px;
+    color: #1BBEA0;
+}
+
 .bottom-indent {
     margin-bottom: 25px;
 }

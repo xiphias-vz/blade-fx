@@ -91,6 +91,7 @@
                         {% include '@Oms/RenderForm/_partial/order-actions.twig' with {
                             redirectUrl: changeStatusRedirectUrl,
                             idSalesOrder: order.idSalesOrder,
+                            pickingZone: null,
                             events: events,
                         } only %}
                     {% endblock %}

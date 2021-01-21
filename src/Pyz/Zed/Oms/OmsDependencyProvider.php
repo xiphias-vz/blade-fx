@@ -43,6 +43,7 @@ use Pyz\Zed\Sales\Communication\Plugin\Oms\Command\MarkDeliveryCancelledByStoreC
 use Pyz\Zed\Sales\Communication\Plugin\Oms\Command\MoveToReadyForCollectionCommandPlugin;
 use Pyz\Zed\Sales\Communication\Plugin\Oms\Command\MoveToReadyForDeliveryCommandPlugin;
 use Pyz\Zed\Sales\Communication\Plugin\Oms\Command\MoveToReadyForPickingCommandPlugin;
+use Pyz\Zed\Sales\Communication\Plugin\Oms\Command\ResetPickZoneCommandPlugin;
 use Pyz\Zed\Sales\Communication\Plugin\Oms\Command\StartDeliveryCommandPlugin;
 use Pyz\Zed\Sales\Communication\Plugin\Oms\Condition\IsExpiredOrderConditionPlugin;
 use Pyz\Zed\Sales\Communication\Plugin\Oms\Condition\IsForCollectionConditionPlugin;
@@ -164,7 +165,7 @@ class OmsDependencyProvider extends SprykerOmsDependencyProvider
             //AppStore
             $commandCollection->add(new MoveToReadyForPickingCommandPlugin(), 'Sales/MoveToReadyForPicking');
             $commandCollection->add(new ConfirmPickingCommandPlugin(), 'Sales/ConfirmPicking');
-
+            $commandCollection->add(new ResetPickZoneCommandPlugin(), 'Sales/ResetPickZone');
             $commandCollection->add(new MoveToReadyForCollectionCommandPlugin(), 'Sales/MoveToReadyForCollection');
             $commandCollection->add(new ConfirmCollectionCommandPlugin(), 'Sales/ConfirmCollection');
             $commandCollection->add(new CancelDueToNotInStockCommandPlugin(), 'Oms/CancelDueToNotInStock');

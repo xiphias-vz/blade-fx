@@ -8,9 +8,13 @@
 namespace Pyz\Zed\Oms\Communication;
 
 use Pyz\Zed\MerchantSalesOrder\Business\MerchantSalesOrderFacadeInterface;
+use Pyz\Zed\Oms\Communication\Builder\OmsTriggerFormCollectionBuilder;
+use Pyz\Zed\Oms\Communication\Builder\OmsTriggerFormCollectionBuilderInterface;
+use Pyz\Zed\Oms\Communication\Factory\OmsTriggerFormFactory;
+use Pyz\Zed\Oms\Communication\Factory\OmsTriggerFormFactoryInterface;
 use Pyz\Zed\Oms\OmsDependencyProvider;
 use Pyz\Zed\Sales\Business\SalesFacadeInterface;
-use Spryker\Zed\Oms\Communication\OmsCommunicationFactory as SprykerOmsCommunicationFactory;
+use Spryker\Zed\Oms\Communication\OmsCommunicationFactory as PyzOmsCommunicationFactory;
 
 /**
  * @method \Pyz\Zed\Oms\Persistence\OmsQueryContainerInterface getQueryContainer()
@@ -18,7 +22,7 @@ use Spryker\Zed\Oms\Communication\OmsCommunicationFactory as SprykerOmsCommunica
  * @method \Pyz\Zed\Oms\Business\OmsFacadeInterface getFacade()
  * @method \Spryker\Zed\Oms\Persistence\OmsRepositoryInterface getRepository()
  */
-class OmsCommunicationFactory extends SprykerOmsCommunicationFactory
+class OmsCommunicationFactory extends PyzOmsCommunicationFactory
 {
     /**
      * @return \Pyz\Zed\Sales\Business\SalesFacadeInterface
@@ -34,5 +38,21 @@ class OmsCommunicationFactory extends SprykerOmsCommunicationFactory
     public function getMerchantSalesOrderFacade(): MerchantSalesOrderFacadeInterface
     {
         return $this->getProvidedDependency(OmsDependencyProvider::FACADE_MERCHANT_SALES_ORDER);
+    }
+
+    /**
+     * @return \Pyz\Zed\Oms\Communication\Factory\OmsTriggerFormFactoryInterface
+     */
+    public function createPyzOmsTriggerFormFactory(): OmsTriggerFormFactoryInterface
+    {
+        return new OmsTriggerFormFactory($this->getFormFactory());
+    }
+
+    /**
+     * @return \Pyz\Zed\Oms\Communication\Builder\OmsTriggerFormCollectionBuilderInterface
+     */
+    public function createPyzOmsTriggerFormCollectionBuilder(): OmsTriggerFormCollectionBuilderInterface
+    {
+        return new OmsTriggerFormCollectionBuilder($this->createOmsTriggerFormFactory(), $this->createPyzOmsTriggerFormFactory());
     }
 }
