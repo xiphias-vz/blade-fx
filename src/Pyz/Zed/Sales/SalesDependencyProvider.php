@@ -48,6 +48,7 @@ class SalesDependencyProvider extends SprykerSalesDependencyProvider
 {
     public const FACADE_SHIPMENT = 'FACADE_SHIPMENT';
     public const BASE_FACADE_OMS = 'BASE_FACADE_OMS';
+    public const FACADE_PICKING_ZONE = 'FACADE_PICKING_ZONE';
     public const SERVICE_DATE_TIME_WITH_ZONE = 'SERVICE_DATE_TIME_WITH_ZONE';
     public const FACADE_PRODUCT = 'FACADE_PRODUCT';
     public const FACADE_ACL = 'FACADE_ACL';
@@ -86,6 +87,21 @@ class SalesDependencyProvider extends SprykerSalesDependencyProvider
         $container = $this->addMerchantSalesOrderFacade($container);
         $container = $this->addBaseOmsFacade($container);
         $container = $this->addAclFacade($container);
+        $container = $this->addPickingZoneFacade($container);
+
+        return $container;
+    }
+
+    /**
+     * @param \Spryker\Zed\Kernel\Container $container
+     *
+     * @return \Spryker\Zed\Kernel\Container
+     */
+    protected function addPickingZoneFacade(Container $container): Container
+    {
+        $container->set(static::FACADE_PICKING_ZONE, function (Container $container) {
+            return $container->getLocator()->pickingZone()->facade();
+        });
 
         return $container;
     }

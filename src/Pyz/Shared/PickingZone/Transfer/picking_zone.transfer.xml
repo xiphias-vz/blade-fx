@@ -13,6 +13,7 @@
         <property name="idSalesOrder" type="int"/>
         <property name="idPickingZone" type="int"/>
         <property name="idUser" type="int"/>
+        <property name="pickingZoneName" type="string"/>
     </transfer>
 
 </transfers>

@@ -53,4 +53,21 @@ class PickingZoneEntityManager extends AbstractEntityManager implements PickingZ
             ->filterByFkUser($orderPickingBlockTransfer->getIdUser())
             ->delete();
     }
+
+    /**
+     * @param \Generated\Shared\Transfer\OrderPickingBlockTransfer $orderPickingBlockTransfer
+     *
+     * @return void
+     */
+    public function resetOrderPickingBlock(OrderPickingBlockTransfer $orderPickingBlockTransfer): void
+    {
+        $this->getFactory()->createOrderPickingBlockQuery()
+            ->filterByFkSalesOrder($orderPickingBlockTransfer->getIdSalesOrder())
+            ->innerJoinPickingZone()
+            ->usePickingZoneQuery()
+                ->filterByName($orderPickingBlockTransfer->getPickingZoneName())
+            ->endUse()
+            ->find()
+            ->delete();
+    }
 }

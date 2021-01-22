@@ -89,4 +89,14 @@ class PickingZoneFacade extends AbstractFacade implements PickingZoneFacadeInter
     {
         $this->getEntityManager()->deleteOrderPickingBlock($orderPickingBlockTransfer);
     }
+
+    /**
+     * @param \Generated\Shared\Transfer\OrderPickingBlockTransfer $orderPickingBlockTransfer
+     *
+     * @return void
+     */
+    public function resetOrderPickingBlock(OrderPickingBlockTransfer $orderPickingBlockTransfer): void
+    {
+        $this->getEntityManager()->resetOrderPickingBlock($orderPickingBlockTransfer);
+    }
 }

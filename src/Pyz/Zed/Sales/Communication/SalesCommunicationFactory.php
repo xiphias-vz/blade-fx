@@ -10,6 +10,7 @@ namespace Pyz\Zed\Sales\Communication;
 use Pyz\Service\DateTimeWithZone\DateTimeWithZoneServiceInterface;
 use Pyz\Zed\MerchantSalesOrder\Business\MerchantSalesOrderFacadeInterface;
 use Pyz\Zed\Oms\Business\OmsFacadeInterface;
+use Pyz\Zed\PickingZone\Business\PickingZoneFacadeInterface;
 use Pyz\Zed\Sales\Communication\Table\OrdersTable;
 use Pyz\Zed\Sales\Communication\Table\OrdersTableQueryBuilder;
 use Pyz\Zed\Sales\SalesDependencyProvider;
@@ -62,6 +63,14 @@ class SalesCommunicationFactory extends SprykerSalesCommunicationFactory
     public function getMerchantSalesOrderFacade(): MerchantSalesOrderFacadeInterface
     {
         return $this->getProvidedDependency(SalesDependencyProvider::FACADE_MERCHANT_SALES_ORDER);
+    }
+
+    /**
+     * @return \Pyz\Zed\PickingZone\Business\PickingZoneFacadeInterface
+     */
+    public function getPickingZoneFacade(): PickingZoneFacadeInterface
+    {
+        return $this->getProvidedDependency(SalesDependencyProvider::FACADE_PICKING_ZONE);
     }
 
     /**

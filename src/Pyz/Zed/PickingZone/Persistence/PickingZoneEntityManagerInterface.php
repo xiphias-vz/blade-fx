@@ -26,4 +26,11 @@ interface PickingZoneEntityManagerInterface
      * @return void
      */
     public function deleteOrderPickingBlock(OrderPickingBlockTransfer $orderPickingBlockTransfer): void;
+
+    /**
+     * @param \Generated\Shared\Transfer\OrderPickingBlockTransfer $orderPickingBlockTransfer
+     *
+     * @return void
+     */
+    public function resetOrderPickingBlock(OrderPickingBlockTransfer $orderPickingBlockTransfer): void;
 }

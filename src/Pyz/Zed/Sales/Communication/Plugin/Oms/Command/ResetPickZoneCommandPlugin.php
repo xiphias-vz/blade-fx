@@ -7,6 +7,7 @@
 
 namespace Pyz\Zed\Sales\Communication\Plugin\Oms\Command;
 
+use Generated\Shared\Transfer\OrderPickingBlockTransfer;
 use Generated\Shared\Transfer\OrderUpdateRequestTransfer;
 use Orm\Zed\Sales\Persistence\SpySalesOrder;
 use Pyz\Shared\Oms\OmsConfig;
@@ -33,6 +34,13 @@ class ResetPickZoneCommandPlugin extends AbstractPlugin implements CommandByOrde
      */
     public function run(array $orderItems, SpySalesOrder $orderEntity, ReadOnlyArrayObject $data): array
     {
+        $orderPickingBlockTransfer = (new OrderPickingBlockTransfer())
+            ->setIdSalesOrder($orderEntity->getIdSalesOrder())
+            ->setPickingZoneName($orderItems[0]->getPickZone());
+
+        $this->getFactory()->getPickingZoneFacade()
+            ->resetOrderPickingBlock($orderPickingBlockTransfer);
+
         $orderUpdateRequestTransfer = (new OrderUpdateRequestTransfer())
             ->setStoreStatus(OmsConfig::STORE_STATE_READY_FOR_PICKING);
 
