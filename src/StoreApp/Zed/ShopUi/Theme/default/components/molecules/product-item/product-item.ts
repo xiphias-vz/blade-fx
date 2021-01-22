@@ -31,6 +31,7 @@ export default class ProductItem extends Component {
     bawContainerButton: HTMLElement;
     private weightMax: number;
     private weightMin: number;
+    private $pricePerKg = 0;
 
     protected readyCallback(): void {
     }
@@ -54,22 +55,23 @@ export default class ProductItem extends Component {
         this.mapEvents();
         this.focusFirstEanField();
         this.boldLastThreeEanNumbers();
+        this.$pricePerKg = $('#ean').data('priceperkg');
     }
 
     protected mapEvents(): void {
-        let checkIfWeightCorrect = true;
 
         this.$minusButton.on('click', () => this.clickCounterHandler());
         this.$plusButton.on('click', () => this.clickCounterHandler(true));
         this.$acceptButton.on('click', () =>
         {
-
-            checkIfWeightCorrect = this.validateWeightInput();
-            if (!checkIfWeightCorrect) {
-                this.$weightField.val(this.$weightField.attr('value'));
+            if(this.$pricePerKg > 0) {
+                if (!this.validateWeightInput())
+                {
+                    this.$weightField.focus();
+                    return;
+                }
             }
-            this.$weightField.focus();
-
+            this.acceptClickHandler();
         });
         this.$declineButton.on('click', () => {
             if (this.isAccepted || this.isDeclined || this.isNotFullyAccepted) {
@@ -173,7 +175,10 @@ export default class ProductItem extends Component {
                 const $ean = $('#ean').data('ean');
 
                 let $alernativeEan = $('#alternativeEan').data('altean');
-                let $altEansArr = $alernativeEan.split(',');
+                if  ($alernativeEan == null) {
+                    $alernativeEan = '';
+                }
+                let $altEansArr = $alernativeEan.toString().split(',');
                 if($alernativeEan === undefined){
                     $alernativeEan = [];
                 }
@@ -190,15 +195,23 @@ export default class ProductItem extends Component {
                     calculatedWeight = Math.round((Number($gewichtFromScan) / Number($pricePerKg)) * 1000);
                 }
                 else if($eanPrefix <= 29 && $eanPrefix >= 25) {
-                    calculatedWeight = Math.round(Number(valueOfWeightElement) + Number($gewichtFromScan));
+                    calculatedWeight = Math.round(Number($gewichtFromScan));
                 }
-                if($eanPrefix <= 29 && $eanPrefix >= 21) {
-                    if (Number(this.barcodeAndWeightContainer) === 0) {
-                        $selForWeightElement.val(calculatedWeight);
-                        this.step20($selForQuantityElement, $formattedScanInput, Number(calculatedWeight), valueOfQuantityElement);
+                if($eanPrefix <= 29 && $eanPrefix >= 21 && $pricePerKg > 0) {
+                    if(this.barcodeAndWeightContainer < this.maxQuantity) {
+                        if (Number(this.barcodeAndWeightContainer) === 0) {
+                            $selForWeightElement.val(calculatedWeight);
+                            this.step20($selForQuantityElement, $formattedScanInput, Number(calculatedWeight), valueOfQuantityElement);
+                        } else {
+                            let val = Number(calculatedWeight) + Number(valueOfWeightElement);
+                            if(val < 0) val = 0;
+                            $selForWeightElement.val(val);
+                            this.step20($selForQuantityElement, $formattedScanInput, Number(calculatedWeight), valueOfQuantityElement);
+                        }
                     } else {
-                        $selForWeightElement.val(Number(calculatedWeight) + Number(valueOfWeightElement));
-                        this.step20($selForQuantityElement, $formattedScanInput, Number(calculatedWeight), valueOfQuantityElement);
+                        alert("Zu viele Stücke!");
+                        (<HTMLInputElement>document.getElementById('txt_ean_scannen')).value = '';
+                        this.focusFirstEanField();
                     }
                 }
                 else
