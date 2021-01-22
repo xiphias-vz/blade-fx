@@ -46,9 +46,9 @@
                 </div>
                 <div class="{{ config.name }}__generalInfo">
                     {% block brandNameAndWeight %}
-                        {% set sumPrice = shelfData['sumPrice'] ?? '' %}
+                        {% set price = itemsToShelfMap['pricePerKg'] ?? shelfData['sumPrice'] %}
                         <div class="{{ config.name }}__supplierNameAndWeight"><span class="{{ config.name }}__supplierAndName col--md-8">{{ itemsToShelfMap['brand'] ?? '' }} - {{ title|split('-')[1] }}</span><span class="{{ config.name }}__weight col--md-4">{{ (itemsToShelfMap['basePriceContent'] / 100)  | replace('.', ',') }} {{ itemsToShelfMap['basePriceUnit'] }}</span></div>
-                        <div id="ean" class="{{ config.name }}__eanAndWeight" data-pricePerKg="{{ itemsToShelfMap['pricePerKg'] }}" data-ean="{{ data.itemSku }}"><span class="{{ config.name }}__ean col--md-8">EAN: {{ data.itemSku ?? '' }}</span><span class="{{ config.name }}__price col--md-4">{{ sumPrice / 100 | replace('.', ',') }} €</span></div>
+                        <div id="ean" class="{{ config.name }}__eanAndWeight" data-pricePerKg="{{ itemsToShelfMap['pricePerKg'] }}" data-ean="{{ data.itemSku }}"><span class="{{ config.name }}__ean col--md-8">EAN: {{ data.itemSku ?? '' }}</span><span class="{{ config.name }}__price col--md-4">{{ price / 100 | replace('.', ',') }} €</span></div>
                     {% endblock %}
                     <div class="hr-line-solid"></div>
                 </div>
