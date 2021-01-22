@@ -1319,7 +1319,7 @@ mail.order.confirmation.item_sku,Artikel Menge,de_DE
 mail.order.confirmation.item_sku,Artikel SKU,en_US
 mail.order.confirmation.item_price_including_tax,Artikelpreis insgesamt inklusive Steuern,de_DE
 mail.order.confirmation.item_price_including_tax,Total item price including taxes,en_US
-mail.order.shipped.subject,Deine Wunscheinkauf %orderReference% ist schon auf dem Weg,de_DE
+mail.order.shipped.subject,Abholschein für Ihre Bestellung %orderReference%,de_DE
 mail.order.shipped.subject,Your order %orderReference% is on its way,en_US
 mail.order.shipped.salutation,Hallo,de_DE
 mail.order.shipped.salutation,Hello,en_US
