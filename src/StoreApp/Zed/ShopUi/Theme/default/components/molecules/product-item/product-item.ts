@@ -90,7 +90,18 @@ export default class ProductItem extends Component {
         const items = Number((<HTMLInputElement>document.getElementsByName('itemsCount')[0]).value);
         const count = Number((<HTMLInputElement>document.getElementsByName('counter')[0]).value);
         if (items === count) {
-            event.view.document.querySelector('popup-ui').classList.add('popup-ui--show');
+            const pickedElement = <HTMLElement>document.querySelector('.js-pick-products__picked.pop');
+            const notPickedElement = <HTMLElement>document.querySelector('.js-pick-products__not-picked.pop');
+            const containerCountElement = <HTMLElement>document.querySelector('.js-pick-products__bags.pop');
+            const containerCount = (<HTMLInputElement>document.getElementsByName('containerCount')[0]).value;
+            let pickedItemsCount = Number((<HTMLInputElement>document.getElementsByName('pickedItemsCount')[0]).value);
+            let notPickedItemsCount = Number((<HTMLInputElement>document.getElementsByName('notPickedItemsCount')[0]).value);
+            pickedItemsCount = pickedItemsCount + this.currentValue;
+            notPickedItemsCount = notPickedItemsCount + this.maxQuantity - this.currentValue;
+            pickedElement.innerText = (pickedItemsCount).toString();
+            notPickedElement.innerText = (notPickedItemsCount).toString();
+            containerCountElement.innerText = containerCount;
+            document.querySelector('.popup-ui').classList.add('popup-ui--show');
         } else {
             event.view.document.forms['order_item_selection_form'].submit();
         }

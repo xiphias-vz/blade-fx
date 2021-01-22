@@ -181,13 +181,7 @@
                                         <table>
                                             <tr>
                                                 <td class="item-quantity">
-                                                    {% embed atom('store-app-label') with {
-                                                        modifiers: ['picked', 'count'],
-                                                    } only %}
-                                                        {% block body %}
-                                                            <span class="js-pick-products__picked">0</span>
-                                                        {% endblock %}
-                                                    {% endembed %}
+                                                    <span class="js-pick-products__picked pop">0</span>
                                                 </td>
                                                 <td>
                                                     <div class="label-text-green">
@@ -203,13 +197,7 @@
                                         <table>
                                             <tr>
                                                 <td class="item-quantity">
-                                                    {% embed atom('store-app-label') with {
-                                                        modifiers: ['not-found', 'count'],
-                                                    } only %}
-                                                        {% block body %}
-                                                            <span class="js-pick-products__not-picked">0</span>
-                                                        {% endblock %}
-                                                    {% endembed %}
+                                                    <span class="js-pick-products__not-picked pop">0</span>
                                                 </td>
                                                 <td>
                                                     <div class="label-text-brown">
@@ -226,13 +214,7 @@
                                         <table>
                                             <tr>
                                                 <td class="item-quantity">
-                                                    {% embed atom('store-app-label') with {
-                                                        modifiers: ['bordered', 'count'],
-                                                    } only %}
-                                                        {% block body %}
-                                                            <span class="js-pick-products__bags">1</span>
-                                                        {% endblock %}
-                                                    {% endembed %}
+                                                    <span class="js-pick-products__bags pop">0</span>
                                                 </td>
                                                 <td>
                                                     <div class="label-text">

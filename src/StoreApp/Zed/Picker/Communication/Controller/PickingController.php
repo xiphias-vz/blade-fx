@@ -509,6 +509,7 @@ class PickingController extends BaseOrderPickingController
             'collectNumber' => $salesOrderTransfer->getCollectNumber(),
             'orderDeliveryTime' => null,
             'containerInfo' => $containerInfo,
+            'containerCount' => $salesOrderTransfer->getPickingBagsCount() ? 0 : 1,
             'ordersCount' => count($pickingFormSkuKeys),
             'ordersInfo' => $products,
             'urlContainerSelect' => PickerConfig::URL_SELECT_CONTAINERS,

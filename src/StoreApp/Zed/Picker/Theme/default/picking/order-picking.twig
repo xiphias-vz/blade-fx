@@ -25,7 +25,8 @@
     orderItemCounter: orderItemCounter,
     itemsCount: itemsCount,
     pickedItemsCount: pickedItemsCount,
-    notPickedItemsCount: notPickedItemsCount
+    notPickedItemsCount: notPickedItemsCount,
+    containerCount: containerCount,
 } %}
 
 {% block header %}
@@ -68,6 +69,7 @@
         <input type="hidden" name="itemsCount" value="{{ data.itemsCount }}">
         <input type="hidden" name="pickedItemsCount" value="{{ data.pickedItemsCount }}">
         <input type="hidden" name="notPickedItemsCount" value="{{ data.notPickedItemsCount }}">
+        <input type="hidden" name="containerCount" value="{{ data.containerCount }}">
 
             {% set field = attribute(data.pickingForm.children, data.pickingFormSkuKeys | first) %}
             {% set itemSku = field.vars.name | split('__') | last %}
