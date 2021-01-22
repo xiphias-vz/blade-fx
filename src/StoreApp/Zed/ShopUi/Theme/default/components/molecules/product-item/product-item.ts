@@ -28,6 +28,7 @@ export default class ProductItem extends Component {
     eanInputFieldWrapper: HTMLElement;
     popUp: HTMLElement;
     btnSubmitPick: HTMLElement;
+    bawContainerButton: HTMLElement;
     private weightMax: number;
     private weightMin: number;
 
@@ -49,8 +50,10 @@ export default class ProductItem extends Component {
         this.eanInputFieldWrapper.addEventListener('keypress', (event: KeyboardEvent) => this.formKeyPressHandler(event));
         this.popUp = <HTMLElement>document.getElementsByClassName('popup-ui')[0];
         this.btnSubmitPick = <HTMLElement>document.querySelector('#btnSubmitPick');
+        this.bawContainerButton = <HTMLElement>document.querySelector('.bawContainerButton');
         this.mapEvents();
         this.focusFirstEanField();
+        this.boldLastThreeEanNumbers();
     }
 
     protected mapEvents(): void {
@@ -148,56 +151,76 @@ export default class ProductItem extends Component {
         if (event.key == 'Enter') {
             event.preventDefault();
             const $inputValue = (<HTMLInputElement>document.getElementById('txt_ean_scannen')).value;
-            const $eanPrefix = Number($inputValue.substr(0,2));
-            const $plu = $inputValue.substr(2,4);  //Check with ean
-            const $value = $inputValue.substr(7,5);
-            let weight = 0;
-            let price = 0;
-
-            const $pricePerKg = $('#ean').data('priceperkg');
-            const $ean = $('#ean').data('ean');
-
-            let $alernativeEan = $('#alternativeEan').data('altean');
-            let $altEansArr = $alernativeEan.split(',');
-            if($alernativeEan === undefined){
-                $alernativeEan = [];
+            const $formattedScanInput = $inputValue.replace('/x11', '').replace('/X11', '');
+            if($formattedScanInput.length != 13){
+                alert("Der Barcode sollte 13 Zeichen lang sein");
             }
+            else
+            {
+                const $eanPrefix = Number($formattedScanInput.substr(0,2));
+                const $plu = $formattedScanInput.substr(2,4);  //Check with ean
+                const $value = $formattedScanInput.substr(7,5);
 
-            const $selForWeightElement = $(".js-product-item__weight");
-            let valueOfWeightElement = $selForWeightElement.val();
+                const $pricePerKg = $('#ean').data('priceperkg');
+                const $ean = $('#ean').data('ean');
 
-            const $selForQuantityElement = $(".js-product-item__quantity");
-            let valueOfQuantityElement = $selForQuantityElement.val();
-
-            if($eanPrefix <= 24 && $eanPrefix >= 21){
-
-                let priceOfProduct = $inputValue.substr(7,4);
-                let calculatedWeight = Number(priceOfProduct) / Number($pricePerKg);
-                $(".js-product-item__weight").val(calculatedWeight);
-
-                this.step20($selForQuantityElement, $inputValue, calculatedWeight, valueOfQuantityElement);
-            }
-            else if($eanPrefix <= 29 && $eanPrefix >= 25){
-
-                let priceWeightOfProduct = $inputValue.substr(7,4);
-                $selForWeightElement.val(Number(valueOfWeightElement) + Number(priceWeightOfProduct));
-
-                this.step20($selForQuantityElement, $inputValue, Number(priceWeightOfProduct), valueOfQuantityElement);
-            }
-            else {
-                if(Number($inputValue) === $ean){
-                    this.step30();
+                let $alernativeEan = $('#alternativeEan').data('altean');
+                let $altEansArr = $alernativeEan.split(',');
+                if($alernativeEan === undefined){
+                    $alernativeEan = [];
                 }
-                else {
-                    const inputHasAlternateEan = $altEansArr.some(function(v){ return v.indexOf($inputValue) >= 0; });
-                    if(inputHasAlternateEan){
-                        this.step30();
+
+                const $selForWeightElement = $(".js-product-item__weight");
+                let valueOfWeightElement = $selForWeightElement.val();
+
+                const $selForQuantityElement = $(".js-product-item__quantity");
+                let valueOfQuantityElement = $selForQuantityElement.val();
+
+                const checkIfWeightCorrect = this.validateWeightInput();
+                if (!checkIfWeightCorrect) {
+                    const element = <HTMLInputElement>document.getElementById('txt_ean_scannen');
+                    element.value = "";
+                    this.focusFirstEanField();
+
+                    return;
+                }
+                else
+                {
+                    if($eanPrefix <= 24 && $eanPrefix >= 21){
+                        let priceOfProduct = $value;
+                        let calculatedWeight = Number(priceOfProduct) / Number(valueOfWeightElement) * 1000;
+                        $selForWeightElement.val(Math.round(calculatedWeight));
+
+                        this.step20($selForQuantityElement, $formattedScanInput, calculatedWeight, valueOfQuantityElement);
                     }
-                    else{
-                        const element = <HTMLInputElement>document.getElementById('txt_ean_scannen');
-                        alert("Error");
-                        element.value = "";
-                        this.focusFirstEanField();
+                    else if($eanPrefix <= 29 && $eanPrefix >= 25){
+                        let priceWeightOfProduct = $value;
+
+                        if(Number(this.barcodeAndWeightContainer) === 0){
+                            $selForWeightElement.val(Math.round(Number(priceWeightOfProduct)));
+                        }
+                        else {
+                            $selForWeightElement.val(Math.round(Number(valueOfWeightElement) + Number(priceWeightOfProduct)));
+                        }
+
+                        this.step20($selForQuantityElement, $formattedScanInput, Number(priceWeightOfProduct), valueOfQuantityElement);
+                    }
+                    else {
+                        if(Number($formattedScanInput) === $ean){
+                            this.step30();
+                        }
+                        else {
+                            const inputHasAlternateEan = $altEansArr.some(function(v){ return v.indexOf($formattedScanInput) >= 0; });
+                            if(inputHasAlternateEan){
+                                this.step30();
+                            }
+                            else{
+                                const element = <HTMLInputElement>document.getElementById('txt_ean_scannen');
+                                alert("Error");
+                                element.value = "";
+                                this.focusFirstEanField();
+                            }
+                        }
                     }
                 }
             }
@@ -209,23 +232,13 @@ export default class ProductItem extends Component {
         $(  '<div id="barcodeAndWeightContainer_' + this.barcodeAndWeightContainer + '" class="barcodeAndWeightContainer">' +
             '<div class="col--md-8 float-left">' +
             '<div><span>Barcode: <span class="scannedBarcode_' + this.barcodeAndWeightContainer + '">' + scannedBarcodeValue + '</span></span></div>' +
-            '<div><span>Weight: <span class="weight_' + this.barcodeAndWeightContainer + '">' + valueOfWeightElement + '</span></span></div>' +
+            '<div><span>Weight: <span class="weight_' + this.barcodeAndWeightContainer + '">' + Math.round(valueOfWeightElement) + '</span></span></div>' +
             '</div>' +
             '<div class="bawContainerRemove_' + this.barcodeAndWeightContainer + ' col--md-3 float-right text-right"><button id="bawContainerButton_' + this.barcodeAndWeightContainer + '" class="bawContainerButton" type="button">X</button></div>' +
             '</div>').appendTo($(".product-item__info"));
 
-        $(".bawContainerButton").click(function(e) {
-            e.preventDefault();
-            let inputValue = Number($(".js-product-item__quantity").val());
-            let calculatedValue = inputValue-1;
-            if(!calculatedValue < 0){
-                $(".js-product-item__quantity").val(calculatedValue);
-            }
+        document.querySelector('.bawContainerButton').addEventListener('click', evt => this.onRemoveContainerClick(evt, valueOfWeightElement));
 
-            $(".js-product-item__quantity-output").html(calculatedValue);
-            $(".js-product-item__weight").val(Number(Number($(".js-product-item__weight").val()) - Number(valueOfWeightElement)));
-            document.getElementById(e.target.id).parentElement.parentElement.remove();
-        });
         this.barcodeAndWeightContainer++;
         this.step30();
     }
@@ -233,9 +246,42 @@ export default class ProductItem extends Component {
     protected step30(): void {
         this.clickCounterHandler(true);
         const element = <HTMLInputElement>document.getElementById('txt_ean_scannen');
-
         element.value = "";
         this.focusFirstEanField();
+    }
+
+    protected boldLastThreeEanNumbers(): void {
+
+        let eanSpan = document.getElementsByClassName('product-item__ean');
+        if(eanSpan.length > 0){
+            let lastThreeDigits = 3;
+            let html = eanSpan[0].innerHTML;
+            eanSpan[0].innerHTML = html.substr(0, html.length-lastThreeDigits)
+                    + "<span class='lastThreeDigits'>"
+                    + eanSpan[0].innerHTML.substr(-lastThreeDigits)
+                    + "</span>";
+        }
+
+    }
+
+    protected onRemoveContainerClick(event: MouseEvent, valueOfWeightElement) {
+        const checkIfWeightCorrect = this.validateWeightInput();
+        if (!checkIfWeightCorrect) {
+            this.clickCounterHandler();
+            this.$weightField.val(this.$weightField.attr('value'));
+            document.getElementById(event.target.id).parentElement.parentElement.remove();
+            this.barcodeAndWeightContainer--;
+            this.focusFirstEanField();
+
+            return;
+        }
+        else{
+            this.clickCounterHandler();
+            $(".js-product-item__weight").val(Math.round(Number(Number($(".js-product-item__weight").val()) - Number(valueOfWeightElement))));
+            document.getElementById(event.target.id).parentElement.parentElement.remove();
+            this.barcodeAndWeightContainer--;
+            this.focusFirstEanField();
+        }
     }
 
     protected updateQuantityInput(value: number): void {

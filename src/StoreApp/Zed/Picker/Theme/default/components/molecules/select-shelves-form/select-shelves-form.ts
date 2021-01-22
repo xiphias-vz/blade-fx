@@ -13,10 +13,10 @@ export default class SelectShelvesForm extends Component {
 
     protected readyCallback(): void {
         this.form = <HTMLFormElement>this.getElementsByTagName('form')[0];
+        this.btn = <HTMLButtonElement>this.getElementsByClassName('btn-saveShelf')[0];
 
         this.form.addEventListener('keypress', (event: KeyboardEvent) => this.formKeyPressHandler(event));
-        this.form.addEventListener('click', (event: MouseEvent) => this.submitButtonHandler(event));
-        //$(".button--success")[0].click(this.submitButtonHandler);
+        this.btn.addEventListener('click', (event: MouseEvent) => this.submitButtonHandler(event));
 
         this.mapEventsForInputs();
         this.focusInputElement();
@@ -63,14 +63,18 @@ export default class SelectShelvesForm extends Component {
     }
 
     protected submitButtonHandler(event: MouseEvent): void {
-
         let formItems = <HTMLElement[]> Array.from(document.getElementsByTagName('input'));
+        let counter = 0;
         formItems.forEach((element: HTMLInputElement) => {
             if(element.value == ""){
                 event.preventDefault();
-                alert("Es werden nicht alle Felder eingegeben!");
+                counter++;
             }
         });
+
+        if(counter > 0){
+            alert("Es werden nicht alle Felder eingegeben!");
+        }
     }
 
     protected focusInputElement(): void

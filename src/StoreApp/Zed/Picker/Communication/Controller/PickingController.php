@@ -321,9 +321,10 @@ class PickingController extends BaseOrderPickingController
         $skuFromRequest = "";
         $orderItemSelectionForm = "";
         $skuToSelectedQuantity = 1;
-        $skuToWeight = 0;
+        $skuToWeight = -1;
         $pickedItemsCount = 0;
         $notPickedItemsCount = 0;
+        $formData = [];
 
         if ($request->request->count() == 0) {
             $counter = 1;
@@ -334,6 +335,13 @@ class PickingController extends BaseOrderPickingController
             $key = key($request->request->get('order_item_selection_form'));
             $skuFromRequest = explode('__', $key)[1];
             $skuToSelectedQuantity = $request->request->get('order_item_selection_form')[$key];
+            $formData = $request->request->get('order_item_selection_form');
+            foreach (array_keys($request->request->get('order_item_selection_form')) as $key) {
+                if (str_contains($key, OrderItemSelectionForm::PREFIX_FIELD_SALES_ORDER_ITEM_NEW_WEIGHT)) {
+                    $skuToWeight = $request->request->get('order_item_selection_form')[$key];
+                    break;
+                }
+            }
         }
         $idSalesOrder = $request->get(PickerConfig::REQUEST_PARAM_ID_ORDER) ?? 0;
 
@@ -442,6 +450,20 @@ class PickingController extends BaseOrderPickingController
             $this->getFacade()->markOrderItemsAsNotPicked($notPickedItems);
             $this->getFacade()->markOrderItemsAsContainerSelected($pickedItems);
             $this->getFacade()->updateOrderPickingBagsCount($idSalesOrder, $pickingBagsCount);
+
+            if ($skuToWeight > -1) {
+                $orderChangeRequestTransfer = $this->getFactory()->getFormDataMapper()
+                    ->mapFormDataToOrderItemChangeRequest(
+                        $formData,
+                        $salesOrderTransfer,
+                        $pickedItems,
+                        OrderItemSelectionForm::PREFIX_FIELD_SALES_ORDER_ITEM_NEW_WEIGHT
+                    );
+
+                if ($orderChangeRequestTransfer->getOrderItemChangeRequest()->count() > 0) {
+                    $this->getFactory()->getSalesFacade()->saveOrderChange($orderChangeRequestTransfer);
+                }
+            }
 
             if ($nextSku == '*') {
                 $orderPickingPath = Url::generate(

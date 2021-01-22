@@ -171,14 +171,20 @@ $setting-item-border-radius: rem(8);
 
         &__supplierNameAndWeight {
             background-color: $setting-color-gray-3;
-            height: rem(40);
             padding: rem(10) rem(5);
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            height: auto;
         }
 
         &__eanAndWeight {
-            height: rem(40);
+            height: auto;
             padding: rem(10) rem(5);
             clear: both;
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
         }
 
         &__supplierAndName,
@@ -191,7 +197,7 @@ $setting-item-border-radius: rem(8);
         &__weight,
         &__price {
             float: right;
-            text-align: center;
+            text-align: right;
         }
 
         .hr-line-solid {
@@ -272,6 +278,11 @@ $setting-item-border-radius: rem(8);
         .bawContainerButton {
             background-color: #dedede;
             cursor: pointer;
+        }
+
+        .lastThreeDigits {
+            font-weight: bold;
+            font-size: rem(16);
         }
 
     }
