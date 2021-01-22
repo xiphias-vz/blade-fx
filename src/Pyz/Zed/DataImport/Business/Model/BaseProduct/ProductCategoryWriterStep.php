@@ -8,7 +8,9 @@
 namespace Pyz\Zed\DataImport\Business\Model\BaseProduct;
 
 use Orm\Zed\Category\Persistence\SpyCategoryQuery;
+use Orm\Zed\ProductCategory\Persistence\Map\SpyProductCategoryTableMap;
 use Orm\Zed\ProductCategory\Persistence\SpyProductCategoryQuery;
+use Propel\Runtime\ActiveQuery\Criteria;
 use Pyz\Zed\DataImport\Business\Model\ProductAbstract\ProductAbstractWriterStep;
 use Spryker\Zed\DataImport\Business\Model\DataImportStep\DataImportStepInterface;
 use Spryker\Zed\DataImport\Business\Model\DataImportStep\PublishAwareStep;
@@ -31,6 +33,8 @@ class ProductCategoryWriterStep extends PublishAwareStep implements DataImportSt
         $categoryId = $dataSet[self::KEY_CATEGORY_KEY];
         $listId = explode(";", $categoryId);
         $productOrder = 0;
+        $currentRelationIds = [];
+
         foreach ($listId as $value) {
             $dataSet[self::KEY_CATEGORY_KEY] = $value;
 
@@ -43,10 +47,31 @@ class ProductCategoryWriterStep extends PublishAwareStep implements DataImportSt
             if ($productCategoryEntity->isNew() || $productCategoryEntity->isModified()) {
                 $productCategoryEntity->save();
             }
-                $this->addPublishEvents(ProductCategoryEvents::PRODUCT_CATEGORY_PUBLISH, $dataSet[ProductAbstractWriterStep::ID_PRODUCT_ABSTRACT]);
-                $this->addPublishEvents(ProductEvents::PRODUCT_ABSTRACT_PUBLISH, $dataSet[ProductAbstractWriterStep::ID_PRODUCT_ABSTRACT]);
+
+            $currentRelationIds[] = $productCategoryEntity->getIdProductCategory();
+
+            $this->addPublishEvents(ProductCategoryEvents::PRODUCT_CATEGORY_PUBLISH, $dataSet[ProductAbstractWriterStep::ID_PRODUCT_ABSTRACT]);
+            $this->addPublishEvents(ProductEvents::PRODUCT_ABSTRACT_PUBLISH, $dataSet[ProductAbstractWriterStep::ID_PRODUCT_ABSTRACT]);
+
             $productOrder++;
         }
+        $this->removeOldRelations($dataSet, $currentRelationIds);
+    }
+
+    /**
+     * @param \Spryker\Zed\DataImport\Business\Model\DataSet\DataSetInterface $dataSet
+     * @param array $currentRelationIds
+     *
+     * @return void
+     */
+    protected function removeOldRelations(DataSetInterface $dataSet, array $currentRelationIds): void
+    {
+        SpyProductCategoryQuery::create()
+            ->filterByFkProductAbstract($dataSet[ProductAbstractWriterStep::ID_PRODUCT_ABSTRACT])
+            ->_and()
+            ->where(SpyProductCategoryTableMap::COL_ID_PRODUCT_CATEGORY . Criteria::NOT_IN . '(' . implode(',', $currentRelationIds) . ')')
+            ->find()
+            ->delete();
     }
 
     /**
