@@ -42,7 +42,7 @@ class PickingZoneOrderExportFormDataProvider
      */
     protected function getPickingZones(): array
     {
-        $pickingZoneTransfers = $this->pickingZoneFacade->getPickingZones();
+        $pickingZoneTransfers = $this->pickingZoneFacade->getPickingZones('');
         $pickingZones = [];
 
         foreach ($pickingZoneTransfers as $pickingZoneTransfer) {

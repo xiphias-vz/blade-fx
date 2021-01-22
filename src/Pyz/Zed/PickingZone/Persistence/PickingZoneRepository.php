@@ -23,17 +23,27 @@ use Spryker\Zed\Kernel\Persistence\AbstractRepository;
 class PickingZoneRepository extends AbstractRepository implements PickingZoneRepositoryInterface
 {
     /**
+     * @param string $merchantReference
+     *
      * @return array
      */
-    public function getPickingZones(): array
+    public function getPickingZones(string $merchantReference): array
     {
-        $zones = $this->getPickingZoneWithOrdersCount();
-        $pickingZones = [];
-        foreach ($zones as $zone) {
-            $pickingZones[$zone[PyzPickingZoneTableMap::COL_ID_PICKING_ZONE]] = $zone[PyzPickingZoneTableMap::COL_NAME] . '/' . $zone['orderCount'];
-        }
+        if (empty($merchantReference)) {
+            $factory = $this->getFactory();
+            $pickingZoneEntities = $factory->createPickingZoneQuery()->find();
 
-        return $pickingZones;
+            return $factory->createPickingZoneMapper()
+                ->mapPickingZoneEntitiesToPickingZoneTransfers($pickingZoneEntities);
+        } else {
+            $zones = $this->getPickingZoneWithOrdersCount($merchantReference);
+            $pickingZones = [];
+            foreach ($zones as $zone) {
+                $pickingZones[$zone[PyzPickingZoneTableMap::COL_ID_PICKING_ZONE]] = $zone[PyzPickingZoneTableMap::COL_NAME] . '/' . $zone['orderCount'];
+            }
+
+            return $pickingZones;
+        }
     }
 
     /**
@@ -85,17 +95,19 @@ class PickingZoneRepository extends AbstractRepository implements PickingZoneRep
     }
 
     /**
+     * @param string $merchantReference
+     *
      * @return array
      */
-    public function getPickingZoneWithOrdersCount(): array
+    public function getPickingZoneWithOrdersCount(string $merchantReference): array
     {
         return $this->getFactory()->createPickingZoneQuery()
             ->select([PyzPickingZoneTableMap::COL_ID_PICKING_ZONE, PyzPickingZoneTableMap::COL_NAME])
-            ->withColumn('COUNT(DISTINCT ' . SpyOmsOrderItemStateTableMap::COL_NAME . ')', 'orderCount')
+            ->withColumn('COUNT(DISTINCT IF(' . SpySalesOrderTableMap::COL_MERCHANT_REFERENCE . ' = \'' . $merchantReference . '\', ' . SpyOmsOrderItemStateTableMap::COL_NAME . ', null))', 'orderCount')
             ->addJoin(PyzPickingZoneTableMap::COL_NAME, SpySalesOrderItemTableMap::COL_PICK_ZONE, Criteria::LEFT_JOIN)
             ->addJoin(SpySalesOrderItemTableMap::COL_FK_SALES_ORDER, SpySalesOrderTableMap::COL_ID_SALES_ORDER, Criteria::LEFT_JOIN)
             ->addJoin(
-                [SpySalesOrderItemTableMap::COL_FK_OMS_ORDER_ITEM_STATE, SpyOmsOrderItemStateTableMap::COL_NAME],
+                [SpySalesOrderItemTableMap::COL_FK_OMS_ORDER_ITEM_STATE, SpyOmsOrderItemStateTableMap::COL_ID_OMS_ORDER_ITEM_STATE],
                 [SpyOmsOrderItemStateTableMap::COL_ID_OMS_ORDER_ITEM_STATE, '\'' . OmsConfig::STORE_STATE_READY_FOR_PICKING . '\''],
                 Criteria::LEFT_JOIN
             )

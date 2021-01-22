@@ -26,11 +26,12 @@ class SelectPickingZoneController extends AbstractController
     public function indexAction(Request $request)
     {
         $factory = $this->getFactory();
+        $merchantReference = $this->getFactory()->getUserFacade()->getCurrentUser()->getMerchantReference();
 
         $pickingZoneSelectionFormDataProvider = $factory->createPickingZoneSelectionFormDataProvider();
         $pickingZoneSelectionForm = $factory->createPickingZoneSelectionForm(
             $pickingZoneSelectionFormDataProvider->getData($this->findIdPickingZoneSelected()),
-            $pickingZoneSelectionFormDataProvider->getOptions()
+            $pickingZoneSelectionFormDataProvider->getOptions($merchantReference)
         );
 
         $pickingZoneSelectionForm->handleRequest($request);

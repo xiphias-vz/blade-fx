@@ -38,20 +38,24 @@ class PickingZoneSelectionFormDataProvider
     }
 
     /**
+     * @param string $merchantReference
+     *
      * @return mixed[]
      */
-    public function getOptions(): array
+    public function getOptions(string $merchantReference): array
     {
-        $options[PickingZoneSelectionForm::OPTION_PICKING_ZONES] = $this->getPickingZones();
+        $options[PickingZoneSelectionForm::OPTION_PICKING_ZONES] = $this->getPickingZones($merchantReference);
 
         return $options;
     }
 
     /**
+     * @param string $merchantReference
+     *
      * @return array
      */
-    protected function getPickingZones(): array
+    protected function getPickingZones(string $merchantReference): array
     {
-        return $this->pickingZoneFacade->getPickingZones();
+        return $this->pickingZoneFacade->getPickingZones($merchantReference);
     }
 }

@@ -13,9 +13,11 @@ use Generated\Shared\Transfer\PickingZoneTransfer;
 interface PickingZoneRepositoryInterface
 {
     /**
+     * @param string $merchantReference
+     *
      * @return \Generated\Shared\Transfer\PickingZoneTransfer[]
      */
-    public function getPickingZones(): array;
+    public function getPickingZones(string $merchantReference): array;
 
     /**
      * @param int $idPickingZone

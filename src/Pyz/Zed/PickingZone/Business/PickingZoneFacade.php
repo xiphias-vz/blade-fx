@@ -23,11 +23,13 @@ class PickingZoneFacade extends AbstractFacade implements PickingZoneFacadeInter
      *
      * @api
      *
+     * @param string $merchantReference
+     *
      * @return \Generated\Shared\Transfer\PickingZoneTransfer[]
      */
-    public function getPickingZones(): array
+    public function getPickingZones(string $merchantReference): array
     {
-        return $this->getRepository()->getPickingZones();
+        return $this->getRepository()->getPickingZones($merchantReference);
     }
 
     /**

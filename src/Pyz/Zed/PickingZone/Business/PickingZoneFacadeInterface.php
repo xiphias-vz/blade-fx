@@ -19,9 +19,11 @@ interface PickingZoneFacadeInterface
      *
      * @api
      *
+     * @param string $merchantReference
+     *
      * @return \Generated\Shared\Transfer\PickingZoneTransfer[]
      */
-    public function getPickingZones(): array;
+    public function getPickingZones(string $merchantReference): array;
 
     /**
      * Specification:
