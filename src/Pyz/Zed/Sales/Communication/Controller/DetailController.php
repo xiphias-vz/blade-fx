@@ -53,12 +53,13 @@ class DetailController extends SprykerDetailController
 
         $pickZones = [];
         $itemDataArray = [];
+        $itemStatusArray = [];
 
         foreach ($groupedOrderItems as $key => $orderItem) {
             if (!in_array($orderItem->getPickZone(), $pickZones)) {
                 array_push($pickZones, $orderItem->getPickZone());
             }
-
+            $itemStatusArray[array_search($orderItem->getPickZone(), $pickZones)][$key] = $orderItem->getState()->getName();
             $itemDataArray[array_search($orderItem->getPickZone(), $pickZones)][$key] = $orderItem;
         }
 
@@ -72,6 +73,7 @@ class DetailController extends SprykerDetailController
             'groupedOrderItems' => $groupedOrderItems,
             'changeStatusRedirectUrl' => $this->createRedirectLink($idSalesOrder),
             'pickZones' => $pickZones,
+            'itemStatusArray' => $itemStatusArray,
             'itemDataArray' => $itemDataArray,
         ], $blockResponseData);
     }

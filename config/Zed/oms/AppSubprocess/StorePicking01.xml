@@ -42,8 +42,15 @@
                 <target>picked</target>
                 <event>confirm picking</event>
             </transition>
+
             <transition>
                 <source>picked</source>
+                <target>ready for picking</target>
+                <event>Zurücksetzen</event>
+            </transition>
+
+            <transition>
+                <source>cancelled</source>
                 <target>ready for picking</target>
                 <event>Zurücksetzen</event>
             </transition>
