@@ -137,8 +137,8 @@ export default class ProductItem extends Component {
 
     protected validateWeightInput(): boolean {
         const inputWeightValue = Number(this.$weightField.val());
-        const inputWeightMax = Number(this.$weightField.attr('max')) / this.maxQuantity * this.currentQuantity;
-        const inputWeightMin = Number(this.$weightField.attr('min')) / this.maxQuantity * this.currentQuantity;
+        const inputWeightMax = Number(this.$weightField.attr('max'));
+        const inputWeightMin = Number(this.$weightField.attr('min'));
 
         if (inputWeightValue > inputWeightMax) {
             alert(`Der Eingabewert sollte nicht größer als ${inputWeightMax} sein`);
