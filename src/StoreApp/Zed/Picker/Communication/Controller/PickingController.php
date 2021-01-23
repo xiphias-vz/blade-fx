@@ -343,6 +343,9 @@ class PickingController extends BaseOrderPickingController
                 }
             }
         }
+        if ($skuToWeight == "") {
+            $skuToWeight = -1;
+        }
         $idSalesOrder = $request->get(PickerConfig::REQUEST_PARAM_ID_ORDER) ?? 0;
 
         $containerInfo = $this->getFactory()
@@ -451,7 +454,7 @@ class PickingController extends BaseOrderPickingController
             $this->getFacade()->markOrderItemsAsContainerSelected($pickedItems);
             $this->getFacade()->updateOrderPickingBagsCount($idSalesOrder, $pickingBagsCount);
 
-            if ($skuToWeight > -1) {
+            if ($skuToWeight > -1 && count($pickedItems) > 0) {
                 $orderChangeRequestTransfer = $this->getFactory()->getFormDataMapper()
                     ->mapFormDataToOrderItemChangeRequest(
                         $formData,
