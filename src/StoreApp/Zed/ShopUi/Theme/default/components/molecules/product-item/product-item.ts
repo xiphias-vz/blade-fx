@@ -155,9 +155,13 @@ export default class ProductItem extends Component {
         }
     }
 
+    protected setQuantityToValue(quantity): void {
+        this.updateQuantityInput(quantity);
+        this.pickProducts.updateStorageItem(this);
+    }
+
     protected formKeyPressHandler(event: KeyboardEvent): void {
         // enter key forces the whole form to submit, we want to prevent that for barcode scanner
-
         if (event.key == 'Enter') {
             event.preventDefault();
             const $inputValue = (<HTMLInputElement>document.getElementById('txt_ean_scannen')).value;
@@ -198,21 +202,18 @@ export default class ProductItem extends Component {
                     calculatedWeight = Math.round(Number($gewichtFromScan));
                 }
                 if($eanPrefix <= 29 && $eanPrefix >= 21 && $pricePerKg > 0) {
-                    if(this.barcodeAndWeightContainer < this.maxQuantity) {
-                        if (Number(this.barcodeAndWeightContainer) === 0) {
-                            $selForWeightElement.val(calculatedWeight);
-                            this.step20($selForQuantityElement, $formattedScanInput, Number(calculatedWeight), valueOfQuantityElement);
-                        } else {
-                            let val = Number(calculatedWeight) + Number(valueOfWeightElement);
-                            if(val < 0) val = 0;
-                            $selForWeightElement.val(val);
-                            this.step20($selForQuantityElement, $formattedScanInput, Number(calculatedWeight), valueOfQuantityElement);
-                        }
+
+                    if (Number(this.barcodeAndWeightContainer) === 0) {
+                        $selForWeightElement.val(calculatedWeight);
+                        this.step20($selForQuantityElement, $formattedScanInput, Number(calculatedWeight), valueOfQuantityElement);
                     } else {
-                        alert("Zu viele Stücke!");
-                        (<HTMLInputElement>document.getElementById('txt_ean_scannen')).value = '';
-                        this.focusFirstEanField();
+                        let val = Number(calculatedWeight) + Number(valueOfWeightElement);
+                        if(val < 0) val = 0;
+                        $selForWeightElement.val(val);
+                        this.step20($selForQuantityElement, $formattedScanInput, Number(calculatedWeight), valueOfQuantityElement);
                     }
+
+                    this.setQuantityToValue(1);
                 }
                 else
                 {
@@ -263,7 +264,7 @@ export default class ProductItem extends Component {
 
     protected boldLastThreeEanNumbers(): void {
 
-        let eanSpan = document.getElementsByClassName('product-item__ean');
+        let eanSpan = document.getElementsByClassName('product-item__toBold');
         if(eanSpan.length > 0){
             let lastThreeDigits = 3;
             let html = eanSpan[0].innerHTML;

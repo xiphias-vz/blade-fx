@@ -59,7 +59,7 @@
 
 {% block content %}
     {{ form_start(data.pickingForm, {
-        attr: { class: 'form js-submit-form-handler__form spacing-top spacing-top--inner' }
+        attr: { class: 'form js-submit-form-handler__form' }
     }) }}
 
         <input type="hidden" name="{{ data.requestParamIdSalesOrder }}" value="{{ data.idSalesOrder }}">
