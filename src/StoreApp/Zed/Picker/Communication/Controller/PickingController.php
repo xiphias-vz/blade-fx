@@ -339,6 +339,7 @@ class PickingController extends BaseOrderPickingController
             foreach (array_keys($request->request->get('order_item_selection_form')) as $key) {
                 if (str_contains($key, OrderItemSelectionForm::PREFIX_FIELD_SALES_ORDER_ITEM_NEW_WEIGHT)) {
                     $skuToWeight = $request->request->get('order_item_selection_form')[$key];
+                    $skuToSelectedQuantity = 1;
                     break;
                 }
             }
