@@ -26,7 +26,11 @@ export default class ProductItem extends Component {
     protected $quantityOutput: $;
     protected $weightField: $;
     protected $previousSku: $;
+    eanScanInputElement: HTMLInputElement;
+    alternativeEanElement: HTMLInputElement;
     eanInputFieldWrapper: HTMLElement;
+    eanInputData: HTMLElement;
+    pricePerKgData: HTMLElement;
     popUp: HTMLElement;
     btnSubmitPick: HTMLElement;
     bawContainerButton: HTMLElement;
@@ -49,37 +53,38 @@ export default class ProductItem extends Component {
         this.$quantityOutput = this.$this.find(this.quantityOutputSelector);
         this.weightMax = Number(this.$weightField.attr('max'));
         this.weightMin = Number(this.$weightField.attr('min'));
-        // this.eanInputFieldWrapper = <HTMLElement>document.getElementById('eanScannenDiv');
         this.eanInputFieldWrapper = this.querySelector('#eanScannenDiv');
         this.productBlockWrapper = <HTMLElement>document.getElementById('gridOfTheProduct');
-        this.eanInputFieldWrapper.addEventListener(
-            'keypress', (event: KeyboardEvent) => this.formKeyPressHandler(event));
+        this.eanInputFieldWrapper.addEventListener('keypress', (event: KeyboardEvent) => this.formKeyPressHandler(event));
         this.popUp = <HTMLElement>document.getElementsByClassName('popup-ui')[0];
         this.btnSubmitPick = <HTMLElement>document.querySelector('#btnSubmitPick');
         this.bawContainerButton = <HTMLElement>document.querySelector('.bawContainerButton');
+        this.eanScanInputElement = <HTMLInputElement>this.$this.find('.ean_scan_input')[0];
+        this.alternativeEanElement = <HTMLInputElement>this.$this.find('.alternativeEan')[0];
+        this.eanInputData = this.$this.find('.eanData')[0].getAttribute('data-ean');
+        this.pricePerKgData = this.$this.find('.eanData')[0].getAttribute('data-priceperkg');
         this.mapEvents();
         this.boldLastThreeEanNumbers();
         this.$previousSku = $('#formPreviousSku').val();
-        if (this.$previousSku == undefined || this.$previousSku === '')
+        if(this.$previousSku == null || this.$previousSku == '')
         {
             this.focusFirstEanField();
         }
 
-        if (this.$previousSku === this.dataset.sku)
+        if(this.$previousSku == this.dataset.sku)
         {
-            const elementForFocus = <HTMLInputElement>this.$this.find(`.ean_scan_input`);
-            elementForFocus.focus();
-
-            // for (let i=0; i < elements.length; i++)
-            // {
-            //     const elementsArray = elements[i].id.split('__');
-            //     const skuElement = elementsArray[1];
-            //     if(this.$previousSku == skuElement)
-            //     {
-            //         const elementForFocus = <HTMLInputElement>document.getElementsByClassName('ean_scan_input')[i];
-            //
-            //     }
-            // }
+            const elements = <HTMLInputElement>document.getElementsByClassName('ean_scan_input');
+            for (let i=0; i< elements.length; i++)
+            {
+                const elementsArray = elements[i].id.split('__');
+                const skuElement = elementsArray[1];
+                if(this.$previousSku == skuElement)
+                {
+                    const elementForFocus = <HTMLInputElement>document.getElementsByClassName('ean_scan_input')[i];
+                    elementForFocus.focus();
+                    break;
+                }
+            }
         }
         this.$pricePerKg = $('#ean').data('priceperkg');
     }
@@ -107,7 +112,7 @@ export default class ProductItem extends Component {
 
             this.declineClickHandler();
         });
-       // this.btnSubmitPick.addEventListener('click', evt => this.onSubmitClick(evt));
+        // this.btnSubmitPick.addEventListener('click', evt => this.onSubmitClick(evt));
     }
 
     protected onSubmitClick(event: MouseEvent) {
@@ -119,8 +124,7 @@ export default class ProductItem extends Component {
             const containerCountElement = <HTMLElement>document.querySelector('.js-pick-products__bags.pop');
             const containerCount = (<HTMLInputElement>document.getElementsByName('containerCount')[0]).value;
             let pickedItemsCount = Number((<HTMLInputElement>document.getElementsByName('pickedItemsCount')[0]).value);
-            let notPickedItemsCount = Number(
-                (<HTMLInputElement>document.getElementsByName('notPickedItemsCount')[0]).value);
+            let notPickedItemsCount = Number((<HTMLInputElement>document.getElementsByName('notPickedItemsCount')[0]).value);
             pickedItemsCount = pickedItemsCount + this.currentValue;
             notPickedItemsCount = notPickedItemsCount + this.maxQuantity - this.currentValue;
             pickedElement.innerText = (pickedItemsCount).toString();
@@ -191,10 +195,9 @@ export default class ProductItem extends Component {
 
         if (event.key == 'Enter') {
             event.preventDefault();
-            console.log(this);
-            const eanScanInput = this.querySelector('#eanScannenDiv input');
+
+            const eanScanInput = this.eanScanInputElement;
             let $inputValue = eanScanInput.value;
-            //const $inputValue = (<HTMLInputElement>document.getElementById('txt_ean_scannen')).value;
             const $formattedScanInput = $inputValue.replace('/x11', '').replace('/X11', '');
             if($formattedScanInput.length != 13){
                 alert("Der Barcode sollte 13 Zeichen lang sein");
@@ -205,14 +208,11 @@ export default class ProductItem extends Component {
                 const $plu = $formattedScanInput.substr(2,4);  //Check with ean
                 const $gewichtFromScan = $formattedScanInput.substr(7,5);
 
-                const $pricePerKg = $('#ean').data('priceperkg');
-                const $ean = $('#ean').data('ean');
+                const $pricePerKg = this.pricePerKgData;
+                const $ean = this.eanInputData;
 
 
-                let $alernativeEan = this.querySelector('#alternativeEan').getAttribute('data-altean');
-                if  ($alernativeEan == null) {
-                    $alernativeEan = '';
-                }
+                let $alernativeEan = this.alternativeEanElement.getAttribute('data-altean');
                 let $altEansArr = $alernativeEan.toString().split(',');
                 if($alernativeEan === undefined){
                     $alernativeEan = [];
@@ -248,7 +248,7 @@ export default class ProductItem extends Component {
                 }
                 else
                 {
-                    if(Number($formattedScanInput) === $ean){
+                    if(Number($formattedScanInput) === Number($ean)){
                         this.step30();
                     }
                     else
@@ -258,13 +258,17 @@ export default class ProductItem extends Component {
                             this.step30();
                         }
                         else{
-                            const element = <HTMLInputElement>document.getElementById('txt_ean_scannen');
+                            const element = this.eanScanInputElement;
                             alert("Error");
                             element.value = "";
                             this.focusFirstEanField();
                         }
                     }
                 }
+            }
+
+            if(Number(this.currentQuantity) === Number(this.maxQuantity)){
+                this.acceptClickHandler();
             }
 
         }
@@ -288,32 +292,32 @@ export default class ProductItem extends Component {
 
     protected step30(): void {
         this.clickCounterHandler(true);
-        const element = <HTMLInputElement>document.getElementById('txt_ean_scannen');
+        const element = this.eanScanInputElement;
         element.value = "";
-        this.focusFirstEanField();
+        element.focus();
     }
 
     protected boldLastThreeEanNumbers(): void {
 
-        let eanSpan = document.getElementsByClassName('product-item__toBold');
+        let eanSpan = this.$this.find('.product-item__toBold');
         if(eanSpan.length > 0){
             let lastThreeDigits = 3;
             let html = eanSpan[0].innerHTML;
             eanSpan[0].innerHTML = html.substr(0, html.length-lastThreeDigits)
-                    + "<span class='lastThreeDigits'>"
-                    + eanSpan[0].innerHTML.substr(-lastThreeDigits)
-                    + "</span>";
+                + "<span class='lastThreeDigits'>"
+                + eanSpan[0].innerHTML.substr(-lastThreeDigits)
+                + "</span>";
         }
 
     }
 
     protected onRemoveContainerClick(event: MouseEvent, valueOfWeightElement) {
-            this.clickCounterHandler();
-            document.getElementById(event.target.id).parentElement.parentElement.remove();
-            this.barcodeAndWeightContainer--;
-            $(".js-product-item__weight").val(Math.round(Number(Number($(".js-product-item__weight").val()) - Number(valueOfWeightElement))));
+        this.clickCounterHandler();
+        document.getElementById(event.target.id).parentElement.parentElement.remove();
+        this.barcodeAndWeightContainer--;
+        $(".js-product-item__weight").val(Math.round(Number(Number($(".js-product-item__weight").val()) - Number(valueOfWeightElement))));
 
-            this.focusFirstEanField();
+        this.focusFirstEanField();
     }
 
     protected updateQuantityInput(value: number): void {
@@ -323,25 +327,34 @@ export default class ProductItem extends Component {
     }
 
     protected acceptClickHandler(): void {
-
         this.$weightField.removeAttr('min');
         this.$weightField.removeAttr('max');
         this.$weightField.removeAttr('required');
-
-        if (this.currentValue === 0) {
+        if (Number(this.currentValue) === 0) {
             this.updateQuantityInput(this.maxQuantity);
         }
-
-        if (this.currentValue === this.maxQuantity) {
+        if (Number(this.currentValue) === Number(this.maxQuantity)) {
             this.isAccepted = true;
-
             this.$this.addClass(this.pickedCLass);
-
             this.pickProducts.update();
-
+            const elements = <HTMLInputElement>document.getElementsByClassName('ean_scan_input');
+            const sku = this.dataset.sku;
+            for (let i=0; i< elements.length; i++)
+            {
+                const elementsArray = elements[i].id.split('__');
+                const skuElement = elementsArray[1];
+                if(sku == skuElement)
+                {
+                    if(i!= (elements.length -1))
+                    {
+                        const elementForFocus = <HTMLInputElement>document.getElementsByClassName('ean_scan_input')[i+1];
+                        elementForFocus.focus();
+                        break;
+                    }
+                }
+            }
             return;
         }
-
         this.$this.addClass(this.pickedNotFullyCLass);
         this.isNotFullyAccepted = true;
         this.pickProducts.update();
@@ -379,7 +392,7 @@ export default class ProductItem extends Component {
 
     protected focusFirstEanField(): void
     {
-        const element = <HTMLInputElement>this.$this.find(`.ean_scan_input`);
+        const element = document.getElementsByClassName('ean_scan_input')[0];
         element.focus();
     }
 

@@ -27,6 +27,7 @@ $storeConfig = require(APPLICATION_ROOT_DIR . '/config/Shared/store_config.php')
 $currentStore = $_COOKIE['current_store'] ?? null;
 $checkCookie = $_GET['check-cookie'] ?? null;
 
+$currentStore = $_GET['store'] ?? 'KMD';
 if (!$currentStore || !in_array($currentStore, $allStores)) {
     if ($checkCookie != "0") {
         header('Location:' . $storeConfig['WELCOME']);
