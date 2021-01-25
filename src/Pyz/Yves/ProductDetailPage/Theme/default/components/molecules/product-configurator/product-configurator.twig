@@ -132,13 +132,8 @@
                 </div>
                 <div class="col col--sm-12 col--lg-7 spacing-bottom">
                     <button type="submit" class="button button--large button--expand button--alternative" {{ isDisabled ? 'disabled' }} {{ qa('add-to-cart-button') }} data-init-single-click>
-                        {% include atom('icon') with {
-                            modifiers: ['big'],
-                            data: {
-                                name: 'cart-plus',
-                            },
-                        } only %}
 
+                        <span class="icon-basketplus"></span>
                         {{ 'page.detail.add-to-cart' | trans }}
                     </button>
                 </div>

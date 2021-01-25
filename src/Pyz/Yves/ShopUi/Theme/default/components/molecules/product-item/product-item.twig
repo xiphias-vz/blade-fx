@@ -256,13 +256,7 @@
                                data-product-price="{{ data.product.prices.ORIGINAL is defined ? data.product.prices.ORIGINAL / 100 : null }}"
                                data-csrf-token="{{ csrf_token('add-to-cart-ajax') }}"
                             >
-                                {% include atom('icon') with {
-                                    class: 'button__icon',
-                                    modifiers: ['big'],
-                                    data: {
-                                        name: 'cart-plus',
-                                    },
-                                } only %}
+                                <span class="icon-basketplus"></span>
                                 <div class="add-details-to-cart-text-holder">
                                     {{- 'page.detail.add-to-cart' | trans -}}
                                 </div>

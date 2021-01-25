@@ -37,6 +37,7 @@
                 &:hover {
                    color:$setting-color-globus-darkOrange;
                 }
+
             }
         }
 
@@ -151,6 +152,14 @@
         }
 
         .add-to-cart-btn {
+
+            a {
+                .icon-basketplus {
+                    font-size: 23px;
+                    margin-right: 14px;
+                }
+            }
+
             @include helper-breakpoint-media-max($sm-max) {
                 text-align: right;
                 position: relative;
@@ -166,6 +175,12 @@
                     .add-details-to-cart-text-holder {
                         display: none;
                     }
+
+                    .icon-basketplus {
+                        font-size: 16px;
+                        margin-right: 0px;
+                    }
+
                     .icon {
                         width: 15px;
                         margin: 0px;

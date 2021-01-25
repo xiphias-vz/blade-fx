@@ -65,7 +65,7 @@
                 {% endembed %}
             {% endif %}
         </div>
-        <div class="col {% if data.salesUnitCount %}col--sm-4{% else %}col--sm-6{% endif %}">
+        <div class="col {% if data.salesUnitCount %}col--sm-4{% else %}col--sm-6{% endif %} add-to-cart-holder">
             {% if data.salesUnitCount and data.packagingUnitIsSelfLead == false %}
                 <label>
                     {{ 'product.measurement.sales_unit' | trans }}
@@ -99,12 +99,13 @@
             {% if not data.salesUnitCount %}
                 <button type="submit" id="add-to-cart-button" onclick="productAddToCartPDP('{{ data.product.idProductConcrete }}','{{ data.product.name }}','{{ data.product.prices.DEFAULT is defined ? data.product.prices.DEFAULT / 100 : null  }}','{{ data.product.sku }}','{{ data.product.attributes.supplier }}')" class="button button--success button--expand"
                         data-init-single-click {{ data.isAddToCartDisabled ? 'disabled' }} {{ qa('add-to-cart-button') }}>
-                    {% include atom('icon') with {
-                        data: {
-                            name: 'cart-plus',
-                        },
-                    } only %}
-                    {{ 'page.detail.add-to-cart' | trans }}
+                    <span class="basket-and-label-holder">
+                        <span class="icon-basketplus"></span>
+                        <span>
+                         {{ 'page.detail.add-to-cart' | trans }}
+                        </span>
+                    </span>
+
                 </button>
                 <script type="text/javascript">
                     function productAddToCartPDP(productId, productName, productPrice, productSku, productBrand)
@@ -247,11 +248,7 @@
             <hr>
             <button type="submit" id="add-to-cart-button" class="button button--success button--expand"
                     data-init-single-click {{ data.isAddToCartDisabled ? 'disabled' : '' }} {{ qa('add-to-cart-button') }}>
-                {% include atom('icon') with {
-                    data: {
-                        name: 'cart-plus'
-                    }
-                } only %}
+                <span class="icon-basketplus"></span>
                 {{ 'page.detail.add-to-cart' | trans }}
             </button>
         {% endif %}

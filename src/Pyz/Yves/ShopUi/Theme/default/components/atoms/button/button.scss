@@ -273,6 +273,15 @@
 
         &--expand {
             width: 100%;
+            .basket-and-label-holder {
+                display: flex;
+                justify-content: center;
+                .icon-basketplus {
+                    font-size: 20px;
+                    margin-right: 10px;
+                }
+            }
+
         }
 
         &--expand-mobile {
