@@ -1,11 +1,6 @@
 @mixin shop-ui-header($name: '.header') {
     #{$name} {
-        height: rem(62);
-        margin-bottom: rem(35);
-
-        &--spacing-reset {
-            margin-bottom: rem(16);
-        }
+        height: rem(45);
 
         &--product-type {
             min-height: rem(84);

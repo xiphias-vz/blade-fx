@@ -128,6 +128,7 @@ class PickingController extends BaseOrderPickingController
     public function selectContainersAction(Request $request)
     {
         $idSalesOrder = $request->get(PickerConfig::REQUEST_PARAM_ID_ORDER);
+        $productSku = $request->get(PickerConfig::REQUEST_PARAM_SKU);
         $csrfTokenName = sprintf(static::FORMAT_START_PICKING_TOKEN_NAME, $idSalesOrder);
 
         if (!$this->isCsrfTokenValid($csrfTokenName, $request)) {
@@ -207,6 +208,7 @@ class PickingController extends BaseOrderPickingController
                 PickerConfig::URL_ORDER_PICKING,
                 [
                     PickerConfig::REQUEST_PARAM_ID_ORDER => $idSalesOrder,
+                    PickerConfig::REQUEST_PARAM_SKU => $productSku,
                 ]
             )->build();
 
@@ -220,6 +222,7 @@ class PickingController extends BaseOrderPickingController
             'itemCount' => $salesOrderTransfer->getItems()->count(),
             'totalItemCount' => $fullOrderTransfer->getItems()->count(),
             'cartNote' => $salesOrderTransfer->getCartNote(),
+            'productSku' => $productSku,
             'customerFullName' => $salesOrderTransfer->getFirstName() . ' ' . $salesOrderTransfer->getLastName(),
             'containerCount' => $containerNumber,
             'listOfUsedContainers' => json_encode($listOfUsedContainers),
@@ -339,7 +342,6 @@ class PickingController extends BaseOrderPickingController
             foreach (array_keys($request->request->get('order_item_selection_form')) as $key) {
                 if (str_contains($key, OrderItemSelectionForm::PREFIX_FIELD_SALES_ORDER_ITEM_NEW_WEIGHT)) {
                     $skuToWeight = $request->request->get('order_item_selection_form')[$key];
-                    $skuToSelectedQuantity = 1;
                     break;
                 }
             }
@@ -348,20 +350,9 @@ class PickingController extends BaseOrderPickingController
             $skuToWeight = -1;
         }
         $idSalesOrder = $request->get(PickerConfig::REQUEST_PARAM_ID_ORDER) ?? 0;
-
-        $containerInfo = $this->getFactory()
-            ->getPickerBusinessFactory()
-            ->createContainerReader()
-            ->getContainersByOrderId($idSalesOrder);
-
-        if (!empty($containerInfo['picking_sales_orders'])) {
-            $containerInfo = $containerInfo['picking_sales_orders'][0];
-            $containerInfo["shelf_code"] = "A01-01-01";
-        }
-
+        $productSku = $request->get(PickerConfig::REQUEST_PARAM_SKU);
         $pickingZoneTransfer = $this->getFacade()->findPickingZoneInSession();
-        $salesOrderTransfer = $this->getFactory()
-            ->getSalesFacade()
+        $salesOrderTransfer = $this->getFactory()->getSalesFacade()
             ->findOrderByIdSalesOrderAndPickingZoneForStoreApp($idSalesOrder, $pickingZoneTransfer->getName());
 
         $userTransfer = $this->getCurrentUser($request);
@@ -376,109 +367,37 @@ class PickingController extends BaseOrderPickingController
             return $this->redirectResponse(PickerConfig::URL_PICKING_LIST);
         }
 
+        $pickingZoneTransfer = $this->getFacade()->findPickingZoneInSession();
+
         if (!$this->isOrderPickingBlockAvailableForUser($idSalesOrder, $userTransfer, $pickingZoneTransfer)) {
-            $this->addErrorMessage(static::PICKING_ERROR_MESSAGE_ORDER_IS_BEING_PROCESSED);
+            $this->addErrorMessage(
+                static::PICKING_ERROR_MESSAGE_ORDER_IS_BEING_PROCESSED
+            );
 
             return $this->redirectResponse(PickerConfig::URL_PICKING_LIST);
         }
 
-        $aggregatedItemTransfers = $this->getFactory()
-            ->getItemAggregator()
+        $aggregatedItemTransfers = $this->getFactory()->getItemAggregator()
             ->aggregateOrderItemsQuantities($salesOrderTransfer->getItems()->getArrayCopy());
 
-        $arrayLength = count($aggregatedItemTransfers);
-
-        if (!empty($skuFromRequest)) {
-            $indexOfOrdersArray = array_search($skuFromRequest, array_keys($aggregatedItemTransfers)) + 1;
-
-            foreach ($aggregatedItemTransfers as $orderItem) {
-                if ($orderItem['sku'] == $skuFromRequest) {
-                    $nextSku = '*';
-                } elseif ($nextSku == '*') {
-                    $nextSku = $orderItem['sku'];
-                    break;
-                }
-            }
-            if ($nextSku != '*') {
-                $obj = $aggregatedItemTransfers[$nextSku];
-            }
-        } else {
-            $obj = array_values($aggregatedItemTransfers)[0];
-        }
+        $aggregatedItemTransfers = $this->sortAggregatedItemTransfersByPickingOrder($aggregatedItemTransfers);
 
         $orderItemSelectionFormDataProvider = $this->getFactory()->createOrderItemSelectionFormDataProvider();
-        if ($nextSku != '*') {
-            foreach ($aggregatedItemTransfers as $product) {
-                array_push($products, [
-                    "sku" => $product["sku"], "quantity" => $product["quantity"], "itemName" => $product["name"],
-                    "itemBrand" => $product["brand"], "price" => $product["unitPrice"], "bontext" => $product["bontext"],
-                    "basePriceContent" => $product["basePriceContent"], "basePriceUnit" => $product["basePriceUnit"], "shelf" => $product["shelf"],
-                    "shelfFloor" => $product["shelfFloor"], "shelfField" => $product["shelfField"]]);
-            }
-
-            $aggregatedItemTransfers = array_values($aggregatedItemTransfers)[$indexOfOrdersArray];
-
-            $orderItemSelectionForm = $this->getFactory()->createOrderItemSelectionForm(
-                $orderItemSelectionFormDataProvider->getData($salesOrderTransfer->getIdSalesOrder()),
-                $orderItemSelectionFormDataProvider->getOptionsForOneOrder([$obj], $salesOrderTransfer->getStore())
-            );
-        } else {
-            $orderItemSelectionForm = $this->getFactory()->createOrderItemSelectionForm(
-                $orderItemSelectionFormDataProvider->getData($salesOrderTransfer->getIdSalesOrder()),
-                [
-                    OrderItemSelectionForm::OPTION_SALES_ORDER_ITEMS => [],
-                    OrderItemSelectionForm::OPTION_ITEM_ATTRIBUTES => [],
-                ]
-            );
-        }
+        $orderItemSelectionForm = $this->getFactory()->createOrderItemSelectionForm(
+            $orderItemSelectionFormDataProvider->getData($salesOrderTransfer->getIdSalesOrder()),
+            $orderItemSelectionFormDataProvider->getOptions($aggregatedItemTransfers, $salesOrderTransfer->getStore())
+        );
 
         $orderItemSelectionForm->handleRequest($request);
 
-        if ($orderItemSelectionForm->isSubmitted()) {
+        if ($orderItemSelectionForm->isSubmitted() && $orderItemSelectionForm->isValid()) {
             $pickingBagsCount = (int)$request->get(static::REQUEST_PARAM_PICKING_BAGS_COUNT);
-            $pickedItems = [];
-            $notPickedItems = [];
-            foreach ($salesOrderTransfer->getItems() as $item) {
-                if ($item->getSku() == $skuFromRequest) {
-                    if ($skuToSelectedQuantity > 0) {
-                        array_push($pickedItems, $item->getIdSalesOrderItem());
-                        $skuToSelectedQuantity--;
-                    } else {
-                        array_push($notPickedItems, $item->getIdSalesOrderItem());
-                    }
-                }
-            }
-            $pickedItemsCount += count($pickedItems);
-            $notPickedItemsCount += count($notPickedItems);
 
-            $this->getFacade()->markOrderItemsAsNotPicked($notPickedItems);
-            $this->getFacade()->markOrderItemsAsContainerSelected($pickedItems);
-            $this->getFacade()->updateOrderPickingBagsCount($idSalesOrder, $pickingBagsCount);
-
-            if ($skuToWeight > -1 && count($pickedItems) > 0) {
-                $orderChangeRequestTransfer = $this->getFactory()->getFormDataMapper()
-                    ->mapFormDataToOrderItemChangeRequest(
-                        $formData,
-                        $salesOrderTransfer,
-                        $pickedItems,
-                        OrderItemSelectionForm::PREFIX_FIELD_SALES_ORDER_ITEM_NEW_WEIGHT
-                    );
-
-                if ($orderChangeRequestTransfer->getOrderItemChangeRequest()->count() > 0) {
-                    $this->getFactory()->getSalesFacade()->saveOrderChange($orderChangeRequestTransfer);
-                }
-            }
-
-            if ($nextSku == '*') {
-                $orderPickingPath = Url::generate(
-                    PickerConfig::URL_SELECT_SHELVES,
-                    [
-                        PickerConfig::REQUEST_PARAM_ID_ORDER => $idSalesOrder,
-                    ]
-                )->build();
-
-                return $this->redirectResponse($orderPickingPath);
-            }
+            return $this->processOrderPickingForm(
+                $orderItemSelectionForm,
+                $pickingBagsCount,
+                $salesOrderTransfer
+            );
         }
 
         $pickingFormSkuKeys = [];
@@ -499,28 +418,21 @@ class PickingController extends BaseOrderPickingController
         return [
             'merchant' => $this->getMerchantFromRequest($request),
             'maxPickingBags' => $this->getFactory()->getConfig()->getMaxPickingBags(),
-            'itemsToShelfMap' => $this->getItemsToShelfMap($aggregatedItemTransfers),
+            'itemsCount' => $this->getItemsCount($aggregatedItemTransfers),
             'itemsToAlternativeEanMap' => $this->getItemsAlternativeEanMap($aggregatedItemTransfers),
+            'itemsToShelfMap' => $this->getItemsToShelfMap($aggregatedItemTransfers),
             'itemsToProductAttributesMap' => $this->getItemsToProductAttributesMap($aggregatedItemTransfers),
-            'itemImageUrls' => $aggregatedItemTransfers->getMetadata()->getImage(),
+            'itemImageUrls' => $this->getSkuToImageMapFromItemTransfers($aggregatedItemTransfers),
             'pickingForm' => $orderItemSelectionForm->createView(),
             'pickingFormSkuKeys' => $pickingFormSkuKeys,
             'pickingFormWeightKeys' => $pickingFormWeightKeys,
             'requestParamIdSalesOrder' => PickerConfig::REQUEST_PARAM_ID_ORDER,
             'idSalesOrder' => $idSalesOrder,
-            'formatStartPickingTokenName' => static::FORMAT_START_PICKING_TOKEN_NAME,
             'orderReference' => $salesOrderTransfer->getOrderReference(),
             'collectNumber' => $salesOrderTransfer->getCollectNumber(),
             'orderDeliveryTime' => null,
-            'containerInfo' => $containerInfo,
-            'containerCount' => $salesOrderTransfer->getPickingBagsCount() ? 0 : 1,
-            'ordersCount' => count($pickingFormSkuKeys),
-            'ordersInfo' => $products,
             'urlContainerSelect' => PickerConfig::URL_SELECT_CONTAINERS,
-            'orderItemCounter' => $counter,
-            'itemsCount' => $arrayLength,
-            'pickedItemsCount' => $pickedItemsCount,
-            'notPickedItemsCount' => $notPickedItemsCount,
+            'productSku' => $productSku,
         ];
     }
 
@@ -684,56 +596,60 @@ class PickingController extends BaseOrderPickingController
     }
 
     /**
-     * @param object $itemTransfer
+     * @param \Generated\Shared\Transfer\ItemTransfer[] $itemTransfers
      *
      * @return array
      */
-    protected function getItemsToShelfMap(object $itemTransfer): array
+    protected function getItemsToShelfMap(array $itemTransfers): array
     {
         $itemsToShelfMap = [];
-
-        $itemsToShelfMap[$itemTransfer->getSku()] = [
-            ItemTransfer::SHELF => $itemTransfer->getShelf(),
-            ItemTransfer::SHELF_FLOOR => $itemTransfer->getShelfFloor(),
-            ItemTransfer::SHELF_FIELD => $itemTransfer->getShelfField(),
-            ItemTransfer::SUM_PRICE => $itemTransfer->getSumPrice(),
-        ];
+        foreach ($itemTransfers as $itemTransfer) {
+            $itemsToShelfMap[$itemTransfer->getSku()] = [
+                ItemTransfer::SHELF => $itemTransfer->getShelf(),
+                ItemTransfer::SHELF_FLOOR => $itemTransfer->getShelfFloor(),
+                ItemTransfer::SHELF_FIELD => $itemTransfer->getShelfField(),
+                ItemTransfer::SUM_PRICE => $itemTransfer->getSumPrice(),
+            ];
+        }
 
         return $itemsToShelfMap;
     }
 
     /**
-     * @param \Generated\Shared\Transfer\ItemTransfer $itemTransfer
+     * @param array $itemTransfer
      *
-     * @return string
+     * @return array
      */
-    protected function getItemsAlternativeEanMap(object $itemTransfer): string
+    protected function getItemsAlternativeEanMap(array $itemTransfer): array
     {
-        $alternativeEan = "";
+        $alternativeEan = [];
 
-        if ($itemTransfer->getAlternativeEan() !== null) {
-            $alternativeEan = $itemTransfer->getAlternativeEan();
+        foreach ($itemTransfer as $item) {
+            if ($item->getAlternativeEan() !== null) {
+                $alternativeEan[$item->getSku()] = $item->getAlternativeEan();
+            }
         }
 
         return $alternativeEan;
     }
 
     /**
-     * @param object $itemTransfer
+     * @param \Generated\Shared\Transfer\ItemTransfer[] $itemTransfers
      *
      * @return array
      */
-    protected function getItemsToProductAttributesMap(object $itemTransfer): array
+    protected function getItemsToProductAttributesMap(array $itemTransfers): array
     {
         $itemsToProductAttributesMap = [];
-
-        $itemsToProductAttributesMap[$itemTransfer->getSku()] = [
-            ItemTransfer::WEIGHT_PER_UNIT => $itemTransfer->getWeightPerUnit(),
-            ItemTransfer::BRAND => $itemTransfer->getBrand(),
-            ItemTransfer::BASE_PRICE_CONTENT => $itemTransfer->getBasePriceContent(),
-            ItemTransfer::BASE_PRICE_UNIT => $itemTransfer->getBasePriceUnit(),
-            ItemTransfer::PRICE_PER_KG => $itemTransfer->getPricePerKg(),
-        ];
+        foreach ($itemTransfers as $itemTransfer) {
+            $itemsToProductAttributesMap[$itemTransfer->getSku()] = [
+                ItemTransfer::WEIGHT_PER_UNIT => $itemTransfer->getWeightPerUnit(),
+                ItemTransfer::BRAND => $itemTransfer->getBrand(),
+                ItemTransfer::BASE_PRICE_CONTENT => $itemTransfer->getBasePriceContent(),
+                ItemTransfer::BASE_PRICE_UNIT => $itemTransfer->getBasePriceUnit(),
+                ItemTransfer::PRICE_PER_KG => $itemTransfer->getPricePerKg(),
+            ];
+        }
 
         return $itemsToProductAttributesMap;
     }

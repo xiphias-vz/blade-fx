@@ -10,6 +10,7 @@ namespace StoreApp\Shared\Picker;
 class PickerConfig
 {
     public const REQUEST_PARAM_ID_ORDER = 'idOrder';
+    public const REQUEST_PARAM_SKU = 'sku';
 
     public const ACTIVITIES = [
         [

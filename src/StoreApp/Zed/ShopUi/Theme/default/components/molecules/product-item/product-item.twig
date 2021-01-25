@@ -8,29 +8,25 @@
 {% define data = {
     imageUrl: '',
     title: '',
-    productsCount: 1,
+    productsCount: required,
     itemSku: '',
-    itemsToShelfMap: [],
-    itemsToProductAttributesMap: [],
-    field: required,
+    idSalesOrder: required,
     urlContainerSelect: '',
-    collectNumber: 0,
-    itemsCount: 1,
-    idSalesOrder: 0,
-    pickedItemsCount: pickedItemsCount|default(null),
-    notPickedItemsCount: notPickedItemsCount|default(null)
+    itemsToProductAttributesMap: [],
+    itemsToShelfMap:[],
+    collectNumber:'',
+    formStoppedSku: '',
 } %}
 
-{% set shelfData = data.itemsToShelfMap[data.itemSku] %}
-{% set itemsToShelfMap = data.itemsToProductAttributesMap[data.itemSku] %}
+{% set itemsToShelfMap = data.itemsToProductAttributesMap %}
 {% set imageUrl = data.imageUrl %}
-{% set shelfData = data.itemsToShelfMap[data.itemSku] %}
+{% set shelfData = data.itemsToShelfMap %}
 {% set title = data.field.vars.label %}
 {% set productsCount = data.field.vars.attr.max %}
-{% set orderWeight = (itemsToShelfMap['weightPerUnit'] ?? 0) * data.productsCount  %}
 
 {% block body %}
-    <div class="grid {{ config.name }}__card" data-sku="{{ data.itemSku }}">
+    <div id="gridOfTheProduct" class="grid {{ config.name }}__card" data-sku="{{ data.itemSku }}">
+        <input type="hidden" id="formPreviousSku" value="{{ data.formStoppedSku }}">
         <div class="col col--expand">
             <div class="box {{ config.name }}__info">
                 <div class="{{ config.name }}__item-location">
@@ -45,17 +41,16 @@
                         }
                     } only %}
                 </div>
+
                 <div class="{{ config.name }}__generalInfo">
                     {% block brandNameAndWeight %}
                         {% set price = itemsToShelfMap['pricePerKg'] ?? shelfData['sumPrice'] %}
                         <div class="{{ config.name }}__supplierNameAndWeight"><span class="{{ config.name }}__supplierAndName col--md-8">{{ itemsToShelfMap['brand'] ?? '' }} - {{ title|split('-')[1] }}</span><span class="{{ config.name }}__weight col--md-4">{{ (itemsToShelfMap['basePriceContent'] / 100)  | replace('.', ',') }} {{ itemsToShelfMap['basePriceUnit'] }}</span></div>
-                        <div id="ean" class="{{ config.name }}__eanAndWeight" data-pricePerKg="{{ itemsToShelfMap['pricePerKg'] }}" data-ean="{{ data.itemSku }}"><span class="{{ config.name }}__ean col--md-8"><span class="{{ config.name }}__toBold">EAN: {{ data.itemSku ?? '' }}</span>{% if orderWeight != 0 %}<span> - {{ orderWeight }}</span>{% endif %}</span><span class="{{ config.name }}__price col--md-4">{{ price / 100 | replace('.', ',') }} €</span></div>
+                        <div id="ean" class="{{ config.name }}__eanAndWeight" data-pricePerKg="{{ itemsToShelfMap['pricePerKg'] }}" data-ean="{{ data.itemSku }}"><span class="{{ config.name }}__ean col--md-8">EAN: {{ data.itemSku ?? '' }}</span><span class="{{ config.name }}__price col--md-4">{{ price / 100 | replace('.', ',') }} €</span></div>
                     {% endblock %}
                     <div class="hr-line-solid"></div>
                 </div>
-
                 <span id="alternativeEan" data-altEan="{{ data.alternativeEanData }}"></span>
-
                 <div class="{{ config.name }}__status">
                     {% include atom('icon') with {
                         class: config.name ~ '__icon-close',
@@ -100,7 +95,6 @@
                     </div>
                 {% endblock %}
 
-
                 {% block formElementWeight %}
                     {% if embed.weightField %}
                         {{ form_row(embed.weightField, {
@@ -110,12 +104,10 @@
                         }) }}
                     {% endif %}
                 {% endblock %}
-
-                {% block formElementScan %}<div id="eanScannenDiv"><input id="txt_ean_scannen" placeholder="EAN scannen" class="input input--expand" type="text" /></div>{% endblock %}
+                {% block formElementScan %}<div id="eanScannenDiv"><input class="input input--expand ean_scan_input" id="txt_ean_scannen__{{ data.itemSku }}" placeholder="EAN scannen" class="input input--expand" type="text" /></div>{% endblock %}
             </div>
         </div>
     </div>
-
     <div class="grid grid--justify spacing-top">
         {% block leftCol %}
             <div class="col button button--round button--delete {{ config.name }}__decline {{ config.jsName }}__decline">
@@ -152,103 +144,102 @@
                     }
                 } only %}
             </div>
-
-            <div class="pick-products__action-wrapper button--confirm">
-                <div class="pick-products__action js-pick-products__action">
-                    {% embed molecule('popup-ui') with {
-                        data: {
-                            buttons: {
-                                submit: {
-                                    isButton: true,
-                                    additionalClass: 'js-pick-products__submit',
-                                },
-                            },
-                        },
-                        embed: {
-                            collectNumber: data.collectNumber,
-                            itemsCount: data.itemsCount,
-                        },
-                    } only %}
-                        {% block content %}
-                            <div class="grid grid--center">
-                                <div class="total-articles grid">
-                                    <p class="total-amount">{{ embed.itemsCount }}</p>
-                                    <p>{{ 'Artikel' | trans }}</p>
-                                </div>
-                            </div>
-                            <div class="store-app-label-holder">
-                                <div class="grid grid--center spacing-y-label">
-                                    <div class="col--sm-12 grid">
-                                        <table>
-                                            <tr>
-                                                <td class="item-quantity">
-                                                    <span class="js-pick-products__picked pop">0</span>
-                                                </td>
-                                                <td>
-                                                    <div class="label-text-green">
-                                                        {{ 'picked' | trans }}
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                        </table>
-                                    </div>
-                                </div>
-                                <div class="grid grid--center spacing-y-label">
-                                    <div class="col--sm-12 grid">
-                                        <table>
-                                            <tr>
-                                                <td class="item-quantity">
-                                                    <span class="js-pick-products__not-picked pop">0</span>
-                                                </td>
-                                                <td>
-                                                    <div class="label-text-brown">
-                                                        {{ 'not found' | trans }}
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                        </table>
-
-                                    </div>
-                                </div>
-                                <div class="grid grid--center spacing-bottom spacing-bottom--big">
-                                    <div class="col--sm-12 grid">
-                                        <table>
-                                            <tr>
-                                                <td class="item-quantity">
-                                                    <span class="js-pick-products__bags pop">0</span>
-                                                </td>
-                                                <td>
-                                                    <div class="label-text">
-                                                        {{ 'bags' | trans }}
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                        </table>
-                                    </div>
-                                </div>
-
-                            </div>
-                            <div class="horizontal-spacing">
-                                {% if embed.collectNumber %}
-                                    <div class="text-center spacing-top--big">
-                                        <p class="text-bold spacing-bottom">{{ 'Collect Number' | trans }}: {{ embed.collectNumber }}</p>
-                                    </div>
-                                {% endif %}
-                            </div>
-                        {% endblock %}
-
-                        {% block button %}
-                            <div id="btnSubmitPick" class="col button button--confirm-btn button--round button--disabled js-pick-products__submit-button js-pick-products__submit">
-                                {{ 'picker.picking.confirmation' | trans }}
-                            </div>
-                        {% endblock %}
-
-                    {% endembed %}
-                </div>
-            </div>
+{#            <div class="pick-products__action-wrapper button--confirm">#}
+{#                <div class="pick-products__action js-pick-products__action">#}
+{#                    {% embed molecule('popup-ui') with {#}
+{#                        data: {#}
+{#                            buttons: {#}
+{#                                submit: {#}
+{#                                    isButton: true,#}
+{#                                    additionalClass: 'js-pick-products__submit',#}
+{#                                },#}
+{#                            },#}
+{#                        },#}
+{#                        embed: {#}
+{#                            collectNumber: data.collectNumber,#}
+{#                            itemsCount: data.itemsCount,#}
+{#                        },#}
+{#                    } only %}#}
+{#                        {% block content %}#}
+{#                            <div class="grid grid--center">#}
+{#                                <div class="total-articles grid">#}
+{#                                    <p class="total-amount">{{ embed.itemsCount }}</p>#}
+{#                                    <p>{{ 'Artikel' | trans }}</p>#}
+{#                                </div>#}
+{#                            </div>#}
+{#                            <div class="store-app-label-holder">#}
+{#                                <div class="grid grid--center spacing-y-label">#}
+{#                                    <div class="col--sm-12 grid">#}
+{#                                        <table>#}
+{#                                            <tr>#}
+{#                                                <td class="item-quantity">#}
+{#                                                    <span class="js-pick-products__picked pop">0</span>#}
+{#                                                </td>#}
+{#                                                <td>#}
+{#                                                    <div class="label-text-green">#}
+{#                                                        {{ 'picked' | trans }}#}
+{#                                                    </div>#}
+{#                                                </td>#}
+{#                                            </tr>#}
+{#                                        </table>#}
+{#                                    </div>#}
+{#                                </div>#}
+{#                                <div class="grid grid--center spacing-y-label">#}
+{#                                    <div class="col--sm-12 grid">#}
+{#                                        <table>#}
+{#                                            <tr>#}
+{#                                                <td class="item-quantity">#}
+{#                                                    <span class="js-pick-products__not-picked pop">0</span>#}
+{#                                                </td>#}
+{#                                                <td>#}
+{#                                                    <div class="label-text-brown">#}
+{#                                                        {{ 'not found' | trans }}#}
+{#                                                    </div>#}
+{#                                                </td>#}
+{#                                            </tr>#}
+{#                                        </table>#}
+{#                                    </div>#}
+{#                                </div>#}
+{#                                <div class="grid grid--center spacing-bottom spacing-bottom--big">#}
+{#                                    <div class="col--sm-12 grid">#}
+{#                                        <table>#}
+{#                                            <tr>#}
+{#                                                <td class="item-quantity">#}
+{#                                                    <span class="js-pick-products__bags pop">0</span>#}
+{#                                                </td>#}
+{#                                                <td>#}
+{#                                                    <div class="label-text">#}
+{#                                                        {{ 'bags' | trans }}#}
+{#                                                    </div>#}
+{#                                                </td>#}
+{#                                            </tr>#}
+{#                                        </table>#}
+{#                                    </div>#}
+{#                                </div>#}
+{#                            </div>#}
+{#                            <div class="horizontal-spacing">#}
+{#                                {% if embed.collectNumber %}#}
+{#                                    <div class="text-center spacing-top--big">#}
+{#                                        <p class="text-bold spacing-bottom">{{ 'Collect Number' | trans }}: {{ embed.collectNumber }}</p>#}
+{#                                    </div>#}
+{#                                {% endif %}#}
+{#                            </div>#}
+{#                        {% endblock %}#}
+{#                        {% block button %}#}
+{#                            <div id="btnSubmitPick" class="col button button--confirm-btn button--round button--disabled js-pick-products__submit-button js-pick-products__submit">#}
+{#                                {{ 'picker.picking.confirmation' | trans }}#}
+{#                            </div>#}
+{#                        {% endblock %}#}
+{#                    {% endembed %}#}
+{#                </div>#}
+{#            </div>#}
         {% endblock %}
     </div>
-
-
-
+    {% include molecule('additional-order-buttons') with {
+        data: {
+            idSalesOrder: data.idSalesOrder,
+            urlContainerSelect: data.urlContainerSelect,
+            itemSku: data.itemSku,
+        }
+    } only %}
 {% endblock %}

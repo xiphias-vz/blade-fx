@@ -6,27 +6,18 @@
     collectNumber: collectNumber,
     itemsCount: itemsCount,
     itemsToShelfMap: itemsToShelfMap,
-    itemsToAlternativeEanMap: itemsToAlternativeEanMap,
     itemsToProductAttributesMap: itemsToProductAttributesMap,
     pickingForm: pickingForm,
     pickingFormSkuKeys: pickingFormSkuKeys,
     pickingFormWeightKeys: pickingFormWeightKeys,
-    itemsToShelfMap: itemsToShelfMap,
     itemImageUrls: itemImageUrls,
     requestParamIdSalesOrder: requestParamIdSalesOrder,
     idSalesOrder: idSalesOrder,
-    formatStartPickingTokenName: formatStartPickingTokenName,
     orderReference: orderReference,
     orderDeliveryTime: orderDeliveryTime,
-    containerInfo: containerInfo,
-    ordersCount: ordersCount,
-    ordersInfo: ordersInfo,
     urlContainerSelect: urlContainerSelect,
-    orderItemCounter: orderItemCounter,
-    itemsCount: itemsCount,
-    pickedItemsCount: pickedItemsCount,
-    notPickedItemsCount: notPickedItemsCount,
-    containerCount: containerCount,
+    itemsToAlternativeEanMap : itemsToAlternativeEanMap,
+    productSku: productSku | default(null),
 } %}
 
 {% block header %}
@@ -62,77 +53,177 @@
         attr: { class: 'form js-submit-form-handler__form' }
     }) }}
 
-        <input type="hidden" name="{{ data.requestParamIdSalesOrder }}" value="{{ data.idSalesOrder }}">
-        {% set tokenName = data.formatStartPickingTokenName | format(data.idSalesOrder) %}
-        <input type="hidden" name="token" value="{{ csrf_token(tokenName) }}">
-        <input type="hidden" name="counter" value="{{ data.orderItemCounter }}">
-        <input type="hidden" name="itemsCount" value="{{ data.itemsCount }}">
-        <input type="hidden" name="pickedItemsCount" value="{{ data.pickedItemsCount }}">
-        <input type="hidden" name="notPickedItemsCount" value="{{ data.notPickedItemsCount }}">
-        <input type="hidden" name="containerCount" value="{{ data.containerCount }}">
+    {% for fieldName in pickingFormSkuKeys %}
+        {% set field = attribute(data.pickingForm.children, fieldName) %}
+        {% set itemSku = field.vars.name | split('__') | last %}
 
-            {% set field = attribute(data.pickingForm.children, data.pickingFormSkuKeys | first) %}
-            {% set itemSku = field.vars.name | split('__') | last %}
+        {% if pickingFormWeightKeys[itemSku] is defined %}
+            {% set weightField = attribute(data.pickingForm.children, pickingFormWeightKeys[itemSku]) %}
+        {% else %}
+            {% set weightField = null %}
+        {% endif %}
 
-            {% if pickingFormWeightKeys[itemSku] is defined %}
-                {% set weightField = attribute(data.pickingForm.children, pickingFormWeightKeys[itemSku]) %}
-            {% else %}
-                {% set weightField = null %}
-            {% endif %}
+        {% if field.vars.block_prefixes[1] is same as('integer') %}
+            {% embed molecule('product-item') with {
+                class: 'spacing-top spacing-top--big',
+                data: {
+                    imageUrl: data.itemImageUrls[itemSku],
+                    title: field.vars.label,
+                    productsCount: field.vars.attr.max,
+                    itemSku: itemSku,
+                    itemsToShelfMap: data.itemsToShelfMap[itemSku],
+                    itemsToProductAttributesMap: data.itemsToProductAttributesMap[itemSku],
+                    itemsCount:itemsCount,
+                    field: field,
+                    collectNumber:collectNumber,
+                    urlContainerSelect: data.urlContainerSelect,
+                    idSalesOrder: data.idSalesOrder,
+                    formStoppedSku: data.productSku,
+                    alternativeEanData: data.itemsToAlternativeEanMap[itemSku]
+                },
+                attributes: {
+                    'data-sku': itemSku,
+                },
+                embed: {
+                    field: field,
+                    weightField: weightField,
+                },
+            } only %}
+                {% block formElement %}
+                    {{ form_row(embed.field, {
+                        attr: {
+                            class: config.jsName ~ '__quantity',
+                        }
+                    }) }}
+                {% endblock %}
 
-            {% if field.vars.block_prefixes[1] is same as('integer') %}
-                {% embed molecule('product-item') with {
-                    class: 'spacing-top spacing-top--big',
-                    data: {
-                        imageUrl: data.itemImageUrls,
-                        shelfData: data.itemsToShelfMap,
-                        title: field.vars.label,
-                        productsCount: field.vars.attr.max,
-                        itemSku: itemSku,
-                        itemsToShelfMap: itemsToShelfMap,
-                        itemsToProductAttributesMap: data.itemsToProductAttributesMap,
-                        field: field,
-                        urlContainerSelect: urlContainerSelect,
-                        collectNumber: collectNumber,
-                        itemsCount: itemsCount,
-                        idSalesOrder: data.idSalesOrder,
-                        alternativeEanData: data.itemsToAlternativeEanMap,
-                        itemSku: itemSku,
-                        itemsToShelfMap: itemsToShelfMap,
-                        itemsToProductAttributesMap: itemsToProductAttributesMap,
-                        field: field,
-                        urlContainerSelect: urlContainerSelect,
-                        collectNumber: collectNumber,
-                        itemsCount: itemsCount,
-                        idSalesOrder: data.idSalesOrder,
-                        pickedItemsCount: pickedItemsCount,
-                        notPickedItemsCount: notPickedItemsCount,
-                    },
-                    attributes: {
-                        'data-sku': itemSku,
-                    },
-                    embed: {
-                        field: field,
-                        weightField: weightField,
-                    },
-                } only %}
-                    {% block formElement %}
-                        {{ form_row(embed.field, {
+                {% block formElementWeight %}
+                    {% if embed.weightField %}
+                        {{ form_row(embed.weightField, {
                             attr: {
-                                class: config.jsName ~ '__quantity',
+                                class: config.jsName ~ '__weight',
                             }
                         }) }}
-                    {% endblock %}
-                {% endembed %}
-            {% endif %}
+                    {% endif %}
+                {% endblock %}
+            {% endembed %}
+        {% endif %}
 
+    {% endfor %}
+
+    <div class="pick-products__action-wrapper">
+        <div class="pick-products__action js-pick-products__action">
+            {% embed molecule('popup-ui') with {
+                data: {
+                    buttons: {
+                        submit: {
+                            isButton: true,
+                            additionalClass: 'js-pick-products__submit',
+                        },
+                    },
+                },
+                embed: {
+                    collectNumber: data.collectNumber,
+                    itemsCount: data.itemsCount,
+                },
+            } only %}
+                {% block content %}
+                    <div class="grid grid--center">
+                        <div class="total-articles grid">
+                            <p class="total-amount">{{ embed.itemsCount }}</p>
+                            <p>{{ 'Artikel' | trans }}</p>
+                        </div>
+                    </div>
+                    <div class="store-app-label-holder">
+                        <div class="grid grid--center spacing-y-label">
+                            <div class="col--sm-12 grid">
+                                <table>
+                                    <tr>
+                                        <td class="item-quantity">
+                                            {% embed atom('store-app-label') with {
+                                                modifiers: ['picked', 'count'],
+                                            } only %}
+                                                {% block body %}
+                                                    <span class="js-pick-products__picked">0</span>
+                                                {% endblock %}
+                                            {% endembed %}
+                                        </td>
+                                        <td>
+                                            <div class="label-text-green">
+                                                {{ 'picked' | trans }}
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="grid grid--center spacing-y-label">
+                            <div class="col--sm-12 grid">
+                                <table>
+                                    <tr>
+                                        <td class="item-quantity">
+                                            {% embed atom('store-app-label') with {
+                                                modifiers: ['not-found', 'count'],
+                                            } only %}
+                                                {% block body %}
+                                                    <span class="js-pick-products__not-picked">0</span>
+                                                {% endblock %}
+                                            {% endembed %}
+                                        </td>
+                                        <td>
+                                            <div class="label-text-brown">
+                                                {{ 'not found' | trans }}
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </table>
+
+                            </div>
+                        </div>
+                        <div class="grid grid--center spacing-bottom spacing-bottom--big">
+                            <div class="col--sm-12 grid">
+                                <table>
+                                    <tr>
+                                        <td class="item-quantity">
+                                            {% embed atom('store-app-label') with {
+                                                modifiers: ['bordered', 'count'],
+                                            } only %}
+                                                {% block body %}
+                                                    <span class="js-pick-products__bags">1</span>
+                                                {% endblock %}
+                                            {% endembed %}
+                                        </td>
+                                        <td>
+                                            <div class="label-text">
+                                                {{ 'bags' | trans }}
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="horizontal-spacing">
+                        {% if embed.collectNumber %}
+                            <div class="text-center spacing-top--big">
+                                <p class="text-bold spacing-bottom">{{ 'Collect Number' | trans }}: {{ embed.collectNumber }}</p>
+                            </div>
+                        {% endif %}
+                    </div>
+                {% endblock %}
+
+                {% block button %}
+                    <div class="text-center">
+                        <div class="button button--expand button--disabled js-pick-products__submit-button {{ config.jsName }}__open">
+                            {{ 'picker.picking.confirmation' | trans }}
+                        </div>
+                    </div>
+                {% endblock %}
+            {% endembed %}
+        </div>
+    </div>
+
+    <input type="hidden" name="{{ data.requestParamIdSalesOrder }}" value="{{ data.idSalesOrder }}">
     {{ form_end(data.pickingForm) }}
-
-    {% include molecule('additional-order-buttons') with {
-        data: {
-            idSalesOrder: data.idSalesOrder,
-            urlContainerSelect: urlContainerSelect
-        }
-    } only %}
-
 {% endblock content %}

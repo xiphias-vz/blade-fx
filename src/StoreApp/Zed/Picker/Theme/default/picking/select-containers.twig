@@ -28,6 +28,7 @@
 {% block content %}
         <form action="{{ data.urlContainerSelect }}" method="post" id="containersSelectForm">
             {% for pickingOrder in data.pickingOrders %}
+                {% set productSku = pickingOrder.productSku %}
                 {% include molecule('container-select') with {
                     data: {
                         containerInfo: data.containerInfo,
@@ -41,6 +42,7 @@
             {% set tokenName = data.formatStartPickingTokenName | format(pickingOrder.idSalesOrder) %}
             <input type="hidden" name="token" value="{{ csrf_token(tokenName) }}">
             <input type="hidden" name="containers" value="">
+            <input type="hidden" name="sku" value="{{ productSku | default(null) }}">
                 <button id="submitSelectedContainers" type="button" class="button button--small button--table button--container button--expand">
                     {{ 'picking.app.containers.continue' | trans }}
                 </button>

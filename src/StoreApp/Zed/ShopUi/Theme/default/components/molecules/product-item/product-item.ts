@@ -25,10 +25,12 @@ export default class ProductItem extends Component {
     protected $quantityField: $;
     protected $quantityOutput: $;
     protected $weightField: $;
+    protected $previousSku: $;
     eanInputFieldWrapper: HTMLElement;
     popUp: HTMLElement;
     btnSubmitPick: HTMLElement;
     bawContainerButton: HTMLElement;
+    productBlockWrapper: HTMLElement;
     private weightMax: number;
     private weightMin: number;
     private $pricePerKg = 0;
@@ -47,19 +49,42 @@ export default class ProductItem extends Component {
         this.$quantityOutput = this.$this.find(this.quantityOutputSelector);
         this.weightMax = Number(this.$weightField.attr('max'));
         this.weightMin = Number(this.$weightField.attr('min'));
-        this.eanInputFieldWrapper = <HTMLElement>document.getElementById('eanScannenDiv');
-        this.eanInputFieldWrapper.addEventListener('keypress', (event: KeyboardEvent) => this.formKeyPressHandler(event));
+        // this.eanInputFieldWrapper = <HTMLElement>document.getElementById('eanScannenDiv');
+        this.eanInputFieldWrapper = this.querySelector('#eanScannenDiv');
+        this.productBlockWrapper = <HTMLElement>document.getElementById('gridOfTheProduct');
+        this.eanInputFieldWrapper.addEventListener(
+            'keypress', (event: KeyboardEvent) => this.formKeyPressHandler(event));
         this.popUp = <HTMLElement>document.getElementsByClassName('popup-ui')[0];
         this.btnSubmitPick = <HTMLElement>document.querySelector('#btnSubmitPick');
         this.bawContainerButton = <HTMLElement>document.querySelector('.bawContainerButton');
         this.mapEvents();
-        this.focusFirstEanField();
         this.boldLastThreeEanNumbers();
+        this.$previousSku = $('#formPreviousSku').val();
+        if (this.$previousSku == undefined || this.$previousSku === '')
+        {
+            this.focusFirstEanField();
+        }
+
+        if (this.$previousSku === this.dataset.sku)
+        {
+            const elementForFocus = <HTMLInputElement>this.$this.find(`.ean_scan_input`);
+            elementForFocus.focus();
+
+            // for (let i=0; i < elements.length; i++)
+            // {
+            //     const elementsArray = elements[i].id.split('__');
+            //     const skuElement = elementsArray[1];
+            //     if(this.$previousSku == skuElement)
+            //     {
+            //         const elementForFocus = <HTMLInputElement>document.getElementsByClassName('ean_scan_input')[i];
+            //
+            //     }
+            // }
+        }
         this.$pricePerKg = $('#ean').data('priceperkg');
     }
 
     protected mapEvents(): void {
-
         this.$minusButton.on('click', () => this.clickCounterHandler());
         this.$plusButton.on('click', () => this.clickCounterHandler(true));
         this.$acceptButton.on('click', () =>
@@ -82,7 +107,7 @@ export default class ProductItem extends Component {
 
             this.declineClickHandler();
         });
-        this.btnSubmitPick.addEventListener('click', evt => this.onSubmitClick(evt));
+       // this.btnSubmitPick.addEventListener('click', evt => this.onSubmitClick(evt));
     }
 
     protected onSubmitClick(event: MouseEvent) {
@@ -94,7 +119,8 @@ export default class ProductItem extends Component {
             const containerCountElement = <HTMLElement>document.querySelector('.js-pick-products__bags.pop');
             const containerCount = (<HTMLInputElement>document.getElementsByName('containerCount')[0]).value;
             let pickedItemsCount = Number((<HTMLInputElement>document.getElementsByName('pickedItemsCount')[0]).value);
-            let notPickedItemsCount = Number((<HTMLInputElement>document.getElementsByName('notPickedItemsCount')[0]).value);
+            let notPickedItemsCount = Number(
+                (<HTMLInputElement>document.getElementsByName('notPickedItemsCount')[0]).value);
             pickedItemsCount = pickedItemsCount + this.currentValue;
             notPickedItemsCount = notPickedItemsCount + this.maxQuantity - this.currentValue;
             pickedElement.innerText = (pickedItemsCount).toString();
@@ -162,9 +188,13 @@ export default class ProductItem extends Component {
 
     protected formKeyPressHandler(event: KeyboardEvent): void {
         // enter key forces the whole form to submit, we want to prevent that for barcode scanner
+
         if (event.key == 'Enter') {
             event.preventDefault();
-            const $inputValue = (<HTMLInputElement>document.getElementById('txt_ean_scannen')).value;
+            console.log(this);
+            const eanScanInput = this.querySelector('#eanScannenDiv input');
+            let $inputValue = eanScanInput.value;
+            //const $inputValue = (<HTMLInputElement>document.getElementById('txt_ean_scannen')).value;
             const $formattedScanInput = $inputValue.replace('/x11', '').replace('/X11', '');
             if($formattedScanInput.length != 13){
                 alert("Der Barcode sollte 13 Zeichen lang sein");
@@ -178,7 +208,8 @@ export default class ProductItem extends Component {
                 const $pricePerKg = $('#ean').data('priceperkg');
                 const $ean = $('#ean').data('ean');
 
-                let $alernativeEan = $('#alternativeEan').data('altean');
+
+                let $alernativeEan = this.querySelector('#alternativeEan').getAttribute('data-altean');
                 if  ($alernativeEan == null) {
                     $alernativeEan = '';
                 }
@@ -190,8 +221,8 @@ export default class ProductItem extends Component {
                 const $selForWeightElement = $(".js-product-item__weight");
                 let valueOfWeightElement = $selForWeightElement.val();
 
-                const $selForQuantityElement = $(".js-product-item__quantity");
-                let valueOfQuantityElement = $selForQuantityElement.val();
+                const $selForQuantityElement = this.querySelector(".js-product-item__quantity");
+                let valueOfQuantityElement = $selForQuantityElement.value;
 
                 let calculatedWeight = 0;
 
@@ -348,7 +379,7 @@ export default class ProductItem extends Component {
 
     protected focusFirstEanField(): void
     {
-        const element = <HTMLInputElement>document.getElementById('txt_ean_scannen');
+        const element = <HTMLInputElement>this.$this.find(`.ean_scan_input`);
         element.focus();
     }
 
