@@ -37,7 +37,7 @@ $header-sticky-height: rem(69, number);
 
         &__middle {
             padding: rem(14) 0;
-            background: white;
+            background: $setting-color-globus-lightGray;
             border-top: rem(5) solid $setting-color-globus-lightGray;
             z-index: $setting-zi-header + 1;
 
