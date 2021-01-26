@@ -8,8 +8,9 @@ $setting-item-border-radius: rem(8);
         .button--posListe {
             width: 33%;
             background-color: white;
-            border: 1px solid #7b7b7b;
-            color: #7b7b7b;
+            border: 1px solid #7B7B7B;
+            color: #7B7B7B;
+            font-size: rem(10);
         }
 
         .button--disabled {
@@ -21,7 +22,11 @@ $setting-item-border-radius: rem(8);
             background-color: white;
         }
 
-        #redirectBtn > span {
+        button[id^="redirectBtn"]{
+            background-color: white;
+        }
+
+        button[id^="redirectBtn"] > span {
             border: none;
             text-decoration: none;
             background-color: white;

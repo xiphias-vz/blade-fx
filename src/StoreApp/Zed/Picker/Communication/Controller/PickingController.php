@@ -316,39 +316,6 @@ class PickingController extends BaseOrderPickingController
      */
     public function orderPickingAction(Request $request)
     {
-        $indexOfOrdersArray = 0;
-        $nextSku = "";
-        $counter = 0;
-        $products = [];
-        $obj = "";
-        $skuFromRequest = "";
-        $orderItemSelectionForm = "";
-        $skuToSelectedQuantity = 1;
-        $skuToWeight = -1;
-        $pickedItemsCount = 0;
-        $notPickedItemsCount = 0;
-        $formData = [];
-
-        if ($request->request->count() == 0) {
-            $counter = 1;
-        } else {
-            $counter = $request->request->get('counter') + 1;
-            $pickedItemsCount = $request->request->get('pickedItemsCount');
-            $notPickedItemsCount = $request->request->get('nonPickedItemsCount');
-            $key = key($request->request->get('order_item_selection_form'));
-            $skuFromRequest = explode('__', $key)[1];
-            $skuToSelectedQuantity = $request->request->get('order_item_selection_form')[$key];
-            $formData = $request->request->get('order_item_selection_form');
-            foreach (array_keys($request->request->get('order_item_selection_form')) as $key) {
-                if (str_contains($key, OrderItemSelectionForm::PREFIX_FIELD_SALES_ORDER_ITEM_NEW_WEIGHT)) {
-                    $skuToWeight = $request->request->get('order_item_selection_form')[$key];
-                    break;
-                }
-            }
-        }
-        if ($skuToWeight == "") {
-            $skuToWeight = -1;
-        }
         $idSalesOrder = $request->get(PickerConfig::REQUEST_PARAM_ID_ORDER) ?? 0;
         $productSku = $request->get(PickerConfig::REQUEST_PARAM_SKU);
         $pickingZoneTransfer = $this->getFacade()->findPickingZoneInSession();

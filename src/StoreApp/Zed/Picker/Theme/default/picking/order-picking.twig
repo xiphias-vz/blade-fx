@@ -226,4 +226,18 @@
 
     <input type="hidden" name="{{ data.requestParamIdSalesOrder }}" value="{{ data.idSalesOrder }}">
     {{ form_end(data.pickingForm) }}
+
+    <form id="formAddContainerSku" action="{{ data.urlContainerSelect }}" method="post">
+        {% set tokenName = 'start-picking-%d' | format(data.idSalesOrder) %}
+        <input type="hidden" name="idOrder" value="{{ data.idSalesOrder }}">
+        <input type="hidden" name="token" value="{{ csrf_token(tokenName) }}">
+        <input type="hidden" id="addContainerSku" name="sku" value="">
+    </form>
+
+    <script>
+        function addContainer(sku) {
+            document.getElementById('addContainerSku').value = sku;
+            document.getElementById('formAddContainerSku').submit();
+        }
+    </script>
 {% endblock content %}

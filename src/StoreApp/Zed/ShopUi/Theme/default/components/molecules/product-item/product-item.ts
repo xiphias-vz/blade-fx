@@ -80,7 +80,7 @@ export default class ProductItem extends Component {
                 const skuElement = elementsArray[1];
                 if(this.$previousSku == skuElement)
                 {
-                    const elementForFocus = <HTMLInputElement>document.getElementsByClassName('ean_scan_input')[i];
+                    const elementForFocus = <HTMLInputElement>elements[i];
                     elementForFocus.focus();
                     break;
                 }
@@ -218,7 +218,7 @@ export default class ProductItem extends Component {
                     $alernativeEan = [];
                 }
 
-                const $selForWeightElement = $(".js-product-item__weight");
+                const $selForWeightElement = this.$this.find(".js-product-item__weight");
                 let valueOfWeightElement = $selForWeightElement.val();
 
                 const $selForQuantityElement = this.querySelector(".js-product-item__quantity");
@@ -282,7 +282,7 @@ export default class ProductItem extends Component {
             '<div><span>Weight: <span class="weight_' + this.barcodeAndWeightContainer + '">' + Math.round(calculatedWeight) + '</span></span></div>' +
             '</div>' +
             '<div class="bawContainerRemove_' + this.barcodeAndWeightContainer + ' col--md-3 float-right text-right"><button id="bawContainerButton_' + this.barcodeAndWeightContainer + '" class="bawContainerButton" type="button">X</button></div>' +
-            '</div>').appendTo($(".product-item__info"));
+            '</div>').appendTo(this.$this.find(".product-item__info"));
 
         document.querySelector('#' + id).addEventListener('click', evt => this.onRemoveContainerClick(evt, calculatedWeight));
 
@@ -315,7 +315,8 @@ export default class ProductItem extends Component {
         this.clickCounterHandler();
         document.getElementById(event.target.id).parentElement.parentElement.remove();
         this.barcodeAndWeightContainer--;
-        $(".js-product-item__weight").val(Math.round(Number(Number($(".js-product-item__weight").val()) - Number(valueOfWeightElement))));
+        let weightInput = this.$this.find(".js-product-item__weight");
+        weightInput.val(Math.round(Number(Number(weightInput.val()) - Number(valueOfWeightElement))));
 
         this.focusFirstEanField();
     }
@@ -336,6 +337,7 @@ export default class ProductItem extends Component {
         if (Number(this.currentValue) === Number(this.maxQuantity)) {
             this.isAccepted = true;
             this.$this.addClass(this.pickedCLass);
+            this.$this[0].$declineButton.addClass(this.addUndoCLass);
             this.pickProducts.update();
             const elements = <HTMLInputElement>document.getElementsByClassName('ean_scan_input');
             const sku = this.dataset.sku;
@@ -356,6 +358,7 @@ export default class ProductItem extends Component {
             return;
         }
         this.$this.addClass(this.pickedNotFullyCLass);
+        this.$this[0].$declineButton.addClass(this.addUndoCLass);
         this.isNotFullyAccepted = true;
         this.pickProducts.update();
     }
@@ -364,6 +367,7 @@ export default class ProductItem extends Component {
         this.isDeclined = true;
         this.updateQuantityInput(0);
         this.$this.addClass(this.notPickedCLass);
+        this.$this[0].$declineButton.addClass(this.addUndoCLass);
         this.pickProducts.update();
 
         this.$weightField.removeAttr('min');
@@ -383,6 +387,7 @@ export default class ProductItem extends Component {
         this.isNotFullyAccepted = false;
 
         this.$this.removeClass(`${this.notPickedCLass} ${this.pickedCLass} ${this.pickedNotFullyCLass}`);
+        this.$this[0].$declineButton.removeClass(this.addUndoCLass);
         this.pickProducts.update();
     }
 
@@ -436,12 +441,16 @@ export default class ProductItem extends Component {
         return `${this.name}--not-picked`;
     }
 
+    protected get addUndoCLass(): string {
+        return `button--undo`;
+    }
+
     get maxQuantity(): number {
         return Number(this.$quantityField.prop('max'));
     }
 
     get currentQuantity(): number {
-        return Number(document.getElementsByClassName("js-product-item__quantity")[0].value);
+        return Number(this.$quantityField.val());
     }
 
     get sku(): string {

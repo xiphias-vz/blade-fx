@@ -16,11 +16,16 @@ $setting-item-border-radius: rem(8);
         }
 
         .button--delete {
-            background-color: #ff3400;
+            background-color: $setting-color-globus-red;
             color: white;
         }
 
         .button--pause {
+            background-color: $setting-color-gray-2;
+            color: $setting-color-gray-10;
+        }
+
+        .button--undo {
             background-color: $setting-color-gray-2;
             color: $setting-color-gray-10;
         }

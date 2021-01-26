@@ -43,11 +43,7 @@
         {% block rightColBottom %}
             <div class="col button button--round button--addContainers">
                 {% set tokenName = 'start-picking-%d' | format(data.idSalesOrder) %}
-                <form action="{{ data.urlContainerSelect }}" method="post" id="redirectToContainerSelectForm__{{ data.itemSku }}">
-                    <input type="hidden" name="idOrder" value="{{ data.idSalesOrder }}">
-                    <input type="hidden" name="token" value="{{ csrf_token(tokenName) }}">
-                    <input type="hidden" name="sku" value="{{ data.itemSku }}">
-                    <button type="submit" id="redirectBtn__{{ data.itemSku }}">
+                    <button type="button" id="redirectBtn__{{ data.itemSku }}" onclick="addContainer('{{ data.itemSku }}')">
                       <span class="col--md-4">
                             {% include atom('icon') with {
                                 data: {
@@ -59,7 +55,6 @@
 
                         <span class="col--md-8">Add Con.</span>
                     </button>
-                </form>
             </div>
         {% endblock %}
     </div>
