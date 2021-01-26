@@ -21,6 +21,35 @@
                 padding: map-get($setting-spacing, big);
             }
         }
+
+        &__total {
+            color: $setting-color-globus-darkGray;
+        }
+
+        &__picked {
+            color: $setting-color-pickingApp-darkerGreen;
+        }
+
+        &__canceled {
+            color: $setting-color-globus-red;
+        }
+
+        .app-label{
+            background-color: $setting-color-globus-white !important;
+        }
+
+        .app-label--product {
+            min-width: 0 !important;
+            padding: 0 !important;
+        }
+
+        .minimalWidth {
+            min-width: rem(68);
+        }
+
+        .separator {
+            color: $setting-color-globus-darkGray;
+        }
     }
 }
 

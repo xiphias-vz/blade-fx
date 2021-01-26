@@ -15,41 +15,46 @@
 } %}
 
 {% block body %}
-    <div style="display:none;" class="grid grid--middle text-center spacing-y spacing-y--big spacing-y--inner">
+    <div class="grid grid--middle text-center spacing-y spacing-y--big spacing-y--inner minimalWidth">
+        <div class="col col--sm-4">
+            <span class="pick-products__total">
+                {{ data.productsLength }}<span class="separator"> |</span>
+            </span>
+        </div>
+
         <div class="col col--sm-4">
             {% embed atom('app-label') with {
-                modifiers: ['not-found', 'product'],
-                data: {
-                    text: 'not found' | trans
-                },
-                embed: {
-                    jsName: config.jsName
-                }
-            } only %}
-                {% block body %}
-                    <span class="{{ embed.jsName }}__not-picked">0</span> {{ data.text }}
-                {% endblock %}
-            {% endembed %}
-        </div>
-        <div class="col col--sm-4">
-            <strong>
-                {{ data.productsLength }} {{ 'products' | trans }}
-            </strong>
-        </div>
-        <div class="col col--sm-4">
-            {% embed atom('app-label') with {
-                modifiers: ['picked', 'product'],
+                modifiers: ['product'],
                 data: {
                     text: 'picked' | trans
                 },
                 embed: {
-                    jsName: config.jsName
+                    jsName: config.jsName,
+                    name: config.name
                 }
             } only %}
                 {% block body %}
-                    <span class="{{ embed.jsName }}__picked">0</span> {{ data.text }}
+                    <span class="{{ embed.jsName }}__picked {{ embed.name }}__picked">0</span><span class="separator"> |</span>
                 {% endblock %}
             {% endembed %}
         </div>
+
+        <div class="col col--sm-4">
+            {% embed atom('app-label') with {
+                modifiers: ['product'],
+                data: {
+                    text: 'not found' | trans
+                },
+                embed: {
+                    jsName: config.jsName,
+                    name: config.name
+                }
+            } only %}
+                {% block body %}
+                    <span class="{{ embed.jsName }}__not-picked {{ embed.name }}__canceled">0</span>
+                {% endblock %}
+            {% endembed %}
+        </div>
+
     </div>
 {% endblock %}

@@ -12,7 +12,7 @@ $setting-item-border-radius: rem(8);
 
         &__info {
             position: relative;
-            border: rem(1) solid transparent;
+            border: rem(2) solid transparent;
         }
 
         .button--delete {
@@ -53,7 +53,7 @@ $setting-item-border-radius: rem(8);
             width: rem(30);
             height: rem(30);
             border-radius: rem(15);
-            border: rem(1) solid map-get($setting-color-actions, success);
+            border: rem(2) solid map-get($setting-color-actions, success);
             color: map-get($setting-color-actions, success);
         }
 

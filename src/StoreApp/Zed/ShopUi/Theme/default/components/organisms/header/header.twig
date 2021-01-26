@@ -18,6 +18,8 @@
     titleColor: '',
     pickingZone: false,
     containerSelect: false,
+    pickingForm: false,
+    productsLength: 0
 } %}
 
 {% block extraClass %}
@@ -58,7 +60,8 @@
                                 </a>
                             </div>
                         {% elseif data.containerSelect %}
-                            <div class="col col--sm-5">
+
+                            <div class="col col--sm-4 col--md-5">
                                 {% if data.buttonUrl %}
                                     <a href="{{ data.buttonUrl }}" class="link link--cancel link--icon">
                                         {% include atom('icon') with {
@@ -73,7 +76,7 @@
                                     </a>
                                 {% endif %}
                             </div>
-                            <div class="col col--expand text-left">
+                            <div class="col col--expand">
                                 <div class="link">
                                     <div class="link__header__container">
                                         {% block orderReference %}
@@ -84,19 +87,25 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col {{ config.name }}__logout text-right">
-                                <a href="/auth/logout" class="link link--icon link--logout">
-                                    {% include atom('icon') with {
-                                        modifiers: ['big'],
-                                        class: 'link__icon',
-                                        data: {
-                                            name: 'logout'
-                                        }
-                                    } only %}                                    &nbsp;
-                                </a>
-                            </div>
+
+                            {% if not data.pickingForm %}
+                                <div class="col {{ config.name }}__logout text-right">
+                                    <a href="/auth/logout" class="link link--icon link--logout">
+                                        {% include atom('icon') with {
+                                            modifiers: ['big'],
+                                            class: 'link__icon',
+                                            data: {
+                                                name: 'logout'
+                                            }
+                                        } only %}                                    &nbsp;
+                                    </a>
+                                </div>
+                            {% else %}
+                                {% block headerBottom %}{% endblock %}
+                            {% endif %}
+
                         {% elseif data.pickingZone %}
-                            <div class="col col--sm-5">
+                            <div class="col col--sm-4 col--md-5">
                                 {% if data.buttonUrl %}
                                     <a href="{{ data.buttonUrl }}" class="link link--cancel link--icon">
                                         {% include atom('icon') with {
@@ -111,7 +120,7 @@
                                     </a>
                                 {% endif %}
                             </div>
-                                <div class="col col--expand text-left">
+                                <div class="col col--expand">
                                     <div class="link">
                                         <div class="link__header__zone">
                                             {% block selectPickingZone %}
@@ -174,7 +183,7 @@
         <div class="{{ config.name }}__header-bottom">
             <div class="container">
                 <div class="container__inner">
-                    {% block headerBottom %}{% endblock %}
+
                 </div>
             </div>
         </div>

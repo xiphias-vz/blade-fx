@@ -74,17 +74,19 @@ export default class FormContainers extends Component {
 
     protected onTriggerSubmitButtonClick(): void {
         this.countSigns = this.savedInputValue.length;
-        if (this.countSigns == 8 && this.containerCount == 0 && this.countInputedContainers == 0)
+        if (this.countSigns == 8)
         {
             this.checkContainerId(this.savedInputValue, this.savedInputId);
         }
-        else if (this.countInputedContainers == 0 && this.containerCount == 0){
-            this.popUpUiError.querySelector("#firstBlock").innerHTML = `Container-ID muss eingestellt werden`;
+        else if (this.countSigns == 0 && (this.containerCount > 0 || this.countInputedContainers > 0 ))
+        {
+            this.fullForm.submit();
+        }
+        else
+        {
+            this.popUpUiError.querySelector("#firstBlock").innerHTML = `Container-ID muss eingestellt werden und 8 Zeichen haben`;
             this.popUpUiError.querySelector("#secondBlock").innerHTML = ``;
             this.popUpUiError.classList.add('popup-ui-error--show');
-        }
-        else {
-            this.fullForm.submit();
         }
     }
 

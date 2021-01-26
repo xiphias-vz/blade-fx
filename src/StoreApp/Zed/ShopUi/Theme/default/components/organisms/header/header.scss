@@ -41,6 +41,7 @@
             height: 3rem;
             @include helper-breakpoint-media-max($sm-max) {
 
+                height: 2rem;
 
                 .back-link {
                     width: auto;
@@ -55,6 +56,10 @@
         &__location-title {
             font: rem(15)/1 $setting-font-family-additional;
             @include helper-font-weight(light);
+
+            @include helper-breakpoint-media-max($sm-max) {
+                margin-top: rem(14);
+            }
         }
 
         &__time {
@@ -79,6 +84,7 @@
                 font-weight: fw(black);
             }
         }
+
         @content;
     }
 }
