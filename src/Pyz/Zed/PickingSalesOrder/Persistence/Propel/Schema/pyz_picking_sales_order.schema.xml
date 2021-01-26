@@ -12,6 +12,7 @@
 
         <unique name="pyz_picking_sales_order-unique-key">
             <unique-column name="container_code"/>
+            <unique-column name="fk_sales_order"/>
         </unique>
 
         <foreign-key name="pyz_picking_sales_order-fk_sales_order" foreignTable="spy_sales_order">
