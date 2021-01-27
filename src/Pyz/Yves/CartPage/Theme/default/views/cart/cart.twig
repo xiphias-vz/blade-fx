@@ -74,6 +74,7 @@
                             });
                             function beginCheckout(actionUrl)
                             {
+                                var rerouted = 0;
                                 window.dataLayer = window.dataLayer || [];
                                 var products =  window.shoppingCartList;
                                 window.dataLayer.push({
@@ -91,11 +92,17 @@
                                         },
                                     'eventCallback': function()
                                     {
+                                        rerouted = 1;
                                         document.location = actionUrl;
                                     }
                                 });
+                                setTimeout(function(){
+                                    if(rerouted==0)
+                                    {
+                                        document.location = actionUrl;
+                                    }
+                                },1000);
                             }
-
                         </script>
                     {% endfor %}
 

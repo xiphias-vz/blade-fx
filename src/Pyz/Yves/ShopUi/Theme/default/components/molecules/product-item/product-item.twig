@@ -149,7 +149,7 @@
 
                                         {% block link %}
                                             <div class="{{ config.name }}__info">
-                                                <a href="#" class="{{ config.name }}__name" onclick="productClicked('{{ data.url }}', '{{ data.idProductAbstract }}', '{{ data.name | escape('js') }}', '{{ data.product.prices.DEFAULT is defined ? data.product.prices.DEFAULT / 100 : null  }}', '{{ data.product.abstract_sku }}' )">
+                                                <a href="javascript:void(0)" class="{{ config.name }}__name" onclick="productClicked('{{ data.url }}', '{{ data.idProductAbstract }}', '{{ data.name | escape('js') }}', '{{ data.product.prices.DEFAULT is defined ? data.product.prices.DEFAULT / 100 : null  }}', '{{ data.product.abstract_sku }}' )">
                                                     {% block linkName %}
                                                         {{- fullname -}}
                                                     {% endblock %}
@@ -158,25 +158,33 @@
                                             <script type="text/javascript">
                                                 function productClicked(productUrl, productId, productName, productPrice, productSku)
                                                 {
+                                                    var rerouted = 0;
                                                     window.dataLayer = window.dataLayer || [];
                                                     window.dataLayer.push({
                                                         'event': 'eec.productClick',
                                                         'ecommerce':{
                                                             'click':{
-                                                                    'actionField': {'list':'Catalog'},
-                                                                    'products': [{
-                                                                            'id': productId,
-                                                                            'name': productName,
-                                                                            'price': productPrice,
-                                                                            'sku': productSku,
-                                                                        }]
-                                                                }
+                                                                'actionField': {'list':'Catalog'},
+                                                                'products': [{
+                                                                    'id': productId,
+                                                                    'name': productName,
+                                                                    'price': productPrice,
+                                                                    'sku': productSku,
+                                                                }]
+                                                            }
                                                         },
                                                         'eventCallback': function()
                                                         {
+                                                            rerouted = 1;
                                                             document.location = productUrl;
                                                         }
                                                     });
+                                                    setTimeout(function(){
+                                                        if(rerouted==0)
+                                                        {
+                                                            document.location = productUrl;
+                                                        }
+                                                    },1000);
                                                 }
                                             </script>
                                         {% endblock %}
