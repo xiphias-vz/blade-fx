@@ -33,7 +33,7 @@
         <column name="shelf" type="VARCHAR" size="255" required="false"/>
         <column name="shelf_floor" type="VARCHAR" size="255" required="false"/>
         <column name="shelf_field" type="VARCHAR" size="255" required="false"/>
-        <column name="alternative_ean" type="VARCHAR" size="255" required="false"/>
+        <column name="alternative_ean" type="VARCHAR" size="10000" required="false"/>
         <column name="sap_wgr" type="VARCHAR" size="255" required="false"/>
         <column name="bontext" type="VARCHAR" size="255" required="false"/>
         <column name="weight_per_unit" type="INTEGER" required="false"/>
