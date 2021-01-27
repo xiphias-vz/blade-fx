@@ -83,16 +83,20 @@ class PickingSalesOrderWriter implements PickingSalesOrderWriterInterface
     protected function executeRefreshTransaction(PickingSalesOrderCollectionTransfer $pickingSalesOrderCollectionTransfer): void
     {
         $containerCodes = [];
+        $salesOrderId = 0;
         foreach ($pickingSalesOrderCollectionTransfer->getPickingSalesOrders() as $pickingSalesOrderTransfer) {
             $containerCodes[] = $pickingSalesOrderTransfer->getContainerCode();
+            $salesOrderId = $pickingSalesOrderTransfer->getIdSalesOrder();
         }
 
-        $pickingSalesOrderCriteriaTransfer = (new PickingSalesOrderCriteriaTransfer())
-            ->setContainerCodes($containerCodes);
+        if (count($containerCodes) != 0) {
+            $pickingSalesOrderCriteriaTransfer = (new PickingSalesOrderCriteriaTransfer())
+            ->setContainerCodes($containerCodes)->setIdSalesOrder($salesOrderId);
 
-        $this->pickingSalesOrderEntityManager->delete($pickingSalesOrderCriteriaTransfer);
+            $this->pickingSalesOrderEntityManager->delete($pickingSalesOrderCriteriaTransfer);
 
-        $this->createPickingSalesOrders($pickingSalesOrderCollectionTransfer);
+            $this->createPickingSalesOrders($pickingSalesOrderCollectionTransfer);
+        }
     }
 
     /**
