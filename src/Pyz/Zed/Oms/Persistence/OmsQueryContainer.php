@@ -35,6 +35,10 @@ class OmsQueryContainer extends SprykerOmsQueryContainer implements OmsQueryCont
             $query->filterByOmsProcessorId($processId);
         }
 
+        if ($storeName) {
+            $query->filterByStore($storeName);
+        }
+
         if ($limit !== null) {
             $query
                 ->withColumn('DISTINCT ' . SpySalesOrderItemTableMap::COL_FK_SALES_ORDER, 'fk_sales_order')
@@ -47,10 +51,6 @@ class OmsQueryContainer extends SprykerOmsQueryContainer implements OmsQueryCont
             if (!empty($salesOrderIds)) {
                 $query->filterByFkSalesOrder_In($salesOrderIds);
             }
-        }
-
-        if ($storeName) {
-            $query->filterByStore($storeName);
         }
 
         return $query;
