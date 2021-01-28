@@ -51,6 +51,11 @@ class OmsQueryContainer extends SprykerOmsQueryContainer implements OmsQueryCont
             if (!empty($salesOrderIds)) {
                 $query->filterByFkSalesOrder_In($salesOrderIds);
             }
+            if ($processName == 'DummyPayment01') {
+                dump('STORE: ' . $storeName);
+                dump('ORDER ID:');
+                dump($salesOrderIds);
+            }
         }
 
         return $query;
