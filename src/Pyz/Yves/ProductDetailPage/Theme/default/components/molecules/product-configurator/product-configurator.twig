@@ -72,7 +72,7 @@
     <div class="{{ config.name }}__info">
         {% if data.product.attributes['herkunftsland_o_g'] is defined %}
             <p><strong>{{ 'product.info.additional.origin.country' | trans }}: </strong>
-                {% set herkunftsland = data.product.attributes['herkunftsland_o_g']|split('\t') %}
+                {% set herkunftsland = data.product.attributes['herkunftsland_o_g']|split(';') %}
                 {% for key,land in herkunftsland %}
                     {% if key ==  herkunftsland|length - 1 %}
                         <span>{{ land }}</span>
