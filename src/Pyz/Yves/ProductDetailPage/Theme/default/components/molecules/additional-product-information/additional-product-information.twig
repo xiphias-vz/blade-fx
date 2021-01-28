@@ -7,30 +7,38 @@
 {% define data = {
     productAttributes: required,
     product: required,
+    characteristics: []
 } %}
 
 {% block body %}
 
                 {% if data.product['idProductConcrete'] is defined %}
-                    <div><strong>{{ 'product.info.additional.article_number' | trans }}:</strong> {{ data.product['idProductConcrete'] }}</div>
+                    <div><div class="{{ config.name }}__headline"><strong>{{ 'product.info.additional.article_number' | trans }}:</strong></div><p class="{{ config.name }}__attribute">{{ data.product['idProductConcrete'] }}</p></div>
                 {% endif %}
                 {% if data.product['sku'] is defined %}
-                    <div><strong>EAN/GTIN:</strong> {{ data.product['sku'] }}</div>
+                    <div><div class="{{ config.name }}__headline"><strong>EAN/GTIN:</strong></div><p class="{{ config.name }}__attribute">{{ data.product['sku'] }}</p></div>
                 {% endif %}
                 {% if data.productAttributes['alkgeh'] is defined %}
-                    <div><strong>{{ 'product.info.additional.alcohol' | trans }}:</strong> {{ data.productAttributes['alkgeh'] }}</div>
+                    <div><div class="{{ config.name }}__headline"><strong>{{ 'product.info.additional.alcohol' | trans }}:</strong></div><p class="{{ config.name }}__attribute">{{ data.productAttributes['alkgeh'] }}</p></div>
                 {% endif %}
                 {% if data.productAttributes['fsk'] is defined %}
-                    <div><strong>{{ 'product.info.additional.age_restriction' | trans }}:</strong> {{ data.productAttributes['fsk'] }}</div>
+                    <div><div class="{{ config.name }}__headline"><strong>{{ 'product.info.additional.age_restriction' | trans }}:</strong></div><p class="{{ config.name }}__attribute">{{ data.productAttributes['fsk'] }}</p></div>
                 {% endif %}
-                {% if data.productAttributes['bio'] is defined %}
-                    <div><strong>{{ 'product.info.additional.bio' | trans }}:</strong> {{ data.productAttributes['bio'] }}</div>
+
+                {% if data.characteristics is defined and data.characteristics is not empty %}
+                    <div><div class="{{ config.name }}__headline"><strong>{{ 'product.info.additional.characteristics' | trans }}:</strong></div>
+                    <p class="{{ config.name }}__attribute">
+                        {% for key, value in data.characteristics %}
+                            <span>{{ key | trans }}{% if loop.last == false %}<span>, </span>{% endif %}</span>
+                        {% endfor %}
+                    </p>
+                    </div>
                 {% endif %}
+
                 {% if data.productAttributes['inverkehrbringer'] is defined %}
-                    <div><strong>Inverkehrbringer (Hersteller):</strong> {{ data.productAttributes['inverkehrbringer'] }}</div>
+                    <div><div class="{{ config.name }}__headline"><strong>{{ 'product.info.additional.manufacturer' | trans }}:</strong></div><p class="{{ config.name }}__attribute">{{ data.productAttributes['inverkehrbringer'] }}</p></div>
                 {% endif %}
 
-    <br/><div><strong>{{ 'product.info.additional.hints' | trans }}:</strong> {{  'product.info.additional.hintsText' | trans }}</div>
-
+                <div><div class="{{ config.name }}__headline"><strong>{{ 'product.info.additional.hints' | trans }}:</strong></div><p class="{{ config.name }}__attribute">{{  'product.info.additional.hintsText' | trans }}</p></div>
 
 {% endblock %}

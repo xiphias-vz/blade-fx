@@ -19,13 +19,11 @@
                 <div class="spacing-bottom spacing-bottom--bigger"><strong>{{ 'product.info.ingredients' | trans }}:</strong> {{ data.productAttributes['zutaten'] }}</div>
             {% endif %}
 
-            {% if data.productAttributes['entallerg'] is defined or data.productAttributes['mentallerg'] is defined %}
-                <strong>{{ 'product.info.alergens' | trans }}:</strong>
-            {% endif %}
             {% if data.productAttributes['entallerg'] is defined %}
-                <div class="spacing-bottom spacing-bottom--bigger"><strong>Enthaltene Allergene:</strong> {{ data.productAttributes['entallerg'] }}</div>
+                <div class="spacing-bottom spacing-bottom--bigger"><strong>{{ 'product.info.allergens.contained' | trans }}:</strong> {{ data.productAttributes['entallerg'] }}</div>
             {% endif %}
+
             {% if data.productAttributes['mentallerg'] is defined %}
-                <div class="spacing-bottom spacing-bottom--bigger"><strong>Moglisch enthaltene Allergene:</strong> {{ data.productAttributes['mentallerg'] }}</div>
+                <div class="spacing-bottom spacing-bottom--bigger"><strong>{{ 'product.info.allergens.contained.possible' | trans }}:</strong> {{ data.productAttributes['mentallerg'] }}</div>
             {% endif %}
 {% endblock %}

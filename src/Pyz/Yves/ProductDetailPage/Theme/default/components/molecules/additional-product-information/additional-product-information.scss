@@ -1,0 +1,13 @@
+@mixin product-detail-page-additional-product-information($name: '.additional-product-information') {
+    #{$name} {
+        &__attribute {
+            color: $setting-color-globus-darkGray !important;
+        }
+
+        p, blockquote, iframe{
+            margin: 0.1rem 0 !important;
+        }
+    }
+}
+
+@include product-detail-page-additional-product-information();

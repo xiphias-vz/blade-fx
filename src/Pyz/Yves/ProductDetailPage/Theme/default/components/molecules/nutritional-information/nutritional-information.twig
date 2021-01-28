@@ -15,10 +15,10 @@
 {%- endblock %}
 
 {% block body %}
-                <div class="is-scrollable-x spacing-bottom">
+                <div class="is-scrollable-x spacing-bottom col--lg-6 col--md-6 col--sm-12 col--xs-12">
                     <table class="table table--expand">
                         <thead>
-                        <th class="{{ config.name }}__col">Nährwerte</th>
+                        <th class="{{ config.name }}__col">{{ 'product.info.additional.nutritionalInfo' | trans }}</th>
                         <th class="{{ config.name }}__col">
                             {{ 'product.info.nutritional.information.prefix' | trans }} 100 g/ml
                         </th>

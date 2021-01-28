@@ -14,6 +14,7 @@
     vitamins: _view.vitamins,
     depositPrice: _view.depositPrice,
     preisProKg: _view.pricePerKg,
+    characteristics: _view.characteristics
 } %}
 
 {% define data = {
@@ -69,17 +70,6 @@
         <div class="col col--spaced-lg col--sm-12 col--lg-12">
             <div class="container__inner">
 
-                {% include molecule('product-detail', 'ProductDetailPage') with {
-                    data: {
-                        description: data.product.description,
-                        attributes: data.product.attributes,
-                        sku: data.product.sku,
-                        vitamins: data.vitamins,
-                        isNutritionalInformationContainsReferenceAmount: data.product.nutritionalInformationContainsReferenceAmount,
-                        isAdditionalProductInformationShown: data.product.additionalProductInformationIsShown,
-                    },
-                } only %}
-
                  {% if data.product.attributes.zutaten is defined or data.product.attributes.entallerg is defined %}
                      {% embed molecule('toggler-item') with {
                          data: {
@@ -123,30 +113,6 @@
                                 data: {
                                     attributes: data.product.attributes,
                                     isNutritionalInformationContainsReferenceAmount: data.product.nutritionalInformationContainsReferenceAmount
-                                },
-                            } only %}
-                        {% endblock %}
-                    {% endembed %}
-                {% endif %}
-
-                {% if data.product.attributes.verwendungshinweise is defined or data.product.attributes.warnhinweise is defined %}
-                    {% embed molecule('toggler-item') with {
-                        data: {
-                            title: 'Warnhinweise & Verwendungshinweise',
-                            triggerClass: 'warnings-and-usage-info__trigger-bundle',
-                            targetClass: 'warnings-and-usage-info__target-bundle',
-                            isActive: true,
-                            productAttributes: data.product.attributes,
-                            product: data.product
-                        },
-                        embed: {
-                            bundleItems: data.bundleItems,
-                        }
-                    } only %}
-                        {% block contentText %}
-                            {% include molecule('warnings-and-usage-info', 'ProductDetailPage') with {
-                                data: {
-                                    productAttributes: data.product.attributes,
                                 },
                             } only %}
                         {% endblock %}
@@ -197,7 +163,8 @@
                         {% include molecule('additional-product-information', 'ProductDetailPage') with {
                             data: {
                                 productAttributes: data.productAttributes,
-                                product: data.product
+                                product: data.product,
+                                characteristics: _view.characteristics
                             },
                         } only %}
                     {% endblock %}

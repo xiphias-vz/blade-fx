@@ -2629,6 +2629,10 @@ product.info.ingredients,Ingredients,en_US
 product.info.ingredients,Zutaten,de_DE
 product.info.alergens,Allergen information,en_US
 product.info.alergens,Allergenhinweise,de_DE
+product.info.allergens.contained,Contained allergens,en_US
+product.info.allergens.contained,Enthaltene Allergene,de_DE
+product.info.allergens.contained.possible,Possible allergens contained,en_US
+product.info.allergens.contained.possible,Möglich enthaltene Allergene,de_DE
 product.info.nutritional.information,Nutrition information,en_US
 product.info.nutritional.information,Nährwertangaben,de_DE
 product.info.condensing,Calorific value,en_US
@@ -2663,7 +2667,24 @@ product.info.additional.alcohol,Alcohol content,en_US
 product.info.additional.alcohol,Alkoholgehalt,de_DE
 product.info.additional.article_number,"Art.Nr",de_DE
 product.info.additional.age_restriction,"Altersbeschränkung",de_DE
-product.info.additional.bio,"Bio",de_DE
+product.info.additional.characteristics,Eigenschaften,de_DE
+product.info.additional.characteristics,Characteristics,en_US
+product.info.additional.characteristics.bio,Bio,de_DE
+product.info.additional.characteristics.bio,Bio,en_US
+product.info.additional.characteristics.vegan,Vegan,de_DE
+product.info.additional.characteristics.vegan,Vegan,en_US
+product.info.additional.characteristics.vegetarian,Vegetarish,de_DE
+product.info.additional.characteristics.vegetarian,Vegetarian,en_US
+product.info.additional.characteristics.laktosefrei,Laktosefrei,de_DE
+product.info.additional.characteristics.laktosefrei,Lactose free,en_US
+product.info.additional.characteristics.glutenfrei,Glutenfrei,de_DE
+product.info.additional.characteristics.glutenfrei,Gluten free,en_US
+product.info.additional.characteristics.fairtrade,Fairtrade,de_DE
+product.info.additional.characteristics.fairtrade,Fairtrade,en_US
+product.info.additional.manufacturer,Hersteller,de_DE
+product.info.additional.manufacturer,Manufacturer,en_US
+product.info.additional.nutritionalInfo,Nährwerte,de_DE
+product.info.additional.nutritionalInfo,Nutritional information,en_US
 product.info.additional.hints,Notes,en_US
 product.info.additional.hints,Hinweise,de_DE
 product.info.additional.hintsText,"Bei der Abholung Ihrer Bestellung haben Sie die Gelegenheit die Artikel vor dem Bezahlvorgang zu überprüfen. Die tatsächliche Verpackung kann von der hier abgebildeten abweichen. Wir empfehlen Ihnen, sich vor Gebrauch, die auf der Ware angebrachten Etiketten, Warnhinweise und Anleitungen durchzulesen. Für weiterführende Informationen über Nährwertangaben, Zutaten, Pflichtinformationen gemäß Lebensmittel-Informationsverordnung etc. wenden Sie sich bitte an unseren Kundenservice. Bei Wiegeartikeln zahlen Sie bei der Abholung die tatsächlich gewogene Menge. Der zu zahlende Betrag kann somit von dem im Shop angegebenen Warenpreis abweichen. Für die Berechnung online dient ein Durchschnittsgewicht des jeweiligen Produktes als Grundlage.",de_DE
