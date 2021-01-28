@@ -18,6 +18,7 @@ export default class FormContainers extends Component {
     containerCount: number;
     countInputedContainers: number = 0;
     countSigns: number = 0;
+    inputPress: number = 0;
     protected barcodePrefix: string = '/x11';
     protected savedInputValue: string = "";
     protected savedInputId: string = "";
@@ -55,12 +56,9 @@ export default class FormContainers extends Component {
     }
 
     protected onTriggerAddFormButtonClick(): void {
-
+        this.inputPress = 3;
         if (this.savedInputValue != ""){
-            this.checkContainerId(this.savedInputValue, this.savedInputId)
-        }
-        else {
-            this.addNewContainerForm();
+            this.checkContainerId(this.savedInputValue, this.savedInputId, this.inputPress)
         }
     }
 
@@ -73,10 +71,11 @@ export default class FormContainers extends Component {
     }
 
     protected onTriggerSubmitButtonClick(): void {
+        this.inputPress = 2;
         this.countSigns = this.savedInputValue.length;
         if (this.countSigns == 8)
         {
-            this.checkContainerId(this.savedInputValue, this.savedInputId);
+            this.checkContainerId(this.savedInputValue, this.savedInputId, this.inputPress);
         }
         else if (this.countSigns == 0 && (this.containerCount > 0 || this.countInputedContainers > 0 ))
         {
@@ -134,10 +133,11 @@ export default class FormContainers extends Component {
     protected formKeyPressHandler(event: KeyboardEvent): void {
         // Enter key forces the whole form to submit, we want to prevent that for barcode scanner
         if (event.key == 'Enter') {
+            this.inputPress = 1;
             event.preventDefault();
             let inputValue = (<HTMLInputElement>event.target).value;
             let inputId = (<HTMLInputElement>event.target).id;
-            this.checkContainerId(inputValue, inputId);
+            this.checkContainerId(inputValue, inputId, this.inputPress);
         }
     }
 
@@ -181,7 +181,7 @@ export default class FormContainers extends Component {
         formLastItem.focus();
     }
 
-    protected checkContainerId(inputValue, inputId): void
+    protected checkContainerId(inputValue, inputId, inputPress): void
     {
         if (inputValue.length != 8)
         {
@@ -234,7 +234,7 @@ export default class FormContainers extends Component {
                  }, 5000)
              }
              else {
-                 if (this.countSigns == 8 && this.containerCount == 0 && this.countInputedContainers == 0)
+                 if (this.countSigns == 8 && inputPress == 2)
                  {
                      this.fullForm.submit();
                  }

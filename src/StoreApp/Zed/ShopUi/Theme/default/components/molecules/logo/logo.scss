@@ -24,6 +24,7 @@
                     @include helper-breakpoint-media-max($sm-max) {
                         width: 60px;
                         top:11px;
+                        margin-top: rem(7);
                     }
                 }
             }
