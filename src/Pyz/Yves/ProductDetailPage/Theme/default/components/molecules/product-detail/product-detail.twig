@@ -18,9 +18,6 @@
 } %}
 
 {% block body %}
-        {% if data.attributes['herkunftsland'] is defined %}
-            <p class="description-text-color">{{ 'product.info.additional.origin.country' | trans }}: {{ data.attributes['herkunftsland'] }}</p>
-        {% endif %}
         {% if data.attributes['handelsklasse'] is defined %}
             <p class="description-text-color">{{ 'product.info.additional.grading' | trans }}: {{ data.attributes['handelsklasse'] }}</p>
         {% endif %}
