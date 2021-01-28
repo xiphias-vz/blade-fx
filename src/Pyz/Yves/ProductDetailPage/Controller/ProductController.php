@@ -72,11 +72,14 @@ class ProductController extends SprykerShopProductController
             $this->checkIfAdditionalProductInformationIsShown($productViewTransfer)
         );
 
-        $searchZutaten = "Zutaten:";
-        $zutatenAttributeData = $productViewTransfer->getAttributes()["zutaten"];
-        if (str_starts_with($productViewTransfer->getAttributes()["zutaten"], $searchZutaten)) {
-            $zutatenAttributeText = trim(substr($productViewTransfer->getAttributes()["zutaten"], strlen($searchZutaten), strlen($zutatenAttributeData)));
-            $productViewTransfer->getAttributes()["zutaten"] = $zutatenAttributeText;
+        if (array_key_exists('zutaten', $productViewTransfer->getAttributes())) {
+            $searchZutaten = "Zutaten:";
+
+            $zutatenAttributeData = $productViewTransfer->getAttributes()["zutaten"];
+            if (str_starts_with($productViewTransfer->getAttributes()["zutaten"], $searchZutaten)) {
+                $zutatenAttributeText = trim(substr($productViewTransfer->getAttributes()["zutaten"], strlen($searchZutaten), strlen($zutatenAttributeData)));
+                $productViewTransfer->getAttributes()["zutaten"] = $zutatenAttributeText;
+            }
         }
 
         $viewData['product'] = $productViewTransfer;
@@ -106,17 +109,6 @@ class ProductController extends SprykerShopProductController
             $viewData['petRows'] = [];
             $viewData['rowData'] = [];
         }
-
-        $characteristics = [
-        'product.info.additional.characteristics.bio' => $productData["attributes"]["bio"],
-        'product.info.additional.characteristics.vegan' => $productData["attributes"]["vegan"],
-        'product.info.additional.characteristics.vegetarian' => $productData["attributes"]["vegetarisch"],
-            'product.info.additional.characteristics.laktosefrei' => $productData["attributes"]["laktosefrei"], 'product.info.additional.characteristics.glutenfrei' => $productData["attributes"]["glutenfrei"], 'product.info.additional.characteristics.fairtrade' => $productData["attributes"]["fairtrade"]];
-
-        $searchFor = "1";
-        $viewData['characteristics'] = array_filter($characteristics, function ($e) use ($searchFor) {
-            return ($e == $searchFor);
-        });
 
         return $viewData;
     }
