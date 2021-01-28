@@ -8,7 +8,9 @@
 namespace Pyz\Zed\Oms\Persistence;
 
 use DateTime;
+use Orm\Zed\Oms\Persistence\Map\SpyOmsOrderItemStateTableMap;
 use Orm\Zed\Sales\Persistence\Map\SpySalesOrderItemTableMap;
+use Pyz\Shared\Oms\OmsConfig;
 use Spryker\Zed\Oms\Persistence\OmsQueryContainer as SprykerOmsQueryContainer;
 
 /**
@@ -30,6 +32,11 @@ class OmsQueryContainer extends SprykerOmsQueryContainer implements OmsQueryCont
     public function querySalesOrderItemsByState(array $states, $processName, $processId = null, $limit = null, ?string $storeName = null)
     {
         $query = parent::querySalesOrderItemsByState($states, $processName);
+        $query->where("not " . SpySalesOrderItemTableMap::COL_FK_SALES_ORDER . " in(
+            select " . SpySalesOrderItemTableMap::COL_FK_SALES_ORDER . "
+            from " . SpySalesOrderItemTableMap::TABLE_NAME . "
+                INNER JOIN " . SpyOmsOrderItemStateTableMap::TABLE_NAME . " on " . SpySalesOrderItemTableMap::COL_FK_OMS_ORDER_ITEM_STATE . " = " . SpyOmsOrderItemStateTableMap::COL_ID_OMS_ORDER_ITEM_STATE . "
+            where " . SpyOmsOrderItemStateTableMap::COL_NAME . " = '" . OmsConfig::STORE_STATE_READY_FOR_PICKING . "')");
 
         if ($processId !== null) {
             $query->filterByOmsProcessorId($processId);
@@ -53,6 +60,8 @@ class OmsQueryContainer extends SprykerOmsQueryContainer implements OmsQueryCont
             }
             if ($processName == 'DummyPayment01') {
                 dump('STORE: ' . $storeName);
+                date_default_timezone_set("Europe/Zagreb");
+                dump('DATE: ' . date('d/m/Y H:i:s', time()));
                 dump('ORDER ID:');
                 dump($salesOrderIds);
             }
