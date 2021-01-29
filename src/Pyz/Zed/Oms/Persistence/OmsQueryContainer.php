@@ -62,6 +62,7 @@ class OmsQueryContainer extends SprykerOmsQueryContainer implements OmsQueryCont
                 dump('STORE: ' . $storeName);
                 date_default_timezone_set("Europe/Zagreb");
                 dump('DATE: ' . date('d/m/Y H:i:s', time()));
+                date_default_timezone_set('UTC');
                 dump('ORDER ID:');
                 dump($salesOrderIds);
             }

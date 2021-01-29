@@ -314,7 +314,7 @@ class OrderStateMachine extends SprykerOrderStateMachine implements OrderStateMa
 
         $this->deleteOldTimeoutEvents($deleteOldTimeoutEvents);
         $this->insertNewTimeoutEvents($newTimeoutEvents);
-        $this->saveOrderItemsBulk($orderItems);
+        $this->saveOrderItemsBulk($orderItems, $sourceStateBuffer);
         $this->saveOrderItemsStateHistory($orderItems);
         $this->saveOrderItemsTransitionLog($log->getAllLogs());
     }
@@ -412,42 +412,24 @@ class OrderStateMachine extends SprykerOrderStateMachine implements OrderStateMa
     }
 
     /**
-     * @param \Orm\Zed\Sales\Persistence\SpySalesOrderItem[] $orderItems
+     * @param array $orderItems
+     * @param array $sourceStateBuffer
      *
      * @return void
      */
-    protected function saveOrderItemsBulk(array $orderItems)
+    protected function saveOrderItemsBulk(array $orderItems, array $sourceStateBuffer)
     {
-        $sql = '';
-        $index = 0;
-        $count = count($orderItems);
-        for ($i = 0; $i < $count; $i++) {
-            $sql .=
-            sprintf(
-                'UPDATE spy_sales_order_item SET fk_oms_order_item_state=:p%d, last_state_change=:p%d, updated_at=:p%d WHERE spy_sales_order_item.id_sales_order_item=:p%d;',
-                $index++,
-                $index++,
-                $index++,
-                $index++
-            );
+        $sqlArr = [];
+        foreach ($orderItems as $orderItem) {
+            $sqlArr[$orderItem->getFkOmsOrderItemState()] = 'UPDATE spy_sales_order_item SET fk_oms_order_item_state=' . $orderItem->getFkOmsOrderItemState() . ', last_state_change=now(), updated_at=now() WHERE spy_sales_order_item.fk_sales_order=' . $orderItem->getFkSalesOrder() . ' and spy_sales_order_item.fk_oms_order_item_state = (select id_oms_order_item_state from spy_oms_order_item_state where name = \'' . $sourceStateBuffer[$orderItem->getIdSalesOrderItem()] . '\'' . ')';
+            $orderItem->setIsOrderItemStateHistoryCreated(false);
         }
 
-        $index = 0;
+        $sql = implode($sqlArr, ';');
         $connection = Propel::getConnection();
         $connection->setAttribute(PDO::ATTR_EMULATE_PREPARES, true);
         $statement = $connection->prepare($sql);
-        foreach ($orderItems as $orderItem) {
-            $statement->bindValue(sprintf(':p%d', $index++), $orderItem->getFkOmsOrderItemState(), PDO::PARAM_INT);
-            $statement->bindValue(sprintf(':p%d', $index++), ($orderItem->getLastStateChange())->format('Y-m-d H:i:s.u'), PDO::PARAM_STR);
-            $statement->bindValue(sprintf(':p%d', $index++), (new DateTime())->format('Y-m-d H:i:s.u'), PDO::PARAM_STR);
-            $statement->bindValue(sprintf(':p%d', $index++), $orderItem->getIdSalesOrderItem(), PDO::PARAM_INT);
-            $modified = in_array(SpySalesOrderItemTableMap::COL_FK_OMS_ORDER_ITEM_STATE, $orderItem->getModifiedColumns());
-            if ($modified) {
-                $orderItem->setIsOrderItemStateHistoryCreated(false);
-            }
-        }
-
-        if ($index !== 0) {
+        if (count($sqlArr) > 0) {
             $statement->execute();
         }
     }
