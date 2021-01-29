@@ -72,13 +72,16 @@ class ProductController extends SprykerShopProductController
             $this->checkIfAdditionalProductInformationIsShown($productViewTransfer)
         );
 
+        $viewData['zutatenText'] = "";
         if (array_key_exists('zutaten', $productViewTransfer->getAttributes())) {
             $searchZutaten = "Zutaten:";
 
             $zutatenAttributeData = $productViewTransfer->getAttributes()["zutaten"];
             if (str_starts_with($productViewTransfer->getAttributes()["zutaten"], $searchZutaten)) {
                 $zutatenAttributeText = trim(substr($productViewTransfer->getAttributes()["zutaten"], strlen($searchZutaten), strlen($zutatenAttributeData)));
-                $productViewTransfer->getAttributes()["zutaten"] = $zutatenAttributeText;
+                $viewData['zutatenText'] = $zutatenAttributeText;
+            } else {
+                $viewData['zutatenText'] = $productViewTransfer->getAttributes()["zutaten"];
             }
         }
 

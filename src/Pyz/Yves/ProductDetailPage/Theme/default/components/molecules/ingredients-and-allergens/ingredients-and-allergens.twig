@@ -8,6 +8,7 @@
 {% define data = {
     productAttributes: required,
     triggerClassName: 'active',
+    zutatenText: ''
 } %}
 
 {% block class -%}
@@ -16,7 +17,7 @@
 
 {% block body %}
             {% if data.productAttributes['zutaten'] is defined %}
-                <div class="spacing-bottom spacing-bottom--bigger"><strong>{{ 'product.info.ingredients' | trans }}:</strong> {{ data.productAttributes['zutaten'] }}</div>
+                <div class="spacing-bottom spacing-bottom--bigger"><strong>{{ 'product.info.ingredients' | trans }}:</strong> {{ data.zutatenText }}</div>
             {% endif %}
 
             {% if data.productAttributes['entallerg'] is defined %}

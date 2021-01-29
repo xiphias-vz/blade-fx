@@ -87,7 +87,8 @@
                          {% block contentText %}
                              {% include molecule('ingredients-and-allergens', 'ProductDetailPage') with {
                                  data: {
-                                     productAttributes: data.product.attributes
+                                     productAttributes: data.product.attributes,
+                                     zutatenText: _view.zutatenText
                                  },
                              } only %}
                          {% endblock %}
