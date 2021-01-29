@@ -19,21 +19,19 @@
                 {% include molecule('product-options', 'ProductOptionWidget') ignore missing with {
                     modifiers: ['summary'],
                     data: {
-                        options: data.productItem.productOptions | default([])
+                        options: data.productItem.productOptions | default([]),
+                        pfandbetrag: data.productItem.concreteAttributes["pfandbetrag"]
                     }
                 } only %}
             </div>
         </li>
     {% else %}
-        {% for option in data.options %}
-            <li class="{{ component.renderClass(config.name ~ '__item', modifiers) }}">
-                <ul>
-                    <li class="{{ config.name }}__item-inner">
-                        + {{ option.value | trans }}:
-                        <span class="float-right">{{ option.sumPrice | default(0) | money }}</span>
-                    </li>
-                </ul>
-            </li>
-        {% endfor %}
+        <li class="{{ component.renderClass(config.name ~ '__item', modifiers) }}">
+            <ul>
+                <li class="{{ config.name }}__item-inner">
+                    + {{ 'mail.order.confirmation.deposit' | trans }} {{ data.pfandbetrag | replace('.', ',') }}
+                </li>
+            </ul>
+        </li>
     {% endif %}
 {% endblock %}

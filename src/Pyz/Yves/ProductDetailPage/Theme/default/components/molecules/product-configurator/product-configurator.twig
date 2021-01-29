@@ -121,7 +121,11 @@
 
     <form method="POST" action="{{ path("cart/add", {"sku": sku}) }}">
         <input type="hidden" name="token" value="{{ csrf_token('add-to-cart') }}"/>
-        {% widget 'ProductOptionConfiguratorWidget' args [data.product] only %}{% endwidget %}
+        {% if data.product.attributes.pfandbetrag is defined %}
+            <div class="text-secondary spacing-bottom--bigger">
+                {{ 'customer.order.item_price.excluding_pfand' | trans | format(data.product.attributes.pfandbetrag) }}
+            </div>
+        {% endif %}
 
         {% widget 'ProductPackagingUnitWidget' args [data.product, isDisabled, options] only %}
         {% elsewidget 'ManageProductMeasurementUnitWidget' args [data.product, isDisabled, options] only %}

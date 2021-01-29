@@ -6,6 +6,7 @@
 
 {% define data = {
     options: null,
+    pfandbetrag: ''
 } %}
 
 {% block component %}
@@ -16,10 +17,8 @@
 
 {% block body %}
     <ul>
-        {% for option in data.options %}
-            <li class="{{ component.renderClass(config.name ~ '__item', modifiers) }} grid">
-                + {{ option.value | trans }} {{ option.sumPrice | money }}
-            </li>
-        {% endfor %}
+        <li class="{{ component.renderClass(config.name ~ '__item', modifiers) }} grid">
+            + {{ 'mail.order.confirmation.deposit' | trans }} {{ data.pfandbetrag | replace('.', ',') }}
+        </li>
     </ul>
 {% endblock %}
