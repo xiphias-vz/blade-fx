@@ -16,9 +16,11 @@
 {% endblock %}
 
 {% block body %}
-    <ul>
-        <li class="{{ component.renderClass(config.name ~ '__item', modifiers) }} grid">
-            + {{ 'mail.order.confirmation.deposit' | trans }} {{ data.pfandbetrag | replace('.', ',') }}
-        </li>
-    </ul>
+    {% if data.pfandbetrag is not empty %}
+        <ul>
+            <li class="{{ component.renderClass(config.name ~ '__item', modifiers) }} grid">
+                + {{ 'mail.order.confirmation.deposit' | trans }} {{ data.pfandbetrag | replace('.', ',') }}
+            </li>
+        </ul>
+    {% endif %}
 {% endblock %}

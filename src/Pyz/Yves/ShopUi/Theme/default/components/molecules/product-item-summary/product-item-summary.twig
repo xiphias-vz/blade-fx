@@ -20,7 +20,7 @@
                     modifiers: ['summary'],
                     data: {
                         options: data.productItem.productOptions | default([]),
-                        pfandbetrag: data.productItem.concreteAttributes["pfandbetrag"]
+                        pfandbetrag: data.productItem.concreteAttributes["pfandbetrag"] | default("")
                     }
                 } only %}
             </div>
