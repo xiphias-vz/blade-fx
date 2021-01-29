@@ -60,8 +60,8 @@
                     }
             });
     </script>
-    <span class="brand-text">{{ 'product.attribute.manufacturer_name' | trans}}: </span>
-    {% if data.product.attributes['supplier'] %}
+    {% if data.product.attributes['supplier'] != 'keine Marke' and data.product.attributes['supplier']  != 'keine' and data.product.attributes['supplier']  != ''%}
+        <span class="brand-text">{{ 'product.attribute.manufacturer_name' | trans}}: </span>
         <span>
             {{ data.product.attributes['supplier'] }}
         </span>
