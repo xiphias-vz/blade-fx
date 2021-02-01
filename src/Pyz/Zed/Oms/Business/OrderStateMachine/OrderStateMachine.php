@@ -421,7 +421,13 @@ class OrderStateMachine extends SprykerOrderStateMachine implements OrderStateMa
     {
         $sqlArr = [];
         foreach ($orderItems as $orderItem) {
-            $sqlArr[$orderItem->getFkOmsOrderItemState()] = 'UPDATE spy_sales_order_item SET fk_oms_order_item_state=' . $orderItem->getFkOmsOrderItemState() . ', last_state_change=now(), updated_at=now() WHERE spy_sales_order_item.fk_sales_order=' . $orderItem->getFkSalesOrder() . ' and spy_sales_order_item.fk_oms_order_item_state = (select id_oms_order_item_state from spy_oms_order_item_state where name = \'' . $sourceStateBuffer[$orderItem->getIdSalesOrderItem()] . '\'' . ')';
+            if (array_key_exists($orderItem->getFkOmsOrderItemState(), $sqlArr)) {
+                $sqlArr[$orderItem->getFkOmsOrderItemState()] = str_replace(',0)', ',' . $orderItem->getIdSalesOrderItem() . ',0)', $sqlArr[$orderItem->getFkOmsOrderItemState()]);
+            } else {
+                $sqlArr[$orderItem->getFkOmsOrderItemState()] = 'UPDATE spy_sales_order_item SET fk_oms_order_item_state=' .
+                    $orderItem->getFkOmsOrderItemState() . ', last_state_change=now(), updated_at=now() WHERE spy_sales_order_item.fk_sales_order=' .
+                    $orderItem->getFkSalesOrder() . ' and spy_sales_order_item.id_sales_order_item in(' . $orderItem->getIdSalesOrderItem() . ',0)';
+            }
             $orderItem->setIsOrderItemStateHistoryCreated(false);
         }
 
