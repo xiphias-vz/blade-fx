@@ -25,6 +25,12 @@ x-real-ip: &real-ip
             - 2405:8100::/32 # Cloudflare
             - 2c0f:f248::/32 # Cloudflare
             - 2a06:98c0::/29 # Cloudflare
+            - 83.246.65.0/24 # Globus VPN
+            - 217.64.175.0/24 # Globus VPN
+            - 94.100.128.0/20 # Globus VPN
+            - 185.140.204.0/22 # Globus VPN
+            - 173.45.18.0/24 # Globus VPN
+            - 62.159.118.222 # Globus VPN
 
 x-frontend-auth: &frontend-auth
     <<: *real-ip
@@ -151,6 +157,7 @@ groups:
                     pick.shop-t.globus.de:
                         store: EIN
                         entry-point: StoreApp
+                        <<: *frontend-auth
 
 services:
     database:
