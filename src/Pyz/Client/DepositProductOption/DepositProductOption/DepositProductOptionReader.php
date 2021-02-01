@@ -64,13 +64,13 @@ class DepositProductOptionReader implements DepositProductOptionReaderInterface
     }
 
     /**
-     * @param \Generated\Shared\Transfer\ProductViewTransfer $productViewTransfer
+     * @param \Generated\Shared\Transfer\ProductViewTransfer|null $productViewTransfer
      * @param \Generated\Shared\Transfer\ProductAbstractOptionStorageTransfer|null $productAbstractOptionStorageTransfer
      *
      * @return \Generated\Shared\Transfer\ProductAbstractOptionStorageTransfer|null
      */
     protected function getFilteredProductOptions(
-        ProductViewTransfer $productViewTransfer,
+        ?ProductViewTransfer $productViewTransfer,
         ?ProductAbstractOptionStorageTransfer $productAbstractOptionStorageTransfer = null
     ) {
         if (!$productAbstractOptionStorageTransfer) {
