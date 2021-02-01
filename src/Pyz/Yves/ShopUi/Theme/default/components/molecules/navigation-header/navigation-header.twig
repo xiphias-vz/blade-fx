@@ -10,7 +10,7 @@
 } %}
 
 {% block body %}
-    <ul class="{{ config.name }}__list">
+    <ul id="product-category-list" class="{{ config.name }}__list">
         {% for node in data.nodes %}
             {% set hasChildren = node.children | length > 0 %}
 
