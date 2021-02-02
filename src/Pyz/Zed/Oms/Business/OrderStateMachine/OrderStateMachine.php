@@ -8,6 +8,8 @@
 namespace Pyz\Zed\Oms\Business\OrderStateMachine;
 
 use DateTime;
+use Orm\Zed\Oms\Persistence\Base\SpyOmsOrderItemStateHistoryQuery;
+use Orm\Zed\Oms\Persistence\Base\SpyOmsOrderItemStateQuery;
 use Orm\Zed\Sales\Persistence\Map\SpySalesOrderItemTableMap;
 use Orm\Zed\Sales\Persistence\SpySalesOrderItem;
 use PDO;
@@ -421,6 +423,8 @@ class OrderStateMachine extends SprykerOrderStateMachine implements OrderStateMa
     {
         $sqlArr = [];
         foreach ($orderItems as $orderItem) {
+            $orderItem = $this->changeMailState($orderItem);
+
             if (array_key_exists($orderItem->getFkOmsOrderItemState(), $sqlArr)) {
                 $sqlArr[$orderItem->getFkOmsOrderItemState()] = str_replace(',0)', ',' . $orderItem->getIdSalesOrderItem() . ',0)', $sqlArr[$orderItem->getFkOmsOrderItemState()]);
             } else {
@@ -558,5 +562,32 @@ class OrderStateMachine extends SprykerOrderStateMachine implements OrderStateMa
     protected function encodeParams(array $params): string
     {
         return '| ' . implode(' | ', $params) . ' |';
+    }
+
+    /**
+     * @param \Orm\Zed\Sales\Persistence\SpySalesOrderItem $orderItem
+     *
+     * @return \Orm\Zed\Sales\Persistence\SpySalesOrderItem
+     */
+    protected function changeMailState(SpySalesOrderItem $orderItem): SpySalesOrderItem
+    {
+        $stateName = $orderItem->getState()->getName();
+        $stateId = $orderItem->getState()->getIdOmsOrderItemState();
+        $orderItemId = $orderItem->getIdSalesOrderItem();
+        if ($stateName == 'shipped mail sending') {
+            $itemStateHistoryEntity = SpyOmsOrderItemStateHistoryQuery::create()
+                ->filterByFkOmsOrderItemState($stateId)
+                ->filterByFkSalesOrderItem($orderItemId)
+                ->find();
+            $itemStatusCount = count($itemStateHistoryEntity->getData());
+            if ($itemStatusCount >= 1) {
+                $itemEntity = SpyOmsOrderItemStateQuery::create()
+                    ->filterByName('shipped mail sent')
+                    ->findOne();
+                $orderItem->setState($itemEntity);
+            }
+        }
+
+        return $orderItem;
     }
 }
