@@ -28,6 +28,7 @@ use Spryker\Zed\Oms\Communication\Plugin\Mail\OrderShippedMailTypePlugin;
 use Spryker\Zed\Oms\Dependency\Facade\OmsToMailInterface;
 use Spryker\Zed\Oms\Dependency\Facade\OmsToSalesInterface;
 use Spryker\Zed\Translator\Business\TranslatorFacadeInterface;
+use Symfony\Component\Config\Definition\Exception\Exception;
 use Twig\Environment;
 
 class MailHandler extends SprykerMailHandler
@@ -144,19 +145,22 @@ class MailHandler extends SprykerMailHandler
      */
     public function sendOrderShippedMail(SpySalesOrder $salesOrderEntity)
     {
-        $orderTransfer = $this->getOrderTransfer($salesOrderEntity);
-        $orderTransfer = $this->expandWithItemGroups($orderTransfer);
+        try {
+            $orderTransfer = $this->getOrderTransfer($salesOrderEntity);
+            $orderTransfer = $this->expandWithItemGroups($orderTransfer);
 
-        $mailTransfer = new MailTransfer();
-        $mailTransfer->setOrder($orderTransfer);
-        $mailTransfer->setType(OrderShippedMailTypePlugin::MAIL_TYPE);
-        $mailTransfer->setLocale($orderTransfer->getLocale());
-        $mailTransfer->setCmsBlockName(CmsBlockConfig::CMS_BLOCK_EMAIL_ORDER_SHIPPED);
-        $mailTransfer->setCmsBlockPlaceholders(
-            $this->getCmsBlockPlaceholders($orderTransfer)
-        );
+            $mailTransfer = new MailTransfer();
+            $mailTransfer->setOrder($orderTransfer);
+            $mailTransfer->setType(OrderShippedMailTypePlugin::MAIL_TYPE);
+            $mailTransfer->setLocale($orderTransfer->getLocale());
+            $mailTransfer->setCmsBlockName(CmsBlockConfig::CMS_BLOCK_EMAIL_ORDER_SHIPPED);
+            $mailTransfer->setCmsBlockPlaceholders(
+                $this->getCmsBlockPlaceholders($orderTransfer)
+            );
 
-        $this->mailFacade->handleMail($mailTransfer);
+            $this->mailFacade->handleMail($mailTransfer);
+        } catch (Exception $e) {
+        }
     }
 
     /**
