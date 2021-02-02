@@ -196,23 +196,42 @@ export default class ProductItem extends Component {
             const eanScanInput = this.eanScanInputElement;
             let $inputValue = eanScanInput.value;
             const $formattedScanInput = $inputValue.replace('/x11', '').replace('/X11', '');
-            if($formattedScanInput.length != 13){
-                alert("Der Barcode sollte 13 Zeichen lang sein");
+
+            const $eanPrefix = Number($formattedScanInput.substr(0,2));
+            const $plu = $formattedScanInput.substr(2,4);  //Check with ean
+            const $gewichtFromScan = $formattedScanInput.substr(7,5);
+
+            const $ean = this.eanInputData;
+
+            let $alernativeEan = this.alternativeEanElement.getAttribute('data-altean');
+            let $altEansArr = $alernativeEan.toString().split(',');
+            if($alernativeEan === undefined){
+                $alernativeEan = [];
+            }
+
+            if($formattedScanInput.length != 13 && $formattedScanInput.length != 8){
+                alert("Der Barcode sollte 13 oder 8 Zeichen lang sein");
+            }
+            else if ($formattedScanInput.length == 8)
+            {
+                if(Number($formattedScanInput) === Number($ean)){
+                    this.step30();
+                }
+                else
+                {
+                    const inputHasAlternateEan = $altEansArr.some(function(v){ return v.indexOf($formattedScanInput) >= 0; });
+                    if(inputHasAlternateEan){
+                        this.step30();
+                    }
+                    else{
+                        alert("Error");
+                        this.eanScanInputElement.value = "";
+                        this.eanScanInputElement.focus();
+                    }
+                }
             }
             else
             {
-                const $eanPrefix = Number($formattedScanInput.substr(0,2));
-                const $plu = $formattedScanInput.substr(2,4);  //Check with ean
-                const $gewichtFromScan = $formattedScanInput.substr(7,5);
-
-                const $ean = this.eanInputData;
-
-
-                let $alernativeEan = this.alternativeEanElement.getAttribute('data-altean');
-                let $altEansArr = $alernativeEan.toString().split(',');
-                if($alernativeEan === undefined){
-                    $alernativeEan = [];
-                }
 
                 const $selForWeightElement = this.$this.find(".js-product-item__weight");
                 let valueOfWeightElement = $selForWeightElement.val();
