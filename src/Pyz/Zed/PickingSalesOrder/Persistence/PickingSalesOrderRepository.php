@@ -11,6 +11,7 @@ use Generated\Shared\Transfer\PickingSalesOrderCollectionTransfer;
 use Generated\Shared\Transfer\PickingSalesOrderCriteriaTransfer;
 use Generated\Shared\Transfer\PickingSalesOrderTransfer;
 use Orm\Zed\PickingSalesOrder\Persistence\PyzPickingSalesOrderQuery;
+use Orm\Zed\Sales\Persistence\Map\SpySalesOrderTableMap;
 use Spryker\Zed\Kernel\Persistence\AbstractRepository;
 
 /**
@@ -30,7 +31,10 @@ class PickingSalesOrderRepository extends AbstractRepository implements PickingS
             ->createPickingSalesOrderQuery();
 
         $pickingSalesOrderQuery = $this->applyFilters($pickingSalesOrderQuery, $pickingSalesOrderCriteriaTransfer);
-        $pyzPickingSalesOrderEntityCollection = $pickingSalesOrderQuery->find();
+        $pyzPickingSalesOrderEntityCollection = $pickingSalesOrderQuery
+            ->joinSpySalesOrder()
+            ->where(SpySalesOrderTableMap::COL_INVOICE_REFERENCE . ' is null')
+            ->find();
 
         foreach ($pyzPickingSalesOrderEntityCollection as $pyzPickingSalesOrderEntity) {
             $pickingSalesOrderTransfer = $this->getFactory()

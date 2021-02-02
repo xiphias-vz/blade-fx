@@ -1,7 +1,7 @@
 @mixin shop-ui-customer-info($name: '.customer-info') {
     #{$name} {
         &__content {
-            margin: rem(10);
+            margin: rem(10) 0;
             padding: rem(20);
             font-size: rem(14);
             font-weight: fw(bold);

@@ -1,5 +1,8 @@
 @mixin missing-articles($name: '.missing-articles') {
     #{$name} {
+        margin-top: rem(15);
+        margin-bottom: rem(10);
+
         .productName {
             font-weight: bold;
         }

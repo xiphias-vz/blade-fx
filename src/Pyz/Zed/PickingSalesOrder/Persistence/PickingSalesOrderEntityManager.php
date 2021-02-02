@@ -11,6 +11,7 @@ use Generated\Shared\Transfer\PickingSalesOrderCriteriaTransfer;
 use Generated\Shared\Transfer\PickingSalesOrderTransfer;
 use Orm\Zed\PickingSalesOrder\Persistence\PyzPickingSalesOrder;
 use Orm\Zed\PickingSalesOrder\Persistence\PyzPickingSalesOrderQuery;
+use Orm\Zed\Sales\Persistence\Map\SpySalesOrderTableMap;
 use Spryker\Zed\Kernel\Persistence\AbstractEntityManager;
 
 /**
@@ -39,8 +40,10 @@ class PickingSalesOrderEntityManager extends AbstractEntityManager implements Pi
     {
         $pickingSalesOrderEntity = $this->getFactory()
             ->createPickingSalesOrderQuery()
-            ->filterByContainerCode($pickingSalesOrderTransfer->getContainerCode())
-            ->findOne();
+            ->joinSpySalesOrder()
+            ->where(SpySalesOrderTableMap::COL_INVOICE_REFERENCE . ' is null')
+            ->findByContainerCode($pickingSalesOrderTransfer->getContainerCode())
+            ->getFirst();
 
         $pickingSalesOrderTransfer = $this->savePickingSalesOrder($pickingSalesOrderTransfer, $pickingSalesOrderEntity);
 

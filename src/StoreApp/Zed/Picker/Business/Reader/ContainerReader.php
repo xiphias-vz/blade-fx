@@ -121,7 +121,10 @@ class ContainerReader implements ContainerReaderInterface
      */
     public function getContainerShelfs(string $ContainerId): array
     {
-        return $this->pyzPickingSalesOrderQuery->findByContainerCode($ContainerId)->toArray();
+        return $this->pyzPickingSalesOrderQuery->joinSpySalesOrder()
+        ->where(SpySalesOrderTableMap::COL_INVOICE_REFERENCE . ' is null')
+        ->findByContainerCode($ContainerId)
+        ->toArray();
     }
 
     /**
