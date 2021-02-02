@@ -31,6 +31,7 @@ x-real-ip: &real-ip
             - 185.140.204.0/22 # Globus VPN
             - 173.45.18.0/24 # Globus VPN
             - 62.159.118.222 # Globus VPN
+            - 94.100.132.14 # Globus VPN
 
 x-frontend-auth: &frontend-auth
     <<: *real-ip
