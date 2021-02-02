@@ -54,6 +54,11 @@ class OmsQueryContainer extends SprykerOmsQueryContainer implements OmsQueryCont
 
             $salesOrderIds = $query->find()->getData();
             $query = parent::querySalesOrderItemsByState($states, $processName);
+            $query->where("not " . SpySalesOrderItemTableMap::COL_FK_SALES_ORDER . " in(
+            select " . SpySalesOrderItemTableMap::COL_FK_SALES_ORDER . "
+            from " . SpySalesOrderItemTableMap::TABLE_NAME . "
+                INNER JOIN " . SpyOmsOrderItemStateTableMap::TABLE_NAME . " on " . SpySalesOrderItemTableMap::COL_FK_OMS_ORDER_ITEM_STATE . " = " . SpyOmsOrderItemStateTableMap::COL_ID_OMS_ORDER_ITEM_STATE . "
+            where " . SpyOmsOrderItemStateTableMap::COL_NAME . " = '" . OmsConfig::STORE_STATE_READY_FOR_PICKING . "')");
 
             if (!empty($salesOrderIds)) {
                 $query->filterByFkSalesOrder_In($salesOrderIds);

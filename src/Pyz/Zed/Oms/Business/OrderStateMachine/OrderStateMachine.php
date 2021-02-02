@@ -432,7 +432,6 @@ class OrderStateMachine extends SprykerOrderStateMachine implements OrderStateMa
         }
 
         $sql = implode($sqlArr, ';');
-        dump('SQL QUERY: ' . $sql);
         $connection = Propel::getConnection();
         $connection->setAttribute(PDO::ATTR_EMULATE_PREPARES, true);
         $statement = $connection->prepare($sql);
