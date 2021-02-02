@@ -1143,7 +1143,7 @@ customer.account.wishlist.empty,Zurzeit ist kein Produkt auf deinem Merkzettel.,
 customer.account.wishlist.continue-shopping,Weiter shoppen,de_DE
 customer.account.wishlist.product,Produkt,de_DE
 customer.account.wishlist.price,Preis,de_DE
-customer.account.wishlist.add-to-cart,Auf die Einkaufsliste,de_DE
+customer.account.wishlist.add-to-cart,In den Warenkorb,de_DE
 customer.account.wishlist.remove,Löschen,de_DE
 customer.account.wishlist.product-not-available,Dieses Produkt ist momentan nicht verfügbar.,de_DE
 customer.account.wishlist.view-in-shop,Produktdetails,de_DE
@@ -1168,7 +1168,7 @@ customer.account.wishlist.overview.edit,Bearbeiten,de_DE
 customer.account.wishlist.overview.delete,Delete,en_US
 customer.account.wishlist.overview.delete,Löschen,de_DE
 customer.account.wishlist.add_all_available_to_cart,Add all products to the cart,en_US
-customer.account.wishlist.add_all_available_to_cart,Alle Produkte zum Wunscheinkauf hinzufügen,de_DE
+customer.account.wishlist.add_all_available_to_cart,Alle Produkte zum Warenkorb hinzufügen,de_DE
 customer.account.wishlist.availability,Availability,en_US
 customer.account.wishlist.availability,Verfügbarkeit,de_DE
 customer.account.wishlist.available,Available,en_US
@@ -1182,7 +1182,7 @@ customer.account.wishlist.item.moved_to_cart,Produkt erfolgreich in den Einkaufs
 customer.account.wishlist.item.moved_to_cart.failed,Product could not be added to the cart.,en_US
 customer.account.wishlist.item.moved_to_cart.failed,Produkt konnte nicht in den Einkaufsliste gelegt werden.,de_DE
 customer.account.wishlist.item.moved_all_available_to_cart,Available products were successfully added to the cart.,en_US
-customer.account.wishlist.item.moved_all_available_to_cart,Verfügbare Produkte wurden erfolgreich in den Einkaufsliste gelegt.,de_DE
+customer.account.wishlist.item.moved_all_available_to_cart,Verfügbare Produkte wurden erfolgreich in den Warenkorb gelegt.,de_DE
 customer.account.wishlist.item.moved_all_available_to_cart.failed,The items could not be successfully added to the cart.,en_US
 customer.account.wishlist.item.moved_all_available_to_cart.failed,Nicht alle Artikel konnten erfolgreich in den Einkaufsliste gelegt werden.,de_DE
 customer.account.wishlist.created,Wishlist successfully created.,en_US
