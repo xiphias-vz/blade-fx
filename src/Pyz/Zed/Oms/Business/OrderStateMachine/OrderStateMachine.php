@@ -572,19 +572,21 @@ class OrderStateMachine extends SprykerOrderStateMachine implements OrderStateMa
     protected function changeMailState(SpySalesOrderItem $orderItem): SpySalesOrderItem
     {
         $stateName = $orderItem->getState()->getName();
-        $stateId = $orderItem->getState()->getIdOmsOrderItemState();
         $orderItemId = $orderItem->getIdSalesOrderItem();
+        $itemEntity = SpyOmsOrderItemStateQuery::create()
+            ->filterByName('shipped mail sent')
+            ->findOne();
+        $itemEntityReady = SpyOmsOrderItemStateQuery::create()
+            ->filterByName('ready for collection')
+            ->findOne();
         if ($stateName == 'shipped mail sending') {
             $itemStateHistoryEntity = SpyOmsOrderItemStateHistoryQuery::create()
-                ->filterByFkOmsOrderItemState($stateId)
+                ->filterByFkOmsOrderItemState($itemEntity->getIdOmsOrderItemState())
                 ->filterByFkSalesOrderItem($orderItemId)
                 ->find();
             $itemStatusCount = count($itemStateHistoryEntity->getData());
             if ($itemStatusCount >= 1) {
-                $itemEntity = SpyOmsOrderItemStateQuery::create()
-                    ->filterByName('shipped mail sent')
-                    ->findOne();
-                $orderItem->setState($itemEntity);
+                $orderItem->setState($itemEntityReady);
             }
         }
 
