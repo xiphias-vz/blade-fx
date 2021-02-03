@@ -14,6 +14,7 @@ use Orm\Zed\Stock\Persistence\SpyStockProductQuery;
 use Orm\Zed\Stock\Persistence\SpyStockQuery;
 use Orm\Zed\Stock\Persistence\SpyStockStoreQuery;
 use Orm\Zed\Store\Persistence\SpyStoreQuery;
+use Propel\Runtime\Propel;
 use Pyz\Shared\Product\ProductConfig;
 use Pyz\Zed\DataImport\DataImportConfig;
 use Spryker\Zed\DataImport\Business\Model\DataImportStep\DataImportStepInterface;
@@ -103,6 +104,7 @@ class ProductStockWriterStep extends PublishAwareStep implements DataImportStepI
                 ->filterByFkStock($this->getIdStockByWarehouseName($sapStoreIdToStoreMap[$dataSet[static::KEY_STOCK_STORE]]))
                 ->findOneOrCreate();
             $stockStoreEntity->save();
+            $this->updateOrderItemShelfs($stockProductEntity->getFkProduct());
         }
     }
 
@@ -135,5 +137,35 @@ class ProductStockWriterStep extends PublishAwareStep implements DataImportStepI
         }
 
         return static::$idStoreBuffer[$storeName];
+    }
+
+    /**
+     * @param int $idProduct
+     *
+     * @return void
+     */
+    protected function updateOrderItemShelfs(int $idProduct)
+    {
+        $sql = 'UPDATE spy_sales_order_item INNER JOIN spy_sales_order on spy_sales_order_item.fk_sales_order = spy_sales_order.id_sales_order INNER JOIN spy_product on spy_product.sku = spy_sales_order_item.sku INNER JOIN spy_merchant on spy_merchant.filial_number = spy_sales_order.merchant_reference INNER JOIN spy_stock_store on spy_stock_store.fk_store = spy_merchant.fk_store INNER JOIN spy_stock_product on spy_stock_product.fk_stock = spy_stock_store.fk_stock AND spy_stock_product.fk_product = spy_product.id_product SET spy_sales_order_item.shelf = spy_stock_product.shelf, spy_sales_order_item.shelf_field = spy_stock_product.shelf_field, spy_sales_order_item.shelf_floor = spy_stock_product.shelf_floor WHERE spy_stock_product.fk_product = ' . $idProduct .' AND spy_sales_order_item.fk_oms_order_item_state in (select id_oms_order_item_state from spy_oms_order_item_state where spy_oms_order_item_state.name in (\'new\', \'confirmed\', \'ready for picking\')) AND (spy_sales_order_item.shelf <> spy_stock_product.shelf or spy_sales_order_item.shelf_field <> spy_stock_product.shelf_field or spy_sales_order_item.shelf_floor <> spy_stock_product.shelf_floor)';
+        $this->executeLocalSql($sql, $idProduct);
+    }
+
+    /**
+     * @param string $sql
+     * @param array $parameters
+     *
+     * @return void
+     */
+    protected function executeLocalSql(string $sql, $parameters = [])
+    {
+        try {
+            //$parameters = [$parameters];
+            $connection = Propel::getConnection();
+            //$stmt = $connection->prepare($sql);
+            $connection->exec($sql);
+            //$stmt->execute($parameters);
+        } catch (Exception $ex) {
+            dump($ex);
+        }
     }
 }
