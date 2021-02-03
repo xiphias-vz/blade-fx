@@ -34,12 +34,22 @@ class Global {
     }
 
     getWebAddress(shops) {
+        let sublink = '';
+        let storeUrlPart = '';
+
         const href = window.location.href;
-        const domainNew = href.replace('welcome.', '');
+        let domainNew = href.replace('welcome.', '');
+        let sublinkPos = domainNew.indexOf("?de/");
+        if (sublinkPos > 0) {
+            sublink = '&path=' + domainNew.substr(sublinkPos, domainNew.length);
+            sublink = sublink.replace('?', '');
+            domainNew = domainNew.substr(0, sublinkPos);
+        }
         const selectValue = this.select.value;
         const store = Object.keys(shops).find(store => selectValue === store);
-        const storeUrlPart = shops[store].link;
-        window.location.href = domainNew+storeUrlPart;
+        storeUrlPart = shops[store].link;
+        const newLink = domainNew+storeUrlPart+sublink;
+        window.location.href = newLink;
     }
 
     async getJson(url) {

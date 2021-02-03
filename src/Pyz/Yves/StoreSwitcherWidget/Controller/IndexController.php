@@ -18,6 +18,7 @@ class IndexController extends AbstractController
 {
     public const URL_PARAM_STORE = 'store';
     public const URL_PARAM_REFERER_URL = 'referer-url';
+    public const URL_PARAM_PATH = 'path';
 
     /**
      * @param \Symfony\Component\HttpFoundation\Request $request
@@ -28,6 +29,8 @@ class IndexController extends AbstractController
     {
         $store = $request->query->get(static::URL_PARAM_STORE);
         $refererUrl = $request->query->get(static::URL_PARAM_REFERER_URL);
+        $path = $request->query->get(static::URL_PARAM_PATH);
+        $refererUrl = $refererUrl . $path;
 
         $response = $refererUrl ? $this->redirectResponseExternal($refererUrl) : new RedirectResponse('/');
 

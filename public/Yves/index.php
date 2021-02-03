@@ -28,8 +28,17 @@ $currentStore = $_COOKIE['current_store'] ?? null;
 $checkCookie = $_GET['check-cookie'] ?? null;
 
 if (!$currentStore || !in_array($currentStore, $allStores)) {
+    $path = '';
     if ($checkCookie != "0") {
-        header('Location:' . $storeConfig['WELCOME']);
+        $uri = $_SERVER['REQUEST_SCHEME'] . '://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
+        $values = parse_url($uri);
+        $path = $values['path'];
+        $path = substr($path, 1);
+        if (strlen($path) > 0) {
+            $path = '?' . $path;
+        }
+
+        header('Location:' . $storeConfig['WELCOME'] . $path);
         exit();
     }
 
