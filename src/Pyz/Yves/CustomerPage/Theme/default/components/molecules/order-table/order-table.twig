@@ -47,19 +47,6 @@
                                         } only %}
                                     </a>
                                 </li>
-                                {% if order.invoiceCreatedAt %}
-                                    <li class="menu__item link link--darkest link--edit">
-                                        <a class="menu__link link link--darkest link--edit table__action" href="{{ path('customer/order/invoice', {'id': order.idSalesOrder}) }}" target="_blank">
-                                            {% include molecule('icon-tooltip') with {
-                                                modifiers: ['medium-up'],
-                                                data: {
-                                                    icon: 'print',
-                                                    text: 'customer.order.invoice' | trans,
-                                                },
-                                            } only %}
-                                        </a>
-                                    </li>
-                                {% endif %}
 
                                 {% include molecule('customer-reorder-link', 'CustomerReorderWidget') with {
                                     data: {
