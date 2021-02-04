@@ -11,12 +11,14 @@ use DateTime;
 use Generated\Shared\Transfer\OrderCriteriaFilterTransfer;
 use Generated\Shared\Transfer\QuoteTransfer;
 use Generated\Shared\Transfer\SpySalesOrderItemEntityTransfer;
+use Orm\Zed\Merchant\Persistence\Map\SpyMerchantTableMap;
 use Orm\Zed\Payone\Persistence\Map\SpyPaymentPayoneTableMap;
 use Orm\Zed\PickingZone\Persistence\Map\PyzPickingZoneTableMap;
 use Orm\Zed\Sales\Persistence\Map\SpySalesOrderItemTableMap;
 use Orm\Zed\Sales\Persistence\Map\SpySalesOrderTableMap;
 use Orm\Zed\Sales\Persistence\Map\SpySalesShipmentTableMap;
 use Orm\Zed\Sales\Persistence\SpySalesOrderQuery;
+use Orm\Zed\Stock\Persistence\Map\SpyStockStoreTableMap;
 use Orm\Zed\Stock\Persistence\SpyStockProduct;
 use Propel\Runtime\ActiveQuery\Criteria;
 use Spryker\Zed\Sales\Persistence\SalesRepository as SprykerSalesRepository;
@@ -317,8 +319,12 @@ class SalesRepository extends SprykerSalesRepository implements SalesRepositoryI
 
         $idStock = $this->getFactory()
             ->createStockQuery()
-            ->findOneByName($quoteTransfer->getStore()->getName())
-            ->getIdStock();
+            ->innerJoinWithStockStore()
+            ->addJoin(SpyStockStoreTableMap::COL_FK_STORE, SpyMerchantTableMap::COL_FK_STORE)
+            ->where(sprintf('%s = \'%s\'', SpyMerchantTableMap::COL_MERCHANT_REFERENCE, $quoteTransfer->getMerchantReference()))
+            ->select(SpyStockStoreTableMap::COL_FK_STOCK)
+            ->find()
+            ->getFirst();
 
         $idProduct = $this->getFactory()
             ->createProductQuery()
