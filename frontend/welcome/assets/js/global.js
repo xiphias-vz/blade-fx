@@ -41,7 +41,9 @@ class Global {
         let domainNew = href.replace('welcome.', '');
         let sublinkPos = domainNew.indexOf("?de/");
         if (sublinkPos > 0) {
-            sublink = '&path=' + domainNew.substr(sublinkPos, domainNew.length);
+            let tempLink = domainNew.substr(sublinkPos, domainNew.length);
+            tempLink = tempLink.replace('&', '%26');
+            sublink = '&path=' + tempLink;
             sublink = sublink.replace('?', '');
             domainNew = domainNew.substr(0, sublinkPos);
         }
