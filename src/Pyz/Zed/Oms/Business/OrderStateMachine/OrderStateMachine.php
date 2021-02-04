@@ -579,13 +579,29 @@ class OrderStateMachine extends SprykerOrderStateMachine implements OrderStateMa
         $itemEntityReady = SpyOmsOrderItemStateQuery::create()
             ->filterByName('ready for collection')
             ->findOne();
+        $itemEntitySending = SpyOmsOrderItemStateQuery::create()
+            ->filterByName('shipped mail sending')
+            ->findOne();
         if ($stateName == 'shipped mail sending') {
             $itemStateHistoryEntity = SpyOmsOrderItemStateHistoryQuery::create()
                 ->filterByFkOmsOrderItemState($itemEntity->getIdOmsOrderItemState())
                 ->filterByFkSalesOrderItem($orderItemId)
                 ->find();
             $itemStatusCount = count($itemStateHistoryEntity->getData());
+            $timeArray = [];
+            $min = date("Y-m-d h:i:s", time() - 10);
+            $timeArray['min'] = $min;
+            $max = date("Y-m-d h:i:s", time());
+            $timeArray['max'] = $max;
+            $itemStateSendingHistoryEntity = SpyOmsOrderItemStateHistoryQuery::create()
+                ->filterByFkOmsOrderItemState($itemEntitySending->getIdOmsOrderItemState())
+                ->filterByFkSalesOrderItem($orderItemId)
+                ->filterByCreatedAt_Between($timeArray)
+                ->find();
+            $itemSendingStatusCount = count($itemStateSendingHistoryEntity->getData());
             if ($itemStatusCount >= 1) {
+                $orderItem->setState($itemEntityReady);
+            } elseif ($itemSendingStatusCount > 0) {
                 $orderItem->setState($itemEntityReady);
             }
         }
