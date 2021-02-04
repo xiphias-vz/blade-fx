@@ -42,7 +42,7 @@ class Global {
         let sublinkPos = domainNew.indexOf("?de/");
         if (sublinkPos > 0) {
             let tempLink = domainNew.substr(sublinkPos, domainNew.length);
-            tempLink = tempLink.replace('&', '%26');
+            tempLink = tempLink.replaceAll('&', '%26');
             sublink = '&path=' + tempLink;
             sublink = sublink.replace('?', '');
             domainNew = domainNew.substr(0, sublinkPos);
