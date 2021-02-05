@@ -7,6 +7,7 @@
 
 namespace Pyz\Zed\Cart;
 
+use Pyz\Zed\PriceCartConnector\Communication\Plugin\FilterAvailableCartItemsPerStorePlugin;
 use Pyz\Zed\ProductUrlCartConnector\Communication\Plugin\ProductUrlCartExpanderPlugin;
 use Pyz\Zed\SalesOrderThreshold\Communication\Plugin\Cart\HardMaxThresholdReachedQuoteExpanderPlugin;
 use Pyz\Zed\SalesOrderThreshold\Communication\Plugin\Cart\HardThresholdReachedQuoteExpanderPlugin;
@@ -133,6 +134,7 @@ class CartDependencyProvider extends SprykerCartDependencyProvider
             new RemoveInactiveItemsPreReloadPlugin(),
             new CleanUpItemsPreReloadPlugin(),
             new FilterItemsWithoutPricePlugin(),
+            new FilterAvailableCartItemsPerStorePlugin(),
         ];
 
         return $preReloadPlugins;
