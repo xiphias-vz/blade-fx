@@ -21,7 +21,8 @@ class PriceCartConnectorBusinessFactory extends SpyPriceCartConnectorBusinessFac
     public function createItemsAvailableForStore()
     {
         return new AvailableItemsForStoreFilter(
-            $this->getAvailabilityFacade()
+            $this->getAvailabilityFacade(),
+            $this->addCartMessengerFacade()
         );
     }
 
@@ -31,5 +32,13 @@ class PriceCartConnectorBusinessFactory extends SpyPriceCartConnectorBusinessFac
     public function getAvailabilityFacade()
     {
         return $this->getProvidedDependency(PriceCartConnectorDependencyProvider::FACADE_AVAILABILITY);
+    }
+
+    /**
+     * @return mixed
+     */
+    public function addCartMessengerFacade()
+    {
+        return $this->getProvidedDependency(PriceCartConnectorDependencyProvider::FACADE_CART_MESSENGER);
     }
 }

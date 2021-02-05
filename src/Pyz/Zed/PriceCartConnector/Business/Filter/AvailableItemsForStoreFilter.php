@@ -9,14 +9,34 @@ namespace Pyz\Zed\PriceCartConnector\Business\Filter;
 
 use ArrayObject;
 use Generated\Shared\Transfer\CartPreCheckResponseTransfer;
-use Generated\Shared\Transfer\ProductAvailabilityCriteriaTransfer;
+use Generated\Shared\Transfer\MessageTransfer;
 use Generated\Shared\Transfer\QuoteTransfer;
 use Spryker\DecimalObject\Decimal;
 use Spryker\Zed\AvailabilityCartConnector\Business\Cart\CheckCartAvailability as SpyCheckCartAvailability;
+use Spryker\Zed\AvailabilityCartConnector\Dependency\Facade\AvailabilityCartConnectorToAvailabilityInterface;
+use Spryker\Zed\Cart\Dependency\Facade\CartToMessengerInterface;
 use Spryker\Zed\PriceCartConnector\Business\Filter\ItemFilterInterface;
 
 class AvailableItemsForStoreFilter extends SpyCheckCartAvailability implements ItemFilterInterface
 {
+    /**
+     * @var \Spryker\Zed\Cart\Dependency\Facade\CartToMessengerInterface
+     */
+    protected $messengerFacade;
+
+    /**
+     * @param \Spryker\Zed\AvailabilityCartConnector\Dependency\Facade\AvailabilityCartConnectorToAvailabilityInterface $availabilityFacade
+     * @param \Spryker\Zed\Cart\Dependency\Facade\CartToMessengerInterface $messengerFacade
+     */
+    public function __construct(
+        AvailabilityCartConnectorToAvailabilityInterface $availabilityFacade,
+        CartToMessengerInterface $messengerFacade
+    ) {
+        parent::__construct($availabilityFacade);
+
+        $this->messengerFacade = $messengerFacade;
+    }
+
     /**
      * @param \Generated\Shared\Transfer\QuoteTransfer $quoteTransfer
      *
@@ -28,7 +48,6 @@ class AvailableItemsForStoreFilter extends SpyCheckCartAvailability implements I
         $cartPreCheckResponseTransfer->setIsSuccess(true);
 
         $productsNotAvailableForStore = [];
-        $messages = new ArrayObject();
 
         foreach ($quoteTransfer->getItems() as $itemTransfer) {
             $isSellable = $this->availabilityFacade->isProductSellableForStore(
@@ -36,21 +55,47 @@ class AvailableItemsForStoreFilter extends SpyCheckCartAvailability implements I
                 new Decimal($itemTransfer->getQuantity()),
                 $quoteTransfer->getStore()
             );
-            $productAvailabilityCriteriaTransfer = (new ProductAvailabilityCriteriaTransfer())
-                ->fromArray($itemTransfer->toArray(), true);
 
             if (!$isSellable) {
-                $availability = $this->findProductConcreteAvailability($itemTransfer, $quoteTransfer->getStore(), $productAvailabilityCriteriaTransfer);
-                $cartPreCheckResponseTransfer->setIsSuccess(false);
-                $messages[] = $this->createItemIsNotAvailableMessageTransfer($availability, $itemTransfer->getSku());
                 array_push($productsNotAvailableForStore, $itemTransfer->getSku());
             }
         }
 
-        $cartPreCheckResponseTransfer->setMessages($messages);
+        $this->addErrorMessageForNotAvailableProducts($productsNotAvailableForStore);
         $quoteTransfer = $this->removeItemsNotSellable($quoteTransfer, $productsNotAvailableForStore);
 
         return $quoteTransfer;
+    }
+
+    /**
+     * @param array $productsNotAvailableForStore
+     *
+     * @return void
+     */
+    protected function addErrorMessageForNotAvailableProducts(array $productsNotAvailableForStore): void
+    {
+        if (!empty($productsNotAvailableForStore)) {
+            $this->messengerFacade->addErrorMessage(
+                $this->createMessengerMessageTransfer(static::CART_PRE_CHECK_AVAILABILITY_EMPTY, [
+                    '%sku%' => implode(', ', $productsNotAvailableForStore),
+                ])
+            );
+        }
+    }
+
+    /**
+     * @param string $message
+     * @param array $parameters
+     *
+     * @return \Generated\Shared\Transfer\MessageTransfer
+     */
+    protected function createMessengerMessageTransfer(string $message, array $parameters = []): MessageTransfer
+    {
+        $messageTransfer = new MessageTransfer();
+        $messageTransfer->setValue($message);
+        $messageTransfer->setParameters($parameters);
+
+        return $messageTransfer;
     }
 
     /**
