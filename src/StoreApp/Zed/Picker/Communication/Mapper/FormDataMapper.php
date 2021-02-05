@@ -14,7 +14,6 @@ use Generated\Shared\Transfer\OrderTransfer;
 use Generated\Shared\Transfer\PickingSalesOrderCollectionTransfer;
 use Generated\Shared\Transfer\PickingSalesOrderTransfer;
 use Generated\Shared\Transfer\PickingZoneTransfer;
-use InvalidArgumentException;
 use StoreApp\Zed\Picker\Communication\Form\OrderItemSelectionForm;
 
 class FormDataMapper implements FormDataMapperInterface
@@ -148,14 +147,16 @@ class FormDataMapper implements FormDataMapperInterface
 
             $itemTransfer = $this->findItemInOrder($salesOrderTransfer, $sku, $selectedIdSalesOrderItems);
 
-            $newPrice = round($newWeight * $itemTransfer->getPricePerKg() / 1000);
+            if ($itemTransfer) {
+                $newPrice = round($newWeight * $itemTransfer->getPricePerKg() / 1000);
 
-            $orderItemChangeRequest->setQuantity($itemTransfer->getQuantity());
-            $orderItemChangeRequest->setPrice($newPrice);
-            $orderItemChangeRequest->setNewWeight($newWeight);
-            $orderItemChangeRequest->setIdSalesOrderItem($itemTransfer->getIdSalesOrderItem());
+                $orderItemChangeRequest->setQuantity($itemTransfer->getQuantity());
+                $orderItemChangeRequest->setPrice($newPrice);
+                $orderItemChangeRequest->setNewWeight($newWeight);
+                $orderItemChangeRequest->setIdSalesOrderItem($itemTransfer->getIdSalesOrderItem());
 
-            $orderChangeRequest->addOrderItemChangeRequest($orderItemChangeRequest);
+                $orderChangeRequest->addOrderItemChangeRequest($orderItemChangeRequest);
+            }
         }
 
         return $orderChangeRequest;
@@ -166,15 +167,13 @@ class FormDataMapper implements FormDataMapperInterface
      * @param string $sku
      * @param array $selectedIdSalesOrderItems
      *
-     * @throws \InvalidArgumentException
-     *
-     * @return \Generated\Shared\Transfer\ItemTransfer
+     * @return \Generated\Shared\Transfer\ItemTransfer|null
      */
     private function findItemInOrder(
         OrderTransfer $salesOrderTransfer,
         string $sku,
         array $selectedIdSalesOrderItems
-    ): ItemTransfer {
+    ): ?ItemTransfer {
         $sumQuantity = 0;
         $sumPrice = 0;
         $sumWeightPerUnit = 0;
@@ -192,13 +191,12 @@ class FormDataMapper implements FormDataMapperInterface
             }
         }
 
-        if (!$selectedItemTransfer) {
-            throw new InvalidArgumentException('No item found for sku ' . $sku);
+        if ($selectedItemTransfer) {
+            //throw new InvalidArgumentException('No item found for sku ' . $sku);
+            $selectedItemTransfer->setQuantity($sumQuantity);
+            $selectedItemTransfer->setSumGrossPrice($sumPrice);
+            $selectedItemTransfer->setWeightPerUnit($sumWeightPerUnit);
         }
-
-        $selectedItemTransfer->setQuantity($sumQuantity);
-        $selectedItemTransfer->setSumGrossPrice($sumPrice);
-        $selectedItemTransfer->setWeightPerUnit($sumWeightPerUnit);
 
         return $selectedItemTransfer;
     }
