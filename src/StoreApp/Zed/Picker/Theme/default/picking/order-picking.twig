@@ -81,7 +81,7 @@
                     urlContainerSelect: data.urlContainerSelect,
                     idSalesOrder: data.idSalesOrder,
                     formStoppedSku: data.productSku,
-                    alternativeEanData: data.itemsToAlternativeEanMap[itemSku]
+                    alternativeEanData: data.itemsToAlternativeEanMap[itemSku] | default('')
                 },
                 attributes: {
                     'data-sku': itemSku,

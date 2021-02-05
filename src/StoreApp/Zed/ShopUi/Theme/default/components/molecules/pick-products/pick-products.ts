@@ -3,6 +3,17 @@ import $ from 'jquery/dist/jquery';
 import ProductItem from '../product-item/product-item';
 import isEmpty from 'lodash-es/isEmpty';
 
+type ScanningBox = {
+    id: number;
+    scannedBarcode: number;
+    scannedWeight: number;
+    fullScannedId: string;
+}
+
+type BoxContainer = {
+    [key:number]: ScanningBox;
+}
+
 export default class PickProducts extends Component {
     protected $document = $(document);
     protected productItems: ProductItem[];
@@ -10,8 +21,13 @@ export default class PickProducts extends Component {
     protected pickedProductsCount: number;
     protected notPickedCount: number;
     protected pickedCount: number;
+    protected weight: number;
+    protected showInfo: boolean;
+    protected containerData: any;
     protected $notPickedField: $;
     protected $pickedField: $;
+    protected $weightField: $;
+    protected $hasInfoField: $;
     protected $action: $;
     protected $submitButton: $;
     protected $bagsStatus: $;
@@ -22,6 +38,9 @@ export default class PickProducts extends Component {
                 isNotFullyAccepted: boolean;
                 isDeclined: boolean;
                 count: number;
+                weight: number;
+                showInfo: boolean;
+                containerData: Array<BoxContainer>;
             }
         };
         timestamp: Date;
@@ -38,6 +57,8 @@ export default class PickProducts extends Component {
         this.quantityInput = $(document).find('.quantity-counter input')[0];
         this.$notPickedField = $(document).find(this.notPickedFieldSelector);
         this.$pickedField = $(document).find(this.pickedFieldSelector);
+        this.$weightField = $(document).find(this.weightFieldSelector);
+        this.$hasInfoField = $(document).find(this.hasInfoFieldSelector);
         this.$action = $(document).find(this.actionSelector);
         this.$submitButton = $(document).find(this.submitButtonSelector);
         this.$bagsStatus = $(document).find(this.bagsSelector);
@@ -80,6 +101,9 @@ export default class PickProducts extends Component {
 
             this.pickedCount += item.currentValue;
             this.notPickedCount += item.maxQuantity - item.currentValue;
+            this.weight = item.weight;
+            this.showInfo = item.showInfo;
+            this.containerData = item.containerData;
 
             this.updateStorageItem(item);
         });
@@ -93,7 +117,10 @@ export default class PickProducts extends Component {
             isAccepted: productItem.isAccepted,
             isNotFullyAccepted: productItem.isNotFullyAccepted,
             isDeclined: productItem.isDeclined,
-            count: productItem.currentValue
+            count: productItem.currentValue,
+            weight: productItem.weight,
+            showInfo: productItem.showInfo,
+            containerData: productItem.containerData
         };
 
         localStorage.setItem(this.orderId, JSON.stringify(this.storageData));
@@ -135,6 +162,14 @@ export default class PickProducts extends Component {
     protected updateCalculation(): void {
         this.$notPickedField.html(this.notPickedCount);
         this.$pickedField.html(this.pickedCount);
+    }
+
+    protected get weightFieldSelector(): string {
+        return `.${this.jsName}__weight`;
+    }
+
+    protected get hasInfoFieldSelector(): string {
+        return `.${this.jsName}__hasInfo`;
     }
 
     protected get notPickedFieldSelector(): string {

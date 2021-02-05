@@ -7,6 +7,20 @@ interface StorageItem {
     isNotFullyAccepted: boolean;
     isDeclined: boolean;
     count: number;
+    weight: number;
+    showInfo: boolean;
+    containerData: Array<BoxContainer>;
+}
+
+type ScanningBox = {
+    id: number;
+    scannedBarcode: number;
+    scannedWeight: number;
+    fullScannedId: string;
+}
+
+type BoxContainer = {
+    [key:number]: ScanningBox;
 }
 
 export default class ProductItem extends Component {
@@ -15,6 +29,9 @@ export default class ProductItem extends Component {
     isAccepted = false;
     isNotFullyAccepted = false;
     isDeclined = false;
+    weight = 0;
+    showInfo = false;
+    containerData = [];
     protected debounceDelay = 300;
     protected barcodeAndWeightContainer = 0;
     protected pickProducts: PickProducts;
@@ -107,6 +124,9 @@ export default class ProductItem extends Component {
 
                 return;
             }
+            else{
+                this.$weightField.focus();
+            }
 
             this.declineClickHandler();
         });
@@ -136,6 +156,18 @@ export default class ProductItem extends Component {
     async updateItem(item: StorageItem): Promise<void> {
         await this.updateQuantityInput(item.count);
 
+        if(item.containerData.length > 0){
+            item.containerData.forEach((value, index) => {
+                this.initAddInfoBox(value);
+                this.containerData = item.containerData;
+            });
+
+            if(this.currentWeight != NaN){
+                this.weight = Number(item.weight);
+                this.$weightField.val(Number(this.weight));
+            }
+        }
+
         if (item.isAccepted || item.isNotFullyAccepted) {
             this.acceptClickHandler();
         }
@@ -143,6 +175,20 @@ export default class ProductItem extends Component {
         if (item.isDeclined) {
             this.declineClickHandler();
         }
+    }
+
+    protected initAddInfoBox(item: BoxContainer): void {
+
+        let elementToAdd = $(  '<div id="' + item.fullScannedId + '" class="barcodeAndWeightContainer">' +
+            '<div class="col--md-8 float-left">' +
+            '<div><span>Barcode: <span class="scannedBarcode_' + item.id + '">' + item.scannedBarcode + '</span></span></div>' +
+            '<div><span>Weight: <span class="weight_' + item.id + '">' + Math.round(item.scannedWeight) + '</span></span></div>' +
+            '</div>' +
+            '<div class="bawContainerRemove_' + item.id + ' col--md-3 float-right text-right"><button id="bawContainerButton_' + item.id + '" class="bawContainerButton" type="button">X</button></div>' +
+            '</div>');
+        elementToAdd.appendTo(this.$this.find(".product-item__info"));
+
+        document.querySelector('#' + item.fullScannedId).addEventListener('click', evt => this.onRemoveContainerClick(evt, item.scannedWeight));
     }
 
     protected clickCounterHandler(isPicked: boolean = false): void {
@@ -177,6 +223,7 @@ export default class ProductItem extends Component {
 
             return false;
         }else {
+            this.weight = inputWeightValue;
 
             return true;
         }
@@ -292,17 +339,26 @@ export default class ProductItem extends Component {
     protected step20(quantityElement, scannedBarcodeValue, calculatedWeight: number, valueOfWeightElement: number): void {
         const sku = this.dataset.sku;
         let id = "barcodeAndWeightContainer_" + sku + '_' + this.barcodeAndWeightContainer;
-        $(  '<div id="' + id + '" class="barcodeAndWeightContainer">' +
+        let elementToAdd = $(  '<div id="' + id + '" class="barcodeAndWeightContainer">' +
             '<div class="col--md-8 float-left">' +
             '<div><span>Barcode: <span class="scannedBarcode_' + this.barcodeAndWeightContainer + '">' + scannedBarcodeValue + '</span></span></div>' +
             '<div><span>Weight: <span class="weight_' + this.barcodeAndWeightContainer + '">' + Math.round(calculatedWeight) + '</span></span></div>' +
             '</div>' +
             '<div class="bawContainerRemove_' + this.barcodeAndWeightContainer + ' col--md-3 float-right text-right"><button id="bawContainerButton_' + this.barcodeAndWeightContainer + '" class="bawContainerButton" type="button">X</button></div>' +
-            '</div>').appendTo(this.$this.find(".product-item__info"));
+            '</div>');
+        elementToAdd.appendTo(this.$this.find(".product-item__info"));
 
         document.querySelector('#' + id).addEventListener('click', evt => this.onRemoveContainerClick(evt, calculatedWeight));
 
         this.barcodeAndWeightContainer++;
+        this.showInfo = true;
+        this.weight = this.currentWeight;
+        let scanBox = {} as ScanningBox
+        scanBox.fullScannedId = id;
+        scanBox.id = this.barcodeAndWeightContainer;
+        scanBox.scannedBarcode = scannedBarcodeValue;
+        scanBox.scannedWeight = Math.round(calculatedWeight);
+        this.containerData.push(scanBox);
 
         const inputWeightMax = Number(this.$weightField.attr('max'));
         const inputWeightMin = Number(this.$weightField.attr('min'));
@@ -336,10 +392,27 @@ export default class ProductItem extends Component {
 
     protected onRemoveContainerClick(event: MouseEvent, valueOfWeightElement) {
         this.clickCounterHandler();
-        document.getElementById(event.target.id).parentElement.parentElement.remove();
+        this.findAncestor(event.target, "barcodeAndWeightContainer").remove();
         this.barcodeAndWeightContainer--;
+
         let weightInput = this.$this.find(".js-product-item__weight");
-        weightInput.val(Math.round(Number(Number(weightInput.val()) - Number(valueOfWeightElement))));
+        let calculatedWeight = Math.round(Number(Number(weightInput.val()) - Number(valueOfWeightElement)));
+        weightInput.val(calculatedWeight);
+
+        var myArray = this.containerData;
+        var index = myArray.findIndex(x => x.fullScannedId === event.currentTarget.id);
+
+        if (index > -1){
+            myArray.splice(index, 1);
+            this.weight = calculatedWeight;
+            this.pickProducts.update();
+        }
+
+        let hasInfoBoxes = $(".barcodeAndWeightContainer");
+        if(hasInfoBoxes == null){
+            this.showInfo = false;
+        }
+
         this.eanScanInputElement.value = '';
         this.eanScanInputElement.focus();
     }
@@ -389,15 +462,33 @@ export default class ProductItem extends Component {
     }
 
     protected declineClickHandler(): void {
+        this.$weightField.removeAttr('min');
+        this.$weightField.removeAttr('max');
+        this.$weightField.removeAttr('required');
+
         this.isDeclined = true;
         this.updateQuantityInput(0);
         this.$this.addClass(this.notPickedCLass);
         this.$this[0].$declineButton.addClass(this.addUndoCLass);
         this.pickProducts.update();
 
-        this.$weightField.removeAttr('min');
-        this.$weightField.removeAttr('max');
-        this.$weightField.removeAttr('required');
+        let elementForFocus: HTMLInputElement = null;
+        const elements = <HTMLInputElement>document.getElementsByClassName('ean_scan_input');
+        const sku = this.dataset.sku;
+        for (let i=0; i< elements.length; i++)
+        {
+            const elementsArray = elements[i].id.split('__');
+            const skuElement = elementsArray[1];
+            if(sku == skuElement)
+            {
+                if(i!= (elements.length -1))
+                {
+                    elementForFocus = <HTMLInputElement>document.getElementsByClassName('ean_scan_input')[i+1];
+                    break;
+                }
+            }
+        }
+        if(elementForFocus != null) elementForFocus.focus();
 
     }
 
@@ -424,6 +515,11 @@ export default class ProductItem extends Component {
     {
         const element = document.getElementsByClassName('ean_scan_input')[0];
         element.focus();
+    }
+
+    protected findAncestor (el, cls) {
+        while ((el = el.parentElement) && !el.classList.contains(cls));
+        return el;
     }
 
     protected get minusButtonSelector(): string {
@@ -476,6 +572,10 @@ export default class ProductItem extends Component {
 
     get currentQuantity(): number {
         return Number(this.$quantityField.val());
+    }
+
+    get currentWeight(): number {
+        return Number(this.$weightField.val());
     }
 
     get sku(): string {
