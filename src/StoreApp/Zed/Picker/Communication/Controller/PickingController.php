@@ -74,8 +74,8 @@ class PickingController extends BaseOrderPickingController
             $merchantSalesOrderTransfers->getArrayCopy()
         );
 
-        $pickingOrders = [];
         $requestedDeliveryDatesByIdSalesOrders = [];
+        $pickingOrders = [];
 
         if (empty($idSalesOrdersForPicking)) {
             $this->addInfoMessage(
@@ -89,29 +89,35 @@ class PickingController extends BaseOrderPickingController
 
         $daysInTheWeek = $this->getFactory()->getConfig()->getDaysInTheWeek();
 
-        foreach ($idSalesOrdersForPicking as $idSalesOrder) {
-            $salesOrderTransfer = $this->getFactory()->getSalesFacade()
-                ->findOrderByIdSalesOrderAndPickingZoneForStoreApp($idSalesOrder, $pickingZoneTransfer->getName());
-            $merchantSalesOrderTransfer = $merchantSalesOrderTransfers[$idSalesOrder];
-            $fullOrderTransfer = $this->getFactory()->getSalesFacade()
-                ->findOrderByIdSalesOrderForStoreApp($idSalesOrder);
+        $gry = $this->getFactory()
+            ->queryOrdersForPickingZone()
+            ->withColumn("(select count(*) from spy_sales_order_item i where i.fk_sales_order = spy_sales_order.id_sales_order)", "itemsCountTotal")
+            ->withColumn("(select count(*) from spy_sales_order_item i where i.fk_sales_order = spy_sales_order.id_sales_order and i.pick_zone = '" . $pickingZoneTransfer->getName() . "' )", "itemsCountZone")
+            ->where("spy_sales_order.id_sales_order in(" . implode(',', $idSalesOrdersForPicking) . ")")
+            ->find()
+            ->toArray();
+
+        $order = new OrderTransfer();
+        foreach ($gry as $item) {
+            $order->fromArray($item, true);
+            $merchantSalesOrderTransfer = $merchantSalesOrderTransfers[$order->getIdSalesOrder()];
             $dayOfTheWeek = '';
-            if ($requestedDeliveryDatesByIdSalesOrders[$idSalesOrder]) {
-                $deliveryDate = str_split($requestedDeliveryDatesByIdSalesOrders[$idSalesOrder], 10);
+            if ($requestedDeliveryDatesByIdSalesOrders[$order->getIdSalesOrder()]) {
+                $deliveryDate = str_split($requestedDeliveryDatesByIdSalesOrders[$order->getIdSalesOrder()], 10);
                 $dayInTheWeek = date('w', strtotime($deliveryDate[0]));
                 $dayOfTheWeek = $daysInTheWeek[$dayInTheWeek];
             }
 
             $pickingOrders[] = [
-                'idSalesOrder' => $idSalesOrder,
-                'reference' => $salesOrderTransfer->getOrderReference(),
-                'collectNumber' => $salesOrderTransfer->getCollectNumber(),
-                'itemCount' => $salesOrderTransfer->getItems()->count(),
-                'totalItemCount' => $fullOrderTransfer->getItems()->count(),
+                'idSalesOrder' => $order->getIdSalesOrder(),
+                'reference' => $order->getOrderReference(),
+                'collectNumber' => $order->getCollectNumber(),
+                'itemCount' => $item["itemsCountZone"],
+                'totalItemCount' => $item["itemsCountTotal"],
                 'isPicked' => $merchantSalesOrderTransfer->getFkUser() === $userTransfer->getIdUser(),
-                'requestedDeliveryDate' => $requestedDeliveryDatesByIdSalesOrders[$idSalesOrder],
-                'cartNote' => $salesOrderTransfer->getCartNote(),
-                'customerFullName' => $salesOrderTransfer->getFirstName() . ' ' . $salesOrderTransfer->getLastName(),
+                'requestedDeliveryDate' => $requestedDeliveryDatesByIdSalesOrders[$order->getIdSalesOrder()],
+                'cartNote' => $order->getCartNote(),
+                'customerFullName' => $order->getFirstName() . ' ' . $order->getLastName(),
                 'dayOfTheWeek' => $dayOfTheWeek,
                 'pickupStatus' => $merchantSalesOrderTransfer->getStoreStatus(),
             ];

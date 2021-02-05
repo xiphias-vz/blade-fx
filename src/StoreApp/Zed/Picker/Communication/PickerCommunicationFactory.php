@@ -7,6 +7,7 @@
 
 namespace StoreApp\Zed\Picker\Communication;
 
+use Orm\Zed\Sales\Persistence\SpySalesOrderQuery;
 use Pyz\Service\DateTimeWithZone\DateTimeWithZoneServiceInterface;
 use Pyz\Zed\Merchant\Business\MerchantFacadeInterface;
 use Pyz\Zed\MerchantSalesOrder\Business\MerchantSalesOrderFacadeInterface;
@@ -244,5 +245,13 @@ class PickerCommunicationFactory extends AbstractCommunicationFactory
     public function getBarcodeGenerator(): BarcodeGenerator
     {
         return new BarcodeGenerator();
+    }
+
+    /**
+     * @return \Orm\Zed\Sales\Persistence\SpySalesOrderQuery
+     */
+    public function queryOrdersForPickingZone(): SpySalesOrderQuery
+    {
+        return SpySalesOrderQuery::create();
     }
 }
