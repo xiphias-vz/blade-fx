@@ -424,6 +424,7 @@ class OrderStateMachine extends SprykerOrderStateMachine implements OrderStateMa
         $sqlArr = [];
         foreach ($orderItems as $orderItem) {
             $orderItem = $this->changeMailState($orderItem);
+            $orderItem = $this->checkCashierOrderExport($orderItem);
 
             if (array_key_exists($orderItem->getFkOmsOrderItemState(), $sqlArr)) {
                 $sqlArr[$orderItem->getFkOmsOrderItemState()] = str_replace(',0)', ',' . $orderItem->getIdSalesOrderItem() . ',0)', $sqlArr[$orderItem->getFkOmsOrderItemState()]);
@@ -588,11 +589,7 @@ class OrderStateMachine extends SprykerOrderStateMachine implements OrderStateMa
                 ->filterByFkSalesOrderItem($orderItemId)
                 ->find();
             $itemStatusCount = count($itemStateHistoryEntity->getData());
-            $timeArray = [];
-            $min = date("Y-m-d h:i:s", time() - 10);
-            $timeArray['min'] = $min;
-            $max = date("Y-m-d h:i:s", time());
-            $timeArray['max'] = $max;
+            $timeArray = $this->getTimeArray();
             $itemStateSendingHistoryEntity = SpyOmsOrderItemStateHistoryQuery::create()
                 ->filterByFkOmsOrderItemState($itemEntitySending->getIdOmsOrderItemState())
                 ->filterByFkSalesOrderItem($orderItemId)
@@ -607,5 +604,50 @@ class OrderStateMachine extends SprykerOrderStateMachine implements OrderStateMa
         }
 
         return $orderItem;
+    }
+
+    /**
+     * @param \Orm\Zed\Sales\Persistence\SpySalesOrderItem $orderItem
+     *
+     * @return \Orm\Zed\Sales\Persistence\SpySalesOrderItem
+     */
+    protected function checkCashierOrderExport(SpySalesOrderItem $orderItem): SpySalesOrderItem
+    {
+        $stateName = $orderItem->getState()->getName();
+        $orderItemId = $orderItem->getIdSalesOrderItem();
+        $itemCashierOrderItemEntity = SpyOmsOrderItemStateQuery::create()
+            ->filterByName('cashier export process')
+            ->findOne();
+        $itemEntityCollectionProcess = SpyOmsOrderItemStateQuery::create()
+            ->filterByName('collection process')
+            ->findOne();
+        if ($stateName == 'cashier export process') {
+            $timeArray = $this->getTimeArray();
+            $itemStateCashierExportingHistoryEntity = SpyOmsOrderItemStateHistoryQuery::create()
+                ->filterByFkOmsOrderItemState($itemCashierOrderItemEntity->getIdOmsOrderItemState())
+                ->filterByFkSalesOrderItem($orderItemId)
+                ->filterByCreatedAt_Between($timeArray)
+                ->find();
+            $itemStateCashierExportingCount = count($itemStateCashierExportingHistoryEntity);
+            if ($itemStateCashierExportingCount > 0) {
+                $orderItem->setState($itemEntityCollectionProcess);
+            }
+        }
+
+        return $orderItem;
+    }
+
+    /**
+     * @return array
+     */
+    public function getTimeArray(): array
+    {
+        $timeArray = [];
+        $min = date("Y-m-d h:i:s", time() - 10);
+        $timeArray['min'] = $min;
+        $max = date("Y-m-d h:i:s", time());
+        $timeArray['max'] = $max;
+
+        return $timeArray;
     }
 }
