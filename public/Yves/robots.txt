@@ -1,0 +1,7 @@
+User-Agent: *
+Disallow: /de/wishlist
+Disallow: /de/customer/
+Disallow: /de/checkout/
+Disallow: /de/search/
+Disallow: /de/login/
+Disallow: /de/cart
