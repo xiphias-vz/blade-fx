@@ -76,9 +76,7 @@ class AvailableItemsForStoreFilter extends SpyCheckCartAvailability implements I
     {
         if (!empty($productsNotAvailableForStore)) {
             $this->messengerFacade->addErrorMessage(
-                $this->createMessengerMessageTransfer(static::CART_PRE_CHECK_AVAILABILITY_EMPTY, [
-                    '%sku%' => implode(', ', $productsNotAvailableForStore),
-                ])
+                $this->createMessengerMessageTransfer(static::CART_PRE_CHECK_AVAILABILITY_EMPTY)
             );
         }
     }
