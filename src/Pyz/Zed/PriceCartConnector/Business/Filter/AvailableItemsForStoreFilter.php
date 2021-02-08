@@ -19,6 +19,8 @@ use Spryker\Zed\PriceCartConnector\Business\Filter\ItemFilterInterface;
 
 class AvailableItemsForStoreFilter extends SpyCheckCartAvailability implements ItemFilterInterface
 {
+    public const CART_PRE_CHECK_AVAILABILITY_NOT_SELLABLE = 'cart.pre.check.availability.failed.not.sellable';
+
     /**
      * @var \Spryker\Zed\Cart\Dependency\Facade\CartToMessengerInterface
      */
@@ -76,7 +78,7 @@ class AvailableItemsForStoreFilter extends SpyCheckCartAvailability implements I
     {
         if (!empty($productsNotAvailableForStore)) {
             $this->messengerFacade->addErrorMessage(
-                $this->createMessengerMessageTransfer(static::CART_PRE_CHECK_AVAILABILITY_EMPTY)
+                $this->createMessengerMessageTransfer(static::CART_PRE_CHECK_AVAILABILITY_NOT_SELLABLE)
             );
         }
     }

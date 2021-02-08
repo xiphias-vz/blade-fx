@@ -10,7 +10,6 @@ namespace Pyz\Yves\CartPage\Controller;
 use Generated\Shared\Transfer\ItemTransfer;
 use Generated\Shared\Transfer\OrderDetailRequestTransfer;
 use Generated\Shared\Transfer\ProductViewTransfer;
-use Generated\Shared\Transfer\QuoteResponseTransfer;
 use Generated\Shared\Transfer\QuoteTransfer;
 use Pyz\Shared\Messages\MessagesConfig;
 use Pyz\Shared\OrderDetail\OrderDetailConstants;
@@ -47,17 +46,13 @@ class CartController extends SprykerCartController
     public function executeIndexAction(array $selectedAttributes = []): array
     {
         $data = parent::executeIndexAction($selectedAttributes);
-        $validateQuoteResponseTransfer = $this->getFactory()
-            ->getCartClient()
-            ->validateQuote();
-        $quoteTransfer = $validateQuoteResponseTransfer->getQuoteTransfer();
-        $isQuoteValid = $validateQuoteResponseTransfer->getIsSuccessful();
-        $amountToPay = $quoteTransfer->getTotals()->getPriceToPay() / 100;
-        if (!$isQuoteValid && count($quoteTransfer->getItems()) > 0 && $amountToPay >= 15) {
-            $quoteResponseTransfer = (new QuoteResponseTransfer())
-                ->setIsSuccessful(true)
-                ->setQuoteTransfer($quoteTransfer);
-            $data['isQuoteValid'] = $quoteResponseTransfer->getIsSuccessful();
+        $quoteTransfer = $data['cart'];
+
+        if (count($quoteTransfer->getItems()) > 0 && $data['isQuoteValid'] == false) {
+            $amountToPay = $quoteTransfer->getTotals()->getPriceToPay() / 100;
+            if ($amountToPay > 15) {
+                $data['isQuoteValid'] = true;
+            }
         }
 
         $orderDetailRequestTransfer = $this->getOrderDetailRequestTransfer($quoteTransfer);
