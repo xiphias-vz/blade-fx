@@ -85,40 +85,41 @@ class CollectByCustomerController extends AbstractController
 
         $requestedDeliveryDatesByIdSalesOrders = $this->getFormattedDeliveryDates($idSalesOrdersForCollection);
 
-        foreach ($idSalesOrdersForCollection as $idSalesOrder) {
-            $salesOrderTransfer = $this->getFactory()->getSalesFacade()->findOrderByIdSalesOrderForStoreApp($idSalesOrder);
-            $collectionMerchantSalesOrder = $collectionMerchantSalesOrders[$idSalesOrder];
+        $qryOrdersInStatus = $this->getFactory()
+            ->queryOrdersForPickingZone()
+            ->withColumn("(select count(*) from spy_sales_order_item i inner join spy_oms_order_item_state s on i.fk_oms_order_item_state = s.id_oms_order_item_state where i.fk_sales_order = spy_sales_order.id_sales_order and s.name = 'ready for collection')", "pickedProductCount")
+            ->withColumn("(select requested_delivery_date from spy_sales_shipment ss where ss.fk_sales_order = spy_sales_order.id_sales_order)", "requestedDeliveryDate")
+            ->withColumn("(select count(*) from pyz_picking_sales_order pso where pso.fk_sales_order = spy_sales_order.id_sales_order)", "numberOfContainersInOrder")
+            ->where("spy_sales_order.id_sales_order in(" . implode(',', $idSalesOrdersForCollection) . ")")
+            ->find()
+            ->toArray();
 
-            $pickedProductCount = $this->getPickedProductCount($salesOrderTransfer);
-
-            $pickingSalesOrderCriteria = new PickingSalesOrderCriteriaTransfer();
-            $pickingSalesOrderCriteria->setIdSalesOrder($idSalesOrder);
-
-            $pickingSalesOrders = $this->getFactory()
-                ->getPickingSalesOrderFacade()
-                ->getPickingSalesOrderCollection($pickingSalesOrderCriteria)
-                ->getPickingSalesOrders();
+        $order = new OrderTransfer();
+        foreach ($qryOrdersInStatus as $item) {
+            $order->fromArray($item, true);
+            $collectionMerchantSalesOrder = $collectionMerchantSalesOrders[$order->getIdSalesOrder()];
 
             $daysInTheWeek = $this->getFactory()->getConfig()->getDaysInTheWeek();
 
-            $deliveryDate = str_split($requestedDeliveryDatesByIdSalesOrders[$idSalesOrder], 10);
+            $fullDeliveryDate = str_replace('_', ' ', $item["requestedDeliveryDate"]);
+            $deliveryDate = str_split($fullDeliveryDate, 10);
             $dayInTheWeek = date('w', strtotime($deliveryDate[0]));
             $dayOfTheWeek = $daysInTheWeek[$dayInTheWeek];
 
             $collectionOrders[] = [
-                'idSalesOrder' => $idSalesOrder,
-                'reference' => $salesOrderTransfer->getOrderReference(),
-                'deliveryMinimumAge' => $salesOrderTransfer->getDeliveryMinimumAge(),
+                'idSalesOrder' => $order->getIdSalesOrder(),
+                'reference' => $order->getOrderReference(),
+                'deliveryMinimumAge' => $order->getDeliveryMinimumAge(),
                 'collectedAt' => $collectionMerchantSalesOrder->getCollectedAt(),
                 'collected' => $this->getIsOrderCollected($collectionMerchantSalesOrder),
                 'cancelled' => $this->getIsOrderCancelled($collectionMerchantSalesOrder),
-                'collectNumber' => $salesOrderTransfer->getCollectNumber(),
-                'requestedDeliveryDate' => $requestedDeliveryDatesByIdSalesOrders[$idSalesOrder],
-                'pickedProductCount' => $pickedProductCount,
-                'pickingSalesOrders' => $pickingSalesOrders,
-                'cartNote' => $salesOrderTransfer->getCartNote(),
+                'collectNumber' => $order->getCollectNumber(),
+                'requestedDeliveryDate' => $fullDeliveryDate,
+                'pickedProductCount' => $item["pickedProductCount"],
+                'numberOfContainersInOrder' => $item["numberOfContainersInOrder"],
+                'cartNote' => $order->getCartNote(),
                 'dayOfTheWeek' => $dayOfTheWeek,
-                'fullName' => $salesOrderTransfer->getFirstName() . " " . $salesOrderTransfer->getLastName(),
+                'fullName' => $order->getFirstName() . " " . $order->getLastName(),
                 'pickupStatus' => $collectionMerchantSalesOrder->getStoreStatus(),
                 'ordersBeforeReadyToCollectStatus' => json_encode($newArray),
             ];

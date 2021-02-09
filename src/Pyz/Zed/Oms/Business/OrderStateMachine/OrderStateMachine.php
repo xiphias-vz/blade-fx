@@ -583,6 +583,9 @@ class OrderStateMachine extends SprykerOrderStateMachine implements OrderStateMa
         $itemEntitySending = SpyOmsOrderItemStateQuery::create()
             ->filterByName('shipped mail sending')
             ->findOne();
+        if ($itemEntity == null || $itemEntityReady == null || $itemEntitySending == null) {
+            return $orderItem;
+        }
         if ($stateName == 'shipped mail sending') {
             $itemStateHistoryEntity = SpyOmsOrderItemStateHistoryQuery::create()
                 ->filterByFkOmsOrderItemState($itemEntity->getIdOmsOrderItemState())
@@ -621,6 +624,9 @@ class OrderStateMachine extends SprykerOrderStateMachine implements OrderStateMa
         $itemEntityCollectionProcess = SpyOmsOrderItemStateQuery::create()
             ->filterByName('collection process')
             ->findOne();
+        if ($itemCashierOrderItemEntity == null || $itemEntityCollectionProcess == null) {
+            return $orderItem;
+        }
         if ($stateName == 'cashier export process') {
             $timeArray = $this->getTimeArray();
             $itemStateCashierExportingHistoryEntity = SpyOmsOrderItemStateHistoryQuery::create()
