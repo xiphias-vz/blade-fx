@@ -113,15 +113,22 @@ class ProductController extends SprykerShopProductController
             $viewData['rowData'] = [];
         }
 
-        $characteristics = [
-            'product.info.additional.characteristics.bio' => $productData["attributes"]["bio"],
-            'product.info.additional.characteristics.vegan' => $productData["attributes"]["vegan"],
-            'product.info.additional.characteristics.vegetarian' => $productData["attributes"]["vegetarisch"],
-            'product.info.additional.characteristics.laktosefrei' => $productData["attributes"]["laktosefrei"], 'product.info.additional.characteristics.glutenfrei' => $productData["attributes"]["glutenfrei"], 'product.info.additional.characteristics.fairtrade' => $productData["attributes"]["fairtrade"]];
-        $searchFor = "1";
-        $viewData['characteristics'] = array_filter($characteristics, function ($e) use ($searchFor) {
-            return ($e == $searchFor);
-        });
+        $productAttributes = $productData["attributes"];
+        $bioAttribute = "";
+
+        if (array_key_exists('bio', $productAttributes)) {
+            $characteristics = [
+                'product.info.additional.characteristics.bio' => $productData["attributes"]["bio"],
+                'product.info.additional.characteristics.vegan' => $productData["attributes"]["vegan"],
+                'product.info.additional.characteristics.vegetarian' => $productData["attributes"]["vegetarisch"],
+                'product.info.additional.characteristics.laktosefrei' => $productData["attributes"]["laktosefrei"], 'product.info.additional.characteristics.glutenfrei' => $productData["attributes"]["glutenfrei"], 'product.info.additional.characteristics.fairtrade' => $productData["attributes"]["fairtrade"]];
+            $searchFor = "1";
+            $viewData['characteristics'] = array_filter($characteristics, function ($e) use ($searchFor) {
+                return ($e == $searchFor);
+            });
+        } else {
+            $viewData['characteristics'] = [];
+        }
 
         return $viewData;
     }
