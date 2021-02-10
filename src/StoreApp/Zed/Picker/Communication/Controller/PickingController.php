@@ -85,15 +85,15 @@ class PickingController extends BaseOrderPickingController
             return $this->createIndexActionResponse($request, $requestedDeliveryDatesByIdSalesOrders, $pickingOrders);
         }
 
-        $requestedDeliveryDatesByIdSalesOrders = $this->getFormattedDeliveryDates($idSalesOrdersForPicking);
-
         $daysInTheWeek = $this->getFactory()->getConfig()->getDaysInTheWeek();
 
         $gry = $this->getFactory()
             ->queryOrdersForPickingZone()
             ->withColumn("(select count(*) from spy_sales_order_item i where i.fk_sales_order = spy_sales_order.id_sales_order)", "itemsCountTotal")
             ->withColumn("(select count(*) from spy_sales_order_item i where i.fk_sales_order = spy_sales_order.id_sales_order and i.pick_zone = '" . $pickingZoneTransfer->getName() . "' )", "itemsCountZone")
+            ->withColumn("(select requested_delivery_date from spy_sales_shipment ss where ss.fk_sales_order = spy_sales_order.id_sales_order)", "requestedDeliveryDate")
             ->where("spy_sales_order.id_sales_order in(" . implode(',', $idSalesOrdersForPicking) . ")")
+            ->orderBy('requestedDeliveryDate')
             ->find()
             ->toArray();
 
@@ -101,12 +101,11 @@ class PickingController extends BaseOrderPickingController
         foreach ($gry as $item) {
             $order->fromArray($item, true);
             $merchantSalesOrderTransfer = $merchantSalesOrderTransfers[$order->getIdSalesOrder()];
-            $dayOfTheWeek = '';
-            if ($requestedDeliveryDatesByIdSalesOrders[$order->getIdSalesOrder()]) {
-                $deliveryDate = str_split($requestedDeliveryDatesByIdSalesOrders[$order->getIdSalesOrder()], 10);
-                $dayInTheWeek = date('w', strtotime($deliveryDate[0]));
-                $dayOfTheWeek = $daysInTheWeek[$dayInTheWeek];
-            }
+
+            $fullDeliveryDate = str_replace('_', ' ', $item["requestedDeliveryDate"]);
+            $deliveryDate = str_split($fullDeliveryDate, 10);
+            $dayInTheWeek = date('w', strtotime($deliveryDate[0]));
+            $dayOfTheWeek = $daysInTheWeek[$dayInTheWeek];
 
             $pickingOrders[] = [
                 'idSalesOrder' => $order->getIdSalesOrder(),
@@ -115,7 +114,7 @@ class PickingController extends BaseOrderPickingController
                 'itemCount' => $item["itemsCountZone"],
                 'totalItemCount' => $item["itemsCountTotal"],
                 'isPicked' => $merchantSalesOrderTransfer->getFkUser() === $userTransfer->getIdUser(),
-                'requestedDeliveryDate' => $requestedDeliveryDatesByIdSalesOrders[$order->getIdSalesOrder()],
+                'requestedDeliveryDate' => $fullDeliveryDate,
                 'cartNote' => $order->getCartNote(),
                 'customerFullName' => $order->getFirstName() . ' ' . $order->getLastName(),
                 'dayOfTheWeek' => $dayOfTheWeek,

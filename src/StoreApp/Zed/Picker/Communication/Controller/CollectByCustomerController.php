@@ -91,6 +91,7 @@ class CollectByCustomerController extends AbstractController
             ->withColumn("(select requested_delivery_date from spy_sales_shipment ss where ss.fk_sales_order = spy_sales_order.id_sales_order)", "requestedDeliveryDate")
             ->withColumn("(select count(*) from pyz_picking_sales_order pso where pso.fk_sales_order = spy_sales_order.id_sales_order)", "numberOfContainersInOrder")
             ->where("spy_sales_order.id_sales_order in(" . implode(',', $idSalesOrdersForCollection) . ")")
+            ->orderBy('requestedDeliveryDate')
             ->find()
             ->toArray();
 
