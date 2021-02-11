@@ -12,6 +12,7 @@ use Generated\Shared\Transfer\PickingSalesOrderCriteriaTransfer;
 use Generated\Shared\Transfer\PickingSalesOrderTransfer;
 use Orm\Zed\PickingSalesOrder\Persistence\PyzPickingSalesOrderQuery;
 use Orm\Zed\Sales\Persistence\Map\SpySalesOrderTableMap;
+use Pyz\Shared\Oms\OmsConfig;
 use Spryker\Zed\Sales\Business\SalesFacadeInterface;
 use StoreApp\Zed\Picker\Business\PickerBusinessFactory;
 
@@ -134,7 +135,15 @@ class ContainerReader implements ContainerReaderInterface
     {
         return $this->pyzPickingSalesOrderQuery
             ->joinSpySalesOrder()
-            ->where(SpySalesOrderTableMap::COL_INVOICE_REFERENCE . ' is null')
+            //->where(SpySalesOrderTableMap::COL_INVOICE_REFERENCE . ' is null')
+            ->where(SpySalesOrderTableMap::COL_INVOICE_REFERENCE . " is null
+                and (select count(*)
+                from spy_sales_order_item ssoi
+                inner join spy_oms_order_item_state soois on ssoi.fk_oms_order_item_state = soois.id_oms_order_item_state
+                where ssoi.fk_sales_order = spy_sales_order.id_sales_order
+                group by ssoi.fk_sales_order
+                having count(*) > sum(case when soois.name = '" . OmsConfig::STATE_CANCELLED . "' then 1 else 0 end)
+                ) > 0")
             ->find()
             ->toArray();
     }
