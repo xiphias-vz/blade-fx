@@ -171,3 +171,13 @@ $jobs[] = [
     'enable' => true,
     'stores' => $allStores,
 ];
+
+/* Sitemap generator*/
+$jobs[] =
+[
+   'name' => 'sitemap-generate',
+   'command' => '$PHP_BIN vendor/bin/console sitemap:generate',
+    'schedule' => '0 4 * * *',
+    'enable' => true,
+    'stores' => $allStores,
+];

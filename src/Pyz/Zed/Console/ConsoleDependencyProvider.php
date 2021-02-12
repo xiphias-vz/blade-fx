@@ -28,6 +28,7 @@ use Pyz\Zed\ProductQuantityDataImport\ProductQuantityDataImportConfig;
 use Pyz\Zed\RabbitMq\Communication\Console\InitVirtualHostConsole;
 use Pyz\Zed\RabbitMq\Communication\Console\RemoveVirtualHostConsole;
 use Pyz\Zed\SalesOrderThresholdDataImport\SalesOrderThresholdDataImportConfig;
+use Pyz\Zed\Sitemap\Communication\Console\SitemapConsole;
 use Pyz\Zed\TimeSlot\Communication\Console\TimeSlotCheckerConsole;
 use Spryker\Shared\Config\Environment;
 use Spryker\Zed\Cache\Communication\Console\EmptyAllCachesConsole;
@@ -328,6 +329,7 @@ class ConsoleDependencyProvider extends SprykerConsoleDependencyProvider
 
             new AclInstallConsole(),
             new TimeSlotCheckerConsole(),
+            new SitemapConsole(),
         ];
 
         $propelCommands = $container->getLocator()->propel()->facade()->getConsoleCommands();
