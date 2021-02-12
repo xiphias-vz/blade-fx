@@ -110,8 +110,16 @@ class ContainerToShelfController extends AbstractController
     protected function processContainerToShelfForm(FormInterface $containerToShelfForm, Request $request, string $containerIdCodeInput, string $shelfIdCodeInput, array $listOfContainers): array //RedirectResponse
     {
         $formData = $containerToShelfForm->getData();
+        $IdPickingSalesOrder = 0;
+
+        foreach ($listOfContainers as $list => $value) {
+            if ($value["ContainerCode"] == $formData[ContainerToShelfForm::FIELD_CONTAINER_CODE]) {
+                $IdPickingSalesOrder = $value["IdPickingSalesOrder"];
+            }
+        }
 
         $pickingSalesOrderTransfer = (new PickingSalesOrderTransfer())
+            ->setIdPickingSalesOrder($IdPickingSalesOrder)
             ->setContainerCode($formData[ContainerToShelfForm::FIELD_CONTAINER_CODE])
             ->setShelfCode($formData[ContainerToShelfForm::FIELD_SHELF_CODE]);
 

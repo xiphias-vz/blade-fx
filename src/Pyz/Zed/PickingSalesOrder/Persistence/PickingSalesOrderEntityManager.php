@@ -42,7 +42,7 @@ class PickingSalesOrderEntityManager extends AbstractEntityManager implements Pi
             ->createPickingSalesOrderQuery()
             ->joinSpySalesOrder()
             ->where(SpySalesOrderTableMap::COL_INVOICE_REFERENCE . ' is null')
-            ->findByContainerCode($pickingSalesOrderTransfer->getContainerCode())
+            ->findByIdPickingSalesOrder($pickingSalesOrderTransfer->getIdPickingSalesOrder())
             ->getFirst();
 
         $pickingSalesOrderTransfer = $this->savePickingSalesOrder($pickingSalesOrderTransfer, $pickingSalesOrderEntity);

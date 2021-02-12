@@ -70,7 +70,11 @@ class PickingSalesOrderWriter implements PickingSalesOrderWriterInterface
             return null;
         }
 
-        $pickingSalesOrderTransfer = $pickingSalesOrders->offsetGet(0)->setShelfCode($pickingSalesOrderTransfer->getShelfCode());
+        foreach ($pickingSalesOrders as $salesOrder) {
+            if ($salesOrder->getIdPickingSalesOrder() == $pickingSalesOrderTransfer->getIdPickingSalesOrder()) {
+                $pickingSalesOrderTransfer = $salesOrder->setShelfCode($pickingSalesOrderTransfer->getShelfCode());
+            }
+        }
 
         return $this->pickingSalesOrderEntityManager->update($pickingSalesOrderTransfer);
     }
