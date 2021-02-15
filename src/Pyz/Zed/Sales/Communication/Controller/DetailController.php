@@ -31,6 +31,7 @@ class DetailController extends SprykerDetailController
         $idSalesOrder = $this->castId($request->query->getInt(SalesConfig::PARAM_ID_SALES_ORDER));
 
         $orderTransfer = $this->getFacade()->findOrderWithPickingSalesOrdersByIdSalesOrder($idSalesOrder);
+        $orderTransfer->setCartNote(json_decode($orderTransfer->getCartNote()));
 
         if ($orderTransfer === null) {
             $this->addErrorMessage('Sales order #%d not found.', ['%d' => $idSalesOrder]);

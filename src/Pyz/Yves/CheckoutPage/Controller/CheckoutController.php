@@ -37,6 +37,8 @@ class CheckoutController extends SprykerCheckoutControllerAlias
             ->getQuoteClient()
             ->getQuote();
 
+        $quoteTransfer->setCartNote(json_encode($quoteTransfer->getCartNote()));
+
         $grandTotal = $quoteTransfer
             ->getTotals()
             ->getGrandTotal();
