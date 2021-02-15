@@ -49,8 +49,7 @@ class OmsQueryContainer extends SprykerOmsQueryContainer implements OmsQueryCont
         if ($limit !== null) {
             $query
                 ->withColumn('DISTINCT ' . SpySalesOrderItemTableMap::COL_FK_SALES_ORDER, 'fk_sales_order')
-                ->select(['fk_sales_order'])
-                ->limit($limit);
+                ->select(['fk_sales_order']);
 
             $salesOrderIds = $query->find()->getData();
             $query = parent::querySalesOrderItemsByState($states, $processName);
@@ -63,6 +62,15 @@ class OmsQueryContainer extends SprykerOmsQueryContainer implements OmsQueryCont
             if (!empty($salesOrderIds)) {
                 $query->filterByFkSalesOrder_In($salesOrderIds);
             }
+
+            if ($processId !== null) {
+                $query->filterByOmsProcessorId($processId);
+            }
+
+            if ($storeName) {
+                $query->filterByStore($storeName);
+            }
+
             if ($processName == 'DummyPayment01') {
                 dump('STORE: ' . $storeName);
                 date_default_timezone_set("Europe/Zagreb");
