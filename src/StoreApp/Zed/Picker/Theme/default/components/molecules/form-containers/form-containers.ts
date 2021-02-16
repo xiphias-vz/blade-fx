@@ -202,6 +202,7 @@ export default class FormContainers extends Component {
             let flag = 0;
             let valueFirstBlock = "";
             let valueSecondBlock = "";
+            let valueSecondBlockOrderNumber = "";
             let valueContainerOnCustomer = "";
             $.each(isMatchByOrder, function(i, val) {
                 if (val['ContainerCode'] == $inputValue && $inputValue != "" && val["FkSalesOrder"] != checkCurrentOrderId) {
@@ -214,6 +215,7 @@ export default class FormContainers extends Component {
                 else if (val['ContainerCode'] == $inputValue && $inputValue != "" && val["FkSalesOrder"] == checkCurrentOrderId) {
                     valueFirstBlock = val['ContainerCode'];
                     valueSecondBlock = val['ShelfCode'];
+                    valueSecondBlockOrderNumber = val['FkSalesOrder'];
                     flag = 2;
                     return;
                 }
@@ -227,7 +229,7 @@ export default class FormContainers extends Component {
              else if (flag == 2){
                  document.getElementById(inputId).value = "";
                  this.popUpUiInfo.querySelector("#firstBlock").innerHTML = `Container: <strong>${ valueFirstBlock }</strong>`;
-                 this.popUpUiInfo.querySelector("#secondBlock").innerHTML = `Lagerplatz: <strong>${ valueSecondBlock }</strong>`;
+                 this.popUpUiInfo.querySelector("#secondBlock").innerHTML = `Lagerplatz: <strong>${ valueSecondBlock }</strong> <br> Bestellnummer: <strong>${ valueSecondBlockOrderNumber }</strong>`;
                  this.popUpUiInfo.classList.add('popup-ui-info--show');
                  setTimeout(() => {
                      this.popUpUiInfo.classList.remove('popup-ui-info--show');
