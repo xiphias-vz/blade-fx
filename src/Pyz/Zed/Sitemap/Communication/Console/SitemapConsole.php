@@ -83,11 +83,14 @@ class SitemapConsole extends Console
                 $generatedContent = $this->addUrlsToString($urls[$i], $generatedContent);
             }
             $generatedContent = $this->addXmlFooter($generatedContent);
+            dump("Generated content \n" . $generatedContent);
             file_put_contents(static::SITEMAP1_FILE_NAME, $generatedContent);
 
             $generatedContent2 = $this->addXmlHeader();
             $generatedContent2 = $this->addXmlFooter($generatedContent2);
             file_put_contents(static::SITEMAP2_FILE_NAME, $generatedContent2);
+            dump("Opened file 1: " . $sitemap1File);
+            dump("Opened file 2: " . $sitemap2File);
             dump("SAVED Single XML");
         } catch (Exception $e) {
             dump($e);
