@@ -39,6 +39,9 @@ class AclConfig extends SprykerAclConfig
         $groups[] = [
             'name' => AclConstants::SUPERVISOR_GROUP,
         ];
+        $groups[] = [
+            'name' => AclConstants::SUPPORT_CENTER_GROUP,
+        ];
 
         return $groups;
     }
@@ -61,6 +64,10 @@ class AclConfig extends SprykerAclConfig
         $roles[] = [
             'name' => AclConstants::SUPERVISOR_ROLE,
             'group' => AclConstants::SUPERVISOR_GROUP,
+        ];
+        $roles[] = [
+            'name' => AclConstants::SUPPORT_CENTER_ROLE,
+            'group' => AclConstants::SUPPORT_CENTER_GROUP,
         ];
 
         return $roles;
@@ -128,6 +135,34 @@ class AclConfig extends SprykerAclConfig
             'action' => AclConstants::VALIDATOR_WILDCARD,
             'type' => AclConstants::ALLOW,
             'role' => AclConstants::SUPERVISOR_ROLE,
+        ];
+        $rules[] = [
+            'bundle' => AclConstants::MODULE_SALES,
+            'controller' => AclConstants::VALIDATOR_WILDCARD,
+            'action' => AclConstants::VALIDATOR_WILDCARD,
+            'type' => AclConstants::ALLOW,
+            'role' => AclConstants::SUPPORT_CENTER_ROLE,
+        ];
+        $rules[] = [
+            'bundle' => AclConstants::MODULE_OMS,
+            'controller' => AclConstants::VALIDATOR_WILDCARD,
+            'action' => AclConstants::VALIDATOR_WILDCARD,
+            'type' => AclConstants::ALLOW,
+            'role' => AclConstants::SUPPORT_CENTER_ROLE,
+        ];
+        $rules[] = [
+            'bundle' => AclConstants::MODULE_CUSTOMER,
+            'controller' => AclConstants::VALIDATOR_WILDCARD,
+            'action' => AclConstants::VALIDATOR_WILDCARD,
+            'type' => AclConstants::ALLOW,
+            'role' => AclConstants::SUPPORT_CENTER_ROLE,
+        ];
+        $rules[] = [
+            'bundle' => 'error',
+            'controller' => AclConstants::VALIDATOR_WILDCARD,
+            'action' => AclConstants::VALIDATOR_WILDCARD,
+            'type' => AclConstants::ALLOW,
+            'role' => AclConstants::SUPPORT_CENTER_ROLE,
         ];
 
         return $rules;

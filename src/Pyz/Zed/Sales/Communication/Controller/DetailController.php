@@ -14,7 +14,7 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
- * @method \Spryker\Zed\Sales\Communication\SalesCommunicationFactory getFactory()
+ * @method \Pyz\Zed\Sales\Communication\SalesCommunicationFactory getFactory()
  * @method \Pyz\Zed\Sales\Business\SalesFacadeInterface getFacade()
  * @method \Spryker\Zed\Sales\Persistence\SalesQueryContainerInterface getQueryContainer()
  * @method \Spryker\Zed\Sales\Persistence\SalesRepositoryInterface getRepository()
@@ -39,12 +39,16 @@ class DetailController extends SprykerDetailController
             return $this->redirectResponse(Url::generate('/sales')->build());
         }
 
+        $userFacade = $this->getFactory()->getUserFacade();
+        $idUser = $userFacade->getCurrentUser()->getIdUser();
+        $userGroup = $this->getFactory()->getAclFacade()->getUserGroups($idUser)->getGroups()[0]->getName();
         $distinctOrderStates = $this->getFacade()->getDistinctOrderStates($idSalesOrder);
         $eventsGroupedByShipment = $this->getFactory()->getOmsFacade()->getGroupedDistinctManualEventsByIdSalesOrder($idSalesOrder);
         $eventsGroupedByItem = $this->getFactory()->getOmsFacade()->getManualEventsByIdSalesOrder($idSalesOrder);
         $orderItemSplitFormCollection = $this->getFactory()->createOrderItemSplitFormCollection($orderTransfer->getItems());
         $events = $this->getFactory()->getOmsFacade()->getDistinctManualEventsByIdSalesOrder($idSalesOrder);
         $blockResponseData = $this->renderSalesDetailBlocks($request, $orderTransfer);
+
         if ($blockResponseData instanceof RedirectResponse) {
             return $blockResponseData;
         }
@@ -64,6 +68,17 @@ class DetailController extends SprykerDetailController
             $itemDataArray[array_search($orderItem->getPickZone(), $pickZones)][$key] = $orderItem;
         }
 
+        if ($userGroup == "support_center_group") {
+            $eventsGroupedByItem = $this->eventsAllowedForSupportUser($eventsGroupedByItem);
+            $eventsGroupedByShipment = $this->eventsAllowedForSupportUser($eventsGroupedByShipment);
+
+            foreach ($events as $key => $event) {
+                if ($event != 'cancel due to not in stock') {
+                    unset($events[$key]);
+                }
+            }
+        }
+
         return array_merge([
             'eventsGroupedByItem' => $eventsGroupedByItem,
             'events' => $events,
@@ -76,6 +91,25 @@ class DetailController extends SprykerDetailController
             'pickZones' => $pickZones,
             'itemStatusArray' => $itemStatusArray,
             'itemDataArray' => $itemDataArray,
+            'userGroup' => $userGroup,
         ], $blockResponseData);
+    }
+
+    /**
+     * @param array $events
+     *
+     * @return array
+     */
+    public function eventsAllowedForSupportUser(array $events): array
+    {
+        foreach ($events as $key => $groupItem) {
+            foreach ($events[$key] as $subKey => $item) {
+                if ($item != 'cancel due to not in stock') {
+                    unset($events[$key][$subKey]);
+                }
+            }
+        }
+
+        return $events;
     }
 }

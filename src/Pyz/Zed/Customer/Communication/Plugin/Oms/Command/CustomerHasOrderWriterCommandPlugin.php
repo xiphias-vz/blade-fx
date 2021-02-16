@@ -16,6 +16,7 @@ use Spryker\Zed\Oms\Dependency\Plugin\Command\CommandByOrderInterface;
  * @method \Pyz\Zed\Customer\Business\CustomerFacadeInterface getFacade()
  * @method \Pyz\Zed\Customer\Communication\CustomerCommunicationFactory getFactory()
  * @method \Pyz\Zed\Customer\CustomerConfig getConfig()
+ * @method \Pyz\Zed\Customer\Persistence\CustomerQueryContainerInterface getQueryContainer()
  */
 class CustomerHasOrderWriterCommandPlugin extends AbstractPlugin implements CommandByOrderInterface
 {

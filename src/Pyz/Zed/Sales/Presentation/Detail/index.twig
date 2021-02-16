@@ -28,8 +28,9 @@
             <div id="{{ blockName }}">{{ externalBlock | raw }}</div>
         {% endif %}
     {% endfor %}
-    <div id="comments">{% include '@Sales/Detail/boxes/comments.twig' %}</div>
-
+    {% if userGroup != 'support_center_group' %}
+        <div id="comments">{% include '@Sales/Detail/boxes/comments.twig' %}</div>
+    {% endif %}
 {% endblock %}
 
 {% block head_css %}

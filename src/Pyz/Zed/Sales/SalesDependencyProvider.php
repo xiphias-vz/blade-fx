@@ -70,6 +70,7 @@ class SalesDependencyProvider extends SprykerSalesDependencyProvider
         $container = $this->addDateTimeWithZoneService($container);
         $container = $this->addProductFacade($container);
         $container = $this->addHydrateOrderForStoreAppPlugins($container);
+        $container = $this->addAclFacade($container);
 
         return $container;
     }

@@ -1,0 +1,27 @@
+{% extends '@Gui/Layout/layout.twig' %}
+
+{% set widget_title = 'Customers' %}
+
+{% block head_title widget_title | trans %}
+
+{% block section_title widget_title | trans %}
+
+{% block action %}
+    {% if userGroup != 'support_center_group' %}
+        {{ createActionButton('/customer/add', 'Add Customer' | trans) }}
+    {% endif %}
+{% endblock %}
+
+{% block content %}
+
+    {% embed '@Gui/Partials/widget.twig' %}
+
+        {% block widget_content %}
+
+            {{ customerTable | raw }}
+
+        {% endblock %}
+
+    {% endembed %}
+
+{% endblock %}

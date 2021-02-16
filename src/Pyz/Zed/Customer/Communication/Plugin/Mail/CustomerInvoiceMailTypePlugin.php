@@ -15,6 +15,7 @@ use Spryker\Zed\Mail\Dependency\Plugin\MailTypePluginInterface;
  * @method \Pyz\Zed\Customer\CustomerConfig getConfig()
  * @method \Pyz\Zed\Customer\Business\CustomerFacadeInterface getFacade()
  * @method \Pyz\Zed\Customer\Communication\CustomerCommunicationFactory getFactory()
+ * @method \Pyz\Zed\Customer\Persistence\CustomerQueryContainerInterface getQueryContainer()
  */
 class CustomerInvoiceMailTypePlugin extends AbstractPlugin implements MailTypePluginInterface
 {

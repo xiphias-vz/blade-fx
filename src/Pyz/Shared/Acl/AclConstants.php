@@ -17,9 +17,13 @@ interface AclConstants extends SprykerAclConstants
     public const PICKER_ROLE = 'picker_role';
     public const SUPERVISOR_ROLE = 'supervisor_role';
     public const SUPERVISOR_GROUP = 'supervisor_group';
+    public const SUPPORT_CENTER_GROUP = 'support_center_group';
+    public const SUPPORT_CENTER_ROLE = 'support_center_role';
 
     public const MODULE_PICKER = 'picker';
     public const MODULE_DELIVERY = 'delivery';
     public const MODULE_SALES = 'sales';
+    public const MODULE_OMS = 'oms';
+    public const MODULE_CUSTOMER = 'customer';
     public const MODULE_PICKING_ZONE_ORDER_EXPORT = 'picking-zone-order-export';
 }
