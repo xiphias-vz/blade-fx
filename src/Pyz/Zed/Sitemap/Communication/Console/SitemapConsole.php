@@ -45,7 +45,7 @@ class SitemapConsole extends Console
     {
         $urls = $this->getUrls();
         $urlsCount = count($urls);
-
+        dump("NUMBER OF URL's: " . $urlsCount);
         if ($urlsCount < static::COUNT_BREAK && $urlsCount != 0) {
             $this->singleXml($urls, $urlsCount);
         } else {
@@ -88,6 +88,7 @@ class SitemapConsole extends Console
             $generatedContent2 = $this->addXmlHeader();
             $generatedContent2 = $this->addXmlFooter($generatedContent2);
             file_put_contents(static::SITEMAP2_FILE_NAME, $generatedContent2);
+            dump("SAVED Single XML");
         } catch (Exception $e) {
             dump($e);
         } finally {
@@ -125,6 +126,7 @@ class SitemapConsole extends Console
 
             file_put_contents(static::SITEMAP1_FILE_NAME, $generatedContent1);
             file_put_contents(static::SITEMAP2_FILE_NAME, $generatedContent2);
+            dump("SAVED Multiple XMLs");
         } catch (Exception $e) {
             dump($e);
         } finally {
