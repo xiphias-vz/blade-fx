@@ -72,10 +72,13 @@ class SitemapConsole extends Console
      */
     protected function singleXml(array $urls, int $count): void
     {
-        $sitemap1File = fopen(static::SITEMAP1_FILE_NAME, "r+");
-        $sitemap2File = fopen(static::SITEMAP2_FILE_NAME, "r+");
+        $sitemap1File = null;
+        $sitemap2File = null;
 
         try {
+            $sitemap1File = fopen(static::SITEMAP1_FILE_NAME, "r+");
+            $sitemap2File = fopen(static::SITEMAP2_FILE_NAME, "r+");
+
             $this->deleteFileContent(static::SITEMAP1_FILE_NAME);
             $generatedContent = $this->addXmlHeader();
 
@@ -112,9 +115,12 @@ class SitemapConsole extends Console
      */
     protected function multipleXmls(array $urls, int $count): void
     {
-        $sitemap1File = fopen(static::SITEMAP1_FILE_NAME, "r+");
-        $sitemap2File = fopen(static::SITEMAP2_FILE_NAME, "r+");
+        $sitemap1File = null;
+        $sitemap2File = null;
         try {
+            $sitemap1File = fopen(static::SITEMAP1_FILE_NAME, "r+");
+            $sitemap2File = fopen(static::SITEMAP2_FILE_NAME, "r+");
+
             $this->deleteFileContent(static::SITEMAP1_FILE_NAME);
             $this->deleteFileContent(static::SITEMAP2_FILE_NAME);
 
@@ -158,7 +164,10 @@ class SitemapConsole extends Console
     protected function addXmlHeader(): string
     {
         $content = '<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">';
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9
+http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">';
 
         return $content;
     }
