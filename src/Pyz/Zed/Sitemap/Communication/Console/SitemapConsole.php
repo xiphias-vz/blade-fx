@@ -219,7 +219,7 @@ class SitemapConsole extends Console
         $updateDate = explode(" ", $updatedAtArr['date']);
         $generatedContent .= "\n";
         $generatedContent .= "    <url>\n";
-        $generatedContent .= "        <loc>https://shop.globus.de" . str_replace("&", "%26", $url->getUrl()) . "</loc>\n";
+        $generatedContent .= "        <loc>https://shop.globus.de" . urlencode($url->getUrl()) . "</loc>\n";
         $generatedContent .= "        <lastmod>" . $updateDate[0] . "</lastmod>\n";
         $generatedContent .= "    </url>";
 
