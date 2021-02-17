@@ -18,11 +18,13 @@ class CatalogPageProductWidget extends SprykerCatalogPageProductWidget
     /**
      * @param array $product
      * @param string|null $viewMode
+     * @param string|null $loopIndex
      */
-    public function __construct(array $product, $viewMode = null)
+    public function __construct(array $product, $viewMode = null, $loopIndex = null)
     {
         $product = $this->expandAbstractProductDataWithAttributes($product);
         $this->addParameter('depositPrice', $this->getConfig()->getDepositPrice());
+        $this->addParameter('position', $loopIndex);
 
         parent::__construct($product, $viewMode);
     }

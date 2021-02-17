@@ -4,6 +4,7 @@
     product: _widget.product,
     viewMode: _widget.viewMode,
     depositPrice: _widget.depositPrice,
+    position: _widget.position,
 } %}
 
 {% set image = publicPath("/images/kein_bild_vorhanden.png") %}
@@ -33,6 +34,7 @@
         idProductAbstract: data.product.id_product_abstract,
         image: image,
         depositPrice: data.depositPrice,
+        position: data.position,
     },
     } only %}
         {% block productAbstractLabels %}

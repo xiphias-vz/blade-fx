@@ -106,7 +106,12 @@
                                 <div class="grid {% if data.viewMode != 'list' %}grid--stretch product-list{% endif %}">
                                     {% if data.products %}
                                         {% for product in data.products %}
-                                            {% widget 'CatalogPageProductWidget' args [product, data.viewMode] only %}{% endwidget %}
+                                            {% if data.pagination.currentPage == 1  %}
+                                                {% widget 'CatalogPageProductWidget' args [product, data.viewMode, loop.index] only %}{% endwidget %}
+                                            {% else %}
+                                                {% set index = loop.index + ((data.pagination.currentPage - 1) * data.pagination.currentItemsPerPage) | default(0) %}
+                                                {% widget 'CatalogPageProductWidget' args [product, data.viewMode, index] only %}{% endwidget %}
+                                         {% endif %}
                                         {% endfor %}
                                     {% else %}
                                             {% block noResults %}{{ parent() }}{% endblock %}
