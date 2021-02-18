@@ -43,6 +43,7 @@ export default class ProductItem extends Component {
     protected $quantityOutput: $;
     protected $weightField: $;
     protected $previousSku: $;
+    eanScanInputElements:HTMLInputElement;
     eanScanInputElement: HTMLInputElement;
     alternativeEanElement: HTMLInputElement;
     eanInputFieldWrapper: HTMLElement;
@@ -75,6 +76,7 @@ export default class ProductItem extends Component {
         this.popUp = <HTMLElement>document.getElementsByClassName('popup-ui')[0];
         this.btnSubmitPick = <HTMLElement>document.querySelector('#btnSubmitPick');
         this.bawContainerButton = <HTMLElement>document.querySelector('.bawContainerButton');
+        this.eanScanInputElements = <HTMLInputElement>document.querySelectorAll('.ean_scan_input');
         this.eanScanInputElement = <HTMLInputElement>this.$this.find('.ean_scan_input')[0];
         this.alternativeEanElement = <HTMLInputElement>this.$this.find('.alternativeEan')[0];
         this.eanInputData = this.$this.find('.eanData')[0].getAttribute('data-ean');
@@ -86,6 +88,8 @@ export default class ProductItem extends Component {
         {
             this.focusFirstEanField();
         }
+
+        this.removeTemporarilyReadOnlyAttributeForNonActiveFields();
 
         if(this.$previousSku == this.dataset.sku)
         {
@@ -101,6 +105,17 @@ export default class ProductItem extends Component {
                     break;
                 }
             }
+        }
+    }
+
+    protected removeTemporarilyReadOnlyAttributeForNonActiveFields() {
+        for(let i = 1; i < this.eanScanInputElements.length; i++) {
+            this.eanScanInputElements[i].addEventListener('click', () => {
+                this.eanScanInputElements[i].readOnly = false;
+            })
+            this.eanScanInputElements[i].addEventListener('touchstart', () => {
+                this.eanScanInputElements[i].readOnly = false;
+            })
         }
     }
 
@@ -373,7 +388,6 @@ export default class ProductItem extends Component {
         this.clickCounterHandler(true);
         const element = this.eanScanInputElement;
         element.value = "";
-        element.focus();
     }
 
     protected boldLastThreeEanNumbers(): void {
@@ -452,7 +466,13 @@ export default class ProductItem extends Component {
                     }
                 }
             }
-            if(elementForFocus != null) elementForFocus.focus();
+            if(elementForFocus != null) {
+                elementForFocus.focus();
+                setTimeout(() => {
+                    elementForFocus.readOnly = false;
+                }, 1000)
+
+            }
             return;
         }
         this.$this.addClass(this.pickedNotFullyCLass);
@@ -513,8 +533,11 @@ export default class ProductItem extends Component {
 
     protected focusFirstEanField(): void
     {
-        const element = document.getElementsByClassName('ean_scan_input')[0];
-        element.focus();
+        const elements = document.querySelectorAll('.ean_scan_input');
+        elements[0].focus();
+        for(let i = 1; i < elements.length; i++) {
+            elements[i].readOnly = true;
+        }
     }
 
     protected findAncestor (el, cls) {
