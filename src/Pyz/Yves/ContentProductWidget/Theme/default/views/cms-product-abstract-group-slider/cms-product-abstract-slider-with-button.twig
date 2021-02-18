@@ -41,6 +41,17 @@
             {% endfor %}
         {% endblock %}
     {% endembed %}
-
+    <script type="text/javascript">
+        window.dataLayer = window.dataLayer || [];
+        var impressions =  window.catalogList;
+        window.dataLayer.push({
+            'event': 'eec.POP',
+            'ecommerce':
+                {
+                    'currency': 'EUR',
+                    impressions,
+                }
+        });
+    </script>
 {% endblock %}
 
