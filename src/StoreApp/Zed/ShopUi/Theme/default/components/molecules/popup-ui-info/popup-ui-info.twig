@@ -9,6 +9,7 @@
     isUpdated: data.isUpdated,
     containerId: data.containerId,
     shelfId: data.shelfId,
+    orderId: data.orderId,
     title: 'Confirm your work!' | trans,
     buttons: {
         submit: {
@@ -46,7 +47,7 @@
                         Container: <strong>{{ data.containerId }}</strong>
                     </div>
                     <div id="secondBlock">
-                        Lagerplatz: <strong>{{ data.shelfId }}</strong>
+                        Lagerplatz: <strong>{{ data.shelfId }}</strong> <br> Bestellnummer: <strong>{{ data.orderId }}</strong>
                     </div>
                     <div>
                         <strong>bereits zugeordnet</strong>
