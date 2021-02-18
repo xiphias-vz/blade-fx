@@ -37,7 +37,7 @@ class ContainerToShelfController extends AbstractController
         $containerToShelfForm->handleRequest($request);
         $listOfContainers = $this->getFactory()->getPickerBusinessFactory()->createContainerReader()->getUsedContainers();
 
-        if ($containerToShelfForm->isSubmitted() && $containerToShelfForm->isValid()) {
+        if ($containerToShelfForm->isSubmitted()) {
             $dataInputForm = $containerToShelfForm->getData();
             $containerIdCodeInput = $dataInputForm['container_code'];
             $shelfIdCodeInput = $dataInputForm['shelf_code'];
@@ -45,11 +45,13 @@ class ContainerToShelfController extends AbstractController
             $containerStatusShelfs = $this->getFactory()->getPickerBusinessFactory()->createContainerReader()->getContainerShelfs($containerIdCodeInput);
             $existingContainerInPicking = count($containerStatusShelfs);
 
+            $existingShelfCode = $shelfIdCodeInput;
             $ItExists = false;
             foreach ($containerStatusShelfs as $property => $value) {
-                if ($value["ShelfCode"] == $shelfIdCodeInput) {
+                if ($value["ShelfCode"] == $shelfIdCodeInput || $shelfIdCodeInput === null) {
                     $ItExists = true;
                     $orderIdCodeInput = $value["FkSalesOrder"];
+                    $existingShelfCode = $value["ShelfCode"];
                 }
             }
 
@@ -65,7 +67,7 @@ class ContainerToShelfController extends AbstractController
                 return [
                     'isUpdated' => $ItExists,
                     'containerId' => $containerIdCodeInput,
-                    'shelfId' => $shelfIdCodeInput,
+                    'shelfId' => $existingShelfCode,
                     'orderId' => $orderIdCodeInput,
                     'containerToShelfForm' => $containerToShelfForm->createView(),
                     'merchant' => $this->getMerchantFromRequest($request),

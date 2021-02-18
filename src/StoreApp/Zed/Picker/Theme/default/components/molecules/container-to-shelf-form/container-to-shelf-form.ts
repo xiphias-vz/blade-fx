@@ -6,19 +6,27 @@ import $ from 'jquery/dist/jquery';
  */
 export default class ContainerToShelfForm extends Component {
 
-    form: HTMLFormElement;
+    fullForm: HTMLFormElement;
+    addSubmitFormButton: HTMLButtonElement;
+    containerId: HTMLInputElement;
+    shelfId: HTMLInputElement;
+    shelfCheck: HTMLInputElement;
     protected barcodePrefix: string = '/x11';
 
     protected readyCallback(): void {
-        this.form = <HTMLFormElement>this.getElementsByTagName('form')[0];
+        //this.form = <HTMLFormElement>this.getElementsByTagName('form')[0];
         this.popUpUiError = this.parentElement.previousElementSibling;
-
+        this.addSubmitFormButton = <HTMLButtonElement>document.getElementById(`submitContainerToShelf`);
+        this.fullForm = <HTMLFormElement>document.getElementById('container_to_shelf_form');
         let isTestSucces = document.querySelector('.js-is-succes').getAttribute('isSuccess');
         if (isTestSucces) {
             this.clearInputFields();
         }
-        this.form.addEventListener('keypress', (event: KeyboardEvent) => this.formKeyPressHandler(event));
-
+        this.containerId = <HTMLInputElement>document.getElementById('container_to_shelf_form_container_code');
+        this.shelfId = <HTMLInputElement>document.getElementById('container_to_shelf_form_shelf_code');
+        this.shelfCheck = <HTMLInputElement>document.getElementById('shelfCheck');
+        this.fullForm.addEventListener('keypress', (event: KeyboardEvent) => this.formKeyPressHandler(event));
+        this.mapEventsForButtons();
         this.mapEventsForInputs();
         this.focusFirstContainerID();
     }
@@ -32,7 +40,9 @@ export default class ContainerToShelfForm extends Component {
             }
         });
     }
-
+    protected mapEventsForButtons(): void {
+        this.addSubmitFormButton.addEventListener('click', () => this.onTriggerSubmitFormButtonClick());
+    }
     protected mapEventsForInputs(): void {
         let formItems = <HTMLElement[]> Array.from(document.getElementsByTagName('input'));
 
@@ -111,6 +121,26 @@ export default class ContainerToShelfForm extends Component {
                 let element = document.getElementById('container_to_shelf_form_shelf_code');
                 element.focus();
             }
+        }
+    }
+
+    protected onTriggerSubmitFormButtonClick(): void {
+        let containerId = this.containerId.value;
+        let shelfId = this.shelfId.value;
+        let shelfCheck = this.shelfCheck.value;
+            //control for inputted values for containerId and ShelfId before submitting the form data
+        if (containerId == '' || containerId == null)
+        {
+            this.popUpUiError.querySelector("#firstBlock").innerHTML = `<strong>ContainerID Wert sollte nicht leer sein</strong>`;
+            this.popUpUiError.classList.add('popup-ui-error--show');
+        }
+        else if ((shelfId == '' || shelfId == null) && shelfCheck == 1)
+        {
+            this.popUpUiError.querySelector("#firstBlock").innerHTML = `<strong>Shelf ID Wert sollte nicht leer sein</strong>`;
+            this.popUpUiError.classList.add('popup-ui-error--show');
+        }
+        else{
+            this.fullForm.submit();
         }
     }
 

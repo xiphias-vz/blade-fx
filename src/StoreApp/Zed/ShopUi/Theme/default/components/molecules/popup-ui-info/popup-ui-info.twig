@@ -25,6 +25,14 @@
     }
 } %}
 
+{% if data.shelfId %}
+    {% set lblShelfId = data.shelfId %}
+    {% set lblAddedShelf = 'storeapp.innfopopup.under.information.label' | trans %}
+{% else %}
+    {% set lblShelfId = 'storeapp.innfopopup.lagerplatz.label' | trans %}
+    {% set lblAddedShelf = '' %}
+{% endif %}
+
 {% define attributes = {
     'close-on-submit': true
 } %}
@@ -47,10 +55,10 @@
                         Container: <strong>{{ data.containerId }}</strong>
                     </div>
                     <div id="secondBlock">
-                        Lagerplatz: <strong>{{ data.shelfId }}</strong> <br> Bestellnummer: <strong>{{ data.orderId }}</strong>
+                        Lagerplatz: <strong>{{ lblShelfId }}</strong> <br> Bestellnummer: <strong>{{ data.orderId }}</strong>
                     </div>
                     <div>
-                        <strong>bereits zugeordnet</strong>
+                        <strong>{{ lblAddedShelf }}</strong>
                     </div>
 
                 {% endblock %}

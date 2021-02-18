@@ -65,20 +65,53 @@
             } only %}
     {% endembed %}
 
+    {% if data.isUpdated %}
+        {% set lblShelfAdding = ('storeapp.form.new-container-assign' | trans) %}
+    {% else %}
+        {% set lblShelfAdding = ('storeapp.form.container-assign' | trans) %}
+    {% endif %}
 
     <div class="margin-top-shelf">
 
-        <div class="padding-shelf"><span class="span-font-weight"> {{ 'storeapp.form.container-assign' | trans }} </span></div>
+        <div class="padding-shelf"><span class="span-font-weight"> {{ lblShelfAdding }} </span></div>
 
-        {% include molecule('container-to-shelf-form', 'Picker') with {
-            class: 'js-order-search__item',
-            data: {
-                form: data.form,
-                isSuccess: data.isSuccess,
-            },
-            attributes: {
-                'data-listOfContainers': data.listOfContainers
-            },
-        } only %}
+        {% if data.isUpdated %}
+            {% include molecule('container-to-shelf-form', 'Picker') with {
+                class: 'js-order-search__item',
+                data: {
+                    form: data.form,
+                    isSuccess: data.isSuccess,
+                    isUpdated: data.isUpdated,
+                    containerId: data.containerId,
+                    submit: {
+                        enable: true
+                    },
+                    cancel: {
+                        url: '/picker/container-to-shelf',
+                        enable: true
+                    },
+                },
+                attributes: {
+                    'data-listOfContainers': data.listOfContainers
+                },
+            } only %}
+        {% else %}
+            {% include molecule('container-to-shelf-form', 'Picker') with {
+                class: 'js-order-search__item',
+                data: {
+                    form: data.form,
+                    isSuccess: data.isSuccess,
+                    isUpdated: data.isUpdated,
+                    containerId: data.containerId,
+                    submit: {
+                        enable: true
+                    },
+                },
+                attributes: {
+                    'data-listOfContainers': data.listOfContainers
+                },
+            } only %}
+        {% endif %}
+
     </div>
 {% endblock %}

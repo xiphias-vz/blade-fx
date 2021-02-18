@@ -127,6 +127,7 @@ storeapp.form.container-to-shelf,Stellen Sie den Behälter auf das Regal.
 collected,Abgeholt
 not collected, Nicht abgeholt
 storeapp.form.container-assign,Lagerplatz zuweisen
+storeapp.form.new-container-assign,Neuen Lagerplatz zuwiesen?
 
 storeapp.delivery.message.info.not-all-selected-orders-were-processed,Nicht alle ausgewählten Bestellungen konnten gestartet werden
 of,von
@@ -148,6 +149,7 @@ storeapp.delivery.message.success.order-successfully-delivered,Bestellung erfolg
 storeapp.delivery.message.success.order-not-delivered,Bestellung konnte nicht geliefert werden
 
 forms.submit-btn,Bestätigen
+general.back.button,Abbrechen
 
 storeapp.new_weight,Gewicht (gr)
 
@@ -165,3 +167,9 @@ storeapp.picking.message.error.container-not-known, Container ID nicht bekant
 picking.app.containers.select.title,Packstücke
 picking.app.containers.add.container,Container hinzufügen
 picking.app.containers.continue,Weiter
+
+storeapp.container.to.shelf.container.label,Scan/Eingabe Container
+storeapp.container.to.shelf.shelfID.label,Shelf ID
+storeapp.innfopopup.lagerplatz.label,nicht zugeordnet
+storeapp.innfopopup.under.information.label,bereits zugeordnet
+storeapp.errorpopup.title,Fehler

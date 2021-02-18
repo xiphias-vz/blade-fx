@@ -79,13 +79,6 @@
         {% if data.submit.enable or data.cancel.enable %}
             {% block actions %}
                 <div class="{{config.name}}__actions">
-                    {% if data.cancel.enable %}
-                        {% block cancel %}
-                            <a href="{{data.cancel.url}}" class="{{config.name}}__action {{data.cancel.class}}" {{qa(data.cancel.qa)}}>
-                                {{data.cancel.text}}
-                            </a>
-                        {% endblock %}
-                    {% endif %}
 
                     {% if data.submit.enable %}
                         {% block submit %}
@@ -100,6 +93,14 @@
                                 {% endif %}
                                 {{data.submit.text}}
                             </button>
+                        {% endblock %}
+                    {% endif %}
+
+                    {% if data.cancel.enable %}
+                        {% block cancel %}
+                            <a href="{{data.cancel.url}}" class="{{config.name}}__action {{data.cancel.class}}" {{qa(data.cancel.qa)}}>
+                                {{data.cancel.text}}
+                            </a>
                         {% endblock %}
                     {% endif %}
                 </div>

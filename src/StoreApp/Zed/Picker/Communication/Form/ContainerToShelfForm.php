@@ -20,7 +20,7 @@ use Symfony\Component\Validator\Constraints\NotBlank;
  */
 class ContainerToShelfForm extends AbstractType
 {
-    public const BUTTON_SUBMIT = 'buttonSubmit';
+    //public const BUTTON_SUBMIT = 'buttonSubmit';
     public const FIELD_CONTAINER_CODE = 'container_code';
     public const FIELD_SHELF_CODE = 'shelf_code';
 
@@ -64,9 +64,8 @@ class ContainerToShelfForm extends AbstractType
     {
         $builder->add(static::FIELD_SHELF_CODE, TextType::class, [
             'label' => 'Shelf ID',
-            'required' => true,
+            'required' => false,
             'constraints' => [
-                new NotBlank(),
                 new Length(['min' => 4]),
                 ],
         ]);
