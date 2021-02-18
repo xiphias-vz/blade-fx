@@ -7,13 +7,16 @@
 
 namespace Pyz\Zed\DataImport\Business\Model\ProductImage;
 
+use Orm\Zed\Product\Persistence\SpyProductQuery;
 use Orm\Zed\ProductImage\Persistence\SpyProductImage;
 use Orm\Zed\ProductImage\Persistence\SpyProductImageQuery;
 use Orm\Zed\ProductImage\Persistence\SpyProductImageSet;
 use Orm\Zed\ProductImage\Persistence\SpyProductImageSetQuery;
 use Orm\Zed\ProductImage\Persistence\SpyProductImageSetToProductImageQuery;
-use Pyz\Zed\DataImport\Business\Model\Locale\Repository\LocaleRepositoryInterface;
-use Pyz\Zed\DataImport\Business\Model\Product\Repository\ProductRepositoryInterface;
+use Orm\Zed\ProductImageStorage\Persistence\SpyProductAbstractImageStorageQuery;
+use Orm\Zed\ProductImageStorage\Persistence\SpyProductConcreteImageStorageQuery;
+use Pyz\Zed\DataImport\Business\Model\Product\Repository\ProductRepository;
+use Pyz\Zed\DataImport\DataImportConfig;
 use Spryker\Zed\DataImport\Business\Model\DataImportStep\DataImportStepInterface;
 use Spryker\Zed\DataImport\Business\Model\DataImportStep\PublishAwareStep;
 use Spryker\Zed\DataImport\Business\Model\DataSet\DataSetInterface;
@@ -34,23 +37,30 @@ class ProductImageWriterStep extends PublishAwareStep implements DataImportStepI
     public const DEFAULT_IMAGE_SORT_ORDER = 0;
 
     /**
-     * @var \Pyz\Zed\DataImport\Business\Model\Locale\Repository\LocaleRepositoryInterface
-     */
-    protected $localeRepository;
-
-    /**
-     * @var \Pyz\Zed\DataImport\Business\Model\Product\Repository\ProductRepositoryInterface
+     * @var \Pyz\Zed\DataImport\Business\Model\Product\Repository\ProductRepository
      */
     protected $productRepository;
 
     /**
-     * @param \Pyz\Zed\DataImport\Business\Model\Locale\Repository\LocaleRepositoryInterface $localeRepository
-     * @param \Pyz\Zed\DataImport\Business\Model\Product\Repository\ProductRepositoryInterface $productRepository
+     * @var array
      */
-    public function __construct(LocaleRepositoryInterface $localeRepository, ProductRepositoryInterface $productRepository)
-    {
-        $this->localeRepository = $localeRepository;
+    protected static $idLocaleBuffer = [];
+
+    /**
+     * @var \Pyz\Zed\DataImport\DataImportConfig
+     */
+    protected $dataImportConfig;
+
+    /**
+     * @param \Pyz\Zed\DataImport\Business\Model\Product\Repository\ProductRepository $productRepository
+     * @param \Pyz\Zed\DataImport\DataImportConfig $dataImportConfig
+     */
+    public function __construct(
+        ProductRepository $productRepository,
+        DataImportConfig $dataImportConfig
+    ) {
         $this->productRepository = $productRepository;
+        $this->dataImportConfig = $dataImportConfig;
     }
 
     /**
@@ -60,10 +70,47 @@ class ProductImageWriterStep extends PublishAwareStep implements DataImportStepI
      */
     public function execute(DataSetInterface $dataSet)
     {
-        $productImageSetEntity = $this->findOrCreateImageSet($dataSet);
-        $productImageEntity = $this->findOrCreateImage($dataSet, $productImageSetEntity);
+        $this->deleteOldImageData($dataSet);
+    }
 
-        $this->updateOrCreateImageToImageSetRelation($productImageSetEntity, $productImageEntity, $dataSet);
+    /**
+     * @param \Spryker\Zed\DataImport\Business\Model\DataSet\DataSetInterface $dataSet
+     *
+     * @return void
+     */
+    protected function deleteOldImageData(DataSetInterface $dataSet)
+    {
+        $gueryProduct = SpyProductQuery::create();
+        $product = $gueryProduct->findOneBySku($dataSet["ordernumber"]);
+        if ($product != null) {
+            $imageIdList = [];
+            $imageSets = SpyProductImageSetQuery::create()->findByFkProduct($product->getIdProduct());
+            foreach ($imageSets as $set) {
+                $imageToProduct = SpyProductImageSetToProductImageQuery::create()->findByFkProductImageSet($set->getIdProductImageSet());
+                foreach ($imageToProduct as $image) {
+                    array_push($imageIdList, $image->getFkProductImage());
+                }
+                SpyProductImageSetToProductImageQuery::create()->findByFkProductImageSet($set->getIdProductImageSet())->delete();
+            }
+            SpyProductImageSetQuery::create()->findByFkProduct($product->getIdProduct())->delete();
+
+            $imageSets = SpyProductImageSetQuery::create()->findByFkProductAbstract($product->getIdProduct());
+            foreach ($imageSets as $set) {
+                $imageToProduct = SpyProductImageSetToProductImageQuery::create()->findByFkProductImageSet($set->getIdProductImageSet());
+                foreach ($imageToProduct as $image) {
+                    array_push($imageIdList, $image->getFkProductImage());
+                }
+                SpyProductImageSetToProductImageQuery::create()->findByFkProductImageSet($set->getIdProductImageSet())->delete();
+            }
+            SpyProductImageSetQuery::create()->findByFkProductAbstract($product->getIdProduct())->delete();
+
+            foreach ($imageIdList as $id) {
+                SpyProductImageQuery::create()->findByIdProductImage($id)->delete();
+            }
+
+            SpyProductConcreteImageStorageQuery::create()->findByFkProduct($product->getIdProduct())->delete();
+            SpyProductAbstractImageStorageQuery::create()->findByFkProductAbstract($product->getIdProduct())->delete();
+        }
     }
 
     /**
@@ -106,11 +153,7 @@ class ProductImageWriterStep extends PublishAwareStep implements DataImportStepI
      */
     protected function getIdLocaleByLocale(DataSetInterface $dataSet)
     {
-        $idLocale = null;
-
-        if (!empty($dataSet[static::KEY_LOCALE])) {
-            $idLocale = $this->localeRepository->getIdLocaleByLocale($dataSet[static::KEY_LOCALE]);
-        }
+        $idLocale = 0;
 
         return $idLocale;
     }

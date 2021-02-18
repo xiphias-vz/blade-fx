@@ -44,6 +44,7 @@ use Pyz\Zed\DataImport\Business\Model\ProductAbstractStore\ProductAbstractStoreW
 use Pyz\Zed\DataImport\Business\Model\ProductAttributeKey\AddProductAttributeKeysStep;
 use Pyz\Zed\DataImport\Business\Model\ProductAttributeKey\ProductAttributeKeyWriter;
 use Pyz\Zed\DataImport\Business\Model\ProductConcrete\ProductConcreteWriter;
+use Pyz\Zed\DataImport\Business\Model\ProductImage\ProductImageWriterStep;
 use Pyz\Zed\DataImport\Business\Model\ProductLabel\Hook\ProductLabelAfterImportPublishHook;
 use Pyz\Zed\DataImport\Business\Model\ProductLabel\ProductLabelWriterStep;
 use Pyz\Zed\DataImport\Business\Model\ProductLocation\ProductLocationWriterStep;
@@ -174,6 +175,7 @@ class DataImportBusinessFactory extends SprykerDataImportBusinessFactory
         $dataSetStepBroker = $this->createTransactionAwareDataSetStepBroker(ProductAbstractWriterStep::BULK_SIZE);
         $dataSetStepBroker
             ->addStep($this->createAddLocalesStep())
+            ->addStep($this->createProductImageWriterStep())
             ->addStep($this->createAttributesExtractorStep())
             ->addStep($this->createProductLocalizedAttributesExtractorStep([
                 ProductConfig::KEY_ARTIKELNAME_SPRYKER,
@@ -1000,6 +1002,17 @@ class DataImportBusinessFactory extends SprykerDataImportBusinessFactory
     public function getProductUpdateFacade(): ProductUpdateFacadeInterface
     {
         return $this->getProvidedDependency(DataImportDependencyProvider::FACADE_PRODUCT_UPDATE);
+    }
+
+    /**
+     * @return \Pyz\Zed\DataImport\Business\Model\ProductImage\ProductImageWriterStep
+     */
+    protected function createProductImageWriterStep(): ProductImageWriterStep
+    {
+        return new ProductImageWriterStep(
+            $this->createProductRepository(),
+            $this->getConfig()
+        );
     }
 
     /**

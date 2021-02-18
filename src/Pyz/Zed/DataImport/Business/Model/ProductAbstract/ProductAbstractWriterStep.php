@@ -106,6 +106,7 @@ class ProductAbstractWriterStep extends PublishAwareStep implements DataImportSt
         $this->importProductUrls($dataSet, $productAbstractEntity, $locales);
         $this->importProductImage($dataSet, $locales);
 
+        $this->addPublishEvents(ProductEvents::PRODUCT_ABSTRACT_UNPUBLISH, $productAbstractEntity->getIdProductAbstract());
         $this->addPublishEvents(ProductEvents::PRODUCT_ABSTRACT_PUBLISH, $productAbstractEntity->getIdProductAbstract());
     }
 
