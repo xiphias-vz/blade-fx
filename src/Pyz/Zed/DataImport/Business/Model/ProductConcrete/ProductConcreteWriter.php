@@ -7,6 +7,7 @@
 
 namespace Pyz\Zed\DataImport\Business\Model\ProductConcrete;
 
+use DateTime;
 use Orm\Zed\Locale\Persistence\SpyLocaleQuery;
 use Orm\Zed\Product\Persistence\SpyProduct;
 use Orm\Zed\Product\Persistence\SpyProductLocalizedAttributesQuery;
@@ -49,6 +50,11 @@ class ProductConcreteWriter extends PublishAwareStep implements DataImportStepIn
      * @var array
      */
     protected static $idLocaleBuffer = [];
+
+    /**
+     * @var \DateTime|null
+     */
+    public static $lastImportTime = null;
 
     /**
      * @var \Pyz\Zed\DataImport\DataImportConfig
@@ -100,6 +106,12 @@ class ProductConcreteWriter extends PublishAwareStep implements DataImportStepIn
             ));
         }
 
+        if (static::$lastImportTime == null) {
+            static::$lastImportTime = new DateTime();
+        } elseif (static::$lastImportTime->diff(new DateTime())->s > 7200) {
+            static::$lastImportTime = new DateTime();
+        }
+
         $attributes = $this->removeUnnecessaryAttributes($dataSet);
 
         $productEntity = SpyProductQuery::create()
@@ -114,6 +126,7 @@ class ProductConcreteWriter extends PublishAwareStep implements DataImportStepIn
             ->setProductNumber($dataSet[static::KEY_PRODUCT_NUMBER])
             ->setSapNumber($dataSet[ProductConfig::KEY_SAP_NUMBER])
             ->setSku($dataSet[static::KEY_PRODUCT_NUMBER])
+            ->setLastImportAt(static::$lastImportTime->format('Y-m-d H:i:s'))
             ->setAttributes(json_encode($attributes));
 
         if ($productEntity->isNew() || $productEntity->isModified()) {

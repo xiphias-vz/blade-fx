@@ -11,6 +11,7 @@
     <transfer name="ProductConcrete">
         <property name="productQuantity" type="ProductQuantity"/>
         <property name="productNumber" type="string"/>
+        <property name="lastUpdatedAt" type="string"/>
     </transfer>
 
 </transfers>
