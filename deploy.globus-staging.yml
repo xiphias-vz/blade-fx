@@ -3,6 +3,9 @@ version: "0.1"
 x-real-ip: &real-ip
     real-ip:
         from:
+            - 93.142.251.52/24
+            - 192.168.117.0/24
+            - 195.29.196.22/24
             - 10.0.0.0/8 # AWS VPC network
             - 103.21.244.0/22 # Cloudflare
             - 103.22.200.0/22 # Cloudflare
@@ -30,8 +33,8 @@ x-real-ip: &real-ip
             - 94.100.128.0/20 # Globus VPN
             - 185.140.204.0/22 # Globus VPN
             - 173.45.18.0/24 # Globus VPN
-            - 62.159.118.222 # Globus VPN
-            - 94.100.132.14 # Globus VPN
+            - 62.159.118.222/24 # Globus VPN
+            - 94.100.132.14/20 # Globus VPN
 
 x-frontend-auth: &frontend-auth
     <<: *real-ip
@@ -42,6 +45,12 @@ x-frontend-auth: &frontend-auth
               password: glo123SPRY!
         exclude:
             - '${ALLOWED_IP}' # AWS gateway
+            - 93.142.251.52/24
+            - 192.168.117.0/24
+            - 195.29.196.22/24
+            - '93.142.251.52/24'
+            - '192.168.117.0/24'
+            - '195.29.196.22/24'
 
 namespace: spryker-cloud
 tag: '1.0'
