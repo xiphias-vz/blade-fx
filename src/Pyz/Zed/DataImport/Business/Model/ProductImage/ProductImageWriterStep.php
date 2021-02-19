@@ -7,6 +7,7 @@
 
 namespace Pyz\Zed\DataImport\Business\Model\ProductImage;
 
+use Exception;
 use Orm\Zed\Product\Persistence\SpyProductQuery;
 use Orm\Zed\ProductImage\Persistence\SpyProductImage;
 use Orm\Zed\ProductImage\Persistence\SpyProductImageQuery;
@@ -94,7 +95,7 @@ class ProductImageWriterStep extends PublishAwareStep implements DataImportStepI
             }
             SpyProductImageSetQuery::create()->findByFkProduct($product->getIdProduct())->delete();
 
-            $imageSets = SpyProductImageSetQuery::create()->findByFkProductAbstract($product->getIdProduct());
+            $imageSets = SpyProductImageSetQuery::create()->findByFkProductAbstract($product->getFkProductAbstract());
             foreach ($imageSets as $set) {
                 $imageToProduct = SpyProductImageSetToProductImageQuery::create()->findByFkProductImageSet($set->getIdProductImageSet());
                 foreach ($imageToProduct as $image) {
@@ -105,7 +106,10 @@ class ProductImageWriterStep extends PublishAwareStep implements DataImportStepI
             SpyProductImageSetQuery::create()->findByFkProductAbstract($product->getIdProduct())->delete();
 
             foreach ($imageIdList as $id) {
-                SpyProductImageQuery::create()->findByIdProductImage($id)->delete();
+                try {
+                    SpyProductImageQuery::create()->findByIdProductImage($id)->delete();
+                } catch (Exception $ex) {
+                }
             }
 
             SpyProductConcreteImageStorageQuery::create()->findByFkProduct($product->getIdProduct())->delete();
