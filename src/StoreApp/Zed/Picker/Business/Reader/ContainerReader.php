@@ -123,6 +123,7 @@ class ContainerReader implements ContainerReaderInterface
     public function getContainerShelfs(string $ContainerId): array
     {
         return $this->pyzPickingSalesOrderQuery->joinSpySalesOrder()
+            ->withColumn("(select order_reference from spy_sales_order where spy_sales_order.id_sales_order = pyz_picking_sales_order.fk_sales_order)", "orderReference")
         ->where(SpySalesOrderTableMap::COL_INVOICE_REFERENCE . ' is null')
         ->findByContainerCode($ContainerId)
         ->toArray();

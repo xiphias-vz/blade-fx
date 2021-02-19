@@ -41,7 +41,7 @@ class ContainerToShelfController extends AbstractController
             $dataInputForm = $containerToShelfForm->getData();
             $containerIdCodeInput = $dataInputForm['container_code'];
             $shelfIdCodeInput = $dataInputForm['shelf_code'];
-            $orderIdCodeInput = "";
+            $orderReference = "";
             $containerStatusShelfs = $this->getFactory()->getPickerBusinessFactory()->createContainerReader()->getContainerShelfs($containerIdCodeInput);
             $existingContainerInPicking = count($containerStatusShelfs);
 
@@ -50,7 +50,7 @@ class ContainerToShelfController extends AbstractController
             foreach ($containerStatusShelfs as $property => $value) {
                 if ($value["ShelfCode"] == $shelfIdCodeInput || $shelfIdCodeInput === null) {
                     $ItExists = true;
-                    $orderIdCodeInput = $value["FkSalesOrder"];
+                    $orderReference = $value["orderReference"];
                     $existingShelfCode = $value["ShelfCode"];
                 }
             }
@@ -68,7 +68,7 @@ class ContainerToShelfController extends AbstractController
                     'isUpdated' => $ItExists,
                     'containerId' => $containerIdCodeInput,
                     'shelfId' => $existingShelfCode,
-                    'orderId' => $orderIdCodeInput,
+                    'orderId' => $orderReference,
                     'containerToShelfForm' => $containerToShelfForm->createView(),
                     'merchant' => $this->getMerchantFromRequest($request),
                     'activities' => PickerConfig::ACTIVITIES,
