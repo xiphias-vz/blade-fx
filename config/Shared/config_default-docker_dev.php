@@ -4,7 +4,6 @@ use Pyz\Shared\CashierOrderExport\CashierOrderExportConstants;
 use Pyz\Shared\Customer\CustomerConstants;
 use Pyz\Shared\DataImport\DataImportConstants;
 use Pyz\Shared\ProductImage\ProductImageConstants;
-use Pyz\Shared\SalesDataExport\SalesDataExportConstants;
 
 $config[ProductImageConstants::IMAGES_HOST_URL] = 'https://globus-staging-product-images.s3.eu-central-1.amazonaws.com';
 
@@ -32,6 +31,3 @@ $config[DataImportConstants::SFTP_DATA_IMPORT_FILES_FOLDER_NAME] = 'RK';
 
 // ---------- CashierOrderExport
 $config[CashierOrderExportConstants::SFTP_CASHIER_ORDER_FILES_FOLDER_KEY] = 'kasse/staging';
-
-// ---------- ExportOrder
-$config[SalesDataExportConstants::SFTP_ORDER_EXPORT_FILES_FOLDER_KEY] = 'IN/RK';

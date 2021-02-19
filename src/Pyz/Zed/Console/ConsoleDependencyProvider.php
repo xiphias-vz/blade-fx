@@ -40,7 +40,6 @@ use Spryker\Zed\CodeGenerator\Communication\Console\BundleSharedCodeGeneratorCon
 use Spryker\Zed\CodeGenerator\Communication\Console\BundleYvesCodeGeneratorConsole;
 use Spryker\Zed\CodeGenerator\Communication\Console\BundleZedCodeGeneratorConsole;
 use Spryker\Zed\Console\ConsoleDependencyProvider as SprykerConsoleDependencyProvider;
-use Spryker\Zed\DataExport\Communication\Console\DataExportConsole;
 use Spryker\Zed\DataImport\Communication\Console\DataImportDumpConsole;
 use Spryker\Zed\Development\Communication\Console\CodeArchitectureSnifferConsole;
 use Spryker\Zed\Development\Communication\Console\CodeFixturesConsole;
@@ -330,7 +329,6 @@ class ConsoleDependencyProvider extends SprykerConsoleDependencyProvider
 
             new AclInstallConsole(),
             new TimeSlotCheckerConsole(),
-            new DataExportConsole(),
             new SitemapConsole(),
         ];
 

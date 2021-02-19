@@ -23,7 +23,6 @@
         <property name="deliveryMinimumAge" type="int"/>
         <property name="requestedDeliveryDate" type="string"/>
         <property name="pickingSalesOrderCollection" type="PickingSalesOrderCollection"/>
-        <property name="loyaltyNumber" type="string" />
     </transfer>
 
     <transfer name="Item">
