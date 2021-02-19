@@ -29,6 +29,10 @@ class ProductCategoryWriterStep extends PublishAwareStep implements DataImportSt
      */
     public function execute(DataSetInterface $dataSet): void
     {
+        if ($this->getCategoryId($dataSet) == null) {
+            return;
+        }
+
         $productAbstractIds = $this->getProductAbstractIds($dataSet);
 
         foreach ($productAbstractIds as $productAbstractId) {
@@ -68,14 +72,17 @@ class ProductCategoryWriterStep extends PublishAwareStep implements DataImportSt
     /**
      * @param \Spryker\Zed\DataImport\Business\Model\DataSet\DataSetInterface $dataSet
      *
-     * @return int
+     * @return int|null
      */
     public function getCategoryId(DataSetInterface $dataSet)
     {
         $categoryEntity = SpyCategoryQuery::create()
             ->filterByCategoryKey_Like('%\_' . $dataSet[static::KEY_CATEGORY_ID])
             ->findOne();
-
-        return $categoryEntity->getIdCategory();
+        if ($categoryEntity != null) {
+            return $categoryEntity->getIdCategory();
+        } else {
+            return null;
+        }
     }
 }
