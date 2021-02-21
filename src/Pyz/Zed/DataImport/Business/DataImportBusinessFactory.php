@@ -175,7 +175,6 @@ class DataImportBusinessFactory extends SprykerDataImportBusinessFactory
         $dataSetStepBroker = $this->createTransactionAwareDataSetStepBroker(ProductAbstractWriterStep::BULK_SIZE);
         $dataSetStepBroker
             ->addStep($this->createAddLocalesStep())
-            ->addStep($this->createProductImageWriterStep())
             ->addStep($this->createAttributesExtractorStep())
             ->addStep($this->createProductLocalizedAttributesExtractorStep([
                 ProductConfig::KEY_ARTIKELNAME_SPRYKER,

@@ -242,6 +242,7 @@ class ProductAbstractWriterStep extends PublishAwareStep implements DataImportSt
     {
         foreach ($locales as $localeKey => $localeName) {
             $productImageSetEntity = $this->findOrCreateImageSet($dataSet, $localeName);
+            SpyProductImageSetToProductImageQuery::create()->findByFkProductImageSet($productImageSetEntity->getIdProductImageSet())->delete();
             $images = explode(';', $dataSet[ProductConfig::KEY_MAIN_IMAGE_FILE_NAME]);
             foreach ($images as $key => $image) {
                 $imageUrl = $this->dataImportConfig->getImagesHostUrl() . '/' . $image;

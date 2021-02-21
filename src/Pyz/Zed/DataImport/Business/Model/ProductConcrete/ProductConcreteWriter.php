@@ -203,6 +203,7 @@ class ProductConcreteWriter extends PublishAwareStep implements DataImportStepIn
     {
         foreach (Store::getInstance()->getLocales() as $localeKey => $localeName) {
             $productImageSetEntity = $this->findOrCreateImageSet($dataSet, $localeName);
+            SpyProductImageSetToProductImageQuery::create()->findByFkProductImageSet($productImageSetEntity->getIdProductImageSet())->delete();
             $images = explode(';', $dataSet[ProductConfig::KEY_MAIN_IMAGE_FILE_NAME]);
             foreach ($images as $key => $image) {
                 $imageUrl = $this->dataImportConfig->getImagesHostUrl() . '/' . $image;
