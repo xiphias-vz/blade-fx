@@ -58,10 +58,12 @@ class PriceProductScheduleApplyTransactionExecutor extends SprykerPriceProductSc
     {
         $idProductAbstract = $priceProductScheduleTransfer->getPriceProduct()->getIdProductAbstract() ?? null;
         $idProduct = $priceProductScheduleTransfer->getPriceProduct()->getIdProduct() ?? null;
+        $priceType = $priceProductScheduleTransfer->getPriceProduct()->getFkPriceType() ?? null;
 
         $priceProductEntity = SpyPriceProductQuery::create()
             ->filterByFkProductAbstract($idProductAbstract)
             ->filterByFkProduct($idProduct)
+            ->filterByFkPriceType($priceType)
             ->find();
 
         foreach ($priceProductEntity->getData() as $priceProduct) {
