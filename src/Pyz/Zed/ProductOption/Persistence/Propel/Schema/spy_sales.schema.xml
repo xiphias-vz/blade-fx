@@ -5,5 +5,10 @@
         <column name="id_sales_order_item_option" required="true" type="BIGINT" autoIncrement="true" primaryKey="true"/>
         <column name="fk_sales_order_item" type="BIGINT" required="true"/>
     </table>
-
+    <table name="spy_sales_order_item">
+        <column name="item_paused" type="BOOLEAN"/>
+        <column name="color_id" type="INTEGER"/>
+        <column name="aisle" type="INTEGER" />
+        <column name="picked_at" type="TIMESTAMP" />
+    </table>
 </database>

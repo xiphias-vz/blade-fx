@@ -41,6 +41,10 @@
         <property name="brand" type="string"/>
         <property name="basePriceContent" type="int"/>
         <property name="basePriceUnit" type="string"/>
+        <property name="itemPaused" type="bool" />
+        <property name="colorId" type="int" />
+        <property name="aisle" type="int" />
+        <property name="pickedAt" type="string" />
     </transfer>
 
     <transfer name="ProductConcrete">
