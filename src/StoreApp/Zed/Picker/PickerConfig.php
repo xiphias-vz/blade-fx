@@ -48,6 +48,7 @@ class PickerConfig extends AbstractBundleConfig
             'diff-sections',
             'collect-by-customer',
             'container-to-shelf',
+            'multi-picking',
         ];
     }
 
@@ -59,6 +60,14 @@ class PickerConfig extends AbstractBundleConfig
     public function getPickingUri(): string
     {
         return '/picker/picking';
+    }
+
+    /**
+     * @return string
+     */
+    public function getMultiPickingUri(): string
+    {
+        return '/picker/multi-picking';
     }
 
     /**

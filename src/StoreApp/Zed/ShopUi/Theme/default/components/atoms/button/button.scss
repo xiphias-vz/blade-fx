@@ -24,12 +24,15 @@ $button-radius: rem(10);
             margin-bottom: 10px;
             min-width: 300px;
             &:nth-child(1) {
-                background: $setting-color-pickingApp-darkerGreen;
+                background: $setting-color-pickingApp-darkBlue;
             }
             &:nth-child(2) {
-                background: $setting-color-pickingApp-lighterGreen;
+                background: $setting-color-pickingApp-darkerGreen;
             }
             &:nth-child(3) {
+                background: $setting-color-pickingApp-lighterGreen;
+            }
+            &:nth-child(4) {
                 background: $setting-color-pickingApp-lightOrange;
             }
         }

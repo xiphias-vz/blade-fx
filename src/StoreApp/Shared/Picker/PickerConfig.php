@@ -14,6 +14,10 @@ class PickerConfig
 
     public const ACTIVITIES = [
         [
+            'name' => 'picker.activity.multi-picking',
+            'path' => self::URL_ORDER_MULTI_PICKING,
+        ],
+        [
             'name' => 'picker.activity.picking',
             'path' => self::URL_PICKING_LIST,
         ],
@@ -28,6 +32,10 @@ class PickerConfig
     ];
 
     public const SECTIONS = [
+        [
+            'name' => 'picker.activity.multi-picking',
+            'path' => self::URL_ORDER_MULTI_PICKING,
+        ],
         [
             'name' => 'picker.activity.picking',
             'path' => self::URL_DIFF_PICKING_ZONE,
@@ -50,6 +58,7 @@ class PickerConfig
     public const URL_START_ORDER_PICKING = '/picker/picking/start-order-picking';
     public const URL_STOP_ORDER_PICKING = '/picker/picking/stop-order-picking';
     public const URL_ORDER_PICKING = '/picker/picking/order-picking';
+    public const URL_ORDER_MULTI_PICKING = '/picker/multi-picking';
 
     public const URL_COLLECT_BY_CUSTOMER_LIST = '/picker/collect-by-customer';
     public const URL_CONTAINER_TO_SHELF = '/picker/container-to-shelf';

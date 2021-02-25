@@ -1,0 +1,12 @@
+{% extends template('page-layout-main') %}
+
+ {% block header %}
+     {% embed organism('header') only %}
+         {% block selectPickingZone %}{% endblock %}
+     {% endembed %}
+ {% endblock %}
+
+
+{% block content %}
+    <h1>NEW FORM FOR MULTIPICKING</h1>
+{% endblock content %}

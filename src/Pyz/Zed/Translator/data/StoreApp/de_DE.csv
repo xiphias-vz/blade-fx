@@ -10,9 +10,10 @@ Forgot password?, Forgot password?
 storeapp.filiale.region.format,%d - %s
 storeapp.filiale.number.format,Filiale - %d
 
-picker.activity.picking,Picking
+picker.activity.picking,Einzel Picking
 picker.activity.collection,Abholung
 picker.activity.container-to-shelf,Container Platz
+picker.activity.multi-picking,Multi Picking
 
 picker.picking.order.deadline,Fertigstellung
 picker.picking.order.reference,Bestellnummer
