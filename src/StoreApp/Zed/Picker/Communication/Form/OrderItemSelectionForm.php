@@ -115,8 +115,8 @@ class OrderItemSelectionForm extends AbstractType
                         'required' => true,
                         'data' => $weight,
                         'attr' => [
-                            'min' => $weight * (1 - self::ALLOWED_DEVIATION_FROM_THE_ORIGINAL_WEIGHT),
-                            'max' => $weight * (1 + self::ALLOWED_DEVIATION_FROM_THE_ORIGINAL_WEIGHT),
+                            'min' => round($weight * (1 - self::ALLOWED_DEVIATION_FROM_THE_ORIGINAL_WEIGHT), 3),
+                            'max' => round($weight * (1 + self::ALLOWED_DEVIATION_FROM_THE_ORIGINAL_WEIGHT), 3),
                         ],
                         'label' => 'storeapp.new_weight',
                         'constraints' => [
