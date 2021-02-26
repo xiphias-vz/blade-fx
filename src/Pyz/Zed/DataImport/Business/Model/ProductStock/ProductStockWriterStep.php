@@ -9,6 +9,7 @@ namespace Pyz\Zed\DataImport\Business\Model\ProductStock;
 
 use Exception;
 use Orm\Zed\Product\Persistence\SpyProductQuery;
+use Orm\Zed\Sales\Persistence\PyzShelfDefinitionQuery;
 use Orm\Zed\Stock\Persistence\Map\SpyStockProductTableMap;
 use Orm\Zed\Stock\Persistence\SpyStockProductQuery;
 use Orm\Zed\Stock\Persistence\SpyStockQuery;
@@ -84,11 +85,24 @@ class ProductStockWriterStep extends PublishAwareStep implements DataImportStepI
                 ->filterByFkStock($this->getIdStockByWarehouseName($sapStoreIdToStoreMap[$dataSet[static::KEY_STOCK_STORE]]))
                 ->findOneOrCreate();
 
+            $shelfDefinitionEntity = PyzShelfDefinitionQuery::create()
+                ->filterByFkStock($stockProductEntity->getFkStock())
+                ->filterByShelf($dataSet[static::KEY_STOCK_SHELF] ? : $stockProductEntity->getShelf())
+                ->filterByShelfField($dataSet[static::KEY_STOCK_SHELF_FIELD] ? : $stockProductEntity->getShelfField())
+                ->filterByShelfFloor($dataSet[static::KEY_STOCK_SHELF_FLOR] ? : $stockProductEntity->getShelfFloor())
+                ->findOne();
+
+            $sequence = null;
+            if ($shelfDefinitionEntity != null) {
+                $sequence = $shelfDefinitionEntity->getSequence();
+            }
+
             $stockProductEntity
                 ->setQuantity($dataSet[static::KEY_STOCK_QTY])
                 ->setShelf($dataSet[static::KEY_STOCK_SHELF] ? : $stockProductEntity->getShelf())
                 ->setShelfField($dataSet[static::KEY_STOCK_SHELF_FIELD] ? : $stockProductEntity->getShelfField())
                 ->setShelfFloor($dataSet[static::KEY_STOCK_SHELF_FLOR] ? : $stockProductEntity->getShelfFloor())
+                ->setSequence($sequence ? : $stockProductEntity->getSequence())
                 ->setIsNeverOutOfStock(false);
 
             $quantityModified = $stockProductEntity->isModified() && in_array(SpyStockProductTableMap::COL_QUANTITY, $stockProductEntity->getModifiedColumns());
@@ -104,6 +118,8 @@ class ProductStockWriterStep extends PublishAwareStep implements DataImportStepI
                 ->filterByFkStock($this->getIdStockByWarehouseName($sapStoreIdToStoreMap[$dataSet[static::KEY_STOCK_STORE]]))
                 ->findOneOrCreate();
             $stockStoreEntity->save();
+
+            $this->updateOrderItemShelfs($productEntity->getIdProduct(), $storeName, $stockProductEntity->getShelf(), $stockProductEntity->getShelfField(), $stockProductEntity->getShelfFloor(), $sequence);
         }
     }
 
@@ -144,31 +160,32 @@ class ProductStockWriterStep extends PublishAwareStep implements DataImportStepI
      * @param string|null $shelf
      * @param string|null $shelf_field
      * @param string|null $shelf_floor
+     * @param string|null $sequence
      *
      * @return void
      */
-    protected function updateOrderItemShelfs(int $idProduct, string $storeName, ?string $shelf, ?string $shelf_field, ?string $shelf_floor)
+    protected function updateOrderItemShelfs(int $idProduct, string $storeName, ?string $shelf, ?string $shelf_field, ?string $shelf_floor, ?string $sequence)
     {
         if (!empty($shelf)) {
-            //$sql = 'UPDATE spy_sales_order_item INNER JOIN spy_sales_order on spy_sales_order_item.fk_sales_order = spy_sales_order.id_sales_order INNER JOIN spy_product on spy_product.sku = spy_sales_order_item.sku INNER JOIN spy_merchant on spy_merchant.filial_number = spy_sales_order.merchant_reference INNER JOIN spy_stock_store on spy_stock_store.fk_store = spy_merchant.fk_store INNER JOIN spy_stock_product on spy_stock_product.fk_stock = spy_stock_store.fk_stock AND spy_stock_product.fk_product = spy_product.id_product SET spy_sales_order_item.shelf = spy_stock_product.shelf, spy_sales_order_item.shelf_field = spy_stock_product.shelf_field, spy_sales_order_item.shelf_floor = spy_stock_product.shelf_floor WHERE spy_stock_product.fk_product = ' . $idProduct .' AND spy_sales_order_item.fk_oms_order_item_state in (select id_oms_order_item_state from spy_oms_order_item_state where spy_oms_order_item_state.name in (\'new\', \'confirmed\', \'ready for picking\')) AND (spy_sales_order_item.shelf <> spy_stock_product.shelf or spy_sales_order_item.shelf_field <> spy_stock_product.shelf_field or spy_sales_order_item.shelf_floor <> spy_stock_product.shelf_floor)';
             $sql = 'UPDATE spy_sales_order_item
-SET spy_sales_order_item.shelf = \'' . $shelf . '\',
-    spy_sales_order_item.shelf_field = \'' . $shelf_field . '\',
-    spy_sales_order_item.shelf_floor = \'' . $shelf_floor . '\'
-where id_sales_order_item in(
-    select spy_sales_order_item.id_sales_order_item
-    from spy_sales_order_item
-             INNER JOIN spy_sales_order on spy_sales_order_item.fk_sales_order = spy_sales_order.id_sales_order
-             INNER JOIN spy_product on spy_product.sku = spy_sales_order_item.sku
-             INNER JOIN spy_merchant on spy_merchant.filial_number = spy_sales_order.merchant_reference
-             INNER JOIN spy_stock_store on spy_stock_store.fk_store = spy_merchant.fk_store
-             INNER JOIN spy_stock_product on spy_stock_product.fk_stock = spy_stock_store.fk_stock
-        AND spy_stock_product.fk_product = spy_product.id_product
-    WHERE spy_stock_product.fk_product = ' . $idProduct . '
-      AND spy_sales_order_item.fk_oms_order_item_state in (select id_oms_order_item_state from spy_oms_order_item_state where spy_oms_order_item_state.name in (\'new\', \'confirmed\', \'ready for picking\'))
-      AND (spy_sales_order_item.shelf <> spy_stock_product.shelf or spy_sales_order_item.shelf_field <> spy_stock_product.shelf_field or spy_sales_order_item.shelf_floor <> spy_stock_product.shelf_floor)
-      AND spy_sales_order_item.store = \'' . $storeName . '\'
-    )';
+                SET shelf = \'' . $shelf . '\',
+                    shelf_field = \'' . $shelf_field . '\',
+                    shelf_floor = \'' . $shelf_floor . '\',
+                    sequence = \'' . $sequence . '\'
+                where spy_sales_order_item.id_sales_order_item in(
+                    select spy_sales_order_item.id_sales_order_item
+                    from spy_sales_order_item
+                    INNER JOIN spy_product on spy_product.sku = spy_sales_order_item.sku
+                    WHERE spy_product.id_product = ' . $idProduct . '
+                      AND spy_sales_order_item.fk_oms_order_item_state in (select id_oms_order_item_state from spy_oms_order_item_state
+                        where spy_oms_order_item_state.name in (\'new\', \'confirmed\', \'ready for picking\'))
+                      AND spy_sales_order_item.store = \'' . $storeName . '\'
+                      AND (
+                      spy_sales_order_item.shelf <> \'' . $shelf . '\'
+                        or spy_sales_order_item.shelf_field <> \'' . $shelf_field . '\'
+                        or spy_sales_order_item.shelf_floor <> \'' . $shelf_floor . '\'
+                      )
+                    )';
             $this->executeLocalSql($sql, $idProduct);
         }
     }

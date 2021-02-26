@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<database xmlns="spryker:schema-01" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" name="zed" namespace="Orm\Zed\Sales\Persistence" package="src.Orm.Zed.Sales.Persistence" xsi:schemaLocation="spryker:schema-01 https://static.spryker.com/schema-01.xsd">
+
+    <table name="pyz_shelf_definition">
+        <column name="id_shelf_definition" required="true" type="BIGINT" autoIncrement="true" primaryKey="true"/>
+        <column name="fk_stock" type="INTEGER" required="true"/>
+        <column name="shelf" type="VARCHAR" required="true"/>
+        <column name="shelf_field" type="VARCHAR" required="true"/>
+        <column name="shelf_floor" type="VARCHAR" required="true"/>
+        <column name="sequence" type="VARCHAR" required="true"/>
+        <column name="aisle" type="VARCHAR" />
+        <foreign-key name="pyz_shelf_definition-fk_stock" foreignTable="spy_stock" onDelete="CASCADE" onUpdate="CASCADE">
+            <reference local="fk_stock" foreign="id_stock"/>
+        </foreign-key>
+        <index name="spy_product_bundle-shelf">
+            <index-column name="fk_stock"/>
+            <index-column name="shelf"/>
+            <index-column name="shelf_field"/>
+            <index-column name="shelf_floor"/>
+        </index>
+    </table>
+</database>
