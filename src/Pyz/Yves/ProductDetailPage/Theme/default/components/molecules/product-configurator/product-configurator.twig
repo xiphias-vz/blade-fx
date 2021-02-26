@@ -16,6 +16,7 @@
 {% set options = [] %}
 {% set productName = data.product.name | default %}
 {% set sku = data.product.sku %}
+{% set idProductAbstract = data.product.idProductAbstract %}
 {% set availabilityWidget = '' %}
 {% set isProductConcrete = data.product.idProductConcrete is not empty %}
 {% set isDisabled = data.product.idProductConcrete is empty or data.product.price is empty %}
@@ -119,7 +120,7 @@
         }
     } only %}
 
-    <form method="POST" action="{{ path("cart/add", {"sku": sku}) }}">
+    <form method="POST" action="{{ path("cart/add", {"sku": idProductAbstract}) }}">
         <input type="hidden" name="token" value="{{ csrf_token('add-to-cart') }}"/>
         {% if data.product.attributes.pfandbetrag is defined %}
             <div class="text-secondary spacing-bottom--bigger">

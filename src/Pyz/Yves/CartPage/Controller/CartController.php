@@ -27,6 +27,7 @@ use Symfony\Component\Security\Csrf\CsrfToken;
 class CartController extends SprykerCartController
 {
     public const REQUEST_HEADER_REFERER = 'referer';
+    public const ADD_ITEMS_SUCCESS = 'cart.add.items.success';
 
     protected const ADD_TO_CART_CSRF_TOKEN_NAME = 'add-to-cart';
     protected const ADD_TO_CART_AJAX_CSRF_TOKEN_NAME = 'add-to-cart-ajax';
@@ -75,10 +76,11 @@ class CartController extends SprykerCartController
     public function addAction(Request $request, $sku)
     {
         if ($this->isCsrfTokenValid(static::ADD_TO_CART_CSRF_TOKEN_NAME, $request)) {
-            parent::addAction($request, $sku);
+            $this->addItemFromPdp($request, $sku);
         } else {
             $this->addErrorMessage(MessagesConfig::MESSAGE_PERMISSION_FAILED);
         }
+        $this->addSuccessMessage(static::ADD_ITEMS_SUCCESS);
 
         return $this->redirect($request);
     }
@@ -301,5 +303,43 @@ class CartController extends SprykerCartController
         return (new OrderDetailRequestTransfer())
             ->setItems($quoteTransfer->getItems())
             ->setTotals($quoteTransfer->getTotals());
+    }
+
+    /**
+     * @param \Symfony\Component\HttpFoundation\Request $request
+     * @param string $productAbstractId
+     *
+     * @return void
+     */
+    public function addItemFromPdp(Request $request, string $productAbstractId)
+    {
+        $data = [];
+
+        $quantity = $request->get('quantity', 1);
+        $productViewTransfer = $this->getFactory()
+            ->getProductStorageClient()
+            ->findProductAbstractViewTransfer($productAbstractId, $this->getLocale());
+
+        $productConcreteSku = $this->resolveProductConcreteSkuFromProductAbstractId($productViewTransfer);
+        $itemTransfer = (new ItemTransfer())
+            ->setSku($productConcreteSku)
+            ->setQuantity($quantity);
+
+        $depositProductOptions = $this->getFactory()
+            ->getDepositProductOptionClient()
+            ->getDepositProductOptionsByIdProductAbstract($productAbstractId, $productViewTransfer);
+
+        $this->addProductOptions($depositProductOptions, $itemTransfer);
+        $itemTransfer = $this->executePreAddToCartPlugins($itemTransfer, $request->request->all());
+
+        $this->getFactory()->getCartClient()->addItem($itemTransfer, $request->request->all());
+
+        $messageTransfers = $this->getFactory()
+            ->getZedRequestClient()
+            ->getResponsesErrorMessages();
+
+        if (count($messageTransfers) !== 0) {
+            $data['error'] = $messageTransfers[0]->getValue();
+        }
     }
 }
