@@ -33,6 +33,7 @@ use Pyz\Zed\DataImport\Business\Model\Navigation\NavigationKeyToIdNavigationStep
 use Pyz\Zed\DataImport\Business\Model\Navigation\NavigationWriterStep;
 use Pyz\Zed\DataImport\Business\Model\NavigationNode\NavigationNodeValidityDatesStep;
 use Pyz\Zed\DataImport\Business\Model\NavigationNode\NavigationNodeWriterStep;
+use Pyz\Zed\DataImport\Business\Model\OrderPickzoneColor\OrderPickzoneColorWriterStep;
 use Pyz\Zed\DataImport\Business\Model\PickingRoute\PickingRouteWriterStep;
 use Pyz\Zed\DataImport\Business\Model\PickingZone\PickingZoneWriterStep;
 use Pyz\Zed\DataImport\Business\Model\PostalCode\PostalCodeWriterStep;
@@ -134,6 +135,7 @@ class DataImportBusinessFactory extends SprykerDataImportBusinessFactory
             ->addDataImporter($this->getMerchantDeliveryPostalCodeImporter())
             ->addDataImporter($this->getMerchantUserImporter())
             ->addDataImporter($this->getTimeSlotImporter())
+            ->addDataImporter($this->getOrderPickzoneImporter())
             ->addDataImporter($this->getAlternativeEanImporter());
 
         return $dataImporterCollection;
@@ -771,6 +773,21 @@ class DataImportBusinessFactory extends SprykerDataImportBusinessFactory
     }
 
     /**
+     * @return \Spryker\Zed\DataImport\Business\Model\DataImporter|\Spryker\Zed\DataImport\Business\Model\DataImporterAfterImportAwareInterface|\Spryker\Zed\DataImport\Business\Model\DataImporterBeforeImportAwareInterface|\Spryker\Zed\DataImport\Business\Model\DataImporterInterface|\Spryker\Zed\DataImport\Business\Model\DataSet\DataSetStepBrokerAwareInterface
+     */
+    protected function getOrderPickzoneImporter()
+    {
+        $dataImporter = $this->getCsvDataImporterFromConfig($this->getConfig()->getOrderPickzoneColorImporterConfiguration());
+
+        $dataSetStepBroker = $this->createTransactionAwareDataSetStepBroker();
+        $dataSetStepBroker->addStep($this->createOrderPickzoneColorWriterStep());
+
+        $dataImporter->addDataSetStepBroker($dataSetStepBroker);
+
+        return $dataImporter;
+    }
+
+    /**
      * @return \Spryker\Zed\DataImport\Business\Model\DataImporterInterface|\Spryker\Zed\DataImport\Business\Model\DataSet\DataSetStepBrokerAwareInterface
      */
     protected function getAlternativeEanImporter()
@@ -807,6 +824,14 @@ class DataImportBusinessFactory extends SprykerDataImportBusinessFactory
     public function createTimeSlotWriterStep(): TimeSlotWriterStep
     {
         return new TimeSlotWriterStep();
+    }
+
+    /**
+     * @return \Pyz\Zed\DataImport\Business\Model\OrderPickzoneColor\OrderPickzoneColorWriterStep
+     */
+    public function createOrderPickzoneColorWriterStep(): OrderPickzoneColorWriterStep
+    {
+        return new OrderPickzoneColorWriterStep();
     }
 
     /**

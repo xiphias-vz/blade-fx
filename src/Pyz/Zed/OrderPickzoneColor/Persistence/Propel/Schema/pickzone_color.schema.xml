@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+<database xmlns="spryker:schema-01" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" name="zed" namespace="Orm\Zed\Sales\Persistence" package="src.Orm.Zed.Sales.Persistence" xsi:schemaLocation="spryker:schema-01 https://static.spryker.com/schema-01.xsd">
+
+    <table name="pyz_order_pickzone_color">
+        <column name="id_color" required="true" type="INTEGER" primaryKey="true"/>
+        <column name="fore_color" type="VARCHAR" required="true"/>
+        <column name="back_color" type="VARCHAR" required="true"/>
+        <column name="circle_color" type="VARCHAR" required="true"/>
+    </table>
+
+</database>

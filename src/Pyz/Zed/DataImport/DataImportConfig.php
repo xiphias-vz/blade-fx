@@ -67,6 +67,7 @@ class DataImportConfig extends SprykerDataImportConfig
     public const IMPORT_PRODUCT_MANAGEMENT_ATTRIBUTE = 'product-management-attribute';
     public const IMPORT_TIME_SLOT = 'time-slot';
     public const IMPORT_ALTERNATIVE_EAN = 'alternative-ean';
+    public const IMPORT_ORDER_PICKZONE_COLOR = 'order_pickzone_color';
 
     /**
      * @return \Generated\Shared\Transfer\DataImporterConfigurationTransfer
@@ -388,6 +389,14 @@ class DataImportConfig extends SprykerDataImportConfig
     public function getAlternativeEanImporterConfiguration(): DataImporterConfigurationTransfer
     {
         return $this->buildBaseImporterConfiguration('spryker/alternative_ean.csv', static::IMPORT_ALTERNATIVE_EAN, SharedDataImportConfig::IMPORT_CSV_PIPE_DELIMITER);
+    }
+
+    /**
+     * @return \Generated\Shared\Transfer\DataImporterConfigurationTransfer
+     */
+    public function getOrderPickzoneColorImporterConfiguration(): DataImporterConfigurationTransfer
+    {
+        return $this->buildBaseImporterConfiguration('spryker/order_pickzone_color.csv', static::IMPORT_ORDER_PICKZONE_COLOR);
     }
 
     /**
