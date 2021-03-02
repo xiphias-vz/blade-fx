@@ -3,6 +3,7 @@
 use Pyz\Shared\CashierOrderExport\CashierOrderExportConstants;
 use Pyz\Shared\Customer\CustomerConstants;
 use Pyz\Shared\DataImport\DataImportConstants;
+use Pyz\Zed\SalesOrderSummaryExport\SalesOrderSummaryExportConfig;
 
 $config[CustomerConstants::CDC_API_KEY] =
     [
@@ -28,3 +29,6 @@ $config[DataImportConstants::SFTP_DATA_IMPORT_FILES_FOLDER_NAME] = 'RP';
 
 // ---------- CashierOrderExport
 $config[CashierOrderExportConstants::SFTP_CASHIER_ORDER_FILES_FOLDER_KEY] = 'kasse';
+
+// ---------- ExportOrder
+$config[SalesOrderSummaryExportConfig::SFTP_ORDER_EXPORT_FILES_FOLDER_KEY] = 'IN/RP';
