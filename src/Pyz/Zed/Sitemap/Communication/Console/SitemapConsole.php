@@ -7,6 +7,8 @@
 
 namespace Pyz\Zed\Sitemap\Communication\Console;
 
+use Aws\S3\ObjectUploader;
+use Aws\S3\S3Client;
 use Orm\Zed\UrlStorage\Persistence\SpyUrlStorageQuery;
 use Spryker\Zed\Kernel\Communication\Console\Console;
 use Symfony\Component\Config\Definition\Exception\Exception;
@@ -21,8 +23,10 @@ class SitemapConsole extends Console
     public const COMMAND_NAME = 'sitemap:generate';
     public const COMMAND_DESCRIPTION = 'Generate new Sitemap.xml';
     public const SHIPMENT_NAME = 'Click & Collect';
-    public const SITEMAP1_FILE_NAME = "public/Yves/sitemap1.xml";
-    public const SITEMAP2_FILE_NAME = "public/Yves/sitemap2.xml";
+//    public const SITEMAP1_FILE_NAME = "public/Yves/sitemap1.xml";
+    public const SITEMAP1_FILE_NAME = "data/sitemaps/sitemap1.xml";
+//    public const SITEMAP2_FILE_NAME = "public/Yves/sitemap2.xml";
+    public const SITEMAP2_FILE_NAME = "data/sitemaps/sitemap2.xml";
     public const COUNT_BREAK = 50000;
 
     /**
@@ -86,24 +90,19 @@ class SitemapConsole extends Console
                 $generatedContent = $this->addUrlsToString($urls[$i], $generatedContent);
             }
             $generatedContent = $this->addXmlFooter($generatedContent);
-            dump("Generated content \n" . $generatedContent);
             file_put_contents(static::SITEMAP1_FILE_NAME, $generatedContent);
 
             $generatedContent2 = $this->addXmlHeader();
             $generatedContent2 = $this->addXmlFooter($generatedContent2);
             file_put_contents(static::SITEMAP2_FILE_NAME, $generatedContent2);
-            dump("Opened file 1: " . $sitemap1File);
-            dump("Opened file 2: " . $sitemap2File);
-            dump("SAVED Single XML");
+            fclose($sitemap1File);
+            fclose($sitemap2File);
+
+            $this->sendFileToAws();
         } catch (Exception $e) {
             dump($e);
-        } finally {
-            if ($sitemap1File != null) {
-                fclose($sitemap1File);
-            }
-            if ($sitemap2File != null) {
-                fclose($sitemap2File);
-            }
+            fclose($sitemap1File);
+            fclose($sitemap2File);
         }
     }
 
@@ -135,16 +134,16 @@ class SitemapConsole extends Console
 
             file_put_contents(static::SITEMAP1_FILE_NAME, $generatedContent1);
             file_put_contents(static::SITEMAP2_FILE_NAME, $generatedContent2);
+
+            fclose($sitemap1File);
+            fclose($sitemap2File);
+
+            $this->sendFileToAws();
             dump("SAVED Multiple XMLs");
         } catch (Exception $e) {
             dump($e);
-        } finally {
-            if ($sitemap1File != null) {
-                fclose($sitemap1File);
-            }
-            if ($sitemap2File != null) {
-                fclose($sitemap2File);
-            }
+            fclose($sitemap1File);
+            fclose($sitemap2File);
         }
     }
 
@@ -233,5 +232,54 @@ http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">';
         $generatedContent .= "    </url>";
 
         return $generatedContent;
+    }
+
+    /**
+     * @return void
+     */
+    protected function sendFileToAws(): void
+    {
+        $s3 = $this->getS3Client();
+        $bucket = 'globus-staging-product-images';
+        $sitemapFile[0] = fopen(static::SITEMAP1_FILE_NAME, "r+");
+        $sitemapFile[1] = fopen(static::SITEMAP2_FILE_NAME, "r+");
+
+        foreach ($sitemapFile as $loopKey => $sitemap) {
+            if ($loopKey == 0) {
+                $key = 'sitemap1.xml';
+            } else {
+                $key = 'sitemap2.xml';
+            }
+            try {
+                $uploader = new ObjectUploader(
+                    $s3,
+                    $bucket,
+                    $key,
+                    $sitemap
+                );
+                $result = $uploader->upload();
+                if ($result["@metadata"]["statusCode"] == '200') {
+                    var_dump('File successfully uploaded to ' . $result["ObjectURL"]);
+                }
+                var_dump($result);
+            } catch (Exception $e) {
+                rewind($sitemap);
+            }
+        }
+    }
+
+    /**
+     * @return \Aws\S3\S3Client
+     */
+    protected function getS3Client(): S3Client
+    {
+        return new S3Client([
+            'region' => 'eu-central-1',
+            'version' => 'latest',
+            'credentials' => [
+                'key' => "AKIA3HMMCRGTLHU62JN6",
+                'secret' => "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",
+            ],
+        ]);
     }
 }
