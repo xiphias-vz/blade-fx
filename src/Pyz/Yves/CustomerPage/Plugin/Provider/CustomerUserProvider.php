@@ -47,8 +47,8 @@ class CustomerUserProvider extends SprykerCustomerUserProvider
                 $encodedPass = $encoder->getEncoder($user)->encodePassword($pass, $user->getSalt());
                 if ($customerTransfer->getPassword() != $encodedPass) {
                     $customerTransfer->setPassword($encodedPass);
-                    $this->getFactory()->getCustomerClient()->updateCustomer($customerTransfer);
                 }
+                $this->getFactory()->getCustomerClient()->updateCustomer($customerTransfer);
                 $profile = new ProfileController();
                 $profile->processProfileUpdateByTransfer($customerTransfer, false);
             } catch (AuthenticationException $e) {
