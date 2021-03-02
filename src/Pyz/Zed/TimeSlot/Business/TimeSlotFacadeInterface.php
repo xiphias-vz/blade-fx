@@ -10,6 +10,7 @@ namespace Pyz\Zed\TimeSlot\Business;
 use Generated\Shared\Transfer\CheckoutResponseTransfer;
 use Generated\Shared\Transfer\QuoteTransfer;
 use Generated\Shared\Transfer\ShipmentTransfer;
+use Generated\Shared\Transfer\WeekDayTimeSlotsTransfer;
 
 /**
  * @method \Pyz\Zed\TimeSlot\Business\TimeSlotBusinessFactory getFactory()
@@ -51,4 +52,9 @@ interface TimeSlotFacadeInterface
      * @return void
      */
     public function releaseTimeSlotForShipment(ShipmentTransfer $shipmentTransfer): void;
+
+    /**
+     * @return \Generated\Shared\Transfer\WeekDayTimeSlotsTransfer
+     */
+    public function getTimeSlot(): WeekDayTimeSlotsTransfer;
 }

@@ -39,6 +39,19 @@
                     {% endif %}
 
                     <div class="{{ config.name }}__navigation">
+                        <a id="link-to-time-slots-mobile" class="{{ config.name }}__navigation-item link link--reset-focus ">
+                            {% include atom('icon') with {
+                                modifiers: ['small'],
+                                class: 'link__icon',
+                                data: {
+                                    name: 'time-slots',
+                                },
+                            } only %}
+                            {{ 'Freie Abholtermine' | trans }}
+                        </a>
+
+                        <div class="hr-line-solid"></div>
+
                         <a href="{{ url('customer/overview') }}"
                            class="{{ config.name }}__navigation-item link link--reset-focus">
                             {% include atom('icon') with {
@@ -50,6 +63,7 @@
                             } only %}
                             {{ 'customer.profile.link' | trans }}
                         </a>
+
                         <a href="{{ 'page.fragen.url' | trans }}" class="{{ config.name }}__navigation-item link link--reset-focus" target="_blank">
                             {% include atom('icon') with {
                                 modifiers: ['small'],

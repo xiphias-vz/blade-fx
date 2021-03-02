@@ -112,6 +112,14 @@ $shop-ui-right-side-drawer-width: rem(320);
             margin-top: auto;
         }
 
+        #link-to-time-slots-mobile {
+            color: $setting-color-globus-darkOrange;
+        }
+
+        .hr-line-solid {
+            border-top: 1px solid #000000;
+        }
+
         @content;
     }
 }

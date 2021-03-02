@@ -1,0 +1,98 @@
+{% extends model('component') %}
+
+{% define config = {
+    name: 'time-slots-selector',
+    tag: 'time-slots-selector',
+} %}
+
+{% define data = {
+    shipment: required,
+    shipmentMethods: required,
+} %}
+
+{% define attributes = {
+    'data-json': '{
+        "slidesToShow": 3,
+        "dots": false,
+        "autoplay": false,
+        "centerMode": false,
+        "infinite": false,
+        "responsive": [{
+            "breakpoint": 769,
+            "settings": {
+                "centerPadding": "12px",
+                "autoplay": false,
+                "slidesToShow": 1
+            }
+        }
+    ]}'
+} %}
+
+{% block body %}
+    {% set requestedDeliveryDate = data.shipment.requestedDeliveryDate %}
+    {% set shipmentSelection = data.shipment.shipmentSelection %}
+    {% set shipmentSelectionIndex = shipmentSelection.vars.value %}
+
+    <h4 class="{{ config.name }}__title title title--shipment text-color-1">{{ 'checkout.timeslots.title' | trans }}</h4>
+
+    {%  for shimpentMethodIndex, shipmentMethod in data.shipmentMethods %}
+        {% set timeSlots = shipmentMethod.timeSlots | first %}
+        {% set isSlickInitOnLoad = loop.index == shipmentSelectionIndex %}
+        {% set isFirstTimeEnter = not shipmentSelectionIndex and loop.index == 1 %}
+
+        {% if isFirstTimeEnter %}
+            {% set isSlickInitOnLoad = true %}
+        {% endif %}
+
+        <div class="js-delivery-type-{{ loop.index ~ '-' ~ shipmentSelectionIndex }}">
+            {% embed molecule('slick-carousel') with {
+                modifiers: ['timeslots'],
+                data: {
+                    slides: timeSlots,
+                    containerClass: 'js-list-switches__item-' ~ loop.index,
+                },
+                attributes: {
+                    'data-json': attributes['data-json'],
+                    'is-init-on-load': isSlickInitOnLoad,
+                },
+                embed: {
+                    jsName: config.jsName,
+                    shimpentMethodIndex: shimpentMethodIndex,
+                }
+            } only %}
+                {% block slides %}
+                    {% set daysInTheWeek =  {
+                            1: 'Montag',
+                            2: 'Dienstag',
+                            3: 'Mittwoch',
+                            4: 'Donnerstag',
+                            5: 'Freitag',
+                            6: 'Samstag',
+                            7: 'Sonntag'
+                    }%}
+                    {% for day, hours in data.slides if hours | length > 0 %}
+                        {% set dayOfTheWeek = day |date('w') %}
+                        <div class="{{ config.name }}__column spacing-bottom spacing-bottom--biggest">
+                            <div class="{{ config.name }}__date">{{ daysInTheWeek[dayOfTheWeek] }}, {{ day | date("d.m.y") }}</div>
+                            {% set parentIndex = 'day-' ~ loop.index %}
+                            {% for hour in hours %}
+                                <div class="{{ config.name }}__slot">
+                                    <input id="timeslot-hour-{{ embed.shimpentMethodIndex }}-{{ parentIndex }}-{{ loop.index }}" class="{{ config.name }}__input {{ embed.jsName }}__input" type="radio" name="timeslot-hour" value="{{ day }}_{{ hour }}">
+                                    <label class="{{ config.name }}__slot-label" for="timeslot-hour-{{ embed.shimpentMethodIndex }}-{{ parentIndex }}-{{ loop.index }}">
+                                        {{ hour }}
+                                    </label>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    {% endfor %}
+                {% endblock %}
+            {% endembed %}
+        </div>
+    {% endfor %}
+
+    {{ form_widget(requestedDeliveryDate, {
+        'attr': {
+            'class': ' ' ~ config.jsName ~ '__target-input is-hidden',
+        }})
+    }}
+{% endblock %}

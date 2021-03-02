@@ -36,6 +36,8 @@ use SprykerShop\Yves\SalesOrderThresholdWidget\Plugin\CheckoutPage\SalesOrderThr
 class CheckoutPageDependencyProvider extends SprykerShopCheckoutPageDependencyProvider
 {
     public const CLIENT_TIME_SLOT = 'CLIENT_TIME_SLOT';
+    public const SERVICE_TIME_SLOT = 'SERVICE_TIME_SLOT';
+    public const TIME_SLOT = 'TIME_SLOT';
     public const CLIENT_ORDER_DETAIL = 'CLIENT_ORDER_DETAIL';
     public const PYZ_SERVICE_SHIPMENT = 'PYZ_SERVICE_SHIPMENT';
 
@@ -50,6 +52,8 @@ class CheckoutPageDependencyProvider extends SprykerShopCheckoutPageDependencyPr
         $container = $this->extendPaymentMethodHandler($container);
         $container = $this->extendSubFormPluginCollection($container);
         $container = $this->addTimeSlotClient($container);
+        $container = $this->addTimeSlotService($container);
+        $container = $this->addTimeSlot($container);
         $container = $this->addOrderDetailClient($container);
         $container = $this->addPyzShipmentService($container);
 
@@ -227,6 +231,34 @@ class CheckoutPageDependencyProvider extends SprykerShopCheckoutPageDependencyPr
     {
         $container->set(static::CLIENT_TIME_SLOT, function () use ($container) {
             return $container->getLocator()->timeSlot()->client();
+        });
+
+        return $container;
+    }
+
+    /**
+     * @param \Spryker\Yves\Kernel\Container $container
+     *
+     * @return \Spryker\Yves\Kernel\Container
+     */
+    protected function addTimeSlotService(Container $container): Container
+    {
+        $container->set(static::SERVICE_TIME_SLOT, function () use ($container) {
+            return $container->getLocator()->timeSlot()->service();
+        });
+
+        return $container;
+    }
+
+    /**
+     * @param \Spryker\Yves\Kernel\Container $container
+     *
+     * @return \Spryker\Yves\Kernel\Container
+     */
+    protected function addTimeSlot(Container $container): Container
+    {
+        $container->set(static::TIME_SLOT, function () use ($container) {
+            return $container->getLocator()->timeSlot();
         });
 
         return $container;

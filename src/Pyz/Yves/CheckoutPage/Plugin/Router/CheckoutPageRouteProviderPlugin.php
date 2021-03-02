@@ -13,6 +13,7 @@ use SprykerShop\Yves\CheckoutPage\Plugin\Router\CheckoutPageRouteProviderPlugin 
 class CheckoutPageRouteProviderPlugin extends SprykerCheckoutPageRouteProviderPluginAlias
 {
     public const CHECKOUT_PLACE_ORDER_DEBUG = 'checkout-place-order-debug';
+    public const CHECKOUT_TIME_SLOTS_DATA = 'checkout-time-slots-data';
     public const CHECKOUT_INDEX = 'checkout-index';
 
     /**
@@ -24,6 +25,7 @@ class CheckoutPageRouteProviderPlugin extends SprykerCheckoutPageRouteProviderPl
     {
         $routeCollection = parent::addRoutes($routeCollection);
         $routeCollection = $this->addPlaceOrderDebugStepRoute($routeCollection);
+        $routeCollection = $this->addTimeSlotDataRoute($routeCollection);
 
         return $routeCollection;
     }
@@ -38,6 +40,20 @@ class CheckoutPageRouteProviderPlugin extends SprykerCheckoutPageRouteProviderPl
         $route = $this->buildRoute('/checkout/place-order-debug', 'CheckoutPage', 'Checkout', 'placeOrderDebugAction');
         $route = $route->setMethods(['POST']);
         $routeCollection->add(static::CHECKOUT_PLACE_ORDER_DEBUG, $route);
+
+        return $routeCollection;
+    }
+
+    /**
+     * @param \Spryker\Yves\Router\Route\RouteCollection $routeCollection
+     *
+     * @return \Spryker\Yves\Router\Route\RouteCollection
+     */
+    protected function addTimeSlotDataRoute(RouteCollection $routeCollection)
+    {
+        $route = $this->buildRoute('/checkout/time-slots-data', 'CheckoutPage', 'Checkout', 'getTimeSlotDataAction');
+        $route = $route->setMethods(['POST']);
+        $routeCollection->add(static::CHECKOUT_TIME_SLOTS_DATA, $route);
 
         return $routeCollection;
     }

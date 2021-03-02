@@ -14,6 +14,8 @@ use Pyz\Service\TimeSlot\TimeSlotServiceInterface;
 use Pyz\Service\TimeSlotStorage\TimeSlotStorageServiceInterface;
 use Pyz\Zed\Merchant\Business\MerchantFacadeInterface;
 use Pyz\Zed\Sales\Business\SalesFacadeInterface;
+use Pyz\Zed\TimeSlot\Business\Reader\TimeSlotReader;
+use Pyz\Zed\TimeSlot\Business\Reader\TimeSlotReaderInterface;
 use Pyz\Zed\TimeSlot\Business\Validator\TimeSlotAvailabilityValidator;
 use Pyz\Zed\TimeSlot\Business\Validator\TimeSlotAvailabilityValidatorInterface;
 use Pyz\Zed\TimeSlot\Business\Writer\TimeSlotCapacityReleaser;
@@ -150,5 +152,13 @@ class TimeSlotBusinessFactory extends AbstractBusinessFactory
     private function getShipmentService(): ShipmentServiceInterface
     {
         return $this->getProvidedDependency(TimeSlotDependencyProvider::SERVICE_SHIPMENT);
+    }
+
+    /**
+     * @return \Pyz\Zed\TimeSlot\Business\Reader\TimeSlotReaderInterface
+     */
+    public function createTimeSlotReader(): TimeSlotReaderInterface
+    {
+        return new TimeSlotReader();
     }
 }

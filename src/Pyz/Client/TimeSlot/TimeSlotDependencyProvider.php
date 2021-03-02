@@ -17,7 +17,9 @@ class TimeSlotDependencyProvider extends AbstractDependencyProvider
     public const CLIENT_QUOTE = 'CLIENT_QUOTE';
     public const CLIENT_TIME_SLOT_STORAGE = 'CLIENT_TIME_SLOT_STORAGE';
     public const SERVICE_TIME_SLOT = 'SERVICE_TIME_SLOT';
+    public const TIME_SLOT = 'TIME_SLOT';
     public const SERVICE_DATE_TIME_WITH_ZONE = 'SERVICE_DATE_TIME_WITH_ZONE';
+    public const CLIENT_ZED_REQUEST = 'CLIENT_ZED_REQUEST';
 
     /**
      * @param \Spryker\Client\Kernel\Container $container
@@ -32,6 +34,7 @@ class TimeSlotDependencyProvider extends AbstractDependencyProvider
         $container = $this->addTimeSlotStorageClient($container);
         $container = $this->addTimeSlotService($container);
         $container = $this->addDateTimeWithZoneService($container);
+        $container = $this->addZedRequestClient($container);
 
         return $container;
     }
@@ -87,6 +90,34 @@ class TimeSlotDependencyProvider extends AbstractDependencyProvider
     {
         $container->set(static::SERVICE_TIME_SLOT, function (Container $container) {
             return $container->getLocator()->timeSlot()->service();
+        });
+
+        return $container;
+    }
+
+    /**
+     * @param \Spryker\Client\Kernel\Container $container
+     *
+     * @return \Spryker\Client\Kernel\Container
+     */
+    protected function addTimeSlot(Container $container): Container
+    {
+        $container->set(static::SERVICE_TIME_SLOT, function (Container $container) {
+            return $container->getLocator()->timeSlot();
+        });
+
+        return $container;
+    }
+
+    /**
+     * @param \Spryker\Client\Kernel\Container $container
+     *
+     * @return \Spryker\Client\Kernel\Container
+     */
+    protected function addZedRequestClient(Container $container): Container
+    {
+        $container->set(static::CLIENT_ZED_REQUEST, function (Container $container) {
+            return $container->getLocator()->zedRequest()->client();
         });
 
         return $container;

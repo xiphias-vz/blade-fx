@@ -10,6 +10,7 @@ namespace Pyz\Zed\TimeSlot\Business;
 use Generated\Shared\Transfer\CheckoutResponseTransfer;
 use Generated\Shared\Transfer\QuoteTransfer;
 use Generated\Shared\Transfer\ShipmentTransfer;
+use Generated\Shared\Transfer\WeekDayTimeSlotsTransfer;
 use Spryker\Zed\Kernel\Business\AbstractFacade;
 
 /**
@@ -51,5 +52,13 @@ class TimeSlotFacade extends AbstractFacade implements TimeSlotFacadeInterface
         $this->getFactory()
             ->createTimeSlotCapacityReleaser()
             ->releaseTimeSlotByShipment($shipmentTransfer);
+    }
+
+    /**
+     * @return \Generated\Shared\Transfer\WeekDayTimeSlotsTransfer
+     */
+    public function getTimeSlot(): WeekDayTimeSlotsTransfer
+    {
+        return $this->getFactory()->createTimeSlotReader()->getDateTimeSlotCapacityForNextDays();
     }
 }

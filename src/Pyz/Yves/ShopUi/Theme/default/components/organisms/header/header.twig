@@ -21,8 +21,10 @@
     jsClass: 'js-header__navigation-trigger js-page-layout-main--block-scroll-trigger icon--color-black is-hidden',
 }
 %}
-
 {% block body %}
+    {% embed molecule('popup-ui-shipment-form') with {
+    } only %}
+    {% endembed %}
     <div class="{{ config.name }}__top">
         <div class="container">
             {% block topSection %}
@@ -44,6 +46,18 @@
                         {% if data.showStoreSwitches %}
                             {% widget 'StoreSwitcherWidget' %}{% endwidget %}
                         {% endif %}
+
+                        <a id="link-to-time-slots" class="{{ config.name }}__navigation-item link link--nav link--reset-focus link-to-time-slots">
+                            {% include atom('icon') with {
+                                modifiers: ['big'],
+                                class: 'link__icon',
+                                data: {
+                                    name: 'time-slots',
+                                },
+                            } only %}
+                            {{ 'Freie Abholtermine' | trans }}
+                        </a>
+
                         <a href="{{ 'page.fragen.url' | trans }}" class="link link--nav" target="_blank">
                             {% include atom('icon') with {
                                 modifiers: ['big'],

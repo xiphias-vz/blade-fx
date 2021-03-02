@@ -10,6 +10,7 @@ namespace Pyz\Client\TimeSlot;
 use Generated\Shared\Transfer\MerchantTransfer;
 use Generated\Shared\Transfer\ShipmentMethodTransfer;
 use Generated\Shared\Transfer\ShipmentTransfer;
+use Generated\Shared\Transfer\WeekDayTimeSlotsTransfer;
 
 interface TimeSlotClientInterface
 {
@@ -32,4 +33,17 @@ interface TimeSlotClientInterface
      * @return bool
      */
     public function isShipmentTimeSlotsValid(ShipmentTransfer $shipmentTransfer, ?MerchantTransfer $merchantTransfer = null): bool;
+
+    /**
+     * @param string $currentDate
+     * @param string $timeSlot
+     *
+     * @return array
+     */
+    public function getDateTimeSlotCapacityForNextDays(string $currentDate, string $timeSlot): array;
+
+    /**
+     * @return \Generated\Shared\Transfer\WeekDayTimeSlotsTransfer
+     */
+    public function getTimeSlot(): WeekDayTimeSlotsTransfer;
 }

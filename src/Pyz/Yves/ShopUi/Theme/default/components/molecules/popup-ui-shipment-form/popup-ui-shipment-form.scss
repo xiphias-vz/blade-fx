@@ -1,0 +1,368 @@
+
+@mixin shop-ui-popup-ui($name: '.popup-ui-shipment-form') {
+    #{$name} {
+        &--show {
+            #{$name} {
+                &__overlay {
+                    display: flex;
+                }
+            }
+        }
+
+        &__overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: $setting-zi-popup;
+            display: none;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            height: 100%;
+            padding: rem(15);
+            background-color: rgba($setting-color-black, 0.7);
+        }
+
+        &__container {
+            flex-grow: 1;
+            width: 100%;
+            height: auto;
+            background: white;
+            border-radius: rem(24);
+
+            @include helper-breakpoint-media-min($xl-min) {
+                width: 60%;
+                flex-grow: 0;
+            }
+
+            .store-app-label-holder {
+                background: white;
+
+                .spacing-y-label {
+                    margin-top: 0.2rem;
+                    margin-bottom: 0.2rem;
+                }
+                table {
+                    .item-quantity {
+                        width: 60px;
+                        text-align: right;
+                    }
+                }
+
+                .label-text{
+                    padding-left: 5px;
+                }
+
+                .label-text-green {
+                    color:$setting-color-green;
+                    padding-left: 5px;
+                }
+                .label-text-brown {
+                    color:$setting-color-brown;
+                    padding-left: 5px;
+                }
+            }
+            .horizontal-spacing {
+                margin-bottom: 15px;
+            }
+        }
+
+        &__title {
+            padding: 0.9rem 1.5rem 0.5rem;
+            font: fw(bold) rem(18) $setting-font-family-additional;
+            text-align: right;
+            border-bottom: rem(1) solid $setting-color-gray-3;
+        }
+
+        &__title--text {
+            color: black;
+            text-align: left;
+            float: left;
+            padding-top: rem(6);
+            font-size: rem(24);
+        }
+
+        &__close {
+            color: $setting-color-globus-lightOrange;
+            text-align: right;
+            cursor: pointer;
+            font-size: rem(34);
+        }
+
+        &__content::-webkit-scrollbar {
+            width: 0;  /* Remove scrollbar space */
+            background: transparent;  /* Optional: just make scrollbar invisible */
+        }
+
+        &__content {
+            padding: 10px;
+            overflow-y: scroll;
+            scrollbar-width: none; /* Firefox */
+            -ms-overflow-style: none;  /* Internet Explorer 10+ */
+            height: rem(600);
+
+            .horizontal-spacing {
+                p {
+                    padding: 0px 35px;
+                    text-align: left;
+                }
+            }
+            .total-articles {
+                width: 100%;
+                padding:0.5rem 2.7rem 0rem;
+                font-weight: bold;
+                font-size: 18px;
+                align-items: center;
+
+                .total-amount {
+                    padding: 0px 5px 0px 9px;
+                }
+            }
+
+            .submit-confirmation {
+                width: 80%;
+                margin: 0px auto;
+                display: block;
+            }
+
+            .cancel-confirmation {
+                padding: 10px;
+                border: 1px solid $setting-color-green;
+                display: block;
+                width: 80%;
+                margin: 10px auto;
+                border-radius: 0.5rem;
+            }
+        }
+
+        &--align-left {
+            .slick-track {
+                margin-left: 0;
+            }
+        }
+
+        &__containerSlick {
+            position: relative;
+
+            @include helper-breakpoint-media-max($sm-max) {
+                padding: 0 rem(11);
+            }
+
+            .slick-arrow {
+                position: absolute;
+                top: rem(152);
+                font-size: 0;
+                width: rem(30);
+                height: rem(30);
+                background: url('../images/right-chevron.svg') no-repeat center / rem(15);
+                border-radius: 50%;
+                z-index: $setting-zi-element + 1;
+                opacity: 0.7;
+
+                @include helper-breakpoint-media-max($sm-max) {
+                    top: rem(66);
+                }
+
+                &:hover {
+                    background-color: $setting-color-white;
+                    opacity: 1;
+                    cursor: pointer;
+                }
+            }
+
+            .slick-prev {
+                left: rem(-30);
+                transform: rotate(180deg);
+
+                @include helper-breakpoint-media-max($xl-max) {
+                    left: rem(-16);
+                }
+
+                @include helper-breakpoint-media-max($sm-max) {
+                    left: rem(-8);
+                }
+            }
+
+            .slick-next {
+                right: rem(-30);
+
+                @include helper-breakpoint-media-max($xl-max) {
+                    right: rem(-16);
+                }
+
+                @include helper-breakpoint-media-max($sm-max) {
+                    right: rem(-8);
+                }
+            }
+        }
+
+        &--product-set {
+            #{$name}__container {
+                padding: 0;
+            }
+
+            .slick-dots {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                margin-top: rem(12);
+
+                li {
+                    display: block;
+                    margin: rem(4.8) rem(8);
+                    width: rem(6);
+                    height: rem(6);
+                    background: $setting-color-gray-3;
+                    border-radius: 50%;
+
+                    &:hover {
+                        cursor: pointer;
+                    }
+
+                    &.slick-active {
+                        width: rem(12);
+                        height: rem(12);
+                        background: $setting-color-transparent;
+                        border: rem(1) solid map-get($setting-color-actions, alert);
+                    }
+                }
+
+                button {
+                    font-size: 0;
+                }
+            }
+
+            .slick-arrow {
+                @include helper-breakpoint-media-max($md-max) {
+                    top: rem(85);
+                }
+            }
+
+            .slick-prev {
+                @include helper-breakpoint-media-max($md-max) {
+                    left: 0;
+                }
+            }
+
+            .slick-next {
+                @include helper-breakpoint-media-max($md-max) {
+                    right: 0;
+                }
+            }
+
+            .slick-disabled {
+                display: none !important;
+            }
+        }
+
+        &--product-set-secondary {
+            margin-top: rem(24);
+
+            @include helper-breakpoint-media-min($lg-min) {
+                margin-top: 0;
+            }
+
+            .slick-slide {
+                width: rem(230);
+
+                @include helper-breakpoint-media-min($sm-max) {
+                    padding-right: rem(30);
+
+                    &:last-of-type {
+                        padding-right: 0;
+                    }
+                }
+
+                @include helper-breakpoint-media-min($lg-min) {
+                    width: rem(309);
+                }
+            }
+        }
+
+        &--timeslots {
+
+            background-color: $setting-color-gray-1;
+            color: $setting-color-gray-9;
+            border-radius: rem(2);
+
+            #{$name}-popup__containerSlick {
+                padding-top: rem(56);
+            }
+
+            #{$name}-popup__column {
+                padding: rem(30) rem(26);
+                    background-color: #FFF;
+                    //margin-left: rem(20);
+
+                #{$name}-popup__input {
+                    display: none;
+                }
+
+                /* stylelint-disable selector-max-combinators, selector-max-compound-selectors */
+                #{$name}-popup__input:checked + #{$name}-popup__slot-label {
+                    border-color: $setting-color-globus-darkOrange;
+                    color: $setting-color-white;
+                    background-color: $setting-color-globus-darkOrange;
+                    position: relative;
+
+                    &::after {
+                        content: '';
+                        position: absolute;
+                        right: rem(20);
+                        top: rem(15);
+                        display: block;
+                        width: rem(8);
+                        height: rem(12);
+                        transform: rotate(45deg);
+                        border-right: rem(2) solid $setting-color-white;
+                        border-bottom: rem(2) solid $setting-color-white;
+                    }
+                }
+                /* stylelint-enable */
+
+                #{$name}-popup__slot-label {
+                    background: $setting-color-lighter;
+                    border-radius: rem(2);
+                    border: rem(1) solid $setting-color-transparent;
+                    padding: rem(9);
+                    margin: rem(8) 0;
+                    text-align: center;
+                    color: $setting-color-black-1;
+                    line-height: rem(28);
+
+                }
+            }
+
+            #{$name}-popup__date {
+                font: fw(semibold) rem(16) / rem(22) $setting-font-family !important;
+                color: $setting-color-black !important;
+                margin-bottom: rem(30) !important;
+            }
+
+            .slick-arrow {
+                top: 0;
+                right: rem(15);
+                left: auto;
+                width: rem(36);
+                height: rem(36);
+                background-color: $setting-color-white;
+                border-radius: rem(4);
+
+                &:hover {
+                    background-color: $setting-color-white;
+                }
+            }
+
+            .slick-prev {
+                right: rem(69);
+            }
+
+            .slick-slide {
+                margin: 0 rem(15);
+            }
+        }
+    }
+
+}
+
+@include shop-ui-popup-ui();

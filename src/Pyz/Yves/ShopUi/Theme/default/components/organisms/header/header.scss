@@ -209,6 +209,10 @@ $header-sticky-height: rem(69, number);
             }
         }
 
+        .link-to-time-slots {
+            cursor: pointer;
+        }
+
         @content;
     }
 }

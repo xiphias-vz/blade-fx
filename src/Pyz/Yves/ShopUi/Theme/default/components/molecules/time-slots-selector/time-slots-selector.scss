@@ -1,0 +1,17 @@
+@mixin checkout-page-time-slots-selector($name: '.time-slots-selector') {
+    #{$name} {
+        position: relative;
+
+        &__title {
+            @include helper-breakpoint-media-min($xl-min) {
+                position: absolute;
+                left: 0;
+                top: rem(6);
+            }
+        }
+
+        @content;
+    }
+}
+
+@include checkout-page-time-slots-selector();

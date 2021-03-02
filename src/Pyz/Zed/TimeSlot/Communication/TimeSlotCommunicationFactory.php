@@ -11,4 +11,11 @@ use Pyz\Zed\TimeSlot\Business\TimeSlotBusinessFactory;
 
 class TimeSlotCommunicationFactory extends TimeSlotBusinessFactory
 {
+    /**
+     * @return \Pyz\Zed\TimeSlot\Business\TimeSlotBusinessFactory
+     */
+    public function getPickerBusinessFactory(): TimeSlotBusinessFactory
+    {
+        return new TimeSlotBusinessFactory();
+    }
 }

@@ -1,0 +1,22 @@
+{% extends model('component') %}
+
+{% define config = {
+    name: 'popup-ui-shipment-form',
+    tag: 'popup-ui-shipment-form',
+} %}
+
+
+{% block body %}
+    <div class="{{ config.name }}__overlay">
+        <div class="{{ config.name }}__container">
+            <div class="{{ config.name }}__title">
+                <span class="{{ config.name }}__title--text">{{ 'Freie Abholtermine' | trans }}</span>
+                <button class="{{ config.name }}__close">x</button>
+            </div>
+            <div class="{{ config.name }}__content">
+
+            </div>
+        </div>
+    </div>
+    {% block button %}{% endblock %}
+{% endblock %}

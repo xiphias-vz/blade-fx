@@ -10,6 +10,8 @@
 
 {% block body %}
     <div class="page-layout-main__container">
+        {% block test %}
+        {% endblock %}
         {% block sidebar %}
             {% include organism('side-drawer') with {
                 modifiers: ['right'],

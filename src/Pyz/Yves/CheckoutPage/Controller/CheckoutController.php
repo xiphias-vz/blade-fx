@@ -10,10 +10,11 @@ namespace Pyz\Yves\CheckoutPage\Controller;
 use Generated\Shared\Transfer\QuoteTransfer;
 use SprykerShop\Yves\CheckoutPage\Controller\CheckoutController as SprykerCheckoutControllerAlias;
 use SprykerShop\Yves\CheckoutPage\Plugin\Provider\CheckoutPageControllerProvider;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
- * @method \SprykerShop\Yves\CheckoutPage\CheckoutPageFactory getFactory()
+ * @method \Pyz\Yves\CheckoutPage\CheckoutPageFactory getFactory()
  * @method \Spryker\Client\Checkout\CheckoutClientInterface getClient()
  */
 class CheckoutController extends SprykerCheckoutControllerAlias
@@ -55,6 +56,39 @@ class CheckoutController extends SprykerCheckoutControllerAlias
     /**
      * @param \Symfony\Component\HttpFoundation\Request $request
      *
+     * @return mixed
+     */
+    public function shipmentAction(Request $request)
+    {
+        $quoteValidationResponseTransfer = $this->canProceedCheckout();
+
+        if (!$quoteValidationResponseTransfer->getIsSuccessful()) {
+            $this->processErrorMessages($quoteValidationResponseTransfer->getMessages());
+
+            return $this->redirectResponseInternal(static::ROUTE_CART);
+        }
+
+        $response = $this->createStepProcess()->process(
+            $request,
+            $this->getFactory()
+                ->createCheckoutFormFactory()
+                ->createShipmentFormCollection()
+        );
+
+        if (!is_array($response)) {
+            return $response;
+        }
+
+            return $this->view(
+                $response,
+                $this->getFactory()->getCustomerPageWidgetPlugins(),
+                '@CheckoutPage/views/shipment/shipment.twig'
+            );
+    }
+
+    /**
+     * @param \Symfony\Component\HttpFoundation\Request $request
+     *
      * @return array|\Symfony\Component\HttpFoundation\RedirectResponse
      */
     public function placeOrderDebugAction(Request $request)
@@ -73,5 +107,20 @@ class CheckoutController extends SprykerCheckoutControllerAlias
 
             return $this->placeOrderAction($request);
         }
+    }
+
+    /**
+     * @param \Symfony\Component\HttpFoundation\Request $request
+     *
+     * @return array|\Symfony\Component\HttpFoundation\JsonResponse
+     */
+    public function getTimeSlotDataAction(Request $request)
+    {
+        $storeName = $this->getFactory()->getStore()->getStoreName();
+        $test = $this->getFactory()->getQuoteClient()->getQuote();
+
+        $weekDayTimeSlotCapacity = $this->getFactory()->getTimeSlotClient()->getTimeSlot();
+
+        return new JsonResponse($weekDayTimeSlotCapacity->toArray());
     }
 }

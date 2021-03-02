@@ -12,6 +12,7 @@ use Pyz\Client\TimeSlot\Expander\ShipmentSlotsExpanderInterface;
 use Pyz\Client\TimeSlot\Expander\ShipmentTimeSlotsExpander;
 use Pyz\Client\TimeSlot\Reader\MerchantReader;
 use Pyz\Client\TimeSlot\Reader\MerchantReaderInterface;
+use Pyz\Client\TimeSlot\Zed\TimeSlotStub;
 use Pyz\Client\TimeSlotStorage\TimeSlotStorageClientInterface;
 use Pyz\Service\DateTimeWithZone\DateTimeWithZoneServiceInterface;
 use Pyz\Service\TimeSlot\TimeSlotServiceInterface;
@@ -84,5 +85,21 @@ class TimeSlotFactory extends AbstractFactory
     protected function getDateTimeWithZoneService(): DateTimeWithZoneServiceInterface
     {
         return $this->getProvidedDependency(TimeSlotDependencyProvider::SERVICE_DATE_TIME_WITH_ZONE);
+    }
+
+    /**
+     * @return \Pyz\Client\TimeSlot\Zed\TimeSlotStubInterface
+     */
+    public function createZedStub()
+    {
+        return new TimeSlotStub($this->getZedRequestClient());
+    }
+
+    /**
+     * @return \Spryker\Client\ZedRequest\ZedRequestClientInterface
+     */
+    protected function getZedRequestClient()
+    {
+        return $this->getProvidedDependency(TimeSlotDependencyProvider::CLIENT_ZED_REQUEST);
     }
 }
