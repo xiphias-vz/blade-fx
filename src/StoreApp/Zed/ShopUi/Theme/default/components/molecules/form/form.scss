@@ -48,6 +48,10 @@
             }
         }
 
+        &__header-spacing {
+            margin-top: rem(-24);
+        }
+
         &__action {
             margin-top: $shop-ui-form-field-margin;
             margin-left: $shop-ui-form-field-margin;

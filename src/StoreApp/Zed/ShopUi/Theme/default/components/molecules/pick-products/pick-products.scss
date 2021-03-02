@@ -45,6 +45,8 @@
 
         .minimalWidth {
             min-width: rem(80);
+            @media only screen and (max-width: 480px) {
+                    margin-top: 10% !important;  }
         }
 
         .separator {
