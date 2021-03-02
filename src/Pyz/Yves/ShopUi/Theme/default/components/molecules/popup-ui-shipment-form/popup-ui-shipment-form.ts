@@ -85,9 +85,10 @@ export default class PopupUiShipmentForm extends Component {
 
         data.forEach((value, index) => {
             let findEl = this.$this.find('.slots_' + value.date);
-
-            let slickSlideHoursContainer = $('<div class="popup-ui-shipment-form__slot"><div class="popup-ui-shipment-form-popup__slot-label">' + value.time_slot + '</div></div>');
-            slickSlideHoursContainer.appendTo(findEl);
+            if(value.capacity > 0){
+                let slickSlideHoursContainer = $('<div class="popup-ui-shipment-form__slot"><div class="popup-ui-shipment-form-popup__slot-label">' + value.time_slot + '</div></div>');
+                slickSlideHoursContainer.appendTo(findEl);
+            }
         });
 
     }

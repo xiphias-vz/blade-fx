@@ -12,7 +12,9 @@ use Generated\Shared\Transfer\WeekDayTimeSlotsTransfer;
 interface TimeSlotReaderInterface
 {
     /**
+     * @param string $currentStore
+     *
      * @return \Generated\Shared\Transfer\WeekDayTimeSlotsTransfer
      */
-    public function getDateTimeSlotCapacityForNextDays(): WeekDayTimeSlotsTransfer;
+    public function getDateTimeSlotCapacityForNextDays(string $currentStore): WeekDayTimeSlotsTransfer;
 }
