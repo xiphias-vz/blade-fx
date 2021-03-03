@@ -41,6 +41,9 @@ class ProductConcreteWriter extends PublishAwareStep implements DataImportStepIn
     public const KEY_LOCALES = 'locales';
     public const KEY_IS_ACTIVE = 'active';
 
+    public const FILE_TYPE_PRODUCT = 1;
+    public const FILE_TYPE_METZGEREI = 2;
+
     /**
      * @var \Pyz\Zed\DataImport\Business\Model\Product\Repository\ProductRepository
      */
@@ -127,7 +130,8 @@ class ProductConcreteWriter extends PublishAwareStep implements DataImportStepIn
             ->setSapNumber($dataSet[ProductConfig::KEY_SAP_NUMBER])
             ->setSku($dataSet[static::KEY_PRODUCT_NUMBER])
             ->setLastImportAt(static::$lastImportTime->format('Y-m-d H:i:s'))
-            ->setAttributes(json_encode($attributes));
+            ->setAttributes(json_encode($attributes))
+            ->setFileType($this->getFileType());
 
         if ($productEntity->isNew() || $productEntity->isModified()) {
             $productEntity->save();
@@ -316,5 +320,19 @@ class ProductConcreteWriter extends PublishAwareStep implements DataImportStepIn
         }
 
         return static::$idLocaleBuffer[$localeName];
+    }
+
+    /**
+     * @return int
+     */
+    protected function getFileType(): int
+    {
+        foreach ($_SERVER["argv"] as $arg) {
+            if (str_contains($arg, ".csv")) {
+                return str_contains($arg, "metzgerei") ? static::FILE_TYPE_METZGEREI : static::FILE_TYPE_PRODUCT;
+            }
+        }
+
+        return static::FILE_TYPE_PRODUCT;
     }
 }

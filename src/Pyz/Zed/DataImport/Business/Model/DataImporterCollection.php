@@ -73,12 +73,10 @@ class DataImporterCollection extends SprykerDataImporterCollection
     protected function updateProductActivity()
     {
         $con = Propel::getConnection();
-        $statement = $con->prepare('SELECT last_import_at
+        $statement = $con->prepare('SELECT MAX(last_import_at) AS last_import_at
             FROM spy_product sp
-            WHERE last_import_at > DATE_ADD(now(), interval -2 HOUR)
-            GROUP BY last_import_at
-            ORDER BY last_import_at DESC
-            LIMIT 2');
+            WHERE NOT file_type IS NULL
+            GROUP BY file_type');
         $statement->execute();
         $result = $statement->fetchAll();
         $filter = [];

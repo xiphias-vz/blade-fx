@@ -38,23 +38,25 @@ class ProductCategoryWriterStep extends PublishAwareStep implements DataImportSt
         foreach ($listId as $value) {
             if ($value != "") {
                 $dataSet[self::KEY_CATEGORY_KEY] = $value;
+                $catId = $this->getCategoryId($dataSet);
+                if ($catId > 0) {
+                    $productCategoryEntity = SpyProductCategoryQuery::create()
+                        ->filterByFkProductAbstract($dataSet[ProductAbstractWriterStep::ID_PRODUCT_ABSTRACT])
+                        ->filterByFkCategory($this->getCategoryId($dataSet))
+                        ->findOneOrCreate()
+                        ->setProductOrder($productOrder);
 
-                $productCategoryEntity = SpyProductCategoryQuery::create()
-                    ->filterByFkProductAbstract($dataSet[ProductAbstractWriterStep::ID_PRODUCT_ABSTRACT])
-                    ->filterByFkCategory($this->getCategoryId($dataSet))
-                    ->findOneOrCreate()
-                    ->setProductOrder($productOrder);
+                    if ($productCategoryEntity->isNew() || $productCategoryEntity->isModified()) {
+                        $productCategoryEntity->save();
+                    }
 
-                if ($productCategoryEntity->isNew() || $productCategoryEntity->isModified()) {
-                    $productCategoryEntity->save();
+                    $currentRelationIds[] = $productCategoryEntity->getIdProductCategory();
+
+                    $this->addPublishEvents(ProductCategoryEvents::PRODUCT_CATEGORY_PUBLISH, $dataSet[ProductAbstractWriterStep::ID_PRODUCT_ABSTRACT]);
+                    $this->addPublishEvents(ProductEvents::PRODUCT_ABSTRACT_PUBLISH, $dataSet[ProductAbstractWriterStep::ID_PRODUCT_ABSTRACT]);
+
+                    $productOrder++;
                 }
-
-                $currentRelationIds[] = $productCategoryEntity->getIdProductCategory();
-
-                $this->addPublishEvents(ProductCategoryEvents::PRODUCT_CATEGORY_PUBLISH, $dataSet[ProductAbstractWriterStep::ID_PRODUCT_ABSTRACT]);
-                $this->addPublishEvents(ProductEvents::PRODUCT_ABSTRACT_PUBLISH, $dataSet[ProductAbstractWriterStep::ID_PRODUCT_ABSTRACT]);
-
-                $productOrder++;
             }
         }
         $this->removeOldRelations($dataSet, $currentRelationIds);
@@ -87,6 +89,6 @@ class ProductCategoryWriterStep extends PublishAwareStep implements DataImportSt
             ->filterByCategoryKey($dataSet[static::KEY_CATEGORY_KEY])
             ->findOne();
 
-        return $categoryEntity->getIdCategory();
+        return $categoryEntity ? $categoryEntity->getIdCategory() : -1;
     }
 }
