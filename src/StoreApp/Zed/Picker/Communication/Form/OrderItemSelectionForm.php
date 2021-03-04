@@ -107,13 +107,13 @@ class OrderItemSelectionForm extends AbstractType
 
             if ($itemTransfer->getWeightPerUnit()) {
                 $weight = $itemTransfer->getWeightPerUnit() * $itemTransfer->getQuantity();
-
+                $displayWeight = null;
                 $builder->add(
                     static::PREFIX_FIELD_SALES_ORDER_ITEM_NEW_WEIGHT . $itemTransfer->getSku(),
                     IntegerType::class,
                     [
                         'required' => true,
-                        'data' => $weight,
+                        'data' => $displayWeight,
                         'attr' => [
                             'min' => round($weight * (1 - self::ALLOWED_DEVIATION_FROM_THE_ORIGINAL_WEIGHT), 3),
                             'max' => round($weight * (1 + self::ALLOWED_DEVIATION_FROM_THE_ORIGINAL_WEIGHT), 3),

@@ -48,7 +48,7 @@
                     {% block brandNameAndWeight %}
                         {% set price = itemsToShelfMap['pricePerKg'] ?? shelfData['sumPrice'] %}
                         <div class="{{ config.name }}__supplierNameAndWeight"><span class="{{ config.name }}__supplierAndName col--md-8">{{ itemsToShelfMap['brand'] ?? '' }} - {{ title|split('-')[1] }}</span><span class="{{ config.name }}__weight col--md-4">{{ (itemsToShelfMap['basePriceContent'] / 100)  | replace('.', ',') }} {{ itemsToShelfMap['basePriceUnit'] }}</span></div>
-                        <div class="eanData" class="{{ config.name }}__eanAndWeight" data-pricePerKg="{{ itemsToShelfMap['pricePerKg'] }}" data-ean="{{ data.itemSku }}"><span class="{{ config.name }}__ean col--md-8"><span class="{{ config.name }}__toBold">EAN: {{ data.itemSku ?? '' }}</span>{% if orderWeight != 0 %}<span> - {{ orderWeight }}</span>{% endif %}</span><span class="{{ config.name }}__price col--md-4">{{ price / 100 | replace('.', ',') }} €</span></div>
+                        <div class="eanData" class="{{ config.name }}__eanAndWeight" data-pricePerKg="{{ itemsToShelfMap['pricePerKg'] }}" data-ean="{{ data.itemSku }}"><span class="{{ config.name }}__ean col--md-8"><span class="{{ config.name }}__toBold">EAN: {{ data.itemSku ?? '' }}</span></span><span class="{{ config.name }}__price col--md-4">{{ price / 100 | replace('.', ',') }} €</span></div>
                     {% endblock %}
                     <div class="hr-line-solid"></div>
                 </div>
@@ -69,7 +69,9 @@
                 </div>
                 {% block quantity %}
                     {% if data.productsCount >= 1 %}
-                        <div class="{{ config.name }}__quantity">
+                <div class="outer_div">
+                        <div class="col--md-4 col--sm-4"></div>
+                        <div class="col--md-4 col--sm-4 {{ config.name }}__quantity">
                             <div class="{{ config.jsName }}__minus {{ config.name }}__minus spacing-right spacing-right--inner">
                                 {% include atom('icon') with {
                                     data: {
@@ -91,6 +93,10 @@
                                 } only %}
                             </div>
                         </div>
+                        <div class="col--md-4 col--sm-4 avg_weight">
+                            {% if orderWeight != 0 %}<span> {{ orderWeight }}gr</span>{% endif %}
+                        </div>
+                </div>
                     {% endif %}
                     <div class="is-hidden">
                         {% block formElement %}{% endblock %}

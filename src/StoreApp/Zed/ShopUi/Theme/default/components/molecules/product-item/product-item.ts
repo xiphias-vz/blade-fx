@@ -30,6 +30,7 @@ export default class ProductItem extends Component {
     isNotFullyAccepted = false;
     isDeclined = false;
     weight = 0;
+    empty= '';
     showInfo = false;
     containerData = [];
     protected debounceDelay = 300;
