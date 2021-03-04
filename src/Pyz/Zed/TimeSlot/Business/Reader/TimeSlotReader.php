@@ -68,14 +68,16 @@ class TimeSlotReader implements TimeSlotReaderInterface
             ->toArray();
 
         $completeData = [];
-
         $timeSlots = ["10:00-12:00", "12:00-14:00", "14:00-16:00", "16:00-18:00", "18:00-20:00"];
 
+        $passedSunday = false;
         for ($dayOfWeek = 0; $dayOfWeek < 5; $dayOfWeek++) {
             $numberOfAddedDays = 1 + $dayOfWeek;
             $date = date("Y-m-d", strtotime("+" . $numberOfAddedDays . " days", strtotime($currentDate)));
             $dayName = date('l', strtotime($date));
-            if ($dayName == "Sunday") {
+
+            if ($dayName == "Sunday" || $passedSunday == true) {
+                $passedSunday = true;
                 $numberOfAddedDays += 1;
                 $date = date("Y-m-d", strtotime("+" . $numberOfAddedDays . " days", strtotime($currentDate)));
                 $dayName = date('l', strtotime($date));

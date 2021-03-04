@@ -8,6 +8,7 @@
 namespace Pyz\Yves\CheckoutPage\Controller;
 
 use Generated\Shared\Transfer\QuoteTransfer;
+use Generated\Shared\Transfer\ShipmentMethodTransfer;
 use SprykerShop\Yves\CheckoutPage\Controller\CheckoutController as SprykerCheckoutControllerAlias;
 use SprykerShop\Yves\CheckoutPage\Plugin\Provider\CheckoutPageControllerProvider;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -119,8 +120,11 @@ class CheckoutController extends SprykerCheckoutControllerAlias
         $storeName = $this->getFactory()->getStore()->getStoreName();
         $test = $this->getFactory()->getQuoteClient()->getQuote();
 
-        $weekDayTimeSlotCapacity = $this->getFactory()->getTimeSlotClient()->getTimeSlot();
+//        $weekDayTimeSlotCapacity = $this->getFactory()->getTimeSlotClient()->getTimeSlot();
+        $shipmentMethodTransfer = new ShipmentMethodTransfer();
+        $shipmentMethodTransfer->setShipmentMethodKey("click_and_collect");
+        $weekDayTimeSlotCapacity = $this->getFactory()->getTimeSlotClient()->expandWithShipmentTimeSlots($shipmentMethodTransfer);
 
-        return new JsonResponse($weekDayTimeSlotCapacity->toArray());
+        return new JsonResponse($weekDayTimeSlotCapacity->getTimeSlots()["click_and_collect"]);
     }
 }

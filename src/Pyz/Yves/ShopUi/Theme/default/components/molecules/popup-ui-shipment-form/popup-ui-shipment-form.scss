@@ -9,6 +9,33 @@
             }
         }
 
+        .slick-arrow[disabled=disabled], .slick-arrow:disabled {
+            background-color: $setting-color-gray-1;
+        }
+
+        .spaceBetweenCol {
+            background-color: $setting-color-gray-1;
+            height: 100%;
+            padding: 0 rem(10);
+        }
+
+        .time-slot-info-text {
+            color: $setting-color-globus-black;
+            font-size: rem(12);
+            margin: rem(10) 0;
+        }
+
+        &__top-left-title {
+            float:left;
+            margin-left: rem(10);
+            color: black;
+        }
+
+        &__time-slot-buttons {
+            float: right;
+            margin-bottom: rem(10);
+        }
+
         &__overlay {
             position: fixed;
             top: 0;
@@ -26,9 +53,9 @@
         &__container {
             flex-grow: 1;
             width: 100%;
-            height: auto;
-            background: white;
-            border-radius: rem(24);
+            height: rem(590);
+            background-color: $setting-color-globus-white;
+            border-radius: 0;
 
             @include helper-breakpoint-media-min($xl-min) {
                 width: 60%;
@@ -71,7 +98,7 @@
             padding: 0.9rem 1.5rem 0.5rem;
             font: fw(bold) rem(18) $setting-font-family-additional;
             text-align: right;
-            border-bottom: rem(1) solid $setting-color-gray-3;
+            border-bottom: rem(1) solid $setting-color-globus-black;
         }
 
         &__title--text {
@@ -97,10 +124,7 @@
 
         &__content {
             padding: 10px;
-            overflow-y: scroll;
-            scrollbar-width: none; /* Firefox */
-            -ms-overflow-style: none;  /* Internet Explorer 10+ */
-            height: rem(600);
+            background-color: $setting-color-globus-white;
 
             .horizontal-spacing {
                 p {
@@ -142,7 +166,7 @@
             }
         }
 
-        &__containerSlick {
+        &__container-slick {
             position: relative;
 
             @include helper-breakpoint-media-max($sm-max) {
@@ -150,15 +174,14 @@
             }
 
             .slick-arrow {
-                position: absolute;
-                top: rem(152);
                 font-size: 0;
                 width: rem(30);
                 height: rem(30);
                 background: url('../images/right-chevron.svg') no-repeat center / rem(15);
-                border-radius: 50%;
+                border-radius: rem(4);
                 z-index: $setting-zi-element + 1;
                 opacity: 0.7;
+                background-color: $setting-color-globus-lightOrange;
 
                 @include helper-breakpoint-media-max($sm-max) {
                     top: rem(66);
@@ -172,8 +195,8 @@
             }
 
             .slick-prev {
-                left: rem(-30);
                 transform: rotate(180deg);
+                margin-right: rem(10);
 
                 @include helper-breakpoint-media-max($xl-max) {
                     left: rem(-16);
@@ -185,8 +208,6 @@
             }
 
             .slick-next {
-                right: rem(-30);
-
                 @include helper-breakpoint-media-max($xl-max) {
                     right: rem(-16);
                 }
@@ -281,10 +302,10 @@
         }
 
         &--timeslots {
-
             background-color: $setting-color-gray-1;
             color: $setting-color-gray-9;
             border-radius: rem(2);
+            clear: both;
 
             #{$name}-popup__containerSlick {
                 padding-top: rem(56);
@@ -293,7 +314,6 @@
             #{$name}-popup__column {
                 padding: rem(30) rem(26);
                     background-color: #FFF;
-                    //margin-left: rem(20);
 
                 #{$name}-popup__input {
                     display: none;
@@ -338,6 +358,7 @@
                 font: fw(semibold) rem(16) / rem(22) $setting-font-family !important;
                 color: $setting-color-black !important;
                 margin-bottom: rem(30) !important;
+                height: rem(30);
             }
 
             .slick-arrow {
@@ -358,8 +379,77 @@
                 right: rem(69);
             }
 
-            .slick-slide {
-                margin: 0 rem(15);
+            .checkout-block {
+                background-color: $setting-color-gray-1;
+                color: $setting-color-gray-9;
+                border-radius: rem(2);
+                padding: rem(20) rem(15);
+
+                @include helper-breakpoint-media-min($xl-min) {
+                    padding: rem(30);
+                }
+
+                &--shipment {
+                    padding-bottom: 0;
+                }
+
+                &--summary {
+                    background: none;
+                    padding: 0;
+                    border-radius: 0;
+                }
+
+                &__title-with-link {
+                    @include helper-breakpoint-media-min($md-min) {
+                        display: flex;
+                        justify-content: space-between;
+                        align-items: baseline;
+                    }
+                }
+
+                &__summary {
+                    background: $setting-color-gray-2;
+                    padding: rem(15);
+                    border-radius: rem(4);
+                    margin-bottom: rem(15);
+
+                    @include helper-breakpoint-media-min($lg-min) {
+                        padding: rem(30);
+                        margin-bottom: rem(30);
+                    }
+                }
+
+                &__summary-total {
+                    border-top: rem(1) solid $setting-color-gray-10;
+                    padding: rem(15) rem(15) 0;
+                    margin: 0 rem(-15);
+
+                    @include helper-breakpoint-media-min($lg-min) {
+                        padding: rem(30) rem(30) 0;
+                        margin: 0 rem(-30);
+                    }
+
+                    .summary-info-holder {
+                        margin-top: 20px;
+                    }
+                }
+
+                &__title {
+                    display: flex;
+                    justify-content: space-between;
+                    flex-wrap: wrap;
+                    align-items: center;
+                    font: fw(bold) rem(24) / 1 $setting-font-family-additional;
+                    padding-bottom: rem(30);
+                    color: $setting-color-gray-6;
+
+                    &-counter {
+                        padding: rem(5) 0;
+                        font-size: rem(15);
+                        color: $setting-color-gray-6;
+                        font-weight: fw(regular);
+                    }
+                }
             }
         }
     }

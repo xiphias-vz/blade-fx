@@ -1,6 +1,10 @@
 import Component from 'ShopUi/models/component';
 import $ from 'jquery/dist/jquery';
 
+const EVENT_TOGGLE_FORM = 'toggleForm';
+const TOP_LEFT_TITLE = 'Unsere verfügbaren Abholzeiten:';
+const TIME_SLOT_INFO_TEXT = 'Der Globus Abholservice steht unseren Kunden an verschiedenen Standorten zur Verfügung. Wenn Sie Ihre Abholstation wechseln, beachten Sie bitte, dass die Produktauswahl, Preise und Abholzeitfenster variieren können.';
+
 export default class PopupUiShipmentForm extends Component {
     protected $this: $ = $(this);
     protected linkToTimeSlots;
@@ -8,8 +12,14 @@ export default class PopupUiShipmentForm extends Component {
     protected closeModalBtn;
     protected mainContentContainer;
     protected slickTrack;
+    protected timeSlotData;
+    protected daysOfWeek;
+    protected btnSlickPrevious;
+    protected btnSlickNext;
+    protected daysCounter;
 
     protected readyCallback(): void {
+        this.daysOfWeek = ["Sonntag", "Montag", "Dienstag", "Mittwoch", "Donnerstag", "Freitag", "Samstag"];
         this.linkToTimeSlots = document.getElementById(this.getLinkToTimeSlots);
         this.linkToTimeSlotsMobile = document.getElementById(this.getLinkToTimeSlotsMobile);
         this.closeModalBtn = this.$this.find(this.closeButtonSelector);
@@ -19,7 +29,6 @@ export default class PopupUiShipmentForm extends Component {
     }
 
     protected mapEvents(): void {
-
 
         if(this.linkToTimeSlots != null ){
             this.linkToTimeSlots.addEventListener('click', () => {
@@ -36,10 +45,8 @@ export default class PopupUiShipmentForm extends Component {
             });
         }
 
-
         this.closeModalBtn.on('click', () => {
             this.$this.toggleClass(this.showClass);
-
             this.mainContentContainer.empty();
         });
 
@@ -62,35 +69,140 @@ export default class PopupUiShipmentForm extends Component {
             .then(response => response.json())
             .then(parsedResponse => {
 
-                this.createTimeSlotsData(parsedResponse.time_slots_capacity)
+                this.createTimeSlotsContainer(parsedResponse)
 
-            }).catch(error => {
+            })
+            .catch(error => {
             console.error(error);
         });
 
     }
 
-    protected createTimeSlotsData(data): void {
+    protected createTimeSlotsContainer(data): void {
+        this.timeSlotData = data;
 
-        let slickCarouselContainer = $('<div class="popup-ui-shipment-form--timeslots"><div class="slick-popup-list draggable"><div class="slick-popup-track" style="opacity: 1; transform: translate3d(0px, 0px, 0px);"></div></div></div>');
+        let slickCarouselContainer = $('<div class="grid"><article class="checkout-block checkout-block--shipment checkout-block--border-bottom-less grid col col--sm-12"><div class="col col--sm-12"><div class="popup-ui-shipment-form__container-slick js-slick-carousel__container js-list-switches__item slick-initialized slick-slider"><div class="popup-ui-shipment-form__top-left-title"><span>' + TOP_LEFT_TITLE + '</span></div><div class="popup-ui-shipment-form__time-slot-buttons"><button id="goToPreviousTimeSlot" class="slick-prev slick-arrow" aria-label="Previous" type="button">Previous</button><button id="goToNextTimeSlot" class="slick-next slick-arrow" aria-label="Next" type="button">Next</button></div><div class="popup-ui-shipment-form--timeslots"><div class="slick-popup-list draggable"><div class="slick-popup-track" style="opacity: 1; transform: translate3d(0px, 0px, 0px);"></div></div></div></div></div></article><div class="time-slot-info-text"><span>' + TIME_SLOT_INFO_TEXT + '</span></div></div>');
         slickCarouselContainer.appendTo(this.mainContentContainer);
+
+        this.btnSlickPrevious = document.getElementById(this.getSlickPrevious);
+        if(this.btnSlickPrevious != null ){
+            this.btnSlickPrevious.addEventListener('click', () => {
+                this.updateTimeSlotData(false);
+                if(this.daysCounter < 1){
+                    this.btnSlickPrevious.setAttribute("disabled","disabled");
+                }
+            });
+        }
+
+        this.btnSlickNext = document.getElementById(this.getSlickNext);
+        if(this.btnSlickNext != null ){
+            this.btnSlickNext.addEventListener('click', () => {
+                this.updateTimeSlotData(true);
+                if(this.daysCounter > (this.timeSlotData.length - 1)){
+                    this.btnSlickNext.setAttribute("disabled","disabled");
+                }
+            });
+        }
 
         this.slickTrack = this.$this.find(this.getSlickTrack);
 
-        let daysData = this.uniqueByDateDay(data);
-        for(let day = 0; day < daysData.length; day++){
-            let slickSlideDaysContainer = $('<div class="slick-popup-slide slick-popup-current slick-popup-active col--md-2 col--sm-12" style="float: left;"><div><div class="popup-ui-shipment-form-popup__column spacing-bottom spacing-bottom--biggest" style="width: 100%; display: inline-block;"><div class="popup-ui-shipment-form-popup__date">' + this.getDayName(daysData[day]) + ', ' + daysData[day] + '</div><div class="slots_' + daysData[day] + '"></div></div></div></div>');
-            slickSlideDaysContainer.appendTo(this.slickTrack);
+        this.daysCounter = 0;
+        this.btnSlickPrevious.setAttribute("disabled","disabled");
+        this.generateTimeSlotsData();
+    }
+
+    protected updateTimeSlotData(increment){
+        let data = this.timeSlotData;
+
+        this.slickTrack.empty();
+        let test = this.daysCounter % 5;
+        if(increment){
+            let numberOfItemsInc = 0;
+            for(test; test < ((this.daysCounter % 5) + 3); test++){
+                let dateInc = Object.keys(data)[test];
+                if(dateInc != undefined){
+                    let dateObj = new Date(dateInc);
+                    let formatedDate = dateObj.getDay() + "." + (dateObj.getMonth() + 1) + "." + dateObj.getFullYear();
+
+                    let slickSlideDaysContainer = $('<div class="slick-popup-slide slick-popup-current slick-popup-active col--md-4 col--sm-12" style="float: left;"><div class="spaceBetweenCol"><div class="popup-ui-shipment-form-popup__column spacing-bottom spacing-bottom--biggest" style="width: 100%; display: inline-block;"><div class="popup-ui-shipment-form-popup__date">' + this.getDayName(dateInc) + ', ' + dateInc + '</div><div class="slots_' + dateInc + '"></div></div></div></div>');
+                    slickSlideDaysContainer.appendTo(this.slickTrack);
+
+                    let arrayOfTimeSlots = Object.values(data)[test];
+
+                    for (const time_slot in arrayOfTimeSlots) {
+                        let findEl = this.$this.find('.slots_' + dateInc);
+                        let slickSlideHoursContainer = $('<div class="popup-ui-shipment-form__slot"><div class="popup-ui-shipment-form-popup__slot-label">' + Object.values(data)[test][time_slot] + '</div></div>');
+                        slickSlideHoursContainer.appendTo(findEl);
+                    }
+
+                    numberOfItemsInc++;
+                }
+            }
+            this.daysCounter += numberOfItemsInc;
+        }
+        else{
+            let numberOfItemsDec = 0;
+            for(test; test < ((this.daysCounter % 5) + 3); test++){
+                let dateDec = Object.keys(data)[test];
+                if(dateDec != undefined){
+                    let dateObj = new Date(dateDec);
+                    let formatedDate = dateObj.getDay() + "." + (dateObj.getMonth() + 1) + "." + dateObj.getFullYear();
+
+                    let slickSlideDaysContainer = $('<div class="slick-popup-slide slick-popup-current slick-popup-active col--md-4 col--sm-12" style="float: left;"><div class="spaceBetweenCol"><div class="popup-ui-shipment-form-popup__column spacing-bottom spacing-bottom--biggest" style="width: 100%; display: inline-block;"><div class="popup-ui-shipment-form-popup__date">' + this.getDayName(dateDec) + ', ' + dateDec + '</div><div class="slots_' + dateDec + '"></div></div></div></div>');
+                    slickSlideDaysContainer.appendTo(this.slickTrack);
+
+                    let arrayOfTimeSlots = Object.values(data)[test];
+
+                    for (const time_slot in arrayOfTimeSlots) {
+                        let findEl = this.$this.find('.slots_' + dateDec);
+                        let slickSlideHoursContainer = $('<div class="popup-ui-shipment-form__slot"><div class="popup-ui-shipment-form-popup__slot-label">' + Object.values(data)[test][time_slot] + '</div></div>');
+                        slickSlideHoursContainer.appendTo(findEl);
+                    }
+
+                    numberOfItemsDec++;
+                }
+            }
+            this.daysCounter -= numberOfItemsDec;
         }
 
-        data.forEach((value, index) => {
-            let findEl = this.$this.find('.slots_' + value.date);
-            if(value.capacity > 0){
-                let slickSlideHoursContainer = $('<div class="popup-ui-shipment-form__slot"><div class="popup-ui-shipment-form-popup__slot-label">' + value.time_slot + '</div></div>');
-                slickSlideHoursContainer.appendTo(findEl);
-            }
-        });
+        if(this.daysCounter < 3){
+            this.btnSlickPrevious.setAttribute("disabled","disabled");
+        }
+        else {
+            this.btnSlickPrevious.removeAttribute("disabled");
+        }
 
+        if(this.daysCounter > 4){
+            this.btnSlickNext.setAttribute("disabled","disabled");
+        }
+        else {
+            this.btnSlickNext.removeAttribute("disabled");
+        }
+
+    }
+
+    protected generateTimeSlotsData(): void {
+        this.btnSlickPrevious.setAttribute("disabled","disabled");
+
+        let data = this.timeSlotData;
+        let maxDayCounter = this.daysCounter + 3;
+        for (const property in data) {
+            if(this.daysCounter < maxDayCounter){
+                this.daysCounter++;
+
+                let dateObj = new Date(property);
+                let formatedDate = dateObj.getDay() + "." + (dateObj.getMonth() + 1) + "." + dateObj.getFullYear();
+
+                let slickSlideDaysContainer = $('<div class="slick-popup-slide slick-popup-current slick-popup-active col--md-4 col--sm-12" style="float: left;"><div class="spaceBetweenCol"><div class="popup-ui-shipment-form-popup__column spacing-bottom spacing-bottom--biggest" style="width: 100%; display: inline-block;"><div class="popup-ui-shipment-form-popup__date">' + this.getDayName(property) + ', ' + formatedDate + '</div><div class="slots_' + property + '"></div></div></div></div>');
+                slickSlideDaysContainer.appendTo(this.slickTrack);
+
+                for (const time_slot in data[property]) {
+                    let findEl = this.$this.find('.slots_' + property);
+                    let slickSlideHoursContainer = $('<div class="popup-ui-shipment-form__slot"><div class="popup-ui-shipment-form-popup__slot-label">' + data[property][time_slot] + '</div></div>');
+                    slickSlideHoursContainer.appendTo(findEl);
+                }
+            }
+        }
     }
 
     protected uniqueByDateDay(arr){
@@ -105,9 +217,8 @@ export default class PopupUiShipmentForm extends Component {
     protected getDayName(dateStr)
     {
         let date = new Date(dateStr);
-        return date.toLocaleDateString("en-US", { weekday: 'long' });
+        return date.toLocaleDateString("de-DE", { weekday: 'long' });
     }
-
 
     get showClass(): string {
         return `${this.name}--show`;
@@ -147,6 +258,14 @@ export default class PopupUiShipmentForm extends Component {
 
     get getLinkToTimeSlotsMobile(): string {
         return `link-to-time-slots-mobile`;
+    }
+
+    get getSlickPrevious(): string {
+        return `goToPreviousTimeSlot`;
+    }
+
+    get getSlickNext(): string {
+        return `goToNextTimeSlot`;
     }
 
 }
