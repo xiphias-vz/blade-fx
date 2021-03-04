@@ -120,9 +120,12 @@ class CheckoutController extends SprykerCheckoutControllerAlias
         $storeName = $this->getFactory()->getStore()->getStoreName();
         $test = $this->getFactory()->getQuoteClient()->getQuote();
 
-//        $weekDayTimeSlotCapacity = $this->getFactory()->getTimeSlotClient()->getTimeSlot();
         $shipmentMethodTransfer = new ShipmentMethodTransfer();
         $shipmentMethodTransfer->setShipmentMethodKey("click_and_collect");
+        $shipmentMethodTransfer->setName("Click & Collect");
+        $shipmentMethodTransfer->setCarrierName("Filiale");
+        $shipmentMethodTransfer->setIdShipmentMethod(1);
+        $shipmentMethodTransfer->setStoreCurrencyPrice(299);
         $weekDayTimeSlotCapacity = $this->getFactory()->getTimeSlotClient()->expandWithShipmentTimeSlots($shipmentMethodTransfer);
 
         return new JsonResponse($weekDayTimeSlotCapacity->getTimeSlots()["click_and_collect"]);

@@ -52,7 +52,6 @@ export default class PopupUiShipmentForm extends Component {
 
     }
 
-
     public triggerPopup(event?: Event): void {
         if (event) {
             event.preventDefault();
@@ -69,7 +68,9 @@ export default class PopupUiShipmentForm extends Component {
             .then(response => response.json())
             .then(parsedResponse => {
 
-                this.createTimeSlotsContainer(parsedResponse)
+                if(parsedResponse != undefined && parsedResponse != []){
+                    this.createTimeSlotsContainer(parsedResponse)
+                }
 
             })
             .catch(error => {
@@ -113,12 +114,16 @@ export default class PopupUiShipmentForm extends Component {
 
     protected updateTimeSlotData(increment){
         let data = this.timeSlotData;
+        let numberOfItems = 3;
+        if ($(this).width() < 580) {
+            numberOfItems = 1;
+        }
 
         this.slickTrack.empty();
         let test = this.daysCounter % 5;
         if(increment){
             let numberOfItemsInc = 0;
-            for(test; test < ((this.daysCounter % 5) + 3); test++){
+            for(test; test < ((this.daysCounter % 5) + numberOfItems); test++){
                 let dateInc = Object.keys(data)[test];
                 if(dateInc != undefined){
                     let dateObj = new Date(dateInc);
@@ -127,7 +132,7 @@ export default class PopupUiShipmentForm extends Component {
                     let slickSlideDaysContainer = $('<div class="slick-popup-slide slick-popup-current slick-popup-active col--md-4 col--sm-12" style="float: left;"><div class="spaceBetweenCol"><div class="popup-ui-shipment-form-popup__column spacing-bottom spacing-bottom--biggest" style="width: 100%; display: inline-block;"><div class="popup-ui-shipment-form-popup__date">' + this.getDayName(dateInc) + ', ' + dateInc + '</div><div class="slots_' + dateInc + '"></div></div></div></div>');
                     slickSlideDaysContainer.appendTo(this.slickTrack);
 
-                    let arrayOfTimeSlots = Object.values(data)[test];
+                    let arrayOfTimeSlots = Object.values(data)[test] as Array<string>;
 
                     for (const time_slot in arrayOfTimeSlots) {
                         let findEl = this.$this.find('.slots_' + dateInc);
@@ -142,7 +147,7 @@ export default class PopupUiShipmentForm extends Component {
         }
         else{
             let numberOfItemsDec = 0;
-            for(test; test < ((this.daysCounter % 5) + 3); test++){
+            for(test; test < ((this.daysCounter % 5) + numberOfItems); test++){
                 let dateDec = Object.keys(data)[test];
                 if(dateDec != undefined){
                     let dateObj = new Date(dateDec);
@@ -151,7 +156,7 @@ export default class PopupUiShipmentForm extends Component {
                     let slickSlideDaysContainer = $('<div class="slick-popup-slide slick-popup-current slick-popup-active col--md-4 col--sm-12" style="float: left;"><div class="spaceBetweenCol"><div class="popup-ui-shipment-form-popup__column spacing-bottom spacing-bottom--biggest" style="width: 100%; display: inline-block;"><div class="popup-ui-shipment-form-popup__date">' + this.getDayName(dateDec) + ', ' + dateDec + '</div><div class="slots_' + dateDec + '"></div></div></div></div>');
                     slickSlideDaysContainer.appendTo(this.slickTrack);
 
-                    let arrayOfTimeSlots = Object.values(data)[test];
+                    let arrayOfTimeSlots = Object.values(data)[test] as Array<string>;
 
                     for (const time_slot in arrayOfTimeSlots) {
                         let findEl = this.$this.find('.slots_' + dateDec);
@@ -165,20 +170,41 @@ export default class PopupUiShipmentForm extends Component {
             this.daysCounter -= numberOfItemsDec;
         }
 
-        if(this.daysCounter < 3){
+        if(this.daysCounter < numberOfItems){
             this.btnSlickPrevious.setAttribute("disabled","disabled");
         }
         else {
             this.btnSlickPrevious.removeAttribute("disabled");
         }
 
-        if(this.daysCounter > 4){
+        if(this.daysCounter > (numberOfItems + 1)){
             this.btnSlickNext.setAttribute("disabled","disabled");
         }
         else {
             this.btnSlickNext.removeAttribute("disabled");
         }
 
+        this.checkSize();
+
+    }
+
+    protected checkSize(): void {
+        if ($(this).width() < 580) {
+
+            let sel = $(".slick-popup-slide");
+
+            if(sel != null){
+                for(let i=0;i<sel.length;i++){
+                    if(i == 0){
+                        $('.slick-popup-slide')[i].style.display = "block";
+                    }
+                    else{
+                        $('.slick-popup-slide')[i].style.display = "none";
+                    }
+                }
+            }
+
+        }
     }
 
     protected generateTimeSlotsData(): void {
@@ -203,6 +229,8 @@ export default class PopupUiShipmentForm extends Component {
                 }
             }
         }
+        this.daysCounter = 2;
+        this.checkSize();
     }
 
     protected uniqueByDateDay(arr){

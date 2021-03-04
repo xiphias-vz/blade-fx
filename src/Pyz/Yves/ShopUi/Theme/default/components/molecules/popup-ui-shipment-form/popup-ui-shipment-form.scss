@@ -9,6 +9,15 @@
             }
         }
 
+        .slick-popup-slide {
+            float:left;
+            height: rem(410);
+        }
+
+        .grid {
+            height: rem(555);
+        }
+
         .slick-arrow[disabled=disabled], .slick-arrow:disabled {
             background-color: $setting-color-gray-1;
         }
@@ -384,6 +393,7 @@
                 color: $setting-color-gray-9;
                 border-radius: rem(2);
                 padding: rem(20) rem(15);
+                height: rem(480);
 
                 @include helper-breakpoint-media-min($xl-min) {
                     padding: rem(30);
