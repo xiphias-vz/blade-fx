@@ -23,10 +23,8 @@ class SitemapConsole extends Console
     public const COMMAND_NAME = 'sitemap:generate';
     public const COMMAND_DESCRIPTION = 'Generate new Sitemap.xml';
     public const SHIPMENT_NAME = 'Click & Collect';
-//    public const SITEMAP1_FILE_NAME = "public/Yves/sitemap1.xml";
-    public const SITEMAP1_FILE_NAME = "data/sitemaps/sitemap1.xml";
-//    public const SITEMAP2_FILE_NAME = "public/Yves/sitemap2.xml";
-    public const SITEMAP2_FILE_NAME = "data/sitemaps/sitemap2.xml";
+    public const SITEMAP1_FILE_NAME = "src/Pyz/Zed/Sitemap/Communication/Sitemaps/sitemap1.xml";
+    public const SITEMAP2_FILE_NAME = "src/Pyz/Zed/Sitemap/Communication/Sitemaps/sitemap2.xml";
     public const COUNT_BREAK = 50000;
 
     /**
