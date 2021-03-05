@@ -213,6 +213,11 @@ $header-sticky-height: rem(69, number);
             cursor: pointer;
         }
 
+        .icon-time {
+            font-size: rem(28);
+            margin-right: rem(12);
+        }
+
         @content;
     }
 }

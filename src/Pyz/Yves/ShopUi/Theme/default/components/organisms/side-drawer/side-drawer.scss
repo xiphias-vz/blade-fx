@@ -120,6 +120,10 @@ $shop-ui-right-side-drawer-width: rem(320);
             border-top: 1px solid #000000;
         }
 
+        .icon-time {
+            margin-right: rem(12);
+        }
+
         @content;
     }
 }

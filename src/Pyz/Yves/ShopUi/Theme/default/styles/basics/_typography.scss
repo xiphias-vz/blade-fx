@@ -37,6 +37,10 @@
     -moz-osx-font-smoothing: grayscale;
 }
 
+.icon-time:before {
+    content: "\e916";
+}
+
 .icon-basketplus:before {
     content: "\e900";
 }

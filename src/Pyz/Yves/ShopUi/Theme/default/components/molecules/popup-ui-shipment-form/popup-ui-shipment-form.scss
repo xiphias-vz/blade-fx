@@ -11,16 +11,11 @@
 
         .slick-popup-slide {
             float:left;
-            height: rem(410);
+            height: rem(380);
         }
 
         .grid {
-            //height: rem(555);
             height: rem(496);
-        }
-
-        .slick-arrow[disabled=disabled] {
-            background-color: $setting-color-gray-1;
         }
 
         .spaceBetweenCol {
@@ -33,6 +28,11 @@
             color: $setting-color-globus-black;
             font-size: rem(12);
             margin: rem(10) 0;
+
+            @include helper-breakpoint-media-max($lg-max) {
+                font-size: rem(10);
+                margin: rem(5) 0;
+            }
         }
 
         &__top-left-title {
@@ -63,9 +63,10 @@
         &__container {
             flex-grow: 1;
             width: 100%;
-            height: rem(655);
+            height: rem(620);
             background-color: $setting-color-globus-white;
             border-radius: 0;
+            padding: 0 rem(20);
 
             @include helper-breakpoint-media-min($xl-min) {
                 width: 60%;
@@ -123,8 +124,9 @@
             color: $setting-color-globus-lightOrange;
             text-align: right;
             cursor: pointer;
-            font-size: rem(34);
+            font-size: rem(24);
             background-color: transparent;
+            margin: rem(10) -20px 0 0;
         }
 
         &__content::-webkit-scrollbar {
@@ -133,7 +135,7 @@
         }
 
         &__content {
-            padding: 10px;
+            padding: rem(5);
             background-color: $setting-color-globus-white;
 
             .horizontal-spacing {
@@ -190,8 +192,8 @@
                 background: url('../images/right-chevron.svg') no-repeat center / rem(15);
                 border-radius: rem(4);
                 z-index: $setting-zi-element + 1;
-                opacity: 0.7;
-                background-color: $setting-color-globus-lightOrange;
+                opacity: 1;
+                background-color: $setting-color-globus-white;
 
                 @include helper-breakpoint-media-max($sm-max) {
                     top: rem(66);
@@ -314,7 +316,7 @@
             color: $setting-color-gray-9;
             border-radius: rem(2);
             padding: rem(20) rem(15);
-            height: rem(480);
+            height: rem(470);
 
             @include helper-breakpoint-media-min($xl-min) {
                 padding: rem(30);
@@ -397,7 +399,7 @@
             #{$name}-popup__column {
                 padding: rem(30) rem(26);
                 background-color: #FFF;
-                height: rem(400);
+                height: rem(380);
 
                 #{$name}-popup__input {
                     display: none;
