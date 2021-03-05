@@ -249,7 +249,11 @@ class ShipmentTimeSlotsExpander implements ShipmentSlotsExpanderInterface
      */
     protected function hasMerchantCapacityForShipment(ShipmentMethodTransfer $shipmentMethodTransfer, MerchantTransfer $currentMerchant): bool
     {
-        $currentShipmentAddressZipCode = $this->quoteClient->getQuote()->getShippingAddress()->getZipCode();
+        if ($this->quoteClient->getQuote()->getShippingAddress() == null) {
+            $currentShipmentAddressZipCode = substr($currentMerchant->getName(), 0, 5);
+        } else {
+            $currentShipmentAddressZipCode = $this->quoteClient->getQuote()->getShippingAddress()->getZipCode();
+        }
 
         if ($shipmentMethodTransfer->getShipmentMethodKey() === ShipmentConfig::SHIPMENT_METHOD_DELIVERY
             && !in_array($currentShipmentAddressZipCode, $currentMerchant->getDeliveryPostalCodes())

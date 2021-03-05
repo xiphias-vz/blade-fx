@@ -15,10 +15,11 @@
         }
 
         .grid {
-            height: rem(555);
+            //height: rem(555);
+            height: rem(496);
         }
 
-        .slick-arrow[disabled=disabled], .slick-arrow:disabled {
+        .slick-arrow[disabled=disabled] {
             background-color: $setting-color-gray-1;
         }
 
@@ -62,7 +63,7 @@
         &__container {
             flex-grow: 1;
             width: 100%;
-            height: rem(590);
+            height: rem(655);
             background-color: $setting-color-globus-white;
             border-radius: 0;
 
@@ -197,8 +198,6 @@
                 }
 
                 &:hover {
-                    background-color: $setting-color-white;
-                    opacity: 1;
                     cursor: pointer;
                 }
             }
@@ -310,6 +309,81 @@
             }
         }
 
+        .checkout-block {
+            background-color: $setting-color-gray-1;
+            color: $setting-color-gray-9;
+            border-radius: rem(2);
+            padding: rem(20) rem(15);
+            height: rem(480);
+
+            @include helper-breakpoint-media-min($xl-min) {
+                padding: rem(30);
+            }
+
+            &--shipment {
+                padding-bottom: 0;
+                margin-bottom: 0 !important;
+            }
+
+            &--summary {
+                background: none;
+                padding: 0;
+                border-radius: 0;
+            }
+
+            &__title-with-link {
+                @include helper-breakpoint-media-min($md-min) {
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: baseline;
+                }
+            }
+
+            &__summary {
+                background: $setting-color-gray-2;
+                padding: rem(15);
+                border-radius: rem(4);
+                margin-bottom: rem(15);
+
+                @include helper-breakpoint-media-min($lg-min) {
+                    padding: rem(30);
+                    //margin-bottom: rem(30);
+                }
+            }
+
+            &__summary-total {
+                border-top: rem(1) solid $setting-color-gray-10;
+                padding: rem(15) rem(15) 0;
+                margin: 0 rem(-15);
+
+                @include helper-breakpoint-media-min($lg-min) {
+                    padding: rem(30) rem(30) 0;
+                    margin: 0 rem(-30);
+                }
+
+                .summary-info-holder {
+                    margin-top: 20px;
+                }
+            }
+
+            &__title {
+                display: flex;
+                justify-content: space-between;
+                flex-wrap: wrap;
+                align-items: center;
+                font: fw(bold) rem(24) / 1 $setting-font-family-additional;
+                padding-bottom: rem(30);
+                color: $setting-color-gray-6;
+
+                &-counter {
+                    padding: rem(5) 0;
+                    font-size: rem(15);
+                    color: $setting-color-gray-6;
+                    font-weight: fw(regular);
+                }
+            }
+        }
+
         &--timeslots {
             background-color: $setting-color-gray-1;
             color: $setting-color-gray-9;
@@ -322,7 +396,8 @@
 
             #{$name}-popup__column {
                 padding: rem(30) rem(26);
-                    background-color: #FFF;
+                background-color: #FFF;
+                height: rem(400);
 
                 #{$name}-popup__input {
                     display: none;
@@ -379,88 +454,12 @@
                 background-color: $setting-color-white;
                 border-radius: rem(4);
 
-                &:hover {
-                    background-color: $setting-color-white;
-                }
             }
 
             .slick-prev {
                 right: rem(69);
             }
 
-            .checkout-block {
-                background-color: $setting-color-gray-1;
-                color: $setting-color-gray-9;
-                border-radius: rem(2);
-                padding: rem(20) rem(15);
-                height: rem(480);
-
-                @include helper-breakpoint-media-min($xl-min) {
-                    padding: rem(30);
-                }
-
-                &--shipment {
-                    padding-bottom: 0;
-                }
-
-                &--summary {
-                    background: none;
-                    padding: 0;
-                    border-radius: 0;
-                }
-
-                &__title-with-link {
-                    @include helper-breakpoint-media-min($md-min) {
-                        display: flex;
-                        justify-content: space-between;
-                        align-items: baseline;
-                    }
-                }
-
-                &__summary {
-                    background: $setting-color-gray-2;
-                    padding: rem(15);
-                    border-radius: rem(4);
-                    margin-bottom: rem(15);
-
-                    @include helper-breakpoint-media-min($lg-min) {
-                        padding: rem(30);
-                        margin-bottom: rem(30);
-                    }
-                }
-
-                &__summary-total {
-                    border-top: rem(1) solid $setting-color-gray-10;
-                    padding: rem(15) rem(15) 0;
-                    margin: 0 rem(-15);
-
-                    @include helper-breakpoint-media-min($lg-min) {
-                        padding: rem(30) rem(30) 0;
-                        margin: 0 rem(-30);
-                    }
-
-                    .summary-info-holder {
-                        margin-top: 20px;
-                    }
-                }
-
-                &__title {
-                    display: flex;
-                    justify-content: space-between;
-                    flex-wrap: wrap;
-                    align-items: center;
-                    font: fw(bold) rem(24) / 1 $setting-font-family-additional;
-                    padding-bottom: rem(30);
-                    color: $setting-color-gray-6;
-
-                    &-counter {
-                        padding: rem(5) 0;
-                        font-size: rem(15);
-                        color: $setting-color-gray-6;
-                        font-weight: fw(regular);
-                    }
-                }
-            }
         }
     }
 
