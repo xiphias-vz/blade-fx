@@ -29,32 +29,39 @@ class SalesOrderSummaryExportRepository extends AbstractRepository implements Sa
     {
         $transfer = new FileSystemContentTransfer();
 
-        $qry = "select
-        sso.order_reference as OrderNr,
-        sso.store, sso.created_at as OrderDate,
-        sum(ssoi.gross_price) as ItemValueGross,
-        sum(ssoi.net_price) as ItemValueNet,
-        sum(ssoi.quantity) as itemsCount,
-        sso.customer_reference as external_customer_identifier,
+        $qry = "select sso.order_reference as OrderNr
+	, sso.store
+	, date_format(CONVERT_TZ(sso.created_at, '+00:00', '+01:00'),  '%d.%m.%Y %h:%m:%s') as OrderDate
+	,  date_format(left(sss.requested_delivery_date, 10), '%d.%m.%Y') as DeliveryDate,
+    sum(ssoi.gross_price) as ItemValueGross,
+        round(sum(round(ssoi.gross_price / ((100 + str.rate)/100), 2)), 0) as ItemValueNet,
+        sum(ssoi.quantity) as ItemQuantity,
+        count(distinct ssoi.product_number) as ItemsCount,
+        sc.id_customer as external_customer_identifier,
         sc.my_globus_card as loyalty_number,
-        sss.requested_delivery_date as TimeSlot,
+        right(sss.requested_delivery_date, 11) as TimeSlot,
         max(sit.name) as status,
-        sum(case when sit.name like 'cancelled' then 0 else ssoi.gross_price end) as Delivered_ItemValueGross,
-        sum(case when sit.name like 'cancelled' then 0 else ssoi.net_price end) as Delivered_ItemValueNet,
-        sum(case when sit.name like 'cancelled' then 0 else ssoi.quantity end) as Delivered_ItemsCount,
-        sum(ssoi.refundable_amount) as Delivered_DepositValueGross,
-        0 as Delivered_DepositValueNet,
-        sum(case when ssoi.refundable_amount > 0 then 1 else 0 end) as Delivered_DepositArticle,
+        sum(case when sit.name like '%cancelled%' then 0 else ssoi.gross_price end) as Delivered_ItemValueGross,
+        round(sum(case when sit.name like '%cancelled%' then 0 else round(ssoi.gross_price / ((100 + str.rate)/100), 2) end), 0) as Delivered_ItemValueNet,
+        sum(case when sit.name like '%cancelled%' then 0 else
+        	case when ssoi.new_weight is not null then round(ssoi.new_weight / ssoi.weight_per_unit, 0) else 1 end
+        	end) as Delivered_ItemsQuantity,
+        count(distinct case when sit.name like '%cancelled%' then 0 else ssoi.product_number end) - sign(sum(case when sit.name like '%cancelled%' then 1 else 0 end)) as Delivered_ItemsCount,
         case when sso.cart_note in ('null', '\"null\"') then null else sso.cart_note end as comment,
         case when sc.my_globus_card is null then 2.99 else 1.99 end as ShippingValueGross
     from spy_sales_order sso
         inner join spy_sales_order_item ssoi on sso.id_sales_order = ssoi.fk_sales_order
+        inner join spy_product sp on sp.sku = ssoi.product_number
+		inner join spy_product_abstract spa on spa.id_product_abstract = sp.fk_product_abstract
+		inner join spy_tax_set sts on sts.id_tax_set = spa.fk_tax_set
+		inner join spy_tax_set_tax stst on stst.fk_tax_set = sts.id_tax_set
+		inner join spy_tax_rate str ON str.id_tax_rate = stst.fk_tax_rate
         left outer join spy_customer sc on sso.customer_reference = sc.customer_reference
         left outer join spy_sales_shipment sss on sso.id_sales_order = sss.fk_sales_order
-        left outer join  spy_sales_order_item_bundle ssoib on ssoi.fk_sales_order_item_bundle = ssoib.id_sales_order_item_bundle
+        left outer join spy_sales_order_item_bundle ssoib on ssoi.fk_sales_order_item_bundle = ssoib.id_sales_order_item_bundle
         inner join spy_oms_order_item_state sit on ssoi.fk_oms_order_item_state = sit.id_oms_order_item_state
     where ssoi.created_at > DATE_ADD(CURDATE(), INTERVAL -1 DAY)
-        or ssoi.updated_at > DATE_ADD(CURDATE(), INTERVAL -1 DAY)
+    	or ssoi.updated_at > DATE_ADD(CURDATE(), INTERVAL -1 DAY)
     group by
         sso.order_reference, sso.store, sso.created_at,
         sss.requested_delivery_date, ssoib.gross_price, sso.customer_reference, sso.cart_note
