@@ -8,6 +8,8 @@
 namespace Pyz\Yves\CustomerPage;
 
 use Pyz\Shared\Customer\CustomerConstants;
+use Spryker\Shared\Config\Config;
+use Spryker\Shared\FileSystem\FileSystemConstants;
 use SprykerShop\Yves\CustomerPage\CustomerPageConfig as SprykerCustomerPageConfig;
 
 class CustomerPageConfig extends SprykerCustomerPageConfig
@@ -25,9 +27,39 @@ class CustomerPageConfig extends SprykerCustomerPageConfig
      */
     public function getCDCApiUrl(): string
     {
-        $url = $this->get(CustomerConstants::CDC_API_URL);
-        $apiKey = $this->get(CustomerConstants::CDC_API_KEY);
+        $url = $this->getCdcUrlPrefix();
+        $apiKey = $this->getCdcApiKey();
 
-        return $url["cdcScreensUrl"] . '?apikey=' . array_shift($apiKey);
+        return $url . '?apikey=' . $apiKey;
+    }
+
+    /**
+     * @return string
+     */
+    protected function getCdcUrlPrefix(): string
+    {
+        $globus_cdc_credentials = Config::get(FileSystemConstants::FILESYSTEM_SERVICE);
+
+        $urlPrefix = '';
+        if (isset($globus_cdc_credentials[CustomerConstants::CDC_LOCAL_CREDENTIALS][CustomerConstants::CDC_SCREENS_URL])) {
+            $urlPrefix = $globus_cdc_credentials[CustomerConstants::CDC_LOCAL_CREDENTIALS][CustomerConstants::CDC_SCREENS_URL];
+        }
+
+        return $urlPrefix;
+    }
+
+    /**
+     * @return string
+     */
+    protected function getCdcApiKey(): string
+    {
+        $globus_cdc_credentials = Config::get(FileSystemConstants::FILESYSTEM_SERVICE);
+
+        $apiKey = '';
+        if (isset($globus_cdc_credentials[CustomerConstants::CDC_LOCAL_CREDENTIALS][CustomerConstants::CDC_API_KEY])) {
+            $apiKey = $globus_cdc_credentials[CustomerConstants::CDC_LOCAL_CREDENTIALS][CustomerConstants::CDC_API_KEY];
+        }
+
+        return $apiKey;
     }
 }

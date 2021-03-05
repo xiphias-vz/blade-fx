@@ -13,6 +13,7 @@ use Pyz\Shared\Customer\CustomerConstants;
 use Pyz\Yves\CustomerPage\Controller\ProfileController;
 use Pyz\Yves\CustomerPage\Plugin\Application\CustomerTransferCustom;
 use Spryker\Shared\Config\Config;
+use Spryker\Shared\FileSystem\FileSystemConstants;
 use SprykerShop\Yves\CustomerPage\Plugin\Provider\CustomerUserProvider as SprykerCustomerUserProvider;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
 
@@ -86,10 +87,10 @@ class CustomerUserProvider extends SprykerCustomerUserProvider
      */
     protected function getCdcAuthorization($username, $pass): array
     {
-        $apiKey = Config::get(CustomerConstants::CDC_API_KEY);
-        $apiSecretKey = Config::get(CustomerConstants::CDC_API_SECRET_KEY);
-        $urlPrefix = Config::get(CustomerConstants::CDC_API_URL);
-        $url = array_shift($urlPrefix) . "accounts.login?apiKey=" . array_shift($apiKey) . "&sec=" . array_shift($apiSecretKey);
+        $apiKey = $this->getCdcApiKey();
+        $apiSecretKey = $this->getCdcSecretKey();
+        $urlPrefix = $this->getCdcUrlPrefix();
+        $url = $urlPrefix . "accounts.login?apiKey=" . $apiKey . "&sec=" . $apiSecretKey;
         $data = ['loginID' => $username, 'password' => $pass];
         $options = [
             'http' => [
@@ -111,12 +112,13 @@ class CustomerUserProvider extends SprykerCustomerUserProvider
      */
     protected function sendCdcMailForRegistration(string $uid): array
     {
-        $apiKey = Config::get(CustomerConstants::CDC_API_KEY);
-        $apiSecretKey = Config::get(CustomerConstants::CDC_API_SECRET_KEY);
-        $apiUserKey = Config::get(CustomerConstants::CDC_API_USER_KEY);
-        $urlPrefix = Config::get(CustomerConstants::CDC_API_URL);
-        $url = array_shift($urlPrefix) . "accounts.resendVerificationCode";
-        $data = ['apiKey' => array_shift($apiKey), 'secret' => array_shift($apiSecretKey), 'userKey' => $apiUserKey, 'UID' => $uid];
+        $apiKey = $this->getCdcApiKey();
+        $apiSecretKey = $this->getCdcSecretKey();
+        $apiUserKey = $this->getCdcUserKey();
+        $urlPrefix = $this->getCdcUrlPrefix();
+
+        $url = $urlPrefix . "accounts.resendVerificationCode";
+        $data = ['apiKey' => $apiKey, 'secret' => $apiSecretKey, 'userKey' => $apiUserKey, 'UID' => $uid];
         $options = [
             'http' => [
                 'header' => "Content-type: application/x-www-form-urlencoded\r\n",
@@ -138,12 +140,12 @@ class CustomerUserProvider extends SprykerCustomerUserProvider
      */
     protected function setCdcPreferredStore(string $uid, string $merchantReference): array
     {
-        $apiKey = Config::get(CustomerConstants::CDC_API_KEY);
-        $apiSecretKey = Config::get(CustomerConstants::CDC_API_SECRET_KEY);
-        $apiUserKey = Config::get(CustomerConstants::CDC_API_USER_KEY);
-        $urlPrefix = Config::get(CustomerConstants::CDC_API_URL);
-        $url = array_shift($urlPrefix) . "accounts.setAccountInfo";
-        $data = ['apiKey' => array_shift($apiKey), 'secret' => array_shift($apiSecretKey), 'userKey' => $apiUserKey, 'UID' => $uid, 'httpStatusCodes' => true, 'data' => '{"preferredStore":"' . $merchantReference . '"}'];
+        $apiKey = $this->getCdcApiKey();
+        $apiSecretKey = $this->getCdcSecretKey();
+        $apiUserKey = $this->getCdcUserKey();
+        $urlPrefix = $this->getCdcUrlPrefix();
+        $url = $urlPrefix . "accounts.setAccountInfo";
+        $data = ['apiKey' => $apiKey, 'secret' => $apiSecretKey, 'userKey' => $apiUserKey, 'UID' => $uid, 'httpStatusCodes' => true, 'data' => '{"preferredStore":"' . $merchantReference . '"}'];
         $options = [
             'http' => [
                 'header' => "Content-type: application/x-www-form-urlencoded\r\n",
@@ -168,5 +170,80 @@ class CustomerUserProvider extends SprykerCustomerUserProvider
             ->getFactory()
             ->getAuthenticationHandler()
             ->registerCustomer($customerTransfer);
+    }
+
+    /**
+     * @return string
+     */
+    public function getCdcApiKey(): string
+    {
+        $globus_cdc_credentials = Config::get(FileSystemConstants::FILESYSTEM_SERVICE);
+
+        $apiKey = '';
+        if (isset($globus_cdc_credentials[CustomerConstants::CDC_LOCAL_CREDENTIALS][CustomerConstants::CDC_API_KEY])) {
+            $apiKey = $globus_cdc_credentials[CustomerConstants::CDC_LOCAL_CREDENTIALS][CustomerConstants::CDC_API_KEY];
+        }
+
+        return $apiKey;
+    }
+
+    /**
+     * @return string
+     */
+    public function getCdcSecretKey(): string
+    {
+        $globus_cdc_credentials = Config::get(FileSystemConstants::FILESYSTEM_SERVICE);
+
+        $apiSecretKey = '';
+        if (isset($globus_cdc_credentials[CustomerConstants::CDC_LOCAL_CREDENTIALS][CustomerConstants::CDC_API_SECRET_KEY])) {
+            $apiSecretKey = $globus_cdc_credentials[CustomerConstants::CDC_LOCAL_CREDENTIALS][CustomerConstants::CDC_API_SECRET_KEY];
+        }
+
+        return $apiSecretKey;
+    }
+
+    /**
+     * @return string
+     */
+    public function getCdcUserKey(): string
+    {
+        $globus_cdc_credentials = Config::get(FileSystemConstants::FILESYSTEM_SERVICE);
+
+        $apiUserKey = '';
+        if (isset($globus_cdc_credentials[CustomerConstants::CDC_LOCAL_CREDENTIALS][CustomerConstants::CDC_API_USER_KEY])) {
+            $apiUserKey = $globus_cdc_credentials[CustomerConstants::CDC_LOCAL_CREDENTIALS][CustomerConstants::CDC_API_USER_KEY];
+        }
+
+        return $apiUserKey;
+    }
+
+    /**
+     * @return string
+     */
+    public function getCdcUrlPrefix(): string
+    {
+        $globus_cdc_credentials = Config::get(FileSystemConstants::FILESYSTEM_SERVICE);
+
+        $urlPrefix = '';
+        if (isset($globus_cdc_credentials[CustomerConstants::CDC_LOCAL_CREDENTIALS][CustomerConstants::CDC_API_URL])) {
+            $urlPrefix = $globus_cdc_credentials[CustomerConstants::CDC_LOCAL_CREDENTIALS][CustomerConstants::CDC_API_URL];
+        }
+
+        return $urlPrefix;
+    }
+
+    /**
+     * @return string
+     */
+    public function getCdcScreensUrl(): string
+    {
+        $globus_cdc_credentials = Config::get(FileSystemConstants::FILESYSTEM_SERVICE);
+
+        $urlScreens = '';
+        if (isset($globus_cdc_credentials[CustomerConstants::CDC_LOCAL_CREDENTIALS][CustomerConstants::CDC_SCREENS_URL])) {
+            $urlScreens = $globus_cdc_credentials[CustomerConstants::CDC_LOCAL_CREDENTIALS][CustomerConstants::CDC_SCREENS_URL];
+        }
+
+        return $urlScreens;
     }
 }

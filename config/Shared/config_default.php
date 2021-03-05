@@ -571,6 +571,18 @@ $config[FileSystemConstants::FILESYSTEM_SERVICE] = [
         'password' => getenv('GLOBUS_SFTP_PASSWORD'),
         'root' => getenv('GLOBUS_SFTP_ROOT'),
     ],
+    'globus_cdc_credentials' => [
+        'cdcApiKey' => getenv('GLOBUS_CDCAPIKEY'),
+        'cdcApiUrl' => getenv('GLOBUS_CDCAPIURL'),
+        'cdcScreensUrl' => getenv('GLOBUS_CDCSCREENSURL'),
+        'cdcApiSecretKey' => getenv('GLOBUS_CDCAPISECRETKEY') ,
+        'cdcApiUserKey' => getenv('GLOBUS_CDCAPIUSERKEY'),
+    ],
+    'globus_aws_s3_credentials' => [
+        'key' => getenv('GLOBUS_AWS_S3_KEY'),
+        'secret' => getenv('GLOBUS_AWS_S3_SECRET'),
+        'bucket' => getenv('GLOBUS_AWS_S3_BUCKET'),
+    ],
 ];
 
 // ---------- FileManager
@@ -825,22 +837,6 @@ $config[\Pyz\Shared\Customer\CustomerConstants::CUSTOMER_PHONE_PREFIX] =
 [
     '+49' => 'customer.registration.phone.prefix_placeholder',
 ];
-
-$config[\Pyz\Shared\Customer\CustomerConstants::CDC_API_KEY] =
-    [
-        'cdcApiKey' => '3_cO6ShorZ5e1MqRhpb214jt1gWEX45qnI0_vO8ioUNl7z1FIA-ogdd4Ii9LnL6eTc',
-    ];
-
-$config[\Pyz\Shared\Customer\CustomerConstants::CDC_API_URL] =
-    [
-        'cdcApiUrl' => 'https://accounts.eu1.gigya.com/',
-        'cdcScreensUrl' => 'https://cdns.us1.gigya.com/js/gigya.js',
-    ];
-
-$config[\Pyz\Shared\Customer\CustomerConstants::CDC_API_SECRET_KEY] =
-    [
-        'cdcApiSecretKey' => 'QA8hvf1Pds/oi0VvwDycD312CjL6gNmW',
-    ];
 
 $config[\Pyz\Shared\Customer\CustomerConstants::CDC_API_USER_KEY] = 'AOOFJuSjBzxx';
 

@@ -8,8 +8,6 @@
 namespace Pyz\Yves\CustomerPage\Controller;
 
 use Elastica\JSON;
-use Pyz\Shared\Customer\CustomerConstants;
-use Spryker\Shared\Config\Config;
 use Spryker\Shared\Customer\Code\Messages;
 use SprykerShop\Yves\CustomerPage\Controller\PasswordController as SprykerPasswordController;
 use Symfony\Component\HttpFoundation\Request;
@@ -32,12 +30,12 @@ class PasswordController extends SprykerPasswordController
             ->getForgottenPasswordForm()
             ->handleRequest($request);
 
-        $apiKey = Config::get(CustomerConstants::CDC_API_KEY);
-        $apiSecretKey = Config::get(CustomerConstants::CDC_API_SECRET_KEY);
-        $urlPrefix = Config::get(CustomerConstants::CDC_API_URL);
+        $apiKey = $this->getFactory()->createCustomerUserProvider()->getCdcApiKey();
+        $apiSecretKey = $this->getFactory()->createCustomerUserProvider()->getCdcSecretKey();
+        $urlPrefix = $this->getFactory()->createCustomerUserProvider()->getCdcUrlPrefix();
         $username = $form->getViewData()["email"];
 
-        $url = array_shift($urlPrefix) . "accounts.resetPassword?apiKey=" . array_shift($apiKey) . "&sec=" . array_shift($apiSecretKey);
+        $url = $urlPrefix . "accounts.resetPassword?apiKey=" . $apiKey . "&sec=" . $apiSecretKey;
         $data = ['loginID' => $username];
         if ($data['loginID'] != null) {
             $options = [

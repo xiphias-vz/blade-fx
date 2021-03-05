@@ -10,13 +10,11 @@ namespace Pyz\Yves\CustomerPage\Plugin;
 use Elastica\JSON;
 use Generated\Shared\Transfer\CustomerResponseTransfer;
 use Generated\Shared\Transfer\CustomerTransfer;
-use Pyz\Shared\Customer\CustomerConstants;
 use Pyz\Yves\MerchantSwitcherWidget\Resolver\ShopContextResolver;
-use Spryker\Shared\Config\Config;
 use SprykerShop\Yves\CustomerPage\Plugin\AuthenticationHandler as SprykerAuthenticationHandler;
 
 /**
- * @method \SprykerShop\Yves\CustomerPage\CustomerPageFactory getFactory()
+ * @method \Pyz\Yves\CustomerPage\CustomerPageFactory getFactory()
  */
 class AuthenticationHandler extends SprykerAuthenticationHandler
 {
@@ -79,10 +77,10 @@ class AuthenticationHandler extends SprykerAuthenticationHandler
      */
     protected function executeCdcApiCall($action, $method, $postData)
     {
-        $apiKey = Config::get(CustomerConstants::CDC_API_KEY);
-        $apiSecretKey = Config::get(CustomerConstants::CDC_API_SECRET_KEY);
-        $urlPrefix = Config::get(CustomerConstants::CDC_API_URL);
-        $url = array_shift($urlPrefix) . $action . "?apiKey=" . array_shift($apiKey) . "&sec=" . array_shift($apiSecretKey);
+        $apiKey = $this->getFactory()->createCustomerUserProvider()->getCdcApiKey();
+        $apiSecretKey = $this->getFactory()->createCustomerUserProvider()->getCdcSecretKey();
+        $urlPrefix = $this->getFactory()->createCustomerUserProvider()->getCdcUrlPrefix();
+        $url = $urlPrefix . $action . "?apiKey=" . $apiKey . "&sec=" . $apiSecretKey;
         $options = [
             'http' => [
                 'method' => 'GET',

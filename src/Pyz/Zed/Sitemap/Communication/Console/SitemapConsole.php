@@ -10,6 +10,8 @@ namespace Pyz\Zed\Sitemap\Communication\Console;
 use Aws\S3\ObjectUploader;
 use Aws\S3\S3Client;
 use Orm\Zed\UrlStorage\Persistence\SpyUrlStorageQuery;
+use Spryker\Shared\Config\Config;
+use Spryker\Shared\FileSystem\FileSystemConstants;
 use Spryker\Zed\Kernel\Communication\Console\Console;
 use Symfony\Component\Config\Definition\Exception\Exception;
 use Symfony\Component\Console\Input\InputInterface;
@@ -26,6 +28,10 @@ class SitemapConsole extends Console
     public const SITEMAP1_FILE_NAME = "src/Pyz/Zed/Sitemap/Communication/Sitemaps/sitemap1.xml";
     public const SITEMAP2_FILE_NAME = "src/Pyz/Zed/Sitemap/Communication/Sitemaps/sitemap2.xml";
     public const COUNT_BREAK = 50000;
+    protected const LOCAL_AWS_CONFIG_CREDENTIALS = 'globus_aws_s3_credentials';
+    protected const LOCAL_AWS_CONFIG_CREDENTIALS_KEY = 'key';
+    protected const LOCAL_AWS_CONFIG_CREDENTIALS_SECRET = 'secret';
+    protected const LOCAL_AWS_CONFIG_CREDENTIALS_BUCKET = 'bucket';
 
     /**
      * @return void
@@ -238,7 +244,7 @@ http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">';
     protected function sendFileToAws(): void
     {
         $s3 = $this->getS3Client();
-        $bucket = 'globus-staging-product-images';
+        $bucket = $this->getS3Bucket();
         $sitemapFile[0] = fopen(static::SITEMAP1_FILE_NAME, "r+");
         $sitemapFile[1] = fopen(static::SITEMAP2_FILE_NAME, "r+");
 
@@ -271,13 +277,38 @@ http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">';
      */
     protected function getS3Client(): S3Client
     {
+        $credentials = Config::get(FileSystemConstants::FILESYSTEM_SERVICE);
+        $key = '';
+        $secret = '';
+        if (isset($credentials[static::LOCAL_AWS_CONFIG_CREDENTIALS][static::LOCAL_AWS_CONFIG_CREDENTIALS_KEY])) {
+            $key = $credentials[static::LOCAL_AWS_CONFIG_CREDENTIALS][static::LOCAL_AWS_CONFIG_CREDENTIALS_KEY];
+        }
+
+        if (isset($credentials[static::LOCAL_AWS_CONFIG_CREDENTIALS][static::LOCAL_AWS_CONFIG_CREDENTIALS_SECRET])) {
+            $secret = $credentials[static::LOCAL_AWS_CONFIG_CREDENTIALS][static::LOCAL_AWS_CONFIG_CREDENTIALS_SECRET];
+        }
+
         return new S3Client([
             'region' => 'eu-central-1',
             'version' => 'latest',
             'credentials' => [
-                'key' => "AKIA3HMMCRGTLHU62JN6",
-                'secret' => "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",
+                'key' => $key,
+                'secret' => $secret,
             ],
         ]);
+    }
+
+    /**
+     * @return string
+     */
+    protected function getS3Bucket(): string
+    {
+        $credentials = Config::get(FileSystemConstants::FILESYSTEM_SERVICE);
+        $bucket = '';
+        if (isset($credentials[static::LOCAL_AWS_CONFIG_CREDENTIALS][static::LOCAL_AWS_CONFIG_CREDENTIALS_BUCKET])) {
+            $bucket = $credentials[static::LOCAL_AWS_CONFIG_CREDENTIALS][static::LOCAL_AWS_CONFIG_CREDENTIALS_BUCKET];
+        }
+
+        return $bucket;
     }
 }

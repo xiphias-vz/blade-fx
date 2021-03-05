@@ -17,8 +17,10 @@ interface CustomerConstants
     public const CUSTOMER_COUNTRY = 'CUSTOMER_COUNTRY_DROPDOWN';
     public const CUSTOMER_PHONE_PREFIX = 'CUSTOMER_PHONE_PREFIX';
     public const CUSTOMER_PROFILE_URL = 'CUSTOMER_PROFILE_URL';
-    public const CDC_API_KEY = 'CDC_API_KEY';
-    public const CDC_API_URL = 'CDC_API_URL';
-    public const CDC_API_SECRET_KEY = 'CDC_API_SECRET_KEY';
-    public const CDC_API_USER_KEY = 'CDC_API_USER_KEY';
+    public const CDC_API_KEY = 'cdcApiKey';
+    public const CDC_API_URL = 'cdcApiUrl';
+    public const CDC_API_SECRET_KEY = 'cdcApiSecretKey';
+    public const CDC_API_USER_KEY = 'cdcApiUserKey';
+    public const CDC_SCREENS_URL = 'cdcScreensUrl';
+    public const CDC_LOCAL_CREDENTIALS = 'globus_cdc_credentials';
 }

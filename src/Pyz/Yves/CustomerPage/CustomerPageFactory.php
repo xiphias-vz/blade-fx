@@ -194,9 +194,9 @@ class CustomerPageFactory extends SprykerShopCustomerPageFactory
     }
 
     /**
-     * @return \Symfony\Component\Security\Core\User\UserProviderInterface
+     * @return \Pyz\Yves\CustomerPage\Plugin\Provider\CustomerUserProvider
      */
-    public function createCustomerUserProvider()
+    public function createCustomerUserProvider(): CustomerUserProvider
     {
         return new CustomerUserProvider();
     }
