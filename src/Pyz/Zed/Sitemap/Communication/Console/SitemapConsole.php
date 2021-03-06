@@ -255,7 +255,7 @@ http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">';
                 $key = 'sitemap2.xml';
             }
             try {
-                var_dump($s3);
+                var_dump('BUCKET:');
                 var_dump($bucket);
                 $uploader = new ObjectUploader(
                     $s3,
@@ -282,6 +282,11 @@ http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">';
         $credentials = Config::get(FileSystemConstants::FILESYSTEM_SERVICE);
         $key = '';
         $secret = '';
+        var_dump('KEY:');
+        var_dump($key);
+        var_dump('SECRET:');
+        var_dump($secret);
+
         if (isset($credentials[static::LOCAL_AWS_CONFIG_CREDENTIALS][static::LOCAL_AWS_CONFIG_CREDENTIALS_KEY])) {
             $key = $credentials[static::LOCAL_AWS_CONFIG_CREDENTIALS][static::LOCAL_AWS_CONFIG_CREDENTIALS_KEY];
         }
