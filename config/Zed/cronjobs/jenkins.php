@@ -181,3 +181,13 @@ $jobs[] =
     'enable' => true,
     'stores' => ['EIN'],
 ];
+
+/* Export sales order summary*/
+$jobs[] =
+[
+    'name' => 'export-sales-order-summary',
+    'command' => '$PHP_BIN vendor/bin/console data:exportSalesOrderSummary',
+    'schedule' => '0 1 * * *',
+    'enable' => true,
+    'stores' => ['EIN'],
+];
