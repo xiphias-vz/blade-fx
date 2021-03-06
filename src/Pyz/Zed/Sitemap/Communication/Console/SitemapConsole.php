@@ -255,6 +255,8 @@ http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">';
                 $key = 'sitemap2.xml';
             }
             try {
+                var_dump($s3);
+                var_dump($bucket);
                 $uploader = new ObjectUploader(
                     $s3,
                     $bucket,
