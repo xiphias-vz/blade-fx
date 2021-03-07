@@ -23,6 +23,8 @@ class SalesOrderSummaryExportRepository extends AbstractRepository implements Sa
     protected $stringColumns = ["OrderNr", "store", "OrderDate", "DeliveryDate", "external_customer_identifier", "TimeSlot", "status", "comment"];
 
      /**
+      * getCustomOrderItemData
+      *
       * @return \Generated\Shared\Transfer\FileSystemContentTransfer
       */
     public function getCustomOrderItemData(): FileSystemContentTransfer
@@ -39,7 +41,7 @@ class SalesOrderSummaryExportRepository extends AbstractRepository implements Sa
         count(distinct ssoi.product_number) as ItemsCount,
         sc.id_customer as external_customer_identifier,
         sc.my_globus_card as loyalty_number,
-        right(sss.requested_delivery_date, 11) as TimeSlot,
+        sss.requested_delivery_date as TimeSlot,
         max(sit.name) as status,
         sum(case when sit.name like '%cancelled%' then 0 else ssoi.gross_price end) as Delivered_ItemValueGross,
         round(sum(case when sit.name like '%cancelled%' then 0 else round(ssoi.gross_price / ((100 + str.rate)/100), 2) end), 0) as Delivered_ItemValueNet,
