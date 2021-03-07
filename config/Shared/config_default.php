@@ -571,11 +571,6 @@ $config[FileSystemConstants::FILESYSTEM_SERVICE] = [
         'password' => getenv('GLOBUS_SFTP_PASSWORD'),
         'root' => getenv('GLOBUS_SFTP_ROOT'),
     ],
-    'globus_aws_s3_credentials' => [
-        'key' => getenv('GLOBUS_AWS_S3_KEY'),
-        'secret' => getenv('GLOBUS_AWS_S3_SECRET'),
-        'bucket' => getenv('GLOBUS_AWS_S3_BUCKET'),
-    ],
     'globus_cdc_credentials' => [
         'cdcApiKey' => getenv('GLOBUS_AWS_S3_BUCKET'),
         'cdcApiUrl' => getenv('GLOBUS_CDCAPIURL'),
@@ -584,6 +579,16 @@ $config[FileSystemConstants::FILESYSTEM_SERVICE] = [
         'cdcApiUserKey' => getenv('GLOBUS_CDCAPIUSERKEY'),
     ],
 ];
+
+// ---------- Sitemap
+$config[\Pyz\Shared\S3Constants\S3Constants::S3_CONSTANTS] = [
+    'globus_sitemap_credentials' => [
+        'key' => getenv('GLOBUS_AWS_S3_KEY'),
+        'secret' => getenv('GLOBUS_AWS_S3_SECRET'),
+        'bucket' => getenv('GLOBUS_AWS_S3_BUCKET'),
+    ],
+];
+
 
 // ---------- FileManager
 $config[FileManagerConstants::STORAGE_NAME] = 'files';
