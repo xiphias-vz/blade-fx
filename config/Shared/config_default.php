@@ -577,7 +577,7 @@ $config[FileSystemConstants::FILESYSTEM_SERVICE] = [
         'bucket' => getenv('GLOBUS_AWS_S3_BUCKET'),
     ],
     'globus_cdc_credentials' => [
-        'cdcApiKey' => getenv('GLOBUS_CDCAPIKEY'),
+        'cdcApiKey' => getenv('GLOBUS_AWS_S3_BUCKET'),
         'cdcApiUrl' => getenv('GLOBUS_CDCAPIURL'),
         'cdcScreensUrl' => getenv('GLOBUS_CDCSCREENSURL'),
         'cdcApiSecretKey' => getenv('GLOBUS_CDCAPISECRETKEY') ,

@@ -28,10 +28,10 @@ class SitemapConsole extends Console
     public const SITEMAP1_FILE_NAME = "src/Pyz/Zed/Sitemap/Communication/Sitemaps/sitemap1.xml";
     public const SITEMAP2_FILE_NAME = "src/Pyz/Zed/Sitemap/Communication/Sitemaps/sitemap2.xml";
     public const COUNT_BREAK = 50000;
-    protected const LOCAL_AWS_CONFIG_CREDENTIALS = 'globus_aws_s3_credentials';
-    protected const LOCAL_AWS_CONFIG_CREDENTIALS_KEY = 'key';
-    protected const LOCAL_AWS_CONFIG_CREDENTIALS_SECRET = 'secret';
-    protected const LOCAL_AWS_CONFIG_CREDENTIALS_BUCKET = 'bucket';
+    public const LOCAL_AWS_CONFIG_CREDENTIALS = 'globus_aws_s3_credentials';
+    public const LOCAL_AWS_CONFIG_CREDENTIALS_KEY = 'key';
+    public const LOCAL_AWS_CONFIG_CREDENTIALS_SECRET = 'secret';
+    public const LOCAL_AWS_CONFIG_CREDENTIALS_BUCKET = 'bucket';
 
     /**
      * @return void
@@ -243,6 +243,7 @@ http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">';
      */
     protected function sendFileToAws(): void
     {
+        $this->getCDCCredentials();
         $s3 = $this->getS3Client();
         $bucket = $this->getS3Bucket();
         $sitemapFile[0] = fopen(static::SITEMAP1_FILE_NAME, "r+");
@@ -327,5 +328,26 @@ http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">';
         var_dump($bucket);
 
         return $bucket;
+    }
+
+    /**
+     * @return void
+     */
+    protected function getCDCCredentials(): void
+    {
+        $cdc = Config::get(FileSystemConstants::FILESYSTEM_SERVICE);
+
+        if (isset($cdc['globus_cdc_credentials']['cdcApiKey'])) {
+            $cdcKey = $cdc['globus_cdc_credentials']['cdcApiKey'];
+            $cdcApiUrl = $cdc['globus_cdc_credentials']['cdcApiUrl'];
+            var_dump('CDC API IS_SET:');
+            var_dump($cdcKey);
+            var_dump('CDC URL:');
+            var_dump($cdcApiUrl);
+        }
+
+        $cdcKey = $cdc['globus_cdc_credentials']['cdcApiKey'];
+        var_dump('CDC API:');
+        var_dump($cdcKey);
     }
 }
