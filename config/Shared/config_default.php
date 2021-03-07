@@ -571,17 +571,17 @@ $config[FileSystemConstants::FILESYSTEM_SERVICE] = [
         'password' => getenv('GLOBUS_SFTP_PASSWORD'),
         'root' => getenv('GLOBUS_SFTP_ROOT'),
     ],
+    'globus_aws_s3_credentials' => [
+        'key' => getenv('GLOBUS_AWS_S3_KEY'),
+        'secret' => getenv('GLOBUS_AWS_S3_SECRET'),
+        'bucket' => getenv('GLOBUS_AWS_S3_BUCKET'),
+    ],
     'globus_cdc_credentials' => [
         'cdcApiKey' => getenv('GLOBUS_CDCAPIKEY'),
         'cdcApiUrl' => getenv('GLOBUS_CDCAPIURL'),
         'cdcScreensUrl' => getenv('GLOBUS_CDCSCREENSURL'),
         'cdcApiSecretKey' => getenv('GLOBUS_CDCAPISECRETKEY') ,
         'cdcApiUserKey' => getenv('GLOBUS_CDCAPIUSERKEY'),
-    ],
-    'globus_aws_s3_credentials' => [
-        'key' => getenv('Domagoj'),
-        'secret' => getenv('GLOBUS_CDCAPIKEY'),
-        'bucket' => getenv('GLOBUS_AWS_S3_BUCKET'),
     ],
 ];
 
