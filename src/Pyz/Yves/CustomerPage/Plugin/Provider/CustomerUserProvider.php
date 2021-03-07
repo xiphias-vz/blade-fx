@@ -13,7 +13,6 @@ use Pyz\Shared\Customer\CustomerConstants;
 use Pyz\Yves\CustomerPage\Controller\ProfileController;
 use Pyz\Yves\CustomerPage\Plugin\Application\CustomerTransferCustom;
 use Spryker\Shared\Config\Config;
-use Spryker\Shared\FileSystem\FileSystemConstants;
 use SprykerShop\Yves\CustomerPage\Plugin\Provider\CustomerUserProvider as SprykerCustomerUserProvider;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
 
@@ -177,7 +176,7 @@ class CustomerUserProvider extends SprykerCustomerUserProvider
      */
     public function getCdcApiKey(): string
     {
-        $globus_cdc_credentials = Config::get(FileSystemConstants::FILESYSTEM_SERVICE);
+        $globus_cdc_credentials = Config::get(CustomerConstants::CDC_CONSTANTS);
 
         $apiKey = '';
         if (isset($globus_cdc_credentials[CustomerConstants::CDC_LOCAL_CREDENTIALS][CustomerConstants::CDC_API_KEY])) {
@@ -192,7 +191,7 @@ class CustomerUserProvider extends SprykerCustomerUserProvider
      */
     public function getCdcSecretKey(): string
     {
-        $globus_cdc_credentials = Config::get(FileSystemConstants::FILESYSTEM_SERVICE);
+        $globus_cdc_credentials = Config::get(CustomerConstants::CDC_CONSTANTS);
 
         $apiSecretKey = '';
         if (isset($globus_cdc_credentials[CustomerConstants::CDC_LOCAL_CREDENTIALS][CustomerConstants::CDC_API_SECRET_KEY])) {
@@ -207,7 +206,7 @@ class CustomerUserProvider extends SprykerCustomerUserProvider
      */
     public function getCdcUserKey(): string
     {
-        $globus_cdc_credentials = Config::get(FileSystemConstants::FILESYSTEM_SERVICE);
+        $globus_cdc_credentials = Config::get(CustomerConstants::CDC_CONSTANTS);
 
         $apiUserKey = '';
         if (isset($globus_cdc_credentials[CustomerConstants::CDC_LOCAL_CREDENTIALS][CustomerConstants::CDC_API_USER_KEY])) {
@@ -222,7 +221,7 @@ class CustomerUserProvider extends SprykerCustomerUserProvider
      */
     public function getCdcUrlPrefix(): string
     {
-        $globus_cdc_credentials = Config::get(FileSystemConstants::FILESYSTEM_SERVICE);
+        $globus_cdc_credentials = Config::get(CustomerConstants::CDC_CONSTANTS);
 
         $urlPrefix = '';
         if (isset($globus_cdc_credentials[CustomerConstants::CDC_LOCAL_CREDENTIALS][CustomerConstants::CDC_API_URL])) {
@@ -237,7 +236,7 @@ class CustomerUserProvider extends SprykerCustomerUserProvider
      */
     public function getCdcScreensUrl(): string
     {
-        $globus_cdc_credentials = Config::get(FileSystemConstants::FILESYSTEM_SERVICE);
+        $globus_cdc_credentials = Config::get(CustomerConstants::CDC_CONSTANTS);
 
         $urlScreens = '';
         if (isset($globus_cdc_credentials[CustomerConstants::CDC_LOCAL_CREDENTIALS][CustomerConstants::CDC_SCREENS_URL])) {

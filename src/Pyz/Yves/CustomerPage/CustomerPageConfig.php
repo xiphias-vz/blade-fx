@@ -9,7 +9,6 @@ namespace Pyz\Yves\CustomerPage;
 
 use Pyz\Shared\Customer\CustomerConstants;
 use Spryker\Shared\Config\Config;
-use Spryker\Shared\FileSystem\FileSystemConstants;
 use SprykerShop\Yves\CustomerPage\CustomerPageConfig as SprykerCustomerPageConfig;
 
 class CustomerPageConfig extends SprykerCustomerPageConfig
@@ -38,7 +37,7 @@ class CustomerPageConfig extends SprykerCustomerPageConfig
      */
     protected function getCdcUrlPrefix(): string
     {
-        $globus_cdc_credentials = Config::get(FileSystemConstants::FILESYSTEM_SERVICE);
+        $globus_cdc_credentials = Config::get(CustomerConstants::CDC_CONSTANTS);
 
         $urlPrefix = '';
         if (isset($globus_cdc_credentials[CustomerConstants::CDC_LOCAL_CREDENTIALS][CustomerConstants::CDC_SCREENS_URL])) {
@@ -53,7 +52,7 @@ class CustomerPageConfig extends SprykerCustomerPageConfig
      */
     protected function getCdcApiKey(): string
     {
-        $globus_cdc_credentials = Config::get(FileSystemConstants::FILESYSTEM_SERVICE);
+        $globus_cdc_credentials = Config::get(CustomerConstants::CDC_CONSTANTS);
 
         $apiKey = '';
         if (isset($globus_cdc_credentials[CustomerConstants::CDC_LOCAL_CREDENTIALS][CustomerConstants::CDC_API_KEY])) {

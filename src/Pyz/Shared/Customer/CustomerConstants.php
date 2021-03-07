@@ -23,4 +23,5 @@ interface CustomerConstants
     public const CDC_API_USER_KEY = 'cdcApiUserKey';
     public const CDC_SCREENS_URL = 'cdcScreensUrl';
     public const CDC_LOCAL_CREDENTIALS = 'globus_cdc_credentials';
+    public const CDC_CONSTANTS = 'CDC_CONSTANTS';
 }

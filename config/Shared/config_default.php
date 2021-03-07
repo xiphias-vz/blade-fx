@@ -571,13 +571,6 @@ $config[FileSystemConstants::FILESYSTEM_SERVICE] = [
         'password' => getenv('GLOBUS_SFTP_PASSWORD'),
         'root' => getenv('GLOBUS_SFTP_ROOT'),
     ],
-    'globus_cdc_credentials' => [
-        'cdcApiKey' => getenv('GLOBUS_AWS_S3_BUCKET'),
-        'cdcApiUrl' => getenv('GLOBUS_CDCAPIURL'),
-        'cdcScreensUrl' => getenv('GLOBUS_CDCSCREENSURL'),
-        'cdcApiSecretKey' => getenv('GLOBUS_CDCAPISECRETKEY') ,
-        'cdcApiUserKey' => getenv('GLOBUS_CDCAPIUSERKEY'),
-    ],
 ];
 
 // ---------- Sitemap
@@ -586,6 +579,17 @@ $config[\Pyz\Shared\S3Constants\S3Constants::S3_CONSTANTS] = [
         'key' => getenv('GLOBUS_AWS_S3_KEY'),
         'secret' => getenv('GLOBUS_AWS_S3_SECRET'),
         'bucket' => getenv('GLOBUS_AWS_S3_BUCKET'),
+    ],
+];
+
+// ---------- CDC
+$config[\Pyz\Shared\Customer\CustomerConstants::CDC_CONSTANTS] = [
+    'globus_cdc_credentials' => [
+        'cdcApiKey' => getenv('GLOBUS_CDCAPIKEY'),
+        'cdcApiUrl' => getenv('GLOBUS_CDCAPIURL'),
+        'cdcScreensUrl' => getenv('GLOBUS_CDCSCREENSURL'),
+        'cdcApiSecretKey' => getenv('GLOBUS_CDCAPISECRETKEY') ,
+        'cdcApiUserKey' => getenv('GLOBUS_CDCAPIUSERKEY'),
     ],
 ];
 
