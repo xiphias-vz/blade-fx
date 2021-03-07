@@ -248,19 +248,26 @@ http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">';
         $sitemapFile[0] = fopen(static::SITEMAP1_FILE_NAME, "r+");
         $sitemapFile[1] = fopen(static::SITEMAP2_FILE_NAME, "r+");
 
+        var_dump('S3_FromGet:');
+        var_dump($s3);
+        var_dump('BUCKET_FromGet:');
+        var_dump($bucket);
+
         foreach ($sitemapFile as $loopKey => $sitemap) {
             if ($loopKey == 0) {
-                $key = 'sitemap1.xml';
+                $sitemapFileName = 'sitemap1.xml';
             } else {
-                $key = 'sitemap2.xml';
+                $sitemapFileName = 'sitemap2.xml';
             }
             try {
                 var_dump('BUCKET:');
                 var_dump($bucket);
+                var_dump('S3_inTry:');
+                var_dump($s3);
                 $uploader = new ObjectUploader(
                     $s3,
                     $bucket,
-                    $key,
+                    $sitemapFileName,
                     $sitemap
                 );
                 $result = $uploader->upload();
@@ -282,10 +289,6 @@ http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">';
         $credentials = Config::get(FileSystemConstants::FILESYSTEM_SERVICE);
         $key = '';
         $secret = '';
-        var_dump('KEY:');
-        var_dump($key);
-        var_dump('SECRET:');
-        var_dump($secret);
 
         if (isset($credentials[static::LOCAL_AWS_CONFIG_CREDENTIALS][static::LOCAL_AWS_CONFIG_CREDENTIALS_KEY])) {
             $key = $credentials[static::LOCAL_AWS_CONFIG_CREDENTIALS][static::LOCAL_AWS_CONFIG_CREDENTIALS_KEY];
@@ -294,6 +297,11 @@ http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">';
         if (isset($credentials[static::LOCAL_AWS_CONFIG_CREDENTIALS][static::LOCAL_AWS_CONFIG_CREDENTIALS_SECRET])) {
             $secret = $credentials[static::LOCAL_AWS_CONFIG_CREDENTIALS][static::LOCAL_AWS_CONFIG_CREDENTIALS_SECRET];
         }
+
+        var_dump('KEY:');
+        var_dump($key);
+        var_dump('SECRET:');
+        var_dump($secret);
 
         return new S3Client([
             'region' => 'eu-central-1',
@@ -315,6 +323,8 @@ http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">';
         if (isset($credentials[static::LOCAL_AWS_CONFIG_CREDENTIALS][static::LOCAL_AWS_CONFIG_CREDENTIALS_BUCKET])) {
             $bucket = $credentials[static::LOCAL_AWS_CONFIG_CREDENTIALS][static::LOCAL_AWS_CONFIG_CREDENTIALS_BUCKET];
         }
+        var_dump('BUCKET_inside_get:');
+        var_dump($bucket);
 
         return $bucket;
     }
