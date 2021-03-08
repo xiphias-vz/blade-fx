@@ -34,23 +34,23 @@ class SalesOrderSummaryExportRepository extends AbstractRepository implements Sa
         $qry = "select sso.order_reference as OrderNr
 	, sso.store
 	, date_format(CONVERT_TZ(sso.created_at, '+00:00', '+01:00'),  '%d.%m.%Y %h:%m:%s') as OrderDate
-	,  date_format(left(sss.requested_delivery_date, 10), '%d.%m.%Y') as DeliveryDate,
-    sum(ssoi.gross_price) as ItemValueGross,
-        round(sum(round(ssoi.gross_price / ((100 + str.rate)/100), 2)), 0) as ItemValueNet,
-        sum(ssoi.quantity) as ItemQuantity,
-        count(distinct ssoi.product_number) as ItemsCount,
-        sc.id_customer as external_customer_identifier,
-        sc.my_globus_card as loyalty_number,
-        sss.requested_delivery_date as TimeSlot,
-        max(sit.name) as status,
-        sum(case when sit.name like '%cancelled%' then 0 else ssoi.gross_price end) as Delivered_ItemValueGross,
-        round(sum(case when sit.name like '%cancelled%' then 0 else round(ssoi.gross_price / ((100 + str.rate)/100), 2) end), 0) as Delivered_ItemValueNet,
-        sum(case when sit.name like '%cancelled%' then 0 else
-        	case when ssoi.new_weight is not null then round(ssoi.new_weight / ssoi.weight_per_unit, 0) else 1 end
+	, date_format(left(sss.requested_delivery_date, 10), '%d.%m.%Y') as DeliveryDate
+    , sum(ssoi.gross_price) as ItemValueGross
+    , round(sum(round(ssoi.gross_price / ((100 + str.rate)/100), 2)), 0) as ItemValueNet
+    , sum(ssoi.quantity) as ItemQuantity
+    , count(distinct ssoi.product_number) as ItemsCount
+    , sc.id_customer as external_customer_identifier
+    , sc.my_globus_card as loyalty_number
+    , right(sss.requested_delivery_date, 11) as TimeSlot
+    , max(sit.name) as status
+    , case when sum(ssoi.gross_price) - ifnull(ssot.canceled_total, 0) > 0 then sum(ssoi.gross_price) - ifnull(ssot.canceled_total, 0) else 0 end as Delivered_ItemValueGross
+    , round(sum(case when sit.name like '%cancelled%' then 0 else round(ssoi.gross_price / ((100 + str.rate)/100), 2) end), 0) as Delivered_ItemValueNet
+    , sum(case when sit.name in ('\"cancellation process\"', '\"cancelled\"', '\"cancelled due to not in stock\"')  then 0 else
+        	case when ssoi.new_weight is not null and sit.name not in ('\"ready for picking\"', '\"ready for selecting shelves\"') then round(ssoi.new_weight / ssoi.weight_per_unit, 0) else 1 end
         	end) as Delivered_ItemsQuantity,
-        count(distinct case when sit.name like '%cancelled%' then 0 else ssoi.product_number end) - sign(sum(case when sit.name like '%cancelled%' then 1 else 0 end)) as Delivered_ItemsCount,
-        case when sso.cart_note in ('null', '\"null\"') then null else sso.cart_note end as comment,
-        ssot.order_expense_total as ShippingValueGross
+        count(distinct case when sit.name like '%cancelled%' then 0 else ssoi.product_number end) - sign(sum(case when sit.name like '%cancelled%' then 1 else 0 end)) as Delivered_ItemsCount
+    , case when sso.cart_note in ('null', '\"null\"') then null else sso.cart_note end as comment
+    , ssot.order_expense_total as ShippingValueGross
     from spy_sales_order sso
         inner join spy_sales_order_item ssoi on sso.id_sales_order = ssoi.fk_sales_order
         inner join spy_product sp on sp.sku = ssoi.product_number
@@ -68,6 +68,7 @@ class SalesOrderSummaryExportRepository extends AbstractRepository implements Sa
     group by
         sso.order_reference, sso.store, sso.created_at,
         sss.requested_delivery_date, ssoib.gross_price, sso.customer_reference, sso.cart_note
+        , ssot.canceled_total, ssot.order_expense_total
     ";
 
         $connection = Propel::getConnection();
