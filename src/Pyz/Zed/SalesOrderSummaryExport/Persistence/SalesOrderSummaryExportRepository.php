@@ -50,7 +50,7 @@ class SalesOrderSummaryExportRepository extends AbstractRepository implements Sa
         	end) as Delivered_ItemsQuantity,
         count(distinct case when sit.name like '%cancelled%' then 0 else ssoi.product_number end) - sign(sum(case when sit.name like '%cancelled%' then 1 else 0 end)) as Delivered_ItemsCount,
         case when sso.cart_note in ('null', '\"null\"') then null else sso.cart_note end as comment,
-        case when sc.my_globus_card is null then 2.99 else 1.99 end as ShippingValueGross
+        ssot.order_expense_total as ShippingValueGross
     from spy_sales_order sso
         inner join spy_sales_order_item ssoi on sso.id_sales_order = ssoi.fk_sales_order
         inner join spy_product sp on sp.sku = ssoi.product_number
@@ -62,6 +62,7 @@ class SalesOrderSummaryExportRepository extends AbstractRepository implements Sa
         left outer join spy_sales_shipment sss on sso.id_sales_order = sss.fk_sales_order
         left outer join spy_sales_order_item_bundle ssoib on ssoi.fk_sales_order_item_bundle = ssoib.id_sales_order_item_bundle
         inner join spy_oms_order_item_state sit on ssoi.fk_oms_order_item_state = sit.id_oms_order_item_state
+        left outer join spy_sales_order_totals ssot on ssot.fk_sales_order = sso.id_sales_order
     where ssoi.created_at > '2021-01-01'
         or ssoi.updated_at > '2021-01-01'
     group by
