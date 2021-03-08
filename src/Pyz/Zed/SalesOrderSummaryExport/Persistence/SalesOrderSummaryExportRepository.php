@@ -62,8 +62,8 @@ class SalesOrderSummaryExportRepository extends AbstractRepository implements Sa
         left outer join spy_sales_shipment sss on sso.id_sales_order = sss.fk_sales_order
         left outer join spy_sales_order_item_bundle ssoib on ssoi.fk_sales_order_item_bundle = ssoib.id_sales_order_item_bundle
         inner join spy_oms_order_item_state sit on ssoi.fk_oms_order_item_state = sit.id_oms_order_item_state
-    where ssoi.created_at > DATE_ADD(CURDATE(), INTERVAL -1 DAY)
-    	or ssoi.updated_at > DATE_ADD(CURDATE(), INTERVAL -1 DAY)
+    where ssoi.created_at > '2021-01-01'
+        or ssoi.updated_at > '2021-01-01'
     group by
         sso.order_reference, sso.store, sso.created_at,
         sss.requested_delivery_date, ssoib.gross_price, sso.customer_reference, sso.cart_note
