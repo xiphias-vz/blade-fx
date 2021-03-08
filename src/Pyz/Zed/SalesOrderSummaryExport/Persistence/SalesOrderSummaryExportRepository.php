@@ -33,7 +33,7 @@ class SalesOrderSummaryExportRepository extends AbstractRepository implements Sa
 
         $qry = "select sso.order_reference as OrderNr
 	, sso.store
-	, date_format(CONVERT_TZ(sso.created_at, '+00:00', '+01:00'),  '%d.%m.%Y %h:%m:%s') as OrderDate
+	, date_format(CONVERT_TZ(sso.created_at, '+00:00', '+01:00'),  '%d.%m.%Y %T') as OrderDate
 	, date_format(left(sss.requested_delivery_date, 10), '%d.%m.%Y') as DeliveryDate
     , sum(ssoi.gross_price) as ItemValueGross
     , round(sum(round(ssoi.gross_price / ((100 + str.rate)/100), 2)), 0) as ItemValueNet
