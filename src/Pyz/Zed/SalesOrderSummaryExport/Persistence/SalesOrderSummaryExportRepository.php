@@ -43,7 +43,7 @@ class SalesOrderSummaryExportRepository extends AbstractRepository implements Sa
     , sc.my_globus_card as loyalty_number
     , right(sss.requested_delivery_date, 11) as TimeSlot
     , max(sit.name) as status
-    , case when sum(ssoi.gross_price) - ifnull(ssot.canceled_total, 0) > 0 then sum(ssoi.gross_price) - ifnull(ssot.canceled_total, 0) else 0 end as Delivered_ItemValueGross
+    , case when sum(ssoi.gross_price) - sum(case when ifnull(ssoi.canceled_amount, 0) > 0 then ssoi.gross_price else 0 end) > 0 then sum(ssoi.gross_price) - sum(case when ifnull(ssoi.canceled_amount, 0) > 0 then ssoi.gross_price else 0 end) else 0 end as Delivered_ItemValueGross
     , round(sum(case when sit.name like '%cancelled%' then 0 else round(ssoi.gross_price / ((100 + str.rate)/100), 2) end), 0) as Delivered_ItemValueNet
     , sum(case when sit.name in ('\"cancellation process\"', '\"cancelled\"', '\"cancelled due to not in stock\"')  then 0 else
         	case when ssoi.new_weight is not null and sit.name not in ('\"ready for picking\"', '\"ready for selecting shelves\"') then round(ssoi.new_weight / ssoi.weight_per_unit, 0) else 1 end
@@ -88,10 +88,7 @@ class SalesOrderSummaryExportRepository extends AbstractRepository implements Sa
                 $header = $header . "\n";
             }
             foreach ($item as $key => $value) {
-                if ($key == "TimeSlot") {
-                    $value = explode('_', $value)[1];
-                    $content = $content . '"' . $value . '",';
-                } elseif ($key == "DeliveryDate") {
+                if ($key == "DeliveryDate") {
                     $value = explode('_', $value)[0];
                     $content = $content . '"' . $value . '",';
                 } elseif (in_array($key, $this->stringColumns)) {
