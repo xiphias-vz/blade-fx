@@ -437,7 +437,16 @@
                     color: $setting-color-black-1;
                     line-height: rem(28);
 
+                    @media only screen and (min-width: 992px) and (max-width: 1028px)  {
+                        line-height: rem(14) !important;
+                    }
+
+                    @media only screen and (min-width: 1029px) and (max-width: 1037px)  {
+                        line-height: rem(20) !important;
+                    }
+
                 }
+
             }
 
             #{$name}-popup__date {
