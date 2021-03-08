@@ -573,15 +573,6 @@ $config[FileSystemConstants::FILESYSTEM_SERVICE] = [
     ],
 ];
 
-// ---------- Sitemap
-$config[\Pyz\Shared\S3Constants\S3Constants::S3_CONSTANTS] = [
-    'globus_sitemap_credentials' => [
-        'key' => getenv('GLOBUS_AWS_S3_KEY'),
-        'secret' => getenv('GLOBUS_AWS_S3_SECRET'),
-        'bucket' => getenv('GLOBUS_AWS_S3_BUCKET'),
-    ],
-];
-
 // ---------- CDC
 $config[\Pyz\Shared\Customer\CustomerConstants::CDC_CONSTANTS] = [
     'globus_cdc_credentials' => [
@@ -592,7 +583,6 @@ $config[\Pyz\Shared\Customer\CustomerConstants::CDC_CONSTANTS] = [
         'cdcApiUserKey' => getenv('GLOBUS_CDCAPIUSERKEY'),
     ],
 ];
-
 
 // ---------- FileManager
 $config[FileManagerConstants::STORAGE_NAME] = 'files';
