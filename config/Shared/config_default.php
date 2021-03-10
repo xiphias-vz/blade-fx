@@ -584,6 +584,16 @@ $config[\Pyz\Shared\Customer\CustomerConstants::CDC_CONSTANTS] = [
     ],
 ];
 
+// ---------- Sitemap
+$config[\Pyz\Shared\S3Constants\S3Constants::S3_CONSTANTS] = [
+    'globus_sitemap_credentials' => [
+        'key' => getenv('GLOBUS_AWS_S3_KEY'),
+        'secret' => getenv('GLOBUS_AWS_S3_SECRET'),
+        'bucket' => getenv('GLOBUS_AWS_S3_BUCKET'),
+    ],
+];
+
+
 // ---------- FileManager
 $config[FileManagerConstants::STORAGE_NAME] = 'files';
 $config[FileManagerGuiConstants::DEFAULT_FILE_MAX_SIZE] = '10M';
