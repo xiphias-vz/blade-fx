@@ -579,7 +579,7 @@ $config[\Pyz\Shared\Customer\CustomerConstants::CDC_CONSTANTS] = [
         'cdcApiKey' => getenv('GLOBUS_CDCAPIKEY'),
         'cdcApiUrl' => getenv('GLOBUS_CDCAPIURL'),
         'cdcScreensUrl' => getenv('GLOBUS_CDCSCREENSURL'),
-        'cdcApiSecretKey' => getenv('GLOBUS_CDCAPISECRETKEY') ,
+        'cdcApiSecretKey' => getenv('GLOBUS_CDCAPISECRETKEY'),
         'cdcApiUserKey' => getenv('GLOBUS_CDCAPIUSERKEY'),
     ],
 ];
@@ -592,7 +592,6 @@ $config[\Pyz\Shared\S3Constants\S3Constants::S3_CONSTANTS] = [
         'bucket' => getenv('GLOBUS_AWS_S3_BUCKET'),
     ],
 ];
-
 
 // ---------- FileManager
 $config[FileManagerConstants::STORAGE_NAME] = 'files';

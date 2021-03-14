@@ -167,6 +167,9 @@ storeapp.picking.message.error.container-not-known, Container ID nicht bekant
 
 picking.app.containers.select.title,Packstücke
 picking.app.containers.add.container,Container hinzufügen
+picking.app.containers.scan.for.container,Container scannen für
+picking.app.containers.scan.container,Container scannen
+picking.app.containers.all.packs.container,Alle Packstücke gescannt für
 picking.app.containers.continue,Weiter
 
 storeapp.container.to.shelf.container.label,Scan/Eingabe Container
@@ -174,3 +177,7 @@ storeapp.container.to.shelf.shelfID.label,Shelf ID
 storeapp.innfopopup.lagerplatz.label,nicht zugeordnet
 storeapp.innfopopup.under.information.label,bereits zugeordnet
 storeapp.errorpopup.title,Fehler
+
+multi.picking.header.overview,Übersicht
+multi.picking.save.button,Speichern
+multi.picking.placeholder.input, Lagerplatz scannen

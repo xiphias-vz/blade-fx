@@ -7,7 +7,9 @@
 
 namespace StoreApp\Zed\Picker\Business;
 
+use Generated\Shared\Transfer\PickingOrderTransfer;
 use Generated\Shared\Transfer\PickingZoneTransfer;
+use StoreApp\Zed\Picker\Business\Transfer\PickingHeaderTransfer;
 
 interface PickerFacadeInterface
 {
@@ -77,4 +79,44 @@ interface PickerFacadeInterface
      * @return void
      */
     public function savePickingZoneInSession(int $idPickingZone): void;
+
+    /**
+     * @return \StoreApp\Zed\Picker\Business\Transfer\PickingHeaderTransfer
+     */
+    public function getAllOrdersInStateReadyForPickingByZone(): PickingHeaderTransfer;
+
+    /**
+     * @param array $idOrderList
+     *
+     * @return \StoreApp\Zed\Picker\Business\Transfer\PickingHeaderTransfer
+     */
+    public function setOrdersToPick(array $idOrderList): PickingHeaderTransfer;
+
+    /**
+     * @return \StoreApp\Zed\Picker\Business\Transfer\PickingHeaderTransfer
+     */
+    public function getPickingHeaderTransfer(): PickingHeaderTransfer;
+
+    /**
+     * @param \Generated\Shared\Transfer\PickingOrderTransfer $order
+     * @param string $containerId
+     * @param string $shelfId
+     *
+     * @return bool
+     */
+    public function setContainerToOrder(PickingOrderTransfer $order, string $containerId, string $shelfId): bool;
+
+    /**
+     * @param int $quantityPicked
+     *
+     * @return void
+     */
+    public function setCurrentOrderItemPicked(int $quantityPicked): void;
+
+    /**
+     * @param bool $isPaused
+     *
+     * @return void
+     */
+    public function setCurrentOrderItemPaused(bool $isPaused): void;
 }

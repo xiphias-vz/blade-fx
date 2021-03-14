@@ -1,0 +1,56 @@
+{% extends model('component') %}
+
+{% define config = {
+    name: 'time-slot-position',
+    tag: 'time-slot-position'
+} %}
+
+{% define data = {
+    idTimeSlot:0,
+    articleCount: 0,
+    articlesQuantity: 0,
+    time: '',
+    orders: []
+} %}
+
+
+{% block body %}
+    <div class="order-overview-with-time-slots">
+        <div class="time-slot-with-quantities">
+            <p>
+                <input type="hidden" name="timeSlot_{{ data.idTimeSlot }}" />
+                <span class="article-count-total">{{ data.articleCount }}</span>/
+                <span class="article-quantity-total">{{ data.articlesQuantity }}</span>
+                <span style="margin-left: 10px">Pos./Stck.</span>
+            </p>
+            <p>{{ data.idTimeSlot }}</p>
+        </div>
+
+        {% for order in data.orders %}
+            {% set articlesCount = ((order.articlesCount is null) ? 0 : order.articlesCount ) %}
+            {% set articlesQuantity = ((order.articlesQuantity is null) ? 0 : order.articlesQuantity ) %}
+            <div class="order-group-by-time-slot" data-idOrder="{{ order.idOrder }}" data-orderReference="{{ order.orderReference }}">
+                <div class="order-status" style="width: 25px">
+                    {% if order.isPaused %}
+                        {% include atom('paused-state') with {
+                        } only %}
+                    {% endif %}
+                </div>
+                <div class="order-info">
+                    <p style="margin: 0">
+                        <span style="font-weight: bold" class="article-count">{{ articlesCount }}</span>/
+                        <span style="font-weight: bold" class="article-quantity">{{ articlesQuantity }}</span>
+                        <span>-</span>
+                        <span>{{ order.orderReference }}</span>
+                        <span>-</span>
+                        <span>{{ order.customerName }}</span>
+                    </p>
+                </div>
+                <div class="select-order" data-isChecked="{{ order.isChecked }}">
+                    {% include atom('checkbox') with {
+                    } only %}
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+{% endblock %}

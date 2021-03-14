@@ -1,0 +1,57 @@
+@mixin shop-ui-time-slot-position($name: '.time-slot-position') {
+    #{$name} {
+        .order-overview-with-time-slots {
+            .time-slot-with-quantities {
+                display: flex;
+                justify-content: space-between;
+                background: $setting-color-green;
+                color:$setting-color-white;
+                font-weight: bold;
+                margin-bottom: 10px;
+                p {
+                    &:first-child {
+                        margin-left: 10px;
+                    }
+
+                    &:last-child {
+                        margin-right: 10px;
+                    }
+                }
+            }
+            .order-group-by-time-slot {
+                display: flex;
+                background: $setting-color-gray-2;
+                margin: 5px 0;
+                padding: 8px;
+                border-radius: 5px;
+                position: relative;
+
+                .select-order {
+                    position: absolute;
+                    right: 10px;
+
+                    input {
+                        width: 20px;
+                        height: 20px;
+
+                        &:checked {
+                            background-color: $setting-color-green;
+                        }
+                    }
+                }
+
+                .order-info {
+                    margin-left: 33%;
+
+                    @include helper-breakpoint-media-max($sm-max)  {
+                        margin-left: 20%;
+                    }
+                }
+            }
+        }
+
+
+    }
+}
+
+@include shop-ui-time-slot-position();

@@ -1,0 +1,102 @@
+{% extends model('component') %}
+
+{% define config = {
+    name: 'container-scan-order',
+    tag: 'container-scan-order'
+} %}
+
+{% define data = {
+    idOrderReference: 0,
+    usedContainersWithShelf:[],
+    colorCode:'',
+    colorNumber:'',
+    textColor: '',
+    listOfContainers:'',
+    nextOrderPosition: 0,
+    pickingColor:[]
+} %}
+
+{% block body %}
+    {% embed molecule('popup-ui-error') with {
+        data: {
+            isErrorTrue: 0,
+            buttons: {
+                submit: {
+                    isButton: true,
+                    additionalClass: 'js-pick-products__submit',
+                },
+            },
+        },
+    } only %}
+         {% block content %}
+            <div class="popup-error-holder">
+                <div class="error-status">Fehler</div>
+                <div class="error-info">
+                    <p class="container-name">Container: <span></span></p>
+                    <p class="container-desc">ist bereits für </p>
+                    <p class="container-order">Bestellung: <span></span></p>
+                </div>
+            </div>
+         {% endblock %}
+    {% endembed %}
+    <div class="bin-icon-holder" style="display: none">
+        {% include atom('icon') with {
+            modifiers: ['big'],
+            class: 'custom__icon',
+            data: {
+                name: 'icon-delete',
+            },
+        } only %}
+    </div>
+    <form id="frm_scanContainerOrder" method="post" data-containers="{{ data.listOfContainers }}">
+        <input type="hidden" name="idContainers" value="[]">
+        <input type="hidden" name="nextOrderPosition" value="{{ data.nextOrderPosition }}">
+        <div class="box">
+            <div class="sub-box">
+                <p style="font-weight: bold;margin: 0">{{ 'picking.app.containers.select.title' | trans }}</p>
+                <div class="list-containers-shelf" style="margin-bottom: 20px">
+                    {% for container in data.usedContainersWithShelf %}
+                        <p>
+                            <span>{{ container.containerID }}</span> > <span style="font-weight: bold">{{ container.shelfID }}</span>
+                        </p>
+                    {% endfor %}
+                </div>
+                <div class="input-scanner-holder">
+                    <div class="grid grid--no-wrap">
+                        <div class="col col--expand">
+                            <label for="input_scanner" style="font-weight: bold;margin-bottom: 10px">{{ 'picking.app.containers.scan.for.container' | trans }} <span class="order-reference-holder">{{ data.idOrderReference }}</span></label>
+                            <input id="input_scanner" type="text" class="input input--expand spacing-bottom spacing-bottom--big" placeholder="{{ 'picking.app.containers.scan.container' | trans }}">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="list-containers-holder"></div>
+            <div class="checkbox-holder" style="padding-left: 1rem;">
+                {% include atom('checkbox') with {
+                } only %}
+                <div class="label-for-checkbox">
+                    <span class="description">{{ 'picking.app.containers.all.packs.container' | trans }}</span>
+                    <span>
+                         {% include atom('circle') with {
+                             data: {
+                                 content: data.pickingColor.idColor,
+                                 backgroundColor: data.pickingColor.backColor,
+                                 paddingLeft: '13px',
+                                 paddingTop: '4px',
+                                 textColor: data.pickingColor.foreColor
+                             }
+                         } only %}
+                    </span>
+                </div>
+            </div>
+        </div>
+        {% block button %}
+            <div id="confirm-scan-containers" class="text-center" style="margin-top:20px">
+                <button type="submit" class="button button--expand button--disabled js-pick-products__submit-button">
+                    {{ 'picker.picking.confirmation' | trans }}
+                </button>
+            </div>
+        {% endblock %}
+    </form>
+{% endblock %}

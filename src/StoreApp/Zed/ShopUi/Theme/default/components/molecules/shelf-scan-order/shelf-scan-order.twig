@@ -1,0 +1,89 @@
+{% extends model('component') %}
+
+{% define config = {
+    name: 'shelf-scan-order',
+    jsName: 'js-shelf-scan-order',
+    tag: 'shelf-scan-order',
+} %}
+
+{% define data = {
+    listOfContainers: [],
+    listOfExistingContainers: [],
+    lastOrder: false
+} %}
+
+{% block body %}
+    <div>
+        <input type="hidden" class="listOfExistingContainers" data-listOfExistingContainers="{{ data.listOfExistingContainers }}">
+        <input type="hidden" name="containersShelf" value="[]">
+        {% set counter = 1 %}
+        {% for shelf in data.listOfContainers %}
+            <div id="container_{{ counter }}">
+                <div style="font-weight: bold;margin-bottom:20px; font-size:20px;">
+                    {{ counter }} : {{ shelf.ContainerCode }}
+                </div>
+                <div>
+                    <span style="display: none">{{ shelf.ContainerCode }}</span>
+                    <input id="inputScanningShelf_{{ counter }}" name="inputScanningShelf_{{ counter }}" type="text" class="input input--expand spacing-bottom spacing-bottom--big" placeholder="{{ 'multi.picking.placeholder.input' | trans }}">
+                </div>
+            </div>
+
+            <div id="containerToShelf_{{ counter }}" class="is-hidden" style="margin-bottom:20px; font-size:20px;">
+                <span>{{ counter }} : </span>
+                <span style="font-weight: bold;"> {{ shelf.ContainerCode }} - </span>
+                <span style="font-weight: bold;" id="shelfCode_{{ counter }}">{{ shelf.ShelfCode }}</span>
+            </div>
+            <hr id="hrId_{{ counter }}" style="margin:30px 0px 30px 0px; border-bottom: 0.0625rem solid #707070" />
+
+            {% set counter = counter + 1 %}
+        {% endfor %}
+    </div>
+
+{% if (data.lastOrder == true) %}
+    <div>
+        {% embed molecule('popup-ui-container-scan') with {
+            data: {
+                title: "Picking fertig gestellt",
+                buttons: {
+                    submit: {
+                        title: "Scanning bestätigen",
+                        isButton: true,
+                        type:'submit',
+                        url:'/picker/multi-picking-scanning-container'
+                    },
+                    close: false
+                },
+                headerBorderBottomColor: '#707070',
+                borderRadius: 0
+            },
+        } only %}
+            {% block content %}
+                <div class="grid grid--center">
+                    <div>Du hast alle deine Container einem Lagerplatz zugeordnet?</div>
+                    <br>
+                </div>
+            {% endblock %}
+
+            {% block button %}
+                <div class="text-center">
+                    <div class="button button--expand btnMultiPickingScanningContainer lastOrder">
+                        {{ 'multi.picking.save.button' | trans }}
+                    </div>
+                </div>
+            {% endblock %}
+        {% endembed %}
+    </div>
+
+{% else %}
+
+    {% block button %}
+        <div class="text-center">
+            <button type="submit" class="button button--expand btnMultiPickingScanningContainer">
+                {{ 'multi.picking.save.button' | trans }}
+            </button>
+        </div>
+    {% endblock %}
+
+{% endif %}
+
+{% endblock %}

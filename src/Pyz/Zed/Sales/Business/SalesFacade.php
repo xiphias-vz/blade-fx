@@ -300,4 +300,12 @@ class SalesFacade extends SprykerSalesFacade implements SalesFacadeInterface
             ->createOrderHydratorForCashier()
             ->getOrderByIdSalesOrderWithoutExpand($idSalesOrder);
     }
+
+    /**
+     * @return string
+     */
+    public function getStoreName(): string
+    {
+        return $this->getFactory()->getStore()->getStoreName();
+    }
 }

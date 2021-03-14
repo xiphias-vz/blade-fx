@@ -1,0 +1,104 @@
+
+@mixin picker-container-color($name: '.container-scan-order') {
+    #{$name} {
+
+        .popup-ui-error__container {
+            border-radius:0;
+
+            .popup-ui-error__content {
+                padding: 0;
+                .popup-error-holder {
+                    margin-bottom: 30px;
+
+                    .error-info {
+                        .container-name {
+                            margin-top:30px;
+
+                            span {
+                                font-weight: bold;
+                            }
+                        }
+                        .container-desc, .container-order {
+                            font-weight: bold;
+                        }
+                    }
+
+                    .error-status {
+                        font-weight: bold;
+                        padding: 10px;
+                        border-bottom: 1px solid #fff;
+                    }
+                }
+            }
+            .link--error {
+                width: 80%;
+            }
+        }
+
+        .box {
+            height: 100%;
+            min-height: 70vh;
+            position: relative;
+            padding:0;
+
+            .sub-box {
+                padding: 1rem;
+            }
+
+            .checkbox-holder {
+                position: absolute;
+                bottom: 20px;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+
+                .label-for-checkbox {
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+
+                    .description {
+                        margin-right: 10px;
+                    }
+                }
+            }
+
+            .list-containers-holder {
+                padding-bottom: 6rem;
+
+                .container-item {
+                    font-weight: bold;
+                    padding: .7rem 0 .7rem 1rem;
+                    display: flex;
+                    justify-content: space-between;
+
+                    .bin-icon-holder {
+                        margin-right: 10px;
+                        cursor:pointer;
+                        background: #fff;
+                        padding: 3px;
+                    }
+
+                    &:first-child {
+                        border-top: 1px solid #000;
+                    }
+
+                    &:last-child {
+                        border-bottom: 1px solid #000;
+                    }
+
+                    border-top: .5px solid #000;
+                }
+            }
+        }
+
+        .input-scanner-holder {
+            #input_scanner {
+                width: 80%;
+                margin-top: 10px;
+            }
+        }
+    }
+}
+
+@include picker-container-color();

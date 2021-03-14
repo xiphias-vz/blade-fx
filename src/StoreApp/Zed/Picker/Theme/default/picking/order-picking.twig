@@ -16,6 +16,7 @@
     orderReference: orderReference,
     orderDeliveryTime: orderDeliveryTime,
     urlContainerSelect: urlContainerSelect,
+    urlPosListe: '/picker/pos-liste',
     itemsToAlternativeEanMap : itemsToAlternativeEanMap,
     productSku: productSku | default(null),
 } %}
@@ -79,6 +80,7 @@
                     field: field,
                     collectNumber:collectNumber,
                     urlContainerSelect: data.urlContainerSelect,
+                    urlPosListe: '/picker/pos-liste',
                     idSalesOrder: data.idSalesOrder,
                     formStoppedSku: data.productSku,
                     alternativeEanData: data.itemsToAlternativeEanMap[itemSku] | default('')
@@ -236,10 +238,23 @@
         <input type="hidden" id="addContainerSku" name="sku" value="">
     </form>
 
+    <form id="formPosListeSku" action="{{ data.urlPosListe }}" method="post">
+        {% set tokenName = 'pos-liste-%d' | format(data.idSalesOrder) %}
+        <input type="hidden" name="idOrder" value="{{ data.idSalesOrder }}">
+        <input type="hidden" name="token" value="{{ csrf_token(tokenName) }}">
+        <input type="hidden" id="addPosListeSku" name="sku" value="">
+    </form>
+
     <script>
         function addContainer(sku) {
             document.getElementById('addContainerSku').value = sku;
             document.getElementById('formAddContainerSku').submit();
+        }
+
+        function posListeForm(sku)
+        {
+            document.getElementById('addPosListeSku').value = sku;
+            document.getElementById('formPosListeSku').submit();
         }
     </script>
 {% endblock content %}

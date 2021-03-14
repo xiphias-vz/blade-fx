@@ -136,6 +136,9 @@ class ContainerReader implements ContainerReaderInterface
     {
         return $this->pyzPickingSalesOrderQuery
             ->joinSpySalesOrder()
+            ->withColumn(SpySalesOrderTableMap::COL_ORDER_REFERENCE, 'orderReference')
+            ->withColumn(SpySalesOrderTableMap::COL_FIRST_NAME, 'firstName')
+            ->withColumn(SpySalesOrderTableMap::COL_LAST_NAME, 'lastName')
             ->where(SpySalesOrderTableMap::COL_INVOICE_REFERENCE . " is null
                 and (select count(*)
                 from spy_sales_order_item ssoi

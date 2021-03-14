@@ -1,0 +1,235 @@
+{% extends model('component') %}
+
+{% define config = {
+    name: 'product-item-multiple-picking',
+    tag: 'product-item-multiple-picking',
+} %}
+
+{% define data = {
+    currentPositionData: [],
+    pickingOrderItemsData: [],
+    productsCount: required,
+    idSalesOrder: required,
+    urlContainerSelect: '',
+    isLastPosition: false
+} %}
+
+{% set title = data.currentPositionData['name'] %}
+{% set brand = data.currentPositionData['brandName'] %}
+{% set imageUrl = data.currentPositionData['pictureUrl'] %}
+{% set itemSku = data.currentPositionData['ean'] %}
+{% set ean = data.currentPositionData['ean'] %}
+{% set alternativeEan = data.currentPositionData['alternativeEan'] %}
+{% set pickingItemPosition = data.currentPositionData['pickingItemPosition'] %}
+
+{% set shelf = data.currentPositionData['shelf'] %}
+{% set shelfFloor = data.currentPositionData['shelfFloor'] %}
+{% set shelfField = data.currentPositionData['shelfField'] %}
+
+{% set orderWeight = (data.currentPositionData['weight'] ?? 0) * data.productsCount  %}
+{% set basePriceContent = data.currentPositionData['price'] %}
+{% set basePriceUnit = data.currentPositionData['priceUnit'] %}
+{% set sumPrice = data.currentPositionData['sumPrice'] %}
+{% set pricePerKg = data.currentPositionData['pricePerKg'] %}
+{% set articles = data.pickingOrderItemsData %}
+{% set currentArticleColors = data.currentPositionData['pickingColor'] %}
+
+{% block body %}
+    <div id="gridOfTheProduct" class="grid {{ config.name }}__card" data-sku="{{ itemSku }}">
+        <input type="hidden" id="formPreviousSku" value="{{ itemSku }}">
+        <div class="col col--expand">
+            <div class="box {{ config.name }}__info">
+                <div class="{{ config.name }}__item-head-box">
+                    <span class="{{ config.name }}__item-position">
+                        {% include atom('circle') with {
+                            data: {
+                                content: currentArticleColors.idColor,
+                                backgroundColor: currentArticleColors.circleColor,
+                                textColor: currentArticleColors.backColor,
+                                paddingLeft: '',
+                                paddingTop: '0.2rem',
+                            }
+                        } %}
+                    </span>
+                    <div class="{{ config.name }}__item-location">
+                        <p>{{ shelf ?? ''}}-{{ shelfField ?? ''}}-{{ shelfFloor ?? ''}}</p>
+                    </div>
+                </div>
+
+                <div class="{{ config.name }}__image-wrapper">
+                    {% include atom('thumbnail') with {
+                        modifiers: ['product'],
+                        attributes: {
+                            src: imageUrl,
+                            alt: title
+                        }
+                    } only %}
+                </div>
+
+                <div class="{{ config.name }}__generalInfo">
+                    {% block brandNameAndWeight %}
+                        {% set price = pricePerKg ?? sumPrice %}
+                        <div class="{{ config.name }}__supplierNameAndWeight"><span class="{{ config.name }}__supplierAndName col--md-8">{{ brand ?? '' }} - {{ title }}</span><span class="{{ config.name }}__weight col--md-4">{{ (basePriceContent / 100)  | replace('.', ',') }} {{ basePriceUnit }}</span></div>
+                        <div class="{{ config.name }}__eanAndWeight eanData" data-pricePerKg="{{ pricePerKg }}" data-ean="{{ itemSku }}"><span class="{{ config.name }}__ean col--md-8"><span class="{{ config.name }}__toBold">EAN: {{ itemSku ?? '' }}</span></span><span class="{{ config.name }}__price col--md-4">{{ price / 100 | replace('.', ',') }} €</span></div>
+                    {% endblock %}
+
+                </div>
+                <span class="alternativeEan" data-altEan="{{ alternativeEan }}"></span>
+                <div class="hr-line-solid"></div>
+                    {% include molecule('order-articles-with-colors') with {
+                        data: {
+                            orderNumber: pickingItemPosition,
+                            articles: articles
+                        }
+                    } only %}
+                <div class="hr-line-solid"></div>
+                <div class="{{ config.name }}__status">
+                    {% include atom('icon') with {
+                        class: config.name ~ '__icon-close',
+                        data: {
+                            name: 'close'
+                        }
+                    } only %}
+                    {% include atom('icon') with {
+                        class: config.name ~ '__icon-check',
+                        data: {
+                            name: 'check'
+                        }
+                    } only %}
+                </div>
+                {% block quantity %}
+                    {% if data.productsCount >= 1 %}
+                        <div class="outer_div">
+                            <div class="col--md-4 col--sm-4"></div>
+                            <div class="col--md-4 col--sm-4 {{ config.name }}__quantity">
+                                <div class="{{ config.jsName }}__minus {{ config.name }}__minus spacing-right spacing-right--inner">
+                                    {% include atom('icon') with {
+                                        data: {
+                                            name: 'remove'
+                                        }
+                                    } only %}
+                                </div>
+                                <div class="box box--white box--bordered box--spaceless {{ config.name }}__counter text-center">
+                                <span class="{{ config.jsName }}__quantity-output">
+                                    0
+                                </span>
+                                    {{ 'of' | trans }} {{ data.productsCount }}
+                                </div>
+                                <div class="{{ config.jsName }}__plus {{ config.name }}__plus spacing-left spacing-left--inner">
+                                    {% include atom('icon') with {
+                                        data: {
+                                            name: 'add'
+                                        }
+                                    } only %}
+                                </div>
+                            </div>
+                            <div class="col--md-4 col--sm-4 avg_weight">
+                                {% if orderWeight != 0 %}<span> {{ orderWeight }} gr</span>{% endif %}
+                            </div>
+                        </div>
+                    {% endif %}
+                    <div class="is-hidden">
+                        {% block newFormElement %}
+                            <label for="order_item_selection_form_field_sales_order_item_sku__{{ itemSku }}" class="label label--required">{{ itemSku }} -
+                                {{ title }}</label>
+                            <input id="order_item_selection_form_field_sales_order_item_sku__{{ itemSku }}" type="number" class="js-product-item-multiple-picking__quantity" max="{{ data.productsCount }}" />
+                        {% endblock %}
+                    </div>
+                {% endblock %}
+
+                {% block formElementWeight %}
+                    {% if embed.weightField %}
+                        {{ form_row(embed.weightField, {
+                            attr: {
+                                class: config.jsName ~ '__weight',
+                            }
+                        }) }}
+                    {% endif %}
+                {% endblock %}
+                {% block formElementScan %}<div id="eanScannenDiv"><input class="input input--expand ean_scan_input" id="txt_ean_scannen__{{ itemSku }}" placeholder="EAN scannen" class="input input--expand" type="text" /></div>{% endblock %}
+            </div>
+        </div>
+    </div>
+    <div class="grid grid--justify spacing-top">
+        {% block leftCol %}
+            <div class="col button button--round button--delete {{ config.name }}__decline {{ config.jsName }}__decline">
+                {% include atom('icon') with {
+                    class: 'button__icon ' ~ config.name ~ '__close',
+                    data: {
+                        name: 'close'
+                    }
+                } only %}
+                {% include atom('icon') with {
+                    class: 'button__icon ' ~ config.name ~ '__undo',
+                    data: {
+                        name: 'undo'
+                    }
+                } only %}
+            </div>
+
+            <div id="btnSubmitPick" class="col button button--round button--continue {{ config.name }}__continue {{ config.jsName }}__continue button--continue popup-ui__open">
+                <span class="product-item-multiple-picking__text-continue">
+                    {{ 'picker.picking.confirmation' | trans }}
+                </span>
+            </div>
+        {% endblock %}
+        {% block midCol %}
+            <div class="col button button--round button--pause {{ config.name }}__pause {{ config.jsName }}__pause">
+                {% include atom('icon') with {
+                    class: 'button__icon',
+                    data: {
+                        name: 'pause'
+                    }
+                } only %}
+            </div>
+        {% endblock %}
+        {% block rightCol %}
+            <div class="col button button--round button--accept {{ config.name }}__pick {{ config.jsName }}__accept">
+                {% include atom('icon') with {
+                    class: 'button__icon ' ~ config.name ~ '__accept',
+                    data: {
+                        name: 'add'
+                    }
+                } only %}
+            </div>
+        {% endblock %}
+    </div>
+
+    <div class="pick-products__action-wrapper">
+        <div class="pick-products__action js-pick-products__action">
+            {% embed molecule('popup-ui-container-scan') with {
+                data: {
+                    title: currentArticleColors.idColor,
+                    buttons: {
+                        submit: {
+                            isButton: false
+                        },
+                        close: true
+                    },
+                    headerBackgroundColor: currentArticleColors.circleColor,
+                    headerTextColor: currentArticleColors.backColor,
+                    borderRadius: 0
+                }
+            } only %}
+                {% block content %}
+                    <div class="grid grid--center">
+                        {% block formElementScan %}
+                            <div id="containerScanDiv">
+                                <input class="input input--expand" id="txt_container_scan" placeholder="Container scannen" type="text" />
+                            </div>
+                        {% endblock %}
+                    </div>
+                {% endblock %}
+
+            {% endembed %}
+        </div>
+    </div>
+
+    {% include molecule('additional-order-buttons') with {
+        data: {
+            idSalesOrder: data.idSalesOrder,
+            urlContainerSelect: data.urlContainerSelect,
+            itemSku: itemSku,
+        }
+    } only %}
+{% endblock %}

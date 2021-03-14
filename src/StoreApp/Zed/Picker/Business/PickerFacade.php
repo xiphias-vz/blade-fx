@@ -7,8 +7,10 @@
 
 namespace StoreApp\Zed\Picker\Business;
 
+use Generated\Shared\Transfer\PickingOrderTransfer;
 use Generated\Shared\Transfer\PickingZoneTransfer;
 use Spryker\Zed\Kernel\Business\AbstractFacade;
+use StoreApp\Zed\Picker\Business\Transfer\PickingHeaderTransfer;
 
 /**
  * @method \StoreApp\Zed\Picker\Business\PickerBusinessFactory getFactory()
@@ -95,5 +97,76 @@ class PickerFacade extends AbstractFacade implements PickerFacadeInterface
     {
         $this->getFactory()->createPickingZoneWriter()
             ->saveInSession($idPickingZone);
+    }
+
+    /**
+     * @return \StoreApp\Zed\Picker\Business\Transfer\PickingHeaderTransfer
+     */
+    public function getAllOrdersInStateReadyForPickingByZone(): PickingHeaderTransfer
+    {
+        return $this->getFactory()
+            ->createPickingHeaderTransferData()
+            ->getAllOrdersInStateReadyForPickingByZone($this->findPickingZoneInSession()->getIdPickingZone());
+    }
+
+    /**
+     * @param array $idOrderList
+     *
+     * @return \StoreApp\Zed\Picker\Business\Transfer\PickingHeaderTransfer
+     */
+    public function setOrdersToPick(array $idOrderList): PickingHeaderTransfer
+    {
+        return $this->getFactory()
+            ->createPickingHeaderTransferData()
+            ->setOrdersToPick($idOrderList);
+    }
+
+    /**
+     * @return \StoreApp\Zed\Picker\Business\Transfer\PickingHeaderTransfer
+     */
+    public function getPickingHeaderTransfer(): PickingHeaderTransfer
+    {
+        return $this->getFactory()
+            ->createPickingHeaderTransferData()
+            ->getTransferFromSession();
+    }
+
+    /**
+     * @param \Generated\Shared\Transfer\PickingOrderTransfer $order
+     * @param string $containerId
+     * @param string $shelfId
+     *
+     * @return bool
+     */
+    public function setContainerToOrder(PickingOrderTransfer $order, string $containerId, string $shelfId): bool
+    {
+        return $this
+            ->getFactory()
+            ->createPickingHeaderTransferData()
+            ->setContainerToOrder($order, $containerId, $shelfId);
+    }
+
+    /**
+     * @param int $quantityPicked
+     *
+     * @return void
+     */
+    public function setCurrentOrderItemPicked(int $quantityPicked): void
+    {
+        $this->getFactory()
+            ->createPickingHeaderTransferData()
+            ->setCurrentOrderItemPicked($quantityPicked);
+    }
+
+    /**
+     * @param bool $isPaused
+     *
+     * @return void
+     */
+    public function setCurrentOrderItemPaused(bool $isPaused): void
+    {
+        $this->getFactory()
+            ->createPickingHeaderTransferData()
+            ->setCurrentOrderItemPaused($isPaused);
     }
 }

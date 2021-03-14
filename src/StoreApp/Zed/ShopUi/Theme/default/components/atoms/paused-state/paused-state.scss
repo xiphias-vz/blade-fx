@@ -1,0 +1,13 @@
+@mixin shop-ui-checkbox($name: '.paused-state') {
+    #{$name} {
+        background: lightblue;
+        color: #fff;
+        width: 25px;
+        text-align: center;
+        font-weight: bold;
+        border-radius: 50%;
+        height: 25px;
+    }
+}
+
+@include shop-ui-checkbox();

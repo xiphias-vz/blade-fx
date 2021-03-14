@@ -1,0 +1,25 @@
+{% extends model('component') %}
+{% import model('component') as component %}
+
+{% define config = {
+    name: 'circle',
+    tag: 'span',
+} %}
+{% define data = {
+    content: '',
+    backgroundColor: '',
+    textColor: '',
+    paddingLeft: '',
+    paddingTop: '',
+    width: '2rem',
+    height: '2rem',
+    borderColor: data.backgroundColor
+} %}
+
+{% block attributes %}{% endblock %}
+
+{% block body %}
+    {% block circle %}
+        <p class="circle" style="color:{{ data.textColor }}; background-color: {{ data.backgroundColor }}; padding-top: {{ data.paddingTop }}; border: 2px solid {{ data.borderColor }}; width: {{ data.width }}; height: {{ data.height }}">{{ data.content }}</p>
+    {% endblock %}
+{% endblock %}

@@ -1,0 +1,20 @@
+
+
+@mixin picker-container-color($name: '.container-color') {
+    #{$name} {
+        .container-color-holder {
+            height: 40px;
+            margin-bottom: 10px;
+
+            .color-number {
+                text-align: center;
+                margin: -12px 0px 0px 0px;
+                font-size: 20px;
+                font-weight: bold;
+            }
+        }
+
+    }
+}
+
+@include picker-container-color();

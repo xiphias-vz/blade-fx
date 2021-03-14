@@ -285,4 +285,9 @@ interface SalesFacadeInterface extends SprykerSalesFacadeInterface
      * @return \Generated\Shared\Transfer\OrderTransfer
      */
     public function getOrderByIdSalesOrderWithoutExpand($idSalesOrder);
+
+    /**
+     * @return string
+     */
+    public function getStoreName(): string;
 }

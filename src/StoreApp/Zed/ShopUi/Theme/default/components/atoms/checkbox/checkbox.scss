@@ -29,6 +29,11 @@
             opacity: 0;
             pointer-events: none;
             position: absolute;
+
+            &:focus {
+                outline: none;
+                border: none;
+            }
         }
 
         &__check {
@@ -44,13 +49,13 @@
 
         &__input:checked {
             & + #{$name}__box {
-                border-color: $setting-color-gray-4;
-                background: $setting-color-white;
+                border-color: transparent;
+                background: $setting-color-green;
 
                 #{$name}__check {
                     opacity: 1;
                     pointer-events: all;
-                    color: $setting-color-green;
+                    color: $setting-color-white;
                 }
             }
 
@@ -59,9 +64,6 @@
             }
         }
 
-        &__input:focus + #{$name}__box {
-            border-color: $setting-color-gray-4;
-        }
 
         &__label {
             line-height: rem(18);

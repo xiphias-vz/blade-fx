@@ -49,6 +49,7 @@ class PickerConfig extends AbstractBundleConfig
             'collect-by-customer',
             'container-to-shelf',
             'multi-picking',
+            'scanning-container',
         ];
     }
 
@@ -71,6 +72,14 @@ class PickerConfig extends AbstractBundleConfig
     }
 
     /**
+     * @return string
+     */
+    public function getScanningContainerUri(): string
+    {
+        return '/picker/scanning-container';
+    }
+
+    /**
      * @api
      *
      * @return string
@@ -88,5 +97,37 @@ class PickerConfig extends AbstractBundleConfig
     public function getPickingZoneSessionKey(): string
     {
         return 'picking_zone';
+    }
+
+    /**
+     * @return string
+     */
+    public function getPosListeUri(): string
+    {
+        return '/picker/pos-liste';
+    }
+
+    /**
+     * @return string
+     */
+    public function getOverviewUri(): string
+    {
+        return '/picker/multi-picking-overview-of-containers-on-order';
+    }
+
+    /**
+     * @return string
+     */
+    public function getShelfToContainerOnOrder(): string
+    {
+        return '/picker/multi-picking-scanning-container';
+    }
+
+    /**
+     * @return string
+     */
+    public function getMultiPicking(): string
+    {
+        return '/picker/multi-picking/multi-order-picking';
     }
 }

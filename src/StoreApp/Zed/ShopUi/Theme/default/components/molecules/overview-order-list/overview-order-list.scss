@@ -1,0 +1,46 @@
+@mixin picker-overview-order-list($name: '.overview-order-list') {
+    #{$name} {
+        &__orders {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: bold;
+        }
+
+        &__containers {
+            display: flex;
+            flex-direction: column;
+        }
+
+        &__hr-line{
+            border: rem(1) solid $setting-color-gray-9
+        }
+
+        &__customerInfo{
+            padding: rem(0) rem(8);
+        }
+
+        &__overview-bubble{
+            background-color: transparent;
+            cursor: pointer;
+        }
+        &__bubble-green{
+            color: $setting-color-green
+        }
+    }
+    .divNote{
+        display: none;
+    }
+
+    .multi-picking-customer-note {
+        &__content
+        {
+            border-radius: rem(10);
+        }
+        &__fontColor
+        {
+            color: $setting-color-black
+        }
+    }
+}
+@include picker-overview-order-list();

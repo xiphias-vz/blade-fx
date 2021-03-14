@@ -1,0 +1,18 @@
+{% extends model('component') %}
+
+{% define config = {
+    name: 'container-color',
+    tag: 'container-color'
+} %}
+
+{% define data = {
+    colorCode: '',
+    colorNumber: '',
+    textColor: ''
+} %}
+
+{% block body %}
+    <div class="container-color-holder" style="background-color: {{ data.colorCode }}">
+        <p class="color-number" style="color: {{ data.textColor }}">{{ data.colorNumber }}</p>
+    </div>
+{% endblock %}

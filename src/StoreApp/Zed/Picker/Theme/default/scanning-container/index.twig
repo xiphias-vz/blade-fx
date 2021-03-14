@@ -1,0 +1,42 @@
+{% extends template('page-layout-main') %}
+
+{% define data = {
+    merchant: merchant,
+    orderForScanningContainer: orderForScanningContainer,
+    listOfContainers: listOfContainers,
+    nextOrderPosition: nextOrderPosition
+} %}
+
+{% block header %}
+    {% include organism('header') with {
+        data: {
+            headerLocationTitle: data.merchant.name,
+            withoutLogo: true,
+            pickingZone: true,
+            buttonUrl:'/picker/select-picking-zone?multi_picking=1'
+        }
+    } only %}
+{% endblock %}
+
+
+{% block content %}
+    {% include molecule('container-color') with {
+        data: {
+            colorCode: data.orderForScanningContainer.pickingColor.backColor,
+            colorNumber: data.orderForScanningContainer.pickingColor.idColor,
+            textColor: data.orderForScanningContainer.pickingColor.foreColor
+        }
+    } only %}
+
+    {% include molecule('container-scan-order') with {
+        data: {
+            nextOrderPosition: data.nextOrderPosition,
+            idOrderReference: data.orderForScanningContainer.orderReference,
+            usedContainersWithShelf: data.orderForScanningContainer.pickingContainers,
+            colorCode: data.orderForScanningContainer.pickingColor,
+            colorNumber: data.orderForScanningContainer.pickingColor,
+            listOfContainers: data.listOfContainers,
+            pickingColor: data.orderForScanningContainer.pickingColor
+        }
+    } only %}
+{% endblock content %}

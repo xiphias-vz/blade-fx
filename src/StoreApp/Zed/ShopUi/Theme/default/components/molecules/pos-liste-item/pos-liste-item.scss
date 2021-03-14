@@ -1,0 +1,112 @@
+@mixin picker-pos-liste-item($name: '.pos-liste-item') {
+    #{$name} {
+        &__left-column {
+            border-right-color: $setting-color-gray-9;
+            border-right-style: solid;
+            border-right-width: 1px;
+            border-bottom-color: $setting-color-gray-9;
+            border-bottom-style: solid;
+            border-bottom-width: 1px;
+            width:5%;
+        }
+        &__right-column {
+            border-bottom-color: $setting-color-gray-9;
+            border-bottom-style: solid;
+            border-bottom-width: 1px;
+            width:95%;
+        }
+
+        &__full-width
+        {
+            width: 100%;
+        }
+
+        &__display-flex
+        {
+            display: flex;
+            flex-wrap: wrap;
+        }
+
+        &__location
+        {
+            font-weight: bold;
+        }
+
+        &__name
+        {
+            margin-left: rem(16);
+        }
+
+        &__circle-spacing
+        {
+            margin-left: rem(6.4);
+        }
+
+        &__paused-circle
+        {
+            background: lightblue;
+            color: #fff;
+            width: rem(32);
+            text-align: center;
+            font-weight: bold;
+            border-radius: 50%;
+            height: rem(32);
+            padding-top: rem(4);
+        }
+        &__checked-circle
+        {
+            background: $setting-color-green;
+            color: #fff;
+            width: rem(32);
+            text-align: center;
+            font-weight: bold;
+            border-radius: 50%;
+            height: rem(32);
+            padding-top: rem(4);
+        }
+        &__cancel-circle
+        {
+            background: $setting-color-red;
+            color: #fff;
+            width: rem(32);
+            text-align: center;
+            font-weight: bold;
+            border-radius: 50%;
+            height: rem(32);
+            padding-top: rem(4);
+        }
+        &__circle-wrapper
+        {
+            margin-bottom: rem(24);
+            @include helper-breakpoint-media-max($sm-max)  {
+                margin-bottom: rem(16);
+            }
+        }
+
+        &__number-text-wrapper
+        {
+            font-size: rem(24);
+            margin-top: - rem(16);
+            margin-left: rem(8);
+        }
+
+        &__number-empty-wrapper
+        {
+            font-size: rem(24);
+            margin-top: rem(35.2);
+            margin-left: rem(8);
+        }
+
+        &__mobile-text-class
+        {
+            @include helper-breakpoint-media-max($sm-max)  {
+                font-size: rem(11.2);
+            }
+        }
+        &__cursor-pointer{
+            cursor: pointer;
+        }
+    }
+}
+@include picker-pos-liste-item();
+

@@ -1,0 +1,89 @@
+<?xml version="1.0"?>
+<transfers xmlns="spryker:transfer-01"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="spryker:transfer-01 http://static.spryker.com/transfer-01.xsd" >
+
+    <transfer name="PickingHeaderTransfer">
+        <property name="articlesCount" type="int"/>
+        <property name="articlesQuantity" type="int"/>
+        <property name="pickingOrders" type="PickingOrder[]" singular="pickingOrders" associative="true"/>
+        <property name="lastPickingItemPosition" type="int"/>
+        <property name="maxPickingItemPosition" type="int"/>
+        <property name="ordersCount" type="int" description="equals max pickingPosition in PickingOrderTransfer"/>
+        <property name="idZone" type="int"/>
+        <property name="errorMessage" type="string"/>
+    </transfer>
+
+    <transfer name="PickingOrderTransfer">
+        <property name="idOrder" type="int"/>
+        <property name="orderReference" type="string"/>
+        <property name="customerName" type="string"/>
+        <property name="articlesCount" type="int"/>
+        <property name="articlesQuantity" type="int"/>
+        <property name="timeSlot" type="string"/>
+        <property name="requestedDeliveryDate" type="string"/>
+        <property name="isChecked" type="bool"/>
+        <property name="isPaused" type="bool"/>
+        <property name="state" type="string"/>
+        <property name="note" type="string"/>
+        <property name="pickingPosition" type="int" description="position for picking 1-9"/>
+        <property name="pickingColor" type="PickingColor"/>
+        <property name="pickingContainers" type="PickingContainer[]" singular="pickingContainer" associative="true"/>
+        <property name="pickingOrderItems" type="PickingOrderItem[]" singular="pickingOrderItem" associative="true"/>
+        <property name="parent" type="PickingHeader"/>
+    </transfer>
+
+    <transfer name="PickingContainerTransfer">
+        <property name="idOrder" type="int"/>
+        <property name="idContainer" type="int"/>
+        <property name="containerID" type="string"/>
+        <property name="shelfID" type="string"/>
+        <property name="pickingColor" type="PickingColor"/>
+        <property name="parent" type="PickingOrder"/>
+    </transfer>
+
+    <transfer name="PickingOrderItemTransfer">
+        <property name="idOrder" type="int"/>
+        <property name="orderReference" type="string"/>
+        <property name="idOrderItem" type="int"/>
+        <property name="idProduct" type="string"/>
+        <property name="pickingPosition" type="int" description="position for picking 1-9 from Order"/>
+        <property name="pickingItemPosition" type="int" description="pickingPosition from order and item position 1-999"/>
+        <property name="alternativeEan" type="string"/>
+        <property name="ean" type="string"/>
+        <property name="quantity" type="int"/>
+        <property name="quantityPicked" type="string"/>
+        <property name="price" type="int"/>
+        <property name="priceUnit" type="string"/>
+        <property name="pricePerKg" type="int"/>
+        <property name="sumPrice" type="int"/>
+        <property name="pickingColor" type="PickingColor"/>
+        <property name="name" type="string"/>
+        <property name="brandName" type="string"/>
+        <property name="weight" type="int"/>
+        <property name="isPaused" type="bool"/>
+        <property name="isCancelled" type="bool"/>
+        <property name="pictureUrl" type="string"/>
+        <property name="sequence" type="string"/>
+        <property name="shelf" type="string"/>
+        <property name="shelfFloor" type="string"/>
+        <property name="shelfField" type="string"/>
+        <property name="aisle" type="string"/>
+        <property name="status" type="string"/>
+        <property name="idContainer" type="int"/>
+        <property name="lastPickedAt" type="string"/>
+        <property name="minWeight" type="int"/>
+        <property name="maxWeight" type="int"/>
+        <property name="totalWeight" type="int"/>
+        <property name="doubleDigits" type="bool"/>
+        <property name="parent" type="PickingOrder"/>
+    </transfer>
+
+    <transfer name="PickingColorTransfer">
+        <property name="idColor" type="int"/>
+        <property name="foreColor" type="string"/>
+        <property name="backColor" type="string"/>
+        <property name="circleColor" type="string"/>
+    </transfer>
+
+</transfers>

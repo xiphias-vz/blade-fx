@@ -1,0 +1,73 @@
+{% extends template('page-layout-main') %}
+
+{% define data = {
+    pickingHeaderTransfer: pickingHeaderTransfer,
+    listOfContainers: listOfContainers,
+    listOfExistingContainers: listOfExistingContainers | default(null),
+    orderColor: orderColor,
+    lastOrder: lastOrder
+} %}
+
+{% block header %}
+    {% include organism('header') with {
+        data: {
+            headerLocationTitle: '',
+            withoutLogo: true,
+            pickingZone: true,
+            buttonUrl: ''
+        }
+    } only %}
+{% endblock %}
+
+{% block content %}
+
+    {% embed molecule('popup-ui-info') with {
+        data: {
+            isUpdated: false,
+            containerId: "1",
+            shelfId: "1",
+            orderId: "1",
+            buttons: {
+                submit: {
+                    isButton: true,
+                    additionalClass: 'js-pick-products__submit',
+                },
+            },
+        },
+    } only %}
+    {% endembed %}
+
+    {% include molecule('container-color') with {
+        data: {
+            colorCode: data.orderColor.back_color,
+            colorNumber: data.orderColor.id,
+            textColor: data.orderColor.fore_color,
+        }
+    } only %}
+
+    {% embed molecule('popup-success-ui') with {
+        data: {
+            isSuccess: true,
+            containerId: "testContainer",
+            shelfId: "testShelf",
+            buttons: {
+                submit: {
+                    isButton: true,
+                    additionalClass: 'js-pick-products__submit',
+                },
+            },
+        },
+    } only %}
+    {% endembed %}
+
+    <form id="frmMultiPickingScanningContainer" method="post" action="/picker/multi-picking-scanning-container">
+        {% include molecule('shelf-scan-order') with {
+            data: {
+                listOfContainers: data.listOfContainers,
+                listOfExistingContainers: data.listOfExistingContainers,
+                lastOrder: data.lastOrder
+            }
+        } only %}
+    </form>
+
+{% endblock %}

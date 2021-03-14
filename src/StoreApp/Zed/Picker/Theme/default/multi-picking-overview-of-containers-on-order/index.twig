@@ -1,0 +1,49 @@
+{% extends template('page-layout-main') %}
+
+{% define data = {
+    pickingOrderTransfer: pickingOrderTransfer
+} %}
+
+{% block header %}
+    {% include organism('header') with {
+        data: {
+            headerLocationTitle: 'multi.picking.header.overview' | trans,
+            withoutLogo: true,
+            titleColor: 'darkerGreen',
+            buttonUrl:''
+        }
+    } only %}
+{% endblock %}
+
+{% block content %}
+    <form id="formOverview" method="post">
+        <div class="box-light-green--overview">
+            <div>Kunde</div>
+            <div>Pos./Stck.</div>
+            <div>Container</div>
+            <div>Comm.</div>
+        </div>
+
+            {% include molecule('overview-order-list') with {
+                data: {
+                   orders: data.pickingOrderTransfer
+                }
+            } only %}
+
+        {% block button %}
+            <div id="confirm-multi-picking" class="text-center" style="margin-top:20px">
+                <button type="submit" class="button button--expand js-pick-products__submit-button">
+                    {{ 'picker.picking.confirmation' | trans }}
+                </button>
+            </div>
+        {% endblock %}
+    </form>
+    {% include molecule('additional-order-buttons') with {
+        data: {
+            idSalesOrder: '1',
+            urlContainerSelect: '/',
+            itemSku: '321654987',
+            overviewForm: true,
+        }
+    } only %}
+{% endblock content %}

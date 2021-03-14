@@ -8,42 +8,48 @@
 {% define data = {
     idSalesOrder: required,
     urlContainerSelect: required,
-    itemSku: required
+    itemSku: required,
+    posListeForm: false,
+    overviewForm: false,
 } %}
 
 {% block body %}
 
     <div class="grid grid--justify spacing-top">
         {% block leftColBottom %}
-            <div class="col button button--disabled button--round button--ubersicht">
+            <div class="col col--md-4 {{ config.name }}__spacing">
+                <button type="button" class="button button--round button--ubersicht additional-button {% if data.overviewForm %} {{ config.name }}__selected-form {% endif %}" id="overviewBtn__{{ data.itemSku }}" onclick="overviewForm('{{ data.itemSku }}')">
                     <span class="col--md-4">
-                        {% include atom('icon') with {
-                            data: {
-                                name: 'overview',
-                                rowText: 'Übersicht'
-                            }
-                        } only %}
-                    </span>
-                <span class="col--md-8">Übersicht</span>
+                            {% include atom('icon') with {
+                                data: {
+                                    name: 'overview',
+                                    rowText:  'multi.picking.header.overview' | trans
+                                }
+                            } only %}
+                        </span>
+                    <span class="col--md-8">{{ 'multi.picking.header.overview' | trans }}</span>
+                </button>
             </div>
         {% endblock %}
         {% block midColBottom %}
-            <div class="col button button--disabled button--round button--posListe">
-                                <span class="col--md-4">
-                                    {% include atom('icon') with {
-                                        data: {
-                                            name: 'posliste',
-                                            rowText: 'Pos. Liste'
-                                        }
-                                    } only %}
-                                </span>
-                <span class="col--md-8">Pos. Liste</span>
-            </div>
+                <div class="col col--md-4 {{ config.name }}__spacing">
+                    <button type="button" class="button button--round button--posListe {% if data.posListeForm %} {{ config.name }}__selected-form {% endif %} {% if data.overviewForm %} button--disabled {% endif %}" id="posListeBtn__{{ data.itemSku }}" onclick="posListeForm('{{ data.itemSku }}')">
+                     <span class="col--md-4">
+                            {% include atom('icon') with {
+                                data: {
+                                    name: 'posliste',
+                                    rowText: 'Pos. Liste'
+                                }
+                            } only %}
+                        </span>
+                        <span class="col--md-8">Pos. Liste</span>
+                    </button>
+                </div>
         {% endblock %}
         {% block rightColBottom %}
-            <div class="col button button--round button--addContainers">
+            <div class="col col--md-4 {{ config.name }}__spacing">
                 {% set tokenName = 'start-picking-%d' | format(data.idSalesOrder) %}
-                    <button type="button" id="redirectBtn__{{ data.itemSku }}" onclick="addContainer('{{ data.itemSku }}')">
+                    <button type="button" class=" button button--round button--addContainers {% if data.overviewForm %} button--disabled {% endif %}" onclick="addContainer('{{ data.itemSku }}')">
                       <span class="col--md-4">
                             {% include atom('icon') with {
                                 data: {
@@ -52,11 +58,27 @@
                                 }
                             } only %}
                         </span>
-
                         <span class="col--md-8">Add Con.</span>
                     </button>
             </div>
         {% endblock %}
     </div>
+    <form id="formPosListeSku" action="/picker/pos-liste" method="post">
+        {% set tokenName = 'pos-liste-%d' | format(data.idSalesOrder) %}
+        <input type="hidden" name="idOrder" value="{{ data.idSalesOrder }}">
+        <input type="hidden" name="token" value="{{ csrf_token(tokenName) }}">
+        <input type="hidden" id="addPosListeSku" name="sku" value="">
+    </form>
+    <script>
+        function overviewForm(sku)
+        {
 
+        }
+
+        function posListeForm(sku)
+        {
+            document.getElementById('addPosListeSku').value = sku;
+            document.getElementById('formPosListeSku').submit();
+        }
+    </script>
 {% endblock %}

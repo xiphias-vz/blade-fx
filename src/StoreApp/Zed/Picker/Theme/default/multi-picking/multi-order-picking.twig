@@ -1,0 +1,119 @@
+{% extends template('page-layout-main') %}
+
+{% define data = {
+    currentPositionData: currentPositionData,
+    pickingOrderItemsData: pickingOrderItemsData,
+    itemsCount: itemsCount,
+    requestParamIdSalesOrder: requestParamIdSalesOrder,
+    orderReference: orderReference,
+    urlContainerSelect: urlContainerSelect,
+    urlPosListe: '/picker/pos-liste',
+    isLastPosition: isLastPosition
+} %}
+
+ {% if data.currentPositionData is defined %}
+     {% set currentPosition = data.currentPositionData %}
+     {% set pickingOrderItems = data.pickingOrderItemsData %}
+
+     {% if currentPosition.weight is defined %}
+         {% set weightField = currentPosition.weight %}
+     {% else %}
+         {% set weightField = null %}
+     {% endif %}
+ {% else %}
+
+     {% set pickingOrderItem = [] %}
+     {% set weightField = null %}
+ {% endif %}
+
+
+{% block header %}
+    {% embed organism('header') with {
+        modifiers: ['picking-detail'],
+        data: {
+            withoutLogo: true,
+            orderId: data.orderReference,
+            buttonUrl: '/picker/picking',
+            orderReference: data.orderReference,
+            containerSelect: true,
+            pickingForm: true,
+            productsLength: data.itemsCount
+        },
+        embed: {
+            itemsCount: data.itemsCount,
+            idOrder: currentPosition.idOrder
+        }
+
+    } only %}
+        {% block headerBottom %}
+            {% include molecule('pick-products') with {
+                data: {
+                    productsLength: embed.itemsCount,
+                },
+                attributes: {
+                    'products-count': embed.itemsCount,
+                    'order-id': embed.idOrder,
+                },
+            } only %}
+        {% endblock %}
+    {% endembed %}
+{% endblock %}
+
+{% block content %}
+        {% embed molecule('product-item-multiple-picking') with {
+            class: 'spacing-top spacing-top--big',
+            data: {
+                currentPositionData: currentPosition,
+                pickingOrderItemsData: pickingOrderItems,
+                productsCount: currentPosition.quantity,
+                idSalesOrder: currentPosition.idOrder,
+                urlContainerSelect: data.urlContainerSelect,
+                isLastPosition: data.isLastPosition
+            },
+            attributes: {
+                'data-sku': currentPosition.ean,
+            },
+            embed: {
+                weightField: weightField,
+            }
+        } only %}
+            {% block formElement %}
+
+            {% endblock %}
+
+            {% block formElementWeight %}
+
+            {% endblock %}
+        {% endembed %}
+
+    <input type="hidden" name="{{ data.requestParamIdSalesOrder }}" value="{{ currentPosition.idOrder }}">
+
+
+    <form id="formAddContainerSku" action="{{ data.urlContainerSelect }}" method="post">
+        {% set tokenName = 'start-picking-%d' | format(currentPosition.idOrder) %}
+        <input type="hidden" name="idOrder" value="{{ currentPosition.idOrder}}">
+        <input type="hidden" name="token" value="{{ csrf_token(tokenName) }}">
+        <input type="hidden" id="addContainerSku" name="sku" value="">
+    </form>
+
+    <form id="formPosListeSku" action="{{ data.urlPosListe }}" method="post">
+        {% set tokenName = 'pos-liste-%d' | format(currentPosition.idOrder) %}
+        <input type="hidden" name="idOrder" value="{{ currentPosition.idOrder }}">
+        <input type="hidden" name="token" value="{{ csrf_token(tokenName) }}">
+        <input type="hidden" id="addPosListeSku" name="sku" value="">
+    </form>
+
+    <script>
+        function addContainer(sku) {
+            document.getElementById('addContainerSku').value = sku;
+            document.getElementById('formAddContainerSku').submit();
+        }
+
+        function posListeForm(sku)
+        {
+            document.getElementById('addPosListeSku').value = sku;
+            document.getElementById('formPosListeSku').submit();
+        }
+    </script>
+
+{% endblock %}

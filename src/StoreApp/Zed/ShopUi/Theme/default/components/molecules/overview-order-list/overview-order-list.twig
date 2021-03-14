@@ -1,0 +1,79 @@
+{% extends model('component') %}
+
+{% define config = {
+    name: 'overview-order-list',
+    tag: 'overview-order-list',
+} %}
+
+{% define data= {
+    orders: [],
+    doubleDigits: false
+} %}
+
+{% block body %}
+
+        {% for order in data.orders %}
+            <div class="orderClass" data-idOrder="{{ order.idOrder }}" data-orderReference="{{ order.orderReference }}">
+                {% if order.pickingColor.idColor > 9 %}
+                    {% set paddingLeft = '0.5rem' %}
+                {% else %}
+                    {% set paddingLeft = '0.8rem' %}
+                {% endif %}
+
+                <div class="{{ config.name }}__orders">
+                    <div class="{{ config.name }}__circle-wrapper">
+                        {% include atom('circle') with {
+                            data: {
+                                content: order.pickingColor.idColor,
+                                backgroundColor: order.pickingColor.backColor,
+                                textColor: order.pickingColor.foreColor,
+                                paddingLeft: paddingLeft,
+                                paddingTop: '0.3rem',
+                            }
+                        } %}
+                    </div>
+                    <div>
+                            <span>{{ order.articlesCount }}</span>/<span>{{ order.articlesQuantity }}</span>
+                    </div>
+                    <div class="{{ config.name }}__containers">
+                    {% set countContainer = 0 %}
+                    {% for container in order.pickingContainers %}
+                        {% set countContainer = countContainer + 1 %}
+                        <div>
+                            <span style="font-weight: normal" >- {{ countContainer }} -</span>
+                            <span>{{ container.containerID }}</span>
+                        </div>
+
+                    {% endfor %}
+                    </div>
+                    <div class="button-note-div">
+                        <button type="button" id="buttonNote-{{ order.idOrder }}" class="{{ config.name }}__overview-bubble">
+                            {% include atom('icon') with {
+                                modifiers: ['big'],
+                                class: 'custom__icon',
+                                data: {
+                                    name: 'overview-bubble',
+                                },
+                            } only %}
+                        </button>
+                    </div>
+                </div>
+
+                {% set orderCustomer = order.orderReference ~ ' - ' ~ order.customerName %}
+                <div id="divNote-{{ order.idOrder }}" class="divNote {{ config.name }}__customerInfo">
+                    {% include molecule('multi-picking-customer-note') with {
+                        data: {
+                            fullName: orderCustomer,
+                            customerCartNote: order.note
+                        },
+                    } only %}
+                </div>
+
+            </div>
+
+            <hr class="{{ config.name }}__hr-line">
+
+        {% endfor %}
+
+
+{% endblock %}

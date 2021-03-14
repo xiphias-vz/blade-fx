@@ -8,15 +8,19 @@
 namespace StoreApp\Zed\Picker\Business;
 
 use Orm\Zed\PickingSalesOrder\Persistence\PyzPickingSalesOrderQuery;
+use Pyz\Zed\Merchant\Business\MerchantFacadeInterface;
+use Pyz\Zed\MerchantSalesOrder\MerchantSalesOrderDependencyProvider;
 use Pyz\Zed\PickingSalesOrder\Persistence\Propel\Mapper\PickingSalesOrderMapper;
 use Pyz\Zed\PickingZone\Business\PickingZoneFacadeInterface;
 use Spryker\Zed\Kernel\Business\AbstractBusinessFactory;
 use Spryker\Zed\Oms\Business\OmsFacadeInterface;
 use Spryker\Zed\Sales\Business\SalesFacadeInterface;
+use Spryker\Zed\User\Business\UserFacadeInterface;
 use StoreApp\Zed\Picker\Business\Reader\ContainerReader;
 use StoreApp\Zed\Picker\Business\Reader\ContainerReaderInterface;
 use StoreApp\Zed\Picker\Business\Reader\PickingZoneReader;
 use StoreApp\Zed\Picker\Business\Reader\PickingZoneReaderInterface;
+use StoreApp\Zed\Picker\Business\Transfer\PickingHeaderTransferData;
 use StoreApp\Zed\Picker\Business\Updater\OrderUpdater;
 use StoreApp\Zed\Picker\Business\Updater\OrderUpdaterInterface;
 use StoreApp\Zed\Picker\Business\Writer\PickingZoneWriter;
@@ -113,5 +117,33 @@ class PickerBusinessFactory extends AbstractBusinessFactory
     public function createPickingSalesOrderMapper(): PickingSalesOrderMapper
     {
         return new PickingSalesOrderMapper();
+    }
+
+    /**
+     * @return \StoreApp\Zed\Picker\Business\Transfer\PickingHeaderTransferData
+     */
+    public function createPickingHeaderTransferData(): PickingHeaderTransferData
+    {
+        return new PickingHeaderTransferData(
+            $this->getOmsFacade(),
+            $this->getSalesFacade(),
+            $this->getSessionService()
+        );
+    }
+
+    /**
+     * @return \Spryker\Zed\User\Business\UserFacadeInterface
+     */
+    public function getUserFacade(): UserFacadeInterface
+    {
+        return $this->getProvidedDependency(PickerDependencyProvider::FACADE_USER);
+    }
+
+    /**
+     * @return \Pyz\Zed\Merchant\Business\MerchantFacadeInterface
+     */
+    public function getMerchantFacade(): MerchantFacadeInterface
+    {
+        return $this->getProvidedDependency(MerchantSalesOrderDependencyProvider::FACADE_MERCHANT);
     }
 }

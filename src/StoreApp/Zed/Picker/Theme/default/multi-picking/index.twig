@@ -1,12 +1,45 @@
 {% extends template('page-layout-main') %}
 
- {% block header %}
-     {% embed organism('header') only %}
-         {% block selectPickingZone %}{% endblock %}
-     {% endembed %}
- {% endblock %}
+{% define data = {
+    merchant: merchant,
+    orderByTimeSlots: orderByTimeSlot
+} %}
+{% block header %}
+    {% include organism('header') with {
+        data: {
+            headerLocationTitle: data.merchant.name,
+            withoutLogo: true,
+            pickingZone: true,
+            buttonUrl:'/picker/select-picking-zone?multi_picking=1'
+        }
+    } only %}
+{% endblock %}
 
 
 {% block content %}
-    <h1>NEW FORM FOR MULTIPICKING</h1>
+    <form id="frm_multiOrderSelection" method="POST" action="/picker/multi-picking">
+        <input type="hidden" name="idOrders" value="[]">
+        {% for key, multiOrdersWithTimeSlots in data.orderByTimeSlots %}
+            {% include molecule('time-slot-position') with {
+                data: {
+                    idTimeSlot: key,
+                    articleCount: 0,
+                    articlesQuantity: 0,
+                    timeSlot: 0,
+                    orders: multiOrdersWithTimeSlots
+                },
+                attributes:{
+                    'idTimeSlot': key
+                }
+            } only %}
+        {% endfor %}
+        {% block button %}
+            <div id="confirm-multi-picking" class="text-center" style="margin-top:20px">
+                <button type="submit" class="button button--expand button--disabled js-pick-products__submit-button">
+                    {{ 'picker.picking.confirmation' | trans }}
+                </button>
+            </div>
+        {% endblock %}
+    </form>
 {% endblock content %}
+

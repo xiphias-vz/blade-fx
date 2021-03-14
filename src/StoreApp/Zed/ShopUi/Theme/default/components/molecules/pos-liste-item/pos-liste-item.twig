@@ -1,0 +1,119 @@
+{% extends model('component') %}
+
+{% define config = {
+    name: 'pos-liste-item',
+    tag: 'pos-liste-item',
+} %}
+
+{% define data= {
+    idOrderItem: '',
+    quantity: '',
+    quantityPicked: '',
+    color: '',
+    name: '',
+    isPaused: false,
+    isAllPicked: false,
+    isCanceled: false,
+    pictureUrl: '',
+    sequence: '',
+    shelf: '',
+    shelfFloor: '',
+    shelfField: '',
+    aisle: '',
+    orderNumber: '',
+} %}
+
+{% block body %}
+    {% if data.orderNumber > 9 %}
+        {% set paddingLeft = '0.3rem' %}
+    {% else %}
+        {% set paddingLeft = '0.6rem' %}
+    {% endif %}
+    <table class="{{ config.name }}__full-width">
+        <form class="{{ config.jsName }}__form" action="/picker/multi-picking" method="post">
+            <input type="hidden" name="idOrderItem" value="{{ data.idOrderItem }}">
+            <input type="hidden" name="position" value="">
+        </form>
+        <tr class="{{ config.jsName }}__product-item" id="{{ data.idOrderItem }}" style="cursor: pointer">
+            <td class="{{ config.name }}__left-column  {{ config.name }}__cursor-pointer">
+                {% if data.isPaused == true %}
+                    <div class="{{ config.name }}__circle-wrapper">
+                        <div class="{{ config.name }}__paused-circle">
+                            ||
+                        </div>
+                    </div>
+                    <div class="{{ config.name }}__number-text-wrapper">
+                        {{ data.quantity }}
+                    </div>
+                {% elseif data.isAllPicked == true %}
+                    <div class="{{ config.name }}__circle-wrapper">
+                        <div class="{{ config.name }}__checked-circle">
+                            <svg class="icon button__icon"><use xlink:href="#:check"></use></svg>
+                        </div>
+                    </div>
+                    <div class="{{ config.name }}__number-text-wrapper">
+                        {{ data.quantity }}
+                    </div>
+                {% elseif data.isCanceled == true %}
+                    <div class="{{ config.name }}__circle-wrapper">
+                        <div class="{{ config.name }}__cancel-circle">
+                            <svg class="icon button__icon"><use xlink:href="#:close"></use></svg>
+                        </div>
+                    </div>
+                    <div class="{{ config.name }}__number-text-wrapper">
+                        {{ data.quantity }}
+                    </div>
+                {% else %}
+                    <div class="{{ config.name }}__number-empty-wrapper">
+                        {{ data.quantity }}
+                    </div>
+                {% endif %}
+            </td>
+            <td class="{{ config.name }}__right-column">
+                <table class="{{ config.name }}__full-width">
+                    <td style="width: 80%">
+                        <table>
+                            <tr>
+                                <div class="{{ config.name }}__display-flex {{ config.name }}__circle-spacing {{ config.name }}__mobile-text-class">
+                                       <p>{{ data.shelf }}-{{ data.shelfFloor }}-</p>
+                                       <p class="{{ config.name }}__location">{{ data.shelfField }}</p>
+                                       <p class="{{ config.name }}__name"> {{ data.name }} </p>
+                                </div>
+                            </tr>
+                            <tr>
+                                <div class="{{ config.name }}__display-flex">
+                                    {% for i in 0..5 %}
+                                        <div class="{{ config.name }}__circle-spacing">
+                                            {% include atom('circle') with {
+                                                data: {
+                                                    content: data.color.idColor,
+                                                    backgroundColor: data.color.circleColor,
+                                                    textColor: data.color.foreColor,
+                                                    paddingLeft: paddingLeft,
+                                                    paddingTop: '0.1rem',
+                                                    width: '1.5rem',
+                                                    height: '1.5rem',
+                                                }
+                                            } %}
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                            </tr>
+                        </table>
+                    </td>
+                    <td style="width:20%">
+                        <div class="{{ config.name }}__image-wrapper" style="float:right">
+                            {% include atom('thumbnail') with {
+                                modifiers: ['product-pos'],
+                                attributes: {
+                                    src: data.pictureUrl,
+                                    alt: data.name
+                                }
+                            } only %}
+                        </div>
+                    </td>
+                </table>
+            </td>
+        </tr>
+    </table>
+{% endblock %}

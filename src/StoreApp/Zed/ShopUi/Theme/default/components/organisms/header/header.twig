@@ -19,6 +19,7 @@
     pickingZone: false,
     containerSelect: false,
     pickingForm: false,
+    posListe: false,
     productsLength: 0
 } %}
 
@@ -27,8 +28,6 @@
         header--spacing-reset
     {% endif %}
 {% endblock %}
-
-
 
 {% block body %}
     <header class="{{ config.name }}__header">
@@ -44,7 +43,7 @@
                                     } only %}
                                 </div>
                             </a>
-                            <div class="col col--expand text-right">
+                            <div class="col col--expand text-right text-middle__darkerGreen">
                                 {{ data.headerLocationTitle }}
                             </div>
                             <div class="col {{ config.name }}__logout text-right">
@@ -59,8 +58,34 @@
                                     &nbsp;
                                 </a>
                             </div>
+                        {% elseif data.posListe %}
+                            <div class="col col--sm-4 col--md-5">
+                                {% if data.buttonUrl %}
+                                    <a href="{{ data.buttonUrl }}" class="link link--cancel link--icon">
+                                        {% include atom('icon') with {
+                                            class: 'link__icon link__icon--cancel',
+                                            data: {
+                                                name: 'arrow-right'
+                                            }
+                                        } only %}
+                                        <div class="link__header__title">
+                                            {{ data.buttonText }}
+                                        </div>
+                                    </a>
+                                {% endif %}
+                            </div>
+                            <div class="col col--expand">
+                                <div class="link">
+                                    <div class="link__header__container">
+                                        {% block posListe %}
+                                            <div class="{{ config.name }}__id">
+                                                Pos.Liste {{ data.headerLocationTitle }}
+                                            </div>
+                                        {% endblock %}
+                                    </div>
+                                </div>
+                            </div>
                         {% elseif data.containerSelect %}
-
                             <div class="col col--sm-4 col--md-5">
                                 {% if data.buttonUrl %}
                                     <a href="{{ data.buttonUrl }}" class="link link--cancel link--icon">
@@ -87,7 +112,6 @@
                                     </div>
                                 </div>
                             </div>
-
                             {% if not data.pickingForm %}
                                 <div class="col {{ config.name }}__logout text-right">
                                     <a href="/auth/logout" class="link link--icon link--logout">

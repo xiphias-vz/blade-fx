@@ -1,0 +1,56 @@
+{% extends template('page-layout-main') %}
+
+{% define data = {
+    pickZone: pickZone,
+    sku: sku,
+    orders: orders,
+    orderItemsByAisle: orderItemsByAisle,
+} %}
+{% block header %}
+    {% include organism('header') with {
+        data: {
+            posListe: true,
+            headerLocationTitle: pickZone,
+            withoutLogo: true,
+            pickingZone: true,
+        }
+    } only %}
+{% endblock %}
+{% block content %}
+    {% for key,aisle in data.orderItemsByAisle %}
+{#        <div class="box-light-green">#}                               {# TODO: ADD AFTER ISSUE 416 IS FINISHED #}
+{#            <p class="box-light-green--title">GANG: {{ key }}</p>#}
+{#        </div>#}
+        {% for key, item in aisle %}
+            {% embed molecule('pos-liste-item') with {
+                data: {
+                    idOrderItem: item.idOrderItem,
+                    quantity: item.quantity,
+                    quantityPicked: item.quantityPicked,
+                    color: item.pickingColor,
+                    name: item.name,
+                    isPaused: item.isPaused,
+                    pictureUrl: item.pictureUrl,
+                    sequence: item.sequence,
+                    shelf: item.shelf,
+                    shelfFloor: item.shelfFloor,
+                    shelfField: item.shelfField,
+                    aisle: item.aisle,
+                    orderNumber: item.idOrder,
+                },
+            } only %}
+            {% endembed %}
+        {% endfor %}
+    {% endfor %}
+    {% include molecule('additional-order-buttons') with {
+        data: {
+            idSalesOrder: '1',
+            urlContainerSelect: '/',
+            itemSku: '321654987',
+            posListeForm: true,
+        }
+    } only %}
+{% endblock %}
+{% block footer %}
+
+{% endblock %}

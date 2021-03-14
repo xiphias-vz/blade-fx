@@ -44,6 +44,14 @@ class SelectPickingZoneController extends AbstractController
             } catch (Exception $ex) {
             }
 
+            $httpAction = $_SERVER['REQUEST_URI'];
+            $splitHttpToGetParam = parse_url($httpAction);
+            $queryParams = $splitHttpToGetParam['query'] ?? '';
+
+            if ($queryParams == "multi_picking=1") {
+                return $this->redirectResponse($factory->getConfig()->getMultiPickingUri());
+            }
+
             return $this->redirectResponse($factory->getConfig()->getPickingUri());
         }
 

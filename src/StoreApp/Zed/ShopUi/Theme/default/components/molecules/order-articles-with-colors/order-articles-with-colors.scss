@@ -1,0 +1,32 @@
+@mixin multiple-picker-order-articles-with-colors($name: '.order-articles-with-colors'){
+    #{$name} {
+        &__display-flex
+        {
+            display: flex;
+            flex-wrap: wrap-reverse;
+        }
+
+        &__circle-wrapper {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: bold;
+        }
+
+        &__hr-line{
+            border: rem(1) solid $setting-color-gray-9
+        }
+
+        &__circle-spacing
+        {
+            margin-left: rem(6.4);
+        }
+
+        &__article-quantity
+        {
+            text-align: center;
+        }
+
+    }
+}
+@include multiple-picker-order-articles-with-colors();

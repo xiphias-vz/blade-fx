@@ -1,7 +1,6 @@
 <?php
 
 use Pyz\Shared\CashierOrderExport\CashierOrderExportConstants;
-use Pyz\Shared\Customer\CustomerConstants;
 use Pyz\Shared\DataImport\DataImportConstants;
 use Pyz\Zed\SalesOrderSummaryExport\SalesOrderSummaryExportConfig;
 

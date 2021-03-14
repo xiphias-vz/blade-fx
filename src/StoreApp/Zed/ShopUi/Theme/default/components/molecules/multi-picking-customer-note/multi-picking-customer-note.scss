@@ -1,0 +1,42 @@
+@mixin shop-ui-multi-picking-customer-note($name: '.multi-picking-customer-note') {
+    #{$name} {
+        &__content {
+            margin: rem(10) 0;
+            padding: rem(20);
+            font-size: rem(14);
+            font-weight: fw(bold);
+            letter-spacing: rem(0.5);
+            line-height: 1.3em;
+            color: $setting-color-gray-9;
+            background-color: $setting-color-gray-3;
+            position: relative;
+            width: 100%;
+        }
+
+        &__title {
+            color: black;
+        }
+
+        &__titleDiv {
+            margin-bottom: rem(20);
+        }
+
+    }
+    .close-note {
+        float: right;
+        border: 1px solid $setting-color-gray-9;
+        border-radius: 50%;
+        width: 1.4rem;
+        height: 1.4rem;
+    }
+    .close-background{
+        background-color: transparent;
+        padding: rem(2);
+        cursor: pointer;
+    }
+    .custom__icon{
+        margin-left: rem(1.5);
+    }
+}
+
+@include shop-ui-multi-picking-customer-note();

@@ -1,0 +1,14 @@
+@mixin shop-ui-circle($name: '.circle') {
+    #{$name} {
+        border-radius: 50%;
+        background-color: lightskyblue;
+        text-align: center;
+
+        &__content {
+            padding: rem(16);
+            background: $setting-color-white;
+        }
+    }
+}
+
+@include shop-ui-circle();
