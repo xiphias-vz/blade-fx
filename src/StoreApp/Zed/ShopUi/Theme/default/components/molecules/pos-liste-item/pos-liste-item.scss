@@ -8,12 +8,19 @@
             border-bottom-style: solid;
             border-bottom-width: 1px;
             width:5%;
+            @include helper-breakpoint-media-max($sm-max)  {
+                width:10%;
+            }
         }
         &__right-column {
             border-bottom-color: $setting-color-gray-9;
             border-bottom-style: solid;
             border-bottom-width: 1px;
             width:95%;
+            @include helper-breakpoint-media-max($sm-max)  {
+                width:90%;
+
+            }
         }
 
         &__full-width
@@ -35,6 +42,9 @@
         &__name
         {
             margin-left: rem(16);
+            @include helper-breakpoint-media-max($sm-max)  {
+                margin-left: rem(0);
+            }
         }
 
         &__circle-spacing

@@ -1,0 +1,15 @@
+$setting-popup-spacing-x: rem(24);
+$setting-popup-spacing-y: rem(16);
+
+@mixin shop-ui-popup-ui-container-shelf($name: '.popup-ui-container-shelf') {
+    #{$name} {
+        .container-shelf-previous-order {
+            background: $setting-color-lighter-green;
+            padding: 20px;
+            margin-top: -10px;
+            margin-bottom: 20px;
+        }
+    }
+}
+
+@include shop-ui-popup-ui-container-shelf();

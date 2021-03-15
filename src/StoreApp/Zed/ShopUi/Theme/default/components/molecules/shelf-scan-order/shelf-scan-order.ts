@@ -12,23 +12,24 @@ export default class ShelfScanOrder extends Component {
     protected positionId: HTMLElement;
     protected form: HTMLFormElement;
     protected formItems: HTMLInputElement[];
+    protected nextOrderPositionInput: HTMLInputElement;
+    protected nextOrderPosition: number;
     protected buttonConfirm: HTMLButtonElement;
     protected hrElement: HTMLElement;
     protected barcodePrefix: string = '/x11';
     protected popUpUiInfo: HTMLElement;
-    protected popUpUiSuccess: HTMLElement;
     protected containerShelfInputField: HTMLInputElement;
     protected containerShelfTransfer: Array<containersShelf>;
     protected containerShelf: containersShelf;
 
     protected readyCallback(): void {
         this.popUpUiInfo = <HTMLElement>document.getElementsByClassName('popup-ui-info')[0];
-        this.popUpUiSuccess= <HTMLElement>document.getElementsByClassName('popup-success-ui')[0];
         this.positionId = <HTMLElement>document.getElementsByClassName('color-number')[0];
         this.form = <HTMLFormElement>document.getElementById('frmMultiPickingScanningContainer');
         this.formItems = Array.from(this.form.querySelectorAll('input[type=text]'));
         this.buttonConfirm = <HTMLButtonElement>document.getElementsByClassName('btnMultiPickingScanningContainer')[0];
         this.buttonConfirm.addEventListener('click', (event: MouseEvent) => this.checkInputBeforeSubmit(event));
+        this.nextOrderPositionInput = <HTMLInputElement>this.form.querySelector('input[name=nextOrderPosition]');
         this.containerShelfInputField = <HTMLInputElement>document.querySelector('input[name=containersShelf]');
         this.containerShelfTransfer = new Array<containersShelf>();
         this.containerShelf = {
@@ -37,6 +38,8 @@ export default class ShelfScanOrder extends Component {
             PositionId: ''
         };
 
+        console.log(this.nextOrderPositionInput);
+        this.nextOrderPosition = parseInt(this.nextOrderPositionInput.value);
         this.mapEventsForInputs();
         this.focusInputElement(1);
         this.removeLastHrElement();
@@ -64,6 +67,10 @@ export default class ShelfScanOrder extends Component {
             element.addEventListener('input', (event: KeyboardEvent) => this.onInputItemChange(event));
             element.addEventListener('keypress', (event: KeyboardEvent) => this.onInputKeyPress(event));
         });
+        this.form.addEventListener('submit', (e) => {
+            this.nextOrderPosition = ++this.nextOrderPosition;
+            this.nextOrderPositionInput.value = String(this.nextOrderPosition);
+        })
     }
 
     protected focusInputElement(indexId): void {

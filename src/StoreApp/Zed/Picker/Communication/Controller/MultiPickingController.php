@@ -8,6 +8,7 @@
 namespace StoreApp\Zed\Picker\Communication\Controller;
 
 use Generated\Shared\Transfer\MerchantTransfer;
+use Generated\Shared\Transfer\PickingContainerTransfer;
 use Pyz\Shared\Oms\OmsConfig;
 use StoreApp\Shared\Picker\PickerConfig;
 use StoreApp\Zed\Merchant\Communication\Plugin\EventDispatcher\MerchantProviderEventDispatcherPlugin;
@@ -34,8 +35,6 @@ class MultiPickingController extends BaseOrderPickingController
     public function indexAction(Request $request)
     {
         $factory = $this->getFactory();
-        $transfer = $this->getFacade()->getAllOrdersInStateReadyForPickingByZone();
-        $orderByTimeSlot = $transfer->getOrdersByTimeSlot();
 
         if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $idOrders = json_decode($request->get(static::ID_ORDERS));
@@ -59,6 +58,9 @@ class MultiPickingController extends BaseOrderPickingController
             }
         }
 
+        $transfer = $this->getFacade()->getAllOrdersInStateReadyForPickingByZone();
+        $orderByTimeSlot = $transfer->getOrdersByTimeSlot();
+
         return [
             'orderByTimeSlot' => $orderByTimeSlot,
             'merchant' => $this->getMerchantFromRequest($request),
@@ -80,6 +82,18 @@ class MultiPickingController extends BaseOrderPickingController
 
         $nextOIData = $transfer->getNextOrderItem(0);
         $positionsData = $transfer->getOrderItems($nextOIData->getPickingItemPosition());
+
+        $orderContainerData = $transfer->getOrderList();
+        $containerData = new PickingContainerTransfer();
+        foreach ($orderContainerData as $order) {
+            if ($nextOIData["idOrder"] == $order["idOrder"]) {
+//              $containerData = $containerData->fromArray(array_values(get_object_vars($order["pickingContainers"])));
+//              $containerData = $order["pickingContainers"];
+//              $containerData = $containerData->getArrayCopy()["containerID"];
+
+                break;
+            }
+        }
 
         $isLastPosition = false;
         if ($transfer->getLastPickingItemPosition() == $transfer->getMaxPickingItemPosition()) {
@@ -164,8 +178,11 @@ class MultiPickingController extends BaseOrderPickingController
 //            'idSalesOrder' => $idSalesOrder,
             'orderReference' => $nextOIData->getOrderReference(),
 //            'orderDeliveryTime' => null,
-            'urlContainerSelect' => PickerConfig::URL_SELECT_CONTAINERS,
+            'urlContainerSelect' => PickerConfig::URL_MULTI_PICKING_SELECT_CONTAINERS,
+            'urlMultiPickingOverview' => PickerConfig::URL_MULTI_PICKING_OVERVIEW,
+            'urlPosListe' => PickerConfig::URL_POS_LISTE,
             'isLastPosition' => $isLastPosition,
+            'containerData' => $containerData,
 //            'multiPickingForm' => $orderItemSelectionForm->createView()
 //            'productSku' => $productSku,
         ];

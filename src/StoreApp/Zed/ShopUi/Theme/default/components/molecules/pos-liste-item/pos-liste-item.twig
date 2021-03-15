@@ -11,9 +11,9 @@
     quantityPicked: '',
     color: '',
     name: '',
-    isPaused: false,
-    isAllPicked: false,
-    isCanceled: false,
+    isPaused: "0",
+    isAllPicked: "0",
+    isCanceled: "0",
     pictureUrl: '',
     sequence: '',
     shelf: '',
@@ -21,6 +21,7 @@
     shelfField: '',
     aisle: '',
     orderNumber: '',
+    orders: '',
 } %}
 
 {% block body %}
@@ -36,7 +37,7 @@
         </form>
         <tr class="{{ config.jsName }}__product-item" id="{{ data.idOrderItem }}" style="cursor: pointer">
             <td class="{{ config.name }}__left-column  {{ config.name }}__cursor-pointer">
-                {% if data.isPaused == true %}
+                {% if data.isPaused == "1" %}
                     <div class="{{ config.name }}__circle-wrapper">
                         <div class="{{ config.name }}__paused-circle">
                             ||
@@ -54,7 +55,7 @@
                     <div class="{{ config.name }}__number-text-wrapper">
                         {{ data.quantity }}
                     </div>
-                {% elseif data.isCanceled == true %}
+                {% elseif data.isCanceled == "1" %}
                     <div class="{{ config.name }}__circle-wrapper">
                         <div class="{{ config.name }}__cancel-circle">
                             <svg class="icon button__icon"><use xlink:href="#:close"></use></svg>
@@ -82,15 +83,16 @@
                             </tr>
                             <tr>
                                 <div class="{{ config.name }}__display-flex">
-                                    {% for i in 0..5 %}
+                                    {% for order in data.orders %}
                                         <div class="{{ config.name }}__circle-spacing">
                                             {% include atom('circle') with {
                                                 data: {
-                                                    content: data.color.idColor,
-                                                    backgroundColor: data.color.circleColor,
-                                                    textColor: data.color.foreColor,
+                                                    content: order.pickingPosition,
+                                                    backgroundColor: order.pickingColor.backColor,
+                                                    textColor: order.pickingColor.foreColor,
+                                                    borderColor: order.pickingColor.circleColor,
                                                     paddingLeft: paddingLeft,
-                                                    paddingTop: '0.1rem',
+                                                    paddingTop: '0rem',
                                                     width: '1.5rem',
                                                     height: '1.5rem',
                                                 }

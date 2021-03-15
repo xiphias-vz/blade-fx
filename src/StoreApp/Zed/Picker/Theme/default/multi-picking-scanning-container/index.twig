@@ -1,11 +1,11 @@
 {% extends template('page-layout-main') %}
 
 {% define data = {
-    pickingHeaderTransfer: pickingHeaderTransfer,
-    listOfContainers: listOfContainers,
     listOfExistingContainers: listOfExistingContainers | default(null),
-    orderColor: orderColor,
-    lastOrder: lastOrder
+    lastOrder: lastOrder,
+    orderForScanningContainer: orderForScanningContainer,
+    nextOrderPosition: nextOrderPosition,
+    containersShelf: containersShelf
 } %}
 
 {% block header %}
@@ -39,33 +39,29 @@
 
     {% include molecule('container-color') with {
         data: {
-            colorCode: data.orderColor.back_color,
-            colorNumber: data.orderColor.id,
-            textColor: data.orderColor.fore_color,
+            colorCode: data.orderForScanningContainer.pickingColor.backColor,
+            colorNumber:  data.orderForScanningContainer.pickingColor.idColor,
+            textColor:  data.orderForScanningContainer.pickingColor.foreColor,
         }
     } only %}
 
-    {% embed molecule('popup-success-ui') with {
-        data: {
-            isSuccess: true,
-            containerId: "testContainer",
-            shelfId: "testShelf",
-            buttons: {
-                submit: {
-                    isButton: true,
-                    additionalClass: 'js-pick-products__submit',
-                },
+    {% if(data.containersShelf | length > 0) %}
+        {% embed molecule('popup-ui-container-shelf') with {
+            data: {
+                containersShelf: data.containersShelf
             },
-        },
-    } only %}
-    {% endembed %}
+        } only %}
+        {% endembed %}
+    {% endif %}
 
     <form id="frmMultiPickingScanningContainer" method="post" action="/picker/multi-picking-scanning-container">
+        <input type="hidden" name="nextOrderPosition" value="{{ data.nextOrderPosition }}">
         {% include molecule('shelf-scan-order') with {
             data: {
-                listOfContainers: data.listOfContainers,
                 listOfExistingContainers: data.listOfExistingContainers,
-                lastOrder: data.lastOrder
+                lastOrder: data.lastOrder,
+                orderForScanningContainer: data.orderForScanningContainer,
+                pickingContainers: data.orderForScanningContainer.pickingContainers
             }
         } only %}
     </form>

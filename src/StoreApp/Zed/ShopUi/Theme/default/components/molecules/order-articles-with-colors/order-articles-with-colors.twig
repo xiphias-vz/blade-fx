@@ -11,20 +11,20 @@
 
 {% block body %}
     <div class="{{ config.name }}__display-flex">
-
-        {% for orderItemArticle in data.articles %}
+        {% for article in data.articles %}
             <div class="{{ config.name }}__circle-wrapper">
                 <div class="{{ config.name }}__circle-spacing">
                     {% include atom('circle') with {
                         data: {
-                            content: orderItemArticle.pickingColor.idColor,
-                            backgroundColor: orderItemArticle.pickingColor.circleColor,
-                            textColor: orderItemArticle.pickingColor.backColor,
+                            content: article.pickingColor.idColor,
+                            backgroundColor: article.pickingColor.backColor,
+                            textColor: article.pickingColor.foreColor,
+                            borderColor: article.pickingColor.circleColor,
                             paddingLeft: '',
                             paddingTop: '0.2rem',
                         }
                     } %}
-                    <div class="{{ config.name }}__article-quantity">{{ orderItemArticle.quantity }}</div>
+                    <div class="{{ config.name }}__article-quantity">{{ article.quantity }}</div>
                 </div>
             </div>
 

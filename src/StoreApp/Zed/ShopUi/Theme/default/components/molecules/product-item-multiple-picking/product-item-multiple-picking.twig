@@ -11,6 +11,10 @@
     productsCount: required,
     idSalesOrder: required,
     urlContainerSelect: '',
+    isLastPosition: false,
+    containerData: '',
+    urlMultiPickingOverview: '',
+    urlPosListe: '',
     isLastPosition: false
 } %}
 
@@ -31,7 +35,8 @@
 {% set basePriceUnit = data.currentPositionData['priceUnit'] %}
 {% set sumPrice = data.currentPositionData['sumPrice'] %}
 {% set pricePerKg = data.currentPositionData['pricePerKg'] %}
-{% set articles = data.pickingOrderItemsData %}
+{% set currentPositionQuantity = data.currentPositionData['quantity'] %}
+{% set articlesData = data.pickingOrderItemsData %}
 {% set currentArticleColors = data.currentPositionData['pickingColor'] %}
 
 {% block body %}
@@ -44,8 +49,9 @@
                         {% include atom('circle') with {
                             data: {
                                 content: currentArticleColors.idColor,
-                                backgroundColor: currentArticleColors.circleColor,
-                                textColor: currentArticleColors.backColor,
+                                backgroundColor: currentArticleColors.backColor,
+                                textColor: currentArticleColors.foreColor,
+                                borderColor: currentArticleColors.circleColor,
                                 paddingLeft: '',
                                 paddingTop: '0.2rem',
                             }
@@ -79,7 +85,7 @@
                     {% include molecule('order-articles-with-colors') with {
                         data: {
                             orderNumber: pickingItemPosition,
-                            articles: articles
+                            articles: articlesData
                         }
                     } only %}
                 <div class="hr-line-solid"></div>
@@ -195,6 +201,8 @@
         {% endblock %}
     </div>
 
+    <div id="containerDataDiv" data-containerData="{{ data.containerData }}"></div>
+
     <div class="pick-products__action-wrapper">
         <div class="pick-products__action js-pick-products__action">
             {% embed molecule('popup-ui-container-scan') with {
@@ -206,8 +214,9 @@
                         },
                         close: true
                     },
-                    headerBackgroundColor: currentArticleColors.circleColor,
-                    headerTextColor: currentArticleColors.backColor,
+                    headerBackgroundColor: currentArticleColors.backColor,
+                    headerTextColor: currentArticleColors.foreColor,
+                    borderColor: currentArticleColors.circleColor,
                     borderRadius: 0
                 }
             } only %}
@@ -229,6 +238,8 @@
         data: {
             idSalesOrder: data.idSalesOrder,
             urlContainerSelect: data.urlContainerSelect,
+            urlMultiPickingOverview: data.urlMultiPickingOverview,
+            urlPosListe: data.urlPosListe,
             itemSku: itemSku,
         }
     } only %}

@@ -4,24 +4,22 @@
     pickZone: pickZone,
     sku: sku,
     orders: orders,
-    orderItemsByAisle: orderItemsByAisle,
+    backButtonUrl: backButtonUrl,
 } %}
 {% block header %}
-    {% include organism('header') with {
+    {# TODO: ADD POSITION FROM WHERE THIS CAME #}
+   {% include organism('header') with {
         data: {
             posListe: true,
             headerLocationTitle: pickZone,
             withoutLogo: true,
             pickingZone: true,
+            buttonUrl: data.backButtonUrl,
         }
     } only %}
 {% endblock %}
 {% block content %}
-    {% for key,aisle in data.orderItemsByAisle %}
-{#        <div class="box-light-green">#}                               {# TODO: ADD AFTER ISSUE 416 IS FINISHED #}
-{#            <p class="box-light-green--title">GANG: {{ key }}</p>#}
-{#        </div>#}
-        {% for key, item in aisle %}
+    {% for key,item in data.orders %}
             {% embed molecule('pos-liste-item') with {
                 data: {
                     idOrderItem: item.idOrderItem,
@@ -37,10 +35,10 @@
                     shelfField: item.shelfField,
                     aisle: item.aisle,
                     orderNumber: item.idOrder,
+                    orders: item.orders,
                 },
             } only %}
             {% endembed %}
-        {% endfor %}
     {% endfor %}
     {% include molecule('additional-order-buttons') with {
         data: {

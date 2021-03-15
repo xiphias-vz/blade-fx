@@ -181,3 +181,6 @@ storeapp.errorpopup.title,Fehler
 multi.picking.header.overview,Übersicht
 multi.picking.save.button,Speichern
 multi.picking.placeholder.input, Lagerplatz scannen
+multi.picking.done.dialog.title, Picking fertig gestellt
+multi.picking.done.dialog.button.submit, Scanning bestätigen
+multi.picking.done.dialog.content, Du hast alle deine Container einem Lagerplatz zugeordnet?

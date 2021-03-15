@@ -11,6 +11,10 @@
     itemSku: required,
     posListeForm: false,
     overviewForm: false,
+    urlContainerSelect: '',
+    urlMultiPickingOverview: '',
+    urlPosListe: '',
+    currentPosition: [],
 } %}
 
 {% block body %}
@@ -18,7 +22,7 @@
     <div class="grid grid--justify spacing-top">
         {% block leftColBottom %}
             <div class="col col--md-4 {{ config.name }}__spacing">
-                <button type="button" class="button button--round button--ubersicht additional-button {% if data.overviewForm %} {{ config.name }}__selected-form {% endif %}" id="overviewBtn__{{ data.itemSku }}" onclick="overviewForm('{{ data.itemSku }}')">
+                <button type="button" class="button button--round button--ubersicht additional-button {% if data.overviewForm %} {{ config.name }}__selected-form {% endif %}" id="overviewBtn__{{ data.itemSku }}" onclick="multiPickingOverview('{{ data.itemSku }}')">
                     <span class="col--md-4">
                             {% include atom('icon') with {
                                 data: {
@@ -63,16 +67,34 @@
             </div>
         {% endblock %}
     </div>
-    <form id="formPosListeSku" action="/picker/pos-liste" method="post">
+    <form id="formOverview" action="{{ data.urlMultiPickingOverview }}" method="post">
+        {% set tokenName = 'overview-%d' | format(data.idSalesOrder) %}
+        <input type="hidden" name="idOrder" value="{{ data.idSalesOrder}}">
+        <input type="hidden" name="token" value="{{ csrf_token(tokenName) }}">
+        <input type="hidden" id="addContainerSku" name="sku" value="">
+    </form>
+
+    <form id="formAddContainerSku" action="{{ data.urlContainerSelect }}" method="post">
+        {% set tokenName = 'container-select-%d' | format(data.idSalesOrder) %}
+        <input type="hidden" name="idOrder" value="{{ data.idSalesOrder}}">
+        <input type="hidden" name="token" value="{{ csrf_token(tokenName) }}">
+        <input type="hidden" id="addContainerSku" name="sku" value="">
+    </form>
+
+    <form id="formPosListeSku" action="{{ data.urlPosListe }}" method="post">
         {% set tokenName = 'pos-liste-%d' | format(data.idSalesOrder) %}
         <input type="hidden" name="idOrder" value="{{ data.idSalesOrder }}">
         <input type="hidden" name="token" value="{{ csrf_token(tokenName) }}">
+        <input type="hidden" name="idOrderItem" value="">
+        <input type="hidden" name="position" value="">
         <input type="hidden" id="addPosListeSku" name="sku" value="">
     </form>
-    <script>
-        function overviewForm(sku)
-        {
 
+    <script>
+        function multiPickingOverview(sku) {
+
+            document.getElementById('addContainerSku').value = sku;
+            document.getElementById('formOverview').submit();
         }
 
         function posListeForm(sku)
@@ -80,5 +102,11 @@
             document.getElementById('addPosListeSku').value = sku;
             document.getElementById('formPosListeSku').submit();
         }
+
+        function addContainer(sku) {
+            document.getElementById('addContainerSku').value = sku;
+            document.getElementById('formAddContainerSku').submit();
+        }
     </script>
+
 {% endblock %}

@@ -14,6 +14,7 @@ use Pyz\Zed\PickingRoute\Business\PickingRouteFacadeInterface;
 use Pyz\Zed\PickingSalesOrder\Business\PickingSalesOrderFacadeInterface;
 use Pyz\Zed\PickingZone\Business\PickingZoneFacadeInterface;
 use Pyz\Zed\Sales\Business\SalesFacadeInterface;
+use Spryker\Shared\Kernel\Store;
 use Spryker\Zed\Kernel\AbstractBundleDependencyProvider;
 use Spryker\Zed\Kernel\Container;
 use Spryker\Zed\Oms\Business\OmsFacadeInterface;
@@ -33,6 +34,7 @@ class PickerDependencyProvider extends AbstractBundleDependencyProvider
     public const FACADE_PICKING_ZONE = 'FACADE_PICKING_ZONE';
     public const FACADE_MERCHANT_SALES_ORDER = 'FACADE_MERCHANT_SALES_ORDER';
     public const FACADE_PERMISSION_ACCESS = 'FACADE_PERMISSION_ACCESS';
+    public const STORE = 'STORE';
 
     public const SERVICE_DATE_TIME_WITH_ZONE = 'SERVICE_DATE_TIME_WITH_ZONE';
 
@@ -63,6 +65,7 @@ class PickerDependencyProvider extends AbstractBundleDependencyProvider
         $container = $this->addMerchantSalesOrderFacade($container);
         $container = $this->addPermissionAccessFacade($container);
         $container = $this->addPickingSalesOrderFacade($container);
+        $container = $this->addStore($container);
 
         return $container;
     }
@@ -82,6 +85,7 @@ class PickerDependencyProvider extends AbstractBundleDependencyProvider
         $container = $this->addPickingSalesOrderFacade($container);
         $container = $this->addPickingZoneFacade($container);
         $container = $this->addSessionService($container);
+        $container = $this->addStore($container);
 
         return $container;
     }
@@ -253,6 +257,20 @@ class PickerDependencyProvider extends AbstractBundleDependencyProvider
 
             return $requestStack->getCurrentRequest()->getSession();
         });
+
+        return $container;
+    }
+
+    /**
+     * @param \Spryker\Zed\Kernel\Container $container
+     *
+     * @return \Spryker\Zed\Kernel\Container
+     */
+    protected function addStore(Container $container)
+    {
+        $container[static::STORE] = function () {
+            return Store::getInstance();
+        };
 
         return $container;
     }

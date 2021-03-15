@@ -1,0 +1,22 @@
+{% extends model('component') %}
+
+{% define config = {
+    name: 'popup-ui-container-shelf',
+    tag: 'popup-ui-container-shelf'
+} %}
+
+{% define data = {
+    containersShelf: []
+} %}
+
+{% define attributes = {
+    'close-on-submit': true
+} %}
+
+{% block body %}
+    <div class="container-shelf-previous-order">
+        {% for container in data.containersShelf %}
+            <p><strong>{{ container.ContainerCode }}</strong> wurde <strong>{{ container.ShelfCode }}</strong> zugeordnet</p>
+        {% endfor %}
+    </div>
+{% endblock %}

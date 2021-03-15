@@ -15,14 +15,14 @@ use Generated\Shared\Transfer\PickingOrderTransfer;
 class PickingHeaderTransfer extends SpyPickingHeaderTransfer
 {
     /**
-     * @returns void
+     * @param bool $recalculateItems
      *
      * @return void
      */
-    public function recalculateAll()
+    public function recalculateAll(bool $recalculateItems = true)
     {
         //$this->setParents();
-        $this->recalculateArticlesCount();
+        $this->recalculateArticlesCount($recalculateItems);
         $this->recalculatePickingPosition();
     }
 
@@ -69,11 +69,11 @@ class PickingHeaderTransfer extends SpyPickingHeaderTransfer
     }
 
     /**
-     * @returns void
+     * @param bool $recalculateItems
      *
      * @return void
      */
-    public function recalculateArticlesCount(): void
+    public function recalculateArticlesCount(bool $recalculateItems = true): void
     {
         if (!empty($this->getPickingOrders())) {
             $ordersCount = 0;
@@ -81,16 +81,21 @@ class PickingHeaderTransfer extends SpyPickingHeaderTransfer
             $articlesQuantityTotal = 0;
             foreach ($this->getPickingOrders() as $order) {
                 $ordersCount++;
-                $articlesCount = 0;
-                $articlesQuantity = 0;
-                foreach ($order->getPickingOrderItems() as $orderItem) {
-                    $articlesQuantity += $orderItem->getQuantity();
-                    $articlesCount++;
+                if ($recalculateItems) {
+                    $articlesCount = 0;
+                    $articlesQuantity = 0;
+                    foreach ($order->getPickingOrderItems() as $orderItem) {
+                        $articlesQuantity += $orderItem->getQuantity();
+                        $articlesCount++;
+                    }
+                    $order->setArticlesCount($articlesCount);
+                    $order->setArticlesQuantity($articlesQuantity);
+                    $articlesCountTotal += $articlesCount;
+                    $articlesQuantityTotal += $articlesQuantity;
+                } else {
+                    $articlesCountTotal += $order->getArticlesCount();
+                    $articlesQuantityTotal += $order->getArticlesQuantity();
                 }
-                $order->setArticlesCount($articlesCount);
-                $order->setArticlesQuantity($articlesQuantity);
-                $articlesCountTotal += $articlesCount;
-                $articlesQuantityTotal += $articlesQuantity;
             }
             $this->setArticlesCount($articlesCountTotal);
             $this->setArticlesQuantity($articlesQuantityTotal);
@@ -302,6 +307,44 @@ class PickingHeaderTransfer extends SpyPickingHeaderTransfer
         ksort($result);
 
         return $result;
+    }
+
+    /**
+     * @return array
+     */
+    public function getGroupedOrderItems(): array
+    {
+        $itemsCount = $this->getMaxPickingItemPosition();
+        $idProduct = "0";
+        $counter = 0;
+        $items = [];
+        $this->setParents();
+        for ($i = 1; $i <= $itemsCount; $i++) {
+            $orderItem = $this->getOrderItem($i);
+            if ($idProduct != $orderItem->getIdProduct()) {
+                $counter++;
+                $idProduct = $orderItem->getIdProduct();
+                $items[$counter] = $orderItem;
+                $items[$counter]["orders"] = [[
+                    'idOrder' => $orderItem->getParent()->getIdOrder(),
+                    'pickingPosition' => $orderItem->getParent()->getPickingPosition(),
+                    'pickingColor' => $orderItem->getParent()->getPickingColor(),
+                ]];
+            } else {
+                $orders = $items[$counter]["orders"];
+                $order =
+                [
+                    'idOrder' => $orderItem->getParent()->getIdOrder(),
+                    'pickingPosition' => $orderItem->getParent()->getPickingPosition(),
+                    'pickingColor' => $orderItem->getParent()->getPickingColor(),
+                ];
+                array_push($orders, $order);
+                $items[$counter]["orders"] = $orders;
+            }
+        }
+        $this->setParents(true);
+
+        return $items;
     }
 
     /**

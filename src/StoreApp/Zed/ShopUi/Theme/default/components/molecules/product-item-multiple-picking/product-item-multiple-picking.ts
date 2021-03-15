@@ -46,12 +46,14 @@ export default class ProductItem extends Component {
     protected $quantityOutput: $;
     protected $weightField: $;
     protected $previousSku: $;
+    protected $containerScanConfirmation: $;
     eanScanInputElements:HTMLInputElement;
     eanScanInputElement: HTMLInputElement;
     alternativeEanElement: HTMLInputElement;
     eanInputFieldWrapper: HTMLElement;
     eanInputData: HTMLElement;
     pricePerKgData: HTMLElement;
+    containerDataFromDiv: HTMLElement;
     popUp: HTMLElement;
     btnSubmitPick: HTMLElement;
     bawContainerButton: HTMLElement;
@@ -85,6 +87,7 @@ export default class ProductItem extends Component {
         this.alternativeEanElement = <HTMLInputElement>this.$this.find('.alternativeEan')[0];
         this.eanInputData = $('.eanData').data('ean');
         this.pricePerKgData = $('.eanData').data('priceperkg');
+        this.containerDataFromDiv = $('#containerDataDiv').data('containerdata');
         this.mapEvents();
         this.boldLastThreeEanNumbers();
         this.$previousSku = $('#formPreviousSku').val();
@@ -179,6 +182,8 @@ export default class ProductItem extends Component {
 
         $(".pick-products__action-wrapper").css("display", "block");
         document.querySelector('.popup-ui-container-scan').classList.add('popup-ui-container-scan--show');
+        this.$containerScanConfirmation = document.getElementById(this.containerScanConfirmation);
+        this.$containerScanConfirmation.addEventListener('keypress', (event: KeyboardEvent) => this.containerScanConfirmationKeyHandler(event));
     }
 
     async updateItem(item: StorageItem): Promise<void> {
@@ -260,6 +265,28 @@ export default class ProductItem extends Component {
     protected setQuantityToValue(quantity): void {
         this.updateQuantityInput(quantity);
         this.pickProducts.updateStorageItem(this);
+    }
+
+    protected containerScanConfirmationKeyHandler(event: KeyboardEvent): void {
+        if (event.key == 'Enter') {
+            event.preventDefault();
+            let inputContainerID = this.$containerScanConfirmation.value;
+            let containerID = this.containerDataFromDiv;
+            if(inputContainerID == containerID){
+
+                const url = window.location.href;
+                let form = $('<form action="' + url + '" method="post">' +
+                    '<input type="text" name="param1" value="goToNextItem" />' +
+                    '</form>');
+                $('body').append(form);
+                form.submit();
+            }
+            else{
+                alert("Container not found");
+            }
+
+        }
+
     }
 
     protected formKeyPressHandler(event: KeyboardEvent): void {
@@ -620,6 +647,11 @@ export default class ProductItem extends Component {
     protected get addUndoCLass(): string {
         return `button--undo`;
     }
+
+    protected get containerScanConfirmation(): string {
+        return `txt_container_scan`;
+    }
+
 
     get maxQuantity(): number {
         return Number(this.$quantityField.prop('max'));

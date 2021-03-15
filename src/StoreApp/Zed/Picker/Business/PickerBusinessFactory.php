@@ -127,7 +127,8 @@ class PickerBusinessFactory extends AbstractBusinessFactory
         return new PickingHeaderTransferData(
             $this->getOmsFacade(),
             $this->getSalesFacade(),
-            $this->getSessionService()
+            $this->getSessionService(),
+            $this->getUserFacade()
         );
     }
 

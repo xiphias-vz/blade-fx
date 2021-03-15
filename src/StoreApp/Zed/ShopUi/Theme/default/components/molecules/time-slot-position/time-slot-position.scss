@@ -8,6 +8,10 @@
                 color:$setting-color-white;
                 font-weight: bold;
                 margin-bottom: 10px;
+
+                @include helper-breakpoint-media-max($xsm-max)  {
+                    font-size:12px;
+                }
                 p {
                     &:first-child {
                         margin-left: 10px;
@@ -25,6 +29,10 @@
                 padding: 8px;
                 border-radius: 5px;
                 position: relative;
+                @include helper-breakpoint-media-max($sm-max)  {
+                    justify-content: center;
+                    align-items: center;
+                }
 
                 .select-order {
                     position: absolute;
@@ -45,6 +53,10 @@
 
                     @include helper-breakpoint-media-max($sm-max)  {
                         margin-left: 20%;
+
+                        p {
+                            width: 80%;
+                        }
                     }
                 }
             }

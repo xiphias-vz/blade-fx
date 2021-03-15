@@ -1,8 +1,13 @@
 {% extends template('page-layout-main') %}
 
 {% define data = {
-    pickingOrderTransfer: pickingOrderTransfer
+    pickingOrderTransfer: pickingOrderTransfer,
+    urlContainerSelect: urlContainerSelect,
+    urlMultiPickingOverview: urlMultiPickingOverview,
+    urlPosListe: urlPosListe
 } %}
+
+{% set returnButtonUrl = '' %}
 
 {% block header %}
     {% include organism('header') with {
@@ -10,7 +15,7 @@
             headerLocationTitle: 'multi.picking.header.overview' | trans,
             withoutLogo: true,
             titleColor: 'darkerGreen',
-            buttonUrl:''
+            buttonUrl: returnButtonUrl
         }
     } only %}
 {% endblock %}
@@ -41,9 +46,11 @@
     {% include molecule('additional-order-buttons') with {
         data: {
             idSalesOrder: '1',
-            urlContainerSelect: '/',
+            urlContainerSelect: data.urlContainerSelect,
             itemSku: '321654987',
             overviewForm: true,
+            urlMultiPickingOverview: data.urlMultiPickingOverview,
+            urlPosListe: data.urlPosListe,
         }
     } only %}
 {% endblock content %}

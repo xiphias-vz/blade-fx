@@ -28,94 +28,6 @@ class PosListeController extends AbstractController
     protected const REQUEST_PARAM_SKU = 'sku';
     protected const SERVICE_FORM_CSRF_PROVIDER = 'form.csrf_provider';
     protected const FORMAT_POS_LISTE_TOKEN_NAME = 'pos-liste-%d';
-    protected const PICKING_ORDER_ITEM_TRANSFER = [
-        [
-                'idOrder' => 1,
-                'idOrderItem' => 5,
-                'idProduct' => 15,
-                'ean' => '6549871265',
-                'quantity' => 2,
-                'quantityPicked' => 0,
-                'price' => 120,
-                'color' =>
-                    [
-                      'id' => 1,
-                      'fore_color' => '#4287f5',
-                      'back_color' => '#f5ef42',
-                      'circle_color' => '#83cc29',
-                    ],
-                'name' => 'Magermilchjoghurt',
-                'weight' => '1',
-                'isPaused' => false,
-                'pictureUrl' => "https://globus-staging-product-images.s3.eu-central-1.amazonaws.com/2000094951422_20000172376.jpg",
-                'sequence' => '207001005',
-                'shelf' => '087',
-                'shelf_floor' => '02',
-                'shelf_field' => '04',
-                'aisle' => '2',
-                'status' => 'ready for picking',
-                'idContainer' => '15946573',
-                'lastPickedAt' => '2021/02/16 08:30:45',
-                'minWeight' => '0,9',
-                'maxWeight' => '1,2',
-                'averageWeight' => '1',
-                'totalWeight' => '2',
-                'orderNumber' => '1',
-                'doubleDigits' => false,
-                ],
-                [
-                    'idOrder' => 1,
-                    'idOrderItem' => 6,
-                    'idProduct' => 17,
-                    'ean' => '95432549',
-                    'quantity' => 7,
-                    'quantityPicked' => 3,
-                    'price' => 150,
-                    'color' =>
-                        [
-                            'id' => 1,
-                            'fore_color' => '#7ca5cf',
-                            'back_color' => '#007d80',
-                            'circle_color' => '#b3472e',
-                        ],
-                        [
-                            'id' => 3,
-                            'fore_color' => '#7ca5cf',
-                            'back_color' => '#007d80',
-                            'circle_color' => '#b3472e',
-                        ],
-                        [
-                            'id' => 4,
-                            'fore_color' => '#7ca5cf',
-                            'back_color' => '#007d80',
-                            'circle_color' => '#b3472e',
-                        ],
-                        [
-                            'id' => 10,
-                            'fore_color' => '#7ca5cf',
-                            'back_color' => '#007d80',
-                            'circle_color' => '#b3472e',
-                        ],
-                    'name' => 'Phyto-Coffein Tonikum',
-                    'weight' => '3',
-                    'isPaused' => true,
-                    'pictureUrl' => "https://globus-staging-product-images.s3.eu-central-1.amazonaws.com/2000094951422_20000172376.jpg",
-                    'sequence' => '207001030',
-                    'shelf' => '088',
-                    'shelf_floor' => '02',
-                    'shelf_field' => '05',
-                    'aisle' => '3',
-                    'status' => 'ready for picking',
-                    'idContainer' => '15946573',
-                    'lastPickedAt' => '2021/02/16 08:30:45',
-                    'minWeight' => '2',
-                    'maxWeight' => '4',
-                    'averageWeight' => '3',
-                    'totalWeight' => '21',
-                    'orderNumber' => '10',
-                    'doubleDigits' => true,
-                ],
-    ];
 
     /**
      * @param \Symfony\Component\HttpFoundation\Request $request
@@ -126,10 +38,9 @@ class PosListeController extends AbstractController
     {
         $pickingZoneTransfer = $this->getFacade()->findPickingZoneInSession();
         $userTransfer = $this->getCurrentUser($request);
-        $orderTransfer = $this->getOrderTransferMock();
-        $dataAisleTransfer = $orderTransfer->getData()->getOrderItemsByAisle();
+        $transfer = $this->getFacade()->getPickingHeaderTransfer();
+        $orderItemTransfer = $transfer->getGroupedOrderItems();
 
-        $result = $this->groupItemsByOrder($dataAisleTransfer);
         $idOrder = $request->get(static::REQUEST_PARAM_ID_ORDER);
         $sku = $request->get(static::REQUEST_PARAM_SKU);
 
@@ -142,13 +53,14 @@ class PosListeController extends AbstractController
 
             return $this->redirectResponse(PickerConfig::URL_PICKING_LIST);
         }
+        $pickingRedirect = PickerConfig::URL_MULTI_PICKING_START_PICKING;
 
         $orderParams[] = [
                 'pickZone' => $pickingZoneTransfer->getName(),
                 'sku' => $sku,
             ];
 
-        return $this->createIndexActionResponse($request, $orderParams, $dataAisleTransfer);
+        return $this->createIndexActionResponse($request, $orderParams, $orderItemTransfer, $pickingRedirect);
     }
 
     /**
@@ -192,38 +104,25 @@ class PosListeController extends AbstractController
         return new PickingHeaderTransferMockData(10, 4);
     }
 
-//    protected function getOrderTransfer(): PickingHeaderTransferData
-//    {
-//        return new PickingHeaderTransferData();
-//    }
-
     /**
      * @param \Symfony\Component\HttpFoundation\Request $request
      * @param array $orderParams
-     * @param array $orderItemsByAisle
+     * @param array $orderItems
+     * @param string $backButtonUrl
      *
      * @return array
      */
     protected function createIndexActionResponse(
         Request $request,
         array $orderParams,
-        array $orderItemsByAisle
+        array $orderItems,
+        string $backButtonUrl
     ): array {
         return [
             'pickZone' => $orderParams[0]['pickZone'],
             'sku' => $orderParams[0]['sku'],
-            'orders' => static::PICKING_ORDER_ITEM_TRANSFER,
-            'orderItemsByAisle' => $orderItemsByAisle,
+            'orders' => $orderItems,
+            'backButtonUrl' => $backButtonUrl,
         ];
-    }
-
-    /**
-     * @param array $itemsPerZone
-     *
-     * @return array
-     */
-    protected function groupItemsByOrder(array $itemsPerZone): array
-    {
-        return $itemsPerZone;
     }
 }

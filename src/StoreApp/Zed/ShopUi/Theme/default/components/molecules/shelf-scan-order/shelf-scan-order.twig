@@ -7,9 +7,10 @@
 } %}
 
 {% define data = {
-    listOfContainers: [],
     listOfExistingContainers: [],
-    lastOrder: false
+    lastOrder: false,
+    orderForScanningContainer: [],
+    pickingContainers: []
 } %}
 
 {% block body %}
@@ -17,23 +18,23 @@
         <input type="hidden" class="listOfExistingContainers" data-listOfExistingContainers="{{ data.listOfExistingContainers }}">
         <input type="hidden" name="containersShelf" value="[]">
         {% set counter = 1 %}
-        {% for shelf in data.listOfContainers %}
+        {% for shelf in data.pickingContainers %}
             <div id="container_{{ counter }}">
-                <div style="font-weight: bold;margin-bottom:20px; font-size:20px;">
-                    {{ counter }} : {{ shelf.ContainerCode }}
+                <div class="{{ config.name }}__containerAndShelf">
+                    {{ counter }} : {{ shelf.containerID }}
                 </div>
                 <div>
-                    <span style="display: none">{{ shelf.ContainerCode }}</span>
+                    <span style="display: none">{{ shelf.containerID }}</span>
                     <input id="inputScanningShelf_{{ counter }}" name="inputScanningShelf_{{ counter }}" type="text" class="input input--expand spacing-bottom spacing-bottom--big" placeholder="{{ 'multi.picking.placeholder.input' | trans }}">
                 </div>
             </div>
 
-            <div id="containerToShelf_{{ counter }}" class="is-hidden" style="margin-bottom:20px; font-size:20px;">
+            <div id="containerToShelf_{{ counter }}" class="is-hidden {{ config.name }}__shelfOnContainer">
                 <span>{{ counter }} : </span>
-                <span style="font-weight: bold;"> {{ shelf.ContainerCode }} - </span>
-                <span style="font-weight: bold;" id="shelfCode_{{ counter }}">{{ shelf.ShelfCode }}</span>
+                <span class="{{ config.name }}__font-weight"> {{ shelf.containerID }} - </span>
+                <span class="{{ config.name }}__font-weight" id="shelfCode_{{ counter }}">{{ shelf.shelfID }}</span>
             </div>
-            <hr id="hrId_{{ counter }}" style="margin:30px 0px 30px 0px; border-bottom: 0.0625rem solid #707070" />
+            <hr id="hrId_{{ counter }}" class="{{ config.name }}__hrElement" />
 
             {% set counter = counter + 1 %}
         {% endfor %}
@@ -43,10 +44,10 @@
     <div>
         {% embed molecule('popup-ui-container-scan') with {
             data: {
-                title: "Picking fertig gestellt",
+                title: 'multi.picking.done.dialog.title' | trans,
                 buttons: {
                     submit: {
-                        title: "Scanning bestätigen",
+                        title: 'multi.picking.done.dialog.button.submit' | trans,
                         isButton: true,
                         type:'submit',
                         url:'/picker/multi-picking-scanning-container'
@@ -59,8 +60,7 @@
         } only %}
             {% block content %}
                 <div class="grid grid--center">
-                    <div>Du hast alle deine Container einem Lagerplatz zugeordnet?</div>
-                    <br>
+                    <div style="margin-bottom: 50px">{{ 'multi.picking.done.dialog.content' | trans }}</div>
                 </div>
             {% endblock %}
 

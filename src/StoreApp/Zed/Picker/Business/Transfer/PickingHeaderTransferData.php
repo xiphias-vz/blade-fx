@@ -17,6 +17,7 @@ use Propel\Runtime\Propel;
 use Pyz\Shared\Oms\OmsConfig;
 use Pyz\Zed\Sales\Business\SalesFacadeInterface;
 use Spryker\Zed\Oms\Business\OmsFacadeInterface;
+use Spryker\Zed\User\Business\UserFacadeInterface;
 use Symfony\Component\HttpFoundation\Session\Session;
 
 class PickingHeaderTransferData
@@ -38,18 +39,26 @@ class PickingHeaderTransferData
     protected $sessionService;
 
     /**
+     * @var \Spryker\Zed\User\Business\UserFacadeInterface
+     */
+    protected $userFacade;
+
+    /**
      * @param \Spryker\Zed\Oms\Business\OmsFacadeInterface $omsFacade
      * @param \Pyz\Zed\Sales\Business\SalesFacadeInterface $salesFacade
      * @param \Symfony\Component\HttpFoundation\Session\Session $sessionService
+     * @param \Spryker\Zed\User\Business\UserFacadeInterface $userFacade
      */
     public function __construct(
         OmsFacadeInterface $omsFacade,
         SalesFacadeInterface $salesFacade,
-        Session $sessionService
+        Session $sessionService,
+        UserFacadeInterface $userFacade
     ) {
         $this->omsFacade = $omsFacade;
         $this->salesFacade = $salesFacade;
         $this->sessionService = $sessionService;
+        $this->userFacade = $userFacade;
     }
 
     /**
@@ -59,7 +68,7 @@ class PickingHeaderTransferData
      */
     public function getAllOrdersInStateReadyForPickingByZone(int $idZone): PickingHeaderTransfer
     {
-        $storeName = $this->salesFacade->getStoreName();
+        $merchantReference = $this->userFacade->getCurrentUser()->getMerchantReference();
         $sql = "select sso.id_sales_order as id_order,
            sso.order_reference,
            CONCAT_WS(' ', sso.first_name, sso.last_name) as customer_name,
@@ -67,11 +76,17 @@ class PickingHeaderTransferData
            CONCAT(DATE_FORMAT(substring(requested_delivery_date, 1, 10), '%w %d.%m.%y'), ' ', substring(requested_delivery_date, 12, 11)) as time_slot,
            0 as is_checked,
            sso.cart_note as note,
-           sso.store
+           sso.store,
+           so.articles_count,
+           so.articles_quantity,
+           so.is_paused
     from spy_sales_order sso
         inner join
          (
-             select ssoi.fk_sales_order
+             select ssoi.fk_sales_order,
+                count(distinct ssoi.product_number) as articles_count,
+                sum(ssoi.quantity) as articles_quantity,
+                max(IFNULL(ssoi.item_paused, 0)) as is_paused
              from spy_sales_order_item ssoi
                       inner join spy_oms_order_item_state soois
                                  on ssoi.fk_oms_order_item_state = soois.id_oms_order_item_state
@@ -84,7 +99,7 @@ class PickingHeaderTransferData
         left outer join spy_sales_shipment sss on sso.id_sales_order = sss.fk_sales_order
         left outer join pyz_order_picking_block popb on sso.id_sales_order = popb.fk_sales_order
             and popb.fk_picking_zone = " . $idZone . "
-    where sso.store = '" . $storeName . "'
+    where sso.merchant_reference = '" . $merchantReference . "'
       and popb.fk_user is null
     ";
 
@@ -101,10 +116,7 @@ class PickingHeaderTransferData
             $order->setTimeSlot($timeSlot);
             $transfer->addPickingOrders($item["id_order"], $order);
         }
-        if ($transfer->getPickingOrders()->count() > 0) {
-            $transfer = $this->getOrderItemsForTransfer($transfer, $idZone);
-        }
-        $transfer->recalculateAll();
+        $transfer->recalculateAll(false);
         $this->setTransferToSession($transfer);
 
         return $transfer;
@@ -131,6 +143,9 @@ class PickingHeaderTransferData
                     }
                 }
                 $transfer->setPickingOrders(new ArrayObject($orders));
+                if ($transfer->getPickingOrders()->count() > 0) {
+                    $transfer = $this->getOrderItemsForTransfer($transfer, $transfer->getIdZone());
+                }
                 $transfer = $this->getOrderContainersForTransfer($transfer);
                 $transfer->setColors($this->getColors());
                 $transfer->recalculateAll();
