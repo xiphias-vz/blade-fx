@@ -10,11 +10,13 @@
     urlContainerSelect: required,
     itemSku: required,
     posListeForm: false,
+    orderPosition: '',
     overviewForm: false,
     urlContainerSelect: '',
     urlMultiPickingOverview: '',
     urlPosListe: '',
     currentPosition: [],
+    position: '',
 } %}
 
 {% block body %}
@@ -71,12 +73,17 @@
         {% set tokenName = 'overview-%d' | format(data.idSalesOrder) %}
         <input type="hidden" name="idOrder" value="{{ data.idSalesOrder}}">
         <input type="hidden" name="token" value="{{ csrf_token(tokenName) }}">
+        <input type="hidden" name="skipToken" value="picking">
+        <input type="hidden" name="position" value="{{ data.position }}">
         <input type="hidden" id="addContainerSku" name="sku" value="">
     </form>
 
     <form id="formAddContainerSku" action="{{ data.urlContainerSelect }}" method="post">
         {% set tokenName = 'container-select-%d' | format(data.idSalesOrder) %}
+        <input type="hidden" name="formAddContainerSku" value="1">
         <input type="hidden" name="idOrder" value="{{ data.idSalesOrder}}">
+        <input type="hidden" name="orderPosition" value="{{ data.orderPosition }}">
+        <input type="hidden" name="itemSku" value="{{ data.itemSku }}">
         <input type="hidden" name="token" value="{{ csrf_token(tokenName) }}">
         <input type="hidden" id="addContainerSku" name="sku" value="">
     </form>
@@ -85,8 +92,8 @@
         {% set tokenName = 'pos-liste-%d' | format(data.idSalesOrder) %}
         <input type="hidden" name="idOrder" value="{{ data.idSalesOrder }}">
         <input type="hidden" name="token" value="{{ csrf_token(tokenName) }}">
-        <input type="hidden" name="idOrderItem" value="">
-        <input type="hidden" name="position" value="">
+        <input type="hidden" name="position" value="{{ data.position }}">
+        <input type="hidden" id="addFromModal" name="fromModal" value="false">
         <input type="hidden" id="addPosListeSku" name="sku" value="">
     </form>
 
@@ -97,9 +104,10 @@
             document.getElementById('formOverview').submit();
         }
 
-        function posListeForm(sku)
+        function posListeForm(sku, fromModal='false')
         {
             document.getElementById('addPosListeSku').value = sku;
+            document.getElementById('addFromModal').value = fromModal;
             document.getElementById('formPosListeSku').submit();
         }
 

@@ -74,6 +74,7 @@ class PickingHeaderTransferData
            CONCAT_WS(' ', sso.first_name, sso.last_name) as customer_name,
            substring(sss.requested_delivery_date, 1, 10) as requested_delivery_date,
            CONCAT(DATE_FORMAT(substring(requested_delivery_date, 1, 10), '%w %d.%m.%y'), ' ', substring(requested_delivery_date, 12, 11)) as time_slot,
+           sss.requested_delivery_date as time_slot_sort,
            0 as is_checked,
            sso.cart_note as note,
            sso.store,
@@ -206,14 +207,30 @@ class PickingHeaderTransferData
     /**
      * @param bool $isPaused
      *
-     * @return void
+     * @return bool
      */
-    public function setCurrentOrderItemPaused(bool $isPaused): void
+    public function setCurrentOrderItemPaused(bool $isPaused): bool
     {
         $transfer = $this->getTransferFromSession();
-        $transfer->setCurrentOrderItemPaused($isPaused);
+        $result = $transfer->setCurrentOrderItemPaused($isPaused);
         //TODO save data to spy_sales_order_item - SpySalesOrderItemQuery
         $this->setTransferToSession($transfer);
+
+        return $result;
+    }
+
+    /**
+     * @param string $containerID
+     *
+     * @return bool
+     */
+    public function checkContainerForCurrentItem(string $containerID): bool
+    {
+        $transfer = $this->getTransferFromSession();
+        $result = $transfer->checkContainerForCurrentItem($containerID);
+        $this->setTransferToSession($transfer);
+
+        return $result;
     }
 
         /**
@@ -311,6 +328,8 @@ class PickingHeaderTransferData
             $orderItem->fromArray($item, true);
             $transfer->addOrderItemToTransfer($orderItem);
         }
+
+        $transfer->removeNotPausedIfPausedExists();
 
         return $transfer;
     }

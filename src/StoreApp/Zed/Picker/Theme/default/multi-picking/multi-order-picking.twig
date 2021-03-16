@@ -9,7 +9,9 @@
     urlContainerSelect: urlContainerSelect,
     urlPosListe: urlPosListe,
     isLastPosition: isLastPosition,
-    urlMultiPickingOverview: urlMultiPickingOverview
+    urlMultiPickingOverview: urlMultiPickingOverview,
+    urlScanShelves: urlScanShelves,
+    orderPosition: orderPosition
 } %}
 
  {% if data.currentPositionData is defined %}
@@ -34,7 +36,7 @@
         data: {
             withoutLogo: true,
             orderId: data.orderReference,
-            buttonUrl: '/picker/picking',
+            buttonUrl: '',
             orderReference: data.orderReference,
             containerSelect: true,
             pickingForm: true,
@@ -69,10 +71,11 @@
                 productsCount: currentPosition.quantity,
                 idSalesOrder: currentPosition.idOrder,
                 urlContainerSelect: data.urlContainerSelect,
+                orderPosition: data.orderPosition,
                 urlMultiPickingOverview: data.urlMultiPickingOverview,
                 urlPosListe: data.urlPosListe,
                 isLastPosition: data.isLastPosition,
-                containerData: '34434242'
+                urlScanShelves: data.urlScanShelves
             },
             attributes: {
                 'data-sku': currentPosition.ean,
@@ -91,39 +94,5 @@
         {% endembed %}
 
     <input type="hidden" name="{{ data.requestParamIdSalesOrder }}" value="{{ currentPosition.idOrder }}">
-
-{#    <form id="formOverview" action="{{ data.urlOverview }}" method="post">#}
-{#        {% set tokenName = 'overview-%d' | format(currentPosition.idOrder) %}#}
-{#        <input type="hidden" name="idOrder" value="{{ currentPosition.idOrder}}">#}
-{#        <input type="hidden" name="token" value="{{ csrf_token(tokenName) }}">#}
-{#        <input type="hidden" id="addContainerSku" name="sku" value="">#}
-{#    </form>#}
-
-{#    <form id="formAddContainerSku" action="{{ data.urlContainerSelect }}" method="post">#}
-{#        {% set tokenName = 'start-picking-%d' | format(currentPosition.idOrder) %}#}
-{#        <input type="hidden" name="idOrder" value="{{ currentPosition.idOrder}}">#}
-{#        <input type="hidden" name="token" value="{{ csrf_token(tokenName) }}">#}
-{#        <input type="hidden" id="addContainerSku" name="sku" value="">#}
-{#    </form>#}
-
-{#    <form id="formPosListeSku" action="{{ data.urlPosListe }}" method="post">#}
-{#        {% set tokenName = 'pos-liste-%d' | format(currentPosition.idOrder) %}#}
-{#        <input type="hidden" name="idOrder" value="{{ currentPosition.idOrder }}">#}
-{#        <input type="hidden" name="token" value="{{ csrf_token(tokenName) }}">#}
-{#        <input type="hidden" id="addPosListeSku" name="sku" value="">#}
-{#    </form>#}
-
-{#    <script>#}
-{#        function addContainer(sku) {#}
-{#            document.getElementById('addContainerSku').value = sku;#}
-{#            document.getElementById('formAddContainerSku').submit();#}
-{#        }#}
-
-{#        function posListeForm(sku)#}
-{#        {#}
-{#            document.getElementById('addPosListeSku').value = sku;#}
-{#            document.getElementById('formPosListeSku').submit();#}
-{#        }#}
-{#    </script>#}
 
 {% endblock %}

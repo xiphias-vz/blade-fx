@@ -116,7 +116,14 @@ interface PickerFacadeInterface
     /**
      * @param bool $isPaused
      *
-     * @return void
+     * @return bool
      */
-    public function setCurrentOrderItemPaused(bool $isPaused): void;
+    public function setCurrentOrderItemPaused(bool $isPaused): bool;
+
+    /**
+     * @param string $containerID
+     *
+     * @return bool
+     */
+    public function checkContainerForCurrentItem(string $containerID): bool;
 }

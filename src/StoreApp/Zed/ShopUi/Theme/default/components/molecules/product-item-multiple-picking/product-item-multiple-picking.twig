@@ -11,11 +11,12 @@
     productsCount: required,
     idSalesOrder: required,
     urlContainerSelect: '',
-    isLastPosition: false,
-    containerData: '',
     urlMultiPickingOverview: '',
     urlPosListe: '',
-    isLastPosition: false
+    urlScanShelves: '',
+    orderPosition: '',
+    isLastPosition: ''
+
 } %}
 
 {% set title = data.currentPositionData['name'] %}
@@ -201,7 +202,8 @@
         {% endblock %}
     </div>
 
-    <div id="containerDataDiv" data-containerData="{{ data.containerData }}"></div>
+    <div id="pickingItemPositionDiv" data-pickingItemPosition="{{ pickingItemPosition }}"></div>
+    <div id="lastPositionDataDiv" data-lastPositionData="{{ data.isLastPosition }}"></div>
 
     <div class="pick-products__action-wrapper">
         <div class="pick-products__action js-pick-products__action">
@@ -241,6 +243,60 @@
             urlMultiPickingOverview: data.urlMultiPickingOverview,
             urlPosListe: data.urlPosListe,
             itemSku: itemSku,
+            orderPosition: data.orderPosition,
+            position: pickingItemPosition,
         }
     } only %}
+
+
+    {% if (data.isLastPosition == true) %}
+        <div id="lastPickingPositionDialog">
+            {% embed molecule('popup-ui-container-scan') with {
+                data: {
+                    title: 'multi.picking.order.dialog.title' | trans,
+                    buttons: {
+                        close: false
+                    },
+                    headerBorderBottomColor: '#707070',
+                    borderRadius: 0,
+                    textAlign: "left",
+                    urlScanShelves: data.urlScanShelves,
+                    itemSku: itemSku
+                }
+            } only %}
+            {% block content %}
+                <div class="grid grid--center">
+                    <div style="margin-bottom: 40px;">{{ 'multi.picking.order.dialog.content' | trans }}</div>
+                    <button type="button" onclick="multiPickingOverview({{ data.itemSku }})" class="button button--expand dialogCheckPickButtons" style="margin-bottom: 10px">
+                    <span class="col--md-4">
+                            {% include atom('icon') with {
+                                data: {
+                                    name: 'overview',
+                                    rowText:  'multi.picking.header.overview' | trans
+                                }
+                            } only %}
+                        </span>
+                        <span class="col--md-8">{{ 'multi.picking.header.overview' | trans }}</span>
+                    </button>
+                    <button type="button" onclick="posListeForm({{ data.itemSku }}, 'true')" class="button button--expand dialogCheckPickButtons" style="margin-bottom: 100px;">
+                     <span class="col--md-4">
+                            {% include atom('icon') with {
+                                data: {
+                                    name: 'posliste',
+                                    rowText: 'Pos. Liste'
+                                }
+                            } only %}
+                     </span>
+                        <span class="col--md-8">Pos. Liste</span>
+                    </button>
+
+                    <button type="button" onclick="location.href='{{ data.urlScanShelves }}'" class="button button--expand">
+                        {{ 'multi.picking.order.dialog.button' | trans }}
+                    </button>
+
+                </div>
+            {% endblock %}
+        {% endembed %}
+        </div>
+    {% endif %}
 {% endblock %}

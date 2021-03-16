@@ -7,7 +7,7 @@
             border-bottom-color: $setting-color-gray-9;
             border-bottom-style: solid;
             border-bottom-width: 1px;
-            width:5%;
+            width:7%;
             @include helper-breakpoint-media-max($sm-max)  {
                 width:10%;
             }
@@ -16,10 +16,9 @@
             border-bottom-color: $setting-color-gray-9;
             border-bottom-style: solid;
             border-bottom-width: 1px;
-            width:95%;
+            width:93%;
             @include helper-breakpoint-media-max($sm-max)  {
                 width:90%;
-
             }
         }
 

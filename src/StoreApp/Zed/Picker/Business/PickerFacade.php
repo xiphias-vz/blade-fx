@@ -161,12 +161,24 @@ class PickerFacade extends AbstractFacade implements PickerFacadeInterface
     /**
      * @param bool $isPaused
      *
-     * @return void
+     * @return bool
      */
-    public function setCurrentOrderItemPaused(bool $isPaused): void
+    public function setCurrentOrderItemPaused(bool $isPaused): bool
     {
-        $this->getFactory()
+        return $this->getFactory()
             ->createPickingHeaderTransferData()
             ->setCurrentOrderItemPaused($isPaused);
+    }
+
+    /**
+     * @param string $containerID
+     *
+     * @return bool
+     */
+    public function checkContainerForCurrentItem(string $containerID): bool
+    {
+        return $this->getFactory()
+            ->createPickingHeaderTransferData()
+            ->checkContainerForCurrentItem($containerID);
     }
 }

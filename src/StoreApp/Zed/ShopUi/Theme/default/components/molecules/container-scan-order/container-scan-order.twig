@@ -7,13 +7,14 @@
 
 {% define data = {
     idOrderReference: 0,
+    itemSku: 0,
     usedContainersWithShelf:[],
-    colorCode:'',
-    colorNumber:'',
-    textColor: '',
     listOfContainers:'',
     nextOrderPosition: 0,
-    pickingColor:[]
+    orderPosition: 0,
+    pickingColor:[],
+    requestFromPickingArticles: '',
+    redirectToPickingArticles: ''
 } %}
 
 {% block body %}
@@ -49,7 +50,11 @@
         } only %}
     </div>
     <form id="frm_scanContainerOrder" method="post" data-containers="{{ data.listOfContainers }}">
+        <input type="hidden" name="formAddContainerSku" value="{{ data.requestFromPickingArticles }}">
+        <input type="hidden" name="redirectToPickingArticles" value="{{ data.redirectToPickingArticles }}">
         <input type="hidden" name="idContainers" value="[]">
+        <input type="hidden" name="itemSku" value="{{ data.itemSku }}">
+        <input type="hidden" name="orderPosition" value="{{ data.orderPosition }}">
         <input type="hidden" name="nextOrderPosition" value="{{ data.nextOrderPosition }}">
         <div class="box">
             <div class="sub-box">

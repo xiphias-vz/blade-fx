@@ -25,6 +25,7 @@ class MultiPickingOverviewOfContainersOnOrderController extends AbstractControll
     protected const REQUEST_PARAM_SKU = 'sku';
     protected const SERVICE_FORM_CSRF_PROVIDER = 'form.csrf_provider';
     protected const FORMAT_OVERVIEW_TOKEN_NAME = 'overview-%d';
+    protected const REQUEST_PARAM_POSITION = 'position';
 
     /**
      * @param \Symfony\Component\HttpFoundation\Request $request
@@ -39,12 +40,26 @@ class MultiPickingOverviewOfContainersOnOrderController extends AbstractControll
         $idOrder = $request->get(static::REQUEST_PARAM_ID_ORDER);
         $sku = $request->get(static::REQUEST_PARAM_SKU);
         $csrfTokenName = sprintf(static::FORMAT_OVERVIEW_TOKEN_NAME, $idOrder);
+        $position = $request->get(static::REQUEST_PARAM_POSITION);
 
-        if ($_SERVER['REQUEST_METHOD'] == 'POST' && !$this->isCsrfTokenValid($csrfTokenName, $request)) {
-            $this->addErrorMessage(
-                MessagesConfig::MESSAGE_PERMISSION_FAILED
-            );
+        $skipCheck = $_REQUEST['skipToken'];
 
+        $urlForBackButton = '';
+        if ($idOrder && $sku) {
+            $urlForBackButton = PickerConfig::URL_MULTI_PICKING_START_PICKING . '?sku=' . $sku . '&position=' . $position;
+        }
+
+        if ($skipCheck != 'skipToken') {
+            if (!$this->isCsrfTokenValid($csrfTokenName, $request)) {
+                $this->addErrorMessage(
+                    MessagesConfig::MESSAGE_PERMISSION_FAILED
+                );
+
+                return $this->redirectResponse(PickerConfig::URL_DIFF_SECTIONS);
+            }
+        }
+
+        if ($_SERVER['REQUEST_METHOD'] == 'POST' && $skipCheck != 'picking') {
             return $this->redirectResponse(PickerConfig::URL_MULTI_PICKING_START_PICKING);
         }
 
@@ -53,6 +68,7 @@ class MultiPickingOverviewOfContainersOnOrderController extends AbstractControll
             'urlContainerSelect' => PickerConfig::URL_SELECT_CONTAINERS,
             'urlMultiPickingOverview' => PickerConfig::URL_MULTI_PICKING_OVERVIEW,
             'urlPosListe' => PickerConfig::URL_POS_LISTE,
+            'urlForBackButton' => $urlForBackButton,
         ];
     }
 

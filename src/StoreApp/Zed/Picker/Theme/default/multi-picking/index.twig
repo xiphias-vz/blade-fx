@@ -22,7 +22,7 @@
         {% for key, multiOrdersWithTimeSlots in data.orderByTimeSlots %}
             {% include molecule('time-slot-position') with {
                 data: {
-                    idTimeSlot: key,
+                    idTimeSlot: key|slice(22),
                     articleCount: 0,
                     articlesQuantity: 0,
                     timeSlot: 0,

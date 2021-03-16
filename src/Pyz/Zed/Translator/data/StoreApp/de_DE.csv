@@ -184,3 +184,6 @@ multi.picking.placeholder.input, Lagerplatz scannen
 multi.picking.done.dialog.title, Picking fertig gestellt
 multi.picking.done.dialog.button.submit, Scanning bestätigen
 multi.picking.done.dialog.content, Du hast alle deine Container einem Lagerplatz zugeordnet?
+multi.picking.order.dialog.title, Check deinen Pick
+multi.picking.order.dialog.content, Zone fertigstellt oder willst du nochmal prüfen?
+multi.picking.order.dialog.button, Zone Bestätigen

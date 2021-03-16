@@ -4,7 +4,11 @@
     merchant: merchant,
     orderForScanningContainer: orderForScanningContainer,
     listOfContainers: listOfContainers,
-    nextOrderPosition: nextOrderPosition
+    nextOrderPosition: nextOrderPosition,
+    orderPosition: orderPosition,
+    requestFromPickingArticles: requestFromPickingArticles,
+    redirectToPickingArticles: redirectToPickingArticles,
+    itemSku: itemSku
 } %}
 
 {% block header %}
@@ -31,12 +35,14 @@
     {% include molecule('container-scan-order') with {
         data: {
             nextOrderPosition: data.nextOrderPosition,
+            orderPosition: orderPosition,
             idOrderReference: data.orderForScanningContainer.orderReference,
+            itemSku: itemSku,
             usedContainersWithShelf: data.orderForScanningContainer.pickingContainers,
-            colorCode: data.orderForScanningContainer.pickingColor,
-            colorNumber: data.orderForScanningContainer.pickingColor,
             listOfContainers: data.listOfContainers,
-            pickingColor: data.orderForScanningContainer.pickingColor
+            pickingColor: data.orderForScanningContainer.pickingColor,
+            requestFromPickingArticles: requestFromPickingArticles,
+            redirectToPickingArticles: redirectToPickingArticles
         }
     } only %}
 {% endblock content %}

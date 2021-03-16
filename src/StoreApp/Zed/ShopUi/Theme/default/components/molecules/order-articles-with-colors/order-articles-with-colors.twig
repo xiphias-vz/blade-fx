@@ -12,6 +12,12 @@
 {% block body %}
     <div class="{{ config.name }}__display-flex">
         {% for article in data.articles %}
+            {% if article.pickingItemPosition == data.orderNumber %}
+                {% set articleBorderColor = article.pickingColor.circleColor %}
+            {% else %}
+                {% set articleBorderColor = 'transparent' %}
+            {% endif %}
+
             <div class="{{ config.name }}__circle-wrapper">
                 <div class="{{ config.name }}__circle-spacing">
                     {% include atom('circle') with {
@@ -19,7 +25,7 @@
                             content: article.pickingColor.idColor,
                             backgroundColor: article.pickingColor.backColor,
                             textColor: article.pickingColor.foreColor,
-                            borderColor: article.pickingColor.circleColor,
+                            borderColor: articleBorderColor,
                             paddingLeft: '',
                             paddingTop: '0.2rem',
                         }

@@ -26,6 +26,7 @@ class PosListeController extends AbstractController
     protected const REQUEST_PARAM_CSRF_TOKEN = 'token';
     protected const REQUEST_PARAM_ID_ORDER = 'idOrder';
     protected const REQUEST_PARAM_SKU = 'sku';
+    protected const REQUEST_PARAM_POSITION = 'position';
     protected const SERVICE_FORM_CSRF_PROVIDER = 'form.csrf_provider';
     protected const FORMAT_POS_LISTE_TOKEN_NAME = 'pos-liste-%d';
 
@@ -43,21 +44,23 @@ class PosListeController extends AbstractController
 
         $idOrder = $request->get(static::REQUEST_PARAM_ID_ORDER);
         $sku = $request->get(static::REQUEST_PARAM_SKU);
+        $position = $request->get(static::REQUEST_PARAM_POSITION);
 
-        $csfrTokenName = sprintf(static::FORMAT_POS_LISTE_TOKEN_NAME, $idOrder);
+        $csrfTokenName = sprintf(static::FORMAT_POS_LISTE_TOKEN_NAME, $idOrder);
 
-        if (!$this->isCsrfTokenValid($csfrTokenName, $request)) {
+        if (!$this->isCsrfTokenValid($csrfTokenName, $request)) {
             $this->addErrorMessage(
                 MessagesConfig::MESSAGE_PERMISSION_FAILED
             );
 
-            return $this->redirectResponse(PickerConfig::URL_PICKING_LIST);
+            return $this->redirectResponse(PickerConfig::URL_DIFF_SECTIONS);
         }
-        $pickingRedirect = PickerConfig::URL_MULTI_PICKING_START_PICKING;
+        $pickingRedirect = PickerConfig::URL_MULTI_PICKING_START_PICKING . '?sku=' . $sku . '&position=' . $position;
 
         $orderParams[] = [
                 'pickZone' => $pickingZoneTransfer->getName(),
                 'sku' => $sku,
+                'position' => $position,
             ];
 
         return $this->createIndexActionResponse($request, $orderParams, $orderItemTransfer, $pickingRedirect);

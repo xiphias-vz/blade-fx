@@ -8,10 +8,10 @@
 namespace StoreApp\Zed\Picker\Communication\Controller;
 
 use Generated\Shared\Transfer\MerchantTransfer;
-use Generated\Shared\Transfer\PickingContainerTransfer;
 use Pyz\Shared\Oms\OmsConfig;
 use StoreApp\Shared\Picker\PickerConfig;
 use StoreApp\Zed\Merchant\Communication\Plugin\EventDispatcher\MerchantProviderEventDispatcherPlugin;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
@@ -74,118 +74,69 @@ class MultiPickingController extends BaseOrderPickingController
      */
     public function multiOrderPickingAction(Request $request)
     {
-        //  Get data ($idSalesOrder, $productSku) from request
-        //        $idSalesOrder = $request->get(PickerConfig::REQUEST_PARAM_ID_ORDER) ?? 0;
-        //        $productSku = $request->get(PickerConfig::REQUEST_PARAM_SKU);
-
-        $transfer = $this->getFacade()->getPickingHeaderTransfer();
-
-        $nextOIData = $transfer->getNextOrderItem(0);
-        $positionsData = $transfer->getOrderItems($nextOIData->getPickingItemPosition());
-
-        $orderContainerData = $transfer->getOrderList();
-        $containerData = new PickingContainerTransfer();
-        foreach ($orderContainerData as $order) {
-            if ($nextOIData["idOrder"] == $order["idOrder"]) {
-//              $containerData = $containerData->fromArray(array_values(get_object_vars($order["pickingContainers"])));
-//              $containerData = $order["pickingContainers"];
-//              $containerData = $containerData->getArrayCopy()["containerID"];
-
-                break;
+        if ($request->request->count() > 0) {
+            if ($request->request->has('saveAndGoToNext')) {
+                if ($request->request->get("saveAndGoToNext") == true) {
+                    $position = (int)$request->request->get("position");
+                    $quantity = (int)$request->request->get("quantity");
+                    $status = $request->request->get("status");
+                    if ($status == "pause") {
+                        $currentItemPausedResponse = $this->getFacade()->setCurrentOrderItemPaused(true);
+                    } else {
+                        $this->getFacade()->setCurrentOrderItemPicked($quantity);
+                    }
+                    // Save
+                }
             }
         }
 
-        $isLastPosition = false;
-        if ($transfer->getLastPickingItemPosition() == $transfer->getMaxPickingItemPosition()) {
-            $isLastPosition = true;
+        $transfer = $this->getFacade()->getPickingHeaderTransfer();
+
+        $productToDisplay = $_REQUEST['sku'] ?? '';
+        $positionToDisplay = $_REQUEST['position'] ?? '';
+        if ($productToDisplay != '' && $positionToDisplay != '') {
+            $nextOIData = $transfer->getNextOrderItem($positionToDisplay - 1);
+        } else {
+            $nextOIData = $transfer->getNextOrderItem(0);
         }
-//        $pickingOrderTransferData = self::PICKING_ORDER_TRANSFER;
+        $orderPosition = $nextOIData['pickingPosition'];
+        $positionsData = $transfer->getOrderItems($nextOIData->getPickingItemPosition());
 
-//        $nextOrderItem = $data->getNextOrderItem(0);
-
-//        $idSalesOrder = $nextOrderItem->getIdOrder();
-//       $productSku = $nextOrderItem->getS();
-//        $alterativeEan = $nextOrderItem->getA();
-
-
-//        $idSalesOrder = $pickingOrderTransferData[0]["idOrder"];
-//        $productSku = $pickingOrderTransferData[0]["sku"];
-//        $alternativeEan = $pickingOrderTransferData[0]["alternativeEan"];
-//        $shelf = $pickingOrderTransferData[0]["shelf"];
-//        $shelfFloor = $pickingOrderTransferData[0]["shelfFloor"];
-//        $shelfField = $pickingOrderTransferData[0]["shelfField"];
-//        $imageUrl = $pickingOrderTransferData[0]["imageUrl"];
-
-//        $pickingZoneTransfer = $this->getFacade()->findPickingZoneInSession();
-//        if($pickingZoneTransfer->getName() == ""){
-//            $pickingZoneTransfer->setIdPickingZone(5);
-//            $pickingZoneTransfer->setName("Obst+Gemüse");
-//        }
-//
-//        $salesOrderTransfer = $this->getFactory()->getSalesFacade()
-//            ->findOrderByIdSalesOrderAndPickingZoneForStoreApp($idSalesOrder, $pickingZoneTransfer->getName());
-//
-//        $userTransfer = $this->getCurrentUser($request);
-//
-//        if (!$this->getFactory()->getPermissionAccessFacade()->isAccessAllowed(
-//            $salesOrderTransfer,
-//            $userTransfer,
-//            static::OMS_ORDER_STATUSES_FOR_PICKING_PROCESS
-//        )) {
-//            $this->addErrorMessage(MessagesConfig::MESSAGE_PERMISSION_FAILED);
-//
-//            return $this->redirectResponse(PickerConfig::URL_PICKING_LIST);
-//        }
-//
-//        if (!$this->isOrderPickingBlockAvailableForUser($idSalesOrder, $userTransfer, $pickingZoneTransfer)) {
-//            $this->addErrorMessage(
-//                static::PICKING_ERROR_MESSAGE_ORDER_IS_BEING_PROCESSED
-//            );
-//
-//            return $this->redirectResponse(PickerConfig::URL_PICKING_LIST);
-//        }
-
-//        $aggregatedItemTransfers = $this->getFactory()->getItemAggregator()
-//            ->aggregateOrderItemsQuantities($salesOrderTransfer->getItems()->getArrayCopy());
-//
-//        $aggregatedItemTransfers = $this->sortAggregatedItemTransfersByPickingOrder($aggregatedItemTransfers);
-//
-//        $orderItemSelectionFormDataProvider = $this->getFactory()->createOrderItemSelectionFormDataProvider();
-//        $orderItemSelectionForm = $this->getFactory()->createOrderItemSelectionForm(
-//            $orderItemSelectionFormDataProvider->getData($salesOrderTransfer->getIdSalesOrder()),
-//            $orderItemSelectionFormDataProvider->getOptions($aggregatedItemTransfers, $salesOrderTransfer->getStore())
-//        );
-//
-//        $orderItemSelectionForm->handleRequest($request);
+        $isLastPosition = "false";
+        if ($transfer->getLastPickingItemPosition() == $transfer->getMaxPickingItemPosition()) {
+            $isLastPosition = "true";
+        }
 
         return [
             'currentPositionData' => $nextOIData,
+            'orderPosition' => $orderPosition,
             'pickingOrderItemsData' => $positionsData,
-//            'pickingOrderData' => $pickingOrderTransferData,
-//            'pickingOrderItemData' => $pickingOrderItemTransferData,
-//            'merchant' => $this->getMerchantFromRequest($request),
-//            'maxPickingBags' => $this->getFactory()->getConfig()->getMaxPickingBags(),
-//            'itemsCount' => $this->getItemsCount($aggregatedItemTransfers),
             'itemsCount' => 0,
-//            'itemsToAlternativeEanMap' => $alternativeEan,
-//            'itemsToShelfMap' => $this->getItemsToShelfMap($aggregatedItemTransfers),
-//            'itemsToProductAttributesMap' => $this->getItemsToProductAttributesMap($aggregatedItemTransfers),
-//            'itemImageUrls' => $this->getSkuToImageMapFromItemTransfers($aggregatedItemTransfers),
-//            'pickingForm' => $orderItemSelectionForm->createView(),
-//            'pickingFormSkuKeys' => $pickingFormSkuKeys,
-//            'pickingFormWeightKeys' => $pickingFormWeightKeys,
             'requestParamIdSalesOrder' => PickerConfig::REQUEST_PARAM_ID_ORDER,
-//            'idSalesOrder' => $idSalesOrder,
             'orderReference' => $nextOIData->getOrderReference(),
-//            'orderDeliveryTime' => null,
             'urlContainerSelect' => PickerConfig::URL_MULTI_PICKING_SELECT_CONTAINERS,
             'urlMultiPickingOverview' => PickerConfig::URL_MULTI_PICKING_OVERVIEW,
             'urlPosListe' => PickerConfig::URL_POS_LISTE,
+            'urlScanShelves' => PickerConfig::URL_MULTI_PICKING_SCAN_SHELVES,
             'isLastPosition' => $isLastPosition,
-            'containerData' => $containerData,
-//            'multiPickingForm' => $orderItemSelectionForm->createView()
-//            'productSku' => $productSku,
         ];
+    }
+
+    /**
+     * @param \Symfony\Component\HttpFoundation\Request $request
+     *
+     * @return array|\Symfony\Component\HttpFoundation\JsonResponse
+     */
+    public function checkContainerIdAction(Request $request)
+    {
+        $response = false;
+        if ($request->request->has('scannedContainerID')) {
+            $position = $request->request->get("position");
+            $containerID = $request->request->get("scannedContainerID");
+            $response = $this->getFacade()->checkContainerForCurrentItem($containerID);
+        }
+
+        return new JsonResponse($response);
     }
 
     /**

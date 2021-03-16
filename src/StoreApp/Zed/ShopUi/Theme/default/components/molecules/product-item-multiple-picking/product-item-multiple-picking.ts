@@ -53,7 +53,8 @@ export default class ProductItem extends Component {
     eanInputFieldWrapper: HTMLElement;
     eanInputData: HTMLElement;
     pricePerKgData: HTMLElement;
-    containerDataFromDiv: HTMLElement;
+    pickingItemPosition: HTMLElement;
+    lastPositionDataFromDiv: HTMLElement;
     popUp: HTMLElement;
     btnSubmitPick: HTMLElement;
     bawContainerButton: HTMLElement;
@@ -78,7 +79,7 @@ export default class ProductItem extends Component {
         this.weightMin = Number(this.$weightField.attr('min'));
         this.eanInputFieldWrapper = this.querySelector('#eanScannenDiv');
         this.productBlockWrapper = <HTMLElement>document.getElementById('gridOfTheProduct');
-        // this.eanInputFieldWrapper.addEventListener('keypress', (event: KeyboardEvent) => this.formKeyPressHandler(event));
+        this.eanInputFieldWrapper.addEventListener('keypress', (event: KeyboardEvent) => this.formKeyPressHandler(event));
         this.popUp = <HTMLElement>document.getElementsByClassName('popup-ui')[0];
         this.btnSubmitPick = <HTMLElement>document.querySelector('#btnSubmitPick');
         this.bawContainerButton = <HTMLElement>document.querySelector('.bawContainerButton');
@@ -87,7 +88,8 @@ export default class ProductItem extends Component {
         this.alternativeEanElement = <HTMLInputElement>this.$this.find('.alternativeEan')[0];
         this.eanInputData = $('.eanData').data('ean');
         this.pricePerKgData = $('.eanData').data('priceperkg');
-        this.containerDataFromDiv = $('#containerDataDiv').data('containerdata');
+        this.pickingItemPosition = $('#pickingItemPositionDiv').data('pickingitemposition');
+        this.lastPositionDataFromDiv = $('#lastPositionDataDiv').data('lastpositiondata');
         this.mapEvents();
         this.boldLastThreeEanNumbers();
         this.$previousSku = $('#formPreviousSku').val();
@@ -161,29 +163,20 @@ export default class ProductItem extends Component {
     }
 
     protected onSubmitClick(event: MouseEvent) {
-        // const items = Number((<HTMLInputElement>document.getElementsByName('itemsCount')[0]).value);
-        // const count = Number((<HTMLInputElement>document.getElementsByName('counter')[0]).value);
-        // if (items === count) {
-        //     const pickedElement = <HTMLElement>document.querySelector('.js-pick-products__picked.pop');
-        //     const notPickedElement = <HTMLElement>document.querySelector('.js-pick-products__not-picked.pop');
-        //     const containerCountElement = <HTMLElement>document.querySelector('.js-pick-products__bags.pop');
-        //     const containerCount = (<HTMLInputElement>document.getElementsByName('containerCount')[0]).value;
-        //     let pickedItemsCount = Number((<HTMLInputElement>document.getElementsByName('pickedItemsCount')[0]).value);
-        //     let notPickedItemsCount = Number((<HTMLInputElement>document.getElementsByName('notPickedItemsCount')[0]).value);
-        //     pickedItemsCount = pickedItemsCount + this.currentValue;
-        //     notPickedItemsCount = notPickedItemsCount + this.maxQuantity - this.currentValue;
-        //     pickedElement.innerText = (pickedItemsCount).toString();
-        //     notPickedElement.innerText = (notPickedItemsCount).toString();
-        //     containerCountElement.innerText = containerCount;
-        //
-        // } else {
-        //     event.view.document.forms['order_item_selection_form'].submit();
-        // }
 
-        $(".pick-products__action-wrapper").css("display", "block");
-        document.querySelector('.popup-ui-container-scan').classList.add('popup-ui-container-scan--show');
-        this.$containerScanConfirmation = document.getElementById(this.containerScanConfirmation);
-        this.$containerScanConfirmation.addEventListener('keypress', (event: KeyboardEvent) => this.containerScanConfirmationKeyHandler(event));
+        if (Boolean(this.lastPositionDataFromDiv) == true) {
+            document.querySelector("#lastPickingPositionDialog .popup-ui-container-scan").classList.add('popup-ui-container-scan--show');
+        }
+        else{
+            $(".pick-products__action-wrapper").css("display", "block");
+            document.querySelector('.popup-ui-container-scan').classList.add('popup-ui-container-scan--show');
+
+            this.$containerScanConfirmation = document.getElementById(this.containerScanConfirmation);
+            this.$containerScanConfirmation.addEventListener('keypress', (event: KeyboardEvent) => this.containerScanConfirmationKeyHandler(event));
+            this.$containerScanConfirmation.focus();
+            this.$containerScanConfirmation.value = "";
+        }
+
     }
 
     async updateItem(item: StorageItem): Promise<void> {
@@ -270,20 +263,46 @@ export default class ProductItem extends Component {
     protected containerScanConfirmationKeyHandler(event: KeyboardEvent): void {
         if (event.key == 'Enter') {
             event.preventDefault();
-            let inputContainerID = this.$containerScanConfirmation.value;
-            let containerID = this.containerDataFromDiv;
-            if(inputContainerID == containerID){
 
-                const url = window.location.href;
-                let form = $('<form action="' + url + '" method="post">' +
-                    '<input type="text" name="param1" value="goToNextItem" />' +
-                    '</form>');
-                $('body').append(form);
-                form.submit();
-            }
-            else{
-                alert("Container not found");
-            }
+            let inputContainerID = this.$containerScanConfirmation.value;
+            let pickingPosition = this.pickingItemPosition;
+
+            const urlSave = window.location.origin + "/picker/multi-picking/multi-order-picking";
+            const urlCheck = window.location.origin + "/picker/multi-picking/check-container-id";
+
+            fetch(urlCheck,
+                {
+                    method: 'POST',
+                    headers: {'Content-Type':'application/x-www-form-urlencoded'},
+                    body: 'scannedContainerID=' + inputContainerID + '&' + 'position=' + pickingPosition
+                    // body: JSON.stringify({scannedContainerID: inputContainerID, position: pickingPosition})
+
+                })
+                .then(response => response.json())
+                .then(parsedResponse => {
+
+                    if(parsedResponse != undefined && parsedResponse != []){
+                        if(parsedResponse == true){
+                            let form = $('<form action="' + urlSave + '" method="post">' +
+                                '<input type="text" name="saveAndGoToNext" value="true" />' +
+                                '<input type="text" name="position" value="' + pickingPosition + '" />' +
+                                '<input type="text" name="quantity" value="" />' +
+                                '<input type="text" name="status" value="" />' +
+                                '</form>');
+                            $('body').append(form);
+                            form.submit();
+                        }
+                        else{
+                            alert("Container not found");
+                        }
+
+                    }
+
+                })
+                .catch(error => {
+                    console.error(error);
+
+                });
 
         }
 

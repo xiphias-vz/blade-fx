@@ -7,6 +7,7 @@
 
 namespace StoreApp\Zed\Picker\Business\Transfer;
 
+use ArrayObject;
 use Generated\Shared\Transfer\PickingContainerTransfer;
 use Generated\Shared\Transfer\PickingHeaderTransfer as SpyPickingHeaderTransfer;
 use Generated\Shared\Transfer\PickingOrderItemTransfer;
@@ -14,6 +15,9 @@ use Generated\Shared\Transfer\PickingOrderTransfer;
 
 class PickingHeaderTransfer extends SpyPickingHeaderTransfer
 {
+    public const ERR_MESSAGE_ITEM_PICKED = 'Item already picked';
+    public const ERR_MESSAGE_WRONG_CONTAINER = 'Wrong container';
+
     /**
      * @param bool $recalculateItems
      *
@@ -142,6 +146,24 @@ class PickingHeaderTransfer extends SpyPickingHeaderTransfer
     }
 
     /**
+     * @return void
+     */
+    public function removeNotPausedIfPausedExists(): void
+    {
+        foreach ($this->getPickingOrders() as $order) {
+            if ($order->getIsPaused()) {
+                $items = [];
+                foreach ($order->getPickingOrderItems() as $orderItem) {
+                    if ($orderItem->getIsPaused()) {
+                        array_push($items, $orderItem);
+                    }
+                }
+                $order->setPickingOrderItems(new ArrayObject($items));
+            }
+        }
+    }
+
+    /**
      * @param int $oldPosition
      *
      * @return \Generated\Shared\Transfer\PickingOrderTransfer|null
@@ -208,6 +230,22 @@ class PickingHeaderTransfer extends SpyPickingHeaderTransfer
                 if ($orderItem->getPickingItemPosition() == $position) {
                     return $orderItem;
                 }
+            }
+        }
+
+        return null;
+    }
+
+    /**
+     * @param \Generated\Shared\Transfer\PickingOrderItemTransfer $orderItem
+     *
+     * @return \Generated\Shared\Transfer\PickingOrderTransfer|null
+     */
+    public function getOrderItemOrder(PickingOrderItemTransfer $orderItem): ?PickingOrderTransfer
+    {
+        foreach ($this->getPickingOrders() as $order) {
+            if ($order->getIdOrder() == $orderItem->getIdOrder()) {
+                return $order;
             }
         }
 
@@ -294,7 +332,7 @@ class PickingHeaderTransfer extends SpyPickingHeaderTransfer
         $keys = [];
         $items = [];
         foreach ($this->getPickingOrders() as $order) {
-            $key = empty($order->getTimeSlot()) ? "0" : $order->getTimeSlot();
+            $key = $order->getTimeSlotSort() . " " . $order->getTimeSlot();
             if (count(array_keys($keys, $key)) === 0) {
                 array_push($keys, $key);
                 array_push($items, []);
@@ -302,7 +340,8 @@ class PickingHeaderTransfer extends SpyPickingHeaderTransfer
         }
         $result = array_combine($keys, $items);
         foreach ($this->getPickingOrders() as $order) {
-            array_push($result[$order->getTimeSlot()], $order);
+            $key = $order->getTimeSlotSort() . " " . $order->getTimeSlot();
+            array_push($result[$key], $order);
         }
         ksort($result);
 
@@ -383,6 +422,9 @@ class PickingHeaderTransfer extends SpyPickingHeaderTransfer
         foreach ($this->getPickingOrders() as $order) {
             if ($order->getIdOrder() == $item->getIdOrder()) {
                 $order->addPickingOrderItem($item->getIdOrderItem(), $item);
+                if ($item->getIsPaused()) {
+                    $order->setIsPaused(true);
+                }
 
                 return;
             }
@@ -412,6 +454,7 @@ class PickingHeaderTransfer extends SpyPickingHeaderTransfer
      */
     public function setCurrentOrderItemPicked(int $quantityPicked): void
     {
+        $this->setErrorMessage(null);
         $orderItem = $this->getOrderItem($this->getLastPickingItemPosition());
         $orderItem->setQuantityPicked($quantityPicked);
     }
@@ -419,15 +462,43 @@ class PickingHeaderTransfer extends SpyPickingHeaderTransfer
     /**
      * @param bool $isPaused
      *
-     * @return void
+     * @return bool
      */
-    public function setCurrentOrderItemPaused(bool $isPaused): void
+    public function setCurrentOrderItemPaused(bool $isPaused): bool
     {
-        $this->setParents(false);
+        $this->setErrorMessage(null);
         $orderItem = $this->getOrderItem($this->getLastPickingItemPosition());
-        $orderItem->setIsPaused($isPaused);
-        $orderItem->getParent()->setIsPaused($isPaused);
-        $this->setParents(true);
+        if ($orderItem->getQuantityPicked() > 0) {
+            $this->setErrorMessage(static::ERR_MESSAGE_ITEM_PICKED);
+
+            return false;
+        } else {
+            $orderItem->setIsPaused($isPaused);
+            $this->getOrderItemOrder($orderItem)->setIsPaused($isPaused);
+        }
+
+        return true;
+    }
+
+    /**
+     * @param string $containerID
+     *
+     * @return bool
+     */
+    public function checkContainerForCurrentItem(string $containerID): bool
+    {
+        $this->setErrorMessage(null);
+        $order = $this->getOrderItemOrder(
+            $this->getOrderItem($this->getLastPickingItemPosition())
+        );
+        foreach ($order->getPickingContainers() as $container) {
+            if ($container->getContainerID() == $containerID) {
+                return true;
+            }
+        }
+        $this->setErrorMessage(static::ERR_MESSAGE_WRONG_CONTAINER);
+
+        return false;
     }
 
     /**

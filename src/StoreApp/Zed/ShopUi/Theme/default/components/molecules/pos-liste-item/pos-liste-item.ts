@@ -34,7 +34,7 @@ export default class PosListeItem extends Component{
     protected formClickHandler(event: MouseEvent): void
     {
         this.$productItemId = this.$productItemWrapper[0].id;
-        alert('IN PROGRESS \n You will be rerouted to the order picking process to the item with id: ' + this.$productItemId);
+        this.$productItemForm.submit();
     }
 
     /**

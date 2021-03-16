@@ -30,6 +30,7 @@
         <property name="pickingColor" type="PickingColor"/>
         <property name="pickingContainers" type="PickingContainer[]" singular="pickingContainer" associative="true"/>
         <property name="pickingOrderItems" type="PickingOrderItem[]" singular="pickingOrderItem" associative="true"/>
+        <property name="timeSlotSort" type="string"/>
         <property name="parent" type="PickingHeader"/>
     </transfer>
 

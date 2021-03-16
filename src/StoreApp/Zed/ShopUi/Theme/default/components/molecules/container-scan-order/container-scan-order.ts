@@ -105,7 +105,7 @@ export default class ContainerScanOrder extends Component {
                 return;
             }
 
-            let containerExists = this.containerExists(containerNumber);
+            let containerExists = this.containerExists(containerNumber, this.orderReferenceNumber);
 
             if(containerExists) {
                this.showPopUpErrorMessage();
@@ -129,11 +129,11 @@ export default class ContainerScanOrder extends Component {
         }
     }
 
-    protected containerExists(containerNumber): boolean {
+    protected containerExists(containerNumber, orderReferenceNumber): boolean {
         let containerExists = false;
         for(let i = 0; i < this.existingContainers.length; i++) {
             let currentContainer = this.existingContainers[i];
-            if(currentContainer.ContainerCode == containerNumber) {
+            if(currentContainer.ContainerCode == containerNumber && currentContainer.orderReference != orderReferenceNumber) {
                 containerExists = true;
                 this.popupUiErrorInfo.ContainerCode = currentContainer.ContainerCode;
                 this.popupUiErrorInfo.orderReference = currentContainer.orderReference;

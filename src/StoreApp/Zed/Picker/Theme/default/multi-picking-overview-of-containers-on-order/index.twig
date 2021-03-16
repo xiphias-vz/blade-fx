@@ -4,10 +4,9 @@
     pickingOrderTransfer: pickingOrderTransfer,
     urlContainerSelect: urlContainerSelect,
     urlMultiPickingOverview: urlMultiPickingOverview,
-    urlPosListe: urlPosListe
+    urlPosListe: urlPosListe,
+    urlForBackButton: urlForBackButton
 } %}
-
-{% set returnButtonUrl = '' %}
 
 {% block header %}
     {% include organism('header') with {
@@ -15,7 +14,7 @@
             headerLocationTitle: 'multi.picking.header.overview' | trans,
             withoutLogo: true,
             titleColor: 'darkerGreen',
-            buttonUrl: returnButtonUrl
+            buttonUrl: data.urlForBackButton
         }
     } only %}
 {% endblock %}
