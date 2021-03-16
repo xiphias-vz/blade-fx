@@ -46,6 +46,7 @@ export default class ProductItem extends Component {
     protected $quantityOutput: $;
     protected $weightField: $;
     protected $previousSku: $;
+    protected $openModal: $;
     protected $containerScanConfirmation: $;
     eanScanInputElements:HTMLInputElement;
     eanScanInputElement: HTMLInputElement;
@@ -98,6 +99,11 @@ export default class ProductItem extends Component {
             this.focusFirstEanField();
         }
 
+        this.$openModal = $('#idOpenModal').val();
+        this.openModal(this.$openModal);
+
+
+
         this.removeTemporarilyReadOnlyAttributeForNonActiveFields();
 
         if(this.$previousSku == this.dataset.sku)
@@ -125,6 +131,12 @@ export default class ProductItem extends Component {
             this.eanScanInputElements[i].addEventListener('touchstart', () => {
                 this.eanScanInputElements[i].readOnly = false;
             })
+        }
+    }
+
+    protected openModal(openModal?: $): void{
+        if(openModal == "true"){
+            document.querySelector("#lastPickingPositionDialog .popup-ui-container-scan").classList.add('popup-ui-container-scan--show');
         }
     }
 

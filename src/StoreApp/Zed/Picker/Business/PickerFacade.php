@@ -171,6 +171,18 @@ class PickerFacade extends AbstractFacade implements PickerFacadeInterface
     }
 
     /**
+     * @param bool $isCanceled
+     *
+     * @return bool
+     */
+    public function setCurrentOrderItemCanceled(bool $isCanceled): bool
+    {
+        return $this->getFactory()
+            ->createPickingHeaderTransferData()
+            ->setCurrentOrderItemCanceled($isCanceled);
+    }
+
+    /**
      * @param string $containerID
      *
      * @return bool

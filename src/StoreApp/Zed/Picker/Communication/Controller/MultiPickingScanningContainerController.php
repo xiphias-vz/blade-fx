@@ -42,8 +42,10 @@ class MultiPickingScanningContainerController extends AbstractController
         $orderForScanningContainer = $transfer->getOrder($nextOrderPosition);
         $containersShelf = [];
         if ($_SERVER["REQUEST_METHOD"] == "POST") {
-            $submittedData = $request->request->all();
             $containersShelf = json_decode($request->get('containersShelf'));
+            foreach ($containersShelf as $key => $containerWithShelf) {
+                $this->getFacade()->setContainerToOrder($orderForScanningContainer, $containerWithShelf->ContainerCode, $containerWithShelf->ShelfCode);
+            }
             $orderForScanningContainer = $transfer->getNextOrder($nextOrderPosition);
 
             if ($orderForScanningContainer == null) {

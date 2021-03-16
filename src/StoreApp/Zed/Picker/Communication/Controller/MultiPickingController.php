@@ -94,8 +94,9 @@ class MultiPickingController extends BaseOrderPickingController
 
         $productToDisplay = $_REQUEST['sku'] ?? '';
         $positionToDisplay = $_REQUEST['position'] ?? '';
+        $openModal = $_REQUEST['fromModal'] ?? 'false';
         if ($productToDisplay != '' && $positionToDisplay != '') {
-            $nextOIData = $transfer->getNextOrderItem($positionToDisplay - 1);
+            $nextOIData = $transfer->getOrderItem($positionToDisplay);
         } else {
             $nextOIData = $transfer->getNextOrderItem(0);
         }
@@ -103,7 +104,7 @@ class MultiPickingController extends BaseOrderPickingController
         $positionsData = $transfer->getOrderItems($nextOIData->getPickingItemPosition());
 
         $isLastPosition = "false";
-        if ($transfer->getLastPickingItemPosition() == $transfer->getMaxPickingItemPosition()) {
+        if ($transfer->getLastPickingItemPosition() == $transfer->getMaxPickingItemPosition() || $openModal == 'true') {
             $isLastPosition = "true";
         }
 
@@ -119,6 +120,7 @@ class MultiPickingController extends BaseOrderPickingController
             'urlPosListe' => PickerConfig::URL_POS_LISTE,
             'urlScanShelves' => PickerConfig::URL_MULTI_PICKING_SCAN_SHELVES,
             'isLastPosition' => $isLastPosition,
+            'openModal' => $openModal,
         ];
     }
 

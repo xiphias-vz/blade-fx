@@ -27,6 +27,7 @@ class PosListeController extends AbstractController
     protected const REQUEST_PARAM_ID_ORDER = 'idOrder';
     protected const REQUEST_PARAM_SKU = 'sku';
     protected const REQUEST_PARAM_POSITION = 'position';
+    protected const REQUEST_PARAM_FROM_MODAL = 'fromModal';
     protected const SERVICE_FORM_CSRF_PROVIDER = 'form.csrf_provider';
     protected const FORMAT_POS_LISTE_TOKEN_NAME = 'pos-liste-%d';
 
@@ -43,8 +44,9 @@ class PosListeController extends AbstractController
         $orderItemTransfer = $transfer->getGroupedOrderItems();
 
         $idOrder = $request->get(static::REQUEST_PARAM_ID_ORDER);
-        $sku = $request->get(static::REQUEST_PARAM_SKU);
-        $position = $request->get(static::REQUEST_PARAM_POSITION);
+        $sku = $request->get(static::REQUEST_PARAM_SKU) ?? '';
+        $position = $request->get(static::REQUEST_PARAM_POSITION) ?? '';
+        $fromModal = $request->get(static::REQUEST_PARAM_FROM_MODAL) ?? 'false';
 
         $csrfTokenName = sprintf(static::FORMAT_POS_LISTE_TOKEN_NAME, $idOrder);
 
@@ -55,12 +57,17 @@ class PosListeController extends AbstractController
 
             return $this->redirectResponse(PickerConfig::URL_DIFF_SECTIONS);
         }
-        $pickingRedirect = PickerConfig::URL_MULTI_PICKING_START_PICKING . '?sku=' . $sku . '&position=' . $position;
+        if ($fromModal == 'true') {
+            $pickingRedirect = PickerConfig::URL_MULTI_PICKING_START_PICKING . '?sku=' . $sku . '&position=' . $position . '&fromModal=true';
+        } else {
+            $pickingRedirect = PickerConfig::URL_MULTI_PICKING_START_PICKING . '?sku=' . $sku . '&position=' . $position;
+        }
 
         $orderParams[] = [
                 'pickZone' => $pickingZoneTransfer->getName(),
                 'sku' => $sku,
                 'position' => $position,
+                'fromModal' => $fromModal,
             ];
 
         return $this->createIndexActionResponse($request, $orderParams, $orderItemTransfer, $pickingRedirect);

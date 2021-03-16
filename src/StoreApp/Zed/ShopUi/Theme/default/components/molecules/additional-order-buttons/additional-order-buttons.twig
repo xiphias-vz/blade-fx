@@ -75,7 +75,8 @@
         <input type="hidden" name="token" value="{{ csrf_token(tokenName) }}">
         <input type="hidden" name="skipToken" value="picking">
         <input type="hidden" name="position" value="{{ data.position }}">
-        <input type="hidden" id="addContainerSku" name="sku" value="">
+        <input type="hidden" id="addFromModal1" name="addFromModal1" value="false">
+        <input type="hidden" id="addOverviewSku" name="sku" value="">
     </form>
 
     <form id="formAddContainerSku" action="{{ data.urlContainerSelect }}" method="post">
@@ -93,18 +94,19 @@
         <input type="hidden" name="idOrder" value="{{ data.idSalesOrder }}">
         <input type="hidden" name="token" value="{{ csrf_token(tokenName) }}">
         <input type="hidden" name="position" value="{{ data.position }}">
-        <input type="hidden" id="addFromModal" name="fromModal" value="false">
+        <input type="hidden" id="addFromModal" name="fromModal" value="">
         <input type="hidden" id="addPosListeSku" name="sku" value="">
     </form>
 
     <script>
-        function multiPickingOverview(sku) {
+        function multiPickingOverview(sku, fromModal1) {
 
-            document.getElementById('addContainerSku').value = sku;
+            document.getElementById('addOverviewSku').value = sku;
+            document.getElementById('addFromModal1').value = fromModal1;
             document.getElementById('formOverview').submit();
         }
 
-        function posListeForm(sku, fromModal='false')
+        function posListeForm(sku, fromModal)
         {
             document.getElementById('addPosListeSku').value = sku;
             document.getElementById('addFromModal').value = fromModal;

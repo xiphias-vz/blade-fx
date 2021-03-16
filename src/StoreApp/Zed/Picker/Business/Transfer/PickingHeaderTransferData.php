@@ -220,6 +220,22 @@ class PickingHeaderTransferData
     }
 
     /**
+     * @param bool $isCanceled
+     *
+     * @return bool
+     */
+    public function setCurrentOrderItemCanceled(bool $isCanceled): bool
+    {
+        $transfer = $this->getTransferFromSession();
+        if ($transfer->setCurrentOrderItemCanceled($isCanceled)) {
+            //TODO save data to spy_sales_order_item - SpySalesOrderItemQuery
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
      * @param string $containerID
      *
      * @return bool

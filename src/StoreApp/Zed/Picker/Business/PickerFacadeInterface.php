@@ -121,6 +121,13 @@ interface PickerFacadeInterface
     public function setCurrentOrderItemPaused(bool $isPaused): bool;
 
     /**
+     * @param bool $isCanceled
+     *
+     * @return bool
+     */
+    public function setCurrentOrderItemCanceled(bool $isCanceled): bool;
+
+    /**
      * @param string $containerID
      *
      * @return bool

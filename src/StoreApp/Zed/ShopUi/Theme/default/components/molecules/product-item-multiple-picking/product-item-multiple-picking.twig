@@ -15,7 +15,8 @@
     urlPosListe: '',
     urlScanShelves: '',
     orderPosition: '',
-    isLastPosition: ''
+    isLastPosition: '',
+    openModal: '',
 
 } %}
 
@@ -43,6 +44,7 @@
 {% block body %}
     <div id="gridOfTheProduct" class="grid {{ config.name }}__card" data-sku="{{ itemSku }}">
         <input type="hidden" id="formPreviousSku" value="{{ itemSku }}">
+        <input type="hidden" id="idOpenModal" value="{{ data.openModal }}">
         <div class="col col--expand">
             <div class="box {{ config.name }}__info">
                 <div class="{{ config.name }}__item-head-box">
@@ -267,7 +269,7 @@
             {% block content %}
                 <div class="grid grid--center">
                     <div style="margin-bottom: 40px;">{{ 'multi.picking.order.dialog.content' | trans }}</div>
-                    <button type="button" onclick="multiPickingOverview({{ data.itemSku }})" class="button button--expand dialogCheckPickButtons" style="margin-bottom: 10px">
+                    <button type="button" onclick="multiPickingOverview({{ data.itemSku }}, 'true')" class="button button--expand dialogCheckPickButtons" style="margin-bottom: 10px">
                     <span class="col--md-4">
                             {% include atom('icon') with {
                                 data: {

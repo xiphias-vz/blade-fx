@@ -7,7 +7,6 @@
     backButtonUrl: backButtonUrl,
 } %}
 {% block header %}
-    {# TODO: ADD POSITION FROM WHERE THIS CAME #}
    {% include organism('header') with {
         data: {
             posListe: true,
@@ -37,7 +36,7 @@
                     aisle: item.aisle,
                     orderNumber: item.idOrder,
                     orders: item.orders,
-
+                    pickingItemPosition: item.pickingItemPosition,
                 },
             } only %}
             {% endembed %}

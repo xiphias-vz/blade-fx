@@ -237,6 +237,24 @@ class PickingHeaderTransfer extends SpyPickingHeaderTransfer
     }
 
     /**
+     * @return \Generated\Shared\Transfer\PickingOrderItemTransfer|null
+     */
+    public function getFirstNonPickedOrderItem(): ?PickingOrderItemTransfer
+    {
+        $maxPosition = $this->getMaxPickingItemPosition();
+        for ($i = 1; $i <= $maxPosition; $i++) {
+            $orderItem = $this->getOrderItem($i);
+            if ($orderItem->getQuantityPicked() == 0
+                && !$orderItem->getIsPaused()
+                && !$orderItem->getIsCancelled()) {
+                return $orderItem;
+            }
+        }
+
+        return null;
+    }
+
+    /**
      * @param \Generated\Shared\Transfer\PickingOrderItemTransfer $orderItem
      *
      * @return \Generated\Shared\Transfer\PickingOrderTransfer|null
@@ -476,6 +494,22 @@ class PickingHeaderTransfer extends SpyPickingHeaderTransfer
             $orderItem->setIsPaused($isPaused);
             $this->getOrderItemOrder($orderItem)->setIsPaused($isPaused);
         }
+
+        return true;
+    }
+
+    /**
+     * @param bool $isCanceled
+     *
+     * @return bool
+     */
+    public function setCurrentOrderItemCanceled(bool $isCanceled): bool
+    {
+        $this->setErrorMessage(null);
+        $orderItem = $this->getOrderItem($this->getLastPickingItemPosition());
+        $orderItem
+            ->setIsCancelled($isCanceled)
+            ->setQuantityPicked(0);
 
         return true;
     }

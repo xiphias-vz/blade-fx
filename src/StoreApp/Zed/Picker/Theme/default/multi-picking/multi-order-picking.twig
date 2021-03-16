@@ -11,7 +11,8 @@
     isLastPosition: isLastPosition,
     urlMultiPickingOverview: urlMultiPickingOverview,
     urlScanShelves: urlScanShelves,
-    orderPosition: orderPosition
+    orderPosition: orderPosition,
+    openModal: openModal,
 } %}
 
  {% if data.currentPositionData is defined %}
@@ -75,7 +76,8 @@
                 urlMultiPickingOverview: data.urlMultiPickingOverview,
                 urlPosListe: data.urlPosListe,
                 isLastPosition: data.isLastPosition,
-                urlScanShelves: data.urlScanShelves
+                urlScanShelves: data.urlScanShelves,
+                openModal: data.openModal,
             },
             attributes: {
                 'data-sku': currentPosition.ean,

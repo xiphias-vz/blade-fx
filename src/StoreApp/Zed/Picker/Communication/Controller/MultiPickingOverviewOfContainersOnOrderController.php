@@ -26,6 +26,7 @@ class MultiPickingOverviewOfContainersOnOrderController extends AbstractControll
     protected const SERVICE_FORM_CSRF_PROVIDER = 'form.csrf_provider';
     protected const FORMAT_OVERVIEW_TOKEN_NAME = 'overview-%d';
     protected const REQUEST_PARAM_POSITION = 'position';
+    protected const REQUEST_PARAM_FROM_MODAL = 'addFromModal1';
 
     /**
      * @param \Symfony\Component\HttpFoundation\Request $request
@@ -41,12 +42,17 @@ class MultiPickingOverviewOfContainersOnOrderController extends AbstractControll
         $sku = $request->get(static::REQUEST_PARAM_SKU);
         $csrfTokenName = sprintf(static::FORMAT_OVERVIEW_TOKEN_NAME, $idOrder);
         $position = $request->get(static::REQUEST_PARAM_POSITION);
+        $fromModal = $request->get(static::REQUEST_PARAM_FROM_MODAL) ?? 'false';
 
         $skipCheck = $_REQUEST['skipToken'];
 
         $urlForBackButton = '';
         if ($idOrder && $sku) {
-            $urlForBackButton = PickerConfig::URL_MULTI_PICKING_START_PICKING . '?sku=' . $sku . '&position=' . $position;
+            if ($fromModal == 'true') {
+                $urlForBackButton = PickerConfig::URL_MULTI_PICKING_START_PICKING . '?sku=' . $sku . '&position=' . $position . '&fromModal=true';
+            } else {
+                $urlForBackButton = PickerConfig::URL_MULTI_PICKING_START_PICKING . '?sku=' . $sku . '&position=' . $position;
+            }
         }
 
         if ($skipCheck != 'skipToken') {
