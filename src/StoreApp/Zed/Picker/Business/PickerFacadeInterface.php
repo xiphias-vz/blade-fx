@@ -108,10 +108,11 @@ interface PickerFacadeInterface
 
     /**
      * @param int $quantityPicked
+     * @param int $weight
      *
      * @return void
      */
-    public function setCurrentOrderItemPicked(int $quantityPicked): void;
+    public function setCurrentOrderItemPicked(int $quantityPicked, int $weight): void;
 
     /**
      * @param bool $isPaused

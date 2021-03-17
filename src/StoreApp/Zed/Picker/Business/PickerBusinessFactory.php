@@ -29,6 +29,7 @@ use StoreApp\Zed\Picker\PickerDependencyProvider;
 use Symfony\Component\HttpFoundation\Session\Session;
 
 /**
+ * @method \StoreApp\Zed\Picker\Business\PickerFacadeInterface getFacade()
  * @method \StoreApp\Zed\Picker\PickerConfig getConfig()
  */
 class PickerBusinessFactory extends AbstractBusinessFactory
@@ -128,7 +129,9 @@ class PickerBusinessFactory extends AbstractBusinessFactory
             $this->getOmsFacade(),
             $this->getSalesFacade(),
             $this->getSessionService(),
-            $this->getUserFacade()
+            $this->getUserFacade(),
+            $this->getPickingZoneFacade(),
+            $this->createOrderUpdater()
         );
     }
 

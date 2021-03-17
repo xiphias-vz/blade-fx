@@ -21,6 +21,8 @@ use Symfony\Component\HttpFoundation\Request;
 class MultiPickingController extends BaseOrderPickingController
 {
     public const ID_ORDERS = 'idOrders';
+    public const ORDER_IS_BEING_PROCESSED_MESSAGE = 'storeapp.picking.message.error.order-is-being-processed';
+    public const REDIRECT_SKIP_TOKEN = 'backToItem';
 
     protected const OMS_ORDER_STATUSES_FOR_PICKING_PROCESS = [
         OmsConfig::STORE_STATE_READY_FOR_PICKING,
@@ -45,7 +47,7 @@ class MultiPickingController extends BaseOrderPickingController
             for ($indexOfOrder = 0; $indexOfOrder < $orderCount; $indexOfOrder++) {
                 if (!$this->isOrderPickingBlockAvailableForUser($idOrders[$indexOfOrder], $userTransfer, $pickingZoneTransfer)) {
                     $this->addErrorMessage(
-                        static::PICKING_ERROR_MESSAGE_ORDER_IS_BEING_PROCESSED
+                        static::ORDER_IS_BEING_PROCESSED_MESSAGE
                     );
 
                     return $this->redirectResponse(PickerConfig::URL_ORDER_MULTI_PICKING);
@@ -79,13 +81,13 @@ class MultiPickingController extends BaseOrderPickingController
                 if ($request->request->get("saveAndGoToNext") == true) {
                     $position = (int)$request->request->get("position");
                     $quantity = (int)$request->request->get("quantity");
+                    $weight = (int)$request->request->get("weight");
                     $status = $request->request->get("status");
-                    if ($status == "pause") {
+                    if ($status == "paused") {
                         $currentItemPausedResponse = $this->getFacade()->setCurrentOrderItemPaused(true);
                     } else {
-                        $this->getFacade()->setCurrentOrderItemPicked($quantity);
+                        $this->getFacade()->setCurrentOrderItemPicked($quantity, $weight);
                     }
-                    // Save
                 }
             }
         }
@@ -101,6 +103,8 @@ class MultiPickingController extends BaseOrderPickingController
             $nextOIData = $transfer->getNextOrderItem(0);
         }
         $orderPosition = $nextOIData['pickingPosition'];
+        $orderItemPosition = $nextOIData['pickingItemPosition'];
+
         $positionsData = $transfer->getOrderItems($nextOIData->getPickingItemPosition());
 
         $isLastPosition = "false";
@@ -108,15 +112,19 @@ class MultiPickingController extends BaseOrderPickingController
             $isLastPosition = "true";
         }
 
+        $urlOverview = PickerConfig::URL_MULTI_PICKING_OVERVIEW;
+        $urlOverview .= '?skipToken=' . static::REDIRECT_SKIP_TOKEN . '&sku=' . $nextOIData->getEan() . '&position=' . $nextOIData->getPickingItemPosition();
+
         return [
             'currentPositionData' => $nextOIData,
             'orderPosition' => $orderPosition,
+            'orderItemPosition' => $orderItemPosition,
             'pickingOrderItemsData' => $positionsData,
             'itemsCount' => 0,
             'requestParamIdSalesOrder' => PickerConfig::REQUEST_PARAM_ID_ORDER,
             'orderReference' => $nextOIData->getOrderReference(),
             'urlContainerSelect' => PickerConfig::URL_MULTI_PICKING_SELECT_CONTAINERS,
-            'urlMultiPickingOverview' => PickerConfig::URL_MULTI_PICKING_OVERVIEW,
+            'urlMultiPickingOverview' => $urlOverview,
             'urlPosListe' => PickerConfig::URL_POS_LISTE,
             'urlScanShelves' => PickerConfig::URL_MULTI_PICKING_SCAN_SHELVES,
             'isLastPosition' => $isLastPosition,
@@ -132,13 +140,32 @@ class MultiPickingController extends BaseOrderPickingController
     public function checkContainerIdAction(Request $request)
     {
         $response = false;
+        $errorMessage = "";
+        $isLastPosition = "false";
+
         if ($request->request->has('scannedContainerID')) {
             $position = $request->request->get("position");
             $containerID = $request->request->get("scannedContainerID");
+
             $response = $this->getFacade()->checkContainerForCurrentItem($containerID);
+
+            $transfer = $this->getFacade()->getPickingHeaderTransfer();
+            if ($response) {
+                if ($transfer->isLastItem()) {
+                    $isLastPosition = "true";
+                }
+            } else {
+                $errorMessage = $transfer->getErrorMessage();
+            }
         }
 
-        return new JsonResponse($response);
+        $responseArray = [
+            "containerCheck" => $response,
+            "errorMessage" => $errorMessage,
+            "isLastPosition" => $isLastPosition,
+        ];
+
+        return new JsonResponse($responseArray);
     }
 
     /**
@@ -148,7 +175,7 @@ class MultiPickingController extends BaseOrderPickingController
      */
     public function multiOrderPickingActionPost(Request $request)
     {
-        $this->getFacade()->setCurrentOrderItemPicked(1);
+        $this->getFacade()->setCurrentOrderItemPicked(1, 0);
     }
 
     /**

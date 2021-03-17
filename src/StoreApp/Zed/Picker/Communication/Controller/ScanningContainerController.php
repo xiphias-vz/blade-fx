@@ -27,6 +27,9 @@ class ScanningContainerController extends AbstractController
     public const ORDER_ITEM_SKU = 'itemSku';
     public const NEXT_ORDER_POSITION = 'nextOrderPosition';
     public const ORDER_POSITION = 'orderPosition';
+    public const REDIRECT_SKIP_TOKEN = 'skipToken';
+
+    public const ORDER_ITEM_POSITION = 'orderItemPosition';
 
     /**
      * @param \Symfony\Component\HttpFoundation\Request $request
@@ -36,11 +39,6 @@ class ScanningContainerController extends AbstractController
     public function indexAction(Request $request)
     {
         $factory = $this->getFactory();
-        $listOfContainers = $factory
-            ->getPickerBusinessFactory()
-            ->createContainerReader()
-            ->getUsedContainers();
-
         $transfer = $this->getFacade()->getPickingHeaderTransfer();
         $transfer->setParents(true);
         $nextOrderPosition = $request->get(static::NEXT_ORDER_POSITION) == null ?
@@ -68,14 +66,18 @@ class ScanningContainerController extends AbstractController
 
             if ($orderForScanningContainer == null) {
                 $urlOverview = $factory->getConfig()->getOverviewUri();
-                $skipToken = 'skipToken';
-                $urlOverview .= '?skipToken=' . $skipToken;
+                $urlOverview .= '?skipToken=' . static::REDIRECT_SKIP_TOKEN;
 
                 return $this->redirectResponse($urlOverview);
             }
         } else {
             $orderForScanningContainer = $transfer->getNextOrder($nextOrderPosition);
         }
+
+        $listOfContainers = $factory
+            ->getPickerBusinessFactory()
+            ->createContainerReader()
+            ->getUsedContainers();
 
         return $this->viewResponse([
             'orderForScanningContainer' => $orderForScanningContainer,
@@ -84,6 +86,7 @@ class ScanningContainerController extends AbstractController
             'requestFromPickingArticles' => $request->get(static::REQUEST_FROM_ADD_CONTAINER_IN_SKU),
             'redirectToPickingArticles' => $request->get(static::REQUEST_FROM_ADD_CONTAINER_IN_SKU) == 1,
             'orderPosition' => $request->get(static::ORDER_POSITION),
+            'orderItemPosition' => $request->get(static::ORDER_ITEM_POSITION),
             'nextOrderPosition' => $nextOrderPosition,
             'merchant' => $this->getMerchantFromRequest($request),
         ]);
@@ -126,7 +129,7 @@ class ScanningContainerController extends AbstractController
     {
         $submittedContainers = json_decode($request->get(static::CONTAINERS_ID)) ?? [];
         $orderForScanningContainer = $transfer->getOrder($request->get(static::ORDER_POSITION));
-        $position = $request->get(static::ORDER_POSITION);
+        $position = $request->get(static::ORDER_ITEM_POSITION);
         $sku = $request->get(static::ORDER_ITEM_SKU);
         if (count($submittedContainers)) {
             foreach ($submittedContainers as $container) {

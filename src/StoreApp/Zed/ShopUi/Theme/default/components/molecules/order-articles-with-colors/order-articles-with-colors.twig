@@ -6,7 +6,8 @@
 
 {% define data = {
     orderNumber: '',
-    articles: []
+    articles: [],
+    sku: '',
 } %}
 
 {% block body %}
@@ -17,19 +18,21 @@
             {% else %}
                 {% set articleBorderColor = 'transparent' %}
             {% endif %}
-
+            {% set positionUrl= '/picker/multi-picking/multi-order-picking?position=' ~ article.pickingItemPosition ~ '&sku=' ~ data.sku  %}
             <div class="{{ config.name }}__circle-wrapper">
                 <div class="{{ config.name }}__circle-spacing">
-                    {% include atom('circle') with {
-                        data: {
-                            content: article.pickingColor.idColor,
-                            backgroundColor: article.pickingColor.backColor,
-                            textColor: article.pickingColor.foreColor,
-                            borderColor: articleBorderColor,
-                            paddingLeft: '',
-                            paddingTop: '0.2rem',
-                        }
-                    } %}
+                    <a id="idPosition__{{ article.pickingItemPosition }}" href="{{ positionUrl }}">
+                        {% include atom('circle') with {
+                            data: {
+                                content: article.pickingColor.idColor,
+                                backgroundColor: article.pickingColor.backColor,
+                                textColor: article.pickingColor.foreColor,
+                                borderColor: articleBorderColor,
+                                paddingLeft: '',
+                                paddingTop: '0.2rem',
+                            }
+                        } %}
+                    </a>
                     <div class="{{ config.name }}__article-quantity">{{ article.quantity }}</div>
                 </div>
             </div>

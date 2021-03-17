@@ -112,6 +112,7 @@ error_page.text,Diese Seite existiert leider nicht. Bitte überprüfe den Link. 
 storeapp.picking.message.info.no-orders-to-pick,Keine Bestellungen zu kommissionieren
 storeapp.picking.message.info.order-will-be-moved-to-next-stage,Der Wunscheinkauf wurde in den nächsten Schritt überführt
 storeapp.picking.message.error.order-is-already-being-processed,Wunscheinkauf wird bereits bearbeitet
+storeapp.picking.message.error.order-is-being-processed,Die Bestellungen sind bereits in Bearbeitung
 
 storeapp.collect-by-customer.message.info.no-orders-to-collect,Keine Bestellungen zu abholen
 
@@ -187,3 +188,4 @@ multi.picking.done.dialog.content, Du hast alle deine Container einem Lagerplatz
 multi.picking.order.dialog.title, Check deinen Pick
 multi.picking.order.dialog.content, Zone fertigstellt oder willst du nochmal prüfen?
 multi.picking.order.dialog.button, Zone Bestätigen
+multi.picking.product.attribute.weight,Gewicht,de_DE

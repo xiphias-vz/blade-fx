@@ -15,9 +15,9 @@
     urlPosListe: '',
     urlScanShelves: '',
     orderPosition: '',
+    orderItemPosition: '',
     isLastPosition: '',
-    openModal: '',
-
+    openModal: ''
 } %}
 
 {% set title = data.currentPositionData['name'] %}
@@ -48,18 +48,9 @@
         <div class="col col--expand">
             <div class="box {{ config.name }}__info">
                 <div class="{{ config.name }}__item-head-box">
-                    <span class="{{ config.name }}__item-position">
-                        {% include atom('circle') with {
-                            data: {
-                                content: currentArticleColors.idColor,
-                                backgroundColor: currentArticleColors.backColor,
-                                textColor: currentArticleColors.foreColor,
-                                borderColor: currentArticleColors.circleColor,
-                                paddingLeft: '',
-                                paddingTop: '0.2rem',
-                            }
-                        } %}
-                    </span>
+                    <div class="{{ config.name }}__item-position">
+                        <p class="{{ config.name }}__circle-position" style="color:{{ currentArticleColors.foreColor }}; background-color: {{ currentArticleColors.backColor }}; padding-top: 0.2rem; border: 2px solid {{ currentArticleColors.circleColor }};">{{ currentArticleColors.idColor }}</p>
+                    </div>
                     <div class="{{ config.name }}__item-location">
                         <p>{{ shelf ?? ''}}-{{ shelfField ?? ''}}-{{ shelfFloor ?? ''}}</p>
                     </div>
@@ -88,7 +79,8 @@
                     {% include molecule('order-articles-with-colors') with {
                         data: {
                             orderNumber: pickingItemPosition,
-                            articles: articlesData
+                            articles: articlesData,
+                            sku: itemSku,
                         }
                     } only %}
                 <div class="hr-line-solid"></div>
@@ -97,6 +89,12 @@
                         class: config.name ~ '__icon-close',
                         data: {
                             name: 'close'
+                        }
+                    } only %}
+                    {% include atom('icon') with {
+                        class: config.name ~ '__icon-pause',
+                        data: {
+                            name: 'pause'
                         }
                     } only %}
                     {% include atom('icon') with {
@@ -109,8 +107,8 @@
                 {% block quantity %}
                     {% if data.productsCount >= 1 %}
                         <div class="outer_div">
-                            <div class="col--md-4 col--sm-4"></div>
-                            <div class="col--md-4 col--sm-4 {{ config.name }}__quantity">
+                            <div class="col--md-4 col--sm-3"></div>
+                            <div class="col--md-4 col--sm-6 {{ config.name }}__quantity">
                                 <div class="{{ config.jsName }}__minus {{ config.name }}__minus spacing-right spacing-right--inner">
                                     {% include atom('icon') with {
                                         data: {
@@ -132,7 +130,7 @@
                                     } only %}
                                 </div>
                             </div>
-                            <div class="col--md-4 col--sm-4 avg_weight">
+                            <div class="col--md-4 col--sm-3 avg_weight">
                                 {% if orderWeight != 0 %}<span> {{ orderWeight }} gr</span>{% endif %}
                             </div>
                         </div>
@@ -141,21 +139,42 @@
                         {% block newFormElement %}
                             <label for="order_item_selection_form_field_sales_order_item_sku__{{ itemSku }}" class="label label--required">{{ itemSku }} -
                                 {{ title }}</label>
-                            <input id="order_item_selection_form_field_sales_order_item_sku__{{ itemSku }}" type="number" class="js-product-item-multiple-picking__quantity" max="{{ data.productsCount }}" />
+                            <input id="order_item_selection_form_field_sales_order_item_sku__{{ itemSku }}" type="number" class="js-product-item-multiple-picking__quantity" min="0" max="{{ data.productsCount }}" />
                         {% endblock %}
                     </div>
                 {% endblock %}
 
-                {% block formElementWeight %}
-                    {% if embed.weightField %}
-                        {{ form_row(embed.weightField, {
-                            attr: {
-                                class: config.jsName ~ '__weight',
-                            }
-                        }) }}
+                {% block ElementWeight %}
+                    {% if data.currentPositionData.totalWeight is defined and data.currentPositionData.totalWeight is not null %}
+                        {% set weightField = data.currentPositionData.totalWeight / 10 %}
+                        {% set minWeight = data.currentPositionData.minWeight / 10 %}
+                        {% set maxWeight = data.currentPositionData.maxWeight / 10 %}
+
+                        <div class="weightFieldDiv">
+                            <div class="{{ config.name }}__weightContainer">
+                                <div class="col col--md-4 col--sm-5 col--xs-5">
+                                    <label for="order_item_selection_form_field_sales_order_item_new_weight" class="label label--required">
+                                        {{ 'multi.picking.product.attribute.weight' | trans }} (gr)
+                                    </label>
+                                </div>
+                                <div class="col col--md-8 col--sm-7 col--xs-7">
+                                    <input id="order_item_selection_form_field_sales_order_item_new_weight"
+                                           name="order_item_selection_form[field_sales_order_item_new_weight]"
+                                           required="required"
+                                           min="{{ minWeight }}"
+                                           max="{{ maxWeight }}"
+                                           class="input input--expand js-product-item-multiple-picking__weight"
+                                           type="number">
+                                </div>
+                            </div>
+                        </div>
                     {% endif %}
                 {% endblock %}
-                {% block formElementScan %}<div id="eanScannenDiv"><input class="input input--expand ean_scan_input" id="txt_ean_scannen__{{ itemSku }}" placeholder="EAN scannen" class="input input--expand" type="text" /></div>{% endblock %}
+                {% block formElementScan %}
+                    <div id="eanScannenDiv">
+                        <input class="input input--expand ean_scan_input" id="txt_ean_scannen" placeholder="EAN scannen" class="input input--expand" type="text" />
+                    </div>
+                {% endblock %}
             </div>
         </div>
     </div>
@@ -207,36 +226,32 @@
     <div id="pickingItemPositionDiv" data-pickingItemPosition="{{ pickingItemPosition }}"></div>
     <div id="lastPositionDataDiv" data-lastPositionData="{{ data.isLastPosition }}"></div>
 
-    <div class="pick-products__action-wrapper">
-        <div class="pick-products__action js-pick-products__action">
-            {% embed molecule('popup-ui-container-scan') with {
-                data: {
-                    title: currentArticleColors.idColor,
-                    buttons: {
-                        submit: {
-                            isButton: false
-                        },
-                        close: true
-                    },
-                    headerBackgroundColor: currentArticleColors.backColor,
-                    headerTextColor: currentArticleColors.foreColor,
-                    borderColor: currentArticleColors.circleColor,
-                    borderRadius: 0
-                }
-            } only %}
-                {% block content %}
-                    <div class="grid grid--center">
-                        {% block formElementScan %}
-                            <div id="containerScanDiv">
-                                <input class="input input--expand" id="txt_container_scan" placeholder="Container scannen" type="text" />
-                            </div>
-                        {% endblock %}
+    {% embed molecule('popup-ui-container-scan') with {
+        data: {
+            title: currentArticleColors.idColor,
+            buttons: {
+                submit: {
+                    isButton: false
+                },
+                close: true
+            },
+            headerBackgroundColor: currentArticleColors.backColor,
+            headerTextColor: currentArticleColors.foreColor,
+            borderColor: currentArticleColors.circleColor,
+            borderRadius: 0
+        }
+    } only %}
+        {% block content %}
+            <div class="grid grid--center">
+                {% block formElementScan %}
+                    <div id="containerScanDiv">
+                        <input class="input input--expand" id="txt_container_scan" placeholder="Container scannen" type="text" />
                     </div>
                 {% endblock %}
+            </div>
+        {% endblock %}
 
-            {% endembed %}
-        </div>
-    </div>
+    {% endembed %}
 
     {% include molecule('additional-order-buttons') with {
         data: {
@@ -250,8 +265,6 @@
         }
     } only %}
 
-
-    {% if (data.isLastPosition == true) %}
         <div id="lastPickingPositionDialog">
             {% embed molecule('popup-ui-container-scan') with {
                 data: {
@@ -300,5 +313,27 @@
             {% endblock %}
         {% endembed %}
         </div>
-    {% endif %}
+
+    {% embed molecule('popup-ui-error') with {
+        data: {
+            isErrorTrue: 0,
+            buttons: {
+                submit: {
+                    isButton: true,
+                    additionalClass: 'js-pick-products__submit',
+                },
+            },
+        },
+    } only %}
+        {% block content %}
+            <div class="popup-error-holder">
+                <div class="error-status">Fehler</div>
+                <div class="error-info">
+                    <p class="container-desc"></p>
+
+                </div>
+            </div>
+        {% endblock %}
+    {% endembed %}
+
 {% endblock %}

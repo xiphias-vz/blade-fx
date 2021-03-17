@@ -11,6 +11,7 @@
     itemSku: required,
     posListeForm: false,
     orderPosition: '',
+    orderItemPosition: '',
     overviewForm: false,
     urlContainerSelect: '',
     urlMultiPickingOverview: '',
@@ -84,6 +85,7 @@
         <input type="hidden" name="formAddContainerSku" value="1">
         <input type="hidden" name="idOrder" value="{{ data.idSalesOrder}}">
         <input type="hidden" name="orderPosition" value="{{ data.orderPosition }}">
+        <input type="hidden" name="orderItemPosition" value="{{ data.orderItemPosition }}">
         <input type="hidden" name="itemSku" value="{{ data.itemSku }}">
         <input type="hidden" name="token" value="{{ csrf_token(tokenName) }}">
         <input type="hidden" id="addContainerSku" name="sku" value="">

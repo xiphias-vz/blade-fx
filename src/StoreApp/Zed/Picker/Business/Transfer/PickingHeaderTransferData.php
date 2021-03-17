@@ -8,16 +8,23 @@
 namespace StoreApp\Zed\Picker\Business\Transfer;
 
 use ArrayObject;
+use Exception;
+use Generated\Shared\Transfer\OrderPickingBlockTransfer;
 use Generated\Shared\Transfer\PickingColorTransfer;
 use Generated\Shared\Transfer\PickingContainerTransfer;
 use Generated\Shared\Transfer\PickingOrderItemTransfer;
 use Generated\Shared\Transfer\PickingOrderTransfer;
+use Orm\Zed\PickingSalesOrder\Persistence\PyzPickingSalesOrderQuery;
+use Orm\Zed\Sales\Persistence\Map\SpySalesOrderItemTableMap;
+use Orm\Zed\Sales\Persistence\SpySalesOrderItemQuery;
 use PDO;
 use Propel\Runtime\Propel;
 use Pyz\Shared\Oms\OmsConfig;
+use Pyz\Zed\PickingZone\Business\PickingZoneFacadeInterface;
 use Pyz\Zed\Sales\Business\SalesFacadeInterface;
 use Spryker\Zed\Oms\Business\OmsFacadeInterface;
 use Spryker\Zed\User\Business\UserFacadeInterface;
+use StoreApp\Zed\Picker\Business\Updater\OrderUpdaterInterface;
 use Symfony\Component\HttpFoundation\Session\Session;
 
 class PickingHeaderTransferData
@@ -44,21 +51,37 @@ class PickingHeaderTransferData
     protected $userFacade;
 
     /**
+     * @var \Pyz\Zed\PickingZone\Business\PickingZoneFacadeInterface
+     */
+    protected $pickingZoneFacade;
+
+    /**
+     * @var \StoreApp\Zed\Picker\Business\Updater\OrderUpdaterInterface
+     */
+    protected $orderUpdater;
+
+    /**
      * @param \Spryker\Zed\Oms\Business\OmsFacadeInterface $omsFacade
      * @param \Pyz\Zed\Sales\Business\SalesFacadeInterface $salesFacade
      * @param \Symfony\Component\HttpFoundation\Session\Session $sessionService
      * @param \Spryker\Zed\User\Business\UserFacadeInterface $userFacade
+     * @param \Pyz\Zed\PickingZone\Business\PickingZoneFacadeInterface $pickingZoneFacade
+     * @param \StoreApp\Zed\Picker\Business\Updater\OrderUpdaterInterface $orderUpdater
      */
     public function __construct(
         OmsFacadeInterface $omsFacade,
         SalesFacadeInterface $salesFacade,
         Session $sessionService,
-        UserFacadeInterface $userFacade
+        UserFacadeInterface $userFacade,
+        PickingZoneFacadeInterface $pickingZoneFacade,
+        OrderUpdaterInterface $orderUpdater
     ) {
         $this->omsFacade = $omsFacade;
         $this->salesFacade = $salesFacade;
         $this->sessionService = $sessionService;
         $this->userFacade = $userFacade;
+        $this->pickingZoneFacade = $pickingZoneFacade;
+        $this->orderUpdater = $orderUpdater;
     }
 
     /**
@@ -140,7 +163,16 @@ class PickingHeaderTransferData
                 foreach ($transfer->getPickingOrders() as $order) {
                     if (in_array($order->getIdOrder(), $idOrderList)) {
                         array_push($orders, $order);
-                        //TODO save data to pyz_order_picking_block - PyzOrderPickingBlockQuery
+
+                        //save data to pyz_order_picking_block - PyzOrderPickingBlockQuery
+                        $orderPickingBlockTransfer = (new OrderPickingBlockTransfer())
+                            ->setIdSalesOrder($order->getIdOrder())
+                            ->setIdPickingZone($transfer->getIdZone())
+                            ->setIdUser($this->userFacade->getCurrentUser()->getIdUser());
+                        try {
+                            $this->pickingZoneFacade->createOrderPickingBlock($orderPickingBlockTransfer);
+                        } catch (Exception $ex) {
+                        }
                     }
                 }
                 $transfer->setPickingOrders(new ArrayObject($orders));
@@ -185,7 +217,20 @@ class PickingHeaderTransferData
             $orderMod->addPickingContainer($containerId, $container);
             $dataUpdated = true;
         }
-        //TODO save data to pyz_picking_sales_order - PyzPickingSalesOrderQuery
+        //save data to pyz_picking_sales_order - PyzPickingSalesOrderQuery
+        $containerEntity = PyzPickingSalesOrderQuery::create()
+            ->filterByFkSalesOrder($orderMod->getIdOrder())
+            ->filterByContainerCode($containerId)
+            ->filterByFkPickingZone($transfer->getIdZone())
+            ->findOneOrCreate();
+        if (!empty($shelfId)) {
+            $containerEntity->setShelfCode($shelfId);
+        }
+
+        if ($containerEntity->isModified() || $containerEntity->isNew()) {
+            $containerEntity->save();
+        }
+
         $this->setTransferToSession($transfer);
 
         return $dataUpdated;
@@ -193,15 +238,50 @@ class PickingHeaderTransferData
 
     /**
      * @param int $quantityPicked
+     * @param int $weight
      *
      * @return void
      */
-    public function setCurrentOrderItemPicked(int $quantityPicked): void
+    public function setCurrentOrderItemPicked(int $quantityPicked, int $weight): void
     {
         $transfer = $this->getTransferFromSession();
-        $transfer->setCurrentOrderItemPicked($quantityPicked);
-        //TODO save data to spy_sales_order_item - SpySalesOrderItemQuery
+        $orderItem = $transfer->setCurrentOrderItemPicked($quantityPicked, $weight);
         $this->setTransferToSession($transfer);
+
+        $idList = $this->getOrderItemIdArray($orderItem);
+        $counter = 0;
+        $pickedItems = [];
+        $nonPickedItems = [];
+        foreach ($idList as $id) {
+            if ($counter < $orderItem->getQuantityPicked()) {
+                $counter++;
+                array_push($pickedItems, $id);
+            } else {
+                array_push($nonPickedItems, $id);
+            }
+        }
+        if (count($pickedItems) > 0) {
+            $this->orderUpdater->markOrderItemsAsPicked($pickedItems);
+        }
+        if (count($nonPickedItems) > 0) {
+            $this->orderUpdater->markOrderItemsAsNotPicked($nonPickedItems);
+        }
+    }
+
+    /**
+     * @param \Generated\Shared\Transfer\PickingOrderItemTransfer $orderItem
+     *
+     * @return array
+     */
+    public function getOrderItemIdArray(PickingOrderItemTransfer $orderItem): array
+    {
+        $qry = SpySalesOrderItemQuery::create();
+        $items = $qry->select(SpySalesOrderItemTableMap::COL_ID_SALES_ORDER_ITEM)
+            ->filterByFkSalesOrder($orderItem->getIdOrder())
+            ->filterByProductNumber($orderItem->getEan())
+            ->find();
+
+        return $items->getData();
     }
 
     /**
@@ -213,8 +293,18 @@ class PickingHeaderTransferData
     {
         $transfer = $this->getTransferFromSession();
         $result = $transfer->setCurrentOrderItemPaused($isPaused);
-        //TODO save data to spy_sales_order_item - SpySalesOrderItemQuery
         $this->setTransferToSession($transfer);
+        if ($result) {
+            //save data to spy_sales_order_item - SpySalesOrderItemQuery
+            $orderItem = $transfer->getOrderItem($transfer->getLastPickingItemPosition());
+            $idList = $this->getOrderItemIdArray($orderItem);
+            $paused = $isPaused ? 1 : 0;
+            if (count($idList) > 0) {
+                $whereList = implode($idList, ",");
+                $qry = "update spy_sales_order_item set item_paused = " . $paused . " where id_sales_order_item in(" . $whereList . ")";
+                $this->getResult($qry);
+            }
+        }
 
         return $result;
     }
@@ -228,7 +318,13 @@ class PickingHeaderTransferData
     {
         $transfer = $this->getTransferFromSession();
         if ($transfer->setCurrentOrderItemCanceled($isCanceled)) {
-            //TODO save data to spy_sales_order_item - SpySalesOrderItemQuery
+            //save data to spy_sales_order_item - SpySalesOrderItemQuery
+            $orderItem = $transfer->getOrderItem($transfer->getLastPickingItemPosition());
+            $idList = $this->getOrderItemIdArray($orderItem);
+            if (count($idList) > 0) {
+                $this->orderUpdater->markOrderItemsAsNotPicked($idList);
+            }
+
             return true;
         }
 

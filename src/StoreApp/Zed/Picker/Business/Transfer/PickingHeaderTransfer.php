@@ -25,9 +25,11 @@ class PickingHeaderTransfer extends SpyPickingHeaderTransfer
      */
     public function recalculateAll(bool $recalculateItems = true)
     {
-        //$this->setParents();
         $this->recalculateArticlesCount($recalculateItems);
         $this->recalculatePickingPosition();
+        if ($recalculateItems) {
+            $this->updateItemsPickedCount();
+        }
     }
 
     /**
@@ -205,17 +207,20 @@ class PickingHeaderTransfer extends SpyPickingHeaderTransfer
         if ($oldPosition == 0 && $this->getLastPickingItemPosition() > 0) {
             $oldPosition = $this->getLastPickingItemPosition();
         }
+        $orderItem = null;
         foreach ($this->getPickingOrders() as $order) {
-            foreach ($order->getPickingOrderItems() as $orderItem) {
-                if ($orderItem->getPickingItemPosition() == $oldPosition + 1) {
-                    $this->setLastPickingItemPosition($orderItem->getPickingItemPosition());
-
-                    return $orderItem;
+            foreach ($order->getPickingOrderItems() as $orderItemN) {
+                if ($orderItemN->getPickingItemPosition() == $oldPosition + 1) {
+                    $this->setLastPickingItemPosition($orderItemN->getPickingItemPosition());
+                    $orderItem = $orderItemN;
                 }
             }
         }
+        if ($orderItem == null) {
+            $orderItem = $this->getFirstNonPickedOrderItem();
+        }
 
-        return null;
+        return $orderItem;
     }
 
     /**
@@ -431,6 +436,18 @@ class PickingHeaderTransfer extends SpyPickingHeaderTransfer
     }
 
     /**
+     * @return bool
+     */
+    public function isLastItem(): bool
+    {
+        if ($this->getArticlesCount() == $this->getPickedArticlesCount() + 1) {
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
      * @param \Generated\Shared\Transfer\PickingOrderItemTransfer $item
      *
      * @return void
@@ -467,14 +484,22 @@ class PickingHeaderTransfer extends SpyPickingHeaderTransfer
 
     /**
      * @param int $quantityPicked
+     * @param int $weight
      *
-     * @return void
+     * @return \Generated\Shared\Transfer\PickingOrderItemTransfer
      */
-    public function setCurrentOrderItemPicked(int $quantityPicked): void
+    public function setCurrentOrderItemPicked(int $quantityPicked, int $weight): PickingOrderItemTransfer
     {
         $this->setErrorMessage(null);
         $orderItem = $this->getOrderItem($this->getLastPickingItemPosition());
+        if ($weight > 0) {
+            $orderItem->setTotalWeight($weight);
+            $quantityPicked = 1;
+        }
         $orderItem->setQuantityPicked($quantityPicked);
+        $this->updateItemsPickedCount();
+
+        return $orderItem;
     }
 
     /**
@@ -493,6 +518,7 @@ class PickingHeaderTransfer extends SpyPickingHeaderTransfer
         } else {
             $orderItem->setIsPaused($isPaused);
             $this->getOrderItemOrder($orderItem)->setIsPaused($isPaused);
+            $this->updateItemsPickedCount();
         }
 
         return true;
@@ -510,6 +536,7 @@ class PickingHeaderTransfer extends SpyPickingHeaderTransfer
         $orderItem
             ->setIsCancelled($isCanceled)
             ->setQuantityPicked(0);
+        $this->updateItemsPickedCount();
 
         return true;
     }
@@ -530,9 +557,40 @@ class PickingHeaderTransfer extends SpyPickingHeaderTransfer
                 return true;
             }
         }
-        $this->setErrorMessage(static::ERR_MESSAGE_WRONG_CONTAINER);
+        foreach ($this->getPickingOrders() as $order) {
+            foreach ($order->getPickingContainers() as $container) {
+                if ($container->getContainerID() == $containerID) {
+                    $msg = "Container: " . $containerID . " *
+                        bereits Für Kunde " . $order->getCustomerName() . " *
+                        Bestellung: " . $order->getOrderReference() . " genutzt";
+                    $this->setErrorMessage($msg);
+
+                    return false;
+                }
+            }
+        }
+        $msg = "Container: " . $containerID . " existiert nicht.";
+        $this->setErrorMessage($msg);
 
         return false;
+    }
+
+    /**
+     * @returns void
+     *
+     * @return void
+     */
+    private function updateItemsPickedCount(): void
+    {
+        $pickedItems = 0;
+        foreach ($this->getPickingOrders() as $order) {
+            foreach ($order->getPickingOrderItems() as $orderItem) {
+                if ($orderItem->getIsCancelled() || $orderItem->getIsPaused() || $orderItem->getQuantityPicked() > 0) {
+                    $pickedItems++;
+                }
+            }
+        }
+        $this->setPickedArticlesCount($pickedItems);
     }
 
     /**

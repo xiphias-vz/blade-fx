@@ -25,10 +25,6 @@ class MultiPickingScanningContainerController extends AbstractController
      */
     public function indexAction(Request $request)
     {
-        $listOfExistingContainers = $this->getFactory()
-            ->getPickerBusinessFactory()
-            ->createContainerReader()
-            ->getUsedContainers();
         $transfer = $this->getFacade()->getPickingHeaderTransfer();
         $dataWithContainers = $transfer->getOrderList();
         $totalQuantity = count($dataWithContainers);
@@ -58,6 +54,11 @@ class MultiPickingScanningContainerController extends AbstractController
         if ($totalQuantity == $nextOrderPosition + 1) {
             $lastOrder = true;
         }
+
+        $listOfExistingContainers = $this->getFactory()
+            ->getPickerBusinessFactory()
+            ->createContainerReader()
+            ->getUsedContainers();
 
         return [
             'orderForScanningContainer' => $orderForScanningContainer,

@@ -12,6 +12,7 @@
     urlMultiPickingOverview: urlMultiPickingOverview,
     urlScanShelves: urlScanShelves,
     orderPosition: orderPosition,
+    orderItemPosition:orderItemPosition,
     openModal: openModal,
 } %}
 
@@ -20,7 +21,7 @@
      {% set pickingOrderItems = data.pickingOrderItemsData %}
 
      {% if currentPosition.weight is defined %}
-         {% set weightField = currentPosition.weight %}
+         {% set weightField = currentPosition.weight / 10 %}
      {% else %}
          {% set weightField = null %}
      {% endif %}
@@ -73,11 +74,12 @@
                 idSalesOrder: currentPosition.idOrder,
                 urlContainerSelect: data.urlContainerSelect,
                 orderPosition: data.orderPosition,
+                orderItemPosition: data.orderItemPosition,
                 urlMultiPickingOverview: data.urlMultiPickingOverview,
                 urlPosListe: data.urlPosListe,
                 isLastPosition: data.isLastPosition,
                 urlScanShelves: data.urlScanShelves,
-                openModal: data.openModal,
+                openModal: data.openModal
             },
             attributes: {
                 'data-sku': currentPosition.ean,

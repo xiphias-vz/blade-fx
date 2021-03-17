@@ -3,7 +3,9 @@ $setting-popup-spacing-y: rem(16);
 
 @mixin shop-ui-popup-ui-container-scan($name: '.popup-ui-container-scan') {
     #{$name} {
+        display: none;
         &--show {
+            display: block;
             #{$name} {
                 &__overlay {
                     display: flex;

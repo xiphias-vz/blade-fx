@@ -12,6 +12,7 @@
         <property name="ordersCount" type="int" description="equals max pickingPosition in PickingOrderTransfer"/>
         <property name="idZone" type="int"/>
         <property name="errorMessage" type="string"/>
+        <property name="pickedArticlesCount" type="int"/>
     </transfer>
 
     <transfer name="PickingOrderTransfer">

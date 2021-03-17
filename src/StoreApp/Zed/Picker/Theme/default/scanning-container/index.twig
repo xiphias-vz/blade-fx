@@ -6,6 +6,7 @@
     listOfContainers: listOfContainers,
     nextOrderPosition: nextOrderPosition,
     orderPosition: orderPosition,
+    orderItemPosition: orderPosition,
     requestFromPickingArticles: requestFromPickingArticles,
     redirectToPickingArticles: redirectToPickingArticles,
     itemSku: itemSku
@@ -36,6 +37,7 @@
         data: {
             nextOrderPosition: data.nextOrderPosition,
             orderPosition: orderPosition,
+            orderItemPosition: orderItemPosition,
             idOrderReference: data.orderForScanningContainer.orderReference,
             itemSku: itemSku,
             usedContainersWithShelf: data.orderForScanningContainer.pickingContainers,

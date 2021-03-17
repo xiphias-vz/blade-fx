@@ -148,14 +148,15 @@ class PickerFacade extends AbstractFacade implements PickerFacadeInterface
 
     /**
      * @param int $quantityPicked
+     * @param int $weight
      *
      * @return void
      */
-    public function setCurrentOrderItemPicked(int $quantityPicked): void
+    public function setCurrentOrderItemPicked(int $quantityPicked, int $weight): void
     {
         $this->getFactory()
             ->createPickingHeaderTransferData()
-            ->setCurrentOrderItemPicked($quantityPicked);
+            ->setCurrentOrderItemPicked($quantityPicked, $weight);
     }
 
     /**

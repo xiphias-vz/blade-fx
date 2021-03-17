@@ -109,6 +109,10 @@ $setting-item-border-radius: rem(8);
                     display: none;
                 }
 
+                &__icon-pause {
+                    display: none;
+                }
+
                 &__icon-check {
                     display: block;
                 }
@@ -138,6 +142,18 @@ $setting-item-border-radius: rem(8);
                     border-color: $setting-color-blue-info;
                     color: $setting-color-blue-info;
                 }
+
+                &__icon-close {
+                    display: none;
+                }
+
+                &__icon-pause {
+                    display: block;
+                }
+
+                &__icon-check {
+                    display: none;
+                }
             }
         }
 
@@ -154,6 +170,10 @@ $setting-item-border-radius: rem(8);
 
                 &__icon-close {
                     display: block;
+                }
+
+                &__icon-pause {
+                    display: none;
                 }
 
                 &__icon-check {
@@ -249,7 +269,7 @@ $setting-item-border-radius: rem(8);
         }
 
         #eanScannenDiv {
-            margin-top: rem(20);
+            margin-top: rem(66);
         }
 
         .button--confirm {
@@ -321,14 +341,68 @@ $setting-item-border-radius: rem(8);
             margin-top: rem(16);
         }
 
-        .pick-products__action-wrapper {
-            display: none;
-        }
-
         .dialogCheckPickButtons {
             background-color: white;
             border: 1px solid #71747c;
             color: #71747c;
+        }
+
+        .popup-ui-error__container {
+            border-radius:0;
+
+            .popup-ui-error__content {
+                padding: 0;
+                .popup-error-holder {
+                    margin-bottom: 30px;
+
+                    .error-info {
+                        .container-name {
+                            margin-top:30px;
+
+                            span {
+                                font-weight: bold;
+                            }
+                        }
+                        .container-desc, .container-order {
+                            font-weight: bold;
+                        }
+                    }
+
+                    .error-status {
+                        font-weight: bold;
+                        padding: 10px;
+                        border-bottom: 1px solid #fff;
+                    }
+                }
+            }
+            .link--error {
+                width: 80%;
+            }
+        }
+
+        #lastPickingPositionDialog {
+            display: none;
+        }
+
+        &__weightContainer{
+            margin: rem(10) 0;
+
+            .label {
+                line-height: rem(40);
+            }
+        }
+
+        &__circle-position {
+            border-radius: 50%;
+            background-color: lightskyblue;
+            text-align: center;
+            width: 2rem;
+            height: 2rem;
+
+            &__content {
+                padding: rem(16);
+                background: $setting-color-white;
+            }
         }
 
     }

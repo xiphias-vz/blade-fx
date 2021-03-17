@@ -48,9 +48,11 @@ export default class ProductItem extends Component {
     protected $previousSku: $;
     protected $openModal: $;
     protected $containerScanConfirmation: $;
+    protected popupUiError: HTMLElement;
     eanScanInputElements:HTMLInputElement;
     eanScanInputElement: HTMLInputElement;
     alternativeEanElement: HTMLInputElement;
+    eanDivWrapper: HTMLElement;
     eanInputFieldWrapper: HTMLElement;
     eanInputData: HTMLElement;
     pricePerKgData: HTMLElement;
@@ -76,11 +78,12 @@ export default class ProductItem extends Component {
         this.$quantityField = this.$this.find(this.quantityFieldSelector);
         this.$weightField = this.$this.find(this.weightInputFieldSelector);
         this.$quantityOutput = this.$this.find(this.quantityOutputSelector);
+        this.eanDivWrapper = this.$this.find(this.eanScannenDivSelector);
+        this.eanInputFieldWrapper = <HTMLElement>document.querySelector(this.eanScannenInputSelector);
+        this.popupUiError = this.querySelector('.popup-ui-error');
         this.weightMax = Number(this.$weightField.attr('max'));
         this.weightMin = Number(this.$weightField.attr('min'));
-        this.eanInputFieldWrapper = this.querySelector('#eanScannenDiv');
         this.productBlockWrapper = <HTMLElement>document.getElementById('gridOfTheProduct');
-        this.eanInputFieldWrapper.addEventListener('keypress', (event: KeyboardEvent) => this.formKeyPressHandler(event));
         this.popUp = <HTMLElement>document.getElementsByClassName('popup-ui')[0];
         this.btnSubmitPick = <HTMLElement>document.querySelector('#btnSubmitPick');
         this.bawContainerButton = <HTMLElement>document.querySelector('.bawContainerButton');
@@ -144,6 +147,9 @@ export default class ProductItem extends Component {
         this.$minusButton.on('click', () => this.clickCounterHandler());
         this.$plusButton.on('click', () => this.clickCounterHandler(true));
         this.btnSubmitPick.addEventListener('click', evt => this.onSubmitClick(evt));
+        if(this.eanScanInputElement != undefined){
+            this.eanScanInputElement.addEventListener('keypress', (event: KeyboardEvent) => this.formKeyPressHandler(event));
+        }
         this.$acceptButton.on('click', () =>
         {
             if(this.pricePerKgData > 0) {
@@ -176,11 +182,51 @@ export default class ProductItem extends Component {
 
     protected onSubmitClick(event: MouseEvent) {
 
-        if (Boolean(this.lastPositionDataFromDiv) == true) {
-            document.querySelector("#lastPickingPositionDialog .popup-ui-container-scan").classList.add('popup-ui-container-scan--show');
+        let pickingPosition = this.pickingItemPosition;
+        let quantity = this.$quantityOutput.text();
+        let weight = 0;
+        if(this.$weightField.val() != 0){
+            weight = this.$weightField.val();
+        }
+
+        let accepted = this.isAccepted;
+        let paused = this.isPaused;
+        let declined = this.isDeclined;
+
+        let status = "";
+        if(accepted === true){
+            status = "accepted"
+        }
+        else if(paused === true){
+            status = "paused"
+        }
+        else if(declined === true){
+            status = "declined"
+        }
+
+        let isLastPosition = this.lastPositionDataFromDiv;
+
+        const urlSave = window.location.origin + "/picker/multi-picking/multi-order-picking";
+
+        if(declined === true){
+            if(Boolean(isLastPosition) === true){
+                // Show popup last position
+                $("#lastPickingPositionDialog").css("display", "block");
+                document.querySelector("#lastPickingPositionDialog .popup-ui-container-scan").classList.add('popup-ui-container-scan--show');
+            }
+            else{
+                let form = $('<form action="' + urlSave + '" method="post">' +
+                    '<input type="text" name="saveAndGoToNext" value="true" />' +
+                    '<input type="text" name="position" value="' + pickingPosition + '" />' +
+                    '<input type="text" name="quantity" value="' + quantity + '" />' +
+                    '<input type="text" name="weight" value="' + weight + '" />' +
+                    '<input type="text" name="status" value="' + status + '" />' +
+                    '</form>');
+                $('body').append(form);
+                form.submit();
+            }
         }
         else{
-            $(".pick-products__action-wrapper").css("display", "block");
             document.querySelector('.popup-ui-container-scan').classList.add('popup-ui-container-scan--show');
 
             this.$containerScanConfirmation = document.getElementById(this.containerScanConfirmation);
@@ -188,7 +234,6 @@ export default class ProductItem extends Component {
             this.$containerScanConfirmation.focus();
             this.$containerScanConfirmation.value = "";
         }
-
     }
 
     async updateItem(item: StorageItem): Promise<void> {
@@ -278,6 +323,26 @@ export default class ProductItem extends Component {
 
             let inputContainerID = this.$containerScanConfirmation.value;
             let pickingPosition = this.pickingItemPosition;
+            let quantity = this.$quantityOutput.text();
+            let weight = 0;
+            if(this.$weightField.val() != 0){
+                weight = this.$weightField.val();
+            }
+
+            let accepted = this.isAccepted;
+            let paused = this.isPaused;
+            let declined = this.isDeclined;
+
+            let status = "";
+            if(accepted === true){
+                status = "accepted"
+            }
+            else if(paused === true){
+                status = "paused"
+            }
+            else if(declined === true){
+                status = "declined"
+            }
 
             const urlSave = window.location.origin + "/picker/multi-picking/multi-order-picking";
             const urlCheck = window.location.origin + "/picker/multi-picking/check-container-id";
@@ -293,21 +358,31 @@ export default class ProductItem extends Component {
                 .then(response => response.json())
                 .then(parsedResponse => {
 
-                    if(parsedResponse != undefined && parsedResponse != []){
-                        if(parsedResponse == true){
+                    let checkedContainerValid = parsedResponse.containerCheck;
+                    let errorMsg = parsedResponse.errorMessage;
+                    let lastPosition = parsedResponse.isLastPosition;
+
+                    if(JSON.parse(checkedContainerValid) === true){
+                        if(JSON.parse(lastPosition) === true){
+                            // Show popup last position
+                            $("#lastPickingPositionDialog").css("display", "block");
+                            document.querySelector("#lastPickingPositionDialog .popup-ui-container-scan").classList.add('popup-ui-container-scan--show');
+                        }
+                        else{
                             let form = $('<form action="' + urlSave + '" method="post">' +
                                 '<input type="text" name="saveAndGoToNext" value="true" />' +
                                 '<input type="text" name="position" value="' + pickingPosition + '" />' +
-                                '<input type="text" name="quantity" value="" />' +
-                                '<input type="text" name="status" value="" />' +
+                                '<input type="text" name="quantity" value="' + quantity + '" />' +
+                                '<input type="text" name="weight" value="' + weight + '" />' +
+                                '<input type="text" name="status" value="' + status + '" />' +
                                 '</form>');
                             $('body').append(form);
                             form.submit();
                         }
-                        else{
-                            alert("Container not found");
-                        }
-
+                    }
+                    else{
+                        $(".container-desc").text(errorMsg);
+                        this.popupUiError.classList.add('popup-ui-error--show');
                     }
 
                 })
@@ -315,9 +390,7 @@ export default class ProductItem extends Component {
                     console.error(error);
 
                 });
-
         }
-
     }
 
     protected formKeyPressHandler(event: KeyboardEvent): void {
@@ -338,9 +411,6 @@ export default class ProductItem extends Component {
 
             let $alernativeEan = this.alternativeEanElement.getAttribute('data-altean');
             let $altEansArr = $alernativeEan.toString().split(',');
-            if($alernativeEan === undefined){
-                $alernativeEan = [];
-            }
 
             if($formattedScanInput.length != 13 && $formattedScanInput.length != 8){
                 alert("Der Barcode sollte 13 oder 8 Zeichen lang sein");
@@ -601,6 +671,7 @@ export default class ProductItem extends Component {
         this.$weightField.attr('required', 'required');
 
         this.isAccepted = false;
+        this.isPaused = false;
         this.isDeclined = false;
         this.isNotFullyAccepted = false;
 
@@ -653,6 +724,14 @@ export default class ProductItem extends Component {
 
     protected get quantityOutputSelector(): string {
         return `.${this.jsName}__quantity-output`;
+    }
+
+    protected get eanScannenDivSelector(): string {
+        return `#eanScannenDiv`;
+    }
+
+    protected get eanScannenInputSelector(): string {
+        return `#txt_ean_scannen`;
     }
 
     protected get weightInputFieldSelector(): string {

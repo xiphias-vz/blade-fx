@@ -5,7 +5,8 @@
     urlContainerSelect: urlContainerSelect,
     urlMultiPickingOverview: urlMultiPickingOverview,
     urlPosListe: urlPosListe,
-    urlForBackButton: urlForBackButton
+    urlForBackButton: urlForBackButton,
+    isFromModal: isFromModal
 } %}
 
 {% block header %}
@@ -21,6 +22,7 @@
 
 {% block content %}
     <form id="formOverview" method="post">
+        <input type="hidden" name="addFromModal1" value="{{ data.isFromModal }}">
         <div class="box-light-green--overview">
             <div>Kunde</div>
             <div>Pos./Stck.</div>

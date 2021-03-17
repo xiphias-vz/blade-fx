@@ -151,3 +151,4 @@ picking.app.weight_per_unit,"Weight per unit: "
 
 storeapp.picking.barcode, Barcode
 storeapp.picking.MissingArticle, Missing article
+multi.picking.product.attribute.weight,Weight,en_US
