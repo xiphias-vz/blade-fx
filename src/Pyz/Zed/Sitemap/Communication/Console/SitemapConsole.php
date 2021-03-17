@@ -231,7 +231,7 @@ http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">';
         $updateDate = explode(" ", $updatedAtArr['date']);
         $generatedContent .= "\n";
         $generatedContent .= "    <url>\n";
-        $generatedContent .= "        <loc>https://shop.globus.de" . urlencode($url->getUrl()) . "</loc>\n";
+        $generatedContent .= "        <loc>https://shop.globus.de" . $this->customUrlEncode($url->getUrl()) . "</loc>\n";
         $generatedContent .= "        <lastmod>" . $updateDate[0] . "</lastmod>\n";
         $generatedContent .= "    </url>";
 
@@ -318,5 +318,18 @@ http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">';
         var_dump($bucket);
 
         return $bucket;
+    }
+
+    /**
+     * @param string $string
+     *
+     * @return string|string[]
+     */
+    public function customUrlEncode(string $string)
+    {
+        $replacements = ['%25', '%21', '%2A', '%27', '%28', '%29', '%3B', '%3A', '%40', '%26', '%3D', '%2B', '%24', '%2C', '%3F', '%23', '%5B', '%5D'];
+        $entities = ['%', '!', '*', "'", "(", ")", ";", ":", "@", "&", "=", "+", "$", ",", "?", "#", "[", "]"];
+
+        return str_replace($entities, $replacements, $string);
     }
 }
