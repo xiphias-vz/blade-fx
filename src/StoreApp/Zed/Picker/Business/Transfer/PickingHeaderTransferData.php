@@ -262,6 +262,7 @@ class PickingHeaderTransferData
             }
         }
         if (count($pickedItems) > 0) {
+            $this->orderUpdater->markOrderItemsAsContainerSelected($pickedItems);
             $this->orderUpdater->markOrderItemsAsPicked($pickedItems);
         }
         if (count($nonPickedItems) > 0) {
