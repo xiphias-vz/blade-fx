@@ -8,39 +8,28 @@
 {% define data = {
     idSalesOrder: required,
     urlContainerSelect: required,
-    itemSku: required,
-    posListeForm: false,
-    orderPosition: '',
-    orderItemPosition: '',
-    overviewForm: false,
-    urlContainerSelect: '',
-    urlMultiPickingOverview: '',
-    urlPosListe: '',
-    currentPosition: [],
-    position: '',
+    itemSku: required
 } %}
 
 {% block body %}
 
     <div class="grid grid--justify spacing-top">
         {% block leftColBottom %}
-            <div class="col col--md-4 {{ config.name }}__spacing">
-                <button type="button" class="button button--round button--ubersicht additional-button {% if data.overviewForm %} {{ config.name }}__selected-form {% endif %}" id="overviewBtn__{{ data.itemSku }}" onclick="multiPickingOverview('{{ data.itemSku }}')">
+            <div class="col button button--disabled button--round button--ubersicht">
                     <span class="col--md-4">
-                            {% include atom('icon') with {
-                                data: {
-                                    name: 'overview',
-                                    rowText:  'multi.picking.header.overview' | trans
-                                }
-                            } only %}
-                        </span>
-                    <span class="col--md-8">{{ 'multi.picking.header.overview' | trans }}</span>
-                </button>
+                        {% include atom('icon') with {
+                            data: {
+                                name: 'overview',
+                                rowText: 'Übersicht'
+                            }
+                        } only %}
+                    </span>
+                <span class="col--md-8">Übersicht</span>
             </div>
         {% endblock %}
         {% block midColBottom %}
-                <div class="col col--md-4 {{ config.name }}__spacing">
-                    <button type="button" class="button button--round button--posListe {% if data.posListeForm %} {{ config.name }}__selected-form {% endif %} {% if data.overviewForm %} button--disabled {% endif %}" id="posListeBtn__{{ data.itemSku }}" onclick="posListeForm('{{ data.itemSku }}')">
+            <div class="col button button--disabled button--round button--posListe">
+                <button type="button" id="posListeBtn__{{ data.itemSku }}" onclick="posListeForm('{{ data.itemSku }}')">
                      <span class="col--md-4">
                             {% include atom('icon') with {
                                 data: {
@@ -49,14 +38,14 @@
                                 }
                             } only %}
                         </span>
-                        <span class="col--md-8">Pos. Liste</span>
-                    </button>
-                </div>
+                    <span class="col--md-8">Pos. Liste</span>
+                </button>
+            </div>
         {% endblock %}
         {% block rightColBottom %}
-            <div class="col col--md-4 {{ config.name }}__spacing">
+            <div class="col button button--round button--addContainers">
                 {% set tokenName = 'start-picking-%d' | format(data.idSalesOrder) %}
-                    <button type="button" class=" button button--round button--addContainers {% if data.overviewForm %} button--disabled {% endif %}" onclick="addContainer('{{ data.itemSku }}')">
+                    <button type="button" id="redirectBtn__{{ data.itemSku }}" onclick="addContainer('{{ data.itemSku }}')">
                       <span class="col--md-4">
                             {% include atom('icon') with {
                                 data: {
@@ -65,60 +54,11 @@
                                 }
                             } only %}
                         </span>
+
                         <span class="col--md-8">Add Con.</span>
                     </button>
             </div>
         {% endblock %}
     </div>
-    <form id="formOverview" action="{{ data.urlMultiPickingOverview }}" method="post">
-        {% set tokenName = 'overview-%d' | format(data.idSalesOrder) %}
-        <input type="hidden" name="idOrder" value="{{ data.idSalesOrder}}">
-        <input type="hidden" name="token" value="{{ csrf_token(tokenName) }}">
-        <input type="hidden" name="skipToken" value="picking">
-        <input type="hidden" name="position" value="{{ data.position }}">
-        <input type="hidden" id="addFromModal1" name="addFromModal1" value="false">
-        <input type="hidden" id="addOverviewSku" name="sku" value="">
-    </form>
-
-    <form id="formAddContainerSku" action="{{ data.urlContainerSelect }}" method="post">
-        {% set tokenName = 'container-select-%d' | format(data.idSalesOrder) %}
-        <input type="hidden" name="formAddContainerSku" value="1">
-        <input type="hidden" name="idOrder" value="{{ data.idSalesOrder}}">
-        <input type="hidden" name="orderPosition" value="{{ data.orderPosition }}">
-        <input type="hidden" name="orderItemPosition" value="{{ data.orderItemPosition }}">
-        <input type="hidden" name="itemSku" value="{{ data.itemSku }}">
-        <input type="hidden" name="token" value="{{ csrf_token(tokenName) }}">
-        <input type="hidden" id="addContainerSku" name="sku" value="">
-    </form>
-
-    <form id="formPosListeSku" action="{{ data.urlPosListe }}" method="post">
-        {% set tokenName = 'pos-liste-%d' | format(data.idSalesOrder) %}
-        <input type="hidden" name="idOrder" value="{{ data.idSalesOrder }}">
-        <input type="hidden" name="token" value="{{ csrf_token(tokenName) }}">
-        <input type="hidden" name="position" value="{{ data.position }}">
-        <input type="hidden" id="addFromModal" name="fromModal" value="">
-        <input type="hidden" id="addPosListeSku" name="sku" value="">
-    </form>
-
-    <script>
-        function multiPickingOverview(sku, fromModal1) {
-
-            document.getElementById('addOverviewSku').value = sku;
-            document.getElementById('addFromModal1').value = fromModal1;
-            document.getElementById('formOverview').submit();
-        }
-
-        function posListeForm(sku, fromModal)
-        {
-            document.getElementById('addPosListeSku').value = sku;
-            document.getElementById('addFromModal').value = fromModal;
-            document.getElementById('formPosListeSku').submit();
-        }
-
-        function addContainer(sku) {
-            document.getElementById('addContainerSku').value = sku;
-            document.getElementById('formAddContainerSku').submit();
-        }
-    </script>
 
 {% endblock %}

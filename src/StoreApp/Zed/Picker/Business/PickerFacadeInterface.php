@@ -98,6 +98,13 @@ interface PickerFacadeInterface
     public function getPickingHeaderTransfer(): PickingHeaderTransfer;
 
     /**
+     * @param \StoreApp\Zed\Picker\Business\Transfer\PickingHeaderTransfer $transfer
+     *
+     * @return void
+     */
+    public function setTransferToSession(PickingHeaderTransfer $transfer): void;
+
+    /**
      * @param \Generated\Shared\Transfer\PickingOrderTransfer $order
      * @param string $containerId
      * @param string $shelfId

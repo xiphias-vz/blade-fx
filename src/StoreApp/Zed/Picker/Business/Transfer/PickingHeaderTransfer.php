@@ -218,6 +218,9 @@ class PickingHeaderTransfer extends SpyPickingHeaderTransfer
         }
         if ($orderItem == null) {
             $orderItem = $this->getFirstNonPickedOrderItem();
+            if ($orderItem != null) {
+                $this->setLastPickingItemPosition($orderItem->getPickingItemPosition());
+            }
         }
 
         return $orderItem;

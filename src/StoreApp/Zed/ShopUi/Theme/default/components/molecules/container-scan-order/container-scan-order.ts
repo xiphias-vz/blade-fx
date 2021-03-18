@@ -95,27 +95,27 @@ export default class ContainerScanOrder extends Component {
             event.preventDefault();
 
             let containerNumber = event.target.value;
+            const formattedContainerInput = containerNumber.replace('/x11', '').replace('/X11', '');
 
-            if(containerNumber == "") {
+            if(formattedContainerInput == "") {
                 return;
             }
 
-            if(containerNumber.length != 8) {
+            if(formattedContainerInput.length != 8) {
                 this.showPopUpErrorMessageForNonValidContainer();
                 return;
             }
 
-            let containerExists = this.containerExists(containerNumber, this.orderReferenceNumber);
+            let containerExists = this.containerExists(formattedContainerInput, this.orderReferenceNumber);
 
             if(containerExists) {
                this.showPopUpErrorMessage();
                return;
             }
 
+            this.updateContainerInputFieldValue(formattedContainerInput, 'ADD_CONTAINER');
 
-            this.updateContainerInputFieldValue(containerNumber, 'ADD_CONTAINER');
-
-            let containerHolder = this.createContainerHolder(containerNumber);
+            let containerHolder = this.createContainerHolder(formattedContainerInput);
             let binIcon = this.createBinIcon();
 
             containerHolder.appendChild(binIcon);

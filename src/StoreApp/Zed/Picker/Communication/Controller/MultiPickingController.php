@@ -99,6 +99,7 @@ class MultiPickingController extends BaseOrderPickingController
         $openModal = $_REQUEST['fromModal'] ?? 'false';
         if ($productToDisplay != '' && $positionToDisplay != '') {
             $nextOIData = $transfer->getOrderItem($positionToDisplay);
+            $transfer->setLastPickingItemPosition($nextOIData->getPickingItemPosition());
         } else {
             $nextOIData = $transfer->getNextOrderItem(0);
         }
@@ -111,6 +112,7 @@ class MultiPickingController extends BaseOrderPickingController
         if ($transfer->getLastPickingItemPosition() == $transfer->getMaxPickingItemPosition() || $openModal == 'true') {
             $isLastPosition = "true";
         }
+        $this->getFacade()->setTransferToSession($transfer);
 
         $urlOverview = PickerConfig::URL_MULTI_PICKING_OVERVIEW;
         $urlOverview .= '?skipToken=' . static::REDIRECT_SKIP_TOKEN . '&sku=' . $nextOIData->getEan() . '&position=' . $nextOIData->getPickingItemPosition();

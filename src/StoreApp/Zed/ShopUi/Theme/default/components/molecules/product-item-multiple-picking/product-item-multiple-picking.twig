@@ -253,7 +253,7 @@
 
     {% endembed %}
 
-    {% include molecule('additional-order-buttons') with {
+    {% include molecule('multi-picking-additional-order-buttons') with {
         data: {
             idSalesOrder: data.idSalesOrder,
             urlContainerSelect: data.urlContainerSelect,
@@ -261,6 +261,7 @@
             urlPosListe: data.urlPosListe,
             itemSku: itemSku,
             orderPosition: data.orderPosition,
+            orderItemPosition: data.orderItemPosition,
             position: pickingItemPosition,
         }
     } only %}

@@ -21,7 +21,7 @@
             {% set positionUrl= '/picker/multi-picking/multi-order-picking?position=' ~ article.pickingItemPosition ~ '&sku=' ~ data.sku  %}
             <div class="{{ config.name }}__circle-wrapper">
                 <div class="{{ config.name }}__circle-spacing">
-                    <a id="idPosition__{{ article.pickingItemPosition }}" href="{{ positionUrl }}">
+                    <a id="idPosition__{{ article.pickingItemPosition }}" style="text-decoration: none" href="{{ positionUrl }}">
                         {% include atom('circle') with {
                             data: {
                                 content: article.pickingColor.idColor,

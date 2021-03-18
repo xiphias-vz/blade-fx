@@ -188,4 +188,4 @@ multi.picking.done.dialog.content, Du hast alle deine Container einem Lagerplatz
 multi.picking.order.dialog.title, Check deinen Pick
 multi.picking.order.dialog.content, Zone fertigstellt oder willst du nochmal prüfen?
 multi.picking.order.dialog.button, Zone Bestätigen
-multi.picking.product.attribute.weight,Gewicht,de_DE
+multi.picking.product.attribute.weight,Gewicht

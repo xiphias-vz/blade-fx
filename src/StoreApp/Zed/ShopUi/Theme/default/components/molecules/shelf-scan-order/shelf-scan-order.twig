@@ -64,26 +64,22 @@
                     <div style="margin-bottom: 50px">{{ 'multi.picking.done.dialog.content' | trans }}</div>
                 </div>
             {% endblock %}
-
-            {% block button %}
-                <div class="text-center">
-                    <div class="button button--expand btnMultiPickingScanningContainer lastOrder">
-                        {{ 'multi.picking.save.button' | trans }}
-                    </div>
-                </div>
-            {% endblock %}
         {% endembed %}
+    </div>
+
+    <div class="text-center">
+        <div class="button button--expand btnMultiPickingScanningContainer lastOrder">
+            {{ 'multi.picking.save.button' | trans }}
+        </div>
     </div>
 
 {% else %}
 
-    {% block button %}
         <div class="text-center">
             <button type="submit" class="button button--expand btnMultiPickingScanningContainer">
                 {{ 'multi.picking.save.button' | trans }}
             </button>
         </div>
-    {% endblock %}
 
 {% endif %}
 

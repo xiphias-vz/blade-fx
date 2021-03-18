@@ -210,7 +210,6 @@ export default class ProductItem extends Component {
 
         if(declined === true){
             if(Boolean(isLastPosition) === true){
-                // Show popup last position
                 $("#lastPickingPositionDialog").css("display", "block");
                 document.querySelector("#lastPickingPositionDialog .popup-ui-container-scan").classList.add('popup-ui-container-scan--show');
             }
@@ -322,6 +321,8 @@ export default class ProductItem extends Component {
             event.preventDefault();
 
             let inputContainerID = this.$containerScanConfirmation.value;
+            const $formattedContainerInput = inputContainerID.replace('/x11', '').replace('/X11', '');
+
             let pickingPosition = this.pickingItemPosition;
             let quantity = this.$quantityOutput.text();
             let weight = 0;
@@ -351,8 +352,7 @@ export default class ProductItem extends Component {
                 {
                     method: 'POST',
                     headers: {'Content-Type':'application/x-www-form-urlencoded'},
-                    body: 'scannedContainerID=' + inputContainerID + '&' + 'position=' + pickingPosition
-                    // body: JSON.stringify({scannedContainerID: inputContainerID, position: pickingPosition})
+                    body: 'scannedContainerID=' + $formattedContainerInput + '&' + 'position=' + pickingPosition
 
                 })
                 .then(response => response.json())

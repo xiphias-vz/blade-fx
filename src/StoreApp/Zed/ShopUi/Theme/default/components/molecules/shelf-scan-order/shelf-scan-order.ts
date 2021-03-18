@@ -38,7 +38,6 @@ export default class ShelfScanOrder extends Component {
             PositionId: ''
         };
 
-        console.log(this.nextOrderPositionInput);
         this.nextOrderPosition = parseInt(this.nextOrderPositionInput.value);
         this.mapEventsForInputs();
         this.focusInputElement(1);
@@ -48,7 +47,7 @@ export default class ShelfScanOrder extends Component {
     protected checkInputBeforeSubmit(event): void {
         let counter = 0;
         this.formItems.forEach((element: HTMLInputElement) => {
-            if (element.value == "") {
+            if (element.value == "" || element.disabled == false) {
                 event.preventDefault();
                 counter++;
             }
@@ -165,6 +164,8 @@ export default class ShelfScanOrder extends Component {
         let shelfCode = <HTMLElement>document.getElementById('shelfCode_' + indexId);
         shelfCode.innerText = event.target.value;
         shelfElement.classList.remove('is-hidden');
+        let focusInput = <HTMLInputElement>document.getElementById('inputScanningShelf_' + indexId);
+        focusInput.disabled = true;
         ++indexId;
         this.focusInputElement(indexId);
     }

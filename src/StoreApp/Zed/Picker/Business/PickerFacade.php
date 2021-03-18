@@ -11,6 +11,7 @@ use Generated\Shared\Transfer\PickingOrderTransfer;
 use Generated\Shared\Transfer\PickingZoneTransfer;
 use Spryker\Zed\Kernel\Business\AbstractFacade;
 use StoreApp\Zed\Picker\Business\Transfer\PickingHeaderTransfer;
+use StoreApp\Zed\Picker\Business\Transfer\PickingHeaderTransferData;
 
 /**
  * @method \StoreApp\Zed\Picker\Business\PickerBusinessFactory getFactory()
@@ -129,6 +130,17 @@ class PickerFacade extends AbstractFacade implements PickerFacadeInterface
         return $this->getFactory()
             ->createPickingHeaderTransferData()
             ->getTransferFromSession();
+    }
+
+    /**
+     * @param \StoreApp\Zed\Picker\Business\Transfer\PickingHeaderTransfer $transfer
+     *
+     * @return void
+     */
+    public function setTransferToSession(PickingHeaderTransfer $transfer): void
+    {
+        $transfer->setParents(true);
+        $this->getFactory()->getSessionService()->set(PickingHeaderTransferData::PICKING_TRANSFER_SESSION_NAME, $transfer);
     }
 
     /**
