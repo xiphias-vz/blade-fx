@@ -590,8 +590,14 @@ class PickingHeaderTransfer extends SpyPickingHeaderTransfer
         $pickedItems = 0;
         foreach ($this->getPickingOrders() as $order) {
             foreach ($order->getPickingOrderItems() as $orderItem) {
-                if ($orderItem->getIsCancelled() || $orderItem->getIsPaused() || $orderItem->getQuantityPicked() > 0) {
-                    $pickedItems++;
+                if ($order->getIsPaused()) {
+                    if ($orderItem->getIsCancelled() || $orderItem->getQuantityPicked() > 0) {
+                        $pickedItems++;
+                    }
+                } else {
+                    if ($orderItem->getIsCancelled() || $orderItem->getIsPaused() || $orderItem->getQuantityPicked() > 0) {
+                        $pickedItems++;
+                    }
                 }
             }
         }

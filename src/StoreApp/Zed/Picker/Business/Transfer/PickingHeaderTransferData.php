@@ -223,8 +223,8 @@ class PickingHeaderTransferData
         $containerEntity = PyzPickingSalesOrderQuery::create()
             ->filterByFkSalesOrder($orderMod->getIdOrder())
             ->filterByContainerCode($containerId)
-            ->filterByFkPickingZone($transfer->getIdZone())
             ->findOneOrCreate();
+        $containerEntity->setFkPickingZone($transfer->getIdZone());
         if (!empty($shelfId)) {
             $containerEntity->setShelfCode($shelfId);
         }
@@ -548,6 +548,7 @@ class PickingHeaderTransferData
         $orderItemChange
             ->setIdSalesOrderItem($orderItem->getIdOrderItem())
             ->setQuantity(1)
+            ->setPrice($orderItem->getPrice())
             ->setNewWeight($orderItem->getTotalWeight());
         $orderChange->setOrderItemChangeRequest(new ArrayObject([$orderItemChange]));
         $this->salesFacade->saveOrderChange($orderChange);
