@@ -96,34 +96,13 @@ export default class ProductItem extends Component {
         this.lastPositionDataFromDiv = $('#lastPositionDataDiv').data('lastpositiondata');
         this.mapEvents();
         this.boldLastThreeEanNumbers();
-        this.$previousSku = $('#formPreviousSku').val();
-        if(this.$previousSku == null || this.$previousSku == '')
-        {
-            this.focusFirstEanField();
-        }
 
         this.$openModal = $('#idOpenModal').val();
         this.openModal(this.$openModal);
 
-
-
         this.removeTemporarilyReadOnlyAttributeForNonActiveFields();
+        this.focusFirstEanField();
 
-        if(this.$previousSku == this.dataset.sku)
-        {
-            const elements = <HTMLInputElement>document.getElementsByClassName('ean_scan_input');
-            for (let i=0; i< elements.length; i++)
-            {
-                const elementsArray = elements[i].id.split('__');
-                const skuElement = elementsArray[1];
-                if(this.$previousSku == skuElement)
-                {
-                    const elementForFocus = <HTMLInputElement>elements[i];
-                    elementForFocus.focus();
-                    break;
-                }
-            }
-        }
     }
 
     protected removeTemporarilyReadOnlyAttributeForNonActiveFields() {
@@ -139,6 +118,7 @@ export default class ProductItem extends Component {
 
     protected openModal(openModal?: $): void{
         if(openModal == "true"){
+            $("#lastPickingPositionDialog").css("display", "block");
             document.querySelector("#lastPickingPositionDialog .popup-ui-container-scan").classList.add('popup-ui-container-scan--show');
         }
     }
@@ -268,7 +248,7 @@ export default class ProductItem extends Component {
             '</div>' +
             '<div class="bawContainerRemove_' + item.id + ' col--md-3 float-right text-right"><button id="bawContainerButton_' + item.id + '" class="bawContainerButton" type="button">X</button></div>' +
             '</div>');
-        elementToAdd.appendTo(this.$this.find(".product-item__info"));
+        elementToAdd.appendTo(this.$this.find(".product-item-multiple-picking__info"));
 
         document.querySelector('#' + item.fullScannedId).addEventListener('click', evt => this.onRemoveContainerClick(evt, item.scannedWeight));
     }
@@ -502,7 +482,7 @@ export default class ProductItem extends Component {
             '</div>' +
             '<div class="bawContainerRemove_' + this.barcodeAndWeightContainer + ' col--md-3 float-right text-right"><button id="bawContainerButton_' + this.barcodeAndWeightContainer + '" class="bawContainerButton" type="button">X</button></div>' +
             '</div>');
-        elementToAdd.appendTo(this.$this.find(".product-item__info"));
+        elementToAdd.appendTo(this.$this.find(".product-item-multiple-picking__info"));
 
         document.querySelector('#' + id).addEventListener('click', evt => this.onRemoveContainerClick(evt, calculatedWeight));
 
@@ -533,7 +513,7 @@ export default class ProductItem extends Component {
 
     protected boldLastThreeEanNumbers(): void {
 
-        let eanSpan = this.$this.find('.product-item__toBold');
+        let eanSpan = this.$this.find('.product-item-multiple-picking__toBold');
         if(eanSpan.length > 0){
             let lastThreeDigits = 3;
             let html = eanSpan[0].innerHTML;
@@ -686,11 +666,7 @@ export default class ProductItem extends Component {
 
     protected focusFirstEanField(): void
     {
-        const elements = document.querySelectorAll('.ean_scan_input');
-        elements[0].focus();
-        for(let i = 1; i < elements.length; i++) {
-            elements[i].readOnly = true;
-        }
+        this.eanScanInputElement.focus();
     }
 
     protected findAncestor (el, cls) {
@@ -722,6 +698,10 @@ export default class ProductItem extends Component {
         return `input[type="number"].js-product-item-multiple-picking__quantity`;
     }
 
+    protected get weightInputFieldSelector(): string {
+        return `input[type="number"].js-product-item-multiple-picking__weight`;
+    }
+
     protected get quantityOutputSelector(): string {
         return `.${this.jsName}__quantity-output`;
     }
@@ -734,9 +714,6 @@ export default class ProductItem extends Component {
         return `#txt_ean_scannen`;
     }
 
-    protected get weightInputFieldSelector(): string {
-        return `input[type="number"].js-product-item-multiple-picking__weight`;
-    }
 
     protected get pickedCLass(): string {
         return `${this.name}--picked`;
@@ -776,6 +753,6 @@ export default class ProductItem extends Component {
     }
 
     get sku(): string {
-        return String(this.$this.find(`div.product-item__card`).attr('data-sku'));
+        return String(this.$this.find(`div.product-item-multiple-picking__card`).attr('data-sku'));
     }
 }

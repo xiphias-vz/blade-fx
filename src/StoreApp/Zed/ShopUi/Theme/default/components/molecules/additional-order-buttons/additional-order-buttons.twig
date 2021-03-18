@@ -29,7 +29,6 @@
         {% endblock %}
         {% block midColBottom %}
             <div class="col button button--disabled button--round button--posListe">
-                <button type="button" id="posListeBtn__{{ data.itemSku }}" onclick="posListeForm('{{ data.itemSku }}')">
                      <span class="col--md-4">
                             {% include atom('icon') with {
                                 data: {
@@ -39,7 +38,6 @@
                             } only %}
                         </span>
                     <span class="col--md-8">Pos. Liste</span>
-                </button>
             </div>
         {% endblock %}
         {% block rightColBottom %}

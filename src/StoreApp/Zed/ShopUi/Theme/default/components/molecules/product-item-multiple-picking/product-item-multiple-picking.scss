@@ -207,7 +207,7 @@ $setting-item-border-radius: rem(8);
         }
 
         &__item-head-box {
-            height: rem(70);
+            height: rem(55);
         }
 
         &__item-position {
@@ -257,8 +257,8 @@ $setting-item-border-radius: rem(8);
             border-bottom: 1px solid black;
             background-color: rgba(0, 0, 0, 0);
             border-style: solid !important;
-            margin-top: 15px;
-            margin-bottom: 15px;
+            margin-top: 5px;
+            margin-bottom: 5px;
             clear: both;
         }
 
@@ -269,7 +269,7 @@ $setting-item-border-radius: rem(8);
         }
 
         #eanScannenDiv {
-            margin-top: rem(66);
+            margin-top: rem(10);
         }
 
         .button--confirm {
@@ -334,7 +334,7 @@ $setting-item-border-radius: rem(8);
         .outer_div{
             display: flex;
             justify-content: center;
-            padding-top: rem(5);
+            padding-top: rem(0);
         }
         .avg_weight{
             text-align: right;
@@ -386,9 +386,14 @@ $setting-item-border-radius: rem(8);
 
         &__weightContainer{
             margin: rem(10) 0;
+            padding-bottom: rem(0);
 
             .label {
                 line-height: rem(40);
+            }
+
+            .input {
+                height: rem(0) !important;
             }
         }
 
@@ -403,6 +408,10 @@ $setting-item-border-radius: rem(8);
                 padding: rem(16);
                 background: $setting-color-white;
             }
+        }
+
+        #gridOfTheProduct {
+            margin-top: rem(-22);
         }
 
     }

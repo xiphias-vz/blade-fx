@@ -9,6 +9,8 @@ namespace StoreApp\Zed\Picker\Business\Transfer;
 
 use ArrayObject;
 use Exception;
+use Generated\Shared\Transfer\OrderChangeRequestTransfer;
+use Generated\Shared\Transfer\OrderItemChangeRequestTransfer;
 use Generated\Shared\Transfer\OrderPickingBlockTransfer;
 use Generated\Shared\Transfer\PickingColorTransfer;
 use Generated\Shared\Transfer\PickingContainerTransfer;
@@ -124,7 +126,7 @@ class PickingHeaderTransferData
         left outer join pyz_order_picking_block popb on sso.id_sales_order = popb.fk_sales_order
             and popb.fk_picking_zone = " . $idZone . "
     where sso.merchant_reference = '" . $merchantReference . "'
-      and popb.fk_user is null
+      and (popb.fk_user is null or so.is_paused = 1)
     ";
 
         $data = $this->getResult($sql);
@@ -246,7 +248,6 @@ class PickingHeaderTransferData
     {
         $transfer = $this->getTransferFromSession();
         $orderItem = $transfer->setCurrentOrderItemPicked($quantityPicked, $weight);
-        $this->setTransferToSession($transfer);
 
         $idList = $this->getOrderItemIdArray($orderItem);
         $counter = 0;
@@ -266,6 +267,15 @@ class PickingHeaderTransferData
         if (count($nonPickedItems) > 0) {
             $this->orderUpdater->markOrderItemsAsNotPicked($nonPickedItems);
         }
+        if ($weight > 0) {
+            $this->updateOrderItemWeigth($orderItem);
+        }
+        if ($orderItem->getIsPaused()) {
+            $orderItem->setIsPaused(false);
+            $this->saveCurrentOrderItemPaused($orderItem, false);
+            $transfer->updateItemsPickedCount();
+        }
+        $this->setTransferToSession($transfer);
     }
 
     /**
@@ -297,16 +307,30 @@ class PickingHeaderTransferData
         if ($result) {
             //save data to spy_sales_order_item - SpySalesOrderItemQuery
             $orderItem = $transfer->getOrderItem($transfer->getLastPickingItemPosition());
-            $idList = $this->getOrderItemIdArray($orderItem);
-            $paused = $isPaused ? 1 : 0;
-            if (count($idList) > 0) {
-                $whereList = implode($idList, ",");
-                $qry = "update spy_sales_order_item set item_paused = " . $paused . " where id_sales_order_item in(" . $whereList . ")";
-                $this->getResult($qry);
-            }
+            $this->saveCurrentOrderItemPaused($orderItem, $isPaused);
         }
 
         return $result;
+    }
+
+    /**
+     * @param \Generated\Shared\Transfer\PickingOrderItemTransfer $orderItem
+     * @param bool $isPaused
+     *
+     * @return bool
+     */
+    private function saveCurrentOrderItemPaused(PickingOrderItemTransfer $orderItem, bool $isPaused): bool
+    {
+        //save data to spy_sales_order_item - SpySalesOrderItemQuery
+        $idList = $this->getOrderItemIdArray($orderItem);
+        $paused = $isPaused ? 1 : 0;
+        if (count($idList) > 0) {
+            $whereList = implode($idList, ",");
+            $qry = "update spy_sales_order_item set item_paused = " . $paused . " where id_sales_order_item in(" . $whereList . ")";
+            $this->getResult($qry, false);
+        }
+
+        return true;
     }
 
     /**
@@ -482,8 +506,12 @@ class PickingHeaderTransferData
         $sql = "select GROUP_CONCAT(sso.order_reference, ',') as locked_orders
             from pyz_order_picking_block popb
                 inner join spy_sales_order sso on popb.fk_sales_order = sso.id_sales_order
+                left outer join (
+                    select fk_sales_order from spy_sales_order_item where item_paused = 1
+                ) ssoi on sso.id_sales_order = ssoi.fk_sales_order
             where popb.fk_picking_zone = " . $idZone . "
-                and popb.fk_sales_order in(" . implode(",", $idOrderList) . ")";
+                and popb.fk_sales_order in(" . implode(",", $idOrderList) . ")
+                and ssoi.fk_sales_order is null ";
         $data = $this->getResult($sql);
 
         return $data[0]["locked_orders"];
@@ -507,16 +535,39 @@ class PickingHeaderTransferData
     }
 
     /**
+     * @param \Generated\Shared\Transfer\PickingOrderItemTransfer $orderItem
+     *
+     * @return void
+     */
+    private function updateOrderItemWeigth(PickingOrderItemTransfer $orderItem): void
+    {
+        $orderChange = new OrderChangeRequestTransfer();
+        $orderItemChange = new OrderItemChangeRequestTransfer();
+        $orderChange->setFkSalesOrder($orderItem->getIdOrder());
+        $orderItemChange
+            ->setIdSalesOrderItem($orderItem->getIdOrderItem())
+            ->setQuantity(1)
+            ->setNewWeight($orderItem->getTotalWeight());
+        $orderChange->setOrderItemChangeRequest(new ArrayObject([$orderItemChange]));
+        $this->salesFacade->saveOrderChange($orderChange);
+    }
+
+    /**
      * @param string $sql
+     * @param bool $doFetch
      *
      * @return array
      */
-    private function getResult(string $sql): array
+    private function getResult(string $sql, bool $doFetch = true): array
     {
         $connection = Propel::getConnection();
         $statement = $connection->prepare($sql);
         $statement->execute();
 
-        return $statement->fetchAll(PDO::FETCH_NAMED);
+        if ($doFetch) {
+            return $statement->fetchAll(PDO::FETCH_NAMED);
+        }
+
+        return [];
     }
 }

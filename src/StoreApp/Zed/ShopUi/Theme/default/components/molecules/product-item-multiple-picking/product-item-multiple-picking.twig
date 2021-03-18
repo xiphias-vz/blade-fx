@@ -146,9 +146,9 @@
 
                 {% block ElementWeight %}
                     {% if data.currentPositionData.totalWeight is defined and data.currentPositionData.totalWeight is not null %}
-                        {% set weightField = data.currentPositionData.totalWeight / 10 %}
-                        {% set minWeight = data.currentPositionData.minWeight / 10 %}
-                        {% set maxWeight = data.currentPositionData.maxWeight / 10 %}
+                        {% set weightField = data.currentPositionData.totalWeight|round %}
+                        {% set minWeight = data.currentPositionData.minWeight|round %}
+                        {% set maxWeight = data.currentPositionData.maxWeight|round %}
 
                         <div class="weightFieldDiv">
                             <div class="{{ config.name }}__weightContainer">
@@ -172,7 +172,7 @@
                 {% endblock %}
                 {% block formElementScan %}
                     <div id="eanScannenDiv">
-                        <input class="input input--expand ean_scan_input" id="txt_ean_scannen" placeholder="EAN scannen" class="input input--expand" type="text" />
+                        <input class="input input--expand ean_scan_input" id="txt_ean_scannen" placeholder="EAN scannen" type="text" />
                     </div>
                 {% endblock %}
             </div>

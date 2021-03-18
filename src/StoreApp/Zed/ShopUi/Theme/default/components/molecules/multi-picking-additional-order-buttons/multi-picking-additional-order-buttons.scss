@@ -3,6 +3,17 @@ $setting-item-border-radius: rem(8);
 @mixin multi-picking-additional-order-buttons($name: '.multi-picking-additional-order-buttons') {
     #{$name} {
 
+        @include helper-breakpoint-media-max($sm-max)  {
+            min-height: 6rem;
+
+            .additional-order-buttons-from-overview {
+                position: fixed;
+                bottom: 0;
+                width: 45%;
+                min-width: 340px;
+            }
+        }
+
         .button--ubersicht,
         .button--addContainers,
         .button--posListe {

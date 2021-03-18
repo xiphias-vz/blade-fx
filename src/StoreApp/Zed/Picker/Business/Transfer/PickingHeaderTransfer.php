@@ -499,7 +499,9 @@ class PickingHeaderTransfer extends SpyPickingHeaderTransfer
             $orderItem->setTotalWeight($weight);
             $quantityPicked = 1;
         }
-        $orderItem->setQuantityPicked($quantityPicked);
+        $orderItem
+            ->setIsCancelled(false)
+            ->setQuantityPicked($quantityPicked);
         $this->updateItemsPickedCount();
 
         return $orderItem;
@@ -583,7 +585,7 @@ class PickingHeaderTransfer extends SpyPickingHeaderTransfer
      *
      * @return void
      */
-    private function updateItemsPickedCount(): void
+    public function updateItemsPickedCount(): void
     {
         $pickedItems = 0;
         foreach ($this->getPickingOrders() as $order) {

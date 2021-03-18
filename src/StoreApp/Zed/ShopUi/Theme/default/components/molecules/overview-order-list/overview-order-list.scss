@@ -42,5 +42,17 @@
             color: $setting-color-black
         }
     }
+
+    @include helper-breakpoint-media-max($sm-max)  {
+        #confirm-multi-picking-overview {
+            position: fixed;
+            bottom: 50px;
+            left: 0;
+            width: 340px;
+            right: 0;
+            margin: 0 auto;
+        }
+    }
+
 }
 @include picker-overview-order-list();

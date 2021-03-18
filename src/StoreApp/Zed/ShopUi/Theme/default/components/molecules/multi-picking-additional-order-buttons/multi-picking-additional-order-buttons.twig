@@ -18,14 +18,16 @@
     urlPosListe: '',
     currentPosition: [],
     position: '',
+    addFromModal: '',
+    className: ''
 } %}
 
 {% block body %}
 
-    <div class="grid grid--justify spacing-top">
+    <div class="grid grid--justify spacing-top {{ data.className }}">
         {% block leftColBottom %}
             <div class="col col--md-4 {{ config.name }}__spacing">
-                <button type="button" class="button button--round button--ubersicht additional-button {% if data.overviewForm %} {{ config.name }}__selected-form {% endif %}" id="overviewBtn__{{ data.itemSku }}" onclick="multiPickingOverview('{{ data.itemSku }}')">
+                <button type="button" class="button button--round button--ubersicht additional-button {% if data.overviewForm %} {{ config.name }}__selected-form {% endif %}" id="overviewBtn__{{ data.itemSku }}" onclick="multiPickingOverview('{{ data.itemSku }}','{{ data.addFromModal }}')">
                     <span class="col--md-4">
                             {% include atom('icon') with {
                                 data: {

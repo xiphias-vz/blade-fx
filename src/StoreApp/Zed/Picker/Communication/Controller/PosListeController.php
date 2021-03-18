@@ -59,8 +59,10 @@ class PosListeController extends AbstractController
         }
         if ($fromModal == 'true') {
             $pickingRedirect = PickerConfig::URL_MULTI_PICKING_START_PICKING . '?sku=' . $sku . '&position=' . $position . '&fromModal=true';
+            $overviewRedirect = PickerConfig::URL_MULTI_PICKING_OVERVIEW . '?sku=' . $sku . '&position=' . $position . '&addFromModal1=true&skipToken=backToItem';
         } else {
             $pickingRedirect = PickerConfig::URL_MULTI_PICKING_START_PICKING . '?sku=' . $sku . '&position=' . $position;
+            $overviewRedirect = PickerConfig::URL_MULTI_PICKING_OVERVIEW . '?sku=' . $sku . '&position=' . $position . '&skipToken=backToItem';
         }
 
         $orderParams[] = [
@@ -70,7 +72,7 @@ class PosListeController extends AbstractController
                 'fromModal' => $fromModal,
             ];
 
-        return $this->createIndexActionResponse($request, $orderParams, $orderItemTransfer, $pickingRedirect);
+        return $this->createIndexActionResponse($request, $orderParams, $orderItemTransfer, $pickingRedirect, $overviewRedirect);
     }
 
     /**
@@ -119,6 +121,7 @@ class PosListeController extends AbstractController
      * @param array $orderParams
      * @param array $orderItems
      * @param string $backButtonUrl
+     * @param string $overviewRedirect
      *
      * @return array
      */
@@ -126,13 +129,17 @@ class PosListeController extends AbstractController
         Request $request,
         array $orderParams,
         array $orderItems,
-        string $backButtonUrl
+        string $backButtonUrl,
+        string $overviewRedirect
     ): array {
         return [
             'pickZone' => $orderParams[0]['pickZone'],
             'sku' => $orderParams[0]['sku'],
+            'fromModal' => $orderParams[0]['fromModal'],
+            'position' => $orderParams[0]['position'],
             'orders' => $orderItems,
             'backButtonUrl' => $backButtonUrl,
+            'overviewButtonUrl' => $overviewRedirect,
         ];
     }
 }

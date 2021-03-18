@@ -5,6 +5,9 @@
     sku: sku,
     orders: orders,
     backButtonUrl: backButtonUrl,
+    overviewButtonUrl: overviewButtonUrl,
+    fromModal: fromModal,
+    position: position,
 } %}
 {% block header %}
    {% include organism('header') with {
@@ -45,8 +48,11 @@
         data: {
             idSalesOrder: '1',
             urlContainerSelect: '/',
-            itemSku: '321654987',
+            itemSku: data.sku,
             posListeForm: true,
+            urlMultiPickingOverview: data.overviewButtonUrl,
+            addFromModal: data.fromModal,
+            position: data.position,
         }
     } only %}
 {% endblock %}

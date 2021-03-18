@@ -35,9 +35,8 @@
                    orders: data.pickingOrderTransfer
                 }
             } only %}
-
         {% block button %}
-            <div id="confirm-multi-picking" class="text-center" style="margin-top:20px">
+            <div id="confirm-multi-picking-overview" class="text-center" style="margin-top:20px">
                 <button type="submit" class="button button--expand js-pick-products__submit-button">
                     {{ 'picker.picking.confirmation' | trans }}
                 </button>
@@ -52,6 +51,7 @@
             overviewForm: true,
             urlMultiPickingOverview: data.urlMultiPickingOverview,
             urlPosListe: data.urlPosListe,
+            className: 'additional-order-buttons-from-overview'
         }
     } only %}
 {% endblock content %}

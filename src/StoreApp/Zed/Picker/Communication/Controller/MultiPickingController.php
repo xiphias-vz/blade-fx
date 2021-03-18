@@ -83,10 +83,16 @@ class MultiPickingController extends BaseOrderPickingController
                     $quantity = (int)$request->request->get("quantity");
                     $weight = (int)$request->request->get("weight");
                     $status = $request->request->get("status");
-                    if ($status == "paused") {
-                        $currentItemPausedResponse = $this->getFacade()->setCurrentOrderItemPaused(true);
-                    } else {
-                        $this->getFacade()->setCurrentOrderItemPicked($quantity, $weight);
+                    switch ($status) {
+                        case "accepted":
+                            $this->getFacade()->setCurrentOrderItemPicked($quantity, $weight);
+                            break;
+                        case "paused":
+                            $currentItemResponse = $this->getFacade()->setCurrentOrderItemPaused(true);
+                            break;
+                        case "declined":
+                            $currentItemResponse = $this->getFacade()->setCurrentOrderItemCanceled(true);
+                            break;
                     }
                 }
             }
@@ -109,7 +115,7 @@ class MultiPickingController extends BaseOrderPickingController
         $positionsData = $transfer->getOrderItems($nextOIData->getPickingItemPosition());
 
         $isLastPosition = "false";
-        if ($transfer->getLastPickingItemPosition() == $transfer->getMaxPickingItemPosition() || $openModal == 'true') {
+        if ($transfer->isLastItem() || $openModal == 'true') {
             $isLastPosition = "true";
         }
         $this->getFacade()->setTransferToSession($transfer);
