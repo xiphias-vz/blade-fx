@@ -17,10 +17,12 @@
     orderPosition: '',
     orderItemPosition: '',
     isLastPosition: '',
+    listOfContainers: [],
     openModal: ''
 } %}
 
 {% set title = data.currentPositionData['name'] %}
+{% set orderReference = data.currentPositionData['orderReference'] %}
 {% set brand = data.currentPositionData['brandName'] %}
 {% set imageUrl = data.currentPositionData['pictureUrl'] %}
 {% set itemSku = data.currentPositionData['ean'] %}
@@ -45,6 +47,8 @@
     <div id="gridOfTheProduct" class="grid {{ config.name }}__card" data-sku="{{ itemSku }}">
         <input type="hidden" id="formPreviousSku" value="{{ itemSku }}">
         <input type="hidden" id="idOpenModal" value="{{ data.openModal }}">
+        <input type="hidden" id="orderReference" value="{{ orderReference }}">
+        <input type="hidden" id="listOfIdContainers" value="{{ data.listOfContainers }}">
         <div class="col col--expand">
             <div class="box {{ config.name }}__info">
                 <div class="{{ config.name }}__item-head-box">

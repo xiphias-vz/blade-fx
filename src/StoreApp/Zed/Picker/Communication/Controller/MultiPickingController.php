@@ -126,9 +126,15 @@ class MultiPickingController extends BaseOrderPickingController
         $urlOverview = PickerConfig::URL_MULTI_PICKING_OVERVIEW;
         $urlOverview .= '?skipToken=' . static::REDIRECT_SKIP_TOKEN . '&sku=' . $nextOIData->getEan() . '&position=' . $nextOIData->getPickingItemPosition();
 
+        $listOfContainers = $this->getFactory()
+            ->getPickerBusinessFactory()
+            ->createContainerReader()
+            ->getUsedContainers();
+
         return [
             'currentPositionData' => $nextOIData,
             'orderPosition' => $orderPosition,
+            'listOfContainers' => json_encode($listOfContainers),
             'orderItemPosition' => $orderItemPosition,
             'pickingOrderItemsData' => $positionsData,
             'itemsCount' => 0,

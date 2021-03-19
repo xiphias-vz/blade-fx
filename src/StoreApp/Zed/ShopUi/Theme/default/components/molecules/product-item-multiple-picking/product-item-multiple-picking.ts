@@ -47,11 +47,15 @@ export default class ProductItem extends Component {
     protected $weightField: $;
     protected $previousSku: $;
     protected $openModal: $;
+    protected popupUiErrorInfo: object;
     protected $containerScanConfirmation: $;
     protected popupUiError: HTMLElement;
     eanScanInputElements:HTMLInputElement;
     eanScanInputElement: HTMLInputElement;
+    listOfContainers: object[];
+    listOfContainersInput: HTMLInputElement;
     alternativeEanElement: HTMLInputElement;
+    orderReference: string;
     eanDivWrapper: HTMLElement;
     eanInputFieldWrapper: HTMLElement;
     eanInputData: HTMLElement;
@@ -80,6 +84,10 @@ export default class ProductItem extends Component {
         this.$weightField = this.$this.find(this.weightInputFieldSelector);
         this.$quantityOutput = this.$this.find(this.quantityOutputSelector);
         this.eanDivWrapper = this.$this.find(this.eanScannenDivSelector);
+        this.listOfContainersInput = <HTMLInputElement>this.querySelector('#listOfIdContainers');
+        this.listOfContainers =  JSON.parse(this.listOfContainersInput.value);
+        this.popupUiErrorInfo = {};
+        this.orderReference = this.querySelector('#orderReference').value;
         this.eanInputFieldWrapper = <HTMLElement>document.querySelector(this.eanScannenInputSelector);
         this.popupUiError = this.querySelector('.popup-ui-error');
         this.closeButton = this.popupUiError.querySelector('.error-holder');
@@ -223,6 +231,17 @@ export default class ProductItem extends Component {
         }
     }
 
+
+    protected showPopUpErrorMessageForNonExistingContainer(containerNumber) {
+        let popUpInfo = this.popupUiError.querySelector('.error-info');
+        popUpInfo.innerHTML = `
+            <p class="container-name">
+               Container: ${containerNumber} existiert nicht.
+            </p>
+        `;
+        this.popupUiError.classList.add('popup-ui-error--show');
+    }
+
     async updateItem(item: StorageItem): Promise<void> {
         await this.updateQuantityInput(item.count);
 
@@ -337,60 +356,63 @@ export default class ProductItem extends Component {
                 status = "declined"
             }
 
-            const urlSave = window.location.origin + "/picker/multi-picking/multi-order-picking";
-            const urlCheck = window.location.origin + "/picker/multi-picking/check-container-id";
+            let containerExists = this.containerExists($formattedContainerInput, this.orderReference)
 
-            fetch(urlCheck,
-                {
-                    method: 'POST',
-                    headers: {'Content-Type':'application/x-www-form-urlencoded'},
-                    body: 'scannedContainerID=' + $formattedContainerInput + '&' + 'position=' + pickingPosition + '&' + 'status=' + status
+            if(!containerExists) {
 
-                })
-                .then(response => response.json())
-                .then(parsedResponse => {
+                let saveAndGoToNext = "true";
+                const urlSave = window.location.origin + "/picker/multi-picking/multi-order-picking";
 
-                    let checkedContainerValid = parsedResponse.containerCheck;
-                    let errorMsg = parsedResponse.errorMessage;
-                    let lastPosition = parsedResponse.isLastPosition;
+                if(this.lastPositionDataFromDiv == true){
+                    // Show popup last position
+                    saveAndGoToNext = "End";
+                }
+                let form = $('<form action="' + urlSave + '" method="post" style="visibility: hidden">' +
+                    '<input type="text" name="saveAndGoToNext" value="' + saveAndGoToNext + '" />' +
+                    '<input type="text" name="position" value="' + pickingPosition + '" />' +
+                    '<input type="text" name="quantity" value="' + quantity + '" />' +
+                    '<input type="text" name="weight" value="' + weight + '" />' +
+                    '<input type="text" name="status" value="' + status + '" />' +
+                    '</form>');
+                $('body').append(form);
+                form.submit();
+            }
 
-                    if(JSON.parse(checkedContainerValid) === true){
-
-                        if(status === "paused"){
-                            if(errorMsg != ""){
-                                $(".container-desc").text(errorMsg);
-                                this.popupUiError.classList.add('popup-ui-error--show');
-                                return;
-                            }
-                        }
-
-                        let saveAndGoToNext = "true";
-
-                        if(JSON.parse(lastPosition) === true){
-                            // Show popup last position
-                            saveAndGoToNext = "End";
-                        }
-                        let form = $('<form action="' + urlSave + '" method="post" style="visibility: hidden">' +
-                            '<input type="text" name="saveAndGoToNext" value="' + saveAndGoToNext + '" />' +
-                            '<input type="text" name="position" value="' + pickingPosition + '" />' +
-                            '<input type="text" name="quantity" value="' + quantity + '" />' +
-                            '<input type="text" name="weight" value="' + weight + '" />' +
-                            '<input type="text" name="status" value="' + status + '" />' +
-                            '</form>');
-                        $('body').append(form);
-                        form.submit();
-                    }
-                    else{
-                        $(".container-desc").text(errorMsg);
-                        this.popupUiError.classList.add('popup-ui-error--show');
-                    }
-
-                })
-                .catch(error => {
-                    console.error(error);
-
-                });
         }
+    }
+
+    protected containerExists(containerNumber, orderReferenceNumber): boolean {
+        let containerExists = true;
+        for(let i = 0; i < this.listOfContainers.length; i++) {
+            let currentContainer = this.listOfContainers[i];
+            if(currentContainer.ContainerCode == containerNumber && currentContainer.orderReference == orderReferenceNumber) {
+                containerExists = false;
+                return containerExists;
+            }else if(currentContainer.ContainerCode == containerNumber && currentContainer.orderReference != orderReferenceNumber) {
+                containerExists = true;
+                this.popupUiErrorInfo.ContainerCode = currentContainer.ContainerCode;
+                this.popupUiErrorInfo.orderReference = currentContainer.orderReference;
+                this.popupUiErrorInfo.firstName = currentContainer.firstName;
+                this.popupUiErrorInfo.lastName = currentContainer.lastName;
+                this.showPopUpErrorMessage();
+                return containerExists;
+            }
+        }
+        this.showPopUpErrorMessageForNonExistingContainer(containerNumber);
+        containerExists = true;
+        return containerExists;
+    }
+
+    protected showPopUpErrorMessage() {
+        let popUpInfo = this.popupUiError.querySelector('.error-info');
+        popUpInfo.innerHTML = `
+            <p class="container-name">
+                Container: <span>${this.popupUiErrorInfo.ContainerCode}</span><br>
+                 <span class="container-desc">ist bereits für Kunde ${this.popupUiErrorInfo.firstName} ${this.popupUiErrorInfo.lastName} </span><br>
+                 <span class="container-order">Bestellung: ${this.popupUiErrorInfo.orderReference} aktiviert</span>
+            </p>
+        `;
+        this.popupUiError.classList.add('popup-ui-error--show');
     }
 
     protected formKeyPressHandler(event: KeyboardEvent): void {
