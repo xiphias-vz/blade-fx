@@ -23,6 +23,9 @@ export default class PopupUiError extends Component {
         if(this.isPopupErrorForPickingArticles == "1") {
             this.$closeButton.on('click', (event: Event) => this.triggerPopupWithClearingInputField(event));
         }
+        else if(this.isPopupErrorForPickingArticles == "2"){
+            this.$closeButton.on('click', (event: Event) => this.triggerPopupWithClearingInputFieldForContainer(event));
+        }
         else {
             this.$closeButton.on('click', (event: Event) => this.triggerPopup(event));
         }
@@ -38,6 +41,12 @@ export default class PopupUiError extends Component {
         if (this.$openPopupButton.length) {
             this.$openPopupButton.on('click', (event: Event) => this.triggerPopup(event));
         }
+    }
+    public triggerPopupWithClearingInputFieldForContainer(event?: Event): void {
+        this.$this.toggleClass(this.showClass);
+        const scanInputField = $('#input_scanner');
+        scanInputField.value = '';
+        scanInputField.focus();
     }
 
     public triggerPopupWithClearingInputField(event?: Event): void {
