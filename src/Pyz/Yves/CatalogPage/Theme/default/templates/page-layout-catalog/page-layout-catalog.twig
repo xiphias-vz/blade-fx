@@ -92,7 +92,7 @@
                             </button>
                             {% block catalogContent %}
                                 <div class="grid">
-                                    <div id="firstSortElement" class="col col--sm-12">
+                                    <div id="firstSortElement" class="col col--sm-12" style="z-index: 10">
                                         {% include molecule('sort-number-products', 'CatalogPage') with {
                                             data: {
                                                 pagination: data.pagination,
@@ -124,7 +124,7 @@
                                     } only %}
                                 </div>
 
-                                <div id="secondSortElement" class="col col--sm-12 float-right col--md-2 menu--inline">
+                                <div id="secondSortElement" class="col col--sm-12 float-right col--md-2 menu--inline" style="z-index: 10">
                                     {% include molecule('sort-number-products', 'CatalogPage') with {
                                         data: {
                                             pagination: data.pagination,

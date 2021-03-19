@@ -4,11 +4,16 @@
     activePage: '',
     matomoUrl: app['matomo.url'],
     matomoIdSite: app['matomo.idsite'],
+    currentCookieStore: app.currentStoreCookie,
 } %}
 
 {%- block class -%}page-layout-main js-page-layout-main js-page-layout-main--side-drawer-container js-page-layout-main--block-scroll{%- endblock -%}
 
 {% block body %}
+        {% embed molecule('popup-ui-store-switcher') with {
+        } only %}
+        {% endembed %}
+        <input id="current_store_cookie" class="display-none" type="text" value="{{ data.currentCookieStore }}" />
     <div class="page-layout-main__container">
         {% block test %}
         {% endblock %}

@@ -17,6 +17,7 @@ cart.shipping.order-item,+ Shipping,en_US
 cart.shipping,Service,de_DE
 cart.shipping,Shipping,en_US
 cart.total,Gesamt,de_DE
+please.choose.store,Bitte Abholstation wählen,de_DE
 cart.total,Total,en_US
 cart.checkout,Zur Kasse,de_DE
 cart.checkout,Checkout,en_US

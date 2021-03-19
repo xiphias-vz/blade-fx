@@ -1,0 +1,39 @@
+{% extends model('component') %}
+
+{% define config = {
+    name: 'popup-ui-store-switcher',
+    tag: 'popup-ui-store-switcher',
+} %}
+
+{% block body %}
+    <div class="{{ config.name }}__overlay">
+        <div class="{{ config.name }}__container">
+            <div class="{{ config.name }}__content">
+                <div class="main__inner">
+                    <div class="col col--sm-8 col--lg-8">
+                        <h1 class="title--shop-switcher">
+                            Herzlich Willkommen bei
+                        </h1>
+                        <div class="sub-title--shop-switcher">
+                            Ihrem Globus Abholservice
+                        </div>
+                        <div class="message--shop-switcher">
+                            Einfach online einkaufen und Ihre gewünschte Artikel <br/>
+                            in gewohnter Globus Qualität abholen.
+                        </div>
+                        <div class="form-text--shop-switcher">
+                            Wählen Sie Ihre Abholstation, um mit Ihrem Einkauf zu beginnen:
+                        </div>
+                        ​
+                        <div class="form-dropdown--shop-switcher">
+                          {% widget 'StoreSwitcherWidget' %}{% endwidget %}
+                        </div>
+                    </div>
+                    <div class="col col--sm-4 col--lg-4">
+                        <img src="{{ publicPath("/images/store-selection.png") }}" width="100%" height="100%" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
