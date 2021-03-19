@@ -247,6 +247,28 @@
                     <div id="containerScanDiv">
                         <input class="input input--expand" id="txt_container_scan" placeholder="Container scannen" type="text" />
                     </div>
+                    {% embed molecule('popup-ui-error') with {
+                        data: {
+                            isErrorTrue: 0,
+                            isPopUpErrorForPickingArticles: 1,
+                            buttons: {
+                                submit: {
+                                    isButton: true,
+                                    additionalClass: 'js-pick-products__submit',
+                                },
+                            },
+                        },
+                    } only %}
+                        {% block content %}
+                            <div class="popup-error-holder">
+                                <div class="error-status">Fehler</div>
+                                <div class="error-info">
+                                    <p class="container-desc"></p>
+
+                                </div>
+                            </div>
+                        {% endblock %}
+                    {% endembed %}
                 {% endblock %}
             </div>
         {% endblock %}
@@ -314,27 +336,4 @@
             {% endblock %}
         {% endembed %}
         </div>
-
-    {% embed molecule('popup-ui-error') with {
-        data: {
-            isErrorTrue: 0,
-            buttons: {
-                submit: {
-                    isButton: true,
-                    additionalClass: 'js-pick-products__submit',
-                },
-            },
-        },
-    } only %}
-        {% block content %}
-            <div class="popup-error-holder">
-                <div class="error-status">Fehler</div>
-                <div class="error-info">
-                    <p class="container-desc"></p>
-
-                </div>
-            </div>
-        {% endblock %}
-    {% endembed %}
-
 {% endblock %}

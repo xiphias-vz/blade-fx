@@ -7,18 +7,25 @@ export default class PopupUiError extends Component {
     public $closeButton: $;
     public $submitButton: $;
     public $isErrorTrue: $;
+    public isPopupErrorForPickingArticles: string;
 
     protected readyCallback(): void {
         this.$openPopupButton = this.$this.find(this.openPopupButton);
         this.$closeButton = this.$this.find(this.closeButtonSelector);
         this.$submitButton = this.$this.find(this.submitButtonSelector);
         this.$isErrorTrue = this.$this.find('.error-holder');
-        console.log(1);
+        this.isPopupErrorForPickingArticles = this.querySelector('.error-holder').getAttribute('isPopUpErrorForPickingArticles');
         this.mapEvents();
     }
 
     protected mapEvents(): void {
-        this.$closeButton.on('click', (event: Event) => this.triggerPopup(event));
+
+        if(this.isPopupErrorForPickingArticles == "1") {
+            this.$closeButton.on('click', (event: Event) => this.triggerPopupWithClearingInputField(event));
+        }
+        else {
+            this.$closeButton.on('click', (event: Event) => this.triggerPopup(event));
+        }
 
         if (this.isCloseOnSubmit) {
             this.$submitButton.on('click', () => this.triggerPopup());
@@ -31,6 +38,13 @@ export default class PopupUiError extends Component {
         if (this.$openPopupButton.length) {
             this.$openPopupButton.on('click', (event: Event) => this.triggerPopup(event));
         }
+    }
+
+    public triggerPopupWithClearingInputField(event?: Event): void {
+        this.$this.toggleClass(this.showClass);
+        const scanInputField = this.previousElementSibling.querySelector('#txt_container_scan');
+        scanInputField.value = '';
+        scanInputField.focus();
     }
 
     public triggerPopup(event?: Event): void {

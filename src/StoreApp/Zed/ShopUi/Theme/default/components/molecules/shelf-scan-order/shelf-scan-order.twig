@@ -10,7 +10,7 @@
     listOfExistingContainers: [],
     lastOrder: false,
     orderForScanningContainer: [],
-    pickingContainers: []
+    containersWithoutShelf: []
 } %}
 
 {% block body %}
@@ -18,7 +18,7 @@
         <input type="hidden" class="listOfExistingContainers" data-listOfExistingContainers="{{ data.listOfExistingContainers }}">
         <input type="hidden" name="containersShelf" value="[]">
         {% set counter = 1 %}
-        {% for shelf in data.pickingContainers %}
+        {% for shelf in data.containersWithoutShelf %}
             <div id="container_{{ counter }}">
                 <div class="{{ config.name }}__containerAndShelf">
                     {{ counter }} : {{ shelf.containerID }}

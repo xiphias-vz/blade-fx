@@ -5,7 +5,8 @@
     lastOrder: lastOrder,
     orderForScanningContainer: orderForScanningContainer,
     nextOrderPosition: nextOrderPosition,
-    containersShelf: containersShelf
+    containersShelf: containersShelf,
+    containersWithoutShelf: containersWithoutShelf | default(null)
 } %}
 
 {% block header %}
@@ -61,7 +62,7 @@
                 listOfExistingContainers: data.listOfExistingContainers,
                 lastOrder: data.lastOrder,
                 orderForScanningContainer: data.orderForScanningContainer,
-                pickingContainers: data.orderForScanningContainer.pickingContainers
+                containersWithoutShelf: data.containersWithoutShelf
             }
         } only %}
     </form>

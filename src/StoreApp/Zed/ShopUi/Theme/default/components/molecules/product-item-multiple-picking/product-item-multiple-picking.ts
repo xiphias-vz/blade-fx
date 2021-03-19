@@ -55,6 +55,7 @@ export default class ProductItem extends Component {
     eanDivWrapper: HTMLElement;
     eanInputFieldWrapper: HTMLElement;
     eanInputData: HTMLElement;
+    closeButton: HTMLElement;
     pricePerKgData: HTMLElement;
     pickingItemPosition: HTMLElement;
     lastPositionDataFromDiv: HTMLElement;
@@ -81,6 +82,7 @@ export default class ProductItem extends Component {
         this.eanDivWrapper = this.$this.find(this.eanScannenDivSelector);
         this.eanInputFieldWrapper = <HTMLElement>document.querySelector(this.eanScannenInputSelector);
         this.popupUiError = this.querySelector('.popup-ui-error');
+        this.closeButton = this.popupUiError.querySelector('.error-holder');
         this.weightMax = Number(this.$weightField.attr('max'));
         this.weightMin = Number(this.$weightField.attr('min'));
         this.productBlockWrapper = <HTMLElement>document.getElementById('gridOfTheProduct');
@@ -99,6 +101,8 @@ export default class ProductItem extends Component {
 
         this.$openModal = $('#idOpenModal').val();
         this.openModal(this.$openModal);
+
+        console.log(this.closeButton);
 
         this.removeTemporarilyReadOnlyAttributeForNonActiveFields();
         this.focusFirstEanField();
@@ -126,6 +130,7 @@ export default class ProductItem extends Component {
     protected mapEvents(): void {
         this.$minusButton.on('click', () => this.clickCounterHandler());
         this.$plusButton.on('click', () => this.clickCounterHandler(true));
+        this.closeButton.addEventListener('click', () => this.clearInputFields);
         this.btnSubmitPick.addEventListener('click', evt => this.onSubmitClick(evt));
         if(this.eanScanInputElement != undefined){
             this.eanScanInputElement.addEventListener('keypress', (event: KeyboardEvent) => this.formKeyPressHandler(event));
@@ -158,6 +163,11 @@ export default class ProductItem extends Component {
         this.$pauseButton.on('click', () => {
             this.pauseClickHandler();
         });
+    }
+
+    protected clearInputFields() {
+        this.eanScanInputElement.value = '';
+        this.eanScanInputElement.focus();
     }
 
     protected onSubmitClick(event: MouseEvent) {
@@ -193,7 +203,7 @@ export default class ProductItem extends Component {
             if(Boolean(isLastPosition) === true){
                 saveAndGoToNext = "End";
             }
-            let form = $('<form action="' + urlSave + '" method="post">' +
+            let form = $('<form action="' + urlSave + '" method="post" style="visibility: hidden;">' +
                 '<input type="text" name="saveAndGoToNext" value="' + saveAndGoToNext + '" />' +
                 '<input type="text" name="position" value="' + pickingPosition + '" />' +
                 '<input type="text" name="quantity" value="' + quantity + '" />' +
@@ -266,6 +276,10 @@ export default class ProductItem extends Component {
 
         this.updateQuantityInput(inputValue);
         this.pickProducts.updateStorageItem(this);
+        if(Number(this.currentQuantity) === Number(this.maxQuantity)){
+            this.acceptClickHandler();
+            this.pressSubmit();
+        }
     }
 
     protected validateWeightInput(): boolean {
@@ -356,7 +370,7 @@ export default class ProductItem extends Component {
                             // Show popup last position
                             saveAndGoToNext = "End";
                         }
-                        let form = $('<form action="' + urlSave + '" method="post">' +
+                        let form = $('<form action="' + urlSave + '" method="post" style="visibility: hidden">' +
                             '<input type="text" name="saveAndGoToNext" value="' + saveAndGoToNext + '" />' +
                             '<input type="text" name="position" value="' + pickingPosition + '" />' +
                             '<input type="text" name="quantity" value="' + quantity + '" />' +
@@ -562,6 +576,10 @@ export default class ProductItem extends Component {
         this.currentValue = value;
         this.$quantityField.val(value);
         this.$quantityOutput.html(value);
+    }
+
+    protected pressSubmit(): void{
+        this.btnSubmitPick.click();
     }
 
     protected acceptClickHandler(): void {

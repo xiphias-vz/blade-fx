@@ -106,7 +106,7 @@ export default class ShelfScanOrder extends Component {
         if (event.key == "Enter") {
             event.preventDefault();
             if (event.target.value != null && event.target.value != "") {
-                this.checkContainerAndShelfId(event);
+                this.updateContainerShelfTransfer(event);
             }
         }
     }

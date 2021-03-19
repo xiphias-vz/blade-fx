@@ -12,8 +12,8 @@
     color: '',
     name: '',
     isPaused: "0",
-    isAllPicked: "0",
-    isCanceled: "0",
+    isAllPicked: '',
+    isCanceled: '',
     pictureUrl: '',
     sequence: '',
     shelf: '',
@@ -49,7 +49,7 @@
                     <div class="{{ config.name }}__number-text-wrapper">
                         {{ data.quantity }}
                     </div>
-                {% elseif data.isAllPicked == true %}
+                {% elseif data.isAllPicked == true or data.isAllPicked == "1" %}
                     <div class="{{ config.name }}__circle-wrapper">
                         <div class="{{ config.name }}__checked-circle">
                             <svg class="icon button__icon"><use xlink:href="#:check"></use></svg>
@@ -58,7 +58,7 @@
                     <div class="{{ config.name }}__number-text-wrapper">
                         {{ data.quantity }}
                     </div>
-                {% elseif data.isCanceled == "1" %}
+                {% elseif data.isCanceled == true or data.isCanceled == "1" %}
                     <div class="{{ config.name }}__circle-wrapper">
                         <div class="{{ config.name }}__cancel-circle">
                             <svg class="icon button__icon"><use xlink:href="#:close"></use></svg>

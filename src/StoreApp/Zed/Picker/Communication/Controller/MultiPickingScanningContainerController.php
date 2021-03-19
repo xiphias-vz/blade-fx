@@ -51,6 +51,13 @@ class MultiPickingScanningContainerController extends AbstractController
             $orderForScanningContainer = $transfer->getNextOrder($nextOrderPosition);
         }
 
+        $containersWithoutShelf = [];
+        foreach ($orderForScanningContainer->getPickingContainers() as $pickingContainer) {
+            if ($pickingContainer->getShelfID() == null) {
+                array_push($containersWithoutShelf, $pickingContainer);
+            }
+        }
+
         if ($totalQuantity == $nextOrderPosition + 1) {
             $lastOrder = true;
         }
@@ -66,6 +73,7 @@ class MultiPickingScanningContainerController extends AbstractController
             'listOfExistingContainers' => json_encode($listOfExistingContainers),
             'nextOrderPosition' => $nextOrderPosition,
             'lastOrder' => $lastOrder,
+            'containersWithoutShelf' => $containersWithoutShelf,
         ];
     }
 }

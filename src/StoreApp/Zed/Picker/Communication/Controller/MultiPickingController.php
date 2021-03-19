@@ -99,13 +99,14 @@ class MultiPickingController extends BaseOrderPickingController
                     }
                     if ($keyValue == "End") {
                         $positionToDisplay = $transfer->getLastPickingItemPosition();
+                        $productToDisplay = 'x';
                         $openModal = 'true';
                     }
                 }
             }
         }
 
-        if ($positionToDisplay != '') {
+        if ($productToDisplay != '' && $positionToDisplay != '') {
             $nextOIData = $transfer->getOrderItem($positionToDisplay);
             $transfer->setLastPickingItemPosition($nextOIData->getPickingItemPosition());
         } else {
