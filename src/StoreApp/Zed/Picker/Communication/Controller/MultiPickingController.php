@@ -76,9 +76,15 @@ class MultiPickingController extends BaseOrderPickingController
      */
     public function multiOrderPickingAction(Request $request)
     {
+        $transfer = $this->getFacade()->getPickingHeaderTransfer();
+        $productToDisplay = $_REQUEST['sku'] ?? '';
+        $positionToDisplay = $_REQUEST['position'] ?? '';
+        $openModal = $_REQUEST['fromModal'] ?? 'false';
+
         if ($request->request->count() > 0) {
             if ($request->request->has('saveAndGoToNext')) {
-                if ($request->request->get("saveAndGoToNext") == true) {
+                $keyValue = $request->request->get("saveAndGoToNext");
+                if ($keyValue == "true" || $keyValue == "End") {
                     $position = (int)$request->request->get("position");
                     $quantity = (int)$request->request->get("quantity");
                     $weight = (int)$request->request->get("weight");
@@ -87,23 +93,19 @@ class MultiPickingController extends BaseOrderPickingController
                         case "accepted":
                             $this->getFacade()->setCurrentOrderItemPicked($quantity, $weight);
                             break;
-                        case "paused":
-                            $currentItemResponse = $this->getFacade()->setCurrentOrderItemPaused(true);
-                            break;
                         case "declined":
                             $currentItemResponse = $this->getFacade()->setCurrentOrderItemCanceled(true);
                             break;
+                    }
+                    if ($keyValue == "End") {
+                        $positionToDisplay = $transfer->getLastPickingItemPosition();
+                        $openModal = 'true';
                     }
                 }
             }
         }
 
-        $transfer = $this->getFacade()->getPickingHeaderTransfer();
-
-        $productToDisplay = $_REQUEST['sku'] ?? '';
-        $positionToDisplay = $_REQUEST['position'] ?? '';
-        $openModal = $_REQUEST['fromModal'] ?? 'false';
-        if ($productToDisplay != '' && $positionToDisplay != '') {
+        if ($positionToDisplay != '') {
             $nextOIData = $transfer->getOrderItem($positionToDisplay);
             $transfer->setLastPickingItemPosition($nextOIData->getPickingItemPosition());
         } else {
@@ -154,11 +156,23 @@ class MultiPickingController extends BaseOrderPickingController
         if ($request->request->has('scannedContainerID')) {
             $position = $request->request->get("position");
             $containerID = $request->request->get("scannedContainerID");
+            $status = $request->request->get("status");
+            $containerIDWithOutPrefix = strtr($containerID, [
+                '/x11' => '',
+                '/X11' => '',
+            ]);
 
-            $response = $this->getFacade()->checkContainerForCurrentItem($containerID);
+            $response = $this->getFacade()->checkContainerForCurrentItem($containerIDWithOutPrefix);
 
             $transfer = $this->getFacade()->getPickingHeaderTransfer();
             if ($response) {
+                if ($status == "paused") {
+                    $currentItemResponse = $this->getFacade()->setCurrentOrderItemPaused(true);
+                    if ($currentItemResponse == false) {
+                        $errorMessage = $transfer->getErrorMessage();
+                    }
+                }
+
                 if ($transfer->isLastItem()) {
                     $isLastPosition = "true";
                 }

@@ -189,21 +189,19 @@ export default class ProductItem extends Component {
         const urlSave = window.location.origin + "/picker/multi-picking/multi-order-picking";
 
         if(declined === true){
+            let saveAndGoToNext = "true";
             if(Boolean(isLastPosition) === true){
-                $("#lastPickingPositionDialog").css("display", "block");
-                document.querySelector("#lastPickingPositionDialog .popup-ui-container-scan").classList.add('popup-ui-container-scan--show');
+                saveAndGoToNext = "End";
             }
-            else{
-                let form = $('<form action="' + urlSave + '" method="post">' +
-                    '<input type="text" name="saveAndGoToNext" value="true" />' +
-                    '<input type="text" name="position" value="' + pickingPosition + '" />' +
-                    '<input type="text" name="quantity" value="' + quantity + '" />' +
-                    '<input type="text" name="weight" value="' + weight + '" />' +
-                    '<input type="text" name="status" value="' + status + '" />' +
-                    '</form>');
-                $('body').append(form);
-                form.submit();
-            }
+            let form = $('<form action="' + urlSave + '" method="post">' +
+                '<input type="text" name="saveAndGoToNext" value="' + saveAndGoToNext + '" />' +
+                '<input type="text" name="position" value="' + pickingPosition + '" />' +
+                '<input type="text" name="quantity" value="' + quantity + '" />' +
+                '<input type="text" name="weight" value="' + weight + '" />' +
+                '<input type="text" name="status" value="' + status + '" />' +
+                '</form>');
+            $('body').append(form);
+            form.submit();
         }
         else{
             document.querySelector('.popup-ui-container-scan').classList.add('popup-ui-container-scan--show');
@@ -332,7 +330,7 @@ export default class ProductItem extends Component {
                 {
                     method: 'POST',
                     headers: {'Content-Type':'application/x-www-form-urlencoded'},
-                    body: 'scannedContainerID=' + $formattedContainerInput + '&' + 'position=' + pickingPosition
+                    body: 'scannedContainerID=' + $formattedContainerInput + '&' + 'position=' + pickingPosition + '&' + 'status=' + status
 
                 })
                 .then(response => response.json())
@@ -343,22 +341,30 @@ export default class ProductItem extends Component {
                     let lastPosition = parsedResponse.isLastPosition;
 
                     if(JSON.parse(checkedContainerValid) === true){
+
+                        if(status === "paused"){
+                            if(errorMsg != ""){
+                                $(".container-desc").text(errorMsg);
+                                this.popupUiError.classList.add('popup-ui-error--show');
+                                return;
+                            }
+                        }
+
+                        let saveAndGoToNext = "true";
+
                         if(JSON.parse(lastPosition) === true){
                             // Show popup last position
-                            $("#lastPickingPositionDialog").css("display", "block");
-                            document.querySelector("#lastPickingPositionDialog .popup-ui-container-scan").classList.add('popup-ui-container-scan--show');
+                            saveAndGoToNext = "End";
                         }
-                        else{
-                            let form = $('<form action="' + urlSave + '" method="post">' +
-                                '<input type="text" name="saveAndGoToNext" value="true" />' +
-                                '<input type="text" name="position" value="' + pickingPosition + '" />' +
-                                '<input type="text" name="quantity" value="' + quantity + '" />' +
-                                '<input type="text" name="weight" value="' + weight + '" />' +
-                                '<input type="text" name="status" value="' + status + '" />' +
-                                '</form>');
-                            $('body').append(form);
-                            form.submit();
-                        }
+                        let form = $('<form action="' + urlSave + '" method="post">' +
+                            '<input type="text" name="saveAndGoToNext" value="' + saveAndGoToNext + '" />' +
+                            '<input type="text" name="position" value="' + pickingPosition + '" />' +
+                            '<input type="text" name="quantity" value="' + quantity + '" />' +
+                            '<input type="text" name="weight" value="' + weight + '" />' +
+                            '<input type="text" name="status" value="' + status + '" />' +
+                            '</form>');
+                        $('body').append(form);
+                        form.submit();
                     }
                     else{
                         $(".container-desc").text(errorMsg);
