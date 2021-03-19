@@ -31,7 +31,7 @@ $setting-popup-spacing-y: rem(16);
             background: $setting-color-white;
             margin-top: - rem(360);
             @include helper-breakpoint-media-max($sm-max)  {
-                margin-top: - rem(112);
+                margin-top: - rem(100);
             }
 
             .store-app-label-holder {
@@ -112,12 +112,14 @@ $setting-popup-spacing-y: rem(16);
     }
     .title--shop-switcher {
         font: bold 1.625rem "Clearface-Medium", "Fira Sans", "Montserrat", sans-serif;
-        margin: 0 0 0.5rem; }
+        margin: rem(20) 0 0.5rem; }
     .sub-title--shop-switcher {
         font: bold 2.25rem "Clearface-Medium", "Fira Sans", "Montserrat", sans-serif;
         margin: 0 0 1.25rem; }
     .message--shop-switcher {
-        margin-bottom: 2.5rem; }
+        margin-bottom: 2.5rem;
+        clear: both;
+    }
     .form-text--shop-switcher {
         font: bold 0.8rem "Fira Sans", "Montserrat", sans-serif;
         margin-bottom: 0.9375rem; }
@@ -125,12 +127,21 @@ $setting-popup-spacing-y: rem(16);
         margin-bottom: 3rem; }
 
     .select2-container {
+        z-index: 9998 !important;
+    }
+
+    .custom-select__caret {
         z-index: 9999 !important;
     }
 
     .select2-container--secondary .select2-results {
         width: 100% !important;
         transform: translateX(0rem) !important;
+    }
+
+    .select2-container--secondary .select2-results__option[aria-selected='true']::before
+    {
+        right: rem(7);
     }
 
     .form-dropdown--shop-switcher .custom-select, .form-dropdown--shop-switcher .custom-select .select2-container {

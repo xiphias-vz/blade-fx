@@ -64,7 +64,13 @@ class DetailController extends SprykerDetailController
             if (!in_array($orderItem->getPickZone(), $pickZones)) {
                 array_push($pickZones, $orderItem->getPickZone());
             }
-            $itemStatusArray[array_search($orderItem->getPickZone(), $pickZones)][$key] = $orderItem->getState()->getName();
+
+            if ($orderItem->getItemPaused() != null && $orderItem->getItemPaused() != 0) {
+                $itemStatusArray[array_search($orderItem->getPickZone(), $pickZones)][$key] = $orderItem->getState()->getName() . ' (paused)';
+                $orderItem->getState()->setName($orderItem->getState()->getName() . ' (paused)');
+            } else {
+                $itemStatusArray[array_search($orderItem->getPickZone(), $pickZones)][$key] = $orderItem->getState()->getName();
+            }
             $itemDataArray[array_search($orderItem->getPickZone(), $pickZones)][$key] = $orderItem;
         }
 

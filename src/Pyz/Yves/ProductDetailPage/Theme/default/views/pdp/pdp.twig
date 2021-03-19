@@ -62,45 +62,69 @@
                 } only %}
             </div>
         </div>
-    </div>
 
-    {% widget 'ProductAlternativeListWidget' args [data.product] only %}{% endwidget %}
+        {% widget 'ProductAlternativeListWidget' args [data.product] only %}{% endwidget %}
 
-    <div class="grid grid--indent">
-        <div class="col col--spaced-lg col--sm-12 col--lg-12">
-            <div class="container__inner">
+        <div class="grid grid--indent">
+            <div class="col col--spaced-lg col--sm-12 col--lg-12">
+                <div class="container__inner">
 
-                 {% if data.product.attributes.zutaten is defined or data.product.attributes.entallerg is defined %}
-                     {% embed molecule('toggler-item') with {
-                         data: {
-                             title: 'product.info.ingredients.and.allergens' | trans,
-                             triggerClass: 'ingredients-and-allergens__trigger-bundle',
-                             targetClass: 'ingredients-and-allergens__target-bundle',
-                             isActive: true,
-                             productAttributes: data.product.attributes,
-                             product: data.product
-                         },
-                         embed: {
-                             bundleItems: data.bundleItems,
-                         }
-                     } only %}
-                         {% block contentText %}
-                             {% include molecule('ingredients-and-allergens', 'ProductDetailPage') with {
-                                 data: {
-                                     productAttributes: data.product.attributes,
-                                     zutatenText: _view.zutatenText
-                                 },
-                             } only %}
-                         {% endblock %}
-                     {% endembed %}
-                {% endif %}
+                     {% if data.product.attributes.zutaten is defined or data.product.attributes.entallerg is defined %}
+                         {% embed molecule('toggler-item') with {
+                             data: {
+                                 title: 'product.info.ingredients.and.allergens' | trans,
+                                 triggerClass: 'ingredients-and-allergens__trigger-bundle',
+                                 targetClass: 'ingredients-and-allergens__target-bundle',
+                                 isActive: true,
+                                 productAttributes: data.product.attributes,
+                                 product: data.product
+                             },
+                             embed: {
+                                 bundleItems: data.bundleItems,
+                             }
+                         } only %}
+                             {% block contentText %}
+                                 {% include molecule('ingredients-and-allergens', 'ProductDetailPage') with {
+                                     data: {
+                                         productAttributes: data.product.attributes,
+                                         zutatenText: _view.zutatenText
+                                     },
+                                 } only %}
+                             {% endblock %}
+                         {% endembed %}
+                    {% endif %}
 
-                {% if data.product.attributes.energiekcalp100gml is defined and data.product.nutritionalInformationContainsReferenceAmount is defined%}
+                    {% if data.product.attributes.energiekcalp100gml is defined and data.product.nutritionalInformationContainsReferenceAmount is defined%}
+                        {% embed molecule('toggler-item') with {
+                            data: {
+                                title: 'Nährwerte',
+                                triggerClass: 'nutritional-information__trigger-bundle',
+                                targetClass: 'nutritional-information__target-bundle',
+                                isActive: true,
+                                productAttributes: data.product.attributes,
+                                product: data.product
+                            },
+                            embed: {
+                                bundleItems: data.bundleItems,
+                            }
+                        } only %}
+                            {% block contentText %}
+                                {% include molecule('nutritional-information', 'ProductDetailPage') with {
+                                    data: {
+                                        attributes: data.product.attributes,
+                                        isNutritionalInformationContainsReferenceAmount: data.product.nutritionalInformationContainsReferenceAmount
+                                    },
+                                } only %}
+                            {% endblock %}
+                        {% endembed %}
+                    {% endif %}
+
+                    {% if data.product.attributes.pet_feeding_table is defined %}
                     {% embed molecule('toggler-item') with {
                         data: {
-                            title: 'Nährwerte',
-                            triggerClass: 'nutritional-information__trigger-bundle',
-                            targetClass: 'nutritional-information__target-bundle',
+                            title: 'Fütterungsempfehlung',
+                            triggerClass: 'pet-feeding-table__trigger-bundle',
+                            targetClass: 'pet-feeding-table__target-bundle',
                             isActive: true,
                             productAttributes: data.product.attributes,
                             product: data.product
@@ -110,73 +134,49 @@
                         }
                     } only %}
                         {% block contentText %}
-                            {% include molecule('nutritional-information', 'ProductDetailPage') with {
+                                {% include molecule('pet-feeding-table', 'ProductDetailPage') with {
+                                    data: {
+                                        attributes: data.product.attributes,
+                                        petColumns: _view.petColumns,
+                                        petRows: _view.petRows,
+                                        rowData: _view.rowData,
+                                    },
+                                } only %}
+                        {% endblock %}
+                    {% endembed %}
+                    {% endif %}
+
+                    {% embed molecule('toggler-item') with {
+                        data: {
+                            title: 'catalog.view.product.info' | trans,
+                            triggerClass: 'additional-product-information__trigger-bundle',
+                            targetClass: 'additional-product-information__target-bundle',
+                            isActive: true,
+                            productAttributes: data.product.attributes,
+                            product: data.product
+                        },
+                        embed: {
+                            bundleItems: data.bundleItems,
+                        }
+                    } only %}
+                        {% block contentText %}
+                            {% include molecule('additional-product-information', 'ProductDetailPage') with {
                                 data: {
-                                    attributes: data.product.attributes,
-                                    isNutritionalInformationContainsReferenceAmount: data.product.nutritionalInformationContainsReferenceAmount
+                                    productAttributes: data.productAttributes,
+                                    product: data.product,
+                                    characteristics: _view.characteristics
                                 },
                             } only %}
                         {% endblock %}
                     {% endembed %}
-                {% endif %}
 
-                {% if data.product.attributes.pet_feeding_table is defined %}
-                {% embed molecule('toggler-item') with {
-                    data: {
-                        title: 'Fütterungsempfehlung',
-                        triggerClass: 'pet-feeding-table__trigger-bundle',
-                        targetClass: 'pet-feeding-table__target-bundle',
-                        isActive: true,
-                        productAttributes: data.product.attributes,
-                        product: data.product
-                    },
-                    embed: {
-                        bundleItems: data.bundleItems,
-                    }
-                } only %}
-                    {% block contentText %}
-                            {% include molecule('pet-feeding-table', 'ProductDetailPage') with {
-                                data: {
-                                    attributes: data.product.attributes,
-                                    petColumns: _view.petColumns,
-                                    petRows: _view.petRows,
-                                    rowData: _view.rowData,
-                                },
-                            } only %}
-                    {% endblock %}
-                {% endembed %}
-                {% endif %}
-
-                {% embed molecule('toggler-item') with {
-                    data: {
-                        title: 'catalog.view.product.info' | trans,
-                        triggerClass: 'additional-product-information__trigger-bundle',
-                        targetClass: 'additional-product-information__target-bundle',
-                        isActive: true,
-                        productAttributes: data.product.attributes,
-                        product: data.product
-                    },
-                    embed: {
-                        bundleItems: data.bundleItems,
-                    }
-                } only %}
-                    {% block contentText %}
-                        {% include molecule('additional-product-information', 'ProductDetailPage') with {
-                            data: {
-                                productAttributes: data.productAttributes,
-                                product: data.product,
-                                characteristics: _view.characteristics
-                            },
-                        } only %}
-                    {% endblock %}
-                {% endembed %}
-
+                </div>
             </div>
         </div>
+
+        {% widget 'ProductReplacementForListWidget' args [data.product.sku] only %}{% endwidget %}
+
     </div>
-
-    {% widget 'ProductReplacementForListWidget' args [data.product.sku] only %}{% endwidget %}
-
     <div class="container__inner">
         {% if data.product.productSetIds is not empty %}
             {% widget 'ProductSetIdsWidget' args [data.product.productSetIds] only %}{% endwidget %}

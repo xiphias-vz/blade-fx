@@ -308,4 +308,20 @@ class SalesFacade extends SprykerSalesFacade implements SalesFacadeInterface
     {
         return $this->getFactory()->getStore()->getStoreName();
     }
+
+    /**
+     * {@inheritDoc}
+     *
+     * @api
+     *
+     * @param int $idSalesOrder
+     *
+     * @return string[]
+     */
+    public function getDistinctOrderStates($idSalesOrder)
+    {
+        return $this->getFactory()
+            ->createOrderReaderWithMultiShippingAddress()
+            ->getDistinctOrderStates($idSalesOrder);
+    }
 }

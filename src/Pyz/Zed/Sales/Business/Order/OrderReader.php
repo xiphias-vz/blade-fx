@@ -94,4 +94,27 @@ class OrderReader extends SprykerOrderReader implements OrderReaderInterface
 
         return $this->orderHydrator->hydrateOrderTransferFromPersistenceBySalesOrder($orderEntity);
     }
+
+    /**
+     * @param int $idSalesOrder
+     *
+     * @return string[]
+     */
+    public function getDistinctOrderStates($idSalesOrder)
+    {
+        $orderItems = $this->queryContainer
+            ->querySalesOrderItemsByIdSalesOrder($idSalesOrder)
+            ->find();
+
+        $states = [];
+        foreach ($orderItems as $orderItem) {
+            if ($orderItem->getItemPaused() != null && $orderItem->getItemPaused() != 0) {
+                $states[$orderItem->getState()->getName() . ' paused'] = $orderItem->getState()->getName() . ' (paused)';
+            } else {
+                $states[$orderItem->getState()->getName()] = $orderItem->getState()->getName();
+            }
+        }
+
+        return $states;
+    }
 }
