@@ -586,6 +586,30 @@ class PickingHeaderTransfer extends SpyPickingHeaderTransfer
     }
 
     /**
+     * @param \Generated\Shared\Transfer\PickingOrderTransfer $order
+     * @param bool $onlyContainersWithoutShelf
+     *
+     * @return \Generated\Shared\Transfer\PickingContainerTransfer[]
+     */
+    public function getOnlyCurrentUserAndZonePickingContainers(PickingOrderTransfer $order, bool $onlyContainersWithoutShelf)
+    {
+        $containers = [];
+        foreach ($order->getPickingContainers() as $container) {
+            if ($container->getIdUser() == $this->getIdUser() && $container->getIdZone() == $this->getIdZone()) {
+                if ($onlyContainersWithoutShelf) {
+                    if (empty($container->getShelfID())) {
+                        array_push($containers, $container);
+                    }
+                } else {
+                    array_push($containers, $container);
+                }
+            }
+        }
+
+        return $containers;
+    }
+
+    /**
      * @returns void
      *
      * @return void

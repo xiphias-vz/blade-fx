@@ -132,7 +132,9 @@ class PickingHeaderTransferData
         $data = $this->getResult($sql);
         $days = [1 => "SO", 2 => "MO", 3 => "DI", 4 => "MI", 5 => "DO", 6 => "FR", 7 => "SA"];
         $transfer = new PickingHeaderTransfer();
-        $transfer->setIdZone($idZone);
+        $transfer
+            ->setIdZone($idZone)
+            ->setIdUser($this->userFacade->getCurrentUser()->getIdUser());
         foreach ($data as $item) {
             $order = new PickingOrderTransfer();
             $order->fromArray($item, true);
@@ -215,6 +217,8 @@ class PickingHeaderTransferData
                 ->setIdOrder($orderMod->getIdOrder())
                 ->setContainerID($containerId)
                 ->setShelfID($shelfId)
+                ->setIdUser($transfer->getIdUser())
+                ->setIdZone($transfer->getIdZone())
                 ->setPickingColor($orderMod->getPickingColor());
             $orderMod->addPickingContainer($containerId, $container);
             $dataUpdated = true;
@@ -479,12 +483,15 @@ class PickingHeaderTransferData
     private function getOrderContainersForTransfer(PickingHeaderTransfer $transfer): PickingHeaderTransfer
     {
         $whereList = implode($transfer->getIdOrderArray(), ",");
-        $sql = "select fk_sales_order as id_order,
-                id_picking_sales_order as id_container,
-                container_code as containerID,
-                shelf_code as shelfID
-            from pyz_picking_sales_order
-            where fk_sales_order in (" . $whereList . ")";
+        $sql = "select ppso.fk_sales_order as id_order,
+                ppso.id_picking_sales_order as id_container,
+                ppso.container_code as containerID,
+                ppso.shelf_code as shelfID,
+                popb.fk_user as id_user,
+                ppso.fk_picking_zone as id_zone
+            from pyz_picking_sales_order ppso
+                left outer join pyz_order_picking_block popb on ppso.fk_sales_order = popb.fk_sales_order and ppso.fk_picking_zone = popb.fk_picking_zone
+            where ppso.fk_sales_order in (" . $whereList . ")";
         $data = $this->getResult($sql);
 
         foreach ($data as $item) {
@@ -548,7 +555,7 @@ class PickingHeaderTransferData
         $orderItemChange
             ->setIdSalesOrderItem($orderItem->getIdOrderItem())
             ->setQuantity(1)
-            ->setPrice($orderItem->getPrice())
+            ->setPrice($orderItem->getPricePerKg())
             ->setNewWeight($orderItem->getTotalWeight());
         $orderChange->setOrderItemChangeRequest(new ArrayObject([$orderItemChange]));
         $this->salesFacade->saveOrderChange($orderChange);

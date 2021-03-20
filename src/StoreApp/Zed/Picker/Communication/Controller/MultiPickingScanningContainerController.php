@@ -51,11 +51,11 @@ class MultiPickingScanningContainerController extends AbstractController
             $orderForScanningContainer = $transfer->getNextOrder($nextOrderPosition);
         }
 
-        $containersWithoutShelf = [];
-        foreach ($orderForScanningContainer->getPickingContainers() as $pickingContainer) {
-            if ($pickingContainer->getShelfID() == null) {
-                array_push($containersWithoutShelf, $pickingContainer);
-            }
+        $containersWithoutShelf = $transfer->getOnlyCurrentUserAndZonePickingContainers($orderForScanningContainer, true);
+        while ($totalQuantity > $nextOrderPosition + 1 && count($containersWithoutShelf) == 0) {
+            $nextOrderPosition++;
+            $orderForScanningContainer = $transfer->getNextOrder($nextOrderPosition);
+            $containersWithoutShelf = $transfer->getOnlyCurrentUserAndZonePickingContainers($orderForScanningContainer, true);
         }
 
         if ($totalQuantity == $nextOrderPosition + 1) {
