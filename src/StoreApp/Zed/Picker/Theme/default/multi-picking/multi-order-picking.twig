@@ -47,18 +47,20 @@
         },
         embed: {
             itemsCount: data.itemsCount,
-            idOrder: currentPosition.idOrder
+            idOrder: currentPosition.idOrder,
+            orderItemPosition: data.orderItemPosition
         }
 
     } only %}
         {% block headerBottom %}
-            {% include molecule('pick-products') with {
+            {% include molecule('pick-products-multiple-picking') with {
                 data: {
                     productsLength: embed.itemsCount,
                 },
                 attributes: {
                     'products-count': embed.itemsCount,
                     'order-id': embed.idOrder,
+                    'position': embed.orderItemPosition,
                 },
             } only %}
         {% endblock %}

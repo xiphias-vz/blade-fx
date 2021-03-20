@@ -1,0 +1,83 @@
+{% extends model('component') %}
+
+{% define config = {
+    name: 'pick-products-multiple-picking',
+    tag: 'pick-products-multiple-picking'
+} %}
+
+{% define data = {
+    productsLength: 0
+} %}
+
+{% define attributes = {
+    'products-count': 0,
+    'order-id': '',
+    'order-item-position': ''
+} %}
+
+{% block body %}
+    <div class="grid grid--middle text-center minimalWidth">
+        <div class="col col--sm-3">
+            <span class="pick-products-multiple-picking__total">
+                {{ data.productsLength }}<span class="separator"> |</span>
+            </span>
+        </div>
+
+        <div class="col col--sm-3">
+            {% embed atom('app-label') with {
+                modifiers: ['product'],
+                data: {
+                    text: 'picked' | trans
+                },
+                embed: {
+                    jsName: config.jsName,
+                    name: config.name
+                }
+            } only %}
+                {% block body %}
+                    <span class="{{ embed.jsName }}__picked {{ embed.name }}__picked">0</span><span class="separator"> |</span>
+                {% endblock %}
+            {% endembed %}
+        </div>
+
+        <div class="col col--sm-3">
+            {% embed atom('app-label') with {
+                modifiers: ['product'],
+                data: {
+                    text: 'not found' | trans
+                },
+                embed: {
+                    jsName: config.jsName,
+                    name: config.name
+                }
+            } only %}
+                {% block body %}
+                    <span class="{{ embed.jsName }}__paused {{ embed.name }}__paused">0</span><span class="separator"> |</span>
+                {% endblock %}
+            {% endembed %}
+        </div>
+
+        <div class="col col--sm-3">
+            {% embed atom('app-label') with {
+                modifiers: ['product'],
+                data: {
+                    text: 'not found' | trans
+                },
+                embed: {
+                    jsName: config.jsName,
+                    name: config.name
+                }
+            } only %}
+                {% block body %}
+                    <span class="{{ embed.jsName }}__not-picked {{ embed.name }}__canceled">0</span>
+                {% endblock %}
+            {% endembed %}
+        </div>
+
+        <div class="hidden">
+            <input type="hidden" class="pick-products-multiple-picking__weight" />
+            <input type="hidden" class="pick-products-multiple-picking__hasInfo" />
+        </div>
+
+    </div>
+{% endblock %}

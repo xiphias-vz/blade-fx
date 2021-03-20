@@ -1,10 +1,11 @@
 import Component from 'ShopUi/models/component';
 import $ from 'jquery/dist/jquery';
-import PickProducts from '../pick-products/pick-products';
+import PickProductsMultiplePicking from '../pick-products-multiple-picking/pick-products-multiple-picking';
 
 interface StorageItem {
     isAccepted: boolean;
     isNotFullyAccepted: boolean;
+    isPaused: boolean;
     isDeclined: boolean;
     count: number;
     weight: number;
@@ -23,7 +24,7 @@ type BoxContainer = {
     [key:number]: ScanningBox;
 }
 
-export default class ProductItem extends Component {
+export default class ProductItemMultiplePicking extends Component {
     $this: $ = $(this);
     currentValue = 0;
     isAccepted = false;
@@ -36,7 +37,7 @@ export default class ProductItem extends Component {
     containerData = [];
     protected debounceDelay = 300;
     protected barcodeAndWeightContainer = 0;
-    protected pickProducts: PickProducts;
+    protected pickProducts: PickProductsMultiplePicking;
     protected $minusButton: $;
     protected $plusButton: $;
     protected $acceptButton: $;
@@ -74,7 +75,7 @@ export default class ProductItem extends Component {
     }
 
     protected init(): void {
-        this.pickProducts = <PickProducts>document.getElementsByTagName('pick-products')[0];
+        this.pickProducts = <PickProductsMultiplePicking>document.getElementsByTagName('pick-products-multiple-picking')[0];
         this.$minusButton = this.$this.find(this.minusButtonSelector);
         this.$plusButton = this.$this.find(this.plusButtonSelector);
         this.$acceptButton = this.$this.find(this.acceptButtonSelector);
@@ -110,11 +111,8 @@ export default class ProductItem extends Component {
         this.$openModal = $('#idOpenModal').val();
         this.openModal(this.$openModal);
 
-        console.log(this.closeButton);
-
         this.removeTemporarilyReadOnlyAttributeForNonActiveFields();
         this.focusFirstEanField();
-
     }
 
     protected removeTemporarilyReadOnlyAttributeForNonActiveFields() {
@@ -145,6 +143,10 @@ export default class ProductItem extends Component {
         }
         this.$acceptButton.on('click', () =>
         {
+            if(document.querySelector("#gridOfTheProduct").classList.contains("paused--state")){
+                document.querySelector("#gridOfTheProduct").classList.remove("paused--state");
+            }
+
             if(this.pricePerKgData > 0) {
                 if (!this.validateWeightInput())
                 {
@@ -156,6 +158,10 @@ export default class ProductItem extends Component {
         });
 
         this.$declineButton.on('click', () => {
+            if(document.querySelector("#gridOfTheProduct").classList.contains("paused--state")){
+                document.querySelector("#gridOfTheProduct").classList.remove("paused--state");
+            }
+
             if (this.isAccepted || this.isDeclined || this.isNotFullyAccepted || this.isPaused) {
                 this.revertView();
 
@@ -169,7 +175,17 @@ export default class ProductItem extends Component {
         });
 
         this.$pauseButton.on('click', () => {
+            if(document.querySelector("#gridOfTheProduct").classList.contains("paused--state")){
+                document.querySelector("#gridOfTheProduct").classList.remove("paused--state");
+            }
+
             this.pauseClickHandler();
+        });
+
+        this.$weightField.on('change', () => {
+            if(this.$weightField.val() < this.$weightField.attr('min') || this.$weightField.val() > this.$weightField.attr('max')){
+                this.$weightField.val("");
+            }
         });
     }
 
@@ -206,7 +222,12 @@ export default class ProductItem extends Component {
 
         const urlSave = window.location.origin + "/picker/multi-picking/multi-order-picking";
 
-        if(declined === true){
+        if(paused === true){
+            this.setPausedStateForItem();
+        }
+        else if(declined === true){
+            this.pickProducts.updateStorageItem(this);
+
             let saveAndGoToNext = "true";
             if(Boolean(isLastPosition) === true){
                 saveAndGoToNext = "End";
@@ -229,6 +250,51 @@ export default class ProductItem extends Component {
             this.$containerScanConfirmation.focus();
             this.$containerScanConfirmation.value = "";
         }
+    }
+
+    protected setPausedStateForItem(): void {
+        let urlPause = window.location.origin + "/picker/multi-picking/set-pause-state";
+        const urlSave = window.location.origin + "/picker/multi-picking/multi-order-picking";
+
+        let pickingPosition = this.pickingItemPosition;
+        let quantity = this.$quantityOutput.text();
+        let weight = 0;
+        if(this.$weightField.val() != 0){
+            weight = this.$weightField.val();
+        }
+        let status = "paused";
+        let This = this;
+
+        $.ajax({
+            type : "POST",  //type of method
+            url  : urlPause,  //your page
+            data : {  },// passing the values
+            success: function(res){
+                // let parsedResponse = JSON.parse(res);
+                let errorMsg = res.errorMessage;
+                let lastPosition = res.isLastPosition;
+
+                if(errorMsg != ""){
+                    $(".container-desc").text(errorMsg);
+                    document.querySelector('.popup-ui-error').classList.add('popup-ui-error--show');
+                    return;
+                }
+
+                if(lastPosition === "true" || lastPosition === true){
+                    $("#lastPickingPositionDialog").css("display", "block");
+                    document.querySelector("#lastPickingPositionDialog .popup-ui-container-scan").classList.add('popup-ui-container-scan--show');
+                }
+                else {
+                    let saveAndGoToNext = "true";
+                    This.pickProducts.updateStorageItem(this);
+
+                    let form = $('<form action="' + urlSave + '" method="post" style="visibility: hidden"></form>');
+                    $('body').append(form);
+                    form.submit();
+                }
+
+            }
+        });
     }
 
 
@@ -258,7 +324,16 @@ export default class ProductItem extends Component {
         }
 
         if (item.isAccepted || item.isNotFullyAccepted) {
+            if(item.weight != NaN){
+                this.weight = Number(item.weight);
+                this.$weightField.val(Number(this.weight));
+            }
+
             this.acceptClickHandler();
+        }
+
+        if (item.isPaused) {
+            this.$this.addClass(this.pausedClass);
         }
 
         if (item.isDeclined) {
@@ -367,6 +442,8 @@ export default class ProductItem extends Component {
                     // Show popup last position
                     saveAndGoToNext = "End";
                 }
+                this.pickProducts.updateStorageItem(this);
+
                 let form = $('<form action="' + urlSave + '" method="post" style="visibility: hidden">' +
                     '<input type="text" name="saveAndGoToNext" value="' + saveAndGoToNext + '" />' +
                     '<input type="text" name="position" value="' + pickingPosition + '" />' +
@@ -596,8 +673,8 @@ export default class ProductItem extends Component {
 
     protected updateQuantityInput(value: number): void {
         this.currentValue = value;
-        this.$quantityField.val(value);
-        this.$quantityOutput.html(value);
+        this.$this.find(this.quantityFieldSelector).val(value);
+        this.$this.find(this.quantityOutputSelector).html(value);
     }
 
     protected pressSubmit(): void{
@@ -605,8 +682,6 @@ export default class ProductItem extends Component {
     }
 
     protected acceptClickHandler(): void {
-        this.$weightField.removeAttr('min');
-        this.$weightField.removeAttr('max');
         this.$weightField.removeAttr('required');
         const $selForWeightElementVal = Number(this.$this.find(".js-product-item-multiple-picking__weight").val());
         let elementForFocus: HTMLInputElement = null;
@@ -649,8 +724,6 @@ export default class ProductItem extends Component {
     }
 
     protected declineClickHandler(): void {
-        this.$weightField.removeAttr('min');
-        this.$weightField.removeAttr('max');
         this.$weightField.removeAttr('required');
 
         this.isDeclined = true;
@@ -680,8 +753,6 @@ export default class ProductItem extends Component {
     }
 
     protected pauseClickHandler(): void {
-        this.$weightField.removeAttr('min');
-        this.$weightField.removeAttr('max');
         this.$weightField.removeAttr('required');
 
         this.$this.addClass(this.pausedClass);

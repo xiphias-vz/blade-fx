@@ -1,0 +1,66 @@
+@mixin picker-pick-products-multiple-picking($name: '.pick-products-multiple-picking') {
+    #{$name} {
+        &__action-wrapper {
+            min-height: rem(56);
+
+            .popup-ui__content {
+                padding:0px;
+                margin-bottom: 2.7rem;
+            }
+        }
+
+        &__action {
+            padding: 0 0 map-get($setting-spacing, big);
+
+            &--fixed {
+                position: fixed;
+                bottom: 0;
+                left: 0;
+                z-index: $setting-zi-popup;
+                width: 100%;
+                padding: map-get($setting-spacing, big);
+            }
+        }
+
+        &__total {
+            color: $setting-color-globus-darkGray;
+        }
+
+        &__picked {
+            color: $setting-color-pickingApp-darkerGreen;
+        }
+
+        &__paused {
+            color: $setting-color-blue-info;
+        }
+
+        &__canceled {
+            color: $setting-color-globus-red;
+        }
+
+        .app-label{
+            background-color: $setting-color-globus-white !important;
+        }
+
+        .app-label--product {
+            min-width: 0 !important;
+            padding: 0 !important;
+        }
+
+        .minimalWidth {
+            min-width: rem(120);
+            visibility: hidden;
+
+            @media only screen and (max-width: 480px) {
+                    margin-top: 10% !important;
+                    visibility: hidden;
+            }
+        }
+
+        .separator {
+            color: $setting-color-globus-darkGray;
+        }
+    }
+}
+
+@include picker-pick-products-multiple-picking();

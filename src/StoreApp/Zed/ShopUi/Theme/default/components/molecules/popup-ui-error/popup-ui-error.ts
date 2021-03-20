@@ -51,7 +51,7 @@ export default class PopupUiError extends Component {
 
     public triggerPopupWithClearingInputField(event?: Event): void {
         this.$this.toggleClass(this.showClass);
-        const scanInputField = this.previousElementSibling.querySelector('#txt_container_scan');
+        const scanInputField = document.querySelector('#txt_container_scan');
         scanInputField.value = '';
         scanInputField.focus();
     }

@@ -154,6 +154,36 @@ class MultiPickingController extends BaseOrderPickingController
      *
      * @return array|\Symfony\Component\HttpFoundation\JsonResponse
      */
+    public function setPauseStateAction(Request $request)
+    {
+        $errorMessage = "";
+        $isLastPosition = "false";
+
+        $transfer = $this->getFacade()->getPickingHeaderTransfer();
+
+        $currentItemResponse = $this->getFacade()->setCurrentOrderItemPaused(true);
+
+        if ($currentItemResponse == false) {
+            $errorMessage = $transfer->getErrorMessage();
+        }
+
+        if ($transfer->isLastItem()) {
+            $isLastPosition = "true";
+        }
+
+        $responseArray = [
+            "errorMessage" => $errorMessage,
+            "isLastPosition" => $isLastPosition,
+        ];
+
+        return new JsonResponse($responseArray);
+    }
+
+    /**
+     * @param \Symfony\Component\HttpFoundation\Request $request
+     *
+     * @return array|\Symfony\Component\HttpFoundation\JsonResponse
+     */
     public function checkContainerIdAction(Request $request)
     {
         $response = false;
