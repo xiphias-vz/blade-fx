@@ -45,6 +45,9 @@ class MultiPickingScanningContainerController extends AbstractController
             $orderForScanningContainer = $transfer->getNextOrder($nextOrderPosition);
 
             if ($orderForScanningContainer == null) {
+                $transfer->updatePausedOrders();
+                $this->getFacade()->clearLockForPausedOrders($transfer);
+
                 return $this->redirectResponse($this->getFactory()->getConfig()->getDiffSectionsUri());
             }
         } else {

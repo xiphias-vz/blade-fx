@@ -141,4 +141,11 @@ interface PickerFacadeInterface
      * @return bool
      */
     public function checkContainerForCurrentItem(string $containerID): bool;
+
+    /**
+     * @param \StoreApp\Zed\Picker\Business\Transfer\PickingHeaderTransfer $transfer
+     *
+     * @return void
+     */
+    public function clearLockForPausedOrders(PickingHeaderTransfer $transfer): void;
 }

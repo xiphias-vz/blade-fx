@@ -619,8 +619,6 @@ class PickingHeaderTransfer extends SpyPickingHeaderTransfer
     }
 
     /**
-     * @returns void
-     *
      * @return void
      */
     public function updateItemsPickedCount(): void
@@ -640,6 +638,22 @@ class PickingHeaderTransfer extends SpyPickingHeaderTransfer
             }
         }
         $this->setPickedArticlesCount($pickedItems);
+    }
+
+    /**
+     * @return void
+     */
+    public function updatePausedOrders(): void
+    {
+        foreach ($this->getPickingOrders() as $order) {
+            $pausedItems = 0;
+            foreach ($order->getPickingOrderItems() as $orderItem) {
+                if ($order->getIsPaused()) {
+                    $pausedItems++;
+                }
+            }
+            $order->setIsPaused($pausedItems > 0);
+        }
     }
 
     /**

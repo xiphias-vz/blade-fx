@@ -568,6 +568,21 @@ class PickingHeaderTransferData
     }
 
     /**
+     * @param \StoreApp\Zed\Picker\Business\Transfer\PickingHeaderTransfer $transfer
+     *
+     * @return void
+     */
+    public function clearLockForPausedOrders(PickingHeaderTransfer $transfer): void
+    {
+        foreach ($transfer->getPickingOrders() as $order) {
+            if ($order->getIsPaused()) {
+                $sql = "delete from pyz_order_picking_block where fk_sales_order = " . $order->getIdOrder() . " and fk_picking_zone = " . $transfer->getIdZone();
+                $this->getResult($sql, false);
+            }
+        }
+    }
+
+    /**
      * @param string $sql
      * @param bool $doFetch
      *
