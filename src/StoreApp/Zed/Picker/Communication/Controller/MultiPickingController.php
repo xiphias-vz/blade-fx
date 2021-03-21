@@ -111,6 +111,19 @@ class MultiPickingController extends BaseOrderPickingController
             $transfer->setLastPickingItemPosition($nextOIData->getPickingItemPosition());
         } else {
             $nextOIData = $transfer->getNextOrderItem(0);
+            if ($nextOIData == null) {
+                $nextOIData = $transfer->getOrderItem($transfer->getLastPickingItemPosition());
+                $openModal = 'true';
+            } elseif ($nextOIData->getQuantityPicked() > 0) {
+                $next = $transfer->getFirstNonPickedOrderItem();
+                if ($next != null) {
+                    $nextOIData = $next;
+                } else {
+                    $nextOIData = $transfer->getOrderItem($transfer->getLastPickingItemPosition());
+                    $openModal = 'true';
+                }
+                $transfer->setLastPickingItemPosition($nextOIData->getPickingItemPosition());
+            }
         }
         $orderPosition = $nextOIData['pickingPosition'];
         $orderItemPosition = $nextOIData['pickingItemPosition'];

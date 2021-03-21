@@ -273,7 +273,7 @@ class PickingHeaderTransferData
             $this->orderUpdater->markOrderItemsAsNotPicked($nonPickedItems);
         }
         if ($weight > 0) {
-            $this->updateOrderItemWeigth($orderItem);
+            $this->updateOrderItemWeight($orderItem);
         }
         if ($orderItem->getIsPaused()) {
             $orderItem->setIsPaused(false);
@@ -552,15 +552,16 @@ class PickingHeaderTransferData
      *
      * @return void
      */
-    private function updateOrderItemWeigth(PickingOrderItemTransfer $orderItem): void
+    private function updateOrderItemWeight(PickingOrderItemTransfer $orderItem): void
     {
         $orderChange = new OrderChangeRequestTransfer();
         $orderItemChange = new OrderItemChangeRequestTransfer();
         $orderChange->setFkSalesOrder($orderItem->getIdOrder());
+        $newPrice = round(($orderItem->getTotalWeight() * $orderItem->getPricePerKg() / 1000));
         $orderItemChange
             ->setIdSalesOrderItem($orderItem->getIdOrderItem())
             ->setQuantity(1)
-            ->setPrice($orderItem->getPricePerKg())
+            ->setPrice($newPrice)
             ->setNewWeight($orderItem->getTotalWeight());
         $orderChange->setOrderItemChangeRequest(new ArrayObject([$orderItemChange]));
         $this->salesFacade->saveOrderChange($orderChange);
