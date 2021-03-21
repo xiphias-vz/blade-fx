@@ -73,6 +73,17 @@
             height: rem(32);
             padding-top: rem(4);
         }
+        &__checked-circle-empty
+        {
+            color: $setting-color-green;
+            border: 1px solid;
+            width: rem(32);
+            text-align: center;
+            font-weight: bold;
+            border-radius: 50%;
+            height: rem(32);
+            padding-top: rem(4);
+        }
         &__cancel-circle
         {
             background: $setting-color-red;

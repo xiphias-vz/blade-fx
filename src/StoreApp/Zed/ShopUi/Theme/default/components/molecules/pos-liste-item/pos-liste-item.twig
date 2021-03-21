@@ -14,6 +14,7 @@
     isPaused: "0",
     isAllPicked: '',
     isCanceled: '',
+    isPartiallyPicked: '',
     pictureUrl: '',
     sequence: '',
     shelf: '',
@@ -67,6 +68,15 @@
                     <div class="{{ config.name }}__number-text-wrapper">
                         {{ data.quantity }}
                     </div>
+                    {% elseif data.isPartiallyPicked == true or data.isPartiallyPicked == "1" %}
+                        <div class="{{ config.name }}__circle-wrapper">
+                            <div class="{{ config.name }}__checked-circle-empty">
+                                <svg class="icon button__icon"><use xlink:href="#:check"></use></svg>
+                            </div>
+                        </div>
+                        <div class="{{ config.name }}__number-text-wrapper">
+                            {{ data.quantity }}
+                        </div>
                 {% else %}
                     <div class="{{ config.name }}__number-empty-wrapper">
                         {{ data.quantity }}

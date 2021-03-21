@@ -396,6 +396,7 @@ class PickingHeaderTransfer extends SpyPickingHeaderTransfer
                     'pickingColor' => $orderItem->getParent()->getPickingColor(),
                 ]];
                 $items[$counter]["isFullPicked"] = true;
+                $items[$counter]["isPartiallyPicked"] = false;
             } else {
                 $orders = $items[$counter]["orders"];
                 $order =
@@ -410,6 +411,14 @@ class PickingHeaderTransfer extends SpyPickingHeaderTransfer
             if ($items[$counter]["isFullPicked"]) {
                 $items[$counter]["isFullPicked"] = ($orderItem->getQuantity() == $orderItem->getQuantityPicked())
                     || ($orderItem->getPricePerKg() > 0 && $orderItem->getQuantityPicked() == 1);
+            }
+            if (!$items[$counter]["isPartiallyPicked"]) {
+                if ($orderItem->getPricePerKg() > 0) {
+                    $items[$counter]["isPartiallyPicked"] = false;
+                } else {
+                    $items[$counter]["isPartiallyPicked"] =
+                        ($orderItem->getQuantityPicked() > 0 && $orderItem->getQuantity() > $orderItem->getQuantityPicked());
+                }
             }
         }
         $this->setParents(true);
