@@ -62,9 +62,17 @@ export default class ShelfScanOrder extends Component {
     }
 
     protected mapEventsForInputs(): void {
-        this.formItems.forEach((element: HTMLInputElement) => {
+        this.formItems.forEach((element: HTMLInputElement, index: number) => {
             element.addEventListener('input', (event: KeyboardEvent) => this.onInputItemChange(event));
-            element.addEventListener('keypress', (event: KeyboardEvent) => this.onInputKeyPress(event));
+
+            if(index == this.formItems.length - 1) {
+                let isLastInputField = true;
+                element.addEventListener('keypress', (event: KeyboardEvent) => this.onInputKeyPress(event, isLastInputField));
+            }
+            else {
+                let isLastInputField = false;
+                element.addEventListener('keypress', (event: KeyboardEvent) => this.onInputKeyPress(event, isLastInputField));
+            }
         });
         this.form.addEventListener('submit', (e) => {
             this.nextOrderPosition = ++this.nextOrderPosition;
@@ -102,11 +110,14 @@ export default class ShelfScanOrder extends Component {
         }
     }
 
-    protected onInputKeyPress(event): void {
+    protected onInputKeyPress(event, isLastInputField): void {
         if (event.key == "Enter") {
             event.preventDefault();
             if (event.target.value != null && event.target.value != "") {
                 this.updateContainerShelfTransfer(event);
+                if(isLastInputField == true) {
+                    this.buttonConfirm.click();
+                }
             }
         }
     }
