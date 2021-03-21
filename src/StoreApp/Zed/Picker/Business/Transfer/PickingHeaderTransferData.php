@@ -130,7 +130,7 @@ class PickingHeaderTransferData
     ";
 
         $data = $this->getResult($sql);
-        $days = [1 => "SO", 2 => "MO", 3 => "DI", 4 => "MI", 5 => "DO", 6 => "FR", 7 => "SA"];
+        $days = [0 => "SO", 1 => "MO", 2 => "DI", 3 => "MI", 4 => "DO", 5 => "FR", 6 => "SA"];
         $transfer = new PickingHeaderTransfer();
         $transfer
             ->setIdZone($idZone)
