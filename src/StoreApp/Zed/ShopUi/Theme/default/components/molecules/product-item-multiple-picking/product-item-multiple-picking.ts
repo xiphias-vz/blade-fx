@@ -688,8 +688,8 @@ export default class ProductItemMultiplePicking extends Component {
         if (Number(this.currentValue) === 0) {
             this.updateQuantityInput(this.maxQuantity);
         }
+        this.isAccepted = Number(this.currentValue) > 0;
         if ((Number(this.currentValue) === Number(this.maxQuantity)) || $selForWeightElementVal > 0) {
-            this.isAccepted = true;
             this.$this.addClass(this.pickedCLass);
             this.$this[0].$declineButton.addClass(this.addUndoCLass);
             this.pickProducts.update();
