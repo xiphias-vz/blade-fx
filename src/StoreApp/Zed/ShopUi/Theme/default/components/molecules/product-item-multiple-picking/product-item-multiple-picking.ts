@@ -619,6 +619,7 @@ export default class ProductItemMultiplePicking extends Component {
         const inputWeightMin = Number(this.$weightField.attr('min'));
         if(valueOfWeightElement > inputWeightMin && valueOfWeightElement < inputWeightMax) {
             this.acceptClickHandler();
+            this.pressSubmit();
         } else {
             this.step30();
         }
