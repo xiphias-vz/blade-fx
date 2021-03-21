@@ -40,6 +40,7 @@
 {% set sumPrice = data.currentPositionData['sumPrice'] %}
 {% set pricePerKg = data.currentPositionData['pricePerKg'] %}
 {% set currentPositionQuantity = data.currentPositionData['quantity'] %}
+{% set currentPositionQuantityPicked = data.currentPositionData['quantityPicked'] %}
 {% set isPaused = data.currentPositionData['isPaused'] %}
 {% set pausedDisabledClass = "" %}
 {% if isPaused == "1" %}
@@ -129,7 +130,7 @@
                                 </div>
                                 <div class="box box--white box--bordered box--spaceless {{ config.name }}__counter text-center">
                                 <span class="{{ config.jsName }}__quantity-output">
-                                    0
+                                    {{ currentPositionQuantityPicked }}
                                 </span>
                                     {{ 'of' | trans }} {{ data.productsCount }}
                                 </div>
