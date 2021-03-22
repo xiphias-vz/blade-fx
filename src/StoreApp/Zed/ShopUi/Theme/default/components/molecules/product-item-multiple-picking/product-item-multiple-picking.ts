@@ -183,7 +183,11 @@ export default class ProductItemMultiplePicking extends Component {
         });
 
         this.$weightField.on('change', () => {
-            if(this.$weightField.val() < this.$weightField.attr('min') || this.$weightField.val() > this.$weightField.attr('max')){
+            let weight = Number(this.$weightField.val());
+            let min = Number(this.$weightField.attr('min'));
+            let max = Number(this.$weightField.attr('max'));
+
+            if(weight < min || weight > max){
                 this.$weightField.val("");
             }
         });
