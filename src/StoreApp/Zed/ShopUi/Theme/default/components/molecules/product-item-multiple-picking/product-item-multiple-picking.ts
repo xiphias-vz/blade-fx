@@ -70,6 +70,7 @@ export default class ProductItemMultiplePicking extends Component {
     productBlockWrapper: HTMLElement;
     private weightMax: number;
     private weightMin: number;
+    private lastWeight: number;
 
     protected readyCallback(): void {
     }
@@ -184,6 +185,7 @@ export default class ProductItemMultiplePicking extends Component {
 
         this.$weightField.on('change', () => {
             let weight = Number(this.$weightField.val());
+            this.lastWeight = weight;
             let min = Number(this.$weightField.attr('min'));
             let max = Number(this.$weightField.attr('max'));
 
@@ -381,7 +383,11 @@ export default class ProductItemMultiplePicking extends Component {
     }
 
     protected validateWeightInput(): boolean {
-        const inputWeightValue = Number(this.$weightField.val());
+
+        let inputWeightValue = Number(this.$weightField.val());
+        if(inputWeightValue == ""){
+            inputWeightValue = Number(this.lastWeight);
+        }
         const inputWeightMax = Number(this.$weightField.attr('max'));
         const inputWeightMin = Number(this.$weightField.attr('min'));
 
