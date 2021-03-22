@@ -266,15 +266,15 @@ class PickingHeaderTransferData
             }
         }
         if (count($pickedItems) > 0) {
+            if ($weight > 0) {
+                $this->updateOrderItemWeight($orderItem);
+            }
             $this->resetCanceledStatusForCanceledItems($pickedItems);
             $this->orderUpdater->markOrderItemsAsContainerSelected($pickedItems);
             $this->orderUpdater->markOrderItemsAsPicked($pickedItems);
         }
         if (count($nonPickedItems) > 0) {
             $this->orderUpdater->markOrderItemsAsNotPicked($nonPickedItems);
-        }
-        if ($weight > 0) {
-            $this->updateOrderItemWeight($orderItem);
         }
         if ($orderItem->getIsPaused()) {
             $orderItem->setIsPaused(false);
@@ -429,7 +429,7 @@ class PickingHeaderTransferData
         $whereList = implode($transfer->getIdOrderArray(), ",");
         $sql = "select sso.id_sales_order as id_order,
                sso.order_reference,
-               max(ssoi.id_sales_order_item) as id_order_item,
+               min(ssoi.id_sales_order_item) as id_order_item,
                sp.id_product,
                sp.product_number as ean,
                ssoi.alternative_ean,
