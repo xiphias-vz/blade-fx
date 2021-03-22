@@ -266,6 +266,7 @@ class PickingHeaderTransferData
             }
         }
         if (count($pickedItems) > 0) {
+            $this->resetCanceledStatusForCanceledItems($pickedItems);
             $this->orderUpdater->markOrderItemsAsContainerSelected($pickedItems);
             $this->orderUpdater->markOrderItemsAsPicked($pickedItems);
         }
@@ -336,6 +337,23 @@ class PickingHeaderTransferData
         }
 
         return true;
+    }
+
+    /**
+     * @param array $pickedItems
+     *
+     * @return void
+     */
+    private function resetCanceledStatusForCanceledItems(array $pickedItems): void
+    {
+        $qry = "select id_oms_order_item_state as id from spy_oms_order_item_state where name = '" . OmsConfig::STORE_STATE_READY_FOR_PICKING . "'";
+        $data = $this->getResult($qry);
+        if (count($data) > 0) {
+            $whereList = implode($pickedItems, ",");
+            $idState = $data[0]["id"];
+            $qry = "update spy_sales_order_item set fk_oms_order_item_state = " . $idState . " where id_sales_order_item in(" . $whereList . ") and fk_oms_order_item_state <> " . $idState;
+            $this->getResult($qry, false);
+        }
     }
 
     /**
