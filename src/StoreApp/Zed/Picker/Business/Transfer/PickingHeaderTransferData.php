@@ -126,7 +126,7 @@ class PickingHeaderTransferData
         left outer join pyz_order_picking_block popb on sso.id_sales_order = popb.fk_sales_order
             and popb.fk_picking_zone = " . $idZone . "
     where sso.merchant_reference = '" . $merchantReference . "'
-      and (popb.fk_user is null or so.is_paused = 1)
+      and (popb.fk_user is null)
     ";
 
         $data = $this->getResult($sql);
