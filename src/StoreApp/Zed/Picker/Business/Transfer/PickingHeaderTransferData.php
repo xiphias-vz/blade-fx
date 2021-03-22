@@ -462,6 +462,7 @@ class PickingHeaderTransferData
             inner join spy_oms_order_item_state sit on ssoi.fk_oms_order_item_state = sit.id_oms_order_item_state
             left outer join spy_product_image_set spis on sp.id_product = spis.fk_product
             left outer join spy_product_image_set_to_product_image spistpi on spis.id_product_image_set = spistpi.fk_product_image_set
+                and spistpi.sort_order = (select min(s1.sort_order) from spy_product_image_set_to_product_image s1 where s1.fk_product_image_set = spis.id_product_image_set)
             left outer join spy_product_image spi on spistpi.fk_product_image = spi.id_product_image
          where sso.id_sales_order in(" . $whereList . ")
             and ppz.id_picking_zone = " . $idZone . "
