@@ -249,17 +249,26 @@ class PickingHeaderTransfer extends SpyPickingHeaderTransfer
      */
     public function getFirstNonPickedOrderItem(): ?PickingOrderItemTransfer
     {
+        $oldPosition = $this->getLastPickingItemPosition();
         $maxPosition = $this->getMaxPickingItemPosition();
+        $orderItemResult = null;
         for ($i = 1; $i <= $maxPosition; $i++) {
             $orderItem = $this->getOrderItem($i);
             if ($orderItem->getQuantityPicked() == 0
                 && !$orderItem->getIsPaused()
                 && !$orderItem->getIsCancelled()) {
-                return $orderItem;
+                if ($orderItemResult == null) {
+                    $orderItemResult = $orderItem;
+                } else {
+                    if ($i > $oldPosition) {
+                        $orderItemResult = $orderItem;
+                        break;
+                    }
+                }
             }
         }
 
-        return null;
+        return $orderItemResult;
     }
 
     /**
