@@ -41,12 +41,6 @@
 {% set pricePerKg = data.currentPositionData['pricePerKg'] %}
 {% set currentPositionQuantity = data.currentPositionData['quantity'] %}
 {% set currentPositionQuantityPicked = data.currentPositionData['quantityPicked'] %}
-{% set isPaused = data.currentPositionData['isPaused'] %}
-{% set pausedDisabledClass = "" %}
-{% if isPaused == "1" %}
-    {% set pausedDisabledClass = "button--disabled" %}
-{% endif %}
-
 
 {% set articlesData = data.pickingOrderItemsData %}
 {% set currentArticleColors = data.currentPositionData['pickingColor'] %}
@@ -214,7 +208,7 @@
             </div>
         {% endblock %}
         {% block midCol %}
-            <div class="col button button--round button--pause {{ config.name }}__pause {{ config.jsName }}__pause {{ pausedDisabledClass }}">
+            <div class="col button button--round button--pause {{ config.name }}__pause {{ config.jsName }}__pause">
                 {% include atom('icon') with {
                     class: 'button__icon',
                     data: {
