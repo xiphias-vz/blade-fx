@@ -35,7 +35,7 @@
 {% set shelfField = data.currentPositionData['shelfField'] %}
 
 {% set orderWeight = (data.currentPositionData['weight'] ?? 0) * data.productsCount  %}
-{% set basePriceContent = data.currentPositionData['price'] %}
+{% set basePriceContent = data.currentPositionData['priceContent'] %}
 {% set basePriceUnit = data.currentPositionData['priceUnit'] %}
 {% set sumPrice = data.currentPositionData['sumPrice'] %}
 {% set pricePerKg = data.currentPositionData['pricePerKg'] %}
