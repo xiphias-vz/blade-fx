@@ -502,6 +502,12 @@ export default class ProductItemMultiplePicking extends Component {
         this.popupUiError.classList.add('popup-ui-error--show');
     }
 
+    protected showPopUpErrorMessageForWrongEan() {
+        let popUpInfo = this.popupUiError.querySelector('.error-info');
+        popUpInfo.innerHTML = `<p class="falsche-ean">Falsche EAN</p>`;
+        this.popupUiError.classList.add('popup-ui-error--show');
+    }
+
     protected formKeyPressHandler(event: KeyboardEvent): void {
         // enter key forces the whole form to submit, we want to prevent that for barcode scanner
 
@@ -536,7 +542,7 @@ export default class ProductItemMultiplePicking extends Component {
                         this.step30();
                     }
                     else{
-                        alert("Error");
+                        this.showPopUpErrorMessageForWrongEan();
                         this.eanScanInputElement.value = "";
                         this.eanScanInputElement.focus();
                     }
@@ -586,7 +592,7 @@ export default class ProductItemMultiplePicking extends Component {
                             this.step30();
                         }
                         else{
-                            alert("Error");
+                            this.showPopUpErrorMessageForWrongEan();
                             this.eanScanInputElement.value = "";
                             this.eanScanInputElement.focus();
                         }

@@ -51,9 +51,20 @@ export default class PopupUiError extends Component {
 
     public triggerPopupWithClearingInputField(event?: Event): void {
         this.$this.toggleClass(this.showClass);
-        const scanInputField = document.querySelector('#txt_container_scan');
-        scanInputField.value = '';
-        scanInputField.focus();
+
+        if(this.$this.find('p.falsche-ean').length !== 0)
+        {
+            const eanScanInputField = $('#txt_ean_scannen');
+            eanScanInputField.value = '';
+            eanScanInputField.focus();
+        }
+        else
+        {
+            let containerScanInputField = $('#txt_container_scan');
+            containerScanInputField.value = '';
+            containerScanInputField.focus();
+        }
+
     }
 
     public triggerPopup(event?: Event): void {
