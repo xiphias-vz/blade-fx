@@ -46,7 +46,7 @@
     {% block formElement %}
     <form id="container_to_shelf_form" name="container_to_shelf_form" method="post" novalidate="novalidate">
         <div class="form__container">
-            <div class="form__fields grid grid--top">
+            <div class="form__fields grid grid--top js-is-updated" isUpdated="{{ data.isUpdated }}">
                 {% if data.isUpdated %}
                     <div id="divContainer" class="hidden form__field col col--sm-12">
                 {% else %}

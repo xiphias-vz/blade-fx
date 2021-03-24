@@ -22,13 +22,22 @@ export default class ContainerToShelfForm extends Component {
         if (isTestSucces) {
             this.clearInputFields();
         }
+
         this.containerId = <HTMLInputElement>document.getElementById('container_to_shelf_form_container_code');
         this.shelfId = <HTMLInputElement>document.getElementById('container_to_shelf_form_shelf_code');
         this.shelfCheck = <HTMLInputElement>document.getElementById('shelfCheck');
         this.fullForm.addEventListener('keypress', (event: KeyboardEvent) => this.formKeyPressHandler(event));
         this.mapEventsForButtons();
         this.mapEventsForInputs();
-        this.focusFirstContainerID();
+
+        let isTestUpdated = document.querySelector('.js-is-updated').getAttribute('isUpdated');
+        if (isTestUpdated){
+            this.focusShelfId();
+        }
+        else {
+            this.focusFirstContainerID();
+        }
+
     }
 
     protected clearInputFields() {
@@ -79,9 +88,7 @@ export default class ContainerToShelfForm extends Component {
         if (event.key == 'Enter') {
             event.preventDefault();
 
-            let element = document.getElementById('container_to_shelf_form_shelf_code');
-            element.focus();
-
+            this.focusShelfId();
             this.checkContainerId();
         }
     }
@@ -147,6 +154,11 @@ export default class ContainerToShelfForm extends Component {
     protected focusFirstContainerID(): void
     {
         let element = document.getElementById('container_to_shelf_form_container_code');
+        element.focus();
+    }
+
+    protected focusShelfId(): void {
+        let element = document.getElementById('container_to_shelf_form_shelf_code');
         element.focus();
     }
 
