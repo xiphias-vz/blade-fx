@@ -63,9 +63,10 @@ export default class ContainerScanOrder extends Component {
         this.inputScanner.addEventListener('keypress', (event: KeyboardEvent) => this.formKeyPressHandler(event));
         this.form.addEventListener('submit', (e) => {
 
-            if(!this.atLeastOneContainerIsAdded(this.listOfContainersHolder, this.listContainersShelf)) {
+            if(!this.atLeastOneContainerIsAdded(this.listOfContainersHolder)) {
                 e.preventDefault();
-                this.showPopUpErrorMessageForNonValidContainer();
+                this.showPopUpErrorMessageForEmptyContainer();
+                this.clearInputField(this.inputScanner);
                 return false;
             }
             this.nextOrderPosition = ++this.nextOrderPosition;
@@ -74,8 +75,8 @@ export default class ContainerScanOrder extends Component {
         })
     }
 
-    protected atLeastOneContainerIsAdded(listOfContainersHolder, listContainersShelf) {
-        return (listOfContainersHolder.childElementCount != 0 || listContainersShelf.childElementCount != 0);
+    protected atLeastOneContainerIsAdded(listOfContainersHolder) {
+        return (listOfContainersHolder.childElementCount != 0);
     }
 
     protected toggleConfirmButton(event):void {
@@ -155,6 +156,16 @@ export default class ContainerScanOrder extends Component {
         this.popupUiError.classList.add('popup-ui-error--show');
     }
 
+    protected showPopUpErrorMessageForEmptyContainer() {
+        let popUpInfo = this.popupUiError.querySelector('.error-info');
+        popUpInfo.innerHTML = `
+            <p class="container-name">
+               Bitte Container scannen
+            </p>
+        `;
+        this.popupUiError.classList.add('popup-ui-error--show');
+    }
+
     protected showPopUpErrorMessage():void {
         let popUpInfo = this.popupUiError.querySelector('.error-info');
         popUpInfo.innerHTML = `
@@ -195,6 +206,7 @@ export default class ContainerScanOrder extends Component {
 
     protected clearInputField(inputField): void {
         inputField.value = '';
+        inputField.focus();
     }
 
     protected removeContainer(event, binIcon):void {
