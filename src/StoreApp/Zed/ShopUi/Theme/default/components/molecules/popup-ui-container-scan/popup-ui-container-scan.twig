@@ -27,7 +27,8 @@
     textAlign: 'center',
     id: '',
     urlScanShelves: '',
-    itemSku: ''
+    itemSku: '',
+    onCloseExecuteCode: ''
 } %}
 
 {% define attributes = {
@@ -44,7 +45,7 @@
 
                 {% if data.buttons.close == true %}
                     {% block cancelButton %}
-                        <a href="#" class="link link--close text-center cancel-confirmation {{ config.jsName }}__close col col--xs-1 col--sm-1 col--md-1" style="color: {{ data.closeIconColor }};">
+                        <a href="#" id="btnCloseContainerScan" class="link link--close text-center cancel-confirmation {{ config.jsName }}__close col col--xs-1 col--sm-1 col--md-1" onclick="{{ data.onCloseExecuteCode }}" style="color: {{ data.closeIconColor }};">
                             X
                         </a>
                     {% endblock %}

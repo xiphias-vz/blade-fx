@@ -201,7 +201,7 @@ export default class ProductItemMultiplePicking extends Component {
     }
 
     protected onSubmitClick(event: MouseEvent) {
-
+        document.querySelector("#btnSubmitPick").classList.add("button--disabled");
         let pickingPosition = this.pickingItemPosition;
         let quantity = this.$quantityOutput.text();
         let weight = 0;

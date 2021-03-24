@@ -267,7 +267,8 @@
             headerBackgroundColor: currentArticleColors.backColor,
             headerTextColor: currentArticleColors.foreColor,
             borderColor: currentArticleColors.circleColor,
-            borderRadius: 0
+            borderRadius: 0,
+            onCloseExecuteCode: 'document.querySelector("#btnSubmitPick").classList.remove("button--disabled");'
         }
     } only %}
         {% block content %}
