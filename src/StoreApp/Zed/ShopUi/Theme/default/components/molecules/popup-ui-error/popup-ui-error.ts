@@ -60,9 +60,9 @@ export default class PopupUiError extends Component {
         }
         else
         {
-            let containerScanInputField = $('#txt_container_scan');
-            containerScanInputField.value = '';
-            containerScanInputField.focus();
+            const scanInputField = document.querySelector('#txt_container_scan');
+            scanInputField.value = '';
+            scanInputField.focus();
         }
 
     }
