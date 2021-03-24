@@ -127,7 +127,7 @@ class PickingHeaderTransfer extends SpyPickingHeaderTransfer
                     $orderItem->setPickingPosition($orderPosition);
                     $sequence = $orderItem->getSequence();
                     if (empty($sequence)) {
-                        $sequence = $orderItem->getShelf() . $orderItem->getShelfField() . $orderItem->getShelfFloor();
+                        $sequence = $orderItem->getShelf() . $orderItem->getShelfFloor() . $orderItem->getShelfField();
                     }
                     $key = str_pad($sequence, 10, "0", STR_PAD_LEFT);
                     $key .= str_pad($orderItem->getIdProduct(), 8, "0", STR_PAD_LEFT);
