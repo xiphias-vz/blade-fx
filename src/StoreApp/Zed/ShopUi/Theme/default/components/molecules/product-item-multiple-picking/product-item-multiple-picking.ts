@@ -49,6 +49,7 @@ export default class ProductItemMultiplePicking extends Component {
     protected $previousSku: $;
     protected $openModal: $;
     protected popupUiErrorInfo: object;
+    protected currentItem: StorageItem;
     protected $containerScanConfirmation: HTMLInputElement;
     protected popupUiError: HTMLElement;
     eanScanInputElements:HTMLInputElement;
@@ -225,13 +226,21 @@ export default class ProductItemMultiplePicking extends Component {
         }
 
         let isLastPosition = this.lastPositionDataFromDiv;
+        let isAlreadyPicked = false;
+        if(this.currentItem != undefined){
+            if(this.currentItem.isAccepted === true || this.currentItem.isNotFullyAccepted === true){
+                isAlreadyPicked = true;
+            }
+        }
+
+
 
         const urlSave = window.location.origin + "/picker/multi-picking/multi-order-picking";
 
         if(paused === true){
             this.setPausedStateForItem();
         }
-        else if(declined === true){
+        else if(declined === true || (accepted === true && isAlreadyPicked === true)){
             this.pickProducts.updateStorageItem(this);
 
             let saveAndGoToNext = "true";
@@ -321,6 +330,8 @@ export default class ProductItemMultiplePicking extends Component {
 
     async updateItem(item: StorageItem): Promise<void> {
         await this.updateQuantityInput(item.count);
+
+        this.currentItem = item;
 
         if(item.containerData.length > 0){
             item.containerData.forEach((value, index) => {
