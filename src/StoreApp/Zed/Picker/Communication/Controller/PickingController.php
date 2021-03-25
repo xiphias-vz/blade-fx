@@ -170,6 +170,7 @@ class PickingController extends BaseOrderPickingController
         $aggregatedItemTransfers = $this->getFactory()->getItemAggregator()
             ->aggregateOrderItemsQuantities($salesOrderTransfer->getItems()->getArrayCopy());
 
+        $aggregatedItemTransfers = $this->removeNonPausedItemsIfPausedExists($aggregatedItemTransfers);
         $aggregatedItemTransfers = $this->sortAggregatedItemTransfersByPickingOrder($aggregatedItemTransfers);
         $orderItemSelectionFormDataProvider = $this->getFactory()->createOrderItemSelectionFormDataProvider();
         $orderItemSelectionForm = $this->getFactory()->createOrderItemSelectionForm(
@@ -352,6 +353,7 @@ class PickingController extends BaseOrderPickingController
         $aggregatedItemTransfers = $this->getFactory()->getItemAggregator()
             ->aggregateOrderItemsQuantities($salesOrderTransfer->getItems()->getArrayCopy());
 
+        $aggregatedItemTransfers = $this->removeNonPausedItemsIfPausedExists($aggregatedItemTransfers);
         $aggregatedItemTransfers = $this->sortAggregatedItemTransfersByPickingOrder($aggregatedItemTransfers);
 
         $orderItemSelectionFormDataProvider = $this->getFactory()->createOrderItemSelectionFormDataProvider();
@@ -748,6 +750,33 @@ class PickingController extends BaseOrderPickingController
     protected function getCsrfTokenManager(): CsrfTokenManagerInterface
     {
         return $this->getApplication()->get(static::SERVICE_FORM_CSRF_PROVIDER);
+    }
+
+    /**
+     * @param array $aggregatedItemTransfers
+     *
+     * @return array
+     */
+    protected function removeNonPausedItemsIfPausedExists(array $aggregatedItemTransfers): array
+    {
+        $isPaused = false;
+        foreach ($aggregatedItemTransfers as $item) {
+            if (!$isPaused && $item->getItemPaused()) {
+                $isPaused = true;
+            }
+        }
+        if ($isPaused) {
+            $items = [];
+            foreach ($aggregatedItemTransfers as $item) {
+                if ($item->getItemPaused()) {
+                    $items[$item->getSku()] = $item;
+                }
+            }
+
+            return $items;
+        }
+
+        return $aggregatedItemTransfers;
     }
 
     /**
