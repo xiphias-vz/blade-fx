@@ -113,7 +113,7 @@ export default class ProductItemMultiplePicking extends Component {
         this.openModal(this.$openModal);
 
         this.removeTemporarilyReadOnlyAttributeForNonActiveFields();
-        this.focusFirstEanField();
+        this.focusEanFieldWithoutDisplayOfKeyboard();
     }
 
     protected removeTemporarilyReadOnlyAttributeForNonActiveFields() {
@@ -548,8 +548,7 @@ export default class ProductItemMultiplePicking extends Component {
                     }
                     else{
                         this.showPopUpErrorMessageForWrongEan();
-                        this.eanScanInputElement.value = "";
-                        this.eanScanInputElement.focus();
+                        this.focusEanFieldWithoutDisplayOfKeyboard();
                     }
                 }
             }
@@ -598,8 +597,7 @@ export default class ProductItemMultiplePicking extends Component {
                         }
                         else{
                             this.showPopUpErrorMessageForWrongEan();
-                            this.eanScanInputElement.value = "";
-                            this.eanScanInputElement.focus();
+                            this.focusEanFieldWithoutDisplayOfKeyboard();
                         }
                     }
                 }
@@ -610,6 +608,16 @@ export default class ProductItemMultiplePicking extends Component {
             }
 
         }
+    }
+
+    protected focusEanFieldWithoutDisplayOfKeyboard() {
+        this.eanScanInputElement.value = "";
+        this.eanScanInputElement.readOnly = true;
+        this.eanScanInputElement.focus();
+
+        setTimeout(() => {
+            this.eanScanInputElement.readOnly = false;
+        }, 1000)
     }
 
     protected step20(quantityElement, scannedBarcodeValue, calculatedWeight: number, valueOfWeightElement: number): void {
@@ -689,8 +697,7 @@ export default class ProductItemMultiplePicking extends Component {
             this.showInfo = false;
         }
 
-        this.eanScanInputElement.value = '';
-        this.eanScanInputElement.focus();
+      this.focusEanFieldWithoutDisplayOfKeyboard();
     }
 
     protected updateQuantityInput(value: number): void {
