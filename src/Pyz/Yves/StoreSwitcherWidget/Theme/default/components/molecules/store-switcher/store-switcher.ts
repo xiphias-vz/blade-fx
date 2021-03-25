@@ -18,7 +18,12 @@ export default class StoreSwitcher extends Component {
         const selectTarget = <HTMLSelectElement>event.currentTarget;
 
         if (this.hasUrl(selectTarget)) {
-            window.location.href = this.currentSelectValue(selectTarget);
+            let url = this.currentSelectValue(selectTarget);
+            let convertedUrl = url;
+            if(url.includes("-&-")){
+                convertedUrl = url.replace("-&-", "AND");
+            }
+            window.location.href = convertedUrl;
         }
     }
 
