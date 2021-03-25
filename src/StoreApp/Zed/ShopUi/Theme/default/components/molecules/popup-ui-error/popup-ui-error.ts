@@ -26,8 +26,11 @@ export default class PopupUiError extends Component {
         else if(this.isPopupErrorForPickingArticles == "2"){
             this.$closeButton.on('click', (event: Event) => this.triggerPopupWithClearingInputFieldForContainer(event));
         }
-        else {
+        else if(this.isPopupErrorForPickingArticles == "0"){
             this.$closeButton.on('click', (event: Event) => this.triggerPopup(event));
+        }
+        else {
+            this.$closeButton.on('click', (event: Event) => this.singlePickinFalscheEanCheck(event));
         }
 
         if (this.isCloseOnSubmit) {
@@ -75,6 +78,13 @@ export default class PopupUiError extends Component {
             }, 1000)
         }
 
+    }
+
+    public singlePickinFalscheEanCheck(event?: Event): void {
+        this.$this.toggleClass(this.showClass);
+        const eanScanInputField = document.getElementById('txt_ean_scannen__' + this.isPopupErrorForPickingArticles);
+        eanScanInputField.value = '';
+        eanScanInputField.focus();
     }
 
     public triggerPopup(event?: Event): void {

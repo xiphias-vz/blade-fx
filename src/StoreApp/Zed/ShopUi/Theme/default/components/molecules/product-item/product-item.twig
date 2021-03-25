@@ -160,4 +160,28 @@
             itemSku: data.itemSku,
         }
     } only %}
+
+    {% set popupParam = data.itemSku ?? '0' %}
+
+    {% embed molecule('popup-ui-error') with {
+        data: {
+            isErrorTrue: 0,
+            isPopUpErrorForPickingArticles: popupParam,
+            buttons: {
+                submit: {
+                    isButton: true,
+                    additionalClass: '',
+                },
+            },
+        },
+    } only %}
+        {% block content %}
+            <div class="popup-error-holder">
+                <div class="error-status">Fehler</div>
+                <div class="error-info">
+                    <p class="container-desc"></p>
+                </div>
+            </div>
+        {% endblock %}
+    {% endembed %}
 {% endblock %}

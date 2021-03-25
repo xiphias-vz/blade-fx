@@ -62,9 +62,9 @@
 
                     <div class="text-center spacing-top spacing-top--big error-holder">
                         {% block cancelButton %}
-                            <a href="#" class="link link--error button button--expand error-button-hover {{ config.jsName }}__close">
+                            <button type="button" class="link link--error button button--expand error-button-hover {{ config.jsName }}__close">
                                 {{ data.buttons.cancel.title }}
-                            </a>
+                            </button>
                         {% endblock %}
                     </div>
                 {% endblock %}
