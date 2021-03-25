@@ -62,7 +62,12 @@ export default class PopupUiError extends Component {
         {
             const scanInputField = document.querySelector('#txt_container_scan');
             scanInputField.value = '';
+            scanInputField.readOnly = true;
             scanInputField.focus();
+
+            setTimeout(() => {
+                scanInputField.readOnly = false;
+            }, 1000)
         }
 
     }

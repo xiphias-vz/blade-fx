@@ -49,7 +49,7 @@ export default class ProductItemMultiplePicking extends Component {
     protected $previousSku: $;
     protected $openModal: $;
     protected popupUiErrorInfo: object;
-    protected $containerScanConfirmation: $;
+    protected $containerScanConfirmation: HTMLInputElement;
     protected popupUiError: HTMLElement;
     eanScanInputElements:HTMLInputElement;
     eanScanInputElement: HTMLInputElement;
@@ -251,10 +251,15 @@ export default class ProductItemMultiplePicking extends Component {
         else{
             document.querySelector('.popup-ui-container-scan').classList.add('popup-ui-container-scan--show');
 
-            this.$containerScanConfirmation = document.getElementById(this.containerScanConfirmation);
+            this.$containerScanConfirmation = <HTMLInputElement>document.getElementById(this.containerScanConfirmation);
             this.$containerScanConfirmation.addEventListener('keypress', (event: KeyboardEvent) => this.containerScanConfirmationKeyHandler(event));
-            this.$containerScanConfirmation.focus();
             this.$containerScanConfirmation.value = "";
+            this.$containerScanConfirmation.readOnly = true;
+            this.$containerScanConfirmation.focus();
+
+            setTimeout(() => {
+                this.$containerScanConfirmation.readOnly = false;
+            }, 1000)
         }
     }
 
