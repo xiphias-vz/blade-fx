@@ -120,14 +120,19 @@ class PickingHeaderTransfer extends SpyPickingHeaderTransfer
             $keys = [];
             $items = [];
             $orderPosition = 0;
+            $pattern = "/[^0]/i";
             foreach ($this->getPickingOrders() as $order) {
                 $orderPosition++;
                 $order->setPickingPosition($orderPosition);
                 foreach ($order->getPickingOrderItems() as $orderItem) {
                     $orderItem->setPickingPosition($orderPosition);
                     $sequence = $orderItem->getSequence();
+                    $sequenceShelf = $orderItem->getShelf() . $orderItem->getShelfFloor() . $orderItem->getShelfField();
                     if (empty($sequence)) {
-                        $sequence = $orderItem->getShelf() . $orderItem->getShelfFloor() . $orderItem->getShelfField();
+                        $sequence = $sequenceShelf;
+                    }
+                    if (preg_match($pattern, $sequenceShelf) == 0) {
+                        $sequence = "999999999";
                     }
                     $key = str_pad($sequence, 10, "0", STR_PAD_LEFT);
                     $key .= str_pad($orderItem->getIdProduct(), 8, "0", STR_PAD_LEFT);
