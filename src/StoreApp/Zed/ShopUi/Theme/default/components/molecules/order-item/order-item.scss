@@ -74,6 +74,10 @@ $setting-item-border-radius: rem(8);
             color: $setting-color-gray-11;
         }
 
+        &__cart-note {
+            overflow-wrap: anywhere;
+        }
+
     }
 }
 

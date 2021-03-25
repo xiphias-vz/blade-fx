@@ -107,6 +107,8 @@ class PickingController extends BaseOrderPickingController
             $dayInTheWeek = date('w', strtotime($deliveryDate[0]));
             $dayOfTheWeek = $daysInTheWeek[$dayInTheWeek];
 
+            $decodedString = json_decode($order->getCartNote());
+
             $pickingOrders[] = [
                 'idSalesOrder' => $order->getIdSalesOrder(),
                 'reference' => $order->getOrderReference(),
@@ -115,7 +117,7 @@ class PickingController extends BaseOrderPickingController
                 'totalItemCount' => $item["itemsCountTotal"],
                 'isPicked' => $merchantSalesOrderTransfer->getFkUser() === $userTransfer->getIdUser(),
                 'requestedDeliveryDate' => $fullDeliveryDate,
-                'cartNote' => $order->getCartNote(),
+                'cartNote' => $decodedString,
                 'customerFullName' => $order->getFirstName() . ' ' . $order->getLastName(),
                 'dayOfTheWeek' => $dayOfTheWeek,
                 'pickupStatus' => $merchantSalesOrderTransfer->getStoreStatus(),

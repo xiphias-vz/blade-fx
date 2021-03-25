@@ -21,6 +21,10 @@
             margin-bottom: rem(20);
         }
 
+        &__cart-note {
+            overflow-wrap: anywhere;
+        }
+
     }
     .close-note {
         float: right;
@@ -37,6 +41,7 @@
     .custom__icon{
         margin-left: rem(1.5);
     }
+
 }
 
 @include shop-ui-multi-picking-customer-note();

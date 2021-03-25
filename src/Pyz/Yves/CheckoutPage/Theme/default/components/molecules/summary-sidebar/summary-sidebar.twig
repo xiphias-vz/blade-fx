@@ -76,7 +76,7 @@
                     {% block message_for_picker %}
                         <div style="margin-top: 15px">
                             <span class="{{ config.name }}__title {{ config.name }}__title--sub">{{ 'cart.checkout.address.abholstation.note.down' | trans }}</span>
-                            <span>{{ data.cartNote }} </span>
+                            <span class="{{ config.name }}__cart-note">{{ data.cartNote }} </span>
                         </div>
                     {% endblock %}
                 </div>

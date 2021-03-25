@@ -106,6 +106,7 @@ class CollectByCustomerController extends AbstractController
             $deliveryDate = str_split($fullDeliveryDate, 10);
             $dayInTheWeek = date('w', strtotime($deliveryDate[0]));
             $dayOfTheWeek = $daysInTheWeek[$dayInTheWeek];
+            $decodedCartNote = json_decode($order->getCartNote());
 
             $collectionOrders[] = [
                 'idSalesOrder' => $order->getIdSalesOrder(),
@@ -118,7 +119,7 @@ class CollectByCustomerController extends AbstractController
                 'requestedDeliveryDate' => $fullDeliveryDate,
                 'pickedProductCount' => $item["pickedProductCount"],
                 'numberOfContainersInOrder' => $item["numberOfContainersInOrder"],
-                'cartNote' => $order->getCartNote(),
+                'cartNote' => $decodedCartNote,
                 'dayOfTheWeek' => $dayOfTheWeek,
                 'fullName' => $order->getFirstName() . " " . $order->getLastName(),
                 'pickupStatus' => $collectionMerchantSalesOrder->getStoreStatus(),
@@ -264,6 +265,8 @@ class CollectByCustomerController extends AbstractController
             $item4['name'] = substr($item4["name"], 0, 25);
         }
 
+        $decodedCartNote = json_decode($salesOrderTransfer->getCartNote());
+
         return [
             'merchant' => $this->getMerchantFromRequest($request),
             'collectDetailsForm' => $orderItemSelectionForm->createView(),
@@ -280,7 +283,7 @@ class CollectByCustomerController extends AbstractController
             'pickedProductCount' => $pickedProductCount,
             'dayOfTheWeek' => $dayOfTheWeek,
             'fullName' => $salesOrderTransfer->getFirstName() . " " . $salesOrderTransfer->getLastName(),
-            'cartNote' => $salesOrderTransfer->getCartNote(),
+            'cartNote' => $decodedCartNote,
             'collectedAt' => $salesOrderTransfer->getMerchantSalesOrder()->getCollectedAt(),
             'pickingSalesOrders' => $pickingSalesOrders,
             'pickedAndNotFoundItems' => $notFound,

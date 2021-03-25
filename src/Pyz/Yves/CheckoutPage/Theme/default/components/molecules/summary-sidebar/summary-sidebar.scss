@@ -65,6 +65,10 @@
             color: $setting-color-gray-13;
         }
 
+        &__cart-note {
+            overflow-wrap: anywhere;
+        }
+
         @content;
     }
 }

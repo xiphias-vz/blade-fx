@@ -38,6 +38,13 @@ class MultiPickingOverviewOfContainersOnOrderController extends AbstractControll
         $transfer = $this->getFacade()->getPickingHeaderTransfer();
         $dataWithContainers = $transfer->getOrderList();
 
+        foreach ($dataWithContainers as $order) {
+            $decodedString = json_decode($order->getNote());
+            if ($decodedString != null) {
+                $order->setNote($decodedString);
+            }
+        }
+
         $isFromModal = 'false';
         $idOrder = $request->get(static::REQUEST_PARAM_ID_ORDER);
         $sku = $request->get(static::REQUEST_PARAM_SKU);
