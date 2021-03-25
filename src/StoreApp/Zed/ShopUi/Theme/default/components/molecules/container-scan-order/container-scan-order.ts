@@ -63,20 +63,21 @@ export default class ContainerScanOrder extends Component {
         this.inputScanner.addEventListener('keypress', (event: KeyboardEvent) => this.formKeyPressHandler(event));
         this.form.addEventListener('submit', (e) => {
 
-            if(!this.atLeastOneContainerIsAdded(this.listOfContainersHolder)) {
+            if(!this.atLeastOneContainerIsAdded(this.listOfContainersHolder, this.listContainersShelf)) {
                 e.preventDefault();
-                this.showPopUpErrorMessageForEmptyContainer();
+                this.showPopUpErrorMessageForNonValidContainer();
                 this.clearInputField(this.inputScanner);
                 return false;
             }
+
             this.nextOrderPosition = ++this.nextOrderPosition;
             this.nextOrderPositionInput.value = String(this.nextOrderPosition);
 
         })
     }
 
-    protected atLeastOneContainerIsAdded(listOfContainersHolder) {
-        return (listOfContainersHolder.childElementCount != 0);
+    protected atLeastOneContainerIsAdded(listOfContainersHolder, listContainersShelf) {
+         return (listOfContainersHolder.childElementCount != 0 || listContainersShelf.childElementCount != 0);
     }
 
     protected toggleConfirmButton(event):void {
