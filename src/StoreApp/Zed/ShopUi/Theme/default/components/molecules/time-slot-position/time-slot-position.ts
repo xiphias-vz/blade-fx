@@ -49,6 +49,7 @@ export default class TimeSlotPosition extends Component {
             this.orderCheckBoxes[i].addEventListener('click', (event: Event) => this.calculateCountAndQuantityPerOrder(this.orderCheckBoxes[i], this.orderInfo[i]));
         }
 
+        this.confirmMultiPickingOrder.addEventListener('click', (event: Event) => this.confirmMultiPickingOrder.classList.add('button--disabled'));
     }
 
     protected calculateCountAndQuantityPerOrder(orderCheckbox, orderInfo) : void {
