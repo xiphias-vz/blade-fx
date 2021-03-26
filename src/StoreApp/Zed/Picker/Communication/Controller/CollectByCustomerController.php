@@ -235,7 +235,7 @@ class CollectByCustomerController extends AbstractController
 
         $notFound = [];
         foreach ($collectOrderTransfer->getNotFoundItems() as $item1 => $value1) {
-             $value1["imageUrl"] = 1;
+             $value1["imageUrl"] = 0;
              array_push($notFound, $value1);
         }
         $containerInfo = $this->getFactory()->getPickerBusinessFactory()->createContainerReader()->getContainersByOrderId($idSalesOrder);
@@ -246,8 +246,8 @@ class CollectByCustomerController extends AbstractController
             array_push($pickedItems, $value2);
         }
 
-        foreach ($pickedItems as $item3 => $value3) {
-            foreach ($notFound as $item3 => $valueNotFound) {
+        foreach ($pickedItems as $value3) {
+            foreach ($notFound as $valueNotFound) {
                 if ($valueNotFound["sku"] == $value3["sku"]) {
                     foreach ($notFound as $key => $val) {
                         if ($val["sku"] === $value3["sku"]) {
@@ -260,7 +260,12 @@ class CollectByCustomerController extends AbstractController
         }
 
         foreach ($notFound as $item4) {
-            $item4["quantity"] = $item4["imageUrl"] - $item4["quantity"];
+            if ($item4["imageUrl"] == 0) {
+                $item4["imageUrl"] = $item4["quantity"];
+                $item4["quantity"] = 0;
+            } else {
+                $item4["quantity"] = $item4["imageUrl"] - $item4["quantity"];
+            }
             $item4['name'] = str_replace($item4["sku"] . ' - ', "", $item4["name"]);
             $item4['name'] = substr($item4["name"], 0, 25);
         }
