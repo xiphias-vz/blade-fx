@@ -45,8 +45,8 @@ class SalesOrderSummaryExportRepository extends AbstractRepository implements Sa
     , max(sit.name) as status
     , case when sum(ssoi.gross_price) - sum(case when ifnull(ssoi.canceled_amount, 0) > 0 then ssoi.gross_price else 0 end) > 0 then sum(ssoi.gross_price) - sum(case when ifnull(ssoi.canceled_amount, 0) > 0 then ssoi.gross_price else 0 end) else 0 end as Delivered_ItemValueGross
     , round(sum(case when sit.name like '%cancelled%' then 0 else round(ssoi.gross_price / ((100 + str.rate)/100), 2) end), 0) as Delivered_ItemValueNet
-    , sum(case when sit.name in ('\"cancellation process\"', '\"cancelled\"', '\"cancelled due to not in stock\"')  then 0 else
-        	case when ssoi.new_weight is not null and sit.name not in ('\"ready for picking\"', '\"ready for selecting shelves\"') then round(ssoi.new_weight / ssoi.weight_per_unit, 0) else 1 end
+    , sum(case when sit.name in ('cancellation process', 'cancelled', 'cancelled due to not in stock')  then 0 else
+        	case when ssoi.new_weight is not null and sit.name not in ('ready for picking', 'ready for selecting shelves') then round(ssoi.new_weight / ssoi.weight_per_unit, 0) else 1 end
         	end) as Delivered_ItemsQuantity,
         count(distinct case when sit.name like '%cancelled%' then 0 else ssoi.product_number end) - sign(sum(case when sit.name like '%cancelled%' then 1 else 0 end)) as Delivered_ItemsCount
     , case when sso.cart_note in ('null', '\"null\"') then null else sso.cart_note end as comment
@@ -92,6 +92,7 @@ class SalesOrderSummaryExportRepository extends AbstractRepository implements Sa
                     $value = explode('_', $value)[0];
                     $content = $content . '"' . $value . '",';
                 } elseif (in_array($key, $this->stringColumns)) {
+                    $value = str_replace(['"', ","], [' ', ' '], $value);
                     $content = $content . '"' . $value . '",';
                 } else {
                     $content = $content . $value . ',';
