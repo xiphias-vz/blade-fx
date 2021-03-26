@@ -409,8 +409,15 @@ class PickingHeaderTransfer extends SpyPickingHeaderTransfer
                     'pickingPosition' => $orderItem->getParent()->getPickingPosition(),
                     'pickingColor' => $orderItem->getParent()->getPickingColor(),
                 ]];
-                $items[$counter]["isFullPicked"] = true;
+                $items[$counter]["isFullPicked"] = false;
                 $items[$counter]["isPartiallyPicked"] = false;
+                $items[$counter]["isCancelledStatus"] = false;
+                $items[$counter]["isPausedStatus"] = false;
+                $items[$counter]["counterOrder"] = 1;
+                $items[$counter]["counterFullPicked"] = 0;
+                $items[$counter]["counterPartiallyPicked"] = 0;
+                $items[$counter]["counterCancelled"] = 0;
+                $items[$counter]["counterPaused"] = 0;
             } else {
                 $orders = $items[$counter]["orders"];
                 $order =
@@ -421,20 +428,58 @@ class PickingHeaderTransfer extends SpyPickingHeaderTransfer
                 ];
                 array_push($orders, $order);
                 $items[$counter]["orders"] = $orders;
+                $items[$counter]["counterOrder"] = $items[$counter]["counterOrder"] + 1;
             }
-            if ($items[$counter]["isFullPicked"]) {
-                $items[$counter]["isFullPicked"] = ($orderItem->getQuantity() == $orderItem->getQuantityPicked())
-                    || ($orderItem->getPricePerKg() > 0 && $orderItem->getQuantityPicked() == 1);
+            if (($orderItem->getQuantity() == $orderItem->getQuantityPicked())
+                    || ($orderItem->getPricePerKg() > 0 && $orderItem->getQuantityPicked() == 1)) {
+                $items[$counter]["counterFullPicked"] = $items[$counter]["counterFullPicked"] + 1;
             }
-            if (!$items[$counter]["isPartiallyPicked"]) {
-                if ($orderItem->getPricePerKg() > 0) {
-                    $items[$counter]["isPartiallyPicked"] = false;
-                } else {
-                    $items[$counter]["isPartiallyPicked"] =
-                        ($orderItem->getQuantityPicked() > 0 && $orderItem->getQuantity() > $orderItem->getQuantityPicked());
-                }
+            if ($orderItem->getQuantityPicked() > 0 && $orderItem->getQuantity() > $orderItem->getQuantityPicked()) {
+                $items[$counter]["counterPartiallyPicked"] = $items[$counter]["counterPartiallyPicked"] + 1;
+            }
+            if ($orderItem->getIsPaused()) {
+                $items[$counter]["counterPaused"] = $items[$counter]["counterPaused"] + 1;
+            }
+            if ($orderItem->getIsCancelled()) {
+                $items[$counter]["counterCancelled"] = $items[$counter]["counterCancelled"] + 1;
             }
         }
+        foreach ($items as $item) {
+            if ($item["counterOrder"] == $item["counterFullPicked"]) {
+                $item["isFullPicked"] = true;
+                //1 position is picked | 2 positions picked | 3 position is cancelled
+            } elseif ($item["counterFullPicked"] > 0 && $item["counterPartiallyPicked"] == 0
+                && $item["counterFullPicked"] > $item["counterCancelled"]
+                && $item["counterPaused"] == 0) {
+                $item["isFullPicked"] = true;
+                //1 position is picked | 2 positions minor quantities | 3 position is minor quantities
+            } elseif ($item["counterFullPicked"] > 0 && $item["counterPartiallyPicked"] > 0
+                && $item["counterFullPicked"] < $item["counterPartiallyPicked"]
+                && $item["counterCancelled"] == 0 && $item["counterPaused"] == 0) {
+                $item["isPartiallyPicked"] = true;
+                //1 position is picked | 2 positions minor quantities | 3 position is cancelled
+            } elseif ($item["counterFullPicked"] > 0 && $item["counterPartiallyPicked"] > 0
+                && $item["counterFullPicked"] >= $item["counterPartiallyPicked"]
+                && $item["counterCancelled"] > 0 && $item["counterPaused"] == 0) {
+                $item["isFullPicked"] = true;
+                //1 position is picked | 2 positions paused | 3 position is paused
+            } elseif ($item["counterFullPicked"] > 0 && $item["counterPartiallyPicked"] == 0
+                && $item["counterCancelled"] == 0 && $item["counterPaused"] > 0) {
+                $item["isPausedStatus"] = true;
+                //1 position is paused | 2 positions paused | 3 position is cancelled
+            } elseif ($item["counterFullPicked"] == 0 && $item["counterPartiallyPicked"] == 0
+                && $item["counterCancelled"] > 0 && $item["counterPaused"] > 0) {
+                $item["isPausedStatus"] = true;
+                //1 position is minor quantities | 2 positions cancelled | 3 position is paused
+            } elseif ($item["counterFullPicked"] == 0 && $item["counterPartiallyPicked"] > 0
+                && $item["counterCancelled"] > 0 && $item["counterPaused"] > 0) {
+                $item["isPartiallyPicked"] = true;
+            } elseif ($item["counterFullPicked"] == 0 && $item["counterPartiallyPicked"] == 0
+                && $item["counterPaused"] == 0 && $item["counterCancelled"] > 0) {
+                $item["isCancelledStatus"] = true;
+            }
+        }
+
         $this->setParents(true);
 
         return $items;

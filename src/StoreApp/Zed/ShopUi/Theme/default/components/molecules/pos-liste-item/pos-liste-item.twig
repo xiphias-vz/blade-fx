@@ -41,18 +41,18 @@
         </form>
         <tr class="{{ config.jsName }}__product-item" id="{{ data.idOrderItem }}" style="cursor: pointer">
             <td class="{{ config.name }}__left-column  {{ config.name }}__cursor-pointer">
-                {% if data.isPaused == "1" %}
+                {% if data.isAllPicked == true or data.isAllPicked == "1" %}
                     <div class="{{ config.name }}__circle-wrapper">
-                        <div class="{{ config.name }}__paused-circle">
-                            ||
+                        <div class="{{ config.name }}__checked-circle">
+                            <svg class="icon button__icon"><use xlink:href="#:check"></use></svg>
                         </div>
                     </div>
                     <div class="{{ config.name }}__number-text-wrapper">
                         {{ data.quantity }}
                     </div>
-                {% elseif data.isAllPicked == true or data.isAllPicked == "1" %}
+                {% elseif data.isPartiallyPicked == true or data.isPartiallyPicked == "1" %}
                     <div class="{{ config.name }}__circle-wrapper">
-                        <div class="{{ config.name }}__checked-circle">
+                        <div class="{{ config.name }}__checked-circle-empty">
                             <svg class="icon button__icon"><use xlink:href="#:check"></use></svg>
                         </div>
                     </div>
@@ -68,15 +68,15 @@
                     <div class="{{ config.name }}__number-text-wrapper">
                         {{ data.quantity }}
                     </div>
-                    {% elseif data.isPartiallyPicked == true or data.isPartiallyPicked == "1" %}
-                        <div class="{{ config.name }}__circle-wrapper">
-                            <div class="{{ config.name }}__checked-circle-empty">
-                                <svg class="icon button__icon"><use xlink:href="#:check"></use></svg>
-                            </div>
+                {% elseif data.isPaused == "1" %}
+                    <div class="{{ config.name }}__circle-wrapper">
+                        <div class="{{ config.name }}__paused-circle">
+                            ||
                         </div>
-                        <div class="{{ config.name }}__number-text-wrapper">
-                            {{ data.quantity }}
-                        </div>
+                    </div>
+                    <div class="{{ config.name }}__number-text-wrapper">
+                        {{ data.quantity }}
+                    </div>
                 {% else %}
                     <div class="{{ config.name }}__number-empty-wrapper">
                         {{ data.quantity }}
