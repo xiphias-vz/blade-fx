@@ -31,6 +31,13 @@
                 {{ 'error_page.button_contact' | trans}}
         </a>
     </div>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        window.dataLayer.push({
+            'event': 'error',
+            'errorType': '403 - Forbidden'
+        });
+    </script>
 {% endblock %}
 
 {% block contentClass -%}
