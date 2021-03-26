@@ -69,7 +69,10 @@ namespace: spryker-cloud
 tag: '1.0'
 
 environment: docker_dev
-image: spryker/php:7.3-DRAFT-new-relic
+image: spryker/php:7.3
+    php:
+        enabled-extensions:
+            - newrelic
 
 composer:
     mode: --no-dev
@@ -224,6 +227,10 @@ services:
             mail.shop-t.globus.de:
 
 docker:
+    newrelic:
+        license: eu01xxde87fd45444188e1361fb03b4efb9fNRAL
+        appname: Globus Staging
+        enabled: true
 
     ssl:
         enabled: true
