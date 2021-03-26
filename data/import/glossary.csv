@@ -627,6 +627,8 @@ customer.order.view_order,View Order,en_US
 customer.order.view_order,Wunscheinkauf ansehen,de_DE
 customer.order.reorder,Reorder,en_US
 customer.order.reorder,Nachbestellen,de_DE
+customer.order.reorder.link,Reorder,en_US
+customer.order.reorder.link,Bestellung wiederholen,de_DE
 customer.order.invoice,Rechnung,de_DE
 customer.order.invoice,Invoice,en_US
 customer.order.reorder_all,Reorder all,en_US
