@@ -28,7 +28,7 @@ class ExportCsvResponseBuilder implements ExportCsvResponseBuilderInterface
         $filePointer = fopen('php://output', 'wb');
 
         foreach ($exportContentsTransfer->getContents() as $content) {
-            fputcsv($filePointer, $content, static::CSV_DELIMITER);
+            fputcsv($filePointer, $content);
         }
 
         return $response;

@@ -10,7 +10,10 @@ picking_zone_order_export.column.total_amount,Gesamtbetrag bestellt
 picking_zone_order_export.column.weight_per_unit,Durchschnittsgewicht
 picking_zone_order_export.column.location,Ort
 picking_zone_order_export.column.ean,EAN
+picking_zone_order_export.column.brand,Marke
+picking_zone_order_export.column.content,Inhalt
 picking_zone_order_export.column.price,Preis
+picking_zone_order_export.column.unit.price,Einzelpreis
 picking_zone_order_export.column.shelf,Regal
 picking_zone_order_export.column.shelf_floor,Regalboden
 picking_zone_order_export.column.shelf_field,Regalfeld

@@ -60,6 +60,9 @@ class MerchantSalesOrderRepository extends SprykerMerchantSalesOrderRepository i
         return $merchantSalesOrderQuery->select([
                 SpySalesOrderItemTableMap::COL_SKU,
                 SpySalesOrderItemTableMap::COL_NAME,
+                SpySalesOrderItemTableMap::COL_BRAND,
+                SpySalesOrderItemTableMap::COL_BASE_PRICE_CONTENT,
+                SpySalesOrderItemTableMap::COL_BASE_PRICE_UNIT,
                 SpySalesShipmentTableMap::COL_REQUESTED_DELIVERY_DATE,
                 SpySalesOrderItemTableMap::COL_PRICE,
                 SpySalesOrderItemTableMap::COL_WEIGHT_PER_UNIT,
