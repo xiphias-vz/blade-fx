@@ -25,6 +25,7 @@
     orders: '',
     ean: '',
     pickingItemPosition: '',
+    fromModal: '',
 } %}
 
 {% block body %}
@@ -38,6 +39,7 @@
             <input type="hidden" name="idOrderItem" value="{{ data.idOrderItem }}">
             <input type="hidden" name="sku" value="{{ data.ean }}">
             <input type="hidden" name="position" value="{{ data.pickingItemPosition }}">
+            <input type="hidden" name="fromPosListeAndModal" value="{{ data.fromModal }}">
         </form>
         <tr class="{{ config.jsName }}__product-item" id="{{ data.idOrderItem }}" style="cursor: pointer">
             <td class="{{ config.name }}__left-column  {{ config.name }}__cursor-pointer">

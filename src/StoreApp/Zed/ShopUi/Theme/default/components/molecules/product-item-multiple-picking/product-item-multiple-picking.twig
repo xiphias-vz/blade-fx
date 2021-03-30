@@ -18,7 +18,8 @@
     orderItemPosition: '',
     isLastPosition: '',
     listOfContainers: [],
-    openModal: ''
+    openModal: '',
+    fromPosListeAndModal: ''
 } %}
 
 {% set title = data.currentPositionData['name'] %}
@@ -87,6 +88,7 @@
                             orderNumber: pickingItemPosition,
                             articles: articlesData,
                             sku: itemSku,
+                            fromPosListeAndModal: data.fromPosListeAndModal,
                         }
                     } only %}
                 <div class="hr-line-solid"></div>

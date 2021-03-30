@@ -15,6 +15,7 @@
     orderItemPosition: orderItemPosition,
     listOfContainers: listOfContainers,
     openModal: openModal,
+    fromPosListeAndModal: fromPosListeAndModal,
 } %}
 
  {% if data.currentPositionData is defined %}
@@ -83,7 +84,8 @@
                 listOfContainers: listOfContainers,
                 isLastPosition: data.isLastPosition,
                 urlScanShelves: data.urlScanShelves,
-                openModal: data.openModal
+                openModal: data.openModal,
+                fromPosListeAndModal: data.fromPosListeAndModal
             },
             attributes: {
                 'data-sku': currentPosition.ean,
