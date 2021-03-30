@@ -108,9 +108,12 @@
         </div>
 
         {% block footer %}
-            {% cms_slot 'slt-1' %}
+            <div class="contact-info-slot">
+                {% cms_slot 'slt-1' %}
+            </div>
+            {% include organism('footer') with {
 
-            {% include organism('footer') only %}
+            } only %}
         {% endblock %}
     </div>
 
