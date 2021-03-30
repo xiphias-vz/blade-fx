@@ -445,38 +445,22 @@ class PickingHeaderTransfer extends SpyPickingHeaderTransfer
             }
         }
         foreach ($items as $item) {
-            if ($item["counterOrder"] == $item["counterFullPicked"]) {
-                $item["isFullPicked"] = true;
-                //1 position is picked | 2 positions picked | 3 position is cancelled
-            } elseif ($item["counterFullPicked"] > 0 && $item["counterPartiallyPicked"] == 0
-                && $item["counterFullPicked"] > $item["counterCancelled"]
-                && $item["counterPaused"] == 0) {
-                $item["isFullPicked"] = true;
-                //1 position is picked | 2 positions minor quantities | 3 position is minor quantities
-            } elseif ($item["counterFullPicked"] > 0 && $item["counterPartiallyPicked"] > 0
-                && $item["counterFullPicked"] < $item["counterPartiallyPicked"]
-                && $item["counterCancelled"] == 0 && $item["counterPaused"] == 0) {
-                $item["isPartiallyPicked"] = true;
-                //1 position is picked | 2 positions minor quantities | 3 position is cancelled
-            } elseif ($item["counterFullPicked"] > 0 && $item["counterPartiallyPicked"] > 0
-                && $item["counterFullPicked"] >= $item["counterPartiallyPicked"]
-                && $item["counterCancelled"] > 0 && $item["counterPaused"] == 0) {
-                $item["isFullPicked"] = true;
-                //1 position is picked | 2 positions paused | 3 position is paused
-            } elseif ($item["counterFullPicked"] > 0 && $item["counterPartiallyPicked"] == 0
-                && $item["counterCancelled"] == 0 && $item["counterPaused"] > 0) {
-                $item["isPausedStatus"] = true;
-                //1 position is paused | 2 positions paused | 3 position is cancelled
-            } elseif ($item["counterFullPicked"] == 0 && $item["counterPartiallyPicked"] == 0
-                && $item["counterCancelled"] > 0 && $item["counterPaused"] > 0) {
-                $item["isPausedStatus"] = true;
-                //1 position is minor quantities | 2 positions cancelled | 3 position is paused
-            } elseif ($item["counterFullPicked"] == 0 && $item["counterPartiallyPicked"] > 0
-                && $item["counterCancelled"] > 0 && $item["counterPaused"] > 0) {
-                $item["isPartiallyPicked"] = true;
-            } elseif ($item["counterFullPicked"] == 0 && $item["counterPartiallyPicked"] == 0
-                && $item["counterPaused"] == 0 && $item["counterCancelled"] > 0) {
-                $item["isCancelledStatus"] = true;
+            $counterOrder = $item["counterOrder"];
+            $counterFullPicked = $item["counterFullPicked"];
+            $counterPartiallyPicked = $item["counterPartiallyPicked"];
+            $counterPaused = $item["counterPaused"];
+            $counterCancelled = $item["counterCancelled"];
+
+            if (($counterFullPicked + $counterPartiallyPicked + $counterPaused + $counterCancelled) > 0) {
+                if ($counterFullPicked > 0) {
+                    $item["isFullPicked"] = true;
+                } elseif ($counterPartiallyPicked > 0) {
+                    $item["isPartiallyPicked"] = true;
+                } elseif ($counterCancelled > 0) {
+                    $item["isCancelledStatus"] = true;
+                } elseif ($counterPaused > 0) {
+                    $item["isPausedStatus"] = true;
+                }
             }
         }
 
