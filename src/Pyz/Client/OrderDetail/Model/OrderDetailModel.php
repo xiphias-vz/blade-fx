@@ -270,11 +270,11 @@ class OrderDetailModel
                 + $itemTransfer->getSumProductOptionPriceAggregation()
             );
 
-        if ($groupedItemTransfer->getProductOptions()->count()) {
-            $groupedItemTransfer->getProductOptions()[0]->setSumPrice(
-                $groupedItemTransfer->getProductOptions()[0]->getSumPrice() +
-                $itemTransfer->getProductOptions()[0]->getSumPrice()
-            );
+        if (isset($groupedItemTransfer->getProductOptions()[0])) {
+                $groupedItemTransfer->getProductOptions()[0]->setSumPrice(
+                    $groupedItemTransfer->getProductOptions()[0]->getSumPrice() +
+                    $itemTransfer->getProductOptions()[0]->getSumPrice()
+                );
         }
 
         return $groupedItems;
