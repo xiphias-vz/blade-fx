@@ -59,11 +59,16 @@ class PickingZoneOrderExportContentBuilder implements PickingZoneOrderExportCont
      * @param int $idPickingZone
      * @param string $pickingStore
      * @param \DateTime $datePicking
+     * @param array $timeSlots
+     * @param string $status
      *
      * @return \Generated\Shared\Transfer\ExportContentsTransfer
      */
-    public function generateContent(int $idPickingZone, string $pickingStore, DateTime $datePicking): ExportContentsTransfer
+    public function generateContent(int $idPickingZone, string $pickingStore, DateTime $datePicking, array $timeSlots, string $status): ExportContentsTransfer
     {
+        $statusArr = [];
+        array_push($statusArr, $status);
+
         $pickingZoneTransfer = $this->pickingZoneFacade->findPickingZoneById($idPickingZone);
 
         $pickingZoneOrderExportContentsTransfer = new ExportContentsTransfer();
@@ -87,7 +92,8 @@ class PickingZoneOrderExportContentBuilder implements PickingZoneOrderExportCont
         $readyForPickingOrderCriteriaFilterTransfer = (new OrderCriteriaFilterTransfer())
             ->setIdPickingZone($pickingZoneTransfer->getIdPickingZone())
             ->setPickingStore($pickingStore)
-            ->setDeliveryDate($datePicking->format('c'));
+            ->setDeliveryDate($datePicking->format('c'))
+            ->setItemStatuses($statusArr);
 
         $salesOrderItems = $this->merchantSalesOrderFacade
             ->getSalesOrderItemDataByPickingDateAndPickingZone($readyForPickingOrderCriteriaFilterTransfer);
@@ -98,6 +104,23 @@ class PickingZoneOrderExportContentBuilder implements PickingZoneOrderExportCont
                 $salesOrderItemData[SpySalesShipmentTableMap::COL_REQUESTED_DELIVERY_DATE]
             );
 
+            $timeSlotDate = $deliveryDate[0];
+            $timeSlotTime = $deliveryDate[1];
+
+            if (in_array($timeSlotTime, $timeSlots)) {
+                $pickingZoneOrderExportContentsTransfer->addContentItem([
+                    $timeSlotDate,
+                    $timeSlotTime,
+                    $salesOrderItemData[SpySalesOrderItemTableMap::COL_NAME],
+                    $salesOrderItemData['quantity'],
+                    $salesOrderItemData[SpySalesOrderItemTableMap::COL_WEIGHT_PER_UNIT] ?? '',
+                    $salesOrderItemData[SpySalesOrderItemTableMap::COL_SHELF],
+                    $salesOrderItemData[SpySalesOrderItemTableMap::COL_SHELF_FLOOR],
+                    $salesOrderItemData[SpySalesOrderItemTableMap::COL_SHELF_FIELD],
+                    $salesOrderItemData[SpySalesOrderItemTableMap::COL_SKU],
+                    ($salesOrderItemData[SpySalesOrderItemTableMap::COL_PRICE] / static::DEFAULT_PRICE_DIVISION) . ' ' . static::DEFAULT_PRICE_CURRENCY,
+                ]);
+            }
             $pickingZoneOrderExportContentsTransfer->addContentItem([
                 $deliveryDate[0],
                 $deliveryDate[1],

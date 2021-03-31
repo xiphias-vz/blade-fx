@@ -26,17 +26,21 @@ class PickingZoneOrderExportFacade extends AbstractFacade implements PickingZone
      * @param int $idPickingZone
      * @param string $pickingStore
      * @param \DateTime $datePicking
+     * @param array $timeSlots
+     * @param string $status
      *
      * @return \Generated\Shared\Transfer\ExportContentsTransfer
      */
     public function generatePickingZoneOrderExportContent(
         int $idPickingZone,
         string $pickingStore,
-        DateTime $datePicking
+        DateTime $datePicking,
+        array $timeSlots,
+        string $status
     ): ExportContentsTransfer {
         return $this->getFactory()
             ->createPickingZoneOrderExportContentBuilder()
-            ->generateContent($idPickingZone, $pickingStore, $datePicking);
+            ->generateContent($idPickingZone, $pickingStore, $datePicking, $timeSlots, $status);
     }
 
     /**

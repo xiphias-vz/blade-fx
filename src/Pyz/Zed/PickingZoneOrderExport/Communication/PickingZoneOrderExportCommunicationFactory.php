@@ -11,6 +11,7 @@ use Pyz\Zed\PickingZone\Business\PickingZoneFacadeInterface;
 use Pyz\Zed\PickingZoneOrderExport\Communication\Form\DataProvider\PickingZoneOrderExportFormDataProvider;
 use Pyz\Zed\PickingZoneOrderExport\Communication\Form\PickingZoneOrderExportForm;
 use Pyz\Zed\PickingZoneOrderExport\PickingZoneOrderExportDependencyProvider;
+use Pyz\Zed\TimeSlot\Business\TimeSlotFacadeInterface;
 use Spryker\Zed\Kernel\Communication\AbstractCommunicationFactory;
 use Symfony\Component\Form\FormInterface;
 
@@ -25,7 +26,7 @@ class PickingZoneOrderExportCommunicationFactory extends AbstractCommunicationFa
      */
     public function createPickingZoneOrderExportFormDataProvider(): PickingZoneOrderExportFormDataProvider
     {
-        return new PickingZoneOrderExportFormDataProvider($this->getPickingZoneFacade());
+        return new PickingZoneOrderExportFormDataProvider($this->getPickingZoneFacade(), $this->getTimeSlotsFacade());
     }
 
     /**
@@ -44,5 +45,13 @@ class PickingZoneOrderExportCommunicationFactory extends AbstractCommunicationFa
     public function getPickingZoneFacade(): PickingZoneFacadeInterface
     {
         return $this->getProvidedDependency(PickingZoneOrderExportDependencyProvider::FACADE_PICKING_ZONE);
+    }
+
+    /**
+     * @return \Pyz\Zed\TimeSlot\Business\TimeSlotFacadeInterface
+     */
+    public function getTimeSlotsFacade(): TimeSlotFacadeInterface
+    {
+        return $this->getProvidedDependency(PickingZoneOrderExportDependencyProvider::FACADE_TIME_SLOTS);
     }
 }

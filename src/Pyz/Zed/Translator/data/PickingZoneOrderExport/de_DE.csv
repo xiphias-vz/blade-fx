@@ -17,3 +17,5 @@ picking_zone_order_export.column.unit.price,Einzelpreis
 picking_zone_order_export.column.shelf,Regal
 picking_zone_order_export.column.shelf_floor,Regalboden
 picking_zone_order_export.column.shelf_field,Regalfeld
+picking_zone_order_export_gui.field.picking_time_slots,Freie Abholtermine
+picking_zone_order_export_gui.field.picking_time_status,Status

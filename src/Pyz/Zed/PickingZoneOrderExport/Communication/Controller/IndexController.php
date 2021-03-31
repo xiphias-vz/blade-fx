@@ -35,7 +35,9 @@ class IndexController extends AbstractController
                 ->generatePickingZoneOrderExportContent(
                     $data[PickingZoneOrderExportForm::FIELD_PICKING_ZONE_ID],
                     $data[PickingZoneOrderExportForm::FIELD_PICKING_STORE],
-                    $data[PickingZoneOrderExportForm::FIELD_PICKING_DATE]
+                    $data[PickingZoneOrderExportForm::FIELD_PICKING_DATE],
+                    $data[PickingZoneOrderExportForm::FIELD_PICKING_TIMESLOTS],
+                    $data[PickingZoneOrderExportForm::FIELD_PICKING_STATUS]
                 );
 
             return $this->getFacade()

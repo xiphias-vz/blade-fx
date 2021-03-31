@@ -14,3 +14,5 @@ picking_zone_order_export.column.price,Price
 picking_zone_order_export.column.shelf,Shelf
 picking_zone_order_export.column.shelf_floor,Shelf floor
 picking_zone_order_export.column.shelf_field,Shelf field
+picking_zone_order_export_gui.field.picking_time_slots,Timeslots
+picking_zone_order_export_gui.field.picking_time_status,Status

@@ -57,4 +57,9 @@ interface TimeSlotFacadeInterface
      * @return \Generated\Shared\Transfer\WeekDayTimeSlotsTransfer
      */
     public function getTimeSlot(): WeekDayTimeSlotsTransfer;
+
+    /**
+     * @return \Generated\Shared\Transfer\WeekDayTimeSlotsTransfer
+     */
+    public function getTimeSlotsForSpecificDate(): WeekDayTimeSlotsTransfer;
 }

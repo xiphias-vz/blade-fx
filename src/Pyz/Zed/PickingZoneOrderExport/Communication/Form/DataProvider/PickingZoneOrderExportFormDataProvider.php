@@ -7,8 +7,10 @@
 
 namespace Pyz\Zed\PickingZoneOrderExport\Communication\Form\DataProvider;
 
+use Orm\Zed\Oms\Persistence\SpyOmsOrderItemStateQuery;
 use Pyz\Zed\PickingZone\Business\PickingZoneFacadeInterface;
 use Pyz\Zed\PickingZoneOrderExport\Communication\Form\PickingZoneOrderExportForm;
+use Pyz\Zed\TimeSlot\Business\TimeSlotFacadeInterface;
 use Spryker\Shared\Kernel\Store;
 
 class PickingZoneOrderExportFormDataProvider
@@ -19,11 +21,23 @@ class PickingZoneOrderExportFormDataProvider
     protected $pickingZoneFacade;
 
     /**
-     * @param \Pyz\Zed\PickingZone\Business\PickingZoneFacadeInterface $pickingZoneFacade
+     * @var \Pyz\Zed\TimeSlot\Business\TimeSlotFacadeInterface
      */
-    public function __construct(PickingZoneFacadeInterface $pickingZoneFacade)
+    protected $timeSlotFacade;
+
+    /**
+     * @var \Generated\Shared\Transfer\SpyOmsOrderItemStateEntityTransfer
+     */
+    protected $stateTransfer;
+
+    /**
+     * @param \Pyz\Zed\PickingZone\Business\PickingZoneFacadeInterface $pickingZoneFacade
+     * @param \Pyz\Zed\TimeSlot\Business\TimeSlotFacadeInterface $timeSlotsFacade
+     */
+    public function __construct(PickingZoneFacadeInterface $pickingZoneFacade, TimeSlotFacadeInterface $timeSlotsFacade)
     {
         $this->pickingZoneFacade = $pickingZoneFacade;
+        $this->timeSlotFacade = $timeSlotsFacade;
     }
 
     /**
@@ -33,6 +47,8 @@ class PickingZoneOrderExportFormDataProvider
     {
         $options[PickingZoneOrderExportForm::OPTION_PICKING_ZONES] = $this->getPickingZones();
         $options[PickingZoneOrderExportForm::OPTION_PICKING_STORES] = $this->getPickingStores();
+        $options[PickingZoneOrderExportForm::OPTION_PICKING_TIMESLOTS] = $this->getPickingTimeSlots();
+        $options[PickingZoneOrderExportForm::OPTION_PICKING_STATUS] = $this->getPickingStatus();
 
         return $options;
     }
@@ -64,5 +80,35 @@ class PickingZoneOrderExportFormDataProvider
         }
 
         return $pickingStores;
+    }
+
+    /**
+     * @return string[]
+     */
+    protected function getPickingTimeSlots(): array
+    {
+        $stateQuery = new SpyOmsOrderItemStateQuery();
+
+        $timeSlotsTransfers = $this->timeSlotFacade->getTimeSlotsForSpecificDate()->getTimeSlotsCapacity()->getArrayCopy();
+        $pickingTimeSlots = [];
+
+        foreach ($timeSlotsTransfers as $timeSlot) {
+            $pickingTimeSlots[$timeSlot["IdTimeSlot"]] = $timeSlot["TimeSlot"];
+        }
+
+        return $pickingTimeSlots;
+    }
+
+    /**
+     * @return string[]
+     */
+    protected function getPickingStatus(): array
+    {
+        $stateQuery = new SpyOmsOrderItemStateQuery();
+        $dataStates = $stateQuery->find()->getData();
+
+        $pickingStatuses = [];
+
+        return $pickingStatuses;
     }
 }

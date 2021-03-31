@@ -63,4 +63,14 @@ class TimeSlotFacade extends AbstractFacade implements TimeSlotFacadeInterface
 
         return $this->getFactory()->createTimeSlotReader()->getDateTimeSlotCapacityForNextDays($currentStore);
     }
+
+    /**
+     * @return \Generated\Shared\Transfer\WeekDayTimeSlotsTransfer
+     */
+    public function getTimeSlotsForSpecificDate(): WeekDayTimeSlotsTransfer
+    {
+        $currentStore = $this->getFactory()->getStoreClient()->getCurrentStore()->getName();
+
+        return $this->getFactory()->createTimeSlotReader()->getTimeSlotsForSpecificDay($currentStore, "26-03-2021");
+    }
 }

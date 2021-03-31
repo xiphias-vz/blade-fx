@@ -126,4 +126,39 @@ class TimeSlotReader implements TimeSlotReaderInterface
 
         return $transferObject;
     }
+
+    /**
+     * @param string $currentStore
+     * @param string $date
+     *
+     * @return \Generated\Shared\Transfer\WeekDayTimeSlotsTransfer
+     */
+    public function getTimeSlotsForSpecificDay(string $currentStore, string $date): WeekDayTimeSlotsTransfer
+    {
+        $storeFkQuery = new SpyStoreQuery();
+        $storeFkId = $storeFkQuery->findByName($currentStore)->getFirst()->getIdStore();
+
+        $storeQuery = new SpyMerchantQuery();
+        $storeData = $storeQuery->findByFkStore($storeFkId);
+        $merchantReference = $storeData->toArray()[0]["MerchantReference"];
+
+        $query = new PyzTimeSlotQuery();
+        $queryByDatesArray = $query->filterByMerchantReference_Like($merchantReference)
+            ->filterByDate_Like($date)
+            ->orderByTimeSlot()
+            ->find()
+            ->toArray();
+
+        $fullArray1 = new ArrayObject();
+
+        foreach ($queryByDatesArray as $timeSlot) {
+            $fullArray1->append($timeSlot);
+        }
+
+        $transferObject = new WeekDayTimeSlotsTransfer();
+
+        $transferObject->setTimeSlotsCapacity($fullArray1);
+
+        return $transferObject;
+    }
 }
