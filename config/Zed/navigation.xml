@@ -19,6 +19,13 @@
                 <icon>fa-user-secret</icon>
                 <visible>fa-user-secret</visible>
             </refunds>
+            <overview>
+                <label>Order management</label>
+                <title>Order management</title>
+                <bundle>sales-overview</bundle>
+                <controller>index</controller>
+                <action>index</action>
+            </overview>
             <order-matrix/>
         </pages>
     </sales>

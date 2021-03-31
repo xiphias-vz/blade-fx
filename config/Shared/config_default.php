@@ -18,6 +18,7 @@ use Pyz\Shared\Shipment\ShipmentConfig;
 use Pyz\Shared\Store\StoreConstants;
 use Pyz\Shared\TimeSlot\TimeSlotConstants;
 use Pyz\Shared\TwigCache\TwigCacheConstants;
+use Pyz\Shared\BackofficeOverview\BackofficeOverviewConstants;
 use Spryker\Client\RabbitMq\Model\RabbitMqAdapter;
 use Spryker\Glue\Log\Plugin\GlueLoggerConfigPlugin;
 use Spryker\Service\FlysystemLocalFileSystem\Plugin\Flysystem\LocalFilesystemBuilderPlugin;
@@ -863,4 +864,29 @@ $config[PickerConstants::DAYS_IN_THE_WEEK] = [
     '5' => 'FR',
     '6' => 'SA',
     '7' => 'SO',
+];
+
+// ----------- Backoffice overview choice
+$config[BackofficeOverviewConstants::CHOICE_FILTER] = [
+    1 => 'Order',
+    2 => 'Position',
+    3 => 'Stückzahl',
+];
+
+// ----------- Backoffice overview table header
+
+$config[BackofficeOverviewConstants::TABLE_HEADER] = [
+    'Slot' => 'Slot',
+    'Gesamt' => 'Gesamt',
+    'TRO' => 'TRO',
+    'BÄCK' => 'BÄCK',
+    'DROG' => 'DROG',
+    'FIS' => 'FIS',
+    'FRI' => 'FRI',
+    'GET' => 'GET',
+    'KÄS' => 'KÄS',
+    'METZ' => 'METZ',
+    'NON' => 'NON',
+    'OBS' => 'OBS',
+    'TKK' => 'TKK',
 ];
