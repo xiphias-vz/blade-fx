@@ -112,29 +112,17 @@ class PickingZoneOrderExportContentBuilder implements PickingZoneOrderExportCont
                     $timeSlotDate,
                     $timeSlotTime,
                     $salesOrderItemData[SpySalesOrderItemTableMap::COL_NAME],
+                    $salesOrderItemData[SpySalesOrderItemTableMap::COL_BRAND] ?? '',
+                    ($salesOrderItemData[SpySalesOrderItemTableMap::COL_BASE_PRICE_CONTENT] / 100) . ' ' . $salesOrderItemData[SpySalesOrderItemTableMap::COL_BASE_PRICE_UNIT],
                     $salesOrderItemData['quantity'],
                     $salesOrderItemData[SpySalesOrderItemTableMap::COL_WEIGHT_PER_UNIT] ?? '',
                     $salesOrderItemData[SpySalesOrderItemTableMap::COL_SHELF],
                     $salesOrderItemData[SpySalesOrderItemTableMap::COL_SHELF_FLOOR],
                     $salesOrderItemData[SpySalesOrderItemTableMap::COL_SHELF_FIELD],
                     $salesOrderItemData[SpySalesOrderItemTableMap::COL_SKU],
-                    ($salesOrderItemData[SpySalesOrderItemTableMap::COL_PRICE] / static::DEFAULT_PRICE_DIVISION) . ' ' . static::DEFAULT_PRICE_CURRENCY,
+                    str_replace('.', ',', ($salesOrderItemData[SpySalesOrderItemTableMap::COL_PRICE] / static::DEFAULT_PRICE_DIVISION)),
                 ]);
             }
-            $pickingZoneOrderExportContentsTransfer->addContentItem([
-                $deliveryDate[0],
-                $deliveryDate[1],
-                $salesOrderItemData[SpySalesOrderItemTableMap::COL_NAME],
-                $salesOrderItemData[SpySalesOrderItemTableMap::COL_BRAND] ?? '',
-                ($salesOrderItemData[SpySalesOrderItemTableMap::COL_BASE_PRICE_CONTENT] / 100) . ' ' . $salesOrderItemData[SpySalesOrderItemTableMap::COL_BASE_PRICE_UNIT],
-                $salesOrderItemData['quantity'],
-                $salesOrderItemData[SpySalesOrderItemTableMap::COL_WEIGHT_PER_UNIT] ?? '',
-                $salesOrderItemData[SpySalesOrderItemTableMap::COL_SHELF],
-                $salesOrderItemData[SpySalesOrderItemTableMap::COL_SHELF_FLOOR],
-                $salesOrderItemData[SpySalesOrderItemTableMap::COL_SHELF_FIELD],
-                $salesOrderItemData[SpySalesOrderItemTableMap::COL_SKU],
-                str_replace('.', ',', ($salesOrderItemData[SpySalesOrderItemTableMap::COL_PRICE] / static::DEFAULT_PRICE_DIVISION)),
-            ]);
         }
 
         return $pickingZoneOrderExportContentsTransfer;
