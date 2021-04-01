@@ -96,12 +96,12 @@ class SalesOverviewRepository extends AbstractRepository implements SalesOvervie
              , ssoi.pick_zone as pickZone
              , case when not popb.fk_sales_order is null AND not ssoi1.fk_sales_order IS NULL then 'in picking' else sit.name end as status
              , count(distinct sso.order_reference) as ordersCount
-             , count(distinct ssoi.sku) as orderItemsCount
+             , count(distinct ssoi.sku + sso.order_reference) as orderItemsCount
              , sum(ssoi.quantity) as orderItemsQuantity
              , sum(ssoi.new_weight) as orderItemsWeight
         from spy_sales_order sso
                  inner join spy_sales_order_item ssoi on sso.id_sales_order = ssoi.fk_sales_order
-                 left outer join spy_sales_order_item ssoi1 on sso.id_sales_order = ssoi1.fk_sales_order AND ssoi.pick_zone = ssoi1.pick_zone
+                 left outer join spy_sales_order_item ssoi1 on sso.id_sales_order = ssoi1.fk_sales_order AND ssoi.id_sales_order_item = ssoi1.id_sales_order_item
                  	and ssoi1.fk_oms_order_item_state = (select id_oms_order_item_state from spy_oms_order_item_state where name = '" . OmsConfig::STORE_STATE_READY_FOR_PICKING . "')
                  left outer join spy_sales_shipment sss on sso.id_sales_order = sss.fk_sales_order
                  inner join pyz_picking_zone ppz on ssoi.pick_zone = ppz.name
@@ -121,12 +121,12 @@ class SalesOverviewRepository extends AbstractRepository implements SalesOvervie
              , 'Total' as pickZone
              , case when not popb.fk_sales_order is null AND not ssoi1.fk_sales_order IS NULL then 'in picking' else sit.name end as status
              , count(distinct sso.order_reference) as ordersCount
-             , count(distinct ssoi.sku) as orderItemsCount
+             , count(distinct ssoi.sku + sso.order_reference) as orderItemsCount
              , sum(ssoi.quantity) as orderItemsQuantity
              , sum(ssoi.new_weight) as orderItemsWeight
         from spy_sales_order sso
                  inner join spy_sales_order_item ssoi on sso.id_sales_order = ssoi.fk_sales_order
-                 left outer join spy_sales_order_item ssoi1 on sso.id_sales_order = ssoi1.fk_sales_order AND ssoi.pick_zone = ssoi1.pick_zone
+                 left outer join spy_sales_order_item ssoi1 on sso.id_sales_order = ssoi1.fk_sales_order AND ssoi.id_sales_order_item = ssoi1.id_sales_order_item
                  	and ssoi1.fk_oms_order_item_state = (select id_oms_order_item_state from spy_oms_order_item_state where name = '" . OmsConfig::STORE_STATE_READY_FOR_PICKING . "')
                  left outer join spy_sales_shipment sss on sso.id_sales_order = sss.fk_sales_order
                  inner join pyz_picking_zone ppz on ssoi.pick_zone = ppz.name
