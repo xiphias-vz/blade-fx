@@ -46,6 +46,21 @@ interface MerchantSalesOrderFacadeInterface extends SprykerMerchantSalesOrderFac
 
     /**
      * Specification:
+     * - Filters the sales order items using picking date and picking zone.
+     * - Retrieves the sales order items data grouped by picking date and time.
+     *
+     * @api
+     *
+     * @param \Generated\Shared\Transfer\OrderCriteriaFilterTransfer $orderFilterCriteriaTransfer
+     *
+     * @return mixed[]
+     */
+    public function getSalesOrderItemDataByPickingDateAndPickingZoneWithPauseStatus(
+        OrderCriteriaFilterTransfer $orderFilterCriteriaTransfer
+    ): array;
+
+    /**
+     * Specification:
      * - update merchant sales order with values in the update request
      *
      * @api

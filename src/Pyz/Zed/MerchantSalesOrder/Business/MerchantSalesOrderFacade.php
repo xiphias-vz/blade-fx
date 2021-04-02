@@ -45,6 +45,21 @@ class MerchantSalesOrderFacade extends SprykerMerchantSalesOrderFacade implement
     }
 
     /**
+     * {@inheritDoc}
+     *
+     * @api
+     *
+     * @param \Generated\Shared\Transfer\OrderCriteriaFilterTransfer $orderFilterCriteriaTransfer
+     *
+     * @return mixed[]
+     */
+    public function getSalesOrderItemDataByPickingDateAndPickingZoneWithPauseStatus(
+        OrderCriteriaFilterTransfer $orderFilterCriteriaTransfer
+    ): array {
+        return $this->getRepository()->getSalesOrderItemDataByPickingDateAndPickingZoneWithPauseStatus($orderFilterCriteriaTransfer);
+    }
+
+    /**
      * @inheritDoc
      */
     public function updateOrderWithOrderUpdateRequest(

@@ -28,4 +28,13 @@ interface MerchantSalesOrderRepositoryInterface extends SprykerMerchantSalesOrde
     public function getSalesOrderItemDataByPickingDateAndPickingZone(
         OrderCriteriaFilterTransfer $orderFilterCriteriaTransfer
     ): array;
+
+    /**
+     * @param \Generated\Shared\Transfer\OrderCriteriaFilterTransfer $orderFilterCriteriaTransfer
+     *
+     * @return mixed[]
+     */
+    public function getSalesOrderItemDataByPickingDateAndPickingZoneWithPauseStatus(
+        OrderCriteriaFilterTransfer $orderFilterCriteriaTransfer
+    ): array;
 }

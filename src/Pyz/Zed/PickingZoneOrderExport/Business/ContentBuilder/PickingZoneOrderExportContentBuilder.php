@@ -95,8 +95,13 @@ class PickingZoneOrderExportContentBuilder implements PickingZoneOrderExportCont
             ->setDeliveryDate($datePicking->format('c'))
             ->setItemStatuses($statusArr);
 
-        $salesOrderItems = $this->merchantSalesOrderFacade
-            ->getSalesOrderItemDataByPickingDateAndPickingZone($readyForPickingOrderCriteriaFilterTransfer);
+        if ($status == "paused") {
+            $salesOrderItems = $this->merchantSalesOrderFacade
+                ->getSalesOrderItemDataByPickingDateAndPickingZoneWithPauseStatus($readyForPickingOrderCriteriaFilterTransfer);
+        } else {
+            $salesOrderItems = $this->merchantSalesOrderFacade
+                ->getSalesOrderItemDataByPickingDateAndPickingZone($readyForPickingOrderCriteriaFilterTransfer);
+        }
 
         foreach ($salesOrderItems as $salesOrderItemData) {
             $deliveryDate = explode(
