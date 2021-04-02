@@ -1,5 +1,4 @@
 version: "0.1"
-
 x-real-ip: &real-ip
     real-ip:
         from:
@@ -35,7 +34,6 @@ x-real-ip: &real-ip
             - 173.45.18.0/24 # Globus VPN
             - 62.159.118.222/32 # Globus VPN
             - 94.100.132.14/32 # Globus VPN
-
 x-frontend-auth: &frontend-auth
     <<: *real-ip
     auth:
@@ -64,27 +62,25 @@ x-frontend-auth: &frontend-auth
             - '185.140.204.0/22'
             - '173.45.18.0/24'
             - '62.159.118.222/32'
-
 namespace: spryker-cloud
 tag: '1.0'
-
 environment: docker_dev
 image:
     tag: spryker/php:7.3-alpine3.12
     php:
         enabled-extensions:
             - newrelic
-
 composer:
     mode: --no-dev
     autoload: --classmap-authoritative
-
 assets:
+    image: fholzer/nginx-brotli:v1.18.0
     mode: production
     compression:
+        brotli:
+            static: only
         gzip:
             level: 5
-
 regions:
     DE:
         services:
@@ -92,7 +88,6 @@ regions:
                 database: globus_staging
                 username: spryker
                 password: secret
-
         stores:
             EIN:
                 services:
@@ -134,7 +129,6 @@ regions:
                         namespace: had_search
                     session:
                         namespace: 8
-
 groups:
     DE-1:
         region: DE
@@ -145,14 +139,12 @@ groups:
                     welcome.shop-t.globus.de:
                         entry-point: Welcome
                         <<: *frontend-auth
-
             Yves:
                 application: yves
                 endpoints:
                     shop-t.globus.de:
                         store: EIN
                         <<: *frontend-auth
-
             Glue:
                 application: glue
                 endpoints:
@@ -180,12 +172,10 @@ groups:
                         store: HAD
                         <<: *frontend-auth
                         primal: true
-
                     pick.shop-t.globus.de:
                         store: EIN
                         entry-point: StoreApp
                         <<: *frontend-auth
-
 services:
     database:
         engine: mysql
@@ -226,27 +216,21 @@ services:
         engine: mailhog
         endpoints:
             mail.shop-t.globus.de:
-
 docker:
     newrelic:
         license: eu01xxde87fd45444188e1361fb03b4efb9fNRAL
         appname: Globus Staging
         enabled: true
-
     ssl:
         enabled: true
-
     testing:
         store: EIN
-
     debug:
         enabled: false
         xdebug:
             enabled: false
-
     mount:
         baked:
-
         docker-sync:
             platforms:
                 - macos
