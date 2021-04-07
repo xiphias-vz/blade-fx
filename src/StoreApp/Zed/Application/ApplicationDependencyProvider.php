@@ -19,13 +19,10 @@ use Spryker\Zed\Propel\Communication\Plugin\Application\PropelApplicationPlugin;
 use Spryker\Zed\Router\Communication\Plugin\Application\RouterApplicationPlugin;
 use Spryker\Zed\Session\Communication\Plugin\Application\SessionApplicationPlugin;
 use Spryker\Zed\Translator\Communication\Plugin\Application\TranslatorApplicationPlugin;
-use Spryker\Zed\Twig\Communication\Plugin\Application\TwigApplicationPlugin;
 use Spryker\Zed\Validator\Communication\Plugin\Application\ValidatorApplicationPlugin;
 use Spryker\Zed\WebProfiler\Communication\Plugin\Application\WebProfilerApplicationPlugin;
 use StoreApp\Zed\Error\Communication\Plugin\ServiceProvider\ErrorHandlerServiceProvider;
-// @codingStandardsIgnoreStart
-use SprykerShop\Yves\ShopUi\Plugin\Provider\ShopUiTwigServiceProvider;
-// @codingStandardsIgnoreEnd
+use StoreApp\Zed\Twig\Communication\Plugin\Application\TwigApplicationPlugin;
 
 class ApplicationDependencyProvider extends SprykerApplicationDependencyProvider
 {
@@ -82,7 +79,6 @@ class ApplicationDependencyProvider extends SprykerApplicationDependencyProvider
         $coreProviders = parent::getServiceProviders($container);
 
         $providers = [
-            new ShopUiTwigServiceProvider(),
             new ErrorHandlerServiceProvider(),
         ];
         $providers = array_merge($coreProviders, $providers);

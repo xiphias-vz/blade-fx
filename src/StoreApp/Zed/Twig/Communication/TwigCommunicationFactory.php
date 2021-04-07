@@ -24,6 +24,8 @@ use Spryker\Zed\Twig\Communication\RouteResolver\RouteResolver;
 use Spryker\Zed\Twig\Communication\RouteResolver\RouteResolverInterface;
 use Spryker\Zed\Twig\Communication\Subscriber\TwigEventSubscriber;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Twig\Loader\ChainLoader;
+
 // @codingStandardsIgnoreEnd
 
 /**
@@ -77,6 +79,14 @@ class TwigCommunicationFactory extends AbstractCommunicationFactory
     }
 
     /**
+     * @return \Twig\Loader\ChainLoader
+     */
+    public function createChainLoader(): ChainLoader
+    {
+        return new ChainLoader();
+    }
+
+    /**
      * @return \Spryker\Shared\Twig\TemplateNameExtractor\TemplateNameExtractorInterface
      */
     protected function createTemplateNameExtractor()
@@ -90,16 +100,6 @@ class TwigCommunicationFactory extends AbstractCommunicationFactory
     protected function getUtilTextService()
     {
         return $this->getProvidedDependency(TwigDependencyProvider::SERVICE_UTIL_TEXT);
-    }
-
-    /**
-     * @return \Spryker\Shared\Twig\Loader\TwigChainLoaderInterface
-     */
-    public function createTwigChainLoader(): TwigChainLoaderInterface
-    {
-        return new TwigChainLoader(
-            $this->getTwigLoaderPlugins()
-        );
     }
 
     /**
