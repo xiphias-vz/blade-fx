@@ -34,6 +34,7 @@ class CustomerUserProvider extends SprykerCustomerUserProvider
     {
         $pass = $_POST["loginForm"]["password"];
         $authCheck = $this->getCdcAuthorization($email, $pass);
+        $accountInfo = $this->getCdcAccountInfo($authCheck["UID"]);
         $customerTransfer = null;
 
         if ($authCheck["errorCode"] == 0) {
@@ -41,7 +42,7 @@ class CustomerUserProvider extends SprykerCustomerUserProvider
             $customerTransferCustom = new CustomerTransferCustom();
             try {
                 $customerTransfer = parent::loadCustomerByEmail($email);
-                $customerTransfer = $customerTransferCustom->fromProfileEvent($data, $customerTransfer);
+                $customerTransfer = $customerTransferCustom->fromProfileEvent($accountInfo, $customerTransfer);
                 $user = $this->getFactory()->createSecurityUser($customerTransfer);
                 $encoder = $this->getContainer()->get('security.encoder_factory');
                 $encodedPass = $encoder->getEncoder($user)->encodePassword($pass, $user->getSalt());
@@ -52,7 +53,7 @@ class CustomerUserProvider extends SprykerCustomerUserProvider
                 $profile = new ProfileController();
                 $profile->processProfileUpdateByTransfer($customerTransfer, false);
             } catch (AuthenticationException $e) {
-                $customerTransfer = $customerTransferCustom->fromProfileEvent($data);
+                $customerTransfer = $customerTransferCustom->fromProfileEvent($accountInfo);
                 $customerTransfer->setUsername($email);
                 $customerTransfer->setPassword($pass);
                 $customerTransfer->setCustomerReference($this->getFactory()->getStore()->getStoreName());
@@ -90,7 +91,39 @@ class CustomerUserProvider extends SprykerCustomerUserProvider
         $apiSecretKey = $this->getCdcSecretKey();
         $urlPrefix = $this->getCdcUrlPrefix();
         $url = $urlPrefix . "accounts.login?apiKey=" . $apiKey . "&sec=" . $apiSecretKey;
-        $data = ['loginID' => $username, 'password' => $pass];
+        $data = ['loginID' => $username, 'password' => $pass, 'include' => 'profile', 'extraProfileFields' => 'firstName,lastName,birthDay,birthMonth,birthYear,zip,city,country,gender,phones,samlData'];
+        $options = [
+            'http' => [
+                'header' => "Content-type: application/x-www-form-urlencoded\r\n",
+                'method' => 'POST',
+                'content' => http_build_query($data),
+            ],
+        ];
+        $context = stream_context_create($options);
+        $result = file_get_contents($url, false, $context);
+
+        return JSON::parse($result);
+    }
+
+    /**
+     * @param string $uid
+     *
+     * @return array
+     */
+    protected function getCdcAccountInfo(string $uid): array
+    {
+        $apiKey = $this->getCdcApiKey();
+        $apiSecretKey = $this->getCdcSecretKey();
+        $apiUserKey = $this->getCdcUserKey();
+        $urlPrefix = $this->getCdcUrlPrefix();
+        $url = $urlPrefix . "accounts.getAccountInfo";
+        $data = [
+        'apiKey' => $apiKey,
+            'secret' => $apiSecretKey,
+            'userKey' => $apiUserKey,
+            'UID' => $uid,
+            'include' => 'profile,data,preferences',
+            'extraProfileFields' => 'firstName,lastName,birthDay,birthMonth,birthYear,zip,city,country,gender,phones,samlData'];
         $options = [
             'http' => [
                 'header' => "Content-type: application/x-www-form-urlencoded\r\n",

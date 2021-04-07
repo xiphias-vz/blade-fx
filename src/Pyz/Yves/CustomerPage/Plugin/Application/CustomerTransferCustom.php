@@ -18,7 +18,7 @@ use Generated\Shared\Transfer\CustomerTransfer;
 class CustomerTransferCustom
 {
     /**
-     * @param string $eventData
+     * @param mixed $eventData
      * @param \Generated\Shared\Transfer\CustomerTransfer|null $customerTransfer
      *
      * @return \Generated\Shared\Transfer\CustomerTransfer
@@ -28,8 +28,10 @@ class CustomerTransferCustom
         if ($customerTransfer == null) {
             $customerTransfer = new CustomerTransfer();
         }
-
-        $data = JSON::parse($eventData);
+        $data = $eventData;
+        if (!is_array($eventData)) {
+            $data = JSON::parse($eventData);
+        }
 
         $customerTransfer->setEmail($data["profile"]["email"])
             ->setFirstName($this->getValue($data["profile"], "firstName"))
@@ -65,9 +67,12 @@ class CustomerTransferCustom
 
         if (array_key_exists("phones", $data["profile"])) {
             $phones = $data["profile"]["phones"];
-            if (array_key_exists("number", $phones)) {
-                $customerTransfer->setPhone(count($phones) > 0 ? $phones[0]["number"] : '')
-                    ->setMobilePhoneNumber(count($phones) > 1 ? $phones[1]["number"] : '');
+            foreach ($phones as $phone) {
+                if ($phone["type"] == "home") {
+                    $customerTransfer->setPhone($phone["number"]);
+                } else {
+                    $customerTransfer->setMobilePhoneNumber($phone["number"]);
+                }
             }
         }
 
