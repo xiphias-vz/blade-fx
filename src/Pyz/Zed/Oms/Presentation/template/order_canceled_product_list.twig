@@ -4,6 +4,7 @@
             {% set orderLocale = order.locale.localeName %}
             {% for orderItem in order.itemGroups %}
                     <tr>
+                        {% if ((orderItem.pricePerKg == null and itemStatus == 'canceled') or itemStatus == "shipped" or (orderItem.canceledAmount == orderItem.quantity and itemStatus == 'canceled')) %}
                         <td style="border-bottom: 1px solid #333333; padding:10px 0px 10px 0px; color:#333333">
                             <table cellspacing="0" cellpadding="0" align="left" class="es-left" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px;float:left">
                                 <tr style="border-collapse:collapse">
@@ -42,16 +43,31 @@
                                                                 {% if orderItem.canceledAmount > 0 %}
                                                                     {% set availableItems =  orderItem.canceledAmount - orderItem.quantity  %}
                                                                     {% if(availableItems != 0) %}
-                                                                        {{ orderItem.quantity }} / {{ orderItem.canceledAmount }}
+                                                                        {% if (orderItem.pricePerKg != null and orderItem.newWeight != null) %}
+                                                                            {{ orderItem.canceledAmount }} / {{ orderItem.canceledAmount }}
+                                                                        {% else  %}
+                                                                            {{ orderItem.quantity }} / {{ orderItem.canceledAmount }}
+                                                                        {% endif %}
                                                                         {% if (itemStatus == 'canceled') %}
                                                                             <br>
                                                                             <span style="font-size:10px;">Nur noch {{ availableItems }} Artikel verfügbar</span>
                                                                         {% else %}
-                                                                            <br>
-                                                                            <span style="font-size:10px;">Nur noch {{ orderItem.quantity }}  Artikel verfügbar</span>
+                                                                            {% if (orderItem.pricePerKg != null and orderItem.newWeight != null) %}
+                                                                                <br>
+                                                                                <span style="font-size:12px;">{{ orderItem.newWeight }} gr</span>
+                                                                            {% else  %}
+                                                                                <br>
+                                                                                <span style="font-size:10px;">Nur noch {{ orderItem.quantity }}  Artikel verfügbar</span>
+                                                                            {% endif %}
                                                                         {% endif %}
                                                                     {% else %}
-                                                                        {{ orderItem.canceledAmount }}
+                                                                        {% if (orderItem.pricePerKg != null and orderItem.newWeight != null) %}
+                                                                            {{ orderItem.canceledAmount }}
+                                                                            <br>
+                                                                            <span style="font-size:12px;">{{ orderItem.newWeight }} gr</span>
+                                                                        {% else  %}
+                                                                            {{ orderItem.canceledAmount }}
+                                                                        {% endif %}
                                                                     {% endif %}
                                                                 {% endif %}
 
@@ -71,6 +87,7 @@
                                 </tr>
                             </table>
                         </td>
+                        {% endif %}
                     </tr>
             {% endfor %}
         </table>
