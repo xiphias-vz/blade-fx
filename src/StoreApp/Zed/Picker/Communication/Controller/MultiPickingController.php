@@ -23,7 +23,7 @@ class MultiPickingController extends BaseOrderPickingController
     public const ID_ORDERS = 'idOrders';
     public const ORDER_IS_BEING_PROCESSED_MESSAGE = 'storeapp.picking.message.error.order-is-being-processed';
     public const REDIRECT_SKIP_TOKEN = 'backToItem';
-
+    public const IS_ANY_ORDER_LOCKED = 'isAnyOrderLocked';
     protected const OMS_ORDER_STATUSES_FOR_PICKING_PROCESS = [
         OmsConfig::STORE_STATE_READY_FOR_PICKING,
         OmsConfig::STORE_STATE_READY_FOR_SELECTING_SHELVES,
@@ -37,11 +37,13 @@ class MultiPickingController extends BaseOrderPickingController
     public function indexAction(Request $request)
     {
         $factory = $this->getFactory();
+        $facade = $this->getFacade();
 
         if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $idOrders = json_decode($request->get(static::ID_ORDERS));
+            $isAnyOrderLocked = json_decode($request->get(static::IS_ANY_ORDER_LOCKED));
             $userTransfer = $this->getCurrentUser($request);
-            $pickingZoneTransfer = $this->getFacade()->findPickingZoneInSession();
+            $pickingZoneTransfer = $facade->findPickingZoneInSession();
 
             $orderCount = count($idOrders);
             for ($indexOfOrder = 0; $indexOfOrder < $orderCount; $indexOfOrder++) {
@@ -54,13 +56,28 @@ class MultiPickingController extends BaseOrderPickingController
                 }
             }
 
-            $pickingHeaderTransfer = $this->getFacade()->setOrdersToPick($idOrders);
+            if ($isAnyOrderLocked) {
+                $transfer = $facade->getPickingHeaderTransfer();
+                $facade->clearLockOrders($transfer, $idOrders);
+                $orderByTimeSlot = $transfer->getOrdersByTimeSlot();
+                $facade->setTransferToSession($transfer);
+                $this->redirectResponse($factory->getConfig()->getMultiPickingUri());
+
+                return [
+                    'orderByTimeSlot' => $orderByTimeSlot,
+                    'merchant' => $this->getMerchantFromRequest($request),
+                ];
+            }
+
+            $pickingHeaderTransfer = $facade->setOrdersToPick($idOrders);
             if ($pickingHeaderTransfer->getErrorMessage() == null) {
                 return $this->redirectResponse($factory->getConfig()->getScanningContainerUri());
+            } else {
+                $this->addErrorMessage($pickingHeaderTransfer->getErrorMessage());
             }
         }
 
-        $transfer = $this->getFacade()->getAllOrdersInStateReadyForPickingByZone();
+        $transfer = $facade->getAllOrdersInStateReadyForPickingByZone();
         $orderByTimeSlot = $transfer->getOrdersByTimeSlot();
 
         return [

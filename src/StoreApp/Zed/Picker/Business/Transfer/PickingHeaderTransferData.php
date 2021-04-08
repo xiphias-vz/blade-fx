@@ -105,7 +105,8 @@ class PickingHeaderTransferData
            sso.store,
            so.articles_count,
            so.articles_quantity,
-           so.is_paused
+           so.is_paused,
+           case when popb.fk_user is null then 0 else 1 end as isLocked
     from spy_sales_order sso
         inner join
          (
@@ -126,7 +127,7 @@ class PickingHeaderTransferData
         left outer join pyz_order_picking_block popb on sso.id_sales_order = popb.fk_sales_order
             and popb.fk_picking_zone = " . $idZone . "
     where sso.merchant_reference = '" . $merchantReference . "'
-      and (popb.fk_user is null)
+        and (popb.fk_user is null or popb.fk_user = " . $this->userFacade->getCurrentUser()->getIdUser() . ")
     ";
 
         $data = $this->getResult($sql);
@@ -601,6 +602,28 @@ class PickingHeaderTransferData
                 $this->getResult($sql, false);
             }
         }
+    }
+
+    /**
+     * @param \StoreApp\Zed\Picker\Business\Transfer\PickingHeaderTransfer $transfer
+     * @param array $idOrders
+     *
+     * @return \StoreApp\Zed\Picker\Business\Transfer\PickingHeaderTransfer
+     */
+    public function clearLockOrders(PickingHeaderTransfer $transfer, array $idOrders): PickingHeaderTransfer
+    {
+        foreach ($transfer->getPickingOrders() as $order) {
+            if (in_array($order->getIdOrder(), $idOrders)) {
+                if ($order->getIsLocked()) {
+                    $sql = "delete from pyz_order_picking_block where fk_sales_order = " . $order->getIdOrder() . " and fk_picking_zone = " . $transfer->getIdZone();
+                    $this->getResult($sql, false);
+                    $order->setIsLocked(false);
+                }
+                $order->setIsChecked(true);
+            }
+        }
+
+        return $transfer;
     }
 
     /**

@@ -14,7 +14,8 @@ picker.activity.picking,Einzel Picking
 picker.activity.collection,Abholung
 picker.activity.container-to-shelf,Container Platz
 picker.activity.multi-picking,Multi Picking
-
+picker.activity.multi-picking.order.error-1,Die blockierten Bestellungen müssen zuerst entsperrt werden
+picker.activity.multi-picking.order.error-2,bevor das Picking begonnen werden kann
 picker.picking.order.deadline,Fertigstellung
 picker.picking.order.reference,Bestellnummer
 picker.picking.order.item-count,Anzahl Produkte
@@ -23,6 +24,7 @@ picker.picking.order.status.done,Erledigt
 picker.picking.order.action,Aktion
 picker.picking.order.action.start,Start
 picker.picking.order.action.stop,Entsperren
+
 
 picker.picking.confirmation,Weiter
 

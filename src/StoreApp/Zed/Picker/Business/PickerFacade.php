@@ -218,4 +218,17 @@ class PickerFacade extends AbstractFacade implements PickerFacadeInterface
             ->createPickingHeaderTransferData()
             ->clearLockForPausedOrders($transfer);
     }
+
+    /**
+     * @param \StoreApp\Zed\Picker\Business\Transfer\PickingHeaderTransfer $transfer
+     * @param array $idOrders
+     *
+     * @return \StoreApp\Zed\Picker\Business\Transfer\PickingHeaderTransfer
+     */
+    public function clearLockOrders(PickingHeaderTransfer $transfer, array $idOrders): PickingHeaderTransfer
+    {
+        return $this->getFactory()
+            ->createPickingHeaderTransferData()
+            ->clearLockOrders($transfer, $idOrders);
+    }
 }

@@ -1,10 +1,15 @@
 import Component from 'ShopUi/models/component';
 
 export default class TimeSlotPosition extends Component {
+    protected form: HTMLFormElement;
     protected orderCheckBoxes: HTMLInputElement;
     protected timeSlot: HTMLInputElement;
     protected idOrdersInput: HTMLInputElement;
+    protected orderIsBlockedInputFields: HTMLInputElement;
+    protected isAnyOrderLocked: HTMLInputElement;
+    protected isAnyNonLockedOrderPicked: HTMLInputElement;
     protected confirmMultiPickingOrder: HTMLButtonElement;
+    protected popupUiError: HTMLElement;
     protected orderInfo: HTMLElement;
     protected selectOrder: HTMLElement;
     protected articleCountTotal: number;
@@ -20,20 +25,27 @@ export default class TimeSlotPosition extends Component {
         this.articleCountTotal = 0;
         this.articleQuantityTotal = 0;
         this.totalNumberOfOrdersSelected = 0;
+        this.form = <HTMLFormElement>this.parentElement;
+        this.popupUiError = <HTMLElement>this.form.querySelector('.error-holder');
+        this.isAnyOrderLocked = <HTMLInputElement>this.form.querySelector('input[name=isAnyOrderLocked]');
+        this.isAnyNonLockedOrderPicked = <HTMLInputElement>this.form.querySelector('input[name=isAnyNonLockedOrderPicked]');
         this.idTimeSlot = this.getAttribute('idTimeSlot');
         this.timeSlot = <HTMLInputElement>this.querySelector(`input`);
         this.orderCheckBoxes = <HTMLInputElement>this.querySelectorAll('.select-order input[type=checkbox]');
         this.confirmMultiPickingOrder = <HTMLButtonElement>this.parentElement.lastElementChild.querySelector('.button')
         this.orderInfo = <HTMLElement>this.querySelectorAll('.order-info');
+        this.orderIsBlockedInputFields = <HTMLInputElement>this.querySelectorAll('input[name=isOrderBlocked]');
         this.selectOrder = <HTMLElement>this.querySelectorAll('.select-order');
         this.idOrdersInput = <HTMLInputElement>this.parentElement.firstElementChild;
 
+        this.addAttributeLockedOrderIfExists();
         this.setActiveOrders();
         this.mapEvents();
 
     }
 
     protected setActiveOrders(): void {
+
         for(let i = 0; i < this.selectOrder.length; i++) {
             let isChecked = this.selectOrder[i].getAttribute('data-isChecked');
 
@@ -52,16 +64,37 @@ export default class TimeSlotPosition extends Component {
         this.confirmMultiPickingOrder.addEventListener('click', (event: Event) => this.confirmMultiPickingOrder.classList.add('button--disabled'));
     }
 
+    protected addAttributeLockedOrderIfExists() {
+        let ordersWithStatus = Array.prototype.slice.call(this.orderIsBlockedInputFields);
+        for(let i = 0; i < ordersWithStatus.length; i++) {
+            if(ordersWithStatus[i].value == '1') {
+                this.isAnyOrderLocked.value = '1';
+                this.setAttribute('contains-locked-order', 'true');
+                break;
+            }
+        }
+    }
+
+    protected showPopUpErrorMessageForNotResolvedLockedOrders() {
+        this.popupUiError.parentElement.classList.add('popup-ui-error--show');
+    }
+
     protected calculateCountAndQuantityPerOrder(orderCheckbox, orderInfo) : void {
 
         let articleCount = orderInfo.querySelector('.article-count');
         let articleQuantity = orderInfo.querySelector('.article-quantity');
+        let isOrderBlocked = orderInfo.parentElement.previousElementSibling.value;
         let idOrder = orderInfo.parentElement.getAttribute('data-idOrder');
-
         let countValue = parseInt(articleCount.innerHTML);
         let quantityValue = parseInt(articleQuantity.innerHTML);
 
         if(orderCheckbox.checked) {
+
+            if(!Boolean(parseInt(isOrderBlocked)) && Boolean(parseInt(this.isAnyOrderLocked.value))) {
+                orderCheckbox.checked = false;
+                this.showPopUpErrorMessageForNotResolvedLockedOrders();
+                return;
+            }
 
             this.articleCountTotal += countValue;
             this.articleQuantityTotal += quantityValue;
@@ -104,19 +137,37 @@ export default class TimeSlotPosition extends Component {
 
     protected changeTextOfConfirmButtonAndShowTotalSelectedOrders() {
         const timeSlots = this.parentElement.querySelectorAll('.time-slot-position');
+        let isAtLeastOneOrderLocked = false;
         let totalSelectedOrdersPerTimeSlot = 0;
+
         for(let i = 0; i < timeSlots.length; i++) {
             let currentSelectedOrders = timeSlots[i].getAttribute('data-total-selected-orders') == null ?
                 "0" : timeSlots[i].getAttribute('data-total-selected-orders');
             totalSelectedOrdersPerTimeSlot += parseInt(currentSelectedOrders);
+
+            if(timeSlots[i].getAttribute('contains-locked-order') == "true") {
+                isAtLeastOneOrderLocked = true;
+            }
         }
 
         if(totalSelectedOrdersPerTimeSlot == 0) {
-            this.confirmMultiPickingOrder.innerHTML = 'Weiter';
-            this.confirmMultiPickingOrder.classList.add('button--disabled');
+
+            if(isAtLeastOneOrderLocked == true) {
+                this.confirmMultiPickingOrder.innerHTML = 'Entsperren';
+                this.confirmMultiPickingOrder.classList.add('button--disabled');
+            }
+            else {
+                this.confirmMultiPickingOrder.innerHTML = 'Weiter';
+                this.confirmMultiPickingOrder.classList.add('button--disabled');
+            }
         }
         else {
-            this.confirmMultiPickingOrder.innerHTML = `Weiter (${totalSelectedOrdersPerTimeSlot})`;
+            if(isAtLeastOneOrderLocked == true) {
+                this.confirmMultiPickingOrder.innerHTML = 'Entsperren';
+            }
+            else {
+                this.confirmMultiPickingOrder.innerHTML = `Weiter (${totalSelectedOrdersPerTimeSlot})`;
+            }
         }
     }
 

@@ -37,6 +37,36 @@
                     padding: 8px 0;
                 }
 
+                .order-status {
+                    &.order-is-blocked {
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        border-radius:50%;
+                        border-color: $setting-color-white;
+                        color: $setting-color-white;
+                        background: $setting-color-globus-red;
+
+                        .icon {
+                            width: .8rem;
+                            height: .8rem;
+                        }
+
+                        @include helper-breakpoint-media-max($xsm-max) {
+                            display: inline-block;
+                            text-align: center;
+                            padding: 5px;
+
+                            .icon {
+                                display: block;
+                                margin: 0 auto;
+                                width: .7rem;
+                                height: .7rem;
+                            }
+                        }
+                    }
+                }
+
 
                 .select-order {
                     position: absolute;

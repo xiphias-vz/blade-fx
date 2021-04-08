@@ -29,10 +29,21 @@
         {% for order in data.orders %}
             {% set articlesCount = ((order.articlesCount is null) ? 0 : order.articlesCount ) %}
             {% set articlesQuantity = ((order.articlesQuantity is null) ? 0 : order.articlesQuantity ) %}
+            {% set orderIsBlockedClass = order.isLocked ? 'order-is-blocked': '' %}
+            {% set isOrderBlocked = order.isLocked ? 1 : 0 %}
+            <input type="hidden" name="isOrderBlocked" value="{{ order.isLocked }}">
             <div class="order-group-by-time-slot" data-idOrder="{{ order.idOrder }}" data-orderReference="{{ order.orderReference }}">
-                <div class="order-status" style="width: 25px">
+                <div class="order-status {{ orderIsBlockedClass }}" style="width: 25px" data-isOrderBlocked="{{ isOrderBlocked  }}">
                     {% if order.isPaused %}
                         {% include atom('paused-state') with {
+                        } only %}
+                    {% endif %}
+                    {% if order.isLocked %}
+                        {% include atom('icon') with {
+                            class: config.name ~ '__icon-close',
+                            data: {
+                                name: 'close'
+                            }
                         } only %}
                     {% endif %}
                 </div>

@@ -33,6 +33,7 @@
         <property name="pickingContainers" type="PickingContainer[]" singular="pickingContainer" associative="true"/>
         <property name="pickingOrderItems" type="PickingOrderItem[]" singular="pickingOrderItem" associative="true"/>
         <property name="timeSlotSort" type="string"/>
+        <property name="isLocked" type="bool"/>
         <property name="parent" type="PickingHeader"/>
     </transfer>
 
