@@ -23,15 +23,13 @@ class ItemAggregator implements ItemAggregatorInterface
 
                 /** @var \Generated\Shared\Transfer\ItemTransfer $aggregatedItemTransfer */
                 $aggregatedItemTransfer = $aggregatedItemTransfers[$itemSku] ?? null;
-                if ($aggregatedItemTransfer !== null) {
+                if (empty($aggregatedItemTransfer)) {
                     $aggregatedItemTransfer->setQuantity(
                         $aggregatedItemTransfer->getQuantity() + $itemTransfer->getQuantity()
                     );
-
-                    return $aggregatedItemTransfers;
+                } else {
+                    $aggregatedItemTransfers[$itemSku] = clone $itemTransfer;
                 }
-
-                $aggregatedItemTransfers[$itemSku] = clone $itemTransfer;
 
                 return $aggregatedItemTransfers;
             },

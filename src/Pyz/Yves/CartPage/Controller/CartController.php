@@ -278,9 +278,9 @@ class CartController extends SprykerCartController
     }
 
     /**
-     * @return string|null
+     * @return string
      */
-    private function getCartLimitationMessage(): ?string
+    private function getCartLimitationMessage(): string
     {
         /** @var \Symfony\Component\HttpFoundation\Session\Flash\FlashBagInterface $flashBag */
         $flashBag = $this->getFactory()->getFlashBag();

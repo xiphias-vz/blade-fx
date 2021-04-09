@@ -84,7 +84,7 @@ class TimeSlotWriter implements TimeSlotWriterInterface
                     ->setExcludeCancelledOrders(true)
             ));
 
-        if (!$currentOrdersCount || $currentOrdersCount === 0) {
+        if (!$currentOrdersCount || $currentOrdersCount == 0) {
             $this->storageClient->set($storageKey, static::INITIAL_TIME_SLOT_ORDERS_COUNT);
 
             return;

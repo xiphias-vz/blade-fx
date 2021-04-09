@@ -59,6 +59,8 @@ class SitemapConsole extends Console
         } else {
             $this->multipleXmls($urls, $urlsCount);
         }
+
+        return null;
     }
 
     /**

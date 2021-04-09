@@ -103,7 +103,7 @@ class CommissioningExportForm extends AbstractType
                                 return;
                             }
 
-                            if ($dateTo && ($dateTo < $context->getRoot()->getData()[static::FIELD_DATE_FROM])) {
+                            if ($dateTo < $context->getRoot()->getData()[static::FIELD_DATE_FROM]) {
                                 $context->addViolation('Date to cannot be earlier than Date from.');
                             }
                         },

@@ -128,6 +128,8 @@ class DatabaseLoadTestConsole extends Console
         } else {
             $output->writeln('No test found!');
         }
+
+        return null;
     }
 
     /**

@@ -47,5 +47,7 @@ class CheckTimeoutConsole extends SprykerCheckTimeoutConsole
         }
 
         $this->getFacade()->checkTimeouts([], $processId);
+
+        return null;
     }
 }

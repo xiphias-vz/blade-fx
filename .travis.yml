@@ -78,7 +78,8 @@ before_script:
     - vendor/bin/console frontend:yves:install-dependencies
 
 script:
-    - vendor/bin/phpstan analyze -c phpstan.neon src/ -l 4
+    - php -d memory_limit=-1 vendor/bin/phpstan analyze -c phpstan.neon src/ -l 4
+#    - vendor/bin/phpstan analyze -c phpstan.neon src/ -l 4
 
     - vendor/bin/console propel:schema:validate-xml-names
     - vendor/bin/console transfer:validate

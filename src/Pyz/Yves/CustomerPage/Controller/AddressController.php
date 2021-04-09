@@ -62,9 +62,9 @@ class AddressController extends SprykerAddressController
             return $this->redirectResponseInternal(CustomerPageControllerProvider::ROUTE_CUSTOMER_REFRESH_ADDRESS);
         }
 
-        $this->addErrorMessage(Messages::CUSTOMER_ADDRESS_DELETE_FAILED);
-
-        return $this->redirectResponseInternal(CustomerPageControllerProvider::ROUTE_CUSTOMER_ADDRESS);
+//        $this->addErrorMessage(Messages::CUSTOMER_ADDRESS_DELETE_FAILED);
+//
+//        return $this->redirectResponseInternal(CustomerPageControllerProvider::ROUTE_CUSTOMER_ADDRESS);
     }
 
     /**

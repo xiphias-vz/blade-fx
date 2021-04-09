@@ -108,6 +108,8 @@ class CheckoutController extends SprykerCheckoutControllerAlias
 
             return $this->placeOrderAction($request);
         }
+
+        return [];
     }
 
     /**

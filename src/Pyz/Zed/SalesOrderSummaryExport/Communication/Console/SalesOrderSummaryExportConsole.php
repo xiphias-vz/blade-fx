@@ -44,5 +44,7 @@ class SalesOrderSummaryExportConsole extends Console
         $data = $this->getFactory()->createRepository()->getCustomOrderItemData();
         $this->getFacade()->exportOrders($data->getContent());
         dump($data->getContent());
+
+        return null;
     }
 }

@@ -66,5 +66,7 @@ class TimeSlotCheckerConsole extends Console
 
             $output->writeln(sprintf('%s = %d', $key, $currentOrdersCount));
         }
+
+        return null;
     }
 }

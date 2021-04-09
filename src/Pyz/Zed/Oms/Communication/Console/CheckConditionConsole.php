@@ -50,5 +50,7 @@ class CheckConditionConsole extends SprykerCheckConditionConsole
 
         $this->getFacade()->checkConditions([], $processId);
         Propel::enableInstancePooling();
+
+        return null;
     }
 }
