@@ -94,7 +94,13 @@ class SalesOverviewRepository extends AbstractRepository implements SalesOvervie
              , right(sss.requested_delivery_date, 11) as timeSlot
              , date_format(left(sss.requested_delivery_date, 10), '%d.%m.%Y') as deliveryDate
              , ssoi.pick_zone as pickZone
-             , case when not popb.fk_sales_order is null AND not ssoi1.fk_sales_order IS NULL then 'in picking' else sit.name end as status
+             , case when not popb.fk_sales_order is null AND not ssoi1.fk_sales_order IS NULL
+                then 'in picking'
+                else
+                    case when paused.fk_sales_order is null then
+                        case when sit.name = 'cancelled' then 'picked' else sit.name end
+                    else 'ready for picking' end
+                end as status
              , count(distinct sso.order_reference) as ordersCount
              , count(distinct ssoi.sku + sso.order_reference) as orderItemsCount
              , sum(ssoi.quantity) as orderItemsQuantity
@@ -103,6 +109,7 @@ class SalesOverviewRepository extends AbstractRepository implements SalesOvervie
                  inner join spy_sales_order_item ssoi on sso.id_sales_order = ssoi.fk_sales_order
                  left outer join spy_sales_order_item ssoi1 on sso.id_sales_order = ssoi1.fk_sales_order AND ssoi.id_sales_order_item = ssoi1.id_sales_order_item
                  	and ssoi1.fk_oms_order_item_state = (select id_oms_order_item_state from spy_oms_order_item_state where name = '" . OmsConfig::STORE_STATE_READY_FOR_PICKING . "')
+                 left outer join (select fk_sales_order from spy_sales_order_item where item_paused = 1 group by fk_sales_order) paused on sso.id_sales_order = paused.fk_sales_order
                  left outer join spy_sales_shipment sss on sso.id_sales_order = sss.fk_sales_order
                  inner join pyz_picking_zone ppz on ssoi.pick_zone = ppz.name
                  left outer join (select fk_sales_order from pyz_order_picking_block group by fk_sales_order) popb on popb.fk_sales_order = sso.id_sales_order
@@ -119,7 +126,13 @@ class SalesOverviewRepository extends AbstractRepository implements SalesOvervie
              , right(sss.requested_delivery_date, 11) as timeSlot
              , date_format(left(sss.requested_delivery_date, 10), '%d.%m.%Y') as deliveryDate
              , 'Total' as pickZone
-             , case when not popb.fk_sales_order is null AND not ssoi1.fk_sales_order IS NULL then 'in picking' else sit.name end as status
+             , case when not popb.fk_sales_order is null AND not ssoi1.fk_sales_order IS NULL
+                then 'in picking'
+                else
+                    case when paused.fk_sales_order is null then
+                        case when sit.name = 'cancelled' then 'picked' else sit.name end
+                    else 'ready for picking' end
+                end as status
              , count(distinct sso.order_reference) as ordersCount
              , count(distinct ssoi.sku + sso.order_reference) as orderItemsCount
              , sum(ssoi.quantity) as orderItemsQuantity
@@ -128,6 +141,7 @@ class SalesOverviewRepository extends AbstractRepository implements SalesOvervie
                  inner join spy_sales_order_item ssoi on sso.id_sales_order = ssoi.fk_sales_order
                  left outer join spy_sales_order_item ssoi1 on sso.id_sales_order = ssoi1.fk_sales_order AND ssoi.id_sales_order_item = ssoi1.id_sales_order_item
                  	and ssoi1.fk_oms_order_item_state = (select id_oms_order_item_state from spy_oms_order_item_state where name = '" . OmsConfig::STORE_STATE_READY_FOR_PICKING . "')
+                 left outer join (select fk_sales_order from spy_sales_order_item where item_paused = 1 group by fk_sales_order) paused on sso.id_sales_order = paused.fk_sales_order
                  left outer join spy_sales_shipment sss on sso.id_sales_order = sss.fk_sales_order
                  inner join pyz_picking_zone ppz on ssoi.pick_zone = ppz.name
                  left outer join (select fk_sales_order from pyz_order_picking_block group by fk_sales_order) popb on popb.fk_sales_order = sso.id_sales_order
