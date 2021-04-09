@@ -83,11 +83,10 @@ export default class TimeSlotPosition extends Component {
 
         let articleCount = orderInfo.querySelector('.article-count');
         let articleQuantity = orderInfo.querySelector('.article-quantity');
-        let isOrderBlocked = orderInfo.parentElement.previousElementSibling.value;
+        let isOrderBlocked = orderInfo.parentElement.firstElementChild.getAttribute('data-isOrderBlocked');
         let idOrder = orderInfo.parentElement.getAttribute('data-idOrder');
         let countValue = parseInt(articleCount.innerHTML);
         let quantityValue = parseInt(articleQuantity.innerHTML);
-
         if(orderCheckbox.checked) {
 
             if(!Boolean(parseInt(isOrderBlocked)) && Boolean(parseInt(this.isAnyOrderLocked.value))) {

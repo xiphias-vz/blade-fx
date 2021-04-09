@@ -34,18 +34,18 @@
             <input type="hidden" name="isOrderBlocked" value="{{ order.isLocked }}">
             <div class="order-group-by-time-slot" data-idOrder="{{ order.idOrder }}" data-orderReference="{{ order.orderReference }}">
                 <div class="order-status {{ orderIsBlockedClass }}" style="width: 25px" data-isOrderBlocked="{{ isOrderBlocked  }}">
-                    {% if order.isPaused %}
-                        {% include atom('paused-state') with {
-                        } only %}
-                    {% endif %}
-                    {% if order.isLocked %}
+                    {% if isOrderBlocked %}
                         {% include atom('icon') with {
                             class: config.name ~ '__icon-close',
                             data: {
                                 name: 'close'
                             }
                         } only %}
+                    {% elseif order.isPaused %}
+                        {% include atom('paused-state') with {
+                        } only %}
                     {% endif %}
+
                 </div>
                 <div class="order-info">
                     <p style="margin: 0">
