@@ -194,7 +194,7 @@
     "fzaninotto/faker": "^1.6",
     "myclabs/deep-copy": "~1.8.1",
     "pdepend/pdepend": "^2.2.4",
-    "phpstan/phpstan": "0.12.82",
+    "phpstan/phpstan": "0.12.78",
     "phpunit/phpunit": "^7.0.0",
     "roave/better-reflection": "~3.3.0",
     "sebastian/object-enumerator": "^3.0.3",
