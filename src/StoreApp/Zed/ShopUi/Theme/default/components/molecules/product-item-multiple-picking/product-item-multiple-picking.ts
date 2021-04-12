@@ -359,12 +359,6 @@ export default class ProductItemMultiplePicking extends Component {
             this.acceptClickHandler();
         }
 
-        if (item.isPaused) {
-            this.isPaused = true;
-            this.$this.addClass(this.pausedClass);
-            this.$this[0].$declineButton.addClass(this.addUndoCLass);
-        }
-
         if (item.isDeclined) {
             this.declineClickHandler();
         }
