@@ -165,12 +165,12 @@ export default class ProductItemMultiplePicking extends Component {
                 document.querySelector("#gridOfTheProduct").classList.remove("paused--state");
             }
 
-            // if(!this.$declineButton.hasClass("button--undo")){
-            //     $(".weightScanContainer").empty();
-            //     this.containerData = [];
-            //     this.weight = 0;
-            //     this.$weightField.val("");
-            // }
+            if(!this.$declineButton.hasClass("button--undo")){
+                $(".weightScanContainer").empty();
+                this.containerData = [];
+                this.weight = 0;
+                this.$weightField.val("");
+            }
 
             if (this.isAccepted || this.isDeclined || this.isNotFullyAccepted || this.isPaused) {
                 this.revertView();
@@ -223,7 +223,7 @@ export default class ProductItemMultiplePicking extends Component {
             weight = this.$weightField.val();
         }
 
-        //let isLastPosition = this.lastPositionDataFromDiv;
+        let isLastPosition = this.lastPositionDataFromDiv;
         let accepted = this.isAccepted;
         let paused = this.isPaused;
         let declined = this.isDeclined;
