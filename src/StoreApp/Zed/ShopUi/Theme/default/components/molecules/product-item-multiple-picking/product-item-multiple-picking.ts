@@ -233,14 +233,19 @@ export default class ProductItemMultiplePicking extends Component {
             }
         }
 
-
-
         const urlSave = window.location.origin + "/picker/multi-picking/multi-order-picking";
 
         if(paused === true){
             this.setPausedStateForItem();
         }
         else if(declined === true || (accepted === true && isAlreadyPicked === true)){
+            if(declined === true){
+                $(".weightScanContainer").empty();
+                this.containerData = [];
+                this.weight = 0;
+                this.$weightField.val("");
+            }
+
             this.pickProducts.updateStorageItem(this);
 
             let saveAndGoToNext = "true";
@@ -372,11 +377,9 @@ export default class ProductItemMultiplePicking extends Component {
             '<div><span>Barcode: <span class="scannedBarcode_' + item.id + '">' + item.scannedBarcode + '</span></span></div>' +
             '<div><span>Weight: <span class="weight_' + item.id + '">' + Math.round(item.scannedWeight) + '</span></span></div>' +
             '</div>' +
-            '<div class="bawContainerRemove_' + item.id + ' col--md-3 float-right text-right"><button id="bawContainerButton_' + item.id + '" class="bawContainerButton" type="button">X</button></div>' +
             '</div>');
-        elementToAdd.appendTo(this.$this.find(".product-item-multiple-picking__info"));
+        elementToAdd.appendTo($(".weightScanContainer"));
 
-        document.querySelector('#' + item.fullScannedId).addEventListener('click', evt => this.onRemoveContainerClick(evt, item.scannedWeight));
     }
 
     protected clickCounterHandler(isPicked: boolean = false): void {
@@ -641,11 +644,8 @@ export default class ProductItemMultiplePicking extends Component {
             '<div><span>Barcode: <span class="scannedBarcode_' + this.barcodeAndWeightContainer + '">' + scannedBarcodeValue + '</span></span></div>' +
             '<div><span>Weight: <span class="weight_' + this.barcodeAndWeightContainer + '">' + Math.round(calculatedWeight) + '</span></span></div>' +
             '</div>' +
-            '<div class="bawContainerRemove_' + this.barcodeAndWeightContainer + ' col--md-3 float-right text-right"><button id="bawContainerButton_' + this.barcodeAndWeightContainer + '" class="bawContainerButton" type="button">X</button></div>' +
             '</div>');
-        elementToAdd.appendTo(this.$this.find(".product-item-multiple-picking__info"));
-
-        document.querySelector('#' + id).addEventListener('click', evt => this.onRemoveContainerClick(evt, calculatedWeight));
+        elementToAdd.appendTo($(".weightScanContainer"));
 
         this.barcodeAndWeightContainer++;
         this.showInfo = true;
