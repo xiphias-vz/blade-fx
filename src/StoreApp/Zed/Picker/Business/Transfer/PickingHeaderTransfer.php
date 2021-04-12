@@ -418,20 +418,22 @@ class PickingHeaderTransfer extends SpyPickingHeaderTransfer
                 $items[$counter]["counterPartiallyPicked"] = 0;
                 $items[$counter]["counterCancelled"] = 0;
                 $items[$counter]["counterPaused"] = 0;
+                $items[$counter]["itemsQuantity"] = $orderItem->getQuantity();
             } else {
                 $orders = $items[$counter]["orders"];
                 $order =
-                [
-                    'idOrder' => $orderItem->getParent()->getIdOrder(),
-                    'pickingPosition' => $orderItem->getParent()->getPickingPosition(),
-                    'pickingColor' => $orderItem->getParent()->getPickingColor(),
-                ];
+                    [
+                        'idOrder' => $orderItem->getParent()->getIdOrder(),
+                        'pickingPosition' => $orderItem->getParent()->getPickingPosition(),
+                        'pickingColor' => $orderItem->getParent()->getPickingColor(),
+                    ];
                 array_push($orders, $order);
                 $items[$counter]["orders"] = $orders;
                 $items[$counter]["counterOrder"] = $items[$counter]["counterOrder"] + 1;
+                $items[$counter]["itemsQuantity"] = $items[$counter]["itemsQuantity"] + $orderItem->getQuantity();
             }
             if (($orderItem->getQuantity() == $orderItem->getQuantityPicked())
-                    || ($orderItem->getPricePerKg() > 0 && $orderItem->getQuantityPicked() == 1)) {
+                || ($orderItem->getPricePerKg() > 0 && $orderItem->getQuantityPicked() == 1)) {
                 $items[$counter]["counterFullPicked"] = $items[$counter]["counterFullPicked"] + 1;
             }
             if ($orderItem->getQuantityPicked() > 0 && $orderItem->getQuantity() > $orderItem->getQuantityPicked()) {
@@ -450,7 +452,6 @@ class PickingHeaderTransfer extends SpyPickingHeaderTransfer
             $counterPartiallyPicked = $item["counterPartiallyPicked"];
             $counterPaused = $item["counterPaused"];
             $counterCancelled = $item["counterCancelled"];
-
             if (($counterFullPicked + $counterPartiallyPicked + $counterPaused + $counterCancelled) > 0) {
                 if ($counterFullPicked > 0) {
                     $item["isFullPicked"] = true;
@@ -463,7 +464,6 @@ class PickingHeaderTransfer extends SpyPickingHeaderTransfer
                 }
             }
         }
-
         $this->setParents(true);
 
         return $items;

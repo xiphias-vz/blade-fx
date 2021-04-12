@@ -26,6 +26,7 @@
     ean: '',
     pickingItemPosition: '',
     fromModal: '',
+    itemsQuantity: ''
 } %}
 
 {% block body %}
@@ -50,7 +51,7 @@
                         </div>
                     </div>
                     <div class="{{ config.name }}__number-text-wrapper">
-                        {{ data.quantity }}
+                        {{ data.itemsQuantity }}
                     </div>
                 {% elseif data.isPartiallyPicked == true or data.isPartiallyPicked == "1" %}
                     <div class="{{ config.name }}__circle-wrapper">
@@ -59,7 +60,7 @@
                         </div>
                     </div>
                     <div class="{{ config.name }}__number-text-wrapper">
-                        {{ data.quantity }}
+                        {{ data.itemsQuantity }}
                     </div>
                 {% elseif data.isCanceled == true or data.isCanceled == "1" %}
                     <div class="{{ config.name }}__circle-wrapper">
@@ -68,7 +69,7 @@
                         </div>
                     </div>
                     <div class="{{ config.name }}__number-text-wrapper">
-                        {{ data.quantity }}
+                        {{ data.itemsQuantity }}
                     </div>
                 {% elseif data.isPaused == "1" %}
                     <div class="{{ config.name }}__circle-wrapper">
@@ -77,11 +78,11 @@
                         </div>
                     </div>
                     <div class="{{ config.name }}__number-text-wrapper">
-                        {{ data.quantity }}
+                        {{ data.itemsQuantity }}
                     </div>
                 {% else %}
                     <div class="{{ config.name }}__number-empty-wrapper">
-                        {{ data.quantity }}
+                        {{ data.itemsQuantity }}
                     </div>
                 {% endif %}
             </td>
