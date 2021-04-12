@@ -160,17 +160,22 @@ export default class ProductItemMultiplePicking extends Component {
         });
 
         this.$declineButton.on('click', () => {
+
             if(document.querySelector("#gridOfTheProduct").classList.contains("paused--state")){
                 document.querySelector("#gridOfTheProduct").classList.remove("paused--state");
+            }
+
+            if(!this.$declineButton.hasClass("button--undo")){
+                $(".weightScanContainer").empty();
+                this.containerData = [];
+                this.weight = 0;
+                this.$weightField.val("");
             }
 
             if (this.isAccepted || this.isDeclined || this.isNotFullyAccepted || this.isPaused) {
                 this.revertView();
 
                 return;
-            }
-            else{
-                this.$weightField.focus();
             }
 
             this.declineClickHandler();
@@ -218,6 +223,7 @@ export default class ProductItemMultiplePicking extends Component {
             weight = this.$weightField.val();
         }
 
+        let isLastPosition = this.lastPositionDataFromDiv;
         let accepted = this.isAccepted;
         let paused = this.isPaused;
         let declined = this.isDeclined;
@@ -233,7 +239,6 @@ export default class ProductItemMultiplePicking extends Component {
             status = "declined"
         }
 
-        let isLastPosition = this.lastPositionDataFromDiv;
         let isAlreadyPicked = false;
         if(this.currentItem != undefined){
             if(this.currentItem.isAccepted === true || this.currentItem.isNotFullyAccepted === true){
@@ -253,6 +258,7 @@ export default class ProductItemMultiplePicking extends Component {
                 this.weight = 0;
                 this.$weightField.val("");
             }
+
 
             this.pickProducts.updateStorageItem(this);
 
