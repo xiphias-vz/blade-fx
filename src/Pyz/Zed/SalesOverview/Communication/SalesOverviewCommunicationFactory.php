@@ -8,6 +8,7 @@
 namespace Pyz\Zed\SalesOverview\Communication;
 
 use Pyz\Zed\SalesOverview\Persistence\SalesOverviewRepositoryInterface;
+use Pyz\Zed\SalesOverview\SalesOverviewDependencyProvider;
 use Spryker\Zed\Kernel\Communication\AbstractCommunicationFactory;
 
 /**
@@ -31,6 +32,14 @@ class SalesOverviewCommunicationFactory extends AbstractCommunicationFactory
     public function choiceFilter(): array
     {
         return $this->getConfig()->getChoiceForDisplay();
+    }
+
+    /**
+     * @return \Spryker\Zed\Sales\Dependency\Facade\SalesToUserInterface
+     */
+    public function getUserFacade()
+    {
+        return $this->getProvidedDependency(SalesOverviewDependencyProvider::FACADE_USER);
     }
 
     /**

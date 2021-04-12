@@ -23,6 +23,11 @@ class IndexController extends SprykerIndexController
      */
     public function indexAction()
     {
+        $userTransfer = $this->getFactory()
+            ->getUserFacade();
+
+        $merchantReferenceByUser = $userTransfer->getCurrentUser()->getMerchantReference();
+
         $merchantList = $this->getFactory()->merchantList();
         $choiceFilter = $this->getFactory()->choiceFilter();
         $tableHeader = $this->getFactory()->getTableHeaderContent();
@@ -53,6 +58,7 @@ class IndexController extends SprykerIndexController
 
         return [
             'merchantList' => $merchantList,
+            'merchantReferenceByUser' => $merchantReferenceByUser,
             'choiceFilter' => $choiceFilter,
             'merchant' => $merchant,
             'date' => $date,
