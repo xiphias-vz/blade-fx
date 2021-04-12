@@ -206,6 +206,14 @@ export default class ProductItemMultiplePicking extends Component {
         let pickingPosition = this.pickingItemPosition;
         let quantity = this.$quantityOutput.text();
         let weight = 0;
+
+        if(this.$weightField.length != 0) {
+            if(this.$weightField.val() == "") {
+                this.showPopUpErrorMessageForEmptyWeightField(this.$weightField)
+                return;
+            }
+        }
+
         if(this.$weightField.val() != 0){
             weight = this.$weightField.val();
         }
@@ -333,6 +341,25 @@ export default class ProductItemMultiplePicking extends Component {
         this.popupUiError.classList.add('popup-ui-error--show');
     }
 
+    protected showPopUpErrorMessageForEmptyWeightField(weightField) {
+        let popUpInfo = this.popupUiError.querySelector('.error-info');
+        let linkError = this.popupUiError.querySelector('.link--error');
+        popUpInfo.innerHTML = `
+            <p style="margin:40px">
+               Bitte ein Gewicht angeben
+            </p>
+        `;
+        this.popupUiError.classList.add('popup-ui-error--show');
+        linkError.addEventListener("click", () => {
+            this.btnSubmitPick.classList.remove("button--disabled");
+            weightField.readOnly = true;
+            weightField.focus();
+            setTimeout(() => {
+                weightField.readOnly = false;
+            }, 1000)
+        })
+    }
+
     async updateItem(item: StorageItem): Promise<void> {
         await this.updateQuantityInput(item.count);
 
@@ -353,7 +380,6 @@ export default class ProductItemMultiplePicking extends Component {
         if (item.isAccepted || item.isNotFullyAccepted) {
             if(item.weight != NaN){
                 this.weight = Number(item.weight);
-                this.$weightField.val(Number(this.weight));
             }
 
             this.acceptClickHandler();

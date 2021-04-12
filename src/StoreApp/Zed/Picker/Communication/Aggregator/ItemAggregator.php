@@ -23,7 +23,7 @@ class ItemAggregator implements ItemAggregatorInterface
 
                 /** @var \Generated\Shared\Transfer\ItemTransfer $aggregatedItemTransfer */
                 $aggregatedItemTransfer = $aggregatedItemTransfers[$itemSku] ?? null;
-                if (empty($aggregatedItemTransfer)) {
+                if ($aggregatedItemTransfer != null) {
                     $aggregatedItemTransfer->setQuantity(
                         $aggregatedItemTransfer->getQuantity() + $itemTransfer->getQuantity()
                     );
