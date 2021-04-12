@@ -79,5 +79,13 @@
         <div class="text-center">
             {{ 'global.search.suggestion.no_result' | trans }}
         </div>
+
+        {% include molecule('suggestion-not-found', 'CatalogPage') with {
+            data: {
+                notFound: true
+            },
+        } only %}
+
     {% endif %}
 {% endblock %}
+

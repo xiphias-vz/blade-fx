@@ -1,0 +1,8 @@
+@mixin catalog-page-suggestion-not-found($name: '.suggestion-not-found') {
+    #{$name} {
+
+        @content;
+    }
+}
+
+@include catalog-page-suggestion-not-found();

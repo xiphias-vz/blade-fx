@@ -159,4 +159,27 @@
     {% include molecule('ajax-add-to-cart') %}
     {% include molecule('matomo-popup-ui-corrector') %}
 
+
+    <script type="text/javascript">
+        let suggestSearchInputElement = document.querySelector(".suggest-search__input");
+        suggestSearchInputElement.addEventListener("change", SearchInputChange);
+
+        function SearchInputChange() {
+
+            let suggestSearchContainer = document.querySelector(".suggest-search__container");
+            let searchTerm = document.querySelector(".suggest-search__input").value;
+
+            if(suggestSearchContainer.contains(document.getElementById("NoResultsForSearchSuggestion"))){
+                if(searchTerm != "")
+                {
+                    window.dataLayer.push({
+                        'event': 'zeroResultsSearch',
+                        'searchTerm': searchTerm,
+                        'searchResults': 0
+                    });
+                }
+            }
+        }
+    </script>
+
 {% endblock %}
