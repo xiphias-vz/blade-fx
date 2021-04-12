@@ -20,6 +20,8 @@ use Symfony\Component\Form\FormBuilderInterface;
  */
 class CheckoutAddressForm extends SprykerShopCheckoutAddressForm
 {
+    public const FIELD_MOBILE_PHONE = 'cell_phone';
+
     /**
      * @param \Symfony\Component\Form\FormBuilderInterface $builder
      * @param array $options
@@ -41,6 +43,7 @@ class CheckoutAddressForm extends SprykerShopCheckoutAddressForm
             ->addCityField($builder, $options)
             ->addIso2CodeField($builder, $options)
             ->addPhoneNumberField($builder, $options)
+            ->addMobilePhoneNumberField($builder, $options)
             ->addIdCompanyUnitAddressTextField($builder)
             ->addIsAddressSavingSkippedField($builder, $options);
     }
@@ -198,14 +201,30 @@ class CheckoutAddressForm extends SprykerShopCheckoutAddressForm
     {
         $builder->add(static::FIELD_PHONE, TelType::class, [
             'label' => 'customer.address.phone',
-            'required' => true,
+            'required' => false,
             'trim' => true,
             'attr' => [
                 'placeholder' => 'customer.registration.phone_placeholder',
             ],
-            'constraints' => [
-                $this->createNotBlankConstraint($options),
-                ProfileForm::createSafeStringRegexConstraint($options),
+        ]);
+
+        return $this;
+    }
+
+    /**
+     * @param \Symfony\Component\Form\FormBuilderInterface $builder
+     * @param array $options
+     *
+     * @return $this
+     */
+    protected function addMobilePhoneNumberField(FormBuilderInterface $builder, array $options)
+    {
+        $builder->add(static::FIELD_MOBILE_PHONE, TelType::class, [
+            'label' => 'customer.address.mobile_phone',
+            'required' => false,
+            'trim' => true,
+            'attr' => [
+                'placeholder' => 'customer.registration.mobile_phone_placeholder',
             ],
         ]);
 

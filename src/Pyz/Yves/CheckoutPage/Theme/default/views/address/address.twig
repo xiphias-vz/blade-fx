@@ -50,37 +50,92 @@
             <div class="{{ config.name }}__fields grid grid--indent">
                 <div class="col col--sm-12 col--xl-6 spacing-x spacing-x--big spacing-x--inner spacing-bottom spacing-bottom--bigger">
                     <div class="checkout-block">
-                        {% set hasShippingAddresses = data.form.shippingAddress.id_customer_address is defined %}
+                        {% set idCustomer = data.form.vars.value.customer.idCustomer %}
+                        <input id="idCustomer" type="hidden" value="{{ idCustomer }}" />
 
                         <h2 class="title title--primary checkout-block__title-with-link">
                             <div>{{ 'page.checkout.address.billing-address' | trans }}</div>
                         </h2>
+                        {% if idCustomer is not null %}
+                            {% set customerData = data.form.vars.value.customer %}
+                            <div>{{ customerData.company }} {{ customerData.firstName }} {{ customerData.lastName }}</div>
+                            <div>{{ customerData.address1 }} {{ customerData.address2 }}</div>
+                            <div>{{ customerData.zipCode }} {{ customerData.city }}</div>
+                            <br>
+                            <div>{{ customerData.email }}</div>
+                            <hr style="border-bottom: 1px solid black !important; margin:1.5rem 0 !important;">
+                            <div class="text-color-1">
+                                Bitte geben Sie Ihre Telefonnummer ein oder überprüfen Seie diese!
+                            </div>
+                            <div>
+                                Wir benötigen eiene Telefonnnummer zur Abwicklung der Bestellung, vor allem bei Problemen oder kurzfristigen Änderungen. Ihre Angaben werder in Ihrem Globus Konto vervollständigt oder ersetzt.
+                            </div>
+                            <br>
+                            <div class="text-color-1" id="phoneRequiredFields">
+                                Telefon (mind .eine Angabe ist Pflicht)*
+                            </div>
 
-                        {% if hasShippingAddresses %}
-                            {{ form_row(embed.forms.shipping.id_customer_address, {
-                                label: 'page.checkout.address.billing.address_select' | trans,
-                            }) }}
-                        {% endif %}
+                            {{ form_row(embed.forms.shipping.phone, { value: customerData.phone }) }}
+                            {{ form_row(embed.forms.shipping.cell_phone, { value : customerData.mobilePhoneNumber }) }}
+                            {{ form_row(embed.forms.shipping.salutation, { value: customerData.salutation, rowAttr: { class: 'is-hidden' } }) }}
+                            {{ form_row(embed.forms.shipping.first_name, { value: customerData.firstName, rowAttr: { class: 'is-hidden' } }) }}
+                            {{ form_row(embed.forms.shipping.last_name, { value: customerData.lastName, rowAttr: { class: 'is-hidden' } }) }}
+                            {{ form_row(embed.forms.shipping.address1, { value: customerData.address1, rowAttr: { class: 'is-hidden' } }) }}
+                            {{ form_row(embed.forms.shipping.address2, { value: customerData.address2, rowAttr: { class: 'is-hidden' } }) }}
+                            {{ form_row(embed.forms.shipping.floor, { value: customerData.floor, rowAttr: { class: 'is-hidden' } }) }}
+                            {{ form_row(embed.forms.shipping.additional_info, { value: customerData.additionalInfo, rowAttr: { class: 'is-hidden' } }) }}
+                            {{ form_row(embed.forms.shipping.zip_code, { value: customerData.zipCode, rowAttr: { class: 'is-hidden' } }) }}
+                            {{ form_row(embed.forms.shipping.city, { value: customerData.city, rowAttr: { class: 'is-hidden' } }) }}
 
-                        {% include molecule('form') with {
-                            class: embed.jsAddressClass ~ '__shipping' ~ (hasShippingAddresses ? ' is-hidden '),
-                            modifiers: ['checkout-form', 'checkout-form-elements'],
-                            data: {
-                                form: embed.forms.shipping,
-                                enableStart: false,
-                                enableEnd: false,
-                                layout: {
-                                    salutation: 'col col--sm-12 col--lg-3',
-                                    first_name: 'col col--sm-12 col--lg-4',
-                                    last_name: 'col col--sm-12 col--lg-5',
-                                    address1: 'col col--sm-12 col--md-8 col--lg-7',
-                                    address2: 'col col--sm-12 col--md-4 col--lg-5',
-                                    floor: 'col col--sm-12 col--lg-12',
-                                    zip_code: 'col col--sm-12 col--lg-5',
-                                    city: 'col col--sm-12 col--lg-7',
+                            {% include molecule('form') with {
+                                modifiers: ['checkout-form', 'checkout-form-elements'],
+                                data: {
+                                    form: embed.forms.shipping,
+                                    enableStart: false,
+                                    enableEnd: false,
+                                    layout: {
+                                        salutation: 'col col--sm-12 col--lg-3 is-hidden',
+                                        first_name: 'col col--sm-12 col--lg-4 is-hidden',
+                                        last_name: 'col col--sm-12 col--lg-5 is-hidden',
+                                        address1: 'col col--sm-12 col--md-8 col--lg-7 is-hidden',
+                                        address2: 'col col--sm-12 col--md-4 col--lg-5 is-hidden',
+                                        floor: 'col col--sm-12 col--lg-12 is-hidden',
+                                        zip_code: 'col col--sm-12 col--lg-5 is-hidden',
+                                        city: 'col col--sm-12 col--lg-7 is-hidden',
+                                        additional_info: 'is-hidden',
+                                        id_customer_address: 'is-hidden',
+                                        isAddressSavingSkipped: 'is-hidden'
+                                    }
                                 },
-                            },
-                        } only %}
+                            } only %}
+
+                        {% else %}
+                            {% include molecule('form') with {
+                                class: embed.jsAddressClass ~ '__shipping',
+                                modifiers: ['checkout-form', 'checkout-form-elements'],
+                                data: {
+                                    form: embed.forms.shipping,
+                                    enableStart: false,
+                                    enableEnd: false,
+                                    layout: {
+                                        salutation: 'col col--sm-12 col--lg-3',
+                                        first_name: 'col col--sm-12 col--lg-4',
+                                        last_name: 'col col--sm-12 col--lg-5',
+                                        address1: 'col col--sm-12 col--md-8 col--lg-7',
+                                        address2: 'col col--sm-12 col--md-4 col--lg-5',
+                                        floor: 'col col--sm-12 col--lg-12',
+                                        zip_code: 'col col--sm-12 col--lg-5',
+                                        city: 'col col--sm-12 col--lg-7',
+                                        id_customer_address: 'is-hidden',
+                                        isAddressSavingSkipped: 'is-hidden'
+                                    }
+                                  },
+                            } only %}
+                            <div class="text-color-1" id="phoneRequiredFieldsGuest">
+                                Telefon (mind .eine Angabe ist Pflicht)*
+                            </div>
+
+                        {% endif %}
 
                         {% if embed.isMultipleShipmentEnabled %}
                             {% include molecule('address-item-form', 'CheckoutPage') with {
@@ -107,9 +162,9 @@
                             <span>
                                 {{- app['merchant_name'] -}}
                             </span>
-{#                            {% if data.merchantName is defined %}#}
-{#                                <span class="{{ config.name }}__text">{{ data.merchantName }}</span>#}
-{#                            {% endif %}#}
+               {#             {% if data.merchantName is defined %}
+                               <span class="{{ config.name }}__text">{{ data.merchantName }}</span>
+                         {% endif %}#}
                         </div>
                         <div class="text-color-1">
                             <p>Nachricht an die Abholstation</p>
@@ -178,30 +233,30 @@
         {% endblock %}
 
         {% block actions %}
-            {% set optionValueDeliverToMultipleAddresses = '-1' %}
-
-            {% include molecule('address-form-toggler', 'CustomerPage') ignore missing with {
-                attributes: {
-                    'trigger-selector': '[name="' ~ embed.forms.shipping.id_customer_address.vars.full_name ~ '"]',
-                    'target-selector': '.' ~ embed.jsAddressClass ~ '__shipping',
-                    'sub-target-selector': '.' ~ embed.jsAddressClass ~ '__items-target',
-                    'container-billing-address-selector': '.' ~ embed.jsAddressClass ~ '__billing-address',
-                    'billing-same-as-shipping-selector': '.' ~ embed.jsAddressClass ~ '__billing-same-as-shipping',
-                    'billing-same-as-shipping-toggler-selector': 'input[name="addressesForm[billingSameAsShipping]"]',
-                    'toggle-option-value': optionValueDeliverToMultipleAddresses,
-                },
-            } only %}
-
-            {% include molecule('address-form-toggler', 'CustomerPage') ignore missing with {
-                attributes: {
-                    'trigger-selector': '[name="' ~ embed.forms.billing.id_customer_address.vars.full_name ~ '"]',
-                    'target-selector': '.' ~ embed.jsAddressClass ~ '__billing',
-                },
-            } only %}
-
             <div class="{{ config.name }}__actions spacing-top spacing-top--bigger">
-                <button type="submit" class="{{ data.submit.class }}" data-init-single-click>{{ data.submit.text }}</button>
+                <button id="js-address__buttonSubmit" type="submit" class="{{ data.submit.class }}">{{ data.submit.text }}</button>
             </div>
+
+            <script>
+                const submitButton = document.getElementById("js-address__buttonSubmit");
+                submitButton.addEventListener("click", displayMessageRequiredField);
+
+                function displayMessageRequiredField() {
+                    const phoneNumber = document.getElementById("addressesForm_shippingAddress_phone").value;
+                    const mobileNumber = document.getElementById("addressesForm_shippingAddress_cell_phone").value;
+                    if (phoneNumber === "" && mobileNumber === "") {
+                        const idCustomer = document.getElementById("idCustomer").value;
+                        event.preventDefault();
+                        if (idCustomer !== "") {
+                            const phoneRequiredFields = document.getElementById('phoneRequiredFields');
+                            phoneRequiredFields.style.color = '#cb3d49';
+                        } else {
+                            const phoneRequiredFieldsGuest = document.getElementById('phoneRequiredFieldsGuest');
+                            phoneRequiredFieldsGuest.style.color = '#cb3d49';
+                        }
+                    }
+                }
+            </script>
         {% endblock %}
     {% endembed %}
 {% endblock %}

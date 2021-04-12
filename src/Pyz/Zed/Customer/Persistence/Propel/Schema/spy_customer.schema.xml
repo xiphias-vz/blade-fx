@@ -5,6 +5,7 @@
         <column name="additional_info" size="255" type="VARCHAR"/>
         <column name="floor" size="255" type="VARCHAR"/>
         <column name="salutation" type="ENUM" valueSet="Mr, Ms, Divers, Dr"/>
+        <column name="cell_phone" type="VARCHAR" />
     </table>
 
     <table name="spy_customer">

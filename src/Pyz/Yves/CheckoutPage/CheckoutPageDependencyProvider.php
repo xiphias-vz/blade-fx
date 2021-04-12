@@ -12,6 +12,7 @@ use Pyz\Yves\CustomerPage\Form\CheckoutAddressCollectionForm;
 use Pyz\Yves\CustomerPage\Form\GuestForm;
 use Pyz\Yves\CustomerPage\Form\LoginForm;
 use Pyz\Yves\CustomerPage\Form\RegisterForm;
+use Pyz\Yves\CustomerPage\Plugin\CheckoutPage\CheckoutAddressFormDataProviderPlugin;
 use Spryker\Shared\Nopayment\NopaymentConfig;
 use Spryker\Yves\Kernel\Container;
 use Spryker\Yves\Kernel\Plugin\Pimple;
@@ -28,7 +29,6 @@ use SprykerShop\Yves\CheckoutPage\CheckoutPageDependencyProvider as SprykerShopC
 use SprykerShop\Yves\CheckoutPage\Dependency\Client\CheckoutPageToProductBundleClientInterface;
 use SprykerShop\Yves\CheckoutPage\Dependency\Client\CheckoutPageToShipmentClientInterface;
 use SprykerShop\Yves\CustomerPage\Form\CustomerCheckoutForm;
-use SprykerShop\Yves\CustomerPage\Plugin\CheckoutPage\CheckoutAddressFormDataProviderPlugin;
 use SprykerShop\Yves\CustomerPage\Plugin\CheckoutPage\CustomerAddressExpanderPlugin;
 use SprykerShop\Yves\CustomerPage\Plugin\CustomerStepHandler;
 use SprykerShop\Yves\SalesOrderThresholdWidget\Plugin\CheckoutPage\SalesOrderThresholdWidgetPlugin;

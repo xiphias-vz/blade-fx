@@ -23,6 +23,39 @@ class CheckoutController extends SprykerCheckoutControllerAlias
     /**
      * @param \Symfony\Component\HttpFoundation\Request $request
      *
+     * @return mixed
+     */
+    public function addressAction(Request $request)
+    {
+        $quoteValidationResponseTransfer = $this->canProceedCheckout();
+
+        if (!$quoteValidationResponseTransfer->getIsSuccessful()) {
+            $this->processErrorMessages($quoteValidationResponseTransfer->getMessages());
+
+            return $this->redirectResponseInternal(static::ROUTE_CART);
+        }
+
+        $response = $this->createStepProcess()->process(
+            $request,
+            $this->getFactory()
+                ->createCheckoutFormFactory()
+                ->createAddressFormCollection()
+        );
+
+        if (!is_array($response)) {
+            return $response;
+        }
+
+        return $this->view(
+            $response,
+            $this->getFactory()->getCustomerPageWidgetPlugins(),
+            '@CheckoutPage/views/address/address.twig'
+        );
+    }
+
+    /**
+     * @param \Symfony\Component\HttpFoundation\Request $request
+     *
      * @return array|\Symfony\Component\HttpFoundation\RedirectResponse
      */
     public function placeOrderAction(Request $request)

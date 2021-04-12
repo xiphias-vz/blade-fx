@@ -18,6 +18,7 @@ use Pyz\Service\User\UserServiceInterface;
 use Pyz\Shared\Pdf\PdfConfig;
 use Pyz\Yves\CustomerPage\Authenticator\CustomerAuthenticator;
 use Pyz\Yves\CustomerPage\Form\Constraints\PasswordConstraint;
+use Pyz\Yves\CustomerPage\Form\DataProvider\CheckoutAddressFormDataProvider;
 use Pyz\Yves\CustomerPage\Form\FormFactory;
 use Pyz\Yves\CustomerPage\Plugin\Provider\CustomerAuthenticationFailureHandler;
 use Pyz\Yves\CustomerPage\Plugin\Provider\CustomerAuthenticationSuccessHandler;
@@ -199,5 +200,21 @@ class CustomerPageFactory extends SprykerShopCustomerPageFactory
     public function createCustomerUserProvider(): CustomerUserProvider
     {
         return new CustomerUserProvider();
+    }
+
+    /**
+     * @return \Pyz\Yves\CustomerPage\Form\DataProvider\CheckoutAddressFormDataProvider
+     */
+    public function createCheckoutAddressFormDataProviderLocal(): CheckoutAddressFormDataProvider
+    {
+        return new CheckoutAddressFormDataProvider(
+            $this->getCustomerClient(),
+            $this->getStore(),
+            $this->getCustomerService(),
+            $this->getShipmentClient(),
+            $this->getProductBundleClient(),
+            $this->getShipmentService(),
+            $this->createAddressChoicesResolver()
+        );
     }
 }

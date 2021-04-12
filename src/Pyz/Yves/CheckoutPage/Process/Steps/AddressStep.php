@@ -52,6 +52,12 @@ class AddressStep extends SprykerAddressStep
             $newCustomer->setMobilePhoneNumber($billingAddress->getCellPhone());
 
             $quoteTransfer->setCustomer($newCustomer);
+        } else {
+            $customer = $quoteTransfer->getCustomer();
+            $shippingAddress = $quoteTransfer->getShippingAddress();
+            $customer->setPhone($shippingAddress->getPhone());
+            $customer->setMobilePhoneNumber($shippingAddress->getCellPhone());
+            $quoteTransfer->setCustomer($customer);
         }
 
         return $this->calculationClient->recalculate($quoteTransfer);
