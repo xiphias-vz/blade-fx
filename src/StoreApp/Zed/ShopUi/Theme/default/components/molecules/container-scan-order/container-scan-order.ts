@@ -70,6 +70,7 @@ export default class ContainerScanOrder extends Component {
                 return false;
             }
 
+            this.confirmButtonForScannedContainers.classList.add('button--disabled');
             this.nextOrderPosition = ++this.nextOrderPosition;
             this.nextOrderPositionInput.value = String(this.nextOrderPosition);
 
