@@ -293,6 +293,7 @@ export default class ProductItemMultiplePicking extends Component {
             if(Boolean(isLastPosition) === true){
                 saveAndGoToNext = "End";
             }
+            this.pickProducts.update();
             let form = $('<form action="' + urlSave + '" method="post" style="visibility: hidden;">' +
                 '<input type="text" name="saveAndGoToNext" value="' + saveAndGoToNext + '" />' +
                 '<input type="text" name="position" value="' + pickingPosition + '" />' +
@@ -353,7 +354,7 @@ export default class ProductItemMultiplePicking extends Component {
                 else {
                     let saveAndGoToNext = "true";
                     This.pickProducts.updateStorageItem(this);
-
+                    This.pickProducts.update();
                     let form = $('<form action="' + urlSave + '" method="post" style="visibility: hidden"></form>');
                     $('body').append(form);
                     form.submit();
@@ -417,6 +418,10 @@ export default class ProductItemMultiplePicking extends Component {
             }
 
             this.acceptClickHandler();
+        }
+
+        if (item.isPaused) {
+            this.$pauseButton.click();
         }
 
         if (item.isDeclined) {
@@ -788,7 +793,7 @@ export default class ProductItemMultiplePicking extends Component {
         if ((Number(this.currentValue) === Number(this.maxQuantity)) || $selForWeightElementVal > 0) {
             this.$this.addClass(this.pickedCLass);
             this.$this[0].$declineButton.addClass(this.addUndoCLass);
-            this.pickProducts.update();
+
             const elements = <HTMLInputElement>document.getElementsByClassName('ean_scan_input');
             const sku = this.dataset.sku;
             for (let i=0; i< elements.length; i++)
@@ -816,7 +821,6 @@ export default class ProductItemMultiplePicking extends Component {
         this.$this.addClass(this.pickedNotFullyCLass);
         this.$this[0].$declineButton.addClass(this.addUndoCLass);
         this.isNotFullyAccepted = true;
-        this.pickProducts.update();
     }
 
     protected declineClickHandler(): void {
@@ -826,7 +830,6 @@ export default class ProductItemMultiplePicking extends Component {
         this.updateQuantityInput(0);
         this.$this.addClass(this.notPickedCLass);
         this.$this[0].$declineButton.addClass(this.addUndoCLass);
-        this.pickProducts.update();
 
         let elementForFocus: HTMLInputElement = null;
         const elements = <HTMLInputElement>document.getElementsByClassName('ean_scan_input');
@@ -854,7 +857,6 @@ export default class ProductItemMultiplePicking extends Component {
         this.$this.addClass(this.pausedClass);
         this.$this[0].$declineButton.addClass(this.addUndoCLass);
         this.isPaused = true;
-        this.pickProducts.update();
     }
 
     protected revertView(): void {
@@ -870,7 +872,6 @@ export default class ProductItemMultiplePicking extends Component {
 
         this.$this.removeClass(`${this.notPickedCLass} ${this.pickedCLass} ${this.pickedNotFullyCLass} ${this.pausedClass}`);
         this.$this[0].$declineButton.removeClass(this.addUndoCLass);
-        this.pickProducts.update();
     }
 
     protected isValueInRange(inputValue: number): boolean {
