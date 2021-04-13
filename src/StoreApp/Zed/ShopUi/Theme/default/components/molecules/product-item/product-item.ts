@@ -48,6 +48,7 @@ export default class ProductItem extends Component {
     eanScanInputElement: HTMLInputElement;
     alternativeEanElement: HTMLInputElement;
     eanInputFieldWrapper: HTMLElement;
+    weightInputFieldWrapper: HTMLElement;
     eanInputData: HTMLElement;
     pricePerKgData: HTMLElement;
     popUp: HTMLElement;
@@ -74,6 +75,8 @@ export default class ProductItem extends Component {
         this.weightMin = Number(this.$weightField.attr('min'));
         this.popupUiError = this.querySelector('.popup-ui-error');
         this.eanInputFieldWrapper = this.querySelector('#eanScannenDiv');
+        this.weightInputFieldWrapper = this.querySelector('#weightWrapperDiv');
+        this.weightInputFieldWrapper.addEventListener('keypress', (event: KeyboardEvent) => this.preventSubmitOnEnter(event));
         this.productBlockWrapper = <HTMLElement>document.getElementById('gridOfTheProduct');
         this.eanInputFieldWrapper.addEventListener('keypress', (event: KeyboardEvent) => this.formKeyPressHandler(event));
         this.popUp = <HTMLElement>document.getElementsByClassName('popup-ui')[0];
@@ -256,6 +259,17 @@ export default class ProductItem extends Component {
         let popUpInfo = this.popupUiError.querySelector('.error-info');
         popUpInfo.innerHTML = `<p class="falsche-ean">Falsche EAN</p>`;
         this.popupUiError.classList.add('popup-ui-error--show');
+    }
+
+    protected preventSubmitOnEnter(event: KeyboardEvent): void{
+        if(event.key == 'Enter'){
+            event.preventDefault();
+            let validation = this.validateWeightInput();
+            if(validation == true){
+                this.acceptClickHandler();
+                document.querySelector('.popup-ui').classList.add('popup-ui--show');
+            }
+        }
     }
 
     protected formKeyPressHandler(event: KeyboardEvent): void {

@@ -195,6 +195,7 @@ export default class ProductItemMultiplePicking extends Component {
         });
 
         this.$weightField.on('change', () => {
+            this.validateWeightInput();
             let weight = Number(this.$weightField.val());
             this.lastWeight = weight;
             let min = Number(this.$weightField.attr('min'));
