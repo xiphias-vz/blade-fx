@@ -175,8 +175,12 @@ export default class ProductItemMultiplePicking extends Component {
             if (this.isAccepted || this.isDeclined || this.isNotFullyAccepted || this.isPaused) {
                 this.revertView();
                 this.eanScanInputElement.focus();
-
                 return;
+            }
+
+            else{
+                this.$weightField.val("0");
+                this.$weightField.focus();
             }
 
             this.declineClickHandler();
@@ -207,17 +211,38 @@ export default class ProductItemMultiplePicking extends Component {
         this.eanScanInputElement.focus();
     }
 
+    protected isWeightArticleInputFieldValid() {
+        if(this.$weightField.length != 0) {
+            let statusOfArticle = this.classList;
+
+            if (statusOfArticle.contains(this.pickedCLass)) {
+               if(Boolean(this.showErrorMessageForNotValidWeight()))
+                   return false;
+            }
+            else if(statusOfArticle.contains((this.pickedNotFullyCLass))) {
+                if(Boolean(this.showErrorMessageForNotValidWeight()))
+                    return false;
+            }
+        }
+
+        return true;
+    }
+
+    protected showErrorMessageForNotValidWeight() {
+        if(this.$weightField[0].value == "" || this.$weightField[0].value == "0") {
+            this.showPopUpErrorMessageForEmptyWeightField(this.$weightField)
+            return true;
+        }
+    }
+
     protected onSubmitClick(event: MouseEvent) {
         document.querySelector("#btnSubmitPick").classList.add("button--disabled");
         let pickingPosition = this.pickingItemPosition;
         let quantity = this.$quantityOutput.text();
         let weight = 0;
 
-        if(this.$weightField.length != 0) {
-            if(this.$weightField.val() == "") {
-                this.showPopUpErrorMessageForEmptyWeightField(this.$weightField)
-                return;
-            }
+        if(!Boolean(this.isWeightArticleInputFieldValid())) {
+            return;
         }
 
         if(this.$weightField.val() != 0){
@@ -387,6 +412,7 @@ export default class ProductItemMultiplePicking extends Component {
         if (item.isAccepted || item.isNotFullyAccepted) {
             if(item.weight != NaN){
                 this.weight = Number(item.weight);
+                this.$weightField.val(Number(this.weight));
             }
 
             this.acceptClickHandler();
@@ -794,7 +820,7 @@ export default class ProductItemMultiplePicking extends Component {
 
     protected declineClickHandler(): void {
         this.$weightField.removeAttr('required');
-
+        this.$weightField.val("0");
         this.isDeclined = true;
         this.updateQuantityInput(0);
         this.$this.addClass(this.notPickedCLass);
