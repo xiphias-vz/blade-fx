@@ -174,6 +174,7 @@ export default class ProductItemMultiplePicking extends Component {
 
             if (this.isAccepted || this.isDeclined || this.isNotFullyAccepted || this.isPaused) {
                 this.revertView();
+                this.eanScanInputElement.focus();
 
                 return;
             }
@@ -258,6 +259,7 @@ export default class ProductItemMultiplePicking extends Component {
                 this.weight = 0;
                 this.$weightField.val("");
             }
+
 
             this.pickProducts.updateStorageItem(this);
 
