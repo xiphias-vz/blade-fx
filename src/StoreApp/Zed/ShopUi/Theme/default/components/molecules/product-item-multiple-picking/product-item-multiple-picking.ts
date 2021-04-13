@@ -180,7 +180,6 @@ export default class ProductItemMultiplePicking extends Component {
 
             else{
                 this.$weightField.val("0");
-                this.$weightField.focus();
             }
 
             this.declineClickHandler();
@@ -386,11 +385,11 @@ export default class ProductItemMultiplePicking extends Component {
         this.popupUiError.classList.add('popup-ui-error--show');
         linkError.addEventListener("click", () => {
             this.btnSubmitPick.classList.remove("button--disabled");
-            weightField.readOnly = true;
-            weightField.focus();
+            this.$weightField[0].readOnly = true;
+            this.$weightField[0].focus();
             setTimeout(() => {
-                weightField.readOnly = false;
-            }, 1000)
+                this.$weightField[0].readOnly = false;
+            }, 600)
         })
     }
 
