@@ -6,8 +6,9 @@
     orders: orders,
     backButtonUrl: backButtonUrl,
     overviewButtonUrl: overviewButtonUrl,
-    fromModal: fromModal,
     position: position,
+    fromModal: fromModal,
+    allPaused: allPaused
 } %}
 {% block header %}
    {% include organism('header') with {
@@ -44,7 +45,8 @@
                     orders: item.orders,
                     pickingItemPosition: item.pickingItemPosition,
                     fromModal: data.fromModal,
-                    itemsQuantity: item.itemsQuantity
+                    itemsQuantity: item.itemsQuantity,
+                    allPaused: data.allPaused
                 },
             } only %}
             {% endembed %}

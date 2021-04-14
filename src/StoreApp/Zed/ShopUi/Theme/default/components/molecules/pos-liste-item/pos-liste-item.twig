@@ -26,7 +26,8 @@
     ean: '',
     pickingItemPosition: '',
     fromModal: '',
-    itemsQuantity: ''
+    itemsQuantity: '',
+    allPaused: false
 } %}
 
 {% block body %}
@@ -71,7 +72,7 @@
                     <div class="{{ config.name }}__number-text-wrapper">
                         {{ data.itemsQuantity }}
                     </div>
-                {% elseif data.isPaused == "1" %}
+                {% elseif data.isPaused == "1" and (data.allPaused == false or (data.allPaused == true and data.fromModal != 'undefined')) %}
                     <div class="{{ config.name }}__circle-wrapper">
                         <div class="{{ config.name }}__paused-circle">
                             ||

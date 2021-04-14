@@ -43,6 +43,13 @@ class PosListeController extends AbstractController
         $transfer = $this->getFacade()->getPickingHeaderTransfer();
         $orderItemTransfer = $transfer->getGroupedOrderItems();
 
+        $allPaused = true;
+        foreach ($orderItemTransfer as $item) {
+            if ($item["isPausedStatus"] == false) {
+                $allPaused = false;
+            }
+        }
+
         $idOrder = $request->get(static::REQUEST_PARAM_ID_ORDER);
         $sku = $request->get(static::REQUEST_PARAM_SKU) ?? '';
         $position = $request->get(static::REQUEST_PARAM_POSITION) ?? '';
@@ -70,6 +77,7 @@ class PosListeController extends AbstractController
                 'sku' => $sku,
                 'position' => $position,
                 'fromModal' => $fromModal,
+                'allPaused' => $allPaused,
             ];
 
         return $this->createIndexActionResponse($request, $orderParams, $orderItemTransfer, $pickingRedirect, $overviewRedirect);
@@ -136,6 +144,7 @@ class PosListeController extends AbstractController
             'pickZone' => $orderParams[0]['pickZone'],
             'sku' => $orderParams[0]['sku'],
             'fromModal' => $orderParams[0]['fromModal'],
+            'allPaused' => $orderParams[0]['allPaused'],
             'position' => $orderParams[0]['position'],
             'orders' => $orderItems,
             'backButtonUrl' => $backButtonUrl,
