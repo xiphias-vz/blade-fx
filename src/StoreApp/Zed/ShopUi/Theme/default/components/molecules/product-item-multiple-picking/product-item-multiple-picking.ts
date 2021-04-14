@@ -174,7 +174,11 @@ export default class ProductItemMultiplePicking extends Component {
 
             if (this.isAccepted || this.isDeclined || this.isNotFullyAccepted || this.isPaused) {
                 this.revertView();
+                this.eanScanInputElement.readOnly = true;
                 this.eanScanInputElement.focus();
+                setTimeout(() => {
+                    this.eanScanInputElement.readOnly = false;
+                }, 600)
                 return;
             }
 
