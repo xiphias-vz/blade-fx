@@ -17,7 +17,7 @@ use SprykerShop\Yves\CustomerPage\Plugin\Provider\CustomerUserProvider as Spryke
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
 
 /**
- * @method \SprykerShop\Yves\CustomerPage\CustomerPageFactory getFactory()
+ * @method \Pyz\Yves\CustomerPage\CustomerPageFactory getFactory()
  */
 class CustomerUserProvider extends SprykerCustomerUserProvider
 {
@@ -35,6 +35,8 @@ class CustomerUserProvider extends SprykerCustomerUserProvider
         $pass = $_POST["loginForm"]["password"];
         $authCheck = $this->getCdcAuthorization($email, $pass);
         $accountInfo = $this->getCdcAccountInfo($authCheck["UID"]);
+        $this->getFactory()->getSessionClient()->set("cdcUID", $authCheck["UID"]);
+
         $customerTransfer = null;
 
         if ($authCheck["errorCode"] == 0) {
@@ -124,6 +126,43 @@ class CustomerUserProvider extends SprykerCustomerUserProvider
             'UID' => $uid,
             'include' => 'profile,data,preferences',
             'extraProfileFields' => 'firstName,lastName,birthDay,birthMonth,birthYear,zip,city,country,gender,phones,samlData'];
+        $options = [
+            'http' => [
+                'header' => "Content-type: application/x-www-form-urlencoded\r\n",
+                'method' => 'POST',
+                'content' => http_build_query($data),
+            ],
+        ];
+        $context = stream_context_create($options);
+        $result = file_get_contents($url, false, $context);
+
+        return JSON::parse($result);
+    }
+
+    /**
+     * @param string $uid
+     * @param \Generated\Shared\Transfer\CustomerTransfer $customerTransfer
+     *
+     * @return array
+     */
+    public function setCdcAccountInfo(string $uid, CustomerTransfer $customerTransfer): array
+    {
+        if (empty($uid)) {
+            $uid = $this->getFactory()->getSessionClient()->get("cdcUID");
+        }
+        $apiKey = $this->getCdcApiKey();
+        $apiSecretKey = $this->getCdcSecretKey();
+        $apiUserKey = $this->getCdcUserKey();
+        $urlPrefix = $this->getCdcUrlPrefix();
+        $url = $urlPrefix . "accounts.setAccountInfo";
+        $data = [
+            'apiKey' => $apiKey,
+            'secret' => $apiSecretKey,
+            'userKey' => $apiUserKey,
+            'UID' => $uid,
+            'profile' => '{"phones": [{"type":"home", "number":"' . $customerTransfer->getPhone() . '"}, {"type":"mobile", "number":"' . $customerTransfer->getMobilePhoneNumber() . '"}]}',
+        ];
+
         $options = [
             'http' => [
                 'header' => "Content-type: application/x-www-form-urlencoded\r\n",

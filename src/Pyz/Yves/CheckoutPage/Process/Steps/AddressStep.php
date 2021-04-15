@@ -39,6 +39,8 @@ class AddressStep extends SprykerAddressStep
             return $quoteTransfer;
         }
         $quoteTransfer = $this->stepExecutor->execute($request, $quoteTransfer);
+        $phone = $_POST["addressesForm"]["shippingAddress"]["phone"];
+        $cellPhone = $_POST["addressesForm"]["shippingAddress"]["cell_phone"];
 
         if ($quoteTransfer->getCustomer() != null && $quoteTransfer->getCustomer()->getIsGuest()) {
             $billingAddress = $quoteTransfer->getBillingAddress();
@@ -48,15 +50,14 @@ class AddressStep extends SprykerAddressStep
             $newCustomer->setLastName($billingAddress->getLastName());
             $newCustomer->setZipCode($billingAddress->getZipCode());
             $newCustomer->setCity($billingAddress->getCity());
-            $newCustomer->setPhone($billingAddress->getPhone());
-            $newCustomer->setMobilePhoneNumber($billingAddress->getCellPhone());
+            $newCustomer->setPhone($phone);
+            $newCustomer->setMobilePhoneNumber($cellPhone);
 
             $quoteTransfer->setCustomer($newCustomer);
         } else {
             $customer = $quoteTransfer->getCustomer();
-            $shippingAddress = $quoteTransfer->getShippingAddress();
-            $customer->setPhone($shippingAddress->getPhone());
-            $customer->setMobilePhoneNumber($shippingAddress->getCellPhone());
+            $customer->setPhone($phone);
+            $customer->setMobilePhoneNumber($cellPhone);
             $quoteTransfer->setCustomer($customer);
         }
 

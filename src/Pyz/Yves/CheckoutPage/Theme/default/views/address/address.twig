@@ -65,17 +65,19 @@
                             <div>{{ customerData.email }}</div>
                             <hr style="border-bottom: 1px solid black !important; margin:1.5rem 0 !important;">
                             <div class="text-color-1">
-                                Bitte geben Sie Ihre Telefonnummer ein oder überprüfen Seie diese!
+                                {{ 'page.checkout.address.phone.paragraph1' | trans }}
                             </div>
                             <div>
-                                Wir benötigen eiene Telefonnnummer zur Abwicklung der Bestellung, vor allem bei Problemen oder kurzfristigen Änderungen. Ihre Angaben werder in Ihrem Globus Konto vervollständigt oder ersetzt.
+                                {{ 'page.checkout.address.phone.paragraph2' | trans }}
                             </div>
                             <br>
                             <div class="text-color-1" id="phoneRequiredFields">
-                                Telefon (mind .eine Angabe ist Pflicht)*
+                                {{ 'page.checkout.address.phone.paragraph3' | trans }}
+                                <br>
                             </div>
 
                             {{ form_row(embed.forms.shipping.phone, { value: customerData.phone }) }}
+                            <br>
                             {{ form_row(embed.forms.shipping.cell_phone, { value : customerData.mobilePhoneNumber }) }}
                             {{ form_row(embed.forms.shipping.salutation, { value: customerData.salutation, rowAttr: { class: 'is-hidden' } }) }}
                             {{ form_row(embed.forms.shipping.first_name, { value: customerData.firstName, rowAttr: { class: 'is-hidden' } }) }}
@@ -131,8 +133,8 @@
                                     }
                                   },
                             } only %}
-                            <div class="text-color-1" id="phoneRequiredFieldsGuest">
-                                Telefon (mind .eine Angabe ist Pflicht)*
+                            <div class="form__field text-color-1" id="phoneRequiredFieldsGuest">
+                                {{ 'page.checkout.address.phone.paragraph3' | trans }}
                             </div>
 
                         {% endif %}
@@ -238,15 +240,30 @@
             </div>
 
             <script>
+                document.addEventListener("DOMContentLoaded", function(event) {
+                    const phoneDivElement = document.getElementById("addressesForm_shippingAddress_phone").parentElement;
+                    const idCustomer = document.getElementById("idCustomer").value;
+                    if (idCustomer === "") {
+                        const phoneRequiredFieldsGuest = document.getElementById('phoneRequiredFieldsGuest');
+                        phoneDivElement.parentNode.insertBefore(phoneRequiredFieldsGuest, phoneDivElement)
+                    }
+                });
+
                 const submitButton = document.getElementById("js-address__buttonSubmit");
                 submitButton.addEventListener("click", displayMessageRequiredField);
 
                 function displayMessageRequiredField() {
-                    const phoneNumber = document.getElementById("addressesForm_shippingAddress_phone").value;
-                    const mobileNumber = document.getElementById("addressesForm_shippingAddress_cell_phone").value;
-                    if (phoneNumber === "" && mobileNumber === "") {
-                        const idCustomer = document.getElementById("idCustomer").value;
+                    const phoneNumber = document.getElementById("addressesForm_shippingAddress_phone");
+                    const mobileNumber = document.getElementById("addressesForm_shippingAddress_cell_phone");
+                    const idCustomer = document.getElementById("idCustomer").value;
+                    if (phoneNumber.value === "" && mobileNumber.value === "") {
                         event.preventDefault();
+                        if (phoneNumber.value === "") {
+                            phoneNumber.style.borderColor = '#cb3d49';
+                        }
+                        if (mobileNumber.value === "") {
+                            mobileNumber.style.borderColor = '#cb3d49';
+                        }
                         if (idCustomer !== "") {
                             const phoneRequiredFields = document.getElementById('phoneRequiredFields');
                             phoneRequiredFields.style.color = '#cb3d49';

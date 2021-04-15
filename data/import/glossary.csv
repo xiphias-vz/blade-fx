@@ -135,6 +135,12 @@ page.checkout.address.address_select.placeholder,Select an address,en_US
 page.checkout.address.address_select.placeholder,Wählen Sie eine Adresse,de_DE
 page.checkout.address.multi_shipment.title,Assign each product to its own delivery address,en_US
 page.checkout.address.multi_shipment.title,Jedes Produkt seiner eigenen Lieferadresse zuweisen,de_DE
+page.checkout.address.phone.paragraph1,Please enter or check your phone number!,en_US
+page.checkout.address.phone.paragraph1,Bitte geben Sie Ihre Telefonnummer ein oder überprüfen Sie diese!,de_DE
+page.checkout.address.phone.paragraph2,Zur reibungsfreien Abwicklung ihrer Bestellung benötigen wir eine Telefonnummer um Sie gegebenfalls kontaktieren zu können. Ihre Angaben werden in Ihrem Globus Konto vervollständigt oder ersetzt.,en_US
+page.checkout.address.phone.paragraph2,Zur reibungsfreien Abwicklung ihrer Bestellung benötigen wir eine Telefonnummer um Sie gegebenfalls kontaktieren zu können. Ihre Angaben werden in Ihrem Globus Konto vervollständigt oder ersetzt.,de_DE
+page.checkout.address.phone.paragraph3,Telefon (mind .eine Angabe ist Pflicht)*,en_US
+page.checkout.address.phone.paragraph3,Telefon (mind .eine Angabe ist Pflicht)*,de_DE
 page.checkout.shipment.heading,2. Lieferart wählen,de_DE
 page.checkout.shipment.heading,2. Shipping Method,en_US
 shipment.standart.name,Standard,de_DE
@@ -550,7 +556,7 @@ customer.address.city,Ort,de_DE
 customer.address.country,Country,en_US
 customer.address.country,Land,de_DE
 customer.address.phone,Phone,en_US
-customer.address.phone,Telefon,de_DE
+customer.address.phone,Festnetz,de_DE
 customer.address.mobile_phone,Cell phone,en_US
 customer.address.mobile_phone,Mobiltelefon,de_DE
 customer.address.is_default_billing,Is default billing address,en_US
@@ -2781,7 +2787,7 @@ customer.registration.zip_placeholder,Enter postcode,en_US
 customer.registration.city_placeholder,Ort,de_DE
 customer.registration.city_placeholder,Enter city,en_US
 customer.registration.phone_placeholder,Enter phone number,en_US
-customer.registration.phone_placeholder,Telefonnummer eingeben,de_DE
+customer.registration.phone_placeholder,Festnetznummer eingeben,de_DE
 customer.registration.mobile_phone_placeholder,Enter cell phone number,en_US
 customer.registration.mobile_phone_placeholder,Mobiltelefonnummer eingeben,de_DE
 customer.registration.benefit_title,"Einfach hier mit Ihren Mein Globus Zugangsdaten anmelden und bestellen.",de_DE

@@ -8,6 +8,7 @@
 namespace Pyz\Client\OrderHistoryBoosting;
 
 use Generated\Shared\Transfer\QuoteTransfer;
+use Pyz\Yves\CustomerPage\Plugin\Provider\CustomerUserProvider;
 use Spryker\Client\Kernel\AbstractClient;
 
 /**
@@ -43,5 +44,8 @@ class OrderHistoryBoostingClient extends AbstractClient implements OrderHistoryB
         $customerTransfer->setPreviouslyBoughtSkus($previouslyBoughtSkus);
 
         $this->getFactory()->getCustomerClient()->setCustomer($customerTransfer);
+
+        $userProvider = new CustomerUserProvider();
+        $userProvider->setCdcAccountInfo('', $customerTransfer);
     }
 }
