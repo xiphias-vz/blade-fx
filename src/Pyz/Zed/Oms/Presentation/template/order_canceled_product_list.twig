@@ -73,7 +73,23 @@
 
                                                             </td>
                                                             <td style="padding:0;Margin:0;text-align:center" class="orderSumPrice">
-                                                                {{ orderItem.unitGrossPrice | money(true, order.currencyIsoCode) }}
+                                                                {% if orderItem.canceledAmount > 0 %}
+                                                                {% set availableItems =  orderItem.canceledAmount - orderItem.quantity  %}
+                                                                    {% if(availableItems != 0) %}
+                                                                        {% if (itemStatus == 'canceled') %}
+                                                                            {{ orderItem.unitGrossPrice | money(true, order.currencyIsoCode) }}
+                                                                        {% else %}
+                                                                            {% if (orderItem.pricePerKg != null and orderItem.newWeight != null) %}
+                                                                                {% set weightUnitPrice = (orderItem.unitGrossPrice / orderItem.canceledAmount) / 100 %}
+                                                                                {{ weightUnitPrice | money(true, order.currencyIsoCode) }}
+                                                                            {% else  %}
+                                                                                {{ orderItem.unitGrossPrice | money(true, order.currencyIsoCode) }}
+                                                                            {% endif %}
+                                                                        {% endif %}
+                                                                    {% else %}
+                                                                        {{ orderItem.unitGrossPrice | money(true, order.currencyIsoCode) }}
+                                                                    {% endif %}
+                                                                {% endif %}
                                                             </td>
                                                             <td style="padding:0;Margin:0;width:80px;text-align:right" class="orderSumPrice">
                                                                 <strong>{{ orderItem.sumPrice | money(true, order.currencyIsoCode) }}</strong>
