@@ -11,6 +11,8 @@
                     <dd>{{ order.email }}</dd>
                     <dt>{{ 'Phone' | trans }}</dt>
                     <dd>{{ order.billingAddress.phone }}</dd>
+                    <dt>{{ 'Mobile' | trans }}</dt>
+                    <dd>{{ order.billingAddress.cellPhone }}</dd>
                     <dt>{{ 'Previous orders count' | trans }}</dt>
                     <dd>{{ order.totalOrderCount }}</dd>
                     <dt>{{ 'Billing address' | trans }}</dt>

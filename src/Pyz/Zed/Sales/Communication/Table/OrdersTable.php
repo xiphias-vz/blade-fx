@@ -173,6 +173,7 @@ class OrdersTable extends SprykerOrdersTable
             SpySalesOrderTableMap::COL_CUSTOMER_REFERENCE => 'Customer Full Name',
             SpySalesOrderTableMap::COL_EMAIL => 'Email',
             static::ADDRESS_PHONE => 'Phone',
+            SpySalesOrderAddressTableMap::COL_CELL_PHONE => 'Mobile',
             static::ITEM_STATE_NAMES_CSV => 'Order State',
             static::GRAND_TOTAL => 'Grand Total',
             static::NUMBER_OF_ORDER_ITEMS => 'Number of Items',
@@ -263,6 +264,7 @@ class OrdersTable extends SprykerOrdersTable
                 SpySalesOrderTableMap::COL_CUSTOMER_REFERENCE => $this->formatCustomer($item),
                 SpySalesOrderTableMap::COL_EMAIL => $this->formatEmailAddress($item[SpySalesOrderTableMap::COL_EMAIL]),
                 static::ADDRESS_PHONE => $this->getAddressPhone($item),
+                SpySalesOrderAddressTableMap::COL_CELL_PHONE => $this->getAddressMobilePhone($item),
                 static::ITEM_STATE_NAMES_CSV => $this->groupItemStateNames($item[OrdersTableQueryBuilder::FIELD_ITEM_STATE_NAMES_CSV]),
                 static::GRAND_TOTAL => $this->getGrandTotal($item),
                 static::NUMBER_OF_ORDER_ITEMS => $item[OrdersTableQueryBuilder::FIELD_NUMBER_OF_ORDER_ITEMS],
@@ -305,6 +307,16 @@ class OrdersTable extends SprykerOrdersTable
     protected function getAddressPhone(array $item): string
     {
         return $item[static::ADDRESS_PHONE][SpySalesOrderAddressTableMap::COL_PHONE] ?? 'No Billing address or Phone was set';
+    }
+
+    /**
+     * @param array $item
+     *
+     * @return string
+     */
+    protected function getAddressMobilePhone(array $item): string
+    {
+        return $item[static::ADDRESS_PHONE][SpySalesOrderAddressTableMap::COL_CELL_PHONE] ?? 'No Billing address or Phone was set';
     }
 
     /**
