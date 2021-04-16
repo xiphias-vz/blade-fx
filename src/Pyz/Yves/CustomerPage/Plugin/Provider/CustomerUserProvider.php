@@ -173,6 +173,9 @@ class CustomerUserProvider extends SprykerCustomerUserProvider
         $context = stream_context_create($options);
         $result = file_get_contents($url, false, $context);
 
+        $profile = new ProfileController();
+        $profile->processProfileUpdateByTransfer($customerTransfer, false);
+
         return JSON::parse($result);
     }
 

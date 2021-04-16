@@ -61,6 +61,7 @@ class ProfileController extends SprykerShopProfileController
             ->setCity($customerTransfer->getCity())
             ->setZipCode($customerTransfer->getZipCode())
             ->setPhone($customerTransfer->getPhone())
+            ->setCellPhone($customerTransfer->getMobilePhoneNumber())
             ->setFirstName($customerTransfer->getFirstName())
             ->setLastName($customerTransfer->getLastName())
             ->setEmail($customerTransfer->getEmail());

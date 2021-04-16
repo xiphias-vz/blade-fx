@@ -52,12 +52,19 @@ class AddressStep extends SprykerAddressStep
             $newCustomer->setCity($billingAddress->getCity());
             $newCustomer->setPhone($phone);
             $newCustomer->setMobilePhoneNumber($cellPhone);
+            $billingAddress->setPhone($phone);
+            $billingAddress->setCellPhone($cellPhone);
+            $quoteTransfer->setBillingAddress($billingAddress);
 
             $quoteTransfer->setCustomer($newCustomer);
         } else {
             $customer = $quoteTransfer->getCustomer();
             $customer->setPhone($phone);
             $customer->setMobilePhoneNumber($cellPhone);
+            $billingAddress = $quoteTransfer->getBillingAddress();
+            $billingAddress->setPhone($phone);
+            $billingAddress->setCellPhone($cellPhone);
+            $quoteTransfer->setBillingAddress($billingAddress);
             $quoteTransfer->setCustomer($customer);
         }
 
