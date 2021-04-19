@@ -8,6 +8,7 @@
 namespace StoreApp\Zed\Picker\Communication\Controller;
 
 use ArrayObject;
+use Exception;
 use Generated\Shared\Transfer\CollectOrderItemTransfer;
 use Generated\Shared\Transfer\CollectOrderTransfer;
 use Generated\Shared\Transfer\ItemTransfer;
@@ -311,21 +312,33 @@ class CollectByCustomerController extends AbstractController
             ->findOrderByIdSalesOrderForStoreApp($idSalesOrder);
         $userTransfer = $this->getCurrentUser($request);
 
-        if (!$this->getFactory()->getPermissionAccessFacade()->isAccessAllowed(
-            $salesOrderTransfer,
-            $userTransfer,
-            [OmsConfig::STORE_STATE_READY_FOR_COLLECT_BY_CUSTOMER]
-        )) {
+        try {
+            $isAccessAllowed = $this->getFactory()->getPermissionAccessFacade()->isAccessAllowed(
+                $salesOrderTransfer,
+                $userTransfer,
+                [OmsConfig::STORE_STATE_READY_FOR_COLLECT_BY_CUSTOMER]
+            );
+        } catch (Exception $e) {
+            $this->addErrorMessage($e->getMessage());
+
+            return $this->redirectResponse(PickerConfig::URL_COLLECT_BY_CUSTOMER_LIST);
+        }
+
+        if (!$isAccessAllowed) {
             $this->addErrorMessage(MessagesConfig::MESSAGE_PERMISSION_FAILED);
 
             return $this->redirectResponse(PickerConfig::URL_COLLECT_BY_CUSTOMER_LIST);
         }
 
-        $idSalesOrderItems = $this->getIdOrderItems($salesOrderTransfer);
-        $this->getFacade()->markOrderItemsAsCollectedByCustomer(
-            $idSalesOrderItems,
-            $userTransfer->getIdUser()
-        );
+        try {
+            $idSalesOrderItems = $this->getIdOrderItems($salesOrderTransfer);
+            $this->getFacade()->markOrderItemsAsCollectedByCustomer(
+                $idSalesOrderItems,
+                $userTransfer->getIdUser()
+            );
+        } catch (Exception $e) {
+            $this->addErrorMessage($e->getMessage());
+        }
 
         return $this->redirectResponse(PickerConfig::URL_COLLECT_BY_CUSTOMER_LIST);
     }
