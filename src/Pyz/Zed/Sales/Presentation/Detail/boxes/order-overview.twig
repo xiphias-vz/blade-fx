@@ -162,7 +162,27 @@
                 </div>
             </div>
 
-            <div class="col-md-12" style="display: none;">
+                <div>
+                        <div id="myModal" class="modal">
+
+                            <div class="popUp-modal-content">
+                                <div class="popUp-modal-header">
+                                    <span class="close">&times;</span>
+                                    <h3>Bestellung stornieren</h3>
+                                </div>
+                                <div class="popUp-modal-body">
+                                    <p>Möchten Sie die Bestellung: {{ order.orderReference }} wirklich stornieren?</p>
+                                    <hr/>
+                                </div>
+                                <div class="popUp-modal-footer">
+                                    <button type="button" id="modalConfirmNo" class="btn btn-invertedPrimary btn-sm">Nein, abbrechen</button>
+                                    <button type="button" id="modalConfirmYes" class="btn btn-customPrimary btn-sm">Ja, Bestellung stornieren</button>
+                                </div>
+                            </div>
+                        </div>
+                </div>
+
+            <div id="omsActions" class="col-md-12">
                 {% embed '@Gui/Partials/widget.twig' with { widget_title: 'Trigger all matching states inside this order' } %}
                     {% block widget_content %}
                         {% include '@Oms/RenderForm/_partial/order-actions.twig' with {
@@ -175,5 +195,87 @@
                 {% endembed %}
             </div>
         </div>
+
+        <script type="text/javascript">
+
+            document.addEventListener('DOMContentLoaded', function(event) {
+
+                    var actionButtons = '{{ buttons | json_encode | raw }}';
+                    actionButtons = JSON.parse(actionButtons); // to convert json into a javascript object
+                    if(actionButtons.length > 0){
+
+                        if(actionButtons.includes("Cancel")){
+                            var btnOmsActions = document.getElementById("omsActions");
+                            let omsActionForms = btnOmsActions.querySelectorAll("form.oms-trigger-form");
+
+                            for(let i = 0;i<omsActionForms.length;i++){
+                                let action = omsActionForms[i].getAttribute("action");
+                                if(action.includes("/oms/trigger/submit-trigger-event-for-order?event=cancel")){
+                                    omsActionForms[i].style.display = "none";
+                                }
+                                if(i == omsActionForms.length - 1){
+                                    var btnText = omsActionForms[i];
+                                    var node = '<button type="button" id="oms_trigger_form_submit_cancel" name="oms_trigger_formCancel[submit]" class="btn btn-danger btn-sm">Cancel</button>';
+                                    var last = btnOmsActions.querySelector(".ibox-content");
+                                    last.insertAdjacentHTML('beforeend', node);
+                                }
+                            }
+
+
+                        }
+
+                    }
+
+                    // Get the modal
+                    var modal = document.getElementById("myModal");
+
+                    // Get the button that opens the modal
+                    var btn = document.getElementById("oms_trigger_form_submit_confirm selecting containers");
+
+                    var btnCancel = document.getElementById("oms_trigger_form_submit_cancel");
+
+                    // Get the <span> element that closes the modal
+                    var span = document.getElementsByClassName("close")[0];
+
+                    // Get the <button> element that closes the modal
+                    var btnConfirmNo = document.getElementById("modalConfirmNo");
+
+                    // Get the <button> element that cancels the order
+                    var btnConfirmYes = document.getElementById("modalConfirmYes");
+
+
+
+                    if(btnCancel != null){
+
+
+                        // When the user clicks on the button, open the modal
+                        btnCancel.onclick = function() {
+                            modal.style.display = "block";
+                        }
+                    }
+
+                    // When the user clicks on <span> (x), close the modal
+                    span.onclick = function() {
+                        modal.style.display = "none";
+                    }
+
+                    // When the user clicks on button "Nein" inside of pop up, close the modal
+                    btnConfirmNo.onclick = function() {
+                        modal.style.display = "none";
+                    }
+
+                    btnConfirmYes.onclick = function() {
+                        let omsActionForms = btnOmsActions.querySelectorAll("form.oms-trigger-form");
+
+                        for(let i = 0;i<omsActionForms.length;i++){
+                            let action = omsActionForms[i].getAttribute("action");
+                            if(action.includes("/oms/trigger/submit-trigger-event-for-order?event=cancel")){
+                                omsActionForms[i].submit();
+                                return;
+                            }
+                        }
+                    }
+            })
+        </script>
     {% endblock %}
 {% endembed %}

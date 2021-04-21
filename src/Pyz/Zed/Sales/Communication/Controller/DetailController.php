@@ -53,14 +53,25 @@ class DetailController extends SprykerDetailController
         $isCurrentUserSupervisorOrAdmin = $this->isCurrentUserSupervisorOrAdmin();
 
         $buttons = [];
-        foreach ($events as $event) {
+        foreach ($events as $key => $event) {
             if (stripos($event, "cancel") === 0) {
                 if ($isCurrentUserSupervisor) {
                     array_push($buttons, "Cancel");
                 }
+                unset($events[$key]);
+            } elseif (stripos($event, "Zurücksetzen") === 0) {
+                if (in_array("picked", $distinctOrderStates) == false && in_array("picked, canceled", $distinctOrderStates) == false) {
+                    unset($events[$key]);
+                } else {
+                    if ($isCurrentUserSupervisor) {
+                        array_push($buttons, $event);
+                    }
+                }
             } else {
                 if (stripos($event, "confirm") === 0) {
-                        array_push($buttons, $event);
+                    array_push($buttons, $event);
+                } else {
+                    array_push($buttons, $event);
                 }
             }
         }
@@ -90,6 +101,7 @@ class DetailController extends SprykerDetailController
         $address = $groupedOrderItems[0]->getShipment()->getShippingAddress();
         $shipping = $groupedOrderItems[0]->getShipment();
         $payments = $orderTransfer->getPayments();
+        $orderState = $groupedOrderItems[0]["state"]["name"];
 
         $pickZones = [];
         $itemDataArray = [];
@@ -142,6 +154,7 @@ class DetailController extends SprykerDetailController
             'itemDataArray' => $itemDataArray,
             'userGroup' => $userGroup,
             'buttons' => $buttons,
+            'orderState' => $orderState,
         ], $blockResponseData);
     }
 
@@ -166,25 +179,6 @@ class DetailController extends SprykerDetailController
     /**
      * @return bool
      */
-    protected function isCurrentUserSupervisor(): bool
-    {
-        $userFacade = $this->getFactory()->getUserFacade();
-
-        $idUser = $userFacade->getCurrentUser()->getIdUser();
-        $userGroups = $this->getFactory()->getAclFacade()->getUserGroups($idUser);
-
-        foreach ($userGroups->getGroups() as $group) {
-            if ($group->getName() === AclConstants::SUPERVISOR_GROUP) {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-    /**
-     * @return bool
-     */
     protected function isCurrentUserSupervisorOrAdmin(): bool
     {
         $userFacade = $this->getFactory()->getUserFacade();
@@ -196,6 +190,25 @@ class DetailController extends SprykerDetailController
             if ($group->getName() === AclConstants::SUPERVISOR_GROUP) {
                 return true;
             } elseif ($group->getName() === AclConstants::ROOT_GROUP) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * @return bool
+     */
+    protected function isCurrentUserSupervisor(): bool
+    {
+        $userFacade = $this->getFactory()->getUserFacade();
+
+        $idUser = $userFacade->getCurrentUser()->getIdUser();
+        $userGroups = $this->getFactory()->getAclFacade()->getUserGroups($idUser);
+
+        foreach ($userGroups->getGroups() as $group) {
+            if ($group->getName() === AclConstants::SUPERVISOR_GROUP) {
                 return true;
             }
         }

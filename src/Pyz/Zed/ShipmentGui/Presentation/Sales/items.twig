@@ -1,21 +1,6 @@
 {% embed '@Gui/Partials/widget.twig' with { widget_title: 'Order Items' } %}
     {% block widget_content %}
         {% for shipmentOrderItems in groupedOrderItemsByShipment %}
-            {% if eventsGroupedByShipment[shipmentOrderItems.shipment.idSalesShipment] is defined %}
-                {% embed '@Gui/Partials/widget.twig' with { widget_title: 'Trigger all matching states of order inside this shipment' } %}
-                    {% block widget_content %}
-                        <div class="sales-order-item-group-element" data-group-key="{{ shipmentOrderItems.shipment.idSalesShipment }}">
-                            {% include '@Oms/RenderForm/_partial/order-actions.twig' with {
-                                redirectUrl: changeStatusRedirectUrl,
-                                idSalesOrder: order.idSalesOrder,
-                                pickingZone: null,
-                                events: eventsGroupedByShipment[shipmentOrderItems.shipment.idSalesShipment],
-                            } only %}
-                        </div>
-                    {% endblock %}
-                {% endembed %}
-            {% endif %}
-
             <table id="order-item-list" class="footable table toggle-arrow-tiny order-group-items-table-{{ shipmentOrderItems.shipment.idSalesShipment }}" data-qa="order-item-list">
                 <thead>
                     <tr class="text-left" style="background: grey;color: #FFFFFF">
