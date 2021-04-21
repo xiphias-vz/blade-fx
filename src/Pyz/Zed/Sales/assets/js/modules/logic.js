@@ -6,6 +6,25 @@
 'use strict';
 
 $(document).ready(function () {
+
+    const pickZones = document.getElementById('list1');
+    const timeslots = document.getElementById('list2');
+    pickZones.getElementsByClassName('anchor')[0].onclick = function(evt) {
+        if (pickZones.classList.contains('visible'))
+            pickZones.classList.remove('visible');
+        else
+            pickZones.classList.add('visible');
+    }
+
+    timeslots.getElementsByClassName('anchor')[0].onclick = function(evt) {
+        if (timeslots.classList.contains('visible'))
+            timeslots.classList.remove('visible');
+        else
+            timeslots.classList.add('visible');
+    }
+
+    console.log("ready");
+
     $('.sales-order-item-group-element button').click(function(e) {
         e.preventDefault();
         var keyItemGroup = $(this).closest('.sales-order-item-group-element').data('group-key');
@@ -82,6 +101,7 @@ $(document).ready(function () {
 
         event.preventDefault();
     });
+
 });
 window.addEventListener('DOMContentLoaded', () => {
     const table = document.querySelector('#order-item-list');

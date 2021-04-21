@@ -37,6 +37,8 @@ class SalesCommunicationFactory extends SprykerSalesCommunicationFactory
             $this->getUserFacade(),
             $this->getAclFacade(),
             $this->getConfig(),
+            $this->getPickingZoneFacade(),
+            $this->getFacade(),
             $this->getSalesTablePlugins()
         );
     }

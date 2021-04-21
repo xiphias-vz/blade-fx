@@ -21,6 +21,7 @@ use Pyz\Zed\Sales\Communication\Plugin\OrderItemPickZoneExpanderPreSavePlugin;
 use Pyz\Zed\Sales\Communication\Plugin\OrderItemStockProductExpanderPreSavePlugin;
 use Pyz\Zed\Sales\Communication\Plugin\OrderStatusHydratorOrderPlugin;
 use Pyz\Zed\Sales\Communication\Plugin\ProductNumberOrderItemExpanderPreSavePlugin;
+use Pyz\Zed\TimeSlot\Business\TimeSlotFacadeInterface;
 use Pyz\Zed\TimeSlot\Communication\Plugin\TimeSlotStorageWriterPostSavePlugin;
 use Spryker\Zed\Acl\Business\AclFacadeInterface;
 use Spryker\Zed\Customer\Communication\Plugin\Sales\CustomerOrderHydratePlugin;
@@ -52,6 +53,7 @@ class SalesDependencyProvider extends SprykerSalesDependencyProvider
     public const SERVICE_DATE_TIME_WITH_ZONE = 'SERVICE_DATE_TIME_WITH_ZONE';
     public const FACADE_PRODUCT = 'FACADE_PRODUCT';
     public const FACADE_ACL = 'FACADE_ACL';
+    public const FACADE_TIME_SLOTS_ORDER_OVERVIEW = 'FACADE_TIME_SLOTS';
 
     public const FACADE_MERCHANT_SALES_ORDER = 'FACADE_MERCHANT_SALES_ORDER';
     public const HYDRATE_ORDER_PLUGINS_FOR_STORE_APP = 'HYDRATE_ORDER_PLUGINS_FOR_STORE_APP';
@@ -89,6 +91,7 @@ class SalesDependencyProvider extends SprykerSalesDependencyProvider
         $container = $this->addBaseOmsFacade($container);
         $container = $this->addAclFacade($container);
         $container = $this->addPickingZoneFacade($container);
+        $container = $this->addTimeSlotFacade($container);
 
         return $container;
     }
@@ -102,6 +105,20 @@ class SalesDependencyProvider extends SprykerSalesDependencyProvider
     {
         $container->set(static::FACADE_PICKING_ZONE, function (Container $container) {
             return $container->getLocator()->pickingZone()->facade();
+        });
+
+        return $container;
+    }
+
+    /**
+     * @param \Spryker\Zed\Kernel\Container $container
+     *
+     * @return \Spryker\Zed\Kernel\Container
+     */
+    protected function addTimeSlotFacade(Container $container): Container
+    {
+        $container->set(static::FACADE_TIME_SLOTS_ORDER_OVERVIEW, function (Container $container): TimeSlotFacadeInterface {
+            return $container->getLocator()->timeSlot()->facade();
         });
 
         return $container;

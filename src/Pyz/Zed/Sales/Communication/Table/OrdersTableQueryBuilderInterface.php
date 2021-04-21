@@ -28,4 +28,37 @@ interface OrdersTableQueryBuilderInterface extends SprykerOrdersTableQueryBuilde
      * @return \Orm\Zed\Sales\Persistence\SpySalesOrderQuery
      */
     public function applyMerchantReferenceFilter(SpySalesOrderQuery $query, string $merchantReference): SpySalesOrderQuery;
+
+    /**
+     * @param \Orm\Zed\Sales\Persistence\SpySalesOrderQuery $query
+     * @param \DateTime $dateFrom
+     * @param \DateTime $dateTo
+     *
+     * @return \Orm\Zed\Sales\Persistence\SpySalesOrderQuery
+     */
+    public function applyFilterDateBetween(SpySalesOrderQuery $query, DateTime $dateFrom, DateTime $dateTo): SpySalesOrderQuery;
+
+    /**
+     * @param \Orm\Zed\Sales\Persistence\SpySalesOrderQuery $query
+     * @param string $storeStatus
+     *
+     * @return \Orm\Zed\Sales\Persistence\SpySalesOrderQuery
+     */
+    public function applyFilterByState(SpySalesOrderQuery $query, string $storeStatus): SpySalesOrderQuery;
+
+    /**
+     * @param \Orm\Zed\Sales\Persistence\SpySalesOrderQuery $query
+     * @param array $pickZones
+     *
+     * @return \Orm\Zed\Sales\Persistence\SpySalesOrderQuery
+     */
+    public function applyFilterByPickZone(SpySalesOrderQuery $query, array $pickZones): SpySalesOrderQuery;
+
+    /**
+     * @param \Orm\Zed\Sales\Persistence\SpySalesOrderQuery $query
+     * @param array $timeSlots
+     *
+     * @return \Orm\Zed\Sales\Persistence\SpySalesOrderQuery
+     */
+    public function applyFilterByTimeSlots(SpySalesOrderQuery $query, array $timeSlots): SpySalesOrderQuery;
 }
