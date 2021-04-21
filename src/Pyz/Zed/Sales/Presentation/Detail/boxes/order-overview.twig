@@ -1,91 +1,168 @@
 {% embed '@Gui/Partials/widget.twig' with { widget_title: 'checkout.order.overview' | trans } %}
     {% block widget_content %}
         <div class="row">
-            <div class="col-xs-12 col-md-6">
+            <input type="hidden" id="isCurrentUserSupervisorOrAdmin" value="{{ isCurrentUserSupervisorOrAdmin }}">
+            <div class="col-xs-12 col-md-4" style="background: #f7f7f7">
+                <h3>{{ 'Bestellinformationen' | trans }}</h3>
                 <div class="bottom-indent">
                     <dl>
                         <dt>{{ 'Order Reference' | trans }}</dt>
-                        <dd>{{ order.orderReference }}</dd>
+                        <dd style="margin-bottom: 15px">{{ order.orderReference }}</dd>
                         {% if order.collectNumber %}
-                        <dt>{{ 'Collect Number' | trans }}</dt>
-                        <dd>{{ order.collectNumber }}</dd>
+                            <dt>{{ 'Collect Number' | trans }}</dt>
+                            <dd style="margin-bottom: 15px">{{ order.collectNumber }}</dd>
                         {% endif %}
-                        <dt>{{ 'Order date' | trans }}</dt>
-                        <dd>{{ order.createdAt | formatDateTime }}</dd>
-                        <dt>{{ 'Unique Product Quantity' | trans }}</dt>
-                        <dd>{{ order.uniqueProductQuantity }}</dd>
+                            <dt>{{ 'Angefratges Lieferdatum' | trans }}:</dt>
+                            <dd>{{ requestDeliveryDate }}</dd>
+                        <div style="height: 2px;background: lightgrey;width: 100%;margin: 10px 0px"></div>
                         <dt>{{ 'Container Code -> Shelf Code' | trans }}</dt>
                         {% for pickingSalesOrder in order.pickingSalesOrderCollection.pickingSalesOrders %}
                             <dd>{{ pickingSalesOrder.containerCode ~ ' -> ' ~ pickingSalesOrder.shelfCode}}</dd>
                         {% endfor %}
-                        <hr>
-                        <dt>{{ 'Merchant Address' | trans }}</dt>
-                        <dd>{{ order.merchantName }}</dd>
-                        <dt>{{ 'Merchant Region Number' | trans }}</dt>
-                        <dd>{{ order.merchantRegionNumber }}</dd>
-                        <dt>{{ 'Merchant Number' | trans }}</dt>
-                        <dd>{{ order.merchantFilialNumber }}</dd>
+                        {% if order.cartNote %}
+                            <dt style="margin-top: 15px">{{ 'Customer Comment' | trans }}</dt>
+                            <dd>{{ order.cartNote }}</dd>
+                        {% endif %}
                     </dl>
                 </div>
             </div>
 
-            <div class="col-xs-12 col-md-6 bottom-indent">
-                <p><b>{{ 'Totals' | trans }}</b></p>
-
+            <div class="col-xs-12 col-md-8 bottom-indent">
                 <div class="row">
-                    {% for orderItem in groupedOrderItems %}
-                        <div class="col-sm-10"><p>{{ orderItem.name }} x {{ orderItem.quantity }}</p></div>
-                        <div class="col-sm-2">{{ orderItem.sumPrice | money(true, order.currencyIsoCode) }}</div>
-
-                        {% for orderItemOption in orderItem.productOptions %}
-                            <div class="col-sm-10"><p>+ <span class="label">{{ 'Option' | trans }}</span> {{ orderItemOption.value }}</p></div>
-                            <div class="col-sm-2">{{ orderItemOption.sumPrice | money(true, order.currencyIsoCode) }}</div>
+                    <div class="col-lg-4" style="margin-left: 60px">
+                        <h3>{{ 'Customer Information' | trans }}</h3>
+                        {% if customerTransfer and customerTransfer.firstName and customerTransfer.lastName %}
+                            <div style="margin-bottom: 15px;margin-top: 15px">
+                                <span style="font-weight: bold">{{ 'Name' | trans }}</span><br/>
+                                {{ customerTransfer.firstName }} {{ customerTransfer.lastName }}
+                            </div>
+                        {% endif %}
+                        {% if address and address.phone %}
+                            <div style="margin-bottom: 15px">
+                                <span style="font-weight: bold">{{ 'Phone Number' | trans }}</span><br/>
+                                <div>{{ address.phone }}</div>
+                            </div>
+                        {% endif %}
+                        {% if customerTransfer and customerTransfer.email %}
+                            <div style="margin-bottom: 15px">
+                                <span style="font-weight: bold">{{ 'Email' | trans }}</span><br/>
+                                <div>{{ customerTransfer.email }}</div>
+                            </div>
+                        {% endif %}
+                        <div style="margin-bottom: 15px">
+                            <span style="font-weight: bold">{{ 'Billing address' | trans }}</span>
+                            <div>{{ order.billingAddress.firstName ~ ' '
+                                ~ order.billingAddress.lastName ~ ', '
+                                ~ order.billingAddress.address1 ~ ' '
+                                ~ order.billingAddress.address2 ~ ', '
+                                ~ order.billingAddress.zipCode ~ ' '
+                                ~ order.billingAddress.city ~ ', '
+                                ~ order.billingAddress.country.name }}
+                            </div>
+                        </div>
+                        <div style="margin-bottom: 15px">
+                            <span style="font-weight: bold">{{ 'Order date' | trans }}</span>
+                            <div>
+                                {{ order.createdAt | formatDateTime }}
+                            </div>
+                        </div>
+                        <div style="margin-bottom: 15px">
+                            <span style="font-weight: bold">{{ 'Previous orders count' | trans }}</span>
+                            <div>{{ order.totalOrderCount }}</div>
+                        </div>
+                        <div style="margin-bottom: 15px">
+                            <span style="font-weight: bold">{{ 'Reference' | trans }}</span>
+                            <div><a href="{{ url('/customer/view', {'id-customer': order.fkCustomer}) }}" target="_blank">{{ order.customerReference }}</a></div>
+                        </div>
+                        <div style="margin-bottom: 15px">
+                            <span style="font-weight: bold">{{ "Payment method" | trans }}</span>
+                            <div>
+                                {% if payments %}
+                                    {% for payment in payments %}
+                                        <span>{{ payment.paymentMethod }}</span><br/>
+                                    {% endfor %}
+                                {% endif %}
+                            </div>
+                        </div>
+                        <div style="margin-bottom: 15px">
+                            <span style="font-weight: bold">{{ "Amount" | trans }}</span>
+                            <div>
+                                {% if payments %}
+                                    {% for payment in payments %}
+                                        <span>{{ payment.amount | money(true, order.currencyIsoCode) }}</span><br/>
+                                    {% endfor %}
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4" style="margin-left: 160px">
+                        <h3>{{ 'Sonstige Informationen' | trans }}</h3>
+                        <div style="margin-bottom: 15px;margin-top: 15px">
+                            <span style="font-weight: bold">{{ 'Filiale Adresse' | trans }}</span>
+                            <div>
+                                {{ order.merchantName }}
+                            </div>
+                        </div>
+                        <div style="margin-bottom: 15px;">
+                            <span style="font-weight: bold">{{ 'Division Nummer' | trans }}</span>
+                            <div>
+                                {{ order.merchantRegionNumber }}
+                            </div>
+                        </div>
+                        <div style="margin-bottom: 15px;">
+                            <span style="font-weight: bold">{{ 'Filiale' | trans }}</span>
+                            <div>
+                                {{ order.merchantFilialNumber }}
+                            </div>
+                        </div>
+                        <div style="margin-bottom: 15px">
+                            <span style="font-weight: bold">{{ 'Delivery Address' | trans }}</span><br/>
+                            <div>
+                                {{ address.salutation
+                                ~ ' ' ~ address.firstName ~ ' '
+                                ~ address.lastName ~ ', '
+                                ~ address.address1 ~ ' '
+                                ~ address.address2 ~ ', '
+                                ~ address.additionalInfo ~ ' '
+                                ~ address.company ~ ', '
+                                ~ address.zipCode ~ ', '
+                                ~ address.city ~ ', '
+                                ~ address.country.name}}
+                            </div>
+                        </div>
+                        <div style="margin-bottom: 15px">
+                            <span style="font-weight: bold">{{ 'Delivery Method' | trans }}</span><br>
+                            <div>
+                                {{ shipping.carrier.name }}
+                            </div>
+                        </div>
+                        <div style="margin-bottom: 15px">
+                            <span style="font-weight: bold">{{ 'Shipping Method' | trans }}</span><br>
+                            <div>
+                                {{ shipping.method.name }}
+                            </div>
+                        </div>
+                        {% for blockName, externalBlock in blocksToRenderForCustomer %}
+                            {% if blockName == 'discount' %}
+                                {% set customExternalBlock = externalBlock|split('Rabatte und Gutscheine') %}
+                                <div style="margin-bottom: 15px">
+                                    <span style="font-weight: bold">{{ 'Rabatte und Gutscheine' | trans }}</span>
+                                    <div class="discount">{{ customExternalBlock[1] | raw }}</div>
+                                </div>
+                            {% endif %}
+                            {% if blockName == 'refund' %}
+                                {% set customExternalBlock = externalBlock|split('Rückerstattung') %}
+                                <div style="margin-bottom: 15px">
+                                    <span style="font-weight: bold">{{ 'Rückerstattung' | trans }}</span>
+                                    <div class="refund">{{ customExternalBlock[1] | raw }}</div>
+                                </div>
+                            {% endif %}
                         {% endfor %}
-                    {% endfor %}
-                </div>
-
-                <div class="row subtotal-row">
-                    <div class="col-sm-10"><b>{{ 'Subtotal' | trans }}</b></div>
-                    <div class="col-sm-2"><b>{{ order.totals.subtotal | money(true, order.currencyIsoCode) }}</b></div>
-                </div>
-
-                <div class="row">
-                    {% include [
-                        '@ShipmentGui/Sales/boxes/shipment-expenses.twig',
-                        '@Sales/Detail/boxes/order-overview-shipment-expenses.twig'
-                    ] %}
-
-                    {% include [
-                        '@SalesOrderThresholdGui/Sales/boxes/threshold-expenses.twig',
-                        '@Sales/Detail/boxes/order-overview-threshold-expenses.twig'
-                    ] %}
-                </div>
-
-                <div class="row">
-                    <div class="col-sm-10"><p>{{ 'Discount' | trans }}</p></div>
-                    <div class="col-sm-2"><p>{{ order.totals.discountTotal | default(0) | money(true, order.currencyIsoCode) }}</p></div>
-                </div>
-
-                <div class="row">
-                    <div class="col-sm-10"><p>{{ 'Cancelled amount' | trans }}</p></div>
-                    <div class="col-sm-2">{{ order.totals.canceledTotal | default(0) | money(true, order.currencyIsoCode) }}</div>
-                </div>
-
-                <div class="row">
-                    <div class="col-sm-12 grandTotal-row">
-                        <div class="row">
-                            <div class="col-sm-10"><p><b>{{ 'GRAND TOTAL' | trans }}</b></p></div>
-                            <div class="col-sm-2"><p><b>{{ order.totals.grandTotal | money(true, order.currencyIsoCode) }}</b></p></div>
-                        </div>
-                        <div class="row">
-                            <div class="col-sm-10"><p>{{ 'Total taxes' | trans }}</p></div>
-                            <div class="col-sm-2">{{ order.totals.taxTotal.amount | money(true, order.currencyIsoCode) }}</div>
-                        </div>
                     </div>
                 </div>
             </div>
 
-            <div class="col-md-12">
+            <div class="col-md-12" style="display: none;">
                 {% embed '@Gui/Partials/widget.twig' with { widget_title: 'Trigger all matching states inside this order' } %}
                     {% block widget_content %}
                         {% include '@Oms/RenderForm/_partial/order-actions.twig' with {

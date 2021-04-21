@@ -7,6 +7,7 @@
 
 namespace Pyz\Zed\Sales\Communication\Controller;
 
+use Pyz\Shared\Acl\AclConstants;
 use Spryker\Service\UtilText\Model\Url\Url;
 use Spryker\Zed\Sales\Communication\Controller\DetailController as SprykerDetailController;
 use Spryker\Zed\Sales\SalesConfig;
@@ -40,6 +41,7 @@ class DetailController extends SprykerDetailController
         }
 
         $userFacade = $this->getFactory()->getUserFacade();
+
         $idUser = $userFacade->getCurrentUser()->getIdUser();
         $userGroup = $this->getFactory()->getAclFacade()->getUserGroups($idUser)->getGroups()[0]->getName();
         $distinctOrderStates = $this->getFacade()->getDistinctOrderStates($idSalesOrder);
@@ -47,7 +49,34 @@ class DetailController extends SprykerDetailController
         $eventsGroupedByItem = $this->getFactory()->getOmsFacade()->getManualEventsByIdSalesOrder($idSalesOrder);
         $orderItemSplitFormCollection = $this->getFactory()->createOrderItemSplitFormCollection($orderTransfer->getItems());
         $events = $this->getFactory()->getOmsFacade()->getDistinctManualEventsByIdSalesOrder($idSalesOrder);
+        $isCurrentUserSupervisor = $this->isCurrentUserSupervisor();
+        $isCurrentUserSupervisorOrAdmin = $this->isCurrentUserSupervisorOrAdmin();
+
+        $buttons = [];
+        foreach ($events as $event) {
+            if (stripos($event, "cancel") === 0) {
+                if ($isCurrentUserSupervisor) {
+                    array_push($buttons, "Cancel");
+                }
+            } else {
+                if (stripos($event, "confirm") === 0) {
+                        array_push($buttons, $event);
+                }
+            }
+        }
+
         $blockResponseData = $this->renderSalesDetailBlocks($request, $orderTransfer);
+        $blocksToRenderForCustomer = $this->renderMultipleActions(
+            $request,
+            [
+                'discount' => '/discount/sales/list',
+                'refund' => '/refund/sales/list',
+            ],
+            $orderTransfer
+        );
+
+        $blocksToRenderForCustomer['refund'] = strip_tags($blocksToRenderForCustomer['refund']);
+        $blocksToRenderForCustomer['discount'] = strip_tags($blocksToRenderForCustomer['discount']);
 
         if ($blockResponseData instanceof RedirectResponse) {
             return $blockResponseData;
@@ -55,6 +84,12 @@ class DetailController extends SprykerDetailController
 
         $groupedOrderItems = $this->getFacade()
             ->getUniqueItemsFromOrder($orderTransfer);
+
+        $customerTransfer = $orderTransfer->getCustomer();
+        $requestDeliveryDate = $groupedOrderItems[0]->getShipment()->getRequestedDeliveryDate();
+        $address = $groupedOrderItems[0]->getShipment()->getShippingAddress();
+        $shipping = $groupedOrderItems[0]->getShipment();
+        $payments = $orderTransfer->getPayments();
 
         $pickZones = [];
         $itemDataArray = [];
@@ -91,6 +126,14 @@ class DetailController extends SprykerDetailController
             'eventsGroupedByShipment' => $eventsGroupedByShipment,
             'distinctOrderStates' => $distinctOrderStates,
             'order' => $orderTransfer,
+            'customerTransfer' => $customerTransfer,
+            'shipping' => $shipping,
+            'address' => $address,
+            'payments' => $payments,
+            'isCurrentUserSupervisor' => $isCurrentUserSupervisor,
+            'isCurrentUserSupervisorOrAdmin' => $isCurrentUserSupervisorOrAdmin,
+            'blocksToRenderForCustomer' => $blocksToRenderForCustomer,
+            'requestDeliveryDate' => $requestDeliveryDate,
             'orderItemSplitFormCollection' => $orderItemSplitFormCollection,
             'groupedOrderItems' => $groupedOrderItems,
             'changeStatusRedirectUrl' => $this->createRedirectLink($idSalesOrder),
@@ -98,6 +141,7 @@ class DetailController extends SprykerDetailController
             'itemStatusArray' => $itemStatusArray,
             'itemDataArray' => $itemDataArray,
             'userGroup' => $userGroup,
+            'buttons' => $buttons,
         ], $blockResponseData);
     }
 
@@ -117,5 +161,45 @@ class DetailController extends SprykerDetailController
         }
 
         return $events;
+    }
+
+    /**
+     * @return bool
+     */
+    protected function isCurrentUserSupervisor(): bool
+    {
+        $userFacade = $this->getFactory()->getUserFacade();
+
+        $idUser = $userFacade->getCurrentUser()->getIdUser();
+        $userGroups = $this->getFactory()->getAclFacade()->getUserGroups($idUser);
+
+        foreach ($userGroups->getGroups() as $group) {
+            if ($group->getName() === AclConstants::SUPERVISOR_GROUP) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * @return bool
+     */
+    protected function isCurrentUserSupervisorOrAdmin(): bool
+    {
+        $userFacade = $this->getFactory()->getUserFacade();
+
+        $idUser = $userFacade->getCurrentUser()->getIdUser();
+        $userGroups = $this->getFactory()->getAclFacade()->getUserGroups($idUser);
+
+        foreach ($userGroups->getGroups() as $group) {
+            if ($group->getName() === AclConstants::SUPERVISOR_GROUP) {
+                return true;
+            } elseif ($group->getName() === AclConstants::ROOT_GROUP) {
+                return true;
+            }
+        }
+
+        return false;
     }
 }

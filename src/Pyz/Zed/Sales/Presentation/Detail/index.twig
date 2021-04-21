@@ -9,6 +9,7 @@
 {% endblock %}
 
 {% block content %}
+
     <div id="order-overview">{% include '@Sales/Detail/boxes/order-overview.twig' %}</div>
     <div id="order-custom-reference">{% include '@OrderCustomReferenceGui/Sales/order-custom-reference.twig' ignore missing with {
             data: {
@@ -22,14 +23,66 @@
             '@ShipmentGui/Sales/boxes/items.twig',
             '@Sales/Detail/boxes/items.twig'
             ] %}</div>
-    {% for blockName, externalBlock in blocks %}
-        {% if externalBlock %}
-            <div id="{{ blockName }}">{{ externalBlock | raw }}</div>
-        {% endif %}
-    {% endfor %}
     {% if userGroup != 'support_center_group' %}
         <div id="comments">{% include '@Sales/Detail/boxes/comments.twig' %}</div>
     {% endif %}
+    <div class="row" style="margin:0;background: #FFFFFF">
+        <div class="col-xs-12 col-md-6 bottom-indent">
+            <p><b>{{ 'Totals' | trans }}</b></p>
+
+            <div class="row">
+                {% for orderItem in groupedOrderItems %}
+                    <div class="col-sm-10"><p>{{ orderItem.name }} x {{ orderItem.quantity }}</p></div>
+                    <div class="col-sm-2">{{ orderItem.sumPrice | money(true, order.currencyIsoCode) }}</div>
+
+                    {% for orderItemOption in orderItem.productOptions %}
+                        <div class="col-sm-10"><p>+ <span class="label">{{ 'Option' | trans }}</span> {{ orderItemOption.value }}</p></div>
+                        <div class="col-sm-2">{{ orderItemOption.sumPrice | money(true, order.currencyIsoCode) }}</div>
+                    {% endfor %}
+                {% endfor %}
+            </div>
+
+            <div class="row subtotal-row">
+                <div class="col-sm-10"><b>{{ 'Subtotal' | trans }}</b></div>
+                <div class="col-sm-2"><b>{{ order.totals.subtotal | money(true, order.currencyIsoCode) }}</b></div>
+            </div>
+
+            <div class="row">
+                {% include [
+                    '@ShipmentGui/Sales/boxes/shipment-expenses.twig',
+                    '@Sales/Detail/boxes/order-overview-shipment-expenses.twig'
+                    ] %}
+
+                {% include [
+                    '@SalesOrderThresholdGui/Sales/boxes/threshold-expenses.twig',
+                    '@Sales/Detail/boxes/order-overview-threshold-expenses.twig'
+                    ] %}
+            </div>
+
+            <div class="row">
+                <div class="col-sm-10"><p>{{ 'Discount' | trans }}</p></div>
+                <div class="col-sm-2"><p>{{ order.totals.discountTotal | default(0) | money(true, order.currencyIsoCode) }}</p></div>
+            </div>
+
+            <div class="row">
+                <div class="col-sm-10"><p>{{ 'Cancelled amount' | trans }}</p></div>
+                <div class="col-sm-2">{{ order.totals.canceledTotal | default(0) | money(true, order.currencyIsoCode) }}</div>
+            </div>
+
+            <div class="row">
+                <div class="col-sm-12 grandTotal-row">
+                    <div class="row">
+                        <div class="col-sm-10"><p><b>{{ 'GRAND TOTAL' | trans }}</b></p></div>
+                        <div class="col-sm-2"><p><b>{{ order.totals.grandTotal | money(true, order.currencyIsoCode) }}</b></p></div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-10"><p>{{ 'Total taxes' | trans }}</p></div>
+                        <div class="col-sm-2">{{ order.totals.taxTotal.amount | money(true, order.currencyIsoCode) }}</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 {% endblock %}
 
 {% block head_css %}

@@ -134,7 +134,7 @@ $chat-box-background-color: #f0f0f0;
 }
 
 img.product-image {
-  width: 150px;
+  width: 100px;
   border: 1px solid #e7eaec;
 
     &--small {
@@ -166,6 +166,16 @@ span.discounted {
     color: #aaa;
 }
 
+#order-item-list {
+    border-collapse: separate;
+    border-spacing: 0 1em;
+
+    tr {
+        td {
+            width: auto;
+        }
+    }
+}
 .table > tbody.single-item {
     border-top: none;
 }
@@ -177,6 +187,38 @@ span.discounted {
 
 .state-history {
     width: 300px;
+}
+.pickingZoneHeader {
+    position: relative;
+    border: none;
+    font-size: 16px;
+    background: #f2f2f2;
+    cursor: pointer;
+
+    .icons-holder {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+
+        .arrow {
+            border: solid black;
+            border-width: 0 2px 2px 0;
+            display: inline-block;
+            padding: 4px;
+            position: absolute;
+            right: 15px;
+        }
+
+        .right {
+            transform: rotate(-45deg);
+            -webkit-transform: rotate(-45deg);
+        }
+
+        .down {
+            transform: rotate(45deg);
+            -webkit-transform: rotate(45deg);
+        }
+    }
 }
 
 .sku {
@@ -211,6 +253,8 @@ a.edit_billing_address {
     border: none;
     font-weight:bold;
     padding-left: 4px;
+    margin: 0;
+    display: inline-block !important;
     &:focus {
         background: none;
         color:#1BBEA0;

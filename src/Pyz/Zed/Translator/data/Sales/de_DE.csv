@@ -11,14 +11,21 @@ checkout.order.overview,Bestellübersicht
 Order date,Bestelldatum
 Unique Product Quantity,Anzahl der einzigartigen Produkte
 Total taxes,Gesamtsumme Steuern
+Quantity Item,Menge/Gewicht
+Unit Price Per Piece,Stckpreis
+Price,Preis
 Trigger all matching states inside this order,Alle übereinstimmenden Stati innerhalb dieser Bestellung auslösen
 Reference,Referenz
 Previous orders count,Anzahl der vorherigen Bestellungen des Kunden
 Billing address,Rechnungsadresse
 Order Items,Auftragspositionen
 Shipmnent,Lieferung
+Customer Information,Kundeninformationen
+Sonstige Informationen,Sonstige Informationen
+Order Items,Auftragspositionen
 of,von
 Delivery Address,Lieferadresse
+Product List,Produkt
 Delivery Method,Service Methode
 Request delivery date,Angefragtes Lieferdatum
 Trigger all matching states of order inside this shipment,Alle übereinstimmenden Stati innerhalb dieser Bestellung auslösen
@@ -35,6 +42,7 @@ Merchant Address, Filiale Adresse
 Merchant Region Number, Division Nummer
 Merchant Number, Filiale Nummer
 checkout.order.order-pickZone, Kommissionierzone
+order.items,Auftragspositionen
 checkout.order.product-quantity, Menge
 checkout.order.nr, Nr
 checkout.order.ean, EAN
