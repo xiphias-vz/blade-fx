@@ -12,13 +12,20 @@
             "lowercase"
           ]
         },
-        "synonym_analyzer": {
+        "suggestion_analyzer": {
           "tokenizer": "standard",
           "filter": [
             "lowercase"
           ]
         },
-        "suggestion_analyzer": {
+        "fulltext_index_analyzer": {
+          "tokenizer": "standard",
+          "filter": [
+            "lowercase",
+            "fulltext_index_ngram_filter"
+          ]
+        },
+        "fulltext_search_analyzer": {
           "tokenizer": "standard",
           "filter": [
             "lowercase"
@@ -32,6 +39,13 @@
           "filter": [
             "lowercase"
           ]
+        }
+      },
+      "filter": {
+        "fulltext_index_ngram_filter": {
+          "type": "edge_ngram",
+          "min_gram": 2,
+          "max_gram": 20
         }
       }
     }
@@ -91,10 +105,14 @@
           "type": "keyword"
         },
         "full-text": {
-          "type": "text"
+          "type": "text",
+          "analyzer": "fulltext_index_analyzer",
+          "search_analyzer": "fulltext_search_analyzer"
         },
         "full-text-boosted": {
-          "type": "text"
+          "type": "text",
+          "analyzer": "fulltext_index_analyzer",
+          "search_analyzer": "fulltext_search_analyzer"
         },
         "string-facet": {
           "type": "nested",
@@ -153,5 +171,3 @@
     }
   }
 }
-
-

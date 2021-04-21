@@ -6,13 +6,6 @@
     },
     "analysis": {
       "analyzer": {
-        "fulltext_index_analyzer": {
-          "tokenizer": "standard",
-          "filter": [
-            "lowercase",
-            "synonym"
-          ]
-        },
         "lowercase_keyword_analyzer": {
           "tokenizer": "keyword",
           "filter": [
@@ -20,14 +13,29 @@
             "synonym"
           ]
         },
-        "synonym_analyzer": {
+        "suggestion_analyzer": {
           "tokenizer": "standard",
           "filter": [
             "lowercase",
             "synonym"
           ]
         },
-        "suggestion_analyzer": {
+        "fulltext_index_analyzer": {
+          "tokenizer": "standard",
+          "filter": [
+            "lowercase",
+            "synonym",
+            "fulltext_index_ngram_filter"
+          ]
+        },
+        "fulltext_search_analyzer": {
+          "tokenizer": "standard",
+          "filter": [
+            "lowercase",
+            "synonym"
+          ]
+        },
+        "synonym_analyzer": {
           "tokenizer": "standard",
           "filter": [
             "lowercase",
@@ -45,6 +53,11 @@
         }
       },
       "filter": {
+        "fulltext_index_ngram_filter": {
+          "type": "edge_ngram",
+          "min_gram": 2,
+          "max_gram": 20
+        },
         "synonym": {
           "type": "synonym",
           "expand": true,
@@ -488,12 +501,14 @@
           "type": "keyword"
         },
         "full-text": {
+          "type": "text",
           "analyzer": "fulltext_index_analyzer",
-          "type": "text"
+          "search_analyzer": "fulltext_search_analyzer"
         },
         "full-text-boosted": {
+          "type": "text",
           "analyzer": "fulltext_index_analyzer",
-          "type": "text"
+          "search_analyzer": "fulltext_search_analyzer"
         },
         "string-facet": {
           "type": "nested",
