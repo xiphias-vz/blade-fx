@@ -93,7 +93,7 @@
                                     {% endfor %}
                                 {% endif %}
                             </div>
-                        </div>
+                         </div>
                     </div>
                     <div class="col-lg-4" style="margin-left: 160px">
                         <h3>{{ 'Sonstige Informationen' | trans }}</h3>
@@ -161,27 +161,25 @@
                     </div>
                 </div>
             </div>
-
                 <div>
-                        <div id="myModal" class="modal">
+                    <div id="myModal" class="modal">
+                        <div class="popUp-modal-content">
+                            <div class="popUp-modal-header">
+                                <span class="close">&times;</span>
+                                <h3>Bestellung stornieren</h3>
+                            </div>
+                            <div class="popUp-modal-body">
+                                <p>Möchten Sie die Bestellung: {{ order.orderReference }} wirklich stornieren?</p>
+                                <hr/>
 
-                            <div class="popUp-modal-content">
-                                <div class="popUp-modal-header">
-                                    <span class="close">&times;</span>
-                                    <h3>Bestellung stornieren</h3>
-                                </div>
-                                <div class="popUp-modal-body">
-                                    <p>Möchten Sie die Bestellung: {{ order.orderReference }} wirklich stornieren?</p>
-                                    <hr/>
-                                </div>
-                                <div class="popUp-modal-footer">
-                                    <button type="button" id="modalConfirmNo" class="btn btn-invertedPrimary btn-sm">Nein, abbrechen</button>
-                                    <button type="button" id="modalConfirmYes" class="btn btn-customPrimary btn-sm">Ja, Bestellung stornieren</button>
-                                </div>
+                            </div>
+                            <div class="popUp-modal-footer">
+                                <button type="button" id="modalConfirmNo" class="btn btn-invertedPrimary btn-sm">Nein, abbrechen</button>
+                                <button type="button" id="modalConfirmYes" class="btn btn-customPrimary btn-sm">Ja, Bestellung stornieren</button>
                             </div>
                         </div>
+                    </div>
                 </div>
-
             <div id="omsActions" class="col-md-12">
                 {% embed '@Gui/Partials/widget.twig' with { widget_title: 'Trigger all matching states inside this order' } %}
                     {% block widget_content %}
@@ -195,6 +193,8 @@
                 {% endembed %}
             </div>
         </div>
+
+
 
         <script type="text/javascript">
 
