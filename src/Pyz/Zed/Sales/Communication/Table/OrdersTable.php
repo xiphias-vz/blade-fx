@@ -255,6 +255,7 @@ class OrdersTable extends SprykerOrdersTable
     protected function buildQuery()
     {
         $query = parent::buildQuery();
+        $query->withColumn("(select max(item_paused) from spy_sales_order_item where fk_sales_order = spy_sales_order.id_sales_order)", "isPaused");
         $dayRangeFilter = $this->request->query->get(static::DAY_RANGE_FILTER);
         $merchantReferenceFilter = $this->request->query->get(static::MERCHANT_REFERENCE_FILTER);
         $dateRangeFilter = $this->request->query->get(static::DATE_RANGE_FILTER);
@@ -272,16 +273,18 @@ class OrdersTable extends SprykerOrdersTable
             $query = $this->queryBuilder->applyFilterDateBetween($query, new DateTime(), new DateTime());
         }
 
+        if ($storeStatus === "paused") {
+            $query = $this->queryBuilder->applyFilterByPausedState($query);
+        } elseif ($storeStatus) {
+            $query = $this->queryBuilder->applyFilterByState($query, $storeStatus);
+        }
+
         if ($dayRangeFilter) {
             $query = $this->queryBuilder->applyDayRangeFilter($query, new DateTime($dayRangeFilter));
         }
 
         if ($dateRangeFilter) {
             $query = $this->queryBuilder->applyDayRangeFilter($query, new DateTime($dateRangeFilter));
-        }
-
-        if ($storeStatus) {
-            $query = $this->queryBuilder->applyFilterByState($query, $storeStatus);
         }
 
         if ($pickingZones) {
@@ -417,14 +420,10 @@ class OrdersTable extends SprykerOrdersTable
         $results = [];
 
         foreach ($queryResults as $item) {
-            $isPaused = '';
-            $orderTransfer = $this->salesFacade->findOrderByIdSalesOrder((int)$item[SpySalesOrderTableMap::COL_ID_SALES_ORDER]);
-            $orderItems = $this->salesFacade
-                ->getUniqueItemsFromOrder($orderTransfer);
-            foreach ($orderItems as $orderItem) {
-                if ($orderItem->getItemPaused() != null && $orderItem->getItemPaused() != 0) {
-                    $isPaused = ' (paused)';
-                }
+            $isPaused = $item['isPaused'];
+            $isPausedText = '';
+            if ($isPaused === "1") {
+                $isPausedText = ' (paused)';
             }
             $itemLine = [
                 SpySalesOrderTableMap::COL_ID_SALES_ORDER => $item[SpySalesOrderTableMap::COL_ID_SALES_ORDER],
@@ -435,7 +434,7 @@ class OrdersTable extends SprykerOrdersTable
                 SpySalesOrderTableMap::COL_EMAIL => $this->formatEmailAddress($item[SpySalesOrderTableMap::COL_EMAIL]),
                 static::ADDRESS_PHONE => $this->getAddressPhone($item),
                 SpySalesOrderAddressTableMap::COL_CELL_PHONE => $this->getAddressMobilePhone($item),
-                static::ITEM_STATE_NAMES_CSV => $this->groupPyzItemStateNames($item[OrdersTableQueryBuilder::FIELD_ITEM_STATE_NAMES_CSV], $isPaused),
+                static::ITEM_STATE_NAMES_CSV => $this->groupPyzItemStateNames($item[OrdersTableQueryBuilder::FIELD_ITEM_STATE_NAMES_CSV], $isPausedText),
                 static::GRAND_TOTAL => $this->getGrandTotal($item),
                 static::NUMBER_OF_ORDER_ITEMS => $item[OrdersTableQueryBuilder::FIELD_NUMBER_OF_ORDER_ITEMS],
                 static::URL => implode(' ', $this->createActionUrls($item)),

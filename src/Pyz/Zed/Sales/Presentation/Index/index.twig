@@ -176,6 +176,7 @@
                             <option value="" disabled selected>alle</option>
                             <option value="ready for picking">ready for picking</option>
                             <option value="picked">picked</option>
+                            <option value="paused">paused</option>
                             <option value="ready for collection">ready for collection</option>
                             <option value="order invoiced">order invoiced</option>
                             <option value="cancelled">cancelled</option>
@@ -531,18 +532,18 @@
             }
 
             else if(operation === 'merchant-filter') {
-                filterState = { ...filterState, merchant: '' }
+                filterState = { ...filterState, merchant: '', merchantID: '' }
                 event.target.parentElement.remove();
-                submitFilters('merchant');
+                submitFilters('merchant-reference-filter');
 
             }
 
             else if(operation === 'status-filter') {
                 filterState = { ...filterState, storeStatus: '' }
                 event.target.parentElement.remove();
-                submitFilters('status')
+                submitFilters('state-status-filter')
             }
-            let isFilterStateEmpty = filterState.pickZones.length === 0 && filterState.timeSlots.length === 0 && filterState.storeStatus === '';
+            let isFilterStateEmpty = filterState.pickZones.length === 0 && filterState.timeSlots.length === 0 && filterState.storeStatus === '' && filterState.merchant === '';
 
             if(isFilterStateEmpty) {
                 clearAllFiltersDOM.style.visibility = 'hidden';
@@ -558,16 +559,23 @@
                 case 'timeSlots':
                     queryParams.set(nameOfParameter, encodeURIComponent(JSON.stringify(filterState.timeSlots)))
                     break;
-                case 'merchant':
+                case 'merchant-reference-filter':
                     queryParams.set(nameOfParameter, filterState.merchant);
                     break;
-                case 'status':
-                    queryParams.set(nameOfParameter, filterState.status)
+                case 'state-status-filter':
+                    queryParams.set(nameOfParameter, filterState.storeStatus)
                     break;
                 default:
                     break;
             }
-            window.location = location.pathname + '?' + queryParams.toString();
+
+            let isFilterStateEmpty = filterState.pickZones.length === 0 && filterState.timeSlots.length === 0 && filterState.storeStatus === '' && filterState.merchant === '';
+            if(isFilterStateEmpty) {
+                window.location = location.pathname;
+            }
+            else {
+                window.location = location.pathname + '?' + queryParams.toString();
+            }
         }
 
         function clearAllFilters() {

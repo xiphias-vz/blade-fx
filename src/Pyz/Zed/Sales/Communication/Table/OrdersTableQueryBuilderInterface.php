@@ -48,6 +48,13 @@ interface OrdersTableQueryBuilderInterface extends SprykerOrdersTableQueryBuilde
 
     /**
      * @param \Orm\Zed\Sales\Persistence\SpySalesOrderQuery $query
+     *
+     * @return \Orm\Zed\Sales\Persistence\SpySalesOrderQuery
+     */
+    public function applyFilterByPausedState(SpySalesOrderQuery $query): SpySalesOrderQuery;
+
+    /**
+     * @param \Orm\Zed\Sales\Persistence\SpySalesOrderQuery $query
      * @param array $pickZones
      *
      * @return \Orm\Zed\Sales\Persistence\SpySalesOrderQuery

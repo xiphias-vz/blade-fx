@@ -108,8 +108,10 @@ window.addEventListener('DOMContentLoaded', () => {
     const pickingZoneHeaders = document.querySelectorAll('.pickingZoneHeader');
     const headers = document.querySelectorAll('#order-item-list th[data-pickzone]')
     const tableRows = document.querySelectorAll('#order-item-list tr')
-    const pickingZoneItems = document.querySelectorAll('#order-item-list tr[data-pickzone-item]')
-    const isCurrentUserSupervisorOrAdmin = document.querySelector("#isCurrentUserSupervisorOrAdmin").value;
+    const pickingZoneItems = document.querySelectorAll('#order-item-list tr[data-pickzone-item]');
+    let isCurrentUserSupervisorOrAdmin;
+    if(document.querySelector("#isCurrentUserSupervisorOrAdmin") !== null)
+        isCurrentUserSupervisorOrAdmin = document.querySelector("#isCurrentUserSupervisorOrAdmin").value;
     let visibleHeader = null;
     for(let i = 0; i < headers.length; i++) {
         headers[i].parentElement.addEventListener('click', (e) => toggleItemsGroupedByPickingZone(headers[i].parentElement, e));

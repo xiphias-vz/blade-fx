@@ -94,6 +94,17 @@ class OrdersTableQueryBuilder extends SprykerOrdersTableQueryBuilder implements 
 
     /**
      * @param \Orm\Zed\Sales\Persistence\SpySalesOrderQuery $query
+     *
+     * @return \Orm\Zed\Sales\Persistence\SpySalesOrderQuery
+     */
+    public function applyFilterByPausedState(SpySalesOrderQuery $query): SpySalesOrderQuery
+    {
+        return $query
+            ->where(SpySalesOrderTableMap::COL_ID_SALES_ORDER . " in (select i.fk_sales_order from spy_sales_order_item i where i.item_paused = 1)");
+    }
+
+    /**
+     * @param \Orm\Zed\Sales\Persistence\SpySalesOrderQuery $query
      * @param array $pickZones
      *
      * @return \Orm\Zed\Sales\Persistence\SpySalesOrderQuery
