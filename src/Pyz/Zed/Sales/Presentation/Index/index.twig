@@ -352,7 +352,6 @@
         function saveMultiSelectedFields(parent, fieldToSave) {
             const allFields = parent.querySelectorAll('.' + fieldToSave);
             let activeFields = [];
-
             for(let i = 0; i < allFields.length; i++) {
                let isFieldSelected = allFields[i].firstElementChild.checked;
                let activeValue = allFields[i].firstElementChild.value;
@@ -368,7 +367,7 @@
                else {
                    if(fieldToSave === 'pickZone') {
                        let pickZones = filterState.pickZones;
-                       pickZones = pickZones.filter(pickZone => pickZone.toLowerCase() !== pickZone);
+                       pickZones = pickZones.filter(pickZone => pickZone.toLowerCase() !== activeValue.toLowerCase());
                        filterState = { ...filterState, pickZones }
 
                    }
