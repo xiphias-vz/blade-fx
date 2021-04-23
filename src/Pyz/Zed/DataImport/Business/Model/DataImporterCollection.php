@@ -42,6 +42,10 @@ class DataImporterCollection extends SprykerDataImporterCollection
                 $this->updateProductActivity();
             }
 
+            if ($importType == "time-slot") {
+                $this->deleteDuplicatedRows();
+            }
+
             if (!empty($dataImporterConfigurationTransfer->getAfterImportHooksToSkip())) {
                 foreach ($this->afterImportHooks as $afterImportHook) {
                     $afterImportHookName = (new ReflectionClass($afterImportHook))->getShortName();
@@ -98,5 +102,23 @@ class DataImporterCollection extends SprykerDataImporterCollection
                 $statement->execute();
             }
         }
+    }
+
+    /**
+     * @return void
+     */
+    protected function deleteDuplicatedRows()
+    {
+        $con = Propel::getConnection();
+        $statement = $con->prepare("DELETE b
+            FROM
+             (
+                SELECT id_time_slot, merchant_reference, day, date, time_slot
+                , ROW_NUMBER() OVER(PARTITION BY merchant_reference, day, date, time_slot order by id_time_slot desc) as rn
+                FROM pyz_time_slot pts WHERE day <>''
+             ) a
+            INNER JOIN pyz_time_slot b on b.id_time_slot = a.id_time_slot
+            WHERE a.rn > 1");
+        $statement->execute();
     }
 }
