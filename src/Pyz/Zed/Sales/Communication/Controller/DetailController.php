@@ -7,6 +7,8 @@
 
 namespace Pyz\Zed\Sales\Communication\Controller;
 
+use Orm\Zed\Sales\Persistence\SpySalesOrder;
+use Orm\Zed\Sales\Persistence\SpySalesOrderAddress;
 use Pyz\Shared\Acl\AclConstants;
 use Spryker\Service\UtilText\Model\Url\Url;
 use Spryker\Zed\Sales\Communication\Controller\DetailController as SprykerDetailController;
@@ -23,6 +25,14 @@ use Symfony\Component\HttpFoundation\Request;
  */
 class DetailController extends SprykerDetailController
 {
+    private const TIMESLOTS_DATA = [
+        '10:00-12:00' => '10:00-12:00',
+        '12:00-14:00' => '12:00-14:00',
+        '14:00-16:00' => '14:00-16:00',
+        '16:00-18:00' => '16:00-18:00',
+        '18:00-20:00' => '18:00-20:00',
+    ];
+
     /**
      * @param \Symfony\Component\HttpFoundation\Request $request
      *
@@ -47,8 +57,29 @@ class DetailController extends SprykerDetailController
             return $this->redirectResponse(Url::generate('/sales')->build());
         }
 
-        $userFacade = $this->getFactory()->getUserFacade();
+        if ($request->get("isTimeslotsFormSubmit") == true) {
+            $pickupDate = $request->get("pickupDate");
+            $pickupTimeSlot = $request->get("pickupTimeSlot");
 
+            $requestedDeliveryDate = $pickupDate . '_' . $pickupTimeSlot;
+
+            $this->getFacade()->updateRequstedDeliveryDateForOrder($orderTransfer, $requestedDeliveryDate);
+
+            $orderTransfer = $this->getFacade()->findOrderWithPickingSalesOrdersByIdSalesOrder($idSalesOrder);
+            $orderTransfer->setCartNote(json_decode($orderTransfer->getCartNote()));
+
+            $spySalesOrder = new SpySalesOrder();
+            $spySalesOrderAddress = new SpySalesOrderAddress();
+            $spySalesOrder->fromArray($orderTransfer->toArray());
+            $spySalesOrderAddress->fromArray($orderTransfer->getBillingAddress()->toArray());
+
+            $spySalesOrder->setBillingAddress($spySalesOrderAddress);
+
+            $this->getFacade()->checkAndUpdateTimeSlotsCapacity();
+            $this->getFacade()->sendOrderConfirmationMail($spySalesOrder);
+        }
+
+        $userFacade = $this->getFactory()->getUserFacade();
         $idUser = $userFacade->getCurrentUser()->getIdUser();
         $userGroup = $this->getFactory()->getAclFacade()->getUserGroups($idUser)->getGroups()[0]->getName();
         $distinctOrderStates = $this->getFacade()->getDistinctOrderStates($idSalesOrder);
@@ -56,60 +87,6 @@ class DetailController extends SprykerDetailController
         $eventsGroupedByItem = $this->getFactory()->getOmsFacade()->getManualEventsByIdSalesOrder($idSalesOrder);
         $orderItemSplitFormCollection = $this->getFactory()->createOrderItemSplitFormCollection($orderTransfer->getItems());
         $events = $this->getFactory()->getOmsFacade()->getDistinctManualEventsByIdSalesOrder($idSalesOrder);
-        $isCurrentUserSupervisor = $this->isCurrentUserSupervisor();
-        $isCurrentUserSupervisorOrAdmin = $this->isCurrentUserSupervisorOrAdmin();
-
-        $buttons = [];
-        foreach ($events as $key => $event) {
-            if (stripos($event, "cancel") === 0) {
-                if ($isCurrentUserSupervisor) {
-                    array_push($buttons, "Cancel");
-                }
-                unset($events[$key]);
-            } elseif (stripos($event, "Zurücksetzen") === 0) {
-                if (in_array("picked", $distinctOrderStates) == false && in_array("picked, canceled", $distinctOrderStates) == false) {
-                    unset($events[$key]);
-                } else {
-                    if ($isCurrentUserSupervisor) {
-                        array_push($buttons, $event);
-                    }
-                }
-            } else {
-                if (stripos($event, "confirm") === 0) {
-                    array_push($buttons, $event);
-                } else {
-                    array_push($buttons, $event);
-                }
-            }
-        }
-
-        $isCurrentUserSupervisor = $this->isCurrentUserSupervisor();
-        $isCurrentUserSupervisorOrAdmin = $this->isCurrentUserSupervisorOrAdmin();
-
-        $buttons = [];
-        foreach ($events as $key => $event) {
-            if (stripos($event, "cancel") === 0) {
-                if ($isCurrentUserSupervisor) {
-                    array_push($buttons, "Cancel");
-                }
-                unset($events[$key]);
-            } elseif (stripos($event, "Zurücksetzen") === 0) {
-                if (in_array("picked", $distinctOrderStates) == false && in_array("picked, canceled", $distinctOrderStates) == false) {
-                    unset($events[$key]);
-                } else {
-                    if ($isCurrentUserSupervisor) {
-                        array_push($buttons, $event);
-                    }
-                }
-            } else {
-                if (stripos($event, "confirm") === 0) {
-                    array_push($buttons, $event);
-                } else {
-                    array_push($buttons, $event);
-                }
-            }
-        }
-
         $blockResponseData = $this->renderSalesDetailBlocks($request, $orderTransfer);
         $blocksToRenderForCustomer = $this->renderMultipleActions(
             $request,
@@ -122,6 +99,8 @@ class DetailController extends SprykerDetailController
 
         $blocksToRenderForCustomer['refund'] = strip_tags($blocksToRenderForCustomer['refund']);
         $blocksToRenderForCustomer['discount'] = strip_tags($blocksToRenderForCustomer['discount']);
+        $isCurrentUserSupervisor = $this->isCurrentUserSupervisor();
+        $isCurrentUserSupervisorOrAdmin = $this->isCurrentUserSupervisorOrAdmin();
 
         if ($blockResponseData instanceof RedirectResponse) {
             return $blockResponseData;
@@ -136,6 +115,9 @@ class DetailController extends SprykerDetailController
         $shipping = $groupedOrderItems[0]->getShipment();
         $payments = $orderTransfer->getPayments();
         $orderState = $groupedOrderItems[0]["state"]["name"];
+        $dateAndTimeSlot = explode('_', $requestDeliveryDate);
+        $deliveryDate = $dateAndTimeSlot[0];
+        $deliveryTimeSlot = $dateAndTimeSlot[1];
 
         $pickZones = [];
         $itemDataArray = [];
@@ -166,6 +148,8 @@ class DetailController extends SprykerDetailController
             }
         }
 
+        $timeSlotsData = self::TIMESLOTS_DATA;
+
         $pickingZonesForContainers = $this->getPickingZones();
         $containers = $orderTransfer->getPickingSalesOrderCollection()->getPickingSalesOrders()->getArrayCopy();
         foreach ($containers as $container) {
@@ -187,6 +171,8 @@ class DetailController extends SprykerDetailController
             'isCurrentUserSupervisorOrAdmin' => $isCurrentUserSupervisorOrAdmin,
             'blocksToRenderForCustomer' => $blocksToRenderForCustomer,
             'requestDeliveryDate' => $requestDeliveryDate,
+            'deliveryDate' => $deliveryDate,
+            'deliveryTimeSlot' => $deliveryTimeSlot,
             'orderItemSplitFormCollection' => $orderItemSplitFormCollection,
             'groupedOrderItems' => $groupedOrderItems,
             'changeStatusRedirectUrl' => $this->createRedirectLink($idSalesOrder),
@@ -194,7 +180,6 @@ class DetailController extends SprykerDetailController
             'itemStatusArray' => $itemStatusArray,
             'itemDataArray' => $itemDataArray,
             'userGroup' => $userGroup,
-            'buttons' => $buttons,
             'orderState' => $orderState,
             'pickingZonesForContainers' => $pickingZonesForContainers,
             'containers' => $containers,

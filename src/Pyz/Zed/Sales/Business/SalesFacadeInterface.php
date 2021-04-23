@@ -14,6 +14,7 @@ use Generated\Shared\Transfer\OrderTransfer;
 use Generated\Shared\Transfer\OrderUpdateRequestTransfer;
 use Generated\Shared\Transfer\QuoteTransfer;
 use Generated\Shared\Transfer\SpySalesOrderItemEntityTransfer;
+use Orm\Zed\Sales\Persistence\SpySalesOrder;
 use Spryker\Zed\Sales\Business\SalesFacadeInterface as SprykerSalesFacadeInterface;
 
 interface SalesFacadeInterface extends SprykerSalesFacadeInterface
@@ -290,4 +291,24 @@ interface SalesFacadeInterface extends SprykerSalesFacadeInterface
      * @return string
      */
     public function getStoreName(): string;
+
+    /**
+     * @param \Generated\Shared\Transfer\OrderTransfer $orderTransfer
+     * @param string $requestedDeliveryDate
+     *
+     * @return void
+     */
+    public function updateRequstedDeliveryDateForOrder(OrderTransfer $orderTransfer, string $requestedDeliveryDate): void;
+
+    /**
+     * @return void
+     */
+    public function checkAndUpdateTimeSlotsCapacity(): void;
+
+    /**
+     * @param \Orm\Zed\Sales\Persistence\SpySalesOrder $salesOrderEntity
+     *
+     * @return void
+     */
+    public function sendOrderConfirmationMail(SpySalesOrder $salesOrderEntity): void;
 }
