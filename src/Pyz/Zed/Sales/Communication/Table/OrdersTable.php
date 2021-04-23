@@ -461,7 +461,6 @@ class OrdersTable extends SprykerOrdersTable
         return $item[static::ADDRESS_PHONE][SpySalesOrderAddressTableMap::COL_CELL_PHONE] ?? 'No Billing address or Phone was set';
     }
 
-
     /**
      * @param \Generated\Shared\Transfer\UserTransfer $currentUser
      *

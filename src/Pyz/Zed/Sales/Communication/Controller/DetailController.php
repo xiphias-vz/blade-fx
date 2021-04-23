@@ -11,6 +11,7 @@ use Pyz\Shared\Acl\AclConstants;
 use Spryker\Service\UtilText\Model\Url\Url;
 use Spryker\Zed\Sales\Communication\Controller\DetailController as SprykerDetailController;
 use Spryker\Zed\Sales\SalesConfig;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -30,6 +31,12 @@ class DetailController extends SprykerDetailController
     public function indexAction(Request $request)
     {
         $idSalesOrder = $this->castId($request->query->getInt(SalesConfig::PARAM_ID_SALES_ORDER));
+
+        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+            if (isset($_POST['pickingZones']) && isset($_POST['frmContainerShelf_idSalesOrder']) && isset($_POST['inputContainer']) && isset($_POST['inputShelf'])) {
+                $this->getFactory()->setZoneContainerShelf($_POST['frmContainerShelf_idSalesOrder'], $_POST['pickingZones'], $_POST['inputContainer'], $_POST['inputShelf']);
+            }
+        }
 
         $orderTransfer = $this->getFacade()->findOrderWithPickingSalesOrdersByIdSalesOrder($idSalesOrder);
         $orderTransfer->setCartNote(json_decode($orderTransfer->getCartNote()));
@@ -159,6 +166,13 @@ class DetailController extends SprykerDetailController
             }
         }
 
+        $pickingZonesForContainers = $this->getPickingZones();
+        $containers = $orderTransfer->getPickingSalesOrderCollection()->getPickingSalesOrders()->getArrayCopy();
+        foreach ($containers as $container) {
+            $idZone = $container->getIdPickingZone();
+            $container["zoneName"] = $pickingZonesForContainers[$idZone];
+        }
+
         return array_merge([
             'eventsGroupedByItem' => $eventsGroupedByItem,
             'events' => $events,
@@ -182,6 +196,8 @@ class DetailController extends SprykerDetailController
             'userGroup' => $userGroup,
             'buttons' => $buttons,
             'orderState' => $orderState,
+            'pickingZonesForContainers' => $pickingZonesForContainers,
+            'containers' => $containers,
         ], $blockResponseData);
     }
 
@@ -241,5 +257,51 @@ class DetailController extends SprykerDetailController
         }
 
         return false;
+    }
+
+    /**
+     * @return array
+     */
+    private function getPickingZones(): array
+    {
+        $qry = $this->getFactory()->getPickingZoneQuery();
+        $zones = $qry->find();
+
+        $pickingZones = [];
+        foreach ($zones as $zone) {
+            $pickingZones[$zone->getIdPickingZone()] = $zone->getName();
+        }
+
+        return $pickingZones;
+    }
+
+    /**
+     * @param \Symfony\Component\HttpFoundation\Request $request
+     *
+     * @return \Symfony\Component\HttpFoundation\JsonResponse
+     */
+    public function setJsonContainerToZoneAction(Request $request)
+    {
+        $error = false;
+        if (isset($_GET['containerID'])) {
+            $containerID = $request->query->get("containerID");
+            $checkContainer = $this->getFactory()->checkUsedContainer($containerID);
+
+            if ($checkContainer === true) {
+                $error = true;
+            } else {
+                if (isset($_GET['idSalesOrder']) && isset($_GET['idZone'])) {
+                    $this->getFactory()->setZoneContainerShelf($_GET['idSalesOrder'], $_GET['idZone'], $_GET['containerID'], '');
+                }
+            }
+        } else {
+            $error = true;
+        }
+
+        $responseArray = [
+            'error' => $error,
+        ];
+
+        return new JsonResponse($responseArray);
     }
 }

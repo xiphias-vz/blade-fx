@@ -15,10 +15,61 @@
                             <dt>{{ 'Angefratges Lieferdatum' | trans }}:</dt>
                             <dd>{{ requestDeliveryDate }}</dd>
                         <div style="height: 2px;background: lightgrey;width: 100%;margin: 10px 0px"></div>
-                        <dt>{{ 'Container Code -> Shelf Code' | trans }}</dt>
-                        {% for pickingSalesOrder in order.pickingSalesOrderCollection.pickingSalesOrders %}
-                            <dd>{{ pickingSalesOrder.containerCode ~ ' -> ' ~ pickingSalesOrder.shelfCode}}</dd>
+                        <dt>{{ 'Zone -> Container ID -> Shelf' | trans }}</dt>
+                        {% for pickingSalesOrder in containers %}
+                            <dd>{{ pickingSalesOrder.zoneName ~ ' -> ' ~ pickingSalesOrder.containerCode ~ ' -> ' ~ pickingSalesOrder.shelfCode}}</dd>
                         {% endfor %}
+
+                        {% if(isCurrentUserSupervisor) %}
+                            <dd>
+                                <div  id="divAddContainer" style="float: left;">
+                                    <?xml version="1.0" encoding="utf-8"?>
+                                    <!-- Generator: Adobe Illustrator 22.1.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+                                    <svg version="1.1" id="Icons" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+                                         viewBox="0 0 24 24" style="fill:#1BBEA0; width: 20px;padding-top: 4px;" xml:space="preserve">
+                                    <g>
+                                        <g id="Gruppe_343">
+                                            <g id="Gruppe_342">
+                                                <path id="Pfad_216" d="M20.8,7.4L20.8,7.4c0-0.1-0.1-0.1-0.1-0.2l-2.8-4.9c-0.2-0.4-0.6-0.6-1-0.6H7.1c-0.4,0-0.8,0.2-1,0.6
+                    l-2.9,5c0,0,0,0.1-0.1,0.1c0,0.1-0.1,0.2-0.1,0.4v12.9c0,0.8,0.6,1.4,1.4,1.4h15c0.8,0,1.4-0.6,1.4-1.4v-13c0,0,0,0,0-0.1
+                    C20.9,7.6,20.9,7.5,20.8,7.4z M12.6,3h4.2l2.2,3.9h-6.5V3z M7.1,3h4.3v3.9H4.9L7.1,3z M19.7,20.8c0,0.1-0.1,0.2-0.2,0.2h-15
+                    c-0.1,0-0.2-0.1-0.2-0.2V8h15.4V20.8z"/>
+                                            </g>
+                                        </g>
+                                        <g id="Gruppe_345" transform="translate(8.618 14.323)">
+                                            <g id="Gruppe_344">
+                                                <path id="Pfad_217" d="M5.9-0.4H4v-1.9c0-0.3-0.3-0.6-0.6-0.6c-0.3,0-0.6,0.3-0.6,0.6c0,0,0,0,0,0v1.9H0.8
+                    c-0.3,0-0.6,0.3-0.6,0.6c0,0.3,0.3,0.6,0.6,0.6h1.9v1.9c0,0.3,0.3,0.6,0.6,0.6C3.7,3.3,4,3.1,4,2.7c0,0,0,0,0,0V0.8h1.9
+                    c0.3,0,0.6-0.3,0.6-0.6C6.5-0.1,6.2-0.4,5.9-0.4z"/>
+                                            </g>
+                                        </g>
+                                    </g>
+                                </svg>
+                                    <div style="float: right; margin-top: 4px;">
+                                        <button type="button" id="btnAddContainer" style="border:none;background-color: transparent;color: #18a689;"> {{ 'Add Container' | trans }}</button>
+                                    </div>
+                                </div>
+                                <div class="clearfix"></div>
+                            </dd>
+                            <form name="formAddZoneContainerShelf" method="post" action="">
+                                <div id="divAddContainerAndShelf" style="display: none">
+                                    <dd id="labelContainerAndShelf" style="margin-top: 8px;"></dd>
+                                    <select id="pickingZones" name="pickingZones" required="required" class="form-control" style="width:40%">
+                                        <option value="">{{ 'Zone auswählen' | trans }}</option>
+                                        {% for idZone,nameZone  in pickingZonesForContainers %}
+                                            <option value="{{ idZone }}">{{ nameZone }}</option>
+                                        {% endfor %}
+                                    </select>
+                                    <input type="hidden" id="frmContainerShelf_idSalesOrder" name="frmContainerShelf_idSalesOrder" value="{{ order.idSalesOrder }}">
+                                    <input id="inputContainer" name="inputContainer" type="hidden" class="form-control" required="required" placeholder="{{ 'Container hinzufugen' | trans }}" style="width:40%">
+                                    <input id="inputShelf" name="inputShelf" type="hidden" class="form-control" required="required" placeholder="{{ 'Lagerplatz zuweisen' | trans }}" style="width:40%">
+                                    <button id='btnSaveContainer' type="submit" class="btn btn-primary" style="margin-right:10px; margin-left: 10px">{{ 'Save' | trans }}</button>
+                                    <button id='btnCancelAction' type="button" class="btn">X</button>
+                                </div>
+                                <p id="errorMessage" style="color:red"></p>
+                            </form>
+                        {% endif %}
+
                         {% if order.cartNote %}
                             <dt style="margin-top: 15px">{{ 'Customer Comment' | trans }}</dt>
                             <dd>{{ order.cartNote }}</dd>
@@ -194,8 +245,6 @@
             </div>
         </div>
 
-
-
         <script type="text/javascript">
 
             document.addEventListener('DOMContentLoaded', function(event) {
@@ -276,6 +325,87 @@
                         }
                     }
             })
+
+            const divAddContainer = document.getElementById('divAddContainer');
+            const divAddContainerAndShelf = document.getElementById('divAddContainerAndShelf');
+            const frmContainerShelf_idSalesOrder = document.getElementById('frmContainerShelf_idSalesOrder');
+            const pickingZones = document.getElementById('pickingZones');
+            const inputContainer = document.getElementById('inputContainer');
+            const inputShelf = document.getElementById('inputShelf');
+            const labelContainerAndShelf = document.getElementById('labelContainerAndShelf');
+            const errorMessage = document.getElementById('errorMessage');
+            const btnAddContainer = document.getElementById('btnAddContainer');
+            const btnCancelAction = document.getElementById('btnCancelAction');
+            const btnSaveContainer = document.getElementById('btnSaveContainer');
+
+            btnAddContainer.addEventListener('click', function() {
+                hideOrShowElement(divAddContainer, 'none', divAddContainerAndShelf, 'flex');
+            });
+            btnCancelAction.addEventListener('click', function() {
+                hideOrShowElement(divAddContainer, 'block', divAddContainerAndShelf, 'none');
+                resetForm();
+            });
+            btnSaveContainer.addEventListener('click', function() {
+                errorMessage.textContent = '';
+                if (pickingZones.value !== "" && inputContainer.getAttribute('type') === "hidden" && inputShelf.getAttribute('type') === "hidden") {
+                    labelContainerAndShelf.textContent = pickingZones.options[pickingZones.selectedIndex].text + ' -> ';
+                    pickingZones.classList.add('hidden');
+                    inputContainer.setAttribute('type', 'text');
+                    event.preventDefault();
+                } else if (inputContainer.value !== "" && inputShelf.getAttribute('type') === "hidden") {
+                    if (inputContainer.value.length !== 8) {
+                        event.preventDefault();
+                        errorMessage.textContent = 'Container-ID muss 8 Zeichen haben';
+                    } else {
+                        setContainerToZone();
+                    }
+                } else if (inputShelf.value !== "" && inputContainer.getAttribute('type') === "hidden") {
+                    let firstChar = (inputShelf.value.charAt(0));
+                    let reg = new RegExp (/^[A-Z]+$/g);
+                    let regTest = reg.test(firstChar);
+                    if (!regTest) {
+                        event.preventDefault();
+                        inputShelf.value = "";
+                        errorMessage.textContent = 'Der erste Buchstabe muss Großbuchstaben sein';
+                    }
+                }
+            });
+
+            function setContainerToZone() {
+                event.preventDefault();
+                var xhttp = new XMLHttpRequest();
+                xhttp.onreadystatechange = function() {
+                    if (this.readyState === 4 && this.status === 200) {
+                        var dataParse = JSON.parse(this.response);
+                        if (dataParse['error'] === true) {
+                            inputContainer.value = "";
+                            errorMessage.textContent = 'Container ID bereits vergeben';
+                        } else {
+                            labelContainerAndShelf.textContent = pickingZones.options[pickingZones.selectedIndex].text + ' -> ' + inputContainer.value + ' -> ';
+                            inputContainer.setAttribute('type', 'hidden');
+                            inputShelf.setAttribute('type', 'text');
+                        }
+                    }
+                };
+                xhttp.open("POST", window.location.origin + "/sales/detail/set-json-container-to-zone?idZone=" + pickingZones.value + "&containerID=" + inputContainer.value + '&idSalesOrder=' + frmContainerShelf_idSalesOrder.value, true);
+                xhttp.send();
+            }
+
+            function hideOrShowElement(element1, displayProperty1, element2, displayProperty2) {
+                element1.style.display = displayProperty1;
+                element2.style.display = displayProperty2;
+            }
+
+            function resetForm() {
+                errorMessage.textContent = '';
+                labelContainerAndShelf.textContent = '';
+                pickingZones.value = '';
+                inputContainer.value = '';
+                inputShelf.value = '';
+                pickingZones.classList.remove('hidden');
+                inputContainer.setAttribute('type', 'hidden');
+                inputShelf.setAttribute('type', 'hidden');
+            }
         </script>
     {% endblock %}
 {% endembed %}
