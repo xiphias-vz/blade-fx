@@ -81,6 +81,9 @@ class SalesDependencyProvider extends SprykerSalesDependencyProvider
         $container = $this->addProductFacade($container);
         $container = $this->addHydrateOrderForStoreAppPlugins($container);
         $container = $this->addAclFacade($container);
+        $container = $this->addStorageClient($container);
+        $container = $this->addOmsFacade($container);
+        $container = $this->addNewOmsFacade($container);
 
         return $container;
     }

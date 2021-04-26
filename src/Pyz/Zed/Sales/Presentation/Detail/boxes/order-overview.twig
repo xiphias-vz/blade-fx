@@ -13,79 +13,73 @@
                             <dd style="margin-bottom: 15px">{{ order.collectNumber }}</dd>
                         {% endif %}
                             <dt>{{ 'Angefratges Lieferdatum' | trans }}:</dt>
-                            <dd>{{ requestDeliveryDate }}</dd>
-                        <div style="height: 2px;background: lightgrey;width: 100%;margin: 10px 0px"></div>
-                        <dt>{{ 'Zone -> Container ID -> Shelf' | trans }}</dt>
-                        {% for pickingSalesOrder in containers %}
-                            <dd>{{ pickingSalesOrder.zoneName ~ ' -> ' ~ pickingSalesOrder.containerCode ~ ' -> ' ~ pickingSalesOrder.shelfCode}}</dd>
-                            <dt>{{ 'Angefratges Lieferdatum' | trans }}:</dt>
-                            <dd>
+                        <dd>
 
-                                {% if (isCurrentUserSupervisor) %}
+                            {% if isCurrentUserSupervisor %}
 
-                                    <div id="buttonsEditDiv">
-                                        <div style="float: left; padding-top: 2px;">
-                                            <span style="margin-right: 10px;">{{ deliveryDate }}</span>
-                                            <span style="margin-right: 10px;">{{ deliveryTimeSlot }}</span>
-                                        </div>
-                                        <div style="float: left;">
-                                            <?xml version="1.0" encoding="utf-8"?>
-                                            <!-- Generator: Adobe Illustrator 22.1.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
-                                            <svg version="1.1" id="Icons" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
-                                                 viewBox="0 0 24 24" style="fill:#18a689;width: 20px;" xml:space="preserve">
+                                <div id="buttonsEditDiv">
+                                    <div style="float: left; padding-top: 2px;">
+                                        <span style="margin-right: 10px;">{{ deliveryDate }}</span>
+                                        <span style="margin-right: 10px;">{{ deliveryTimeSlot }}</span>
+                                    </div>
+                                    <div style="float: left;">
+                                        <?xml version="1.0" encoding="utf-8"?>
+                                        <!-- Generator: Adobe Illustrator 22.1.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+                                        <svg version="1.1" id="Icons" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+                                             viewBox="0 0 24 24" style="fill:#18a689;width: 20px;" xml:space="preserve">
 						                    <title>003-fischfleisch</title>
+                                            <g>
                                                 <g>
-                                                    <g>
-                                                        <path d="M21.7,4.3l-1.8-1.8c-0.8-0.8-2.2-0.8-3.1,0C16,3.3,3.9,15.4,3.1,16.2c-0.1,0.1-0.1,0.2-0.2,0.3l-0.9,5
+                                                    <path d="M21.7,4.3l-1.8-1.8c-0.8-0.8-2.2-0.8-3.1,0C16,3.3,3.9,15.4,3.1,16.2c-0.1,0.1-0.1,0.2-0.2,0.3l-0.9,5
                                                             c0,0.2,0,0.4,0.2,0.5c0.1,0.1,0.3,0.2,0.5,0.2l5-0.9c0.1,0,0.2-0.1,0.3-0.2L21.7,7.4C22.6,6.5,22.6,5.2,21.7,4.3z M3.3,20.9l0.6-3
                                                             l2.5,2.5L3.3,20.9z M7.6,19.9l-3.2-3.2L16.1,4.9l3.2,3.2L7.6,19.9z M20.9,6.5l-0.7,0.7L17,4.1l0.7-0.7c0.4-0.4,1-0.4,1.4,0
                                                             l1.8,1.8C21.3,5.6,21.3,6.2,20.9,6.5z"/>
-                                                    </g>
                                                 </g>
+                                            </g>
                                     </svg>
-                                            <div style="float: right;">
-                                                <button id="btnBearbeiten" style="border:none;background-color: transparent;color: #18a689;">{{ 'Bearbeiten' | trans }}</button>
-                                            </div>
+                                        <div style="float: right;">
+                                            <button id="btnBearbeiten" style="border:none;background-color: transparent;color: #18a689;">{{ 'Bearbeiten' | trans }}</button>
                                         </div>
                                     </div>
+                                </div>
 
-                                    <div id="fieldsEditDiv" style="margin: 10px 0px 10px 0px; display: none;">
-                                        <form method="POST" action="" style="display: flex;">
-                                            <input type="hidden" name="isTimeslotsFormSubmit" value="true">
-                                            <input type="date" id="pickup-time-window" name="pickupDate" style="outline: none;height: 30px;margin-right: 10px;"/>
-                                            <select class="form-control input-sm" name="pickupTimeSlot" style="width:140px;height: 30px;margin-right: 10px;">
-                                                {% for timeSlot in timeSlotsData %}
-                                                    <option value="{{ timeSlot }}">{{ timeSlot }}</option>
-                                                {% endfor %}
-                                            </select>
-                                            <div style="float: right;">
-                                                <input id="btnSaveTsChange" type="submit" class="btn btn-customPrimary" value="Save" style="margin-right: 10px; min-width: 50px;">
-                                                <input id="btnCancelTsChange" type="button" class="btn" value="X" style="min-width: 50px;">
-                                            </div>
-                                        </form>
-                                    </div>
-
-                                {% else %}
-
-                                    <div id="buttonsEditDiv">
-                                        <div style="float: left; padding-top: 2px;">
-                                            <span style="margin-right: 10px;">{{ deliveryDate }}</span>
-                                            <span style="margin-right: 10px;">{{ deliveryTimeSlot }}</span>
+                                <div id="fieldsEditDiv" style="margin: 10px 0px 10px 0px; display: none;">
+                                    <form method="POST" action="" style="display: flex;">
+                                        <input type="hidden" name="isTimeslotsFormSubmit" value="true">
+                                        <input type="date" id="pickup-time-window" name="pickupDate" onchange="handleDateRange(this)" style="outline: none;height: 30px;margin-right: 10px;"/>
+                                        <select class="form-control input-sm" name="pickupTimeSlot" style="width:140px;height: 30px;margin-right: 10px;">
+                                            {% for timeSlot in timeSlotsData %}
+                                                <option value="{{ timeSlot }}">{{ timeSlot }}</option>
+                                            {% endfor %}
+                                        </select>
+                                        <div style="float: right;">
+                                            <input id="btnSaveTsChange" type="submit" class="btn btn-customPrimary" value="Save" style="margin-right: 10px; min-width: 50px;">
+                                            <input id="btnCancelTsChange" type="button" class="btn" value="X" style="min-width: 50px;">
                                         </div>
+                                    </form>
+                                </div>
+
+                            {% else %}
+
+                                <div id="buttonsEditDiv">
+                                    <div style="float: left; padding-top: 2px;">
+                                        <span style="margin-right: 10px;">{{ deliveryDate }}</span>
+                                        <span style="margin-right: 10px;">{{ deliveryTimeSlot }}</span>
                                     </div>
+                                </div>
 
-                                    <div id="fieldsEditDiv" style="margin: 10px 0px 10px 0px; display: none;"></div>
-
-
-                                {% endif %}
+                                <div id="fieldsEditDiv" style="margin: 10px 0px 10px 0px; display: none;"></div>
 
 
+                            {% endif %}
 
-                            </dd>
-                        <div style="height: 2px;background: lightgrey;width: 100%;margin: 40px 0px 20px 0px; clear: both;"></div>
-                        <dt>{{ 'Container Code -> Shelf Code' | trans }}</dt>
-                        {% for pickingSalesOrder in order.pickingSalesOrderCollection.pickingSalesOrders %}
-                            <dd>{{ pickingSalesOrder.containerCode ~ ' -> ' ~ pickingSalesOrder.shelfCode}}</dd>
+
+
+                        </dd>
+                        <div style="height: 2px;background: lightgrey;width: 100%;margin: 10px 0px; clear: both;"></div>
+                        <dt>{{ 'Zone -> Container ID -> Shelf' | trans }}</dt>
+                        {% for pickingSalesOrder in containers %}
+                            <dd>{{ pickingSalesOrder.zoneName ~ ' -> ' ~ pickingSalesOrder.containerCode ~ ' -> ' ~ pickingSalesOrder.shelfCode}}</dd>
                         {% endfor %}
 
                         {% if(isCurrentUserSupervisor) %}

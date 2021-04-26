@@ -102,6 +102,30 @@ class DetailController extends SprykerDetailController
         $isCurrentUserSupervisor = $this->isCurrentUserSupervisor();
         $isCurrentUserSupervisorOrAdmin = $this->isCurrentUserSupervisorOrAdmin();
 
+        $buttons = [];
+        foreach ($events as $key => $event) {
+            if (stripos($event, "cancel") === 0) {
+                if ($isCurrentUserSupervisor) {
+                    array_push($buttons, "Cancel");
+                }
+                unset($events[$key]);
+            } elseif (stripos($event, "Zurücksetzen") === 0) {
+                if (in_array("picked", $distinctOrderStates) == false && in_array("picked, canceled", $distinctOrderStates) == false) {
+                    unset($events[$key]);
+                } else {
+                    if ($isCurrentUserSupervisor) {
+                        array_push($buttons, $event);
+                    }
+                }
+            } else {
+                if (stripos($event, "confirm") === 0) {
+                    array_push($buttons, $event);
+                } else {
+                    array_push($buttons, $event);
+                }
+            }
+        }
+
         if ($blockResponseData instanceof RedirectResponse) {
             return $blockResponseData;
         }
@@ -181,8 +205,10 @@ class DetailController extends SprykerDetailController
             'itemDataArray' => $itemDataArray,
             'userGroup' => $userGroup,
             'orderState' => $orderState,
+            'buttons' => $buttons,
             'pickingZonesForContainers' => $pickingZonesForContainers,
             'containers' => $containers,
+            'timeSlotsData' => $timeSlotsData,
         ], $blockResponseData);
     }
 
