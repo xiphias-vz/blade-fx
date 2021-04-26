@@ -18,6 +18,7 @@ use Pyz\Zed\DataImport\DataImportConfig;
 use Pyz\Zed\Development\Communication\Console\AcceptanceCodeTestConsole;
 use Pyz\Zed\Development\Communication\Console\ApiCodeTestConsole;
 use Pyz\Zed\Development\Communication\Console\FunctionalCodeTestConsole;
+use Pyz\Zed\ImageImportToS3\Communication\Console\ImageImportToS3Console;
 use Pyz\Zed\Installer\Communication\Console\PerStoreInstallerConsole;
 use Pyz\Zed\Maintenance\Communication\Console\MaintenanceDisableConsole;
 use Pyz\Zed\Maintenance\Communication\Console\MaintenanceEnableConsole;
@@ -332,6 +333,7 @@ class ConsoleDependencyProvider extends SprykerConsoleDependencyProvider
             new TimeSlotCheckerConsole(),
             new SitemapConsole(),
             new SalesOrderSummaryExportConsole(),
+            new ImageImportToS3Console(),
         ];
 
         $propelCommands = $container->getLocator()->propel()->facade()->getConsoleCommands();
