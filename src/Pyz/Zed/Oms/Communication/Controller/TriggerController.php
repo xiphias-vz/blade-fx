@@ -12,7 +12,7 @@ use Symfony\Component\HttpFoundation\Request;
 
 /**
  * @method \Spryker\Zed\Oms\Business\OmsFacadeInterface getFacade()
- * @method \Spryker\Zed\Oms\Persistence\OmsQueryContainerInterface getQueryContainer()
+ * @method \Pyz\Zed\Oms\Persistence\OmsQueryContainerInterface getQueryContainer()
  * @method \Spryker\Zed\Oms\Communication\OmsCommunicationFactory getFactory()
  * @method \Spryker\Zed\Oms\Persistence\OmsRepositoryInterface getRepository()
  */
@@ -60,6 +60,12 @@ class TriggerController extends SpyTriggerController
         }
 
         $this->getFacade()->triggerEvent($event, $orderItems, []);
+        foreach ($orderItems as $orderItem) {
+            if ($orderItem->getItemPaused()) {
+                $this->getQueryContainer()
+                    ->updateSalesOrderItemPausedStatus($orderItem->getIdSalesOrderItem());
+            }
+        }
         $this->addInfoMessage(static::MESSAGE_STATUS_CHANGED_SUCCESSFULLY);
 
         return $this->redirectResponse($redirect);

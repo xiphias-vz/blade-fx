@@ -10,6 +10,7 @@ namespace Pyz\Zed\Oms\Persistence;
 use DateTime;
 use Orm\Zed\Oms\Persistence\Map\SpyOmsOrderItemStateTableMap;
 use Orm\Zed\Sales\Persistence\Map\SpySalesOrderItemTableMap;
+use Orm\Zed\Sales\Persistence\SpySalesOrderItemQuery;
 use Pyz\Shared\Oms\OmsConfig;
 use Spryker\Zed\Oms\Persistence\OmsQueryContainer as SprykerOmsQueryContainer;
 
@@ -119,5 +120,17 @@ class OmsQueryContainer extends SprykerOmsQueryContainer implements OmsQueryCont
         }
 
         return $query;
+    }
+
+    /**
+     * @param string $idSalesOrderItem
+     *
+     * @return void
+     */
+    public function updateSalesOrderItemPausedStatus(string $idSalesOrderItem): void
+    {
+        $item = SpySalesOrderItemQuery::create()->filterByIdSalesOrderItem($idSalesOrderItem)->findOne();
+        $item->setItemPaused(false);
+        $item->save();
     }
 }

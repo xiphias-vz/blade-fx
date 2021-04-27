@@ -148,8 +148,11 @@ class MultiPickingController extends BaseOrderPickingController
         $orderItems = $transfer->getOrder($orderPosition)->getPickingOrderItems();
         $totalQuantity = 0;
         $quantityProcessed = 0;
+        $orderItemStatus = '';
 
         foreach ($orderItems as $orderItem) {
+            $orderItemStatus = $orderItem->getStatus();
+
             $quantityProcessed += $orderItem->getQuantityPicked();
             if (($orderItem->getIsCancelled() || $orderItem->getIsPaused())) {
                 $quantityProcessed += $orderItem->getQuantity();
@@ -186,6 +189,7 @@ class MultiPickingController extends BaseOrderPickingController
             'editedItems' => $editedItems,
             'openedItems' => $openedItems,
             'isMultiPickingProcess' => 1,
+            'orderItemStatus' => $orderItemStatus,
             'requestParamIdSalesOrder' => PickerConfig::REQUEST_PARAM_ID_ORDER,
             'orderReference' => $nextOIData->getOrderReference(),
             'urlContainerSelect' => PickerConfig::URL_MULTI_PICKING_SELECT_CONTAINERS,

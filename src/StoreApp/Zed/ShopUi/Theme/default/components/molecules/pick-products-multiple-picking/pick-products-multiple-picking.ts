@@ -111,14 +111,14 @@ export default class PickProductsMultiplePicking extends Component {
             this.showInfo = item.showInfo;
             this.containerData = item.containerData;
 
-            this.updateStorageItem(item);
+            this.updateStorageItem(item, null);
         });
 
         this.showAction();
         this.updateCalculation();
     }
 
-    updateStorageItem(productItem: ProductItemMultiplePicking): void {
+    updateStorageItem(productItem: ProductItemMultiplePicking, orderItemStatus): void {
         this.storageData.items[productItem.sku] = {
             isAccepted: productItem.isAccepted,
             isNotFullyAccepted: productItem.isNotFullyAccepted,
@@ -129,7 +129,9 @@ export default class PickProductsMultiplePicking extends Component {
             showInfo: productItem.showInfo,
             containerData: productItem.containerData
         };
-
+        if(orderItemStatus !== null) {
+            localStorage.setItem('orderItemStatus', orderItemStatus.value);
+        }
         localStorage.setItem(this.orderId + "_" + this.orderItemPosition, JSON.stringify(this.storageData));
     }
 
@@ -149,12 +151,20 @@ export default class PickProductsMultiplePicking extends Component {
 
     protected clearStorage(): void {
         for (let i = 0; i < localStorage.length; i += 1){
-            const storageData = JSON.parse(localStorage.getItem(localStorage.key(i)));
-            const storageDataTime = new Date(storageData.timestamp).getTime();
-            const currentTime = new Date().getTime();
+            if(localStorage.key(i) === 'orderItemStatus') {
+                let orderItemStatusValue = localStorage.getItem('orderItemStatus');
+                if(orderItemStatusValue === "ready for picking") {
+                    localStorage.clear();
+                    localStorage.setItem('orderItemStatus', orderItemStatusValue);
+                }
+            } else {
+                const storageData = JSON.parse(localStorage.getItem(localStorage.key(i)));
+                const storageDataTime = new Date(storageData.timestamp).getTime();
+                const currentTime = new Date().getTime();
 
-            if (currentTime - storageDataTime > this.twentyFourHours) {
-                localStorage.removeItem(localStorage.key(i));
+                if (currentTime - storageDataTime > this.twentyFourHours) {
+                    localStorage.removeItem(localStorage.key(i));
+                }
             }
         }
     }

@@ -19,7 +19,8 @@
     isLastPosition: '',
     listOfContainers: [],
     openModal: '',
-    fromPosListeAndModal: ''
+    fromPosListeAndModal: '',
+    orderItemStatus: ''
 } %}
 
 {% set title = data.currentPositionData['name'] %}
@@ -58,6 +59,7 @@
         <input type="hidden" id="formPreviousSku" value="{{ itemSku }}">
         <input type="hidden" id="idOpenModal" value="{{ data.openModal }}">
         <input type="hidden" id="orderReference" value="{{ orderReference }}">
+        <input type="hidden" id="orderItemStatus" value="{{ data.orderItemStatus }}">
         <input type="hidden" id="listOfIdContainers" value="{{ data.listOfContainers }}">
         <div class="col col--expand">
             <div class="box {{ config.name }}__info">

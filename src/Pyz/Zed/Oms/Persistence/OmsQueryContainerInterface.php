@@ -36,4 +36,11 @@ interface OmsQueryContainerInterface extends SprykerOmsQueryContainerInterface
      * @return \Orm\Zed\Sales\Persistence\SpySalesOrderItemQuery
      */
     public function querySalesOrderItemsWithExpiredTimeouts(DateTime $now, $processId = null, $limit = null, ?string $storeName = null);
+
+    /**
+     * @param string $idSalesOrderItem
+     *
+     * @return void
+     */
+    public function updateSalesOrderItemPausedStatus(string $idSalesOrderItem): void;
 }

@@ -57,6 +57,7 @@ export default class ProductItemMultiplePicking extends Component {
     listOfContainers: object[];
     listOfContainersInput: HTMLInputElement;
     alternativeEanElement: HTMLInputElement;
+    orderItemStatus: HTMLInputElement;
     orderReference: string;
     eanDivWrapper: HTMLElement;
     eanInputFieldWrapper: HTMLElement;
@@ -89,6 +90,7 @@ export default class ProductItemMultiplePicking extends Component {
         this.eanDivWrapper = this.$this.find(this.eanScannenDivSelector);
         this.listOfContainersInput = <HTMLInputElement>this.querySelector('#listOfIdContainers');
         this.listOfContainers =  JSON.parse(this.listOfContainersInput.value);
+        this.orderItemStatus = <HTMLInputElement>this.querySelector('#orderItemStatus');
         this.popupUiErrorInfo = {};
         this.orderReference = this.querySelector('#orderReference').value;
         this.eanInputFieldWrapper = <HTMLElement>document.querySelector(this.eanScannenInputSelector);
@@ -290,7 +292,7 @@ export default class ProductItemMultiplePicking extends Component {
             }
 
 
-            this.pickProducts.updateStorageItem(this);
+            this.pickProducts.updateStorageItem(this, this.orderItemStatus);
 
             let saveAndGoToNext = "true";
             if(Boolean(isLastPosition) === true){
@@ -356,7 +358,7 @@ export default class ProductItemMultiplePicking extends Component {
                 }
                 else {
                     let saveAndGoToNext = "true";
-                    This.pickProducts.updateStorageItem(this);
+                    This.pickProducts.updateStorageItem(this, This.orderItemStatus);
                     This.pickProducts.update();
                     let form = $('<form action="' + urlSave + '" method="post" style="visibility: hidden"></form>');
                     $('body').append(form);
@@ -399,8 +401,9 @@ export default class ProductItemMultiplePicking extends Component {
 
     async updateItem(item: StorageItem): Promise<void> {
         await this.updateQuantityInput(item.count);
-
+        let orderItemStatus = localStorage.getItem('orderItemStatus');
         this.currentItem = item;
+
 
         if(item.containerData.length > 0){
             item.containerData.forEach((value, index) => {
@@ -410,14 +413,19 @@ export default class ProductItemMultiplePicking extends Component {
 
             if(this.currentWeight != NaN){
                 this.weight = Number(item.weight);
-                this.$weightField.val(Number(this.weight));
+                if(this.$weightField !== undefined) {
+                    this.$weightField.val(Number(this.weight));
+                }
             }
         }
+
 
         if (item.isAccepted || item.isNotFullyAccepted) {
             if(item.weight != NaN){
                 this.weight = Number(item.weight);
-                this.$weightField.val(Number(this.weight));
+                if(this.$weightField !== undefined) {
+                    this.$weightField.val(Number(this.weight));
+                }
             }
 
             this.acceptClickHandler();
@@ -458,7 +466,7 @@ export default class ProductItemMultiplePicking extends Component {
         }
 
         this.updateQuantityInput(inputValue);
-        this.pickProducts.updateStorageItem(this);
+        this.pickProducts.updateStorageItem(this, this.orderItemStatus);
         if(Number(this.currentQuantity) === Number(this.maxQuantity)){
             this.acceptClickHandler();
             this.pressSubmit();
@@ -492,7 +500,7 @@ export default class ProductItemMultiplePicking extends Component {
 
     protected setQuantityToValue(quantity): void {
         this.updateQuantityInput(quantity);
-        this.pickProducts.updateStorageItem(this);
+        this.pickProducts.updateStorageItem(this, this.orderItemStatus);
     }
 
     protected containerScanConfirmationKeyHandler(event: KeyboardEvent): void {
@@ -535,7 +543,7 @@ export default class ProductItemMultiplePicking extends Component {
                     // Show popup last position
                     saveAndGoToNext = "End";
                 }
-                this.pickProducts.updateStorageItem(this);
+                this.pickProducts.updateStorageItem(this, this.orderItemStatus);
 
                 let form = $('<form action="' + urlSave + '" method="post" style="visibility: hidden">' +
                     '<input type="text" name="saveAndGoToNext" value="' + saveAndGoToNext + '" />' +

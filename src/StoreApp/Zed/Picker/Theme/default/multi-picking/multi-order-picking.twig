@@ -18,7 +18,8 @@
     fromPosListeAndModal: fromPosListeAndModal,
     openedItems: openedItems,
     editedItems: editedItems,
-    isMultiPickingProcess: isMultiPickingProcess
+    isMultiPickingProcess: isMultiPickingProcess,
+    orderItemStatus: orderItemStatus,
 } %}
 
  {% if data.currentPositionData is defined %}
@@ -91,7 +92,8 @@
                 isLastPosition: data.isLastPosition,
                 urlScanShelves: data.urlScanShelves,
                 openModal: data.openModal,
-                fromPosListeAndModal: data.fromPosListeAndModal
+                fromPosListeAndModal: data.fromPosListeAndModal,
+                orderItemStatus: data.orderItemStatus
             },
             attributes: {
                 'data-sku': currentPosition.ean,
