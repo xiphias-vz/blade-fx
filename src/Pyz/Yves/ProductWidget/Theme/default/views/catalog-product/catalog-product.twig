@@ -21,10 +21,7 @@
     {% if data.product.images is defined %}
         {% set firstImage = data.product.images | first %}
         {% if firstImage.external_url_small is not empty %}
-            {% set splitUrl = firstImage.external_url_small | split('.com/') %}
-            {% set insertInTheMiddle = '.com/thumb_' %}
-            {% set newThumbUrl = splitUrl[0] ~ insertInTheMiddle ~ splitUrl[1] %}
-            {% set image = newThumbUrl %}
+            {% set image = firstImage.external_url_small %}
         {% endif %}
     {% endif %}
 
