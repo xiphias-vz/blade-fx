@@ -61,7 +61,7 @@ class ImageImportToS3Console extends Console
         } else {
             dump("Missing file name. After command put -f <filename>");
 
-            return 0;
+            return static::CODE_ERROR;
         }
         $directoryEmpty = $this->emptyTempDirectory();
         if ($directoryEmpty) {
@@ -75,7 +75,7 @@ class ImageImportToS3Console extends Console
             }
         }
 
-        return 1;
+        return static::CODE_SUCCESS;
     }
 
     /**
@@ -87,7 +87,8 @@ class ImageImportToS3Console extends Console
             $zip = new ZipArchive();
             $imagesDirectory = $zip->open($this->zipFileName);
 
-            dump('DIRECTORY FOUND'); //TODO: ONLY TESTING - REMOVE AFTER
+            dump('DIRECTORY FOUND:'); //TODO: ONLY TESTING - REMOVE AFTER
+            dump($imagesDirectory);
             if ($imagesDirectory == true) {
                 $zip->extractTo(static::UNZIP_FILE_NAME);
                 $zip->close();

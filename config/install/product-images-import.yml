@@ -7,4 +7,4 @@ sections:
 
     import:
         import-images:
-            command: "vendor/bin/console data:import:images-to-s3 -f spryker/2.globus_articles_images"
+            command: "vendor/bin/console data:import:images-to-s3 -f spryker/2.globus_articles_images.zip"
