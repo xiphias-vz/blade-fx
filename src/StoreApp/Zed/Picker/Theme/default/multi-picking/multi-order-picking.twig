@@ -16,6 +16,9 @@
     listOfContainers: listOfContainers,
     openModal: openModal,
     fromPosListeAndModal: fromPosListeAndModal,
+    openedItems: openedItems,
+    editedItems: editedItems,
+    isMultiPickingProcess: isMultiPickingProcess
 } %}
 
  {% if data.currentPositionData is defined %}
@@ -44,7 +47,10 @@
             orderReference: data.orderReference,
             containerSelect: true,
             pickingForm: true,
-            productsLength: data.itemsCount
+            productsLength: data.itemsCount,
+            openedItems: data.openedItems,
+            editedItems: data.editedItems,
+            isMultiPickingProcess: data.isMultiPickingProcess
         },
         embed: {
             itemsCount: data.itemsCount,

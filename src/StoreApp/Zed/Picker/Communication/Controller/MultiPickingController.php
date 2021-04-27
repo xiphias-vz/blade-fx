@@ -145,8 +145,22 @@ class MultiPickingController extends BaseOrderPickingController
         }
         $orderPosition = $nextOIData['pickingPosition'];
         $orderItemPosition = $nextOIData['pickingItemPosition'];
+        $orderItems = $transfer->getOrder($orderPosition)->getPickingOrderItems();
+        $totalQuantity = 0;
+        $quantityProcessed = 0;
 
-        $positionsData = $transfer->getOrderItems($nextOIData->getPickingItemPosition());
+        foreach ($orderItems as $orderItem) {
+            $quantityProcessed += $orderItem->getQuantityPicked();
+            if (($orderItem->getIsCancelled() || $orderItem->getIsPaused())) {
+                $quantityProcessed += $orderItem->getQuantity();
+            }
+            $totalQuantity += $orderItem->getQuantity();
+        }
+
+        $openedItems = $totalQuantity - $quantityProcessed < 0 ? 0 : $totalQuantity - $quantityProcessed;
+        $editedItems = $quantityProcessed;
+
+        $positionsData = $transfer->getOrderItems($nextOIData->getPickingItemPosition())[0];
 
         $isLastPosition = "false";
         if ($transfer->isLastItem() || $openModal == 'true' || $fromPosListeAndModal == 'true') {
@@ -169,6 +183,9 @@ class MultiPickingController extends BaseOrderPickingController
             'orderItemPosition' => $orderItemPosition,
             'pickingOrderItemsData' => $positionsData,
             'itemsCount' => 0,
+            'editedItems' => $editedItems,
+            'openedItems' => $openedItems,
+            'isMultiPickingProcess' => 1,
             'requestParamIdSalesOrder' => PickerConfig::REQUEST_PARAM_ID_ORDER,
             'orderReference' => $nextOIData->getOrderReference(),
             'urlContainerSelect' => PickerConfig::URL_MULTI_PICKING_SELECT_CONTAINERS,
