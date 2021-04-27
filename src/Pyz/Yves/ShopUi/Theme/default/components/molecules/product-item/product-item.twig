@@ -64,9 +64,10 @@
                         {% if data.url %}
                             {% block imageLink %}
                                     <a href="{{ data.url }}">
-
-                                        {{ _self.thumbnail(data.image, data.name, extraClass, modifiers, data.idProductAbstract) }}
-
+                                        {% set splitUrl = data.image | split('.com/') %}
+                                        {% set insertInTheMiddle = '.com/thumb_' %}
+                                        {% set newThumbUrl = splitUrl[0] ~ insertInTheMiddle ~ splitUrl[1] %}
+                                        {{ _self.thumbnail(newThumbUrl, data.name, extraClass, modifiers, data.idProductAbstract) }}
                                     </a>
                             {% endblock %}
                         {% endif %}
