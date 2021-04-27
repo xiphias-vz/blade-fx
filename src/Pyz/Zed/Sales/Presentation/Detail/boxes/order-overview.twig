@@ -132,8 +132,9 @@
                             </form>
                         {% endif %}
 
+
+                        <dt style="margin-top: 15px">{{ 'Customer Comment' | trans }}</dt>
                         {% if order.cartNote %}
-                            <dt style="margin-top: 15px">{{ 'Customer Comment' | trans }}</dt>
                             <dd>{{ order.cartNote }}</dd>
                         {% endif %}
                     </dl>
@@ -150,12 +151,26 @@
                                 {{ customerTransfer.firstName }} {{ customerTransfer.lastName }}
                             </div>
                         {% endif %}
-                        {% if address and address.phone %}
-                            <div style="margin-bottom: 15px">
-                                <span style="font-weight: bold">{{ 'Phone Number' | trans }}</span><br/>
+
+                        <div style="margin-bottom: 15px">
+                            <span style="font-weight: bold">{{ 'Phone Number' | trans }}</span><br/>
+                            {% if address and address.phone %}
                                 <div>{{ address.phone }}</div>
-                            </div>
-                        {% endif %}
+                            {% else %}
+                                <div>---</div>
+                            {% endif %}
+                        </div>
+
+
+                        <div style="margin-bottom: 15px">
+                            <span style="font-weight: bold">{{ 'Cell phone number' | trans }}</span><br/>
+                            {% if address and address.cellPhone %}
+                                <div>{{ address.cellPhone }}</div>
+                            {% else %}
+                                <div>---</div>
+                            {% endif %}
+                        </div>
+
                         {% if customerTransfer and customerTransfer.email %}
                             <div style="margin-bottom: 15px">
                                 <span style="font-weight: bold">{{ 'Email' | trans }}</span><br/>
@@ -279,16 +294,20 @@
                         <div class="popUp-modal-content">
                             <div class="popUp-modal-header">
                                 <span class="close">&times;</span>
-                                <h3>Bestellung stornieren</h3>
+                                <span id="popUpTitle"></span>
+{#                                <h3>Bestellung stornieren</h3>#}
                             </div>
                             <div class="popUp-modal-body">
-                                <p>Möchten Sie die Bestellung: {{ order.orderReference }} wirklich stornieren?</p>
+                                <div id="popUpContent"></div>
+{#                                <p>Möchten Sie die Bestellung: {{ order.orderReference }} wirklich stornieren?</p>#}
                                 <hr/>
 
                             </div>
-                            <div class="popUp-modal-footer">
-                                <button type="button" id="modalConfirmNo" class="btn btn-invertedPrimary btn-sm">Nein, abbrechen</button>
-                                <button type="button" id="modalConfirmYes" class="btn btn-customPrimary btn-sm">Ja, Bestellung stornieren</button>
+                            <div class="popUp-modal-footer" style="display: flex; justify-content: center;">
+                                <div id="confirmNo"><button type="button" id="modalConfirmNo" class="btn btn-invertedPrimary btn-sm"></button></div>
+                                <div id="confirmYes"></div>
+
+{#                                <button type="button" id="modalConfirmYes" class="btn btn-customPrimary btn-sm"></button>#}
                             </div>
                         </div>
                     </div>
@@ -315,26 +334,35 @@
                 actionButtons = JSON.parse(actionButtons); // to convert json into a javascript object
                 if(actionButtons.length > 0){
 
-                    if(actionButtons.includes("Cancel")){
-                        var btnOmsActions = document.getElementById("omsActions");
-                        let omsActionForms = btnOmsActions.querySelectorAll("form.oms-trigger-form");
+                    var btnOmsActions = document.getElementById("omsActions");
+                    var omsActionForms = btnOmsActions.querySelectorAll("form.oms-trigger-form");
 
+                    if(actionButtons.includes("Cancel") || actionButtons.includes("Abholung bestätigen") || actionButtons.includes("Picking bestätigen")){
                         for(let i = 0;i<omsActionForms.length;i++){
                             let action = omsActionForms[i].getAttribute("action");
                             if(action.includes("/oms/trigger/submit-trigger-event-for-order?event=cancel")){
                                 omsActionForms[i].style.display = "none";
                             }
+                            else if(action.includes("/oms/trigger/submit-trigger-event-for-order?event=Abholung")){
+                                omsActionForms[i].style.display = "none";
+                                var nodeAbholung = '<button type="button" id="oms_trigger_form_submit_abholungBest" name="oms_trigger_formAbholungBest[submit]" class="btn btn-primary btn-sm" style="margin-right: 10px;">Abholung bestätigen</button>';
+                                var lastAbholung = btnOmsActions.querySelector(".ibox-content");
+                                lastAbholung.insertAdjacentHTML('beforeend', nodeAbholung);
+                            }
+                            else if(action.includes("/oms/trigger/submit-trigger-event-for-order?event=confirm+picking")){
+                                omsActionForms[i].style.display = "none";
+                                var nodePicking = '<button type="button" id="oms_trigger_form_submit_pickingBest" name="oms_trigger_formPickingBest[submit]" class="btn btn-primary btn-sm" style="margin-right: 10px;">Picking bestätigen</button>';
+                                var lastPicking = btnOmsActions.querySelector(".ibox-content");
+                                lastPicking.insertAdjacentHTML('beforeend', nodePicking);
+                            }
+
                             if(i === omsActionForms.length - 1){
-                                var btnText = omsActionForms[i];
-                                var node = '<button type="button" id="oms_trigger_form_submit_cancel" name="oms_trigger_formCancel[submit]" class="btn btn-danger btn-sm">Cancel</button>';
-                                var last = btnOmsActions.querySelector(".ibox-content");
-                                last.insertAdjacentHTML('beforeend', node);
+                                var nodeCancel = '<button type="button" id="oms_trigger_form_submit_cancel" name="oms_trigger_formCancel[submit]" class="btn btn-danger btn-sm" style="margin-right: 10px;">Bestellung stornieren</button>';
+                                var lastCancel = btnOmsActions.querySelector(".ibox-content");
+                                lastCancel.insertAdjacentHTML('beforeend', nodeCancel);
                             }
                         }
-
-
                     }
-
                 }
 
                 // Get the modal
@@ -343,16 +371,16 @@
                 // Get the button that opens the modal
                 var btn = document.getElementById("oms_trigger_form_submit_confirm selecting containers");
 
+                var btnAbholungBest = document.getElementById("oms_trigger_form_submit_abholungBest");
+                var btnPickingBest = document.getElementById("oms_trigger_form_submit_pickingBest");
                 var btnCancel = document.getElementById("oms_trigger_form_submit_cancel");
+                var btnSubmit = document.getElementById("oms_trigger_form_submit");
 
                 // Get the <span> element that closes the modal
                 var span = document.getElementsByClassName("close")[0];
 
                 // Get the <button> element that closes the modal
                 var btnConfirmNo = document.getElementById("modalConfirmNo");
-
-                // Get the <button> element that cancels the order
-                var btnConfirmYes = document.getElementById("modalConfirmYes");
 
                 var buttonBearbeiten = document.getElementById("btnBearbeiten");
 
@@ -361,12 +389,163 @@
 
                 var buttonCancel = document.getElementById("btnCancelTsChange");
 
+                if(btnAbholungBest != null){
+                    btnAbholungBest.onclick = function() {
+                        ResetModalContent();
+                        ConfirmCollectionModalFill();
+                        modal.style.display = "block";
+                    }
+                }
+
+                if(btnPickingBest != null){
+                    btnPickingBest.onclick = function() {
+                        ResetModalContent();
+                        ConfirmPickingModalFill();
+                        modal.style.display = "block";
+                    }
+                }
+
                 if(btnCancel != null){
-
-
                     // When the user clicks on the button, open the modal
                     btnCancel.onclick = function() {
+                        ResetModalContent();
+                        CancelModalFill();
                         modal.style.display = "block";
+                    }
+                }
+
+                if(btnSubmit != null){
+                    btnSubmit.onclick = function() {
+                        ResetModalContent();
+                        if(btnSubmit.innerText === "Picking bestätigen"){
+                            ConfirmPickingModalFill();
+                            modal.style.display = "block";
+                        }
+                        else if(btnSubmit.innerText === "Abholung bestätigen"){
+                            ConfirmCollectionModalFill();
+                            modal.style.display = "block";
+                        }
+                    }
+                }
+
+                function ResetModalContent()
+                {
+                    let titleElements = document.getElementById("popUpTitle");
+                    let contentElements = document.getElementById("popUpContent");
+                    let confirmYesModalButton = document.getElementById("confirmYes");
+
+                    while (titleElements.firstChild) {
+                        titleElements.removeChild(titleElements.firstChild);
+                    }
+                    while (contentElements.firstChild) {
+                        contentElements.removeChild(contentElements.firstChild);
+                    }
+                    while (confirmYesModalButton.firstChild) {
+                        confirmYesModalButton.removeChild(confirmYesModalButton.firstChild);
+                    }
+
+                }
+
+                function CancelModalFill()
+                {
+                    let cancelModalTitle = "Bestellung stornieren";
+                    let cancelModalContent = "Möchten Sie die Bestellung: {{ order.orderReference }} wirklich stornieren?";
+                    let cancelModaDecline = "Nein, abbrechen";
+                    let cancelModalConfirm = "Ja, Bestellung stornieren";
+                    let cancelModalButtonHtml = '<button type="button" id="modalConfirmYesCancel" class="btn btn-customPrimary btn-sm">' + cancelModalConfirm + '</button>';
+
+                    let hTag = document.createElement("h3");
+                    hTag.innerHTML = cancelModalTitle;
+                    document.getElementById("popUpTitle").appendChild(hTag);
+
+                    let pTag = document.createElement("p");
+                    pTag.innerHTML = cancelModalContent;
+                    document.getElementById("popUpContent").appendChild(pTag);
+
+                    document.getElementById("modalConfirmNo").innerHTML = cancelModaDecline;
+
+                    document.getElementById("confirmYes").innerHTML = cancelModalButtonHtml;
+
+                    var btnConfirmYesCancel = document.getElementById("modalConfirmYesCancel");
+                    btnConfirmYesCancel.onclick = function () {
+                        let omsActionForms = btnOmsActions.querySelectorAll("form.oms-trigger-form");
+
+                        for (let i = 0; i < omsActionForms.length; i++) {
+                            let action = omsActionForms[i].getAttribute("action");
+                            if (action.includes("/oms/trigger/submit-trigger-event-for-order?event=cancel")) {
+                                omsActionForms[i].submit();
+                                return;
+                            }
+                        }
+                    }
+
+                }
+
+                function ConfirmPickingModalFill()
+                {
+                    let cancelModalTitle = "Picking bestätigen";
+                    let cancelModalContent = "Möchten Sie das Picking für die Bestellung: {{ order.orderReference }} wirklich stornieren?";
+                    let cancelModaDecline = "Nein, abbrechen";
+                    let cancelModalConfirm = "Ja, Picking bestätigen";
+                    let confirmModalButtonHtml = '<button type="button" id="modalConfirmYesPicking" class="btn btn-customPrimary btn-sm">' + cancelModalConfirm + '</button>';
+
+                    let hTag = document.createElement("h3");
+                    hTag.innerHTML = cancelModalTitle;
+                    document.getElementById("popUpTitle").appendChild(hTag);
+
+                    let pTag = document.createElement("p");
+                    pTag.innerHTML = cancelModalContent;
+                    document.getElementById("popUpContent").appendChild(pTag);
+
+                    document.getElementById("modalConfirmNo").innerHTML = cancelModaDecline;
+                    document.getElementById("confirmYes").innerHTML = confirmModalButtonHtml;
+
+                    var btnConfirmYesPickingBest = document.getElementById("modalConfirmYesPicking");
+
+                    btnConfirmYesPickingBest.onclick = function () {
+                        let omsActionForms = btnOmsActions.querySelectorAll("form.oms-trigger-form");
+
+                        for (let i = 0; i < omsActionForms.length; i++) {
+                            let action = omsActionForms[i].getAttribute("action");
+                            if (action.includes("/oms/trigger/submit-trigger-event-for-order?event=confirm+picking")) {
+                                omsActionForms[i].submit();
+                                return;
+                            }
+                        }
+                    }
+                }
+
+                function ConfirmCollectionModalFill()
+                {
+                    let cancelModalTitle = "Abholung bestätigen";
+                    let cancelModalContent = "Möchten Sie die Abholung für die Bestellung: {{ order.orderReference }} wirklich stornieren?";
+                    let cancelModaDecline = "Nein, abbrechen";
+                    let cancelModalConfirm = "Ja, Abholung bestätigen";
+                    let confirmModalButtonHtml = '<button type="button" id="modalConfirmYesCollection" class="btn btn-customPrimary btn-sm">' + cancelModalConfirm + '</button>';
+
+                    let hTag = document.createElement("h3");
+                    hTag.innerHTML = cancelModalTitle;
+                    document.getElementById("popUpTitle").appendChild(hTag);
+
+                    let pTag = document.createElement("p");
+                    pTag.innerHTML = cancelModalContent;
+                    document.getElementById("popUpContent").appendChild(pTag);
+
+                    document.getElementById("modalConfirmNo").innerHTML = cancelModaDecline;
+                    document.getElementById("confirmYes").innerHTML = confirmModalButtonHtml;
+
+                    var btnConfirmYesAbholungBest = document.getElementById("modalConfirmYesCollection");
+
+                    btnConfirmYesAbholungBest.onclick = function () {
+                        let omsActionForms = btnOmsActions.querySelectorAll("form.oms-trigger-form");
+
+                        for (let i = 0; i < omsActionForms.length; i++) {
+                            let action = omsActionForms[i].getAttribute("action");
+                            if (action.includes("/oms/trigger/submit-trigger-event-for-order?event=Abholung")) {
+                                omsActionForms[i].submit();
+                                return;
+                            }
+                        }
                     }
                 }
 
@@ -378,18 +557,6 @@
                 // When the user clicks on button "Nein" inside of pop up, close the modal
                 btnConfirmNo.onclick = function() {
                     modal.style.display = "none";
-                }
-
-                btnConfirmYes.onclick = function() {
-                    let omsActionForms = btnOmsActions.querySelectorAll("form.oms-trigger-form");
-
-                    for(let i = 0;i<omsActionForms.length;i++){
-                        let action = omsActionForms[i].getAttribute("action");
-                        if(action.includes("/oms/trigger/submit-trigger-event-for-order?event=cancel")){
-                            omsActionForms[i].submit();
-                            return;
-                        }
-                    }
                 }
 
                 buttonBearbeiten.onclick = function() {

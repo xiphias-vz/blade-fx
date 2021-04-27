@@ -103,12 +103,14 @@ class DetailController extends SprykerDetailController
         $isCurrentUserSupervisorOrAdmin = $this->isCurrentUserSupervisorOrAdmin();
 
         $buttons = [];
-        foreach ($events as $key => $event) {
-            if (stripos($event, "cancel") === 0) {
+        foreach ($events as $key => &$event) {
+            if (stripos($event, "return") === 0 || stripos($event, "close") === 0 || stripos($event, "confirm selecting containers") === 0) {
+                unset($events[$key]);
+            } elseif (stripos($event, "cancel") === 0) {
                 if ($isCurrentUserSupervisor) {
                     array_push($buttons, "Cancel");
                 }
-                unset($events[$key]);
+//                unset($events[$key]);
             } elseif (stripos($event, "Zurücksetzen") === 0) {
                 if (in_array("picked", $distinctOrderStates) == false && in_array("picked, canceled", $distinctOrderStates) == false) {
                     unset($events[$key]);
@@ -118,7 +120,11 @@ class DetailController extends SprykerDetailController
                     }
                 }
             } else {
-                if (stripos($event, "confirm") === 0) {
+                if (stripos($event, "confirm picking") === 0) {
+                    $event = "Picking bestätigen";
+                    array_push($buttons, $event);
+                } elseif (stripos($event, "confirm collection") === 0) {
+                    $event = "Abholung bestätigen";
                     array_push($buttons, $event);
                 } else {
                     array_push($buttons, $event);
