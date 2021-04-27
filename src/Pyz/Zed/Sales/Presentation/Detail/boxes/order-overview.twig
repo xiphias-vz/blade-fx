@@ -15,7 +15,7 @@
                             <dt>{{ 'Angefratges Lieferdatum' | trans }}:</dt>
                         <dd>
 
-                            {% if isCurrentUserSupervisor %}
+                            {% if isCurrentUserSupervisorOrAdmin %}
 
                                 <div id="buttonsEditDiv">
                                     <div style="float: left; padding-top: 2px;">
@@ -82,7 +82,7 @@
                             <dd>{{ pickingSalesOrder.zoneName ~ ' -> ' ~ pickingSalesOrder.containerCode ~ ' -> ' ~ pickingSalesOrder.shelfCode}}</dd>
                         {% endfor %}
 
-                        {% if(isCurrentUserSupervisor) %}
+                        {% if(isCurrentUserSupervisorOrAdmin) %}
                             <dd>
                                 <div  id="divAddContainer" style="float: left;">
                                     <?xml version="1.0" encoding="utf-8"?>
@@ -164,8 +164,8 @@
 
                         <div style="margin-bottom: 15px">
                             <span style="font-weight: bold">{{ 'Cell phone number' | trans }}</span><br/>
-                            {% if address and address.cellPhone %}
-                                <div>{{ address.cellPhone }}</div>
+                            {% if cellPhone %}
+                                <div>{{ cellPhone }}</div>
                             {% else %}
                                 <div>---</div>
                             {% endif %}
@@ -295,20 +295,15 @@
                             <div class="popUp-modal-header">
                                 <span class="close">&times;</span>
                                 <span id="popUpTitle"></span>
-{#                                <h3>Bestellung stornieren</h3>#}
                             </div>
                             <div class="popUp-modal-body">
                                 <div id="popUpContent"></div>
-{#                                <p>Möchten Sie die Bestellung: {{ order.orderReference }} wirklich stornieren?</p>#}
                                 <hr/>
 
                             </div>
                             <div class="popUp-modal-footer" style="display: flex; justify-content: center;">
                                 <div id="confirmNo"><button type="button" id="modalConfirmNo" class="btn btn-invertedPrimary btn-sm"></button></div>
-                                <div id="confirmYes"></div>
-
-{#                                <button type="button" id="modalConfirmYes" class="btn btn-customPrimary btn-sm"></button>#}
-                            </div>
+                                <div id="confirmYes"></div></div>
                         </div>
                     </div>
                 </div>
@@ -326,331 +321,339 @@
             </div>
         </div>
 
-        <script type="text/javascript">
+        {% if isCurrentUserSupervisorOrAdmin %}
+            <script type="text/javascript">
 
-            document.addEventListener('DOMContentLoaded', function(event) {
+                document.addEventListener('DOMContentLoaded', function(event) {
 
-                var actionButtons = '{{ buttons | json_encode | raw }}';
-                actionButtons = JSON.parse(actionButtons); // to convert json into a javascript object
-                if(actionButtons.length > 0){
+                    var actionButtons = '{{ buttons | json_encode | raw }}';
+                    actionButtons = JSON.parse(actionButtons);
+                    if(actionButtons.length > 0){
 
-                    var btnOmsActions = document.getElementById("omsActions");
-                    var omsActionForms = btnOmsActions.querySelectorAll("form.oms-trigger-form");
+                        var btnOmsActions = document.getElementById("omsActions");
+                        var omsActionForms = btnOmsActions.querySelectorAll("form.oms-trigger-form");
 
-                    if(actionButtons.includes("Cancel") || actionButtons.includes("Abholung bestätigen") || actionButtons.includes("Picking bestätigen")){
-                        for(let i = 0;i<omsActionForms.length;i++){
-                            let action = omsActionForms[i].getAttribute("action");
-                            if(action.includes("/oms/trigger/submit-trigger-event-for-order?event=cancel")){
-                                omsActionForms[i].style.display = "none";
-                            }
-                            else if(action.includes("/oms/trigger/submit-trigger-event-for-order?event=Abholung")){
-                                omsActionForms[i].style.display = "none";
-                                var nodeAbholung = '<button type="button" id="oms_trigger_form_submit_abholungBest" name="oms_trigger_formAbholungBest[submit]" class="btn btn-primary btn-sm" style="margin-right: 10px;">Abholung bestätigen</button>';
-                                var lastAbholung = btnOmsActions.querySelector(".ibox-content");
-                                lastAbholung.insertAdjacentHTML('beforeend', nodeAbholung);
-                            }
-                            else if(action.includes("/oms/trigger/submit-trigger-event-for-order?event=confirm+picking")){
-                                omsActionForms[i].style.display = "none";
-                                var nodePicking = '<button type="button" id="oms_trigger_form_submit_pickingBest" name="oms_trigger_formPickingBest[submit]" class="btn btn-primary btn-sm" style="margin-right: 10px;">Picking bestätigen</button>';
-                                var lastPicking = btnOmsActions.querySelector(".ibox-content");
-                                lastPicking.insertAdjacentHTML('beforeend', nodePicking);
-                            }
+                        if(actionButtons.includes("Cancel") || actionButtons.includes("Abholung bestätigen") || actionButtons.includes("Picking bestätigen")){
+                            for(let i = 0;i<omsActionForms.length;i++){
+                                let action = omsActionForms[i].getAttribute("action");
+                                if(action.includes("/oms/trigger/submit-trigger-event-for-order?event=cancel")){
+                                    omsActionForms[i].style.display = "none";
+                                }
+                                else if(action.includes("/oms/trigger/submit-trigger-event-for-order?event=Abholung")){
+                                    omsActionForms[i].style.display = "none";
+                                    var nodeAbholung = '<button type="button" id="oms_trigger_form_submit_abholungBest" name="oms_trigger_formAbholungBest[submit]" class="btn btn-primary btn-sm" style="margin-right: 10px;">Abholung bestätigen</button>';
+                                    var lastAbholung = btnOmsActions.querySelector(".ibox-content");
+                                    lastAbholung.insertAdjacentHTML('beforeend', nodeAbholung);
+                                }
+                                else if(action.includes("/oms/trigger/submit-trigger-event-for-order?event=Picking+best")){
+                                    omsActionForms[i].style.display = "none";
+                                    var nodePicking = '<button type="button" id="oms_trigger_form_submit_pickingBest" name="oms_trigger_formPickingBest[submit]" class="btn btn-primary btn-sm" style="margin-right: 10px;">Picking bestätigen</button>';
+                                    var lastPicking = btnOmsActions.querySelector(".ibox-content");
+                                    lastPicking.insertAdjacentHTML('beforeend', nodePicking);
+                                }
 
-                            if(i === omsActionForms.length - 1){
-                                var nodeCancel = '<button type="button" id="oms_trigger_form_submit_cancel" name="oms_trigger_formCancel[submit]" class="btn btn-danger btn-sm" style="margin-right: 10px;">Bestellung stornieren</button>';
-                                var lastCancel = btnOmsActions.querySelector(".ibox-content");
-                                lastCancel.insertAdjacentHTML('beforeend', nodeCancel);
+                                if(i === omsActionForms.length - 1){
+                                    var nodeCancel = '<button type="button" id="oms_trigger_form_submit_cancel" name="oms_trigger_formCancel[submit]" class="btn btn-danger btn-sm" style="margin-right: 10px;">Bestellung stornieren</button>';
+                                    var lastCancel = btnOmsActions.querySelector(".ibox-content");
+                                    lastCancel.insertAdjacentHTML('beforeend', nodeCancel);
+                                }
                             }
                         }
                     }
-                }
 
-                // Get the modal
-                var modal = document.getElementById("myModal");
+                    // Get the modal
+                    var modal = document.getElementById("myModal");
 
-                // Get the button that opens the modal
-                var btn = document.getElementById("oms_trigger_form_submit_confirm selecting containers");
+                    // Get the button that opens the modal
+                    var btn = document.getElementById("oms_trigger_form_submit_confirm selecting containers");
 
-                var btnAbholungBest = document.getElementById("oms_trigger_form_submit_abholungBest");
-                var btnPickingBest = document.getElementById("oms_trigger_form_submit_pickingBest");
-                var btnCancel = document.getElementById("oms_trigger_form_submit_cancel");
-                var btnSubmit = document.getElementById("oms_trigger_form_submit");
+                    var btnAbholungBest = document.getElementById("oms_trigger_form_submit_abholungBest");
+                    var btnPickingBest = document.getElementById("oms_trigger_form_submit_pickingBest");
+                    var btnCancel = document.getElementById("oms_trigger_form_submit_cancel");
+                    var btnSubmit = document.getElementById("oms_trigger_form_submit");
 
-                // Get the <span> element that closes the modal
-                var span = document.getElementsByClassName("close")[0];
+                    // Get the <span> element that closes the modal
+                    var span = document.getElementsByClassName("close")[0];
 
-                // Get the <button> element that closes the modal
-                var btnConfirmNo = document.getElementById("modalConfirmNo");
+                    // Get the <button> element that closes the modal
+                    var btnConfirmNo = document.getElementById("modalConfirmNo");
 
-                var buttonBearbeiten = document.getElementById("btnBearbeiten");
+                    var buttonBearbeiten = document.getElementById("btnBearbeiten");
 
-                var divButtonEdit = document.getElementById("buttonsEditDiv");
-                var divFieldsEdit = document.getElementById("fieldsEditDiv");
+                    var divButtonEdit = document.getElementById("buttonsEditDiv");
+                    var divFieldsEdit = document.getElementById("fieldsEditDiv");
 
-                var buttonCancel = document.getElementById("btnCancelTsChange");
+                    var buttonCancel = document.getElementById("btnCancelTsChange");
 
-                if(btnAbholungBest != null){
-                    btnAbholungBest.onclick = function() {
-                        ResetModalContent();
-                        ConfirmCollectionModalFill();
-                        modal.style.display = "block";
-                    }
-                }
-
-                if(btnPickingBest != null){
-                    btnPickingBest.onclick = function() {
-                        ResetModalContent();
-                        ConfirmPickingModalFill();
-                        modal.style.display = "block";
-                    }
-                }
-
-                if(btnCancel != null){
-                    // When the user clicks on the button, open the modal
-                    btnCancel.onclick = function() {
-                        ResetModalContent();
-                        CancelModalFill();
-                        modal.style.display = "block";
-                    }
-                }
-
-                if(btnSubmit != null){
-                    btnSubmit.onclick = function() {
-                        ResetModalContent();
-                        if(btnSubmit.innerText === "Picking bestätigen"){
-                            ConfirmPickingModalFill();
-                            modal.style.display = "block";
-                        }
-                        else if(btnSubmit.innerText === "Abholung bestätigen"){
+                    if(btnAbholungBest != null){
+                        btnAbholungBest.onclick = function() {
+                            ResetModalContent();
                             ConfirmCollectionModalFill();
                             modal.style.display = "block";
                         }
                     }
-                }
 
-                function ResetModalContent()
-                {
-                    let titleElements = document.getElementById("popUpTitle");
-                    let contentElements = document.getElementById("popUpContent");
-                    let confirmYesModalButton = document.getElementById("confirmYes");
-
-                    while (titleElements.firstChild) {
-                        titleElements.removeChild(titleElements.firstChild);
-                    }
-                    while (contentElements.firstChild) {
-                        contentElements.removeChild(contentElements.firstChild);
-                    }
-                    while (confirmYesModalButton.firstChild) {
-                        confirmYesModalButton.removeChild(confirmYesModalButton.firstChild);
+                    if(btnPickingBest != null){
+                        btnPickingBest.onclick = function() {
+                            ResetModalContent();
+                            ConfirmPickingModalFill();
+                            modal.style.display = "block";
+                        }
                     }
 
-                }
+                    if(btnCancel != null){
+                        // When the user clicks on the button, open the modal
+                        btnCancel.onclick = function() {
+                            ResetModalContent();
+                            CancelModalFill();
+                            modal.style.display = "block";
+                        }
+                    }
 
-                function CancelModalFill()
-                {
-                    let cancelModalTitle = "Bestellung stornieren";
-                    let cancelModalContent = "Möchten Sie die Bestellung: {{ order.orderReference }} wirklich stornieren?";
-                    let cancelModaDecline = "Nein, abbrechen";
-                    let cancelModalConfirm = "Ja, Bestellung stornieren";
-                    let cancelModalButtonHtml = '<button type="button" id="modalConfirmYesCancel" class="btn btn-customPrimary btn-sm">' + cancelModalConfirm + '</button>';
-
-                    let hTag = document.createElement("h3");
-                    hTag.innerHTML = cancelModalTitle;
-                    document.getElementById("popUpTitle").appendChild(hTag);
-
-                    let pTag = document.createElement("p");
-                    pTag.innerHTML = cancelModalContent;
-                    document.getElementById("popUpContent").appendChild(pTag);
-
-                    document.getElementById("modalConfirmNo").innerHTML = cancelModaDecline;
-
-                    document.getElementById("confirmYes").innerHTML = cancelModalButtonHtml;
-
-                    var btnConfirmYesCancel = document.getElementById("modalConfirmYesCancel");
-                    btnConfirmYesCancel.onclick = function () {
-                        let omsActionForms = btnOmsActions.querySelectorAll("form.oms-trigger-form");
-
-                        for (let i = 0; i < omsActionForms.length; i++) {
-                            let action = omsActionForms[i].getAttribute("action");
-                            if (action.includes("/oms/trigger/submit-trigger-event-for-order?event=cancel")) {
-                                omsActionForms[i].submit();
-                                return;
+                    if(btnSubmit != null){
+                        btnSubmit.onclick = function() {
+                            ResetModalContent();
+                            if(btnSubmit.innerText === "Picking bestätigen"){
+                                ConfirmPickingModalFill();
+                                modal.style.display = "block";
+                            }
+                            else if(btnSubmit.innerText === "Abholung bestätigen"){
+                                ConfirmCollectionModalFill();
+                                modal.style.display = "block";
                             }
                         }
                     }
 
-                }
+                    function ResetModalContent()
+                    {
+                        let titleElements = document.getElementById("popUpTitle");
+                        let contentElements = document.getElementById("popUpContent");
+                        let confirmYesModalButton = document.getElementById("confirmYes");
 
-                function ConfirmPickingModalFill()
-                {
-                    let cancelModalTitle = "Picking bestätigen";
-                    let cancelModalContent = "Möchten Sie das Picking für die Bestellung: {{ order.orderReference }} wirklich stornieren?";
-                    let cancelModaDecline = "Nein, abbrechen";
-                    let cancelModalConfirm = "Ja, Picking bestätigen";
-                    let confirmModalButtonHtml = '<button type="button" id="modalConfirmYesPicking" class="btn btn-customPrimary btn-sm">' + cancelModalConfirm + '</button>';
+                        while (titleElements.firstChild) {
+                            titleElements.removeChild(titleElements.firstChild);
+                        }
+                        while (contentElements.firstChild) {
+                            contentElements.removeChild(contentElements.firstChild);
+                        }
+                        while (confirmYesModalButton.firstChild) {
+                            confirmYesModalButton.removeChild(confirmYesModalButton.firstChild);
+                        }
 
-                    let hTag = document.createElement("h3");
-                    hTag.innerHTML = cancelModalTitle;
-                    document.getElementById("popUpTitle").appendChild(hTag);
+                    }
 
-                    let pTag = document.createElement("p");
-                    pTag.innerHTML = cancelModalContent;
-                    document.getElementById("popUpContent").appendChild(pTag);
+                    function CancelModalFill()
+                    {
+                        let cancelModalTitle = "Bestellung stornieren";
+                        let cancelModalContent = "Möchten Sie die Bestellung: {{ order.orderReference }} wirklich stornieren?";
+                        let cancelModaDecline = "Nein, abbrechen";
+                        let cancelModalConfirm = "Ja, Bestellung stornieren";
+                        let cancelModalButtonHtml = '<button type="button" id="modalConfirmYesCancel" class="btn btn-customPrimary btn-sm">' + cancelModalConfirm + '</button>';
 
-                    document.getElementById("modalConfirmNo").innerHTML = cancelModaDecline;
-                    document.getElementById("confirmYes").innerHTML = confirmModalButtonHtml;
+                        let hTag = document.createElement("h3");
+                        hTag.innerHTML = cancelModalTitle;
+                        document.getElementById("popUpTitle").appendChild(hTag);
 
-                    var btnConfirmYesPickingBest = document.getElementById("modalConfirmYesPicking");
+                        let pTag = document.createElement("p");
+                        pTag.innerHTML = cancelModalContent;
+                        document.getElementById("popUpContent").appendChild(pTag);
 
-                    btnConfirmYesPickingBest.onclick = function () {
-                        let omsActionForms = btnOmsActions.querySelectorAll("form.oms-trigger-form");
+                        document.getElementById("modalConfirmNo").innerHTML = cancelModaDecline;
 
-                        for (let i = 0; i < omsActionForms.length; i++) {
-                            let action = omsActionForms[i].getAttribute("action");
-                            if (action.includes("/oms/trigger/submit-trigger-event-for-order?event=confirm+picking")) {
-                                omsActionForms[i].submit();
-                                return;
+                        document.getElementById("confirmYes").innerHTML = cancelModalButtonHtml;
+
+                        var btnConfirmYesCancel = document.getElementById("modalConfirmYesCancel");
+                        btnConfirmYesCancel.onclick = function () {
+                            let omsActionForms = btnOmsActions.querySelectorAll("form.oms-trigger-form");
+
+                            for (let i = 0; i < omsActionForms.length; i++) {
+                                let action = omsActionForms[i].getAttribute("action");
+                                if (action.includes("/oms/trigger/submit-trigger-event-for-order?event=cancel+collection+by+store")) {
+                                    omsActionForms[i].submit();
+                                    return;
+                                }
+                                else if (action.includes("/oms/trigger/submit-trigger-event-for-order?event=cancel")) {
+                                    omsActionForms[i].submit();
+                                    return;
+                                }
+                            }
+                        }
+
+                    }
+
+                    function ConfirmPickingModalFill()
+                    {
+                        let cancelModalTitle = "Picking bestätigen";
+                        let cancelModalContent = "Möchten Sie das Picking für die Bestellung: {{ order.orderReference }} wirklich stornieren?";
+                        let cancelModaDecline = "Nein, abbrechen";
+                        let cancelModalConfirm = "Ja, Picking bestätigen";
+                        let confirmModalButtonHtml = '<button type="button" id="modalConfirmYesPicking" class="btn btn-customPrimary btn-sm">' + cancelModalConfirm + '</button>';
+
+                        let hTag = document.createElement("h3");
+                        hTag.innerHTML = cancelModalTitle;
+                        document.getElementById("popUpTitle").appendChild(hTag);
+
+                        let pTag = document.createElement("p");
+                        pTag.innerHTML = cancelModalContent;
+                        document.getElementById("popUpContent").appendChild(pTag);
+
+                        document.getElementById("modalConfirmNo").innerHTML = cancelModaDecline;
+                        document.getElementById("confirmYes").innerHTML = confirmModalButtonHtml;
+
+                        var btnConfirmYesPickingBest = document.getElementById("modalConfirmYesPicking");
+
+                        btnConfirmYesPickingBest.onclick = function () {
+                            let omsActionForms = btnOmsActions.querySelectorAll("form.oms-trigger-form");
+
+                            for (let i = 0; i < omsActionForms.length; i++) {
+                                let action = omsActionForms[i].getAttribute("action");
+                                if (action.includes("/oms/trigger/submit-trigger-event-for-order?event=Picking+best")) {
+                                    omsActionForms[i].submit();
+                                    return;
+                                }
                             }
                         }
                     }
-                }
 
-                function ConfirmCollectionModalFill()
-                {
-                    let cancelModalTitle = "Abholung bestätigen";
-                    let cancelModalContent = "Möchten Sie die Abholung für die Bestellung: {{ order.orderReference }} wirklich stornieren?";
-                    let cancelModaDecline = "Nein, abbrechen";
-                    let cancelModalConfirm = "Ja, Abholung bestätigen";
-                    let confirmModalButtonHtml = '<button type="button" id="modalConfirmYesCollection" class="btn btn-customPrimary btn-sm">' + cancelModalConfirm + '</button>';
+                    function ConfirmCollectionModalFill()
+                    {
+                        let cancelModalTitle = "Abholung bestätigen";
+                        let cancelModalContent = "Möchten Sie die Abholung für die Bestellung: {{ order.orderReference }} wirklich stornieren?";
+                        let cancelModaDecline = "Nein, abbrechen";
+                        let cancelModalConfirm = "Ja, Abholung bestätigen";
+                        let confirmModalButtonHtml = '<button type="button" id="modalConfirmYesCollection" class="btn btn-customPrimary btn-sm">' + cancelModalConfirm + '</button>';
 
-                    let hTag = document.createElement("h3");
-                    hTag.innerHTML = cancelModalTitle;
-                    document.getElementById("popUpTitle").appendChild(hTag);
+                        let hTag = document.createElement("h3");
+                        hTag.innerHTML = cancelModalTitle;
+                        document.getElementById("popUpTitle").appendChild(hTag);
 
-                    let pTag = document.createElement("p");
-                    pTag.innerHTML = cancelModalContent;
-                    document.getElementById("popUpContent").appendChild(pTag);
+                        let pTag = document.createElement("p");
+                        pTag.innerHTML = cancelModalContent;
+                        document.getElementById("popUpContent").appendChild(pTag);
 
-                    document.getElementById("modalConfirmNo").innerHTML = cancelModaDecline;
-                    document.getElementById("confirmYes").innerHTML = confirmModalButtonHtml;
+                        document.getElementById("modalConfirmNo").innerHTML = cancelModaDecline;
+                        document.getElementById("confirmYes").innerHTML = confirmModalButtonHtml;
 
-                    var btnConfirmYesAbholungBest = document.getElementById("modalConfirmYesCollection");
+                        var btnConfirmYesAbholungBest = document.getElementById("modalConfirmYesCollection");
 
-                    btnConfirmYesAbholungBest.onclick = function () {
-                        let omsActionForms = btnOmsActions.querySelectorAll("form.oms-trigger-form");
+                        btnConfirmYesAbholungBest.onclick = function () {
+                            let omsActionForms = btnOmsActions.querySelectorAll("form.oms-trigger-form");
 
-                        for (let i = 0; i < omsActionForms.length; i++) {
-                            let action = omsActionForms[i].getAttribute("action");
-                            if (action.includes("/oms/trigger/submit-trigger-event-for-order?event=Abholung")) {
-                                omsActionForms[i].submit();
-                                return;
+                            for (let i = 0; i < omsActionForms.length; i++) {
+                                let action = omsActionForms[i].getAttribute("action");
+                                if (action.includes("/oms/trigger/submit-trigger-event-for-order?event=Abholung")) {
+                                    omsActionForms[i].submit();
+                                    return;
+                                }
                             }
                         }
                     }
-                }
 
-                // When the user clicks on <span> (x), close the modal
-                span.onclick = function() {
-                    modal.style.display = "none";
-                }
+                    // When the user clicks on <span> (x), close the modal
+                    span.onclick = function() {
+                        modal.style.display = "none";
+                    }
 
-                // When the user clicks on button "Nein" inside of pop up, close the modal
-                btnConfirmNo.onclick = function() {
-                    modal.style.display = "none";
-                }
+                    // When the user clicks on button "Nein" inside of pop up, close the modal
+                    btnConfirmNo.onclick = function() {
+                        modal.style.display = "none";
+                    }
 
-                buttonBearbeiten.onclick = function() {
-                    divButtonEdit.style.display = "none";
-                    divFieldsEdit.style.display = "flex";
-                }
+                    buttonBearbeiten.onclick = function() {
+                        divButtonEdit.style.display = "none";
+                        divFieldsEdit.style.display = "flex";
+                    }
 
-                buttonCancel.onclick = function() {
-                    divButtonEdit.style.display = "block";
-                    divFieldsEdit.style.display = "none";
-                }
+                    buttonCancel.onclick = function() {
+                        divButtonEdit.style.display = "block";
+                        divFieldsEdit.style.display = "none";
+                    }
 
-            })
+                })
 
-            const divAddContainer = document.getElementById('divAddContainer');
-            const divAddContainerAndShelf = document.getElementById('divAddContainerAndShelf');
-            const frmContainerShelf_idSalesOrder = document.getElementById('frmContainerShelf_idSalesOrder');
-            const pickingZones = document.getElementById('pickingZones');
-            const inputContainer = document.getElementById('inputContainer');
-            const inputShelf = document.getElementById('inputShelf');
-            const labelContainerAndShelf = document.getElementById('labelContainerAndShelf');
-            const errorMessage = document.getElementById('errorMessage');
-            const btnAddContainer = document.getElementById('btnAddContainer');
-            const btnCancelAction = document.getElementById('btnCancelAction');
-            const btnSaveContainer = document.getElementById('btnSaveContainer');
+                const divAddContainer = document.getElementById('divAddContainer');
+                const divAddContainerAndShelf = document.getElementById('divAddContainerAndShelf');
+                const frmContainerShelf_idSalesOrder = document.getElementById('frmContainerShelf_idSalesOrder');
+                const pickingZones = document.getElementById('pickingZones');
+                const inputContainer = document.getElementById('inputContainer');
+                const inputShelf = document.getElementById('inputShelf');
+                const labelContainerAndShelf = document.getElementById('labelContainerAndShelf');
+                const errorMessage = document.getElementById('errorMessage');
+                const btnAddContainer = document.getElementById('btnAddContainer');
+                const btnCancelAction = document.getElementById('btnCancelAction');
+                const btnSaveContainer = document.getElementById('btnSaveContainer');
 
-            btnAddContainer.addEventListener('click', function() {
-                hideOrShowElement(divAddContainer, 'none', divAddContainerAndShelf, 'flex');
-            });
-            btnCancelAction.addEventListener('click', function() {
-                hideOrShowElement(divAddContainer, 'block', divAddContainerAndShelf, 'none');
-                resetForm();
-            });
-            btnSaveContainer.addEventListener('click', function() {
-                errorMessage.textContent = '';
-                if (pickingZones.value !== "" && inputContainer.getAttribute('type') === "hidden" && inputShelf.getAttribute('type') === "hidden") {
-                    labelContainerAndShelf.textContent = pickingZones.options[pickingZones.selectedIndex].text + ' -> ';
-                    pickingZones.classList.add('hidden');
-                    inputContainer.setAttribute('type', 'text');
-                    event.preventDefault();
-                } else if (inputContainer.value !== "" && inputShelf.getAttribute('type') === "hidden") {
-                    if (inputContainer.value.length !== 8) {
+                btnAddContainer.addEventListener('click', function() {
+                    hideOrShowElement(divAddContainer, 'none', divAddContainerAndShelf, 'flex');
+                });
+                btnCancelAction.addEventListener('click', function() {
+                    hideOrShowElement(divAddContainer, 'block', divAddContainerAndShelf, 'none');
+                    resetForm();
+                });
+                btnSaveContainer.addEventListener('click', function() {
+                    errorMessage.textContent = '';
+                    if (pickingZones.value !== "" && inputContainer.getAttribute('type') === "hidden" && inputShelf.getAttribute('type') === "hidden") {
+                        labelContainerAndShelf.textContent = pickingZones.options[pickingZones.selectedIndex].text + ' -> ';
+                        pickingZones.classList.add('hidden');
+                        inputContainer.setAttribute('type', 'text');
                         event.preventDefault();
-                        errorMessage.textContent = 'Container-ID muss 8 Zeichen haben';
-                    } else {
-                        setContainerToZone();
-                    }
-                } else if (inputShelf.value !== "" && inputContainer.getAttribute('type') === "hidden") {
-                    let firstChar = (inputShelf.value.charAt(0));
-                    let reg = new RegExp (/^[A-Z]+$/g);
-                    let regTest = reg.test(firstChar);
-                    if (!regTest) {
-                        event.preventDefault();
-                        inputShelf.value = "";
-                        errorMessage.textContent = 'Der erste Buchstabe muss Großbuchstaben sein';
-                    }
-                }
-            });
-
-            function setContainerToZone() {
-                event.preventDefault();
-                var xhttp = new XMLHttpRequest();
-                xhttp.onreadystatechange = function() {
-                    if (this.readyState === 4 && this.status === 200) {
-                        var dataParse = JSON.parse(this.response);
-                        if (dataParse['error'] === true) {
-                            inputContainer.value = "";
-                            errorMessage.textContent = 'Container ID bereits vergeben';
+                    } else if (inputContainer.value !== "" && inputShelf.getAttribute('type') === "hidden") {
+                        if (inputContainer.value.length !== 8) {
+                            event.preventDefault();
+                            errorMessage.textContent = 'Container-ID muss 8 Zeichen haben';
                         } else {
-                            labelContainerAndShelf.textContent = pickingZones.options[pickingZones.selectedIndex].text + ' -> ' + inputContainer.value + ' -> ';
-                            inputContainer.setAttribute('type', 'hidden');
-                            inputShelf.setAttribute('type', 'text');
+                            setContainerToZone();
+                        }
+                    } else if (inputShelf.value !== "" && inputContainer.getAttribute('type') === "hidden") {
+                        let firstChar = (inputShelf.value.charAt(0));
+                        let reg = new RegExp (/^[A-Z]+$/g);
+                        let regTest = reg.test(firstChar);
+                        if (!regTest) {
+                            event.preventDefault();
+                            inputShelf.value = "";
+                            errorMessage.textContent = 'Der erste Buchstabe muss Großbuchstaben sein';
                         }
                     }
-                };
-                xhttp.open("POST", window.location.origin + "/sales/detail/set-json-container-to-zone?idZone=" + pickingZones.value + "&containerID=" + inputContainer.value + '&idSalesOrder=' + frmContainerShelf_idSalesOrder.value, true);
-                xhttp.send();
-            }
+                });
 
-            function hideOrShowElement(element1, displayProperty1, element2, displayProperty2) {
-                element1.style.display = displayProperty1;
-                element2.style.display = displayProperty2;
-            }
+                function setContainerToZone() {
+                    event.preventDefault();
+                    var xhttp = new XMLHttpRequest();
+                    xhttp.onreadystatechange = function() {
+                        if (this.readyState === 4 && this.status === 200) {
+                            var dataParse = JSON.parse(this.response);
+                            if (dataParse['error'] === true) {
+                                inputContainer.value = "";
+                                errorMessage.textContent = 'Container ID bereits vergeben';
+                            } else {
+                                labelContainerAndShelf.textContent = pickingZones.options[pickingZones.selectedIndex].text + ' -> ' + inputContainer.value + ' -> ';
+                                inputContainer.setAttribute('type', 'hidden');
+                                inputShelf.setAttribute('type', 'text');
+                            }
+                        }
+                    };
+                    xhttp.open("POST", window.location.origin + "/sales/detail/set-json-container-to-zone?idZone=" + pickingZones.value + "&containerID=" + inputContainer.value + '&idSalesOrder=' + frmContainerShelf_idSalesOrder.value, true);
+                    xhttp.send();
+                }
 
-            function resetForm() {
-                errorMessage.textContent = '';
-                labelContainerAndShelf.textContent = '';
-                pickingZones.value = '';
-                inputContainer.value = '';
-                inputShelf.value = '';
-                pickingZones.classList.remove('hidden');
-                inputContainer.setAttribute('type', 'hidden');
-                inputShelf.setAttribute('type', 'hidden');
-            }
-        </script>
+                function hideOrShowElement(element1, displayProperty1, element2, displayProperty2) {
+                    element1.style.display = displayProperty1;
+                    element2.style.display = displayProperty2;
+                }
+
+                function resetForm() {
+                    errorMessage.textContent = '';
+                    labelContainerAndShelf.textContent = '';
+                    pickingZones.value = '';
+                    inputContainer.value = '';
+                    inputShelf.value = '';
+                    pickingZones.classList.remove('hidden');
+                    inputContainer.setAttribute('type', 'hidden');
+                    inputShelf.setAttribute('type', 'hidden');
+                }
+            </script>
+        {% endif %}
+
+
     {% endblock %}
 {% endembed %}

@@ -50,6 +50,7 @@ class DetailController extends SprykerDetailController
 
         $orderTransfer = $this->getFacade()->findOrderWithPickingSalesOrdersByIdSalesOrder($idSalesOrder);
         $orderTransfer->setCartNote(json_decode($orderTransfer->getCartNote()));
+        $cellPhone = $orderTransfer->getBillingAddress()->getCellPhone();
 
         if ($orderTransfer === null) {
             $this->addErrorMessage('Sales order #%d not found.', ['%d' => $idSalesOrder]);
@@ -107,15 +108,14 @@ class DetailController extends SprykerDetailController
             if (stripos($event, "return") === 0 || stripos($event, "close") === 0 || stripos($event, "confirm selecting containers") === 0) {
                 unset($events[$key]);
             } elseif (stripos($event, "cancel") === 0) {
-                if ($isCurrentUserSupervisor) {
+                if ($isCurrentUserSupervisorOrAdmin) {
                     array_push($buttons, "Cancel");
                 }
-//                unset($events[$key]);
             } elseif (stripos($event, "Zurücksetzen") === 0) {
                 if (in_array("picked", $distinctOrderStates) == false && in_array("picked, canceled", $distinctOrderStates) == false) {
                     unset($events[$key]);
                 } else {
-                    if ($isCurrentUserSupervisor) {
+                    if ($isCurrentUserSupervisorOrAdmin) {
                         array_push($buttons, $event);
                     }
                 }
@@ -215,6 +215,7 @@ class DetailController extends SprykerDetailController
             'pickingZonesForContainers' => $pickingZonesForContainers,
             'containers' => $containers,
             'timeSlotsData' => $timeSlotsData,
+            'cellPhone' => $cellPhone,
         ], $blockResponseData);
     }
 

@@ -42,6 +42,13 @@ class TriggerController extends SpyTriggerController
         $idOrder = $this->castId($request->query->getInt(static::REQUEST_PARAMETER_ID_SALES_ORDER));
         $pickingZoneName = $request->query->get(static::REQUEST_PARAMETER_PICKING_ZONE);
         $event = $request->query->get(static::REQUEST_PARAMETER_EVENT);
+
+        if ($event == "Abholung bestätigen") {
+            $event = "confirm collection";
+        } elseif ($event == "Picking bestätigen") {
+            $event = "confirm picking";
+        }
+
         $redirect = $request->query->get(static::REQUEST_PARAMETER_REDIRECT, '/');
         $itemsList = $request->query->get(static::REQUEST_PARAMETER_ITEMS);
 
