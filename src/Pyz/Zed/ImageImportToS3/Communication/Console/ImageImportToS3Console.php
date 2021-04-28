@@ -32,15 +32,11 @@ class ImageImportToS3Console extends Console
     protected const FILE_NAME = "/2.globus_articles_images.";
 
     /**
-     * @var string
-     */
-    public $zipFileName = 'data/import/spryker/images-directory.zip';
-
-    /**
      * @return void
      */
     public function configure()
     {
+        dump("JOB IS FOUND");
         $this->setName(static::COMMAND_NAME);
         $this->setDescription(static::COMMAND_DESCRIPTION);
         parent::configure();
@@ -54,8 +50,14 @@ class ImageImportToS3Console extends Console
      */
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
+        dump("TESTING IMAGES UPLOAD TO S3");
         $directories = $this->findAllImagesDirectories();
+        dump("FOUND DIRECTORIES");
+        dump($directories);
         $directoryEmpty = $this->emptyTempDirectory();
+        dump("EMPTY DIRECTORY");
+        dump($directoryEmpty);
+
         if ($directoryEmpty) {
             foreach ($directories as $fileName) {
                 $directoryUnziped = $this->unzipDirectory($fileName);
