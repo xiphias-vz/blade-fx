@@ -307,6 +307,14 @@
                         </div>
                     </div>
                 </div>
+            {% if order.isCashierExportSuccess %}
+            <div class="col-md-12" style="text-align: right">
+                <form name="DownloadCashierFile" method="POST">
+                    <input type="hidden" name="isDownloadCashierFile" value="true">
+                    <button type="submit" id="btnDownloadCashierFile" name="btnDownloadCashierFile" class="btn btn-primary">{{ 'order.overview.download.cachier.file' | trans }}</button>
+                </form>
+            </div>
+            {% endif %}
             <div id="omsActions" class="col-md-12">
                 {% embed '@Gui/Partials/widget.twig' with { widget_title: 'Trigger all matching states inside this order' } %}
                     {% block widget_content %}

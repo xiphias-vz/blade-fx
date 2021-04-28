@@ -11,4 +11,5 @@ interface S3Constants
 {
     public const S3_CONSTANTS = 'S3_CONSTANTS';
     public const S3_IMAGES_BUCKETS = 'S3_IMAGES_BUCKETS';
+    public const S3_CASHIER_FILE_BUCKETS = 'S3_CASHIER_FILE_BUCKETS';
 }

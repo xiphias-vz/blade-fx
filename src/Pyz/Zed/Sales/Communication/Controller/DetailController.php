@@ -7,10 +7,14 @@
 
 namespace Pyz\Zed\Sales\Communication\Controller;
 
+use Aws\S3\Exception\S3Exception;
+use Aws\S3\S3Client;
 use Orm\Zed\Sales\Persistence\SpySalesOrder;
 use Orm\Zed\Sales\Persistence\SpySalesOrderAddress;
 use Pyz\Shared\Acl\AclConstants;
+use Pyz\Shared\S3Constants\S3Constants;
 use Spryker\Service\UtilText\Model\Url\Url;
+use Spryker\Shared\Config\Config;
 use Spryker\Zed\Sales\Communication\Controller\DetailController as SprykerDetailController;
 use Spryker\Zed\Sales\SalesConfig;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -22,9 +26,16 @@ use Symfony\Component\HttpFoundation\Request;
  * @method \Pyz\Zed\Sales\Business\SalesFacadeInterface getFacade()
  * @method \Spryker\Zed\Sales\Persistence\SalesQueryContainerInterface getQueryContainer()
  * @method \Spryker\Zed\Sales\Persistence\SalesRepositoryInterface getRepository()
+ * @method \Pyz\Zed\CashierOrderExport\Business\Exporter\CashierOrderExporter exportCashier()
  */
 class DetailController extends SprykerDetailController
 {
+    protected const LOCAL_AWS_CONFIG_CREDENTIALS = 'globus_s3_cashier_file_credentials';
+    protected const LOCAL_AWS_CONFIG_CREDENTIALS_KEY = 'key';
+    protected const LOCAL_AWS_CONFIG_CREDENTIALS_SECRET = 'secret';
+    protected const LOCAL_AWS_CONFIG_CREDENTIALS_BUCKET = 'bucket';
+    protected const EXPORT_ARCHIVE_FILE_PATH = '/data/data/EIN/export/files/';
+
     private const TIMESLOTS_DATA = [
         '10:00-12:00' => '10:00-12:00',
         '12:00-14:00' => '12:00-14:00',
@@ -51,6 +62,28 @@ class DetailController extends SprykerDetailController
         $orderTransfer = $this->getFacade()->findOrderWithPickingSalesOrdersByIdSalesOrder($idSalesOrder);
         $orderTransfer->setCartNote(json_decode($orderTransfer->getCartNote()));
         $cellPhone = $orderTransfer->getBillingAddress()->getCellPhone();
+
+        if ($request->get("isDownloadCashierFile") == true) {
+            $s3 = $this->getS3Client();
+            $bucket = $this->getS3Bucket();
+            $mrechantReference = $orderTransfer->getMerchantReference();
+            $keyname = $mrechantReference . '_' . $idSalesOrder . '_order.txt';
+            $tempName = $mrechantReference . '_' . $idSalesOrder . '_order.zip';
+            $tempFilePath = static::EXPORT_ARCHIVE_FILE_PATH . $tempName;
+            try {
+                // Get the object.
+                $result = $s3->getObject([
+                    'Bucket' => $bucket,
+                    'Key' => $keyname,
+                ]);
+
+                file_put_contents($tempFilePath, $result['Body']);
+            } catch (S3Exception $e) {
+                echo $e->getMessage() . PHP_EOL;
+            }
+
+            $this->downloadFile($tempFilePath);
+        }
 
         if ($orderTransfer === null) {
             $this->addErrorMessage('Sales order #%d not found.', ['%d' => $idSalesOrder]);
@@ -321,5 +354,63 @@ class DetailController extends SprykerDetailController
         ];
 
         return new JsonResponse($responseArray);
+    }
+
+    /**
+     * @return \Aws\S3\S3Client
+     */
+    protected function getS3Client(): S3Client
+    {
+        $credentials = Config::get(S3Constants::S3_CONSTANTS);
+        $key = '';
+        $secret = '';
+        if (isset($credentials[static::LOCAL_AWS_CONFIG_CREDENTIALS][static::LOCAL_AWS_CONFIG_CREDENTIALS_KEY])) {
+            $key = $credentials[static::LOCAL_AWS_CONFIG_CREDENTIALS][static::LOCAL_AWS_CONFIG_CREDENTIALS_KEY];
+        }
+
+        if (isset($credentials[static::LOCAL_AWS_CONFIG_CREDENTIALS][static::LOCAL_AWS_CONFIG_CREDENTIALS_SECRET])) {
+            $secret = $credentials[static::LOCAL_AWS_CONFIG_CREDENTIALS][static::LOCAL_AWS_CONFIG_CREDENTIALS_SECRET];
+        }
+
+        return new S3Client([
+            'region' => 'eu-central-1',
+            'version' => 'latest',
+            'credentials' => [
+                'key' => $key,
+                'secret' => $secret,
+            ],
+        ]);
+    }
+
+    /**
+     * @return string
+     */
+    protected function getS3Bucket(): string
+    {
+        return Config::get(S3Constants::S3_CASHIER_FILE_BUCKETS);
+    }
+
+    /**
+     * @param string $fileLink
+     *
+     * @return void
+     */
+    protected function downloadFile(string $fileLink)
+    {
+        if (file_exists($fileLink)) {
+            header('Content-Description: File Transfer');
+            header('Content-Type: application/octet-stream');
+            header('Content-Disposition: attachment; filename=' . basename($fileLink));
+            header('Expires: 0');
+            header('Cache-Control: must-revalidate');
+            header('Pragma: public');
+            header('Content-Length: ' . filesize($fileLink));
+            ob_clean();
+            flush();
+            readfile($fileLink);
+
+            unlink($fileLink);
+            exit;
+        }
     }
 }
