@@ -14,7 +14,6 @@ use Spryker\Shared\Config\Config;
 use Spryker\Zed\Kernel\Communication\Console\Console;
 use Symfony\Component\Config\Definition\Exception\Exception;
 use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use ZipArchive;
 
@@ -29,6 +28,8 @@ class ImageImportToS3Console extends Console
     protected const OPTION_SET_ZIP_DIRECTORY_SHORT = 'f';
     protected const UNZIP_FILE_NAME = 'src/Pyz/Zed/ImageImportToS3/Images';
     protected const FILE_PREFIX = 'data/import/';
+    protected const FILE_FULL_DIRECTORY = 'data/import/spryker';
+    protected const FILE_NAME = "/2.globus_articles_images.";
 
     /**
      * @var string
@@ -43,8 +44,6 @@ class ImageImportToS3Console extends Console
         $this->setName(static::COMMAND_NAME);
         $this->setDescription(static::COMMAND_DESCRIPTION);
         parent::configure();
-
-        $this->addOption(static::OPTION_SET_ZIP_DIRECTORY, static::OPTION_SET_ZIP_DIRECTORY_SHORT, InputOption::VALUE_REQUIRED, 'Defines which file to use for data import.');
     }
 
     /**
@@ -55,22 +54,18 @@ class ImageImportToS3Console extends Console
      */
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $directoryFromConsole = $input->getOption(static::OPTION_SET_ZIP_DIRECTORY) ?? null;
-        if ($directoryFromConsole != null) {
-            $this->zipFileName = static::FILE_PREFIX . $directoryFromConsole;
-        } else {
-            dump("Missing file name. After command put -f <filename>");
-
-            return static::CODE_ERROR;
-        }
+        $directories = $this->findAllImagesDirectories();
         $directoryEmpty = $this->emptyTempDirectory();
         if ($directoryEmpty) {
-            $directoryUnziped = $this->unzipDirectory();
+            foreach ($directories as $fileName) {
+                $directoryUnziped = $this->unzipDirectory($fileName);
 
-            if ($directoryUnziped) {
-                $upload = $this->uploadImagesToS3();
-                if ($upload) {
-                    $this->emptyTempDirectory();
+                if ($directoryUnziped) {
+                    $upload = $this->uploadImagesToS3();
+                    if ($upload) {
+                        $this->emptyTempDirectory();
+                        $this->deleteZipFromDirectory($fileName);
+                    }
                 }
             }
         }
@@ -79,24 +74,29 @@ class ImageImportToS3Console extends Console
     }
 
     /**
+     * @param string $fileName
+     *
      * @return bool
      */
-    protected function unzipDirectory(): bool
+    protected function unzipDirectory(string $fileName): bool
     {
         try {
             $zip = new ZipArchive();
-            $imagesDirectory = $zip->open($this->zipFileName);
+            $imagesDirectory = $zip->open($fileName);
 
             dump('DIRECTORY FOUND:'); //TODO: ONLY TESTING - REMOVE AFTER
             dump($imagesDirectory);
             if ($imagesDirectory == true) {
                 $zip->extractTo(static::UNZIP_FILE_NAME);
                 $zip->close();
+                dump('UNZIPED DIRECTORY'); //TODO: ONLY TESTING - REMOVE AFTER
+
+                return true;
+            } else {
+                dump('ERROR WITH UNZIPPING DIRECTORY');
+
+                return false;
             }
-
-            dump('UNZIPED DIRECTORY'); //TODO: ONLY TESTING - REMOVE AFTER
-
-            return true;
         } catch (Exception $e) {
             dump('Error occured while unziping file:');
             dump($e);
@@ -141,6 +141,7 @@ class ImageImportToS3Console extends Console
         dump('BUCKET: '); //TODO: ONLY TESTING - REMOVE AFTER
         dump($bucket); //TODO: ONLY TESTING - REMOVE AFTER
 
+        dump("IMPORTED IMAGES: ");
         foreach ($images as $image) {
             $imageFile = fopen(static::UNZIP_FILE_NAME . '/' . $image, 'r++');
             dump($image);
@@ -203,5 +204,31 @@ class ImageImportToS3Console extends Console
     protected function getS3Bucket(): string
     {
         return Config::get(S3Constants::S3_IMAGES_BUCKETS);
+    }
+
+    /**
+     * @return array
+     */
+    protected function findAllImagesDirectories(): array
+    {
+        return glob(static::FILE_FULL_DIRECTORY . static::FILE_NAME . "*.zip");
+    }
+
+    /**
+     * @param string $filename
+     *
+     * @return bool
+     */
+    protected function deleteZipFromDirectory(string $filename): bool
+    {
+        try {
+            unlink($filename);
+
+            return true;
+        } catch (Exception $exception) {
+            dump("ERROR WHILE DELETING FROM DIRECTORY");
+
+            return false;
+        }
     }
 }
