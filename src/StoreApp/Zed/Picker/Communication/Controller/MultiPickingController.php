@@ -145,25 +145,28 @@ class MultiPickingController extends BaseOrderPickingController
         }
         $orderPosition = $nextOIData['pickingPosition'];
         $orderItemPosition = $nextOIData['pickingItemPosition'];
-        $orderItems = $transfer->getOrder($orderPosition)->getPickingOrderItems();
-        $totalQuantity = 0;
         $quantityProcessed = 0;
-        $orderItemStatus = '';
-
-        foreach ($orderItems as $orderItem) {
-            $orderItemStatus = $orderItem->getStatus();
-
-            $quantityProcessed += $orderItem->getQuantityPicked();
-            if (($orderItem->getIsCancelled() || $orderItem->getIsPaused())) {
-                $quantityProcessed += $orderItem->getQuantity();
+        $orderList = $transfer->getOrderList();
+        $articlesTotalForZone = 0;
+        foreach ($orderList as $order) {
+            $articlesTotalForZone += $order['articlesQuantity'];
+            $pickingOrderItems = $order['pickingOrderItems'];
+            foreach ($pickingOrderItems as $orderItem) {
+                $quantityProcessed += $orderItem->getQuantityPicked();
+                if (($orderItem->getIsCancelled() || $orderItem->getIsPaused())) {
+                    $quantityProcessed += $orderItem->getQuantity();
+                }
             }
-            $totalQuantity += $orderItem->getQuantity();
         }
 
-        $openedItems = $totalQuantity - $quantityProcessed < 0 ? 0 : $totalQuantity - $quantityProcessed;
+        $openedItems = $articlesTotalForZone - $quantityProcessed < 0 ? 0 : $articlesTotalForZone - $quantityProcessed;
         $editedItems = $quantityProcessed;
 
-        $positionsData = $transfer->getOrderItems($nextOIData->getPickingItemPosition())[0];
+        $positionsData = $transfer->getOrderItems($nextOIData->getPickingItemPosition());
+        $orderItemStatus = '';
+        foreach ($positionsData as $positionData) {
+            $orderItemStatus = $positionData['status'];
+        }
 
         $isLastPosition = "false";
         if ($transfer->isLastItem() || $openModal == 'true' || $fromPosListeAndModal == 'true') {

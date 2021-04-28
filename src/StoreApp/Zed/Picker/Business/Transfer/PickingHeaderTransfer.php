@@ -162,6 +162,7 @@ class PickingHeaderTransfer extends SpyPickingHeaderTransfer
                 $items = [];
                 foreach ($order->getPickingOrderItems() as $orderItem) {
                     if ($orderItem->getIsPaused()) {
+                        $orderItem->setIsPaused(false);
                         array_push($items, $orderItem);
                     }
                 }

@@ -360,7 +360,9 @@ export default class ProductItemMultiplePicking extends Component {
                     let saveAndGoToNext = "true";
                     This.pickProducts.updateStorageItem(this, This.orderItemStatus);
                     This.pickProducts.update();
-                    let form = $('<form action="' + urlSave + '" method="post" style="visibility: hidden"></form>');
+                    let form = $(`<form action=${urlSave} method="post" style="visibility: hidden">
+                                       <input type="hidden" name="orderItemIsSetToPaused" value="true">
+                                </form> `);
                     $('body').append(form);
                     form.submit();
                 }
