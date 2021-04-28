@@ -3,7 +3,7 @@ command-timeout: 14400
 sections:
     download-csv-files:
         download:
-            command: "vendor/bin/console data:import:files-download"
+            command: "vendor/bin/console data:import:files-images-download"
 
     import:
         import-images:

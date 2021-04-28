@@ -452,6 +452,9 @@ class DataImportConfig extends SprykerDataImportConfig
             '/^4\.globus_article_prices\.[0-9]+_1031/' => '4.globus_article_prices.1031.csv',
             '/^4\.globus_article_prices\.[0-9]+_1042/' => '4.globus_article_prices.1042.csv',
             '/^4\.globus_article_prices\.[0-9]+_1057/' => '4.globus_article_prices.1057.csv',
+
+            '/^2\.globus_articles_images\.[0-9]/' => '2.globus_articles_images.1.zip',
+
         ];
     }
 
@@ -461,5 +464,13 @@ class DataImportConfig extends SprykerDataImportConfig
     public function getDataImportFilesFolderName(): string
     {
         return $this->get(DataImportConstants::SFTP_DATA_IMPORT_FILES_FOLDER_NAME, '');
+    }
+
+    /**
+     * @return string
+     */
+    public function getImagesDataImportFilesFolderName(): string
+    {
+        return $this->get(DataImportConstants::SFTP_DATA_IMPORT_IMAGES_FILES_FOLDER_NAME);
     }
 }

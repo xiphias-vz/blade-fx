@@ -594,6 +594,10 @@ $config[\Pyz\Shared\S3Constants\S3Constants::S3_CONSTANTS] = [
     ],
 ];
 
+// ---------- Images Download
+$config[DataImportConstants::SFTP_DATA_IMPORT_IMAGES_FILES_FOLDER_NAME] = '/pictures';
+
+
 // ---------- FileManager
 $config[FileManagerConstants::STORAGE_NAME] = 'files';
 $config[FileManagerGuiConstants::DEFAULT_FILE_MAX_SIZE] = '10M';

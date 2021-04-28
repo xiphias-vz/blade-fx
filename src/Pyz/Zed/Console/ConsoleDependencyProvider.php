@@ -14,6 +14,7 @@ use Pyz\Zed\Console\Communication\Plugin\ConsoleLogPlugin;
 use Pyz\Zed\DatabaseLoad\Communication\Console\DatabaseLoadTestConsole;
 use Pyz\Zed\DataImport\Communication\Console\DataImportConsole;
 use Pyz\Zed\DataImport\Communication\Console\DataImportFileManagerConsole;
+use Pyz\Zed\DataImport\Communication\Console\DataImportImagesFileManagerConsole;
 use Pyz\Zed\DataImport\DataImportConfig;
 use Pyz\Zed\Development\Communication\Console\AcceptanceCodeTestConsole;
 use Pyz\Zed\Development\Communication\Console\ApiCodeTestConsole;
@@ -328,6 +329,7 @@ class ConsoleDependencyProvider extends SprykerConsoleDependencyProvider
             new RemoveVirtualHostConsole(),
             new DirectoryCacheCleanerConsole(),
             new DataImportFileManagerConsole(),
+            new DataImportImagesFileManagerConsole(),
 
             new AclInstallConsole(),
             new TimeSlotCheckerConsole(),
