@@ -63,11 +63,7 @@
         const countItems = {{ data.orders | length }};
         const tblSku = document.getElementById("tbLSku_{{ data.sku }}");
         if(countItems > 5) {
-            if (currentIndex === 1) {
-                document.getElementById('divElementPosListe').style.marginTop = "200px";
-            } else if (currentIndex === 2) {
-                document.getElementById('divElementPosListe').style.marginTop = "150px";
-            } else if (currentIndex === countItems) {
+            if (currentIndex === countItems) {
                 document.getElementById('divElementPosListe').style.marginBottom = "200px";
             } else if (currentIndex === countItems - 1) {
                 document.getElementById('divElementPosListe').style.marginBottom = "150px";
