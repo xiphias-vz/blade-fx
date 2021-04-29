@@ -220,6 +220,7 @@ class PickingHeaderTransferData
                 ->setShelfID($shelfId)
                 ->setIdUser($transfer->getIdUser())
                 ->setIdZone($transfer->getIdZone())
+                ->setIsAdded(true)
                 ->setPickingColor($orderMod->getPickingColor());
             $orderMod->addPickingContainer($containerId, $container);
             $dataUpdated = true;
@@ -515,7 +516,8 @@ class PickingHeaderTransferData
                 ppso.container_code as containerID,
                 ppso.shelf_code as shelfID,
                 popb.fk_user as id_user,
-                ppso.fk_picking_zone as id_zone
+                ppso.fk_picking_zone as id_zone,
+                false as is_added
             from pyz_picking_sales_order ppso
                 left outer join pyz_order_picking_block popb on ppso.fk_sales_order = popb.fk_sales_order and ppso.fk_picking_zone = popb.fk_picking_zone
             where ppso.fk_sales_order in (" . $whereList . ")";
@@ -624,6 +626,32 @@ class PickingHeaderTransferData
         }
 
         return $transfer;
+    }
+
+    /**
+     * @param \StoreApp\Zed\Picker\Business\Transfer\PickingHeaderTransfer $transfer
+     *
+     * @return bool
+     */
+    public function unLockAndClearAddedContainers(PickingHeaderTransfer $transfer): bool
+    {
+        $result = true;
+        try {
+            foreach ($transfer->getPickingOrders() as $order) {
+                foreach ($order->getPickingContainers() as $container) {
+                    if ($container->getIsAdded()) {
+                        $sql = "delete from pyz_picking_sales_order where fk_sales_order = " . $container->getIdOrder() . " and fk_picking_zone = " . $transfer->getIdZone() . " and container_code = '" . $container->getContainerID() . "'";
+                        $this->getResult($sql, false);
+                    }
+                }
+                $sql = "delete from pyz_order_picking_block where fk_sales_order = " . $order->getIdOrder() . " and fk_picking_zone = " . $transfer->getIdZone();
+                $this->getResult($sql, false);
+            }
+        } catch (Exception $ex) {
+            $result = false;
+        }
+
+        return $result;
     }
 
     /**

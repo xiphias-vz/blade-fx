@@ -39,6 +39,8 @@ class MultiPickingController extends BaseOrderPickingController
         $factory = $this->getFactory();
         $facade = $this->getFacade();
 
+        $unlockProducts = (bool)isset($_REQUEST['unlock']) ?? false;
+
         if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $idOrders = json_decode($request->get(static::ID_ORDERS));
             $isAnyOrderLocked = json_decode($request->get(static::IS_ANY_ORDER_LOCKED));
@@ -63,10 +65,7 @@ class MultiPickingController extends BaseOrderPickingController
                 $facade->setTransferToSession($transfer);
                 $this->redirectResponse($factory->getConfig()->getMultiPickingUri());
 
-                return [
-                    'orderByTimeSlot' => $orderByTimeSlot,
-                    'merchant' => $this->getMerchantFromRequest($request),
-                ];
+                $this->returnOrderByTimeSlotAndMerchant($orderByTimeSlot, $request);
             }
 
             $pickingHeaderTransfer = $facade->setOrdersToPick($idOrders);
@@ -77,13 +76,22 @@ class MultiPickingController extends BaseOrderPickingController
             }
         }
 
+        if ($unlockProducts) {
+            $transfer = $facade->getPickingHeaderTransfer();
+
+            $facade->unLockAndClearAddedContainers($transfer);
+            $transfer = $facade->getPickingHeaderTransfer();
+            $orderByTimeSlot = $transfer->getOrdersByTimeSlot();
+            $facade->setTransferToSession($transfer);
+            $this->redirectResponse($factory->getConfig()->getMultiPickingUri());
+
+            $this->returnOrderByTimeSlotAndMerchant($orderByTimeSlot, $request);
+        }
+
         $transfer = $facade->getAllOrdersInStateReadyForPickingByZone();
         $orderByTimeSlot = $transfer->getOrdersByTimeSlot();
 
-        return [
-            'orderByTimeSlot' => $orderByTimeSlot,
-            'merchant' => $this->getMerchantFromRequest($request),
-        ];
+        return $this->returnOrderByTimeSlotAndMerchant($orderByTimeSlot, $request);
     }
 
     /**
@@ -333,5 +341,19 @@ class MultiPickingController extends BaseOrderPickingController
         );
 
         return $aggregatedItemTransfers;
+    }
+
+    /**
+     * @param mixed $orderByTimeSlot
+     * @param mixed $request
+     *
+     * @return array
+     */
+    protected function returnOrderByTimeSlotAndMerchant($orderByTimeSlot, $request): array
+    {
+        return [
+            'orderByTimeSlot' => $orderByTimeSlot,
+            'merchant' => $this->getMerchantFromRequest($request),
+        ];
     }
 }
