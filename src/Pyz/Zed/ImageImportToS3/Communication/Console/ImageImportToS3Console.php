@@ -29,7 +29,7 @@ class ImageImportToS3Console extends Console
     protected const UNZIP_FILE_NAME = 'src/Pyz/Zed/ImageImportToS3/Images';
     protected const FILE_PREFIX = 'data/import/';
     protected const FILE_FULL_DIRECTORY = 'data/import/spryker';
-    protected const FILE_NAME = "/2.globus_articles_images.";
+    protected const FILE_NAME = "/2.globus_articles_images";
 
     /**
      * @return void
@@ -81,17 +81,18 @@ class ImageImportToS3Console extends Console
     {
         try {
             $zip = new ZipArchive();
-
             dump("FILE NAME FOR OPENING");
             dump($fileName);
             $imagesDirectory = $zip->open($fileName);
+            if ($imagesDirectory === 19) {
+                dump("THIS FILE IS CORRUPT AND WAS SKIPPED DURING THE IMPORT: ");
+                $this->deleteZipFromDirectory($fileName);
 
-            dump('DIRECTORY ERROR CODE (if true, everthing works fine):'); //TODO: ONLY TESTING - REMOVE AFTER
-            dump($imagesDirectory);
+                return false;
+            }
             if ($imagesDirectory == true) {
                 $zip->extractTo(static::UNZIP_FILE_NAME);
                 $zip->close();
-                dump('UNZIPED DIRECTORY'); //TODO: ONLY TESTING - REMOVE AFTER
 
                 return true;
             } else {
