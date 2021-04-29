@@ -79,7 +79,7 @@ class DetailController extends SprykerDetailController
 
                 file_put_contents($tempFilePath, $result['Body']);
             } catch (S3Exception $e) {
-                echo $e->getMessage() . PHP_EOL;
+                $this->addErrorMessage('Kassenfile Existiert nicht für Bestell-ID' . ' %d', ['%d' => $idSalesOrder]);
             }
 
             $this->downloadFile($tempFilePath);

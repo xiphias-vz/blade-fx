@@ -106,8 +106,8 @@ class CashierOrderWriter implements CashierOrderWriterInterface
             $this->cashierOrderSftpWriter->sendFileToFtp($archiveFileName, $archiveRemoteFilePath);
             try {
                 $this->uploadCashierFileToAws($archiveFilePath, $fileNameForS3);
-            } catch (Exception $e) {
-                $errorUplodToAws = $e->getMessage();
+            } catch (Exception $exception) {
+                $errorUplodToAws = $exception->getMessage();
             }
             $this->cashierOrderDeleter->delete($archiveFileName);
         } catch (Exception $exception) {
