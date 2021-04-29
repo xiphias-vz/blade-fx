@@ -167,7 +167,7 @@ class CashierOrderWriter implements CashierOrderWriterInterface
      */
     protected function getS3Client(): S3Client
     {
-        $credentials = Config::get(S3Constants::S3_CONSTANTS);
+        $credentials = Config::get(S3Constants::S3_CONSTANTS_CASHIER_FILE);
         $key = '';
         $secret = '';
         if (isset($credentials[static::LOCAL_AWS_CONFIG_CREDENTIALS][static::LOCAL_AWS_CONFIG_CREDENTIALS_KEY])) {

@@ -79,7 +79,7 @@ class DetailController extends SprykerDetailController
 
                 file_put_contents($tempFilePath, $result['Body']);
             } catch (S3Exception $e) {
-                $this->addErrorMessage('Kassenfile Existiert nicht für Bestell-ID' . ' %d', ['%d' => $idSalesOrder]);
+                $this->addErrorMessage('Kassenfile existiert nicht für Bestell-ID' . ' %d', ['%d' => $idSalesOrder]);
             }
 
             $this->downloadFile($tempFilePath);
@@ -361,7 +361,7 @@ class DetailController extends SprykerDetailController
      */
     protected function getS3Client(): S3Client
     {
-        $credentials = Config::get(S3Constants::S3_CONSTANTS);
+        $credentials = Config::get(S3Constants::S3_CONSTANTS_CASHIER_FILE);
         $key = '';
         $secret = '';
         if (isset($credentials[static::LOCAL_AWS_CONFIG_CREDENTIALS][static::LOCAL_AWS_CONFIG_CREDENTIALS_KEY])) {

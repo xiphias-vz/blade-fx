@@ -595,7 +595,7 @@ $config[\Pyz\Shared\S3Constants\S3Constants::S3_CONSTANTS] = [
 ];
 
 // ---------- S3 export cashier file
-$config[\Pyz\Shared\S3Constants\S3Constants::S3_CONSTANTS] = [
+$config[\Pyz\Shared\S3Constants\S3Constants::S3_CONSTANTS_CASHIER_FILE] = [
     'globus_s3_cashier_file_credentials' => [
         'key' => getenv('GLOBUS_AWS_S3_KEY'),
         'secret' => getenv('GLOBUS_AWS_S3_SECRET'),
