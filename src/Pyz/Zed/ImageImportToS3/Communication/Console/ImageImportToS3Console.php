@@ -36,7 +36,6 @@ class ImageImportToS3Console extends Console
      */
     public function configure()
     {
-        dump("JOB IS FOUND");
         $this->setName(static::COMMAND_NAME);
         $this->setDescription(static::COMMAND_DESCRIPTION);
         parent::configure();
@@ -55,8 +54,6 @@ class ImageImportToS3Console extends Console
         dump("FOUND DIRECTORIES");
         dump($directories);
         $directoryEmpty = $this->emptyTempDirectory();
-        dump("EMPTY DIRECTORY");
-        dump($directoryEmpty);
 
         if ($directoryEmpty) {
             foreach ($directories as $fileName) {
@@ -84,9 +81,12 @@ class ImageImportToS3Console extends Console
     {
         try {
             $zip = new ZipArchive();
+
+            dump("FILE NAME FOR OPENING");
+            dump($fileName);
             $imagesDirectory = $zip->open($fileName);
 
-            dump('DIRECTORY FOUND:'); //TODO: ONLY TESTING - REMOVE AFTER
+            dump('DIRECTORY ERROR CODE (if true, everthing works fine):'); //TODO: ONLY TESTING - REMOVE AFTER
             dump($imagesDirectory);
             if ($imagesDirectory == true) {
                 $zip->extractTo(static::UNZIP_FILE_NAME);

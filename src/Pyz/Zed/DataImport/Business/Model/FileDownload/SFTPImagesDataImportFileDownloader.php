@@ -60,18 +60,14 @@ class SFTPImagesDataImportFileDownloader
         );
 
         foreach ($listContents as $content) {
-            foreach ($this->dataImportConfig->getRegexToSprykerFileNameMap() as $regex => $fileName) {
-                if (preg_match($regex, $content->getFilename(), $matches)) {
-                    $csvFileSavingStatus = $this->downloadFile($content, $fileName);
+                $csvFileSavingStatus = $this->downloadFile($content, $content->getBasename());
 
-                    if (!$csvFileSavingStatus) {
-                        $this->getLogger()->error($fileName . ' file save error occurred.');
-                        continue;
-                    }
+            if (!$csvFileSavingStatus) {
+                $this->getLogger()->error($content->getBasename() . ' file save error occurred.');
+                continue;
+            }
 
 //                    $this->moveDownloadedFilesToArchive($content);  //TODO: ONLY TESTING -> remove later
-                }
-            }
         }
     }
 
