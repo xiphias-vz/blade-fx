@@ -154,7 +154,6 @@ export default class PickProductsMultiplePicking extends Component {
             if(localStorage.key(i) === 'orderItemStatus') {
                 let orderItemStatusValue = localStorage.getItem('orderItemStatus');
                 if(orderItemStatusValue === "ready for picking") {
-                    localStorage.clear();
                     localStorage.setItem('orderItemStatus', orderItemStatusValue);
                 }
             } else {
