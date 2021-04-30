@@ -44,7 +44,7 @@ class StoreSwitcher
      */
     public function switchStore(string $store, Response $response)
     {
-        $response->headers->setCookie(new Cookie(static::COOKIE_STORE_IDENTIFIER, $store));
+        $response->headers->setCookie(new Cookie(static::COOKIE_STORE_IDENTIFIER, $store, time() + (86400 * 30)));
 
         $this->switchStoreInQuote($store);
 
