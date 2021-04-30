@@ -278,11 +278,10 @@ class PickingHeaderTransferData
         if (count($nonPickedItems) > 0) {
             $this->orderUpdater->markOrderItemsAsNotPicked($nonPickedItems);
         }
-        if ($orderItem->getIsPaused()) {
-            $orderItem->setIsPaused(false);
-            $this->saveCurrentOrderItemPaused($orderItem, false);
-            $transfer->updateItemsPickedCount();
-        }
+        $orderItem->setIsPaused(false);
+        $this->saveCurrentOrderItemPaused($orderItem, false);
+        $transfer->updateItemsPickedCount();
+
         $this->setTransferToSession($transfer);
     }
 
@@ -370,10 +369,9 @@ class PickingHeaderTransferData
             //save data to spy_sales_order_item - SpySalesOrderItemQuery
 
             $orderItem = $transfer->getOrderItem($transfer->getLastPickingItemPosition());
-            if ($orderItem->getIsPaused()) {
-                $orderItem->setIsPaused(false);
-                $this->saveCurrentOrderItemPaused($orderItem, false);
-            }
+            $orderItem->setIsPaused(false);
+            $this->saveCurrentOrderItemPaused($orderItem, false);
+
             $idList = $this->getOrderItemIdArray($orderItem);
             if (count($idList) > 0) {
                 $this->orderUpdater->markOrderItemsAsNotPicked($idList);

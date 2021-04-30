@@ -44,6 +44,17 @@ export default class TimeSlotPosition extends Component {
 
     }
 
+    protected removeOrderFromLocalStorage(idOrderToCheck) {
+        for(let i = 0; i < localStorage.length; i++) {
+            if(!(localStorage.key(i) === 'orderItemStatus')) {
+                let idOrder = localStorage.key(i).split('_')[0];
+                if(idOrder === idOrderToCheck) {
+                    localStorage.removeItem(localStorage.key(i));
+                }
+            }
+        }
+    }
+
     protected setActiveOrders(): void {
 
         for(let i = 0; i < this.selectOrder.length; i++) {
@@ -83,10 +94,15 @@ export default class TimeSlotPosition extends Component {
 
         let articleCount = orderInfo.querySelector('.article-count');
         let articleQuantity = orderInfo.querySelector('.article-quantity');
-        let isOrderBlocked = orderInfo.parentElement.firstElementChild.getAttribute('data-isOrderBlocked');
+        let orderStatus = orderInfo.parentElement.firstElementChild;
+        let isOrderBlocked = orderStatus.getAttribute('data-isOrderBlocked');
+        let orderHasStatus = orderStatus.childElementCount;
         let idOrder = orderInfo.parentElement.getAttribute('data-idOrder');
         let countValue = parseInt(articleCount.innerHTML);
         let quantityValue = parseInt(articleQuantity.innerHTML);
+        if(!Boolean(orderHasStatus)) {
+            this.removeOrderFromLocalStorage(idOrder);
+        }
         if(orderCheckbox.checked) {
 
             if(!Boolean(parseInt(isOrderBlocked)) && Boolean(parseInt(this.isAnyOrderLocked.value))) {
