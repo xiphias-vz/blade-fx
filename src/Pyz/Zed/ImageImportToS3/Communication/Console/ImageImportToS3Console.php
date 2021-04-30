@@ -49,7 +49,6 @@ class ImageImportToS3Console extends Console
      */
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        dump("TESTING IMAGES UPLOAD TO S3");
         $directories = $this->findAllImagesDirectories();
         dump("FOUND DIRECTORIES");
         dump($directories);
@@ -84,21 +83,16 @@ class ImageImportToS3Console extends Console
             dump("FILE NAME FOR OPENING");
             dump($fileName);
             $imagesDirectory = $zip->open($fileName);
-            if ($imagesDirectory === 19) {
+            if ($imagesDirectory !== true) {
                 dump("THIS FILE IS CORRUPT AND WAS SKIPPED DURING THE IMPORT: ");
                 $this->deleteZipFromDirectory($fileName);
 
                 return false;
-            }
-            if ($imagesDirectory == true) {
+            } else {
                 $zip->extractTo(static::UNZIP_FILE_NAME);
                 $zip->close();
 
                 return true;
-            } else {
-                dump('ERROR WITH UNZIPPING DIRECTORY');
-
-                return false;
             }
         } catch (Exception $e) {
             dump('Error occured while unziping file:');
@@ -141,9 +135,6 @@ class ImageImportToS3Console extends Console
         $bucket = $this->getS3Bucket();
         $images = array_diff(scandir(static::UNZIP_FILE_NAME), ['..', '.']);
 
-        dump('BUCKET: '); //TODO: ONLY TESTING - REMOVE AFTER
-        dump($bucket); //TODO: ONLY TESTING - REMOVE AFTER
-
         dump("IMPORTED IMAGES: ");
         foreach ($images as $image) {
             $imageFile = fopen(static::UNZIP_FILE_NAME . '/' . $image, 'r++');
@@ -155,10 +146,10 @@ class ImageImportToS3Console extends Console
                     $image,
                     $imageFile
                 );
-//                $result = $uploader->upload();                                        //TODO: UNCOMMENT AFTERWARDS
-//                if($result["@metadata"]["statusCode"] == '200'){
-//                    var_dump('File successfully uploaded to ' . $result["ObjectURL"]);
-//                }
+                $result = $uploader->upload();
+                if ($result["@metadata"]["statusCode"] == '200') {
+                    var_dump('File successfully uploaded to ' . $result["ObjectURL"]);
+                }
             } catch (Exception $e) {
                 rewind($image);
 
@@ -185,11 +176,6 @@ class ImageImportToS3Console extends Console
         if (isset($credentials[static::LOCAL_AWS_CONFIG_CREDENTIALS][static::LOCAL_AWS_CONFIG_CREDENTIALS_SECRET])) {
             $secret = $credentials[static::LOCAL_AWS_CONFIG_CREDENTIALS][static::LOCAL_AWS_CONFIG_CREDENTIALS_SECRET];
         }
-        dump('KEY: '); //TODO: ONLY TESTING - REMOVE AFTER
-        dump($key); //TODO: ONLY TESTING - REMOVE AFTER
-
-        dump('SECRET: '); //TODO: ONLY TESTING - REMOVE AFTER
-        dump($secret); //TODO: ONLY TESTING - REMOVE AFTER
 
         return new S3Client([
             'region' => 'eu-central-1',

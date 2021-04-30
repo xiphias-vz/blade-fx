@@ -163,6 +163,14 @@ $jobs[] = [
     'stores' => ['EIN'],
 ];
 
+$jobs[] = [
+    'name' => 'data-import-images',
+    'command' => 'vendor/bin/install -r product-images-import',
+    'schedule' => '0 20 * * *',
+    'enable' => true,
+    'stores' => ['EIN'],
+];
+
 /* Timeslot check */
 $jobs[] = [
     'name' => 'timeslot-check',
