@@ -9,6 +9,7 @@ namespace Pyz\Zed\Sales\Communication\Controller;
 
 use Aws\S3\Exception\S3Exception;
 use Aws\S3\S3Client;
+use Exception;
 use Orm\Zed\Sales\Persistence\SpySalesOrder;
 use Orm\Zed\Sales\Persistence\SpySalesOrderAddress;
 use Pyz\Shared\Acl\AclConstants;
@@ -33,8 +34,7 @@ class DetailController extends SprykerDetailController
     protected const LOCAL_AWS_CONFIG_CREDENTIALS = 'globus_s3_cashier_file_credentials';
     protected const LOCAL_AWS_CONFIG_CREDENTIALS_KEY = 'key';
     protected const LOCAL_AWS_CONFIG_CREDENTIALS_SECRET = 'secret';
-    protected const LOCAL_AWS_CONFIG_CREDENTIALS_BUCKET = 'bucket';
-    protected const EXPORT_ARCHIVE_FILE_PATH = '/data/data/EIN/export/files/';
+    protected const EXPORT_ARCHIVE_FILE_PATH = '/data/data/import/';
 
     private const TIMESLOTS_DATA = [
         '10:00-12:00' => '10:00-12:00',
@@ -397,20 +397,24 @@ class DetailController extends SprykerDetailController
      */
     protected function downloadFile(string $fileLink)
     {
-        if (file_exists($fileLink)) {
-            header('Content-Description: File Transfer');
-            header('Content-Type: application/octet-stream');
-            header('Content-Disposition: attachment; filename=' . basename($fileLink));
-            header('Expires: 0');
-            header('Cache-Control: must-revalidate');
-            header('Pragma: public');
-            header('Content-Length: ' . filesize($fileLink));
-            ob_clean();
-            flush();
-            readfile($fileLink);
+        try {
+            if (file_exists($fileLink)) {
+                header('Content-Description: File Transfer');
+                header('Content-Type: application/octet-stream');
+                header('Content-Disposition: attachment; filename=' . basename($fileLink));
+                header('Expires: 0');
+                header('Cache-Control: must-revalidate');
+                header('Pragma: public');
+                header('Content-Length: ' . filesize($fileLink));
+                ob_clean();
+                flush();
+                readfile($fileLink);
 
-            unlink($fileLink);
-            exit;
+                unlink($fileLink);
+                exit;
+            }
+        } catch (Exception $exception) {
+            $this->addErrorMessage($exception->getMessage());
         }
     }
 }
