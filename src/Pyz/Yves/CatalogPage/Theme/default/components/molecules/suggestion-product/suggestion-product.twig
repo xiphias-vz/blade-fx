@@ -12,6 +12,9 @@
                 {% endif %}
                 {% include atom('thumbnail') with {
                     modifiers: ['catalog', 'with-overlay'],
+                    data: {
+                        imageWithoutThumb: firstImage.external_url_small,
+                    },
                     attributes: {
                         alt: data.alt,
                         src: newThumbUrl,
@@ -19,6 +22,7 @@
                     },
                 } only %}
             {% endif %}
+
        </span>
 
         <span class="col col--expand col--lg-9 title title--medium">

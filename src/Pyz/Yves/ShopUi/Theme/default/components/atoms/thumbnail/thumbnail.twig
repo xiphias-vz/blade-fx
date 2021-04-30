@@ -1,9 +1,17 @@
 {% extends atom('thumbnail', '@SprykerShop:ShopUi') %}
 
+{% define data = {
+    imageWithoutThumb: '',
+} %}
+
 {% block body %}
-    {% set defaultImage = publicPath("/images/kein_bild_vorhanden.png") %}
+    {% set defaultUrl = publicPath("/images/kein_bild_vorhanden.png") %}
     {% set imageExtraClasses = '' %}
     {% block image %}
-        <img onerror="this.src = '{{ defaultImage }}'" class="{{ component.renderClass(config.name ~ '__image', modifiers) }} {{ imageExtraClasses }}" {{ component.renderAttributes(attributes) }}>
+        {% if data.imageWithoutThumb is not empty and ".jpg" in data.imageWithoutThumb %}
+            <img onerror="this.src = '{{ data.imageWithoutThumb }}'" class="{{ component.renderClass(config.name ~ '__image', modifiers) }} {{ imageExtraClasses }}" {{ component.renderAttributes(attributes) }}>
+        {% else %}
+            <img onerror="this.src = '{{ defaultUrl }}'" class="{{ component.renderClass(config.name ~ '__image', modifiers) }} {{ imageExtraClasses }}" {{ component.renderAttributes(attributes) }}>
+        {% endif %}
     {% endblock %}
 {% endblock %}

@@ -26,13 +26,10 @@
             {% block image %}
                 <a href="{{ data.productItem.url }}"
                    class="{{ component.renderClass(config.name ~ '__image', modifiers) }} col">
-                    {% set splitUrl = data.productItem.images[0].externalUrlLarge | split('.com/')  %}
-                    {% set insertInTheMiddle = '.com/thumb_' %}
-                    {% set newThumbUrl = splitUrl[0] ~ insertInTheMiddle ~ splitUrl[1] %}
                     {% include molecule('product-image') with {
                         data: {
                             name: data.productItem.name | default,
-                            image: newThumbUrl,
+                            image: data.productItem.images[0].externalUrlLarge,
                         },
                     } only %}
 
