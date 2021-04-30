@@ -34,7 +34,7 @@ class DetailController extends SprykerDetailController
     protected const LOCAL_AWS_CONFIG_CREDENTIALS = 'globus_s3_cashier_file_credentials';
     protected const LOCAL_AWS_CONFIG_CREDENTIALS_KEY = 'key';
     protected const LOCAL_AWS_CONFIG_CREDENTIALS_SECRET = 'secret';
-    protected const EXPORT_ARCHIVE_FILE_PATH = '/data/data/import/';
+    protected const EXPORT_ARCHIVE_FILE_PATH = '../../src/Pyz/Zed/Sales/Communication/CashierFiles/';
 
     private const TIMESLOTS_DATA = [
         '10:00-12:00' => '10:00-12:00',
@@ -69,7 +69,7 @@ class DetailController extends SprykerDetailController
             $mrechantReference = $orderTransfer->getMerchantReference();
             $keyname = $mrechantReference . '_' . $idSalesOrder . '_order.txt';
             $tempName = $mrechantReference . '_' . $idSalesOrder . '_order.zip';
-            $tempFilePath = static::EXPORT_ARCHIVE_FILE_PATH . $tempName;
+            $tempFilePath = realpath(static::EXPORT_ARCHIVE_FILE_PATH) . $tempName;
             try {
                 // Get the object.
                 $result = $s3->getObject([
