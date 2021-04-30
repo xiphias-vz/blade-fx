@@ -80,10 +80,10 @@ class ProfileController extends SprykerShopProfileController
                 ->createAddressAndUpdateCustomerDefaultAddresses($addressTransfer);
         }
 
+        $this->updateLoggedInCustomerTransfer($customerResponseTransfer->getCustomerTransfer());
+
         if ($customerResponseTransfer->getIsSuccess()) {
             if ($doCurrentProfileUpdate) {
-                $this->updateLoggedInCustomerTransfer($customerResponseTransfer->getCustomerTransfer());
-
                 $this->addSuccessMessage(self::MESSAGE_PROFILE_CHANGE_SUCCESS);
             }
 
