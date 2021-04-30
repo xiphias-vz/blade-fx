@@ -137,7 +137,13 @@ class ImageImportToS3Console extends Console
 
         dump("IMPORTED IMAGES: ");
         foreach ($images as $image) {
+            if (is_dir(static::UNZIP_FILE_NAME . '/' . $image)) {
+                dump("DIRECTORY FOUND: ");
+                dump($image);
+                continue;
+            }
             $imageFile = fopen(static::UNZIP_FILE_NAME . '/' . $image, 'r++');
+
             dump($image);
             try {
                 $uploader = new ObjectUploader(
