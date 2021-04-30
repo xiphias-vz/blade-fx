@@ -36,4 +36,23 @@ class SalesOrderSummaryExportFacade extends AbstractFacade implements SalesOrder
             ->createSalesOrderSummaryExportSftpWriter()
             ->sendFileToFtp($content, $archiveRemoteFilePath);
     }
+
+    /**
+     * @param string $content
+     *
+     * @return void
+     */
+    public function exportDeeplink(string $content): void
+    {
+        $date = date("Ymd");
+        $archiveRemoteFilePath = sprintf(
+            static::EXPORT_FILE_REMOTE_FILE_PATH_FORMAT,
+            $this->getFactory()->getConfig()->getDefaultDeeplinkExportDirectoryPath(),
+            "productdata_" . $date . ".csv"
+        );
+
+        $this->getFactory()
+            ->createSalesOrderSummaryExportSftpWriter()
+            ->sendFileToFtp($content, $archiveRemoteFilePath);
+    }
 }

@@ -199,3 +199,12 @@ $jobs[] =
     'enable' => true,
     'stores' => ['EIN'],
 ];
+
+/* Export products deep links */
+$jobs[] = [
+        'name' => 'export-product-deep-links',
+        'command' => '$PHP_BIN vendor/bin/console data:exportDeeplink',
+        'schedule' => '0 9 * * 3',
+        'enable' => true,
+        'stores' => ['EIN'],
+    ];

@@ -29,6 +29,7 @@ use Pyz\Zed\PriceProductScheduleDataImport\PriceProductScheduleDataImportConfig;
 use Pyz\Zed\ProductQuantityDataImport\ProductQuantityDataImportConfig;
 use Pyz\Zed\RabbitMq\Communication\Console\InitVirtualHostConsole;
 use Pyz\Zed\RabbitMq\Communication\Console\RemoveVirtualHostConsole;
+use Pyz\Zed\SalesOrderSummaryExport\Communication\Console\ProductfeedDeeplinksConsole;
 use Pyz\Zed\SalesOrderSummaryExport\Communication\Console\SalesOrderSummaryExportConsole;
 use Pyz\Zed\SalesOrderThresholdDataImport\SalesOrderThresholdDataImportConfig;
 use Pyz\Zed\Sitemap\Communication\Console\SitemapConsole;
@@ -336,6 +337,7 @@ class ConsoleDependencyProvider extends SprykerConsoleDependencyProvider
             new SitemapConsole(),
             new SalesOrderSummaryExportConsole(),
             new ImageImportToS3Console(),
+            new ProductfeedDeeplinksConsole(),
         ];
 
         $propelCommands = $container->getLocator()->propel()->facade()->getConsoleCommands();
