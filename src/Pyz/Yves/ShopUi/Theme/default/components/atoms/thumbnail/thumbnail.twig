@@ -8,10 +8,8 @@
     {% set defaultUrl = publicPath("/images/kein_bild_vorhanden.png") %}
     {% set imageExtraClasses = '' %}
     {% block image %}
-        {% if data.imageWithoutThumb is not empty and ".jpg" in data.imageWithoutThumb %}
-            <img onerror="this.src = '{{ data.imageWithoutThumb }}'" class="{{ component.renderClass(config.name ~ '__image', modifiers) }} {{ imageExtraClasses }}" {{ component.renderAttributes(attributes) }}>
-        {% else %}
-            <img onerror="this.src = '{{ defaultUrl }}'" class="{{ component.renderClass(config.name ~ '__image', modifiers) }} {{ imageExtraClasses }}" {{ component.renderAttributes(attributes) }}>
-        {% endif %}
+        <img onerror="if(this.src.includes('thumb_')){let nonThumbImageFromStorage = this.getAttribute('data-storage');this.src = nonThumbImageFromStorage;this.setAttribute('data-src', nonThumbImageFromStorage);}else{this.src = '{{ defaultUrl }}';this.setAttribute('data-src', '{{ defaultUrl }}');}"
+             class="{{ component.renderClass(config.name ~ '__image', modifiers) }} {{ imageExtraClasses }}" data-src="{{ data.imageWithoutThumb }}" data-storage="{{ data.imageWithoutThumb }}" {{ component.renderAttributes(attributes) }}>
     {% endblock %}
+
 {% endblock %}
