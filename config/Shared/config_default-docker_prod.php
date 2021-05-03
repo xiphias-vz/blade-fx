@@ -2,10 +2,12 @@
 
 use Pyz\Shared\CashierOrderExport\CashierOrderExportConstants;
 use Pyz\Shared\DataImport\DataImportConstants;
+use Pyz\Shared\ProductImage\ProductImageConstants;
 use Pyz\Zed\SalesOrderSummaryExport\SalesOrderSummaryExportConfig;
 
 require('config_default-docker.php');
 
+$config[ProductImageConstants::IMAGES_HOST_URL] = 'https://globus-prod-product-images.s3.eu-central-1.amazonaws.com';
 $config[DataImportConstants::SFTP_DATA_IMPORT_FILES_FOLDER_NAME] = 'RP';
 $config[CashierOrderExportConstants::CASHIER_FILE_DOWNLOAD_URL] = 'https://s3.console.aws.amazon.com/s3/object/globus-prod-csv-uploads?region=eu-central-1&prefix=';
 

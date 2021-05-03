@@ -5,7 +5,7 @@ use Pyz\Shared\DataImport\DataImportConstants;
 use Pyz\Shared\ProductImage\ProductImageConstants;
 use Pyz\Zed\SalesOrderSummaryExport\SalesOrderSummaryExportConfig;
 
-$config[ProductImageConstants::IMAGES_HOST_URL] = 'https://globus-prod-product-images.s3.eu-central-1.amazonaws.com';
+$config[ProductImageConstants::IMAGES_HOST_URL] = 'https://globus-staging-product-images.s3.eu-central-1.amazonaws.com';
 $config[CashierOrderExportConstants::CASHIER_FILE_DOWNLOAD_URL] = 'https://s3.console.aws.amazon.com/s3/object/globus-staging-csv-uploads?region=eu-central-1&prefix=';
 
 require('config_default-docker.php');
