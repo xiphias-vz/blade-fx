@@ -8,6 +8,7 @@
 namespace Pyz\Zed\DataImport\Business\Model\ProductConcrete;
 
 use DateTime;
+use Exception;
 use Orm\Zed\Locale\Persistence\SpyLocaleQuery;
 use Orm\Zed\Product\Persistence\SpyProduct;
 use Orm\Zed\Product\Persistence\SpyProductLocalizedAttributesQuery;
@@ -83,14 +84,19 @@ class ProductConcreteWriter extends PublishAwareStep implements DataImportStepIn
      */
     public function execute(DataSetInterface $dataSet)
     {
-        $productEntity = $this->importProduct($dataSet);
+        try {
+            $productEntity = $this->importProduct($dataSet);
 
-        $this->productRepository->addProductConcrete($productEntity, $dataSet[ProductConfig::KEY_PRODUCT_NUMBER]);
+            $this->productRepository->addProductConcrete($productEntity, $dataSet[ProductConfig::KEY_PRODUCT_NUMBER]);
 
-        $this->importProductLocalizedAttributes($dataSet, $productEntity);
-        $this->importProductPlaceholderImage($dataSet);
+            $this->importProductLocalizedAttributes($dataSet, $productEntity);
+            $this->importProductPlaceholderImage($dataSet);
 
-        $this->addPublishEvents(ProductEvents::PRODUCT_CONCRETE_PUBLISH, $productEntity->getIdProduct());
+            $this->addPublishEvents(ProductEvents::PRODUCT_CONCRETE_PUBLISH, $productEntity->getIdProduct());
+        } catch (Exception $ex) {
+            dump($dataSet);
+            dump($ex);
+        }
     }
 
     /**

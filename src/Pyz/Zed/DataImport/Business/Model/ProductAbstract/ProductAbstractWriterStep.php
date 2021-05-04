@@ -7,6 +7,7 @@
 
 namespace Pyz\Zed\DataImport\Business\Model\ProductAbstract;
 
+use Exception;
 use Orm\Zed\Locale\Persistence\SpyLocaleQuery;
 use Orm\Zed\Product\Persistence\SpyProductAbstract;
 use Orm\Zed\Product\Persistence\SpyProductAbstractLocalizedAttributesQuery;
@@ -37,7 +38,7 @@ use Spryker\Zed\Url\Dependency\UrlEvents;
 
 class ProductAbstractWriterStep extends PublishAwareStep implements DataImportStepInterface
 {
-    public const BULK_SIZE = 200;
+    public const BULK_SIZE = 50;
 
     public const KEY_PRODUCT_NUMBER = ProductConfig::KEY_PRODUCT_NUMBER;
     public const KEY_CONCRETE_SKU = 'Key';
@@ -96,17 +97,25 @@ class ProductAbstractWriterStep extends PublishAwareStep implements DataImportSt
      */
     public function execute(DataSetInterface $dataSet)
     {
-        $productAbstractEntity = $this->importProductAbstract($dataSet);
+        try {
+            $productAbstractEntity = $this->importProductAbstract($dataSet);
 
-        $this->productRepository->addProductAbstract($productAbstractEntity);
+            $this->productRepository->addProductAbstract($productAbstractEntity);
 
-        $this->importProductAbstractLocalizedAttributes($dataSet, $productAbstractEntity);
+            $this->importProductAbstractLocalizedAttributes($dataSet, $productAbstractEntity);
 
-        $locales = Store::getInstance()->getLocales();
-        $this->importProductUrls($dataSet, $productAbstractEntity, $locales);
-        $this->importProductImage($dataSet, $locales);
+            $locales = Store::getInstance()->getLocales();
+            $this->importProductUrls($dataSet, $productAbstractEntity, $locales);
+            $productImageSetEntities = $this->importProductImage($dataSet, $locales);
 
-        $this->addPublishEvents(ProductEvents::PRODUCT_ABSTRACT_PUBLISH, $productAbstractEntity->getIdProductAbstract());
+            $this->addPublishEvents(ProductEvents::PRODUCT_ABSTRACT_PUBLISH, $productAbstractEntity->getIdProductAbstract());
+            foreach ($productImageSetEntities as $productImageSetEntity) {
+                $this->addImagePublishEvents($productImageSetEntity);
+            }
+        } catch (Exception $ex) {
+            dump($dataSet);
+            dump($ex);
+        }
     }
 
     /**
@@ -234,12 +243,13 @@ class ProductAbstractWriterStep extends PublishAwareStep implements DataImportSt
 
     /**
      * @param \Spryker\Zed\DataImport\Business\Model\DataSet\DataSetInterface $dataSet
-     * @param string[] $locales
+     * @param array $locales
      *
-     * @return void
+     * @return array
      */
-    protected function importProductImage(DataSetInterface $dataSet, array $locales)
+    protected function importProductImage(DataSetInterface $dataSet, array $locales): array
     {
+        $productImageSetEntities = [];
         foreach ($locales as $localeKey => $localeName) {
             $productImageSetEntity = $this->findOrCreateImageSet($dataSet, $localeName);
             SpyProductImageSetToProductImageQuery::create()->findByFkProductImageSet($productImageSetEntity->getIdProductImageSet())->delete();
@@ -249,9 +259,10 @@ class ProductAbstractWriterStep extends PublishAwareStep implements DataImportSt
                 $productImageEntity = $this->findOrCreateImage($imageUrl);
                 $this->updateOrCreateImageToImageSetRelation($productImageSetEntity, $productImageEntity, $key);
             }
-
-            $this->addImagePublishEvents($productImageSetEntity);
+            array_push($productImageSetEntities, $productImageSetEntity);
         }
+
+        return $productImageSetEntities;
     }
 
     /**
