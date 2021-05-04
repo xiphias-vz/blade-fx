@@ -38,7 +38,7 @@ use Spryker\Zed\Url\Dependency\UrlEvents;
 
 class ProductAbstractWriterStep extends PublishAwareStep implements DataImportStepInterface
 {
-    public const BULK_SIZE = 50;
+    public const BULK_SIZE = 100;
 
     public const KEY_PRODUCT_NUMBER = ProductConfig::KEY_PRODUCT_NUMBER;
     public const KEY_CONCRETE_SKU = 'Key';
