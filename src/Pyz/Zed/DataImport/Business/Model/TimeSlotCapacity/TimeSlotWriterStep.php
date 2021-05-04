@@ -8,7 +8,6 @@
 namespace Pyz\Zed\DataImport\Business\Model\TimeSlotCapacity;
 
 use DateTime;
-use Exception;
 use Generated\Shared\Transfer\TimeSlotCapacityTransfer;
 use Orm\Zed\Merchant\Persistence\SpyMerchantQuery;
 use Orm\Zed\TimeSlot\Persistence\PyzTimeSlotQuery;
@@ -103,27 +102,23 @@ class TimeSlotWriterStep extends PublishAwareStep implements DataImportStepInter
         $timeslotDay = $timeSlotCapacityTransfer->getDate() ?
             DateTime::createFromFormat('Y-m-d', $timeSlotCapacityTransfer->getDate()) : null;
 
-        try {
-            $pyzTimeSlotEntity = PyzTimeSlotQuery::create()
-                ->filterByDay($timeSlotCapacityTransfer->getDay())
-                ->filterByTimeSlot($timeSlotCapacityTransfer->getTimeSlot())
-                ->filterByMerchantReference($timeSlotCapacityTransfer->getMerchantReference())
-                ->filterByDate($timeslotDay)
-                ->findOneOrCreate();
+        $pyzTimeSlotEntity = PyzTimeSlotQuery::create()
+            ->filterByDay($timeSlotCapacityTransfer->getDay())
+            ->filterByTimeSlot($timeSlotCapacityTransfer->getTimeSlot())
+            ->filterByMerchantReference($timeSlotCapacityTransfer->getMerchantReference())
+            ->filterByDate($timeslotDay)
+            ->findOneOrCreate();
 
-            $pyzTimeSlotEntity->setCapacity($timeSlotCapacityTransfer->getCapacity() ?? static::DEFAULT_CAPACITY);
-            $pyzTimeSlotEntity->setDate($timeslotDay);
+        $pyzTimeSlotEntity->setCapacity($timeSlotCapacityTransfer->getCapacity() ?? static::DEFAULT_CAPACITY);
+        $pyzTimeSlotEntity->setDate($timeslotDay);
 
-            if ($pyzTimeSlotEntity->isNew() || $pyzTimeSlotEntity->isModified()) {
-                $pyzTimeSlotEntity->save();
+        if ($pyzTimeSlotEntity->isNew() || $pyzTimeSlotEntity->isModified()) {
+            $pyzTimeSlotEntity->save();
 
-                $this->addPublishEvents(
-                    MerchantEvents::MERCHANT_PUBLISH,
-                    $this->getMerchantId($pyzTimeSlotEntity->getMerchantReference())
-                );
-            }
-        } catch (Exception $e) {
-            echo 'Duplicates in the table pyz_time_slot' . $e->getMessage();
+            $this->addPublishEvents(
+                MerchantEvents::MERCHANT_PUBLISH,
+                $this->getMerchantId($pyzTimeSlotEntity->getMerchantReference())
+            );
         }
     }
 

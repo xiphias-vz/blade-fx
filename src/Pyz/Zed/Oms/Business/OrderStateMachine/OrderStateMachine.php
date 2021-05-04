@@ -8,6 +8,8 @@
 namespace Pyz\Zed\Oms\Business\OrderStateMachine;
 
 use DateTime;
+use Orm\Zed\Oms\Persistence\Base\SpyOmsOrderItemStateHistoryQuery;
+use Orm\Zed\Oms\Persistence\Base\SpyOmsOrderItemStateQuery;
 use Orm\Zed\Sales\Persistence\Map\SpySalesOrderItemTableMap;
 use Orm\Zed\Sales\Persistence\SpySalesOrderItem;
 use PDO;
@@ -421,6 +423,9 @@ class OrderStateMachine extends SprykerOrderStateMachine implements OrderStateMa
     {
         $sqlArr = [];
         foreach ($orderItems as $orderItem) {
+            $orderItem = $this->changeMailState($orderItem);
+            $orderItem = $this->checkCashierOrderExport($orderItem);
+
             if (array_key_exists($orderItem->getFkOmsOrderItemState(), $sqlArr)) {
                 $sqlArr[$orderItem->getFkOmsOrderItemState()] = str_replace(',0)', ',' . $orderItem->getIdSalesOrderItem() . ',0)', $sqlArr[$orderItem->getFkOmsOrderItemState()]);
             } else {
@@ -558,5 +563,97 @@ class OrderStateMachine extends SprykerOrderStateMachine implements OrderStateMa
     protected function encodeParams(array $params): string
     {
         return '| ' . implode(' | ', $params) . ' |';
+    }
+
+    /**
+     * @param \Orm\Zed\Sales\Persistence\SpySalesOrderItem $orderItem
+     *
+     * @return \Orm\Zed\Sales\Persistence\SpySalesOrderItem
+     */
+    protected function changeMailState(SpySalesOrderItem $orderItem): SpySalesOrderItem
+    {
+        $stateName = $orderItem->getState()->getName();
+        $orderItemId = $orderItem->getIdSalesOrderItem();
+        $itemEntity = SpyOmsOrderItemStateQuery::create()
+            ->filterByName('shipped mail sent')
+            ->findOne();
+        $itemEntityReady = SpyOmsOrderItemStateQuery::create()
+            ->filterByName('ready for collection')
+            ->findOne();
+        $itemEntitySending = SpyOmsOrderItemStateQuery::create()
+            ->filterByName('shipped mail sending')
+            ->findOne();
+        if ($itemEntity == null || $itemEntityReady == null || $itemEntitySending == null) {
+            return $orderItem;
+        }
+        if ($stateName == 'shipped mail sending') {
+            $itemStateHistoryEntity = SpyOmsOrderItemStateHistoryQuery::create()
+                ->filterByFkOmsOrderItemState($itemEntity->getIdOmsOrderItemState())
+                ->filterByFkSalesOrderItem($orderItemId)
+                ->find();
+            $itemStatusCount = count($itemStateHistoryEntity->getData());
+            $timeArray = $this->getTimeArray();
+            $itemStateSendingHistoryEntity = SpyOmsOrderItemStateHistoryQuery::create()
+                ->filterByFkOmsOrderItemState($itemEntitySending->getIdOmsOrderItemState())
+                ->filterByFkSalesOrderItem($orderItemId)
+                ->filterByCreatedAt_Between($timeArray)
+                ->find();
+            $itemSendingStatusCount = count($itemStateSendingHistoryEntity->getData());
+            if ($itemStatusCount >= 1) {
+                $orderItem->setState($itemEntityReady);
+            } elseif ($itemSendingStatusCount > 0) {
+                $orderItem->setState($itemEntityReady);
+            }
+        }
+
+        return $orderItem;
+    }
+
+    /**
+     * @param \Orm\Zed\Sales\Persistence\SpySalesOrderItem $orderItem
+     *
+     * @return \Orm\Zed\Sales\Persistence\SpySalesOrderItem
+     */
+    protected function checkCashierOrderExport(SpySalesOrderItem $orderItem): SpySalesOrderItem
+    {
+        $stateName = $orderItem->getState()->getName();
+        $orderItemId = $orderItem->getIdSalesOrderItem();
+        $itemCashierOrderItemEntity = SpyOmsOrderItemStateQuery::create()
+            ->filterByName('cashier export process')
+            ->findOne();
+        $itemEntityCollectionProcess = SpyOmsOrderItemStateQuery::create()
+            ->filterByName('collection process')
+            ->findOne();
+        if ($itemCashierOrderItemEntity == null || $itemEntityCollectionProcess == null) {
+            return $orderItem;
+        }
+        if ($stateName == 'cashier export process') {
+            $timeArray = $this->getTimeArray();
+            $itemStateCashierExportingHistoryEntity = SpyOmsOrderItemStateHistoryQuery::create()
+                ->filterByFkOmsOrderItemState($itemCashierOrderItemEntity->getIdOmsOrderItemState())
+                ->filterByFkSalesOrderItem($orderItemId)
+                ->filterByCreatedAt_Between($timeArray)
+                ->find();
+            $itemStateCashierExportingCount = count($itemStateCashierExportingHistoryEntity);
+            if ($itemStateCashierExportingCount > 0) {
+                $orderItem->setState($itemEntityCollectionProcess);
+            }
+        }
+
+        return $orderItem;
+    }
+
+    /**
+     * @return array
+     */
+    public function getTimeArray(): array
+    {
+        $timeArray = [];
+        $min = date("Y-m-d h:i:s", time() - 10);
+        $timeArray['min'] = $min;
+        $max = date("Y-m-d h:i:s", time());
+        $timeArray['max'] = $max;
+
+        return $timeArray;
     }
 }
