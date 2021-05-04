@@ -427,66 +427,56 @@ class PickingHeaderTransferData
     private function getOrderItemsForTransfer(PickingHeaderTransfer $transfer, int $idZone): PickingHeaderTransfer
     {
         $whereList = implode($transfer->getIdOrderArray(), ",");
-        $sql = "select sso.id_sales_order as id_order,
-               sso.order_reference,
-               min(ssoi.id_sales_order_item) as id_order_item,
-               sp.id_product,
-               sp.product_number as ean,
-               ssoi.alternative_ean,
-               count(*) as quantity,
-               sum(case when sit.name = '" . OmsConfig::STORE_STATE_PICKED . "' then ssoi.quantity else 0 end) as quantityPicked,
-               IF(sum(case when sit.name = '" . OmsConfig::STATE_TYPE_FLAG_CANCELLED . "' then 1 else 0 end) > 0, 1, 0) as is_cancelled,
-               ssoi.price,
-               ssoi.base_price_unit as price_unit,
-               ssoi.base_price_content as price_content,
-               ssoi.price_per_kg,
-               sum(ssoi.price) as sum_price,
-               ssoi.name,
-               ssoi.brand as brand_name,
-               ssoi.weight_per_unit as weight,
-               IFNULL(ssoi.item_paused, 0) as is_paused,
-               MAX(spi.external_url_small) as picture_url,
-               ssoi.sequence,
-               ssoi.shelf,
-               ssoi.shelf_floor,
-               ssoi.shelf_field,
-               ssoi.aisle,
-               sit.name as status,
-               MAX(ssoi.picked_at) as last_picked_at,
-               MAX(ssoi.weight_per_unit) * SUM(ssoi.quantity) * 0.8 as min_weight,
-               MAX(ssoi.weight_per_unit) * SUM(ssoi.quantity) * 1.2 as max_weight,
-               MAX(ssoi.weight_per_unit) * SUM(ssoi.quantity) as total_weight
-        from spy_sales_order sso
-            inner join spy_sales_order_item ssoi on sso.id_sales_order = ssoi.fk_sales_order
-            inner join pyz_picking_zone ppz on ssoi.pick_zone = ppz.name
-            inner join spy_product sp on ssoi.product_number = sp.product_number
-            inner join spy_oms_order_item_state sit on ssoi.fk_oms_order_item_state = sit.id_oms_order_item_state
-            left outer join spy_product_image_set spis on sp.id_product = spis.fk_product
-            left outer join spy_product_image_set_to_product_image spistpi on spis.id_product_image_set = spistpi.fk_product_image_set
-                and spistpi.sort_order = (select min(s1.sort_order) from spy_product_image_set_to_product_image s1 where s1.fk_product_image_set = spis.id_product_image_set)
-            left outer join spy_product_image spi on spistpi.fk_product_image = spi.id_product_image
-         where sso.id_sales_order in(" . $whereList . ")
-            and ppz.id_picking_zone = " . $idZone . "
-         group by sso.id_sales_order,
-           sso.order_reference,
-           sp.id_product,
-           sp.product_number,
-           ssoi.alternative_ean,
-           ssoi.quantity_base_measurement_unit_name,
-           ssoi.price,
-           ssoi.base_price_unit,
-           ssoi.base_price_content,
-           ssoi.price_per_kg,
-           ssoi.name,
-           ssoi.brand,
-           ssoi.weight_per_unit,
-           ssoi.item_paused,
-           ssoi.sequence,
-           ssoi.shelf,
-           ssoi.shelf_floor,
-           ssoi.shelf_field,
-           ssoi.aisle,
-           sit.name";
+        $sql = "SELECT m.id_order, m.order_reference, m.id_order_item
+                        , m.id_product, m.ean
+                        , m.alternative_ean, m.quantity, m.price, m.price_unit, m.price_content
+                        , m.price_per_kg, m.sum_price, m.name, m.brand_name, m.weight
+                        , m.is_paused, m.sequence, m.shelf, m.shelf_floor, m.shelf_field, m.aisle
+                        , m.quantityPicked
+                        , m.is_cancelled
+                        , m.status, m.last_picked_at, m.min_weight
+                        , m.max_weight, m.total_weight
+                        , i.external_url_small
+                FROM
+                    (
+                    select sso.id_sales_order as id_order, sso.order_reference, min(ssoi.id_sales_order_item) as id_order_item
+                        , sp.id_product, sp.product_number as ean
+                        , ssoi.alternative_ean, count(*) as quantity, ssoi.price, ssoi.base_price_unit as price_unit, ssoi.base_price_content as price_content
+                        , ssoi.price_per_kg, sum(ssoi.price) as sum_price, ssoi.name, ssoi.brand as brand_name, ssoi.weight_per_unit as weight
+                        , IFNULL(ssoi.item_paused, 0) as is_paused, ssoi.sequence, ssoi.shelf, ssoi.shelf_floor, ssoi.shelf_field,ssoi.aisle
+                        , sum(case when sit.name = 'picked' then ssoi.quantity else 0 end) as quantityPicked
+                        , IF(sum(case when sit.name = 'cancelled' then 1 else 0 end) > 0, 1, 0) as is_cancelled
+                        , sit.name as status, MAX(ssoi.picked_at) as last_picked_at, MAX(ssoi.weight_per_unit) * SUM(ssoi.quantity) * 0.8 as min_weight
+                        , MAX(ssoi.weight_per_unit) * SUM(ssoi.quantity) * 1.2 as max_weight, MAX(ssoi.weight_per_unit) * SUM(ssoi.quantity) as total_weight
+                    from spy_sales_order sso
+                        inner join spy_sales_order_item ssoi on sso.id_sales_order = ssoi.fk_sales_order
+                        inner join pyz_picking_zone ppz on ssoi.pick_zone = ppz.name
+                        inner join spy_product sp on ssoi.product_number = sp.product_number
+                        inner join spy_oms_order_item_state sit on ssoi.fk_oms_order_item_state = sit.id_oms_order_item_state
+                    where sso.id_sales_order in (" . $whereList . ")
+                        and ppz.id_picking_zone = " . $idZone . "
+                    group by sso.id_sales_order, sso.order_reference
+                        , sp.id_product, sp.product_number
+                        , ssoi.alternative_ean, ssoi.quantity_base_measurement_unit_name, ssoi.price, ssoi.base_price_unit, ssoi.base_price_content
+                        , ssoi.price_per_kg, ssoi.name, ssoi.brand, ssoi.weight_per_unit, ssoi.item_paused, ssoi.sequence, ssoi.shelf, ssoi.shelf_floor
+                        , ssoi.shelf_field, ssoi.aisle, sit.name
+                    ) m
+                    left outer join
+                    (
+                        SELECT t.id_product, t.external_url_small
+                        FROM
+                        (
+                        SELECT sp.id_product, spi.external_url_small, ROW_NUMBER() OVER(PARTITION BY sp.id_product order by spistpi.sort_order asc) as rowNumber
+                        FROM spy_sales_order_item ssoi
+                            inner join spy_product sp on ssoi.product_number = sp.product_number
+                            inner join spy_product_image_set spis on sp.id_product = spis.fk_product
+                            inner join spy_product_image_set_to_product_image spistpi on spis.id_product_image_set = spistpi.fk_product_image_set
+                            inner join spy_product_image spi on spistpi.fk_product_image = spi.id_product_image
+                            inner join pyz_picking_zone ppz on ssoi.pick_zone = ppz.name
+                        where ssoi.fk_sales_order in (" . $whereList . ")
+                            and ppz.id_picking_zone = " . $idZone . "
+                        ) t where t.rowNumber = 1
+                    ) i on i.id_product = m.id_product";
 
         $data = $this->getResult($sql);
 
