@@ -7,7 +7,6 @@
 
 namespace Pyz\Zed\DataImport\Business\Model\ProductAbstract;
 
-use Exception;
 use Orm\Zed\Locale\Persistence\SpyLocaleQuery;
 use Orm\Zed\Product\Persistence\SpyProductAbstract;
 use Orm\Zed\Product\Persistence\SpyProductAbstractLocalizedAttributesQuery;
@@ -23,6 +22,7 @@ use Orm\Zed\Url\Persistence\SpyUrlQuery;
 use Propel\Runtime\ActiveQuery\Criteria;
 use Pyz\Shared\Product\ProductConfig;
 use Pyz\Zed\DataImport\Business\Model\BaseProduct\AttributesExtractorStep;
+use Pyz\Zed\DataImport\Business\Model\Import\ImportLogWriter;
 use Pyz\Zed\DataImport\Business\Model\Product\ProductLocalizedAttributesExtractorStep;
 use Pyz\Zed\DataImport\Business\Model\Product\Repository\ProductRepository;
 use Pyz\Zed\DataImport\DataImportConfig;
@@ -38,7 +38,7 @@ use Spryker\Zed\Url\Dependency\UrlEvents;
 
 class ProductAbstractWriterStep extends PublishAwareStep implements DataImportStepInterface
 {
-    public const BULK_SIZE = 100;
+    public const BULK_SIZE = 1;
 
     public const KEY_PRODUCT_NUMBER = ProductConfig::KEY_PRODUCT_NUMBER;
     public const KEY_CONCRETE_SKU = 'Key';
@@ -113,8 +113,7 @@ class ProductAbstractWriterStep extends PublishAwareStep implements DataImportSt
                 $this->addImagePublishEvents($productImageSetEntity);
             }
         } catch (Exception $ex) {
-            dump($dataSet);
-            dump($ex);
+            ImportLogWriter::createLogEntry("product", "ProductAbstractWriterStep", $ex->getMessage(), null, null, null);
         }
     }
 
@@ -133,7 +132,7 @@ class ProductAbstractWriterStep extends PublishAwareStep implements DataImportSt
      *
      * @return \Orm\Zed\Product\Persistence\SpyProductAbstract
      */
-    protected function importProductAbstract(DataSetInterface $dataSet)
+    protected function importProductAbstract(DataSetInterface $dataSet): SpyProductAbstract
     {
         $productAbstractEntity = SpyProductAbstractQuery::create()
             ->filterBySku(static::getAbstractSku($dataSet))
@@ -283,8 +282,6 @@ class ProductAbstractWriterStep extends PublishAwareStep implements DataImportSt
         $productImageSetEntity = $query->findOneOrCreate();
         if ($productImageSetEntity->isNew() || $productImageSetEntity->isModified()) {
             $productImageSetEntity->save();
-
-            $this->addImagePublishEvents($productImageSetEntity);
         }
 
         return $productImageSetEntity;
@@ -344,7 +341,6 @@ class ProductAbstractWriterStep extends PublishAwareStep implements DataImportSt
     {
         if ($productImageSetEntity->getFkProductAbstract()) {
             $this->addPublishEvents(ProductImageEvents::PRODUCT_IMAGE_PRODUCT_ABSTRACT_PUBLISH, $productImageSetEntity->getFkProductAbstract());
-            $this->addPublishEvents(ProductEvents::PRODUCT_ABSTRACT_PUBLISH, $productImageSetEntity->getFkProductAbstract());
         } elseif ($productImageSetEntity->getFkProduct()) {
             $this->addPublishEvents(ProductImageEvents::PRODUCT_IMAGE_PRODUCT_CONCRETE_PUBLISH, $productImageSetEntity->getFkProduct());
         }
