@@ -14,7 +14,6 @@ class SalesOrderSummaryExportConfig extends AbstractBundleConfig
     protected const MODULE_ROOT_DIRECTORY_LEVEL = 4;
     protected const SFTP_FILE_SYSTEM_SERVICE_PROVIDER_KEY = 'globus_sftp';
     public const SFTP_ORDER_EXPORT_FILES_FOLDER_KEY = 'SFTP_ORDER_EXPORT_FILES_FOLDER_KEY';
-    public const SFTP_PRODUCT_DEEPLINK_EXPORT_FILES_FOLDER_KEY = 'SFTP_PRODUCT_DEEPLINK_EXPORT_FILES_FOLDER_KEY';
 
     /**
      * Specification:
@@ -55,13 +54,5 @@ class SalesOrderSummaryExportConfig extends AbstractBundleConfig
     public function getDefaultOrderExportDirectoryPath(): string
     {
         return $this->get(SalesOrderSummaryExportConfig::SFTP_ORDER_EXPORT_FILES_FOLDER_KEY);
-    }
-
-    /**
-     * @return string
-     */
-    public function getDefaultDeeplinkExportDirectoryPath(): string
-    {
-        return $this->get(SalesOrderSummaryExportConfig::SFTP_PRODUCT_DEEPLINK_EXPORT_FILES_FOLDER_KEY);
     }
 }

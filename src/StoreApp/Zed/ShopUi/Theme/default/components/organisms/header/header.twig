@@ -17,10 +17,7 @@
     containerSelect: false,
     pickingForm: false,
     posListe: false,
-    productsLength: 0,
-    openedItems: 0,
-    editedItems: 0,
-    isMultiPickingProcess: 0
+    productsLength: 0
 } %}
 
 {% block extraClass %}
@@ -125,12 +122,7 @@
                                     </a>
                                 </div>
                             {% else %}
-                                {% if data.isMultiPickingProcess == 1 %}
-                                    <p><span style="color: red">{{ data.openedItems }}</span> | <span style="color: green">{{ data.editedItems }}</span></p>
-                                {% endif %}
-                                <div style="{{ data.isMultiPickingProcess == 1 ?  'width: 0' : 'width: auto' }}">
-                                    {% block headerBottom %}{% endblock %}
-                                </div>
+                                {% block headerBottom %}{% endblock %}
                             {% endif %}
 
                         {% elseif data.pickingZone %}

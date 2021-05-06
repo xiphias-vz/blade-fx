@@ -8,7 +8,6 @@
 namespace Pyz\Zed\DataImport\Business\Model\ProductConcrete;
 
 use DateTime;
-use Exception;
 use Orm\Zed\Locale\Persistence\SpyLocaleQuery;
 use Orm\Zed\Product\Persistence\SpyProduct;
 use Orm\Zed\Product\Persistence\SpyProductLocalizedAttributesQuery;
@@ -21,7 +20,6 @@ use Orm\Zed\ProductImage\Persistence\SpyProductImageSetToProductImageQuery;
 use Orm\Zed\ProductSearch\Persistence\SpyProductSearchQuery;
 use Pyz\Shared\Product\ProductConfig;
 use Pyz\Zed\DataImport\Business\Exception\ProductNumberIsMissingException;
-use Pyz\Zed\DataImport\Business\Model\Import\ImportLogWriter;
 use Pyz\Zed\DataImport\Business\Model\Product\Repository\ProductRepository;
 use Pyz\Zed\DataImport\Business\Model\ProductAbstract\ProductAbstractWriterStep;
 use Pyz\Zed\DataImport\DataImportConfig;
@@ -85,20 +83,14 @@ class ProductConcreteWriter extends PublishAwareStep implements DataImportStepIn
      */
     public function execute(DataSetInterface $dataSet)
     {
-        try {
-            $productEntity = $this->importProduct($dataSet);
+        $productEntity = $this->importProduct($dataSet);
 
-            ImportLogWriter::createLogEntry("product", "ProductConcreteWriterStep", $productEntity->getProductNumber(), null, null, null);
+        $this->productRepository->addProductConcrete($productEntity, $dataSet[ProductConfig::KEY_PRODUCT_NUMBER]);
 
-            $this->productRepository->addProductConcrete($productEntity, $dataSet[ProductConfig::KEY_PRODUCT_NUMBER]);
+        $this->importProductLocalizedAttributes($dataSet, $productEntity);
+        $this->importProductPlaceholderImage($dataSet);
 
-            $this->importProductLocalizedAttributes($dataSet, $productEntity);
-            $this->importProductPlaceholderImage($dataSet);
-
-            $this->addPublishEvents(ProductEvents::PRODUCT_CONCRETE_PUBLISH, $productEntity->getIdProduct());
-        } catch (Exception $ex) {
-            ImportLogWriter::createLogEntry("product", "ProductConcreteWriterStep", $ex->getMessage(), null, null, null);
-        }
+        $this->addPublishEvents(ProductEvents::PRODUCT_CONCRETE_PUBLISH, $productEntity->getIdProduct());
     }
 
     /**

@@ -15,11 +15,4 @@ interface SalesOrderSummaryExportFacadeInterface
      * @return void
      */
     public function exportOrders(string $content): void;
-
-    /**
-     * @param string $content
-     *
-     * @return void
-     */
-    public function exportDeeplink(string $content): void;
 }

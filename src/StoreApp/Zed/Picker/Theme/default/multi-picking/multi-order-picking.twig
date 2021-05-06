@@ -16,10 +16,6 @@
     listOfContainers: listOfContainers,
     openModal: openModal,
     fromPosListeAndModal: fromPosListeAndModal,
-    openedItems: openedItems,
-    editedItems: editedItems,
-    isMultiPickingProcess: isMultiPickingProcess,
-    orderItemStatus: orderItemStatus,
 } %}
 
  {% if data.currentPositionData is defined %}
@@ -48,10 +44,7 @@
             orderReference: data.orderReference,
             containerSelect: true,
             pickingForm: true,
-            productsLength: data.itemsCount,
-            openedItems: data.openedItems,
-            editedItems: data.editedItems,
-            isMultiPickingProcess: data.isMultiPickingProcess
+            productsLength: data.itemsCount
         },
         embed: {
             itemsCount: data.itemsCount,
@@ -92,8 +85,7 @@
                 isLastPosition: data.isLastPosition,
                 urlScanShelves: data.urlScanShelves,
                 openModal: data.openModal,
-                fromPosListeAndModal: data.fromPosListeAndModal,
-                orderItemStatus: data.orderItemStatus
+                fromPosListeAndModal: data.fromPosListeAndModal
             },
             attributes: {
                 'data-sku': currentPosition.ean,

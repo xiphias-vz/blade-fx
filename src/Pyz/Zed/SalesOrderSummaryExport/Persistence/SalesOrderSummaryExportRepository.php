@@ -22,13 +22,6 @@ class SalesOrderSummaryExportRepository extends AbstractRepository implements Sa
      */
     protected $stringColumns = ["OrderNr", "store", "OrderDate", "DeliveryDate", "external_customer_identifier", "TimeSlot", "status", "comment"];
 
-    /**
-     * @var string[]
-     */
-    protected $stringColumnsDeeplink = ["deeplink"];
-
-    protected const BASE_URL = 'https://';
-
      /**
       * getCustomOrderItemData
       *
@@ -113,53 +106,5 @@ class SalesOrderSummaryExportRepository extends AbstractRepository implements Sa
         $transfer->setContent($content);
 
         return $transfer;
-    }
-
-    /**
-     * getProductsDeeplink
-     *
-     * @return \Generated\Shared\Transfer\FileSystemContentTransfer
-     */
-    public function getProductsDeeplink(): FileSystemContentTransfer
-    {
-        $transferData = new FileSystemContentTransfer();
-        $yvesHost = static::BASE_URL . $_SERVER['SPRYKER_FE_HOST'];
-        $qry = "SELECT sp.sku as GTIN, CONCAT('$yvesHost', su.url) as deeplink
-                FROM spy_product sp
-                    INNER JOIN spy_url su on su.fk_resource_product_abstract = sp.fk_product_abstract
-                WHERE sp.is_active = 1";
-
-        $connection = Propel::getConnection();
-        $statement = $connection->prepare($qry);
-        $statement->execute();
-        $data = $statement->fetchAll(PDO::FETCH_NAMED);
-
-        $content = '';
-        $header = '';
-
-        foreach ($data as $item) {
-            if ($header == '') {
-                foreach ($item as $key => $value) {
-                    $header = $header . '"' . $key . '",';
-                }
-                $header = mb_substr($header, 0, -1);
-                $header = $header . "\n";
-            }
-            foreach ($item as $key => $value) {
-                if (in_array($key, $this->stringColumnsDeeplink)) {
-                    $value = str_replace(['"', ","], [' ', ' '], $value);
-                    $content = $content . '"' . $value . '",';
-                } else {
-                    $content = $content . $value . ',';
-                }
-            }
-            $content = mb_substr($content, 0, -1);
-            $content = $content . "\n";
-        }
-        $content = $header . $content;
-
-        $transferData->setContent($content);
-
-        return $transferData;
     }
 }

@@ -47,69 +47,6 @@ $colorUrlHover: #1cbb9e;
     }
 }
 
-.filters-holder #location {
-    width: 145px;
-    padding: 2px;
-}
-.dropdown-check-list {
-    display: inline-block;
-}
-
-.dropdown-check-list .anchor {
-    position: relative;
-    cursor: pointer;
-    display: inline-block;
-    padding: 5px 50px 5px 10px;
-    border: 1px solid #ccc;
-}
-
-.dropdown-check-list .anchor:after {
-    position: absolute;
-    content: "";
-    border-left: 2px solid black;
-    border-top: 2px solid black;
-    padding: 5px;
-    right: 10px;
-    top: 20%;
-    -moz-transform: rotate(-135deg);
-    -ms-transform: rotate(-135deg);
-    -o-transform: rotate(-135deg);
-    -webkit-transform: rotate(-135deg);
-    transform: rotate(-135deg);
-}
-
-.dropdown-check-list .anchor:active:after {
-    right: 8px;
-    top: 21%;
-}
-
-.dropdown-check-list ul.items {
-    padding: 2px;
-    display: none;
-    margin: 0;
-    border: 1px solid #ccc;
-    border-top: none;
-}
-
-.dropdown-check-list ul.items li {
-    list-style: none;
-}
-
-.dropdown-check-list.visible .anchor {
-    color: #0094ff;
-}
-
-.dropdown-check-list.visible .items {
-    display: block;
-    padding: 2px;
-    z-index: 1000000;
-    position: fixed;
-    margin: 0;
-    border: 1px solid #ccc;
-    border-top: none;
-    background: red;
-}
-
 .overview-nav .nav-item .text {
     font-size: 18px;
 
@@ -197,7 +134,7 @@ $chat-box-background-color: #f0f0f0;
 }
 
 img.product-image {
-  width: 100px;
+  width: 150px;
   border: 1px solid #e7eaec;
 
     &--small {
@@ -229,16 +166,6 @@ span.discounted {
     color: #aaa;
 }
 
-#order-item-list {
-    border-collapse: separate;
-    border-spacing: 0 1em;
-
-    tr {
-        td {
-            width: auto;
-        }
-    }
-}
 .table > tbody.single-item {
     border-top: none;
 }
@@ -250,38 +177,6 @@ span.discounted {
 
 .state-history {
     width: 300px;
-}
-.pickingZoneHeader {
-    position: relative;
-    border: none;
-    font-size: 16px;
-    background: #f2f2f2;
-    cursor: pointer;
-
-    .icons-holder {
-        display: flex;
-        flex-direction: row;
-        align-items: center;
-
-        .arrow {
-            border: solid black;
-            border-width: 0 2px 2px 0;
-            display: inline-block;
-            padding: 4px;
-            position: absolute;
-            right: 15px;
-        }
-
-        .right {
-            transform: rotate(-45deg);
-            -webkit-transform: rotate(-45deg);
-        }
-
-        .down {
-            transform: rotate(45deg);
-            -webkit-transform: rotate(45deg);
-        }
-    }
 }
 
 .sku {
@@ -316,8 +211,6 @@ a.edit_billing_address {
     border: none;
     font-weight:bold;
     padding-left: 4px;
-    margin: 0;
-    display: inline-block !important;
     &:focus {
         background: none;
         color:#1BBEA0;

@@ -29,12 +29,4 @@ class DataImportFacade extends SprykerDataImportFacade implements DataImportFaca
     {
         $this->getFactory()->createSFTPDataImportFileLoader()->downloadDataImportFiles();
     }
-
-    /**
-     * @return void
-     */
-    public function downloadImagesDataImportFiles(): void
-    {
-        $this->getFactory()->createSFTPImagesDataImportFileLoader()->downloadDataImportFiles();
-    }
 }

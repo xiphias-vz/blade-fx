@@ -198,11 +198,6 @@ services:
         engine: mailhog
         endpoints:
             mail.globus.local:
-    kibana:
-        engine: kibana
-        version: 6.8
-        endpoints:
-            kibana.globus.local:
 
 docker:
 

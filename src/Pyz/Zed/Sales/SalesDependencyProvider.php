@@ -21,8 +21,6 @@ use Pyz\Zed\Sales\Communication\Plugin\OrderItemPickZoneExpanderPreSavePlugin;
 use Pyz\Zed\Sales\Communication\Plugin\OrderItemStockProductExpanderPreSavePlugin;
 use Pyz\Zed\Sales\Communication\Plugin\OrderStatusHydratorOrderPlugin;
 use Pyz\Zed\Sales\Communication\Plugin\ProductNumberOrderItemExpanderPreSavePlugin;
-use Pyz\Zed\Sales\Dependency\Facade\SalesToOmsBridge;
-use Pyz\Zed\TimeSlot\Business\TimeSlotFacadeInterface;
 use Pyz\Zed\TimeSlot\Communication\Plugin\TimeSlotStorageWriterPostSavePlugin;
 use Spryker\Zed\Acl\Business\AclFacadeInterface;
 use Spryker\Zed\Customer\Communication\Plugin\Sales\CustomerOrderHydratePlugin;
@@ -54,14 +52,6 @@ class SalesDependencyProvider extends SprykerSalesDependencyProvider
     public const SERVICE_DATE_TIME_WITH_ZONE = 'SERVICE_DATE_TIME_WITH_ZONE';
     public const FACADE_PRODUCT = 'FACADE_PRODUCT';
     public const FACADE_ACL = 'FACADE_ACL';
-    public const FACADE_TIME_SLOTS_ORDER_OVERVIEW = 'FACADE_TIME_SLOTS';
-    public const CLIENT_STORAGE = 'CLIENT_STORAGE';
-
-    public const PLUGINS_OMS_ORDER_MAIL_EXPANDER = 'PLUGINS_OMS_ORDER_MAIL_EXPANDER';
-    public const FACADE_MAIL = 'FACADE_MAIL';
-    public const FACADE_SALES = 'FACADE_SALES';
-    public const OMS_FACTORY = 'OMS_FACTORY';
-    public const NEW_FACADE_OMS = 'NEW_FACADE_OMS';
 
     public const FACADE_MERCHANT_SALES_ORDER = 'FACADE_MERCHANT_SALES_ORDER';
     public const HYDRATE_ORDER_PLUGINS_FOR_STORE_APP = 'HYDRATE_ORDER_PLUGINS_FOR_STORE_APP';
@@ -81,9 +71,6 @@ class SalesDependencyProvider extends SprykerSalesDependencyProvider
         $container = $this->addProductFacade($container);
         $container = $this->addHydrateOrderForStoreAppPlugins($container);
         $container = $this->addAclFacade($container);
-        $container = $this->addStorageClient($container);
-        $container = $this->addOmsFacade($container);
-        $container = $this->addNewOmsFacade($container);
 
         return $container;
     }
@@ -102,7 +89,6 @@ class SalesDependencyProvider extends SprykerSalesDependencyProvider
         $container = $this->addBaseOmsFacade($container);
         $container = $this->addAclFacade($container);
         $container = $this->addPickingZoneFacade($container);
-        $container = $this->addTimeSlotFacade($container);
 
         return $container;
     }
@@ -116,20 +102,6 @@ class SalesDependencyProvider extends SprykerSalesDependencyProvider
     {
         $container->set(static::FACADE_PICKING_ZONE, function (Container $container) {
             return $container->getLocator()->pickingZone()->facade();
-        });
-
-        return $container;
-    }
-
-    /**
-     * @param \Spryker\Zed\Kernel\Container $container
-     *
-     * @return \Spryker\Zed\Kernel\Container
-     */
-    protected function addTimeSlotFacade(Container $container): Container
-    {
-        $container->set(static::FACADE_TIME_SLOTS_ORDER_OVERVIEW, function (Container $container): TimeSlotFacadeInterface {
-            return $container->getLocator()->timeSlot()->facade();
         });
 
         return $container;
@@ -340,33 +312,5 @@ class SalesDependencyProvider extends SprykerSalesDependencyProvider
             new MerchantRegionOrderExpanderPlugin(),
             new MerchantSalesOrderExpanderPlugin(),
         ];
-    }
-
-    /**
-     * @param \Spryker\Zed\Kernel\Container $container
-     *
-     * @return \Spryker\Zed\Kernel\Container
-     */
-    protected function addStorageClient(Container $container): Container
-    {
-        $container->set(static::CLIENT_STORAGE, function (Container $container) {
-            return $container->getLocator()->storage()->client();
-        });
-
-        return $container;
-    }
-
-    /**
-     * @param \Spryker\Zed\Kernel\Container $container
-     *
-     * @return \Spryker\Zed\Kernel\Container
-     */
-    protected function addNewOmsFacade(Container $container): Container
-    {
-        $container->set(static::NEW_FACADE_OMS, function (Container $container) {
-            return new SalesToOmsBridge($container->getLocator()->oms()->facade());
-        });
-
-        return $container;
     }
 }

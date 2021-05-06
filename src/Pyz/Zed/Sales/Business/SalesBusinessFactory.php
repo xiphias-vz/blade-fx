@@ -8,7 +8,6 @@
 namespace Pyz\Zed\Sales\Business;
 
 use Pyz\Service\DateTimeWithZone\DateTimeWithZoneServiceInterface;
-use Pyz\Zed\Oms\Business\OmsBusinessFactory;
 use Pyz\Zed\Oms\Business\OmsFacadeInterface;
 use Pyz\Zed\Product\Business\ProductFacadeInterface;
 use Pyz\Zed\Sales\Business\InvoiceOrder\InvoiceSalesOrderReader;
@@ -27,9 +26,7 @@ use Pyz\Zed\Sales\Business\Order\OrderReaderInterface;
 use Pyz\Zed\Sales\Business\OrderChange\OrderChangeSaver;
 use Pyz\Zed\Sales\Business\OrderDate\OrderDateCheck;
 use Pyz\Zed\Sales\Business\OrderItem\OrderItemExpander;
-use Pyz\Zed\Sales\Dependency\Facade\SalesToOmsBridgeInterface;
 use Pyz\Zed\Sales\SalesDependencyProvider;
-use Spryker\Client\Storage\StorageClientInterface;
 use Spryker\Zed\Sales\Business\Model\Customer\CustomerOrderOverviewInterface;
 use Spryker\Zed\Sales\Business\Model\Order\OrderUpdaterInterface;
 use Spryker\Zed\Sales\Business\Order\OrderHydratorInterface;
@@ -261,29 +258,5 @@ class SalesBusinessFactory extends SprykerSalesBusinessFactory
     public function createOrderItemExpander(): OrderItemExpander
     {
         return new OrderItemExpander($this->getRepository());
-    }
-
-    /**
-     * @return \Spryker\Client\Storage\StorageClientInterface
-     */
-    public function getStorageClient(): StorageClientInterface
-    {
-        return $this->getProvidedDependency(SalesDependencyProvider::CLIENT_STORAGE);
-    }
-
-    /**
-     * @return \Pyz\Zed\Oms\Business\OmsBusinessFactory
-     */
-    public function getOmsFactory(): OmsBusinessFactory
-    {
-        return $this->getProvidedDependency(SalesDependencyProvider::PLUGINS_OMS_ORDER_MAIL_EXPANDER);
-    }
-
-    /**
-     * @return \Pyz\Zed\Sales\Dependency\Facade\SalesToOmsBridgeInterface
-     */
-    public function getNewOmsFacade(): SalesToOmsBridgeInterface
-    {
-        return $this->getProvidedDependency(SalesDependencyProvider::NEW_FACADE_OMS);
     }
 }

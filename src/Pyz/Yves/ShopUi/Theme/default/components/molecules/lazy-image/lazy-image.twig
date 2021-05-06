@@ -14,7 +14,7 @@
     loading: 'lazy',
 } %}
 
-{% set defaultImage = publicPath("images/kein_bild_vorhanden.png") %}
+{% set defaultImage = publicPath("/images/kein_bild_vorhanden.png") %}
 
 {% block attributes %}{% endblock %}
 
@@ -32,12 +32,11 @@
 
         {% if data.isImage %}
             {% if attributes.src is defined %}
-                {% set splitUrl = attributes.src | split('.com/') %}
-                {% set insertInTheMiddle = '.com/thumb_' %}
-                {% set newThumbUrl = splitUrl[0] ~ insertInTheMiddle ~ splitUrl[1] %}
-
-                <img onerror="OnErrorChangeImage(this);" class="{{ data.imageClasses }} {{ config.jsName }}__content is-invisible" src="{{ newThumbUrl }}" data-src="{{ newThumbUrl }}" data-storage="{{ attributes.src }}" {{ component.renderAttributes(attributesWithoutSrc) }}>
-
+                {% if attributes.src is not empty %}
+                    <img onerror="this.src = '{{ defaultImage }}'" class="{{ data.imageClasses }} {{ config.jsName }}__content is-invisible" data-src="{{ attributes.src }}" {{ component.renderAttributes(attributesWithoutSrc) }}>
+                {% else %}
+                    <img onerror="this.src = '{{ defaultImage }}'" class="{{ data.imageClasses }} {{ config.jsName }}__content is-invisible" data-src="{{ defaultImage }}" {{ component.renderAttributes(attributesWithoutSrc) }}>
+                {% endif %}
             {% endif %}
         {% else %}
             <div class="{{ data.imageClasses }} {{ config.jsName }}__content is-invisible" data-background-image="{{ attributes.src }}"></div>
@@ -53,19 +52,5 @@
             {% endif %}
         </noscript>
     {% endblock %}
-
-    <script type="text/javascript">
-        function OnErrorChangeImage(ev){
-            if(ev.src.includes("thumb_") ){
-                let nonThumbImageFromStorage = ev.getAttribute("data-storage");
-                ev.src = nonThumbImageFromStorage;
-                ev.setAttribute("data-src", nonThumbImageFromStorage);
-            }
-            else{
-                ev.src = '{{ defaultImage }}';
-                ev.setAttribute("data-src", "{{ defaultImage }}");
-            }
-        }
-    </script>
 
 {% endblock %}

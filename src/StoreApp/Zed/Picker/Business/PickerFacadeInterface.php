@@ -93,13 +93,6 @@ interface PickerFacadeInterface
     public function setOrdersToPick(array $idOrderList): PickingHeaderTransfer;
 
     /**
-     * @param \StoreApp\Zed\Picker\Business\Transfer\PickingHeaderTransfer $transfer
-     *
-     * @return bool
-     */
-    public function unLockAndClearAddedContainers(PickingHeaderTransfer $transfer): bool;
-
-    /**
      * @return \StoreApp\Zed\Picker\Business\Transfer\PickingHeaderTransfer
      */
     public function getPickingHeaderTransfer(): PickingHeaderTransfer;

@@ -43,6 +43,16 @@
         {% widget 'FullTextSearchTabsWidget' args [data.searchString, 'FullTextSearchProductsTab'] only %}{% endwidget %}
     </div>
 
+    {% embed molecule('spelling-suggestion', 'CatalogPage') with {
+        data: {
+            suggestion: data.suggestion
+        }
+    } only %}
+        {% block body %}
+            {{parent()}}
+        {% endblock %}
+    {% endembed %}
+
     {{parent()}}
 
     {% if data.searchString is not empty %}

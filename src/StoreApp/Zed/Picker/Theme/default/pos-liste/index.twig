@@ -1,6 +1,5 @@
 {% extends template('page-layout-main') %}
 
-{% set currentIndex = 0 %}
 {% define data = {
     pickZone: pickZone,
     sku: sku,
@@ -23,11 +22,7 @@
     } only %}
 {% endblock %}
 {% block content %}
-    <div id="divElementPosListe">
     {% for key,item in data.orders %}
-        {% if (data.sku == item.ean) %}
-            {% set currentIndex = key %}
-        {% endif %}
             {% embed molecule('pos-liste-item') with {
                 data: {
                     idOrderItem: item.idOrderItem,
@@ -51,28 +46,11 @@
                     pickingItemPosition: item.pickingItemPosition,
                     fromModal: data.fromModal,
                     itemsQuantity: item.itemsQuantity,
-                    allPaused: data.allPaused,
-                    itemSkuFrom: data.sku
+                    allPaused: data.allPaused
                 },
             } only %}
             {% endembed %}
     {% endfor %}
-    </div>
-    <script type="text/javascript">
-        const currentIndex = {{ currentIndex }};
-        const countItems = {{ data.orders | length }};
-        const tblSku = document.getElementById("tbLSku_{{ data.sku }}");
-        if(countItems > 5) {
-            if (currentIndex === countItems) {
-                document.getElementById('divElementPosListe').style.marginBottom = "200px";
-            } else if (currentIndex === countItems - 1) {
-                document.getElementById('divElementPosListe').style.marginBottom = "150px";
-            }
-        }
-        setTimeout(function (){
-            tblSku.scrollIntoView({ behavior: 'auto', block: 'center', inline: 'center' });
-        },500);
-    </script>
     {% include molecule('multi-picking-additional-order-buttons') with {
         data: {
             idSalesOrder: '1',

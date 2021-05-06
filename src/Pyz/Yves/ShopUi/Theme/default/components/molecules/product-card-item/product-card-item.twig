@@ -29,7 +29,7 @@
                     {% include molecule('product-image') with {
                         data: {
                             name: data.productItem.name | default,
-                            image: data.productItem.images[0].externalUrlLarge,
+                            image: data.productItem.images[0].externalUrlLarge | default(null),
                         },
                     } only %}
 

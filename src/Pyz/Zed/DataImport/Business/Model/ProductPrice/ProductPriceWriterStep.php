@@ -96,19 +96,8 @@ class ProductPriceWriterStep extends PublishAwareStep implements DataImportStepI
         $sapStoreIdToStoreMap = $this->dataImportConfig->getSapStoreIdToStoreMap();
         $dataSet[PriceProductDataSet::KEY_STORE] = $sapStoreIdToStoreMap[$dataSet[PriceProductDataSet::KEY_STORE]];
 
-        $key = ProductConfig::KEY_SAP_NUMBER;
-        $keys = array_keys($dataSet->getArrayCopy());
-        if (!in_array($key, $keys)) {
-            foreach ($keys as $str) {
-                if (str_ends_with($str, $key)) {
-                    $key = $str;
-                    break;
-                }
-            }
-        }
-
         $productAbstractEntitiesCollection = SpyProductAbstractQuery::create()
-            ->filterBySapNumber($dataSet[$key])
+            ->filterBySapNumber($dataSet[ProductConfig::KEY_SAP_NUMBER])
             ->find();
 
         if ($productAbstractEntitiesCollection->isEmpty()) {

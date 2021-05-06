@@ -15,7 +15,7 @@
 
     <table name="spy_oms_state_machine_lock" identifierQuoting="true">
         <column name="id_oms_state_machine_lock" required="true" type="BIGINT" autoIncrement="true" primaryKey="true"/>
-        <column name="details" type="VARCHAR" size="15000"/>
+        <column name="details" type="VARCHAR" size="4096"/>
     </table>
 
     <table name="spy_oms_order_item_state" identifierQuoting="true">

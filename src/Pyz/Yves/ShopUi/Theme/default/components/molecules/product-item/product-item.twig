@@ -63,9 +63,11 @@
                     {% block image %}
                         {% if data.url %}
                             {% block imageLink %}
-                                <a href="{{ data.url }}">
-                                    {{ _self.thumbnail(data.image, data.name, extraClass, modifiers, data.idProductAbstract) }}
-                                </a>
+                                    <a href="{{ data.url }}">
+
+                                        {{ _self.thumbnail(data.image, data.name, extraClass, modifiers, data.idProductAbstract) }}
+
+                                    </a>
                             {% endblock %}
                         {% endif %}
                         {% if not data.url %}

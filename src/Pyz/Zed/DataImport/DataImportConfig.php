@@ -462,12 +462,4 @@ class DataImportConfig extends SprykerDataImportConfig
     {
         return $this->get(DataImportConstants::SFTP_DATA_IMPORT_FILES_FOLDER_NAME, '');
     }
-
-    /**
-     * @return string
-     */
-    public function getImagesDataImportFilesFolderName(): string
-    {
-        return $this->get(DataImportConstants::SFTP_DATA_IMPORT_IMAGES_FILES_FOLDER_NAME);
-    }
 }

@@ -218,11 +218,11 @@ class OrderHydrator extends SprykerOrderHydrator implements OrderHydratorInterfa
     protected function getPickingSalesOrderCollection(SpySalesOrder $orderEntity): PickingSalesOrderCollectionTransfer
     {
         $pickingSalesOrderCollection = new PickingSalesOrderCollectionTransfer();
+
         foreach ($orderEntity->getPyzPickingSalesOrders() as $pyzPickingSalesOrder) {
-            $item = new PickingSalesOrderTransfer();
-            $item->fromArray($pyzPickingSalesOrder->toArray(), true);
-            $item->setIdPickingZone($pyzPickingSalesOrder->getFkPickingZone());
-            $pickingSalesOrderCollection->addPickingSalesOrder($item);
+            $pickingSalesOrderCollection->addPickingSalesOrder(
+                (new PickingSalesOrderTransfer())->fromArray($pyzPickingSalesOrder->toArray(), true)
+            );
         }
 
         return $pickingSalesOrderCollection;

@@ -27,7 +27,6 @@ class IndexController extends SprykerIndexController
         return [
             'orders' => $table->render(),
             'merchantFilterButtonsData' => $table->getMerchantFilterButtonsData(),
-            'pickingZones' => $table->getPickingZones(),
         ];
     }
 }

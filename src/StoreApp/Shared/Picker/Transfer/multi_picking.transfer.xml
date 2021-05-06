@@ -45,7 +45,6 @@
         <property name="pickingColor" type="PickingColor"/>
         <property name="idUser" type="int"/>
         <property name="idZone" type="int"/>
-        <property name="isAdded" type="bool"/>
         <property name="parent" type="PickingOrder"/>
     </transfer>
 
