@@ -208,6 +208,15 @@
             }
         }
 
+        &--hollow-ghost {
+            background-color: transparent;
+            border-width: thin;
+            border-style: solid;
+            border-color: $setting-color-globus-lightOrange;
+            color: $setting-color-globus-lightOrange;
+        }
+
+
         &--hollow-gray {
             border-color: $setting-color-globus-lightOrange;
             color: $setting-color-white;

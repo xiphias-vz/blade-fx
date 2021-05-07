@@ -37,7 +37,7 @@
                         payment: data.payment,
                     },
                 } only %}
-                <a href="{{ data.backUrl }}" class="is-hidden-sm-lg button button--hollow">
+                <a href="{{ data.backUrl }}" class="is-hidden-sm-lg button button--hollow-ghost">
                     {{ 'general.back.button' | trans }}
                 </a>
             </div>
@@ -168,7 +168,7 @@
                                     url: data.backUrl,
                                     text: 'general.back.button' | trans,
                                     icon: '',
-                                    class: 'is-hidden-xl-only form__action--checkout button button--hollow button--hollow-border-light button--expand',
+                                    class: 'is-hidden-xl-only form__action--checkout button button--hollow-ghost button--expand',
                                 },
                                 agbInputName: data.agbInputName,
                             },

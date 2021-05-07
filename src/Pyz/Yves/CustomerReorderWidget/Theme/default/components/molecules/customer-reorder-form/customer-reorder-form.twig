@@ -4,7 +4,7 @@
     <input type="hidden" name="token" value="{{ csrf_token('reorder-items') }}">
     <div class="grid grid--middle spacing-top spacing-top--biggest">
         <div class="col col--expand">
-            <a href="{{ url('customer/order') }}" class="button button--hollow {{ config.name }}__button">
+            <a href="{{ url('customer/order') }}" class="button button--hollow-ghost {{ config.name }}__button">
                 {{- 'general.back.button' | trans -}}
             </a>
         </div>
