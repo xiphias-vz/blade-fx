@@ -23,3 +23,20 @@
         showAlwaysFirstAndLast: true
     }
 } %}
+
+{% block form %}
+{{parent()}}
+<script type="text/javascript">
+    let paginationLinks = document.getElementsByClassName("pagination__step");
+
+    for (const pageLink of paginationLinks) {
+        pageLink.addEventListener("click", paginationButtonClick);
+    }
+
+    function paginationButtonClick(ev) {
+        let clickedLink = ev.target.href;
+        let splitLink = clickedLink.split("?");
+        ev.target.href = splitLink[0] + "{{ app.request.attributes.get('categoryPath') }}?"  + splitLink[1];
+    }
+</script>
+{% endblock %}
