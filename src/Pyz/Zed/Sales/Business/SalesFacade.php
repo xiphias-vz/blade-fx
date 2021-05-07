@@ -13,8 +13,12 @@ use Generated\Shared\Transfer\OrderCriteriaFilterTransfer;
 use Generated\Shared\Transfer\OrderTransfer;
 use Generated\Shared\Transfer\OrderUpdateRequestTransfer;
 use Generated\Shared\Transfer\QuoteTransfer;
+use Generated\Shared\Transfer\ShipmentTransfer;
 use Generated\Shared\Transfer\SpySalesOrderItemEntityTransfer;
+use Orm\Zed\Sales\Persistence\SpySalesOrder;
+use Orm\Zed\Sales\Persistence\SpySalesShipmentQuery;
 use Spryker\Zed\Sales\Business\SalesFacade as SprykerSalesFacade;
+use Spryker\Zed\Shipment\Persistence\ShipmentEntityManager;
 
 /**
  * @method \Pyz\Zed\Sales\Business\SalesBusinessFactory getFactory()
@@ -323,5 +327,67 @@ class SalesFacade extends SprykerSalesFacade implements SalesFacadeInterface
         return $this->getFactory()
             ->createOrderReaderWithMultiShippingAddress()
             ->getDistinctOrderStates($idSalesOrder);
+    }
+
+    /**
+     * @inheritDoc
+     *
+     * @api
+     *
+     * @param \Generated\Shared\Transfer\OrderTransfer $orderTransfer
+     * @param string $requestedDeliveryDate
+     *
+     * @return void
+     */
+    public function updateRequstedDeliveryDateForOrder(OrderTransfer $orderTransfer, string $requestedDeliveryDate): void
+    {
+        $qry = SpySalesShipmentQuery::create();
+        $item = $qry->findOneByFkSalesOrder($orderTransfer->getIdSalesOrder());
+        $item->setRequestedDeliveryDate($requestedDeliveryDate);
+
+        $manager = new ShipmentEntityManager();
+        $transfer = new ShipmentTransfer();
+        $transfer->fromArray($item->toArray(), true);
+
+        $response = $manager->saveSalesShipment($transfer, $orderTransfer);
+    }
+
+    /**
+     * @return void
+     */
+    public function checkAndUpdateTimeSlotsCapacity(): void
+    {
+        $client = $this->getFactory()->getStorageClient();
+        foreach ($client->getKeys('*click*:*-*:*:*') as $key) {
+            $key = explode(':', $key, 2)[1];
+            $val = $client->get($key);
+            $keyParts = explode('_', $key);
+            $merchantReference = $keyParts[0];
+            $deliveryDate = $keyParts[count($keyParts) - 2] . '_' . $keyParts[count($keyParts) - 1];
+            $deliveryDate = substr($deliveryDate, 0, strrpos($deliveryDate, ':'));
+
+            $currentOrdersCount = count($this
+                ->findIdSalesOrdersByOrderFilterCriteria(
+                    (new OrderCriteriaFilterTransfer())
+                        ->setMerchantReferences([$merchantReference])
+                        ->setRequestedDeliveryDate($deliveryDate)
+                        ->setShipmentName('Click & Collect')
+                        ->setExcludeCancelledOrders(true)
+                ));
+
+            if (!$val || $val !== $currentOrdersCount) {
+                $client->set($key, $currentOrdersCount);
+            }
+        }
+    }
+
+    /**
+     * @param \Orm\Zed\Sales\Persistence\SpySalesOrder $salesOrderEntity
+     *
+     * @return void
+     */
+    public function sendOrderConfirmationMail(SpySalesOrder $salesOrderEntity): void
+    {
+        $this->getFactory()->getNewOmsFacade()->sendEmail($salesOrderEntity);
     }
 }

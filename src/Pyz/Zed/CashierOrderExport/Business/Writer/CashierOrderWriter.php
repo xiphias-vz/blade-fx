@@ -7,12 +7,17 @@
 
 namespace Pyz\Zed\CashierOrderExport\Business\Writer;
 
+use Aws\S3\ObjectUploader;
+use Aws\S3\S3Client;
 use Exception;
 use Generated\Shared\Transfer\OrderTransfer;
+use Pyz\Shared\S3Constants\S3Constants;
 use Pyz\Zed\CashierOrderExport\Business\Checker\CashierOrderFileCheckerInterface;
 use Pyz\Zed\CashierOrderExport\Business\Deleter\CashierOrderDeleterInterface;
 use Pyz\Zed\CashierOrderExport\Business\Resolver\CashierOrderFileNameResolverInterface;
+use Spryker\Shared\Config\Config;
 use Spryker\Shared\Log\LoggerTrait;
+use Symfony\Component\Config\Definition\Exception\Exception as SymfonyException;
 
 class CashierOrderWriter implements CashierOrderWriterInterface
 {
@@ -20,6 +25,10 @@ class CashierOrderWriter implements CashierOrderWriterInterface
 
     protected const FILE_CREATE_FAIL_MESSAGE = 'failed to create cashier order archive with file name: ';
     protected const FILE_EXIST_FAIL_MESSAGE = 'failed to create cashier order archive, file already exist. File name: ';
+    protected const LOCAL_AWS_CONFIG_CREDENTIALS = 'globus_s3_cashier_file_credentials';
+    protected const LOCAL_AWS_CONFIG_CREDENTIALS_KEY = 'key';
+    protected const LOCAL_AWS_CONFIG_CREDENTIALS_SECRET = 'secret';
+    protected const LOCAL_AWS_CONFIG_CREDENTIALS_BUCKET = 'bucket';
 
     /**
      * @var \Pyz\Zed\CashierOrderExport\Business\Resolver\CashierOrderFileNameResolverInterface
@@ -80,6 +89,9 @@ class CashierOrderWriter implements CashierOrderWriterInterface
         $archiveFileName = $this->cashierOrderFilePathResolver->resolveCashierOrderExportArchiveFileName($orderTransfer->getIdSalesOrder());
         $archiveFilePath = $this->cashierOrderFilePathResolver->resolveCashierOrderExportArchiveFilePath($archiveFileName);
         $fileName = $this->cashierOrderFilePathResolver->resolveCashierOrderExportFileName();
+        $orderId = $orderTransfer->getIdSalesOrder();
+        $merchantReference = $orderTransfer->getMerchantReference();
+        $fileNameForS3 = $merchantReference . '_' . $orderId . '_' . $fileName;
         $archiveRemoteFilePath = $this->cashierOrderFilePathResolver
             ->resolveCashierOrderExportArchiveRemoteFilePath($archiveFileName, $orderTransfer->getStore());
 
@@ -92,6 +104,11 @@ class CashierOrderWriter implements CashierOrderWriterInterface
         try {
             $this->cashierOrderArchiveWriter->addContentToArchive($archiveFilePath, $fileName, $content);
             $this->cashierOrderSftpWriter->sendFileToFtp($archiveFileName, $archiveRemoteFilePath);
+            try {
+                $this->uploadCashierFileToAws($archiveFilePath, $fileNameForS3);
+            } catch (Exception $exception) {
+                $errorUplodToAws = $exception->getMessage();
+            }
             $this->cashierOrderDeleter->delete($archiveFileName);
         } catch (Exception $exception) {
             $this->logError(static::FILE_CREATE_FAIL_MESSAGE, $archiveFileName, $exception->getTrace());
@@ -115,5 +132,67 @@ class CashierOrderWriter implements CashierOrderWriterInterface
             sprintf('%s%s', $message, $archiveFileName),
             $trace
         );
+    }
+
+    /**
+     * @param string $archiveFilePath
+     * @param string $fileNameForS3
+     *
+     * @return void
+     */
+    protected function uploadCashierFileToAws(string $archiveFilePath, string $fileNameForS3): void
+    {
+        $s3 = $this->getS3Client();
+        $bucket = $this->getS3Bucket();
+        $cashierFile = fopen($archiveFilePath, 'r+');
+        try {
+            $uploader = new ObjectUploader(
+                $s3,
+                $bucket,
+                $fileNameForS3,
+                $cashierFile
+            );
+            $result = $uploader->upload();
+            if ($result["@metadata"]["statusCode"] == '200') {
+                var_dump('File successfully uploaded to ' . $result["ObjectURL"]);
+            }
+            var_dump($result);
+        } catch (SymfonyException $e) {
+            rewind($cashierFile);
+        }
+    }
+
+    /**
+     * @return \Aws\S3\S3Client
+     */
+    protected function getS3Client(): S3Client
+    {
+        $credentials = Config::get(S3Constants::S3_CONSTANTS_CASHIER_FILE);
+        $key = '';
+        $secret = '';
+        if (isset($credentials[static::LOCAL_AWS_CONFIG_CREDENTIALS][static::LOCAL_AWS_CONFIG_CREDENTIALS_KEY])) {
+            $key = $credentials[static::LOCAL_AWS_CONFIG_CREDENTIALS][static::LOCAL_AWS_CONFIG_CREDENTIALS_KEY];
+        }
+
+        if (isset($credentials[static::LOCAL_AWS_CONFIG_CREDENTIALS][static::LOCAL_AWS_CONFIG_CREDENTIALS_SECRET])) {
+            $secret = $credentials[static::LOCAL_AWS_CONFIG_CREDENTIALS][static::LOCAL_AWS_CONFIG_CREDENTIALS_SECRET];
+        }
+
+        return new S3Client([
+            'region' => 'eu-central-1',
+            'version' => 'latest',
+            'credentials' => [
+                'key' => $key,
+                'secret' => $secret,
+            ],
+        ]);
+    }
+
+    /**
+     * @return string
+     */
+    protected function getS3Bucket(): string
+    {
+        return Config::get(S3Constants::S3_CASHIER_FILE_BUCKETS);
     }
 }

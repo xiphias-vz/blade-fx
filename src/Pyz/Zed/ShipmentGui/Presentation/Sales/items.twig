@@ -1,63 +1,17 @@
 {% embed '@Gui/Partials/widget.twig' with { widget_title: 'Order Items' } %}
-    {% block widget_title -%}
-        <div class="row">
-            <div class="col-sm-9">
-                <h5>{{ 'Order Items' | trans }}</h5>
-            </div>
-        </div>
-    {% endblock %}
-
     {% block widget_content %}
         {% for shipmentOrderItems in groupedOrderItemsByShipment %}
-            <div class="row">
-                <div class="col-sm-9">
-                    <h3>{{ 'sales.shipment' | trans }}  {{ loop.index }} {{ 'of' | trans }} {{ loop.length }}</h3>
-                </div>
-            </div>
-
-            <div class="row">
-                <div class="col-xs-12">
-                    <p><b>{{ 'Delivery Address' | trans }}:</b> {{ shipmentOrderItems.shipment.shippingAddress.salutation
-                        ~ ' ' ~ shipmentOrderItems.shipment.shippingAddress.firstName ~ ' '
-                        ~ shipmentOrderItems.shipment.shippingAddress.lastName ~ ', '
-                        ~ shipmentOrderItems.shipment.shippingAddress.address1 ~ ' '
-                        ~ shipmentOrderItems.shipment.shippingAddress.address2 ~ ', '
-                        ~ shipmentOrderItems.shipment.shippingAddress.additionalInfo ~ ' '
-                        ~ shipmentOrderItems.shipment.shippingAddress.company ~ ', '
-                        ~ shipmentOrderItems.shipment.shippingAddress.zipCode ~ ', '
-                        ~ shipmentOrderItems.shipment.shippingAddress.city ~ ', '
-                        ~ shipmentOrderItems.shipment.shippingAddress.country.name}}</p>
-                    <p><b>{{ 'Delivery Method' | trans }}:</b> {{ shipmentOrderItems.shipment.carrier.name }}</p>
-                    <p><b>{{ 'Shipping Method' | trans }}:</b> {{ shipmentOrderItems.shipment.method.name }}</p>
-                    <p><b>{{ 'Request delivery date' | trans }}:</b> {{ shipmentOrderItems.shipment.requestedDeliveryDate | default('ASAP') }}</p>
-                </div>
-            </div>
-
-            {% if eventsGroupedByShipment[shipmentOrderItems.shipment.idSalesShipment] is defined %}
-                {% embed '@Gui/Partials/widget.twig' with { widget_title: 'Trigger all matching states of order inside this shipment' } %}
-                    {% block widget_content %}
-                        <div class="sales-order-item-group-element" data-group-key="{{ shipmentOrderItems.shipment.idSalesShipment }}">
-                            {% include '@Oms/RenderForm/_partial/order-actions.twig' with {
-                                redirectUrl: changeStatusRedirectUrl,
-                                idSalesOrder: order.idSalesOrder,
-                                pickingZone: null,
-                                events: eventsGroupedByShipment[shipmentOrderItems.shipment.idSalesShipment],
-                            } only %}
-                        </div>
-                    {% endblock %}
-                {% endembed %}
-            {% endif %}
-
-            <table class="footable table toggle-arrow-tiny order-group-items-table-{{ shipmentOrderItems.shipment.idSalesShipment }}" data-qa="order-item-list">
+            <table id="order-item-list" class="footable table toggle-arrow-tiny order-group-items-table-{{ shipmentOrderItems.shipment.idSalesShipment }}" data-qa="order-item-list">
                 <thead>
-                    <tr class="text-left">
-                        <th><input type="checkbox" class="check-all-orders" /></th>
-                        <th colspan="2">{{ 'Product' | trans }}</th>
-                        <th>{{ 'Quantity' | trans }}</th>
-                        <th>{{ 'Unit Price' | trans }} <small>({{ order.priceMode | trans }})</small></th>
-                        <th>{{ 'Total' | trans }}</th>
+                    <tr class="text-left" style="background: grey;color: #FFFFFF">
+                        <th colspan="3">{{ 'Product List' | trans }}</th>
+                        <th>{{ 'Quantity Item' | trans }}</th>
+                        <th>{{ 'Unit Price Per Piece' | trans }}</th>
+                        <th>{{ 'Price' | trans }}</th>
                         <th>{{ 'State' | trans }}</th>
-                        <th>{{ 'Trigger event' | trans }}</th>
+                        <th>{{ 'Lokation' | trans }}</th>
+                        <th>{{ 'Kennzeichen' | trans }}</th>
+                        <th>{{ 'Picker' | trans }}</th>
                     </tr>
                 </thead>
 
@@ -70,7 +24,7 @@
                         {% include '@Sales/Detail/boxes/item-group.twig' with {groups: itemGroups[shipmentOrderItems.hash]} %}
                     {% endif %}
 
-                    {% include '@Sales/Detail/boxes/no-group-items.twig' with {items: shipmentOrderItems.items} %}
+                    {% include '@Sales/Detail/boxes/no-group-items.twig' with {items: [shipmentOrderItems.items]} %}
                 </tbody>
             </table>
         {% endfor %}

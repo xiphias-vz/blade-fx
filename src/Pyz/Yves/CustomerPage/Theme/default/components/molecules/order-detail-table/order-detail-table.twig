@@ -16,10 +16,18 @@
                 </div>
 
                 <div class="col {{ config.name }}__item-image">
-                    {% include atom('thumbnail') with {
+                   {% if concreteItem.metadata.image is not empty  %}
+                       {% set splitUrl = concreteItem.metadata.image | split('.com/')  %}
+                       {% set insertInTheMiddle = '.com/thumb_' %}
+                       {% set newThumbUrl = splitUrl[0] ~ insertInTheMiddle ~ splitUrl[1] %}
+                   {% endif %}
+                   {% include atom('thumbnail') with {
                         modifiers: ['small'],
+                       data: {
+                           imageWithoutThumb: concreteItem.metadata.image,
+                       },
                         attributes: {
-                            src: concreteItem.metadata.image,
+                            src: newThumbUrl,
                         },
                     } only %}
                 </div>

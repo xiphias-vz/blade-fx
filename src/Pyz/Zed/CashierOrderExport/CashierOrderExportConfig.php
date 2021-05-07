@@ -102,4 +102,12 @@ class CashierOrderExportConfig extends AbstractBundleConfig
     {
         return static::CASHIER_FILE_SUPPORTED_ENCODING;
     }
+
+    /**
+     * @return string
+     */
+    public function getCashierFileDownloadUrl(): string
+    {
+        return $this->get(CashierOrderExportConstants::CASHIER_FILE_DOWNLOAD_URL);
+    }
 }

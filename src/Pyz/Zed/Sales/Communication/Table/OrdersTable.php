@@ -12,16 +12,20 @@ use Generated\Shared\Transfer\UserTransfer;
 use Orm\Zed\Sales\Persistence\Map\SpySalesOrderAddressTableMap;
 use Orm\Zed\Sales\Persistence\Map\SpySalesOrderTableMap;
 use Orm\Zed\Sales\Persistence\Map\SpySalesShipmentTableMap;
+use Propel\Runtime\Exception\LogicException;
 use Pyz\Shared\Acl\AclConstants;
+use Pyz\Zed\PickingZone\Business\PickingZoneFacadeInterface;
 use Pyz\Zed\Sales\SalesConfig;
 use Spryker\Service\UtilDateTime\UtilDateTimeServiceInterface;
 use Spryker\Zed\Acl\Business\AclFacadeInterface;
 use Spryker\Zed\Gui\Communication\Table\TableConfiguration;
+use Spryker\Zed\Sales\Business\SalesFacadeInterface;
 use Spryker\Zed\Sales\Communication\Table\OrdersTable as SprykerOrdersTable;
 use Spryker\Zed\Sales\Dependency\Facade\SalesToCustomerInterface;
 use Spryker\Zed\Sales\Dependency\Facade\SalesToMoneyInterface;
 use Spryker\Zed\Sales\Dependency\Facade\SalesToUserInterface;
 use Spryker\Zed\Sales\Dependency\Service\SalesToUtilSanitizeInterface;
+use Twig\Loader\FilesystemLoader;
 
 class OrdersTable extends SprykerOrdersTable
 {
@@ -30,6 +34,11 @@ class OrdersTable extends SprykerOrdersTable
     public const DAY_RANGE_FILTER = 'day-range-filter';
     public const MERCHANT_REFERENCE_FILTER = 'merchant-reference-filter';
     public const DATE_RANGE_FILTER = 'date-range-filter';
+    public const DATE_FROM_FILTER = 'date-from-range-filter';
+    public const DATE_TO_FILTER = 'date-to-range-filter';
+    public const FILTER_BY_STORE_STATUS = 'state-status-filter';
+    public const FILTER_BY_PICK_ZONES = 'pickZones';
+    public const FILTER_BY_TIME_SLOTS = 'timeSlots';
 
     protected const TIMESLOT_DELIMITER = '_';
     protected const TIMESLOT_DELIMITER_REPLACEMENT = ' ';
@@ -56,6 +65,21 @@ class OrdersTable extends SprykerOrdersTable
     protected $salesConfig;
 
     /**
+     * @var \Pyz\Zed\PickingZone\Business\PickingZoneFacadeInterface
+     */
+    protected $pickingZoneFacade;
+
+    /**
+     * @var \Spryker\Zed\Sales\Business\SalesFacadeInterface
+     */
+    protected $salesFacade;
+
+    /**
+     * @var int
+     */
+    protected $defaultLimit = 50;
+
+    /**
      * @param \Pyz\Zed\Sales\Communication\Table\OrdersTableQueryBuilderInterface $queryBuilder
      * @param \Spryker\Zed\Sales\Dependency\Facade\SalesToMoneyInterface $moneyFacade
      * @param \Spryker\Zed\Sales\Dependency\Service\SalesToUtilSanitizeInterface $sanitizeService
@@ -64,7 +88,9 @@ class OrdersTable extends SprykerOrdersTable
      * @param \Spryker\Zed\Sales\Dependency\Facade\SalesToUserInterface $userFacade
      * @param \Spryker\Zed\Acl\Business\AclFacadeInterface $aclFacade
      * @param \Pyz\Zed\Sales\SalesConfig $salesConfig
-     * @param \Spryker\Zed\SalesExtension\Dependency\Plugin\SalesTablePluginInterface[] $salesTablePlugins
+     * @param \Pyz\Zed\PickingZone\Business\PickingZoneFacadeInterface $pickingZoneFacade
+     * @param \Spryker\Zed\Sales\Business\SalesFacadeInterface $salesFacade
+     * @param array $salesTablePlugins
      */
     public function __construct(
         OrdersTableQueryBuilderInterface $queryBuilder,
@@ -75,6 +101,8 @@ class OrdersTable extends SprykerOrdersTable
         SalesToUserInterface $userFacade,
         AclFacadeInterface $aclFacade,
         SalesConfig $salesConfig,
+        PickingZoneFacadeInterface $pickingZoneFacade,
+        SalesFacadeInterface $salesFacade,
         array $salesTablePlugins
     ) {
         parent::__construct(
@@ -89,6 +117,8 @@ class OrdersTable extends SprykerOrdersTable
         $this->userFacade = $userFacade;
         $this->aclFacade = $aclFacade;
         $this->salesConfig = $salesConfig;
+        $this->pickingZoneFacade = $pickingZoneFacade;
+        $this->salesFacade = $salesFacade;
     }
 
     /**
@@ -119,6 +149,21 @@ class OrdersTable extends SprykerOrdersTable
     }
 
     /**
+     * @return string[]
+     */
+    public function getPickingZones(): array
+    {
+        $pickingZoneTransfers = $this->pickingZoneFacade->getPickingZones('');
+        $pickingZones = [];
+
+        foreach ($pickingZoneTransfers as $pickingZoneTransfer) {
+            $pickingZones[$pickingZoneTransfer->getIdPickingZone()] = $pickingZoneTransfer->getName();
+        }
+
+        return $pickingZones;
+    }
+
+    /**
      * @param \Spryker\Zed\Gui\Communication\Table\TableConfiguration $config
      *
      * @return array
@@ -132,16 +177,107 @@ class OrdersTable extends SprykerOrdersTable
     }
 
     /**
+     * @return string
+     */
+    public function render()
+    {
+        $this->init();
+
+        $twigVars = [
+            'config' => $this->prepareConfig(),
+        ];
+
+        return $this->twig
+            ->render('index.twig', $twigVars);
+    }
+
+    /**
+     * @return int
+     */
+    public function getLimit()
+    {
+        if (!$this->limit) {
+            $this->limit = $this->request->query->getInt('length', $this->defaultLimit);
+        }
+
+        return $this->limit;
+    }
+
+    /**
+     * @return $this
+     */
+    protected function init()
+    {
+        if (!$this->initialized) {
+            $this->initialized = true;
+            $this->request = $this->getRequest();
+            $config = $this->newTableConfiguration();
+            $config->setPageLength($this->getLimit());
+            $config = $this->configure($config);
+            $this->setConfiguration($config);
+            $this->twig = $this->getTwig();
+
+            if ($this->tableIdentifier === null) {
+                $this->generateTableIdentifier();
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @throws \Propel\Runtime\Exception\LogicException
+     *
+     * @return \Twig\Environment
+     */
+    private function getTwig()
+    {
+        /** @var \Twig\Environment|null $twig */
+        $twig = $this->getApplicationContainer()->get(static::SERVICE_TWIG);
+
+        if ($twig === null) {
+            throw new LogicException('Twig environment not set up.');
+        }
+
+        /** @var \Twig\Loader\ChainLoader $loaderChain */
+        $loaderChain = $twig->getLoader();
+        $loaderChain->addLoader(new FilesystemLoader(
+            $this->getTwigPaths(),
+            $this->getTwigRootPath()
+        ));
+
+        return $twig;
+    }
+
+    /**
      * @return \Orm\Zed\Sales\Persistence\SpySalesOrderQuery
      */
     protected function buildQuery()
     {
         $query = parent::buildQuery();
+        $query->withColumn("(select max(item_paused) from spy_sales_order_item where fk_sales_order = spy_sales_order.id_sales_order)", "isPaused");
         $dayRangeFilter = $this->request->query->get(static::DAY_RANGE_FILTER);
         $merchantReferenceFilter = $this->request->query->get(static::MERCHANT_REFERENCE_FILTER);
         $dateRangeFilter = $this->request->query->get(static::DATE_RANGE_FILTER);
+        $dateFrom = $this->request->query->get(static::DATE_FROM_FILTER);
+        $dateTo = $this->request->query->get(static::DATE_TO_FILTER);
+        $storeStatus = $this->request->query->get(static::FILTER_BY_STORE_STATUS);
+        $pickingZones = json_decode(urldecode($this->request->query->get(static::FILTER_BY_PICK_ZONES)));
+        $timeSlots = json_decode(urldecode($this->request->query->get(static::FILTER_BY_TIME_SLOTS)));
         $currentUser = $this->userFacade->getCurrentUser();
         $isCurrentUserSupervisor = $this->isCurrentUserSupervisor($currentUser);
+
+        if ($dateFrom && $dateTo) {
+            $query = $this->queryBuilder->applyFilterDateBetween($query, new DateTime($dateFrom), new DateTime($dateTo));
+        } elseif ($dateFrom == '' && $dateTo == '') {
+            $query = $this->queryBuilder->applyFilterDateBetween($query, new DateTime(), new DateTime());
+        }
+
+        if ($storeStatus === "paused") {
+            $query = $this->queryBuilder->applyFilterByPausedState($query);
+        } elseif ($storeStatus) {
+            $query = $this->queryBuilder->applyFilterByState($query, $storeStatus);
+        }
 
         if ($dayRangeFilter) {
             $query = $this->queryBuilder->applyDayRangeFilter($query, new DateTime($dayRangeFilter));
@@ -149,6 +285,14 @@ class OrdersTable extends SprykerOrdersTable
 
         if ($dateRangeFilter) {
             $query = $this->queryBuilder->applyDayRangeFilter($query, new DateTime($dateRangeFilter));
+        }
+
+        if ($pickingZones) {
+            $query = $this->queryBuilder->applyFilterByPickZone($query, $pickingZones);
+        }
+
+        if ($timeSlots) {
+            $query = $this->queryBuilder->applyFilterByTimeSlots($query, $timeSlots);
         }
 
         if ($isCurrentUserSupervisor || $merchantReferenceFilter) {
@@ -218,9 +362,14 @@ class OrdersTable extends SprykerOrdersTable
             static::ID_ORDER_ITEM_PROCESS => $this->request->query->getInt(static::ID_ORDER_ITEM_PROCESS),
             static::DAY_RANGE_FILTER => $this->request->query->get(static::DAY_RANGE_FILTER),
             static::DATE_RANGE_FILTER => $this->request->query->get(static::DATE_RANGE_FILTER),
+            static::DATE_FROM_FILTER => $this->request->query->get(static::DATE_FROM_FILTER),
+            static::DATE_TO_FILTER => $this->request->query->get(static::DATE_TO_FILTER),
+            static::FILTER_BY_STORE_STATUS => $this->request->query->get(static::FILTER_BY_STORE_STATUS),
             static::MERCHANT_REFERENCE_FILTER => $this->request->query->get(static::MERCHANT_REFERENCE_FILTER),
             static::ID_ORDER_ITEM_STATE => $this->request->query->getInt(static::ID_ORDER_ITEM_STATE),
             static::FILTER => $this->request->query->get(static::FILTER),
+            static::FILTER_BY_PICK_ZONES => $this->request->query->get(static::FILTER_BY_PICK_ZONES),
+            static::FILTER_BY_TIME_SLOTS => $this->request->query->get(static::FILTER_BY_TIME_SLOTS),
         ];
 
         $sanitizedFilers = array_filter($filters);
@@ -247,6 +396,21 @@ class OrdersTable extends SprykerOrdersTable
     }
 
     /**
+     * @param string $itemStateNamesCsv
+     * @param string $isPaused
+     *
+     * @return string
+     */
+    protected function groupPyzItemStateNames(string $itemStateNamesCsv, string $isPaused)
+    {
+        $itemStateNames = explode(',', $itemStateNamesCsv);
+        $itemStateNames = array_map('trim', $itemStateNames);
+        $distinctItemStateNames = array_unique($itemStateNames);
+
+        return implode(', ', $distinctItemStateNames) . $isPaused;
+    }
+
+    /**
      * @param array $queryResults
      *
      * @return array
@@ -256,6 +420,11 @@ class OrdersTable extends SprykerOrdersTable
         $results = [];
 
         foreach ($queryResults as $item) {
+            $isPaused = $item['isPaused'];
+            $isPausedText = '';
+            if ($isPaused === "1") {
+                $isPausedText = ' (paused)';
+            }
             $itemLine = [
                 SpySalesOrderTableMap::COL_ID_SALES_ORDER => $item[SpySalesOrderTableMap::COL_ID_SALES_ORDER],
                 SpySalesOrderTableMap::COL_ORDER_REFERENCE => $item[SpySalesOrderTableMap::COL_ORDER_REFERENCE],
@@ -265,7 +434,7 @@ class OrdersTable extends SprykerOrdersTable
                 SpySalesOrderTableMap::COL_EMAIL => $this->formatEmailAddress($item[SpySalesOrderTableMap::COL_EMAIL]),
                 static::ADDRESS_PHONE => $this->getAddressPhone($item),
                 SpySalesOrderAddressTableMap::COL_CELL_PHONE => $this->getAddressMobilePhone($item),
-                static::ITEM_STATE_NAMES_CSV => $this->groupItemStateNames($item[OrdersTableQueryBuilder::FIELD_ITEM_STATE_NAMES_CSV]),
+                static::ITEM_STATE_NAMES_CSV => $this->groupPyzItemStateNames($item[OrdersTableQueryBuilder::FIELD_ITEM_STATE_NAMES_CSV], $isPausedText),
                 static::GRAND_TOTAL => $this->getGrandTotal($item),
                 static::NUMBER_OF_ORDER_ITEMS => $item[OrdersTableQueryBuilder::FIELD_NUMBER_OF_ORDER_ITEMS],
                 static::URL => implode(' ', $this->createActionUrls($item)),
@@ -279,6 +448,16 @@ class OrdersTable extends SprykerOrdersTable
         }
 
         return $results;
+    }
+
+    /**
+     * @param array $item
+     *
+     * @return string
+     */
+    protected function getAddressMobilePhone(array $item): string
+    {
+        return $item[static::ADDRESS_PHONE][SpySalesOrderAddressTableMap::COL_CELL_PHONE] ?? 'No Billing address or Phone was set';
     }
 
     /**
@@ -307,16 +486,6 @@ class OrdersTable extends SprykerOrdersTable
     protected function getAddressPhone(array $item): string
     {
         return $item[static::ADDRESS_PHONE][SpySalesOrderAddressTableMap::COL_PHONE] ?? 'No Billing address or Phone was set';
-    }
-
-    /**
-     * @param array $item
-     *
-     * @return string
-     */
-    protected function getAddressMobilePhone(array $item): string
-    {
-        return $item[static::ADDRESS_PHONE][SpySalesOrderAddressTableMap::COL_CELL_PHONE] ?? 'No Billing address or Phone was set';
     }
 
     /**

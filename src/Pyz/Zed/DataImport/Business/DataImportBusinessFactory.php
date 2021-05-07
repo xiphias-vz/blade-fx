@@ -22,6 +22,7 @@ use Pyz\Zed\DataImport\Business\Model\Currency\CurrencyWriterStep;
 use Pyz\Zed\DataImport\Business\Model\Customer\CustomerWriterStep;
 use Pyz\Zed\DataImport\Business\Model\DataImporterCollection;
 use Pyz\Zed\DataImport\Business\Model\FileDownload\SFTPDataImportFileDownloader;
+use Pyz\Zed\DataImport\Business\Model\FileDownload\SFTPImagesDataImportFileDownloader;
 use Pyz\Zed\DataImport\Business\Model\Glossary\GlossaryWriterStep;
 use Pyz\Zed\DataImport\Business\Model\Locale\AddLocalesStep;
 use Pyz\Zed\DataImport\Business\Model\Locale\LocaleNameToIdLocaleStep;
@@ -856,6 +857,17 @@ class DataImportBusinessFactory extends SprykerDataImportBusinessFactory
     public function createSFTPDataImportFileLoader(): SFTPDataImportFileDownloader
     {
         return new SFTPDataImportFileDownloader(
+            $this->getProvidedDependency(DataImportDependencyProvider::SERVICE_FLY_SYSTEM_SERVICE),
+            $this->getConfig()
+        );
+    }
+
+    /**
+     * @return \Pyz\Zed\DataImport\Business\Model\FileDownload\SFTPImagesDataImportFileDownloader
+     */
+    public function createSFTPImagesDataImportFileLoader(): SFTPImagesDataImportFileDownloader
+    {
+        return new SFTPImagesDataImportFileDownloader(
             $this->getProvidedDependency(DataImportDependencyProvider::SERVICE_FLY_SYSTEM_SERVICE),
             $this->getConfig()
         );

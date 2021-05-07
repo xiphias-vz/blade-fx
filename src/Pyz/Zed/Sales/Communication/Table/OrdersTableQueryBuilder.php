@@ -8,6 +8,7 @@
 namespace Pyz\Zed\Sales\Communication\Table;
 
 use DateTime;
+use Orm\Zed\Sales\Persistence\Map\SpySalesOrderTableMap;
 use Orm\Zed\Sales\Persistence\Map\SpySalesShipmentTableMap;
 use Orm\Zed\Sales\Persistence\SpySalesOrderQuery;
 use Spryker\Zed\Sales\Communication\Table\OrdersTableQueryBuilder as SprykerOrdersTableQueryBuilder;
@@ -62,8 +63,68 @@ class OrdersTableQueryBuilder extends SprykerOrdersTableQueryBuilder implements 
     {
         return $query
             ->useSpySalesShipmentQuery()
-                ->filterByRequestedDeliveryDate_Like(sprintf('%s%%', $dateTime->format('Y-m-d')))
+            ->filterByRequestedDeliveryDate_Like(sprintf('%s%%', $dateTime->format('Y-m-d')))
             ->endUse();
+    }
+
+    /**
+     * @param \Orm\Zed\Sales\Persistence\SpySalesOrderQuery $query
+     * @param \DateTime $dateFrom
+     * @param \DateTime $dateTo
+     *
+     * @return \Orm\Zed\Sales\Persistence\SpySalesOrderQuery
+     */
+    public function applyFilterDateBetween(SpySalesOrderQuery $query, DateTime $dateFrom, DateTime $dateTo): SpySalesOrderQuery
+    {
+        return $query
+                ->where(SpySalesOrderTableMap::COL_ID_SALES_ORDER . " in (select s.fk_sales_order from spy_sales_shipment s where s.requested_delivery_date BETWEEN '" . $dateFrom->format('Y-m-d') . "_00:00' and '" . $dateTo->format('Y-m-d') . "_23:59')");
+    }
+
+    /**
+     * @param \Orm\Zed\Sales\Persistence\SpySalesOrderQuery $query
+     * @param string $storeStatus
+     *
+     * @return \Orm\Zed\Sales\Persistence\SpySalesOrderQuery
+     */
+    public function applyFilterByState(SpySalesOrderQuery $query, string $storeStatus): SpySalesOrderQuery
+    {
+        return $query
+            ->where(SpySalesOrderTableMap::COL_ID_SALES_ORDER . " in (select i.fk_sales_order from spy_sales_order_item i inner join spy_oms_order_item_state s on i.fk_oms_order_item_state = s.id_oms_order_item_state where s.name like '" . $storeStatus . "')");
+    }
+
+    /**
+     * @param \Orm\Zed\Sales\Persistence\SpySalesOrderQuery $query
+     *
+     * @return \Orm\Zed\Sales\Persistence\SpySalesOrderQuery
+     */
+    public function applyFilterByPausedState(SpySalesOrderQuery $query): SpySalesOrderQuery
+    {
+        return $query
+            ->where(SpySalesOrderTableMap::COL_ID_SALES_ORDER . " in (select i.fk_sales_order from spy_sales_order_item i where i.item_paused = 1)");
+    }
+
+    /**
+     * @param \Orm\Zed\Sales\Persistence\SpySalesOrderQuery $query
+     * @param array $pickZones
+     *
+     * @return \Orm\Zed\Sales\Persistence\SpySalesOrderQuery
+     */
+    public function applyFilterByPickZone(SpySalesOrderQuery $query, array $pickZones): SpySalesOrderQuery
+    {
+        return $query
+            ->where(SpySalesOrderTableMap::COL_ID_SALES_ORDER . " in (select i.fk_sales_order from spy_sales_order_item i where i.pick_zone in('" . implode("','", $pickZones) . "'))");
+    }
+
+    /**
+     * @param \Orm\Zed\Sales\Persistence\SpySalesOrderQuery $query
+     * @param array $timeSlots
+     *
+     * @return \Orm\Zed\Sales\Persistence\SpySalesOrderQuery
+     */
+    public function applyFilterByTimeSlots(SpySalesOrderQuery $query, array $timeSlots): SpySalesOrderQuery
+    {
+        return $query
+            ->where(SpySalesOrderTableMap::COL_ID_SALES_ORDER . " in (select s.fk_sales_order from spy_sales_shipment s where s.requested_delivery_date like '%" . implode("' or s.requested_delivery_date like '%", $timeSlots) . "')");
     }
 
     /**

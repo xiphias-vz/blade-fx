@@ -19,4 +19,9 @@ interface CashierOrderExportConstants
      * @api
      */
     public const SFTP_CASHIER_ORDER_FILES_FOLDER_KEY = 'SFTP_CASHIER_ORDER_FILES_FOLDER_KEY';
+
+    /**
+     * - File is uploaded on S3 bucket for late download from backoffice
+     */
+    public const CASHIER_FILE_DOWNLOAD_URL = 'CASHIER_FILE_DOWNLOAD_URL';
 }

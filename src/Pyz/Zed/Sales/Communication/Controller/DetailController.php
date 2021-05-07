@@ -7,9 +7,18 @@
 
 namespace Pyz\Zed\Sales\Communication\Controller;
 
+use Aws\S3\Exception\S3Exception;
+use Aws\S3\S3Client;
+use Exception;
+use Orm\Zed\Sales\Persistence\SpySalesOrder;
+use Orm\Zed\Sales\Persistence\SpySalesOrderAddress;
+use Pyz\Shared\Acl\AclConstants;
+use Pyz\Shared\S3Constants\S3Constants;
 use Spryker\Service\UtilText\Model\Url\Url;
+use Spryker\Shared\Config\Config;
 use Spryker\Zed\Sales\Communication\Controller\DetailController as SprykerDetailController;
 use Spryker\Zed\Sales\SalesConfig;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -18,9 +27,23 @@ use Symfony\Component\HttpFoundation\Request;
  * @method \Pyz\Zed\Sales\Business\SalesFacadeInterface getFacade()
  * @method \Spryker\Zed\Sales\Persistence\SalesQueryContainerInterface getQueryContainer()
  * @method \Spryker\Zed\Sales\Persistence\SalesRepositoryInterface getRepository()
+ * @method \Pyz\Zed\CashierOrderExport\Business\Exporter\CashierOrderExporter exportCashier()
  */
 class DetailController extends SprykerDetailController
 {
+    protected const LOCAL_AWS_CONFIG_CREDENTIALS = 'globus_s3_cashier_file_credentials';
+    protected const LOCAL_AWS_CONFIG_CREDENTIALS_KEY = 'key';
+    protected const LOCAL_AWS_CONFIG_CREDENTIALS_SECRET = 'secret';
+    protected const EXPORT_ARCHIVE_FILE_PATH = '../../src/Pyz/Zed/Sales/Communication/CashierFiles/';
+
+    private const TIMESLOTS_DATA = [
+        '10:00-12:00' => '10:00-12:00',
+        '12:00-14:00' => '12:00-14:00',
+        '14:00-16:00' => '14:00-16:00',
+        '16:00-18:00' => '16:00-18:00',
+        '18:00-20:00' => '18:00-20:00',
+    ];
+
     /**
      * @param \Symfony\Component\HttpFoundation\Request $request
      *
@@ -30,13 +53,64 @@ class DetailController extends SprykerDetailController
     {
         $idSalesOrder = $this->castId($request->query->getInt(SalesConfig::PARAM_ID_SALES_ORDER));
 
+        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+            if (isset($_POST['pickingZones']) && isset($_POST['frmContainerShelf_idSalesOrder']) && isset($_POST['inputContainer']) && isset($_POST['inputShelf'])) {
+                $this->getFactory()->setZoneContainerShelf($_POST['frmContainerShelf_idSalesOrder'], $_POST['pickingZones'], $_POST['inputContainer'], $_POST['inputShelf']);
+            }
+        }
+
         $orderTransfer = $this->getFacade()->findOrderWithPickingSalesOrdersByIdSalesOrder($idSalesOrder);
         $orderTransfer->setCartNote(json_decode($orderTransfer->getCartNote()));
+        $cellPhone = $orderTransfer->getBillingAddress()->getCellPhone();
+
+        if ($request->get("isDownloadCashierFile") == true) {
+            $s3 = $this->getS3Client();
+            $bucket = $this->getS3Bucket();
+            $mrechantReference = $orderTransfer->getMerchantReference();
+            $keyname = $mrechantReference . '_' . $idSalesOrder . '_order.txt';
+            $tempName = $mrechantReference . '_' . $idSalesOrder . '_order.zip';
+            $tempFilePath = realpath(static::EXPORT_ARCHIVE_FILE_PATH) . $tempName;
+            try {
+                // Get the object.
+                $result = $s3->getObject([
+                    'Bucket' => $bucket,
+                    'Key' => $keyname,
+                ]);
+
+                file_put_contents($tempFilePath, $result['Body']);
+            } catch (S3Exception $e) {
+                $this->addErrorMessage('Kassenfile existiert nicht für Bestell-ID' . ' %d', ['%d' => $idSalesOrder]);
+            }
+
+            $this->downloadFile($tempFilePath);
+        }
 
         if ($orderTransfer === null) {
             $this->addErrorMessage('Sales order #%d not found.', ['%d' => $idSalesOrder]);
 
             return $this->redirectResponse(Url::generate('/sales')->build());
+        }
+
+        if ($request->get("isTimeslotsFormSubmit") == true) {
+            $pickupDate = $request->get("pickupDate");
+            $pickupTimeSlot = $request->get("pickupTimeSlot");
+
+            $requestedDeliveryDate = $pickupDate . '_' . $pickupTimeSlot;
+
+            $this->getFacade()->updateRequstedDeliveryDateForOrder($orderTransfer, $requestedDeliveryDate);
+
+            $orderTransfer = $this->getFacade()->findOrderWithPickingSalesOrdersByIdSalesOrder($idSalesOrder);
+            $orderTransfer->setCartNote(json_decode($orderTransfer->getCartNote()));
+
+            $spySalesOrder = new SpySalesOrder();
+            $spySalesOrderAddress = new SpySalesOrderAddress();
+            $spySalesOrder->fromArray($orderTransfer->toArray());
+            $spySalesOrderAddress->fromArray($orderTransfer->getBillingAddress()->toArray());
+
+            $spySalesOrder->setBillingAddress($spySalesOrderAddress);
+
+            $this->getFacade()->checkAndUpdateTimeSlotsCapacity();
+            $this->getFacade()->sendOrderConfirmationMail($spySalesOrder);
         }
 
         $userFacade = $this->getFactory()->getUserFacade();
@@ -48,6 +122,48 @@ class DetailController extends SprykerDetailController
         $orderItemSplitFormCollection = $this->getFactory()->createOrderItemSplitFormCollection($orderTransfer->getItems());
         $events = $this->getFactory()->getOmsFacade()->getDistinctManualEventsByIdSalesOrder($idSalesOrder);
         $blockResponseData = $this->renderSalesDetailBlocks($request, $orderTransfer);
+        $blocksToRenderForCustomer = $this->renderMultipleActions(
+            $request,
+            [
+                'discount' => '/discount/sales/list',
+                'refund' => '/refund/sales/list',
+            ],
+            $orderTransfer
+        );
+
+        $blocksToRenderForCustomer['refund'] = strip_tags($blocksToRenderForCustomer['refund']);
+        $blocksToRenderForCustomer['discount'] = strip_tags($blocksToRenderForCustomer['discount']);
+        $isCurrentUserSupervisor = $this->isCurrentUserSupervisor();
+        $isCurrentUserSupervisorOrAdmin = $this->isCurrentUserSupervisorOrAdmin();
+
+        $buttons = [];
+        foreach ($events as $key => &$event) {
+            if (stripos($event, "return") === 0 || stripos($event, "close") === 0 || stripos($event, "confirm selecting containers") === 0) {
+                unset($events[$key]);
+            } elseif (stripos($event, "cancel") === 0) {
+                if ($isCurrentUserSupervisorOrAdmin) {
+                    array_push($buttons, "Cancel");
+                }
+            } elseif (stripos($event, "Zurücksetzen") === 0) {
+                if (in_array("picked", $distinctOrderStates) == false && in_array("picked, canceled", $distinctOrderStates) == false) {
+                    unset($events[$key]);
+                } else {
+                    if ($isCurrentUserSupervisorOrAdmin) {
+                        array_push($buttons, $event);
+                    }
+                }
+            } else {
+                if (stripos($event, "confirm picking") === 0) {
+                    $event = "Picking bestätigen";
+                    array_push($buttons, $event);
+                } elseif (stripos($event, "confirm collection") === 0) {
+                    $event = "Abholung bestätigen";
+                    array_push($buttons, $event);
+                } else {
+                    array_push($buttons, $event);
+                }
+            }
+        }
 
         if ($blockResponseData instanceof RedirectResponse) {
             return $blockResponseData;
@@ -55,6 +171,16 @@ class DetailController extends SprykerDetailController
 
         $groupedOrderItems = $this->getFacade()
             ->getUniqueItemsFromOrder($orderTransfer);
+
+        $customerTransfer = $orderTransfer->getCustomer();
+        $requestDeliveryDate = $groupedOrderItems[0]->getShipment()->getRequestedDeliveryDate();
+        $address = $groupedOrderItems[0]->getShipment()->getShippingAddress();
+        $shipping = $groupedOrderItems[0]->getShipment();
+        $payments = $orderTransfer->getPayments();
+        $orderState = $groupedOrderItems[0]["state"]["name"];
+        $dateAndTimeSlot = explode('_', $requestDeliveryDate);
+        $deliveryDate = $dateAndTimeSlot[0];
+        $deliveryTimeSlot = $dateAndTimeSlot[1];
 
         $pickZones = [];
         $itemDataArray = [];
@@ -85,12 +211,31 @@ class DetailController extends SprykerDetailController
             }
         }
 
+        $timeSlotsData = self::TIMESLOTS_DATA;
+
+        $pickingZonesForContainers = $this->getPickingZones();
+        $containers = $orderTransfer->getPickingSalesOrderCollection()->getPickingSalesOrders()->getArrayCopy();
+        foreach ($containers as $container) {
+            $idZone = $container->getIdPickingZone();
+            $container["zoneName"] = $pickingZonesForContainers[$idZone];
+        }
+
         return array_merge([
             'eventsGroupedByItem' => $eventsGroupedByItem,
             'events' => $events,
             'eventsGroupedByShipment' => $eventsGroupedByShipment,
             'distinctOrderStates' => $distinctOrderStates,
             'order' => $orderTransfer,
+            'customerTransfer' => $customerTransfer,
+            'shipping' => $shipping,
+            'address' => $address,
+            'payments' => $payments,
+            'isCurrentUserSupervisor' => $isCurrentUserSupervisor,
+            'isCurrentUserSupervisorOrAdmin' => $isCurrentUserSupervisorOrAdmin,
+            'blocksToRenderForCustomer' => $blocksToRenderForCustomer,
+            'requestDeliveryDate' => $requestDeliveryDate,
+            'deliveryDate' => $deliveryDate,
+            'deliveryTimeSlot' => $deliveryTimeSlot,
             'orderItemSplitFormCollection' => $orderItemSplitFormCollection,
             'groupedOrderItems' => $groupedOrderItems,
             'changeStatusRedirectUrl' => $this->createRedirectLink($idSalesOrder),
@@ -98,6 +243,12 @@ class DetailController extends SprykerDetailController
             'itemStatusArray' => $itemStatusArray,
             'itemDataArray' => $itemDataArray,
             'userGroup' => $userGroup,
+            'orderState' => $orderState,
+            'buttons' => $buttons,
+            'pickingZonesForContainers' => $pickingZonesForContainers,
+            'containers' => $containers,
+            'timeSlotsData' => $timeSlotsData,
+            'cellPhone' => $cellPhone,
         ], $blockResponseData);
     }
 
@@ -117,5 +268,153 @@ class DetailController extends SprykerDetailController
         }
 
         return $events;
+    }
+
+    /**
+     * @return bool
+     */
+    protected function isCurrentUserSupervisorOrAdmin(): bool
+    {
+        $userFacade = $this->getFactory()->getUserFacade();
+
+        $idUser = $userFacade->getCurrentUser()->getIdUser();
+        $userGroups = $this->getFactory()->getAclFacade()->getUserGroups($idUser);
+
+        foreach ($userGroups->getGroups() as $group) {
+            if ($group->getName() === AclConstants::SUPERVISOR_GROUP) {
+                return true;
+            } elseif ($group->getName() === AclConstants::ROOT_GROUP) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * @return bool
+     */
+    protected function isCurrentUserSupervisor(): bool
+    {
+        $userFacade = $this->getFactory()->getUserFacade();
+
+        $idUser = $userFacade->getCurrentUser()->getIdUser();
+        $userGroups = $this->getFactory()->getAclFacade()->getUserGroups($idUser);
+
+        foreach ($userGroups->getGroups() as $group) {
+            if ($group->getName() === AclConstants::SUPERVISOR_GROUP) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * @return array
+     */
+    private function getPickingZones(): array
+    {
+        $qry = $this->getFactory()->getPickingZoneQuery();
+        $zones = $qry->find();
+
+        $pickingZones = [];
+        foreach ($zones as $zone) {
+            $pickingZones[$zone->getIdPickingZone()] = $zone->getName();
+        }
+
+        return $pickingZones;
+    }
+
+    /**
+     * @param \Symfony\Component\HttpFoundation\Request $request
+     *
+     * @return \Symfony\Component\HttpFoundation\JsonResponse
+     */
+    public function setJsonContainerToZoneAction(Request $request)
+    {
+        $error = false;
+        if (isset($_GET['containerID'])) {
+            $containerID = $request->query->get("containerID");
+            $checkContainer = $this->getFactory()->checkUsedContainer($containerID);
+
+            if ($checkContainer === true) {
+                $error = true;
+            } else {
+                if (isset($_GET['idSalesOrder']) && isset($_GET['idZone'])) {
+                    $this->getFactory()->setZoneContainerShelf($_GET['idSalesOrder'], $_GET['idZone'], $_GET['containerID'], '');
+                }
+            }
+        } else {
+            $error = true;
+        }
+
+        $responseArray = [
+            'error' => $error,
+        ];
+
+        return new JsonResponse($responseArray);
+    }
+
+    /**
+     * @return \Aws\S3\S3Client
+     */
+    protected function getS3Client(): S3Client
+    {
+        $credentials = Config::get(S3Constants::S3_CONSTANTS_CASHIER_FILE);
+        $key = '';
+        $secret = '';
+        if (isset($credentials[static::LOCAL_AWS_CONFIG_CREDENTIALS][static::LOCAL_AWS_CONFIG_CREDENTIALS_KEY])) {
+            $key = $credentials[static::LOCAL_AWS_CONFIG_CREDENTIALS][static::LOCAL_AWS_CONFIG_CREDENTIALS_KEY];
+        }
+
+        if (isset($credentials[static::LOCAL_AWS_CONFIG_CREDENTIALS][static::LOCAL_AWS_CONFIG_CREDENTIALS_SECRET])) {
+            $secret = $credentials[static::LOCAL_AWS_CONFIG_CREDENTIALS][static::LOCAL_AWS_CONFIG_CREDENTIALS_SECRET];
+        }
+
+        return new S3Client([
+            'region' => 'eu-central-1',
+            'version' => 'latest',
+            'credentials' => [
+                'key' => $key,
+                'secret' => $secret,
+            ],
+        ]);
+    }
+
+    /**
+     * @return string
+     */
+    protected function getS3Bucket(): string
+    {
+        return Config::get(S3Constants::S3_CASHIER_FILE_BUCKETS);
+    }
+
+    /**
+     * @param string $fileLink
+     *
+     * @return void
+     */
+    protected function downloadFile(string $fileLink)
+    {
+        try {
+            if (file_exists($fileLink)) {
+                header('Content-Description: File Transfer');
+                header('Content-Type: application/octet-stream');
+                header('Content-Disposition: attachment; filename=' . basename($fileLink));
+                header('Expires: 0');
+                header('Cache-Control: must-revalidate');
+                header('Pragma: public');
+                header('Content-Length: ' . filesize($fileLink));
+                ob_clean();
+                flush();
+                readfile($fileLink);
+
+                unlink($fileLink);
+                exit;
+            }
+        } catch (Exception $exception) {
+            $this->addErrorMessage($exception->getMessage());
+        }
     }
 }

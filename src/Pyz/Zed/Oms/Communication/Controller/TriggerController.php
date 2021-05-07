@@ -12,7 +12,7 @@ use Symfony\Component\HttpFoundation\Request;
 
 /**
  * @method \Spryker\Zed\Oms\Business\OmsFacadeInterface getFacade()
- * @method \Spryker\Zed\Oms\Persistence\OmsQueryContainerInterface getQueryContainer()
+ * @method \Pyz\Zed\Oms\Persistence\OmsQueryContainerInterface getQueryContainer()
  * @method \Spryker\Zed\Oms\Communication\OmsCommunicationFactory getFactory()
  * @method \Spryker\Zed\Oms\Persistence\OmsRepositoryInterface getRepository()
  */
@@ -42,6 +42,13 @@ class TriggerController extends SpyTriggerController
         $idOrder = $this->castId($request->query->getInt(static::REQUEST_PARAMETER_ID_SALES_ORDER));
         $pickingZoneName = $request->query->get(static::REQUEST_PARAMETER_PICKING_ZONE);
         $event = $request->query->get(static::REQUEST_PARAMETER_EVENT);
+
+        if ($event == "Abholung bestätigen") {
+            $event = "confirm collection";
+        } elseif ($event == "Picking bestätigen") {
+            $event = "confirm picking";
+        }
+
         $redirect = $request->query->get(static::REQUEST_PARAMETER_REDIRECT, '/');
         $itemsList = $request->query->get(static::REQUEST_PARAMETER_ITEMS);
 
@@ -53,6 +60,12 @@ class TriggerController extends SpyTriggerController
         }
 
         $this->getFacade()->triggerEvent($event, $orderItems, []);
+        foreach ($orderItems as $orderItem) {
+            if ($orderItem->getItemPaused()) {
+                $this->getQueryContainer()
+                    ->updateSalesOrderItemPausedStatus($orderItem->getIdSalesOrderItem());
+            }
+        }
         $this->addInfoMessage(static::MESSAGE_STATUS_CHANGED_SUCCESSFULLY);
 
         return $this->redirectResponse($redirect);

@@ -14,10 +14,12 @@ use Pyz\Zed\Console\Communication\Plugin\ConsoleLogPlugin;
 use Pyz\Zed\DatabaseLoad\Communication\Console\DatabaseLoadTestConsole;
 use Pyz\Zed\DataImport\Communication\Console\DataImportConsole;
 use Pyz\Zed\DataImport\Communication\Console\DataImportFileManagerConsole;
+use Pyz\Zed\DataImport\Communication\Console\DataImportImagesFileManagerConsole;
 use Pyz\Zed\DataImport\DataImportConfig;
 use Pyz\Zed\Development\Communication\Console\AcceptanceCodeTestConsole;
 use Pyz\Zed\Development\Communication\Console\ApiCodeTestConsole;
 use Pyz\Zed\Development\Communication\Console\FunctionalCodeTestConsole;
+use Pyz\Zed\ImageImportToS3\Communication\Console\ImageImportToS3Console;
 use Pyz\Zed\Installer\Communication\Console\PerStoreInstallerConsole;
 use Pyz\Zed\Maintenance\Communication\Console\MaintenanceDisableConsole;
 use Pyz\Zed\Maintenance\Communication\Console\MaintenanceEnableConsole;
@@ -27,6 +29,7 @@ use Pyz\Zed\PriceProductScheduleDataImport\PriceProductScheduleDataImportConfig;
 use Pyz\Zed\ProductQuantityDataImport\ProductQuantityDataImportConfig;
 use Pyz\Zed\RabbitMq\Communication\Console\InitVirtualHostConsole;
 use Pyz\Zed\RabbitMq\Communication\Console\RemoveVirtualHostConsole;
+use Pyz\Zed\SalesOrderSummaryExport\Communication\Console\ProductfeedDeeplinksConsole;
 use Pyz\Zed\SalesOrderSummaryExport\Communication\Console\SalesOrderSummaryExportConsole;
 use Pyz\Zed\SalesOrderThresholdDataImport\SalesOrderThresholdDataImportConfig;
 use Pyz\Zed\Sitemap\Communication\Console\SitemapConsole;
@@ -327,11 +330,14 @@ class ConsoleDependencyProvider extends SprykerConsoleDependencyProvider
             new RemoveVirtualHostConsole(),
             new DirectoryCacheCleanerConsole(),
             new DataImportFileManagerConsole(),
+            new DataImportImagesFileManagerConsole(),
 
             new AclInstallConsole(),
             new TimeSlotCheckerConsole(),
             new SitemapConsole(),
             new SalesOrderSummaryExportConsole(),
+            new ImageImportToS3Console(),
+            new ProductfeedDeeplinksConsole(),
         ];
 
         $propelCommands = $container->getLocator()->propel()->facade()->getConsoleCommands();

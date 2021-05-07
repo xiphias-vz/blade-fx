@@ -104,9 +104,12 @@ class ProductAbstractWriterStep extends PublishAwareStep implements DataImportSt
 
         $locales = Store::getInstance()->getLocales();
         $this->importProductUrls($dataSet, $productAbstractEntity, $locales);
-        $this->importProductImage($dataSet, $locales);
+        $productImageSetEntities = $this->importProductImage($dataSet, $locales);
 
         $this->addPublishEvents(ProductEvents::PRODUCT_ABSTRACT_PUBLISH, $productAbstractEntity->getIdProductAbstract());
+        foreach ($productImageSetEntities as $productImageSetEntity) {
+            $this->addImagePublishEvents($productImageSetEntity);
+        }
     }
 
     /**
@@ -124,7 +127,7 @@ class ProductAbstractWriterStep extends PublishAwareStep implements DataImportSt
      *
      * @return \Orm\Zed\Product\Persistence\SpyProductAbstract
      */
-    protected function importProductAbstract(DataSetInterface $dataSet)
+    protected function importProductAbstract(DataSetInterface $dataSet): SpyProductAbstract
     {
         $productAbstractEntity = SpyProductAbstractQuery::create()
             ->filterBySku(static::getAbstractSku($dataSet))
@@ -234,12 +237,13 @@ class ProductAbstractWriterStep extends PublishAwareStep implements DataImportSt
 
     /**
      * @param \Spryker\Zed\DataImport\Business\Model\DataSet\DataSetInterface $dataSet
-     * @param string[] $locales
+     * @param array $locales
      *
-     * @return void
+     * @return array
      */
-    protected function importProductImage(DataSetInterface $dataSet, array $locales)
+    protected function importProductImage(DataSetInterface $dataSet, array $locales): array
     {
+        $productImageSetEntities = [];
         foreach ($locales as $localeKey => $localeName) {
             $productImageSetEntity = $this->findOrCreateImageSet($dataSet, $localeName);
             SpyProductImageSetToProductImageQuery::create()->findByFkProductImageSet($productImageSetEntity->getIdProductImageSet())->delete();
@@ -249,9 +253,10 @@ class ProductAbstractWriterStep extends PublishAwareStep implements DataImportSt
                 $productImageEntity = $this->findOrCreateImage($imageUrl);
                 $this->updateOrCreateImageToImageSetRelation($productImageSetEntity, $productImageEntity, $key);
             }
-
-            $this->addImagePublishEvents($productImageSetEntity);
+            array_push($productImageSetEntities, $productImageSetEntity);
         }
+
+        return $productImageSetEntities;
     }
 
     /**
@@ -272,8 +277,6 @@ class ProductAbstractWriterStep extends PublishAwareStep implements DataImportSt
         $productImageSetEntity = $query->findOneOrCreate();
         if ($productImageSetEntity->isNew() || $productImageSetEntity->isModified()) {
             $productImageSetEntity->save();
-
-            $this->addImagePublishEvents($productImageSetEntity);
         }
 
         return $productImageSetEntity;
@@ -333,7 +336,6 @@ class ProductAbstractWriterStep extends PublishAwareStep implements DataImportSt
     {
         if ($productImageSetEntity->getFkProductAbstract()) {
             $this->addPublishEvents(ProductImageEvents::PRODUCT_IMAGE_PRODUCT_ABSTRACT_PUBLISH, $productImageSetEntity->getFkProductAbstract());
-            $this->addPublishEvents(ProductEvents::PRODUCT_ABSTRACT_PUBLISH, $productImageSetEntity->getFkProductAbstract());
         } elseif ($productImageSetEntity->getFkProduct()) {
             $this->addPublishEvents(ProductImageEvents::PRODUCT_IMAGE_PRODUCT_CONCRETE_PUBLISH, $productImageSetEntity->getFkProduct());
         }

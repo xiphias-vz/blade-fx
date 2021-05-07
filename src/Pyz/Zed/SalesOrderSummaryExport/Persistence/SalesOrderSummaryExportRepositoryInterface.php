@@ -15,4 +15,9 @@ interface SalesOrderSummaryExportRepositoryInterface
      * @return \Generated\Shared\Transfer\FileSystemContentTransfer
      */
     public function getCustomOrderItemData(): FileSystemContentTransfer;
+
+    /**
+     * @return \Generated\Shared\Transfer\FileSystemContentTransfer
+     */
+    public function getProductsDeeplink(): FileSystemContentTransfer;
 }

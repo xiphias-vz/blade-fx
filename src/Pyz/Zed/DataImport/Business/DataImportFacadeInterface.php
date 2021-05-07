@@ -20,4 +20,9 @@ interface DataImportFacadeInterface extends SprykerDataImportFacadeInterface
      * @return void
      */
     public function downloadDataImportFiles(): void;
+
+    /**
+     * @return void
+     */
+    public function downloadImagesDataImportFiles(): void;
 }

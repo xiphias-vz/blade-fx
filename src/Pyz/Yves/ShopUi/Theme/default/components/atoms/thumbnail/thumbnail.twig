@@ -1,9 +1,15 @@
 {% extends atom('thumbnail', '@SprykerShop:ShopUi') %}
 
+{% define data = {
+    imageWithoutThumb: '',
+} %}
+
 {% block body %}
-    {% set defaultImage = publicPath("/images/kein_bild_vorhanden.png") %}
+    {% set defaultUrl = publicPath("/images/kein_bild_vorhanden.png") %}
     {% set imageExtraClasses = '' %}
     {% block image %}
-        <img onerror="this.src = '{{ defaultImage }}'" class="{{ component.renderClass(config.name ~ '__image', modifiers) }} {{ imageExtraClasses }}" {{ component.renderAttributes(attributes) }}>
+        <img onerror="if(this.src.includes('thumb_')){let nonThumbImageFromStorage = this.getAttribute('data-storage');this.src = nonThumbImageFromStorage;this.setAttribute('data-src', nonThumbImageFromStorage);}else{this.src = '{{ defaultUrl }}';this.setAttribute('data-src', '{{ defaultUrl }}');}"
+             class="{{ component.renderClass(config.name ~ '__image', modifiers) }} {{ imageExtraClasses }}" data-src="{{ data.imageWithoutThumb }}" data-storage="{{ data.imageWithoutThumb }}" {{ component.renderAttributes(attributes) }}>
     {% endblock %}
+
 {% endblock %}
