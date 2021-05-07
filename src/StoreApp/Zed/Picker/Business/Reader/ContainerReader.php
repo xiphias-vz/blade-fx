@@ -12,7 +12,6 @@ use Generated\Shared\Transfer\PickingSalesOrderCriteriaTransfer;
 use Generated\Shared\Transfer\PickingSalesOrderTransfer;
 use Orm\Zed\PickingSalesOrder\Persistence\PyzPickingSalesOrderQuery;
 use Orm\Zed\Sales\Persistence\Map\SpySalesOrderTableMap;
-use Pyz\Shared\Oms\OmsConfig;
 use Spryker\Zed\Sales\Business\SalesFacadeInterface;
 use StoreApp\Zed\Picker\Business\PickerBusinessFactory;
 
@@ -134,19 +133,25 @@ class ContainerReader implements ContainerReaderInterface
      */
     public function getUsedContainers(): array
     {
+        $merchantRef = $this->factory->getUserFacade()->getCurrentUser()->getMerchantReference();
+
         return $this->pyzPickingSalesOrderQuery
             ->joinSpySalesOrder()
             ->withColumn(SpySalesOrderTableMap::COL_ORDER_REFERENCE, 'orderReference')
             ->withColumn(SpySalesOrderTableMap::COL_FIRST_NAME, 'firstName')
             ->withColumn(SpySalesOrderTableMap::COL_LAST_NAME, 'lastName')
-            ->where(SpySalesOrderTableMap::COL_INVOICE_REFERENCE . " is null
-                and (select count(*)
-                from spy_sales_order_item ssoi
-                inner join spy_oms_order_item_state soois on ssoi.fk_oms_order_item_state = soois.id_oms_order_item_state
-                where ssoi.fk_sales_order = spy_sales_order.id_sales_order
-                group by ssoi.fk_sales_order
-                having count(*) > sum(case when soois.name = '" . OmsConfig::STATE_CANCELLED . "' then 1 else 0 end)
-                ) > 0")
+            ->where("(spy_sales_order.invoice_reference is null or spy_sales_order.is_cashier_export_success  = 0)
+            	and spy_sales_order.merchant_filial_number = '" . $merchantRef . "'
+	            and datediff(now(), spy_sales_order.created_at) < 30
+                and
+                    (
+                    select count(*)
+                    from spy_sales_order_item ssoi
+                        inner join spy_oms_order_item_state soois on ssoi.fk_oms_order_item_state = soois.id_oms_order_item_state
+                    where ssoi.fk_sales_order = spy_sales_order.id_sales_order
+                    group by ssoi.fk_sales_order
+                    having count(*) > sum(case when soois.name = 'cancelled' then 1 else 0 end)
+                    ) > 0")
             ->find()
             ->toArray();
     }
