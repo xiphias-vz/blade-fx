@@ -14,4 +14,49 @@
             background: $setting-color-gray-2;
         }
     }
+
+    &__button-search-cart{
+        background-color: white;
+        padding-left:15px;
+        padding-right:0px;
+        padding-top:7px;
+        padding-bottom:7px;
+        margin-top:20px;
+        margin-right:10px;
+        float: right;
+
+        &:hover {
+            cursor: pointer;
+            text-decoration: none;
+            border-radius: 25px;
+            padding-left:18px;
+            padding-right:3px;
+            padding-top:10px;
+            padding-bottom:10px;
+            background: $setting-color-gray-2;
+        }
+    }
+
+    .suggested-product-link{
+    float:left;
+    width:85%;
+    padding-bottom:7px;
+    padding-top:10px;
+
+        @include helper-breakpoint-media-max($sm-max)  {
+            width:80%;
+        }
+    }
+
+    .suggestion-product-slot{
+        border-bottom: 1px solid #dedddd;
+    }
+
+    .search-suggestion-supplier{
+        font-size:12px;
+    }
+
+
+
 }
+

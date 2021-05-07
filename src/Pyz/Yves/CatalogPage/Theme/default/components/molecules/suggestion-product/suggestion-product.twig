@@ -1,39 +1,60 @@
 {% extends molecule('suggestion-product', '@SprykerShop:CatalogPage') %}
 
+{% set addAjaxUrl = path("cart/add-ajax", { "productAbstractId": data.product.id_product_abstract  }) %}
+
 {% block body %}
-    <a class="{{ config.name }}__link grid grid--middle grid--no-wrap js-suggest-search__item--navigable js-suggest-search__product-item--navigable"  href="{{ data.url }}">
-        <span class="col">
-            {% if data.image %}
-                {% set firstImage = data.product.images | first %}
-                {% if firstImage.external_url_small is not empty %}
-                    {% set splitUrl = firstImage.external_url_small | split('.com/') %}
-                    {% set insertInTheMiddle = '.com/thumb_' %}
-                    {% set newThumbUrl = splitUrl[0] ~ insertInTheMiddle ~ splitUrl[1] %}
+<div class="suggestion-product-slot" >
+    <div class="suggested-product-link" >
+
+        <a class="{{ config.name }}__link grid grid--middle grid--no-wrap js-suggest-search__item--navigable js-suggest-search__product-item--navigable"  href="{{ data.url }}">
+            <span class="col">
+                {% if data.image %}
+                    {% include atom('thumbnail') with {
+                        modifiers: ['catalog', 'with-overlay'],
+                        attributes: {
+                            alt: data.alt,
+                            src: data.image.external_url_small,
+                            title: data.title,
+                        },
+                    } only %}
                 {% endif %}
-                {% include atom('thumbnail') with {
-                    modifiers: ['catalog', 'with-overlay'],
+           </span>
+
+            <span class="col col--expand col--lg-9 title title--medium">
+                <span class="search-suggestion-supplier">{{ data.product.supplier }},  </span>
+                {{- data.title -}}
+                {% include molecule('money-price') with {
+                    modifiers: ['suggestion-product'],
                     data: {
-                        imageWithoutThumb: firstImage.external_url_small,
-                    },
-                    attributes: {
-                        alt: data.alt,
-                        src: newThumbUrl,
-                        title: data.title,
+                        amount: data.price,
+                        originalAmount: data.originalPrice ?? null,
                     },
                 } only %}
-            {% endif %}
+           </span>
+        </a>
 
-       </span>
+    </div>
 
-        <span class="col col--expand col--lg-9 title title--medium">
-            {{- data.title -}}
-            {% include molecule('money-price') with {
-                modifiers: ['suggestion-product'],
+    <div>
+        <button type="button" class="{{ config.name }}__button-search-cart" onclick="submitToCartButton(
+            '{{ data.product.id_product_abstract }}',
+            '{{ data.product.abstract_sku }}',
+            '{{ data.product.abstract_name }}',
+            '{{ data.product.price }}',
+            '{{ addAjaxUrl }}'
+            )">{% include atom('icon') with {
+                class: 'link__icon link__icon--xxl-with-text icon--color-orange',
+                modifiers: ['big'],
                 data: {
-                    amount: data.price,
-                    originalAmount: data.originalPrice ?? null,
+                    name: 'cart',
                 },
-            } only %}
-       </span>
-    </a>
+            } only %}</button>
+
+        {% include molecule('ajax-add-to-cart') %}
+    </div>
+
+    <div style="clear: both"></div>
+
+</div>
 {% endblock %}
+

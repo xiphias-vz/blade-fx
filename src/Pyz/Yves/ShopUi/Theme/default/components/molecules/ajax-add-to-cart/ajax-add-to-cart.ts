@@ -1,6 +1,5 @@
 import Component from 'ShopUi/models/component';
 import FlashMessage from 'ShopUi/components/molecules/flash-message/flash-message';
-
 const HIDDEN_CLASS = 'is-hidden';
 
 export default class AjaxAddToCart extends Component {
@@ -15,11 +14,9 @@ export default class AjaxAddToCart extends Component {
 
     protected readyCallback(): void {
         this.links = <HTMLLinkElement[]>Array.from(document.getElementsByClassName(this.addToCartLinkClass));
-
         if (!this.links.length) {
             return;
         }
-
         this.icon = <HTMLElement>document.getElementsByClassName(this.iconClass)[0];
         this.cartBlock = <HTMLElement>document.getElementsByClassName(this.cartClass)[0];
         this.amount = <HTMLElement[]>Array.from(document.getElementsByClassName(this.amountClass));
@@ -41,7 +38,6 @@ export default class AjaxAddToCart extends Component {
 
     protected linkClickHandler(event: Event, link: HTMLLinkElement): void {
         event.preventDefault();
-
         this.sendRequest(link.href, link);
     }
 

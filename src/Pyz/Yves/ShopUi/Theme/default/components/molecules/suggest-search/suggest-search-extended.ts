@@ -5,6 +5,7 @@ export default class SuggestSearchExtended extends SuggestSearch {
     clearButton: HTMLElement;
     triggers: HTMLElement[];
     target: HTMLElement;
+    searchCartButton: HTMLInputElement;
 
     protected init() {
         this.wrap = <HTMLElement> document.getElementsByClassName(this.wrapClassName)[0];
@@ -13,6 +14,7 @@ export default class SuggestSearchExtended extends SuggestSearch {
         this.target = <HTMLElement> document.getElementsByClassName(`${this.jsName}--target`)[0];
         super.init();
         this.toggleClearButton(!this.searchInput.value);
+        this.searchCartButton = <HTMLInputElement> document.getElementById('is-cart-button-clicked');
     }
 
     protected mapEvents(): void {
@@ -61,6 +63,13 @@ export default class SuggestSearchExtended extends SuggestSearch {
         super.hideSugestions();
         this.wrap.classList.remove(this.wrapActiveClassName);
         this.hintInput.classList.remove(`${this.name}__hint--active`);
+    }
+
+    protected onInputFocusOut(): void {
+        if (this.searchCartButton.value === 'y'){
+        } else{
+            this.hideSugestions();
+        }
     }
 
     protected clearSearchField(): void {
