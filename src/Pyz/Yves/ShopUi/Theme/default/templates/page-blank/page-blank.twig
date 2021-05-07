@@ -8,7 +8,8 @@
     metaKeywords: '',
     markt: app.store,
     googleTagMangerId: app.googleTagManagerId,
-    cookieBotId: app.domainGroupId
+    cookieBotId: app.domainGroupId,
+    currentCookieStore: app.currentStoreCookie,
 } %}
 
 {% block template %}
@@ -16,12 +17,18 @@
     <html lang="{{ data.locale }}">
     <head>
         <script id="Cookiebot" src="https://consent.cookiebot.com/uc.js" data-cbid="{{ data.cookieBotId }}" type="text/javascript" async></script>
+        {% if data.currentCookieStore == '' %}
+            {% set market = 'NO_STORE' %}
+        {% else %}
+            {% set market = data.markt %}
+        {% endif %}
+
         {% if is_granted('IS_AUTHENTICATED_FULLY') %}
             <script>
                 window.dataLayer = window.dataLayer || [];
                 window.dataLayer.push({
                     'isloggedin': 'true',
-                    'markt': '{{ data.markt }}'
+                    'markt': '{{ market }}'
                 });
             </script>
         {% else %}
@@ -29,7 +36,7 @@
                 window.dataLayer = window.dataLayer || [];
                 window.dataLayer.push({
                     'isloggedin': 'false',
-                    'markt': '{{ data.markt }}'
+                    'markt': '{{ market }}'
                 });
             </script>
         {% endif %}
