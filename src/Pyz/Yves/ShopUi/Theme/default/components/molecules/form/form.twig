@@ -111,4 +111,15 @@
     {% if data.enableEnd %}
         {{ form_end(data.form) }}
     {% endif %}
+    <script>
+        window.addEventListener('DOMContentLoaded', () => {
+            let summaryForm = document.querySelector('form[name=summaryForm]');
+            if(summaryForm !== null) {
+                summaryForm.addEventListener('submit', () => {
+                    let submitButton = summaryForm.querySelector('button');
+                    submitButton.disabled = true;
+                })
+            }
+        })
+    </script>
 {% endblock %}
