@@ -427,16 +427,19 @@ class DataImportConfig extends SprykerDataImportConfig
             '/^4\.globus_article_prices\.metzgerei\.[0-9]+_1031/' => '4.globus_article_prices.metzgerei.1031.csv',
             '/^4\.globus_article_prices\.metzgerei\.[0-9]+_1042/' => '4.globus_article_prices.metzgerei.1042.csv',
             '/^4\.globus_article_prices\.metzgerei\.[0-9]+_1057/' => '4.globus_article_prices.metzgerei.1057.csv',
+            '/^4\.globus_article_prices\.metzgerei\.[0-9]+_1021/' => '4.globus_article_prices.metzgerei.1021.csv',
 
             '/^5\.globus_article_instock\.metzgerei\.[0-9]+_1004/' => '5.globus_article_instock.metzgerei.1004.csv',
             '/^5\.globus_article_instock\.metzgerei\.[0-9]+_1031/' => '5.globus_article_instock.metzgerei.1031.csv',
             '/^5\.globus_article_instock\.metzgerei\.[0-9]+_1042/' => '5.globus_article_instock.metzgerei.1042.csv',
             '/^5\.globus_article_instock\.metzgerei\.[0-9]+_1057/' => '5.globus_article_instock.metzgerei.1057.csv',
+            '/^5\.globus_article_instock\.metzgerei\.[0-9]+_1021/' => '5.globus_article_instock.metzgerei.1021.csv',
 
             '/^5\.globus_article_instock\.NOS\.[0-9]+_1004/' => '5.globus_article_instock.NOS.1004.csv',
             '/^5\.globus_article_instock\.NOS\.[0-9]+_1031/' => '5.globus_article_instock.NOS.1031.csv',
             '/^5\.globus_article_instock\.NOS\.[0-9]+_1042/' => '5.globus_article_instock.NOS.1042.csv',
             '/^5\.globus_article_instock\.NOS\.[0-9]+_1057/' => '5.globus_article_instock.NOS.1057.csv',
+            '/^5\.globus_article_instock\.NOS\.[0-9]+_1021/' => '5.globus_article_instock.NOS.1021.csv',
 
             '/^1\.globus_categories\.[0-9]+/' => '1.globus_categories.csv',
             '/^1\.globus_time_slot/' => '1.globus_time_slot.csv',
@@ -447,11 +450,14 @@ class DataImportConfig extends SprykerDataImportConfig
             '/^5\.globus_article_instock\.[0-9]+_1031/' => '5.globus_article_instock.1031.csv',
             '/^5\.globus_article_instock\.[0-9]+_1042/' => '5.globus_article_instock.1042.csv',
             '/^5\.globus_article_instock\.[0-9]+_1057/' => '5.globus_article_instock.1057.csv',
+            '/^5\.globus_article_instock\.[0-9]+_1021/' => '5.globus_article_instock.1021.csv',
 
             '/^4\.globus_article_prices\.[0-9]+_1004/' => '4.globus_article_prices.1004.csv',
             '/^4\.globus_article_prices\.[0-9]+_1031/' => '4.globus_article_prices.1031.csv',
             '/^4\.globus_article_prices\.[0-9]+_1042/' => '4.globus_article_prices.1042.csv',
             '/^4\.globus_article_prices\.[0-9]+_1057/' => '4.globus_article_prices.1057.csv',
+            '/^4\.globus_article_prices\.[0-9]+_1021/' => '4.globus_article_prices.1021.csv',
+
         ];
     }
 

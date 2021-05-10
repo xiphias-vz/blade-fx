@@ -149,6 +149,9 @@ sections:
         import-product-location-1004:
             command: "vendor/bin/console data:import product-location -f spryker/90.globus_article_location.04_1004.csv"
 
+        import-product-location-1021:
+            command: "vendor/bin/console data:import product-location -f spryker/90.globus_article_location.01_1021.csv"
+
         import-product-location-1031:
             command: "vendor/bin/console data:import product-location -f spryker/90.globus_article_location.03_1031.csv"
 

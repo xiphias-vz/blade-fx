@@ -110,6 +110,16 @@ regions:
                         namespace: had_search
                     session:
                         namespace: 8
+            ISS:
+                services:
+                    broker:
+                        namespace: iss_queue
+                    key_value_store:
+                        namespace: 9
+                    search:
+                        namespace: iss_search
+                    session:
+                        namespace: 10
 
 groups:
     DE-1:
@@ -144,6 +154,9 @@ groups:
                     zed.had.shop.globus.local:
                         store: HAD
                         primal: true
+                    zed.iss.shop.globus.local:
+                        store: ISS
+                        primal: true
 
                     filial-app.ein.shop.globus.local:
                         store: EIN
@@ -156,6 +169,9 @@ groups:
                         entry-point: StoreApp
                     filial-app.had.shop.globus.local:
                         store: HAD
+                        entry-point: StoreApp
+                    filial-app.iss.shop.globus.local:
+                        store: ISS
                         entry-point: StoreApp
 
 services:
@@ -177,6 +193,7 @@ services:
             queue.globus.local:
             localhost:5672:
                 protocol: tcp
+
     session:
         engine: redis
     key_value_store:

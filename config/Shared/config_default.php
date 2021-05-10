@@ -836,6 +836,7 @@ $config[StoreConstants::SAP_STORE_ID_TO_STORE_MAP] = [
     1031 => 'KMD',
     1042 => 'LPZ',
     1057 => 'HAD',
+    1021 => 'ISS',
 ];
 
 // ----------- Stores
@@ -844,6 +845,7 @@ $config[StoreConstants::STORE_NAMES] = [
     'KMD' => 'Köln',
     'LPZ' => 'Leipzig',
     'HAD' => 'Halle',
+    'ISS' => 'Isserstedt',
 ];
 
 // ----------- Google Tag Manager
