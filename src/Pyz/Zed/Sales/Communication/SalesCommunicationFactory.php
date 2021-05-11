@@ -18,6 +18,7 @@ use Pyz\Zed\PickingZone\Business\PickingZoneFacadeInterface;
 use Pyz\Zed\Sales\Communication\Table\OrdersTable;
 use Pyz\Zed\Sales\Communication\Table\OrdersTableQueryBuilder;
 use Pyz\Zed\Sales\SalesDependencyProvider;
+use Pyz\Zed\TimeSlot\Business\TimeSlotFacadeInterface;
 use Spryker\Zed\Acl\Business\AclFacadeInterface;
 use Spryker\Zed\Sales\Communication\SalesCommunicationFactory as SprykerSalesCommunicationFactory;
 use Spryker\Zed\Sales\SalesDependencyProvider as SprykerSalesDependencyProvider;
@@ -150,5 +151,13 @@ class SalesCommunicationFactory extends SprykerSalesCommunicationFactory
         }
 
         return $containerEntity;
+    }
+
+    /**
+     * @return \Pyz\Zed\TimeSlot\Business\TimeSlotFacadeInterface
+     */
+    public function getTimeSlotsFacade(): TimeSlotFacadeInterface
+    {
+        return $this->getProvidedDependency(SalesDependencyProvider::FACADE_TIME_SLOTS_ORDER_OVERVIEW);
     }
 }

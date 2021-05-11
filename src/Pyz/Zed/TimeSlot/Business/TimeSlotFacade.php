@@ -73,4 +73,27 @@ class TimeSlotFacade extends AbstractFacade implements TimeSlotFacadeInterface
 
         return $this->getFactory()->createTimeSlotReader()->getTimeSlotsForSpecificDay($currentStore, "26-03-2021");
     }
+
+    /**
+     * @param string $store
+     *
+     * @return array
+     */
+    public function getTimeSlotsFilteredByStore(string $store): array
+    {
+        return $this->getFactory()->createTimeSlotReader()->getTimeSlotsFilteredByStore($store);
+    }
+
+    /**
+     * @param string $store
+     * @param string $day
+     * @param string $time
+     * @param string $capacity
+     *
+     * @return int
+     */
+    public function setTimeSlotsForSelectedStore(string $store, string $day, string $time, string $capacity): int
+    {
+        return $this->getFactory()->createTimeSlotWriter()->saveTimeSlotsDataForStore($store, $day, $time, $capacity);
+    }
 }

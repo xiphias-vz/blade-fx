@@ -17,4 +17,14 @@ interface TimeSlotWriterInterface
      * @return void
      */
     public function updateTimeSlotByQuote(QuoteTransfer $quoteTransfer): void;
+
+    /**
+     * @param string $store
+     * @param string $day
+     * @param string $time
+     * @param string $capacity
+     *
+     * @return int
+     */
+    public function saveTimeSlotsDataForStore(string $store, string $day, string $time, string $capacity): int;
 }

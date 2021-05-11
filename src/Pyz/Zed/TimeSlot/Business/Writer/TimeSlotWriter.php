@@ -10,6 +10,8 @@ namespace Pyz\Zed\TimeSlot\Business\Writer;
 use Generated\Shared\Transfer\OrderCriteriaFilterTransfer;
 use Generated\Shared\Transfer\QuoteTransfer;
 use Generated\Shared\Transfer\SynchronizationDataTransfer;
+use Orm\Zed\TimeSlot\Persistence\Map\PyzTimeSlotTableMap;
+use Orm\Zed\TimeSlot\Persistence\PyzTimeSlotQuery;
 use Pyz\Service\TimeSlotStorage\TimeSlotStorageServiceInterface;
 use Pyz\Zed\Sales\Business\SalesFacadeInterface;
 use Spryker\Client\Storage\StorageClientInterface;
@@ -114,5 +116,28 @@ class TimeSlotWriter implements TimeSlotWriterInterface
         return $this->synchronizationService
             ->getStorageKeyBuilder($timeSlotStorageKey)
             ->generateKey($synchronizationDataTransfer);
+    }
+
+    /**
+     * @param string $store
+     * @param string $day
+     * @param string $time
+     * @param string $capacity
+     *
+     * @return int
+     */
+    public function saveTimeSlotsDataForStore(string $store, string $day, string $time, string $capacity): int
+    {
+        $query = new PyzTimeSlotQuery();
+
+        $result = $query->filterByMerchantReference_Like($store)
+            ->filterByDay_Like($day)
+            ->filterByTimeSlot_Like($time)
+            ->where(PyzTimeSlotTableMap::COL_DATE . ' is null or ' . PyzTimeSlotTableMap::COL_DATE . ' = ""')
+            ->findOne()
+            ->setCapacity($capacity)
+            ->save();
+
+        return $result;
     }
 }

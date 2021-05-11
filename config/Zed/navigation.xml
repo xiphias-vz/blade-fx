@@ -35,6 +35,14 @@
         <icon>fa-file-text-o</icon>
         <pages>
             <merchant/>
+            <capacity>
+                <label>Capacities</label>
+                <title>Capacities</title>
+                <bundle>sales</bundle>
+                <controller>index</controller>
+                <action>capacities</action>
+                <visible>1</visible>
+            </capacity>
         </pages>
     </merchant-gui>
     <sales-document/>

@@ -62,4 +62,21 @@ interface TimeSlotFacadeInterface
      * @return \Generated\Shared\Transfer\WeekDayTimeSlotsTransfer
      */
     public function getTimeSlotsForSpecificDate(): WeekDayTimeSlotsTransfer;
+
+    /**
+     * @param string $store
+     *
+     * @return array
+     */
+    public function getTimeSlotsFilteredByStore(string $store): array;
+
+    /**
+     * @param string $store
+     * @param string $day
+     * @param string $time
+     * @param string $capacity
+     *
+     * @return int
+     */
+    public function setTimeSlotsForSelectedStore(string $store, string $day, string $time, string $capacity): int;
 }

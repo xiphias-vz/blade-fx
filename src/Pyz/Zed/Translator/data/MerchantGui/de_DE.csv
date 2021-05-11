@@ -10,6 +10,7 @@
 "Merchant with id %s doesn't exists.","Filialen mit der ID %s existiert nicht."
 "Overview of Merchants","Übersicht der Filialen"
 Save,Speichern
+Cancel,Abbrechen
 approved,Genehmigt
 denied,Verweigert
 approved_button,"Zugang gewähren"
@@ -30,3 +31,7 @@ Merchants,Filialen
 Email,E-Mail-Addresse
 Merchant Reference,Filialen Referenz
 Merchants Management,Filialverwaltung
+Capacities,Kapazitäten
+Location,Standort
+Capacity management, Kapazitätsverwaltung
+edit_standard_plan, Standardplan bearbeiten

@@ -161,4 +161,22 @@ class TimeSlotReader implements TimeSlotReaderInterface
 
         return $transferObject;
     }
+
+    /**
+     * @param string $store
+     *
+     * @return array
+     */
+    public function getTimeSlotsFilteredByStore(string $store): array
+    {
+        $query = new PyzTimeSlotQuery();
+        $result = $query->filterByMerchantReference_Like($store)
+            ->where('(' . PyzTimeSlotTableMap::COL_DAY . ' is not null and ' . PyzTimeSlotTableMap::COL_DAY . ' != "") AND (' . PyzTimeSlotTableMap::COL_DATE . ' is null or ' . PyzTimeSlotTableMap::COL_DATE . ' = "")')
+            ->orderByDate()
+            ->orderByTimeSlot()
+            ->find()
+            ->toArray();
+
+        return $result;
+    }
 }

@@ -25,4 +25,11 @@ interface TimeSlotReaderInterface
      * @return \Generated\Shared\Transfer\WeekDayTimeSlotsTransfer
      */
     public function getTimeSlotsForSpecificDay(string $currentStore, string $date): WeekDayTimeSlotsTransfer;
+
+    /**
+     * @param string $store
+     *
+     * @return array
+     */
+    public function getTimeSlotsFilteredByStore(string $store): array;
 }

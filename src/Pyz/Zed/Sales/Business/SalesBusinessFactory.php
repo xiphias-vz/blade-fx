@@ -8,6 +8,7 @@
 namespace Pyz\Zed\Sales\Business;
 
 use Pyz\Service\DateTimeWithZone\DateTimeWithZoneServiceInterface;
+use Pyz\Service\TimeSlot\TimeSlotServiceInterface;
 use Pyz\Zed\Oms\Business\OmsBusinessFactory;
 use Pyz\Zed\Oms\Business\OmsFacadeInterface;
 use Pyz\Zed\Product\Business\ProductFacadeInterface;
@@ -29,6 +30,7 @@ use Pyz\Zed\Sales\Business\OrderDate\OrderDateCheck;
 use Pyz\Zed\Sales\Business\OrderItem\OrderItemExpander;
 use Pyz\Zed\Sales\Dependency\Facade\SalesToOmsBridgeInterface;
 use Pyz\Zed\Sales\SalesDependencyProvider;
+use Pyz\Zed\TimeSlot\Business\TimeSlotFacadeInterface;
 use Spryker\Client\Storage\StorageClientInterface;
 use Spryker\Zed\Sales\Business\Model\Customer\CustomerOrderOverviewInterface;
 use Spryker\Zed\Sales\Business\Model\Order\OrderUpdaterInterface;
@@ -285,5 +287,21 @@ class SalesBusinessFactory extends SprykerSalesBusinessFactory
     public function getNewOmsFacade(): SalesToOmsBridgeInterface
     {
         return $this->getProvidedDependency(SalesDependencyProvider::NEW_FACADE_OMS);
+    }
+
+    /**
+     * @return \Pyz\Service\TimeSlot\TimeSlotServiceInterface
+     */
+    public function getTimeSlotService(): TimeSlotServiceInterface
+    {
+        return $this->getProvidedDependency(SalesDependencyProvider::SERVICE_TIME_SLOTS);
+    }
+
+    /**
+     * @return \Pyz\Zed\TimeSlot\Business\TimeSlotFacadeInterface
+     */
+    public function getTimeSlotFacade(): TimeSlotFacadeInterface
+    {
+        return $this->getProvidedDependency(SalesDependencyProvider::FACADE_TIME_SLOTS_ORDER_OVERVIEW);
     }
 }

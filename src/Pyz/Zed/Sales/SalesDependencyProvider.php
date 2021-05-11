@@ -8,6 +8,7 @@
 namespace Pyz\Zed\Sales;
 
 use Pyz\Service\DateTimeWithZone\DateTimeWithZoneServiceInterface;
+use Pyz\Service\TimeSlot\TimeSlotServiceInterface;
 use Pyz\Zed\AlternativeEan\Communication\Plugin\OrderItemAlternativeEanExpanderPreSavePlugin;
 use Pyz\Zed\Merchant\Communication\Plugin\MerchantOrderExpanderPreSavePlugin;
 use Pyz\Zed\MerchantRegion\Communication\Plugin\Sales\MerchantRegionOrderExpanderPlugin;
@@ -55,6 +56,7 @@ class SalesDependencyProvider extends SprykerSalesDependencyProvider
     public const FACADE_PRODUCT = 'FACADE_PRODUCT';
     public const FACADE_ACL = 'FACADE_ACL';
     public const FACADE_TIME_SLOTS_ORDER_OVERVIEW = 'FACADE_TIME_SLOTS';
+    public const SERVICE_TIME_SLOTS = 'SERVICE_TIME_SLOTS';
     public const CLIENT_STORAGE = 'CLIENT_STORAGE';
 
     public const PLUGINS_OMS_ORDER_MAIL_EXPANDER = 'PLUGINS_OMS_ORDER_MAIL_EXPANDER';
@@ -103,6 +105,7 @@ class SalesDependencyProvider extends SprykerSalesDependencyProvider
         $container = $this->addAclFacade($container);
         $container = $this->addPickingZoneFacade($container);
         $container = $this->addTimeSlotFacade($container);
+        $container = $this->addTimeSlotService($container);
 
         return $container;
     }
@@ -130,6 +133,20 @@ class SalesDependencyProvider extends SprykerSalesDependencyProvider
     {
         $container->set(static::FACADE_TIME_SLOTS_ORDER_OVERVIEW, function (Container $container): TimeSlotFacadeInterface {
             return $container->getLocator()->timeSlot()->facade();
+        });
+
+        return $container;
+    }
+
+    /**
+     * @param \Spryker\Zed\Kernel\Container $container
+     *
+     * @return \Spryker\Zed\Kernel\Container
+     */
+    protected function addTimeSlotService(Container $container): Container
+    {
+        $container->set(static::SERVICE_TIME_SLOTS, function (Container $container): TimeSlotServiceInterface {
+            return $container->getLocator()->timeSlot()->service();
         });
 
         return $container;
