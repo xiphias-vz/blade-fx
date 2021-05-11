@@ -4,6 +4,7 @@
     stores: _widget.stores,
     currentStore: _widget.currentStore,
     pattern: _widget.pattern,
+    passwordProtected: _widget.isPasswordProtected,
     additionalModifiers: ['header'],
     additionalClassName: '',
 } %}
@@ -17,6 +18,7 @@
                 pattern: data.pattern,
                 additionalModifiers: data.additionalModifiers,
                 additionalClassName: data.additionalClassName,
+                passwordProtected: data.passwordProtected,
             },
         } only %}
     </form>

@@ -11,6 +11,7 @@
     pattern: required,
     additionalModifiers: required,
     additionalClassName: '',
+    passwordProtected: '',
 } %}
 
 {% block body %}
@@ -24,7 +25,8 @@
             jsName: config.jsName ~ '__select_store',
             stores: data.stores,
             currentStore: data.currentStore,
-            pattern: data.pattern
+            pattern: data.pattern,
+            passwordProtected: data.passwordProtected
         }
     } only %}
         {% block selectClass %}
@@ -38,12 +40,12 @@
             {% endif %}
             {% for storeName, storeTitle in embed.stores %}
                 {% if app.request.cookies.get('current_store') == null %}
-                    <option value="{{ embed.pattern | format(storeName, app.request.requestUri) }}">
+                    <option value="{{ embed.pattern | format(storeName, app.request.requestUri) }}" is_password_protected="{{ attribute(embed.passwordProtected, storeName) }}">
                         {{ storeTitle }}
                     </option>
                 {% else %}
                 {% set selectedOption = storeName == embed.currentStore ? 'selected' %}
-                <option value="{{ embed.pattern | format(storeName, app.request.requestUri) }}" {{ selectedOption }}>
+                <option value="{{ embed.pattern | format(storeName, app.request.requestUri) }}" is_password_protected="{{ attribute(embed.passwordProtected, storeName) }}" {{ selectedOption }}>
                     {{ storeTitle }}
                 </option>
                 {% endif %}

@@ -1,0 +1,35 @@
+{% extends '@Gui/Layout/layout.twig' %}
+
+{% set widget_title = 'Edit Merchant' | trans ~ ': ' ~ idMerchant %}
+
+{% block head_title widget_title %}
+{% block section_title widget_title %}
+
+{% block action %}
+    {{ backActionButton(url('/merchant-gui/list-merchant'), 'Back to Merchants' | trans) }}
+    {%  for applicableMerchantStatus in applicableMerchantStatuses %}
+        {% if applicableMerchantStatus == 'denied' %}
+            {{ removeActionButton(url('/merchant-gui/merchant-status', {'status': applicableMerchantStatus, 'id-merchant': idMerchant}), (applicableMerchantStatus ~ '_button') | trans, {'icon':'<i class="fa fa-key"></i> '}) }}
+        {% else %}
+            {{ createActionButton(url('/merchant-gui/merchant-status', {'status': applicableMerchantStatus, 'id-merchant': idMerchant}), (applicableMerchantStatus ~ '_button') | trans, {'icon':'<i class="fa fa-key"></i> '}) }}
+        {%  endif %}
+    {%  endfor %}
+{% endblock %}
+
+{% block content %}
+
+    {% embed '@Gui/Partials/widget.twig' %}
+
+        {% block widget_content %}
+
+            {{ form_start(form, {'attr': {'novalidate': 'novalidate'}}) }}
+
+            {{ tabs(merchantFormTabs, {'merchantForm': form, 'isCurrentUserAdmin': isCurrentUserAdmin }) }}
+
+            {{ form_end(form) }}
+
+        {% endblock %}
+
+    {% endembed %}
+
+{% endblock %}

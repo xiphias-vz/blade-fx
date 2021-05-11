@@ -15,6 +15,9 @@
         <column name="longitude" required="false" type="DECIMAL" size="9" scale="6"/>
         <column name="picking_capacity_per_slot" required="false" default="0" type="INTEGER"/>
         <column name="delivery_capacity_per_slot" required="false" default="0" type="INTEGER"/>
+        <column name="is_shop_visible" default="1" required="false" type="BOOLEAN"/>
+        <column name="is_password_protected" default="0" required="false" type="BOOLEAN"/>
+        <column name="shop_password" required="false" size="255" type="VARCHAR"/>
 
         <foreign-key name="spy_merchant-fk_store" foreignTable="spy_store">
             <reference local="fk_store" foreign="id_store"/>

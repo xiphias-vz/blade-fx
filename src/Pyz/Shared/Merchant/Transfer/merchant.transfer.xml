@@ -12,8 +12,12 @@
         <property name="street" type="string"/>
         <property name="latitude" type="decimal"/>
         <property name="longitude" type="decimal"/>
+        <property name="isPasswordProtected" type="boolean"/>
+        <property name="isShopVisible" type="boolean"/>
+        <property name="shopPassword" type="string"/>
         <property name="deliveryCapacityPerSlot" type="int"/>
         <property name="pickingCapacityPerSlot" type="int"/>
+        <property name="visibleStoresArray" type="array"/>
     </transfer>
 
     <transfer name="MerchantCriteriaFilter">

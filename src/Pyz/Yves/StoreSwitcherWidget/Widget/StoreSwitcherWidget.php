@@ -7,6 +7,7 @@
 
 namespace Pyz\Yves\StoreSwitcherWidget\Widget;
 
+use Pyz\Shared\Store\StoreConstants;
 use Spryker\Shared\Application\ApplicationConstants;
 use Spryker\Shared\Config\Config;
 use Spryker\Yves\Kernel\Widget\AbstractWidget;
@@ -16,14 +17,38 @@ use Spryker\Yves\Kernel\Widget\AbstractWidget;
  */
 class StoreSwitcherWidget extends AbstractWidget
 {
+    public const FILLIAL_NUMBER = 'fillialNumber';
+    public const PASSWORD_PROTECTED = 'isPasswordProtected';
+
     public function __construct()
     {
+        $visibleMerchants = $this->getFactory()->getStoreSwitcherClient()->getVisibleStores();
+
+        $storeData = $visibleMerchants->getVisibleStoresArray();
         $store = $this->getFactory()->getStore();
         $storeNames = $this->getConfig()->getStoreNames();
-        $storeName = $store->getStoreName();
+        $merchantsFromConfig = Config::get(StoreConstants::SAP_STORE_ID_TO_STORE_MAP);
 
-        $this->addParameter('stores', $storeNames)
+        $storeName = $store->getStoreName();
+        $visibleStoreNames = [];
+        $visibleStorePass = [];
+        foreach ($storeData as $visibleStore) {
+            if (isset($merchantsFromConfig[$visibleStore[static::FILLIAL_NUMBER]])) {
+                if (isset($storeNames[$merchantsFromConfig[$visibleStore[static::FILLIAL_NUMBER]]])) {
+                    $visibleStoreNames[$merchantsFromConfig[$visibleStore[static::FILLIAL_NUMBER]]] = $storeNames[$merchantsFromConfig[$visibleStore[static::FILLIAL_NUMBER]]];
+                    $visibleStorePass[$merchantsFromConfig[$visibleStore[static::FILLIAL_NUMBER]]] = $visibleStore[static::PASSWORD_PROTECTED];
+                }
+            }
+        }
+
+        if (!isset($visibleStoreNames[$storeName]) || !isset($_COOKIE['current_store'])) {
+            $storeName = '';
+            setcookie("current_store", "", time() - 3600);
+        }
+
+        $this->addParameter('stores', $visibleStoreNames)
             ->addParameter('currentStore', $storeName)
+            ->addParameter('isPasswordProtected', $visibleStorePass)
             ->addParameter('pattern', $this->getYvesHost() . '/store/switch?store=%s&referer-url=%s');
     }
 
