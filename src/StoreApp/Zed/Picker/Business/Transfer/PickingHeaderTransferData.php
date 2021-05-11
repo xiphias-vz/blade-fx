@@ -269,6 +269,9 @@ class PickingHeaderTransferData
         }
         if (count($pickedItems) > 0) {
             if ($weight > 0) {
+                if (count($nonPickedItems) > 0) {
+                    $this->orderUpdater->markOrderItemsAsNotPicked($nonPickedItems);
+                }
                 $this->updateOrderItemWeight($orderItem);
             }
             $this->resetCanceledStatusForCanceledItems($pickedItems);
