@@ -9,12 +9,7 @@ namespace Pyz\Zed\PickingZone\Persistence;
 
 use Generated\Shared\Transfer\OrderPickingBlockTransfer;
 use Generated\Shared\Transfer\PickingZoneTransfer;
-use Orm\Zed\Oms\Persistence\Map\SpyOmsOrderItemStateTableMap;
 use Orm\Zed\PickingZone\Persistence\Map\PyzPickingZoneTableMap;
-use Orm\Zed\Sales\Persistence\Map\SpySalesOrderItemTableMap;
-use Orm\Zed\Sales\Persistence\Map\SpySalesOrderTableMap;
-use Propel\Runtime\ActiveQuery\Criteria;
-use Pyz\Shared\Oms\OmsConfig;
 use Spryker\Zed\Kernel\Persistence\AbstractRepository;
 
 /**
@@ -103,16 +98,17 @@ class PickingZoneRepository extends AbstractRepository implements PickingZoneRep
     {
         return $this->getFactory()->createPickingZoneQuery()
             ->select([PyzPickingZoneTableMap::COL_ID_PICKING_ZONE, PyzPickingZoneTableMap::COL_NAME])
-            ->withColumn('COUNT(DISTINCT IF(' . SpySalesOrderTableMap::COL_MERCHANT_REFERENCE . ' = \'' . $merchantReference . '\', ' . SpyOmsOrderItemStateTableMap::COL_NAME . ', null))', 'orderCount')
-            ->addJoin(PyzPickingZoneTableMap::COL_NAME, SpySalesOrderItemTableMap::COL_PICK_ZONE, Criteria::LEFT_JOIN)
-            ->addJoin(SpySalesOrderItemTableMap::COL_FK_SALES_ORDER, SpySalesOrderTableMap::COL_ID_SALES_ORDER, Criteria::LEFT_JOIN)
-            ->addJoin(
-                [SpySalesOrderItemTableMap::COL_FK_OMS_ORDER_ITEM_STATE, SpyOmsOrderItemStateTableMap::COL_NAME],
-                [SpyOmsOrderItemStateTableMap::COL_ID_OMS_ORDER_ITEM_STATE, '\'' . OmsConfig::STORE_STATE_READY_FOR_PICKING . '\''],
-                Criteria::LEFT_JOIN
-            )
-            ->addGroupByColumn(PyzPickingZoneTableMap::COL_ID_PICKING_ZONE)
-            ->addGroupByColumn(PyzPickingZoneTableMap::COL_NAME)
+            ->withColumn("(
+                                  	SELECT count(*) as noOrders
+                                    FROM spy_merchant_sales_order smso
+                                	  	INNER JOIN spy_sales_order_item ssoi on ssoi.fk_sales_order = smso.fk_sales_order
+  		                                INNER JOIN spy_oms_order_item_state soois on soois.id_oms_order_item_state = ssoi.fk_oms_order_item_state
+	  		                            AND soois.name in('ready for picking')
+                                	WHERE smso.requested_delivery_date > DATE_ADD(now(), INTERVAL -30 day)
+                                		AND smso.merchant_reference = '" . $merchantReference . "'
+                                		AND  ssoi.pick_zone = " . PyzPickingZoneTableMap::COL_NAME . "
+                                    GROUP BY ssoi.pick_zone
+                            )", "orderCount")
             ->find()
             ->toArray();
     }

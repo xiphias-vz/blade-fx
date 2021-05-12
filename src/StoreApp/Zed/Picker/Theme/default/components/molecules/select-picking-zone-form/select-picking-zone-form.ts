@@ -10,6 +10,12 @@ function disableSubmitButtonWhenNoItemIsSelected() {
     const radioItemInputFields =  selectPickingZoneForm.querySelectorAll('.radio__input');
     const radioItem =  selectPickingZoneForm.querySelectorAll('.select-picking-zone-form__radio-item')
     let submitButton = selectPickingZoneForm.querySelector('.submit button');
+    let idPickingZoneInput = selectPickingZoneForm.querySelector('input[name=idPickingZone]');
+
+    selectPickingZoneForm.addEventListener('submit', () => {
+        updateIdPickingZone(idPickingZoneInput, radioItemInputFields);
+    })
+
     let isOneItemSelected = false;
     disableFieldsWithNoOrders(radioItem, radioItemInputFields);
 
@@ -39,5 +45,14 @@ function disableFieldsWithNoOrders(radioItem, radioItemInputFields) {
             radioItemInputFields[i].setAttribute('disabled', 'disabled');
             labelPickZone.classList.add('disable-field')
         }
+    }
+}
+
+function updateIdPickingZone(idPickingZoneInput, radioItemInputFields) {
+    for(let i = 0; i < radioItemInputFields.length; i++) {
+       let isCurrentRadioItemChecked = radioItemInputFields[i].checked;
+       if(isCurrentRadioItemChecked) {
+           idPickingZoneInput.value = radioItemInputFields[i].value;
+       }
     }
 }
