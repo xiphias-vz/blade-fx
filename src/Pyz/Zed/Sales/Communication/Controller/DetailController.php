@@ -52,7 +52,6 @@ class DetailController extends SprykerDetailController
     public function indexAction(Request $request)
     {
         $idSalesOrder = $this->castId($request->query->getInt(SalesConfig::PARAM_ID_SALES_ORDER));
-
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             if (isset($_POST['pickingZones']) && isset($_POST['frmContainerShelf_idSalesOrder']) && isset($_POST['inputContainer']) && isset($_POST['inputShelf'])) {
                 $this->getFactory()->setZoneContainerShelf($_POST['frmContainerShelf_idSalesOrder'], $_POST['pickingZones'], $_POST['inputContainer'], $_POST['inputShelf']);
@@ -62,6 +61,42 @@ class DetailController extends SprykerDetailController
         $orderTransfer = $this->getFacade()->findOrderWithPickingSalesOrdersByIdSalesOrder($idSalesOrder);
         $orderTransfer->setCartNote(json_decode($orderTransfer->getCartNote()));
         $cellPhone = $orderTransfer->getBillingAddress()->getCellPhone();
+        $userFacade = $this->getFactory()->getUserFacade();
+        $idUser = $userFacade->getCurrentUser()->getIdUser();
+        $userGroup = $this->getFactory()->getAclFacade()->getUserGroups($idUser)->getGroups()[0]->getName();
+        $distinctOrderStates = $this->getFacade()->getDistinctOrderStates($idSalesOrder);
+        $eventsGroupedByShipment = $this->getFactory()->getOmsFacade()->getGroupedDistinctManualEventsByIdSalesOrder($idSalesOrder);
+        $eventsGroupedByItem = $this->getFactory()->getOmsFacade()->getManualEventsByIdSalesOrder($idSalesOrder);
+        $orderItemSplitFormCollection = $this->getFactory()->createOrderItemSplitFormCollection($orderTransfer->getItems());
+        $events = $this->getFactory()->getOmsFacade()->getDistinctManualEventsByIdSalesOrder($idSalesOrder);
+        $customerTransfer = $orderTransfer->getCustomer();
+        $groupedOrderItems = $this->getFacade()
+            ->getUniqueItemsFromOrder($orderTransfer);
+        $requestDeliveryDate = $groupedOrderItems[0]->getShipment()->getRequestedDeliveryDate();
+        $address = $groupedOrderItems[0]->getShipment()->getShippingAddress();
+        $payments = $orderTransfer->getPayments();
+        $orderState = $groupedOrderItems[0]["state"]["name"];
+        $dateAndTimeSlot = explode('_', $requestDeliveryDate);
+        $deliveryDate = $dateAndTimeSlot[0];
+        $deliveryTimeSlot = $dateAndTimeSlot[1];
+        $merchantReference = $orderTransfer->getMerchantReference();
+        $pickingZonesForContainers = $this->getPickingZones();
+        $containers = $orderTransfer->getPickingSalesOrderCollection()->getPickingSalesOrders()->getArrayCopy();
+        $blockResponseData = $this->renderSalesDetailBlocks($request, $orderTransfer);
+        $blocksToRenderForCustomer = $this->renderMultipleActions(
+            $request,
+            [
+                'discount' => '/discount/sales/list',
+                'refund' => '/refund/sales/list',
+            ],
+            $orderTransfer
+        );
+
+        $blocksToRenderForCustomer['refund'] = strip_tags($blocksToRenderForCustomer['refund']);
+        $blocksToRenderForCustomer['discount'] = strip_tags($blocksToRenderForCustomer['discount']);
+        $isCurrentUserSupervisor = $this->isCurrentUserSupervisor();
+        $isCurrentUserSupervisorOrAdmin = $this->isCurrentUserSupervisorOrAdmin();
+        $shipping = $groupedOrderItems[0]->getShipment();
 
         if ($request->get("isDownloadCashierFile") == true) {
             $s3 = $this->getS3Client();
@@ -94,7 +129,6 @@ class DetailController extends SprykerDetailController
         if ($request->get("isTimeslotsFormSubmit") == true) {
             $pickupDate = $request->get("pickupDate");
             $pickupTimeSlot = $request->get("pickupTimeSlot");
-
             $requestedDeliveryDate = $pickupDate . '_' . $pickupTimeSlot;
 
             $this->getFacade()->updateRequstedDeliveryDateForOrder($orderTransfer, $requestedDeliveryDate);
@@ -108,33 +142,16 @@ class DetailController extends SprykerDetailController
             $spySalesOrderAddress->fromArray($orderTransfer->getBillingAddress()->toArray());
 
             $spySalesOrder->setBillingAddress($spySalesOrderAddress);
-
             $this->getFacade()->checkAndUpdateTimeSlotsCapacity();
             $this->getFacade()->sendOrderConfirmationMail($spySalesOrder);
+            $orderTransfer = $this->getFacade()->findOrderWithPickingSalesOrdersByIdSalesOrder($idSalesOrder);
+            $groupedOrderItems = $this->getFacade()
+                ->getUniqueItemsFromOrder($orderTransfer);
+            $requestDeliveryDate = $groupedOrderItems[0]->getShipment()->getRequestedDeliveryDate();
+            $dateAndTimeSlot = explode('_', $requestDeliveryDate);
+            $deliveryDate = $dateAndTimeSlot[0];
+            $deliveryTimeSlot = $dateAndTimeSlot[1];
         }
-
-        $userFacade = $this->getFactory()->getUserFacade();
-        $idUser = $userFacade->getCurrentUser()->getIdUser();
-        $userGroup = $this->getFactory()->getAclFacade()->getUserGroups($idUser)->getGroups()[0]->getName();
-        $distinctOrderStates = $this->getFacade()->getDistinctOrderStates($idSalesOrder);
-        $eventsGroupedByShipment = $this->getFactory()->getOmsFacade()->getGroupedDistinctManualEventsByIdSalesOrder($idSalesOrder);
-        $eventsGroupedByItem = $this->getFactory()->getOmsFacade()->getManualEventsByIdSalesOrder($idSalesOrder);
-        $orderItemSplitFormCollection = $this->getFactory()->createOrderItemSplitFormCollection($orderTransfer->getItems());
-        $events = $this->getFactory()->getOmsFacade()->getDistinctManualEventsByIdSalesOrder($idSalesOrder);
-        $blockResponseData = $this->renderSalesDetailBlocks($request, $orderTransfer);
-        $blocksToRenderForCustomer = $this->renderMultipleActions(
-            $request,
-            [
-                'discount' => '/discount/sales/list',
-                'refund' => '/refund/sales/list',
-            ],
-            $orderTransfer
-        );
-
-        $blocksToRenderForCustomer['refund'] = strip_tags($blocksToRenderForCustomer['refund']);
-        $blocksToRenderForCustomer['discount'] = strip_tags($blocksToRenderForCustomer['discount']);
-        $isCurrentUserSupervisor = $this->isCurrentUserSupervisor();
-        $isCurrentUserSupervisorOrAdmin = $this->isCurrentUserSupervisorOrAdmin();
 
         $buttons = [];
         foreach ($events as $key => &$event) {
@@ -169,19 +186,6 @@ class DetailController extends SprykerDetailController
             return $blockResponseData;
         }
 
-        $groupedOrderItems = $this->getFacade()
-            ->getUniqueItemsFromOrder($orderTransfer);
-
-        $customerTransfer = $orderTransfer->getCustomer();
-        $requestDeliveryDate = $groupedOrderItems[0]->getShipment()->getRequestedDeliveryDate();
-        $address = $groupedOrderItems[0]->getShipment()->getShippingAddress();
-        $shipping = $groupedOrderItems[0]->getShipment();
-        $payments = $orderTransfer->getPayments();
-        $orderState = $groupedOrderItems[0]["state"]["name"];
-        $dateAndTimeSlot = explode('_', $requestDeliveryDate);
-        $deliveryDate = $dateAndTimeSlot[0];
-        $deliveryTimeSlot = $dateAndTimeSlot[1];
-
         $pickZones = [];
         $itemDataArray = [];
         $itemStatusArray = [];
@@ -212,9 +216,10 @@ class DetailController extends SprykerDetailController
         }
 
         $timeSlotsData = self::TIMESLOTS_DATA;
+        if ($merchantReference === '1021') {
+            $timeSlotsData['10:00-18:00'] = '10:00-18:00';
+        }
 
-        $pickingZonesForContainers = $this->getPickingZones();
-        $containers = $orderTransfer->getPickingSalesOrderCollection()->getPickingSalesOrders()->getArrayCopy();
         foreach ($containers as $container) {
             $idZone = $container->getIdPickingZone();
             $container["zoneName"] = $pickingZonesForContainers[$idZone];
