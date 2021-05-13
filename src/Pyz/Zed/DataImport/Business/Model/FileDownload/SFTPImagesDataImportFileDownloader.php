@@ -55,19 +55,22 @@ class SFTPImagesDataImportFileDownloader
     {
         $listContents = $this->fileSystemService->listContents(
             (new FileSystemListTransfer())
-                ->setPath(static::SFTP_PATH . $this->dataImportConfig->getDataImportFilesFolderName() . $this->dataImportConfig->getImagesDataImportFilesFolderName())
+                ->setPath(static::SFTP_PATH . $this->dataImportConfig->getDataImportFilesFolderName())
                 ->setFileSystemName(static::SFTP_FILE_SYSTEM_NAME)
         );
 
         foreach ($listContents as $content) {
+            $fileExtension = $content->getExtension();
+            if ($fileExtension == "zip") {
                 $csvFileSavingStatus = $this->downloadFile($content, $content->getBasename());
 
-            if (!$csvFileSavingStatus) {
-                $this->getLogger()->error($content->getBasename() . ' file save error occurred.');
-                continue;
-            }
+                if (!$csvFileSavingStatus) {
+                    $this->getLogger()->error($content->getBasename() . ' file save error occurred.');
+                    continue;
+                }
 
-            $this->moveDownloadedFilesToArchive($content);
+                $this->moveDownloadedFilesToArchive($content);
+            }
         }
     }
 
