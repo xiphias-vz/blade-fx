@@ -39,12 +39,17 @@ class StoreSwitcher
     /**
      * @param string $store
      * @param \Symfony\Component\HttpFoundation\Response $response
+     * @param bool $isPwdProtected
      *
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function switchStore(string $store, Response $response)
+    public function switchStore(string $store, Response $response, bool $isPwdProtected)
     {
         $response->headers->setCookie(new Cookie(static::COOKIE_STORE_IDENTIFIER, $store, time() + (86400 * 30)));
+
+        if ($isPwdProtected == true) {
+            $response->headers->setCookie(new Cookie(static::COOKIE_STORE_IDENTIFIER, $store));
+        }
 
         $this->switchStoreInQuote($store);
 

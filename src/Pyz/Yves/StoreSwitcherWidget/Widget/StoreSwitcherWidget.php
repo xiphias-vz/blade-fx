@@ -41,7 +41,12 @@ class StoreSwitcherWidget extends AbstractWidget
             }
         }
 
-        if (!isset($visibleStoreNames[$storeName]) || !isset($_COOKIE['current_store'])) {
+        if (isset($_COOKIE['current_store'])) {
+            if (!array_key_exists($_COOKIE['current_store'], $visibleStoreNames)) {
+                $storeName = '';
+                setcookie("current_store", "", time() - 3600);
+            }
+        } elseif (!isset($visibleStoreNames[$storeName]) || !isset($_COOKIE['current_store'])) {
             $storeName = '';
             setcookie("current_store", "", time() - 3600);
         }

@@ -13,6 +13,7 @@ use Spryker\Yves\Router\Route\RouteCollection;
 class StoreSwitcherWidgetRouteProviderPlugin extends AbstractRouteProviderPlugin
 {
     protected const ROUTER_SWITCH_STORE = 'switch-store';
+    protected const ROUTER_CHECK_STORE = 'check-store';
 
     /**
      * @param \Spryker\Yves\Router\Route\RouteCollection $routeCollection
@@ -22,6 +23,7 @@ class StoreSwitcherWidgetRouteProviderPlugin extends AbstractRouteProviderPlugin
     public function addRoutes(RouteCollection $routeCollection): RouteCollection
     {
         $routeCollection = $this->addSwitchStoreRoute($routeCollection);
+        $routeCollection = $this->addCheckStoreRoute($routeCollection);
 
         return $routeCollection;
     }
@@ -35,6 +37,19 @@ class StoreSwitcherWidgetRouteProviderPlugin extends AbstractRouteProviderPlugin
     {
         $route = $this->buildRoute('/store/switch', 'StoreSwitcherWidget', 'Index', 'switchStore');
         $routeCollection->add(static::ROUTER_SWITCH_STORE, $route);
+
+        return $routeCollection;
+    }
+
+    /**
+     * @param \Spryker\Yves\Router\Route\RouteCollection $routeCollection
+     *
+     * @return \Spryker\Yves\Router\Route\RouteCollection
+     */
+    protected function addCheckStoreRoute(RouteCollection $routeCollection): RouteCollection
+    {
+        $route = $this->buildRoute('/store/checkStore', 'StoreSwitcherWidget', 'Index', 'checkStore');
+        $routeCollection->add(static::ROUTER_CHECK_STORE, $route);
 
         return $routeCollection;
     }

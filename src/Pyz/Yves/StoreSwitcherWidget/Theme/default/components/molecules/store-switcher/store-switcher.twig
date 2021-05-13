@@ -33,7 +33,7 @@
             {{ parent() }} {{ embed.jsName }}
         {% endblock %}
         {% block options %}
-            {% if app.request.cookies.get('current_store') == null %}
+            {% if app.request.cookies.get('current_store') == null or embed.stores[embed.currentStore] is not defined %}
                 <option value="{{ embed.pattern }}" selected>
                     {{ 'please.choose.store' | trans }}
                 </option>
@@ -45,9 +45,9 @@
                     </option>
                 {% else %}
                 {% set selectedOption = storeName == embed.currentStore ? 'selected' %}
-                <option value="{{ embed.pattern | format(storeName, app.request.requestUri) }}" is_password_protected="{{ attribute(embed.passwordProtected, storeName) }}" {{ selectedOption }}>
-                    {{ storeTitle }}
-                </option>
+                    <option value="{{ embed.pattern | format(storeName, app.request.requestUri) }}" is_password_protected="{{ attribute(embed.passwordProtected, storeName) }}" {{ selectedOption }}>
+                        {{ storeTitle }}
+                    </option>
                 {% endif %}
             {% endfor %}
         {% endblock %}
