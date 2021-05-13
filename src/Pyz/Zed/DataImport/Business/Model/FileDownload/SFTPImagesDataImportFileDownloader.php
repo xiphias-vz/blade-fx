@@ -58,10 +58,12 @@ class SFTPImagesDataImportFileDownloader
                 ->setPath(static::SFTP_PATH . $this->dataImportConfig->getDataImportFilesFolderName())
                 ->setFileSystemName(static::SFTP_FILE_SYSTEM_NAME)
         );
-
+        dump(static::SFTP_PATH . $this->dataImportConfig->getDataImportFilesFolderName());
         foreach ($listContents as $content) {
             $fileExtension = $content->getExtension();
             if ($fileExtension == "zip") {
+                dump("Zip file found: ");
+                dump($content->getBasename());
                 $csvFileSavingStatus = $this->downloadFile($content, $content->getBasename());
 
                 if (!$csvFileSavingStatus) {
