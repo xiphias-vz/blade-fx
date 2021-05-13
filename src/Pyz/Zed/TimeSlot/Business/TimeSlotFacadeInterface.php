@@ -79,4 +79,44 @@ interface TimeSlotFacadeInterface
      * @return int
      */
     public function setTimeSlotsForSelectedStore(string $store, string $day, string $time, string $capacity): int;
+
+    /**
+     * @param string $dateFrom
+     * @param string $dateTo
+     *
+     * @return array
+     */
+    public function getTimeSlotsFilteredByDate(string $dateFrom, string $dateTo): array;
+
+    /**
+     * @param string $dateFrom
+     * @param string $dateTo
+     *
+     * @return array
+     */
+    public function getTimeSlotCapacityCountByDate(string $dateFrom, string $dateTo): array;
+
+    /**
+     * @param string $date
+     * @param string $time
+     * @param string $capacity
+     *
+     * @return int
+     */
+    public function setTimeSlotsForSelectedDate(string $date, string $time, string $capacity): int;
+
+    /**
+     * @param string $date
+     * @param string $day
+     * @param string $time
+     * @param string $capacity
+     *
+     * @return int
+     */
+    public function setDefaultTimeSlotsForSelectedDate(string $date, string $day, string $time, string $capacity): int;
+
+    /**
+     * @return int
+     */
+    public function getMerchantByStoreName(): int;
 }

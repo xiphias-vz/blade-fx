@@ -140,4 +140,50 @@ class TimeSlotWriter implements TimeSlotWriterInterface
 
         return $result;
     }
+
+    /**
+     * @param string $merchantReference
+     * @param string $date
+     * @param string $time
+     * @param string $capacity
+     *
+     * @return int
+     */
+    public function saveTimeSlotsDataForDate(string $merchantReference, string $date, string $time, string $capacity): int
+    {
+        $query = new PyzTimeSlotQuery();
+
+        $result = $query->filterByMerchantReference_Like($merchantReference)
+            ->filterByDate_Like($date)
+            ->filterByTimeSlot_Like($time)
+            ->findOne()
+            ->setCapacity($capacity)
+            ->save();
+
+        return $result;
+    }
+
+    /**
+     * @param string $merchantReference
+     * @param string $date
+     * @param string $day
+     * @param string $time
+     * @param string $capacity
+     *
+     * @return int
+     */
+    public function saveDefaultTimeSlotsDataForDate(string $merchantReference, string $date, string $day, string $time, string $capacity): int
+    {
+        $query = new PyzTimeSlotQuery();
+        $entity = $query
+            ->filterByDate($date)
+            ->filterByTimeSlot($time)
+            ->findOneOrCreate();
+        $entity->setMerchantReference($merchantReference)
+            ->setDay($day)
+            ->setCapacity($capacity);
+        $result = $entity->save();
+
+        return $result;
+    }
 }

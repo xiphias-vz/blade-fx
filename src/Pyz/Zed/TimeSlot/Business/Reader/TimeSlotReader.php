@@ -11,6 +11,8 @@ use ArrayObject;
 use Generated\Shared\Transfer\TimeSlotCapacityTransfer;
 use Generated\Shared\Transfer\WeekDayTimeSlotsTransfer;
 use Orm\Zed\Merchant\Persistence\SpyMerchantQuery;
+use Orm\Zed\Sales\Persistence\Map\SpySalesShipmentTableMap;
+use Orm\Zed\Sales\Persistence\SpySalesShipmentQuery;
 use Orm\Zed\Store\Persistence\SpyStoreQuery;
 use Orm\Zed\TimeSlot\Persistence\Map\PyzTimeSlotTableMap;
 use Orm\Zed\TimeSlot\Persistence\PyzTimeSlotQuery;
@@ -135,12 +137,7 @@ class TimeSlotReader implements TimeSlotReaderInterface
      */
     public function getTimeSlotsForSpecificDay(string $currentStore, string $date): WeekDayTimeSlotsTransfer
     {
-        $storeFkQuery = new SpyStoreQuery();
-        $storeFkId = $storeFkQuery->findByName($currentStore)->getFirst()->getIdStore();
-
-        $storeQuery = new SpyMerchantQuery();
-        $storeData = $storeQuery->findByFkStore($storeFkId);
-        $merchantReference = $storeData->toArray()[0]["MerchantReference"];
+        $merchantReference = $this->getMerchantReferenceByStoreName($currentStore);
 
         $query = new PyzTimeSlotQuery();
         $queryByDatesArray = $query->filterByMerchantReference_Like($merchantReference)
@@ -178,5 +175,73 @@ class TimeSlotReader implements TimeSlotReaderInterface
             ->toArray();
 
         return $result;
+    }
+
+    /**
+     * @param string $currentStore
+     * @param string $dateFrom
+     * @param string $dateTo
+     *
+     * @return array
+     */
+    public function getTimeSlotsFilteredByDate(string $currentStore, string $dateFrom, string $dateTo): array
+    {
+        $merchantReference = $this->getMerchantReferenceByStoreName($currentStore);
+
+        $betweenDates = [ 'min' => $dateFrom, 'max' => $dateTo ];
+
+        $query = new PyzTimeSlotQuery();
+        $result = $query->filterByMerchantReference_Like($merchantReference)
+            ->filterByDate_Between($betweenDates)
+            ->orderByDate()
+            ->orderByTimeSlot()
+            ->find()
+            ->toArray();
+
+        return $result;
+    }
+
+    /**
+     * @param string $currentStore
+     * @param string $dateFrom
+     * @param string $dateTo
+     *
+     * @return array
+     */
+    public function getTimeSlotCapacityCountByDate(string $currentStore, string $dateFrom, string $dateTo): array
+    {
+        $merchantReference = $this->getMerchantReferenceByStoreName($currentStore);
+
+        $salesShipmentQuery = new SpySalesShipmentQuery();
+
+        $result = $salesShipmentQuery
+            ->where(SpySalesShipmentTableMap::COL_REQUESTED_DELIVERY_DATE . ">'" . $dateFrom . "_01:00-03:00' AND " . SpySalesShipmentTableMap::COL_REQUESTED_DELIVERY_DATE . "< '" . $dateTo . "_22:00-24:00'")
+            ->select([SpySalesShipmentTableMap::COL_REQUESTED_DELIVERY_DATE])
+            ->withColumn("count(*)", "orderCount")
+            ->withColumn("SUBSTR(" . SpySalesShipmentTableMap::COL_REQUESTED_DELIVERY_DATE . ", 1, 10)", "date")
+            ->withColumn("SUBSTR(" . SpySalesShipmentTableMap::COL_REQUESTED_DELIVERY_DATE . ", 12, 11)", "timeSlot")
+            ->filterByMerchantReference_Like($merchantReference)
+            ->groupByRequestedDeliveryDate()
+            ->find()
+            ->toArray();
+
+        return $result;
+    }
+
+    /**
+     * @param string $currentStore
+     *
+     * @return int
+     */
+    public function getMerchantReferenceByStoreName(string $currentStore): int
+    {
+        $storeFkQuery = new SpyStoreQuery();
+        $storeFkId = $storeFkQuery->findByName($currentStore)->getFirst()->getIdStore();
+
+        $storeQuery = new SpyMerchantQuery();
+        $storeData = $storeQuery->findByFkStore($storeFkId);
+        $merchantReference = $storeData->toArray()[0]["MerchantReference"];
+
+        return $merchantReference;
     }
 }

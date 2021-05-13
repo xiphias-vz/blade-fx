@@ -35,3 +35,7 @@ Capacities,Kapazitäten
 Location,Standort
 Capacity management, Kapazitätsverwaltung
 edit_standard_plan, Standardplan bearbeiten
+date_from,Datum von
+date_to,Datum bis
+select,Auswählen
+edit_days,Tage bearbeiten

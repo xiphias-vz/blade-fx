@@ -27,4 +27,25 @@ interface TimeSlotWriterInterface
      * @return int
      */
     public function saveTimeSlotsDataForStore(string $store, string $day, string $time, string $capacity): int;
+
+    /**
+     * @param string $merchantReference
+     * @param string $date
+     * @param string $time
+     * @param string $capacity
+     *
+     * @return int
+     */
+    public function saveTimeSlotsDataForDate(string $merchantReference, string $date, string $time, string $capacity): int;
+
+    /**
+     * @param string $merchantReference
+     * @param string $date
+     * @param string $day
+     * @param string $time
+     * @param string $capacity
+     *
+     * @return int
+     */
+    public function saveDefaultTimeSlotsDataForDate(string $merchantReference, string $date, string $day, string $time, string $capacity): int;
 }

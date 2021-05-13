@@ -26,12 +26,12 @@
             margin-right: 10px;
         }
 
-        #cmbStores {
+        #cmbStores, #dateFrom, #dateTo {
             width: 130px;
             height: 35px;
         }
 
-        #btnFilterByPickzone, #btnResetDefaultFilter {
+        #btnFilterByStore, #btnResetDefaultDayFilter, #btnResetDefaultDateFilter, #btnFilterByDate {
             margin-left: 10px;
             min-width: 50px;
             height: 35px;
@@ -39,7 +39,7 @@
         }
 
         table {
-            width: 50%;
+            width: 95%;
             margin-bottom: 20px;
         }
 
@@ -54,6 +54,10 @@
 
         th, td {
             padding: 8px !important;
+        }
+
+        tr {
+            text-align: center;
         }
 
         .ts-table-info-row {
@@ -102,11 +106,11 @@
             margin-left: 10px;
         }
 
-        #btnCancel, #btnResetDefaultFilter, #btnSave {
+        #btnCancel, #btnResetDefaultDayFilter, #btnSave {
             min-width: 50px;
         }
 
-        #btnResetDefaultFilter {
+        #btnResetDefaultDayFilter, #btnResetDefaultDateFilter {
             display: none;
         }
 
@@ -131,7 +135,7 @@
         }
 
         .ts-table-capacityField {
-            width: 50px;
+            /*width: 50px;*/
             text-align: center;
         }
 
@@ -217,26 +221,55 @@
             margin-right: 10px;
         }
 
+        .defaultTable {
+            background-color: #000000;
+        }
+
+        .notDefaultTable {
+            background-color: #ce6200;
+        }
+
     </style>
     {% embed '@Gui/Partials/widget.twig' %}
         {% block widget_content %}
-            <form style="display:flex;">
-                <div class="filters-holder">
-                    <div class="filter-component">
-                        <label for="cmbStores">{{ 'Location' | trans }}</label> <br>
-                        <select id="cmbStores" name="location">
-                            {% for merchantId, merchantName in merchantFilterButtonsData  %}
-                                <option value="{{ merchantId }}">{{ merchantName }}</option>
-                            {% endfor %}
-                        </select>
-                    </div>
-                </div>
-                <div id="filterButtons">
-                    <input id="btnFilterByPickzone" type="button" class="btn btn-customPrimary" value="{{ 'edit_standard_plan' | trans }}">
-                    <input id="btnResetDefaultFilter" type="button" class="btn btn-custom-cancel" value="{{ 'Cancel' | trans }}">
-                </div>
+            <div style="display: flex;justify-content: space-between;">
 
-            </form>
+                <form style="display:flex;">
+                    <div class="filters-holder">
+                        <div class="filter-component">
+                            <label for="cmbStores">{{ 'Location' | trans }}</label> <br>
+                            <select id="cmbStores" name="location">
+                                {% for merchantId, merchantName in merchantFilterButtonsData  %}
+                                    <option value="{{ merchantId }}">{{ merchantName }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+                    <div id="dayFilterButtons">
+                        <input id="btnFilterByStore" type="button" class="btn btn-customPrimary" value="{{ 'edit_standard_plan' | trans }}">
+                        <input id="btnResetDefaultDayFilter" type="button" class="btn btn-custom-cancel" value="{{ 'Cancel' | trans }}">
+                    </div>
+
+                </form>
+
+                <form style="display:flex;">
+                    <div class="filters-holder" style="justify-content: space-between; display: flex;">
+                        <div class="filter-component">
+                            <label for="dateFrom">{{ 'date_from' | trans }}</label><br/>
+                            <input type="date" id="dateFrom" placeholder="{{ 'select' | trans }}" value=""/>
+                        </div>
+                        <div class="filter-component" style="margin: 0 10px;">
+                            <label for="dateTo">{{ 'date_to' | trans }}</label><br/>
+                            <input type="date" id="dateTo" placeholder="{{ 'select' | trans }}" value=""/>
+                        </div>
+                    </div>
+                    <div id="dateFilterButtons">
+                        <input id="btnFilterByDate" type="button" class="btn btn-customPrimary" value="{{ 'edit_days' | trans }}">
+                        <input id="btnResetDefaultDateFilter" type="button" class="btn btn-custom-cancel" value="{{ 'Cancel' | trans }}">
+                    </div>
+                </form>
+
+            </div>
 
             <div id="capacitySaveBox">
                 <div id="savingAndMessageDiv">
@@ -279,18 +312,6 @@
                 </div>
             </div>
 
-            {#            <form>#}
-            {#                <div class="filters-holder">#}
-            {#                    <div class="filter-component">#}
-            {#                        <label for="date_from">Datum von</label><br/>#}
-            {#                        <input type="date" id="date_from" value="" onchange="handleDateRange(this, 'date-from-range-filter')">#}
-            {#                    </div>#}
-            {#                    <div class="filter-component">#}
-            {#                        <label for="date_to">Datum bis</label><br/>#}
-            {#                        <input type="date" id="date_to" value="" onchange="handleDateRange(this, 'date-to-range-filter')">#}
-            {#                    </div>#}
-            {#                </div>#}
-            {#            </form>#}
 
         {% endblock %}
     {% endembed %}
@@ -305,9 +326,13 @@
             }, {})
         };
 
-        let btnFilterByPickzone = document.getElementById("btnFilterByPickzone");
+        let btnFilterByDate = document.getElementById("btnFilterByDate");
+        let dateFrom = document.getElementById("dateFrom");
+        let dateTo = document.getElementById("dateTo");
+
+        let btnFilterByStore = document.getElementById("btnFilterByStore");
         let capacitySaveBoxDiv = document.getElementById("capacitySaveBox");
-        let btnResetDefaultFilter = document.getElementById("btnResetDefaultFilter");
+        let btnResetDefaultDayFilter = document.getElementById("btnResetDefaultDayFilter");
         let savingAndMessageDiv = document.getElementById("savingAndMessageDiv");
         let selectedStoreEl = document.getElementById("cmbStores");
         let capacityFieldEditor = document.getElementsByClassName("ts-table-capacityField");
@@ -317,6 +342,7 @@
         var infoBoxText = document.getElementById("infoBoxText");
         var infoBoxClose = document.getElementById("infoBoxClose");
         var btnCancelTimeSlotChange = document.getElementById("btnCancel");
+
         var modal = document.getElementById("myModal");
         var btnCloseModal = document.getElementById("closeModal");
         var btnModalConfirmNo = document.getElementById("modalConfirmNo");
@@ -344,34 +370,59 @@
             btnSaveChangedData.disabled = true;
             btnCancelTimeSlotChange.disabled = true;
             capacitySaveBoxDiv.style.display = "none";
-            btnFilterByPickzone.style.display = "block";
-            btnResetDefaultFilter.style.display = "none";
+            btnFilterByStore.style.display = "block";
+            btnResetDefaultDayFilter.style.display = "none";
             modal.style.display = "none";
         });
 
-        btnFilterByPickzone.addEventListener("click", function() {
+        dateFrom.addEventListener("change", function(ev) {
+            let choosenDate = ev.target.value;
+            let maxDateDifference = 28;
+            var maxDate = new Date(choosenDate);
+            maxDate.setDate(maxDate.getDate() + maxDateDifference);
+            dateTo.setAttribute("min", choosenDate);
+            dateTo.setAttribute("max", maxDate.toISOString().split("T")[0]);
+        });
+
+
+        btnFilterByStore.addEventListener("click", function() {
             FormatByStore(selectedStoreEl.value);
             infoBox.style.backgroundColor = "#e3a858;";
             infoBoxText.innerText = 'ACHTUNG: "Sie ändern die Kapazitäten für den Standardplan"';
             savingAndMessageDiv.style.display = "flex";
             capacitySaveBoxDiv.style.display = "block";
-            btnFilterByPickzone.style.display = "none";
-            btnResetDefaultFilter.style.display = "block";
+            btnFilterByStore.style.display = "none";
+            btnResetDefaultDayFilter.style.display = "block";
             infoBox.style.display = "block";
         });
 
-        btnResetDefaultFilter.addEventListener("click", function() {
+        btnFilterByDate.addEventListener("click", function() {
+            FormatByDate(dateFrom.value, dateTo.value);
+            infoBox.style.backgroundColor = "#e3a858;";
+            infoBoxText.innerText = 'ACHTUNG: "Sie ändern die Kapazitäten für den Standardplan"';
+            savingAndMessageDiv.style.display = "flex";
+            capacitySaveBoxDiv.style.display = "block";
+            btnFilterByStore.style.display = "none";
+            btnResetDefaultDayFilter.style.display = "block";
+            infoBox.style.display = "block";
+        });
+
+        btnResetDefaultDayFilter.addEventListener("click", function() {
             modal.style.display = "block";
         });
 
-        btnSaveChangedData.addEventListener("click", function() {
-            SaveTimeSlots(selectedStoreEl.value, localStorage.getItem('timeSlotCapacities'));
+        btnSaveChangedData.addEventListener("click", function(ev) {
+            let formToSave = localStorage.getItem('FormToSave');
+            if(formToSave !== ""){
+                SaveTimeSlots(selectedStoreEl.value, localStorage.getItem('timeSlotCapacities'), formToSave);
+            }
         });
 
-        function SaveTimeSlots(store, changedData){
+        function SaveTimeSlots(store, changedData, formToSave){
             var formData = new FormData();
             formData.append("store", store)
             formData.append("changedData", changedData);
+            formData.append("formToSave", formToSave);
 
             let xhttp = new XMLHttpRequest();
             xhttp.onreadystatechange = function () {
@@ -391,6 +442,7 @@
 
         function FormatByStore(store) {
             localStorage.removeItem('timeSlotCapacities');
+            localStorage.setItem('FormToSave', "DefaultByStore");
             btnSaveChangedData.disabled = true;
             btnCancelTimeSlotChange.disabled = true;
 
@@ -455,6 +507,108 @@
             xhttp.send(formData);
         }
 
+        function FormatByDate(dateFrom, dateTo){
+            localStorage.removeItem('timeSlotCapacities');
+            localStorage.setItem('FormToSave', "ByDate");
+            btnSaveChangedData.disabled = true;
+            btnCancelTimeSlotChange.disabled = true;
+
+            var formData = new FormData();
+            formData.append("dateFrom", dateFrom);
+            formData.append("dateTo", dateTo);
+
+            let xhttp = new XMLHttpRequest();
+            xhttp.onreadystatechange = function () {
+                if (this.readyState === 4 && this.status === 200) {
+                    var dataParse = JSON.parse(this.response);
+
+                    if(dataParse !== undefined && Object.keys(dataParse).length > 0)
+                    {
+                        ResetCapacitiesBlock();
+
+                        for (const [key, value] of Object.entries(dataParse)) {
+                            let dayName = getDayName(key);
+                            let defaultText = "";
+                            var defaultClass = "";
+
+                            if(Object.values(value)[0]["IsDefault"] === true)
+                            {
+                                defaultText = "Default";
+                                defaultClass = "defaultTable";
+                            }
+                            else{
+                                defaultText = "Geändert";
+                                defaultClass = "notDefaultTable";
+                            }
+
+                            formatedTablesDiv.insertAdjacentHTML("beforeend",
+                                '<div class="col col-md-6">' +
+                                '<table>' +
+                                '<thead><tr class="' + defaultClass + '">' +
+                                '<th>' + dayName + ', ' + key + '</th>' +
+                                '<th>' + defaultText + '</th>' +
+                                '<th></th>' +
+                                '<th></th>' +
+                                '</tr></thead>' +
+                                '<tbody id="tbody_' + key + '"><tr class="ts-table-info-row"><td>Timeslot</td><td>Kapazitaten</td><td>Gebucht</td><td>Offen</td></tr></tbody>' +
+                                '</table>' +
+                                '</div>');
+
+                            let capacitySum = Object.values(value).reduce((a, b) => a + (b["Capacity"] || 0), 0);
+
+                            let capacityUsedSum = 0;
+                            let capacityLeftSum = 0;
+
+                            let rowCounter = 0;
+
+                            for (const [key1, value1] of Object.entries(value)) {
+                                let usedCapacity = value1["UsedCapacity"];
+                                let capacityLeft = value1["CapacityLeft"];
+                                if(usedCapacity === undefined && capacityLeft === undefined){
+                                    usedCapacity = 0;
+                                    capacityLeft = value1["Capacity"];
+                                }
+
+                                capacityUsedSum += usedCapacity;
+                                capacityLeftSum += capacityLeft;
+
+                                document.getElementById("tbody_" + key).insertAdjacentHTML("beforeend",
+                                    '<tr class="ts-table-' + rowCounter + '-row">' +
+                                    '<td>' + value1["TimeSlot"] + '</td>' +
+                                    '<td><div id="capacityRow_' + value1["Date"] + '_' + value1["Day"] + '_' + rowCounter + '_' + defaultClass + '"  class="ts-table-capacityField capacityField_' + rowCounter + ' cf_' + key + '_' + rowCounter + '" contenteditable="true">' + value1["Capacity"] + '</div></td>' +
+                                    '<td>' + usedCapacity + '</td>' +
+                                    '<td>' + capacityLeft + '</td>' +
+                                    '</tr>'
+                                );
+
+                                rowCounter++;
+                            }
+
+                            document.getElementById("tbody_" + key).insertAdjacentHTML("beforeend",
+                                '<tr class="ts-table-sum-row">' +
+                                '<td></td>' +
+                                '<td id="capacitySum_' + key + '" style="text-align: center;">' + capacitySum + '</td>' +
+                                '<td id="capacityUsedSum_' + key + '" style="text-align: center;">' + capacityUsedSum + '</td>' +
+                                '<td id="capacityLeftSum_' + key + '" style="text-align: center;">' + capacityLeftSum + '</td>' +
+                                '</tr>'
+                            );
+
+                            let capacityFieldEditor = document.getElementsByClassName("ts-table-capacityField");
+
+                            for (let capacity of capacityFieldEditor) {
+                                capacity.setAttribute("oldValue", capacity.innerText);
+                                capacity.addEventListener("focusout", function (ev) {
+                                    onTableEditorInput(ev, key);
+                                });
+                            }
+                        }
+                    }
+                }
+            };
+            xhttp.open("POST", window.location.origin + "/sales/index/filterByDate");
+            xhttp.send(formData);
+        }
+
         function onTableEditorInput(ev, day){
             let sumOfCapacity = document.getElementById("capacitySum_" + day);
             let oldRowCapacityValue = parseInt(ev.target.getAttribute("oldvalue"));
@@ -479,7 +633,7 @@
 
                     let changedDataArray = JSON.parse(localStorage.getItem('timeSlotCapacities'));
 
-                    var currentSave = idFieldSplited[1] + "_" + idFieldSplited[2];
+                    var currentSave = idFieldSplited[1] + "_" + idFieldSplited[2] + "_" + idFieldSplited[3] + "_" + idFieldSplited[4];
                     if(changedDataArray === null){
                         changedDataArray = [];
                     }
@@ -541,6 +695,13 @@
                 formatedTablesDiv.removeChild(formatedTablesDiv.lastChild);
             }
         }
+
+        function getDayName(dateStr)
+        {
+            let date = new Date(dateStr);
+            return date.toLocaleDateString("de-DE", { weekday: 'long' });
+        }
+
 
     </script>
 {% endblock %}

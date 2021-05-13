@@ -32,4 +32,29 @@ interface TimeSlotReaderInterface
      * @return array
      */
     public function getTimeSlotsFilteredByStore(string $store): array;
+
+    /**
+     * @param string $currentStore
+     * @param string $dateFrom
+     * @param string $dateTo
+     *
+     * @return array
+     */
+    public function getTimeSlotsFilteredByDate(string $currentStore, string $dateFrom, string $dateTo): array;
+
+    /**
+     * @param string $currentStore
+     * @param string $dateFrom
+     * @param string $dateTo
+     *
+     * @return array
+     */
+    public function getTimeSlotCapacityCountByDate(string $currentStore, string $dateFrom, string $dateTo): array;
+
+    /**
+     * @param string $currentStore
+     *
+     * @return int
+     */
+    public function getMerchantReferenceByStoreName(string $currentStore): int;
 }
