@@ -48,6 +48,7 @@ class PickingController extends BaseOrderPickingController
     protected const REQUEST_PARAM_CSRF_TOKEN = 'token';
     protected const FORMAT_START_PICKING_TOKEN_NAME = 'start-picking-%d';
     protected const FORMAT_STOP_PICKING_TOKEN_NAME = 'stop-picking-%d';
+    public const ADDED_CONTAINERS = 'addedContainers';
 
     protected const FORMAT_SELECT_CONTAINERS = 'select-containers-%d';
 
@@ -137,6 +138,7 @@ class PickingController extends BaseOrderPickingController
         $idSalesOrder = $request->get(PickerConfig::REQUEST_PARAM_ID_ORDER);
         $productSku = $request->get(PickerConfig::REQUEST_PARAM_SKU);
         $csrfTokenName = sprintf(static::FORMAT_START_PICKING_TOKEN_NAME, $idSalesOrder);
+        $submittedContainers = json_decode($request->get(static::ADDED_CONTAINERS)) ?? [];
 
         if (!$this->isCsrfTokenValid($csrfTokenName, $request)) {
             $this->addErrorMessage(
@@ -166,8 +168,8 @@ class PickingController extends BaseOrderPickingController
         $containerInfo = $this->getFactory()->getPickerBusinessFactory()->createContainerReader()->getContainersByOrderId($idSalesOrder);
         $containerInfo = $containerInfo['picking_sales_orders'];
         $containerNumber = count($containerInfo);
-
-        $listOfUsedContainers = $this->getFactory()->getPickerBusinessFactory()->createContainerReader()->getUsedContainers();
+        $merchantTransfer = $this->getMerchantFromRequest($request);
+        $merchantReference = $merchantTransfer->getMerchantReference();
 
         $aggregatedItemTransfers = $this->getFactory()->getItemAggregator()
             ->aggregateOrderItemsQuantities($salesOrderTransfer->getItems()->getArrayCopy());
@@ -179,10 +181,33 @@ class PickingController extends BaseOrderPickingController
             $orderItemSelectionFormDataProvider->getData($salesOrderTransfer->getIdSalesOrder()),
             $orderItemSelectionFormDataProvider->getOptions($aggregatedItemTransfers, $salesOrderTransfer->getStore())
         );
+        $pickingOrders[] = [
+            'idSalesOrder' => $idSalesOrder,
+            'reference' => $salesOrderTransfer->getOrderReference(),
+            'collectNumber' => $salesOrderTransfer->getCollectNumber(),
+            'itemCount' => $salesOrderTransfer->getItems()->count(),
+            'totalItemCount' => $fullOrderTransfer->getItems()->count(),
+            'cartNote' => $salesOrderTransfer->getCartNote(),
+            'productSku' => $productSku,
+            'customerFullName' => $salesOrderTransfer->getFirstName() . ' ' . $salesOrderTransfer->getLastName(),
+            'containerCount' => $containerNumber,
+        ];
 
         $orderItemSelectionForm->handleRequest($request);
 
         if ($orderItemSelectionForm->isSubmitted()) {
+            foreach ($submittedContainers as $container) {
+                $isContainerInUseMessage = $this->getFacade()->checkContainerUsage($container, $merchantReference, $idSalesOrder);
+                if (!empty($isContainerInUseMessage)) {
+                    $isContainerInUseMessage = $this->getFacade()->formatErrorMessage($isContainerInUseMessage, $container);
+                    $orderItemSelectionForm = $this->getFactory()->createOrderItemSelectionForm(
+                        $orderItemSelectionFormDataProvider->getData($salesOrderTransfer->getIdSalesOrder()),
+                        $orderItemSelectionFormDataProvider->getOptions($aggregatedItemTransfers, $salesOrderTransfer->getStore())
+                    );
+
+                    return $this->createSelectContainersActionsResponse($request, $pickingOrders, $containerInfo, $orderItemSelectionForm, $isContainerInUseMessage);
+                }
+            }
             $orderPickingBlockTransfer = (new OrderPickingBlockTransfer())
                 ->setIdSalesOrder($idSalesOrder)
                 ->setIdPickingZone($pickingZoneTransfer->getIdPickingZone())
@@ -223,20 +248,7 @@ class PickingController extends BaseOrderPickingController
             return $this->redirectResponse($orderPickingPath);
         }
 
-        $pickingOrders[] = [
-            'idSalesOrder' => $idSalesOrder,
-            'reference' => $salesOrderTransfer->getOrderReference(),
-            'collectNumber' => $salesOrderTransfer->getCollectNumber(),
-            'itemCount' => $salesOrderTransfer->getItems()->count(),
-            'totalItemCount' => $fullOrderTransfer->getItems()->count(),
-            'cartNote' => $salesOrderTransfer->getCartNote(),
-            'productSku' => $productSku,
-            'customerFullName' => $salesOrderTransfer->getFirstName() . ' ' . $salesOrderTransfer->getLastName(),
-            'containerCount' => $containerNumber,
-            'listOfUsedContainers' => json_encode($listOfUsedContainers),
-        ];
-
-        return $this->createSelectContainersActionsResponse($request, $pickingOrders, $containerInfo, $orderItemSelectionForm);
+        return $this->createSelectContainersActionsResponse($request, $pickingOrders, $containerInfo, $orderItemSelectionForm, null);
     }
 
     /**
@@ -708,6 +720,7 @@ class PickingController extends BaseOrderPickingController
      * @param array $pickingOrders
      * @param array $containerInfo
      * @param \Symfony\Component\Form\FormInterface $orderItemSelectionForm
+     * @param string|null $isContainerInUseMessage
      *
      * @return array
      */
@@ -715,12 +728,14 @@ class PickingController extends BaseOrderPickingController
         Request $request,
         array $pickingOrders,
         array $containerInfo,
-        FormInterface $orderItemSelectionForm
+        FormInterface $orderItemSelectionForm,
+        ?string $isContainerInUseMessage
     ): array {
         return [
             'merchant' => $this->getMerchantFromRequest($request),
             'pickingOrders' => $pickingOrders,
             'containerInfo' => $containerInfo,
+            'isContainerInUseMessage' => $isContainerInUseMessage,
             'pickingForm' => $orderItemSelectionForm->createView(),
             'requestParamIdSalesOrder' => PickerConfig::REQUEST_PARAM_ID_ORDER,
             'urlOrderPicking' => PickerConfig::URL_START_ORDER_PICKING,

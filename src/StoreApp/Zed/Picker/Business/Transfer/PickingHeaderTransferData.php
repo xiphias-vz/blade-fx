@@ -646,6 +646,29 @@ class PickingHeaderTransferData
     }
 
     /**
+     * @param string $containerID
+     * @param string $merchantReference
+     * @param int $idSalesOrder
+     *
+     * @return string|null
+     */
+    public function checkContainerUsage(string $containerID, string $merchantReference, int $idSalesOrder): ?string
+    {
+        $sql = "select GROUP_CONCAT(distinct concat_ws(' ', sso.order_reference, ',', sso.first_name, sso.last_name)) as used_in_orders
+            from spy_sales_order_item ssoi
+                     inner join spy_oms_order_item_state soois on ssoi.fk_oms_order_item_state = soois.id_oms_order_item_state
+                     inner join spy_sales_order sso on sso.id_sales_order = ssoi.fk_sales_order
+                inner join pyz_picking_sales_order ppso on sso.id_sales_order = ppso.fk_sales_order
+            where soois.name in('ready for picking', 'ready for selecting shelves', 'picked', 'collection process', 'ready for collection')
+                and ppso.container_code = '" . $containerID . "'
+                and sso.merchant_reference = '" . $merchantReference . "'
+                and ppso.fk_sales_order <> " . $idSalesOrder;
+        $data = $this->getResult($sql);
+
+        return $data[0]["used_in_orders"];
+    }
+
+    /**
      * @param string $sql
      * @param bool $doFetch
      *

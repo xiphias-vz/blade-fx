@@ -11,6 +11,7 @@ export default class ContainerScanOrder extends Component {
     protected inputScanner: HTMLInputElement;
     protected containerInput: HTMLInputElement;
     protected nextOrderPositionInput: HTMLInputElement;
+    protected isContainerUsedInput: HTMLInputElement;
     protected confirmButtonForScannedContainers: HTMLButtonElement;
     protected listOfContainersHolder: HTMLElement;
     protected listContainersShelf: HTMLElement;
@@ -33,13 +34,15 @@ export default class ContainerScanOrder extends Component {
         this.applicationUrl = new URL(window.location.href);
         this.containerTransfer = new Array<containerTransfer>();
         this.popupUiErrorInfo = {};
+        this.nextOrderPosition = 0;
         this.nextOrderPositionInput = <HTMLInputElement>this.querySelector('input[name=nextOrderPosition]');
+        this.isContainerUsedInput = <HTMLInputElement>this.querySelector('input[name=isContainerUsed]');
         this.form = this.querySelector('#frm_scanContainerOrder');
         this.popupUiError = this.querySelector('.popup-ui-error');
         this.existingContainers = JSON.parse(this.form.getAttribute('data-containers'));
         this.allPacksForCustomerNumber = this.querySelector('.checkbox-holder input[type=checkbox]');
         this.listContainersShelf = this.querySelector('.list-containers-shelf');
-        this.confirmButtonForScannedContainers = this.parentElement.querySelector('#confirm-scan-containers button')
+        this.confirmButtonForScannedContainers = this.parentElement.querySelector('#confirm-scan-containers button');
         this.inputScanner = this.querySelector('#input_scanner');
         this.orderReferenceNumber = this.inputScanner.previousElementSibling.querySelector('.order-reference-holder').innerHTML;
         this.listOfContainersHolder = this.querySelector('.list-containers-holder');
@@ -51,7 +54,7 @@ export default class ContainerScanOrder extends Component {
                 orderReference: this.orderReferenceNumber,
                 containers: []
             }
-        )
+        );
         this.containerInput.value = JSON.stringify(this.containerTransfer);
         this.nextOrderPosition = parseInt(this.nextOrderPositionInput.value);
         this.inputScanner.focus();
@@ -65,23 +68,26 @@ export default class ContainerScanOrder extends Component {
 
             if(!this.atLeastOneContainerIsAdded(this.listOfContainersHolder, this.listContainersShelf)) {
                 e.preventDefault();
-                this.showPopUpErrorMessageForNonValidContainer();
+                // this.showPopUpErrorMessageForNonValidContainer();
                 this.clearInputField(this.inputScanner);
                 return false;
             }
 
             this.confirmButtonForScannedContainers.classList.add('button--disabled');
-            this.nextOrderPosition = ++this.nextOrderPosition;
+            const isUsedContainer = this.isContainerUsedInput.value;
+            if (!(Boolean(parseInt(isUsedContainer)))) {
+                this.nextOrderPosition = (this.nextOrderPosition += 1);
+            }
             this.nextOrderPositionInput.value = String(this.nextOrderPosition);
 
-        })
+        });
     }
 
     protected atLeastOneContainerIsAdded(listOfContainersHolder, listContainersShelf) {
          return (listOfContainersHolder.childElementCount != 0 || listContainersShelf.childElementCount != 0);
     }
 
-    protected toggleConfirmButton(event):void {
+    protected toggleConfirmButton(event): void {
         let isChecked = event.target.checked;
 
         if(isChecked) {
@@ -108,14 +114,6 @@ export default class ContainerScanOrder extends Component {
                 this.showPopUpErrorMessageForNonValidContainer();
                 return;
             }
-
-            let containerExists = this.containerExists(formattedContainerInput, this.orderReferenceNumber);
-
-            if(containerExists) {
-               this.showPopUpErrorMessage();
-               return;
-            }
-
             this.updateContainerInputFieldValue(formattedContainerInput, 'ADD_CONTAINER');
 
             let containerHolder = this.createContainerHolder(formattedContainerInput);

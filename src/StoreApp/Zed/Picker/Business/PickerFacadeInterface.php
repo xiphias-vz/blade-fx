@@ -121,6 +121,23 @@ interface PickerFacadeInterface
     public function setContainerToOrder(PickingOrderTransfer $order, string $containerId, string $shelfId): bool;
 
     /**
+     * @param string $containerID
+     * @param string $merchantReference
+     * @param int $idSalesOrder
+     *
+     * @return string|null
+     */
+    public function checkContainerUsage(string $containerID, string $merchantReference, int $idSalesOrder): ?string;
+
+    /**
+     * @param string $isContainerInUseMessage
+     * @param string $containerCode
+     *
+     * @return string
+     */
+    public function formatErrorMessage(string $isContainerInUseMessage, string $containerCode): string;
+
+    /**
      * @param int $quantityPicked
      * @param int $weight
      *

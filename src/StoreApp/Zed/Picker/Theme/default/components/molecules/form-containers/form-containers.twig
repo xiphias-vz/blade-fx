@@ -9,6 +9,8 @@
 {% define data = {
     formContainers: required,
     containerCount: containerCount | default(null),
+    isUsedContainerMessage: isUsedContainerMessage | default(null),
+    isErrorTrue: isErrorTrue | default(null)
 } %}
 
 {% define attributes = {
@@ -16,9 +18,11 @@
 } %}
 
 {% block body %}
+    <input type="hidden" name="addedContainers" value="">
     {% embed molecule('popup-ui-error') with {
         data: {
-            isErrorTrue: 0,
+            isErrorTrue: data.isErrorTrue,
+            isUsedContainerMessage: data.isUsedContainerMessage,
             buttons: {
                 submit: {
                     isButton: true,

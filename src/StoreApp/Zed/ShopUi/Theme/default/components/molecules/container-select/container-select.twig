@@ -7,8 +7,9 @@
 {% define data = {
     containerInfo: containerInfo | default(null),
     pickingForm: pickingForm | default(null),
-    listOfUsedContainers: listOfUsedContainers | default(null),
     containerCount: containerCount | default(null),
+    isUsedContainerMessage: isUsedContainerMessage | default(null),
+    isErrorTrue: isErrorTrue | default(null),
 } %}
 
 {% block body %}
@@ -53,11 +54,10 @@
             data: {
                 formContainers: data.pickingForm.field_sales_order_containers,
                 containerCount: data.containerCount,
+                isUsedContainerMessage: data.isUsedContainerMessage,
+                isErrorTrue: data.isErrorTrue
             },
-            attributes: {
-                'data-listOfUsedContainers': data.listOfUsedContainers,
 
-            },
         } only %}
     </div>
 {% endblock %}

@@ -9,7 +9,9 @@
     formatStartPickingTokenName: formatStartPickingTokenName,
     formatStopPickingTokenName: formatStopPickingTokenName,
     pickingForm: pickingForm,
-    urlContainerSelect: urlContainerSelect
+    urlContainerSelect: urlContainerSelect,
+    isContainerInUseMessage: isContainerInUseMessage | default(null),
+    isErrorTrue: isErrorTrue | default(0)
 } %}
 
 {% block header %}
@@ -24,7 +26,11 @@
         } only %}
     {% endfor %}
 {% endblock %}
-
+{% if data.isContainerInUseMessage  %}
+    {% set isErrorTrue = true %}
+    {% else %}
+        {% set isErrorTrue = false %}
+{% endif %}
 {% block content %}
         <form action="{{ data.urlContainerSelect }}" method="post" id="containersSelectForm">
             {% for pickingOrder in data.pickingOrders %}
@@ -33,8 +39,9 @@
                     data: {
                         containerInfo: data.containerInfo,
                         pickingForm: data.pickingForm,
-                        listOfUsedContainers: pickingOrder.listOfUsedContainers,
-                        containerCount: pickingOrder.containerCount
+                        containerCount: pickingOrder.containerCount,
+                        isErrorTrue: isErrorTrue,
+                        isUsedContainerMessage: data.isContainerInUseMessage
                     },
                 } only %}
             <br />

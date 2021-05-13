@@ -171,6 +171,36 @@ class PickerFacade extends AbstractFacade implements PickerFacadeInterface
     }
 
     /**
+     * @param string $containerID
+     * @param string $merchantReference
+     * @param int $idSalesOrder
+     *
+     * @return string|null
+     */
+    public function checkContainerUsage(string $containerID, string $merchantReference, int $idSalesOrder): ?string
+    {
+        return $this
+            ->getFactory()
+            ->createPickingHeaderTransferData()
+            ->checkContainerUsage($containerID, $merchantReference, $idSalesOrder);
+    }
+
+    /**
+     * @param string $isContainerInUseMessage
+     * @param string $containerCode
+     *
+     * @return string
+     */
+    public function formatErrorMessage(string $isContainerInUseMessage, string $containerCode): string
+    {
+        $isContainerInUseMessage = $containerCode . ',' . $isContainerInUseMessage;
+        $isContainerInUseMessageToArray = explode(',', $isContainerInUseMessage);
+
+        return $isContainerInUseMessageToArray[0] . ' ist bereits für Kunde ' . $isContainerInUseMessageToArray[2] .
+            ' bestellung ' . $isContainerInUseMessageToArray[1] . ' aktiviert';
+    }
+
+    /**
      * @param int $quantityPicked
      * @param int $weight
      *

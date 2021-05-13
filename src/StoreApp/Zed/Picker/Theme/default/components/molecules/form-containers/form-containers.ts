@@ -9,6 +9,8 @@ export default class FormContainers extends Component {
     addFormButton: HTMLButtonElement;
     closeButtonError: HTMLButtonElement;
     submitButtonContainers: HTMLButtonElement;
+    addedContainersInputField: HTMLInputElement;
+    addedContainers: [];
     formItemCandidate: string;
     formIndex: number;
     form: HTMLFormElement;
@@ -20,12 +22,14 @@ export default class FormContainers extends Component {
     countSigns: number = 0;
     inputPress: number = 0;
     protected barcodePrefix: string = '/x11';
-    protected savedInputValue: string = "";
-    protected savedInputId: string = "";
+    protected savedInputValue: string = '';
+    protected savedInputId: string = '';
 
     protected readyCallback(): void {
         this.popUpUiError = <HTMLElement>document.getElementsByClassName('popup-ui-error')[0];
         this.popUpUiInfo = <HTMLElement>document.getElementsByClassName('popup-ui-info')[0];
+        this.addedContainers = [];
+        this.addedContainersInputField = <HTMLInputElement>document.querySelector('input[name=addedContainers]');
         this.orderId = <HTMLInputElement>document.getElementById('idOrder');
         this.containerFormsWrapper = <HTMLElement>document.getElementById('order_item_selection_form_field_sales_order_containers');
         this.addFormButton = <HTMLButtonElement>this.getElementsByClassName(`${this.jsName}__add-container`)[0];
@@ -58,7 +62,7 @@ export default class FormContainers extends Component {
     protected onTriggerAddFormButtonClick(): void {
         this.inputPress = 3;
         if (this.savedInputValue != ""){
-            this.checkContainerId(this.savedInputValue, this.savedInputId, this.inputPress)
+            this.validateAndAddNewContainerField(this.savedInputValue, this.savedInputId, this.inputPress)
         }
     }
 
@@ -75,7 +79,7 @@ export default class FormContainers extends Component {
         this.countSigns = this.savedInputValue.length;
         if (this.countSigns == 8)
         {
-            this.checkContainerId(this.savedInputValue, this.savedInputId, this.inputPress);
+            this.validateAndAddNewContainerField(this.savedInputValue, this.savedInputId, this.inputPress);
         }
         else if (this.countSigns == 0 && (this.containerCount > 0 || this.countInputedContainers > 0 ))
         {
@@ -137,7 +141,7 @@ export default class FormContainers extends Component {
             event.preventDefault();
             let inputValue = (<HTMLInputElement>event.target).value;
             let inputId = (<HTMLInputElement>event.target).id;
-            this.checkContainerId(inputValue, inputId, this.inputPress);
+            this.validateAndAddNewContainerField(inputValue, inputId, this.inputPress);
         }
     }
 
@@ -181,77 +185,31 @@ export default class FormContainers extends Component {
         formLastItem.focus();
     }
 
-    protected checkContainerId(inputValue, inputId, inputPress): void
+    protected validateAndAddNewContainerField(inputValue, inputId, inputPress): void
     {
         if (inputValue.length != 8)
         {
             this.popUpUiError.querySelector("#firstBlock").innerHTML = `Container-ID muss 8 Zeichen haben`;
             this.popUpUiError.querySelector("#secondBlock").innerHTML = ``;
             this.popUpUiError.classList.add('popup-ui-error--show');
-        }
-        else{
-        let checkCurrentOrderId = this.orderId.value;
-        let isMatchByOrder = [];
-        const $searchFields = <$>$(document).find(this.searchItemsListSelector);
-        const $inputValue = inputValue;
-        if ($inputValue != "") {
-            $searchFields.each((index: number, searchItem: HTMLElement) => {
-                const $searchItem = $(searchItem);
-                isMatchByOrder = $searchItem.data('listofusedcontainers');
-            });
-            let flag = 0;
-            let valueFirstBlock = "";
-            let valueSecondBlock = "";
-            let valueSecondBlockOrderNumber = "";
-            let valueContainerOnCustomer = "";
-            $.each(isMatchByOrder, function(i, val) {
-                if (val['ContainerCode'] == $inputValue && $inputValue != "" && val["FkSalesOrder"] != checkCurrentOrderId) {
-                    valueFirstBlock = val['ContainerCode'];
-                    valueSecondBlock = val['FkSalesOrder'];
-                    valueContainerOnCustomer = "";
-                    flag = 1;
-                    return;
+        } else{
+            if (inputValue !== '') {
+                if (this.countSigns === 8 && inputPress === 2) {
+                    this.fullForm.submit();
+
+                }else {
+                    this.countInputedContainers = this.countInputedContainers +1;
+                    this.addedContainers.push(inputValue);
+                    this.addedContainersInputField.value = JSON.stringify(this.addedContainers);
+                    this.addNewContainerForm();
                 }
-                else if (val['ContainerCode'] == $inputValue && $inputValue != "" && val["FkSalesOrder"] == checkCurrentOrderId) {
-                    valueFirstBlock = val['ContainerCode'];
-                    valueSecondBlock = val['ShelfCode'];
-                    valueSecondBlockOrderNumber = val['FkSalesOrder'];
-                    flag = 2;
-                    return;
-                }
-            });
-             if (flag == 1) {
-                 document.getElementById(inputId).value = "";
-                 this.popUpUiError.querySelector("#firstBlock").innerHTML = `Container: <strong>${ valueFirstBlock }</strong>`;
-                 this.popUpUiError.querySelector("#secondBlock").innerHTML = `Bereits Für Kunde <strong>${ valueContainerOnCustomer }</strong> <br> Bestellung: <strong>${ valueSecondBlock }</strong> genutzt`;
-                 this.popUpUiError.classList.add('popup-ui-error--show');
-             }
-             else if (flag == 2){
-                 document.getElementById(inputId).value = "";
-                 this.popUpUiInfo.querySelector("#firstBlock").innerHTML = `Container: <strong>${ valueFirstBlock }</strong>`;
-                 this.popUpUiInfo.querySelector("#secondBlock").innerHTML = `Lagerplatz: <strong>${ valueSecondBlock }</strong> <br> Bestellnummer: <strong>${ valueSecondBlockOrderNumber }</strong>`;
-                 this.popUpUiInfo.classList.add('popup-ui-info--show');
-                 setTimeout(() => {
-                     this.popUpUiInfo.classList.remove('popup-ui-info--show');
-                 }, 5000)
-             }
-             else {
-                 if (this.countSigns == 8 && inputPress == 2)
-                 {
-                     this.fullForm.submit();
-                 }
-                 else {
-                     this.countInputedContainers = this.countInputedContainers +1;
-                     this.addNewContainerForm();
-                 }
-             }
-        }
+            }
         }
     }
 
     protected focusFirstContainerInputElement(): void
     {
-        let element = document.getElementById('order_item_selection_form_field_sales_order_containers_0_container_code');
+        const element = document.getElementById('order_item_selection_form_field_sales_order_containers_0_container_code');
         element.focus();
     }
 

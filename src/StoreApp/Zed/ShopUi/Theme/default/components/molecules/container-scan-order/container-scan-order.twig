@@ -9,13 +9,13 @@
     idOrderReference: 0,
     itemSku: 0,
     usedContainersWithShelf:[],
-    listOfContainers:'',
     nextOrderPosition: 0,
     orderPosition: 0,
     orderItemPosition: 0,
     pickingColor:[],
     requestFromPickingArticles: '',
-    redirectToPickingArticles: ''
+    redirectToPickingArticles: '',
+    isContainerUsed: '',
 } %}
 
 {% block body %}
@@ -51,7 +51,7 @@
             },
         } only %}
     </div>
-    <form id="frm_scanContainerOrder" method="post" data-containers="{{ data.listOfContainers }}">
+    <form id="frm_scanContainerOrder" method="post" >
         <input type="hidden" name="formAddContainerSku" value="{{ data.requestFromPickingArticles }}">
         <input type="hidden" name="redirectToPickingArticles" value="{{ data.redirectToPickingArticles }}">
         <input type="hidden" name="idContainers" value="[]">
@@ -59,6 +59,7 @@
         <input type="hidden" name="orderPosition" value="{{ data.orderPosition }}">
         <input type="hidden" name="orderItemPosition" value="{{ data.orderItemPosition }}">
         <input type="hidden" name="nextOrderPosition" value="{{ data.nextOrderPosition }}">
+        <input type="hidden" name="isContainerUsed" value="{{ data.isContainerUsed }}">
         <div class="box">
             <div class="sub-box">
                 <p style="font-weight: bold;margin: 0">{{ 'picking.app.containers.select.title' | trans }}</p>

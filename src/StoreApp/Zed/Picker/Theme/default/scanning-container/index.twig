@@ -3,14 +3,17 @@
 {% define data = {
     merchant: merchant,
     orderForScanningContainer: orderForScanningContainer,
-    listOfContainers: listOfContainers,
     nextOrderPosition: nextOrderPosition,
     orderPosition: orderPosition,
     orderItemPosition: orderPosition,
     requestFromPickingArticles: requestFromPickingArticles,
     redirectToPickingArticles: redirectToPickingArticles,
-    itemSku: itemSku
+    itemSku: itemSku,
+    isContainerUsed: isContainerUsed | default(null),
+    isUsedContainerMessage: isUsedContainerMessage,
 } %}
+
+
 
 {% block header %}
     {#  TODO: Add this '/picker/select-picking-zone?multi_picking=1' in the buttonUrl after issue 533 is finished#}
@@ -26,6 +29,20 @@
 
 
 {% block content %}
+        {% embed molecule('popup-ui-error') with {
+            data: {
+                isErrorTrue: data.isContainerUsed,
+                isUsedContainerMessage: data.isUsedContainerMessage,
+                buttons: {
+                    submit: {
+                        isButton: true,
+                        additionalClass: 'js-pick-products__submit',
+                    },
+                },
+            },
+        } only %}
+    {% endembed %}
+
     {% include molecule('container-color') with {
         data: {
             colorCode: data.orderForScanningContainer.pickingColor.backColor,
@@ -42,10 +59,10 @@
             idOrderReference: data.orderForScanningContainer.orderReference,
             itemSku: itemSku,
             usedContainersWithShelf: data.orderForScanningContainer.pickingContainers,
-            listOfContainers: data.listOfContainers,
             pickingColor: data.orderForScanningContainer.pickingColor,
             requestFromPickingArticles: requestFromPickingArticles,
-            redirectToPickingArticles: redirectToPickingArticles
+            redirectToPickingArticles: redirectToPickingArticles,
+            isContainerUsed: data.isContainerUsed,
         }
     } only %}
 {% endblock content %}
