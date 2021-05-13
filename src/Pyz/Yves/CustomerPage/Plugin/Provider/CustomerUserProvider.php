@@ -7,6 +7,7 @@
 
 namespace Pyz\Yves\CustomerPage\Plugin\Provider;
 
+use ArrayObject;
 use Elastica\JSON;
 use Generated\Shared\Transfer\CustomerTransfer;
 use Pyz\Shared\Customer\CustomerConstants;
@@ -45,12 +46,16 @@ class CustomerUserProvider extends SprykerCustomerUserProvider
             try {
                 $customerTransfer = parent::loadCustomerByEmail($email);
                 $customerTransfer = $customerTransferCustom->fromProfileEvent($accountInfo, $customerTransfer);
+                if (empty($customerTransfer->getCity())) {
+                    $customerTransfer = $this->populateCustomerAddress($customerTransfer);
+                }
                 $user = $this->getFactory()->createSecurityUser($customerTransfer);
                 $encoder = $this->getContainer()->get('security.encoder_factory');
                 $encodedPass = $encoder->getEncoder($user)->encodePassword($pass, $user->getSalt());
                 if ($customerTransfer->getPassword() != $encodedPass) {
                     $customerTransfer->setPassword($encodedPass);
                 }
+
                 $this->getFactory()->getCustomerClient()->updateCustomer($customerTransfer);
                 $profile = new ProfileController();
                 $profile->processProfileUpdateByTransfer($customerTransfer, false);
@@ -76,6 +81,31 @@ class CustomerUserProvider extends SprykerCustomerUserProvider
             }
         } else {
             throw new AuthenticationException(self::ERROR_NOT_VERIFIED_CUSTOMER);
+        }
+
+        return $customerTransfer;
+    }
+
+    /**
+     * @param \Generated\Shared\Transfer\CustomerTransfer $customerTransfer
+     *
+     * @return \Generated\Shared\Transfer\CustomerTransfer
+     */
+    private function populateCustomerAddress(CustomerTransfer $customerTransfer): CustomerTransfer
+    {
+        $addresses = $this->getFactory()->getCustomerClient()->getAddresses($customerTransfer);
+        foreach ($addresses->getAddresses() as $address) {
+            if ($address->getIdCustomerAddress() == $customerTransfer->getDefaultBillingAddress()) {
+                $customerTransfer->setBillingAddress(new ArrayObject([$address]));
+                $customerTransfer
+                    ->setCity($address->getCity())
+                    ->setAddress1($address->getAddress1())
+                    ->setAddress2($address->getAddress2())
+                    ->setZipCode($address->getZipCode());
+            }
+            if ($address->getIdCustomerAddress() == $customerTransfer->getDefaultShippingAddress()) {
+                $customerTransfer->setShippingAddress(new ArrayObject([$address]));
+            }
         }
 
         return $customerTransfer;
