@@ -439,7 +439,7 @@ class PickingHeaderTransferData
                         , m.is_cancelled
                         , m.status, m.last_picked_at, m.min_weight
                         , m.max_weight, m.total_weight
-                        , i.external_url_small
+                        , i.external_url_small as picture_url
                 FROM
                     (
                     select sso.id_sales_order as id_order, sso.order_reference, min(ssoi.id_sales_order_item) as id_order_item
