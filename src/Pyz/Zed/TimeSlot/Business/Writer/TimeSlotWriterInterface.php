@@ -31,12 +31,13 @@ interface TimeSlotWriterInterface
     /**
      * @param string $merchantReference
      * @param string $date
+     * @param string $day
      * @param string $time
      * @param string $capacity
      *
      * @return int
      */
-    public function saveTimeSlotsDataForDate(string $merchantReference, string $date, string $time, string $capacity): int;
+    public function saveTimeSlotsDataForDate(string $merchantReference, string $date, string $day, string $time, string $capacity): int;
 
     /**
      * @param string $merchantReference

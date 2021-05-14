@@ -80,38 +80,38 @@ class IndexController extends SprykerIndexController
             $capacityToSave = current($value);
 
             $pieces = explode("_", $timeSlotTimeDate);
-            $date = $pieces[0]; // piece1
-            $day = $pieces[1]; // piece1
-            $isDefault = $pieces[3]; // piece1
+            $date = $pieces[0];
+            $day = $pieces[1];
+            $timeIndex = $pieces[2];
+            $isDefault = $pieces[3];
 
-            switch ($pieces[2]) {
-                case '0':
-                    $timeSlot = '10:00-12:00';
-                    break;
-                case '1':
-                    $timeSlot = '12:00-14:00';
-                    break;
-                case '2':
-                    $timeSlot = '14:00-16:00';
-                    break;
-                case '3':
-                    $timeSlot = '16:00-18:00';
-                    break;
-                case '4':
-                    $timeSlot = '18:00-20:00';
-                    break;
-                default:
-                    $timeSlot = '';
-            }
+            $timeSlot = $this->getTimeSlotByIndex($timeIndex);
 
             if ($formToSave == "ByDate") {
                 if ($isDefault == "defaultTable") {
-                    $response = $this->getFactory()->getTimeSlotsFacade()->setDefaultTimeSlotsForSelectedDate($date, $day, $timeSlot, $capacityToSave);
+                    $tsForDate = $this->getFactory()->getTimeSlotsFacade()->getTimeSlotsForSpecificDateAndDay($date, $day);
+                    if (count($tsForDate) > 0) {
+                        $response = $this->getFactory()->getTimeSlotsFacade()->setTimeSlotsForSelectedDate($date, $day, $timeSlot, $capacityToSave);
+                    } else {
+                        $capacitiesFromDefaultDay = $this->getFactory()->getTimeSlotsFacade()->getTimeSlotCapacityForDefaultDay($date, $day);
+
+                        for ($timeId = 0; $timeId < 5; $timeId++) {
+                            $time = $this->getTimeSlotByIndex($timeId);
+                            $capacity = "";
+                            if ($timeSlot == $time) {
+                                $capacity = $capacityToSave;
+                            } else {
+                                $capacity = $capacitiesFromDefaultDay[$timeId]["Capacity"];
+                            }
+
+                            $response = $this->getFactory()->getTimeSlotsFacade()->setDefaultTimeSlotsForSelectedDate($date, $day, $time, $capacitiesFromDefaultDay[$timeId]["Capacity"]);
+                        }
+                    }
                 } else {
-                    $response = $this->getFactory()->getTimeSlotsFacade()->setTimeSlotsForSelectedDate($date, $timeSlot, $capacityToSave);
+                    $response = $this->getFactory()->getTimeSlotsFacade()->setTimeSlotsForSelectedDate($date, $day, $timeSlot, $capacityToSave);
                 }
             } elseif ($formToSave == "DefaultByStore") {
-                $response = $this->getFactory()->getTimeSlotsFacade()->setTimeSlotsForSelectedStore($selectedStore, $date, $timeSlot, $capacityToSave);
+                $response = $this->getFactory()->getTimeSlotsFacade()->setTimeSlotsForSelectedStore($selectedStore, $day, $timeSlot, $capacityToSave);
             } else {
                 $response = 0;
             }
@@ -208,5 +208,36 @@ class IndexController extends SprykerIndexController
         $response = $newArray;
 
         return new JsonResponse($response);
+    }
+
+    /**
+     * @param string $indexOfTime
+     *
+     * @return string
+     */
+    public function getTimeSlotByIndex(string $indexOfTime): string
+    {
+        $timeSlotsArr = ['10:00-12:00', '12:00-14:00', '14:00-16:00', '16:00-18:00', '18:00-20:00'];
+
+        return $timeSlotsArr[$indexOfTime];
+//        switch ($indexOfTime) {
+//            case '0':
+//                $timeSlot = '10:00-12:00';
+//                break;
+//            case '1':
+//                $timeSlot = '12:00-14:00';
+//                break;
+//            case '2':
+//                $timeSlot = '14:00-16:00';
+//                break;
+//            case '3':
+//                $timeSlot = '16:00-18:00';
+//                break;
+//            case '4':
+//                $timeSlot = '18:00-20:00';
+//                break;
+//            default:
+//                $timeSlot = '';
+//        }
     }
 }

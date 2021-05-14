@@ -125,17 +125,18 @@ class TimeSlotFacade extends AbstractFacade implements TimeSlotFacadeInterface
 
     /**
      * @param string $date
+     * @param string $day
      * @param string $time
      * @param string $capacity
      *
      * @return int
      */
-    public function setTimeSlotsForSelectedDate(string $date, string $time, string $capacity): int
+    public function setTimeSlotsForSelectedDate(string $date, string $day, string $time, string $capacity): int
     {
         $currentStore = $this->getFactory()->getStoreClient()->getCurrentStore()->getName();
         $merchantReference = $this->getFactory()->createTimeSlotReader()->getMerchantReferenceByStoreName($currentStore);
 
-        return $this->getFactory()->createTimeSlotWriter()->saveTimeSlotsDataForDate($merchantReference, $date, $time, $capacity);
+        return $this->getFactory()->createTimeSlotWriter()->saveTimeSlotsDataForDate($merchantReference, $date, $day, $time, $capacity);
     }
 
     /**
@@ -163,5 +164,33 @@ class TimeSlotFacade extends AbstractFacade implements TimeSlotFacadeInterface
         $merchantReference = $this->getFactory()->createTimeSlotReader()->getMerchantReferenceByStoreName($currentStore);
 
         return $merchantReference;
+    }
+
+    /**
+     * @param string $date
+     * @param string $day
+     *
+     * @return array
+     */
+    public function getTimeSlotsForSpecificDateAndDay(string $date, string $day): array
+    {
+        $currentStore = $this->getFactory()->getStoreClient()->getCurrentStore()->getName();
+        $result = $this->getFactory()->createTimeSlotReader()->getTimeSlotsForSpecificDateAndDay($currentStore, $date, $day);
+
+        return $result;
+    }
+
+    /**
+     * @param string $store
+     * @param string $day
+     *
+     * @return array
+     */
+    public function getTimeSlotCapacityForDefaultDay(string $store, string $day): array
+    {
+        $currentStore = $this->getFactory()->getStoreClient()->getCurrentStore()->getName();
+        $merchantReference = $this->getFactory()->createTimeSlotReader()->getMerchantReferenceByStoreName($currentStore);
+
+        return $this->getFactory()->createTimeSlotReader()->getTimeSlotCapacityForDefaultDay($merchantReference, $day);
     }
 }

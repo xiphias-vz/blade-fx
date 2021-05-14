@@ -57,4 +57,21 @@ interface TimeSlotReaderInterface
      * @return int
      */
     public function getMerchantReferenceByStoreName(string $currentStore): int;
+
+    /**
+     * @param string $currentStore
+     * @param string $date
+     * @param string $day
+     *
+     * @return array
+     */
+    public function getTimeSlotsForSpecificDateAndDay(string $currentStore, string $date, string $day): array;
+
+    /**
+     * @param string $store
+     * @param string $day
+     *
+     * @return array
+     */
+    public function getTimeSlotCapacityForDefaultDay(string $store, string $day): array;
 }

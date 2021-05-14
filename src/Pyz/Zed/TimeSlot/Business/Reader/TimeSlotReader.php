@@ -244,4 +244,47 @@ class TimeSlotReader implements TimeSlotReaderInterface
 
         return $merchantReference;
     }
+
+    /**
+     * @param string $currentStore
+     * @param string $date
+     * @param string $day
+     *
+     * @return array
+     */
+    public function getTimeSlotsForSpecificDateAndDay(string $currentStore, string $date, string $day): array
+    {
+        $merchantReference = $this->getMerchantReferenceByStoreName($currentStore);
+
+        $query = new PyzTimeSlotQuery();
+        $result = $query->filterByMerchantReference_Like($merchantReference)
+            ->filterByDate_Like($date)
+            ->filterByDay_Like($day)
+            ->orderByTimeSlot()
+            ->find()
+            ->toArray();
+
+        return $result;
+    }
+
+    /**
+     * @param string $store
+     * @param string $day
+     *
+     * @return array
+     */
+    public function getTimeSlotCapacityForDefaultDay(string $store, string $day): array
+    {
+        $query = new PyzTimeSlotQuery();
+        $result = $query
+            ->filterByMerchantReference_Like($store)
+            ->filterByDay_Like($day)
+            ->where(PyzTimeSlotTableMap::COL_DATE . ' is null or ' . PyzTimeSlotTableMap::COL_DATE . ' = ""')
+            ->orderByDate()
+            ->orderByTimeSlot()
+            ->find()
+            ->toArray();
+
+        return $result;
+    }
 }

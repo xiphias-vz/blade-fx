@@ -39,3 +39,4 @@ date_from,Datum von
 date_to,Datum bis
 select,Auswählen
 edit_days,Tage bearbeiten
+timeslot_capacites_edit_warning,"ACHTUNG: ""Sie ändern die Kapazitäten für den Standardplan"""
