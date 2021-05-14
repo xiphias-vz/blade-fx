@@ -24,17 +24,21 @@ export default class PopupUiStoreSwitcher extends Component{
     protected mapEvents(): void {
         let store_value = this.currentStoreValue;
         let store_value_exist = false;
+        let store_value_protected = false;
         Array.from(this.selectStore).forEach(function(option_element) {
             if(store_value != "" && store_value != null){
                 if(option_element.value.includes(store_value)) {
                     store_value_exist = true;
+                    if(option_element.getAttribute('is_password_protected')){
+                        store_value_protected = true;
+                    }
                 }
             }
         });
         this.buttonForStoreSwitcher.addEventListener('click', this.onClickButtonSave);
         this.storeSwitcherPassword.addEventListener('keypress', event => this.checkIfPressEnter(event));
 
-        if (this.currentStoreValue == null || this.currentStoreValue == "" || store_value_exist == false){
+        if (this.currentStoreValue == null || this.currentStoreValue == "" || store_value_exist == false || store_value_protected == true){
             this.openModal();
         }
     }

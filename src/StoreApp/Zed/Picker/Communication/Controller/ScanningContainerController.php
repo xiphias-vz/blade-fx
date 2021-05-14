@@ -105,7 +105,7 @@ class ScanningContainerController extends AbstractController
                                 ]);
                             } else {
                                 $this->getFacade()->setContainerToOrder($orderForScanningContainer, $containerId, '');
-                                if ($isContainerUsed) {
+                                if ($isContainerUsed == 1) {
                                     $isContainerUsed = 0;
                                 }
                             }
