@@ -47,6 +47,7 @@ class ScanningContainerController extends AbstractController
         $isContainerUsed = $request->get(static::IS_CONTAINER_USED) == null ?
             0 : (int)$request->get(static::IS_CONTAINER_USED);
         $submittedContainers = json_decode($request->get(static::CONTAINERS_ID)) ?? [];
+        $merchant = $this->getMerchantFromRequest($request)->getMerchantReference();
 
         $usedError = '';
         $isContainerUsed = 0;
@@ -54,13 +55,35 @@ class ScanningContainerController extends AbstractController
             $orderForScanningContainer = $this->handleRequestFromPickingArticlesAndGetOrder($request, $transfer);
 
             if ($request->get(static::REDIRECT_TO_PICKING_ARTICLES)) {
+                foreach ($submittedContainers as $container) {
+                    foreach ($container->containers as $containerId) {
+                        $usedError = $this->getFacade()->checkContainerUsage($containerId, $merchant, $orderForScanningContainer->getIdOrder());
+                        if (!empty($usedError)) {
+                            $isContainerUsed = 1;
+                            $usedError = $this->getFacade()->formatErrorMessage($usedError, $containerId);
+
+                            return $this->viewResponse([
+                                'isContainerUsed' => $isContainerUsed,
+                                'orderForScanningContainer' => $orderForScanningContainer,
+                                'itemSku' => $request->get(static::ORDER_ITEM_SKU),
+                                'requestFromPickingArticles' => $request->get(static::REQUEST_FROM_ADD_CONTAINER_IN_SKU),
+                                'redirectToPickingArticles' => $request->get(static::REQUEST_FROM_ADD_CONTAINER_IN_SKU) == 1,
+                                'orderPosition' => $request->get(static::ORDER_POSITION),
+                                'orderItemPosition' => $request->get(static::ORDER_ITEM_POSITION),
+                                'nextOrderPosition' => $nextOrderPosition,
+                                'merchant' => $this->getMerchantFromRequest($request),
+                                'isUsedContainerMessage' => $usedError,
+                            ]);
+                        }
+                    }
+                }
+
                 return $this->setContainersToOrderAndRedirectToPickingArticles($request, $transfer);
             }
 
             if ($orderForScanningContainer == null) {
                 if (count($submittedContainers)) {
                     $orderForScanningContainer = $transfer->getOrder($nextOrderPosition);
-                    $merchant = $this->getMerchantFromRequest($request)->getMerchantReference();
                     foreach ($submittedContainers as $container) {
                         foreach ($container->containers as $containerId) {
                             $usedError = $this->getFacade()->checkContainerUsage($containerId, $merchant, $orderForScanningContainer->getIdOrder());
@@ -82,7 +105,7 @@ class ScanningContainerController extends AbstractController
                                 ]);
                             } else {
                                 $this->getFacade()->setContainerToOrder($orderForScanningContainer, $containerId, '');
-                                if ($isContainerUsed == 1) {
+                                if ($isContainerUsed) {
                                     $isContainerUsed = 0;
                                 }
                             }
