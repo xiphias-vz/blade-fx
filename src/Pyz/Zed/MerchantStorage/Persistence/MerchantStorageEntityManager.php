@@ -19,7 +19,7 @@ class MerchantStorageEntityManager extends AbstractEntityManager implements Merc
     protected const ID_MERCHANT = 'idMerchant';
     protected const MERCHANT_SHORT_NAME = 'merchant_short_name';
     protected const MERCHANT_IS_AVAILABLE = 'is_shop_visible';
-    protected const MERCHANT_IS_PASSWORD_PROTECTED = 'is_password_protected';
+    protected const MERCHANT_IS_PASSWORD_PROTECTED = 'isPasswordProtected';
     protected const MERCHANT_PASSWORD = 'shop_password';
     protected const FILIAL_NUMBER = 'fillialNumber';
 

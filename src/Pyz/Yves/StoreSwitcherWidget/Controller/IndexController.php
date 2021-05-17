@@ -24,7 +24,7 @@ class IndexController extends AbstractController
     public const URL_PARAM_PATH = 'path';
     public const FILLIAL_NUMBER = 'fillialNumber';
     public const SHOP_PASSWORD = 'shopPassword';
-    public const IS_PASSWORD_PROTECTED = 'is_password_protected';
+    public const IS_PASSWORD_PROTECTED = 'isPasswordProtected';
 
     /**
      * @param \Symfony\Component\HttpFoundation\Request $request

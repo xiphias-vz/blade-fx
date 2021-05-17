@@ -18,7 +18,7 @@ use Spryker\Yves\Kernel\Widget\AbstractWidget;
 class StoreSwitcherWidget extends AbstractWidget
 {
     public const FILLIAL_NUMBER = 'fillialNumber';
-    public const PASSWORD_PROTECTED = 'is_password_protected';
+    public const PASSWORD_PROTECTED = 'isPasswordProtected';
 
     public function __construct()
     {
