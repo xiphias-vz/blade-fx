@@ -24,7 +24,7 @@ class IndexController extends AbstractController
     public const URL_PARAM_PATH = 'path';
     public const FILLIAL_NUMBER = 'fillialNumber';
     public const SHOP_PASSWORD = 'shopPassword';
-    public const IS_PASSWORD_PROTECTED = 'isPasswordProtected';
+    public const IS_PASSWORD_PROTECTED = 'is_password_protected';
 
     /**
      * @param \Symfony\Component\HttpFoundation\Request $request
@@ -48,7 +48,7 @@ class IndexController extends AbstractController
             return $response;
         }
 
-        $visibleMerchants = $this->getFactory()->getStoreSwitcherClient()->getVisibleStores()->getVisibleStoresArray();
+        $visibleMerchants = $this->getFactory()->getMerchantStorageClient()->getMerchantsList()->getMerchants()[0]->getVisibleStoresArray();
         $merchantsFromConfig = Config::get(StoreConstants::SAP_STORE_ID_TO_STORE_MAP);
         $isPwdProtected = false;
         foreach ($visibleMerchants as $visibleStore) {

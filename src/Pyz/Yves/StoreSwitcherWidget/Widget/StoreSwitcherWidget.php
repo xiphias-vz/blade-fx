@@ -18,13 +18,11 @@ use Spryker\Yves\Kernel\Widget\AbstractWidget;
 class StoreSwitcherWidget extends AbstractWidget
 {
     public const FILLIAL_NUMBER = 'fillialNumber';
-    public const PASSWORD_PROTECTED = 'isPasswordProtected';
+    public const PASSWORD_PROTECTED = 'is_password_protected';
 
     public function __construct()
     {
-        $visibleMerchants = $this->getFactory()->getStoreSwitcherClient()->getVisibleStores();
-
-        $storeData = $visibleMerchants->getVisibleStoresArray();
+        $storeData = $this->getFactory()->getMerchantStorageClient()->getMerchantsList()->getMerchants()[0]->getVisibleStoresArray();
         $store = $this->getFactory()->getStore();
         $storeNames = $this->getConfig()->getStoreNames();
         $merchantsFromConfig = Config::get(StoreConstants::SAP_STORE_ID_TO_STORE_MAP);

@@ -16,6 +16,7 @@ class StoreSwitcherWidgetDependencyProvider extends AbstractBundleDependencyProv
     public const STORE = 'STORE';
     public const CLIENT_QUOTE = 'CLIENT_QUOTE';
     public const CLIENT_STORE = 'CLIENT_STORE';
+    public const CLIENT_MERCHANT_STORAGE = 'CLIENT_MERCHANT_STORAGE';
     public const CLIENT_STORE_SWITCHER = 'CLIENT_STORE_SWITCHER';
 
     /**
@@ -31,6 +32,21 @@ class StoreSwitcherWidgetDependencyProvider extends AbstractBundleDependencyProv
         $container = $this->addQuoteClient($container);
         $container = $this->addStoreClient($container);
         $container = $this->addStoreWidgetClient($container);
+        $container = $this->addMerchantStorageClient($container);
+
+        return $container;
+    }
+
+    /**
+     * @param \Spryker\Yves\Kernel\Container $container
+     *
+     * @return \Spryker\Yves\Kernel\Container
+     */
+    protected function addMerchantStorageClient(Container $container)
+    {
+        $container[self::CLIENT_MERCHANT_STORAGE] = function (Container $container) {
+            return $container->getLocator()->merchantStorage()->client();
+        };
 
         return $container;
     }

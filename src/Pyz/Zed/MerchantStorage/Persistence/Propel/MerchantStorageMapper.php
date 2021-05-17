@@ -70,12 +70,14 @@ class MerchantStorageMapper
     /**
      * @param \Generated\Shared\Transfer\MerchantCollectionTransfer $merchantCollectionTransfer
      * @param \Orm\Zed\MerchantStorage\Persistence\Base\PyzMerchantsListStorage $merchantsListStorage
+     * @param array|null $availableMerchants
      *
      * @return \Orm\Zed\MerchantStorage\Persistence\Base\PyzMerchantsListStorage
      */
     public function mapMerchantCollectionTransferToMerchantsListStorageEntity(
         MerchantCollectionTransfer $merchantCollectionTransfer,
-        PyzMerchantsListStorage $merchantsListStorage
+        PyzMerchantsListStorage $merchantsListStorage,
+        ?array $availableMerchants
     ): PyzMerchantsListStorage {
         $merchants = [];
 
@@ -87,6 +89,7 @@ class MerchantStorageMapper
                 MerchantTransfer::WEEK_DAYS_TIME_SLOTS => $merchant->getWeekDaysTimeSlotsRaw(),
                 MerchantTransfer::DATE_TIME_SLOTS => $merchant->getDateTimeSlotsRaw(),
                 MerchantTransfer::DELIVERY_POSTAL_CODES => $merchant->getDeliveryPostalCodes(),
+                MerchantTransfer::VISIBLE_STORES_ARRAY => $availableMerchants,
             ];
         }
 

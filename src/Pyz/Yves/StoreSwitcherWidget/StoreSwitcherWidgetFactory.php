@@ -7,6 +7,7 @@
 
 namespace Pyz\Yves\StoreSwitcherWidget;
 
+use Pyz\Client\MerchantStorage\MerchantStorageClient;
 use Pyz\Client\StoreSwitcher\StoreSwitcherClientInterface;
 use Pyz\Yves\StoreSwitcherWidget\StoreSwitcher\StoreSwitcher;
 use Spryker\Client\Quote\QuoteClientInterface;
@@ -56,6 +57,14 @@ class StoreSwitcherWidgetFactory extends AbstractFactory
     public function getStoreSwitcherClient(): StoreSwitcherClientInterface
     {
         return $this->getProvidedDependency(StoreSwitcherWidgetDependencyProvider::CLIENT_STORE_SWITCHER);
+    }
+
+    /**
+     * @return \Pyz\Client\MerchantStorage\MerchantStorageClient
+     */
+    public function getMerchantStorageClient(): MerchantStorageClient
+    {
+        return $this->getProvidedDependency(StoreSwitcherWidgetDependencyProvider::CLIENT_MERCHANT_STORAGE);
     }
 
     /**

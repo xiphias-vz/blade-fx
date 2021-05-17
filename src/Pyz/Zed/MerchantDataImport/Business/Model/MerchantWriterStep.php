@@ -62,6 +62,7 @@ class MerchantWriterStep implements DataImportStepInterface
             ->setLongitude($dataSet[MerchantDataSetInterface::LONGITUDE])
             ->setDeliveryCapacityPerSlot($dataSet[MerchantDataSetInterface::DELIVERY_CAPACITY_PER_SLOT])
             ->setPickingCapacityPerSlot($dataSet[MerchantDataSetInterface::PICKING_CAPACITY_PER_SLOT])
+            ->setMerchantShortName($dataSet[MerchantDataSetInterface::STORE])
             ->save();
     }
 
