@@ -29,6 +29,16 @@ class CatalogController extends SprykerCatalogController
      */
     protected function executeIndexAction(array $categoryNode, int $idCategoryNode, Request $request): array
     {
+        $get_query_ipp = $request->query->get('ipp');
+
+        if (!isset($_SESSION['ipp'])) {
+            $_SESSION['ipp'] = null;
+        }
+
+        if ($_SESSION['ipp'] != $get_query_ipp && $get_query_ipp == null && $_SESSION['ipp'] != null) {
+            $request->query->set('ipp', $_SESSION['ipp']);
+        }
+
         $data = parent::executeIndexAction($categoryNode, $idCategoryNode, $request);
 
         $data = $this->addCategoryImage($categoryNode, $data);
@@ -36,6 +46,8 @@ class CatalogController extends SprykerCatalogController
         $this->getFactory()->getDataDogService()->increment([
             DataDogConfig::DATA_DOG_SEARCH_STAT,
         ]);
+
+        $_SESSION['ipp'] = $data['pagination']['currentItemsPerPage'] ?? null;
 
         return $data;
     }
