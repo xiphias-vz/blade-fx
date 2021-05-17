@@ -178,6 +178,10 @@ groups:
                         store: LPZ
                         <<: *frontend-auth
                         primal: true
+                    zed.iss.shop-t.globus.de:
+                        store: ISS
+                        <<: *frontend-auth
+                        primal: true
                     zed.had.shop-t.globus.de:
                         store: HAD
                         <<: *frontend-auth
