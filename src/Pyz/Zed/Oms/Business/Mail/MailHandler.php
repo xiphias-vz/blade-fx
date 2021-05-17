@@ -385,6 +385,22 @@ class MailHandler extends SprykerMailHandler
     }
 
     /**
+     * @param \Generated\Shared\Transfer\OrderTransfer $orderTransfer
+     *
+     * @return int
+     */
+    protected function getShipmentTax(OrderTransfer $orderTransfer): int
+    {
+        foreach ($orderTransfer->getExpenses() as $expenseTransfer) {
+            if ($expenseTransfer->getType() === ShipmentConfig::SHIPMENT_EXPENSE_TYPE) {
+                return $expenseTransfer->getSumTaxAmount();
+            }
+        }
+
+        return 0;
+    }
+
+    /**
      * @param int $amount
      *
      * @return string
@@ -475,13 +491,27 @@ class MailHandler extends SprykerMailHandler
     protected function getSumTaxes(OrderTransfer $orderTransfer, string $tax): int
     {
         $result = 0;
-        foreach ($orderTransfer->getItems() as $itemTransfer) {
-            if ($itemTransfer->getCanceledAmount() == null) {
-                $itemTransfer->setCanceledAmount(0);
+
+        if ($tax == "7") {
+            foreach ($orderTransfer->getItems() as $itemTransfer) {
+                if ($itemTransfer->getCanceledAmount() == null) {
+                    $itemTransfer->setCanceledAmount(0);
+                }
+                if ($tax == $itemTransfer["taxRate"] && $itemTransfer->getCanceledAmount() < 1) {
+                    $result += $itemTransfer["sumTaxAmountFullAggregation"];
+                }
             }
-            if ($tax == $itemTransfer["taxRate"] && $itemTransfer->getCanceledAmount() < 1) {
-                $result += $itemTransfer["sumTaxAmountFullAggregation"];
+        } else {
+            $deliveryCostTax = $this->getShipmentTax($orderTransfer);
+            foreach ($orderTransfer->getItems() as $itemTransfer) {
+                if ($itemTransfer->getCanceledAmount() == null) {
+                    $itemTransfer->setCanceledAmount(0);
+                }
+                if ($tax == $itemTransfer["taxRate"] && $itemTransfer->getCanceledAmount() < 1) {
+                    $result += $itemTransfer["sumTaxAmountFullAggregation"];
+                }
             }
+            $result += $deliveryCostTax;
         }
 
         return $result;

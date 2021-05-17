@@ -74,6 +74,7 @@ class IndexController extends SprykerIndexController
         $timeSlots = json_decode($request->request->get("changedData"));
         $formToSave = $request->request->get("formToSave");
         $isSuccess = [];
+        $response = 0;
 
         foreach ($timeSlots as $key => $value) {
             $timeSlotTimeDate = key($value);
