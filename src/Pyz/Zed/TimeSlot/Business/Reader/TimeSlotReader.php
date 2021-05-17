@@ -137,10 +137,8 @@ class TimeSlotReader implements TimeSlotReaderInterface
      */
     public function getTimeSlotsForSpecificDay(string $currentStore, string $date): WeekDayTimeSlotsTransfer
     {
-        $merchantReference = $this->getMerchantReferenceByStoreName($currentStore);
-
         $query = new PyzTimeSlotQuery();
-        $queryByDatesArray = $query->filterByMerchantReference_Like($merchantReference)
+        $queryByDatesArray = $query->filterByMerchantReference_Like($currentStore)
             ->filterByDate_Like($date)
             ->orderByTimeSlot()
             ->find()
@@ -186,12 +184,10 @@ class TimeSlotReader implements TimeSlotReaderInterface
      */
     public function getTimeSlotsFilteredByDate(string $currentStore, string $dateFrom, string $dateTo): array
     {
-        $merchantReference = $this->getMerchantReferenceByStoreName($currentStore);
-
         $betweenDates = [ 'min' => $dateFrom, 'max' => $dateTo ];
 
         $query = new PyzTimeSlotQuery();
-        $result = $query->filterByMerchantReference_Like($merchantReference)
+        $result = $query->filterByMerchantReference_Like($currentStore)
             ->filterByDate_Between($betweenDates)
             ->orderByDate()
             ->orderByTimeSlot()
@@ -210,8 +206,6 @@ class TimeSlotReader implements TimeSlotReaderInterface
      */
     public function getTimeSlotCapacityCountByDate(string $currentStore, string $dateFrom, string $dateTo): array
     {
-        $merchantReference = $this->getMerchantReferenceByStoreName($currentStore);
-
         $salesShipmentQuery = new SpySalesShipmentQuery();
 
         $result = $salesShipmentQuery
@@ -220,7 +214,7 @@ class TimeSlotReader implements TimeSlotReaderInterface
             ->withColumn("count(*)", "orderCount")
             ->withColumn("SUBSTR(" . SpySalesShipmentTableMap::COL_REQUESTED_DELIVERY_DATE . ", 1, 10)", "date")
             ->withColumn("SUBSTR(" . SpySalesShipmentTableMap::COL_REQUESTED_DELIVERY_DATE . ", 12, 11)", "timeSlot")
-            ->filterByMerchantReference_Like($merchantReference)
+            ->filterByMerchantReference_Like($currentStore)
             ->groupByRequestedDeliveryDate()
             ->find()
             ->toArray();
@@ -254,10 +248,8 @@ class TimeSlotReader implements TimeSlotReaderInterface
      */
     public function getTimeSlotsForSpecificDateAndDay(string $currentStore, string $date, string $day): array
     {
-        $merchantReference = $this->getMerchantReferenceByStoreName($currentStore);
-
         $query = new PyzTimeSlotQuery();
-        $result = $query->filterByMerchantReference_Like($merchantReference)
+        $result = $query->filterByMerchantReference_Like($currentStore)
             ->filterByDate_Like($date)
             ->filterByDay_Like($day)
             ->orderByTimeSlot()

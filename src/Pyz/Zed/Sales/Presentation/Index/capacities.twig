@@ -290,7 +290,7 @@
                         </form>
                     </div>
                     <div id="infoBox">
-                        <span id="infoBoxText">{{ 'timeslot_capacites_edit_warning' | trans }}</span>
+                        <span id="infoBoxText">{{ 'timeslot_capacity_edit_warning' | trans }}</span>
                         <button id="infoBoxClose" class="close">x</button>
                     </div>
                 </div>
@@ -439,6 +439,14 @@
 
                     resetForm();
 
+                    if(formToSave === "DefaultByStore"){
+                        btnResetDefaultDayFilter.style.display = "block";
+                    }
+
+                    if(formToSave === "ByDate"){
+                        btnResetDefaultDateFilter.style.display = "block";
+                    }
+
                     if(dataParse["isSuccess"] === true){
                         infoBox.style.display = "block";
                         infoBox.style.backgroundColor = "#c1e1ca";
@@ -510,7 +518,7 @@
                             capacity.addEventListener("focusin", function (ev) {
                                 infoBox.style.display = "block";
                                 infoBox.style.backgroundColor = "#e3a858";
-                                infoBoxText.innerText = 'ACHTUNG: "Sie ändern die Kapazitäten für den Standardplan"';
+                                infoBoxText.innerText = '"Achtung: Sie ändern die Kapazitäten für einen expliziten Tag"';
                             });
                             capacity.addEventListener("focusout", function (ev) {
                                 onTableEditorInput(ev, key);
@@ -523,12 +531,13 @@
             xhttp.send(formData);
         }
 
-        function FormatByDate(dateFrom, dateTo){
+        function FormatByDate(dateFrom, dateTo, store){
             localStorage.removeItem('timeSlotCapacities');
             btnSaveChangedData.disabled = true;
             btnCancelTimeSlotChange.disabled = true;
 
             var formData = new FormData();
+            formData.append("store", store);
             formData.append("dateFrom", dateFrom);
             formData.append("dateTo", dateTo);
 
@@ -631,7 +640,7 @@
 
             infoBox.style.display = "none";
             infoBox.style.backgroundColor = "#e3a858";
-            infoBoxText.innerText = 'ACHTUNG: "Sie ändern die Kapazitäten für den Standardplan"';
+            infoBoxText.innerText = '"Achtung: Sie ändern die Kapazitäten für einen expliziten Tag"';
 
             let sumOfCapacity = document.getElementById("capacitySum_" + day);
             let oldRowCapacityValue = parseInt(ev.target.getAttribute("oldvalue"));
@@ -743,7 +752,7 @@
             {
                 FormatByStore(selectedStoreEl.value);
                 infoBox.style.backgroundColor = "#e3a858";
-                infoBoxText.innerText = 'ACHTUNG: "Sie ändern die Kapazitäten für den Standardplan"';
+                infoBoxText.innerText = '"Achtung: Sie ändern die Kapazitäten für einen expliziten Tag"';
                 savingAndMessageDiv.style.display = "flex";
                 capacitySaveBoxDiv.style.display = "block";
                 btnFilterByDate.style.display = "block";
@@ -753,9 +762,9 @@
 
             if(formToSave === "ByDate")
             {
-                FormatByDate(dateFrom.value, dateTo.value);
+                FormatByDate(dateFrom.value, dateTo.value, selectedStoreEl.value);
                 infoBox.style.backgroundColor = "#e3a858";
-                infoBoxText.innerText = 'ACHTUNG: "Sie ändern die Kapazitäten für den Standardplan"';
+                infoBoxText.innerText = '"Achtung: Sie ändern die Kapazitäten für einen expliziten Tag"';
                 savingAndMessageDiv.style.display = "flex";
                 capacitySaveBoxDiv.style.display = "block";
                 btnFilterByStore.style.display = "block";

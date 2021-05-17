@@ -218,6 +218,10 @@ $header-sticky-height: rem(69, number);
             margin-right: rem(12);
         }
 
+        .zIndex{
+            z-index: 1;
+        }
+
         @content;
     }
 }

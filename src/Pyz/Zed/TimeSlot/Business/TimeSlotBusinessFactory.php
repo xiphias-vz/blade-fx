@@ -25,6 +25,7 @@ use Pyz\Zed\TimeSlot\TimeSlotDependencyProvider;
 use Spryker\Client\Storage\StorageClientInterface;
 use Spryker\Client\Store\StoreClientInterface;
 use Spryker\Service\Synchronization\SynchronizationServiceInterface;
+use Spryker\Zed\EventBehavior\Business\EventBehaviorFacadeInterface;
 use Spryker\Zed\Kernel\Business\AbstractBusinessFactory;
 
 /**
@@ -160,5 +161,13 @@ class TimeSlotBusinessFactory extends AbstractBusinessFactory
     public function createTimeSlotReader(): TimeSlotReaderInterface
     {
         return new TimeSlotReader();
+    }
+
+    /**
+     * @return \Spryker\Zed\EventBehavior\Business\EventBehaviorFacadeInterface
+     */
+    public function getEventBehaviourFacade(): EventBehaviorFacadeInterface
+    {
+        return $this->getProvidedDependency(TimeSlotDependencyProvider::FACADE_EVENT_BEHAVIOUR);
     }
 }

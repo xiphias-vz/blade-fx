@@ -81,22 +81,25 @@ interface TimeSlotFacadeInterface
     public function setTimeSlotsForSelectedStore(string $store, string $day, string $time, string $capacity): int;
 
     /**
+     * @param string $store
      * @param string $dateFrom
      * @param string $dateTo
      *
      * @return array
      */
-    public function getTimeSlotsFilteredByDate(string $dateFrom, string $dateTo): array;
+    public function getTimeSlotsFilteredByDate(string $store, string $dateFrom, string $dateTo): array;
 
     /**
+     * @param string $store
      * @param string $dateFrom
      * @param string $dateTo
      *
      * @return array
      */
-    public function getTimeSlotCapacityCountByDate(string $dateFrom, string $dateTo): array;
+    public function getTimeSlotCapacityCountByDate(string $store, string $dateFrom, string $dateTo): array;
 
     /**
+     * @param string $store
      * @param string $date
      * @param string $day
      * @param string $time
@@ -104,9 +107,10 @@ interface TimeSlotFacadeInterface
      *
      * @return int
      */
-    public function setTimeSlotsForSelectedDate(string $date, string $day, string $time, string $capacity): int;
+    public function setTimeSlotsForSelectedDate(string $store, string $date, string $day, string $time, string $capacity): int;
 
     /**
+     * @param string $store
      * @param string $date
      * @param string $day
      * @param string $time
@@ -114,7 +118,7 @@ interface TimeSlotFacadeInterface
      *
      * @return int
      */
-    public function setDefaultTimeSlotsForSelectedDate(string $date, string $day, string $time, string $capacity): int;
+    public function setDefaultTimeSlotsForSelectedDate(string $store, string $date, string $day, string $time, string $capacity): int;
 
     /**
      * @return int
@@ -122,12 +126,13 @@ interface TimeSlotFacadeInterface
     public function getMerchantByStoreName(): int;
 
     /**
+     * @param string $store
      * @param string $date
      * @param string $day
      *
      * @return array
      */
-    public function getTimeSlotsForSpecificDateAndDay(string $date, string $day): array;
+    public function getTimeSlotsForSpecificDateAndDay(string $store, string $date, string $day): array;
 
     /**
      * @param string $store
@@ -136,4 +141,11 @@ interface TimeSlotFacadeInterface
      * @return array
      */
     public function getTimeSlotCapacityForDefaultDay(string $store, string $day): array;
+
+    /**
+     * @param array $event
+     *
+     * @return void
+     */
+    public function executeEvent(array $event): void;
 }

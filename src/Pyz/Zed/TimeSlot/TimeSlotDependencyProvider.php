@@ -20,6 +20,7 @@ class TimeSlotDependencyProvider extends AbstractBundleDependencyProvider
     public const SERVICE_TIME_SLOT_STORAGE = 'SERVICE_TIME_SLOT_STORAGE';
     public const FACADE_SALES = 'FACADE_SALES';
     public const FACADE_MERCHANT = 'FACADE_MERCHANT';
+    public const FACADE_EVENT_BEHAVIOUR = 'FACADE_MERCHANT';
     public const CLIENT_TIME_SLOT = 'CLIENT_TIME_SLOT';
     public const SERVICE_TIME_SLOT = 'SERVICE_TIME_SLOT';
     public const SERVICE_DATE_TIME_WITH_ZONE = 'SERVICE_DATE_TIME_WITH_ZONE';
@@ -43,6 +44,7 @@ class TimeSlotDependencyProvider extends AbstractBundleDependencyProvider
         $container = $this->addMerchantFacade($container);
         $container = $this->addDateTimeWithZoneService($container);
         $container = $this->addShipmentService($container);
+        $container = $this->addEventBehaviourFacade($container);
 
         return $container;
     }
@@ -182,6 +184,20 @@ class TimeSlotDependencyProvider extends AbstractBundleDependencyProvider
     {
         $container->set(static::SERVICE_SHIPMENT, function (Container $container): ShipmentServiceInterface {
             return $container->getLocator()->shipment()->service();
+        });
+
+        return $container;
+    }
+
+    /**
+     * @param \Spryker\Zed\Kernel\Container $container
+     *
+     * @return \Spryker\Zed\Kernel\Container
+     */
+    protected function addEventBehaviourFacade(Container $container): Container
+    {
+        $container->set(static::FACADE_EVENT_BEHAVIOUR, function (Container $container) {
+            return $container->getLocator()->eventBehavior()->facade();
         });
 
         return $container;

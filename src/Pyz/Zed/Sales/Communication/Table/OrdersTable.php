@@ -149,6 +149,24 @@ class OrdersTable extends SprykerOrdersTable
     }
 
     /**
+     * @return array
+     */
+    public function getStoresByUser()
+    {
+        $currentUser = $this->userFacade->getCurrentUser();
+        $isCurrentUserSupervisor = $this->isCurrentUserSupervisor($currentUser);
+        $stores = [];
+
+        if ($isCurrentUserSupervisor) {
+            $stores = $this->getMerchantsForSupervisor();
+        } else {
+            $stores = $this->getMerchantsIdToNameMap();
+        }
+
+        return $stores;
+    }
+
+    /**
      * @return string[]
      */
     public function getPickingZones(): array
@@ -390,6 +408,22 @@ class OrdersTable extends SprykerOrdersTable
 
         foreach ($this->salesConfig->getSapStoreIdToStoreMap() as $sapStoreId => $sapStoreName) {
             $merchantFilterButtonsData[$sapStoreId] = $sapStoreName;
+        }
+
+        return $merchantFilterButtonsData;
+    }
+
+    /**
+     * @return array
+     */
+    protected function getMerchantsForSupervisor(): array
+    {
+        $merchantFilterButtonsData = [];
+
+        foreach ($this->salesConfig->getSapStoreIdToStoreMap() as $sapStoreId => $sapStoreName) {
+            if ($this->userFacade->getCurrentUser()->getMerchantReference() == $sapStoreId) {
+                $merchantFilterButtonsData[$sapStoreId] = $sapStoreName;
+            }
         }
 
         return $merchantFilterButtonsData;
