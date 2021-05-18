@@ -296,6 +296,7 @@ class CollectByCustomerController extends AbstractController
             'containerInfo' => $containerInfo,
             'containerNumber' => $containerNumber,
             'encodedBarcode' => $this->getFactory()->getBarcodeGenerator()->getEncodedBarcode($salesOrderTransfer->getOrderReference()),
+            'barcodeNumber' => '97400' . $salesOrderTransfer->getOrderReference(),
         ];
     }
 

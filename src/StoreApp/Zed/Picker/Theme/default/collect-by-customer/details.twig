@@ -23,6 +23,7 @@
     containerInfo: containerInfo,
     containerNumber: containerNumber,
     encodedBarcode: encodedBarcode,
+    barcodeNumber: barcodeNumber
 } %}
 
 {% set pickedItemCount = data.collectOrder.pickedItemsCount %}
@@ -84,7 +85,9 @@
                 pickedAndNotFoundItems: pickedAndNotFoundItems,
                 containerInfo: data.containerInfo,
                 containerNumber: data.containerNumber,
-                encodedBarcode: data.encodedBarcode
+                encodedBarcode: data.encodedBarcode,
+                barcodeNumber: data.barcodeNumber,
+
 
             }
         } only %}
@@ -175,6 +178,7 @@
                     {% include molecule('barcode') with {
                         data: {
                             encodedBarcode: embed.encodedBarcode,
+                            barcodeNumber: embed.barcodeNumber
                         },
                     } only %}
                 </div>

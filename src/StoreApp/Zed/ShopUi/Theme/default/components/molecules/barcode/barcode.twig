@@ -5,13 +5,15 @@
 } %}
 
 {% define data = {
-    encodedBarcode: ''
+    encodedBarcode: '',
+    barcodeNumber: '',
 } %}
 
 {% block body %}
     <div class="white--box">
         {% if data.encodedBarcode is not empty %}
             <p class="barcode--text">{{ data.encodedBarcode }}</p>
+            <p class="barcode--number"> {{ data.barcodeNumber }}</p>
         {% else %}
             <p>{{ 'storeapp.picking.barcode' | trans }}</p>
         {% endif %}
