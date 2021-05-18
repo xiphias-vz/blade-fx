@@ -12,6 +12,7 @@ use Generated\Shared\Transfer\PickingContainerTransfer;
 use Generated\Shared\Transfer\PickingHeaderTransfer as SpyPickingHeaderTransfer;
 use Generated\Shared\Transfer\PickingOrderItemTransfer;
 use Generated\Shared\Transfer\PickingOrderTransfer;
+use Pyz\Shared\Oms\OmsConfig;
 
 class PickingHeaderTransfer extends SpyPickingHeaderTransfer
 {
@@ -161,7 +162,7 @@ class PickingHeaderTransfer extends SpyPickingHeaderTransfer
             if ($order->getIsPaused()) {
                 $items = [];
                 foreach ($order->getPickingOrderItems() as $orderItem) {
-                    if ($orderItem->getIsPaused()) {
+                    if ($orderItem->getIsPaused() || $orderItem->getStatus() == OmsConfig::STORE_STATE_READY_FOR_PICKING) {
                         $orderItem->setIsPaused(false);
                         array_push($items, $orderItem);
                     }
