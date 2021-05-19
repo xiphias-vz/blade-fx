@@ -322,7 +322,6 @@ class CheckoutAddressForm extends SprykerShopCheckoutAddressForm
                 'Mr' => 'customer.salutation.mr',
                 'Ms' => 'customer.salutation.ms',
                 'Divers' => 'customer.salutation.divers',
-                'Dr' => 'customer.salutation.dr',
             ]),
             'label' => 'profile.form.salutation',
             'required' => true,
