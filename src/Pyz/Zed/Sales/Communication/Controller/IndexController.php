@@ -20,6 +20,17 @@ use Symfony\Component\HttpFoundation\Request;
  */
 class IndexController extends SprykerIndexController
 {
+    protected const TIMESLOT_COLUMN = 'TimeSlot';
+    protected const IS_DEFAULT_COLUMN = 'IsDefault';
+    protected const USED_CAPACITY_COLUMN = 'UsedCapacity';
+    protected const CAPACITY_LEFT_COLUMN = 'CapacityLeft';
+    protected const CAPACITY_COLUMN = 'Capacity';
+    protected const DATE_COLUMN = 'Date';
+    protected const DAY_COLUMN = 'Day';
+    protected const COUNT_DATE = 'date';
+    protected const COUNT_TIMESLOT = 'timeSlot';
+    protected const COUNT_ORDER_COUNT = 'orderCount';
+
     /**
      * @return array
      */
@@ -156,51 +167,51 @@ class IndexController extends SprykerIndexController
         for ($i = $begin; $i <= $end; $i->modify('+1 day')) {
             $date = $i->format("Y-m-d");
             $day = $i->format('l');
-            $isInArrFilteredByDate = in_array($date, array_column($tsCapacitiesDef, 'Date'));
+            $isInArrFilteredByDate = in_array($date, array_column($tsCapacitiesDef, static::DATE_COLUMN));
 
             if (count($tsCapacitiesDef) > 0) {
                 foreach ($tsCapacitiesDef as $key => $value) {
-                    if ($date == $value['Date']) {
-                        $newArray[$date][$value['TimeSlot']] = $value;
-                        $newArray[$date][$value['TimeSlot']]['IsDefault'] = false;
+                    if ($date == $value[static::DATE_COLUMN]) {
+                        $newArray[$date][$value[static::TIMESLOT_COLUMN]] = $value;
+                        $newArray[$date][$value[static::TIMESLOT_COLUMN]][static::IS_DEFAULT_COLUMN] = false;
 
                         if (count($tsCapacitiesCount) > 0) {
                             foreach ($tsCapacitiesCount as $count) {
-                                if ($value['Date'] == $count['date'] && $value['TimeSlot'] == $count['timeSlot']) {
-                                    $newArray[$value['Date']][$value['TimeSlot']]['UsedCapacity'] = (int)($count['orderCount']);
-                                    $leftCapacity = (int)($value['Capacity']) - (int)($count['orderCount']);
+                                if ($value[static::DATE_COLUMN] == $count[static::COUNT_DATE] && $value[static::TIMESLOT_COLUMN] == $count[static::COUNT_TIMESLOT]) {
+                                    $newArray[$value[static::DATE_COLUMN]][$value[static::TIMESLOT_COLUMN]][static::USED_CAPACITY_COLUMN] = (int)($count[static::COUNT_ORDER_COUNT]);
+                                    $leftCapacity = (int)($value[static::CAPACITY_COLUMN]) - (int)($count[static::COUNT_ORDER_COUNT]);
                                     if ($leftCapacity < 0) {
                                         $leftCapacity = 0;
                                     }
-                                    $newArray[$value['Date']][$value['TimeSlot']]['CapacityLeft'] = $leftCapacity;
+                                    $newArray[$value[static::DATE_COLUMN]][$value[static::TIMESLOT_COLUMN]][static::CAPACITY_LEFT_COLUMN] = $leftCapacity;
                                 }
                             }
                         } else {
-                            $newArray[$date][$value['TimeSlot']]['UsedCapacity'] = 0;
-                            $newArray[$date][$value['TimeSlot']]['CapacityLeft'] = (int)($value['Capacity']);
+                            $newArray[$date][$value[static::TIMESLOT_COLUMN]][static::USED_CAPACITY_COLUMN] = 0;
+                            $newArray[$date][$value[static::TIMESLOT_COLUMN]][static::CAPACITY_LEFT_COLUMN] = (int)($value[static::CAPACITY_COLUMN]);
                         }
                     } else {
-                        if ($date != $value['Date'] && array_key_exists($date, $newArray) == false) {
+                        if ($date != $value[static::DATE_COLUMN] && array_key_exists($date, $newArray) == false) {
                             foreach ($tsCapacityByDay as $key1 => $value1) {
-                                if ($day == $value1['Day']) {
-                                    $newArray[$date][$value1['TimeSlot']] = $value1;
-                                    $newArray[$date][$value1['TimeSlot']]['Date'] = $date;
-                                    $newArray[$date][$value1['TimeSlot']]['IsDefault'] = true;
+                                if ($day == $value1[static::DAY_COLUMN]) {
+                                    $newArray[$date][$value1[static::TIMESLOT_COLUMN]] = $value1;
+                                    $newArray[$date][$value1[static::TIMESLOT_COLUMN]][static::DATE_COLUMN] = $date;
+                                    $newArray[$date][$value1[static::TIMESLOT_COLUMN]][static::IS_DEFAULT_COLUMN] = true;
 
                                     if (count($tsCapacitiesCount) > 0) {
                                         foreach ($tsCapacitiesCount as $count) {
-                                            if ($value1['Date'] == $count['date'] && $value1['TimeSlot'] == $count['timeSlot']) {
-                                                $newArray[$value1['Date']][$value1['TimeSlot']]['UsedCapacity'] = (int)($count['orderCount']);
-                                                $leftCapacity = (int)($value1['Capacity']) - (int)($count['orderCount']);
+                                            if ($value1[static::DATE_COLUMN] == $count[static::COUNT_DATE] && $value1[static::TIMESLOT_COLUMN] == $count[static::COUNT_TIMESLOT]) {
+                                                $newArray[$value1[static::DATE_COLUMN]][$value1[static::TIMESLOT_COLUMN]][static::USED_CAPACITY_COLUMN] = (int)($count[static::COUNT_ORDER_COUNT]);
+                                                $leftCapacity = (int)($value1[static::CAPACITY_COLUMN]) - (int)($count[static::COUNT_ORDER_COUNT]);
                                                 if ($leftCapacity < 0) {
                                                     $leftCapacity = 0;
                                                 }
-                                                $newArray[$date][$value1['TimeSlot']]['CapacityLeft'] = $leftCapacity;
+                                                $newArray[$date][$value1[static::TIMESLOT_COLUMN]][static::CAPACITY_LEFT_COLUMN] = $leftCapacity;
                                             }
                                         }
                                     } else {
-                                        $newArray[$date][$value1['TimeSlot']]['UsedCapacity'] = 0;
-                                        $newArray[$date][$value1['TimeSlot']]['CapacityLeft'] = (int)($value1['Capacity']);
+                                        $newArray[$date][$value1[static::TIMESLOT_COLUMN]][static::USED_CAPACITY_COLUMN] = 0;
+                                        $newArray[$date][$value1[static::TIMESLOT_COLUMN]][static::CAPACITY_LEFT_COLUMN] = (int)($value1[static::CAPACITY_COLUMN]);
                                     }
                                 }
                             }
@@ -209,25 +220,25 @@ class IndexController extends SprykerIndexController
                 }
             } else {
                 foreach ($tsCapacityByDay as $key2 => $value2) {
-                    if ($day == $value2['Day']) {
-                        $newArray[$date][$value2['TimeSlot']] = $value2;
-                        $newArray[$date][$value2['TimeSlot']]['Date'] = $date;
-                        $newArray[$date][$value2['TimeSlot']]['IsDefault'] = true;
+                    if ($day == $value2[static::DAY_COLUMN]) {
+                        $newArray[$date][$value2[static::TIMESLOT_COLUMN]] = $value2;
+                        $newArray[$date][$value2[static::TIMESLOT_COLUMN]][static::DATE_COLUMN] = $date;
+                        $newArray[$date][$value2[static::TIMESLOT_COLUMN]][static::IS_DEFAULT_COLUMN] = true;
 
                         if (count($tsCapacitiesCount) > 0) {
                             foreach ($tsCapacitiesCount as $count) {
-                                if ($value2['Date'] == $count['date'] && $value2['TimeSlot'] == $count['timeSlot']) {
-                                    $newArray[$value2['Date']][$value2['TimeSlot']]['UsedCapacity'] = (int)($count['orderCount']);
-                                    $leftCapacity = (int)($value2['Capacity']) - (int)($count['orderCount']);
+                                if ($value2[static::DATE_COLUMN] == $count[static::COUNT_DATE] && $value2[static::TIMESLOT_COLUMN] == $count[static::COUNT_TIMESLOT]) {
+                                    $newArray[$value2[static::DATE_COLUMN]][$value2[static::TIMESLOT_COLUMN]][static::USED_CAPACITY_COLUMN] = (int)($count[static::COUNT_ORDER_COUNT]);
+                                    $leftCapacity = (int)($value2[static::CAPACITY_COLUMN]) - (int)($count[static::COUNT_ORDER_COUNT]);
                                     if ($leftCapacity < 0) {
                                         $leftCapacity = 0;
                                     }
-                                    $newArray[$date][$value2['TimeSlot']]['CapacityLeft'] = $leftCapacity;
+                                    $newArray[$date][$value2[static::TIMESLOT_COLUMN]][static::CAPACITY_LEFT_COLUMN] = $leftCapacity;
                                 }
                             }
                         } else {
-                            $newArray[$date][$value2['TimeSlot']]['UsedCapacity'] = 0;
-                            $newArray[$date][$value2['TimeSlot']]['CapacityLeft'] = (int)($value2['Capacity']);
+                            $newArray[$date][$value2[static::TIMESLOT_COLUMN]][static::USED_CAPACITY_COLUMN] = 0;
+                            $newArray[$date][$value2[static::TIMESLOT_COLUMN]][static::CAPACITY_LEFT_COLUMN] = (int)($value2[static::CAPACITY_COLUMN]);
                         }
                     }
                 }

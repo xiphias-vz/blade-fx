@@ -20,7 +20,7 @@ class TimeSlotDependencyProvider extends AbstractBundleDependencyProvider
     public const SERVICE_TIME_SLOT_STORAGE = 'SERVICE_TIME_SLOT_STORAGE';
     public const FACADE_SALES = 'FACADE_SALES';
     public const FACADE_MERCHANT = 'FACADE_MERCHANT';
-    public const FACADE_EVENT_BEHAVIOUR = 'FACADE_MERCHANT';
+    public const FACADE_EVENT_BEHAVIOUR = 'FACADE_EVENT_BEHAVIOUR';
     public const CLIENT_TIME_SLOT = 'CLIENT_TIME_SLOT';
     public const SERVICE_TIME_SLOT = 'SERVICE_TIME_SLOT';
     public const SERVICE_DATE_TIME_WITH_ZONE = 'SERVICE_DATE_TIME_WITH_ZONE';
