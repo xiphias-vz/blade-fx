@@ -46,6 +46,39 @@ class MerchantStorageEntityManager extends AbstractEntityManager implements Merc
     }
 
     /**
+     * @param \Generated\Shared\Transfer\MerchantCollectionTransfer $merchantCollectionTransfer
+     *
+     * @return void
+     */
+    public function saveMerchantsToStorage(MerchantCollectionTransfer $merchantCollectionTransfer)
+    {
+        $merchantsListStorageMapper = $this->getFactory()
+            ->createMerchantStorageMapper();
+
+        $currentMerchantsList = $this->getFactory()
+            ->createMerchantsListStorageQuery()
+            ->findOneOrCreate();
+
+        $merchants = SpyMerchantQuery::create()
+            ->find()
+            ->getData();
+
+        $storageData = [];
+
+        foreach ($merchants as $store) {
+            $storageData[$store->getMerchantShortName()][static::MERCHANT_IS_AVAILABLE] = $store->getIsShopVisible();
+            $storageData[$store->getMerchantShortName()][static::MERCHANT_IS_PASSWORD_PROTECTED] = $store->getIsPasswordProtected();
+            $storageData[$store->getMerchantShortName()][static::MERCHANT_PASSWORD] = $store->getShopPassword();
+            $storageData[$store->getMerchantShortName()][static::FILIAL_NUMBER] = $store->getMerchantReference();
+            $storageData[$store->getMerchantShortName()][static::ID_MERCHANT] = $store->getIdMerchant();
+        }
+
+        $merchantsListStorageMapper
+            ->mapMerchantCollectionTransferToMerchantsListStorageEntity($merchantCollectionTransfer, $currentMerchantsList, $storageData)
+            ->save();
+    }
+
+    /**
      * @return array
      */
     public function getAvailableMerchants(): array

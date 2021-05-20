@@ -7,6 +7,7 @@
 
 namespace Pyz\Zed\MerchantGui;
 
+use Pyz\Zed\MerchantStorage\Business\MerchantStorageFacadeInterface;
 use Spryker\Zed\Acl\Business\AclFacadeInterface;
 use Spryker\Zed\Kernel\Container;
 use Spryker\Zed\MerchantGui\MerchantGuiDependencyProvider as SpyMerchantGuiDependencyProvider;
@@ -19,6 +20,7 @@ class MerchantGuiDependencyProvider extends SpyMerchantGuiDependencyProvider
 {
     public const FACADE_USER = 'FACADE_USER';
     public const FACADE_ACL = 'FACADE_ACL';
+    public const MERCHANT_STORAGE_FACADE = 'MERCHANT_STORAGE_FACADE';
 
     /**
      * @param \Spryker\Zed\Kernel\Container $container
@@ -30,6 +32,7 @@ class MerchantGuiDependencyProvider extends SpyMerchantGuiDependencyProvider
         $container = parent::provideCommunicationLayerDependencies($container);
         $container = $this->addUserFacade($container);
         $container = $this->addAclFacade($container);
+        $container = $this->addMerchantStorageFacade($container);
 
         return $container;
     }
@@ -44,6 +47,20 @@ class MerchantGuiDependencyProvider extends SpyMerchantGuiDependencyProvider
         $container[static::FACADE_USER] = function (Container $container) {
             return new SalesToUserBridge($container->getLocator()->user()->facade());
         };
+
+        return $container;
+    }
+
+    /**
+     * @param \Spryker\Zed\Kernel\Container $container
+     *
+     * @return \Spryker\Zed\Kernel\Container
+     */
+    protected function addMerchantStorageFacade(Container $container)
+    {
+        $container->set(static::MERCHANT_STORAGE_FACADE, function (Container $container): MerchantStorageFacadeInterface {
+            return $container->getLocator()->merchantStorage()->facade();
+        });
 
         return $container;
     }

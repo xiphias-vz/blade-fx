@@ -17,4 +17,11 @@ interface MerchantStorageEntityManagerInterface
      * @return void
      */
     public function saveMerchantsList(MerchantCollectionTransfer $merchantCollectionTransfer);
+
+    /**
+     * @param \Generated\Shared\Transfer\MerchantCollectionTransfer $merchantCollectionTransfer
+     *
+     * @return mixed
+     */
+    public function saveMerchantsToStorage(MerchantCollectionTransfer $merchantCollectionTransfer);
 }

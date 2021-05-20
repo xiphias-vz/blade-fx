@@ -19,6 +19,7 @@ class StoreSwitcherWidget extends AbstractWidget
 {
     public const FILLIAL_NUMBER = 'fillialNumber';
     public const PASSWORD_PROTECTED = 'isPasswordProtected';
+    public const IS_SHOP_VISIBLE = 'is_shop_visible';
 
     public function __construct()
     {
@@ -33,8 +34,10 @@ class StoreSwitcherWidget extends AbstractWidget
         foreach ($storeData as $visibleStore) {
             if (isset($merchantsFromConfig[$visibleStore[static::FILLIAL_NUMBER]])) {
                 if (isset($storeNames[$merchantsFromConfig[$visibleStore[static::FILLIAL_NUMBER]]])) {
-                    $visibleStoreNames[$merchantsFromConfig[$visibleStore[static::FILLIAL_NUMBER]]] = $storeNames[$merchantsFromConfig[$visibleStore[static::FILLIAL_NUMBER]]];
-                    $visibleStorePass[$merchantsFromConfig[$visibleStore[static::FILLIAL_NUMBER]]] = $visibleStore[static::PASSWORD_PROTECTED];
+                    if ($visibleStore[static::IS_SHOP_VISIBLE]) {
+                        $visibleStoreNames[$merchantsFromConfig[$visibleStore[static::FILLIAL_NUMBER]]] = $storeNames[$merchantsFromConfig[$visibleStore[static::FILLIAL_NUMBER]]];
+                        $visibleStorePass[$merchantsFromConfig[$visibleStore[static::FILLIAL_NUMBER]]] = $visibleStore[static::PASSWORD_PROTECTED];
+                    }
                 }
             }
         }

@@ -26,4 +26,9 @@ interface MerchantStorageFacadeInterface
      * @return void
      */
     public function writeCollectionByDeliveryPostalCodeEvents(array $eventTransfers): void;
+
+    /**
+     * @return void
+     */
+    public function synchronizeMerchantToStorage(): void;
 }

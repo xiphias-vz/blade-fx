@@ -22,4 +22,9 @@ interface MerchantStorageWriterInterface
      * @return void
      */
     public function writeMerchantListStorageCollectionByDeliveryPostalCodeEvents(array $eventTransfers): void;
+
+    /**
+     * @return void
+     */
+    public function updateMerchantsToStorage(): void;
 }

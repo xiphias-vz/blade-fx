@@ -29,6 +29,14 @@ class MerchantStorageFacade extends AbstractFacade implements MerchantStorageFac
     }
 
     /**
+     * @return void
+     */
+    public function synchronizeMerchantToStorage(): void
+    {
+        $this->getFactory()->createMerchantStorageWriter()->updateMerchantsToStorage();
+    }
+
+    /**
      * {@inheritDoc}
      *
      * @api

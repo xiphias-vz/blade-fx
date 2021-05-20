@@ -30,6 +30,10 @@ class EditMerchantController extends SprykerEditMerchantController
     public function indexAction(Request $request)
     {
         $response = parent::indexAction($request);
+
+        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+            $this->getFactory()->getMerchantStorageFacade()->synchronizeMerchantToStorage();
+        }
         if ($response instanceof RedirectResponse) {
             $redirectUrl = $response->getTargetUrl();
 
