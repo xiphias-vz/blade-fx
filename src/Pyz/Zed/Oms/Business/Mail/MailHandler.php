@@ -291,7 +291,7 @@ class MailHandler extends SprykerMailHandler
             $orderTransfer = $this->expandWithItemGroups($orderTransfer);
         }
 
-        if ($orderTransfer->getMerchantReference() == 1004) {
+        if ($orderTransfer->getMerchantReference() == 1004 || $orderTransfer->getMerchantReference() == 1021) {
             $merchantReference = [
                 'footerAddress' => 'GLOBUS Handelshof GmbH & Co. KG <br> Neunmorgenstraße 8 – 12 <br> 66424 Homburg-Einöd <br> Amtsgericht Saarbrücken: HRB 80397 <br>',
             ];
