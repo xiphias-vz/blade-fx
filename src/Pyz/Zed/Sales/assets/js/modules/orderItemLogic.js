@@ -58,10 +58,14 @@ $(document).ready(function () {
         let currentWeightAmount = currentOrderItem.querySelector('.total-weight').innerHTML;
         let totalWeight = 0;
         if(currentWeightAmount !== "") {
-            totalWeight += parseInt(currentWeightAmount);
+            if(itemState !== "cancelled" && itemState !== "ready for picking" && itemState !== "ready for picking (paused)") {
+                totalWeight += parseInt(currentWeightAmount);
+            }
         }
         if(averageWeight !== "") {
-            totalWeight += parseInt(averageWeight);
+            if(itemState !== "cancelled" && itemState !== "ready for picking" && itemState !== "ready for picking (paused)") {
+                totalWeight += parseInt(averageWeight);
+            }
         }
         if(itemState !== "cancelled" && itemState !== "ready for picking" && itemState !== "ready for picking (paused)") {
             pickedQuantity += individualQuantity;
@@ -105,8 +109,15 @@ $(document).ready(function () {
             currentOrderItem.querySelector('.quantity-balance .picked').innerHTML = "0";
         }
         if(weightPerUnit !== "") {
+            if(clonedOrderItem.querySelector('.item-state').innerHTML !== "cancelled"
+                && clonedOrderItem.querySelector('.item-state').innerHTML !== "ready for picking"
+                && clonedOrderItem.querySelector('.item-state').innerHTML !== "ready for picking (paused)"
+            ) {
+                currentOrderItem.querySelector('.total-weight').innerHTML = weightPerUnit + ' gr';
+            } else {
+                currentOrderItem.querySelector('.total-weight').innerHTML = '0 gr';
+            }
             currentOrderItem.querySelector('.average-weight').innerHTML = weightPerUnit + ' gr';
-            currentOrderItem.querySelector('.total-weight').innerHTML = weightPerUnit + ' gr';
         }
         currentOrderItem.querySelector('.item-state').innerHTML = clonedOrderItem.querySelector('.item-state').innerHTML;
         clonedOrderItem.querySelector('.quantity-balance').innerHTML = clonedOrderItem.getAttribute('data-quantity');
