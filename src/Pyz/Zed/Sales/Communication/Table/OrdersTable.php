@@ -167,6 +167,16 @@ class OrdersTable extends SprykerOrdersTable
     }
 
     /**
+     * @return bool
+     */
+    public function getIsUserAdmin(): bool
+    {
+        $currentUser = $this->userFacade->getCurrentUser();
+
+        return $this->isCurrentUserAdmin($currentUser);
+    }
+
+    /**
      * @return string[]
      */
     public function getPickingZones(): array
@@ -505,6 +515,24 @@ class OrdersTable extends SprykerOrdersTable
 
         foreach ($currentUserGroups->getGroups() as $group) {
             if ($group->getName() === AclConstants::SUPERVISOR_GROUP) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * @param \Generated\Shared\Transfer\UserTransfer $currentUser
+     *
+     * @return bool
+     */
+    protected function isCurrentUserAdmin(UserTransfer $currentUser): bool
+    {
+        $currentUserGroups = $this->aclFacade->getUserGroups($currentUser->getIdUser());
+
+        foreach ($currentUserGroups->getGroups() as $group) {
+            if ($group->getName() === AclConstants::ROOT_GROUP) {
                 return true;
             }
         }

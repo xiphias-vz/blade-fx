@@ -238,6 +238,13 @@
             display: flow-root;
         }
 
+        {% if isUserAdmin != 1 %}
+            #savingAndMessageDiv {
+                visibility: hidden;
+            }
+        {% endif %}
+
+
     </style>
     {% embed '@Gui/Partials/widget.twig' %}
         {% block widget_content %}
@@ -248,8 +255,8 @@
                         <div class="filter-component">
                             <label for="cmbStores">{{ 'Location' | trans }}</label> <br>
                             <select id="cmbStores" name="location">
-                                {% for merchantId, merchantName in merchantFilterButtonsData  %}
-                                    <option value="{{ merchantId }}">{{ merchantName }}</option>
+                                {% for storeId, storeName in storesData  %}
+                                    <option value="{{ storeId }}">{{ storeName }}</option>
                                 {% endfor %}
                             </select>
                         </div>
@@ -283,11 +290,11 @@
             <div id="capacitySaveBox">
                 <div id="savingAndMessageDiv">
                     <div style="margin-top: 8px">
-                        <form>
-                            <span style="margin-left: 10px;">{{ 'edit_standard_plan' | trans }}</span>
-                            <input id="btnSave" type="button" class="btn btn-customPrimary" value="&#10003; {{ 'Save' | trans }}" disabled>
-                            <input id="btnCancel" type="button" class="btn btn-custom-cancel" value="X  {{ 'Cancel' | trans }}" >
-                        </form>
+                            <form>
+                                <span style="margin-left: 10px;">{{ 'edit_standard_plan' | trans }}</span>
+                                <input id="btnSave" type="button" class="btn btn-customPrimary" value="&#10003; {{ 'Save' | trans }}" disabled>
+                                <input id="btnCancel" type="button" class="btn btn-custom-cancel" value="X  {{ 'Cancel' | trans }}" >
+                            </form>
                     </div>
                     <div id="infoBox">
                         <span id="infoBoxText">{{ 'timeslot_capacity_edit_warning' | trans }}</span>
@@ -357,6 +364,15 @@
         var btnCloseModal = document.getElementById("closeModal");
         var btnModalConfirmNo = document.getElementById("modalConfirmNo");
         var btnModalConfirmYes = document.getElementById("modalConfirmYes");
+        var isAdmin = '{{ isUserAdmin }}';
+        var userIsAdmin;
+        if(isAdmin === '1'){
+            userIsAdmin = true;
+        }
+        else
+        {
+            userIsAdmin = false;
+        }
 
         infoBoxClose.addEventListener("click", function() {
             infoBox.style.display = "none";
@@ -495,7 +511,7 @@
                             document.getElementById("tbody_" + key).insertAdjacentHTML("beforeend",
                                 '<tr class="ts-table-' + rowCounter + '-row">' +
                                 '<td>' + timeSlot["TimeSlot"] + '</td>' +
-                                '<td><div id="capacityRow__' + key + '_' + rowCounter + '_notDefaultTable"  class="ts-table-capacityField capacityField_' + rowCounter + ' cf_' + key + '_' + rowCounter + '" contenteditable="true">' + timeSlot["Capacity"] + '</div></td>' +
+                                '<td><div id="capacityRow__' + key + '_' + rowCounter + '_notDefaultTable"  class="ts-table-capacityField capacityField_' + rowCounter + ' cf_' + key + '_' + rowCounter + '" contenteditable="' + userIsAdmin + '">' + timeSlot["Capacity"] + '</div></td>' +
                                 '<td></td>' +
                                 '</tr>'
                             );
@@ -599,7 +615,7 @@
                                 document.getElementById("tbody_" + key).insertAdjacentHTML("beforeend",
                                     '<tr class="ts-table-' + rowCounter + '-row">' +
                                     '<td>' + value1["TimeSlot"] + '</td>' +
-                                    '<td><div id="capacityRow_' + value1["Date"] + '_' + value1["Day"] + '_' + rowCounter + '_' + defaultClass + '"  class="ts-table-capacityField capacityField_' + rowCounter + ' cf_' + key + '_' + rowCounter + '" contenteditable="true">' + value1["Capacity"] + '</div></td>' +
+                                    '<td><div id="capacityRow_' + value1["Date"] + '_' + value1["Day"] + '_' + rowCounter + '_' + defaultClass + '"  class="ts-table-capacityField capacityField_' + rowCounter + ' cf_' + key + '_' + rowCounter + '" contenteditable="' + userIsAdmin + '">' + value1["Capacity"] + '</div></td>' +
                                     '<td>' + usedCapacity + '</td>' +
                                     '<td>' + capacityLeft + '</td>' +
                                     '</tr>'

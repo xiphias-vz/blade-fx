@@ -52,11 +52,13 @@ class IndexController extends SprykerIndexController
     {
         $table = $this->getFactory()->createOrdersTable();
         $stores = $table->getStoresByUser();
+        $isAdmin = $table->getIsUserAdmin();
         $datetime = new DateTime('tomorrow');
 
         return [
-            'merchantFilterButtonsData' => $stores,
+            'storesData' => $stores,
             'tommorowMinDate' => $datetime,
+            'isUserAdmin' => $isAdmin,
         ];
     }
 
