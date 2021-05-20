@@ -284,9 +284,60 @@ span.discounted {
     }
 }
 
+.cell-with-no-border {
+    border: none;
+}
+
+
+.picking-zone-item {
+    position: relative;
+    cursor: pointer;
+
+    td {
+        div {
+            a {
+                font-size: 14px;
+                color: #000;
+            }
+        }
+
+    }
+
+    &.header-row {
+        td {
+            border-bottom: 1px solid #e7eaec;
+        }
+    }
+    .arrow {
+        border: solid black;
+        border-width: 0 2px 2px 0;
+        display: inline-block;
+        margin-top: 15px;
+        padding: 4px;
+        position: absolute;
+        right: 50px;
+    }
+    &.nested-element {
+        td {
+            border: none;
+            padding: 0;
+        }
+    }
+
+    .right {
+        transform: rotate(-45deg);
+        -webkit-transform: rotate(-45deg);
+    }
+
+    .down {
+        transform: rotate(45deg);
+        -webkit-transform: rotate(45deg);
+    }
+}
+
 .sku {
-    color: #aaa;
-    font-size: 10px;
+    color: gray;
+    font-size: 12px;
 }
 
 .variant-details {

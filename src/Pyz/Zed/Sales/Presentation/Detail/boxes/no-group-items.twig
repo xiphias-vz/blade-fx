@@ -29,7 +29,11 @@
             <i class="arrow down"></i>
         </div>
     </th>
-    <tr class="picking-zone-item" data-pickZone-item="{{ shipmentOrderItems.items[key].pickZone }}">
+    <tr class="picking-zone-item" data-pickZone-item="{{ shipmentOrderItems.items[key].pickZone }}"
+        data-item-name="{{ shipmentOrderItems.items[key].name }}"
+        data-quantity="{{ shipmentOrderItems.items[key].quantity }}"
+        data-weightPerUnit="{{ shipmentOrderItems.items[key].weightPerUnit }}"
+    >
       {% embed '@Sales/Detail/boxes/order-item.twig' with {orderItem: orderItem, displayImage: true, image: orderItem.metadata.image, displayTotals: true, group: false} %}{% endembed %}
     </tr>
   {% embed '@Sales/Detail/boxes/order-item-option.twig' with {orderItem: orderItem} %} {% endembed %}

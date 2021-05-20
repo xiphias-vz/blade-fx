@@ -3,7 +3,6 @@
 {% set priceToPay = group ? bundleItem.sumPriceToPayAggregation : orderItem.sumPriceToPayAggregation %}
 {% set image = image %}
 
-<td class="item-checker"><input type="checkbox" name="order-item" value="{{ orderItem.idSalesOrderItem }}" class="item-check" /></td>
 {% if displayImage %}
     <td {% if group %}rowspan="{{ itemCount }}" {% endif %}><img class="product-image" src="{{ image }}"/></td>
 {% endif %}
@@ -14,7 +13,7 @@
         </a>
     </div>
     <div class="sku">
-      {{ 'Sku' | trans }}: {{ orderItem.Sku }}
+       {{ orderItem.Sku }}
     </div>
 
   {% if orderItem.metadata.superAttributes is not null and orderItem.metadata.superAttributes | length > 0 %}
@@ -37,9 +36,11 @@
   {% endif %}
   {% include ['@ProductPackagingUnitGui/Sales/Detail/boxes/item-packaging-unit.twig', '@Sales/Detail/boxes/item-packaging-unit.twig'] with {orderItem: orderItem} %}
 </td>
-<td>
-  {{ orderItem.quantity }}
+<td class="quantity-balance">
+    <span class="picked">0</span>/<span class="quantity">{{ orderItem.quantity }}</span>
   {% embed '@Sales/Detail/boxes/item-measurement-unit.twig' with {orderItem: orderItem} %}{% endembed %}
+    <span class="average-weight" style="display: block"></span>
+    <span class="total-weight" style="display: block"></span>
 </td>
 <td>
     <div>
@@ -54,12 +55,12 @@
     </td>
 {% else %}
 {% endif %}
-<td rowspan="{{ numberOfItemAdditions }}" class="state-history">
+<td rowspan="1" class="state-history">
     <div>
         {% if orderItem.itemPaused == true %}
-            <a style="color: #1AB394" href="{{ url('/oms/index/draw', {'process': orderItem.process, 'state': orderItem.state.name}) }}" target="_blank">{{ (orderItem.stateHistory | first).name }} (paused)</a>
+            <a style="color: #1AB394" href="{{ url('/oms/index/draw', {'process': orderItem.process, 'state': orderItem.state.name}) }}" target="_blank" class="item-state">{{ (orderItem.stateHistory | first).name }} (paused)</a>
         {% else %}
-            <a style="color: #1AB394" href="{{ url('/oms/index/draw', {'process': orderItem.process, 'state': orderItem.state.name}) }}" target="_blank">{{ (orderItem.stateHistory | first).name }}</a>
+            <a style="color: #1AB394" href="{{ url('/oms/index/draw', {'process': orderItem.process, 'state': orderItem.state.name}) }}" target="_blank" class="item-state">{{ (orderItem.stateHistory | first).name }}</a>
         {% endif %}
     </div>
   {% if orderItem.stateHistory | length > 1 %}
@@ -77,3 +78,4 @@
 <td class="location">
     {{ orderItem.shelf }} - {{ orderItem.shelfFloor }} - {{ orderItem.shelfField }}
 </td>
+<td></td>

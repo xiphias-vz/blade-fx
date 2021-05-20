@@ -9,21 +9,23 @@ $(document).ready(function () {
 
     const pickZones = document.getElementById('list1');
     const timeslots = document.getElementById('list2');
-    pickZones.getElementsByClassName('anchor')[0].onclick = function(evt) {
-        if (pickZones.classList.contains('visible'))
-            pickZones.classList.remove('visible');
-        else
-            pickZones.classList.add('visible');
+    if(pickZones !== null) {
+        pickZones.getElementsByClassName('anchor')[0].onclick = function(evt) {
+            if (pickZones.classList.contains('visible'))
+                pickZones.classList.remove('visible');
+            else
+                pickZones.classList.add('visible');
+        }
     }
 
-    timeslots.getElementsByClassName('anchor')[0].onclick = function(evt) {
-        if (timeslots.classList.contains('visible'))
-            timeslots.classList.remove('visible');
-        else
-            timeslots.classList.add('visible');
+    if(timeslots !== null) {
+        timeslots.getElementsByClassName('anchor')[0].onclick = function(evt) {
+            if (timeslots.classList.contains('visible'))
+                timeslots.classList.remove('visible');
+            else
+                timeslots.classList.add('visible');
+        }
     }
-
-    console.log("ready");
 
     $('.sales-order-item-group-element button').click(function(e) {
         e.preventDefault();
@@ -108,7 +110,6 @@ window.addEventListener('DOMContentLoaded', () => {
     const pickingZoneHeaders = document.querySelectorAll('.pickingZoneHeader');
     const headers = document.querySelectorAll('#order-item-list th[data-pickzone]')
     const tableRows = document.querySelectorAll('#order-item-list tr')
-    const pickingZoneItems = document.querySelectorAll('#order-item-list tr[data-pickzone-item]');
     let isCurrentUserSupervisorOrAdmin;
     if(document.querySelector("#isCurrentUserSupervisorOrAdmin") !== null)
         isCurrentUserSupervisorOrAdmin = document.querySelector("#isCurrentUserSupervisorOrAdmin").value;
@@ -156,16 +157,19 @@ window.addEventListener('DOMContentLoaded', () => {
         }
         let pickingZone = row.querySelector('.pickingZoneHeader');
         let pickingZoneValue = pickingZone.getAttribute('data-pickZone');
+        const pickingZoneItems = document.querySelectorAll('#order-item-list tr[data-pickzone-item]');
         let arr = Array.prototype.slice.call(pickingZoneItems);
         arr.map((el, index) => {
 
             if(el.getAttribute('data-pickZone-item') === pickingZoneValue) {
                 if(window.getComputedStyle(el).display === 'none') {
+                    if(!el.classList.contains('collapsed')) {
+                        el.style.display = 'table-row';
+                        let arrow = pickingZone.querySelector('.arrow');
+                        toggleAdditionalRows('DISPLAY_TABLE_ROW', el);
+                        toggleArrowIcon('ADD_DOWN_ARROW', arrow);
+                    }
 
-                    let arrow = pickingZone.querySelector('.arrow');
-                    el.style.display = 'table-row';
-                    toggleAdditionalRows('DISPLAY_TABLE_ROW', el);
-                    toggleArrowIcon('ADD_DOWN_ARROW', arrow);
                 }
                 else {
                     el.style.display = 'none';
@@ -182,9 +186,12 @@ window.addEventListener('DOMContentLoaded', () => {
        let additionalRow = currentRow.nextElementSibling;
        if(additionalRow === null)
            return;
-       while (additionalRow.classList.contains('addition-row') && additionalRow.nextElementSibling !== null) {
+       while (additionalRow.classList.contains('addition-row')) {
            additionalRow.style.display = operation === 'DISPLAY_TABLE_ROW' ? 'table-row' : 'none';
+           if(additionalRow.nextElementSibling === null)
+               break;
            additionalRow = additionalRow.nextElementSibling;
+
            if(!additionalRow.classList.contains('addition-row')) {
                break;
            }
@@ -229,7 +236,6 @@ window.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-
     function removeNotNeededRows() {
         let rows = document.querySelectorAll('#order-item-list tr');
         for(let i = 0; i < rows.length; i++) {
@@ -245,4 +251,5 @@ window.addEventListener('DOMContentLoaded', () => {
             }
         }
     }
+
 })
