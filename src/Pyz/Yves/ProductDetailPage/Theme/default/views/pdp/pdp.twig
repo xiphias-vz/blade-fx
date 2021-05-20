@@ -6,9 +6,9 @@
 
     cart: _view.cart,
 
-    title: product.metaTitle | default(_view.product.name),
-    metaTitle: product.metaTitle | default(_view.product.name),
-    metaDescription: _view.product.metaDescription | default,
+    title: product.metaTitle | default(_view.product.attributes.metatitle),
+    metaTitle: product.metaTitle | default(_view.product.attributes.metatitle),
+    metaDescription: _view.product.attributes.metadescription | default,
     metaKeywords: _view.product.metaKeywords | default,
     tags: _view.tags,
     vitamins: _view.vitamins,
