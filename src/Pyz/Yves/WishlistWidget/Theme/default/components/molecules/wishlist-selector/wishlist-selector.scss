@@ -2,6 +2,19 @@
     #{$name} {
         position: relative;
 
+        .payback {
+            display:flex;
+            align-items: center;
+        }
+
+        .text-blue {
+            color: blue !important;
+        }
+
+        .text-grey {
+            color: gray !important;
+        }
+
         @content;
     }
 }
