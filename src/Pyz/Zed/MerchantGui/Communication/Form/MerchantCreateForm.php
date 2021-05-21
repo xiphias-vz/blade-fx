@@ -34,7 +34,7 @@ class MerchantCreateForm extends ExtendedMerchantCreateForm
     protected const LABEL_EMAIL = 'Email';
     protected const LABEL_MERCHANT_REFERENCE = 'Merchant Reference';
     protected const LABEL_IS_SHOP_VISIBLE = 'Is active';
-    protected const LABEL_IS_PASSWORD_PROTECTED = 'Is password protected';
+    protected const LABEL_IS_PASSWORD_PROTECTED = 'Ist passwortgeschützt';
     protected const LABEL_SHOP_PASSWORD = 'Shop password';
 
     /**

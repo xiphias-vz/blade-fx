@@ -841,7 +841,7 @@ $config[StoreConstants::STORE_NAMES] = [
     'KMD' => 'Köln',
     'LPZ' => 'Leipzig',
     'HAD' => 'Halle',
-    'ISS' => 'Isserstedt',
+    'ISS' => 'Jena-Isserstedt',
 ];
 
 // ----------- Google Tag Manager
