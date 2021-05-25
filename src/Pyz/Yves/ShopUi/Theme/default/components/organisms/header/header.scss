@@ -7,6 +7,44 @@ $header-sticky-height: rem(69, number);
         position: relative;
         z-index: $setting-zi-header;
 
+        &__meta-navigation-top {
+            background: $setting-color-globus-lightGray;
+            height: 28px;
+            padding: 2px;
+            margin: 0px;
+
+            @include helper-breakpoint-media-max($xl-min) {
+                display: none;
+            }
+        }
+
+       &__text-left {
+            display: inline-flex;
+            text-align: left;
+            color:#EA8801;
+        }
+
+        &__text-right {
+            display: inline-flex;
+            text-align: right;
+            color:#7B7B7B;
+        }
+
+        &__icon_left {
+            width: 20px;
+            height: 20px;
+            vertical-align:middle;
+            margin:0px 4px 2px 0px;
+        }
+
+        &__icon_right {
+            width: 16px;
+            height: 16px;
+            vertical-align:middle;
+            margin-right: 4px;
+            margin-left: 12px;
+        }
+
         &__top {
             background: $setting-color-globus-white;
             color: $setting-color-globus-lightGray;
@@ -20,6 +58,8 @@ $header-sticky-height: rem(69, number);
 
         &__row {
             padding: 0 rem(20) 0 rem(100);
+            margin-left: 10px;
+            margin-right: 10px;
 
             @include helper-breakpoint-media-min($xl-min) {
                 padding: 0;

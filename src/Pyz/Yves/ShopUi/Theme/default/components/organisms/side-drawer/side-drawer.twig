@@ -94,6 +94,18 @@
                                 {{ 'customer.login' | trans }}
                             </a>
                         {% endif %}
+
+                        <div class="hr-line-solid"></div>
+
+                        <a href="https://www.globus.de/" target = "_blank" class = "{{ config.name }}__navigation-item link link--reset-focus">
+                            <img src="{{ publicPath('images/meinmarkt_mobile.svg') }}" class="{{ config.name }}__icon"/>
+                            {{ 'my_market.link' | trans }}
+                        </a>
+                        <a href="https://www.globus.de/produkte/" target = "_blank" class = "{{ config.name }}__navigation-item link link--reset-focus">
+                            <img src="{{ publicPath('images/sortiment_mobile.svg') }}" class="{{ config.name }}__icon"/>
+                            {{ 'product.find' | trans }}
+                        </a>
+
                     </div>
                 {% endblock %}
 

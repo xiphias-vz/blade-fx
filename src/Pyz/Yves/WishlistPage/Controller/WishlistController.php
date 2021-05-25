@@ -32,7 +32,7 @@ class WishlistController extends SprykerWishlistController
     public const MESSAGE_PERMISSION_FAILED = 'global.permission.failed';
     private const REQUEST_PARAM_CSRF_TOKEN = 'token';
 
-    public const DEFAULT_NAME = 'Meine Merkzettel';
+    public const DEFAULT_NAME = 'Meine Einkaufsliste';
     public const REQUEST_HEADER_REFERER = 'referer';
     public const PARAM_WISHLIST_QUANTITY = 'quantity';
     public const PARAM_ID_PRODUCT_ABSTRACT = 'idProductAbstract';
@@ -67,9 +67,9 @@ class WishlistController extends SprykerWishlistController
             ->getWishlistClient()
             ->addItem($wishlistItemTransfer);
         if (!$wishlistItemTransfer->getIdWishlistItem()) {
-            $this->addErrorMessage('customer.account.wishlist.item.not_added');
+            $this->addErrorMessage('customer.account.shopping_list.item.failed');
         } else {
-            $this->addSuccessMessage('customer.account.wishlist.item.added');
+            $this->addSuccessMessage('customer.account.shopping_list.item.added');
         }
 
         if ($request->headers->has(static::REQUEST_HEADER_REFERER)) {
