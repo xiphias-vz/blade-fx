@@ -29,6 +29,8 @@
         <property name="acceptTerms" type="bool"/>
         <property name="hasOrders" type="bool"/>
         <property name="myGlobusCard" type="string"/>
+        <property name="paybackNumber" type="string"/>
+        <property name="isConnected" type="bool" />
     </transfer>
 
     <transfer name="CustomerAddressResponse">

@@ -2,6 +2,7 @@
 
 {% define data = {
     payment: _view.quoteTransfer.payment,
+    customer: _view.quoteTransfer.customer,
     overview: {
         taxPayments: _view.taxPayments,
         totalItems: _view.totalItems,
@@ -33,6 +34,7 @@
                         shipment: shipmentGroup.shipment,
                         billingAddress: data.billingAddress,
                         isGiftCardExists: isGiftCardExists,
+                        customer: data.customer,
                         canEdit: true,
                         payment: data.payment,
                     },

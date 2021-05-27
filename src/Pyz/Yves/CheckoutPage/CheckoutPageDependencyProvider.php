@@ -13,6 +13,8 @@ use Pyz\Yves\CustomerPage\Form\GuestForm;
 use Pyz\Yves\CustomerPage\Form\LoginForm;
 use Pyz\Yves\CustomerPage\Form\RegisterForm;
 use Pyz\Yves\CustomerPage\Plugin\CheckoutPage\CheckoutAddressFormDataProviderPlugin;
+use Spryker\Client\Customer\CustomerClientInterface;
+use Spryker\Client\Session\SessionClientInterface;
 use Spryker\Shared\Nopayment\NopaymentConfig;
 use Spryker\Yves\Kernel\Container;
 use Spryker\Yves\Kernel\Plugin\Pimple;
@@ -35,11 +37,13 @@ use SprykerShop\Yves\SalesOrderThresholdWidget\Plugin\CheckoutPage\SalesOrderThr
 
 class CheckoutPageDependencyProvider extends SprykerShopCheckoutPageDependencyProvider
 {
+    public const CUSTOMER_CLIENT = 'CUSTOMER_CLIENT';
     public const CLIENT_TIME_SLOT = 'CLIENT_TIME_SLOT';
     public const SERVICE_TIME_SLOT = 'SERVICE_TIME_SLOT';
     public const TIME_SLOT = 'TIME_SLOT';
     public const CLIENT_ORDER_DETAIL = 'CLIENT_ORDER_DETAIL';
     public const PYZ_SERVICE_SHIPMENT = 'PYZ_SERVICE_SHIPMENT';
+    public const CLIENT_SESSION = 'CLIENT_SESSION';
 
     /**
      * @param \Spryker\Yves\Kernel\Container $container
@@ -56,6 +60,36 @@ class CheckoutPageDependencyProvider extends SprykerShopCheckoutPageDependencyPr
         $container = $this->addTimeSlot($container);
         $container = $this->addOrderDetailClient($container);
         $container = $this->addPyzShipmentService($container);
+        $container = $this->addSessionClient($container);
+        $container = $this->addPyzCustomerClient($container);
+
+        return $container;
+    }
+
+    /**
+     * @param \Spryker\Yves\Kernel\Container $container
+     *
+     * @return \Spryker\Yves\Kernel\Container
+     */
+    protected function addPyzCustomerClient(Container $container): Container
+    {
+        $container->set(self::CUSTOMER_CLIENT, function (Container $container): CustomerClientInterface {
+            return $container->getLocator()->customer()->client();
+        });
+
+        return $container;
+    }
+
+    /**
+     * @param \Spryker\Yves\Kernel\Container $container
+     *
+     * @return \Spryker\Yves\Kernel\Container
+     */
+    private function addSessionClient(Container $container): Container
+    {
+        $container->set(self::CLIENT_SESSION, function (Container $container): SessionClientInterface {
+            return $container->getLocator()->session()->client();
+        });
 
         return $container;
     }

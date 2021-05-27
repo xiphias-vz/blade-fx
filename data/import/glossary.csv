@@ -967,6 +967,23 @@ checkout.step.customer.title,Anmelden,de_DE
 checkout.step.address.title,Address,en_US
 checkout.step.address.title,Abholstation,de_DE
 checkout.step.shipment.title,Shipment,en_US
+checkout.step.payback.title,Mit Ihrer PAYBACK Karte Punkte sammeln,en_US
+checkout.step.payback.title,Mit Ihrer PAYBACK Karte Punkte sammeln,de_DE
+checkout.step.payback.tooltip.title,So finden Sie Ihre Kundennummer,de_DE
+checkout.step.payback.tooltip.description,Kundennummer eingeben,de_DE
+checkout.step.payback.tooltip.paragraph,Bitte registrieren Sie ihre PAYBACK Karte.Auf der Rückseite Ihrer Karte finden SIe die 10-stellige Kundennummer,de_DE
+checkout.step.payback.name.description,Payback kundennummer,en_US
+checkout.step.payback.name.description,Payback kundennummer,de_DE
+checkout.step.payback.save,Speichern,en_US
+checkout.step.payback.save,Speichern,de_DE
+checkout.step.payback.error.message,Wrong payback number,en_US
+checkout.step.payback.error.message,Falsche payback nummer,de_DE
+checkout.step.payback.checkbox.mark,Für diese Bestellung PAYBACK Punkte sammeln,en_US
+checkout.step.payback.checkbox.mark,Für diese Bestellung PAYBACK Punkte sammeln,de_DE
+checkout.step.payback.checkbox.marked,Mein Globus mit PAYBACK,de_DE
+checkout.step.payback.label,Sie erhalten somit keinen Tankrabatt,de_DE
+checkout.step.payback.label.two,Um von allen Vorteilen zu profitieren,de_DE
+checkout.step.payback.label.three,verknüpfen Sie,de_DE
 checkout.step.shipment.title,Abholzeitpunkt,de_DE
 checkout.step.shipment.note,Bitte beachten Sie: Aufgrund von Kapazitätenengpässen sind eventuell leider nicht immer alle Lieferfenster verfügbar,de_DE
 checkout.step.shipment.provider.a,DHL,en_US
@@ -1026,6 +1043,18 @@ checkout.step.payment.must_be_older_than_18_years,You must be at least 18 years 
 checkout.step.payment.must_be_older_than_18_years,Sie müssen mindestens 18 Jahre alt sein.,de_DE
 checkout.step.success.title,Thank you.,en_US
 checkout.step.success.title,Vielen Dank für Ihren Einkauf!,de_DE
+checkout.step.success.payback.not.connected,Alle Vorteile von Mein Globus und PAYBACK entdecken,de_DE
+checkout.step.success.payback.not.connected,Discover all the advantages of Mein Globus and PAYBACK,en_US
+checkout.step.success.payback.tip.one,PAYBACK Punkte sammeln und in Einkaufsgutscheine umwandeln,de_DE
+checkout.step.success.payback.tip.one,Collect PAYBACK points and convert them into shopping vouchers,en_US
+checkout.step.success.payback.tip.two,Mein Globus und PAYBACK Coupons einlösen,de_DE
+checkout.step.success.payback.tip.two,Redeem my Globus and PAYBACK coupons,en_US
+checkout.step.success.payback.tip.three,Tankeschön sammeln,de_DE
+checkout.step.success.payback.tip.three,Collect Tankeschön,en_US
+checkout.step.success.payback.tip.four,von exklusiven Vorteilen für Weinliebhaber und Weltentdecker profitieren,de_DE
+checkout.step.success.payback.tip.four,benefit from exclusive advantages for wine lovers and world explorers,en_US
+checkout.step.success.payback.discover,Jetzt entdecken,de_DE
+checkout.step.success.payback.discover,Now discover,en_US
 checkout.step.success.text,Your order has been placed successfully. You will get the order confirmation email in a few minutes. You can check and track your order in Your Account.,en_US
 checkout.step.success.text,Ihre Bestellung ist erfolgreich in unserem Abholmarkt eingegangen.,de_DE
 checkout.step.success.link,"Go to ""My Account""",en_US
@@ -3040,7 +3069,7 @@ forms.additional_register,"Ja, ich möchte über am <a href='/de/agb-online-kauf
 checkout.customer.register_as_guest,Als Gast bestellen,de_DE
 customer.phone.checkout.guest,Telefon,de_DE
 mobile.phone.number,Mobiltelefon,de_DE
-customer.land.phone,Fastnetz,de_DE
+customer.land.phone,Festnetz,de_DE
 customer.register.birthdate.title,"Geburtstag (TT/MM/YYYY)",de_DE
 customer.register.telefon.title,Telefon (mindenstens 1 Angabe Ist Pflicht),de_DE
 page.fragen.url,https://globus.zendesk.com/hc/de,de_DE

@@ -9,6 +9,7 @@
     isGiftCardExists: false,
     canEdit: false,
     billingAddress: null,
+    customer: [],
     payment: null,
     merchantName: app['merchant_name'] | default,
     cartNote: _view.quoteTransfer.cartNote,
@@ -22,7 +23,6 @@
                     {% block addressHeading %}
                         <div class="{{ config.name }}__heading">
                             <h2 class="{{ config.name }}__title"></h2>
-
                             {% if data.canEdit %}
                                 <a href="{{ url('checkout-address') }}" class="link link--darkest link--edit">
                                     {% include molecule('icon-tooltip') with {
@@ -118,4 +118,71 @@
             </div>
         {% endblock %}
     {% endif %}
+
+    {% block payback %}
+        <div class="{{ config.name }}__item col col--sm-12 payback-banner">
+            <div class="{{ config.name }}__row">
+                <div class="col--lg-8">
+                    <h3 class="{{ config.name }}__title">{{ 'checkout.step.payback.title' | trans }}</h3>
+                    <div class="payback-form-holder">
+                        <form id="frm_payback" class="form_payback" method="post">
+                            <input type="hidden" name="linkPayBackInput" value="">
+                            <div style="display: flex">
+                                <div class="payback-icon">
+                                    <img src="{{ publicPath('images/pb-badge-pdp.png') }}" width="70px" height="25" style="margin-right: 5px;" />
+                                </div>
+                                <div class="payback-name-description" style="text-transform: uppercase">{{ 'checkout.step.payback.name.description' | trans }}</div>
+                            </div>
+                            <div class="input-holder">
+                                <div class="input-text">
+                                    <input type="text" id="txt_paymentCardNumber"
+                                           name="paymentCardNumber" class="payment-card-number"
+                                           placeholder="{{ 'checkout.step.payback.name.description' | trans }}"
+                                           value="{{ data.customer.paybackNumber }}"
+                                    >
+                                    {% if not data.customer.isConnected %}
+                                        <div class="tooltip-background">
+                                            <div class="position-tool-tip">
+                                                <div class="tooltip-information">
+                                                    <h2 style="padding: 13px">{{ 'checkout.step.payback.tooltip.title' | trans }}</h2>
+                                                    <div>
+                                                        <p>{{ 'checkout.step.payback.tooltip.description' | trans }}</p>
+                                                        <p style="color: gray;font-weight: normal">{{ 'checkout.step.payback.tooltip.paragraph' | trans }}</p>
+                                                    </div>
+                                                </div>
+                                                {% include atom('icon') with {
+                                                    modifiers: ['big'],
+                                                    class: 'question__mark',
+                                                    data: {
+                                                        name: 'help',
+                                                    },
+                                                } only %}
+                                            </div>
+                                        </div>
+                                    {% endif %}
+                                </div>
+                                {% if data.customer.isConnected %}
+                                    {% else %}
+                                        <button id="btn_submitPayBackNumber" type="submit">{{ 'checkout.step.payback.save' | trans }}</button>
+                                {% endif %}
+                            </div>
+                            <div class="error-message" style="visibility: hidden">{{ 'checkout.step.payback.error.message' | trans }}</div>
+                            <div class="checkbox-holder" style="margin-bottom: 10px">
+                                {% include atom('checkbox') with {
+                                    data: {
+                                        isChecked: data.customer.isConnected
+                                    }
+                                } only %}
+                                <span style="margin-bottom: 3px;color: #000;font-weight: normal">{{ 'checkout.step.payback.checkbox.mark' | trans }}</span>
+                            </div>
+                            <div class="additional-info" style="color: #000;font-weight: normal">{{ 'checkout.step.payback.label' | trans }}. {{ 'checkout.step.payback.label.two' | trans }}, {{ 'checkout.step.payback.label.three' | trans }}. <span style="color:#ea8901;">{{ 'checkout.step.payback.checkbox.marked' | trans }}</span></div>
+                        </form>
+                    </div>
+                </div>
+                <div class="col--lg-4">
+                    <img src="{{ publicPath('images/pb-pointee.png') }}" width="230px" height="130px"/>
+                </div>
+            </div>
+        </div>
+    {% endblock %}
 {% endblock %}

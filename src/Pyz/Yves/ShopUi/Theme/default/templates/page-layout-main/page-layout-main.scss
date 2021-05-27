@@ -26,7 +26,7 @@
 
             .spacing-y--big {
                 @include helper-breakpoint-media-max($sm-max) {
-                    margin-top:0px;
+                    margin-top:0;
                     margin-bottom: 10px;
                 }
             }
@@ -61,18 +61,24 @@
 
         &--success-page {
             #{$name}__content {
-                background: url('../images/welcome.jpg') no-repeat center top/100% auto;
+                background-image: url('../images/welcome.jpg');
+                background-repeat: no-repeat;
+                background-size: cover;
+                background-position: center;
                 margin-bottom: 0;
+                height: 100%;
 
                 @include helper-breakpoint-media-min($lg-min) {
                     margin-bottom: rem(100);
                 }
             }
+
         }
 
 
 
         &--error {
+
             #{$name}__content {
                 background: url('../images/background-orange.jpg') no-repeat center top / 100% auto;
             }
