@@ -47,7 +47,7 @@
                     Erfahren Sie Mehr unter: <a style="color:orange" href="https://globus.zendesk.com/hc/de">https://globus.zendesk.com/hc/de</a>
                 </p>
                 {% if is_granted('IS_AUTHENTICATED_FULLY') %}
-                    <a style="background: orange;float: left;margin-top: 15px" class="button" href="{{ url('customer/overview') }}">{{ 'checkout.step.success.link' | trans }}</a>
+                    <a style="background: orange;float: left;margin-top: 0px" class="button" href="{{ url('customer/overview') }}">{{ 'checkout.step.success.link' | trans }}</a>
                 {% endif %}
             </div>
             {% if not data.isOrderConnectedWithPayback %}
