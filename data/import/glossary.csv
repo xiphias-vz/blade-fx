@@ -3119,6 +3119,11 @@ checkout.step.customer.login.help_text,Do you need help?,en_US
 checkout.step.customer.login.help_text,Benötigen Sie Hilfe?,de_DE
 checkout.step.customer.login.create_customer_title,Create a customer account and take advantage of the benefits!,en_US
 checkout.step.customer.login.create_customer_title,Kundenkonto anlegen und Vorteile nutzen!,de_DE
+checkout.customer.submit_registration,Bestätigen,de_DE
+checkout.customer.submit_modal_title,Adressprüfung,de_DE
+checkout.customer.submit_modal_content,Ihre Adresse wurde angepasst. Alternativ können Sie Ihre ursprüngliche Eingabe übernehmen,de_DE
+checkout.customer.submit_modal_angepasste_adresse,Angepasste Adresse,de_DE
+checkout.customer.submit_modal_eingegebene_adresse,Eingegebene Adresse,de_DE
 payback.text.part.one,1 °P ,de_DE
 payback.text.part.one,1 °P ,en_US
 payback.text.part.two, pro 2 Euro Warenwert,de_DE

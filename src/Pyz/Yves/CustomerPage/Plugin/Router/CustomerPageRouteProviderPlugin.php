@@ -21,7 +21,7 @@ class CustomerPageRouteProviderPlugin extends SprykerCustomerPageRouteProviderPl
     protected const ROUTE_CUSTOMER_PASSWORD_CHANGE = 'password/change';
     public const CHECKOUT_CHECK_AVAILABILITY = 'checkout-check-availability';
     public const CHECKOUT_GLOBUS_LOGIN = 'checkout-globus-login';
-
+    protected const ROUTE_CUSTOMER_ADDRESS_CHECK = 'register/customer-address-api';
     protected const ROUTE_CUSTOMER_PASSWORD_RESET = 'password/reset';
 
     /**
@@ -45,6 +45,7 @@ class CustomerPageRouteProviderPlugin extends SprykerCustomerPageRouteProviderPl
         $routeCollection = $this->addAvaliabilityTestRoute($routeCollection);
         $routeCollection = $this->addGlobusLoginRoute($routeCollection);
         $routeCollection = $this->addPasswordResetRoute($routeCollection);
+        $routeCollection = $this->addCustomerRegistrationAddressCheckRouter($routeCollection);
 
         return $routeCollection;
     }
@@ -139,6 +140,19 @@ class CustomerPageRouteProviderPlugin extends SprykerCustomerPageRouteProviderPl
         $route = $this->buildRoute('/password/reset', 'CustomerPage', 'Password', 'passwordReset');
         $route = $route->setMethods(['POST']);
         $routeCollection->add(static::ROUTE_CUSTOMER_PASSWORD_RESET, $route);
+
+        return $routeCollection;
+    }
+
+    /**
+     * @param \Spryker\Yves\Router\Route\RouteCollection $routeCollection
+     *
+     * @return \Spryker\Yves\Router\Route\RouteCollection
+     */
+    public function addCustomerRegistrationAddressCheckRouter(RouteCollection $routeCollection): RouteCollection
+    {
+        $route = $this->buildRoute('/register/customer-address-api', 'CustomerPage', 'Register', 'getCustomerDataAPIAction');
+        $routeCollection->add(static::ROUTE_CUSTOMER_ADDRESS_CHECK, $route);
 
         return $routeCollection;
     }

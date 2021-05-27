@@ -175,13 +175,13 @@
                                                 <div class="form__field col col--sm-12">
                                                     <label for="passwordCheckBoxes" class="label label--required">Ihr Passwort muss folgende Kriterien erfüllen:</label>
                                                     <div><input id="passwordCheckBoxes_length" name="passwordCheckBoxes[length]" type="checkbox" onclick="return false;" />
-                                                    <label for="passwordCheckBoxes_length" class="label">mind. 8 Zeichen lang</label></div>
+                                                        <label for="passwordCheckBoxes_length" class="label">mind. 8 Zeichen lang</label></div>
                                                     <div><input id="passwordCheckBoxes_specChar" name="passwordCheckBoxes[specChar]" placeholder="{{ 'customer.login.password_placeholder' | trans }}" type="checkbox" onclick="return false;" />
-                                                    <label for="passwordCheckBoxes_specChar" class="label">mind. 1 Sonderzeichen (außer...)</label></div>
+                                                        <label for="passwordCheckBoxes_specChar" class="label">mind. 1 Sonderzeichen (außer...)</label></div>
                                                     <div><input id="passwordCheckBoxes_digit" name="passwordCheckBoxes[digit]" placeholder="{{ 'customer.login.password_placeholder' | trans }}" type="checkbox" onclick="return false;" />
-                                                    <label for="passwordCheckBoxes_digit" class="label">mind. 1 Ziffer</label></div>
+                                                        <label for="passwordCheckBoxes_digit" class="label">mind. 1 Ziffer</label></div>
                                                     <div><input id="passwordCheckBoxes_letter" name="passwordCheckBoxes[letter]" placeholder="{{ 'customer.login.password_placeholder' | trans }}" type="checkbox" onclick="return false;" />
-                                                    <label for="passwordCheckBoxes_letter" class="label">mind. 1 Buchstabe</label></div>
+                                                        <label for="passwordCheckBoxes_letter" class="label">mind. 1 Buchstabe</label></div>
                                                 </div>
                                             </div>
                                         </div>
@@ -266,13 +266,13 @@
                             <p></p>
                         </div>
                         <div class="col col--lg-6">
-                            {% embed molecule('form') with {
+                            {% embed molecule('form-register') with {
                                 class: 'register-form js-login__register',
                                 modifiers: ['checkout-actions'],
                                 data: {
                                     form: data.forms.registration,
                                     submit: {
-                                        enable: true,
+                                        enable: false,
                                         text: 'checkout.customer.auth_as_user' | trans,
                                         class: 'form__action--checkout col col--middle button button--expand-tablet button--large',
                                     },
@@ -295,6 +295,14 @@
                                         },
                                     } only %}
                                 {% endblock %}
+                            {% endembed %}
+                            {% block submitButton %}
+                                <button type="button" id="link-to-address-modal" class="form__action form__action--checkout col col--middle button button--expand-tablet button--large">
+                                    {{'checkout.customer.auth_as_user' | trans}}
+                                </button>
+                            {% endblock %}
+                            {% embed molecule('popup-ui-address-validation') with {
+                            } only %}
                             {% endembed %}
                         </div>
                     </div>
@@ -323,50 +331,13 @@
                             {% endembed %}
 
                     </div>
-                    <div id="hiddenGuestForm">
-                        {% embed molecule('form') with {
-                            class: 'register-form js-login__guest' ~ (data.isGuest ? '' : ' is-hidden'),
-                            modifiers: ['login', 'checkout-actions'],
-                            data: {
-                                form: data.forms.guest,
-                                submit: {
-                                    enable: true,
-                                    text: 'checkout.customer.submit_as_guest' | trans,
-                                    class: 'col col--middle button button--expand-tablet button--large'
-                                }
-                            },
-                            embed: {
-                                forms: {
-                                    customerGuest: data.forms.customerGuest
-                                }
-                            }
-                        } only %}
-                            {% block fields %}
-                                {% include molecule('form') with {
-                                    modifiers: ['login', 'checkout-actions', 'grid-indent'],
-                                    data: {
-                                        class: 'col col--sm-6',
-                                        form: embed.forms.customerGuest,
-                                        enableStart: false,
-                                        enableEnd: false,
-                                        submit: {
-                                            enable: false
-                                        },
-                                        cancel: {
-                                            enable: false
-                                        }
-                                    }
-                                } only %}
-                            {% endblock %}
-                        {% endembed %}
-                    </div>
-               {% endblock %}
+
+                {% endblock %}
             </div>
         </div>
     </div>
 
     <script type="text/javascript">
-
         function checkoutStep(option)
         {
             window.dataLayer.push({
@@ -557,6 +528,9 @@
         $("#btnContinueRegistration").click(function(){
             $("#additionalLoginForm").css("display", "none");
             $("#checkoutCustomerRegister").css("display", "block");
+            $("#registerForm_customer_email").val($("#startRegistrationForm_customer_email").val());
+            $("#registerForm_customer_password_pass").val($("#startRegister__customer_password").val());
+            $("#registerForm_customer_password_confirm").val($("#startRegister__customer_password").val());
         });
 
         $("#btnContinueRegistrationAsGuest").click(function(){

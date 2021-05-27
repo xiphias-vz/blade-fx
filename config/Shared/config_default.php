@@ -585,6 +585,15 @@ $config[\Pyz\Shared\Customer\CustomerConstants::CDC_CONSTANTS] = [
     ],
 ];
 
+// ---------- GLOBUS APIS
+$config[\Pyz\Shared\Customer\CustomerConstants::GLOBUS_API_CONSTANTS] = [
+    'globus_api_credentials' => [
+        'globusApiUrlNoScreen' => getenv('GLOBUS_CDCAPIURL_NO_SCREEN'),
+        'globusApiKeyNoScreen' => getenv('GLOBUS_CDCAPIKEY_NO_SCREEN'),
+        'globusApiSecretKeyNoScreen' => getenv('GLOBUS_CDCAPISECRETKEY_NO_SCREEN')
+    ],
+];
+
 // ---------- Sitemap
 $config[\Pyz\Shared\S3Constants\S3Constants::S3_CONSTANTS] = [
     'globus_sitemap_credentials' => [
