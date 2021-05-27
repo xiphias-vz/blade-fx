@@ -30,6 +30,41 @@ class CheckoutController extends SprykerCheckoutControllerAlias
      *
      * @return mixed
      */
+    public function customerAction(Request $request)
+    {
+        $quoteValidationResponseTransfer = $this->canProceedCheckout();
+
+        if (!$quoteValidationResponseTransfer->getIsSuccessful()) {
+            $this->processErrorMessages($quoteValidationResponseTransfer->getMessages());
+
+            return $this->redirectResponseInternal(static::ROUTE_CART);
+        }
+
+        //$this->getFactory()->getAuthenticationHandler()->registerCustomer();
+
+        $response = $this->createStepProcess()->process(
+            $request,
+            $this->getFactory()
+                ->createCheckoutFormFactory()
+                ->createCustomerFormCollection()
+        );
+
+        if (!is_array($response)) {
+            return $response;
+        }
+
+        return $this->view(
+            $response,
+            $this->getFactory()->getCustomerPageWidgetPlugins(),
+            '@CheckoutPage/views/login/login.twig'
+        );
+    }
+
+    /**
+     * @param \Symfony\Component\HttpFoundation\Request $request
+     *
+     * @return mixed
+     */
     public function addressAction(Request $request)
     {
         $quoteValidationResponseTransfer = $this->canProceedCheckout();

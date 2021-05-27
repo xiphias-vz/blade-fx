@@ -33,5 +33,6 @@ interface CustomerConstants
 
     public const GOOGLE_CAPTCHA_CONSTANTS = 'GOOGLE_CAPTCHA_CONSTANTS';
     public const GOOGLE_CAPTCHA_CREDENTIALS = 'google_captcha_credentials';
-    public const GOOGLE_CAPTCHA_KEY = 'googleCaptchaKey';
+    public const GOOGLE_CAPTCHA_KEY = 'google_captcha_site_key';
+    public const GOOGLE_CAPTCHA_SECRET = 'google_captcha_secret';
 }

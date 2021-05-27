@@ -19,6 +19,8 @@ class CustomerPageRouteProviderPlugin extends SprykerCustomerPageRouteProviderPl
     protected const ROUTE_CUSTOMER_ORDER_CANCEL = 'customer/order/cancel';
     protected const ROUTE_CUSTOMER_REGISTRATION_CONFIRM = 'register/confirm';
     protected const ROUTE_CUSTOMER_PASSWORD_CHANGE = 'password/change';
+    public const CHECKOUT_CHECK_AVAILABILITY = 'checkout-check-availability';
+    public const CHECKOUT_GLOBUS_LOGIN = 'checkout-globus-login';
 
     protected const ROUTE_CUSTOMER_PASSWORD_RESET = 'password/reset';
 
@@ -40,6 +42,8 @@ class CustomerPageRouteProviderPlugin extends SprykerCustomerPageRouteProviderPl
         $routeCollection = $this->addCustomerOrderCancellationRoute($routeCollection);
         $routeCollection = $this->addCustomerRegisterConfirmRoute($routeCollection);
         $routeCollection = $this->addCustomerPasswordChangeRoute($routeCollection);
+        $routeCollection = $this->addAvaliabilityTestRoute($routeCollection);
+        $routeCollection = $this->addGlobusLoginRoute($routeCollection);
         $routeCollection = $this->addPasswordResetRoute($routeCollection);
 
         return $routeCollection;
@@ -93,6 +97,34 @@ class CustomerPageRouteProviderPlugin extends SprykerCustomerPageRouteProviderPl
     {
         $route = $this->buildRoute('/password/change', 'CustomerPage', 'Password', 'passwordChange');
         $routeCollection->add(static::ROUTE_CUSTOMER_PASSWORD_CHANGE, $route);
+
+        return $routeCollection;
+    }
+
+    /**
+     * @param \Spryker\Yves\Router\Route\RouteCollection $routeCollection
+     *
+     * @return \Spryker\Yves\Router\Route\RouteCollection
+     */
+    protected function addAvaliabilityTestRoute(RouteCollection $routeCollection)
+    {
+        $route = $this->buildRoute('/login/check-availability', 'CustomerPage', 'Auth', 'callAvaliabilityTestAction');
+        $route = $route->setMethods(['POST']);
+        $routeCollection->add(static::CHECKOUT_CHECK_AVAILABILITY, $route);
+
+        return $routeCollection;
+    }
+
+    /**
+     * @param \Spryker\Yves\Router\Route\RouteCollection $routeCollection
+     *
+     * @return \Spryker\Yves\Router\Route\RouteCollection
+     */
+    protected function addGlobusLoginRoute(RouteCollection $routeCollection)
+    {
+        $route = $this->buildRoute('/login/globus-login', 'CustomerPage', 'Auth', 'globusLoginAction');
+        $route = $route->setMethods(['POST']);
+        $routeCollection->add(static::CHECKOUT_GLOBUS_LOGIN, $route);
 
         return $routeCollection;
     }

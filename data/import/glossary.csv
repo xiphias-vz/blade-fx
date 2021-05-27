@@ -964,6 +964,14 @@ checkout.customer.auth_as_login,Login,en_US
 checkout.customer.auth_as_login,Anmelden,de_DE
 checkout.step.customer.title,Login,en_US
 checkout.step.customer.title,Anmelden,de_DE
+checkout.step.customer.login.emailField.label,Email address or customer card number,en_US
+checkout.step.customer.login.emailField.label,E-mail-Addresse oder Kundenkartennummer,de_DE
+checkout.step.customer.login.emailField.placeholder,Enter your e-mail address or customer card number,en_US
+checkout.step.customer.login.emailField.placeholder,E-mail-Addresse oder Kundenkartennummer eingeben,de_DE
+checkout.step.customer.login.new_user_text,New to the pick-up service? Create your,en_US
+checkout.step.customer.login.new_user_text,Neu beim Abholservice? Erstellen Sie Ihr,de_DE
+checkout.step.customer.login.globus_account_text,Globus account,en_US
+checkout.step.customer.login.globus_account_text,Globus Konto,de_DE
 checkout.step.address.title,Address,en_US
 checkout.step.address.title,Abholstation,de_DE
 checkout.step.shipment.title,Shipment,en_US
@@ -1226,11 +1234,11 @@ customer.account.wishlist.item.moved_all_available_to_cart,Verfügbare Produkte 
 customer.account.wishlist.item.moved_all_available_to_cart.failed,The items could not be successfully added to the cart.,en_US
 customer.account.wishlist.item.moved_all_available_to_cart.failed,Nicht alle Artikel konnten erfolgreich in den Einkaufsliste gelegt werden.,de_DE
 customer.account.wishlist.created,Wishlist successfully created.,en_US
-customer.account.wishlist.created,Einkaufsliste erfolgreich angelegt.,de_DE
+customer.account.wishlist.created,Merkzettel erfolgreich angelegt.,de_DE
 customer.account.wishlist.updated,Wishlist successfully updated.,en_US
-customer.account.wishlist.updated,Einkaufsliste erfolgreich aktualisiert.,de_DE
+customer.account.wishlist.updated,Merkzettel erfolgreich aktualisiert.,de_DE
 customer.account.wishlist.deleted,Wishlist successfully deleted.,en_US
-customer.account.wishlist.deleted,Einkaufsliste erfolgreich gelöscht.,de_DE
+customer.account.wishlist.deleted,Merkzettel erfolgreich gelöscht.,de_DE
 customer.account.wishlist.item.not_added,Adding to the wishlist failed.,en_US
 customer.account.wishlist.item.not_added,Hinzufügen zur Merkzettel fehlgeschlagen.,de_DE
 newsletter.subscribe,E-Mail,en_US
@@ -2261,11 +2269,11 @@ customer.account.shopping_list.item.remove.success,Produkt erfolgreich entfernt.
 customer.account.shopping_list.item.remove.failed,Product was not removed from shopping list.,en_US
 customer.account.shopping_list.item.remove.failed,Artikel wurde nicht von der Merkzettel entfernt,de_DE
 customer.account.shopping_list.updated,Shopping list updated successfully,en_US
-customer.account.shopping_list.updated,Einkaufsliste erfolgreich aktualisiert.,de_DE
+customer.account.shopping_list.updated,Merkzettel erfolgreich aktualisiert.,de_DE
 customer.account.shopping_list.clear.success,Shopping list was successfully cleared.,en_US
 customer.account.shopping_list.clear.success,Merkzettel wurde erfolgreich gelöscht.,de_DE
 customer.account.shopping_list.delete.success,Shopping list deleted successfully.,en_US
-customer.account.shopping_list.delete.success,Einkaufsliste erfolgreich gelöscht.,de_DE
+customer.account.shopping_list.delete.success,Merkzettel erfolgreich gelöscht.,de_DE
 customer.account.shopping_list.delete.failed,Shopping list was not deleted.,en_US
 customer.account.shopping_list.delete.failed,Merkzettel konnte nicht gelöscht.,de_DE
 customer.account.shopping_list.delete.you_are_trying_to_delete_shopping_list,"You are trying to delete shopping list <a href=""%link%"">%name%</a>",en_US
@@ -3105,6 +3113,12 @@ customer.account.shopping_list.item.failed,Failed to add product to shopping lis
 customer.account.shopping_list.item.failed,Hinzufügen zu die Einkaufsliste fehlgeschlagen.,de_DE
 globus.metadata,Globus | Unser Globus Bestell & Abholservice | einfach online bestellen ✅ über 8.000 Artikel ✅ schnell am Markt abholen ✅ in gewohnter Globus Qualität ✅ ,de_DE
 globus.metadata,Globus | Unser Globus Bestell & Abholservice | einfach online bestellen ✅ über 8.000 Artikel ✅ schnell am Markt abholen ✅ in gewohnter Globus Qualität ✅ ,en_US
+checkout.step.customer.login.invalidPassword,Ihr eingegebees Passwort Ist falsch,de_DE
+checkout.step.customer.login.invalidPassword,Your entered password is wrong,en_US
+checkout.step.customer.login.help_text,Do you need help?,en_US
+checkout.step.customer.login.help_text,Benötigen Sie Hilfe?,de_DE
+checkout.step.customer.login.create_customer_title,Create a customer account and take advantage of the benefits!,en_US
+checkout.step.customer.login.create_customer_title,Kundenkonto anlegen und Vorteile nutzen!,de_DE
 payback.text.part.one,1 °P ,de_DE
 payback.text.part.one,1 °P ,en_US
 payback.text.part.two, pro 2 Euro Warenwert,de_DE
