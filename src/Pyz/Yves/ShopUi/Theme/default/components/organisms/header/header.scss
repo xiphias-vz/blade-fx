@@ -9,8 +9,9 @@ $header-sticky-height: rem(69, number);
 
         &__meta-navigation-top {
             background: $setting-color-globus-lightGray;
-            height: 28px;
-            padding: 2px;
+            font-size: 11px;
+            height: 30px;
+            padding: 5px;
             margin: 0px;
 
             @include helper-breakpoint-media-max($xl-min) {
@@ -19,30 +20,65 @@ $header-sticky-height: rem(69, number);
         }
 
        &__text-left {
-            display: inline-flex;
+            display: inline-block;
             text-align: left;
-            color:#EA8801;
+            color:$setting-color-globus-lightOrange-2;
         }
 
         &__text-right {
-            display: inline-flex;
+            display: inline-block;
             text-align: right;
-            color:#7B7B7B;
+            color:$setting-color-globus-darkGray-2;
+        }
+
+        &__link_orange {
+            color: $setting-color-gray-13;
+            text-decoration: none;
+
+            &:hover {
+                opacity: 1;
+                color: $setting-color-globus-lightOrange-2;
+                text-decoration: none;
+                box-shadow: none;
+            }
+
+            &:hover svg {
+                fill: $setting-color-globus-lightOrange-2;
+            }
         }
 
         &__icon_left {
-            width: 20px;
-            height: 20px;
-            vertical-align:middle;
-            margin:0px 4px 2px 0px;
+            width: 18px;
+            height: 18px;
+            vertical-align:bottom;
+            margin-right: 2px;
+            margin-left: 10px;
+            text-decoration: none;
+
+            &:hover {
+                opacity: 1;
+                fill: $setting-color-globus-lightOrange-2;
+            }
         }
 
         &__icon_right {
             width: 16px;
             height: 16px;
-            vertical-align:middle;
-            margin-right: 4px;
-            margin-left: 12px;
+            vertical-align:bottom;
+            margin-right: 2px;
+            margin-left: 10px;
+        }
+
+        &__link_black {
+            color: $setting-color-gray-13;
+            text-decoration: none;
+
+            &:hover {
+                opacity: 1;
+                color: $setting-color-black-1;
+                text-decoration: none;
+                box-shadow: none;
+            }
         }
 
         &__top {
@@ -58,8 +94,8 @@ $header-sticky-height: rem(69, number);
 
         &__row {
             padding: 0 rem(20) 0 rem(100);
-            margin-left: 10px;
-            margin-right: 10px;
+            margin-left: 5px;
+            margin-right: 5px;
 
             @include helper-breakpoint-media-min($xl-min) {
                 padding: 0;
