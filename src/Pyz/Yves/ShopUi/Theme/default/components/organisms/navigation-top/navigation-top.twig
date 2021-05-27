@@ -14,11 +14,16 @@
 {% block extraClass %} {{ config.jsName }} {% endblock %}
 
 {% block body %}
+    {% embed molecule('popup-ui-login-form') with {
+    } only %}
+    {% endembed %}
+
     <ul class="grid grid--middle grid--right">
         <li class="{{ config.name }}__item">
             {% set custometLink = is_granted('ROLE_USER') ? 'customer/overview' : 'login' %}
 
-            <a href="{{ url(custometLink) }}" class="link link--nav">
+            {#href="{{ custometLink }}"#}
+            <a id="link-to-login-modal" class="link link--nav">
                 {% include atom('icon') with {
                     class: 'link__icon link__icon--xxl-with-text icon--color-orange',
                     modifiers: ['big'],

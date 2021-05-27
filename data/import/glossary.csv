@@ -3109,3 +3109,7 @@ payback.text.part.one,1 °P ,de_DE
 payback.text.part.one,1 °P ,en_US
 payback.text.part.two, pro 2 Euro Warenwert,de_DE
 payback.text.part.two, pro 2 Euro Warenwert,en_US
+login.modal.register.now,Jetzt registrieren,de_DE
+login.modal.register.now,Register now,en_US
+login.modal.register.new.in.service.text,> Neu beim Abholservice?,de_DE
+login.modal.register.new.in.service.text,> New to the pick-up service?,en_US
