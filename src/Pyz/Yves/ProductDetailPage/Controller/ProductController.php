@@ -43,6 +43,7 @@ class ProductController extends SprykerShopProductController
 
     protected const VITAMIN_IDENTIFIER = 'Vitamin';
     protected const VITAMIN_DATA_REFERENCE_AMOUNT_ATTRIBUTE_KEY = 'Prozent Tagesdosis';
+    protected const PRODUCT_TAG = 'product';
 
     /**
      * @param array $productData
@@ -53,6 +54,13 @@ class ProductController extends SprykerShopProductController
     protected function executeDetailAction(array $productData, Request $request): array
     {
         $viewData = parent::executeDetailAction($productData, $request);
+
+        if (isset($viewData[static::PRODUCT_TAG]['attributes']['metatitle'])) {
+            $viewData[static::PRODUCT_TAG]['metaTitle'] = $viewData[static::PRODUCT_TAG]['attributes']['metatitle'];
+        }
+        if (isset($viewData[static::PRODUCT_TAG]['attributes']['metadescription'])) {
+            $viewData[static::PRODUCT_TAG]['metaDescription'] = $viewData[static::PRODUCT_TAG]['attributes']['metadescription'];
+        }
 
         $quoteTransfer = new QuoteTransfer();
         $quoteTransfer->addItem(
