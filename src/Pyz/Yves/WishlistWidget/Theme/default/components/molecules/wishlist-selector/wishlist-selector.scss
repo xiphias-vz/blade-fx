@@ -8,11 +8,11 @@
         }
 
         .text-blue {
-            color: blue !important;
+            color: $setting-color-globus-payback-blue !important;
         }
 
         .text-grey {
-            color: gray !important;
+            color: $setting-color-gray-9 !important;
         }
 
         @content;
