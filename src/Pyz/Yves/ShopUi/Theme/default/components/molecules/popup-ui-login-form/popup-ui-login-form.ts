@@ -1,8 +1,6 @@
 import Component from 'ShopUi/models/component';
 import $ from 'jquery/dist/jquery';
 
-const EVENT_TOGGLE_FORM = 'toggleForm';
-
 export default class PopupUiLoginForm extends Component {
     protected $this: $ = $(this);
     protected linkToLoginModal;
@@ -62,7 +60,6 @@ export default class PopupUiLoginForm extends Component {
     }
 
     protected appendToLoginForm(): void {
-        // prepending Labels
         const starSpan = document.createElement('span');
         starSpan.setAttribute('class', 'login-modal-star');
         starSpan.textContent = '*';
@@ -86,48 +83,46 @@ export default class PopupUiLoginForm extends Component {
         this.gigyaUsernameDiv.item(1).prepend(usernameLabel);
         this.gigyaPasswordDiv.item(8).prepend(passwordLabel);
 
-        // Appending Password forget link
         const passwordForgetLink = document.createElement('a');
         passwordForgetLink.setAttribute('id', 'password-forget-link-my');
         passwordForgetLink.setAttribute('href', '#');
         passwordForgetLink.textContent = 'Passwort vergessen?';
         passwordForgetLink.style.float = 'left';
+        $(passwordForgetLink).css('padding-bottom', '0.7rem');
         this.gigyaLayoutRow.item(158).append(passwordForgetLink);
         passwordForgetLink.addEventListener('click', () => {
             this.globusApiCall(this.mailInputField.item(0).value);
         });
 
-        // bottom line horizontal line
         $(this.gigyaUsernameDiv).parent().css('position', 'relative');
-        $(this.gigyaUsernameDiv).parent().css('padding-bottom', '10px');
+        // $(this.gigyaUsernameDiv).parent().css('padding-bottom', '10px');
         $(this.gigyaUsernameDiv).parent().css('border-bottom-style', 'solid');
         $(this.gigyaUsernameDiv).parent().css('border-bottom-color', 'black');
         $(this.gigyaUsernameDiv).parent().css('border-bottom-width', '1px');
 
-        // positioning forget password link //this code is not needed
-        $(this.forgotenPassword.item(1)).css('text-align', 'left');
-        $(this.forgotenPassword.item(1)).css('position', 'absolute');
-        $(this.forgotenPassword.item(1)).css('bottom', '15px');
-
-        // styling "jetzt registrieren" link
         const textSpan = document.createElement('span');
         textSpan.setAttribute('class', 'span-in-link');
         textSpan.textContent = '> Neu beim Abholservice? ';
 
-        // registriren link
-        $(this.registerText.item(1)).parent().prepend(textSpan);
-        $(this.registerText.item(1)).parent().css('display', 'inline-flex');
-        this.registerText.item(1).setAttribute('id', 'register-now-link-in-modal');
-        this.registerText.item(1).text = 'Jetzt registrieren';
-        this.registerText.item(1).removeAttribute('href');
-        this.registerText.item(1).setAttribute('href', '/register');
+        const registerLink = document.createElement('a');
+        registerLink.setAttribute('id', 'register-now-link-in-modal');
+        registerLink.setAttribute('href', '/register');
+        registerLink.text = 'Jetzt registrieren';
+        $(registerLink).css('cursor', 'pointer');
 
-        $(this.registerText.item(1)).css('cursor', 'pointer');
+        const divForLink = document.createElement('div');
+        divForLink.setAttribute('class', 'gigya-layout-row');
+        divForLink.setAttribute('display', 'inline-flex');
+        $(divForLink).css('text-align', 'left');
+        $(divForLink).css('padding-top', '0.6rem');
+        divForLink.append(textSpan);
+        divForLink.append(registerLink);
 
-        // changing tekst in button
+        $(this.gigyaLayoutRow.item(159)).prepend(divForLink);
+
         this.submitButton.item(11).value = 'Weiter';
-        // this.submitButton.item(11).removeAttribute('')
         this.submitButton.item(11).setAttribute('gigya-default-value', 'Weiter');
+        $(this.submitButton.item(11)).parent().attr('style', 'padding-bottom: 5px !important');
 
     }
 
@@ -138,21 +133,17 @@ export default class PopupUiLoginForm extends Component {
         this.$this.toggleClass(this.showClass);
     }
 
-    private changeTextInSubmitButton():void {
-        // seting weiter in submit button
+    private changeTextInSubmitButton(): void {
         setTimeout(() => {
             if (this.submitButton.item(11) != undefined){
                 this.submitButton.item(11).value = 'Weiter';
             } else {
-                //console.log("Submit button is null");
             }
         }, 130);
     }
 
-    // function to call Globus API and to show toaster message for failure or success
     private globusApiCall(mail: string)
     {
-        // https://api-dev.globus.de:443/v2/meinglobus/accounts/password/reset
         const url = '/password/reset';
 
         $.ajax(url, {
@@ -162,23 +153,17 @@ export default class PopupUiLoginForm extends Component {
                 id: mail
             },
             success: function(data, status, xhr) {
-                //let response = JSON.parse(data);
-                /*console.log(data);
-                console.log(status);
-                console.log(xhr);
+                let response = JSON.parse(data);
                 console.log("Success");
-                console.log(response);*/
                 alert('E-Mail zum Zurücksetzen Ihres Passworts wurde an Sie gesendet');
             },
             error: function(response) {
-                /*console.log(response);
-                console.log("Error");*/
+                console.log("Error");
                 alert('Kein Konto mit dieser Mail');
             },
         });
     }
 
-    // GETTERS
     get showClass(): string {
         return `${this.name}--show`;
     }

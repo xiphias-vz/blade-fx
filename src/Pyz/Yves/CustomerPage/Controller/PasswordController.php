@@ -85,20 +85,13 @@ class PasswordController extends SprykerPasswordController
      */
     public function passwordResetAction(Request $request)
     {
-        //$mail = $request->request->get('mail');
-        $id = $request->request->get('id');
-        //echo "To je mail\n";
-        //dump($mail);
-        //echo "To je ID\n";
-        /*echo "To je Request\n";
-        dump($request);*/
-
+        $email = $request->request->get('id');
         $apiKey = $this->getGlobusApiKey();
         $apiSecret = $this->getGlobusApiSecretKey();
         $urlPrefix = $this->getGlobusApiUrlPrefix();
         $url = "v2/meinglobus/accounts/password/reset";
         $fullUrl = $urlPrefix . $url;
-        $data = '{"id": "' . $id . '"}';
+        $data = '{"id": "' . $email . '"}';
 
         $curl = curl_init();
 
