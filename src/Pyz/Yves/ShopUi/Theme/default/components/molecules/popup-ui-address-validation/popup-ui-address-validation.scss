@@ -28,6 +28,7 @@ $setting-popup-spacing-y: rem(16);
 
         #id-submit-registration-user{
             float:right;
+            margin: rem(25);
         }
 
         &__disabledCircle{
@@ -40,8 +41,8 @@ $setting-popup-spacing-y: rem(16);
 
         &__container {
             flex-grow: 1;
-            max-width: rem(800);
-            background: $setting-color-white;
+            max-width: rem(1200);
+            background-color: $setting-color-globus-lightGray;
             margin-top: - rem(360);
             @include helper-breakpoint-media-max($sm-max)  {
                 margin-top: - rem(100);
@@ -122,6 +123,23 @@ $setting-popup-spacing-y: rem(16);
 
         &__selectable-div{
             cursor: pointer;
+            background-color: $setting-color-globus-white;
+            padding: rem(24) rem(10);
+            min-height: rem(190);
+            border-radius: rem(25);
+        }
+
+        .selected-div {
+            border: rem(1) solid $setting-color-globus-lightOrange;
+
+        }
+
+        #button-cancel-registration {
+            background: transparent;
+            border: rem(1) solid $setting-color-globus-darkGray;
+            color: $setting-color-globus-darkGray;
+            float: left;
+            margin: rem(25);
         }
 
         &__circle-wrapper
@@ -213,6 +231,10 @@ $setting-popup-spacing-y: rem(16);
     .form-dropdown--shop-switcher .custom-select--header .select2-selection--single {
         border: 0.0625rem solid #dce0e5 !important;
         padding: 0.625rem !important;
+    }
+
+    #right-side {
+        float: right;
     }
 }
 

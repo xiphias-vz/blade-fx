@@ -1,4 +1,4 @@
-{% extends model('component') %}
+ {% extends model('component') %}
 
 {% define config = {
     name: 'popup-ui-address-validation',
@@ -18,7 +18,7 @@
                     {{ 'checkout.customer.submit_modal_content' | trans }}
                 </p>
 
-                <div id="left-side" class="col col--md-6 {{ config.name }}__selectable-div">
+                <div id="left-side" class="col col--md-5 {{ config.name }}__selectable-div">
                     <h3>{{ 'checkout.customer.submit_modal_angepasste_adresse' | trans }}</h3>
                     <br />
                     <div id="user_button_content">
@@ -36,7 +36,10 @@
                         </div>
                     </div>
                 </div>
-                <div id="right-side" class="col col--md-6 {{ config.name }}__selectable-div">
+                <div class="col col--md-2">
+
+                </div>
+                <div id="right-side" class="col col--md-5 {{ config.name }}__selectable-div">
                     <h3>{{ 'checkout.customer.submit_modal_eingegebene_adresse' | trans }}</h3>
                     <br />
                     <div id="api_button_content">
@@ -54,11 +57,17 @@
                 </div>
             </div>
             <div style="clear:both"></div>
+            {% block cancelButton %}
+                <button type="button" id="button-cancel-registration" class="form__action form__action--checkout col col--middle button button--expand-tablet button--large">
+                    {{'general.back.button' | trans}}
+                </button>
+            {% endblock %}
             {% block submitButton %}
                 <button type="button" id="id-submit-registration-user" class="form__action form__action--checkout col col--middle button button--expand-tablet button--large">
                     {{'checkout.customer.submit_registration' | trans}}
                 </button>
             {% endblock %}
+            <div style="clear:both"></div>
         </div>
     </div>
 {% endblock %}

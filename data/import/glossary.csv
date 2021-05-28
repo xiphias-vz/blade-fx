@@ -3132,3 +3132,5 @@ login.modal.register.now,Jetzt registrieren,de_DE
 login.modal.register.now,Register now,en_US
 login.modal.register.new.in.service.text,> Neu beim Abholservice?,de_DE
 login.modal.register.new.in.service.text,> New to the pick-up service?,en_US
+checkout.customer.register_firstPharagraph,"Um aktuelle News und Coupons zu nutzen bestätigen Sie bitte ihre E-Mail Adresse.",de_DE
+checkout.customer.register_secondPharagraph,"Wenn Sie Scan & Go nutzen möchten, lassen Sie sich an der Infotheke In Ihrem Markt freischalten",de_DE
