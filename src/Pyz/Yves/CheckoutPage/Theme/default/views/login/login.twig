@@ -4,6 +4,7 @@
     isGuest: _view.guestForm.vars.value and (_view.guestForm.vars.value.customer and _view.guestForm.vars.value.customer.isGuest),
     isLogin: _view.loginForm.vars.value and not (_view.guestForm.vars.value and (_view.guestForm.vars.value.customer and _view.guestForm.vars.value.customer.isGuest)),
 
+
     forms: {
         registration: _view.registerForm,
         customer: _view.registerForm.customer,

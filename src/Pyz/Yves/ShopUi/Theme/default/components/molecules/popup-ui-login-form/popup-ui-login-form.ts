@@ -120,7 +120,7 @@ export default class PopupUiLoginForm extends Component {
         this.registerText.item(1).setAttribute('id', 'register-now-link-in-modal');
         this.registerText.item(1).text = 'Jetzt registrieren';
         this.registerText.item(1).removeAttribute('href');
-        this.registerText.item(1).setAttribute('href', 'https://www.shop.globus.local/register');
+        this.registerText.item(1).setAttribute('href', '/register');
 
         $(this.registerText.item(1)).css('cursor', 'pointer');
 
