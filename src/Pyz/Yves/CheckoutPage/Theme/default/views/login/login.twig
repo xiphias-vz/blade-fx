@@ -332,8 +332,44 @@
                             {% endembed %}
 
                     </div>
-
-                {% endblock %}
+                    <div id="hiddenGuestForm">
+                        {% embed molecule('form') with {
+                            class: 'register-form js-login__guest' ~ (data.isGuest ? '' : ' is-hidden'),
+                            modifiers: ['login', 'checkout-actions'],
+                            data: {
+                                form: data.forms.guest,
+                                submit: {
+                                    enable: true,
+                                    text: 'checkout.customer.submit_as_guest' | trans,
+                                    class: 'col col--middle button button--expand-tablet button--large'
+                                }
+                            },
+                            embed: {
+                                forms: {
+                                    customerGuest: data.forms.customerGuest
+                                }
+                            }
+                        } only %}
+                            {% block fields %}
+                                {% include molecule('form') with {
+                                    modifiers: ['login', 'checkout-actions', 'grid-indent'],
+                                    data: {
+                                        class: 'col col--sm-6',
+                                        form: embed.forms.customerGuest,
+                                        enableStart: false,
+                                        enableEnd: false,
+                                        submit: {
+                                            enable: false
+                                        },
+                                        cancel: {
+                                            enable: false
+                                        }
+                                    }
+                                } only %}
+                            {% endblock %}
+                        {% endembed %}
+                    </div>
+               {% endblock %}
             </div>
         </div>
     </div>
