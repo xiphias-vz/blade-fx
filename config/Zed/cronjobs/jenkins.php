@@ -158,7 +158,7 @@ $jobs[] = [
 $jobs[] = [
     'name' => 'data-import-full',
     'command' => 'vendor/bin/install -r sftp-based-full-import',
-    'schedule' => '5 0 * * *',
+    'schedule' => '5 21 * * *',
     'enable' => true,
     'stores' => ['EIN'],
 ];
@@ -195,7 +195,7 @@ $jobs[] =
 [
     'name' => 'export-sales-order-summary',
     'command' => '$PHP_BIN vendor/bin/console data:exportSalesOrderSummary',
-    'schedule' => '0 1 * * *',
+    'schedule' => '0 23 * * *',
     'enable' => true,
     'stores' => ['EIN'],
 ];
