@@ -39,9 +39,6 @@
 {% endblock %}
 
 {% block form %}
-    <div class="col col--sm-12 spacing spacing--inner">
-        {% widget 'FullTextSearchTabsWidget' args [data.searchString, 'FullTextSearchProductsTab'] only %}{% endwidget %}
-    </div>
 
     {{parent()}}
 
