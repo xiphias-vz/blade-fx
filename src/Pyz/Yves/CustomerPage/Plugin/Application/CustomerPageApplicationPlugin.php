@@ -18,7 +18,6 @@ class CustomerPageApplicationPlugin extends AbstractPlugin implements Applicatio
 {
     public const CUSTOMER_PROFILE_URL = 'customerProfileUrl';
     public const CUSTOMER_CDC_API_URL = 'customerCDCApiUrl';
-    public const CAPTCHA_SITE_KEY = 'reCaptchaSiteKey';
 
     /**
      * @param \Spryker\Service\Container\ContainerInterface $container
@@ -29,7 +28,6 @@ class CustomerPageApplicationPlugin extends AbstractPlugin implements Applicatio
     {
         $container = $this->getCustomerProfileUrl($container);
         $container = $this->getCDCApiUrl($container);
-        $container = $this->getCaptchaKey($container);
 
         return $container;
     }
@@ -57,20 +55,6 @@ class CustomerPageApplicationPlugin extends AbstractPlugin implements Applicatio
     {
         $container->set(static::CUSTOMER_CDC_API_URL, function () {
             return $this->getConfig()->getCDCApiUrl();
-        });
-
-        return $container;
-    }
-
-    /**
-     * @param \Spryker\Service\Container\ContainerInterface $container
-     *
-     * @return \Spryker\Service\Container\ContainerInterface
-     */
-    protected function getCaptchaKey(ContainerInterface $container): ContainerInterface
-    {
-        $container->set(static::CAPTCHA_SITE_KEY, function () {
-            return $this->getConfig()->getCaptchaSiteKey();
         });
 
         return $container;

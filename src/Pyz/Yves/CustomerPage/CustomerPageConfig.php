@@ -61,19 +61,4 @@ class CustomerPageConfig extends SprykerCustomerPageConfig
 
         return $apiKey;
     }
-
-    /**
-     * @return string
-     */
-    public function getCaptchaSiteKey(): string
-    {
-        $captcha_credentials = Config::get(CustomerConstants::GOOGLE_CAPTCHA_CONSTANTS);
-
-        $apiKey = '';
-        if (isset($captcha_credentials[CustomerConstants::GOOGLE_CAPTCHA_CREDENTIALS][CustomerConstants::GOOGLE_CAPTCHA_KEY])) {
-            $apiKey = $captcha_credentials[CustomerConstants::GOOGLE_CAPTCHA_CREDENTIALS][CustomerConstants::GOOGLE_CAPTCHA_KEY];
-        }
-
-        return $apiKey;
-    }
 }

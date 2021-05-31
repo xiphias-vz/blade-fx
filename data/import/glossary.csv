@@ -964,34 +964,9 @@ checkout.customer.auth_as_login,Login,en_US
 checkout.customer.auth_as_login,Anmelden,de_DE
 checkout.step.customer.title,Login,en_US
 checkout.step.customer.title,Anmelden,de_DE
-checkout.step.customer.login.emailField.label,Email address or customer card number,en_US
-checkout.step.customer.login.emailField.label,E-mail-Addresse oder Kundenkartennummer,de_DE
-checkout.step.customer.login.emailField.placeholder,Enter your e-mail address or customer card number,en_US
-checkout.step.customer.login.emailField.placeholder,E-mail-Addresse oder Kundenkartennummer eingeben,de_DE
-checkout.step.customer.login.new_user_text,New to the pick-up service? Create your,en_US
-checkout.step.customer.login.new_user_text,Neu beim Abholservice? Erstellen Sie Ihr,de_DE
-checkout.step.customer.login.globus_account_text,Globus account,en_US
-checkout.step.customer.login.globus_account_text,Globus Konto,de_DE
 checkout.step.address.title,Address,en_US
 checkout.step.address.title,Abholstation,de_DE
 checkout.step.shipment.title,Shipment,en_US
-checkout.step.payback.title,Mit Ihrer PAYBACK Karte Punkte sammeln,en_US
-checkout.step.payback.title,Mit Ihrer PAYBACK Karte Punkte sammeln,de_DE
-checkout.step.payback.tooltip.title,So finden Sie Ihre Kundennummer,de_DE
-checkout.step.payback.tooltip.description,Kundennummer eingeben,de_DE
-checkout.step.payback.tooltip.paragraph,Bitte registrieren Sie ihre PAYBACK Karte.Auf der Rückseite Ihrer Karte finden SIe die 10-stellige Kundennummer,de_DE
-checkout.step.payback.name.description,Payback kundennummer,en_US
-checkout.step.payback.name.description,Payback kundennummer,de_DE
-checkout.step.payback.save,Speichern,en_US
-checkout.step.payback.save,Speichern,de_DE
-checkout.step.payback.error.message,Wrong payback number,en_US
-checkout.step.payback.error.message,Falsche payback nummer,de_DE
-checkout.step.payback.checkbox.mark,Für diese Bestellung PAYBACK Punkte sammeln,en_US
-checkout.step.payback.checkbox.mark,Für diese Bestellung PAYBACK Punkte sammeln,de_DE
-checkout.step.payback.checkbox.marked,Mein Globus mit PAYBACK,de_DE
-checkout.step.payback.label,Sie erhalten somit keinen Tankrabatt,de_DE
-checkout.step.payback.label.two,Um von allen Vorteilen zu profitieren,de_DE
-checkout.step.payback.label.three,verknüpfen Sie,de_DE
 checkout.step.shipment.title,Abholzeitpunkt,de_DE
 checkout.step.shipment.note,Bitte beachten Sie: Aufgrund von Kapazitätenengpässen sind eventuell leider nicht immer alle Lieferfenster verfügbar,de_DE
 checkout.step.shipment.provider.a,DHL,en_US
@@ -1051,18 +1026,6 @@ checkout.step.payment.must_be_older_than_18_years,You must be at least 18 years 
 checkout.step.payment.must_be_older_than_18_years,Sie müssen mindestens 18 Jahre alt sein.,de_DE
 checkout.step.success.title,Thank you.,en_US
 checkout.step.success.title,Vielen Dank für Ihren Einkauf!,de_DE
-checkout.step.success.payback.not.connected,Alle Vorteile von Mein Globus und PAYBACK entdecken,de_DE
-checkout.step.success.payback.not.connected,Discover all the advantages of Mein Globus and PAYBACK,en_US
-checkout.step.success.payback.tip.one,PAYBACK Punkte sammeln und in Einkaufsgutscheine umwandeln,de_DE
-checkout.step.success.payback.tip.one,Collect PAYBACK points and convert them into shopping vouchers,en_US
-checkout.step.success.payback.tip.two,Mein Globus und PAYBACK Coupons einlösen,de_DE
-checkout.step.success.payback.tip.two,Redeem my Globus and PAYBACK coupons,en_US
-checkout.step.success.payback.tip.three,Tankeschön sammeln,de_DE
-checkout.step.success.payback.tip.three,Collect Tankeschön,en_US
-checkout.step.success.payback.tip.four,von exklusiven Vorteilen für Weinliebhaber und Weltentdecker profitieren,de_DE
-checkout.step.success.payback.tip.four,benefit from exclusive advantages for wine lovers and world explorers,en_US
-checkout.step.success.payback.discover,Jetzt entdecken,de_DE
-checkout.step.success.payback.discover,Now discover,en_US
 checkout.step.success.text,Your order has been placed successfully. You will get the order confirmation email in a few minutes. You can check and track your order in Your Account.,en_US
 checkout.step.success.text,Ihre Bestellung ist erfolgreich in unserem Abholmarkt eingegangen.,de_DE
 checkout.step.success.link,"Go to ""My Account""",en_US
@@ -3077,7 +3040,7 @@ forms.additional_register,"Ja, ich möchte über am <a href='/de/agb-online-kauf
 checkout.customer.register_as_guest,Als Gast bestellen,de_DE
 customer.phone.checkout.guest,Telefon,de_DE
 mobile.phone.number,Mobiltelefon,de_DE
-customer.land.phone,Festnetz,de_DE
+customer.land.phone,Fastnetz,de_DE
 customer.register.birthdate.title,"Geburtstag (TT/MM/YYYY)",de_DE
 customer.register.telefon.title,Telefon (mindenstens 1 Angabe Ist Pflicht),de_DE
 page.fragen.url,https://globus.zendesk.com/hc/de,de_DE
@@ -3089,48 +3052,5 @@ error_page.button_contact,Kontakt aufnehmen,de_DE
 customer.account.passwordChange,Passwortänderung,de_DE
 show_more.btn.title,Mehr erfahren,de_DE
 show_more.btn.title,Show more,en_US
-my_market.link,Mein Markt,de_DE
-my_market.link,My marketplace,en_US
-product.find,Produkte finden,de_DE
-product.find,Find products,en_US
-product.buy,Produkte kaufen,de_DE
-product.buy,Buy products,en_US
-service.fee.customers,"nur 1,99€ Servicegebühren für Mein Globus Kunden",de_DE
-service.fee.customers,"only 1.99€ service fees for Mein Globus customers",en_US
-without.contact.shop&pay,Kontaktlos einkaufen & bezahlen,de_DE
-without.contact.shop&pay,Shop and pay without contact,en_US
-payback.upper,PAYBACK,de_DE
-payback.upper,PAYBACK,en_US
-customer.shopping_list,Einkaufsliste,de_DE
-customer.shopping_list,Shopping list,en_US
-shopping_list.overview.empty,Sie haben noch keine Einkaufsliste.,de_DE
-shopping_list.overview.empty,You do not have any shopping lists yet.,en_US
-shopping_list.overview.add_new,"Einkaufsliste hinzufügen",de_DE
-shopping_list.overview.add_new,Add shopping list,en_US
-customer.account.shopping_list.item.added,The item was added to your shopping list,en_US
-customer.account.shopping_list.item.added,Der Artikel wurde deiner Einkaufsliste hinzugefügt,de_DE
-customer.account.shopping_list.item.failed,Failed to add product to shopping list.,en_US
-customer.account.shopping_list.item.failed,Hinzufügen zu die Einkaufsliste fehlgeschlagen.,de_DE
 globus.metadata,Globus | Unser Globus Bestell & Abholservice | einfach online bestellen ✅ über 8.000 Artikel ✅ schnell am Markt abholen ✅ in gewohnter Globus Qualität ✅ ,de_DE
 globus.metadata,Globus | Unser Globus Bestell & Abholservice | einfach online bestellen ✅ über 8.000 Artikel ✅ schnell am Markt abholen ✅ in gewohnter Globus Qualität ✅ ,en_US
-checkout.step.customer.login.invalidPassword,Ihr eingegebees Passwort Ist falsch,de_DE
-checkout.step.customer.login.invalidPassword,Your entered password is wrong,en_US
-checkout.step.customer.login.help_text,Do you need help?,en_US
-checkout.step.customer.login.help_text,Benötigen Sie Hilfe?,de_DE
-checkout.step.customer.login.create_customer_title,Create a customer account and take advantage of the benefits!,en_US
-checkout.step.customer.login.create_customer_title,Kundenkonto anlegen und Vorteile nutzen!,de_DE
-checkout.customer.submit_registration,Bestätigen,de_DE
-checkout.customer.submit_modal_title,Adressprüfung,de_DE
-checkout.customer.submit_modal_content,Ihre Adresse wurde angepasst. Alternativ können Sie Ihre ursprüngliche Eingabe übernehmen,de_DE
-checkout.customer.submit_modal_angepasste_adresse,Angepasste Adresse,de_DE
-checkout.customer.submit_modal_eingegebene_adresse,Eingegebene Adresse,de_DE
-payback.text.part.one,1 °P ,de_DE
-payback.text.part.one,1 °P ,en_US
-payback.text.part.two, pro 2 Euro Warenwert,de_DE
-payback.text.part.two, pro 2 Euro Warenwert,en_US
-login.modal.register.now,Jetzt registrieren,de_DE
-login.modal.register.now,Register now,en_US
-login.modal.register.new.in.service.text,> Neu beim Abholservice?,de_DE
-login.modal.register.new.in.service.text,> New to the pick-up service?,en_US
-checkout.customer.register_firstPharagraph,"Um aktuelle News und Coupons zu nutzen bestätigen Sie bitte ihre E-Mail Adresse.",de_DE
-checkout.customer.register_secondPharagraph,"Wenn Sie Scan & Go nutzen möchten, lassen Sie sich an der Infotheke In Ihrem Markt freischalten",de_DE

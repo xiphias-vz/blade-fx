@@ -124,13 +124,6 @@ $shop-ui-right-side-drawer-width: rem(320);
             margin-right: rem(12);
         }
 
-        &__icon {
-            width: 20px;
-            height: 20px;
-            vertical-align:middle;
-            margin:0px 8px 0px 0px;
-        }
-
         @content;
     }
 }

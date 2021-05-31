@@ -27,7 +27,7 @@
 
 {% block body %}
     <a class="{{ component.renderClass('menu__link', modifiers) }}" href="{{ path('wishlist/overview') }}" data-id="sidebar-wishlist">
-        {{- 'customer.shopping_list' | trans -}}
+        {{- 'wishlist.wishlist' | trans -}}
     </a>
     {% if hasWishlists %}
         <ul class="menu">

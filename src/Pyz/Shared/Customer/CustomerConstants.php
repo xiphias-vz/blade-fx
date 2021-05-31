@@ -24,15 +24,4 @@ interface CustomerConstants
     public const CDC_SCREENS_URL = 'cdcScreensUrl';
     public const CDC_LOCAL_CREDENTIALS = 'globus_cdc_credentials';
     public const CDC_CONSTANTS = 'CDC_CONSTANTS';
-
-    public const GLOBUS_API_CONSTANTS = 'GLOBUS_API_CONSTANTS';
-    public const GLOBUS_API_CREDENTIALS = 'globus_api_credentials';
-    public const GLOBUS_API_URL = 'globusApiUrlNoScreen';
-    public const GLOBUS_API_KEY = 'globusApiKeyNoScreen';
-    public const GLOBUS_API_SECRET_KEY = 'globusApiSecretKeyNoScreen';
-
-    public const GOOGLE_CAPTCHA_CONSTANTS = 'GOOGLE_CAPTCHA_CONSTANTS';
-    public const GOOGLE_CAPTCHA_CREDENTIALS = 'google_captcha_credentials';
-    public const GOOGLE_CAPTCHA_KEY = 'google_captcha_site_key';
-    public const GOOGLE_CAPTCHA_SECRET = 'google_captcha_secret';
 }

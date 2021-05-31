@@ -14,8 +14,6 @@
         <column name="store_status" type="VARCHAR" required="false"/>
         <column name="invoice_reference" type="VARCHAR" size="2048"/>
         <column name="invoice_created_at" type="TIMESTAMP" />
-        <column name="payback_number" type="VARCHAR" size="2048"/>
-        <column name="is_connected" type="BOOLEAN" />
         <column name="delivered_at" type="TIMESTAMP" />
         <column name="picked_at" type="TIMESTAMP" />
         <column name="collected_at" type="TIMESTAMP" />

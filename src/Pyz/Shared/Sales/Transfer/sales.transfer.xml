@@ -22,8 +22,6 @@
         <property name="merchantName" type="string"/>
         <property name="deliveryMinimumAge" type="int"/>
         <property name="requestedDeliveryDate" type="string"/>
-        <property name="paybackNumber" type="string"/>
-        <property name="isConnected" type="bool"/>
         <property name="pickingSalesOrderCollection" type="PickingSalesOrderCollection"/>
     </transfer>
 

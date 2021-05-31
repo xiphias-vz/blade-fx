@@ -24,7 +24,6 @@
     &__text {
         &--xxl-visible {
             display: none;
-            font-family: "Fira Sans";
 
             @include helper-breakpoint-media-min($xxl-min) {
                 display: inline;

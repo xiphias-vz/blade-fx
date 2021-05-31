@@ -10,7 +10,6 @@
     items: '',
     totals: '',
     payments: '',
-    isOrderConnectedWithPayback: '',
 } %}
 
 {%- block class -%}{{ parent() }} page-layout-main--success-page{%- endblock -%}
@@ -46,49 +45,9 @@
                     Weitere Fragen zu Ihrer Bestellung oder dem Abholschein?<br/>
                     Erfahren Sie Mehr unter: <a style="color:orange" href="https://globus.zendesk.com/hc/de">https://globus.zendesk.com/hc/de</a>
                 </p>
-                {% if is_granted('IS_AUTHENTICATED_FULLY') %}
-                    <a style="background: orange;float: left;margin-top: 0px" class="button" href="{{ url('customer/overview') }}">{{ 'checkout.step.success.link' | trans }}</a>
-                {% endif %}
             </div>
-            {% if not data.isOrderConnectedWithPayback %}
-                <div class="not-linked-payback">
-                    <div class="info-banner">
-                        <div class="info-left-banner" >
-                            <div class="title">
-                                <img src="{{ publicPath('images/pb-badge-pdp.png') }}" width="70px" height="25" style="margin-right: 5px;" />
-                                <h3>{{ 'checkout.step.success.payback.not.connected' | trans }}</h3>
-                            </div>
-                            <p>
-                                <span>
-                                    <img src="{{ publicPath('images/check-circle.svg') }}" />
-                                </span>
-                                <span class="payback-tip">{{ 'checkout.step.success.payback.tip.one' | trans }}</span>
-                            </p>
-                            <p>
-                                <span>
-                                    <img src="{{ publicPath('images/check-circle.svg') }}" />
-                                </span>
-                                <span class="payback-tip">{{ 'checkout.step.success.payback.tip.two' | trans }}</span>
-                            </p>
-                            <p>
-                                <span>
-                                    <img src="{{ publicPath('images/check-circle.svg') }}" />
-                                </span>
-                                <span class="payback-tip">{{ 'checkout.step.success.payback.tip.three' | trans }}</span>
-                            </p>
-                            <p>
-                                <span>
-                                    <img src="{{ publicPath('images/check-circle.svg') }}" />
-                                </span>
-                                <span class="payback-tip">{{ 'checkout.step.success.payback.tip.four' | trans }}</span>
-                            </p>
-                            <a class="button payback-discovery">
-                                {{ 'checkout.step.success.payback.discover' | trans }}
-                            </a>
-                        </div>
-                    </div>
-                    <img class="payback-img" src="{{ publicPath('images/pb-pointee.png') }}"/>
-                </div>
+            {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+                <a style="background: orange" class="button" href="{{ url('customer/overview') }}">{{ 'checkout.step.success.link' | trans }}</a>
             {% endif %}
         </div>
     </div>

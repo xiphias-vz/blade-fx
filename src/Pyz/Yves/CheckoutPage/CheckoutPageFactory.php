@@ -13,9 +13,6 @@ use Pyz\Service\TimeSlot\TimeSlotService;
 use Pyz\Yves\CheckoutPage\Form\DataProvider\ShipmentFormDataProvider;
 use Pyz\Yves\CheckoutPage\Form\FormFactory;
 use Pyz\Yves\CheckoutPage\Process\StepFactory;
-use Pyz\Yves\CustomerPage\CustomerPageDependencyProvider;
-use Spryker\Client\Customer\CustomerClientInterface;
-use Spryker\Client\Session\SessionClientInterface;
 use SprykerShop\Yves\CheckoutPage\CheckoutPageFactory as SprykerShopCheckoutPageFactory;
 
 class CheckoutPageFactory extends SprykerShopCheckoutPageFactory
@@ -39,27 +36,11 @@ class CheckoutPageFactory extends SprykerShopCheckoutPageFactory
     }
 
     /**
-     * @return \Spryker\Client\Session\SessionClientInterface
-     */
-    public function getSessionClient(): SessionClientInterface
-    {
-        return $this->getProvidedDependency(CustomerPageDependencyProvider::CLIENT_SESSION);
-    }
-
-    /**
      * @return \Pyz\Yves\CheckoutPage\Process\StepFactory
      */
     public function createStepFactory()
     {
         return new StepFactory();
-    }
-
-    /**
-     * @return \Spryker\Client\Customer\CustomerClientInterface
-     */
-    public function getCustomerClient(): CustomerClientInterface
-    {
-        return $this->getProvidedDependency(CheckoutPageDependencyProvider::CUSTOMER_CLIENT);
     }
 
     /**
@@ -92,13 +73,5 @@ class CheckoutPageFactory extends SprykerShopCheckoutPageFactory
     public function createCheckoutFormFactory()
     {
         return new FormFactory();
-    }
-
-    /**
-     * @return \SprykerShop\Yves\CustomerPage\Plugin\AuthenticationHandler
-     */
-    public function getAuthenticationHandler()
-    {
-        return $this->getProvidedDependency(CustomerPageDependencyProvider::PLUGIN_AUTHENTICATION_HANDLER);
     }
 }

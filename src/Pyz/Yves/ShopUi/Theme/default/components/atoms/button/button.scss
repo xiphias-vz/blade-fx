@@ -470,8 +470,7 @@
         &--ghost {
             min-height: rem(50);
             color: $setting-color-black-1;
-            background: #DEDEDE;
-            font-family: "Fira Sans";
+            background: $setting-color-gray-15;
             border-radius: rem(4);
 
             &:hover,

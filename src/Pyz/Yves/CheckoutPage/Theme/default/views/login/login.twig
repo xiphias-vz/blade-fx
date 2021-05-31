@@ -13,321 +13,117 @@
         login: _view.loginForm
     },
     title: 'global.login' | trans,
-    scriptSrc: app.customerCDCApiUrl,
-    reCaptchaKey: app.reCaptchaSiteKey
+    scriptSrc: app.customerCDCApiUrl
 } %}
 
 {% block containerContent %}
     <script src="https://code.jquery.com/jquery-latest.min.js"></script>
-    <script src="https://www.google.com/recaptcha/api.js?render={{ data.reCaptchaKey }}"></script>
-    <script src="{{ data.scriptSrc }}"></script>
+    <script language="JavaScript" src="{{ data.scriptSrc }}"></script>
 
     <style type="text/css">
-
-        .button--maxLarge {
-            width: 100%;
+        .gigya-screen-content div.gigya-screen.landscape {
+            padding: 0;
         }
-
-        .stepTitle {
-            margin-bottom: 20px;
+        .gigya-screen, .gigya-screen * {
+            margin: 0;
+            font-family: "Fra Sans", "Open Sans", Arial, "Lucida Grande", sans-serif;
         }
-
-        .customLogin-footer {
-            margin-top: 10px;
+        .gigya-screen .gigya-label-text{
+            font-family: "Fra Sans", "Open Sans", Arial, "Lucida Grande", sans-serif;
         }
-
-        .btn-link {
-            background-color: transparent;
-            color: #7c7c7c;
+        .gigya-screen-caption {
+            display: none;
         }
-
-        .btn-link:hover,
-        .btn-link:focus,
-        .btn-link:active
+        .gigya-screen a
         {
-            background-color: transparent;
-            color: #7c7c7c;
+            color: grey !important;
         }
-
-        .hr-line-solid {
-            border-bottom: 1px solid black;
-            background-color: rgba(0, 0, 0, 0);
-            border-style: solid !important;
-            margin-top: 15px;
-            margin-bottom: 15px;
-            width: 100%;
+        .globus_register_link
+        {
+            display: none !important;
         }
-
-        .hintText {
-            color: #71747c;
-        }
-
-        .helpLink {
-            text-decoration: none;
-        }
-
-        .linkOrange {
-            color: #ea8901;
-            background-color: transparent;
-            cursor: pointer;
-        }
-
-        .registrationLeftSideDiv {
-            display: flex;
-            flex-direction: column;
-            min-height: 56rem;
-        }
-
-        .cancelFlex {
-            margin-top:auto;
-        }
-
-        .cancelBtn {
-            border: 1px solid;
-        }
-        #customerPasswordDiv, #ForgotPasswordLinkDiv, #btnLogin {
-            display: none;
-        }
-
-        #ForgotPasswordLinkDiv {
-            margin-top: 10px;
-        }
-
-        #forgotPasswordDiv {
-            display: none;
-        }
-
-        #forgotPasswordMessage {
-            color: #FF3400;
-        }
-
-        #emailCheckIcon, #startRegister_emailCheckIcon, #passwordToggleEye, #startRegister_passwordToggleEye {
-            display: none;
-            position: absolute;
-            bottom: 21px;
-            right: 20px;
-            width: 24px;
-            height: 24px;
-            background: transparent;
-        }
-
-        #passwordToggleEye, #startRegister_passwordToggleEye {
-            display: block;
-            position: absolute;
-            bottom: 28px;
-            right: 28px;
-            width: 24px;
-            height: 24px;
-            background: transparent;
-            cursor: pointer;
-        }
-
-        #customerEmailDiv,
-        #startRegister_customerEmailDiv,
-        #customerPasswordDiv,
-        #startRegister_customerPasswordDiv {
-            position: relative;
-        }
-
-        #additionalLoginForm {
-            display: none;
-        }
-
-        #btnContinueRegistrationAsGuest {
-            background-color: transparent;
-            border: 1px solid #ea8901;
-            color: #ea8901;
-            margin-bottom: 20px;
-        }
-
-        #startRegister_passwordCheckBoxes {
-            display: none;
-        }
-
-        #hiddenGuestForm {
-            display: none;
-        }
-
-        #btnContinueRegistration, #btnContinueRegistrationAsGuest, #btnCancelLogin, #btnCheckMailOrCard  {
-            cursor: pointer;
-        }
-
-        .checkboxError {
-            outline: 1px solid red;
-        }
-
-        #link-to-address-modal{
-            float: right;
-        }
-
     </style>
 
     <div class="grid grid--center">
         <div class="col col--sm-12 col--md-9 col--xl-9">
             <div class="box box--checkout">
+                {% block title %}
+                    <div class="list-switches list-switches--checkout">
+                        <ul class="list-switches__list list-switches--register-type">
+                            <li class="list-switches__item">
+                                {% embed molecule('toggler-radio') with {
+                                    modifiers: ['checkout', 'with-bg'],
+                                    data: {
+                                        label: 'checkout.customer.auth_as_login' | trans
+                                    },
+                                    attributes: {
+                                        id: 'login',
+                                        checked: data.isLogin,
+                                        name: 'checkoutProceedAs',
+                                        'target-class-name': 'js-login__login',
+                                    },
+                                } only %}
+                                    {% block labelContainer %}
+                                        <span class="toggler-radio__subtext">
+                                             {{ 'customer.login_subtext' | trans }}
+                                             </span>
+                                        {{ parent() }}
+                                    {% endblock %}
+                                {% endembed %}
+                            </li>
 
-                {% block content %}
+                            <li class="list-switches__item">
+                                {% embed molecule('toggler-radio') with {
+                                    modifiers: ['checkout', 'with-bg'],
+                                    data: {
+                                        label: 'checkout.customer.auth_as_user' | trans,
+                                    },
+                                    attributes: {
+                                        id: 'register',
+                                        checked: not data.isGuest and not data.isLogin,
+                                        name: 'checkoutProceedAs',
+                                        'target-class-name': 'js-login__register',
+                                    },
+                                } only %}
+                                    {% block labelContainer %}
+                                        <span class="toggler-radio__subtext">
+                                                 {{ 'customer.signup_subtext' | trans }}
+                                                 </span>
+                                        {{ parent() }}
+                                    {% endblock %}
+                                {% endembed %}
 
-                    <div id="additionalLoginForm" class="form form--login form--checkout-actions">
-                        <h2 class="createCustomerTitle">{{ 'checkout.step.customer.login.create_customer_title' | trans }}</h2>
-                        <form name="startRegistrationForm" method="post" novalidate="novalidate">
-                            <div class="form__container">
-                                <div class="form__fields grid grid--top">
-                                    <div class="form form--login form--checkout-actions form--grid-indent" data-qa="component form">
-                                        <div class="form__container">
-                                            <div id="startRegister_customerEmailDiv" class="form__fields grid grid--top">
-                                                <div class="form__field col col--sm-12">
-                                                    <label for="startRegistrationForm_customer_email" class="label label--required">{{ 'checkout.step.customer.login.email_field.label' | trans }}</label>
-                                                    <input id="startRegistrationForm_customer_email" name="startRegistrationForm[customer][email]" required="required" placeholder="{{ 'checkout.step.customer.login.emailField.placeholder' | trans }}" class="input input--expand" type="email" >
-                                                    <span id="startRegister_emailCheckIcon" class="icon-check"></span>
-                                                </div>
-                                            </div>
-                                            <div id="startRegister_customerPasswordDiv" class="form__fields grid grid--top">
-                                                <div class="form__field col col--sm-12">
-                                                    <label for="startRegister__customer_password" class="label label--required">{{ 'auth.password' | trans }}</label>
-                                                    <input id="startRegister__customer_password" name="startRegistrationForm[customer][password]" placeholder="{{ 'customer.login.password_placeholder' | trans }}" class="input input--expand" type="password" >
-                                                    <button type="button" id="startRegister_passwordToggleEye" class="icon-eye"></button>
-                                                </div>
-                                            </div>
-                                            <div id="startRegister_passwordCheckBoxes" class="form__fields grid grid--top">
-                                                <div class="form__field col col--sm-12">
-                                                    <label for="passwordCheckBoxes" class="label label--required">Ihr Passwort muss folgende Kriterien erfüllen:</label>
-                                                    <div><input id="passwordCheckBoxes_length" name="passwordCheckBoxes[length]" type="checkbox" onclick="return false;" />
-                                                        <label for="passwordCheckBoxes_length" class="label">mind. 8 Zeichen lang</label></div>
-                                                    <div><input id="passwordCheckBoxes_specChar" name="passwordCheckBoxes[specChar]" placeholder="{{ 'customer.login.password_placeholder' | trans }}" type="checkbox" onclick="return false;" />
-                                                        <label for="passwordCheckBoxes_specChar" class="label">mind. 1 Sonderzeichen (außer...)</label></div>
-                                                    <div><input id="passwordCheckBoxes_digit" name="passwordCheckBoxes[digit]" placeholder="{{ 'customer.login.password_placeholder' | trans }}" type="checkbox" onclick="return false;" />
-                                                        <label for="passwordCheckBoxes_digit" class="label">mind. 1 Ziffer</label></div>
-                                                    <div><input id="passwordCheckBoxes_letter" name="passwordCheckBoxes[letter]" placeholder="{{ 'customer.login.password_placeholder' | trans }}" type="checkbox" onclick="return false;" />
-                                                        <label for="passwordCheckBoxes_letter" class="label">mind. 1 Buchstabe</label></div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
+                            </li>
 
-                                <div class="form__actions">
-                                    <button id="btnContinueRegistrationAsGuest" type="button" class="form__action col col--middle button button--expand-tablet button--maxLarge">{{ 'checkout.customer.auth_as_guest' | trans }}</button>
-                                    <button id="btnContinueRegistration" type="button" class="form__action col col--middle button button--expand-tablet button--maxLarge" disabled>{{ 'general.next.button' | trans }}</button>
-                                </div>
-
-                                <div class="customLogin-footer form__actions">
-                                    <button id="btnCancelLogin" type="button" class="btn btn-link col col--middle">{{ 'general.cancel.button' | trans }}</button>
-                                </div>
-
-                                <div class="hr-line-solid"></div>
-
-                                <p id="basicHelpText" class="hintText">> <a class="helpLink" href="https://globus.zendesk.com/hc/de">{{ 'checkout.step.customer.login.help_text' | trans }}</a></p>
-                            </div>
-                        </form>
+                            <li class="list-switches__item">
+                                {% embed molecule('toggler-radio') with {
+                                    modifiers: ['checkout', 'with-bg'],
+                                    data: {
+                                        label: 'checkout.customer.auth_as_guest' | trans
+                                    },
+                                    attributes: {
+                                    id: 'guest',
+                                    checked: data.isGuest,
+                                    name: 'checkoutProceedAs',
+                                    'target-class-name': 'js-login__guest',
+                                },
+                                    } only %}
+                                    {% block labelContainer %}
+                                        <span class="toggler-radio__subtext">&nbsp;</span>
+                                        {{ parent() }}
+                                    {% endblock %}
+                                {% endembed %}
+                            </li>
+                        </ul>
                     </div>
-
-                    <div id="loginAPI" class="form form--login form--checkout-actions register-form">
-                        <h2 class="stepTitle">{{ 'global.login' | trans }}</h2>
-                        <form name="customLoginForm" method="post" novalidate="novalidate">
-                            <div class="form__container">
-                            <div class="form__fields grid grid--top">
-                                <div class="form form--login form--checkout-actions form--grid-indent" data-qa="component form">
-                                    <div class="form__container">
-                                        <div id="customerEmailDiv" class="form__fields grid grid--top">
-                                            <div class="form__field col col--sm-12">
-                                                <label for="customLoginForm_customer_email" class="label label--required">{{ 'checkout.step.customer.login.email_field.label' | trans }}</label>
-                                                <input id="customLoginForm_customer_email" name="customLoginForm[customer][email]" required="required" placeholder="{{ 'checkout.step.customer.login.emailField.placeholder' | trans }}" class="input input--expand" type="email" >
-                                                <span id="emailCheckIcon" class="icon-check"></span>
-                                            </div>
-                                        </div>
-                                        <div id="customerPasswordDiv" class="form__fields grid grid--top" >
-                                            <div class="form__field col col--sm-12">
-                                                <label for="customLoginForm_customer_password" class="label label--required">{{ 'auth.password' | trans }}</label>
-                                                <input id="customLoginForm_customer_password" name="customLoginForm[customer][password]" placeholder="{{ 'customer.login.password_placeholder' | trans }}" class="input input--expand" type="password" >
-                                                <button type="button" id="passwordToggleEye" class="icon-eye"></button>
-                                            </div>
-                                        </div>
-                                        <div id="forgotPasswordDiv">
-                                            <span id="forgotPasswordMessage">{{ 'checkout.step.customer.login.invalidPassword' | trans }}</span>
-                                            <input id="captchaGeneratedToken" type="hidden" />
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="form__actions">
-                                <button id="btnCheckMailOrCard" type="button" class="form__action col col--middle button button--expand-tablet button--maxLarge" data-qa="submit-button">
-                                    {{ 'general.next.button' | trans }}
-                                </button>
-                                <button id="btnLogin" type="button" class="form__action col col--middle button button--expand-tablet button--maxLarge">{{ 'general.next.button' | trans }}</button>
-                            </div>
-
-                            <div id="ForgotPasswordLinkDiv">
-                                <a class="helpLink" href="">{{ 'global.recover.password' | trans }}?</a>
-                            </div>
-
-                        </div>
-                        </form>
-                        <div class="customLogin-footer form__actions">
-                            <button id="btnCancelLogin" type="button" class="btn btn-link col col--middle">{{ 'general.cancel.button' | trans }}</button>
-                        </div>
-
-                        <div class="hr-line-solid"></div>
-
-                        <p id="basicHelpText" class="hintText">> <a class="helpLink" href="https://globus.zendesk.com/hc/de">{{ 'checkout.step.customer.login.help_text' | trans }}</a></p>
-                        <p id="newUserHelpText" class="hintText">> {{ 'checkout.step.customer.login.new_user_text' | trans }} <button class="helpLink linkOrange">{{ 'checkout.step.customer.login.globus_account_text' | trans }}</button></p>
+                {% endblock %}
+                {% block content %}
+                    <div id="checkoutCustomerLogin" class="js-login__login{{ (data.isLogin ? '' : ' is-hidden') }}">
 
                     </div>
 
                     <div id="checkoutCustomerRegister" class="register-form js-login__register{{ (data.isGuest or data.isLogin? ' is-hidden' : '') }} ">
-                        <div class="col col--lg-5 registrationLeftSideDiv">
-                            {% embed molecule('register-page-left-side') only %}
-                            {% endembed %}
-                            {% block CancelRegisterButton %}
-                                <div class="cancelFlex">
-                                    <button id="btnCancelRegister" type="button" class="btn btn-link col col--middle button button--expand-tablet button--large cancelBtn">{{ 'general.cancel.button' | trans }}</button>
-                                </div>
-                            {% endblock %}
-                        </div>
-                        <div class="col col--lg-1">
-                            <p></p>
-                        </div>
-                        <div class="col col--lg-6">
-                            {% embed molecule('form-register') with {
-                                class: 'register-form js-login__register',
-                                modifiers: ['checkout-actions'],
-                                data: {
-                                    form: data.forms.registration,
-                                    submit: {
-                                        enable: false,
-                                        text: 'checkout.customer.auth_as_user' | trans,
-                                        class: 'form__action--checkout col col--middle button button--expand-tablet button--large',
-                                    },
-                                },
-                                embed: {
-                                    forms: {
-                                        customer: data.forms.customer,
-                                    },
-                                },
-                                qa: 'register-form'
-                            } only %}
-                                {% block fields %}
-                                    {% include molecule('customer-confirmation-form', 'CustomerConfirmationPage') ignore missing with {
-                                        modifiers: ['checkout-actions', 'grid-sm-indent'],
-                                        data: {
-                                            form: embed.forms.customer,
-                                            isSubmitEnabled: false,
-                                            enableStart: false,
-                                            enableEnd: false,
-                                        },
-                                    } only %}
-                                {% endblock %}
-                            {% endembed %}
-                            {% block submitButton %}
-                                <button type="button" id="link-to-address-modal" class="form__action form__action--checkout col col--middle button button--expand-tablet button--large">
-                                    {{'checkout.customer.auth_as_user' | trans}}
-                                </button>
-                            {% endblock %}
-                            {% embed molecule('popup-ui-address-validation') with {
-                            } only %}
-                            {% endembed %}
-                        </div>
+
                     </div>
 
                     <div style="display: none">
@@ -354,49 +150,96 @@
                             {% endembed %}
 
                     </div>
-                    <div id="hiddenGuestForm">
-                        {% embed molecule('form') with {
-                            class: 'register-form js-login__guest' ~ (data.isGuest ? '' : ' is-hidden'),
-                            modifiers: ['login', 'checkout-actions'],
-                            data: {
-                                form: data.forms.guest,
-                                submit: {
-                                    enable: true,
-                                    text: 'checkout.customer.submit_as_guest' | trans,
-                                    class: 'col col--middle button button--expand-tablet button--large'
-                                }
-                            },
-                            embed: {
-                                forms: {
-                                    customerGuest: data.forms.customerGuest
-                                }
-                            }
+
+                    {% embed molecule('form') with {
+                        class: 'register-form js-login__guest' ~ (data.isGuest ? '' : ' is-hidden'),
+                        modifiers: ['login', 'checkout-actions'],
+                        data: {
+                        form: data.forms.guest,
+                        submit: {
+                            enable: true,
+                            text: 'checkout.customer.submit_as_guest' | trans,
+                            class: 'col col--middle button button--expand-tablet button--large'
+                        }
+                    },
+                        embed: {
+                        forms: {
+                            customerGuest: data.forms.customerGuest
+                        }
+                    }
                         } only %}
-                            {% block fields %}
-                                {% include molecule('form') with {
-                                    modifiers: ['login', 'checkout-actions', 'grid-indent'],
-                                    data: {
-                                        class: 'col col--sm-6',
-                                        form: embed.forms.customerGuest,
-                                        enableStart: false,
-                                        enableEnd: false,
-                                        submit: {
-                                            enable: false
-                                        },
-                                        cancel: {
-                                            enable: false
-                                        }
+                        {% block fields %}
+                            {% include molecule('form') with {
+                                modifiers: ['login', 'checkout-actions', 'grid-indent'],
+                                data: {
+                                    class: 'col col--sm-6',
+                                    form: embed.forms.customerGuest,
+                                    enableStart: false,
+                                    enableEnd: false,
+                                    submit: {
+                                        enable: false
+                                    },
+                                    cancel: {
+                                        enable: false
                                     }
-                                } only %}
-                            {% endblock %}
-                        {% endembed %}
-                    </div>
-               {% endblock %}
+                                }
+                            } only %}
+                        {% endblock %}
+                    {% endembed %}
+                {% endblock %}
             </div>
         </div>
     </div>
 
     <script type="text/javascript">
+        function gigyaRegistrationScreen() {
+            var params = {
+                screenSet: 'CCCustomer-RegistrationLogin',
+                startScreen: 'gigya-register-screen',
+                containerID: 'checkoutCustomerRegister',
+                // context: '<the-number-of-the-Globus-store>'
+                "onBeforeSubmit": function(event) {
+                    document.querySelector("#loginForm_password.input").value = document.querySelector(".gigya-register-form input[type='password'][data-gigya-placeholder]").value;
+                },
+                "onAfterSubmit": function(event) {
+                    if(event.response.errorCode == 0) {
+                        checkoutStep('registration');
+                        document.querySelector("#loginForm_email.input").value = event.profile.email;
+                        document.querySelector("#loginForm_data").value = JSON.stringify(event);
+                        document.getElementsByName("loginForm")[0].submit();
+                    }
+                }
+            }
+            gigya.accounts.showScreenSet( params );
+        }
+
+        function gigyaLoginScreen() {
+            gigya.accounts.showScreenSet({
+                screenSet: 'CCCustomer-RegistrationLogin',
+                startScreen: 'gigya-login-screen',
+                containerID: 'checkoutCustomerLogin',
+                "onAfterScreenLoad": function(event) {
+                    var lnk = document.getElementsByClassName('globus_register_link');
+                    lnk[0].setAttribute("href", "/register");
+                    lnk[0].removeAttribute("target");
+                    lnk[1].removeAttribute("target");
+                    lnk[1].setAttribute("href", "javascript: document.getElementsByClassName('js-toggler-radio__trigger')[1].click()")
+                },
+                "onBeforeSubmit": function(event) {
+                    if(event.screen === 'gigya-login-screen')
+                        document.querySelector("#loginForm_password.input").value = document.querySelector(".gigya-input-password.gigya-show-checkmark.gigya-valid").value;
+                },
+                "onAfterSubmit": function(event) {
+                    if(event.response.errorCode == 0 && event.screen === 'gigya-login-screen') {
+                        checkoutStep('login');
+                        document.querySelector("#loginForm_email.input").value = event.profile.email;
+                        document.querySelector("#loginForm_data").value = JSON.stringify(event);
+                        document.getElementsByName("loginForm")[0].submit();
+                    }
+                }
+            });
+        }
+
         function checkoutStep(option)
         {
             window.dataLayer.push({
@@ -415,195 +258,17 @@
             });
         }
 
-        var btnCheck = document.getElementById('btnCheckMailOrCard');
-        if(btnCheck != null)
+        gigyaRegistrationScreen();
+        gigyaLoginScreen();
+
+        var buttons = document.getElementsByTagName('button');
+        if(buttons != null)
         {
-            btnCheck.addEventListener('click', function()
+            buttons[1].addEventListener('click', function()
             {
-               var emailOrCardNumber = $("#customLoginForm_customer_email").val();
-               const url = "/login/check-availability"
-
-                if(emailOrCardNumber != ""){
-                    $.ajax(url, {
-                        type: 'POST',  // http method
-                        data: { id: emailOrCardNumber },  // data to submit
-                        success: function (data, status, xhr) {
-                            let response = JSON.parse(data);
-                            if(response.isAvailable === true){
-                                $("#loginAPI").css("display", "none");
-                                $("#additionalLoginForm").css("display", "block");
-
-                                $("#startRegistrationForm_customer_email").val(emailOrCardNumber);
-                            }
-                            else
-                            {
-                                $("#customerPasswordDiv").css("display", "block");
-                                $("#ForgotPasswordLinkDiv").css("display", "block");
-                                $("#newUserHelpText").css("display", "none");
-                                $('#btnCheckMailOrCard').css("display", "none");
-                                $("#btnLogin").css("display", "block");
-                                $("#emailCheckIcon").css("display", "block");
-
-                            }
-                        },
-                        error: function (jqXhr, textStatus, errorMessage) {
-                        }
-                    });
-                }
-                else {
-                    $("#loginAPI").css("display", "none");
-                    $("#additionalLoginForm").css("display", "block");
-                }
+                checkoutStep('guestCheckout');
             });
         }
-
-        $("#btnLogin").click(function()
-        {
-            var emailOrCardNumber = $("#customLoginForm_customer_email").val();
-            var password = $("#customLoginForm_customer_password").val();
-            var captchaGeneratedToken = $("#captchaGeneratedToken").val();
-            const loginUrl = '/login/globus-login';
-
-            $.ajax(loginUrl, {
-                type: 'POST',  // http method
-                data: { id: emailOrCardNumber, password: password, captchaToken: captchaGeneratedToken  },  // data to submit
-                success: function (data, status, xhr) {
-                    let response = JSON.parse(data);
-                    console.log(response);
-
-                    if(response["successfullyLoggedIn"] === true){
-                        checkoutStep('login');
-                        document.querySelector("#loginForm_email.input").value = emailOrCardNumber;
-                        document.querySelector("#loginForm_password.input").value = password
-                        document.querySelector("#loginForm_data").value = JSON.stringify(response);
-                        document.getElementsByName("loginForm")[0].submit();
-                    }
-                    else{
-                        $("#customLoginForm_customer_password").css("border", "1px solid red");
-                        $("#forgotPasswordDiv").css("display", "block");
-
-                        if(response["showCaptcha"] === true){
-                            grecaptcha.ready(function() {
-                                grecaptcha.execute('{{ data.reCaptchaKey }}', {action: 'login'}).then(function(token) {
-                                    // Add your logic to submit to your backend server here.
-                                    $("#captchaGeneratedToken").val(token);
-                                });
-                            });
-                        }
-                    }
-                },
-                error: function (jqXhr, textStatus, errorMessage) {
-                }
-            });
-        });
-
-        $("#btnCancelLogin").click(function(){
-            window.location.reload();
-        });
-
-        $("#btnCancelRegister").click(function(){
-            window.location.reload();
-        });
-
-        $("#passwordToggleEye").click(function(){
-            var el = $("#customLoginForm_customer_password")[0];
-            if(el.type === "password"){
-                el.type = "text";
-            }
-            else
-            {
-                el.type = "password";
-            }
-
-            $("#passwordToggleEye").toggleClass("icon-eye");
-            $("#passwordToggleEye").toggleClass("icon-eyeclosed");
-        });
-
-        $("#startRegister_passwordToggleEye").click(function(){
-            var el = $("#startRegister__customer_password")[0];
-            if(el.type === "password"){
-                el.type = "text";
-            }
-            else
-            {
-                el.type = "password";
-            }
-
-            $("#startRegister_passwordToggleEye").toggleClass("icon-eye");
-            $("#startRegister_passwordToggleEye").toggleClass("icon-eyeclosed");
-        });
-
-        $("#startRegister__customer_password").focusout(function(ev){
-            let pass = ev.currentTarget.value;
-
-            $("#startRegister_passwordCheckBoxes").css("display", "block");
-            if(pass.length > 8){
-                $("#passwordCheckBoxes_length").prop("checked", "true");
-                $("#passwordCheckBoxes_length").removeClass("checkboxError");
-            }
-            else {
-                $("#passwordCheckBoxes_length").removeAttr("checked");
-                $("#passwordCheckBoxes_length").addClass("checkboxError");
-            }
-
-            let regSpecialChars = /\W/;
-            if(regSpecialChars.test(pass)){
-                $("#passwordCheckBoxes_specChar").prop("checked", "true");
-                $("#passwordCheckBoxes_specChar").removeClass("checkboxError");
-            }
-            else {
-                $("#passwordCheckBoxes_specChar").removeAttr("checked");
-                $("#passwordCheckBoxes_specChar").addClass("checkboxError");
-            }
-
-            let regDigits = /\d/;
-            if(regDigits.test(pass)){
-                $("#passwordCheckBoxes_digit").prop("checked", "true");
-                $("#passwordCheckBoxes_digit").removeClass("checkboxError");
-            }
-            else {
-                $("#passwordCheckBoxes_digit").removeAttr("checked");
-                $("#passwordCheckBoxes_digit").addClass("checkboxError");
-            }
-
-            let regLetters = /[a-zA-Z]/;
-            if(regLetters.test(pass)){
-                $("#passwordCheckBoxes_letter").prop("checked", "true");
-                $("#passwordCheckBoxes_letter").removeClass("checkboxError");
-            }
-            else {
-                $("#passwordCheckBoxes_letter").removeAttr("checked");
-                $("#passwordCheckBoxes_letter").addClass("checkboxError");
-            }
-
-            var reg = /^(?=.*\d)(?=.*[a-zA-Z])(?=.*\W)(?!.*\s).{8,}$/;
-            if (reg.test(pass)) {
-                $("#btnContinueRegistration").removeAttr("disabled");
-            }
-            else {
-                $("#startRegister__customer_password").css("border", "2px solid red");
-                $("#btnContinueRegistration").prop("disabled", "true");
-            }
-
-        });
-
-        $("#btnContinueRegistration").click(function(){
-            $("#additionalLoginForm").css("display", "none");
-            $("#checkoutCustomerRegister").css("display", "block");
-            $("#registerForm_customer_email").val($("#startRegistrationForm_customer_email").val());
-            $("#registerForm_customer_password_pass").val($("#startRegister__customer_password").val());
-            $("#registerForm_customer_password_confirm").val($("#startRegister__customer_password").val());
-        });
-
-        $("#btnContinueRegistrationAsGuest").click(function(){
-            $("#guestForm_customer_email").val($("#startRegistrationForm_customer_email").val());
-            document.getElementsByName("guestForm")[0].submit();
-        });
-
-        $("#newUserHelpText").click(function(){
-            $("#loginAPI").css("display", "none");
-            $("#additionalLoginForm").css("display", "block");
-        });
 
     </script>
 

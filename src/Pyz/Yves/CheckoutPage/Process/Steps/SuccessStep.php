@@ -47,7 +47,6 @@ class SuccessStep extends SprykerSuccessStep
         $data['items'] = $this->copyQuoteTransfer->getItems();
         $data['totals'] = $this->copyQuoteTransfer->getTotals();
         $data['payments'] = $this->copyQuoteTransfer->getPayments();
-        $data['isOrderConnectedWithPayback'] = $this->copyQuoteTransfer->getCustomer() !== null ? (int)$this->copyQuoteTransfer->getCustomer()->getIsConnected() : 0;
 
         return $data;
     }

@@ -3,8 +3,6 @@
         display: flex;
         flex-flow: row wrap;
         padding: rem(20) 0;
-        margin-left: 10px;
-        margin-right: 10px;
 
         @include helper-breakpoint-media-max($sm-max) {
            padding: 0px;

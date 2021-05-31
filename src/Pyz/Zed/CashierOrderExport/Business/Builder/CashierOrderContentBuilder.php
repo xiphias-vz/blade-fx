@@ -98,12 +98,6 @@ class CashierOrderContentBuilder implements CashierOrderContentBuilderInterface
      */
     protected function getHeaderContent(OrderTransfer $orderTransfer): string
     {
-        if ($orderTransfer->getIsConnected()) {
-            $renderCardInformation = $orderTransfer->getPaybackNumber() ?? static::DEFAULT_EMPTY_NUMBER;
-        } else {
-            $renderCardInformation = ($orderTransfer->getCustomer() === null) ? (static::DEFAULT_EMPTY_NUMBER) : ($orderTransfer->getCustomer()->getMyGlobusCard() ?? static::DEFAULT_EMPTY_NUMBER);
-        }
-
          $content = sprintf(
              static::HEADER_MASK,
              $this->getSapStoreId($orderTransfer->getStore()),
@@ -121,7 +115,7 @@ class CashierOrderContentBuilder implements CashierOrderContentBuilderInterface
              static::ACCOUNT_NUMBER_IDENTIFIER,
              static::DEFAULT_EMPTY_NUMBER,
              static::CUSTOMER_KEY_IDENTIFIER,
-             $renderCardInformation,
+             ($orderTransfer->getCustomer() === null) ? (static::DEFAULT_EMPTY_NUMBER) : ($orderTransfer->getCustomer()->getMyGlobusCard() ?? static::DEFAULT_EMPTY_NUMBER),
              static::ORDER_TOTAL_KEY_IDENTIFIER,
              $orderTransfer->getTotals()->getGrandTotal() ?? static::DEFAULT_EMPTY_NUMBER,
              static::ORDER_PAYMENT_STATE_IDENTIFIER,
