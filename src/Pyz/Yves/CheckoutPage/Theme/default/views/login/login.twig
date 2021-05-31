@@ -72,6 +72,19 @@
             cursor: pointer;
         }
 
+        .registrationLeftSideDiv {
+            display: flex;
+            flex-direction: column;
+            min-height: 56rem;
+        }
+
+        .cancelFlex {
+            margin-top:auto;
+        }
+
+        .cancelBtn {
+            border: 1px solid;
+        }
         #customerPasswordDiv, #ForgotPasswordLinkDiv, #btnLogin {
             display: none;
         }
@@ -141,6 +154,10 @@
 
         .checkboxError {
             outline: 1px solid red;
+        }
+
+        #link-to-address-modal{
+            float: right;
         }
 
     </style>
@@ -259,9 +276,14 @@
                     </div>
 
                     <div id="checkoutCustomerRegister" class="register-form js-login__register{{ (data.isGuest or data.isLogin? ' is-hidden' : '') }} ">
-                        <div class="col col--lg-5">
+                        <div class="col col--lg-5 registrationLeftSideDiv">
                             {% embed molecule('register-page-left-side') only %}
                             {% endembed %}
+                            {% block CancelRegisterButton %}
+                                <div class="cancelFlex">
+                                    <button id="btnCancelRegister" type="button" class="btn btn-link col col--middle button button--expand-tablet button--large cancelBtn">{{ 'general.cancel.button' | trans }}</button>
+                                </div>
+                            {% endblock %}
                         </div>
                         <div class="col col--lg-1">
                             <p></p>
@@ -475,8 +497,11 @@
             });
         });
 
-
         $("#btnCancelLogin").click(function(){
+            window.location.reload();
+        });
+
+        $("#btnCancelRegister").click(function(){
             window.location.reload();
         });
 

@@ -40,8 +40,6 @@ class CheckoutController extends SprykerCheckoutControllerAlias
             return $this->redirectResponseInternal(static::ROUTE_CART);
         }
 
-        //$this->getFactory()->getAuthenticationHandler()->registerCustomer();
-
         $response = $this->createStepProcess()->process(
             $request,
             $this->getFactory()

@@ -30,7 +30,8 @@ class RegistrationCheckoutAuthenticationHandlerPlugin extends SprykerRegistratio
 
         $this->processErrorMessages($customerResponseTransfer);
 
-        $quoteTransfer->setCustomer(null);
+        //TODO check if setting customer to null is not needed
+        //$quoteTransfer->setCustomer(null);
 
         return $quoteTransfer;
     }
