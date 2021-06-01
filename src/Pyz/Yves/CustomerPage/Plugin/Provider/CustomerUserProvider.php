@@ -70,6 +70,7 @@ class CustomerUserProvider extends SprykerCustomerUserProvider
                 $customerTransfer->setRegistered(date('yy-m-d'));
                 $customerTransfer->setRegistrationKey(null);
                 $customerTransfer->setThirdPartyRegistration(true);
+                $customerTransfer = $this->populateCustomerAddress($customerTransfer);
                 $this->getFactory()->getCustomerClient()->updateCustomer($customerTransfer);
             }
 
