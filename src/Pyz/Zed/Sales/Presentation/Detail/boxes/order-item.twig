@@ -39,8 +39,8 @@
 <td class="quantity-balance">
     <span class="picked">0</span>/<span class="quantity">{{ orderItem.quantity }}</span>
   {% embed '@Sales/Detail/boxes/item-measurement-unit.twig' with {orderItem: orderItem} %}{% endembed %}
-    <span class="average-weight" style="display: block"></span>
     <span class="total-weight" style="display: block"></span>
+    <span class="cumulative-weight" style="display: block">{{ orderItem.newWeight }}</span>
 </td>
 <td>
     <div>
