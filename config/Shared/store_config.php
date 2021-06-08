@@ -46,6 +46,11 @@ $zedMap = [
         'stage' => 'zed.iss.shop-t.globus.de',
         'prod' => 'zed.iss.shop.globus.de',
     ],
+    'RUE' => [
+        'local' => 'zed.rue.shop.globus.local',
+        'stage' => 'zed.rue.shop-t.globus.de',
+        'prod' => 'zed.rue.shop.globus.de',
+    ],
 ];
 
 return [
@@ -70,5 +75,9 @@ return [
     'ISS' => [
         'key_value_store_namespace' => 9,
         'zed' => $zedMap['ISS'][$environment],
+    ],
+    'RUE' => [
+        'key_value_store_namespace' => 11,
+        'zed' => $zedMap['RUE'][$environment],
     ],
 ];

@@ -9,6 +9,7 @@ stores:
     - LPZ
     - HAD
     - ISS
+    - RUE
 
 sections:
     clean-oms:

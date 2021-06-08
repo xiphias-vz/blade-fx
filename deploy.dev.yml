@@ -120,6 +120,16 @@ regions:
                         namespace: iss_search
                     session:
                         namespace: 10
+            RUE:
+                services:
+                    broker:
+                        namespace: rue_queue
+                    key_value_store:
+                        namespace: 11
+                    search:
+                        namespace: rue_search
+                    session:
+                        namespace: 12
 
 groups:
     DE-1:
@@ -157,6 +167,9 @@ groups:
                     zed.iss.shop.globus.local:
                         store: ISS
                         primal: true
+                    zed.rue.shop.globus.local:
+                        store: RUE
+                        primal: true
 
                     filial-app.ein.shop.globus.local:
                         store: EIN
@@ -172,6 +185,9 @@ groups:
                         entry-point: StoreApp
                     filial-app.iss.shop.globus.local:
                         store: ISS
+                        entry-point: StoreApp
+                    filial-app.rue.shop.globus.local:
+                        store: RUE
                         entry-point: StoreApp
 
 services:

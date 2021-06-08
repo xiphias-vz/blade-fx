@@ -4,4 +4,4 @@ region_number,store,region_name,filial_number,zip_code,city,street,latitude,long
 41,LPZ,Germany,1042,04356,Leipzig,"An der Passage 1",52.532278,13.384491,10,
 41,HAD,Germany,1057,06130,"Halle (Saale)","Dieselstraße 47",52.532278,13.384491,10,
 41,ISS,Germany,1021,07751,"Jena-Isserstadt","Weimarische Straße 3",52.532278,13.384491,10,
-
+41,RUE,Germany,1053,65428,Rüsselsheim am Main,Am Steinmarkt 1,52.532278,13.384491,10,

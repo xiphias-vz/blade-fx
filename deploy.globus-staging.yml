@@ -139,6 +139,16 @@ regions:
                         namespace: iss_search
                     session:
                         namespace: 10
+            RUE:
+                services:
+                    broker:
+                        namespace: rue_queue
+                    key_value_store:
+                        namespace: 11
+                    search:
+                        namespace: rue_search
+                    session:
+                        namespace: 12
 groups:
     DE-1:
         region: DE

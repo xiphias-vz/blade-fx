@@ -6,6 +6,7 @@ $availableStores = [
     'LPZ' => true,
     'HAD' => true,
     'ISS' => true,
+    'RUE' => true,
 ];
 
 $activeStores = array_combine(
