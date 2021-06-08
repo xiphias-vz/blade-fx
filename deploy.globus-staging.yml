@@ -196,6 +196,10 @@ groups:
                         store: HAD
                         <<: *frontend-auth
                         primal: true
+                    zed.rue.shop-t.globus.de:
+                        store: RUE
+                        <<: *frontend-auth
+                        primal: true
                     pick.shop-t.globus.de:
                         store: EIN
                         entry-point: StoreApp
