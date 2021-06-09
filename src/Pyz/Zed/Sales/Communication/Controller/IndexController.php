@@ -229,8 +229,8 @@ class IndexController extends SprykerIndexController
 
                         if (count($tsCapacitiesCount) > 0) {
                             foreach ($tsCapacitiesCount as $count) {
-                                if ($value2[static::DATE_COLUMN] == $count[static::COUNT_DATE] && $value2[static::TIMESLOT_COLUMN] == $count[static::COUNT_TIMESLOT]) {
-                                    $newArray[$value2[static::DATE_COLUMN]][$value2[static::TIMESLOT_COLUMN]][static::USED_CAPACITY_COLUMN] = (int)($count[static::COUNT_ORDER_COUNT]);
+                                if ($date == $count[static::COUNT_DATE] && $value2[static::TIMESLOT_COLUMN] == $count[static::COUNT_TIMESLOT]) {
+                                    $newArray[$count[static::COUNT_DATE]][$value2[static::TIMESLOT_COLUMN]][static::USED_CAPACITY_COLUMN] = (int)($count[static::COUNT_ORDER_COUNT]);
                                     $leftCapacity = (int)($value2[static::CAPACITY_COLUMN]) - (int)($count[static::COUNT_ORDER_COUNT]);
                                     if ($leftCapacity < 0) {
                                         $leftCapacity = 0;
