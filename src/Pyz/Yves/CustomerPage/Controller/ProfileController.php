@@ -66,14 +66,19 @@ class ProfileController extends SprykerShopProfileController
             ->setLastName($customerTransfer->getLastName())
             ->setEmail($customerTransfer->getEmail());
 
-        if (!$isNewAddress) {
-            $addressTransfer->setIdCustomerAddress($customerTransfer->getDefaultBillingAddress());
+        if (!empty($customerTransfer->getCity()) &&
+            !empty($customerTransfer->getZipCode())) {
+            if (!$isNewAddress) {
+                $addressTransfer->setIdCustomerAddress($customerTransfer->getDefaultBillingAddress());
 
-            $this
-                ->getFactory()
-                ->getCustomerClient()
-                ->updateAddressAndCustomerDefaultAddresses($addressTransfer);
-        } else {
+                $this
+                    ->getFactory()
+                    ->getCustomerClient()
+                    ->updateAddressAndCustomerDefaultAddresses($addressTransfer);
+            }
+        }
+
+        if ($isNewAddress) {
             $this
                 ->getFactory()
                 ->getCustomerClient()
