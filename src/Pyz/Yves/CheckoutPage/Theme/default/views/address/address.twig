@@ -86,8 +86,8 @@
                             {{ form_row(embed.forms.shipping.address2, { value: customerData.address2, rowAttr: { class: 'is-hidden' } }) }}
                             {{ form_row(embed.forms.shipping.floor, { value: customerData.floor, rowAttr: { class: 'is-hidden' } }) }}
                             {{ form_row(embed.forms.shipping.additional_info, { value: customerData.additionalInfo, rowAttr: { class: 'is-hidden' } }) }}
-                            {{ form_row(embed.forms.shipping.zip_code, { value: customerData.zipCode, rowAttr: { class: 'is-hidden' } }) }}
-                            {{ form_row(embed.forms.shipping.city, { value: customerData.city, rowAttr: { class: 'is-hidden' } }) }}
+                            {{ form_row(embed.forms.shipping.zip_code, { value: (customerData.zipCode is not null ? customerData.zipCode : '____'), rowAttr: { class: 'is-hidden' } }) }}
+                            {{ form_row(embed.forms.shipping.city, { value: (customerData.city is not null ? customerData.city : '____'), rowAttr: { class: 'is-hidden' } }) }}
 
                             {% include molecule('form') with {
                                 modifiers: ['checkout-form', 'checkout-form-elements'],

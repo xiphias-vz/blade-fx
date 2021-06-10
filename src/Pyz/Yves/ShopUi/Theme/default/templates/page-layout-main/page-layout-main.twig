@@ -162,8 +162,9 @@
 
     <script type="text/javascript">
         let suggestSearchInputElement = document.querySelector(".suggest-search__input");
-        suggestSearchInputElement.addEventListener("change", SearchInputChange);
-
+        if(suggestSearchInputElement !== null) {
+            suggestSearchInputElement.addEventListener("change", SearchInputChange);
+        }
         function SearchInputChange() {
 
             let suggestSearchContainer = document.querySelector(".suggest-search__container");
