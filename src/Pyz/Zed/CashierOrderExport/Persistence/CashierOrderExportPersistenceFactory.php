@@ -7,6 +7,7 @@
 
 namespace Pyz\Zed\CashierOrderExport\Persistence;
 
+use Orm\Zed\Merchant\Persistence\SpyMerchantQuery;
 use Spryker\Zed\Kernel\Persistence\AbstractPersistenceFactory;
 
 /**
@@ -15,4 +16,11 @@ use Spryker\Zed\Kernel\Persistence\AbstractPersistenceFactory;
  */
 class CashierOrderExportPersistenceFactory extends AbstractPersistenceFactory
 {
+    /**
+     * @return \Orm\Zed\Merchant\Persistence\SpyMerchantQuery
+     */
+    public function createMerchantQuery(): SpyMerchantQuery
+    {
+        return SpyMerchantQuery::create();
+    }
 }

@@ -9,12 +9,14 @@ namespace Pyz\Zed\CashierOrderExport\Business\Writer;
 
 use Aws\S3\ObjectUploader;
 use Aws\S3\S3Client;
+use DOMDocument;
 use Exception;
 use Generated\Shared\Transfer\OrderTransfer;
 use Pyz\Shared\S3Constants\S3Constants;
 use Pyz\Zed\CashierOrderExport\Business\Checker\CashierOrderFileCheckerInterface;
 use Pyz\Zed\CashierOrderExport\Business\Deleter\CashierOrderDeleterInterface;
 use Pyz\Zed\CashierOrderExport\Business\Resolver\CashierOrderFileNameResolverInterface;
+use Pyz\Zed\CashierOrderExport\Persistence\CashierOrderExportRepositoryInterface;
 use Spryker\Shared\Config\Config;
 use Spryker\Shared\Log\LoggerTrait;
 use Symfony\Component\Config\Definition\Exception\Exception as SymfonyException;
@@ -29,6 +31,8 @@ class CashierOrderWriter implements CashierOrderWriterInterface
     protected const LOCAL_AWS_CONFIG_CREDENTIALS_KEY = 'key';
     protected const LOCAL_AWS_CONFIG_CREDENTIALS_SECRET = 'secret';
     protected const LOCAL_AWS_CONFIG_CREDENTIALS_BUCKET = 'bucket';
+
+    protected const EXPORT_ARCHIVE_FILE_PATH = '../../src/Pyz/Zed/CashierOrderExport/Communication/CashierFiles/';
 
     /**
      * @var \Pyz\Zed\CashierOrderExport\Business\Resolver\CashierOrderFileNameResolverInterface
@@ -56,44 +60,60 @@ class CashierOrderWriter implements CashierOrderWriterInterface
     protected $cashierOrderFileChecker;
 
     /**
+     * @var \Pyz\Zed\CashierOrderExport\Persistence\CashierOrderExportRepositoryInterface
+     */
+    protected $cashierOrderExportRepository;
+
+    /**
      * @param \Pyz\Zed\CashierOrderExport\Business\Resolver\CashierOrderFileNameResolverInterface $cashierOrderFilePathResolver
      * @param \Pyz\Zed\CashierOrderExport\Business\Checker\CashierOrderFileCheckerInterface $cashierOrderFileChecker
      * @param \Pyz\Zed\CashierOrderExport\Business\Writer\CashierOrderArchiveWriterInterface $cashierOrderArchiveWriter
      * @param \Pyz\Zed\CashierOrderExport\Business\Writer\CashierOrderSftpWriterInterface $cashierOrderSftpWriter
      * @param \Pyz\Zed\CashierOrderExport\Business\Deleter\CashierOrderDeleterInterface $cashierOrderDeleter
+     * @param \Pyz\Zed\CashierOrderExport\Persistence\CashierOrderExportRepositoryInterface $cashierOrderExportRepository
      */
     public function __construct(
         CashierOrderFileNameResolverInterface $cashierOrderFilePathResolver,
         CashierOrderFileCheckerInterface $cashierOrderFileChecker,
         CashierOrderArchiveWriterInterface $cashierOrderArchiveWriter,
         CashierOrderSftpWriterInterface $cashierOrderSftpWriter,
-        CashierOrderDeleterInterface $cashierOrderDeleter
+        CashierOrderDeleterInterface $cashierOrderDeleter,
+        CashierOrderExportRepositoryInterface $cashierOrderExportRepository
     ) {
         $this->cashierOrderFilePathResolver = $cashierOrderFilePathResolver;
         $this->cashierOrderArchiveWriter = $cashierOrderArchiveWriter;
         $this->cashierOrderSftpWriter = $cashierOrderSftpWriter;
         $this->cashierOrderDeleter = $cashierOrderDeleter;
         $this->cashierOrderFileChecker = $cashierOrderFileChecker;
+        $this->cashierOrderExportRepository = $cashierOrderExportRepository;
     }
 
     /**
      * @param string $content
+     * @param \DOMDocument $contentXml
      * @param \Generated\Shared\Transfer\OrderTransfer $orderTransfer
      *
      * @return \Generated\Shared\Transfer\OrderTransfer
      */
-    public function write(string $content, OrderTransfer $orderTransfer): OrderTransfer
+    public function write(string $content, DOMDocument $contentXml, OrderTransfer $orderTransfer): OrderTransfer
     {
         $orderTransfer->setIsCashierExportSuccess(false);
-
+        $merchantReference = $orderTransfer->getMerchantReference();
+        $merchantTransfer = $this->cashierOrderExportRepository->findMerchantByMerchantReference($merchantReference);
         $archiveFileName = $this->cashierOrderFilePathResolver->resolveCashierOrderExportArchiveFileName($orderTransfer->getIdSalesOrder());
         $archiveFilePath = $this->cashierOrderFilePathResolver->resolveCashierOrderExportArchiveFilePath($archiveFileName);
         $fileName = $this->cashierOrderFilePathResolver->resolveCashierOrderExportFileName();
         $orderId = $orderTransfer->getIdSalesOrder();
-        $merchantReference = $orderTransfer->getMerchantReference();
         $fileNameForS3 = $merchantReference . '_' . $orderId . '_' . $fileName;
         $archiveRemoteFilePath = $this->cashierOrderFilePathResolver
             ->resolveCashierOrderExportArchiveRemoteFilePath($archiveFileName, $orderTransfer->getStore());
+
+        $xmlFileName = $this->cashierOrderFilePathResolver->resolveCashierOrderExportArchiveXmlFileName($orderId, $merchantReference);
+        $archiveXmlFilePath = $this->cashierOrderFilePathResolver->resolveCashierOrderExportArchiveFilePath($xmlFileName);
+        $archiveRemoteXmlFilePath = $this->cashierOrderFilePathResolver
+            ->resolveCashierOrderExportArchiveRemoteXmlFilePath($xmlFileName, $merchantReference);
+        $xmlFileNameS3 = $this->cashierOrderFilePathResolver->resolveCashierOrderExportXmlFileName();
+        $xmlFileNameForS3 = $merchantReference . '_' . $orderId . '_' . $xmlFileNameS3;
 
         if ($this->cashierOrderFileChecker->isFileExist($archiveFilePath)) {
             $this->logError(static::FILE_EXIST_FAIL_MESSAGE, $archiveFileName);
@@ -101,15 +121,24 @@ class CashierOrderWriter implements CashierOrderWriterInterface
             return $orderTransfer;
         }
 
+        $this->cashierOrderArchiveWriter->addContentToArchive($archiveFilePath, $fileName, $content);
+        $contentXml->save($archiveXmlFilePath);
+
         try {
-            $this->cashierOrderArchiveWriter->addContentToArchive($archiveFilePath, $fileName, $content);
-            $this->cashierOrderSftpWriter->sendFileToFtp($archiveFileName, $archiveRemoteFilePath);
+            if ($merchantTransfer->getIsCashierTxt() == true) {
+                $this->cashierOrderSftpWriter->sendFileToFtp($archiveFileName, $archiveRemoteFilePath);
+            } else {
+                $this->cashierOrderSftpWriter->sendFileToFtp($xmlFileName, $archiveRemoteXmlFilePath);
+            }
+
             try {
                 $this->uploadCashierFileToAws($archiveFilePath, $fileNameForS3);
+                $this->uploadCashierFileToAws($archiveXmlFilePath, $xmlFileNameForS3);
             } catch (Exception $exception) {
-                $errorUplodToAws = $exception->getMessage();
+                $this->logError($exception->getMessage(), $archiveFileName, $exception->getTrace());
             }
             $this->cashierOrderDeleter->delete($archiveFileName);
+            $this->cashierOrderDeleter->delete($xmlFileName);
         } catch (Exception $exception) {
             $this->logError(static::FILE_CREATE_FAIL_MESSAGE, $archiveFileName, $exception->getTrace());
 

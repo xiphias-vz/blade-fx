@@ -12,7 +12,9 @@ use Orm\Zed\PickingZone\Persistence\PyzPickingZoneQuery;
 use Orm\Zed\Sales\Persistence\Map\SpySalesOrderTableMap;
 use Pyz\Service\DateTimeWithZone\DateTimeWithZoneServiceInterface;
 use Pyz\Shared\Oms\OmsConfig;
+use Pyz\Zed\Merchant\Business\MerchantFacadeInterface;
 use Pyz\Zed\MerchantSalesOrder\Business\MerchantSalesOrderFacadeInterface;
+use Pyz\Zed\MerchantSalesOrder\MerchantSalesOrderDependencyProvider;
 use Pyz\Zed\Oms\Business\OmsFacadeInterface;
 use Pyz\Zed\PickingZone\Business\PickingZoneFacadeInterface;
 use Pyz\Zed\Sales\Communication\Table\OrdersTable;
@@ -94,6 +96,14 @@ class SalesCommunicationFactory extends SprykerSalesCommunicationFactory
     public function getAclFacade(): AclFacadeInterface
     {
         return $this->getProvidedDependency(SalesDependencyProvider::FACADE_ACL);
+    }
+
+    /**
+     * @return \Pyz\Zed\Merchant\Business\MerchantFacadeInterface
+     */
+    public function getMerchantFacade(): MerchantFacadeInterface
+    {
+        return $this->getProvidedDependency(MerchantSalesOrderDependencyProvider::FACADE_MERCHANT);
     }
 
     /**

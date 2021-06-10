@@ -7,15 +7,17 @@
 
 namespace Pyz\Zed\CashierOrderExport\Business\Writer;
 
+use DOMDocument;
 use Generated\Shared\Transfer\OrderTransfer;
 
 interface CashierOrderWriterInterface
 {
     /**
      * @param string $content
+     * @param \DOMDocument $contentXml
      * @param \Generated\Shared\Transfer\OrderTransfer $orderTransfer
      *
      * @return \Generated\Shared\Transfer\OrderTransfer
      */
-    public function write(string $content, OrderTransfer $orderTransfer): OrderTransfer;
+    public function write(string $content, DOMDocument $contentXml, OrderTransfer $orderTransfer): OrderTransfer;
 }

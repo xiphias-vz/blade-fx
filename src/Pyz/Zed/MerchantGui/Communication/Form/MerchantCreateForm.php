@@ -10,6 +10,7 @@ namespace Pyz\Zed\MerchantGui\Communication\Form;
 use Pyz\Shared\Acl\AclConstants;
 use Spryker\Zed\MerchantGui\Communication\Form\MerchantCreateForm as ExtendedMerchantCreateForm;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+use Symfony\Component\Form\Extension\Core\Type\RadioType;
 use Symfony\Component\Form\FormBuilderInterface;
 
 /**
@@ -28,12 +29,16 @@ class MerchantCreateForm extends ExtendedMerchantCreateForm
     protected const FIELD_IS_SHOP_VISIBLE = 'isShopVisible';
     protected const FIELD_IS_PASSWORD_PROTECTED = 'isPasswordProtected';
     protected const FIELD_SHOP_PASSWORD = 'shopPassword';
+    protected const FIELD_IS_CASHIER_TXT = 'isCashierTxt';
+    protected const FIELD_IS_CASHIER_XML = 'isCashierXml';
 
     protected const LABEL_NAME = 'Name';
     protected const LABEL_REGISTRATION_NUMBER = 'Registration number';
     protected const LABEL_EMAIL = 'Email';
     protected const LABEL_MERCHANT_REFERENCE = 'Merchant Reference';
     protected const LABEL_IS_SHOP_VISIBLE = 'Is active';
+    protected const LABEL_IS_CASHIER_TXT = 'Ist cashier txt';
+    protected const LABEL_IS_CASHIER_XML = 'Ist cashier xml';
     protected const LABEL_IS_PASSWORD_PROTECTED = 'Ist passwortgeschützt';
     protected const LABEL_SHOP_PASSWORD = 'Shop password';
 
@@ -50,6 +55,8 @@ class MerchantCreateForm extends ExtendedMerchantCreateForm
             ->addNameField($builder)
             ->addEmailField($builder, $options[static::OPTION_CURRENT_ID])
             ->addRegistrationNumberField($builder)
+            ->addCashierTxtField($builder)
+            ->addCashierXmlField($builder)
             ->addMerchantReferenceField($builder, $options[static::OPTION_CURRENT_ID]);
 
         $isCurrentUserAdmin = $this->isCurrentUserAdmin();
@@ -60,6 +67,36 @@ class MerchantCreateForm extends ExtendedMerchantCreateForm
         }
 
         $this->executeMerchantProfileFormExpanderPlugins($builder, $options);
+    }
+
+    /**
+     * @param \Symfony\Component\Form\FormBuilderInterface $builder
+     *
+     * @return $this
+     */
+    protected function addCashierTxtField(FormBuilderInterface $builder)
+    {
+        $builder->add(static::FIELD_IS_CASHIER_TXT, RadioType::class, [
+            'label' => static::LABEL_IS_CASHIER_TXT,
+            'required' => false,
+        ]);
+
+        return $this;
+    }
+
+    /**
+     * @param \Symfony\Component\Form\FormBuilderInterface $builder
+     *
+     * @return $this
+     */
+    protected function addCashierXmlField(FormBuilderInterface $builder)
+    {
+        $builder->add(static::FIELD_IS_CASHIER_XML, RadioType::class, [
+            'label' => static::LABEL_IS_CASHIER_XML,
+            'required' => false,
+        ]);
+
+        return $this;
     }
 
     /**

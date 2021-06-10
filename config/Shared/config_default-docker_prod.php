@@ -14,6 +14,9 @@ $config[CashierOrderExportConstants::CASHIER_FILE_DOWNLOAD_URL] = 'https://s3.co
 // ---------- CashierOrderExport
 $config[CashierOrderExportConstants::SFTP_CASHIER_ORDER_FILES_FOLDER_KEY] = 'kasse';
 
+// ---------- CashierOrderXmlExport
+$config[CashierOrderExportConstants::SFTP_CASHIER_ORDER_XML_FILES_FOLDER_KEY] = 'kasse_v2';
+
 // ---------- ExportOrder
 $config[SalesOrderSummaryExportConfig::SFTP_ORDER_EXPORT_FILES_FOLDER_KEY] = 'IN/RP';
 

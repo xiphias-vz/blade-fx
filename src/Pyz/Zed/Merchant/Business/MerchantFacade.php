@@ -47,4 +47,15 @@ class MerchantFacade extends SpykerMerchantFacade implements MerchantFacadeInter
             ->createOrderExpander()
             ->expandOrderWithMerchant($spySalesOrderEntityTransfer, $quoteTransfer);
     }
+
+    /**
+     * @param string $merchantReference
+     *
+     * @return \Generated\Shared\Transfer\MerchantTransfer
+     */
+    public function findMerchantTransferFromMerchantReference(string $merchantReference): MerchantTransfer
+    {
+        return $this->getFactory()
+            ->getMerchantTransferFromMerchantReference($merchantReference);
+    }
 }

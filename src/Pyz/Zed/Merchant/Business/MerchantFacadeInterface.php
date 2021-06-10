@@ -39,4 +39,11 @@ interface MerchantFacadeInterface extends SprykerMerchantFacadeInterface
      * @return \Generated\Shared\Transfer\SpySalesOrderEntityTransfer
      */
     public function expandOrderWithMerchant(SpySalesOrderEntityTransfer $spySalesOrderEntityTransfer, QuoteTransfer $quoteTransfer): SpySalesOrderEntityTransfer;
+
+    /**
+     * @param string $merchantReference
+     *
+     * @return \Generated\Shared\Transfer\MerchantTransfer
+     */
+    public function findMerchantTransferFromMerchantReference(string $merchantReference): MerchantTransfer;
 }

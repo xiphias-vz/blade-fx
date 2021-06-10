@@ -10,6 +10,7 @@ namespace Pyz\Zed\Sales;
 use Pyz\Service\DateTimeWithZone\DateTimeWithZoneServiceInterface;
 use Pyz\Service\TimeSlot\TimeSlotServiceInterface;
 use Pyz\Zed\AlternativeEan\Communication\Plugin\OrderItemAlternativeEanExpanderPreSavePlugin;
+use Pyz\Zed\Merchant\Business\MerchantFacadeInterface;
 use Pyz\Zed\Merchant\Communication\Plugin\MerchantOrderExpanderPreSavePlugin;
 use Pyz\Zed\MerchantRegion\Communication\Plugin\Sales\MerchantRegionOrderExpanderPlugin;
 use Pyz\Zed\MerchantSalesOrder\Business\MerchantSalesOrderFacadeInterface;
@@ -55,6 +56,7 @@ class SalesDependencyProvider extends SprykerSalesDependencyProvider
     public const SERVICE_DATE_TIME_WITH_ZONE = 'SERVICE_DATE_TIME_WITH_ZONE';
     public const FACADE_PRODUCT = 'FACADE_PRODUCT';
     public const FACADE_ACL = 'FACADE_ACL';
+    public const FACADE_MERCHANT = 'FACADE_MERCHANT';
     public const FACADE_TIME_SLOTS_ORDER_OVERVIEW = 'FACADE_TIME_SLOTS';
     public const SERVICE_TIME_SLOTS = 'SERVICE_TIME_SLOTS';
     public const CLIENT_STORAGE = 'CLIENT_STORAGE';
@@ -106,6 +108,7 @@ class SalesDependencyProvider extends SprykerSalesDependencyProvider
         $container = $this->addPickingZoneFacade($container);
         $container = $this->addTimeSlotFacade($container);
         $container = $this->addTimeSlotService($container);
+        $container = $this->addMerchantFacade($container);
 
         return $container;
     }
@@ -189,6 +192,20 @@ class SalesDependencyProvider extends SprykerSalesDependencyProvider
     {
         $container->set(static::FACADE_ACL, function (Container $container): AclFacadeInterface {
             return $container->getLocator()->acl()->facade();
+        });
+
+        return $container;
+    }
+
+    /**
+     * @param \Spryker\Zed\Kernel\Container $container
+     *
+     * @return \Spryker\Zed\Kernel\Container
+     */
+    protected function addMerchantFacade(Container $container): Container
+    {
+        $container->set(static::FACADE_MERCHANT, function (Container $container): MerchantFacadeInterface {
+            return $container->getLocator()->merchant()->facade();
         });
 
         return $container;

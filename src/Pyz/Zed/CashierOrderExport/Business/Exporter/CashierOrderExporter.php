@@ -58,7 +58,8 @@ class CashierOrderExporter implements CashierOrderExporterInterface
         }
 
         $content = $this->cashierOrderContentBuilder->prepareContent($orderTransfer);
+        $contentXml = $this->cashierOrderContentBuilder->prepareContentXMl($orderTransfer);
 
-        return $this->cashierOrderWriter->write($content, $orderTransfer);
+        return $this->cashierOrderWriter->write($content, $contentXml, $orderTransfer);
     }
 }

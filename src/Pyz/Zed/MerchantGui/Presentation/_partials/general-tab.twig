@@ -3,6 +3,8 @@
 {{ form_row(merchantForm.registration_number) }}
 {{ form_row(merchantForm.merchant_reference) }}
 {{ form_row(merchantForm.email) }}
+{{ form_row(merchantForm.isCashierTxt) }}
+{{ form_row(merchantForm.isCashierXml) }}
 
 {% if isCurrentUserAdmin %}
     {{ form_row(merchantForm.isShopVisible) }}

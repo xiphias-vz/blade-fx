@@ -7,6 +7,7 @@
 
 namespace Pyz\Zed\Merchant\Business;
 
+use Generated\Shared\Transfer\MerchantTransfer;
 use Pyz\Zed\Merchant\Business\Finder\MerchantFinder;
 use Pyz\Zed\Merchant\Business\Finder\MerchantFinderInterface;
 use Pyz\Zed\Merchant\Business\Order\OrderExpander;
@@ -37,5 +38,16 @@ class MerchantBusinessFactory extends SprykerMerchantBusinessFactory
         return new OrderExpander(
             $this->getRepository()
         );
+    }
+
+    /**
+     * @param string $merchantReference
+     *
+     * @return \Generated\Shared\Transfer\MerchantTransfer
+     */
+    public function getMerchantTransferFromMerchantReference(string $merchantReference): MerchantTransfer
+    {
+        return $this->getRepository()
+            ->findMerchantByMerchantReference($merchantReference);
     }
 }

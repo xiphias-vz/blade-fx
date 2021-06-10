@@ -18,6 +18,8 @@
         <column name="is_shop_visible" default="1" required="false" type="BOOLEAN"/>
         <column name="is_password_protected" default="0" required="false" type="BOOLEAN"/>
         <column name="shop_password" required="false" size="255" type="VARCHAR"/>
+        <column name="is_cashier_txt" required="false" default="1" type="BOOLEAN" />
+        <column name="is_cashier_xml" required="false" default="0" type="BOOLEAN" />
         <column name="merchant_short_name" required="false" size="255" type="VARCHAR"/>
 
         <foreign-key name="spy_merchant-fk_store" foreignTable="spy_store">

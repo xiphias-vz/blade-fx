@@ -59,6 +59,10 @@ class DetailController extends SprykerDetailController
         }
 
         $orderTransfer = $this->getFacade()->findOrderWithPickingSalesOrdersByIdSalesOrder($idSalesOrder);
+        $merchantTransfer = $this->getFactory()
+            ->getMerchantFacade()
+            ->findMerchantTransferFromMerchantReference($orderTransfer->getMerchantReference());
+        $isCashierTxt = $merchantTransfer->getIsCashierTxt();
         $orderTransfer->setCartNote(json_decode($orderTransfer->getCartNote()));
         $cellPhone = $orderTransfer->getBillingAddress()->getCellPhone();
         $userFacade = $this->getFactory()->getUserFacade();
@@ -102,14 +106,20 @@ class DetailController extends SprykerDetailController
             $s3 = $this->getS3Client();
             $bucket = $this->getS3Bucket();
             $mrechantReference = $orderTransfer->getMerchantReference();
-            $keyname = $mrechantReference . '_' . $idSalesOrder . '_order.txt';
-            $tempName = $mrechantReference . '_' . $idSalesOrder . '_order.zip';
+            if ($isCashierTxt) {
+                $keyName = $mrechantReference . '_' . $idSalesOrder . '_order.txt';
+                $tempName = $mrechantReference . '_' . $idSalesOrder . '_order.zip';
+            } else {
+                $keyName = $mrechantReference . '_' . $idSalesOrder . '_order.xml';
+                $tempName = $mrechantReference . '_' . $idSalesOrder . '_order.xml';
+            }
+
             $tempFilePath = realpath(static::EXPORT_ARCHIVE_FILE_PATH) . $tempName;
             try {
                 // Get the object.
                 $result = $s3->getObject([
                     'Bucket' => $bucket,
-                    'Key' => $keyname,
+                    'Key' => $keyName,
                 ]);
 
                 file_put_contents($tempFilePath, $result['Body']);

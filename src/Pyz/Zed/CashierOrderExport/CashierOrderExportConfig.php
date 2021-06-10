@@ -72,6 +72,14 @@ class CashierOrderExportConfig extends AbstractBundleConfig
     }
 
     /**
+     * @return string
+     */
+    public function getDefaultRemoteCashierExportXmlDirectoryPath(): string
+    {
+        return $this->get(CashierOrderExportConstants::SFTP_CASHIER_ORDER_XML_FILES_FOLDER_KEY);
+    }
+
+    /**
      * @return array
      */
     public function getTaxRateToSapItemTaxIdMap(): array

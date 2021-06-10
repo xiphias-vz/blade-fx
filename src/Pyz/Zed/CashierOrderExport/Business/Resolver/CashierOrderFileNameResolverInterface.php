@@ -29,10 +29,31 @@ interface CashierOrderFileNameResolverInterface
     public function resolveCashierOrderExportArchiveFileName(int $idSalesOrder): string;
 
     /**
+     * @param int $idSalesOrder
+     * @param string $merchantReference
+     *
+     * @return string
+     */
+    public function resolveCashierOrderExportArchiveXmlFileName(int $idSalesOrder, string $merchantReference): string;
+
+    /**
      * @param string $fileName
      * @param string $store
      *
      * @return string
      */
     public function resolveCashierOrderExportArchiveRemoteFilePath(string $fileName, string $store): string;
+
+    /**
+     * @return string
+     */
+    public function resolveCashierOrderExportXmlFileName(): string;
+
+    /**
+     * @param string $fileName
+     * @param string $merchantReference
+     *
+     * @return string
+     */
+    public function resolveCashierOrderExportArchiveRemoteXmlFilePath(string $fileName, string $merchantReference): string;
 }

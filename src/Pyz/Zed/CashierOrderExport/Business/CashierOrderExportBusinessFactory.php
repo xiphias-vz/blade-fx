@@ -65,7 +65,7 @@ class CashierOrderExportBusinessFactory extends AbstractBusinessFactory
      */
     public function createCashierOrderContentBuilder(): CashierOrderContentBuilderInterface
     {
-        return new CashierOrderContentBuilder($this->getConfig());
+        return new CashierOrderContentBuilder($this->getConfig(), $this->getRepository());
     }
 
     /**
@@ -78,7 +78,8 @@ class CashierOrderExportBusinessFactory extends AbstractBusinessFactory
             $this->createCashierOrderFileChecker(),
             $this->createCashierOrderArchiveWriter(),
             $this->createCashierOrderSftpWriter(),
-            $this->createCashierOrderDeleter()
+            $this->createCashierOrderDeleter(),
+            $this->getRepository()
         );
     }
 
