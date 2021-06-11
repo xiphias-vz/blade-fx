@@ -700,26 +700,29 @@ class CashierOrderContentBuilder implements CashierOrderContentBuilderInterface
             if ($itemTransfer->getCanceledAmount()) {
                 continue;
             }
-            foreach ($itemTransfer->getProductOptions() as $productOption) {
-                $productDeposit = $this->cashierOrderExportRepository->getProductBySku($itemTransfer->getSku());
-                $counter++;
+            $quantityDeposit = $itemTransfer->getQuantity();
+            for ($i = 0; $i < $quantityDeposit; $i++) {
+                foreach ($itemTransfer->getProductOptions() as $productOption) {
+                    $productDeposit = $this->cashierOrderExportRepository->getProductBySku($itemTransfer->getSku());
+                    $counter++;
 
-                $XmlItem = $ItemGroup->appendChild($dom->createElement(static::XML_ITEM));
-                $XmlItem->appendChild($dom->createElement(static::XML_ORIGIN, static::XML_ORIGIN_VALUE));
-                $XmlItem->appendChild($dom->createElement(static::XML_POSITION_NUMBER, $counter));
-                $XmlItem->appendChild($dom->createElement(static::XML_BARCODE, $this->extractPluFromProductDepositSku($productOption->getSku())));
-                $XmlItem->appendChild($dom->createElement(static::XML_ITEM_NUMBER, $productDeposit->getSapNumber()));
-                $XmlItem->appendChild($dom->createElement(static::XML_DEPARTMENT_NUMBER, $itemTransfer->getSapWgr()));
-                $XmlItem->appendChild($dom->createElement(static::XML_DESCRIPTION, static::XML_DEPOSIT_DESCRIPTION));
-                $XmlItem->appendChild($dom->createElement(static::XML_NETTO_PRICE, $productOption->getUnitGrossPrice()));
-                $XmlItem->appendChild($dom->createElement(static::XML_DISCOUNT));
-                $XmlItem->appendChild($dom->createElement(static::XML_HISTORIC_PER_PRICE));
-                $XmlItem->appendChild($dom->createElement(static::XML_MARKDOWN_AMOUNT));
-                $XmlItem->appendChild($dom->createElement(static::XML_AGE_RESTRICTION));
-                $XmlItem->appendChild($dom->createElement(static::XML_SCALE_ITEM));
-                $XmlItem->appendChild($dom->createElement(static::XML_RESCAN_ITEM));
-                $XmlItem->appendChild($dom->createElement(static::XML_MIXED_CRATE_TICKET_ID));
-                $XmlItem->appendChild($dom->createElement(static::XML_TIMESTAMP, date(static::XML_TIMESTAMP_FORMAT)));
+                    $XmlItem = $ItemGroup->appendChild($dom->createElement(static::XML_ITEM));
+                    $XmlItem->appendChild($dom->createElement(static::XML_ORIGIN, static::XML_ORIGIN_VALUE));
+                    $XmlItem->appendChild($dom->createElement(static::XML_POSITION_NUMBER, $counter));
+                    $XmlItem->appendChild($dom->createElement(static::XML_BARCODE, $this->extractPluFromProductDepositSku($productOption->getSku())));
+                    $XmlItem->appendChild($dom->createElement(static::XML_ITEM_NUMBER, $productDeposit->getSapNumber()));
+                    $XmlItem->appendChild($dom->createElement(static::XML_DEPARTMENT_NUMBER, $itemTransfer->getSapWgr()));
+                    $XmlItem->appendChild($dom->createElement(static::XML_DESCRIPTION, static::XML_DEPOSIT_DESCRIPTION));
+                    $XmlItem->appendChild($dom->createElement(static::XML_NETTO_PRICE, $productOption->getUnitGrossPrice()));
+                    $XmlItem->appendChild($dom->createElement(static::XML_DISCOUNT));
+                    $XmlItem->appendChild($dom->createElement(static::XML_HISTORIC_PER_PRICE));
+                    $XmlItem->appendChild($dom->createElement(static::XML_MARKDOWN_AMOUNT));
+                    $XmlItem->appendChild($dom->createElement(static::XML_AGE_RESTRICTION));
+                    $XmlItem->appendChild($dom->createElement(static::XML_SCALE_ITEM));
+                    $XmlItem->appendChild($dom->createElement(static::XML_RESCAN_ITEM));
+                    $XmlItem->appendChild($dom->createElement(static::XML_MIXED_CRATE_TICKET_ID));
+                    $XmlItem->appendChild($dom->createElement(static::XML_TIMESTAMP, date(static::XML_TIMESTAMP_FORMAT)));
+                }
             }
         }
 
