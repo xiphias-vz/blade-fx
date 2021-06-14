@@ -9,14 +9,18 @@ namespace Pyz\Zed\CashierOrderExport\Business\Builder;
 
 use DateTime;
 use DOMDocument;
+use Exception;
 use Generated\Shared\Transfer\ItemTransfer;
 use Generated\Shared\Transfer\OrderTransfer;
 use Pyz\Zed\CashierOrderExport\CashierOrderExportConfig;
 use Pyz\Zed\CashierOrderExport\Persistence\CashierOrderExportRepositoryInterface;
+use Spryker\Shared\Log\LoggerTrait;
 use Spryker\Shared\Shipment\ShipmentConfig;
 
 class CashierOrderContentBuilder implements CashierOrderContentBuilderInterface
 {
+    use LoggerTrait;
+
     protected const HEADER_MASK = '%s%s%s%s%s%s%s%s%s%s%s%020s%s%s%s%020u%s%020u%s%s%s%s%s%020s%s%s';
     protected const DEFAULT_HEADER_ENDING_ZERO_SETS = 7;
     protected const POSITION_MASK = '%s%s%s%s%s%s%s%s%s%s%s%020s%s%020s%s%s%s%020s%s%020s%s%020s%s%020s';
@@ -590,10 +594,14 @@ class CashierOrderContentBuilder implements CashierOrderContentBuilderInterface
     {
         $dom = new DOMDocument();
 
-        $dom = $this->prepareXmlDefinitions($dom);
-        $dom = $this->prepareXmlHeader($dom, $orderTransfer);
-        $dom = $this->prepareXmlItems($dom, $orderTransfer);
-        $dom = $this->prepareXmlFooter($dom, $orderTransfer);
+        try {
+            $dom = $this->prepareXmlDefinitions($dom);
+            $dom = $this->prepareXmlHeader($dom, $orderTransfer);
+            $dom = $this->prepareXmlItems($dom, $orderTransfer);
+            $dom = $this->prepareXmlFooter($dom, $orderTransfer);
+        } catch (Exception $exception) {
+            $this->logError($exception->getMessage(), $exception->getTrace());
+        }
 
         return $dom;
     }
@@ -755,5 +763,19 @@ class CashierOrderContentBuilder implements CashierOrderContentBuilderInterface
         $dom->appendChild($footer);
 
         return $dom;
+    }
+
+    /**
+     * @param string $message
+     * @param array $trace
+     *
+     * @return void
+     */
+    protected function logError(string $message, array $trace = [])
+    {
+        $this->getLogger()->error(
+            $message,
+            $trace
+        );
     }
 }

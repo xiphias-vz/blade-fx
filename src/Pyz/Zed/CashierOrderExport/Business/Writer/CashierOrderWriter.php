@@ -121,8 +121,12 @@ class CashierOrderWriter implements CashierOrderWriterInterface
             return $orderTransfer;
         }
 
-        $this->cashierOrderArchiveWriter->addContentToArchive($archiveFilePath, $fileName, $content);
-        $contentXml->save($archiveXmlFilePath);
+        try {
+            $this->cashierOrderArchiveWriter->addContentToArchive($archiveFilePath, $fileName, $content);
+            $contentXml->save($archiveXmlFilePath);
+        } catch (Exception $exceptionSaveFile) {
+            $this->logError($exceptionSaveFile->getMessage(), $archiveFileName, $exceptionSaveFile->getTrace());
+        }
 
         try {
             if ($merchantTransfer->getIsCashierTxt() == true) {
