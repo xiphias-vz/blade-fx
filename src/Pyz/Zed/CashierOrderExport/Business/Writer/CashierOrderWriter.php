@@ -9,6 +9,7 @@ namespace Pyz\Zed\CashierOrderExport\Business\Writer;
 
 use Aws\S3\ObjectUploader;
 use Aws\S3\S3Client;
+use DateTime;
 use DOMDocument;
 use Exception;
 use Generated\Shared\Transfer\OrderTransfer;
@@ -31,6 +32,7 @@ class CashierOrderWriter implements CashierOrderWriterInterface
     protected const LOCAL_AWS_CONFIG_CREDENTIALS_KEY = 'key';
     protected const LOCAL_AWS_CONFIG_CREDENTIALS_SECRET = 'secret';
     protected const LOCAL_AWS_CONFIG_CREDENTIALS_BUCKET = 'bucket';
+    protected const EXPORT_XML_FILE_NAME_DATE_FORMAT = 'Ymd';
 
     protected const EXPORT_ARCHIVE_FILE_PATH = '../../src/Pyz/Zed/CashierOrderExport/Communication/CashierFiles/';
 
@@ -104,6 +106,9 @@ class CashierOrderWriter implements CashierOrderWriterInterface
         $archiveFilePath = $this->cashierOrderFilePathResolver->resolveCashierOrderExportArchiveFilePath($archiveFileName);
         $fileName = $this->cashierOrderFilePathResolver->resolveCashierOrderExportFileName();
         $orderId = $orderTransfer->getIdSalesOrder();
+        $orderReference = $orderTransfer->getOrderReference();
+        $orderCreateDate = $this->getFilenameDate($orderTransfer->getCreatedAt());
+
         $fileNameForS3 = $merchantReference . '_' . $orderId . '_' . $fileName;
         $archiveRemoteFilePath = $this->cashierOrderFilePathResolver
             ->resolveCashierOrderExportArchiveRemoteFilePath($archiveFileName, $orderTransfer->getStore());
@@ -113,7 +118,7 @@ class CashierOrderWriter implements CashierOrderWriterInterface
         $archiveRemoteXmlFilePath = $this->cashierOrderFilePathResolver
             ->resolveCashierOrderExportArchiveRemoteXmlFilePath($xmlFileName, $merchantReference);
         $xmlFileNameS3 = $this->cashierOrderFilePathResolver->resolveCashierOrderExportXmlFileName();
-        $xmlFileNameForS3 = $merchantReference . '_' . $orderId . '_' . $xmlFileNameS3;
+        $xmlFileNameForS3 = $merchantReference . '_' . $orderCreateDate . '_' . $orderReference . '_' . $xmlFileNameS3;
 
         if ($this->cashierOrderFileChecker->isFileExist($archiveFilePath)) {
             $this->logError(static::FILE_EXIST_FAIL_MESSAGE, $archiveFileName);
@@ -227,5 +232,17 @@ class CashierOrderWriter implements CashierOrderWriterInterface
     protected function getS3Bucket(): string
     {
         return Config::get(S3Constants::S3_CASHIER_FILE_BUCKETS);
+    }
+
+    /**
+     * @param string $orderDate
+     *
+     * @return string
+     */
+    protected function getFilenameDate(string $orderDate): string
+    {
+        $date = new DateTime($orderDate);
+
+        return $date->format(static::EXPORT_XML_FILE_NAME_DATE_FORMAT);
     }
 }

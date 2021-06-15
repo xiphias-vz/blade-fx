@@ -9,6 +9,7 @@ namespace Pyz\Zed\Sales\Communication\Controller;
 
 use Aws\S3\Exception\S3Exception;
 use Aws\S3\S3Client;
+use DateTime;
 use Exception;
 use Orm\Zed\Sales\Persistence\SpySalesOrder;
 use Orm\Zed\Sales\Persistence\SpySalesOrderAddress;
@@ -35,6 +36,7 @@ class DetailController extends SprykerDetailController
     protected const LOCAL_AWS_CONFIG_CREDENTIALS_KEY = 'key';
     protected const LOCAL_AWS_CONFIG_CREDENTIALS_SECRET = 'secret';
     protected const EXPORT_ARCHIVE_FILE_PATH = '../../src/Pyz/Zed/Sales/Communication/CashierFiles/';
+    protected const EXPORT_XML_FILE_NAME_DATE_FORMAT = 'Ymd';
 
     private const TIMESLOTS_DATA = [
         '10:00-12:00' => '10:00-12:00',
@@ -101,6 +103,8 @@ class DetailController extends SprykerDetailController
         $isCurrentUserSupervisor = $this->isCurrentUserSupervisor();
         $isCurrentUserSupervisorOrAdmin = $this->isCurrentUserSupervisorOrAdmin();
         $shipping = $groupedOrderItems[0]->getShipment();
+        $orderReference = $orderTransfer->getOrderReference();
+        $orderCreateDate = $this->getFilenameDate($orderTransfer->getCreatedAt());
 
         if ($request->get("isDownloadCashierFile") == true) {
             $s3 = $this->getS3Client();
@@ -110,8 +114,8 @@ class DetailController extends SprykerDetailController
                 $keyName = $mrechantReference . '_' . $idSalesOrder . '_order.txt';
                 $tempName = $mrechantReference . '_' . $idSalesOrder . '_order.zip';
             } else {
-                $keyName = $mrechantReference . '_' . $idSalesOrder . '_order.xml';
-                $tempName = $mrechantReference . '_' . $idSalesOrder . '_order.xml';
+                $keyName = $mrechantReference . '_' . $orderCreateDate . '_' . $orderReference . '_order.xml';
+                $tempName = $mrechantReference . '_' . $orderCreateDate . '_' . $orderReference . '_order.xml';
             }
 
             $tempFilePath = realpath(static::EXPORT_ARCHIVE_FILE_PATH) . $tempName;
@@ -431,5 +435,17 @@ class DetailController extends SprykerDetailController
         } catch (Exception $exception) {
             $this->addErrorMessage($exception->getMessage());
         }
+    }
+
+    /**
+     * @param string $orderDate
+     *
+     * @return string
+     */
+    protected function getFilenameDate(string $orderDate): string
+    {
+        $date = new DateTime($orderDate);
+
+        return $date->format(static::EXPORT_XML_FILE_NAME_DATE_FORMAT);
     }
 }

@@ -112,6 +112,11 @@ class CashierOrderContentBuilder implements CashierOrderContentBuilderInterface
     protected const XML_RESCAN_ITEM = 'RescanItem';
     protected const XML_MIXED_CRATE_TICKET_ID = 'MixedCrateTicketId';
 
+    protected const XML_SERVICE_FEE_DEFAULT_BARCODE = '99999';
+    protected const XML_SERVICE_FEE_DEFAULT_ITEM_NUMBER = '99999';
+    protected const XML_SERVICE_FEE_DEPARTMENT_NUMBER = '714';
+    protected const XML_SERVICE_FEE_DESCRIPTION = 'Abholung';
+
     protected const XML_FOOTER = 'Footer';
     protected const XML_NUMBER_OF_ITEMS = 'NumberOfItems';
     protected const XML_VOIDED_ITEMS = 'VoidedItems';
@@ -657,7 +662,7 @@ class CashierOrderContentBuilder implements CashierOrderContentBuilderInterface
         $header->appendChild($dom->createElement(static::XML_CREATE_DATE, date("Y-m-d")));
         $header->appendChild($dom->createElement(static::XML_STORE_NUMBER, $orderTransfer->getMerchantReference()));
         $header->appendChild($dom->createElement(static::XML_SCANNER_WALL_NUMBER));
-        $transactionNumber = $this->calculateTransactionNumber($orderTransfer->getIdSalesOrder());
+        $transactionNumber = $this->calculateTransactionNumber($orderTransfer->getOrderReference());
         $header->appendChild($dom->createElement(static::XML_TRANSACTION_NUMBER, $transactionNumber));
         $header->appendChild($dom->createElement(static::XML_SELFSCANNER_NUMBER));
         $header->appendChild($dom->createElement(static::XML_CARD_NUMBER, $orderTransfer->getCustomer()->getMyGlobusCard()));
@@ -680,6 +685,9 @@ class CashierOrderContentBuilder implements CashierOrderContentBuilderInterface
         $ItemGroup = $dom->createElement(static::XML_ITEM_GROUP);
         $counter = 0;
         foreach ($orderTransfer->getItems() as $item) {
+            if ($item->getCanceledAmount()) {
+                continue;
+            }
             $quantity = $item->getQuantity();
             for ($x = 0; $x < $quantity; $x++) {
                 $product = $this->cashierOrderExportRepository->getProductBySku($item->getSku());
@@ -692,7 +700,7 @@ class CashierOrderContentBuilder implements CashierOrderContentBuilderInterface
                 $XmlItem->appendChild($dom->createElement(static::XML_ITEM_NUMBER, $product->getSapNumber()));
                 $XmlItem->appendChild($dom->createElement(static::XML_DEPARTMENT_NUMBER, $item->getSapWgr()));
                 $XmlItem->appendChild($dom->createElement(static::XML_DESCRIPTION, $this->getItemName($item)));
-                $XmlItem->appendChild($dom->createElement(static::XML_NETTO_PRICE, $this->getItemPrice($item)));
+                $XmlItem->appendChild($dom->createElement(static::XML_NETTO_PRICE, $this->getXmlItemPrice($item)));
                 $XmlItem->appendChild($dom->createElement(static::XML_DISCOUNT));
                 $XmlItem->appendChild($dom->createElement(static::XML_HISTORIC_PER_PRICE));
                 $XmlItem->appendChild($dom->createElement(static::XML_MARKDOWN_AMOUNT));
@@ -733,6 +741,28 @@ class CashierOrderContentBuilder implements CashierOrderContentBuilderInterface
                 }
             }
         }
+
+        $counter++;
+
+        $xmlFeeBarcode = $this->getCashierServiceXmlFeeBarcodeNumber($orderTransfer);
+        $xmlFeeItemNumber = $this->getCashierServiceXmlFeeItemNumber($orderTransfer);
+
+        $XmlItem = $ItemGroup->appendChild($dom->createElement(static::XML_ITEM));
+        $XmlItem->appendChild($dom->createElement(static::XML_ORIGIN, static::XML_ORIGIN_VALUE));
+        $XmlItem->appendChild($dom->createElement(static::XML_POSITION_NUMBER, $counter));
+        $XmlItem->appendChild($dom->createElement(static::XML_BARCODE, $xmlFeeBarcode));
+        $XmlItem->appendChild($dom->createElement(static::XML_ITEM_NUMBER, $xmlFeeItemNumber));
+        $XmlItem->appendChild($dom->createElement(static::XML_DEPARTMENT_NUMBER, static::XML_SERVICE_FEE_DEPARTMENT_NUMBER));
+        $XmlItem->appendChild($dom->createElement(static::XML_DESCRIPTION, static::XML_SERVICE_FEE_DESCRIPTION));
+        $XmlItem->appendChild($dom->createElement(static::XML_NETTO_PRICE, $this->getShipmentExpensePrice($orderTransfer)));
+        $XmlItem->appendChild($dom->createElement(static::XML_DISCOUNT));
+        $XmlItem->appendChild($dom->createElement(static::XML_HISTORIC_PER_PRICE));
+        $XmlItem->appendChild($dom->createElement(static::XML_MARKDOWN_AMOUNT));
+        $XmlItem->appendChild($dom->createElement(static::XML_AGE_RESTRICTION));
+        $XmlItem->appendChild($dom->createElement(static::XML_SCALE_ITEM));
+        $XmlItem->appendChild($dom->createElement(static::XML_RESCAN_ITEM));
+        $XmlItem->appendChild($dom->createElement(static::XML_MIXED_CRATE_TICKET_ID));
+        $XmlItem->appendChild($dom->createElement(static::XML_TIMESTAMP, date(static::XML_TIMESTAMP_FORMAT)));
 
         static::$numberOfItems = $counter;
         $dom->appendChild($ItemGroup);
@@ -777,5 +807,59 @@ class CashierOrderContentBuilder implements CashierOrderContentBuilderInterface
             $message,
             $trace
         );
+    }
+
+    /**
+     * @param \Generated\Shared\Transfer\OrderTransfer $orderTransfer
+     *
+     * @return string
+     */
+    protected function getCashierServiceXmlFeeBarcodeNumber(OrderTransfer $orderTransfer): string
+    {
+        $serviceFeeXmlBarcode = $this->cashierOrderExportConfig->getServiceFeeXmlBarcodeNumber();
+        $currentOrderShipmentExpensePrice = $this->getShipmentExpensePrice($orderTransfer);
+
+        if ($currentOrderShipmentExpensePrice === null) {
+            return static::XML_SERVICE_FEE_DEFAULT_BARCODE;
+        }
+
+        return $serviceFeeXmlBarcode[$currentOrderShipmentExpensePrice] ?? static::XML_SERVICE_FEE_DEFAULT_BARCODE;
+    }
+
+    /**
+     * @param \Generated\Shared\Transfer\OrderTransfer $orderTransfer
+     *
+     * @return string
+     */
+    protected function getCashierServiceXmlFeeItemNumber(OrderTransfer $orderTransfer): string
+    {
+        $serviceFeeXmlItemNumber = $this->cashierOrderExportConfig->getServiceFeeXmlItemNumber();
+        $currentOrderShipmentExpensePrice = $this->getShipmentExpensePrice($orderTransfer);
+
+        if ($currentOrderShipmentExpensePrice === null) {
+            return static::XML_SERVICE_FEE_DEFAULT_ITEM_NUMBER;
+        }
+
+        return $serviceFeeXmlItemNumber[$currentOrderShipmentExpensePrice] ?? static::XML_SERVICE_FEE_DEFAULT_ITEM_NUMBER;
+    }
+
+    /**
+     * @param \Generated\Shared\Transfer\ItemTransfer $itemTransfer
+     *
+     * @return float
+     */
+    protected function getXmlItemPrice(ItemTransfer $itemTransfer): float
+    {
+        $weight = 0;
+
+        if ($itemTransfer->getPricePerKg()) {
+            if ($itemTransfer->getNewWeight()) {
+                $weight = $itemTransfer->getNewWeight();
+            }
+
+            return ($weight * $itemTransfer->getPricePerKg()) / 1000;
+        }
+
+        return $itemTransfer->getSumPrice();
     }
 }

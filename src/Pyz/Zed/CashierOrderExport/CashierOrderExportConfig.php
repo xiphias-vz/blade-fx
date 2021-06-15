@@ -31,6 +31,18 @@ class CashierOrderExportConfig extends AbstractBundleConfig
         '0' => '00000002070000573031',
     ];
 
+    protected const SERVICE_FEE_XML_BARCODE_NUMBER = [
+        '199' => '2070000549869',
+        '299' => '2070000578456',
+        '0' => '2070000573031',
+    ];
+
+    protected const SERVICE_FEE_XML_ITEM_NUMBER = [
+        '199' => '7158855',
+        '299' => '7373112',
+        '0' => '7331534',
+    ];
+
     /**
      * @return string
      */
@@ -117,5 +129,21 @@ class CashierOrderExportConfig extends AbstractBundleConfig
     public function getCashierFileDownloadUrl(): string
     {
         return $this->get(CashierOrderExportConstants::CASHIER_FILE_DOWNLOAD_URL);
+    }
+
+    /**
+     * @return string[]
+     */
+    public function getServiceFeeXmlBarcodeNumber(): array
+    {
+        return static::SERVICE_FEE_XML_BARCODE_NUMBER;
+    }
+
+    /**
+     * @return string[]
+     */
+    public function getServiceFeeXmlItemNumber(): array
+    {
+        return static::SERVICE_FEE_XML_ITEM_NUMBER;
     }
 }
