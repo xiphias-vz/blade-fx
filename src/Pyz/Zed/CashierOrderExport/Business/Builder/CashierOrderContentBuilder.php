@@ -69,6 +69,9 @@ class CashierOrderContentBuilder implements CashierOrderContentBuilderInterface
     protected const QUANTITY = 'quantity';
     protected const PRICE = 'price';
 
+    protected const DEFAULT_EMPTY_XML_TAG = '';
+    protected const DEFAULT_EMPTY_XML_LOCALE = 'de_DE';
+    protected const DEFAULT_EMPTY_XML_NUMBER = '000000';
     protected const XML_ENCODING = 'utf-8';
     protected const XML_VERSION = '1.0';
     protected const XML_FORMAT_OUTPUT = true;
@@ -635,16 +638,20 @@ class CashierOrderContentBuilder implements CashierOrderContentBuilderInterface
      */
     public function prepareXmlDefinitions(DOMDocument $dom)
     {
-        $dom->xmlVersion = static::XML_VERSION;
-        $dom->formatOutput = static::XML_FORMAT_OUTPUT;
-        $dom->preserveWhiteSpace = false;
+        try {
+            $dom->xmlVersion = static::XML_VERSION;
+            $dom->formatOutput = static::XML_FORMAT_OUTPUT;
+            $dom->preserveWhiteSpace = false;
 
-        $documentNs = $dom->createElementNS(static::XML_DOCUMENT_NSD, static::XML_DOCUMENT_NODE_NS);
-        $dom->appendChild($documentNs);
+            $documentNs = $dom->createElementNS(static::XML_DOCUMENT_NSD, static::XML_DOCUMENT_NODE_NS);
+            $dom->appendChild($documentNs);
 
-        $documentNs->setAttributeNS('http://www.w3.org/2000/xmlns/', static::XML_DOCUMENT_NSI_PREFIX, static::XML_DOCUMENT_NSI);
-        $version = $dom->createElement(static::XML_DOCUMENT_NODE_VERSION, static::XML_DOCUMENT_NODE_VERSION_VALUE);
-        $dom->appendChild($version);
+            $documentNs->setAttributeNS('http://www.w3.org/2000/xmlns/', static::XML_DOCUMENT_NSI_PREFIX, static::XML_DOCUMENT_NSI);
+            $version = $dom->createElement(static::XML_DOCUMENT_NODE_VERSION, static::XML_DOCUMENT_NODE_VERSION_VALUE);
+            $dom->appendChild($version);
+        } catch (Exception $exception) {
+            $this->logError($exception->getMessage(), $exception->getTrace());
+        }
 
         return $dom;
     }
@@ -657,19 +664,26 @@ class CashierOrderContentBuilder implements CashierOrderContentBuilderInterface
      */
     public function prepareXmlHeader(DOMDocument $dom, OrderTransfer $orderTransfer)
     {
-        $header = $dom->createElement(static::XML_HEADER);
-        $header->appendChild($dom->createElement(static::XML_ORIGIN, static::XML_ORIGIN_VALUE));
-        $header->appendChild($dom->createElement(static::XML_CREATE_DATE, date("Y-m-d")));
-        $header->appendChild($dom->createElement(static::XML_STORE_NUMBER, $orderTransfer->getMerchantReference()));
-        $header->appendChild($dom->createElement(static::XML_SCANNER_WALL_NUMBER));
-        $transactionNumber = $this->calculateTransactionNumber($orderTransfer->getOrderReference());
-        $header->appendChild($dom->createElement(static::XML_TRANSACTION_NUMBER, $transactionNumber));
-        $header->appendChild($dom->createElement(static::XML_SELFSCANNER_NUMBER));
-        $header->appendChild($dom->createElement(static::XML_CARD_NUMBER, $orderTransfer->getCustomer()->getMyGlobusCard()));
-        $header->appendChild($dom->createElement(static::XML_CUSTOMER_LANGUAGE, substr($orderTransfer->getCustomer()->getLocale()->getLocaleName(), -2)));
-        $header->appendChild($dom->createElement(static::XML_PERSONNEL_NUMBER));
-        $header->appendChild($dom->createElement(static::XML_TIMESTAMP, date(static::XML_TIMESTAMP_FORMAT)));
-        $dom->appendChild($header);
+        try {
+            $myGlobusCard = ($orderTransfer->getCustomer() === null) ? (static::DEFAULT_EMPTY_XML_TAG) : ($orderTransfer->getCustomer()->getMyGlobusCard() ?? static::DEFAULT_EMPTY_XML_TAG);
+            $locale = ($orderTransfer->getCustomer() === null) ? (static::DEFAULT_EMPTY_XML_LOCALE) : (substr(($orderTransfer->getCustomer()->getLocale()->getLocaleName() ?? static::DEFAULT_EMPTY_XML_LOCALE), -2));
+
+            $header = $dom->createElement(static::XML_HEADER);
+            $header->appendChild($dom->createElement(static::XML_ORIGIN, static::XML_ORIGIN_VALUE));
+            $header->appendChild($dom->createElement(static::XML_CREATE_DATE, date("Y-m-d")));
+            $header->appendChild($dom->createElement(static::XML_STORE_NUMBER, ($orderTransfer->getMerchantReference() ?? static::DEFAULT_EMPTY_XML_TAG)));
+            $header->appendChild($dom->createElement(static::XML_SCANNER_WALL_NUMBER));
+            $transactionNumber = $this->calculateTransactionNumber($orderTransfer->getOrderReference() ?? static::DEFAULT_EMPTY_XML_NUMBER);
+            $header->appendChild($dom->createElement(static::XML_TRANSACTION_NUMBER, $transactionNumber));
+            $header->appendChild($dom->createElement(static::XML_SELFSCANNER_NUMBER));
+            $header->appendChild($dom->createElement(static::XML_CARD_NUMBER, $myGlobusCard));
+            $header->appendChild($dom->createElement(static::XML_CUSTOMER_LANGUAGE, $locale));
+            $header->appendChild($dom->createElement(static::XML_PERSONNEL_NUMBER));
+            $header->appendChild($dom->createElement(static::XML_TIMESTAMP, date(static::XML_TIMESTAMP_FORMAT)));
+            $dom->appendChild($header);
+        } catch (Exception $exception) {
+            $this->logError($exception->getMessage(), $exception->getTrace());
+        }
 
         return $dom;
     }
@@ -682,54 +696,26 @@ class CashierOrderContentBuilder implements CashierOrderContentBuilderInterface
      */
     public function prepareXmlItems(DOMDocument $dom, OrderTransfer $orderTransfer)
     {
-        $ItemGroup = $dom->createElement(static::XML_ITEM_GROUP);
-        $counter = 0;
-        foreach ($orderTransfer->getItems() as $item) {
-            if ($item->getCanceledAmount()) {
-                continue;
-            }
-            $quantity = $item->getQuantity();
-            for ($x = 0; $x < $quantity; $x++) {
-                $product = $this->cashierOrderExportRepository->getProductBySku($item->getSku());
-                $counter++;
-
-                $XmlItem = $ItemGroup->appendChild($dom->createElement(static::XML_ITEM));
-                $XmlItem->appendChild($dom->createElement(static::XML_ORIGIN, static::XML_ORIGIN_VALUE));
-                $XmlItem->appendChild($dom->createElement(static::XML_POSITION_NUMBER, $counter));
-                $XmlItem->appendChild($dom->createElement(static::XML_BARCODE, $item->getSku()));
-                $XmlItem->appendChild($dom->createElement(static::XML_ITEM_NUMBER, $product->getSapNumber()));
-                $XmlItem->appendChild($dom->createElement(static::XML_DEPARTMENT_NUMBER, $item->getSapWgr()));
-                $XmlItem->appendChild($dom->createElement(static::XML_DESCRIPTION, $this->getItemName($item)));
-                $XmlItem->appendChild($dom->createElement(static::XML_NETTO_PRICE, $this->getXmlItemPrice($item)));
-                $XmlItem->appendChild($dom->createElement(static::XML_DISCOUNT));
-                $XmlItem->appendChild($dom->createElement(static::XML_HISTORIC_PER_PRICE));
-                $XmlItem->appendChild($dom->createElement(static::XML_MARKDOWN_AMOUNT));
-                $XmlItem->appendChild($dom->createElement(static::XML_AGE_RESTRICTION));
-                $XmlItem->appendChild($dom->createElement(static::XML_SCALE_ITEM));
-                $XmlItem->appendChild($dom->createElement(static::XML_RESCAN_ITEM));
-                $XmlItem->appendChild($dom->createElement(static::XML_MIXED_CRATE_TICKET_ID));
-                $XmlItem->appendChild($dom->createElement(static::XML_TIMESTAMP, date(static::XML_TIMESTAMP_FORMAT)));
-            }
-        }
-
-        foreach ($orderTransfer->getItems() as $itemTransfer) {
-            if ($itemTransfer->getCanceledAmount()) {
-                continue;
-            }
-            $quantityDeposit = $itemTransfer->getQuantity();
-            for ($i = 0; $i < $quantityDeposit; $i++) {
-                foreach ($itemTransfer->getProductOptions() as $productOption) {
-                    $productDeposit = $this->cashierOrderExportRepository->getProductBySku($itemTransfer->getSku());
+        try {
+            $ItemGroup = $dom->createElement(static::XML_ITEM_GROUP);
+            $counter = 0;
+            foreach ($orderTransfer->getItems() as $item) {
+                if ($item->getCanceledAmount()) {
+                    continue;
+                }
+                $quantity = $item->getQuantity();
+                for ($x = 0; $x < $quantity; $x++) {
+                    $product = $this->cashierOrderExportRepository->getProductBySku($item->getSku());
                     $counter++;
 
                     $XmlItem = $ItemGroup->appendChild($dom->createElement(static::XML_ITEM));
                     $XmlItem->appendChild($dom->createElement(static::XML_ORIGIN, static::XML_ORIGIN_VALUE));
                     $XmlItem->appendChild($dom->createElement(static::XML_POSITION_NUMBER, $counter));
-                    $XmlItem->appendChild($dom->createElement(static::XML_BARCODE, $this->extractPluFromProductDepositSku($productOption->getSku())));
-                    $XmlItem->appendChild($dom->createElement(static::XML_ITEM_NUMBER, $productDeposit->getSapNumber()));
-                    $XmlItem->appendChild($dom->createElement(static::XML_DEPARTMENT_NUMBER, $itemTransfer->getSapWgr()));
-                    $XmlItem->appendChild($dom->createElement(static::XML_DESCRIPTION, static::XML_DEPOSIT_DESCRIPTION));
-                    $XmlItem->appendChild($dom->createElement(static::XML_NETTO_PRICE, $productOption->getUnitGrossPrice()));
+                    $XmlItem->appendChild($dom->createElement(static::XML_BARCODE, $item->getSku()));
+                    $XmlItem->appendChild($dom->createElement(static::XML_ITEM_NUMBER, $product->getSapNumber()));
+                    $XmlItem->appendChild($dom->createElement(static::XML_DEPARTMENT_NUMBER, $item->getSapWgr()));
+                    $XmlItem->appendChild($dom->createElement(static::XML_DESCRIPTION, $this->getItemName($item)));
+                    $XmlItem->appendChild($dom->createElement(static::XML_NETTO_PRICE, $this->getXmlItemPrice($item) ?? static::DEFAULT_EMPTY_XML_NUMBER));
                     $XmlItem->appendChild($dom->createElement(static::XML_DISCOUNT));
                     $XmlItem->appendChild($dom->createElement(static::XML_HISTORIC_PER_PRICE));
                     $XmlItem->appendChild($dom->createElement(static::XML_MARKDOWN_AMOUNT));
@@ -740,32 +726,64 @@ class CashierOrderContentBuilder implements CashierOrderContentBuilderInterface
                     $XmlItem->appendChild($dom->createElement(static::XML_TIMESTAMP, date(static::XML_TIMESTAMP_FORMAT)));
                 }
             }
+
+            foreach ($orderTransfer->getItems() as $itemTransfer) {
+                if ($itemTransfer->getCanceledAmount()) {
+                    continue;
+                }
+                $quantityDeposit = $itemTransfer->getQuantity();
+                for ($i = 0; $i < $quantityDeposit; $i++) {
+                    foreach ($itemTransfer->getProductOptions() as $productOption) {
+                        $productDeposit = $this->cashierOrderExportRepository->getProductBySku($itemTransfer->getSku());
+                        $counter++;
+
+                        $XmlItem = $ItemGroup->appendChild($dom->createElement(static::XML_ITEM));
+                        $XmlItem->appendChild($dom->createElement(static::XML_ORIGIN, static::XML_ORIGIN_VALUE));
+                        $XmlItem->appendChild($dom->createElement(static::XML_POSITION_NUMBER, $counter));
+                        $XmlItem->appendChild($dom->createElement(static::XML_BARCODE, $this->extractPluFromProductDepositSku($productOption->getSku()) ?? static::DEFAULT_EMPTY_XML_NUMBER));
+                        $XmlItem->appendChild($dom->createElement(static::XML_ITEM_NUMBER, $productDeposit->getSapNumber()));
+                        $XmlItem->appendChild($dom->createElement(static::XML_DEPARTMENT_NUMBER, $itemTransfer->getSapWgr()));
+                        $XmlItem->appendChild($dom->createElement(static::XML_DESCRIPTION, static::XML_DEPOSIT_DESCRIPTION));
+                        $XmlItem->appendChild($dom->createElement(static::XML_NETTO_PRICE, $productOption->getUnitGrossPrice()));
+                        $XmlItem->appendChild($dom->createElement(static::XML_DISCOUNT));
+                        $XmlItem->appendChild($dom->createElement(static::XML_HISTORIC_PER_PRICE));
+                        $XmlItem->appendChild($dom->createElement(static::XML_MARKDOWN_AMOUNT));
+                        $XmlItem->appendChild($dom->createElement(static::XML_AGE_RESTRICTION));
+                        $XmlItem->appendChild($dom->createElement(static::XML_SCALE_ITEM));
+                        $XmlItem->appendChild($dom->createElement(static::XML_RESCAN_ITEM));
+                        $XmlItem->appendChild($dom->createElement(static::XML_MIXED_CRATE_TICKET_ID));
+                        $XmlItem->appendChild($dom->createElement(static::XML_TIMESTAMP, date(static::XML_TIMESTAMP_FORMAT)));
+                    }
+                }
+            }
+
+            $counter++;
+
+            $xmlFeeBarcode = $this->getCashierServiceXmlFeeBarcodeNumber($orderTransfer);
+            $xmlFeeItemNumber = $this->getCashierServiceXmlFeeItemNumber($orderTransfer);
+
+            $XmlItem = $ItemGroup->appendChild($dom->createElement(static::XML_ITEM));
+            $XmlItem->appendChild($dom->createElement(static::XML_ORIGIN, static::XML_ORIGIN_VALUE));
+            $XmlItem->appendChild($dom->createElement(static::XML_POSITION_NUMBER, $counter));
+            $XmlItem->appendChild($dom->createElement(static::XML_BARCODE, $xmlFeeBarcode));
+            $XmlItem->appendChild($dom->createElement(static::XML_ITEM_NUMBER, $xmlFeeItemNumber));
+            $XmlItem->appendChild($dom->createElement(static::XML_DEPARTMENT_NUMBER, static::XML_SERVICE_FEE_DEPARTMENT_NUMBER));
+            $XmlItem->appendChild($dom->createElement(static::XML_DESCRIPTION, static::XML_SERVICE_FEE_DESCRIPTION));
+            $XmlItem->appendChild($dom->createElement(static::XML_NETTO_PRICE, $this->getShipmentExpensePrice($orderTransfer)));
+            $XmlItem->appendChild($dom->createElement(static::XML_DISCOUNT));
+            $XmlItem->appendChild($dom->createElement(static::XML_HISTORIC_PER_PRICE));
+            $XmlItem->appendChild($dom->createElement(static::XML_MARKDOWN_AMOUNT));
+            $XmlItem->appendChild($dom->createElement(static::XML_AGE_RESTRICTION));
+            $XmlItem->appendChild($dom->createElement(static::XML_SCALE_ITEM));
+            $XmlItem->appendChild($dom->createElement(static::XML_RESCAN_ITEM));
+            $XmlItem->appendChild($dom->createElement(static::XML_MIXED_CRATE_TICKET_ID));
+            $XmlItem->appendChild($dom->createElement(static::XML_TIMESTAMP, date(static::XML_TIMESTAMP_FORMAT)));
+
+            static::$numberOfItems = $counter;
+            $dom->appendChild($ItemGroup);
+        } catch (Exception $exception) {
+            $this->logError($exception->getMessage(), $exception->getTrace());
         }
-
-        $counter++;
-
-        $xmlFeeBarcode = $this->getCashierServiceXmlFeeBarcodeNumber($orderTransfer);
-        $xmlFeeItemNumber = $this->getCashierServiceXmlFeeItemNumber($orderTransfer);
-
-        $XmlItem = $ItemGroup->appendChild($dom->createElement(static::XML_ITEM));
-        $XmlItem->appendChild($dom->createElement(static::XML_ORIGIN, static::XML_ORIGIN_VALUE));
-        $XmlItem->appendChild($dom->createElement(static::XML_POSITION_NUMBER, $counter));
-        $XmlItem->appendChild($dom->createElement(static::XML_BARCODE, $xmlFeeBarcode));
-        $XmlItem->appendChild($dom->createElement(static::XML_ITEM_NUMBER, $xmlFeeItemNumber));
-        $XmlItem->appendChild($dom->createElement(static::XML_DEPARTMENT_NUMBER, static::XML_SERVICE_FEE_DEPARTMENT_NUMBER));
-        $XmlItem->appendChild($dom->createElement(static::XML_DESCRIPTION, static::XML_SERVICE_FEE_DESCRIPTION));
-        $XmlItem->appendChild($dom->createElement(static::XML_NETTO_PRICE, $this->getShipmentExpensePrice($orderTransfer)));
-        $XmlItem->appendChild($dom->createElement(static::XML_DISCOUNT));
-        $XmlItem->appendChild($dom->createElement(static::XML_HISTORIC_PER_PRICE));
-        $XmlItem->appendChild($dom->createElement(static::XML_MARKDOWN_AMOUNT));
-        $XmlItem->appendChild($dom->createElement(static::XML_AGE_RESTRICTION));
-        $XmlItem->appendChild($dom->createElement(static::XML_SCALE_ITEM));
-        $XmlItem->appendChild($dom->createElement(static::XML_RESCAN_ITEM));
-        $XmlItem->appendChild($dom->createElement(static::XML_MIXED_CRATE_TICKET_ID));
-        $XmlItem->appendChild($dom->createElement(static::XML_TIMESTAMP, date(static::XML_TIMESTAMP_FORMAT)));
-
-        static::$numberOfItems = $counter;
-        $dom->appendChild($ItemGroup);
 
         return $dom;
     }
@@ -778,19 +796,23 @@ class CashierOrderContentBuilder implements CashierOrderContentBuilderInterface
      */
     public function prepareXmlFooter(DOMDocument $dom, OrderTransfer $orderTransfer)
     {
-        $footer = $dom->createElement(static::XML_FOOTER);
-        $footer->appendChild($dom->createElement(static::XML_ORIGIN, static::XML_ORIGIN_VALUE));
-        $footer->appendChild($dom->createElement(static::XML_NUMBER_OF_ITEMS, static::$numberOfItems));
-        $footer->appendChild($dom->createElement(static::XML_VOIDED_ITEMS));
-        $footer->appendChild($dom->createElement(static::XML_POS_NUMBER));
-        $footer->appendChild($dom->createElement(static::XML_RESCAN, 0));
-        $footer->appendChild($dom->createElement(static::XML_ERROR_SCANS, 0));
-        $footer->appendChild($dom->createElement(static::XML_TOTAL_AMOUNT_SELF_SCAN, $orderTransfer->getTotals()->getPriceToPay()));
-        $footer->appendChild($dom->createElement(static::XML_LOYALTY_POINT_BALANCE, 0));
-        $footer->appendChild($dom->createElement(static::XML_LOYALTY_POINT_CHANGE, 0));
-        $footer->appendChild($dom->createElement(static::XML_TIMESTAMP, date(static::XML_TIMESTAMP_FORMAT)));
-        $footer->appendChild($dom->createElement(static::XML_RESCAN_REQUIRED, static::XML_RESCAN_REQUIRED_VALUE));
-        $dom->appendChild($footer);
+        try {
+            $footer = $dom->createElement(static::XML_FOOTER);
+            $footer->appendChild($dom->createElement(static::XML_ORIGIN, static::XML_ORIGIN_VALUE));
+            $footer->appendChild($dom->createElement(static::XML_NUMBER_OF_ITEMS, static::$numberOfItems));
+            $footer->appendChild($dom->createElement(static::XML_VOIDED_ITEMS));
+            $footer->appendChild($dom->createElement(static::XML_POS_NUMBER));
+            $footer->appendChild($dom->createElement(static::XML_RESCAN, 0));
+            $footer->appendChild($dom->createElement(static::XML_ERROR_SCANS, 0));
+            $footer->appendChild($dom->createElement(static::XML_TOTAL_AMOUNT_SELF_SCAN, $orderTransfer->getTotals()->getPriceToPay()));
+            $footer->appendChild($dom->createElement(static::XML_LOYALTY_POINT_BALANCE, 0));
+            $footer->appendChild($dom->createElement(static::XML_LOYALTY_POINT_CHANGE, 0));
+            $footer->appendChild($dom->createElement(static::XML_TIMESTAMP, date(static::XML_TIMESTAMP_FORMAT)));
+            $footer->appendChild($dom->createElement(static::XML_RESCAN_REQUIRED, static::XML_RESCAN_REQUIRED_VALUE));
+            $dom->appendChild($footer);
+        } catch (Exception $exception) {
+            $this->logError($exception->getMessage(), $exception->getTrace());
+        }
 
         return $dom;
     }
