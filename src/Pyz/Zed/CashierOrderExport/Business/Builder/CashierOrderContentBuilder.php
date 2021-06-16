@@ -868,7 +868,7 @@ class CashierOrderContentBuilder implements CashierOrderContentBuilderInterface
                 $weight = $itemTransfer->getNewWeight();
             }
 
-            return ($weight * $itemTransfer->getPricePerKg()) / 1000;
+            return round(($weight * $itemTransfer->getPricePerKg()) / 1000, 0);
         }
 
         return $itemTransfer->getSumPrice();
