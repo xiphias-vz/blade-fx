@@ -603,10 +603,25 @@ class CashierOrderContentBuilder implements CashierOrderContentBuilderInterface
         $dom = new DOMDocument();
 
         try {
-            $dom = $this->prepareXmlDefinitions($dom);
-            $dom = $this->prepareXmlHeader($dom, $orderTransfer);
-            $dom = $this->prepareXmlItems($dom, $orderTransfer);
-            $dom = $this->prepareXmlFooter($dom, $orderTransfer);
+            $dom->xmlVersion = static::XML_VERSION;
+            $dom->formatOutput = static::XML_FORMAT_OUTPUT;
+            $dom->preserveWhiteSpace = false;
+
+            $document = $dom->createElementNS(static::XML_DOCUMENT_NSD, static::XML_DOCUMENT_NODE_NS);
+            $dom->appendChild($document);
+            $document->setAttributeNS('http://www.w3.org/2000/xmlns/', static::XML_DOCUMENT_NSI_PREFIX, static::XML_DOCUMENT_NSI);
+
+            $version = $dom->createElement(static::XML_DOCUMENT_NODE_VERSION, static::XML_DOCUMENT_NODE_VERSION_VALUE);
+            $document->appendChild($version);
+
+            $header = $this->prepareXmlHeader($dom, $orderTransfer);
+            $document->appendChild($header);
+
+            $items = $this->prepareXmlItems($dom, $orderTransfer);
+            $document->appendChild($items);
+
+            $footer = $this->prepareXmlFooter($dom, $orderTransfer);
+            $document->appendChild($footer);
         } catch (Exception $exception) {
             $this->logError($exception->getMessage(), $exception->getTrace());
         }
@@ -633,42 +648,17 @@ class CashierOrderContentBuilder implements CashierOrderContentBuilderInterface
 
     /**
      * @param \DOMDocument $dom
-     *
-     * @return \DOMDocument
-     */
-    public function prepareXmlDefinitions(DOMDocument $dom)
-    {
-        try {
-            $dom->xmlVersion = static::XML_VERSION;
-            $dom->formatOutput = static::XML_FORMAT_OUTPUT;
-            $dom->preserveWhiteSpace = false;
-
-            $documentNs = $dom->createElementNS(static::XML_DOCUMENT_NSD, static::XML_DOCUMENT_NODE_NS);
-            $dom->appendChild($documentNs);
-
-            $documentNs->setAttributeNS('http://www.w3.org/2000/xmlns/', static::XML_DOCUMENT_NSI_PREFIX, static::XML_DOCUMENT_NSI);
-            $version = $dom->createElement(static::XML_DOCUMENT_NODE_VERSION, static::XML_DOCUMENT_NODE_VERSION_VALUE);
-            $dom->appendChild($version);
-        } catch (Exception $exception) {
-            $this->logError($exception->getMessage(), $exception->getTrace());
-        }
-
-        return $dom;
-    }
-
-    /**
-     * @param \DOMDocument $dom
      * @param \Generated\Shared\Transfer\OrderTransfer $orderTransfer
      *
-     * @return \DOMDocument
+     * @return \DOMElement
      */
     public function prepareXmlHeader(DOMDocument $dom, OrderTransfer $orderTransfer)
     {
+        $header = $dom->createElement(static::XML_HEADER);
         try {
             $myGlobusCard = ($orderTransfer->getCustomer() === null) ? (static::DEFAULT_EMPTY_XML_TAG) : ($orderTransfer->getCustomer()->getMyGlobusCard() ?? static::DEFAULT_EMPTY_XML_TAG);
-            $locale = ($orderTransfer->getCustomer() === null) ? (static::DEFAULT_EMPTY_XML_LOCALE) : (substr(($orderTransfer->getCustomer()->getLocale()->getLocaleName() ?? static::DEFAULT_EMPTY_XML_LOCALE), -2));
+            $locale = ($orderTransfer->getCustomer() === null) ? (substr(static::DEFAULT_EMPTY_XML_LOCALE, -2)) : (substr(($orderTransfer->getCustomer()->getLocale()->getLocaleName() ?? static::DEFAULT_EMPTY_XML_LOCALE), -2));
 
-            $header = $dom->createElement(static::XML_HEADER);
             $header->appendChild($dom->createElement(static::XML_ORIGIN, static::XML_ORIGIN_VALUE));
             $header->appendChild($dom->createElement(static::XML_CREATE_DATE, date("Y-m-d")));
             $header->appendChild($dom->createElement(static::XML_STORE_NUMBER, ($orderTransfer->getMerchantReference() ?? static::DEFAULT_EMPTY_XML_TAG)));
@@ -680,24 +670,23 @@ class CashierOrderContentBuilder implements CashierOrderContentBuilderInterface
             $header->appendChild($dom->createElement(static::XML_CUSTOMER_LANGUAGE, $locale));
             $header->appendChild($dom->createElement(static::XML_PERSONNEL_NUMBER));
             $header->appendChild($dom->createElement(static::XML_TIMESTAMP, date(static::XML_TIMESTAMP_FORMAT)));
-            $dom->appendChild($header);
         } catch (Exception $exception) {
             $this->logError($exception->getMessage(), $exception->getTrace());
         }
 
-        return $dom;
+        return $header;
     }
 
     /**
      * @param \DOMDocument $dom
      * @param \Generated\Shared\Transfer\OrderTransfer $orderTransfer
      *
-     * @return \DOMDocument
+     * @return \DOMElement
      */
     public function prepareXmlItems(DOMDocument $dom, OrderTransfer $orderTransfer)
     {
+        $ItemGroup = $dom->createElement(static::XML_ITEM_GROUP);
         try {
-            $ItemGroup = $dom->createElement(static::XML_ITEM_GROUP);
             $counter = 0;
             foreach ($orderTransfer->getItems() as $item) {
                 if ($item->getCanceledAmount()) {
@@ -780,24 +769,24 @@ class CashierOrderContentBuilder implements CashierOrderContentBuilderInterface
             $XmlItem->appendChild($dom->createElement(static::XML_TIMESTAMP, date(static::XML_TIMESTAMP_FORMAT)));
 
             static::$numberOfItems = $counter;
-            $dom->appendChild($ItemGroup);
+            //$dom->appendChild($ItemGroup);
         } catch (Exception $exception) {
             $this->logError($exception->getMessage(), $exception->getTrace());
         }
 
-        return $dom;
+        return $ItemGroup;
     }
 
     /**
      * @param \DOMDocument $dom
      * @param \Generated\Shared\Transfer\OrderTransfer $orderTransfer
      *
-     * @return \DOMDocument
+     * @return \DOMElement
      */
     public function prepareXmlFooter(DOMDocument $dom, OrderTransfer $orderTransfer)
     {
+        $footer = $dom->createElement(static::XML_FOOTER);
         try {
-            $footer = $dom->createElement(static::XML_FOOTER);
             $footer->appendChild($dom->createElement(static::XML_ORIGIN, static::XML_ORIGIN_VALUE));
             $footer->appendChild($dom->createElement(static::XML_NUMBER_OF_ITEMS, static::$numberOfItems));
             $footer->appendChild($dom->createElement(static::XML_VOIDED_ITEMS));
@@ -809,12 +798,12 @@ class CashierOrderContentBuilder implements CashierOrderContentBuilderInterface
             $footer->appendChild($dom->createElement(static::XML_LOYALTY_POINT_CHANGE, 0));
             $footer->appendChild($dom->createElement(static::XML_TIMESTAMP, date(static::XML_TIMESTAMP_FORMAT)));
             $footer->appendChild($dom->createElement(static::XML_RESCAN_REQUIRED, static::XML_RESCAN_REQUIRED_VALUE));
-            $dom->appendChild($footer);
+            //$dom->appendChild($footer);
         } catch (Exception $exception) {
             $this->logError($exception->getMessage(), $exception->getTrace());
         }
 
-        return $dom;
+        return $footer;
     }
 
     /**
