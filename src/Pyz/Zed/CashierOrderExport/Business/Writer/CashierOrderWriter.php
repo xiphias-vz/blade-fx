@@ -199,13 +199,9 @@ class CashierOrderWriter implements CashierOrderWriterInterface
                 'private',
                 $options
             );
-            $result = $uploader->upload();
-            if ($result["@metadata"]["statusCode"] == '200') {
-                var_dump('File successfully uploaded to ' . $result["ObjectURL"]);
-            }
-            var_dump($result);
+            $uploader->upload();
         } catch (SymfonyException $e) {
-            rewind($cashierFile);
+            var_dump('Error while saving to S3 :  ' . $e->getMessage());
         }
         fclose($cashierFile);
     }
