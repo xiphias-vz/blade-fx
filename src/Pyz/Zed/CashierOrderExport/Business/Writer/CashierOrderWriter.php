@@ -7,6 +7,7 @@
 
 namespace Pyz\Zed\CashierOrderExport\Business\Writer;
 
+use Aws\Command;
 use Aws\S3\ObjectUploader;
 use Aws\S3\S3Client;
 use DateTime;
@@ -139,7 +140,7 @@ class CashierOrderWriter implements CashierOrderWriterInterface
             } else {
                 $this->cashierOrderSftpWriter->sendFileToFtp($xmlFileName, $archiveRemoteXmlFilePath);
             }
-
+            gc_collect_cycles();
             try {
                 $this->uploadCashierFileToAws($archiveFilePath, $fileNameForS3);
                 $this->uploadCashierFileToAws($archiveXmlFilePath, $xmlFileNameForS3);
@@ -153,6 +154,7 @@ class CashierOrderWriter implements CashierOrderWriterInterface
 
             return $orderTransfer;
         }
+        gc_collect_cycles();
 
         return $orderTransfer->setIsCashierExportSuccess(true);
     }
@@ -184,11 +186,18 @@ class CashierOrderWriter implements CashierOrderWriterInterface
         $bucket = $this->getS3Bucket();
         $cashierFile = fopen($archiveFilePath, 'r+');
         try {
+            $options = [
+                'before_upload' => function (Command $command) {
+                    gc_collect_cycles();
+                },
+            ];
             $uploader = new ObjectUploader(
                 $s3,
                 $bucket,
                 $fileNameForS3,
-                $cashierFile
+                $cashierFile,
+                'private',
+                $options
             );
             $result = $uploader->upload();
             if ($result["@metadata"]["statusCode"] == '200') {
@@ -198,6 +207,7 @@ class CashierOrderWriter implements CashierOrderWriterInterface
         } catch (SymfonyException $e) {
             rewind($cashierFile);
         }
+        fclose($cashierFile);
     }
 
     /**
