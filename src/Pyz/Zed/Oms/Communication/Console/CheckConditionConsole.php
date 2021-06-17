@@ -22,7 +22,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 class CheckConditionConsole extends SprykerCheckConditionConsole
 {
     public const PROCESS_ID = 'process-id';
-    public const PROCESS_ID_SHORTCUT = 'p';
+    public const PROCESS_ID_SHORTCUT = 'P';
 
     /**
      * @return void
@@ -38,9 +38,9 @@ class CheckConditionConsole extends SprykerCheckConditionConsole
      * @param \Symfony\Component\Console\Input\InputInterface $input
      * @param \Symfony\Component\Console\Output\OutputInterface $output
      *
-     * @return int|null
+     * @return int
      */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         Propel::disableInstancePooling();
         $processId = null;
@@ -51,6 +51,6 @@ class CheckConditionConsole extends SprykerCheckConditionConsole
         $this->getFacade()->checkConditions([], $processId);
         Propel::enableInstancePooling();
 
-        return null;
+        return (int)null;
     }
 }

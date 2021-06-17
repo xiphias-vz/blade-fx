@@ -42,6 +42,7 @@ class CategoryWriterStep extends SprykerCategoryWriterStep
 
     protected const ROOT = 'cls_pim_de_cus_class';
     protected const ROOT_NAME = 'DE - Kunden Produkt Hierarchie';
+    protected const LOCALE_NAME = 'de_DE';
 
     /**
      * @var array
@@ -204,7 +205,7 @@ class CategoryWriterStep extends SprykerCategoryWriterStep
             static::$isRootImported = true;
         }
 
-        $idParentCategoryNode = $this->getParentCategoryId($dataSet, $dataSet['locales']['de_DE']);
+        $idParentCategoryNode = $this->getParentCategoryId($dataSet, $dataSet['locales'][static::LOCALE_NAME]);
         if ($idParentCategoryNode) {
             $categoryNodeEntity->setFkParentCategoryNode($idParentCategoryNode);
         }

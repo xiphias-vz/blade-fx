@@ -1,0 +1,2 @@
+region_number,store,region_name,filial_number,zip_code,city,street,latitude,longitude,picking_capacity_per_slot,delivery_capacity_per_slot
+41,OPA,Czech,4012,74600,"Opava","Těšínská 83",52.532278,13.384491,10,

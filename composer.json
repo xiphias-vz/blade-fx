@@ -174,7 +174,7 @@
     "spryker/shipments-rest-api": "^1.2.2",
     "spryker/shop-context": "^0.1.0",
     "spryker/stores-rest-api": "^1.0.2",
-    "spryker/symfony": "^3.3.5",
+    "spryker/symfony": "^3.5.0",
     "spryker/synchronization-behavior": "^1.4.2",
     "spryker/tax-product-connector": "^4.2.1",
     "spryker/tax-product-storage": "^1.0.2",
@@ -218,6 +218,7 @@
       "Generated\\": "src/Generated/",
       "Orm\\": "src/Orm/",
       "Pyz\\": "src/Pyz/",
+      "SprykerConfig\\" : "src/SprykerConfig",
       "StoreApp\\": "src/StoreApp/",
       "Install\\": "src/Install/"
     }

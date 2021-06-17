@@ -72,7 +72,7 @@ class ProductAbstractWriterStep extends PublishAwareStep implements DataImportSt
     /**
      * @var \Pyz\Zed\DataImport\DataImportConfig
      */
-    private $dataImportConfig;
+    protected $dataImportConfig;
 
     /**
      * @param \Pyz\Zed\DataImport\Business\Model\Product\Repository\ProductRepository $productRepository

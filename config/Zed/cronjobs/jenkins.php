@@ -11,6 +11,8 @@ $stores = require(APPLICATION_ROOT_DIR . '/config/Shared/stores.php');
 
 $allStores = array_keys($stores);
 
+$storeCodeBucket = getenv('SPRYKER_CODE_BUCKET');
+
 $jobs[] = [
     'name' => 'BUILD HASH',
     'command' => 'php public/Zed/version.php',
@@ -155,22 +157,6 @@ $jobs[] = [
     'stores' => $allStores,
 ];
 
-$jobs[] = [
-    'name' => 'data-import-full',
-    'command' => 'vendor/bin/install -r sftp-based-full-import',
-    'schedule' => '5 21 * * *',
-    'enable' => true,
-    'stores' => ['EIN'],
-];
-
-$jobs[] = [
-    'name' => 'data-import-images',
-    'command' => 'vendor/bin/install -r product-images-import',
-    'schedule' => '0 20 * * *',
-    'enable' => true,
-    'stores' => ['EIN'],
-];
-
 /* Timeslot check */
 $jobs[] = [
     'name' => 'timeslot-check',
@@ -180,31 +166,86 @@ $jobs[] = [
     'stores' => $allStores,
 ];
 
-/* Sitemap generator*/
-$jobs[] =
-[
-    'name' => 'sitemap-generate',
-    'command' => '$PHP_BIN vendor/bin/console sitemap:generate',
-    'schedule' => '0 4 * * *',
-    'enable' => true,
-    'stores' => ['EIN'],
-];
+if ($storeCodeBucket == 'CZ') {
+    $jobs[] = [
+        'name' => 'data-import-full',
+        'command' => 'vendor/bin/install -r gsoa-based-full-import',
+        'schedule' => '5 0 * * *',
+        'enable' => true,
+        'stores' => ['OPA'],
+    ];
 
-/* Export sales order summary*/
-$jobs[] =
-[
-    'name' => 'export-sales-order-summary',
-    'command' => '$PHP_BIN vendor/bin/console data:exportSalesOrderSummary',
-    'schedule' => '0 23 * * *',
-    'enable' => true,
-    'stores' => ['EIN'],
-];
+    /* Sitemap generator*/
+    $jobs[] =
+    [
+        'name' => 'sitemap-generate',
+        'command' => '$PHP_BIN vendor/bin/console sitemap:generate',
+        'schedule' => '0 4 * * *',
+        'enable' => true,
+        'stores' => ['OPA'],
+    ];
 
-/* Export products deep links */
-$jobs[] = [
+    /* Export sales order summary*/
+    $jobs[] =
+    [
+        'name' => 'export-sales-order-summary',
+        'command' => '$PHP_BIN vendor/bin/console data:exportSalesOrderSummary',
+        'schedule' => '0 1 * * *',
+        'enable' => true,
+        'stores' => ['OPA'],
+    ];
+
+    /* Export products deep links */
+    $jobs[] = [
         'name' => 'export-product-deep-links',
         'command' => '$PHP_BIN vendor/bin/console data:exportDeeplink',
         'schedule' => '0 9 * * 3',
         'enable' => true,
+        'stores' => ['OPA'],
+    ];
+} else {
+    $jobs[] = [
+        'name' => 'data-import-full',
+        'command' => 'vendor/bin/install -r sftp-based-full-import',
+        'schedule' => '5 0 * * *',
+        'enable' => true,
         'stores' => ['EIN'],
     ];
+
+    $jobs[] = [
+        'name' => 'data-import-images',
+        'command' => 'vendor/bin/install -r product-images-import',
+        'schedule' => '0 20 * * *',
+        'enable' => true,
+        'stores' => ['EIN'],
+    ];
+
+    /* Sitemap generator*/
+    $jobs[] =
+        [
+            'name' => 'sitemap-generate',
+            'command' => '$PHP_BIN vendor/bin/console sitemap:generate',
+            'schedule' => '0 4 * * *',
+            'enable' => true,
+            'stores' => ['EIN'],
+        ];
+
+    /* Export sales order summary*/
+    $jobs[] =
+        [
+            'name' => 'export-sales-order-summary',
+            'command' => '$PHP_BIN vendor/bin/console data:exportSalesOrderSummary',
+            'schedule' => '0 1 * * *',
+            'enable' => true,
+            'stores' => ['EIN'],
+        ];
+
+    /* Export products deep links */
+    $jobs[] = [
+    'name' => 'export-product-deep-links',
+    'command' => '$PHP_BIN vendor/bin/console data:exportDeeplink',
+    'schedule' => '0 9 * * 3',
+    'enable' => true,
+    'stores' => ['EIN'],
+    ];
+}

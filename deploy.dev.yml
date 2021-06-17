@@ -49,7 +49,10 @@ namespace: spryker-click-and-collect
 tag: 'dev'
 
 environment: docker_dev
-image: spryker/php:7.3-DRAFT-new-relic
+image:
+    tag: spryker/php:7.4-alpine3.12
+    environment:
+           SPRYKER_CODE_BUCKET: DE
 
 composer:
     mode: --dev

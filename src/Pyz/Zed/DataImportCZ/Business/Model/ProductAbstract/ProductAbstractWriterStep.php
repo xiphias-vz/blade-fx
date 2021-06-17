@@ -1,0 +1,76 @@
+<?php
+
+/**
+ * This file is part of the Spryker Commerce OS.
+ * For full license information, please view the LICENSE file that was distributed with this source code.
+ */
+
+namespace Pyz\Zed\DataImportCZ\Business\Model\ProductAbstract;
+
+use Orm\Zed\ProductImage\Persistence\SpyProductImage;
+use Orm\Zed\ProductImage\Persistence\SpyProductImageQuery;
+use Orm\Zed\ProductImage\Persistence\SpyProductImageSetToProductImageQuery;
+use Pyz\Shared\Product\ProductConfig;
+use Pyz\Zed\DataImport\Business\Model\ProductAbstract\ProductAbstractWriterStep as PyzProductAbstractWriterStep;
+use Spryker\Zed\DataImport\Business\Model\DataSet\DataSetInterface;
+
+class ProductAbstractWriterStep extends PyzProductAbstractWriterStep
+{
+    protected const SHIPMENT_TAX_RATE_NAME = 'CZ Shipment Tax';
+
+    /**
+     * @param \Spryker\Zed\DataImport\Business\Model\DataSet\DataSetInterface $dataSet
+     *
+     * @return void
+     */
+    public function execute(DataSetInterface $dataSet)
+    {
+        parent::execute($dataSet);
+    }
+
+    /**
+     * @param \Spryker\Zed\DataImport\Business\Model\DataSet\DataSetInterface $dataSet
+     * @param array $locales
+     *
+     * @return array
+     */
+    protected function importProductImage(DataSetInterface $dataSet, array $locales): array
+    {
+        $productImageSetEntities = [];
+        foreach ($locales as $localeKey => $localeName) {
+            $productImageSetEntity = $this->findOrCreateImageSet($dataSet, $localeName);
+            SpyProductImageSetToProductImageQuery::create()->findByFkProductImageSet($productImageSetEntity->getIdProductImageSet())->delete();
+            $images = explode(';', $dataSet[ProductConfig::KEY_MAIN_IMAGE_FILE_NAME]);
+            foreach ($images as $key => $image) {
+                if (!empty($image)) {
+                    $imageUrl = $this->dataImportConfig->getImagesHostUrl() . $image;
+                    $productImageEntity = $this->findOrCreateImage($imageUrl);
+                    $this->updateOrCreateImageToImageSetRelation($productImageSetEntity, $productImageEntity, $key);
+                }
+            }
+            array_push($productImageSetEntities, $productImageSetEntity);
+        }
+
+        return $productImageSetEntities;
+    }
+
+    /**
+     * @param string $imageUrl
+     *
+     * @return \Orm\Zed\ProductImage\Persistence\SpyProductImage
+     */
+    protected function findOrCreateImage(string $imageUrl): SpyProductImage
+    {
+        $productImageEntity = SpyProductImageQuery::create()
+            ->filterByExternalUrlLarge($imageUrl)
+            ->findOneOrCreate();
+
+        $productImageEntity->setExternalUrlSmall($imageUrl);
+
+        if ($productImageEntity->isNew() || $productImageEntity->isModified()) {
+            $productImageEntity->save();
+        }
+
+        return $productImageEntity;
+    }
+}

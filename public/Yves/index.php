@@ -24,7 +24,13 @@ $allStores = array_keys($stores);
  */
 $storeConfig = require(APPLICATION_ROOT_DIR . '/config/Shared/store_config.php');
 
-$currentStore = $_COOKIE['current_store'] ?? 'EIN';
+$storeCodeBucket = getenv('SPRYKER_CODE_BUCKET');
+
+if ($storeCodeBucket == 'CZ') {
+    $currentStore = $_COOKIE['current_store'] ?? 'OPA';
+} else {
+    $currentStore = $_COOKIE['current_store'] ?? 'EIN';
+}
 
 define('APPLICATION_STORE', $currentStore);
 define('SPRYKER_KEY_VALUE_STORE_NAMESPACE', $storeConfig[$currentStore]['key_value_store_namespace']);

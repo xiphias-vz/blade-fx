@@ -8,6 +8,7 @@
 namespace Pyz\Zed\Customer\Communication\Controller;
 
 use Spryker\Zed\Customer\Communication\Controller\DeleteController as SprykerDeleteController;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Csrf\CsrfToken;
 use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
@@ -31,7 +32,7 @@ class DeleteController extends SprykerDeleteController
      *
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
-    public function confirmAction(Request $request)
+    public function confirmAction(Request $request): RedirectResponse
     {
         if (!$request->isMethod(Request::METHOD_POST)) {
             $this->addErrorMessage(static::MESSAGE_PERMISSION_FAILED);

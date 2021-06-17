@@ -1,4 +1,4 @@
-block_key,block_name,template_name,template_path,active,products,placeholder.title.de_DE,placeholder.title.en_US,placeholder.description.de_DE,placeholder.description.en_US,placeholder.link.de_DE,placeholder.link.en_US,placeholder.content.de_DE,placeholder.content.en_US
+block_key,block_name,template_name,template_path,active,products,placeholder.title.cs_CZ,placeholder.title.de_DE,placeholder.description.de_DE,placeholder.description.cs_CZ,placeholder.link.de_DE,placeholder.link.cs_CZ,placeholder.content.de_DE,placeholder.content.cs_CZ
 order-confirmation-email,Order confirmation email,Email content Block,@CmsBlock/template/content_block.twig,1,,,,,,,,"<meta charset='UTF-8'>
   <meta content='width=device-width, initial-scale=1' name='viewport'>
   <meta name='x-apple-disable-message-reformatting'>

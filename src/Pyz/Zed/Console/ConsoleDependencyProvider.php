@@ -9,6 +9,7 @@ namespace Pyz\Zed\Console;
 
 use Pyz\Zed\Acl\Communication\Console\AclInstallConsole;
 use Pyz\Zed\Cache\Communication\Console\DirectoryCacheCleanerConsole;
+use Pyz\Zed\CategoryDataImport\CategoryDataImportConfig;
 use Pyz\Zed\CmsPageDataImport\CmsPageDataImportConfig;
 use Pyz\Zed\Console\Communication\Plugin\ConsoleLogPlugin;
 use Pyz\Zed\DatabaseLoad\Communication\Console\DatabaseLoadTestConsole;
@@ -19,6 +20,8 @@ use Pyz\Zed\DataImport\DataImportConfig;
 use Pyz\Zed\Development\Communication\Console\AcceptanceCodeTestConsole;
 use Pyz\Zed\Development\Communication\Console\ApiCodeTestConsole;
 use Pyz\Zed\Development\Communication\Console\FunctionalCodeTestConsole;
+use Pyz\Zed\GsoaRestApiClient\Communication\Console\GsoaProductConsole;
+use Pyz\Zed\GsoaRestApiClient\Communication\Console\GsoaTokenConsole;
 use Pyz\Zed\ImageImportToS3\Communication\Console\ImageImportToS3Console;
 use Pyz\Zed\Installer\Communication\Console\PerStoreInstallerConsole;
 use Pyz\Zed\Maintenance\Communication\Console\MaintenanceDisableConsole;
@@ -36,7 +39,6 @@ use Pyz\Zed\Sitemap\Communication\Console\SitemapConsole;
 use Pyz\Zed\TimeSlot\Communication\Console\TimeSlotCheckerConsole;
 use Spryker\Shared\Config\Environment;
 use Spryker\Zed\Cache\Communication\Console\EmptyAllCachesConsole;
-use Spryker\Zed\CategoryDataImport\CategoryDataImportConfig;
 use Spryker\Zed\CodeGenerator\Communication\Console\BundleClientCodeGeneratorConsole;
 use Spryker\Zed\CodeGenerator\Communication\Console\BundleCodeGeneratorConsole;
 use Spryker\Zed\CodeGenerator\Communication\Console\BundleServiceCodeGeneratorConsole;
@@ -338,6 +340,8 @@ class ConsoleDependencyProvider extends SprykerConsoleDependencyProvider
             new SalesOrderSummaryExportConsole(),
             new ImageImportToS3Console(),
             new ProductfeedDeeplinksConsole(),
+            new GsoaTokenConsole(),
+            new GsoaProductConsole(),
         ];
 
         $propelCommands = $container->getLocator()->propel()->facade()->getConsoleCommands();

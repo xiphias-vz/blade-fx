@@ -64,6 +64,8 @@ class ProductDepositOptionStep extends PublishAwareStep implements DataImportSte
     protected const DEFAULT_DEPOSIT_AMOUNT_MULTIPLIER = 100;
     protected const DEFAULT_DEPOSIT_COUNT = 1;
 
+    protected const LOCALE_NAME = 'de_DE';
+
     /**
      * @var array
      */
@@ -153,8 +155,8 @@ class ProductDepositOptionStep extends PublishAwareStep implements DataImportSte
             ->setValue($optionValue)
             ->save();
 
-        $this->findOrCreateTranslation($optionGroupName, static::DEFAULT_DEPOSIT_NAME, $dataSet->getArrayCopy()['locales']['de_DE']);
-        $this->findOrCreateTranslation($optionValue, static::DEFAULT_DEPOSIT_NAME, $dataSet->getArrayCopy()['locales']['de_DE']);
+        $this->findOrCreateTranslation($optionGroupName, static::DEFAULT_DEPOSIT_NAME, $dataSet->getArrayCopy()['locales'][static::LOCALE_NAME]);
+        $this->findOrCreateTranslation($optionValue, static::DEFAULT_DEPOSIT_NAME, $dataSet->getArrayCopy()['locales'][static::LOCALE_NAME]);
     }
 
     /**

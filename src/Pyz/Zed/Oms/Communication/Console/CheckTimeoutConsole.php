@@ -21,7 +21,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 class CheckTimeoutConsole extends SprykerCheckTimeoutConsole
 {
     public const PROCESS_ID = 'process-id';
-    public const PROCESS_ID_SHORTCUT = 'p';
+    public const PROCESS_ID_SHORTCUT = 'P';
 
     /**
      * @return void
@@ -37,9 +37,9 @@ class CheckTimeoutConsole extends SprykerCheckTimeoutConsole
      * @param \Symfony\Component\Console\Input\InputInterface $input
      * @param \Symfony\Component\Console\Output\OutputInterface $output
      *
-     * @return int|null
+     * @return int
      */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $processId = null;
         if ($input->getOption(static::PROCESS_ID)) {
@@ -48,6 +48,6 @@ class CheckTimeoutConsole extends SprykerCheckTimeoutConsole
 
         $this->getFacade()->checkTimeouts([], $processId);
 
-        return null;
+        return (int)null;
     }
 }

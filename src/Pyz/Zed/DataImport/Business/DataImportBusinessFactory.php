@@ -80,6 +80,7 @@ use Spryker\Shared\ProductSearch\Code\KeyBuilder\FilterGlossaryKeyBuilder;
 use Spryker\Zed\Acl\Business\AclFacadeInterface;
 use Spryker\Zed\DataImport\Business\DataImportBusinessFactory as SprykerDataImportBusinessFactory;
 use Spryker\Zed\DataImport\Business\Model\DataImportStep\DataImportStepInterface;
+use Spryker\Zed\DataImport\Business\Model\DataImportStep\PublishAwareStep;
 use Spryker\Zed\DataImport\Dependency\Plugin\DataImportPluginInterface;
 use Spryker\Zed\Money\Business\MoneyFacadeInterface;
 use Spryker\Zed\User\Business\UserFacadeInterface;
@@ -271,9 +272,9 @@ class DataImportBusinessFactory extends SprykerDataImportBusinessFactory
     }
 
     /**
-     * @return \Pyz\Zed\DataImport\Business\Model\ProductConcrete\ProductConcreteWriter
+     * @return \Spryker\Zed\DataImport\Business\Model\DataImportStep\DataImportStepInterface
      */
-    protected function createProductConcreteWriter(): ProductConcreteWriter
+    protected function createProductConcreteWriter(): DataImportStepInterface
     {
         return new ProductConcreteWriter(
             $this->createProductRepository(),
@@ -985,9 +986,9 @@ class DataImportBusinessFactory extends SprykerDataImportBusinessFactory
     }
 
     /**
-     * @return \Pyz\Zed\DataImport\Business\Model\BaseProduct\ProductDepositOptionStep
+     * @return \Spryker\Zed\DataImport\Business\Model\DataImportStep\PublishAwareStep
      */
-    private function createProductDepositOptionStep(): ProductDepositOptionStep
+    protected function createProductDepositOptionStep(): PublishAwareStep
     {
         return new ProductDepositOptionStep();
     }
@@ -995,7 +996,7 @@ class DataImportBusinessFactory extends SprykerDataImportBusinessFactory
     /**
      * @return \Spryker\Service\UtilText\UtilTextServiceInterface
      */
-    private function getUtilTextService(): UtilTextServiceInterface
+    protected function getUtilTextService(): UtilTextServiceInterface
     {
         return $this->getProvidedDependency(DataImportDependencyProvider::SERVICE_UTIL_TEXT);
     }
@@ -1052,9 +1053,9 @@ class DataImportBusinessFactory extends SprykerDataImportBusinessFactory
     }
 
     /**
-     * @return \Pyz\Zed\DataImport\Business\Model\ProductAbstract\ProductAbstractWriterStep
+     * @return \Spryker\Zed\DataImport\Business\Model\DataImportStep\DataImportStepInterface
      */
-    protected function createProductAbstractWriterStep(): ProductAbstractWriterStep
+    protected function createProductAbstractWriterStep(): DataImportStepInterface
     {
         return new ProductAbstractWriterStep(
             $this->createProductRepository(),

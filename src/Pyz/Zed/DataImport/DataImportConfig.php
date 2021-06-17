@@ -462,6 +462,7 @@ class DataImportConfig extends SprykerDataImportConfig
             '/^4\.globus_article_prices\.[0-9]+_1057/' => '4.globus_article_prices.1057.csv',
             '/^4\.globus_article_prices\.[0-9]+_1021/' => '4.globus_article_prices.1021.csv',
             '/^4\.globus_article_prices\.[0-9]+_1053/' => '4.globus_article_prices.1053.csv',
+
         ];
     }
 

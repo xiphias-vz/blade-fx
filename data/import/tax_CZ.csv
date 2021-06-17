@@ -1,0 +1,5 @@
+tax_set_name,country_name,tax_rate_name,tax_rate_percent
+STANDARD_NEW,Czech Republic,Czech Standard NEW,10
+LOW_NEW,Czech Republic,Czech Reduced NEW,15
+ZERO,Czech Republic,Czech Taxfree,0
+Shipment Taxes,Czech Republic,Czech Shipment Tax,21

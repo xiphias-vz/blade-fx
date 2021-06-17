@@ -7,6 +7,7 @@
 
 namespace Pyz\Yves\ShopApplication;
 
+use Pyz\Yves\CodeBucketPlugin\Plugin\Application\CurrentCodeBucketApplicationPlugin;
 use Pyz\Yves\CookieBot\Plugin\Application\CookieBotApplicationPlugin;
 use Pyz\Yves\CurrentStoreCookieCheck\Plugin\Application\CurrentStoreCookieCheckApplicationPlugin;
 use Pyz\Yves\CustomerPage\Plugin\Application\CustomerPageApplicationPlugin;
@@ -157,6 +158,7 @@ class ShopApplicationDependencyProvider extends SprykerShopApplicationDependency
             new CustomerPageApplicationPlugin(),
             new CookieBotApplicationPlugin(),
             new CurrentStoreCookieCheckApplicationPlugin(),
+            new CurrentCodeBucketApplicationPlugin(),
         ];
 
         if (class_exists(WebProfilerApplicationPlugin::class)) {

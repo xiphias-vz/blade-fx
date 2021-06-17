@@ -5,6 +5,7 @@
     matomoUrl: app['matomo.url'],
     matomoIdSite: app['matomo.idsite'],
     currentCookieStore: app.currentStoreCookie,
+    currentCodeBucket: app.currentCodeBucket,
 } %}
 
 {%- block class -%}page-layout-main js-page-layout-main js-page-layout-main--side-drawer-container js-page-layout-main--block-scroll{%- endblock -%}
@@ -13,10 +14,15 @@
         {% embed molecule('popup-ui-store-switcher') with {
         } only %}
         {% endembed %}
+
+    {% if data.currentCodeBucket=='CZ' %}
+        {% embed molecule('popup-ui-login-form') with {
+        } only %}
+        {% endembed %}
+    {% endif %}
+
         <input id="current_store_cookie" class="display-none" type="text" value="{{ data.currentCookieStore }}" />
     <div class="page-layout-main__container">
-        {% block test %}
-        {% endblock %}
         {% block sidebar %}
             {% include organism('side-drawer') with {
                 modifiers: ['right'],

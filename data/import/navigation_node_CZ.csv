@@ -1,0 +1,17 @@
+navigation_key,node_key,parent_node_key,node_type,title.cs_CZ,url.cs_CZ,css_class.cs_CZ,title.de_DE,url.de_DE,css_class.de_DE,valid_from,valid_to,position
+NAVIGATION_FOOTER_ELEMENT,node_key_162,,cms_page,About us,/cs/ueberuns/,category-4,Über uns,/ueberuns,category-4,,,4
+FOOTER_NAVIGATION_CATEGORIES,node_key_165,,external_url,Garden & Outdoor,/cs/garden-&-outdoor,category-7,Fragen und Antworten,https://globus.zendesk.com/hc/de,category-7,,,2
+FOOTER_NAVIGATION_CATEGORIES,node_key_166,,cms_page,Abholservice,/cs/abholservice,category-8,Abholservice,/abholservice,category-8,,,3
+FOOTER_NAVIGATION_CATEGORIES,node_key_167,,cms_page,Directions,/cs/anfart,category-9,Anfart,/anfart,category-9,,,4
+FOOTER_NAVIGATION,node_key_34,,cms_page,GTC,/cs/Allgemeine-Geschaeftsbedingungen/,,Allgemeine Geschäftsbedingungen,/Allgemeine-Geschaeftsbedingungen/,,,,2
+FOOTER_NAVIGATION,node_key_35,,cms_page,Data privacy,/cs/privacy,,Datenschutz,/de/datenschutz/,,,,3
+FOOTER_NAVIGATION,node_key_50,,cms_page,Imprint,/cs/imprint,,Impressum,/de/impressum/,,,,4
+POPULAR_CATEGORIES,node_key_168,,cms_page,Obst & Gemüse,/cs/obst-&-gemüse,category-11,Obst & Gemüse,/obst-&-gemüse,category-11,,,5
+POPULAR_CATEGORIES,node_key_169,,cms_page,Frische Produkte,/cs/frische-produkte,category-12,Frische Produkte,/frische-produkte,category-12,,,6
+POPULAR_CATEGORIES,node_key_170,,cms_page,Vorratsschrank,/cs/vorratsschrank,category-13,Vorratsschrank,/vorratsschrank,category-13,,,7
+POPULAR_CATEGORIES,node_key_171,,cms_page,Getränke,/cs/getränke,category-14,Getränke,/getränke,category-14,,,8
+POPULAR_CATEGORIES,node_key_172,,cms_page,Fisch & Fleisch,/cs/fisch-&-fleisch,category-15,Fisch & Fleisch,/fisch-&-fleisch,category-15,,,9
+POPULAR_CATEGORIES,node_key_173,,cms_page,Fertiggerichte & Tiefkühl,/cs/fertiggerichte-&-tiefkühl,category-16,Fertiggerichte & Tiefkühl,/fertiggerichte-&-tiefkühl,category-16,,,10
+POPULAR_CATEGORIES,node_key_174,,cms_page,Baby & Schwangerschaft,/cs/baby-&-schwangerschaft,category-17,Baby & Schwangerschaft,/baby-&-schwangerschaft,category-17,,,11
+POPULAR_CATEGORIES,node_key_175,,cms_page,Körperpflege & Kosmetik,/cs/körperpflege-&-kosmetik,category-18,Körperpflege & Kosmetik,/körperpflege-&-kosmetik,category-18,,,12
+POPULAR_CATEGORIES,node_key_176,,cms_page,Haushalt,/cs/haushalt,category-19,Haushalt,/haushalt,category-19,,,13
