@@ -638,10 +638,13 @@ class CashierOrderContentBuilder implements CashierOrderContentBuilderInterface
     {
         $numLength = strlen((string)$idSalesOrder);
         $numberOfZeroes = 9 - $numLength;
-
-        //$result = static::XML_TRANSACTION_NUMBER_PREFIX;
-        $result = str_repeat('0', $numberOfZeroes);
-        $result .= $idSalesOrder;
+        if ($numberOfZeroes > 0) {
+            //$result = static::XML_TRANSACTION_NUMBER_PREFIX;
+            $result = str_repeat('0', $numberOfZeroes);
+            $result .= $idSalesOrder;
+        } else {
+            $result = substr($idSalesOrder, 0, 9);
+        }
 
         return $result;
     }
@@ -656,8 +659,13 @@ class CashierOrderContentBuilder implements CashierOrderContentBuilderInterface
     {
         $header = $dom->createElement(static::XML_HEADER);
         try {
-            $myGlobusCard = ($orderTransfer->getCustomer() === null) ? (static::DEFAULT_EMPTY_XML_TAG) : ($orderTransfer->getCustomer()->getMyGlobusCard() ?? static::DEFAULT_EMPTY_XML_TAG);
-            $locale = ($orderTransfer->getCustomer() === null) ? (substr(static::DEFAULT_EMPTY_XML_LOCALE, -2)) : (substr(($orderTransfer->getCustomer()->getLocale()->getLocaleName() ?? static::DEFAULT_EMPTY_XML_LOCALE), -2));
+            if ($orderTransfer->getCustomer() === null) {
+                $myGlobusCard = static::DEFAULT_EMPTY_XML_TAG;
+                $locale = substr(static::DEFAULT_EMPTY_XML_LOCALE, -2);
+            } else {
+                $myGlobusCard = $orderTransfer->getCustomer()->getMyGlobusCard() ?? static::DEFAULT_EMPTY_XML_TAG;
+                $locale = $orderTransfer->getCustomer()->getLocale() === null ? substr(static::DEFAULT_EMPTY_XML_LOCALE, -2) : substr(($orderTransfer->getCustomer()->getLocale()->getLocaleName() ?? static::DEFAULT_EMPTY_XML_LOCALE), -2);
+            }
 
             $header->appendChild($dom->createElement(static::XML_ORIGIN, static::XML_ORIGIN_VALUE));
             $header->appendChild($dom->createElement(static::XML_CREATE_DATE, date("Y-m-d")));
@@ -686,6 +694,7 @@ class CashierOrderContentBuilder implements CashierOrderContentBuilderInterface
     public function prepareXmlItems(DOMDocument $dom, OrderTransfer $orderTransfer)
     {
         $ItemGroup = $dom->createElement(static::XML_ITEM_GROUP);
+        $productSku["sku"] = "SapNumber";
         try {
             $counter = 0;
             foreach ($orderTransfer->getItems() as $item) {
@@ -693,8 +702,9 @@ class CashierOrderContentBuilder implements CashierOrderContentBuilderInterface
                     continue;
                 }
                 $quantity = $item->getQuantity();
+                $product = $this->cashierOrderExportRepository->getProductBySku($item->getSku());
+                $productSku[$item->getSku()] = $product->getSapNumber();
                 for ($x = 0; $x < $quantity; $x++) {
-                    $product = $this->cashierOrderExportRepository->getProductBySku($item->getSku());
                     $counter++;
 
                     $XmlItem = $ItemGroup->appendChild($dom->createElement(static::XML_ITEM));
@@ -723,14 +733,13 @@ class CashierOrderContentBuilder implements CashierOrderContentBuilderInterface
                 $quantityDeposit = $itemTransfer->getQuantity();
                 for ($i = 0; $i < $quantityDeposit; $i++) {
                     foreach ($itemTransfer->getProductOptions() as $productOption) {
-                        $productDeposit = $this->cashierOrderExportRepository->getProductBySku($itemTransfer->getSku());
                         $counter++;
 
                         $XmlItem = $ItemGroup->appendChild($dom->createElement(static::XML_ITEM));
                         $XmlItem->appendChild($dom->createElement(static::XML_ORIGIN, static::XML_ORIGIN_VALUE));
                         $XmlItem->appendChild($dom->createElement(static::XML_POSITION_NUMBER, $counter));
                         $XmlItem->appendChild($dom->createElement(static::XML_BARCODE, $this->extractPluFromProductDepositSku($productOption->getSku()) ?? static::DEFAULT_EMPTY_XML_NUMBER));
-                        $XmlItem->appendChild($dom->createElement(static::XML_ITEM_NUMBER, $productDeposit->getSapNumber()));
+                        $XmlItem->appendChild($dom->createElement(static::XML_ITEM_NUMBER, $productSku[$itemTransfer->getSku()]));
                         $XmlItem->appendChild($dom->createElement(static::XML_DEPARTMENT_NUMBER, $itemTransfer->getSapWgr()));
                         $XmlItem->appendChild($dom->createElement(static::XML_DESCRIPTION, static::XML_DEPOSIT_DESCRIPTION));
                         $XmlItem->appendChild($dom->createElement(static::XML_NETTO_PRICE, $productOption->getUnitGrossPrice()));

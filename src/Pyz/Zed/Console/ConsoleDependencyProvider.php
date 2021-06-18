@@ -9,6 +9,7 @@ namespace Pyz\Zed\Console;
 
 use Pyz\Zed\Acl\Communication\Console\AclInstallConsole;
 use Pyz\Zed\Cache\Communication\Console\DirectoryCacheCleanerConsole;
+use Pyz\Zed\CashierOrderExport\Communication\Console\CashierOrderExportConsole;
 use Pyz\Zed\CategoryDataImport\CategoryDataImportConfig;
 use Pyz\Zed\CmsPageDataImport\CmsPageDataImportConfig;
 use Pyz\Zed\Console\Communication\Plugin\ConsoleLogPlugin;
@@ -342,6 +343,7 @@ class ConsoleDependencyProvider extends SprykerConsoleDependencyProvider
             new ProductfeedDeeplinksConsole(),
             new GsoaTokenConsole(),
             new GsoaProductConsole(),
+            new CashierOrderExportConsole(),
         ];
 
         $propelCommands = $container->getLocator()->propel()->facade()->getConsoleCommands();
