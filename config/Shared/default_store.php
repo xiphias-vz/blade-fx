@@ -7,4 +7,3 @@ if($storeCodeBucket == 'CZ'){
 }else{
     return 'EIN';
 }
-

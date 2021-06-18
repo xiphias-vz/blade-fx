@@ -165,18 +165,14 @@ class GsoaProductConsole extends Console
                     file_put_contents("//data/data/import/spryker/1.globusCZ_categories.csv", "categoryIdStibo|parentIdCategoryStibo|name|metatitle|metadescription" . PHP_EOL);
                     foreach ($result["productCategoriesEshop"] as $item) {
                         if (!str_starts_with($item["categoryId"], 'cls_czc_')) {
-                            if ($item["categoryId"] == 'cls_czr_click_and_collect') {
-                                $cat["categoryIdStibo"] = $item["categoryId"];
-                                $cat["parentIdCategoryStibo"] = "cls_czr_click_and_collect";
-                                $cat["name"] = "CZ - Kunden Produkt Hierarchie";
-                            } else {
+                            if ($item["categoryId"] != 'cls_czr_click_and_collect') {
                                 $cat["categoryIdStibo"] = $item["categoryId"];
                                 $cat["parentIdCategoryStibo"] = $item["parentId"];
                                 $cat["name"] = $item["categoryName"];
+                                $cat["metatitle"] = "";
+                                $cat["metadescription"] = "";
+                                file_put_contents("//data/data/import/spryker/1.globusCZ_categories.csv", implode('|', $cat) . PHP_EOL, FILE_APPEND);
                             }
-                            $cat["metatitle"] = "";
-                            $cat["metadescription"] = "";
-                            file_put_contents("//data/data/import/spryker/1.globusCZ_categories.csv", implode('|', $cat) . PHP_EOL, FILE_APPEND);
                         }
                     }
                     break;
