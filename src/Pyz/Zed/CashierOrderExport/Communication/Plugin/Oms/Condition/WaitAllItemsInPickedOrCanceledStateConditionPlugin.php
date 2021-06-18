@@ -8,6 +8,7 @@
 namespace Pyz\Zed\CashierOrderExport\Communication\Plugin\Oms\Condition;
 
 use Orm\Zed\Sales\Persistence\SpySalesOrderItem;
+use Pyz\Zed\Oms\Communication\Console\CheckConditionConsole;
 use Spryker\Zed\Oms\Communication\Plugin\Oms\Condition\AbstractCondition;
 
 /**
@@ -26,7 +27,20 @@ class WaitAllItemsInPickedOrCanceledStateConditionPlugin extends AbstractConditi
      */
     public function check(SpySalesOrderItem $orderItem)
     {
-        $orderTransfer = $this->getFactory()->getSalesFacade()->getOrderByIdSalesOrderWithoutExpand($orderItem->getFkSalesOrder());
+        $orderTransfer = null;
+        if (CheckConditionConsole::$ordersTransfers !== null) {
+            foreach (CheckConditionConsole::$ordersTransfers as $transfer) {
+                if ($transfer->getIdSalesOrder() === $orderItem->getFkSalesOrder()) {
+                    $orderTransfer = $transfer;
+                }
+            }
+        }
+        if ($orderTransfer == null) {
+            $orderTransfer = $this->getFactory()->getSalesFacade()->getOrderByIdSalesOrderWithoutExpand($orderItem->getFkSalesOrder());
+            if (CheckConditionConsole::$ordersTransfers !== null) {
+                CheckConditionConsole::$ordersTransfers[] = $orderTransfer;
+            }
+        }
 
         return $this->getFacade()->checkIsAllItemsReadyForExport($orderTransfer);
     }

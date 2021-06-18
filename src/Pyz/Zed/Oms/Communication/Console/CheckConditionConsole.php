@@ -23,6 +23,10 @@ class CheckConditionConsole extends SprykerCheckConditionConsole
 {
     public const PROCESS_ID = 'process-id';
     public const PROCESS_ID_SHORTCUT = 'P';
+    /**
+     * @var array|null
+     */
+    public static $ordersTransfers = null;
 
     /**
      * @return void
@@ -47,8 +51,9 @@ class CheckConditionConsole extends SprykerCheckConditionConsole
         if ($input->getOption(static::PROCESS_ID)) {
             $processId = (int)$input->getOption(static::PROCESS_ID);
         }
-
+        static::$ordersTransfers = [];
         $this->getFacade()->checkConditions([], $processId);
+        static::$ordersTransfers = null;
         Propel::enableInstancePooling();
 
         return (int)null;
