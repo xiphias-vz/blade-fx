@@ -4,13 +4,17 @@
  * This is the global runtime configuration for Yves and Generated_Yves_Zed in a staging environment.
  */
 
+
 use Pyz\Shared\TwigCache\TwigCacheConstants;
 use Spryker\Shared\Application\ApplicationConstants;
 use Spryker\Shared\Collector\CollectorConstants;
 use Spryker\Shared\Kernel\KernelConstants;
 use Spryker\Shared\Log\LogConstants;
 use Spryker\Shared\Propel\PropelConstants;
+use Spryker\Shared\PropelOrm\PropelOrmConstants;
+use Spryker\Shared\PropelQueryBuilder\PropelQueryBuilderConstants;
 use Spryker\Shared\Search\SearchConstants;
+use Spryker\Zed\Propel\PropelConfig;
 use SprykerShop\Shared\ShopApplication\ShopApplicationConstants;
 
 // ---------- TwigCache
@@ -42,7 +46,6 @@ $config[LogConstants::EXCEPTION_LOG_FILE_PATH_GLUE] = 'php://stderr';
 /* Database */
 $config[PropelConstants::USE_SUDO_TO_MANAGE_DATABASE] = false;
 $config[PropelConstants::PROPEL_DEBUG] = false;
-
 $config[PropelOrmConstants::PROPEL_SHOW_EXTENDED_EXCEPTION] = (bool)getenv('SPRYKER_DEBUG_ENABLED');
 $config[PropelConstants::ZED_DB_USERNAME] = getenv('SPRYKER_DB_USERNAME');
 $config[PropelConstants::ZED_DB_PASSWORD] = getenv('SPRYKER_DB_PASSWORD');
