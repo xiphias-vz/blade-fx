@@ -69,13 +69,7 @@ image:
     tag: spryker/php:7.4-alpine3.12
     environment:
         SPRYKER_CODE_BUCKET: CZ
-        APPLICATION_STORE: OPA
-        SPRYKER_SEARCH_NAMESPACE: opa_search
-        SPRYKER_KEY_VALUE_STORE_NAMESPACE: 1
-        SPRYKER_BROKER_NAMESPACE: opa_queue
-        SPRYKER_SESSION_BE_NAMESPACE: 2
-        SPRYKER_FE_HOST: shop-t.iglobus.cz
-        SPRYKER_BE_HOST: zed.opa.shop-t.iglobus.cz
+        SPRYKER_HOOK_INSTALL: "vendor/bin/install -r production_CZ --no-ansi -vvv"
     php:
         enabled-extensions:
             - newrelic
