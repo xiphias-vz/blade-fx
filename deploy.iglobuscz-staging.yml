@@ -70,6 +70,7 @@ image:
     environment:
         SPRYKER_CODE_BUCKET: CZ
         SPRYKER_HOOK_INSTALL: "vendor/bin/install -r production_CZ --no-ansi -vvv"
+        SPRYKER_HOOK_DESTRUCTIVE_INSTALL: "vendor/bin/install -r destructive_CZ --no-ansi -vvv"
     php:
         enabled-extensions:
             - newrelic
