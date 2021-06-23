@@ -9,6 +9,7 @@ use Spryker\Shared\Application\ApplicationConstants;
 use Spryker\Shared\Collector\CollectorConstants;
 use Spryker\Shared\Kernel\KernelConstants;
 use Spryker\Shared\Log\LogConstants;
+use Spryker\Shared\Propel\PropelConstants;
 use Spryker\Shared\Search\SearchConstants;
 use SprykerShop\Shared\ShopApplication\ShopApplicationConstants;
 
