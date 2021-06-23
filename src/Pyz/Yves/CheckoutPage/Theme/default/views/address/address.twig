@@ -76,18 +76,6 @@
                                 <br>
                             </div>
 
-                            {{ form_row(embed.forms.shipping.phone, { value: customerData.phone }) }}
-                            <br>
-                            {{ form_row(embed.forms.shipping.cell_phone, { value : customerData.mobilePhoneNumber }) }}
-                            {{ form_row(embed.forms.shipping.salutation, { value: customerData.salutation, rowAttr: { class: 'is-hidden' } }) }}
-                            {{ form_row(embed.forms.shipping.first_name, { value: customerData.firstName, rowAttr: { class: 'is-hidden' } }) }}
-                            {{ form_row(embed.forms.shipping.last_name, { value: customerData.lastName, rowAttr: { class: 'is-hidden' } }) }}
-                            {{ form_row(embed.forms.shipping.address1, { value: customerData.address1, rowAttr: { class: 'is-hidden' } }) }}
-                            {{ form_row(embed.forms.shipping.address2, { value: customerData.address2, rowAttr: { class: 'is-hidden' } }) }}
-                            {{ form_row(embed.forms.shipping.floor, { value: customerData.floor, rowAttr: { class: 'is-hidden' } }) }}
-                            {{ form_row(embed.forms.shipping.additional_info, { value: customerData.additionalInfo, rowAttr: { class: 'is-hidden' } }) }}
-                            {{ form_row(embed.forms.shipping.zip_code, { value: (customerData.zipCode is not null ? customerData.zipCode : '____'), rowAttr: { class: 'is-hidden' } }) }}
-                            {{ form_row(embed.forms.shipping.city, { value: (customerData.city is not null ? customerData.city : '____'), rowAttr: { class: 'is-hidden' } }) }}
 
                             {% include molecule('form') with {
                                 modifiers: ['checkout-form', 'checkout-form-elements'],
@@ -212,16 +200,6 @@
                         } only %}
                             {% block fields %}
                                 {% set hasBillingAddresses = data.form.id_customer_address is defined %}
-
-                                {% if hasBillingAddresses %}
-                                    {{ form_row(data.form.id_customer_address, {
-                                        label: 'page.checkout.address.billing.address_select' | trans,
-                                        rowAttr: {
-                                            class: config.name ~ '__expand',
-                                        },
-                                    }) }}
-                                {% endif %}
-
                                <div class="{{ config.name }}__checkout-sub-form">
                                    <div class="{{ embed.jsAddressClass }}__billing {{ hasBillingAddresses ? 'is-hidden' }}">
                                        {{ parent() }}
@@ -241,12 +219,34 @@
 
             <script>
                 document.addEventListener("DOMContentLoaded", function(event) {
+
                     const phoneDivElement = document.getElementById("addressesForm_shippingAddress_phone").parentElement;
                     const idCustomer = document.getElementById("idCustomer").value;
                     if (idCustomer === "") {
                         const phoneRequiredFieldsGuest = document.getElementById('phoneRequiredFieldsGuest');
                         phoneDivElement.parentNode.insertBefore(phoneRequiredFieldsGuest, phoneDivElement)
                     }
+                    else {
+                        document.getElementById("{{ embed.forms.shipping.phone.vars.id }}").value = "{{ data.form.vars.value.customer.phone }}";
+                        document.getElementById("{{ embed.forms.shipping.cell_phone.vars.id }}").value = "{{ data.form.vars.value.customer.mobilePhoneNumber }}";
+                        document.getElementById("{{ embed.forms.shipping.salutation.vars.id }}").value = "{{ data.form.vars.value.customer.salutation }}";
+                        document.getElementById("{{ embed.forms.shipping.first_name.vars.id }}").value = "{{ data.form.vars.value.customer.firstName }}";
+                        document.getElementById("{{ embed.forms.shipping.last_name.vars.id }}").value = "{{ data.form.vars.value.customer.lastName }}";
+                        document.getElementById("{{ embed.forms.shipping.address1.vars.id }}").value = "{{ data.form.vars.value.customer.address1 }}";
+                        document.getElementById("{{ embed.forms.shipping.address2.vars.id }}").value = "{{ data.form.vars.value.customer.address2 }}";
+                        document.getElementById("{{ embed.forms.shipping.floor.vars.id }}").value = "{{ data.form.vars.value.customer.floor }}";
+                        document.getElementById("{{ embed.forms.shipping.additional_info.vars.id }}").value = "{{ data.form.vars.value.customer.additionalInfo }}";
+                        document.getElementById("{{ embed.forms.shipping.zip_code.vars.id }}").value = "{{ (data.form.vars.value.customer.zipCode is not null ? data.form.vars.value.customer.zipCode : '____') }}";
+                        document.getElementById("{{ embed.forms.shipping.city.vars.id }}").value = "{{ (data.form.vars.value.customer.city is not null ? data.form.vars.value.customer.city : '____') }}";
+
+                        var hasBillingAddress = "{{ embed.forms.billing.id_customer_address is defined }}";
+
+                        if(hasBillingAddress === "1"){
+                            document.querySelector('label[for="{{ embed.forms.billing.id_customer_address.vars.id }}"]').value = "{{ 'page.checkout.address.billing.address_select' | trans }}";
+                            document.querySelector('label[for="{{ embed.forms.billing.id_customer_address.vars.id }}"]').classList.add("{{ config.name ~ '__expand' }}");
+                        }
+                    }
+
                 });
 
                 const submitButton = document.getElementById("js-address__buttonSubmit");
