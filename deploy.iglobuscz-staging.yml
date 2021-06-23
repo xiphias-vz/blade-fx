@@ -64,7 +64,7 @@ x-frontend-auth: &frontend-auth
             - '62.159.118.222/32'
 namespace: spryker-cloud
 tag: '1.0'
-environment: staging
+environment: docker_prod_CZ
 image:
     tag: spryker/php:7.4-alpine3.12
     environment:
