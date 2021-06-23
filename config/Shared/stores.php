@@ -52,14 +52,23 @@ if($storeCodeBucket == 'CZ'){
         'storesWithSharedPersistence' => $activeStores,
     ];
 }else{
-    $availableStores = [
-        'EIN' => true,
-        'KMD' => true,
-        'LPZ' => true,
-        'HAD' => true,
-        'ISS' => true,
-        'RUE' => true,
-    ];
+   $availableStores = [
+      'EIN' => true,
+      'KMD' => true,
+      'LPZ' => true,
+      'HAD' => true,
+      'ISS' => true,
+      'RUE' => true,
+      'WIE' => true,
+      'WND' => true,
+      'KRE' => true,
+      'GEN' => true,
+      'ESS' => true,
+      'GUE' => true,
+      'BSG' => true,
+      'ESB' => true,
+      'WLZ' => true,
+  ];
 
     $activeStores = array_combine(
         array_keys($availableStores),

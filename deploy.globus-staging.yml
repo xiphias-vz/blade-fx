@@ -154,6 +154,97 @@ regions:
                         namespace: rue_search
                     session:
                         namespace: 12
+            WIE:
+                services:
+                    broker:
+                        namespace: wie_queue
+                    key_value_store:
+                        namespace: 13
+                    search:
+                        namespace: wie_search
+                    session:
+                        namespace: 14
+            WND:
+                services:
+                    broker:
+                        namespace: wnd_queue
+                    key_value_store:
+                        namespace: 15
+                    search:
+                        namespace: wnd_search
+                    session:
+                        namespace: 16
+
+            KRE:
+                services:
+                    broker:
+                        namespace: kre_queue
+                    key_value_store:
+                        namespace: 17
+                    search:
+                        namespace: kre_search
+                    session:
+                        namespace: 18
+            GEN:
+                services:
+                    broker:
+                        namespace: gen_queue
+                    key_value_store:
+                        namespace: 19
+                    search:
+                        namespace: gen_search
+                    session:
+                        namespace: 20
+            ESS:
+                services:
+                    broker:
+                        namespace: ess_queue
+                    key_value_store:
+                        namespace: 21
+                    search:
+                        namespace: ess_search
+                    session:
+                        namespace: 22
+            GUE:
+                services:
+                    broker:
+                        namespace: gue_queue
+                    key_value_store:
+                        namespace: 23
+                    search:
+                        namespace: gue_search
+                    session:
+                        namespace: 24
+            BSG:
+                services:
+                    broker:
+                        namespace: bsg_queue
+                    key_value_store:
+                        namespace: 25
+                    search:
+                        namespace: bsg_search
+                    session:
+                        namespace: 26
+            ESB:
+                services:
+                    broker:
+                        namespace: esb_queue
+                    key_value_store:
+                        namespace: 27
+                    search:
+                        namespace: esb_search
+                    session:
+                        namespace: 28
+            WLZ:
+                services:
+                    broker:
+                        namespace: wlz_queue
+                    key_value_store:
+                        namespace: 29
+                    search:
+                        namespace: wlz_search
+                    session:
+                        namespace: 30
 groups:
     DE-1:
         region: DE
@@ -203,6 +294,42 @@ groups:
                         primal: true
                     zed.rue.shop-t.globus.de:
                         store: RUE
+                        <<: *frontend-auth
+                        primal: true
+                    zed.wie.shop-t.globus.de:
+                        store: WIE
+                        <<: *frontend-auth
+                        primal: true
+                    zed.wnd.shop-t.globus.de:
+                        store: WND
+                        <<: *frontend-auth
+                        primal: true
+                    zed.kre.shop-t.globus.de:
+                        store: KRE
+                        <<: *frontend-auth
+                        primal: true
+                    zed.gen.shop-t.globus.de:
+                        store: GEN
+                        <<: *frontend-auth
+                        primal: true
+                    zed.ess.shop-t.globus.de:
+                        store: ESS
+                        <<: *frontend-auth
+                        primal: true
+                    zed.gue.shop-t.globus.de:
+                        store: GUE
+                        <<: *frontend-auth
+                        primal: true
+                    zed.bsg.shop-t.globus.de:
+                        store: BSG
+                        <<: *frontend-auth
+                        primal: true
+                    zed.esb.shop-t.globus.de:
+                        store: ESB
+                        <<: *frontend-auth
+                        primal: true
+                    zed.wlz.shop-t.globus.de:
+                        store: WLZ
                         <<: *frontend-auth
                         primal: true
                     pick.shop-t.globus.de:

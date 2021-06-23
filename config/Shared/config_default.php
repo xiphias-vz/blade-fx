@@ -834,6 +834,15 @@ $config[StoreConstants::SAP_STORE_ID_TO_STORE_MAP] = [
     1057 => 'HAD',
     1021 => 'ISS',
     1053 => 'RUE',
+    1013 => 'WIE',
+    1001 => 'WND',
+    1071 => 'KRE',
+    1003 => 'GEN',
+    1073 => 'ESS',
+    1006 => 'GUE',
+    1072 => 'BSG',
+    1054 => 'ESB',
+    1032 => 'WLZ',
 ];
 
 // ----------- Stores
@@ -844,6 +853,15 @@ $config[StoreConstants::STORE_NAMES] = [
     'HAD' => 'Halle',
     'ISS' => 'Jena-Isserstedt',
     'RUE' => 'Rüsselsheim',
+    'WIE' => 'Waghäusel-Wiesental',
+    'WND' => 'Wendel',
+    'KRE' => 'Krefeld',
+    'GEN' => 'Gensingen',
+    'ESS' => 'Essen',
+    'GUE' => 'Saarbrücken-Güdingen',
+    'BSG' => 'Braunschweig',
+    'ESB' => 'Eschborn',
+    'WLZ' => 'Weischlitz',
 ];
 
 // ----------- Google Tag Manager

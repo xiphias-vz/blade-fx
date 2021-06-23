@@ -178,7 +178,6 @@ $header-sticky-height: rem(69, number);
         &__merchant {
             display: block;
             overflow: hidden;
-            white-space: nowrap;
             text-overflow: ellipsis;
             color: $setting-color-gray-13;
             padding: 0 rem(30);

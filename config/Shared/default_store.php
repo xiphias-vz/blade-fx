@@ -1,9 +1,9 @@
 <?php
 
-$storeCodeBucket =  getenv('SPRYKER_CODE_BUCKET');
+$storeCodeBucket = getenv('SPRYKER_CODE_BUCKET');
 
-if($storeCodeBucket == 'CZ'){
+if ($storeCodeBucket == 'CZ') {
     return 'OPA';
-}else{
+} else {
     return 'EIN';
 }

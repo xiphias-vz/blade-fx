@@ -133,6 +133,96 @@ regions:
                         namespace: rue_search
                     session:
                         namespace: 12
+            WIE:
+                services:
+                    broker:
+                        namespace: wie_queue
+                    key_value_store:
+                        namespace: 13
+                    search:
+                        namespace: wie_search
+                    session:
+                        namespace: 14
+            WND:
+                services:
+                    broker:
+                        namespace: wnd_queue
+                    key_value_store:
+                        namespace: 15
+                    search:
+                        namespace: wnd_search
+                    session:
+                        namespace: 16
+            KRE:
+                services:
+                    broker:
+                        namespace: kre_queue
+                    key_value_store:
+                        namespace: 17
+                    search:
+                        namespace: kre_search
+                    session:
+                        namespace: 18
+            GEN:
+                services:
+                    broker:
+                        namespace: gen_queue
+                    key_value_store:
+                        namespace: 19
+                    search:
+                        namespace: gen_search
+                    session:
+                        namespace: 20
+            ESS:
+                services:
+                    broker:
+                        namespace: ess_queue
+                    key_value_store:
+                        namespace: 21
+                    search:
+                        namespace: ess_search
+                    session:
+                        namespace: 22
+            GUE:
+                services:
+                    broker:
+                        namespace: gue_queue
+                    key_value_store:
+                        namespace: 23
+                    search:
+                        namespace: gue_search
+                    session:
+                        namespace: 24
+            BSG:
+                services:
+                    broker:
+                        namespace: bsg_queue
+                    key_value_store:
+                        namespace: 25
+                    search:
+                        namespace: bsg_search
+                    session:
+                        namespace: 26
+            ESB:
+                services:
+                    broker:
+                        namespace: esb_queue
+                    key_value_store:
+                        namespace: 27
+                    search:
+                        namespace: esb_search
+                    session:
+                        namespace: 28
+            WLZ:
+                services:
+                    broker:
+                        namespace: wlz_queue
+                    key_value_store:
+                        namespace: 29
+                    search:
+                        namespace: wlz_search
+                    session:
+                        namespace: 30
 
 groups:
     DE-1:
@@ -173,6 +263,33 @@ groups:
                     zed.rue.shop.globus.local:
                         store: RUE
                         primal: true
+                    zed.wie.shop.globus.local:
+                        store: WIE
+                        primal: true
+                    zed.wnd.shop.globus.local:
+                        store: WND
+                        primal: true
+                    zed.kre.shop.globus.local:
+                        store: KRE
+                        primal: true
+                    zed.gen.shop.globus.local:
+                        store: GEN
+                        primal: true
+                    zed.ess.shop.globus.local:
+                        store: ESS
+                        primal: true
+                    zed.gue.shop.globus.local:
+                        store: GUE
+                        primal: true
+                    zed.bsg.shop.globus.local:
+                        store: BSG
+                        primal: true
+                    zed.esb.shop.globus.local:
+                        store: ESB
+                        primal: true
+                    zed.wlz.shop.globus.local:
+                        store: WLZ
+                        primal: true
 
                     filial-app.ein.shop.globus.local:
                         store: EIN
@@ -191,6 +308,33 @@ groups:
                         entry-point: StoreApp
                     filial-app.rue.shop.globus.local:
                         store: RUE
+                        entry-point: StoreApp
+                    filial-app.wie.shop.globus.local:
+                        store: WIE
+                        entry-point: StoreApp
+                    filial-app.wnd.shop.globus.local:
+                        store: WND
+                        entry-point: StoreApp
+                    filial-app.kre.shop.globus.local:
+                        store: KRE
+                        entry-point: StoreApp
+                    filial-app.gen.shop.globus.local:
+                        store: GEN
+                        entry-point: StoreApp
+                    filial-app.ess.shop.globus.local:
+                        store: ESS
+                        entry-point: StoreApp
+                    filial-app.gue.shop.globus.local:
+                        store: GUE
+                        entry-point: StoreApp
+                    filial-app.bsg.shop.globus.local:
+                        store: BSG
+                        entry-point: StoreApp
+                    filial-app.esb.shop.globus.local:
+                        store: ESB
+                        entry-point: StoreApp
+                    filial-app.wlz.shop.globus.local:
+                        store: WLZ
                         entry-point: StoreApp
 
 services:

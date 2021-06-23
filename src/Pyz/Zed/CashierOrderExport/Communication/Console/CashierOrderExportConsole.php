@@ -48,9 +48,8 @@ class CashierOrderExportConsole extends Console
             ->getSalesFacade()
             ->getOrderByIdSalesOrder($orderId);
         if ($orderTransfer->getIsCashierExportSuccess()) {
-            $this->info('Nothing to do, order cashier file already generated', true);;
-        }
-        else {
+            $this->info('Nothing to do, order cashier file already generated', true);
+        } else {
             $emptiedDirectories = $this->getFacade()->exportOrders($orderTransfer);
             $this->info('Order exported', true);
         }
