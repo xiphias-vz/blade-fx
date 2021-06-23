@@ -242,6 +242,9 @@ export default class ProductItemMultiplePicking extends Component {
     }
 
     protected onSubmitClick(event: MouseEvent) {
+        if(!this.validateWeightInput()) {
+            return;
+        }
         document.querySelector("#btnSubmitPick").classList.add("button--disabled");
         let pickingPosition = this.pickingItemPosition;
         let quantity = this.$quantityOutput.text();
@@ -792,7 +795,11 @@ export default class ProductItemMultiplePicking extends Component {
     }
 
     protected pressSubmit(): void{
-        this.btnSubmitPick.click();
+        if(!this.validateWeightInput()) {
+            return;
+        } else {
+            this.btnSubmitPick.click();
+        }
     }
 
     protected acceptClickHandler(): void {
