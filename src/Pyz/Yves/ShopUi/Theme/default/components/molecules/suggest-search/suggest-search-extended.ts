@@ -1,4 +1,5 @@
 import SuggestSearch from 'ShopUi/components/molecules/suggest-search/suggest-search';
+import debounce from 'lodash-es/debounce';
 
 export default class SuggestSearchExtended extends SuggestSearch {
     wrap: HTMLElement;
@@ -23,6 +24,7 @@ export default class SuggestSearchExtended extends SuggestSearch {
         this.triggers.forEach((trigger: HTMLElement) => {
             trigger.addEventListener('click', (event: Event) => this.onTriggerClick(event));
         });
+        this.searchInput.addEventListener('blur', debounce((event) => this.onInputFocusOutWithEvent(event), this.debounceDelay));
     }
 
     protected async onInputKeyUp(): Promise<void> {
@@ -65,11 +67,17 @@ export default class SuggestSearchExtended extends SuggestSearch {
         this.hintInput.classList.remove(`${this.name}__hint--active`);
     }
 
-    protected onInputFocusOut(): void {
-        if (this.searchCartButton.value === 'y'){
-        } else{
+    protected onInputFocusOutWithEvent(event: any): void {
+        let parentEl = document.getElementsByClassName("search-form")[0];
+        if (!parentEl.contains(event.relatedTarget)) {
             this.hideSugestions();
         }
+        else {
+            this.searchInput.focus();
+        }
+    }
+
+    protected onInputFocusOut(): void {
     }
 
     protected clearSearchField(): void {
