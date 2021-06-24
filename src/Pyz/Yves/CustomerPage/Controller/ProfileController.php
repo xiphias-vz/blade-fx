@@ -8,6 +8,7 @@
 namespace Pyz\Yves\CustomerPage\Controller;
 
 use Generated\Shared\Transfer\AddressTransfer;
+use Generated\Shared\Transfer\CountryTransfer;
 use Generated\Shared\Transfer\CustomerTransfer;
 use Pyz\Yves\CustomerPage\Plugin\Application\CustomerTransferCustom;
 use SprykerShop\Yves\CustomerPage\Controller\ProfileController as SprykerShopProfileController;
@@ -46,48 +47,53 @@ class ProfileController extends SprykerShopProfileController
             ->getCustomerClient()
             ->updateCustomer($customerTransfer);
 
-        $customerTransfer = $this
-            ->getFactory()
-            ->getCustomerClient()
-            ->getCustomerByEmail($customerTransfer);
+        if ($customerResponseTransfer->getIsSuccess()) {
+             $customerTransfer = $this
+                 ->getFactory()
+                 ->getCustomerClient()
+                 ->getCustomerByEmail($customerTransfer);
 
-        $isNewAddress = $customerTransfer->getDefaultBillingAddress() == null;
+             $isNewAddress = $customerTransfer->getDefaultBillingAddress() == null;
+             $countryIso2Code = $customerTransfer->getCountry();
+            if (empty($countryIso2Code)) {
+                $countryIso2Code = 'DE';
+            }
 
-        $addressTransfer = new AddressTransfer();
-        $addressTransfer
-            ->setCustomerId($customerTransfer->getIdCustomer())
-            ->setAddress1($customerTransfer->getAddress1())
-            ->setAddress2($customerTransfer->getAddress2())
-            ->setCity($customerTransfer->getCity())
-            ->setZipCode($customerTransfer->getZipCode())
-            ->setPhone($customerTransfer->getPhone())
-            ->setCellPhone($customerTransfer->getMobilePhoneNumber())
-            ->setFirstName($customerTransfer->getFirstName())
-            ->setLastName($customerTransfer->getLastName())
-            ->setEmail($customerTransfer->getEmail());
+             $addressTransfer = new AddressTransfer();
+             $addressTransfer
+                 ->setCustomerId($customerTransfer->getIdCustomer())
+                 ->setAddress1($customerTransfer->getAddress1())
+                 ->setAddress2($customerTransfer->getAddress2())
+                 ->setCity($customerTransfer->getCity())
+                 ->setZipCode($customerTransfer->getZipCode())
+                 ->setPhone($customerTransfer->getPhone())
+                 ->setCellPhone($customerTransfer->getMobilePhoneNumber())
+                 ->setFirstName($customerTransfer->getFirstName())
+                 ->setLastName($customerTransfer->getLastName())
+                 ->setEmail($customerTransfer->getEmail())
+                 ->setCountry((new CountryTransfer())->setIso2Code($countryIso2Code));
 
-        if (!empty($customerTransfer->getCity()) &&
-            !empty($customerTransfer->getZipCode())) {
-            if (!$isNewAddress) {
-                $addressTransfer->setIdCustomerAddress($customerTransfer->getDefaultBillingAddress());
+            if (!empty($customerTransfer->getCity()) &&
+                 !empty($customerTransfer->getZipCode())) {
+                if (!$isNewAddress) {
+                    $addressTransfer->setIdCustomerAddress($customerTransfer->getDefaultBillingAddress());
 
+                    $this
+                        ->getFactory()
+                        ->getCustomerClient()
+                        ->updateAddressAndCustomerDefaultAddresses($addressTransfer);
+                }
+            }
+
+            if ($isNewAddress) {
                 $this
                     ->getFactory()
                     ->getCustomerClient()
-                    ->updateAddressAndCustomerDefaultAddresses($addressTransfer);
+                    ->createAddressAndUpdateCustomerDefaultAddresses($addressTransfer);
             }
-        }
 
-        if ($isNewAddress) {
-            $this
-                ->getFactory()
-                ->getCustomerClient()
-                ->createAddressAndUpdateCustomerDefaultAddresses($addressTransfer);
-        }
+             $this->updateLoggedInCustomerTransfer($customerResponseTransfer->getCustomerTransfer());
 
-        $this->updateLoggedInCustomerTransfer($customerResponseTransfer->getCustomerTransfer());
-
-        if ($customerResponseTransfer->getIsSuccess()) {
             if ($doCurrentProfileUpdate) {
                 $this->addSuccessMessage(self::MESSAGE_PROFILE_CHANGE_SUCCESS);
             }
