@@ -7,8 +7,8 @@
 
 namespace Pyz\Zed\CashierOrderExport\Business\Builder;
 
-use DOMDocument;
 use Generated\Shared\Transfer\OrderTransfer;
+use XMLWriter;
 
 interface CashierOrderContentBuilderInterface
 {
@@ -22,7 +22,7 @@ interface CashierOrderContentBuilderInterface
     /**
      * @param \Generated\Shared\Transfer\OrderTransfer $orderTransfer
      *
-     * @return \DOMDocument
+     * @return \XMLWriter
      */
-    public function prepareContentXml(OrderTransfer $orderTransfer): DOMDocument;
+    public function prepareContentXml(OrderTransfer $orderTransfer): XMLWriter;
 }

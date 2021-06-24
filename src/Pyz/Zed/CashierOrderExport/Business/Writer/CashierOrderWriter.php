@@ -11,7 +11,6 @@ use Aws\Command;
 use Aws\S3\ObjectUploader;
 use Aws\S3\S3Client;
 use DateTime;
-use DOMDocument;
 use Exception;
 use Generated\Shared\Transfer\OrderTransfer;
 use Pyz\Shared\S3Constants\S3Constants;
@@ -22,6 +21,7 @@ use Pyz\Zed\CashierOrderExport\Persistence\CashierOrderExportRepositoryInterface
 use Spryker\Shared\Config\Config;
 use Spryker\Shared\Log\LoggerTrait;
 use Symfony\Component\Config\Definition\Exception\Exception as SymfonyException;
+use XMLWriter;
 
 class CashierOrderWriter implements CashierOrderWriterInterface
 {
@@ -93,12 +93,12 @@ class CashierOrderWriter implements CashierOrderWriterInterface
 
     /**
      * @param string $content
-     * @param \DOMDocument $contentXml
+     * @param \XMLWriter $contentXml
      * @param \Generated\Shared\Transfer\OrderTransfer $orderTransfer
      *
      * @return \Generated\Shared\Transfer\OrderTransfer
      */
-    public function write(string $content, DOMDocument $contentXml, OrderTransfer $orderTransfer): OrderTransfer
+    public function write(string $content, XMLWriter $contentXml, OrderTransfer $orderTransfer): OrderTransfer
     {
         $orderTransfer->setIsCashierExportSuccess(false);
         $merchantReference = $orderTransfer->getMerchantReference();
@@ -129,7 +129,8 @@ class CashierOrderWriter implements CashierOrderWriterInterface
 
         try {
             $this->cashierOrderArchiveWriter->addContentToArchive($archiveFilePath, $fileName, $content);
-            $contentXml->save($archiveXmlFilePath);
+            file_put_contents($archiveXmlFilePath, $contentXml->outputMemory());
+            unset($contentXml);
         } catch (Exception $exceptionSaveFile) {
             $this->logError($exceptionSaveFile->getMessage(), $archiveFileName, $exceptionSaveFile->getTrace());
         }
