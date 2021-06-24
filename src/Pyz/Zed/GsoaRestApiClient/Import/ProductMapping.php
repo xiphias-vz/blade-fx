@@ -123,6 +123,11 @@ class ProductMapping
         ];
 
     /**
+     * @var int
+     */
+    private $productWithOutEan = 0;
+
+    /**
      * @param array $item
      *
      * @return string[]
@@ -294,5 +299,17 @@ class ProductMapping
                 }
             }
         }
+        if (empty($value["ordernumber"])) {
+            $value["ordernumber"] = $item["wamasNr"];
+            $this->productWithOutEan++;
+        }
+    }
+
+    /**
+     * @return int
+     */
+    public function getProductCountWithOutEan(): int
+    {
+        return $this->productWithOutEan;
     }
 }

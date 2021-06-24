@@ -158,6 +158,9 @@ class GsoaProductConsole extends Console
                     } catch (Exception $ex) {
                         $output->writeln("ERROR: " . $ex->getMessage());
                     }
+                    if ($map->getProductCountWithOutEan() > 0) {
+                        $output->writeln("Product count with no EAN code: " . $map->getProductCountWithOutEan());
+                    }
                     $output->writeln("imported: " . $counter . " rows");
                     break;
                 case "importCategories":
@@ -270,11 +273,15 @@ class GsoaProductConsole extends Console
             } elseif (empty($result)) {
                 $output->writeln('No data returned');
 
-                return 0;
-            } else {
+                return 1;
+            } elseif (count($result) > 0) {
                 $output->writeln("Data returned: " . count($result));
 
-                return count($result);
+                return 0;
+            } else {
+                $output->writeln('No data returned');
+
+                return 1;
             }
         } catch (Exception $ex) {
             $output->writeln($ex->getMessage());
