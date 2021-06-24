@@ -263,12 +263,11 @@ class GsoaProductConsole extends Console
                     }
                     break;
             }
-            if($counter > 0) {
+            if ($counter > 0) {
                 $output->writeln("Data rows returned: " . $counter);
 
                 return 0;
-            }
-            else if (empty($result)) {
+            } elseif (empty($result)) {
                 $output->writeln('No data returned');
 
                 return 0;
