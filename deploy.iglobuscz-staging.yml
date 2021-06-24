@@ -74,6 +74,8 @@ image:
     php:
         enabled-extensions:
             - newrelic
+        ini:
+            "memory_limit": 2048m
 composer:
     mode: --no-dev
     autoload: --classmap-authoritative

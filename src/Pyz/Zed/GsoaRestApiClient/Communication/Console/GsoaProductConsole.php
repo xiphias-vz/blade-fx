@@ -70,6 +70,7 @@ class GsoaProductConsole extends Console
         $filter = $this->getOptionValue($input, self::OPTION_FILTER, self::OPTION_FILTER_SHORT, '');
         $modifiedFrom = $this->getOptionValue($input, self::OPTION_MODIFIED_FROM, self::OPTION_MODIFIED_FROM_SHORT, '');
         $validFrom = $this->getOptionValue($input, self::OPTION_VALID_FROM, self::OPTION_VALID_FROM_SHORT, '');
+        $counter = 0;
 
         try {
             $client = new ProductCatalogProvider();
@@ -161,7 +162,7 @@ class GsoaProductConsole extends Console
                     break;
                 case "importCategories":
                     $result = $client->getProductCategories($page, 20000);
-                    $categories = [];
+                    $counter = 0;
                     file_put_contents("//data/data/import/spryker/1.globusCZ_categories.csv", "categoryIdStibo|parentIdCategoryStibo|name|metatitle|metadescription" . PHP_EOL);
                     foreach ($result["productCategoriesEshop"] as $item) {
                         if (!str_starts_with($item["categoryId"], 'cls_czc_')) {
@@ -172,6 +173,7 @@ class GsoaProductConsole extends Console
                                 $cat["metatitle"] = "";
                                 $cat["metadescription"] = "";
                                 file_put_contents("//data/data/import/spryker/1.globusCZ_categories.csv", implode('|', $cat) . PHP_EOL, FILE_APPEND);
+                                $counter++;
                             }
                         }
                     }
@@ -261,7 +263,12 @@ class GsoaProductConsole extends Console
                     }
                     break;
             }
-            if (empty($result)) {
+            if($counter > 0) {
+                $output->writeln("Data rows returned: " . $counter);
+
+                return 0;
+            }
+            else if (empty($result)) {
                 $output->writeln('No data returned');
 
                 return 0;
