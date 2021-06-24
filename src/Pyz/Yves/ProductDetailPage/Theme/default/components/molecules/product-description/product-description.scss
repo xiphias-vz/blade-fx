@@ -1,0 +1,32 @@
+@mixin product-description($name: '.product-description') {
+    #{$name} {
+        color: $setting-color-globus-darkGray;
+
+        &__info {
+            .description-holder {
+                margin-bottom: 10px;
+                .description {
+                    font-weight: bold;
+                    color: #000;
+                }
+            }
+
+            .bullet-point {
+                display: flex;
+                align-items: center;
+                margin-left: -3px;
+                margin-bottom: 5px;
+                &:nth-child(1) {
+                    margin-top: 10px;
+                }
+                img {
+                    margin-right: 8px;
+                }
+            }
+
+
+        }
+    }
+}
+
+@include product-description();

@@ -1,0 +1,25 @@
+{% extends model('component') %}
+
+{% define config = {
+    name: 'warning-and-notes',
+    nameopt: 'warning-and-notes',
+} %}
+
+{% define data = {
+    product:[],
+} %}
+
+{% block class -%}
+    {{ parent() }}
+{%- endblock %}
+
+{% block body %}
+    {% if data.product.attributes.warnhinweise is defined %}
+        <span class="description">{{ 'product.info.description.warnings' | trans }}:</span><br>
+        <span>{{ data.product.attributes.warnhinweise }}</span><br>
+    {% endif %}
+    {% if data.product.attributes.verwendungshinweise is defined %}
+        <span class="description">{{ 'product.info.description.usage.notes' | trans }}:</span><br>
+        <span>{{ data.product.attributes.verwendungshinweise }}</span><br>
+    {% endif %}
+{% endblock %}

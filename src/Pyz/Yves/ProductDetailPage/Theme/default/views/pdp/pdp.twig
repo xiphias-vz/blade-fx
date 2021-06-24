@@ -68,7 +68,29 @@
         <div class="grid grid--indent">
             <div class="col col--spaced-lg col--sm-12 col--lg-12">
                 <div class="container__inner">
-
+                    {% embed molecule('toggler-item') with {
+                        data: {
+                            title: 'product.info.description' | trans,
+                            triggerClass: 'product-description__trigger-bundle',
+                            targetClass: 'product-description__target-bundle',
+                            isActive: true,
+                            productAttributes: data.product.attributes,
+                            product: data.product
+                        },
+                        embed: {
+                            bundleItems: data.bundleItems,
+                        }
+                    } only %}
+                        {% block contentText %}
+                            {% include molecule('product-description', 'ProductDetailPage') with {
+                                data: {
+                                    productAttributes: data.product.attributes,
+                                    zutatenText: _view.zutatenText,
+                                    product: data.product
+                                },
+                            } only %}
+                        {% endblock %}
+                    {% endembed %}
                      {% if data.product.attributes.zutaten is defined or data.product.attributes.entallerg is defined %}
                          {% embed molecule('toggler-item') with {
                              data: {
@@ -119,6 +141,29 @@
                         {% endembed %}
                     {% endif %}
 
+                    {% if data.product.attributes.warnhinweise is defined and data.product.attributes.verwendungshinweise is defined %}
+                        {% embed molecule('toggler-item') with {
+                            data: {
+                                title: 'product.info.description.warning.usage.notes' | trans,
+                                triggerClass: 'warning-and-notes__trigger-bundle',
+                                targetClass: 'warning-and-notes__target-bundle',
+                                isActive: true,
+                                productAttributes: data.product.attributes,
+                                product: data.product
+                            },
+                            embed: {
+                                bundleItems: data.bundleItems,
+                            }
+                        } only %}
+                            {% block contentText %}
+                                {% include molecule('warning-and-notes', 'ProductDetailPage') with {
+                                    data: {
+                                        product: data.product
+                                    },
+                                } only %}
+                            {% endblock %}
+                        {% endembed %}
+                    {% endif %}
                     {% if data.product.attributes.pet_feeding_table is defined %}
                     {% embed molecule('toggler-item') with {
                         data: {

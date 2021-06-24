@@ -255,7 +255,9 @@
         .additional-product-information__trigger-bundle,
         .ingredients-and-allergens__trigger-bundle,
         .warnings-and-usage-info__trigger-bundle,
-        .pet-feeding-table__trigger-bundle  {
+        .pet-feeding-table__trigger-bundle,
+        .product-description__trigger-bundle,
+        .warning-and-notes__trigger-bundle {
             color: $setting-color-globus-lightOrange;
             border-bottom: 1px solid $setting-color-globus-lightOrange;
         }
@@ -264,7 +266,9 @@
         .additional-product-information__trigger-bundle:hover,
         .ingredients-and-allergens__trigger-bundle:hover,
         .warnings-and-usage-info__trigger-bundle:hover,
-        .pet-feeding-table__trigger-bundle:hover {
+        .pet-feeding-table__trigger-bundle:hover,
+        .product-description__trigger-bundle:hover,
+        .warning-and-notes__trigger-bundle:hover {
             color: $setting-color-globus-lightOrange;
         }
 
@@ -272,7 +276,9 @@
         .additional-product-information__trigger-bundle::before,
         .ingredients-and-allergens__trigger-bundle::before,
         .warnings-and-usage-info__trigger-bundle::before,
-        .pet-feeding-table__trigger-bundle::before {
+        .pet-feeding-table__trigger-bundle::before,
+        .product-description__trigger-bundle::before,
+        .warning-and-notes__trigger-bundle::before {
             content: '';
         }
 
@@ -280,7 +286,9 @@
         .additional-product-information__trigger-bundle::after,
         .ingredients-and-allergens__trigger-bundle::after,
         .warnings-and-usage-info__trigger-bundle::after,
-        .pet-feeding-table__trigger-bundle::after {
+        .pet-feeding-table__trigger-bundle::after,
+        .product-description__trigger-bundle::after,
+        .warning-and-notes__trigger-bundle::after {
             content: '';
             border-color: $setting-color-globus-lightOrange;
         }

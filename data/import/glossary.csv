@@ -2637,6 +2637,14 @@ mail.order-refunded.subject,Deine Wunscheinkauf wurde zurückerstattet,de_DE
 mail.order-refunded.subject,Your order has been refunded,en_US
 product.info.ingredients.and.allergens,Ingredients and allergens,en_US
 product.info.ingredients.and.allergens,Zutaten und Allergene,de_DE
+product.info.description,Produktbeschrelbung,de_DE
+product.info.description,Product description,en_US
+product.info.description.warnings,Warnhinweise,de_DE
+product.info.description.warnings,Warnings,en_US
+product.info.description.usage.notes,Verwendungshinweise,de_DE
+product.info.description.usage.notes,Usage notes,en_US
+product.info.description.warning.usage.notes,Warnhinweise & Verwendungshinweise,de_DE
+product.info.description.warning.usage.notes,Warnings & usage notes,en_US
 product.info.ingredients,Ingredients,en_US
 product.info.ingredients,Zutaten,de_DE
 product.info.alergens,Allergen information,en_US
