@@ -172,6 +172,7 @@ class SalesBusinessFactory extends SprykerSalesBusinessFactory
             $this->getQueryContainer(),
             $this->getOmsFacade(),
             $this->getConfig(),
+            $this->getCustomerFacade(),
             $this->getHydrateOrderPlugins()
         );
     }
@@ -185,6 +186,7 @@ class SalesBusinessFactory extends SprykerSalesBusinessFactory
             $this->getQueryContainer(),
             $this->getOmsFacade(),
             $this->getConfig(),
+            $this->getCustomerFacade(),
             $this->getHydrateOrderForStoreAppPlugins()
         );
     }
@@ -198,7 +200,8 @@ class SalesBusinessFactory extends SprykerSalesBusinessFactory
             $this->getQueryContainer(),
             $this->getOmsFacade(),
             $this->getConfig(),
-            $this->getHydrateOrderPlugins()
+            $this->getCustomerFacade(),
+            $this->getHydrateOrderPlugins(),
         );
     }
 

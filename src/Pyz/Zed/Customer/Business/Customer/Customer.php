@@ -21,6 +21,7 @@ use Spryker\Shared\Kernel\Store;
 use Spryker\Zed\Customer\Business\Customer\Customer as SprykerCustomer;
 use Spryker\Zed\Customer\Business\Customer\EmailValidatorInterface;
 use Spryker\Zed\Customer\Business\CustomerExpander\CustomerExpanderInterface;
+use Spryker\Zed\Customer\Business\CustomerPasswordPolicy\CustomerPasswordPolicyValidatorInterface;
 use Spryker\Zed\Customer\Business\Exception\CustomerNotFoundException;
 use Spryker\Zed\Customer\Business\ReferenceGenerator\CustomerReferenceGeneratorInterface;
 use Spryker\Zed\Customer\Communication\Plugin\Mail\CustomerRestoredPasswordConfirmationMailTypePlugin;
@@ -50,6 +51,11 @@ class Customer extends SprykerCustomer
     protected $customerConfig;
 
     /**
+     * @var \Spryker\Zed\Customer\Business\CustomerPasswordPolicy\CustomerPasswordPolicyValidatorInterface;
+     */
+    protected $customerPasswordPolicyValidator;
+
+    /**
      * @param \Spryker\Zed\Customer\Persistence\CustomerQueryContainerInterface $queryContainer
      * @param \Spryker\Zed\Customer\Business\ReferenceGenerator\CustomerReferenceGeneratorInterface $customerReferenceGenerator
      * @param \Spryker\Zed\Customer\CustomerConfig $customerConfig
@@ -58,6 +64,7 @@ class Customer extends SprykerCustomer
      * @param \Spryker\Zed\Locale\Persistence\LocaleQueryContainerInterface $localeQueryContainer
      * @param \Spryker\Shared\Kernel\Store $store
      * @param \Spryker\Zed\Customer\Business\CustomerExpander\CustomerExpanderInterface $customerExpander
+     * @param \Spryker\Zed\Customer\Business\CustomerPasswordPolicy\CustomerPasswordPolicyValidatorInterface $customerPasswordPolicyValidator
      * @param array $postCustomerRegistrationPlugins
      * @param \Pyz\Service\MailCmsBlock\MailCmsBlockServiceInterface $mailCmsBlockService
      * @param \Pyz\Zed\MerchantRegion\Business\MerchantRegionFacadeInterface $merchantRegionFacade
@@ -71,6 +78,7 @@ class Customer extends SprykerCustomer
         LocaleQueryContainerInterface $localeQueryContainer,
         Store $store,
         CustomerExpanderInterface $customerExpander,
+        CustomerPasswordPolicyValidatorInterface $customerPasswordPolicyValidator,
         array $postCustomerRegistrationPlugins,
         MailCmsBlockServiceInterface $mailCmsBlockService,
         MerchantRegionFacadeInterface $merchantRegionFacade
@@ -84,6 +92,7 @@ class Customer extends SprykerCustomer
             $localeQueryContainer,
             $store,
             $customerExpander,
+            $customerPasswordPolicyValidator,
             $postCustomerRegistrationPlugins
         );
 

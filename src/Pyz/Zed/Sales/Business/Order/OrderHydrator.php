@@ -19,6 +19,7 @@ use Orm\Zed\Sales\Persistence\SpySalesOrderItem;
 use Pyz\Zed\Sales\SalesConfig;
 use Spryker\Zed\Sales\Business\Exception\InvalidSalesOrderException;
 use Spryker\Zed\Sales\Business\Order\OrderHydrator as SprykerOrderHydrator;
+use Spryker\Zed\Sales\Dependency\Facade\SalesToCustomerInterface;
 use Spryker\Zed\Sales\Dependency\Facade\SalesToOmsInterface;
 use Spryker\Zed\Sales\Persistence\SalesQueryContainerInterface;
 
@@ -35,15 +36,17 @@ class OrderHydrator extends SprykerOrderHydrator implements OrderHydratorInterfa
      * @param \Spryker\Zed\Sales\Persistence\SalesQueryContainerInterface $queryContainer
      * @param \Spryker\Zed\Sales\Dependency\Facade\SalesToOmsInterface $omsFacade
      * @param \Pyz\Zed\Sales\SalesConfig $salesConfig
+     * @param \Spryker\Zed\Sales\Dependency\Facade\SalesToCustomerInterface $customerFacade
      * @param array $hydrateOrderPlugins
      */
     public function __construct(
         SalesQueryContainerInterface $queryContainer,
         SalesToOmsInterface $omsFacade,
         SalesConfig $salesConfig,
+        SalesToCustomerInterface $customerFacade,
         array $hydrateOrderPlugins = []
     ) {
-        parent::__construct($queryContainer, $omsFacade, $hydrateOrderPlugins);
+        parent::__construct($queryContainer, $omsFacade, $salesConfig, $customerFacade, $hydrateOrderPlugins);
         $this->salesConfig = $salesConfig;
     }
 

@@ -89,7 +89,8 @@ class OmsBusinessFactory extends SprykerOmsBusinessFactory
         return new Timeout(
             $this->getQueryContainer(),
             $this->getConfig(),
-            $this->getStoreFacade()
+            $this->getStoreFacade(),
+            $this->createTimeoutProcessorCollection()
         );
     }
 

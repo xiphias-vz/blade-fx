@@ -7,12 +7,12 @@
 
 namespace Pyz\Service\Shipment;
 
-use Spryker\Service\Kernel\AbstractBundleConfig;
+use Spryker\Service\Shipment\ShipmentConfig as SprykerShipmentConfig;
 
 /**
  * @method \Pyz\Shared\Shipment\ShipmentConfig getSharedConfig()
  */
-class ShipmentConfig extends AbstractBundleConfig
+class ShipmentConfig extends SprykerShipmentConfig
 {
     /**
      * @return int

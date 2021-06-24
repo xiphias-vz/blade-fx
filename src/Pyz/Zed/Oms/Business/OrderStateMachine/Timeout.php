@@ -13,6 +13,7 @@ use Pyz\Zed\Oms\OmsConfig;
 use Spryker\Zed\Oms\Business\OrderStateMachine\OrderStateMachineInterface;
 use Spryker\Zed\Oms\Business\OrderStateMachine\Timeout as SprykerTimeout;
 use Spryker\Zed\Oms\Business\Process\ProcessInterface;
+use Spryker\Zed\Oms\Business\Util\TimeoutProcessorCollectionInterface;
 use Spryker\Zed\Oms\Dependency\Facade\OmsToStoreFacadeInterface;
 use Spryker\Zed\Oms\Persistence\OmsQueryContainerInterface;
 
@@ -42,13 +43,15 @@ class Timeout extends SprykerTimeout implements TimeoutInterface
      * @param \Spryker\Zed\Oms\Persistence\OmsQueryContainerInterface $queryContainer
      * @param \Pyz\Zed\Oms\OmsConfig $omsConfig
      * @param \Spryker\Zed\Oms\Dependency\Facade\OmsToStoreFacadeInterface $storeFacade
+     * @param \Spryker\Zed\Oms\Business\Util\TimeoutProcessorCollectionInterface $timeoutProcessorCollection
      */
     public function __construct(
         OmsQueryContainerInterface $queryContainer,
         OmsConfig $omsConfig,
-        OmsToStoreFacadeInterface $storeFacade
+        OmsToStoreFacadeInterface $storeFacade,
+        TimeoutProcessorCollectionInterface $timeoutProcessorCollection
     ) {
-        parent::__construct($queryContainer);
+        parent::__construct($queryContainer, $timeoutProcessorCollection, $omsConfig);
 
         $this->omsConfig = $omsConfig;
         $this->storeFacade = $storeFacade;

@@ -73,7 +73,7 @@ class OrderStateMachine extends SprykerOrderStateMachine implements OrderStateMa
         OmsConfig $omsConfig,
         OmsToStoreFacadeInterface $storeFacade
     ) {
-        parent::__construct($queryContainer, $builder, $transitionLog, $timeout, $activeProcesses, $conditions, $commands, $reservation);
+        parent::__construct($queryContainer, $builder, $transitionLog, $timeout, $activeProcesses, $conditions, $commands, $reservation, $omsConfig);
 
         $this->omsConfig = $omsConfig;
         $this->storeFacade = $storeFacade;

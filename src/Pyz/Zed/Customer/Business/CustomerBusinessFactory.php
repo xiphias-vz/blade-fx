@@ -37,6 +37,7 @@ class CustomerBusinessFactory extends SprykerCustomerBusinessFactory
             $this->getLocaleQueryContainer(),
             $this->getStore(),
             $this->createCustomerExpander(),
+            $this->createCustomerPasswordPolicyValidator(),
             $this->getPostCustomerRegistrationPlugins(),
             $this->getMailCmsBlock(),
             $this->getMerchantRegionFacade()
