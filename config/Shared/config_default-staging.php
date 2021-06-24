@@ -4,7 +4,6 @@
  * This is the global runtime configuration for Yves and Generated_Yves_Zed in a staging environment.
  */
 
-
 use Pyz\Shared\TwigCache\TwigCacheConstants;
 use Spryker\Shared\Application\ApplicationConstants;
 use Spryker\Shared\Collector\CollectorConstants;

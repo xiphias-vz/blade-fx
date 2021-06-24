@@ -57,6 +57,7 @@ export default class ShelfScanOrder extends Component {
         } else {
             if (this.buttonConfirm.classList.contains('lastOrder')) {
                 document.querySelector('.popup-ui-container-scan').classList.add('popup-ui-container-scan--show');
+                this.buttonConfirm.classList.add('button--disabled');
             }
         }
     }
@@ -117,6 +118,7 @@ export default class ShelfScanOrder extends Component {
                 this.updateContainerShelfTransfer(event);
                 if(isLastInputField == true) {
                     this.buttonConfirm.click();
+                    this.buttonConfirm.disabled = true;
                 }
             }
         }
