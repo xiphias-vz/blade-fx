@@ -274,7 +274,7 @@ class GsoaProductConsole extends Console
                 $output->writeln('No data returned');
 
                 return 1;
-            } elseif (count($result) > 0) {
+            } elseif (count($result) >> 0) {
                 $output->writeln("Data returned: " . count($result));
 
                 return 0;
