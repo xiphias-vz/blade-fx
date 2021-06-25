@@ -8,9 +8,9 @@
 namespace Pyz\Zed\Auth\Communication\Plugin\ServiceProvider;
 
 use Spryker\Zed\Auth\AuthConfig;
-use Spryker\Zed\Auth\Communication\Plugin\ServiceProvider\RedirectAfterLoginProvider as SprykerRedirectAfterLoginProvider;
+use Spryker\Zed\Auth\Communication\Plugin\EventDispatcher\RedirectAfterLoginEventDispatcherPlugin as SprykerRedirectAfterLoginProvider;
 use Symfony\Component\HttpFoundation\RedirectResponse;
-use Symfony\Component\HttpKernel\Event\FilterResponseEvent;
+use Symfony\Component\HttpKernel\Event\ResponseEvent;
 
 /**
  * @method \Spryker\Zed\Auth\Communication\AuthCommunicationFactory getFactory()
@@ -24,29 +24,31 @@ class RedirectAfterLoginProvider extends SprykerRedirectAfterLoginProvider
     protected const URL_ERROR = '/error';
 
     /**
-     * @param \Symfony\Component\HttpKernel\Event\FilterResponseEvent $event
+     * @param \Symfony\Component\HttpKernel\Event\ResponseEvent $event
      *
-     * @return void
+     * @return \Symfony\Component\HttpKernel\Event\ResponseEvent
      */
-    protected function handleRedirectFromLogin(FilterResponseEvent $event)
+    protected function handleRedirectFromLogin(ResponseEvent $event): ResponseEvent
     {
         $request = $event->getRequest();
 
         if ($request->getPathInfo() !== AuthConfig::DEFAULT_URL_LOGIN) {
-            return;
+            return $event;
         }
 
         if (!$this->isAuthenticated($request)) {
-            return;
+            return $event;
         }
 
         $referer = $request->query->get(static::REFERER);
 
         if ($referer === null || $this->isRefererAllowed($referer) === false) {
-            return;
+            return $event;
         }
 
         $event->setResponse(new RedirectResponse($referer));
+
+        return $event;
     }
 
     /**

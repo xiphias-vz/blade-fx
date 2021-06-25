@@ -41,6 +41,7 @@ class PaginatedCustomerOrderOverview extends SprykerPaginatedCustomerOrderOvervi
      * @param \Spryker\Zed\Sales\Persistence\SalesQueryContainerInterface $queryContainer
      * @param \Spryker\Zed\Sales\Business\Model\Order\CustomerOrderOverviewHydratorInterface $customerOrderOverviewHydrator
      * @param \Spryker\Zed\Sales\Dependency\Facade\SalesToOmsInterface $omsFacade
+     * @param array $searchOrderExpanderPlugins
      * @param \Pyz\Zed\Sales\Business\Model\Order\OrderStatusHydratorInterface $orderStatusHydrator
      * @param \Pyz\Zed\Sales\SalesConfig $salesConfig
      */
@@ -48,10 +49,11 @@ class PaginatedCustomerOrderOverview extends SprykerPaginatedCustomerOrderOvervi
         SalesQueryContainerInterface $queryContainer,
         CustomerOrderOverviewHydratorInterface $customerOrderOverviewHydrator,
         SalesToOmsInterface $omsFacade,
+        array $searchOrderExpanderPlugins,
         OrderStatusHydratorInterface $orderStatusHydrator,
         SalesConfig $salesConfig
     ) {
-        parent::__construct($queryContainer, $customerOrderOverviewHydrator, $omsFacade);
+        parent::__construct($queryContainer, $customerOrderOverviewHydrator, $omsFacade, $searchOrderExpanderPlugins);
         $this->orderStatusHydrator = $orderStatusHydrator;
         $this->salesConfig = $salesConfig;
     }

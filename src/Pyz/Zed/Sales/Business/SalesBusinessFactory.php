@@ -106,6 +106,7 @@ class SalesBusinessFactory extends SprykerSalesBusinessFactory
             $this->getQueryContainer(),
             $this->createCustomerOrderOverviewHydrator(),
             $this->getOmsFacade(),
+            $this->getSearchOrderExpanderPlugins(),
             $this->createOrderStatusHydrator(),
             $this->getConfig()
         );

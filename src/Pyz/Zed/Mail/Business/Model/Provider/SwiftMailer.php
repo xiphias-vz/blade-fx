@@ -50,14 +50,12 @@ class SwiftMailer extends SprykerSwiftMailer
     /**
      * @param \Generated\Shared\Transfer\MailTransfer $mailTransfer
      *
-     * @return $this
+     * @return void
      */
-    protected function addAttachments(MailTransfer $mailTransfer)
+    protected function addAttachments(MailTransfer $mailTransfer): void
     {
         foreach ($mailTransfer->getAttachments() as $attachment) {
             $this->mailer->addAttachment($attachment->getAttachmentUrl(), $attachment->getDisplayName());
         }
-
-        return $this;
     }
 }
