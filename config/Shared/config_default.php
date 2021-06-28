@@ -23,7 +23,7 @@ use Spryker\Client\RabbitMq\Model\RabbitMqAdapter;
 use Spryker\Glue\Log\Plugin\GlueLoggerConfigPlugin;
 use Spryker\Service\FlysystemLocalFileSystem\Plugin\Flysystem\LocalFilesystemBuilderPlugin;
 use Spryker\Shared\Acl\AclConstants;
-use Spryker\Shared\Application\ApplicationConstants;
+use Pyz\Shared\Application\ApplicationConstants;
 use Spryker\Shared\Auth\AuthConstants;
 use Spryker\Shared\CmsGui\CmsGuiConstants;
 use Spryker\Shared\Collector\CollectorConstants;
@@ -645,6 +645,8 @@ $config[ApplicationConstants::TWIG_ENVIRONMENT_NAME]
 
 $config[ErrorHandlerConstants::IS_PRETTY_ERROR_HANDLER_ENABLED]
     = $config[ApplicationConstants::ENABLE_PRETTY_ERROR_HANDLER] = false;
+
+$config[ApplicationConstants::CURRENCY_CODE] = 'EUR';
 
 // ----------- Yves assets
 $config[ShopUiConstants::YVES_ASSETS_URL_PATTERN] = '/assets/' . (getenv('SPRYKER_BUILD_HASH') ?: 'current') . '/%theme%/';

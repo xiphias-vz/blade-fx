@@ -37,7 +37,7 @@ if($storeCodeBucket == 'CZ'){
         ],
         'locales' => [
             // first entry is default
-            'cs' => 'cs_CZ',
+            'cz' => 'cs_CZ',
         ],
         // first entry is default
         'countries' => ['CZ'],

@@ -16,9 +16,11 @@ use Orm\Zed\PriceProduct\Persistence\SpyPriceProductStore;
 use Orm\Zed\PriceProduct\Persistence\SpyPriceProductStoreQuery;
 use Orm\Zed\PriceProduct\Persistence\SpyPriceTypeQuery;
 use Orm\Zed\Store\Persistence\SpyStoreQuery;
+use Pyz\Shared\Application\ApplicationConstants;
 use Pyz\Zed\DataImport\Business\Exception\InvalidDataException;
 use Pyz\Zed\DataImport\Business\Model\BaseProduct\StoreSpecificAttributeExtractorStep;
 use Pyz\Zed\DataImport\Business\Model\ProductAbstract\ProductAbstractWriterStep;
+use Spryker\Shared\Config\Config;
 use Spryker\Zed\DataImport\Business\Model\DataSet\DataSetInterface;
 use Spryker\Zed\DataImport\Business\Model\Publisher\DataImporterPublisher;
 use Spryker\Zed\Money\Business\MoneyFacadeInterface;
@@ -113,9 +115,10 @@ class ProductPriceSaver
             $productPriceEntity->save();
         }
 
+        $curr = Config::get(ApplicationConstants::CURRENCY_CODE);
         $priceProductStoreEntity = SpyPriceProductStoreQuery::create()
             ->filterByFkStore($this->getIdStoreByName($dataSet[PriceProductDataSet::KEY_STORE]))
-            ->filterByFkCurrency($this->getIdCurrencyByCode('EUR'))
+            ->filterByFkCurrency($this->getIdCurrencyByCode($curr))
             ->filterByFkPriceProduct($productPriceEntity->getPrimaryKey())
             ->joinPriceProductDefault()
             ->findOne();
@@ -123,7 +126,7 @@ class ProductPriceSaver
         if (!$priceProductStoreEntity) {
             $priceProductStoreEntity = (new SpyPriceProductStore())
                 ->setFkStore($this->getIdStoreByName($dataSet[PriceProductDataSet::KEY_STORE]))
-                ->setFkCurrency($this->getIdCurrencyByCode('EUR'))
+                ->setFkCurrency($this->getIdCurrencyByCode($curr))
                 ->setFkPriceProduct($productPriceEntity->getPrimaryKey());
         }
 

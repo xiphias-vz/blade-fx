@@ -3,6 +3,7 @@
 use Pyz\Shared\GsoaRestApiClient\Provider\TokenProvider;
 use Pyz\Shared\ProductImage\ProductImageConstants;
 use Pyz\Shared\Store\StoreConstants;
+use Pyz\Shared\Application\ApplicationConstants;
 
 $config[StoreConstants::SAP_STORE_ID_TO_STORE_MAP] = [
     4012 => 'OPA',
@@ -12,6 +13,9 @@ $config[StoreConstants::SAP_STORE_ID_TO_STORE_MAP] = [
 $config[StoreConstants::STORE_NAMES] = [
     'OPA' => 'Opava',
 ];
+
+// ----------- Application
+$config[ApplicationConstants::CURRENCY_CODE] = 'CZK';
 
 // ----------- GSOA API
 $config[TokenProvider::GSOA_CLIENT_ID] = "webAppSpryker";

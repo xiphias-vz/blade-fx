@@ -8,6 +8,7 @@
 {% define data = {
     imageClasses: '',
     isImage: true,
+    currentCodeBucket: app.currentCodeBucket,
 } %}
 
 {% define attributes = {
@@ -32,9 +33,13 @@
 
         {% if data.isImage %}
             {% if attributes.src is defined %}
-                {% set splitUrl = attributes.src | split('.com/') %}
                 {% set insertInTheMiddle = '.com/thumb_' %}
-                {% set newThumbUrl = splitUrl[0] ~ insertInTheMiddle ~ splitUrl[1] %}
+                {% if data.currentCodeBucket=='CZ' %}
+                    {% set newThumbUrl = attributes.src %}
+                {% else %}
+                    {% set splitUrl = attributes.src | split('.com/') %}
+                    {% set newThumbUrl = splitUrl[0] ~ insertInTheMiddle ~ splitUrl[1] %}
+                {% endif %}
 
                 <img onerror="OnErrorChangeImage(this);" class="{{ data.imageClasses }} {{ config.jsName }}__content is-invisible" src="{{ newThumbUrl }}" data-src="{{ newThumbUrl }}" data-storage="{{ attributes.src }}" {{ component.renderAttributes(attributesWithoutSrc) }}>
 

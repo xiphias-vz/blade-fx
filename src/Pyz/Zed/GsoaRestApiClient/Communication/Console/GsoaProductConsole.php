@@ -8,6 +8,10 @@
 namespace Pyz\Zed\GsoaRestApiClient\Communication\Console;
 
 use Exception;
+use Orm\Zed\AvailabilityStorage\Persistence\Map\SpyAvailabilityStorageTableMap;
+use Orm\Zed\AvailabilityStorage\Persistence\SpyAvailabilityStorageQuery;
+use Orm\Zed\PriceProductStorage\Persistence\Map\SpyPriceProductAbstractStorageTableMap;
+use Orm\Zed\PriceProductStorage\Persistence\SpyPriceProductAbstractStorageQuery;
 use Orm\Zed\Product\Persistence\Map\SpyProductTableMap;
 use Orm\Zed\Product\Persistence\SpyProductQuery;
 use Pyz\Shared\GsoaRestApiClient\Provider\ProductCatalogProvider;
@@ -182,87 +186,33 @@ class GsoaProductConsole extends Console
                     }
                     break;
                 case "importProductPrice":
-                    $qry = new SpyProductQuery();
-                    $products = $qry->select(SpyProductTableMap::COL_SAP_NUMBER)->find();
-                    $page = 0;
-                    $pageSize = 50;
-                    $counter = 0;
-                    $fileName = "//data/data/import/spryker/4.globus_article_prices." . $store . ".csv";
-                    file_put_contents($fileName, "sapnumber;price;pseudoprice;store;promotion;promotionstart;promotionend" . PHP_EOL);
-                    $p = [];
-                    $c = 0;
-                    foreach ($products->getData() as $sapNumber) {
-                        $p[] = $sapNumber;
-                        $c++;
-                        if ($c === 20) {
-                            $filter = "ProductWamasNr:in " . implode(",", $p);
-                            $c = 0;
-                            $p = [];
-                            $result = $client->getProductPricesByHouse($store, true, 'ESHOP', "2021-05-01", $filter, 0, $pageSize);
-                            if ((is_array($result))
-                             && (count($result) > 0)
-                             && (is_array($result["productPrices"]) && count($result["productPrices"]) > 0)) {
-                                foreach ($result["productPrices"] as $item) {
-                                    $counter++;
-                                    $d = $this->getProductPriceArray();
-                                    $d["sapnumber"] = $item["productWamasNr"];
-                                    $d["store"] = $store;
-                                    $price = $item["prices"][0];
-                                    $d["price"] = str_replace(".", ",", $price["actualPrice"]);
-                                    if (empty($price["actionNumber"])) {
-                                        $d["pseudoprice"] = "0,00";
-                                    } else {
-                                        $d["pseudoprice"] = str_replace(".", ",", $price["originalPrice"]);
-                                        $d["promotion"] = $price["actionNumber"];
-                                        $d["promotionstart"] = $price["priceValidFrom"];
-                                        $d["promotionend"] = $price["priceValidTo"];
-                                    }
-                                    file_put_contents($fileName, implode(';', $d) . PHP_EOL, FILE_APPEND);
-                                }
-                                $output->writeln('Pages done ' . $page . ', rows ' . $counter);
-                                $page = $page + 1;
-                            }
-                        }
-                    }
+                    $this->generateProductPriceFile($output, $client, $store, $counter, $result, null);
                     break;
                 case "importProductStock":
-                    $qry = new SpyProductQuery();
-                    $products = $qry->select(SpyProductTableMap::COL_SAP_NUMBER)->find();
-                    $page = 0;
-                    $pageSize = 100;
-                    $counter = 0;
-                    $fileName = "//data/data/import/spryker/5.globus_article_instock." . $store . ".csv";
-                    file_put_contents($fileName, "sapnumber;instock;store;shelf;shelffield;shelffloor" . PHP_EOL);
-                    $p = [];
-                    $c = 0;
-                    foreach ($products->getData() as $sapNumber) {
-                        $p[] = $sapNumber;
-                        $c++;
-                        if ($c === $pageSize) {
-                            $filter = "vanr:in " . implode(",", $p);
-                            $c = 0;
-                            $p = [];
-                            $result = $client->getProductsByHouse($store, $filter, '', 0, $pageSize);
-                            if ((is_array($result)) && (count($result) > 0)) {
-                                foreach ($result as $item) {
-                                    $counter++;
-                                    $d = $this->getProductStockArray();
-                                    $d["sapnumber"] = $item["vanr"];
-                                    if (!empty($item["productInHouse"]["stockAmount"])) {
-                                        $d["instock"] = str_replace(",", ".", $item["productInHouse"]["stockAmount"]);
-                                    }
-                                    $d["store"] = $store;
-                                    if ((is_array($item["productInHouse"]["placements"])) && (count($item["productInHouse"]["placements"]) > 0)) {
-                                        $d["shelf"] = $item["productInHouse"]["placements"][0]["placement"];
-                                        $d["shelffield"] = $item["productInHouse"]["placements"][0]["facing"];
-                                        $d["shelffloor"] = $item["productInHouse"]["placements"][0]["presentationStock"];
-                                    }
-                                    file_put_contents($fileName, implode(';', $d) . PHP_EOL, FILE_APPEND);
-                                }
-                                $output->writeln('Pages done ' . $page . ', rows ' . $counter);
-                                $page = $page + 1;
-                            }
-                        }
+                    $this->generateProductStockFile($output, $client, $store, $counter, $result, null);
+                    break;
+                case "updatePrices":
+                    $qry1 = new SpyPriceProductAbstractStorageQuery();
+                    $lastImport = $qry1
+                        ->select(SpyPriceProductAbstractStorageTableMap::COL_ID_PRICE_PRODUCT_ABSTRACT_STORAGE)
+                        ->withColumn('max(' . SpyPriceProductAbstractStorageTableMap::COL_UPDATED_AT . ')', 'dateUpdated')
+                        ->findOne();
+                    $lastDate = $lastImport['dateUpdated'];
+                    $result = $client->getProductPricesByHouseModified($store, $lastDate, true);
+                    if (!empty($result)) {
+                        $this->generateProductPriceFile($output, $client, $store, $counter, $result, $result["modifiedProducts"]);
+                    }
+                    break;
+                case "updateStock":
+                    $qry1 = new SpyAvailabilityStorageQuery();
+                    $lastImport = $qry1
+                        ->select(SpyAvailabilityStorageTableMap::COL_ID_AVAILABILITY_STORAGE)
+                        ->withColumn('max(' . SpyAvailabilityStorageTableMap::COL_UPDATED_AT . ')', 'dateUpdated')
+                        ->findOne();
+                    $lastDate = $lastImport['dateUpdated'];
+                    $result = $client->getProductStocksByHouseModified($store, $lastDate, true);
+                    if (!empty($result)) {
+                        $this->generateProductStockFile($output, $client, $store, $counter, $result, $result["modifiedProducts"]);
                     }
                     break;
             }
@@ -337,5 +287,129 @@ class GsoaProductConsole extends Console
             "shelffield" => "00",
             "shelffloor" => "00",
         ];
+    }
+
+    /**
+     * @param \Symfony\Component\Console\Output\OutputInterface $output
+     * @param \Pyz\Shared\GsoaRestApiClient\Provider\ProductCatalogProvider $client
+     * @param string $store
+     * @param int $counter
+     * @param mixed $result
+     * @param array|null $sapNumberArray
+     *
+     * @return void
+     */
+    private function generateProductPriceFile(
+        OutputInterface $output,
+        ProductCatalogProvider $client,
+        string $store,
+        int &$counter,
+        &$result,
+        ?array $sapNumberArray
+    ) {
+        $qry = new SpyProductQuery();
+        $products = $qry->select(SpyProductTableMap::COL_SAP_NUMBER)->find();
+        $page = 0;
+        $pageSize = 50;
+        $counter = 0;
+        $fileName = "//data/data/import/spryker/4.globus_article_prices." . $store . ".csv";
+        file_put_contents($fileName, "sapnumber;price;pseudoprice;store;promotion;promotionstart;promotionend" . PHP_EOL);
+        $p = [];
+        $c = 0;
+        foreach ($products->getData() as $sapNumber) {
+            if (empty($sapNumberArray) || in_array($sapNumber, $sapNumberArray)) {
+                $p[] = $sapNumber;
+                $c++;
+                if ($c === 20) {
+                    $filter = "ProductWamasNr:in " . implode(",", $p);
+                    $c = 0;
+                    $p = [];
+                    $result = $client->getProductPricesByHouse($store, true, 'ESHOP', "2021-05-01", $filter, 0, $pageSize);
+                    if ((is_array($result))
+                        && (count($result) > 0)
+                        && (is_array($result["productPrices"]) && count($result["productPrices"]) > 0)) {
+                        foreach ($result["productPrices"] as $item) {
+                            $counter++;
+                            $d = $this->getProductPriceArray();
+                            $d["sapnumber"] = $item["productWamasNr"];
+                            $d["store"] = $store;
+                            $price = $item["prices"][0];
+                            $d["price"] = str_replace(".", ",", $price["actualPrice"]);
+                            if (empty($price["actionNumber"])) {
+                                $d["pseudoprice"] = "0,00";
+                            } else {
+                                $d["pseudoprice"] = str_replace(".", ",", $price["originalPrice"]);
+                                $d["promotion"] = $price["actionNumber"];
+                                $d["promotionstart"] = $price["priceValidFrom"];
+                                $d["promotionend"] = $price["priceValidTo"];
+                            }
+                            file_put_contents($fileName, implode(';', $d) . PHP_EOL, FILE_APPEND);
+                        }
+                        $output->writeln('Pages done ' . $page . ', rows ' . $counter);
+                        $page = $page + 1;
+                    }
+                }
+            }
+        }
+    }
+
+    /**
+     * @param \Symfony\Component\Console\Output\OutputInterface $output
+     * @param \Pyz\Shared\GsoaRestApiClient\Provider\ProductCatalogProvider $client
+     * @param string $store
+     * @param int $counter
+     * @param mixed $result
+     * @param array|null $sapNumberArray
+     *
+     * @return void
+     */
+    private function generateProductStockFile(
+        OutputInterface $output,
+        ProductCatalogProvider $client,
+        string $store,
+        int &$counter,
+        &$result,
+        ?array $sapNumberArray
+    ) {
+        $qry = new SpyProductQuery();
+        $products = $qry->select(SpyProductTableMap::COL_SAP_NUMBER)->find();
+        $page = 0;
+        $pageSize = 100;
+        $counter = 0;
+        $fileName = "//data/data/import/spryker/5.globus_article_instock." . $store . ".csv";
+        file_put_contents($fileName, "sapnumber;instock;store;shelf;shelffield;shelffloor" . PHP_EOL);
+        $p = [];
+        $c = 0;
+        foreach ($products->getData() as $sapNumber) {
+            if (empty($sapNumberArray) || in_array($sapNumber, $sapNumberArray)) {
+                $p[] = $sapNumber;
+                $c++;
+                if ($c === $pageSize) {
+                    $filter = "vanr:in " . implode(",", $p);
+                    $c = 0;
+                    $p = [];
+                    $result = $client->getProductsByHouse($store, $filter, '', 0, $pageSize);
+                    if ((is_array($result)) && (count($result) > 0)) {
+                        foreach ($result as $item) {
+                            $counter++;
+                            $d = $this->getProductStockArray();
+                            $d["sapnumber"] = $item["vanr"];
+                            if (!empty($item["productInHouse"]["stockAmount"])) {
+                                $d["instock"] = str_replace(",", ".", $item["productInHouse"]["stockAmount"]);
+                            }
+                            $d["store"] = $store;
+                            if ((is_array($item["productInHouse"]["placements"])) && (count($item["productInHouse"]["placements"]) > 0)) {
+                                $d["shelf"] = $item["productInHouse"]["placements"][0]["placement"];
+                                $d["shelffield"] = $item["productInHouse"]["placements"][0]["facing"];
+                                $d["shelffloor"] = $item["productInHouse"]["placements"][0]["presentationStock"];
+                            }
+                            file_put_contents($fileName, implode(';', $d) . PHP_EOL, FILE_APPEND);
+                        }
+                        $output->writeln('Pages done ' . $page . ', rows ' . $counter);
+                        $page = $page + 1;
+                    }
+                }
+            }
+        }
     }
 }
