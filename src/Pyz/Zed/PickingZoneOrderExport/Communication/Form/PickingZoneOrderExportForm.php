@@ -10,7 +10,7 @@ namespace Pyz\Zed\PickingZoneOrderExport\Communication\Form;
 use DateTime;
 use Spryker\Zed\Kernel\Communication\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
-use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
+use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\NotBlank;
@@ -140,7 +140,7 @@ class PickingZoneOrderExportForm extends AbstractType
     {
         $builder->add(
             static::FIELD_PICKING_DATE,
-            DateTimeType::class,
+            DateType::class,
             [
                 'format' => static::VALIDITY_DATE_FORMAT,
                 'label' => 'picking_zone_order_export_gui.field.picking_date',

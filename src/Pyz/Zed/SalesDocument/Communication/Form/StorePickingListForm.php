@@ -9,7 +9,7 @@ namespace Pyz\Zed\SalesDocument\Communication\Form;
 
 use Spryker\Zed\Kernel\Communication\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
-use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
+use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\NotBlank;
@@ -67,7 +67,7 @@ class StorePickingListForm extends AbstractType
     {
         $builder->add(
             static::FIELD_PICKING_DATE,
-            DateTimeType::class,
+            DateType::class,
             [
                 'format' => static::VALIDITY_DATE_FORMAT,
                 'label' => 'sales-document.store-picking.html-template.delivery-date',

@@ -8,7 +8,7 @@
 namespace Pyz\Zed\CommissioningExport\Communication\Form;
 
 use Spryker\Zed\Kernel\Communication\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
+use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Validator\Constraints\Callback;
 use Symfony\Component\Validator\Constraints\NotBlank;
@@ -46,7 +46,7 @@ class CommissioningExportForm extends AbstractType
     {
         $builder->add(
             static::FIELD_DATE_FROM,
-            DateTimeType::class,
+            DateType::class,
             [
                 'format' => static::VALIDITY_DATE_FORMAT,
                 'label' => 'Date From',
@@ -85,7 +85,7 @@ class CommissioningExportForm extends AbstractType
     {
         $builder->add(
             static::FIELD_DATE_TO,
-            DateTimeType::class,
+            DateType::class,
             [
                 'format' => static::VALIDITY_DATE_FORMAT,
                 'label' => 'Date To',
