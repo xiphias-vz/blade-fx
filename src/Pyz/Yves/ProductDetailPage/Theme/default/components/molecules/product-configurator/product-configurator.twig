@@ -97,7 +97,7 @@
         </div>
 
         <div class="grid">
-            {% if data.product.attributes.grundpreisinhalt > 0 %}
+            {% if productSaleVolume > 0 %}
             <div class="text-secondary">
 
                 {% if data.preisProKg is not null and data.product.attributes.grundeinheit > 0 %}
@@ -105,7 +105,7 @@
                 {% elseif data.preisProKg is null and data.product.attributes.grundeinheit == 0 %}
 
                 {% else %}
-                    {{ ((((data.product.price / 100) / data.product.attributes.grundpreisinhalt)) * data.product.attributes.grundeinheit ) | round(2, 'common') | replace('.', ',') }} €/{{ data.product.attributes.grundeinheit }} {{ data.product.attributes.grundpreismasseinheit }}
+                    {{ ((((data.product.price / 100) / productSaleVolume)) * data.product.attributes.grundeinheit ) | round(2, 'common') | replace('.', ',') }} €/{{ data.product.attributes.grundeinheit }} {{ data.product.attributes.grundpreismasseinheit }}
                 {% endif %}
 
             </div>
