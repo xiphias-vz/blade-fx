@@ -155,7 +155,6 @@ class CashierOrderWriter implements CashierOrderWriterInterface
 
             return $orderTransfer;
         }
-        gc_collect_cycles();
 
         return $orderTransfer->setIsCashierExportSuccess(true);
     }

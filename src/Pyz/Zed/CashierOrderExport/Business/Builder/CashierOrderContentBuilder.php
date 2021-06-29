@@ -706,8 +706,8 @@ class CashierOrderContentBuilder implements CashierOrderContentBuilderInterface
                     $writer->startElement(static::XML_ITEM);
                     $writer->writeElement(static::XML_ORIGIN, static::XML_ORIGIN_VALUE);
                     $writer->writeElement(static::XML_POSITION_NUMBER, $counter);
-                    $writer->writeElement(static::XML_BARCODE, $item->getSku());
-                    $writer->writeElement(static::XML_ITEM_NUMBER, $product->getSapNumber());
+                    $writer->writeElement(static::XML_BARCODE, $this->getXmlPickZoneValue($item, $item->getSku()));
+                    $writer->writeElement(static::XML_ITEM_NUMBER, $this->getXmlPickZoneValue($item, $product->getSapNumber()));
                     $writer->writeElement(static::XML_DEPARTMENT_NUMBER, $item->getSapWgr());
                     $writer->writeElement(static::XML_DESCRIPTION, $this->getItemName($item));
                     $writer->writeElement(static::XML_NETTO_PRICE, $this->getXmlItemPrice($item) ?? static::DEFAULT_EMPTY_XML_NUMBER);
@@ -880,5 +880,20 @@ class CashierOrderContentBuilder implements CashierOrderContentBuilderInterface
         }
 
         return $itemTransfer->getSumPrice();
+    }
+
+    /**
+     * @param \Generated\Shared\Transfer\ItemTransfer $itemTransfer
+     * @param string $defaultResult
+     *
+     * @return string|null
+     */
+    protected function getXmlPickZoneValue(ItemTransfer $itemTransfer, string $defaultResult): ?string
+    {
+        if (array_key_exists($itemTransfer->getPickZone(), static::PICKING_ZONE_TO_PRODUCT_NUMBER_MAPPER)) {
+            return static::PICKING_ZONE_TO_PRODUCT_NUMBER_MAPPER[$itemTransfer->getPickZone()];
+        } else {
+            return $defaultResult;
+        }
     }
 }
