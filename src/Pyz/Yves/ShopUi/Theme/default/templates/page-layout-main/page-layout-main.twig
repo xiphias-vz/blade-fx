@@ -23,6 +23,7 @@
 
         <input id="current_store_cookie" class="display-none" type="text" value="{{ data.currentCookieStore }}" />
     <div class="page-layout-main__container">
+        {% cms_slot 'slt-11' %}
         {% block sidebar %}
             {% include organism('side-drawer') with {
                 modifiers: ['right'],

@@ -10,3 +10,4 @@ template_path,slot_key,content_provider,name,description,is_active
 @HomePage/views/home/home.twig,slt-1st-in-frame,SprykerCmsSlotBlock,1st in-frame full width Content,"1st Content section for full width rectangle Blocks in the Home Page, below Top Promotions section, and above Grid section.",1
 @HomePage/views/home/home.twig,3-elements-slt-in-frame-grid-content,SprykerCmsSlotBlock,3 elements in-frame Grid Content,"A Content section for square Blocks in the Home Page, below 1st in-frame full width section, and above 2nd in-frame full width section.",1
 @HomePage/views/home/home.twig,4-elements-slt-in-frame-grid-content,SprykerCmsSlotBlock,4 elements in-frame Grid Content,A Content section for square Blocks in the Home Page with 4 element inside.,1
+@ShopUi/templates/page-layout-main/page-layout-main.twig,slt-11,SprykerCmsSlotBlock,Header Top,"A content area in the Header section, that is above the logo, search section and main navigation.",1
