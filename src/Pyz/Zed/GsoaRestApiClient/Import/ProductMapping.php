@@ -149,6 +149,7 @@ class ProductMapping
         }
         $d['grundpreispflicht'] = 1;
         $d['grundeinheit'] = 1;
+        $d['Pickzone'] = 'Trocken';
         $this->setNutritionValues($d, $item);
         $this->setAssets($d, $item);
         $this->setProductTags($d, $item);
