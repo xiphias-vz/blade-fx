@@ -70,7 +70,7 @@
                                 'sku': '{{ cartItem.sku }}',
                                 'price': '{{ cartItem.unitGrossPrice is defined ? cartItem.unitGrossPrice / 100 : null }}',
                                 'quantity': '{{ cartItem.quantity }}',
-                                'brand': '{{ cartItem.concreteAttributes.supplier is defined ? cartItem.concreteAttributes.supplier: null}}'
+                                'brand': '{{ cartItem.concreteAttributes.supplier }}'
                             });
                             function beginCheckout(actionUrl)
                             {
