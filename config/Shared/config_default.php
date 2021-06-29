@@ -2,6 +2,7 @@
 
 use Monolog\Logger;
 use Pyz\Service\FlysystemSftpFileSystem\Plugin\Flysystem\SftpFileSystemBuilderPlugin;
+use Pyz\Shared\Application\ApplicationConstants;
 use Pyz\Shared\BackofficeOverview\BackofficeOverviewConstants;
 use Pyz\Shared\CollectNumber\CollectNumberConstants;
 use Pyz\Shared\DataImport\DataImportConstants;
@@ -23,7 +24,6 @@ use Spryker\Client\RabbitMq\Model\RabbitMqAdapter;
 use Spryker\Glue\Log\Plugin\GlueLoggerConfigPlugin;
 use Spryker\Service\FlysystemLocalFileSystem\Plugin\Flysystem\LocalFilesystemBuilderPlugin;
 use Spryker\Shared\Acl\AclConstants;
-use Pyz\Shared\Application\ApplicationConstants;
 use Spryker\Shared\Auth\AuthConstants;
 use Spryker\Shared\CmsGui\CmsGuiConstants;
 use Spryker\Shared\Collector\CollectorConstants;

@@ -1,9 +1,9 @@
 <?php
 
+use Pyz\Shared\Application\ApplicationConstants;
 use Pyz\Shared\GsoaRestApiClient\Provider\TokenProvider;
 use Pyz\Shared\ProductImage\ProductImageConstants;
 use Pyz\Shared\Store\StoreConstants;
-use Pyz\Shared\Application\ApplicationConstants;
 
 $config[StoreConstants::SAP_STORE_ID_TO_STORE_MAP] = [
     4012 => 'OPA',
