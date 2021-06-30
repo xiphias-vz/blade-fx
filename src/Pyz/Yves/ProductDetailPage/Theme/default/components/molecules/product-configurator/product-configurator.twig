@@ -61,14 +61,16 @@
                     }
             });
     </script>
-    {% if data.product.attributes['supplier'] != 'keine Marke' and data.product.attributes['supplier']  != 'keine' and data.product.attributes['supplier']  != ''%}
-        <span class="brand-text">{{ 'product.attribute.manufacturer_name' | trans}}: </span>
-        <span>
-            {{ data.product.attributes['supplier'] }}
-        </span>
+    {% if  data.product.attributes['supplier']  is defined %}
+        {% if data.product.attributes['supplier'] != 'keine Marke' and data.product.attributes['supplier']  != 'keine' and data.product.attributes['supplier']  != ''%}
+            <span class="brand-text">{{ 'product.attribute.manufacturer_name' | trans}}: </span>
+            <span>
+                {{ data.product.attributes['supplier'] }}
+            </span>
+        {% endif %}
     {% endif %}
 
-    <h2 class="title title--product">{{ productName }} - {% if data.product.attributes.einzelgewicht is defined %} ca. {{ data.product.attributes.einzelgewicht|replace('.', ',') }} {% else %} {{ productSaleVolume|round(3, 'floor')|replace('.', ',') }}  {% endif %} {{ data.product.attributes["grundpreismasseinheit"] }}</h2>
+    <h2 class="title title--product">{{ productName }} - {% if data.product.attributes.einzelgewicht is defined %} ca. {{ data.product.attributes.einzelgewicht|replace('.', ',') }} {% else %} {{ productSaleVolume|round(3, 'floor')|replace('.', ',') }}  {% endif %} {% if data.product.attributes["grundpreismasseinheit"] is defined %} {{ data.product.attributes["grundpreismasseinheit"] }} {% endif %}</h2>
 
     <div class="{{ config.name }}__info">
         {% if data.product.attributes['herkunftsland_o_g'] is defined %}
