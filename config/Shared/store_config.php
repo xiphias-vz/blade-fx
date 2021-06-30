@@ -12,7 +12,10 @@ if ($applicationEnv === 'docker_prod') {
     $environment = 'prod';
 } elseif ($applicationEnv === 'docker_dev' && strpos($_SERVER['SERVER_NAME'], 'local') === false) {
     $environment = 'stage';
-} else {
+} elseif($applicationEnv === 'docker_prod_CZ'){ //TODO: CHECK LATER -> QUICK FIX
+    $environment = 'stage';
+}
+else {
     $environment = 'local';
 }
 if ($codeBucket == 'CZ') {
