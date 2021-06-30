@@ -1,5 +1,9 @@
 {% extends molecule('order-detail-table', '@SprykerShop:CustomerPage') %}
 
+{% define data = {
+    currentCodeBucket: app.currentCodeBucket,
+} %}
+
 {% block body %}
     {% for concreteItem in data.orderedItems %}
         {% set depositValue = (concreteItem.productOptions.first.sumPrice | default(0)) * concreteItem.quantity %}
@@ -17,9 +21,13 @@
 
                 <div class="col {{ config.name }}__item-image">
                    {% if concreteItem.metadata.image is not empty  %}
-                       {% set splitUrl = concreteItem.metadata.image | split('.com/')  %}
-                       {% set insertInTheMiddle = '.com/thumb_' %}
-                       {% set newThumbUrl = splitUrl[0] ~ insertInTheMiddle ~ splitUrl[1] %}
+                    {% if data.currentCodeBucket=='CZ' %}
+                        {% set newThumbUrl = concreteItem.metadata.image %}
+                    {% else %}
+                        {% set splitUrl = concreteItem.metadata.image | split('.com/')  %}
+                        {% set insertInTheMiddle = '.com/thumb_' %}
+                        {% set newThumbUrl = splitUrl[0] ~ insertInTheMiddle ~ splitUrl[1] %}
+                    {% endif %}
                    {% endif %}
                    {% include atom('thumbnail') with {
                         modifiers: ['small'],
