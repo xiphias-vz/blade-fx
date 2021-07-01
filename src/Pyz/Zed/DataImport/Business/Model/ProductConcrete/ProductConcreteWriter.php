@@ -131,7 +131,6 @@ class ProductConcreteWriter extends PublishAwareStep implements DataImportStepIn
             ->setSapNumber($dataSet[ProductConfig::KEY_SAP_NUMBER])
             ->setSku($dataSet[static::KEY_PRODUCT_NUMBER])
             ->setLastImportAt(static::$lastImportTime->format('Y-m-d H:i:s'))
-            ->setAssortmentZone($dataSet[static::ASSORTMENT_ZONE])
             ->setAttributes(json_encode($attributes))
             ->setFileType($this->getFileType());
 
