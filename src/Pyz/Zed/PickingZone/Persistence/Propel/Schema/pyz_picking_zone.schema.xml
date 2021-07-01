@@ -8,7 +8,7 @@
     <table name="pyz_picking_zone">
         <column name="id_picking_zone" type="INTEGER" autoIncrement="true" primaryKey="true"/>
         <column name="name" type="VARCHAR" required="true"/>
-
+        <column name="is_default" type="BOOLEAN" />
         <index name="pyz_picking_zone-index-name">
             <index-column name="name"/>
         </index>

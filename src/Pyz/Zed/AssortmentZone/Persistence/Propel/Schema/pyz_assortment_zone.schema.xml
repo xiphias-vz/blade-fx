@@ -1,0 +1,55 @@
+<?xml version="1.0"?>
+<database xmlns="spryker:schema-01"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          name="zed"
+          namespace="Orm\Zed\AssortmentZone\Persistence"
+          package="src.Orm.Zed.AssortmentZone.Persistence" xsi:schemaLocation="spryker:schema-01 https://static.spryker.com/schema-01.xsd">
+
+    <table name="pyz_assortment_zone">
+        <column name="id_assortment_zone" required="true" type="INTEGER" primaryKey="true" autoIncrement="true"/>
+        <column name="assortment_zone" type="VARCHAR" required="true"/>
+
+        <index name="pyz_assortment_zone-index-name">
+            <index-column name="assortment_zone"/>
+        </index>
+
+        <unique name="pyz_assortment_zone-unique">
+            <unique-column name="assortment_zone" />
+        </unique>
+
+        <id-method-parameter value="pyz_assortment_zone_pk_seq"/>
+    </table>
+
+    <table name="pyz_assortment_pick_zone_relation">
+        <column name="id_assortment_pick_zone_relation" required="true" type="INTEGER" primaryKey="true" autoIncrement="true"/>
+        <column name="fk_merchant" type="INTEGER" required="true"/>
+        <column name="fk_assortment_zone" type="INTEGER" required="true"/>
+        <column name="fk_picking_zone" type="INTEGER" required="true"/>
+
+        <unique name="pyz_assortment_pick_zone_relation-unique">
+            <unique-column name="fk_merchant" />
+            <unique-column name="fk_assortment_zone" />
+            <unique-column name="fk_picking_zone" />
+        </unique>
+
+        <foreign-key name="pyz_assortment_pick_zone_relation-fk_merchant" foreignTable="spy_merchant" phpName="Merchant">
+            <reference local="fk_merchant" foreign="id_merchant"/>
+        </foreign-key>
+
+        <foreign-key name="pyz_assortment_pick_zone_relation-fk_assortment_zone" foreignTable="pyz_assortment_zone" phpName="AssortmentZone">
+            <reference local="fk_assortment_zone" foreign="id_assortment_zone"/>
+        </foreign-key>
+        <index name="index-pyz_assortment_pick_zone_relation-fk_assortment_zone">
+            <index-column name="fk_assortment_zone"/>
+        </index>
+
+        <foreign-key name="pyz_assortment_pick_zone_relation-fk_picking_zone" foreignTable="pyz_picking_zone" phpName="PickingZone">
+            <reference local="fk_picking_zone" foreign="id_picking_zone"/>
+        </foreign-key>
+        <index name="index-pyz_assortment_pick_zone_relation-fk_picking_zone">
+            <index-column name="fk_picking_zone"/>
+        </index>
+
+        <id-method-parameter value="pyz_assortment_pick_zone_relation_pk_seq"/>
+    </table>
+</database>

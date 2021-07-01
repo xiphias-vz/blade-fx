@@ -14,6 +14,7 @@ use Spryker\Zed\DataImport\Business\Model\DataSet\DataSetInterface;
 class PickingZoneWriterStep implements DataImportStepInterface
 {
     protected const KEY_PICKING_ZONE_NAME = 'picking_zone_name';
+    protected const KEY_IS_DEFAULT = 'is_default';
 
     /**
      * @param \Spryker\Zed\DataImport\Business\Model\DataSet\DataSetInterface $dataSet
@@ -25,6 +26,8 @@ class PickingZoneWriterStep implements DataImportStepInterface
         $pickingZoneQuery = PyzPickingZoneQuery::create()
             ->filterByName($dataSet[static::KEY_PICKING_ZONE_NAME])
             ->findOneOrCreate();
+
+        $pickingZoneQuery->setIsDefault($dataSet[static::KEY_IS_DEFAULT]);
 
         if ($pickingZoneQuery->isNew() || $pickingZoneQuery->isModified()) {
             $pickingZoneQuery->save();

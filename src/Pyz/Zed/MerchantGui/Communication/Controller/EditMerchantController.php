@@ -34,6 +34,10 @@ class EditMerchantController extends SprykerEditMerchantController
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $this->getFactory()->getMerchantStorageFacade()->synchronizeMerchantToStorage();
         }
+        $assortmentZones = $this->getFactory()
+            ->getAssortmentZoneFacade()
+            ->queryAssortmentZones();
+
         if ($response instanceof RedirectResponse) {
             $redirectUrl = $response->getTargetUrl();
 

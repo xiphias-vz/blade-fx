@@ -29,6 +29,7 @@
         <column name="product_number" type="VARCHAR" size="255" required="false"/>
         <column name="store" type="VARCHAR" size="255" required="false"/>
         <column name="pick_zone" type="VARCHAR" size="255" required="false"/>
+        <column name="assortment_zone" type="VARCHAR" size="255" required="false"/>
         <column name="sequence" type="VARCHAR" size="255" required="false"/>
         <column name="shelf" type="VARCHAR" size="255" required="false"/>
         <column name="shelf_floor" type="VARCHAR" size="255" required="false"/>

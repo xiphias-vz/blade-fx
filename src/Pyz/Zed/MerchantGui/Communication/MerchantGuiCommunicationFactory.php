@@ -8,6 +8,7 @@
 namespace Pyz\Zed\MerchantGui\Communication;
 
 use Generated\Shared\Transfer\MerchantTransfer;
+use Pyz\Zed\AssortmentZone\Business\AssortmentZoneFacadeInterface;
 use Pyz\Zed\MerchantGui\Communication\Form\MerchantUpdateForm;
 use Pyz\Zed\MerchantGui\Communication\Tabs\MerchantFormTabs;
 use Pyz\Zed\MerchantGui\MerchantGuiDependencyProvider;
@@ -50,6 +51,14 @@ class MerchantGuiCommunicationFactory extends SprykerMerchantGuiCommunicationFac
     public function getMerchantStorageFacade(): MerchantStorageFacadeInterface
     {
         return $this->getProvidedDependency(MerchantGuiDependencyProvider::MERCHANT_STORAGE_FACADE);
+    }
+
+    /**
+     * @return \Pyz\Zed\AssortmentZone\Business\AssortmentZoneFacadeInterface
+     */
+    public function getAssortmentZoneFacade(): AssortmentZoneFacadeInterface
+    {
+        return $this->getProvidedDependency(MerchantGuiDependencyProvider::ASSORTMENT_ZONES);
     }
 
     /**

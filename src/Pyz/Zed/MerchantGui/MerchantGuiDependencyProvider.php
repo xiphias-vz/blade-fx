@@ -7,6 +7,7 @@
 
 namespace Pyz\Zed\MerchantGui;
 
+use Pyz\Zed\AssortmentZone\Business\AssortmentZoneFacadeInterface;
 use Pyz\Zed\MerchantStorage\Business\MerchantStorageFacadeInterface;
 use Spryker\Zed\Acl\Business\AclFacadeInterface;
 use Spryker\Zed\Kernel\Container;
@@ -21,6 +22,7 @@ class MerchantGuiDependencyProvider extends SpyMerchantGuiDependencyProvider
     public const FACADE_USER = 'FACADE_USER';
     public const FACADE_ACL = 'FACADE_ACL';
     public const MERCHANT_STORAGE_FACADE = 'MERCHANT_STORAGE_FACADE';
+    public const ASSORTMENT_ZONES = 'ASSORTMENT_ZONES';
 
     /**
      * @param \Spryker\Zed\Kernel\Container $container
@@ -33,6 +35,7 @@ class MerchantGuiDependencyProvider extends SpyMerchantGuiDependencyProvider
         $container = $this->addUserFacade($container);
         $container = $this->addAclFacade($container);
         $container = $this->addMerchantStorageFacade($container);
+        $container = $this->addAssortmentZonesFacade($container);
 
         return $container;
     }
@@ -74,6 +77,20 @@ class MerchantGuiDependencyProvider extends SpyMerchantGuiDependencyProvider
     {
         $container->set(static::FACADE_ACL, function (Container $container): AclFacadeInterface {
             return $container->getLocator()->acl()->facade();
+        });
+
+        return $container;
+    }
+
+    /**
+     * @param \Spryker\Zed\Kernel\Container $container
+     *
+     * @return \Spryker\Zed\Kernel\Container
+     */
+    protected function addAssortmentZonesFacade(Container $container): Container
+    {
+        $container->set(static::ASSORTMENT_ZONES, function (Container $container): AssortmentZoneFacadeInterface {
+            return $container->getLocator()->assortmentZone()->facade();
         });
 
         return $container;
