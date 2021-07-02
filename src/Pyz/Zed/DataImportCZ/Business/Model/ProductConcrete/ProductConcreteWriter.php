@@ -11,6 +11,7 @@ use Orm\Zed\ProductImage\Persistence\SpyProductImage;
 use Orm\Zed\ProductImage\Persistence\SpyProductImageQuery;
 use Orm\Zed\ProductImage\Persistence\SpyProductImageSetToProductImageQuery;
 use Pyz\Shared\Product\ProductConfig;
+use Pyz\Zed\DataImport\Business\Model\DataImporterCollection;
 use Pyz\Zed\DataImport\Business\Model\ProductConcrete\ProductConcreteWriter as PyzProductConcreteWriter;
 use Spryker\Shared\Kernel\Store;
 use Spryker\Zed\DataImport\Business\Model\DataSet\DataSetInterface;
@@ -24,6 +25,17 @@ class ProductConcreteWriter extends PyzProductConcreteWriter
      */
     public function execute(DataSetInterface $dataSet)
     {
+        if (DataImporterCollection::$importCounters["product"] === 0) {
+            DataImporterCollection::$importCounters["productStart"] = date_create(date("Y-m-d h:i:s"));
+        }
+        DataImporterCollection::$importCounters["product"]++;
+        var_dump(DataImporterCollection::$importCounters["product"] . '#' . date("h:i:s") . ' ["sapnumber"=>"' . $dataSet["sapnumber"] . '"]');
+        if (DataImporterCollection::$importCounters["product"] % 100 === 0) {
+            $now = date_create(date("Y-m-d h:i:s"));
+            $diff = date_diff(DataImporterCollection::$importCounters["productStart"], $now);
+            var_dump("Duration from start: " . $diff->format("%H:%I:%S") . ", Memory usage for " . DataImporterCollection::$importCounters["product"] . " items:" . memory_get_usage(true) / 1024 / 1024 . " Mb");
+        }
+
         parent::execute($dataSet);
     }
 

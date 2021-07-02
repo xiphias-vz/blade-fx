@@ -74,7 +74,7 @@ class ProductMapping
         'warnhinweise' => '',
         'verwendungshinweise' => '',
         'temperaturecondition' => '',
-        'Pickzone' => '',
+        'pickzone' => '',
         'orderlimit' => '',
         'pet_feeding_table' => '',
         'SAP-WGR' => '',
@@ -145,11 +145,20 @@ class ProductMapping
                         $d[$this->importSchemaPropertyNameMap[$key][0]] = 'keine';
                     }
                 }
+                if ($key == 'bruttoWeightKg') {
+                    if ($this->trimValue($item["saleUnit"]) == 'KG'
+                        && $this->trimValue($item["amount"]) == '1.0'
+                        && $this->trimValue($item["sellUnitSizeText"]) == null) {
+                        $d[$this->importSchemaPropertyNameMap[$key][0]] = $item[$key];
+                    } else {
+                        $d[$this->importSchemaPropertyNameMap[$key][0]] = null;
+                    }
+                }
             }
         }
         $d['grundpreispflicht'] = 1;
         $d['grundeinheit'] = 1;
-        $d['Pickzone'] = 'Trocken';
+        $d['pickzone'] = 'Trocken';
         $this->setNutritionValues($d, $item);
         $this->setAssets($d, $item);
         $this->setProductTags($d, $item);

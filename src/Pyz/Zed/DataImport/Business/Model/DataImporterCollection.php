@@ -17,6 +17,11 @@ use Spryker\Zed\Product\Dependency\ProductEvents;
 class DataImporterCollection extends SprykerDataImporterCollection
 {
     /**
+     * @var array
+     */
+    public static $importCounters;
+
+    /**
      * {@inheritDoc}
      *
      * @param \Generated\Shared\Transfer\DataImporterConfigurationTransfer|null $dataImporterConfigurationTransfer
@@ -32,6 +37,9 @@ class DataImporterCollection extends SprykerDataImporterCollection
         $this->beforeImport();
 
         if ($importType !== $this->getImportType()) {
+            static::$importCounters[$importType] = 0;
+            Propel::disableInstancePooling();
+
             $this->executeDataImporter(
                 $dataImporters[$importType],
                 $dataImporterReportTransfer,
@@ -45,6 +53,7 @@ class DataImporterCollection extends SprykerDataImporterCollection
             if ($importType == "time-slot") {
                 $this->deleteDuplicatedRows();
             }
+            Propel::enableInstancePooling();
 
             if (!empty($dataImporterConfigurationTransfer->getAfterImportHooksToSkip())) {
                 foreach ($this->afterImportHooks as $afterImportHook) {
