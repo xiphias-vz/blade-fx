@@ -48,6 +48,8 @@ class DataImporterCollection extends SprykerDataImporterCollection
 
             if ($importType == "product") {
                 $this->updateProductActivity();
+                $this->insertDataToAssortmentZoneTable();
+                $this->mapAssortmentZoneWithPickZoneAndMerchant();
             }
 
             if ($importType == "time-slot") {
@@ -78,6 +80,41 @@ class DataImporterCollection extends SprykerDataImporterCollection
         $this->afterImport();
 
         return $dataImporterReportTransfer;
+    }
+
+    /**
+     * @return void
+     */
+    protected function insertDataToAssortmentZoneTable()
+    {
+        $con = Propel::getConnection();
+        $statement = $con->prepare('INSERT INTO pyz_assortment_zone (assortment_zone)
+                    SELECT distinct sp.assortment_zone
+                    FROM spy_product sp
+                    LEFT OUTER JOIN pyz_assortment_zone paz on paz.assortment_zone = sp.assortment_zone
+                    WHERE paz.id_assortment_zone is null');
+        $statement->execute();
+    }
+
+    /**
+     * @return void
+     */
+    protected function mapAssortmentZoneWithPickZoneAndMerchant()
+    {
+        $con = Propel::getConnection();
+        $statement = $con->prepare('INSERT INTO pyz_assortment_pick_zone_relation (fk_assortment_zone, fk_merchant, fk_picking_zone)
+                    SELECT allAsortmentZonesPerMerchant.*
+                        , def_picking_zone.id_picking_zone
+                    FROM (
+                    SELECT paz.id_assortment_zone, sm.id_merchant
+                    FROM pyz_assortment_zone paz
+                    CROSS JOIN spy_merchant sm
+                    )  allAsortmentZonesPerMerchant
+                    LEFT OUTER JOIN pyz_assortment_pick_zone_relation papzr on papzr.fk_merchant = allAsortmentZonesPerMerchant.id_merchant
+                    AND papzr.fk_assortment_zone = allAsortmentZonesPerMerchant.id_assortment_zone
+                    CROSS JOIN (SELECT id_picking_zone FROM pyz_picking_zone ORDER BY is_default DESC, id_picking_zone DESC LIMIT 1) def_picking_zone
+                    WHERE papzr.id_assortment_pick_zone_relation is null');
+        $statement->execute();
     }
 
     /**
