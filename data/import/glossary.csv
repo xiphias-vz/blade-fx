@@ -4015,7 +4015,9 @@ product.info.additional.alcohol,Alcohol content,en_US
 product.info.additional.alcohol,Alkoholgehalt,de_DE
 product.info.additional.article_number,"Číslo artiklu",cs_CZ
 product.info.additional.article_number,"Art.Nr",de_DE
-product.info.additional.age_restriction,"Věkové omezení",de_DE
+product.info.additional.age_restriction,"Věkové omezení",cs_CZ
+product.info.additional.age_restriction,"Altersbeschränkung",de_DE
+product.info.additional.age_restriction,"Age restriction",en_US
 product.info.additional.characteristics,"Číslo artiklu",cs_CZ
 product.info.additional.characteristics,Eigenschaften,de_DE
 product.info.additional.characteristics,Characteristics,en_US
@@ -4031,7 +4033,7 @@ product.info.additional.characteristics.vegetarisch,Vegetarian,en_US
 product.info.additional.characteristics.laktosefrei,"Bez laktózy",cs_CZ
 product.info.additional.characteristics.laktosefrei,Laktosefrei,de_DE
 product.info.additional.characteristics.laktosefrei,Lactose free,en_US
-product.info.additional.characteristics.glutenfrei,"Bez lepku",de_DE
+product.info.additional.characteristics.glutenfrei,"Bez lepku",cs_CZ
 product.info.additional.characteristics.glutenfrei,Glutenfrei,de_DE
 product.info.additional.characteristics.glutenfrei,Gluten free,en_US
 product.info.additional.characteristics.fairtrade,Fairtrade,cs_CZ
@@ -4458,7 +4460,7 @@ mail.invoice.table.name,Name,en_US
 mail.invoice.table.tax,"Sazba daně",cs_CZ
 mail.invoice.table.tax,Steuersatz,de_DE
 mail.invoice.table.tax,Tax Rate,en_US
-mail.invoice.table.price,"Jednotková cena <br/> brutto",de_DE
+mail.invoice.table.price,"Jednotková cena <br/> brutto",cs_CZ
 mail.invoice.table.price,Einzelpreis<br/>Brutto,de_DE
 mail.invoice.table.price,Unit price<br/>Gross,en_US
 mail.invoice.table.sum,"Pol.<br/>Brutto",cs_CZ
