@@ -146,9 +146,7 @@ class ProductMapping
                     }
                 }
                 if ($key == 'bruttoWeightKg') {
-                    if ($this->trimValue($item["saleUnit"]) == 'KG'
-                        && $this->trimValue($item["amount"]) == '1.0'
-                        && $this->trimValue($item["sellUnitSizeText"]) == null) {
+                    if ($item["articleType"] === 1) {
                         $d[$this->importSchemaPropertyNameMap[$key][0]] = $item[$key];
                     } else {
                         $d[$this->importSchemaPropertyNameMap[$key][0]] = null;
