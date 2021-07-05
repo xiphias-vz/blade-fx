@@ -29,4 +29,6 @@ sections:
         import-stock-opa:
             command: "vendor/bin/console data:import product-stock -f spryker/5.globus_article_instock.4012.csv -a UpdateAvailabilityAfterImportPlugin -vvv --no-ansi || true"
 
-
+    import-alternative-eans:
+        import-alternative-eans:
+            command: "vendor/bin/console data:import alternative-ean -f spryker/99.globusCZ_article_gtins.csv -vvv --no-ansi || true"

@@ -8,6 +8,7 @@ use Pyz\Shared\CollectNumber\CollectNumberConstants;
 use Pyz\Shared\DataImport\DataImportConstants;
 use Pyz\Shared\DummyPayment\DummyPaymentConfig;
 use Pyz\Shared\GoogleTagManager\GoogleTagManagerConstants;
+use Pyz\Shared\CodeBuckets\CodeBucketConstants;
 use Pyz\Shared\Invoice\InvoiceConstants;
 use Pyz\Shared\Matomo\MatomoConstants;
 use Pyz\Shared\Oms\OmsConstants;
@@ -868,6 +869,9 @@ $config[StoreConstants::STORE_NAMES] = [
 
 // ----------- Google Tag Manager
 $config[GoogleTagManagerConstants::CONTAINER_ID] = 'GTM-KN8QSGS';
+
+
+$config[CodeBucketConstants::CURRENCY_SYMBOL] = '€';
 
 // ---------- Customer dropdowns
 $config[\Pyz\Shared\Customer\CustomerConstants::CUSTOMER_COUNTRY] = [

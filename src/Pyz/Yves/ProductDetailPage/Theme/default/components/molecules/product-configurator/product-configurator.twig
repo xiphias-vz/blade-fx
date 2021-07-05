@@ -11,6 +11,7 @@
     depositPrice: null,
     tags: [],
     preisProKg: null,
+    currencySymbol: app.currentCurrencySymbol,
 } %}
 
 {% set options = [] %}
@@ -103,11 +104,11 @@
             <div class="text-secondary">
 
                 {% if data.preisProKg is not null and data.product.attributes.grundeinheit > 0 %}
-                    {{(data.preisProKg / 100 ) | round(2, 'common') | replace('.', ',') }} €/{{ data.product.attributes.grundpreismasseinheit }}
+                    {{(data.preisProKg / 100 ) | round(2, 'common') | replace('.', ',') }} {{ data.currencySymbol }}/{{ data.product.attributes.grundpreismasseinheit }}
                 {% elseif data.preisProKg is null and data.product.attributes.grundeinheit == 0 %}
 
                 {% else %}
-                    {{ ((((data.product.price / 100) / productSaleVolume)) * data.product.attributes.grundeinheit ) | round(2, 'common') | replace('.', ',') }} €/{{ data.product.attributes.grundeinheit }} {{ data.product.attributes.grundpreismasseinheit }}
+                    {{ ((((data.product.price / 100) / productSaleVolume)) * data.product.attributes.grundeinheit ) | round(2, 'common') | replace('.', ',') }} {{ data.currencySymbol }}/{{ data.product.attributes.grundeinheit }} {{ data.product.attributes.grundpreismasseinheit }}
                 {% endif %}
 
             </div>

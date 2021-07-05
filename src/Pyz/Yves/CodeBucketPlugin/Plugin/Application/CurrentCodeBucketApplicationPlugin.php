@@ -11,9 +11,13 @@ use Spryker\Service\Container\ContainerInterface;
 use Spryker\Shared\ApplicationExtension\Dependency\Plugin\ApplicationPluginInterface;
 use Spryker\Yves\Kernel\AbstractPlugin;
 
+/**
+ * @method \Pyz\Yves\CodeBucketPlugin\CodeBucketPluginConfig getConfig()
+ */
 class CurrentCodeBucketApplicationPlugin extends AbstractPlugin implements ApplicationPluginInterface
 {
     public const CURRENT_CODE_BUCKET = 'currentCodeBucket';
+    public const CURRENT_CURRENCY_SYMBOL = 'currentCurrencySymbol';
 
     /**
      * @param \Spryker\Service\Container\ContainerInterface $container
@@ -22,6 +26,8 @@ class CurrentCodeBucketApplicationPlugin extends AbstractPlugin implements Appli
      */
     public function provide(ContainerInterface $container): ContainerInterface
     {
+        $container = $this->getCurrentCurrency($container);
+
         return $this->getCurrentCodeBucket($container);
     }
 
@@ -34,6 +40,20 @@ class CurrentCodeBucketApplicationPlugin extends AbstractPlugin implements Appli
     {
         $container->set(static::CURRENT_CODE_BUCKET, function () {
             return getenv('SPRYKER_CODE_BUCKET') ?? null;
+        });
+
+        return $container;
+    }
+
+    /**
+     * @param \Spryker\Service\Container\ContainerInterface $container
+     *
+     * @return \Spryker\Service\Container\ContainerInterface
+     */
+    protected function getCurrentCurrency(ContainerInterface $container): ContainerInterface
+    {
+        $container->set(static::CURRENT_CURRENCY_SYMBOL, function () {
+            return $this->getConfig()->getCurrentCurrencySymbol();
         });
 
         return $container;

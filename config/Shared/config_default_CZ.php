@@ -1,6 +1,7 @@
 <?php
 
 use Pyz\Shared\Application\ApplicationConstants;
+use Pyz\Shared\CodeBuckets\CodeBucketConstants;
 use Pyz\Shared\GsoaRestApiClient\Provider\TokenProvider;
 use Pyz\Shared\ProductImage\ProductImageConstants;
 use Pyz\Shared\Store\StoreConstants;
@@ -16,6 +17,9 @@ $config[StoreConstants::STORE_NAMES] = [
 
 // ----------- Application
 $config[ApplicationConstants::CURRENCY_CODE] = 'CZK';
+
+// ----------- Currency symbol
+$config[CodeBucketConstants::CURRENCY_SYMBOL] = 'Kč';
 
 // ----------- GSOA API
 $config[TokenProvider::GSOA_CLIENT_ID] = "webAppSpryker";

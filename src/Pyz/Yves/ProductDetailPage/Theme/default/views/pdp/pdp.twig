@@ -3,9 +3,7 @@
 {% define data = {
     product: _view.product,
     productUrl: _view.productUrl,
-
     cart: _view.cart,
-
     title: product.metaTitle | default(_view.product.name),
     metaTitle: product.metaTitle | default(_view.product.name),
     metaDescription: _view.product.metaDescription | default,
