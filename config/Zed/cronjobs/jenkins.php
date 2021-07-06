@@ -175,6 +175,15 @@ if ($storeCodeBucket == 'CZ') {
         'stores' => ['OPA'],
     ];
 
+    // Export orders every day
+    $jobs[] = [
+        'name' => 'export-orders',
+        'command' => '$PHP_BIN vendor/bin/console data:export --config order_export_config.yml',
+        'schedule' => '0 1 * * *',
+        'enable' => true,
+        'stores' => ['OPA'],
+    ];
+
     /* Sitemap generator*/
     $jobs[] =
     [
@@ -216,6 +225,15 @@ if ($storeCodeBucket == 'CZ') {
         'name' => 'data-import-images',
         'command' => 'vendor/bin/install -r product-images-import',
         'schedule' => '0 20 * * *',
+        'enable' => true,
+        'stores' => ['EIN'],
+    ];
+
+    // Export orders every day
+    $jobs[] = [
+        'name' => 'export-orders',
+        'command' => '$PHP_BIN vendor/bin/console data:export --config order_export_config.yml',
+        'schedule' => '0 1 * * *',
         'enable' => true,
         'stores' => ['EIN'],
     ];
