@@ -123,8 +123,8 @@ class PasswordController extends SprykerPasswordController
     {
         $globus_api_credentials = Config::get(CustomerConstants::GLOBUS_API_CONSTANTS);
         $apiKey = '';
-        if (isset($globus_api_credentials[CustomerConstants::GLOBUS_API_CREDENTIALS][CustomerConstants::GLOBUS_API_KEY_NO_SCREEN])) {
-            $apiKey = $globus_api_credentials[CustomerConstants::GLOBUS_API_CREDENTIALS][CustomerConstants::GLOBUS_API_KEY_NO_SCREEN];
+        if (isset($globus_api_credentials[CustomerConstants::GLOBUS_API_CREDENTIALS][CustomerConstants::GLOBUS_API_KEY])) {
+            $apiKey = $globus_api_credentials[CustomerConstants::GLOBUS_API_CREDENTIALS][CustomerConstants::GLOBUS_API_KEY];
         }
 
         return $apiKey;
@@ -137,8 +137,8 @@ class PasswordController extends SprykerPasswordController
     {
         $globus_api_credentials = Config::get(CustomerConstants::GLOBUS_API_CONSTANTS);
         $apiSecretKey = '';
-        if (isset($globus_api_credentials[CustomerConstants::GLOBUS_API_CREDENTIALS][CustomerConstants::GLOBUS_API_SECRET_KEY_NO_SCREEN])) {
-            $apiSecretKey = $globus_api_credentials[CustomerConstants::GLOBUS_API_CREDENTIALS][CustomerConstants::GLOBUS_API_SECRET_KEY_NO_SCREEN];
+        if (isset($globus_api_credentials[CustomerConstants::GLOBUS_API_CREDENTIALS][CustomerConstants::GLOBUS_API_SECRET_KEY])) {
+            $apiSecretKey = $globus_api_credentials[CustomerConstants::GLOBUS_API_CREDENTIALS][CustomerConstants::GLOBUS_API_SECRET_KEY];
         }
 
         return $apiSecretKey;
@@ -151,8 +151,8 @@ class PasswordController extends SprykerPasswordController
     {
         $globus_api_credentials = Config::get(CustomerConstants::GLOBUS_API_CONSTANTS);
         $urlPrefix = '';
-        if (isset($globus_api_credentials[CustomerConstants::GLOBUS_API_CREDENTIALS][CustomerConstants::GLOBUS_API_URL_NO_SCREEN])) {
-            $urlPrefix = $globus_api_credentials[CustomerConstants::GLOBUS_API_CREDENTIALS][CustomerConstants::GLOBUS_API_URL_NO_SCREEN];
+        if (isset($globus_api_credentials[CustomerConstants::GLOBUS_API_CREDENTIALS][CustomerConstants::GLOBUS_API_URL])) {
+            $urlPrefix = $globus_api_credentials[CustomerConstants::GLOBUS_API_CREDENTIALS][CustomerConstants::GLOBUS_API_URL];
         }
 
         return $urlPrefix;

@@ -31,10 +31,6 @@ interface CustomerConstants
     public const GLOBUS_API_KEY = 'globusApiKeyNoScreen';
     public const GLOBUS_API_SECRET_KEY = 'globusApiSecretKeyNoScreen';
 
-    public const GLOBUS_API_URL_NO_SCREEN = 'globusApiUrlNoScreen';
-    public const GLOBUS_API_KEY_NO_SCREEN = 'globusApiKeyNoScreen';
-    public const GLOBUS_API_SECRET_KEY_NO_SCREEN = 'globusApiSecretKeyNoScreen';
-
     public const GOOGLE_CAPTCHA_CONSTANTS = 'GOOGLE_CAPTCHA_CONSTANTS';
     public const GOOGLE_CAPTCHA_CREDENTIALS = 'google_captcha_credentials';
     public const GOOGLE_CAPTCHA_KEY = 'google_captcha_site_key';
