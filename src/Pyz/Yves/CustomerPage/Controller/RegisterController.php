@@ -28,13 +28,12 @@ use Symfony\Component\HttpFoundation\Request;
  */
 class RegisterController extends SprykerShopRegisterController
 {
-    const FIRST_NAME = 'firstName';
-    const LAST_NAME = 'lastName';
-    const STREET = 'street';
-    const HOUSE_NUMBER = 'houseNumber';
-    const ZIP = 'zip';
-    const CITY = 'city';
-
+    public const FIRST_NAME = 'firstName';
+    public const LAST_NAME = 'lastName';
+    public const STREET = 'street';
+    public const HOUSE_NUMBER = 'houseNumber';
+    public const ZIP = 'zip';
+    public const CITY = 'city';
 
     /**
      * @param \Symfony\Component\HttpFoundation\Request $request
@@ -142,12 +141,12 @@ class RegisterController extends SprykerShopRegisterController
     }
 
     /**
-     * @param Request $request
-     * @return JsonResponse
+     * @param \Symfony\Component\HttpFoundation\Request $request
+     *
+     * @return \Symfony\Component\HttpFoundation\JsonResponse
      */
     public function getCustomerDataAPIAction(Request $request)
     {
-
         $firstName = $request->request->get(static::FIRST_NAME);
         $lastName = $request->request->get(static::LAST_NAME);
         $street = $request->request->get(static::STREET);
@@ -174,7 +173,7 @@ class RegisterController extends SprykerShopRegisterController
 
         $curl = curl_init();
 
-        curl_setopt_array($curl, array(
+        curl_setopt_array($curl, [
             CURLOPT_URL => $fullUrl,
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_ENCODING => '',
@@ -184,12 +183,12 @@ class RegisterController extends SprykerShopRegisterController
             CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
             CURLOPT_CUSTOMREQUEST => 'POST',
             CURLOPT_POSTFIELDS => $data,
-            CURLOPT_HTTPHEADER => array(
+            CURLOPT_HTTPHEADER => [
                 'APIKey: ' . $apiKey,
                 'APISecret: ' . $apiSecret,
-                'Content-Type: application/json'
-            ),
-        ));
+                'Content-Type: application/json',
+            ],
+        ]);
 
         $result = curl_exec($curl);
         curl_close($curl);

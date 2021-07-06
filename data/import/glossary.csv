@@ -4595,7 +4595,28 @@ customer.account.passwordChange,Passwortänderung,de_DE
 show_more.btn.title,"Dozvědět se víc",cs_CZ
 show_more.btn.title,Mehr erfahren,de_DE
 show_more.btn.title,Show more,en_US
-globus.metadata,"Globus | Naše Globus služba Objednej& vyzvedni | jednoduše objednejte online ✅ přes 8.000 artiklů ✅ rychle vyzvednout na marketu ✅ v obvyklé Globus kvalitě ✅ ",cs_CZ
+my_market.link,Mein Markt,de_DE
+my_market.link,My marketplace,en_US
+product.find,Produkte finden,de_DE
+product.find,Find products,en_US
+product.buy,Produkte kaufen,de_DE
+product.buy,Buy products,en_US
+service.fee.customers,"nur 1,99€ Servicegebühren für Mein Globus Kunden",de_DE
+service.fee.customers,"only 1.99€ service fees for Mein Globus customers",en_US
+without.contact.shop&pay,Kontaktlos einkaufen & bezahlen,de_DE
+without.contact.shop&pay,Shop and pay without contact,en_US
+payback.upper,PAYBACK,de_DE
+payback.upper,PAYBACK,en_US
+customer.shopping_list,Einkaufsliste,de_DE
+customer.shopping_list,Shopping list,en_US
+shopping_list.overview.empty,Sie haben noch keine Einkaufsliste.,de_DE
+shopping_list.overview.empty,You do not have any shopping lists yet.,en_US
+shopping_list.overview.add_new,"Einkaufsliste hinzufügen",de_DE
+shopping_list.overview.add_new,Add shopping list,en_US
+customer.account.shopping_list.item.added,The item was added to your shopping list,en_US
+customer.account.shopping_list.item.added,Der Artikel wurde deiner Einkaufsliste hinzugefügt,de_DE
+customer.account.shopping_list.item.failed,Failed to add product to shopping list.,en_US
+customer.account.shopping_list.item.failed,Hinzufügen zu die Einkaufsliste fehlgeschlagen.,de_DE
 globus.metadata,Globus | Unser Globus Bestell & Abholservice | einfach online bestellen ✅ über 8.000 Artikel ✅ schnell am Markt abholen ✅ in gewohnter Globus Qualität ✅ ,de_DE
 globus.metadata,Globus | Unser Globus Bestell & Abholservice | einfach online bestellen ✅ über 8.000 Artikel ✅ schnell am Markt abholen ✅ in gewohnter Globus Qualität ✅ ,en_US
 checkout.step.customer.login.invalidPassword,Ihr eingegebees Passwort Ist falsch,de_DE
@@ -4612,6 +4633,21 @@ login.modal.register.now,Jetzt registrieren,de_DE
 login.modal.register.now,Register now,en_US
 login.modal.register.new.in.service.text,> Neu beim Abholservice?,de_DE
 login.modal.register.new.in.service.text,> New to the pick-up service?,en_US
+checkout.customer.submit_registration,Bestätigen,de_DE
+checkout.customer.submit_modal_title,Adressprüfung,de_DE
+checkout.customer.submit_modal_content,Ihre Adresse wurde angepasst. Alternativ können Sie Ihre ursprüngliche Eingabe übernehmen,de_DE
+checkout.customer.submit_modal_angepasste_adresse,Angepasste Adresse,de_DE
+checkout.customer.submit_modal_eingegebene_adresse,Eingegebene Adresse,de_DE
+payback.text.part.one,1 °P ,de_DE
+payback.text.part.one,1 °P ,en_US
+payback.text.part.two, pro 2 Euro Warenwert,de_DE
+payback.text.part.two, pro 2 Euro Warenwert,en_US
+login.modal.register.now,Jetzt registrieren,de_DE
+login.modal.register.now,Register now,en_US
+login.modal.register.new.in.service.text,> Neu beim Abholservice?,de_DE
+login.modal.register.new.in.service.text,> New to the pick-up service?,en_US
+checkout.customer.register_firstPharagraph,"Um aktuelle News und Coupons zu nutzen bestätigen Sie bitte ihre E-Mail Adresse.",de_DE
+checkout.customer.register_secondPharagraph,"Wenn Sie Scan & Go nutzen möchten, lassen Sie sich an der Infotheke In Ihrem Markt freischalten",de_DEFliber
 customer.login.form.join_now,Jetzt registrieren,de_DE
 customer.login.form.join_now,Join now,en_US
 my_market.link,Mein Markt,de_DE

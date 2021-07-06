@@ -8,7 +8,7 @@
 namespace Pyz\Zed\AssortmentZone\Persistence;
 
 use Generated\Shared\Transfer\AssortmentZoneTransfer;
-use Orm\Zed\AssortmentZone\Persistence\PyzAssortmentZone;
+use Orm\Zed\AssortmentZone\Persistence\Base\PyzAssortmentZone;
 use Spryker\Zed\Kernel\Persistence\AbstractRepository;
 
 /**
@@ -38,7 +38,7 @@ class AssortmentZoneRepository extends AbstractRepository implements AssortmentZ
     }
 
     /**
-     * @param \Orm\Zed\AssortmentZone\Persistence\PyzAssortmentZone $assortmentZoneEntity
+     * @param \Orm\Zed\AssortmentZone\Persistence\Base\PyzAssortmentZone $assortmentZoneEntity
      * @param \Generated\Shared\Transfer\AssortmentZoneTransfer $assortmentZoneTransfer
      *
      * @return \Generated\Shared\Transfer\AssortmentZoneTransfer

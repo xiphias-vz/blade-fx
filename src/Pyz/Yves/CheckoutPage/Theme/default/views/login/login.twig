@@ -94,12 +94,6 @@
             cursor: pointer;
         }
 
-        .registrationLeftSideDiv {
-            display: flex;
-            flex-direction: column;
-            min-height: 56rem;
-        }
-
         .cancelFlex {
             margin-top:auto;
         }
@@ -107,7 +101,6 @@
         .cancelBtn {
             border: 1px solid;
         }
-
         #customerPasswordDiv, #ForgotPasswordLinkDiv, #btnLogin {
             display: none;
         }
@@ -182,7 +175,6 @@
         #link-to-address-modal{
             float: right;
         }
-
     </style>
 
     {% if data.currentCodeBucket=='CZ' %}
@@ -291,8 +283,8 @@
                             } only %}
                             {% endembed %}
 
-                        </div>
-
+                    </div>
+                    <div id="hiddenGuestForm">
                         {% embed molecule('form') with {
                             class: 'register-form js-login__guest' ~ (data.isGuest ? '' : ' is-hidden'),
                             modifiers: ['login', 'checkout-actions'],
@@ -328,10 +320,11 @@
                                 } only %}
                             {% endblock %}
                         {% endembed %}
-                    {% endblock %}
-                </div>
+                    </div>
+               {% endblock %}
             </div>
         </div>
+    </div>
 
         <script type="text/javascript">
             function gigyaRegistrationScreen() {
@@ -652,195 +645,195 @@
                 });
             }
 
-            var btnCheck = document.getElementById('btnCheckMailOrCard');
-            if(btnCheck != null)
+        var btnCheck = document.getElementById('btnCheckMailOrCard');
+        if(btnCheck != null)
+        {
+            btnCheck.addEventListener('click', function()
             {
-                btnCheck.addEventListener('click', function()
-                {
-                    var emailOrCardNumber = $("#customLoginForm_customer_email").val();
-                    const url = "/login/check-availability"
+               var emailOrCardNumber = $("#customLoginForm_customer_email").val();
+               const url = "/login/check-availability"
 
-                    if(emailOrCardNumber != ""){
-                        $.ajax(url, {
-                            type: 'POST',  // http method
-                            data: { id: emailOrCardNumber },  // data to submit
-                            success: function (data, status, xhr) {
-                                let response = JSON.parse(data);
-                                if(response.isAvailable === true){
-                                    $("#loginAPI").css("display", "none");
-                                    $("#additionalLoginForm").css("display", "block");
+                if(emailOrCardNumber != ""){
+                    $.ajax(url, {
+                        type: 'POST',  // http method
+                        data: { id: emailOrCardNumber },  // data to submit
+                        success: function (data, status, xhr) {
+                            let response = JSON.parse(data);
+                            if(response.isAvailable === true){
+                                $("#loginAPI").css("display", "none");
+                                $("#additionalLoginForm").css("display", "block");
 
-                                    $("#startRegistrationForm_customer_email").val(emailOrCardNumber);
-                                }
-                                else
-                                {
-                                    $("#customerPasswordDiv").css("display", "block");
-                                    $("#ForgotPasswordLinkDiv").css("display", "block");
-                                    $("#newUserHelpText").css("display", "none");
-                                    $('#btnCheckMailOrCard').css("display", "none");
-                                    $("#btnLogin").css("display", "block");
-                                    $("#emailCheckIcon").css("display", "block");
-
-                                }
-                            },
-                            error: function (jqXhr, textStatus, errorMessage) {
+                                $("#startRegistrationForm_customer_email").val(emailOrCardNumber);
                             }
-                        });
+                            else
+                            {
+                                $("#customerPasswordDiv").css("display", "block");
+                                $("#ForgotPasswordLinkDiv").css("display", "block");
+                                $("#newUserHelpText").css("display", "none");
+                                $('#btnCheckMailOrCard').css("display", "none");
+                                $("#btnLogin").css("display", "block");
+                                $("#emailCheckIcon").css("display", "block");
+
+                            }
+                        },
+                        error: function (jqXhr, textStatus, errorMessage) {
+                        }
+                    });
+                }
+                else {
+                    $("#loginAPI").css("display", "none");
+                    $("#additionalLoginForm").css("display", "block");
+                }
+            });
+        }
+
+        $("#btnLogin").click(function()
+        {
+            var emailOrCardNumber = $("#customLoginForm_customer_email").val();
+            var password = $("#customLoginForm_customer_password").val();
+            var captchaGeneratedToken = $("#captchaGeneratedToken").val();
+            const loginUrl = '/login/globus-login';
+
+            $.ajax(loginUrl, {
+                type: 'POST',  // http method
+                data: { id: emailOrCardNumber, password: password, captchaToken: captchaGeneratedToken  },  // data to submit
+                success: function (data, status, xhr) {
+                    let response = JSON.parse(data);
+                    console.log(response);
+
+                    if(response["successfullyLoggedIn"] === true){
+                        checkoutStep('login');
+                        document.querySelector("#loginForm_email.input").value = emailOrCardNumber;
+                        document.querySelector("#loginForm_password.input").value = password
+                        document.querySelector("#loginForm_data").value = JSON.stringify(response);
+                        document.getElementsByName("loginForm")[0].submit();
                     }
-                    else {
-                        $("#loginAPI").css("display", "none");
-                        $("#additionalLoginForm").css("display", "block");
+                    else{
+                        $("#customLoginForm_customer_password").css("border", "1px solid red");
+                        $("#forgotPasswordDiv").css("display", "block");
+
+                       /* if(response["showCaptcha"] === true){
+                            grecaptcha.ready(function() {
+                                grecaptcha.execute('{#{{ data.reCaptchaKey }}#}', {action: 'login'}).then(function(token) {
+                                    // Add your logic to submit to your backend server here.
+                                    $("#captchaGeneratedToken").val(token);
+                                });
+                            });
+                        }*/
                     }
-                });
+                },
+                error: function (jqXhr, textStatus, errorMessage) {
+                }
+            });
+        });
+
+        $("#btnCancelLogin").click(function(){
+            window.location.reload();
+        });
+
+        $("#btnCancelRegister").click(function(){
+            window.location.reload();
+        });
+
+        $("#passwordToggleEye").click(function(){
+            var el = $("#customLoginForm_customer_password")[0];
+            if(el.type === "password"){
+                el.type = "text";
+            }
+            else
+            {
+                el.type = "password";
             }
 
-            $("#btnLogin").click(function()
+            $("#passwordToggleEye").toggleClass("icon-eye");
+            $("#passwordToggleEye").toggleClass("icon-eyeclosed");
+        });
+
+        $("#startRegister_passwordToggleEye").click(function(){
+            var el = $("#startRegister__customer_password")[0];
+            if(el.type === "password"){
+                el.type = "text";
+            }
+            else
             {
-                var emailOrCardNumber = $("#customLoginForm_customer_email").val();
-                var password = $("#customLoginForm_customer_password").val();
-                var captchaGeneratedToken = $("#captchaGeneratedToken").val();
-                const loginUrl = '/login/globus-login';
+                el.type = "password";
+            }
 
-                $.ajax(loginUrl, {
-                    type: 'POST',  // http method
-                    data: { id: emailOrCardNumber, password: password, captchaToken: captchaGeneratedToken  },  // data to submit
-                    success: function (data, status, xhr) {
-                        let response = JSON.parse(data);
-                        console.log(response);
+            $("#startRegister_passwordToggleEye").toggleClass("icon-eye");
+            $("#startRegister_passwordToggleEye").toggleClass("icon-eyeclosed");
+        });
 
-                        if(response["successfullyLoggedIn"] === true){
-                            checkoutStep('login');
-                            document.querySelector("#loginForm_email.input").value = emailOrCardNumber;
-                            document.querySelector("#loginForm_password.input").value = password
-                            document.querySelector("#loginForm_data").value = JSON.stringify(response);
-                            document.getElementsByName("loginForm")[0].submit();
-                        }
-                        else{
-                            $("#customLoginForm_customer_password").css("border", "1px solid red");
-                            $("#forgotPasswordDiv").css("display", "block");
+        $("#startRegister__customer_password").focusout(function(ev){
+            let pass = ev.currentTarget.value;
 
-                            if(response["showCaptcha"] === true){
-                                grecaptcha.ready(function() {
-                                    grecaptcha.execute('{{ data.reCaptchaKey }}', {action: 'login'}).then(function(token) {
-                                        // Add your logic to submit to your backend server here.
-                                        $("#captchaGeneratedToken").val(token);
-                                    });
-                                });
-                            }
-                        }
-                    },
-                    error: function (jqXhr, textStatus, errorMessage) {
-                    }
-                });
-            });
+            $("#startRegister_passwordCheckBoxes").css("display", "block");
+            if(pass.length > 8){
+                $("#passwordCheckBoxes_length").prop("checked", "true");
+                $("#passwordCheckBoxes_length").removeClass("checkboxError");
+            }
+            else {
+                $("#passwordCheckBoxes_length").removeAttr("checked");
+                $("#passwordCheckBoxes_length").addClass("checkboxError");
+            }
 
-            $("#btnCancelLogin").click(function(){
-                window.location.reload();
-            });
+            let regSpecialChars = /\W/;
+            if(regSpecialChars.test(pass)){
+                $("#passwordCheckBoxes_specChar").prop("checked", "true");
+                $("#passwordCheckBoxes_specChar").removeClass("checkboxError");
+            }
+            else {
+                $("#passwordCheckBoxes_specChar").removeAttr("checked");
+                $("#passwordCheckBoxes_specChar").addClass("checkboxError");
+            }
 
-            $("#btnCancelRegister").click(function(){
-                window.location.reload();
-            });
+            let regDigits = /\d/;
+            if(regDigits.test(pass)){
+                $("#passwordCheckBoxes_digit").prop("checked", "true");
+                $("#passwordCheckBoxes_digit").removeClass("checkboxError");
+            }
+            else {
+                $("#passwordCheckBoxes_digit").removeAttr("checked");
+                $("#passwordCheckBoxes_digit").addClass("checkboxError");
+            }
 
-            $("#passwordToggleEye").click(function(){
-                var el = $("#customLoginForm_customer_password")[0];
-                if(el.type === "password"){
-                    el.type = "text";
-                }
-                else
-                {
-                    el.type = "password";
-                }
+            let regLetters = /[a-zA-Z]/;
+            if(regLetters.test(pass)){
+                $("#passwordCheckBoxes_letter").prop("checked", "true");
+                $("#passwordCheckBoxes_letter").removeClass("checkboxError");
+            }
+            else {
+                $("#passwordCheckBoxes_letter").removeAttr("checked");
+                $("#passwordCheckBoxes_letter").addClass("checkboxError");
+            }
 
-                $("#passwordToggleEye").toggleClass("icon-eye");
-                $("#passwordToggleEye").toggleClass("icon-eyeclosed");
-            });
+            var reg = /^(?=.*\d)(?=.*[a-zA-Z])(?=.*\W)(?!.*\s).{8,}$/;
+            if (reg.test(pass)) {
+                $("#btnContinueRegistration").removeAttr("disabled");
+            }
+            else {
+                $("#startRegister__customer_password").css("border", "2px solid red");
+                $("#btnContinueRegistration").prop("disabled", "true");
+            }
 
-            $("#startRegister_passwordToggleEye").click(function(){
-                var el = $("#startRegister__customer_password")[0];
-                if(el.type === "password"){
-                    el.type = "text";
-                }
-                else
-                {
-                    el.type = "password";
-                }
+        });
 
-                $("#startRegister_passwordToggleEye").toggleClass("icon-eye");
-                $("#startRegister_passwordToggleEye").toggleClass("icon-eyeclosed");
-            });
+        $("#btnContinueRegistration").click(function(){
+            $("#additionalLoginForm").css("display", "none");
+            $("#checkoutCustomerRegister").css("display", "block");
+            $("#registerForm_customer_email").val($("#startRegistrationForm_customer_email").val());
+            $("#registerForm_customer_password_pass").val($("#startRegister__customer_password").val());
+            $("#registerForm_customer_password_confirm").val($("#startRegister__customer_password").val());
+        });
 
-            $("#startRegister__customer_password").focusout(function(ev){
-                let pass = ev.currentTarget.value;
+        $("#btnContinueRegistrationAsGuest").click(function(){
+            $("#guestForm_customer_email").val($("#startRegistrationForm_customer_email").val());
+            document.getElementsByName("guestForm")[0].submit();
+        });
 
-                $("#startRegister_passwordCheckBoxes").css("display", "block");
-                if(pass.length > 8){
-                    $("#passwordCheckBoxes_length").prop("checked", "true");
-                    $("#passwordCheckBoxes_length").removeClass("checkboxError");
-                }
-                else {
-                    $("#passwordCheckBoxes_length").removeAttr("checked");
-                    $("#passwordCheckBoxes_length").addClass("checkboxError");
-                }
-
-                let regSpecialChars = /\W/;
-                if(regSpecialChars.test(pass)){
-                    $("#passwordCheckBoxes_specChar").prop("checked", "true");
-                    $("#passwordCheckBoxes_specChar").removeClass("checkboxError");
-                }
-                else {
-                    $("#passwordCheckBoxes_specChar").removeAttr("checked");
-                    $("#passwordCheckBoxes_specChar").addClass("checkboxError");
-                }
-
-                let regDigits = /\d/;
-                if(regDigits.test(pass)){
-                    $("#passwordCheckBoxes_digit").prop("checked", "true");
-                    $("#passwordCheckBoxes_digit").removeClass("checkboxError");
-                }
-                else {
-                    $("#passwordCheckBoxes_digit").removeAttr("checked");
-                    $("#passwordCheckBoxes_digit").addClass("checkboxError");
-                }
-
-                let regLetters = /[a-zA-Z]/;
-                if(regLetters.test(pass)){
-                    $("#passwordCheckBoxes_letter").prop("checked", "true");
-                    $("#passwordCheckBoxes_letter").removeClass("checkboxError");
-                }
-                else {
-                    $("#passwordCheckBoxes_letter").removeAttr("checked");
-                    $("#passwordCheckBoxes_letter").addClass("checkboxError");
-                }
-
-                var reg = /^(?=.*\d)(?=.*[a-zA-Z])(?=.*\W)(?!.*\s).{8,}$/;
-                if (reg.test(pass)) {
-                    $("#btnContinueRegistration").removeAttr("disabled");
-                }
-                else {
-                    $("#startRegister__customer_password").css("border", "2px solid red");
-                    $("#btnContinueRegistration").prop("disabled", "true");
-                }
-
-            });
-
-            $("#btnContinueRegistration").click(function(){
-                $("#additionalLoginForm").css("display", "none");
-                $("#checkoutCustomerRegister").css("display", "block");
-                $("#registerForm_customer_email").val($("#startRegistrationForm_customer_email").val());
-                $("#registerForm_customer_password_pass").val($("#startRegister__customer_password").val());
-                $("#registerForm_customer_password_confirm").val($("#startRegister__customer_password").val());
-            });
-
-            $("#btnContinueRegistrationAsGuest").click(function(){
-                $("#guestForm_customer_email").val($("#startRegistrationForm_customer_email").val());
-                document.getElementsByName("guestForm")[0].submit();
-            });
-
-            $("#newUserHelpText").click(function(){
-                $("#loginAPI").css("display", "none");
-                $("#additionalLoginForm").css("display", "block");
-            });
+        $("#newUserHelpText").click(function(){
+            $("#loginAPI").css("display", "none");
+            $("#additionalLoginForm").css("display", "block");
+        });
 
         </script>
 

@@ -23,7 +23,6 @@ use Pyz\Yves\CustomerPage\Form\FormFactory;
 use Pyz\Yves\CustomerPage\Plugin\Provider\CustomerAuthenticationFailureHandler;
 use Pyz\Yves\CustomerPage\Plugin\Provider\CustomerAuthenticationSuccessHandler;
 use Pyz\Yves\CustomerPage\Plugin\Provider\CustomerUserProvider;
-use Pyz\Yves\CustomerPage\Plugin\Provider\CustomerUserProviderInterface;
 use Pyz\Yves\MerchantSwitcherWidget\Plugin\SelectedMerchantCookiePlugin;
 use Pyz\Yves\ShopApplication\ShopApplicationDependencyProvider;
 use Spryker\Client\Session\SessionClientInterface;
@@ -196,9 +195,9 @@ class CustomerPageFactory extends SprykerShopCustomerPageFactory
     }
 
     /**
-     * @return \Pyz\Yves\CustomerPage\Plugin\Provider\CustomerUserProviderInterface
+     * @return \Pyz\Yves\CustomerPage\Plugin\Provider\CustomerUserProvider
      */
-    public function createCustomerUserProvider(): CustomerUserProviderInterface
+    public function createCustomerUserProvider(): CustomerUserProvider
     {
         return new CustomerUserProvider();
     }

@@ -7,7 +7,7 @@
 
 namespace Pyz\Zed\AssortmentZone\Persistence;
 
-use Orm\Zed\AssortmentZone\Persistence\PyzAssortmentZoneQuery;
+use Orm\Zed\AssortmentZone\Persistence\Base\PyzAssortmentZoneQuery;
 use Spryker\Zed\Kernel\Persistence\AbstractPersistenceFactory;
 
 /**
@@ -17,7 +17,7 @@ use Spryker\Zed\Kernel\Persistence\AbstractPersistenceFactory;
 class AssortmentZonePersistenceFactory extends AbstractPersistenceFactory
 {
     /**
-     * @return \Orm\Zed\AssortmentZone\Persistence\PyzAssortmentZoneQuery
+     * @return \Orm\Zed\AssortmentZone\Persistence\Base\PyzAssortmentZoneQuery
      */
     public function createAssortmentZonePersistenceQuery(): PyzAssortmentZoneQuery
     {

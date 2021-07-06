@@ -8,8 +8,7 @@
 namespace Pyz\Yves\CustomerPageCZ;
 
 use Pyz\Yves\CustomerPage\CustomerPageFactory as LocalCustomerPageFactory;
-use Pyz\Yves\CustomerPage\Plugin\Provider\CustomerUserProviderInterface;
-use Pyz\Yves\CustomerPageCZ\Plugin\Provider\CustomerUserProvider;
+use Pyz\Yves\CustomerPage\Plugin\Provider\CustomerUserProvider;
 
 /**
  * @method \Pyz\Yves\CustomerPage\CustomerPageConfig getConfig()
@@ -17,9 +16,9 @@ use Pyz\Yves\CustomerPageCZ\Plugin\Provider\CustomerUserProvider;
 class CustomerPageFactory extends LocalCustomerPageFactory
 {
     /**
-     * @return \Pyz\Yves\CustomerPage\Plugin\Provider\CustomerUserProviderInterface
+     * @return \Pyz\Yves\CustomerPage\Plugin\Provider\CustomerUserProvider
      */
-    public function createCustomerUserProvider(): CustomerUserProviderInterface
+    public function createCustomerUserProvider(): CustomerUserProvider
     {
         return new CustomerUserProvider();
     }

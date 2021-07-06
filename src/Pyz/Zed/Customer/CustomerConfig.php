@@ -13,6 +13,9 @@ use Spryker\Shared\Customer\CustomerConstants;
 use Spryker\Shared\SequenceNumber\SequenceNumberConstants;
 use Spryker\Zed\Customer\CustomerConfig as SprykerCustomerConfig;
 
+/**
+ * @method \Spryker\Shared\Customer\CustomerConfig getSharedConfig()
+ */
 class CustomerConfig extends SprykerCustomerConfig
 {
     /**

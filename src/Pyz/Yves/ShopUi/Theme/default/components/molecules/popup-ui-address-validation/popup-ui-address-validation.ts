@@ -6,6 +6,7 @@ export default class PopupUiAddressValidation extends Component{
     protected linkToAddressModal;
     protected closeModalBtn;
     protected submitRegistrationFormButton;
+    protected cancelRegistrationFormButton;
     protected $registrationForm;
     protected $firstName;
     protected $lastName;
@@ -43,6 +44,7 @@ export default class PopupUiAddressValidation extends Component{
         this.linkToAddressModal = document.getElementById(this.getLinkToAddressModal);
         this.closeModalBtn = this.$this.find(this.getCloseButtonSelector);
         this.submitRegistrationFormButton = document.getElementById(this.getSubmitFormButton);
+        this.cancelRegistrationFormButton = document.getElementById(this.getCancelRegisterButton);
         this.$registrationForm = document.getElementsByName(this.registerForm);
         this.$firstName = document.getElementById(this.getFirstName);
         this.$lastName = document.getElementById(this.getLastName);
@@ -88,7 +90,14 @@ export default class PopupUiAddressValidation extends Component{
 
         if(this.submitRegistrationFormButton != null){
             this.submitRegistrationFormButton.addEventListener('click', () => {
-               this.submitRegistrationForm();
+                this.submitRegistrationForm();
+                this.emptyDivElements();
+            });
+        }
+
+        if(this.cancelRegistrationFormButton != null){
+            this.cancelRegistrationFormButton.addEventListener('click', () => {
+                this.$this.toggleClass(this.showClass);
                 this.emptyDivElements();
             });
         }
@@ -115,6 +124,8 @@ export default class PopupUiAddressValidation extends Component{
         this.$userNameElement.classList.add(this.getDisableTextClass);
         this.$userZipCity.classList.add(this.getDisableTextClass);
         this.$userStreetHouseNo.classList.add(this.getDisableTextClass);
+
+        this.$userDiv.classList.remove(this.getSelectedDivClass);
     }
 
     protected disableApiContent(): void{
@@ -122,6 +133,8 @@ export default class PopupUiAddressValidation extends Component{
         this.$apiNameElement.classList.add(this.getDisableTextClass);
         this.$apiZipCity.classList.add(this.getDisableTextClass);
         this.$apiStreetHouseNo.classList.add(this.getDisableTextClass);
+
+        this.$apiDiv.classList.remove(this.getSelectedDivClass);
     }
 
     protected enableUserContent(): void{
@@ -129,6 +142,8 @@ export default class PopupUiAddressValidation extends Component{
         this.$userNameElement.classList.remove(this.getDisableTextClass);
         this.$userZipCity.classList.remove(this.getDisableTextClass);
         this.$userStreetHouseNo.classList.remove(this.getDisableTextClass);
+
+        this.$userDiv.classList.add(this.getSelectedDivClass);
     }
 
     protected enableApiContent(): void{
@@ -136,6 +151,8 @@ export default class PopupUiAddressValidation extends Component{
         this.$apiNameElement.classList.remove(this.getDisableTextClass);
         this.$apiZipCity.classList.remove(this.getDisableTextClass);
         this.$apiStreetHouseNo.classList.remove(this.getDisableTextClass);
+
+        this.$apiDiv.classList.add(this.getSelectedDivClass);
     }
 
     protected clickedUserAddress(): void {
@@ -239,9 +256,7 @@ export default class PopupUiAddressValidation extends Component{
                     this.addContentToModal(parsedResponse);
                 }
             })
-            .catch(error => {
-               console.error(error);
-            });
+            .catch(error => {});
     }
 
     protected addContentToModal(data): void{
@@ -273,6 +288,10 @@ export default class PopupUiAddressValidation extends Component{
 
     get showClass(): string {
         return `${this.name}--show`;
+    }
+
+    get getCancelRegisterButton(): string{
+        return 'button-cancel-registration';
     }
 
     get getSubmitFormButton(): string{
@@ -361,5 +380,9 @@ export default class PopupUiAddressValidation extends Component{
 
     get getDisableTextClass(): string{
         return 'popup-ui-address-validation__disabledText';
+    }
+
+    get getSelectedDivClass(): string{
+        return 'selected-div';
     }
 }
