@@ -71,8 +71,6 @@ class RegisterForm extends SprykerRegisterForm
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $this
-            ->addEmailField($builder)
-            ->addPasswordField($builder, $options)
             ->addSalutationField($builder)
             ->addFirstNameField($builder)
             ->addLastNameField($builder);
@@ -300,7 +298,6 @@ class RegisterForm extends SprykerRegisterForm
                 'Mr' => 'customer.salutation.mr',
                 'Ms' => 'customer.salutation.ms',
                 'Divers' => 'customer.salutation.divers',
-                'Dr' => 'customer.salutation.dr',
             ]),
             'required' => true,
             'label' => 'address.salutation',

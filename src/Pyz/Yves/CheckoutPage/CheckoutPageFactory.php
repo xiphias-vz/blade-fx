@@ -74,4 +74,12 @@ class CheckoutPageFactory extends SprykerShopCheckoutPageFactory
     {
         return new FormFactory();
     }
+
+    /**
+     * @return \SprykerShop\Yves\CustomerPage\Plugin\AuthenticationHandler
+     */
+    public function getAuthenticationHandler()
+    {
+        return $this->getProvidedDependency(CustomerPageDependencyProvider::PLUGIN_AUTHENTICATION_HANDLER);
+    }
 }

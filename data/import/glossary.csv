@@ -1450,6 +1450,14 @@ checkout.customer.auth_as_login,Anmelden,de_DE
 checkout.customer.auth_as_login,"Přihlášení",cs_CZ
 checkout.step.customer.title,Login,en_US
 checkout.step.customer.title,Anmelden,de_DE
+checkout.step.customer.login.emailField.label,Email address or customer card number,en_US
+checkout.step.customer.login.emailField.label,E-mail-Addresse oder Kundenkartennummer,de_DE
+checkout.step.customer.login.emailField.placeholder,Enter your e-mail address or customer card number,en_US
+checkout.step.customer.login.emailField.placeholder,E-mail-Addresse oder Kundenkartennummer eingeben,de_DE
+checkout.step.customer.login.new_user_text,New to the pick-up service? Create your,en_US
+checkout.step.customer.login.new_user_text,Neu beim Abholservice? Erstellen Sie Ihr,de_DE
+checkout.step.customer.login.globus_account_text,Globus account,en_US
+checkout.step.customer.login.globus_account_text,Globus Konto,de_DE
 checkout.step.customer.title,"Přihlásit se",cs_CZ
 checkout.step.address.title,Address,en_US
 checkout.step.address.title,Abholstation,de_DE
@@ -4552,6 +4560,20 @@ show_more.btn.title,Show more,en_US
 globus.metadata,"Globus | Naše Globus služba Objednej& vyzvedni | jednoduše objednejte online ✅ přes 8.000 artiklů ✅ rychle vyzvednout na marketu ✅ v obvyklé Globus kvalitě ✅ ",cs_CZ
 globus.metadata,Globus | Unser Globus Bestell & Abholservice | einfach online bestellen ✅ über 8.000 Artikel ✅ schnell am Markt abholen ✅ in gewohnter Globus Qualität ✅ ,de_DE
 globus.metadata,Globus | Unser Globus Bestell & Abholservice | einfach online bestellen ✅ über 8.000 Artikel ✅ schnell am Markt abholen ✅ in gewohnter Globus Qualität ✅ ,en_US
+checkout.step.customer.login.invalidPassword,Ihr eingegebees Passwort Ist falsch,de_DE
+checkout.step.customer.login.invalidPassword,Your entered password is wrong,en_US
+checkout.step.customer.login.help_text,Do you need help?,en_US
+checkout.step.customer.login.help_text,Benötigen Sie Hilfe?,de_DE
+checkout.step.customer.login.create_customer_title,Create a customer account and take advantage of the benefits!,en_US
+checkout.step.customer.login.create_customer_title,Kundenkonto anlegen und Vorteile nutzen!,de_DE
+payback.text.part.one,1 °P ,de_DE
+payback.text.part.one,1 °P ,en_US
+payback.text.part.two, pro 2 Euro Warenwert,de_DE
+payback.text.part.two, pro 2 Euro Warenwert,en_US
+login.modal.register.now,Jetzt registrieren,de_DE
+login.modal.register.now,Register now,en_US
+login.modal.register.new.in.service.text,> Neu beim Abholservice?,de_DE
+login.modal.register.new.in.service.text,> New to the pick-up service?,en_US
 customer.login.form.join_now,Jetzt registrieren,de_DE
 customer.login.form.join_now,Join now,en_US
 my_market.link,Mein Markt,de_DE

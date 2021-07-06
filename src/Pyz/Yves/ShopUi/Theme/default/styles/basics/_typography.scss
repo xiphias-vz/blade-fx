@@ -201,6 +201,12 @@
     content: "\e93c";
     color: #4d4d4d;
 }
+.icon-eye:before {
+    content: "\e91b";
+}
+.icon-eyeclosed:before {
+    content: "\e91c";
+}
 
 
 @mixin basic-typography() {
