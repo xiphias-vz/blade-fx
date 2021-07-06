@@ -154,8 +154,9 @@ class CustomerPageRouteProviderPlugin extends SprykerCustomerPageRouteProviderPl
     }
 
     /**
-     * @param RouteCollection $routeCollection
-     * @return RouteCollection
+     * @param \Spryker\Yves\Router\Route\RouteCollection $routeCollection
+     *
+     * @return \Spryker\Yves\Router\Route\RouteCollection
      */
     public function addCustomerRegistrationAddressCheckRouter(RouteCollection $routeCollection): RouteCollection
     {
@@ -164,5 +165,4 @@ class CustomerPageRouteProviderPlugin extends SprykerCustomerPageRouteProviderPl
 
         return $routeCollection;
     }
-
 }

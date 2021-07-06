@@ -8,7 +8,6 @@
 namespace Pyz\Zed\DataImport\Business\Model\ProductConcrete;
 
 use DateTime;
-use Orm\Zed\AssortmentZone\Persistence\PyzAssortmentZoneQuery;
 use Orm\Zed\Locale\Persistence\SpyLocaleQuery;
 use Orm\Zed\Product\Persistence\SpyProduct;
 use Orm\Zed\Product\Persistence\SpyProductLocalizedAttributesQuery;
@@ -41,7 +40,6 @@ class ProductConcreteWriter extends PublishAwareStep implements DataImportStepIn
     public const KEY_LOCALIZED_ATTRIBUTES = 'localizedAttributes';
     public const KEY_LOCALES = 'locales';
     public const KEY_IS_ACTIVE = 'active';
-    public const PICK_ZONE = 'pickzone';
     public const ASSORTMENT_ZONE = 'assortmentzone';
 
     public const FILE_TYPE_PRODUCT = 1;
@@ -124,8 +122,6 @@ class ProductConcreteWriter extends PublishAwareStep implements DataImportStepIn
             ->filterBySku($dataSet[ProductConfig::KEY_PRODUCT_NUMBER])
             ->findOneOrCreate();
 
-        $this->setPickingAssortmentZone($dataSet);
-
         $idAbstract = $this->productRepository->getIdProductAbstractByAbstractSku(ProductAbstractWriterStep::getAbstractSku($dataSet));
 
         $productEntity
@@ -146,22 +142,6 @@ class ProductConcreteWriter extends PublishAwareStep implements DataImportStepIn
         $dataSet[PriceProductDataSet::ID_PRODUCT_CONCRETE] = $productEntity->getIdProduct();
 
         return $productEntity;
-    }
-
-    /**
-     * @param \Spryker\Zed\DataImport\Business\Model\DataSet\DataSetInterface $dataSet
-     *
-     * @return void
-     */
-    protected function setPickingAssortmentZone(DataSetInterface $dataSet): void
-    {
-        $pyzAssortmentZone = PyzAssortmentZoneQuery::create()
-            ->filterByAssortmentZone($dataSet[static::PICK_ZONE])
-            ->findOneOrCreate();
-
-        if ($pyzAssortmentZone->isNew() || $pyzAssortmentZone->isModified()) {
-            $pyzAssortmentZone->save();
-        }
     }
 
     /**

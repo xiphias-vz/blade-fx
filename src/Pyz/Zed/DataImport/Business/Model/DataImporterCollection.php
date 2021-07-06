@@ -92,7 +92,7 @@ class DataImporterCollection extends SprykerDataImporterCollection
                     SELECT distinct sp.assortment_zone
                     FROM spy_product sp
                     LEFT OUTER JOIN pyz_assortment_zone paz on paz.assortment_zone = sp.assortment_zone
-                    WHERE paz.id_assortment_zone is null');
+                    WHERE paz.id_assortment_zone is null and not sp.assortment_zone is null ');
         $statement->execute();
     }
 
