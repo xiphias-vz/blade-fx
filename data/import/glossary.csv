@@ -1465,6 +1465,23 @@ checkout.step.address.title,"Výdejní místo",cs_CZ
 checkout.step.shipment.title,Shipment,en_US
 checkout.step.shipment.title,Abholzeitpunkt,de_DE
 checkout.step.shipment.title,"Čas vyzvednutí",cs_CZ
+checkout.step.payback.title,Mit Ihrer PAYBACK Karte Punkte sammeln,en_US
+checkout.step.payback.title,Mit Ihrer PAYBACK Karte Punkte sammeln,de_DE
+checkout.step.payback.tooltip.title,So finden Sie Ihre Kundennummer,de_DE
+checkout.step.payback.tooltip.description,Kundennummer eingeben,de_DE
+checkout.step.payback.tooltip.paragraph,Bitte registrieren Sie ihre PAYBACK Karte. Auf der Rückseite Ihrer Karte finden SIe die 10-stellige Kundennummer,de_DE
+checkout.step.payback.name.description,Payback kundennummer,en_US
+checkout.step.payback.name.description,Payback kundennummer,de_DE
+checkout.step.payback.save,Speichern,en_US
+checkout.step.payback.save,Speichern,de_DE
+checkout.step.payback.error.message,Wrong payback number,en_US
+checkout.step.payback.error.message,Falsche payback nummer,de_DE
+checkout.step.payback.checkbox.mark,Für diese Bestellung PAYBACK Punkte sammeln,en_US
+checkout.step.payback.checkbox.mark,Für diese Bestellung PAYBACK Punkte sammeln,de_DE
+checkout.step.payback.checkbox.marked,Mein Globus mit PAYBACK,de_DE
+checkout.step.payback.label,Sie erhalten somit keinen Tankrabatt,de_DE
+checkout.step.payback.label.two,Um von allen Vorteilen zu profitieren,de_DE
+checkout.step.payback.label.three,verknüpfen Sie,de_DE
 checkout.step.shipment.note,"Bitte beachten Sie: Aufgrund von Kapazitätenengpässen sind eventuell leider nicht immer alle Lieferfenster verfügbar",de_DE
 checkout.step.shipment.note,"Please note: Due to capacity bottlenecks, unfortunately not all delivery windows are always available",en_US
 checkout.step.shipment.note,"Vezměte prosím na vědomí, že, vzhledem ke kapacitám, nejsou pro dodání vždy k dispozici všechny termíny",cs_CZ
@@ -1563,6 +1580,18 @@ checkout.step.success.link,"K mému účtu",cs_CZ
 checkout.step.error.title,Your order has not been placed.,en_US
 checkout.step.error.title,"Lieber Kunde, Ihre Bestellung konnte leider nicht platziert werden.",de_DE
 checkout.step.error.title,"Vážený zákazníku, vaši objednávku nebylo možné provést.",cs_CZ
+checkout.step.success.payback.not.connected,Alle Vorteile von Mein Globus und PAYBACK entdecken,de_DE
+checkout.step.success.payback.not.connected,Discover all the advantages of Mein Globus and PAYBACK,en_US
+checkout.step.success.payback.tip.one,PAYBACK Punkte sammeln und in Einkaufsgutscheine umwandeln,de_DE
+checkout.step.success.payback.tip.one,Collect PAYBACK points and convert them into shopping vouchers,en_US
+checkout.step.success.payback.tip.two,Mein Globus und PAYBACK Coupons einlösen,de_DE
+checkout.step.success.payback.tip.two,Redeem my Globus and PAYBACK coupons,en_US
+checkout.step.success.payback.tip.three,Tankeschön sammeln,de_DE
+checkout.step.success.payback.tip.three,Collect Tankeschön,en_US
+checkout.step.success.payback.tip.four,von exklusiven Vorteilen für Weinliebhaber und Weltentdecker profitieren,de_DE
+checkout.step.success.payback.tip.four,benefit from exclusive advantages for wine lovers and world explorers,en_US
+checkout.step.success.payback.discover,Jetzt entdecken,de_DE
+checkout.step.success.payback.discover,Now discover,en_US
 checkout.step.error.text,Something went wrong. Sorry.,en_US
 checkout.step.error.text,"Versuchen Sie es bitte später noch einmal oder kontaktieren Sie den Kundenservice. Ihre Bestellung wurde nicht platziert.",de_DE
 checkout.step.error.text,"Zkuste to prosím ještě jednou později nebo kontaktujte naší zákaznickou podporu. Vaše objednávka nebyla přijata.",cs_CZ

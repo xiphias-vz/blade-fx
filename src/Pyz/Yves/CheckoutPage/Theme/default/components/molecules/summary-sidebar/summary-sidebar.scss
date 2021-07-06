@@ -10,6 +10,109 @@
                 padding: rem(30);
                 margin-bottom: rem(30);
             }
+
+            &.payback-banner {
+                .payback-form-holder {
+                    margin-top: 10px;
+
+                    .form_payback {
+
+                        .payback-name-description {
+                            padding: rem(2);
+                        }
+
+                        .input-holder {
+                            width: 100%;
+                            display: flex;
+                            align-items: center;
+                            margin-top: 10px;
+
+                            .input-text {
+                                position: relative;
+                                width: 70%;
+
+                                .tooltip-background {
+                                    position: absolute;
+                                    top: 8px;
+                                    right: 5px;
+
+                                    .position-tool-tip {
+                                        position: relative;
+                                        .question__mark {
+                                            width: 1rem;
+                                            cursor: pointer;
+                                        }
+                                        &:hover {
+                                            .tooltip-information {
+                                                visibility: visible;
+                                                opacity: 1;
+                                            }
+                                        }
+                                        .tooltip-information {
+                                            visibility: hidden;
+                                            width: 400px;
+                                            background-color: #e5ecf6;
+                                            color: #000;
+                                            text-align: center;
+                                            padding: 5px 0;
+                                            position: absolute;
+                                            z-index: 1;
+                                            bottom: 166%;
+                                            left: -890%;
+                                            margin-left: -60px;
+                                            opacity: 0;
+                                            transition: opacity .5s;
+                                            -webkit-box-shadow:0 1px 4px rgba(0, 0, 0, 0.3), 0 0 40px rgba(0, 0, 0, 0.1) inset;
+                                            -moz-box-shadow:0 1px 4px rgba(0, 0, 0, 0.3), 0 0 40px rgba(0, 0, 0, 0.1) inset;
+                                            box-shadow:0 1px 4px rgba(0, 0, 0, 0.3), 0 0 40px rgba(0, 0, 0, 0.1) inset;
+
+                                            &:after {
+                                                content: "";
+                                                position: absolute;
+                                                top: 100%;
+                                                left: 50%;
+                                                margin-left: -5px;
+                                                border-top: 19px solid #e5ecf6;
+                                                border-bottom: 19px solid transparent;
+                                                border-right: 15px solid transparent;
+                                                border-left: 15px solid transparent;
+                                            }
+
+
+                                        }
+                                    }
+                                }
+                            }
+
+                            input[type=text], select, textarea {
+                                width: 100%;
+                                padding: 12px;
+                                border: 1px solid #ccc;
+                                resize: vertical;
+                            }
+                        }
+
+                        button {
+                            background-color: #0044aa;
+                            border: none;
+                            color: white;
+                            padding: 11px;
+                            text-align: center;
+                            text-decoration: none;
+                            display: inline-block;
+                            font-size: 16px;
+                            cursor: pointer;
+                        }
+                    }
+
+                    .checkbox-holder {
+                        display: flex;
+                        align-items: center;
+                        margin-top: 10px;
+
+                    }
+                }
+            }
         }
 
         &__row {
