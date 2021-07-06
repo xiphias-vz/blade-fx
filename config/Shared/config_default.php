@@ -4,11 +4,11 @@ use Monolog\Logger;
 use Pyz\Service\FlysystemSftpFileSystem\Plugin\Flysystem\SftpFileSystemBuilderPlugin;
 use Pyz\Shared\Application\ApplicationConstants;
 use Pyz\Shared\BackofficeOverview\BackofficeOverviewConstants;
+use Pyz\Shared\CodeBuckets\CodeBucketConstants;
 use Pyz\Shared\CollectNumber\CollectNumberConstants;
 use Pyz\Shared\DataImport\DataImportConstants;
 use Pyz\Shared\DummyPayment\DummyPaymentConfig;
 use Pyz\Shared\GoogleTagManager\GoogleTagManagerConstants;
-use Pyz\Shared\CodeBuckets\CodeBucketConstants;
 use Pyz\Shared\Invoice\InvoiceConstants;
 use Pyz\Shared\Matomo\MatomoConstants;
 use Pyz\Shared\Oms\OmsConstants;
@@ -869,7 +869,6 @@ $config[StoreConstants::STORE_NAMES] = [
 
 // ----------- Google Tag Manager
 $config[GoogleTagManagerConstants::CONTAINER_ID] = 'GTM-KN8QSGS';
-
 
 $config[CodeBucketConstants::CURRENCY_SYMBOL] = '€';
 

@@ -21,6 +21,7 @@ class MerchantCreateForm extends ExtendedMerchantCreateForm
 {
     public const OPTION_CURRENT_ID = 'current_id';
 
+    protected const FIELD_DROPDOWN = 'dropdown';
     protected const FIELD_ID_MERCHANT = 'id_merchant';
     protected const FIELD_NAME = 'name';
     protected const FIELD_REGISTRATION_NUMBER = 'registration_number';
@@ -41,6 +42,11 @@ class MerchantCreateForm extends ExtendedMerchantCreateForm
     protected const LABEL_IS_CASHIER_XML = 'Ist cashier xml';
     protected const LABEL_IS_PASSWORD_PROTECTED = 'Ist passwortgeschützt';
     protected const LABEL_SHOP_PASSWORD = 'Shop password';
+
+    protected const FIELD_ASORTMENT_ZONES = 'idAsortmentZones';
+    protected const FIELD_PICK_ZONES = 'idPickZones';
+    protected const LABEL_ASORTMENT_ZONES = 'asortment_zones';
+    protected const LABEL_PICK_ZONES = 'pick_zones';
 
     /**
      * @param \Symfony\Component\Form\FormBuilderInterface $builder

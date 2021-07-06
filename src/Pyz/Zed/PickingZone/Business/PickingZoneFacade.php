@@ -99,4 +99,22 @@ class PickingZoneFacade extends AbstractFacade implements PickingZoneFacadeInter
     {
         $this->getEntityManager()->resetOrderPickingBlock($orderPickingBlockTransfer);
     }
+
+    /**
+     * @return array
+     */
+    public function getPickingZonesArray(): array
+    {
+        return $this->getRepository()->getPickingZonesArray();
+    }
+
+    /**
+     * @param string $idMerchant
+     *
+     * @return array
+     */
+    public function getMappedAsortmentPickingZonesArray(string $idMerchant): array
+    {
+        return $this->getRepository()->getMappedAsortmentPickingZonesArray($idMerchant);
+    }
 }

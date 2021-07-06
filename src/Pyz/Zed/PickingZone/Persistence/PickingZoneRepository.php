@@ -10,6 +10,7 @@ namespace Pyz\Zed\PickingZone\Persistence;
 use Generated\Shared\Transfer\OrderPickingBlockTransfer;
 use Generated\Shared\Transfer\PickingZoneTransfer;
 use Orm\Zed\PickingZone\Persistence\Map\PyzPickingZoneTableMap;
+use Propel\Runtime\Propel;
 use Spryker\Zed\Kernel\Persistence\AbstractRepository;
 
 /**
@@ -111,5 +112,46 @@ class PickingZoneRepository extends AbstractRepository implements PickingZoneRep
                             )", "orderCount")
             ->find()
             ->toArray();
+    }
+
+    /**
+     * @return array
+     */
+    public function getPickingZonesArray(): array
+    {
+        $pickingZonesArray = [];
+
+        $factory = $this->getFactory();
+        $pickingZoneEntities = $factory->createPickingZoneQuery()->find();
+
+        $pickingZoneFactory = $factory->createPickingZoneMapper()
+            ->mapPickingZoneEntitiesToPickingZoneTransfers($pickingZoneEntities);
+
+        foreach ($pickingZoneFactory as $listPickingZones) {
+            $idPickingZone = $listPickingZones['idPickingZone'];
+            $name = $listPickingZones['name'];
+            $pickingZonesArray[$idPickingZone] = $name;
+        }
+
+        return $pickingZonesArray;
+    }
+
+    /**
+     * @param string $idMerchant
+     *
+     * @return array
+     */
+    public function getMappedAsortmentPickingZonesArray(string $idMerchant): array
+    {
+        $con = Propel::getConnection();
+        $statement = $con->prepare('SELECT papzr.id_assortment_pick_zone_relation, papzr.fk_picking_zone, pz.name as pick_zone_name, paz.id_assortment_zone, paz.assortment_zone
+                        FROM pyz_assortment_pick_zone_relation papzr
+                            INNER JOIN pyz_assortment_zone paz on paz.id_assortment_zone = papzr.fk_assortment_zone
+                            INNER JOIN pyz_picking_zone pz on pz.id_picking_zone = papzr.fk_picking_zone
+                        WHERE papzr.fk_merchant =' . $idMerchant . '
+                        ORDER BY paz.assortment_zone');
+        $statement->execute();
+
+        return $statement->fetchAll();
     }
 }

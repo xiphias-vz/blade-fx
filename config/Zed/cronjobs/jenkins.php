@@ -41,7 +41,7 @@ $jobs[] = [
 $jobs[] = [
     'name' => 'update-product-label-relations',
     'command' => '$PHP_BIN vendor/bin/console product-label:relations:update -vvv',
-    'schedule' => '* * * * *',
+    'schedule' => 'H 18 * * *',
     'enable' => false,
     'stores' => $allStores,
 ];
@@ -207,7 +207,7 @@ if ($storeCodeBucket == 'CZ') {
     $jobs[] = [
         'name' => 'data-import-full',
         'command' => 'vendor/bin/install -r sftp-based-full-import',
-        'schedule' => '5 0 * * *',
+        'schedule' => 'H 21 * * *',
         'enable' => true,
         'stores' => ['EIN'],
     ];

@@ -1,9 +1,10 @@
 {% extends '@Gui/Layout/layout.twig' %}
 
 {% set widget_title = 'Edit Merchant' | trans ~ ': ' ~ idMerchant %}
+{% set section_title_reference = 'Edit Merchant' | trans ~ ': ' ~ merchantReference %}
 
+{% block section_title section_title_reference %}
 {% block head_title widget_title %}
-{% block section_title widget_title %}
 
 {% block action %}
     {{ backActionButton(url('/merchant-gui/list-merchant'), 'Back to Merchants' | trans) }}
@@ -17,14 +18,14 @@
 {% endblock %}
 
 {% block content %}
-
+    <link rel="stylesheet" href="{{ assetsPath('css/spryker-zed-merchantgui-main.css') }}">
     {% embed '@Gui/Partials/widget.twig' %}
 
         {% block widget_content %}
 
             {{ form_start(form, {'attr': {'novalidate': 'novalidate'}}) }}
 
-            {{ tabs(merchantFormTabs, {'merchantForm': form, 'isCurrentUserAdmin': isCurrentUserAdmin }) }}
+            {{ tabs(merchantFormTabs, {'merchantForm': form, 'isCurrentUserAdmin': isCurrentUserAdmin, 'pickingZones': pickingZones, 'mappedAssortmentPickingZones': mappedAssortmentPickingZones }) }}
 
             {{ form_end(form) }}
 

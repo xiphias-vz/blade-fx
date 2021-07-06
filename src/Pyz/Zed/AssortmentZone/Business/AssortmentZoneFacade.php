@@ -23,4 +23,13 @@ class AssortmentZoneFacade extends AbstractFacade implements AssortmentZoneFacad
         return $this->getRepository()
             ->getAssortmentZones();
     }
+
+    /**
+     * @return array
+     */
+    public function assortmentZonesArray(): array
+    {
+        return $this->getRepository()
+            ->getAssortmentZonesArray();
+    }
 }

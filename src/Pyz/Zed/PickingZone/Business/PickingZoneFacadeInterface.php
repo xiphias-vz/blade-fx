@@ -86,4 +86,16 @@ interface PickingZoneFacadeInterface
      * @return void
      */
     public function resetOrderPickingBlock(OrderPickingBlockTransfer $orderPickingBlockTransfer): void;
+
+    /**
+     * @return array
+     */
+    public function getPickingZonesArray(): array;
+
+    /**
+     * @param string $idMerchant
+     *
+     * @return array
+     */
+    public function getMappedAsortmentPickingZonesArray(string $idMerchant): array;
 }

@@ -13,4 +13,9 @@ interface AssortmentZoneFacadeInterface
      * @return array
      */
     public function queryAssortmentZones(): array;
+
+    /**
+     * @return array
+     */
+    public function assortmentZonesArray(): array;
 }

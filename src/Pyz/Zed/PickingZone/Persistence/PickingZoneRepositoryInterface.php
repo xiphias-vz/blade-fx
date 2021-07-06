@@ -33,4 +33,16 @@ interface PickingZoneRepositoryInterface
      * @return \Generated\Shared\Transfer\OrderPickingBlockTransfer|null
      */
     public function findOrderPickingBlock(int $idSalesOrder, int $idPickingZone): ?OrderPickingBlockTransfer;
+
+    /**
+     * @return array
+     */
+    public function getPickingZonesArray(): array;
+
+    /**
+     * @param string $idMerchant
+     *
+     * @return array
+     */
+    public function getMappedAsortmentPickingZonesArray(string $idMerchant): array;
 }

@@ -7,12 +7,11 @@
 
 namespace Pyz\Zed\MerchantGui\Communication\Controller;
 
+use Orm\Zed\AssortmentZone\Persistence\PyzAssortmentPickZoneRelationQuery;
+use phpDocumentor\GraphViz\Exception;
 use Pyz\Shared\Acl\AclConstants;
-use Pyz\Shared\Url\UrlConfig;
-use Pyz\Zed\Application\Url\SafeUrl;
-use Spryker\Zed\Kernel\Communication\Exception\ForbiddenRedirectException;
 use Spryker\Zed\MerchantGui\Communication\Controller\EditMerchantController as SprykerEditMerchantController;
-use Symfony\Component\HttpFoundation\RedirectResponse;
+use Spryker\Zed\MerchantGui\MerchantGuiConfig;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
@@ -20,36 +19,83 @@ use Symfony\Component\HttpFoundation\Request;
  */
 class EditMerchantController extends SprykerEditMerchantController
 {
+    public const URL_PARAM_REDIRECT_URL = 'redirect-url';
+    public const REQUEST_ID_MERCHANT = 'id-merchant';
+    public const URL_EDIT_MERCHANT_ASSORTMENT_ZONE = '/merchant-gui/edit-merchant?id-merchant=';
+
     /**
      * @param \Symfony\Component\HttpFoundation\Request $request
-     *
-     * @throws \Spryker\Zed\Kernel\Communication\Exception\ForbiddenRedirectException
      *
      * @return array|\Symfony\Component\HttpFoundation\RedirectResponse
      */
     public function indexAction(Request $request)
     {
-        $response = parent::indexAction($request);
+        $idMerchant = $this->castId($request->get(static::REQUEST_ID_MERCHANT));
 
-        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-            $this->getFactory()->getMerchantStorageFacade()->synchronizeMerchantToStorage();
+        $dataProvider = $this->getFactory()->createMerchantUpdateFormDataProvider();
+        $merchantTransfer = $dataProvider->getData($idMerchant);
+        $merchantReference = $merchantTransfer->getMerchantReference();
+
+        if ($merchantTransfer === null) {
+            $this->addErrorMessage("Merchant with id %s doesn't exists.", ['%s' => $idMerchant]);
+
+            return $this->redirectResponse(MerchantGuiConfig::URL_MERCHANT_LIST);
         }
-        $assortmentZones = $this->getFactory()
-            ->getAssortmentZoneFacade()
-            ->queryAssortmentZones();
 
-        if ($response instanceof RedirectResponse) {
-            $redirectUrl = $response->getTargetUrl();
+        $merchantForm = $this->getFactory()
+            ->getMerchantUpdateForm(
+                $merchantTransfer,
+                $dataProvider->getOptions($merchantTransfer)
+            )
+            ->handleRequest($request);
 
-            if (!SafeUrl::isUrlSafe($redirectUrl)) {
-                throw new ForbiddenRedirectException(sprintf(UrlConfig::ERROR_URL_DOMAIN, $redirectUrl));
+        $applicableMerchantStatuses = $this->getFactory()->getMerchantFacade()->getApplicableMerchantStatuses($merchantTransfer->getStatus());
+
+        if ($merchantForm->isSubmitted() && $merchantForm->isValid()) {
+            if ($_REQUEST['isPickzoneTab'] == '0') {
+                $merchantReturn = $this->updateMerchant($request, $merchantForm);
+                $this->getFactory()->getMerchantStorageFacade()->synchronizeMerchantToStorage();
+
+                return $merchantReturn;
+            } else {
+                $submitArray = [];
+                foreach ($_REQUEST as $key => $val) {
+                    if (str_starts_with($key, 'cmbPickZone_')) {
+                        $midArray = [];
+                        $idMapAssortmentPickZone = substr($key, strpos($key, "_") + 1);
+                        $midArray['id_assortment_pick_zone_relation'] = $idMapAssortmentPickZone;
+                        $midArray['fk_picking_zone'] = $val;
+
+                        $submitArray[] = $midArray;
+                    }
+                }
+
+                $resultUrl = $this->updateAsortmentZones($request, $submitArray, $idMerchant);
+
+                return $this->redirectResponse($resultUrl->getTargetUrl());
             }
-        } else {
-            $isCurrentUserAdmin = $this->isCurrentUserAdmin();
-            $response['isCurrentUserAdmin'] = $isCurrentUserAdmin;
         }
 
-        return $response;
+        $pickingZones = $this->getFactory()
+            ->getPickingZoneFacade()
+            ->getPickingZonesArray();
+
+        $mappedAssortmentPickingZones = $this->getFactory()
+            ->getPickingZoneFacade()
+            ->getMappedAsortmentPickingZonesArray($idMerchant);
+
+        $isCurrentUserAdmin = $this->isCurrentUserAdmin();
+
+        return $this->viewResponse([
+            'form' => $merchantForm->createView(),
+            'idMerchant' => $idMerchant,
+            'applicableMerchantStatuses' => $applicableMerchantStatuses,
+            'merchantFormTabs' => $this->getFactory()->createMerchantFormTabs()->createView(),
+            'isCurrentUserAdmin' => $isCurrentUserAdmin,
+            'pickingZones' => $pickingZones,
+            'mappedAssortmentPickingZones' => $mappedAssortmentPickingZones,
+            'merchantReference' => $merchantReference,
+        ]);
     }
 
     /**
@@ -69,5 +115,31 @@ class EditMerchantController extends SprykerEditMerchantController
         }
 
         return false;
+    }
+
+    /**
+     * @param \Symfony\Component\HttpFoundation\Request $request
+     * @param array $submitArray
+     * @param int $idMerchant
+     *
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     */
+    protected function updateAsortmentZones(Request $request, array $submitArray, int $idMerchant)
+    {
+        $assortmentZoneUrl = static::URL_EDIT_MERCHANT_ASSORTMENT_ZONE . $idMerchant;
+        $redirectUrl = $request->get(static::URL_PARAM_REDIRECT_URL, $assortmentZoneUrl);
+
+        try {
+            foreach ($submitArray as $val) {
+                $getQueryAssortmentZone = new PyzAssortmentPickZoneRelationQuery();
+                $mapPickZoneToAssortmentZone = $getQueryAssortmentZone->findOneByIdAssortmentPickZoneRelation($val['id_assortment_pick_zone_relation']);
+                $mapPickZoneToAssortmentZone->setFkPickingZone($val['fk_picking_zone']);
+                $mapPickZoneToAssortmentZone->save();
+            }
+        } catch (Exception $exception) {
+            $error = $exception->getMessage();
+        }
+
+        return $this->redirectResponse($redirectUrl);
     }
 }

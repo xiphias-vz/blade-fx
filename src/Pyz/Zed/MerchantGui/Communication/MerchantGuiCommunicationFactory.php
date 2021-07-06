@@ -8,11 +8,13 @@
 namespace Pyz\Zed\MerchantGui\Communication;
 
 use Generated\Shared\Transfer\MerchantTransfer;
+use Orm\Zed\AssortmentZone\Persistence\Base\PyzAssortmentPickZoneRelationQuery;
 use Pyz\Zed\AssortmentZone\Business\AssortmentZoneFacadeInterface;
 use Pyz\Zed\MerchantGui\Communication\Form\MerchantUpdateForm;
 use Pyz\Zed\MerchantGui\Communication\Tabs\MerchantFormTabs;
 use Pyz\Zed\MerchantGui\MerchantGuiDependencyProvider;
 use Pyz\Zed\MerchantStorage\Business\MerchantStorageFacadeInterface;
+use Pyz\Zed\PickingZone\Business\PickingZoneFacadeInterface;
 use Pyz\Zed\Sales\SalesDependencyProvider as SalesSalesDependencyProvider;
 use Spryker\Zed\Acl\Business\AclFacadeInterface;
 use Spryker\Zed\MerchantGui\Communication\MerchantGuiCommunicationFactory as SprykerMerchantGuiCommunicationFactory;
@@ -78,5 +80,21 @@ class MerchantGuiCommunicationFactory extends SprykerMerchantGuiCommunicationFac
     public function getMerchantUpdateForm(?MerchantTransfer $data = null, array $options = []): FormInterface
     {
         return $this->getFormFactory()->create(MerchantUpdateForm::class, $data, $options);
+    }
+
+    /**
+     * @return \Pyz\Zed\PickingZone\Business\PickingZoneFacadeInterface
+     */
+    public function getPickingZoneFacade(): PickingZoneFacadeInterface
+    {
+        return $this->getProvidedDependency(MerchantGuiDependencyProvider::PICKING_ZONES);
+    }
+
+    /**
+     * @return \Orm\Zed\AssortmentZone\Persistence\PyzAssortmentPickZoneRelationQuery
+     */
+    public function getAssortmentPickZoneRelationQuery(): PyzAssortmentPickZoneRelationQuery
+    {
+        return $this->getAssortmentPickZoneRelationQuery();
     }
 }

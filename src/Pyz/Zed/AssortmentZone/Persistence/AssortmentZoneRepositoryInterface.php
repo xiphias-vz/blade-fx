@@ -13,4 +13,9 @@ interface AssortmentZoneRepositoryInterface
      * @return \Generated\Shared\Transfer\AssortmentZoneTransfer[]
      */
     public function getAssortmentZones(): array;
+
+    /**
+     * @return array
+     */
+    public function getAssortmentZonesArray(): array;
 }

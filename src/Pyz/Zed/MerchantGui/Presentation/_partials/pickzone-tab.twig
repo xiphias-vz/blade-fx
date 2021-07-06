@@ -1,0 +1,34 @@
+
+<div class="grid-assortment-zone">
+    <input id="isPickzoneTab" name="isPickzoneTab" type="text" class="hidden" />
+    <table>
+        <tr>
+            <th class="th-style">#</th>
+            <th class="th-style">Assortmentzone</th>
+            <th class="th-style">Pickzone</th>
+        </tr>
+        {% set counter = 0 %}
+        {% for mapped in mappedAssortmentPickingZones %}
+            {% set counter = counter + 1 %}
+            <tr>
+                <td class="td-style">{{ counter }}</td>
+                <td class="td-style"> {{ mapped.assortment_zone }} </td>
+                <td class="td-style">
+                    <select class="select-width" name= 'cmbPickZone_{{ mapped.id_assortment_pick_zone_relation }}'>
+                        {% for idPickingZone, name in pickingZones  %}
+                            {% if mapped.fk_picking_zone == idPickingZone %}
+                                <option value="{{ idPickingZone }}" selected="selected">{{ name }}</option>
+                            {% else %}
+                                <option value="{{ idPickingZone }}">{{ name }}</option>
+                            {% endif %}
+                        {% endfor %}
+                    </select>
+                     </td>
+            </tr>
+        {% endfor %}
+    </table>
+</div>
+
+
+
+

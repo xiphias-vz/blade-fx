@@ -7,6 +7,7 @@
 
 namespace Pyz\Zed\MerchantGui\Communication\Tabs;
 
+use Generated\Shared\Transfer\TabItemTransfer;
 use Generated\Shared\Transfer\TabsViewTransfer;
 use Spryker\Zed\Acl\Business\AclFacadeInterface;
 use Spryker\Zed\MerchantGui\Communication\Tabs\MerchantFormTabs as SprykerMerchantFormTabs;
@@ -39,11 +40,42 @@ class MerchantFormTabs extends SprykerMerchantFormTabs
     /**
      * @param \Generated\Shared\Transfer\TabsViewTransfer $tabsViewTransfer
      *
+     * @return \Generated\Shared\Transfer\TabsViewTransfer
+     */
+    protected function build(TabsViewTransfer $tabsViewTransfer): TabsViewTransfer
+    {
+        $this->addGeneralTab($tabsViewTransfer)
+            ->addPickzoneTab($tabsViewTransfer)
+            ->setFooter($tabsViewTransfer);
+
+        return $this->executeMerchantFormTabExpanderPlugins($tabsViewTransfer);
+    }
+
+    /**
+     * @param \Generated\Shared\Transfer\TabsViewTransfer $tabsViewTransfer
+     *
      * @return $this
      */
     protected function setFooter(TabsViewTransfer $tabsViewTransfer)
     {
         $tabsViewTransfer->setFooterTemplate('@MerchantGui/_partials/_form-submit.twig');
+
+        return $this;
+    }
+
+    /**
+     * @param \Generated\Shared\Transfer\TabsViewTransfer $tabsViewTransfer
+     *
+     * @return \Spryker\Zed\MerchantGui\Communication\Tabs\MerchantFormTabs
+     */
+    protected function addPickzoneTab(TabsViewTransfer $tabsViewTransfer)
+    {
+        $tabItemTransfer = new TabItemTransfer();
+        $tabItemTransfer->setName('pickzone')
+            ->setTitle('Pickzone')
+            ->setTemplate('@MerchantGui/_partials/pickzone-tab.twig');
+
+        $tabsViewTransfer->addTab($tabItemTransfer);
 
         return $this;
     }

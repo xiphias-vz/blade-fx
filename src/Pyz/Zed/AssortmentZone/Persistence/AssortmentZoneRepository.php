@@ -49,4 +49,25 @@ class AssortmentZoneRepository extends AbstractRepository implements AssortmentZ
     ): AssortmentZoneTransfer {
         return $assortmentZoneTransfer->fromArray($assortmentZoneEntity->toArray(), true);
     }
+
+    /**
+     * @return array
+     */
+    public function getAssortmentZonesArray(): array
+    {
+        $assortmentZonesArray = [];
+
+        $transferAsortmentZones = $this->getFactory()
+            ->createAssortmentZonePersistenceQuery()
+            ->find()
+            ->toArray();
+
+        foreach ($transferAsortmentZones as $listAsortmentZones) {
+            $idAssortmentZone = $listAsortmentZones['IdAssortmentZone'];
+            $assortmentZone = $listAsortmentZones['AssortmentZone'];
+                $assortmentZonesArray[$idAssortmentZone] = $assortmentZone;
+        }
+
+        return $assortmentZonesArray;
+    }
 }
