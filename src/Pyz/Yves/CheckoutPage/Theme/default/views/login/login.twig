@@ -19,8 +19,11 @@
 
 {% block containerContent %}
     <script src="https://code.jquery.com/jquery-latest.min.js"></script>
-    <script src="https://www.google.com/recaptcha/api.js?render={{ data.reCaptchaKey }}"></script>
-    <script src="{{ data.scriptSrc }}"></script>
+
+    {% if data.currentCodeBucket != 'CZ' %}
+        <script src="https://www.google.com/recaptcha/api.js?render={{ data.reCaptchaKey }}"></script>
+        <script src="{{ data.scriptSrc }}"></script>
+    {% endif %}
 
     <style type="text/css">
 
