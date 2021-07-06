@@ -9,13 +9,16 @@ namespace Pyz\Yves\CustomerPage\Controller;
 
 use Generated\Shared\Transfer\CustomerTransfer;
 use Pyz\Shared\Customer\CustomerConfig;
+use Pyz\Shared\Customer\CustomerConstants;
 use Pyz\Shared\DataDog\DataDogConfig;
 use Pyz\Yves\CheckoutPage\Plugin\Router\CheckoutPageRouteProviderPlugin;
 use Pyz\Yves\CustomerPage\Form\RegisterForm;
 use Pyz\Yves\CustomerPage\Plugin\Router\CustomerPageRouteProviderPlugin;
+use Spryker\Shared\Config\Config;
 use Spryker\Shared\Customer\Code\Messages;
 use SprykerShop\Yves\CustomerPage\Controller\RegisterController as SprykerShopRegisterController;
 use SprykerShop\Yves\CustomerPage\Plugin\Provider\CustomerPageControllerProvider;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -25,6 +28,14 @@ use Symfony\Component\HttpFoundation\Request;
  */
 class RegisterController extends SprykerShopRegisterController
 {
+    const FIRST_NAME = 'firstName';
+    const LAST_NAME = 'lastName';
+    const STREET = 'street';
+    const HOUSE_NUMBER = 'houseNumber';
+    const ZIP = 'zip';
+    const CITY = 'city';
+
+
     /**
      * @param \Symfony\Component\HttpFoundation\Request $request
      *
@@ -128,5 +139,106 @@ class RegisterController extends SprykerShopRegisterController
         $customerTransfer->setRegistrationKey($request->get(CustomerConfig::PARAM_TOKEN, null));
 
         return $customerTransfer;
+    }
+
+    /**
+     * @param Request $request
+     * @return JsonResponse
+     */
+    public function getCustomerDataAPIAction(Request $request)
+    {
+
+        $firstName = $request->request->get(static::FIRST_NAME);
+        $lastName = $request->request->get(static::LAST_NAME);
+        $street = $request->request->get(static::STREET);
+        $houseNumber = $request->request->get(static::HOUSE_NUMBER);
+        $zip = $request->request->get(static::ZIP);
+        $city = $request->request->get(static::CITY);
+
+        $apiKey = $this->getGlobusApiKey();
+        $apiSecret = $this->getGlobusApiSecretKey();
+        $apiPrefix = $this->getGlobusApiUrlPrefix();
+        $url = "/v1/meinglobus/validations/address";
+        $fullUrl = $apiPrefix . $url;
+
+        $data = '{
+                    "firstName": "' . $firstName . '",
+                    "lastName": "' . $lastName . '",
+                    "address": {
+                    "zip": "' . $zip . '",
+                    "houseNo": "' . $houseNumber . '",
+                    "street": "' . $street . '",
+                    "city": "' . $city . '"
+                    }
+                }';
+
+        $curl = curl_init();
+
+        curl_setopt_array($curl, array(
+            CURLOPT_URL => $fullUrl,
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_ENCODING => '',
+            CURLOPT_MAXREDIRS => 10,
+            CURLOPT_TIMEOUT => 0,
+            CURLOPT_FOLLOWLOCATION => true,
+            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+            CURLOPT_CUSTOMREQUEST => 'POST',
+            CURLOPT_POSTFIELDS => $data,
+            CURLOPT_HTTPHEADER => array(
+                'APIKey: ' . $apiKey,
+                'APISecret: ' . $apiSecret,
+                'Content-Type: application/json'
+            ),
+        ));
+
+        $result = curl_exec($curl);
+        curl_close($curl);
+
+        return new JsonResponse($result);
+    }
+
+    /**
+     * @return string
+     */
+    protected function getGlobusApiKey(): string
+    {
+        $globus_api_credentials = Config::get(CustomerConstants::GLOBUS_API_CONSTANTS);
+
+        $apiKey = '';
+        if (isset($globus_api_credentials[CustomerConstants::GLOBUS_API_CREDENTIALS][CustomerConstants::GLOBUS_API_KEY])) {
+            $apiKey = $globus_api_credentials[CustomerConstants::GLOBUS_API_CREDENTIALS][CustomerConstants::GLOBUS_API_KEY];
+        }
+
+        return $apiKey;
+    }
+
+    /**
+     * @return string
+     */
+    public function getGlobusApiSecretKey(): string
+    {
+        $globus_api_credentials = Config::get(CustomerConstants::GLOBUS_API_CONSTANTS);
+
+        $apiSecretKey = '';
+        if (isset($globus_api_credentials[CustomerConstants::GLOBUS_API_CREDENTIALS][CustomerConstants::GLOBUS_API_SECRET_KEY])) {
+            $apiSecretKey = $globus_api_credentials[CustomerConstants::GLOBUS_API_CREDENTIALS][CustomerConstants::GLOBUS_API_SECRET_KEY];
+        }
+
+        return $apiSecretKey;
+    }
+
+    /**
+     * @return string
+     */
+    public function getGlobusApiUrlPrefix(): string
+    {
+        $globus_api_credentials = Config::get(CustomerConstants::GLOBUS_API_CONSTANTS);
+
+        $urlPrefix = '';
+        if (isset($globus_api_credentials[CustomerConstants::GLOBUS_API_CREDENTIALS][CustomerConstants::GLOBUS_API_URL])) {
+            $urlPrefix = $globus_api_credentials[CustomerConstants::GLOBUS_API_CREDENTIALS][CustomerConstants::GLOBUS_API_URL];
+        }
+
+        return $urlPrefix;
     }
 }

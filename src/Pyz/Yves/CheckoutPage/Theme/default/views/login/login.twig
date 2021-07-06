@@ -94,6 +94,20 @@
             cursor: pointer;
         }
 
+        .registrationLeftSideDiv {
+            display: flex;
+            flex-direction: column;
+            min-height: 56rem;
+        }
+
+        .cancelFlex {
+            margin-top:auto;
+        }
+
+        .cancelBtn {
+            border: 1px solid;
+        }
+
         #customerPasswordDiv, #ForgotPasswordLinkDiv, #btnLogin {
             display: none;
         }
@@ -163,6 +177,10 @@
 
         .checkboxError {
             outline: 1px solid red;
+        }
+
+        #link-to-address-modal{
+            float: right;
         }
 
     </style>
@@ -375,14 +393,17 @@
             }
 
         </script>
+
     {% endif %}
 
     {% if data.currentCodeBucket=='DE' %}
-            <div class="grid grid--center">
+
+        <div class="grid grid--center">
             <div class="col col--sm-12 col--md-9 col--xl-9">
                 <div class="box box--checkout">
 
                     {% block content_DE %}
+
                         <div id="additionalLoginForm" class="form form--login form--checkout-actions">
                             <h2 class="createCustomerTitle">{{ 'checkout.step.customer.login.create_customer_title' | trans }}</h2>
                             <form name="startRegistrationForm" method="post" novalidate="novalidate">
@@ -408,13 +429,13 @@
                                                     <div class="form__field col col--sm-12">
                                                         <label for="passwordCheckBoxes" class="label label--required">Ihr Passwort muss folgende Kriterien erfüllen:</label>
                                                         <div><input id="passwordCheckBoxes_length" name="passwordCheckBoxes[length]" type="checkbox" onclick="return false;" />
-                                                        <label for="passwordCheckBoxes_length" class="label">mind. 8 Zeichen lang</label></div>
+                                                            <label for="passwordCheckBoxes_length" class="label">mind. 8 Zeichen lang</label></div>
                                                         <div><input id="passwordCheckBoxes_specChar" name="passwordCheckBoxes[specChar]" placeholder="{{ 'customer.login.password_placeholder' | trans }}" type="checkbox" onclick="return false;" />
-                                                        <label for="passwordCheckBoxes_specChar" class="label">mind. 1 Sonderzeichen (außer...)</label></div>
+                                                            <label for="passwordCheckBoxes_specChar" class="label">mind. 1 Sonderzeichen (außer...)</label></div>
                                                         <div><input id="passwordCheckBoxes_digit" name="passwordCheckBoxes[digit]" placeholder="{{ 'customer.login.password_placeholder' | trans }}" type="checkbox" onclick="return false;" />
-                                                        <label for="passwordCheckBoxes_digit" class="label">mind. 1 Ziffer</label></div>
+                                                            <label for="passwordCheckBoxes_digit" class="label">mind. 1 Ziffer</label></div>
                                                         <div><input id="passwordCheckBoxes_letter" name="passwordCheckBoxes[letter]" placeholder="{{ 'customer.login.password_placeholder' | trans }}" type="checkbox" onclick="return false;" />
-                                                        <label for="passwordCheckBoxes_letter" class="label">mind. 1 Buchstabe</label></div>
+                                                            <label for="passwordCheckBoxes_letter" class="label">mind. 1 Buchstabe</label></div>
                                                     </div>
                                                 </div>
                                             </div>
@@ -491,21 +512,26 @@
                         </div>
 
                         <div id="checkoutCustomerRegister" class="register-form js-login__register{{ (data.isGuest or data.isLogin? ' is-hidden' : '') }} ">
-                            <div class="col col--lg-5">
+                            <div class="col col--lg-5 registrationLeftSideDiv">
                                 {% embed molecule('register-page-left-side') only %}
                                 {% endembed %}
+                                {% block CancelRegisterButton %}
+                                    <div class="cancelFlex">
+                                        <button id="btnCancelRegister" type="button" class="btn btn-link col col--middle button button--expand-tablet button--large cancelBtn">{{ 'general.cancel.button' | trans }}</button>
+                                    </div>
+                                {% endblock %}
                             </div>
                             <div class="col col--lg-1">
                                 <p></p>
                             </div>
                             <div class="col col--lg-6">
-                                {% embed molecule('form') with {
+                                {% embed molecule('form-register') with {
                                     class: 'register-form js-login__register',
                                     modifiers: ['checkout-actions'],
                                     data: {
                                         form: data.forms.registration,
                                         submit: {
-                                            enable: true,
+                                            enable: false,
                                             text: 'checkout.customer.auth_as_user' | trans,
                                             class: 'form__action--checkout col col--middle button button--expand-tablet button--large',
                                         },
@@ -528,6 +554,14 @@
                                             },
                                         } only %}
                                     {% endblock %}
+                                {% endembed %}
+                                {% block submitButton %}
+                                    <button type="button" id="link-to-address-modal" class="form__action form__action--checkout col col--middle button button--expand-tablet button--large">
+                                        {{'checkout.customer.auth_as_user' | trans}}
+                                    </button>
+                                {% endblock %}
+                                {% embed molecule('popup-ui-address-validation') with {
+                                } only %}
                                 {% endembed %}
                             </div>
                         </div>
@@ -700,8 +734,11 @@
                 });
             });
 
-
             $("#btnCancelLogin").click(function(){
+                window.location.reload();
+            });
+
+            $("#btnCancelRegister").click(function(){
                 window.location.reload();
             });
 
@@ -790,6 +827,9 @@
             $("#btnContinueRegistration").click(function(){
                 $("#additionalLoginForm").css("display", "none");
                 $("#checkoutCustomerRegister").css("display", "block");
+                $("#registerForm_customer_email").val($("#startRegistrationForm_customer_email").val());
+                $("#registerForm_customer_password_pass").val($("#startRegister__customer_password").val());
+                $("#registerForm_customer_password_confirm").val($("#startRegister__customer_password").val());
             });
 
             $("#btnContinueRegistrationAsGuest").click(function(){

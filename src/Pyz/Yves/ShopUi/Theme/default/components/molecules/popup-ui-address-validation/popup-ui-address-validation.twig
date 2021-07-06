@@ -1,0 +1,64 @@
+{% extends model('component') %}
+
+{% define config = {
+    name: 'popup-ui-address-validation',
+    tag: 'popup-ui-address-validation',
+} %}
+
+{% block body %}
+<div class="{{ config.name }}__overlay">
+    <div class="{{ config.name }}__container">
+        <div class="{{ config.name }}__title">
+            <span class="{{ config.name }}__title--text">{{ 'checkout.customer.submit_modal_title' | trans }}</span>
+            <button class="{{ config.name }}__close icon-close"></button>
+            <div style="clear:both"></div>
+        </div>
+        <div class="{{ config.name }}__content">
+            <p class="message--shop-switcher">
+                {{ 'checkout.customer.submit_modal_content' | trans }}
+            </p>
+
+            <div id="left-side" class="col col--md-6 {{ config.name }}__selectable-div">
+                <h3>{{ 'checkout.customer.submit_modal_angepasste_adresse' | trans }}</h3>
+                <br />
+                <div id="user_button_content">
+                    <div id="user_svg_icon" class="col col--md-2 {{ config.name }}__svg_margin-top">
+                        <div class="{{ config.name }}__circle-wrapper">
+                            <div id="user_circle_class" class="{{ config.name }}__checked-circle {{ config.name }}__disabledCircle">
+                                <svg class="icon button__icon"><use xlink:href="#:check"></use></svg>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="user_address_content" class="col col--md-10">
+                        <p id="user_name_and_surname" class="{{ config.name }}__disabledText"></p>
+                        <p id="user_zip_city" class="{{ config.name }}__disabledText"></p>
+                        <p id="user_street_houseNo" class="{{ config.name }}__disabledText"></p>
+                    </div>
+                </div>
+            </div>
+            <div id="right-side" class="col col--md-6 {{ config.name }}__selectable-div">
+                <h3>{{ 'checkout.customer.submit_modal_eingegebene_adresse' | trans }}</h3>
+                <br />
+                <div id="api_button_content">
+                    <div id="api_svg_icon" class="col col--md-2 {{ config.name }}__svg_margin-top">
+                        <div id="api_circle_class" class="{{ config.name }}__checked-circle  {{ config.name }}__disabledCircle">
+                            <svg class="icon button__icon"><use xlink:href="#:check"></use></svg>
+                        </div>
+                    </div>
+                    <div id="api_address_content" class="col col--md-6">
+                        <div id="api_name_and_surname" class="{{ config.name }}__disabledText"></div>
+                        <div id="api_zip_city" class="{{ config.name }}__disabledText"></div>
+                        <div id="api_street_houseNo" class="{{ config.name }}__disabledText"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div style="clear:both"></div>
+        {% block submitButton %}
+            <button type="button" id="id-submit-registration-user" class="form__action form__action--checkout col col--middle button button--expand-tablet button--large">
+                {{'checkout.customer.submit_registration' | trans}}
+            </button>
+        {% endblock %}
+    </div>
+</div>
+{% endblock %}

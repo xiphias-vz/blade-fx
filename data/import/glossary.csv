@@ -1439,6 +1439,11 @@ checkout.customer.order_as_guest,Als Gast bestellen,de_DE
 checkout.customer.auth_as_user,Sign Up,en_US
 checkout.customer.auth_as_user,"Registrace",cs_CZ
 checkout.customer.auth_as_user,Registrieren,de_DE
+checkout.customer.submit_registration,Bestätigen,de_DE
+checkout.customer.submit_modal_title,Adressprüfung,de_DE
+checkout.customer.submit_modal_content,Ihre Adresse wurde angepasst. Alternativ können Sie Ihre ursprüngliche Eingabe übernehmen,de_DE
+checkout.customer.submit_modal_angepasste_adresse,Angepasste Adresse,de_DE
+checkout.customer.submit_modal_eingegebene_adresse,Eingegebene Adresse,de_DE
 checkout.customer.auth_as_guest,Buy as Guest,en_US
 checkout.customer.auth_as_guest,"Objednávka bez registrace",cs_CZ
 checkout.customer.auth_as_guest,Als Gast bestellen,de_DE
@@ -1448,6 +1453,10 @@ checkout.customer.submit_as_guest,Weiter,en_US
 checkout.customer.auth_as_login,Login,en_US
 checkout.customer.auth_as_login,Anmelden,de_DE
 checkout.customer.auth_as_login,"Přihlášení",cs_CZ
+checkout.step.customer.login.emailField.label,Email address or customer card number,en_US
+checkout.step.customer.login.emailField.label,E-mail-Addresse oder Kundenkartennummer,de_DE
+checkout.step.customer.login.emailField.placeholder,Enter your e-mail address or customer card number,en_US
+checkout.step.customer.login.emailField.placeholder,E-mail-Addresse oder Kundenkartennummer eingeben,de_DE
 checkout.step.customer.title,Login,en_US
 checkout.step.customer.title,Anmelden,de_DE
 checkout.step.customer.login.emailField.label,Email address or customer card number,en_US

@@ -133,7 +133,6 @@ class CheckoutController extends SprykerCheckoutControllerAlias
     public function shipmentAction(Request $request)
     {
         $quoteValidationResponseTransfer = $this->canProceedCheckout();
-
         if (!$quoteValidationResponseTransfer->getIsSuccessful()) {
             $this->processErrorMessages($quoteValidationResponseTransfer->getMessages());
 
