@@ -74,7 +74,7 @@ class ProductMapping
         'warnhinweise' => '',
         'verwendungshinweise' => '',
         'temperaturecondition' => '',
-        'pickzone' => '',
+        'assortmentzone' => '',
         'orderlimit' => '',
         'pet_feeding_table' => '',
         'SAP-WGR' => '',
@@ -156,7 +156,7 @@ class ProductMapping
         }
         $d['grundpreispflicht'] = 1;
         $d['grundeinheit'] = 1;
-        $d['pickzone'] = 'Trocken';
+        $d['assortmentzone'] = 'Trocken';
         $this->setNutritionValues($d, $item);
         $this->setAssets($d, $item);
         $this->setProductTags($d, $item);

@@ -20,7 +20,7 @@
 
     {% if data.product.images is defined %}
         {% set firstImage = data.product.images | first %}
-        {% if firstImage.external_url_small is not empty %}
+        {% if firstImage.external_url_small is defined %}
             {% set image = firstImage.external_url_small %}
         {% endif %}
     {% endif %}

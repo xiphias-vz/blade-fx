@@ -37,6 +37,7 @@ class CustomerForm extends AbstractType
     public const OPTION_SALUTATION_CHOICES = 'salutation_choices';
     public const OPTION_GENDER_CHOICES = 'gender_choices';
     public const OPTION_LOCALE_CHOICES = 'locale_choices';
+    public const OPTION_CUSTOMER_QUALITY = 'customer_quality';
 
     public const FIELD_EMAIL = 'email';
     public const FIELD_SALUTATION = 'salutation';
@@ -50,6 +51,7 @@ class CustomerForm extends AbstractType
     public const FIELD_MOBILE_PHONE = 'mobile_phone_number';
     public const FIELD_DATE_OF_BIRTH = 'date_of_birth';
     public const FIELD_LOCALE = 'locale';
+    public const FIELD_CUSTOMER_QUALITY = 'risk_flag';
 
     /**
      * @return string

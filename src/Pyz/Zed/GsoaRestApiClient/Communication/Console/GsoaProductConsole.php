@@ -40,6 +40,8 @@ class GsoaProductConsole extends Console
     public const OPTION_MODIFIED_FROM_SHORT = 'm';
     public const OPTION_VALID_FROM = 'valid_from';
     public const OPTION_VALID_FROM_SHORT = 'vf';
+    public const OPTION_LIMIT = 'limit';
+    public const OPTION_LIMIT_SHORT = 'l';
 
     /**
      * @return void
@@ -55,6 +57,7 @@ class GsoaProductConsole extends Console
         $this->addOption(self::OPTION_PAGE_SIZE, self::OPTION_PAGE_SIZE_SHORT, InputOption::VALUE_OPTIONAL);
         $this->addOption(self::OPTION_FILTER, self::OPTION_FILTER_SHORT, InputOption::VALUE_OPTIONAL);
         $this->addOption(self::OPTION_MODIFIED_FROM, self::OPTION_MODIFIED_FROM_SHORT, InputOption::VALUE_OPTIONAL);
+        $this->addOption(self::OPTION_LIMIT, self::OPTION_LIMIT_SHORT, InputOption::VALUE_OPTIONAL);
 
         parent::configure();
     }
@@ -74,6 +77,12 @@ class GsoaProductConsole extends Console
         $filter = $this->getOptionValue($input, self::OPTION_FILTER, self::OPTION_FILTER_SHORT, '');
         $modifiedFrom = $this->getOptionValue($input, self::OPTION_MODIFIED_FROM, self::OPTION_MODIFIED_FROM_SHORT, '');
         $validFrom = $this->getOptionValue($input, self::OPTION_VALID_FROM, self::OPTION_VALID_FROM_SHORT, '');
+        $limit = $this->getOptionValue($input, self::OPTION_LIMIT, self::OPTION_LIMIT_SHORT, '');
+        if (empty($limit)) {
+            $limit = 0;
+        } else {
+            $limit = (int)$limit;
+        }
         $counter = 0;
 
         try {
@@ -154,6 +163,10 @@ class GsoaProductConsole extends Console
                                             file_put_contents($fileAlternativeEanPath, implode('|', $line) . PHP_EOL, FILE_APPEND);
                                         }
                                     }
+                                }
+                                if ($limit > 0 && $limit === $counter) {
+                                    $page = 2000;
+                                    break;
                                 }
                             }
                             $output->writeln('Pages done ' . $page . ', rows ' . $counter);
