@@ -7,6 +7,80 @@ $header-sticky-height: rem(69, number);
         position: relative;
         z-index: $setting-zi-header;
 
+        &__meta-navigation-top {
+            background: $setting-color-globus-lightGray;
+            font-size: 11px;
+            height: 30px;
+            padding: 5px;
+            margin: 0px;
+
+            @include helper-breakpoint-media-max($xl-min) {
+                display: none;
+            }
+        }
+
+       &__text-left {
+            display: inline-block;
+            text-align: left;
+            color:$setting-color-globus-lightOrange-2;
+        }
+
+        &__text-right {
+            display: inline-block;
+            text-align: right;
+            color:$setting-color-globus-darkGray-2;
+        }
+
+        &__link_orange {
+            color: $setting-color-gray-13;
+            text-decoration: none;
+
+            &:hover {
+                opacity: 1;
+                color: $setting-color-globus-lightOrange-2;
+                text-decoration: none;
+                box-shadow: none;
+            }
+
+            &:hover svg {
+                fill: $setting-color-globus-lightOrange-2;
+            }
+        }
+
+        &__icon_left {
+            width: 18px;
+            height: 18px;
+            vertical-align:bottom;
+            margin-right: 2px;
+            margin-left: 10px;
+            text-decoration: none;
+
+            &:hover {
+                opacity: 1;
+                fill: $setting-color-globus-lightOrange-2;
+            }
+        }
+
+        &__icon_right {
+            width: 16px;
+            height: 16px;
+            vertical-align:bottom;
+            margin-right: 2px;
+            margin-left: 10px;
+        }
+
+        &__link_black {
+            color: $setting-color-gray-13;
+            text-decoration: none;
+
+            &:hover {
+                opacity: 1;
+                color: $setting-color-black-1;
+                text-decoration: none;
+                box-shadow: none;
+            }
+        }
+
         &__top {
             background: $setting-color-globus-white;
             color: $setting-color-globus-lightGray;
@@ -20,6 +94,8 @@ $header-sticky-height: rem(69, number);
 
         &__row {
             padding: 0 rem(20) 0 rem(100);
+            margin-left: 10px;
+            margin-right: 10px;
 
             @include helper-breakpoint-media-min($xl-min) {
                 padding: 0;
@@ -178,6 +254,7 @@ $header-sticky-height: rem(69, number);
         &__merchant {
             display: block;
             overflow: hidden;
+            white-space: nowrap;
             text-overflow: ellipsis;
             color: $setting-color-gray-13;
             padding: 0 rem(30);

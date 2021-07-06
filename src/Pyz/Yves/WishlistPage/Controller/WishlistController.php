@@ -32,7 +32,7 @@ class WishlistController extends SprykerWishlistController
     public const MESSAGE_PERMISSION_FAILED = 'global.permission.failed';
     private const REQUEST_PARAM_CSRF_TOKEN = 'token';
 
-    public const DEFAULT_NAME = 'Meine Merkzettel';
+    public const DEFAULT_NAME = 'Meine Einkaufsliste';
     public const REQUEST_HEADER_REFERER = 'referer';
     public const PARAM_WISHLIST_QUANTITY = 'quantity';
     public const PARAM_ID_PRODUCT_ABSTRACT = 'idProductAbstract';

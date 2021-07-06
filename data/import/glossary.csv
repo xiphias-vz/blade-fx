@@ -684,7 +684,7 @@ global.store_finder,"Filiálky",cs_CZ
 global.store_finder,Filialen,de_DE
 global.store_finder,Store Finder,en_US
 global.my_wishlist,"Můj poznámkový list",cs_CZ
-global.my_wishlist,Meine Merkzettel,de_DE
+global.my_wishlist,Meine Einkaufsliste,de_DE
 global.my_wishlist,My Wishlist,en_US
 global.all_products,"Všechny produkty",cs_CZ
 global.all_products,Alle Produkte,de_DE
@@ -1705,13 +1705,13 @@ wishlist.title,Wishlist,en_US
 wishlist.title,Merkzettel,de_DE
 wishlist.title,"Poznámkový list",cs_CZ
 wishlist.wishlist,Wishlist,en_US
-wishlist.wishlist,Merkzettel,de_DE
+wishlist.wishlist,Einkaufsliste,de_DE
 wishlist.wishlist,"Poznámkový list",cs_CZ
 page.detail.add-to-wishlist,Add to Wishlist,en_US
 page.detail.add-to-wishlist,Auf den Merkzettel,de_DE
 page.detail.add-to-wishlist,"Na poznámkový list",cs_CZ
 customer.account.wishlist,Wishlist,en_US
-customer.account.wishlist,Merkzettel,de_DE
+customer.account.wishlist,Einkaufsliste,de_DE
 customer.account.wishlist,"Seznam přání",cs_CZ
 customer.account.wishlist.empty,Currently there are no items in your wishlist.,en_US
 customer.account.wishlist.empty,Zurzeit ist kein Produkt auf deinem Merkzettel.,de_DE
@@ -1750,15 +1750,15 @@ customer.account.wishlist.overview.variant,Variant,en_US
 customer.account.wishlist.overview.variant,Produktvariante,de_DE
 customer.account.wishlist.overview.variant,"Varianta produktu",cs_CZ
 customer.account.wishlist.overview.title,Manage wishlists,en_US
-customer.account.wishlist.overview.title,Merkzettel verwalten,de_DE
+customer.account.wishlist.overview.title,Einkaufsliste verwalten,de_DE
 customer.account.wishlist.overview.title,"Správa seznamů přání",cs_CZ
 customer.account.wishlist.overview.empty,You don't have a wishlist yet.,en_US
-customer.account.wishlist.overview.empty,Sie haben noch keine Merkzettel.,de_DE
+customer.account.wishlist.overview.empty,Sie haben noch keine Einkaufsliste.,de_DE
 customer.account.wishlist.overview.empty,"Zatím nemáže žádný seznam přání.",cs_CZ
 customer.account.wishlist.overview.enter_name,Enter name here,en_US
 customer.account.wishlist.overview.enter_name,Name hier eingeben,de_DE
 customer.account.wishlist.overview.enter_name,"Zde zadejte jméno",cs_CZ
-customer.account.wishlist.overview.add_new,Merkzettel hinzufügen,de_DE
+customer.account.wishlist.overview.add_new,Einkaufsliste hinzufügen,de_DE
 customer.account.wishlist.overview.add_new,Add wishlist,en_US
 customer.account.wishlist.overview.add_new,"Přidat seznam přání.",cs_CZ
 customer.account.wishlist.overview.item_count,# Products,en_US
@@ -1801,16 +1801,16 @@ customer.account.wishlist.item.moved_all_available_to_cart.failed,The items coul
 customer.account.wishlist.item.moved_all_available_to_cart.failed,Nicht alle Artikel konnten erfolgreich in den Einkaufsliste gelegt werden.,de_DE
 customer.account.wishlist.item.moved_all_available_to_cart.failed,"Do nákupního seznamu nelze přidat všechny artikly.",cs_CZ
 customer.account.wishlist.created,Wishlist successfully created.,en_US
-customer.account.wishlist.created,Merkzettel erfolgreich angelegt.,de_DE
+customer.account.wishlist.created,Einkaufsliste erfolgreich angelegt.,de_DE
 customer.account.wishlist.created,"Seznam přání byl úspěšně vytvořen.",cs_CZ
 customer.account.wishlist.updated,Wishlist successfully updated.,en_US
-customer.account.wishlist.updated,Merkzettel erfolgreich aktualisiert.,de_DE
+customer.account.wishlist.updated,Einkaufsliste erfolgreich aktualisiert.,de_DE
 customer.account.wishlist.updated,"Seznam přání byl úspěšně aktualizován",cs_CZ
 customer.account.wishlist.deleted,Wishlist successfully deleted.,en_US
-customer.account.wishlist.deleted,Merkzettel erfolgreich gelöscht.,de_DE
+customer.account.wishlist.deleted,Einkaufsliste erfolgreich gelöscht.,de_DE
 customer.account.wishlist.deleted,"Seznam přání byl úspěšně odstraněn.",cs_CZ
 customer.account.wishlist.item.not_added,Adding to the wishlist failed.,en_US
-customer.account.wishlist.item.not_added,Hinzufügen zur Merkzettel fehlgeschlagen.,de_DE
+customer.account.wishlist.item.not_added,Hinzufügen zu die Einkaufsliste fehlgeschlagen.,de_DE
 customer.account.wishlist.item.not_added,"Nepodařilo se přidat na seznam přání.",cs_CZ
 newsletter.subscribe,E-Mail,en_US
 newsletter.subscribe,E-Mail,de_DE
@@ -3258,13 +3258,13 @@ customer.account.shopping_list.overview.view,View,en_US
 customer.account.shopping_list.overview.view,Ansehen,de_DE
 customer.account.shopping_list.overview.form.new,"Vytvořit nový nákupní seznam",cs_CZ
 customer.account.shopping_list.overview.form.new,Create new shopping list,en_US
-customer.account.shopping_list.overview.form.new,Erstelle eine neue Merkzettel,de_DE
+customer.account.shopping_list.overview.form.new,Erstelle eine neue Einkaufslsite,de_DE
 customer.account.shopping_list.overview.delete,"Odstranit",cs_CZ
 customer.account.shopping_list.overview.delete,Delete,en_US
 customer.account.shopping_list.overview.delete,Löschen,de_DE
 customer.account.shopping_list.overview.empty,"Zatím nemáte žádný nákupní seznam.",cs_CZ
 customer.account.shopping_list.overview.empty,You do not have any shopping lists yet.,en_US
-customer.account.shopping_list.overview.empty,Sie haben noch keine Merkzettel.,de_DE
+customer.account.shopping_list.overview.empty,Sie haben noch keine Einkaufsliste.,de_DE
 customer.account.shopping_list.overview.share,"Sdílet",cs_CZ
 customer.account.shopping_list.overview.share,Share,en_US
 customer.account.shopping_list.overview.share,Teilen,de_DE
@@ -3345,13 +3345,13 @@ customer.account.shopping_list.item.remove.failed,Product was not removed from s
 customer.account.shopping_list.item.remove.failed,Artikel wurde nicht von der Merkzettel entfernt,de_DE
 customer.account.shopping_list.updated,"Nákupní seznam byl úspěšně aktualizován",cs_CZ
 customer.account.shopping_list.updated,Shopping list updated successfully,en_US
-customer.account.shopping_list.updated,Merkzettel erfolgreich aktualisiert.,de_DE
+customer.account.shopping_list.updated,Einkaufsliste erfolgreich aktualisiert.,de_DE
 customer.account.shopping_list.clear.success,"Nákupní seznam byl úspěšně odstraněn",cs_CZ
 customer.account.shopping_list.clear.success,Shopping list was successfully cleared.,en_US
 customer.account.shopping_list.clear.success,Merkzettel wurde erfolgreich gelöscht.,de_DE
 customer.account.shopping_list.delete.success,"Nákupní seznam byl úspěšně odstraněn.",cs_CZ
 customer.account.shopping_list.delete.success,Shopping list deleted successfully.,en_US
-customer.account.shopping_list.delete.success,Merkzettel erfolgreich gelöscht.,de_DE
+customer.account.shopping_list.delete.success,Einkaufsliste erfolgreich gelöscht.,de_DE
 customer.account.shopping_list.delete.failed,"Nákupní seznam nelze odstranit.",cs_CZ
 customer.account.shopping_list.delete.failed,Shopping list was not deleted.,en_US
 customer.account.shopping_list.delete.failed,Merkzettel konnte nicht gelöscht.,de_DE
@@ -3894,7 +3894,7 @@ customer.account.wishlist.item.added_to_cart,Item added successfully to the cart
 customer.account.wishlist.item.added_to_cart,Artikel erfolgreich hinzugefügt.,de_DE
 customer.account.wishlist.item.added,"Položka byla přidána do vašeho seznamu přání.",cs_CZ
 customer.account.wishlist.item.added,The item was added to your wishlist,en_US
-customer.account.wishlist.item.added,Der Artikel wurde deinem Merkzettel hinzugefügt,de_DE
+customer.account.wishlist.item.added,Der Artikel wurde deiner Einkaufsliste hinzugefügt,de_DE
 customer.account.wishlist.quantity,"Množství",cs_CZ
 customer.account.wishlist.quantity,Amount,en_US
 customer.account.wishlist.quantity,Menge,de_DE
@@ -4554,3 +4554,15 @@ globus.metadata,Globus | Unser Globus Bestell & Abholservice | einfach online be
 globus.metadata,Globus | Unser Globus Bestell & Abholservice | einfach online bestellen ✅ über 8.000 Artikel ✅ schnell am Markt abholen ✅ in gewohnter Globus Qualität ✅ ,en_US
 customer.login.form.join_now,Jetzt registrieren,de_DE
 customer.login.form.join_now,Join now,en_US
+my_market.link,Mein Markt,de_DE
+my_market.link,My marketplace,en_US
+product.find,Produkte finden,de_DE
+product.find,Find products,en_US
+product.buy,Produkte kaufen,de_DE
+product.buy,Buy products,en_US
+service.fee.customers,"nur 1,99€ Servicegebühren für Mein Globus Kunden",de_DE
+service.fee.customers,"only 1.99€ service fees for Mein Globus customers",en_US
+without.contact.shop&pay,Kontaktlos einkaufen & bezahlen,de_DE
+without.contact.shop&pay,Shop and pay without contact,en_US
+payback.upper,PAYBACK,de_DE
+payback.upper,PAYBACK,en_US
