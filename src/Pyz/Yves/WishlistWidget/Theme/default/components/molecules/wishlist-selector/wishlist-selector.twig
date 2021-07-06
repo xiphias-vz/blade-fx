@@ -6,7 +6,8 @@
 
 {% define data = {
     sku: required,
-    idProductConcrete: required
+    idProductConcrete: required,
+    currentCodeBucket: app.currentCodeBucket,
 } %}
 
 {% set isUserLoggedIn = is_granted('ROLE_USER') %}
@@ -35,6 +36,19 @@
 
     <form method="POST" action="{{ path('wishlist/add-item', { sku: data.sku }) }}" class="{{config.name}}__form"
           onSubmit="document.getElementsByClassName('wishlist-quantity__input')[0].value = document.getElementsByClassName('quantity-counter__input')[0].value;">
+
+        {% if data.currentCodeBucket=='DE' %}
+            <div class="grid grid--justify spacing-top spacing-top--big payback">
+                <div class="col col--sm-12 col--lg-10 spacing-bottom">
+                    <div class="payback">
+                        <img src="{{ publicPath('images/pb-badge-pdp.png') }}" width="70px" height="25" style="margin-right: 5px;" />
+                        <span class="text-blue">{{ 'payback.text.part.one' | trans }}&nbsp;</span>
+                        <span class="text-grey">{{ 'payback.text.part.two' | trans }}</span>
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+
         <div class="grid grid--justify spacing-top spacing-top--big">
             <div class="col col--sm-12 col--lg-10 spacing-bottom">
                 {% if isUserLoggedIn %}

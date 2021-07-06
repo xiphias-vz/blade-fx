@@ -4566,3 +4566,7 @@ without.contact.shop&pay,Kontaktlos einkaufen & bezahlen,de_DE
 without.contact.shop&pay,Shop and pay without contact,en_US
 payback.upper,PAYBACK,de_DE
 payback.upper,PAYBACK,en_US
+payback.text.part.one,1 °P ,de_DE
+payback.text.part.one,1 °P ,en_US
+payback.text.part.two, pro 2 Euro Warenwert,de_DE
+payback.text.part.two, pro 2 Euro Value of goods,en_US

@@ -2,6 +2,19 @@
     #{$name} {
         position: relative;
 
+        .payback {
+            display:flex;
+            align-items: center;
+        }
+
+        .text-blue {
+            color: $setting-color-globus-payback-blue;
+        }
+
+        .text-grey {
+            color: $setting-color-gray-9;
+        }
+
         @content;
     }
 }
