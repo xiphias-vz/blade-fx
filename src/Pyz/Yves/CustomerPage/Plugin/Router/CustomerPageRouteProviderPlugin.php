@@ -20,6 +20,8 @@ class CustomerPageRouteProviderPlugin extends SprykerCustomerPageRouteProviderPl
     protected const ROUTE_CUSTOMER_REGISTRATION_CONFIRM = 'register/confirm';
     protected const ROUTE_CUSTOMER_PASSWORD_CHANGE = 'password/change';
 
+    protected const ROUTE_CUSTOMER_PASSWORD_RESET = 'password/reset';
+
     /**
      * Specification:
      * - Adds Routes to the RouteCollection.
@@ -38,6 +40,7 @@ class CustomerPageRouteProviderPlugin extends SprykerCustomerPageRouteProviderPl
         $routeCollection = $this->addCustomerOrderCancellationRoute($routeCollection);
         $routeCollection = $this->addCustomerRegisterConfirmRoute($routeCollection);
         $routeCollection = $this->addCustomerPasswordChangeRoute($routeCollection);
+        $routeCollection = $this->addCustomerPasswordResetRoute($routeCollection);
 
         return $routeCollection;
     }
@@ -90,6 +93,14 @@ class CustomerPageRouteProviderPlugin extends SprykerCustomerPageRouteProviderPl
     {
         $route = $this->buildRoute('/password/change', 'CustomerPage', 'Password', 'passwordChange');
         $routeCollection->add(static::ROUTE_CUSTOMER_PASSWORD_CHANGE, $route);
+
+        return $routeCollection;
+    }
+
+    protected function addCustomerPasswordResetRoute(RouteCollection $routeCollection): RouteCollection
+    {
+        $route = $this->buildRoute('/password/reset', 'CustomerPage', 'Password', 'passwordReset');
+        $routeCollection->add(static::ROUTE_CUSTOMER_PASSWORD_RESET, $route);
 
         return $routeCollection;
     }

@@ -1,0 +1,71 @@
+@mixin shop-ui-pass-reset-flash-message($name: '.pass-reset-flash-message') {
+    #{$name} {
+        @include helper-visibility-invisible;
+        @include helper-effect-transition(max-height opacity visibility, $setting-effect-default-duration * 2);
+        max-height: 0;
+        overflow-y: hidden;
+        font-size: $setting-font-size-base + 1;
+        font-family: $setting-font-family-additional;
+
+
+        &__static-link {
+            color: $setting-color-black;
+        }
+
+        &__message {
+            padding: rem(10) rem(8);
+            color: $setting-color-white;
+            font-size: rem(16);
+
+            &--info {
+                color: $setting-color-black;
+            }
+        }
+
+        &__title {
+           text-align: center;
+        }
+
+        #pass_reset_flash_message {
+            width: 100%;
+            text-align: center;
+            align-items: center;
+        }
+
+        &--show {
+            @include helper-visibility-visible;
+            max-height: 100%;
+        }
+
+        @each $action, $setting-color-action in $setting-color-actions {
+            @include shop-ui-pass-reset-flash-message-action($action, $setting-color-action);
+        }
+
+        #flash-message-static-link {
+            cursor: pointer;
+        }
+
+        .flash-message-error {
+            background-color: $setting-color-alt-4;
+            color: $setting-color-white;
+        }
+
+        .flash-message-success {
+            background-color: $setting-color-green;
+            color: $setting-color-white;
+        }
+
+        @content;
+    }
+}
+
+@mixin shop-ui-pass-reset-flash-message-action($action, $setting-color-action) {
+    &--#{$action} {
+        background-color: $setting-color-action;
+        // background-color: $setting-color-globus-darkGreen;
+    }
+
+    @content;
+}
+
+@include shop-ui-pass-reset-flash-message();

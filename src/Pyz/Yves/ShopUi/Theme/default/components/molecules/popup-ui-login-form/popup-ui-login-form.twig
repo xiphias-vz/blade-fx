@@ -5,22 +5,84 @@
     tag: 'popup-ui-login-form',
 } %}
 
+{% define data = {
+    title: 'global.login' | trans,
+    scriptSrc: app.customerCDCApiUrl,
+    currentCodeBucket: app.currentCodeBucket,
+} %}
+
 {% block body %}
+    <script src="https://code.jquery.com/jquery-latest.min.js"></script>
+    <script language="JavaScript" src="{{ data.scriptSrc }}"></script>
+
+    <style>
+        .gigya-screen-content div.gigya-screen.landscape {
+            padding: 10px;
+        }
+        .gigya-screen, .gigya-screen * {
+            margin: 2px;
+            font-family: "Fira Sans";
+        }
+        .gigya-screen .gigya-label-text{
+            font-family: "Fira Sans";
+        }
+        .gigya-screen-caption {
+            display: none;
+        }
+        .gigya-screen a
+        {
+            color: grey !important;
+        }
+
+        input.gigya-input-text, input.gigya-input-password{
+            border-radius: 0px !important;
+        }
+
+        .globus_pwforget_link {
+            display: none !important;
+        }
+
+        .globus_register_link
+        {
+            display: none !important;
+        }
+
+    </style>
+
+
     <div class="{{ config.name }}__overlay">
         <div class="{{ config.name }}__container">
             <div class="{{ config.name }}__title">
-                <span class="{{ config.name }}__title--text">{{ 'Anmelden' | trans }}</span>
+                <span class="{{ config.name }}__title--text">{{ 'auth.login' | trans }}</span>
                 <button class="{{ config.name }}__close icon-close"></button>
             </div>
+
             <div class="{{ config.name }}__content">
-                <div>
+                <div id="checkoutCustomerLogin">
+
+                </div>
+                {% embed molecule('pass-reset-flash-message') with {
+                    data : {
+                        action: '',
+                        title: '',
+                        text: '',
+                        icon: null,
+                        messageTextHolderClass: '',
+                        currentCodeBucket: app.currentCodeBucket,
+                    }
+                } only %}
+                {% endembed %}
+
+                <div style="display: none">
                     <div class="form form--grid-indent form--login form--checkout-actions" data-qa="component form">
                         <form name="loginForm" method="post" action="/login_check">
+
                             <div class="form__container">
+
                                 <div class="form__fields grid grid--top">
                                     <div class="form__field col col--sm-12">
                                         <label for="loginForm_email" class="label label--required">{{ 'customer.login.email' | trans }}</label>
-                                        <input id="loginForm_email" name="loginForm[email]" required="required" placeholder="{{ 'customer.login.email_placeholder' | trans }}" class="input input--expand" type="text">
+                                        <input id="loginForm_email" name="loginForm[email]" required="required" placeholder="{{ 'customer.login.email_placeholder' | trans }}" class="input input--expand" type="email">
                                     </div>
                                     <div class="form__field col col--sm-12">
                                         <label for="loginForm_password" class="label label--required">{{ 'customer.password' | trans }}</label>
@@ -29,31 +91,130 @@
                                     <input id="loginForm_data" name="loginForm[data]" class="input input--expand" type="hidden">
                                     <input id="loginForm__token" name="loginForm[_token]" class="input input--expand" type="hidden" value="{{ csrf_token('loginForm') }}">
 
-{#                                    {% if is_granted('IS_AUTHENTICATED_FULLY') %}#}
-{#                                        <input type="hidden" id="is_user_logged_in" value="true" />#}
-{#                                    {% else %}#}
-{#                                        <input type="hidden" id="is_user_logged_in" value="false" />#}
-{#                                    {% endif %}#}
+                                    {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+                                        <input type="hidden" id="is_user_logged_in" value="true" />
+                                    {% else %}
+                                        <input type="hidden" id="is_user_logged_in" value="false" />
+                                    {% endif %}
+                                </div>
 
-                                </div>
-                                <div class="form__actions">
-                                    <button type="submit" class="form__action form__action--login button button--large button--expand" data-qa="submit-button">
-                                        {{ 'customer.signin' | trans }}
-                                    </button>
-                                </div>
-                                <br>
-                                <a class="link-cursor" href="https://www.globusbonus.cz/prihlaseni/zapomenute-heslo" target="_blank">{{ 'customer.forgotten-password.title' | trans }}?</a>
-                                <hr class='box-separator'>
-                                <p style="color:#71747c">
-                                    > {{ 'customer.signup_subtext' | trans }}
-                                    <a class="link-cursor-registration" href="https://www.globusbonus.cz/prihlaseni/registrace" target="_blank">{{ 'customer.login.form.join_now' | trans }}</a>
-                                </p>
+                                {% if data.currentCodeBucket=='CZ' %}
+                                    <div class="form__actions">
+                                        <button type="submit" class="form__action form__action--login button button--large button--expand" data-qa="submit-button">
+                                            {{ 'customer.signin' | trans }}
+                                        </button>
+                                    </div>
+                                    <br>
+                                    <a class="link-cursor" href="https://www.globusbonus.cz/prihlaseni/zapomenute-heslo" target="_blank">{{ 'customer.forgotten-password.title' | trans }}?</a>
+                                    <hr class='box-separator'>
+                                    <p style="color:#71747c">
+                                        > {{ 'customer.signup_subtext' | trans }}
+                                        <a class="link-cursor-registration" href="https://www.globusbonus.cz/prihlaseni/registrace" target="_blank">{{ 'customer.login.form.join_now' | trans }}</a>
+                                    </p>
+                                    <input id="which_country" type="hidden" value="CZ">
+                                {% elseif data.currentCodeBucket=='DE' %}
+                                    <div class="form__actions">
+                                        <button type="submit" class="form__action form__action--login button button--large button--expand" data-qa="submit-button">
+                                            {{ 'customer.signin' | trans }}
+                                        </button>
+                                        <input id="which_country" type="hidden" value="DE">
+                                    </div>
+                                {% endif %}
                             </div>
                         </form>
+                        <script>
+                            window.addEventListener('DOMContentLoaded', () => {
+                                let summaryForm = document.querySelector('form[name=summaryForm]');
+                                if(summaryForm !== null) {
+                                    summaryForm.addEventListener('submit', () => {
+                                        let submitButton = summaryForm.querySelector('button');
+                                        submitButton.disabled = true;
+                                    })
+                                }
+                            })
+                        </script>
                     </div>
                 </div>
             </div>
         </div>
     </div>
     {% block button %}{% endblock %}
+
+    <script type="text/javascript">
+
+        var passwordInputField = document.getElementsByClassName('gigya-input-password gigya-show-checkmark gigya-valid');
+        var passwordErrorMessage = document.getElementsByClassName('gigya-error-msg gigya-form-error-msg');
+
+
+        function gigyaLoginScreen() {
+            gigya.accounts.showScreenSet({
+                screenSet: 'CCCustomer-RegistrationLogin',
+                startScreen: 'gigya-login-screen',
+                containerID: 'checkoutCustomerLogin',
+                "onBeforeValidation": function (event) {
+
+                },
+                "onAfterScreenLoad": function(event) {
+                    var lnk = document.getElementsByClassName('globus_register_link');
+                    lnk[0].setAttribute("href", "/register");
+                    lnk[0].removeAttribute("target");
+                    lnk[1].removeAttribute("target");
+                    lnk[1].setAttribute("href", "javascript: document.getElementsByClassName('js-toggler-radio__trigger')[1].click()")
+                },
+                "onBeforeSubmit": function(event) {
+                    if(event.screen === 'gigya-login-screen')
+                        document.querySelector("#loginForm_password.input").value = document.querySelector(".gigya-input-password.gigya-show-checkmark.gigya-valid").value;
+                },
+                "onAfterSubmit": function(event) {
+                    if(event.response.errorCode == 0 && event.screen === 'gigya-login-screen') {
+                        checkoutStep('login');
+                        document.querySelector("#loginForm_email.input").value = event.profile.email;
+                        document.querySelector("#loginForm_data").value = JSON.stringify(event);
+                        document.getElementsByName("loginForm")[0].submit();
+                    } else {
+                        passwordInputField.item(0).value = '';
+
+                        setTimeout(() => {
+                            passwordErrorMessage.item(11).innerHTML = "Ungültiger Benutzname oder Passwort";
+                        }, 1);
+
+                    }
+                }
+            });
+        }
+
+        function checkoutStep(option)
+        {
+            window.dataLayer.push({
+                'event': 'eec.checkout',
+                'ecommerce':
+                    {
+                        'checkout':
+                            {
+                                'actionField':
+                                    {
+                                        'step': '1',
+                                        'option': option,
+                                    }
+                            },
+                    },
+            });
+        }
+
+        {% if data.currentCodeBucket=='DE' %}
+            gigyaLoginScreen();
+        {% endif %}
+
+        var buttons = document.getElementsByTagName('button');
+        if(buttons != null)
+        {
+            buttons[1].addEventListener('click', function()
+            {
+                checkoutStep('guestCheckout');
+            });
+        }
+
+    </script>
 {% endblock %}
+
+

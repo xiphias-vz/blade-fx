@@ -47,23 +47,39 @@
                 </span>
                     </a>
                 {% endif %}
-            {% else %}
-                {% set custometLink = is_granted('ROLE_USER') ? 'customer/overview' : 'login' %}
-                <a href="{{ url(custometLink) }}" class="link link--nav">
-                    {% include atom('icon') with {
-                        class: 'link__icon link__icon--xxl-with-text icon--color-orange',
-                        modifiers: ['big'],
-                        data: {
-                            name: 'user-account',
-                        },
-                    } only %}
+            {% elseif data.currentCodeBucket=='DE' %}
+                {% if(is_granted('ROLE_USER')) %}
+                    <a href="{{ url('customer/overview') }}" class="link link--nav">
+                        {% include atom('icon') with {
+                            class: 'link__icon link__icon--xxl-with-text icon--color-orange',
+                            modifiers: ['big'],
+                            data: {
+                                name: 'user-account',
+                            },
+                        } only %}
 
-                    <span class="link__text link__text--xxl-visible">
-                        {{ 'customer.profile.link' | trans }}
-                    </span>
-                </a>
+                        <span class="link__text link__text--xxl-visible">
+                            {{ 'customer.profile.link' | trans }}
+                        </span>
+                    </a>
+                {% else %}
+                    <a id="link-to-login-modal" class="{{ config.name }}__navigation-item link link--nav link--reset-focus">
+                        {% include atom('icon') with {
+                            class: 'link__icon link__icon--xxl-with-text icon--color-orange',
+                            modifiers: ['big'],
+                            data: {
+                                name: 'user-account',
+                            },
+                        } only %}
+
+                        <span class="link__text link__text--xxl-visible">
+                            {{ 'customer.profile.link' | trans }}
+                        </span>
+                    </a>
+                {% endif %}
             {% endif %}
         </li>
+
 
         {% if data.showUserMenu and is_granted('IS_AUTHENTICATED_FULLY') %}
             <li class="{{ config.name }}__item">

@@ -71,18 +71,31 @@
                                     {{ 'customer.profile.link' | trans }}
                                 </a>
                             {% endif %}
-                        {% else %}
-                            <a href="{{ url('customer/overview') }}"
-                               class="{{ config.name }}__navigation-item link link--reset-focus">
-                                {% include atom('icon') with {
-                                    modifiers: ['small'],
-                                    class: 'link__icon',
-                                    data: {
-                                        name: 'user-account',
-                                    },
-                                } only %}
-                                {{ 'customer.profile.link' | trans }}
-                            </a>
+                        {% elseif data.currentCodeBucket=='DE' %}
+                            {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+                                <a href="{{ url('customer/overview') }}"
+                                   class="{{ config.name }}__navigation-item link link--reset-focus">
+                                    {% include atom('icon') with {
+                                        modifiers: ['small'],
+                                        class: 'link__icon',
+                                        data: {
+                                            name: 'user-account',
+                                        },
+                                    } only %}
+                                    {{ 'customer.profile.link' | trans }}
+                                </a>
+                            {% else %}
+                                <a class="{{ config.name }}__navigation-item link link--reset-focus link-to-login-modal">
+                                    {% include atom('icon') with {
+                                        modifiers: ['small'],
+                                        class: 'link__icon',
+                                        data: {
+                                            name: 'user-account',
+                                        },
+                                    } only %}
+                                    {{ 'customer.profile.link' | trans }}
+                                </a>
+                            {% endif %}
                         {% endif %}
 
                         <a href="{{ 'page.fragen.url' | trans }}" class="{{ config.name }}__navigation-item link link--reset-focus" target="_blank">

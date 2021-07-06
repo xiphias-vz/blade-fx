@@ -1,0 +1,82 @@
+{% extends model('component') %}
+
+{% define config = {
+    name: 'popup-ui-pass-reset-error',
+    tag: 'popup-ui-pass-reset-error'
+} %}
+
+{% define data = {
+    isErrorTrue: data.isErrorTrue,
+    isUsedContainerMessage: '',
+    isPopUpErrorForPickingArticles: 0,
+    title: 'Confirm your work!' | trans,
+    buttons: {
+        submit: {
+            title: 'Confirm' | trans,
+            isButton: false,
+            url: '/',
+            blank: false,
+            additionalClass: ''
+        },
+        cancel: {
+            title: 'message.submit_link' | trans
+        }
+    }
+} %}
+
+{% define attributes = {
+    'close-on-submit': true
+} %}
+
+{% if data.isErrorTrue == true and data.isUsedContainerMessage != '' %}
+    {% set errorMessage = data.isUsedContainerMessage %}
+{% else %}
+    {% set errorMessage = 'storeapp.picking.message.error.container-not-known' | trans %}
+{% endif %}
+
+{% block body %}
+    <div class="{{ config.name }}__overlay error-holder" error={{ data.isErrorTrue }} isPopUpErrorForPickingArticles={{ data.isPopUpErrorForPickingArticles }}>
+        <div class="{{ config.name }}__container">
+
+            <div class="{{ config.name }}__content">
+                {% block content %}
+                    <div class="grid grid--top spacing-y">
+                        <div class="col--sm-12 error-header">
+                            <span>{{ 'storeapp.errorpopup.title' | trans }}</span>
+                        </div>
+                    </div>
+                    <div class="row" style="margin-bottom:5px;">
+                        <hr style="width: 100%; margin: 20px auto; height: 2px; background-color: white;" />
+                    </div>
+                    <div class="grid grid--center">
+                        <div id="firstBlock" class="col--sm-12">
+                            {{ errorMessage }}
+                        </div>
+                    </div>
+                    <div class="grid grid--center spacing-y">
+                        <div id="secondBlock" class="col--sm-8">
+
+                        </div>
+                    </div>
+                    <div class="grid grid--center spacing-bottom spacing-bottom--big">
+                        <div class="col--sm-8">
+
+                        </div>
+                    </div>
+                {% endblock %}
+
+                {% block popupActions %}
+
+                    <div class="text-center spacing-top spacing-top--big error-holder">
+                        {% block cancelButton %}
+                            <button type="button" class="link link--error button button--expand error-button-hover {{ config.jsName }}__close">
+                                {{ data.buttons.cancel.title }}
+                            </button>
+                        {% endblock %}
+                    </div>
+                {% endblock %}
+            </div>
+        </div>
+    </div>
+    {% block button %}{% endblock %}
+{% endblock %}
