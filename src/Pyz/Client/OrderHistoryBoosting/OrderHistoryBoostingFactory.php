@@ -20,6 +20,9 @@ class OrderHistoryBoostingFactory extends AbstractFactory
         return $this->getProvidedDependency(OrderHistoryBoostingDependencyProvider::CLIENT_CUSTOMER);
     }
 
+    /**
+     * @return string
+     */
     public function getCodeBucket(): string
     {
         return getenv('SPRYKER_CODE_BUCKET');

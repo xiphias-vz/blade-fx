@@ -145,6 +145,11 @@ class CustomerPageRouteProviderPlugin extends SprykerCustomerPageRouteProviderPl
         return $routeCollection;
     }
 
+    /**
+     * @param \Spryker\Yves\Router\Route\RouteCollection $routeCollection
+     *
+     * @return \Spryker\Yves\Router\Route\RouteCollection
+     */
     protected function addCustomerPasswordResetRoute(RouteCollection $routeCollection): RouteCollection
     {
         $route = $this->buildRoute('/password/reset', 'CustomerPage', 'Password', 'passwordReset');

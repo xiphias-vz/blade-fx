@@ -46,6 +46,7 @@ class ProductConfig extends SprykerProductConfigAlias
     public const KEY_PSEUDO_PRICE = 'pseudoprice';
     public const KEY_HERKUNFTSLAND_ATTRIBUTE = 'herkunftsland_o_g';
     public const KEY_PICK_ZONE_ATTRIBUTE = 'pickzone';
+    public const KEY_ASSORTMENT_ZONE_ATTRIBUTE = 'assortmentzone';
     public const KEY_SAP_WGR = 'sapwgr';
     public const KEY_BON_TEXT = 'bontext';
     public const KEY_BRAND = 'supplier';
