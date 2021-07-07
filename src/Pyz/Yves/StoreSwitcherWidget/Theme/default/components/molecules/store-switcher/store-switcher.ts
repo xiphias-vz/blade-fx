@@ -35,7 +35,6 @@ export default class StoreSwitcher extends Component {
             }
             if (is_pwd_protected == 1) {
                 this.storeSwitcherFormText.classList.add('is-hidden');
-                this.storeSwitcherDropDown.classList.add('is-hidden');
                 this.storeSwitcherPassword.classList.remove('is-hidden');
                 this.storeSwitcherUrl.value = convertedUrl;
               if (elementFromModal !== 'popup-ui-store-switcher__overlay') {

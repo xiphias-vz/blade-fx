@@ -27,6 +27,12 @@
                             Einfach online einkaufen und Ihre gewünschten Artikel <br/>
                             in gewohnter Globus Qualität im Markt abholen.
                         </div>
+                        <div class="col col--sm-12 col--lg-8 col--xs-12 form-dropdown--shop-switcher">
+                            {% widget 'StoreSwitcherWidget' %}{% endwidget %}
+                        </div>
+                        <div class="col col--sm-12 col--lg-12 col--xs-12 form-text--shop-switcher">
+                            Wählen Sie Ihre Abholstation, um mit Ihrem Einkauf zu beginnen
+                        </div>
                         <div class="col col--sm-12 col--lg-8 col--xs-12 is-hidden" id="form-password-shop-switcher">
                             <input type="hidden" id="form-url-shop-switcher" />
                             <label for="{{ config.name }}-password">Für die Auswahl dieses Standorts ist aktuell die Eingabe eines Passworts notwendig.</label>
@@ -35,13 +41,6 @@
                             <br>
                             <button type="button" id="{{ config.name }}-button-save" class="button button--hollow-border-light">
                                 {{ 'auth.login' | trans }}</button>
-                        </div>
-
-                        <div class="form-text--shop-switcher">
-                            Wählen Sie Ihre Abholstation, um mit Ihrem Einkauf zu beginnen:
-                        </div>
-                        <div class="form-dropdown--shop-switcher">
-                          {% widget 'StoreSwitcherWidget' %}{% endwidget %}
                         </div>
 
                     </div>
