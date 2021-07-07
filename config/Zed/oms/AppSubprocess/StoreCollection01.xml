@@ -47,6 +47,12 @@
 
             <transition>
                 <source>ready for collection</source>
+                <target>cancelled by backoffice</target>
+                <event>cancel by backoffice</event>
+            </transition>
+
+            <transition>
+                <source>ready for collection</source>
                 <target>collection cancelled by customer</target>
                 <event>cancel collection by customer</event>
             </transition>

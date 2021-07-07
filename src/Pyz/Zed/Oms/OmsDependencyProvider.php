@@ -20,6 +20,7 @@ use Pyz\Zed\MerchantSalesOrder\Business\MerchantSalesOrderFacadeInterface;
 use Pyz\Zed\Oms\Communication\Plugin\Oms\Command\CancelCollectionByCustomerCommandPlugin;
 use Pyz\Zed\Oms\Communication\Plugin\Oms\Command\CancelCollectionByStoreCommandPlugin;
 use Pyz\Zed\Oms\Communication\Plugin\Oms\Command\CancelDueToNotInStockCommandPlugin;
+use Pyz\Zed\Oms\Communication\Plugin\Oms\Command\OrderCancelledByBackoffice;
 use Pyz\Zed\Oms\Communication\Plugin\Oms\Command\OrderCancelledByCustomerCommandByOrderPlugin;
 use Pyz\Zed\Oms\Communication\Plugin\Oms\Command\SendOrderCancelledEmailCommandByOrderPlugin;
 use Pyz\Zed\Oms\Communication\Plugin\Oms\Command\SendOrderRefundedCommandByOrderPlugin;
@@ -141,6 +142,7 @@ class OmsDependencyProvider extends SprykerOmsDependencyProvider
             $commandCollection->add(new SendOrderShippedPlugin(), 'Oms/SendOrderShipped');
             $commandCollection->add(new SendOrderCancelledEmailCommandByOrderPlugin(), 'OrderCancelEmail');
             $commandCollection->add(new OrderCancelledByCustomerCommandByOrderPlugin(), 'OrderCancelByCustomer');
+            $commandCollection->add(new OrderCancelledByBackoffice(), 'OrderCancelByBackoffice');
             $commandCollection->add(new SendOrderRefundedCommandByOrderPlugin(), 'SendOrderRefundedEmail');
 
             // Invoice

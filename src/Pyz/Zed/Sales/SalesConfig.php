@@ -34,6 +34,7 @@ class SalesConfig extends SprykerSalesConfig
         OmsConfig::STORE_STATE_DELIVERY_CANCELLED_BY_STORE => OmsConfig::STATE_CANCELLED,
         OmsConfig::STORE_STATE_CANCELLED_BY_TIMEOUT => OmsConfig::STATE_CANCELLED,
         OmsConfig::STATE_CANCELLED_BY_CUSTOMER => OmsConfig::STATE_CANCELLED,
+        OmsConfig::STATE_CANCELLED_BY_BACKOFFICE => OmsConfig::STATE_CANCELLED,
         OmsConfig::STORE_STATE_DELIVERED => OmsConfig::STATE_COMPLETED,
         OmsConfig::STORE_STATE_COLLECTED_BY_CUSTOMER => OmsConfig::STATE_COMPLETED,
         OmsConfig::STATE_CLOSED => OmsConfig::STATE_COMPLETED,

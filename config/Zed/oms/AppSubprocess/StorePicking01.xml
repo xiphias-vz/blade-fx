@@ -14,10 +14,21 @@
             <state name="started order processing">
                 <flag>cancellable by customer</flag>
             </state>
-            <state name="ready to start picking" />
-            <state name="ready for picking" />
-            <state name="ready for selecting shelves" />
-            <state name="picked" />
+            <state name="ready to start picking">
+                <flag>cancellable by backoffice</flag>
+            </state>
+            <state name="ready for picking">
+                <flag>cancellable by backoffice</flag>
+            </state>
+
+            <state name="ready for selecting shelves">
+                <flag>cancellable by backoffice</flag>
+            </state>
+
+            <state name="picked">
+                <flag>cancellable by backoffice</flag>
+            </state>
+
             <state name="cancelled due to not in stock">
                 <flag>cancelled</flag>
                 <flag>shipped mail awaits</flag>
@@ -37,6 +48,12 @@
                 <event>confirm selecting containers</event>
             </transition>
 
+            <transition>
+                <source>ready for picking</source>
+                <target>cancelled by backoffice</target>
+                <event>cancel by backoffice</event>
+            </transition>
+
             <transition happy="true">
                 <source>ready for selecting shelves</source>
                 <target>picked</target>
@@ -44,9 +61,21 @@
             </transition>
 
             <transition>
+                <source>ready for selecting shelves</source>
+                <target>cancelled by backoffice</target>
+                <event>cancel by backoffice</event>
+            </transition>
+
+            <transition>
                 <source>picked</source>
                 <target>ready for picking</target>
                 <event>Zurücksetzen</event>
+            </transition>
+
+            <transition>
+                <source>picked</source>
+                <target>cancelled by backoffice</target>
+                <event>cancel by backoffice</event>
             </transition>
 
             <transition>
@@ -83,6 +112,12 @@
                 <target>accepted by customer</target>
                 <event>pass 1 second</event>
             </transition>
+
+            <transition>
+                <source>cancelled by backoffice</source>
+                <target>release time slot and cancel</target>
+                <event>pass</event>
+            </transition>
         </transitions>
 
         <events>
@@ -92,6 +127,7 @@
             <event name="confirm picking" manual="true" command="Sales/ConfirmPicking"/>
             <event name="cancel due to not in stock" manual="true"/>
             <event name="process cancelled due to not in stock" onEnter="true" command="Oms/CancelDueToNotInStock"/>
+            <event name="cancel by backoffice" manual="true" command="OrderCancelByBackoffice"/>
             <event name="close order" manual="true"/>
         </events>
     </process>

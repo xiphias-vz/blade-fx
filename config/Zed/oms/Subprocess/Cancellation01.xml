@@ -35,6 +35,9 @@
             <state name="cancelled by customer" >
                 <flag>cancelled</flag>
             </state>
+            <state name="cancelled by backoffice" >
+                <flag>cancelled</flag>
+            </state>
         </states>
 
         <transitions>
