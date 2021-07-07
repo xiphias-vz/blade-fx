@@ -21,7 +21,7 @@ use Symfony\Component\Security\Core\Exception\AuthenticationException;
 /**
  * @method \Pyz\Yves\CustomerPage\CustomerPageFactory getFactory()
  */
-class CustomerUserProvider extends SprykerCustomerUserProvider
+class CustomerUserProvider extends SprykerCustomerUserProvider implements CustomerUserProviderInterface
 {
     public const ERROR_NOT_VERIFIED_CUSTOMER = 'ERROR_NOT_VERIFIED_CUSTOMER';
 

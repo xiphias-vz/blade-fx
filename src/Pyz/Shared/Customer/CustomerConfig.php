@@ -7,7 +7,9 @@
 
 namespace Pyz\Shared\Customer;
 
-class CustomerConfig
+use Spryker\Shared\Customer\CustomerConfig as SpryCustomerConfig;
+
+class CustomerConfig extends SpryCustomerConfig
 {
     public const PARAM_TOKEN = 'token';
     public const PARAM_CONTINUE_CHECKOUT = 'continueCheckout';

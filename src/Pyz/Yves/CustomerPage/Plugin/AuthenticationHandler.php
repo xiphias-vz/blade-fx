@@ -37,18 +37,27 @@ class AuthenticationHandler extends SprykerAuthenticationHandler
             $isAuthorized = true;
         }
 
-        $customerTransfer->setEmail($_REQUEST['registerForm_customer_email']);
-        $customerTransfer->setPassword($_REQUEST['registerForm_customer_password_pass']);
-        $customerTransfer->setMyGlobusCard($_REQUEST['registerForm_my_globus_card_number']);
+        $customerTransfer->setEmail($_REQUEST['loginForm']['email']);
+        $customerTransfer->setPassword($_REQUEST['loginForm']['password']);
+        //$customerTransfer->setMyGlobusCard($_REQUEST['registerForm_my_globus_card_number']);
+
+        $data = JSON::parse($_REQUEST['loginForm']['data']);
+        if (array_key_exists("cardID", $data['data'])) {
+            $customerTransfer->setMyGlobusCard($data["cardID"]);
+        }
 
         $customerResponseTransfer = new CustomerResponseTransfer();
         $customerTransfer->setMerchantReference($this->createShopContextResolver()->resolve()->getMerchantReference());
         $isAuthorized = $this->getCdcAuthorization($customerTransfer->getEmail(), $customerTransfer->getPassword());
         $customerResponseTransfer->setIsSuccess($isAuthorized);
 
-        $isRegistrationAuthorized = $this->registerCdcUser($customerTransfer);
-        $customerResponseTransfer->setIsSuccess($isRegistrationAuthorized);
-        if ($isRegistrationAuthorized) {
+        if (!$data['response']['isRegistered']) {
+            $isRegistrationAuthorized = $this->registerCdcUser($customerTransfer);
+            $customerResponseTransfer->setIsSuccess($isRegistrationAuthorized);
+            if ($isRegistrationAuthorized) {
+                $customerResponseTransfer = parent::registerCustomer($customerTransfer);
+            }
+        } else {
             $customerResponseTransfer = parent::registerCustomer($customerTransfer);
         }
 
