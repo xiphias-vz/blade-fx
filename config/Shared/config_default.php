@@ -591,7 +591,7 @@ $config[\Pyz\Shared\Customer\CustomerConstants::GLOBUS_API_CONSTANTS] = [
     'globus_api_credentials' => [
         'globusApiUrlNoScreen' => getenv('GLOBUS_CDCAPIURL_NO_SCREEN'),
         'globusApiKeyNoScreen' => getenv('GLOBUS_CDCAPIKEY_NO_SCREEN'),
-        'globusApiSecretKeyNoScreen' => getenv('GLOBUS_CDCAPISECRETKEY_NO_SCREEN')
+        'globusApiSecretKeyNoScreen' => getenv('GLOBUS_CDCAPISECRETKEY_NO_SCREEN'),
     ],
 ];
 
@@ -599,7 +599,7 @@ $config[\Pyz\Shared\Customer\CustomerConstants::GLOBUS_API_CONSTANTS] = [
 $config[\Pyz\Shared\Customer\CustomerConstants::GOOGLE_CAPTCHA_CONSTANTS] = [
     'google_captcha_credentials' => [
         'google_captcha_site_key' => getenv('GLOBUS_GOOGLE_CAPTCHA_SITE_KEY'),
-        'google_captcha_secret' => getenv('GLOBUS_GOOGLE_CAPTCHA_SECRET')
+        'google_captcha_secret' => getenv('GLOBUS_GOOGLE_CAPTCHA_SECRET'),
     ],
 ];
 
