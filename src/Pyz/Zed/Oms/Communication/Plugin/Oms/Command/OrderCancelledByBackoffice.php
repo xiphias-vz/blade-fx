@@ -1,8 +1,11 @@
 <?php
 
+/**
+ * This file is part of the Spryker Commerce OS.
+ * For full license information, please view the LICENSE file that was distributed with this source code.
+ */
 
 namespace Pyz\Zed\Oms\Communication\Plugin\Oms\Command;
-
 
 use Generated\Shared\Transfer\OrderUpdateRequestTransfer;
 use Orm\Zed\Sales\Persistence\SpySalesOrder;
@@ -21,8 +24,8 @@ class OrderCancelledByBackoffice extends AbstractPlugin implements CommandByOrde
 {
     /**
      * @param array $orderItems
-     * @param SpySalesOrder $orderEntity
-     * @param ReadOnlyArrayObject $data
+     * @param \Orm\Zed\Sales\Persistence\SpySalesOrder $orderEntity
+     * @param \Spryker\Zed\Oms\Business\Util\ReadOnlyArrayObject $data
      *
      * @return array
      */
