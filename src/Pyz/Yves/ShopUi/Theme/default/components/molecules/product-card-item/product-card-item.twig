@@ -26,10 +26,15 @@
             {% block image %}
                 <a href="{{ data.productItem.url }}"
                    class="{{ component.renderClass(config.name ~ '__image', modifiers) }} col">
+                    {% if data.productItem.images[0].externalUrlLarge is defined %}
+                        {% set imageProduct = data.productItem.images[0].externalUrlLarge %}
+                    {% else %}
+                        {% set imageProduct = '' %}  {# TODO: ADD DISPLAY OF THE BOX IMAGE #}
+                    {% endif %}
                     {% include molecule('product-image') with {
                         data: {
                             name: data.productItem.name | default,
-                            image: data.productItem.images[0].externalUrlLarge,
+                            image: imageProduct,
                         },
                     } only %}
 

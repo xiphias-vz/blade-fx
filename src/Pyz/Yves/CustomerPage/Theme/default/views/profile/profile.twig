@@ -1,10 +1,49 @@
 {% extends view('profile', '@SprykerShop:CustomerPage') %}
 
 {% define data = {
-    scriptSrc: app.customerCDCApiUrl
+    scriptSrc: app.customerCDCApiUrl,
+    currentCodeBucket: app.currentCodeBucket,
 } %}
 
 {% block customerContent %}
+    {% if data.currentCodeBucket == 'CZ' %}
+        <div class="grid grid--justify grid--stretch">
+            <div class="col--lg-12 col--sm-12 spacing-bottom spacing-bottom--biggest">
+                {% include molecule('customer-form', 'CustomerPage') with {
+                    class: 'box',
+                    modifiers: ['customer-overview'],
+                    data: {
+                        title: 'customer.profile.update' | trans,
+                        form: data.forms.profile,
+                        layout: {
+                            salutation: 'col col--sm-12 col--lg-4 col--xl-4',
+                            first_name: 'col col--sm-12 col--lg-4 col--xl-4',
+                            last_name: 'col col--sm-12 col--lg-4 col--xl-4',
+                        },
+                        submit: {
+                            enable: false,
+                        },
+                    },
+                } only %}
+            </div>
+
+            <div class="col--lg-12 col--sm-12 spacing-bottom spacing-bottom--biggest">
+                <div class="box">
+                    {% include molecule('title-box', 'CustomerPage') with {
+                        modifiers: ['borderless'],
+                        data: {
+                            title: "forms.forgot-password" | trans,
+                        },
+                    } only %}
+
+                    <div class="grid grid--justify grid--middle">
+                        <br>
+                        <a target="_blank" href="https://www.globusbonus.cz/prihlaseni/zapomenute-heslo" class="button button--alternative col col--sm-12 col--lg-auto spacing-bottom spacing-bottom--big">{{ "forms.forgot-password" | trans }}</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% else %}
     <style type="text/css">
         .gigya-screen, .gigya-screen * {
             font-family: "Fra Sans", "Open Sans", Arial, "Lucida Grande", sans-serif;
@@ -93,5 +132,5 @@
 
         gigyaProfileScreen();
     </script>
-
+    {% endif %}
 {% endblock %}

@@ -16,7 +16,6 @@
     scriptSrc: app.customerCDCApiUrl,
     reCaptchaKey: app.reCaptchaSiteKey
 } %}
-
 {% block containerContent %}
     <script src="https://code.jquery.com/jquery-latest.min.js"></script>
 
@@ -26,7 +25,6 @@
     {% endif %}
 
     <style type="text/css">
-
         .gigya-screen-content div.gigya-screen.landscape {
             padding: 0;
         }
@@ -180,37 +178,15 @@
         }
     </style>
 
-    {% if data.currentCodeBucket=='CZ' %}
+    {% if data.currentCodeBucket == 'CZ' %}
         <div class="grid grid--center">
-            <div class="col col--sm-12 col--md-9 col--xl-9">
+            <div class="col col--sm-12 col--md-9 col--xl-6">
                 <div class="box box--checkout">
-                    {% block title %}
+                    {% block titleCZ %}
                         <div class="list-switches list-switches--checkout">
                             <ul class="list-switches__list list-switches--register-type">
                                 <li class="list-switches__item">
-                                    {% embed molecule('toggler-radio') with {
-                                        modifiers: ['checkout', 'with-bg'],
-                                        data: {
-                                            label: 'checkout.customer.auth_as_login' | trans
-                                        },
-                                        attributes: {
-                                            id: 'login',
-                                            checked: data.isLogin,
-                                            name: 'checkoutProceedAs',
-                                            'target-class-name': 'js-login__login',
-                                        },
-                                    } only %}
-                                        {% block labelContainer %}
-                                            <span class="toggler-radio__subtext">
-                                                 {{ 'customer.login_subtext' | trans }}
-                                                 </span>
-                                            {{ parent() }}
-                                        {% endblock %}
-                                    {% endembed %}
-                                </li>
-
-                                <li class="list-switches__item">
-                                    {% embed molecule('toggler-radio') with {
+                                    {% include molecule('toggler-radio') with {
                                         modifiers: ['checkout', 'with-bg'],
                                         data: {
                                             label: 'checkout.customer.auth_as_user' | trans,
@@ -222,16 +198,21 @@
                                             'target-class-name': 'js-login__register',
                                         },
                                     } only %}
-                                        {% block labelContainer %}
-                                            <span class="toggler-radio__subtext">
-                                                     {{ 'customer.signup_subtext' | trans }}
-                                                     </span>
-                                            {{ parent() }}
-                                        {% endblock %}
-                                    {% endembed %}
-
                                 </li>
-
+                                <li class="list-switches__item">
+                                    {% include molecule('toggler-radio') with {
+                                        modifiers: ['checkout', 'with-bg'],
+                                        data: {
+                                            label: 'checkout.customer.auth_as_login' | trans
+                                        },
+                                        attributes: {
+                                            id: 'login',
+                                            checked: data.isLogin,
+                                            name: 'checkoutProceedAs',
+                                            'target-class-name': 'js-login__login',
+                                        },
+                                    } only %}
+                                </li>
                                 <li class="list-switches__item">
                                     {% embed molecule('toggler-radio') with {
                                         modifiers: ['checkout', 'with-bg'],
@@ -245,8 +226,7 @@
                                             'target-class-name': 'js-login__guest',
                                         },
                                     } only %}
-                                        {% block labelContainer %}
-                                            <span class="toggler-radio__subtext">&nbsp;</span>
+                                        {% block labelContainerCZ %}
                                             {{ parent() }}
                                         {% endblock %}
                                     {% endembed %}
@@ -254,40 +234,41 @@
                             </ul>
                         </div>
                     {% endblock %}
-                    {% block content %}
-                        <div id="checkoutCustomerLogin" class="js-login__login{{ (data.isLogin ? '' : ' is-hidden') }}">
 
+                    {% block contentCZ %}
+                        <div class="register-form js-login__register is-hidden">
+                            <div style="text-align: center">
+                                <a target="_blank" href="https://www.globusbonus.cz/prihlaseni/registrace" class="col--middle button button--expand-tablet button--large">
+                                    {{ 'checkout.customer.auth_as_user' | trans }}
+                                </a>
+                            </div>
                         </div>
-
-                        <div id="checkoutCustomerRegister" class="register-form js-login__register{{ (data.isGuest or data.isLogin? ' is-hidden' : '') }} ">
-
-                        </div>
-
-                        <div style="display: none">
-
-                            {% embed molecule('form') with {
-                                class: 'js-login__login' ~ (data.isLogin ? '' : ' is-hidden'),
-                                modifiers: ['login', 'checkout-actions', 'grid-sm-indent'],
-                                data: {
-                                    form: data.forms.login,
-                                    layout: {
-                                        email: 'col col--sm-12',
-                                        password: 'col col--sm-12',
-                                    },
-                                    submit: {
-                                        enable: true,
-                                        text: 'forms.submit.login' | trans,
-                                        class: 'form__action--checkout col col--middle button button--expand-tablet button--large',
-                                    },
-                                    cancel: {
-                                        enable: true,
-                                    },
+                        {% embed molecule('form') with {
+                            class: 'js-login__login' ~ (data.isLogin ? '' : ' is-hidden'),
+                            modifiers: ['login', 'checkout-actions', 'grid-sm-indent'],
+                            data: {
+                                form: data.forms.login,
+                                layout: {
+                                    email: 'col col--sm-12',
+                                    password: 'col col--sm-12',
                                 },
-                            } only %}
-                            {% endembed %}
+                                submit: {
+                                    enable: true,
+                                    text: 'forms.submit.login' | trans,
+                                    class: 'form__action--checkout col col--middle button button--expand-tablet button--large',
+                                },
+                                cancel: {
+                                    enable: true,
+                                },
+                            },
+                        } only %}
+                            {% block cancel %}
+                                <a target="_blank" href="https://www.globusbonus.cz/prihlaseni/zapomenute-heslo" class="col col--middle link link--login-forgot-password" {{qa('customer-forgot-password-link')}}>
+                                    {{ 'forms.forgot-password' | trans~'?' }}
+                                </a>
+                            {% endblock %}
+                        {% endembed %}
 
-                    </div>
-                    <div id="hiddenGuestForm">
                         {% embed molecule('form') with {
                             class: 'register-form js-login__guest' ~ (data.isGuest ? '' : ' is-hidden'),
                             modifiers: ['login', 'checkout-actions'],
@@ -323,77 +304,15 @@
                                 } only %}
                             {% endblock %}
                         {% endembed %}
-                    </div>
-               {% endblock %}
+                    {% endblock %}
+                </div>
             </div>
         </div>
-    </div>
-
-        <script type="text/javascript">
-            function gigyaRegistrationScreen() {
-                var params = {
-                    screenSet: 'CCCustomer-RegistrationLogin',
-                    startScreen: 'gigya-register-screen',
-                    containerID: 'checkoutCustomerRegister',
-                    // context: '<the-number-of-the-Globus-store>'
-                    "onBeforeSubmit": function(event) {
-                        document.querySelector("#loginForm_password.input").value = document.querySelector(".gigya-register-form input[type='password'][data-gigya-placeholder]").value;
-                    },
-                    "onAfterSubmit": function(event) {
-                        if(event.response.errorCode == 0) {
-                            checkoutStep('registration');
-                            document.querySelector("#loginForm_email.input").value = event.profile.email;
-                            document.querySelector("#loginForm_data").value = JSON.stringify(event);
-                            document.getElementsByName("loginForm")[0].submit();
-                        }
-                    }
-                }
-                gigya.accounts.showScreenSet( params );
-            }
-            function gigyaLoginScreen() {
-                gigya.accounts.showScreenSet({
-                    screenSet: 'CCCustomer-RegistrationLogin',
-                    startScreen: 'gigya-login-screen',
-                    containerID: 'checkoutCustomerLogin',
-                    "onAfterScreenLoad": function(event) {
-                        var lnk = document.getElementsByClassName('globus_register_link');
-                        lnk[0].setAttribute("href", "/register");
-                        lnk[0].removeAttribute("target");
-                        lnk[1].removeAttribute("target");
-                        lnk[1].setAttribute("href", "javascript: document.getElementsByClassName('js-toggler-radio__trigger')[1].click()")
-                    },
-                    "onBeforeSubmit": function(event) {
-                        if(event.screen === 'gigya-login-screen')
-                            document.querySelector("#loginForm_password.input").value = document.querySelector(".gigya-input-password.gigya-show-checkmark.gigya-valid").value;
-                    },
-                    "onAfterSubmit": function(event) {
-                        if(event.response.errorCode == 0 && event.screen === 'gigya-login-screen') {
-                            checkoutStep('login');
-                            document.querySelector("#loginForm_email.input").value = event.profile.email;
-                            document.querySelector("#loginForm_data").value = JSON.stringify(event);
-                            document.getElementsByName("loginForm")[0].submit();
-                        }
-                    }
-                });
-            }
-
-            gigyaRegistrationScreen();
-            gigyaLoginScreen();
-            var buttons = document.getElementsByTagName('button');
-            if(buttons != null)
-            {
-                buttons[1].addEventListener('click', function()
-                {
-                    checkoutStep('guestCheckout');
-                });
-            }
-
-        </script>
-
     {% endif %}
 
-    {% if data.currentCodeBucket=='DE' %}
 
+
+    {% if data.currentCodeBucket=='DE' %}
         <div class="grid grid--center">
             <div class="col col--sm-12 col--md-9 col--xl-9">
                 <div class="box box--checkout">
