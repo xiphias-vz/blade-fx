@@ -1,5 +1,4 @@
 import Component from 'ShopUi/models/component';
-
 export default class StoreSwitcher extends Component {
     protected select: HTMLSelectElement;
     protected storeSwitcherFormText;
@@ -17,7 +16,6 @@ export default class StoreSwitcher extends Component {
         this.storeSwitcherUrl = document.getElementById('form-url-shop-switcher');
         this.mapEvents();
     }
-
     protected mapEvents(): void {
         this.select.addEventListener('change', (event: Event) => this.onTriggerChange(event));
     }
@@ -26,7 +24,6 @@ export default class StoreSwitcher extends Component {
         const selectTarget = <HTMLSelectElement>event.currentTarget;
         const elementFromModal = selectTarget.parentElement.offsetParent.className;
         const is_pwd_protected = selectTarget.options[selectTarget.selectedIndex].getAttribute("is_password_protected");
-
         if (this.hasUrl(selectTarget)) {
             let url = this.currentSelectValue(selectTarget);
             let convertedUrl = url;
@@ -37,19 +34,17 @@ export default class StoreSwitcher extends Component {
                 this.storeSwitcherFormText.classList.add('is-hidden');
                 this.storeSwitcherPassword.classList.remove('is-hidden');
                 this.storeSwitcherUrl.value = convertedUrl;
-              if (elementFromModal !== 'popup-ui-store-switcher__overlay') {
-                  document.getElementsByTagName('popup-ui-store-switcher')[0].classList.add('popup-ui-store-switcher--show');
-              }
+                if (elementFromModal !== 'popup-ui-store-switcher__overlay') {
+                    document.getElementsByTagName('popup-ui-store-switcher')[0].classList.add('popup-ui-store-switcher--show');
+                }
             } else {
                 window.location.href = convertedUrl;
             }
         }
     }
-
     protected currentSelectValue(select: HTMLSelectElement): string {
         return select.options[select.selectedIndex].value;
     }
-
     protected hasUrl(select: HTMLSelectElement): boolean {
         return !!select.value;
     }

@@ -1,0 +1,51 @@
+{% define data = {
+    data: [],
+    response : '',
+    info : ''
+} %}
+
+
+
+
+{% block test%}
+    <form method="post">
+        <label>HOST URL:</label>
+        <input type="text" name="txtHostUrl" value="https://api-dev.globus.de/">
+        <br />
+        <label>URL:</label>
+        <input type="text" name="txtUrl" value="v2/meinglobus/accounts/registrations/available">
+        <br />
+        <label>METHOD:</label>
+        <input type="text" name="txtMethod" value="POST">
+        <br />
+        <label>Api key:</label>
+        <input type="text" name="txtApiKey" value="">
+        <br />
+        <label>Api secret:</label>
+        <input type="text" name="txtApiSecret" value="">
+        <br />
+        <label>Post param1:</label>
+        <input type="text" name="txtParam1" value="">
+        <br />
+        <label>Post param2:</label>
+        <input type="text" name="txtParam2" value="">
+
+        <button type="submit">Submit</button>
+    </form>
+<div>
+    <h1>API test</h1>
+{#    <p>{{ data[0].cardNumber }}</p>#}
+    <h2>data</h2>
+    {{ dump(data) }}
+    <h2>response</h2>
+    {{ dump(response) }}
+    <h3>curl info</h3>
+    {% if info.url is defined %}
+    <b>URL: {{ info.url }}</b>
+    <br />
+    <b>http_code: {{ info.http_code }}</b>
+    <br />
+    {% endif %}
+    {{ dump(info) }}
+</div>
+{% endblock %}

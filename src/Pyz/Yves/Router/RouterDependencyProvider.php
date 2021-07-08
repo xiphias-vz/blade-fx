@@ -7,6 +7,7 @@
 
 namespace Pyz\Yves\Router;
 
+use Pyz\Yves\ApiTest\Plugin\Provider\ApiTestRouteProviderPlugin;
 use Pyz\Yves\CartPage\Plugin\Router\CartPageRouteProviderPlugin;
 use Pyz\Yves\CheckoutPage\Plugin\Router\CheckoutPageRouteProviderPlugin;
 use Pyz\Yves\CustomerPage\Plugin\Router\CustomerPageRouteProviderPlugin;
@@ -96,6 +97,7 @@ class RouterDependencyProvider extends SprykerRouterDependencyProvider
             new MerchantSwitcherWidgetRouteProviderPlugin(),
             new PayoneRouteProviderPlugin(), #Payone
             new StoreSwitcherWidgetRouteProviderPlugin(),
+            new ApiTestRouteProviderPlugin(),
         ];
     }
 
