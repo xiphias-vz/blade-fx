@@ -13,6 +13,7 @@ use Spryker\Yves\Router\Route\RouteCollection;
 class XiphiasRouteProviderPlugin extends AbstractRouteProviderPlugin
 {
     protected const ROUTE_API_TEST = 'xiphias';
+    protected const ROUTE_API_TEST_2 = 'xiphias2';
 
     /**
      * @param \Spryker\Yves\Router\Route\RouteCollection $routeCollection
@@ -23,6 +24,9 @@ class XiphiasRouteProviderPlugin extends AbstractRouteProviderPlugin
     {
         $route = $this->buildRoute('/xiphias', 'Xiphias', 'Xiphias', 'indexAction');
         $routeCollection->add(static::ROUTE_API_TEST, $route);
+
+        $route = $this->buildRoute('/xiphias2', 'Xiphias', 'Xiphias', 'getApiFromRequestAction');
+        $routeCollection->add(static::ROUTE_API_TEST_2, $route);
 
         return $routeCollection;
     }

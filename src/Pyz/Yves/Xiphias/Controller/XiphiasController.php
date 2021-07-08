@@ -7,6 +7,7 @@
 
 namespace Pyz\Yves\Xiphias\Controller;
 
+use Elastica\JSON;
 use Exception;
 use Spryker\Yves\Kernel\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -47,7 +48,7 @@ class XiphiasController extends AbstractController
 
             try {
                 $resultAPI = curl_exec($curl);
-                $newCardResult = [json_decode($resultAPI)];
+                $newCardResult = json_encode($resultAPI);
             } catch (Exception $ex) {
                 $newCardResult = 'no data';
                 $resultAPI = $ex->getMessage();
@@ -55,10 +56,55 @@ class XiphiasController extends AbstractController
                 $info = curl_getinfo($curl);
                 curl_close($curl);
             }
+            $infoJson = json_encode($info);
 
-            return ['data' => $newCardResult, 'response' => $resultAPI, 'info' => $info];
+            return ['data1' => $newCardResult, 'response' => $resultAPI, 'info' => $info, 'infoJson' => $infoJson];
         }
 
-        return ['data' => ['submit form'], 'response' => 'submit form', 'info' => 'submit form'];
+        return $this->viewResponse(
+            [
+            'data1' => 'submit form',
+                'response' => 'submit form',
+                'info' => 'submit form',
+                'infoJson' => 'submit form']
+        );
+    }
+
+    /**
+     * @param \Symfony\Component\HttpFoundation\Request $request
+     *
+     * @return array
+     */
+    public function getApiFromRequestAction(Request $request)
+    {
+        if ($request->getMethod() != 'GET') {
+            $urlPrefix = $request->request->get("txtHostUrl");
+            $url = $request->request->get("txtUrl");
+            $fullUrl = $urlPrefix . $url;
+            $dataForApi = '{"id": "' . $request->request->get("txtParam1") . '"}';
+
+            $options = [
+                'http' => [
+                    'accept' => "Content-type: application/json\r\n",
+                    'header' => "Content-type: application/json\r\n" .
+                        "Content-Length: " . strlen($dataForApi) . "\r\n" .
+                        "APIKey: " . $request->request->get("txtApiKey") . "\r\n" .
+                        'APISecret: ' . $request->request->get("txtApiSecret"),
+                    'method' => $request->request->get("txtMethod"),
+                    'content' => $dataForApi,
+                ],
+            ];
+
+            $context = stream_context_create($options);
+            try {
+                $result = file_get_contents($fullUrl, false, $context);
+            } catch (Exception $ex) {
+                $result = JSON::stringify(["error" => $ex->getMessage(), "error_description" => $ex->getMessage()]);
+            }
+
+            return ['result' => $result];
+        }
+
+        return ['result' => 'submit form'];
     }
 }
