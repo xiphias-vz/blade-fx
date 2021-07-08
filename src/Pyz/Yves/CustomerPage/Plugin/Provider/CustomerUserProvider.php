@@ -423,6 +423,7 @@ class CustomerUserProvider extends SprykerCustomerUserProvider implements Custom
      */
     public function checkEmailOrCardAvaliability(string $emailOrCardNumber): string
     {
+
         $apiKey = $this->getGlobusApiKey();
         $apiSecretKey = $this->getGlobusApiSecretKey();
         $urlPrefix = $this->getGlobusApiUrlPrefix();

@@ -64,7 +64,10 @@ class XiphiasController extends AbstractController
             $apiSecretPS = $this->getGlobusApiSecretKey();
             $apiPrefixPS = $this->getGlobusApiUrlPrefix();
 
-            return ['data1' => $newCardResult, 'response' => $resultAPI, 'info' => $info,
+            return [
+            'data1' => $newCardResult,
+            'response' => $resultAPI,
+            'info' => $info,
                 'infoJson' => $infoJson,
                 'apiKeyPS' => $apiKeyPS,
                 'apiSecretPS' => $apiSecretPS,
