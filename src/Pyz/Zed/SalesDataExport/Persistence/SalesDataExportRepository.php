@@ -292,7 +292,6 @@ class SalesDataExportRepository extends SpySalesDataExportRepository
         inner join spy_oms_order_item_state sit on ssoi.fk_oms_order_item_state = sit.id_oms_order_item_state
         left outer join spy_sales_order_totals ssot on ssot.fk_sales_order = sso.id_sales_order
     where ssoi.created_at > '2021-01-01'
-        or ssoi.updated_at > '2021-01-01'
     group by
         sso.order_reference, sso.store, sso.created_at,
         sss.requested_delivery_date, ssoib.gross_price, sso.customer_reference, sso.cart_note
