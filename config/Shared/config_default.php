@@ -590,7 +590,7 @@ $config[\Pyz\Shared\Customer\CustomerConstants::CDC_CONSTANTS] = [
 $config[\Pyz\Shared\Customer\CustomerConstants::GLOBUS_API_CONSTANTS] = [
     'globus_api_credentials' => [
         'globusApiUrlNoScreen' => getenv('GLOBUS_CDCAPIURL_NO_SCREEN'),
-        'globusApiKeyNoScreen' => getenv('GLOBUS_CDCAPIKEY'),
+        'globusApiKeyNoScreen' => getenv('GLOBUS_CDCAPIKEY_NO_SCREEN'),
         'globusApiSecretKeyNoScreen' => getenv('GLOBUS_CDCAPISECRETKEY_NO_SCREEN'),
     ],
 ];
