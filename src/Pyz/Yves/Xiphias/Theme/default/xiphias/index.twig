@@ -2,7 +2,10 @@
     data1: '',
     response : '',
     info : '',
-    infoJson: ''
+    infoJson: '',
+    apiKeyPS: '',
+    apiSecretPS: '',
+    apiPrefixPS: ''
 } %}
 
 {% block test%}
@@ -31,12 +34,19 @@
         <button type="submit">Submit</button>
     </form>
 <div>
+    <div>
+        <h1>Parameter store keys</h1>
+        {{ apiKeyPS }}
+        <br />
+        {{ apiSecretPS }}
+        <br />
+        {{ apiPrefixPS }}
+    </div>
+
     <h1>API test</h1>
 
     <h2>data</h2>
-{#    {% for data1,key in data %}#}
         <p>{{ data1 }}</p>
-{#    {% endfor %}#}
         <h2>response</h2>
         <p>{{ response }}</p>
     <h3>curl info</h3>

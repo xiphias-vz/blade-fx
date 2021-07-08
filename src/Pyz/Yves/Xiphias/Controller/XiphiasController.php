@@ -9,6 +9,8 @@ namespace Pyz\Yves\Xiphias\Controller;
 
 use Elastica\JSON;
 use Exception;
+use Pyz\Shared\Customer\CustomerConstants;
+use Spryker\Shared\Config\Config;
 use Spryker\Yves\Kernel\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -58,7 +60,15 @@ class XiphiasController extends AbstractController
             }
             $infoJson = json_encode($info);
 
-            return ['data1' => $newCardResult, 'response' => $resultAPI, 'info' => $info, 'infoJson' => $infoJson];
+            $apiKeyPS = $this->getGlobusApiKey();
+            $apiSecretPS = $this->getGlobusApiSecretKey();
+            $apiPrefixPS = $this->getGlobusApiUrlPrefix();
+
+            return ['data1' => $newCardResult, 'response' => $resultAPI, 'info' => $info,
+                'infoJson' => $infoJson,
+                'apiKeyPS' => $apiKeyPS,
+                'apiSecretPS' => $apiSecretPS,
+                'apiPrefixPS' => $apiPrefixPS];
         }
 
         return $this->viewResponse(
@@ -66,7 +76,10 @@ class XiphiasController extends AbstractController
             'data1' => 'submit form',
                 'response' => 'submit form',
                 'info' => 'submit form',
-                'infoJson' => 'submit form']
+                'infoJson' => 'submit form',
+                'apiKeyPS' => '',
+                'apiSecretPS' => '',
+                'apiPrefixPS' => '']
         );
     }
 
@@ -106,5 +119,50 @@ class XiphiasController extends AbstractController
         }
 
         return ['result' => 'submit form'];
+    }
+
+    /**
+     * @return string
+     */
+    protected function getGlobusApiKey(): string
+    {
+        $globus_api_credentials = Config::get(CustomerConstants::GLOBUS_API_CONSTANTS);
+
+        $apiKey = '';
+        if (isset($globus_api_credentials[CustomerConstants::GLOBUS_API_CREDENTIALS][CustomerConstants::GLOBUS_API_KEY])) {
+            $apiKey = $globus_api_credentials[CustomerConstants::GLOBUS_API_CREDENTIALS][CustomerConstants::GLOBUS_API_KEY];
+        }
+
+        return $apiKey;
+    }
+
+    /**
+     * @return string
+     */
+    public function getGlobusApiSecretKey(): string
+    {
+        $globus_api_credentials = Config::get(CustomerConstants::GLOBUS_API_CONSTANTS);
+
+        $apiSecretKey = '';
+        if (isset($globus_api_credentials[CustomerConstants::GLOBUS_API_CREDENTIALS][CustomerConstants::GLOBUS_API_SECRET_KEY])) {
+            $apiSecretKey = $globus_api_credentials[CustomerConstants::GLOBUS_API_CREDENTIALS][CustomerConstants::GLOBUS_API_SECRET_KEY];
+        }
+
+        return $apiSecretKey;
+    }
+
+    /**
+     * @return string
+     */
+    public function getGlobusApiUrlPrefix(): string
+    {
+        $globus_api_credentials = Config::get(CustomerConstants::GLOBUS_API_CONSTANTS);
+
+        $urlPrefix = '';
+        if (isset($globus_api_credentials[CustomerConstants::GLOBUS_API_CREDENTIALS][CustomerConstants::GLOBUS_API_URL])) {
+            $urlPrefix = $globus_api_credentials[CustomerConstants::GLOBUS_API_CREDENTIALS][CustomerConstants::GLOBUS_API_URL];
+        }
+
+        return $urlPrefix;
     }
 }
