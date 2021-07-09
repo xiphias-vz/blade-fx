@@ -1453,6 +1453,8 @@ checkout.customer.submit_as_guest,Weiter,en_US
 checkout.customer.auth_as_login,Login,en_US
 checkout.customer.auth_as_login,Anmelden,de_DE
 checkout.customer.auth_as_login,"Přihlášení",cs_CZ
+checkout.step.customer.desc.form,Please enter your e-mail adress. You need this to log into your personal customer account,en_US
+checkout.step.customer.desc.form,Bitte geben Sie Ihre E-Mail-Adresse an. Diese benötigen Sie zur Anmeldung in Ihrem persönlichen Kundenkonto,de_DE
 checkout.step.customer.login.emailField.label,Email address or customer card number,en_US
 checkout.step.customer.login.emailField.label,E-mail-Addresse oder Kundenkartennummer,de_DE
 checkout.step.customer.login.emailField.placeholder,Enter your e-mail address or customer card number,en_US

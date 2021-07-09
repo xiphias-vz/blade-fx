@@ -52,6 +52,10 @@
         }
 
         .stepTitle {
+            margin-bottom: 5px;
+        }
+        .form-desc {
+            margin-top: 4px;
             margin-bottom: 20px;
         }
 
@@ -163,6 +167,10 @@
 
         #hiddenGuestForm {
             display: none;
+        }
+
+        #btnCancelLogin {
+            text-decoration: none;
         }
 
         #btnContinueRegistration, #btnContinueRegistrationAsGuest, #btnCancelLogin, #btnCheckMailOrCard  {
@@ -368,13 +376,14 @@
 
                                     <div class="hr-line-solid"></div>
 
-                                    <p id="basicHelpText" class="hintText">> <a class="helpLink" href="https://globus.zendesk.com/hc/de">{{ 'checkout.step.customer.login.help_text' | trans }}</a></p>
+                                    <p id="basicHelpText" class="hintText">> <a class="helpLink" target="_blank" href="https://globus.zendesk.com/hc/de">{{ 'checkout.step.customer.login.help_text' | trans }}</a></p>
                                 </div>
                             </form>
                         </div>
 
                         <div id="loginAPI" class="form form--login form--checkout-actions register-form">
                             <h2 class="stepTitle">{{ 'global.login' | trans }}</h2>
+                            <p class="form-desc">{{ 'checkout.step.customer.desc.form' | trans }}</p>
                             <form name="customLoginForm" method="post" novalidate="novalidate">
                                 <div class="form__container">
                                 <div class="form__fields grid grid--top">
@@ -410,18 +419,18 @@
                                 </div>
 
                                 <div id="ForgotPasswordLinkDiv">
-                                    <a class="helpLink" href="">{{ 'global.recover.password' | trans }}?</a>
+                                    <a class="helpLink"  href="">{{ 'global.recover.password' | trans }}?</a>
                                 </div>
 
                             </div>
                             </form>
                             <div class="customLogin-footer form__actions">
-                                <button id="btnCancelLogin" type="button" class="btn btn-link col col--middle">{{ 'general.cancel.button' | trans }}</button>
+                                <a id="btnCancelLogin" onclick="cancelLogin()" type="button" class="btn btn-link col col--middle">{{ 'general.cancel.button' | trans }}</a>
                             </div>
 
                             <div class="hr-line-solid"></div>
 
-                            <p id="basicHelpText" class="hintText">> <a class="helpLink" href="https://globus.zendesk.com/hc/de">{{ 'checkout.step.customer.login.help_text' | trans }}</a></p>
+                            <p id="basicHelpText" class="hintText">> <a class="helpLink" target="_blank" href="https://globus.zendesk.com/hc/de">{{ 'checkout.step.customer.login.help_text' | trans }}</a></p>
                             <p id="newUserHelpText" class="hintText">> {{ 'checkout.step.customer.login.new_user_text' | trans }} <button class="helpLink linkOrange">{{ 'checkout.step.customer.login.globus_account_text' | trans }}</button></p>
 
                         </div>
@@ -548,6 +557,20 @@
         </div>
 
         <script type="text/javascript">
+            function cancelLogin() {
+                localStorage.setItem('cancelLogin', "true");
+                location.reload();
+            }
+
+            $(document).ready(function () {
+                let passwordField = document.querySelector('#customLoginForm_customer_password');
+                let isLoginCancelled = localStorage.getItem('cancelLogin');
+                if(isLoginCancelled === "true") {
+                    passwordField.setAttribute('autocomplete', 'new-password');
+                } else {
+                    passwordField.removeAttribute('autocomplete');
+                }
+            })
 
             function checkoutStep(option)
             {
@@ -629,6 +652,7 @@
                         document.querySelector("#loginForm_password.input").value = password
                         document.querySelector("#loginForm_data").value = JSON.stringify(response);
                         document.getElementsByName("loginForm")[0].submit();
+                        localStorage.setItem('cancelLogin', 'false');
                     }
                     else{
                         $("#customLoginForm_customer_password").css("border", "1px solid red");
