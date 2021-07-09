@@ -177,8 +177,24 @@
             cursor: pointer;
         }
 
+        input[type='checkbox'] {
+            appearance: none;
+        }
+
+        input[type='checkbox']:checked:after {
+            content: "\2714";
+            font-size: 14px;
+            border: none;
+            background-color: #B8DCC3;
+            color: white;
+            border-radius: 3px;
+        }
+
         .checkboxError {
-            outline: 1px solid red;
+            border: 1px solid grey;
+            width: 12px;
+            height: 15px;
+            border-radius: 3px;
         }
 
         #link-to-address-modal{
@@ -344,7 +360,7 @@
                                                 <div id="startRegister_customerPasswordDiv" class="form__fields grid grid--top">
                                                     <div class="form__field col col--sm-12">
                                                         <label for="startRegister__customer_password" class="label label--required">{{ 'auth.password' | trans }}</label>
-                                                        <input id="startRegister__customer_password" name="startRegistrationForm[customer][password]" placeholder="{{ 'customer.login.password_placeholder' | trans }}" class="input input--expand" type="password" >
+                                                        <input id="startRegister__customer_password" name="startRegistrationForm[customer][password]" required="required" placeholder="{{ 'customer.login.password_placeholder' | trans }}" class="input input--expand" type="password" >
                                                         <button type="button" id="startRegister_passwordToggleEye" class="icon-eye"></button>
                                                     </div>
                                                 </div>
@@ -376,7 +392,7 @@
 
                                     <div class="hr-line-solid"></div>
 
-                                    <p id="basicHelpText" class="hintText">> <a class="helpLink" target="_blank" href="https://globus.zendesk.com/hc/de">{{ 'checkout.step.customer.login.help_text' | trans }}</a></p>
+                                    <p id="basicHelpText" class="hintText">> <a class="helpLink" href="https://globus.zendesk.com/hc/de" target="_blank">{{ 'checkout.step.customer.login.help_text' | trans }}</a></p>
                                 </div>
                             </form>
                         </div>
@@ -430,7 +446,7 @@
 
                             <div class="hr-line-solid"></div>
 
-                            <p id="basicHelpText" class="hintText">> <a class="helpLink" target="_blank" href="https://globus.zendesk.com/hc/de">{{ 'checkout.step.customer.login.help_text' | trans }}</a></p>
+                            <p id="basicHelpText" class="hintText">> <a class="helpLink" href="https://globus.zendesk.com/hc/de" target="_blank">{{ 'checkout.step.customer.login.help_text' | trans }}</a></p>
                             <p id="newUserHelpText" class="hintText">> {{ 'checkout.step.customer.login.new_user_text' | trans }} <button class="helpLink linkOrange">{{ 'checkout.step.customer.login.globus_account_text' | trans }}</button></p>
 
                         </div>
@@ -590,6 +606,12 @@
                 });
             }
 
+
+        var emailField = $('#startRegistrationForm_customer_email');
+        var passField = $('#startRegister__customer_password');
+        var regGlobalEmail = /^\S+@\S+$/;
+        var regGlobalPass = /^(?=.*\d)(?=.*[a-zA-Z])(?=.*\W)(?!.*\s).{8,}$/;
+
         var btnCheck = document.getElementById('btnCheckMailOrCard');
         if(btnCheck != null)
         {
@@ -709,8 +731,23 @@
             $("#startRegister_passwordToggleEye").toggleClass("icon-eyeclosed");
         });
 
-        $("#startRegister__customer_password").focusout(function(ev){
+        $("#startRegistrationForm_customer_email").on('input', function(ev) {
             let pass = ev.currentTarget.value;
+            let password = passField.val();
+
+            var reg = /^\S+@\S+$/;
+            if (reg.test(pass) && regGlobalPass.test(password)) {
+                $("#btnContinueRegistration").removeAttr("disabled");
+            }
+            else {
+                $("#startRegistrationForm_customer_email").css("border", "2px solid red");
+                $("#btnContinueRegistration").prop("disabled", "true");
+            }
+        });
+
+        $("#startRegister__customer_password").on('input', function(ev){
+            let pass = ev.currentTarget.value;
+            let email = emailField.val();
 
             $("#startRegister_passwordCheckBoxes").css("display", "block");
             if(pass.length > 8){
@@ -752,8 +789,8 @@
                 $("#passwordCheckBoxes_letter").addClass("checkboxError");
             }
 
-            var reg = /^(?=.*\d)(?=.*[a-zA-Z])(?=.*\W)(?!.*\s).{8,}$/;
-            if (reg.test(pass)) {
+            var regPass = /^(?=.*\d)(?=.*[a-zA-Z])(?=.*\W)(?!.*\s).{8,}$/;
+            if (regPass.test(pass) && regGlobalEmail.test(email)) {
                 $("#btnContinueRegistration").removeAttr("disabled");
             }
             else {
