@@ -1,8 +1,8 @@
 {% extends model('component') %}
 
 {% define config = {
-    name: 'popup-ui-login-form',
-    tag: 'popup-ui-login-form',
+    name: 'popup-ui-login-form-cz',
+    tag: 'popup-ui-login-form-cz',
 } %}
 
 {% block body %}
@@ -29,11 +29,11 @@
                                     <input id="loginForm_data" name="loginForm[data]" class="input input--expand" type="hidden">
                                     <input id="loginForm__token" name="loginForm[_token]" class="input input--expand" type="hidden" value="{{ csrf_token('loginForm') }}">
 
-{#                                    {% if is_granted('IS_AUTHENTICATED_FULLY') %}#}
-{#                                        <input type="hidden" id="is_user_logged_in" value="true" />#}
-{#                                    {% else %}#}
-{#                                        <input type="hidden" id="is_user_logged_in" value="false" />#}
-{#                                    {% endif %}#}
+                                    {#                                    {% if is_granted('IS_AUTHENTICATED_FULLY') %}#}
+                                    {#                                        <input type="hidden" id="is_user_logged_in" value="true" />#}
+                                    {#                                    {% else %}#}
+                                    {#                                        <input type="hidden" id="is_user_logged_in" value="false" />#}
+                                    {#                                    {% endif %}#}
 
                                 </div>
                                 <div class="form__actions">

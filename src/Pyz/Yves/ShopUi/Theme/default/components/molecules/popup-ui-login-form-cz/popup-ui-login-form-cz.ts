@@ -1,7 +1,7 @@
 import Component from 'ShopUi/models/component';
 import $ from 'jquery/dist/jquery';
 
-export default class PopupUiLoginForm extends Component {
+export default class PopupUiLoginFormCz extends Component {
     protected $this: $ = $(this);
     protected linkToLoginModal;
     protected linkToLoginModalMobile;
@@ -24,6 +24,7 @@ export default class PopupUiLoginForm extends Component {
 
         if (this.linkToLoginModal != undefined){
             this.linkToLoginModal.addEventListener('click', () => {
+                alert("TJOS");
                 this.$this.addClass(`${this.name}--show`);
             });
         }

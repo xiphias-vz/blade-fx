@@ -1,5 +1,5 @@
 
-@mixin shop-ui-popup-ui($name: '.popup-ui-login-form') {
+@mixin shop-ui-popup-ui($name: '.popup-ui-login-form-cz') {
     #{$name} {
         &--show {
             #{$name} {
@@ -24,12 +24,19 @@
 
         &__container {
             flex-grow: 1;
+            max-width: rem(400);
             height: 100%;
             background-color: $setting-color-globus-lightGray;
             border-radius: 0;
 
+
             @include helper-breakpoint-media-min($xl-min) {
-                width: 300px;
+                width: 60%;
+                flex-grow: 0;
+            }
+
+            @include helper-breakpoint-media-max($xs-max) {
+                width: 100%;
                 flex-grow: 0;
             }
         }
@@ -78,6 +85,31 @@
                 margin-top: 1rem !important;
             }
         }
+
+
+
+        #checkoutCustomerLogin {
+            padding: rem(10);
+        }
+
+        #usernameLabel, #passwordLabel {
+            color: $setting-color-gray-13 !important;
+            font-size: rem(14) !important;
+        }
+
+        .login-modal-star {
+            color: $setting-color-orange !important;
+        }
+
+        .span-in-link {
+            color: $setting-color-gray-13 !important;
+        }
+
+        #register-now-link-in-modal {
+            color: $setting-color-orange !important;
+        }
+
+
     }
 }
 
