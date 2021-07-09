@@ -24,6 +24,7 @@
     einzelgewicht: data.product.attributes.einzelgewicht | default(null),
     position: position | default(null),
     currencySymbol: app.currentCurrencySymbol,
+    currencyIsoCode: app.currentCurrencyISOCode,
 } %}
 
 {% set addAjaxUrl = path("cart/add-ajax", { "productAbstractId": data.product.id_product_abstract ?? data.product.idProductAbstract }) %}
@@ -289,7 +290,7 @@
                                 'event': 'eec.addToCart',
                                 'ecommerce':{
                                     'add':{
-                                        'currencyCode': 'EUR',
+                                        'currencyCode': '{{ data.currencyIsoCode }}',
                                         'products': [{
                                             'id': productId,
                                             'name': productName,

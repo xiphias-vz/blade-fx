@@ -2,6 +2,7 @@
 
 {% define data = {
     productAbstractViewCollection: productAbstractViewCollection,
+    currencyIsoCode: app.currentCurrencyISOCode,
 } %}
 {% block body %}
     {% embed molecule('slick-carousel') with {
@@ -49,7 +50,7 @@
             'event': 'eec.POP',
             'ecommerce':
                 {
-                    'currency': 'EUR',
+                    'currency': '{{ data.currencyIsoCode }}',
                     impressions,
                 }
         });

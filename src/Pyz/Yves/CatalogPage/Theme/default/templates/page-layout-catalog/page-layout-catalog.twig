@@ -11,6 +11,7 @@
     metaDescription: _view.pageDescription | default,
     metaKeywords: _view.pageKeywords | default,
     sort: _view.sort,
+    currencyIsoCode: app.currentCurrencyISOCode,
     pagination: {
         parameters: app.request.query.all(),
         currentPage: _view.pagination.currentPage,
@@ -150,7 +151,7 @@
                                                 'event': 'eec.POP',
                                                 'ecommerce':
                                                     {
-                                                        'currency': 'EUR',
+                                                        'currency': '{{ data.currencyIsoCode }}',
                                                         impressions,
                                                     }
                                             });

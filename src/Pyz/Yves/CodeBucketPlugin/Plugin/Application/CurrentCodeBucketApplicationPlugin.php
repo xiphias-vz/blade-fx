@@ -18,6 +18,7 @@ class CurrentCodeBucketApplicationPlugin extends AbstractPlugin implements Appli
 {
     public const CURRENT_CODE_BUCKET = 'currentCodeBucket';
     public const CURRENT_CURRENCY_SYMBOL = 'currentCurrencySymbol';
+    public const CURRENT_CURRENCY_ISO_CODE = 'currentCurrencyISOCode';
 
     /**
      * @param \Spryker\Service\Container\ContainerInterface $container
@@ -27,6 +28,7 @@ class CurrentCodeBucketApplicationPlugin extends AbstractPlugin implements Appli
     public function provide(ContainerInterface $container): ContainerInterface
     {
         $container = $this->getCurrentCurrency($container);
+        $container = $this->getCurrentCurrencyISOCode($container);
 
         return $this->getCurrentCodeBucket($container);
     }
@@ -54,6 +56,20 @@ class CurrentCodeBucketApplicationPlugin extends AbstractPlugin implements Appli
     {
         $container->set(static::CURRENT_CURRENCY_SYMBOL, function () {
             return $this->getConfig()->getCurrentCurrencySymbol();
+        });
+
+        return $container;
+    }
+
+    /**
+     * @param \Spryker\Service\Container\ContainerInterface $container
+     *
+     * @return \Spryker\Service\Container\ContainerInterface
+     */
+    protected function getCurrentCurrencyISOCode(ContainerInterface $container): ContainerInterface
+    {
+        $container->set(static::CURRENT_CURRENCY_ISO_CODE, function () {
+            return $GLOBALS['template']['currencyIsoCode'] ?? '';
         });
 
         return $container;

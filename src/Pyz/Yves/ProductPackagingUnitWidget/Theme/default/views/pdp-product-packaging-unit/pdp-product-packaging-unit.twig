@@ -15,6 +15,7 @@
     jsonScheme: _widget.jsonScheme | default(''),
     minQuantityInBaseUnit: _widget.minQuantityInBaseUnit,
     minQuantityInSalesUnits: _widget.minQuantityInSalesUnits,
+    currencyIsoCode: app.currentCurrencyISOCode,
 } %}
 
 {% block body %}
@@ -115,7 +116,7 @@
                             'event': 'eec.addToCart',
                             'ecommerce':{
                                 'add':{
-                                    'currencyCode': 'EUR',
+                                    'currencyCode': '{{ data.currencyIsoCode }}',
                                     'products': [{
                                         'id': productId,
                                         'name': productName,
