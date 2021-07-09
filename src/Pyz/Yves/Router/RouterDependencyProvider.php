@@ -14,7 +14,6 @@ use Pyz\Yves\ErrorPage\Plugin\Router\ErrorPageRouteProviderPlugin;
 use Pyz\Yves\ExampleProductSalePage\Plugin\Router\ExampleProductSaleRouteProviderPlugin;
 use Pyz\Yves\StoreSwitcherWidget\Plugin\Router\StoreSwitcherWidgetRouteProviderPlugin;
 use Pyz\Yves\WishlistPage\Plugin\Router\WishlistPageRouteProviderPlugin;
-use Pyz\Yves\Xiphias\Plugin\Router\XiphiasRouteProviderPlugin;
 use Spryker\Yves\HealthCheck\Plugin\Router\HealthCheckRouteProviderPlugin;
 use Spryker\Yves\Router\Plugin\RouteManipulator\LanguageDefaultPostAddRouteManipulatorPlugin;
 use Spryker\Yves\Router\Plugin\RouteManipulator\SslPostAddRouteManipulatorPlugin;
@@ -97,7 +96,6 @@ class RouterDependencyProvider extends SprykerRouterDependencyProvider
             new MerchantSwitcherWidgetRouteProviderPlugin(),
             new PayoneRouteProviderPlugin(), #Payone
             new StoreSwitcherWidgetRouteProviderPlugin(),
-            new XiphiasRouteProviderPlugin(),
         ];
     }
 
