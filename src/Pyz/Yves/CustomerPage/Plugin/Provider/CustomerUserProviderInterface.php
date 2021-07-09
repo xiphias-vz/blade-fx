@@ -30,4 +30,24 @@ interface CustomerUserProviderInterface extends UserProviderInterface
      * @return string
      */
     public function getCdcUrlPrefix(): string;
+
+    /**
+     * @param string $emailOrCardNumber
+     *
+     * @return string
+     */
+    public function checkEmailOrCardAvaliability(string $emailOrCardNumber): string;
+
+    /**
+     * @return string
+     */
+    public function getCaptchaSecretKey(): string;
+
+    /**
+     * @param string $emailOrCardNumber
+     * @param string $password
+     *
+     * @return string
+     */
+    public function globusLogin(string $emailOrCardNumber, string $password): string;
 }
