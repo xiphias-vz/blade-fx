@@ -14,6 +14,7 @@ use Pyz\Shared\DataDog\DataDogConfig;
 use Pyz\Yves\CheckoutPage\Plugin\Router\CheckoutPageRouteProviderPlugin;
 use Pyz\Yves\CustomerPage\Form\RegisterForm;
 use Pyz\Yves\CustomerPage\Plugin\Router\CustomerPageRouteProviderPlugin;
+use Pyz\Yves\GlobusRestApiClient\Provider\GlobusRestApiClientValidation;
 use Spryker\Shared\Config\Config;
 use Spryker\Shared\Customer\Code\Messages;
 use SprykerShop\Yves\CustomerPage\Controller\RegisterController as SprykerShopRegisterController;
@@ -154,46 +155,9 @@ class RegisterController extends SprykerShopRegisterController
         $zip = $request->request->get(static::ZIP);
         $city = $request->request->get(static::CITY);
 
-        $apiKey = $this->getGlobusApiKey();
-        $apiSecret = $this->getGlobusApiSecretKey();
-        $apiPrefix = $this->getGlobusApiUrlPrefix();
-        $url = "/v1/meinglobus/validations/address";
-        $fullUrl = $apiPrefix . $url;
+        $result = GlobusRestApiClientValidation::addressValidation($firstName, $lastName, $zip, $houseNumber, $street, $city);
 
-        $data = '{
-                    "firstName": "' . $firstName . '",
-                    "lastName": "' . $lastName . '",
-                    "address": {
-                    "zip": "' . $zip . '",
-                    "houseNo": "' . $houseNumber . '",
-                    "street": "' . $street . '",
-                    "city": "' . $city . '"
-                    }
-                }';
-
-        $curl = curl_init();
-
-        curl_setopt_array($curl, [
-            CURLOPT_URL => $fullUrl,
-            CURLOPT_RETURNTRANSFER => true,
-            CURLOPT_ENCODING => '',
-            CURLOPT_MAXREDIRS => 10,
-            CURLOPT_TIMEOUT => 0,
-            CURLOPT_FOLLOWLOCATION => true,
-            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-            CURLOPT_CUSTOMREQUEST => 'POST',
-            CURLOPT_POSTFIELDS => $data,
-            CURLOPT_HTTPHEADER => [
-                'APIKey: ' . $apiKey,
-                'APISecret: ' . $apiSecret,
-                'Content-Type: application/json',
-            ],
-        ]);
-
-        $result = curl_exec($curl);
-        curl_close($curl);
-
-        return new JsonResponse($result);
+        return new JsonResponse($result->result);
     }
 
     /**

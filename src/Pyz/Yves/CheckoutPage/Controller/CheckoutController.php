@@ -9,8 +9,7 @@ namespace Pyz\Yves\CheckoutPage\Controller;
 
 use Generated\Shared\Transfer\QuoteTransfer;
 use Generated\Shared\Transfer\ShipmentMethodTransfer;
-use Pyz\Shared\Customer\CustomerConstants;
-use Spryker\Shared\Config\Config;
+use Pyz\Yves\GlobusRestApiClient\Provider\GlobusRestApiClientAccount;
 use SprykerShop\Yves\CheckoutPage\Controller\CheckoutController as SprykerCheckoutControllerAlias;
 use SprykerShop\Yves\CheckoutPage\Plugin\Provider\CheckoutPageControllerProvider;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -213,83 +212,11 @@ class CheckoutController extends SprykerCheckoutControllerAlias
      */
     public function getPayBackInfoFromAccount()
     {
-        $apiKey = $this->getGlobusApiKey();
-        $secretKey = $this->getGlobusApiSecretKey();
-        $urlPrefix = $this->getGlobusApiUrlPrefix();
         $uuid = $this->getFactory()->getSessionClient()->get("cdcUID");
         $idToken = $this->getFactory()->getSessionClient()->get("id_token");
-        $urlPostfix = 'v1/meinglobus/accounts/data/' . $uuid . '/payback';
-        $fullUrl = $urlPrefix . $urlPostfix;
-        $authorization = "Authorization: Bearer " . $idToken;
-
-        $curl = curl_init();
-
-        curl_setopt_array($curl, [
-            CURLOPT_URL => $fullUrl,
-            CURLOPT_RETURNTRANSFER => true,
-            CURLOPT_ENCODING => '',
-            CURLOPT_MAXREDIRS => 10,
-            CURLOPT_TIMEOUT => 0,
-            CURLOPT_FOLLOWLOCATION => true,
-            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-            CURLOPT_CUSTOMREQUEST => 'GET',
-            CURLOPT_HTTPHEADER => [
-                'APIKey: ' . $apiKey,
-                'APISecret: ' . $secretKey,
-                'Content-Type: application/json',
-                $authorization,
-            ],
-        ]);
-
-        $result = curl_exec($curl);
-        curl_close($curl);
+        $result = GlobusRestApiClientAccount::getPayBackInfoFromAccount($uuid, $idToken);
 
         return json_decode($result);
-    }
-
-    /**
-     * @return string
-     */
-    public function getGlobusApiKey(): string
-    {
-        $globus_api_credentials = Config::get(CustomerConstants::GLOBUS_API_CONSTANTS);
-
-        $apiKey = '';
-        if (isset($globus_api_credentials[CustomerConstants::GLOBUS_API_CREDENTIALS][CustomerConstants::GLOBUS_API_KEY])) {
-            $apiKey = $globus_api_credentials[CustomerConstants::GLOBUS_API_CREDENTIALS][CustomerConstants::GLOBUS_API_KEY];
-        }
-
-        return $apiKey;
-    }
-
-    /**
-     * @return string
-     */
-    public function getGlobusApiUrlPrefix(): string
-    {
-        $globus_api_credentials = Config::get(CustomerConstants::GLOBUS_API_CONSTANTS);
-
-        $apiKey = '';
-        if (isset($globus_api_credentials[CustomerConstants::GLOBUS_API_CREDENTIALS][CustomerConstants::GLOBUS_API_URL])) {
-            $apiKey = $globus_api_credentials[CustomerConstants::GLOBUS_API_CREDENTIALS][CustomerConstants::GLOBUS_API_URL];
-        }
-
-        return $apiKey;
-    }
-
-    /**
-     * @return string
-     */
-    public function getGlobusApiSecretKey(): string
-    {
-        $globus_api_credentials = Config::get(CustomerConstants::GLOBUS_API_CONSTANTS);
-
-        $apiSecretKey = '';
-        if (isset($globus_api_credentials[CustomerConstants::GLOBUS_API_CREDENTIALS][CustomerConstants::GLOBUS_API_SECRET_KEY])) {
-            $apiSecretKey = $globus_api_credentials[CustomerConstants::GLOBUS_API_CREDENTIALS][CustomerConstants::GLOBUS_API_SECRET_KEY];
-        }
-
-        return $apiSecretKey;
     }
 
     /**

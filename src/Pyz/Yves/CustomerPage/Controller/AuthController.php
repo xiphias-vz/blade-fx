@@ -39,7 +39,7 @@ class AuthController extends SprykerAuthControllerAlias
     {
         $id = $request->request->get("id");
         $customerUserProvider = $this->getFactory()->createCustomerUserProvider();
-        $result = $customerUserProvider->checkEmailOrCardAvaliability($id);
+        $result = $customerUserProvider->checkEmailOrCardAvailability($id);
 
         return new JsonResponse($result);
     }

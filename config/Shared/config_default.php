@@ -593,6 +593,15 @@ $config[\Pyz\Shared\Customer\CustomerConstants::GLOBUS_API_CONSTANTS] = [
         'globusApiKeyNoScreen' => getenv('GLOBUS_CDCAPIKEY_NO_SCREEN'),
         'globusApiSecretKeyNoScreen' => getenv('GLOBUS_CDCAPISECRETKEY_NO_SCREEN'),
     ],
+    'globus_api_endpoint' => [
+        'globusApiEndPointAddressValidation' => '/v1/meinglobus/validations/address',
+        'globusApiEndPointNextCardNumber' => '/v2/meinglobus/digitalcard/nextcard',
+        'globusApiEndPointAccountAvailable' => '/v2/meinglobus/accounts/registrations/available',
+        'globusApiEndPointAccountLogin' => '/v2/meinglobus/accounts/login',
+        'globusApiEndPointAccountPasswordReset' => 'v2/meinglobus/accounts/password/reset',
+        'globusApiEndPointAccountRegistrationFull' => 'v2/meinglobus/accounts/registrations/full',
+        'globusApiEndPointAccountPaybackInfo' => 'v1/meinglobus/accounts/data/{uuid}/payback'
+    ]
 ];
 
 // --------------- GOOGLE CAPTCHA

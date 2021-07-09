@@ -14,6 +14,7 @@ use Generated\Shared\Transfer\CustomerTransfer;
 use Pyz\Shared\Customer\CustomerConstants;
 use Pyz\Yves\CustomerPage\Controller\ProfileController;
 use Pyz\Yves\CustomerPage\Plugin\Application\CustomerTransferCustom;
+use Pyz\Yves\GlobusRestApiClient\Provider\GlobusRestApiClientAccount;
 use Spryker\Shared\Config\Config;
 use SprykerShop\Yves\CustomerPage\Plugin\Provider\CustomerUserProvider as SprykerCustomerUserProvider;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
@@ -356,54 +357,9 @@ class CustomerUserProvider extends SprykerCustomerUserProvider implements Custom
         return $urlScreens;
     }
 
-    /**
-     * @return string
-     */
-    public function getGlobusApiUrlPrefix(): string
-    {
-        $globus_api_credentials = Config::get(CustomerConstants::GLOBUS_API_CONSTANTS);
-
-        $urlPrefix = '';
-        if (isset($globus_api_credentials[CustomerConstants::GLOBUS_API_CREDENTIALS][CustomerConstants::GLOBUS_API_URL])) {
-            $urlPrefix = $globus_api_credentials[CustomerConstants::GLOBUS_API_CREDENTIALS][CustomerConstants::GLOBUS_API_URL];
-        }
-
-        return $urlPrefix;
-    }
-
-    /**
-     * @return string
-     */
-    public function getGlobusApiKey(): string
-    {
-        $globus_api_credentials = Config::get(CustomerConstants::GLOBUS_API_CONSTANTS);
-
-        $apiKey = '';
-        if (isset($globus_api_credentials[CustomerConstants::GLOBUS_API_CREDENTIALS][CustomerConstants::GLOBUS_API_KEY])) {
-            $apiKey = $globus_api_credentials[CustomerConstants::GLOBUS_API_CREDENTIALS][CustomerConstants::GLOBUS_API_KEY];
-        }
-
-        return $apiKey;
-    }
-
-    /**
-     * @return string
-     */
-    public function getGlobusApiSecretKey(): string
-    {
-        $globus_api_credentials = Config::get(CustomerConstants::GLOBUS_API_CONSTANTS);
-
-        $apiSecretKey = '';
-        if (isset($globus_api_credentials[CustomerConstants::GLOBUS_API_CREDENTIALS][CustomerConstants::GLOBUS_API_SECRET_KEY])) {
-            $apiSecretKey = $globus_api_credentials[CustomerConstants::GLOBUS_API_CREDENTIALS][CustomerConstants::GLOBUS_API_SECRET_KEY];
-        }
-
-        return $apiSecretKey;
-    }
-
-    /**
-     * @return string
-     */
+     /**
+      * @return string
+      */
     public function getCaptchaSecretKey(): string
     {
         $globus_api_credentials = Config::get(CustomerConstants::GOOGLE_CAPTCHA_CONSTANTS);
@@ -421,38 +377,9 @@ class CustomerUserProvider extends SprykerCustomerUserProvider implements Custom
      *
      * @return string
      */
-    public function checkEmailOrCardAvaliability(string $emailOrCardNumber): string
+    public function checkEmailOrCardAvailability(string $emailOrCardNumber): string
     {
-        $apiKey = $this->getGlobusApiKey();
-        $apiSecretKey = $this->getGlobusApiSecretKey();
-        $urlPrefix = $this->getGlobusApiUrlPrefix();
-        $url = "v2/meinglobus/accounts/registrations/available";
-        $fullUrl = $urlPrefix . $url;
-        $data = '{"id": "' . $emailOrCardNumber . '"}';
-
-        $curl = curl_init();
-
-        curl_setopt_array($curl, [
-            CURLOPT_URL => $fullUrl,
-            CURLOPT_RETURNTRANSFER => true,
-            CURLOPT_ENCODING => '',
-            CURLOPT_MAXREDIRS => 10,
-            CURLOPT_TIMEOUT => 0,
-            CURLOPT_FOLLOWLOCATION => true,
-            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-            CURLOPT_CUSTOMREQUEST => 'POST',
-            CURLOPT_POSTFIELDS => $data,
-            CURLOPT_HTTPHEADER => [
-                'APIKey: ' . $apiKey,
-                'APISecret: ' . $apiSecretKey,
-                'Content-Type: application/json',
-            ],
-        ]);
-
-        $result = curl_exec($curl);
-        curl_close($curl);
-
-        return $result;
+        return GlobusRestApiClientAccount::checkEmailOrCardAvailability($emailOrCardNumber);
     }
 
     /**
@@ -463,35 +390,6 @@ class CustomerUserProvider extends SprykerCustomerUserProvider implements Custom
      */
     public function globusLogin(string $emailOrCardNumber, string $password): string
     {
-        $apiKey = $this->getGlobusApiKey();
-        $apiSecretKey = $this->getGlobusApiSecretKey();
-        $urlPrefix = $this->getGlobusApiUrlPrefix();
-        $url = "v2/meinglobus/accounts/login";
-        $fullUrl = $urlPrefix . $url;
-        $data = '{"id": "' . $emailOrCardNumber . '" , "password": "' . $password . '"}';
-
-        $curl = curl_init();
-
-        curl_setopt_array($curl, [
-            CURLOPT_URL => $fullUrl,
-            CURLOPT_RETURNTRANSFER => true,
-            CURLOPT_ENCODING => '',
-            CURLOPT_MAXREDIRS => 10,
-            CURLOPT_TIMEOUT => 0,
-            CURLOPT_FOLLOWLOCATION => true,
-            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-            CURLOPT_CUSTOMREQUEST => 'POST',
-            CURLOPT_POSTFIELDS => $data,
-            CURLOPT_HTTPHEADER => [
-                'APIKey: ' . $apiKey,
-                'APISecret: ' . $apiSecretKey,
-                'Content-Type: application/json',
-            ],
-        ]);
-
-        $result = curl_exec($curl);
-        curl_close($curl);
-
-        return $result;
+        return GlobusRestApiClientAccount::login($emailOrCardNumber, $password);
     }
 }

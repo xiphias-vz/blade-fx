@@ -8,12 +8,13 @@
 namespace Pyz\Yves\CustomerPage\Plugin;
 
 use Elastica\JSON;
-use Exception;
 use Generated\Shared\Transfer\CustomerResponseTransfer;
 use Generated\Shared\Transfer\CustomerTransfer;
-use Pyz\Shared\Customer\CustomerConstants;
+use Pyz\Yves\GlobusRestApiClient\Provider\GlobusRestApiClientAccount;
+use Pyz\Yves\GlobusRestApiClient\Provider\GlobusRestApiClientDigitalCard;
+use Pyz\Yves\GlobusRestApiClient\Provider\GlobusRestApiClientValidation;
+use Pyz\Yves\GlobusRestApiClient\Provider\GlobusRestApiResult;
 use Pyz\Yves\MerchantSwitcherWidget\Resolver\ShopContextResolver;
-use Spryker\Shared\Config\Config;
 use SprykerShop\Yves\CustomerPage\Plugin\AuthenticationHandler as SprykerAuthenticationHandler;
 
 /**
@@ -31,10 +32,9 @@ class AuthenticationHandler extends SprykerAuthenticationHandler
     public function registerCustomer(CustomerTransfer $customerTransfer)
     {
         $validAdress = $this->getApiAdressCheck($customerTransfer);
-        $decodeAdress = json_decode($validAdress);
         $isAuthorized = false;
         $customerResponseTransfer = new CustomerResponseTransfer();
-        if ($decodeAdress->code == 'VA') {
+        if ($validAdress->resultToJson()->code == 'VA') {
             $isAuthorized = true;
         }
         $customerTransfer->setMerchantReference($this->createShopContextResolver()->resolve()->getMerchantReference());
@@ -48,7 +48,7 @@ class AuthenticationHandler extends SprykerAuthenticationHandler
                 $customerTransfer->setMyGlobusCard($data["cardID"]);
             }
 
-            if (!$data['response']['isRegistered']) {
+            if (array_key_exists("response", $data) && !$data['response']['isRegistered']) {
                 $isRegistrationAuthorized = $this->registerCdcUser($customerTransfer);
                 $customerResponseTransfer->setIsSuccess($isRegistrationAuthorized);
                 if ($isRegistrationAuthorized) {
@@ -157,8 +157,7 @@ class AuthenticationHandler extends SprykerAuthenticationHandler
     protected function registerCdcUser(CustomerTransfer $customerTransfer): bool
     {
         $validAddress = $this->getApiAdressCheck($customerTransfer);
-        $validAdressDecode = json_decode($validAddress);
-        $addressStatus = $validAdressDecode->code;
+        $addressStatus = $validAddress->resultToJson()->code;
         $addressLastUpdated = date("Y-m-d");
 
         if ($customerTransfer->getCountry() == 60) {
@@ -177,14 +176,9 @@ class AuthenticationHandler extends SprykerAuthenticationHandler
         $marketingPermission = "false";
         //$token = $this->getCdcAuthorizationToken();
 
-        $apiKey = $this->getGlobusApiKey();
-        $apiSecretKey = $this->getGlobusApiSecretKey();
-        $urlPrefix = $this->getGlobusApiUrlPrefix();
-        $url = "v2/meinglobus/accounts/registrations/full";
-        $fullUrl = $urlPrefix . $url;
         $newMyGlobusCardNumber = 0;
         if (!$customerTransfer->getMyGlobusCard()) {
-            $newMyGlobusCardNumber = $this->getNewGlobusCardNumber($apiKey, $apiSecretKey);
+            $newMyGlobusCardNumber = $this->getNewGlobusCardNumber();
             $customerTransfer->setMyGlobusCard($newMyGlobusCardNumber);
         }
 
@@ -244,37 +238,15 @@ class AuthenticationHandler extends SprykerAuthenticationHandler
                       },
                       "password": "' . $customerTransfer->getPassword() . '"
                     }';
-
-        try {
-            $curl = curl_init();
-
-            curl_setopt_array($curl, [
-                CURLOPT_URL => $fullUrl,
-                CURLOPT_RETURNTRANSFER => true,
-                CURLOPT_ENCODING => '',
-                CURLOPT_MAXREDIRS => 10,
-                CURLOPT_TIMEOUT => 0,
-                CURLOPT_FOLLOWLOCATION => true,
-                CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-                CURLOPT_CUSTOMREQUEST => 'POST',
-                CURLOPT_POSTFIELDS => $data,
-                CURLOPT_HTTPHEADER => [
-                    'APIKey: ' . $apiKey,
-                    'APISecret: ' . $apiSecretKey,
-                    'Content-Type: application/json',
-                ],
-            ]);
-
-            $result = curl_exec($curl);
-            curl_close($curl);
-
-            $resultRegisterApi = json_decode($result);
+        $result = GlobusRestApiClientAccount::registrationFull($data);
+        if ($result->isSuccess) {
+            $resultRegisterApi = $result->resultToJson();
             if ($resultRegisterApi->UID) {
                 return true;
             } else {
                 return false;
             }
-        } catch (Exception $exception) {
+        } else {
             return false;
         }
     }
@@ -312,9 +284,9 @@ class AuthenticationHandler extends SprykerAuthenticationHandler
     /**
      * @param \Generated\Shared\Transfer\CustomerTransfer $customerTransfer
      *
-     * @return string
+     * @return \Pyz\Yves\GlobusRestApiClient\Provider\GlobusRestApiResult
      */
-    protected function getApiAdressCheck($customerTransfer)
+    protected function getApiAdressCheck($customerTransfer): GlobusRestApiResult
     {
         $firstName = $customerTransfer->getFirstName();
         $lastName = $customerTransfer->getLastName();
@@ -323,133 +295,14 @@ class AuthenticationHandler extends SprykerAuthenticationHandler
         $street = $customerTransfer->getAddress1();
         $city = $customerTransfer->getCity();
 
-        $apiKey = $this->getGlobusApiKey();
-        $apiSecretKey = $this->getGlobusApiSecretKey();
-        $urlPrefix = $this->getGlobusApiUrlPrefix();
-        $url = "/v1/meinglobus/validations/address";
-        $fullUrl = $urlPrefix . $url;
-        $data = '{
-                    "firstName": "' . $firstName . '",
-                    "lastName": "' . $lastName . '",
-                    "address": {
-                    "zip": "' . $zip . '",
-                    "houseNo": "' . $houseNo . '",
-                    "street": "' . $street . '",
-                    "city": "' . $city . '"
-                    }
-                }';
-
-        $curl = curl_init();
-
-        curl_setopt_array($curl, [
-            CURLOPT_URL => $fullUrl,
-            CURLOPT_RETURNTRANSFER => true,
-            CURLOPT_ENCODING => '',
-            CURLOPT_MAXREDIRS => 10,
-            CURLOPT_TIMEOUT => 0,
-            CURLOPT_FOLLOWLOCATION => true,
-            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-            CURLOPT_CUSTOMREQUEST => 'POST',
-            CURLOPT_POSTFIELDS => $data,
-            CURLOPT_HTTPHEADER => [
-                'APIKey: ' . $apiKey,
-                'APISecret: ' . $apiSecretKey,
-                'Content-Type: application/json',
-            ],
-        ]);
-
-        $result = curl_exec($curl);
-        curl_close($curl);
-
-        return $result;
+        return GlobusRestApiClientValidation::addressValidation($firstName, $lastName, $zip, $houseNo, $street, $city);
     }
 
     /**
      * @return string
      */
-    public function getGlobusApiKey(): string
+    public function getNewGlobusCardNumber(): string
     {
-        $globus_api_credentials = Config::get(CustomerConstants::GLOBUS_API_CONSTANTS);
-
-        $apiKey = '';
-        if (isset($globus_api_credentials[CustomerConstants::GLOBUS_API_CREDENTIALS][CustomerConstants::GLOBUS_API_KEY])) {
-            $apiKey = $globus_api_credentials[CustomerConstants::GLOBUS_API_CREDENTIALS][CustomerConstants::GLOBUS_API_KEY];
-        }
-
-        return $apiKey;
-    }
-
-    /**
-     * @return string
-     */
-    public function getGlobusApiSecretKey(): string
-    {
-        $globus_api_credentials = Config::get(CustomerConstants::GLOBUS_API_CONSTANTS);
-
-        $apiSecretKey = '';
-        if (isset($globus_api_credentials[CustomerConstants::GLOBUS_API_CREDENTIALS][CustomerConstants::GLOBUS_API_SECRET_KEY])) {
-            $apiSecretKey = $globus_api_credentials[CustomerConstants::GLOBUS_API_CREDENTIALS][CustomerConstants::GLOBUS_API_SECRET_KEY];
-        }
-
-        return $apiSecretKey;
-    }
-
-    /**
-     * @return string
-     */
-    public function getGlobusApiUrlPrefix(): string
-    {
-        $globus_api_credentials = Config::get(CustomerConstants::GLOBUS_API_CONSTANTS);
-
-        $urlPrefix = '';
-        if (isset($globus_api_credentials[CustomerConstants::GLOBUS_API_CREDENTIALS][CustomerConstants::GLOBUS_API_URL])) {
-            $urlPrefix = $globus_api_credentials[CustomerConstants::GLOBUS_API_CREDENTIALS][CustomerConstants::GLOBUS_API_URL];
-        }
-
-        return $urlPrefix;
-    }
-
-    /**
-     * @param string $apiKey
-     * @param string $apiSecretKey
-     *
-     * @return string
-     */
-    public function getNewGlobusCardNumber(string $apiKey, string $apiSecretKey): string
-    {
-        $urlPrefix = $this->getGlobusApiUrlPrefix();
-        $url = "v2/meinglobus/digitalcard/nextcard";
-        $fullUrl = $urlPrefix . $url;
-
-        $curl = curl_init();
-
-        curl_setopt_array($curl, [
-            CURLOPT_URL => $fullUrl,
-            CURLOPT_RETURNTRANSFER => true,
-            CURLOPT_ENCODING => '',
-            CURLOPT_MAXREDIRS => 10,
-            CURLOPT_TIMEOUT => 0,
-            CURLOPT_FOLLOWLOCATION => true,
-            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-            CURLOPT_CUSTOMREQUEST => 'GET',
-            CURLOPT_HTTPHEADER => [
-                'APIKey: ' . $apiKey,
-                'APISecret: ' . $apiSecretKey,
-                'Content-Type: application/json',
-            ],
-        ]);
-
-        $resultAPI = curl_exec($curl);
-        curl_close($curl);
-
-        $newCardResult = json_decode($resultAPI);
-        $result = "";
-        if ($newCardResult->code == 200) {
-            $result = $newCardResult->cardNumber;
-        } else {
-            $result = $newCardResult->message;
-        }
-
-        return $result;
+        return GlobusRestApiClientDigitalCard::getNewGlobusCardNumber();
     }
 }

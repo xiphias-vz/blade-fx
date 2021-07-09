@@ -8,8 +8,7 @@
 namespace Pyz\Yves\CustomerPage\Controller;
 
 use Elastica\JSON;
-use Pyz\Shared\Customer\CustomerConstants;
-use Spryker\Shared\Config\Config;
+use Pyz\Yves\GlobusRestApiClient\Provider\GlobusRestApiClientAccount;
 use Spryker\Shared\Customer\Code\Messages;
 use SprykerShop\Yves\CustomerPage\Controller\PasswordController as SprykerPasswordController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -82,79 +81,9 @@ class PasswordController extends SprykerPasswordController
     public function passwordResetAction(Request $request): JsonResponse
     {
         $email = $request->request->get('id');
-        $apiKey = $this->getGlobusApiKey();
-        $apiSecret = $this->getGlobusApiSecretKey();
-        $urlPrefix = $this->getGlobusApiUrlPrefix();
-        $url = "v2/meinglobus/accounts/password/reset";
-        $fullUrl = $urlPrefix . $url;
-        $data = '{"id": "' . $email . '"}';
-
-        $curl = curl_init();
-
-        curl_setopt_array($curl, [
-            CURLOPT_URL => $fullUrl,
-            CURLOPT_RETURNTRANSFER => true,
-            CURLOPT_ENCODING => '',
-            CURLOPT_MAXREDIRS => 10,
-            CURLOPT_TIMEOUT => 0,
-            CURLOPT_FOLLOWLOCATION => true,
-            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-            CURLOPT_CUSTOMREQUEST => 'POST',
-            CURLOPT_POSTFIELDS => $data,
-            CURLOPT_HTTPHEADER => [
-                'APIKey: ' . $apiKey,
-                'APISecret: ' . $apiSecret,
-                'Content-Type: application/json',
-            ],
-        ]);
-
-        $result = curl_exec($curl);
-        curl_close($curl);
-
+        $result = GlobusRestApiClientAccount::passwordReset($email);
         $jsonResponse = new JsonResponse($result);
 
         return $jsonResponse;
-    }
-
-    /**
-     * @return string
-     */
-    public function getGlobusApiKey(): string
-    {
-        $globus_api_credentials = Config::get(CustomerConstants::GLOBUS_API_CONSTANTS);
-        $apiKey = '';
-        if (isset($globus_api_credentials[CustomerConstants::GLOBUS_API_CREDENTIALS][CustomerConstants::GLOBUS_API_KEY])) {
-            $apiKey = $globus_api_credentials[CustomerConstants::GLOBUS_API_CREDENTIALS][CustomerConstants::GLOBUS_API_KEY];
-        }
-
-        return $apiKey;
-    }
-
-    /**
-     * @return string
-     */
-    public function getGlobusApiSecretKey(): string
-    {
-        $globus_api_credentials = Config::get(CustomerConstants::GLOBUS_API_CONSTANTS);
-        $apiSecretKey = '';
-        if (isset($globus_api_credentials[CustomerConstants::GLOBUS_API_CREDENTIALS][CustomerConstants::GLOBUS_API_SECRET_KEY])) {
-            $apiSecretKey = $globus_api_credentials[CustomerConstants::GLOBUS_API_CREDENTIALS][CustomerConstants::GLOBUS_API_SECRET_KEY];
-        }
-
-        return $apiSecretKey;
-    }
-
-    /**
-     * @return string
-     */
-    public function getGlobusApiUrlPrefix(): string
-    {
-        $globus_api_credentials = Config::get(CustomerConstants::GLOBUS_API_CONSTANTS);
-        $urlPrefix = '';
-        if (isset($globus_api_credentials[CustomerConstants::GLOBUS_API_CREDENTIALS][CustomerConstants::GLOBUS_API_URL])) {
-            $urlPrefix = $globus_api_credentials[CustomerConstants::GLOBUS_API_CREDENTIALS][CustomerConstants::GLOBUS_API_URL];
-        }
-
-        return $urlPrefix;
     }
 }
