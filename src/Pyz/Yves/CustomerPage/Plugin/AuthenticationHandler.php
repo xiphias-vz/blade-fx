@@ -221,7 +221,7 @@ class AuthenticationHandler extends SprykerAuthenticationHandler
                           }
                         }
                       },
-                      "subsrciptions": {
+                      "subscriptions": {
                         "meinGlobus": true,
                         "general": true,
                         "marketingPermission": {

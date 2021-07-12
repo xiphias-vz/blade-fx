@@ -20,7 +20,7 @@
             display: none;
         }
 
-        &:not(:last-child) &__separator {
+        &__separator {
             display: block;
 
             &::after {
@@ -48,11 +48,11 @@
             white-space: nowrap;
 
             &:last-child {
-                padding-right: 0;
+                /*padding-right: 0;*/
 
-                &::after {
+                /*&::after {
                     right: rem(-3);
-                }
+                }*/
             }
 
             #{$name}__link {

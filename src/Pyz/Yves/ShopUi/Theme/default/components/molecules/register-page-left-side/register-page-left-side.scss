@@ -1,35 +1,115 @@
 @mixin register-page-left-side($name: '.register-page-left-side') {
 
     #{$name} {
-        &__body{
+        &__body {
             background-color: $setting-color-globus-lightGray;
             padding: rem(16);
+            overflow: hidden;
         }
 
-        &__image{
+        &__image {
             width: 80%;
             margin-left: rem(28);
         }
 
-        &__top-margin{
+        &__top-margin {
             margin-top: rem(16);
         }
 
-        &__font-smaller{
+        &__top-margin-smaller {
+            margin-top: rem(8);
+        }
+
+        &__top-margin-big {
+            margin-top: rem(24);
+        }
+
+        &__bot-margin {
+            margin-bottom: rem(16);
+        }
+
+        &__bottom-margin-information {
+            margin-bottom: rem(8);
+        }
+
+        &__information-paragraph-margin {
+            margin: rem(0);
+
+            @include helper-breakpoint-media-max($md-max) {
+                margin-top: rem(2);
+            }
+        }
+
+        &__bot-margin-smaller {
+            margin-bottom: rem(8);
+        }
+
+        &__left-margin {
+            margin-left: rem(16);
+        }
+
+        &__left-margin-smaller {
+            margin-left: rem(8);
+        }
+
+        &__right-margin {
+            margin-right: rem(16);
+        }
+
+        &__right-margin-smaller {
+            margin-right: rem(8);
+        }
+
+        &__font-smaller {
             font-size: smaller;
         }
 
-        &__icon{
+        &__icon {
             width: rem(24);
+            vertical-align: middle;
         }
 
-        &__height{
-            height: rem(16);
+        &__height {
+            min-height: rem(60);
+            width: 100%;
+            margin-right: rem(4);
+        }
+
+        &__icon-list {
+            margin: rem(5) auto rem(5) auto;
+        }
+
+        &__orange-radio-button {
+            border:2px solid white;
+            box-shadow:0 0 0 1px #932;
+            appearance: none;
+            border-radius:50%;
+            width:rem(12);
+            height:rem(12);
+            background-color:#fff;
+            transition:all ease-in 0.2s;
+            &:checked {
+                background-color: $setting-color-orange;
+            }
+        }
+
+        #btnCancelRegister {
+            background-color: red;
+        }
+
+        #globusCardTerms {
+            float: right;
+        }
+
+        #globusCardTerms span{
+            float: left;
+            margin-top: rem(4);
+            margin-right: rem(4);
         }
 
     }
 
-    .hidden{
+    .hidden {
         display: none;
     }
 

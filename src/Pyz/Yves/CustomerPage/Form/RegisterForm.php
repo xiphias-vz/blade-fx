@@ -87,8 +87,7 @@ class RegisterForm extends SprykerRegisterForm
             ->addPhoneField($builder)
             ->addDayField($builder)
             ->addMonthField($builder)
-            ->addYearField($builder)
-            ->addAcceptTermsField($builder);
+            ->addYearField($builder);
     }
 
     /**

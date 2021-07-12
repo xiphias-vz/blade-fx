@@ -7,48 +7,60 @@
 
 {% block body %}
     <div class="{{ config.name }}__body">
-        <div>
+        <div class="col col--lg-12">
             <h1>1€ Servicegebühr sparen und jetzt registrieren!</h1>
         </div>
         <div class="col col--lg-12 {{ config.name }}__top-margin">
             <div class="col col--lg-8">
-                <p class="{{ config.name }}__font-smaller">Holen Sie sich Ihre persönliche Kundenkarte und erhalten Sie viele Vorteile und Vergünstigungen.</p>
+                <p class="{{ config.name }}__font-smaller">{{ 'globus.card.registration.text' | trans }}</p>
             </div>
-            <div class="col col--lg-4">
+            <div class="col col--lg-4 {{ config.name }}__top-margin-smaller">
                 <img src="{{ publicPath('images/meinglobus-card.png') }}" class="{{ config.name }}__image" />
             </div>
         </div>
-        <div>
-            <p class="{{ config.name }}__font-smaller"><img src="{{ publicPath('images/meinglobus-vorteil-icon1.png') }}" class="{{ config.name }}__icon" /> Mit Tankeschön bis zu 4 Cent pro Liter sparen</p>
-        </div>
-        <div>
-            <p class="{{ config.name }}__font-smaller"><img src="{{ publicPath('images/meinglobus-vorteil-icon2.png') }}" class="{{ config.name }}__icon" /> Scan & Go nutzen und Zeit sparen</p>
-        </div>
-        <div>
-            <p class="{{ config.name }}__font-smaller"><img src="{{ publicPath('images/meinglobus-vorteil-icon2.png') }}" class="{{ config.name }}__icon" /> Exklusive Angebote, Coupons, Veranstaltungen und mehr</p>
-        </div>
-        <div>
-            <h2>Möchten Sie eine Kundenkarte, um die Mein Globus Vorteile zu nutzen?</h2>
-        </div>
-        <div class="{{ config.name }}__top-margin">
-            <form name="form-radio-kundenkarte">
-                <label><input type="radio" name="radio_kundenkarte" value="Yes"/> Ja</label>
-                <label><input type="radio" name="radio_kundenkarte" value="No"/> Nein</label>
-            </form>
-
-            <div id="globus-card-yes" class="hidden">
-                <p class="{{ config.name }}__font-smaller">Wenn Sie bereits eine Karte im Markt mitgenommen haben, können Sie hier die Kartennummer eingeben.</p>
-                <input id="myGlobusCardNumber" type="text" class="input {{ config.name }}__height" />
-                <p class="{{ config.name }}__font-smaller">Mit dem Klick auf Weiter bestätigen Sie die Mein Globus-Teilnahmebedingungen.</p>
+        <div  class="col col--lg-12 {{ config.name }}__top-margin {{ config.name }}__bot-margin">
+            <div class="{{ config.name }}__icon-list">
+                <p class="{{ config.name }}__font-smaller"><img src="{{ publicPath('images/meinglobus-vorteil-icon1.png') }}" class="{{ config.name }}__icon" /> Mit Tankeschön bis zu 4 Cent pro Liter sparen</p>
+            </div>
+            <div class="{{ config.name }}__icon-list">
+                <p class="{{ config.name }}__font-smaller"><img src="{{ publicPath('images/meinglobus-vorteil-icon2.png') }}" class="{{ config.name }}__icon" /> Scan & Go nutzen und Zeit sparen</p>
+            </div>
+            <div class="{{ config.name }}__icon-list">
+                <p class="{{ config.name }}__font-smaller"><img src="{{ publicPath('images/meinglobus-vorteil-icon3.png') }}" class="{{ config.name }}__icon" /> Exklusive Angebote, Coupons, Veranstaltungen und mehr</p>
             </div>
         </div>
-        <div class="{{ config.name }}__top-margin">
-            <p class="{{ config.name }}__font-smaller">{% include atom('checkbox') with {
+        <div class="col col--lg-12 {{ config.name }}__top-margin {{ config.name }}__bot-margin">
+            <h2>Möchten Sie eine Kundenkarte, um die Mein Globus Vorteile zu nutzen?</h2>
+        </div>
+        <div class="col col--lg-12 {{ config.name }}__top-margin-smaller {{ config.name }}__bot-margin">
+            <form name="form-radio-kundenkarte">
+                <label class="{{ config.name }}__left-margin-smaller {{ config.name }}__right-margin">
+                    <input class="{{ config.name }}__orange-radio-button" type="radio" name="radio_kundenkarte" value="Yes"/> Ja
+                </label>
+                <label class="{{ config.name }}__left-margin {{ config.name }}__right-margin-smaller">
+                    <input class="{{ config.name }}__orange-radio-button" type="radio" name="radio_kundenkarte" value="No"/> Nein
+                </label>
+            </form>
+
+            <div id="globus-card-yes" class="hidden {{ config.name }}__top-margin-smaller">
+                <p class="{{ config.name }}__font-smaller {{ config.name }}__bot-margin">Wenn Sie bereits eine Karte im Markt mitgenommen haben, können Sie hier die Kartennummer eingeben.</p>
+                <input id="myGlobusCardNumber" type="text" class="input {{ config.name }}__height" placeholder="Karternnummer"/>
+                <p class="{{ config.name }}__font-smaller {{ config.name }}__top-margin">Mit dem Klick auf Weiter bestätigen Sie die Mein Globus-Teilnahmebedingungen.</p>
+            </div>
+        </div>
+        <div class="col col--lg-12 {{ config.name }}__top-margin {{ config.name }}__bottom-margin-information">
+            <div class="col col--lg-2">
+                {% include atom('checkbox') with {
                     attributes: {
                         name: 'isAdvertise'
                     }
                 } only %}
-                Ich stimme den Bedingungen der Werbeeinwilligung zu, um über Produkte und Angebote informiert zu werden.</p>
+            </div>
+            <div class="col col--lg-10">
+                <p class="{{ config.name }}__font-smaller {{ config.name }}__information-paragraph-margin">
+                    {{ 'globus.card.registration.terms.of.agreement' | trans }}</p>
+            </div>
         </div>
+
     </div>
 {% endblock %}

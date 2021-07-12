@@ -64,16 +64,16 @@
         }
 
         .btn-link {
-            background-color: transparent;
-            color: #7c7c7c;
+            background-color: transparent !important;
+            color: #7c7c7c !important;
         }
 
         .btn-link:hover,
         .btn-link:focus,
         .btn-link:active
         {
-            background-color: transparent;
-            color: #7c7c7c;
+            background-color: transparent !important;
+            color: #7c7c7c !important;
         }
 
         .hr-line-solid {
@@ -100,7 +100,9 @@
         }
 
         .cancelFlex {
-            margin-top:auto;
+            /*margin-top:auto;
+            position: absolute;
+            bottom: 30px;*/
         }
 
         .cancelBtn {
@@ -200,11 +202,17 @@
         #link-to-address-modal{
             float: right;
         }
+
+        @media screen and (max-width: 768px) {
+            .register-form-tablet-width {
+                width: 96%;
+            }
+        }
     </style>
 
     {% if data.currentCodeBucket == 'CZ' %}
         <div class="grid grid--center">
-            <div class="col col--sm-12 col--md-9 col--xl-6">
+            <div class="col col--sm-12 col--md-9 col--xl-6 register-form-tablet-width">
                 <div class="box box--checkout">
                     {% block titleCZ %}
                         <div class="list-switches list-switches--checkout">
@@ -338,8 +346,8 @@
 
     {% if data.currentCodeBucket=='DE' %}
         <div class="grid grid--center">
-            <div class="col col--sm-12 col--md-9 col--xl-9">
-                <div class="box box--checkout">
+            <div class="col col--sm-12 col--md-9 col--xl-9 register-form-tablet-width">
+                <div class="box box--checkout" style="position: relative;">
 
                     {% block content_DE %}
 
@@ -455,11 +463,6 @@
                             <div class="col col--lg-5 registrationLeftSideDiv">
                                 {% embed molecule('register-page-left-side') only %}
                                 {% endembed %}
-                                {% block CancelRegisterButton %}
-                                    <div class="cancelFlex">
-                                        <button id="btnCancelRegister" type="button" class="btn btn-link col col--middle button button--expand-tablet button--large cancelBtn">{{ 'general.cancel.button' | trans }}</button>
-                                    </div>
-                                {% endblock %}
                             </div>
                             <div class="col col--lg-1">
                                 <p></p>
@@ -495,16 +498,25 @@
                                         } only %}
                                     {% endblock %}
                                 {% endembed %}
-                                {% block submitButton %}
-                                    <button type="button" id="link-to-address-modal" class="form__action form__action--checkout col col--middle button button--expand-tablet button--large">
-                                        {{'checkout.customer.auth_as_user' | trans}}
-                                    </button>
-                                {% endblock %}
                                 {% embed molecule('popup-ui-address-validation') with {
                                 } only %}
                                 {% endembed %}
                             </div>
                         </div>
+
+                        <div id="customerRegistrationFormButtons" class="{{ (data.isGuest or data.isLogin? ' is-hidden' : '') }}">
+                            {% block CancelRegisterButton %}
+                                <div class="cancelFlex">
+                                    <button id="btnCancelRegister" type="button" class="btn-link form__action form__action--checkout col col--middle button button--expand-tablet button--large cancelBtn" style="margin-bottom: 5px;">{{ 'general.cancel.button' | trans }}</button>
+                                </div>
+                            {% endblock %}
+                            {% block submitButton %}
+                                <button type="button" id="link-to-address-modal" class="form__action form__action--checkout col col--middle button button--expand-tablet button--large" style="margin-top: 5px;">
+                                    {{'checkout.customer.submit_as_guest' | trans}}
+                                </button>
+                            {% endblock %}
+                        </div>
+
 
                         <div style="display: none">
 
@@ -530,6 +542,7 @@
                                 {% endembed %}
 
                         </div>
+
                         <div id="hiddenGuestForm">
                             {% embed molecule('form') with {
                                 class: 'register-form js-login__guest' ~ (data.isGuest ? '' : ' is-hidden'),
@@ -803,6 +816,7 @@
         $("#btnContinueRegistration").click(function(){
             $("#additionalLoginForm").css("display", "none");
             $("#checkoutCustomerRegister").css("display", "block");
+            $("#customerRegistrationFormButtons").css("display", "block");
             $("#registerForm_customer_email").val($("#startRegistrationForm_customer_email").val());
             $("#registerForm_customer_password_pass").val($("#startRegister__customer_password").val());
             $("#registerForm_customer_password_confirm").val($("#startRegister__customer_password").val());

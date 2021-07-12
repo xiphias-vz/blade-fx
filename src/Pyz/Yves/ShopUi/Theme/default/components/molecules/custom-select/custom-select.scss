@@ -53,10 +53,6 @@
             border: rem(1) solid $setting-color-input-border;
             border-radius: rem(2);
 
-            @include helper-breakpoint-media-max($lg-max) {
-                border: none !important;
-            }
-
             .select2-selection__rendered {
                 color: $setting-color-gray-6;
                 font: fw(medium) rem(14)/rem(16) $setting-font-family;
