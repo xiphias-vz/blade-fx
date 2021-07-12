@@ -1,5 +1,4 @@
 key,translation,locale
-
 cart.remove.items.success,"Produkty byly úspěšně odebrány z nákupního seznamu.",cs_CZ
 cart.remove.items.success,Produkte wurden erfolgreich aus der Einkaufsliste entfernt.,de_DE
 cart.remove.items.success,Products were removed successfully,en_US
@@ -3702,7 +3701,7 @@ agent.control_bar.customer_name,Kunde:,de_DE
 agent.control_bar.logout_as_customer,"Ukončit zákaznickou podporu",cs_CZ
 agent.control_bar.logout_as_customer,End Customer Assistance,en_US
 agent.control_bar.logout_as_customer,Kunden-Assistenz beenden,de_DE
-agent.control_bar.logout,"Odhlásit",cs_cz
+agent.control_bar.logout,"Odhlásit",cs_CZ
 agent.control_bar.logout,Logout,en_US
 agent.control_bar.logout,Abmelden,de_DE
 agent.autocomplete.no_results,"Nebyly nalezeny žádné výsledky",cs_CZ
@@ -4674,4 +4673,3 @@ success.message.title,"Wie geht es weiter?",de_DE
 success.message.text1,"Ihre Bestellbestätigung",de_DE
 success.message.text2,"ist bereits auf dem Weg in Ihr Email-Postfach - prüfen Sie also unbedingt auch Ihren Spam Ordner.",de_DE
 success.message.text3,"Ihren",de_DE
-
