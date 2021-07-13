@@ -148,16 +148,18 @@
                         <p class="spacing-bottom spacing-bottom--bigger text-color-1">{{ 'cart.checkout.address.abholstation.note.up' | trans }}</p>
 
                         <div class="spacing-bottom spacing-bottom--bigger text-color-1">
-                            <p>Abholstation</p>
+                            <p>{{ 'checkout.step.address.title' | trans }}</p>
                             <span>
                                 {{- app['merchant_name'] -}}
                             </span>
-               {#             {% if data.merchantName is defined %}
-                               <span class="{{ config.name }}__text">{{ data.merchantName }}</span>
-                         {% endif %}#}
                         </div>
+                        {% if app.currentCodeBucket == 'CZ' %}
+                            <div class="spacing-bottom text-color-1">
+                                <p>{{ 'cart.checkout.address.product.note' | trans }}</p>
+                            </div>
+                        {% endif %}
                         <div class="text-color-1">
-                            <p>Nachricht an die Abholstation</p>
+                            <p>{{ 'cart.checkout.address.abholstation.note.down' | trans }}</p>
                         </div>
                         <div class="spacing-bottom text-color-1">
                             {{ form_row(data.form.cart_note, {

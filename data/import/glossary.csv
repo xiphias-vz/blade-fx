@@ -4678,3 +4678,6 @@ globus.card.registration.text,Discover many advantages with your personal My Glo
 globus.card.registration.text_before,Holen Sie sich Ihre persönliche Kundenkarte und erhalten Sie viele Vorteile und Vergünstigungen.,de_DE
 globus.card.registration.text_before,Get your personal customer card and receive many advantages and discounts.,en_US
 globus.card.registration.terms.of.agreement,"Ich stimme den Bedingungen der Werbeeinwilligung zu, um über Produkte und Angebote informiert zu werden.",de_DE
+cart.checkout.address.product.note,"In case the required goods are not available, we will offer you a product with the same parameters (ingredients, weight, price, etc.). You can reject the offered replacement at any time and you will not be charged for it.",en_US
+cart.checkout.address.product.note,"Falls die gewünschte Ware nicht verfügbar ist, bieten wir Ihnen ein Produkt mit den gleichen Parametern (Zutaten, Gewicht, Preis usw.) an. Sie können den angebotenen Ersatz jederzeit ablehnen und werden Ihnen nicht in Rechnung gestellt.",de_DE
+cart.checkout.address.product.note,"Pokud požadované zboží není k dispozici, nabídneme vám produkt se stejnými parametry (přísady, hmotnost, cena atd.). Nabízenou náhradu můžete kdykoli odmítnout a nebude vám nic účtováno.",cs_CZ
