@@ -6,10 +6,21 @@
 } %}
 
 {% define data = {
-    product: required
+    product: required,
+    idProductAbstract: data.product.idProductAbstract | default
 } %}
 
 {% block body %}
+
+    {% if data.idProductAbstract %}
+        {% block productAbstractLabels %}
+            {% widget 'ProductAbstractLabelWidget' args [data.idProductAbstract] with {
+                data: {
+                    parentJsName: config.jsName,
+                },
+            } only %}{% endwidget %}
+        {% endblock %}
+    {% endif %}
     {% include molecule('image-gallery', 'ProductImageWidget') with {
         data: {
             idProductAbstract: data.product.idProductAbstract,
@@ -39,4 +50,5 @@
             }'
         }
     } only %}
+
 {% endblock %}

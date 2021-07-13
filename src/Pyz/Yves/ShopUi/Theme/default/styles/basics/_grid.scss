@@ -181,6 +181,10 @@
             }
         }
 
+        &--column {
+            flex-direction: column;
+        }
+
         &--inline {
             display: inline-flex;
         }

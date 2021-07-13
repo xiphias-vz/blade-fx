@@ -13,4 +13,7 @@
     <span class="{{ component.renderClass(config.name ~ '__text', modifiers) }}">
         {{data.text}}
     </span>
+    {% if data.type == 'goproduct' %}
+        <span><img src="{{ publicPath('images/globus-product.png') }}" /></span>
+    {% endif %}
 {% endblock %}

@@ -34,6 +34,12 @@
             color: $setting-color-alt;
         }
 
+        &--goproduct {
+            background: $setting-color-transparent;
+            margin: 0;
+            padding: 0;
+        }
+
         @content;
     }
 }

@@ -25,6 +25,7 @@
     position: position | default(null),
     currencySymbol: app.currentCurrencySymbol,
     currencyIsoCode: app.currentCurrencyISOCode,
+    label: data.product.id_product_labels
 } %}
 
 {% set addAjaxUrl = path("cart/add-ajax", { "productAbstractId": data.product.id_product_abstract ?? data.product.idProductAbstract }) %}
@@ -43,6 +44,23 @@
 
             {% block imageContainer %}
                 <div class="{{ config.name }}__image-wrap">
+                    {% if data.idProductAbstract and data.label is not empty %}
+                        {% block goproductLabel %}
+                            {% set labels = labels | default([]) %}
+
+                            {% set labels = labels | merge([{
+                                text: '',
+                                type: 'goproduct',
+                            }]) %}
+
+                            {% include molecule('label-group', 'ProductLabelWidget') with {
+                                data: {
+                                    labels: labels,
+                                    parentJsName: '',
+                                },
+                            } only %}
+                        {% endblock %}
+                    {% endif %}
                     {% macro thumbnail(src, alt='', extraClass='', modifiers=[], idProductAbstract='') %}
                         {% embed molecule('lazy-thumbnail') with {
                             class: extraClass,

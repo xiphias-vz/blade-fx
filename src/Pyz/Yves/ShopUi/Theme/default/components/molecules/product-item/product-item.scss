@@ -28,6 +28,10 @@
         &__image-wrap {
             position: relative;
             overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+
             @include helper-breakpoint-media-max($sm-max) {
                 width:150px;
                 height:auto;
