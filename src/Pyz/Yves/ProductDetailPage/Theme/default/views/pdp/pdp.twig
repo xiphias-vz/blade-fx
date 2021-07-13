@@ -12,7 +12,9 @@
     vitamins: _view.vitamins,
     depositPrice: _view.depositPrice,
     preisProKg: _view.pricePerKg,
-    characteristics: _view.characteristics
+    characteristics: _view.characteristics,
+    productAttributes: _view.product.attributes,
+    currentCodeBucket: app.currentCodeBucket
 } %}
 
 {% define data = {
@@ -20,8 +22,8 @@
     maxQuantity: 10,
     isBundle: null,
     bundleItems: []
-} %}
 
+} %}
 {% block headStyles %}
     {{ parent() }}
     <link itemprop="url" href="{{ data.productUrl }}">
@@ -38,6 +40,18 @@
 {% block contentClass %} page-layout-main page-layout-main--pdp{% endblock %}
 
 {% block content %}
+    {% if data.currentCodeBucket=='CZ' %}
+        {% embed molecule('popup-age-confirmation') with {
+        } only %}
+        {% endembed %}
+
+        {% if data.productAttributes.Altersempfehlung is defined %}
+            <input type="hidden" id="age-restriction" value="{{ data.productAttributes.Altersempfehlung }}">
+        {% else %}
+            <input type="hidden" id="age-restriction" value="null">
+        {% endif %}
+    {% endif %}
+
     <div class="container__inner">
         <div class="grid grid--indent">
             <div class="col col--spaced-lg col--sm-12 col--lg-6">

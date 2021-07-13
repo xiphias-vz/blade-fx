@@ -1,0 +1,29 @@
+{% extends model('component') %}
+
+{% define config = {
+    name: 'popup-age-confirmation',
+    tag: 'popup-age-confirmation',
+} %}
+
+{% block body %}
+    <div class="{{ config.name }}__overlay" >
+        <div class="{{ config.name }}__container">
+            <div class="{{ config.name }}__content">
+                <div class="text-container">
+                    <div class="title">
+                        {{ 'pdp.modal.age.confirmation.notice' | trans }}
+                    </div>
+                    <div class="message-container">
+                        {{ 'pdp.modal.age.confirmation.18question.part1' | trans }} <br>
+                        {{ 'pdp.modal.age.confirmation.18question.part2' | trans }}
+                    </div>
+                </div>
+                <div class="buttons">
+                    <button class="button button--success button--expand" type="button" id="age-confirmation-no-button">< &nbsp &nbsp &nbsp &nbsp {{ 'pdp.modal.age.confirmation.no.button' | trans }}</button>
+                    <div>&nbsp</div>
+                    <button class="button button--success button--expand" type="button" id="age-confirmation-yes-button">{{ 'pdp.modal.age.confirmation.yes.button' | trans }}</button>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

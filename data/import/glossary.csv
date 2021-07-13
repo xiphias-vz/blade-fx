@@ -1,4 +1,5 @@
 key,translation,locale
+
 cart.remove.items.success,"Produkty byly úspěšně odebrány z nákupního seznamu.",cs_CZ
 cart.remove.items.success,Produkte wurden erfolgreich aus der Einkaufsliste entfernt.,de_DE
 cart.remove.items.success,Products were removed successfully,en_US
@@ -4673,6 +4674,24 @@ success.message.title,"Wie geht es weiter?",de_DE
 success.message.text1,"Ihre Bestellbestätigung",de_DE
 success.message.text2,"ist bereits auf dem Weg in Ihr Email-Postfach - prüfen Sie also unbedingt auch Ihren Spam Ordner.",de_DE
 success.message.text3,"Ihren",de_DE
+pdp.modal.age.confirmation,Are you over 18?,en_US
+pdp.modal.age.confirmation,Sind Sie 18 jahre alt?,de_DE
+pdp.modal.age.confirmation,"Je vám více než 18?",cs_CZ
+pdp.modal.age.confirmation.no.button,No,en_US
+pdp.modal.age.confirmation.no.button,Nein,de_DE
+pdp.modal.age.confirmation.no.button,"Ne",cs_CZ
+pdp.modal.age.confirmation.yes.button,"Yes, I am 18 years old",en_US
+pdp.modal.age.confirmation.yes.button,"Ja, ich bin 18 Jahre alt",de_DE
+pdp.modal.age.confirmation.yes.button,"Ano, je mi 18 let",cs_CZ
+pdp.modal.age.confirmation.notice,Notice,en_US
+pdp.modal.age.confirmation.notice,Beachten,de_DE
+pdp.modal.age.confirmation.notice,"Upozornění",cs_CZ
+pdp.modal.age.confirmation.18question.part1,Only people over the age of 18 can purchase this product.,en_US
+pdp.modal.age.confirmation.18question.part1,Nur Personen über 18 Jahren können dieses Produkt kaufen.,de_DE
+pdp.modal.age.confirmation.18question.part1,"Tento produkt mohou zakoupit pouze osoby starší než 18 let.",cs_CZ
+pdp.modal.age.confirmation.18question.part2,Are you 18 years old?,en_US
+pdp.modal.age.confirmation.18question.part2,Sind Sie 18 jahre alt?,de_DE
+pdp.modal.age.confirmation.18question.part2,"Je vám 18 let?",cs_CZ
 globus.card.registration.text,Entdecken Sie mit Ihrer persönlichen Mein Globus-Kundekarte viele Vorteile.,de_DE
 globus.card.registration.text,Discover many advantages with your personal My Globus customer card.,en_US
 globus.card.registration.text_before,Holen Sie sich Ihre persönliche Kundenkarte und erhalten Sie viele Vorteile und Vergünstigungen.,de_DE
