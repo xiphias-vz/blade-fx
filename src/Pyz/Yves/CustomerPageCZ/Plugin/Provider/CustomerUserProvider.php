@@ -144,4 +144,33 @@ class CustomerUserProvider extends SprykerCustomerUserProvider implements Custom
     {
         return "";
     }
+
+    /**
+     * @return string
+     */
+    public function getCaptchaSecretKey(): string
+    {
+        return "";
+    }
+
+    /**
+     * @param string $emailOrCardNumber
+     *
+     * @return string
+     */
+    public function checkEmailOrCardAvailability(string $emailOrCardNumber): string
+    {
+        return "";
+    }
+
+    /**
+     * @param string $emailOrCardNumber
+     * @param string $password
+     *
+     * @return string
+     */
+    public function globusLogin(string $emailOrCardNumber, string $password): string
+    {
+        return "";
+    }
 }
