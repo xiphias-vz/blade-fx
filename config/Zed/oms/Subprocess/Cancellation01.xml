@@ -118,7 +118,7 @@
             <event name="pass 10 minutes" timeout="10 minutes" onEnter="true"/>
             <event name="cancel by timeout" onEnter="true" command="Sales/CancelByTimeout"/>
             <event name="recalculate order cancellation" onEnter="true"  command="Cancel and recalculate order"/>
-            <event name="send order cancelled email" timeout="1 second"/>
+            <event name="send order cancelled email" command="OrderCancelEmail" timeout="1 second"/>
             <event name="release time slot" onEnter="true" command="TimeSlot/Release"/>
             <event name="pass" onEnter="true"/>
         </events>
