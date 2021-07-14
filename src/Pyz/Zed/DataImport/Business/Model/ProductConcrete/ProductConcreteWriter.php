@@ -40,7 +40,6 @@ class ProductConcreteWriter extends PublishAwareStep implements DataImportStepIn
     public const KEY_LOCALIZED_ATTRIBUTES = 'localizedAttributes';
     public const KEY_LOCALES = 'locales';
     public const KEY_IS_ACTIVE = 'active';
-    public const ASSORTMENT_ZONE = 'assortmentzone';
 
     public const FILE_TYPE_PRODUCT = 1;
     public const FILE_TYPE_METZGEREI = 2;
@@ -131,7 +130,6 @@ class ProductConcreteWriter extends PublishAwareStep implements DataImportStepIn
             ->setSapNumber($dataSet[ProductConfig::KEY_SAP_NUMBER])
             ->setSku($dataSet[static::KEY_PRODUCT_NUMBER])
             ->setLastImportAt(static::$lastImportTime->format('Y-m-d H:i:s'))
-            ->setAssortmentZone($dataSet[static::ASSORTMENT_ZONE])
             ->setAttributes(json_encode($attributes))
             ->setFileType($this->getFileType());
 
