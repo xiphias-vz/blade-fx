@@ -600,8 +600,15 @@ class CollectByCustomerController extends AbstractController
      */
     protected function getProductType(array $productAttributes): string
     {
+        $result = "";
+        if (isset($productAttributes[ProductConfig::PRODUCT_ATTRIBUTE_KEY_PICKING_AREA])) {
+            $result = $productAttributes[ProductConfig::PRODUCT_ATTRIBUTE_KEY_PICKING_AREA];
+        } elseif (isset($productAttributes[ProductConfig::PRODUCT_ATTRIBUTE_KEY_PICKING_ZONE])) {
+            $result = $productAttributes[ProductConfig::PRODUCT_ATTRIBUTE_KEY_PICKING_ZONE];
+        }
+
         return strtolower(
-            $productAttributes[ProductConfig::PRODUCT_ATTRIBUTE_KEY_PICKING_AREA]
+            $result
         );
     }
 

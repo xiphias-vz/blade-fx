@@ -12,6 +12,7 @@ use Spryker\Zed\Product\ProductConfig as SprykerProductConfigAlias;
 class ProductConfig extends SprykerProductConfigAlias
 {
     public const PRODUCT_ATTRIBUTE_KEY_PICKING_AREA = 'assortmentzone';
+    public const PRODUCT_ATTRIBUTE_KEY_PICKING_ZONE = 'pickzone';
     public const PRODUCT_ATTRIBUTE_KEY_AGE_CONTROL = 'Alkoholkontrolle erforderlich';
 
     public const KEY_PRODUCT_EAN = 'EAN';
