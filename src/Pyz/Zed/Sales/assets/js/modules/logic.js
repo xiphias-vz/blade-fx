@@ -131,19 +131,27 @@ window.addEventListener('DOMContentLoaded', () => {
     }
 
     function showResetFunctionality() {
-
+        let showResetFunction = true;
         for(let i = 0; i < pickingZoneHeaders.length; i++) {
             if(window.getComputedStyle(pickingZoneHeaders[i]).display === 'table-cell') {
                 visibleHeader = pickingZoneHeaders[i];
+                visibleHeader.querySelector('.reset-picking-zone').style.display = 'none';
                 let itemState = pickingZoneHeaders[i].getAttribute('data-orderItemState');
-                if (itemState === 'picked' || itemState === 'cancelled') {
-                        visibleHeader.querySelector('.reset-picking-zone').style.display = 'flex';
+                if (itemState !== 'picked' && itemState !== 'cancelled') {
+                    showResetFunction = false;
+                }
+                if(showResetFunction) {
+                    visibleHeader.querySelector('.reset-picking-zone').style.display = 'flex';
                 }
             }
             else if(window.getComputedStyle(pickingZoneHeaders[i]).display === 'none'){
                 let itemState = pickingZoneHeaders[i].getAttribute('data-orderItemState');
-                if (itemState === 'picked' || itemState === 'cancelled') {
-                    if(visibleHeader.getAttribute('data-pickZone') === pickingZoneHeaders[i].getAttribute('data-pickZone')) {
+                visibleHeader.querySelector('.reset-picking-zone').style.display = 'none';
+                if (itemState !== 'picked' && itemState !== 'cancelled') {
+                    showResetFunction = false;
+                }
+                if(visibleHeader.getAttribute('data-pickZone') === pickingZoneHeaders[i].getAttribute('data-pickZone')) {
+                    if(showResetFunction) {
                         visibleHeader.querySelector('.reset-picking-zone').style.display = 'flex';
                     }
                 }
