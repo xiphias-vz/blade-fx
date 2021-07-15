@@ -65,7 +65,7 @@ class GlobusRestApiClientAccount
     public static function getPayBackInfoFromAccount(string $uuid, string $idToken): string
     {
         $url = GlobusRestApiConfig::getGlobusApiEndPoint(CustomerConstants::GLOBUS_API_END_POINT_ACCOUNT_PAYBACK_INFO);
-        $url = str_replace("{uuid}", $uuid, $url);
+        $url = str_replace("uuid", $uuid, $url);
         $result = GlobusRestApiClient::get($url, [], $idToken);
 
         return $result->result;

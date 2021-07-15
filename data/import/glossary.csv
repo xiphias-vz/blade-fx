@@ -1582,7 +1582,7 @@ checkout.step.success.text,Your order has been placed successfully. You will get
 checkout.step.success.text,Ihre Bestellung ist erfolgreich in unserem Abholmarkt eingegangen.,de_DE
 checkout.step.success.text,"Vaše objednávka byla úspěšně přijata na našem výdejním místě.",cs_CZ
 checkout.step.success.link,"Go to ""My Account""",en_US
-checkout.step.success.link,"Zum meinem Konto",de_DE
+checkout.step.success.link,"Zu meinem Konto",de_DE
 checkout.step.success.link,"K mému účtu",cs_CZ
 checkout.step.error.title,Your order has not been placed.,en_US
 checkout.step.error.title,"Lieber Kunde, Ihre Bestellung konnte leider nicht platziert werden.",de_DE

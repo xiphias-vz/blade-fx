@@ -31,6 +31,8 @@ class OrderHistoryBoostingClient extends AbstractClient implements OrderHistoryB
 
         $customerTransfer->setPhone($quoteTransfer->getCustomer()->getPhone());
         $customerTransfer->setMobilePhoneNumber($quoteTransfer->getCustomer()->getMobilePhoneNumber());
+        $customerTransfer->setPaybackNumber($quoteTransfer->getCustomer()->getPaybackNumber());
+        $customerTransfer->setIsConnected($quoteTransfer->getCustomer()->getIsConnected());
         $previouslyBoughtSkus = $customerTransfer->getPreviouslyBoughtSkus();
         if ($previouslyBoughtSkus === null) {
             $previouslyBoughtSkus = [];

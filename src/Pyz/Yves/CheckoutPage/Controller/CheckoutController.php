@@ -170,15 +170,34 @@ class CheckoutController extends SprykerCheckoutControllerAlias
         $paybackNumber = $request->get(static::PAYBACK_NUMBER) == null ?
             "" : (string)$request->get(static::PAYBACK_NUMBER);
 
+        $isAccountConnectedWithPayback = $this->getFactory()
+            ->getQuoteClient()
+            ->getQuote()
+            ->getCustomer()
+            ->getIsConnected();
+
         if ($linkAccountWithPayback) {
-            $customerTransfer = $this->getFactory()
+            $this->getFactory()
                 ->getQuoteClient()
                 ->getQuote()
-                ->getCustomer();
-
-            $customerTransfer->setPaybackNumber($paybackNumber);
-            $customerTransfer->setIsConnected(true);
-            $this->getFactory()->getCustomerClient()->setCustomer($customerTransfer);
+                ->getCustomer()
+                ->setPaybackNumber($paybackNumber)
+                ->setIsConnected(true);
+        } else {
+            if (!$isAccountConnectedWithPayback) {
+                $paybackInfo = (array)$this->getPayBackInfoFromAccount();
+                if (isset($paybackInfo['payback'])) {
+                    $payback = $paybackInfo['payback'];
+                    $cardNumber = $payback->cards[0]->number;
+                    $cardNumberWithoutPrefix = substr($cardNumber, 6);
+                    $this->getFactory()
+                        ->getQuoteClient()
+                        ->getQuote()
+                        ->getCustomer()
+                        ->setPaybackNumber($cardNumberWithoutPrefix)
+                        ->setIsConnected(true);
+                }
+            }
         }
 
         if (!$quoteValidationResponseTransfer->getIsSuccessful()) {
@@ -186,8 +205,6 @@ class CheckoutController extends SprykerCheckoutControllerAlias
 
             return $this->redirectResponseInternal(static::ROUTE_CART);
         }
-        //Commented for later use
-        //$paybackInfo = $this->getPayBackInfoFromAccount();
 
         $viewData = $this->createStepProcess()->process(
             $request,
@@ -214,6 +231,10 @@ class CheckoutController extends SprykerCheckoutControllerAlias
     {
         $uuid = $this->getFactory()->getSessionClient()->get("cdcUID");
         $idToken = $this->getFactory()->getSessionClient()->get("id_token");
+
+        if ($uuid == null || $idToken == null) {
+            return "";
+        }
         $result = GlobusRestApiClientAccount::getPayBackInfoFromAccount($uuid, $idToken);
 
         return json_decode($result);

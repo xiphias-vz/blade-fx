@@ -39,7 +39,7 @@
         <div class="success-page__container container">
             <h1 class="title">{{ data.title }}</h1>
             <p class="success-page__text">{{ data.message }}</p>
-            <div class="success-information-holder" style="text-align: left;margin:0px auto;width:80%">
+            <div class="success-information-holder" style="text-align: left;margin:0px auto;width:80%;padding-bottom: 20px">
                 <strong>{{ 'success.message.title' | trans }}</strong>
                 <p>{{ 'success.message.text1' | trans }} <strong> {{ data.orderReference }}</strong> {{ 'success.message.text2' | trans }}<br>
                     {{ 'success.message.text3' | trans }}<strong>Abholschein</strong> erhalten Sie direkt am <strong>Abholtag per Mail</strong>, sobald wir Ihre Bestellung fertig gepackt haben.
@@ -83,7 +83,7 @@
                                 </span>
                                 <span class="payback-tip">{{ 'checkout.step.success.payback.tip.four' | trans }}</span>
                             </p>
-                            <a class="button payback-discovery">
+                            <a class="button payback-discovery" href="https://www.globus.de/kundenprogramme/payback/index.php" target="_blank">
                                 {{ 'checkout.step.success.payback.discover' | trans }}
                             </a>
                         </div>

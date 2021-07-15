@@ -64,6 +64,8 @@ class CashierOrderContentBuilder implements CashierOrderContentBuilderInterface
     protected const DEFAULT_SERVICE_FEE_FEE_QUANTITY = '00000000000000001000';
     protected const DEFAULT_EMPTY_NUMBER = '00000000000000000000';
 
+    protected const PAYBACK_PREFIX = '308342';
+
     protected const DEPOSIT_NAME = 'deposit_name';
     protected const TAX_RATE = 'tax_rate';
     protected const QUANTITY = 'quantity';
@@ -182,7 +184,7 @@ class CashierOrderContentBuilder implements CashierOrderContentBuilderInterface
     protected function getHeaderContent(OrderTransfer $orderTransfer): string
     {
         if ($orderTransfer->getIsConnected()) {
-            $renderCardInformation = $orderTransfer->getPaybackNumber() ?? static::DEFAULT_EMPTY_NUMBER;
+            $renderCardInformation = self::PAYBACK_PREFIX . $orderTransfer->getPaybackNumber() ?? static::DEFAULT_EMPTY_NUMBER;
         } else {
             $renderCardInformation = ($orderTransfer->getCustomer() === null) ? (static::DEFAULT_EMPTY_NUMBER) : ($orderTransfer->getCustomer()->getMyGlobusCard() ?? static::DEFAULT_EMPTY_NUMBER);
         }
@@ -661,10 +663,19 @@ class CashierOrderContentBuilder implements CashierOrderContentBuilderInterface
         $writer->startElement(static::XML_HEADER);
         try {
             if ($orderTransfer->getCustomer() === null) {
-                $myGlobusCard = static::DEFAULT_EMPTY_XML_TAG;
+                if ($orderTransfer->getIsConnected()) {
+                    $myGlobusCard = self::PAYBACK_PREFIX . $orderTransfer->getPaybackNumber() ?? static::DEFAULT_EMPTY_XML_TAG;
+                } else {
+                    $myGlobusCard = static::DEFAULT_EMPTY_XML_TAG;
+                }
                 $locale = substr(static::DEFAULT_EMPTY_XML_LOCALE, -2);
             } else {
-                $myGlobusCard = $orderTransfer->getCustomer()->getMyGlobusCard() ?? static::DEFAULT_EMPTY_XML_TAG;
+                if ($orderTransfer->getIsConnected()) {
+                    $myGlobusCard = self::PAYBACK_PREFIX . $orderTransfer->getPaybackNumber() ?? static::DEFAULT_EMPTY_XML_TAG;
+                } else {
+                    $myGlobusCard = $orderTransfer->getCustomer()->getMyGlobusCard() ?? static::DEFAULT_EMPTY_XML_TAG;
+                }
+
                 $locale = $orderTransfer->getCustomer()->getLocale() === null ? substr(static::DEFAULT_EMPTY_XML_LOCALE, -2) : substr(($orderTransfer->getCustomer()->getLocale()->getLocaleName() ?? static::DEFAULT_EMPTY_XML_LOCALE), -2);
             }
             $transactionNumber = $this->calculateTransactionNumber($orderTransfer->getOrderReference() ?? static::DEFAULT_EMPTY_XML_NUMBER);

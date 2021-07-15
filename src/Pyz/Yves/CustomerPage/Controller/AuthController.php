@@ -75,8 +75,8 @@ class AuthController extends SprykerAuthControllerAlias
         }
 
         $result = $customerUserProvider->globusLogin($email, $password);
-
         $response = json_decode($result);
+        $this->getFactory()->getSessionClient()->set("id_token", $response->id_token ?? '');
         if (property_exists($response, "code") == false) {
             $response->successfullyLoggedIn = true;
             $_SESSION["failedLogins"] = 0;

@@ -8,13 +8,15 @@ const prefix = '308342';
 const checkbox = <HTMLInputElement>document.querySelector('.checkbox__input');
 window.addEventListener('DOMContentLoaded', () => {
     if (payBackForm !== null) {
+        if(paymentNumberInputField.value !== "") {
+                linkPayBackInput.value = '1';
+        }
         payBackForm.addEventListener('submit',e => {
             const paymentNumberInputFieldValue = prefix.concat(paymentNumberInputField.value);
 
             if (valid_credit_card(paymentNumberInputFieldValue)) {
                 linkPayBackInput.value = '1';
                 checkbox.checked = true;
-                paymentNumberInputField.value = paymentNumberInputFieldValue;
             }else {
                 errorMessageHolder.style.visibility = 'visible';
                 errorMessageHolder.style.color = 'red';

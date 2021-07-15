@@ -143,7 +143,6 @@
                                                placeholder="{{ 'checkout.step.payback.name.description' | trans }}"
                                                value="{{ data.customer.paybackNumber }}"
                                         >
-                                        {% if not data.customer.isConnected %}
                                             <div class="tooltip-background">
                                                 <div class="position-tool-tip">
                                                     <div class="tooltip-information">
@@ -151,6 +150,9 @@
                                                         <div>
                                                             <p>{{ 'checkout.step.payback.tooltip.description' | trans }}</p>
                                                             <p style="color: gray;font-weight: normal">{{ 'checkout.step.payback.tooltip.paragraph' | trans }}</p>
+                                                        </div>
+                                                        <div class="info-payback">
+                                                            <img src={{ publicPath("/images/info-card.png")}}  width="200px" height="100px" />
                                                         </div>
                                                     </div>
                                                     {% include atom('icon') with {
@@ -162,12 +164,8 @@
                                                     } only %}
                                                 </div>
                                             </div>
-                                        {% endif %}
                                     </div>
-                                    {% if data.customer.isConnected %}
-                                    {% else %}
-                                        <button id="btn_submitPayBackNumber" type="submit">{{ 'checkout.step.payback.save' | trans }}</button>
-                                    {% endif %}
+                                    <button id="btn_submitPayBackNumber" type="submit">{{ 'checkout.step.payback.save' | trans }}</button>
                                 </div>
                                 <div class="error-message" style="visibility: hidden">{{ 'checkout.step.payback.error.message' | trans }}</div>
                                 <div class="checkbox-holder" style="margin-bottom: 10px">
@@ -178,7 +176,7 @@
                                     } only %}
                                     <span style="margin-bottom: 3px;color: #000;font-weight: normal">{{ 'checkout.step.payback.checkbox.mark' | trans }}</span>
                                 </div>
-                                <div class="additional-info" style="color: #000;font-weight: normal">{{ 'checkout.step.payback.label' | trans }}. {{ 'checkout.step.payback.label.two' | trans }}, {{ 'checkout.step.payback.label.three' | trans }}. <span style="color:#ea8901;">{{ 'checkout.step.payback.checkbox.marked' | trans }}</span></div>
+                                <div class="additional-info" style="color: #000;font-weight: normal">{{ 'checkout.step.payback.label' | trans }}. {{ 'checkout.step.payback.label.two' | trans }}, {{ 'checkout.step.payback.label.three' | trans }} <a target="_blank" href="https://www.globus.de/kundenprogramme/payback/index.php" style="text-decoration:none;color:#ea8901;">{{ 'checkout.step.payback.checkbox.marked' | trans }}</a></div>
                             </form>
                         </div>
                     </div>
