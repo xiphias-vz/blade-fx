@@ -1,0 +1,64 @@
+<?xml version="1.0"?>
+<database xmlns="spryker:schema-01"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          name="zed"
+          namespace="Orm\Zed\PerformancePickingReport\Persistence"
+          package="src.Orm.Zed.PerformancePickingReport.Persistence" xsi:schemaLocation="spryker:schema-01 https://static.spryker.com/schema-01.xsd">
+
+    <table name="pyz_performance_sales_order_report">
+        <column name="id_performance_sales_order_report" required="true" type="INTEGER" primaryKey="true" autoIncrement="true"/>
+        <column name="fk_global_pick_report" type="INTEGER" required="true"/>
+        <column name="id_sales_order" type="INTEGER" />
+        <column name="order_date" type="DATE" />
+        <column name="pickup_date" type="DATE" />
+        <column name="id_picker" type="INTEGER" />
+        <column name="containers_used" type="INTEGER" />
+        <column name="positions_used" type="INTEGER" />
+        <column name="pieces" type="INTEGER" />
+        <column name="picking_start" type="DATE" />
+        <column name="picking_end" type="DATE" />
+        <column name="pickup_start" type="DATE" />
+        <column name="pickup_end" type="DATE" />
+        <column name="duration_pick_time" type="INTEGER" />
+
+        <unique name="pyz_performance_sales_order_report-unique">
+            <unique-column name="id_sales_order" />
+            <unique-column name="fk_global_pick_report" />
+        </unique>
+
+        <foreign-key name="sales_order_report-fk_global_pick_report" foreignTable="pyz_performance_global_sales_order_report" phpName="PerformanceSalesOrderReport">
+            <reference local="fk_global_pick_report" foreign="id_global_pick_report"/>
+        </foreign-key>
+
+        <id-method-parameter value="pyz_performance_sales_order_report_pk_seq"/>
+    </table>
+
+    <table name="pyz_performance_sales_order_item_report">
+        <column name="id_performance_sales_order_item_report" required="true" type="INTEGER" primaryKey="true" autoIncrement="true"/>
+        <column name="fk_performance_sales_order_report" type="INTEGER" required="true"/>
+        <column name="id_sales_order_item" type="INTEGER" />
+        <column name="pickup_start_position" type="DATE" />
+        <column name="pickup_end_position" type="DATE" />
+        <column name="duration_pick_time" type="INTEGER" />
+
+        <unique name="pyz_performance_sales_order_item_report-unique">
+            <unique-column name="fk_performance_sales_order_report" />
+        </unique>
+
+        <foreign-key name="sales_order_item_report-fk_performance_sales_order_report" foreignTable="pyz_performance_sales_order_report" phpName="PerformanceSalesOrderItemReport">
+            <reference local="fk_performance_sales_order_report" foreign="id_performance_sales_order_report"/>A
+        </foreign-key>
+
+        <id-method-parameter value="pyz_performance_sales_order_item_report_pk_seq"/>
+    </table>
+
+    <table name="pyz_performance_global_sales_order_report">
+        <column name="id_global_pick_report" required="true" type="INTEGER" primaryKey="true" autoIncrement="true"/>
+        <column name="pick_zone" type="VARCHAR" />
+        <column name="is_multi_pick" type="BOOLEAN" />
+        <column name="number_related_orders" type="INTEGER" />
+        <column name="pick_time_begin" type="DATE" />
+        <column name="pick_time_end" type="DATE" />
+    </table>
+
+</database>
