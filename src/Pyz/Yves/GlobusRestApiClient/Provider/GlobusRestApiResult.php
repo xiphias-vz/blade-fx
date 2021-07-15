@@ -15,7 +15,7 @@ class GlobusRestApiResult
     public $result;
 
     /**
-     * @var string;
+     * @var string
      */
     public $error;
 
