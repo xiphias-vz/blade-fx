@@ -134,10 +134,17 @@ window.addEventListener('DOMContentLoaded', () => {
         let hasItemStatusPickedOrCancelled = false;
         let hasItemStatusReadyForPicking = false;
         let hasForbiddenStatus = false;
-
+        let currentPickZone = '';
         for(let i = 0; i < pickingZoneHeaders.length; i++) {
             if(window.getComputedStyle(pickingZoneHeaders[i]).display === 'table-cell') {
                 visibleHeader = pickingZoneHeaders[i];
+                if(currentPickZone === '') {
+                    currentPickZone = pickingZoneHeaders[i].getAttribute('data-pickZone');
+                }
+                if(currentPickZone !== pickingZoneHeaders[i].getAttribute('data-pickZone')) {
+                    hasItemStatusReadyForPicking = false;
+                    hasItemStatusPickedOrCancelled = false;
+                }
                 let itemState = pickingZoneHeaders[i].getAttribute('data-orderItemState');
                 if (itemState === 'picked' || itemState === 'cancelled') {
                       hasItemStatusPickedOrCancelled = true;
@@ -159,6 +166,13 @@ window.addEventListener('DOMContentLoaded', () => {
             else if(window.getComputedStyle(pickingZoneHeaders[i]).display === 'none'){
                 let itemState = pickingZoneHeaders[i].getAttribute('data-orderItemState');
                 if(visibleHeader.getAttribute('data-pickZone') === pickingZoneHeaders[i].getAttribute('data-pickZone')) {
+                    if(currentPickZone === '') {
+                        currentPickZone = pickingZoneHeaders[i].getAttribute('data-pickZone');
+                    }
+                    if(currentPickZone !== pickingZoneHeaders[i].getAttribute('data-pickZone')) {
+                        hasItemStatusReadyForPicking = false;
+                        hasItemStatusPickedOrCancelled = false;
+                    }
                     if (itemState === 'picked' || itemState === 'cancelled') {
                         hasItemStatusPickedOrCancelled = true;
                     } else if(itemState === 'ready for picking' || itemState === 'ready for picking (paused)') {
