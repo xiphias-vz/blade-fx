@@ -13,6 +13,7 @@ use SprykerShop\Yves\CustomerPage\CustomerPageConfig as SprykerCustomerPageConfi
 
 class CustomerPageConfig extends SprykerCustomerPageConfig
 {
+    public const CDC_LANGUAGE = '&lang=de';
     /**
      * @return string
      */
@@ -29,7 +30,7 @@ class CustomerPageConfig extends SprykerCustomerPageConfig
         $url = $this->getCdcUrlPrefix();
         $apiKey = $this->getCdcApiKey();
 
-        return $url . '?apikey=' . $apiKey;
+        return $url . '?apikey=' . $apiKey . self::CDC_LANGUAGE;
     }
 
     /**

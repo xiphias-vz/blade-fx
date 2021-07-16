@@ -63,7 +63,6 @@ export default class PopupUiLoginForm extends Component {
                     }
                 }
 
-                this.changeTextInSubmitButton();
             });
         }
 
@@ -82,7 +81,6 @@ export default class PopupUiLoginForm extends Component {
                             }
                         }
 
-                        this.changeTextInSubmitButton();
                     }
                 }
             });
@@ -120,7 +118,7 @@ export default class PopupUiLoginForm extends Component {
 
         // appending Password forget link
         const passwordForgetLink = document.createElement('a');
-        passwordForgetLink.setAttribute('id', 'password-forget-link-my');
+        passwordForgetLink.setAttribute('id', 'password-forget-link');
         passwordForgetLink.setAttribute('href', '#');
         passwordForgetLink.textContent = 'Passwort vergessen?';
         passwordForgetLink.style.float = 'left';
@@ -148,7 +146,7 @@ export default class PopupUiLoginForm extends Component {
 
         // registriren link
         const registerLink = document.createElement('a');
-        registerLink.setAttribute('id', 'register-now-link-in-modal');
+        registerLink.setAttribute('id', 'register-now-link');
         registerLink.setAttribute('href', '/register');
         registerLink.text = 'Jetzt registrieren';
         $(registerLink).css('cursor', 'pointer');
@@ -165,8 +163,6 @@ export default class PopupUiLoginForm extends Component {
         $(this.gigyaLayoutRow.item(159)).prepend(divForLink);
 
         // changing tekst in button ??
-        this.submitButton.item(11).value = 'Weiter';
-        this.submitButton.item(11).setAttribute('gigya-default-value', 'Weiter');
         $(this.submitButton.item(11)).parent().attr('style', 'padding-bottom: 5px !important');
 
     }
