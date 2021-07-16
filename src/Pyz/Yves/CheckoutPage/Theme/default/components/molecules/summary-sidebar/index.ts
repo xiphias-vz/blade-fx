@@ -17,13 +17,14 @@ window.addEventListener('DOMContentLoaded', () => {
             if (valid_credit_card(paymentNumberInputFieldValue)) {
                 linkPayBackInput.value = '1';
                 checkbox.checked = true;
+                additionalInfo.style.display = 'block';
             }else {
                 errorMessageHolder.style.visibility = 'visible';
                 errorMessageHolder.style.color = 'red';
 
                 setTimeout(() => {
                     errorMessageHolder.style.visibility = 'hidden';
-                }, 1000);
+                }, 1300);
 
                 e.preventDefault();
 

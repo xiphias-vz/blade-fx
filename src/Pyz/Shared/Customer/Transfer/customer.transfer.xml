@@ -31,6 +31,7 @@
         <property name="myGlobusCard" type="string"/>
         <property name="paybackNumber" type="string"/>
         <property name="isConnected" type="bool" />
+        <property name="isAccountConnected" type="bool" />
     </transfer>
 
     <transfer name="CustomerAddressResponse">

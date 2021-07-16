@@ -164,13 +164,12 @@ class CheckoutController extends SprykerCheckoutControllerAlias
     public function summaryAction(Request $request)
     {
         $quoteValidationResponseTransfer = $this->canProceedCheckout();
-
         $linkAccountWithPayback = $request->get(static::LINK_ACCOUNT_WITH_PAYBACK) == null ?
             0 : (int)$request->get(static::LINK_ACCOUNT_WITH_PAYBACK);
         $paybackNumber = $request->get(static::PAYBACK_NUMBER) == null ?
             "" : (string)$request->get(static::PAYBACK_NUMBER);
 
-        $isAccountConnectedWithPayback = $this->getFactory()
+        $isOrderConnectedWithPayback = $this->getFactory()
             ->getQuoteClient()
             ->getQuote()
             ->getCustomer()
@@ -184,7 +183,7 @@ class CheckoutController extends SprykerCheckoutControllerAlias
                 ->setPaybackNumber($paybackNumber)
                 ->setIsConnected(true);
         } else {
-            if (!$isAccountConnectedWithPayback) {
+            if (!$isOrderConnectedWithPayback) {
                 $paybackInfo = (array)$this->getPayBackInfoFromAccount();
                 if (isset($paybackInfo['payback'])) {
                     $payback = $paybackInfo['payback'];
@@ -195,7 +194,8 @@ class CheckoutController extends SprykerCheckoutControllerAlias
                         ->getQuote()
                         ->getCustomer()
                         ->setPaybackNumber($cardNumberWithoutPrefix)
-                        ->setIsConnected(true);
+                        ->setIsConnected(true)
+                        ->setIsAccountConnected(true);
                 }
             }
         }

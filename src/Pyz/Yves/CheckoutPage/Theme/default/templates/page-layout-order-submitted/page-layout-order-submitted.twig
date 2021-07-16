@@ -10,7 +10,7 @@
     items: '',
     totals: '',
     payments: '',
-    isOrderConnectedWithPayback: '',
+    isAccountConnectedWithPayback: '',
     currencyIsoCode: app.currentCurrencyISOCode,
 } %}
 
@@ -51,7 +51,7 @@
                     <a style="background: orange;float: left;margin-top: 15px" class="button" href="{{ url('customer/overview') }}">{{ 'checkout.step.success.link' | trans }}</a>
                 {% endif %}
             </div>
-            {% if not data.isOrderConnectedWithPayback %}
+            {% if not data.isAccountConnectedWithPayback %}
                 <div class="not-linked-payback">
                     <div class="info-banner">
                         <div class="info-left-banner" >

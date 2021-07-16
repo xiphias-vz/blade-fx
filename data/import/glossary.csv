@@ -1477,12 +1477,12 @@ checkout.step.payback.title,Mit Ihrer PAYBACK Karte Punkte sammeln,de_DE
 checkout.step.payback.tooltip.title,So finden Sie Ihre Kundennummer,de_DE
 checkout.step.payback.tooltip.description,Kundennummer eingeben,de_DE
 checkout.step.payback.tooltip.paragraph,Bitte registrieren Sie ihre PAYBACK Karte. Auf der Rückseite Ihrer Karte finden SIe die 10-stellige Kundennummer,de_DE
-checkout.step.payback.name.description,Payback kundennummer,en_US
-checkout.step.payback.name.description,Payback kundennummer,de_DE
+checkout.step.payback.name.description,PAYBACK number,en_US
+checkout.step.payback.name.description,PAYBACK Kundennummer,de_DE
 checkout.step.payback.save,Speichern,en_US
 checkout.step.payback.save,Speichern,de_DE
 checkout.step.payback.error.message,Wrong payback number,en_US
-checkout.step.payback.error.message,Falsche payback nummer,de_DE
+checkout.step.payback.error.message,Falsche PAYBACK Nummer. Bitte prüfen Sie Ihre Eingabe.,de_DE
 checkout.step.payback.checkbox.mark,Für diese Bestellung PAYBACK Punkte sammeln,en_US
 checkout.step.payback.checkbox.mark,Für diese Bestellung PAYBACK Punkte sammeln,de_DE
 checkout.step.payback.checkbox.marked,Mein Globus mit PAYBACK,de_DE
