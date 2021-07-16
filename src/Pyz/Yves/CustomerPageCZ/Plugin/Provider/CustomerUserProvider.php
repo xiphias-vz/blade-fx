@@ -173,4 +173,22 @@ class CustomerUserProvider extends SprykerCustomerUserProvider implements Custom
     {
         return "";
     }
+
+    /**
+     * @return string
+     */
+    public function globusLoginWithCookie(): string
+    {
+        return "";
+    }
+
+    /**
+     * @param string $data
+     *
+     * @return \Generated\Shared\Transfer\CustomerTransfer
+     */
+    public function loadCustomerByProfileData(string $data): CustomerTransfer
+    {
+        return new CustomerTransfer();
+    }
 }

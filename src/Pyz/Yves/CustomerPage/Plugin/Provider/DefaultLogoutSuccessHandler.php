@@ -8,6 +8,8 @@
 namespace Pyz\Yves\CustomerPage\Plugin\Provider;
 
 use Pyz\Shared\DataDog\DataDogConfig;
+use Pyz\Yves\GlobusRestApiClient\Provider\GlobusRestApiClientAccount;
+use Pyz\Yves\GlobusRestApiClient\Provider\GlobusRestApiClientCookie;
 use Spryker\Yves\Kernel\AbstractPlugin;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Http\HttpUtils;
@@ -48,6 +50,8 @@ class DefaultLogoutSuccessHandler extends AbstractPlugin implements LogoutSucces
         $this->getFactory()->getDataDogService()->decrement([
             DataDogConfig::DATA_DOG_USER_AUTH_STAT,
         ], [DataDogConfig::DATA_DOG_REGION_SCOPE => APPLICATION_STORE]);
+        GlobusRestApiClientAccount::logoutWithCookie();
+        GlobusRestApiClientCookie::clearCookies();
 
         return $this->httpUtils->createRedirectResponse($request, $this->targetUrl);
     }

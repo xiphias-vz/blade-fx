@@ -35,6 +35,7 @@ interface CustomerConstants
     public const GLOBUS_API_END_POINT_NEXT_CARD_NUMBER = 'globusApiEndPointNextCardNumber';
     public const GLOBUS_API_END_POINT_ACCOUNT_AVAILABLE = 'globusApiEndPointAccountAvailable';
     public const GLOBUS_API_END_POINT_ACCOUNT_LOGIN = 'globusApiEndPointAccountLogin';
+    public const GLOBUS_API_END_POINT_ACCOUNT_LOGOUT = 'globusApiEndPointAccountLogout';
     public const GLOBUS_API_END_POINT_ACCOUNT_PASSWORD_RESET = 'globusApiEndPointAccountPasswordReset';
     public const GLOBUS_API_END_POINT_ACCOUNT_REGISTRATION_FULL = 'globusApiEndPointAccountRegistrationFull';
     public const GLOBUS_API_END_POINT_ACCOUNT_PAYBACK_INFO = 'globusApiEndPointAccountPaybackInfo';

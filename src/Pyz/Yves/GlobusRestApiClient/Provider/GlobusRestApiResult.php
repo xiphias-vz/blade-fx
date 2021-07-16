@@ -22,7 +22,7 @@ class GlobusRestApiResult
     /**
      * @var bool
      */
-    public $isSuccess;
+    public $isSuccess = false;
 
     /**
      * @return mixed

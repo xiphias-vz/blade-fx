@@ -17,9 +17,11 @@ use Pyz\Service\DataDog\DataDogServiceInterface;
 use Pyz\Service\User\UserServiceInterface;
 use Pyz\Shared\Pdf\PdfConfig;
 use Pyz\Yves\CustomerPage\Authenticator\CustomerAuthenticator;
+use Pyz\Yves\CustomerPage\Controller\ProfileController;
 use Pyz\Yves\CustomerPage\Form\Constraints\PasswordConstraint;
 use Pyz\Yves\CustomerPage\Form\DataProvider\CheckoutAddressFormDataProvider;
 use Pyz\Yves\CustomerPage\Form\FormFactory;
+use Pyz\Yves\CustomerPage\Plugin\Application\CustomerTransferCustom;
 use Pyz\Yves\CustomerPage\Plugin\Provider\CustomerAuthenticationFailureHandler;
 use Pyz\Yves\CustomerPage\Plugin\Provider\CustomerAuthenticationSuccessHandler;
 use Pyz\Yves\CustomerPage\Plugin\Provider\CustomerUserProvider;
@@ -217,5 +219,21 @@ class CustomerPageFactory extends SprykerShopCustomerPageFactory
             $this->getShipmentService(),
             $this->createAddressChoicesResolver()
         );
+    }
+
+    /**
+     * @return \Pyz\Yves\CustomerPage\Plugin\Application\CustomerTransferCustom
+     */
+    public function createCustomerTransferCustom(): CustomerTransferCustom
+    {
+        return new CustomerTransferCustom();
+    }
+
+    /**
+     * @return \Pyz\Yves\CustomerPage\Controller\ProfileController
+     */
+    public function createProfileController(): ProfileController
+    {
+        return new ProfileController();
     }
 }

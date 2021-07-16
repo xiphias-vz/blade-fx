@@ -14,6 +14,7 @@ use SprykerShop\Yves\CustomerPage\CustomerPageConfig as SprykerCustomerPageConfi
 class CustomerPageConfig extends SprykerCustomerPageConfig
 {
     public const CDC_LANGUAGE = '&lang=de';
+
     /**
      * @return string
      */

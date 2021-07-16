@@ -13,7 +13,6 @@ use Exception;
 use Generated\Shared\Transfer\CustomerTransfer;
 use Pyz\Shared\Customer\CustomerConstants;
 use Pyz\Yves\CustomerPage\Controller\ProfileController;
-use Pyz\Yves\CustomerPage\Plugin\Application\CustomerTransferCustom;
 use Pyz\Yves\GlobusRestApiClient\Provider\GlobusRestApiClientAccount;
 use Spryker\Shared\Config\Config;
 use SprykerShop\Yves\CustomerPage\Plugin\Provider\CustomerUserProvider as SprykerCustomerUserProvider;
@@ -25,6 +24,7 @@ use Symfony\Component\Security\Core\Exception\AuthenticationException;
 class CustomerUserProvider extends SprykerCustomerUserProvider implements CustomerUserProviderInterface
 {
     public const ERROR_NOT_VERIFIED_CUSTOMER = 'ERROR_NOT_VERIFIED_CUSTOMER';
+    public const INITIAL_PASSWORD = '$#$%J%R%$)O%t43t';
 
     /**
      * @param string $email
@@ -35,45 +35,33 @@ class CustomerUserProvider extends SprykerCustomerUserProvider implements Custom
      */
     protected function loadCustomerByEmail($email)
     {
+        $customerTransfer = null;
         $pass = $_POST["loginForm"]["password"];
         $authCheck = $this->getCdcAuthorization($email, $pass);
+        if (isset($authCheck["statusCode"])) {
+            if ($authCheck["statusCode"] === 403) {
+                $result = $this->globusLoginWithCookie();
+                if (!empty($result)) {
+                    $customerTransfer = $this->loadCustomerByProfileData($result);
+                    $profile = $this->getFactory()->createProfileController();
+                    $profile->processProfileUpdateByTransfer($customerTransfer, false);
+
+                    return $customerTransfer;
+                }
+            }
+        }
         $accountInfo = $this->getCdcAccountInfo($authCheck["UID"]);
         $this->getFactory()->getSessionClient()->set("cdcUID", $authCheck["UID"]);
 
-        $customerTransfer = null;
-
         if ($authCheck["errorCode"] == 0) {
             $data = $_POST["loginForm"]["data"];
-            $customerTransferCustom = new CustomerTransferCustom();
             try {
                 $customerTransfer = parent::loadCustomerByEmail($email);
-                $customerTransfer = $customerTransferCustom->fromProfileEvent($accountInfo, $customerTransfer);
-                if (empty($customerTransfer->getCity())) {
-                    $customerTransfer = $this->populateCustomerAddress($customerTransfer);
-                }
-                $user = $this->getFactory()->createSecurityUser($customerTransfer);
-                $encoder = $this->getContainer()->get('security.encoder_factory');
-                $encodedPass = $encoder->getEncoder($user)->encodePassword($pass, $user->getSalt());
-                if ($customerTransfer->getPassword() != $encodedPass) {
-                    $customerTransfer->setPassword($encodedPass);
-                }
-
-                $this->getFactory()->getCustomerClient()->updateCustomer($customerTransfer);
-                $profile = new ProfileController();
+                $customerTransfer = $this->updateCustomerData($data, $pass, $customerTransfer);
+                $profile = $this->getFactory()->createProfileController();
                 $profile->processProfileUpdateByTransfer($customerTransfer, false);
             } catch (AuthenticationException $e) {
-                $customerTransfer = $customerTransferCustom->fromProfileEvent($accountInfo);
-                $customerTransfer->setUsername($email);
-                $customerTransfer->setPassword($pass);
-                $customerTransfer->setCustomerReference($this->getFactory()->getStore()->getStoreName());
-                $this->registerCustomer($customerTransfer);
-
-                $customerTransfer = parent::loadCustomerByEmail($email);
-                $customerTransfer->setRegistered(date('yy-m-d'));
-                $customerTransfer->setRegistrationKey(null);
-                $customerTransfer->setThirdPartyRegistration(true);
-                $customerTransfer = $this->populateCustomerAddress($customerTransfer);
-                $this->getFactory()->getCustomerClient()->updateCustomer($customerTransfer);
+                $customerTransfer = $this->createNewCustomer($accountInfo, $email, $pass);
             }
 
             try {
@@ -88,6 +76,74 @@ class CustomerUserProvider extends SprykerCustomerUserProvider implements Custom
         } else {
             throw new AuthenticationException(self::ERROR_NOT_VERIFIED_CUSTOMER);
         }
+
+        return $customerTransfer;
+    }
+
+    /**
+     * @param string $data
+     *
+     * @return \Generated\Shared\Transfer\CustomerTransfer
+     */
+    public function loadCustomerByProfileData(string $data): CustomerTransfer
+    {
+        $user = json_decode($data, true);
+        try {
+            $customerTransfer = parent::loadCustomerByEmail($user["email"]);
+            $customerTransfer = $this->updateCustomerData($user, static::INITIAL_PASSWORD, $customerTransfer);
+        } catch (Exception $ex) {
+            $customerTransfer = $this->createNewCustomer($user, $user["email"], static::INITIAL_PASSWORD);
+        }
+
+        return $customerTransfer;
+    }
+
+    /**
+     * @param mixed $data
+     * @param string $password
+     * @param \Generated\Shared\Transfer\CustomerTransfer $customerTransfer
+     *
+     * @return \Generated\Shared\Transfer\CustomerTransfer
+     */
+    private function updateCustomerData($data, string $password, CustomerTransfer $customerTransfer): CustomerTransfer
+    {
+        $customerTransfer = $this->getFactory()->createCustomerTransferCustom()->fromProfileEvent($data, $customerTransfer);
+        if (empty($customerTransfer->getCity())) {
+            $customerTransfer = $this->populateCustomerAddress($customerTransfer);
+        }
+        $user = $this->getFactory()->createSecurityUser($customerTransfer);
+
+        $encoder = $this->getContainer()->get('security.encoder_factory');
+        $encodedPass = $encoder->getEncoder($user)->encodePassword($password, $user->getSalt());
+        if ($customerTransfer->getPassword() != $encodedPass) {
+            $customerTransfer->setPassword($encodedPass);
+        }
+        $this->getFactory()->getCustomerClient()->updateCustomer($customerTransfer);
+
+        return $customerTransfer;
+    }
+
+    /**
+     * @param mixed $data
+     * @param string $email
+     * @param string $password
+     *
+     * @return \Generated\Shared\Transfer\CustomerTransfer
+     */
+    private function createNewCustomer($data, string $email, string $password): CustomerTransfer
+    {
+        $customerTransfer = $this->getFactory()->createCustomerTransferCustom()->fromProfileEvent($data);
+        $customerTransfer->setUsername($email);
+        $customerTransfer->setPassword($password);
+        $customerTransfer->setCustomerReference($this->getFactory()->getStore()->getStoreName());
+        $this->registerCustomer($customerTransfer);
+
+        $customerTransfer = parent::loadCustomerByEmail($email);
+        $customerTransfer->setRegistered(date('yy-m-d'));
+        $customerTransfer->setRegistrationKey(null);
+        $customerTransfer->setThirdPartyRegistration(true);
+        $customerTransfer = $this->populateCustomerAddress($customerTransfer);
+        $this->getFactory()->getCustomerClient()->updateCustomer($customerTransfer);
 
         return $customerTransfer;
     }
@@ -123,7 +179,7 @@ class CustomerUserProvider extends SprykerCustomerUserProvider implements Custom
      *
      * @return array
      */
-    protected function getCdcAuthorization($username, $pass): array
+    protected function getCdcAuthorization(string $username, string $pass): array
     {
         $apiKey = $this->getCdcApiKey();
         $apiSecretKey = $this->getCdcSecretKey();
@@ -391,5 +447,13 @@ class CustomerUserProvider extends SprykerCustomerUserProvider implements Custom
     public function globusLogin(string $emailOrCardNumber, string $password): string
     {
         return GlobusRestApiClientAccount::login($emailOrCardNumber, $password);
+    }
+
+    /**
+     * @return string
+     */
+    public function globusLoginWithCookie(): string
+    {
+        return GlobusRestApiClientAccount::loginWithCookie();
     }
 }

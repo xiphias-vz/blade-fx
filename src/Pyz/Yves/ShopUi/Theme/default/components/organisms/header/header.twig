@@ -279,5 +279,25 @@
                 'target-class-name': config.jsName ~ '__navigation-target',
             },
         } only %}
+        {% if data.currentCodeBucket=='DE' %}
+            <script language="JavaScript">
+                if (!document.cookie.includes("globusUidChecked")) {
+                    document.cookie = "globusUidChecked=1; path=/";
+                    let url = "{{ path('globus-cookie-login') }}";
+                    fetch(url, {method: 'GET'})
+                        .then(response => response.json())
+                        .then(parsedResponse => {
+                            let uid = JSON.parse(parsedResponse).UID;
+                            if (uid == "0") {
+                                return;
+                            } else {
+                                document.location.reload();
+                            }
+                        }).catch(error => {
+                        console.error(error);
+                    });
+                }
+            </script>
+        {% endif %}
     {% endblock %}
 {% endblock %}

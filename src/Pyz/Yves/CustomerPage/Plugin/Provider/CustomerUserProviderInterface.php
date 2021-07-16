@@ -7,6 +7,7 @@
 
 namespace Pyz\Yves\CustomerPage\Plugin\Provider;
 
+use Generated\Shared\Transfer\CustomerTransfer;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
 
 interface CustomerUserProviderInterface extends UserProviderInterface
@@ -50,4 +51,16 @@ interface CustomerUserProviderInterface extends UserProviderInterface
      * @return string
      */
     public function globusLogin(string $emailOrCardNumber, string $password): string;
+
+    /**
+     * @return string
+     */
+    public function globusLoginWithCookie(): string;
+
+    /**
+     * @param string $data
+     *
+     * @return \Generated\Shared\Transfer\CustomerTransfer
+     */
+    public function loadCustomerByProfileData(string $data): CustomerTransfer;
 }

@@ -8,6 +8,8 @@
 namespace Pyz\Yves\CustomerPage\Controller;
 
 use Pyz\Yves\CustomerPage\Form\LoginForm;
+use Pyz\Yves\GlobusRestApiClient\Provider\GlobusRestApiClientAccount;
+use Pyz\Yves\GlobusRestApiClient\Provider\GlobusRestApiClientCookie;
 use SprykerShop\Yves\CustomerPage\Controller\AuthController as SprykerAuthControllerAlias;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -76,11 +78,15 @@ class AuthController extends SprykerAuthControllerAlias
 
         $result = $customerUserProvider->globusLogin($email, $password);
         $response = json_decode($result);
+
         $this->getFactory()->getSessionClient()->set("id_token", $response->id_token ?? '');
         if (property_exists($response, "code") == false) {
             $response->successfullyLoggedIn = true;
             $_SESSION["failedLogins"] = 0;
             $response->showCaptcha = false;
+            $cook = new GlobusRestApiClientCookie();
+            $cookie = $cook->createLoginCookie($result, $this->getFactory()->getSessionClient());
+            $cookieConfirm = $cook->createLoginConfirmedCookie();
         } else {
             $response->successfullyLoggedIn = false;
             $_SESSION["failedLogins"] += 1;
@@ -91,6 +97,63 @@ class AuthController extends SprykerAuthControllerAlias
             }
         }
 
-        return new JsonResponse(json_encode($response));
+        $resp = new JsonResponse(json_encode($response));
+        if (isset($cookie) && isset($cookieConfirm)) {
+            $resp->headers->setCookie($cookie);
+            $resp->headers->setCookie($cookieConfirm);
+        }
+
+        return $resp;
+    }
+
+    /**
+     * https://www.shop.globus.local/login/globus-cookie-login
+     *
+     * @param \Symfony\Component\HttpFoundation\Request $request
+     *
+     * @return \Symfony\Component\HttpFoundation\JsonResponse
+     */
+    public function globusLoginWithCookieAction(Request $request)
+    {
+        $result = ["UID" => "0"];
+        if (!GlobusRestApiClientCookie::isLoginConfirmed()) {
+            if (GlobusRestApiClientCookie::isTokenCookieSet()) {
+                $customerUserProvider = $this->getFactory()->createCustomerUserProvider();
+                $result = $customerUserProvider->globusLoginWithCookie();
+                $user = json_decode($result);
+                if (isset($user->email)) {
+                    $customerTransfer = $customerUserProvider->loadCustomerByProfileData($result);
+                    $cook = new GlobusRestApiClientCookie();
+                    $cookie = $cook->createLoginCookie($result, $this->getFactory()->getSessionClient());
+                    $cookieConfirm = $cook->createLoginConfirmedCookie();
+                } else {
+                    $this->logout();
+                }
+            }
+        }
+        $resp = new JsonResponse(json_encode($result));
+        if (isset($cookie) && isset($cookieConfirm) && isset($customerTransfer)) {
+            $resp->headers->setCookie($cookie);
+            $resp->headers->setCookie($cookieConfirm);
+            $customerAuthenticator = $this->getFactory()->createCustomerAuthenticator();
+            $token = $this->getFactory()->createUsernamePasswordToken($customerTransfer);
+            $customerAuthenticator->authenticateCustomer($customerTransfer, $token);
+        }
+
+        return $resp;
+    }
+
+    /**
+     * @return bool
+     */
+    private function logout()
+    {
+        if ($this->isLoggedInCustomer()) {
+            $this->getFactory()->getCustomerClient()->logout();
+        }
+        GlobusRestApiClientAccount::logoutWithCookie();
+        GlobusRestApiClientCookie::clearCookies();
+
+        return true;
     }
 }
