@@ -131,30 +131,51 @@ window.addEventListener('DOMContentLoaded', () => {
     }
 
     function showResetFunctionality() {
-        let showResetFunction = true;
+        let hasItemStatusPickedOrCancelled = false;
+        let hasItemStatusReadyForPicking = false;
+        let hasForbiddenStatus = false;
+
         for(let i = 0; i < pickingZoneHeaders.length; i++) {
             if(window.getComputedStyle(pickingZoneHeaders[i]).display === 'table-cell') {
                 visibleHeader = pickingZoneHeaders[i];
-                visibleHeader.querySelector('.reset-picking-zone').style.display = 'none';
                 let itemState = pickingZoneHeaders[i].getAttribute('data-orderItemState');
-                if (itemState !== 'picked' && itemState !== 'cancelled') {
-                    showResetFunction = false;
+                if (itemState === 'picked' || itemState === 'cancelled') {
+                      hasItemStatusPickedOrCancelled = true;
+                } else if(itemState === 'ready for picking' || itemState === 'ready for picking (paused)') {
+                    hasItemStatusReadyForPicking = true;
+                } else {
+                    hasForbiddenStatus = true;
                 }
-                if(showResetFunction) {
+
+                if(hasItemStatusPickedOrCancelled && hasItemStatusReadyForPicking && !hasForbiddenStatus) {
                     visibleHeader.querySelector('.reset-picking-zone').style.display = 'flex';
+                } else if (hasItemStatusPickedOrCancelled && !hasItemStatusReadyForPicking && !hasForbiddenStatus) {
+                    visibleHeader.querySelector('.reset-picking-zone').style.display = 'flex';
+                } else {
+                    visibleHeader.querySelector('.reset-picking-zone').style.display = 'none';
                 }
+
             }
             else if(window.getComputedStyle(pickingZoneHeaders[i]).display === 'none'){
                 let itemState = pickingZoneHeaders[i].getAttribute('data-orderItemState');
-                visibleHeader.querySelector('.reset-picking-zone').style.display = 'none';
-                if (itemState !== 'picked' && itemState !== 'cancelled') {
-                    showResetFunction = false;
-                }
                 if(visibleHeader.getAttribute('data-pickZone') === pickingZoneHeaders[i].getAttribute('data-pickZone')) {
-                    if(showResetFunction) {
+                    if (itemState === 'picked' || itemState === 'cancelled') {
+                        hasItemStatusPickedOrCancelled = true;
+                    } else if(itemState === 'ready for picking' || itemState === 'ready for picking (paused)') {
+                        hasItemStatusReadyForPicking = true;
+                    } else {
+                        hasForbiddenStatus = true;
+                    }
+
+                    if(hasItemStatusPickedOrCancelled && hasItemStatusReadyForPicking && !hasForbiddenStatus) {
                         visibleHeader.querySelector('.reset-picking-zone').style.display = 'flex';
+                    } else if (hasItemStatusPickedOrCancelled && !hasItemStatusReadyForPicking && !hasForbiddenStatus) {
+                        visibleHeader.querySelector('.reset-picking-zone').style.display = 'flex';
+                    } else {
+                        visibleHeader.querySelector('.reset-picking-zone').style.display = 'none';
                     }
                 }
+
             }
         }
     }

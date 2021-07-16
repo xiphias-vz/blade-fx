@@ -13,7 +13,6 @@ $(document).ready(function () {
     groupOrderItemsByName(orderItems);
 
     function groupOrderItemsByName(orderItems) {
-
         for(let i = 0; i < orderItems.length; i++) {
             let currentOrderItem = orderItems[i];
             if(!currentOrderItem.classList.contains('header-row') && !currentOrderItem.classList.contains('nested-element')) {
