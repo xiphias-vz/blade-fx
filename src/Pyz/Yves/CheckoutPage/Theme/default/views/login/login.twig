@@ -762,7 +762,7 @@
                 type: 'POST',  // http method
                 data: { id: emailOrCardNumber, password: password, captchaToken: captchaGeneratedToken  },  // data to submit
                 success: function (data, status, xhr) {
-                    let response = JSON.parse(data);
+                    var response = JSON.parse(data);
                     console.log(response);
 
                     if(response["successfullyLoggedIn"] === true){
@@ -776,15 +776,13 @@
                     else{
                         $("#customLoginForm_customer_password").css("border", "1px solid red");
                         $("#forgotPasswordDiv").css("display", "block");
-
-                       /* if(response["showCaptcha"] === true){
+                        if(response["showCaptcha"] === true){
                             grecaptcha.ready(function() {
-                                grecaptcha.execute('{#{{ data.reCaptchaKey }}#}', {action: 'login'}).then(function(token) {
-                                    // Add your logic to submit to your backend server here.
+                                grecaptcha.execute('{{ data.reCaptchaKey }}', {action: 'login'}).then(function(token) {
                                     $("#captchaGeneratedToken").val(token);
                                 });
                             });
-                        }*/
+                        }
                     }
                 },
                 error: function (jqXhr, textStatus, errorMessage) {

@@ -53,26 +53,32 @@ class AuthController extends SprykerAuthControllerAlias
      */
     public function globusLoginAction(Request $request)
     {
-        if (!isset($_SESSION["failedLogins"])) {
-            $_SESSION["failedLogins"] = 0;
-        }
-
         $email = $request->request->get("id");
         $password = $request->request->get("password");
         $captchaToken = $request->request->get("captchaToken");
 
+        $failedLogins = $this->getFactory()->getSessionClient()->get("failedLogins");
+        $previousEmail = $this->getFactory()->getSessionClient()->get("previousEmail");
+        if (!isset($failedLogins)) {
+            $failedLogins = 0;
+        }
+        if (isset($previousEmail)) {
+            if ($previousEmail !== $email) {
+                $failedLogins = 0;
+            }
+        }
+        $this->getFactory()->getSessionClient()->set("previousEmail", $email);
         $customerUserProvider = $this->getFactory()->createCustomerUserProvider();
 
-        if ($_SESSION["failedLogins"] >= 4) {
+        if ($failedLogins >= 3) {
             $secret = $customerUserProvider->getCaptchaSecretKey();
             $captchaResponse = file_get_contents("https://www.google.com/recaptcha/api/siteverify?secret=" . $secret . "&response=" . $captchaToken);
             $decodedResponse = json_decode($captchaResponse);
-            if ($decodedResponse->success == true) {
-                $_SESSION["failedLogins"] = 0;
-            } else {
-                $_SESSION["failedLogins"] += 1;
+            if ($decodedResponse->success !== true) {
+                $failedLogins += 1;
+                $this->getFactory()->getSessionClient()->set("failedLogins", $failedLogins);
 
-                return new JsonResponse('{"successfullyLoggedIn": false, "showCaptcha": false}');
+                return new JsonResponse('{"successfullyLoggedIn": false, "showCaptcha": true}');
             }
         }
 
@@ -82,19 +88,21 @@ class AuthController extends SprykerAuthControllerAlias
         $this->getFactory()->getSessionClient()->set("id_token", $response->id_token ?? '');
         if (property_exists($response, "code") == false) {
             $response->successfullyLoggedIn = true;
-            $_SESSION["failedLogins"] = 0;
+            $this->getFactory()->getSessionClient()->remove("failedLogins");
+            $this->getFactory()->getSessionClient()->remove("previousEmail");
             $response->showCaptcha = false;
             $cook = new GlobusRestApiClientCookie();
             $cookie = $cook->createLoginCookie($result, $this->getFactory()->getSessionClient());
             $cookieConfirm = $cook->createLoginConfirmedCookie();
         } else {
             $response->successfullyLoggedIn = false;
-            $_SESSION["failedLogins"] += 1;
-            if ($_SESSION["failedLogins"] > 3) {
+            $failedLogins += 1;
+            if ($failedLogins > 2) {
                 $response->showCaptcha = true;
             } else {
                 $response->showCaptcha = false;
             }
+            $this->getFactory()->getSessionClient()->set("failedLogins", $failedLogins);
         }
 
         $resp = new JsonResponse(json_encode($response));
