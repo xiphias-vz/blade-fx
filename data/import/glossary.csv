@@ -112,10 +112,17 @@ auth.login,"Registrovat",cs_CZ
 auth.login,Anmelden,de_DE
 auth.login,Sign up,en_US
 auth.password,"Heslo",cs_CZ
+forget.password,Passwort vergessen,de_DE
+forget.password,Forget Password,en_US
+enter.your.email.address.for.reset.password.title.1,Bitte tragen Sie hier E-Mail-Adresse ein,de_DE
+enter.your.email.address.for.reset.password.title.2,um Ihr Passwort zurück zu setzen,de_DE
+email.or.card.number,E-mail-Adrese order Kundenkartennummer,de_DE
 auth.password,Passwort,de_DE
 auth.password,Password,en_US
 auth.password-forgot,"Zapomněli jste?",cs_CZ
 auth.password-forgot,Vergessen?,de_DE
+send,Senden,de_DE
+return.sign.in,Zurück zur Anmeldung,de_DE
 auth.password-forgot,Forgotten?,en_US
 auth.email,"E-mailová adresa",cs_CZ
 auth.email,E-mail-Addresse,de_DE
@@ -4700,3 +4707,4 @@ globus.card.registration.terms.of.agreement,"Ich stimme den Bedingungen der Werb
 cart.checkout.address.product.note,"In case the required goods are not available, we will offer you a product with the same parameters (ingredients, weight, price, etc.). You can reject the offered replacement at any time and you will not be charged for it.",en_US
 cart.checkout.address.product.note,"Falls die gewünschte Ware nicht verfügbar ist, bieten wir Ihnen ein Produkt mit den gleichen Parametern (Zutaten, Gewicht, Preis usw.) an. Sie können den angebotenen Ersatz jederzeit ablehnen und werden Ihnen nicht in Rechnung gestellt.",de_DE
 cart.checkout.address.product.note,"Pokud požadované zboží není k dispozici, nabídneme vám produkt se stejnými parametry (přísady, hmotnost, cena atd.). Nabízenou náhradu můžete kdykoli odmítnout a nebude vám nic účtováno.",cs_CZ
+checkout.validation.mailSentMsg, "Ihnen wurde eine E-Mail zur Passwortänderung zugestellt. Bitte prüfen Sie Ihr Postfach!",de_DE

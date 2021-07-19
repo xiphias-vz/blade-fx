@@ -120,7 +120,7 @@
             display: none;
         }
 
-        #forgotPasswordMessage {
+        #forgotPasswordMessage, #passwordForgotEmailMessage {
             color: #FF3400;
         }
 
@@ -175,7 +175,7 @@
             text-decoration: none;
         }
 
-        #btnContinueRegistration, #btnContinueRegistrationAsGuest, #btnCancelLogin, #btnCheckMailOrCard  {
+        #btnContinueRegistration, #btnContinueRegistrationAsGuest, #btnCancelLogin, #btnCheckMailOrCard, #btnBackToLogin  {
             cursor: pointer;
         }
 
@@ -207,6 +207,27 @@
             .register-form-tablet-width {
                 width: 96%;
             }
+        }
+
+        .description-passwordForgot {
+            margin-bottom: 25px;
+        }
+
+        #passwordForgotEmail, #customLoginFormEmail {
+            height: 40px;
+            padding: 10px;
+        }
+
+        .validation-success {
+            background-color: #B8DCC3;
+        }
+
+        .validation-invalid {
+            background-color: #cb3d49;
+        }
+
+        #passwordForgotEmailMessage, #customLoginFormEmailMessage {
+            color: black;
         }
     </style>
 
@@ -342,8 +363,6 @@
         </div>
     {% endif %}
 
-
-
     {% if data.currentCodeBucket=='DE' %}
         <div class="grid grid--center">
             <div class="col col--sm-12 col--md-9 col--xl-9 register-form-tablet-width">
@@ -427,6 +446,9 @@
                                                     <button type="button" id="passwordToggleEye" class="icon-eye"></button>
                                                 </div>
                                             </div>
+                                            <div id="customLoginFormEmail" class="is-hidden">
+                                                <span id="customLoginFormEmailMessage"></span>
+                                            </div>
                                             <div id="forgotPasswordDiv">
                                                 <span id="forgotPasswordMessage">{{ 'checkout.step.customer.login.invalidPassword' | trans }}</span>
                                                 <input id="captchaGeneratedToken" type="hidden" />
@@ -442,8 +464,8 @@
                                     <button id="btnLogin" type="button" class="form__action col col--middle button button--expand-tablet button--maxLarge">{{ 'general.next.button' | trans }}</button>
                                 </div>
 
-                                <div id="ForgotPasswordLinkDiv">
-                                    <a class="helpLink"  href="">{{ 'global.recover.password' | trans }}?</a>
+                                <div id="ForgotPasswordLinkDiv" onclick="showForgotPassword()">
+                                    <a class="helpLink"  href="#">{{ 'global.recover.password' | trans }}?</a>
                                 </div>
 
                             </div>
@@ -517,7 +539,6 @@
                             {% endblock %}
                         </div>
 
-
                         <div style="display: none">
 
                                 {% embed molecule('form') with {
@@ -580,12 +601,71 @@
                                 {% endblock %}
                             {% endembed %}
                         </div>
+
+                        <div id="passwordForgotFormDiv" class="form form--login form--checkout-actions register-form is-hidden">
+                            <h2 class="stepTitle">{{ 'forget.password' | trans }}</h2>
+                            <form name="passwordForgotForm" method="post" novalidate="novalidate">
+                                <div class="form__container">
+                                    <div class="form__fields grid grid--top">
+                                        <div class="form form--login form--checkout-actions form--grid-indent" data-qa="component form">
+                                            <div class="form__container">
+                                                <div id="passwordForgotEmailDiv" class="form__fields grid grid--top">
+                                                    <div class="form__field col col--sm-12">
+                                                        <p class="description-passwordForgot">{{ 'enter.your.email.address.for.reset.password.title.1' | trans }},{{ 'enter.your.email.address.for.reset.password.title.2' | trans }}:</p>
+                                                        <label for="txt_email_or_card_for_pass_reset" class="label label--required">{{ 'checkout.step.customer.login.emailField.label' | trans }}</label>
+                                                        <input id="txt_email_or_card_for_pass_reset" name="forgotPassForms[customer][email]" required="required" placeholder="{{ 'checkout.step.customer.login.emailField.placeholder' | trans }}" class="input input--expand" type="email" >
+                                                    </div>
+                                                </div>
+                                                <div id="passwordForgotEmail" class="is-hidden">
+                                                    <span id="passwordForgotEmailMessage"></span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="form__actions">
+                                        <button id="btnCallForgotPasswordApi" type="button" class="form__action col col--middle button button--expand-tablet button--maxLarge" data-qa="submit-button">
+                                            {{ 'send' | trans }}
+                                        </button>
+                                        <button id="btnLogin" type="button" class="form__action col col--middle button button--expand-tablet button--maxLarge">{{ 'general.next.button' | trans }}</button>
+                                    </div>
+                                </div>
+                            </form>
+                            <div class="customLogin-footer form__actions">
+                                <a id="btnBackToLogin" onclick="backToLoginForm()" type="button" class="btn btn-link col col--middle">{{ 'return.sign.in' | trans }}</a>
+                            </div>
+
+                            <div class="hr-line-solid"></div>
+
+                            <p id="basicHelpText" class="hintText">> <a class="helpLink" href="https://globus.zendesk.com/hc/de" target="_blank">{{ 'checkout.step.customer.login.help_text' | trans }}</a></p>
+                            <p id="newUserHelpText" class="hintText">> {{ 'checkout.step.customer.login.new_user_text' | trans }} <button class="helpLink linkOrange">{{ 'checkout.step.customer.login.globus_account_text' | trans }}</button></p>
+
+                        </div>
+
                    {% endblock %}
                 </div>
             </div>
         </div>
 
         <script type="text/javascript">
+
+            function showForgotPassword() {
+                $("#loginAPI").css("display", "none");
+                $("#passwordForgotFormDiv").removeClass("is-hidden");
+            }
+
+            function backToLoginForm() {
+                $("#passwordForgotFormDiv").addClass("is-hidden");
+                $("#customerPasswordDiv").css("display", "block");
+                $("#ForgotPasswordLinkDiv").css("display", "block");
+                $("#newUserHelpText").css("display", "none");
+                $('#btnCheckMailOrCard').css("display", "none");
+                $("#btnLogin").css("display", "block");
+                $("#emailCheckIcon").css("display", "block");
+                $("#loginAPI").css("display", "block");
+                $("#passwordForgotEmail").remove();
+            }
+
             function cancelLogin() {
                 localStorage.setItem('cancelLogin', "true");
                 location.reload();
@@ -634,6 +714,9 @@
                const url = "/login/check-availability"
 
                 if(emailOrCardNumber != ""){
+                    $("#customLoginFormEmail").addClass("is-hidden");
+                    $("#customLoginFormEmail").removeClass("validation-invalid");
+                    $("#customLoginFormEmailMessage").text("");
                     $.ajax(url, {
                         type: 'POST',  // http method
                         data: { id: emailOrCardNumber },  // data to submit
@@ -653,7 +736,6 @@
                                 $('#btnCheckMailOrCard').css("display", "none");
                                 $("#btnLogin").css("display", "block");
                                 $("#emailCheckIcon").css("display", "block");
-
                             }
                         },
                         error: function (jqXhr, textStatus, errorMessage) {
@@ -661,8 +743,10 @@
                     });
                 }
                 else {
-                    $("#loginAPI").css("display", "none");
-                    $("#additionalLoginForm").css("display", "block");
+                    $("#customLoginFormEmail").removeClass("is-hidden");
+                    $("#customLoginFormEmail").addClass("validation-invalid");
+                    $("#customLoginFormEmailMessage").text("{{ 'validation.not_blank' | trans }}");
+                    return false;
                 }
             });
         }
@@ -831,6 +915,41 @@
             $("#loginAPI").css("display", "none");
             $("#additionalLoginForm").css("display", "block");
         });
+
+        $("#btnCallForgotPasswordApi").click(function(){
+            const url = '/password/reset';
+            var emailOrKundenkartenummer = $("#txt_email_or_card_for_pass_reset").val();
+            if(emailOrKundenkartenummer === ""){
+                showErrorBox("{{ 'validation.not_blank' | trans }}");
+                return false;
+            }
+
+            $.ajax(url, {
+                type: 'POST',
+                dataType: 'json',
+                data: {
+                    id: emailOrKundenkartenummer
+                },
+                success(data, status, xhr) {
+                    showSuccessBox("{{ 'checkout.validation.mailSentMsg' | trans }}");
+                },
+                error(jqXhr, textStatus, errorMessage) {
+                    showErrorBox("Error");
+                },
+            });
+        });
+
+        function showSuccessBox(message){
+            $("#passwordForgotEmail").removeClass("is-hidden");
+            $("#passwordForgotEmail").addClass("validation-success");
+            $("#passwordForgotEmailMessage").text(message);
+        }
+
+        function showErrorBox(message){
+            $("#passwordForgotEmail").removeClass("is-hidden");
+            $("#passwordForgotEmail").addClass("validation-invalid");
+            $("#passwordForgotEmailMessage").text(message);
+        }
 
         </script>
 

@@ -109,6 +109,12 @@
             color: $setting-color-orange !important;
         }
 
+        .notRegisteredYet-box {
+            border-top: 1px solid black;
+            margin-top: rem(40);
+            padding-top: rem(10);
+        }
+
 
     }
 }

@@ -12,6 +12,10 @@ export default class PopupUiLoginForm extends Component {
     protected gigyaPasswordDiv;
     protected submitButton;
     protected registerText;
+    protected closeResetPasswordIcon;
+    protected closeResetPasswordBtn;
+    protected submitButtonResetPassword;
+    protected emailOrCardNumber;
 
     protected forgotenPassword;
 
@@ -24,6 +28,8 @@ export default class PopupUiLoginForm extends Component {
     protected fmTitle;
     protected fmMessage;
     protected fmLink;
+    protected resetPasswordFormHolder;
+    protected loginFormHolder;
 
     protected whichCountry;
 
@@ -40,6 +46,13 @@ export default class PopupUiLoginForm extends Component {
         this.isUserLoggedIn = document.getElementById(this.getIsUserLoggedIn);
         this.mailInputField = document.getElementsByClassName(this.getMailInputField);
         this.whichCountry = document.getElementById(this.getWhichCountry);
+        this.resetPasswordFormHolder = document.querySelector('#reset-password-form-holder');
+        this.loginFormHolder = document.querySelector('#login-form-holder');
+        this.closeResetPasswordIcon = document.querySelector('.close-reset-password-icon');
+        this.closeResetPasswordBtn = document.querySelector('.btn-return-sign-in');
+        this.submitButtonResetPassword = this.resetPasswordFormHolder.querySelector('.submit-form');
+        this.emailOrCardNumber = document.querySelector('#txt_email_or_card');
+
 
         // flash message and all related to it
         this.flashMessage = document.getElementById(this.getFlashMessage);
@@ -65,6 +78,22 @@ export default class PopupUiLoginForm extends Component {
 
             });
         }
+
+        this.closeResetPasswordIcon.addEventListener('click', () => {
+            this.loginFormHolder.style.display = 'block';
+            this.resetPasswordFormHolder.style.display = 'none';
+            this.classList.add('popup-ui-login-form--show');
+        })
+        this.closeResetPasswordBtn.addEventListener('click', () => {
+            this.loginFormHolder.style.display = 'block';
+            this.resetPasswordFormHolder.style.display = 'none';
+            this.classList.add('popup-ui-login-form--show');
+        })
+
+        this.submitButtonResetPassword.addEventListener('click', () => {
+            const email = this.emailOrCardNumber.value;
+            this.globusApiCall(email);
+        })
 
         if (this.linkToLoginModal != undefined) {
             this.linkToLoginModal.addEventListener('click', () => {
@@ -125,13 +154,8 @@ export default class PopupUiLoginForm extends Component {
         $(passwordForgetLink).css('padding-bottom', '0.7rem');
         this.gigyaLayoutRow.item(158).append(passwordForgetLink);
         passwordForgetLink.addEventListener('click', event => {
-            if (this.fmLink != undefined) {
-                this.fmLink.addEventListener('click', () => {
-                    $(this.flashMessage).parent().removeClass(this.showMessage);
-                });
-            }
-
-            this.globusApiCall(this.mailInputField.item(0).value);
+            this.loginFormHolder.style.display = 'none';
+            this.resetPasswordFormHolder.style.display = 'block';
         });
 
         // bottom line horizontal line
@@ -192,7 +216,7 @@ export default class PopupUiLoginForm extends Component {
 
         $.ajax(url, {
             type: 'POST',
-            dataType: 'application/json',
+            dataType: 'json',
             data: {
                 id: email
             },
@@ -212,7 +236,10 @@ export default class PopupUiLoginForm extends Component {
         this.fmTitle.textContent = 'Success!';
         this.fmMessage.textContent = 'Password has been reset. Check your email.';
         this.fmLink.textContent = 'OK!';
-        this.closeFlashMessage();
+        setTimeout(() => {
+            this.closeFlashMessage();
+            this.$this.toggleClass(this.showClass);
+        }, 2000);
     }
 
     showErrorMessage() {
@@ -221,13 +248,13 @@ export default class PopupUiLoginForm extends Component {
         this.fmTitle.textContent = 'Error!';
         this.fmMessage.textContent = 'No account with selected email.';
         this.fmLink.textContent = 'OK!';
-        this.closeFlashMessage();
+        setTimeout(() => {
+            this.closeFlashMessage();
+        }, 2000);
     }
 
     private closeFlashMessage() {
-        setTimeout(() => {
-            $(this.flashMessage).parent().removeClass(this.showMessage);
-        }, 2000);
+        $(this.flashMessage).parent().removeClass(this.showMessage);
     }
 
     // getters
@@ -240,7 +267,7 @@ export default class PopupUiLoginForm extends Component {
     }
 
     get closeButtonSelector(): string {
-        return `.${this.name}__close`;
+        return `.login-close-icon`;
     }
 
     get getLinkToLoginForm(): string {
