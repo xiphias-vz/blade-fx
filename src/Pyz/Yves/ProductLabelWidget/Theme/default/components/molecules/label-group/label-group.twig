@@ -8,11 +8,19 @@
     labels: []
 }  %}
 
+
+{% set isOther = false %}
+{% set isHighlighted = false %}
+{% set currentDiscount = 0 %}
+
 {% block body %}
+
     {% set leftColumnComponents = [] %}
     {% set rightColumnComponents = [] %}
+    {% set sameItem = false %}
 
     {% for label in data.labels %}
+
         {% set componentName = 'flag' %}
         {% set componentModifiers = [label.type] %}
 
@@ -20,6 +28,7 @@
             {% set componentName = 'tag' %}
             {% set componentModifiers = [] %}
         {% endif %}
+
 
         {% set component = include(
             [
@@ -29,21 +38,37 @@
                 modifiers: componentModifiers,
                 data: {
                     text: label.text,
-                    type: label.type
+                    type: label.type,
+                    product_type: label.product_type is defined ? label.product_type : '',
+                    discount: label.discount is defined ? label.discount : 0,
+                    discount_percentage: label.discount_percentage is defined ? label.discount_percentage : 0,
                 }
             },
             with_context = false
         ) %}
 
-        {% set component = '<div class="col">' ~ component ~ '</div>' %}
+
+        {% if label.type == 'direct_discount' %}
+            {% if not is_granted('IS_AUTHENTICATED_FULLY') %}
+                    {% set component = '<div style="visibility: hidden;" class="col">' ~ component ~ '</div>' %}
+                {% else %}
+                    {% set component = '<div class="col">' ~ component ~ '</div>' %}
+            {% endif %}
+        {% else %}
+            {% set component = '<div class="col">' ~ component ~ '</div>' %}
+        {% endif %}
+
         {% if label.type == 'template:tag' %}
             {% set leftColumnComponents = leftColumnComponents | merge([component]) %}
         {% else %}
             {% set rightColumnComponents = rightColumnComponents | merge([component]) %}
         {% endif %}
+
+
     {% endfor %}
 
-    <div class="grid grid--right grid--column">
+
+    <div class="grid grid--right">
         {% if leftColumnComponents is not empty %}
             {{leftColumnComponents | join | raw}}
         {% endif %}

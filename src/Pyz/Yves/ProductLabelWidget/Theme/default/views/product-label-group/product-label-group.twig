@@ -3,6 +3,7 @@
 {% define data = {
     dictionary: _widget.productLabelDictionaryItemTransfers,
     parentJsName: '',
+    discount: 0,
 } %}
 
 {% set labels = labels | default([]) %}
@@ -15,6 +16,9 @@
     {% set labels = labels | merge([{
         text: labelMappings[item.getKey()] is defined ? labelMappings[item.getKey()] : item.getKey(),
         type: (item.getFrontEndReference() | lower | replace(' ', '-')) | default,
+        product_type: data.product_type is defined ? data.product_type : '',
+        discount: data.discount is defined ? data.discount : 0,
+        discount_percentage: data.discount_percentage is defined ? data.discount_percentage : 0
     }]) %}
 {% endfor %}
 

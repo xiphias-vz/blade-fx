@@ -7,21 +7,22 @@
         margin-top: -1rem !important;
         margin-left: -1rem !important;
         max-height: 100%;
-        pointer-events: none;
         z-index: $setting-zi-element-floating;
         padding: rem(16);
         font-family: $setting-font-family;
+
+
 
         @include helper-breakpoint-media-max($sm-max) {
             position: absolute;
             bottom: auto;
             right: auto;
             max-height: 100%;
-            pointer-events: none;
             z-index: $setting-zi-element-floating;
             padding: rem(16);
             font-family: $setting-font-family;
         }
+
 
         @media only screen and (max-width: 575px) {
             position: absolute;
@@ -30,13 +31,13 @@
             margin-top: -1rem !important;
             margin-left: -1rem !important;
             max-height: 100%;
-            pointer-events: none;
             z-index: 350;
             padding: 1rem;
             font-family: "Fira Sans", "Open Sans", Arial, "Lucida Grande", sans-serif;
         }
 
         @content;
+
     }
 }
 

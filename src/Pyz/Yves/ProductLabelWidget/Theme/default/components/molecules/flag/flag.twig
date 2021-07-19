@@ -6,14 +6,65 @@
 } %}
 
 {% define data = {
-    text: ''
+    text: '',
 } %}
 
 {% block body %}
-    <span class="{{ component.renderClass(config.name ~ '__text', modifiers) }}">
-        {{data.text}}
-    </span>
-    {% if data.type == 'goproduct' %}
+
+    {% if data.product_type == 'goproduct' %}
         <span><img src="{{ publicPath('images/globus-product.png') }}" /></span>
+    {% endif %}
+
+    {% set tooltip_text = data.text == '' ? 'Discount' : data.text %}
+
+    {% if data.type == 'direct_discount' %}
+        {% if data.discount is defined and data.discount > 0 %}
+            <span class="{{ component.renderClass(config.name ~ '__text', modifiers) }} tooltip">
+                {{ data.discount_percentage }} %
+                <span class="tooltiptext">
+                    {{ tooltip_text }}
+                </span>
+            </span>
+        {% else %}
+            {% set data = data | merge({"text": "DD%"}) %}
+            <span class="{{ component.renderClass(config.name ~ '__text', modifiers) }} tooltip">
+                {{data.text}}
+                <span class="tooltiptext">
+                    {{ tooltip_text }}
+                </span>
+            </span>
+        {% endif %}
+
+    {% elseif data.type == 'cashback_discount' %}
+        {% if data.discount is defined and data.discount > 0 %}
+            <span class="{{ component.renderClass(config.name ~ '__text', modifiers) }} tooltip">
+                {{ data.discount_percentage }} %
+             <span class="tooltiptext">
+                {{ tooltip_text }}
+            </span>
+        </span>
+        {% else %}
+            {% set data = data | merge({"text": "CB%"}) %}
+            <span class="{{ component.renderClass(config.name ~ '__text', modifiers) }} tooltip">
+                {{data.text}}
+             <span class="tooltiptext">
+                {{ tooltip_text }}
+            </span>
+        </span>
+        {% endif %}
+
+    {% else %}
+    {% if data.discount is defined and data.discount > 0 %}
+        <span class="{{ component.renderClass(config.name ~ '__text', modifiers) }} tooltip">
+            {{ data.discount_percentage }} %
+             <span class="tooltiptext">
+                {{ tooltip_text }}
+            </span>
+        </span>
+        {% else %}
+        <span class="{{ component.renderClass(config.name ~ '__text', modifiers) }} tooltip">
+            {{data.text}}
+        </span>
+            {% endif %}
     {% endif %}
 {% endblock %}

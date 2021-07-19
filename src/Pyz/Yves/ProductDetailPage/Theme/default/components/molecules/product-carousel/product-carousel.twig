@@ -7,20 +7,72 @@
 
 {% define data = {
     product: required,
-    idProductAbstract: data.product.idProductAbstract | default
+    idProductAbstract: data.product.idProductAbstract | default,
+    globusSupplierLabel: data.product.attributes.supplier
 } %}
 
 {% block body %}
-
-    {% if data.idProductAbstract %}
+    {% if data.idProductAbstract and data.globusSupplierLabel == "Globus" %}
         {% block productAbstractLabels %}
-            {% widget 'ProductAbstractLabelWidget' args [data.idProductAbstract] with {
-                data: {
-                    parentJsName: config.jsName,
-                },
-            } only %}{% endwidget %}
+            {% block goproductLabel %}
+                {% set labels = labels | default([]) %}
+
+                {% set labels = labels | merge([{
+                    text: '',
+                    type: '',
+                    product_type: 'goproduct',
+                    discount: discount is defined ? discount : 0,
+                    discount_percentage: discount_percentage is defined ? discount_percentage : 0,
+                }]) %}
+
+                {% include molecule('label-group', 'ProductLabelWidget') with {
+                    data: {
+                        labels: labels,
+                        parentJsName: '',
+                    },
+                } only %}
+            {% endblock %}
         {% endblock %}
     {% endif %}
+    <div>
+        {% if (data.product.prices['ORIGINAL'] is defined and data.product.prices['DEFAULT'] < data.product.prices['ORIGINAL']) %}
+            {% block saleLabel%}
+                {% set discount = data.product.prices.ORIGINAL - data.product.prices.DEFAULT %}
+                {% set discount_percentage = ((discount / data.product.prices.ORIGINAL) * 100)|round %}
+
+                {% set labels = labels | default([]) %}
+
+                {% if not data.product.id_product_labels is defined or data.product.id_product_labels|length <= 0 %}
+
+                    {% set labels = labels | merge([{
+                        text: '',
+                        type: 'highlight',
+                        product_type: '',
+                        discount: discount,
+                        discount_percentage: discount_percentage
+                    }]) %}
+
+                    {% include molecule('label-group', 'ProductLabelWidget') with {
+                        data: {
+                            labels: labels,
+                            parentJsName: '',
+                        },
+                    } only %}
+
+                {% elseif data.idProductAbstract %}
+                    {% widget 'ProductAbstractLabelWidget' args [data.idProductAbstract] with {
+                        data: {
+                            parentJsName: config.jsName,
+                            product_type: '',
+                            discount: discount,
+                            discount_percentage: discount_percentage
+                        },
+                    } only %}{% endwidget %}
+                {% endif %}
+            {% endblock %}
+        {% endif %}
+    </div>
+
     {% include molecule('image-gallery', 'ProductImageWidget') with {
         data: {
             idProductAbstract: data.product.idProductAbstract,

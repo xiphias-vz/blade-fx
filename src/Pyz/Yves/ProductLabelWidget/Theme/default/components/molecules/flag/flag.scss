@@ -2,7 +2,6 @@
     #{$name} {
         display: inline-block;
         padding: rem(1) rem(7);
-        background: $setting-color-alpha-6;
         border-radius: rem(2);
         margin: rem(4) 0 0 rem(8);
 
@@ -19,6 +18,8 @@
             background-color: $setting-color-alt-4;
             border: rem(1) solid $setting-color-alt-4;
             color: $setting-color-white;
+            position: relative;
+            display: inline-block;
         }
 
         &--alternative {
@@ -26,12 +27,16 @@
             border: rem(1) solid $setting-color-main;
             color: $setting-color-main;
             white-space: nowrap;
+            position: relative;
+            display: inline-block;
         }
 
         &--discontinued {
             background: $setting-color-transparent;
             border: rem(1) solid $setting-color-alt;
             color: $setting-color-alt;
+            position: relative;
+            display: inline-block;
         }
 
         &--goproduct {
@@ -39,6 +44,64 @@
             margin: 0;
             padding: 0;
         }
+
+        &--cashback_discount {
+            background: $setting-color-orange;
+            border: rem(1) solid $setting-color-alt;
+            color: $setting-color-white;
+            position: relative;
+            display: inline-block;
+        }
+
+        &--direct_discount {
+            background: $setting-color-green;
+            border: rem(1) solid $setting-color-alt;
+            color: $setting-color-white;
+            position: relative;
+            display: inline-block;
+        }
+
+
+
+        /* Tooltip text */
+        .tooltip .tooltiptext {
+            visibility: hidden;
+            min-width: 120px;
+            top: rem(-2.75);
+            left: 115%;
+            background-color: black;
+            color: #fff;
+            text-align: center;
+            padding: rem(3) rem(5);
+            border-radius: 6px;
+            white-space: nowrap;
+
+            /* Position the tooltip text - see examples below! */
+            position: absolute;
+            z-index: 1;
+
+            @include helper-breakpoint-media-max($sm-max) {
+                top: rem(-1.2) !important;
+            }
+        }
+
+        .tooltip .tooltiptext::after {
+            content: " ";
+            position: absolute;
+            top: 35%; /* At the bottom of the tooltip */
+            right: 100%;
+            margin-left: -5px;
+            border-width: 5px;
+            border-style: solid;
+            border-color: transparent black transparent transparent;
+        }
+
+        /* Show the tooltip text when you mouse over the tooltip container */
+        .tooltip:hover .tooltiptext {
+            visibility: visible;
+        }
+
+
 
         @content;
     }

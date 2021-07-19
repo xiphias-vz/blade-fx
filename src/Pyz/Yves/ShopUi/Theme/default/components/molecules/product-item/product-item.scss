@@ -2,6 +2,7 @@
     #{$name} {
         position: relative;
         padding: 0 rem(5) rem(30);
+        z-index: 0;
 
         @include helper-breakpoint-media-min($md-min) {
             padding: 0 rem(15) rem(30);
@@ -28,9 +29,11 @@
         &__image-wrap {
             position: relative;
             overflow: hidden;
+            z-index: 0;
             display: flex;
             flex-direction: column;
             justify-content: flex-end;
+            padding-top: rem(35);
 
             @include helper-breakpoint-media-max($sm-max) {
                 width:150px;
@@ -79,6 +82,7 @@
 
         &__container {
             position: relative;
+            z-index: 0;
             display: flex;
             flex-direction: column;
             @include helper-breakpoint-media-max($sm-max) {
@@ -121,7 +125,7 @@
         &__content-top {
             flex-grow: 1;
             @include helper-breakpoint-media-max($sm-max) {
-                padding-top: 20px;
+                padding-top: rem(30);
             }
             @include helper-breakpoint-media-min($md-min) {
                 padding-bottom: rem(20);
