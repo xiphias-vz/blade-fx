@@ -737,24 +737,16 @@ class CashierOrderContentBuilder implements CashierOrderContentBuilderInterface
                     $writer->writeElement(static::XML_MIXED_CRATE_TICKET_ID);
                     $writer->writeElement(static::XML_TIMESTAMP, date(static::XML_TIMESTAMP_FORMAT));
                     $writer->endElement();
-                }
-            }
 
-            foreach ($orderTransfer->getItems() as $itemTransfer) {
-                if ($itemTransfer->getCanceledAmount()) {
-                    continue;
-                }
-                $quantityDeposit = $itemTransfer->getQuantity();
-                for ($i = 0; $i < $quantityDeposit; $i++) {
-                    foreach ($itemTransfer->getProductOptions() as $productOption) {
+                    foreach ($item->getProductOptions() as $productOption) {
                         $counter++;
 
                         $writer->startElement(static::XML_ITEM);
                         $writer->writeElement(static::XML_ORIGIN, static::XML_ORIGIN_VALUE);
                         $writer->writeElement(static::XML_POSITION_NUMBER, $counter);
                         $writer->writeElement(static::XML_BARCODE, $this->extractPluFromProductDepositSku($productOption->getSku()) ?? static::DEFAULT_EMPTY_XML_NUMBER);
-                        $writer->writeElement(static::XML_ITEM_NUMBER, $productSku[$itemTransfer->getSku()]);
-                        $writer->writeElement(static::XML_DEPARTMENT_NUMBER, $itemTransfer->getSapWgr());
+                        $writer->writeElement(static::XML_ITEM_NUMBER, $productSku[$item->getSku()]);
+                        $writer->writeElement(static::XML_DEPARTMENT_NUMBER, $item->getSapWgr());
                         $writer->writeElement(static::XML_DESCRIPTION, static::XML_DEPOSIT_DESCRIPTION);
                         $writer->writeElement(static::XML_NETTO_PRICE, $productOption->getUnitGrossPrice());
                         $writer->writeElement(static::XML_DISCOUNT);
