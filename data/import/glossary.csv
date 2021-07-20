@@ -4628,7 +4628,7 @@ customer.account.shopping_list.item.failed,Failed to add product to shopping lis
 customer.account.shopping_list.item.failed,Hinzufügen zu die Einkaufsliste fehlgeschlagen.,de_DE
 globus.metadata,Globus | Unser Globus Bestell & Abholservice | einfach online bestellen ✅ über 8.000 Artikel ✅ schnell am Markt abholen ✅ in gewohnter Globus Qualität ✅ ,de_DE
 globus.metadata,Globus | Unser Globus Bestell & Abholservice | einfach online bestellen ✅ über 8.000 Artikel ✅ schnell am Markt abholen ✅ in gewohnter Globus Qualität ✅ ,en_US
-checkout.step.customer.login.invalidPassword,Ihr eingegebees Passwort Ist falsch,de_DE
+checkout.step.customer.login.invalidPassword,Ungültiger Login oder ungültiges Passwort,de_DE
 checkout.step.customer.login.invalidPassword,Your entered password is wrong,en_US
 checkout.step.customer.login.help_text,Do you need help?,en_US
 checkout.step.customer.login.help_text,Benötigen Sie Hilfe?,de_DE
