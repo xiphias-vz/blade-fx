@@ -233,9 +233,9 @@ export default class PopupUiLoginForm extends Component {
     {
         $(this.flashMessage).parent().toggleClass(this.showMessage);
         $(this.flashMessage).removeClass('flash-message-error').addClass('flash-message-success');
-        this.fmTitle.textContent = 'Success!';
-        this.fmMessage.textContent = 'Password has been reset. Check your email.';
-        this.fmLink.textContent = 'OK!';
+        this.fmTitle.textContent = '';
+        this.fmMessage.textContent = 'Ihnen wurde eine E-Mail zur Passwortänderung zugestellt. Bitte prüfen Sie Ihr Postfach.';
+        this.fmLink.textContent = '';
         setTimeout(() => {
             this.closeFlashMessage();
             this.$this.toggleClass(this.showClass);

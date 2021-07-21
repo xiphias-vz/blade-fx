@@ -477,7 +477,7 @@
                             <div class="hr-line-solid"></div>
 
                             <p id="basicHelpText" class="hintText">> <a class="helpLink" href="https://globus.zendesk.com/hc/de" target="_blank">{{ 'checkout.step.customer.login.help_text' | trans }}</a></p>
-                            <p id="newUserHelpText" class="hintText">> {{ 'checkout.step.customer.login.new_user_text' | trans }} <button class="helpLink linkOrange">{{ 'checkout.step.customer.login.globus_account_text' | trans }}</button></p>
+                            <p id="newUserHelpText" class="hintText">> {{ 'checkout.step.customer.login.new_user_text' | trans }} <a class="helpLink linkOrange" href="/register">{{ 'checkout.step.customer.login.globus_account_text' | trans }}</a></p>
 
                         </div>
 
@@ -638,7 +638,7 @@
                             <div class="hr-line-solid"></div>
 
                             <p id="basicHelpText" class="hintText">> <a class="helpLink" href="https://globus.zendesk.com/hc/de" target="_blank">{{ 'checkout.step.customer.login.help_text' | trans }}</a></p>
-                            <p id="newUserHelpText" class="hintText">> {{ 'checkout.step.customer.login.new_user_text' | trans }} <button class="helpLink linkOrange">{{ 'checkout.step.customer.login.globus_account_text' | trans }}</button></p>
+                            <p id="newUserHelpText" class="hintText">> {{ 'checkout.step.customer.login.new_user_text' | trans }} <a class="helpLink linkOrange" href="/register">{{ 'checkout.step.customer.login.globus_account_text' | trans }}</a></p>
 
                         </div>
 
@@ -907,11 +907,6 @@
         $("#btnContinueRegistrationAsGuest").click(function(){
             $("#guestForm_customer_email").val($("#startRegistrationForm_customer_email").val());
             document.getElementsByName("guestForm")[0].submit();
-        });
-
-        $("#newUserHelpText").click(function(){
-            $("#loginAPI").css("display", "none");
-            $("#additionalLoginForm").css("display", "block");
         });
 
         $("#btnCallForgotPasswordApi").click(function(){
