@@ -4713,3 +4713,7 @@ cart.checkout.address.product.note,"In case the required goods are not available
 cart.checkout.address.product.note,"Falls die gewünschte Ware nicht verfügbar ist, bieten wir Ihnen ein Produkt mit den gleichen Parametern (Zutaten, Gewicht, Preis usw.) an. Sie können den angebotenen Ersatz jederzeit ablehnen und werden Ihnen nicht in Rechnung gestellt.",de_DE
 cart.checkout.address.product.note,"Pokud požadované zboží není k dispozici, nabídneme vám produkt se stejnými parametry (přísady, hmotnost, cena atd.). Nabízenou náhradu můžete kdykoli odmítnout a nebude vám nic účtováno.",cs_CZ
 checkout.validation.mailSentMsg, "Ihnen wurde eine E-Mail zur Passwortänderung zugestellt. Bitte prüfen Sie Ihr Postfach!",de_DE
+checkout.scan&goActivated, "Scan & Go ist für Sie freigeschaltet. Sie können Scan & Go nun bequem mit der (digitalen) Kundenkarte in Ihrem Globus-Markt nutzen.",de_DE
+checkout.scan&goActivated, "Scan & Go is activated for you. You can now use Scan & Go conveniently with the (digital) customer card in your Globus store.",en_US
+checkout.activateScan&Go, "Scan & Go freischalten. Wenn Sie Scan & Go nutzen möchten, lassen Sie sich an der Infotheke in Ihrem Markt freischalten.",de_DE
+checkout.activateScan&Go, "Activate Scan & Go. If you would like to use Scan & Go, have yourself activated at the information desk in your store.",en_US

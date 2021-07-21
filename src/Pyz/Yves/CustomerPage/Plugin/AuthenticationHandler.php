@@ -243,6 +243,10 @@ class AuthenticationHandler extends SprykerAuthenticationHandler
         if ($result->isSuccess) {
             $resultRegisterApi = $result->resultToJson();
             if (isset($resultRegisterApi->UID)) {
+                if (isset($resultRegisterApi->profile->address->verification->status)) {
+                    $customerTransfer->setAddressStatus($resultRegisterApi->profile->address->verification->status);
+                }
+
                 return true;
             } else {
                 return false;

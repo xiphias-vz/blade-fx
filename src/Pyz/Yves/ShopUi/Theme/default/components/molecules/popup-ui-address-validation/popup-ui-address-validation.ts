@@ -38,6 +38,8 @@ export default class PopupUiAddressValidation extends Component{
     protected $userCity;
     protected $userCheckedCircleWrapper;
     protected $apiCheckedCircleWrapper;
+    protected $apiButton;
+    protected $userButton;
     protected $errorMessageSpan;
     protected $errorDivAboveSubmitButton;
     protected $globusCardNumberField;
@@ -71,6 +73,9 @@ export default class PopupUiAddressValidation extends Component{
         this.$apiDiv = document.getElementById(this.getApiDiv);
         this.$userCheckedCircleWrapper = document.getElementById(this.getUserCircleWrapper);
         this.$apiCheckedCircleWrapper = document.getElementById(this.getApiCircleWrapper);
+        this.$apiButton = document.getElementById(this.getApiButton);
+        this.$userButton = document.getElementById(this.getUserButton);
+
         this.$errorMessageSpan = document.getElementsByClassName(this.errorMessageSpan);
         this.$errorDivAboveSubmitButton = document.getElementById(this.errorDivAboveSubmit);
         this.$globusCardNumberField = document.getElementById(this.getMyGlobusCardNumber);
@@ -93,7 +98,7 @@ export default class PopupUiAddressValidation extends Component{
 
                 this.removeErrorLabels();
                 this.emptyDivElements();
-                this.enableUserContent();
+                this.enableApiContent();
 
                 const fieldsChecked = await this.checkIfDataIsInputed();
                 if (fieldsChecked === true) {
@@ -124,16 +129,16 @@ export default class PopupUiAddressValidation extends Component{
             });
         }
 
-        if (this.$userDiv != undefined){
-            this.$userDiv.addEventListener('click', () => {
+        if(this.$userButton != undefined){
+            this.$userButton.addEventListener('click', () => {
                 this.clickedUserAddress();
                 this.enableUserContent();
                 this.disableApiContent();
             });
         }
 
-        if (this.$apiDiv != undefined){
-            this.$apiDiv.addEventListener('click', () => {
+        if(this.$apiButton != undefined){
+            this.$apiButton.addEventListener('click', () => {
                 this.clickedApiAddress();
                 this.enableApiContent();
                 this.disableUserContent();
@@ -153,7 +158,7 @@ export default class PopupUiAddressValidation extends Component{
         this.$userZipCity.classList.add(this.getDisableTextClass);
         this.$userStreetHouseNo.classList.add(this.getDisableTextClass);
 
-        this.$userDiv.classList.remove(this.getSelectedDivClass);
+        this.$userButton.classList.remove(this.getSelectedDivClass);
     }
 
     protected disableApiContent(): void{
@@ -163,7 +168,7 @@ export default class PopupUiAddressValidation extends Component{
         this.$apiStreetHouseNo.classList.add(this.getDisableTextClass);
         this.$globusCardNumberField.classList.add(this.getDisableTextClass);
 
-        this.$apiDiv.classList.remove(this.getSelectedDivClass);
+        this.$apiButton.classList.remove(this.getSelectedDivClass);
     }
 
     protected enableUserContent(): void{
@@ -172,7 +177,7 @@ export default class PopupUiAddressValidation extends Component{
         this.$userZipCity.classList.remove(this.getDisableTextClass);
         this.$userStreetHouseNo.classList.remove(this.getDisableTextClass);
 
-        this.$userDiv.classList.add(this.getSelectedDivClass);
+        this.$userButton.classList.add(this.getSelectedDivClass);
     }
 
     protected enableApiContent(): void{
@@ -181,7 +186,7 @@ export default class PopupUiAddressValidation extends Component{
         this.$apiZipCity.classList.remove(this.getDisableTextClass);
         this.$apiStreetHouseNo.classList.remove(this.getDisableTextClass);
 
-        this.$apiDiv.classList.add(this.getSelectedDivClass);
+        this.$apiButton.classList.add(this.getSelectedDivClass);
     }
 
     protected clickedUserAddress(): void {
@@ -253,7 +258,7 @@ export default class PopupUiAddressValidation extends Component{
         this.$globusCardNumberField.innerHTML = '';
     }
 
-    submitRegistrationForm(): void
+    public submitRegistrationForm(): void
     {
         this.$registrationForm[0].submit();
     }
@@ -282,11 +287,20 @@ export default class PopupUiAddressValidation extends Component{
             { method: 'POST', body: formData })
             .then(response => response.json())
             .then(parsedResponse => {
-                if (parsedResponse != undefined && parsedResponse !== []){
-                    this.addContentToModal(parsedResponse);
+                if(parsedResponse != undefined && parsedResponse !== []){
+                    var addressData = JSON.parse(parsedResponse);
+                    if(addressData.code === "VZ"){
+                        this.addContentToModal(parsedResponse);
+                        this.$this.addClass(`${this.name}--show`);
+                    }
+                    else {
+                        this.submitRegistrationForm();
+                        this.emptyDivElements();
+                    }
                 }
             })
             .catch(error => {});
+
     }
 
     protected async callCardNumberCheckAPI(): Promise<string> {
@@ -524,11 +538,11 @@ export default class PopupUiAddressValidation extends Component{
         return 'api_svg_icon';
     }
 
-    get getUserDiv(): string{
+    get getApiDiv(): string{
         return 'left-side';
     }
 
-    get getApiDiv(): string{
+    get getUserDiv(): string{
         return 'right-side';
     }
 
@@ -550,6 +564,14 @@ export default class PopupUiAddressValidation extends Component{
 
     get getSelectedDivClass(): string{
         return 'selected-div';
+    }
+
+    get getApiButton(): string {
+        return 'api_button_content';
+    }
+
+    get getUserButton(): string {
+        return 'user_button_content';
     }
 
     get errorMessageSpan(): string{

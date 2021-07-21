@@ -2,7 +2,7 @@
 
 {% define data = {
     isBillingSameAsShippingChecked: _view.isBillingSameAsShippingChecked,
-    merchantName: app['merchant_name'] | default,
+    merchantName: app['merchant_name'] | default
 } %}
 
 {% block content %}
@@ -63,6 +63,37 @@
                             <div>{{ customerData.zipCode }} {{ customerData.city }}</div>
                             <br>
                             <div>{{ customerData.email }}</div>
+
+                            {% if(customerData.isAdvertise == "false")  %}
+                                {% if(customerData.addressStatus == "VZ")  %}
+                                    <div style="padding: 10px 0; margin-top: 15px; display: flex;">
+                                        <div style="display: inline-block; width: 30px; margin-right: 15px; margin-top: 5px;"><img src="{{ publicPath('images/scanandgo.png') }}" style="height: 20px;" /></div>
+                                        <span>{{ 'checkout.scan&goActivated' | trans }}</span>
+                                    </div>
+                                {% else %}
+                                    <div style="padding: 10px 0; display: flex;">
+                                        <div style="display: inline-block; width: 30px; margin-right: 25px; margin-top: 5px;"><img src="{{ publicPath('images/scanandgo.png') }}" style="height: 20px;" /></div>
+                                        <span>{{ 'checkout.activateScan&Go' | trans }}</span>
+                                    </div>
+                                {% endif %}
+                            {% else %}
+                                {% if(customerData.addressStatus == "VZ")  %}
+                                    <div style="padding: 10px 0; display: flex;">
+                                        <div style="display: inline-block; width: 30px; margin-right: 15px; margin-top: 5px;"><img src="{{ publicPath('images/scanandgo.png') }}" style="height: 20px;" /></div>
+                                        <span>{{ 'checkout.scan&goActivated' | trans }}</span>
+                                    </div>
+                                {% else %}
+                                    <div style="padding: 10px 0; display: flex;">
+                                        <div style="display: inline-block; width: 30px; margin-right: 15px; margin-top: 5px;"><img src="{{ publicPath('images/brief.png') }}" style="height: 20px;" /></div>
+                                        <span>{{ 'checkout.customer.register_firstPharagraph' | trans }}</span>
+                                    </div>
+                                    <div style="padding: 10px 0; display: flex;">
+                                        <div style="display: inline-block; width: 30px; margin-right: 25px; margin-top: 5px;"><img src="{{ publicPath('images/scanandgo.png') }}" style="height: 20px;" /></div>
+                                        <span>{{ 'checkout.activateScan&Go' | trans }}</span>
+                                    </div>
+                                {% endif %}
+                            {% endif %}
+
                             <hr style="border-bottom: 1px solid black !important; margin:1.5rem 0 !important;">
                             <div class="text-color-1">
                                 {{ 'page.checkout.address.phone.paragraph1' | trans }}

@@ -7,4 +7,9 @@
         <property name="termsApproval" type="bool"/>
     </transfer>
 
+    <transfer name="Customer">
+        <property name="isAdvertise" type="bool"/>
+        <property name="addressStatus" type="string"/>
+    </transfer>
+
 </transfers>
