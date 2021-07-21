@@ -40,11 +40,11 @@ interface CustomerUserProviderInterface extends UserProviderInterface
     public function checkEmailOrCardAvailability(string $emailOrCardNumber): string;
 
     /**
-     * @param string $cardNumber
+     * @param string|null $cardNumber
      *
      * @return string
      */
-    public function checkCardNumberAvailability(string $cardNumber): string;
+    public function checkCardNumberAvailability(?string $cardNumber): string;
 
     /**
      * @return string

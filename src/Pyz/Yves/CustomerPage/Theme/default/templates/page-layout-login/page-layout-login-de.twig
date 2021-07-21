@@ -171,7 +171,7 @@
             height: 0px;
         }
         .page-layout-customer__form-wrap {
-            border-top: 0.0625rem solid #dce0e5;
+            border-style: hidden;
         }
 
         .margin-telefon-title {
@@ -230,7 +230,6 @@
                         </div>
 
                         <div class="form__actions">
-{#                            <button id="btnContinueRegistrationAsGuest" type="button" class="form__action col col--middle button button--expand-tablet button--maxLarge">{{ 'checkout.customer.auth_as_guest' | trans }}</button>#}
                             <button id="btnContinueRegistration" type="button" class="form__action col col--middle button button--expand-tablet button--maxLarge" disabled>{{ 'general.next.button' | trans }}</button>
                         </div>
 
@@ -277,6 +276,16 @@
                     } only %}
                     {% endembed %}
                 </div>
+
+                <span id="errorMessageAboveSubmitButton"></span>
+
+                <div id="customerRegistrationFormButtons">
+                    {% block CancelRegisterButton %}
+                        <div class="cancelFlex">
+                            <button id="btnCancelRegister" type="button" class="btn-link form__action form__action--checkout col col--middle button button--expand-tablet button--large cancelBtn" style="margin-bottom: 5px;">{{ 'general.cancel.button' | trans }}</button>
+                        </div>
+                    {% endblock %}
+                </div>
             </div>
         </div>
     </div>
@@ -294,6 +303,7 @@
             let emailField = document.querySelector('#startRegistrationForm_customer_email');
             emailField.removeAttribute('autocomplete');
             emailField.value = "";
+            $('form__action js-form-register__submit-button form__action--login button button--large button--expand').attr("id",'link-to-address-modal');
         })
 
         function checkoutStep(option)

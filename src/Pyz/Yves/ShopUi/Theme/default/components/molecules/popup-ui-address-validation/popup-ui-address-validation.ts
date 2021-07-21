@@ -50,35 +50,43 @@ export default class PopupUiAddressValidation extends Component{
     protected globalCardNumber;
 
     protected async readyCallback() {
-        this.linkToAddressModal = document.getElementById(this.getLinkToAddressModal);
+        this.linkToAddressModal = this.findElement(this.getLinkToAddressModal);
+        if(!this.linkToAddressModal) {
+            this.linkToAddressModal = document.getElementsByClassName('form__action js-form-register__submit-button form__action--login button button--large button--expand')[0];
+            if(this.linkToAddressModal) {
+                this.linkToAddressModal.addEventListener("click", function(event) {
+                    event.preventDefault();
+                }, false);
+            }
+        }
         this.closeModalBtn = this.$this.find(this.getCloseButtonSelector);
-        this.submitRegistrationFormButton = document.getElementById(this.getSubmitFormButton);
-        this.cancelRegistrationFormButton = document.getElementById(this.getCancelRegisterButton);
+        this.submitRegistrationFormButton = this.findElement(this.getSubmitFormButton);
+        this.cancelRegistrationFormButton = this.findElement(this.getCancelRegisterButton);
         this.$registrationForm = document.getElementsByName(this.registerForm);
-        this.$firstName = document.getElementById(this.getFirstName);
-        this.$lastName = document.getElementById(this.getLastName);
-        this.$streetName = document.getElementById(this.getStreet);
-        this.$houseNumber = document.getElementById(this.getHouseNumber);
-        this.$zip = document.getElementById(this.getZipNumber);
-        this.$city = document.getElementById(this.getCity);
-        this.$userNameElement = document.getElementById(this.getUserName);
-        this.$userZipCity = document.getElementById(this.getUserZipCity);
-        this.$userStreetHouseNo = document.getElementById(this.getUserStreetHouseNo);
-        this.$userSvg = document.getElementById(this.getUserSvg);
-        this.$apiNameElement = document.getElementById(this.getApiName);
-        this.$apiZipCity = document.getElementById(this.getApiZipCity);
-        this.$apiStreetHouseNo = document.getElementById(this.getApiStreetHouseNo);
-        this.$apiSvg = document.getElementById(this.getApiSvg);
-        this.$userDiv = document.getElementById(this.getUserDiv);
-        this.$apiDiv = document.getElementById(this.getApiDiv);
-        this.$userCheckedCircleWrapper = document.getElementById(this.getUserCircleWrapper);
-        this.$apiCheckedCircleWrapper = document.getElementById(this.getApiCircleWrapper);
+        this.$firstName = this.findElement(this.getFirstName);
+        this.$lastName = this.findElement(this.getLastName);
+        this.$streetName = this.findElement(this.getStreet);
+        this.$houseNumber = this.findElement(this.getHouseNumber);
+        this.$zip = this.findElement(this.getZipNumber);
+        this.$city = this.findElement(this.getCity);
+        this.$userNameElement = this.findElement(this.getUserName);
+        this.$userZipCity = this.findElement(this.getUserZipCity);
+        this.$userStreetHouseNo = this.findElement(this.getUserStreetHouseNo);
+        this.$userSvg = this.findElement(this.getUserSvg);
+        this.$apiNameElement = this.findElement(this.getApiName);
+        this.$apiZipCity = this.findElement(this.getApiZipCity);
+        this.$apiStreetHouseNo = this.findElement(this.getApiStreetHouseNo);
+        this.$apiSvg = this.findElement(this.getApiSvg);
+        this.$userDiv = this.findElement(this.getUserDiv);
+        this.$apiDiv = this.findElement(this.getApiDiv);
+        this.$userCheckedCircleWrapper = this.findElement(this.getUserCircleWrapper);
+        this.$apiCheckedCircleWrapper = this.findElement(this.getApiCircleWrapper);
         this.$apiButton = document.getElementById(this.getApiButton);
         this.$userButton = document.getElementById(this.getUserButton);
 
         this.$errorMessageSpan = document.getElementsByClassName(this.errorMessageSpan);
         this.$errorDivAboveSubmitButton = document.getElementById(this.errorDivAboveSubmit);
-        this.$globusCardNumberField = document.getElementById(this.getMyGlobusCardNumber);
+        this.$globusCardNumberField = this.findElement(this.getMyGlobusCardNumber);
         this.$radioButtons = document.getElementsByName(this.getRadioButtonsName);
         this.hiddenMyGlobusCardNumber = document.querySelector('#registerForm_my_globus_card_number');
 
@@ -294,8 +302,9 @@ export default class PopupUiAddressValidation extends Component{
                         this.$this.addClass(`${this.name}--show`);
                     }
                     else {
-                        this.submitRegistrationForm();
+                        this.$this.toggleClass(this.showClass);
                         this.emptyDivElements();
+                        this.submitRegistrationForm();
                     }
                 }
             })
@@ -456,6 +465,15 @@ export default class PopupUiAddressValidation extends Component{
         this.$apiZip = zip;
 
         this.setApiAttributesModal(firstName, lastName, street, houseNumber, zip, city);
+    }
+
+    protected findElement(name:string): HTMLElement {
+        let el = document.getElementById(name);
+        if(!el) {
+            name = name.replace('registerForm_customer_', 'registerForm_');
+            el = document.getElementById(name);
+        }
+        return el;
     }
 
     get getLinkToAddressModal(): string{

@@ -181,6 +181,8 @@ class AuthenticationHandler extends SprykerAuthenticationHandler
         if (!$customerTransfer->getMyGlobusCard()) {
             $newMyGlobusCardNumber = $this->getNewGlobusCardNumber();
             $customerTransfer->setMyGlobusCard($newMyGlobusCardNumber);
+        } else {
+            $newMyGlobusCardNumber = $customerTransfer->getMyGlobusCard();
         }
 
         $cardType = "digital";
@@ -243,7 +245,10 @@ class AuthenticationHandler extends SprykerAuthenticationHandler
         if ($result->isSuccess) {
             $resultRegisterApi = $result->resultToJson();
             if (isset($resultRegisterApi->UID)) {
-                if (isset($resultRegisterApi->profile->address->verification->status)) {
+                if (isset($resultRegisterApi->profile)
+                    && isset($resultRegisterApi->profile->address)
+                    && isset($resultRegisterApi->profile->address->verification)
+                    && isset($resultRegisterApi->profile->address->verification->status)) {
                     $customerTransfer->setAddressStatus($resultRegisterApi->profile->address->verification->status);
                 }
 
