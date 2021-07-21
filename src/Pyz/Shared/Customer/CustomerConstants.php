@@ -32,6 +32,7 @@ interface CustomerConstants
     public const GLOBUS_API_SECRET_KEY = 'globusApiSecretKeyNoScreen';
     public const GLOBUS_API_ENDPOINT = 'globus_api_endpoint';
     public const GLOBUS_API_END_POINT_ADDRESS_VALIDATION = 'globusApiEndPointAddressValidation';
+    public const GLOBUS_API_END_POINT_CHECK_CARD_STATUS = 'globusApiEndPointCheckCardStatus';
     public const GLOBUS_API_END_POINT_NEXT_CARD_NUMBER = 'globusApiEndPointNextCardNumber';
     public const GLOBUS_API_END_POINT_ACCOUNT_AVAILABLE = 'globusApiEndPointAccountAvailable';
     public const GLOBUS_API_END_POINT_ACCOUNT_LOGIN = 'globusApiEndPointAccountLogin';

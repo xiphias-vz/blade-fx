@@ -107,6 +107,7 @@
 
         .cancelBtn {
             border: 1px solid;
+            margin: 0.5rem 0 0.5rem;
         }
         #customerPasswordDiv, #ForgotPasswordLinkDiv, #btnLogin {
             display: none;
@@ -477,7 +478,7 @@
                             <div class="hr-line-solid"></div>
 
                             <p id="basicHelpText" class="hintText">> <a class="helpLink" href="https://globus.zendesk.com/hc/de" target="_blank">{{ 'checkout.step.customer.login.help_text' | trans }}</a></p>
-                            <p id="newUserHelpText" class="hintText">> {{ 'checkout.step.customer.login.new_user_text' | trans }} <a class="helpLink linkOrange" href="/register">{{ 'checkout.step.customer.login.globus_account_text' | trans }}</a></p>
+                            <p id="newUserHelpText" class="hintText">> {{ 'checkout.step.customer.login.new_user_text' | trans }} <button class="helpLink linkOrange">{{ 'checkout.step.customer.login.globus_account_text' | trans }}</button></p>
 
                         </div>
 
@@ -525,17 +526,18 @@
                                 {% endembed %}
                             </div>
                         </div>
+                        <span id="errorMessageAboveSubmitButton"></span>
 
                         <div id="customerRegistrationFormButtons" class="{{ (data.isGuest or data.isLogin? ' is-hidden' : '') }}">
+                            {% block submitButton %}
+                                <button type="button" id="link-to-address-modal" class="form__action form__action--checkout col col--middle button button--expand-tablet button--large" style="margin-top: 5px; clear: both">
+                                    {{'checkout.customer.submit_as_guest' | trans}}
+                                </button>
+                            {% endblock %}
                             {% block CancelRegisterButton %}
                                 <div class="cancelFlex">
                                     <button id="btnCancelRegister" type="button" class="btn-link form__action form__action--checkout col col--middle button button--expand-tablet button--large cancelBtn" style="margin-bottom: 5px;">{{ 'general.cancel.button' | trans }}</button>
                                 </div>
-                            {% endblock %}
-                            {% block submitButton %}
-                                <button type="button" id="link-to-address-modal" class="form__action form__action--checkout col col--middle button button--expand-tablet button--large" style="margin-top: 5px;">
-                                    {{'checkout.customer.submit_as_guest' | trans}}
-                                </button>
                             {% endblock %}
                         </div>
 
@@ -907,6 +909,11 @@
         $("#btnContinueRegistrationAsGuest").click(function(){
             $("#guestForm_customer_email").val($("#startRegistrationForm_customer_email").val());
             document.getElementsByName("guestForm")[0].submit();
+        });
+
+        $("#newUserHelpText").click(function(){
+            $("#loginAPI").css("display", "none");
+            $("#additionalLoginForm").css("display", "block");
         });
 
         $("#btnCallForgotPasswordApi").click(function(){

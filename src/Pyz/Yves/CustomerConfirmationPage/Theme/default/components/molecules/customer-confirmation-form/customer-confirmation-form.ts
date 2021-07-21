@@ -72,6 +72,7 @@ export default class CustomerConfirmationForm extends Component {
         const isPhoneNumberValid = this.isPhoneNumberValid();
         if (isPhoneNumberValid && this.thirdPartyRegistration.checked) {
             this.customerConfirmationForm.submit();
+
             return;
         }
 
@@ -95,7 +96,9 @@ export default class CustomerConfirmationForm extends Component {
         this.hideElement(this.phoneHintHolder);
         let target = (event.target as HTMLInputElement);
         let prefix: HTMLSelectElement = target.id.includes("mobile") ? this.phonePrefix: this.mobilePrefix;
-        if(prefix.value.length > 0 && target.value.length > 0 && !target.value.startsWith(prefix.value))
-            target.value = prefix.value + target.value;
+        if (prefix !== undefined) {
+            if(prefix.value.length > 0 && target.value.length > 0 && !target.value.startsWith(prefix.value))
+                target.value = prefix.value + target.value;
+        }
     }
 }

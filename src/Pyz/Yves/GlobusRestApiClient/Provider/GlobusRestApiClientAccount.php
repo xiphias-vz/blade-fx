@@ -100,6 +100,20 @@ class GlobusRestApiClientAccount
     }
 
     /**
+     * @param string $cardNumber
+     *
+     * @return string
+     */
+    public static function checkCardNumberAvailability(string $cardNumber): string
+    {
+        $url = GlobusRestApiConfig::getGlobusApiEndPoint(CustomerConstants::GLOBUS_API_END_POINT_CHECK_CARD_STATUS);
+        $url = str_replace("{cardNumber}", $cardNumber, $url);
+        $result = GlobusRestApiClient::get($url, []);
+
+        return $result->result;
+    }
+
+    /**
      * @param string $emailOrCardNumber
      *
      * @return string

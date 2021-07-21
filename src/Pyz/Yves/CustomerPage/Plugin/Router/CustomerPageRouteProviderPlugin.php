@@ -24,6 +24,7 @@ class CustomerPageRouteProviderPlugin extends SprykerCustomerPageRouteProviderPl
     public const GLOBUS_COOKIE_LOGIN = 'globus-cookie-login';
     protected const ROUTE_CUSTOMER_ADDRESS_CHECK = 'register/customer-address-api';
     protected const ROUTE_CUSTOMER_PASSWORD_RESET = 'password/reset';
+    protected const ROUTE_CUSTOMER_GLOBUS_CARD_CHECK = 'register/check-card-number';
 
     /**
      * Specification:
@@ -49,6 +50,7 @@ class CustomerPageRouteProviderPlugin extends SprykerCustomerPageRouteProviderPl
         $routeCollection = $this->addPasswordResetRoute($routeCollection);
         $routeCollection = $this->addCustomerRegistrationAddressCheckRouter($routeCollection);
         $routeCollection = $this->addCustomerPasswordResetRoute($routeCollection);
+        $routeCollection = $this->addCheckingCardRoute($routeCollection);
 
         return $routeCollection;
     }
@@ -182,6 +184,19 @@ class CustomerPageRouteProviderPlugin extends SprykerCustomerPageRouteProviderPl
     {
         $route = $this->buildRoute('/register/customer-address-api', 'CustomerPage', 'Register', 'getCustomerDataAPIAction');
         $routeCollection->add(static::ROUTE_CUSTOMER_ADDRESS_CHECK, $route);
+
+        return $routeCollection;
+    }
+
+    /**
+     * @param \Spryker\Yves\Router\Route\RouteCollection $routeCollection
+     *
+     * @return \Spryker\Yves\Router\Route\RouteCollection
+     */
+    public function addCheckingCardRoute(RouteCollection $routeCollection): RouteCollection
+    {
+        $route = $this->buildRoute('/register/check-card-number', 'CustomerPage', 'Register', 'checkGlobusCardAction');
+        $routeCollection->add(static::ROUTE_CUSTOMER_GLOBUS_CARD_CHECK, $route);
 
         return $routeCollection;
     }

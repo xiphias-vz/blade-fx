@@ -40,6 +40,13 @@ interface CustomerUserProviderInterface extends UserProviderInterface
     public function checkEmailOrCardAvailability(string $emailOrCardNumber): string;
 
     /**
+     * @param string $cardNumber
+     *
+     * @return string
+     */
+    public function checkCardNumberAvailability(string $cardNumber): string;
+
+    /**
      * @return string
      */
     public function getCaptchaSecretKey(): string;

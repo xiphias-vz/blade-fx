@@ -5,7 +5,7 @@ export default class RegisterPageLeftSide extends Component{
     protected radioButton;
     protected globusCardDiv;
     protected myGlobusCardNumber;
-    protected hiddenMyGlobusCardNumber
+    protected hiddenMyGlobusCardNumber;
 
     protected readyCallback() {
     }
@@ -13,8 +13,8 @@ export default class RegisterPageLeftSide extends Component{
     protected init() {
         this.radioButton = document.querySelectorAll('input[name="radio_kundenkarte"]');
         this.globusCardDiv = document.querySelector('#globus-card-yes');
-        this.myGlobusCardNumber = document.querySelector('#myGlobusCardNumber')
-        this.hiddenMyGlobusCardNumber = document.querySelector('#registerForm_my_globus_card_number')
+        this.myGlobusCardNumber = document.querySelector('#myGlobusCardNumber');
+        this.hiddenMyGlobusCardNumber = document.querySelector('#registerForm_my_globus_card_number');
 
         this.mapEvents();
     }

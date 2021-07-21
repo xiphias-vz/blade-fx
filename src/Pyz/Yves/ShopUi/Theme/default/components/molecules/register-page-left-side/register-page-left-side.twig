@@ -44,19 +44,21 @@
 
             <div id="globus-card-yes" class="hidden {{ config.name }}__top-margin-smaller">
                 <p class="{{ config.name }}__font-smaller {{ config.name }}__bot-margin">Wenn Sie bereits eine Karte im Markt mitgenommen haben, können Sie hier die Kartennummer eingeben.</p>
-                <input id="myGlobusCardNumber" type="text" class="input {{ config.name }}__height" placeholder="Karternnummer"/>
+                <div>
+                    <input id="myGlobusCardNumber" type="text" class="input {{ config.name }}__height" placeholder="Kartennummer eingeben"/>
+                </div>
                 <p class="{{ config.name }}__font-smaller {{ config.name }}__top-margin">Mit dem Klick auf Weiter bestätigen Sie die Mein Globus-Teilnahmebedingungen.</p>
             </div>
         </div>
-        <div class="col col--lg-12 {{ config.name }}__top-margin {{ config.name }}__bottom-margin-information">
-            <div class="col col--lg-2">
+        <div class="col col--lg-12 {{ config.name }}__flex {{ config.name }}__top-margin {{ config.name }}__bottom-margin-information">
+            <div class="">
                 {% include atom('checkbox') with {
                     attributes: {
                         name: 'isAdvertise'
                     }
                 } only %}
             </div>
-            <div class="col col--lg-10">
+            <div class="">
                 <p class="{{ config.name }}__font-smaller {{ config.name }}__information-paragraph-margin">
                     {{ 'globus.card.registration.terms.of.agreement' | trans }}</p>
             </div>

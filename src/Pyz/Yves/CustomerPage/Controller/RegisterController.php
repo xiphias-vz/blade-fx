@@ -14,6 +14,7 @@ use Pyz\Shared\DataDog\DataDogConfig;
 use Pyz\Yves\CheckoutPage\Plugin\Router\CheckoutPageRouteProviderPlugin;
 use Pyz\Yves\CustomerPage\Form\RegisterForm;
 use Pyz\Yves\CustomerPage\Plugin\Router\CustomerPageRouteProviderPlugin;
+use Pyz\Yves\GlobusRestApiClient\Provider\GlobusRestApiClientDigitalCard;
 use Pyz\Yves\GlobusRestApiClient\Provider\GlobusRestApiClientValidation;
 use Spryker\Shared\Config\Config;
 use Spryker\Shared\Customer\Code\Messages;
@@ -168,6 +169,29 @@ class RegisterController extends SprykerShopRegisterController
         $result = GlobusRestApiClientValidation::addressValidation($firstName, $lastName, $zip, $houseNumber, $street, $city);
 
         return new JsonResponse($result->result);
+    }
+
+    /**
+     * @param \Symfony\Component\HttpFoundation\Request $request
+     *
+     * @return array|\Symfony\Component\HttpFoundation\JsonResponse
+     */
+    public function checkGlobusCardAction(Request $request)
+    {
+        $id = $request->request->get("id");
+        $customerUserProvider = $this->getFactory()->createCustomerUserProvider();
+        $result = $customerUserProvider->checkCardNumberAvailability($id);
+        $result = json_decode($result);
+
+        $cardNumberToSend = $id;
+
+        if ($result->status === 'USED') {
+            return new JsonResponse('used_card_error');
+        } elseif ($result->status === 'INVALID' || $result->status === 'BLOCKED') {
+            $cardNumberToSend = GlobusRestApiClientDigitalCard::getNewGlobusCardNumber();
+        }
+
+        return new JsonResponse($cardNumberToSend);
     }
 
     /**

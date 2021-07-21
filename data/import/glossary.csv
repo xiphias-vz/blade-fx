@@ -4582,7 +4582,7 @@ customer.phone.checkout.guest,Telefon,de_DE
 mobile.phone.number,"Mobilní telefon",cs_CZ
 mobile.phone.number,Mobiltelefon,de_DE
 customer.land.phone,"Pevná linka",cs_CZ
-customer.land.phone,Fastnetz,de_DE
+customer.land.phone,Festnetz,de_DE
 customer.register.birthdate.title,"Datum narození (DD.MM.RRRR)",cs_CZ
 customer.register.birthdate.title,"Geburtstag (TT/MM/YYYY)",de_DE
 customer.register.telefon.title,"Telefon (je vyžadován alespoň jeden údaj)",cs_CZ
@@ -4681,6 +4681,11 @@ success.message.title,"Wie geht es weiter?",de_DE
 success.message.text1,"Ihre Bestellbestätigung",de_DE
 success.message.text2,"ist bereits auf dem Weg in Ihr Email-Postfach - prüfen Sie also unbedingt auch Ihren Spam Ordner.",de_DE
 success.message.text3,"Ihren",de_DE
+globus.card.registration.text,Entdecken Sie mit Ihrer persönlichen Mein Globus-Kundekarte viele Vorteile.,de_DE
+globus.card.registration.text,Discover many advantages with your personal My Globus customer card.,en_US
+globus.card.registration.text_before,Holen Sie sich Ihre persönliche Kundenkarte und erhalten Sie viele Vorteile und Vergünstigungen.,de_DE
+globus.card.registration.text_before,Get your personal customer card and receive many advantages and discounts.,en_US
+globus.card.registration.terms.of.agreement,"Ich stimme den Bedingungen der Werbeeinwilligung zu, um über Produkte und Angebote informiert zu werden.",de_DE
 pdp.modal.age.confirmation,Are you over 18?,en_US
 pdp.modal.age.confirmation,Sind Sie 18 jahre alt?,de_DE
 pdp.modal.age.confirmation,"Je vám více než 18?",cs_CZ

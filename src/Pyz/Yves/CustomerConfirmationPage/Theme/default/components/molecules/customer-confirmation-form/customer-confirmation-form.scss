@@ -26,6 +26,10 @@
             margin-bottom: -3%;
             margin-top: 5%;
         }
+
+        .asterisk-orange {
+            color: $setting-color-globus-lightOrange;
+        }
         @content;
     }
 }

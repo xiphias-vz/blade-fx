@@ -191,4 +191,10 @@ class CustomerUserProvider extends SprykerCustomerUserProvider implements Custom
     {
         return new CustomerTransfer();
     }
+
+    public function checkCardNumberAvailability(string $cardNumber): string
+    {
+        // TODO: Implement checkCardNumberAvailability() method.
+        return '';
+    }
 }

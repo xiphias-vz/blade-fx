@@ -38,9 +38,16 @@ export default class PopupUiAddressValidation extends Component{
     protected $userCity;
     protected $userCheckedCircleWrapper;
     protected $apiCheckedCircleWrapper;
+    protected $errorMessageSpan;
+    protected $errorDivAboveSubmitButton;
+    protected $globusCardNumberField;
+    protected $radioButtons;
+    protected hiddenMyGlobusCardNumber;
 
+    protected requiredCard = false;
+    protected globalCardNumber;
 
-    protected readyCallback() {
+    protected async readyCallback() {
         this.linkToAddressModal = document.getElementById(this.getLinkToAddressModal);
         this.closeModalBtn = this.$this.find(this.getCloseButtonSelector);
         this.submitRegistrationFormButton = document.getElementById(this.getSubmitFormButton);
@@ -64,45 +71,60 @@ export default class PopupUiAddressValidation extends Component{
         this.$apiDiv = document.getElementById(this.getApiDiv);
         this.$userCheckedCircleWrapper = document.getElementById(this.getUserCircleWrapper);
         this.$apiCheckedCircleWrapper = document.getElementById(this.getApiCircleWrapper);
+        this.$errorMessageSpan = document.getElementsByClassName(this.errorMessageSpan);
+        this.$errorDivAboveSubmitButton = document.getElementById(this.errorDivAboveSubmit);
+        this.$globusCardNumberField = document.getElementById(this.getMyGlobusCardNumber);
+        this.$radioButtons = document.getElementsByName(this.getRadioButtonsName);
+        this.hiddenMyGlobusCardNumber = document.querySelector('#registerForm_my_globus_card_number');
 
-        this.mapEvents();
+        await this.mapEvents();
     }
 
-    protected mapEvents(): void
+    protected async mapEvents()
     {
-        if(this.linkToAddressModal != null){
-            this.linkToAddressModal.addEventListener('click', () => {
+        if (this.linkToAddressModal != undefined){
+            this.linkToAddressModal.addEventListener('click', async() => {
+
+                if (this.$radioButtons[0].checked) {
+                    this.requiredCard = true;
+                } else {
+                    this.requiredCard = false;
+                }
+
+                this.removeErrorLabels();
                 this.emptyDivElements();
                 this.enableUserContent();
-                this.sendRequestToAddressAPI();
-                this.setUserAttributesToModal();
-                this.$this.addClass(`${this.name}--show`);
 
+                const fieldsChecked = await this.checkIfDataIsInputed();
+                if (fieldsChecked === true) {
+                    this.$this.addClass(`${this.name}--show`);
+                    this.afterApiCall();
+                }
             });
         }
 
-        if(this.closeModalBtn !=null){
+        if (this.closeModalBtn != undefined){
             this.closeModalBtn.on('click', () => {
                 this.$this.toggleClass(this.showClass);
                 this.emptyDivElements();
             });
         }
 
-        if(this.submitRegistrationFormButton != null){
+        if (this.submitRegistrationFormButton != undefined){
             this.submitRegistrationFormButton.addEventListener('click', () => {
                 this.submitRegistrationForm();
                 this.emptyDivElements();
             });
         }
 
-        if(this.cancelRegistrationFormButton != null){
+        if (this.cancelRegistrationFormButton != undefined){
             this.cancelRegistrationFormButton.addEventListener('click', () => {
                 this.$this.toggleClass(this.showClass);
                 this.emptyDivElements();
             });
         }
 
-        if(this.$userDiv != null){
+        if (this.$userDiv != undefined){
             this.$userDiv.addEventListener('click', () => {
                 this.clickedUserAddress();
                 this.enableUserContent();
@@ -110,13 +132,19 @@ export default class PopupUiAddressValidation extends Component{
             });
         }
 
-        if(this.$apiDiv != null){
+        if (this.$apiDiv != undefined){
             this.$apiDiv.addEventListener('click', () => {
                 this.clickedApiAddress();
                 this.enableApiContent();
                 this.disableUserContent();
             });
         }
+    }
+
+    protected  afterApiCall(): void
+    {
+        this.sendRequestToAddressAPI();
+        this.setUserAttributesToModal();
     }
 
     protected disableUserContent(): void {
@@ -133,6 +161,7 @@ export default class PopupUiAddressValidation extends Component{
         this.$apiNameElement.classList.add(this.getDisableTextClass);
         this.$apiZipCity.classList.add(this.getDisableTextClass);
         this.$apiStreetHouseNo.classList.add(this.getDisableTextClass);
+        this.$globusCardNumberField.classList.add(this.getDisableTextClass);
 
         this.$apiDiv.classList.remove(this.getSelectedDivClass);
     }
@@ -156,22 +185,22 @@ export default class PopupUiAddressValidation extends Component{
     }
 
     protected clickedUserAddress(): void {
-        let firstName = this.$userFirstNameValue;
-        let lastName = this.$userLastNameValue;
-        let street = this.$userStreet;
-        let city = this.$userCity;
-        let zip = this.$userZip;
-        let houseNumber = this.$userHouseNumber;
+        const firstName = this.$userFirstNameValue;
+        const lastName = this.$userLastNameValue;
+        const street = this.$userStreet;
+        const city = this.$userCity;
+        const zip = this.$userZip;
+        const houseNumber = this.$userHouseNumber;
         this.addValuesToFormElements(firstName, lastName, street, city, zip, houseNumber);
     }
 
     protected clickedApiAddress(): void {
-        let firstName = this.$apiFirstNameValue;
-        let lastName = this.$apiLastNameValue;
-        let street = this.$apiStreet;
-        let city = this.$apiCity;
-        let zip = this.$apiZip;
-        let houseNumber = this.$apiHouseNumber;
+        const firstName = this.$apiFirstNameValue;
+        const lastName = this.$apiLastNameValue;
+        const street = this.$apiStreet;
+        const city = this.$apiCity;
+        const zip = this.$apiZip;
+        const houseNumber = this.$apiHouseNumber;
         this.addValuesToFormElements(firstName, lastName, street, city, zip, houseNumber);
 
     }
@@ -188,12 +217,12 @@ export default class PopupUiAddressValidation extends Component{
 
     protected setUserAttributesToModal(): void
     {
-        let firstName = this.$firstName;
-        let lastName = this.$lastName;
-        let street = this.$streetName;
-        let houseNumber = this.$houseNumber;
-        let zip = this.$zip;
-        let city = this.$city;
+        const firstName = this.$firstName;
+        const lastName = this.$lastName;
+        const street = this.$streetName;
+        const houseNumber = this.$houseNumber;
+        const zip = this.$zip;
+        const city = this.$city;
 
         this.$userFirstNameValue = firstName.value;
         this.$userLastNameValue = lastName.value;
@@ -214,30 +243,31 @@ export default class PopupUiAddressValidation extends Component{
         this.$apiStreetHouseNo.append(street + ' ' + houseNumber);
     }
 
-    protected emptyDivElements():void{
-        this.$userNameElement.innerHTML = "";
-        this.$userZipCity.innerHTML = "";
-        this.$userStreetHouseNo.innerHTML = "";
-        this.$apiNameElement.innerHTML = "";
-        this.$apiZipCity.innerHTML = "";
-        this.$apiStreetHouseNo.innerHTML = "";
+    protected emptyDivElements(): void {
+        this.$userNameElement.innerHTML = '';
+        this.$userZipCity.innerHTML = '';
+        this.$userStreetHouseNo.innerHTML = '';
+        this.$apiNameElement.innerHTML = '';
+        this.$apiZipCity.innerHTML = '';
+        this.$apiStreetHouseNo.innerHTML = '';
+        this.$globusCardNumberField.innerHTML = '';
     }
 
-    public submitRegistrationForm(): void
+    submitRegistrationForm(): void
     {
         this.$registrationForm[0].submit();
     }
 
     protected async sendRequestToAddressAPI(): Promise <void>
     {
-        let firstName = this.$firstName;
-        let lastName = this.$lastName;
-        let street = this.$streetName;
-        let houseNumber = this.$houseNumber;
-        let zip = this.$zip;
-        let city = this.$city;
+        const firstName = this.$firstName;
+        const lastName = this.$lastName;
+        const street = this.$streetName;
+        const houseNumber = this.$houseNumber;
+        const zip = this.$zip;
+        const city = this.$city;
 
-        const url = "/register/customer-address-api";
+        const url = '/register/customer-address-api';
 
         const formData = new FormData();
 
@@ -252,21 +282,157 @@ export default class PopupUiAddressValidation extends Component{
             { method: 'POST', body: formData })
             .then(response => response.json())
             .then(parsedResponse => {
-                if(parsedResponse != undefined && parsedResponse != []){
+                if (parsedResponse != undefined && parsedResponse !== []){
                     this.addContentToModal(parsedResponse);
                 }
             })
             .catch(error => {});
     }
 
+    protected async callCardNumberCheckAPI(): Promise<string> {
+
+        const cardNumber = $(this.$globusCardNumberField).val();
+        const url = '/register/check-card-number';
+
+        const formData = new FormData();
+        let dataToSend = '';
+
+        formData.append('id', cardNumber);
+
+        await fetch(url,
+            { method: 'POST', body: formData })
+            .then(response => response.json())
+            .then(parsedResponse => {
+                if (parsedResponse != undefined && parsedResponse !== []){
+                    dataToSend = parsedResponse;
+
+                    return dataToSend;
+                }
+            })
+            .catch(error => {
+                return 'error';
+            });
+
+        return dataToSend;
+
+    }
+
+    protected async checkIfDataIsInputed(){
+        let flag = 0;
+
+        if (this.$firstName.value === '' || this.$firstName.value === null){
+            this.$firstName.classList.add('input--error');
+            this.addErrorMessageToTheInputField(this.$firstName);
+            flag = 1;
+        }
+
+        if (this.$lastName.value === '' || this.$lastName.value === null){
+            this.$lastName.classList.add('input--error');
+            this.addErrorMessageToTheInputField(this.$lastName);
+            flag = 1;
+        }
+
+        if (this.$streetName.value === '' || this.$streetName.value === null){
+            this.$streetName.classList.add('input--error');
+            this.addErrorMessageToTheInputField(this.$streetName);
+            flag = 1;
+        }
+
+        if (this.$houseNumber.value === '' || this.$houseNumber.value === null){
+            this.$houseNumber.classList.add('input--error');
+            this.addErrorMessageToTheInputField(this.$houseNumber);
+            flag = 1;
+        }
+
+        if (this.$zip.value === '' || this.$zip.value === null){
+            this.$zip.classList.add('input--error');
+            this.addErrorMessageToTheInputField(this.$zip);
+            flag = 1;
+        }
+
+        if (this.$city.value === '' || this.$city.value === null){
+            this.$city.classList.add('input--error');
+            this.addErrorMessageToTheInputField(this.$city);
+            flag = 1;
+        }
+
+        if (this.requiredCard) {
+            if (this.$globusCardNumberField.value === '' || this.$globusCardNumberField.value === null) {
+                this.$globusCardNumberField.classList.add('input--error');
+                this.addErrorMessageToTheInputField(this.$globusCardNumberField, true);
+                flag = 1;
+            } else {
+                const cardNumber = await this.callCardNumberCheckAPI();
+                if (cardNumber !== 'used_card_error') {
+                    this.hiddenMyGlobusCardNumber.value = cardNumber;
+                } else {
+                    this.$globusCardNumberField.value = '';
+                    this.$globusCardNumberField.classList.add('input--error');
+                    this.addErrorMessageToTheInputField(this.$globusCardNumberField, true);
+                    flag = 1;
+                }
+            }
+        }
+
+        if (flag === 0){
+            return true;
+        } else {
+            this.addErrorMessageToTheSubmitButton();
+
+            return false;
+        }
+    }
+
+    protected removeErrorLabels(): void{
+        this.$firstName.classList.remove('input--error');
+        this.$lastName.classList.remove('input--error');
+        this.$streetName.classList.remove('input--error');
+        this.$houseNumber.classList.remove('input--error');
+        this.$zip.classList.remove('input--error');
+        this.$city.classList.remove('input--error');
+
+        this.$city.classList.remove('input--error');
+
+        if (this.$globusCardNumberField.classList !== undefined) {
+            this.$globusCardNumberField.classList.remove('input--error');
+        }
+
+        this.$errorDivAboveSubmitButton.setAttribute('class', 'errorSubmitMessage');
+        this.$errorDivAboveSubmitButton.textContent = '';
+
+        if (this.$errorMessageSpan.length > 0) {
+            for (let i = 0; i < this.$errorMessageSpan.length; i++) {
+                if (this.$errorMessageSpan[i].parentNode !== undefined) {
+                    this.$errorMessageSpan[i].classList.add('hidden');
+                }
+            }
+        }
+    }
+
+    protected addErrorMessageToTheInputField(element, cardNumberError: boolean = false): void{
+        const errorSpan = document.createElement('span');
+        errorSpan.setAttribute('class', 'errorValidationMessage');
+        errorSpan.textContent = '• Dieses Feld sollte nicht leer sein.';
+        if (cardNumberError) {
+            $(element).parent().append(errorSpan);
+        } else {
+            $(element).parent().append(errorSpan);
+        }
+    }
+
+    protected addErrorMessageToTheSubmitButton(): void{
+        this.$errorDivAboveSubmitButton.setAttribute('class', 'errorSubmitMessage');
+        this.$errorDivAboveSubmitButton.textContent = 'Bitte füllen Sie die Pflichtfelder aus.';
+    }
+
     protected addContentToModal(data): void{
-        let responseData = JSON.parse(data);
-        let firstName = responseData.firstName;
-        let lastName = responseData.lastName;
-        let zip = responseData.address.zip;
-        let houseNumber = responseData.address.houseNo;
-        let street = responseData.address.street;
-        let city = responseData.address.city;
+        const responseData = JSON.parse(data);
+        const firstName = responseData.firstName;
+        const lastName = responseData.lastName;
+        const zip = responseData.address.zip;
+        const houseNumber = responseData.address.houseNo;
+        const street = responseData.address.street;
+        const city = responseData.address.city;
 
         this.$apiFirstNameValue = firstName;
         this.$apiLastNameValue = lastName;
@@ -275,7 +441,7 @@ export default class PopupUiAddressValidation extends Component{
         this.$apiCity = city;
         this.$apiZip = zip;
 
-        this.setApiAttributesModal(firstName, lastName, street, houseNumber, zip, city)
+        this.setApiAttributesModal(firstName, lastName, street, houseNumber, zip, city);
     }
 
     get getLinkToAddressModal(): string{
@@ -384,5 +550,21 @@ export default class PopupUiAddressValidation extends Component{
 
     get getSelectedDivClass(): string{
         return 'selected-div';
+    }
+
+    get errorMessageSpan(): string{
+        return 'errorValidationMessage';
+    }
+
+    get errorDivAboveSubmit(): string{
+        return 'errorMessageAboveSubmitButton';
+    }
+
+    get getMyGlobusCardNumber(): string {
+        return 'myGlobusCardNumber';
+    }
+
+    get getRadioButtonsName(): string {
+        return 'radio_kundenkarte';
     }
 }

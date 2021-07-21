@@ -21,7 +21,7 @@ class GlobusRestApiClientDigitalCard
         $url = GlobusRestApiConfig::getGlobusApiEndPoint(CustomerConstants::GLOBUS_API_END_POINT_NEXT_CARD_NUMBER);
         $result = GlobusRestApiClient::get($url, []);
         $newCardResult = $result->resultToJson();
-        if ($newCardResult->code == 200) {
+        if ($newCardResult->code === '200') {
             $number = $newCardResult->cardNumber;
         } else {
             $number = $newCardResult->message;

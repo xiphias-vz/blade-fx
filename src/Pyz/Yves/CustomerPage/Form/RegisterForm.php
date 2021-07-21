@@ -358,7 +358,7 @@ class RegisterForm extends SprykerRegisterForm
         $prefixes = Config::get(CustomerConstants::CUSTOMER_PHONE_PREFIX);
         $builder->add(self::FIELD_PHONE_PREFIX_1, ChoiceType::class, [
             'choices' => array_flip($prefixes),
-            'required' => false,
+            'required' => true,
             'label' => false,
             'constraints' =>
             [
@@ -379,7 +379,7 @@ class RegisterForm extends SprykerRegisterForm
         $prefixes = Config::get(CustomerConstants::CUSTOMER_PHONE_PREFIX);
         $builder->add(self::FIELD_PHONE_PREFIX_2, ChoiceType::class, [
             'choices' => array_flip($prefixes),
-            'required' => false,
+            'required' => true,
             'label' => false,
         ]);
 

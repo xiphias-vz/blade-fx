@@ -596,6 +596,7 @@ $config[\Pyz\Shared\Customer\CustomerConstants::GLOBUS_API_CONSTANTS] = [
     'globus_api_endpoint' => [
         'globusApiEndPointAddressValidation' => '/v1/meinglobus/validations/address',
         'globusApiEndPointNextCardNumber' => '/v2/meinglobus/digitalcard/nextcard',
+        'globusApiEndPointCheckCardStatus' => '/v1/card/cards/{cardNumber}/status',
         'globusApiEndPointAccountAvailable' => '/v2/meinglobus/accounts/registrations/available',
         'globusApiEndPointAccountLogin' => '/v2/meinglobus/accounts/login',
         'globusApiEndPointAccountPasswordReset' => 'v2/meinglobus/accounts/password/reset',

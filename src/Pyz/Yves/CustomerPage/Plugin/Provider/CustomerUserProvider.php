@@ -439,6 +439,16 @@ class CustomerUserProvider extends SprykerCustomerUserProvider implements Custom
     }
 
     /**
+     * @param string $cardNumber
+     *
+     * @return string
+     */
+    public function checkCardNumberAvailability(string $cardNumber): string
+    {
+        return GlobusRestApiClientAccount::checkCardNumberAvailability($cardNumber);
+    }
+
+    /**
      * @param string $emailOrCardNumber
      * @param string $password
      *

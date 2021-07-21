@@ -32,6 +32,10 @@
             margin-bottom: rem(8);
         }
 
+        &__flex {
+            display: flex;
+        }
+
         &__information-paragraph-margin {
             margin: rem(0);
 
@@ -81,7 +85,7 @@
 
         &__orange-radio-button {
             border:2px solid white;
-            box-shadow:0 0 0 1px #932;
+            box-shadow:0 0 0 1px $setting-color-globus-darkGray;
             appearance: none;
             border-radius:50%;
             width:rem(12);
