@@ -114,9 +114,9 @@ auth.login,Sign up,en_US
 auth.password,"Heslo",cs_CZ
 forget.password,Passwort vergessen,de_DE
 forget.password,Forget Password,en_US
-enter.your.email.address.for.reset.password.title.1,Bitte tragen Sie hier E-Mail-Adresse ein,de_DE
-enter.your.email.address.for.reset.password.title.2,um Ihr Passwort zurück zu setzen,de_DE
-email.or.card.number,E-mail-Adrese order Kundenkartennummer,de_DE
+enter.your.email.address.for.reset.password.title.1,Bitte tragen Sie hier Ihre E-Mail-Adresse ein,de_DE
+enter.your.email.address.for.reset.password.title.2,um Ihr Passwort zurück zu setzen.,de_DE
+email.or.card.number,E-mail-Adresse oder Kundenkartennummer,de_DE
 auth.password,Passwort,de_DE
 auth.password,Password,en_US
 auth.password-forgot,"Zapomněli jste?",cs_CZ
