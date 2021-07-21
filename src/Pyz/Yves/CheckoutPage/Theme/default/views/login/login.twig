@@ -97,6 +97,7 @@
             color: #ea8901;
             background-color: transparent;
             cursor: pointer;
+            font-weight: 700;
         }
 
         .cancelFlex {
@@ -478,7 +479,7 @@
                             <div class="hr-line-solid"></div>
 
                             <p id="basicHelpText" class="hintText">> <a class="helpLink" href="https://globus.zendesk.com/hc/de" target="_blank">{{ 'checkout.step.customer.login.help_text' | trans }}</a></p>
-                            <p id="newUserHelpText" class="hintText">> {{ 'checkout.step.customer.login.new_user_text' | trans }} <button class="helpLink linkOrange">{{ 'checkout.step.customer.login.globus_account_text' | trans }}</button></p>
+                            <p id="newUserHelpText" class="hintText">> {{ 'checkout.step.customer.login.new_user_text' | trans }} <button id="btnRegisterUser" class="helpLink linkOrange">{{ 'checkout.step.customer.login.globus_account_text' | trans }}</button></p>
 
                         </div>
 
@@ -640,7 +641,7 @@
                             <div class="hr-line-solid"></div>
 
                             <p id="basicHelpText" class="hintText">> <a class="helpLink" href="https://globus.zendesk.com/hc/de" target="_blank">{{ 'checkout.step.customer.login.help_text' | trans }}</a></p>
-                            <p id="newUserHelpText" class="hintText">> {{ 'checkout.step.customer.login.new_user_text' | trans }} <a class="helpLink linkOrange" href="/register">{{ 'checkout.step.customer.login.globus_account_text' | trans }}</a></p>
+                            <p id="newUserHelpText" class="hintText">> {{ 'checkout.step.customer.login.new_user_text' | trans }} <a id="lnkRegisterUser" class="helpLink linkOrange" href="/register">{{ 'checkout.step.customer.login.globus_account_text' | trans }}</a></p>
 
                         </div>
 
@@ -907,13 +908,19 @@
         });
 
         $("#btnContinueRegistrationAsGuest").click(function(){
+            checkoutStep('guestCheckout');
             $("#guestForm_customer_email").val($("#startRegistrationForm_customer_email").val());
             document.getElementsByName("guestForm")[0].submit();
         });
 
-        $("#newUserHelpText").click(function(){
+        $("#btnRegisterUser").click(function(){
+            checkoutStep('register');
             $("#loginAPI").css("display", "none");
             $("#additionalLoginForm").css("display", "block");
+        });
+
+        $("#lnkRegisterUser").click(function(){
+            checkoutStep('register');
         });
 
         $("#btnCallForgotPasswordApi").click(function(){
