@@ -19,6 +19,7 @@ use Spryker\Shared\Config\Config;
 use Spryker\Shared\Customer\Code\Messages;
 use SprykerShop\Yves\CustomerPage\Controller\RegisterController as SprykerShopRegisterController;
 use SprykerShop\Yves\CustomerPage\Plugin\Provider\CustomerPageControllerProvider;
+use Symfony\Component\Form\FormView;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -81,10 +82,19 @@ class RegisterController extends SprykerShopRegisterController
             ->getFactory()
             ->createCustomerFormFactory()
             ->getLoginForm();
+        $customer = new FormView();
+        $customer->vars = array_merge(
+            $customer->vars,
+            (new CustomerTransfer())->toArray(),
+            ['full_name' => '', 'unique_block_prefix' => '', 'block_prefixes' => '']
+        );
+
+        $registerFormView = $registerForm->createView();
 
         return [
             'loginForm' => $loginForm->createView(),
-            'registerForm' => $registerForm->createView(),
+            'registerForm' => $registerFormView,
+            'customer' => $customer,
         ];
     }
 

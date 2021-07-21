@@ -66,6 +66,7 @@ class AuthenticationHandler extends SprykerAuthenticationHandler
             $customerResponseTransfer->setIsSuccess($isRegistrationAuthorized);
             if ($isRegistrationAuthorized) {
                  $customerResponseTransfer = parent::registerCustomer($customerTransfer);
+                 $isAuthorized = true;
             }
         }
 
@@ -241,7 +242,7 @@ class AuthenticationHandler extends SprykerAuthenticationHandler
         $result = GlobusRestApiClientAccount::registrationFull($data);
         if ($result->isSuccess) {
             $resultRegisterApi = $result->resultToJson();
-            if ($resultRegisterApi->UID) {
+            if (isset($resultRegisterApi->UID)) {
                 return true;
             } else {
                 return false;

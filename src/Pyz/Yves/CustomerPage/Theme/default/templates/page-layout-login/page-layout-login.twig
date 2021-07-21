@@ -7,6 +7,9 @@
 } %}
 
 {% block container %}
+    {% if app.currentCodeBucket == 'DE' %}
+        {{ include('@CustomerPage/templates/page-layout-login/page-layout-loginDE.twig') }}
+    {% else %}
     <script src="https://code.jquery.com/jquery-latest.min.js"></script>
     <script language="JavaScript" src="{{ data.scriptSrc }}"></script>
     <style>
@@ -233,5 +236,5 @@
         gigyaLoginScreen();
 
     </script>
-
+    {% endif %}
 {% endblock %}

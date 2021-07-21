@@ -1,0 +1,480 @@
+
+{% define data = {
+    isLogin: false,
+    scriptSrc: app.customerCDCApiUrl,
+    reCaptchaKey: app.reCaptchaSiteKey,
+    forms: {
+        registration: _view.registerForm,
+        customer: _view.customer
+    }
+} %}
+
+{% block container %}
+    <style>
+        .button--maxLarge {
+            width: 100%;
+        }
+
+        .stepTitle {
+            margin-bottom: 5px;
+        }
+        .form-desc {
+            margin-top: 4px;
+            margin-bottom: 20px;
+        }
+
+        .customLogin-footer {
+            margin-top: 10px;
+        }
+
+        .btn-link {
+            background-color: transparent !important;
+            color: #7c7c7c !important;
+        }
+
+        .btn-link:hover,
+        .btn-link:focus,
+        .btn-link:active
+        {
+            background-color: transparent !important;
+            color: #7c7c7c !important;
+        }
+
+        .hr-line-solid {
+            border-bottom: 1px solid black;
+            background-color: rgba(0, 0, 0, 0);
+            border-style: solid !important;
+            margin-top: 15px;
+            margin-bottom: 15px;
+            width: 100%;
+        }
+
+        .hintText {
+            color: #71747c;
+        }
+
+        .helpLink {
+            text-decoration: none;
+        }
+
+        .linkOrange {
+            color: #ea8901;
+            background-color: transparent;
+            cursor: pointer;
+        }
+
+        .cancelFlex {
+            /*margin-top:auto;
+            position: absolute;
+            bottom: 30px;*/
+        }
+
+        .cancelBtn {
+            border: 1px solid;
+        }
+        #customerPasswordDiv, #ForgotPasswordLinkDiv, #btnLogin {
+            display: none;
+        }
+
+        #ForgotPasswordLinkDiv {
+            margin-top: 10px;
+        }
+
+        #forgotPasswordDiv {
+            display: none;
+        }
+
+        #forgotPasswordMessage {
+            color: #FF3400;
+        }
+
+        #emailCheckIcon, #startRegister_emailCheckIcon, #passwordToggleEye, #startRegister_passwordToggleEye {
+            display: none;
+            position: absolute;
+            bottom: 21px;
+            right: 20px;
+            width: 24px;
+            height: 24px;
+            background: transparent;
+        }
+
+        #passwordToggleEye, #startRegister_passwordToggleEye {
+            display: block;
+            position: absolute;
+            bottom: 28px;
+            right: 28px;
+            width: 24px;
+            height: 24px;
+            background: transparent;
+            cursor: pointer;
+        }
+
+        #customerEmailDiv,
+        #startRegister_customerEmailDiv,
+        #customerPasswordDiv,
+        #startRegister_customerPasswordDiv {
+            position: relative;
+        }
+
+        #checkoutCustomerRegister {
+            display: none;
+        }
+
+        #btnContinueRegistrationAsGuest {
+            background-color: transparent;
+            border: 1px solid #ea8901;
+            color: #ea8901;
+            margin-bottom: 20px;
+        }
+
+        #startRegister_passwordCheckBoxes {
+            display: none;
+        }
+
+        #hiddenGuestForm {
+            display: none;
+        }
+
+        #btnCancelLogin {
+            text-decoration: none;
+        }
+
+        #btnContinueRegistration, #btnContinueRegistrationAsGuest, #btnCancelLogin, #btnCheckMailOrCard  {
+            cursor: pointer;
+        }
+
+        input[type='checkbox'] {
+            appearance: none;
+        }
+
+        input[type='checkbox']:checked:after {
+            content: "\2714";
+            font-size: 14px;
+            border: none;
+            background-color: #B8DCC3;
+            color: white;
+            border-radius: 3px;
+        }
+
+        .checkboxError {
+            border: 1px solid grey;
+            width: 12px;
+            height: 15px;
+            border-radius: 3px;
+        }
+
+        #link-to-address-modal{
+            float: right;
+        }
+        .list-switches {
+            visibility: collapse;
+            height: 0px;
+        }
+        .page-layout-customer__form-wrap {
+            border-top: 0.0625rem solid #dce0e5;
+        }
+
+        .margin-telefon-title {
+            margin-left: 1rem;
+            margin-bottom: 0.5rem;
+            display: block;
+            width: 100%;
+            font: 500 0.75rem "Clearface-Medium", Arial, sans-serif;
+        }
+
+        @media screen and (max-width: 768px) {
+            .register-form-tablet-width {
+                width: 96%;
+            }
+        }
+    </style>
+    <div class="page-layout-customer page-layout-customer--login-wrap">
+        <div class="page-layout-customer__form-wrap">
+
+            <div id="additionalLoginForm" class="form form--login form--checkout-actions">
+                <h2 class="createCustomerTitle">{{ 'checkout.step.customer.login.create_customer_title' | trans }}</h2>
+                <form name="startRegistrationForm" method="post" novalidate="novalidate">
+                    <div class="form__container">
+                        <div class="form__fields grid grid--top">
+                            <div class="form form--login form--checkout-actions form--grid-indent" data-qa="component form">
+                                <div class="form__container">
+                                    <div id="startRegister_customerEmailDiv" class="form__fields grid grid--top">
+                                        <div class="form__field col col--sm-12">
+                                            <label for="startRegistrationForm_customer_email" class="label label--required">{{ 'checkout.step.customer.login.emailField.labelCreate' | trans }}</label>
+                                            <input id="startRegistrationForm_customer_email" name="startRegistrationForm[customer][email]" required="required" placeholder="{{ 'checkout.step.customer.login.emailField.placeholderCreate' | trans }}" class="input input--expand" type="email" >
+                                            <span id="startRegister_emailCheckIcon" class="icon-check"></span>
+                                        </div>
+                                    </div>
+                                    <div id="startRegister_customerPasswordDiv" class="form__fields grid grid--top">
+                                        <div class="form__field col col--sm-12">
+                                            <label for="startRegister__customer_password" class="label label--required">{{ 'auth.password' | trans }}</label>
+                                            <input id="startRegister__customer_password" name="startRegistrationForm[customer][password]" required="required" placeholder="{{ 'customer.login.password_placeholder' | trans }}" class="input input--expand" type="password" >
+                                            <button type="button" id="startRegister_passwordToggleEye" class="icon-eye"></button>
+                                        </div>
+                                    </div>
+                                    <div id="startRegister_passwordCheckBoxes" class="form__fields grid grid--top">
+                                        <div class="form__field col col--sm-12">
+                                            <label for="passwordCheckBoxes" class="label label--required">Ihr Passwort muss folgende Kriterien erfüllen:</label>
+                                            <div><input id="passwordCheckBoxes_length" name="passwordCheckBoxes[length]" type="checkbox" onclick="return false;" />
+                                                <label for="passwordCheckBoxes_length" class="label">mind. 8 Zeichen lang</label></div>
+                                            <div><input id="passwordCheckBoxes_specChar" name="passwordCheckBoxes[specChar]" placeholder="{{ 'customer.login.password_placeholder' | trans }}" type="checkbox" onclick="return false;" />
+                                                <label for="passwordCheckBoxes_specChar" class="label">mind. 1 Sonderzeichen (außer...)</label></div>
+                                            <div><input id="passwordCheckBoxes_digit" name="passwordCheckBoxes[digit]" placeholder="{{ 'customer.login.password_placeholder' | trans }}" type="checkbox" onclick="return false;" />
+                                                <label for="passwordCheckBoxes_digit" class="label">mind. 1 Ziffer</label></div>
+                                            <div><input id="passwordCheckBoxes_letter" name="passwordCheckBoxes[letter]" placeholder="{{ 'customer.login.password_placeholder' | trans }}" type="checkbox" onclick="return false;" />
+                                                <label for="passwordCheckBoxes_letter" class="label">mind. 1 Buchstabe</label></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form__actions">
+{#                            <button id="btnContinueRegistrationAsGuest" type="button" class="form__action col col--middle button button--expand-tablet button--maxLarge">{{ 'checkout.customer.auth_as_guest' | trans }}</button>#}
+                            <button id="btnContinueRegistration" type="button" class="form__action col col--middle button button--expand-tablet button--maxLarge" disabled>{{ 'general.next.button' | trans }}</button>
+                        </div>
+
+                        <div class="customLogin-footer form__actions">
+                            <button id="btnCancelLogin" type="button" class="btn btn-link col col--middle">{{ 'general.cancel.button' | trans }}</button>
+                        </div>
+
+                        <div class="hr-line-solid"></div>
+
+                        <p id="basicHelpText" class="hintText">> <a class="helpLink" href="https://globus.zendesk.com/hc/de" target="_blank">{{ 'checkout.step.customer.login.help_text' | trans }}</a></p>
+                    </div>
+                </form>
+            </div>
+
+            <div id="checkoutCustomerRegister" class="js-customer-page-login-register grid">
+                <div class="col col--sm-12 col--lg-6 spacing spacing--bigger spacing--inner is-hidden-sm-md">
+                    {% embed molecule('register-page-left-side') only %}
+                    {% endembed %}
+                </div>
+
+                <div class="col col--sm-12 col--lg-6 spacing spacing--bigger spacing--inner"  id="page-layout-customer_register2">
+                    {% embed molecule('form-register') with {
+                        class: 'register-form js-login__register',
+                        modifiers: ['checkout-actions'],
+                        data: {
+                            form: data.forms.registration,
+                            submit: {
+                                enable: false,
+                                text: 'checkout.customer.auth_as_user' | trans,
+                                class: 'form__action--checkout col col--middle button button--expand-tablet button--large',
+                            },
+                        },embed: {
+                            forms: {
+                                customer: data.forms.customer,
+                            },
+                        },
+                        qa: 'register-form'
+                    } only %}
+                        {% block fields %}
+                            {% include molecule('customer-confirmation-form', 'CustomerConfirmationPage') ignore missing %}
+                        {% endblock %}
+                    {% endembed %}
+                    {% embed molecule('popup-ui-address-validation') with {
+                    } only %}
+                    {% endembed %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script type="text/javascript">
+        function cancelLogin() {
+            localStorage.setItem('cancelLogin', "true");
+            location.reload();
+        }
+
+        $(document).ready(function () {
+            let passwordField = document.querySelector('#startRegister__customer_password');
+            passwordField.removeAttribute('autocomplete');
+            passwordField.value = "";
+            let emailField = document.querySelector('#startRegistrationForm_customer_email');
+            emailField.removeAttribute('autocomplete');
+            emailField.value = "";
+        })
+
+        function checkoutStep(option)
+        {
+            window.dataLayer.push({
+                'event': 'eec.checkout',
+                'ecommerce':
+                    {
+                        'checkout':
+                            {
+                                'actionField':
+                                    {
+                                        'step': '1',
+                                        'option': option,
+                                    }
+                            },
+                    },
+            });
+        }
+
+        var emailField = $('#startRegistrationForm_customer_email');
+        var passField = $('#startRegister__customer_password');
+        var regGlobalEmail = /^\S+@\S+$/;
+        var regGlobalPass = /^(?=.*\d)(?=.*[a-zA-Z])(?=.*\W)(?!.*\s).{8,}$/;
+
+        var btnCheck = document.getElementById('btnCheckMailOrCard');
+        if(btnCheck != null)
+        {
+            btnCheck.addEventListener('click', function()
+            {
+                var emailOrCardNumber = $("#customLoginForm_customer_email").val();
+                const url = "/login/check-availability"
+
+                if(emailOrCardNumber != ""){
+                    $.ajax(url, {
+                        type: 'POST',  // http method
+                        data: { id: emailOrCardNumber },  // data to submit
+                        success: function (data, status, xhr) {
+                            let response = JSON.parse(data);
+                            if(response.isAvailable === true){
+                                $("#additionalLoginForm").css("display", "block");
+
+                                $("#startRegistrationForm_customer_email").val(emailOrCardNumber);
+                            }
+                            else
+                            {
+                                $("#customerPasswordDiv").css("display", "block");
+                                $("#ForgotPasswordLinkDiv").css("display", "block");
+                                $('#btnCheckMailOrCard').css("display", "none");
+                                $("#emailCheckIcon").css("display", "block");
+
+                            }
+                        },
+                        error: function (jqXhr, textStatus, errorMessage) {
+                        }
+                    });
+                }
+                else {
+                    $("#additionalLoginForm").css("display", "block");
+                }
+            });
+        }
+
+        $("#btnCancelLogin").click(function(){
+            window.location.reload();
+        });
+
+        $("#btnCancelRegister").click(function(){
+            window.location.reload();
+        });
+
+        $("#passwordToggleEye").click(function(){
+            var el = $("#customLoginForm_customer_password")[0];
+            if(el.type === "password"){
+                el.type = "text";
+            }
+            else
+            {
+                el.type = "password";
+            }
+
+            $("#passwordToggleEye").toggleClass("icon-eye");
+            $("#passwordToggleEye").toggleClass("icon-eyeclosed");
+        });
+
+        $("#startRegister_passwordToggleEye").click(function(){
+            var el = $("#startRegister__customer_password")[0];
+            if(el.type === "password"){
+                el.type = "text";
+            }
+            else
+            {
+                el.type = "password";
+            }
+
+            $("#startRegister_passwordToggleEye").toggleClass("icon-eye");
+            $("#startRegister_passwordToggleEye").toggleClass("icon-eyeclosed");
+        });
+
+        $("#startRegistrationForm_customer_email").on('input', function(ev) {
+            let pass = ev.currentTarget.value;
+            let password = passField.val();
+
+            var reg = /^\S+@\S+$/;
+            if (reg.test(pass) && regGlobalPass.test(password)) {
+                $("#btnContinueRegistration").removeAttr("disabled");
+            }
+            else {
+                $("#btnContinueRegistration").prop("disabled", "true");
+            }
+        });
+
+        $("#startRegister__customer_password").on('input', function(ev){
+            let pass = ev.currentTarget.value;
+            let email = emailField.val();
+
+            $("#startRegister_passwordCheckBoxes").css("display", "block");
+            if(pass.length > 8){
+                $("#passwordCheckBoxes_length").prop("checked", "true");
+                $("#passwordCheckBoxes_length").removeClass("checkboxError");
+            }
+            else {
+                $("#passwordCheckBoxes_length").removeAttr("checked");
+                $("#passwordCheckBoxes_length").addClass("checkboxError");
+            }
+
+            let regSpecialChars = /\W/;
+            if(regSpecialChars.test(pass)){
+                $("#passwordCheckBoxes_specChar").prop("checked", "true");
+                $("#passwordCheckBoxes_specChar").removeClass("checkboxError");
+            }
+            else {
+                $("#passwordCheckBoxes_specChar").removeAttr("checked");
+                $("#passwordCheckBoxes_specChar").addClass("checkboxError");
+            }
+
+            let regDigits = /\d/;
+            if(regDigits.test(pass)){
+                $("#passwordCheckBoxes_digit").prop("checked", "true");
+                $("#passwordCheckBoxes_digit").removeClass("checkboxError");
+            }
+            else {
+                $("#passwordCheckBoxes_digit").removeAttr("checked");
+                $("#passwordCheckBoxes_digit").addClass("checkboxError");
+            }
+
+            let regLetters = /[a-zA-Z]/;
+            if(regLetters.test(pass)){
+                $("#passwordCheckBoxes_letter").prop("checked", "true");
+                $("#passwordCheckBoxes_letter").removeClass("checkboxError");
+            }
+            else {
+                $("#passwordCheckBoxes_letter").removeAttr("checked");
+                $("#passwordCheckBoxes_letter").addClass("checkboxError");
+            }
+
+            var regPass = /^(?=.*\d)(?=.*[a-zA-Z])(?=.*\W)(?!.*\s).{8,}$/;
+            if (regPass.test(pass) && regGlobalEmail.test(email)) {
+                $("#btnContinueRegistration").removeAttr("disabled");
+            }
+            else {
+                $("#startRegister__customer_password").css("border", "2px solid red");
+                $("#btnContinueRegistration").prop("disabled", "true");
+            }
+
+        });
+
+        $("#btnContinueRegistration").click(function(){
+            $("#additionalLoginForm").css("display", "none");
+            $("#checkoutCustomerRegister").css("display", "block");
+            $("#customerRegistrationFormButtons").css("display", "block");
+            $("#registerForm_customer_email").val($("#startRegistrationForm_customer_email").val());
+            $("#registerForm_customer_password_pass").val($("#startRegister__customer_password").val());
+            $("#registerForm_customer_password_confirm").val($("#startRegister__customer_password").val());
+        });
+
+        $("#btnContinueRegistrationAsGuest").click(function(){
+            $("#guestForm_customer_email").val($("#startRegistrationForm_customer_email").val());
+            document.getElementsByName("guestForm")[0].submit();
+        });
+
+    </script>
+
+{% endblock %}
