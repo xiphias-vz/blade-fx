@@ -1,0 +1,109 @@
+{% extends template('page-layout-main') %}
+
+{% define data = {
+    customer: _view.customer
+} %}
+
+{%- block class -%}{{ parent() }} page-layout-main--success-page{%- endblock -%}
+
+{% block breadcrumbs %}{% endblock %}
+
+{% block title %}{% endblock %}
+
+{% block content %}
+        <div class="page-layout-checkout success-page text-center">
+        <div class="success-page__container container">
+            <h1 class="title">{{ 'checkout.step.success.page.title' | trans }}</h1>
+            <p class="success-page__text"></p>
+            <div class="success-information-holder" style="text-align: left;margin:0px auto;width:80%;padding-bottom: 20px;padding-left: 15%;padding-right: 15%;">
+                {% if(data.customer.is_advertise == "false")  %}
+                    {% if(data.customer.address_status == "VZ")  %}
+                        <div style="padding: 10px 0; margin-top: 15px; display: flex;">
+                            <div style="display: inline-block; margin-right: 15px; margin-top: 5px;"><img src="{{ publicPath('images/scanandgo.png') }}" style="width: 80px; height: 30px;" /></div>
+                            <span>{{ 'checkout.scan&goActivated' | trans }}</span>
+                        </div>
+                    {% else %}
+                        <div style="padding: 10px 0; display: flex;">
+                            <div style="display: inline-block; margin-right: 25px; margin-top: 5px;"><img src="{{ publicPath('images/scanandgo.png') }}" style="width: 80px; height: 30px;" /></div>
+                            <span>{{ 'checkout.activateScan&Go' | trans }}</span>
+                        </div>
+                    {% endif %}
+                {% else %}
+                    {% if(data.customer.address_status == "VZ")  %}
+                        <div style="padding: 10px 0; display: flex;">
+                            <div style="display: inline-block; margin-right: 15px; margin-top: 5px;"><img src="{{ publicPath('images/scanandgo.png') }}" style="width: 80px; height: 30px;" /></div>
+                            <span>{{ 'checkout.scan&goActivated' | trans }}</span>
+                        </div>
+                    {% else %}
+                        <div style="padding: 10px 0; display: flex;">
+                            <div style="display: inline-block; margin-right: 15px; margin-top: 5px;"><img src="{{ publicPath('images/brief.png') }}" style="width: 50px; height: 30px;" /></div>
+                            <span>{{ 'checkout.customer.register_firstPharagraph' | trans }}</span>
+                        </div>
+                        <div style="padding: 10px 0; display: flex;">
+                            <div style="display: inline-block; margin-right: 25px; margin-top: 5px;"><img src="{{ publicPath('images/scanandgo.png') }}" style="width: 80px; height: 30px;" /></div>
+                            <span>{{ 'checkout.activateScan&Go' | trans }}</span>
+                        </div>
+                    {% endif %}
+                {% endif %}
+
+                {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+                    <div style="display: flex; justify-content: center">
+                        <a style="background: orange;float: left;margin-top: 15px" class="button" href="/">{{ 'checkout.step.success.page.button' | trans }}</a>
+                    </div>
+                {% endif %}
+
+            </div>
+
+                <div class="not-linked-payback">
+                    <div class="info-banner">
+                        <div class="info-left-banner" >
+                            <div class="title">
+                                <img src="{{ publicPath('images/pb-badge-pdp.png') }}" width="70px" height="25" style="margin-right: 5px;" />
+                                <h3>{{ 'checkout.step.success.payback.not.connected' | trans }}</h3>
+                            </div>
+                            <p>
+                                <span>
+                                    <img src="{{ publicPath('images/check-circle.svg') }}" />
+                                </span>
+                                <span class="payback-tip">{{ 'checkout.step.success.payback.tip.one' | trans }}</span>
+                            </p>
+                            <p>
+                                <span>
+                                    <img src="{{ publicPath('images/check-circle.svg') }}" />
+                                </span>
+                                <span class="payback-tip">{{ 'checkout.step.success.payback.tip.two' | trans }}</span>
+                            </p>
+                            <p>
+                                <span>
+                                    <img src="{{ publicPath('images/check-circle.svg') }}" />
+                                </span>
+                                <span class="payback-tip">{{ 'checkout.step.success.payback.tip.three' | trans }}</span>
+                            </p>
+                            <p>
+                                <span>
+                                    <img src="{{ publicPath('images/check-circle.svg') }}" />
+                                </span>
+                                <span class="payback-tip">{{ 'checkout.step.success.payback.tip.four' | trans }}</span>
+                            </p>
+                            <p>
+                                <span>
+                                    <img src="{{ publicPath('images/check-circle.svg') }}" />
+                                </span>
+                                <span class="payback-tip">{{ 'checkout.step.success.payback.tip.four' | trans }}</span>
+                            </p>
+                            <p>
+                                <span>
+                                    <img src="{{ publicPath('images/check-circle.svg') }}" />
+                                </span>
+                                <span class="payback-tip">{{ 'checkout.step.success.payback.tip.five' | trans }}</span>
+                            </p>
+                            <a class="button payback-discovery" href="https://www.globus.de/kundenprogramme/payback/index.php" target="_blank" style="margin-top:10px;">
+                                {{ 'checkout.step.success.payback.discover' | trans }}
+                            </a>
+                        </div>
+                    </div>
+                    <img class="payback-img" src="{{ publicPath('images/pb-pointee.png') }}"/>
+                </div>
+        </div>
+    </div>
+{% endblock %}

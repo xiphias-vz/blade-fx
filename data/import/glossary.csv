@@ -1606,8 +1606,10 @@ checkout.step.success.payback.tip.two,Mein Globus und PAYBACK Coupons einlösen,
 checkout.step.success.payback.tip.two,Redeem my Globus and PAYBACK coupons,en_US
 checkout.step.success.payback.tip.three,Tankeschön sammeln,de_DE
 checkout.step.success.payback.tip.three,Collect Tankeschön,en_US
-checkout.step.success.payback.tip.four,von exklusiven Vorteilen für Weinliebhaber und Weltentdecker profitieren,de_DE
-checkout.step.success.payback.tip.four,benefit from exclusive advantages for wine lovers and world explorers,en_US
+checkout.step.success.payback.tip.four,Scan & Go nutzen,de_DE
+checkout.step.success.payback.tip.four,Use Scan & Go,en_US
+checkout.step.success.payback.tip.five,von exklusiven Vorteilen für Weinliebhaber und Weltentdecker profitieren,de_DE
+checkout.step.success.payback.tip.five,benefit from exclusive advantages for wine lovers and world explorers,en_US
 checkout.step.success.payback.discover,Jetzt entdecken,de_DE
 checkout.step.success.payback.discover,Now discover,en_US
 checkout.step.error.text,Something went wrong. Sorry.,en_US
@@ -4714,6 +4716,8 @@ checkout.scan&goActivated, "Scan & Go ist für Sie freigeschaltet. Sie können S
 checkout.scan&goActivated, "Scan & Go is activated for you. You can now use Scan & Go conveniently with the (digital) customer card in your Globus store.",en_US
 checkout.activateScan&Go, "Scan & Go freischalten. Wenn Sie Scan & Go nutzen möchten, lassen Sie sich an der Infotheke in Ihrem Markt freischalten.",de_DE
 checkout.activateScan&Go, "Activate Scan & Go. If you would like to use Scan & Go, have yourself activated at the information desk in your store.",en_US
+checkout.step.success.page.title,Vielen Dank für Ihre Registrierung,de_DE
+checkout.step.success.page.button,Jetzt den Shop durchstöbern,de_DE
 register.page.left.side.globus.card.top,"Wenn Sie bereits eine Karte im Markt mitgenommen haben, können Sie hier die Kartennummer eingeben.",de_DE
 register.page.left.side.globus.card.bottom,"Mit dem Klick auf Weiter bestätigen Sie die Mein Globus-",de_DE
 register.page.left.side.globus.card.bottom.hyperlink,"Teilnahmebedingungen",de_DE

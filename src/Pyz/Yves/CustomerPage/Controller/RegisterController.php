@@ -64,7 +64,7 @@ class RegisterController extends SprykerShopRegisterController
                         DataDogConfig::DATA_DOG_REGISTRATION_SUCCESS_STAT,
                     ], [DataDogConfig::DATA_DOG_REGION_SCOPE => APPLICATION_STORE]);
 
-                    return $this->redirectResponseInternal(CustomerPageControllerProvider::ROUTE_CUSTOMER_OVERVIEW);
+                    return $this->redirectResponseInternal(CustomerPageRouteProviderPlugin::ROUTE_CUSTOMER_REGISTER_SUCCESS);
                 }
 
                 $this->getFactory()->getDataDogService()->increment([
@@ -97,6 +97,22 @@ class RegisterController extends SprykerShopRegisterController
             'registerForm' => $registerFormView,
             'customer' => $customer,
         ];
+    }
+
+    /**
+     * @param \Symfony\Component\HttpFoundation\Request $request
+     *
+     * @return \Spryker\Yves\Kernel\View\View
+     */
+    public function registerSuccessAction(Request $request)
+    {
+        $customerData = $this->getFactory()->getCustomerClient()->getCustomer()->toArray();
+
+        return $this->view(
+            ['customer' => $customerData],
+            [],
+            '@CustomerPage/views/register-success/register-success.twig'
+        );
     }
 
     /**
