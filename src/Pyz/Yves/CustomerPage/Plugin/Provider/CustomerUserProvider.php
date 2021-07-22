@@ -14,6 +14,7 @@ use Generated\Shared\Transfer\CustomerTransfer;
 use Pyz\Shared\Customer\CustomerConstants;
 use Pyz\Yves\CustomerPage\Controller\ProfileController;
 use Pyz\Yves\GlobusRestApiClient\Provider\GlobusRestApiClientAccount;
+use Pyz\Yves\GlobusRestApiClient\Provider\GlobusRestApiClientCookie;
 use Spryker\Shared\Config\Config;
 use SprykerShop\Yves\CustomerPage\Plugin\Provider\CustomerUserProvider as SprykerCustomerUserProvider;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
@@ -65,11 +66,18 @@ class CustomerUserProvider extends SprykerCustomerUserProvider implements Custom
             }
 
             try {
-                $data = JSON::parse($data);
+                $dataParsed = JSON::parse($data);
+                $token = $dataParsed["response"]["id_token"];
+                $res = GlobusRestApiClientAccount::loginWithToken($token);
+                $cook = new GlobusRestApiClientCookie();
+                $cookie = $cook->createLoginCookie($res, $this->getFactory()->getSessionClient());
+                $cookieConfirm = $cook->createLoginConfirmedCookie();
+                setcookie($cookie->getName(), $cookie->getValue(), $cookie->getExpiresTime(), $cookie->getPath(), $cookie->getDomain());
+                setcookie($cookieConfirm->getName(), $cookieConfirm->getValue(), $cookieConfirm->getExpiresTime(), $cookie->getPath());
 
-                if ($data["screen"] === "gigya-register-screen") {
-                    $this->setCdcPreferredStore($data["response"]["UID"], $customerTransfer->getMerchantReference());
-                    $this->sendCdcMailForRegistration($data["response"]["UID"]);
+                if ($dataParsed["screen"] === "gigya-register-screen") {
+                    $this->setCdcPreferredStore($dataParsed["response"]["UID"], $customerTransfer->getMerchantReference());
+                    $this->sendCdcMailForRegistration($dataParsed["response"]["UID"]);
                 }
             } catch (Exception $ex) {
             }

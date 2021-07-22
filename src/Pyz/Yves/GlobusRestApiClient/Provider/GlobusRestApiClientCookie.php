@@ -44,7 +44,8 @@ class GlobusRestApiClientCookie
             static::COOKIE_NAME,
             $value,
             $ent[static::FIELD_NAME_TOKEN_EXPIRES_AT],
-            '/'
+            '/',
+            static::getDomain()
         );
     }
 
@@ -84,6 +85,17 @@ class GlobusRestApiClientCookie
     }
 
     /**
+     * @return string
+     */
+    private static function getDomain(): string
+    {
+        $parts = explode(".", $_SERVER["HTTP_HOST"]);
+        $partCount = count($parts);
+
+        return $parts[$partCount - 2] . "." . $parts[$partCount - 1];
+    }
+
+    /**
      * @return void
      */
     public static function clearCookies(): void
@@ -93,7 +105,7 @@ class GlobusRestApiClientCookie
             unset($_COOKIE[static::COOKIE_LOGIN_CONFIRMED_NAME]);
         }
         if (isset($_COOKIE[static::COOKIE_NAME])) {
-            setcookie(static::COOKIE_NAME, false, 1);
+            setcookie(static::COOKIE_NAME, false, 1, "/", static::getDomain());
             unset($_COOKIE[static::COOKIE_NAME]);
         }
     }
