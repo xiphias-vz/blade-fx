@@ -45,8 +45,32 @@ class GlobusRestApiClientCookie
             $value,
             $ent[static::FIELD_NAME_TOKEN_EXPIRES_AT],
             '/',
-            static::getDomain()
+            static::getDomain(),
+            true,
+            false,
+            false,
+            'None' // None || Lax  || Strict
         );
+    }
+
+    /**
+     * @param string $data
+     * @param \Spryker\Client\Session\SessionClientInterface $sessionClient
+     *
+     * @return void
+     */
+    public function setLoginCookiePhp(string $data, SessionClientInterface $sessionClient): void
+    {
+        $cookie = $this->createLoginCookie($data, $sessionClient);
+        $arr_cookie_options = [
+            'expires' => $cookie->getExpiresTime(),
+            'path' => $cookie->getPath(),
+            'domain' => $cookie->getDomain(),
+            'secure' => $cookie->isSecure(),
+            'httponly' => $cookie->isHttpOnly(),
+            'samesite' => $cookie->getSameSite(),
+        ];
+        setcookie($cookie->getName(), $cookie->getValue(), $arr_cookie_options);
     }
 
     /**
@@ -58,6 +82,15 @@ class GlobusRestApiClientCookie
             static::COOKIE_LOGIN_CONFIRMED_NAME,
             true
         );
+    }
+
+    
+    /**
+     * @return void
+     */
+    public function setLoginConfirmedCookiePhp(): void
+    {
+        setcookie(static::COOKIE_LOGIN_CONFIRMED_NAME, true);
     }
 
     /**

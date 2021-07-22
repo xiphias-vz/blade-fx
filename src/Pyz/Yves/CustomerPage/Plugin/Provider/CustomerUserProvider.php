@@ -70,10 +70,8 @@ class CustomerUserProvider extends SprykerCustomerUserProvider implements Custom
                 $token = $dataParsed["response"]["id_token"];
                 $res = GlobusRestApiClientAccount::loginWithToken($token);
                 $cook = new GlobusRestApiClientCookie();
-                $cookie = $cook->createLoginCookie($res, $this->getFactory()->getSessionClient());
-                $cookieConfirm = $cook->createLoginConfirmedCookie();
-                setcookie($cookie->getName(), $cookie->getValue(), $cookie->getExpiresTime(), $cookie->getPath(), $cookie->getDomain());
-                setcookie($cookieConfirm->getName(), $cookieConfirm->getValue(), $cookieConfirm->getExpiresTime(), $cookie->getPath());
+                $cook->setLoginCookiePhp($res, $this->getFactory()->getSessionClient());
+                $cook->setLoginConfirmedCookiePhp();
 
                 if ($dataParsed["screen"] === "gigya-register-screen") {
                     $this->setCdcPreferredStore($dataParsed["response"]["UID"], $customerTransfer->getMerchantReference());
