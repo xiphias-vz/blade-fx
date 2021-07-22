@@ -60,6 +60,9 @@ class CustomerUserProvider extends SprykerCustomerUserProvider implements Custom
 
         if (isset($authCheck["errorCode"]) && $authCheck["errorCode"] == 0) {
             $data = $_POST["loginForm"]["data"];
+            if (!str_contains($email, "@")) {
+                $email = json_decode($data, true)["email"];
+            }
             try {
                 $customerTransfer = parent::loadCustomerByEmail($email);
                 $customerTransfer = $this->updateCustomerData($data, $pass, $customerTransfer);
