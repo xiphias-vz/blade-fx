@@ -4721,3 +4721,8 @@ checkout.step.success.page.button,Jetzt den Shop durchstöbern,de_DE
 register.page.left.side.globus.card.top,"Wenn Sie bereits eine Karte im Markt mitgenommen haben, können Sie hier die Kartennummer eingeben.",de_DE
 register.page.left.side.globus.card.bottom,"Mit dem Klick auf Weiter bestätigen Sie die Mein Globus-",de_DE
 register.page.left.side.globus.card.bottom.hyperlink,"Teilnahmebedingungen",de_DE
+register.page.password.check.length,"mind. 8 Zeichen lang",de_DE
+register.page.password.check.spec.char,"mind. 1 Sonderzeichen (außer_)",de_DE
+register.page.password.check.digit,"mind. 1 Ziffer",de_DE
+register.page.password.check.letter,"mind. 1 Buchstabe",de_DE
+register.page.password.checkboxes.label,"Ihr Passwort muss folgende Kriterien erfüllen:",de_DE

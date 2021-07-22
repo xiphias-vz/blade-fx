@@ -389,15 +389,15 @@
                                                 </div>
                                                 <div id="startRegister_passwordCheckBoxes" class="form__fields grid grid--top">
                                                     <div class="form__field col col--sm-12">
-                                                        <label for="passwordCheckBoxes" class="label label--required">Ihr Passwort muss folgende Kriterien erfüllen:</label>
+                                                        <label for="passwordCheckBoxes" class="label label--required">{{ 'register.page.password.checkboxes.label' | trans}}</label>
                                                         <div><input id="passwordCheckBoxes_length" name="passwordCheckBoxes[length]" type="checkbox" onclick="return false;" />
-                                                            <label for="passwordCheckBoxes_length" class="label">mind. 8 Zeichen lang</label></div>
+                                                            <label for="passwordCheckBoxes_length" class="label">{{ 'register.page.password.check.length' | trans }}</label></div>
                                                         <div><input id="passwordCheckBoxes_specChar" name="passwordCheckBoxes[specChar]" placeholder="{{ 'customer.login.password_placeholder' | trans }}" type="checkbox" onclick="return false;" />
-                                                            <label for="passwordCheckBoxes_specChar" class="label">mind. 1 Sonderzeichen (außer...)</label></div>
+                                                            <label for="passwordCheckBoxes_specChar" class="label">{{ 'register.page.password.check.spec.char' | trans }}</label></div>
                                                         <div><input id="passwordCheckBoxes_digit" name="passwordCheckBoxes[digit]" placeholder="{{ 'customer.login.password_placeholder' | trans }}" type="checkbox" onclick="return false;" />
-                                                            <label for="passwordCheckBoxes_digit" class="label">mind. 1 Ziffer</label></div>
+                                                            <label for="passwordCheckBoxes_digit" class="label">{{ 'register.page.password.check.digit' | trans }}</label></div>
                                                         <div><input id="passwordCheckBoxes_letter" name="passwordCheckBoxes[letter]" placeholder="{{ 'customer.login.password_placeholder' | trans }}" type="checkbox" onclick="return false;" />
-                                                            <label for="passwordCheckBoxes_letter" class="label">mind. 1 Buchstabe</label></div>
+                                                            <label for="passwordCheckBoxes_letter" class="label">{{ 'register.page.password.check.letter' | trans }}</label></div>
                                                     </div>
                                                 </div>
                                             </div>
