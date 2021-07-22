@@ -37,7 +37,10 @@ class CustomerUserProvider extends SprykerCustomerUserProvider implements Custom
     protected function loadCustomerByEmail($email)
     {
         $customerTransfer = null;
-        $pass = $_POST["loginForm"]["password"];
+        $pass = '';
+        if (isset($_POST["loginForm"]["password"])) {
+            $pass = $_POST["loginForm"]["password"];
+        }
         $authCheck = $this->getCdcAuthorization($email, $pass);
         if (isset($authCheck["statusCode"])) {
             if ($authCheck["statusCode"] === 403) {
@@ -51,10 +54,12 @@ class CustomerUserProvider extends SprykerCustomerUserProvider implements Custom
                 }
             }
         }
-        $accountInfo = $this->getCdcAccountInfo($authCheck["UID"]);
-        $this->getFactory()->getSessionClient()->set("cdcUID", $authCheck["UID"]);
+        if (isset($authCheck["UID"])) {
+            $accountInfo = $this->getCdcAccountInfo($authCheck["UID"]);
+            $this->getFactory()->getSessionClient()->set("cdcUID", $authCheck["UID"]);
+        }
 
-        if ($authCheck["errorCode"] == 0) {
+        if (isset($authCheck["errorCode"]) && $authCheck["errorCode"] == 0) {
             $data = $_POST["loginForm"]["data"];
             try {
                 $customerTransfer = parent::loadCustomerByEmail($email);

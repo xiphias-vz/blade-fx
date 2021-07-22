@@ -39,7 +39,9 @@ class AuthenticationHandler extends SprykerAuthenticationHandler
         }
         $customerTransfer->setMerchantReference($this->createShopContextResolver()->resolve()->getMerchantReference());
         if (isset($_REQUEST['loginForm'])) {
-            $customerTransfer->setEmail($_REQUEST['loginForm']['email']);
+            if (empty($customerTransfer->getEmail())) {
+                $customerTransfer->setEmail($_REQUEST['loginForm']['email']);
+            }
             $customerTransfer->setPassword($_REQUEST['loginForm']['password']);
             $isAuthorized = $this->getCdcAuthorization($customerTransfer->getEmail(), $customerTransfer->getPassword());
 
