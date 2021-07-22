@@ -4726,3 +4726,4 @@ register.page.password.check.spec.char,"mind. 1 Sonderzeichen (außer_)",de_DE
 register.page.password.check.digit,"mind. 1 Ziffer",de_DE
 register.page.password.check.letter,"mind. 1 Buchstabe",de_DE
 register.page.password.checkboxes.label,"Ihr Passwort muss folgende Kriterien erfüllen:",de_DE
+register.step.success.page.brief.text,"Um Ihre Registrierung abzuschließen, bestätigen Sie bitte unsere E-Mails zu Ihrem Account und der Werbeeinwilligung.",de_DE

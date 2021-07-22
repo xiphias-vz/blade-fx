@@ -24,10 +24,6 @@ class RegistrationCheckoutAuthenticationHandlerPlugin extends SprykerRegistratio
      */
     public function addToQuote(QuoteTransfer $quoteTransfer)
     {
-        $customer = $quoteTransfer->getCustomer();
-        $customer->setIsAdvertise($_REQUEST["registerForm_isAdvertise"]);
-        $customer->setMyGlobusCard($_REQUEST["registerForm_my_globus_card_number"]);
-        $quoteTransfer->setCustomer($customer);
         $customerResponseTransfer = $this->getFactory()
             ->getAuthenticationHandler()
             ->registerCustomer($quoteTransfer->getCustomer());

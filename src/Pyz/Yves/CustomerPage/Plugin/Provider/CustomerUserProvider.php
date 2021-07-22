@@ -38,6 +38,8 @@ class CustomerUserProvider extends SprykerCustomerUserProvider implements Custom
     {
         $customerTransfer = null;
         $pass = '';
+        $accountInfo = [];
+
         if (isset($_POST["loginForm"]["password"])) {
             $pass = $_POST["loginForm"]["password"];
         }

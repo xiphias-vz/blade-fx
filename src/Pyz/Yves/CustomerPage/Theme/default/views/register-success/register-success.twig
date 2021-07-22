@@ -31,16 +31,20 @@
                 {% else %}
                     {% if(data.customer.address_status == "VZ")  %}
                         <div style="padding: 10px 0; display: flex;">
-                            <div style="display: inline-block; margin-right: 15px; margin-top: 5px;"><img src="{{ publicPath('images/scanandgo.png') }}" style="width: 80px; height: 30px;" /></div>
+                            <div style="display: inline-block; margin-right: 30px; margin-top: 5px;"><img src="{{ publicPath('images/brief.png') }}" style="width: 45px; height: 30px;" /></div>
+                            <span>{{ 'register.step.success.page.brief.text' | trans }}</span>
+                        </div>
+                        <div style="padding: 10px 0; display: flex;">
+                            <div style="display: inline-block; margin-right: 30px; margin-top: 5px;"><img src="{{ publicPath('images/scanandgo.png') }}" style="width: 80px; height: 30px;" /></div>
                             <span>{{ 'checkout.scan&goActivated' | trans }}</span>
                         </div>
                     {% else %}
                         <div style="padding: 10px 0; display: flex;">
-                            <div style="display: inline-block; margin-right: 15px; margin-top: 5px;"><img src="{{ publicPath('images/brief.png') }}" style="width: 50px; height: 30px;" /></div>
-                            <span>{{ 'checkout.customer.register_firstPharagraph' | trans }}</span>
+                            <div style="display: inline-block; margin-right: 30px; margin-top: 5px;"><img src="{{ publicPath('images/brief.png') }}" style="width: 45px; height: 30px;" /></div>
+                            <span>{{ 'register.step.success.page.brief.text' | trans }}</span>
                         </div>
                         <div style="padding: 10px 0; display: flex;">
-                            <div style="display: inline-block; margin-right: 25px; margin-top: 5px;"><img src="{{ publicPath('images/scanandgo.png') }}" style="width: 80px; height: 30px;" /></div>
+                            <div style="display: inline-block; margin-right: 30px; margin-top: 5px;"><img src="{{ publicPath('images/scanandgo.png') }}" style="width: 80px; height: 30px;" /></div>
                             <span>{{ 'checkout.activateScan&Go' | trans }}</span>
                         </div>
                     {% endif %}
@@ -78,12 +82,6 @@
                                     <img src="{{ publicPath('images/check-circle.svg') }}" />
                                 </span>
                                 <span class="payback-tip">{{ 'checkout.step.success.payback.tip.three' | trans }}</span>
-                            </p>
-                            <p>
-                                <span>
-                                    <img src="{{ publicPath('images/check-circle.svg') }}" />
-                                </span>
-                                <span class="payback-tip">{{ 'checkout.step.success.payback.tip.four' | trans }}</span>
                             </p>
                             <p>
                                 <span>

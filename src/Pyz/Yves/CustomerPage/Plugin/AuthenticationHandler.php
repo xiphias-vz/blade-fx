@@ -255,6 +255,9 @@ class AuthenticationHandler extends SprykerAuthenticationHandler
                     $customerTransfer->setAddressStatus($resultRegisterApi->profile->address->verification->status);
                 }
 
+                $customerTransfer->setIsAdvertise($_REQUEST["registerForm_isAdvertise"]);
+                $customerTransfer->setMyGlobusCard($_REQUEST["registerForm_my_globus_card_number"]);
+
                 return true;
             } else {
                 return false;

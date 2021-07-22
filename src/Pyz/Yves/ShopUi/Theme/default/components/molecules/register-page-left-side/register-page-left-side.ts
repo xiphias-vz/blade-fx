@@ -19,6 +19,7 @@ export default class RegisterPageLeftSide extends Component{
         this.hiddenMyGlobusCardNumber = document.querySelector('#registerForm_my_globus_card_number');
         this.hiddenIsAdvertise = document.querySelector('#registerForm_isAdvertise');
         this.checkboxIsAdvertise = document.querySelector('#chk_isAdvertise .checkbox__input');
+        this.hiddenIsAdvertise.value = "false";
 
         this.mapEvents();
     }
