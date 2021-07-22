@@ -4321,7 +4321,7 @@ checkout.step.summary.info.down,"*Der Vorteil der Mehrwertsteuersenkung wird Ihn
 checkout.step.summary.info.down1,"Ušetřete na servisním poplatku!",cs_CZ
 checkout.step.summary.info.down1,"Sparen Sie bei der Servicegebühr!",de_DE
 checkout.step.summary.info.down2,"Požádejte o zákaznickou kartu Můj Globus hned teď a za svůj nákup zaplatíte pouze servisní poplatek 1,99 €.",cs_CZ
-checkout.step.summary.info.down2,"Jetzt die Mein Globus Kundekarte beantragen und nur 1,99€ Servicegebühr für Ihren Einkauf zahlen.",de_DE
+checkout.step.summary.info.down2,"Jetzt die Mein Globus Kundenkarte beantragen und nur 1,99€ Servicegebühr für Ihren Einkauf zahlen.",de_DE
 checkout.timeslots.info,"* Pokud se rozhodnete zboží v obchodě nevyzvednout, nebudeme Vám účtovat žádné poplatky.",cs_CZ
 checkout.timeslots.info,"*We do not charge any fees if you decide not to pick up the goods at the store.",en_US
 checkout.timeslots.info,"*Wir berechnen keine Gebühren, wenn du dich dagegen entscheidest, die Waren in der Filiale abzuholen.",de_DE
@@ -4701,7 +4701,7 @@ pdp.modal.age.confirmation.18question.part1,"Tento produkt mohou zakoupit pouze 
 pdp.modal.age.confirmation.18question.part2,Are you 18 years old?,en_US
 pdp.modal.age.confirmation.18question.part2,Sind Sie 18 jahre alt?,de_DE
 pdp.modal.age.confirmation.18question.part2,"Je vám 18 let?",cs_CZ
-globus.card.registration.text,Entdecken Sie mit Ihrer persönlichen Mein Globus-Kundekarte viele Vorteile.,de_DE
+globus.card.registration.text,Entdecken Sie mit Ihrer persönlichen Mein Globus-Kundenkarte viele Vorteile.,de_DE
 globus.card.registration.text,Discover many advantages with your personal My Globus customer card.,en_US
 globus.card.registration.text_before,Holen Sie sich Ihre persönliche Kundenkarte und erhalten Sie viele Vorteile und Vergünstigungen.,de_DE
 globus.card.registration.text_before,Get your personal customer card and receive many advantages and discounts.,en_US

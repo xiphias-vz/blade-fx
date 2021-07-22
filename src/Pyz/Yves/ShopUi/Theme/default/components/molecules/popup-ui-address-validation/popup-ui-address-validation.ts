@@ -46,14 +46,16 @@ export default class PopupUiAddressValidation extends Component{
     protected $radioButtons;
     protected hiddenMyGlobusCardNumber;
 
+    protected registerForma = false;
     protected requiredCard = false;
     protected globalCardNumber;
 
     protected async readyCallback() {
         this.linkToAddressModal = this.findElement(this.getLinkToAddressModal);
         if(!this.linkToAddressModal) {
-            this.linkToAddressModal = document.getElementsByClassName('form__action js-form-register__submit-button form__action--login button button--large button--expand')[0];
+            this.linkToAddressModal = document.getElementsByClassName('form__action js-form-register__submit-button form__action--login button button--large button--expand-tablet')[0];
             if(this.linkToAddressModal) {
+                this.registerForma = true;
                 this.linkToAddressModal.addEventListener("click", function(event) {
                     event.preventDefault();
                 }, false);
@@ -445,8 +447,18 @@ export default class PopupUiAddressValidation extends Component{
     }
 
     protected addErrorMessageToTheSubmitButton(): void{
-        this.$errorDivAboveSubmitButton.setAttribute('class', 'errorSubmitMessage');
-        this.$errorDivAboveSubmitButton.textContent = 'Bitte füllen Sie die Pflichtfelder aus.';
+        if (this.registerForma) {
+            const errorSpan = document.createElement('span');
+            errorSpan.setAttribute('class', 'errorValidationMessage');
+            $(errorSpan).css('position', 'absolute');
+            $(errorSpan).css('margin-bottom', '45px');
+            errorSpan.textContent = 'Bitte füllen Sie die Pflichtfelder aus.';
+            this.linkToAddressModal.parentNode.prepend(errorSpan);
+        } else {
+            this.$errorDivAboveSubmitButton.setAttribute('class', 'errorSubmitMessage');
+            this.$errorDivAboveSubmitButton.textContent = 'Bitte füllen Sie die Pflichtfelder aus.';
+        }
+
     }
 
     protected addContentToModal(data): void{
