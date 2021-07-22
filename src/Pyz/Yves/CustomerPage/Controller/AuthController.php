@@ -124,8 +124,8 @@ class AuthController extends SprykerAuthControllerAlias
     public function globusLoginWithCookieAction(Request $request)
     {
         $result = ["UID" => "0"];
-        if (!GlobusRestApiClientCookie::isLoginConfirmed()) {
-            if (GlobusRestApiClientCookie::isTokenCookieSet()) {
+        if (GlobusRestApiClientCookie::isTokenCookieSet()) {
+            if (!GlobusRestApiClientCookie::isLoginConfirmed()) {
                 $customerUserProvider = $this->getFactory()->createCustomerUserProvider();
                 $result = $customerUserProvider->globusLoginWithCookie();
                 $user = json_decode($result);
@@ -135,10 +135,13 @@ class AuthController extends SprykerAuthControllerAlias
                     $cookie = $cook->createLoginCookie($result, $this->getFactory()->getSessionClient());
                     $cookieConfirm = $cook->createLoginConfirmedCookie();
                 } else {
-                    $this->logout();
+                    $result = ["UID" => "1"];
                 }
             }
+        } elseif (GlobusRestApiClientCookie::isLoginConfirmed()) {
+            $result = ["UID" => "1"];
         }
+
         $resp = new JsonResponse(json_encode($result));
         if (isset($cookie) && isset($cookieConfirm) && isset($customerTransfer)) {
             $resp->headers->setCookie($cookie);

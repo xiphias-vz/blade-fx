@@ -80,17 +80,19 @@ class GlobusRestApiClientCookie
     {
         return new Cookie(
             static::COOKIE_LOGIN_CONFIRMED_NAME,
-            true
+            true,
+            0,
+            '/',
+            static::getDomain()
         );
     }
 
-    
     /**
      * @return void
      */
     public function setLoginConfirmedCookiePhp(): void
     {
-        setcookie(static::COOKIE_LOGIN_CONFIRMED_NAME, true);
+        setcookie(static::COOKIE_LOGIN_CONFIRMED_NAME, true, 0, '/', static::getDomain());
     }
 
     /**
@@ -134,7 +136,7 @@ class GlobusRestApiClientCookie
     public static function clearCookies(): void
     {
         if (isset($_COOKIE[static::COOKIE_LOGIN_CONFIRMED_NAME])) {
-            setcookie(static::COOKIE_LOGIN_CONFIRMED_NAME, false, 1);
+            setcookie(static::COOKIE_LOGIN_CONFIRMED_NAME, false, 1, "/", static::getDomain());
             unset($_COOKIE[static::COOKIE_LOGIN_CONFIRMED_NAME]);
         }
         if (isset($_COOKIE[static::COOKIE_NAME])) {

@@ -281,8 +281,6 @@
         } only %}
         {% if data.currentCodeBucket=='DE' %}
             <script language="JavaScript">
-                if (!document.cookie.includes("globusUidChecked")) {
-                    document.cookie = "globusUidChecked=1; path=/";
                     let url = "{{ path('globus-cookie-login') }}";
                     fetch(url, {method: 'GET'})
                         .then(response => response.json())
@@ -291,12 +289,11 @@
                             if (uid == "0") {
                                 return;
                             } else {
-                                document.location.reload();
+                                window.location.href = '/logout';
                             }
                         }).catch(error => {
                         console.error(error);
                     });
-                }
             </script>
         {% endif %}
     {% endblock %}
