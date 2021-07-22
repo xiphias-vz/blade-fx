@@ -55,7 +55,6 @@ class CustomerUserProvider extends SprykerCustomerUserProvider implements Custom
             }
         }
         if (isset($authCheck["UID"])) {
-            $accountInfo = $this->getCdcAccountInfo($authCheck["UID"]);
             $this->getFactory()->getSessionClient()->set("cdcUID", $authCheck["UID"]);
         }
 
@@ -67,7 +66,12 @@ class CustomerUserProvider extends SprykerCustomerUserProvider implements Custom
                 $profile = $this->getFactory()->createProfileController();
                 $profile->processProfileUpdateByTransfer($customerTransfer, false);
             } catch (AuthenticationException $e) {
-                $customerTransfer = $this->createNewCustomer($accountInfo, $email, $pass);
+                if (isset($authCheck["UID"])) {
+                    $accountInfo = $this->getCdcAccountInfo($authCheck["UID"]);
+                    $customerTransfer = $this->createNewCustomer($accountInfo, $email, $pass);
+                } else {
+                    throw new AuthenticationException(self::ERROR_NOT_VERIFIED_CUSTOMER);
+                }
             }
 
             try {

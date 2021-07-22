@@ -112,7 +112,6 @@ export default class PopupUiAddressValidation extends Component{
 
                 const fieldsChecked = await this.checkIfDataIsInputed();
                 if (fieldsChecked === true) {
-                    this.$this.addClass(`${this.name}--show`);
                     this.afterApiCall();
                 }
             });
@@ -120,7 +119,7 @@ export default class PopupUiAddressValidation extends Component{
 
         if (this.closeModalBtn != undefined){
             this.closeModalBtn.on('click', () => {
-                this.$this.toggleClass(this.showClass);
+                this.closeModal();
                 this.emptyDivElements();
             });
         }
@@ -134,7 +133,7 @@ export default class PopupUiAddressValidation extends Component{
 
         if (this.cancelRegistrationFormButton != undefined){
             this.cancelRegistrationFormButton.addEventListener('click', () => {
-                this.$this.toggleClass(this.showClass);
+                this.closeModal();
                 this.emptyDivElements();
             });
         }
@@ -154,9 +153,31 @@ export default class PopupUiAddressValidation extends Component{
                 this.disableUserContent();
             });
         }
+
+        if(this.$userDiv != undefined) {
+            this.$userDiv.addEventListener('click', () => {
+                 this.findElement('hidShowScanAndGo').value = "0";
+            });
+        }
+
+        if(this.$apiDiv != undefined) {
+            this.$apiDiv.addEventListener('click', () => {
+                this.findElement('hidShowScanAndGo').value = "1";
+            });
+        }
     }
 
-    protected  afterApiCall(): void
+    protected showModal(): void
+    {
+        this.$this.addClass(this.showClass);
+    }
+
+    protected closeModal(): void
+    {
+        this.$this.removeClass(this.showClass);
+    }
+
+    protected afterApiCall(): void
     {
         this.sendRequestToAddressAPI();
         this.setUserAttributesToModal();
@@ -301,10 +322,9 @@ export default class PopupUiAddressValidation extends Component{
                     var addressData = JSON.parse(parsedResponse);
                     if(addressData.code === "VZ"){
                         this.addContentToModal(parsedResponse);
-                        this.$this.addClass(`${this.name}--show`);
+                        this.showModal();
                     }
                     else {
-                        this.$this.toggleClass(this.showClass);
                         this.emptyDivElements();
                         this.submitRegistrationForm();
                     }
@@ -383,9 +403,7 @@ export default class PopupUiAddressValidation extends Component{
 
         if (this.requiredCard) {
             if (this.$globusCardNumberField.value === '' || this.$globusCardNumberField.value === null) {
-                this.$globusCardNumberField.classList.add('input--error');
-                this.addErrorMessageToTheInputField(this.$globusCardNumberField, true);
-                flag = 1;
+
             } else {
                 const cardNumber = await this.callCardNumberCheckAPI();
                 if (cardNumber !== 'used_card_error') {

@@ -63,6 +63,7 @@ class AuthenticationHandler extends SprykerAuthenticationHandler
             $customerTransfer->setEmail($_REQUEST['registerForm_customer_email']);
             $customerTransfer->setPassword($_REQUEST['registerForm_customer_password_pass']);
             $customerTransfer->setMyGlobusCard($_REQUEST['registerForm_my_globus_card_number']);
+            $customerTransfer->setIsScanAndGo($_REQUEST['hidShowScanAndGo']);
             $customerResponseTransfer->setIsSuccess($isAuthorized);
             $isRegistrationAuthorized = $this->registerCdcUser($customerTransfer);
             $customerResponseTransfer->setIsSuccess($isRegistrationAuthorized);

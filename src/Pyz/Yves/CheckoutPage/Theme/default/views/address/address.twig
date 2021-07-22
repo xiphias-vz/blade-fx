@@ -58,6 +58,7 @@
                         </h2>
                         {% if idCustomer is not null %}
                             {% set customerData = data.form.vars.value.customer %}
+                            {% set isScanAndGo = customerData.isScanAndGo %}
                             <div>{{ customerData.company }} {{ customerData.firstName }} {{ customerData.lastName }}</div>
                             <div>{{ customerData.address1 }} {{ customerData.address2 }}</div>
                             <div>{{ customerData.zipCode }} {{ customerData.city }}</div>
@@ -66,31 +67,39 @@
 
                             {% if(customerData.isAdvertise == "false")  %}
                                 {% if(customerData.addressStatus == "VZ")  %}
-                                    <div style="padding: 10px 0; margin-top: 15px; display: flex;">
+                                    {% if isScanAndGo == "1" %}
+                                    <div style="padding: 10px 0; margin-top: 15px; display: flex;" id="divScanAndGo">
                                         <div style="display: inline-block; width: 30px; margin-right: 15px; margin-top: 5px;"><img src="{{ publicPath('images/scanandgo.png') }}" style="height: 20px;" /></div>
                                         <span>{{ 'checkout.scan&goActivated' | trans }}</span>
                                     </div>
+                                        {% endif %}
                                 {% else %}
-                                    <div style="padding: 10px 0; display: flex;">
+                                    {% if isScanAndGo == "1" %}
+                                    <div style="padding: 10px 0; display: flex;" id="divScanAndGo">
                                         <div style="display: inline-block; width: 30px; margin-right: 25px; margin-top: 5px;"><img src="{{ publicPath('images/scanandgo.png') }}" style="height: 20px;" /></div>
                                         <span>{{ 'checkout.activateScan&Go' | trans }}</span>
                                     </div>
+                                        {% endif %}
                                 {% endif %}
                             {% else %}
                                 {% if(customerData.addressStatus == "VZ")  %}
-                                    <div style="padding: 10px 0; display: flex;">
+                                    {% if isScanAndGo == "1" %}
+                                    <div style="padding: 10px 0; display: flex;" id="divScanAndGo">
                                         <div style="display: inline-block; width: 30px; margin-right: 15px; margin-top: 5px;"><img src="{{ publicPath('images/scanandgo.png') }}" style="height: 20px;" /></div>
                                         <span>{{ 'checkout.scan&goActivated' | trans }}</span>
                                     </div>
+                                        {% endif %}
                                 {% else %}
                                     <div style="padding: 10px 0; display: flex;">
                                         <div style="display: inline-block; width: 30px; margin-right: 15px; margin-top: 5px;"><img src="{{ publicPath('images/brief.png') }}" style="height: 20px;" /></div>
                                         <span>{{ 'checkout.customer.register_firstPharagraph' | trans }}</span>
                                     </div>
-                                    <div style="padding: 10px 0; display: flex;">
+                                    {% if isScanAndGo == "1" %}
+                                    <div style="padding: 10px 0; display: flex;" id="divScanAndGo">
                                         <div style="display: inline-block; width: 30px; margin-right: 25px; margin-top: 5px;"><img src="{{ publicPath('images/scanandgo.png') }}" style="height: 20px;" /></div>
                                         <span>{{ 'checkout.activateScan&Go' | trans }}</span>
                                     </div>
+                                        {% endif %}
                                 {% endif %}
                             {% endif %}
 
