@@ -43,11 +43,11 @@
             </form>
 
             <div id="globus-card-yes" class="hidden {{ config.name }}__top-margin-smaller">
-                <p class="{{ config.name }}__font-smaller {{ config.name }}__bot-margin">Wenn Sie bereits eine Karte im Markt mitgenommen haben, können Sie hier die Kartennummer eingeben.</p>
+                <p class="{{ config.name }}__font-smaller {{ config.name }}__bot-margin">{{ 'register.page.left.side.globus.card.top' | trans }}</p>
                 <div>
                     <input id="myGlobusCardNumber" type="text" class="input {{ config.name }}__height" placeholder="Kartennummer eingeben"/>
                 </div>
-                <p class="{{ config.name }}__font-smaller {{ config.name }}__top-margin">Mit dem Klick auf Weiter bestätigen Sie die Mein Globus-Teilnahmebedingungen.</p>
+                <p class="{{ config.name }}__font-smaller {{ config.name }}__top-margin">{{ 'register.page.left.side.globus.card.bottom' | trans }}<a id="lnkParticipationConditions" class="{{ config.name }}__linkOrange" href="https://www.globus.de/kundenprogramme/meinglobus-teilnahmebedingungen.php" target="_blank">{{ 'register.page.left.side.globus.card.bottom.hyperlink' | trans }}</a>.</p>
             </div>
         </div>
         <div class="col col--lg-12 {{ config.name }}__flex {{ config.name }}__top-margin {{ config.name }}__bottom-margin-information">
@@ -61,7 +61,7 @@
             </div>
             <div class="">
                 <p class="{{ config.name }}__font-smaller {{ config.name }}__information-paragraph-margin">
-                    {{ 'globus.card.registration.terms.of.agreement' | trans }}</p>
+                    {{ 'globus.card.registration.terms.of.agreement.first' | trans }}<a id="lnkAdvertiseConfirmation" class="{{ config.name }}__linkOrange" href="https://www.globus.de/kundenprogramme/meinglobus-werbeeinwilligung.php" target="_blank">{{ 'globus.card.registration.terms.of.agreement.hyperlink' | trans }}</a>{{ 'globus.card.registration.terms.of.agreement.last' | trans }}</p>
             </div>
         </div>
 

@@ -3430,7 +3430,7 @@ customer.account.shopping_list.remove,Remove,en_US
 customer.account.shopping_list.remove,Löschen,de_DE
 validation.not_blank,"Toto pole nesmí být prázdné.",cs_CZ
 validation.not_blank,This value should not be blank.,en_US
-validation.not_blank,Dieses Feld sollte nicht leer sein.,de_DE
+validation.not_blank,Dieses Feld sollte nicht leer sein,de_DE
 validation.invalid_date,"Datum musí být ve správném formátu %s.",cs_CZ
 validation.invalid_date,Date should be in correct format %s.,en_US
 validation.invalid_date,Datum sollte im richtigen Format vorliegen %s.,de_DE
@@ -4573,7 +4573,7 @@ customer.registration.phone.prefix_placeholder,DE +49,cs_CZ
 customer.registration.phone.prefix_placeholder,DE +50,en_US
 customer.registration.phone.prefix_placeholder,DE +49,de_DE
 customer.register.phone,"Telefon (je vyžadován alespoň jeden údaj)",cs_CZ
-customer.register.phone,Telefon (mindestens 1 Angabe Ist Pflicht),de_DE
+customer.register.phone,Telefon (mindestens eine Angabe ist Pflicht),de_DE
 checkout.customer.register_as_guest,"Objednávka bez registrace",cs_CZ
 checkout.customer.register_as_guest,Als Gast bestellen,de_DE
 customer.phone.checkout.guest,Telefon,cs_CZ
@@ -4584,9 +4584,9 @@ mobile.phone.number,Mobiltelefon,de_DE
 customer.land.phone,"Pevná linka",cs_CZ
 customer.land.phone,Festnetz,de_DE
 customer.register.birthdate.title,"Datum narození (DD.MM.RRRR)",cs_CZ
-customer.register.birthdate.title,"Geburtstag (TT/MM/YYYY)",de_DE
+customer.register.birthdate.title,"Geburtstag (TT/MM/JJJJ)",de_DE
 customer.register.telefon.title,"Telefon (je vyžadován alespoň jeden údaj)",cs_CZ
-customer.register.telefon.title,Telefon (mindenstens 1 Angabe Ist Pflicht),de_DE
+customer.register.telefon.title,Telefon (mindestens eine Angabe ist Pflicht),de_DE
 page.fragen.url,https://globus.zendesk.com/hc/de,de_DE
 page.fragen.url,https://globus.zendesk.com/hc/de,cs_CZ
 error_page.second_title,"Požadovanou stránku jsme bohužel nenašli!",cs_CZ
@@ -4681,11 +4681,6 @@ success.message.title,"Wie geht es weiter?",de_DE
 success.message.text1,"Ihre Bestellbestätigung",de_DE
 success.message.text2,"ist bereits auf dem Weg in Ihr Email-Postfach - prüfen Sie also unbedingt auch Ihren Spam Ordner.",de_DE
 success.message.text3,"Ihren",de_DE
-globus.card.registration.text,Entdecken Sie mit Ihrer persönlichen Mein Globus-Kundekarte viele Vorteile.,de_DE
-globus.card.registration.text,Discover many advantages with your personal My Globus customer card.,en_US
-globus.card.registration.text_before,Holen Sie sich Ihre persönliche Kundenkarte und erhalten Sie viele Vorteile und Vergünstigungen.,de_DE
-globus.card.registration.text_before,Get your personal customer card and receive many advantages and discounts.,en_US
-globus.card.registration.terms.of.agreement,"Ich stimme den Bedingungen der Werbeeinwilligung zu, um über Produkte und Angebote informiert zu werden.",de_DE
 pdp.modal.age.confirmation,Are you over 18?,en_US
 pdp.modal.age.confirmation,Sind Sie 18 jahre alt?,de_DE
 pdp.modal.age.confirmation,"Je vám více než 18?",cs_CZ
@@ -4708,7 +4703,9 @@ globus.card.registration.text,Entdecken Sie mit Ihrer persönlichen Mein Globus-
 globus.card.registration.text,Discover many advantages with your personal My Globus customer card.,en_US
 globus.card.registration.text_before,Holen Sie sich Ihre persönliche Kundenkarte und erhalten Sie viele Vorteile und Vergünstigungen.,de_DE
 globus.card.registration.text_before,Get your personal customer card and receive many advantages and discounts.,en_US
-globus.card.registration.terms.of.agreement,"Ich stimme den Bedingungen der Werbeeinwilligung zu, um über Produkte und Angebote informiert zu werden.",de_DE
+globus.card.registration.terms.of.agreement.first,"Ich stimme den Bedingungen der ",de_DE
+globus.card.registration.terms.of.agreement.hyperlink,"Werbeeinwilligung",de_DE
+globus.card.registration.terms.of.agreement.last," zu, um über Produkte und Angebote informiert zu werden.",de_DE
 cart.checkout.address.product.note,"In case the required goods are not available, we will offer you a product with the same parameters (ingredients, weight, price, etc.). You can reject the offered replacement at any time and you will not be charged for it.",en_US
 cart.checkout.address.product.note,"Falls die gewünschte Ware nicht verfügbar ist, bieten wir Ihnen ein Produkt mit den gleichen Parametern (Zutaten, Gewicht, Preis usw.) an. Sie können den angebotenen Ersatz jederzeit ablehnen und werden Ihnen nicht in Rechnung gestellt.",de_DE
 cart.checkout.address.product.note,"Pokud požadované zboží není k dispozici, nabídneme vám produkt se stejnými parametry (přísady, hmotnost, cena atd.). Nabízenou náhradu můžete kdykoli odmítnout a nebude vám nic účtováno.",cs_CZ
@@ -4717,3 +4714,6 @@ checkout.scan&goActivated, "Scan & Go ist für Sie freigeschaltet. Sie können S
 checkout.scan&goActivated, "Scan & Go is activated for you. You can now use Scan & Go conveniently with the (digital) customer card in your Globus store.",en_US
 checkout.activateScan&Go, "Scan & Go freischalten. Wenn Sie Scan & Go nutzen möchten, lassen Sie sich an der Infotheke in Ihrem Markt freischalten.",de_DE
 checkout.activateScan&Go, "Activate Scan & Go. If you would like to use Scan & Go, have yourself activated at the information desk in your store.",en_US
+register.page.left.side.globus.card.top,"Wenn Sie bereits eine Karte im Markt mitgenommen haben, können Sie hier die Kartennummer eingeben.",de_DE
+register.page.left.side.globus.card.bottom,"Mit dem Klick auf Weiter bestätigen Sie die Mein Globus-",de_DE
+register.page.left.side.globus.card.bottom.hyperlink,"Teilnahmebedingungen",de_DE

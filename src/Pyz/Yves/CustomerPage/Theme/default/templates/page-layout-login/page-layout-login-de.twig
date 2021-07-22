@@ -63,12 +63,6 @@
             cursor: pointer;
         }
 
-        .cancelFlex {
-            /*margin-top:auto;
-            position: absolute;
-            bottom: 30px;*/
-        }
-
         .cancelBtn {
             border: 1px solid;
         }
@@ -187,6 +181,17 @@
                 width: 96%;
             }
         }
+
+        .btn-cancel-margin {
+            margin-top: -5.8rem !important;
+        }
+
+        @media screen and (max-width: 768px) {
+            .btn-cancel-margin {
+                margin-top: -2rem !important;
+            }
+        }
+
     </style>
     <div class="page-layout-customer page-layout-customer--login-wrap">
         <div class="page-layout-customer__form-wrap">
@@ -279,13 +284,13 @@
 
                 <span id="errorMessageAboveSubmitButton"></span>
 
-                <div id="customerRegistrationFormButtons">
+{#                <div id="customerRegistrationFormButtons">#}
                     {% block CancelRegisterButton %}
-                        <div class="cancelFlex">
+                        <div class="col col--sm-12 col--lg-6 spacing spacing--bigger spacing--inner btn-cancel-margin">
                             <button id="btnCancelRegister" type="button" class="btn-link form__action form__action--checkout col col--middle button button--expand-tablet button--large cancelBtn" style="margin-bottom: 5px;">{{ 'general.cancel.button' | trans }}</button>
                         </div>
                     {% endblock %}
-                </div>
+{#                </div>#}
             </div>
         </div>
     </div>
@@ -474,7 +479,6 @@
         $("#btnContinueRegistration").click(function(){
             $("#additionalLoginForm").css("display", "none");
             $("#checkoutCustomerRegister").css("display", "block");
-            $("#customerRegistrationFormButtons").css("display", "block");
             $("#registerForm_customer_email").val($("#startRegistrationForm_customer_email").val());
             $("#registerForm_customer_password_pass").val($("#startRegister__customer_password").val());
             $("#registerForm_customer_password_confirm").val($("#startRegister__customer_password").val());

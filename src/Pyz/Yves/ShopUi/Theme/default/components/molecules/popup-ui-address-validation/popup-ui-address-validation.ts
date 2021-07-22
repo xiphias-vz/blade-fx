@@ -435,10 +435,11 @@ export default class PopupUiAddressValidation extends Component{
     protected addErrorMessageToTheInputField(element, cardNumberError: boolean = false): void{
         const errorSpan = document.createElement('span');
         errorSpan.setAttribute('class', 'errorValidationMessage');
-        errorSpan.textContent = '• Dieses Feld sollte nicht leer sein.';
         if (cardNumberError) {
+            errorSpan.textContent = '• Diese Kartennummer ist bereits angelegt. Bitte loggen Sie sich mit Ihrem Passwort ein.';
             $(element).parent().append(errorSpan);
         } else {
+            errorSpan.textContent = '• Dieses Feld sollte nicht leer sein';
             $(element).parent().append(errorSpan);
         }
     }

@@ -97,6 +97,14 @@
             }
         }
 
+        &__linkOrange {
+            text-decoration: none;
+            color: $setting-color-orange;
+            background-color: transparent;
+            cursor: pointer;
+            font-weight: 700;
+        }
+
         #btnCancelRegister {
             background-color: red;
         }

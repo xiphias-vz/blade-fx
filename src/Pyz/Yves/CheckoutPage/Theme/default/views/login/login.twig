@@ -100,12 +100,6 @@
             font-weight: 700;
         }
 
-        .cancelFlex {
-            /*margin-top:auto;
-            position: absolute;
-            bottom: 30px;*/
-        }
-
         .cancelBtn {
             border: 1px solid;
             margin: 0.5rem 0 0.5rem;
@@ -536,7 +530,7 @@
                                 </button>
                             {% endblock %}
                             {% block CancelRegisterButton %}
-                                <div class="cancelFlex">
+                                <div>
                                     <button id="btnCancelRegister" type="button" class="btn-link form__action form__action--checkout col col--middle button button--expand-tablet button--large cancelBtn" style="margin-bottom: 5px;">{{ 'general.cancel.button' | trans }}</button>
                                 </div>
                             {% endblock %}
