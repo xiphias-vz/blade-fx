@@ -30,7 +30,7 @@ class GlobusRestApiClientCookie
     {
         $ent = json_decode($data, true);
         $cookieContent = [
-            static::FIELD_NAME_UID => $ent[static::FIELD_NAME_UID],
+            strtolower(static::FIELD_NAME_UID) => $ent[static::FIELD_NAME_UID],
             static::FIELD_NAME_TOKEN => $ent[static::FIELD_NAME_TOKEN],
             static::FIELD_NAME_TOKEN_STRONG => $ent[static::FIELD_NAME_TOKEN_STRONG],
             static::FIELD_NAME_TOKEN_ISSUED_AT => $ent[static::FIELD_NAME_TOKEN_ISSUED_AT],
@@ -38,7 +38,7 @@ class GlobusRestApiClientCookie
         ];
         $value = json_encode($cookieContent);
         $sessionClient->set("id_token", $cookieContent[static::FIELD_NAME_TOKEN]);
-        $sessionClient->set("cdcUID", $cookieContent[static::FIELD_NAME_UID]);
+        $sessionClient->set("cdcUID", $cookieContent[strtolower(static::FIELD_NAME_UID)]);
 
         return new Cookie(
             static::COOKIE_NAME,
@@ -49,7 +49,7 @@ class GlobusRestApiClientCookie
             true,
             false,
             false,
-            'None' // None || Lax  || Strict
+            '' // None || Lax  || Strict
         );
     }
 

@@ -77,7 +77,7 @@ class GlobusRestApiClientAccount
     {
         if (isset($_COOKIE[GlobusRestApiClientCookie::COOKIE_NAME])) {
             $val = json_decode($_COOKIE[GlobusRestApiClientCookie::COOKIE_NAME], true);
-            $uid = $val[GlobusRestApiClientCookie::FIELD_NAME_UID];
+            $uid = $val[strtolower(GlobusRestApiClientCookie::FIELD_NAME_UID)];
 
             return static::logout($uid);
         }
