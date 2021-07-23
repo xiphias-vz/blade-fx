@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+<database xmlns="spryker:schema-01"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          name="zed"
+          xsi:schemaLocation="spryker:schema-01 https://static.spryker.com/schema-01.xsd"
+          namespace="Orm\Zed\TimeSlot\Persistence"
+          package="src.Orm.Zed.TimeSlot.Persistence">
+
+    <table name="pyz_time_slot_history">
+        <column name="id_time_slot_history" required="true" type="INTEGER" primaryKey="true" autoIncrement="true"/>
+        <column name="created_at" required="true" type="TIMESTAMP"/>
+        <column name="merchant_reference" type="VARCHAR" required="true"/>
+        <column name="fk_user" type="INTEGER" required="false"/>
+        <column name="time_slot_changed" type="VARCHAR" required="true"/>
+        <column name="day_changed" type="VARCHAR" required="false"/>
+        <column name="date_changed" type="DATE" required="false"/>
+        <column name="capacity_set_from" type="INTEGER"/>
+        <column name="capacity_set_to" type="INTEGER"/>
+        <column name="action_preformed" type="VARCHAR"/>
+        <column name="is_trigger" type="BOOLEAN"/>
+
+        <foreign-key name="pyz_time_slot_history-fk_user" foreignTable="spy_user">
+            <reference local="fk_user" foreign="id_user"/>
+        </foreign-key>
+
+    </table>
+
+</database>
