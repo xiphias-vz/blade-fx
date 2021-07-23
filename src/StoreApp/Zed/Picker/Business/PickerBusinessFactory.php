@@ -131,7 +131,8 @@ class PickerBusinessFactory extends AbstractBusinessFactory
             $this->getSessionService(),
             $this->getUserFacade(),
             $this->getPickingZoneFacade(),
-            $this->createOrderUpdater()
+            $this->createOrderUpdater(),
+            $this->getPickerFacade()
         );
     }
 
@@ -149,5 +150,13 @@ class PickerBusinessFactory extends AbstractBusinessFactory
     public function getMerchantFacade(): MerchantFacadeInterface
     {
         return $this->getProvidedDependency(MerchantSalesOrderDependencyProvider::FACADE_MERCHANT);
+    }
+
+    /**
+     * @return \StoreApp\Zed\Picker\Business\PickerFacadeInterface
+     */
+    public function getPickerFacade(): PickerFacadeInterface
+    {
+        return $this->getProvidedDependency(PickerDependencyProvider::FACADE_PICKER);
     }
 }

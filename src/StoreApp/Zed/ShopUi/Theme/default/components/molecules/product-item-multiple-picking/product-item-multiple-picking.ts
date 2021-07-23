@@ -58,6 +58,7 @@ export default class ProductItemMultiplePicking extends Component {
     listOfContainersInput: HTMLInputElement;
     alternativeEanElement: HTMLInputElement;
     orderItemStatus: HTMLInputElement;
+    itemPickingStartTime: HTMLInputElement;
     orderReference: string;
     eanDivWrapper: HTMLElement;
     eanInputFieldWrapper: HTMLElement;
@@ -91,6 +92,7 @@ export default class ProductItemMultiplePicking extends Component {
         this.listOfContainersInput = <HTMLInputElement>this.querySelector('#listOfIdContainers');
         this.listOfContainers =  JSON.parse(this.listOfContainersInput.value);
         this.orderItemStatus = <HTMLInputElement>this.querySelector('#orderItemStatus');
+        this.itemPickingStartTime = <HTMLInputElement>this.querySelector('#itemPickingStartTime');
         this.popupUiErrorInfo = {};
         this.orderReference = this.querySelector('#orderReference').value;
         this.eanInputFieldWrapper = <HTMLElement>document.querySelector(this.eanScannenInputSelector);
@@ -294,7 +296,7 @@ export default class ProductItemMultiplePicking extends Component {
                 this.$weightField.val("");
             }
 
-
+            let itemPickingStartTime = this.itemPickingStartTime.value;
             this.pickProducts.updateStorageItem(this, this.orderItemStatus);
 
             let saveAndGoToNext = "true";
@@ -308,6 +310,7 @@ export default class ProductItemMultiplePicking extends Component {
                 '<input type="text" name="quantity" value="' + quantity + '" />' +
                 '<input type="text" name="weight" value="' + weight + '" />' +
                 '<input type="text" name="status" value="' + status + '" />' +
+                '<input type="text" name="itemPickingStartTime" value="' + itemPickingStartTime + '" />' +
                 '</form>');
             $('body').append(form);
             form.submit();
@@ -540,7 +543,7 @@ export default class ProductItemMultiplePicking extends Component {
             let containerExists = this.containerExists($formattedContainerInput, this.orderReference)
 
             if(!containerExists) {
-
+                let itemPickingStartTime = this.itemPickingStartTime.value;
                 let saveAndGoToNext = "true";
                 const urlSave = window.location.origin + "/picker/multi-picking/multi-order-picking";
 
@@ -556,6 +559,7 @@ export default class ProductItemMultiplePicking extends Component {
                     '<input type="text" name="quantity" value="' + quantity + '" />' +
                     '<input type="text" name="weight" value="' + weight + '" />' +
                     '<input type="text" name="status" value="' + status + '" />' +
+                    '<input type="text" name="itemPickingStartTime" value="' + itemPickingStartTime + '" />' +
                     '</form>');
                 $('body').append(form);
                 form.submit();
