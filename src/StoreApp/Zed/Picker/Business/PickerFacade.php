@@ -7,14 +7,8 @@
 
 namespace StoreApp\Zed\Picker\Business;
 
-use Generated\Shared\Transfer\PerformanceGlobalSalesOrderReportTransfer;
-use Generated\Shared\Transfer\PerformanceSalesOrderItemReportTransfer;
-use Generated\Shared\Transfer\PerformanceSalesOrderReportTransfer;
 use Generated\Shared\Transfer\PickingOrderTransfer;
 use Generated\Shared\Transfer\PickingZoneTransfer;
-use Orm\Zed\PerformancePickingReport\Persistence\PyzPerformanceGlobalSalesOrderReportQuery;
-use Orm\Zed\PerformancePickingReport\Persistence\PyzPerformanceSalesOrderItemReportQuery;
-use Orm\Zed\PerformancePickingReport\Persistence\PyzPerformanceSalesOrderReportQuery;
 use Spryker\Zed\Kernel\Business\AbstractFacade;
 use StoreApp\Zed\Picker\Business\Transfer\PickingHeaderTransfer;
 use StoreApp\Zed\Picker\Business\Transfer\PickingHeaderTransferData;
@@ -278,101 +272,5 @@ class PickerFacade extends AbstractFacade implements PickerFacadeInterface
         return $this->getFactory()
             ->createPickingHeaderTransferData()
             ->clearLockOrders($transfer, $idOrders);
-    }
-
-    /**
-     * @param \Generated\Shared\Transfer\PerformanceGlobalSalesOrderReportTransfer $transfer
-     *
-     * @return \Generated\Shared\Transfer\PerformanceGlobalSalesOrderReportTransfer
-     */
-    public function setGlobalPickerReport(PerformanceGlobalSalesOrderReportTransfer $transfer): PerformanceGlobalSalesOrderReportTransfer
-    {
-        $pyzGlobalPerformaceEntity = PyzPerformanceGlobalSalesOrderReportQuery::create()
-            ->filterByIdPicker($transfer->getIdPicker())
-            ->filterByPickZone($transfer->getPickZone())
-            ->filterByIsMultiPick($transfer->getIsMultiPick())
-            ->filterByPickTimeBegin($transfer->getPickTimeBegin())
-            ->filterByNumberRelatedOrders($transfer->getNumberRelatedOrders())
-            ->findOneOrCreate();
-
-        if ($pyzGlobalPerformaceEntity->isNew() || $pyzGlobalPerformaceEntity->isModified()) {
-            $pyzGlobalPerformaceEntity->save();
-        }
-
-        $globalPickerReportTransfer = (new PerformanceGlobalSalesOrderReportTransfer())
-            ->setIdGlobalPickReport($pyzGlobalPerformaceEntity->getIdGlobalPickReport())
-            ->setIdPicker($pyzGlobalPerformaceEntity->getIdPicker())
-            ->setPickZone($pyzGlobalPerformaceEntity->getPickZone())
-            ->setIsMultiPick($pyzGlobalPerformaceEntity->getIsMultiPick())
-            ->setPickTimeBegin(date("Y-m-d H:i:s", $pyzGlobalPerformaceEntity->getPickTimeBegin()->getTimestamp()))
-            ->setNumberRelatedOrders($pyzGlobalPerformaceEntity->getNumberRelatedOrders());
-
-        return $globalPickerReportTransfer;
-    }
-
-    /**
-     * @param \Generated\Shared\Transfer\PerformanceSalesOrderReportTransfer $transfer
-     *
-     * @return \Generated\Shared\Transfer\PerformanceSalesOrderReportTransfer
-     */
-    public function setOrderPickerReport(PerformanceSalesOrderReportTransfer $transfer): PerformanceSalesOrderReportTransfer
-    {
-        $pyzPerformaceOrderEntity = PyzPerformanceSalesOrderReportQuery::create()
-            ->filterByFkGlobalPickReport($transfer->getFkGlobalPickReport())
-            ->filterByIdSalesOrder($transfer->getIdSalesOrder())
-            ->filterByOrderDate($transfer->getOrderDate())
-            ->filterByContainersUsed($transfer->getContainersUsed())
-            ->filterByPositionsUsed($transfer->getPositionsUsed())
-            ->filterByPieces($transfer->getPieces())
-            ->filterByPickingStart($transfer->getPickingStart())
-            ->findOneOrCreate();
-
-        if ($pyzPerformaceOrderEntity->isNew() || $pyzPerformaceOrderEntity->isModified()) {
-            $pyzPerformaceOrderEntity->save();
-        }
-
-        $orderPerformanceReportTransfer = (new PerformanceSalesOrderReportTransfer())
-            ->setIdPerformanceSalesOrderReport($pyzPerformaceOrderEntity->getIdPerformanceSalesOrderReport())
-            ->setFkGlobalPickReport($pyzPerformaceOrderEntity->getFkGlobalPickReport())
-            ->setIdSalesOrder($pyzPerformaceOrderEntity->getIdSalesOrder())
-            ->setOrderDate(date("Y-m-d", $pyzPerformaceOrderEntity->getOrderDate()->getTimestamp()))
-            ->setContainersUsed($pyzPerformaceOrderEntity->getContainersUsed())
-            ->setPositionsUsed($pyzPerformaceOrderEntity->getPositionsUsed())
-            ->setPieces($pyzPerformaceOrderEntity->getPieces())
-            ->setPickingStart(date("Y-m-d H:i:s", $pyzPerformaceOrderEntity->getPickingStart()->getTimestamp()));
-
-        return $orderPerformanceReportTransfer;
-    }
-
-    /**
-     * @param \Generated\Shared\Transfer\PerformanceSalesOrderItemReportTransfer $transfer
-     *
-     * @return \Generated\Shared\Transfer\PerformanceSalesOrderItemReportTransfer
-     */
-    public function setOrderItemPickerReport(PerformanceSalesOrderItemReportTransfer $transfer): PerformanceSalesOrderItemReportTransfer
-    {
-        $pyzPerformaceOrderItemEntity = PyzPerformanceSalesOrderItemReportQuery::create()
-            ->filterByFkPerformanceSalesOrderReport($transfer->getFkPerformanceSalesOrderReport())
-            ->filterByIdSalesOrderItem($transfer->getIdSalesOrderItem())
-            ->filterByPickupStartPosition($transfer->getPickupStartPosition())
-            ->filterByPickupEndPosition($transfer->getPickupEndPosition())
-            ->filterByPickupEndStatus($transfer->getPickupEndStatus())
-            ->filterByDurationPickTime($transfer->getDurationPickingTime())
-            ->findOneOrCreate();
-
-        if ($pyzPerformaceOrderItemEntity->isNew() || $pyzPerformaceOrderItemEntity->isModified()) {
-            $pyzPerformaceOrderItemEntity->save();
-        }
-
-        $orderItemPerformanceReportTransfer = (new PerformanceSalesOrderItemReportTransfer())
-            ->setIdPerformanceSalesOrderItemReport($pyzPerformaceOrderItemEntity->getIdPerformanceSalesOrderItemReport())
-            ->setFkPerformanceSalesOrderReport($pyzPerformaceOrderItemEntity->getFkPerformanceSalesOrderReport())
-            ->setIdSalesOrderItem($pyzPerformaceOrderItemEntity->getIdSalesOrderItem())
-            ->setPickupStartPosition(date("Y-m-d", $pyzPerformaceOrderItemEntity->getPickupStartPosition()->getTimestamp()))
-            ->setPickupEndPosition(date("Y-m-d", $pyzPerformaceOrderItemEntity->getPickupEndPosition()->getTimestamp()))
-            ->setPickupEndStatus($transfer->getPickupEndStatus())
-            ->setDurationPickingTime($pyzPerformaceOrderItemEntity->getDurationPickTime());
-
-        return $orderItemPerformanceReportTransfer;
     }
 }

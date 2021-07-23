@@ -21,7 +21,6 @@ use Spryker\Zed\Oms\Business\OmsFacadeInterface;
 use Spryker\Zed\Product\Business\ProductFacadeInterface;
 use Spryker\Zed\User\Business\UserFacadeInterface;
 use StoreApp\Zed\PermissionAccess\Business\PermissionAccessFacadeInterface;
-use StoreApp\Zed\Picker\Business\PickerFacadeInterface;
 
 class PickerDependencyProvider extends AbstractBundleDependencyProvider
 {
@@ -36,7 +35,6 @@ class PickerDependencyProvider extends AbstractBundleDependencyProvider
     public const FACADE_MERCHANT_SALES_ORDER = 'FACADE_MERCHANT_SALES_ORDER';
     public const FACADE_PERMISSION_ACCESS = 'FACADE_PERMISSION_ACCESS';
     public const STORE = 'STORE';
-    public const FACADE_PICKER = 'FACADE_PICKER';
 
     public const SERVICE_DATE_TIME_WITH_ZONE = 'SERVICE_DATE_TIME_WITH_ZONE';
 
@@ -68,7 +66,6 @@ class PickerDependencyProvider extends AbstractBundleDependencyProvider
         $container = $this->addPermissionAccessFacade($container);
         $container = $this->addPickingSalesOrderFacade($container);
         $container = $this->addStore($container);
-        $container = $this->addPickerFacade($container);
 
         return $container;
     }
@@ -89,7 +86,6 @@ class PickerDependencyProvider extends AbstractBundleDependencyProvider
         $container = $this->addPickingZoneFacade($container);
         $container = $this->addSessionService($container);
         $container = $this->addStore($container);
-        $container = $this->addPickerFacade($container);
 
         return $container;
     }
@@ -201,20 +197,6 @@ class PickerDependencyProvider extends AbstractBundleDependencyProvider
     {
         $container->set(static::FACADE_PICKING_ZONE, function (Container $container): PickingZoneFacadeInterface {
             return $container->getLocator()->pickingZone()->facade();
-        });
-
-        return $container;
-    }
-
-    /**
-     * @param \Spryker\Zed\Kernel\Container $container
-     *
-     * @return \Spryker\Zed\Kernel\Container
-     */
-    private function addPickerFacade(Container $container): Container
-    {
-        $container->set(static::FACADE_PICKER, function (Container $container): PickerFacadeInterface {
-            return $container->getLocator()->picker()->facade();
         });
 
         return $container;
