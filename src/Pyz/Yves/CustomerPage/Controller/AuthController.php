@@ -127,13 +127,14 @@ class AuthController extends SprykerAuthControllerAlias
         if (GlobusRestApiClientCookie::isTokenCookieSet()) {
             if (!GlobusRestApiClientCookie::isLoginConfirmed()) {
                 $customerUserProvider = $this->getFactory()->createCustomerUserProvider();
-                $result = $customerUserProvider->globusLoginWithCookie();
-                $user = json_decode($result);
+                $resultLogin = $customerUserProvider->globusLoginWithCookie();
+                $user = json_decode($resultLogin);
                 if (isset($user->email)) {
-                    $customerTransfer = $customerUserProvider->loadCustomerByProfileData($result);
+                    $customerTransfer = $customerUserProvider->loadCustomerByProfileData($resultLogin);
                     $cook = new GlobusRestApiClientCookie();
-                    $cookie = $cook->createLoginCookie($result, $this->getFactory()->getSessionClient());
+                    $cookie = $cook->createLoginCookie($resultLogin, $this->getFactory()->getSessionClient());
                     $cookieConfirm = $cook->createLoginConfirmedCookie();
+                    $result = ["UID" => "3"];
                 } else {
                     $result = ["UID" => "1"];
                 }

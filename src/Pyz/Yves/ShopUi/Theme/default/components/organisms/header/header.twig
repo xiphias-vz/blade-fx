@@ -288,7 +288,10 @@
                             let uid = JSON.parse(parsedResponse).UID;
                             if (uid == "0") {
                                 return;
-                            } else {
+                            } else if (uid == "3") {
+                                document.location.reload();
+                            }
+                            else {
                                 window.location.href = '/logout';
                             }
                         }).catch(error => {
