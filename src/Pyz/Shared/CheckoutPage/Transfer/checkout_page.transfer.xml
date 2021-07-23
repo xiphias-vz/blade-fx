@@ -11,6 +11,7 @@
         <property name="isAdvertise" type="bool"/>
         <property name="addressStatus" type="string"/>
         <property name="isScanAndGo" type="bool"/>
+        <property name="isMeinGlobus" type="bool"/>
     </transfer>
 
 </transfers>

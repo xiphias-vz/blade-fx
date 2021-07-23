@@ -20,8 +20,10 @@ class GlobusRestApiClientValidation
      * @param string $houseNumber
      * @param string $street
      * @param string $city
+     * @param bool $mainGlobus
+     * @param bool $we
      *
-     * @return \Pyz\Yves\GlobusRestApiClient\Provider\GlobusRestApiResult
+     * @return array
      */
     public static function addressValidation(
         string $firstName,
@@ -29,8 +31,10 @@ class GlobusRestApiClientValidation
         string $zip,
         string $houseNumber,
         string $street,
-        string $city
-    ): GlobusRestApiResult {
+        string $city,
+        bool $mainGlobus,
+        bool $we
+    ): array {
         $url = GlobusRestApiConfig::getGlobusApiEndPoint(CustomerConstants::GLOBUS_API_END_POINT_ADDRESS_VALIDATION);
         $data = [
             'firstName' => $firstName,
@@ -43,6 +47,9 @@ class GlobusRestApiClientValidation
                 ],
         ];
 
-        return GlobusRestApiClient::post($url, $data, []);
+        $result = GlobusRestApiClient::post($url, $data, []);
+        $addressValidation = new GlobusRestApiAddressResult();
+
+        return $addressValidation->getResult($result, $mainGlobus, $we);
     }
 }

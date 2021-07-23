@@ -45,6 +45,13 @@ export default class PopupUiAddressValidation extends Component{
     protected $globusCardNumberField;
     protected $radioButtons;
     protected hiddenMyGlobusCardNumber;
+    protected checkboxIsAdvertise;
+    protected hiddenIsMeinGlobus;
+    protected $mobilePhoneNumber;
+    protected $phoneNumber;
+    protected $cmbDay;
+    protected $cmbMonth;
+    protected $cmbYear;
 
     protected registerForma = false;
     protected requiredCard = false;
@@ -52,9 +59,9 @@ export default class PopupUiAddressValidation extends Component{
 
     protected async readyCallback() {
         this.linkToAddressModal = this.findElement(this.getLinkToAddressModal);
-        if(!this.linkToAddressModal) {
+        if (!this.linkToAddressModal) {
             this.linkToAddressModal = document.getElementsByClassName('form__action js-form-register__submit-button form__action--login button button--large button--expand-tablet')[0];
-            if(this.linkToAddressModal) {
+            if (this.linkToAddressModal) {
                 this.registerForma = true;
                 this.linkToAddressModal.addEventListener("click", function(event) {
                     event.preventDefault();
@@ -91,6 +98,28 @@ export default class PopupUiAddressValidation extends Component{
         this.$globusCardNumberField = this.findElement(this.getMyGlobusCardNumber);
         this.$radioButtons = document.getElementsByName(this.getRadioButtonsName);
         this.hiddenMyGlobusCardNumber = document.querySelector('#registerForm_my_globus_card_number');
+        this.checkboxIsAdvertise = document.querySelector('#chk_isAdvertise .checkbox__input');
+        this.hiddenIsMeinGlobus = document.querySelector('#registerForm_isMeinGlobus');
+        this.$mobilePhoneNumber = document.getElementById(this.getMobilePhoneNumber);
+        if (!this.$mobilePhoneNumber) {
+            this.$mobilePhoneNumber = document.getElementById(this.getMobilePhoneNumberRegistrationForm);
+        }
+        this.$phoneNumber = document.getElementById(this.getPhoneNumber);
+        if (!this.$phoneNumber) {
+            this.$phoneNumber = document.getElementById(this.getPhoneNumberRegistrationForm);
+        }
+        this.$cmbDay = document.getElementById(this.getDay);
+        if (!this.$cmbDay) {
+            this.$cmbDay = document.getElementById(this.getDayRegistrationForm);
+        }
+        this.$cmbMonth = document.getElementById(this.getMonth);
+        if (!this.$cmbMonth) {
+            this.$cmbMonth = document.getElementById(this.getMonthRegistrationForm);
+        }
+        this.$cmbYear = document.getElementById(this.getYear);
+        if (!this.$cmbYear) {
+            this.$cmbYear = document.getElementById(this.getYearRegistrationForm);
+        }
 
         await this.mapEvents();
     }
@@ -304,6 +333,8 @@ export default class PopupUiAddressValidation extends Component{
         const houseNumber = this.$houseNumber;
         const zip = this.$zip;
         const city = this.$city;
+        const we = this.checkboxIsAdvertise;
+        const meinGlobus = this.hiddenIsMeinGlobus;
 
         const url = '/register/customer-address-api';
 
@@ -315,32 +346,33 @@ export default class PopupUiAddressValidation extends Component{
         formData.append('houseNumber', houseNumber.value);
         formData.append('zip', zip.value);
         formData.append('city', city.value);
+        formData.append('we', we.checked);
+        formData.append('meinGlobus', meinGlobus.checked);
 
         fetch(url,
             { method: 'POST', body: formData })
             .then(response => response.json())
             .then(parsedResponse => {
                 if(parsedResponse != undefined && parsedResponse !== []){
-                    var addressData = JSON.parse(parsedResponse);
-                    if(addressData.code === "VZ"){
+
+                    if(parsedResponse.showOverlay === true){
                         this.addContentToModal(parsedResponse);
                         this.showModal();
                     }
                     else {
+                        document.getElementById("hidShowScanAndGo").value = "2";
                         this.emptyDivElements();
                         this.submitRegistrationForm();
                     }
+
                 }
             })
             .catch(error => {});
 
     }
 
-    protected async callCardNumberCheckAPI(): Promise<string> {
-
-        const cardNumber = $(this.$globusCardNumberField).val();
+    protected async callCardNumberCheckAPI(cardNumber): Promise<string> {
         const url = '/register/check-card-number';
-
         const formData = new FormData();
         let dataToSend = '';
 
@@ -403,13 +435,39 @@ export default class PopupUiAddressValidation extends Component{
             flag = 1;
         }
 
+        if ((this.$mobilePhoneNumber.value === '' || this.$mobilePhoneNumber.value === null) && (this.$phoneNumber.value === '' || this.$phoneNumber.value === null)){
+            this.$mobilePhoneNumber.classList.add('input--error');
+            this.addErrorMessageToTheInputField(this.$mobilePhoneNumber);
+            this.$phoneNumber.classList.add('input--error');
+            this.addErrorMessageToTheInputField(this.$phoneNumber);
+            flag = 1;
+        }
+
+        if ($(this.$cmbDay).val() === '' || $(this.$cmbDay).val() === null
+            || $(this.$cmbMonth).val() === '' || $(this.$cmbMonth).val() === null
+            || $(this.$cmbYear).val() === '' || $(this.$cmbYear).val() === null)
+        {
+            if ($(this.$cmbDay).val() === '') {
+                this.$cmbDay.parentNode.classList.add('input--error-birthday');
+            }
+            if ($(this.$cmbMonth).val() === '') {
+                this.$cmbMonth.parentNode.classList.add('input--error-birthday');
+            }
+            if ($(this.$cmbYear).val() === '') {
+                this.$cmbYear.parentNode.classList.add('input--error-birthday');
+            }
+            this.addErrorMessageToTheInputField(this.$cmbYear.parentNode.parentNode, 3);
+            flag = 1;
+        }
+
         if (this.requiredCard) {
+            const cardNumber = $(this.$globusCardNumberField).val();
             if (this.$globusCardNumberField.value === '' || this.$globusCardNumberField.value === null) {
 
             } else {
-                const cardNumber = await this.callCardNumberCheckAPI();
-                if (cardNumber !== 'used_card_error') {
-                    this.hiddenMyGlobusCardNumber.value = cardNumber;
+                const cardNumberAfter = await this.callCardNumberCheckAPI(cardNumber);
+                if (cardNumberAfter !== 'used_card_error') {
+                    this.hiddenMyGlobusCardNumber.value = cardNumberAfter;
                 } else {
                     this.$globusCardNumberField.value = '';
                     this.$globusCardNumberField.classList.add('input--error');
@@ -417,6 +475,13 @@ export default class PopupUiAddressValidation extends Component{
                     flag = 1;
                 }
             }
+        } else {
+            if (!this.$radioButtons[1].checked) {
+                this.$radioButtons[0].parentNode.parentNode.classList.add('input--error');
+                this.addErrorMessageToTheInputField(this.$radioButtons[0].parentNode.parentNode, 2);
+                flag = 1;
+            }
+
         }
 
         if (flag === 0){
@@ -435,8 +500,12 @@ export default class PopupUiAddressValidation extends Component{
         this.$houseNumber.classList.remove('input--error');
         this.$zip.classList.remove('input--error');
         this.$city.classList.remove('input--error');
-
-        this.$city.classList.remove('input--error');
+        this.$mobilePhoneNumber.classList.remove('input--error');
+        this.$phoneNumber.classList.remove('input--error');
+        this.$radioButtons[0].parentNode.parentNode.classList.remove('input--error');
+        this.$cmbDay.parentNode.classList.remove('input--error-birthday');
+        this.$cmbMonth.parentNode.classList.remove('input--error-birthday');
+        this.$cmbYear.parentNode.classList.remove('input--error-birthday');
 
         if (this.$globusCardNumberField.classList !== undefined) {
             this.$globusCardNumberField.classList.remove('input--error');
@@ -454,11 +523,19 @@ export default class PopupUiAddressValidation extends Component{
         }
     }
 
-    protected addErrorMessageToTheInputField(element, cardNumberError: boolean = false): void{
+    // using flags for different cases -> 0 = normal case, 1 = card_number_error, 2 = radio button error message
+    protected addErrorMessageToTheInputField(element, flag: number = 0): void{
         const errorSpan = document.createElement('span');
         errorSpan.setAttribute('class', 'errorValidationMessage');
-        if (cardNumberError) {
+        if (flag === 1) {
             errorSpan.textContent = '• Diese Kartennummer ist bereits angelegt. Bitte loggen Sie sich mit Ihrem Passwort ein.';
+            $(element).parent().append(errorSpan);
+        } else if (flag === 2) {
+            errorSpan.textContent = '• Mindestens eine Angabe ist Pflicht.';
+            $(element).parent().append(errorSpan);
+        } else if (flag === 3) {
+            errorSpan.textContent = '• Dieses Felder sollte nicht leer sein';
+            errorSpan.classList.add('form__field', 'col', 'col--order-4', 'col--sm-12', 'col--md-12');
             $(element).parent().append(errorSpan);
         } else {
             errorSpan.textContent = '• Dieses Feld sollte nicht leer sein';
@@ -482,13 +559,12 @@ export default class PopupUiAddressValidation extends Component{
     }
 
     protected addContentToModal(data): void{
-        const responseData = JSON.parse(data);
-        const firstName = responseData.firstName;
-        const lastName = responseData.lastName;
-        const zip = responseData.address.zip;
-        const houseNumber = responseData.address.houseNo;
-        const street = responseData.address.street;
-        const city = responseData.address.city;
+        const firstName = data.result.firstName;
+        const lastName = data.result.lastName;
+        const zip = data.result.address.zip;
+        const houseNumber = data.result.address.houseNo;
+        const street = data.result.address.street;
+        const city = data.result.address.city;
 
         this.$apiFirstNameValue = firstName;
         this.$apiLastNameValue = lastName;
@@ -657,5 +733,45 @@ export default class PopupUiAddressValidation extends Component{
 
     get getRadioButtonsName(): string {
         return 'radio_kundenkarte';
+    }
+
+    get getMobilePhoneNumber(): string {
+        return 'registerForm_customer_mobile_phone_number';
+    }
+
+    get getMobilePhoneNumberRegistrationForm(): string {
+        return 'registerForm_mobile_phone_number';
+    }
+
+    get getPhoneNumber(): string {
+        return 'registerForm_customer_phone';
+    }
+
+    get getPhoneNumberRegistrationForm(): string {
+        return 'registerForm_phone';
+    }
+
+    get getDay(): string {
+        return 'registerForm_customer_birth_day';
+    }
+
+    get getDayRegistrationForm(): string {
+        return 'registerForm_birth_day';
+    }
+
+    get getMonth(): string {
+        return 'registerForm_customer_birth_month';
+    }
+
+    get getMonthRegistrationForm(): string {
+        return 'registerForm_birth_month';
+    }
+
+    get getYear(): string {
+        return 'registerForm_customer_birth_year';
+    }
+
+    get getYearRegistrationForm(): string {
+        return 'registerForm_birth_year';
     }
 }

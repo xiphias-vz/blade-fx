@@ -505,15 +505,16 @@ class RegisterForm extends SprykerRegisterForm
     {
         $days = [];
         for ($i = 1; $i < 32; $i++) {
-            $days[$i] = $i;
+            $days[$i] = sprintf('%02d', $i);
         }
         $builder->add(static::FIELD_DAY, ChoiceType::class, [
             'choices' => array_flip($days),
             'required' => true,
             'trim' => true,
             'label' => false,
+            'placeholder' => 'Tag',
             'attr' => [
-                'placeholder' => 'customer.date.day',
+                'placeholder' => 'Tag',
             ],
             'constraints' =>
             [
@@ -533,13 +534,14 @@ class RegisterForm extends SprykerRegisterForm
     {
         $months = [];
         for ($i = 1; $i < 13; $i++) {
-            $months[$i] = $i;
+            $months[$i] = sprintf('%02d', $i);
         }
         $builder->add(static::FIELD_MONTH, ChoiceType::class, [
             'choices' => array_flip($months),
             'required' => true,
             'trim' => true,
             'label' => false,
+            'placeholder' => 'Monat',
             'attr' => [
                 'placeholder' => 'customer.date.month',
             ],
@@ -569,6 +571,7 @@ class RegisterForm extends SprykerRegisterForm
             'required' => true,
             'trim' => true,
             'label' => false,
+            'placeholder' => 'Jahr',
             'attr' => [
                 'placeholder' => 'customer.date.year',
             ],

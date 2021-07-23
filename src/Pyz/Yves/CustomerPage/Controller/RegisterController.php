@@ -37,6 +37,8 @@ class RegisterController extends SprykerShopRegisterController
     public const HOUSE_NUMBER = 'houseNumber';
     public const ZIP = 'zip';
     public const CITY = 'city';
+    public const WE = 'we';
+    public const MEIN_GLOBUS = 'meinGlobus';
 
     /**
      * @param \Symfony\Component\HttpFoundation\Request $request
@@ -106,7 +108,18 @@ class RegisterController extends SprykerShopRegisterController
      */
     public function registerSuccessAction(Request $request)
     {
-        $customerData = $this->getFactory()->getCustomerClient()->getCustomer()->toArray();
+        $customerTransfer = $this->getFactory()->getCustomerClient()->getCustomer();
+        $firstName = $customerTransfer->getFirstName();
+        $lastName = $customerTransfer->getLastName();
+        $zip = $customerTransfer->getZipCode();
+        $houseNo = $customerTransfer->getAddress2();
+        $street = $customerTransfer->getAddress1();
+        $city = $customerTransfer->getCity();
+        $we = $customerTransfer->getIsAdvertise();
+        $meinGlobus = $customerTransfer->getIsMeinGlobus();
+
+        $validAddress = GlobusRestApiClientValidation::addressValidation($firstName, $lastName, $zip, $houseNo, $street, $city, $meinGlobus, $we);
+        $customerData["data"] = $validAddress;
 
         return $this->view(
             ['customer' => $customerData],
@@ -181,10 +194,12 @@ class RegisterController extends SprykerShopRegisterController
         $houseNumber = $request->request->get(static::HOUSE_NUMBER);
         $zip = $request->request->get(static::ZIP);
         $city = $request->request->get(static::CITY);
+        $mainGlobus = $request->request->get(static::MEIN_GLOBUS);
+        $we = $request->request->get(static::WE);
 
-        $result = GlobusRestApiClientValidation::addressValidation($firstName, $lastName, $zip, $houseNumber, $street, $city);
+        $result = GlobusRestApiClientValidation::addressValidation($firstName, $lastName, $zip, $houseNumber, $street, $city, $mainGlobus, $we);
 
-        return new JsonResponse($result->result);
+        return new JsonResponse($result);
     }
 
     /**

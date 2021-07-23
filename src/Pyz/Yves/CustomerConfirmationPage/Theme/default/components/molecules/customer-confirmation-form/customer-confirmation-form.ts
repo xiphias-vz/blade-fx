@@ -95,8 +95,8 @@ export default class CustomerConfirmationForm extends Component {
     protected phoneBlur(event: Event): void {
         this.hideElement(this.phoneHintHolder);
         let target = (event.target as HTMLInputElement);
-        let prefix: HTMLSelectElement = target.id.includes("mobile") ? this.phonePrefix: this.mobilePrefix;
-        if (prefix !== undefined) {
+        let prefix: HTMLSelectElement = target.id.includes("mobile") ? this.phonePrefix : this.mobilePrefix;
+        if (prefix !== undefined && prefix !== null) {
             if(prefix.value.length > 0 && target.value.length > 0 && !target.value.startsWith(prefix.value))
                 target.value = prefix.value + target.value;
         }

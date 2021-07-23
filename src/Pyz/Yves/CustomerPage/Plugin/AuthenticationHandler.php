@@ -13,7 +13,6 @@ use Generated\Shared\Transfer\CustomerTransfer;
 use Pyz\Yves\GlobusRestApiClient\Provider\GlobusRestApiClientAccount;
 use Pyz\Yves\GlobusRestApiClient\Provider\GlobusRestApiClientDigitalCard;
 use Pyz\Yves\GlobusRestApiClient\Provider\GlobusRestApiClientValidation;
-use Pyz\Yves\GlobusRestApiClient\Provider\GlobusRestApiResult;
 use Pyz\Yves\MerchantSwitcherWidget\Resolver\ShopContextResolver;
 use SprykerShop\Yves\CustomerPage\Plugin\AuthenticationHandler as SprykerAuthenticationHandler;
 
@@ -31,10 +30,13 @@ class AuthenticationHandler extends SprykerAuthenticationHandler
      */
     public function registerCustomer(CustomerTransfer $customerTransfer)
     {
-        $validAdress = $this->getApiAdressCheck($customerTransfer);
+        $meinGlobus = $_REQUEST["registerForm_isMeinGlobus"];
+        $we = $_REQUEST["registerForm_isAdvertise"];
+
+        $validAdress = $this->getApiAdressCheck($customerTransfer, $meinGlobus, $we);
         $isAuthorized = false;
         $customerResponseTransfer = new CustomerResponseTransfer();
-        if ($validAdress->resultToJson()->code == 'VA') {
+        if ($validAdress["code"] == 'VA') {
             $isAuthorized = true;
         }
         $customerTransfer->setMerchantReference($this->createShopContextResolver()->resolve()->getMerchantReference());
@@ -63,7 +65,10 @@ class AuthenticationHandler extends SprykerAuthenticationHandler
             $customerTransfer->setEmail($_REQUEST['registerForm_customer_email']);
             $customerTransfer->setPassword($_REQUEST['registerForm_customer_password_pass']);
             $customerTransfer->setMyGlobusCard($_REQUEST['registerForm_my_globus_card_number']);
+            $customerTransfer->setIsAdvertise($we);
             $customerTransfer->setIsScanAndGo($_REQUEST['hidShowScanAndGo']);
+            $customerTransfer->setIsMeinGlobus($meinGlobus);
+
             $customerResponseTransfer->setIsSuccess($isAuthorized);
             $isRegistrationAuthorized = $this->registerCdcUser($customerTransfer);
             $customerResponseTransfer->setIsSuccess($isRegistrationAuthorized);
@@ -160,9 +165,22 @@ class AuthenticationHandler extends SprykerAuthenticationHandler
      */
     protected function registerCdcUser(CustomerTransfer $customerTransfer): bool
     {
-        $validAddress = $this->getApiAdressCheck($customerTransfer);
-        $addressStatus = $validAddress->resultToJson()->code;
+        $globusMyCardNumber = $_REQUEST["registerForm_my_globus_card_number"];
+        $globusIsAdvertise = $_REQUEST["registerForm_isAdvertise"];
+        $globusIsMeinGlobus = $_REQUEST["registerForm_isMeinGlobus"];
+
+        $validAddress = $this->getApiAdressCheck($customerTransfer, $globusIsMeinGlobus, $globusIsAdvertise);
+        $addressStatus = $validAddress["code"];
         $addressLastUpdated = date("Y-m-d");
+
+        if ($_REQUEST["hidShowScanAndGo"] == 1) {
+            $customerTransfer->setZipCode($validAddress["result"]["address"]["zip"]);
+            $customerTransfer->setAddress2($validAddress["result"]["address"]["houseNo"]);
+            $customerTransfer->setAddress1($validAddress["result"]["address"]["street"]);
+            $customerTransfer->setCity($validAddress["result"]["address"]["city"]);
+        } elseif ($_REQUEST["hidShowScanAndGo"] == 0) {
+            $addressStatus = "UN";
+        }
 
         if ($customerTransfer->getCountry() == 60) {
             $country = "DE";
@@ -177,8 +195,6 @@ class AuthenticationHandler extends SprykerAuthenticationHandler
         } else {
             $gender = "u";
         }
-        $marketingPermission = "false";
-        //$token = $this->getCdcAuthorizationToken();
 
         $newMyGlobusCardNumber = 0;
         if (!$customerTransfer->getMyGlobusCard()) {
@@ -228,10 +244,10 @@ class AuthenticationHandler extends SprykerAuthenticationHandler
                         }
                       },
                       "subscriptions": {
-                        "meinGlobus": true,
+                        "meinGlobus": ' . $globusIsMeinGlobus . ',
                         "general": true,
                         "marketingPermission": {
-                          "email": ' . $marketingPermission . ',
+                          "email": ' . $globusIsAdvertise . ',
                           "letter": false
                         },
                         "wec": {
@@ -255,8 +271,9 @@ class AuthenticationHandler extends SprykerAuthenticationHandler
                     $customerTransfer->setAddressStatus($resultRegisterApi->profile->address->verification->status);
                 }
 
-                $customerTransfer->setIsAdvertise($_REQUEST["registerForm_isAdvertise"]);
-                $customerTransfer->setMyGlobusCard($_REQUEST["registerForm_my_globus_card_number"]);
+                $customerTransfer->setIsMeinGlobus($globusIsMeinGlobus);
+                $customerTransfer->setMyGlobusCard($globusMyCardNumber);
+                $customerTransfer->setIsAdvertise($globusIsAdvertise);
 
                 return true;
             } else {
@@ -299,10 +316,12 @@ class AuthenticationHandler extends SprykerAuthenticationHandler
 
     /**
      * @param \Generated\Shared\Transfer\CustomerTransfer $customerTransfer
+     * @param bool $mainGlobus
+     * @param bool $we
      *
-     * @return \Pyz\Yves\GlobusRestApiClient\Provider\GlobusRestApiResult
+     * @return array
      */
-    protected function getApiAdressCheck($customerTransfer): GlobusRestApiResult
+    protected function getApiAdressCheck($customerTransfer, bool $mainGlobus, bool $we): array
     {
         $firstName = $customerTransfer->getFirstName();
         $lastName = $customerTransfer->getLastName();
@@ -311,7 +330,7 @@ class AuthenticationHandler extends SprykerAuthenticationHandler
         $street = $customerTransfer->getAddress1();
         $city = $customerTransfer->getCity();
 
-        return GlobusRestApiClientValidation::addressValidation($firstName, $lastName, $zip, $houseNo, $street, $city);
+        return GlobusRestApiClientValidation::addressValidation($firstName, $lastName, $zip, $houseNo, $street, $city, $mainGlobus, $we);
     }
 
     /**

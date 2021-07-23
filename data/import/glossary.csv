@@ -224,8 +224,8 @@ page.checkout.address.phone.paragraph2,"Abychom mohli vaši objednávku bez prob
 page.checkout.address.phone.paragraph2,Zur reibungsfreien Abwicklung ihrer Bestellung benötigen wir eine Telefonnummer um Sie gegebenfalls kontaktieren zu können. Ihre Angaben werden in Ihrem Globus Konto vervollständigt oder ersetzt.,de_DE
 page.checkout.address.phone.paragraph2,"In order to process your order smoothly, we need a telephone number so that we can contact you if necessary. Your details will be completed or replaced in your Globus account.",en_US
 page.checkout.address.phone.paragraph3,"Telefon (je vyžadován alespoň jeden údaj)*",cs_CZ
-page.checkout.address.phone.paragraph3,Telefon (mind .eine Angabe ist Pflicht)*,de_DE
-page.checkout.address.phone.paragraph3,Telefon (mind .eine Angabe ist Pflicht)*,en_US
+page.checkout.address.phone.paragraph3,"Telefon (mind. eine Angabe ist Pflicht)*",de_DE
+page.checkout.address.phone.paragraph3,"Telefon (mind. eine Angabe ist Pflicht)*",en_US
 page.checkout.shipment.heading,"2. Výběr způsobu dodání",cs_CZ
 page.checkout.shipment.heading,2. Lieferart wählen,de_DE
 page.checkout.shipment.heading,2. Shipping Method,en_US
@@ -4712,10 +4712,10 @@ cart.checkout.address.product.note,"In case the required goods are not available
 cart.checkout.address.product.note,"Falls die gewünschte Ware nicht verfügbar ist, bieten wir Ihnen ein Produkt mit den gleichen Parametern (Zutaten, Gewicht, Preis usw.) an. Sie können den angebotenen Ersatz jederzeit ablehnen und werden Ihnen nicht in Rechnung gestellt.",de_DE
 cart.checkout.address.product.note,"Pokud požadované zboží není k dispozici, nabídneme vám produkt se stejnými parametry (přísady, hmotnost, cena atd.). Nabízenou náhradu můžete kdykoli odmítnout a nebude vám nic účtováno.",cs_CZ
 checkout.validation.mailSentMsg, "Ihnen wurde eine E-Mail zur Passwortänderung zugestellt. Bitte prüfen Sie Ihr Postfach!",de_DE
-checkout.scan&goActivated, "Scan & Go ist für Sie freigeschaltet. Sie können Scan & Go nun bequem mit der (digitalen) Kundenkarte in Ihrem Globus-Markt nutzen.",de_DE
-checkout.scan&goActivated, "Scan & Go is activated for you. You can now use Scan & Go conveniently with the (digital) customer card in your Globus store.",en_US
-checkout.activateScan&Go, "Scan & Go freischalten. Wenn Sie Scan & Go nutzen möchten, lassen Sie sich an der Infotheke in Ihrem Markt freischalten.",de_DE
-checkout.activateScan&Go, "Activate Scan & Go. If you would like to use Scan & Go, have yourself activated at the information desk in your store.",en_US
+checkout.showScanAndGoActivateHint, "Scan & Go ist für Sie freigeschaltet. Sie können Scan & Go nun bequem mit der (digitalen) Kundenkarte in Ihrem Globus-Markt nutzen.",de_DE
+checkout.showScanAndGoActivateHint, "Scan & Go is activated for you. You can now use Scan & Go conveniently with the (digital) customer card in your Globus store.",en_US
+checkout.showScanAndGoNotActivateHint, "Scan & Go freischalten. Wenn Sie Scan & Go nutzen möchten, lassen Sie sich an der Infotheke in Ihrem Markt freischalten.",de_DE
+checkout.showScanAndGoNotActivateHint&Go, "Activate Scan & Go. If you would like to use Scan & Go, have yourself activated at the information desk in your store.",en_US
 checkout.step.success.page.title,Vielen Dank für Ihre Registrierung,de_DE
 checkout.step.success.page.button,Jetzt den Shop durchstöbern,de_DE
 register.page.left.side.globus.card.top,"Wenn Sie bereits eine Karte im Markt mitgenommen haben, können Sie hier die Kartennummer eingeben.",de_DE

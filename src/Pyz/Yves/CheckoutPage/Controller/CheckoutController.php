@@ -10,6 +10,7 @@ namespace Pyz\Yves\CheckoutPage\Controller;
 use Generated\Shared\Transfer\QuoteTransfer;
 use Generated\Shared\Transfer\ShipmentMethodTransfer;
 use Pyz\Yves\GlobusRestApiClient\Provider\GlobusRestApiClientAccount;
+use Pyz\Yves\GlobusRestApiClient\Provider\GlobusRestApiClientValidation;
 use SprykerShop\Yves\CheckoutPage\Controller\CheckoutController as SprykerCheckoutControllerAlias;
 use SprykerShop\Yves\CheckoutPage\Plugin\Provider\CheckoutPageControllerProvider;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -82,6 +83,19 @@ class CheckoutController extends SprykerCheckoutControllerAlias
         if (!is_array($response)) {
             return $response;
         }
+
+        $customerTransfer = $this->getFactory()->getCustomerClient()->getCustomer();
+        $firstName = $customerTransfer->getFirstName();
+        $lastName = $customerTransfer->getLastName();
+        $zip = $customerTransfer->getZipCode();
+        $houseNo = $customerTransfer->getAddress2();
+        $street = $customerTransfer->getAddress1();
+        $city = $customerTransfer->getCity();
+        $we = $customerTransfer->getIsAdvertise();
+        $meinGlobus = $customerTransfer->getIsMeinGlobus();
+
+        $validAddress = GlobusRestApiClientValidation::addressValidation($firstName, $lastName, $zip, $houseNo, $street, $city, $meinGlobus, $we);
+        $response["data"] = $validAddress;
 
         return $this->view(
             $response,

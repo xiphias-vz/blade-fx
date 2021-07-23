@@ -8,6 +8,7 @@ export default class RegisterPageLeftSide extends Component{
     protected hiddenMyGlobusCardNumber;
     protected hiddenIsAdvertise;
     protected checkboxIsAdvertise;
+    protected hiddenIsMeinGlobus;
 
     protected readyCallback() {
     }
@@ -20,6 +21,7 @@ export default class RegisterPageLeftSide extends Component{
         this.hiddenIsAdvertise = document.querySelector('#registerForm_isAdvertise');
         this.checkboxIsAdvertise = document.querySelector('#chk_isAdvertise .checkbox__input');
         this.hiddenIsAdvertise.value = "false";
+        this.hiddenIsMeinGlobus = document.querySelector('#registerForm_isMeinGlobus');
 
         this.mapEvents();
     }
@@ -43,12 +45,14 @@ export default class RegisterPageLeftSide extends Component{
 
     protected radioChange(checkbox: HTMLInputElement): void {
             if (checkbox.value == "Yes"){
-            this.globusCardDiv.classList.remove("hidden");
+                this.globusCardDiv.classList.remove("hidden");
+                this.hiddenIsMeinGlobus.value = true;
             }
             else {
                 this.globusCardDiv.classList.add("hidden");
                 this.hiddenMyGlobusCardNumber.value = '';
                 this.myGlobusCardNumber.value = '';
+                this.hiddenIsMeinGlobus.value = false;
             }
     }
 

@@ -192,6 +192,13 @@ $setting-popup-spacing-y: rem(16);
         }
     }
 
+    .input--error-birthday {
+        clear: both;
+        border: rem(0.8) solid map-get($setting-color-actions, alert) !important;
+        border-radius: rem(2) !important;
+
+    }
+
     .errorValidationMessage {
         color: map-get($setting-color-actions, alert);
     }
