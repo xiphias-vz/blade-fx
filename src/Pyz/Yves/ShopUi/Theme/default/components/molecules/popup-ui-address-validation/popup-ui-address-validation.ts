@@ -291,6 +291,8 @@ export default class PopupUiAddressValidation extends Component{
 
     public submitRegistrationForm(): void
     {
+        this.checkoutStep('login');
+        this.checkoutStep('pick-up station');
         this.$registrationForm[0].submit();
     }
 
@@ -505,6 +507,24 @@ export default class PopupUiAddressValidation extends Component{
             el = document.getElementById(name);
         }
         return el;
+    }
+
+    protected checkoutStep(option)
+    {
+        window.dataLayer.push({
+            'event': 'eec.checkout',
+            'ecommerce':
+                {
+                    'checkout':
+                        {
+                            'actionField':
+                                {
+                                    'step': '1',
+                                    'option': option,
+                                }
+                        },
+                },
+        });
     }
 
     get getLinkToAddressModal(): string{
