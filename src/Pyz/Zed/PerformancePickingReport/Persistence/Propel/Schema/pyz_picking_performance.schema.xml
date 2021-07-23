@@ -41,14 +41,6 @@
         <column name="pickup_end_position" type="DATE" />
         <column name="duration_pick_time" type="INTEGER" />
 
-        <unique name="pyz_performance_sales_order_item_report-unique">
-            <unique-column name="fk_performance_sales_order_report" />
-        </unique>
-
-        <foreign-key name="sales_order_item_report-fk_performance_sales_order_report" foreignTable="pyz_performance_sales_order_report" phpName="PerformanceSalesOrderItemReport">
-            <reference local="fk_performance_sales_order_report" foreign="id_performance_sales_order_report"/>A
-        </foreign-key>
-
         <id-method-parameter value="pyz_performance_sales_order_item_report_pk_seq"/>
     </table>
 
