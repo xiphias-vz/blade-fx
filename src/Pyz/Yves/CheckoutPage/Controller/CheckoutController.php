@@ -94,6 +94,17 @@ class CheckoutController extends SprykerCheckoutControllerAlias
         $we = $customerTransfer->getIsAdvertise();
         $meinGlobus = $customerTransfer->getIsMeinGlobus();
 
+        if (isset($we)) {
+            $we = $customerTransfer->getIsAdvertise();
+        } else {
+            $we = false;
+        }
+        if (isset($meinGlobus)) {
+            $meinGlobus = $customerTransfer->getIsMeinGlobus();
+        } else {
+            $meinGlobus = true;
+        }
+
         $validAddress = GlobusRestApiClientValidation::addressValidation($firstName, $lastName, $zip, $houseNo, $street, $city, $meinGlobus, $we);
         $response["data"] = $validAddress;
 

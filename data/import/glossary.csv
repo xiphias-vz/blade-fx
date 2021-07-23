@@ -4715,7 +4715,7 @@ checkout.validation.mailSentMsg, "Ihnen wurde eine E-Mail zur Passwortänderung 
 checkout.showScanAndGoActivateHint, "Scan & Go ist für Sie freigeschaltet. Sie können Scan & Go nun bequem mit der (digitalen) Kundenkarte in Ihrem Globus-Markt nutzen.",de_DE
 checkout.showScanAndGoActivateHint, "Scan & Go is activated for you. You can now use Scan & Go conveniently with the (digital) customer card in your Globus store.",en_US
 checkout.showScanAndGoNotActivateHint, "Scan & Go freischalten. Wenn Sie Scan & Go nutzen möchten, lassen Sie sich an der Infotheke in Ihrem Markt freischalten.",de_DE
-checkout.showScanAndGoNotActivateHint&Go, "Activate Scan & Go. If you would like to use Scan & Go, have yourself activated at the information desk in your store.",en_US
+checkout.showScanAndGoNotActivateHint, "Activate Scan & Go. If you would like to use Scan & Go, have yourself activated at the information desk in your store.",en_US
 checkout.step.success.page.title,Vielen Dank für Ihre Registrierung,de_DE
 checkout.step.success.page.button,Jetzt den Shop durchstöbern,de_DE
 register.page.left.side.globus.card.top,"Wenn Sie bereits eine Karte im Markt mitgenommen haben, können Sie hier die Kartennummer eingeben.",de_DE
