@@ -118,12 +118,12 @@ class RegisterController extends SprykerShopRegisterController
         $we = $customerTransfer->getIsAdvertise();
         $meinGlobus = $customerTransfer->getIsMeinGlobus();
 
-        if (isset($we) && $we) {
+        if (isset($we) && $we == "true") {
             $we = true;
         } else {
             $we = false;
         }
-        if (isset($meinGlobus) && $meinGlobus) {
+        if (isset($meinGlobus) && $meinGlobus == "true") {
             $meinGlobus = true;
         } else {
             $meinGlobus = false;
@@ -208,12 +208,12 @@ class RegisterController extends SprykerShopRegisterController
         $meinGlobus = $request->request->get(static::MEIN_GLOBUS);
         $we = $request->request->get(static::WE);
 
-        if (isset($we) && $we) {
+        if (isset($we) && $we == "true") {
             $we = true;
         } else {
             $we = false;
         }
-        if (isset($meinGlobus) && $meinGlobus) {
+        if (isset($meinGlobus) && $meinGlobus == "true") {
             $meinGlobus = true;
         } else {
             $meinGlobus = false;

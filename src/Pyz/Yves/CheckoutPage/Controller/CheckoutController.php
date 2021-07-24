@@ -94,12 +94,12 @@ class CheckoutController extends SprykerCheckoutControllerAlias
         $we = $customerTransfer->getIsAdvertise();
         $meinGlobus = $customerTransfer->getIsMeinGlobus();
 
-        if (isset($we) && $we) {
+        if (isset($we) && $we == "true") {
             $we = true;
         } else {
             $we = false;
         }
-        if (isset($meinGlobus) && $meinGlobus) {
+        if (isset($meinGlobus) && $meinGlobus == "true") {
             $meinGlobus = true;
         } else {
             $meinGlobus = false;
