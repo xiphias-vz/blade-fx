@@ -206,20 +206,30 @@ class AuthenticationHandler extends SprykerAuthenticationHandler
             $gender = "u";
         }
 
-        $newMyGlobusCardNumber = 0;
-        if (!$globusMyCardNumber) {
-            $newMyGlobusCardNumber = $this->getNewGlobusCardNumber();
-            $customerTransfer->setMyGlobusCard($newMyGlobusCardNumber);
-        } else {
-            $newMyGlobusCardNumber = $globusMyCardNumber;
-        }
-
+        $newMyGlobusCardNumber = null;
         $cardType = "digital";
         $cardOrigin = "ClickAndCollect";
+
+        $myGlobusCardNumberAPIVariable = '';
+        $cardTypeAPIVariable = '';
+        $meinGlobusAPIVariable = '';
+        if ($globusIsMeinGlobus == "true") {
+            if (!$globusMyCardNumber) {
+                $newMyGlobusCardNumber = $this->getNewGlobusCardNumber();
+                $customerTransfer->setMyGlobusCard($newMyGlobusCardNumber);
+            } else {
+                $newMyGlobusCardNumber = $globusMyCardNumber;
+            }
+
+            $myGlobusCardNumberAPIVariable = '"cardNumber": "' . $newMyGlobusCardNumber . '",';
+            $cardTypeAPIVariable = '"cardType": "' . $cardType . '",';
+            $meinGlobusAPIVariable = '"meinGlobus": ' . $globusIsMeinGlobus . ',';
+        }
+
         $data = '{
                       "email": "' . $customerTransfer->getEmail() . '",
-                      "cardNumber": "' . $newMyGlobusCardNumber . '",
-                      "cardType": "' . $cardType . '",
+                      ' . $myGlobusCardNumberAPIVariable . '
+                      ' . $cardTypeAPIVariable . '
                       "origin": "' . $cardOrigin . '",
                       "profile": {
                         "lastName": "' . $customerTransfer->getFirstName() . '",
@@ -254,6 +264,7 @@ class AuthenticationHandler extends SprykerAuthenticationHandler
                         }
                       },
                       "subscriptions": {
+                        ' . $meinGlobusAPIVariable . '
                         "general": true,
                         "marketingPermission": {
                           "email": ' . $globusIsAdvertise . ',
