@@ -118,6 +118,17 @@ class RegisterController extends SprykerShopRegisterController
         $we = $customerTransfer->getIsAdvertise();
         $meinGlobus = $customerTransfer->getIsMeinGlobus();
 
+        if (isset($we) && $we) {
+            $we = true;
+        } else {
+            $we = false;
+        }
+        if (isset($meinGlobus) && $meinGlobus) {
+            $meinGlobus = true;
+        } else {
+            $meinGlobus = false;
+        }
+
         $validAddress = GlobusRestApiClientValidation::addressValidation($firstName, $lastName, $zip, $houseNo, $street, $city, $meinGlobus, $we);
         $customerData["data"] = $validAddress;
 
@@ -194,10 +205,21 @@ class RegisterController extends SprykerShopRegisterController
         $houseNumber = $request->request->get(static::HOUSE_NUMBER);
         $zip = $request->request->get(static::ZIP);
         $city = $request->request->get(static::CITY);
-        $mainGlobus = $request->request->get(static::MEIN_GLOBUS);
+        $meinGlobus = $request->request->get(static::MEIN_GLOBUS);
         $we = $request->request->get(static::WE);
 
-        $result = GlobusRestApiClientValidation::addressValidation($firstName, $lastName, $zip, $houseNumber, $street, $city, $mainGlobus, $we);
+        if (isset($we) && $we) {
+            $we = true;
+        } else {
+            $we = false;
+        }
+        if (isset($meinGlobus) && $meinGlobus) {
+            $meinGlobus = true;
+        } else {
+            $meinGlobus = false;
+        }
+
+        $result = GlobusRestApiClientValidation::addressValidation($firstName, $lastName, $zip, $houseNumber, $street, $city, $meinGlobus, $we);
 
         return new JsonResponse($result);
     }

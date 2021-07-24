@@ -31,7 +31,17 @@ class AuthenticationHandler extends SprykerAuthenticationHandler
     public function registerCustomer(CustomerTransfer $customerTransfer)
     {
         $meinGlobus = $_REQUEST["registerForm_isMeinGlobus"];
+        if (strtolower($meinGlobus) == "true") {
+            $meinGlobus = true;
+        } else {
+            $meinGlobus = false;
+        }
         $we = $_REQUEST["registerForm_isAdvertise"];
+        if (strtolower($we) == "true") {
+            $we = true;
+        } else {
+            $we = false;
+        }
 
         $validAdress = $this->getApiAdressCheck($customerTransfer, $meinGlobus, $we);
         $isAuthorized = false;
