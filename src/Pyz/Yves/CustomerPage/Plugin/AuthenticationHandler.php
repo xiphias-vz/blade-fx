@@ -207,11 +207,11 @@ class AuthenticationHandler extends SprykerAuthenticationHandler
         }
 
         $newMyGlobusCardNumber = 0;
-        if (!$customerTransfer->getMyGlobusCard()) {
+        if (!$globusMyCardNumber) {
             $newMyGlobusCardNumber = $this->getNewGlobusCardNumber();
             $customerTransfer->setMyGlobusCard($newMyGlobusCardNumber);
         } else {
-            $newMyGlobusCardNumber = $customerTransfer->getMyGlobusCard();
+            $newMyGlobusCardNumber = $globusMyCardNumber;
         }
 
         $cardType = "digital";
@@ -254,7 +254,6 @@ class AuthenticationHandler extends SprykerAuthenticationHandler
                         }
                       },
                       "subscriptions": {
-                        "meinGlobus": ' . $globusIsMeinGlobus . ',
                         "general": true,
                         "marketingPermission": {
                           "email": ' . $globusIsAdvertise . ',
@@ -282,7 +281,7 @@ class AuthenticationHandler extends SprykerAuthenticationHandler
                 }
 
                 $customerTransfer->setIsMeinGlobus($globusIsMeinGlobus);
-                $customerTransfer->setMyGlobusCard($globusMyCardNumber);
+                $customerTransfer->setMyGlobusCard($newMyGlobusCardNumber);
                 $customerTransfer->setIsAdvertise($globusIsAdvertise);
 
                 return true;
