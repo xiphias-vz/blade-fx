@@ -485,12 +485,6 @@
             $("#registerForm_customer_password_confirm").val($("#startRegister__customer_password").val());
         });
 
-        $("#btnContinueRegistrationAsGuest").click(function(){
-            checkoutStep('guestCheckout');
-            $("#guestForm_customer_email").val($("#startRegistrationForm_customer_email").val());
-            document.getElementsByName("guestForm")[0].submit();
-        });
-
     </script>
 
 {% endblock %}
