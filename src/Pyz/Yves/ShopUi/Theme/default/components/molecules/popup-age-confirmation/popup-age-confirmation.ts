@@ -28,7 +28,7 @@ export default class PopupAgeConfirmation extends Component{
             this.closeModal(this.$this);
         });
         this.ageConfirmedNoButton.addEventListener('click', () => {
-            this.redirectToHomePage();
+            this.redirectToBackPage();
         });
     }
 
@@ -41,10 +41,7 @@ export default class PopupAgeConfirmation extends Component{
         className.removeClass(`${this.name}--show`);
     }
 
-    protected redirectToHomePage(): void {
-        $.ajax({
-            type: 'POST',
-            url: window.location.href = '/'
-        });
+    protected redirectToBackPage(): void {
+        !history.length ? location.href = '/' : history.back();
     }
 }
