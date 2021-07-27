@@ -8,11 +8,12 @@
 {% define data = {
     product: required,
     idProductAbstract: data.product.idProductAbstract | default,
+    name: data.product.name,
     globusSupplierLabel: data.product.attributes.supplier
 } %}
 
 {% block body %}
-    {% if data.idProductAbstract and data.globusSupplierLabel == "Globus" %}
+    {% if data.idProductAbstract and data.globusSupplierLabel == "Globus" or 'Globus'in data.name %}
         {% block productAbstractLabels %}
             {% block goproductLabel %}
                 {% set labels = labels | default([]) %}
