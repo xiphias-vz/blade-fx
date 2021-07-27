@@ -13,7 +13,7 @@
         <property name="dateChanged" type="string"/>
         <property name="capacitySetFrom" type="int"/>
         <property name="capacitySetTo" type="int"/>
-        <property name="actionPreformed" type="int"/>
+        <property name="actionPerformed" type="int"/>
         <property name="isTrigger" type="boolean"/>
     </transfer>
 

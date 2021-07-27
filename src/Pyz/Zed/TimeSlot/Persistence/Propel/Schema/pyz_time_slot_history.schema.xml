@@ -16,7 +16,7 @@
         <column name="date_changed" type="DATE" required="false"/>
         <column name="capacity_set_from" type="INTEGER"/>
         <column name="capacity_set_to" type="INTEGER"/>
-        <column name="action_preformed" type="VARCHAR"/>
+        <column name="action_performed" type="VARCHAR"/>
         <column name="is_trigger" type="BOOLEAN"/>
 
         <foreign-key name="pyz_time_slot_history-fk_user" foreignTable="spy_user">
