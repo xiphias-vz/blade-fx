@@ -45,6 +45,7 @@ export default class PopupUiAddressValidation extends Component{
     protected $globusCardNumberField;
     protected $radioButtons;
     protected hiddenMyGlobusCardNumber;
+    protected hiddenMyGlobusCardType;
     protected checkboxIsAdvertise;
     protected hiddenIsMeinGlobus;
     protected $mobilePhoneNumber;
@@ -56,6 +57,9 @@ export default class PopupUiAddressValidation extends Component{
     protected registerForma = false;
     protected requiredCard = false;
     protected globalCardNumber;
+
+    protected cardKey = 'cardNumber';
+    protected isPhysicalKey = 'is_physical';
 
     protected async readyCallback() {
         this.linkToAddressModal = this.findElement(this.getLinkToAddressModal);
@@ -98,6 +102,7 @@ export default class PopupUiAddressValidation extends Component{
         this.$globusCardNumberField = this.findElement(this.getMyGlobusCardNumber);
         this.$radioButtons = document.getElementsByName(this.getRadioButtonsName);
         this.hiddenMyGlobusCardNumber = document.querySelector('#registerForm_my_globus_card_number');
+        this.hiddenMyGlobusCardType = document.querySelector('#registerForm_isMyGloubsCardValid');
         this.checkboxIsAdvertise = document.querySelector('#chk_isAdvertise .checkbox__input');
         this.hiddenIsMeinGlobus = document.querySelector('#registerForm_isMeinGlobus');
         this.$mobilePhoneNumber = document.getElementById(this.getMobilePhoneNumber);
@@ -371,10 +376,10 @@ export default class PopupUiAddressValidation extends Component{
 
     }
 
-    protected async callCardNumberCheckAPI(cardNumber): Promise<string> {
+    protected async callCardNumberCheckAPI(cardNumber): Promise<any> {
         const url = '/register/check-card-number';
         const formData = new FormData();
-        let dataToSend = '';
+        let dataToSend;
 
         formData.append('id', cardNumber);
 
@@ -393,7 +398,6 @@ export default class PopupUiAddressValidation extends Component{
             });
 
         return dataToSend;
-
     }
 
     protected async checkIfDataIsInputed(){
@@ -479,7 +483,8 @@ export default class PopupUiAddressValidation extends Component{
             } else {
                 const cardNumberAfter = await this.callCardNumberCheckAPI(cardNumber);
                 if (cardNumberAfter !== 'used_card_error') {
-                    this.hiddenMyGlobusCardNumber.value = cardNumberAfter;
+                    this.hiddenMyGlobusCardNumber.value = cardNumberAfter[this.cardKey];
+                    this.hiddenMyGlobusCardType.value = cardNumberAfter[this.isPhysicalKey];
                 } else {
                     this.$globusCardNumberField.value = '';
                     this.$globusCardNumberField.classList.add('input--error');

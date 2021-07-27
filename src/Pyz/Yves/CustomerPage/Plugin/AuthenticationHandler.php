@@ -178,6 +178,7 @@ class AuthenticationHandler extends SprykerAuthenticationHandler
         $globusMyCardNumber = $_REQUEST["registerForm_my_globus_card_number"];
         $globusIsAdvertise = $_REQUEST["registerForm_isAdvertise"];
         $globusIsMeinGlobus = $_REQUEST["registerForm_isMeinGlobus"];
+        $globusIsMYGloubsCardValid = $_REQUEST["registerForm_isMyGloubsCardValid"];
 
         $validAddress = $this->getApiAdressCheck($customerTransfer, $globusIsMeinGlobus, $globusIsAdvertise);
         $addressStatus = $validAddress["code"];
@@ -207,8 +208,13 @@ class AuthenticationHandler extends SprykerAuthenticationHandler
         }
 
         $newMyGlobusCardNumber = null;
-        $cardType = "digital";
         $cardOrigin = "ClickAndCollect";
+
+        if ($globusIsMYGloubsCardValid == "true") {
+            $cardType = "physical";
+        } else {
+            $cardType = "digital";
+        }
 
         $myGlobusCardNumberAPIVariable = '';
         $cardTypeAPIVariable = '';

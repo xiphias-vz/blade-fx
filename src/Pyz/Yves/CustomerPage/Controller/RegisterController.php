@@ -238,13 +238,17 @@ class RegisterController extends SprykerShopRegisterController
 
         $cardNumberToSend = $id;
 
+        $dataToSend = ['cardNumber' => $cardNumberToSend, 'is_physical' => true];
+
         if ($result->status === 'USED') {
-            return new JsonResponse('used_card_error');
+            $dataToSend['is_physical'] = false;
+            $dataToSend['cardNumber'] = 'used_card_error';
         } elseif ($result->status === 'INVALID' || $result->status === 'BLOCKED') {
-            $cardNumberToSend = GlobusRestApiClientDigitalCard::getNewGlobusCardNumber();
+            $dataToSend['is_physical'] = false;
+            $dataToSend['cardNumber'] = GlobusRestApiClientDigitalCard::getNewGlobusCardNumber();
         }
 
-        return new JsonResponse($cardNumberToSend);
+        return new JsonResponse($dataToSend);
     }
 
     /**
