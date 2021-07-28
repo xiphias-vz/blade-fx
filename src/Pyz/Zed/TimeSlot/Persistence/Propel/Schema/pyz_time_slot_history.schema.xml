@@ -18,11 +18,6 @@
         <column name="capacity_set_to" type="INTEGER"/>
         <column name="action_performed" type="VARCHAR"/>
         <column name="is_trigger" type="BOOLEAN"/>
-
-        <foreign-key name="pyz_time_slot_history-fk_user" foreignTable="spy_user">
-            <reference local="fk_user" foreign="id_user"/>
-        </foreign-key>
-
     </table>
 
 </database>
