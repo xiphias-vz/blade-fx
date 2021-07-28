@@ -19,7 +19,7 @@
         <property name="durationPickingTime" type="int" />
     </transfer>
 
-    <transfer name="PerformanceSalesOrderItemReport">
+    <transfer name="PerformanceSalesOrderReportItem">
         <property name="idPerformanceSalesOrderItemReport" type="int"/>
         <property name="idPerformanceSalesOrderReport" type="int"/>
         <property name="idSalesOrderItem" type="int"/>

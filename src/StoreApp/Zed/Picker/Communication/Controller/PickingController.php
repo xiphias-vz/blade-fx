@@ -16,11 +16,11 @@ use Generated\Shared\Transfer\OrderPickingBlockTransfer;
 use Generated\Shared\Transfer\OrderTransfer;
 use Generated\Shared\Transfer\OrderUpdateRequestTransfer;
 use Generated\Shared\Transfer\PerformanceGlobalSalesOrderReportTransfer;
-use Generated\Shared\Transfer\PerformanceSalesOrderItemReportTransfer;
+use Generated\Shared\Transfer\PerformanceSalesOrderReportItemTransfer;
 use Generated\Shared\Transfer\PerformanceSalesOrderReportTransfer;
 use Generated\Shared\Transfer\PickingZoneTransfer;
 use Generated\Shared\Transfer\UserTransfer;
-use Orm\Zed\PerformancePickingReport\Persistence\PyzPerformanceSalesOrderItemReportQuery;
+use Orm\Zed\PerformancePickingReport\Persistence\PyzPerformanceSalesOrderReportItemQuery;
 use Orm\Zed\PickingSalesOrder\Persistence\PyzPickingSalesOrderQuery;
 use Pyz\Shared\Messages\MessagesConfig;
 use Pyz\Shared\Oms\OmsConfig;
@@ -938,7 +938,7 @@ class PickingController extends BaseOrderPickingController
     protected function setPerformanceOrderItem(array $aggregatedItemTransfers, int $idPerformanceSalesOrderReport)
     {
         foreach ($aggregatedItemTransfers as $orderItem) {
-            $orderItemPickerReportTransfer = (new PerformanceSalesOrderItemReportTransfer())
+            $orderItemPickerReportTransfer = (new PerformanceSalesOrderReportItemTransfer())
                 ->setFkPerformanceSalesOrderReport($idPerformanceSalesOrderReport)
                 ->setIdSalesOrderItem($orderItem->getIdSalesOrderItem())
                 ->setPickingStartTime(date("Y-m-d H:i:s"))
@@ -962,7 +962,7 @@ class PickingController extends BaseOrderPickingController
     protected function updateSinglePickingOrderItemPerformanceOrderItem(int $idSalesOrderItem, string $status)
     {
         try {
-            $updateOrderItemPerformanceEntity = PyzPerformanceSalesOrderItemReportQuery::create()
+            $updateOrderItemPerformanceEntity = PyzPerformanceSalesOrderReportItemQuery::create()
                 ->filterByIdSalesOrderItem($idSalesOrderItem)
                 ->findOne();
 

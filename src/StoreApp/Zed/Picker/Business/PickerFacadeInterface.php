@@ -8,7 +8,7 @@
 namespace StoreApp\Zed\Picker\Business;
 
 use Generated\Shared\Transfer\PerformanceGlobalSalesOrderReportTransfer;
-use Generated\Shared\Transfer\PerformanceSalesOrderItemReportTransfer;
+use Generated\Shared\Transfer\PerformanceSalesOrderReportItemTransfer;
 use Generated\Shared\Transfer\PerformanceSalesOrderReportTransfer;
 use Generated\Shared\Transfer\PickingOrderTransfer;
 use Generated\Shared\Transfer\PickingZoneTransfer;
@@ -199,9 +199,9 @@ interface PickerFacadeInterface
     public function setOrderPickerReport(PerformanceSalesOrderReportTransfer $transfer): PerformanceSalesOrderReportTransfer;
 
     /**
-     * @param \Generated\Shared\Transfer\PerformanceSalesOrderItemReportTransfer $transfer
+     * @param \Generated\Shared\Transfer\PerformanceSalesOrderReportItemTransfer $transfer
      *
-     * @return \Generated\Shared\Transfer\PerformanceSalesOrderItemReportTransfer
+     * @return \Generated\Shared\Transfer\PerformanceSalesOrderReportItemTransfer
      */
-    public function setOrderItemPickerReport(PerformanceSalesOrderItemReportTransfer $transfer): PerformanceSalesOrderItemReportTransfer;
+    public function setOrderItemPickerReport(PerformanceSalesOrderReportItemTransfer $transfer): PerformanceSalesOrderReportItemTransfer;
 }

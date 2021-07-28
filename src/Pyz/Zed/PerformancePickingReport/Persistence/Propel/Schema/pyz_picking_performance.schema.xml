@@ -32,7 +32,7 @@
         <column name="duration_pick_time" type="INTEGER" />
     </table>
 
-    <table name="pyz_performance_sales_order_item_report">
+    <table name="pyz_performance_sales_order_report_item">
         <column name="id_performance_sales_order_item_report" required="true" type="INTEGER" primaryKey="true" autoIncrement="true"/>
         <column name="id_performance_sales_order_report" type="INTEGER"/>
         <column name="id_sales_order_item" type="INTEGER" />

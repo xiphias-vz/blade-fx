@@ -13,7 +13,7 @@ use Generated\Shared\Transfer\OrderChangeRequestTransfer;
 use Generated\Shared\Transfer\OrderItemChangeRequestTransfer;
 use Generated\Shared\Transfer\OrderPickingBlockTransfer;
 use Generated\Shared\Transfer\PerformanceGlobalSalesOrderReportTransfer;
-use Generated\Shared\Transfer\PerformanceSalesOrderItemReportTransfer;
+use Generated\Shared\Transfer\PerformanceSalesOrderReportItemTransfer;
 use Generated\Shared\Transfer\PerformanceSalesOrderReportTransfer;
 use Generated\Shared\Transfer\PickingColorTransfer;
 use Generated\Shared\Transfer\PickingContainerTransfer;
@@ -804,7 +804,7 @@ class PickingHeaderTransferData
      */
     protected function updatePerformanceOrderItem(PickingOrderTransfer $order, PickingOrderItemTransfer $orderItem, string $itemStatus)
     {
-        $orderItemPickerReportTransfer = (new PerformanceSalesOrderItemReportTransfer())
+        $orderItemPickerReportTransfer = (new PerformanceSalesOrderReportItemTransfer())
             ->setFkPerformanceSalesOrderReport($order->getIdPerformanceSalesOrderReport())
             ->setIdSalesOrderItem($orderItem->getIdOrderItem())
             ->setPickingStartTime($orderItem->getPerformancePickingStartedAt())

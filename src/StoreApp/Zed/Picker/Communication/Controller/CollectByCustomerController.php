@@ -18,12 +18,12 @@ use Generated\Shared\Transfer\OrderCriteriaFilterTransfer;
 use Generated\Shared\Transfer\OrderTransfer;
 use Generated\Shared\Transfer\OrderUpdateRequestTransfer;
 use Generated\Shared\Transfer\PerformanceGlobalSalesOrderReportTransfer;
-use Generated\Shared\Transfer\PerformanceSalesOrderItemReportTransfer;
+use Generated\Shared\Transfer\PerformanceSalesOrderReportItemTransfer;
 use Generated\Shared\Transfer\PerformanceSalesOrderReportTransfer;
 use Generated\Shared\Transfer\PickingSalesOrderCriteriaTransfer;
 use Generated\Shared\Transfer\UserTransfer;
 use Orm\Zed\PerformancePickingReport\Persistence\PyzPerformanceGlobalSalesOrderReportQuery;
-use Orm\Zed\PerformancePickingReport\Persistence\PyzPerformanceSalesOrderItemReportQuery;
+use Orm\Zed\PerformancePickingReport\Persistence\PyzPerformanceSalesOrderReportItemQuery;
 use Orm\Zed\PerformancePickingReport\Persistence\PyzPerformanceSalesOrderReportQuery;
 use Orm\Zed\Sales\Persistence\Map\SpySalesOrderTableMap;
 use Pyz\Shared\Messages\MessagesConfig;
@@ -993,16 +993,16 @@ class CollectByCustomerController extends AbstractController
      */
     protected function deleteIdSalesOrderItemPerformanceOrderItem(string $idPerformanceSalesOrderReport)
     {
-        $orderItemPickerReportTransfer = (new PerformanceSalesOrderItemReportTransfer())
+        $orderItemPickerReportTransfer = (new PerformanceSalesOrderReportItemTransfer())
             ->setFkPerformanceSalesOrderReport($idPerformanceSalesOrderReport);
 
         try {
-            $orderPerformanceOrderItemTransferEntity = PyzPerformanceSalesOrderItemReportQuery::create()
+            $orderPerformanceOrderItemTransferEntity = PyzPerformanceSalesOrderReportItemQuery::create()
                 ->filterByFkPerformanceSalesOrderReport($orderItemPickerReportTransfer->getFkPerformanceSalesOrderReport())
                 ->findByFkPerformanceSalesOrderReport($orderItemPickerReportTransfer->getFkPerformanceSalesOrderReport());
 
             foreach ($orderPerformanceOrderItemTransferEntity->getData() as $orderItem) {
-                $deleteOrderItemPerformanceEntity = PyzPerformanceSalesOrderItemReportQuery::create()
+                $deleteOrderItemPerformanceEntity = PyzPerformanceSalesOrderReportItemQuery::create()
                     ->filterByIdPerformanceSalesOrderItemReport($orderItem->getIdPerformanceSalesOrderItemReport())
                     ->findOne();
 

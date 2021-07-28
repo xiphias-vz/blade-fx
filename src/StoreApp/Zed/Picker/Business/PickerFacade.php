@@ -8,12 +8,12 @@
 namespace StoreApp\Zed\Picker\Business;
 
 use Generated\Shared\Transfer\PerformanceGlobalSalesOrderReportTransfer;
-use Generated\Shared\Transfer\PerformanceSalesOrderItemReportTransfer;
+use Generated\Shared\Transfer\PerformanceSalesOrderReportItemTransfer;
 use Generated\Shared\Transfer\PerformanceSalesOrderReportTransfer;
 use Generated\Shared\Transfer\PickingOrderTransfer;
 use Generated\Shared\Transfer\PickingZoneTransfer;
 use Orm\Zed\PerformancePickingReport\Persistence\PyzPerformanceGlobalSalesOrderReportQuery;
-use Orm\Zed\PerformancePickingReport\Persistence\PyzPerformanceSalesOrderItemReportQuery;
+use Orm\Zed\PerformancePickingReport\Persistence\PyzPerformanceSalesOrderReportItemQuery;
 use Orm\Zed\PerformancePickingReport\Persistence\PyzPerformanceSalesOrderReportQuery;
 use Spryker\Zed\Kernel\Business\AbstractFacade;
 use StoreApp\Zed\Picker\Business\Transfer\PickingHeaderTransfer;
@@ -345,13 +345,13 @@ class PickerFacade extends AbstractFacade implements PickerFacadeInterface
     }
 
     /**
-     * @param \Generated\Shared\Transfer\PerformanceSalesOrderItemReportTransfer $transfer
+     * @param \Generated\Shared\Transfer\PerformanceSalesOrderReportItemTransfer $transfer
      *
-     * @return \Generated\Shared\Transfer\PerformanceSalesOrderItemReportTransfer
+     * @return \Generated\Shared\Transfer\PerformanceSalesOrderReportItemTransfer
      */
-    public function setOrderItemPickerReport(PerformanceSalesOrderItemReportTransfer $transfer): PerformanceSalesOrderItemReportTransfer
+    public function setOrderItemPickerReport(PerformanceSalesOrderReportItemTransfer $transfer): PerformanceSalesOrderReportItemTransfer
     {
-        $pyzPerformaceOrderItemEntity = PyzPerformanceSalesOrderItemReportQuery::create()
+        $pyzPerformaceOrderItemEntity = PyzPerformanceSalesOrderReportItemQuery::create()
             ->filterByFkPerformanceSalesOrderReport($transfer->getFkPerformanceSalesOrderReport())
             ->filterByIdSalesOrderItem($transfer->getIdSalesOrderItem())
             ->filterByPickingStartTime($transfer->getPickingStartTime())
@@ -364,7 +364,7 @@ class PickerFacade extends AbstractFacade implements PickerFacadeInterface
             $pyzPerformaceOrderItemEntity->save();
         }
 
-        $orderItemPerformanceReportTransfer = (new PerformanceSalesOrderItemReportTransfer())
+        $orderItemPerformanceReportTransfer = (new PerformanceSalesOrderReportItemTransfer())
             ->setIdPerformanceSalesOrderItemReport($pyzPerformaceOrderItemEntity->getIdPerformanceSalesOrderItemReport())
             ->setFkPerformanceSalesOrderReport($pyzPerformaceOrderItemEntity->getFkPerformanceSalesOrderReport())
             ->setIdSalesOrderItem($pyzPerformaceOrderItemEntity->getIdSalesOrderItem())
