@@ -18,7 +18,7 @@
 
     <table name="pyz_performance_sales_order_report">
         <column name="id_performance_sales_order_report" required="true" type="INTEGER" primaryKey="true" autoIncrement="true"/>
-        <column name="fk_global_pick_report" type="INTEGER"/>
+        <column name="id_global_pick_report" type="INTEGER"/>
         <column name="id_sales_order" type="INTEGER" />
         <column name="order_date" type="TIMESTAMP" />
         <column name="pickup_date" type="DATE" />
@@ -34,7 +34,7 @@
 
     <table name="pyz_performance_sales_order_item_report">
         <column name="id_performance_sales_order_item_report" required="true" type="INTEGER" primaryKey="true" autoIncrement="true"/>
-        <column name="fk_performance_sales_order_report" type="INTEGER"/>
+        <column name="id_performance_sales_order_report" type="INTEGER"/>
         <column name="id_sales_order_item" type="INTEGER" />
         <column name="picking_start_time" type="TIMESTAMP" />
         <column name="picking_end_time" type="TIMESTAMP" />
