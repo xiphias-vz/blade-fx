@@ -7,17 +7,10 @@
 
 namespace StoreApp\Zed\Picker\Communication\Controller;
 
-use Exception;
 use Generated\Shared\Transfer\OrderTransfer;
-use Generated\Shared\Transfer\PerformanceGlobalSalesOrderReportTransfer;
-use Generated\Shared\Transfer\PerformanceSalesOrderReportTransfer;
 use Generated\Shared\Transfer\PickingZoneTransfer;
-use Orm\Zed\PerformancePickingReport\Persistence\Base\PyzPerformanceSalesOrderReportQuery;
-use Orm\Zed\PerformancePickingReport\Persistence\PyzPerformanceGlobalSalesOrderReportQuery;
-use Orm\Zed\PerformancePickingReport\Persistence\PyzPerformanceSalesOrderReportQuery as OrmPyzPerformanceSalesOrderReportQuery;
 use Pyz\Shared\Messages\MessagesConfig;
 use Pyz\Shared\Oms\OmsConfig;
-use Spryker\Shared\Log\LoggerTrait;
 use StoreApp\Shared\Picker\PickerConfig;
 use StoreApp\Zed\Picker\Communication\Form\ShelvesSelectionForm;
 use Symfony\Component\Form\FormInterface;
@@ -29,8 +22,6 @@ use Symfony\Component\HttpFoundation\Request;
  */
 class SelectShelvesController extends BaseOrderPickingController
 {
-    use LoggerTrait;
-
     protected const PICKING_SUCCESS_MESSAGE_ORDER_PICKED = 'storeapp.picking.message.success.order-has-been-picked';
 
     /**
@@ -129,102 +120,9 @@ class SelectShelvesController extends BaseOrderPickingController
                 [OmsConfig::STORE_STATE_READY_FOR_SELECTING_SHELVES]
             );
 
-        $idGlobalPickReport = $this->updatePerformanceOrder($salesOrderTransfer->getIdSalesOrder(), count($containerIdToShelfCodeMap));
-        $this->updateGlobalPerformanceOrder($idGlobalPickReport);
-
         $this->addSuccessMessage(static::PICKING_SUCCESS_MESSAGE_ORDER_PICKED);
         $this->getFacade()->markOrderItemsAsPicked($selectedIdSalesOrderItems);
 
         return $this->redirectResponse(PickerConfig::URL_PICKING_LIST);
-    }
-
-    /**
-     * @param int $IdGlobalPickReport
-     *
-     * @return void
-     */
-    protected function updateGlobalPerformanceOrder(int $IdGlobalPickReport)
-    {
-        $orderGlobalPerformanceOrderTransfer = (new PerformanceGlobalSalesOrderReportTransfer())
-            ->setIdGlobalPickReport($IdGlobalPickReport)
-            ->setPickTimeEnd(date("Y-m-d H:i:s"));
-
-        try {
-            $orderPerformanceGlobalOrderTransferEntity = PyzPerformanceGlobalSalesOrderReportQuery::create()
-                ->filterByIdGlobalPickReport($orderGlobalPerformanceOrderTransfer->getIdGlobalPickReport())
-                ->findOneOrCreate();
-
-            $globalOrderPickingDuration = $this->calculatePickingDurationTime(date("Y-m-d H:i:s", $orderPerformanceGlobalOrderTransferEntity->getPickTimeBegin()->getTimestamp()), $orderGlobalPerformanceOrderTransfer->getPickTimeEnd());
-
-            $orderPerformanceGlobalOrderTransferEntity->setPickTimeEnd($orderGlobalPerformanceOrderTransfer->getPickTimeEnd());
-            $orderPerformanceGlobalOrderTransferEntity->setDurationPickTime($globalOrderPickingDuration);
-
-            if ($orderPerformanceGlobalOrderTransferEntity->isModified()) {
-                $orderPerformanceGlobalOrderTransferEntity->save();
-            }
-        } catch (Exception $exceptionSaveGlobal) {
-            $this->logError($exceptionSaveGlobal->getMessage(), $exceptionSaveGlobal->getTrace());
-        }
-    }
-
-    /**
-     * @param int $IdSalesOrder
-     * @param int $containerCount
-     *
-     * @return int
-     */
-    protected function updatePerformanceOrder(int $IdSalesOrder, int $containerCount): int
-    {
-        $orderPerformanceOrderTransfer = (new PerformanceSalesOrderReportTransfer())
-            ->setIdSalesOrder($IdSalesOrder)
-            ->setContainersUsed($containerCount)
-            ->setPickingEnd(date("Y-m-d H:i:s"));
-
-        $orderPerformanceOrderTransferEntity = new OrmPyzPerformanceSalesOrderReportQuery();
-        try {
-            $orderPerformanceOrderTransferEntity = PyzPerformanceSalesOrderReportQuery::create()
-                ->filterByIdSalesOrder($orderPerformanceOrderTransfer->getIdSalesOrder())
-                ->findOneOrCreate();
-
-            $orderPickingDuration = $this->calculatePickingDurationTime(date("Y-m-d H:i:s", $orderPerformanceOrderTransferEntity->getPickingStart()->getTimestamp()), $orderPerformanceOrderTransfer->getPickingEnd());
-
-            $orderPerformanceOrderTransferEntity->setContainersUsed($orderPerformanceOrderTransfer->getContainersUsed());
-            $orderPerformanceOrderTransferEntity->setPickingEnd($orderPerformanceOrderTransfer->getPickingEnd());
-            $orderPerformanceOrderTransferEntity->setDurationPickTime($orderPickingDuration);
-
-            if ($orderPerformanceOrderTransferEntity->isModified()) {
-                $orderPerformanceOrderTransferEntity->save();
-            }
-        } catch (Exception $exceptionSaveGlobal) {
-            $this->logError($exceptionSaveGlobal->getMessage(), $exceptionSaveGlobal->getTrace());
-        }
-
-        return $orderPerformanceOrderTransferEntity->getFkGlobalPickReport();
-    }
-
-    /**
-     * @param string $message
-     * @param array $trace
-     *
-     * @return void
-     */
-    protected function logError(string $message, array $trace = [])
-    {
-        $this->getLogger()->error($message, $trace);
-    }
-
-    /**
-     * @param string $startTime
-     * @param string $endTime
-     *
-     * @return int
-     */
-    protected function calculatePickingDurationTime(string $startTime, string $endTime): int
-    {
-        $firstTime = strtotime($startTime);
-        $lastTime = strtotime($endTime);
-        $timeDiff = $lastTime - $firstTime;
-
-        return $timeDiff;
     }
 }

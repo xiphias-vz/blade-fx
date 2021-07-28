@@ -7,9 +7,6 @@
 
 namespace StoreApp\Zed\Picker\Business;
 
-use Generated\Shared\Transfer\PerformanceGlobalSalesOrderReportTransfer;
-use Generated\Shared\Transfer\PerformanceSalesOrderItemReportTransfer;
-use Generated\Shared\Transfer\PerformanceSalesOrderReportTransfer;
 use Generated\Shared\Transfer\PickingOrderTransfer;
 use Generated\Shared\Transfer\PickingZoneTransfer;
 use StoreApp\Zed\Picker\Business\Transfer\PickingHeaderTransfer;
@@ -183,25 +180,4 @@ interface PickerFacadeInterface
      * @return \StoreApp\Zed\Picker\Business\Transfer\PickingHeaderTransfer
      */
     public function clearLockOrders(PickingHeaderTransfer $transfer, array $idOrders): PickingHeaderTransfer;
-
-    /**
-     * @param \Generated\Shared\Transfer\PerformanceGlobalSalesOrderReportTransfer $transfer
-     *
-     * @return \Generated\Shared\Transfer\PerformanceGlobalSalesOrderReportTransfer
-     */
-    public function setGlobalPickerReport(PerformanceGlobalSalesOrderReportTransfer $transfer): PerformanceGlobalSalesOrderReportTransfer;
-
-    /**
-     * @param \Generated\Shared\Transfer\PerformanceSalesOrderReportTransfer $transfer
-     *
-     * @return \Generated\Shared\Transfer\PerformanceSalesOrderReportTransfer
-     */
-    public function setOrderPickerReport(PerformanceSalesOrderReportTransfer $transfer): PerformanceSalesOrderReportTransfer;
-
-    /**
-     * @param \Generated\Shared\Transfer\PerformanceSalesOrderItemReportTransfer $transfer
-     *
-     * @return \Generated\Shared\Transfer\PerformanceSalesOrderItemReportTransfer
-     */
-    public function setOrderItemPickerReport(PerformanceSalesOrderItemReportTransfer $transfer): PerformanceSalesOrderItemReportTransfer;
 }

@@ -12,15 +12,10 @@ use Exception;
 use Generated\Shared\Transfer\OrderChangeRequestTransfer;
 use Generated\Shared\Transfer\OrderItemChangeRequestTransfer;
 use Generated\Shared\Transfer\OrderPickingBlockTransfer;
-use Generated\Shared\Transfer\PerformanceGlobalSalesOrderReportTransfer;
-use Generated\Shared\Transfer\PerformanceSalesOrderItemReportTransfer;
-use Generated\Shared\Transfer\PerformanceSalesOrderReportTransfer;
 use Generated\Shared\Transfer\PickingColorTransfer;
 use Generated\Shared\Transfer\PickingContainerTransfer;
 use Generated\Shared\Transfer\PickingOrderItemTransfer;
 use Generated\Shared\Transfer\PickingOrderTransfer;
-use Orm\Zed\PerformancePickingReport\Persistence\PyzPerformanceGlobalSalesOrderReportQuery;
-use Orm\Zed\PerformancePickingReport\Persistence\PyzPerformanceSalesOrderReportQuery;
 use Orm\Zed\PickingSalesOrder\Persistence\PyzPickingSalesOrderQuery;
 use Orm\Zed\Sales\Persistence\Map\SpySalesOrderItemTableMap;
 use Orm\Zed\Sales\Persistence\SpySalesOrderItemQuery;
@@ -29,22 +24,14 @@ use Propel\Runtime\Propel;
 use Pyz\Shared\Oms\OmsConfig;
 use Pyz\Zed\PickingZone\Business\PickingZoneFacadeInterface;
 use Pyz\Zed\Sales\Business\SalesFacadeInterface;
-use Spryker\Shared\Log\LoggerTrait;
 use Spryker\Zed\Oms\Business\OmsFacadeInterface;
 use Spryker\Zed\User\Business\UserFacadeInterface;
-use StoreApp\Zed\Picker\Business\PickerFacadeInterface;
 use StoreApp\Zed\Picker\Business\Updater\OrderUpdaterInterface;
 use Symfony\Component\HttpFoundation\Session\Session;
 
 class PickingHeaderTransferData
 {
-    use LoggerTrait;
-
     public const PICKING_TRANSFER_SESSION_NAME = 'PickingTransfer';
-    public const GLOBAL_PICKER_REPORT_IS_MULTIPICK = true;
-    public const PERFORMANCE_ORDER_ITEM_REPORT_PICKED = 'picked';
-    public const PERFORMANCE_ORDER_ITEM_REPORT_CANCELLED = 'cancelled';
-    public const PERFORMANCE_ORDER_ITEM_REPORT_PAUSED = 'paused';
     /**
      * @var \Spryker\Zed\Oms\Business\OmsFacadeInterface
      */
@@ -76,18 +63,12 @@ class PickingHeaderTransferData
     protected $orderUpdater;
 
     /**
-     * @var \StoreApp\Zed\Picker\Business\PickerFacadeInterface
-     */
-    protected $pickerFacade;
-
-    /**
      * @param \Spryker\Zed\Oms\Business\OmsFacadeInterface $omsFacade
      * @param \Pyz\Zed\Sales\Business\SalesFacadeInterface $salesFacade
      * @param \Symfony\Component\HttpFoundation\Session\Session $sessionService
      * @param \Spryker\Zed\User\Business\UserFacadeInterface $userFacade
      * @param \Pyz\Zed\PickingZone\Business\PickingZoneFacadeInterface $pickingZoneFacade
      * @param \StoreApp\Zed\Picker\Business\Updater\OrderUpdaterInterface $orderUpdater
-     * @param \StoreApp\Zed\Picker\Business\PickerFacadeInterface $pickerFacade
      */
     public function __construct(
         OmsFacadeInterface $omsFacade,
@@ -95,8 +76,7 @@ class PickingHeaderTransferData
         Session $sessionService,
         UserFacadeInterface $userFacade,
         PickingZoneFacadeInterface $pickingZoneFacade,
-        OrderUpdaterInterface $orderUpdater,
-        PickerFacadeInterface $pickerFacade
+        OrderUpdaterInterface $orderUpdater
     ) {
         $this->omsFacade = $omsFacade;
         $this->salesFacade = $salesFacade;
@@ -104,7 +84,6 @@ class PickingHeaderTransferData
         $this->userFacade = $userFacade;
         $this->pickingZoneFacade = $pickingZoneFacade;
         $this->orderUpdater = $orderUpdater;
-        $this->pickerFacade = $pickerFacade;
     }
 
     /**
@@ -127,7 +106,6 @@ class PickingHeaderTransferData
            so.articles_count,
            so.articles_quantity,
            so.is_paused,
-           sso.created_at as performance_order_date,
            case when popb.fk_user is null then 0 else 1 end as isLocked
     from spy_sales_order sso
         inner join
@@ -202,41 +180,6 @@ class PickingHeaderTransferData
                         }
                     }
                 }
-
-                $numberOfOrders = count($idOrderList);
-
-                $globalPickerReportTransfer = (new PerformanceGlobalSalesOrderReportTransfer())
-                    ->setIdPicker($transfer->getIdUser())
-                    ->setPickZone($transfer->getIdZone())
-                    ->setIsMultiPick(self::GLOBAL_PICKER_REPORT_IS_MULTIPICK)
-                    ->setPickTimeBegin(date("Y-m-d H:i:s"))
-                    ->setNumberRelatedOrders($numberOfOrders);
-                try {
-                    $transferGlobal = $this->pickerFacade->setGlobalPickerReport($globalPickerReportTransfer);
-                    $transfer->setIdGlobalPickReport($transferGlobal->getIdGlobalPickReport());
-                } catch (Exception $exceptionSaveGlobal) {
-                    $this->logError($exceptionSaveGlobal->getMessage(), $exceptionSaveGlobal->getTrace());
-                }
-
-                foreach ($orders as $listOrder) {
-                    $containerCount = count($listOrder->getPickingContainers());
-                    $orderPickerReportTransfer = (new PerformanceSalesOrderReportTransfer())
-                        ->setFkGlobalPickReport($transfer->getIdGlobalPickReport())
-                        ->setIdSalesOrder($listOrder->getIdOrder())
-                        ->setOrderDate($listOrder->getPerformanceOrderDate())
-                        ->setContainersUsed($containerCount)
-                        ->setPositionsUsed($listOrder->getArticlesCount())
-                        ->setPieces($listOrder->getArticlesQuantity())
-                        ->setPickingStart(date("Y-m-d H:i:s"));
-
-                    try {
-                        $transferOrderPerformance = $this->pickerFacade->setOrderPickerReport($orderPickerReportTransfer);
-                        $listOrder->setIdPerformanceSalesOrderReport($transferOrderPerformance->getIdPerformanceSalesOrderReport());
-                    } catch (Exception $exceptionSaveGlobal) {
-                        $this->logError($exceptionSaveGlobal->getMessage(), $exceptionSaveGlobal->getTrace());
-                    }
-                }
-
                 $transfer->setPickingOrders(new ArrayObject($orders));
                 if ($transfer->getPickingOrders()->count() > 0) {
                     $transfer = $this->getOrderItemsForTransfer($transfer, $transfer->getIdZone());
@@ -290,11 +233,6 @@ class PickingHeaderTransferData
         $containerEntity->setFkPickingZone($transfer->getIdZone());
         if (!empty($shelfId)) {
             $containerEntity->setShelfCode($shelfId);
-
-            $containerCount = count($orderMod->getPickingContainers());
-            $fkGlobalPickReport = $this->updatePerformanceOrder($orderMod->getIdPerformanceSalesOrderReport(), $containerCount);
-
-            $this->updateGlobalPerformanceOrder($fkGlobalPickReport);
         }
 
         if ($containerEntity->isModified() || $containerEntity->isNew()) {
@@ -316,16 +254,11 @@ class PickingHeaderTransferData
     {
         $transfer = $this->getTransferFromSession();
         $orderItem = $transfer->setCurrentOrderItemPicked($quantityPicked, $weight);
-        $orderItem->setPerformancePickingStartedAt($this->getPerformancePickingStartedAt());
+
         $idList = $this->getOrderItemIdArray($orderItem);
         $counter = 0;
         $pickedItems = [];
         $nonPickedItems = [];
-
-        $transfer->setParents(false);
-        $order = $orderItem->getParent();
-        $transfer->setParents(true);
-
         foreach ($idList as $id) {
             if ($counter < $orderItem->getQuantityPicked()) {
                 $counter++;
@@ -344,8 +277,6 @@ class PickingHeaderTransferData
             $this->resetCanceledStatusForCanceledItems($pickedItems);
             $this->orderUpdater->markOrderItemsAsContainerSelected($pickedItems);
             $this->orderUpdater->markOrderItemsAsPicked($pickedItems);
-
-            $this->updatePerformanceOrderItem($order, $orderItem, static::PERFORMANCE_ORDER_ITEM_REPORT_PICKED);
         }
         if (count($nonPickedItems) > 0) {
             $this->orderUpdater->markOrderItemsAsNotPicked($nonPickedItems);
@@ -387,13 +318,6 @@ class PickingHeaderTransferData
             //save data to spy_sales_order_item - SpySalesOrderItemQuery
             $orderItem = $transfer->getOrderItem($transfer->getLastPickingItemPosition());
             $this->saveCurrentOrderItemPaused($orderItem, $isPaused);
-
-            $orderItem->setPerformancePickingStartedAt($this->getPerformancePickingStartedAt());
-
-            $transfer->setParents(false);
-            $order = $orderItem->getParent();
-            $transfer->setParents(true);
-            $this->updatePerformanceOrderItem($order, $orderItem, static::PERFORMANCE_ORDER_ITEM_REPORT_PAUSED);
         }
 
         return $result;
@@ -450,12 +374,6 @@ class PickingHeaderTransferData
             $orderItem = $transfer->getOrderItem($transfer->getLastPickingItemPosition());
             $orderItem->setIsPaused(false);
             $this->saveCurrentOrderItemPaused($orderItem, false);
-
-            $orderItem->setPerformancePickingStartedAt($this->getPerformancePickingStartedAt());
-            $transfer->setParents(false);
-            $order = $orderItem->getParent();
-            $transfer->setParents(true);
-            $this->updatePerformanceOrderItem($order, $orderItem, static::PERFORMANCE_ORDER_ITEM_REPORT_CANCELLED);
 
             $idList = $this->getOrderItemIdArray($orderItem);
             if (count($idList) > 0) {
@@ -767,132 +685,5 @@ class PickingHeaderTransferData
         }
 
         return [];
-    }
-
-    /**
-     * @param string $message
-     * @param array $trace
-     *
-     * @return void
-     */
-    protected function logError(string $message, array $trace = [])
-    {
-        $this->getLogger()->error($message, $trace);
-    }
-
-    /**
-     * @param string $startTime
-     * @param string $endTime
-     *
-     * @return int
-     */
-    protected function calculatePickingDurationTime(string $startTime, string $endTime): int
-    {
-        $firstTime = strtotime($startTime);
-        $lastTime = strtotime($endTime);
-        $timeDiff = $lastTime - $firstTime;
-
-        return $timeDiff;
-    }
-
-    /**
-     * @param \Generated\Shared\Transfer\PickingOrderTransfer $order
-     * @param \Generated\Shared\Transfer\PickingOrderItemTransfer $orderItem
-     * @param string $itemStatus
-     *
-     * @return void
-     */
-    protected function updatePerformanceOrderItem(PickingOrderTransfer $order, PickingOrderItemTransfer $orderItem, string $itemStatus)
-    {
-        $orderItemPickerReportTransfer = (new PerformanceSalesOrderItemReportTransfer())
-            ->setFkPerformanceSalesOrderReport($order->getIdPerformanceSalesOrderReport())
-            ->setIdSalesOrderItem($orderItem->getIdOrderItem())
-            ->setPickingStartTime($orderItem->getPerformancePickingStartedAt())
-            ->setPickingEndTime(date("Y-m-d H:i:s"))
-            ->setPickupEndStatus($itemStatus)
-            ->setDurationPickingTime($this->calculatePickingDurationTime($orderItem->getPerformancePickingStartedAt(), date("Y-m-d H:i:s")));
-
-        try {
-            $this->pickerFacade->setOrderItemPickerReport($orderItemPickerReportTransfer);
-        } catch (Exception $exceptionSaveGlobal) {
-            $this->logError($exceptionSaveGlobal->getMessage(), $exceptionSaveGlobal->getTrace());
-        }
-    }
-
-    /**
-     * @param int $IdPerformanceSalesOrderReport
-     * @param int $containerCount
-     *
-     * @return int
-     */
-    protected function updatePerformanceOrder(int $IdPerformanceSalesOrderReport, int $containerCount): int
-    {
-        $orderPerformanceOrderTransfer = (new PerformanceSalesOrderReportTransfer())
-            ->setIdPerformanceSalesOrderReport($IdPerformanceSalesOrderReport)
-            ->setContainersUsed($containerCount)
-            ->setPickingEnd(date("Y-m-d H:i:s"));
-
-        $orderPerformanceOrderTransferEntity = new PyzPerformanceSalesOrderReportQuery();
-        try {
-            $orderPerformanceOrderTransferEntity = PyzPerformanceSalesOrderReportQuery::create()
-                    ->filterByIdPerformanceSalesOrderReport($orderPerformanceOrderTransfer->getIdPerformanceSalesOrderReport())
-                    ->findOneOrCreate();
-
-            $orderPickingDuration = $this->calculatePickingDurationTime(date("Y-m-d H:i:s", $orderPerformanceOrderTransferEntity->getPickingStart()->getTimestamp()), $orderPerformanceOrderTransfer->getPickingEnd());
-
-            $orderPerformanceOrderTransferEntity->setContainersUsed($orderPerformanceOrderTransfer->getContainersUsed());
-            $orderPerformanceOrderTransferEntity->setPickingEnd($orderPerformanceOrderTransfer->getPickingEnd());
-            $orderPerformanceOrderTransferEntity->setDurationPickTime($orderPickingDuration);
-
-            if ($orderPerformanceOrderTransferEntity->isModified()) {
-                $orderPerformanceOrderTransferEntity->save();
-            }
-        } catch (Exception $exceptionSaveGlobal) {
-            $this->logError($exceptionSaveGlobal->getMessage(), $exceptionSaveGlobal->getTrace());
-        }
-
-        return $orderPerformanceOrderTransferEntity->getFkGlobalPickReport();
-    }
-
-    /**
-     * @param int $IdGlobalPickReport
-     *
-     * @return void
-     */
-    protected function updateGlobalPerformanceOrder(int $IdGlobalPickReport)
-    {
-        $orderGlobalPerformanceOrderTransfer = (new PerformanceGlobalSalesOrderReportTransfer())
-            ->setIdGlobalPickReport($IdGlobalPickReport)
-            ->setPickTimeEnd(date("Y-m-d H:i:s"));
-
-        try {
-            $orderPerformanceGlobalOrderTransferEntity = PyzPerformanceGlobalSalesOrderReportQuery::create()
-                ->filterByIdGlobalPickReport($orderGlobalPerformanceOrderTransfer->getIdGlobalPickReport())
-                ->findOneOrCreate();
-
-            $globalOrderPickingDuration = $this->calculatePickingDurationTime(date("Y-m-d H:i:s", $orderPerformanceGlobalOrderTransferEntity->getPickTimeBegin()->getTimestamp()), $orderGlobalPerformanceOrderTransfer->getPickTimeEnd());
-
-            $orderPerformanceGlobalOrderTransferEntity->setPickTimeEnd($orderGlobalPerformanceOrderTransfer->getPickTimeEnd());
-            $orderPerformanceGlobalOrderTransferEntity->setDurationPickTime($globalOrderPickingDuration);
-
-            if ($orderPerformanceGlobalOrderTransferEntity->isModified()) {
-                $orderPerformanceGlobalOrderTransferEntity->save();
-            }
-        } catch (Exception $exceptionSaveGlobal) {
-            $this->logError($exceptionSaveGlobal->getMessage(), $exceptionSaveGlobal->getTrace());
-        }
-    }
-
-    /**
-     * @return string|mixed|false
-     */
-    protected function getPerformancePickingStartedAt()
-    {
-        $itemPickingStartTime = date("Y-m-d H:i:s");
-        if (isset($_REQUEST['itemPickingStartTime'])) {
-            return $_REQUEST['itemPickingStartTime'];
-        } else {
-            return $itemPickingStartTime;
-        }
     }
 }

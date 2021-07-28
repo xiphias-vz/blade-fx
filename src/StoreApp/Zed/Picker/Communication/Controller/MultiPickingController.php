@@ -190,8 +190,6 @@ class MultiPickingController extends BaseOrderPickingController
             ->createContainerReader()
             ->getUsedContainers();
 
-        $itemPickingStartTime = date("Y-m-d H:i:s");
-
         return [
             'currentPositionData' => $nextOIData,
             'orderPosition' => $orderPosition,
@@ -212,7 +210,6 @@ class MultiPickingController extends BaseOrderPickingController
             'isLastPosition' => $isLastPosition,
             'openModal' => $openModal,
             'fromPosListeAndModal' => $fromPosListeAndModal,
-            'itemPickingStartTime' => $itemPickingStartTime,
         ];
     }
 

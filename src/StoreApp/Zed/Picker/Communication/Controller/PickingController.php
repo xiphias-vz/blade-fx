@@ -15,17 +15,12 @@ use Generated\Shared\Transfer\OrderCriteriaFilterTransfer;
 use Generated\Shared\Transfer\OrderPickingBlockTransfer;
 use Generated\Shared\Transfer\OrderTransfer;
 use Generated\Shared\Transfer\OrderUpdateRequestTransfer;
-use Generated\Shared\Transfer\PerformanceGlobalSalesOrderReportTransfer;
-use Generated\Shared\Transfer\PerformanceSalesOrderItemReportTransfer;
-use Generated\Shared\Transfer\PerformanceSalesOrderReportTransfer;
 use Generated\Shared\Transfer\PickingZoneTransfer;
 use Generated\Shared\Transfer\UserTransfer;
-use Orm\Zed\PerformancePickingReport\Persistence\PyzPerformanceSalesOrderItemReportQuery;
 use Orm\Zed\PickingSalesOrder\Persistence\PyzPickingSalesOrderQuery;
 use Pyz\Shared\Messages\MessagesConfig;
 use Pyz\Shared\Oms\OmsConfig;
 use Spryker\Service\UtilText\Model\Url\Url;
-use Spryker\Shared\Log\LoggerTrait;
 use StoreApp\Shared\Picker\PickerConfig;
 use StoreApp\Zed\Merchant\Communication\Plugin\EventDispatcher\MerchantProviderEventDispatcherPlugin;
 use StoreApp\Zed\Picker\Communication\Form\OrderItemSelectionForm;
@@ -41,8 +36,6 @@ use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
  */
 class PickingController extends BaseOrderPickingController
 {
-    use LoggerTrait;
-
     protected const REQUEST_PARAM_PICKING_BAGS_COUNT = 'quantity';
 
     protected const PICKING_ERROR_MESSAGE_ORDER_FULLY_CANCELLED = 'storeapp.picking.message.error.order-is-fully-cancelled';
@@ -58,11 +51,6 @@ class PickingController extends BaseOrderPickingController
     public const ADDED_CONTAINERS = 'addedContainers';
 
     protected const FORMAT_SELECT_CONTAINERS = 'select-containers-%d';
-    public const GLOBAL_PICKER_REPORT_IS_MULTIPICK = false;
-    public const GLOBAL_PICKER_REPORT_NUMBER_OF_ORDERS = 1;
-
-    public const PERFORMANCE_ORDER_ITEM_REPORT_PICKED = 'picked';
-    public const PERFORMANCE_ORDER_ITEM_REPORT_CANCELLED = 'cancelled';
 
     protected const OMS_ORDER_STATUSES_FOR_PICKING_PROCESS = [
         OmsConfig::STORE_STATE_READY_FOR_PICKING,
@@ -193,7 +181,6 @@ class PickingController extends BaseOrderPickingController
             $orderItemSelectionFormDataProvider->getData($salesOrderTransfer->getIdSalesOrder()),
             $orderItemSelectionFormDataProvider->getOptions($aggregatedItemTransfers, $salesOrderTransfer->getStore())
         );
-
         $pickingOrders[] = [
             'idSalesOrder' => $idSalesOrder,
             'reference' => $salesOrderTransfer->getOrderReference(),
@@ -401,44 +388,6 @@ class PickingController extends BaseOrderPickingController
             );
         }
 
-        $globalPickerReportTransfer = (new PerformanceGlobalSalesOrderReportTransfer())
-            ->setIdPicker($userTransfer->getIdUser())
-            ->setPickZone($pickingZoneTransfer->getIdPickingZone())
-            ->setIsMultiPick(self::GLOBAL_PICKER_REPORT_IS_MULTIPICK)
-            ->setPickTimeBegin(date("Y-m-d H:i:s"))
-            ->setNumberRelatedOrders(self::GLOBAL_PICKER_REPORT_NUMBER_OF_ORDERS);
-        try {
-            $transferGlobal = $this->getFactory()->getPickerFacade()->setGlobalPickerReport($globalPickerReportTransfer);
-            $idGlobalPickReport = $transferGlobal->getIdGlobalPickReport();
-        } catch (Exception $exceptionSaveGlobal) {
-            $this->logError($exceptionSaveGlobal->getMessage(), $exceptionSaveGlobal->getTrace());
-        }
-
-        $containerInfo = $this->getFactory()->getPickerBusinessFactory()->createContainerReader()->getContainersByOrderId($idSalesOrder);
-        $containerNumber = count($containerInfo['picking_sales_orders']);
-        $numberOfPieces = $this->getNumberOfPiecesOnOrder($aggregatedItemTransfers);
-        $orderPickerReportTransfer = (new PerformanceSalesOrderReportTransfer())
-            ->setFkGlobalPickReport($idGlobalPickReport)
-            ->setIdSalesOrder($idSalesOrder)
-            ->setOrderDate($salesOrderTransfer->getCreatedAt())
-            ->setContainersUsed($containerNumber)
-            ->setPositionsUsed(count($aggregatedItemTransfers))
-            ->setPieces($numberOfPieces)
-            ->setPickingStart(date("Y-m-d H:i:s"));
-
-        try {
-            $transferOrderPerformance = $this->getFactory()->getPickerFacade()->setOrderPickerReport($orderPickerReportTransfer);
-            $idPerformanceSalesOrderReport = $transferOrderPerformance->getIdPerformanceSalesOrderReport();
-        } catch (Exception $exceptionSaveGlobal) {
-            $this->logError($exceptionSaveGlobal->getMessage(), $exceptionSaveGlobal->getTrace());
-        }
-
-        try {
-            $this->setPerformanceOrderItem($aggregatedItemTransfers, $idPerformanceSalesOrderReport);
-        } catch (Exception $exceptionSaveGlobal) {
-            $this->logError($exceptionSaveGlobal->getMessage(), $exceptionSaveGlobal->getTrace());
-        }
-
         $pickingFormSkuKeys = [];
         $pickingFormWeightKeys = [];
 
@@ -553,13 +502,6 @@ class PickingController extends BaseOrderPickingController
 
         if ($orderChangeRequestTransfer->getOrderItemChangeRequest()->count() > 0) {
             $this->getFactory()->getSalesFacade()->saveOrderChange($orderChangeRequestTransfer);
-        }
-
-        foreach ($orderItemStatusesTransfer->getSelectedOrderItemIds() as $itemPicked) {
-            $this->updateSinglePickingOrderItemPerformanceOrderItem($itemPicked, self::PERFORMANCE_ORDER_ITEM_REPORT_PICKED);
-        }
-        foreach ($orderItemStatusesTransfer->getNotSelectedOrderItemIds() as $itemPicked) {
-            $this->updateSinglePickingOrderItemPerformanceOrderItem($itemPicked, self::PERFORMANCE_ORDER_ITEM_REPORT_CANCELLED);
         }
 
         return $this->redirectResponse($orderPickingPath);
@@ -901,81 +843,5 @@ class PickingController extends BaseOrderPickingController
     protected function getCurrentUser(Request $request): UserTransfer
     {
         return $request->attributes->get(MerchantProviderEventDispatcherPlugin::ATTRIBUTE_USER);
-    }
-
-    /**
-     * @param string $message
-     * @param array $trace
-     *
-     * @return void
-     */
-    protected function logError(string $message, array $trace = [])
-    {
-        $this->getLogger()->error($message, $trace);
-    }
-
-    /**
-     * @param array $aggregatedItemTransfers
-     *
-     * @return int
-     */
-    protected function getNumberOfPiecesOnOrder(array $aggregatedItemTransfers): int
-    {
-        $numberOfPieces = 0;
-        foreach ($aggregatedItemTransfers as $item) {
-            $numberOfPieces += $item->getQuantity();
-        }
-
-        return $numberOfPieces;
-    }
-
-    /**
-     * @param array $aggregatedItemTransfers
-     * @param int $idPerformanceSalesOrderReport
-     *
-     * @return void
-     */
-    protected function setPerformanceOrderItem(array $aggregatedItemTransfers, int $idPerformanceSalesOrderReport)
-    {
-        foreach ($aggregatedItemTransfers as $orderItem) {
-            $orderItemPickerReportTransfer = (new PerformanceSalesOrderItemReportTransfer())
-                ->setFkPerformanceSalesOrderReport($idPerformanceSalesOrderReport)
-                ->setIdSalesOrderItem($orderItem->getIdSalesOrderItem())
-                ->setPickingStartTime(date("Y-m-d H:i:s"))
-                ->setPickingEndTime(date("Y-m-d H:i:s"))
-                ->setDurationPickingTime(0);
-
-            try {
-                $this->getFactory()->getPickerFacade()->setOrderItemPickerReport($orderItemPickerReportTransfer);
-            } catch (Exception $exceptionSaveGlobal) {
-                $this->logError($exceptionSaveGlobal->getMessage(), $exceptionSaveGlobal->getTrace());
-            }
-        }
-    }
-
-    /**
-     * @param int $idSalesOrderItem
-     * @param string $status
-     *
-     * @return void
-     */
-    protected function updateSinglePickingOrderItemPerformanceOrderItem(int $idSalesOrderItem, string $status)
-    {
-        try {
-            $updateOrderItemPerformanceEntity = PyzPerformanceSalesOrderItemReportQuery::create()
-                ->filterByIdSalesOrderItem($idSalesOrderItem)
-                ->findOne();
-
-            if (isset($updateOrderItemPerformanceEntity)) {
-                $updateOrderItemPerformanceEntity->setPickingEndTime(date("Y-m-d H:i:s"));
-                $updateOrderItemPerformanceEntity->setPickupEndStatus($status);
-
-                if ($updateOrderItemPerformanceEntity->isModified()) {
-                    $updateOrderItemPerformanceEntity->save();
-                }
-            }
-        } catch (Exception $exceptionSaveGlobal) {
-            $this->logError($exceptionSaveGlobal->getMessage(), $exceptionSaveGlobal->getTrace());
-        }
     }
 }
