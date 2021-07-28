@@ -5,7 +5,7 @@
 
     <transfer name="PerformanceSalesOrderReport">
         <property name="idPerformanceSalesOrderReport" type="int"/>
-        <property name="idGlobalPickReport" type="int"/>
+        <property name="fkGlobalPickReport" type="int"/>
         <property name="idSalesOrder" type="int"/>
         <property name="orderDate" type="string"/>
         <property name="pickupDate" type="string"/>
@@ -21,7 +21,7 @@
 
     <transfer name="PerformanceSalesOrderReportItem">
         <property name="idPerformanceSalesOrderItemReport" type="int"/>
-        <property name="idPerformanceSalesOrderReport" type="int"/>
+        <property name="fkPerformanceSalesOrderReport" type="int"/>
         <property name="idSalesOrderItem" type="int"/>
         <property name="pickingStartTime" type="string" />
         <property name="pickingEndTime" type="string" />
