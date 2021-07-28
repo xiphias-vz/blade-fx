@@ -30,20 +30,30 @@ class AuthenticationHandler extends SprykerAuthenticationHandler
      */
     public function registerCustomer(CustomerTransfer $customerTransfer)
     {
-        $meinGlobus = $_REQUEST["registerForm_isMeinGlobus"];
-        if (strtolower($meinGlobus) == "true") {
-            $meinGlobus = true;
+        if (isset($_REQUEST["registerForm_isMeinGlobus"])) {
+            $meinGlobus = $_REQUEST["registerForm_isMeinGlobus"];
+            if (strtolower($meinGlobus) == "true") {
+                $meinGlobus = true;
+            } else {
+                $meinGlobus = false;
+            }
         } else {
             $meinGlobus = false;
         }
-        $we = $_REQUEST["registerForm_isAdvertise"];
-        if (strtolower($we) == "true") {
-            $we = true;
+
+        if (isset($_REQUEST["registerForm_isAdvertise"])) {
+            $we = $_REQUEST["registerForm_isAdvertise"];
+            if (strtolower($we) == "true") {
+                $we = true;
+            } else {
+                $we = false;
+            }
         } else {
             $we = false;
         }
 
         $validAdress = $this->getApiAdressCheck($customerTransfer, $meinGlobus, $we);
+        $thirdPartyRegistration = $customerTransfer->getThirdPartyRegistration();
         $isAuthorized = false;
         $customerResponseTransfer = new CustomerResponseTransfer();
         if ($validAdress["code"] == 'VA') {
@@ -71,6 +81,8 @@ class AuthenticationHandler extends SprykerAuthenticationHandler
             } else {
                 $customerResponseTransfer = parent::registerCustomer($customerTransfer);
             }
+        } elseif ($thirdPartyRegistration === true) {
+            $customerResponseTransfer = parent::registerCustomer($customerTransfer);
         } else {
             $customerTransfer->setEmail($_REQUEST['registerForm_customer_email']);
             $customerTransfer->setPassword($_REQUEST['registerForm_customer_password_pass']);
