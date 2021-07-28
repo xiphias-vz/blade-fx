@@ -9,16 +9,15 @@
         <column name="id_performance_sales_order_report" required="true" type="INTEGER" primaryKey="true" autoIncrement="true"/>
         <column name="fk_global_pick_report" type="INTEGER" required="true"/>
         <column name="id_sales_order" type="INTEGER" />
-        <column name="order_date" type="DATE" />
+        <column name="order_date" type="TIMESTAMP" />
         <column name="pickup_date" type="DATE" />
-        <column name="id_picker" type="INTEGER" />
         <column name="containers_used" type="INTEGER" />
         <column name="positions_used" type="INTEGER" />
         <column name="pieces" type="INTEGER" />
-        <column name="picking_start" type="DATE" />
-        <column name="picking_end" type="DATE" />
-        <column name="pickup_start" type="DATE" />
-        <column name="pickup_end" type="DATE" />
+        <column name="picking_start" type="TIMESTAMP" />
+        <column name="picking_end" type="TIMESTAMP" />
+        <column name="pickup_start" type="TIMESTAMP" />
+        <column name="pickup_end" type="TIMESTAMP" />
         <column name="duration_pick_time" type="INTEGER" />
 
         <unique name="pyz_performance_sales_order_report-unique">
@@ -37,12 +36,14 @@
         <column name="id_performance_sales_order_item_report" required="true" type="INTEGER" primaryKey="true" autoIncrement="true"/>
         <column name="fk_performance_sales_order_report" type="INTEGER" required="true"/>
         <column name="id_sales_order_item" type="INTEGER" />
-        <column name="pickup_start_position" type="DATE" />
-        <column name="pickup_end_position" type="DATE" />
+        <column name="picking_start_time" type="TIMESTAMP" />
+        <column name="picking_end_time" type="TIMESTAMP" />
+        <column name="pickup_end_status" type="VARCHAR" />
         <column name="duration_pick_time" type="INTEGER" />
 
         <unique name="pyz_performance_sales_order_item_report-unique">
             <unique-column name="fk_performance_sales_order_report" />
+            <unique-column name="id_sales_order_item" />
         </unique>
 
         <foreign-key name="sales_order_item_report-fk_performance_sales_order_report" foreignTable="pyz_performance_sales_order_report" phpName="PerformanceSalesOrderItemReport">
@@ -54,11 +55,13 @@
 
     <table name="pyz_performance_global_sales_order_report">
         <column name="id_global_pick_report" required="true" type="INTEGER" primaryKey="true" autoIncrement="true"/>
+        <column name="id_picker" type="INTEGER" />
         <column name="pick_zone" type="VARCHAR" />
         <column name="is_multi_pick" type="BOOLEAN" />
         <column name="number_related_orders" type="INTEGER" />
-        <column name="pick_time_begin" type="DATE" />
-        <column name="pick_time_end" type="DATE" />
+        <column name="pick_time_begin" type="TIMESTAMP" />
+        <column name="pick_time_end" type="TIMESTAMP" />
+        <column name="duration_pick_time" type="INTEGER" />
     </table>
 
 </database>
