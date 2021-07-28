@@ -7,6 +7,7 @@
 
 namespace Pyz\Zed\SalesDataExport\Persistence;
 
+use DateTime;
 use Generated\Shared\Transfer\DataExportBatchTransfer;
 use Generated\Shared\Transfer\DataExportConfigurationTransfer;
 use Orm\Zed\Sales\Persistence\Map\SpySalesOrderTableMap;
@@ -45,7 +46,8 @@ class SalesDataExportRepository extends SpySalesDataExportRepository
             ->setOffset($offset)
             ->setFields($selectedFields)
             ->setData([]);
-
+        $yesterday = new DateTime('yesterday');
+        $date = $yesterday->format('Y-m-d') . '%';
         $salesOrderItemQuery = $this->getFactory()
             ->getSalesOrderItemPropelQuery()
             ->joinOrder()
@@ -54,6 +56,7 @@ class SalesDataExportRepository extends SpySalesDataExportRepository
             ->leftJoinSalesOrderItemBundle()
             ->leftJoinSpySalesShipment()
             ->useSpySalesShipmentQuery()
+            ->filterByRequestedDeliveryDate_Like($date)
             ->leftJoinSpySalesOrderAddress()
             ->useSpySalesOrderAddressQuery()
             ->leftJoinCountry()
