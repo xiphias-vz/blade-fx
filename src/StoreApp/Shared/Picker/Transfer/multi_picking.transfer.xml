@@ -14,6 +14,7 @@
         <property name="errorMessage" type="string"/>
         <property name="pickedArticlesCount" type="int"/>
         <property name="idUser" type="int"/>
+        <property name="idGlobalPickReport" type="int"/>
     </transfer>
 
     <transfer name="PickingOrderTransfer">
@@ -35,6 +36,8 @@
         <property name="timeSlotSort" type="string"/>
         <property name="isLocked" type="bool"/>
         <property name="parent" type="PickingHeader"/>
+        <property name="performanceOrderDate" type="string"/>
+        <property name="idPerformanceSalesOrderReport" type="int"/>
     </transfer>
 
     <transfer name="PickingContainerTransfer">
@@ -85,6 +88,7 @@
         <property name="totalWeight" type="int"/>
         <property name="doubleDigits" type="bool"/>
         <property name="parent" type="PickingOrder"/>
+        <property name="performancePickingStartedAt" type="string"/>
     </transfer>
 
     <transfer name="PickingColorTransfer">

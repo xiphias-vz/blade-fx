@@ -13,9 +13,9 @@ use Spryker\Zed\Oms\Business\OmsFacadeInterface;
 
 class OrderUpdater implements OrderUpdaterInterface
 {
-    /**
-     * @var \Spryker\Zed\Oms\Business\OmsFacadeInterface
-     */
+     /**
+      * @var \Spryker\Zed\Oms\Business\OmsFacadeInterface
+      */
     private $omsFacade;
 
     /**
