@@ -17,12 +17,19 @@ use Generated\Shared\Transfer\MerchantTransfer;
 use Generated\Shared\Transfer\OrderCriteriaFilterTransfer;
 use Generated\Shared\Transfer\OrderTransfer;
 use Generated\Shared\Transfer\OrderUpdateRequestTransfer;
+use Generated\Shared\Transfer\PerformanceGlobalSalesOrderReportTransfer;
+use Generated\Shared\Transfer\PerformanceSalesOrderItemReportTransfer;
+use Generated\Shared\Transfer\PerformanceSalesOrderReportTransfer;
 use Generated\Shared\Transfer\PickingSalesOrderCriteriaTransfer;
 use Generated\Shared\Transfer\UserTransfer;
+use Orm\Zed\PerformancePickingReport\Persistence\PyzPerformanceGlobalSalesOrderReportQuery;
+use Orm\Zed\PerformancePickingReport\Persistence\PyzPerformanceSalesOrderItemReportQuery;
+use Orm\Zed\PerformancePickingReport\Persistence\PyzPerformanceSalesOrderReportQuery;
 use Orm\Zed\Sales\Persistence\Map\SpySalesOrderTableMap;
 use Pyz\Shared\Messages\MessagesConfig;
 use Pyz\Shared\Oms\OmsConfig;
 use Pyz\Shared\Product\ProductConfig;
+use Spryker\Shared\Log\LoggerTrait;
 use Spryker\Zed\Kernel\Communication\Controller\AbstractController;
 use StoreApp\Shared\Picker\PickerConfig;
 use StoreApp\Zed\Merchant\Communication\Plugin\EventDispatcher\MerchantProviderEventDispatcherPlugin;
@@ -37,6 +44,8 @@ use Symfony\Component\HttpFoundation\Request;
  */
 class CollectByCustomerController extends AbstractController
 {
+    use LoggerTrait;
+
     protected const ITEM_STATUS_PICKED = 'ITEM_STATUS_PICKED';
     protected const ITEM_STATUS_NOT_FOUND = 'ITEM_STATUS_NOT_FOUND';
 
@@ -273,6 +282,8 @@ class CollectByCustomerController extends AbstractController
 
         $decodedCartNote = json_decode($salesOrderTransfer->getCartNote());
 
+        $this->updatePerformanceOrderReportPickupStart($idSalesOrder, $containerNumber);
+
         return [
             'merchant' => $this->getMerchantFromRequest($request),
             'collectDetailsForm' => $orderItemSelectionForm->createView(),
@@ -337,6 +348,8 @@ class CollectByCustomerController extends AbstractController
                 $idSalesOrderItems,
                 $userTransfer->getIdUser()
             );
+
+            $this->updatePerformanceOrderReportPickupEnd($idSalesOrder);
         } catch (Exception $e) {
             $this->addErrorMessage($e->getMessage());
         }
@@ -870,5 +883,137 @@ class CollectByCustomerController extends AbstractController
             $idSalesOrder,
             $orderUpdateRequestTransfer
         );
+    }
+
+    /**
+     * @param int $IdSalesOrder
+     * @param int $containerCount
+     *
+     * @return int
+     */
+    protected function updatePerformanceOrderReportPickupStart(int $IdSalesOrder, int $containerCount): int
+    {
+        $orderPerformanceOrderTransfer = (new PerformanceSalesOrderReportTransfer())
+            ->setIdSalesOrder($IdSalesOrder)
+            ->setContainersUsed($containerCount)
+            ->setPickupDate(date("Y-m-d H:i:s"))
+            ->setPickupStart(date("Y-m-d H:i:s"));
+
+        try {
+            $orderPerformanceOrderTransferEntity = PyzPerformanceSalesOrderReportQuery::create()
+                ->filterByIdSalesOrder($orderPerformanceOrderTransfer->getIdSalesOrder())
+                ->findOneOrCreate();
+
+            $orderPerformanceOrderTransferEntity->setContainersUsed($orderPerformanceOrderTransfer->getContainersUsed());
+            $orderPerformanceOrderTransferEntity->setPickupDate($orderPerformanceOrderTransfer->getPickupDate());
+            $orderPerformanceOrderTransferEntity->setPickupStart($orderPerformanceOrderTransfer->getPickupStart());
+
+            if ($orderPerformanceOrderTransferEntity->isModified()) {
+                $orderPerformanceOrderTransferEntity->save();
+            }
+        } catch (Exception $exceptionSaveGlobal) {
+            $this->logError($exceptionSaveGlobal->getMessage(), $exceptionSaveGlobal->getTrace());
+        }
+
+        return $orderPerformanceOrderTransferEntity->getFkGlobalPickReport();
+    }
+
+    /**
+     * @param string $message
+     * @param array $trace
+     *
+     * @return void
+     */
+    protected function logError(string $message, array $trace = [])
+    {
+        $this->getLogger()->error($message, $trace);
+    }
+
+    /**
+     * @param int $IdSalesOrder
+     *
+     * @return int
+     */
+    protected function updatePerformanceOrderReportPickupEnd(int $IdSalesOrder): int
+    {
+        $orderPerformanceOrderTransfer = (new PerformanceSalesOrderReportTransfer())
+            ->setIdSalesOrder($IdSalesOrder)
+            ->setPickupEnd(date("Y-m-d H:i:s"));
+
+        try {
+            $orderPerformanceOrderTransferEntity = PyzPerformanceSalesOrderReportQuery::create()
+                ->filterByIdSalesOrder($orderPerformanceOrderTransfer->getIdSalesOrder())
+                ->findOneOrCreate();
+
+            $orderPerformanceOrderTransferEntity->setIdSalesOrder(null);
+            $orderPerformanceOrderTransferEntity->setPickupEnd($orderPerformanceOrderTransfer->getPickupEnd());
+
+            $this->deleteIdPickerGlobalPerformanceReport($orderPerformanceOrderTransferEntity->getFkGlobalPickReport());
+            $this->deleteIdSalesOrderItemPerformanceOrderItem($orderPerformanceOrderTransferEntity->getIdPerformanceSalesOrderReport());
+
+            if ($orderPerformanceOrderTransferEntity->isModified()) {
+                $orderPerformanceOrderTransferEntity->save();
+            }
+        } catch (Exception $exceptionSaveGlobal) {
+            $this->logError($exceptionSaveGlobal->getMessage(), $exceptionSaveGlobal->getTrace());
+        }
+
+        return $orderPerformanceOrderTransferEntity->getFkGlobalPickReport();
+    }
+
+    /**
+     * @param int $IdGlobalPickReport
+     *
+     * @return void
+     */
+    protected function deleteIdPickerGlobalPerformanceReport(int $IdGlobalPickReport)
+    {
+        $orderGlobalPerformanceOrderTransfer = (new PerformanceGlobalSalesOrderReportTransfer())
+            ->setIdGlobalPickReport($IdGlobalPickReport);
+
+        try {
+            $orderPerformanceGlobalOrderTransferEntity = PyzPerformanceGlobalSalesOrderReportQuery::create()
+                ->filterByIdGlobalPickReport($orderGlobalPerformanceOrderTransfer->getIdGlobalPickReport())
+                ->findOneOrCreate();
+
+            $orderPerformanceGlobalOrderTransferEntity->setIdPicker(null);
+
+            if ($orderPerformanceGlobalOrderTransferEntity->isModified()) {
+                $orderPerformanceGlobalOrderTransferEntity->save();
+            }
+        } catch (Exception $exceptionSaveGlobal) {
+            $this->logError($exceptionSaveGlobal->getMessage(), $exceptionSaveGlobal->getTrace());
+        }
+    }
+
+    /**
+     * @param string $idPerformanceSalesOrderReport
+     *
+     * @return void
+     */
+    protected function deleteIdSalesOrderItemPerformanceOrderItem(string $idPerformanceSalesOrderReport)
+    {
+        $orderItemPickerReportTransfer = (new PerformanceSalesOrderItemReportTransfer())
+            ->setFkPerformanceSalesOrderReport($idPerformanceSalesOrderReport);
+
+        try {
+            $orderPerformanceOrderItemTransferEntity = PyzPerformanceSalesOrderItemReportQuery::create()
+                ->filterByFkPerformanceSalesOrderReport($orderItemPickerReportTransfer->getFkPerformanceSalesOrderReport())
+                ->findByFkPerformanceSalesOrderReport($orderItemPickerReportTransfer->getFkPerformanceSalesOrderReport());
+
+            foreach ($orderPerformanceOrderItemTransferEntity->getData() as $orderItem) {
+                $deleteOrderItemPerformanceEntity = PyzPerformanceSalesOrderItemReportQuery::create()
+                    ->filterByIdPerformanceSalesOrderItemReport($orderItem->getIdPerformanceSalesOrderItemReport())
+                    ->findOne();
+
+                $deleteOrderItemPerformanceEntity->setIdSalesOrderItem(null);
+
+                if ($deleteOrderItemPerformanceEntity->isModified()) {
+                    $deleteOrderItemPerformanceEntity->save();
+                }
+            }
+        } catch (Exception $exceptionSaveGlobal) {
+            $this->logError($exceptionSaveGlobal->getMessage(), $exceptionSaveGlobal->getTrace());
+        }
     }
 }

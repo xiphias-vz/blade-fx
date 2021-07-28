@@ -20,6 +20,7 @@
     editedItems: editedItems,
     isMultiPickingProcess: isMultiPickingProcess,
     orderItemStatus: orderItemStatus,
+    itemPickingStartTime: itemPickingStartTime,
 } %}
 
  {% if data.currentPositionData is defined %}
@@ -93,7 +94,8 @@
                 urlScanShelves: data.urlScanShelves,
                 openModal: data.openModal,
                 fromPosListeAndModal: data.fromPosListeAndModal,
-                orderItemStatus: data.orderItemStatus
+                orderItemStatus: data.orderItemStatus,
+                itemPickingStartTime: data.itemPickingStartTime
             },
             attributes: {
                 'data-sku': currentPosition.ean,
