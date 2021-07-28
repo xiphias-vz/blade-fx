@@ -19,17 +19,6 @@
         <column name="pickup_start" type="TIMESTAMP" />
         <column name="pickup_end" type="TIMESTAMP" />
         <column name="duration_pick_time" type="INTEGER" />
-
-        <unique name="pyz_performance_sales_order_report-unique">
-            <unique-column name="id_sales_order" />
-            <unique-column name="fk_global_pick_report" />
-        </unique>
-
-        <foreign-key name="sales_order_report-fk_global_pick_report_another_name" foreignTable="pyz_performance_global_sales_order_report" phpName="PerformanceSalesOrderReport">
-            <reference local="fk_global_pick_report" foreign="id_global_pick_report"/>
-        </foreign-key>
-
-        <id-method-parameter value="pyz_performance_sales_order_report_pk_seq"/>
     </table>
 
     <table name="pyz_performance_sales_order_item_report">
@@ -40,12 +29,6 @@
         <column name="picking_end_time" type="TIMESTAMP" />
         <column name="pickup_end_status" type="VARCHAR" />
         <column name="duration_pick_time" type="INTEGER" />
-
-        <foreign-key name="sales_order_item_report-fk_performance_sales_order_report" foreignTable="pyz_performance_sales_order_report" phpName="PerformanceSalesOrderItemReport">
-            <reference local="fk_performance_sales_order_report" foreign="id_performance_sales_order_report"/>
-        </foreign-key>
-
-        <id-method-parameter value="pyz_performance_sales_order_item_report_pk_seq"/>
     </table>
 
     <table name="pyz_performance_global_sales_order_report">
