@@ -75,8 +75,8 @@ class CustomerTransferCustom
                 $customerTransfer->setMyGlobusCard($data["data"]["cardID"]);
             }
 
-            if (isset($data["subscriptions"]["general"])) {
-                $customerTransfer->setThirdPartyRegistration($data["subscriptions"]["general"]);
+            if (isset($data["subscriptions"]["meinGlobus"])) {
+                $customerTransfer->setThirdPartyRegistration($data["subscriptions"]["meinGlobus"]);
             } elseif (array_key_exists("preferences", $data)) {
                 if (array_key_exists("terms.meinGlobus", $data["preferences"])) {
                     $customerTransfer->setThirdPartyRegistration($data["preferences"]["terms.meinGlobus"]["isConsentGranted"]);

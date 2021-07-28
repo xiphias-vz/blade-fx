@@ -53,7 +53,13 @@ class AuthenticationHandler extends SprykerAuthenticationHandler
         }
 
         $validAdress = $this->getApiAdressCheck($customerTransfer, $meinGlobus, $we);
-        $thirdPartyRegistration = $customerTransfer->getThirdPartyRegistration();
+
+        $ssoRegister = true;
+        if (isset($_COOKIE['localLogin'])) {
+            if ($_COOKIE['localLogin'] == 1) {
+                $ssoRegister = false;
+            }
+        }
         $isAuthorized = false;
         $customerResponseTransfer = new CustomerResponseTransfer();
         if ($validAdress["code"] == 'VA') {
@@ -81,9 +87,7 @@ class AuthenticationHandler extends SprykerAuthenticationHandler
             } else {
                 $customerResponseTransfer = parent::registerCustomer($customerTransfer);
             }
-        } elseif ($thirdPartyRegistration === true) {
-            $customerResponseTransfer = parent::registerCustomer($customerTransfer);
-        } else {
+        } elseif (isset($_REQUEST['registerForm'])) {
             $customerTransfer->setEmail($_REQUEST['registerForm_customer_email']);
             $customerTransfer->setPassword($_REQUEST['registerForm_customer_password_pass']);
             $customerTransfer->setMyGlobusCard($_REQUEST['registerForm_my_globus_card_number']);
@@ -98,6 +102,8 @@ class AuthenticationHandler extends SprykerAuthenticationHandler
                  $customerResponseTransfer = parent::registerCustomer($customerTransfer);
                  $isAuthorized = true;
             }
+        } elseif ($ssoRegister === true) {
+            $customerResponseTransfer = parent::registerCustomer($customerTransfer);
         }
 
         $customerResponseTransfer->setIsSuccess($isAuthorized);

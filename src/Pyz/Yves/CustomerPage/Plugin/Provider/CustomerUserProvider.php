@@ -156,7 +156,6 @@ class CustomerUserProvider extends SprykerCustomerUserProvider implements Custom
         $customerTransfer->setUsername($email);
         $customerTransfer->setPassword($password);
         $customerTransfer->setCustomerReference($this->getFactory()->getStore()->getStoreName());
-        $customerTransfer->setThirdPartyRegistration(true);
         $this->registerCustomer($customerTransfer);
 
         $customerTransfer = parent::loadCustomerByEmail($email);
