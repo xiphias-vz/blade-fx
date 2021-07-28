@@ -22,6 +22,11 @@ use Spryker\Zed\SalesDataExport\Persistence\SalesDataExportRepository as SpySale
 class SalesDataExportRepository extends SpySalesDataExportRepository
 {
     /**
+     * @var int
+     */
+    public $limitPerChunk = 150000;
+
+    /**
      * @module Country
      * @module Oms
      * @module Shipment
@@ -55,7 +60,8 @@ class SalesDataExportRepository extends SpySalesDataExportRepository
             ->leftJoinRegion()
             ->endUse()
             ->endUse()
-            ->orderByFkSalesOrder();
+            ->orderByFkSalesOrder()
+            ->limit($this->limitPerChunk);
 
         $salesOrderItemQuery = $this->applyFilterCriteriaToSalesOrderItemQuery(
             $dataExportConfigurationTransfer->getFilterCriteria(),
@@ -101,7 +107,8 @@ class SalesDataExportRepository extends SpySalesDataExportRepository
             ->getSalesExpensePropelQuery()
             ->joinOrder()
             ->leftJoinSpySalesShipment()
-            ->orderByFkSalesOrder();
+            ->orderByFkSalesOrder()
+            ->limit($this->limitPerChunk);
 
         $salesExpenseQuery = $this->applyFilterCriteriaToSalesExpenseQuery(
             $dataExportConfigurationTransfer->getFilterCriteria(),
@@ -162,7 +169,8 @@ class SalesDataExportRepository extends SpySalesDataExportRepository
             ->leftJoinCountry()
             ->leftJoinRegion()
             ->endUse()
-            ->orderByIdSalesOrder();
+            ->orderByIdSalesOrder()
+            ->limit($this->limitPerChunk);
 
         $salesOrderQuery = $this->applyFilterCriteriaToSalesOrderQuery($dataExportConfigurationTransfer->getFilterCriteria(), $salesOrderQuery);
         $salesOrderQuery->select($selectedColumns);
