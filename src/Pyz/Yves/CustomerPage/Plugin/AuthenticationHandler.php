@@ -69,7 +69,7 @@ class AuthenticationHandler extends SprykerAuthenticationHandler
 
             $data = JSON::parse($_REQUEST['loginForm']['data']);
             if (array_key_exists("cardID", $data['data'])) {
-                $customerTransfer->setMyGlobusCard($data["cardID"]);
+                $customerTransfer->setMyGlobusCard($data['data']['cardID']);
             }
 
             if (array_key_exists("response", $data) && !$data['response']['isRegistered']) {
