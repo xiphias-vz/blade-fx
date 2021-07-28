@@ -9,6 +9,7 @@
         <property name="idSalesOrder" type="int"/>
         <property name="orderDate" type="string"/>
         <property name="pickupDate" type="string"/>
+        <property name="idPicker" type="int"/>
         <property name="containersUsed" type="int"/>
         <property name="positionsUsed" type="int"/>
         <property name="pieces" type="int"/>
@@ -23,21 +24,18 @@
         <property name="idPerformanceSalesOrderItemReport" type="int"/>
         <property name="fkPerformanceSalesOrderReport" type="int"/>
         <property name="idSalesOrderItem" type="int"/>
-        <property name="pickingStartTime" type="string" />
-        <property name="pickingEndTime" type="string" />
-        <property name="pickupEndStatus" type="string" />
+        <property name="pickupStartPosition" type="string" />
+        <property name="pickupEndPosition" type="string" />
         <property name="durationPickingTime" type="int" />
     </transfer>
 
     <transfer name="PerformanceGlobalSalesOrderReport">
         <property name="idGlobalPickReport" type="int"/>
-        <property name="idPicker" type="int"/>
         <property name="pickZone" type="string"/>
         <property name="isMultiPick" type="string" />
         <property name="numberRelatedOrders" type="string" />
         <property name="pickTimeBegin" type="string" />
         <property name="pickTimeEnd" type="string" />
-        <property name="durationPickingTime" type="int" />
     </transfer>
 
 </transfers>
