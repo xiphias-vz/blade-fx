@@ -25,7 +25,7 @@
             <unique-column name="fk_global_pick_report" />
         </unique>
 
-        <foreign-key name="sales_order_report-fk_global_pick_report" foreignTable="pyz_performance_global_sales_order_report" phpName="PerformanceSalesOrderReport">
+        <foreign-key name="sales_order_report-fk_global_pick_report_another_name" foreignTable="pyz_performance_global_sales_order_report" phpName="PerformanceSalesOrderReport">
             <reference local="fk_global_pick_report" foreign="id_global_pick_report"/>
         </foreign-key>
 
