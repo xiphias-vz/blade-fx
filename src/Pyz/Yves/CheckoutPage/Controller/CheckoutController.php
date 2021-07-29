@@ -214,15 +214,17 @@ class CheckoutController extends SprykerCheckoutControllerAlias
                 $paybackInfo = (array)$this->getPayBackInfoFromAccount();
                 if (isset($paybackInfo['payback'])) {
                     $payback = $paybackInfo['payback'];
-                    $cardNumber = $payback->cards[0]->number;
-                    $cardNumberWithoutPrefix = substr($cardNumber, 6);
-                    $this->getFactory()
-                        ->getQuoteClient()
-                        ->getQuote()
-                        ->getCustomer()
-                        ->setPaybackNumber($cardNumberWithoutPrefix)
-                        ->setIsConnected(true)
-                        ->setIsAccountConnected(true);
+                    if (isset($payback->cards)) {
+                        $cardNumber = $payback->cards[0]->number;
+                        $cardNumberWithoutPrefix = substr($cardNumber, 6);
+                        $this->getFactory()
+                            ->getQuoteClient()
+                            ->getQuote()
+                            ->getCustomer()
+                            ->setPaybackNumber($cardNumberWithoutPrefix)
+                            ->setIsConnected(true)
+                            ->setIsAccountConnected(true);
+                    }
                 }
             }
         }
