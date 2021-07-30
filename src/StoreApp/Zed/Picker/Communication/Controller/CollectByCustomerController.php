@@ -889,9 +889,9 @@ class CollectByCustomerController extends AbstractController
      * @param int $IdSalesOrder
      * @param int $containerCount
      *
-     * @return int
+     * @return int|null
      */
-    protected function updatePerformanceOrderReportPickupStart(int $IdSalesOrder, int $containerCount): int
+    protected function updatePerformanceOrderReportPickupStart(int $IdSalesOrder, int $containerCount): ?int
     {
         $orderPerformanceOrderTransfer = (new PerformanceSalesOrderReportTransfer())
             ->setIdSalesOrder($IdSalesOrder)
@@ -932,9 +932,9 @@ class CollectByCustomerController extends AbstractController
     /**
      * @param int $IdSalesOrder
      *
-     * @return int
+     * @return int|null
      */
-    protected function updatePerformanceOrderReportPickupEnd(int $IdSalesOrder): int
+    protected function updatePerformanceOrderReportPickupEnd(int $IdSalesOrder): ?int
     {
         $orderPerformanceOrderTransfer = (new PerformanceSalesOrderReportTransfer())
             ->setIdSalesOrder($IdSalesOrder)
