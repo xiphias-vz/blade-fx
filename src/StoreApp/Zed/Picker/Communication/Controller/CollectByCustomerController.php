@@ -947,8 +947,9 @@ class CollectByCustomerController extends AbstractController
 
             $orderPerformanceOrderTransferEntity->setIdSalesOrder(null);
             $orderPerformanceOrderTransferEntity->setPickupEnd($orderPerformanceOrderTransfer->getPickupEnd());
-
-            $this->deleteIdPickerGlobalPerformanceReport($orderPerformanceOrderTransferEntity->getFkGlobalPickReport());
+            if ($orderPerformanceOrderTransferEntity->getFkGlobalPickReport()) {
+                $this->deleteIdPickerGlobalPerformanceReport($orderPerformanceOrderTransferEntity->getFkGlobalPickReport());
+            }
             $this->deleteIdSalesOrderItemPerformanceOrderItem($orderPerformanceOrderTransferEntity->getIdPerformanceSalesOrderReport());
 
             if ($orderPerformanceOrderTransferEntity->isModified()) {
