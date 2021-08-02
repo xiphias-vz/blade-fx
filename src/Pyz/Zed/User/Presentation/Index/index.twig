@@ -5,7 +5,9 @@
 {% block section_title %}{{ widget_title | trans }}{% endblock %}
 
 {% block action %}
-    {{ createActionButton('/user/edit/create', 'Add New User' | trans) }}
+    {% if not isCurrentUserSupervisor %}
+        {{ createActionButton('/user/edit/create', 'Add New User' | trans) }}
+    {% endif %}
 {% endblock %}
 
 {% block content %}

@@ -13,6 +13,7 @@ use Pyz\Zed\User\Communication\Form\UserForm;
 use Pyz\Zed\User\Communication\Form\UserUpdateForm;
 use Pyz\Zed\User\Communication\Table\UsersTable;
 use Pyz\Zed\User\UserDependencyProvider;
+use Spryker\Zed\Acl\Business\AclFacadeInterface;
 use Spryker\Zed\User\Communication\UserCommunicationFactory as SprykerUserCommunicationFactory;
 
 /**
@@ -61,8 +62,18 @@ class UserCommunicationFactory extends SprykerUserCommunicationFactory
         return new UsersTable(
             $this->getQueryContainer(),
             $this->getProvidedDependency(UserDependencyProvider::SERVICE_DATE_FORMATTER),
-            $this->createUserTablePluginExecutor()
+            $this->createUserTablePluginExecutor(),
+            $this->getAclFacade(),
+            $this->getUserFacade()
         );
+    }
+
+    /**
+     * @return \Spryker\Zed\Acl\Business\AclFacadeInterface
+     */
+    public function getAclFacade(): AclFacadeInterface
+    {
+        return $this->getProvidedDependency(UserDependencyProvider::FACADE_ACL);
     }
 
     /**
@@ -71,5 +82,13 @@ class UserCommunicationFactory extends SprykerUserCommunicationFactory
     public function getUserService(): UserServiceInterface
     {
         return $this->getProvidedDependency(UserDependencyProvider::SERVICE_USER);
+    }
+
+    /**
+     * @return \Spryker\Zed\Sales\Dependency\Facade\SalesToUserInterface
+     */
+    public function getUserFacade()
+    {
+        return $this->getProvidedDependency(UserDependencyProvider::FACADE_USER);
     }
 }

@@ -14,9 +14,9 @@ use Symfony\Component\Security\Csrf\CsrfToken;
 use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
 
 /**
- * @method \Spryker\Zed\User\Business\UserFacadeInterface getFacade()
- * @method \Spryker\Zed\User\Communication\UserCommunicationFactory getFactory()
- * @method \Spryker\Zed\User\Persistence\UserQueryContainerInterface getQueryContainer()
+ * @method \Pyz\Zed\User\Business\UserFacadeInterface getFacade()
+ * @method \Pyz\Zed\User\Communication\UserCommunicationFactory getFactory()
+ * @method \Pyz\Zed\User\Persistence\UserQueryContainerInterface getQueryContainer()
  */
 class EditController extends SprykerEditController
 {
@@ -53,6 +53,26 @@ class EditController extends SprykerEditController
         }
 
         return parent::deactivateUserAction($request);
+    }
+
+    /**
+     * @param \Symfony\Component\HttpFoundation\Request $request
+     *
+     * @return array|\Symfony\Component\HttpFoundation\RedirectResponse
+     */
+    public function updateAction(Request $request)
+    {
+        $isCurrentUserSupervisor = $this->getFacade()->isCurrentUserSupervisor();
+        $response = parent::updateAction($request);
+
+        if (!is_array($response)) {
+            return $response;
+        }
+
+        return $this->viewResponse([
+            'isCurrentUserSupervisor' => $isCurrentUserSupervisor,
+            'userForm' => $response['userForm'],
+        ]);
     }
 
     /**

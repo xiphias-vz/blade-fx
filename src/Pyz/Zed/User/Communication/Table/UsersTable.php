@@ -8,10 +8,13 @@
 namespace Pyz\Zed\User\Communication\Table;
 
 use Orm\Zed\User\Persistence\Map\SpyUserTableMap;
+use Pyz\Shared\Acl\AclConstants;
 use Pyz\Zed\Gui\Communication\Table\AbstractTable;
 use Spryker\Service\UtilDateTime\UtilDateTimeServiceInterface;
 use Spryker\Service\UtilText\Model\Url\Url;
+use Spryker\Zed\Acl\Business\AclFacadeInterface;
 use Spryker\Zed\Gui\Communication\Table\TableConfiguration;
+use Spryker\Zed\Sales\Dependency\Facade\SalesToUserInterface;
 use Spryker\Zed\User\Communication\Table\PluginExecutor\UserTablePluginExecutorInterface;
 use Spryker\Zed\User\Persistence\UserQueryContainerInterface;
 
@@ -30,7 +33,7 @@ class UsersTable extends AbstractTable
     public const PARAM_ID_USER = 'id-user';
 
     /**
-     * @var \Spryker\Zed\User\Persistence\UserQueryContainerInterface
+     * @var \Pyz\Zed\User\Persistence\UserQueryContainerInterface
      */
     protected $userQueryContainer;
 
@@ -45,6 +48,16 @@ class UsersTable extends AbstractTable
     protected $userTablePluginExecutor;
 
     /**
+     * @var \Spryker\Zed\Sales\Dependency\Facade\SalesToUserInterface
+     */
+    protected $saleUserInterface;
+
+    /**
+     * @var \Spryker\Zed\Acl\Business\AclFacadeInterface
+     */
+    protected $aclFacade;
+
+    /**
      * @param \Spryker\Zed\User\Persistence\UserQueryContainerInterface $userQueryContainer
      * @param \Spryker\Service\UtilDateTime\UtilDateTimeServiceInterface $utilDateTimeService
      * @param \Spryker\Zed\User\Communication\Table\PluginExecutor\UserTablePluginExecutorInterface $userTablePluginExecutor
@@ -52,11 +65,15 @@ class UsersTable extends AbstractTable
     public function __construct(
         UserQueryContainerInterface $userQueryContainer,
         UtilDateTimeServiceInterface $utilDateTimeService,
-        UserTablePluginExecutorInterface $userTablePluginExecutor
+        UserTablePluginExecutorInterface $userTablePluginExecutor,
+        AclFacadeInterface $aclFacade,
+        SalesToUserInterface $saleUserInterface
     ) {
         $this->userQueryContainer = $userQueryContainer;
         $this->utilDateTimeService = $utilDateTimeService;
         $this->userTablePluginExecutor = $userTablePluginExecutor;
+        $this->aclFacade = $aclFacade;
+        $this->saleUserInterface = $saleUserInterface;
     }
 
     /**
@@ -113,7 +130,15 @@ class UsersTable extends AbstractTable
      */
     protected function prepareData(TableConfiguration $config)
     {
-        $userQuery = $this->userQueryContainer->queryUser();
+        if ($this->isCurrentUserSupervisor()) {
+            $merchantReferenceOfCurrentUser = $this->aclFacade->getCurrentUser()->getMerchantReference();
+        }
+
+        if (isset($merchantReferenceOfCurrentUser)) {
+            $userQuery = $this->userQueryContainer->queryUsersByMerchantReference($merchantReferenceOfCurrentUser);
+        } else {
+            $userQuery = $this->userQueryContainer->queryUser();
+        }
         $queryResults = $this->runQuery($userQuery, $config);
 
         $results = [];
@@ -129,6 +154,23 @@ class UsersTable extends AbstractTable
         }
 
         return $results;
+    }
+
+    /**
+     * @return bool
+     */
+    protected function isCurrentUserSupervisor(): bool
+    {
+        $idUser = $this->saleUserInterface->getCurrentUser()->getIdUser();
+        $userGroups = $this->aclFacade->getUserGroups($idUser);
+
+        foreach ($userGroups->getGroups() as $group) {
+            if ($group->getName() === AclConstants::SUPERVISOR_GROUP) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     /**
@@ -156,14 +198,15 @@ class UsersTable extends AbstractTable
             ]),
             'Edit'
         );
+        if (!$this->isCurrentUserSupervisor()) {
+            $urls[] = $this->createStatusButton($user);
 
-        $urls[] = $this->createStatusButton($user);
+            $deleteUrl = Url::generate(static::CONFIRM_DELETE_USER_URL, [
+                self::PARAM_ID_USER => $user[SpyUserTableMap::COL_ID_USER],
+            ]);
 
-        $deleteUrl = Url::generate(static::CONFIRM_DELETE_USER_URL, [
-            self::PARAM_ID_USER => $user[SpyUserTableMap::COL_ID_USER],
-        ]);
-
-        $urls[] = $this->generateRemoveButton($deleteUrl, 'Delete');
+            $urls[] = $this->generateRemoveButton($deleteUrl, 'Delete');
+        }
 
         return $urls;
     }

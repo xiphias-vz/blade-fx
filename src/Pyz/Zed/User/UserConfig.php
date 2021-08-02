@@ -11,6 +11,8 @@ use Spryker\Zed\User\UserConfig as SprykerUserConfig;
 
 class UserConfig extends SprykerUserConfig
 {
+    protected const LENGTH_PICKER_PASSWORD = 6;
+
     /**
      * @return array
      */
@@ -32,5 +34,15 @@ class UserConfig extends SprykerUserConfig
                 'localeName' => 'cs_CZ',
             ],
         ];
+    }
+
+    /**
+     * @api
+     *
+     * @return int
+     */
+    public function getPickerPasswordLength(): int
+    {
+        return static::LENGTH_PICKER_PASSWORD;
     }
 }
