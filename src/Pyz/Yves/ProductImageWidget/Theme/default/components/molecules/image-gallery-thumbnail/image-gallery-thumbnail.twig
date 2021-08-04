@@ -8,12 +8,23 @@
     images: []
 } %}
 
+{% set defaultImage = publicPath("/images/kein_bild_vorhanden.png") %}
+
 {% block body %}
     {% for i, image in data.images %}
         <div class="{{ config.name }}__item {% if loop.first %}{{config.name}}__item--active{% endif %} {{ config.jsName }}__item"  data-thumbnail-index="{{ i }}">
             {% if image.externalUrlLarge is not empty %}
-                <img class="{{ config.name }}__img" src="{{ image.externalUrlLarge }}" alt="{{ 'page.product.details.slider_thumbnail' | trans }}">
+                <img onerror="OnErrorChangeImage(this);" class="{{ config.name }}__img" src="{{ image.externalUrlLarge }}" alt="{{ 'page.product.details.slider_thumbnail' | trans }}">
             {% endif %}
         </div>
     {% endfor %}
 {% endblock %}
+{% block script %}
+    <script type="text/javascript">
+        function OnErrorChangeImage(ev){
+            ev.src = '{{ defaultImage }}';
+            ev.setAttribute("data-src", "{{ defaultImage }}");
+        }
+    </script>
+{% endblock %}
+

@@ -82,6 +82,22 @@
 
         @content;
     }
+
+    #mobile-slider {
+        display: none;
+
+        @include helper-breakpoint-media-max($md-max) {
+            margin: rem(30) 0;
+            display: block;
+            width: 100%;
+            height: rem(300);
+            text-align: center;
+        }
+    }
+
+    .mobile-slider--image {
+        width: 100% !important;
+    }
 }
 
 @include product-image-widget-image-gallery();

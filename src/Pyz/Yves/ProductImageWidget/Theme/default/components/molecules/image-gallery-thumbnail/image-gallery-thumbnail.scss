@@ -1,11 +1,17 @@
 @mixin product-image-widget-image-gallery-thumbnail($name: '.image-gallery-thumbnail') {
     #{$name} {
-        width: 100%;
+        width: rem(400) !important;
+        display: flex !important;
+
+        @include helper-breakpoint-media-max($md-max) {
+            width: rem(352) !important;
+            display: flex !important;
+        }
 
         @include helper-breakpoint-media-min($lg-min) {
             position: absolute;
-            top: 50%;
-            left: rem(10);
+            top: 115%;
+            left: rem(100);
             transform: translateY(-50%);
             z-index: $setting-zi-element + 1;
             width: rem(36);
@@ -33,15 +39,25 @@
             margin: 0;
             cursor: default;
 
+            &:hover {
+                border: rem(2) solid $setting-color-globus-darkOrange !important;
+            }
+
             @include helper-breakpoint-media-max($md-max) {
                 &:not(:first-child) {
                     display: none !important;
                 }
+
+                &:hover {
+                    border: rem(2) solid $setting-color-globus-darkGray !important;
+                }
+
+                height: rem(85) !important;
             }
 
             @include helper-breakpoint-media-min($lg-min) {
                 width: rem(36);
-                height: rem(36);
+                height: rem(60);
                 border: rem(1) solid $setting-color-gray-3;
                 margin: rem(8) 0;
                 cursor: pointer;
@@ -49,6 +65,7 @@
 
             &--active {
                 padding: 0;
+                border: rem(2) solid $setting-color-globus-darkGray !important;
 
                 @include helper-breakpoint-media-min($lg-min) {
                     border: rem(2) solid $setting-color-white;
@@ -74,6 +91,7 @@
         &__img {
             max-height: rem(250);
             opacity: 1;
+            height: -webkit-fill-available;
 
             @include helper-breakpoint-media-min($lg-min) {
                 opacity: 0.25;
@@ -90,12 +108,35 @@
         }
 
         &__prev {
-            padding: rem(10) 0 0;
+            margin-top: rem(35);
+        }
+
+        &__next {
+            margin-top: rem(35);
         }
 
         .slick-slide {
             border: none;
             height: auto;
+            width: rem(80) !important;
+            margin: 0 rem(8);
+
+            @include helper-breakpoint-media-max($md-max) {
+                border: none;
+                height: auto;
+                width: rem(102) !important;
+                margin: 0 rem(8);
+            }
+        }
+
+        .slick-track {
+            width: rem(1520) !important;
+            transform: translate3d(-80px, 0px, 0px);
+
+            @include helper-breakpoint-media-max($md-max) {
+                width: rem(2080) !important;
+                transform: translate3d(-80px, 0px, 0px);
+            }
         }
 
         .slick-dots {
@@ -150,6 +191,14 @@
                 color: $setting-color-globus-darkOrange;
             }
         }
+    }
+
+    .icon--thumbnail-arrow {
+        transform: rotate(270deg) !important;
+    }
+
+    .icon--reverse {
+        transform: rotate(90deg) !important;
     }
 }
 

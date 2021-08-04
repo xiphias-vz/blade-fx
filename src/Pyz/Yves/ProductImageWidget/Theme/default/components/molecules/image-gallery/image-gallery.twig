@@ -16,29 +16,86 @@
 } %}
 
 {% set defaultImage = publicPath("/images/kein_bild_vorhanden.png") %}
+{% set imagesQuantity = data.images | length %}
+{% set firstImage = data.images | first %}
+{% block extraClass %}
+    {{ config.jsName }}
+{% endblock %}
 
 {% block body %}
-    <a href="{{ path("cart/add-ajax", {"productAbstractId": data.idProductAbstract}) }}"
-       class="{{ config.name }}__container {{config.name}}__container--single-image {{config.jsName}} js-product-color-group__image-{{ data.idProductAbstract }} js-image-animation__link js-ajax-add-to-cart__link"
-       data-product-id="{{ data.idProductAbstract }}"
-       data-csrf-token="{{ csrf_token('add-to-cart-ajax') }}">
-        <div class="{{ config.name }}__item {{ config.jsName }}__item {{ config.name }}__item--active">
-            {% if data.images is defined%}
-                {% set firstImage = data.images | first %}
-                {% if firstImage.externalUrlLarge is defined %}
-                        {% if firstImage.externalUrlLarge is not empty %}
-                            <img class="{{ config.name }}__image js-image-animation__image-{{ data.idProductAbstract }}" src="{{ firstImage.externalUrlLarge }}" alt="{{ 'page.product.details.slider_image' | trans }}">
+
+    <div id="mobile-slider">
+    </div>
+
+    {% if imagesQuantity > 1 %}
+        {% include molecule('image-gallery-thumbnail', 'ProductImageWidget') with {
+            class: config.jsName ~ '-thumbnail',
+            data: {
+                images: data.images,
+            },
+        } only %}
+    {% endif %}
+    {% set singleImageClass = imagesQuantity == 1 ? config.name ~ '__container--single-image' %}
+    <div class="{{ config.name }}__container {{ singleImageClass }}">
+        {% for image in data.images %}
+            {% set activeItemClass = loop.first ? config.name ~ '__item--active' %}
+                <div class="{{ config.name }}__item {{ config.jsName }}__item {{ activeItemClass }}">
+                    {% if image is defined %}
+                        {% if image.externalUrlLarge is defined %}
+                            {% if image.externalUrlLarge is not empty %}
+                                {% include molecule('lazy-image') with {
+                                    class: config.name ~ '__image',
+                                    modifiers: ['full-height'],
+                                    data: {
+                                        imageSrc: image.externalUrlLarge,
+                                        imageTitle: 'page.product.details.slider_image' | trans,
+                                    },
+                                    attributes: {
+                                        src: image.externalUrlLarge
+                                    },
+                                } only %}
+                            {% else %}
+                                {% include molecule('lazy-image') with {
+                                    class: config.name ~ '__image',
+                                    modifiers: ['full-height'],
+                                    data: {
+                                        imageSrc: defaultImage,
+                                        imageTitle: 'page.product.details.slider_image' | trans,
+                                    },
+                                    attributes: {
+                                        src: defaultImage
+                                    },
+                                } only %}
+                            {% endif %}
                         {% else %}
-                            <img class="{{ config.name }}__image" src="{{ defaultImage }}" alt="{{ 'page.product.details.slider_image' | trans }}">
+                            {% include molecule('lazy-image') with {
+                                class: config.name ~ '__image',
+                                modifiers: ['full-height'],
+                                data: {
+                                    imageSrc: defaultImage,
+                                    imageTitle: 'page.product.details.slider_image' | trans,
+                                },
+                                attributes: {
+                                    src: defaultImage
+                                },
+                            } only %}
                         {% endif %}
-                {% else %}
-                    <img class="{{ config.name }}__image" src="{{ defaultImage }}" alt="{{ 'page.product.details.slider_image' | trans }}">
-                {% endif %}
-            {% else %}
-                <img class="{{ config.name }}__image" src="{{ defaultImage }}" alt="{{ 'page.product.details.slider_image' | trans }}">
-            {% endif %}
-        </div>
-    </a>
+                    {% else %}
+                        {% include molecule('lazy-image') with {
+                            class: config.name ~ '__image',
+                            modifiers: ['full-height'],
+                            data: {
+                                imageSrc: defaultImage,
+                                imageTitle: 'page.product.details.slider_image' | trans,
+                            },
+                            attributes: {
+                                src: defaultImage
+                            },
+                        } only %}
+                    {% endif %}
+                </div>
+        {% endfor %}
+    </div>
 
     <script type="text/javascript">
         document.querySelector(".image-gallery__image").onerror = function(args){

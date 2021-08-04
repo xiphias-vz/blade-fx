@@ -20,7 +20,7 @@ export default class ImageGallery extends Component {
 
     protected mapEvents(): void {
         if (this.thumbnail) {
-            this.thumbnail.addEventListener('mouseenter', (event: Event) => this.onThumbnailHover(event), true);
+            this.thumbnail.addEventListener('click', (event: Event) => this.onThumbnailHover(event), true);
         }
     }
 
@@ -29,6 +29,8 @@ export default class ImageGallery extends Component {
         if (imagesQuantity > 1) {
             $(this.thumbnail).slick(this.thumbnailSliderConfig);
         }
+
+        this.mobileViewSetPreviewImage();
     }
 
     protected onThumbnailHover(event: Event): void {
@@ -50,6 +52,18 @@ export default class ImageGallery extends Component {
     setActiveImage(activeItemIndex: number): void {
         this.galleryItems.forEach(galleryItem => galleryItem.classList.remove(this.activeClass));
         this.galleryItems[activeItemIndex].classList.add(this.activeClass);
+        this.mobileViewSetPreviewImage();
+    }
+
+    protected mobileViewSetPreviewImage(): void {
+        $("#mobile-slider").empty();
+        var find = $(".image-gallery-thumbnail__item.js-image-gallery-thumbnail__item.image-gallery-thumbnail__item--active")[0];
+        var activeSource = $(find).clone();
+        $(activeSource[0]).removeClass("image-gallery-thumbnail__item");
+        $(activeSource[0]).removeClass("js-image-gallery-thumbnail__item");
+        $(activeSource[0]).removeClass("image-gallery-thumbnail__item--active");
+        $("#mobile-slider").append(activeSource);
+
     }
 
     protected get activeClass(): string {

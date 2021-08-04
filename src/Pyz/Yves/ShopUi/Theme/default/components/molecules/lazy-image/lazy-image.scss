@@ -1,6 +1,7 @@
 @mixin shop-ui-lazy-image($name: '.lazy-image') {
     #{$name} {
         line-height: 1;
+        max-height: fit-content !important;
 
         &--bg {
             position: relative;
