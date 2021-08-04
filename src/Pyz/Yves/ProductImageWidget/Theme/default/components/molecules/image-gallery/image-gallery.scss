@@ -1,6 +1,7 @@
 @mixin product-image-widget-image-gallery($name: '.image-gallery') {
     #{$name} {
         position: relative;
+        min-width: fit-content;
 
         &__container {
             position: relative;
@@ -53,6 +54,14 @@
             &--active,
             &--color-active {
                 opacity: 1;
+            }
+
+            .js-lazy-image__content {
+
+                @include helper-breakpoint-media-max($md-max) {
+                    max-width: rem(570) !important;
+                    max-height: rem(500) !important;
+                }
             }
 
             @include helper-breakpoint-media-min($lg-min) {

@@ -28,9 +28,17 @@ export default class ImageGallery extends Component {
         const imagesQuantity = this.galleryItems.length;
         if (imagesQuantity > 1) {
             $(this.thumbnail).slick(this.thumbnailSliderConfig);
+            if (window.matchMedia('(max-width: 768px)').matches) {
+                this.mobileViewSetPreviewImage();
+            }
+            else {
+                $("#mobile-slider").css("display", "none");
+            }
         }
-
-        this.mobileViewSetPreviewImage();
+        else {
+            $("#mobile-slider").css("display", "none");
+            $("#product-attributes-data").css("margin-top", "0px");
+        }
     }
 
     protected onThumbnailHover(event: Event): void {
