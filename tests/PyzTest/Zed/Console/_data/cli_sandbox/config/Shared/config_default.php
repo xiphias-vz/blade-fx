@@ -1,6 +1,7 @@
 <?php
 
 use Monolog\Logger;
+use Pyz\Shared\SessionLocks\SessionLocksConfig;
 use Spryker\Shared\Acl\AclConstants;
 use Spryker\Shared\Application\ApplicationConstants;
 use Spryker\Shared\Auth\AuthConstants;
@@ -169,9 +170,9 @@ $config[SessionRedisConstants::ZED_SESSION_REDIS_PORT] = $config[StorageRedisCon
 $config[SessionRedisConstants::ZED_SESSION_REDIS_PASSWORD] = $config[StorageRedisConstants::STORAGE_REDIS_PASSWORD];
 $config[SessionRedisConstants::ZED_SESSION_REDIS_DATABASE] = 2;
 
-$config[SessionRedisConstants::LOCKING_TIMEOUT_MILLISECONDS] = 0;
-$config[SessionRedisConstants::LOCKING_RETRY_DELAY_MICROSECONDS] = 0;
-$config[SessionRedisConstants::LOCKING_LOCK_TTL_MILLISECONDS] = 0;
+$config[SessionRedisConstants::LOCKING_TIMEOUT_MILLISECONDS] = SessionLocksConfig::LOCKING_TIMEOUT_MILLISECONDS;
+$config[SessionRedisConstants::LOCKING_RETRY_DELAY_MICROSECONDS] = SessionLocksConfig::LOCKING_RETRY_DELAY_MICROSECONDS;
+$config[SessionRedisConstants::LOCKING_LOCK_TTL_MILLISECONDS] = SessionLocksConfig::LOCKING_LOCK_TTL_MILLISECONDS;
 
 $config[ZedRequestConstants::ZED_API_SSL_ENABLED] = false;
 

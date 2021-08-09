@@ -17,6 +17,7 @@ use Pyz\Shared\ProductDetailPage\ProductDetailPageConstants;
 use Pyz\Shared\ProductImage\ProductImageConstants;
 use Pyz\Shared\ProductPageSearch\ProductPageSearchConstants;
 use Pyz\Shared\Sales\SalesConstants;
+use Pyz\Shared\SessionLocks\SessionLocksConfig;
 use Pyz\Shared\Shipment\ShipmentConfig;
 use Pyz\Shared\Store\StoreConstants;
 use Pyz\Shared\TimeSlot\TimeSlotConstants;
@@ -328,9 +329,9 @@ $config[SessionFileConstants::ZED_SESSION_TIME_TO_LIVE] = $config[SessionConstan
 $config[SessionConstants::ZED_SESSION_COOKIE_TIME_TO_LIVE] = SessionConfig::SESSION_LIFETIME_BROWSER_SESSION;
 $config[SessionFileConstants::ZED_SESSION_FILE_PATH] = session_save_path();
 $config[SessionConstants::ZED_SESSION_PERSISTENT_CONNECTION] = $config[StorageRedisConstants::STORAGE_REDIS_PERSISTENT_CONNECTION];
-$config[SessionRedisConstants::LOCKING_TIMEOUT_MILLISECONDS] = 0;
-$config[SessionRedisConstants::LOCKING_RETRY_DELAY_MICROSECONDS] = 0;
-$config[SessionRedisConstants::LOCKING_LOCK_TTL_MILLISECONDS] = 0;
+$config[SessionRedisConstants::LOCKING_TIMEOUT_MILLISECONDS] = SessionLocksConfig::LOCKING_TIMEOUT_MILLISECONDS;
+$config[SessionRedisConstants::LOCKING_RETRY_DELAY_MICROSECONDS] = SessionLocksConfig::LOCKING_RETRY_DELAY_MICROSECONDS;
+$config[SessionRedisConstants::LOCKING_LOCK_TTL_MILLISECONDS] = SessionLocksConfig::LOCKING_LOCK_TTL_MILLISECONDS;
 
 /**
  * Data source names are used exclusively when set, e.g. no other Redis session configuration will be used for the client.
