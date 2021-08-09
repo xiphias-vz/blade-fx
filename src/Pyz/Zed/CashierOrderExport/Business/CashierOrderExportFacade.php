@@ -9,6 +9,7 @@ namespace Pyz\Zed\CashierOrderExport\Business;
 
 use Generated\Shared\Transfer\OrderTransfer;
 use Spryker\Zed\Kernel\Business\AbstractFacade;
+use XMLWriter;
 
 /**
  * @method \Pyz\Zed\CashierOrderExport\Business\CashierOrderExportBusinessFactory getFactory()
@@ -26,6 +27,26 @@ class CashierOrderExportFacade extends AbstractFacade implements CashierOrderExp
     public function exportOrders(OrderTransfer $orderTransfer): OrderTransfer
     {
         return $this->getFactory()->createCashierOrderExporter()->exportOrders($orderTransfer);
+    }
+
+    /**
+     * @param \Generated\Shared\Transfer\OrderTransfer $orderTransfer
+     *
+     * @return string
+     */
+    public function writeTxt(OrderTransfer $orderTransfer): string
+    {
+        return $this->getFactory()->createCashierOrderContentBuilder()->prepareContent($orderTransfer);
+    }
+
+    /**
+     * @param \Generated\Shared\Transfer\OrderTransfer $orderTransfer
+     *
+     * @return \XMLWriter
+     */
+    public function writeXml(OrderTransfer $orderTransfer): XMLWriter
+    {
+        return $this->getFactory()->createCashierOrderContentBuilder()->prepareContentXml($orderTransfer);
     }
 
     /**

@@ -5,6 +5,7 @@
  */
 
 use Monolog\Logger;
+use Pyz\Shared\CashierOrderExport\CashierOrderExportConstants;
 use Pyz\Shared\Console\ConsoleConstants;
 use Pyz\Shared\Scheduler\SchedulerConfig;
 use Pyz\Shared\TwigCache\TwigCacheConstants;
@@ -57,9 +58,9 @@ $config[TestifyConstants::BOOTSTRAP_CLASS_YVES] = YvesBootstrap::class;
 $config[TestifyConstants::BOOTSTRAP_CLASS_ZED] = ZedBootstrap::class;
 
 // ---------- Propel
-$config[PropelConstants::ZED_DB_ENGINE] = $config[PropelConstants::ZED_DB_ENGINE_PGSQL];
-$config[PropelConstants::ZED_DB_HOST] = '127.0.0.1';
-$config[PropelConstants::ZED_DB_PORT] = 5432;
+$config[PropelConstants::ZED_DB_ENGINE] = $config[PropelConstants::ZED_DB_ENGINE_MYSQL];
+$config[PropelConstants::ZED_DB_HOST] = 'database';
+$config[PropelConstants::ZED_DB_PORT] = 3306;
 
 // ---------- Redis
 $config[StorageRedisConstants::STORAGE_REDIS_DATABASE] = 3;
@@ -78,6 +79,12 @@ $config[RabbitMqEnv::RABBITMQ_API_PASSWORD] = 'mate20mg';
 
 // ---------- Logging
 $config[LogConstants::LOG_FILE_PATH] = APPLICATION_ROOT_DIR . '/data/logs';
+
+// ---------- CashierOrderExport
+$config[CashierOrderExportConstants::SFTP_CASHIER_ORDER_FILES_FOLDER_KEY] = 'kasse/staging';
+
+// ---------- CashierOrderXmlExport
+$config[CashierOrderExportConstants::SFTP_CASHIER_ORDER_XML_FILES_FOLDER_KEY] = 'kasse_v2/staging';
 
 // ---------- Scheduler
 $config[SchedulerConstants::ENABLED_SCHEDULERS] = [
@@ -166,9 +173,9 @@ $config[ApplicationConstants::YVES_TRUSTED_HOSTS]
 ];
 
 // ---------- Propel
-$config[PropelConstants::ZED_DB_USERNAME] = 'devtest';
-$config[PropelConstants::ZED_DB_PASSWORD] = 'mate20mg';
-$config[PropelConstants::ZED_DB_DATABASE] = 'DE_devtest_zed';
+$config[PropelConstants::ZED_DB_USERNAME] = 'spryker';
+$config[PropelConstants::ZED_DB_PASSWORD] = 'secret';
+$config[PropelConstants::ZED_DB_DATABASE] = 'de-globus';
 
 // ---------- Elasticsearch
 $config[CollectorConstants::ELASTICA_PARAMETER__INDEX_NAME]
