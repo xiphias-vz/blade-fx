@@ -8,10 +8,10 @@
 namespace Pyz\Yves\CustomerReorderWidget;
 
 use Pyz\Client\Messenger\MessengerClientInterface;
+use Pyz\Yves\CustomerReorderWidget\Model\CartFiller;
 use Pyz\Yves\CustomerReorderWidget\Model\ItemFetcher;
 use Spryker\Yves\Kernel\Application;
 use SprykerShop\Yves\CustomerReorderWidget\CustomerReorderWidgetFactory as SprykerCustomerReorderWidgetFactory;
-use SprykerShop\Yves\CustomerReorderWidget\Model\CartFiller;
 use SprykerShop\Yves\CustomerReorderWidget\Model\CartFillerInterface;
 use SprykerShop\Yves\CustomerReorderWidget\Model\ItemFetcherInterface;
 use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;

@@ -290,7 +290,7 @@ class CartController extends SprykerCartController
 
         $infoMessages = array_unique($infoMessages);
 
-        return implode('\n', $infoMessages);
+        return implode("\n", $infoMessages);
     }
 
     /**

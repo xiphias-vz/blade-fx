@@ -8,6 +8,7 @@
 namespace Pyz\Zed\ProductCartConnector\Business;
 
 use Pyz\Zed\ProductCartConnector\Business\Expander\ProductExpander;
+use Pyz\Zed\ProductCartConnector\Business\Validator\ProductValidator;
 use Spryker\Zed\ProductCartConnector\Business\ProductCartConnectorBusinessFactory as SprykerProductCartConnectorBusinessFactory;
 
 /**
@@ -22,6 +23,16 @@ class ProductCartConnectorBusinessFactory extends SprykerProductCartConnectorBus
     {
         return new ProductExpander(
             $this->getLocaleFacade(),
+            $this->getProductFacade()
+        );
+    }
+
+    /**
+     * @return \Spryker\Zed\ProductCartConnector\Business\Validator\ProductValidatorInterface
+     */
+    public function createProductValidator()
+    {
+        return new ProductValidator(
             $this->getProductFacade()
         );
     }
