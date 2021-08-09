@@ -2059,7 +2059,7 @@ mail.order.confirmation.item_sku,Artikel SKU,en_US
 mail.order.confirmation.item_price_including_tax,"Celková cena artiklu včetně daní",cs_CZ
 mail.order.confirmation.item_price_including_tax,Artikelpreis insgesamt inklusive Steuern,de_DE
 mail.order.confirmation.item_price_including_tax,Total item price including taxes,en_US
-mail.order.shipped.subject,"Výdejní lístek pro vaši objednávku% orderReference%",cs_CZ
+mail.order.shipped.subject,"Výdejní lístek pro vaši objednávku %orderReference%",cs_CZ
 mail.order.shipped.subject,Abholschein für Ihre Bestellung %orderReference%,de_DE
 mail.order.shipped.subject,Your order %orderReference% is on its way,en_US
 mail.order.shipped.salutation,"Dobrý den",cs_CZ

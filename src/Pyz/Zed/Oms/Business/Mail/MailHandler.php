@@ -284,6 +284,8 @@ class MailHandler extends SprykerMailHandler
             'canceledProductList' => $this->getShippedProductList($orderTransfer, $itemsGroupsCanceled, 'canceled'),
             'orderReference' => $orderTransfer->getOrderReference(),
             'merchantName' => $orderTransfer->getMerchantName() ?: ' ',
+            'tax15' => $this->getMoneyValue($this->getSumTaxes($orderTransfer, '15')),
+            'tax21' => $this->getMoneyValue($this->getSumTaxes($orderTransfer, '21'))
         ];
 
         $orderTransfer->setItems($items);
@@ -491,8 +493,9 @@ class MailHandler extends SprykerMailHandler
     protected function getSumTaxes(OrderTransfer $orderTransfer, string $tax): int
     {
         $result = 0;
+        $storeCodeBucket = getenv('SPRYKER_CODE_BUCKET');
 
-        if ($tax == "7") {
+        if ((($storeCodeBucket == 'DE') && ($tax == "7")) || (($storeCodeBucket == 'CZ') && ($tax == "15"))) {
             foreach ($orderTransfer->getItems() as $itemTransfer) {
                 if ($itemTransfer->getCanceledAmount() == null) {
                     $itemTransfer->setCanceledAmount(0);
@@ -501,7 +504,7 @@ class MailHandler extends SprykerMailHandler
                     $result += $itemTransfer["sumTaxAmountFullAggregation"];
                 }
             }
-        } else {
+        } elseif ((($storeCodeBucket == 'DE') && ($tax == "19")) || (($storeCodeBucket == 'CZ') && ($tax == "21")))  {
             $deliveryCostTax = $this->getShipmentTax($orderTransfer);
             foreach ($orderTransfer->getItems() as $itemTransfer) {
                 if ($itemTransfer->getCanceledAmount() == null) {
