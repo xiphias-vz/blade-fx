@@ -22,6 +22,7 @@ class ProductCategoryWriterStep extends PublishAwareStep implements DataImportSt
 {
     public const BULK_SIZE = 100;
     public const KEY_CATEGORY_KEY = 'Classification_ID';
+    public const KEY_SORTING_ORDER = 'sortingorder';
 
     /**
      * @param \Spryker\Zed\DataImport\Business\Model\DataSet\DataSetInterface $dataSet
@@ -34,6 +35,12 @@ class ProductCategoryWriterStep extends PublishAwareStep implements DataImportSt
         $listId = explode(";", $categoryId);
         $productOrder = 0;
         $currentRelationIds = [];
+
+        if (isset($dataSet->getArrayCopy()[static::KEY_SORTING_ORDER])) {
+            if ($dataSet->getArrayCopy()[static::KEY_SORTING_ORDER] != null) {
+                $productOrder = $dataSet->getArrayCopy()[static::KEY_SORTING_ORDER];
+            }
+        }
 
         foreach ($listId as $value) {
             if ($value != "") {
