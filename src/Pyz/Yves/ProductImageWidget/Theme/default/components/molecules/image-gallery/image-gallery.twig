@@ -27,14 +27,12 @@
     <div id="mobile-slider">
     </div>
 
-    {% if imagesQuantity > 1 %}
-        {% include molecule('image-gallery-thumbnail', 'ProductImageWidget') with {
-            class: config.jsName ~ '-thumbnail',
-            data: {
-                images: data.images,
-            },
-        } only %}
-    {% endif %}
+    {% include molecule('image-gallery-thumbnail', 'ProductImageWidget') with {
+        class: config.jsName ~ '-thumbnail',
+        data: {
+            images: data.images,
+        },
+    } only %}
     {% set singleImageClass = imagesQuantity == 1 ? config.name ~ '__container--single-image' %}
     <div class="{{ config.name }}__container {{ singleImageClass }}">
         {% for image in data.images %}

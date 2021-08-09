@@ -25,19 +25,12 @@ export default class ImageGallery extends Component {
     }
 
     protected initSlider(): void {
-        const imagesQuantity = this.galleryItems.length;
-        if (imagesQuantity > 1) {
-            $(this.thumbnail).slick(this.thumbnailSliderConfig);
-            if (window.matchMedia('(max-width: 768px)').matches) {
-                this.mobileViewSetPreviewImage();
-            }
-            else {
-                $("#mobile-slider").css("display", "none");
-            }
+        $(this.thumbnail).slick(this.thumbnailSliderConfig);
+        if (window.matchMedia('(max-width: 768px)').matches) {
+            this.mobileViewSetPreviewImage();
         }
         else {
             $("#mobile-slider").css("display", "none");
-            $("#product-attributes-data").css("margin-top", "0px");
         }
     }
 
