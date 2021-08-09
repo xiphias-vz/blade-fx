@@ -8,6 +8,7 @@
 namespace Pyz\Zed\Oms\Business\Mail;
 
 use ArrayObject;
+use Exception as ExceptionException;
 use Generated\Shared\Transfer\MailTransfer;
 use Generated\Shared\Transfer\OrderTransfer;
 use Orm\Zed\Sales\Persistence\SpySalesOrder;
@@ -27,12 +28,18 @@ use Spryker\Zed\Oms\Business\Mail\MailHandler as SprykerMailHandler;
 use Spryker\Zed\Oms\Communication\Plugin\Mail\OrderShippedMailTypePlugin;
 use Spryker\Zed\Oms\Dependency\Facade\OmsToMailInterface;
 use Spryker\Zed\Oms\Dependency\Facade\OmsToSalesInterface;
+use Spryker\Zed\Oms\Persistence\OmsQueryContainerInterface;
 use Spryker\Zed\Translator\Business\TranslatorFacadeInterface;
 use Symfony\Component\Config\Definition\Exception\Exception;
 use Twig\Environment;
 
 class MailHandler extends SprykerMailHandler
 {
+    /**
+     * @var \Pyz\Zed\Oms\Persistence\OmsQueryContainerInterface
+     */
+    protected $queryContainer;
+
     /**
      * @var \Spryker\Service\UtilDateTime\UtilDateTimeServiceInterface
      */
@@ -77,7 +84,7 @@ class MailHandler extends SprykerMailHandler
      * @param \Spryker\Zed\Oms\Dependency\Facade\OmsToSalesInterface $salesFacade
      * @param \Spryker\Zed\Oms\Dependency\Facade\OmsToMailInterface $mailFacade
      * @param \Spryker\Zed\OmsExtension\Dependency\Plugin\OmsOrderMailExpanderPluginInterface[] $orderMailExpanderPlugins
-     * @param \Spryker\Zed\Money\Business\MoneyFacadeInterface $moneyFacade
+     * @param \Spryker\Zed\Money\Business\MoneyFacadeInterface|array $moneyFacade
      * @param \Pyz\Zed\Oms\OmsConfig $config
      * @param \Pyz\Service\MailCmsBlock\MailCmsBlockServiceInterface $mailCmsBlockService
      * @param \Spryker\Service\UtilDateTime\UtilDateTimeServiceInterface $utilDateTimeService
@@ -87,6 +94,7 @@ class MailHandler extends SprykerMailHandler
      * @param \Spryker\Zed\Translator\Business\TranslatorFacadeInterface $translatorFacade
      */
     public function __construct(
+        OmsQueryContainerInterface $queryContainer,
         OmsToSalesInterface $salesFacade,
         OmsToMailInterface $mailFacade,
         array $orderMailExpanderPlugins,
@@ -109,6 +117,7 @@ class MailHandler extends SprykerMailHandler
         $this->twigEnvironment = $twigEnvironment;
         $this->dateTimeWithZoneService = $dateTimeWithZoneService;
         $this->translatorFacade = $translatorFacade;
+        $this->queryContainer = $queryContainer;
     }
 
     /**
@@ -118,11 +127,9 @@ class MailHandler extends SprykerMailHandler
      */
     public function sendOrderConfirmationMail(SpySalesOrder $salesOrderEntity)
     {
-         //todo: remove Test Orders
         if ($salesOrderEntity->getIsTest()) {
             return;
         }
-
         $orderTransfer = $this->getOrderTransfer($salesOrderEntity);
         $orderTransfer = $this->expandWithItemGroups($orderTransfer);
 
@@ -249,9 +256,31 @@ class MailHandler extends SprykerMailHandler
             }
         }
 
+        $itemsCanceled = $this->getCanceledProductListItems($orderTransfer);
+        $similarProducts = [];
+        $store = $orderTransfer->getMerchantReference();
+
+        foreach ($itemsCanceled as $product) {
+            if (isset($product['sku'])) {
+                $sku = $product['sku'];
+            }
+            $similarProduct = $this->queryContainer->queryRelatedProductsBySku($sku, $store);
+            if (!empty($similarProduct)) {
+                array_push($similarProducts, $similarProduct);
+            }
+        }
+
         $orderTransfer->setItems($itemsShipped);
         $orderTransfer = $this->expandWithItemGroups($orderTransfer);
         $totals = $orderTransfer->getTotals();
+        $similarProductsTwig = '0';
+        try {
+            $similarProductsTwig = $this->getSimilarProductsList($similarProducts, $orderTransfer);
+        }
+        catch(\Exception $e){
+
+        }
+
 
         $params = [
             'totalPriceOfTheOrder' => $this->getMoneyValue($totals->getGrandTotal()),
@@ -284,8 +313,9 @@ class MailHandler extends SprykerMailHandler
             'canceledProductList' => $this->getShippedProductList($orderTransfer, $itemsGroupsCanceled, 'canceled'),
             'orderReference' => $orderTransfer->getOrderReference(),
             'merchantName' => $orderTransfer->getMerchantName() ?: ' ',
+            'similarProducts' => $similarProductsTwig,
             'tax15' => $this->getMoneyValue($this->getSumTaxes($orderTransfer, '15')),
-            'tax21' => $this->getMoneyValue($this->getSumTaxes($orderTransfer, '21'))
+            'tax21' => $this->getMoneyValue($this->getSumTaxes($orderTransfer, '21')),
         ];
 
         $orderTransfer->setItems($items);
@@ -504,7 +534,7 @@ class MailHandler extends SprykerMailHandler
                     $result += $itemTransfer["sumTaxAmountFullAggregation"];
                 }
             }
-        } elseif ((($storeCodeBucket == 'DE') && ($tax == "19")) || (($storeCodeBucket == 'CZ') && ($tax == "21")))  {
+        } elseif ((($storeCodeBucket == 'DE') && ($tax == "19")) || (($storeCodeBucket == 'CZ') && ($tax == "21"))) {
             $deliveryCostTax = $this->getShipmentTax($orderTransfer);
             foreach ($orderTransfer->getItems() as $itemTransfer) {
                 if ($itemTransfer->getCanceledAmount() == null) {
@@ -554,5 +584,13 @@ class MailHandler extends SprykerMailHandler
         }
 
         return $items;
+    }
+
+    protected function getSimilarProductsList($similarProducts, $orderTransfer): string
+    {
+        return $this->twigEnvironment->render(
+            $this->config->getSimilarProductListTemplate(),
+            ['similarProducts' => $similarProducts, 'order' => $orderTransfer]
+        );
     }
 }

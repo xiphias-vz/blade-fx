@@ -52,7 +52,7 @@ environment: docker_dev
 image:
     tag: spryker/php:7.3-alpine3.12
     environment:
-           SPRYKER_CODE_BUCKET: DE
+        SPRYKER_CODE_BUCKET: DE
     php:
         enabled-extensions:
             - newrelic

@@ -51,6 +51,7 @@ class OmsBusinessFactory extends SprykerOmsBusinessFactory
     public function createMailHandler()
     {
         return new MailHandler(
+            $this->getQueryContainer(),
             $this->getSalesFacade(),
             $this->getMailFacade(),
             $this->getOmsOrderMailExpanderPlugins(),

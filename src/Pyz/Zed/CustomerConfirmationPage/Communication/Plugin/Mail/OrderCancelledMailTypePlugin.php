@@ -13,7 +13,7 @@ use Spryker\Zed\Mail\Dependency\Plugin\MailTypePluginInterface;
 
 class OrderCancelledMailTypePlugin extends AbstractPlugin implements MailTypePluginInterface
 {
-    public const MAIL_TYPE = 'order cancelled';
+    public const MAIL_TYPE = 'order cancelled email';
     private const MAIL_SUBJECT = 'mail.order-cancelled.subject';
 
     /**
