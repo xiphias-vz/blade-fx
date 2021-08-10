@@ -24,6 +24,12 @@ class CheckoutController extends SprykerCheckoutControllerAlias
 {
     public const LINK_ACCOUNT_WITH_PAYBACK = 'linkPayBackInput';
     public const PAYBACK_NUMBER = 'paymentCardNumber';
+    public const MESSAGE_NO_CUSTOMER = 'checkout.summary.no.customer';
+
+    /**
+     * @uses \SprykerShop\Yves\CheckoutPage\Plugin\Router\CheckoutPageRouteProviderPlugin::CHECKOUT_CUSTOMER
+     */
+    protected const ROUTE_CHECKOUT_CUSTOMER = 'checkout-customer';
 
     /**
      * @param \Symfony\Component\HttpFoundation\Request $request
@@ -191,6 +197,19 @@ class CheckoutController extends SprykerCheckoutControllerAlias
     public function summaryAction(Request $request)
     {
         $quoteValidationResponseTransfer = $this->canProceedCheckout();
+        if (!$quoteValidationResponseTransfer->getIsSuccessful()) {
+            $this->processErrorMessages($quoteValidationResponseTransfer->getMessages());
+
+            return $this->redirectResponseInternal(static::ROUTE_CART);
+        }
+
+        $customer = $this->getFactory()->getQuoteClient()->getQuote()->getCustomer();
+        if ($customer === null) {
+            $this->addErrorMessage(static::MESSAGE_NO_CUSTOMER);
+
+            return $this->redirectResponseInternal(static::ROUTE_CHECKOUT_CUSTOMER);
+        }
+
         $linkAccountWithPayback = $request->get(static::LINK_ACCOUNT_WITH_PAYBACK) == null ?
             0 : (int)$request->get(static::LINK_ACCOUNT_WITH_PAYBACK);
         $paybackNumber = $request->get(static::PAYBACK_NUMBER) == null ?
@@ -227,12 +246,6 @@ class CheckoutController extends SprykerCheckoutControllerAlias
                     }
                 }
             }
-        }
-
-        if (!$quoteValidationResponseTransfer->getIsSuccessful()) {
-            $this->processErrorMessages($quoteValidationResponseTransfer->getMessages());
-
-            return $this->redirectResponseInternal(static::ROUTE_CART);
         }
 
         $viewData = $this->createStepProcess()->process(

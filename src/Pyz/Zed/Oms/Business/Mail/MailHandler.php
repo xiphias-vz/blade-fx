@@ -8,7 +8,6 @@
 namespace Pyz\Zed\Oms\Business\Mail;
 
 use ArrayObject;
-use Exception as ExceptionException;
 use Generated\Shared\Transfer\MailTransfer;
 use Generated\Shared\Transfer\OrderTransfer;
 use Orm\Zed\Sales\Persistence\SpySalesOrder;
@@ -276,11 +275,8 @@ class MailHandler extends SprykerMailHandler
         $similarProductsTwig = '0';
         try {
             $similarProductsTwig = $this->getSimilarProductsList($similarProducts, $orderTransfer);
+        } catch (ExceptionException $e) {
         }
-        catch(\Exception $e){
-
-        }
-
 
         $params = [
             'totalPriceOfTheOrder' => $this->getMoneyValue($totals->getGrandTotal()),
