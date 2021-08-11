@@ -27,6 +27,7 @@ use Pyz\Zed\ImageImportToS3\Communication\Console\ImageImportToS3Console;
 use Pyz\Zed\Installer\Communication\Console\PerStoreInstallerConsole;
 use Pyz\Zed\Maintenance\Communication\Console\MaintenanceDisableConsole;
 use Pyz\Zed\Maintenance\Communication\Console\MaintenanceEnableConsole;
+use Pyz\Zed\MultipleStatusesFixScript\Communication\Console\MultipleStatusesFixScriptConsole;
 use Pyz\Zed\Oms\Communication\Console\CheckConditionConsole as OmsCheckConditionConsole;
 use Pyz\Zed\Oms\Communication\Console\CheckTimeoutConsole as OmsCheckTimeoutConsole;
 use Pyz\Zed\PriceProductScheduleDataImport\PriceProductScheduleDataImportConfig;
@@ -347,6 +348,7 @@ class ConsoleDependencyProvider extends SprykerConsoleDependencyProvider
             new CashierOrderExportConsole(),
 
             new DataExportConsole(),
+            new MultipleStatusesFixScriptConsole(),
         ];
 
         $propelCommands = $container->getLocator()->propel()->facade()->getConsoleCommands();

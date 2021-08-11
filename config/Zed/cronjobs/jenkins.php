@@ -175,6 +175,15 @@ if ($storeCodeBucket == 'CZ') {
         'stores' => ['OPA'],
     ];
 
+    //Multiple statuses fix
+    $jobs[] = [
+        'name' => 'multiple-statuses-fix',
+        'command' => 'vendor/bin/console multiple-statuses:fix',
+        'schedule' => '*/5 * * * *',
+        'enable' => true,
+        'stores' => ['OPA'],
+    ];
+
     // Export orders every day
     $jobs[] = [
         'name' => 'export-orders',
@@ -225,6 +234,15 @@ if ($storeCodeBucket == 'CZ') {
         'name' => 'data-import-images',
         'command' => 'vendor/bin/install -r product-images-import',
         'schedule' => '0 20 * * *',
+        'enable' => true,
+        'stores' => ['EIN'],
+    ];
+
+    //Multiple statuses fix
+    $jobs[] = [
+        'name' => 'multiple-statuses-fix',
+        'command' => 'vendor/bin/console multiple-statuses:fix',
+        'schedule' => '*/5 * * * *',
         'enable' => true,
         'stores' => ['EIN'],
     ];
