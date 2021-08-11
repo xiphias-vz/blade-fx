@@ -1,6 +1,7 @@
 @mixin product-image-widget-image-gallery-thumbnail($name: '.image-gallery-thumbnail') {
     #{$name} {
         width: rem(400) !important;
+        max-height: rem(90) !important;
         display: flex !important;
 
         @include helper-breakpoint-media-max($md-max) {
@@ -83,7 +84,6 @@
                 left: 0;
                 right: 0;
                 bottom: 0;
-                background: $setting-color-alpha-1;
                 z-index: $setting-zi-element-floating;
             }
         }

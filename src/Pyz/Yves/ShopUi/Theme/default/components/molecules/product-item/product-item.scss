@@ -284,6 +284,10 @@
             }
         }
 
+        .lazy-thumbnail__image {
+            max-height: 70px !important;
+        }
+
         @content;
     }
 }
