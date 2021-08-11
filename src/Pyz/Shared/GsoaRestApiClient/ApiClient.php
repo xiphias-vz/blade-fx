@@ -12,7 +12,7 @@ use Exception;
 
 class ApiClient
 {
-    public const ROOT_URL = 'https://gsoat.globus.cz';
+    public const ROOT_URL = 'https://gapi.globus.cz';
 
     /**
      * @param string $url
