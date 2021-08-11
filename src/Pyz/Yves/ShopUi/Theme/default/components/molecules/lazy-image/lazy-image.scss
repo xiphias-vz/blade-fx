@@ -28,6 +28,10 @@
             height: 100%;
         }
 
+        .js-lazy-image__content {
+            height: -webkit-fill-available;
+        }
+
         @content;
     }
 }

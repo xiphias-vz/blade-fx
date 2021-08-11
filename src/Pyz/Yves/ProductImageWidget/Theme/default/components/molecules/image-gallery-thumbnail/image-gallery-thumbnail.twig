@@ -5,26 +5,25 @@
 } %}
 
 {% define data = {
-    images: []
+    images: [],
+    currentCodeBucket: app.currentCodeBucket,
 } %}
 
 {% set defaultImage = publicPath("/images/kein_bild_vorhanden.png") %}
 
 {% block body %}
     {% for i, image in data.images %}
-        <div class="{{ config.name }}__item {% if loop.first %}{{config.name}}__item--active{% endif %} {{ config.jsName }}__item"  data-thumbnail-index="{{ i }}">
-            {% if image.externalUrlLarge is not empty %}
-                <img onerror="OnErrorChangeImage(this);" class="{{ config.name }}__img" src="{{ image.externalUrlLarge }}" alt="{{ 'page.product.details.slider_thumbnail' | trans }}">
+        {% set insertInTheMiddle = '.com/thumb_' %}
+        {% if data.currentCodeBucket=='CZ' %}
+            {% set newThumbUrl = image.externalUrlSmall %}
+        {% else %}
+            {% set splitUrl = image.externalUrlSmall | split('.com/') %}
+            {% set newThumbUrl = splitUrl[0] ~ insertInTheMiddle ~ splitUrl[1] %}
+        {% endif %}
+        <div class="{{ config.name }}__item {% if loop.first %}{{config.name}}__item--active{% endif %} {{ config.jsName }}__item" data-thumbnail-index="{{ i }}">
+            {% if newThumbUrl is not empty %}
+                <img onerror="OnErrorChangeImage(this);" class="{{ config.name }}__img" src="{{ newThumbUrl }}" data-src="{{ newThumbUrl }}" data-storage="{{ image.externalUrlSmall }}" alt="{{ 'page.product.details.slider_thumbnail' | trans }}">
             {% endif %}
         </div>
     {% endfor %}
 {% endblock %}
-{% block script %}
-    <script type="text/javascript">
-        function OnErrorChangeImage(ev){
-            ev.src = '{{ defaultImage }}';
-            ev.setAttribute("data-src", "{{ defaultImage }}");
-        }
-    </script>
-{% endblock %}
-

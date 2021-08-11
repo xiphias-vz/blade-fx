@@ -285,7 +285,9 @@
         }
 
         .lazy-thumbnail__image {
-            max-height: 70px !important;
+            @include helper-breakpoint-media-max($md-max) {
+                max-height: 70px !important;
+            }
         }
 
         @content;

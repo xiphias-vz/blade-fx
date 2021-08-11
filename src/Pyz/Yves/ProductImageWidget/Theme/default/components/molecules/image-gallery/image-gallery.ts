@@ -59,6 +59,12 @@ export default class ImageGallery extends Component {
     protected mobileViewSetPreviewImage(): void {
         $("#mobile-slider").empty();
         var find = $(".image-gallery-thumbnail__item.js-image-gallery-thumbnail__item.image-gallery-thumbnail__item--active")[0];
+        var imgSrc = find.getElementsByClassName("image-gallery-thumbnail__img")[0].src;
+        var splited = imgSrc.split('thumb_');
+        if(splited.length > 1){
+            var srcWithOutThumb = splited[0] + splited[1];
+            find.getElementsByClassName("image-gallery-thumbnail__img")[0].src = srcWithOutThumb;
+        }
         var activeSource = $(find).clone();
         $(activeSource[0]).removeClass("image-gallery-thumbnail__item");
         $(activeSource[0]).removeClass("js-image-gallery-thumbnail__item");
