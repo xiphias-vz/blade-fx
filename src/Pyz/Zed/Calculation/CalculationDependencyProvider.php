@@ -158,7 +158,6 @@ class CalculationDependencyProvider extends SprykerCalculationDependencyProvider
             new SubtotalWithOptionsCalculationPlugin(),
             new AddSalesOrderThresholdExpenseCalculatorPlugin(), #SalesOrderThresholdFeature
             new DiscountAmountAggregatorPlugin(),
-            //new OfferItemSubtotalAggregatorPlugin(),
 
             new PriceCalculatorPlugin(),
             new ItemProductOptionPriceAggregatorPlugin(),
@@ -185,7 +184,6 @@ class CalculationDependencyProvider extends SprykerCalculationDependencyProvider
             new RefundableAmountCalculatorPlugin(),
 
             new CalculateBundlePricePlugin(),
-            /*new CalculateBundlePricesPlugin(),*/
 
             new ExpenseTotalCalculatorPlugin(),
             new DiscountTotalCalculatorPlugin(),

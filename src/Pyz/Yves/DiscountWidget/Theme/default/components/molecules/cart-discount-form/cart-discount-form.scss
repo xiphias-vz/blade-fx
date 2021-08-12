@@ -26,7 +26,11 @@
         }
 
         .form__action {
-            margin: 0;
+            margin: 0 0 rem(2) 0;
+        }
+
+        .form__actions {
+            margin: rem(5) 0 0 rem(5);
         }
 
         .input {
