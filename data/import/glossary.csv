@@ -3997,7 +3997,7 @@ mail.registration.subject,"Thank you for your registration in the Spryker Click&
 cart.clear,Warenkorb löschen,de_DE
 cart.clear,"Vyprázdnit  košík",cs_CZ
 cart.clear,Delete cart,en_US
-mail.order-cancelled.subject,Deine Wunscheinkauf wurde storniert,de_DE
+mail.order-cancelled.subject,"Ihre Bestellung wurde storniert!",de_DE
 mail.order-cancelled.subject,"Váš nákup byl stornován",cs_CZ
 mail.order-cancelled.subject,Your order has been cancelled,en_US
 mail.order-refunded.subject,Deine Wunscheinkauf wurde zurückerstattet,de_DE
