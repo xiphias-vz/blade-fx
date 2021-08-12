@@ -25,13 +25,14 @@ export default class ImageGallery extends Component {
     }
 
     protected initSlider(): void {
-        $(this.thumbnail).slick(this.thumbnailSliderConfig);
         if (window.matchMedia('(max-width: 768px)').matches) {
+            $(".slick-track").css({"transform": "translate3d(0px, 0px, 0px)"});
             this.mobileViewSetPreviewImage();
         }
         else {
             $("#mobile-slider").css("display", "none");
         }
+        $(this.thumbnail).slick(this.thumbnailSliderConfig);
     }
 
     protected onThumbnailHover(event: Event): void {
@@ -44,14 +45,16 @@ export default class ImageGallery extends Component {
     protected thumbnailChange(thumbnail: HTMLElement): void {
         const index = Number(thumbnail.dataset.thumbnailIndex);
         if (!thumbnail.classList.contains(this.thumbnailActiveClass)) {
-            this.thumbnailItems.forEach(thumbnailItem => thumbnailItem.classList.remove(this.thumbnailActiveClass));
+            var allItems = <HTMLElement[]>Array.from(this.getElementsByClassName(`${this.jsName}-thumbnail__item`));
+            allItems.forEach(thumbnailItem => thumbnailItem.classList.remove(this.thumbnailActiveClass));
             thumbnail.classList.add(this.thumbnailActiveClass);
             this.setActiveImage(index);
         }
     }
 
     setActiveImage(activeItemIndex: number): void {
-        this.galleryItems.forEach(galleryItem => galleryItem.classList.remove(this.activeClass));
+        var allGalleryItems = <HTMLElement[]>Array.from(this.getElementsByClassName(`${this.jsName}__item`));
+        allGalleryItems.forEach(galleryItem => galleryItem.classList.remove(this.activeClass));
         this.galleryItems[activeItemIndex].classList.add(this.activeClass);
         this.mobileViewSetPreviewImage();
     }

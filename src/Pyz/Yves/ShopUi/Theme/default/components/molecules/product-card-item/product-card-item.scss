@@ -365,6 +365,10 @@ $additional-info-width: rem(350);
             }
         }
 
+        .lazy-thumbnail__image {
+            height: rem(75);
+        }
+
         @content;
     }
 }

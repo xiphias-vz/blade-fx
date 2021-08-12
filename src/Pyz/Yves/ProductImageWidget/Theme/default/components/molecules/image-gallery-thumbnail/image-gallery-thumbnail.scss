@@ -33,7 +33,7 @@
             align-items: center;
             justify-content: center;
             width: 100%;
-            padding: rem(1);
+            padding: rem(2) !important;
             position: relative;
             height: rem(280);
             background-color: $setting-color-white;
@@ -50,7 +50,7 @@
                 }
 
                 &:hover {
-                    border: rem(2) solid $setting-color-globus-darkGray !important;
+                    border: rem(2) solid $setting-color-globus-darkOrange !important;
                 }
 
                 height: rem(85) !important;
@@ -66,10 +66,10 @@
 
             &--active {
                 padding: 0;
-                border: rem(2) solid $setting-color-globus-darkGray !important;
+                border: rem(2) solid $setting-color-globus-darkOrange !important;
 
                 @include helper-breakpoint-media-min($lg-min) {
-                    border: rem(2) solid $setting-color-white;
+                    border: rem(2) solid $setting-color-globus-darkOrange !important;
                 }
 
                 #{$name}__img {
@@ -91,6 +91,7 @@
         &__img {
             max-height: rem(250);
             opacity: 1;
+            height: -moz-available;
             height: -webkit-fill-available;
 
             @include helper-breakpoint-media-min($lg-min) {
@@ -135,7 +136,7 @@
 
             @include helper-breakpoint-media-max($md-max) {
                 width: rem(2080) !important;
-                transform: translate3d(-80px, 0px, 0px);
+                transform: translate3d(0px, 0px, 0px);
             }
         }
 
