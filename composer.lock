@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "4f28ee506032b4065c6b1b16638bf06e",
+    "content-hash": "eb2824f98a07621afc0705f1fc844bbd",
     "packages": [
         {
             "name": "aws/aws-sdk-php",
@@ -21417,25 +21417,28 @@
         },
         {
             "name": "spryker/payment",
-            "version": "5.0.1",
+            "version": "5.4.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/spryker/payment.git",
-                "reference": "0cc970b0bf074cc0c17728177307b629ed9a654a"
+                "reference": "ed2617651b99f06d81a4f5429a906c83e1010347"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/spryker/payment/zipball/0cc970b0bf074cc0c17728177307b629ed9a654a",
-                "reference": "0cc970b0bf074cc0c17728177307b629ed9a654a",
+                "url": "https://api.github.com/repos/spryker/payment/zipball/ed2617651b99f06d81a4f5429a906c83e1010347",
+                "reference": "ed2617651b99f06d81a4f5429a906c83e1010347",
                 "shasum": ""
             },
             "require": {
-                "php": ">=7.2",
+                "php": ">=7.3",
+                "spryker/checkout-extension": "^1.2.0",
                 "spryker/kernel": "^3.30.0",
+                "spryker/payment-extension": "^1.0.0",
                 "spryker/propel-orm": "^1.0.0",
                 "spryker/sales": "^8.0.0 || ^10.0.0 || ^11.0.0",
                 "spryker/store": "^1.4.0",
                 "spryker/symfony": "^3.0.0",
+                "spryker/transfer": "^3.27.0",
                 "spryker/zed-request": "^3.0.0"
             },
             "require-dev": {
@@ -21467,7 +21470,10 @@
                 "proprietary"
             ],
             "description": "Payment module",
-            "time": "2020-03-06T10:49:14+00:00"
+            "support": {
+                "source": "https://github.com/spryker/payment/tree/5.4.1"
+            },
+            "time": "2021-06-29T09:34:47+00:00"
         },
         {
             "name": "spryker/payment-cart-connector",
@@ -21556,6 +21562,47 @@
             ],
             "description": "PaymentDataImport module",
             "time": "2019-12-21T14:19:19+00:00"
+        },
+        {
+            "name": "spryker/payment-extension",
+            "version": "1.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/spryker/payment-extension.git",
+                "reference": "6f28bd21da0bed0f959758897c544c7c17aece92"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/spryker/payment-extension/zipball/6f28bd21da0bed0f959758897c544c7c17aece92",
+                "reference": "6f28bd21da0bed0f959758897c544c7c17aece92",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=7.3"
+            },
+            "require-dev": {
+                "spryker/code-sniffer": "*"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.0.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Spryker\\": "src/Spryker/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "proprietary"
+            ],
+            "description": "PaymentExtension module",
+            "support": {
+                "source": "https://github.com/spryker/payment-extension/tree/1.0.0"
+            },
+            "time": "2021-05-24T10:32:31+00:00"
         },
         {
             "name": "spryker/payment-gui",
@@ -41602,7 +41649,8 @@
         "ext-pdo_pgsql": "*",
         "ext-pgsql": "*",
         "ext-readline": "*",
-        "ext-redis": "*"
+        "ext-redis": "*",
+        "ext-xmlwriter": "*"
     },
     "platform-dev": [],
     "platform-overrides": {

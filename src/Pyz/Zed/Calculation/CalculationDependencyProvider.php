@@ -11,9 +11,13 @@ use Pyz\Zed\Calculation\Communication\Plugin\SubtotalWithOptionsCalculationPlugi
 use Pyz\Zed\Calculation\Communication\Plugin\SumDiscountAmountAggregationCalculationPlugin;
 use Spryker\Zed\Calculation\CalculationDependencyProvider as SprykerCalculationDependencyProvider;
 use Spryker\Zed\Calculation\Communication\Plugin\Calculator\CanceledTotalCalculationPlugin;
+use Spryker\Zed\Calculation\Communication\Plugin\Calculator\DiscountAmountAggregatorForGenericAmountPlugin;
+use Spryker\Zed\Calculation\Communication\Plugin\Calculator\DiscountAmountAggregatorPlugin;
+use Spryker\Zed\Calculation\Communication\Plugin\Calculator\DiscountTotalCalculatorPlugin;
 use Spryker\Zed\Calculation\Communication\Plugin\Calculator\ExpenseTotalCalculatorPlugin;
 use Spryker\Zed\Calculation\Communication\Plugin\Calculator\GrandTotalCalculatorPlugin;
 use Spryker\Zed\Calculation\Communication\Plugin\Calculator\InitialGrandTotalCalculatorPlugin;
+use Spryker\Zed\Calculation\Communication\Plugin\Calculator\ItemDiscountAmountFullAggregatorPlugin;
 use Spryker\Zed\Calculation\Communication\Plugin\Calculator\ItemProductOptionPriceAggregatorPlugin;
 use Spryker\Zed\Calculation\Communication\Plugin\Calculator\ItemSubtotalAggregatorPlugin;
 use Spryker\Zed\Calculation\Communication\Plugin\Calculator\ItemTaxAmountFullAggregatorPlugin;
@@ -23,13 +27,17 @@ use Spryker\Zed\Calculation\Communication\Plugin\Calculator\PriceCalculatorPlugi
 use Spryker\Zed\Calculation\Communication\Plugin\Calculator\PriceToPayAggregatorPlugin;
 use Spryker\Zed\Calculation\Communication\Plugin\Calculator\RefundableAmountCalculatorPlugin;
 use Spryker\Zed\Calculation\Communication\Plugin\Calculator\RefundTotalCalculatorPlugin;
+use Spryker\Zed\Calculation\Communication\Plugin\Calculator\RemoveAllCalculatedDiscountsCalculatorPlugin;
 use Spryker\Zed\Calculation\Communication\Plugin\Calculator\RemoveCanceledAmountCalculatorPlugin;
 use Spryker\Zed\Calculation\Communication\Plugin\Calculator\RemoveTotalsCalculatorPlugin;
 use Spryker\Zed\Calculation\Communication\Plugin\Calculator\SubtotalCalculatorPlugin;
 use Spryker\Zed\Calculation\Communication\Plugin\Calculator\TaxTotalCalculatorPlugin;
+use Spryker\Zed\DiscountCalculationConnector\Communication\Plugin\DiscountCalculatorPlugin;
+use Spryker\Zed\DiscountPromotion\Communication\Plugin\Calculation\RemovePromotionItemsCalculatorPlugin;
 use Spryker\Zed\Kernel\Container;
 use Spryker\Zed\Payment\Communication\Plugin\Calculation\PaymentCalculatorPlugin;
 use Spryker\Zed\PersistentCart\Communication\Plugin\Calculation\QuoteSaveQuotePostRecalculateStrategyPlugin;
+use Spryker\Zed\ProductBundle\Communication\Plugin\Calculation\CalculateBundlePricePlugin;
 use Spryker\Zed\ProductOption\Communication\Plugin\Calculation\ProductOptionTaxRateCalculatorPlugin;
 use Spryker\Zed\SalesOrderThreshold\Communication\Plugin\Calculation\AddSalesOrderThresholdExpenseCalculatorPlugin;
 use Spryker\Zed\SalesOrderThreshold\Communication\Plugin\Calculation\RemoveSalesOrderThresholdExpenseCalculatorPlugin;
@@ -140,24 +148,32 @@ class CalculationDependencyProvider extends SprykerCalculationDependencyProvider
         /** @var \Spryker\Zed\Calculation\Dependency\Plugin\CalculationPluginInterface[] $pluginStack */
         $pluginStack = [
             new RemoveTotalsCalculatorPlugin(),
+            new RemoveAllCalculatedDiscountsCalculatorPlugin(),
+            new RemovePromotionItemsCalculatorPlugin(),
+
             new RemoveCanceledAmountCalculatorPlugin(),
             new RemoveSalesOrderThresholdExpenseCalculatorPlugin(), #SalesOrderThresholdFeature
             new FilterObsoleteShipmentExpensesCalculatorPlugin(),
             new SumDiscountAmountAggregationCalculationPlugin(),
+            new SubtotalWithOptionsCalculationPlugin(),
+            new AddSalesOrderThresholdExpenseCalculatorPlugin(), #SalesOrderThresholdFeature
+            new DiscountAmountAggregatorPlugin(),
+            //new OfferItemSubtotalAggregatorPlugin(),
 
             new PriceCalculatorPlugin(),
             new ItemProductOptionPriceAggregatorPlugin(),
             new ItemSubtotalAggregatorPlugin(),
 
-            new SubtotalWithOptionsCalculationPlugin(),
             new SubtotalCalculatorPlugin(),
-            new AddSalesOrderThresholdExpenseCalculatorPlugin(), #SalesOrderThresholdFeature
 
             new ProductItemTaxRateCalculatorPlugin(),
             new ProductOptionTaxRateCalculatorPlugin(),
             new ShipmentTaxRateCalculatorPlugin(),
 
             new InitialGrandTotalCalculatorPlugin(),
+            new DiscountCalculatorPlugin(),
+            new DiscountAmountAggregatorForGenericAmountPlugin(),
+            new ItemDiscountAmountFullAggregatorPlugin(),
 
             new TaxAmountCalculatorPlugin(),
             new ItemTaxAmountFullAggregatorPlugin(),
@@ -168,12 +184,16 @@ class CalculationDependencyProvider extends SprykerCalculationDependencyProvider
 
             new RefundableAmountCalculatorPlugin(),
 
+            new CalculateBundlePricePlugin(),
+            /*new CalculateBundlePricesPlugin(),*/
+
             new ExpenseTotalCalculatorPlugin(),
+            new DiscountTotalCalculatorPlugin(),
             new RefundTotalCalculatorPlugin(),
             new TaxTotalCalculatorPlugin(),
             new GrandTotalCalculatorPlugin(),
-            new NetTotalCalculatorPlugin(),
 
+            new NetTotalCalculatorPlugin(),
             new PaymentCalculatorPlugin(),
         ];
 
@@ -194,9 +214,11 @@ class CalculationDependencyProvider extends SprykerCalculationDependencyProvider
             new PriceCalculatorPlugin(),
             new ItemProductOptionPriceAggregatorPlugin(),
             new ItemSubtotalAggregatorPlugin(),
-            new SumDiscountAmountAggregationCalculationPlugin(),
 
             new SubtotalCalculatorPlugin(),
+
+            new DiscountAmountAggregatorForGenericAmountPlugin(),
+            new ItemDiscountAmountFullAggregatorPlugin(),
 
             new TaxAmountCalculatorPlugin(),
             new ItemTaxAmountFullAggregatorPlugin(),
@@ -208,6 +230,7 @@ class CalculationDependencyProvider extends SprykerCalculationDependencyProvider
             new RefundableAmountCalculatorPlugin(),
 
             new ExpenseTotalCalculatorPlugin(),
+            new DiscountTotalCalculatorPlugin(),
             new RefundTotalCalculatorPlugin(),
             new CanceledTotalCalculationPlugin(),
             new OrderTaxTotalCalculationPlugin(),

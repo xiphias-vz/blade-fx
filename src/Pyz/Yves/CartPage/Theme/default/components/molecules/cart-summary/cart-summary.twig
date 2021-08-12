@@ -55,6 +55,14 @@
                 </li>
             {% endfor %}
 
+            {% widget 'DiscountVoucherFormWidget' only %}
+                {% block body %}
+                    {{ parent() }}
+                    <hr>
+                {% endblock %}
+            {% endwidget %}
+
+            
             {% include molecule('cart-discount-summary', 'DiscountWidget') ignore missing with {
                 class: config.name ~ '__item spacing-y spacing-y--big',
                 data: {

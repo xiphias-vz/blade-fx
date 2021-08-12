@@ -203,6 +203,12 @@ class CheckoutController extends SprykerCheckoutControllerAlias
             return $this->redirectResponseInternal(static::ROUTE_CART);
         }
 
+        $quoteTransfer = $this->getFactory()
+            ->getQuoteClient()
+            ->getQuote();
+
+      
+
         $customer = $this->getFactory()->getQuoteClient()->getQuote()->getCustomer();
         if ($customer === null) {
             $this->addErrorMessage(static::MESSAGE_NO_CUSTOMER);

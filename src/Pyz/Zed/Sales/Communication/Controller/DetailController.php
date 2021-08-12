@@ -61,6 +61,11 @@ class DetailController extends SprykerDetailController
         }
 
         $orderTransfer = $this->getFacade()->findOrderWithPickingSalesOrdersByIdSalesOrder($idSalesOrder);
+        foreach ($orderTransfer->getItems() as $item) {
+            $calculatedDiscounts = $item->getCalculatedDiscounts();
+            foreach ($calculatedDiscounts as $discount) {
+            }
+        }
         $merchantTransfer = $this->getFactory()
             ->getMerchantFacade()
             ->findMerchantTransferFromMerchantReference($orderTransfer->getMerchantReference());
