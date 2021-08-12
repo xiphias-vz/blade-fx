@@ -18,13 +18,25 @@
             padding: 0;
         }
 
-        .form__action {
-            margin: 0;
-        }
-
         .input {
             border-radius: rem(2) 0 0 rem(2);
             height: rem(48);
+        }
+
+        .title {
+            font-size: 1.12rem;
+            font-weight: 500;
+            padding: 0;
+            color: #7c7c7c;
+            margin: rem(5) 0 rem(5) 0;
+        }
+
+        .form__action {
+            margin: 0 0 rem(2) rem(-3);
+        }
+
+        .form__actions {
+            margin: rem(5) 0 0 rem(5);
         }
     }
 }
