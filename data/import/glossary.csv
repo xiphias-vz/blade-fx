@@ -2313,9 +2313,9 @@ product-cart.validation.error.product-option-value-price-exists,"Cena produktu n
 product-cart.validation.error.concrete-product-inactive,"Product %sku% is not active.",en_US
 product-cart.validation.error.concrete-product-inactive,"Produkt %sku% ist nicht aktiv.",de_DE
 product-cart.validation.error.concrete-product-inactive,"Produkt %sku% není aktivní.",cs_CZ
-product-cart.info.concrete-product-inactive.removed,"Inactive item %sku% was removed from your shopping cart.",en_US
-product-cart.info.concrete-product-inactive.removed,"Der inaktive Artikel %sku% wurde aus deinem Einkaufsliste entfernt.",de_DE
-product-cart.info.concrete-product-inactive.removed,"Neaktivní položka %sku% byla odstraněna z vašeho nákupního seznamu.",cs_CZ
+product-cart.info.concrete-product-inactive.removed,"The article %sku% is currently not available and has been removed from your shopping cart.",en_US
+product-cart.info.concrete-product-inactive.removed,"Der Artikel %sku% ist aktuell leider nicht verfügbar und wurde aus Ihrem Warenkorb entfernt.",de_DE
+product-cart.info.concrete-product-inactive.removed,"Článek %sku% momentálně není k dispozici a byl odstraněn z vašeho nákupního košíku.",cs_CZ
 product.filter.label,Label,en_US
 product.filter.label,Label,de_DE
 product.filter.label,Label,cs_CZ
