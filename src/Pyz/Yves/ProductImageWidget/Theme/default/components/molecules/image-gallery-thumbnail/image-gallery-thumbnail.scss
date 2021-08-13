@@ -50,7 +50,7 @@
                 }
 
                 &:hover {
-                    border: rem(2) solid $setting-color-globus-darkOrange !important;
+                    border: rem(2) solid $setting-color-globus-darkGray !important;
                 }
 
                 height: rem(85) !important;
@@ -66,10 +66,10 @@
 
             &--active {
                 padding: 0;
-                border: rem(2) solid $setting-color-globus-darkOrange !important;
+                border: rem(2) solid $setting-color-globus-darkGray !important;
 
                 @include helper-breakpoint-media-min($lg-min) {
-                    border: rem(2) solid $setting-color-globus-darkOrange !important;
+                    border: rem(2) solid $setting-color-white;
                 }
 
                 #{$name}__img {
@@ -176,7 +176,7 @@
             }
 
             .slick-active {
-                border-color: $setting-color-alt;
+                border-color: $setting-color-globus-lightOrange;
 
                 &::before {
                     background-color: $setting-color-transparent;
