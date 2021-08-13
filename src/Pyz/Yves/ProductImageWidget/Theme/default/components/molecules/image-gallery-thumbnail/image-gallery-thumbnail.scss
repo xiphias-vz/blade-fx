@@ -91,6 +91,7 @@
         &__img {
             max-height: rem(250);
             opacity: 1;
+            height: inherit;
             height: -moz-available;
             height: -webkit-fill-available;
 
