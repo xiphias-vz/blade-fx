@@ -136,6 +136,10 @@ class CashierOrderContentBuilder implements CashierOrderContentBuilderInterface
 
     protected const XML_DEPOSIT_DESCRIPTION = 'Leergut Flaschenpfand';
 
+    protected const XML_DISCOUNT_BARCODE = '2070000615533';
+    protected const XML_DISCOUNT_ITEM_NUMBER = '7532194';
+    protected const XML_DISCOUNT_DEPARTMENT_NUMBER = '714';
+
     /**
      * @var int
      */
@@ -760,6 +764,28 @@ class CashierOrderContentBuilder implements CashierOrderContentBuilderInterface
                         $writer->endElement();
                     }
                 }
+            }
+
+            foreach ($orderTransfer->getCalculatedDiscounts() as $discount) {
+                $counter++;
+
+                $writer->startElement(static::XML_ITEM);
+                $writer->writeElement(static::XML_ORIGIN, static::XML_ORIGIN_VALUE);
+                $writer->writeElement(static::XML_POSITION_NUMBER, $counter);
+                $writer->writeElement(static::XML_BARCODE, static::XML_DISCOUNT_BARCODE);
+                $writer->writeElement(static::XML_ITEM_NUMBER, self::XML_DISCOUNT_ITEM_NUMBER);
+                $writer->writeElement(static::XML_DEPARTMENT_NUMBER, self::XML_DISCOUNT_DEPARTMENT_NUMBER);
+                $writer->writeElement(static::XML_DESCRIPTION, $discount->getDisplayName());
+                $writer->writeElement(static::XML_NETTO_PRICE, $discount->getSumAmount() * (-1));
+                $writer->writeElement(static::XML_DISCOUNT);
+                $writer->writeElement(static::XML_HISTORIC_PER_PRICE);
+                $writer->writeElement(static::XML_MARKDOWN_AMOUNT);
+                $writer->writeElement(static::XML_AGE_RESTRICTION);
+                $writer->writeElement(static::XML_SCALE_ITEM);
+                $writer->writeElement(static::XML_RESCAN_ITEM);
+                $writer->writeElement(static::XML_MIXED_CRATE_TICKET_ID);
+                $writer->writeElement(static::XML_TIMESTAMP, date(static::XML_TIMESTAMP_FORMAT));
+                $writer->endElement();
             }
 
             $counter++;

@@ -61,8 +61,9 @@ class DetailController extends SprykerDetailController
         }
 
         $orderTransfer = $this->getFacade()->findOrderWithPickingSalesOrdersByIdSalesOrder($idSalesOrder);
+        $totalDiscounts = $orderTransfer->getCalculatedDiscounts();
         foreach ($orderTransfer->getItems() as $item) {
-            $calculatedDiscounts = $item->getCalculatedDiscounts();
+            $calculatedDiscounts = $item->getCalculatedDiscounts() ?? [];
             foreach ($calculatedDiscounts as $discount) {
             }
         }
