@@ -3876,7 +3876,7 @@ cart.code.apply.failed,"Kód poukazu nelze použít",cs_CZ
 cart.code.apply.failed,Code could not be applied,en_US
 cart.code.apply.failed,Gutscheincode konnte nicht angewendet werden,de_DE
 cart.code.enter-code,"Zadejte kód poukazu/kód dárkového poukazu",cs_CZ
-cart.code.enter-code,Gutscheincode/Geschenkgutscheincode eingeben,de_DE
+cart.code.enter-code,Gutscheincode eingeben,de_DE
 cart.code.enter-code,Enter voucher/gift card code,en_US
 general.next.button,"Dál",cs_CZ
 general.next.button,Next,en_US

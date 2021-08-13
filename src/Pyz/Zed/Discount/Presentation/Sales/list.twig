@@ -1,0 +1,16 @@
+ {% embed '@Gui/Partials/widget.twig' with { widget_title: 'Discounts & Vouchers' } %}
+            {% block widget_content %}
+                {% if order.calculatedDiscounts is not empty %}
+                     {% for calculatedDiscount in order.calculatedDiscounts %}
+                            <p>
+                                <span>{{ calculatedDiscount.displayName }}</span>
+                                <span>{{ calculatedDiscount.sumAmount | money(true, order.currencyIsoCode) }}</span>
+                            </p>
+                         <br/>
+                        {% endfor %}
+                {% else %}
+                    <span class="text-left">{{ 'No returns for this order' | trans }}</span>
+                {% endif %}
+            {% endblock %}
+
+        {% endembed %}

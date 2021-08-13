@@ -61,12 +61,6 @@ class DetailController extends SprykerDetailController
         }
 
         $orderTransfer = $this->getFacade()->findOrderWithPickingSalesOrdersByIdSalesOrder($idSalesOrder);
-        $totalDiscounts = $orderTransfer->getCalculatedDiscounts();
-        foreach ($orderTransfer->getItems() as $item) {
-            $calculatedDiscounts = $item->getCalculatedDiscounts() ?? [];
-            foreach ($calculatedDiscounts as $discount) {
-            }
-        }
         $merchantTransfer = $this->getFactory()
             ->getMerchantFacade()
             ->findMerchantTransferFromMerchantReference($orderTransfer->getMerchantReference());
@@ -105,7 +99,7 @@ class DetailController extends SprykerDetailController
         );
 
         $blocksToRenderForCustomer['refund'] = strip_tags($blocksToRenderForCustomer['refund']);
-        $blocksToRenderForCustomer['discount'] = strip_tags($blocksToRenderForCustomer['discount']);
+        $blocksToRenderForCustomer['discount'] = strip_tags($blocksToRenderForCustomer['discount'], '<br>');
         $isCurrentUserSupervisor = $this->isCurrentUserSupervisor();
         $isCurrentUserSupervisorOrAdmin = $this->isCurrentUserSupervisorOrAdmin();
         $shipping = $groupedOrderItems[0]->getShipment();
