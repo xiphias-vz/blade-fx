@@ -33,7 +33,7 @@ use Spryker\Zed\ProductImage\Dependency\ProductImageEvents;
 
 class ProductConcreteWriter extends PublishAwareStep implements DataImportStepInterface
 {
-    public const BULK_SIZE = 100;
+    public const BULK_SIZE = 1000;
 
     public const KEY_ATTRIBUTES = 'attributes';
     public const KEY_PRODUCT_NUMBER = ProductConfig::KEY_PRODUCT_NUMBER;
