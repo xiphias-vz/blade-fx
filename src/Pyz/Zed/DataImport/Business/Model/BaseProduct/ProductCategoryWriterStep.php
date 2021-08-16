@@ -20,7 +20,7 @@ use Spryker\Zed\ProductCategory\Dependency\ProductCategoryEvents;
 
 class ProductCategoryWriterStep extends PublishAwareStep implements DataImportStepInterface
 {
-    public const BULK_SIZE = 1000;
+    public const BULK_SIZE = 100;
     public const KEY_CATEGORY_KEY = 'Classification_ID';
     public const KEY_SORTING_ORDER = 'sortingorder';
 
