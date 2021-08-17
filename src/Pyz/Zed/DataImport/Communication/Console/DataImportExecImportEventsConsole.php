@@ -12,6 +12,7 @@ use Exception;
 use Orm\Zed\DataImport\Persistence\Map\PyzDataImportEventTableMap;
 use Orm\Zed\DataImport\Persistence\PyzDataImportEventArchive;
 use Orm\Zed\DataImport\Persistence\PyzDataImportEventQuery;
+use Propel\Runtime\Connection\ConnectionInterface;
 use Propel\Runtime\Propel;
 use Spryker\Zed\DataImport\Business\Model\Publisher\DataImporterPublisher;
 use Spryker\Zed\Kernel\Communication\Console\Console;
@@ -45,16 +46,23 @@ class DataImportExecImportEventsConsole extends Console
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
+        $con = Propel::getConnection();
+        $con->beginTransaction();
         try {
             $counter = 0;
+            DataImporterPublisher::triggerEvents();
             $qry = new PyzDataImportEventQuery();
             $qry->groupBy([PyzDataImportEventTableMap::COL_EVENT_NAME, PyzDataImportEventTableMap::COL_ENTITY_ID]);
             $qry->withColumn('GROUP_CONCAT(' . PyzDataImportEventTableMap::COL_ID_DATA_IMPORT_EVENT . ')', 'itemIdList');
             $data = $qry->find();
 
             foreach ($data as $event) {
-                DataImporterPublisher::addEvent($event->getEventName(), $event->getEntityId());
                 $counter++;
+                DataImporterPublisher::addEvent($event->getEventName(), $event->getEntityId());
+                if ($counter % DataImporterPublisher::DEFAULT_CHUNK_SIZE == 0) {
+                    $con->commit();
+                    $con->beginTransaction();
+                }
                 $eventArcive = new PyzDataImportEventArchive();
                 $eventArcive->setIdDataImportEvent($event->getIdDataImportEvent())
                     ->setEventName($event->getEventName())
@@ -65,16 +73,19 @@ class DataImportExecImportEventsConsole extends Console
                 $idList = $event->getVirtualColumn('itemIdList');
                 $event->delete();
                 if (str_contains($idList, ',')) {
-                    $this->execCommand("delete from " . PyzDataImportEventTableMap::TABLE_NAME . " where " . PyzDataImportEventTableMap::COL_ID_DATA_IMPORT_EVENT . " in (" . $idList . ")");
+                    $this->execCommand("delete from " . PyzDataImportEventTableMap::TABLE_NAME . " where " . PyzDataImportEventTableMap::COL_ID_DATA_IMPORT_EVENT . " in (" . $idList . ")", $con);
                 }
                 if ($counter % 1000 == 0) {
                     $output->writeln("published " . $counter . " events");
                 }
             }
+            DataImporterPublisher::triggerEvents();
+            $con->commit();
             $output->writeln("Totally generated " . $counter . " events");
 
             return Console::CODE_SUCCESS;
         } catch (Exception $ex) {
+            $con->rollBack();
             $output->writeln($ex->getMessage());
         }
 
@@ -83,12 +94,12 @@ class DataImportExecImportEventsConsole extends Console
 
     /**
      * @param string $sql
+     * @param \Propel\Runtime\Connection\ConnectionInterface $connection
      *
      * @return bool
      */
-    private function execCommand(string $sql): bool
+    private function execCommand(string $sql, ConnectionInterface $connection): bool
     {
-        $connection = Propel::getConnection();
         $statement = $connection->prepare($sql);
         $statement->execute();
 
