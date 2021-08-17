@@ -39,6 +39,7 @@ class PickingZoneOrderExportForm extends AbstractType
         'picked' => 'picked',
         'ready for collection' => 'ready for collection',
         'paused' => 'paused',
+        'cancelled' => 'cancelled',
     ];
 
     private const TIMESLOTS_DATA = [
