@@ -73,12 +73,12 @@ class DataImportExecImportEventsConsole extends Console
             }
             $output->writeln("Totally generated " . $counter . " events");
 
-            return 1;
+            return Console::CODE_SUCCESS;
         } catch (Exception $ex) {
             $output->writeln($ex->getMessage());
         }
 
-        return null;
+        return Console::CODE_ERROR;
     }
 
     /**
