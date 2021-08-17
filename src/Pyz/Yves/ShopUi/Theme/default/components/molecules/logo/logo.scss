@@ -33,7 +33,7 @@
             height: auto;
             margin-top: rem(12);
 
-            @include helper-breakpoint-media-max($md-max) {
+            @include helper-breakpoint-media-max($lg-max) {
                 margin-top: 6px;
                 margin-left: 6px;
             }

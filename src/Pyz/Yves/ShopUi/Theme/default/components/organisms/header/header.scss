@@ -7,6 +7,10 @@ $header-sticky-height: rem(69, number);
         position: relative;
         z-index: $setting-zi-header;
 
+        @include helper-breakpoint-media-max($lg-max) {
+            margin-bottom: 3rem;
+        }
+
         &__meta-navigation-top {
             background: $setting-color-globus-lightGray;
             font-size: 11px;
@@ -97,6 +101,11 @@ $header-sticky-height: rem(69, number);
             margin-left: 10px;
             margin-right: 10px;
 
+            @include helper-breakpoint-media-max($lg-max) {
+                margin-left: 0;
+                margin-right: 0;
+            }
+
             @include helper-breakpoint-media-min($xl-min) {
                 padding: 0;
             }
@@ -121,7 +130,7 @@ $header-sticky-height: rem(69, number);
                 position: relative;
             }
 
-            @include helper-breakpoint-media-max($md-max) {
+            @include helper-breakpoint-media-max($lg-max) {
                 padding: 0px 0px 3px 0px;
                 transition: top 0.3s;
                 top:-120px;
@@ -158,15 +167,11 @@ $header-sticky-height: rem(69, number);
                 left: 0;
                 top: 100%;
                 right: 0;
-                padding: rem(12) rem(16) rem(12) rem(20);
-                box-shadow: 0px 5px 10px #d3d3d3;
+                padding: 0;
+                box-shadow: 0 3px 10px #d3d3d3;
                 margin-top: 0;
-                background: $setting-color-globus-lightGray;
-            }
-            @include helper-breakpoint-media-max($sm-max) {
-                padding: 0px;
                 border:1px solid #D3D3D3;
-                box-shadow: 0px 3px 10px #D3D3D3;
+                background: $setting-color-globus-lightGray;
             }
         }
 
@@ -265,7 +270,7 @@ $header-sticky-height: rem(69, number);
             left: rem(60);
             top: rem(5);
 
-            @include helper-breakpoint-media-max($md-max) {
+            @include helper-breakpoint-media-max($lg-max) {
                 position: absolute;
                 top:0px;
                 left:45px;
@@ -278,7 +283,7 @@ $header-sticky-height: rem(69, number);
             left: rem(20);
             top: rem(15);
             background-color: transparent;
-            @include helper-breakpoint-media-max($md-max) {
+            @include helper-breakpoint-media-max($lg-max) {
                 position: absolute;
                 top: 16px;
                 left: 10px;
