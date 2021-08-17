@@ -11,10 +11,10 @@ use NumberFormatter;
 use Orm\Zed\Product\Persistence\SpyProductQuery;
 use Pyz\Shared\Product\ProductConfig;
 use Pyz\Shared\ProductDetailPage\ProductDetailPageConfig;
+use Pyz\Zed\DataImport\Business\Model\DataImportStep\PublishAwareStep;
 use Pyz\Zed\DataImport\Business\Model\Product\Repository\ProductRepository;
 use Pyz\Zed\DataImport\Business\Model\ProductVitaminAttributeKey\ProductVitaminAttributeKeyWriter;
 use Spryker\Zed\DataImport\Business\Model\DataImportStep\DataImportStepInterface;
-use Spryker\Zed\DataImport\Business\Model\DataImportStep\PublishAwareStep;
 use Spryker\Zed\DataImport\Business\Model\DataSet\DataSetInterface;
 use Spryker\Zed\Product\Dependency\ProductEvents;
 

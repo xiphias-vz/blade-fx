@@ -17,9 +17,9 @@ use Orm\Zed\Stock\Persistence\SpyStockStoreQuery;
 use Orm\Zed\Store\Persistence\SpyStoreQuery;
 use Propel\Runtime\Propel;
 use Pyz\Shared\Product\ProductConfig;
+use Pyz\Zed\DataImport\Business\Model\DataImportStep\PublishAwareStep;
 use Pyz\Zed\DataImport\DataImportConfig;
 use Spryker\Zed\DataImport\Business\Model\DataImportStep\DataImportStepInterface;
-use Spryker\Zed\DataImport\Business\Model\DataImportStep\PublishAwareStep;
 use Spryker\Zed\DataImport\Business\Model\DataSet\DataSetInterface;
 use Spryker\Zed\Product\Dependency\ProductEvents;
 
@@ -31,6 +31,11 @@ class ProductStockWriterStep extends PublishAwareStep implements DataImportStepI
     public const KEY_STOCK_SHELF = 'shelf';
     public const KEY_STOCK_SHELF_FIELD = 'shelffield';
     public const KEY_STOCK_SHELF_FLOR = 'shelffloor';
+
+    /**
+     * @var string
+     */
+    private static $sapNumberColumn = '';
 
     /**
      * @var array
@@ -71,8 +76,18 @@ class ProductStockWriterStep extends PublishAwareStep implements DataImportStepI
             throw new Exception('Sap store id does not exists in Spryker config map.');
         }
 
+        if (empty(static::$sapNumberColumn)) {
+            static::$sapNumberColumn = ProductConfig::KEY_SAP_NUMBER;
+            foreach (array_keys($dataSet->getArrayCopy()) as $key) {
+                if (str_ends_with($key, ProductConfig::KEY_SAP_NUMBER)) {
+                    static::$sapNumberColumn = $key;
+                    break;
+                }
+            }
+        }
+
         $productEntityCollection = SpyProductQuery::create()
-            ->filterBySapNumber($dataSet[ProductConfig::KEY_SAP_NUMBER])
+            ->filterBySapNumber($dataSet[static::$sapNumberColumn])
             ->find();
 
         if ($productEntityCollection->isEmpty()) {

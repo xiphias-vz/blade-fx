@@ -9,8 +9,8 @@ namespace Pyz\Zed\DataImport\Business\Model\ProductQuantity;
 
 use Orm\Zed\ProductQuantity\Persistence\SpyProductQuantity;
 use Orm\Zed\ProductQuantity\Persistence\SpyProductQuantityQuery;
+use Pyz\Zed\DataImport\Business\Model\DataImportStep\PublishAwareStep;
 use Spryker\Zed\DataImport\Business\Model\DataImportStep\DataImportStepInterface;
-use Spryker\Zed\DataImport\Business\Model\DataImportStep\PublishAwareStep;
 use Spryker\Zed\DataImport\Business\Model\DataSet\DataSetInterface;
 use Spryker\Zed\PriceProductDataImport\Business\Model\DataSet\PriceProductDataSet;
 use Spryker\Zed\ProductQuantity\Dependency\ProductQuantityEvents;

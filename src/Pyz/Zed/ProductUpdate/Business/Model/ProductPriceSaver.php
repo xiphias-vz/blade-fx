@@ -7,8 +7,10 @@
 
 namespace Pyz\Zed\ProductUpdate\Business\Model;
 
+use DateTime;
 use NumberFormatter;
 use Orm\Zed\Currency\Persistence\SpyCurrencyQuery;
+use Orm\Zed\DataImport\Persistence\PyzDataImportEvent;
 use Orm\Zed\PriceProduct\Persistence\Map\SpyPriceTypeTableMap;
 use Orm\Zed\PriceProduct\Persistence\SpyPriceProductDefaultQuery;
 use Orm\Zed\PriceProduct\Persistence\SpyPriceProductQuery;
@@ -22,7 +24,6 @@ use Pyz\Zed\DataImport\Business\Model\BaseProduct\StoreSpecificAttributeExtracto
 use Pyz\Zed\DataImport\Business\Model\ProductAbstract\ProductAbstractWriterStep;
 use Spryker\Shared\Config\Config;
 use Spryker\Zed\DataImport\Business\Model\DataSet\DataSetInterface;
-use Spryker\Zed\DataImport\Business\Model\Publisher\DataImporterPublisher;
 use Spryker\Zed\Money\Business\MoneyFacadeInterface;
 use Spryker\Zed\PriceProduct\Dependency\PriceProductEvents;
 use Spryker\Zed\PriceProductDataImport\Business\Model\DataSet\PriceProductDataSet;
@@ -275,6 +276,11 @@ class ProductPriceSaver
      */
     private function addPublishEvents($eventName, $entityId)
     {
-        DataImporterPublisher::addEvent($eventName, $entityId);
+        $eventData = new PyzDataImportEvent();
+        $eventData
+            ->setEntityId($entityId)
+            ->setEventName($eventName)
+            ->setCreatedAt((new DateTime())->getTimestamp());
+        $eventData->save();
     }
 }

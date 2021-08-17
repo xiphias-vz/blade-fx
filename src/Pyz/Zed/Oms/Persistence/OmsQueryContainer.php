@@ -136,6 +136,12 @@ class OmsQueryContainer extends SprykerOmsQueryContainer implements OmsQueryCont
         $item->save();
     }
 
+    /**
+     * @param string $sku
+     * @param string $store
+     *
+     * @return array
+     */
     public function queryRelatedProductsBySku(string $sku, string $store): array
     {
         $qry = "SELECT sp2.product_number, spp.fk_price_type,  spps.gross_price, spps.net_price, sc.symbol, spala.name

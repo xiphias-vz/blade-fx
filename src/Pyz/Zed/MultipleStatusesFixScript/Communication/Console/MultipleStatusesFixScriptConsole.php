@@ -30,6 +30,12 @@ class MultipleStatusesFixScriptConsole extends Console
         parent::configure();
     }
 
+    /**
+     * @param \Symfony\Component\Console\Input\InputInterface $input
+     * @param \Symfony\Component\Console\Output\OutputInterface $output
+     *
+     * @return int
+     */
     public function execute(InputInterface $input, OutputInterface $output)
     {
         try {
@@ -78,6 +84,9 @@ class MultipleStatusesFixScriptConsole extends Console
         return [];
     }
 
+    /**
+     * @return string
+     */
     public function selectSqlQuery(): string
     {
         return "SELECT distinct s.order_reference, s.created_at, ssoi.*
@@ -98,6 +107,9 @@ class MultipleStatusesFixScriptConsole extends Console
                         AND soois.name in ('collection process', 'ready for collection', 'collection cancelled by store', 'cancellation process', 'order cancellation recalculated', 'cashier order exporting', 'cashier order exported', 'collected by customer', 'accepted by customer', 'invoice process', 'started invoice process', 'generated invoice reference', 'invoice generated', 'order invoiced', 'picking cancelled by timeout', 'collection cancelled by timeout', 'cancelled by timeout', 'shipped mail sending', 'shipped mail sent', 'confirm mail sending', 'cashier export process', 'ready for cashier export', 'ready for return', 'refund - not received', 'ready for refund', 'refund items group', 'closed', 'cashier order exporting fail', 'release time slot and cancel', 'need to release time slot')";
     }
 
+    /**
+     * @return string
+     */
     public function updateSqlQuery(): string
     {
         return "UPDATE spy_sales_order_item ssoi

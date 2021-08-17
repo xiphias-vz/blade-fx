@@ -61,6 +61,8 @@ class UsersTable extends AbstractTable
      * @param \Spryker\Zed\User\Persistence\UserQueryContainerInterface $userQueryContainer
      * @param \Spryker\Service\UtilDateTime\UtilDateTimeServiceInterface $utilDateTimeService
      * @param \Spryker\Zed\User\Communication\Table\PluginExecutor\UserTablePluginExecutorInterface $userTablePluginExecutor
+     * @param \Spryker\Zed\Acl\Business\AclFacadeInterface $aclFacade
+     * @param \Spryker\Zed\Sales\Dependency\Facade\SalesToUserInterface $saleUserInterface
      */
     public function __construct(
         UserQueryContainerInterface $userQueryContainer,

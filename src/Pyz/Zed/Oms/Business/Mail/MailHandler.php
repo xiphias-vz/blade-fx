@@ -80,6 +80,7 @@ class MailHandler extends SprykerMailHandler
     private $translatorFacade;
 
     /**
+     * @param \Spryker\Zed\Oms\Persistence\OmsQueryContainerInterface $queryContainer
      * @param \Spryker\Zed\Oms\Dependency\Facade\OmsToSalesInterface $salesFacade
      * @param \Spryker\Zed\Oms\Dependency\Facade\OmsToMailInterface $mailFacade
      * @param \Spryker\Zed\OmsExtension\Dependency\Plugin\OmsOrderMailExpanderPluginInterface[] $orderMailExpanderPlugins
@@ -582,6 +583,12 @@ class MailHandler extends SprykerMailHandler
         return $items;
     }
 
+    /**
+     * @param mixed $similarProducts
+     * @param mixed $orderTransfer
+     *
+     * @return string
+     */
     protected function getSimilarProductsList($similarProducts, $orderTransfer): string
     {
         return $this->twigEnvironment->render(

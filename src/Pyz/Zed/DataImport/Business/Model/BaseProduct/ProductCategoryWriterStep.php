@@ -11,9 +11,9 @@ use Orm\Zed\Category\Persistence\SpyCategoryQuery;
 use Orm\Zed\ProductCategory\Persistence\Map\SpyProductCategoryTableMap;
 use Orm\Zed\ProductCategory\Persistence\SpyProductCategoryQuery;
 use Propel\Runtime\ActiveQuery\Criteria;
+use Pyz\Zed\DataImport\Business\Model\DataImportStep\PublishAwareStep;
 use Pyz\Zed\DataImport\Business\Model\ProductAbstract\ProductAbstractWriterStep;
 use Spryker\Zed\DataImport\Business\Model\DataImportStep\DataImportStepInterface;
-use Spryker\Zed\DataImport\Business\Model\DataImportStep\PublishAwareStep;
 use Spryker\Zed\DataImport\Business\Model\DataSet\DataSetInterface;
 use Spryker\Zed\Product\Dependency\ProductEvents;
 use Spryker\Zed\ProductCategory\Dependency\ProductCategoryEvents;
@@ -77,12 +77,14 @@ class ProductCategoryWriterStep extends PublishAwareStep implements DataImportSt
      */
     protected function removeOldRelations(DataSetInterface $dataSet, array $currentRelationIds): void
     {
-        SpyProductCategoryQuery::create()
-            ->filterByFkProductAbstract($dataSet[ProductAbstractWriterStep::ID_PRODUCT_ABSTRACT])
-            ->_and()
-            ->where(SpyProductCategoryTableMap::COL_ID_PRODUCT_CATEGORY . Criteria::NOT_IN . '(' . implode(',', $currentRelationIds) . ')')
-            ->find()
-            ->delete();
+        if (!empty($currentRelationIds)) {
+            SpyProductCategoryQuery::create()
+                ->filterByFkProductAbstract($dataSet[ProductAbstractWriterStep::ID_PRODUCT_ABSTRACT])
+                ->_and()
+                ->where(SpyProductCategoryTableMap::COL_ID_PRODUCT_CATEGORY . Criteria::NOT_IN . '(' . implode(',', $currentRelationIds) . ')')
+                ->find()
+                ->delete();
+        }
     }
 
     /**

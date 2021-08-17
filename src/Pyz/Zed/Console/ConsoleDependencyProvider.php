@@ -15,6 +15,7 @@ use Pyz\Zed\CmsPageDataImport\CmsPageDataImportConfig;
 use Pyz\Zed\Console\Communication\Plugin\ConsoleLogPlugin;
 use Pyz\Zed\DatabaseLoad\Communication\Console\DatabaseLoadTestConsole;
 use Pyz\Zed\DataImport\Communication\Console\DataImportConsole;
+use Pyz\Zed\DataImport\Communication\Console\DataImportExecImportEventsConsole;
 use Pyz\Zed\DataImport\Communication\Console\DataImportFileManagerConsole;
 use Pyz\Zed\DataImport\Communication\Console\DataImportImagesFileManagerConsole;
 use Pyz\Zed\DataImport\DataImportConfig;
@@ -238,6 +239,7 @@ class ConsoleDependencyProvider extends SprykerConsoleDependencyProvider
             new DataImportConsole(DataImportConsole::DEFAULT_NAME . ':' . StockDataImportConfig::IMPORT_TYPE_STOCK_STORE),
             new DataImportConsole(DataImportConsole::DEFAULT_NAME . ':' . PaymentDataImportConfig::IMPORT_TYPE_PAYMENT_METHOD),
             new DataImportConsole(DataImportConsole::DEFAULT_NAME . ':' . PaymentDataImportConfig::IMPORT_TYPE_PAYMENT_METHOD_STORE),
+            new DataImportExecImportEventsConsole(),
 
             //core data importers
             new DataImportConsole(DataImportConsole::DEFAULT_NAME . ':' . PriceProductDataImportConfig::IMPORT_TYPE_PRODUCT_PRICE),
