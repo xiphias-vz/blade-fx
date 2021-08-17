@@ -48,6 +48,9 @@
         <property name="colorId" type="int" />
         <property name="aisle" type="int" />
         <property name="pickedAt" type="string" />
+        <property name="originalPrice" type="int" />
+        <property name="discountedPriceFrom" type="datetime" />
+        <property name="discountedPriceTo" type="datetime" />
     </transfer>
 
     <transfer name="ProductConcrete">
