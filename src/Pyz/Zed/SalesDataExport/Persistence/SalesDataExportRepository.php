@@ -64,6 +64,7 @@ class SalesDataExportRepository extends SpySalesDataExportRepository
             ->endUse()
             ->endUse()
             ->orderByFkSalesOrder()
+            ->where("case when spy_sales_order_item.price_per_kg is not null AND spy_sales_order_item.fk_oms_order_item_state = 8 then 0 else 1 end = 1")
             ->limit($this->limitPerChunk);
 
         $salesOrderItemQuery = $this->applyFilterCriteriaToSalesOrderItemQuery(
