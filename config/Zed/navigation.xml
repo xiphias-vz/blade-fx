@@ -130,15 +130,15 @@
         </pages>
     </administration>
     <maintenance>
-        <visible>1</visible>
+        <visible>0</visible>
     </maintenance>
     <discount>
         <visible>1</visible>
     </discount>
     <acl>
-        <visible>1</visible>
+        <visible>0</visible>
     </acl>
     <threshold>
-        <visible>1</visible>
+        <visible>0</visible>
     </threshold>
 </config>
