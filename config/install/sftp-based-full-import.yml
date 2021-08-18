@@ -351,7 +351,7 @@ sections:
             command: "vendor/bin/console data:import product-stock -f spryker/5.globus_article_instock.NOS.1042.csv -a UpdateAvailabilityAfterImportPlugin -vvv --no-ansi || true"
 
         import-metzgerei-product-stock-nos-1057:
-            command: "vendor/bin/console data:import product-stock -f spryker/5.globus_article_instock.NOS.1057.csv -a UpdateAvailabilityAfterImportPlugin -vvv --no-ansi || true"
+            command: "vendor/bin/console data:import product-stock -f spryker/5.globus_article_instock.NOS.1057.csv -vvv --no-ansi || true"
 
     reset-metzgerei:
         reset-metzgerei-product:
