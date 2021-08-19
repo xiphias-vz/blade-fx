@@ -2,6 +2,7 @@
 
 use Pyz\Shared\Application\ApplicationConstants;
 use Pyz\Shared\CodeBuckets\CodeBucketConstants;
+use Pyz\Shared\GoogleTagManager\GoogleTagManagerConstants;
 use Pyz\Shared\GsoaRestApiClient\Provider\TokenProvider;
 use Pyz\Shared\ProductImage\ProductImageConstants;
 use Pyz\Shared\Store\StoreConstants;
@@ -15,6 +16,8 @@ $config[StoreConstants::SAP_STORE_ID_TO_STORE_MAP] = [
 $config[StoreConstants::STORE_NAMES] = [
     'OPA' => 'Opava',
 ];
+// ----------- Google Tag Manager
+$config[GoogleTagManagerConstants::CONTAINER_ID] = 'GTM-PPGX4LT';
 
 // ----------- Application
 $config[ApplicationConstants::CURRENCY_CODE] = 'CZK';
