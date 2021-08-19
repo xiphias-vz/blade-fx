@@ -8,8 +8,9 @@
 
     <table name="pyz_data_import_event">
         <column name="id_data_import_event" required="true" type="BIGINT" autoIncrement="true" primaryKey="true"/>
-        <column name="entity_id" type="INTEGER" required="true"/>
+        <column name="entity_id" type="VARCHAR" size="40" required="true"/>
         <column name="event_name" type="VARCHAR" size="100"/>
+        <column name="class_name" type="VARCHAR" size="100"/>
         <column name="event_data" type="VARCHAR" size="1000"/>
         <column name="created_at" required="true" type="TIMESTAMP"/>
     </table>
@@ -17,8 +18,9 @@
     <table name="pyz_data_import_event_archive">
         <column name="id" required="true" type="BIGINT" autoIncrement="true" primaryKey="true"/>
         <column name="id_data_import_event" required="true" type="BIGINT"/>
-        <column name="entity_id" type="INTEGER"/>
+        <column name="entity_id" type="VARCHAR" size="40"/>
         <column name="event_name" type="VARCHAR" size="100"/>
+        <column name="class_name" type="VARCHAR" size="100"/>
         <column name="event_data" type="VARCHAR" size="1000"/>
         <column name="created_at" type="TIMESTAMP"/>
         <column name="executed_at" type="TIMESTAMP"/>

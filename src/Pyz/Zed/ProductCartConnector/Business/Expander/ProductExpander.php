@@ -100,7 +100,7 @@ class ProductExpander extends SprykerProductExpander implements ProductExpanderI
         $priceProductAbstractData = $this->getPriceProductByProductFromAbstractStorageEntity($priceProductAbstractStorageEntity, $productConcreteTransfer);
         $originalPrice = null;
         $grossPriceData = null;
-        if(isset($priceProductAbstractData['prices']->EUR->GROSS_MODE)) {
+        if (isset($priceProductAbstractData['prices']->EUR->GROSS_MODE)) {
             $grossPriceData = $priceProductAbstractData['prices']->EUR->GROSS_MODE;
         }
         if (isset($grossPriceData->ORIGINAL)) {
@@ -140,7 +140,7 @@ class ProductExpander extends SprykerProductExpander implements ProductExpanderI
     }
 
     /**
-     * @return SpyPriceProductAbstractStorageQuery
+     * @return \Orm\Zed\PriceProductStorage\Persistence\SpyPriceProductAbstractStorageQuery
      */
     protected function createPriceProductAbstractStorageQuery(): SpyPriceProductAbstractStorageQuery
     {
@@ -148,7 +148,7 @@ class ProductExpander extends SprykerProductExpander implements ProductExpanderI
     }
 
     /**
-     * @return SpyPriceProductScheduleQuery
+     * @return \Orm\Zed\PriceProductSchedule\Persistence\SpyPriceProductScheduleQuery
      */
     protected function createPriceProductScheduleQuery(): SpyPriceProductScheduleQuery
     {
