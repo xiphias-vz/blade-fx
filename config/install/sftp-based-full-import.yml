@@ -1,5 +1,3 @@
-command-timeout: 14400
-
 sections:
     download-csv-files:
         download:
