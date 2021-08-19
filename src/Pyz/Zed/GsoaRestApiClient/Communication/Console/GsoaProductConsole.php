@@ -411,11 +411,22 @@ class GsoaProductConsole extends Console
                                 $d["instock"] = str_replace(",", ".", $item["productInHouse"]["stockAmount"]);
                             }
                             $d["store"] = $store;
-                            if ((is_array($item["productInHouse"]["placements"])) && (count($item["productInHouse"]["placements"]) > 0)) {
-                                $d["shelf"] = $item["productInHouse"]["placements"][0]["placement"];
-                                $d["shelffield"] = $item["productInHouse"]["placements"][0]["facing"];
-                                $d["shelffloor"] = $item["productInHouse"]["placements"][0]["presentationStock"];
+                            if(isset($item["productInHouse"]["placement"]))
+                            {
+                                if ((is_array($item["productInHouse"]["placement"])) && (count($item["productInHouse"]["placement"]) > 0)) {
+                                    $d["shelf"] = $item["productInHouse"]["placement"][0]["placement"];
+                                    $d["shelffield"] = $item["productInHouse"]["placement"][0]["facing"];
+                                    $d["shelffloor"] = $item["productInHouse"]["placement"][0]["presentationStock"];
+                                }
+                            }else
+                            {
+                                if ((is_array($item["productInHouse"]["placements"])) && (count($item["productInHouse"]["placements"]) > 0)) {
+                                    $d["shelf"] = $item["productInHouse"]["placements"][0]["placement"];
+                                    $d["shelffield"] = $item["productInHouse"]["placements"][0]["facing"];
+                                    $d["shelffloor"] = $item["productInHouse"]["placements"][0]["presentationStock"];
+                                }
                             }
+
                             file_put_contents($fileName, implode(';', $d) . PHP_EOL, FILE_APPEND);
                         }
                         $output->writeln('Pages done ' . $page . ', rows ' . $counter);
