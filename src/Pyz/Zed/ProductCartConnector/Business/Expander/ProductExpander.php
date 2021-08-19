@@ -14,6 +14,8 @@ use Orm\Zed\AssortmentZone\Persistence\Map\PyzAssortmentZoneTableMap;
 use Orm\Zed\Merchant\Persistence\Map\SpyMerchantTableMap;
 use Orm\Zed\PickingZone\Persistence\Map\PyzPickingZoneTableMap;
 use Orm\Zed\PickingZone\Persistence\PyzPickingZoneQuery;
+use Orm\Zed\PriceProductSchedule\Persistence\SpyPriceProductScheduleQuery;
+use Orm\Zed\PriceProductStorage\Persistence\SpyPriceProductAbstractStorageQuery;
 use Pyz\Shared\Product\ProductConfig;
 use Spryker\Zed\ProductCartConnector\Business\Expander\ProductExpander as SprykerProductExpander;
 use Spryker\Zed\ProductCartConnector\Business\Expander\ProductExpanderInterface;
@@ -94,6 +96,26 @@ class ProductExpander extends SprykerProductExpander implements ProductExpanderI
 
         $weightPerUnit = $this->calculateWeightPerItem($productConcreteTransfer->getAttributes());
 
+        $priceProductAbstractStorageEntity = $this->createPriceProductAbstractStorageQuery();
+        $priceProductAbstractData = $this->getPriceProductByProductFromAbstractStorageEntity($priceProductAbstractStorageEntity, $productConcreteTransfer);
+        $originalPrice = null;
+        $grossPriceData = null;
+        if(isset($priceProductAbstractData['prices']->EUR->GROSS_MODE)) {
+            $grossPriceData = $priceProductAbstractData['prices']->EUR->GROSS_MODE;
+        }
+        if (isset($grossPriceData->ORIGINAL)) {
+            $originalPrice = $grossPriceData->ORIGINAL;
+        }
+
+        $priceProductScheduleEntity = $this->createPriceProductScheduleQuery();
+        $priceProductScheduleData = $this->getActiveFromAndActiveToDiscountDataFromProductScheduleEntity($priceProductScheduleEntity, $productConcreteTransfer);
+        $priceActiveFrom = null;
+        $priceActiveTo = null;
+        if (array_key_exists('active_from', $priceProductScheduleData) && array_key_exists('active_to', $priceProductScheduleData)) {
+            $priceActiveFrom = (date("Y-m-d H:i:s", strtotime($priceProductScheduleData['active_from'])));
+            $priceActiveTo = (date("Y-m-d H:i:s", strtotime($priceProductScheduleData['active_to'])));
+        }
+
         $pricePerKg = null;
         if ($itemTransfer->getPriceProduct() && $itemTransfer->getPriceProduct()->getMoneyValue()) {
             $pricePerKg = $itemTransfer->getPriceProduct()->getMoneyValue()->getPricePerKg();
@@ -111,7 +133,60 @@ class ProductExpander extends SprykerProductExpander implements ProductExpanderI
             ->setBontext($productConcreteTransfer->getAttributes()[ProductConfig::KEY_BON_TEXT] ?? '')
             ->setBrand($productConcreteTransfer->getAttributes()[ProductConfig::KEY_BRAND] ?? '')
             ->setBasePriceContent($productConcreteTransfer->getAttributes()[ProductConfig::KEY_BASE_PRICE_CONTENT] ?? '')
-            ->setBasePriceUnit($productConcreteTransfer->getAttributes()[ProductConfig::KEY_BASE_PRICE_UNIT] ?? '');
+            ->setBasePriceUnit($productConcreteTransfer->getAttributes()[ProductConfig::KEY_BASE_PRICE_UNIT] ?? '')
+            ->setOriginalPrice($originalPrice)
+            ->setDiscountedPriceFrom($priceActiveFrom)
+            ->setDiscountedPriceTo($priceActiveTo);
+    }
+
+    /**
+     * @return SpyPriceProductAbstractStorageQuery
+     */
+    protected function createPriceProductAbstractStorageQuery(): SpyPriceProductAbstractStorageQuery
+    {
+        return SpyPriceProductAbstractStorageQuery::create();
+    }
+
+    /**
+     * @return SpyPriceProductScheduleQuery
+     */
+    protected function createPriceProductScheduleQuery(): SpyPriceProductScheduleQuery
+    {
+        return SpyPriceProductScheduleQuery::create();
+    }
+
+    /**
+     * @param \Orm\Zed\PriceProductStorage\Persistence\SpyPriceProductAbstractStorageQuery $priceProductAbstractStorageQuery
+     * @param \Generated\Shared\Transfer\ProductConcreteTransfer $productConcreteTransfer
+     *
+     * @return array
+     */
+    protected function getPriceProductByProductFromAbstractStorageEntity(
+        SpyPriceProductAbstractStorageQuery $priceProductAbstractStorageQuery,
+        ProductConcreteTransfer $productConcreteTransfer
+    ): array {
+        $priceProductAbstractStorageEntity = $priceProductAbstractStorageQuery
+            ->select(['data'])
+            ->filterByFkProductAbstract($productConcreteTransfer->getFkProductAbstract())
+            ->findOne();
+
+        return (array)json_decode($priceProductAbstractStorageEntity);
+    }
+
+    /**
+     * @param \Orm\Zed\PriceProductSchedule\Persistence\SpyPriceProductScheduleQuery $priceProductScheduleQuery
+     * @param \Generated\Shared\Transfer\ProductConcreteTransfer $productConcreteTransfer
+     *
+     * @return array
+     */
+    protected function getActiveFromAndActiveToDiscountDataFromProductScheduleEntity(
+        SpyPriceProductScheduleQuery $priceProductScheduleQuery,
+        ProductConcreteTransfer $productConcreteTransfer
+    ): array {
+        return (array)$priceProductScheduleQuery
+            ->select(['active_from', 'active_to'])
+            ->filterByFkProductAbstract($productConcreteTransfer->getFkProductAbstract())
+            ->findOne();
     }
 
     /**
