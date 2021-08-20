@@ -417,12 +417,16 @@ class GsoaProductConsole extends Console
                                     $d["shelffield"] = $item["productInHouse"]["placement"][0]["facing"];
                                     $d["shelffloor"] = $item["productInHouse"]["placement"][0]["presentationStock"];
                                 }
-                            } else {
+                            } elseif (isset($item["productInHouse"]["placements"])) {
                                 if ((is_array($item["productInHouse"]["placements"])) && (count($item["productInHouse"]["placements"]) > 0)) {
                                     $d["shelf"] = $item["productInHouse"]["placements"][0]["placement"];
                                     $d["shelffield"] = $item["productInHouse"]["placements"][0]["facing"];
                                     $d["shelffloor"] = $item["productInHouse"]["placements"][0]["presentationStock"];
                                 }
+                            } else {
+                                $d["shelf"] = '';
+                                $d["shelffield"] = '';
+                                $d["shelffloor"] = '';
                             }
 
                             file_put_contents($fileName, implode(';', $d) . PHP_EOL, FILE_APPEND);
