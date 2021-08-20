@@ -13,4 +13,14 @@
       <index-column name="fk_product_image"/>
     </index>
   </table>
+    <table name="spy_product_image">
+        <column name="external_url_large" type="VARCHAR" size="500"/>
+        <column name="external_url_small" type="VARCHAR" size="500"/>
+        <index name="index-spy_product_image_url_large">
+            <index-column name="external_url_large"/>
+        </index>
+        <index name="index-spy_product_image_url_small">
+            <index-column name="external_url_small"/>
+        </index>
+    </table>
 </database>
