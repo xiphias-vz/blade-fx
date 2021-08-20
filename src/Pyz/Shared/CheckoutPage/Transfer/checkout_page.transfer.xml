@@ -5,6 +5,7 @@
 
     <transfer name="Quote">
         <property name="termsApproval" type="bool"/>
+        <property name="IsSubstitutionAllowed" type="bool" />
     </transfer>
 
     <transfer name="Customer">

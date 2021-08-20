@@ -8,6 +8,7 @@
         totalItems: _view.totalItems,
     },
     agbInputName: 'terms_approval',
+    isSubstitutionAllowed:_view.quoteTransfer.isSubstitutionAllowed
 } %}
 
 {% block content %}
@@ -37,6 +38,7 @@
                         customer: data.customer,
                         canEdit: true,
                         payment: data.payment,
+                        isSubstitutionAllowed: data.isSubstitutionAllowed
                     },
                 } only %}
                 <a href="{{ data.backUrl }}" class="is-hidden-sm-lg button button--hollow-ghost">

@@ -1,0 +1,51 @@
+@mixin substitutions-tooltip($name: '.substitutions-tooltip') {
+    #{$name} {
+        .position-tool-tip {
+            position: relative;
+            &:hover {
+                .tooltip-information {
+                    visibility: visible;
+                    opacity: 1;
+                }
+            }
+
+            .tooltip-information {
+                visibility: hidden;
+                width: 316px;
+                background-color: #F7F7F7;
+                padding: 5px 10px;
+                position: absolute;
+                z-index: 1;
+                opacity: 0;
+                bottom: 152%;
+                left: -307%;
+                transition: opacity .5s;
+                -webkit-box-shadow:0 1px 4px rgba(0, 0, 0, 0.3), 0 0 40px rgba(0, 0, 0, 0.1) inset;
+                -moz-box-shadow:0 1px 4px rgba(0, 0, 0, 0.3), 0 0 40px rgba(0, 0, 0, 0.1) inset;
+                box-shadow:0 1px 4px rgba(0, 0, 0, 0.3), 0 0 40px rgba(0, 0, 0, 0.1) inset;
+
+                &:after {
+                    content: "";
+                    position: absolute;
+                    top: 100%;
+                    left: 50%;
+                    margin-left: -5px;
+                    border-top: 19px solid #f0f0f0;
+                    border-bottom: 19px solid transparent;
+                    border-right: 15px solid transparent;
+                    border-left: 15px solid transparent;
+                }
+            }
+        }
+
+        .infoIcon {
+            cursor: pointer;
+            margin-left: 12px;
+            color:$setting-color-orange;
+            float: none;
+        }
+    }
+}
+
+
+@include substitutions-tooltip();

@@ -32,6 +32,23 @@
             font-size: rem(12);
         }
 
+        &__substitutions-break {
+            height: rem(35);
+            margin:rem(25) rem(-31) rem(0) rem(-31);
+            background: $setting-color-white;
+        }
+
+        &__substitutions-icon-info {
+            width:20px !important;
+            height: 20px !important;
+        }
+
+        &__substitutions-icon-sync {
+            width:25px !important;
+            height: 25px !important;
+            color: $setting-color-orange;
+        }
+
         @content;
     }
 }

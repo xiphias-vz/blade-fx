@@ -14,6 +14,7 @@
     merchantName: app['merchant_name'] | default,
     cartNote: _view.quoteTransfer.cartNote,
     currentCodeBucket: app.currentCodeBucket,
+    isSubstitutionAllowed: _view.quoteTransfer.isSubstitutionAllowed
 } %}
 
 {% block body %}
@@ -78,6 +79,13 @@
                     {% block message_for_picker %}
                         <div style="margin-top: 15px">
                             <span class="{{ config.name }}__title {{ config.name }}__title--sub">{{ 'cart.checkout.address.abholstation.note.down' | trans }}</span>
+
+                            {% if data.isSubstitutionAllowed %}
+                                <span class="{{ config.name }}__title {{ config.name }}__title--sub">{{ 'checkout.summary.page.substitutions.info.checked' | trans }}</span>
+                            {% else %}
+                                <span class="{{ config.name }}__title {{ config.name }}__title--sub">{{ 'checkout.summary.page.substitutions.info.unchecked' | trans }}</span>
+                            {% endif %}
+
                             <span class="{{ config.name }}__cart-note">{{ data.cartNote }} </span>
                         </div>
                     {% endblock %}

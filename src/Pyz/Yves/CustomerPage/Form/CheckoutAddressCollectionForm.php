@@ -11,6 +11,7 @@ use Generated\Shared\Transfer\AddressTransfer;
 use Generated\Shared\Transfer\ItemTransfer;
 use Generated\Shared\Transfer\QuoteTransfer;
 use SprykerShop\Yves\CustomerPage\Form\CheckoutAddressCollectionForm as SprykerShopCheckoutAddressCollectionForm;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -21,6 +22,7 @@ use Symfony\Component\Form\FormInterface;
 class CheckoutAddressCollectionForm extends SprykerShopCheckoutAddressCollectionForm
 {
     public const OPTION_CART_NOTE = 'cart_note';
+    public const OPTION_IS_SUBSTITUTION_ALLOWED = 'is_substitution_allowed';
 
     /**
      * @param \Symfony\Component\Form\FormBuilderInterface $builder
@@ -34,6 +36,7 @@ class CheckoutAddressCollectionForm extends SprykerShopCheckoutAddressCollection
             ->addShippingAddressSubForm($builder, $options)
             ->addItemShippingAddressSubForm($builder, $options)
             ->addTextAreaMessage($builder)
+            ->addSubstitutionCheckbox($builder)
             ->addSameAsShippingCheckboxField($builder)
             ->addBillingAddressSubForm($builder, $options)
             ->addIsMultipleShipmentEnabledField($builder, $options);
@@ -54,6 +57,22 @@ class CheckoutAddressCollectionForm extends SprykerShopCheckoutAddressCollection
                 'placeholder' => 'cart.checkout.address.abholstation.textarea.note',
                 'class' => 'txtarea--checkout',
             ],
+        ]);
+
+        return $this;
+    }
+
+    /**
+     * @param \Symfony\Component\Form\FormBuilderInterface $builder
+     *
+     * @return $this
+     */
+    protected function addSubstitutionCheckbox(FormBuilderInterface $builder)
+    {
+        $builder->add(self::OPTION_IS_SUBSTITUTION_ALLOWED, CheckboxType::class, [
+            'label' => 'checkout.address.page.substitutions.checkbox',
+            'required' => false,
+            'trim' => false,
         ]);
 
         return $this;

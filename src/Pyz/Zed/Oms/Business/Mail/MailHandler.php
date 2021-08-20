@@ -259,7 +259,7 @@ class MailHandler extends SprykerMailHandler
         $itemsCanceled = $this->getCanceledProductListItems($orderTransfer);
         $similarProducts = [];
         $store = $orderTransfer->getMerchantReference();
-
+        $sku = "";
         foreach ($itemsCanceled as $product) {
             if (isset($product['sku'])) {
                 $sku = $product['sku'];

@@ -116,6 +116,16 @@ class CheckoutController extends SprykerCheckoutControllerAlias
             $response["data"] = $validAddress;
         }
 
+        $quoteTransfer = $this->getFactory()
+            ->getQuoteClient()
+            ->getQuote();
+
+        $isSubstitutionAllowed = $quoteTransfer->getIsSubstitutionAllowed();
+        if ($isSubstitutionAllowed === null) {
+            $isSubstitutionAllowed = true;
+        }
+        $response['isSubstitutionAllowed'] = $isSubstitutionAllowed;
+
         return $this->view(
             $response,
             $this->getFactory()->getCustomerPageWidgetPlugins(),
@@ -206,8 +216,6 @@ class CheckoutController extends SprykerCheckoutControllerAlias
         $quoteTransfer = $this->getFactory()
             ->getQuoteClient()
             ->getQuote();
-
-      
 
         $customer = $this->getFactory()->getQuoteClient()->getQuote()->getCustomer();
         if ($customer === null) {

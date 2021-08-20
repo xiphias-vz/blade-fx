@@ -3,7 +3,8 @@
 {% define data = {
     isBillingSameAsShippingChecked: _view.isBillingSameAsShippingChecked,
     merchantName: app['merchant_name'] | default,
-    addressData: _view.data
+    addressData: _view.data,
+    isSubstitutionAllowed: _view.isSubstitutionAllowed
 } %}
 
 {% block content %}
@@ -30,6 +31,7 @@
             jsAddressClass: jsAddressClass,
             isBillingSameAsShippingChecked: data.isBillingSameAsShippingChecked,
             addressData: data.addressData,
+            isSubstitutionAllowed: data.isSubstitutionAllowed,
         },
     } only %}
         {% block fieldset %}
@@ -198,6 +200,18 @@
                             {{ form_row(data.form.cart_note, {
                                 placeholder: 'cart.checkout.address.abholstation.textarea.note' | trans,
                             }) }}
+                        </div>
+                        <div style="display: flex;">
+                            {{ form_row(data.form.is_substitution_allowed, {
+                                label: 'checkout.address.page.substitutions.checkbox' | trans,
+                                attributes: {
+                                    'checked': embed.isSubstitutionAllowed,
+                                    'style': 'margin-top:3px'
+                                }
+                            }) }}
+                            <div>
+                                {% include molecule('substitutions-tooltip', 'CheckoutPage') with { } only %}
+                            </div>
                         </div>
                         <div class="{{ embed.jsAddressClass }}__billing-same-as-shipping is-hidden">
                             {{ form_row(data.form.billingSameAsShipping, {

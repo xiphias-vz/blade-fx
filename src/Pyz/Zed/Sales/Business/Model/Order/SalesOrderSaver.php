@@ -49,6 +49,23 @@ class SalesOrderSaver extends SprykerSalesOrderSaver
     }
 
     /**
+     * @param \Generated\Shared\Transfer\QuoteTransfer $quoteTransfer
+     *
+     * @return \Orm\Zed\Sales\Persistence\SpySalesOrder
+     */
+    protected function saveOrderEntity(QuoteTransfer $quoteTransfer)
+    {
+        $salesOrderEntity = $this->createSalesOrderEntity();
+        $this->hydrateSalesOrderEntity($quoteTransfer, $salesOrderEntity);
+        $this->hydrateAddresses($quoteTransfer, $salesOrderEntity);
+        $this->addLocale($salesOrderEntity);
+        $salesOrderEntity->setIsSubstitutionAllowed($quoteTransfer->getIsSubstitutionAllowed());
+        $salesOrderEntity->save();
+
+        return $salesOrderEntity;
+    }
+
+    /**
      * @param \Orm\Zed\Sales\Persistence\SpySalesOrder $salesOrderEntity
      * @param \Generated\Shared\Transfer\QuoteTransfer $quoteTransfer
      * @param \Orm\Zed\Sales\Persistence\SpySalesOrderItem $salesOrderItemEntity

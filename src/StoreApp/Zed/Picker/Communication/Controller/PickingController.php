@@ -413,7 +413,8 @@ class PickingController extends BaseOrderPickingController
         } catch (Exception $exceptionSaveGlobal) {
             $this->logError($exceptionSaveGlobal->getMessage(), $exceptionSaveGlobal->getTrace());
         }
-
+        $idGlobalPickReport = 0;
+        $idPerformanceSalesOrderReport = 0;
         $containerInfo = $this->getFactory()->getPickerBusinessFactory()->createContainerReader()->getContainersByOrderId($idSalesOrder);
         $containerNumber = count($containerInfo['picking_sales_orders']);
         $numberOfPieces = $this->getNumberOfPiecesOnOrder($aggregatedItemTransfers);
