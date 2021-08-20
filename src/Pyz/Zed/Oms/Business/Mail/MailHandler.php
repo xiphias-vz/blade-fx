@@ -19,6 +19,7 @@ use Pyz\Zed\CustomerConfirmationPage\Communication\Plugin\Mail\OrderRefundedMail
 use Pyz\Zed\Invoice\Business\Mailer\InvoiceMailer;
 use Pyz\Zed\Oms\Communication\Plugin\Mail\OrderConfirmationMailTypePlugin;
 use Pyz\Zed\Oms\OmsConfig;
+use Pyz\Zed\Oms\Persistence\OmsQueryContainerInterface;
 use Pyz\Zed\Sales\Business\SalesFacadeInterface;
 use Spryker\Service\UtilDateTime\UtilDateTimeServiceInterface;
 use Spryker\Shared\Shipment\ShipmentConfig;
@@ -27,7 +28,6 @@ use Spryker\Zed\Oms\Business\Mail\MailHandler as SprykerMailHandler;
 use Spryker\Zed\Oms\Communication\Plugin\Mail\OrderShippedMailTypePlugin;
 use Spryker\Zed\Oms\Dependency\Facade\OmsToMailInterface;
 use Spryker\Zed\Oms\Dependency\Facade\OmsToSalesInterface;
-use Spryker\Zed\Oms\Persistence\OmsQueryContainerInterface;
 use Spryker\Zed\Translator\Business\TranslatorFacadeInterface;
 use Symfony\Component\Config\Definition\Exception\Exception;
 use Twig\Environment;
@@ -80,11 +80,11 @@ class MailHandler extends SprykerMailHandler
     private $translatorFacade;
 
     /**
-     * @param \Spryker\Zed\Oms\Persistence\OmsQueryContainerInterface $queryContainer
+     * @param \Pyz\Zed\Oms\Persistence\OmsQueryContainerInterface $queryContainer
      * @param \Spryker\Zed\Oms\Dependency\Facade\OmsToSalesInterface $salesFacade
      * @param \Spryker\Zed\Oms\Dependency\Facade\OmsToMailInterface $mailFacade
      * @param \Spryker\Zed\OmsExtension\Dependency\Plugin\OmsOrderMailExpanderPluginInterface[] $orderMailExpanderPlugins
-     * @param \Spryker\Zed\Money\Business\MoneyFacadeInterface|array $moneyFacade
+     * @param \Spryker\Zed\Money\Business\MoneyFacadeInterface $moneyFacade
      * @param \Pyz\Zed\Oms\OmsConfig $config
      * @param \Pyz\Service\MailCmsBlock\MailCmsBlockServiceInterface $mailCmsBlockService
      * @param \Spryker\Service\UtilDateTime\UtilDateTimeServiceInterface $utilDateTimeService
@@ -263,10 +263,10 @@ class MailHandler extends SprykerMailHandler
         foreach ($itemsCanceled as $product) {
             if (isset($product['sku'])) {
                 $sku = $product['sku'];
-            }
-            $similarProduct = $this->queryContainer->queryRelatedProductsBySku($sku, $store);
-            if (!empty($similarProduct)) {
-                array_push($similarProducts, $similarProduct);
+                $similarProduct = $this->queryContainer->queryRelatedProductsBySku($sku, $store);
+                if (!empty($similarProduct)) {
+                    array_push($similarProducts, $similarProduct);
+                }
             }
         }
 
@@ -276,7 +276,7 @@ class MailHandler extends SprykerMailHandler
         $similarProductsTwig = '0';
         try {
             $similarProductsTwig = $this->getSimilarProductsList($similarProducts, $orderTransfer);
-        } catch (ExceptionException $e) {
+        } catch (Exception $e) {
         }
 
         $params = [

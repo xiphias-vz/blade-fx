@@ -91,7 +91,7 @@ class DataImportExecImportEventsConsole extends Console
                 $counter = 0;
                 DataImporterPublisher::triggerEvents();
                 $qry = new PyzDataImportEventQuery();
-                $qry->groupBy([PyzDataImportEventTableMap::COL_EVENT_NAME, PyzDataImportEventTableMap::COL_ENTITY_ID]);
+                $qry->groupBy([PyzDataImportEventTableMap::COL_EVENT_NAME, PyzDataImportEventTableMap::COL_ENTITY_ID, PyzDataImportEventTableMap::COL_EVENT_DATA]);
                 $qry->withColumn('GROUP_CONCAT(' . PyzDataImportEventTableMap::COL_ID_DATA_IMPORT_EVENT . ')', 'itemIdList');
                 $data = $qry->find();
 

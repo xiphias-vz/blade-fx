@@ -10,13 +10,13 @@ namespace Pyz\Zed\User\Communication\Table;
 use Orm\Zed\User\Persistence\Map\SpyUserTableMap;
 use Pyz\Shared\Acl\AclConstants;
 use Pyz\Zed\Gui\Communication\Table\AbstractTable;
+use Pyz\Zed\User\Persistence\UserQueryContainerInterface;
 use Spryker\Service\UtilDateTime\UtilDateTimeServiceInterface;
 use Spryker\Service\UtilText\Model\Url\Url;
 use Spryker\Zed\Acl\Business\AclFacadeInterface;
 use Spryker\Zed\Gui\Communication\Table\TableConfiguration;
 use Spryker\Zed\Sales\Dependency\Facade\SalesToUserInterface;
 use Spryker\Zed\User\Communication\Table\PluginExecutor\UserTablePluginExecutorInterface;
-use Spryker\Zed\User\Persistence\UserQueryContainerInterface;
 
 class UsersTable extends AbstractTable
 {
@@ -58,7 +58,7 @@ class UsersTable extends AbstractTable
     protected $aclFacade;
 
     /**
-     * @param \Spryker\Zed\User\Persistence\UserQueryContainerInterface $userQueryContainer
+     * @param \Pyz\Zed\User\Persistence\UserQueryContainerInterface $userQueryContainer
      * @param \Spryker\Service\UtilDateTime\UtilDateTimeServiceInterface $utilDateTimeService
      * @param \Spryker\Zed\User\Communication\Table\PluginExecutor\UserTablePluginExecutorInterface $userTablePluginExecutor
      * @param \Spryker\Zed\Acl\Business\AclFacadeInterface $aclFacade

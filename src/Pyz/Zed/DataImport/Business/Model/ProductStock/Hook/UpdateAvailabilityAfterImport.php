@@ -11,21 +11,25 @@ use DateTime;
 use Generated\Shared\Transfer\AvailabilityNotificationDataTransfer;
 use Generated\Shared\Transfer\EventEntityTransfer;
 use Generated\Shared\Transfer\StoreTransfer;
+use Orm\Zed\Availability\Persistence\Map\SpyAvailabilityAbstractTableMap;
+use Orm\Zed\Availability\Persistence\Map\SpyAvailabilityTableMap;
 use Orm\Zed\Availability\Persistence\SpyAvailability;
 use Orm\Zed\Availability\Persistence\SpyAvailabilityAbstract;
 use Orm\Zed\DataImport\Persistence\PyzDataImportEvent;
 use Orm\Zed\Store\Persistence\SpyStoreQuery;
 use PDO;
+use PDOException;
 use Propel\Runtime\Connection\ConnectionInterface;
 use Propel\Runtime\Propel;
 use Spryker\Zed\Availability\Business\AvailabilityFacadeInterface;
+use Spryker\Zed\Availability\Dependency\AvailabilityEvents;
 use Spryker\Zed\Kernel\Locator;
 use Spryker\Zed\Stock\Persistence\Propel\Mapper\StoreMapper;
 
 /**
  * @method \Pyz\Zed\DataImport\Business\DataImportBusinessFactory getFactory()
  */
-class UpdateAvailabilityAfterImport implements UpdateAvailabilityAfterImportInterface
+class UpdateAvailabilityAfterImport implements UpdateAvailabilityAfterImportInterface, AvailabilityEvents
 {
     /**
      * @var \Spryker\Zed\Availability\Business\AvailabilityFacadeInterface
@@ -68,7 +72,7 @@ class UpdateAvailabilityAfterImport implements UpdateAvailabilityAfterImportInte
                sa.id_availability, sa.is_never_out_of_stock as av_is_never_out_of_stock, sa.quantity as av_quantity,
                saa.id_availability_abstract, saa.abstract_sku, saa.quantity as ab_quantity,
                sas.id_availability_storage,
-               IF(ssp.is_never_out_of_stock = true or ssp.quantity = 99999, 999999, ssp.quantity - ifnull(sopr.reservation_quantity, 0)) as real_quantity
+               IF(ssp.is_never_out_of_stock = true or ssp.quantity = 999999.0, 999999.0, ssp.quantity - IFNULL(sopr.reservation_quantity, 0.0)) as real_quantity
         FROM spy_store s
                 LEFT JOIN spy_stock_store sss ON (s.id_store = sss.fk_store)
                 LEFT JOIN spy_stock ss ON (sss.fk_stock = ss.id_stock)
@@ -84,8 +88,8 @@ class UpdateAvailabilityAfterImport implements UpdateAvailabilityAfterImportInte
     private const FILTER_CHANGED = "
     WHERE (
     (ssp.is_never_out_of_stock <> sa.is_never_out_of_stock)
-    or ((ssp.quantity - ifnull(sopr.reservation_quantity, 0)) <> ifnull(sa.quantity, 0))
-    or ((ssp.quantity - ifnull(sopr.reservation_quantity, 0)) <> ifnull(saa.quantity, 0))
+    or ((ssp.quantity - ifnull(sopr.reservation_quantity, 0.0)) <> ifnull(sa.quantity, 0.0))
+    or ((ssp.quantity - ifnull(sopr.reservation_quantity, 0.0)) <> ifnull(saa.quantity, 0.0))
     )
     ";
 
@@ -98,11 +102,14 @@ class UpdateAvailabilityAfterImport implements UpdateAvailabilityAfterImportInte
      */
     private function getResult(string $sql, ConnectionInterface $connection, bool $doFetch = true): array
     {
-        $statement = $connection->prepare($sql);
-        $statement->execute();
+        try {
+            $statement = $connection->prepare($sql);
+            $statement->execute();
 
-        if ($doFetch) {
-            return $statement->fetchAll(PDO::FETCH_NAMED);
+            if ($doFetch) {
+                return $statement->fetchAll(PDO::FETCH_NAMED);
+            }
+        } catch (PDOException $ex) {
         }
 
         return [];
@@ -208,7 +215,13 @@ class UpdateAvailabilityAfterImport implements UpdateAvailabilityAfterImportInte
                 $event = (new AvailabilityNotificationDataTransfer())
                     ->setSku($sku)
                     ->setStore($this->getStoreById($stores, $item["id_store"]));
-                $this->addPublishEvents("availability_notification", $sku, "AvailabilityNotificationDataTransfer", $event->serialize(), $connection);
+                $this->addPublishEvents(
+                    self::AVAILABILITY_NOTIFICATION,
+                    $sku,
+                    "AvailabilityNotificationDataTransfer",
+                    $event->serialize(),
+                    $connection
+                );
             } else {
                 $availEntity->setFkAvailabilityAbstract($item["id_availability_abstract"]);
             }
@@ -225,8 +238,17 @@ class UpdateAvailabilityAfterImport implements UpdateAvailabilityAfterImportInte
                     $event = (new AvailabilityNotificationDataTransfer())
                         ->setSku($sku)
                         ->setStore($this->getStoreById($stores, $item["id_store"]));
-                    $this->addPublishEvents("availability_notification", $sku, "AvailabilityNotificationDataTransfer", $event->serialize(), $connection);
-                    $availAbstractEntities[] = $availAbstractEntity->setIdAvailabilityAbstract($item["id_availability_abstract"])->setAbstractSku($item["abstract_sku"]);
+                    $this->addPublishEvents(
+                        self::AVAILABILITY_NOTIFICATION,
+                        $sku,
+                        "AvailabilityNotificationDataTransfer",
+                        $event->serialize(),
+                        $connection
+                    );
+                    $availAbstractEntities[] = $availAbstractEntity
+                        ->setIdAvailabilityAbstract($item["id_availability_abstract"])
+                        ->setAbstractSku($item["abstract_sku"])
+                        ->setFkStore($item["id_store"]);
                 }
             }
             if ($counter % 1000 == 0) {
@@ -240,12 +262,24 @@ class UpdateAvailabilityAfterImport implements UpdateAvailabilityAfterImportInte
         foreach ($availAbstractEntities as $availAbstractEntity) {
             $event = (new EventEntityTransfer())
                 ->setId($availAbstractEntity->getIdAvailabilityAbstract())
-                ->setEvent("Entity.spy_availability_abstract.create")
-                ->setName("spy_availability_abstract")
-                ->setForeignKeys(["spy_availability_abstract.fk_store" => $item["id_store"]])
-                ->setModifiedColumns(["spy_availability_abstract.abstract_sku", "spy_availability_abstract.fk_store", "spy_availability_abstract.quantity"]);
+                ->setEvent(self::ENTITY_SPY_AVAILABILITY_ABSTRACT_CREATE)
+                ->setName(SpyAvailabilityAbstractTableMap::TABLE_NAME)
+                ->setForeignKeys([
+                    SpyAvailabilityAbstractTableMap::COL_FK_STORE => $availAbstractEntity->getFkStore(),
+                ])
+                ->setModifiedColumns([
+                    SpyAvailabilityAbstractTableMap::COL_ABSTRACT_SKU,
+                    SpyAvailabilityAbstractTableMap::COL_FK_STORE,
+                    SpyAvailabilityAbstractTableMap::COL_QUANTITY,
+                ]);
 
-            $this->addPublishEvents("Entity.spy_availability_abstract.create", $availAbstractEntity->getAbstractSku(), "EventEntityTransfer", $event->serialize(), $connection);
+            $this->addPublishEvents(
+                self::ENTITY_SPY_AVAILABILITY_ABSTRACT_CREATE,
+                $availAbstractEntity->getAbstractSku(),
+                "EventEntityTransfer",
+                $event->serialize(),
+                $connection
+            );
         }
         $connection->commit();
     }
@@ -275,29 +309,43 @@ class UpdateAvailabilityAfterImport implements UpdateAvailabilityAfterImportInte
                 ->setIdAvailabilityAbstract($item["id_availability_abstract"])
                 ->setQuantity($quantity);
             $connection->exec("update spy_availability_abstract set quantity = " . $availAbstractEntity->getQuantity() . " where id_availability_abstract = " . $availAbstractEntity->getIdAvailabilityAbstract());
-            //$availAbstractEntity->save($connection);
 
             $availEntity
                 ->setIdAvailability($item["id_availability"])
                 ->setIsNeverOutOfStock($item["is_never_out_of_stock"])
                 ->setQuantity($quantity);
             $connection->exec("update spy_availability set quantity = " . $availAbstractEntity->getQuantity() . ", is_never_out_of_stock = " . $item["is_never_out_of_stock"] . "  where id_availability = " . $availEntity->getIdAvailability());
-            //$availEntity->save($connection);
 
             $event = (new AvailabilityNotificationDataTransfer())
                 ->setSku($sku)
                 ->setStore($this->getStoreById($stores, $item["id_store"]));
-            $this->addPublishEvents("availability_notification", $sku, "AvailabilityNotificationDataTransfer", $event->serialize(), $connection);
+            $this->addPublishEvents(
+                self::AVAILABILITY_NOTIFICATION,
+                $sku,
+                "AvailabilityNotificationDataTransfer",
+                $event->serialize(),
+                $connection
+            );
 
             $event = (new EventEntityTransfer())
                 ->setId($availEntity->getIdAvailability())
-                ->setEvent("Entity.spy_availability.update")
-                ->setName("spy_availability")
+                ->setEvent(self::ENTITY_SPY_AVAILABILITY_UPDATE)
+                ->setName(SpyAvailabilityTableMap::TABLE_NAME)
                 ->setForeignKeys([
-                    "spy_availability.fk_availability_abstract" => 65704,
-                    "spy_availability.fk_store" => $item["id_store"]])
-                ->setModifiedColumns(["spy_availability.quantity", "spy_availability.is_never_out_of_stock"]);
-            $this->addPublishEvents("Entity.spy_availability.update", $sku, "EventEntityTransfer", $event->serialize(), $connection);
+                    SpyAvailabilityTableMap::COL_FK_AVAILABILITY_ABSTRACT => $item["id_availability_abstract"],
+                    SpyAvailabilityTableMap::COL_FK_STORE => $item["id_store"],
+                ])
+                ->setModifiedColumns([
+                    SpyAvailabilityTableMap::COL_QUANTITY,
+                    SpyAvailabilityTableMap::COL_IS_NEVER_OUT_OF_STOCK,
+                ]);
+            $this->addPublishEvents(
+                self::ENTITY_SPY_AVAILABILITY_UPDATE,
+                $sku,
+                "EventEntityTransfer",
+                $event->serialize(),
+                $connection
+            );
 
             if ($counter % 1000 == 0) {
                 $connection->commit();

@@ -43,4 +43,12 @@ interface OmsQueryContainerInterface extends SprykerOmsQueryContainerInterface
      * @return void
      */
     public function updateSalesOrderItemPausedStatus(string $idSalesOrderItem): void;
+
+    /**
+     * @param string $sku
+     * @param string $store
+     *
+     * @return array
+     */
+    public function queryRelatedProductsBySku(string $sku, string $store): array;
 }
