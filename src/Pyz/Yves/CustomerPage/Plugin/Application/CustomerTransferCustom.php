@@ -90,10 +90,12 @@ class CustomerTransferCustom
             if (isset($data["profile"]["phones"])) {
                 $phones = $data["profile"]["phones"];
                 foreach ($phones as $phone) {
-                    if ($phone["type"] == "home") {
-                        $customerTransfer->setPhone($phone["number"]);
-                    } else {
-                        $customerTransfer->setMobilePhoneNumber($phone["number"]);
+                    if (isset($phone["type"]) && isset($phone["number"])) {
+                        if ($phone["type"] == "home") {
+                            $customerTransfer->setPhone($phone["number"]);
+                        } else {
+                            $customerTransfer->setMobilePhoneNumber($phone["number"]);
+                        }
                     }
                 }
             }
