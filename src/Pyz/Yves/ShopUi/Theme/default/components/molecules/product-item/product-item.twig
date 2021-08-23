@@ -24,8 +24,7 @@
     einzelgewicht: data.product.attributes.einzelgewicht | default(null),
     position: position | default(null),
     currencySymbol: app.currentCurrencySymbol,
-    currencyIsoCode: app.currentCurrencyISOCode,
-    globusSupplierLabel: data.product.supplier
+    currencyIsoCode: app.currentCurrencyISOCode
 } %}
 
 {% set addAjaxUrl = path("cart/add-ajax", { "productAbstractId": data.product.id_product_abstract ?? data.product.idProductAbstract }) %}
@@ -44,7 +43,7 @@
 
             {% block imageContainer %}
                 <div class="{{ config.name }}__image-wrap">
-                    {% if data.idProductAbstract and data.globusSupplierLabel == "Globus" or 'Globus'in data.name %}
+                    {% if data.idProductAbstract and data.supplier == "Globus" or 'Globus'in data.name %}
                         {% block goproductLabel %}
                             {% set labels = labels | default([]) %}
 

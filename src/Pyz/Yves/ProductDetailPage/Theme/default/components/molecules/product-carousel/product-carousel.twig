@@ -9,7 +9,7 @@
     product: required,
     idProductAbstract: data.product.idProductAbstract | default,
     name: data.product.name,
-    globusSupplierLabel: data.product.attributes.supplier
+    globusSupplierLabel: data.product.attributes.supplier | default
 } %}
 
 {% block body %}
