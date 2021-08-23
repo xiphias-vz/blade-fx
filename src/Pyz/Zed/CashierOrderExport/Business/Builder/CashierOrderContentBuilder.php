@@ -727,7 +727,7 @@ class CashierOrderContentBuilder implements CashierOrderContentBuilderInterface
                     $writer->startElement(static::XML_ITEM);
                     $writer->writeElement(static::XML_ORIGIN, static::XML_ORIGIN_VALUE);
                     $writer->writeElement(static::XML_POSITION_NUMBER, $counter);
-                    $writer->writeElement(static::XML_BARCODE, $this->getXmlPickZoneValue($item, $item->getSku()));
+                    $writer->writeElement(static::XML_BARCODE, $this->getXmlPickZoneValue($item, $this->removeLeadingZerosFromProductDepositSku($item->getSku())));
                     $writer->writeElement(static::XML_ITEM_NUMBER, $this->getXmlPickZoneValue($item, $product->getSapNumber()));
                     $writer->writeElement(static::XML_DEPARTMENT_NUMBER, $item->getSapWgr());
                     $writer->writeElement(static::XML_DESCRIPTION, $this->getItemName($item));
@@ -930,5 +930,18 @@ class CashierOrderContentBuilder implements CashierOrderContentBuilderInterface
         } else {
             return $defaultResult;
         }
+    }
+
+    /**
+     * @param string $productDepositSku
+     *
+     * @return string|null
+     */
+    protected function removeLeadingZerosFromProductDepositSku(string $productDepositSku): ?string
+    {
+        $intVal = (int)$productDepositSku;
+        $stringWithRemovedLeadingZero = (string)$intVal;
+
+        return $stringWithRemovedLeadingZero ?? null;
     }
 }

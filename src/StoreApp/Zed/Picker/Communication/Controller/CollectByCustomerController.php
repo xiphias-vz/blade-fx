@@ -911,11 +911,13 @@ class CollectByCustomerController extends AbstractController
             if ($orderPerformanceOrderTransferEntity->isModified()) {
                 $orderPerformanceOrderTransferEntity->save();
             }
+
+            return $orderPerformanceOrderTransferEntity->getFkGlobalPickReport();
         } catch (Exception $exceptionSaveGlobal) {
             $this->logError($exceptionSaveGlobal->getMessage(), $exceptionSaveGlobal->getTrace());
         }
 
-        return $orderPerformanceOrderTransferEntity->getFkGlobalPickReport();
+        return null;
     }
 
     /**
@@ -955,11 +957,13 @@ class CollectByCustomerController extends AbstractController
             if ($orderPerformanceOrderTransferEntity->isModified()) {
                 $orderPerformanceOrderTransferEntity->save();
             }
+
+            return $orderPerformanceOrderTransferEntity->getFkGlobalPickReport();
         } catch (Exception $exceptionSaveGlobal) {
             $this->logError($exceptionSaveGlobal->getMessage(), $exceptionSaveGlobal->getTrace());
         }
 
-        return $orderPerformanceOrderTransferEntity->getFkGlobalPickReport();
+        return null;
     }
 
     /**
