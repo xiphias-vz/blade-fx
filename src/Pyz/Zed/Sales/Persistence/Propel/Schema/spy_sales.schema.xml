@@ -20,7 +20,7 @@
         <column name="picked_at" type="TIMESTAMP" />
         <column name="collected_at" type="TIMESTAMP" />
         <column name="salutation" type="ENUM" valueSet="Mr, Ms, Divers, Dr" required="false"/>
-        <column name="is_substitution_allowed" type="BOOLEAN" required="false" />
+        <column name="is_substitution_allowed" type="BOOLEAN" required="false" defaultValue="false"  />
 
         <foreign-key name="spy_sales_order-fk_user" foreignTable="spy_user">
             <reference local="fk_user" foreign="id_user"/>
@@ -49,7 +49,7 @@
         <column name="original_price" type="INTEGER" required="false" />
         <column name="discounted_price_from" type="TIMESTAMP" required="false" />
         <column name="discounted_price_to" type="TIMESTAMP" required="false" />
-        <column name="is_substitution_found" type="BOOLEAN" required="false" />
+        <column name="is_substitution_found" type="BOOLEAN" required="false" defaultValue="false" />
         <index name="index-pick_zone">
             <index-column name="pick_zone"/>
         </index>
