@@ -52,3 +52,6 @@ order.overview.download.cashier.file, Download Kassenfile
 Customer Comment, Kundenkommentar
 Phone Number, Telefon
 Cell phone number, Mobile
+order.overview.replacement.article.title, Ersatzartikel
+order.overview.replacement.article.yes, Ja
+order.overview.replacement.article.no, Nein

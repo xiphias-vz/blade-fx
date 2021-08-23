@@ -133,9 +133,16 @@
                         {% endif %}
 
 
-                        <dt style="margin-top: 15px">{{ 'Customer Comment' | trans }}</dt>
+                        <dt style="margin-top: 1rem">{{ 'Customer Comment' | trans }}</dt>
                         {% if order.cartNote %}
                             <dd>{{ order.cartNote }}</dd>
+                        {% endif %}
+
+                        <dt style="margin-top: 1rem">{{ 'order.overview.replacement.article.title' | trans }}</dt>
+                        {% if order.isSubstitutionAllowed and order.isSubstitutionAllowed == '1'%}
+                            <dd>{{ 'order.overview.replacement.article.yes' | trans }}</dd>
+                        {% else %}
+                            <dd>{{ 'order.overview.replacement.article.no' | trans }}</dd>
                         {% endif %}
                     </dl>
                 </div>
