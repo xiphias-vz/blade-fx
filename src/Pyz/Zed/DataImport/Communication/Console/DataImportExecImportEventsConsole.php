@@ -116,6 +116,8 @@ class DataImportExecImportEventsConsole extends Console
                     $eventArcive->setIdDataImportEvent($event->getIdDataImportEvent())
                         ->setEventName($event->getEventName())
                         ->setEntityId($event->getEntityId())
+                        ->setClassName($event->getClassName())
+                        ->setEventData($event->getEventData())
                         ->setCreatedAt($event->getCreatedAt())
                         ->setExecutedAt((new DateTime())->getTimestamp());
                     $eventArcive->save();
@@ -201,12 +203,12 @@ class DataImportExecImportEventsConsole extends Console
 
                         insert into pyz_data_import_event
                             (entity_id, event_name, class_name, event_data, created_at)
-                        select  entity_id, event_name, max(class_name), max(event_data), max(created_at)
+                        select  entity_id, event_name, class_name, event_data, max(created_at)
                         from pyz_data_import_event_archive
                         where event_name like '" . $eventName . "'
                             and executed_at between DATE_SUB(@date, INTERVAL 10 MINUTE)
                                 and DATE_ADD(@date, INTERVAL 1 MINUTE)
-                        group by entity_id, event_name";
+                        group by entity_id, event_name, class_name, event_data";
         $this->execCommand($qry, $con);
     }
 
