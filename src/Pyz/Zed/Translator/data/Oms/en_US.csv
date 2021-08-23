@@ -1,3 +1,4 @@
 mail.order.confirmation.item.quantity,Quantity
 mail.order.confirmation.collect.number,Your pickup code
 mail.order.confirmation.deposit,Deposit
+mail.order.confirmation.substitution.available,Substitution items available
