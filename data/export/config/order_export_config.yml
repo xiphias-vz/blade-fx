@@ -13,6 +13,7 @@ actions:
           - order_item_reference
           - product_name
           - product_sku
+          - is_substitution_found
           - discount_amount_aggregation
           - discount_amount_full_aggregation
           - expense_price_aggregation
@@ -67,6 +68,46 @@ actions:
 
     - data_entity: order
       destination: '{data_entity}s_DE_{timestamp}.{extension}'
+      fields:
+          - order_reference
+          - customer_reference
+          - is_substitution_allowed
+          - order_created_at
+          - order_updated_at
+          - order_store,email
+          - salutation
+          - first_name
+          - last_name
+          - order_note
+          - currency_iso_code
+          - price_mode
+          - locale_name
+          - billing_address_salutation
+          - billing_address_first_name
+          - billing_address_last_name
+          - billing_address_middle_name
+          - billing_address_email
+          - billing_address_cell_phone
+          - billing_address_phone
+          - billing_address_address1
+          - billing_address_address2
+          - billing_address_address3
+          - billing_address_city
+          - billing_address_zip_code
+          - billing_address_po_box
+          - billing_address_company
+          - billing_address_description
+          - billing_address_comment
+          - billing_address_country
+          - billing_address_region
+          - order_totals_canceled_total
+          - order_totals_discount_total
+          - order_totals_grand_total
+          - order_totals_order_expense_total
+          - order_totals_refund_total
+          - order_totals_subtotal
+          - order_totals_tax_total
+          - order_comments
 
     - data_entity: order-expense
       destination: '{data_entity}s_DE_{timestamp}.{extension}'

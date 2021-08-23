@@ -16,12 +16,15 @@ use Propel\Runtime\ActiveQuery\Criteria;
 use Propel\Runtime\Propel;
 use Spryker\Zed\SalesDataExport\Persistence\Propel\Mapper\SalesOrderMapper;
 use Spryker\Zed\SalesDataExport\Persistence\SalesDataExportRepository as SpySalesDataExportRepository;
+use Spryker\Zed\Translator\Business\TranslatorFacade;
 
 /**
- * @method \Spryker\Zed\SalesDataExport\Persistence\SalesDataExportPersistenceFactory getFactory()
+ * @method \Pyz\Zed\SalesDataExport\Persistence\SalesDataExportPersistenceFactory getFactory()
  */
 class SalesDataExportRepository extends SpySalesDataExportRepository
 {
+    public const SALES_DATA_EXPORT_KEYWORD_NO = 'sales.data.export.keyword.no';
+    public const SALES_DATA_EXPORT_KEYWORD_YES = 'sales.data.export.keyword.yes';
     /**
      * @var int
      */
@@ -87,10 +90,48 @@ class SalesDataExportRepository extends SpySalesDataExportRepository
         }
 
         $data = $this->getFactory()
-            ->createSalesOrderItemMapper()
+            ->createPyzSalesOrderItemMapper()
             ->mapSalesOrderItemDataByField($salesOrderItemData);
 
+        $dataExportBatchTransfer = $this->removeSubstitutionFieldAndAddFormattedOne($selectedFields, $dataExportBatchTransfer);
+        $data = $this->updateOrderItemDataset($data);
+
         return $dataExportBatchTransfer->setData($data);
+    }
+
+    /**
+     * @param array $selectedFields
+     * @param \Generated\Shared\Transfer\DataExportBatchTransfer $dataExportBatchTransfer
+     *
+     * @return \Generated\Shared\Transfer\DataExportBatchTransfer
+     */
+    public function removeSubstitutionFieldAndAddFormattedOne(array $selectedFields, DataExportBatchTransfer $dataExportBatchTransfer): DataExportBatchTransfer
+    {
+        unset($selectedFields['SpySalesOrderItem.isSubstitutionFound']);
+        $selectedFields['ArticleHasSubstitute'] = 'ArticleHasSubstitute';
+
+        return $dataExportBatchTransfer->setFields($selectedFields);
+    }
+
+    /**
+     * @param array $salesOrderItemData
+     *
+     * @return array
+     */
+    public function updateOrderItemDataset(array $salesOrderItemData): array
+    {
+        $translator = new TranslatorFacade();
+
+        foreach ($salesOrderItemData as $salesOrderItemKey => $salesOrderItem) {
+            if ($salesOrderItem['is_substitution_found'] == null || $salesOrderItem['is_substitution_found'] == 0) {
+                $salesOrderItemData[$salesOrderItemKey]['ArticleHasSubstitute'] = $translator->trans(static::SALES_DATA_EXPORT_KEYWORD_NO);
+            } else {
+                $salesOrderItemData[$salesOrderItemKey]['ArticleHasSubstitute'] = $translator->trans(static::SALES_DATA_EXPORT_KEYWORD_YES);
+            }
+            unset($salesOrderItemData[$salesOrderItemKey]['is_substitution_found']);
+        }
+
+        return $salesOrderItemData;
     }
 
     /**
@@ -202,12 +243,12 @@ class SalesDataExportRepository extends SpySalesDataExportRepository
         }
 
         $data = $this->getFactory()
-            ->createSalesOrderMapper()
+            ->createPyzSalesOrderMapper()
             ->mapSalesOrderDataByField($salesOrderData, $selectedFields);
 
         $dataFromSalesOrderSummary = $this->getDataBySalesOrderSummary();
-        $data = $this->updateDataset($data, $dataFromSalesOrderSummary);
         $dataExportBatchTransfer = $this->updateFields($selectedFields, $dataExportBatchTransfer);
+        $data = $this->updateDataset($data, $dataFromSalesOrderSummary);
 
         return $dataExportBatchTransfer->setData($data);
     }
@@ -220,6 +261,7 @@ class SalesDataExportRepository extends SpySalesDataExportRepository
      */
     public function updateFields(array $selectedFields, DataExportBatchTransfer $dataExportBatchTransfer): DataExportBatchTransfer
     {
+        $selectedFields['CustomerWantsSubstitute'] = 'CustomerWantsSubstitute';
         $selectedFields['DeliveryDate'] = 'DeliveryDate';
         $selectedFields['ItemValueGross'] = 'ItemValueGross';
         $selectedFields['ItemValueNet'] = 'ItemValueNet';
@@ -234,6 +276,7 @@ class SalesDataExportRepository extends SpySalesDataExportRepository
         $selectedFields['Delivered_ItemsQuantity'] = 'Delivered_ItemsQuantity';
         $selectedFields['Delivered_ItemsCount'] = 'Delivered_ItemsCount';
         $selectedFields['ShippingValueGross'] = 'ShippingValueGross';
+        unset($selectedFields['SpySalesOrder.isSubstitutionAllowed']);
 
         return $dataExportBatchTransfer->setFields($selectedFields);
     }
@@ -246,7 +289,14 @@ class SalesDataExportRepository extends SpySalesDataExportRepository
      */
     public function updateDataset(array $salesOrderData, array $dataFromSalesOrderSummary): array
     {
+        $translator = new TranslatorFacade();
         foreach ($salesOrderData as $salesOrderKey => $salesOrder) {
+            if ($salesOrder['is_substitution_allowed'] == null || $salesOrder['is_substitution_allowed'] == 0) {
+                $salesOrderData[$salesOrderKey]['CustomerWantsSubstitute'] = $translator->trans(static::SALES_DATA_EXPORT_KEYWORD_NO);
+            } else {
+                $salesOrderData[$salesOrderKey]['CustomerWantsSubstitute'] = $translator->trans(static::SALES_DATA_EXPORT_KEYWORD_YES);
+            }
+            unset($salesOrderData[$salesOrderKey]['is_substitution_allowed']);
             if ($salesOrder['order_reference'] == $dataFromSalesOrderSummary[$salesOrderKey]['OrderNr']) {
                 $salesOrderData[$salesOrderKey]['DeliveryDate'] = $dataFromSalesOrderSummary[$salesOrderKey]['DeliveryDate'];
                 $salesOrderData[$salesOrderKey]['ItemValueGross'] = $dataFromSalesOrderSummary[$salesOrderKey]['ItemValueGross'];
@@ -317,5 +367,33 @@ class SalesDataExportRepository extends SpySalesDataExportRepository
         $statement->execute();
 
         return $statement->fetchAll(PDO::FETCH_NAMED);
+    }
+
+    /**
+     * @param \Generated\Shared\Transfer\DataExportConfigurationTransfer $dataExportConfigurationTransfer
+     *
+     * @return array
+     */
+    protected function getSalesOrderSelectedColumns(DataExportConfigurationTransfer $dataExportConfigurationTransfer): array
+    {
+        $fieldMapping = $this->getFactory()
+            ->createPyzSalesOrderMapper()
+            ->getFieldMapping();
+
+        return array_intersect_key($fieldMapping, array_flip($dataExportConfigurationTransfer->getFields()));
+    }
+
+    /**
+     * @param \Generated\Shared\Transfer\DataExportConfigurationTransfer $dataExportConfigurationTransfer
+     *
+     * @return array
+     */
+    public function getSalesOrderItemSelectedColumns(DataExportConfigurationTransfer $dataExportConfigurationTransfer): array
+    {
+        $fieldMapping = $this->getFactory()
+            ->createPyzSalesOrderItemMapper()
+            ->getFieldMapping();
+
+        return array_intersect_key($fieldMapping, array_flip($dataExportConfigurationTransfer->getFields()));
     }
 }
