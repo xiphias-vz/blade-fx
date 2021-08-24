@@ -26,19 +26,64 @@ if ($codeBucket == 'CZ') {
         ];
 
     $zedMap = [
-        'OPA' => [
-            'local' => 'zed.opa.shop.globus.local',
-            'stage' => 'zed.opa.shop-t.iglobus.cz',
-            'prod' => 'zed.opa.shop.iglobus.cz',
+        'OST' => [
+            'local' => 'zed.ost.shop.globus.local',
+            'stage' => 'zed.ost.shop-t.iglobus.cz',
+            'prod' => 'zed.ost.shop.iglobus.cz',
+        ],
+        'OLO' => [
+            'local' => 'zed.olo.shop.globus.local',
+            'stage' => 'zed.olo.shop-t.iglobus.cz',
+            'prod' => 'zed.olo.shop.iglobus.cz',
+        ],
+        'ZLI' => [
+            'local' => 'zed.zli.shop.globus.local',
+            'stage' => 'zed.zli.shop-t.iglobus.cz',
+            'prod' => 'zed.zli.shop.iglobus.cz',
+        ],
+        'LIB' => [
+            'local' => 'zed.lib.shop.globus.local',
+            'stage' => 'zed.lib.shop-t.iglobus.cz',
+            'prod' => 'zed.lib.shop.iglobus.cz',
+        ],
+        'CAK' => [
+            'local' => 'zed.cak.shop.globus.local',
+            'stage' => 'zed.cak.shop-t.iglobus.cz',
+            'prod' => 'zed.cak.shop.iglobus.cz',
+        ],
+        'CCM' => [
+            'local' => 'zed.ccm.shop.globus.local',
+            'stage' => 'zed.ccm.shop-t.iglobus.cz',
+            'prod' => 'zed.ccm.shop.iglobus.cz',
         ],
     ];
 
     return [
 
         'WELCOME' => $welcomeMap[$environment],
-        'OPA' => [
+        'OST' => [
             'key_value_store_namespace' => 1,
-            'zed' => $zedMap['OPA'][$environment],
+            'zed' => $zedMap['OST'][$environment],
+        ],
+        'OLO' => [
+            'key_value_store_namespace' => 3,
+            'zed' => $zedMap['OLO'][$environment],
+        ],
+        'ZLI' => [
+            'key_value_store_namespace' => 5,
+            'zed' => $zedMap['ZLI'][$environment],
+        ],
+        'LIB' => [
+            'key_value_store_namespace' => 7,
+            'zed' => $zedMap['LIB'][$environment],
+        ],
+        'CAK' => [
+            'key_value_store_namespace' => 9,
+            'zed' => $zedMap['CAK'][$environment],
+        ],
+        'CCM' => [
+            'key_value_store_namespace' => 11,
+            'zed' => $zedMap['CCM'][$environment],
         ],
     ];
 } else {

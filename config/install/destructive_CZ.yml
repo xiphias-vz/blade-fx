@@ -4,7 +4,12 @@ env:
 command-timeout: 14400
 
 stores:
-    - OPA
+    - OST
+    - OLO
+    - ZLI
+    - LIB
+    - CAK
+    - CCM
 
 sections:
 

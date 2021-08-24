@@ -4,7 +4,12 @@ $storeCodeBucket =  getenv('SPRYKER_CODE_BUCKET');
 
 if($storeCodeBucket == 'CZ'){
     $availableStores = [
-        'OPA' => true,
+        'OST' => true,
+        'OLO' => true,
+        'ZLI' => true,
+        'LIB' => true,
+        'CAK' => true,
+        'CCM' => true,
     ];
     $activeStores = array_combine(
         array_keys($availableStores),

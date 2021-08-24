@@ -95,16 +95,66 @@ regions:
                 username: spryker
                 password: secret
         stores:
-            OPA:
+            OST:
                 services:
                     broker:
-                        namespace: opa_queue
+                        namespace: ost_queue
                     key_value_store:
                         namespace: 1
                     search:
-                        namespace: opa_search
+                        namespace: ost_search
                     session:
                         namespace: 2
+            OLO:
+                services:
+                    broker:
+                        namespace: olo_queue
+                    key_value_store:
+                        namespace: 3
+                    search:
+                        namespace: olo_search
+                    session:
+                        namespace: 4
+            ZLI:
+                services:
+                    broker:
+                        namespace: zli_queue
+                    key_value_store:
+                        namespace: 5
+                    search:
+                        namespace: zli_search
+                    session:
+                        namespace: 6
+            LIB:
+                services:
+                    broker:
+                        namespace: lib_queue
+                    key_value_store:
+                        namespace: 7
+                    search:
+                        namespace: lib_search
+                    session:
+                        namespace: 8
+            CAK:
+                services:
+                    broker:
+                        namespace: cak_queue
+                    key_value_store:
+                        namespace: 9
+                    search:
+                        namespace: cak_search
+                    session:
+                        namespace: 10
+            CCM:
+                services:
+                    broker:
+                        namespace: ccm_queue
+                    key_value_store:
+                        namespace: 11
+                    search:
+                        namespace: ccm_search
+                    session:
+                        namespace: 12
 groups:
     CZ-1:
         region: CZ
@@ -119,25 +169,45 @@ groups:
                 application: yves
                 endpoints:
                     shop-t.iglobus.cz:
-                        store: OPA
+                        store: OST
                         <<: *frontend-auth
             Glue:
                 application: glue
                 endpoints:
                     api.shop-t.iglobus.cz:
-                        store: OPA
+                        store: OST
             Zed:
                 application: zed
                 endpoints:
                     backoffice.shop-t.iglobus.cz:
-                        store: OPA
+                        store: OST
                         <<: *frontend-auth
-                    zed.opa.shop-t.iglobus.cz:
-                        store: OPA
+                    zed.ost.shop-t.iglobus.cz:
+                        store: OST
+                        <<: *frontend-auth
+                        primal: true
+                    zed.olo.shop-t.iglobus.cz:
+                        store: OLO
+                        <<: *frontend-auth
+                        primal: true
+                    zed.zli.shop-t.iglobus.cz:
+                        store: ZLI
+                        <<: *frontend-auth
+                        primal: true
+                    zed.lib.shop-t.iglobus.cz:
+                        store: LIB
+                        <<: *frontend-auth
+                        primal: true
+                    zed.cak.shop-t.iglobus.cz:
+                        store: CAK
+                        <<: *frontend-auth
+                        primal: true
+                    zed.ccm.shop-t.iglobus.cz:
+                        store: CCM
                         <<: *frontend-auth
                         primal: true
                     pick.shop-t.iglobus.cz:
-                        store: OPA
+                        store: OST
                         entry-point: StoreApp
                         <<: *frontend-auth
 services:
@@ -184,7 +254,7 @@ docker:
     ssl:
         enabled: true
     testing:
-        store: OPA
+        store: OST
     debug:
         enabled: false
         xdebug:

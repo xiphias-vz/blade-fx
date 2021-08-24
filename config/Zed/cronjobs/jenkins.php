@@ -172,7 +172,7 @@ if ($storeCodeBucket == 'CZ') {
         'command' => 'vendor/bin/install -r gsoa-based-full-import',
         'schedule' => '5 0 * * *',
         'enable' => true,
-        'stores' => ['OPA'],
+        'stores' => ['OST'],
     ];
 
     //Multiple statuses fix
@@ -181,7 +181,7 @@ if ($storeCodeBucket == 'CZ') {
         'command' => 'vendor/bin/console multiple-statuses:fix',
         'schedule' => '*/5 * * * *',
         'enable' => true,
-        'stores' => ['OPA'],
+        'stores' => ['OST'],
     ];
 
     // Export orders every day
@@ -190,7 +190,7 @@ if ($storeCodeBucket == 'CZ') {
         'command' => '$PHP_BIN vendor/bin/console data:export --config order_export_config.yml',
         'schedule' => '0 1 * * *',
         'enable' => true,
-        'stores' => ['OPA'],
+        'stores' => ['OST'],
     ];
 
     /* Sitemap generator*/
@@ -200,7 +200,7 @@ if ($storeCodeBucket == 'CZ') {
         'command' => '$PHP_BIN vendor/bin/console sitemap:generate',
         'schedule' => '0 4 * * *',
         'enable' => true,
-        'stores' => ['OPA'],
+        'stores' => ['OST'],
     ];
 
     /* Export sales order summary*/
@@ -210,7 +210,7 @@ if ($storeCodeBucket == 'CZ') {
         'command' => '$PHP_BIN vendor/bin/console data:exportSalesOrderSummary',
         'schedule' => '0 1 * * *',
         'enable' => true,
-        'stores' => ['OPA'],
+        'stores' => ['OST'],
     ];
 
     /* Export products deep links */
@@ -219,7 +219,7 @@ if ($storeCodeBucket == 'CZ') {
         'command' => '$PHP_BIN vendor/bin/console data:exportDeeplink',
         'schedule' => '0 9 * * 3',
         'enable' => true,
-        'stores' => ['OPA'],
+        'stores' => ['OST'],
     ];
 } else {
     $jobs[] = [

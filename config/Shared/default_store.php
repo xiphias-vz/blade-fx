@@ -3,7 +3,7 @@
 $storeCodeBucket = getenv('SPRYKER_CODE_BUCKET');
 
 if ($storeCodeBucket == 'CZ') {
-    return 'OPA';
+    return 'OST';
 } else {
     return 'EIN';
 }

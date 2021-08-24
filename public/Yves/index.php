@@ -27,7 +27,7 @@ $storeConfig = require(APPLICATION_ROOT_DIR . '/config/Shared/store_config.php')
 $storeCodeBucket = getenv('SPRYKER_CODE_BUCKET');
 
 if ($storeCodeBucket == 'CZ') {
-    $currentStore = $_COOKIE['current_store'] ?? 'OPA';
+    $currentStore = $_COOKIE['current_store'] ?? 'OST';
 } else {
     $currentStore = $_COOKIE['current_store'] ?? 'EIN';
 }

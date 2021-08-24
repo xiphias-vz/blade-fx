@@ -76,16 +76,66 @@ regions:
                 password: secret
 
         stores:
-            OPA:
+            OST:
                 services:
                     broker:
-                        namespace: opa_queue
+                        namespace: ost_queue
                     key_value_store:
                         namespace: 1
                     search:
-                        namespace: opa_search
+                        namespace: ost_search
                     session:
                         namespace: 2
+            OLO:
+                services:
+                    broker:
+                        namespace: olo_queue
+                    key_value_store:
+                        namespace: 3
+                    search:
+                        namespace: olo_search
+                    session:
+                        namespace: 4
+            ZLI:
+                services:
+                    broker:
+                        namespace: zli_queue
+                    key_value_store:
+                        namespace: 5
+                    search:
+                        namespace: zli_search
+                    session:
+                        namespace: 6
+            LIB:
+                services:
+                    broker:
+                        namespace: lib_queue
+                    key_value_store:
+                        namespace: 7
+                    search:
+                        namespace: lib_search
+                    session:
+                        namespace: 8
+            CAK:
+                services:
+                    broker:
+                        namespace: cak_queue
+                    key_value_store:
+                        namespace: 9
+                    search:
+                        namespace: cak_search
+                    session:
+                        namespace: 10
+            CCM:
+                services:
+                    broker:
+                        namespace: ccm_queue
+                    key_value_store:
+                        namespace: 11
+                    search:
+                        namespace: ccm_search
+                    session:
+                        namespace: 12
 
 
 groups:
@@ -102,20 +152,59 @@ groups:
                 application: yves
                 endpoints:
                     www.shop.globus.local:
-                        store: OPA
+                        store: OST
             Zed:
                 application: zed
                 endpoints:
                     backoffice.shop.globus.local:
-                        store: OPA
+                        store: OST
 
-                    zed.opa.shop.globus.local:
-                        store: OPA
+                    zed.ost.shop.globus.local:
+                        store: OST
                         primal: true
 
+                    zed.olo.shop.globus.local:
+                        store: OLO
+                        primal: true
 
-                    filial-app.opa.shop.globus.local:
-                        store: OPA
+                    zed.zli.shop.globus.local:
+                        store: ZLI
+                        primal: true
+
+                    zed.lib.shop.globus.local:
+                        store: LIB
+                        primal: true
+
+                    zed.cak.shop.globus.local:
+                        store: CAK
+                        primal: true
+
+                    zed.ccm.shop.globus.local:
+                        store: CCM
+                        primal: true
+
+                    filial-app.ost.shop.globus.local:
+                        store: OST
+                        entry-point: StoreApp
+
+                    filial-app.olo.shop.globus.local:
+                        store: OLO
+                        entry-point: StoreApp
+
+                    filial-app.zli.shop.globus.local:
+                        store: ZLI
+                        entry-point: StoreApp
+
+                    filial-app.lib.shop.globus.local:
+                        store: LIB
+                        entry-point: StoreApp
+
+                    filial-app.cak.shop.globus.local:
+                        store: CAK
+                        entry-point: StoreApp
+
+                    filial-app.ccm.shop.globus.local:
+                        store: CCM
                         entry-point: StoreApp
 
 
@@ -172,7 +261,7 @@ docker:
         enabled: true
 
     testing:
-        store: OPA
+        store: OST
 
     debug:
         enabled: true

@@ -9,8 +9,25 @@ use Pyz\Shared\ProductImage\ProductImageConstants;
 use Pyz\Shared\Store\StoreConstants;
 use Spryker\Service\FlysystemLocalFileSystem\Plugin\Flysystem\LocalFilesystemBuilderPlugin;
 use Spryker\Shared\FileSystem\FileSystemConstants;
-use Spryker\Shared\Synchronization\SynchronizationConstants;
 
+$config[StoreConstants::SAP_STORE_ID_TO_STORE_MAP] = [
+    4007 => 'OST',
+    4008 => 'OLO',
+    4003 => 'ZLI',
+    4006 => 'LIB',
+    4005 => 'CAK',
+    4002 => 'CCM',
+];
+
+// ----------- Stores
+$config[StoreConstants::STORE_NAMES] = [
+    'OST' => 'Ostrava',
+    'OLO' => 'Olomouc',
+    'ZLI' => 'Zličín',
+    'LIB' => 'Liberec',
+    'CAK' => 'Čakovice',
+    'CCM' => 'Černý Most',
+];
 
 // ---------- FileSystem
 $config[FileSystemConstants::FILESYSTEM_SERVICE] = [
@@ -42,14 +59,7 @@ $config[FileSystemConstants::FILESYSTEM_SERVICE] = [
     ],
 ];
 
-$config[StoreConstants::SAP_STORE_ID_TO_STORE_MAP] = [
-    4012 => 'OPA',
-];
 
-// ----------- Stores
-$config[StoreConstants::STORE_NAMES] = [
-    'OPA' => 'Opava',
-];
 // ----------- Google Tag Manager
 $config[GoogleTagManagerConstants::CONTAINER_ID] = 'GTM-PPGX4LT';
 

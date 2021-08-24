@@ -1,2 +1,7 @@
 region_number,store,region_name,filial_number,zip_code,city,street,latitude,longitude,picking_capacity_per_slot,delivery_capacity_per_slot
-41,OPA,Czech,4012,74600,"Opava","Těšínská 83",52.532278,13.384491,10,
+41,OST,Czech,4007,72527,Ostrava,Spojovací 326,52.532278,13.384491,10,
+41,OLO,Czech,4008,77900,Olomouc,Pražská ul. 39/248,52.532278,13.384491,10,
+41,ZLI,Czech,4003,15500,Zličín,Sárská 5/133,52.532278,13.384491,10,
+41,LIB,Czech,4006,46011,Liberec,Sousedská 600,52.532278,13.384491,10,
+41,CAK,Czech,4005,19600,Čakovice,Kostelecká 823,52.532278,13.384491,10,
+41,CCM,Czech,4002,19819 ,Černý Most,Chlumecká 765/6,52.532278,13.384491,10,
