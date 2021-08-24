@@ -53,17 +53,23 @@
                 <input id="base-unit-quantity" type="hidden" value="{{ data.minQuantityInBaseUnit }}"
                        name="quantity"/>
             {% else %}
-                {% embed atom('select') with {
+
+                {% embed molecule('custom-select') with {
                     modifiers: ['expand'],
-                    data: {
-                        options: data.quantityOptions
+                    embed: {
+                        quantityOptions: data.quantityOptions,
                     },
                     attributes: {
-                        name: 'quantity'
+                        style: "width: 100% !important"
                     }
                 } only %}
-                    {% block selectClass %}js-volume-price__quantity{% endblock %}
+                    {% block options %}
+                        {% for itemQn in embed.quantityOptions %}
+                            <option value="{{ itemQn.value }}">{{ itemQn.label }}</option>
+                        {% endfor %}
+                    {% endblock %}
                 {% endembed %}
+
             {% endif %}
         </div>
         <div class="col {% if data.salesUnitCount %}col--sm-4{% else %}col--sm-6{% endif %} add-to-cart-holder">
