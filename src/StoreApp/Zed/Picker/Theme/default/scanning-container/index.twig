@@ -47,7 +47,8 @@
         data: {
             colorCode: data.orderForScanningContainer.pickingColor.backColor,
             colorNumber: data.orderForScanningContainer.pickingColor.idColor,
-            textColor: data.orderForScanningContainer.pickingColor.foreColor
+            textColor: data.orderForScanningContainer.pickingColor.foreColor,
+            isSubstitutionAllowed: data.orderForScanningContainer.isSubstitutionAllowed | default,
         }
     } only %}
 

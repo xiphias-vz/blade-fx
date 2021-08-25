@@ -1,0 +1,70 @@
+{% extends model('component') %}
+
+{% define config = {
+    name: 'popup-ui-substitute',
+    tag: 'popup-ui-substitute'
+} %}
+
+{% define data = {
+    title: '',
+    buttons: {
+        submit: {
+            title: 'multi.picking.substitutes.popupui.confirm.button' | trans,
+            isButton: false,
+            type:'button',
+            blank: false,
+        },
+        cancel: {
+            title: 'multi.picking.substitutes.popupui.cancel.button' | trans,
+            type:'button',
+            isButton: false
+        },
+    },
+    headerBorderBottomColor: '#000',
+    contentBackgroundColor: '#FFF',
+    borderRadius: 24,
+    textAlign: 'center',
+    id: '',
+} %}
+
+{% define attributes = {
+    'close-on-submit': true
+} %}
+
+{% block body %}
+    <div class="{{ config.name }}__overlay" id="{{ data.id }}">
+        <div class="{{ config.name }}__container" style="border-radius: {{ data.borderRadius }};">
+            <div class="{{ config.name }}__title-container" style="border-bottom: 1px solid {{ data.headerBorderBottomColor }};">
+                <div class="{{ config.name }}__title col col--xs-10 col--sm-10 col--md-10">
+                    {{ data.title }}
+                </div>
+            </div>
+            <div class="{{ config.name }}__content">
+                {% block content %}{% endblock %}
+                <div id="substituteButtons" class="{{config.name}}--buttons-div">
+                    {% block popupActions %}
+                        {% if data.buttons.cancel.isButton %}
+                            {% block cancelButton %}
+                                <div class="col {{config.name}}--div-button">
+                                    <button type="{{ data.buttons.cancel.type }}" class="button {{config.name}}--no-button {{config.name}}__no-substitute">
+                                        {{ data.buttons.cancel.title }}
+                                    </button>
+                                </div>
+                            {% endblock %}
+                        {% endif %}
+                        {% block confirmButton %}
+                            {% if data.buttons.submit.isButton %}
+                                <div class="col {{config.name}}--div-button">
+                                    <button type="{{ data.buttons.submit.type }}" class="button {{config.name}}--yes-button {{ config.name }}__yes-substitute">
+                                        {{ data.buttons.submit.title }}
+                                    </button>
+                                </div>
+                            {% endif %}
+                        {% endblock %}
+                    {% endblock %}
+                </div>
+            </div>
+        </div>
+    </div>
+    {% block button %}{% endblock %}
+{% endblock %}

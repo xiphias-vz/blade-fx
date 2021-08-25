@@ -8,11 +8,23 @@
 {% define data = {
     colorCode: '',
     colorNumber: '',
-    textColor: ''
+    textColor: '',
+    isSubstitutionAllowed: ''
 } %}
 
 {% block body %}
     <div class="container-color-holder" style="background-color: {{ data.colorCode }}">
-        <p class="color-number" style="color: {{ data.textColor }}">{{ data.colorNumber }}</p>
+
+        <p class="color-number" style="color: {{ data.textColor }}">{{ data.colorNumber }}
+            {% if data.isSubstitutionAllowed == '' or data.isSubstitutionAllowed == '0' %}
+                {% include atom('icon') with {
+                    class: 'icon-substitutes',
+                    modifiers: ['big'],
+                    data: {
+                        name: 'icon-not-substitutes',
+                    },
+                } only %}
+            {% endif %}
+        </p>
     </div>
 {% endblock %}

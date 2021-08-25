@@ -21,6 +21,7 @@
     isMultiPickingProcess: isMultiPickingProcess,
     orderItemStatus: orderItemStatus,
     itemPickingStartTime: itemPickingStartTime,
+    isSubstitutionAllowed: isSubstitutionAllowed,
 } %}
 
  {% if data.currentPositionData is defined %}
@@ -95,7 +96,8 @@
                 openModal: data.openModal,
                 fromPosListeAndModal: data.fromPosListeAndModal,
                 orderItemStatus: data.orderItemStatus,
-                itemPickingStartTime: data.itemPickingStartTime
+                itemPickingStartTime: data.itemPickingStartTime,
+                isSubstitutionAllowed: data.isSubstitutionAllowed
             },
             attributes: {
                 'data-sku': currentPosition.ean,

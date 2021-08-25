@@ -128,7 +128,8 @@ class PickingHeaderTransferData
            so.articles_quantity,
            so.is_paused,
            sso.created_at as performance_order_date,
-           case when popb.fk_user is null then 0 else 1 end as isLocked
+           case when popb.fk_user is null then 0 else 1 end as isLocked,
+           sso.is_substitution_allowed
     from spy_sales_order sso
         inner join
          (
@@ -323,6 +324,7 @@ class PickingHeaderTransferData
         $pickedItems = [];
         $nonPickedItems = [];
 
+        $orderItem->setIsSubstitutionFound(false);
         $transfer->setParents(false);
         $order = $orderItem->getParent();
         $transfer->setParents(true);
@@ -387,6 +389,7 @@ class PickingHeaderTransferData
         if ($result) {
             //save data to spy_sales_order_item - SpySalesOrderItemQuery
             $orderItem = $transfer->getOrderItem($transfer->getLastPickingItemPosition());
+            $orderItem->setIsSubstitutionFound(false);
             $this->saveCurrentOrderItemPaused($orderItem, $isPaused);
 
             $orderItem->setPerformancePickingStartedAt($this->getPerformancePickingStartedAt());
@@ -413,7 +416,7 @@ class PickingHeaderTransferData
         $paused = $isPaused ? 1 : 0;
         if (count($idList) > 0) {
             $whereList = implode($idList, ",");
-            $qry = "update spy_sales_order_item set item_paused = " . $paused . " where id_sales_order_item in(" . $whereList . ")";
+            $qry = "update spy_sales_order_item set item_paused = " . $paused . ", is_substitution_found = " . $orderItem->getIsSubstitutionFound() . " where id_sales_order_item in(" . $whereList . ")";
             $this->getResult($qry, false);
         }
 
@@ -439,10 +442,11 @@ class PickingHeaderTransferData
 
     /**
      * @param bool $isCanceled
+     * @param bool $isSubstitutionFound
      *
      * @return bool
      */
-    public function setCurrentOrderItemCanceled(bool $isCanceled): bool
+    public function setCurrentOrderItemCanceled(bool $isCanceled, bool $isSubstitutionFound): bool
     {
         $transfer = $this->getTransferFromSession();
         if ($transfer->setCurrentOrderItemCanceled($isCanceled)) {
@@ -450,6 +454,7 @@ class PickingHeaderTransferData
 
             $orderItem = $transfer->getOrderItem($transfer->getLastPickingItemPosition());
             $orderItem->setIsPaused(false);
+            $orderItem->setIsSubstitutionFound($isSubstitutionFound);
             $this->saveCurrentOrderItemPaused($orderItem, false);
 
             $orderItem->setPerformancePickingStartedAt($this->getPerformancePickingStartedAt());

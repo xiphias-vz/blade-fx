@@ -191,3 +191,7 @@ multi.picking.order.dialog.title, Check deinen Pick
 multi.picking.order.dialog.content, Zone fertigstellt oder willst du nochmal prüfen?
 multi.picking.order.dialog.button, Zone Bestätigen
 multi.picking.product.attribute.weight,Gewicht
+multi.picking.substitutes.popupui.title,Ersatzartikel
+multi.picking.substitutes.popupui.confirm.button,Ja
+multi.picking.substitutes.popupui.cancel.button,Nein
+multi.picking.substitutes.popupui.message,Ist ein Ersatzartikel vorhanden?

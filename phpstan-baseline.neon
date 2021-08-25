@@ -159,3 +159,8 @@ parameters:
 			message: "#^Call to an undefined method SprykerShop\\\\Yves\\\\CustomerPage\\\\Form\\\\RegisterForm\\:\\:addFieldReceiveNotificationsAboutProducts\\(\\)\\.$#"
 			count: 1
 			path: src/Pyz/Yves/CustomerPage/Form/RegisterForm.php
+
+		-
+			message: "#^Call to an undefined method Generated\\\\Zed\\\\Ide\\\\AutoCompletion\\|Spryker\\\\Shared\\\\Kernel\\\\LocatorLocatorInterface\\:\\:picker\\(\\)\\.$#"
+			count: 1
+			path: src/StoreApp/Zed/Picker/PickerDependencyProvider.php

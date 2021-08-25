@@ -32,6 +32,11 @@
         display: none;
     }
 
+    .button-note-div {
+        width: rem(54);
+        text-align: right;
+    }
+
     .multi-picking-customer-note {
         &__content
         {

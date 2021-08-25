@@ -15,6 +15,10 @@
         }
 
     }
+    .icon-substitutes {
+        float: right;
+        margin: 8px 10px 0px 0px;
+    }
 }
 
 @include picker-container-color();

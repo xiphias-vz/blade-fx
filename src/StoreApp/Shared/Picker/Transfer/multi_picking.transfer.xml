@@ -38,6 +38,7 @@
         <property name="parent" type="PickingHeader"/>
         <property name="performanceOrderDate" type="string"/>
         <property name="idPerformanceSalesOrderReport" type="int"/>
+        <property name="isSubstitutionAllowed" type="bool"/>
     </transfer>
 
     <transfer name="PickingContainerTransfer">
@@ -89,6 +90,8 @@
         <property name="doubleDigits" type="bool"/>
         <property name="parent" type="PickingOrder"/>
         <property name="performancePickingStartedAt" type="string"/>
+        <property name="isSubstitutionFound" type="bool"/>
+        <property name="isSubstitutionAllowedOnOrder" type="bool"/>
     </transfer>
 
     <transfer name="PickingColorTransfer">

@@ -46,6 +46,14 @@
                     {% endfor %}
                     </div>
                     <div class="button-note-div">
+                        {% if order.isSubstitutionAllowed == '' or order.isSubstitutionAllowed == '0' %}
+                            {% include atom('icon') with {
+                                modifiers: ['big'],
+                                data: {
+                                    name: 'icon-not-substitutes',
+                                },
+                            } only %}
+                        {% endif %}
                         <button type="button" id="buttonNote-{{ order.idOrder }}" class="{{ config.name }}__overview-bubble">
                             {% include atom('icon') with {
                                 modifiers: ['big'],

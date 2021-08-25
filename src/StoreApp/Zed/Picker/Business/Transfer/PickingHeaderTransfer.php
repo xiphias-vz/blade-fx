@@ -220,6 +220,7 @@ class PickingHeaderTransfer extends SpyPickingHeaderTransfer
                 if ($orderItemN->getPickingItemPosition() == $oldPosition + 1) {
                     $this->setLastPickingItemPosition($orderItemN->getPickingItemPosition());
                     $orderItem = $orderItemN;
+                    $orderItem->setIsSubstitutionAllowedOnOrder($order->getIsSubstitutionAllowed());
                 }
             }
         }

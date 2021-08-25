@@ -157,10 +157,11 @@ interface PickerFacadeInterface
 
     /**
      * @param bool $isCanceled
+     * @param bool $isSubstitutionFound
      *
      * @return bool
      */
-    public function setCurrentOrderItemCanceled(bool $isCanceled): bool;
+    public function setCurrentOrderItemCanceled(bool $isCanceled, bool $isSubstitutionFound): bool;
 
     /**
      * @param string $containerID

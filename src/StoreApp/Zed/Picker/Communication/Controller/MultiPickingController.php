@@ -106,6 +106,7 @@ class MultiPickingController extends BaseOrderPickingController
         $positionToDisplay = $_REQUEST['position'] ?? '';
         $openModal = $_REQUEST['fromModal'] ?? 'false';
         $fromPosListeAndModal = $_REQUEST['fromPosListeAndModal'] ?? 'false';
+        $isSubstitutionFound = $_REQUEST['isSubstitutionPicked'] ?? 'false';
 
         if ($request->request->count() > 0) {
             if ($request->request->has('saveAndGoToNext')) {
@@ -120,7 +121,7 @@ class MultiPickingController extends BaseOrderPickingController
                             $this->getFacade()->setCurrentOrderItemPicked($quantity, $weight);
                             break;
                         case "declined":
-                            $currentItemResponse = $this->getFacade()->setCurrentOrderItemCanceled(true);
+                            $currentItemResponse = $this->getFacade()->setCurrentOrderItemCanceled(true, strtolower($isSubstitutionFound) == 'true' ? true : false);
                             break;
                     }
                     if ($keyValue == "End") {
@@ -192,6 +193,11 @@ class MultiPickingController extends BaseOrderPickingController
 
         $itemPickingStartTime = date("Y-m-d H:i:s");
 
+        $isSubstitutionAllowedOnOrder = $nextOIData->getIsSubstitutionAllowedOnOrder();
+        if ($nextOIData->getIsSubstitutionAllowedOnOrder() === null) {
+            $isSubstitutionAllowedOnOrder = "0";
+        }
+
         return [
             'currentPositionData' => $nextOIData,
             'orderPosition' => $orderPosition,
@@ -213,6 +219,7 @@ class MultiPickingController extends BaseOrderPickingController
             'openModal' => $openModal,
             'fromPosListeAndModal' => $fromPosListeAndModal,
             'itemPickingStartTime' => $itemPickingStartTime,
+            'isSubstitutionAllowed' => $isSubstitutionAllowedOnOrder,
         ];
     }
 

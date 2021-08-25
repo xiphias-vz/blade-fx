@@ -21,7 +21,8 @@
     openModal: '',
     fromPosListeAndModal: '',
     orderItemStatus: '',
-    itemPickingStartTime: ''
+    itemPickingStartTime: '',
+    isSubstitutionAllowed: ''
 } %}
 
 {% set title = data.currentPositionData['name'] %}
@@ -63,11 +64,30 @@
         <input type="hidden" id="orderItemStatus" value="{{ data.orderItemStatus }}">
         <input type="hidden" id="listOfIdContainers" value="{{ data.listOfContainers }}">
         <input type="hidden" id="itemPickingStartTime" value="{{ data.itemPickingStartTime }}">
+        <input type="hidden" id="isSubstitutionAllowed" value="{{ data.isSubstitutionAllowed }}">
+        <input type="hidden" id="isSubstitutionPicked" value="false">
         <div class="col col--expand">
             <div class="box {{ config.name }}__info">
                 <div class="{{ config.name }}__item-head-box">
                     <div class="{{ config.name }}__item-position">
                         <p class="{{ config.name }}__circle-position" style="color:{{ currentArticleColors.foreColor }}; background-color: {{ currentArticleColors.backColor }}; padding-top: 0.2rem; border: 2px solid {{ currentArticleColors.circleColor }};">{{ currentArticleColors.idColor }}</p>
+                        {% if data.isSubstitutionAllowed == '' or data.isSubstitutionAllowed == '0' %}
+                            {% include atom('icon') with {
+                                class: 'icon-substitute-item',
+                                modifiers: ['big'],
+                                data: {
+                                    name: 'icon-not-substitutes',
+                                },
+                            } only %}
+                            {% else %}
+                                {% include atom('icon') with {
+                                    class: 'icon-substitute-item product-item-multiple-picking--hide',
+                                    modifiers: ['big'],
+                                    data: {
+                                        name: 'icon-substitutes',
+                                    },
+                                } only %}
+                        {% endif %}
                     </div>
                     <div class="{{ config.name }}__item-location">
                         <p>{{ shelf ?? ''}}-{{ shelfField ?? ''}}-{{ shelfFloor ?? ''}}</p>
@@ -289,6 +309,32 @@
                 {% block formElementScan %}
                     <div id="containerScanDiv">
                         <input class="input input--expand" id="txt_container_scan" placeholder="Container scannen" type="text" />
+                    </div>
+                {% endblock %}
+            </div>
+        {% endblock %}
+
+    {% endembed %}
+
+    {% embed molecule('popup-ui-substitute') with {
+        data: {
+            title: 'multi.picking.substitutes.popupui.title' | trans,
+            buttons: {
+                submit: {
+                    isButton: true
+                },
+                cancel: {
+                    isButton: true
+                },
+            },
+            borderRadius: 0
+        }
+    } only %}
+        {% block content %}
+            <div>
+                {% block formMessage %}
+                    <div id="substituteMessage">
+                        <p>{{ 'multi.picking.substitutes.popupui.message' | trans }}</p>
                     </div>
                 {% endblock %}
             </div>

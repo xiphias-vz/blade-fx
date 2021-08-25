@@ -13,6 +13,10 @@ $setting-item-border-radius: rem(8);
             }
         }
 
+        &--hide {
+            display: none;
+        }
+
         &__info {
             position: relative;
             border: rem(2) solid transparent;
@@ -408,6 +412,11 @@ $setting-item-border-radius: rem(8);
                 padding: rem(16);
                 background: $setting-color-white;
             }
+        }
+
+        .icon-substitute-item{
+            width: rem(32) !important;
+            height: rem(32) !important;
         }
 
         #gridOfTheProduct {
