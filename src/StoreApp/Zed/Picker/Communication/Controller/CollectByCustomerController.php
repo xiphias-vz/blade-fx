@@ -61,6 +61,8 @@ class CollectByCustomerController extends AbstractController
         self::PRODUCT_TYPE_FROZEN => 3,
     ];
 
+    protected const PRICE_DIVISION = 100;
+
     /**
      * @param \Symfony\Component\HttpFoundation\Request $request
      *
@@ -288,6 +290,7 @@ class CollectByCustomerController extends AbstractController
             'merchant' => $this->getMerchantFromRequest($request),
             'collectDetailsForm' => $orderItemSelectionForm->createView(),
             'collectOrder' => $collectOrderTransfer,
+            'isSubstitutionAllowed' => $salesOrderTransfer->getIsSubstitutionAllowed(),
             'paramIdSalesOrder' => PickerConfig::REQUEST_PARAM_ID_ORDER,
             'idSalesOrder' => $salesOrderTransfer->getIdSalesOrder(),
             'orderReference' => $salesOrderTransfer->getOrderReference(),
@@ -568,7 +571,10 @@ class CollectByCustomerController extends AbstractController
                 $this->getProductType($productAttributes)
             )
             ->setQuantity($itemTransfer->getQuantity())
-            ->setImageUrl($itemTransfer->getMetadata()->getImage() ?? '');
+            ->setImageUrl($itemTransfer->getMetadata()->getImage() ?? '')
+            ->setIsSubstitutionFound($itemTransfer->getIsSubstitutionFound())
+            ->setItemPrice($itemTransfer->getUnitGrossPrice() / static::PRICE_DIVISION)
+            ->setIsSaleArticle($itemTransfer->getOriginalPrice() > $itemTransfer->getUnitGrossPrice());
     }
 
     /**

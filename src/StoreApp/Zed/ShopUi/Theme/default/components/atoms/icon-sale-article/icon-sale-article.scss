@@ -1,0 +1,19 @@
+@mixin shop-ui-icon-sale-article($name: '.icon-sale-article') {
+    #{$name} {
+        display: inline-block;
+        background-color: #FF3B21;
+        padding: 0 4px 0 4px;
+        color: #FFF;
+        font-weight: bold;
+        border-radius: 3px;
+        float: right;
+
+        @include helper-breakpoint-media-max($sm-max)  {
+            margin-left: 8px;
+            font-size: 10px;
+            margin-bottom: 3px;
+        }
+    }
+}
+
+@include shop-ui-icon-sale-article();

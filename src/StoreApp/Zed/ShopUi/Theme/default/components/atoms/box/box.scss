@@ -9,6 +9,12 @@
             background: $setting-color-white;
         }
 
+        &.order-item-pickup {
+            @include helper-breakpoint-media-max($sm-max)  {
+                padding:.5rem;
+            }
+        }
+
         &__bottom {
             padding: rem(4) rem(16);
             margin: rem(16) rem(-16) 0;
@@ -48,7 +54,7 @@
         &--white {
             background: $setting-color-white;
         }
-        
+
         &--actions {
             min-height: rem(70);
         }

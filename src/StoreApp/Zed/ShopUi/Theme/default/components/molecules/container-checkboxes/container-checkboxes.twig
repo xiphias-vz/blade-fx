@@ -14,7 +14,7 @@
             <div class="col col--md-12">
                 {% include atom('checkbox') with {
                     data: {
-                        label: container.shelf_code ~ ' > ' ~ container.container_code,
+                        label: '<span class="abbreviation">'~container.abbreviation ~' ></span>' ~ container.shelf_code ~ ' > ' ~ container.container_code,
                         containerID: container.container_code
                     },
                 } only %}

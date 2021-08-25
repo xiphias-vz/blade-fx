@@ -4,6 +4,7 @@
     merchant: merchant,
     collectDetailsForm: collectDetailsForm,
     collectOrder: collectOrder,
+    isSubstitutionAllowed: isSubstitutionAllowed,
     paramIdSalesOrder: paramIdSalesOrder,
     idSalesOrder: idSalesOrder,
     orderReference: orderReference,
@@ -54,6 +55,7 @@
             data: {
                 reference: data.orderReference,
                 collectNumber: data.collectNumber,
+                isSubstitutionAllowed: data.isSubstitutionAllowed,
                 productsCount: data.pickedProductCount,
                 date: data.requestedDeliveryDate | split(' ') | first | date('d/m/Y'),
                 deadline: data.requestedDeliveryDate | split(' ') | last ~ ' ' ~ 'hour' | trans,

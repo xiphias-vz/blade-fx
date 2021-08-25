@@ -76,7 +76,6 @@ class ProductExpander extends SprykerProductExpander implements ProductExpanderI
 
             if (!empty($assortmentZone)) {
                 $merchantReference = $cartChangeTransfer->getQuote()->getMerchantReference();
-
                 $query = PyzPickingZoneQuery::create();
                 $query->joinWithPyzAssortmentPickZoneRelation()
                     ->usePyzAssortmentPickZoneRelationQuery()
@@ -96,8 +95,10 @@ class ProductExpander extends SprykerProductExpander implements ProductExpanderI
 
         $weightPerUnit = $this->calculateWeightPerItem($productConcreteTransfer->getAttributes());
 
+        $currentStoreName = $cartChangeTransfer->getQuote()->getStore()->getName();
+
         $priceProductAbstractStorageEntity = $this->createPriceProductAbstractStorageQuery();
-        $priceProductAbstractData = $this->getPriceProductByProductFromAbstractStorageEntity($priceProductAbstractStorageEntity, $productConcreteTransfer);
+        $priceProductAbstractData = $this->getPriceProductByProductFromAbstractStorageEntity($priceProductAbstractStorageEntity, $productConcreteTransfer, $currentStoreName);
         $originalPrice = null;
         $grossPriceData = null;
         if (isset($priceProductAbstractData['prices']->EUR->GROSS_MODE)) {
@@ -158,16 +159,19 @@ class ProductExpander extends SprykerProductExpander implements ProductExpanderI
     /**
      * @param \Orm\Zed\PriceProductStorage\Persistence\SpyPriceProductAbstractStorageQuery $priceProductAbstractStorageQuery
      * @param \Generated\Shared\Transfer\ProductConcreteTransfer $productConcreteTransfer
+     * @param string $currentStoreName
      *
      * @return array
      */
     protected function getPriceProductByProductFromAbstractStorageEntity(
         SpyPriceProductAbstractStorageQuery $priceProductAbstractStorageQuery,
-        ProductConcreteTransfer $productConcreteTransfer
+        ProductConcreteTransfer $productConcreteTransfer,
+        string $currentStoreName
     ): array {
         $priceProductAbstractStorageEntity = $priceProductAbstractStorageQuery
             ->select(['data'])
             ->filterByFkProductAbstract($productConcreteTransfer->getFkProductAbstract())
+            ->filterByStore($currentStoreName)
             ->findOne();
 
         return (array)json_decode($priceProductAbstractStorageEntity);

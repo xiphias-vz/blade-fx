@@ -15,6 +15,7 @@ class PickingZoneWriterStep implements DataImportStepInterface
 {
     protected const KEY_PICKING_ZONE_NAME = 'picking_zone_name';
     protected const KEY_IS_DEFAULT = 'is_default';
+    protected const ABBREVIATION = 'abbreviation';
 
     /**
      * @param \Spryker\Zed\DataImport\Business\Model\DataSet\DataSetInterface $dataSet
@@ -27,7 +28,9 @@ class PickingZoneWriterStep implements DataImportStepInterface
             ->filterByName($dataSet[static::KEY_PICKING_ZONE_NAME])
             ->findOneOrCreate();
 
-        $pickingZoneQuery->setIsDefault($dataSet[static::KEY_IS_DEFAULT]);
+        $pickingZoneQuery
+            ->setIsDefault($dataSet[static::KEY_IS_DEFAULT])
+            ->setAbbreviation($dataSet[static::ABBREVIATION]);
 
         if ($pickingZoneQuery->isNew() || $pickingZoneQuery->isModified()) {
             $pickingZoneQuery->save();

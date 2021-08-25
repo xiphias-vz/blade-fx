@@ -9,6 +9,7 @@
         <property name="shelfCode" type="string"/>
         <property name="idSalesOrder" type="int"/>
         <property name="idPickingZone" type="int"/>
+        <property name="abbreviation" type="string"/>
     </transfer>
 
     <transfer name="PickingSalesOrderCollection">

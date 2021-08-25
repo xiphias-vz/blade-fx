@@ -19,6 +19,9 @@
         <property name="imageUrl" type="string"/>
         <property name="quantity" type="int"/>
         <property name="productType" type="string"/>
+        <property name="isSubstitutionFound" type="string"/>
+        <property name="itemPrice" type="int"/>
+        <property name="isSaleArticle" type="bool"/>
     </transfer>
 
 </transfers>

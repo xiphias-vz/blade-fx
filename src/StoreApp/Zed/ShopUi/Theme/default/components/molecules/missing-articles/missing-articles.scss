@@ -3,18 +3,72 @@
         margin-top: rem(15);
         margin-bottom: rem(10);
 
-        .productName {
-            font-weight: bold;
+        .info {
+            display: flex;
+            margin-bottom: 5px;
+
+            .left-info {
+                display: flex;
+                align-items: center;
+                width: 70%;
+
+                @include helper-breakpoint-media-max($sm-max)  {
+                    font-size: 12px;
+                    width: 65%;
+                }
+
+                @include helper-breakpoint-media-max($xsm-max)  {
+                    width: 54%;
+                }
+
+                .product-name {
+                    font-weight: bold;
+                }
+            }
+
+            .right-info {
+                display: flex;
+                align-items: center;
+                width: 30%;
+                @include helper-breakpoint-media-max($sm-max)  {
+                    width: 35%;
+                }
+                @include helper-breakpoint-media-max($xsm-max)  {
+                    width: 45%;
+                }
+                .product-name,
+                .item-price,
+                .quantity {
+                    width: 75px;
+                    padding: 0 8px 0 8px;
+
+                    @include helper-breakpoint-media-max($sm-max)  {
+                        width: 57%;
+                        padding: 0 2px 0 8px;
+                        font-size: 12px;
+                    }
+                }
+            }
+
         }
+
 
         .pickedProducts {
             color: red;
         }
 
-        .quantity {
-            float: right;
-        }
+        .icon-substitution-item-found {
+            display: inline-block;
+            margin-right: 15px;
+            @include helper-breakpoint-media-max($xsm-max)  {
+                margin-right: 5px;
 
+                .icon {
+                    width: 1rem;
+                    height: 1rem;
+                }
+            }
+        }
     }
 }
 

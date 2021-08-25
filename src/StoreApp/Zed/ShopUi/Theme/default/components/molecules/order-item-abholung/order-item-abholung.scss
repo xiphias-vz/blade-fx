@@ -4,6 +4,12 @@ $setting-item-border-radius: rem(8);
     #{$name} {
         margin-bottom: rem(8);
 
+        .header-content {
+            .icon-substitution {
+                float: right;
+            }
+        }
+
         &--picked {
             #{$name} {
                 &__left-col,

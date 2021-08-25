@@ -11,12 +11,14 @@ use Generated\Shared\Transfer\PickingSalesOrderCollectionTransfer;
 use Generated\Shared\Transfer\PickingSalesOrderCriteriaTransfer;
 use Generated\Shared\Transfer\PickingSalesOrderTransfer;
 use Orm\Zed\PickingSalesOrder\Persistence\PyzPickingSalesOrderQuery;
+use Orm\Zed\PickingZone\Persistence\Map\PyzPickingZoneTableMap;
 use Orm\Zed\Sales\Persistence\Map\SpySalesOrderTableMap;
 use Spryker\Zed\Sales\Business\SalesFacadeInterface;
 use StoreApp\Zed\Picker\Business\PickerBusinessFactory;
 
 class ContainerReader implements ContainerReaderInterface
 {
+    protected const ALIAS_ABBREVIATION = 'abbreviation';
     /**
      * @var \Orm\Zed\PickingSalesOrder\Persistence\PyzPickingSalesOrderQuery $pyzPickingSalesOrderQuery
      */
@@ -100,7 +102,9 @@ class ContainerReader implements ContainerReaderInterface
     {
         $pickingSalesOrderCollectionTransfer = (new PickingSalesOrderCollectionTransfer());
         $pickingSalesOrders = $this->pyzPickingSalesOrderQuery
+            ->leftJoinWithPickingZone()
             ->orderByShelfCode()
+            ->withColumn(PyzPickingZoneTableMap::COL_ABBREVIATION, static::ALIAS_ABBREVIATION)
             ->findByFkSalesOrder($orderId)->getData();
 
         foreach ($pickingSalesOrders as $pyzPickingSalesOrderEntity) {

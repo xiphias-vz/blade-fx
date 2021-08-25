@@ -10,13 +10,33 @@
     date: '',
     deadline: required,
     dayOfTheWeek: '',
-    detailPage: false
+    detailPage: false,
+    isSubstitutionAllowed: false,
 } %}
 
 {% block body %}
-    <div class="{{ component.renderClass('box', modifiers) }}">
+    <div class="{{ component.renderClass('box', modifiers) }} order-item-pickup">
         {% if data.detailPage %}
-            <div>
+            <div class="header-content">
+                <div class="icon-substitution">
+                    {% if data.isSubstitutionAllowed %}
+                        {% include atom('icon') with {
+                            modifiers: ['big'],
+                            class: 'custom__icon',
+                            data: {
+                                name: 'icon-substitutes',
+                            },
+                        } only %}
+                        {% else %}
+                            {% include atom('icon') with {
+                                modifiers: ['big'],
+                                class: 'custom__icon',
+                                data: {
+                                    name: 'icon-not-substitutes',
+                                },
+                            } only %}
+                    {% endif %}
+                </div>
                 <div>
                     {% if data.collectNumber %}
                         <div class="{{ config.name }}__collect">

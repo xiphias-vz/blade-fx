@@ -12,6 +12,8 @@ use Orm\Zed\PickingSalesOrder\Persistence\PyzPickingSalesOrder;
 
 class PickingSalesOrderMapper
 {
+    public const PYZ_PICKING_ZONE_ABBREVIATION = 'abbreviation';
+
     /**
      * @param \Generated\Shared\Transfer\PickingSalesOrderTransfer $pickingSalesOrderTransfer
      * @param \Orm\Zed\PickingSalesOrder\Persistence\PyzPickingSalesOrder $pyzPickingSalesOrderEntity
@@ -43,6 +45,9 @@ class PickingSalesOrderMapper
         $pickingSalesOrderTransfer->fromArray($pyzPickingSalesOrderEntity->toArray(), true);
         $pickingSalesOrderTransfer->setIdSalesOrder($pyzPickingSalesOrderEntity->getFkSalesOrder());
         $pickingSalesOrderTransfer->setIdPickingZone($pyzPickingSalesOrderEntity->getFkPickingZone());
+        if ($pyzPickingSalesOrderEntity->hasVirtualColumn(static::PYZ_PICKING_ZONE_ABBREVIATION)) {
+            $pickingSalesOrderTransfer->setAbbreviation($pyzPickingSalesOrderEntity->getVirtualColumn(static::PYZ_PICKING_ZONE_ABBREVIATION));
+        }
 
         return $pickingSalesOrderTransfer;
     }
