@@ -55,7 +55,7 @@ $config[FileSystemConstants::FILESYSTEM_SERVICE] = [
         'port' => '22',
         'username' => 'spryker',
         'password' => '8U65f$b_p6vLNMc',
-        'root' => '/',
+        'root' => '/home/spryker/',
     ],
 ];
 
