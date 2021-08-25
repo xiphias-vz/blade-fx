@@ -4590,7 +4590,7 @@ customer.register.birthdate.title,"Geburtstag (TT/MM/JJJJ)",de_DE
 customer.register.telefon.title,"Telefon (je vyžadován alespoň jeden údaj)",cs_CZ
 customer.register.telefon.title,Telefon (mindestens eine Angabe ist Pflicht),de_DE
 page.fragen.url,https://globus.zendesk.com/hc/de,de_DE
-page.fragen.url,https://globus.zendesk.com/hc/de,cs_CZ
+page.fragen.url,mailto:info@globus.cz,cs_CZ
 error_page.second_title,"Požadovanou stránku jsme bohužel nenašli!",cs_CZ
 error_page.second_title,Wir konnten die gewünschte Seite leider nicht finden!,de_DE
 error_page.second_text,"Můžeme vám pomoci?",cs_CZ
