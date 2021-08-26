@@ -11,11 +11,6 @@ use Orm\Zed\Locale\Persistence\SpyLocaleQuery;
 use Orm\Zed\Product\Persistence\SpyProductAbstract;
 use Orm\Zed\Product\Persistence\SpyProductAbstractLocalizedAttributesQuery;
 use Orm\Zed\Product\Persistence\SpyProductAbstractQuery;
-use Orm\Zed\ProductImage\Persistence\SpyProductImage;
-use Orm\Zed\ProductImage\Persistence\SpyProductImageQuery;
-use Orm\Zed\ProductImage\Persistence\SpyProductImageSet;
-use Orm\Zed\ProductImage\Persistence\SpyProductImageSetQuery;
-use Orm\Zed\ProductImage\Persistence\SpyProductImageSetToProductImageQuery;
 use Orm\Zed\Tax\Persistence\Map\SpyTaxRateTableMap;
 use Orm\Zed\Tax\Persistence\SpyTaxRateQuery;
 use Orm\Zed\Url\Persistence\SpyUrlQuery;
@@ -28,11 +23,9 @@ use Pyz\Zed\DataImport\Business\Model\Product\Repository\ProductRepository;
 use Pyz\Zed\DataImport\DataImportConfig;
 use Spryker\Service\UtilText\UtilTextServiceInterface;
 use Spryker\Shared\Kernel\Store;
-use Spryker\Shared\ProductImageCartConnector\ProductImageCartConnectorConfig;
 use Spryker\Zed\DataImport\Business\Model\DataImportStep\DataImportStepInterface;
 use Spryker\Zed\DataImport\Business\Model\DataSet\DataSetInterface;
 use Spryker\Zed\Product\Dependency\ProductEvents;
-use Spryker\Zed\ProductImage\Dependency\ProductImageEvents;
 use Spryker\Zed\Url\Dependency\UrlEvents;
 
 class ProductAbstractWriterStep extends PublishAwareStep implements DataImportStepInterface
@@ -104,12 +97,8 @@ class ProductAbstractWriterStep extends PublishAwareStep implements DataImportSt
 
         $locales = Store::getInstance()->getLocales();
         $this->importProductUrls($dataSet, $productAbstractEntity, $locales);
-        $productImageSetEntities = $this->importProductImage($dataSet, $locales);
 
         $this->addPublishEvents(ProductEvents::PRODUCT_ABSTRACT_PUBLISH, $productAbstractEntity->getIdProductAbstract());
-        foreach ($productImageSetEntities as $productImageSetEntity) {
-            $this->addImagePublishEvents($productImageSetEntity);
-        }
     }
 
     /**
@@ -232,112 +221,6 @@ class ProductAbstractWriterStep extends PublishAwareStep implements DataImportSt
 
                 $this->addPublishEvents(UrlEvents::URL_PUBLISH, $urlEntity->getIdUrl());
             }
-        }
-    }
-
-    /**
-     * @param \Spryker\Zed\DataImport\Business\Model\DataSet\DataSetInterface $dataSet
-     * @param array $locales
-     *
-     * @return array
-     */
-    protected function importProductImage(DataSetInterface $dataSet, array $locales): array
-    {
-        $productImageSetEntities = [];
-        foreach ($locales as $localeKey => $localeName) {
-            $productImageSetEntity = $this->findOrCreateImageSet($dataSet, $localeName);
-            SpyProductImageSetToProductImageQuery::create()->findByFkProductImageSet($productImageSetEntity->getIdProductImageSet())->delete();
-            $images = explode(';', $dataSet[ProductConfig::KEY_MAIN_IMAGE_FILE_NAME]);
-            foreach ($images as $key => $image) {
-                $imageUrl = $this->dataImportConfig->getImagesHostUrl() . '/' . $image;
-                $productImageEntity = $this->findOrCreateImage($imageUrl);
-                $this->updateOrCreateImageToImageSetRelation($productImageSetEntity, $productImageEntity, $key);
-            }
-            array_push($productImageSetEntities, $productImageSetEntity);
-        }
-
-        return $productImageSetEntities;
-    }
-
-    /**
-     * @param \Spryker\Zed\DataImport\Business\Model\DataSet\DataSetInterface $dataSet
-     * @param string $localeName
-     *
-     * @return \Orm\Zed\ProductImage\Persistence\SpyProductImageSet
-     */
-    protected function findOrCreateImageSet(DataSetInterface $dataSet, string $localeName)
-    {
-        $query = SpyProductImageSetQuery::create()
-            ->filterByName(ProductImageCartConnectorConfig::DEFAULT_IMAGE_SET_NAME)
-            ->filterByFkLocale($this->getIdLocaleByName($localeName));
-
-        $idProductAbstract = $this->productRepository->getIdProductAbstractByAbstractSku($this->getAbstractSku($dataSet));
-        $query->filterByFkProductAbstract($idProductAbstract);
-
-        $productImageSetEntity = $query->findOneOrCreate();
-        if ($productImageSetEntity->isNew() || $productImageSetEntity->isModified()) {
-            $productImageSetEntity->save();
-        }
-
-        return $productImageSetEntity;
-    }
-
-    /**
-     * @param string $imageUrl
-     *
-     * @return \Orm\Zed\ProductImage\Persistence\SpyProductImage
-     */
-    protected function findOrCreateImage(string $imageUrl): SpyProductImage
-    {
-        $productImageEntity = SpyProductImageQuery::create()
-            ->filterByExternalUrlLarge($imageUrl)
-            ->findOneOrCreate();
-
-        $productImageEntity->setExternalUrlSmall($imageUrl);
-
-        if ($productImageEntity->isNew() || $productImageEntity->isModified()) {
-            $productImageEntity->save();
-        }
-
-        return $productImageEntity;
-    }
-
-    /**
-     * @param \Orm\Zed\ProductImage\Persistence\SpyProductImageSet $productImageSetEntity
-     * @param \Orm\Zed\ProductImage\Persistence\SpyProductImage $productImageEntity
-     * @param int $sortOrder
-     *
-     * @return void
-     */
-    protected function updateOrCreateImageToImageSetRelation(
-        SpyProductImageSet $productImageSetEntity,
-        SpyProductImage $productImageEntity,
-        int $sortOrder
-    ) {
-        $productImageSetToProductImageEntity = SpyProductImageSetToProductImageQuery::create()
-            ->filterByFkProductImageSet($productImageSetEntity->getIdProductImageSet())
-            ->filterByFkProductImage($productImageEntity->getIdProductImage())
-            ->findOneOrCreate();
-
-        $productImageSetToProductImageEntity
-            ->setSortOrder($sortOrder);
-
-        if ($productImageSetToProductImageEntity->isNew() || $productImageSetToProductImageEntity->isModified()) {
-            $productImageSetToProductImageEntity->save();
-        }
-    }
-
-    /**
-     * @param \Orm\Zed\ProductImage\Persistence\SpyProductImageSet $productImageSetEntity
-     *
-     * @return void
-     */
-    protected function addImagePublishEvents(SpyProductImageSet $productImageSetEntity)
-    {
-        if ($productImageSetEntity->getFkProductAbstract()) {
-            $this->addPublishEvents(ProductImageEvents::PRODUCT_IMAGE_PRODUCT_ABSTRACT_PUBLISH, $productImageSetEntity->getFkProductAbstract());
-        } elseif ($productImageSetEntity->getFkProduct()) {
-            $this->addPublishEvents(ProductImageEvents::PRODUCT_IMAGE_PRODUCT_CONCRETE_PUBLISH, $productImageSetEntity->getFkProduct());
         }
     }
 

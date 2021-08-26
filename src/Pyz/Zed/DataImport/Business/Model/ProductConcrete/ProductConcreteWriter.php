@@ -12,11 +12,6 @@ use Orm\Zed\Locale\Persistence\SpyLocaleQuery;
 use Orm\Zed\Product\Persistence\SpyProduct;
 use Orm\Zed\Product\Persistence\SpyProductLocalizedAttributesQuery;
 use Orm\Zed\Product\Persistence\SpyProductQuery;
-use Orm\Zed\ProductImage\Persistence\SpyProductImage;
-use Orm\Zed\ProductImage\Persistence\SpyProductImageQuery;
-use Orm\Zed\ProductImage\Persistence\SpyProductImageSet;
-use Orm\Zed\ProductImage\Persistence\SpyProductImageSetQuery;
-use Orm\Zed\ProductImage\Persistence\SpyProductImageSetToProductImageQuery;
 use Orm\Zed\ProductSearch\Persistence\SpyProductSearchQuery;
 use Pyz\Shared\Product\ProductConfig;
 use Pyz\Zed\DataImport\Business\Exception\ProductNumberIsMissingException;
@@ -24,12 +19,10 @@ use Pyz\Zed\DataImport\Business\Model\DataImportStep\PublishAwareStep;
 use Pyz\Zed\DataImport\Business\Model\Product\Repository\ProductRepository;
 use Pyz\Zed\DataImport\Business\Model\ProductAbstract\ProductAbstractWriterStep;
 use Pyz\Zed\DataImport\DataImportConfig;
-use Spryker\Shared\Kernel\Store;
 use Spryker\Zed\DataImport\Business\Model\DataImportStep\DataImportStepInterface;
 use Spryker\Zed\DataImport\Business\Model\DataSet\DataSetInterface;
 use Spryker\Zed\PriceProductDataImport\Business\Model\DataSet\PriceProductDataSet;
 use Spryker\Zed\Product\Dependency\ProductEvents;
-use Spryker\Zed\ProductImage\Dependency\ProductImageEvents;
 
 class ProductConcreteWriter extends PublishAwareStep implements DataImportStepInterface
 {
@@ -89,7 +82,6 @@ class ProductConcreteWriter extends PublishAwareStep implements DataImportStepIn
         $this->productRepository->addProductConcrete($productEntity, $dataSet[ProductConfig::KEY_PRODUCT_NUMBER]);
 
         $this->importProductLocalizedAttributes($dataSet, $productEntity);
-        $this->importProductPlaceholderImage($dataSet);
 
         $this->addPublishEvents(ProductEvents::PRODUCT_CONCRETE_PUBLISH, $productEntity->getIdProduct());
     }
@@ -133,6 +125,7 @@ class ProductConcreteWriter extends PublishAwareStep implements DataImportStepIn
             ->setLastImportAt(static::$lastImportTime->format('Y-m-d H:i:s'))
             ->setAssortmentZone($dataSet[static::ASSORTMENT_ZONE])
             ->setAttributes(json_encode($attributes))
+            ->setImages($this->getImagesJson($dataSet))
             ->setFileType($this->getFileType());
 
         if ($productEntity->isNew() || $productEntity->isModified()) {
@@ -203,110 +196,14 @@ class ProductConcreteWriter extends PublishAwareStep implements DataImportStepIn
     /**
      * @param \Spryker\Zed\DataImport\Business\Model\DataSet\DataSetInterface $dataSet
      *
-     * @return void
+     * @return string|false
      */
-    protected function importProductPlaceholderImage(DataSetInterface $dataSet)
+    protected function getImagesJson(DataSetInterface $dataSet)
     {
-        foreach (Store::getInstance()->getLocales() as $localeKey => $localeName) {
-            $productImageSetEntity = $this->findOrCreateImageSet($dataSet, $localeName);
-            SpyProductImageSetToProductImageQuery::create()->findByFkProductImageSet($productImageSetEntity->getIdProductImageSet())->delete();
-            $images = explode(';', $dataSet[ProductConfig::KEY_MAIN_IMAGE_FILE_NAME]);
-            foreach ($images as $key => $image) {
-                $imageUrl = $this->dataImportConfig->getImagesHostUrl() . '/' . $image;
-                $productImageEntity = $this->findOrCreateImage($imageUrl);
-                $this->updateOrCreateImageToImageSetRelation($productImageSetEntity, $productImageEntity, $key);
-            }
-            $this->addImagePublishEvents($productImageSetEntity);
-        }
-    }
+        $images = explode(';', $dataSet[ProductConfig::KEY_MAIN_IMAGE_FILE_NAME]);
+        $json["default"] = ["images" => $images];
 
-    /**
-     * @param \Spryker\Zed\DataImport\Business\Model\DataSet\DataSetInterface $dataSet
-     * @param string $localeName
-     *
-     * @return \Orm\Zed\ProductImage\Persistence\SpyProductImageSet
-     */
-    protected function findOrCreateImageSet(DataSetInterface $dataSet, string $localeName)
-    {
-        $idLocale = null;
-
-        $query = SpyProductImageSetQuery::create()
-            ->filterByName('default')
-            ->filterByFkLocale($this->getIdLocaleByName($localeName));
-
-        $idProduct = $this->productRepository->getIdProductByConcreteSku($dataSet[ProductConfig::KEY_PRODUCT_NUMBER]);
-        $query->filterByFkProduct($idProduct);
-
-        $productImageSetEntity = $query->findOneOrCreate();
-        if ($productImageSetEntity->isNew() || $productImageSetEntity->isModified()) {
-            $productImageSetEntity->save();
-
-            $this->addImagePublishEvents($productImageSetEntity);
-        }
-
-        return $productImageSetEntity;
-    }
-
-    /**
-     * @param string $imageUrl
-     *
-     * @return \Orm\Zed\ProductImage\Persistence\SpyProductImage
-     */
-    protected function findOrCreateImage(string $imageUrl): SpyProductImage
-    {
-        $productImageEntity = SpyProductImageQuery::create()
-            ->filterByExternalUrlLarge($imageUrl)
-            ->findOneOrCreate();
-
-        $productImageEntity->setExternalUrlSmall($imageUrl);
-
-        if ($productImageEntity->isNew() || $productImageEntity->isModified()) {
-            $productImageEntity->save();
-        }
-
-        return $productImageEntity;
-    }
-
-    /**
-     * @param \Orm\Zed\ProductImage\Persistence\SpyProductImageSet $productImageSetEntity
-     * @param \Orm\Zed\ProductImage\Persistence\SpyProductImage $productImageEntity
-     * @param int $sortOrder
-     *
-     * @return void
-     */
-    protected function updateOrCreateImageToImageSetRelation(
-        SpyProductImageSet $productImageSetEntity,
-        SpyProductImage $productImageEntity,
-        int $sortOrder
-    ): void {
-        $productImageSetToProductImageEntity = SpyProductImageSetToProductImageQuery::create()
-            ->filterByFkProductImageSet($productImageSetEntity->getIdProductImageSet())
-            ->filterByFkProductImage($productImageEntity->getIdProductImage())
-            ->findOneOrCreate();
-
-        $productImageSetToProductImageEntity
-            ->setSortOrder($sortOrder);
-
-        if ($productImageSetToProductImageEntity->isNew() || $productImageSetToProductImageEntity->isModified()) {
-            $productImageSetToProductImageEntity->save();
-
-            $this->addImagePublishEvents($productImageSetEntity);
-        }
-    }
-
-    /**
-     * @param \Orm\Zed\ProductImage\Persistence\SpyProductImageSet $productImageSetEntity
-     *
-     * @return void
-     */
-    protected function addImagePublishEvents(SpyProductImageSet $productImageSetEntity)
-    {
-        if ($productImageSetEntity->getFkProductAbstract()) {
-            $this->addPublishEvents(ProductImageEvents::PRODUCT_IMAGE_PRODUCT_ABSTRACT_PUBLISH, $productImageSetEntity->getFkProductAbstract());
-            $this->addPublishEvents(ProductEvents::PRODUCT_ABSTRACT_PUBLISH, $productImageSetEntity->getFkProductAbstract());
-        } elseif ($productImageSetEntity->getFkProduct()) {
-            $this->addPublishEvents(ProductImageEvents::PRODUCT_IMAGE_PRODUCT_CONCRETE_PUBLISH, $productImageSetEntity->getFkProduct());
-        }
+        return json_encode($json);
     }
 
     /**

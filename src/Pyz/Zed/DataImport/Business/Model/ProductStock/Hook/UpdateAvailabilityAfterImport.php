@@ -21,9 +21,13 @@ use PDO;
 use PDOException;
 use Propel\Runtime\Connection\ConnectionInterface;
 use Propel\Runtime\Propel;
+use Pyz\Zed\DataImport\DataImportConfig;
+use Spryker\Shared\Kernel\Store;
 use Spryker\Zed\Availability\Business\AvailabilityFacadeInterface;
 use Spryker\Zed\Availability\Dependency\AvailabilityEvents;
 use Spryker\Zed\Kernel\Locator;
+use Spryker\Zed\Product\Dependency\ProductEvents;
+use Spryker\Zed\ProductImage\Dependency\ProductImageEvents;
 use Spryker\Zed\Stock\Persistence\Propel\Mapper\StoreMapper;
 
 /**
@@ -56,6 +60,8 @@ class UpdateAvailabilityAfterImport implements UpdateAvailabilityAfterImportInte
     {
         $counter = 0;
         $connection = Propel::getConnection();
+
+        $this->updateProductImages($connection);
 
         $storeEntities = $this->getStoreQuery()->find($connection);
         $stores = $this->createStoreMapper()->mapStoreEntitiesToStoreTransfers($storeEntities->getArrayCopy());
@@ -164,13 +170,13 @@ class UpdateAvailabilityAfterImport implements UpdateAvailabilityAfterImportInte
     /**
      * @param string $eventName
      * @param string $entityId
-     * @param string $className
-     * @param string $data
+     * @param string|null $className
+     * @param string|null $data
      * @param \Propel\Runtime\Connection\ConnectionInterface $connection
      *
      * @return void
      */
-    public function addPublishEvents(string $eventName, string $entityId, string $className, string $data, ConnectionInterface $connection)
+    public function addPublishEvents(string $eventName, string $entityId, ?string $className, ?string $data, ConnectionInterface $connection)
     {
         $eventData = new PyzDataImportEvent();
         $eventData
@@ -353,5 +359,66 @@ class UpdateAvailabilityAfterImport implements UpdateAvailabilityAfterImportInte
             }
         }
         $connection->commit();
+    }
+
+    /**
+     * @param \Propel\Runtime\Connection\ConnectionInterface $connection
+     *
+     * @return void
+     */
+    protected function updateProductImages(ConnectionInterface $connection): void
+    {
+        $imagesPublish = $this->getResult($this->getImagesToPublishSql(), $connection, true);
+        $connection->beginTransaction();
+        foreach ($imagesPublish as $image) {
+            if ($image["publish"]) {
+                $this->addPublishEvents(
+                    ProductImageEvents::PRODUCT_IMAGE_PRODUCT_CONCRETE_PUBLISH,
+                    $image["fk_product"],
+                    null,
+                    null,
+                    $connection
+                );
+                if (!empty($image["fk_product_abstract"])) {
+                    $this->addPublishEvents(
+                        ProductEvents::PRODUCT_ABSTRACT_PUBLISH,
+                        $image["fk_product_abstract"],
+                        null,
+                        null,
+                        $connection
+                    );
+                    $this->addPublishEvents(
+                        ProductImageEvents::PRODUCT_IMAGE_PRODUCT_ABSTRACT_PUBLISH,
+                        $image["fk_product_abstract"],
+                        null,
+                        null,
+                        $connection
+                    );
+                }
+            } else {
+                $this->addPublishEvents(
+                    ProductImageEvents::PRODUCT_IMAGE_PRODUCT_CONCRETE_UNPUBLISH,
+                    $image["fk_product"],
+                    null,
+                    null,
+                    $connection
+                );
+            }
+        }
+        $connection->commit();
+    }
+
+    /**
+     * @return string
+     */
+    private function getImagesToPublishSql(): string
+    {
+        $fac = new DataImportConfig();
+        $url = $fac->getImagesHostUrl() . '/';
+        $local = array_values(Store::getInstance()->getLocales())[0];
+        $local = str_replace("-", "_", $local);
+        $sql = "call pyzx_import_images('" . $url . "', '" . $local . "');";
+
+        return $sql;
     }
 }

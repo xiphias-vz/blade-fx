@@ -25,6 +25,7 @@
         <column name="assortment_zone" type="VARCHAR"/>
         <column name="last_import_at" type="TIMESTAMP"/>
         <column name="file_type" type="INTEGER"/>
+        <column name="images" type="VARCHAR" size="4000"/>
         <index>
             <index-column name="sap_number"/>
         </index>

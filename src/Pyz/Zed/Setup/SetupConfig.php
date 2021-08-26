@@ -9,6 +9,7 @@ namespace Pyz\Zed\Setup;
 
 use Spryker\Zed\Cache\Communication\Console\EmptyAllCachesConsole;
 use Spryker\Zed\Installer\Communication\Console\InitializeDatabaseConsole;
+use Spryker\Zed\Propel\Communication\Console\InsertSqlConsole;
 use Spryker\Zed\Propel\Communication\Console\PropelInstallConsole;
 use Spryker\Zed\Search\Communication\Console\SearchConsole;
 use Spryker\Zed\Setup\Communication\Console\EmptyGeneratedDirectoryConsole;
@@ -34,6 +35,7 @@ class SetupConfig extends SprykerSetupConfig
             // PropelInstallConsole::COMMAND_NAME => ['--' . PropelInstallConsole::OPTION_NO_DIFF => true]
             // from there on to persist migration files.
             PropelInstallConsole::COMMAND_NAME,
+            InsertSqlConsole::COMMAND_NAME,
             GeneratorConsole::COMMAND_NAME,
             InitializeDatabaseConsole::COMMAND_NAME,
             BuildNavigationConsole::COMMAND_NAME,
