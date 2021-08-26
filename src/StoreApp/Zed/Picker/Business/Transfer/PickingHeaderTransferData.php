@@ -414,9 +414,10 @@ class PickingHeaderTransferData
         //save data to spy_sales_order_item - SpySalesOrderItemQuery
         $idList = $this->getOrderItemIdArray($orderItem);
         $paused = $isPaused ? 1 : 0;
+        $isSubstitutionFound = $orderItem->getIsSubstitutionFound() ? 1 : 0;
         if (count($idList) > 0) {
             $whereList = implode($idList, ",");
-            $qry = "update spy_sales_order_item set item_paused = " . $paused . ", is_substitution_found = " . $orderItem->getIsSubstitutionFound() . " where id_sales_order_item in(" . $whereList . ")";
+            $qry = "update spy_sales_order_item set item_paused = " . $paused . ", is_substitution_found = " . $isSubstitutionFound . " where id_sales_order_item in(" . $whereList . ")";
             $this->getResult($qry, false);
         }
 
