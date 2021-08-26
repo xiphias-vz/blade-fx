@@ -1,6 +1,7 @@
 delimiter //
 create or replace procedure pyzx_import_images(IN url varchar(1000), IN localeName varchar(5))
 BEGIN
+    /* modified by Marin 2021-08-21 12:20 */
     DROP TEMPORARY TABLE IF EXISTS tmp_tbl_images;
     CREATE TEMPORARY TABLE tmp_tbl_images (fk_product int, image_name varchar(500), sort_order int);
 CREATE INDEX u ON tmp_tbl_images (fk_product, image_name);
@@ -13,8 +14,8 @@ CREATE INDEX u ON tmp_tbl_images_message (fk_product, id_product_image);
     WHERE id_product_image_set_to_product_image in
       (
           select spistpi.id_product_image_set_to_product_image
-          FROM spy_product_image_set spis
-              INNER JOIN spy_product_image spi on spi.id_product_image = spis.fk_product_image
+          FROM spy_product_image_set_to_product_image spistpi
+                   INNER JOIN spy_product_image spi on spi.id_product_image = spistpi.fk_product_image
           where spi.image_name is null
       );
 
