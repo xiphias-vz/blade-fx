@@ -24,7 +24,6 @@ export default class PopupUiLoginFormCz extends Component {
 
         if (this.linkToLoginModal != undefined){
             this.linkToLoginModal.addEventListener('click', () => {
-                alert("TJOS");
                 this.$this.addClass(`${this.name}--show`);
             });
         }
