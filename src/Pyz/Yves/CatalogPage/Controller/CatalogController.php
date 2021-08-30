@@ -53,6 +53,8 @@ class CatalogController extends SprykerCatalogController
     }
 
     /**
+     * Add image to category
+     *
      * @param array $categoryNode
      * @param array $data
      *
@@ -60,8 +62,10 @@ class CatalogController extends SprykerCatalogController
      */
     protected function addCategoryImage(array $categoryNode, array $data): array
     {
-        if ($categoryNode['parents'][0]['node_id'] > 1) {
-            return $data;
+        if (isset($categoryNode['parents'][0]['node_id'])) {
+            if ($categoryNode['parents'][0]['node_id'] > 1) {
+                return $data;
+            }
         }
 
         $categorySlug = $this->getFactory()->getUtilTextService()->generateSlug($categoryNode['name']);

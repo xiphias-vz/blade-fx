@@ -413,8 +413,12 @@ class UpdateAvailabilityAfterImport implements UpdateAvailabilityAfterImportInte
      */
     private function getImagesToPublishSql(): string
     {
+        $storeCodeBucket = getenv('SPRYKER_CODE_BUCKET');
         $fac = new DataImportConfig();
-        $url = $fac->getImagesHostUrl() . '/';
+        $url = $fac->getImagesHostUrl();
+        if ($storeCodeBucket != "CZ") {
+            $url = $url . '/';
+        }
         $local = array_values(Store::getInstance()->getLocales())[0];
         $local = str_replace("-", "_", $local);
         $sql = "call pyzx_import_images('" . $url . "', '" . $local . "');";
