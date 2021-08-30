@@ -66,10 +66,9 @@ class SalesDataExportRepository extends SpySalesDataExportRepository
             ->leftJoinRegion()
             ->endUse()
             ->endUse()
+            ->leftJoinState()
             ->orderByFkSalesOrder()
-            ->where("case when spy_sales_order_item.price_per_kg is not null
-                AND (spy_sales_order_item.fk_oms_order_item_state = (SELECT id_oms_order_item_state FROM spy_oms_order_item_state WHERE name = 'cancelled'))
-                then 0 else 1 end = 1")
+            ->withColumn("row_number() over (partition by case when spy_sales_order_item.price_per_kg is null then spy_sales_order_item.sku + spy_sales_order_item.id_sales_order_item else spy_sales_order_item.sku end, spy_sales_order_item.fk_sales_order order by case when spy_oms_order_item_state.name like '%cancel%' then 999999999 else spy_sales_order_item.id_sales_order_item end)", "rowNr")
             ->limit($this->limitPerChunk);
 
         $salesOrderItemQuery = $this->applyFilterCriteriaToSalesOrderItemQuery(
@@ -80,6 +79,14 @@ class SalesDataExportRepository extends SpySalesDataExportRepository
         $salesOrderItemQuery->select($selectedColumns);
 
         $salesOrderItemData = $salesOrderItemQuery->find()->getArrayCopy();
+        $salesOrderItemDataTmp = [];
+        foreach ($salesOrderItemData as $key => $data) {
+            if ($data["rowNr"] == 1) {
+                unset($salesOrderItemData[$key]['rowNr']);
+                $salesOrderItemDataTmp[] = $salesOrderItemData[$key];
+            }
+        }
+        $salesOrderItemData = $salesOrderItemDataTmp;
 
         if ($salesOrderItemData === []) {
             return $dataExportBatchTransfer;
