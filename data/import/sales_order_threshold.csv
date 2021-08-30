@@ -1,3 +1,4 @@
 currency,threshold_type_key,threshold,fee,message_glossary_key
 EUR,hard-minimum-threshold,1500,0,sales-order-threshold.hard-minimum-threshold.de.eur.message
 EUR,hard-maximum-threshold,70000,0,sales-order-threshold.hard-maximum-threshold.de.eur.message
+CZK,hard-minimum-threshold,50000,0,sales-order-threshold.hard-minimum-threshold.de.czk.message

@@ -19,6 +19,7 @@ use Pyz\Shared\ProductPageSearch\ProductPageSearchConstants;
 use Pyz\Shared\Sales\SalesConstants;
 use Pyz\Shared\SessionLocks\SessionLocksConfig;
 use Pyz\Shared\Shipment\ShipmentConfig;
+use Pyz\Shared\Shipment\ShipmentConstants;
 use Pyz\Shared\Store\StoreConstants;
 use Pyz\Shared\TimeSlot\TimeSlotConstants;
 use Pyz\Shared\TwigCache\TwigCacheConstants;
@@ -929,6 +930,11 @@ $config[PickerConstants::DAYS_IN_THE_WEEK] = [
     '6' => 'SA',
     '7' => 'SO',
 ];
+
+//------------ Shipment consts
+$config[ShipmentConstants::MAIN_GLOBUS_CUSTOMER_CLICK_AND_COLLECT_SHIPMENT_METHOD_PRICE] = 199;
+
+$config[ShipmentConstants::GUEST_CUSTOMER_CLICK_AND_COLLECT_SHIPMENT_METHOD_PRICE] = 299;
 
 // ----------- Backoffice overview choice
 $config[BackofficeOverviewConstants::CHOICE_FILTER] = [

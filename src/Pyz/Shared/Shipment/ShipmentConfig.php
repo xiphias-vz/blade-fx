@@ -7,14 +7,13 @@
 
 namespace Pyz\Shared\Shipment;
 
+use Spryker\Shared\Config\Config;
 use Spryker\Shared\Shipment\ShipmentConfig as SprykerShipmentConfig;
 
 class ShipmentConfig extends SprykerShipmentConfig
 {
     public const SHIPMENT_METHOD_CLICK_AND_COLLECT = 'click_and_collect';
     public const SHIPMENT_METHOD_DELIVERY = 'lieferung';
-    public const MAIN_GLOBUS_CUSTOMER_CLICK_AND_COLLECT_SHIPMENT_METHOD_PRICE = 199;
-    public const GUEST_CUSTOMER_CLICK_AND_COLLECT_SHIPMENT_METHOD_PRICE = 299;
     public const PROMOTION_CLICK_AND_COLLECT_SHIPMENT_METHOD_PRICE = 0;
 
     /**
@@ -30,7 +29,7 @@ class ShipmentConfig extends SprykerShipmentConfig
      */
     public function getGuestCustomerClickAndCollectShipmentMethodPrice(): int
     {
-        return static::GUEST_CUSTOMER_CLICK_AND_COLLECT_SHIPMENT_METHOD_PRICE;
+        return Config::get(ShipmentConstants::GUEST_CUSTOMER_CLICK_AND_COLLECT_SHIPMENT_METHOD_PRICE);
     }
 
     /**
@@ -38,7 +37,7 @@ class ShipmentConfig extends SprykerShipmentConfig
      */
     public function getMainGlobusCustomerClickAndCollectShipmentMethodPrice(): int
     {
-        return static::MAIN_GLOBUS_CUSTOMER_CLICK_AND_COLLECT_SHIPMENT_METHOD_PRICE;
+        return Config::get(ShipmentConstants::MAIN_GLOBUS_CUSTOMER_CLICK_AND_COLLECT_SHIPMENT_METHOD_PRICE);
     }
 
     /**

@@ -6,6 +6,7 @@ use Pyz\Shared\CodeBuckets\CodeBucketConstants;
 use Pyz\Shared\GoogleTagManager\GoogleTagManagerConstants;
 use Pyz\Shared\GsoaRestApiClient\Provider\TokenProvider;
 use Pyz\Shared\ProductImage\ProductImageConstants;
+use Pyz\Shared\Shipment\ShipmentConstants;
 use Pyz\Shared\Store\StoreConstants;
 use Spryker\Service\FlysystemLocalFileSystem\Plugin\Flysystem\LocalFilesystemBuilderPlugin;
 use Spryker\Shared\FileSystem\FileSystemConstants;
@@ -59,7 +60,6 @@ $config[FileSystemConstants::FILESYSTEM_SERVICE] = [
     ],
 ];
 
-
 // ----------- Google Tag Manager
 $config[GoogleTagManagerConstants::CONTAINER_ID] = 'GTM-PPGX4LT';
 
@@ -69,10 +69,13 @@ $config[ApplicationConstants::CURRENCY_CODE] = 'CZK';
 // ----------- Currency symbol
 $config[CodeBucketConstants::CURRENCY_SYMBOL] = 'Kč';
 
+//------------ Shipment consts
+$config[ShipmentConstants::MAIN_GLOBUS_CUSTOMER_CLICK_AND_COLLECT_SHIPMENT_METHOD_PRICE] = 3900;
+
+$config[ShipmentConstants::GUEST_CUSTOMER_CLICK_AND_COLLECT_SHIPMENT_METHOD_PRICE] = 3900;
+
 // ----------- GSOA API
 $config[TokenProvider::GSOA_CLIENT_ID] = "webAppSpryker";
 $config[TokenProvider::GSOA_CLIENT_SECRET] = "1A5CE779-02EA-42A5-959C-9909C2C11666";
 
 $config[ProductImageConstants::IMAGES_HOST_URL] = 'https://gapi.globus.cz/OnlineAsset/3/asset?assetID=';
-
-
