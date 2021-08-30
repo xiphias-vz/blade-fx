@@ -21,7 +21,7 @@
            </span>
 
             <span class="col col--expand col--lg-9 title title--medium">
-                <span class="search-suggestion-supplier">{{ data.product.supplier | default }},  </span>
+                <span class="search-suggestion-supplier">{% if data.product.supplier != 'keine' %}{{ data.product.supplier | default }},{% endif %}  </span>
                 {{- data.title -}}
                 {% include molecule('money-price') with {
                     modifiers: ['suggestion-product'],
