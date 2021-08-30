@@ -24,6 +24,15 @@
                 -moz-box-shadow:0 1px 4px rgba(0, 0, 0, 0.3), 0 0 40px rgba(0, 0, 0, 0.1) inset;
                 box-shadow:0 1px 4px rgba(0, 0, 0, 0.3), 0 0 40px rgba(0, 0, 0, 0.1) inset;
 
+                @include helper-breakpoint-media-max($l-max) {
+                    left: -500%;
+                }
+
+                @include helper-breakpoint-media-max($xs-max) {
+                    left: -460%;
+                    width: 270px;
+                }
+
                 &:after {
                     content: "";
                     position: absolute;
@@ -34,6 +43,14 @@
                     border-bottom: 19px solid transparent;
                     border-right: 15px solid transparent;
                     border-left: 15px solid transparent;
+
+                    @include helper-breakpoint-media-max($l-max) {
+                        left: 79%;
+                    }
+
+                    @include helper-breakpoint-media-max($xxs-max) {
+                        left: 85%;
+                    }
                 }
             }
         }
@@ -43,6 +60,12 @@
             margin-left: 12px;
             color:$setting-color-orange;
             float: none;
+        }
+
+        .substitutions-text {
+            color:#71747c;
+            font-weight: 100;
+            font-size: small;
         }
     }
 }

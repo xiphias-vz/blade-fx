@@ -17,6 +17,7 @@
         &__item {
             font-weight: fw(medium);
             font-size: rem(16);
+            margin: rem(16) rem(0) rem(16) rem(0);
         }
 
         &__total {
@@ -49,6 +50,9 @@
             color: $setting-color-orange;
         }
 
+        &__substitutions-text {
+            font-weight: 100;
+        }
         @content;
     }
 }

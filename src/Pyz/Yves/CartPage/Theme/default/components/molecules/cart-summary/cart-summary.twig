@@ -95,12 +95,12 @@
 
     <div>
         <div class="{{ config.name }}__substitutions-break"></div>
-        <p class="{{ config.name }}__item spacing-y spacing-y--big">
+        <p class="{{ config.name }}__item">
             <span style="margin-right:7px"><svg class="{{ config.name }}__substitutions-icon-info icon"><use xlink:href="#:sync"></use></svg></span>
             {{ 'checkout.cart.page.substitutions.title' | trans }}
             <span style="float: right;"><svg class="{{ config.name }}__substitutions-icon-sync icon"><use xlink:href="#:info-circle"></use></svg></span>
         </p>
-        <p> {{ 'checkout.cart.page.substitutions.text' | trans }} </p>
+        <p class="{{ config.name }}__substitutions-text"> {{ 'checkout.cart.page.substitutions.text' | trans }} </p>
     </div>
 
 {% endblock %}
