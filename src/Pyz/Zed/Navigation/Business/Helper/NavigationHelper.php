@@ -7,6 +7,7 @@
 
 namespace Pyz\Zed\Navigation\Business\Helper;
 
+use Orm\Zed\Category\Persistence\SpyCategoryQuery;
 use Pyz\Zed\Navigation\Business\Navigation\NavigationReader;
 
 class NavigationHelper
@@ -31,8 +32,10 @@ class NavigationHelper
     public function composeNavigationNodeKeys(int $parentCategoryId): array
     {
         $navigationNodeKeys = [];
+        $key = SpyCategoryQuery::create()->findOneByIdCategory($parentCategoryId)->getCategoryKey();
         foreach (static::MAIN_NAVIGATION_KEYS as $navigationKey) {
             $navigationNodeKeys[] = $navigationKey . static::NODE_KEY_SUFFIX . $parentCategoryId;
+            $navigationNodeKeys[] = $navigationKey . static::NODE_KEY_SUFFIX . str_replace("_", "", $key);
         }
 
         return $navigationNodeKeys;

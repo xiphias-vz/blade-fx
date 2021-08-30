@@ -131,8 +131,7 @@ class CategoryWriterStep extends SprykerCategoryWriterStep
             $this->idNavigationNodeBuffer[$navigationMode] = $this->resolveIdNavigation($navigationMode);
         }
 
-        $categoryIdExplodeData = explode('_', $dataSet[static::KEY_CATEGORY_KEY]);
-        $position = (end($categoryIdExplodeData));
+        $position = $this->getPosition($dataSet);
 
         $navigationNodeEntity = SpyNavigationNodeQuery::create()
             ->filterByFkNavigation($this->idNavigationNodeBuffer[$navigationMode])
@@ -164,6 +163,18 @@ class CategoryWriterStep extends SprykerCategoryWriterStep
         $this->saveNavigationDataToBuffer($dataSet, $navigationNodeEntity->getIdNavigationNode(), $navigationMode);
 
         $this->addPublishEvents(NavigationEvents::NAVIGATION_KEY_PUBLISH, $navigationNodeEntity->getFkNavigation());
+    }
+
+    /**
+     * @param \Spryker\Zed\DataImport\Business\Model\DataSet\DataSetInterface $dataSet
+     *
+     * @return string
+     */
+    protected function getPosition(DataSetInterface $dataSet): string
+    {
+        $categoryIdExplodeData = explode('_', $dataSet[static::KEY_CATEGORY_KEY]);
+
+        return (end($categoryIdExplodeData));
     }
 
     /**

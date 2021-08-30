@@ -54,19 +54,20 @@ class CategoryModel
         $navigationNodeKeys = $this->navigationHelper->composeNavigationNodeKeys($categoryTransfer->getParentCategoryNode()->getIdCategoryNode());
         foreach ($navigationNodeKeys as $navigationNodeKey) {
             $navigationNodeTransfer = $this->navigationNodeReader->findNavigationNodeByKey($navigationNodeKey);
-
-            $navigationNodeLocalizedAttributes = $navigationNodeTransfer->getNavigationNodeLocalizedAttributes();
-            $categoryLocalizedAttributes = $categoryTransfer->getLocalizedAttributes();
-            foreach ($navigationNodeLocalizedAttributes as $navigationNodeLocalizedAttribute) {
-                foreach ($categoryLocalizedAttributes as $categoryLocalizedAttribute) {
-                    if ($categoryLocalizedAttribute->getLocale()->getIdLocale() == $navigationNodeLocalizedAttribute->getFkLocale()) {
-                        $navigationNodeLocalizedAttribute->setTitle($categoryLocalizedAttribute->getName());
-                        break;
+            if ($navigationNodeTransfer != null) {
+                $navigationNodeLocalizedAttributes = $navigationNodeTransfer->getNavigationNodeLocalizedAttributes();
+                $categoryLocalizedAttributes = $categoryTransfer->getLocalizedAttributes();
+                foreach ($navigationNodeLocalizedAttributes as $navigationNodeLocalizedAttribute) {
+                    foreach ($categoryLocalizedAttributes as $categoryLocalizedAttribute) {
+                        if ($categoryLocalizedAttribute->getLocale()->getIdLocale() == $navigationNodeLocalizedAttribute->getFkLocale()) {
+                            $navigationNodeLocalizedAttribute->setTitle($categoryLocalizedAttribute->getName());
+                            break;
+                        }
                     }
                 }
+                $navigationNodeTransfer->setNavigationNodeLocalizedAttributes($navigationNodeLocalizedAttributes);
+                $this->navigationNodeUpdate->updateNavigationNode($navigationNodeTransfer);
             }
-            $navigationNodeTransfer->setNavigationNodeLocalizedAttributes($navigationNodeLocalizedAttributes);
-            $this->navigationNodeUpdate->updateNavigationNode($navigationNodeTransfer);
         }
     }
 }

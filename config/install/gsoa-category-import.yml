@@ -1,0 +1,10 @@
+command-timeout: 14400
+
+sections:
+    download-gsoa-categories-products:
+        download-categories:
+            command: "vendor/bin/console gsoa:product -c importCategories"
+
+    import-categories-products:
+        import-categories:
+            command: "vendor/bin/console data:import category -f spryker/1.globusCZ_categories.csv -a UpdateAvailabilityAfterImportPlugin -vvv --no-ansi || true"

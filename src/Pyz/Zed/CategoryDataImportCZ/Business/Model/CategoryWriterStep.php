@@ -39,4 +39,14 @@ class CategoryWriterStep extends IntCategoryWriterStep
 
         throw new Exception(sprintf('Could not extract language identifier for idLocale "%s"', $idLocale));
     }
+
+    /**
+     * @param \Spryker\Zed\DataImport\Business\Model\DataSet\DataSetInterface $dataSet
+     *
+     * @return string
+     */
+    protected function getPosition(DataSetInterface $dataSet): string
+    {
+        return str_replace("_", "", $dataSet[static::KEY_CATEGORY_KEY]);
+    }
 }
