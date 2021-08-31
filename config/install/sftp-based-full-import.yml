@@ -491,3 +491,7 @@ sections:
 
         reset-metzgerei-product-stock-nos-1057:
             command: "cp data/import/spryker/product_stock.csv data/import/spryker/5.globus_article_instock.NOS.1057.csv"
+
+    exec-after-import:
+        exec-events:
+            command: "vendor/bin/console import:execEvents"
