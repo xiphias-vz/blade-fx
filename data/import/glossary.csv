@@ -1,5 +1,4 @@
 key,translation,locale
-
 cart.remove.items.success,"Produkty byly úspěšně odebrány z nákupního seznamu.",cs_CZ
 cart.remove.items.success,Produkte wurden erfolgreich aus der Einkaufsliste entfernt.,de_DE
 cart.remove.items.success,Products were removed successfully,en_US
@@ -2395,7 +2394,7 @@ cart.quantity.adjusted,Requested item quantity was adjusted as far as selected q
 cart.quantity.adjusted,"Die angeforderte Artikelmenge wurde angepasst, soweit die ausgewählte Menge nicht verfügbar ist.",de_DE
 cart.quantity.adjusted,"Požadované množství produktu bylo upraveno, protože požadované množství není k dispozici.",cs_CZ
 catalog.sale,Sale,en_US
-catalog.sale,Sale,de_DE
+catalog.sale,Angebote,de_DE
 catalog.sale,"prodej",cs_CZ
 catalog.new,New,en_US
 catalog.new,Neu,de_DE
