@@ -106,7 +106,7 @@ class MultiPickingController extends BaseOrderPickingController
         $positionToDisplay = $_REQUEST['position'] ?? '';
         $openModal = $_REQUEST['fromModal'] ?? 'false';
         $fromPosListeAndModal = $_REQUEST['fromPosListeAndModal'] ?? 'false';
-        $isSubstitutionFound = $_REQUEST['isSubstitutionPicked'] ?? 'false';
+        $isSubstitutionPicked = $_REQUEST['isSubstitutionPicked'] ?? 'false';
 
         if ($request->request->count() > 0) {
             if ($request->request->has('saveAndGoToNext')) {
@@ -121,7 +121,7 @@ class MultiPickingController extends BaseOrderPickingController
                             $this->getFacade()->setCurrentOrderItemPicked($quantity, $weight);
                             break;
                         case "declined":
-                            $currentItemResponse = $this->getFacade()->setCurrentOrderItemCanceled(true, strtolower($isSubstitutionFound) == 'true' ? true : false);
+                            $currentItemResponse = $this->getFacade()->setCurrentOrderItemCanceled(true, strtolower($isSubstitutionPicked) == 'true' ? true : false);
                             break;
                     }
                     if ($keyValue == "End") {
@@ -220,6 +220,7 @@ class MultiPickingController extends BaseOrderPickingController
             'fromPosListeAndModal' => $fromPosListeAndModal,
             'itemPickingStartTime' => $itemPickingStartTime,
             'isSubstitutionAllowed' => $isSubstitutionAllowedOnOrder,
+            'isSubstitutionFound' => $nextOIData->getIsSubstitutionFound() ?? '0',
         ];
     }
 

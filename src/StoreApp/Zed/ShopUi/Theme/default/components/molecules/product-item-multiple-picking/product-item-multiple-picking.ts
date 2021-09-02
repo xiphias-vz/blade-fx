@@ -7,6 +7,7 @@ interface StorageItem {
     isNotFullyAccepted: boolean;
     isPaused: boolean;
     isDeclined: boolean;
+    isSubstitutionFound: boolean;
     isSubstitute: boolean;
     count: number;
     weight: number;
@@ -77,6 +78,7 @@ export default class ProductItemMultiplePicking extends Component {
     yesSubstitute: HTMLButtonElement;
     noSubstitute: HTMLButtonElement;
     iconSubstitute: HTMLElement;
+    isSubstitutionFound: HTMLInputElement;
     protected isSubstitutionPicked: boolean;
     private weightMax: number;
     private weightMin: number;
@@ -122,6 +124,7 @@ export default class ProductItemMultiplePicking extends Component {
         this.yesSubstitute = this.querySelector('.popup-ui-substitute__yes-substitute');
         this.noSubstitute = this.querySelector('.popup-ui-substitute__no-substitute');
         this.iconSubstitute = this.querySelector('.icon-substitute-item');
+        this.isSubstitutionFound = <HTMLInputElement>this.querySelector('#isSubstitutionFound');
         this.isSubstitutionPicked = false;
         this.mapEvents();
         this.boldLastThreeEanNumbers();
@@ -132,6 +135,7 @@ export default class ProductItemMultiplePicking extends Component {
 
         this.removeTemporarilyReadOnlyAttributeForNonActiveFields();
         this.focusEanFieldWithoutDisplayOfKeyboard();
+        this.showSubstituteIconIfSubstitutionIsSet(this.isSubstitutionFound.value);
     }
 
     protected removeTemporarilyReadOnlyAttributeForNonActiveFields() {
@@ -864,7 +868,7 @@ export default class ProductItemMultiplePicking extends Component {
     }
 
     protected declineClickHandler(): void {
-        if(this.$isSubstitutionAllowed == '1')
+        if(this.$isSubstitutionAllowed == '1' && this.isSubstitutionFound.value === "0")
         {
         this.popupUiSubstitute.classList.remove('popup-ui-substitute--hide');
         this.popupUiSubstitute.classList.add('popup-ui-substitute--show');
@@ -919,6 +923,7 @@ export default class ProductItemMultiplePicking extends Component {
         this.$this.removeClass(`${this.notPickedCLass} ${this.pickedCLass} ${this.pickedNotFullyCLass} ${this.pausedClass}`);
         this.$this[0].$declineButton.removeClass(this.addUndoCLass);
         this.iconSubstitute.classList.add(this.showIconSubstitute);
+        this.isSubstitutionFound.value = "0";
     }
 
     protected onClickNoSubstitute(){
@@ -931,6 +936,14 @@ export default class ProductItemMultiplePicking extends Component {
         this.isSubstitutionPicked = true;
         this.iconSubstitute.classList.remove(this.showIconSubstitute);
         this.popupUiSubstitute.classList.add('popup-ui-substitute--hide');
+    }
+
+    protected showSubstituteIconIfSubstitutionIsSet(isSubstitutionFound) {
+        if(isSubstitutionFound === "1") {
+            this.isSubstitutionPicked = true;
+            this.iconSubstitute.classList.remove(this.showIconSubstitute);
+            this.popupUiSubstitute.classList.add('popup-ui-substitute--hide');
+        }
     }
 
     protected isValueInRange(inputValue: number): boolean {

@@ -443,11 +443,11 @@ class PickingHeaderTransferData
 
     /**
      * @param bool $isCanceled
-     * @param bool $isSubstitutionFound
+     * @param bool $isSubstitutionPicked
      *
      * @return bool
      */
-    public function setCurrentOrderItemCanceled(bool $isCanceled, bool $isSubstitutionFound): bool
+    public function setCurrentOrderItemCanceled(bool $isCanceled, bool $isSubstitutionPicked): bool
     {
         $transfer = $this->getTransferFromSession();
         if ($transfer->setCurrentOrderItemCanceled($isCanceled)) {
@@ -455,7 +455,7 @@ class PickingHeaderTransferData
 
             $orderItem = $transfer->getOrderItem($transfer->getLastPickingItemPosition());
             $orderItem->setIsPaused(false);
-            $orderItem->setIsSubstitutionFound($isSubstitutionFound);
+            $orderItem->setIsSubstitutionFound($isSubstitutionPicked);
             $this->saveCurrentOrderItemPaused($orderItem, false);
 
             $orderItem->setPerformancePickingStartedAt($this->getPerformancePickingStartedAt());

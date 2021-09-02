@@ -233,15 +233,15 @@ class PickerFacade extends AbstractFacade implements PickerFacadeInterface
 
     /**
      * @param bool $isCanceled
-     * @param bool $isSubstitutionFound
+     * @param bool $isSubstitutionPicked
      *
      * @return bool
      */
-    public function setCurrentOrderItemCanceled(bool $isCanceled, bool $isSubstitutionFound): bool
+    public function setCurrentOrderItemCanceled(bool $isCanceled, bool $isSubstitutionPicked): bool
     {
         return $this->getFactory()
             ->createPickingHeaderTransferData()
-            ->setCurrentOrderItemCanceled($isCanceled, $isSubstitutionFound);
+            ->setCurrentOrderItemCanceled($isCanceled, $isSubstitutionPicked);
     }
 
     /**

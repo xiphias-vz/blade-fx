@@ -22,6 +22,7 @@
     orderItemStatus: orderItemStatus,
     itemPickingStartTime: itemPickingStartTime,
     isSubstitutionAllowed: isSubstitutionAllowed,
+    isSubstitutionFound: isSubstitutionFound,
 } %}
 
  {% if data.currentPositionData is defined %}
@@ -97,7 +98,8 @@
                 fromPosListeAndModal: data.fromPosListeAndModal,
                 orderItemStatus: data.orderItemStatus,
                 itemPickingStartTime: data.itemPickingStartTime,
-                isSubstitutionAllowed: data.isSubstitutionAllowed
+                isSubstitutionAllowed: data.isSubstitutionAllowed,
+                isSubstitutionFound: data.isSubstitutionFound
             },
             attributes: {
                 'data-sku': currentPosition.ean,

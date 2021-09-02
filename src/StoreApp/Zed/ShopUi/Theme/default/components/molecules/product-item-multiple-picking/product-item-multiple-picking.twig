@@ -22,7 +22,8 @@
     fromPosListeAndModal: '',
     orderItemStatus: '',
     itemPickingStartTime: '',
-    isSubstitutionAllowed: ''
+    isSubstitutionAllowed: '',
+    isSubstitutionFound: '',
 } %}
 
 {% set title = data.currentPositionData['name'] %}
@@ -66,6 +67,7 @@
         <input type="hidden" id="itemPickingStartTime" value="{{ data.itemPickingStartTime }}">
         <input type="hidden" id="isSubstitutionAllowed" value="{{ data.isSubstitutionAllowed }}">
         <input type="hidden" id="isSubstitutionPicked" value="false">
+        <input type="hidden" id="isSubstitutionFound" value="{{ data.isSubstitutionFound }}">
         <div class="col col--expand">
             <div class="box {{ config.name }}__info">
                 <div class="{{ config.name }}__item-head-box">

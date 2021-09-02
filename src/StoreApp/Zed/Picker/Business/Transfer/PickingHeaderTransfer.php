@@ -244,6 +244,8 @@ class PickingHeaderTransfer extends SpyPickingHeaderTransfer
         foreach ($this->getPickingOrders() as $order) {
             foreach ($order->getPickingOrderItems() as $orderItem) {
                 if ($orderItem->getPickingItemPosition() == $position) {
+                    $orderItem->setIsSubstitutionAllowedOnOrder($order->getIsSubstitutionAllowed());
+
                     return $orderItem;
                 }
             }
