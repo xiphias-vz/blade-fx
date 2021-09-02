@@ -922,13 +922,13 @@ $config[\Pyz\Shared\CookieBot\CookieBotConstants::DOMAIN_GROUP_ID] = '4bae1e02-8
 
 // ----------- Days in the week abbr
 $config[PickerConstants::DAYS_IN_THE_WEEK] = [
+    '0' => 'SO',
     '1' => 'MO',
     '2' => 'DI',
     '3' => 'MI',
     '4' => 'DO',
     '5' => 'FR',
     '6' => 'SA',
-    '7' => 'SO',
 ];
 
 //------------ Shipment consts
