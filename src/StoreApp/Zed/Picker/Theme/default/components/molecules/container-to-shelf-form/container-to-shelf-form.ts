@@ -11,6 +11,9 @@ export default class ContainerToShelfForm extends Component {
     containerId: HTMLInputElement;
     shelfId: HTMLInputElement;
     shelfCheck: HTMLInputElement;
+    firstLetter: HTMLInputElement;
+    containerIDNotEmpty: HTMLInputElement;
+    shelfIDNotEmpty: HTMLInputElement;
     protected barcodePrefix: string = '/x11';
 
     protected readyCallback(): void {
@@ -18,6 +21,9 @@ export default class ContainerToShelfForm extends Component {
         this.popUpUiError = this.parentElement.previousElementSibling;
         this.addSubmitFormButton = <HTMLButtonElement>document.getElementById(`submitContainerToShelf`);
         this.fullForm = <HTMLFormElement>document.getElementById('container_to_shelf_form');
+        this.firstLetter = <HTMLInputElement>document.querySelector('#first_letter');
+        this.containerIDNotEmpty = <HTMLInputElement>document.querySelector('#containerID_not_empty');
+        this.shelfIDNotEmpty = <HTMLInputElement>document.querySelector('#shelfID_not_empty');
         let isTestSucces = document.querySelector('.js-is-succes').getAttribute('isSuccess');
         if (isTestSucces) {
             this.clearInputFields();
@@ -78,7 +84,7 @@ export default class ContainerToShelfForm extends Component {
         if(replacedValue != "" && (<HTMLInputElement>event.target).id == 'container_to_shelf_form_shelf_code' && !regTest)
         {
             (<HTMLInputElement>event.target).value = "";
-            alert('Der erste Buchstabe muss Großbuchstaben sein');
+            alert(this.firstLetter.value);
         }
 
     }
@@ -138,12 +144,12 @@ export default class ContainerToShelfForm extends Component {
             //control for inputted values for containerId and ShelfId before submitting the form data
         if (containerId == '' || containerId == null)
         {
-            this.popUpUiError.querySelector("#firstBlock").innerHTML = `<strong>ContainerID Wert sollte nicht leer sein</strong>`;
+            this.popUpUiError.querySelector("#firstBlock").innerHTML = this.containerIDNotEmpty.value;
             this.popUpUiError.classList.add('popup-ui-error--show');
         }
         else if ((shelfId == '' || shelfId == null) && shelfCheck == 1)
         {
-            this.popUpUiError.querySelector("#firstBlock").innerHTML = `<strong>Shelf ID Wert sollte nicht leer sein</strong>`;
+            this.popUpUiError.querySelector("#firstBlock").innerHTML = this.shelfIDNotEmpty.value;
             this.popUpUiError.classList.add('popup-ui-error--show');
         }
         else{

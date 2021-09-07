@@ -17,6 +17,8 @@
 {% block body %}
     <div class="grid grid--no-wrap">
         <div class="col col--expand">
+            <input type="hidden" id="order_progress" value="{{ 'order.search.order.progress' | trans }}">
+            <input type="hidden" id="order_unknown" value="{{ 'order.search.order.unknown' | trans }}">
             <input type="text" class="input input--expand spacing-bottom spacing-bottom--big {{ config.jsName }}__input" placeholder="{{ 'Order Search' | trans }}">
         </div>
     </div>

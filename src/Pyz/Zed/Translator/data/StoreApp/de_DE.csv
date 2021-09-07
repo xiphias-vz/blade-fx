@@ -195,3 +195,20 @@ multi.picking.substitutes.popupui.title,Ersatzartikel
 multi.picking.substitutes.popupui.confirm.button,Ja
 multi.picking.substitutes.popupui.cancel.button,Nein
 multi.picking.substitutes.popupui.message,Ist ein Ersatzartikel vorhanden?
+
+shelf.first.letter.large,Der erste Buchstabe muss Großbuchstaben sein
+shelf.containerID.value.not.empty,ContainerID Wert sollte nicht leer sein
+shelf.shelfID.value.not.empty,Shelf ID Wert sollte nicht leer sein
+order.search.order.progress,Bestellung in Bearbeitung
+order.search.order.unknown,Unbekannte Bestellung
+shelf.not.all.fields.entered,Es werden nicht alle Felder eingegeben!
+containerID.eighth.characters.set,Container-ID muss eingestellt werden und 8 Zeichen haben
+containerID.eighth.characters,Container-ID muss 8 Zeichen haben
+overview.of.containers.customer,Kunde
+overview.of.containers.position.piece,"Pos./Stck."
+overview.of.containers.container,Container
+overview.of.containers.comment,"Comm."
+product-item.multiple.picking.placeholder,EAN scannen
+popup.ui.info.container,"Container:"
+popup.ui.info.storage.place,"Lagerplatz:"
+popup.ui.info.order.number,"Bestellnummer:"

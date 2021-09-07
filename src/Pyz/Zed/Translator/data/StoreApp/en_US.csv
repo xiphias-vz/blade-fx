@@ -152,3 +152,20 @@ picking.app.weight_per_unit,"Weight per unit: "
 storeapp.picking.barcode, Barcode
 storeapp.picking.MissingArticle, Missing article
 multi.picking.product.attribute.weight,Weight
+
+shelf.first.letter.large,The first letter must be uppercase
+shelf.containerID.value.not.empty,ContainerID value should not be empty
+shelf.shelfID.value.not.empty,Shelf ID value should not be empty
+order.search.order.progress,Order in progress
+order.search.order.unknown,Unknown order
+shelf.not.all.fields.entered,Not all fields are entered!
+containerID.eighth.characters.set,Container ID must be set and have 8 characters
+containerID.eighth.characters,Container ID must have 8 characters
+overview.of.containers.customer,Customer
+overview.of.containers.position.piece,"Pos./Pc."
+overview.of.containers.container,Container
+overview.of.containers.comment,"Comm."
+product-item.multiple.picking.placeholder,EAN scan
+popup.ui.info.container,"Container:"
+popup.ui.info.storage.place,"Storage Place:"
+popup.ui.info.order.number,"Order Number:"

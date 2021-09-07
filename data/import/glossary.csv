@@ -1430,6 +1430,9 @@ countries.iso.ES,Spanien,de_DE
 countries.iso.GB,United Kingdom,en_US
 countries.iso.GB,"Velká Británie",cs_CZ
 countries.iso.GB,Großbritannien,de_DE
+countries.iso.CZ,Czechia,en_US
+countries.iso.CZ,Tschechien,de_DE
+countries.iso.CZ,ČR,cs_CZ
 customer.billingSameAsShipping,Billing address same as shipping address,en_US
 customer.billingSameAsShipping,"Dodací a fakturační adresa jsou stejné",cs_CZ
 customer.billingSameAsShipping,Liefer- und Rechnungsadresse sind gleich,de_DE
@@ -4007,21 +4010,28 @@ product.info.ingredients.and.allergens,Ingredients and allergens,en_US
 product.info.ingredients.and.allergens,Zutaten und Allergene,de_DE
 product.info.description,Produktbeschrelbung,de_DE
 product.info.description,Product description,en_US
+product.info.description,"Popis produktu",cs_CZ
 product.info.description.warnings,Warnhinweise,de_DE
 product.info.description.warnings,Warnings,en_US
+product.info.description.warnings,"Varování",cs_CZ
 product.info.description.usage.notes,Verwendungshinweise,de_DE
 product.info.description.usage.notes,Usage notes,en_US
+product.info.description.usage.notes,"Informace k použití",cs_CZ
 product.info.description.warning.usage.notes,Warnhinweise & Verwendungshinweise,de_DE
 product.info.description.warning.usage.notes,Warnings & usage notes,en_US
+product.info.description.warning.usage.notes,"Varování a informace k použití",cs_CZ
 product.info.ingredients,"Přísady",cs_CZ
 product.info.ingredients,Ingredients,en_US
 product.info.ingredients,Zutaten,de_DE
 product.info.alergens,Allergen information,en_US
 product.info.alergens,Allergenhinweise,de_DE
+product.info.alergens,"Informace k alergenům",cs_CZ
 product.info.allergens.contained,Contained allergens,en_US
 product.info.allergens.contained,Enthaltene Allergene,de_DE
+product.info.allergens.contained,"Obsažené alergeny",cs_CZ
 product.info.allergens.contained.possible,Possible allergens contained,en_US
 product.info.allergens.contained.possible,Möglich enthaltene Allergene,de_DE
+product.info.allergens.contained.possible,"Možné obsažené alergeny",cs_CZ
 product.info.nutritional.information,"Nutriční hodnoty",cs_CZ
 product.info.nutritional.information,Nutrition information,en_US
 product.info.nutritional.information,Nährwertangaben,de_DE
@@ -4295,6 +4305,7 @@ checkout.order.overview,Order Overview,en_US
 checkout.order.overview,Einkaufsliste,de_DE
 checkout.amount.items,%items% items,en_US
 checkout.amount.items,%items% Artikel,de_DE
+checkout.amount.items,"%items% artikl",cs_CZ
 cart.summary.message,"V závislosti na regionální dostupnosti. Platby platební kartou jsou možné bez dalších příplatků.",cs_CZ
 cart.summary.message,Vorbehaltlich der regionalen Verfügbarkeit. Zahlungen per Kreditkarte sind ohne zusätzliche Kosten möglich.,de_DE
 cart.summary.message,Subject to regional availability. Payments by credit card are possible without additional costs.,en_US
@@ -4660,6 +4671,7 @@ checkout.customer.register_firstPharagraph,"Um aktuelle News und Coupons zu nutz
 checkout.customer.register_secondPharagraph,"Wenn Sie Scan & Go nutzen möchten, lassen Sie sich an der Infotheke In Ihrem Markt freischalten",de_DE
 customer.login.form.join_now,Jetzt registrieren,de_DE
 customer.login.form.join_now,Join now,en_US
+customer.login.form.join_now,"Registrujte se",cs_CZ
 my_market.link,Mein Markt,de_DE
 my_market.link,My marketplace,en_US
 product.find,Produkte finden,de_DE
@@ -4679,9 +4691,29 @@ payback.text.part.two, pro 2 Euro Value of goods,en_US
 header.timeslot.button,Freie Abholtermine,de_DE
 header.timeslot.button,"Zdarma datum vyzvednutí",cs_CZ
 success.message.title,"Wie geht es weiter?",de_DE
+success.message.title,"Jak dál?",cs_CZ
 success.message.text1,"Ihre Bestellbestätigung",de_DE
+success.message.text1,"Potvrzení Vaší objednávky",cs_CZ
 success.message.text2,"ist bereits auf dem Weg in Ihr Email-Postfach - prüfen Sie also unbedingt auch Ihren Spam Ordner.",de_DE
+success.message.text2,"je již na cestě do Vaší e-mailové schránky - zkontrolujte příp. i složku spam.",cs_CZ
 success.message.text3,"Ihren",de_DE
+success.message.text3,"Vaše",cs_CZ
+success.message.text4,"Abholschein",de_DE
+success.message.text4,"potvrzení k vyzvednutí",cs_CZ
+success.message.text5,"erhalten Sie direkt am",de_DE
+success.message.text5,"obdržíte e-mailem přímo",cs_CZ
+success.message.text6,"Abholtag per Mail",de_DE
+success.message.text6,"v den vyzvednutí",cs_CZ
+success.message.text7,", sobald wir Ihre Bestellung fertig gepackt haben. Darin finden Sie außerdem den ",de_DE
+success.message.text7,", jakmile bude Vaše objednávka nabalena. V něm naleznete i",cs_CZ
+success.message.text8,"detaillierten Lieferstatus",de_DE
+success.message.text8,"podrobný stav dodání",cs_CZ
+success.message.text9,"aller bestellten Artikel.",de_DE
+success.message.text9,"všech objednaných výrobků.",cs_CZ
+success.message.text10,"Weitere Fragen zu Ihrer Bestellung oder dem Abholschein?",de_DE
+success.message.text10,"Máte další dotazy ohledně Vaší objednávky či potvrzení k  vyzvednutí?",cs_CZ
+success.message.text11,"Erfahren Sie Mehr unter:",de_DE
+success.message.text11,"Zde se dozvíte víc:",cs_CZ
 pdp.modal.age.confirmation,Are you over 18?,en_US
 pdp.modal.age.confirmation,Sind Sie 18 jahre alt?,de_DE
 pdp.modal.age.confirmation,"Je vám více než 18?",cs_CZ
@@ -4739,3 +4771,7 @@ checkout.summary.page.substitutions.info.checked,"Mit Ersatzartikeln",de_DE
 checkout.summary.page.substitutions.info.checked,"With substitutions",en_US
 checkout.summary.page.substitutions.info.unchecked,"Ohne Ersatzartikel",de_DE
 checkout.summary.page.substitutions.info.unchecked,"Without substitutions",en_US
+footer.price.expenses.message,Alle Preise verstehen sich inklusive Mehrwertsteuer und zzgl. Servicegebühr,de_DE
+footer.price.expenses.message,All prices include VAT and plus a service fee,en_US
+footer.price.expenses.message,"Všechny ceny jsou včetně DPH a bez servisního poplatku",cs_CZ
+free.timeslot.window,"Unsere verfügbaren Abholzeiten:",de_DE

@@ -21,6 +21,8 @@ export default class ShelfScanOrder extends Component {
     protected containerShelfInputField: HTMLInputElement;
     protected containerShelfTransfer: Array<containersShelf>;
     protected containerShelf: containersShelf;
+    firstLetter: HTMLInputElement;
+    notAllFields: HTMLInputElement;
 
     protected readyCallback(): void {
         this.popUpUiInfo = <HTMLElement>document.getElementsByClassName('popup-ui-info')[0];
@@ -32,6 +34,8 @@ export default class ShelfScanOrder extends Component {
         this.nextOrderPositionInput = <HTMLInputElement>this.form.querySelector('input[name=nextOrderPosition]');
         this.containerShelfInputField = <HTMLInputElement>document.querySelector('input[name=containersShelf]');
         this.containerShelfTransfer = new Array<containersShelf>();
+        this.firstLetter = <HTMLInputElement>document.querySelector('#first_letter');
+        this.notAllFields = <HTMLInputElement>document.querySelector('#not_all_fields');
         this.containerShelf = {
             ContainerCode:'',
             ShelfCode:'',
@@ -53,7 +57,7 @@ export default class ShelfScanOrder extends Component {
             }
         });
         if (counter > 0) {
-            alert("Es werden nicht alle Felder eingegeben!");
+            alert(this.notAllFields.value);
         } else {
             if (this.buttonConfirm.classList.contains('lastOrder')) {
                 document.querySelector('.popup-ui-container-scan').classList.add('popup-ui-container-scan--show');
@@ -107,7 +111,7 @@ export default class ShelfScanOrder extends Component {
         let regTest = reg.test(firstChar);
         if (!regTest) {
             event.target.value = "";
-            alert('Der erste Buchstabe muss Großbuchstaben sein');
+            alert(this.firstLetter.value);
         }
     }
 

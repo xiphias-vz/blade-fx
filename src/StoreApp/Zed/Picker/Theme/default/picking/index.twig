@@ -52,7 +52,7 @@
                     customerFullName: pickingOrder.customerFullName,
                     date: pickingOrder.requestedDeliveryDate | split(' ') | first | date('d.m.y'),
                     dayOfTheWeek: pickingOrder.dayOfTheWeek,
-                    deadline: pickingOrder.requestedDeliveryDate | split(' ') | last ~ ' ' ~ 'Uhr' | trans
+                    deadline: pickingOrder.requestedDeliveryDate | split(' ') | last ~ ' ' ~ 'hour' | trans
                 },
                 embed: {
                     pickingOrder: pickingOrder,

@@ -24,10 +24,10 @@
     <form id="formOverview" method="post">
         <input type="hidden" name="addFromModal1" value="{{ data.isFromModal }}">
         <div class="box-light-green--overview">
-            <div>Kunde</div>
-            <div>Pos./Stck.</div>
-            <div>Container</div>
-            <div>Comm.</div>
+            <div>{{ 'overview.of.containers.customer' | trans }}</div>
+            <div>{{ 'overview.of.containers.position.piece' | trans }}</div>
+            <div>{{ 'overview.of.containers.container' | trans }}</div>
+            <div>{{ 'overview.of.containers.comment' | trans }}</div>
         </div>
 
             {% include molecule('overview-order-list') with {

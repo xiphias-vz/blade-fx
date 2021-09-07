@@ -8,6 +8,8 @@ export default class SelectShelvesForm extends Component {
 
     form: HTMLFormElement;
     btn: HTMLButtonElement;
+    firstLetter: HTMLInputElement;
+    notAllFields: HTMLInputElement;
 
     protected barcodePrefix: string = '/x11';
 
@@ -17,6 +19,8 @@ export default class SelectShelvesForm extends Component {
 
         this.form.addEventListener('keypress', (event: KeyboardEvent) => this.formKeyPressHandler(event));
         this.btn.addEventListener('click', (event: MouseEvent) => this.submitButtonHandler(event));
+        this.firstLetter = <HTMLInputElement>document.querySelector('#first_letter');
+        this.notAllFields = <HTMLInputElement>document.querySelector('#not_all_fields');
 
         this.mapEventsForInputs();
         this.focusInputElement();
@@ -45,7 +49,7 @@ export default class SelectShelvesForm extends Component {
         if(!regTest)
         {
             (<HTMLInputElement>event.target).value = "";
-            alert('Der erste Buchstabe muss Großbuchstaben sein');
+            alert(this.firstLetter.value);
         }
     }
 
@@ -73,7 +77,7 @@ export default class SelectShelvesForm extends Component {
         });
 
         if(counter > 0){
-            alert("Es werden nicht alle Felder eingegeben!");
+            alert(this.notAllFields.value);
         }
     }
 

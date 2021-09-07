@@ -10,6 +10,8 @@ export default class OrderSearch extends Component {
     protected currentSelectValue: string;
     protected isTimeActive = false;
     protected debounceDelay = 300;
+    orderProgress: HTMLInputElement;
+    orderUnknown: HTMLInputElement;
 
     protected readyCallback(): void {}
 
@@ -17,6 +19,8 @@ export default class OrderSearch extends Component {
         this.$searchItems = <$>$(document).find(this.searchItemsSelector);
         this.$input = <$>$(this).find(this.inputSelector);
         this.$select = <$>$(this).find(this.selectSelector);
+        this.orderProgress = <HTMLInputElement>document.querySelector('#order_progress');
+        this.orderUnknown = <HTMLInputElement>document.querySelector('#order_unknown');
 
         this.mapEvents();
         document.body.onload = function() {
@@ -87,10 +91,10 @@ export default class OrderSearch extends Component {
 
         if(itemsFound === 0){
             if(itemsWithOtherStatus > 0){
-                alert("Bestellung in Bearbeitung");
+                alert(this.orderProgress.value);
             }
             else{
-                alert("Unbekannte Bestellung");
+                alert(this.orderUnknown.value);
             }
         }
 

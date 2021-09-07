@@ -16,6 +16,8 @@ export default class FormContainers extends Component {
     form: HTMLFormElement;
     fullForm: HTMLFormElement;
     orderId: HTMLInputElement;
+    containerEighthCharactersSet: HTMLInputElement;
+    containerEighthCharacters: HTMLInputElement;
     containerCountData: string;
     containerCount: number;
     countInputedContainers: number = 0;
@@ -41,6 +43,8 @@ export default class FormContainers extends Component {
         this.containerCountData = document.querySelector('.js-container-count');
         this.containerCount = this.containerCountData.dataset.containerCount;
         this.submitButtonContainers = <HTMLButtonElement>document.getElementById('submitSelectedContainers');
+        this.containerEighthCharactersSet = <HTMLInputElement>document.querySelector('#containerID_eighth_characters_set,');
+        this.containerEighthCharacters = <HTMLInputElement>document.querySelector('#containerID_eighth_characters');
 
         if (this.containerFormsWrapper.innerHTML === "") {
             this.addFormItem();
@@ -87,7 +91,7 @@ export default class FormContainers extends Component {
         }
         else
         {
-            this.popUpUiError.querySelector("#firstBlock").innerHTML = `Container-ID muss eingestellt werden und 8 Zeichen haben`;
+            this.popUpUiError.querySelector("#firstBlock").innerHTML = this.containerEighthCharactersSet.value;
             this.popUpUiError.querySelector("#secondBlock").innerHTML = ``;
             this.popUpUiError.classList.add('popup-ui-error--show');
         }
@@ -189,7 +193,7 @@ export default class FormContainers extends Component {
     {
         if (inputValue.length != 8)
         {
-            this.popUpUiError.querySelector("#firstBlock").innerHTML = `Container-ID muss 8 Zeichen haben`;
+            this.popUpUiError.querySelector("#firstBlock").innerHTML = this.containerEighthCharacters.value;
             this.popUpUiError.querySelector("#secondBlock").innerHTML = ``;
             this.popUpUiError.classList.add('popup-ui-error--show');
         } else{

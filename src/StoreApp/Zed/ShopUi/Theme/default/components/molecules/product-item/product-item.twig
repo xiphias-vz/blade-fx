@@ -113,7 +113,7 @@
                     {% endif %}
                 {% endblock %}
                 </div>
-                {% block formElementScan %}<div id="eanScannenDiv"><input class="input input--expand ean_scan_input" id="txt_ean_scannen__{{ data.itemSku }}" placeholder="EAN scannen" class="input input--expand" type="text" /></div>{% endblock %}
+                {% block formElementScan %}<div id="eanScannenDiv"><input class="input input--expand ean_scan_input" id="txt_ean_scannen__{{ data.itemSku }}" placeholder="{{ 'product-item.multiple.picking.placeholder' | trans }}" class="input input--expand" type="text" /></div>{% endblock %}
             </div>
         </div>
     </div>

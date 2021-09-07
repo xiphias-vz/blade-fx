@@ -52,10 +52,10 @@
 
                 {% block popupActions %}
                     <div id="firstBlock">
-                        Container: <strong>{{ data.containerId }}</strong>
+                        {{ 'popup.ui.info.container' | trans }} <strong>{{ data.containerId }}</strong>
                     </div>
                     <div id="secondBlock">
-                        Lagerplatz: <strong>{{ lblShelfId }}</strong> <br> Bestellnummer: <strong>{{ data.orderId }}</strong>
+                        {{ 'popup.ui.info.storage.place' | trans }} <strong>{{ lblShelfId }}</strong> <br> {{ 'popup.ui.info.order.number' | trans }} <strong>{{ data.orderId }}</strong>
                     </div>
                     <div>
                         <strong>{{ lblAddedShelf }}</strong>

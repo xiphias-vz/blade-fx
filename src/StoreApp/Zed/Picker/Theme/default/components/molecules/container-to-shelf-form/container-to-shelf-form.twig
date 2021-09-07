@@ -45,6 +45,9 @@
 <div class="form box js-is-succes" isSuccess="{{ data.isSuccess }}">
     {% block formElement %}
     <form id="container_to_shelf_form" name="container_to_shelf_form" method="post" novalidate="novalidate">
+        <input type="hidden" id="first_letter" value="{{ 'shelf.first.letter.large' | trans }}">
+        <input type="hidden" id="containerID_not_empty" value="<strong>{{ 'shelf.containerID.value.not.empty' | trans }}</strong>">
+        <input type="hidden" id="shelfID_not_empty" value="<strong>{{ 'shelf.shelfID.value.not.empty' | trans }}</strong>">
         <div class="form__container">
             <div class="form__fields grid grid--top js-is-updated" isUpdated="{{ data.isUpdated }}">
                 {% if data.isUpdated %}

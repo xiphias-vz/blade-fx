@@ -17,6 +17,8 @@
     <div>
         <input type="hidden" class="listOfExistingContainers" data-listOfExistingContainers="{{ data.listOfExistingContainers }}">
         <input type="hidden" name="containersShelf" value="[]">
+        <input type="hidden" id="first_letter" value="{{ 'shelf.first.letter.large' | trans }}">
+        <input type="hidden" id="not_all_fields" value="{{ 'shelf.not.all.fields.entered' | trans }}">
         {% set counter = 1 %}
         {% for shelf in data.containersWithoutShelf %}
             <div id="container_{{ counter }}">
