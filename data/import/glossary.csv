@@ -4206,7 +4206,7 @@ catalog.sort.by,Sortieren nach,de_DE
 customer.login_subtext,"Již máte účet Můj Globus?",cs_CZ
 customer.login_subtext,Schon ein Mein Globus Konto?,de_DE
 customer.login_subtext,Already registered?,en_US
-customer.login.email_placeholder,"Zadejte číslo zákaznické karty nebo e-mail",cs_CZ
+customer.login.email_placeholder,"Zadejte e-mailovou adresu nebo číslo zákaznické karty",cs_CZ
 customer.login.email_placeholder,Kundenkartennummer oder E-Mail eingeben,de_DE
 customer.login.email_placeholder,Enter E-Mail address,en_US
 customer.login.password_placeholder,"Zadat heslo",cs_CZ
