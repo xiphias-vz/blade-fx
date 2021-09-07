@@ -1374,7 +1374,7 @@ customer.email.already.used,Email already used,en_US
 customer.email.already.used,"Tento e-mail je již používán.",cs_CZ
 customer.email.already.used,E-Mail bereits vergeben.,de_DE
 general.back.button,Back,en_US
-general.back.button,"Přerušit",cs_CZ
+general.back.button,"Zpět",cs_CZ
 general.back.button,Zurück,de_DE
 general.cancel.button,Cancel,en_US
 general.cancel.button,"Přerušit",cs_CZ
