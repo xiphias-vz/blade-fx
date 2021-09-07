@@ -14,6 +14,7 @@ use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\TelType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Validator\Constraints\Regex;
 
 /**
  * @method \Pyz\Yves\CustomerPage\CustomerPageFactory getFactory()
@@ -332,5 +333,21 @@ class CheckoutAddressForm extends SprykerShopCheckoutAddressForm
         ]);
 
         return $this;
+    }
+
+    /**
+     * @param array $options
+     *
+     * @return \Symfony\Component\Validator\Constraints\Regex
+     */
+    protected function createAddressNumberConstraint(array $options)
+    {
+        $validationGroup = $this->getValidationGroup($options);
+
+        return new Regex([
+            'pattern' => '/^\d+|\/*\d+[a-zA-Z]*$/',
+            'message' => static::VALIDATION_ADDRESS_NUMBER_MESSAGE,
+            'groups' => $validationGroup,
+        ]);
     }
 }

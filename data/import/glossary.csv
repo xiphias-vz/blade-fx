@@ -3438,7 +3438,7 @@ validation.not_blank,Dieses Feld sollte nicht leer sein,de_DE
 validation.invalid_date,"Datum musí být ve správném formátu %s.",cs_CZ
 validation.invalid_date,Date should be in correct format %s.,en_US
 validation.invalid_date,Datum sollte im richtigen Format vorliegen %s.,de_DE
-validation.address_number,"Tato hodnota je neplatná (akceptovaný formát např. 12c)" (accepted format e.g.: 12c).,cs_CZ
+validation.address_number,"Tato hodnota je neplatná",cs_CZ
 validation.address_number,This value is not valid (accepted format e.g.: 12c).,en_US
 validation.address_number,Dieser Wert ist nicht gültig (akzeptiertes Format z. B. 12c).,de_DE
 validation.zip_code,"Toto pole musí obsahovat přesně 5 číslic.",cs_CZ
