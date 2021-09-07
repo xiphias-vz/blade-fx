@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+<transfers xmlns="spryker:transfer-01"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="spryker:transfer-01 http://static.spryker.com/transfer-01.xsd">
+
+    <transfer name="CustomerEventProduct">
+        <property name="ItemType" type="string" description="SAP_ERP_MATNR" />
+        <property name="ItemId" type="string"/>
+        <property name="Name" type="string"/>
+        <property name="NavigationURL" type="string"/>
+        <property name="ImageUrl" type="string"/>
+    </transfer>
+
+    <transfer name="CustomerEvent">
+        <property name="InteractionType" type="string" description="SHOP_CHECKOUT_SUCCES"/>
+        <property name="CommunicationMedium" type="string" description="Z_CLICK_AND_COLLECT"/>
+        <property name="SourceSystemType" type="string" description="Z_CLICK_AND_COLLECT"/>
+        <property name="SourceSystemId" type="string" description="GetNow"/>
+        <property name="Timestamp" type="string" description="2021-08-31T10:20:22"/>
+        <property name="ContentTitle" type="string"/>
+        <property name="Products" type="CustomerEventProduct[]" singular="product" associative="true"/>
+        <property name="CardNumber" type="string"/>
+        <property name="ExternalUserId" type="string"/>
+        <property name="SourceObjectId" type="string"/>
+        <property name="Valuation" type="string" description="PROD_REVIEW_CREATED"/>
+    </transfer>
+
+</transfers>

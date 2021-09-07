@@ -57,10 +57,11 @@ class GlobusRestApiClient
      * @param string $url
      * @param mixed $data
      * @param array $params $params = ['id' => 1, 'name' => 'spry']
+     * @param string|null $bearerToken
      *
      * @return \Pyz\Yves\GlobusRestApiClient\Provider\GlobusRestApiResult
      */
-    public static function post(string $url, $data, array $params): GlobusRestApiResult
+    public static function post(string $url, $data, array $params, ?string $bearerToken = null): GlobusRestApiResult
     {
         $urlPrefix = GlobusRestApiConfig::getGlobusApiUrlPrefix();
         $fullUrl = $urlPrefix . $url;
@@ -77,6 +78,14 @@ class GlobusRestApiClient
         }
 
         $curl = curl_init();
+        $header = [
+            'APIKey: ' . GlobusRestApiConfig::getGlobusApiKey(),
+            'APISecret: ' . GlobusRestApiConfig::getGlobusApiSecretKey(),
+            'Content-Type: application/json',
+        ];
+        if (!empty($bearerToken)) {
+            $header[] = 'Authorization: Bearer ' . $bearerToken;
+        }
         curl_setopt_array($curl, [
             CURLOPT_URL => $fullUrl,
             CURLOPT_RETURNTRANSFER => true,
@@ -87,11 +96,7 @@ class GlobusRestApiClient
             CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
             CURLOPT_CUSTOMREQUEST => 'POST',
             CURLOPT_POSTFIELDS => $postData,
-            CURLOPT_HTTPHEADER => [
-                'APIKey: ' . GlobusRestApiConfig::getGlobusApiKey(),
-                'APISecret: ' . GlobusRestApiConfig::getGlobusApiSecretKey(),
-                'Content-Type: application/json',
-            ],
+            CURLOPT_HTTPHEADER => $header,
         ]);
 
         return static::getResult($curl);
