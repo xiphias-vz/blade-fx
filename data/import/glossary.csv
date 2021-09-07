@@ -4689,7 +4689,7 @@ payback.text.part.one,1 °P ,en_US
 payback.text.part.two, pro 2 Euro Warenwert,de_DE
 payback.text.part.two, pro 2 Euro Value of goods,en_US
 header.timeslot.button,Freie Abholtermine,de_DE
-header.timeslot.button,"Zdarma datum vyzvednutí",cs_CZ
+header.timeslot.button,"Čas vyzvednutí",cs_CZ
 success.message.title,"Wie geht es weiter?",de_DE
 success.message.title,"Jak dál?",cs_CZ
 success.message.text1,"Ihre Bestellbestätigung",de_DE
