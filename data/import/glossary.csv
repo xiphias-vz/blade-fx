@@ -5,7 +5,7 @@ cart.remove.items.success,Products were removed successfully,en_US
 cart.add.items.error.text,"Je nám to líto, něco se bohužel pokazilo.",cs_CZ
 cart.add.items.error.text,Leider ging etwas schief. Tut uns leid.,de_DE
 cart.add.items.error.text,Something went wrong. Sorry.,en_US
-cart.add.items.success,"Produkty byly úspěšně přidány do nákupního seznamu.",cs_CZ
+cart.add.items.success,"Produkty byly úspěšně přidány do košíku.",cs_CZ
 cart.add.items.success,Produkte erfolgreich der Einkaufsliste hinzugefügt.,de_DE
 cart.add.items.success,Items added successfully,en_US
 cart.your-order,"Vaše objednávka",cs_CZ
