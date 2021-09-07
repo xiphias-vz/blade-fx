@@ -1566,7 +1566,7 @@ checkout.step.summary.tax,Tax,en_US
 checkout.step.summary.tax,"DPH",cs_CZ
 checkout.step.summary.total,Complete checkout,en_US
 checkout.step.summary.total,Bestellung abschließen,de_DE
-checkout.step.summary.total,"Ukončit objednávku",cs_CZ
+checkout.step.summary.total,"Souhrn objednávky",cs_CZ
 checkout.step.summary.shipment_costs_total,"Shipment costs (total)",en_US
 checkout.step.summary.shipment_costs_total,"Servicegebühr",de_DE
 checkout.step.summary.shipment_costs_total,"Poplatek za službu",cs_CZ
