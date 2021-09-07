@@ -59,7 +59,7 @@ cart.checkout.address.abholstation.note.up,I will pick up my order at the pick-u
 cart.checkout.address.abholstation.note.down,"Zpráva výdejnímu místu",cs_CZ
 cart.checkout.address.abholstation.note.down,Nachricht an die Abholstation,de_DE
 cart.checkout.address.abholstation.note.down,Message to the pick-up station,en_US
-cart.checkout.address.abholstation.textarea.note,"Nemáte zájem o náhradní výrobky? Cokoliv je pro Vás při nákupu důležité, řeknětě nám o tom.",cs_CZ
+cart.checkout.address.abholstation.textarea.note," ",cs_CZ
 cart.checkout.address.abholstation.textarea.note,Kein Interesse an Ersatzprodukten? Was auch immer bei Ihrem aktuellen Einkauf wichtig ist. Sagen Sie es uns einfach.,de_DE
 cart.checkout.address.abholstation.textarea.note,Not interested in replacement products? Whatever is important in your current purchase. Just tell us.,en_US
 sales-order-threshold.expense.name,"Přirážka",cs_CZ
