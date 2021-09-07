@@ -102,15 +102,15 @@
         <div class="grid">
             {% if productSaleVolume > 0 %}
             <div class="text-secondary">
+                {% if data.product.attributes.grundeinheit is defined %}
+                    {% if data.preisProKg is not null and data.product.attributes.grundeinheit > 0 %}
+                        {{(data.preisProKg / 100 ) | round(2, 'common') | replace('.', ',') }} {{ data.currencySymbol }}/{{ data.product.attributes.grundpreismasseinheit }}
+                    {% elseif data.preisProKg is null and data.product.attributes.grundeinheit == 0 %}
 
-                {% if data.preisProKg is not null and data.product.attributes.grundeinheit > 0 %}
-                    {{(data.preisProKg / 100 ) | round(2, 'common') | replace('.', ',') }} {{ data.currencySymbol }}/{{ data.product.attributes.grundpreismasseinheit }}
-                {% elseif data.preisProKg is null and data.product.attributes.grundeinheit == 0 %}
-
-                {% else %}
-                    {{ ((((data.product.price / 100) / productSaleVolume)) * data.product.attributes.grundeinheit ) | round(2, 'common') | replace('.', ',') }} {{ data.currencySymbol }}/{{ data.product.attributes.grundeinheit }} {{ data.product.attributes.grundpreismasseinheit }}
+                    {% else %}
+                        {{ ((((data.product.price / 100) / productSaleVolume)) * data.product.attributes.grundeinheit ) | round(2, 'common') | replace('.', ',') }} {{ data.currencySymbol }}/{{ data.product.attributes.grundeinheit }} {{ data.product.attributes.grundpreismasseinheit }}
+                    {% endif %}
                 {% endif %}
-
             </div>
             {% endif %}
         </div>
