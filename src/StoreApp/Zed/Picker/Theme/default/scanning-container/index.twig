@@ -11,17 +11,21 @@
     itemSku: itemSku,
     isContainerUsed: isContainerUsed | default(null),
     isUsedContainerMessage: isUsedContainerMessage,
+    isScanFromPickingProcess: isScanFromPickingProcess | default,
+    isMultiPickingProcess: isMultiPickingProcess | default('0'),
+    pickZoneName: pickZoneName | default
 } %}
 
 
 
 {% block header %}
-    {#  TODO: Add this '/picker/select-picking-zone?multi_picking=1' in the buttonUrl after issue 533 is finished#}
     {% include organism('header') with {
         data: {
-            headerLocationTitle: data.merchant.name,
+            headerLocationTitle: data.pickZoneName,
             withoutLogo: true,
             pickingZone: true,
+            isScanFromPickingProcess: isScanFromPickingProcess,
+            isMultiPickingProcess: isMultiPickingProcess,
             buttonUrl:'/picker/multi-picking?unlock=true'
         }
     } only %}

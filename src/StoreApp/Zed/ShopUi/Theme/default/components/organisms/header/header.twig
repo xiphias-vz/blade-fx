@@ -20,7 +20,8 @@
     productsLength: 0,
     openedItems: 0,
     editedItems: 0,
-    isMultiPickingProcess: 0
+    isMultiPickingProcess: 0,
+    isScanFromPickingProcess: ''
 } %}
 
 {% block extraClass %}
@@ -135,7 +136,7 @@
 
                         {% elseif data.pickingZone %}
                             <div class="col col--sm-4 col--md-5">
-                                {% if data.buttonUrl %}
+                                {% if data.buttonUrl and data.isScanFromPickingProcess == '0' %}
                                     <a href="{{ data.buttonUrl }}" class="link link--cancel link--icon">
                                         {% include atom('icon') with {
                                             class: 'link__icon link__icon--cancel',
@@ -151,11 +152,19 @@
                             </div>
                                 <div class="col col--expand">
                                     <div class="link">
-                                        <div class="link__header__zone">
-                                            {% block selectPickingZone %}
-                                                {% widget 'SelectPickingZoneWidget' only %}{% endwidget %}
-                                            {% endblock %}
-                                        </div>
+                                        {% if data.isMultiPickingProcess == '1' %}
+                                            <div class="no_link__header__zone">
+                                                <div class="col col--expand text-right text-middle__darkerGreen text-middle__position">
+                                                    {{ data.headerLocationTitle }}
+                                                </div>
+                                            </div>
+                                        {% else %}
+                                            <div class="link__header__zone">
+                                                {% block selectPickingZone %}
+                                                    {% widget 'SelectPickingZoneWidget' only %}{% endwidget %}
+                                                {% endblock %}
+                                            </div>
+                                        {% endif %}
                                     </div>
                                  </div>
                             <div class="col {{ config.name }}__logout text-right">

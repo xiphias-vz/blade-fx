@@ -84,4 +84,13 @@
             color: $setting-color-pickingApp-darkerGreen;
         }
     }
+
+    .no_link__header__zone
+    {
+        margin-top:10% !important;
+
+        @media only screen and (max-width: 480px) {
+            margin-top:17% !important;
+        }
+    }
 }

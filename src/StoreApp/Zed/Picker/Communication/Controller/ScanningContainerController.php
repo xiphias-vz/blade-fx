@@ -49,6 +49,7 @@ class ScanningContainerController extends AbstractController
         $submittedContainers = json_decode($request->get(static::CONTAINERS_ID)) ?? [];
         $merchant = $this->getMerchantFromRequest($request)->getMerchantReference();
 
+        $pickZoneById = $factory->getPickingZoneFacade()->findPickingZoneById($transfer->getIdZone());
         $usedError = '';
         $isContainerUsed = 0;
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
@@ -126,6 +127,11 @@ class ScanningContainerController extends AbstractController
             $orderForScanningContainer = $transfer->getNextOrder($nextOrderPosition);
         }
 
+        $isScanFromPickingProcess = "0";
+        if (isset($_REQUEST['add_multiple_containers'])) {
+            $isScanFromPickingProcess = $_REQUEST['add_multiple_containers'];
+        }
+
         return $this->viewResponse([
             'orderForScanningContainer' => $orderForScanningContainer,
             'itemSku' => $request->get(static::ORDER_ITEM_SKU),
@@ -137,6 +143,9 @@ class ScanningContainerController extends AbstractController
             'merchant' => $this->getMerchantFromRequest($request),
             'isContainerUsed' => $isContainerUsed,
             'isUsedContainerMessage' => $usedError,
+            'isScanFromPickingProcess' => $isScanFromPickingProcess,
+            'isMultiPickingProcess' => '1',
+            'pickZoneName' => $pickZoneById->getName(),
         ]);
     }
 

@@ -75,6 +75,7 @@
 
             &__darkerGreen {
                 color: $setting-color-pickingApp-darkerGreen;
+                text-decoration: none;
                 font-weight: fw(black);
                 font-size:16px;
             }
@@ -82,6 +83,12 @@
             &__lightOrange {
                 color: $setting-color-pickingApp-lightOrange;
                 font-weight: fw(black);
+            }
+
+            &__position {
+                padding: rem(15) 0;
+                margin-left: rem(25);
+
             }
         }
 
