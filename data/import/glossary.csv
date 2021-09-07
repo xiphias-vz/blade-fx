@@ -712,7 +712,7 @@ homepage.carousel.previous,Zurück,de_DE
 homepage.carousel.previous,Previous,en_US
 homepage.carousel.next,Vore,de_DE
 homepage.carousel.next,Next,en_US
-customer.signup,"Jste u logistické služby noví?",cs_CZ
+customer.signup,"Ještě jste u nás nenakupovali?",cs_CZ
 customer.signup,Neuer Kunde?,de_DE
 customer.signup,New customer?,en_US
 customer.signin,Signin,en_US
@@ -4212,7 +4212,7 @@ customer.login.email_placeholder,Enter E-Mail address,en_US
 customer.login.password_placeholder,"Zadat heslo",cs_CZ
 customer.login.password_placeholder,Passwort eingeben,de_DE
 customer.login.password_placeholder,Enter password,en_US
-customer.signup_subtext,"Jste u logistické služby noví?",cs_CZ
+customer.signup_subtext,"Ještě jste u nás nenakupovali?",cs_CZ
 customer.signup_subtext,New to Spryker?,en_US
 customer.signup_subtext,Neu bei Abholservice?,de_DE
 customer.registration.first_name_placeholder,"Jméno",cs_CZ
