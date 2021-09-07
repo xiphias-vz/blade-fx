@@ -939,7 +939,7 @@ customer.forgotten_password.email,E-Mail Adresse,de_DE
 customer.forgotten_password.email,"E-mailová adresa",cs_CZ
 customer.forgotten-password.title,Recover my password,en_US
 customer.forgotten-password.title,Passwort vergessen,de_DE
-customer.forgotten-password.title,"Připomenout heslo",cs_CZ
+customer.forgotten-password.title,"Zapomněli jste heslo",cs_CZ
 customer.order.order_id,Order ID,en_US
 customer.order.order_id,Nummer,de_DE
 customer.order.order_id,"Číslo objednávky",cs_CZ
