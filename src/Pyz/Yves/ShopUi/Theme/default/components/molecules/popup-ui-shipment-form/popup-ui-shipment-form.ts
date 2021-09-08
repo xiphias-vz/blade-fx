@@ -1,10 +1,6 @@
 import Component from 'ShopUi/models/component';
 import $ from 'jquery/dist/jquery';
 
-const EVENT_TOGGLE_FORM = 'toggleForm';
-const TOP_LEFT_TITLE = 'Unsere verfügbaren Abholzeiten:';
-const TIME_SLOT_INFO_TEXT = 'Der Globus Abholservice steht unseren Kunden an verschiedenen Standorten zur Verfügung. Wenn Sie Ihre Abholstation wechseln, beachten Sie bitte, dass die Produktauswahl, Preise und Abholzeitfenster variieren können.';
-
 export default class PopupUiShipmentForm extends Component {
     protected $this: $ = $(this);
     protected linkToTimeSlots;
@@ -13,20 +9,24 @@ export default class PopupUiShipmentForm extends Component {
     protected mainContentContainer;
     protected slickTrack;
     protected timeSlotData;
-    protected daysOfWeek;
     protected btnSlickPrevious;
     protected btnSlickNext;
     protected daysCounter;
     protected currentItemForMobile;
     protected lastOperation;
+    pickUpTimes: HTMLInputElement;
+    footerMessage: HTMLInputElement;
+    locale: HTMLInputElement;
 
     protected readyCallback(): void {
-        this.daysOfWeek = ["Sonntag", "Montag", "Dienstag", "Mittwoch", "Donnerstag", "Freitag", "Samstag"];
         this.linkToTimeSlots = document.getElementById(this.getLinkToTimeSlots);
         this.linkToTimeSlotsMobile = document.getElementById(this.getLinkToTimeSlotsMobile);
         this.closeModalBtn = this.$this.find(this.closeButtonSelector);
         this.mainContentContainer = this.$this.find(this.getMainContentContainer);
         this.currentItemForMobile = 0;
+        this.pickUpTimes = <HTMLInputElement>document.querySelector('#pickup_times');
+        this.footerMessage = <HTMLInputElement>document.querySelector('#footer_message');
+        this.locale = <HTMLInputElement>document.querySelector('#locale');
 
         this.mapEvents();
     }
@@ -85,7 +85,7 @@ export default class PopupUiShipmentForm extends Component {
     protected createTimeSlotsContainer(data): void {
         this.timeSlotData = data;
 
-        let slickCarouselContainer = $('<div class="grid"><article class="checkout-block checkout-block--shipment checkout-block--border-bottom-less grid col col--sm-12"><div class="col col--sm-12"><div class="popup-ui-shipment-form__container-slick js-slick-carousel__container js-list-switches__item slick-initialized slick-slider"><div class="popup-ui-shipment-form__top-left-title"><span>' + TOP_LEFT_TITLE + '</span></div><div class="popup-ui-shipment-form__time-slot-buttons"><button id="goToPreviousTimeSlot" class="slick-prev slick-arrow" aria-label="Previous" type="button">Previous</button><button id="goToNextTimeSlot" class="slick-next slick-arrow" aria-label="Next" type="button">Next</button></div><div class="popup-ui-shipment-form--timeslots"><div class="slick-popup-list draggable"><div class="slick-popup-track" style="opacity: 1; transform: translate3d(0px, 0px, 0px);"></div></div></div></div></div></article><div class="time-slot-info-text"><span>' + TIME_SLOT_INFO_TEXT + '</span></div></div>');
+        let slickCarouselContainer = $('<div class="grid"><article class="checkout-block checkout-block--shipment checkout-block--border-bottom-less grid col col--sm-12"><div class="col col--sm-12"><div class="popup-ui-shipment-form__container-slick js-slick-carousel__container js-list-switches__item slick-initialized slick-slider"><div class="popup-ui-shipment-form__top-left-title"><span>' + this.pickUpTimes.value + '</span></div><div class="popup-ui-shipment-form__time-slot-buttons"><button id="goToPreviousTimeSlot" class="slick-prev slick-arrow" aria-label="Previous" type="button">Previous</button><button id="goToNextTimeSlot" class="slick-next slick-arrow" aria-label="Next" type="button">Next</button></div><div class="popup-ui-shipment-form--timeslots"><div class="slick-popup-list draggable"><div class="slick-popup-track" style="opacity: 1; transform: translate3d(0px, 0px, 0px);"></div></div></div></div></div></article><div class="time-slot-info-text"><span>' + this.footerMessage.value + '</span></div></div>');
         slickCarouselContainer.appendTo(this.mainContentContainer);
 
         this.btnSlickPrevious = document.getElementById(this.getSlickPrevious);
@@ -138,7 +138,7 @@ export default class PopupUiShipmentForm extends Component {
                 let dateInc = Object.keys(data)[item];
                 if(dateInc != undefined){
                     let dateObj = new Date(dateInc);
-                    let germanFormatDate = dateObj.toLocaleDateString('de-DE');
+                    let germanFormatDate = dateObj.toLocaleDateString(this.locale.value);
 
                     let slickSlideDaysContainer = $('<div class="slick-popup-slide slick-popup-current slick-popup-active col--md-4 col--sm-12" style="float: left;"><div class="spaceBetweenCol"><div class="popup-ui-shipment-form-popup__column spacing-bottom spacing-bottom--biggest" style="width: 100%; display: inline-block;"><div class="popup-ui-shipment-form-popup__date">' + this.getDayName(dateInc) + ', ' + germanFormatDate + '</div><div class="slots_' + dateInc + '"></div></div></div></div>');
                     slickSlideDaysContainer.appendTo(this.slickTrack);
@@ -172,7 +172,7 @@ export default class PopupUiShipmentForm extends Component {
                 let dateDec = Object.keys(data)[item];
                 if(dateDec != undefined){
                     let dateObj = new Date(dateDec);
-                    let germanFormatDate = dateObj.toLocaleDateString('de-DE');
+                    let germanFormatDate = dateObj.toLocaleDateString(this.locale.value);
 
                     let slickSlideDaysContainer = $('<div class="slick-popup-slide slick-popup-current slick-popup-active col--md-4 col--sm-12" style="float: left;"><div class="spaceBetweenCol"><div class="popup-ui-shipment-form-popup__column spacing-bottom spacing-bottom--biggest" style="width: 100%; display: inline-block;"><div class="popup-ui-shipment-form-popup__date">' + this.getDayName(dateDec) + ', ' + germanFormatDate + '</div><div class="slots_' + dateDec + '"></div></div></div></div>');
                     slickSlideDaysContainer.appendTo(this.slickTrack);
@@ -256,7 +256,7 @@ export default class PopupUiShipmentForm extends Component {
                 this.daysCounter++;
 
                 let dateObj = new Date(property);
-                let germanFormatDate = dateObj.toLocaleDateString('de-DE');
+                let germanFormatDate = dateObj.toLocaleDateString(this.locale.value);
 
                 let slickSlideDaysContainer = $('<div class="slick-popup-slide slick-popup-current slick-popup-active col--md-4 col--sm-12" style="float: left;"><div class="spaceBetweenCol"><div class="popup-ui-shipment-form-popup__column spacing-bottom spacing-bottom--biggest" style="width: 100%; display: inline-block;"><div class="popup-ui-shipment-form-popup__date">' + this.getDayName(property) + ', ' + germanFormatDate + '</div><div class="slots_' + property + '"></div></div></div></div>');
                 slickSlideDaysContainer.appendTo(this.slickTrack);
@@ -285,7 +285,7 @@ export default class PopupUiShipmentForm extends Component {
     protected getDayName(dateStr)
     {
         let date = new Date(dateStr);
-        return date.toLocaleDateString("de-DE", { weekday: 'long' });
+        return date.toLocaleDateString(this.locale.value, { weekday: 'long' });
     }
 
     get showClass(): string {

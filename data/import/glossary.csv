@@ -4775,3 +4775,36 @@ footer.price.expenses.message,Alle Preise verstehen sich inklusive Mehrwertsteue
 footer.price.expenses.message,All prices include VAT and plus a service fee,en_US
 footer.price.expenses.message,"Všechny ceny jsou včetně DPH a bez servisního poplatku",cs_CZ
 free.timeslot.window,"Unsere verfügbaren Abholzeiten:",de_DE
+popup.shipment.form.title,"Volné intervaly vyzvednutí",cs_CZ
+popup.shipment.form.title,Freie Abholtermine,de_DE
+popup.shipment.form.title,Free pick-up intervals,en_US
+popup.shipment.form.available.pick-up.times,Unsere verfügbaren Abholzeiten:,de_DE
+popup.shipment.form.available.pick-up.times,"Možné časy vyzvednutí:",cs_CZ
+popup.shipment.form.available.pick-up.times,Our available pick-up times:,en_US
+popup.shipment.form.footer.message,"Der Globus Abholservice steht unseren Kunden an verschiedenen Standorten zur Verfügung. Wenn Sie Ihre Abholstation wechseln, beachten Sie bitte, dass die Produktauswahl, Preise und Abholzeitfenster variieren können.",de_DE
+popup.shipment.form.footer.message,"Služba vyzvednutí Globus je našim zákazníkům k dispozici na různých pobočkách. Pokud změníte výdejní místo, mějte prosím na paměti, že se může lišit výběr produktů, ceny a časové intervaly vyzvednutí.",cs_CZ
+popup.shipment.form.footer.message,"The Globus pick-up service is available to our customers at various locations. If you change your pick-up station, please note that the product selection, prices and pick-up time windows may vary.",en_US
+popup.shipment.form.locale,de-DE,de_DE
+popup.shipment.form.locale,cs-CZ,cs_CZ
+popup.shipment.form.locale,en-US,en_US
+shipment.form.monday,Montag,de_DE
+shipment.form.monday,"pondělí",cs_CZ
+shipment.form.monday,Monday,en_US
+shipment.form.tuesday,Dienstag,de_DE
+shipment.form.tuesday,"úterý",cs_CZ
+shipment.form.tuesday,Tuesday,en_US
+shipment.form.wednesday,Mittwoch,de_DE
+shipment.form.wednesday,"středa",cs_CZ
+shipment.form.wednesday,Wednesday,en_US
+shipment.form.thursday,Donnerstag,de_DE
+shipment.form.thursday,"čtvrtek",cs_CZ
+shipment.form.thursday,Thursday,en_US
+shipment.form.friday,Freitag,de_DE
+shipment.form.friday,"pátek",cs_CZ
+shipment.form.friday,Friday,en_US
+shipment.form.saturday,Samstag,de_DE
+shipment.form.saturday,"sobota",cs_CZ
+shipment.form.saturday,Saturday,en_US
+shipment.form.sunday,Sonntag,de_DE
+shipment.form.sunday,"neděle",cs_CZ
+shipment.form.sunday,Sunday,en_US

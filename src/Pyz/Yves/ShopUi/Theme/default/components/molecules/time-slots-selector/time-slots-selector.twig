@@ -62,13 +62,13 @@
             } only %}
                 {% block slides %}
                     {% set daysInTheWeek =  {
-                            1: 'Montag',
-                            2: 'Dienstag',
-                            3: 'Mittwoch',
-                            4: 'Donnerstag',
-                            5: 'Freitag',
-                            6: 'Samstag',
-                            7: 'Sonntag'
+                        1: 'shipment.form.monday' | trans,
+                        2: 'shipment.form.tuesday' | trans,
+                        3: 'shipment.form.wednesday' | trans,
+                        4: 'shipment.form.thursday' | trans,
+                        5: 'shipment.form.friday' | trans,
+                        6: 'shipment.form.saturday' | trans,
+                        7: 'shipment.form.sunday' | trans
                     }%}
                     {% for day, hours in data.slides if hours | length > 0 %}
                         {% set dayOfTheWeek = day |date('w') %}
