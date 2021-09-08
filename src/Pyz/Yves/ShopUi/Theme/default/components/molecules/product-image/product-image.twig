@@ -9,18 +9,22 @@
     image: null
 } %}
 
+{% set defaultImage = publicPath("/images/kein_bild_vorhanden.png") %}
+
 {% block body %}
-    {% if data.image is not empty %}
-        {% include molecule('lazy-thumbnail') with {
-            modifiers: ['small'] | merge(modifiers),
-            attributes: {
-                alt: data.name,
-                src: data.image,
-            },
-        } only %}
+
+    {% if data.image is defined %}
+        {% set displayImage = data.image %}
     {% else %}
-        <div class="text-center">
-            <small>{{ 'global.no_image_available' | trans }}</small>
-        </div>
+        {% set displayImage = defaultImage %}
     {% endif %}
+
+    {% include molecule('lazy-thumbnail') with {
+        modifiers: ['small'] | merge(modifiers),
+        attributes: {
+            alt: data.name,
+            src: displayImage,
+        },
+    } only %}
+
 {% endblock %}

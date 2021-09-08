@@ -1,6 +1,7 @@
 {% extends molecule('suggestion-product', '@SprykerShop:CatalogPage') %}
 
 {% set addAjaxUrl = path("cart/add-ajax", { "productAbstractId": data.product.id_product_abstract  }) %}
+{% set defaultImage = publicPath("/images/kein_bild_vorhanden.png") %}
 
 {% block body %}
 <div class="suggestion-product-slot" >
@@ -9,15 +10,19 @@
         <a class="{{ config.name }}__link grid grid--middle grid--no-wrap js-suggest-search__item--navigable js-suggest-search__product-item--navigable"  href="{{ data.url }}">
             <span class="col">
                 {% if data.image %}
-                    {% include atom('thumbnail') with {
-                        modifiers: ['catalog', 'with-overlay'],
-                        attributes: {
-                            alt: data.alt,
-                            src: data.image.external_url_small,
-                            title: data.title,
-                        },
-                    } only %}
+                    {% set thumbImage = data.image.external_url_small %}
+                {% else %}
+                    {% set thumbImage = defaultImage %}
                 {% endif %}
+
+                {% include atom('thumbnail') with {
+                    modifiers: ['catalog', 'with-overlay'],
+                    attributes: {
+                        alt: data.alt,
+                        src: thumbImage,
+                        title: data.title,
+                    },
+                } only %}
            </span>
 
             <span class="col col--expand col--lg-9 title title--medium">

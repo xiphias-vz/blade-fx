@@ -19,6 +19,7 @@
 
 {% set canEditCart = (not is_granted('IS_AUTHENTICATED_FULLY') or can('WriteSharedCartPermissionPlugin', data.idQuote)) and data.canEditCart %}
 {% set productItemBox = (data.productItem.productOptions is defined and data.productItem.productOptions is empty) ? '' : config.name ~ '__box--with-options' %}
+{% set defaultImage = publicPath("/images/kein_bild_vorhanden.png") %}
 
 {% block body %}
     <div class="{{ component.renderClass(config.name ~ '__box', modifiers) }} {{ productItemBox }}">
@@ -29,7 +30,7 @@
                     {% if data.productItem.images[0].externalUrlLarge is defined %}
                         {% set imageProduct = data.productItem.images[0].externalUrlLarge %}
                     {% else %}
-                        {% set imageProduct = '' %}  {# TODO: ADD DISPLAY OF THE BOX IMAGE #}
+                        {% set imageProduct = defaultImage %}
                     {% endif %}
                     {% include molecule('product-image') with {
                         data: {
