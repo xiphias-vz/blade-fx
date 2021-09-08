@@ -38,11 +38,13 @@ class OrderItemExpander
     ): SpySalesOrderItemEntityTransfer {
         $stockProduct = $this->salesRepository->findStockProduct($quoteTransfer, $itemEntityTransfer);
 
-        $itemEntityTransfer
-            ->setSequence($stockProduct->getSequence())
-            ->setShelf($stockProduct->getShelf())
-            ->setShelfFloor($stockProduct->getShelfFloor())
-            ->setShelfField($stockProduct->getShelfField());
+        if ($stockProduct != null) {
+            $itemEntityTransfer
+                ->setSequence($stockProduct->getSequence())
+                ->setShelf($stockProduct->getShelf())
+                ->setShelfFloor($stockProduct->getShelfFloor())
+                ->setShelfField($stockProduct->getShelfField());
+        }
 
         return $itemEntityTransfer;
     }

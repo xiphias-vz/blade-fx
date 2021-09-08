@@ -16,6 +16,7 @@ use Orm\Zed\PickingZone\Persistence\Map\PyzPickingZoneTableMap;
 use Orm\Zed\PickingZone\Persistence\PyzPickingZoneQuery;
 use Orm\Zed\PriceProductSchedule\Persistence\SpyPriceProductScheduleQuery;
 use Orm\Zed\PriceProductStorage\Persistence\SpyPriceProductAbstractStorageQuery;
+use PDO;
 use Pyz\Shared\Product\ProductConfig;
 use Spryker\Zed\ProductCartConnector\Business\Expander\ProductExpander as SprykerProductExpander;
 use Spryker\Zed\ProductCartConnector\Business\Expander\ProductExpanderInterface;
@@ -82,13 +83,13 @@ class ProductExpander extends SprykerProductExpander implements ProductExpanderI
                     ->joinWithAssortmentZone()
                     ->joinWithMerchant()
                     ->endUse()
-                    ->where(PyzAssortmentZoneTableMap::COL_ASSORTMENT_ZONE . ' = ?', $assortmentZone)
-                    ->where(SpyMerchantTableMap::COL_FILIAL_NUMBER . ' = ?', $merchantReference)
+                    ->where(PyzAssortmentZoneTableMap::COL_ASSORTMENT_ZONE . ' = ?', $assortmentZone, PDO::PARAM_STR)
+                    ->where(SpyMerchantTableMap::COL_FILIAL_NUMBER . ' = ?', $merchantReference, PDO::PARAM_STR)
                     ->select([PyzPickingZoneTableMap::COL_NAME]);
 
                 $entity = $query->find();
-                if (!empty($entity)) {
-                    $pickZone = $entity[0];
+                if (!empty($entity->getData())) {
+                    $pickZone = $entity->getFirst();
                 }
             }
         }
