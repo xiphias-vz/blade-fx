@@ -7,8 +7,8 @@
 
 namespace Pyz\Zed\ProductQuantity\Business;
 
-use Generated\Shared\Transfer\ProductQuantityResponseTransfer;
-use Generated\Shared\Transfer\ProductQuantityTransfer;
+use Generated\Shared\Transfer\CartChangeTransfer;
+use Generated\Shared\Transfer\CartPreCheckResponseTransfer;
 use Spryker\Zed\ProductQuantity\Business\ProductQuantityFacade as SprykerProductQuantityFacade;
 
 /**
@@ -16,19 +16,21 @@ use Spryker\Zed\ProductQuantity\Business\ProductQuantityFacade as SprykerProduct
  * @method \Pyz\Zed\ProductQuantity\Persistence\ProductQuantityEntityManagerInterface getEntityManager()
  * @method \Spryker\Zed\ProductQuantity\Persistence\ProductQuantityRepositoryInterface getRepository()
  */
-class ProductQuantityFacade extends SprykerProductQuantityFacade implements ProductQuantityFacadeInterface
+class ProductQuantityFacade extends SprykerProductQuantityFacade
 {
     /**
      * {@inheritDoc}
      *
      * @api
      *
-     * @param \Generated\Shared\Transfer\ProductQuantityTransfer $productQuantityTransfer
+     * @param \Generated\Shared\Transfer\CartChangeTransfer $cartChangeTransfer
      *
-     * @return \Generated\Shared\Transfer\ProductQuantityResponseTransfer
+     * @return \Generated\Shared\Transfer\CartPreCheckResponseTransfer
      */
-    public function saveProductQuantity(ProductQuantityTransfer $productQuantityTransfer): ProductQuantityResponseTransfer
+    public function validateItemAddProductQuantityRestrictions(CartChangeTransfer $cartChangeTransfer): CartPreCheckResponseTransfer
     {
-        return $this->getFactory()->createProductQuantityWriter()->saveProductQuantity($productQuantityTransfer);
+        return $this->getFactory()
+            ->createProductQuantityRestrictionValidator()
+            ->validateItemAddition($cartChangeTransfer);
     }
 }

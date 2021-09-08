@@ -4443,8 +4443,8 @@ cart.pre.check.quantity.min.failed,"Požadavek na minimální množství pro SKU
 cart.pre.check.quantity.min.failed,Minimum quantity requirements for product SKU '%sku%' are not fulfilled.,en_US
 cart.pre.check.quantity.min.failed,Die Mindestanzahl für Produkt SKU '%sku%' ist nicht erreicht.,de_DE
 cart.pre.check.quantity.max.failed,"Vezměte prosím na vědomí, že zboží vydáváme pouze v množství běžném pro domácnost.",cs_CZ
-cart.pre.check.quantity.max.failed,Maximum quantity for product SKU '%sku%' is exceeded.,en_US
-cart.pre.check.quantity.max.failed,Die Maximalanzahl für Produkt SKU '%sku%' ist überschritten.,de_DE
+cart.pre.check.quantity.max.failed,Maximum quantity for product '%sku%' is exceeded.,en_US
+cart.pre.check.quantity.max.failed,Die Maximalanzahl für Produkt '%sku%' ist überschritten.,de_DE
 cart.pre.check.quantity.interval.failed,"Počet pro SKU produktu '% sku%' se nenachází ve stanoveném intervalu.",cs_CZ
 cart.pre.check.quantity.interval.failed,Quantity interval requirements for product SKU '%sku%' are not fulfilled.,en_US
 cart.pre.check.quantity.interval.failed,Die Anzahl für Produkt SKU '%sku%' liegt nicht innerhalb des vorgegebenen Intervals.,de_DE
