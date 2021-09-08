@@ -24,6 +24,14 @@ class CheckoutAddressForm extends SprykerShopCheckoutAddressForm
     public const FIELD_MOBILE_PHONE = 'cell_phone';
 
     /**
+     * @return bool
+     */
+    private function getRequired(): bool
+    {
+        return !$this->getFactory()->getCustomerClient()->isLoggedIn();
+    }
+
+    /**
      * @param \Symfony\Component\Form\FormBuilderInterface $builder
      * @param array $options
      *
@@ -59,7 +67,7 @@ class CheckoutAddressForm extends SprykerShopCheckoutAddressForm
     {
         $builder->add(self::FIELD_FIRST_NAME, TextType::class, [
             'label' => 'customer.address.first_name',
-            'required' => true,
+            'required' => $this->getRequired(),
             'trim' => true,
             'attr' => [
                 'placeholder' => 'customer.registration.first_name_placeholder',
@@ -84,7 +92,7 @@ class CheckoutAddressForm extends SprykerShopCheckoutAddressForm
     {
         $builder->add(self::FIELD_LAST_NAME, TextType::class, [
             'label' => 'customer.address.last_name',
-            'required' => true,
+            'required' => $this->getRequired(),
             'trim' => true,
             'attr' => [
                 'placeholder' => 'customer.registration.last_name_placeholder',
@@ -109,7 +117,7 @@ class CheckoutAddressForm extends SprykerShopCheckoutAddressForm
     {
         $builder->add(self::FIELD_ADDRESS_1, TextType::class, [
             'label' => 'customer.address.address1',
-            'required' => true,
+            'required' => $this->getRequired(),
             'trim' => true,
             'attr' => [
                 'placeholder' => 'customer.registration.address1_placeholder',
@@ -134,7 +142,7 @@ class CheckoutAddressForm extends SprykerShopCheckoutAddressForm
     {
         $builder->add(self::FIELD_ADDRESS_2, TextType::class, [
             'label' => 'customer.address.number',
-            'required' => true,
+            'required' => $this->getRequired(),
             'trim' => true,
             'attr' => [
                 'placeholder' => 'customer.registration.address2_placeholder',
@@ -179,7 +187,7 @@ class CheckoutAddressForm extends SprykerShopCheckoutAddressForm
     {
         $builder->add(self::FIELD_ZIP_CODE, TextType::class, [
             'label' => 'customer.address.zip_code',
-            'required' => true,
+            'required' => $this->getRequired(),
             'trim' => true,
             'attr' => [
                 'placeholder' => 'customer.registration.zip_placeholder',
@@ -242,7 +250,7 @@ class CheckoutAddressForm extends SprykerShopCheckoutAddressForm
     {
         $builder->add(self::FIELD_CITY, TextType::class, [
             'label' => 'customer.address.city',
-            'required' => true,
+            'required' => $this->getRequired(),
             'trim' => true,
             'attr' => [
                 'placeholder' => 'customer.registration.city_placeholder',
@@ -325,7 +333,7 @@ class CheckoutAddressForm extends SprykerShopCheckoutAddressForm
                 'Divers' => 'customer.salutation.divers',
             ]),
             'label' => 'profile.form.salutation',
-            'required' => true,
+            'required' => $this->getRequired(),
             'trim' => true,
             'constraints' => [
                 $this->createNotBlankConstraint($options),
