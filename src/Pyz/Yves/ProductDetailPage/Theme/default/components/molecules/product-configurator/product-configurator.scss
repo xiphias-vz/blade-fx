@@ -6,6 +6,10 @@
             margin-bottom: rem(16);
         }
 
+        &__not-in-stock-msg {
+            color: red;
+        }
+
         &__quantity-wrapper {
             padding-bottom: rem(24);
             margin-bottom: rem(5);

@@ -1,0 +1,19 @@
+@mixin product-detail-page-product-configurator($name: '.product-configurator') {
+    #{$name} {
+        &__info {
+            .not-in-stock {
+                display: flex;
+                align-items: center;
+
+                .message {
+                    color:red;
+                    padding-left: 5px;
+                    margin-top:1px;
+                }
+            }
+        }
+    }
+}
+
+
+@include product-detail-page-product-configurator();

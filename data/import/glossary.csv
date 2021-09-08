@@ -3058,6 +3058,9 @@ cart_note.checkout_page.quote_note,Cart Note,en_US
 cart_note.checkout_page.quote_note,Einkaufsliste Notiz,de_DE
 cart_note.checkout_page.quote_note,"Poznámka košíku",cs_CZ
 cart_note.customer_page.item_note,Order item Note,en_US
+product.not.in.stock.message,Nicht in sortiment,de_DE
+product.not.in.stock.message,Not in stock,en_US
+product.not.in.stock.message,Není skladem,cs_CZ
 cart_note.customer_page.item_note,Bestellposition Notiz,de_DE
 cart_note.customer_page.item_note,"Poznámka k položce objednávky",cs_CZ
 cart_note.customer_page.order_note,Order Note,en_US

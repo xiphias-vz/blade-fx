@@ -87,16 +87,19 @@
             </p>
         {% endif %}
         <div class="align-right">
-            {% widget 'ProductPriceVolumeWidget' args [data.product] only %}
-            {% nowidget %}
-                {% include molecule('money-price') with {
-                    modifiers: ['pdp'],
-                    data: {
-                        amount: data.product.price,
-                        originalAmount: data.product.prices.ORIGINAL is not defined ? null : data.product.prices.ORIGINAL,
-                    }
-                } only %}
-            {% endwidget %}
+            {% if not isAvailable %}
+
+                {% else %}
+                    {% widget 'ProductPriceVolumeWidget' args [data.product] only %}
+                    {% nowidget %}
+                        {% include molecule('money-price') with {
+                            modifiers: ['pdp'],
+                            data: {
+                                amount: data.product.price,
+                                originalAmount: data.product.prices.ORIGINAL is not defined ? null : data.product.prices.ORIGINAL,
+                            }
+                        } only %}
+                    {% endwidget %}
         </div>
 
         <div class="grid">
@@ -160,18 +163,23 @@
             </div>
         {% endwidget %}
     </form>
-
-    {% if not isAvailable and isProductConcrete %}
-        {% widget 'AvailabilityNotificationSubscriptionWidget' args [data.product] only %}{% endwidget %}
     {% endif %}
 
-    {% if isProductAvailable %}
+    {% if not isAvailable and isProductConcrete %}
+        <div class="not-in-stock">
+            <span style="background: red; height: 1rem; width: 1rem; border-radius: 50%; float: left">  </span>
+            <span class="message">
+                {{ 'product.not.in.stock.message' | trans }}
+        </div>
+
+    {% elseif isProductAvailable %}
         {% include molecule('wishlist-selector-for-pdp', 'WishlistWidget') ignore missing with {
             data: {
                 sku: data.product.sku,
                 idProductConcrete: data.product.idProductConcrete | default
             }
         } only %}
+
     {% endif %}
 
 {% endblock %}
