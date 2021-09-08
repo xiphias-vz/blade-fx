@@ -10,6 +10,7 @@ use Pyz\Shared\Shipment\ShipmentConstants;
 use Pyz\Shared\Store\StoreConstants;
 use Spryker\Service\FlysystemLocalFileSystem\Plugin\Flysystem\LocalFilesystemBuilderPlugin;
 use Spryker\Shared\FileSystem\FileSystemConstants;
+use StoreApp\Shared\Picker\PickerConstants;
 
 $config[StoreConstants::SAP_STORE_ID_TO_STORE_MAP] = [
     4007 => 'OST',
@@ -79,3 +80,14 @@ $config[TokenProvider::GSOA_CLIENT_ID] = "webAppSpryker";
 $config[TokenProvider::GSOA_CLIENT_SECRET] = "1A5CE779-02EA-42A5-959C-9909C2C11666";
 
 $config[ProductImageConstants::IMAGES_HOST_URL] = 'https://gapi.globus.cz/OnlineAsset/3/asset?assetID=';
+
+// ----------- Days in the week abbr
+$config[PickerConstants::DAYS_IN_THE_WEEK] = [
+    '0' => 'SO',
+    '1' => 'MO',
+    '2' => 'DI',
+    '3' => 'MI',
+    '4' => 'DO',
+    '5' => 'FR',
+    '6' => 'SA',
+];
