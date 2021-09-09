@@ -1,17 +1,17 @@
 navigation_key,node_key,parent_node_key,node_type,title.cs_CZ,url.cs_CZ,css_class.cs_CZ,title.de_DE,url.de_DE,css_class.de_DE,valid_from,valid_to,position
-NAVIGATION_FOOTER_ELEMENT,node_key_162,,cms_page,O nás,/cs/ueberuns/,category-4,Über uns,/ueberuns,category-4,,,4
-FOOTER_NAVIGATION_CATEGORIES,node_key_165,,external_url,Otázky a odpovědi,/cs/garden-&-outdoor,category-7,Fragen und Antworten,https://globus.zendesk.com/hc/de,category-7,,,2
-FOOTER_NAVIGATION_CATEGORIES,node_key_166,,cms_page,Služba vyzvednutí,/cs/abholservice,category-8,Abholservice,/abholservice,category-8,,,3
-FOOTER_NAVIGATION_CATEGORIES,node_key_167,,cms_page,Jak k nám,/cs/anfart,category-9,Anfart,/anfart,category-9,,,4
-FOOTER_NAVIGATION,node_key_34,,cms_page,Všeobecné obchodní podmínky,/cs/Allgemeine-Geschaeftsbedingungen/,,Allgemeine Geschäftsbedingungen,/Allgemeine-Geschaeftsbedingungen/,,,,2
-FOOTER_NAVIGATION,node_key_35,,cms_page,Ochrana osobních údajů,/cs/privacy,,Datenschutz,/de/datenschutz/,,,,3
-FOOTER_NAVIGATION,node_key_50,,cms_page,Impressum,/cs/imprint,,Impressum,/de/impressum/,,,,4
-POPULAR_CATEGORIES,node_key_168,,cms_page,"Ovoce a zelenina",/cs/obst-&-gemüse,category-11,Obst & Gemüse,/obst-&-gemüse,category-11,,,5
-POPULAR_CATEGORIES,node_key_169,,cms_page,"Čerstvé potraviny",/cs/frische-produkte,category-12,Frische Produkte,/frische-produkte,category-12,,,6
-POPULAR_CATEGORIES,node_key_170,,cms_page,"Skříň na zásoby",/cs/vorratsschrank,category-13,Vorratsschrank,/vorratsschrank,category-13,,,7
-POPULAR_CATEGORIES,node_key_171,,cms_page,"Nápoje",/cs/getränke,category-14,Getränke,/getränke,category-14,,,8
-POPULAR_CATEGORIES,node_key_172,,cms_page,"Ryby a maso",/cs/fisch-&-fleisch,category-15,Fisch & Fleisch,/fisch-&-fleisch,category-15,,,9
-POPULAR_CATEGORIES,node_key_173,,cms_page,"Připravené pokrmy a mražené",/cs/fertiggerichte-&-tiefkühl,category-16,Fertiggerichte & Tiefkühl,/fertiggerichte-&-tiefkühl,category-16,,,10
-POPULAR_CATEGORIES,node_key_174,,cms_page,"Děti a těhotné",/cs/baby-&-schwangerschaft,category-17,Baby & Schwangerschaft,/baby-&-schwangerschaft,category-17,,,11
-POPULAR_CATEGORIES,node_key_175,,cms_page,"Péče o tělo a kosmetika",/cs/körperpflege-&-kosmetik,category-18,Körperpflege & Kosmetik,/körperpflege-&-kosmetik,category-18,,,12
-POPULAR_CATEGORIES,node_key_176,,cms_page,"Domácnost",/cs/haushalt,category-19,Haushalt,/haushalt,category-19,,,13
+NAVIGATION_FOOTER_ELEMENT,node_key_162,,cms_page,O nás,/cz/ueberuns/,category-4,Über uns,/ueberuns,category-4,,,4
+FOOTER_NAVIGATION_CATEGORIES,node_key_165,,external_url,Otázky a odpovědi,/cz/garden-&-outdoor,category-7,Fragen und Antworten,https://globus.zendesk.com/hc/de,category-7,,,2
+FOOTER_NAVIGATION_CATEGORIES,node_key_166,,cms_page,Služba vyzvednutí,/cz/abholservice,category-8,Abholservice,/abholservice,category-8,,,3
+FOOTER_NAVIGATION_CATEGORIES,node_key_167,,cms_page,Jak k nám,/cz/anfart,category-9,Anfart,/anfart,category-9,,,4
+FOOTER_NAVIGATION,node_key_34,,cms_page,Všeobecné obchodní podmínky,/cz/Allgemeine-Geschaeftsbedingungen/,,Allgemeine Geschäftsbedingungen,/Allgemeine-Geschaeftsbedingungen/,,,,2
+FOOTER_NAVIGATION,node_key_35,,cms_page,Ochrana osobních údajů,/cz/privacy,,Datenschutz,/de/datenschutz/,,,,3
+FOOTER_NAVIGATION,node_key_50,,cms_page,Impressum,/cz/imprint,,Impressum,/de/impressum/,,,,4
+POPULAR_CATEGORIES,node_key_168,,cms_page,"Ovoce a zelenina",/cz/ovoce-a-zelenina,category-20,Obst & Gemüse,/obst-&-gemüse,category-11,,,5
+POPULAR_CATEGORIES,node_key_169,,cms_page,Mléčné a chlazené,/cz/mléčné-a-chlazené,category-21,Frische Produkte,/frische-produkte,category-12,,,6
+POPULAR_CATEGORIES,node_key_170,,cms_page,Trvanlivé potraviny,/cz/trvanlivé-potraviny,category-22,Vorratsschrank,/vorratsschrank,category-13,,,7
+POPULAR_CATEGORIES,node_key_171,,cms_page,"Nápoje",/cz/nápoje,category-23,Getränke,/getränke,category-14,,,8
+POPULAR_CATEGORIES,node_key_172,,cms_page,Maso a ryby,/cz/maso-a-ryby,category-24,Fisch & Fleisch,/fisch-&-fleisch,category-15,,,9
+POPULAR_CATEGORIES,node_key_173,,cms_page,Mražené potraviny,/cz/mražené-potraviny,category-25,Fertiggerichte & Tiefkühl,/fertiggerichte-&-tiefkühl,category-16,,,10
+POPULAR_CATEGORIES,node_key_174,,cms_page,Svět dětí,/cz/svět-dětí,category-26,Baby & Schwangerschaft,/baby-&-schwangerschaft,category-17,,,11
+POPULAR_CATEGORIES,node_key_175,,cms_page,Drogerie a kosmetika,/cz/drogerie-a-kosmetika,category-27,Körperpflege & Kosmetik,/körperpflege-&-kosmetik,category-18,,,12
+POPULAR_CATEGORIES,node_key_176,,cms_page,Pekárna a cukrárna,/cz/pekárna-a-cukrárna,category-28,Haushalt,/haushalt,category-19,,,13
