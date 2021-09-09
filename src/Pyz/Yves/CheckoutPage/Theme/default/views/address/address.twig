@@ -265,9 +265,15 @@
         {% endblock %}
 
         {% block actions %}
-            <div class="{{ config.name }}__actions spacing-top spacing-top--bigger">
-                <button id="js-address__buttonSubmit" type="submit" class="{{ data.submit.class }}">{{ data.submit.text }}</button>
-            </div>
+            {% if app.currentCodeBucket=='DE' %}
+                <div class="{{ config.name }}__actions spacing-top spacing-top--bigger">
+                    <button id="js-address__buttonSubmit" type="submit" class="{{ data.submit.class }}">{{ data.submit.text }}</button>
+                </div>
+            {% else %}
+                <div class="{{ config.name }}__actions spacing-top spacing-top--bigger">
+                    <button id="js-address__buttonSubmit" type="submit" class="{{ data.submit.class }} button--font-CZ button--backgroundcolor-CZ">{{ data.submit.text }}</button>
+                </div>
+            {% endif %}
 
             <script>
                 document.addEventListener("DOMContentLoaded", function(event) {

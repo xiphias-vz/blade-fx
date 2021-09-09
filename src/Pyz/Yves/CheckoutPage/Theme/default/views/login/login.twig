@@ -287,9 +287,15 @@
                     {% block contentCZ %}
                         <div class="register-form js-login__register is-hidden">
                             <div style="text-align: center">
-                                <a target="_blank" href="https://www.globusbonus.cz/prihlaseni/registrace" class="col--middle button button--expand-tablet button--large button--font-CZ">
-                                    {{ 'checkout.customer.auth_as_user' | trans }}
-                                </a>
+                                {% if app.currentCodeBucket == 'DE' %}
+                                    <a target="_blank" href="https://www.globusbonus.cz/prihlaseni/registrace" class="col--middle button button--expand-tablet button--large">
+                                        {{ 'checkout.customer.auth_as_user' | trans }}
+                                    </a>
+                                {% else %}
+                                    <a target="_blank" href="https://www.globusbonus.cz/prihlaseni/registrace" class="col--middle button button--expand-tablet button--large button--font-CZ button--backgroundcolor-CZ">
+                                        {{ 'checkout.customer.auth_as_user' | trans }}
+                                    </a>
+                                {% endif %}
                             </div>
                         </div>
                         {% embed molecule('form') with {
@@ -304,7 +310,7 @@
                                 submit: {
                                     enable: true,
                                     text: 'forms.submit.login' | trans,
-                                    class: 'form__action--checkout col col--middle button button--expand-tablet button--large button--font-CZ',
+                                    class: app.currentCodeBucket == 'DE' ? 'form__action--checkout col col--middle button button--expand-tablet button--large' : 'form__action--checkout col col--middle button button--expand-tablet button--large button--font-CZ button--backgroundcolor-CZ',
                                 },
                                 cancel: {
                                     enable: true,
@@ -326,7 +332,7 @@
                                 submit: {
                                     enable: true,
                                     text: 'checkout.customer.submit_as_guest' | trans,
-                                    class: 'col col--middle button button--expand-tablet button--large button--font-CZ'
+                                    class: app.currentCodeBucket == 'DE' ? 'col col--middle button button--expand-tablet button--large' : 'col col--middle button button--expand-tablet button--large button--font-CZ button--backgroundcolor-CZ',
                                 }
                             },
                             embed: {
