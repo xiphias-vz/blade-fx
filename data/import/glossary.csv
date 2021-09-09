@@ -4008,7 +4008,7 @@ mail.order-cancelled.subject,Your order has been cancelled,en_US
 mail.order-refunded.subject,Deine Wunscheinkauf wurde zurückerstattet,de_DE
 mail.order-refunded.subject,Peníze za nákup byly vráceny,cs_CZ
 mail.order-refunded.subject,Your order has been refunded,en_US
-product.info.ingredients.and.allergens,"Přísady a alergeny",cs_CZ
+product.info.ingredients.and.allergens,"Složení a alergeny",cs_CZ
 product.info.ingredients.and.allergens,Ingredients and allergens,en_US
 product.info.ingredients.and.allergens,Zutaten und Allergene,de_DE
 product.info.description,Produktbeschrelbung,de_DE
@@ -4031,10 +4031,10 @@ product.info.alergens,Allergenhinweise,de_DE
 product.info.alergens,"Informace k alergenům",cs_CZ
 product.info.allergens.contained,Contained allergens,en_US
 product.info.allergens.contained,Enthaltene Allergene,de_DE
-product.info.allergens.contained,"Obsažené alergeny",cs_CZ
+product.info.allergens.contained,"Alergeny",cs_CZ
 product.info.allergens.contained.possible,Possible allergens contained,en_US
 product.info.allergens.contained.possible,Möglich enthaltene Allergene,de_DE
-product.info.allergens.contained.possible,"Možné obsažené alergeny",cs_CZ
+product.info.allergens.contained.possible,"Možné alergeny",cs_CZ
 product.info.nutritional.information,"Nutriční hodnoty",cs_CZ
 product.info.nutritional.information,Nutrition information,en_US
 product.info.nutritional.information,Nährwertangaben,de_DE
