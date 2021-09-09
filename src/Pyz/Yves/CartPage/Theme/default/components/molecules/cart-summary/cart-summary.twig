@@ -106,7 +106,11 @@
         <p class="{{ config.name }}__item">
             <span style="margin-right:7px"><svg class="{{ config.name }}__substitutions-icon-info icon"><use xlink:href="#:sync"></use></svg></span>
             {{ 'checkout.cart.page.substitutions.title' | trans }}
-            <span style="float: right;"><svg class="{{ config.name }}__substitutions-icon-sync icon"><use xlink:href="#:info-circle"></use></svg></span>
+            {% if app.currentCodeBucket == 'DE' %}
+                <span style="float: right;"><svg class="{{ config.name }}__substitutions-icon-sync icon"><use xlink:href="#:info-circle"></use></svg></span>
+            {% else %}
+                <span style="float: right;"><svg class="{{ config.name }}__substitutions-icon-sync-CZ icon"><use xlink:href="#:info-circle"></use></svg></span>
+            {% endif %}
         </p>
         <p class="{{ config.name }}__substitutions-text"> {{ 'checkout.cart.page.substitutions.text' | trans }} </p>
     </div>

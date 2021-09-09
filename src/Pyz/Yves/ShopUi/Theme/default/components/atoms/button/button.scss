@@ -12,7 +12,7 @@
         text-align: center;
         font: fw(medium) rem(14)/1.7 $setting-font-family-additional;
         cursor: pointer;
-        background: $setting-color-globus-lightOrange;
+        background: $setting-color-globusCZ-main-green;
         color: $setting-color-white;
         text-decoration: none;
         border-radius: rem(2);
@@ -183,6 +183,33 @@
             }
         }
 
+        &--hollow-CZ,
+        &--hollow-border-light-CZ,
+        &--hollow-gray-CZ,
+        &--hollow-light-CZ {
+            background-color: $setting-color-globusCZ-main-green;
+            color: $setting-color-white;
+
+            &:hover,
+            &:focus,
+            &:active {
+                box-shadow: 0 rem(4) rem(18) $setting-color-globus-darkOrange;
+            }
+
+            &[disabled],
+            &--disabled {
+                background-color: $setting-color-white;
+                border-color: $setting-color-gray-3;
+                color: $setting-color-gray-3;
+
+                &:hover,
+                &:focus,
+                &:active {
+                    background-color: $setting-color-white;
+                }
+            }
+        }
+
         &--hollow-border-light {
             border-color: $setting-color-gray-10;
         }
@@ -214,6 +241,14 @@
             border-style: solid;
             border-color: $setting-color-globus-lightOrange;
             color: $setting-color-globus-lightOrange;
+        }
+
+        &--hollow-ghost-CZ {
+            background-color: transparent;
+            border-width: thin;
+            border-style: solid;
+            border-color: $setting-color-globusCZ-main-green;
+            color: $setting-color-globusCZ-main-green;
         }
 
 

@@ -58,6 +58,22 @@
             }
         }
 
+        &__input-CZ:checked {
+            & + #{$name}__box {
+                border-color: $setting-color-globusCZ-main-green;
+                background: $setting-color-globusCZ-main-green;
+
+                #{$name}__check {
+                    opacity: 1;
+                    pointer-events: all;
+                }
+            }
+
+            & ~ #{$name}__label {
+                color: $setting-color-black;
+            }
+        }
+
         &__input:focus + #{$name}__box {
             border-color: $setting-color-globus-darkOrange;
         }

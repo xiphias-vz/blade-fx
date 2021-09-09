@@ -34,13 +34,23 @@
                     </a>
                 {% else %}
                     <a id="link-to-login-modal" class="{{ config.name }}__navigation-item link link--nav link--reset-focus">
-                        {% include atom('icon') with {
-                            class: 'link__icon link__icon--xxl-with-text icon--color-orange',
-                            modifiers: ['big'],
-                            data: {
-                                name: 'user-account',
-                            },
-                        } only %}
+                        {% if app.currentCodeBucket == 'DE' %}
+                            {% include atom('icon') with {
+                                class: 'link__icon link__icon--xxl-with-text icon--color-orange',
+                                modifiers: ['big'],
+                                data: {
+                                    name: 'user-account',
+                                },
+                            } only %}
+                        {% else %}
+                            {% include atom('icon') with {
+                                class: 'link__icon link__icon--xxl-with-text icon--color-green',
+                                modifiers: ['big'],
+                                data: {
+                                    name: 'user-account',
+                                },
+                            } only %}
+                        {% endif %}
 
                         <span class="link__text link__text--xxl-visible">
                     {{ 'customer.profile.link' | trans }}
@@ -50,13 +60,23 @@
             {% elseif data.currentCodeBucket=='DE' %}
                 {% if(is_granted('ROLE_USER')) %}
                     <a href="{{ url('customer/overview') }}" class="link link--nav">
-                        {% include atom('icon') with {
-                            class: 'link__icon link__icon--xxl-with-text icon--color-orange',
-                            modifiers: ['big'],
-                            data: {
-                                name: 'user-account',
-                            },
-                        } only %}
+                        {% if app.currentCodeBucket == 'DE' %}
+                            {% include atom('icon') with {
+                                class: 'link__icon link__icon--xxl-with-text icon--color-orange',
+                                modifiers: ['big'],
+                                data: {
+                                    name: 'user-account',
+                                },
+                            } only %}
+                        {% else %}
+                            {% include atom('icon') with {
+                                class: 'link__icon link__icon--xxl-with-text icon--color-green',
+                                modifiers: ['big'],
+                                data: {
+                                    name: 'user-account',
+                                },
+                            } only %}
+                        {% endif %}
 
                         <span class="link__text link__text--xxl-visible">
                             {{ 'customer.profile.link' | trans }}
@@ -64,13 +84,23 @@
                     </a>
                 {% else %}
                     <a id="link-to-login-modal" class="{{ config.name }}__navigation-item link link--nav link--reset-focus">
-                        {% include atom('icon') with {
-                            class: 'link__icon link__icon--xxl-with-text icon--color-orange',
-                            modifiers: ['big'],
-                            data: {
-                                name: 'user-account',
-                            },
-                        } only %}
+                        {% if app.currentCodeBucket == 'DE' %}
+                            {% include atom('icon') with {
+                                class: 'link__icon link__icon--xxl-with-text icon--color-orange',
+                                modifiers: ['big'],
+                                data: {
+                                    name: 'user-account',
+                                },
+                            } only %}
+                        {% else %}
+                            {% include atom('icon') with {
+                                class: 'link__icon link__icon--xxl-with-text icon--color-green',
+                                modifiers: ['big'],
+                                data: {
+                                    name: 'user-account',
+                                },
+                            } only %}
+                        {% endif %}
 
                         <span class="link__text link__text--xxl-visible">
                             {{ 'customer.profile.link' | trans }}
@@ -84,13 +114,23 @@
         {% if data.showUserMenu and is_granted('IS_AUTHENTICATED_FULLY') %}
             <li class="{{ config.name }}__item">
                 <a href="{{ url('wishlist/overview') }}" class="link link--nav">
-                    {% include atom('icon') with {
-                        class: 'link__icon link__icon--xxl-with-text icon--color-orange',
-                        modifiers: ['big'],
-                        data: {
-                            name: 'wishlist',
-                        },
-                    } only %}
+                    {% if app.currentCodeBucket == 'DE' %}
+                        {% include atom('icon') with {
+                            class: 'link__icon link__icon--xxl-with-text icon--color-orange',
+                            modifiers: ['big'],
+                            data: {
+                                name: 'wishlist',
+                            },
+                        } only %}
+                    {% else %}
+                        {% include atom('icon') with {
+                            class: 'link__icon link__icon--xxl-with-text icon--color-orange',
+                            modifiers: ['big'],
+                            data: {
+                                name: 'wishlist',
+                            },
+                        } only %}
+                    {% endif %}
 
                     <span class="link__text link__text--xxl-visible">
                         {{ 'global.my_wishlist' | trans }}

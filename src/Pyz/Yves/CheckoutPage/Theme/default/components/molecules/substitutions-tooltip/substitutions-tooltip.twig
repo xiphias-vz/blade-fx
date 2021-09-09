@@ -14,7 +14,11 @@
                 </p>
                 <p class="substitutions-text"> {{ 'checkout.cart.page.substitutions.text' | trans }} </p>
             </div>
-            <svg style="width:25px !important;height: 25px !important;" class="infoIcon icon button__icon"><use xlink:href="#:info-circle"></use></svg>
+            {% if app.currentCodeBucket == 'DE' %}
+                <svg style="width:25px !important;height: 25px !important;" class="infoIcon icon button__icon"><use xlink:href="#:info-circle"></use></svg>
+            {% else %}
+                <svg style="width:25px !important;height: 25px !important;" class="infoIcon-CZ icon button__icon"><use xlink:href="#:info-circle"></use></svg>
+            {% endif %}
         </div>
     </div>
 {% endblock %}

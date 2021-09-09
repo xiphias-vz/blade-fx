@@ -59,6 +59,11 @@
                 color: $setting-color-globus-lightOrange;
                 text-decoration: none;
             }
+
+            #{$name}__link-CZ {
+                color: $setting-color-globusCZ-main-green;
+                text-decoration: none;
+            }
         }
 
         &--progress-active {

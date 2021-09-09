@@ -53,6 +53,25 @@
 
         }
 
+        &__image-CZ--header-mobile {
+            width: rem(64);
+            height: auto;
+            margin-top: rem(12);
+
+            @include helper-breakpoint-media-max($lg-max) {
+                width: 3rem;
+                margin-top: -2px;
+                margin-left: 6px;
+            }
+
+            @include helper-breakpoint-media-max($sm-max) {
+                width: 3rem;
+                margin-top: -3px;
+                margin-left: 0px;
+            }
+
+        }
+
         &--login {
             width: rem(70);
             height: rem(65);

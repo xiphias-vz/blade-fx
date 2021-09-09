@@ -16,7 +16,11 @@
 
 {% block body %}
     {%- if isLink -%}
-        <a class="{{ config.name }}__link" href="{{ data.url }}">
+        {% if app.currentCodeBucket == 'DE' %}
+            <a class="{{ config.name }}__link" href="{{ data.url }}">
+        {% else %}
+            <a class="{{ config.name }}__link-CZ" href="{{ data.url }}">
+        {% endif %}
     {%- endif -%}
 
         {%- if data.itemProp -%}

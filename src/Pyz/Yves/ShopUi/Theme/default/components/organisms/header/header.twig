@@ -230,14 +230,26 @@
 
 
                                     {% block logoMobile %}
-                                        <div class="{{ config.name }}__logo">
-                                            {% include molecule('logo') with {
-                                                modifiers: modifiers | merge(['header-mobile']),
-                                                attributes: {
-                                                    src: publicPath('images/spryker-logo.png'),
-                                                },
-                                            } only %}
-                                        </div>
+                                        {% if app.currentCodeBucket == 'DE' %}
+                                            <div class="{{ config.name }}__logo">
+                                                {% include molecule('logo') with {
+                                                    modifiers: modifiers | merge(['header-mobile']),
+                                                    attributes: {
+                                                        src: publicPath('images/spryker-logo.png'),
+                                                    },
+                                                } only %}
+                                            </div>
+                                        {% else %}
+                                            <div class="{{ config.name }}__logo">
+                                                {% include molecule('logo') with {
+                                                    modifiers: modifiers | merge(['header-mobile']),
+                                                    attributes: {
+                                                        src: publicPath('images/iglobuscz_logo.png'),
+                                                    },
+                                                } only %}
+                                            </div>
+                                        {% endif %}
+
                                     {% endblock %}
 
                                     {% include molecule('navigation-top-mobile') with {
