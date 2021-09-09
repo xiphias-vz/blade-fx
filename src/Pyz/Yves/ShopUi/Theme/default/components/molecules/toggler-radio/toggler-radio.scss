@@ -100,7 +100,7 @@
 
                 #{$name}__label {
                     @include helper-breakpoint-media-min($lg-min) {
-                        font-size: rem(24);
+                        font-size: rem(16);
                     }
                 }
             }
