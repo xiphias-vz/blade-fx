@@ -31,7 +31,7 @@
                         {% include atom('icon-row') with {
                             data: {
                                 iconName: 'cart',
-                                rowText: data.productsCount ~ ' ' ~ 'Artikel' ~ ' / ' ~ data.productsCountFull ~ ' ' ~ 'Stck.'| trans
+                                rowText: data.productsCount ~ ' ' ~ ('Items' | trans) ~ ' / ' ~ data.productsCountFull ~ ' ' ~ ('Piece'| trans)
                             }
                         } only %}
                     {% endblock %}

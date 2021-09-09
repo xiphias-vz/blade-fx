@@ -15,13 +15,17 @@
 
 
 {% block body %}
+    <input type="hidden" id="" value="">
+    <input type="hidden" id="continue_button" value="{{ 'picking.app.containers.continue' | trans }}">
+    <input type="hidden" id="action_stop_button" value="{{ 'picker.picking.order.action.stop' | trans }}">
+
     <div class="order-overview-with-time-slots">
         <div class="time-slot-with-quantities">
             <p>
                 <input type="hidden" name="timeSlot_{{ data.idTimeSlot }}" />
                 <span class="article-count-total">{{ data.articleCount }}</span>/
                 <span class="article-quantity-total">{{ data.articlesQuantity }}</span>
-                <span style="margin-left: 10px">Pos./Stck.</span>
+                <span style="margin-left: 10px">{{ 'overview.of.containers.position.piece' | trans }}</span>
             </p>
             <p>{{ data.idTimeSlot }}</p>
         </div>

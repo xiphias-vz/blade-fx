@@ -60,6 +60,8 @@ products,Products
 Total bags, Number of bags
 not found, not found
 picked, packed
+Items,Items
+Piece,Piece
 Confirm,Confirm
 Confirm your work!, Confirm your work!
 bags, Bags
@@ -169,3 +171,4 @@ product-item.multiple.picking.placeholder,EAN scan
 popup.ui.info.container,"Container:"
 popup.ui.info.storage.place,"Storage Place:"
 popup.ui.info.order.number,"Order Number:"
+container.not.part.order,This container is not part of the order!

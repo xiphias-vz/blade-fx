@@ -83,11 +83,11 @@ $config[ProductImageConstants::IMAGES_HOST_URL] = 'https://gapi.globus.cz/Online
 
 // ----------- Days in the week abbr
 $config[PickerConstants::DAYS_IN_THE_WEEK] = [
-    '0' => 'SO',
-    '1' => 'MO',
-    '2' => 'DI',
-    '3' => 'MI',
-    '4' => 'DO',
-    '5' => 'FR',
-    '6' => 'SA',
+    '0' => 'NE',
+    '1' => 'PO',
+    '2' => 'ÚT',
+    '3' => 'ST',
+    '4' => 'ČT',
+    '5' => 'PÁ',
+    '6' => 'SO',
 ];

@@ -16,6 +16,8 @@ export default class TimeSlotPosition extends Component {
     protected articleQuantityTotal: number;
     protected totalNumberOfOrdersSelected:number;
     protected idTimeSlot: string;
+    protected continueButton: HTMLInputElement;
+    protected actionStopButton: HTMLInputElement;
 
     protected readyCallback(): void {
     }
@@ -37,6 +39,8 @@ export default class TimeSlotPosition extends Component {
         this.orderIsBlockedInputFields = <HTMLInputElement>this.querySelectorAll('input[name=isOrderBlocked]');
         this.selectOrder = <HTMLElement>this.querySelectorAll('.select-order');
         this.idOrdersInput = <HTMLInputElement>this.parentElement.firstElementChild;
+        this.continueButton = <HTMLInputElement>document.querySelector('#continue_button');
+        this.actionStopButton = <HTMLInputElement>document.querySelector('#action_stop_button');
 
         this.addAttributeLockedOrderIfExists();
         this.setActiveOrders();
@@ -168,20 +172,20 @@ export default class TimeSlotPosition extends Component {
         if(totalSelectedOrdersPerTimeSlot == 0) {
 
             if(isAtLeastOneOrderLocked == true) {
-                this.confirmMultiPickingOrder.innerHTML = 'Entsperren';
+                this.confirmMultiPickingOrder.innerHTML = this.actionStopButton.value;
                 this.confirmMultiPickingOrder.classList.add('button--disabled');
             }
             else {
-                this.confirmMultiPickingOrder.innerHTML = 'Weiter';
+                this.confirmMultiPickingOrder.innerHTML = this.continueButton.value;
                 this.confirmMultiPickingOrder.classList.add('button--disabled');
             }
         }
         else {
             if(isAtLeastOneOrderLocked == true) {
-                this.confirmMultiPickingOrder.innerHTML = 'Entsperren';
+                this.confirmMultiPickingOrder.innerHTML = this.actionStopButton.value;
             }
             else {
-                this.confirmMultiPickingOrder.innerHTML = `Weiter (${totalSelectedOrdersPerTimeSlot})`;
+                this.confirmMultiPickingOrder.innerHTML = `${this.continueButton.value} (${totalSelectedOrdersPerTimeSlot})`;
             }
         }
     }
