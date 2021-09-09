@@ -187,7 +187,7 @@ if ($storeCodeBucket == 'CZ') {
     // Export orders every day
     $jobs[] = [
         'name' => 'export-orders',
-        'command' => '$PHP_BIN vendor/bin/console data:export --config order_export_config.yml',
+        'command' => '$PHP_BIN vendor/bin/console data:export --config order_export_config_CZ.yml',
         'schedule' => '0 1 * * *',
         'enable' => true,
         'stores' => ['OST'],
