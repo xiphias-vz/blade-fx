@@ -86,11 +86,19 @@
     </div>
 
     {% if canProceedToCheckout %}
-        <a class="button button--expand" href="javascript:void(0)"
-           onclick="beginCheckout('{{ url('checkout-index') }}')"
-           {{ qa('cart-go-to-checkout') }}>
-            {{ 'cart.checkout' | trans }}
-        </a>
+        {% if app.currentCodeBucket == 'DE' %}
+            <a class="button button--expand" href="javascript:void(0)"
+               onclick="beginCheckout('{{ url('checkout-index') }}')"
+               {{ qa('cart-go-to-checkout') }}>
+                {{ 'cart.checkout' | trans }}
+            </a>
+        {% else %}
+            <a class="button button--expand button--font-CZ" href="javascript:void(0)"
+               onclick="beginCheckout('{{ url('checkout-index') }}')"
+                {{ qa('cart-go-to-checkout') }}>
+                {{ 'cart.checkout' | trans }}
+            </a>
+        {% endif %}
     {% endif %}
 
     <div>

@@ -215,6 +215,42 @@ $header-sticky-height: rem(69, number);
             }
         }
 
+        &__navigation-main-CZ {
+            position: fixed;
+            top: #{$header-mobile-height};
+            left: 0;
+            width: 100%;
+            bottom: 0;
+            border-top: rem(8) solid $setting-color-globusCZ-main-green;
+            background: $setting-color-globus-lightGray;
+            z-index: $setting-zi-header + 1;
+            box-shadow: 0 rem(2) 0 $setting-color-globus-lightGray;
+            display: flex;
+            flex-direction: column;
+
+            @include helper-breakpoint-media-min($xl-min) {
+                position: absolute;
+                top: 100%;
+                bottom: auto;
+                display: block;
+                width: rem(345);
+                height: calc(100vh - #{$header-height});
+                box-shadow: 0 ($header-height - $header-sticky-height) 0 $setting-color-globus-lightGray;
+                // Move scrollbar to the left side
+                transform: scaleX(-1);
+            }
+
+            @include helper-media-ie() {
+                transform: none;
+            }
+
+            #{$name}__middle--sticky & {
+                @include helper-breakpoint-media-min($xl-min) {
+                    height: calc(100vh - #{$header-sticky-height});
+                }
+            }
+        }
+
         &__navigation-button-container {
             margin-right: rem(50);
             min-width: rem(190);
@@ -263,6 +299,16 @@ $header-sticky-height: rem(69, number);
             text-overflow: ellipsis;
             color: $setting-color-gray-13;
             padding: 0 rem(30);
+        }
+
+        &__merchant-CZ {
+            display: block;
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            color: $setting-color-gray-13;
+            padding: 0 rem(30);
+            margin-left: rem(-48);
         }
 
         &__logo {

@@ -22,15 +22,27 @@
 {% endmacro %}
 
 {% block body %}
-    <li class="{{ config.name }}__list-item">
-        <span class="float-right {{ config.name }}__price">{{ data.prices.subTotal | money }}</span>
-        <span>{{ 'checkout.step.summary.sub_total' | trans }}</span>
-    </li>
+    {% if app.currentCodeBucket == 'DE' %}
+        <li class="{{ config.name }}__list-item">
+            <span class="float-right {{ config.name }}__price">{{ data.prices.subTotal | money }}</span>
+            <span>{{ 'checkout.step.summary.sub_total' | trans }}</span>
+        </li>
 
-    <li class="{{ config.name }}__list-item">
-        <span class="float-right {{ config.name }}__price">{{ data.totalCosts | money }}</span>
-        <span>{{ 'checkout.step.summary.shipment_costs_total' | trans }}</span>
-    </li>
+        <li class="{{ config.name }}__list-item">
+            <span class="float-right {{ config.name }}__price">{{ data.totalCosts | money }}</span>
+            <span>{{ 'checkout.step.summary.shipment_costs_total' | trans }}</span>
+        </li>
+    {% else %}
+        <li class="{{ config.name }}__list-item-CZ">
+            <span class="float-right {{ config.name }}__price">{{ data.prices.subTotal | money }}</span>
+            <span>{{ 'checkout.step.summary.sub_total' | trans }}</span>
+        </li>
+
+        <li class="{{ config.name }}__list-item-CZ">
+            <span class="float-right {{ config.name }}__price">{{ data.totalCosts | money }}</span>
+            <span>{{ 'checkout.step.summary.shipment_costs_total' | trans }}</span>
+        </li>
+    {% endif %}
 
     {% if data.prices.discountTotal %}
         {{ _self.itemDiscounts(data.voucherDiscounts, 'cart.vouchers', config.name) }}
@@ -46,16 +58,30 @@
     {% endwidget %}
 
     {% for rate,taxItem in data.taxPayments if taxItem.tax > 0 %}
-    <li class="{{ config.name }}__list-item">
-        <span>{{ 'checkout.step.summary.tax' | trans }} {{ rate / 100 }}%</span>
-        <span class="float-right {{ config.name }}__price">{{ taxItem.tax | money }}</span>
-    </li>
+    {% if app.currentCodeBucket == 'DE' %}
+        <li class="{{ config.name }}__list-item">
+            <span>{{ 'checkout.step.summary.tax' | trans }} {{ rate / 100 }}%</span>
+            <span class="float-right {{ config.name }}__price">{{ taxItem.tax | money }}</span>
+        </li>
+    {% else %}
+        <li class="{{ config.name }}__list-item-CZ">
+            <span>{{ 'checkout.step.summary.tax' | trans }} {{ rate / 100 }}%</span>
+            <span class="float-right {{ config.name }}__price">{{ taxItem.tax | money }}</span>
+        </li>
+    {% endif %}
     {% endfor %}
 
-    <li class="{{ config.name }}__list-item {{ config.name }}__list-item--total">
-        <strong>{{ 'checkout.step.summary.grand_total_Globus' | trans }}</strong>
-        <strong class="float-right {{ config.name }}__price {{ config.name }}__price--total">{{ data.prices.grandTotal | money }}</strong>
-    </li>
+    {% if app.currentCodeBucket == 'DE' %}
+        <li class="{{ config.name }}__list-item {{ config.name }}__list-item--total">
+            <strong>{{ 'checkout.step.summary.grand_total_Globus' | trans }}</strong>
+            <strong class="float-right {{ config.name }}__price {{ config.name }}__price--total">{{ data.prices.grandTotal | money }}</strong>
+        </li>
+    {% else %}
+        <li class="{{ config.name }}__list-item-CZ {{ config.name }}__list-item--total">
+            <strong>{{ 'checkout.step.summary.grand_total_Globus' | trans }}</strong>
+            <strong class="float-right {{ config.name }}__price {{ config.name }}__price--total">{{ data.prices.grandTotal | money }}</strong>
+        </li>
+    {% endif %}
 
     <li class="{{ config.name }}__list-item">
         {% include molecule('gift-card-payment-summary', 'GiftCardWidget') ignore missing with {

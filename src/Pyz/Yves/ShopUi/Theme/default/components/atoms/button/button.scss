@@ -293,6 +293,10 @@
 
         }
 
+        &--font-CZ {
+            font: fw(medium) rem(14)/1.7 $setting-font-family;
+        }
+
         &--expand-mobile {
             width: 100%;
 

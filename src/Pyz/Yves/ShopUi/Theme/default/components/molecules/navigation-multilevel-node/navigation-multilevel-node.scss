@@ -147,6 +147,141 @@
             }
         }
 
+        &__link-CZ {
+            display: inline-block;
+            color: $setting-color-gray-6;
+            text-decoration: none;
+            font: fw(medium) rem(14) $setting-font-family;
+            cursor: pointer;
+            padding: 0 0 rem(12);
+            white-space: normal;
+            word-break: break-all;
+
+            @include helper-breakpoint-media-min($xl-min) {
+                padding-top: rem(6);
+                padding-bottom: rem(6);
+            }
+
+            &:hover {
+                color: $setting-color-gray-6;
+                text-decoration: underline;
+            }
+
+            &.angebote-navigation-node-icon{
+                background-image: url("../images/spryker-logo.png");
+                background-repeat: no-repeat;
+                background-position: left;
+                background-size: 4rem;
+            }
+
+            &.frische-produkte-navigation-node-icon{
+                background-image: url("../images/categoryimages_home_2_frische_produkte.png");
+                background-repeat: no-repeat;
+                background-position: left;
+                background-size: 4rem;
+            }
+
+            &.fisch-fleisch-navigation-node-icon{
+                background-image: url("../images/categoryimages_home_5_fisch_fleisch.png");
+                background-repeat: no-repeat;
+                background-position: left;
+                background-size: 4rem;
+            }
+
+            &.fertiggerichte-tiefkuhl-navigation-node-icon{
+                background-image: url("../images/categoryimages_home_6_tiefkuehl.png");
+                background-repeat: no-repeat;
+                background-position: left;
+                background-size: 4rem;
+            }
+
+            &.vorratsschrank-navigation-node-icon{
+                background-image: url("../images/categoryimages_home_3_vorratsschrank.png");
+                background-repeat: no-repeat;
+                background-position: left;
+                background-size: 4rem;
+            }
+
+            &.getranke-navigation-node-icon{
+                background-image: url("../images/categoryimages_home_4_getraenke.png");
+                background-repeat: no-repeat;
+                background-position: left;
+                background-size: 4rem;
+            }
+
+            &.korperpflege-kosmetik-navigation-node-icon{
+                background-image: url("../images/categoryimages_home_8_kosmetik.png");
+                background-repeat: no-repeat;
+                background-position: left;
+                background-size: 4rem;
+            }
+
+            &.haushalt-navigation-node-icon{
+                background-image: url("../images/categoryimages_home_9_haushalt.png");
+                background-repeat: no-repeat;
+                background-position: left;
+                background-size: 4rem;
+            }
+
+            &.freizeit-tier-auto-navigation-node-icon{
+                background-image: url("../images/popular-3.png");
+                background-repeat: no-repeat;
+                background-position: left;
+                background-size: 4rem;
+            }
+
+            &.baby-schwangerschaft-navigation-node-icon{
+                background-image: url("../images/categoryimages_home_7_baby_schwangerschaft.png");
+                background-repeat: no-repeat;
+                background-position: left;
+                background-size: 4rem;
+            }
+
+            &--lvl-1 {
+                position: relative;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                background: $setting-color-gray-14;
+                padding: 0;
+                padding-left: 4rem;
+
+                @include helper-breakpoint-media-min($xl-min) {
+                    position: relative;
+
+                    &:hover {
+                        background-color: $setting-color-white;
+                        color: $setting-color-gray-6;
+                        text-decoration: none;
+                        border-left: rem(5) solid $setting-color-globusCZ-main-green;
+                    }
+
+                    &#{$name}__link {
+                        &--header {
+                            transform: scaleX(-1);
+                        }
+                    }
+                }
+
+                @include helper-media-ie() {
+                    &#{$name}__link {
+                        &--header {
+                            transform: none;
+                        }
+                    }
+                }
+            }
+
+            &--lvl-2 {
+                font-weight: fw(bold);
+            }
+
+            &--lvl-3 {
+                color: $setting-color-gray-9;
+            }
+        }
+
+
         &__link-icon {
             flex-shrink: 0;
 

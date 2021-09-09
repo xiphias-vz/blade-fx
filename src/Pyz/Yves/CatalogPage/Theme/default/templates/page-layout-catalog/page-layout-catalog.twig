@@ -47,7 +47,11 @@
         <div class="container">
             <div class="container__inner spacing-bottom spacing-bottom--inner spacing-bottom--bigger is-hidden-lg-only">
                 <div class="box is-hidden-sm-md">
-                    <h1 class="spacing-bottom spacing-bottom--inner">{{ data.title }}</h1>
+                    {% if app.currentCodeBucket == 'DE' %}
+                        <h1 class="spacing-bottom spacing-bottom--inner">{{ data.title }}</h1>
+                    {% else %}
+                        <h1 class="title--heading-CZ spacing-bottom spacing-bottom--inner title">{{ data.title }}</h1>
+                    {% endif %}
                     <span class="text-secondary text-medium ">{{ 'catalog.itemsFound' | trans({ '%numFound%': data.pagination.numFound }) }}</span>
                 </div>
             </div>

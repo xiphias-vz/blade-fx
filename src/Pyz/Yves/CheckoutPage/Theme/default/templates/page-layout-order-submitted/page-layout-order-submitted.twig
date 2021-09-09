@@ -37,7 +37,11 @@
     {% endfor %}
     <div class="page-layout-checkout success-page text-center">
         <div class="success-page__container container">
-            <h1 class="title">{{ data.title }}</h1>
+            {% if app.currentCodeBucket == 'DE' %}
+                <h1 class="title">{{ data.title }}</h1>
+            {% else %}
+                <h1 class="title title--heading-CZ">{{ data.title }}</h1>
+            {% endif %}
             <p class="success-page__text">{{ data.message }}</p>
             <div class="success-information-holder" style="text-align: left;margin:0px auto;width:80%;padding-bottom: 20px">
                 <strong>{{ 'success.message.title' | trans }}</strong>

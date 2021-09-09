@@ -35,8 +35,11 @@ class GuestForm extends SprykerGuestForm
      */
     protected function addEmailField(FormBuilderInterface $builder)
     {
+        $storeCodeBucket = getenv('SPRYKER_CODE_BUCKET');
+
         $builder->add(self::FIELD_EMAIL, EmailType::class, [
             'label' => 'auth.email',
+            'label_attr' => ($storeCodeBucket == 'CZ') ? ['class' => 'label-CZ'] : [],
             'attr' =>
             [
                 'placeholder' => 'customer.profile.email',

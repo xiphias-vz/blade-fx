@@ -214,6 +214,10 @@
             margin-bottom: rem(8);
         }
 
+        &--heading-CZ {
+            font-family: $setting-font-family;
+        }
+
         &--product-details {
             padding: rem(16) rem(10);
             cursor: pointer;

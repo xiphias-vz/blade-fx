@@ -72,6 +72,23 @@
             }
         }
 
+        &__title-CZ {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            align-items: center;
+            font: fw(bold) rem(24) / 1 $setting-font-family;
+            padding-bottom: rem(30);
+            color: $setting-color-gray-6;
+
+            &-counter {
+                padding: rem(5) 0;
+                font-size: rem(15);
+                color: $setting-color-gray-6;
+                font-weight: fw(regular);
+            }
+        }
+
         @content;
     }
 }

@@ -17,9 +17,15 @@
                         {{ parent() }}
                     {% endblock %}
 
-                    <a href="{{ url('cart') }}" class="button button--hollow-gray">
-                        {{ 'header.back_to_cart_link' | trans }}
-                    </a>
+                    {% if app.currentCodeBucket == 'DE' %}
+                        <a href="{{ url('cart') }}" class="button button--hollow-gray">
+                            {{ 'header.back_to_cart_link' | trans }}
+                        </a>
+                    {% else %}
+                        <a href="{{ url('cart') }}" class="button button--hollow-gray button--font-CZ">
+                            {{ 'header.back_to_cart_link' | trans }}
+                        </a>
+                    {% endif %}
                 </div>
             </div>
         {% endblock %}

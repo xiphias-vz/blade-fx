@@ -27,9 +27,15 @@
             {% if data.title is not empty %}
                 <h6>{{data.title | trans}}</h6>
             {% endif %}
-            <div class="spacing-right spacing-right--big {{ data.messageTextHolderClass }}">
-                {{data.text | trans}}
-            </div>
+            {% if app.currentCodeBucket == 'DE' %}
+                <div class="spacing-right spacing-right--big {{ data.messageTextHolderClass }}">
+                    {{data.text | trans}}
+                </div>
+            {% else %}
+                <div class="title--heading-CZ spacing-right spacing-right--big {{ data.messageTextHolderClass }}">
+                    {{data.text | trans}}
+                </div>
+            {% endif %}
             <span class="{{config.name}}__static-link">{{ 'message.submit_link' | trans }}</span>
         </div>
 

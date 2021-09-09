@@ -56,10 +56,13 @@
                     <div class="checkout-block">
                         {% set idCustomer = data.form.vars.value.customer.idCustomer %}
                         <input id="idCustomer" type="hidden" value="{{ idCustomer }}" />
-
-                        <h2 class="title title--primary checkout-block__title-with-link">
-                            <div>{{ 'page.checkout.address.billing-address' | trans }}</div>
-                        </h2>
+                        {% if app.currentCodeBucket == 'DE' %}
+                            <h2 class="title title--primary checkout-block__title-with-link">
+                        {% else %}
+                            <h2 class="title title--heading-CZ title--primary checkout-block__title-with-link">
+                        {% endif %}
+                                <div>{{ 'page.checkout.address.billing-address' | trans }}</div>
+                            </h2>
                         {% if idCustomer is not null %}
                             {% set customerData = data.form.vars.value.customer %}
                             {% set isScanAndGo = customerData.isScanAndGo %}

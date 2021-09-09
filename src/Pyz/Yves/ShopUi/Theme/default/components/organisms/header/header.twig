@@ -110,9 +110,16 @@
                             } only %}
                         {% endblock %}
 
-                        <span class="{{ config.name }}__merchant">
-                            {{- data.merchant -}}
-                        </span>
+                        {% if app.currentCodeBucket == 'DE' %}
+                            <span class="{{ config.name }}__merchant">
+                                {{- data.merchant -}}
+                            </span>
+                        {% else %}
+                            <span class="{{ config.name }}__merchant-CZ">
+                                {{- data.merchant -}}
+                            </span>
+                        {% endif %}
+
                     </div>
 
                     <div class="col col--no-shrink grid grid--no-wrap grid--middle zIndex">
@@ -244,10 +251,18 @@
                         </div>
 
                         {% if data.showNavigation %}
-                            <div
-                                class="{{ config.name }}__navigation-main {{ config.jsName }}__navigation-target is-hidden is-hidden-sm-lg">
-                                {% widget 'NavigationWidget' args ['MAIN_NAVIGATION_DESKTOP', 'navigation-header'] %}{% endwidget %}
-                            </div>
+                            {% if app.currentCodeBucket == 'DE' %}
+                                <div
+                                    class="{{ config.name }}__navigation-main {{ config.jsName }}__navigation-target is-hidden is-hidden-sm-lg">
+                                    {% widget 'NavigationWidget' args ['MAIN_NAVIGATION_DESKTOP', 'navigation-header'] %}{% endwidget %}
+                                </div>
+                            {% else %}
+                                <div
+                                    class="{{ config.name }}__navigation-main-CZ {{ config.jsName }}__navigation-target is-hidden is-hidden-sm-lg">
+                                    {% widget 'NavigationWidget' args ['MAIN_NAVIGATION_DESKTOP', 'navigation-header'] %}{% endwidget %}
+                                </div>
+                            {% endif %}
+
 
                             <div
                                 class="{{ config.name }}__navigation-main {{ config.jsName }}__navigation-target is-hidden is-hidden-xl-only">

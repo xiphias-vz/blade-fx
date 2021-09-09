@@ -45,8 +45,11 @@ class LoginForm extends SprykerLoginForm
      */
     protected function addEmailField(FormBuilderInterface $builder)
     {
+        $storeCodeBucket = getenv('SPRYKER_CODE_BUCKET');
+
         $builder->add(self::FIELD_EMAIL, EmailType::class, [
             'label' => 'customer.login.email',
+            'label_attr' => ($storeCodeBucket == 'CZ') ? ['class' => 'label-CZ'] : [],
             'constraints' => [
                 $this->createNotBlankConstraint(),
                 $this->createEmailConstraint(),
@@ -67,8 +70,11 @@ class LoginForm extends SprykerLoginForm
      */
     protected function addPasswordField(FormBuilderInterface $builder)
     {
+        $storeCodeBucket = getenv('SPRYKER_CODE_BUCKET');
+
         $builder->add(self::FIELD_PASSWORD, PasswordType::class, [
             'label' => 'customer.login.password',
+            'label_attr' => ($storeCodeBucket == 'CZ') ? ['class' => 'label-CZ'] : [],
             'constraints' => $this->createNotBlankConstraint(),
             'mapped' => false,
             'attr' => [

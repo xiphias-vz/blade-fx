@@ -6,13 +6,23 @@
     <form action="{{ data.searchUrl }}">
         <div class="grid grid--middle grid--no-wrap">
             <button class="{{ config.name }}__submit button button--skinless">
-                {% include atom('icon') with {
-                    class: 'icon--color-orange',
-                    modifiers: ['big'],
-                    data: {
+                {% if app.currentCodeBucket == 'DE' %}
+                    {% include atom('icon') with {
+                        class: 'icon--color-orange',
+                        modifiers: ['big'],
+                        data: {
+                            name: 'search',
+                        },
+                    } only %}
+                {% else %}
+                    {% include atom('icon') with {
+                        class: 'icon--color-green',
+                        modifiers: ['big'],
+                        data: {
                         name: 'search',
-                    },
-                } only %}
+                        },
+                    } only %}
+                {% endif %}
             </button>
             <input name="q"
                    type="text"
@@ -21,12 +31,22 @@
                    value="{{ data.searchValue }}"
                    autocomplete="off">
             <button class="{{ config.name }}__clear {{ config.jsName }}__clear button button button--clear is-hidden" type="button">
-                {% include atom('icon') with {
-                    class: 'icon--color-orange',
-                    data: {
-                        name: 'close-circle',
-                    },
-                } only %}
+                {% if app.currentCodeBucket == 'DE' %}
+                    {% include atom('icon') with {
+                        class: 'icon--color-orange',
+                        data: {
+                            name: 'close-circle',
+                        },
+                    } only %}
+                {% else %}
+                    {% include atom('icon') with {
+                        class: 'icon--color-green',
+                        data: {
+                            name: 'close-circle',
+                        },
+                    } only %}
+                {% endif %}
+
             </button>
         </div>
 

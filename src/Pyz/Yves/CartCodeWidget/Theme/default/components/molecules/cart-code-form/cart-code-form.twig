@@ -33,7 +33,7 @@
                             enable: true,
                             text: 'cart.voucher.redeem' | trans,
                             icon: null,
-                            class: 'button button--combined',
+                            class: app.currentCodeBucket == 'DE' ? 'button button--combined' : 'button button--combined button--font-CZ',
                         },
                         options: {
                             action: path('cart-code/code/add'),

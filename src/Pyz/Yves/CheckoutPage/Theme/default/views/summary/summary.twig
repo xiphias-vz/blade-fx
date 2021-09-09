@@ -41,9 +41,15 @@
                         isSubstitutionAllowed: data.isSubstitutionAllowed
                     },
                 } only %}
-                <a href="{{ data.backUrl }}" class="is-hidden-sm-lg button button--hollow-ghost">
-                    {{ 'general.back.button' | trans }}
-                </a>
+                {% if app.currentCodeBucket == 'DE' %}
+                    <a href="{{ data.backUrl }}" class="is-hidden-sm-lg button button--hollow-ghost">
+                        {{ 'general.back.button' | trans }}
+                    </a>
+                {% else %}
+                    <a href="{{ data.backUrl }}" class="is-hidden-sm-lg button button--hollow-ghost button--font-CZ">
+                        {{ 'general.back.button' | trans }}
+                    </a>
+                {% endif %}
             </div>
 
             <div class="col col--spaced-lg col--sm-12 col--xl-4">
@@ -80,14 +86,25 @@
                                 },
                         });
                     </script>
-                    <div class="checkout-block__title">
-                        <span>{{ 'checkout.order.overview' | trans }}</span>
-                        <span class="checkout-block__title-counter">
+                    {% if app.currentCodeBucket == 'DE' %}
+                        <div class="checkout-block__title">
+                            <span>{{ 'checkout.order.overview' | trans }}</span>
+                            <span class="checkout-block__title-counter">
                             {{ 'checkout.amount.items' | trans({
                                 '%items%': data.overview.totalItems
                             }) }}
                         </span>
-                    </div>
+                        </div>
+                    {% else %}
+                        <div class="checkout-block__title-CZ">
+                            <span>{{ 'checkout.order.overview' | trans }}</span>
+                            <span class="checkout-block__title-CZ-counter">
+                            {{ 'checkout.amount.items' | trans({
+                                '%items%': data.overview.totalItems
+                            }) }}
+                        </span>
+                        </div>
+                    {% endif %}
 
                     {% for item in shipmentGroup.cartItems %}
                         {% set cartItem = item.bundleProduct ?? item %}
@@ -155,9 +172,15 @@
                     {% endfor %}
 
                     <div class="checkout-block__summary-total">
-                        <h3 class="title title--general">
-                            {{ 'checkout.step.summary.total' | trans }}
-                        </h3>
+                        {% if app.currentCodeBucket == 'DE' %}
+                            <h3 class="title title--general">
+                                {{ 'checkout.step.summary.total' | trans }}
+                            </h3>
+                        {% else %}
+                            <h3 class="title title--heading-CZ title--general">
+                                {{ 'checkout.step.summary.total' | trans }}
+                            </h3>
+                        {% endif %}
                         {% embed molecule('form') with {
                             modifiers: ['checkout-actions'],
                             data: {
@@ -165,14 +188,14 @@
                                 submit: {
                                     enable: true,
                                     text: 'checkout.step.place.order' | trans,
-                                    class: 'form__action--checkout button button--large button--expand',
+                                    class:  app.currentCodeBucket == 'DE' ? 'form__action--checkout button button--large button--expand' : 'form__action--checkout button button--large button--expand button--font-CZ',
                                 },
                                 cancel: {
                                     enable: true,
                                     url: data.backUrl,
                                     text: 'general.back.button' | trans,
                                     icon: '',
-                                    class: 'is-hidden-xl-only form__action--checkout button button--hollow-ghost button--expand',
+                                    class: app.currentCodeBucket == 'DE' ? 'is-hidden-xl-only form__action--checkout button button--hollow-ghost button--expand' : 'is-hidden-xl-only form__action--checkout button button--hollow-ghost button--expand button--font-CZ',
                                 },
                                 agbInputName: data.agbInputName,
                             },

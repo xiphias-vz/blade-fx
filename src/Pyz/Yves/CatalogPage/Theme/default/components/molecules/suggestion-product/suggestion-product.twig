@@ -41,19 +41,39 @@
     </div>
 
     <div>
+        {% if app.currentCodeBucket == 'DE' %}
         <button type="button" class="{{ config.name }}__button-search-cart" onclick="submitToCartButton(
             '{{ data.product.id_product_abstract }}',
             '{{ data.product.abstract_sku }}',
             '{{ data.product.abstract_name }}',
             '{{ data.product.price }}',
             '{{ addAjaxUrl }}'
-            )">{% include atom('icon') with {
-                class: 'link__icon icon--color-orange',
-                modifiers: ['big'],
-                data: {
-                    name: 'cart',
-                },
-            } only %}</button>
+            )">
+                {% include atom('icon') with {
+                    class: 'link__icon icon--color-orange',
+                    modifiers: ['big'],
+                    data: {
+                        name: 'cart',
+                    },
+                } only %}
+        </button>
+        {% else %}
+            <button type="button" class="{{ config.name }}__button-search-cart" onclick="submitToCartButton(
+                '{{ data.product.id_product_abstract }}',
+                '{{ data.product.abstract_sku }}',
+                '{{ data.product.abstract_name }}',
+                '{{ data.product.price }}',
+                '{{ addAjaxUrl }}'
+                )">
+                {% include atom('icon') with {
+                    class: 'link__icon icon--color-green',
+                    modifiers: ['big'],
+                    data: {
+                        name: 'cart',
+                    },
+                } only %}
+            </button>
+        {% endif %}
 
         {% include molecule('ajax-add-to-cart') %}
     </div>

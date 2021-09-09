@@ -25,18 +25,23 @@
 
     {% block title %}
         {% if not data.notTrigger %}
-            <h3 class="title title--h2 title--product-details active {{ data.triggerClass }} {{ titleActiveClass }} {{ titleReadOnlyClass }}"
-                {{ targetAttribute }}>
+            {% if app.currentCodeBucket == 'DE' %}
+                <h3 class="title title--h2 title--product-details active {{ data.triggerClass }} {{ titleActiveClass }} {{ titleReadOnlyClass }}" {{ targetAttribute }}>
+            {% else %}
+                <h3 class="title title--heading-CZ title--product-details active {{ data.triggerClass }} {{ titleActiveClass }} {{ titleReadOnlyClass }}" {{ targetAttribute }}>
+            {% endif %}
                 {{ data.title }}
                 {% block arrow %}{% endblock %}
             </h3>
+        {% else %}
+            {% if app.currentCodeBucket == 'DE' %}
+                <h3 class="title title--h2 title--product-details" {{ targetAttribute }}>
             {% else %}
-                <h3 class="title title--h2 title--product-details"
-                    {{ targetAttribute }}>
-                    {{ data.title }}
-                </h3>
+                <h3 class="title title--heading-CZ title--product-details" {{ targetAttribute }}>
+            {% endif %}
+                {{ data.title }}
+            </h3>
         {% endif %}
-
     {% endblock %}
 
     {% block content %}

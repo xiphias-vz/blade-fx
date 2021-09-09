@@ -33,9 +33,15 @@
     <div class="{{ config.name }}__wrap">
         <div class="{{ config.name }}__progress-wrap">
             <div class="{{ config.name }}__button">
-                <a href="{{ url('cart') }}" class="button button--hollow-gray is-hidden-sm-lg">
-                    {{ 'header.back_to_cart_link' | trans }}
-                </a>
+                {% if app.currentCodeBucket == 'DE' %}
+                    <a href="{{ url('cart') }}" class="button button--hollow-gray is-hidden-sm-lg">
+                        {{ 'header.back_to_cart_link' | trans }}
+                    </a>
+                {% else %}
+                    <a href="{{ url('cart') }}" class="button button--hollow-gray button--font-CZ is-hidden-sm-lg">
+                        {{ 'header.back_to_cart_link' | trans }}
+                    </a>
+                {% endif %}
             </div>
             {% embed molecule('breadcrumb') with {
                 modifiers: ['progress'],
