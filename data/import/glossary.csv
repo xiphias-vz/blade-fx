@@ -680,7 +680,7 @@ global.benefit.warranty,3 Years Warranty,en_US
 global.benefit.competitive_prices,"Výhodné ceny",cs_CZ
 global.benefit.competitive_prices,Günstige Preise,de_DE
 global.benefit.competitive_prices,Competitive Prices,en_US
-global.help,"Otázky? Zákaznický servis",cs_CZ
+global.help,"Otázky a odpovědi",cs_CZ
 global.help,Fragen? Kundenservice,de_DE
 global.help,Help,en_US
 global.importInfo,"Důležité informace",cs_CZ
@@ -4603,7 +4603,7 @@ customer.register.birthdate.title,"Geburtstag (TT/MM/JJJJ)",de_DE
 customer.register.telefon.title,"Telefon (je vyžadován alespoň jeden údaj)",cs_CZ
 customer.register.telefon.title,Telefon (mindestens eine Angabe ist Pflicht),de_DE
 page.fragen.url,https://globus.zendesk.com/hc/de,de_DE
-page.fragen.url,mailto:info@globus.cz,cs_CZ
+page.fragen.url,/cs/otazky-a-odpovedi,cs_CZ
 error_page.second_title,"Požadovanou stránku jsme bohužel nenašli!",cs_CZ
 error_page.second_title,Wir konnten die gewünschte Seite leider nicht finden!,de_DE
 error_page.second_text,"Můžeme vám pomoci?",cs_CZ
