@@ -25,6 +25,7 @@ class ProductAbstractSearchDataMapper extends SprykerProductAbstractSearchDataMa
 
         $einzelgewicht = null;
         $pricePerKg = null;
+        $sortingOrder = null;
 
         if (isset($data['attributes']['einzelgewicht'][0])) {
             $einzelgewicht = $data['attributes']['einzelgewicht'][0];
@@ -37,6 +38,11 @@ class ProductAbstractSearchDataMapper extends SprykerProductAbstractSearchDataMa
         /**
          * TODO: FETCH CURRENCY
          */
+
+        if (isset($data['attributes']['sortingorder'][0])) {
+            $sortingOrder = (int)$data['attributes']['sortingorder'][0];
+            $this->pageMapBuilder->addIntegerSort($pageMapTransfer, 'sortingOrder', (int)$data['attributes']['sortingorder'][0]);
+        }
 
         if (isset($data['prices']['EUR']['PRICE_PER_KG']['DEFAULT'])) {
             $pricePerKg = $data['prices']['EUR']['PRICE_PER_KG']['DEFAULT'];
@@ -68,6 +74,7 @@ class ProductAbstractSearchDataMapper extends SprykerProductAbstractSearchDataMa
         $this->addIfNotNull($grundpreisinhalt, 'grundpreisinhalt', $pageMapTransfer);
         $this->addIfNotNull($grundpreismasseinheit, 'grundpreismasseinheit', $pageMapTransfer);
         $this->addIfNotNull($verpackungseinheit, 'verpackungseinheit', $pageMapTransfer);
+        $this->addIfNotNull($sortingOrder, 'sortingorder', $pageMapTransfer);
 
         return $pageMapTransfer;
     }
