@@ -4766,14 +4766,19 @@ checkout.summary.no.customer,"Fehler beim Abrufen Ihrer Kundendaten. Bitte melde
 checkout.summary.no.customer,"Error getting your customer data. Please log in again or add your details.",en_US
 checkout.cart.page.substitutions.title,"Substitution",en_US
 checkout.cart.page.substitutions.title,"Ersatzartikel Informationen",de_DE
+checkout.cart.page.substitutions.title,"Náhrada",cs_CZ
 checkout.cart.page.substitutions.text,"Ist ein Artikel ausverkauft bemühen sich unsere Shopper Ihnen Ersatzartikel anbieten zu können. Die Preise für Ersatzartikel können vom bestellten Wunschartikel abweichen. Sie können sich bei der Abholung vor Ort entscheiden, ob Sie die entsprechenden Artikel mitnehmen wollen.",de_DE
 checkout.cart.page.substitutions.text,"If an item is sold out, our shoppers will try to offer you replacement items. The prices for replacement items may differ from the requested item. When you pick it up on site, you can decide whether you want to take the relevant item with you.",en_US
+checkout.cart.page.substitutions.text,"Pokud je nějaký artikl vyprodán, budou se Vám naši shoppeři snažit nabídnout náhradní artikl. Ceny za náhradní artikl se mohou lišit od objednaného požadovaného artiklu. Můžete se při vyzvednutí na místě rozhodnout, zda máte o daný artikl zájem či ne.",cs_CZ
 checkout.address.page.substitutions.checkbox,"Yes, I would like to be offered a replacement item.",en_US
 checkout.address.page.substitutions.checkbox,"Ja, ich möchte Ersatzartikel angeboten bekommen.",de_DE
+checkout.address.page.substitutions.checkbox,"Ano, mám zájem o nabídku náhradního artiklu.",cs_CZ
 checkout.summary.page.substitutions.info.checked,"Mit Ersatzartikeln",de_DE
 checkout.summary.page.substitutions.info.checked,"With substitutions",en_US
+checkout.summary.page.substitutions.info.checked,"S náhradními artikly",cs_CZ
 checkout.summary.page.substitutions.info.unchecked,"Ohne Ersatzartikel",de_DE
 checkout.summary.page.substitutions.info.unchecked,"Without substitutions",en_US
+checkout.summary.page.substitutions.info.unchecked,"Bez náhradních artiklů",cs_CZ
 footer.price.expenses.message,Alle Preise verstehen sich inklusive Mehrwertsteuer und zzgl. Servicegebühr,de_DE
 footer.price.expenses.message,All prices include VAT and plus a service fee,en_US
 footer.price.expenses.message,"Všechny ceny jsou včetně DPH a bez servisního poplatku",cs_CZ
