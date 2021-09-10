@@ -26,7 +26,7 @@ class CheckoutAddressForm extends SprykerShopCheckoutAddressForm
     /**
      * @return bool
      */
-    private function getRequired(): bool
+    protected function getRequired(): bool
     {
         return !$this->getFactory()->getCustomerClient()->isLoggedIn();
     }
@@ -225,15 +225,17 @@ class CheckoutAddressForm extends SprykerShopCheckoutAddressForm
     {
         $storeCodeBucket = getenv('SPRYKER_CODE_BUCKET');
 
-        $builder->add(static::FIELD_PHONE, TelType::class, [
-            'label' => 'customer.address.phone',
-            'label_attr' => ($storeCodeBucket == 'CZ') ? ['class' => 'label-CZ'] : [],
-            'required' => false,
-            'trim' => true,
-            'attr' => [
-                'placeholder' => 'customer.registration.phone_placeholder',
-            ],
-        ]);
+        if ($storeCodeBucket == 'DE') {
+            $builder->add(static::FIELD_PHONE, TelType::class, [
+                'label' => 'customer.address.phone',
+                'label_attr' => ($storeCodeBucket == 'CZ') ? ['class' => 'label-CZ'] : [],
+                'required' => false,
+                'trim' => true,
+                'attr' => [
+                    'placeholder' => 'customer.registration.phone_placeholder',
+                ],
+            ]);
+        }
 
         return $this;
     }
@@ -247,11 +249,12 @@ class CheckoutAddressForm extends SprykerShopCheckoutAddressForm
     protected function addMobilePhoneNumberField(FormBuilderInterface $builder, array $options)
     {
         $storeCodeBucket = getenv('SPRYKER_CODE_BUCKET');
+        $required = $storeCodeBucket == 'CZ';
 
         $builder->add(static::FIELD_MOBILE_PHONE, TelType::class, [
             'label' => 'customer.address.mobile_phone',
             'label_attr' => ($storeCodeBucket == 'CZ') ? ['class' => 'label-CZ'] : [],
-            'required' => false,
+            'required' => $required,
             'trim' => true,
             'attr' => [
                 'placeholder' => 'customer.registration.mobile_phone_placeholder',

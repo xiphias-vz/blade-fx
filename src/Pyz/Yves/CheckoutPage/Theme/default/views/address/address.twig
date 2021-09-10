@@ -35,6 +35,11 @@
         },
     } only %}
         {% block fieldset %}
+            <style>
+                .form__fields, .form--checkout-form .form__fields {
+                    max-width: inherit;
+                }
+            </style>
             <script>
                 window.dataLayer.push({
                     'event': 'eec.checkout',
@@ -159,9 +164,11 @@
                                     }
                                   },
                             } only %}
+                            {% if app.currentCodeBucket != 'CZ' %}
                             <div class="form__field text-color-1" id="phoneRequiredFieldsGuest">
                                 {{ 'page.checkout.address.phone.paragraph3' | trans }}
                             </div>
+                            {% endif %}
 
                         {% endif %}
 
@@ -285,7 +292,9 @@
                         phoneDivElement.parentNode.insertBefore(phoneRequiredFieldsGuest, phoneDivElement)
                     }
                     else {
+                        {% if app.currentCodeBucket != 'CZ' %}
                         document.getElementById("{{ embed.forms.shipping.phone.vars.id }}").value = "{{ data.form.vars.value.customer.phone }}";
+                        {% endif %}
                         document.getElementById("{{ embed.forms.shipping.cell_phone.vars.id }}").value = "{{ data.form.vars.value.customer.mobilePhoneNumber }}";
                         document.getElementById("{{ embed.forms.shipping.salutation.vars.id }}").value = "{{ data.form.vars.value.customer.salutation }}";
                         document.getElementById("{{ embed.forms.shipping.first_name.vars.id }}").value = "{{ data.form.vars.value.customer.firstName }}";
@@ -304,7 +313,6 @@
                             document.querySelector('label[for="{{ embed.forms.billing.id_customer_address.vars.id }}"]').classList.add("{{ config.name ~ '__expand' }}");
                         }
                     }
-
                 });
 
                 const submitButton = document.getElementById("js-address__buttonSubmit");
@@ -312,12 +320,16 @@
 
                 function displayMessageRequiredField() {
                     const phoneNumber = document.getElementById("addressesForm_shippingAddress_phone");
+                    let phoneNumberValue = "";
+                    if (phoneNumber)  phoneNumberValue = phoneNumber.value;
                     const mobileNumber = document.getElementById("addressesForm_shippingAddress_cell_phone");
                     const idCustomer = document.getElementById("idCustomer").value;
-                    if (phoneNumber.value === "" && mobileNumber.value === "") {
+                    if (phoneNumberValue === "" && mobileNumber.value === "") {
                         event.preventDefault();
-                        if (phoneNumber.value === "") {
-                            phoneNumber.style.borderColor = '#cb3d49';
+                        if (phoneNumber) {
+                            if (phoneNumber.value === "") {
+                                phoneNumber.style.borderColor = '#cb3d49';
+                            }
                         }
                         if (mobileNumber.value === "") {
                             mobileNumber.style.borderColor = '#cb3d49';

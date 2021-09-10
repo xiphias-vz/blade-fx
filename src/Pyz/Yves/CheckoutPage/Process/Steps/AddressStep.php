@@ -39,7 +39,10 @@ class AddressStep extends SprykerAddressStep
             return $quoteTransfer;
         }
         $quoteTransfer = $this->stepExecutor->execute($request, $quoteTransfer);
-        $phone = $_POST["addressesForm"]["shippingAddress"]["phone"];
+        $phone = null;
+        if (isset($_POST["addressesForm"]["shippingAddress"]["phone"])) {
+            $phone = $_POST["addressesForm"]["shippingAddress"]["phone"];
+        }
         $cellPhone = $_POST["addressesForm"]["shippingAddress"]["cell_phone"];
 
         if ($quoteTransfer->getCustomer() != null && $quoteTransfer->getCustomer()->getIsGuest()) {
