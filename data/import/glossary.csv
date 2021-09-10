@@ -499,7 +499,7 @@ customer.last_name,Last Name,en_US
 customer.salutation.mr,"Pan",cs_CZ
 customer.salutation.mr,Herr,de_DE
 customer.salutation.mr,Mr.,en_US
-customer.salutation.divers,Divers,cs_CZ
+customer.salutation.divers,"Jiné",cs_CZ
 customer.salutation.divers,Divers,de_DE
 customer.salutation.divers,Various,en_US
 customer.salutation.mrs,Divers,en_US
