@@ -8,11 +8,11 @@ $applicationEnv = getenv('APPLICATION_ENV');
 
 $codeBucket = getenv('SPRYKER_CODE_BUCKET');
 
-if ($applicationEnv === 'docker_prod' || $applicationEnv === 'docker_prod_CZ') {
+if ($applicationEnv === 'docker_prod') {
     $environment = 'prod';
 } elseif ($applicationEnv === 'docker_dev' && strpos($_SERVER['SERVER_NAME'], 'local') === false) {
     $environment = 'stage';
-} elseif ($applicationEnv === 'docker_dev_CZ') {
+} elseif ($applicationEnv === 'docker_prod_CZ') { //TODO: CHECK LATER -> QUICK FIX
     $environment = 'stage';
 } else {
     $environment = 'local';
