@@ -27,9 +27,15 @@
         {% endif %}
         <p class="title title--general spacing-bottom--big" style="margin-top: 2%">{{ 'error_page.second_title' | trans }}</p>
         <p style="margin-top: 5%">{{'error_page.text' | trans}}</p>
-        <a class="{{ data.buttonClass }}" style="margin-top: 2%" href="/">
-            {{ 'error_page.button_home' | trans}}
-        </a>
+        {% if app.currentCodeBucket == 'DE' %}
+            <a class="{{ data.buttonClass }}" style="margin-top: 2%" href="/">
+                {{ 'error_page.button_home' | trans}}
+            </a>
+        {% else %}
+            <a class="{{ data.buttonClass }} {{ data.buttonClass }}--font-CZ {{ data.buttonClass }}--backgroundcolor-CZ" style="margin-top: 2%" href="/">
+                {{ 'error_page.button_home' | trans}}
+            </a>
+        {% endif %}
         <p style="margin-top: 2%">{{'error_page.second_text' | trans}}</p>
         <p>{{'error_page.third_text' | trans}}</p>
         {% if app.currentCodeBucket == 'DE' %}
@@ -37,7 +43,7 @@
                 {{ 'error_page.button_contact' | trans}}
             </a>
         {% else %}
-            <a class="{{ data.buttonClass }}" style="margin-top: 2%" href="{{ data.customerContact_CZ }}" target="_blank">
+            <a class="{{ data.buttonClass }} {{ data.buttonClass }}--font-CZ {{ data.buttonClass }}--backgroundcolor-CZ" style="margin-top: 2%" href="{{ data.customerContact_CZ }}" target="_blank">
                 {{ 'error_page.button_contact' | trans}}
             </a>
         {% endif %}

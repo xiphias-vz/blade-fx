@@ -30,10 +30,17 @@
     {% endif %}
 
     {% if data.cart.items is empty %}
-        <div class="page-layout-cart__empty text-center">
-            <h1>{{ data.title }}</h1>
-            <h6 class="spacing-top spacing-top--bigger">{{ 'cart.empty' | trans }}</h6>
-        </div>
+        {% if app.currentCodeBucket == 'DE' %}
+            <div class="page-layout-cart__empty text-center">
+                <h1>{{ data.title }}</h1>
+                <h6 class="spacing-top spacing-top--bigger">{{ 'cart.empty' | trans }}</h6>
+            </div>
+        {% else %}
+            <div class="page-layout-cart__empty text-center">
+                <h1 class="title title--heading-CZ">{{ data.title }}</h1>
+                <h6 class="spacing-top spacing-top--bigger button--font-CZ">{{ 'cart.empty' | trans }}</h6>
+            </div>
+        {% endif %}
     {% else %}
         <div class="grid grid--stretch spacing-x spacing-x--big">
             <div class="col col--sm-12 col--lg-8">
