@@ -251,6 +251,10 @@ services:
         endpoints:
             mail.shop-t.iglobus.cz:
 docker:
+    newrelic:
+        license: eu01xxe93fda1ebf14235a7b8e58b1431b40NRAL
+        appname: Globus CZ Staging
+        enabled: true
     ssl:
         enabled: true
     testing:
