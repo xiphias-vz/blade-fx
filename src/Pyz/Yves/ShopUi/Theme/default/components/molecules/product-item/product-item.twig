@@ -167,20 +167,28 @@
                                 {% block name %}
                                     {% if data.name and data.url %}
 
-                                        {% if productSupplier and productSaleVolume and productSaleUnit %}
-                                            {% set fullname = ((productSupplier == 'keine Marke' or productSupplier == '' or productSupplier == 'keine') ? '' : productSupplier ~ " - ") ~ data.name ~ " - " ~ productSaleVolume|round(3, 'floor')|replace('.', ',') ~  ' ' ~ productSaleUnit %}
-                                            {% if data.einzelgewicht %}
-                                                {% set fullname = ((productSupplier == 'keine Marke' or productSupplier == '' or productSupplier == 'keine') ? '' : productSupplier ~ " - ") ~ data.name ~ " - ca. " ~ data.einzelgewicht|round(3, 'floor')|replace('.', ',') ~  ' ' ~ productSaleUnit %}
+                                        {% if app.currentCodeBucket == 'DE' %}
+                                            {% if productSupplier and productSaleVolume and productSaleUnit %}
+                                                {% set fullname = ((productSupplier == 'keine Marke' or productSupplier == '' or productSupplier == 'keine') ? '' : productSupplier ~ " - ") ~ data.name ~ " - " ~ productSaleVolume|round(3, 'floor')|replace('.', ',') ~  ' ' ~ productSaleUnit %}
+                                                {% if data.einzelgewicht %}
+                                                    {% set fullname = ((productSupplier == 'keine Marke' or productSupplier == '' or productSupplier == 'keine') ? '' : productSupplier ~ " - ") ~ data.name ~ " - ca. " ~ data.einzelgewicht|round(3, 'floor')|replace('.', ',') ~  ' ' ~ productSaleUnit %}
+                                                {% endif %}
+                                            {% elseif productSaleVolume and productSaleUnit %}
+                                                {% set fullname = data.name ~ " - " ~ productSaleVolume|round(3, 'floor')|replace('.', ',') ~  ' ' ~ productSaleUnit %}
+                                                {% if data.einzelgewicht %}
+                                                    {% set fullname = data.name ~ " - ca. " ~ data.einzelgewicht|round(3, 'floor')|replace('.', ',') ~  ' ' ~ productSaleUnit %}
+                                                {% endif %}
+                                            {% elseif productSupplier %}
+                                                {% set fullname = ((productSupplier == 'keine Marke' or productSupplier == 'keine') ? '' : productSupplier ~ " - ") ~ data.name %}
+                                            {% else %}
+                                                {% set fullname = data.name %}
                                             {% endif %}
-                                        {% elseif productSaleVolume and productSaleUnit %}
-                                            {% set fullname = data.name ~ " - " ~ productSaleVolume|round(3, 'floor')|replace('.', ',') ~  ' ' ~ productSaleUnit %}
-                                            {% if data.einzelgewicht %}
-                                                {% set fullname = data.name ~ " - ca. " ~ data.einzelgewicht|round(3, 'floor')|replace('.', ',') ~  ' ' ~ productSaleUnit %}
-                                            {% endif %}
-                                        {% elseif productSupplier %}
-                                            {% set fullname = ((productSupplier == 'keine Marke' or productSupplier == 'keine') ? '' : productSupplier ~ " - ") ~ data.name %}
                                         {% else %}
-                                            {% set fullname = data.name %}
+                                            {% if productSupplier %}
+                                                {% set fullname = ((productSupplier == 'keine Marke' or productSupplier == 'keine') ? '' : productSupplier ~ " - ") ~ data.name %}
+                                            {% else %}
+                                                {% set fullname = data.name %}
+                                            {% endif %}
                                         {% endif %}
 
                                         {% block link %}

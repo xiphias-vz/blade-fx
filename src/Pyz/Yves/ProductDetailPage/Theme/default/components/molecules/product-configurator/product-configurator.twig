@@ -71,7 +71,11 @@
         {% endif %}
     {% endif %}
 
-    <h2 class="title title--product">{{ productName }} - {% if data.product.attributes.einzelgewicht is defined %} ca. {{ data.product.attributes.einzelgewicht|replace('.', ',') }} {% else %} {{ productSaleVolume|round(3, 'floor')|replace('.', ',') }}  {% endif %} {% if data.product.attributes["grundpreismasseinheit"] is defined %} {{ data.product.attributes["grundpreismasseinheit"] }} {% endif %}</h2>
+    {% if app.currentCodeBucket == 'DE' %}
+        <h2 class="title title--product">{{ productName }} - {% if data.product.attributes.einzelgewicht is defined %} ca. {{ data.product.attributes.einzelgewicht|replace('.', ',') }} {% else %} {{ productSaleVolume|round(3, 'floor')|replace('.', ',') }}  {% endif %} {% if data.product.attributes["grundpreismasseinheit"] is defined %} {{ data.product.attributes["grundpreismasseinheit"] }} {% endif %}</h2>
+    {% else %}
+        <h2 class="title title--product">{{ productName }}</h2>
+    {% endif %}
 
     <div class="{{ config.name }}__info">
         {% if data.product.attributes['herkunftsland_o_g'] is defined %}
