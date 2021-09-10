@@ -131,10 +131,10 @@
                          {% endembed %}
                     {% endif %}
 
-                    {% if data.product.attributes.energiekcalp100gml is defined and data.product.nutritionalInformationContainsReferenceAmount is defined%}
+                    {% if data.product.attributes.energiekcalp100gml is defined and data.product.nutritionalInformationContainsReferenceAmount is defined %}
                         {% embed molecule('toggler-item') with {
                             data: {
-                                title: 'Nährwerte',
+                                title: 'product.info.additional.nutritionalInfo' | trans,
                                 triggerClass: 'nutritional-information__trigger-bundle',
                                 targetClass: 'nutritional-information__target-bundle',
                                 isActive: true,

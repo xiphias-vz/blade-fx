@@ -4050,7 +4050,7 @@ product.info.saturated.fatty.acids,davon gesättigte Fettsäuren,de_DE
 product.info.carbohydrates,"Sacharidy",cs_CZ
 product.info.carbohydrates,Carbohydrates,en_US
 product.info.carbohydrates,Kohlenhydrate,de_DE
-product.info.sugar,"z toho cukr",cs_CZ
+product.info.sugar,"z toho cukry",cs_CZ
 product.info.sugar,thereof sugar,en_US
 product.info.sugar,davon Zucker,de_DE
 product.info.protein,"Bílkoviny",cs_CZ
@@ -4114,6 +4114,18 @@ product.info.additional.manufacturer,Manufacturer,en_US
 product.info.additional.nutritionalInfo,"Nutriční hodnoty",cs_CZ
 product.info.additional.nutritionalInfo,Nährwerte,de_DE
 product.info.additional.nutritionalInfo,Nutritional information,en_US
+product.info.additional.nutritionalInfo.monounsaturated,davon einfach ungesättigte Fettsäuren,de_DE
+product.info.additional.nutritionalInfo.monounsaturated,thereof monounsaturated fatty acids,en_US
+product.info.additional.nutritionalInfo.monounsaturated,"z toho mononenasycené mastné kyseliny",cs_CZ
+product.info.additional.nutritionalInfo.polyunsaturated,davon mehrfach ungesättigte Fettsäuren,de_DE
+product.info.additional.nutritionalInfo.polyunsaturated,thereof polyunsaturated fatty acids,en_US
+product.info.additional.nutritionalInfo.polyunsaturated,"z toho polynenasycené mastné kyseliny",cs_CZ
+product.info.additional.nutritionalInfo.polyhydric.alcohols,davon mehrwertige Alkohole,de_DE
+product.info.additional.nutritionalInfo.polyhydric.alcohols,thereof polyhydric alcohols,en_US
+product.info.additional.nutritionalInfo.polyhydric.alcohols,"z toho polyalkoholy",cs_CZ
+product.info.additional.nutritionalInfo.starch,davon Stärke,de_DE
+product.info.additional.nutritionalInfo.starch,thereof starches,en_US
+product.info.additional.nutritionalInfo.starch,"z toho škroby",cs_CZ
 product.info.additional.hints,"Upozornění",cs_CZ
 product.info.additional.hints,Notes,en_US
 product.info.additional.hints,Hinweise,de_DE
