@@ -9,6 +9,8 @@ use Pyz\Shared\ProductImage\ProductImageConstants;
 use Pyz\Shared\Shipment\ShipmentConstants;
 use Pyz\Shared\Store\StoreConstants;
 use Spryker\Service\FlysystemLocalFileSystem\Plugin\Flysystem\LocalFilesystemBuilderPlugin;
+use Spryker\Shared\ErrorHandler\ErrorHandlerConstants;
+use Spryker\Shared\ErrorHandler\ErrorRenderer\WebHtmlErrorRenderer;
 use Spryker\Shared\FileSystem\FileSystemConstants;
 use StoreApp\Shared\Picker\PickerConstants;
 
@@ -91,3 +93,9 @@ $config[PickerConstants::DAYS_IN_THE_WEEK] = [
     '5' => 'PÁ',
     '6' => 'SO',
 ];
+
+// ---------- Error handling
+$config[ErrorHandlerConstants::YVES_ERROR_PAGE] = APPLICATION_ROOT_DIR . '/public/Yves/errorpage/5xx-CZ.html';
+$config[ErrorHandlerConstants::ZED_ERROR_PAGE] = APPLICATION_ROOT_DIR . '/public/Zed/errorpage/5xx-CZ.html';
+$config[ErrorHandlerConstants::ERROR_RENDERER] = WebHtmlErrorRenderer::class;
+

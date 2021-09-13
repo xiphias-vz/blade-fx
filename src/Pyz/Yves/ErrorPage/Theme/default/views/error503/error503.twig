@@ -10,7 +10,7 @@
     fieldValue: '',
     homePage: '',
     customerContact: 'https://globus.zendesk.com/hc/de/requests/new',
-    customerContact_CZ: 'mailto:info@globus.cz',
+    customerContact_CZ: '/cs/otazky-a-odpovedi',
 } %}
 
 {% block pageInfo %}{% endblock %}
@@ -43,7 +43,7 @@
                 {{ 'error_page.button_contact' | trans}}
             </a>
         {% else %}
-            <a class="{{ data.buttonClass }} {{ data.buttonClass }}--font-CZ {{ data.buttonClass }}--backgroundcolor-CZ" style="margin-top: 2%" href="{{ data.customerContact_CZ }}" target="_blank">
+            <a class="{{ data.buttonClass }} {{ data.buttonClass }}--font-CZ {{ data.buttonClass }}--backgroundcolor-CZ" style="margin-top: 2%" href="{{ data.customerContact_CZ }}">
                 {{ 'error_page.button_contact' | trans}}
             </a>
         {% endif %}
