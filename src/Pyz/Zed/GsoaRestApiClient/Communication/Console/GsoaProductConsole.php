@@ -399,16 +399,23 @@ class GsoaProductConsole extends Console
                 $c++;
                 if ($c === $pageSize) {
                     $filter = "vanr:in " . implode(",", $p);
+                    $filterStock = "ProductWamasNr:in " . implode(",", $p);
                     $c = 0;
                     $p = [];
                     $result = $client->getProductsByHouse($store, $filter, '', 0, $pageSize);
+                    $resultStock = $client->getProductStocksByHouse($store, true, $filterStock, 0, $pageSize)['productStocks'];
                     if ((is_array($result)) && (count($result) > 0)) {
                         foreach ($result as $item) {
                             $counter++;
                             $d = $this->getProductStockArray();
                             $d["sapnumber"] = $item["vanr"];
                             if (!empty($item["productInHouse"]["stockAmount"])) {
-                                $d["instock"] = str_replace(",", ".", $item["productInHouse"]["stockAmount"]);
+                                $key = array_search($item["vanr"], array_column($resultStock, 'productWamasNr'));
+                                if (!empty($key)) {
+                                    $d["instock"] = str_replace(",", ".", $resultStock[$key]["availableAmount"]);
+                                } else {
+                                    $d["instock"] = str_replace(",", ".", $item["productInHouse"]["stockAmount"]);
+                                }
                             }
                             $d["store"] = $store;
                             if (isset($item["productInHouse"]["placement"])) {

@@ -9,10 +9,19 @@ namespace Pyz\Shared\GsoaRestApiClient;
 
 use Elastica\JSON;
 use Exception;
+use Spryker\Shared\Config\Config;
 
 class ApiClient
 {
-    public const ROOT_URL = 'https://gapi.globus.cz';
+    public const GSOA_ROOT_URL = 'GSOA_ROOT_URL';
+
+    /**
+     * @return string
+     */
+    protected static function getRootUrl(): string
+    {
+        return Config::get(static::GSOA_ROOT_URL);
+    }
 
     /**
      * @param string $url
@@ -26,7 +35,7 @@ class ApiClient
         if (!empty($bearerToken)) {
             $bearerToken = "Authorization: Bearer " . $bearerToken . "\r\n";
         }
-        $url = self::ROOT_URL . $url;
+        $url = static::getRootUrl() . $url;
         if (!empty($data)) {
             $url .= '?' . http_build_query($data);
         }
@@ -56,7 +65,7 @@ class ApiClient
      */
     public static function post(string $url, string $bearerToken, array $data): array
     {
-        $url = self::ROOT_URL . $url;
+        $url = static::getRootUrl() . $url;
         if (!empty($bearerToken)) {
             $bearerToken = "Authorization: Bearer " . $bearerToken . "\r\n";
         }

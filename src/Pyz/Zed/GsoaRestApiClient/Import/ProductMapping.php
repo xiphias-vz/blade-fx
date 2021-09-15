@@ -229,7 +229,7 @@ class ProductMapping
         if (is_array($item["assets"])) {
             foreach ($item["assets"] as $asset) {
                 if ($asset["type"] == "ref_czr_online_image") {
-                    $value["mainimage_filename"] = $asset["id"] . "&type=1;" . $asset["id"] . "&type=2;" . $asset["id"] . "&type=3";
+                    $value["mainimage_filename"] = $asset["id"] . "&type=1";
                 }
             }
         }

@@ -36,6 +36,7 @@ class ProductCatalogProvider
 
     /**
      * Get categories for eShop
+     * ProductCatalogService /productCategoriesEshop
      *
      * @param int $page
      * @param int $pageSize
@@ -74,6 +75,7 @@ class ProductCatalogProvider
 
     /**
      * Get changed category identifiers for eShop
+     * ProductCatalogService /modifiedProductCategoriesEshop
      *
      * @param string $modifiedFrom 'yyyy-mm-dd'
      *
@@ -91,6 +93,7 @@ class ProductCatalogProvider
 
     /**
      * Get product master data for eShop
+     * ProductCatalogService /eShop/products
      *
      * @param string $filter
      * @param bool $baseVariantOnly If true, it returns data for all products that have the activeForOnline = true property and isActive = true at the same time. Otherwise, it will return all products.
@@ -114,6 +117,7 @@ class ProductCatalogProvider
 
     /**
      * Get identifiers for changed products
+     * ProductCatalogService /modifiedProducts
      *
      * @param string $modifiedFrom 'yyyy-mm-dd'
      * @param bool $baseVariantOnly If True, it returns data for all products that have the activeForOnline = true property and isActive = true at the same time. Otherwise, it will return all products.
@@ -133,6 +137,7 @@ class ProductCatalogProvider
 
     /**
      * Obtain price data of products in a given house (store)
+     * ProductCatalogService /houses/{houseNumber}/productPrices
      *
      * @param int $houseNumber
      * @param bool $baseVariantOnly
@@ -172,6 +177,7 @@ class ProductCatalogProvider
 
     /**
      * Get product identifiers with price changes
+     * ProductCatalogService /houses/{houseNumber}/modifiedProductPrices
      *
      * @param int $houseNumber
      * @param string $modifiedFrom
@@ -195,6 +201,7 @@ class ProductCatalogProvider
 
     /**
      * Obtain stocks of products in the given house (store)
+     * ProductCatalogService /houses/{houseNumber}/productStocks
      *
      * @param int $houseNumber
      * @param bool $baseVariantOnly
@@ -226,6 +233,7 @@ class ProductCatalogProvider
 
     /**
      * Obtain product identifiers with a change in stock
+     * ProductCatalogService /houses/{houseNumber}/modifiedProductStock
      *
      * @param int $houseNumber
      * @param string $modifiedFrom
@@ -249,6 +257,7 @@ class ProductCatalogProvider
 
     /**
      * Get rebates in a given house (store)
+     * ProductCatalogService /houses/{houseNumber}/rebates
      *
      * @param int $houseNumber
      * @param bool $activeForEshopOnly If True, it returns data for all products that have the activeForOnline = true property and isActive = true at the same time. Otherwise, it will return all products.
@@ -280,6 +289,7 @@ class ProductCatalogProvider
 
     /**
      * Get identifiers of changed rebates in a given house (store)
+     * ProductCatalogService /houses/{houseNumber}/modifiedRebates
      *
      * @param int $houseNumber
      * @param string $modifiedFrom yyyy-dd-mm
@@ -303,6 +313,7 @@ class ProductCatalogProvider
 
     /**
      * Get product brands
+     * ProductCatalogService /brands
      *
      * @param string $filter Id:in Abc,def,ghi. Combinations possible, concatenation with ";;" means logical AND.
      * @param int $page Default value : 0
@@ -329,6 +340,7 @@ class ProductCatalogProvider
 
     /**
      * Get product labels
+     * ProductCatalogService /productTags
      *
      * @param string $filter Id:in Abc,def,ghi. Combinations possible, concatenation with ";;" means logical AND.
      * @param int $page Default value : 0
@@ -355,6 +367,7 @@ class ProductCatalogProvider
 
     /**
      * Get price labels
+     * ProductCatalogService /priceTags
      *
      * @param string $filter Id:in Abc,def,ghi. Combinations possible, concatenation with ";;" means logical AND.
      * @param int $page Default value : 0
@@ -381,6 +394,7 @@ class ProductCatalogProvider
 
     /**
      * Obtain products with stock and prices in the given house (store)
+     * ProductCatalogService /houses/{houseNumber}/products
      *
      * @param int $houseNumber
      * @param string $filter vanr:in Abc,def,ghi productCategories:in Abc,def,ghi

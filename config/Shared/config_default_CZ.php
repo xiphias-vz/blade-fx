@@ -4,6 +4,7 @@ use Pyz\Service\FlysystemSftpFileSystem\Plugin\Flysystem\SftpFileSystemBuilderPl
 use Pyz\Shared\Application\ApplicationConstants;
 use Pyz\Shared\CodeBuckets\CodeBucketConstants;
 use Pyz\Shared\GoogleTagManager\GoogleTagManagerConstants;
+use Pyz\Shared\GsoaRestApiClient\ApiClient;
 use Pyz\Shared\GsoaRestApiClient\Provider\TokenProvider;
 use Pyz\Shared\ProductImage\ProductImageConstants;
 use Pyz\Shared\Shipment\ShipmentConstants;
@@ -78,6 +79,7 @@ $config[ShipmentConstants::MAIN_GLOBUS_CUSTOMER_CLICK_AND_COLLECT_SHIPMENT_METHO
 $config[ShipmentConstants::GUEST_CUSTOMER_CLICK_AND_COLLECT_SHIPMENT_METHOD_PRICE] = 3900;
 
 // ----------- GSOA API
+$config[ApiClient::GSOA_ROOT_URL] = 'https://gapi.globus.cz';
 $config[TokenProvider::GSOA_CLIENT_ID] = "webAppSpryker";
 $config[TokenProvider::GSOA_CLIENT_SECRET] = "1A5CE779-02EA-42A5-959C-9909C2C11666";
 
