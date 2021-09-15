@@ -64,9 +64,9 @@ class CheckCartAvailability extends SpyCheckCartAvailability
                 $availability = $this->findProductConcreteAvailability($itemTransfer, $storeTransfer, $productAvailabilityCriteriaTransfer);
 
                 if ($action != 'add-valid-items') {
-                    $messages[] = $this->createItemIsNotAvailableMessageTransfer($availability, $itemTransfer->getSku());
+                    $messages[] = $this->createItemIsNotAvailableMessageTransfer($availability, $itemTransfer->getName());
                 } else {
-                    $messages[] = $this->createItemIsNotAvailableMessageTransferForNotSellableItems($availability, $itemTransfer->getSku());
+                    $messages[] = $this->createItemIsNotAvailableMessageTransferForNotSellableItems($availability, $itemTransfer->getName());
                 }
             }
 

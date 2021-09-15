@@ -80,7 +80,6 @@ class CartController extends SprykerCartController
         } else {
             $this->addErrorMessage(MessagesConfig::MESSAGE_PERMISSION_FAILED);
         }
-        $this->addSuccessMessage(static::ADD_ITEMS_SUCCESS);
 
         return $this->redirect($request);
     }
@@ -339,7 +338,9 @@ class CartController extends SprykerCartController
             ->getResponsesErrorMessages();
 
         if (count($messageTransfers) !== 0) {
-            $data['error'] = $messageTransfers[0]->getValue();
+            $this->addErrorMessage($messageTransfers[0]->getValue());
+        } else {
+            $this->addSuccessMessage(static::ADD_ITEMS_SUCCESS);
         }
     }
 }
