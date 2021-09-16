@@ -25,12 +25,21 @@
                         </thead>
                         <tbody>
                         {% if (data.attributes['energiekjp100gml'] is defined and data.attributes['energiekcalp100gml'] is defined) %}
-                            <tr class="table__row table__row--with-border">
-                                <td>
-                                    <strong>{{ 'product.info.condensing' | trans }}</strong>
-                                </td>
-                                <td>{{ data.attributes['energiekjp100gml'] }}/{{ data.attributes['energiekcalp100gml'] }}  </td>
-                            </tr>
+                            {% if app.currentCodeBucket == 'DE' %}
+                                <tr class="table__row table__row--with-border">
+                                    <td>
+                                        <strong>{{ 'product.info.condensing' | trans }}</strong>
+                                    </td>
+                                    <td>{{ data.attributes['energiekjp100gml'] }}/{{ data.attributes['energiekcalp100gml'] }}  </td>
+                                </tr>
+                            {% else %}
+                                <tr class="table__row table__row--with-border">
+                                    <td>
+                                        <strong>{{ 'product.info.condensing' | trans }}</strong>
+                                    </td>
+                                    <td>{{ data.attributes['energiekjp100gml'] }} KJ/{{ data.attributes['energiekcalp100gml'] }} kcal</td>
+                                </tr>
+                            {% endif %}
                         {% endif %}
                         {% if (data.attributes['fettp100gml'] is defined) %}
                         <tr class="table__row table__row--with-border">
@@ -111,6 +120,16 @@
                                 </td>
                                 <td>{{ data.attributes['salz100gml'] }}</td>
                             </tr>
+                        {% endif %}
+                        {% if app.currentCodeBucket == 'CZ' %}
+                            {% if (data.attributes['ballaststoffe'] is defined) %}
+                                <tr class="table__row table__row--with-border">
+                                    <td>
+                                        <strong>{{ 'product.info.fiber' | trans }}</strong>
+                                    </td>
+                                    <td>{{ data.attributes['ballaststoffe'] }}</td>
+                                </tr>
+                            {% endif %}
                         {% endif %}
                         </tbody>
                     </table>

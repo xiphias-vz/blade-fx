@@ -4059,6 +4059,9 @@ product.info.protein,Eiweiß,de_DE
 product.info.salt,"Sůl",cs_CZ
 product.info.salt,Salt,en_US
 product.info.salt,Salz,de_DE
+product.info.fiber,"Ballaststoffe",de_DE
+product.info.fiber,"Fiber",en_US
+product.info.fiber,"Vláknina",cs_CZ
 product.info.additional,"Doplňkové informace",cs_CZ
 product.info.additional,Additional Information,en_US
 product.info.additional,Zusätzliche Informationen,de_DE

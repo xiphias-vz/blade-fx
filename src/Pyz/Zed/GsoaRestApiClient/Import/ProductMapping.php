@@ -120,6 +120,7 @@ class ProductMapping
         'atr_czr_saturated_fatty_acids_os' => 'fettefettmgsaeurenp100gml',
         'atr_czr_salt_os' => 'salz100gml',
         'atr_czr_alcohol_percentage' => 'alkgeh',
+        'atr_czr_sugars_os' => 'kohlzkrp100gml',
         ];
 
     /**
