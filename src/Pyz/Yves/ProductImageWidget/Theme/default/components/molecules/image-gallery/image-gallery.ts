@@ -4,24 +4,33 @@ import 'slick-carousel';
 
 export default class ImageGallery extends Component {
     protected galleryItems: HTMLElement[];
+    protected image: HTMLElement;
     protected thumbnail: HTMLElement;
     protected thumbnailItems: HTMLElement[];
 
-    protected readyCallback(): void {}
+    protected readyCallback(): void {
+    }
 
     protected init(): void {
         this.galleryItems = <HTMLElement[]>Array.from(this.getElementsByClassName(`${this.jsName}__item`));
         this.thumbnail = <HTMLElement>this.getElementsByClassName(`${this.jsName}-thumbnail`)[0];
         this.thumbnailItems = <HTMLElement[]>Array.from(this.getElementsByClassName(`${this.jsName}-thumbnail__item`));
+        this.image = <HTMLElement>this.getElementsByClassName(this.imageClass)[0];
 
         this.initSlider();
+        this.addHeightToTheImg();
         this.mapEvents();
     }
 
     protected mapEvents(): void {
+
         if (this.thumbnail) {
             this.thumbnail.addEventListener('click', (event: Event) => this.onThumbnailHover(event), true);
         }
+    }
+
+    protected addHeightToTheImg(): void{
+        this.image.setAttribute('style', 'height: auto !important');
     }
 
     protected initSlider(): void {
@@ -86,5 +95,9 @@ export default class ImageGallery extends Component {
 
     protected get thumbnailActiveClass(): string {
         return this.getAttribute('thumbnail-active-class');
+    }
+
+    protected get imageClass(): string {
+        return `image-gallery-thumbnail__img`;
     }
 }
