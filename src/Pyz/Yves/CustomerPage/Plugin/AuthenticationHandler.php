@@ -52,7 +52,10 @@ class AuthenticationHandler extends SprykerAuthenticationHandler
             $we = false;
         }
 
-        $validAdress = $this->getApiAdressCheck($customerTransfer, $meinGlobus, $we);
+        $validAddress = $this->getApiAdressCheck($customerTransfer, $meinGlobus, $we);
+
+        $customerTransfer->setCity($this->getCityFromApiResult($validAddress));
+        $customerTransfer->setAddress1($this->getStreetNameFromApiResult($validAddress));
 
         $ssoRegister = true;
         if (isset($_COOKIE['localLogin'])) {
@@ -62,7 +65,7 @@ class AuthenticationHandler extends SprykerAuthenticationHandler
         }
         $isAuthorized = false;
         $customerResponseTransfer = new CustomerResponseTransfer();
-        if ($validAdress["code"] == 'VA') {
+        if ($validAddress["code"] == 'VA') {
             $isAuthorized = true;
         }
         $customerTransfer->setMerchantReference($this->createShopContextResolver()->resolve()->getMerchantReference());
@@ -79,7 +82,7 @@ class AuthenticationHandler extends SprykerAuthenticationHandler
             }
 
             if (array_key_exists("response", $data) && !$data['response']['isRegistered']) {
-                $isRegistrationAuthorized = $this->registerCdcUser($customerTransfer);
+                $isRegistrationAuthorized = $this->registerCdcUser($customerTransfer, $validAddress);
                 $customerResponseTransfer->setIsSuccess($isRegistrationAuthorized);
                 if ($isRegistrationAuthorized) {
                     $customerResponseTransfer = parent::registerCustomer($customerTransfer);
@@ -96,7 +99,7 @@ class AuthenticationHandler extends SprykerAuthenticationHandler
             $customerTransfer->setIsMeinGlobus($meinGlobus);
 
             $customerResponseTransfer->setIsSuccess($isAuthorized);
-            $isRegistrationAuthorized = $this->registerCdcUser($customerTransfer);
+            $isRegistrationAuthorized = $this->registerCdcUser($customerTransfer, $validAddress);
             $customerResponseTransfer->setIsSuccess($isRegistrationAuthorized);
             if ($isRegistrationAuthorized) {
                  $customerResponseTransfer = parent::registerCustomer($customerTransfer);
@@ -188,34 +191,30 @@ class AuthenticationHandler extends SprykerAuthenticationHandler
 
     /**
      * @param \Generated\Shared\Transfer\CustomerTransfer $customerTransfer
+     * @param array $validAddress
      *
      * @return bool
      */
-    protected function registerCdcUser(CustomerTransfer $customerTransfer): bool
+    protected function registerCdcUser(CustomerTransfer $customerTransfer, array $validAddress): bool
     {
         $globusMyCardNumber = $_REQUEST["registerForm_my_globus_card_number"];
         $globusIsAdvertise = $_REQUEST["registerForm_isAdvertise"];
         $globusIsMeinGlobus = $_REQUEST["registerForm_isMeinGlobus"];
         $globusIsMYGloubsCardValid = $_REQUEST["registerForm_isMyGloubsCardValid"];
 
-        $validAddress = $this->getApiAdressCheck($customerTransfer, $globusIsMeinGlobus, $globusIsAdvertise);
         $addressStatus = $validAddress["code"];
         $addressLastUpdated = date("Y-m-d");
 
         if ($_REQUEST["hidShowScanAndGo"] == 1) {
             $customerTransfer->setZipCode($validAddress["result"]["address"]["zip"]);
             $customerTransfer->setAddress2($validAddress["result"]["address"]["houseNo"]);
-            $customerTransfer->setAddress1($validAddress["result"]["address"]["street"]);
-            $customerTransfer->setCity($validAddress["result"]["address"]["city"]);
+            $customerTransfer->setAddress1($this->getStreetNameFromApiResult($validAddress));
+            $customerTransfer->setCity($this->getCityFromApiResult($validAddress));
         } elseif ($_REQUEST["hidShowScanAndGo"] == 0) {
             $addressStatus = "UN";
         }
 
-        if ($customerTransfer->getCountry() == 60) {
-            $country = "DE";
-        } else {
-            $country = "DE";
-        }
+        $country = $validAddress["result"]["address"]["country"];
 
         if ($customerTransfer->getSalutation() == "Mr") {
             $gender = "m";
@@ -383,5 +382,33 @@ class AuthenticationHandler extends SprykerAuthenticationHandler
     public function getNewGlobusCardNumber(): string
     {
         return GlobusRestApiClientDigitalCard::getNewGlobusCardNumber();
+    }
+
+    /**
+     * @param array $validAddress
+     *
+     * @return string
+     */
+    public function getStreetNameFromApiResult(array $validAddress): string
+    {
+        if (is_array($validAddress["result"]["address"]["street"])) {
+            return $validAddress["result"]["address"]["street"]["value"];
+        } else {
+            return $validAddress["result"]["address"]["street"];
+        }
+    }
+
+    /**
+     * @param array $validAddress
+     *
+     * @return string
+     */
+    public function getCityFromApiResult(array $validAddress): string
+    {
+        if (is_array($validAddress["result"]["address"]["city"])) {
+            return $validAddress["result"]["address"]["city"]["value"];
+        } else {
+            return $validAddress["result"]["address"]["city"];
+        }
     }
 }
