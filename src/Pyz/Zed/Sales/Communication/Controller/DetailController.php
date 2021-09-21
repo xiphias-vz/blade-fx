@@ -280,12 +280,12 @@ class DetailController extends SprykerDetailController
     protected function executeTimeSlotCheckJenkinsJob(string $storeName): void
     {
         $domainName = $_SERVER["HTTP_HOST"];
-        $jenkinsDomainName = str_replace('backoffice', $_SERVER['SPRYKER_SCHEDULER_HOST'], $domainName);
+        $jenkinsDomainName = str_replace('backoffice', 'jenkins', $domainName);
         $isDevelopmentEnvironment = $this->checkIsDevelopmentEnvironment($jenkinsDomainName);
         if ($isDevelopmentEnvironment) {
             $jenkinsDomainName = static::LOCAL_SCHEDULER_NAME;
         }
-        $fullUrl = 'http://' . $jenkinsDomainName . '/job/' . $storeName . '__timeslot-check/build';
+        $fullUrl = 'https://' . $jenkinsDomainName . '/job/' . $storeName . '__timeslot-check/build';
         $curl = curl_init();
         try {
             curl_setopt_array($curl, [
