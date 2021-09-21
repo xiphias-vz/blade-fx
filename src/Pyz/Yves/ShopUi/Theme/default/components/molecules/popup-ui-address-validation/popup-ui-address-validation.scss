@@ -228,13 +228,6 @@ $setting-popup-spacing-y: rem(16);
     #form-password-shop-switcher {
         margin-bottom: 3rem;
     }
-    .select2-container {
-        z-index: 9998 !important;
-    }
-
-    .custom-select__caret {
-        z-index: 9999 !important;
-    }
 
     .select2-container--secondary .select2-results {
         width: 100% !important;
