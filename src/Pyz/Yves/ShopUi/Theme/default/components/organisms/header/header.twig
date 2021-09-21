@@ -127,11 +127,17 @@
                             {% widget 'StoreSwitcherWidget' %}{% endwidget %}
                         {% endif %}
 
-                        <a id="link-to-time-slots" class="{{ config.name }}__navigation-item link link--nav link--reset-focus link-to-time-slots">
-                            <span class="icon-time"></span>
-                            {{ 'header.timeslot.button' | trans }}
-                        </a>
-
+                        {% if app.currentCodeBucket == 'DE' %}
+                            <a id="link-to-time-slots" class="{{ config.name }}__navigation-item link link--nav link--reset-focus link-to-time-slots">
+                                <span class="icon-time"></span>
+                                {{ 'header.timeslot.button' | trans }}
+                            </a>
+                        {% else %}
+                            <a id="link-to-time-slots" class="{{ config.name }}__navigation-item link link--nav-CZ link--reset-focus link-to-time-slots">
+                                <span class="icon-time"></span>
+                                {{ 'header.timeslot.button' | trans }}
+                            </a>
+                        {% endif %}
                         {% if app.currentCodeBucket == 'DE' %}
                             <a href="{{ 'page.fragen.url' | trans }}" class="link link--nav" target="_blank">
                                 {% include atom('icon') with {
@@ -144,7 +150,7 @@
                                 {{ 'global.help' | trans }}
                             </a>
                         {% else %}
-                            <a href="{{ 'page.fragen.url' | trans }}" class="link link--nav">
+                            <a href="{{ 'page.fragen.url' | trans }}" class="link link--nav-CZ">
                                 {% include atom('icon') with {
                                     modifiers: ['big'],
                                     class: 'link__icon',

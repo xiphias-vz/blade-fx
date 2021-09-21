@@ -135,6 +135,30 @@
         }
     }
 
+    &--nav-CZ {
+        display: inline-flex;
+        align-items: center;
+        text-decoration: none;
+        color: $setting-color-globusCZ-header;
+        margin: 0 rem(15);
+
+        &:hover,
+        &:focus {
+            opacity: 1;
+            color: $setting-color-black-1;
+            text-decoration: none;
+            box-shadow: none;
+        }
+
+        &:first-child {
+            margin-left: 0;
+        }
+
+        &:last-child {
+            margin-right: 0;
+        }
+    }
+
     &--white {
         color: $setting-color-white;
         text-decoration: none;
