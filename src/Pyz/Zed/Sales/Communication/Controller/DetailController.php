@@ -285,12 +285,11 @@ class DetailController extends SprykerDetailController
         if ($isDevelopmentEnvironment) {
             $jenkinsDomainName = static::LOCAL_SCHEDULER_NAME;
         }
-        $fullUrl = 'https://' . $jenkinsDomainName . '/job/' . $storeName . '__timeslot-check/build';
-        $testURL = 'http://jenkins.shop-t.globus.de/job/LPZ__timeslot-check/build';
+        $fullUrl = 'http://' . $jenkinsDomainName . '/job/' . $storeName . '__timeslot-check/build';
         $curl = curl_init();
         try {
             curl_setopt_array($curl, [
-                CURLOPT_URL => $testURL,
+                CURLOPT_URL => $fullUrl,
                 CURLOPT_RETURNTRANSFER => true,
                 CURLOPT_ENCODING => '',
                 CURLOPT_MAXREDIRS => 10,
