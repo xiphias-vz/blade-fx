@@ -169,12 +169,12 @@
 
                                         {% if app.currentCodeBucket == 'DE' %}
                                             {% if productSupplier and productSaleVolume and productSaleUnit %}
-                                                {% set fullname = ((productSupplier == 'keine Marke' or productSupplier == '' or productSupplier == 'keine') ? '' : productSupplier ~ " - ") ~ data.name ~ " - " ~ productSaleVolume|round(3, 'floor')|replace('.', ',') ~  ' ' ~ productSaleUnit %}
+                                                {% set fullname = ((productSupplier == 'keine Marke' or productSupplier == '' or productSupplier == 'keine') ? '' : productSupplier ~ " - ") ~ data.name ~ (productSaleVolume|round(3, 'floor') > 0 ?  " - " ~ productSaleVolume|round(3, 'floor')|replace('.', ',') ~  ' ' ~ productSaleUnit : '') %}
                                                 {% if data.einzelgewicht %}
                                                     {% set fullname = ((productSupplier == 'keine Marke' or productSupplier == '' or productSupplier == 'keine') ? '' : productSupplier ~ " - ") ~ data.name ~ " - ca. " ~ data.einzelgewicht|round(3, 'floor')|replace('.', ',') ~  ' ' ~ productSaleUnit %}
                                                 {% endif %}
                                             {% elseif productSaleVolume and productSaleUnit %}
-                                                {% set fullname = data.name ~ " - " ~ productSaleVolume|round(3, 'floor')|replace('.', ',') ~  ' ' ~ productSaleUnit %}
+                                                {% set fullname = data.name ~ (productSaleVolume|round(3, 'floor') > 0 ? " - " ~ productSaleVolume|round(3, 'floor')|replace('.', ',') ~  ' ' ~ productSaleUnit : '') %}
                                                 {% if data.einzelgewicht %}
                                                     {% set fullname = data.name ~ " - ca. " ~ data.einzelgewicht|round(3, 'floor')|replace('.', ',') ~  ' ' ~ productSaleUnit %}
                                                 {% endif %}
