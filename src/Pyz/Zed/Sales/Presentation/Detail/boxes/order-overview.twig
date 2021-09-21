@@ -3,7 +3,7 @@
         <div class="row">
             <input type="hidden" id="isCurrentUserSupervisorOrAdmin" value="{{ isCurrentUserSupervisorOrAdmin }}">
             <div class="col-xs-12 col-md-4" style="background: #f7f7f7">
-                <h3>{{ 'Bestellinformationen' | trans }}</h3>
+                <h3>{{ 'Ordering Information' | trans }}</h3>
                 <div class="bottom-indent">
                     <dl>
                         <dt>{{ 'Order Reference' | trans }}</dt>
@@ -12,7 +12,7 @@
                             <dt>{{ 'Collect Number' | trans }}</dt>
                             <dd style="margin-bottom: 15px">{{ order.collectNumber }}</dd>
                         {% endif %}
-                            <dt>{{ 'Angefratges Lieferdatum' | trans }}:</dt>
+                            <dt>{{ 'Requested delivery date' | trans }}:</dt>
                         <dd>
 
                             {% if isCurrentUserSupervisorOrAdmin %}
@@ -38,7 +38,7 @@
                                             </g>
                                     </svg>
                                         <div style="float: right;">
-                                            <button id="btnBearbeiten" style="border:none;background-color: transparent;color: #18a689;">{{ 'Bearbeiten' | trans }}</button>
+                                            <button id="btnBearbeiten" style="border:none;background-color: transparent;color: #18a689;">{{ 'Edit' | trans }}</button>
                                         </div>
                                     </div>
                                 </div>
@@ -53,7 +53,7 @@
                                             {% endfor %}
                                         </select>
                                         <div style="float: right;">
-                                            <input id="btnSaveTsChange" type="submit" class="btn btn-customPrimary" value="Save" style="margin-right: 10px; min-width: 50px;">
+                                            <input id="btnSaveTsChange" type="submit" class="btn btn-customPrimary" value={{ 'Save' | trans }} style="margin-right: 10px; min-width: 50px;">
                                             <input id="btnCancelTsChange" type="button" class="btn" value="X" style="min-width: 50px;">
                                         </div>
                                     </form>
@@ -117,14 +117,14 @@
                                 <div id="divAddContainerAndShelf" style="display: none">
                                     <dd id="labelContainerAndShelf" style="margin-top: 8px;"></dd>
                                     <select id="pickingZones" name="pickingZones" required="required" class="form-control" style="width:40%">
-                                        <option value="">{{ 'Zone auswählen' | trans }}</option>
+                                        <option value="">{{ 'order.overview.select.zone' | trans }}</option>
                                         {% for idZone,nameZone  in pickingZonesForContainers %}
                                             <option value="{{ idZone }}">{{ nameZone }}</option>
                                         {% endfor %}
                                     </select>
                                     <input type="hidden" id="frmContainerShelf_idSalesOrder" name="frmContainerShelf_idSalesOrder" value="{{ order.idSalesOrder }}">
-                                    <input id="inputContainer" name="inputContainer" type="hidden" class="form-control" required="required" placeholder="{{ 'Container hinzufugen' | trans }}" style="width:40%">
-                                    <input id="inputShelf" name="inputShelf" type="hidden" class="form-control" required="required" placeholder="{{ 'Lagerplatz zuweisen' | trans }}" style="width:40%">
+                                    <input id="inputContainer" name="inputContainer" type="hidden" class="form-control" required="required" placeholder="{{ 'Add Container' | trans }}" style="width:40%">
+                                    <input id="inputShelf" name="inputShelf" type="hidden" class="form-control" required="required" placeholder="{{ 'Container assign' | trans }}" style="width:40%">
                                     <button id='btnSaveContainer' type="submit" class="btn btn-primary" style="margin-right:10px; margin-left: 10px">{{ 'Save' | trans }}</button>
                                     <button id='btnCancelAction' type="button" class="btn">X</button>
                                 </div>
@@ -239,7 +239,7 @@
                             <div><a href="{{ url('/customer/view', {'id-customer': order.fkCustomer}) }}" target="_blank">{{ order.customerReference }}</a></div>
                         </div>
                         <div style="margin-bottom: 15px">
-                            <span style="font-weight: bold">{{ "Payment method" | trans }}</span>
+                            <span style="font-weight: bold">{{ 'Payment method' | trans }}</span>
                             <div>
                                 {% if payments %}
                                     {% for payment in payments %}
@@ -262,19 +262,19 @@
                     <div class="col-lg-4" style="margin-left: 160px">
                         <h3>{{ 'Sonstige Informationen' | trans }}</h3>
                         <div style="margin-bottom: 15px;margin-top: 15px">
-                            <span style="font-weight: bold">{{ 'Filiale Adresse' | trans }}</span>
+                            <span style="font-weight: bold">{{ 'Merchant Address' | trans }}</span>
                             <div>
                                 {{ order.merchantName }}
                             </div>
                         </div>
                         <div style="margin-bottom: 15px;">
-                            <span style="font-weight: bold">{{ 'Division Nummer' | trans }}</span>
+                            <span style="font-weight: bold">{{ 'Merchant Region Number' | trans }}</span>
                             <div>
                                 {{ order.merchantRegionNumber }}
                             </div>
                         </div>
                         <div style="margin-bottom: 15px;">
-                            <span style="font-weight: bold">{{ 'Filiale' | trans }}</span>
+                            <span style="font-weight: bold">{{ 'Merchant' | trans }}</span>
                             <div>
                                 {{ order.merchantFilialNumber }}
                             </div>
@@ -310,14 +310,14 @@
                             {% if blockName == 'discount' %}
                                 {% set customExternalBlock = externalBlock|split('Rabatte und Gutscheine') %}
                                 <div style="margin-bottom: 15px">
-                                    <span style="font-weight: bold">{{ 'Rabatte und Gutscheine' | trans }}</span>
+                                    <span style="font-weight: bold">{{ 'Discounts & Vouchers' | trans }}</span>
                                     <div class="discount">{{ customExternalBlock[1] | raw }}</div>
                                 </div>
                             {% endif %}
                             {% if blockName == 'refund' %}
                                 {% set customExternalBlock = externalBlock|split('Rückerstattung') %}
                                 <div style="margin-bottom: 15px">
-                                    <span style="font-weight: bold">{{ 'Rückerstattung' | trans }}</span>
+                                    <span style="font-weight: bold">{{ 'Refunds' | trans }}</span>
                                     <div class="refund">{{ customExternalBlock[1] | raw }}</div>
                                 </div>
                             {% endif %}

@@ -136,26 +136,26 @@
             <form>
                 <div class="filters-holder">
                     <div class="filter-component">
-                        <label for="location">Standort</label> <br>
+                        <label for="location">{{ 'Location' | trans }}</label> <br>
                         <select id="location" name="location" onchange="onChangeLocation(this)">
-                            <option value="" disabled selected>alle</option>
+                            <option value="" disabled selected>{{ 'All' | trans }}</option>
                             {% for merchantId, merchantName in merchantFilterButtonsData  %}
                                 <option value="{{ merchantId }}">{{ merchantName }}</option>
                             {% endfor %}
                         </select>
                     </div>
                     <div class="filter-component">
-                        <label for="date_from">Datum von</label><br/>
+                        <label for="date_from">{{ 'Date From' | trans }}</label><br/>
                         <input type="date" id="date_from" value="" onchange="handleDateRange(this, 'date-from-range-filter')">
                     </div>
                     <div class="filter-component">
-                        <label for="date_to">Datum bis</label><br/>
+                        <label for="date_to">{{ 'Date To' | trans }}</label><br/>
                         <input type="date" id="date_to" value="" onchange="handleDateRange(this, 'date-to-range-filter')">
                     </div>
                     <div class="filter-component">
                         <div id="list2" style="outline: none" class="dropdown-check-list" tabindex="100">
-                            <span class="title" style="font-weight: bold;margin-bottom: 5px;display: block">Timeslot</span>
-                            <span class="anchor"><span class="timeslot-value">alle</span>
+                            <span class="title" style="font-weight: bold;margin-bottom: 5px;display: block">{{ 'Timeslot' | trans }}</span>
+                            <span class="anchor"><span class="timeslot-value">{{ 'All' | trans }}</span>
                             <span class="fa arrow"></span>
                             </span>
                             <ul class="items">
@@ -165,15 +165,15 @@
                                 <li class="timeSlot"><input type="checkbox" value="16:00-18:00" /><span>16:00-18:00</span></li>
                                 <li class="timeSlot"><input type="checkbox" value="18:00-20:00" /><span>18:00-20:00</span></li>
                                 <li>
-                                    <button class="save-pickZone-btn" type="button" onclick="saveMultiSelectedFields(this.parentElement.parentElement, 'timeSlot')">speichern</button>
+                                    <button class="save-pickZone-btn" type="button" onclick="saveMultiSelectedFields(this.parentElement.parentElement, 'timeSlot')">{{ 'Save' | trans }}</button>
                                 </li>
                             </ul>
                         </div>
                     </div>
                     <div class="filter-component">
-                        <label for="status">Status</label> <br>
+                        <label for="status">{{ 'Status' | trans }}</label> <br>
                         <select id="status" name="status" style="padding: 2px" onchange="handleDateRange(this, 'state-status-filter')">
-                            <option value="" disabled selected>alle</option>
+                            <option value="" disabled selected>{{ 'All' | trans }}</option>
                             <option value="ready for picking">ready for picking</option>
                             <option value="picked">picked</option>
                             <option value="paused">paused</option>
@@ -184,8 +184,8 @@
                     </div>
                     <div class="filter-component">
                         <div id="list1" style="outline: none" class="dropdown-check-list" tabindex="100">
-                            <span class="title" style="font-weight: bold;margin-bottom: 5px;display: block">Pickzone</span>
-                            <span class="anchor"><span class="pickZone-value">alle</span>
+                            <span class="title" style="font-weight: bold;margin-bottom: 5px;display: block">{{ 'Pickzone' | trans }}</span>
+                            <span class="anchor"><span class="pickZone-value">{{ 'All' | trans }}</span>
                             <span class="fa arrow"></span>
                             </span>
                             <ul class="items">
@@ -193,7 +193,7 @@
                                     <li class="pickZone"><input type="checkbox" id="{{ key }}" value="{{ name }}" /><span>{{ name }}</span></li>
                                 {% endfor %}
                                 <li>
-                                    <button class="save-pickZone-btn" type="button" onclick="saveMultiSelectedFields(this.parentElement.parentElement, 'pickZone')">speichern</button>
+                                    <button class="save-pickZone-btn" type="button" onclick="saveMultiSelectedFields(this.parentElement.parentElement, 'pickZone')">{{ 'Save' | trans }}</button>
                                 </li>
                             </ul>
                         </div>
@@ -204,7 +204,7 @@
                     <div class='store-status-filter'></div>
                     <div class="time-slot-active-filter"></div>
                     <div class="picking-zone-active-filter" data-pickingZones="picking-zones"></div>
-                    <div class="clear-all-filters" style="color:#14ba93;cursor: pointer;visibility: hidden;" onclick="clearAllFilters()"><span style="margin-right: 4px">x</span>Alle Filter löschen</div>
+                    <div class="clear-all-filters" style="color:#14ba93;cursor: pointer;visibility: hidden;" onclick="clearAllFilters()"><span style="margin-right: 4px">x</span>{{ 'Clear all filters' | trans }}</div>
                 </div>
             </form>
             <div style="margin-bottom: 10px"></div>
@@ -416,7 +416,7 @@
             }
             htmlElement.textContent = '';
             if(dataToUnset.length === 0) {
-                htmlElement.textContent = 'alle';
+                htmlElement.textContent = '{{ 'All' | trans }}';
 
             }
             for(let i = 0; i < dataToUnset.length; i++) {

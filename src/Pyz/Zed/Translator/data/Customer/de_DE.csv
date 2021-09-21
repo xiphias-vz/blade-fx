@@ -1,12 +1,73 @@
-Customers,Kunden
 Last Name,Nachname
 Registration Date,Registrierungsdatum
 Zip Code,Postleitzahl
 Billing Address,Rechnungsadresse
 Shipping Address,Lieferanschrift
-Locale,Gebietsschema
 "Manage Customers",Kundenverwaltung
 Mr,Herr
 Ms,Frau
 Divers,Divers
 Dr,Dr.
+
+"Add address","Adresse hinzufügen"
+"Add Customer","Kunde hinzufügen"
+"Add new Address","Neue Adresse hinzufügen"
+"Add new address","Neue Adresse hinzufügen"
+"Address Line 1","Adresszeile 1"
+"Address Line 2","Adresszeile 2"
+"Address Line 3","Adresszeile 3"
+Back,Zurück
+"Back to Customer View","Zurück zu Kundenansicht"
+"Back to Customers","Zurück zu Kunden"
+"Back to Manage Addresses","Zurück zu Adressen verwalten"
+City,Stadt
+Company,Firma
+Country,Land
+Customers,Kunden
+"Customer deletion confirmation","Löschen des Kunden bestätigt"
+"Customer does not exist","Kunde existiert nicht"
+"Customer Reference",Kundenreferenz
+"Customer successfully deleted","Kunde wurde erfolgreich gelöscht."
+"Customer was created successfully.","Kunde wurde erfolgreich erstellt."
+"Customer was not created.","Kunde wurde nicht erstellt."
+"Customer was not updated.","Kunde wurde nicht aktualisiert."
+"Customer was updated successfully.","Kunde wurde erfolgreich aktualisiert."
+"Customer with id `%s` does not exist","Die Kunde mit der ID `%s` ist nicht vorhanden"
+"Date of birth",Geburtsdatum
+Delete,Löschen
+"Delete account","Konto löschen"
+"Edit Address","Adresse bearbeiten"
+"Edit customer","Kunde bearbeiten"
+"Edit Customer","Kunde bearbeiten"
+Email,E-Mail
+"First Name",Vorname
+"First name",Vorname
+"Form was not submitted.","Der Formular wurde nicht eingereicht."
+Gender,Geschlecht
+"Last name",Nachname
+"Last Name",Nachname
+"List Customers","Liste der Kunden"
+Locale,Gebietsschema
+"Male",Male
+"Female",Female
+Phone,Telefon
+"Registered at","Eingetragen bei"
+Salutation,Anrede
+Save,Speichern
+"Select one","Eins auswählen"
+"Send password token through email","Passwort-Token per E-Mail senden"
+View,Ansicht
+"View Customer","Kunden anzeigen"
+"Zed Account Reference",Zed-Konto-Referenz
+ZipCode,Postleitzahl
+"Registration Date",Registrierungsdatum
+"Billing Address",Rechnungsadresse
+"Shipping Address",Lieferanschrift
+"Attach to company","Einem Unternehmen zuordnen"
+"Add a customer","Kunde hinzufügen"
+"Comment successfully added","Kommentar erfolgreich hinzugefügt."
+"Address (2nd line)","Adresse (zweite Zeile)"
+"Address (3rd line)","Adresse (dritte Zeile)"
+MobilePhone,Mobile Phone
+"Address ","Adresse"
+customer.address.zip_code,"Postleitzahl"

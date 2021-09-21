@@ -1,1 +1,15 @@
 content_product_set.template.add_to_cart,"Bilder links, Produkte rechts und nur alle Schaltfläche hinzufügen"
+
+Actions,Aktionen
+Add,Hinzufügen
+"Available Product Sets","Verfügbare Produktgruppen"
+"Clear locale","Gebietsschema löschen"
+content_product_set_gui.template.cart-button-btm,"In den Warenkorb Button unten"
+content_product_set_gui.template.cart-button-top,"In den Warenkorb Button oben"
+content_product_set_gui.template.default,Standard
+Delete,Löschen
+ID,ID
+Name,Name
+"Number of Products","# von Produkten"
+"Product Set","Produkt Set"
+Status,Status

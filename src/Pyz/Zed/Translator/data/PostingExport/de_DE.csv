@@ -40,3 +40,4 @@ export.product.quantity,Menge
 export.product.gross-no-deposit,Bruttobetrag exklusive Pfand
 export.product.tax-rate,Steuersatz
 export.product.gross-deposit,Bruttobetrag Pfand
+export.commissioning.page.title,"ERP Export"

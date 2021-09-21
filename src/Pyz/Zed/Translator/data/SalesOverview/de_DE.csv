@@ -1,0 +1,32 @@
+order.management.management,Bestellverwaltung
+order.management.location,Standort
+order.management.day,Tag
+order.management.selection,Auswahl
+order.management.orderState1,ready for Picking / in picking / ready for Collection / order invoiced
+order.management.orderState2,ready for Picking / in picking / picked
+order.management.orderState3,ready for Picking / picked
+order.management.total,Gesamt
+order.management.slot,Slot
+order.management.total,Summe
+order.management.full.dry,Trocken
+order.management.full.bakery,Bäckerei
+order.management.full.drugstore,Drogerie
+order.management.full.fish,Fischtheke
+order.management.full.fresh,Frische
+order.management.full.beverages,Getränke
+order.management.full.cheese,Käsetheke
+order.management.full.butchers,Metzgerei
+order.management.full.nonfood,Nonfood
+order.management.full.fruit_vegetables,Obst+Gemüse
+order.management.full.frozen,Tiefkühl
+order.management.abbr.dry,TRO
+order.management.abbr.bakery,BÄCK
+order.management.abbr.drugstore,DROG
+order.management.abbr.fish,FIS
+order.management.abbr.fresh,FRI
+order.management.abbr.beverages,GET
+order.management.abbr.cheese,KÄS
+order.management.abbr.butchers,METZ
+order.management.abbr.nonfood,NON
+order.management.abbr.fruit_vegetables,OBS
+order.management.abbr.frozen,TKK

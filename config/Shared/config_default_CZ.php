@@ -2,6 +2,7 @@
 
 use Pyz\Service\FlysystemSftpFileSystem\Plugin\Flysystem\SftpFileSystemBuilderPlugin;
 use Pyz\Shared\Application\ApplicationConstants;
+use Pyz\Shared\BackofficeOverview\BackofficeOverviewConstants;
 use Pyz\Shared\CodeBuckets\CodeBucketConstants;
 use Pyz\Shared\GoogleTagManager\GoogleTagManagerConstants;
 use Pyz\Shared\GsoaRestApiClient\ApiClient;
@@ -94,6 +95,31 @@ $config[PickerConstants::DAYS_IN_THE_WEEK] = [
     '4' => 'ČT',
     '5' => 'PÁ',
     '6' => 'SO',
+];
+
+// ----------- Backoffice overview choice
+$config[BackofficeOverviewConstants::CHOICE_FILTER] = [
+    1 => 'Objednávka',
+    2 => 'Pozice',
+    3 => 'Počet kusů',
+];
+
+// ----------- Backoffice overview table header
+
+$config[BackofficeOverviewConstants::TABLE_HEADER] = [
+    'Slot' => 'Slot',
+    'Gesamt' => 'Celkem',
+    'TRO' => 'SUCH',
+    'BÄCK' => 'PEK',
+    'DROG' => 'DROG',
+    'FIS' => 'RYB',
+    'FRI' => 'ČER',
+    'GET' => 'NÁP',
+    'KÄS' => 'KÄS',
+    'METZ' => 'SÝR',
+    'NON' => 'NON',
+    'OBS' => 'OVO',
+    'TKK' => 'MRA',
 ];
 
 // ---------- Error handling

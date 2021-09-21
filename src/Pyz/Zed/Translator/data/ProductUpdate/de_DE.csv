@@ -1,3 +1,15 @@
 Product Update,Produkt-Update
 Import data,Daten importieren
 Update prices,Preise aktualisieren
+Reset,Zurücksetzen
+product.update.examples.header,Examples:
+product.update.header1,Update price for product in all stores to the same value:
+product.update.example1_1,Artikelnummer;Verkaufspreis
+product.update.example1_2,"1012;5,00"
+product.update.header2,Update price only in one store:
+product.update.example2_1,Artikelnummer;Verkaufspreis_041
+product.update.header3,Set specific price in one store, others - another value:
+product.update.example3_1,Artikelnummer;Verkaufspreis_041;Verkaufspreis
+product.update.example3_2,"1012;5.00;6,00"
+product.update.message,It's safe to use comma and dot as a decimal separator.
+

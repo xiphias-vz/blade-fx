@@ -11,3 +11,41 @@ Enter flexible fee,Geben Sie die flexible Gebühr ein
 "You can use the placeholders <code>{{threshold}}</code>.","Sie können die Platzhalter <code>{{threshold}}</code> benutzen."
 "Minimum order value cannot be greater or equal to the maximum order value.","Der minimale Bestellwert darf nicht größer oder gleich dem maximalen Bestellwert sein."
 "The Global Thresholds is saved successfully.","Die globalen Bestellschwellen werden erfolgreich gespeichert."
+
+"Edit Global threshold","Globalen Grenzwert bearbeiten"
+"Edit Threshold Settings","Schwellwerteinstellungen bearbeiten"
+"Global threshold","Allgemeiner Grenzwert"
+"Hard Threshold","Harter Grenzwert"
+"Minimum Order Value settings saved.","Einstellungen für Mindestbestellwert gespeichert."
+Save,Speichern
+"Soft Threshold","Weicher Grenzwert"
+"The Global Threshold is saved successfully.","Der globale Grenzwert wurde erfolgreich gespeichert."
+Threshold,Schwellenwert
+"You can use the the placeholders <b>{{threshold}}</b> <b>{{fee}}</b>","Sie können die Platzhalter <b>{{threshold}}</b> <b>{{fee}}</b> benutzen"
+
+"Add New User","Neuen Benutzer hinzufügen"
+"Add User","Benutzer hinzufügen"
+"Assign Customers","Kunden zuweisen"
+Create,Erstellen
+"Edit User","Benutzer bearbeiten"
+"General Information","Allgemeine Informationen"
+"List Users","Liste der Benutzer"
+"Repeat Password","Passwort wiederholen"
+Save,Speichern
+Update,Aktualisieren
+"Last Login","Letzte Anmeldung"
+"User entity was not created.","Benutzer wurde nicht erstellt."
+"User entity was not updated.","Benutzer wurde nicht aktualisiert."
+"User was not activated.","Benutzer wurde nicht aktiviert."
+"User was not deactivated.","Benutzer wurde nicht deaktiviert."
+"User was not deleted.","Benutzer wurde nicht gelöscht."
+User,Benutzer
+"Create new User","Neuen Benutzer erstellen"
+"Create user","Benutzer erstellen"
+Warning,Warnung
+"Delete User","Benutzer löschen"
+"You are trying to delete user","Sie versuchen einen Benutzer zu löschen"
+"Root group",Stammgruppe
+E-mail,E-Mail
+
+

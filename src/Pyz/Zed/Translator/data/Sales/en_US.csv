@@ -1,3 +1,124 @@
 order.overview.replacement.article.title, Replacement article
 order.overview.replacement.article.yes, Yes
 order.overview.replacement.article.no, No
+order.overview.select.zone,Select zone
+Location,Location
+Date From,Date from
+Date To,Date to
+Timeslot,Timeslot
+Status,Status
+Pickzone,Pickzone
+Save,Save
+All,all
+Clear all filters,Clear all filters
+Ordering Information,Ordering Information
+Requested delivery date,Requested delivery date
+Edit,Edit
+Save,Save
+Add Container,Add Container
+Zone -> Container ID -> Shelf,Zone -> Container ID -> Shelf
+Payment method,Payment method
+Merchant,Merchant
+Mark,Mark
+Order,Order
+Cancelled amount,Cancelled amount
+Container assign,Container assign
+Cancel,Cancel
+capacities.question,Are you sure you want to reset your entries? (They are not saved.)
+OK,OK
+
+"<1d | 1d-7d | >7d","<1d | 1d-7d | >7d"
+"Address successfully updated.","Address successfully updated."
+Addresses,Addresses
+"All orders of the customer","All orders of the customer"
+"Back to Orders","Back to Orders"
+"Canceled amount","Canceled amount"
+"Cart Notes","Cart Notes"
+Comments,Comments
+"Customer Full Name ","Customer Full Name"
+"Customer Full Name","Customer Full Name"
+"Customer successfully updated.","Customer successfully updated."
+Discount,Discount
+"GRAND TOTAL","Grand Total"
+"Grand Total","Grand Total"
+"Hide history","Hide history"
+"incl. %tax_amount% % tax","incl. %tax_amount% % tax"
+"Included tax amount","Included tax amount"
+"Item total","Item Total"
+Items,Items
+Legend,Legend
+"List of orders","List of orders"
+Matrix,Matrix
+Note,Note
+"Number of Items","Number of Items"
+Option,Option
+"Order Matrix","Order Matrix"
+"Order Source","Order Source"
+"Order State","Order State"
+Orders,Orders
+"Overview of Order Matrix","Overview of Order Matrix"
+"Overview of Orders","Overview of Orders"
+Payments,Payments
+Product,Product
+Quantity,Quantity
+Sales,Sales
+Save,Save
+"Send Message","Send Message"
+Shipment,Shipment
+"Show history","Show history"
+"Show less","Show less"
+"Show more","Show more"
+Sku,SKU
+State,State
+"Sub total","Sub Total"
+Subtotal,Subtotal
+Totals,Totals
+"Trigger all matching states","Trigger all matching states"
+"Trigger event","Trigger event"
+"Unique Product Quantity","Unique Product Quantity"
+"Unit Price","Unit Price"
+"Variant Details","Variant Details"
+"View Order","View Order"
+"View Order:","View Order:"
+"Remuneration total","Remuneration total"
+"Trigger all matching states inside this order","Trigger all matching states inside this order"
+"Previous orders count","Previous orders count"
+Name,Name
+E-mail,E-mail
+"Order date","Order date"
+Refunds,Refunds
+"Discounts & Vouchers","Discounts & Vouchers"
+"Order Items","Order Items"
+Reference,Reference
+"Order Overview","Order Overview"
+"Total taxes","Total taxes"
+Reclamations,Reclamations
+Claim,Claim
+"payment pending","Payment pending"
+exported,Exported
+shipped,Shipped
+delivered,Delivered
+refunded,Refunded
+closed,Closed
+pay,Pay
+ship,Ship
+stock-update,"Stock update"
+close,Close
+refund,Refund
+execute-return,"Execute return"
+cancel-return,"Cancel return"
+ship-return,"Send return back to customer"
+delivery-return,"Deliver return back to customer"
+cancel,Cancel
+"skip timeout","Skip timeout"
+"Refund total","Refund total"
+"Comment successfully added","Comment successfully added."
+"Address Details","Address Details"
+"Middle name","Middle name"
+"Po box","Po box"
+"Zip code","Zip code"
+Address1,"Address 1"
+Address2,"Address 2"
+"Cell phone","Cell Phone"
+"Edit Address for Order: %idSalesOrder%","Edit Address for Order: %idSalesOrder%"
+

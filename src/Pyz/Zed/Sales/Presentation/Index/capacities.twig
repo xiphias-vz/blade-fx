@@ -316,13 +316,13 @@
                         </div>
                         <div class="popUp-modal-body">
                             <div id="popUpContent"></div>
-                            Möchten Sie Ihre Eingaben wirklich zurücksetzen? (Sie werden nicht gespeichert.)
+                            {{ 'capacities.question' | trans }}
                             <hr/>
 
                         </div>
                         <div class="popUp-modal-footer" style="display: flex; justify-content: center;">
-                            <div id="confirmNo"><button type="button" id="modalConfirmNo" class="btn btn-invertedPrimary btn-sm">Abbrechen</button></div>
-                            <div id="confirmYes"><button type="button" id="modalConfirmYes" class="btn btn-customPrimary btn-sm">Okay</button></div>
+                            <div id="confirmNo"><button type="button" id="modalConfirmNo" class="btn btn-invertedPrimary btn-sm">{{ 'Cancel' | trans }}</button></div>
+                            <div id="confirmYes"><button type="button" id="modalConfirmYes" class="btn btn-customPrimary btn-sm">{{ 'OK' | trans }}</button></div>
                         </div>
                     </div>
                 </div>

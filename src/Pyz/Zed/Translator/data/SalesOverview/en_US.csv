@@ -1,0 +1,33 @@
+order.management.management,Order management
+order.management.location,Location
+order.management.day,Day
+order.management.selection,Selection
+order.management.orderState1,ready for Picking / in picking / ready for Collection / order invoiced
+order.management.orderState2,ready for Picking / in picking / picked
+order.management.orderState3,ready for Picking / picked
+order.management.total,Total
+order.management.slot,Slot
+order.management.total,Total
+order.management.full.dry,Dry
+order.management.full.bakery,Bakery
+order.management.full.drugstore,Drugstore
+order.management.full.fish,Fish counter
+order.management.full.fresh,Fresh
+order.management.full.beverages,Beverages
+order.management.full.cheese,Cheese counter
+order.management.full.butchers,Butcher's shop
+order.management.full.nonfood,Nonfood
+order.management.full.fruit_vegetables,Fruit+Vegetables
+order.management.full.frozen,Frozen
+order.management.abbr.dry,DRY
+order.management.abbr.bakery,BAK
+order.management.abbr.drugstore,DRU
+order.management.abbr.fish,FIS
+order.management.abbr.fresh,FRE
+order.management.abbr.beverages,BEV
+order.management.abbr.cheese,CHE
+order.management.abbr.butchers,BUT
+order.management.abbr.nonfood,NON
+order.management.abbr.fruit_vegetables,FRU
+order.management.abbr.frozen,FRO
+

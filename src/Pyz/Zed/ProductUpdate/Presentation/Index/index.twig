@@ -13,23 +13,23 @@
     <input type="reset" value="{{ 'Reset' | trans }}" class="btn btn-danger reset">
     {{ form_end(form) }}
 
-    <h3>Examples:</h3>
-        Update price for product in all stores to the same value:
+    <h3>{{ 'product.update.examples.header' | trans }}</h3>
+        {{ 'product.update.header1' | trans }}
     <pre>
-Artikelnummer;Verkaufspreis
-1012;5,00</pre>
+{{ 'product.update.example1_1' | trans }}
+{{ 'product.update.example1_2' | trans }}</pre>
 
-        Update price only in one store:
+        {{ 'product.update.header2' | trans }}
     <pre>
-Artikelnummer;Verkaufspreis_041
-1012;5,00</pre>
+{{ 'product.update.example2_1' | trans }}
+{{ 'product.update.example1_2' | trans }}</pre>
 
-        Set specific price in one store, others - another value:
+        {{ 'product.update.header3' | trans }}
     <pre>
-Artikelnummer;Verkaufspreis_041;Verkaufspreis
-1012;5.00;6,00</pre>
+{{ 'product.update.example3_1' | trans }}
+{{ 'product.update.example3_2' | trans }}</pre>
 
-        It's safe to use comma and dot as a decimal separator.
+        {{ 'product.update.message' | trans }}
 {% endblock %}
 
 {% block footer_js %}

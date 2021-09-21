@@ -8,3 +8,7 @@ Price Plugin,Preis Plugin
 Delivery Time Plugin,Lieferzeit Plugin
 Store Relation,Region Beziehung
 Available in the following store(s),Verfügbar in den folgenden regionen
+Add Carrier Company,Transportunternehmen hinzufügen
+
+"Shipment n° %shipmentNumber%","Versand n° %shipmentNumber%"
+"New address","Neue Adresse"

@@ -38,9 +38,9 @@ class MerchantCreateForm extends ExtendedMerchantCreateForm
     protected const LABEL_EMAIL = 'Email';
     protected const LABEL_MERCHANT_REFERENCE = 'Merchant Reference';
     protected const LABEL_IS_SHOP_VISIBLE = 'Is active';
-    protected const LABEL_IS_CASHIER_TXT = 'Ist cashier txt';
-    protected const LABEL_IS_CASHIER_XML = 'Ist cashier xml';
-    protected const LABEL_IS_PASSWORD_PROTECTED = 'Ist passwortgeschützt';
+    protected const LABEL_IS_CASHIER_TXT = 'Is cashier txt';
+    protected const LABEL_IS_CASHIER_XML = 'Is cashier xml';
+    protected const LABEL_IS_PASSWORD_PROTECTED = 'Is password protected';
     protected const LABEL_SHOP_PASSWORD = 'Shop password';
 
     protected const FIELD_ASORTMENT_ZONES = 'idAsortmentZones';

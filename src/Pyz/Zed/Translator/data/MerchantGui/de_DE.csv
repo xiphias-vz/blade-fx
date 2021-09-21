@@ -42,3 +42,7 @@ date_to,Datum bis
 select,Auswählen
 edit_days,Tage bearbeiten
 timeslot_capacity_edit_warning,"ACHTUNG: ""Achtung: Sie ändern die Kapazitäten für einen expliziten Tag"""
+Is active,Ist aktiv
+Is cashier txt,Ist cashier txt
+Is cashier xml,Ist cashier xml
+Is password protected,Ist passwortgeschützt

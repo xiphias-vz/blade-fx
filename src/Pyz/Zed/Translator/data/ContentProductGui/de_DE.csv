@@ -2,3 +2,23 @@ content_product.template.slider,Produktkategorie Info
 content_product.template.slider_with_button,Produktkategorie Info und Button
 content_product.template.slider_not_include_group,Produktkategorie info keine Produktgruppen
 content_product_abstract_list.template.slider,Produktkategorie slider mit Button
+
+"Abstract Product List","Abstrakte Produktliste"
+Actions,Aktionen
+Active,Aktiv
+"Add more products","Weitere Produkte hinzufügen"
+"Add to list","Zur Liste hinzufügen"
+content_product_abstract_list.template.bottom-title,"Titel unten"
+content_product_abstract_list.template.default,Standard
+content_product_abstract_list.template.top-title,"Titel oben"
+Delete,Löschen
+ID,ID
+Image,Bild
+Inactive,"Nicht aktiv"
+"Move Down",Runter
+"Move Up",Hoch
+Name,Name
+Selected,Ausgewählt
+SKU,SKU
+Status,Status
+Stores,Stores

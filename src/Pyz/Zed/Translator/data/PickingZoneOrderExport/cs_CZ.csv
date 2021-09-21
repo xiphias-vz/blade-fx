@@ -19,3 +19,4 @@ picking_zone_order_export.column.shelf_floor,"Spodní police"
 picking_zone_order_export.column.shelf_field,"Policové pole"
 picking_zone_order_export_gui.field.picking_time_slots,"Volné intervaly vyzvednutí"
 picking_zone_order_export_gui.field.picking_time_status,"Status"
+picking_zone_order_export_gui.field.picking_store,Picking market

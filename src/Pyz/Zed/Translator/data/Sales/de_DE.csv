@@ -41,6 +41,7 @@ Time slot,Abholzeitfenster
 Merchant Address, Filiale Adresse
 Merchant Region Number, Division Nummer
 Merchant Number, Filiale Nummer
+Merchant,Filiale
 checkout.order.order-pickZone, Kommissionierzone
 order.items,Auftragspositionen
 checkout.order.product-quantity, Menge
@@ -56,3 +57,122 @@ order.overview.replacement.article.title, Ersatzartikel
 order.overview.replacement.article.yes, Ja
 order.overview.replacement.article.no, Nein
 order.overview.select.zone,Zone auswählen
+Location,Standort
+Date From,Datum von
+Date To,Datum bis
+Timeslot,Timeslot
+Status,Status
+Pickzone,Pickzone
+Save,speichern
+All,alle
+Clear all filters,Alle Filter löschen
+Ordering Information,Bestellinformationen
+Requested delivery date,Angefratges Lieferdatum
+Edit,Bearbeiten
+Save,Speichern
+Add Container,Container hinzufügen
+Zone -> Container ID -> Shelf,Zone -> Container ID -> Shelf
+Payment method,Zahlungsmethode
+Mark,Kennzeichen
+Order,Bestellung
+Cancelled amount,Cancelled amount
+Container assign,Lagerplatz zuweisen
+Cancel,Abbrechen
+capacities.question,Möchten Sie Ihre Eingaben wirklich zurücksetzen? (Sie werden nicht gespeichert.)
+OK,OK
+
+"<1d | 1d-7d | >7d","<1Tag| 1-7Tage | >7Tag"
+"Address successfully updated.","Adresse erfolgreich aktualisiert."
+Addresses,Adressen
+"All orders of the customer","Alle Bestellungen des Kunden"
+"Back to Orders","Zurück zu Bestellungen"
+"Canceled amount","Stornierter Betrag"
+"Cart Notes","Einkaufswagen Notizen"
+Comments,Kommentare
+"Customer Full Name ","Vollständiger Kundenname"
+"Customer Full Name","Vollständiger Kundenname"
+"Customer successfully updated.","Kunde wurde erfolgreich aktualisiert."
+Discount,Rabatt
+"GRAND TOTAL",Gesamtsumme
+"Grand Total",Gesamtsumme
+"Hide history","Historie ausblenden"
+"incl. %tax_amount% % tax","Inkl. %tax_amount% % Mehrwertsteuer"
+"Included tax amount","Enthaltener Steuerbetrag"
+"Item total","Artikel Gesamt"
+Items,Artikel
+Legend,Legende
+"List of orders","Liste der Bestellungen"
+Matrix,Matrix
+Note,Hinweis
+"Number of Items",Artikelanzahl
+Option,Option
+"Order Matrix",Bestellungsmatrix
+"Order Source","Quelle der Bestellung"
+"Order State",Bestellungsstatus
+Orders,Bestellungen
+"Overview of Order Matrix","Übersicht der Bestellmatrix"
+"Overview of Orders","Übersicht der Bestellungen"
+Payments,Zahlungen
+Product,Produkt
+Quantity,Menge
+Sales,Verkauf
+Save,Speichern
+"Send Message","Nachricht senden"
+Shipment,Versand
+"Show history","Historie anzeigen"
+"Show less","Weniger anzeigen"
+"Show more","Mehr anzeigen"
+Sku,SKU
+State,Status
+"Sub total",Zwischensumme
+Subtotal,Zwischensumme
+Totals,Gesamtsummen
+"Trigger all matching states","Alle passenden Status auslösen"
+"Trigger event","Event auslösen"
+"Unique Product Quantity","Anzahl der Produkte"
+"Unit Price",Stückpreis
+"Variant Details",Variantendetails
+"View Order","Bestellung anzeigen"
+"View Order:","Bestellung anzeigen:"
+"Remuneration total",Rückerstattungsbetrag
+"Trigger all matching states inside this order","Alle übereinstimmenden Status innerhalb dieser Bestellung auslösen"
+"Previous orders count","Anzahl der vorherigen Bestellungen des Kunden"
+Name,Name
+E-mail,E-Mail
+"Order date",Bestelldatum
+Refunds,Rückerstattung
+"Discounts & Vouchers","Rabatte und Gutscheine"
+"Order Items",Auftragspositionen
+Reference,Referenz
+"Order Overview",Bestellübersicht
+"Total taxes","Gesamtsumme Steuern"
+Reclamations,Reklamationen
+Claim,Anspruch
+"payment pending","Ausstehende Zahlung"
+exported,Exportiert
+shipped,Versandt
+delivered,Geliefert
+refunded,Rückerstattet
+closed,Abgeschlossen
+pay,Bezahlen
+ship,Versenden
+stock-update,Bestandsaktualisierung
+close,Schließen
+refund,Rückerstatten
+execute-return,"Retoure ausführen"
+cancel-return,"Retoure stornieren"
+ship-return,"Retoure zum Kunden zurückschicken"
+delivery-return,"Retoure zum Kunden zurücksenden"
+cancel,Stornieren
+"skip timeout","Timeout überspringen"
+"Refund total","Rückerstattung insgesamt"
+"Comment successfully added","Kommentar erfolgreich hinzugefügt."
+"Address Details",Adressdetails
+"Middle name","Zweiter Vorname"
+"Po box",Postfach
+"Zip code",Postleitzahl
+Address1,"Adresse 1"
+Address2,"Adresse 2"
+"Cell phone",Mobiltelefon
+"Edit Address for Order: %idSalesOrder%","Adresse für Bestellung %idSalesOrder% bearbeiten"
+
