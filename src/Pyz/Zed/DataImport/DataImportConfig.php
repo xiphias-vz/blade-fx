@@ -68,6 +68,7 @@ class DataImportConfig extends SprykerDataImportConfig
     public const IMPORT_TIME_SLOT = 'time-slot';
     public const IMPORT_ALTERNATIVE_EAN = 'alternative-ean';
     public const IMPORT_ORDER_PICKZONE_COLOR = 'order_pickzone_color';
+    public const IMPORT_COUNTRY_LOCALIZED = 'country-localized';
 
     /**
      * @return \Generated\Shared\Transfer\DataImporterConfigurationTransfer
@@ -397,6 +398,14 @@ class DataImportConfig extends SprykerDataImportConfig
     public function getOrderPickzoneColorImporterConfiguration(): DataImporterConfigurationTransfer
     {
         return $this->buildBaseImporterConfiguration('spryker/order_pickzone_color.csv', static::IMPORT_ORDER_PICKZONE_COLOR);
+    }
+
+    /**
+     * @return \Generated\Shared\Transfer\DataImporterConfigurationTransfer
+     */
+    public function getCountryLocalizedImporterConfiguration(): DataImporterConfigurationTransfer
+    {
+        return $this->buildBaseImporterConfiguration('spryker/country_localized.csv', static::IMPORT_COUNTRY_LOCALIZED);
     }
 
     /**

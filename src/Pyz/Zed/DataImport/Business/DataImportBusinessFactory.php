@@ -18,6 +18,7 @@ use Pyz\Zed\DataImport\Business\Model\CmsBlock\CmsBlockWriterStep;
 use Pyz\Zed\DataImport\Business\Model\CmsBlockStore\CmsBlockStoreWriterStep;
 use Pyz\Zed\DataImport\Business\Model\CmsTemplate\CmsTemplateWriterStep;
 use Pyz\Zed\DataImport\Business\Model\Country\Repository\CountryRepository;
+use Pyz\Zed\DataImport\Business\Model\CountryLocalized\CountryLocalizedWriterStep;
 use Pyz\Zed\DataImport\Business\Model\Currency\CurrencyWriterStep;
 use Pyz\Zed\DataImport\Business\Model\Customer\CustomerWriterStep;
 use Pyz\Zed\DataImport\Business\Model\DataImporterCollection;
@@ -138,6 +139,7 @@ class DataImportBusinessFactory extends SprykerDataImportBusinessFactory
             ->addDataImporter($this->getMerchantUserImporter())
             ->addDataImporter($this->getTimeSlotImporter())
             ->addDataImporter($this->getOrderPickzoneImporter())
+            ->addDataImporter($this->getCountryLocalizedImporter())
             ->addDataImporter($this->getAlternativeEanImporter());
 
         return $dataImporterCollection;
@@ -790,6 +792,20 @@ class DataImportBusinessFactory extends SprykerDataImportBusinessFactory
     }
 
     /**
+     * @return \Spryker\Zed\DataImport\Business\Model\DataImporter|\Spryker\Zed\DataImport\Business\Model\DataImporterAfterImportAwareInterface|\Spryker\Zed\DataImport\Business\Model\DataImporterBeforeImportAwareInterface|\Spryker\Zed\DataImport\Business\Model\DataImporterInterface|\Spryker\Zed\DataImport\Business\Model\DataSet\DataSetStepBrokerAwareInterface
+     */
+    protected function getCountryLocalizedImporter()
+    {
+        $dataImporter = $this->getCsvDataImporterFromConfig($this->getConfig()->getCountryLocalizedImporterConfiguration());
+
+        $dataSetStepBroker = $this->createTransactionAwareDataSetStepBroker();
+        $dataSetStepBroker->addStep($this->createCountryLocalizedWriterStep());
+        $dataImporter->addDataSetStepBroker($dataSetStepBroker);
+
+        return $dataImporter;
+    }
+
+    /**
      * @return \Spryker\Zed\DataImport\Business\Model\DataImporterInterface|\Spryker\Zed\DataImport\Business\Model\DataSet\DataSetStepBrokerAwareInterface
      */
     protected function getAlternativeEanImporter()
@@ -834,6 +850,14 @@ class DataImportBusinessFactory extends SprykerDataImportBusinessFactory
     public function createOrderPickzoneColorWriterStep(): OrderPickzoneColorWriterStep
     {
         return new OrderPickzoneColorWriterStep();
+    }
+
+    /**
+     * @return \Pyz\Zed\DataImport\Business\Model\CountryLocalized\CountryLocalizedWriterStep
+     */
+    public function createCountryLocalizedWriterStep(): CountryLocalizedWriterStep
+    {
+        return new CountryLocalizedWriterStep();
     }
 
     /**

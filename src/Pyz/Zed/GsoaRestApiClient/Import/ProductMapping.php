@@ -7,8 +7,24 @@
 
 namespace Pyz\Zed\GsoaRestApiClient\Import;
 
+use Orm\Zed\Country\Persistence\SpyCountryQuery;
+use Orm\Zed\Locale\Persistence\SpyLocaleQuery;
+use Orm\Zed\Sales\Persistence\PyzCountryLocalizedQuery;
+
 class ProductMapping
 {
+    private const LOCALE_NAME = 'cs_CZ';
+
+    /**
+     * @var int $localeId
+     */
+    private $localeId = 0;
+
+    /**
+     * @var array $localeArray
+     */
+    private $localeArray = [];
+
     /**
      * @var string[]
      */
@@ -163,7 +179,11 @@ class ProductMapping
         $this->setProductTags($d, $item);
         $this->setEanCode($d, $item);
         if (is_array($item["countriesOfOrigin"])) {
-            $d["herkunftsland"] = implode(",", $item["countriesOfOrigin"]);
+            $countries = [];
+            foreach ($item["countriesOfOrigin"] as $country) {
+                $countries[] = $this->getCountryNameByIso2Code($country);
+            }
+            $d["herkunftsland"] = implode(",", $countries);
         }
         $d["inverkehrbringer"] = $this->trimValue($item["producerName"] . " " . $item["producerAddress"]);
         if (is_array($item["allergens"])) {
@@ -320,5 +340,43 @@ class ProductMapping
     public function getProductCountWithOutEan(): int
     {
         return $this->productWithOutEan;
+    }
+
+    /**
+     * @param string $code
+
+     * @return string
+     */
+    private function getCountryNameByIso2Code(string $code): string
+    {
+        if (empty($code)) {
+            return '';
+        }
+        if (!array_key_exists($code, $this->localeArray)) {
+            if ($this->localeId === 0) {
+                $this->localeId = SpyLocaleQuery::create()
+                    ->findOneByLocaleName(static::LOCALE_NAME)
+                    ->getIdLocale();
+            }
+            $country = SpyCountryQuery::create()->findOneByIso2Code($code);
+            if ($country != null) {
+                $countryLocale = PyzCountryLocalizedQuery::create()
+                    ->filterByFkCountry($country->getIdCountry())
+                    ->findOneByFkLocale($this->localeId);
+                if ($countryLocale != null) {
+                    if (!empty($countryLocale->getNameLocalized())) {
+                        $this->localeArray[$code] = $countryLocale->getNameLocalized();
+                    }
+                }
+                if (!isset($this->localeArray[$code])) {
+                    $this->localeArray[$code] = $country->getName();
+                }
+            }
+            if (!isset($this->localeArray[$code])) {
+                $this->localeArray[$code] = $code;
+            }
+        }
+
+        return $this->localeArray[$code];
     }
 }

@@ -1,0 +1,256 @@
+id_country;iso2_code;iso3_code;name;name_localized;locale_name
+1;AC;ASC;Ascension Island;;cs_CZ
+2;AD;AND;Andorra;Andorra;cs_CZ
+3;AE;ARE;United Arab Emirates;Sp.arab.emiráty;cs_CZ
+4;AF;AFG;Afghanistan;Afganistán;cs_CZ
+5;AG;ATG;Antigua and Barbuda;Antigua/Barbuda;cs_CZ
+6;AI;AIA;Anguilla;Anguilla;cs_CZ
+7;AL;ALB;Albania;Albánie;cs_CZ
+8;AM;ARM;Armenia;Arménie;cs_CZ
+9;AN;ANT;Netherlands Antilles;Nizozem.Antily;cs_CZ
+10;AO;AGO;Angola;Angola;cs_CZ
+11;AQ;ATA;Antarctica;Antarktida;cs_CZ
+12;AR;ARG;Argentina;Argentina;cs_CZ
+13;AS;ASM;American Samoa;Americká Samoa;cs_CZ
+14;AT;AUT;Austria;Rakousko;cs_CZ
+15;AU;AUS;Australia;Austrálie;cs_CZ
+16;AW;ABW;Aruba;Aruba;cs_CZ
+17;AX;ALA;Åland Islands;;cs_CZ
+18;AZ;AZE;Azerbaijan;Azerbajdžán;cs_CZ
+19;BA;BIH;Bosnia and Herzegovina;Bosnia and Herzegovina;cs_CZ
+20;BB;BRB;Barbados;Barbados;cs_CZ
+21;BD;BGD;Bangladesh;Bangladéš;cs_CZ
+22;BE;BEL;Belgium;Belgie;cs_CZ
+23;BF;BFA;Burkina Faso;Burkina Faso;cs_CZ
+24;BG;BGR;Bulgaria;Bulharsko;cs_CZ
+25;BH;BHR;Bahrain;Bahrain;cs_CZ
+26;BI;BDI;Burundi;Burundi;cs_CZ
+27;BJ;BEN;Benin;Benin;cs_CZ
+28;BL;BLM;Saint Barthélemy;Modrá;cs_CZ
+29;BM;BMU;Bermuda;Bermudy;cs_CZ
+30;BN;BRN;Brunei;Brunei Drussal.;cs_CZ
+31;BO;BOL;Bolivia;Bolívie;cs_CZ
+32;BQ;BES;Caribbean Netherlands;Bonaire, Saba;cs_CZ
+33;BR;BRA;Brazil;Brazílie;cs_CZ
+34;BS;BHS;Bahamas;Bahamy;cs_CZ
+35;BT;BTN;Bhutan;Bhútán;cs_CZ
+36;BV;BVT;Bouvet Island;Bouvet Islands;cs_CZ
+37;BW;BWA;Botswana;Botswana;cs_CZ
+38;BY;BLR;Belarus;Bělorusko;cs_CZ
+39;BZ;BLZ;Belize;Belize;cs_CZ
+40;CA;CAN;Canada;Kanada;cs_CZ
+41;CC;CCK;Cocos (Keeling) Islands;Kokos.ostrovy;cs_CZ
+42;CD;COD;Congo - Kinshasa;Republika Kongo;cs_CZ
+43;CF;CAF;Central African Republic;Středoafr.rep.;cs_CZ
+44;CG;COG;Congo - Brazzaville;Kongo;cs_CZ
+45;CH;CHE;Switzerland;Švýcarsko;cs_CZ
+46;CI;CIV;Côte d’Ivoire;Pobřeží slonov.;cs_CZ
+47;CK;COK;Cook Islands;Cookovy ostrovy;cs_CZ
+48;CL;CHL;Chile;Chile;cs_CZ
+49;CM;CMR;Cameroon;Kamerun;cs_CZ
+50;CN;CHN;China;Čína;cs_CZ
+51;CO;COL;Colombia;Kolumbie;cs_CZ
+52;CP;CPT;Clipperton Island;;cs_CZ
+53;CR;CRI;Costa Rica;Kostarika;cs_CZ
+54;CU;CUB;Cuba;Kuba;cs_CZ
+55;CV;CPV;Cape Verde;Kapverdy;cs_CZ
+56;CW;CUW;Curaçao;Curaçao;cs_CZ
+57;CX;CXR;Christmas Island;Vánoční ostrovy;cs_CZ
+58;CY;CYP;Cyprus;Kypr;cs_CZ
+59;CZ;CZE;Czech Republic;Česká republika;cs_CZ
+60;DE;DEU;Germany;Německo;cs_CZ
+61;DG;DGA;Diego Garcia;;cs_CZ
+62;DJ;DJI;Djibouti;Džibuti;cs_CZ
+63;DK;DNK;Denmark;Dánsko;cs_CZ
+64;DM;DMA;Dominica;Dominika;cs_CZ
+65;DO;DOM;Dominican Republic;Dominikán.rep.;cs_CZ
+66;DZ;DZA;Algeria;Alžírsko;cs_CZ
+67;EC;ECU;Ecuador;Ekvádor;cs_CZ
+68;EE;EST;Estonia;Estonsko;cs_CZ
+69;EG;EGY;Egypt;Egypt;cs_CZ
+70;EH;ESH;Western Sahara;Záp.Sahara;cs_CZ
+71;ER;ERI;Eritrea;Eritrea;cs_CZ
+72;ES;ESP;Spain;Španělsko;cs_CZ
+73;ET;ETH;Ethiopia;Etiopie;cs_CZ
+74;FI;FIN;Finland;Finsko;cs_CZ
+75;FJ;FJI;Fiji;Fidži;cs_CZ
+76;FK;FLK;Falkland Islands;Falkland. Ostr.;cs_CZ
+77;FM;FSM;Micronesia;Mikronésie;cs_CZ
+78;FO;FRO;Faroe Islands;Faerské ostr.;cs_CZ
+79;FR;FRA;France;Francie;cs_CZ
+80;GA;GAB;Gabon;Gabon;cs_CZ
+81;GB;GBR;United Kingdom;Spoj.království;cs_CZ
+82;GD;GRD;Grenada;Grenada;cs_CZ
+83;GE;GEO;Georgia;Gruzie;cs_CZ
+84;GF;GUF;French Guiana;Franc.Guayana;cs_CZ
+85;GG;GGY;Guernsey;Guernsey;cs_CZ
+86;GH;GHA;Ghana;Ghana;cs_CZ
+87;GI;GIB;Gibraltar;Gibraltar;cs_CZ
+88;GL;GRL;Greenland;Grónsko;cs_CZ
+89;GM;GMB;Gambia;Gambie;cs_CZ
+90;GN;GIN;Guinea;Guinea;cs_CZ
+91;GP;GLP;Guadeloupe;Guadeloupe;cs_CZ
+92;GQ;GNQ;Equatorial Guinea;Rovník.Guinea;cs_CZ
+93;GR;GRC;Greece;Řecko;cs_CZ
+94;GS;SGS;South Georgia & South Sandwich Islands;Ost.S.Sandwich;cs_CZ
+95;GT;GTM;Guatemala;Guatemala;cs_CZ
+96;GU;GUM;Guam;Guam;cs_CZ
+97;GW;GNB;Guinea-Bissau;Guinea-Bissau;cs_CZ
+98;GY;GUY;Guyana;Guayana;cs_CZ
+99;HK;HKG;Hong Kong SAR China;Hongkong;cs_CZ
+100;HM;HMD;Heard & McDonald Islands;Heard/McDon.ost;cs_CZ
+101;HN;HND;Honduras;Honduras;cs_CZ
+102;HR;HRV;Croatia;Chorvatsko;cs_CZ
+103;HT;HTI;Haiti;Haiti;cs_CZ
+104;HU;HUN;Hungary;Maďarsko;cs_CZ
+105;ID;IDN;Indonesia;Indonésie;cs_CZ
+106;IE;IRL;Ireland;Irsko;cs_CZ
+107;IL;ISR;Israel;Izrael;cs_CZ
+108;IM;IMN;Isle of Man;Ostrov Man;cs_CZ
+109;IN;IND;India;Indie;cs_CZ
+110;IO;IOT;British Indian Ocean Territory;Brit obl.vIndOc;cs_CZ
+111;IQ;IRQ;Iraq;Irák;cs_CZ
+112;IR;IRN;Iran;Írán;cs_CZ
+113;IS;ISL;Iceland;Island;cs_CZ
+114;IT;ITA;Italy;Itálie;cs_CZ
+115;JE;JEY;Jersey;Jersey;cs_CZ
+116;JM;JAM;Jamaica;Jamajka;cs_CZ
+117;JO;JOR;Jordan;Jordánsko;cs_CZ
+118;JP;JPN;Japan;Japonsko;cs_CZ
+119;KE;KEN;Kenya;Keňa;cs_CZ
+120;KG;KGZ;Kyrgyzstan;Kyrgyzstán;cs_CZ
+121;KH;KHM;Cambodia;Kambodža;cs_CZ
+122;KI;KIR;Kiribati;Kiribati;cs_CZ
+123;KM;COM;Comoros;Komory;cs_CZ
+124;KN;KNA;Saint Kitts and Nevis;St.Kryšt.&Nevis;cs_CZ
+125;KP;PRK;North Korea;Severní Korea;cs_CZ
+126;KR;KOR;South Korea;Jižní Korea;cs_CZ
+127;KW;KWT;Kuwait;Kuvajt;cs_CZ
+128;KY;CYM;Cayman Islands;Kajmanské ostr.;cs_CZ
+129;KZ;KAZ;Kazakhstan;Kazachstán;cs_CZ
+130;LA;LAO;Laos;Laos;cs_CZ
+131;LB;LBN;Lebanon;Libanon;cs_CZ
+132;LC;LCA;Saint Lucia;Svatá Lucie;cs_CZ
+133;LI;LIE;Liechtenstein;Lichtenštejnsko;cs_CZ
+134;LK;LKA;Sri Lanka;Srí Lanka;cs_CZ
+135;LR;LBR;Liberia;Libérie;cs_CZ
+136;LS;LSO;Lesotho;Lesotho;cs_CZ
+137;LT;LTU;Lithuania;Litva;cs_CZ
+138;LU;LUX;Luxembourg;Lucembursko;cs_CZ
+139;LV;LVA;Latvia;Lotyšsko;cs_CZ
+140;LY;LBY;Libya;Libye;cs_CZ
+141;MA;MAR;Morocco;Maroko;cs_CZ
+142;MC;MCO;Monaco;Monako;cs_CZ
+143;MD;MDA;Moldova;Moldavsko;cs_CZ
+144;ME;MNE;Montenegro;Montenegro;cs_CZ
+145;MF;MAF;Saint Martin;;cs_CZ
+146;MG;MDG;Madagascar;Madagaskar;cs_CZ
+147;MH;MHL;Marshall Islands;Marshall.ostr.;cs_CZ
+148;MK;MKD;Macedonia;Makedonie;cs_CZ
+149;ML;MLI;Mali;Mali;cs_CZ
+150;MM;MMR;Myanmar (Burma);Myanmar;cs_CZ
+151;MN;MNG;Mongolia;Mongolsko;cs_CZ
+152;MO;MAC;Macau SAR China;Macao;cs_CZ
+153;MP;MNP;Northern Mariana Islands;Sev.marián.os.;cs_CZ
+154;MQ;MTQ;Martinique;Martinique;cs_CZ
+155;MR;MRT;Mauritania;Mauritánie;cs_CZ
+156;MS;MSR;Montserrat;Montserrat;cs_CZ
+157;MT;MLT;Malta;Malta;cs_CZ
+158;MU;MUS;Mauritius;Mauricius;cs_CZ
+159;MV;MDV;Maldives;Maledivy;cs_CZ
+160;MW;MWI;Malawi;Malawi;cs_CZ
+161;MX;MEX;Mexico;Mexiko;cs_CZ
+162;MY;MYS;Malaysia;Malajsie;cs_CZ
+163;MZ;MOZ;Mozambique;Mosambik;cs_CZ
+164;NA;NAM;Namibia;Namibie;cs_CZ
+165;NC;NCL;New Caledonia;Nová Kaledonie;cs_CZ
+166;NE;NER;Niger;Niger;cs_CZ
+167;NF;NFK;Norfolk Island;Norfolk.ostrovy;cs_CZ
+168;NG;NGA;Nigeria;Nigérie;cs_CZ
+169;NI;NIC;Nicaragua;Nikaragua;cs_CZ
+170;NL;NLD;Netherlands;Nizozemí;cs_CZ
+171;NO;NOR;Norway;Norsko;cs_CZ
+172;NP;NPL;Nepal;Nepál;cs_CZ
+173;NR;NRU;Nauru;Nauru;cs_CZ
+174;NU;NIU;Niue;Niue;cs_CZ
+175;NZ;NZL;New Zealand;Nový Zéland;cs_CZ
+176;OM;OMN;Oman;Omán;cs_CZ
+177;PA;PAN;Panama;Panama;cs_CZ
+178;PE;PER;Peru;Peru;cs_CZ
+179;PF;PYF;French Polynesia;Franc.Polynésie;cs_CZ
+180;PG;PNG;Papua New Guinea;Papua-NovGuinea;cs_CZ
+181;PH;PHL;Philippines;Filipíny;cs_CZ
+182;PK;PAK;Pakistan;Pakistán;cs_CZ
+183;PL;POL;Poland;Polsko;cs_CZ
+184;PM;SPM;Saint Pierre and Miquelon;StPier.,Miquel.;cs_CZ
+185;PN;PCN;Pitcairn Islands;Ostr.Pitcairn;cs_CZ
+186;PR;PRI;Puerto Rico;Portoriko;cs_CZ
+187;PS;PSE;Palestinian Territories;Palestina;cs_CZ
+188;PT;PRT;Portugal;Portugalsko;cs_CZ
+189;PW;PLW;Palau;Palau;cs_CZ
+190;PY;PRY;Paraguay;Paraguay;cs_CZ
+191;QA;QAT;Qatar;Katar;cs_CZ
+192;RE;REU;Réunion;Reunion;cs_CZ
+193;RO;ROU;Romania;Rumunsko;cs_CZ
+194;RS;SRB;Serbia;Serbia;cs_CZ
+195;RU;RUS;Russia;Ruská federace;cs_CZ
+196;RW;RWA;Rwanda;Rwanda;cs_CZ
+197;SA;SAU;Saudi Arabia;Saúdská Arábie;cs_CZ
+198;SB;SLB;Solomon Islands;Šalamoun.ostr.;cs_CZ
+199;SC;SYC;Seychelles;Seychely;cs_CZ
+200;SD;SDN;Sudan;Súdán;cs_CZ
+201;SE;SWE;Sweden;Švédsko;cs_CZ
+202;SG;SGP;Singapore;Singapur;cs_CZ
+203;SH;SHN;Saint Helena;Sv.Helena;cs_CZ
+204;SI;SVN;Slovenia;Slovinsko;cs_CZ
+205;SJ;SJM;Svalbard and Jan Mayen;Svalbard;cs_CZ
+206;SK;SVK;Slovakia;Slovensko;cs_CZ
+207;SL;SLE;Sierra Leone;Sierra Leone;cs_CZ
+208;SM;SMR;San Marino;San Marino;cs_CZ
+209;SN;SEN;Senegal;Senegal;cs_CZ
+210;SO;SOM;Somalia;Somálsko;cs_CZ
+211;SR;SUR;Suriname;Surinam;cs_CZ
+212;SS;SSD;South Sudan;Jižní Súdán;cs_CZ
+213;ST;STP;São Tomé and Príncipe;Sv.Tomáš,Prince;cs_CZ
+214;SV;SLV;El Salvador;Salvador;cs_CZ
+215;SX;SXM;Sint Maarten;Sint Maarten;cs_CZ
+216;SY;SYR;Syria;Sýrie;cs_CZ
+217;SZ;SWZ;Swaziland;Svazijsko;cs_CZ
+218;TA;TAA;Tristan da Cunha;;cs_CZ
+219;TC;TCA;Turks and Caicos Islands;Turks, Caicos;cs_CZ
+220;TD;TCD;Chad;Čad;cs_CZ
+221;TF;ATF;French Southern Territories;French S.Territ;cs_CZ
+222;TG;TGO;Togo;Togo;cs_CZ
+223;TH;THA;Thailand;Thajsko;cs_CZ
+224;TJ;TJK;Tajikistan;Tádžikistán;cs_CZ
+225;TK;TKL;Tokelau;Ostrovy Tokelau;cs_CZ
+226;TL;TLS;Timor-Leste;Východní Timor;cs_CZ
+227;TM;TKM;Turkmenistan;Turkmenistán;cs_CZ
+228;TN;TUN;Tunisia;Tunisko;cs_CZ
+229;TO;TON;Tonga;Tonga;cs_CZ
+230;TR;TUR;Turkey;Turecko;cs_CZ
+231;TT;TTO;Trinidad and Tobago;Trinidad,Tobago;cs_CZ
+232;TV;TUV;Tuvalu;Tuvalu;cs_CZ
+233;TW;TWN;Taiwan;Tchaj-wan;cs_CZ
+234;TZ;TZA;Tanzania;Tanzanie;cs_CZ
+235;UA;UKR;Ukraine;Ukrajina;cs_CZ
+236;UG;UGA;Uganda;Uganda;cs_CZ
+237;UM;UMI;U.S. Outlying Islands;Ostr.mimo LTSA;cs_CZ
+238;US;USA;United States;USA;cs_CZ
+239;UY;URY;Uruguay;Uruguay;cs_CZ
+240;UZ;UZB;Uzbekistan;Uzbekistán;cs_CZ
+241;VA;VAT;Vatican City;Vatikán;cs_CZ
+242;VC;VCT;St. Vincent & Grenadines;Sv.Vincent;cs_CZ
+243;VE;VEN;Venezuela;Venezuela;cs_CZ
+244;VG;VGB;British Virgin Islands;Brit.Panen.Ost.;cs_CZ
+245;VI;VIR;U.S. Virgin Islands;Amer.Panen.Ost.;cs_CZ
+246;VN;VNM;Vietnam;Vietnam;cs_CZ
+247;VU;VUT;Vanuatu;Vanuatu;cs_CZ
+248;WF;WLF;Wallis and Futuna;Wallis,Futuna;cs_CZ
+249;WS;WSM;Samoa;Západní Samoa;cs_CZ
+250;XK;XKK;Kosovo;XK;cs_CZ
+251;YE;YEM;Yemen;Jemen;cs_CZ
+252;YT;MYT;Mayotte;Mayotte;cs_CZ
+253;ZA;ZAF;South Africa;Jižní Afrika;cs_CZ
+254;ZM;ZMB;Zambia;Zambie;cs_CZ
+255;ZW;ZWE;Zimbabwe;Zimbabwe;cs_CZ
