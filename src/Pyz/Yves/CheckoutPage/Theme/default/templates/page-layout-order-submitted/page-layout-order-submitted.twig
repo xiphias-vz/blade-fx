@@ -48,13 +48,18 @@
                 <p>{{ 'success.message.text1' | trans }} <strong> {{ data.orderReference }}</strong> {{ 'success.message.text2' | trans }}<br>
                     {{ 'success.message.text3' | trans }}<strong> {{ 'success.message.text4' | trans }}</strong> {{ 'success.message.text5' | trans }} <strong>{{ 'success.message.text6' | trans }}</strong>{{ 'success.message.text7' | trans }} <strong> {{ 'success.message.text8' | trans }} </strong> {{ 'success.message.text9' | trans }}<br/><br/><br/>
                     {{ 'success.message.text10' | trans }}<br/>
-                    {{ 'success.message.text11' | trans }} <a style="color:orange" href="https://globus.zendesk.com/hc/de">https://globus.zendesk.com/hc/de</a>
+                    {{ 'success.message.text11' | trans }}
+                    {% if app.currentCodeBucket == 'DE' %}
+                        <a style="color:orange" href="https://globus.zendesk.com/hc/de">https://globus.zendesk.com/hc/de</a>
+                        {% else %}
+                            <a style="color:orange" href="{{ url('/cs/otazky-a-odpovedi')  }}">{{ url('/cs/otazky-a-odpovedi')  }}</a>
+                    {% endif %}
                 </p>
                 {% if is_granted('IS_AUTHENTICATED_FULLY') %}
                     <a style="background: orange;float: left;margin-top: 15px" class="button" href="{{ url('customer/overview') }}">{{ 'checkout.step.success.link' | trans }}</a>
                 {% endif %}
             </div>
-            {% if not data.isAccountConnectedWithPayback %}
+            {% if not data.isAccountConnectedWithPayback and app.currentCodeBucket == 'DE' %}
                 <div class="not-linked-payback">
                     <div class="info-banner">
                         <div class="info-left-banner" >
