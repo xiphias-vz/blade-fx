@@ -390,11 +390,11 @@
                             {% include atom('icon') with {
                                 data: {
                                     name: 'posliste',
-                                    rowText: 'Pos. Liste'
+                                    rowText: 'multi.picking.header.position.liste' | trans
                                 }
                             } only %}
                      </span>
-                        <span class="col--md-8">Pos. Liste</span>
+                        <span class="col--md-8">{{ 'multi.picking.header.position.liste' | trans }}</span>
                     </button>
 
                     <button type="button" onclick="location.href='{{ data.urlScanShelves }}'" class="button button--expand js-pick-products__submit">

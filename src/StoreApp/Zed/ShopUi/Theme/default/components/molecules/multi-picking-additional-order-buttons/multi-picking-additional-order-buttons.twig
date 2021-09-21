@@ -13,7 +13,6 @@
     orderPosition: '',
     orderItemPosition: '',
     overviewForm: false,
-    urlContainerSelect: '',
     urlMultiPickingOverview: '',
     urlPosListe: '',
     currentPosition: [],
@@ -32,7 +31,7 @@
                             {% include atom('icon') with {
                                 data: {
                                     name: 'overview',
-                                    rowText:  'multi.picking.header.overview' | trans
+                                    rowText: 'multi.picking.header.overview' | trans
                                 }
                             } only %}
                         </span>
@@ -47,11 +46,11 @@
                             {% include atom('icon') with {
                                 data: {
                                     name: 'posliste',
-                                    rowText: 'Pos. Liste'
+                                    rowText: 'multi.picking.header.position.liste' | trans
                                 }
                             } only %}
                         </span>
-                    <span class="col--md-8">Pos. Liste</span>
+                    <span class="col--md-8">{{ 'multi.picking.header.position.liste' | trans }}</span>
                 </button>
             </div>
         {% endblock %}
@@ -63,11 +62,11 @@
                             {% include atom('icon') with {
                                 data: {
                                     name: 'addcontainer',
-                                    rowText: 'Add Cont.'
+                                    rowText: 'multi.picking.header.add.container' | trans
                                 }
                             } only %}
                         </span>
-                    <span class="col--md-8">Add Con.</span>
+                    <span class="col--md-8">{{ 'multi.picking.header.add.container' | trans }}</span>
                 </button>
             </div>
         {% endblock %}
@@ -98,6 +97,8 @@
         <input type="hidden" name="idOrder" value="{{ data.idSalesOrder }}">
         <input type="hidden" name="token" value="{{ csrf_token(tokenName) }}">
         <input type="hidden" name="position" value="{{ data.position }}">
+        <input type="hidden" name="orderPosition" value="{{ data.orderPosition }}">
+        <input type="hidden" name="orderItemPosition" value="{{ data.orderItemPosition }}">
         <input type="hidden" id="addFromModal" name="fromModal" value="">
         <input type="hidden" id="addPosListeSku" name="sku" value="">
     </form>

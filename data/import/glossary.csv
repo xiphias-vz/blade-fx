@@ -1023,7 +1023,7 @@ customer.order.shipping_address,Lieferadresse,de_DE
 customer.order.shipping_address,Shipping address,en_US
 customer.order.billing_address,"Fakturační adresa",cs_CZ
 customer.order.billing_address,Billing address,en_US
-customer.order.billing_address,Billing address,en_US
+customer.order.billing_address,Rechnungsadresse,de_DE
 customer.order.shipment_method,"Doprava",cs_CZ
 customer.order.shipment_method,Service,de_DE
 customer.order.shipment_method,Shipment,en_US

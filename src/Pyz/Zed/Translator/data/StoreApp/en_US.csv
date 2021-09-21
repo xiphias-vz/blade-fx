@@ -153,7 +153,11 @@ picking.app.weight_per_unit,"Weight per unit: "
 
 storeapp.picking.barcode, Barcode
 storeapp.picking.MissingArticle, Missing article
+
 multi.picking.product.attribute.weight,Weight
+multi.picking.header.overview,"Overview"
+multi.picking.header.position.liste,"Pos. List"
+multi.picking.header.add.container,"Add Con."
 
 shelf.first.letter.large,The first letter must be uppercase
 shelf.containerID.value.not.empty,ContainerID value should not be empty

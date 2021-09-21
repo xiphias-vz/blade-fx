@@ -182,6 +182,8 @@ storeapp.innfopopup.under.information.label,"již přiřazeno"
 storeapp.errorpopup.title,"Chyba"
 
 multi.picking.header.overview,"Přehled"
+multi.picking.header.position.liste,"Sez. pozic"
+multi.picking.header.add.container,"Přidejte kon."
 multi.picking.save.button,"Uložit"
 multi.picking.placeholder.input,"Naskenovat skladové místo"
 multi.picking.done.dialog.title,"Pickování dokončeno"

@@ -2,6 +2,7 @@
 
 {% set currentIndex = 0 %}
 {% define data = {
+    idOrder: idOrder,
     pickZone: pickZone,
     sku: sku,
     orders: orders,
@@ -9,7 +10,10 @@
     overviewButtonUrl: overviewButtonUrl,
     position: position,
     fromModal: fromModal,
-    allPaused: allPaused
+    allPaused: allPaused,
+    urlContainerSelect: urlContainerSelect,
+    orderPosition: orderPosition,
+    orderItemPosition: orderItemPosition
 } %}
 {% block header %}
    {% include organism('header') with {
@@ -75,13 +79,15 @@
     </script>
     {% include molecule('multi-picking-additional-order-buttons') with {
         data: {
-            idSalesOrder: '1',
-            urlContainerSelect: '/',
+            idSalesOrder: data.idOrder,
+            urlContainerSelect: data.urlContainerSelect,
             itemSku: data.sku,
             posListeForm: true,
             urlMultiPickingOverview: data.overviewButtonUrl,
             addFromModal: data.fromModal,
             position: data.position,
+            orderPosition: data.orderPosition,
+            orderItemPosition: data.orderItemPosition,
         }
     } only %}
 {% endblock %}

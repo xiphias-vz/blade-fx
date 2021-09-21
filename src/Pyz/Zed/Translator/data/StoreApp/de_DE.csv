@@ -182,7 +182,9 @@ storeapp.innfopopup.lagerplatz.label,nicht zugeordnet
 storeapp.innfopopup.under.information.label,bereits zugeordnet
 storeapp.errorpopup.title,Fehler
 
-multi.picking.header.overview,Übersicht
+multi.picking.header.overview,"Übersicht"
+multi.picking.header.position.liste,"Pos. Liste"
+multi.picking.header.add.container,"Add Con."
 multi.picking.save.button,Speichern
 multi.picking.placeholder.input, Lagerplatz scannen
 multi.picking.done.dialog.title, Picking fertig gestellt

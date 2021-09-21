@@ -27,6 +27,8 @@ class PosListeController extends AbstractController
     protected const REQUEST_PARAM_ID_ORDER = 'idOrder';
     protected const REQUEST_PARAM_SKU = 'sku';
     protected const REQUEST_PARAM_POSITION = 'position';
+    protected const REQUEST_PARAM_ORDER_POSITION = 'orderPosition';
+    protected const REQUEST_PARAM_ORDER_ITEM_POSITION = 'orderItemPosition';
     protected const REQUEST_PARAM_FROM_MODAL = 'fromModal';
     protected const SERVICE_FORM_CSRF_PROVIDER = 'form.csrf_provider';
     protected const FORMAT_POS_LISTE_TOKEN_NAME = 'pos-liste-%d';
@@ -53,6 +55,8 @@ class PosListeController extends AbstractController
         $idOrder = $request->get(static::REQUEST_PARAM_ID_ORDER);
         $sku = $request->get(static::REQUEST_PARAM_SKU) ?? '';
         $position = $request->get(static::REQUEST_PARAM_POSITION) ?? '';
+        $orderPosition = $request->get(static::REQUEST_PARAM_ORDER_POSITION) ?? '';
+        $orderItemPosition = $request->get(static::REQUEST_PARAM_ORDER_ITEM_POSITION) ?? '';
         $fromModal = $request->get(static::REQUEST_PARAM_FROM_MODAL) ?? 'false';
 
         $csrfTokenName = sprintf(static::FORMAT_POS_LISTE_TOKEN_NAME, $idOrder);
@@ -78,6 +82,8 @@ class PosListeController extends AbstractController
                 'position' => $position,
                 'fromModal' => $fromModal,
                 'allPaused' => $allPaused,
+                'orderPosition' => $orderPosition,
+                'orderItemPosition' => $orderItemPosition,
             ];
 
         return $this->createIndexActionResponse($request, $orderParams, $orderItemTransfer, $pickingRedirect, $overviewRedirect);
@@ -141,6 +147,7 @@ class PosListeController extends AbstractController
         string $overviewRedirect
     ): array {
         return [
+            'idOrder' => $request->get(static::REQUEST_PARAM_ID_ORDER),
             'pickZone' => $orderParams[0]['pickZone'],
             'sku' => $orderParams[0]['sku'],
             'fromModal' => $orderParams[0]['fromModal'],
@@ -149,6 +156,9 @@ class PosListeController extends AbstractController
             'orders' => $orderItems,
             'backButtonUrl' => $backButtonUrl,
             'overviewButtonUrl' => $overviewRedirect,
+            'urlContainerSelect' => PickerConfig::URL_MULTI_PICKING_SELECT_CONTAINERS,
+            'orderPosition' => $orderParams[0]['orderPosition'],
+            'orderItemPosition' => $orderParams[0]['orderItemPosition'],
         ];
     }
 }
