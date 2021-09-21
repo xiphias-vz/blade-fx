@@ -80,11 +80,11 @@ $config[ShipmentConstants::MAIN_GLOBUS_CUSTOMER_CLICK_AND_COLLECT_SHIPMENT_METHO
 $config[ShipmentConstants::GUEST_CUSTOMER_CLICK_AND_COLLECT_SHIPMENT_METHOD_PRICE] = 3900;
 
 // ----------- GSOA API
-$config[ApiClient::GSOA_ROOT_URL] = 'https://gapi.globus.cz';
+$config[ApiClient::GSOA_ROOT_URL] = 'https://gsoat.globus.cz';
 $config[TokenProvider::GSOA_CLIENT_ID] = "webAppSpryker";
-$config[TokenProvider::GSOA_CLIENT_SECRET] = "1A5CE779-02EA-42A5-959C-9909C2C11666";
+$config[TokenProvider::GSOA_CLIENT_SECRET] = "D55910C6-0811-4749-B55C-3BCCEDC9BF91";
 
-$config[ProductImageConstants::IMAGES_HOST_URL] = 'https://gapi.globus.cz/OnlineAsset/3/asset?assetID=';
+$config[ProductImageConstants::IMAGES_HOST_URL] = 'https://gsoat.globus.cz/OnlineAsset/3/asset?assetID=';
 
 // ----------- Days in the week abbr
 $config[PickerConstants::DAYS_IN_THE_WEEK] = [
@@ -126,4 +126,3 @@ $config[BackofficeOverviewConstants::TABLE_HEADER] = [
 $config[ErrorHandlerConstants::YVES_ERROR_PAGE] = APPLICATION_ROOT_DIR . '/public/Yves/errorpage/5xx-CZ.html';
 $config[ErrorHandlerConstants::ZED_ERROR_PAGE] = APPLICATION_ROOT_DIR . '/public/Zed/errorpage/5xx-CZ.html';
 $config[ErrorHandlerConstants::ERROR_RENDERER] = WebHtmlErrorRenderer::class;
-
