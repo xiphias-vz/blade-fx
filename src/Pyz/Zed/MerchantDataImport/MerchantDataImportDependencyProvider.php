@@ -12,6 +12,7 @@ use Spryker\Zed\MerchantDataImport\MerchantDataImportDependencyProvider as Spryk
 
 class MerchantDataImportDependencyProvider extends SprykerMerchantDataImportDependencyProvider
 {
+    public const FACADE_EVENT = 'FACADE_EVENT';
     public const FACADE_STORE = 'FACADE_STORE';
 
     /**
@@ -36,6 +37,20 @@ class MerchantDataImportDependencyProvider extends SprykerMerchantDataImportDepe
     {
         parent::provideCommunicationLayerDependencies($container);
         $container = $this->addStoreFacade($container);
+
+        return $container;
+    }
+
+    /**
+     * @param \Spryker\Zed\Kernel\Container $container
+     *
+     * @return \Spryker\Zed\Kernel\Container
+     */
+    protected function addEventFacade(Container $container)
+    {
+        $container->set(static::FACADE_EVENT, function (Container $container) {
+            return $container->getLocator()->event()->facade();
+        });
 
         return $container;
     }

@@ -18,7 +18,7 @@ class ProductPageSearchBusinessFactory extends SprykerProductPageSearchBusinessF
     /**
      * @return \Pyz\Zed\ProductPageSearch\Business\Publisher\ProductAbstractPagePublisher
      */
-    public function createProductAbstractPagePublisher(): ProductAbstractPagePublisher
+    public function createProductAbstractPagePublisher()
     {
         return new ProductAbstractPagePublisher(
             $this->getQueryContainer(),
@@ -26,16 +26,14 @@ class ProductPageSearchBusinessFactory extends SprykerProductPageSearchBusinessF
             $this->getProductPageDataLoaderPlugins(),
             $this->createProductPageMapper(),
             $this->createProductPageWriter(),
-            $this->getConfig(),
-            $this->getStoreFacade(),
-            $this->createAddToCartSkuReader()
+            $this->getStoreFacade()
         );
     }
 
     /**
      * @return \Spryker\Zed\ProductPageSearch\Business\Mapper\ProductPageSearchMapper
      */
-    protected function createProductPageMapper(): ProductPageSearchMapper
+    protected function createProductPageMapper()
     {
         return new ProductPageSearchMapper(
             $this->createProductPageAttribute(),

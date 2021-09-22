@@ -44,12 +44,12 @@ use SprykerShop\Yves\CheckoutWidget\Widget\CheckoutBreadcrumbWidget;
 use SprykerShop\Yves\CurrencyWidget\Widget\CurrencyWidget;
 use SprykerShop\Yves\CustomerPage\Widget\CustomerNavigationWidget;
 use SprykerShop\Yves\CustomerReorderWidget\Plugin\CustomerPage\CustomerReorderItemCheckboxWidget;
-use SprykerShop\Yves\CustomerReorderWidget\Plugin\CustomerPage\CustomerReorderItemsFormWidget;
 use SprykerShop\Yves\DiscountPromotionWidget\Widget\CartDiscountPromotionProductListWidget;
+use SprykerShop\Yves\DiscountWidget\Widget\CheckoutVoucherFormWidget;
+use SprykerShop\Yves\DiscountWidget\Widget\DiscountVoucherFormWidget;
+use SprykerShop\Yves\NavigationWidget\Widget\NavigationWidget;
 use SprykerShop\Yves\NewsletterWidget\Widget\NewsletterSubscriptionSummaryWidget;
-use SprykerShop\Yves\OrderCancelWidget\Widget\OrderCancelButtonWidget;
-use SprykerShop\Yves\PriceProductVolumeWidget\Widget\CurrentProductPriceVolumeWidget;
-use SprykerShop\Yves\PriceProductWidget\Widget\PriceProductWidget;
+use SprykerShop\Yves\PriceProductVolumeWidget\Widget\ProductPriceVolumeWidget;
 use SprykerShop\Yves\PriceWidget\Widget\PriceModeSwitcherWidget;
 use SprykerShop\Yves\ProductAlternativeWidget\Widget\ProductAlternativeListWidget;
 use SprykerShop\Yves\ProductAlternativeWidget\Widget\ShoppingListProductAlternativeWidget;
@@ -96,6 +96,7 @@ class ShopApplicationDependencyProvider extends SprykerShopApplicationDependency
             CustomerNavigationWidget::class,
             CustomerReorderItemCheckboxWidget::class,
             LanguageSwitcherWidget::class,
+            NavigationWidget::class,
             NewsletterSubscriptionSummaryWidget::class,
             PdpProductRelationWidget::class,
             PdpProductReplacementForListWidget::class,
@@ -109,12 +110,13 @@ class ShopApplicationDependencyProvider extends SprykerShopApplicationDependency
             ProductDiscontinuedNoteWidget::class,
             ProductDiscontinuedWidget::class,
             ProductOptionConfiguratorWidget::class,
-            CurrentProductPriceVolumeWidget::class,
+            ProductPriceVolumeWidget::class,
             SalesOrderThresholdWidget::class,
             ShoppingListProductAlternativeWidget::class,
             SimilarProductsWidget::class,
             UpSellingProductsWidget::class,
-            CartCodeFormWidget::class,
+            DiscountVoucherFormWidget::class,
+            CheckoutVoucherFormWidget::class,
             WishlistMenuItemWidget::class,
             WishlistProductAlternativeWidget::class,
             ProductSetIdsWidget::class,
@@ -127,9 +129,6 @@ class ShopApplicationDependencyProvider extends SprykerShopApplicationDependency
             ManageProductMeasurementUnitWidget::class,
             CartProductMeasurementUnitQuantitySelectorWidget::class,
             ProductPackagingUnitWidget::class,
-            OrderCancelButtonWidget::class,
-            PriceProductWidget::class,
-            CustomerReorderItemsFormWidget::class,
         ];
     }
 

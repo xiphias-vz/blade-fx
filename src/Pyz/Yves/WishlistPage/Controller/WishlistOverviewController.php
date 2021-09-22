@@ -30,7 +30,7 @@ class WishlistOverviewController extends SprykerWishlistOverviewController
      *
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
-    public function safeDeleteAction(string $wishlistName, Request $request): RedirectResponse
+    public function safeDeleteAction(string $wishlistName, Request $request)
     {
         if (!$this->isCsrfTokenValid(static::DELETE_WISHLIST_CSRF_TOKEN_NAME, $request)) {
             $this->addErrorMessage(static::MESSAGE_PERMISSION_FAILED);
@@ -38,7 +38,7 @@ class WishlistOverviewController extends SprykerWishlistOverviewController
             return $this->redirectInvalidAction($wishlistName, $request);
         }
 
-        return parent::deleteAction($wishlistName, $request);
+        return parent::deleteAction($wishlistName);
     }
 
     /**
@@ -58,7 +58,7 @@ class WishlistOverviewController extends SprykerWishlistOverviewController
      */
     protected function getCsrfTokenManager(): CsrfTokenManagerInterface
     {
-        return $this->getFactory()->getCsrfTokenManager();
+        return $this->getApplication()->get(static::SERVICE_FORM_CSRF_PROVIDER);
     }
 
     /**

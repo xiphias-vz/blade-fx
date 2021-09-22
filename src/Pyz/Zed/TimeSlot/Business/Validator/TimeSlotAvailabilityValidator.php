@@ -7,7 +7,7 @@
 
 namespace Pyz\Zed\TimeSlot\Business\Validator;
 
-use Generated\Shared\Transfer\MerchantCriteriaTransfer;
+use Generated\Shared\Transfer\MerchantCriteriaFilterTransfer;
 use Generated\Shared\Transfer\MerchantTransfer;
 use Generated\Shared\Transfer\OrderCriteriaFilterTransfer;
 use Generated\Shared\Transfer\QuoteTransfer;
@@ -88,7 +88,7 @@ class TimeSlotAvailabilityValidator implements TimeSlotAvailabilityValidatorInte
 
         $currentMerchantTransfer = $this->merchantFacade
             ->findOne(
-                (new MerchantCriteriaTransfer())
+                (new MerchantCriteriaFilterTransfer())
                     ->setWithDeliveryPostalCodes(true)
                     ->setWithTimeSlots(true)
                     ->setMerchantReference($quoteTransfer->getMerchantReference())

@@ -91,6 +91,6 @@ class EditController extends SprykerEditController
      */
     protected function getCsrfTokenManager(): CsrfTokenManagerInterface
     {
-        return $this->getFactory()->getCsrfTokenManager();
+        return $this->getApplication()->get(static::SERVICE_FORM_CSRF_PROVIDER);
     }
 }

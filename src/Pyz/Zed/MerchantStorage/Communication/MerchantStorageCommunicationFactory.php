@@ -11,14 +11,14 @@ use Pyz\Zed\MerchantStorage\MerchantStorageDependencyProvider;
 use Spryker\Zed\EventBehavior\Business\EventBehaviorFacadeInterface;
 use Spryker\Zed\Kernel\Communication\AbstractCommunicationFactory;
 use Spryker\Zed\Store\Business\StoreFacadeInterface;
-use Spryker\Zed\MerchantStorage\Communication\MerchantStorageCommunicationFactory as SprykerMerchantStorageCommunicationFactory;
+
 /**
  * @method \Pyz\Zed\MerchantStorage\MerchantStorageConfig getConfig()
  * @method \Pyz\Zed\MerchantStorage\Business\MerchantStorageFacadeInterface getFacade()
  * @method \Pyz\Zed\MerchantStorage\Persistence\MerchantStorageEntityManagerInterface getEntityManager()
  * @method \Pyz\Zed\MerchantStorage\Persistence\MerchantStorageRepositoryInterface getRepository()
  */
-class MerchantStorageCommunicationFactory extends SprykerMerchantStorageCommunicationFactory
+class MerchantStorageCommunicationFactory extends AbstractCommunicationFactory
 {
     /**
      * @return \Spryker\Zed\EventBehavior\Business\EventBehaviorFacadeInterface

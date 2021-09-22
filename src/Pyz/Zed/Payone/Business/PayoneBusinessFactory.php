@@ -8,28 +8,53 @@
 namespace Pyz\Zed\Payone\Business;
 
 use Pyz\Zed\Payone\Business\Api\Adapter\Http\Guzzle;
+use Pyz\Zed\Payone\Business\Payment\PaymentManager;
 use Pyz\Zed\Payone\Business\StandardParameter\StandardParameterProvider;
 use Pyz\Zed\Payone\Business\StandardParameter\StandardParameterProviderInterface;
 use Pyz\Zed\Payone\Business\TransactionStatus\TransactionStatusUpdateManager;
 use Pyz\Zed\Payone\PayoneDependencyProvider;
 use Spryker\Zed\Store\Business\StoreFacadeInterface;
-use SprykerEco\Zed\Payone\Business\Api\Adapter\AdapterInterface;
+use SprykerEco\Zed\Payone\Business\Payment\PaymentManagerInterface;
 use SprykerEco\Zed\Payone\Business\PayoneBusinessFactory as SprykerEcoPayoneBusinessFactory;
-use SprykerEco\Zed\Payone\Business\TransactionStatus\TransactionStatusUpdateManagerInterface;
 
 /**
- * @method \Pyz\Zed\Payone\PayoneConfig getConfig()
+ * @method \SprykerEco\Zed\Payone\PayoneConfig getConfig()
  * @method \SprykerEco\Zed\Payone\Persistence\PayoneQueryContainerInterface getQueryContainer()
  * @method \SprykerEco\Zed\Payone\Persistence\PayoneRepositoryInterface getRepository()
  * @method \SprykerEco\Zed\Payone\Persistence\PayoneEntityManagerInterface getEntityManager()
  */
 class PayoneBusinessFactory extends SprykerEcoPayoneBusinessFactory
 {
+    /**
+     * @param string|null $storeName
+     *
+     * @return \Pyz\Zed\Payone\Business\Payment\PaymentManagerInterface
+     */
+    public function createPaymentManager(?string $storeName = null): PaymentManagerInterface
+    {
+        $paymentManager = new PaymentManager(
+            $this->createExecutionAdapter(),
+            $this->getQueryContainer(),
+            $this->createStandardParameterProvider()->provideStandardParameter($storeName),
+            $this->createKeyHashGenerator(),
+            $this->createSequenceNumberProvider(),
+            $this->createModeDetector(),
+            $this->createUrlHmacGenerator(),
+            $this->getRepository(),
+            $this->getEntityManager()
+        );
+
+        foreach ($this->getAvailablePaymentMethods() as $paymentMethod) {
+            $paymentManager->registerPaymentMethodMapper($paymentMethod);
+        }
+
+        return $paymentManager;
+    }
 
     /**
      * @return \SprykerEco\Zed\Payone\Business\Api\Adapter\AdapterInterface
      */
-    public function createExecutionAdapter(): AdapterInterface
+    protected function createExecutionAdapter()
     {
         return new Guzzle(
             $this->getStandardParameter()->getPaymentGatewayUrl(),
@@ -40,12 +65,12 @@ class PayoneBusinessFactory extends SprykerEcoPayoneBusinessFactory
     /**
      * @return \SprykerEco\Zed\Payone\Business\TransactionStatus\TransactionStatusUpdateManagerInterface
      */
-    public function createTransactionStatusManager(): TransactionStatusUpdateManagerInterface
+    public function createTransactionStatusManager()
     {
         return new TransactionStatusUpdateManager(
             $this->getQueryContainer(),
             $this->getStandardParameter(),
-            $this->createHashGenerator()
+            $this->createKeyHashGenerator()
         );
     }
 

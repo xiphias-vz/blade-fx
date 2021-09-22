@@ -18,13 +18,37 @@
                     <div class="grid grid--justify grid--expand">
                         <div class="contact-store-info">
                         </div>
-                        <div class="col col--sm-12 col--lg-7">
-                            <div class="custom-element navigation-footer footer__navigation">
-                            {% block footerNavigation %}
-                                {% cms_slot 'slt-footer' %}
-                            {% endblock %}
+
+                        {% block navigation %}
+                            <div class="col col--sm-12 col--lg-7">
+                                {% include molecule('navigation-footer') with {
+                                    class: config.name ~ '__navigation',
+                                    data: {
+                                        items: [
+                                            {
+                                                title: 'footer.categories',
+                                                templates: [
+                                                {
+                                                    template: 'navigation-footer',
+                                                    menu: 'FOOTER_NAVIGATION_CATEGORIES',
+                                                },
+                                            ],
+                                            },
+                                            {
+                                                title: 'footer.globus',
+                                                templates: [
+                                                {
+                                                    template: 'navigation-footer',
+                                                    menu: 'NAVIGATION_FOOTER_ELEMENT',
+                                                },
+                                            ],
+                                            }
+                                        ],
+                                    },
+                                } only %}
                             </div>
-                        </div>
+                        {% endblock %}
+
 
                         {% block payments %}
                             <div class="icon-container">

@@ -15,9 +15,12 @@ use Spryker\Zed\ProductSet\Business\Model\Data\ProductSetDataCreatorInterface;
 use Spryker\Zed\ProductSet\Business\Model\Image\ProductSetImageSaverInterface;
 use Spryker\Zed\ProductSet\Business\Model\ProductSetCreator as SprykerProductSetCreator;
 use Spryker\Zed\ProductSet\Business\Model\Touch\ProductSetTouchInterface;
+use Spryker\Zed\PropelOrm\Business\Transaction\DatabaseTransactionHandlerTrait;
 
 class ProductSetCreator extends SprykerProductSetCreator
 {
+    use DatabaseTransactionHandlerTrait;
+
     /**
      * @var \Spryker\Zed\ProductSet\Business\Model\Data\ProductSetDataCreatorInterface
      */
@@ -60,7 +63,7 @@ class ProductSetCreator extends SprykerProductSetCreator
      *
      * @return \Generated\Shared\Transfer\ProductSetTransfer
      */
-    protected function executeCreateProductSetTransaction(ProductSetTransfer $productSetTransfer): ProductSetTransfer
+    protected function executeCreateProductSetTransaction(ProductSetTransfer $productSetTransfer)
     {
         $productSetEntity = $this->createProductSetEntity($productSetTransfer);
 

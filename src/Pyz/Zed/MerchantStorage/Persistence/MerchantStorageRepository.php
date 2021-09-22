@@ -8,7 +8,7 @@
 namespace Pyz\Zed\MerchantStorage\Persistence;
 
 use Generated\Shared\Transfer\MerchantCollectionTransfer;
-use Generated\Shared\Transfer\MerchantCriteriaTransfer;
+use Generated\Shared\Transfer\MerchantCriteriaFilterTransfer;
 use Orm\Zed\Merchant\Persistence\Map\SpyMerchantTableMap;
 use Orm\Zed\Merchant\Persistence\SpyMerchantQuery;
 use Orm\Zed\TimeSlot\Persistence\PyzTimeSlotQuery;
@@ -21,11 +21,11 @@ use Spryker\Zed\Kernel\Persistence\AbstractRepository;
 class MerchantStorageRepository extends AbstractRepository implements MerchantStorageRepositoryInterface
 {
     /**
-     * @param \Generated\Shared\Transfer\MerchantCriteriaTransfer $merchantCriteriaTransfer
+     * @param \Generated\Shared\Transfer\MerchantCriteriaFilterTransfer $merchantCriteriaFilterTransfer
      *
      * @return \Generated\Shared\Transfer\MerchantCollectionTransfer
      */
-    public function getMerchants(MerchantCriteriaTransfer $merchantCriteriaTransfer): MerchantCollectionTransfer
+    public function getMerchants(MerchantCriteriaFilterTransfer $merchantCriteriaFilterTransfer): MerchantCollectionTransfer
     {
         $merchantQuery = $this->getFactory()->createMerchantQuery()->leftJoinSpyStore();
         $merchantQuery
@@ -34,19 +34,19 @@ class MerchantStorageRepository extends AbstractRepository implements MerchantSt
                 ->leftJoinWithPyzPostalCode()
             ->endUse();
 
-        $merchantQuery = $this->applyFilters($merchantQuery, $merchantCriteriaTransfer);
+        $merchantQuery = $this->applyFilters($merchantQuery, $merchantCriteriaFilterTransfer);
 
         $merchantEntities = $merchantQuery->find();
 
         $merchantCollectionTransfer = $this->getFactory()->createMerchantStorageMapper()
             ->mapMerchantEntitiesToMerchantCollectionTransfer($merchantEntities, new MerchantCollectionTransfer());
 
-        if ($merchantCriteriaTransfer->getIdStore() && $merchantCollectionTransfer->getMerchants()->count()) {
+        if ($merchantCriteriaFilterTransfer->getIdStore() && $merchantCollectionTransfer->getMerchants()->count()) {
             $merchantTransfer = $merchantCollectionTransfer->getMerchants()[0];
             $merchantCollectionTransfer->setStoreName($merchantTransfer->getStoreName());
         }
 
-        if ($merchantCriteriaTransfer->getWithTimeSlots()) {
+        if ($merchantCriteriaFilterTransfer->getWithTimeSlots()) {
             foreach ($merchantCollectionTransfer->getMerchants() as $merchantTransfer) {
                 $timeslotEntities = PyzTimeSlotQuery::create()->filterByMerchantReference($merchantTransfer->getMerchantReference())->find();
 
@@ -100,14 +100,14 @@ class MerchantStorageRepository extends AbstractRepository implements MerchantSt
 
     /**
      * @param \Orm\Zed\Merchant\Persistence\SpyMerchantQuery $merchantQuery
-     * @param \Generated\Shared\Transfer\MerchantCriteriaTransfer $merchantCriteriaTransfer
+     * @param \Generated\Shared\Transfer\MerchantCriteriaFilterTransfer $merchantCriteriaFilterTransfer
      *
      * @return \Orm\Zed\Merchant\Persistence\SpyMerchantQuery
      */
-    protected function applyFilters(SpyMerchantQuery $merchantQuery, MerchantCriteriaTransfer $merchantCriteriaTransfer)
+    protected function applyFilters(SpyMerchantQuery $merchantQuery, MerchantCriteriaFilterTransfer $merchantCriteriaFilterTransfer)
     {
-        if ($merchantCriteriaTransfer->getIdStore()) {
-            $merchantQuery->filterByFkStore($merchantCriteriaTransfer->getIdStore());
+        if ($merchantCriteriaFilterTransfer->getIdStore()) {
+            $merchantQuery->filterByFkStore($merchantCriteriaFilterTransfer->getIdStore());
         }
 
         return $merchantQuery;

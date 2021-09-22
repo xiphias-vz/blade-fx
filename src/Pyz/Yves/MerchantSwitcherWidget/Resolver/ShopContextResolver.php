@@ -9,23 +9,22 @@ namespace Pyz\Yves\MerchantSwitcherWidget\Resolver;
 
 use Generated\Shared\Transfer\ShopContextTransfer;
 use Spryker\Shared\Kernel\Communication\Application;
-use Spryker\Shared\Kernel\ContainerInterface;
 
 class ShopContextResolver
 {
     protected const SERVICE_SHOP_CONTEXT = 'SERVICE_SHOP_CONTEXT';
 
     /**
-     * @param \Spryker\Shared\Kernel\ContainerInterface $container
+     * @var \Spryker\Shared\Kernel\Communication\Application
      */
-    protected $container;
+    protected $application;
 
     /**
-     * @param \Spryker\Shared\Kernel\ContainerInterface $container
+     * @param \Spryker\Shared\Kernel\Communication\Application $application
      */
-    public function __construct(ContainerInterface $container)
+    public function __construct(Application $application)
     {
-        $this->container = $container;
+        $this->application = $application;
     }
 
     /**
@@ -33,8 +32,6 @@ class ShopContextResolver
      */
     public function resolve(): ShopContextTransfer
     {
-        return $this->container->hasApplicationService(static::SERVICE_SHOP_CONTEXT)
-            ? $this->container->getApplicationService(static::SERVICE_SHOP_CONTEXT)
-            : new ShopContextTransfer();
+        return $this->application[static::SERVICE_SHOP_CONTEXT] ?? new ShopContextTransfer();
     }
 }

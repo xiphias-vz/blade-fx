@@ -99,7 +99,7 @@ class SummaryStep extends SprykerSummaryStep
      *
      * @return bool
      */
-    public function preCondition(AbstractTransfer $quoteTransfer): bool
+    public function preCondition(AbstractTransfer $quoteTransfer)
     {
         $quoteTransfer->setTermsApproval(false);
 

@@ -11,10 +11,8 @@ use ArrayObject;
 use Generated\Shared\Transfer\RabbitMqOptionTransfer;
 use Pyz\Shared\MerchantStorage\MerchantStorageConfig;
 use Pyz\Shared\ShipmentStorage\ShipmentStorageConfig;
-use Pyz\Zed\CmsStorage\CmsStorageConfig;
 use Spryker\Client\RabbitMq\Model\Connection\Connection;
 use Spryker\Client\RabbitMq\RabbitMqConfig as SprykerRabbitMqConfig;
-use Spryker\Shared\AvailabilityStorage\AvailabilityStorageConfig;
 use Spryker\Shared\AvailabilityStorage\AvailabilityStorageConstants;
 use Spryker\Shared\CategoryPageSearch\CategoryPageSearchConstants;
 use Spryker\Shared\CategoryStorage\CategoryStorageConstants;
@@ -25,23 +23,15 @@ use Spryker\Shared\CustomerAccessStorage\CustomerAccessStorageConstants;
 use Spryker\Shared\Event\EventConfig;
 use Spryker\Shared\Event\EventConstants;
 use Spryker\Shared\FileManagerStorage\FileManagerStorageConstants;
-use Spryker\Shared\GlossaryStorage\GlossaryStorageConfig;
 use Spryker\Shared\GlossaryStorage\GlossaryStorageConstants;
 use Spryker\Shared\Log\LogConstants;
 use Spryker\Shared\MerchantOpeningHoursStorage\MerchantOpeningHoursStorageConfig;
-use Spryker\Shared\MerchantSearch\MerchantSearchConfig;
-use Spryker\Shared\PriceProductStorage\PriceProductStorageConfig;
 use Spryker\Shared\PriceProductStorage\PriceProductStorageConstants;
-use Spryker\Shared\ProductImageStorage\ProductImageStorageConfig;
-use Spryker\Shared\ProductPageSearch\ProductPageSearchConfig;
 use Spryker\Shared\ProductPageSearch\ProductPageSearchConstants;
 use Spryker\Shared\ProductQuantityStorage\ProductQuantityStorageConfig;
-use Spryker\Shared\ProductStorage\ProductStorageConfig;
 use Spryker\Shared\ProductStorage\ProductStorageConstants;
-use Spryker\Shared\Publisher\PublisherConfig;
 use Spryker\Shared\TaxProductStorage\TaxProductStorageConfig;
 use Spryker\Shared\TaxStorage\TaxStorageConfig;
-use Spryker\Shared\UrlStorage\UrlStorageConfig;
 use Spryker\Shared\UrlStorage\UrlStorageConstants;
 
 class RabbitMqConfig extends SprykerRabbitMqConfig
@@ -49,7 +39,7 @@ class RabbitMqConfig extends SprykerRabbitMqConfig
     /**
      * @return \ArrayObject
      */
-    protected function getQueueOptions(): ArrayObject
+    protected function getQueueOptions()
     {
         $queueOptionCollection = new ArrayObject();
         $queueOptionCollection->append($this->createQueueOption(EventConstants::EVENT_QUEUE, EventConstants::EVENT_QUEUE_RETRY, EventConfig::EVENT_ROUTING_KEY_RETRY));
@@ -74,7 +64,6 @@ class RabbitMqConfig extends SprykerRabbitMqConfig
         $queueOptionCollection->append($this->createQueueOption(MerchantStorageConfig::MERCHANT_SYNC_STORAGE_QUEUE, MerchantStorageConfig::MERCHANT_SYNC_STORAGE_ERROR_QUEUE));
         $queueOptionCollection->append($this->createQueueOption(ShipmentStorageConfig::SHIPMENT_SYNC_STORAGE_QUEUE, ShipmentStorageConfig::SHIPMENT_SYNC_STORAGE_ERROR_QUEUE));
         $queueOptionCollection->append($this->createQueueOption(ProductQuantityStorageConfig::PRODUCT_QUANTITY_SYNC_STORAGE_QUEUE, ProductQuantityStorageConfig::PRODUCT_QUANTITY_SYNC_STORAGE_ERROR_QUEUE));
-        $queueOptionCollection->append($this->createQueueOption(MerchantSearchConfig::SYNC_SEARCH_MERCHANT, MerchantSearchConfig::SYNC_SEARCH_MERCHANT . '_error'));
 
         $queueOptionCollection->append(
             $this->createQueueOption(
@@ -93,7 +82,7 @@ class RabbitMqConfig extends SprykerRabbitMqConfig
      *
      * @return \Generated\Shared\Transfer\RabbitMqOptionTransfer
      */
-    protected function createQueueOption(string $queueName, string $errorQueueName, string $routingKey = 'error'): RabbitMqOptionTransfer
+    protected function createQueueOption($queueName, $errorQueueName, $routingKey = 'error')
     {
         $queueOptionTransfer = new RabbitMqOptionTransfer();
         $queueOptionTransfer
@@ -112,7 +101,7 @@ class RabbitMqConfig extends SprykerRabbitMqConfig
      *
      * @return \Generated\Shared\Transfer\RabbitMqOptionTransfer
      */
-    protected function createQueueBinding(string $queueName): RabbitMqOptionTransfer
+    protected function createQueueBinding($queueName)
     {
         $queueOptionTransfer = new RabbitMqOptionTransfer();
         $queueOptionTransfer
@@ -130,7 +119,7 @@ class RabbitMqConfig extends SprykerRabbitMqConfig
      *
      * @return \Generated\Shared\Transfer\RabbitMqOptionTransfer
      */
-    protected function createErrorQueueBinding(string $errorQueueName, string $routingKey): RabbitMqOptionTransfer
+    protected function createErrorQueueBinding($errorQueueName, $routingKey)
     {
         $queueOptionTransfer = new RabbitMqOptionTransfer();
         $queueOptionTransfer
@@ -140,86 +129,5 @@ class RabbitMqConfig extends SprykerRabbitMqConfig
             ->addRoutingKey($routingKey);
 
         return $queueOptionTransfer;
-    }
-
-    /**
-     *  QueueNameFoo, // Queue => QueueNameFoo, (Queue and error queue will be created: QueueNameFoo and QueueNameFoo.error)
-     *  QueueNameBar => [
-     *       RoutingKeyFoo => QueueNameBaz, // (Additional queues can be defined by several routing keys)
-     *   ],
-     *
-     * @see https://www.rabbitmq.com/tutorials/amqp-concepts.html
-     *
-     * @return array
-     */
-    protected function getQueueConfiguration(): array
-    {
-        return [
-            EventConstants::EVENT_QUEUE => [
-                EventConfig::EVENT_ROUTING_KEY_RETRY => EventConstants::EVENT_QUEUE_RETRY,
-                EventConfig::EVENT_ROUTING_KEY_ERROR => EventConstants::EVENT_QUEUE_ERROR,
-            ],
-            GlossaryStorageConfig::SYNC_STORAGE_TRANSLATION,
-            UrlStorageConstants::URL_SYNC_STORAGE_QUEUE,
-            $this->get(LogConstants::LOG_QUEUE_NAME),
-            $this->getPublishQueueConfiguration(),
-            $this->getSynchronizationQueueConfiguration()
-        ];
-    }
-
-    /**
-     * @return array
-     */
-    protected function getSynchronizationQueueConfiguration(): array
-    {
-        return [
-            GlossaryStorageConfig::SYNC_STORAGE_TRANSLATION,
-            UrlStorageConstants::URL_SYNC_STORAGE_QUEUE,
-            AvailabilityStorageConstants::AVAILABILITY_SYNC_STORAGE_QUEUE,
-            CustomerAccessStorageConstants::CUSTOMER_ACCESS_SYNC_STORAGE_QUEUE,
-            CategoryStorageConstants::CATEGORY_SYNC_STORAGE_QUEUE,
-            ProductStorageConstants::PRODUCT_SYNC_STORAGE_QUEUE,
-            PriceProductStorageConstants::PRICE_SYNC_STORAGE_QUEUE,
-            CmsStorageConstants::CMS_SYNC_STORAGE_QUEUE,
-            CategoryPageSearchConstants::CATEGORY_SYNC_SEARCH_QUEUE,
-            CmsPageSearchConstants::CMS_SYNC_SEARCH_QUEUE,
-            ProductPageSearchConstants::PRODUCT_SYNC_SEARCH_QUEUE,
-            FileManagerStorageConstants::FILE_SYNC_STORAGE_QUEUE,
-            ContentStorageConfig::CONTENT_SYNC_STORAGE_QUEUE,
-            TaxProductStorageConfig::PRODUCT_ABSTRACT_TAX_SET_SYNC_STORAGE_QUEUE,
-            TaxStorageConfig::TAX_SET_SYNC_STORAGE_QUEUE,
-        ];
-    }
-
-    /**
-     * @return string
-     */
-    protected function getDefaultBoundQueueNamePrefix(): string
-    {
-        return 'error';
-    }
-
-    /**
-     * @return array
-     */
-    protected function getPublishQueueConfiguration(): array
-    {
-        return [
-            PublisherConfig::PUBLISH_QUEUE => [
-                PublisherConfig::PUBLISH_ROUTING_KEY_RETRY => PublisherConfig::PUBLISH_RETRY_QUEUE,
-                PublisherConfig::PUBLISH_ROUTING_KEY_ERROR => PublisherConfig::PUBLISH_ERROR_QUEUE,
-            ],
-            GlossaryStorageConfig::PUBLISH_TRANSLATION,
-            UrlStorageConfig::PUBLISH_URL,
-            AvailabilityStorageConfig::PUBLISH_AVAILABILITY,
-            PriceProductStorageConfig::PUBLISH_PRICE_PRODUCT_ABSTRACT,
-            PriceProductStorageConfig::PUBLISH_PRICE_PRODUCT_CONCRETE,
-            ProductImageStorageConfig::PUBLISH_PRODUCT_ABSTRACT_IMAGE,
-            ProductImageStorageConfig::PUBLISH_PRODUCT_CONCRETE_IMAGE,
-            ProductPageSearchConfig::PUBLISH_PRODUCT_ABSTRACT_PAGE,
-            ProductPageSearchConfig::PUBLISH_PRODUCT_CONCRETE_PAGE,
-            ProductStorageConfig::PUBLISH_PRODUCT_ABSTRACT,
-            ProductStorageConfig::PUBLISH_PRODUCT_CONCRETE,
-        ];
     }
 }

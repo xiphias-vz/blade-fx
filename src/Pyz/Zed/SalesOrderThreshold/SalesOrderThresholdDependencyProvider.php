@@ -9,11 +9,7 @@ namespace Pyz\Zed\SalesOrderThreshold;
 
 use Pyz\Zed\SalesOrderThreshold\Communication\Plugin\GlobalThresholdWithoutOptionsTotalStrategyPlugin;
 use Pyz\Zed\SalesOrderThreshold\Communication\Plugin\Strategy\HardMaximumThresholdStrategyPlugin;
-use Spryker\Zed\SalesOrderThreshold\Communication\Plugin\SalesOrderThresholdExtension\GlobalSalesOrderThresholdDataSourceStrategyPlugin;
 use Spryker\Zed\SalesOrderThreshold\Communication\Plugin\Strategy\HardMinimumThresholdStrategyPlugin;
-use Spryker\Zed\SalesOrderThreshold\Communication\Plugin\Strategy\SoftMinimumThresholdWithFixedFeeStrategyPlugin;
-use Spryker\Zed\SalesOrderThreshold\Communication\Plugin\Strategy\SoftMinimumThresholdWithFlexibleFeeStrategyPlugin;
-use Spryker\Zed\SalesOrderThreshold\Communication\Plugin\Strategy\SoftMinimumThresholdWithMessageStrategyPlugin;
 use Spryker\Zed\SalesOrderThreshold\SalesOrderThresholdDependencyProvider as SprykerSalesOrderThresholdDependencyProvider;
 
 class SalesOrderThresholdDependencyProvider extends SprykerSalesOrderThresholdDependencyProvider
@@ -23,10 +19,8 @@ class SalesOrderThresholdDependencyProvider extends SprykerSalesOrderThresholdDe
      */
     protected function getSalesOrderThresholdDataSourceStrategies(): array
     {
-        //TODO: check commented plugin
         return [
             new GlobalThresholdWithoutOptionsTotalStrategyPlugin(),
-          //  new GlobalSalesOrderThresholdDataSourceStrategyPlugin(),
         ];
     }
 
@@ -37,9 +31,6 @@ class SalesOrderThresholdDependencyProvider extends SprykerSalesOrderThresholdDe
     {
         return [
             new HardMinimumThresholdStrategyPlugin(),
-            new SoftMinimumThresholdWithMessageStrategyPlugin(),
-            new SoftMinimumThresholdWithFixedFeeStrategyPlugin(),
-            new SoftMinimumThresholdWithFlexibleFeeStrategyPlugin(),
             new HardMaximumThresholdStrategyPlugin(),
         ];
     }

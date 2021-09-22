@@ -8,7 +8,7 @@
     <ul class="menu">
         {% for categoryNode in data.categories %}
 
-            {% set categoryUrl = data.filterPath is defined ? url(data.filterPath, {categoryPath: (categoryNode.url | trimLocale)}) : categoryNode.url %}
+            {% set categoryUrl = data.filterPath is not empty ? url(data.filterPath, {categoryPath: (categoryNode.url | trimLocale)}) : categoryNode.url %}
             {% set disableAttribute = not categoryNode.quantity ? 'disabled' %}
             {% set classes = [
                 config.name ~ '__item',

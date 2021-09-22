@@ -32,7 +32,7 @@ use Spryker\Zed\Calculation\Communication\Plugin\Calculator\RemoveCanceledAmount
 use Spryker\Zed\Calculation\Communication\Plugin\Calculator\RemoveTotalsCalculatorPlugin;
 use Spryker\Zed\Calculation\Communication\Plugin\Calculator\SubtotalCalculatorPlugin;
 use Spryker\Zed\Calculation\Communication\Plugin\Calculator\TaxTotalCalculatorPlugin;
-use Spryker\Zed\DiscountCalculationConnector\Communication\Plugin\Calculation\DiscountCalculationPlugin;
+use Spryker\Zed\DiscountCalculationConnector\Communication\Plugin\DiscountCalculatorPlugin;
 use Spryker\Zed\DiscountPromotion\Communication\Plugin\Calculation\RemovePromotionItemsCalculatorPlugin;
 use Spryker\Zed\Kernel\Container;
 use Spryker\Zed\Payment\Communication\Plugin\Calculation\PaymentCalculatorPlugin;
@@ -43,7 +43,6 @@ use Spryker\Zed\SalesOrderThreshold\Communication\Plugin\Calculation\AddSalesOrd
 use Spryker\Zed\SalesOrderThreshold\Communication\Plugin\Calculation\RemoveSalesOrderThresholdExpenseCalculatorPlugin;
 use Spryker\Zed\Shipment\Communication\Plugin\Calculation\FilterObsoleteShipmentExpensesCalculatorPlugin;
 use Spryker\Zed\Shipment\Communication\Plugin\Calculation\ShipmentTaxRateCalculatorPlugin;
-use Spryker\Zed\Shipment\Communication\Plugin\Calculation\ShipmentTotalCalculatorPlugin;
 use Spryker\Zed\Tax\Communication\Plugin\Calculator\TaxAmountAfterCancellationCalculatorPlugin;
 use Spryker\Zed\Tax\Communication\Plugin\Calculator\TaxAmountCalculatorPlugin;
 use Spryker\Zed\Tax\Communication\Plugin\Calculator\TaxRateAverageAggregatorPlugin;
@@ -144,7 +143,7 @@ class CalculationDependencyProvider extends SprykerCalculationDependencyProvider
      *
      * @return \Spryker\Zed\CalculationExtension\Dependency\Plugin\CalculationPluginInterface[]
      */
-    protected function getQuoteCalculatorPluginStack(Container $container): array
+    protected function getQuoteCalculatorPluginStack(Container $container)
     {
         /** @var \Spryker\Zed\Calculation\Dependency\Plugin\CalculationPluginInterface[] $pluginStack */
         $pluginStack = [
@@ -171,7 +170,7 @@ class CalculationDependencyProvider extends SprykerCalculationDependencyProvider
             new ShipmentTaxRateCalculatorPlugin(),
 
             new InitialGrandTotalCalculatorPlugin(),
-            new DiscountCalculationPlugin(),
+            new DiscountCalculatorPlugin(),
             new DiscountAmountAggregatorForGenericAmountPlugin(),
             new ItemDiscountAmountFullAggregatorPlugin(),
 
@@ -194,8 +193,6 @@ class CalculationDependencyProvider extends SprykerCalculationDependencyProvider
 
             new NetTotalCalculatorPlugin(),
             new PaymentCalculatorPlugin(),
-
-            new ShipmentTotalCalculatorPlugin(),
         ];
 
         return $pluginStack;
@@ -208,7 +205,7 @@ class CalculationDependencyProvider extends SprykerCalculationDependencyProvider
      *
      * @return \Spryker\Zed\CalculationExtension\Dependency\Plugin\CalculationPluginInterface[]
      */
-    protected function getOrderCalculatorPluginStack(Container $container): array
+    protected function getOrderCalculatorPluginStack(Container $container)
     {
         return [
 

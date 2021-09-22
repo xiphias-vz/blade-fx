@@ -24,7 +24,7 @@ class CheckCartAvailability extends SpyCheckCartAvailability
      *
      * @return \Generated\Shared\Transfer\CartPreCheckResponseTransfer
      */
-    public function checkCartAvailability(CartChangeTransfer $cartChangeTransfer): CartPreCheckResponseTransfer
+    public function checkCartAvailability(CartChangeTransfer $cartChangeTransfer)
     {
         $cartPreCheckResponseTransfer = new CartPreCheckResponseTransfer();
         $cartPreCheckResponseTransfer->setIsSuccess(true);

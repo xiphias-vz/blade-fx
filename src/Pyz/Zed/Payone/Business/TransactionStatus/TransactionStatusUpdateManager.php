@@ -20,7 +20,7 @@ class TransactionStatusUpdateManager extends SprykerEcoTransactionStatusUpdateMa
      *
      * @return \SprykerEco\Zed\Payone\Business\Api\TransactionStatus\TransactionStatusResponse
      */
-    public function processTransactionStatusUpdate(TransactionStatusUpdateInterface $request): TransactionStatusResponse
+    public function processTransactionStatusUpdate(TransactionStatusUpdateInterface $request)
     {
         $validationResult = $this->validate($request);
         if ($validationResult instanceof TransactionStatusResponse) {
@@ -55,7 +55,7 @@ class TransactionStatusUpdateManager extends SprykerEcoTransactionStatusUpdateMa
      *
      * @return void
      */
-    protected function persistRequest(TransactionStatusUpdateInterface $request, ?SpyPaymentPayone $paymentPayoneEntity = null): void
+    protected function persistRequest(TransactionStatusUpdateInterface $request, ?SpyPaymentPayone $paymentPayoneEntity = null)
     {
         if (!$paymentPayoneEntity) {
             return;

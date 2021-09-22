@@ -31,11 +31,6 @@ class CustomerDependencyProvider extends SprykerCustomerDependencyProvider
     public const FACADE_USER = 'FACADE_USER';
 
     /**
-     * @uses \Spryker\Zed\Form\Communication\Plugin\Application\FormApplicationPlugin::SERVICE_FORM_CSRF_PROVIDER
-     */
-    public const SERVICE_FORM_CSRF_PROVIDER = 'form.csrf_provider';
-
-    /**
      * @param \Spryker\Zed\Kernel\Container $container
      *
      * @return \Spryker\Zed\Kernel\Container
@@ -63,7 +58,6 @@ class CustomerDependencyProvider extends SprykerCustomerDependencyProvider
         $container = $this->addNewsletterFacade($container);
         $container = $this->addAclFacade($container);
         $container = $this->addUserFacade($container);
-        $container = $this->addCsrfProviderService($container);
 
         return $container;
     }
@@ -99,7 +93,7 @@ class CustomerDependencyProvider extends SprykerCustomerDependencyProvider
     /**
      * @return \Spryker\Zed\Customer\Dependency\Plugin\CustomerAnonymizerPluginInterface[]
      */
-    protected function getCustomerAnonymizerPlugins(): array
+    protected function getCustomerAnonymizerPlugins()
     {
         return [
             new CustomerUnsubscribePlugin([
@@ -113,7 +107,7 @@ class CustomerDependencyProvider extends SprykerCustomerDependencyProvider
     /**
      * @return \Spryker\Zed\Customer\Dependency\Plugin\CustomerTransferExpanderPluginInterface[]
      */
-    protected function getCustomerTransferExpanderPlugins(): array
+    protected function getCustomerTransferExpanderPlugins()
     {
         return [
             new CustomerTransferUsernameExpanderPlugin(),
@@ -186,19 +180,5 @@ class CustomerDependencyProvider extends SprykerCustomerDependencyProvider
         return [
             new CreateAddressOnRegistrationPlugin(),
         ];
-    }
-
-    /**
-     * @param \Spryker\Zed\Kernel\Container $container
-     *
-     * @return \Spryker\Zed\Kernel\Container
-     */
-    protected function addCsrfProviderService(Container $container): Container
-    {
-        $container->set(static::SERVICE_FORM_CSRF_PROVIDER, function (Container $container) {
-            return $container->getApplicationService(static::SERVICE_FORM_CSRF_PROVIDER);
-        });
-
-        return $container;
     }
 }

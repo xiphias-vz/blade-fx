@@ -18,7 +18,7 @@ class GatewayController extends SprykerGatewayController
      *
      * @return \Generated\Shared\Transfer\CheckoutResponseTransfer
      */
-    protected function createCheckoutResponseWithPlaceOrderFailure($exception): CheckoutResponseTransfer
+    protected function createCheckoutResponseWithPlaceOrderFailure($exception)
     {
         $checkoutResponseTransfer = (new CheckoutResponseTransfer())
             ->setIsSuccess(false);

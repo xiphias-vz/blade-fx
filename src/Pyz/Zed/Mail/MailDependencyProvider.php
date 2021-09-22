@@ -32,7 +32,6 @@ use Spryker\Zed\Mail\MailDependencyProvider as SprykerMailDependencyProvider;
 use Spryker\Zed\Newsletter\Communication\Plugin\Mail\NewsletterSubscribedMailTypePlugin;
 use Spryker\Zed\Newsletter\Communication\Plugin\Mail\NewsletterUnsubscribedMailTypePlugin;
 use Spryker\Zed\Oms\Communication\Plugin\Mail\OrderShippedMailTypePlugin;
-use Spryker\Zed\SalesInvoice\Communication\Plugin\Mail\OrderInvoiceMailTypePlugin;
 use Swift_Mailer;
 use Swift_Message;
 use Swift_SmtpTransport;
@@ -51,12 +50,11 @@ class MailDependencyProvider extends SprykerMailDependencyProvider
      *
      * @return \Spryker\Zed\Kernel\Container
      */
-    public function provideBusinessLayerDependencies(Container $container): Container
+    public function provideBusinessLayerDependencies(Container $container)
     {
         $container = parent::provideBusinessLayerDependencies($container);
         $container = $this->addCmsBlockStorageFacade($container);
         $container = $this->addDataDogService($container);
-        $container = $this->addTwigEnvironment($container);
 
         $container->extend(static::MAIL_TYPE_COLLECTION, function (MailTypeCollectionAddInterface $mailCollection) {
             $mailCollection
@@ -74,8 +72,7 @@ class MailDependencyProvider extends SprykerMailDependencyProvider
                 ->add(new CustomerInvoiceMailTypePlugin())
                 ->add(new RegistrationMailTypePlugin())
                 ->add(new OrderRefundedMailTypePlugin())
-                ->add(new OrderCancelledMailTypePlugin())
-                ->add(new OrderInvoiceMailTypePlugin());
+                ->add(new OrderCancelledMailTypePlugin());
 
             return $mailCollection;
         });
@@ -189,20 +186,6 @@ class MailDependencyProvider extends SprykerMailDependencyProvider
     {
         $container->set(self::SERVICE_DATA_DOG, function (Container $container): DataDogServiceInterface {
             return $container->getLocator()->dataDog()->service();
-        });
-
-        return $container;
-    }
-
-    /**
-     * @param \Spryker\Zed\Kernel\Container $container
-     *
-     * @return \Spryker\Zed\Kernel\Container
-     */
-    protected function addTwigEnvironment(Container $container): Container
-    {
-        $container->set(static::SERVICE_TWIG, function (Container $container) {
-            return $container->getApplicationService(static::SERVICE_TWIG);
         });
 
         return $container;

@@ -46,7 +46,7 @@ class OrderItemAttributesExpanderPreSavePlugin extends AbstractPlugin implements
         $salesOrderItemEntity->setWeightPerUnit($itemTransfer->getWeightPerUnit());
         $salesOrderItemEntity->setPricePerKg($itemTransfer->getPricePerKg());
         $salesOrderItemEntity->setBrand($itemTransfer->getBrand());
-        $salesOrderItemEntity->setBasePriceContent((int)$itemTransfer->getBasePriceContent() * self::DEFAULT_PRICE_MULTIPLICATION);
+        $salesOrderItemEntity->setBasePriceContent($itemTransfer->getBasePriceContent() * self::DEFAULT_PRICE_MULTIPLICATION);
         $salesOrderItemEntity->setBasePriceUnit($itemTransfer->getBasePriceUnit());
 
         return $salesOrderItemEntity;

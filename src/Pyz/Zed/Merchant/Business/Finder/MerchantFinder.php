@@ -7,20 +7,20 @@
 
 namespace Pyz\Zed\Merchant\Business\Finder;
 
-use Generated\Shared\Transfer\MerchantCriteriaTransfer;
+use Generated\Shared\Transfer\MerchantCriteriaFilterTransfer;
 use Generated\Shared\Transfer\MerchantTransfer;
 use Generated\Shared\Transfer\UserTransfer;
-use Spryker\Zed\Merchant\Business\Reader\MerchantReaderInterface;
+use Spryker\Zed\Merchant\Business\Model\MerchantReaderInterface;
 
 class MerchantFinder implements MerchantFinderInterface
 {
     /**
-     * @var \Spryker\Zed\Merchant\Business\Reader\MerchantReaderInterface
+     * @var \Spryker\Zed\Merchant\Business\Model\MerchantReaderInterface
      */
     private $merchantReader;
 
     /**
-     * @param \Spryker\Zed\Merchant\Business\Reader\MerchantReaderInterface $merchantReader
+     * @param \Spryker\Zed\Merchant\Business\Model\MerchantReaderInterface $merchantReader
      */
     public function __construct(MerchantReaderInterface $merchantReader)
     {
@@ -36,9 +36,9 @@ class MerchantFinder implements MerchantFinderInterface
             return null;
         }
 
-        $merchantCriteriaTransfer = (new MerchantCriteriaTransfer())
+        $merchantCriteriaFilterTransfer = (new MerchantCriteriaFilterTransfer())
             ->setMerchantReference($userTransfer->getMerchantReference());
 
-        return $this->merchantReader->findOne($merchantCriteriaTransfer);
+        return $this->merchantReader->findOne($merchantCriteriaFilterTransfer);
     }
 }

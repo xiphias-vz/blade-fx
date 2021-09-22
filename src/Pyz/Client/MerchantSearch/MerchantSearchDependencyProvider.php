@@ -10,12 +10,8 @@ namespace Pyz\Client\MerchantSearch;
 use Spryker\Client\Kernel\AbstractDependencyProvider;
 use Spryker\Client\Kernel\Container;
 use Spryker\Client\Kernel\Container as SprykerContainer;
-use Spryker\Client\MerchantSearch\MerchantSearchDependencyProvider as SprykerMerchantSearchDependencyProvider;
-use Spryker\Client\MerchantSearch\Plugin\Elasticsearch\Query\PaginatedMerchantSearchQueryExpanderPlugin;
-use Spryker\Client\MerchantSearch\Plugin\Elasticsearch\ResultFormatter\MerchantSearchResultFormatterPlugin;
-use Spryker\Client\SearchElasticsearch\Plugin\QueryExpander\StoreQueryExpanderPlugin;
 
-class MerchantSearchDependencyProvider extends SprykerMerchantSearchDependencyProvider
+class MerchantSearchDependencyProvider extends AbstractDependencyProvider
 {
     public const CLIENT_MERCHANT_STORAGE = 'CLIENT_MERCHANT_STORAGE';
 
@@ -24,7 +20,7 @@ class MerchantSearchDependencyProvider extends SprykerMerchantSearchDependencyPr
      *
      * @return \Spryker\Client\Kernel\Container
      */
-    public function provideServiceLayerDependencies(Container $container): Container
+    public function provideServiceLayerDependencies(Container $container)
     {
         parent::provideServiceLayerDependencies($container);
         $container = $this->addMerchantStorageClient($container);
@@ -37,33 +33,12 @@ class MerchantSearchDependencyProvider extends SprykerMerchantSearchDependencyPr
      *
      * @return \Spryker\Client\Kernel\Container
      */
-    protected function addMerchantStorageClient(Container $container): Container
+    protected function addMerchantStorageClient(Container $container)
     {
         $container->set(static::CLIENT_MERCHANT_STORAGE, function (SprykerContainer $container) {
             return $container->getLocator()->merchantStorage()->client();
         });
 
         return $container;
-    }
-
-    /**
-     * @return \Spryker\Client\SearchExtension\Dependency\Plugin\ResultFormatterPluginInterface[]
-     */
-    protected function getMerchantSearchResultFormatterPlugins(): array
-    {
-        return [
-            new MerchantSearchResultFormatterPlugin(),
-        ];
-    }
-
-    /**
-     * @return \Spryker\Client\SearchExtension\Dependency\Plugin\QueryExpanderPluginInterface[]
-     */
-    protected function getMerchantSearchQueryExpanderPlugins(): array
-    {
-        return [
-            new PaginatedMerchantSearchQueryExpanderPlugin(),
-            new StoreQueryExpanderPlugin(),
-        ];
     }
 }

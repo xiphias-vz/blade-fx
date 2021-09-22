@@ -26,6 +26,14 @@ class CartPageFactory extends SprykerCartPageFactory
     }
 
     /**
+     * @return \Symfony\Component\Security\Csrf\CsrfTokenManagerInterface
+     */
+    public function getCsrfTokenManager(): CsrfTokenManagerInterface
+    {
+        return $this->getApplication()->get(CartPageDependencyProvider::SERVICE_FORM_CSRF_PROVIDER);
+    }
+
+    /**
      * @return \Spryker\Client\Quote\QuoteClientInterface
      */
     public function getBaseQuoteClient(): QuoteClientInterface

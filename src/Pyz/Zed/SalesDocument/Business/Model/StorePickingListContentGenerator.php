@@ -10,7 +10,7 @@ namespace Pyz\Zed\SalesDocument\Business\Model;
 use ArrayObject;
 use DateTime;
 use Generated\Shared\Transfer\ItemTransfer;
-use Generated\Shared\Transfer\MerchantCriteriaTransfer;
+use Generated\Shared\Transfer\MerchantCriteriaFilterTransfer;
 use Generated\Shared\Transfer\MerchantTransfer;
 use Generated\Shared\Transfer\OrderCriteriaFilterTransfer;
 use Generated\Shared\Transfer\OrderTransfer;
@@ -84,7 +84,7 @@ class StorePickingListContentGenerator
     {
         $storePickingListCollectionTransfer = new StorePickingListCollectionTransfer();
 
-        $merchantFilterCriteria = (new MerchantCriteriaTransfer())->setMerchantReference($merchantReference);
+        $merchantFilterCriteria = (new MerchantCriteriaFilterTransfer())->setMerchantReference($merchantReference);
         $merchantTransfer = $this->merchantFacade->findOne($merchantFilterCriteria);
 
         if ($merchantTransfer === null) {

@@ -24,13 +24,13 @@ class PrepareMerchantDataStep implements DataImportStepInterface
      */
     public function execute(DataSetInterface $dataSet): void
     {
+        $dataSet[MerchantDataSetInterface::MERCHANT_KEY] = $this->generateMerchantKey($dataSet);
         $dataSet[MerchantDataSetInterface::MERCHANT_REFERENCE] = $this->generateMerchantReference($dataSet);
         $dataSet[MerchantDataSetInterface::NAME] = $this->generateMerchantName($dataSet);
         $dataSet[MerchantDataSetInterface::REGISTRATION_NUMBER] = $this->generateMerchantRegistrationNumber($dataSet);
         $dataSet[MerchantDataSetInterface::EMAIL] = $this->generateMerchantEmail($dataSet);
         $dataSet[MerchantDataSetInterface::ID_STORE] = $this->getMerchantStore($dataSet);
         $dataSet[MerchantDataSetInterface::STATUS] = MerchantConfig::STATUS_APPROVED;
-        $dataSet[MerchantDataSetInterface::IS_ACTIVE] = 1;
     }
 
     /**

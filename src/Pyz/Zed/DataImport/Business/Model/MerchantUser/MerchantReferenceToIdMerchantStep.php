@@ -7,7 +7,6 @@
 
 namespace Pyz\Zed\DataImport\Business\Model\MerchantUser;
 
-use Orm\Zed\Merchant\Persistence\Map\SpyMerchantTableMap;
 use Orm\Zed\Merchant\Persistence\SpyMerchantQuery;
 use Pyz\Zed\DataImport\Business\Exception\EntityNotFoundException;
 use Spryker\Zed\DataImport\Business\Exception\DataKeyNotFoundInDataSetException;
@@ -77,17 +76,15 @@ class MerchantReferenceToIdMerchantStep implements DataImportStepInterface
      */
     protected function resolveIdMerchant(string $merchantReference): int
     {
-        /** @var \Orm\Zed\Merchant\Persistence\SpyMerchantQuery $merchantQuery */
-        $merchantQuery = SpyMerchantQuery::create()
-            ->select(SpyMerchantTableMap::COL_ID_MERCHANT);
+        /** @var \Orm\Zed\Merchant\Persistence\SpyMerchant|null $merchantEntity */
+        $merchantEntity = SpyMerchantQuery::create()
+            ->filterByMerchantKey($merchantReference)
+            ->findOne();
 
-        /** @var int $idMerchant */
-        $idMerchant = $merchantQuery->findOneByMerchantReference($merchantReference);
-
-        if (!$idMerchant) {
-            throw new EntityNotFoundException(sprintf('Could not find Merchant by reference "%s"', $merchantReference));
+        if (!$merchantEntity) {
+            throw new EntityNotFoundException(sprintf('Merchant by reference "%s" not found.', $merchantReference));
         }
 
-        return $idMerchant;
+        return $merchantEntity->getIdMerchant();
     }
 }

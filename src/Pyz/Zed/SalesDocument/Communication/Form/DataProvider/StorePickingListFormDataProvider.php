@@ -8,16 +8,21 @@
 namespace Pyz\Zed\SalesDocument\Communication\Form\DataProvider;
 
 use Generated\Shared\Transfer\FilterTransfer;
-use Generated\Shared\Transfer\MerchantCriteriaTransfer;
+use Generated\Shared\Transfer\MerchantCriteriaFilterTransfer;
 use Generated\Shared\Transfer\MerchantTransfer;
 use Orm\Zed\Merchant\Persistence\Map\SpyMerchantTableMap;
 use Pyz\Zed\Merchant\Business\MerchantFacadeInterface;
 use Pyz\Zed\SalesDocument\Communication\Form\StorePickingListForm;
 use Pyz\Zed\SalesDocument\SalesDocumentConfig;
+use Spryker\Zed\MerchantSearch\Business\MerchantSearchFacadeInterface;
 use Spryker\Zed\User\Business\UserFacadeInterface;
 
 class StorePickingListFormDataProvider
 {
+    /**
+     * @var \Spryker\Zed\MerchantSearch\Business\MerchantSearchFacadeInterface
+     */
+    private $merchantSearchFacade;
 
     /**
      * @var \Spryker\Zed\User\Business\UserFacadeInterface
@@ -30,13 +35,16 @@ class StorePickingListFormDataProvider
     private $merchantFacade;
 
     /**
+     * @param \Spryker\Zed\MerchantSearch\Business\MerchantSearchFacadeInterface $merchantSearchFacade
      * @param \Spryker\Zed\User\Business\UserFacadeInterface $userFacade
      * @param \Pyz\Zed\Merchant\Business\MerchantFacadeInterface $merchantFacade
      */
     public function __construct(
+        MerchantSearchFacadeInterface $merchantSearchFacade,
         UserFacadeInterface $userFacade,
         MerchantFacadeInterface $merchantFacade
     ) {
+        $this->merchantSearchFacade = $merchantSearchFacade;
         $this->userFacade = $userFacade;
         $this->merchantFacade = $merchantFacade;
     }
@@ -88,13 +96,13 @@ class StorePickingListFormDataProvider
      */
     private function getAvailableMerchants(): array
     {
-        $merchantCriteriaTransfer = (new MerchantCriteriaTransfer())
+        $merchantCriteriaFilterTransfer = (new MerchantCriteriaFilterTransfer())
             ->setFilter(
                 (new FilterTransfer())
                     ->setOrderBy(SpyMerchantTableMap::COL_REGION_NAME)
             );
 
-        $activeMerchantCollectionTransfer = $this->merchantFacade->get($merchantCriteriaTransfer);
+        $activeMerchantCollectionTransfer = $this->merchantSearchFacade->getActiveMerchants($merchantCriteriaFilterTransfer);
 
         return $activeMerchantCollectionTransfer->getMerchants()->getArrayCopy();
     }

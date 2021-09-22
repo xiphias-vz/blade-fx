@@ -8,7 +8,6 @@
 namespace Pyz\Yves\ProductSetWidget;
 
 use SprykerShop\Yves\ProductSetWidget\ProductSetWidgetFactory as SprykerProductSetWidgetFactory;
-use Symfony\Component\HttpFoundation\RequestStack;
 
 class ProductSetWidgetFactory extends SprykerProductSetWidgetFactory
 {
@@ -26,21 +25,5 @@ class ProductSetWidgetFactory extends SprykerProductSetWidgetFactory
     public function getProductSetStorageClient()
     {
         return $this->getProvidedDependency(ProductSetWidgetDependencyProvider::CLIENT_PRODUCT_SET_STORAGE);
-    }
-
-    /**
-     * @return \Symfony\Component\HttpFoundation\Request
-     */
-    public function getRequest()
-    {
-        return $this->getRequestStack()->getCurrentRequest();
-    }
-
-    /**
-     * @return \Symfony\Component\HttpFoundation\RequestStack
-     */
-    public function getRequestStack(): RequestStack
-    {
-        return $this->getProvidedDependency(ProductSetWidgetDependencyProvider::SERVICE_REQUEST_STACK);
     }
 }

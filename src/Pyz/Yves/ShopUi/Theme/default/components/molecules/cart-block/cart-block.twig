@@ -5,8 +5,8 @@
 } %}
 
 {% define data = {
-    quote: quote is defined ? quote : app['quote'],
-    cartItems: cartItems is defined ? cartItems : app['cartItems']
+    quote: app['quote'],
+    cartItems: app['cartItems']
 } %}
 
 {% block body %}

@@ -17,7 +17,7 @@ class ItemQtyCountPlugin implements ItemCountPluginInterface
      *
      * @return int
      */
-    public function getItemCount(QuoteTransfer $quoteTransfer): int
+    public function getItemCount(QuoteTransfer $quoteTransfer)
     {
         $quantity = 0;
         foreach ($quoteTransfer->getItems() as $itemTransfer) {

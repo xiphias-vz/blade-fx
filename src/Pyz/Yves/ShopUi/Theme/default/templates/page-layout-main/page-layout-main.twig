@@ -2,8 +2,8 @@
 
 {% define data = {
     activePage: '',
-    matomoUrl: matomoUrl is defined ? matomoUrl : app['matomo.url'],
-    matomoIdSite: matomoIdsite is defined ? matomoIdsite : app['matomo.idsite'],
+    matomoUrl: app['matomo.url'],
+    matomoIdSite: app['matomo.idsite'],
     currentCookieStore: app.currentStoreCookie,
     currentCodeBucket: app.currentCodeBucket,
 } %}
@@ -95,16 +95,7 @@
         {% block outside %}{% endblock %}
 
         {% block header %}
-            {% embed organism('header') only %}
-                {% block mainNavigation %}
-                    {% embed molecule('navigation-header') %}
-                        {% cms_slot 'slt-desktop-header' %}
-                    {% endembed %}
-                {% endblock %}
-                {% block mobileNavigation %}
-                    {% cms_slot 'slt-mobile-header' %}
-                {% endblock %}
-            {% endembed %}
+            {% include organism('header') only %}
         {% endblock %}
 
         <div class="page-layout-main__content">
@@ -131,16 +122,9 @@
             <div class="contact-info-slot">
                 {% cms_slot 'slt-1' %}
             </div>
-            {% embed organism('footer') only %}
-                {% block footerNavigation %}
-                    {% embed molecule('navigation-footer') with {
-                        class: config.name ~ '__navigation',
-                        modifiers: ['content-item'],
-                    } only %}
-                        {% cms_slot 'slt-footer' %}
-                    {% endembed %}
-                {% endblock %}
-            {% endembed %}
+            {% include organism('footer') with {
+
+            } only %}
         {% endblock %}
     </div>
 

@@ -72,7 +72,7 @@ class MerchantCreateForm extends ExtendedMerchantCreateForm
                 ->addIsPasswordProtected($builder);
         }
 
-        $this->executeMerchantFormExpanderPlugins($builder, $options);
+        $this->executeMerchantProfileFormExpanderPlugins($builder, $options);
     }
 
     /**

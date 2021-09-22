@@ -9,7 +9,7 @@ namespace Pyz\Yves\CmsPage\Plugin\Twig;
 
 use Spryker\Service\Container\ContainerInterface;
 use SprykerShop\Yves\CmsPage\Plugin\Twig\CmsTwigPlugin as SprykerShopCmsTwigPlugin;
-use Symfony\Contracts\Translation\TranslatorInterface;
+use Symfony\Component\Translation\TranslatorInterface;
 
 /**
  * @method \SprykerShop\Yves\CmsPage\CmsPageFactory getFactory()
@@ -17,14 +17,14 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 class CmsTwigPlugin extends SprykerShopCmsTwigPlugin
 {
     /**
-     * @var \Symfony\Contracts\Translation\TranslatorInterface|null
+     * @var \Symfony\Component\Translation\TranslatorInterface|null
      */
     protected static $translator;
 
     /**
      * @param \Spryker\Service\Container\ContainerInterface $container
      *
-     * @return \Symfony\Contracts\Translation\TranslatorInterface
+     * @return \Symfony\Component\Translation\TranslatorInterface
      */
     protected function getTranslator(ContainerInterface $container): TranslatorInterface
     {

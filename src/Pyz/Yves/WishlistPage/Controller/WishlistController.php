@@ -17,7 +17,6 @@ use SprykerShop\Yves\CustomerPage\Plugin\Provider\CustomerPageControllerProvider
 use SprykerShop\Yves\WishlistPage\Controller\WishlistController as SprykerWishlistController;
 use SprykerShop\Yves\WishlistPage\Form\AddAllAvailableProductsToCartFormType;
 use SprykerShop\Yves\WishlistPage\Plugin\Provider\WishlistPageControllerProvider;
-use SprykerShop\Yves\WishlistPage\Plugin\Router\WishlistPageRouteProviderPlugin;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -372,9 +371,14 @@ class WishlistController extends SprykerWishlistController
             );
         }
 
-        return $this->redirectResponseInternal(WishlistPageRouteProviderPlugin::ROUTE_NAME_WISHLIST_DETAILS, [
-            'wishlistName' => $wishListName,
-        ]);
+        $url = $this->getApplication()->path(
+            WishlistPageControllerProvider::ROUTE_WISHLIST_DETAILS,
+            [
+                self::KEY_WISHLIST_NAME => $wishListName,
+            ]
+        );
+
+        return $this->redirectResponseInternal($url);
     }
 
     /**
@@ -394,7 +398,7 @@ class WishlistController extends SprykerWishlistController
      */
     protected function getCsrfTokenManager(): CsrfTokenManagerInterface
     {
-        return $this->getFactory()->getCsrfTokenManager();
+        return $this->getApplication()->get(static::SERVICE_FORM_CSRF_PROVIDER);
     }
 
     /**

@@ -7,7 +7,6 @@
 
 namespace Pyz\Yves\MerchantSwitcherWidget\Widget;
 
-use Generated\Shared\Transfer\MerchantSearchRequestTransfer;
 use SprykerShop\Yves\MerchantSwitcherWidget\Widget\MerchantSwitcherSelectorFormWidget as SprykerMerchantSwitcherSelectorFormWidget;
 
 /**
@@ -21,13 +20,14 @@ class MerchantSwitcherSelectorFormWidget extends SprykerMerchantSwitcherSelector
      */
     protected function addMerchantParameters(): void
     {
-        $merchantTransfers = $this->getFactory()->getMerchantSearchClient()->search(new MerchantSearchRequestTransfer());
+        $merchantTransfers = $this->getFactory()->getMerchantSearchClient()->getActiveMerchants()->getMerchants();
 
         if (!count($merchantTransfers)) {
             return;
         }
 
         $selectedMerchantReference = $this->getFactory()->createMerchantShopContextReader()->getCurrentMerchantReference();
+
         $this->addParameter('merchantTransfers', $merchantTransfers);
         $this->addParameter('selectedMerchantReference', $selectedMerchantReference);
     }

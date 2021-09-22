@@ -7,33 +7,16 @@
 
 namespace Pyz\Zed\PriceProductDataImport;
 
-use Generated\Shared\Transfer\DataImporterConfigurationTransfer;
 use Spryker\Zed\PriceProductDataImport\PriceProductDataImportConfig as SprykerPriceProductDataImportConfig;
 
 class PriceProductDataImportConfig extends SprykerPriceProductDataImportConfig
 {
     /**
-     * @return \Generated\Shared\Transfer\DataImporterConfigurationTransfer
-     */
-    public function getPriceProductDataImporterConfiguration(): DataImporterConfigurationTransfer
-    {
-        $moduleDataImportDirectory = $this->getModuleRoot() . 'data' . DIRECTORY_SEPARATOR . 'import' . DIRECTORY_SEPARATOR . 'spryker' . DIRECTORY_SEPARATOR;
-
-        return $this->buildImporterConfiguration($moduleDataImportDirectory .  'product_price.csv', static::IMPORT_TYPE_PRODUCT_PRICE);
-    }
-
-    /**
      * @return string
      */
     protected function getModuleRoot(): string
     {
-        $moduleRoot = realpath(
-            __DIR__
-            . DIRECTORY_SEPARATOR . '..'
-            . DIRECTORY_SEPARATOR . '..'
-            . DIRECTORY_SEPARATOR . '..'
-            . DIRECTORY_SEPARATOR . '..'
-        );
+        $moduleRoot = realpath(APPLICATION_ROOT_DIR);
 
         return $moduleRoot . DIRECTORY_SEPARATOR;
     }

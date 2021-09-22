@@ -28,4 +28,20 @@ class DataImportConsole extends SprykerDataImportConsole
         parent::configure();
         $this->addOption(static::OPTION_SKIP_AFTER_IMPORT_HOOKS, static::OPTION_SKIP_AFTER_IMPORT_HOOKS_SHORT, InputOption::VALUE_OPTIONAL | InputOption::VALUE_IS_ARRAY, 'Defines after import hook plugins to be skipped.');
     }
+
+    /**
+     * @param \Symfony\Component\Console\Input\InputInterface $input
+     *
+     * @return \Generated\Shared\Transfer\DataImporterConfigurationTransfer
+     */
+    protected function buildDataImportConfiguration(InputInterface $input)
+    {
+        $dataImporterConfigurationTransfer = parent::buildDataImportConfiguration($input);
+
+        if ($input->hasParameterOption('--' . static::OPTION_SKIP_AFTER_IMPORT_HOOKS) || $input->hasParameterOption('-' . static::OPTION_SKIP_AFTER_IMPORT_HOOKS_SHORT)) {
+            $dataImporterConfigurationTransfer->setAfterImportHooksToSkip($input->getOption(static::OPTION_SKIP_AFTER_IMPORT_HOOKS));
+        }
+
+        return $dataImporterConfigurationTransfer;
+    }
 }

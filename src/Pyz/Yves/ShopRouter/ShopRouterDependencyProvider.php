@@ -8,7 +8,7 @@
 namespace Pyz\Yves\ShopRouter;
 
 use SprykerShop\Yves\CatalogPage\Plugin\CatalogPageResourceCreatorPlugin;
-use SprykerShop\Yves\CmsPage\Plugin\StorageRouter\PageResourceCreatorPlugin;
+use SprykerShop\Yves\CmsPage\Plugin\PageResourceCreatorPlugin;
 use SprykerShop\Yves\ProductDetailPage\Plugin\ProductDetailPageResourceCreatorPlugin;
 use SprykerShop\Yves\ProductSetDetailPage\Plugin\ProductSetDetailPageResourceCreatorPlugin;
 use SprykerShop\Yves\RedirectPage\Plugin\RedirectResourceCreatorPlugin;
@@ -19,7 +19,7 @@ class ShopRouterDependencyProvider extends SprykerShopRouterDependencyProvider
     /**
      * @return \SprykerShop\Yves\ShopRouterExtension\Dependency\Plugin\ResourceCreatorPluginInterface[]
      */
-    protected function getResourceCreatorPlugins(): array
+    protected function getResourceCreatorPlugins()
     {
         return [
             new PageResourceCreatorPlugin(),

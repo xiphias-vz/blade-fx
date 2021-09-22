@@ -137,6 +137,6 @@ class ProductSetIdsWidget extends AbstractWidget
      */
     protected function getRequest(): Request
     {
-        return $this->getFactory()->getRequest();
+        return $this->getApplication()['request'];
     }
 }

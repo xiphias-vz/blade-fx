@@ -137,8 +137,8 @@ class CheckoutAddressCollectionForm extends SprykerShopCheckoutAddressCollection
                     return false;
                 }
 
-                if ($this->isIdCustomerAddressFieldNotEmpty($form)
-                    || $this->isIdCompanyUnitAddressFieldNotEmpty($form)
+                if ($this->isIdCustomerAddressExistAndNotEmpty($form)
+                    || $this->isIdCompanyUnitAddressFieldExistAndNotEmpty($form)
                 ) {
                     return false;
                 }

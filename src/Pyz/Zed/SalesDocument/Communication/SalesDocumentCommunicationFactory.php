@@ -17,6 +17,7 @@ use Pyz\Zed\SalesDocument\Communication\Form\StorePickingListForm;
 use Pyz\Zed\SalesDocument\SalesDocumentDependencyProvider;
 use Spryker\Shared\Kernel\Store;
 use Spryker\Zed\Kernel\Communication\AbstractCommunicationFactory;
+use Spryker\Zed\Kernel\Communication\Plugin\Pimple;
 use Spryker\Zed\MerchantSearch\Business\MerchantSearchFacadeInterface;
 use Spryker\Zed\Messenger\Business\MessengerFacadeInterface;
 use Spryker\Zed\User\Business\UserFacadeInterface;
@@ -46,6 +47,7 @@ class SalesDocumentCommunicationFactory extends AbstractCommunicationFactory
     public function createStorePickingListFormDataProvider(): StorePickingListFormDataProvider
     {
         return new StorePickingListFormDataProvider(
+            $this->getMerchantSearchFacade(),
             $this->getUserFacade(),
             $this->getMerchantFacade()
         );
@@ -74,7 +76,7 @@ class SalesDocumentCommunicationFactory extends AbstractCommunicationFactory
      */
     private function getTwigEnvironment(): Environment
     {
-        return $this->getProvidedDependency(SalesDocumentDependencyProvider::TWIG_ENVIRONMENT);
+        return (new Pimple())->getApplication()['twig'];
     }
 
     /**

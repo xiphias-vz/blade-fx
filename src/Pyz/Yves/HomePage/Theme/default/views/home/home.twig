@@ -23,7 +23,11 @@
                 {% block content %}
 
                     {% cms_slot 'slt-3' %}
-                    {{ content_navigation('navigation-categories', 'navigation-categories') }}
+
+                    <div class="spacing-bottom spacing-bottom--biggest">
+                        {% widget 'NavigationWidget' args ['POPULAR_CATEGORIES', 'navigation-categories'] %}{% endwidget %}
+                    </div>
+
                     {% cms_slot 'slt-1st-in-frame' %}
 
                     {% embed organism('section') with {

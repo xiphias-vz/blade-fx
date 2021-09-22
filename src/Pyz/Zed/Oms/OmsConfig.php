@@ -21,7 +21,7 @@ class OmsConfig extends SprykerOmsConfig
     /**
      * @return int|null
      */
-    public function getOmsProcessWorkerChunkSize(): ?int
+    public function getOmsProcessWorkerChunkSize()
     {
         $config = $this->getConfig();
         if ($config->haskey(OmsConstants::OMS_PROCESS_WORKER_CHUNK_SIZE)) {
@@ -69,16 +69,5 @@ class OmsConfig extends SprykerOmsConfig
     public function getSimilarProductListTemplate(): string
     {
         return static::ORDER_SIMILAR_PRODUCT_LIST;
-    }
-
-    /**
-     * Specification:
-     * - Uses fallback prefix in concatenation with the normalized state name, in case the display property is not defined for the state.
-     *
-     * @return string
-     */
-    public function getFallbackDisplayNamePrefix(): string
-    {
-        return 'oms.state.';
     }
 }

@@ -19,7 +19,7 @@ class Guzzle extends SprykerEcoGuzzle
      *
      * @return array
      */
-    public function sendRequest(AbstractRequestContainer $container, array $additionalParams = []): array
+    public function sendRequest(AbstractRequestContainer $container, array $additionalParams = [])
     {
         try {
             $requestParams = array_merge($container->toArray(), $additionalParams);

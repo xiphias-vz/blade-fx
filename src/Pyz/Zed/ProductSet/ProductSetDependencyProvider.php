@@ -19,7 +19,7 @@ class ProductSetDependencyProvider extends SprykerProductSetDependencyProvider
      *
      * @return \Spryker\Zed\Kernel\Container
      */
-    public function provideBusinessLayerDependencies(Container $container): Container
+    public function provideBusinessLayerDependencies(Container $container)
     {
         $container = parent::provideBusinessLayerDependencies($container);
         $this->addEventFacade($container);
@@ -32,7 +32,7 @@ class ProductSetDependencyProvider extends SprykerProductSetDependencyProvider
      *
      * @return \Spryker\Zed\Kernel\Container
      */
-    protected function addEventFacade(Container $container): Container
+    protected function addEventFacade(Container $container)
     {
         $container[static::FACADE_EVENT] = function (Container $container) {
             return $container->getLocator()->event()->facade();

@@ -36,8 +36,4 @@
         <property name="withTimeSlots" type="bool"/>
     </transfer>
 
-    <transfer name="MerchantCriteria">
-        <property name="withTimeSlots" type="bool"/>
-    </transfer>
-
 </transfers>

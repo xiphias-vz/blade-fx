@@ -284,5 +284,4 @@ if ($storeCodeBucket == 'CZ') {
     'enable' => true,
     'stores' => ['EIN'],
     ];
-
 }

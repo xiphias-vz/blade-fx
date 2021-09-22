@@ -9,7 +9,6 @@ namespace Pyz\Client\Cart;
 
 use Pyz\Client\Cart\Plugin\ItemQtyCountPlugin;
 use Spryker\Client\Cart\CartDependencyProvider as SprykerCartDependencyProvider;
-use Spryker\Client\Cart\Dependency\Plugin\ItemCountPluginInterface;
 use Spryker\Client\DiscountPromotion\Plugin\AddDiscountPromotionCartRequestExpandPlugin;
 use Spryker\Client\PersistentCart\Plugin\DatabaseQuoteStorageStrategy;
 use Spryker\Client\ProductMeasurementUnit\Plugin\Cart\SingleItemQuantitySalesUnitCartChangeRequestExpanderPlugin;
@@ -20,7 +19,7 @@ class CartDependencyProvider extends SprykerCartDependencyProvider
     /**
      * @return \Spryker\Client\CartExtension\Dependency\Plugin\QuoteStorageStrategyPluginInterface[]
      */
-    protected function getQuoteStorageStrategyPlugins(): array
+    protected function getQuoteStorageStrategyPlugins()
     {
         $quoteStorageStrategyPlugins = parent::getQuoteStorageStrategyPlugins();
         $quoteStorageStrategyPlugins[] = new DatabaseQuoteStorageStrategy(); #PersistentCartFeature
@@ -31,7 +30,7 @@ class CartDependencyProvider extends SprykerCartDependencyProvider
     /**
      * @return \Spryker\Client\CartExtension\Dependency\Plugin\CartChangeRequestExpanderPluginInterface[]
      */
-    protected function getAddItemsRequestExpanderPlugins(): array
+    protected function getAddItemsRequestExpanderPlugins()
     {
         return [
             new AddDiscountPromotionCartRequestExpandPlugin(),
@@ -41,9 +40,9 @@ class CartDependencyProvider extends SprykerCartDependencyProvider
     }
 
     /**
-     * @return \Spryker\Client\Cart\Dependency\Plugin\ItemCountPluginInterface
+     * @return \Pyz\Client\Cart\Plugin\ItemQtyCountPlugin
      */
-    protected function getItemCountPlugin(): ItemCountPluginInterface
+    protected function getItemCountPlugin()
     {
         return new ItemQtyCountPlugin();
     }

@@ -28,9 +28,7 @@ class WishlistFactory extends SprykerWishlistFactory
     {
         return new CartHandler(
             $cartClient,
-            $wishlistClient,
-            $this->getWishlistPostMoveToCartCollectionExpanderPlugins(),
-            $this->getWishlistCollectionToRemoveExpanderPlugins()
+            $wishlistClient
         );
     }
 

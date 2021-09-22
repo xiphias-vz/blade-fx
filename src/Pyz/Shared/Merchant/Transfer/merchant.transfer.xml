@@ -27,8 +27,4 @@
         <property name="withDeliveryPostalCodes" type="bool"/>
     </transfer>
 
-    <transfer name="MerchantCriteria">
-        <property name="idStore" type="int"/>
-        <property name="withDeliveryPostalCodes" type="bool"/>
-    </transfer>
 </transfers>

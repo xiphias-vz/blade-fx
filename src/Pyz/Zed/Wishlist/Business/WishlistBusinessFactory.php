@@ -26,10 +26,8 @@ class WishlistBusinessFactory extends SprykerWishlistBusinessFactory
         return new Writer(
             $this->getQueryContainer(),
             $this->createReader(),
-            $this->getEntityManager(),
             $this->getProductFacade(),
-            $this->getAddItemPreCheckPlugins(),
-            $this->getWishlistPreAddItemPlugins()
+            $this->getAddItemPreCheckPlugins()
         );
     }
 

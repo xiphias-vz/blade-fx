@@ -7,10 +7,8 @@
 
 namespace Pyz\Zed\Merchant\Persistence;
 
-use Generated\Shared\Transfer\MerchantCriteriaTransfer;
+use Generated\Shared\Transfer\MerchantCriteriaFilterTransfer;
 use Generated\Shared\Transfer\MerchantTransfer;
-use Generated\Shared\Transfer\StoreRelationTransfer;
-use Generated\Shared\Transfer\StoreTransfer;
 use Orm\Zed\Merchant\Persistence\Map\SpyMerchantTableMap;
 use Orm\Zed\PostalCode\Persistence\Map\PyzPostalCodeTableMap;
 use Orm\Zed\TimeSlot\Persistence\PyzTimeSlotQuery;
@@ -43,16 +41,17 @@ class MerchantRepository extends SprykerMerchantRepository implements MerchantRe
     }
 
     /**
-     * @param \Generated\Shared\Transfer\MerchantCriteriaTransfer $merchantCriteriaTransfer
+     * @param \Generated\Shared\Transfer\MerchantCriteriaFilterTransfer $merchantCriteriaFilterTransfer
      *
      * @return \Generated\Shared\Transfer\MerchantTransfer|null
      */
-    public function findOne(MerchantCriteriaTransfer $merchantCriteriaTransfer): ?MerchantTransfer
+    public function findOne(MerchantCriteriaFilterTransfer $merchantCriteriaFilterTransfer): ?MerchantTransfer
     {
         $merchantQuery = $this->getFactory()->createMerchantQuery();
-        $merchantQuery = $this->applyFilters($merchantQuery, $merchantCriteriaTransfer);
 
-        if ($merchantCriteriaTransfer->getWithDeliveryPostalCodes()) {
+        $merchantQuery = $this->applyFilters($merchantQuery, $merchantCriteriaFilterTransfer);
+
+        if ($merchantCriteriaFilterTransfer->getWithDeliveryPostalCodes()) {
             $merchantQuery->usePyzMerchantDeliveryPostalCodeQuery(null, Criteria::LEFT_JOIN)
                     ->usePyzPostalCodeQuery(null, Criteria::LEFT_JOIN)
                         ->withColumn(sprintf('GROUP_CONCAT(%s)', PyzPostalCodeTableMap::COL_POSTAL_CODE), static::POSTAL_GROUP_VIRTUAL_COLUMN)
@@ -71,7 +70,7 @@ class MerchantRepository extends SprykerMerchantRepository implements MerchantRe
             ->pyzCreatePropelMerchantMapper()
             ->mapMerchantEntityToMerchantTransfer($merchantEntity, new MerchantTransfer());
 
-        if ($merchantCriteriaTransfer->getWithTimeSlots()) {
+        if ($merchantCriteriaFilterTransfer->getWithTimeSlots()) {
             $timeslotEntities = PyzTimeSlotQuery::create()->filterByMerchantReference($merchantTransfer->getMerchantReference())->find();
 
             $merchantTransfer->setWeekDaysTimeSlots(
@@ -86,36 +85,5 @@ class MerchantRepository extends SprykerMerchantRepository implements MerchantRe
         }
 
         return $merchantTransfer;
-    }
-
-    /**
-     * @param int[] $merchantIds
-     *
-     * @return \Generated\Shared\Transfer\StoreRelationTransfer[]
-     */
-    public function getMerchantStoreRelationMapByMerchantIds(array $merchantIds): array
-    {
-        $storeRelationTransfers = [];
-        $merchants = $this->getFactory()
-            ->createMerchantQuery()
-            ->joinWithSpyStore()
-            ->filterByIdMerchant_In($merchantIds)
-            ->find();
-
-        foreach ($merchants as $merchantEntity) {
-            $idMerchant = $merchantEntity->getIdMerchant();
-            $storeRelationTransfers[$merchantEntity->getIdMerchant()] = (new StoreRelationTransfer())
-                ->setIdEntity($idMerchant)
-                ->setStores(new \ArrayObject(
-                    [(new StoreTransfer)
-                        ->setIdStore($merchantEntity->getFkStore())
-                        ->setName($merchantEntity->getSpyStore()->getName())
-                    ]
-                ))
-                ->setIdStores([$merchantEntity->getFkStore()])
-            ;
-        }
-
-        return $storeRelationTransfers;
     }
 }

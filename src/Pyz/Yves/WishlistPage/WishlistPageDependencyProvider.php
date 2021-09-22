@@ -22,11 +22,6 @@ class WishlistPageDependencyProvider extends SprykerWishlistPageDependencyProvid
     public const CLIENT_ZED_REQUEST = 'CLIENT_ZED_REQUEST';
 
     /**
-     * @uses \Spryker\Yves\Form\Plugin\Application\FormApplicationPlugin::SERVICE_FORM_CSRF_PROVIDER
-     */
-    public const SERVICE_FORM_CSRF_PROVIDER = 'form.csrf_provider';
-
-    /**
      * @param \Spryker\Yves\Kernel\Container $container
      *
      * @return \Spryker\Yves\Kernel\Container
@@ -37,7 +32,6 @@ class WishlistPageDependencyProvider extends SprykerWishlistPageDependencyProvid
         $container = $this->addBaseWishlistClient($container);
         $container = $this->addDepositProductOptionClient($container);
         $container = $this->addZedRequestClient($container);
-        $container = $this->addFormCsrfProviderService($container);
 
         return $container;
     }
@@ -92,20 +86,6 @@ class WishlistPageDependencyProvider extends SprykerWishlistPageDependencyProvid
         $container[self::CLIENT_ZED_REQUEST] = function (Container $container): ZedRequestClientInterface {
             return $container->getLocator()->zedRequest()->client();
         };
-
-        return $container;
-    }
-
-    /**
-     * @param \Spryker\Yves\Kernel\Container $container
-     *
-     * @return \Spryker\Yves\Kernel\Container
-     */
-    protected function addFormCsrfProviderService(Container $container): Container
-    {
-        $container->set(static::SERVICE_FORM_CSRF_PROVIDER, function (Container $container) {
-            return $container->getApplicationService(static::SERVICE_FORM_CSRF_PROVIDER);
-        });
 
         return $container;
     }

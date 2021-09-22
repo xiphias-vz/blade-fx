@@ -40,7 +40,6 @@ use SprykerShop\Yves\HomePage\Plugin\Router\HomePageRouteProviderPlugin;
 use SprykerShop\Yves\MerchantSwitcherWidget\Plugin\Router\MerchantSwitcherWidgetRouteProviderPlugin;
 use SprykerShop\Yves\NewsletterPage\Plugin\Router\NewsletterPageRouteProviderPlugin;
 use SprykerShop\Yves\NewsletterWidget\Plugin\Router\NewsletterWidgetRouteProviderPlugin;
-use SprykerShop\Yves\OrderCancelWidget\Plugin\Router\OrderCancelWidgetRouteProviderPlugin;
 use SprykerShop\Yves\PriceWidget\Plugin\Router\PriceWidgetRouteProviderPlugin;
 use SprykerShop\Yves\ProductNewPage\Plugin\Router\ProductNewPageRouteProviderPlugin;
 use SprykerShop\Yves\ProductSearchWidget\Plugin\Router\ProductSearchWidgetRouteProviderPlugin;
@@ -97,7 +96,6 @@ class RouterDependencyProvider extends SprykerRouterDependencyProvider
             new MerchantSwitcherWidgetRouteProviderPlugin(),
             new PayoneRouteProviderPlugin(), #Payone
             new StoreSwitcherWidgetRouteProviderPlugin(),
-            new OrderCancelWidgetRouteProviderPlugin(),
         ];
     }
 

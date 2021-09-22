@@ -17,6 +17,6 @@ class AvailabilityCartConnectorBusinessFactory extends SpyAvailabilityCartConnec
      */
     public function createCartCheckAvailability()
     {
-        return new CheckCartAvailability($this->getAvailabilityFacade(), $this->getCartItemQuantityCounterStrategyPlugins());
+        return new CheckCartAvailability($this->getAvailabilityFacade());
     }
 }

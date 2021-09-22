@@ -25,11 +25,11 @@ class OrderController extends SprykerOrderController
 
     /**
      * @param int $idSalesOrder
-     * @param \Symfony\Component\HttpFoundation\Request $request
+     * @param \Symfony\Component\HttpFoundation\Request|null $request
      *
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
-    public function reorderAction(Request $request, int $idSalesOrder): RedirectResponse
+    public function reorderAction(int $idSalesOrder, ?Request $request = null): RedirectResponse
     {
         if (!$this->isCsrfTokenValid(static::REORDER_CSRF_TOKEN_NAME, $request)) {
             $this->getFactory()
@@ -113,7 +113,9 @@ class OrderController extends SprykerOrderController
      */
     protected function getSuccessRedirect(): RedirectResponse
     {
-        return $this->redirectResponseInternal(static::ROUTE_SUCCESSFUL_REDIRECT);
+        $url = $this->getApplication()->path(static::ROUTE_SUCCESSFUL_REDIRECT, []);
+
+        return new RedirectResponse($url, 302);
     }
 
     /**

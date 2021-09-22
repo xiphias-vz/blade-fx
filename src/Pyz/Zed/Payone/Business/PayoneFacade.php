@@ -31,7 +31,7 @@ class PayoneFacade extends SprykerEcoPayoneFacade implements PayoneFacadeInterfa
         PayonePartialOperationRequestTransfer $payonePartialOperationRequestTransfer
     ): CaptureResponseTransfer {
         return $this->getFactory()
-            ->createPayonePartialCaptureRequestSender()
+            ->createPaymentManager($payonePartialOperationRequestTransfer->getOrder()->getStore())
             ->executePartialCapture($payonePartialOperationRequestTransfer);
     }
 
@@ -47,7 +47,7 @@ class PayoneFacade extends SprykerEcoPayoneFacade implements PayoneFacadeInterfa
     public function capturePayment(PayoneCaptureTransfer $captureTransfer): CaptureResponseTransfer
     {
         return $this->getFactory()
-            ->createPayoneCaptureRequestSender()
+            ->createPaymentManager($captureTransfer->getOrder()->getStore())
             ->capturePayment($captureTransfer);
     }
 
@@ -63,7 +63,7 @@ class PayoneFacade extends SprykerEcoPayoneFacade implements PayoneFacadeInterfa
     public function executePartialRefund(PayonePartialOperationRequestTransfer $payonePartialOperationRequestTransfer): RefundResponseTransfer
     {
         return $this->getFactory()
-            ->createPayonePartialRefundRequestSender()
+            ->createPaymentManager($payonePartialOperationRequestTransfer->getOrder()->getStore())
             ->executePartialRefund($payonePartialOperationRequestTransfer);
     }
 }

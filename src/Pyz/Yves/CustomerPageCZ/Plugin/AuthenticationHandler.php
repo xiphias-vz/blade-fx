@@ -36,7 +36,7 @@ class AuthenticationHandler extends SprykerAuthenticationHandler
 //        }
 
         $customerResponseTransfer = new CustomerResponseTransfer();
-        $customerTransfer->setMerchantReference($this->getFactory()->createShopContextResolver()->resolve()->getMerchantReference());
+        $customerTransfer->setMerchantReference($this->createShopContextResolver()->resolve()->getMerchantReference());
         //$isAuthorized = $this->getCdcAuthorization($customerTransfer->getEmail(), $customerTransfer->getPassword());
         //$customerResponseTransfer->setIsSuccess($isAddresAuthorized);
 
@@ -67,5 +67,13 @@ class AuthenticationHandler extends SprykerAuthenticationHandler
         $this->getFactory()
             ->createCustomerAuthenticator()
             ->authenticateCustomer($customerTransfer, $token);
+    }
+
+    /**
+     * @return \Pyz\Yves\MerchantSwitcherWidget\Resolver\ShopContextResolver
+     */
+    public function createShopContextResolver(): ShopContextResolver
+    {
+        return new ShopContextResolver($this->getApplication());
     }
 }

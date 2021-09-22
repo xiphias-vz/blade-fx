@@ -8,17 +8,13 @@
 namespace Pyz\Yves\CustomerReorderWidget;
 
 use Spryker\Yves\Kernel\Container;
+use Spryker\Yves\Kernel\Plugin\Pimple;
 use SprykerShop\Yves\CustomerReorderWidget\CustomerReorderWidgetDependencyProvider as SprykerCustomerReorderWidgetDependencyProvider;
 
 class CustomerReorderWidgetDependencyProvider extends SprykerCustomerReorderWidgetDependencyProvider
 {
     public const BASE_CLIENT_MESSENGER = 'BASE_CLIENT_MESSENGER';
     public const PLUGIN_APPLICATION = 'PLUGIN_APPLICATION';
-
-    /**
-     * @uses \Spryker\Yves\Form\Plugin\Application\FormApplicationPlugin::SERVICE_FORM_CSRF_PROVIDER
-     */
-    public const SERVICE_FORM_CSRF_PROVIDER = 'form.csrf_provider';
 
     /**
      * @param \Spryker\Yves\Kernel\Container $container
@@ -30,7 +26,7 @@ class CustomerReorderWidgetDependencyProvider extends SprykerCustomerReorderWidg
         $container = parent::provideDependencies($container);
 
         $container = $this->addBaseMessengerClient($container);
-        $container = $this->addFormCsrfProviderService($container);
+        $container = $this->addApplication($container);
 
         return $container;
     }
@@ -54,11 +50,13 @@ class CustomerReorderWidgetDependencyProvider extends SprykerCustomerReorderWidg
      *
      * @return \Spryker\Yves\Kernel\Container
      */
-    protected function addFormCsrfProviderService(Container $container): Container
+    protected function addApplication(Container $container): Container
     {
-        $container->set(static::SERVICE_FORM_CSRF_PROVIDER, function (Container $container) {
-            return $container->getApplicationService(static::SERVICE_FORM_CSRF_PROVIDER);
-        });
+        $container[static::PLUGIN_APPLICATION] = function () {
+            $pimplePlugin = new Pimple();
+
+            return $pimplePlugin->getApplication();
+        };
 
         return $container;
     }

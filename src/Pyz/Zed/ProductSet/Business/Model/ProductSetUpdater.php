@@ -17,9 +17,12 @@ use Spryker\Zed\ProductSet\Business\Model\Image\ProductSetImageSaverInterface;
 use Spryker\Zed\ProductSet\Business\Model\ProductSetEntityReaderInterface;
 use Spryker\Zed\ProductSet\Business\Model\ProductSetUpdater as SprykerProductSetUpdater;
 use Spryker\Zed\ProductSet\Business\Model\Touch\ProductSetTouchInterface;
+use Spryker\Zed\PropelOrm\Business\Transaction\DatabaseTransactionHandlerTrait;
 
 class ProductSetUpdater extends SprykerProductSetUpdater
 {
+    use DatabaseTransactionHandlerTrait;
+
     /**
      * @var \Spryker\Zed\ProductSet\Business\Model\ProductSetEntityReaderInterface
      */
@@ -70,7 +73,7 @@ class ProductSetUpdater extends SprykerProductSetUpdater
      *
      * @return void
      */
-    protected function updateProductAbstractSetEntities(SpyProductSet $productSetEntity, ProductSetTransfer $productSetTransfer): void
+    protected function updateProductAbstractSetEntities(SpyProductSet $productSetEntity, ProductSetTransfer $productSetTransfer)
     {
         if (!$productSetTransfer->isPropertyModified(ProductSetTransfer::ID_PRODUCT_ABSTRACTS)) {
             return;

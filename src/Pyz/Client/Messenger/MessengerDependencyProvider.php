@@ -9,16 +9,11 @@ namespace Pyz\Client\Messenger;
 
 use Spryker\Client\Kernel\Container;
 use Spryker\Client\Messenger\MessengerDependencyProvider as SprykerMessengerDependencyProvider;
-use Spryker\Shared\Kernel\ContainerInterface;
+use Spryker\Yves\Kernel\Plugin\Pimple;
 
 class MessengerDependencyProvider extends SprykerMessengerDependencyProvider
 {
     public const FLASH_MESSENGER = 'FLASH_MESSENGER';
-
-    /**
-     * @uses \Spryker\Yves\Messenger\Plugin\Application\FlashMessengerApplicationPlugin::SERVICE_FLASH_MESSENGER
-     */
-    public const SERVICE_FLASH_MESSENGER = 'flash_messenger';
 
     /**
      * @param \Spryker\Client\Kernel\Container $container
@@ -40,8 +35,11 @@ class MessengerDependencyProvider extends SprykerMessengerDependencyProvider
      */
     protected function addFlashMessenger(Container $container): Container
     {
-        $container->set(static::FLASH_MESSENGER, function (ContainerInterface $container) {
-            return $container->getApplicationService(static::SERVICE_FLASH_MESSENGER);
+        $container->set(static::FLASH_MESSENGER, function () {
+            $pimplePlugin = new Pimple();
+            $application = $pimplePlugin->getApplication();
+
+            return $application['flash_messenger'];
         });
 
         return $container;
