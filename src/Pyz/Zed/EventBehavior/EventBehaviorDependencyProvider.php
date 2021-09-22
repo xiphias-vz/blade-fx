@@ -12,6 +12,8 @@ use Spryker\Zed\AvailabilityStorage\Communication\Plugin\Event\AvailabilityEvent
 use Spryker\Zed\CategoryPageSearch\Communication\Plugin\Event\CategoryPageEventResourceQueryContainerPlugin;
 use Spryker\Zed\CategoryStorage\Communication\Plugin\Event\CategoryNodeEventResourceQueryContainerPlugin;
 use Spryker\Zed\CategoryStorage\Communication\Plugin\Event\CategoryTreeEventResourceQueryContainerPlugin;
+use Spryker\Zed\CmsBlockCategoryStorage\Communication\Plugin\Event\CmsBlockCategoryEventResourceQueryContainerPlugin;
+use Spryker\Zed\CmsBlockProductStorage\Communication\Plugin\Event\CmsBlockProductEventResourceQueryContainerPlugin;
 use Spryker\Zed\CmsBlockStorage\Communication\Plugin\Event\CmsBlockEventResourceQueryContainerPlugin;
 use Spryker\Zed\CmsPageSearch\Communication\Plugin\Event\CmsPageEventResourceQueryContainerPlugin;
 use Spryker\Zed\CmsSlotBlockStorage\Communication\Plugin\EventBehavior\CmsSlotBlockEventResourceBulkRepositoryPlugin;
@@ -37,6 +39,7 @@ use Spryker\Zed\ProductPageSearch\Communication\Plugin\Event\ProductConcretePage
 use Spryker\Zed\ProductPageSearch\Communication\Plugin\Event\ProductPageEventResourceQueryContainerPlugin;
 use Spryker\Zed\ProductQuantityStorage\Communication\Plugin\Event\ProductQuantityEventResourceBulkRepositoryPlugin;
 use Spryker\Zed\ProductRelationStorage\Communication\Plugin\Event\ProductRelationEventResourceQueryContainerPlugin;
+use Spryker\Zed\ProductRelationStorage\Communication\Plugin\Publisher\ProductRelationPublisherTriggerPlugin;
 use Spryker\Zed\ProductSearchConfigStorage\Communication\Plugin\Event\ProductSearchConfigEventResourceQueryContainerPlugin;
 use Spryker\Zed\ProductSetPageSearch\Communication\Plugin\Event\ProductSetEventResourceQueryContainerPlugin as ProductSetPageSearchEventResourceQueryContainerPlugin;
 use Spryker\Zed\ProductSetStorage\Communication\Plugin\Event\ProductSetEventResourceQueryContainerPlugin;
@@ -49,7 +52,7 @@ class EventBehaviorDependencyProvider extends SprykerEventBehaviorDependencyProv
     /**
      * @return \Spryker\Zed\EventBehavior\Dependency\Plugin\EventResourcePluginInterface[]
      */
-    protected function getEventTriggerResourcePlugins()
+    protected function getEventTriggerResourcePlugins(): array
     {
         return [
             new CmsPageEventResourceQueryContainerPlugin(),
@@ -72,7 +75,7 @@ class EventBehaviorDependencyProvider extends SprykerEventBehaviorDependencyProv
             new ProductLabelDictionaryEventResourceQueryContainerPlugin(),
             new ProductAbstractLabelEventResourceQueryContainerPlugin(),
             new ProductOptionEventResourceQueryContainerPlugin(),
-            new ProductRelationEventResourceQueryContainerPlugin(),
+            new ProductRelationPublisherTriggerPlugin(),
             new ProductSearchConfigEventResourceQueryContainerPlugin(),
             new ProductSetEventResourceQueryContainerPlugin(),
             new ProductAbstractEventResourceQueryContainerPlugin(),
@@ -89,6 +92,10 @@ class EventBehaviorDependencyProvider extends SprykerEventBehaviorDependencyProv
             new ProductConcreteMeasurementUnitEventResourceBulkRepositoryPlugin(),
 
             new ProductPackagingUnitEventResourceBulkRepositoryPlugin(),
+
+            // Optional subscribers, use only if you need CMS Block relationship with categories or products.
+            new CmsBlockCategoryEventResourceQueryContainerPlugin(),
+            new CmsBlockProductEventResourceQueryContainerPlugin(),
         ];
     }
 }

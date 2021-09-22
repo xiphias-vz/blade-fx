@@ -18,6 +18,7 @@ use Pyz\Yves\GlobusRestApiClient\Provider\GlobusRestApiClientDigitalCard;
 use Pyz\Yves\GlobusRestApiClient\Provider\GlobusRestApiClientValidation;
 use Spryker\Shared\Config\Config;
 use Spryker\Shared\Customer\Code\Messages;
+use Spryker\Yves\Kernel\View\View;
 use SprykerShop\Yves\CustomerPage\Controller\RegisterController as SprykerShopRegisterController;
 use SprykerShop\Yves\CustomerPage\Plugin\Provider\CustomerPageControllerProvider;
 use Symfony\Component\Form\FormView;
@@ -106,7 +107,7 @@ class RegisterController extends SprykerShopRegisterController
      *
      * @return \Spryker\Yves\Kernel\View\View
      */
-    public function registerSuccessAction(Request $request)
+    public function registerSuccessAction(Request $request): View
     {
         $customerTransfer = $this->getFactory()->getCustomerClient()->getCustomer();
         $firstName = $customerTransfer->getFirstName();
@@ -142,16 +143,17 @@ class RegisterController extends SprykerShopRegisterController
     /**
      * @param \Symfony\Component\HttpFoundation\Request $request
      *
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
-    public function confirmAction(Request $request)
+    public function confirmAction(Request $request): RedirectResponse
     {
         $customerTransfer = $this->getCustomerFromRequest($request);
 
         if ($customerTransfer->getRegistrationKey()) {
-            $customerTransfer = $this->getFactory()
+            $customerResponseTransfer = $this->getFactory()
                 ->getBaseCustomerClient()
-                ->confirmRegistration($customerTransfer);
+                ->confirmCustomerRegistration($customerTransfer);
+            $customerTransfer = $customerResponseTransfer->getCustomerTransferOrFail();
 
             if ($customerTransfer->getIdCustomer()) {
                 $token = $this->getFactory()->createUsernamePasswordToken($customerTransfer);
@@ -161,7 +163,7 @@ class RegisterController extends SprykerShopRegisterController
                     ->authenticateCustomer($customerTransfer, $token);
 
                 $this->getFactory()
-                    ->getMessenger()
+                    ->getFlashMessenger()
                     ->addSuccessMessage(Messages::CUSTOMER_REGISTRATION_SUCCESS);
 
                 if ($request->get(CustomerConfig::PARAM_CONTINUE_CHECKOUT, false)) {
@@ -172,7 +174,7 @@ class RegisterController extends SprykerShopRegisterController
             }
 
             $this->getFactory()
-                ->getMessenger()
+                ->getFlashMessenger()
                 ->addErrorMessage(Messages::CUSTOMER_AUTHORIZATION_FAILED);
         }
 
@@ -197,7 +199,7 @@ class RegisterController extends SprykerShopRegisterController
      *
      * @return \Symfony\Component\HttpFoundation\JsonResponse
      */
-    public function getCustomerDataAPIAction(Request $request)
+    public function getCustomerDataAPIAction(Request $request): JsonResponse
     {
         $firstName = $request->request->get(static::FIRST_NAME);
         $lastName = $request->request->get(static::LAST_NAME);
@@ -227,9 +229,9 @@ class RegisterController extends SprykerShopRegisterController
     /**
      * @param \Symfony\Component\HttpFoundation\Request $request
      *
-     * @return array|\Symfony\Component\HttpFoundation\JsonResponse
+     * @return \Symfony\Component\HttpFoundation\JsonResponse
      */
-    public function checkGlobusCardAction(Request $request)
+    public function checkGlobusCardAction(Request $request): JsonResponse
     {
         $id = $request->request->get("id");
         $customerUserProvider = $this->getFactory()->createCustomerUserProvider();

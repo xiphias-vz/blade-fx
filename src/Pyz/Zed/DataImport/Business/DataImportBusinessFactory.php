@@ -7,6 +7,7 @@
 
 namespace Pyz\Zed\DataImport\Business;
 
+use Generated\Shared\Transfer\DataImportConfigurationActionTransfer;
 use NumberFormatter;
 use Pyz\Shared\Product\ProductConfig;
 use Pyz\Zed\DataImport\Business\Model\AlternativeEan\AlternativeEanWriterStep;
@@ -60,6 +61,7 @@ use Pyz\Zed\DataImport\Business\Model\ProductQuantity\ProductQuantityWriterStep;
 use Pyz\Zed\DataImport\Business\Model\ProductSearchAttribute\Hook\ProductSearchAfterImportHook;
 use Pyz\Zed\DataImport\Business\Model\ProductSearchAttribute\ProductSearchAttributeWriter;
 use Pyz\Zed\DataImport\Business\Model\ProductSearchAttributeMap\ProductSearchAttributeMapWriter;
+use Pyz\Zed\DataImport\Business\Model\ProductStock\Hook\ProductStockAfterImportPublishHook;
 use Pyz\Zed\DataImport\Business\Model\ProductStock\Hook\UpdateAvailabilityAfterImport;
 use Pyz\Zed\DataImport\Business\Model\ProductStock\Hook\UpdateAvailabilityAfterImportInterface;
 use Pyz\Zed\DataImport\Business\Model\ProductStock\ProductStockWriterStep;
@@ -71,6 +73,7 @@ use Pyz\Zed\DataImport\Business\Model\Store\StoreWriterStep;
 use Pyz\Zed\DataImport\Business\Model\Tax\TaxSetNameToIdTaxSetStep;
 use Pyz\Zed\DataImport\Business\Model\Tax\TaxWriterStep;
 use Pyz\Zed\DataImport\Business\Model\TimeSlotCapacity\TimeSlotWriterStep;
+use Pyz\Zed\DataImport\DataImportConfig;
 use Pyz\Zed\DataImport\DataImportDependencyProvider;
 use Pyz\Zed\MerchantRegion\Communication\Plugin\DataImport\MerchantRegionDataImportPlugin;
 use Pyz\Zed\ProductUpdate\Business\ProductUpdateFacadeInterface;
@@ -80,8 +83,10 @@ use Spryker\Shared\Kernel\Store;
 use Spryker\Shared\ProductSearch\Code\KeyBuilder\FilterGlossaryKeyBuilder;
 use Spryker\Zed\Acl\Business\AclFacadeInterface;
 use Spryker\Zed\DataImport\Business\DataImportBusinessFactory as SprykerDataImportBusinessFactory;
+use Spryker\Zed\DataImport\Business\Model\DataImporterInterface;
 use Spryker\Zed\DataImport\Business\Model\DataImportStep\DataImportStepInterface;
 use Spryker\Zed\DataImport\Business\Model\DataImportStep\PublishAwareStep;
+use Spryker\Zed\DataImport\Business\Model\DataReader\CsvReader\CsvReaderConfiguration;
 use Spryker\Zed\DataImport\Dependency\Plugin\DataImportPluginInterface;
 use Spryker\Zed\Money\Business\MoneyFacadeInterface;
 use Spryker\Zed\User\Business\UserFacadeInterface;
@@ -93,6 +98,80 @@ use Spryker\Zed\User\Business\UserFacadeInterface;
  */
 class DataImportBusinessFactory extends SprykerDataImportBusinessFactory
 {
+    /**
+     * @param \Generated\Shared\Transfer\DataImportConfigurationActionTransfer $dataImportConfigurationActionTransfer
+     *
+     * @return \Spryker\Zed\DataImport\Business\Model\DataImporterInterface|null
+     */
+    public function getDataImporterByType(DataImportConfigurationActionTransfer $dataImportConfigurationActionTransfer): ?DataImporterInterface
+    {
+        switch ($dataImportConfigurationActionTransfer->getDataEntity()) {
+            case DataImportConfig::IMPORT_TYPE_STORE:
+                return $this->createStoreImporter($dataImportConfigurationActionTransfer);
+            case DataImportConfig::IMPORT_TYPE_MERCHANT_REGION:
+                return $this->getMerchantRegionImporter();
+            case DataImportConfig::IMPORT_TYPE_CURRENCY:
+                return $this->createCurrencyImporter($dataImportConfigurationActionTransfer);
+            case DataImportConfig::IMPORT_TYPE_CATEGORY_TEMPLATE:
+                return $this->createCategoryTemplateImporter($dataImportConfigurationActionTransfer);
+            case DataImportConfig::IMPORT_TYPE_CUSTOMER:
+                return $this->createCustomerImporter($dataImportConfigurationActionTransfer);
+            case DataImportConfig::IMPORT_TYPE_GLOSSARY:
+                return $this->createGlossaryImporter($dataImportConfigurationActionTransfer);
+            case DataImportConfig::IMPORT_TYPE_TAX:
+                return $this->createTaxImporter($dataImportConfigurationActionTransfer);
+            case DataImportConfig::IMPORT_TYPE_PRODUCT_ATTRIBUTE_KEY:
+                return $this->createProductAttributeKeyImporter($dataImportConfigurationActionTransfer);
+            case DataImportConfig::IMPORT_TYPE_PRODUCT_MANAGEMENT_ATTRIBUTE:
+                return $this->createProductManagementAttributeImporter($dataImportConfigurationActionTransfer);
+            case DataImportConfig::IMPORT_TYPE_PRODUCT:
+                return $this->getProductImporter();
+            case DataImportConfig::IMPORT_TYPE_PRODUCT_OPTION:
+                return $this->createProductOptionImporter($dataImportConfigurationActionTransfer);
+            case DataImportConfig::IMPORT_TYPE_PRODUCT_OPTION_PRICE:
+                return $this->createProductOptionPriceImporter($dataImportConfigurationActionTransfer);
+            case DataImportConfig::IMPORT_TYPE_PRODUCT_PRICE:
+                return $this->getPriceImporter();
+            case DataImportConfig::IMPORT_TYPE_PRODUCT_SEARCH_ATTRIBUTE_MAP:
+                return $this->createProductSearchAttributeMapImporter($dataImportConfigurationActionTransfer);
+            case DataImportConfig::IMPORT_TYPE_PRODUCT_SEARCH_ATTRIBUTE:
+                return $this->createProductSearchAttributeImporter($dataImportConfigurationActionTransfer);
+            case DataImportConfig::IMPORT_TYPE_CMS_TEMPLATE:
+                return $this->createCmsTemplateImporter($dataImportConfigurationActionTransfer);
+            case DataImportConfig::IMPORT_TYPE_CMS_BLOCK:
+                return $this->createCmsBlockImporter($dataImportConfigurationActionTransfer);
+            case DataImportConfig::IMPORT_TYPE_CMS_BLOCK_STORE:
+                return $this->createCmsBlockStoreImporter($dataImportConfigurationActionTransfer);
+            case DataImportConfig::IMPORT_TYPE_PRODUCT_STOCK:
+                return $this->createProductStockImporter($dataImportConfigurationActionTransfer);
+            case DataImportConfig::IMPORT_TYPE_NAVIGATION:
+                return $this->createNavigationImporter($dataImportConfigurationActionTransfer);
+            case DataImportConfig::IMPORT_TYPE_NAVIGATION_NODE:
+                return $this->createNavigationNodeImporter($dataImportConfigurationActionTransfer);
+            case DataImportConfig::IMPORT_TYPE_MERCHANT_USER:
+                return $this->getMerchantUserImporter($dataImportConfigurationActionTransfer);
+            case DataImportConfig::IMPORT_TYPE_MERCHANT:
+                return $this->getMerchantImporter();
+            case DataImportConfig::IMPORT_POSTAL_CODE:
+                return $this->createPostalCodeImporter($dataImportConfigurationActionTransfer);
+            case DataImportConfig::IMPORT_TYPE_PICKING_ROUTE:
+                return $this->createPickingRouteImporter($dataImportConfigurationActionTransfer);
+            case DataImportConfig::IMPORT_TYPE_PICKING_ZONE:
+                return $this->createPickingZoneImporter($dataImportConfigurationActionTransfer);
+            case DataImportConfig::IMPORT_TYPE_PRODUCT_LOCATION:
+                return $this->createProductLocationImporter($dataImportConfigurationActionTransfer);
+            case DataImportConfig::IMPORT_TYPE_MERCHANT_DELIVERY_POSTAL_CODE:
+                return $this->getMerchantDeliveryPostalCodeImporter($dataImportConfigurationActionTransfer);
+            case DataImportConfig::IMPORT_TIME_SLOT:
+                return $this->getTimeSlotImporter($dataImportConfigurationActionTransfer);
+            case DataImportConfig::IMPORT_ALTERNATIVE_EAN:
+                return $this->getAlternativeEanImporter($dataImportConfigurationActionTransfer);
+            case DataImportConfig::IMPORT_TYPE_PRODUCT_LABEL:
+                return $this->createProductLabelImporter($dataImportConfigurationActionTransfer);
+            default:
+                return null;
+        }
+    }
     /**
      * @return \Spryker\Zed\DataImport\Business\Model\DataImporterCollectionInterface
      */
@@ -132,6 +211,7 @@ class DataImportBusinessFactory extends SprykerDataImportBusinessFactory
             ->addDataImporter($this->createProductLocationImporter());
 
         $dataImporterCollection->addDataImporterPlugins($this->getDataImporterPlugins());
+        $dataImporterCollection->addDataImporter($this->createProductStockImporter());
 
         $dataImporterCollection
             ->addDataImporter($this->createNavigationNodeImporter())
@@ -352,7 +432,7 @@ class DataImportBusinessFactory extends SprykerDataImportBusinessFactory
     /**
      * @return \Spryker\Zed\DataImport\Business\Model\DataImporterInterface
      */
-    protected function createGlossaryImporter()
+    protected function createGlossaryImporter(?DataImportConfigurationActionTransfer $dataImportConfigurationActionTransfer = null)
     {
         $dataImporter = $this->getCsvDataImporterFromConfig($this->getConfig()->getGlossaryDataImporterConfiguration());
 
@@ -369,7 +449,7 @@ class DataImportBusinessFactory extends SprykerDataImportBusinessFactory
     /**
      * @return \Spryker\Zed\DataImport\Business\Model\DataImporterInterface
      */
-    protected function createCategoryTemplateImporter()
+    protected function createCategoryTemplateImporter(?DataImportConfigurationActionTransfer $dataImportConfigurationActionTransfer = null)
     {
         $dataImporter = $this->getCsvDataImporterFromConfig($this->getConfig()->getCategoryTemplateDataImporterConfiguration());
 
@@ -386,7 +466,7 @@ class DataImportBusinessFactory extends SprykerDataImportBusinessFactory
     /**
      * @return \Spryker\Zed\DataImport\Business\Model\DataImporterInterface|\Spryker\Zed\DataImport\Business\Model\DataSet\DataSetStepBrokerAwareInterface
      */
-    protected function createCustomerImporter()
+    protected function createCustomerImporter(?DataImportConfigurationActionTransfer $dataImportConfigurationActionTransfer = null)
     {
         $dataImporter = $this->getCsvDataImporterFromConfig($this->getConfig()->getCustomerDataImporterConfiguration());
 
@@ -401,7 +481,7 @@ class DataImportBusinessFactory extends SprykerDataImportBusinessFactory
     /**
      * @return \Spryker\Zed\DataImport\Business\Model\DataImporterInterface|\Spryker\Zed\DataImport\Business\Model\DataSet\DataSetStepBrokerAwareInterface
      */
-    protected function createCmsTemplateImporter()
+    protected function createCmsTemplateImporter(?DataImportConfigurationActionTransfer $dataImportConfigurationActionTransfer = null)
     {
         $dataImporter = $this->getCsvDataImporterFromConfig($this->getConfig()->getCmsTemplateDataImporterConfiguration());
 
@@ -417,7 +497,7 @@ class DataImportBusinessFactory extends SprykerDataImportBusinessFactory
     /**
      * @return \Spryker\Zed\DataImport\Business\Model\DataImporterInterface|\Spryker\Zed\DataImport\Business\Model\DataSet\DataSetStepBrokerAwareInterface
      */
-    protected function createCmsBlockImporter()
+    protected function createCmsBlockImporter(?DataImportConfigurationActionTransfer $dataImportConfigurationActionTransfer = null)
     {
         $dataImporter = $this->getCsvDataImporterFromConfig($this->getConfig()->getCmsBlockDataImporterConfiguration());
 
@@ -440,7 +520,7 @@ class DataImportBusinessFactory extends SprykerDataImportBusinessFactory
     /**
      * @return \Spryker\Zed\DataImport\Business\Model\DataImporterInterface|\Spryker\Zed\DataImport\Business\Model\DataSet\DataSetStepBrokerAwareInterface
      */
-    protected function createCmsBlockStoreImporter()
+    protected function createCmsBlockStoreImporter(?DataImportConfigurationActionTransfer $dataImportConfigurationActionTransfer = null)
     {
         $dataImporter = $this->getCsvDataImporterFromConfig($this->getConfig()->getCmsBlockStoreDataImporterConfiguration());
 
@@ -454,7 +534,7 @@ class DataImportBusinessFactory extends SprykerDataImportBusinessFactory
     /**
      * @return \Spryker\Zed\DataImport\Business\Model\DataImporterInterface|\Spryker\Zed\DataImport\Business\Model\DataSet\DataSetStepBrokerAwareInterface
      */
-    protected function createProductOptionImporter()
+    protected function createProductOptionImporter(?DataImportConfigurationActionTransfer $dataImportConfigurationActionTransfer = null)
     {
         $dataImporter = $this->getCsvDataImporterFromConfig($this->getConfig()->getProductOptionDataImporterConfiguration());
 
@@ -476,7 +556,7 @@ class DataImportBusinessFactory extends SprykerDataImportBusinessFactory
     /**
      * @return \Spryker\Zed\DataImport\Business\Model\DataImporterInterface|\Spryker\Zed\DataImport\Business\Model\DataSet\DataSetStepBrokerAwareInterface
      */
-    protected function createProductOptionPriceImporter()
+    protected function createProductOptionPriceImporter(?DataImportConfigurationActionTransfer $dataImportConfigurationActionTransfer = null)
     {
         $dataImporter = $this->getCsvDataImporterFromConfig($this->getConfig()->getProductOptionPriceDataImporterConfiguration());
 
@@ -500,7 +580,7 @@ class DataImportBusinessFactory extends SprykerDataImportBusinessFactory
     /**
      * @return \Spryker\Zed\DataImport\Business\Model\DataImporterInterface|\Spryker\Zed\DataImport\Business\Model\DataSet\DataSetStepBrokerAwareInterface
      */
-    protected function createStockImporter()
+    protected function createStockImporter(?DataImportConfigurationActionTransfer $dataImportConfigurationActionTransfer = null)
     {
         $dataImporter = $this->getCsvDataImporterFromConfig($this->getConfig()->getStockDataImporterConfiguration());
 
@@ -516,7 +596,7 @@ class DataImportBusinessFactory extends SprykerDataImportBusinessFactory
     /**
      * @return \Spryker\Zed\DataImport\Business\Model\DataImporterInterface|\Spryker\Zed\DataImport\Business\Model\DataSet\DataSetStepBrokerAwareInterface
      */
-    protected function createShipmentImporter()
+    protected function createShipmentImporter(?DataImportConfigurationActionTransfer $dataImportConfigurationActionTransfer = null)
     {
         $dataImporter = $this->getCsvDataImporterFromConfig($this->getConfig()->getShipmentDataImporterConfiguration());
 
@@ -533,9 +613,13 @@ class DataImportBusinessFactory extends SprykerDataImportBusinessFactory
     /**
      * @return \Spryker\Zed\DataImport\Business\Model\DataImporterInterface|\Spryker\Zed\DataImport\Business\Model\DataSet\DataSetStepBrokerAwareInterface
      */
-    protected function createShipmentPriceImporter()
+    protected function createShipmentPriceImporter(?DataImportConfigurationActionTransfer $dataImportConfigurationActionTransfer = null)
     {
-        $dataImporter = $this->getCsvDataImporterFromConfig($this->getConfig()->getShipmentPriceDataImporterConfiguration());
+        $configuration = $dataImportConfigurationActionTransfer ?
+            $this->getConfig()->buildImporterConfigurationByDataImportConfigAction($dataImportConfigurationActionTransfer) :
+            $this->getConfig()->getShipmentPriceDataImporterConfiguration();
+
+        $dataImporter = $this->getCsvDataImporterFromConfig($configuration);
 
         $dataSetStepBroker = $this->createTransactionAwareDataSetStepBroker(ShipmentWriterStep::BULK_SIZE);
         $dataSetStepBroker
@@ -549,9 +633,13 @@ class DataImportBusinessFactory extends SprykerDataImportBusinessFactory
     /**
      * @return \Spryker\Zed\DataImport\Business\Model\DataImporterInterface|\Spryker\Zed\DataImport\Business\Model\DataSet\DataSetStepBrokerAwareInterface
      */
-    protected function createTaxImporter()
+    protected function createTaxImporter(?DataImportConfigurationActionTransfer $dataImportConfigurationActionTransfer = null)
     {
-        $dataImporter = $this->getCsvDataImporterFromConfig($this->getConfig()->getTaxDataImporterConfiguration());
+        $configuration = $dataImportConfigurationActionTransfer ?
+            $this->getConfig()->buildImporterConfigurationByDataImportConfigAction($dataImportConfigurationActionTransfer) :
+            $this->getConfig()->getTaxDataImporterConfiguration();
+
+        $dataImporter = $this->getCsvDataImporterFromConfig($configuration);
 
         $dataSetStepBroker = $this->createTransactionAwareDataSetStepBroker(TaxWriterStep::BULK_SIZE);
         $dataSetStepBroker
@@ -573,7 +661,7 @@ class DataImportBusinessFactory extends SprykerDataImportBusinessFactory
     /**
      * @return \Spryker\Zed\DataImport\Business\Model\DataImporterInterface|\Spryker\Zed\DataImport\Business\Model\DataSet\DataSetStepBrokerAwareInterface
      */
-    protected function createNavigationImporter()
+    protected function createNavigationImporter(?DataImportConfigurationActionTransfer $dataImportConfigurationActionTransfer = null)
     {
         $dataImporter = $this->getCsvDataImporterFromConfig($this->getConfig()->getNavigationDataImporterConfiguration());
 
@@ -589,7 +677,7 @@ class DataImportBusinessFactory extends SprykerDataImportBusinessFactory
     /**
      * @return \Spryker\Zed\DataImport\Business\Model\DataImporterInterface|\Spryker\Zed\DataImport\Business\Model\DataSet\DataSetStepBrokerAwareInterface
      */
-    protected function createNavigationNodeImporter()
+    protected function createNavigationNodeImporter(?DataImportConfigurationActionTransfer $dataImportConfigurationActionTransfer = null)
     {
         $dataImporter = $this->getCsvDataImporterFromConfig($this->getConfig()->getNavigationNodeDataImporterConfiguration());
 
@@ -648,7 +736,7 @@ class DataImportBusinessFactory extends SprykerDataImportBusinessFactory
     /**
      * @return \Spryker\Zed\DataImport\Business\Model\DataImporterInterface|\Spryker\Zed\DataImport\Business\Model\DataSet\DataSetStepBrokerAwareInterface
      */
-    protected function createProductAttributeKeyImporter()
+    protected function createProductAttributeKeyImporter(?DataImportConfigurationActionTransfer $dataImportConfigurationActionTransfer = null)
     {
         $dataImporter = $this->getCsvDataImporterFromConfig($this->getConfig()->getProductAttributeKeyDataImporterConfiguration());
 
@@ -664,7 +752,7 @@ class DataImportBusinessFactory extends SprykerDataImportBusinessFactory
     /**
      * @return \Spryker\Zed\DataImport\Business\Model\DataImporterInterface|\Spryker\Zed\DataImport\Business\Model\DataSet\DataSetStepBrokerAwareInterface
      */
-    protected function createProductLabelImporter()
+    protected function createProductLabelImporter(?DataImportConfigurationActionTransfer $dataImportConfigurationActionTransfer = null)
     {
         $dataImporter = $this->getCsvDataImporterFromConfig($this->getConfig()->getProductLabelDataImporterConfiguration());
 
@@ -692,7 +780,7 @@ class DataImportBusinessFactory extends SprykerDataImportBusinessFactory
     /**
      * @return \Spryker\Zed\DataImport\Business\Model\DataImporterInterface|\Spryker\Zed\DataImport\Business\Model\DataSet\DataSetStepBrokerAwareInterface
      */
-    protected function createProductSearchAttributeMapImporter()
+    protected function createProductSearchAttributeMapImporter(?DataImportConfigurationActionTransfer $dataImportConfigurationActionTransfer = null)
     {
         $dataImporter = $this->getCsvDataImporterFromConfig($this->getConfig()->getProductSearchAttributeMapDataImporterConfiguration());
 
@@ -709,7 +797,7 @@ class DataImportBusinessFactory extends SprykerDataImportBusinessFactory
     /**
      * @return \Spryker\Zed\DataImport\Business\Model\DataImporterInterface|\Spryker\Zed\DataImport\Business\Model\DataSet\DataSetStepBrokerAwareInterface
      */
-    protected function createProductSearchAttributeImporter()
+    protected function createProductSearchAttributeImporter(?DataImportConfigurationActionTransfer $dataImportConfigurationActionTransfer = null)
     {
         $dataImporter = $this->getCsvDataImporterFromConfig($this->getConfig()->getProductSearchAttributeDataImporterConfiguration());
 
@@ -731,7 +819,7 @@ class DataImportBusinessFactory extends SprykerDataImportBusinessFactory
     /**
      * @return \Spryker\Zed\DataImport\Business\Model\DataImporterInterface|\Spryker\Zed\DataImport\Business\Model\DataSet\DataSetStepBrokerAwareInterface
      */
-    protected function getMerchantDeliveryPostalCodeImporter()
+    protected function getMerchantDeliveryPostalCodeImporter(?DataImportConfigurationActionTransfer $dataImportConfigurationActionTransfer = null)
     {
         $dataImporter = $this->getCsvDataImporterFromConfig($this->getConfig()->getMerchantDeliveryPostalCodeImporterConfiguration());
 
@@ -746,7 +834,7 @@ class DataImportBusinessFactory extends SprykerDataImportBusinessFactory
     /**
      * @return \Spryker\Zed\DataImport\Business\Model\DataImporterInterface|\Spryker\Zed\DataImport\Business\Model\DataSet\DataSetStepBrokerAwareInterface
      */
-    protected function getMerchantUserImporter()
+    protected function getMerchantUserImporter(?DataImportConfigurationActionTransfer $dataImportConfigurationActionTransfer = null)
     {
         $dataImporter = $this->getCsvDataImporterFromConfig($this->getConfig()->getMerchantUserImporterConfiguration());
 
@@ -764,7 +852,7 @@ class DataImportBusinessFactory extends SprykerDataImportBusinessFactory
     /**
      * @return \Spryker\Zed\DataImport\Business\Model\DataImporterInterface|\Spryker\Zed\DataImport\Business\Model\DataSet\DataSetStepBrokerAwareInterface
      */
-    protected function getTimeSlotImporter()
+    protected function getTimeSlotImporter(?DataImportConfigurationActionTransfer $dataImportConfigurationActionTransfer = null)
     {
         $dataImporter = $this->getCsvDataImporterFromConfig($this->getConfig()->getTimeSlotImporterConfiguration());
 
@@ -779,7 +867,7 @@ class DataImportBusinessFactory extends SprykerDataImportBusinessFactory
     /**
      * @return \Spryker\Zed\DataImport\Business\Model\DataImporter|\Spryker\Zed\DataImport\Business\Model\DataImporterAfterImportAwareInterface|\Spryker\Zed\DataImport\Business\Model\DataImporterBeforeImportAwareInterface|\Spryker\Zed\DataImport\Business\Model\DataImporterInterface|\Spryker\Zed\DataImport\Business\Model\DataSet\DataSetStepBrokerAwareInterface
      */
-    protected function getOrderPickzoneImporter()
+    protected function getOrderPickzoneImporter(?DataImportConfigurationActionTransfer $dataImportConfigurationActionTransfer = null)
     {
         $dataImporter = $this->getCsvDataImporterFromConfig($this->getConfig()->getOrderPickzoneColorImporterConfiguration());
 
@@ -808,7 +896,7 @@ class DataImportBusinessFactory extends SprykerDataImportBusinessFactory
     /**
      * @return \Spryker\Zed\DataImport\Business\Model\DataImporterInterface|\Spryker\Zed\DataImport\Business\Model\DataSet\DataSetStepBrokerAwareInterface
      */
-    protected function getAlternativeEanImporter()
+    protected function getAlternativeEanImporter(?DataImportConfigurationActionTransfer $dataImportConfigurationActionTransfer = null)
     {
         $dataImporter = $this->getCsvDataImporterFromConfig($this->getConfig()->getAlternativeEanImporterConfiguration());
 
@@ -1091,7 +1179,7 @@ class DataImportBusinessFactory extends SprykerDataImportBusinessFactory
     /**
      * @return \Spryker\Zed\DataImport\Business\Model\DataImporterInterface|\Spryker\Zed\DataImport\Business\Model\DataSet\DataSetStepBrokerAwareInterface
      */
-    protected function createPostalCodeImporter()
+    protected function createPostalCodeImporter(?DataImportConfigurationActionTransfer $dataImportConfigurationActionTransfer = null)
     {
         $dataImporter = $this->getCsvDataImporterFromConfig($this->getConfig()->getPostalCodeDataImporterConfiguration());
 
@@ -1107,7 +1195,7 @@ class DataImportBusinessFactory extends SprykerDataImportBusinessFactory
     /**
      * @return \Spryker\Zed\DataImport\Business\Model\DataImporterAfterImportAwareInterface|\Spryker\Zed\DataImport\Business\Model\DataImporterBeforeImportAwareInterface|\Spryker\Zed\DataImport\Business\Model\DataImporterInterface|\Spryker\Zed\DataImport\Business\Model\DataSet\DataSetStepBrokerAwareInterface
      */
-    protected function createPickingRouteImporter()
+    protected function createPickingRouteImporter(?DataImportConfigurationActionTransfer $dataImportConfigurationActionTransfer = null)
     {
         $dataImporter = $this->getCsvDataImporterFromConfig($this->getConfig()->getPickingRouteDataImporterConfiguration());
 
@@ -1122,7 +1210,7 @@ class DataImportBusinessFactory extends SprykerDataImportBusinessFactory
     /**
      * @return \Spryker\Zed\DataImport\Business\Model\DataImporterAfterImportAwareInterface|\Spryker\Zed\DataImport\Business\Model\DataImporterBeforeImportAwareInterface|\Spryker\Zed\DataImport\Business\Model\DataImporterInterface|\Spryker\Zed\DataImport\Business\Model\DataSet\DataSetStepBrokerAwareInterface
      */
-    protected function createPickingZoneImporter()
+    protected function createPickingZoneImporter(?DataImportConfigurationActionTransfer $dataImportConfigurationActionTransfer = null)
     {
         $dataImporter = $this->getCsvDataImporterFromConfig($this->getConfig()->getPickingZoneDataImporterConfiguration());
 
@@ -1145,7 +1233,7 @@ class DataImportBusinessFactory extends SprykerDataImportBusinessFactory
     /**
      * @return \Spryker\Zed\DataImport\Business\Model\DataImporterAfterImportAwareInterface|\Spryker\Zed\DataImport\Business\Model\DataImporterBeforeImportAwareInterface|\Spryker\Zed\DataImport\Business\Model\DataImporterInterface|\Spryker\Zed\DataImport\Business\Model\DataSet\DataSetStepBrokerAwareInterface
      */
-    protected function createProductLocationImporter()
+    protected function createProductLocationImporter(?DataImportConfigurationActionTransfer $dataImportConfigurationActionTransfer = null)
     {
         $dataImporter = $this->getCsvDataImporterFromConfig($this->getConfig()->getProductLocationDataImporterConfiguration());
 
@@ -1187,5 +1275,30 @@ class DataImportBusinessFactory extends SprykerDataImportBusinessFactory
     private function getMerchantRegionImporter(): MerchantRegionDataImportPlugin
     {
         return $this->getProvidedDependency(DataImportDependencyProvider::PLUGIN_MERCHANT_REGION_IMPORTER);
+    }
+
+    /**
+     * @return \Spryker\Zed\DataImport\Business\Model\DataImporterInterface|\Spryker\Zed\DataImport\Business\Model\DataSet\DataSetStepBrokerAwareInterface
+     */
+    public function createProductStockImporter(?DataImportConfigurationActionTransfer $dataImportConfigurationActionTransfer = null)
+    {
+        $dataImporter = $this->getCsvDataImporterFromConfig($this->getConfig()->getProductStockDataImporterConfiguration());
+
+        $dataSetStepBroker = $this->createTransactionAwareDataSetStepBroker(ProductStockWriterStep::BULK_SIZE);
+        $dataSetStepBroker
+            ->addStep($this->createProductStockWriterStep());
+
+        $dataImporter->addDataSetStepBroker($dataSetStepBroker);
+        $dataImporter->addAfterImportHook($this->createProductStockAfterImportPublishHook());
+
+        return $dataImporter;
+    }
+
+    /**
+     * @return \Pyz\Zed\DataImport\Business\Model\ProductStock\Hook\ProductStockAfterImportPublishHook
+     */
+    protected function createProductStockAfterImportPublishHook(): ProductStockAfterImportPublishHook
+    {
+        return new ProductStockAfterImportPublishHook();
     }
 }

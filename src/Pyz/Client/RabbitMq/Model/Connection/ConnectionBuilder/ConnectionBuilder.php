@@ -24,7 +24,8 @@ class ConnectionBuilder extends SprykerConnectionBuilder
         return new Connection(
             $this->createAmqpStreamConnection($queueConnectionTransfer),
             $this->queueEstablishmentHelper,
-            $queueConnectionTransfer
+            $queueConnectionTransfer,
+            $this->config
         );
     }
 }

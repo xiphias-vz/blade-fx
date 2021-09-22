@@ -22,10 +22,13 @@ use Spryker\Zed\CmsSlotStorage\Communication\Plugin\Event\Subscriber\CmsSlotStor
 use Spryker\Zed\CmsStorage\Communication\Plugin\Event\Subscriber\CmsStorageEventSubscriber;
 use Spryker\Zed\ContentStorage\Communication\Plugin\Event\Subscriber\ContentStorageEventSubscriber;
 use Spryker\Zed\CustomerAccessStorage\Communication\Plugin\Event\Subscriber\CustomerAccessStorageEventSubscriber;
+use Spryker\Zed\Event\Dependency\EventSubscriberCollectionInterface;
 use Spryker\Zed\Event\EventDependencyProvider as SprykerEventDependencyProvider;
 use Spryker\Zed\FileManagerStorage\Communication\Plugin\Event\Subscriber\FileManagerStorageSubscriber;
 use Spryker\Zed\GlossaryStorage\Communication\Plugin\Event\Subscriber\GlossaryStorageEventSubscriber;
 use Spryker\Zed\MerchantOpeningHoursStorage\Communication\Plugin\Event\Subscriber\MerchantOpeningHoursStorageEventSubscriber;
+use Spryker\Zed\MerchantProductOfferSearch\Communication\Plugin\Event\Subscriber\MerchantProductOfferSearchEventSubscriber;
+use Spryker\Zed\MerchantProductOfferSearch\Communication\Plugin\Event\Subscriber\MerchantSearchEventSubscriber;
 use Spryker\Zed\NavigationStorage\Communication\Plugin\Event\Subscriber\NavigationStorageEventSubscriber;
 use Spryker\Zed\PriceProductStorage\Communication\Plugin\Event\Subscriber\PriceProductStorageEventSubscriber;
 use Spryker\Zed\ProductAlternativeStorage\Communication\Plugin\Event\Subscriber\ProductAlternativeStorageEventSubscriber;
@@ -47,6 +50,7 @@ use Spryker\Zed\ProductSearchConfigStorage\Communication\Plugin\Event\Subscriber
 use Spryker\Zed\ProductSetPageSearch\Communication\Plugin\Event\Subscriber\ProductSetPageSearchEventSubscriber;
 use Spryker\Zed\ProductSetStorage\Communication\Plugin\Event\Subscriber\ProductSetStorageEventSubscriber;
 use Spryker\Zed\ProductStorage\Communication\Plugin\Event\Subscriber\ProductStorageEventSubscriber;
+use Spryker\Zed\Publisher\Communication\Plugin\Event\PublisherSubscriber;
 use Spryker\Zed\TaxProductStorage\Communication\Plugin\Event\Subscriber\TaxProductStorageSubscriber;
 use Spryker\Zed\TaxStorage\Communication\Plugin\Event\Subscriber\TaxStorageSubscriber;
 use Spryker\Zed\UrlStorage\Communication\Plugin\Event\Subscriber\UrlStorageEventSubscriber;
@@ -64,7 +68,7 @@ class EventDependencyProvider extends SprykerEventDependencyProvider
     /**
      * @return \Spryker\Zed\Event\Dependency\EventSubscriberCollectionInterface
      */
-    public function getEventSubscriberCollection()
+    public function getEventSubscriberCollection(): EventSubscriberCollectionInterface
     {
         $eventSubscriberCollection = parent::getEventSubscriberCollection();
 
@@ -85,8 +89,6 @@ class EventDependencyProvider extends SprykerEventDependencyProvider
         $eventSubscriberCollection->add(new ProductImageStorageEventSubscriber());
         $eventSubscriberCollection->add(new CategoryImageStorageEventSubscriber());
         $eventSubscriberCollection->add(new ProductOptionStorageEventSubscriber());
-        $eventSubscriberCollection->add(new ProductRelationStorageEventSubscriber());
-        $eventSubscriberCollection->add(new ProductLabelStorageEventSubscriber());
         $eventSubscriberCollection->add(new ProductSetStorageEventSubscriber());
         $eventSubscriberCollection->add(new FileManagerStorageSubscriber());
         $eventSubscriberCollection->add(new ProductSearchConfigStorageEventSubscriber());
@@ -114,13 +116,17 @@ class EventDependencyProvider extends SprykerEventDependencyProvider
         $eventSubscriberCollection->add(new CmsPageSearchEventSubscriber());
         $eventSubscriberCollection->add(new ProductSetPageSearchEventSubscriber());
         $eventSubscriberCollection->add(new ProductPageSearchEventSubscriber());
-        $eventSubscriberCollection->add(new ProductLabelSearchEventSubscriber());
         $eventSubscriberCollection->add(new ProductConcretePageSearchProductAbstractEventSubscriber());
         $eventSubscriberCollection->add(new ProductConcretePageSearchProductEventSubscriber());
         $eventSubscriberCollection->add(new ProductConcretePageSearchProductLocalizedAttributesEventSubscriber());
-        $eventSubscriberCollection->add(new MerchantOpeningHoursStorageEventSubscriber());
         $eventSubscriberCollection->add(new ProductMeasurementUnitStorageEventSubscriber());
         $eventSubscriberCollection->add(new ProductPackagingUnitStorageEventSubscriber());
+
+        $eventSubscriberCollection->add(new MerchantSearchEventSubscriber());
+        $eventSubscriberCollection->add(new MerchantProductOfferSearchEventSubscriber());
+
+        $eventSubscriberCollection->add(new PublisherSubscriber());
+
 
         return $eventSubscriberCollection;
     }

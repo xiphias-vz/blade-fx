@@ -27,13 +27,15 @@ use Pyz\Yves\CustomerPage\Plugin\Provider\CustomerAuthenticationSuccessHandler;
 use Pyz\Yves\CustomerPage\Plugin\Provider\CustomerUserProvider;
 use Pyz\Yves\CustomerPage\Plugin\Provider\CustomerUserProviderInterface;
 use Pyz\Yves\MerchantSwitcherWidget\Plugin\SelectedMerchantCookiePlugin;
+use Pyz\Yves\MerchantSwitcherWidget\Resolver\ShopContextResolver;
 use Pyz\Yves\ShopApplication\ShopApplicationDependencyProvider;
 use Spryker\Client\Session\SessionClientInterface;
-use Spryker\Yves\Kernel\Plugin\Pimple;
+use Spryker\Yves\Messenger\FlashMessenger\FlashMessengerInterface;
 use SprykerShop\Yves\CustomerPage\Authenticator\CustomerAuthenticatorInterface;
 use SprykerShop\Yves\CustomerPage\CustomerPageFactory as SprykerShopCustomerPageFactory;
 use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
 use Twig\Environment;
+use Twig\Loader\FilesystemLoader;
 
 /**
  * @method \Pyz\Yves\CustomerPage\CustomerPageConfig getConfig()
@@ -102,9 +104,17 @@ class CustomerPageFactory extends SprykerShopCustomerPageFactory
     /**
      * @return \Twig\Environment
      */
-    public function getTwigEnvironment(): Environment
+    protected function createTwigEnvironment()
     {
-        return (new Pimple())->getApplication()['twig'];
+        return new Environment($this->createTwigLoaderFilesystem());
+    }
+
+    /**
+     * @return \Twig\Loader\FilesystemLoader
+     */
+    protected function createTwigLoaderFilesystem()
+    {
+        return new FilesystemLoader();
     }
 
     /**
@@ -154,7 +164,7 @@ class CustomerPageFactory extends SprykerShopCustomerPageFactory
      */
     public function getCsrfTokenManager(): CsrfTokenManagerInterface
     {
-        return $this->getApplication()->get(ShopApplicationDependencyProvider::SERVICE_FORM_CSRF_PROVIDER);
+        return $this->getProvidedDependency(CustomerPageDependencyProvider::SERVICE_FORM_CSRF_PROVIDER);
     }
 
     /**
@@ -235,5 +245,21 @@ class CustomerPageFactory extends SprykerShopCustomerPageFactory
     public function createProfileController(): ProfileController
     {
         return new ProfileController();
+    }
+
+    /**
+     * @return \Pyz\Yves\MerchantSwitcherWidget\Resolver\ShopContextResolver
+     */
+    public function createShopContextResolver(): ShopContextResolver
+    {
+        return new ShopContextResolver($this->getContainer());
+    }
+
+    /**
+     * @return \Spryker\Yves\Messenger\FlashMessenger\FlashMessengerInterface
+     */
+    public function getFlashMessenger(): FlashMessengerInterface
+    {
+        return $this->getProvidedDependency(CustomerPageDependencyProvider::SERVICE_FLASH_MESSENGER);
     }
 }

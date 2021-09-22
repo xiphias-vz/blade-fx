@@ -7,7 +7,9 @@
 
 namespace Pyz\Zed\DataImport;
 
+use Generated\Shared\Transfer\DataImportConfigurationActionTransfer;
 use Generated\Shared\Transfer\DataImporterConfigurationTransfer;
+use Generated\Shared\Transfer\DataImporterReaderConfigurationTransfer;
 use Pyz\Shared\DataImport\DataImportConfig as SharedDataImportConfig;
 use Pyz\Shared\DataImport\DataImportConstants;
 use Pyz\Shared\ProductDetailPage\ProductDetailPageConstants;
@@ -69,6 +71,16 @@ class DataImportConfig extends SprykerDataImportConfig
     public const IMPORT_ALTERNATIVE_EAN = 'alternative-ean';
     public const IMPORT_ORDER_PICKZONE_COLOR = 'order_pickzone_color';
     public const IMPORT_COUNTRY_LOCALIZED = 'country-localized';
+    public const IMPORT_TYPE_MERCHANT = 'merchant';
+    public const IMPORT_TYPE_MERCHANT_REGION = 'merchant-region';
+
+    /**
+     * @return string|null
+     */
+    public function getDefaultYamlConfigPath(): ?string
+    {
+        return APPLICATION_ROOT_DIR . DIRECTORY_SEPARATOR . 'data/import/local/full_DE.yml';
+    }
 
     /**
      * @return \Generated\Shared\Transfer\DataImporterConfigurationTransfer
@@ -525,5 +537,28 @@ class DataImportConfig extends SprykerDataImportConfig
     public function getDataImportFilesFolderName(): string
     {
         return $this->get(DataImportConstants::SFTP_DATA_IMPORT_FILES_FOLDER_NAME, '');
+    }
+
+    /**
+     * @api
+     *
+     * @param \Generated\Shared\Transfer\DataImportConfigurationActionTransfer $dataImportConfigurationActionTransfer
+     *
+     * @return \Generated\Shared\Transfer\DataImporterConfigurationTransfer
+     */
+    public function buildImporterConfigurationByDataImportConfigAction(
+        DataImportConfigurationActionTransfer $dataImportConfigurationActionTransfer
+    ): DataImporterConfigurationTransfer {
+        $dataImportReaderConfigurationTransfer = new DataImporterReaderConfigurationTransfer();
+        $dataImportReaderConfigurationTransfer
+            ->setFileName($dataImportConfigurationActionTransfer->getSource())
+            ->addDirectory($this->getDataImportRootPath());
+
+        $dataImporterConfigurationTransfer = new DataImporterConfigurationTransfer();
+        $dataImporterConfigurationTransfer
+            ->setImportType($dataImportConfigurationActionTransfer->getDataEntity())
+            ->setReaderConfiguration($dataImportReaderConfigurationTransfer);
+
+        return $dataImporterConfigurationTransfer;
     }
 }

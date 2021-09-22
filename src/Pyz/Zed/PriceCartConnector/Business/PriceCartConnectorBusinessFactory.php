@@ -22,6 +22,7 @@ class PriceCartConnectorBusinessFactory extends SpyPriceCartConnectorBusinessFac
     {
         return new AvailableItemsForStoreFilter(
             $this->getAvailabilityFacade(),
+            $this->getCartItemQuantityCounterStrategyPlugins(),
             $this->addCartMessengerFacade()
         );
     }
@@ -40,5 +41,13 @@ class PriceCartConnectorBusinessFactory extends SpyPriceCartConnectorBusinessFac
     public function addCartMessengerFacade()
     {
         return $this->getProvidedDependency(PriceCartConnectorDependencyProvider::FACADE_CART_MESSENGER);
+    }
+
+    /**
+     * @return \Spryker\Zed\AvailabilityCartConnectorExtension\Dependency\Plugin\CartItemQuantityCounterStrategyPluginInterface[]
+     */
+    public function getCartItemQuantityCounterStrategyPlugins(): array
+    {
+        return $this->getProvidedDependency(PriceCartConnectorDependencyProvider::PLUGINS_CART_ITEM_QUANTITY_COUNTER_STRATEGY);
     }
 }

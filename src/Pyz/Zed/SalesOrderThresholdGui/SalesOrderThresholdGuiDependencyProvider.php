@@ -9,6 +9,9 @@ namespace Pyz\Zed\SalesOrderThresholdGui;
 
 use Pyz\Zed\SalesOrderThresholdGui\Communication\Plugin\FormExpander\GlobalHardMaximumThresholdFormExpanderPlugin;
 use Spryker\Zed\SalesOrderThresholdGui\Communication\Plugin\FormExpander\GlobalHardThresholdFormExpanderPlugin;
+use Spryker\Zed\SalesOrderThresholdGui\Communication\Plugin\FormExpander\GlobalSoftThresholdFixedFeeFormExpanderPlugin;
+use Spryker\Zed\SalesOrderThresholdGui\Communication\Plugin\FormExpander\GlobalSoftThresholdFlexibleFeeFormExpanderPlugin;
+use Spryker\Zed\SalesOrderThresholdGui\Communication\Plugin\FormExpander\GlobalSoftThresholdWithMessageFormExpanderPlugin;
 use Spryker\Zed\SalesOrderThresholdGui\SalesOrderThresholdGuiDependencyProvider as SprykerSalesOrderThresholdGuiDependencyProvider;
 
 class SalesOrderThresholdGuiDependencyProvider extends SprykerSalesOrderThresholdGuiDependencyProvider
@@ -20,6 +23,9 @@ class SalesOrderThresholdGuiDependencyProvider extends SprykerSalesOrderThreshol
     {
         return [
             new GlobalHardThresholdFormExpanderPlugin(),
+            new GlobalSoftThresholdWithMessageFormExpanderPlugin(),
+            new GlobalSoftThresholdFixedFeeFormExpanderPlugin(),
+            new GlobalSoftThresholdFlexibleFeeFormExpanderPlugin(),
             new GlobalHardMaximumThresholdFormExpanderPlugin(),
         ];
     }

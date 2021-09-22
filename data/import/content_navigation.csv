@@ -1,0 +1,10 @@
+key,name,description,navigation_key.default,navigation_key.en_US,navigation_key.de_DE
+navigation-main,Top Navigation,,MAIN_NAVIGATION,,
+navigation-footer,Footer,,FOOTER_NAVIGATION,,
+navigation-footer-services,Footer,,FOOTER_NAVIGATION_SERVICES,,
+navigation-footer-sortiment,Footer,,FOOTER_NAVIGATION_SORTIMENT,,
+navigation-social,Social links,,SOCIAL_LINKS,,
+navigation-header,Top Navigation Desktop,,MAIN_NAVIGATION_DESKTOP,,
+navigation-categories,Popular Categories,,POPULAR_CATEGORIES,,
+navigation-footer-categories,Footer Categories,,FOOTER_NAVIGATION_CATEGORIES,,
+navigation-footer-element,Navigation footer element,,NAVIGATION_FOOTER_ELEMENT,,

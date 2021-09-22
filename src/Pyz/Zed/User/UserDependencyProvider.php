@@ -24,6 +24,11 @@ class UserDependencyProvider extends SprykerUserDependencyProvider
     public const FACADE_ACL = 'FACADE_ACL';
 
     /**
+     * @uses \Spryker\Zed\Form\Communication\Plugin\Application\FormApplicationPlugin::SERVICE_FORM_CSRF_PROVIDER
+     */
+    public const SERVICE_FORM_CSRF_PROVIDER = 'form.csrf_provider';
+
+    /**
      * @param \Spryker\Zed\Kernel\Container $container
      *
      * @return \Spryker\Zed\Kernel\Container
@@ -48,6 +53,7 @@ class UserDependencyProvider extends SprykerUserDependencyProvider
         $container = $this->addUserService($container);
         $container = $this->addUserFacade($container);
         $container = $this->addAclFacade($container);
+        $container = $this->addCsrfProviderService($container);
 
         return $container;
     }
@@ -159,6 +165,20 @@ class UserDependencyProvider extends SprykerUserDependencyProvider
         $container[static::FACADE_USER] = function (Container $container) {
             return new SalesToUserBridge($container->getLocator()->user()->facade());
         };
+
+        return $container;
+    }
+
+    /**
+     * @param \Spryker\Zed\Kernel\Container $container
+     *
+     * @return \Spryker\Zed\Kernel\Container
+     */
+    protected function addCsrfProviderService(Container $container): Container
+    {
+        $container->set(static::SERVICE_FORM_CSRF_PROVIDER, function (Container $container) {
+            return $container->getApplicationService(static::SERVICE_FORM_CSRF_PROVIDER);
+        });
 
         return $container;
     }

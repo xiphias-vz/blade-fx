@@ -50,7 +50,7 @@ tag: 'dev'
 
 environment: docker_dev
 image:
-    tag: spryker/php:7.3-alpine3.12
+    tag: spryker/php:7.4-alpine3.12
     php:
         ini:
             "memory_limit": 2048m
@@ -273,5 +273,8 @@ docker:
 
         docker-sync:
             platforms:
-                - macos
                 - windows
+
+        mutagen:
+            platforms:
+                - macos

@@ -14,6 +14,7 @@ use Spryker\Client\Kernel\Container;
 class TimeSlotDependencyProvider extends AbstractDependencyProvider
 {
     public const CLIENT_MERCHANT_STORAGE = 'CLIENT_MERCHANT_STORAGE';
+    public const CLIENT_MERCHANT_SEARCH = 'CLIENT_MERCHANT_SEARCH';
     public const CLIENT_QUOTE = 'CLIENT_QUOTE';
     public const CLIENT_TIME_SLOT_STORAGE = 'CLIENT_TIME_SLOT_STORAGE';
     public const SERVICE_TIME_SLOT = 'SERVICE_TIME_SLOT';
@@ -35,6 +36,7 @@ class TimeSlotDependencyProvider extends AbstractDependencyProvider
         $container = $this->addTimeSlotService($container);
         $container = $this->addDateTimeWithZoneService($container);
         $container = $this->addZedRequestClient($container);
+        $container = $this->addMerchantSearchClient($container);
 
         return $container;
     }
@@ -132,6 +134,20 @@ class TimeSlotDependencyProvider extends AbstractDependencyProvider
     {
         $container->set(self::SERVICE_DATE_TIME_WITH_ZONE, function (Container $container): DateTimeWithZoneServiceInterface {
             return $container->getLocator()->dateTimeWithZone()->service();
+        });
+
+        return $container;
+    }
+
+    /**
+     * @param \Spryker\Client\Kernel\Container $container
+     *
+     * @return \Spryker\Client\Kernel\Container
+     */
+    protected function addMerchantSearchClient(Container $container): Container
+    {
+        $container->set(static::CLIENT_MERCHANT_SEARCH, function (Container $container) {
+            return $container->getLocator()->merchantSearch()->client();
         });
 
         return $container;

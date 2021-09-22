@@ -33,6 +33,8 @@
         <behavior name="event">
             <parameter name="spy_merchant_all" column="*"/>
             <parameter name="spy_merchant_fk_store" column="fk_store" keep-additional="true"/>
+            <parameter name="spy_merchant-name" column="name"/>
+            <parameter name="spy_merchant-is_active" column="is_active"/>
         </behavior>
     </table>
 

@@ -8,8 +8,8 @@
 {% define data = {
     url: '/',
     searchUrl: path('search'),
-    cartQuantity: app['cart.quantity'] | default,
-    cartAmount: app['cart.amount'] | default,
+    cartQuantity: getCartQuantity(),
+    cartAmount: cartAmount is defined ? cartAmount : app['cart.amount'] | default,
     showStoreSwitches:true,
 } %}
 

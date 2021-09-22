@@ -54,7 +54,7 @@ class MerchantSwitcherWidgetFactory extends SprykerMerchantSwitcherWidgetFactory
      */
     public function createShopContextResolver(): ShopContextResolver
     {
-        return new ShopContextResolver($this->getApplication());
+        return new ShopContextResolver($this->getContainer());
     }
 
     /**
@@ -89,7 +89,7 @@ class MerchantSwitcherWidgetFactory extends SprykerMerchantSwitcherWidgetFactory
      */
     public function getCsrfTokenManager(): CsrfTokenManagerInterface
     {
-        return $this->getApplication()->get(ShopApplicationDependencyProvider::SERVICE_FORM_CSRF_PROVIDER);
+        return $this->getProvidedDependency(MerchantSwitcherWidgetDependencyProvider::SERVICE_FORM_CSRF_PROVIDER);
     }
 
     /**
@@ -99,7 +99,7 @@ class MerchantSwitcherWidgetFactory extends SprykerMerchantSwitcherWidgetFactory
     {
         return new SelectedMerchantCookie(
             $this->getCookies(),
-            $this->getRequest(),
+            $this->getRequestStack(),
             $this->getConfig()
         );
     }

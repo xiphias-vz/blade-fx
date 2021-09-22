@@ -17,7 +17,6 @@ use Spryker\Yves\Kernel\Exception\ReadOnlyException;
 use Spryker\Yves\Kernel\Widget\WidgetContainerAwareTrait;
 use Spryker\Zed\Kernel\BundleConfigResolverAwareTrait;
 use Spryker\Zed\Kernel\Communication\FactoryResolverAwareTrait;
-use Spryker\Zed\Kernel\Communication\Plugin\Pimple;
 // @codingStandardsIgnoreEnd
 abstract class AbstractWidget implements WidgetInterface
 {
@@ -126,16 +125,6 @@ abstract class AbstractWidget implements WidgetInterface
     public function offsetUnset($offset): void
     {
         throw new ReadOnlyException('This is a read only object.');
-    }
-
-    /**
-     * @deprecated Use {@link \Spryker\Yves\Kernel\Widget\AbstractWidget::getGlobalContainer()} instead.
-     *
-     * @return \Spryker\Service\Container\Container
-     */
-    protected function getApplication()
-    {
-        return (new Pimple())->getApplication();
     }
 
     /**

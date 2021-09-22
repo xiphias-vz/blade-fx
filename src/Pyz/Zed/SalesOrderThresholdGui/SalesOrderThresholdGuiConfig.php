@@ -23,7 +23,9 @@ class SalesOrderThresholdGuiConfig extends SprykerSalesOrderThresholdGuiConfig
     ];
 
     /**
-     * @return \Spryker\Zed\SalesOrderThresholdGui\Communication\Form\Mapper\ThresholdGroup\GlobalThresholdFormMapperInterface[]
+     * @phpstan-return class-string<\Spryker\Zed\SalesOrderThresholdGui\Communication\Form\Mapper\ThresholdGroup\GlobalThresholdFormMapperInterface>[]
+     *
+     * @return string[]
      */
     public function getStrategyGroupToFormTypeMap(): array
     {

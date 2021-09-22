@@ -16,7 +16,7 @@ use Spryker\Zed\DataImport\Business\DataImportBusinessFactory;
 /**
  * @method \Pyz\Zed\MerchantDataImport\MerchantDataImportConfig getConfig()
  */
-class MerchantDataImportBusinessFactory extends DataImportBusinessFactory
+class MerchantDataImportBusinessFactory extends \Spryker\Zed\MerchantDataImport\Business\MerchantDataImportBusinessFactory
 {
     /**
      * @return \Spryker\Zed\DataImport\Business\Model\DataImporterAfterImportAwareInterface|\Spryker\Zed\DataImport\Business\Model\DataImporterBeforeImportAwareInterface|\Spryker\Zed\DataImport\Business\Model\DataImporterInterface|\Spryker\Zed\DataImport\Business\Model\DataSet\DataSetStepBrokerAwareInterface

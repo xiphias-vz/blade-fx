@@ -17,6 +17,14 @@ use Pyz\Zed\DataImport\DataImportConfig as IntDataImportConfig;
 class DataImportConfig extends IntDataImportConfig
 {
     /**
+     * @return string|null
+     */
+    public function getDefaultYamlConfigPath(): ?string
+    {
+        return APPLICATION_ROOT_DIR . DIRECTORY_SEPARATOR . 'data/import/local/full_CZ.yml';
+    }
+
+    /**
      * @return \Generated\Shared\Transfer\DataImporterConfigurationTransfer
      */
     public function getProductDataImporterConfiguration()
@@ -45,7 +53,7 @@ class DataImportConfig extends IntDataImportConfig
      */
     public function getProductCategoryImporterConfiguration()
     {
-        return $this->buildBaseImporterConfiguration('spryker/product_category_CZ.csv', static::IMPORT_TYPE_PRODUCT_CATEGORY, SharedDataImportConfig::IMPORT_CSV_BASE_DELIMITER);
+        return $this->buildBaseImporterConfiguration('spryker/1.globusCZ_categories.csv', static::IMPORT_TYPE_PRODUCT_CATEGORY, SharedDataImportConfig::IMPORT_CSV_BASE_DELIMITER);
     }
 
     /**

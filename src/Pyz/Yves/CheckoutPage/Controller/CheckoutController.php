@@ -341,4 +341,29 @@ class CheckoutController extends SprykerCheckoutControllerAlias
 
         return new JsonResponse($weekDayTimeSlotCapacity->getTimeSlots()["click_and_collect"]);
     }
+
+    /**
+     * @param \Symfony\Component\HttpFoundation\Request|null $request
+     *
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Spryker\Yves\Kernel\View\View
+     */
+    public function errorAction(?Request $request = null)
+    {
+        if ($request === null) {
+            return $this->view([], [], '@CheckoutPage/views/order-fail/order-fail.twig');
+        }
+
+        $response = $this->createStepProcess()->process($request);
+
+        if (!is_array($response)) {
+            //Temp fix for infinite redirect
+            if($request->getRequestUri() !== $response->getTargetUrl()) {
+                return $response;
+            }
+
+            $response = [];
+        }
+
+        return $this->view($response, [], '@CheckoutPage/views/order-fail/order-fail.twig');
+    }
 }

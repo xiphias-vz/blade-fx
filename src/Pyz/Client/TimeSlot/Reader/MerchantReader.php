@@ -7,17 +7,25 @@
 
 namespace Pyz\Client\TimeSlot\Reader;
 
+use Generated\Shared\Transfer\MerchantSearchRequestTransfer;
 use Generated\Shared\Transfer\MerchantTransfer;
 use Pyz\Client\MerchantStorage\MerchantStorageClientInterface;
 use Pyz\Client\TimeSlot\Exception\MerchantNotFound;
+use Pyz\Client\TimeSlot\Expander\MerchantStorageDataExpanderInterface;
+use Spryker\Client\MerchantSearch\MerchantSearchClientInterface;
 use Spryker\Client\Quote\QuoteClientInterface;
 
 class MerchantReader implements MerchantReaderInterface
 {
     /**
-     * @var \Pyz\Client\MerchantStorage\MerchantStorageClientInterface
+     * @uses \Spryker\Client\MerchantSearch\Plugin\Elasticsearch\ResultFormatter\MerchantSearchResultFormatterPlugin::NAME
      */
-    protected $merchantStorageClient;
+    protected const MERCHANT_SEARCH_COLLECTION = 'MerchantSearchCollection';
+
+    /**
+     * @var \Spryker\Client\MerchantSearch\MerchantSearchClientInterface
+     */
+    protected $merchantSearchClient;
 
     /**
      * @var \Spryker\Client\Quote\QuoteClientInterface
@@ -25,15 +33,22 @@ class MerchantReader implements MerchantReaderInterface
     protected $quoteClient;
 
     /**
-     * @param \Pyz\Client\MerchantStorage\MerchantStorageClientInterface $merchantStorageClient
+     * @var MerchantStorageDataExpanderInterface
+     */
+    protected $merchantStorageDataExpander;
+
+    /**
+     * @param \Spryker\Client\MerchantSearch\MerchantSearchClientInterface $merchantSearchClient
      * @param \Spryker\Client\Quote\QuoteClientInterface $quoteClient
      */
     public function __construct(
-        MerchantStorageClientInterface $merchantStorageClient,
-        QuoteClientInterface $quoteClient
+        MerchantSearchClientInterface $merchantSearchClient,
+        QuoteClientInterface $quoteClient,
+        MerchantStorageDataExpanderInterface $merchantStorageDataExpander
     ) {
-        $this->merchantStorageClient = $merchantStorageClient;
+        $this->merchantSearchClient = $merchantSearchClient;
         $this->quoteClient = $quoteClient;
+        $this->merchantStorageDataExpander = $merchantStorageDataExpander;
     }
 
     /**
@@ -43,17 +58,31 @@ class MerchantReader implements MerchantReaderInterface
      */
     public function getCurrentMerchant(): MerchantTransfer
     {
-        $merchantList = $this->merchantStorageClient->getMerchantsList();
+        $merchantSearchTransfers = $this->getMerchantSearchTransfers();
         $currentMerchantReference = $this->quoteClient->getQuote()->getMerchantReference();
 
-        foreach ($merchantList->getMerchants() as $merchantTransfer) {
+        foreach ($merchantSearchTransfers as $merchantTransfer) {
             if ($merchantTransfer->getMerchantReference() === $currentMerchantReference) {
-                return $merchantTransfer;
+                $merchantTransfer = (new MerchantTransfer())->fromArray($merchantTransfer->toArray(), true);
+
+                return $this->merchantStorageDataExpander->expand($merchantTransfer);
             }
         }
 
         throw new MerchantNotFound(
             "Current user Merchant with merchantReference: `$currentMerchantReference` was't found in the merchant storage"
         );
+    }
+
+    /**
+     * @return \ArrayObject|\Generated\Shared\Transfer\MerchantSearchTransfer[]
+     */
+    protected function getMerchantSearchTransfers()
+    {
+        $merchantSearchCollectionTransfer = $this->merchantSearchClient
+            ->search(new MerchantSearchRequestTransfer())[static::MERCHANT_SEARCH_COLLECTION];
+
+        return $merchantSearchCollectionTransfer
+            ->getMerchants();
     }
 }

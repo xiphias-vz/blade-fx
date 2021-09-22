@@ -38,7 +38,7 @@ class MerchantSalesOrderMapper extends SprykerMerchantSalesOrderMapper
             );
 
             $merchantSalesOrderCollectionTransfer->getMerchantSalesOrders()->offsetSet(
-                $merchantSalesOrderTransfer->getFkSalesOrder(),
+                $merchantSalesOrderEntity->getFkSalesOrder(),
                 $merchantSalesOrderTransfer
             );
         }
@@ -65,5 +65,18 @@ class MerchantSalesOrderMapper extends SprykerMerchantSalesOrderMapper
         $idUser = (int)$virtualColumns[OrderPickingBlockTransfer::ID_USER];
 
         return $merchantSalesOrderTransfer->setFkUser($idUser);
+    }
+
+    /**
+     * @param \Orm\Zed\MerchantSalesOrder\Persistence\SpyMerchantSalesOrder $merchantSalesOrderEntity
+     * @param \Generated\Shared\Transfer\MerchantSalesOrderTransfer $merchantSalesOrderTransfer
+     *
+     * @return \Generated\Shared\Transfer\MerchantSalesOrderTransfer
+     */
+    public function mapMerchantSalesOrderEntityToMerchantSalesOrderTransfer(
+        SpyMerchantSalesOrder $merchantSalesOrderEntity,
+        MerchantSalesOrderTransfer $merchantSalesOrderTransfer
+    ): MerchantSalesOrderTransfer {
+        return $merchantSalesOrderTransfer->fromArray($merchantSalesOrderEntity->toArray(), true);
     }
 }

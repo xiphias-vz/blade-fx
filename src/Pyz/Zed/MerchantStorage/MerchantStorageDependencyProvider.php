@@ -9,11 +9,12 @@ namespace Pyz\Zed\MerchantStorage;
 
 use Spryker\Zed\Kernel\AbstractBundleDependencyProvider;
 use Spryker\Zed\Kernel\Container;
+use Spryker\Zed\MerchantStorage\MerchantStorageDependencyProvider as SprykerMerchantStorageDependencyProvider;
 
 /**
  * @method \Pyz\Zed\MerchantStorage\MerchantStorageConfig getConfig()
  */
-class MerchantStorageDependencyProvider extends AbstractBundleDependencyProvider
+class MerchantStorageDependencyProvider extends SprykerMerchantStorageDependencyProvider
 {
     public const FACADE_EVENT_BEHAVIOR = 'FACADE_EVENT_BEHAVIOR';
     public const FACADE_STORE = 'FACADE_STORE';
@@ -37,7 +38,7 @@ class MerchantStorageDependencyProvider extends AbstractBundleDependencyProvider
      *
      * @return \Spryker\Zed\Kernel\Container
      */
-    public function provideBusinessLayerDependencies(Container $container)
+    public function provideBusinessLayerDependencies(Container $container): Container
     {
         parent::provideBusinessLayerDependencies($container);
         $container = $this->addEventBehaviorFacade($container);
@@ -64,7 +65,7 @@ class MerchantStorageDependencyProvider extends AbstractBundleDependencyProvider
      *
      * @return \Spryker\Zed\Kernel\Container
      */
-    protected function addStoreFacade(Container $container)
+    protected function addStoreFacade(Container $container): Container
     {
         $container->set(static::FACADE_STORE, function (Container $container) {
             return $container->getLocator()->store()->facade();

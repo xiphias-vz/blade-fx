@@ -25,7 +25,7 @@ class PaymentDependencyProvider extends SprykerPaymentDependencyProvider
      *
      * @return \Spryker\Zed\Kernel\Container
      */
-    public function provideBusinessLayerDependencies(Container $container)
+    public function provideBusinessLayerDependencies(Container $container): Container
     {
         $container = parent::provideBusinessLayerDependencies($container);
         $container = $this->extendPaymentPlugins($container);
@@ -34,7 +34,7 @@ class PaymentDependencyProvider extends SprykerPaymentDependencyProvider
     }
 
     /**
-     * @return \Spryker\Zed\Payment\Dependency\Plugin\Payment\PaymentMethodFilterPluginInterface[]
+     * @return \Spryker\Zed\PaymentExtension\Dependency\Plugin\PaymentMethodFilterPluginInterface[]
      */
     protected function getPaymentMethodFilterPlugins(): array
     {

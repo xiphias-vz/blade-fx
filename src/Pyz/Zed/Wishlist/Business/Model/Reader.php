@@ -8,6 +8,7 @@
 namespace Pyz\Zed\Wishlist\Business\Model;
 
 use ArrayObject;
+use Generated\Shared\Transfer\WishlistItemMetaTransfer;
 use Spryker\Zed\Wishlist\Business\Model\Reader as SprykerReader;
 
 class Reader extends SprykerReader
@@ -26,7 +27,10 @@ class Reader extends SprykerReader
         $wishlistItemMetaTransfers = new ArrayObject();
         foreach ($wishlistItemEntities as $wishlistItemEntity) {
             $productEntity = $wishlistItemEntity->getSpyProduct();
-            $wishlistItemMetaTransfer = $this->convertProductEntityToWishlistItemMetaTransfer($productEntity);
+            $wishlistItemMetaTransfer = new WishlistItemMetaTransfer();
+            $wishlistItemMetaTransfer->fromArray($wishlistItemEntity->toArray(), true);
+            $wishlistItemMetaTransfer = $this->transferMapper
+                ->mapProductEntityToWishlistItemMetaTransfer($productEntity, $wishlistItemMetaTransfer);
             $wishlistItemMetaTransfer->setQuantity($wishlistItemEntity->getQuantity());
             $wishlistItemMetaTransfers->append($wishlistItemMetaTransfer);
         }

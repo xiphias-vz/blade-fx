@@ -19,7 +19,6 @@ use Pyz\Zed\Mail\Business\MailFacadeInterface;
 use Pyz\Zed\Sales\Business\SalesFacadeInterface;
 use Spryker\Shared\Kernel\Store;
 use Spryker\Zed\Kernel\Business\AbstractBusinessFactory;
-use Spryker\Zed\Kernel\Communication\Plugin\Pimple;
 use Spryker\Zed\SequenceNumber\Business\SequenceNumberFacadeInterface;
 use Spryker\Zed\Translator\Business\TranslatorFacadeInterface;
 use Twig\Environment;
@@ -100,9 +99,9 @@ class InvoiceBusinessFactory extends AbstractBusinessFactory
     /**
      * @return \Twig\Environment
      */
-    public function createTwigEnvironment(): Environment
+    protected function createTwigEnvironment(): Environment
     {
-        return (new Pimple())->getApplication()['twig'];
+        return $this->getProvidedDependency(InvoiceDependencyProvider::SERVICE_TWIG);
     }
 
     /**

@@ -13,13 +13,12 @@ use Generated\Shared\Transfer\ProductViewTransfer;
 use Generated\Shared\Transfer\QuoteTransfer;
 use Pyz\Shared\Messages\MessagesConfig;
 use Pyz\Shared\OrderDetail\OrderDetailConstants;
+use Pyz\Yves\CartPage\Plugin\Router\CartPageRouteProviderPlugin;
 use Spryker\Shared\Messenger\MessengerConfig;
-use Spryker\Yves\Kernel\View\View;
 use SprykerShop\Yves\CartPage\Controller\CartController as SprykerCartController;
-use SprykerShop\Yves\CartPage\Plugin\Provider\CartControllerProvider;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Security\Csrf\CsrfToken;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * @method \Pyz\Yves\CartPage\CartPageFactory getFactory()
@@ -34,6 +33,10 @@ class CartController extends SprykerCartController
     protected const CHANGE_CART_CSRF_TOKEN_NAME = 'change-cart';
     protected const CLEAR_CART_CSRF_TOKEN_NAME = 'clear-cart';
     protected const REQUEST_PARAM_CSRF_TOKEN = 'token';
+    protected const REQUEST_PARAMETER_TOKEN = 'token';
+    protected const REQUEST_ATTRIBUTE_PRODUCT_ABSTRACT_ID = 'productAbstractId';
+
+    protected const KEY_ERROR = 'error';
 
     protected const DEFAULT_QUANTITY = 1;
 
@@ -73,7 +76,7 @@ class CartController extends SprykerCartController
      *
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
-    public function addAction(Request $request, $sku)
+    public function addAction(Request $request, $sku): RedirectResponse
     {
         if ($this->isCsrfTokenValid(static::ADD_TO_CART_CSRF_TOKEN_NAME, $request)) {
             $this->addItemFromPdp($request, $sku);
@@ -112,57 +115,46 @@ class CartController extends SprykerCartController
 
     /**
      * @param \Symfony\Component\HttpFoundation\Request $request
-     * @param int $productAbstractId
      *
-     * @return \Spryker\Yves\Kernel\View\View|\Symfony\Component\HttpFoundation\RedirectResponse
+     * @return array
      */
-    public function addAjaxAction(Request $request, $productAbstractId)
+    protected function executeAddAjaxAction(Request $request): array
     {
-        if ($request->getMethod() !== Request::METHOD_POST) {
-            $this->addErrorMessage(static::MESSAGE_AJAX_ADD_TO_CART_INVALID_ACTION);
-
-            return $this->redirectResponseExternal($request->headers->get(static::REQUEST_HEADER_REFERER, '/'));
-        }
-
-        $data = [];
         if (!$this->isCsrfTokenValid(static::ADD_TO_CART_AJAX_CSRF_TOKEN_NAME, $request)) {
-            return $this->buildAddAjaxResponse([
-                'error' => MessagesConfig::MESSAGE_PERMISSION_FAILED,
-            ]);
+            return $this->createAjaxAddErrorResponse(
+                Response::HTTP_BAD_REQUEST,
+                static::MESSAGE_PERMISSION_FAILED
+            );
         }
+        $productAbstractId = $request->attributes->get(static::REQUEST_ATTRIBUTE_PRODUCT_ABSTRACT_ID);
 
         if (!$productAbstractId || !$this->canAddCartItem()) {
-            return $this->buildAddAjaxResponse($data);
+            return [];
         }
 
-        $quantity = $request->get('quantity', 1);
-        $productViewTransfer = $this->getFactory()
-            ->getProductStorageClient()
-            ->findProductAbstractViewTransfer($productAbstractId, $this->getLocale());
+        if (!$this->canAddCartItem()) {
+            return $this->createAjaxAddErrorResponse(
+                Response::HTTP_FORBIDDEN,
+                static::MESSAGE_PERMISSION_FAILED
+            );
+        }
+        $messageTransfers = $this->addItemToCart($request, $productAbstractId);
 
-        $productConcreteSku = $this->resolveProductConcreteSkuFromProductAbstractId($productViewTransfer);
-        $itemTransfer = (new ItemTransfer())
-            ->setSku($productConcreteSku)
-            ->setQuantity($quantity);
-
-        $depositProductOptions = $this->getFactory()
-            ->getDepositProductOptionClient()
-            ->getDepositProductOptionsByIdProductAbstract($productAbstractId, $productViewTransfer);
-
-        $this->addProductOptions($depositProductOptions, $itemTransfer);
-        $itemTransfer = $this->executePreAddToCartPlugins($itemTransfer, $request->request->all());
-
-        $this->getFactory()->getCartClient()->addItem($itemTransfer, $request->request->all());
-
-        $messageTransfers = $this->getFactory()
-            ->getZedRequestClient()
-            ->getResponsesErrorMessages();
+        $error = '';
 
         if (count($messageTransfers) !== 0) {
-            $data['error'] = $messageTransfers[0]->getValue();
+            $error = $messageTransfers[0]->getValue();
         }
 
-        return $this->buildAddAjaxResponse($data);
+        $cartQuantity = $this->getFactory()
+            ->getCartClient()
+            ->getItemCount();
+
+        return [
+            static::KEY_CODE => Response::HTTP_OK,
+            static::REQUEST_PARAMETER_QUANTITY => $cartQuantity,
+            static::KEY_ERROR => $error,
+        ];
     }
 
     /**
@@ -171,12 +163,12 @@ class CartController extends SprykerCartController
      *
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
-    public function changeAction(Request $request, $sku)
+    public function changeAction(Request $request, $sku): RedirectResponse
     {
         if (!$this->isCsrfTokenValid(static::CHANGE_CART_CSRF_TOKEN_NAME, $request)) {
             $this->addErrorMessage(MessagesConfig::MESSAGE_PERMISSION_FAILED);
 
-            return $this->redirectResponseInternal(CartControllerProvider::ROUTE_CART);
+            return $this->redirectResponseInternal(CartPageRouteProviderPlugin::ROUTE_NAME_CART);
         }
 
         $quantity = $request->request->getInt('quantity', static::DEFAULT_QUANTITY);
@@ -188,7 +180,7 @@ class CartController extends SprykerCartController
         if (!$this->canChangeCartItem($quantity)) {
             $this->addErrorMessage(static::MESSAGE_PERMISSION_FAILED);
 
-            return $this->redirectResponseInternal(CartControllerProvider::ROUTE_CART);
+            return $this->redirectResponseInternal(CartPageRouteProviderPlugin::ROUTE_NAME_CART);
         }
 
         $this->getFactory()
@@ -199,21 +191,7 @@ class CartController extends SprykerCartController
             ->getZedRequestClient()
             ->addResponseMessagesToMessenger();
 
-        return $this->redirectResponseInternal(CartControllerProvider::ROUTE_CART);
-    }
-
-    /**
-     * @param array $data
-     *
-     * @return \Spryker\Yves\Kernel\View\View
-     */
-    protected function buildAddAjaxResponse(array $data = []): View
-    {
-        return $this->view(
-            $data,
-            $this->getFactory()->getCartPageWidgetPlugins(),
-            '@CartPage/views/cart/cart-ajax.twig'
-        );
+        return $this->redirectResponseInternal(CartPageRouteProviderPlugin::ROUTE_NAME_CART);
     }
 
     /**
@@ -222,10 +200,32 @@ class CartController extends SprykerCartController
      *
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
-    public function removeAction(Request $request, $sku)
+    public function removeAction(Request $request, $sku): RedirectResponse
     {
         if ($this->isCsrfTokenValid(static::CHANGE_CART_CSRF_TOKEN_NAME, $request)) {
-            parent::removeAction($request, $sku);
+            if (!$this->canRemoveCartItem()) {
+                $this->addErrorMessage(static::MESSAGE_PERMISSION_FAILED);
+
+                return $this->redirectResponseInternal(CartPageRouteProviderPlugin::ROUTE_NAME_CART);
+            }
+
+            $groupKey = $request->get('groupKey', null);
+
+            if (!$this->canRemoveCartItem()) {
+                $this->addErrorMessage(static::MESSAGE_PERMISSION_FAILED);
+
+                return $this->redirectResponseInternal(CartPageRouteProviderPlugin::ROUTE_NAME_CART);
+            }
+
+            $this->getFactory()
+                ->getCartClient()
+                ->removeItem($sku, $groupKey);
+
+            $this->getFactory()
+                ->getZedRequestClient()
+                ->addResponseMessagesToMessenger();
+
+            return $this->redirectResponseInternal(CartPageRouteProviderPlugin::ROUTE_NAME_CART);
         } else {
             $this->addErrorMessage(static::MESSAGE_PERMISSION_FAILED);
         }
@@ -238,13 +238,13 @@ class CartController extends SprykerCartController
      *
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
-    protected function redirect(Request $request)
+    protected function redirect(Request $request): RedirectResponse
     {
         if ($request->headers->has(static::REQUEST_HEADER_REFERER)) {
             return $this->redirectResponseExternal($request->headers->get(static::REQUEST_HEADER_REFERER));
         }
 
-        return $this->redirectResponseInternal(CartControllerProvider::ROUTE_CART);
+        return $this->redirectResponseInternal(CartPageRouteProviderPlugin::ROUTE_NAME_CART);
     }
 
     /**
@@ -255,9 +255,14 @@ class CartController extends SprykerCartController
      */
     protected function isCsrfTokenValid(string $id, Request $request): bool
     {
+        $csrfToken = $this->createCsrfToken(
+            $id,
+            $request->get(static::REQUEST_PARAMETER_TOKEN)
+        );
+
         return $this->getFactory()
             ->getCsrfTokenManager()
-            ->isTokenValid(new CsrfToken($id, $request->request->get(static::REQUEST_PARAM_CSRF_TOKEN)));
+            ->isTokenValid($csrfToken);
     }
 
     /**
@@ -268,7 +273,6 @@ class CartController extends SprykerCartController
     protected function resolveProductConcreteSkuFromProductAbstractId(ProductViewTransfer $productViewTransfer): ?string
     {
         $productConcreteIds = $productViewTransfer->getAttributeMap()->getProductConcreteIds();
-
         if (count($productConcreteIds) === 1) {
             return $productViewTransfer->getSku();
         }
@@ -310,10 +314,39 @@ class CartController extends SprykerCartController
      *
      * @return void
      */
-    public function addItemFromPdp(Request $request, string $productAbstractId)
+    public function addItemFromPdp(Request $request, string $productAbstractId): void
     {
         $data = [];
 
+        $messageTransfers = $this->addItemToCart($request, $productAbstractId);
+
+        if (count($messageTransfers) !== 0) {
+            $data['error'] = $messageTransfers[0]->getValue();
+        }
+    }
+
+    /**
+     * @param int $code
+     * @param string $message
+     *
+     * @return array
+     */
+    protected function createAjaxAddErrorResponse(int $code, string $message = ''): array
+    {
+        return [
+            static::KEY_CODE => $code,
+            static::KEY_ERROR => $message ?? '',
+        ];
+    }
+
+    /**
+     * @param \Symfony\Component\HttpFoundation\Request $request
+     * @param int $productAbstractId
+     *
+     * @return \Generated\Shared\Transfer\MessageTransfer[]
+     */
+    protected function addItemToCart(Request $request, int $productAbstractId): array
+    {
         $quantity = $request->get('quantity', 1);
         $productViewTransfer = $this->getFactory()
             ->getProductStorageClient()
@@ -342,5 +375,7 @@ class CartController extends SprykerCartController
         } else {
             $this->addSuccessMessage(static::ADD_ITEMS_SUCCESS);
         }
+
+        return $messageTransfers;
     }
 }

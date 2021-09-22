@@ -9,13 +9,14 @@ namespace Pyz\Zed\Cart\Business;
 
 use Pyz\Zed\Cart\Business\Model\Operation;
 use Spryker\Zed\Cart\Business\CartBusinessFactory as SprykerCartBusinessFactory;
+use Spryker\Zed\Cart\Business\Model\OperationInterface;
 
 class CartBusinessFactory extends SprykerCartBusinessFactory
 {
     /**
      * @return \Spryker\Zed\Cart\Business\Model\OperationInterface
      */
-    public function createCartOperation()
+    public function createCartOperation(): OperationInterface
     {
         $operation = new Operation(
             $this->createStorageProvider(),

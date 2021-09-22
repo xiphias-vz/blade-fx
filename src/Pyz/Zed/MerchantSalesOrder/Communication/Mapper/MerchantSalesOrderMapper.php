@@ -8,9 +8,10 @@
 namespace Pyz\Zed\MerchantSalesOrder\Communication\Mapper;
 
 use DateTime;
-use Generated\Shared\Transfer\MerchantCriteriaFilterTransfer;
-use Generated\Shared\Transfer\MerchantSalesOrderTransfer;
+use Generated\Shared\Transfer\ItemTransfer;
+use Generated\Shared\Transfer\MerchantCriteriaTransfer;
 use Generated\Shared\Transfer\MerchantTransfer;
+use Generated\Shared\Transfer\OrderTransfer;
 use Generated\Shared\Transfer\QuoteTransfer;
 use Generated\Shared\Transfer\SaveOrderTransfer;
 use Pyz\Service\Shipment\ShipmentServiceInterface;
@@ -46,17 +47,21 @@ class MerchantSalesOrderMapper implements MerchantSalesOrderMapperInterface
     public function mapFromSaveOrderTransfer(
         SaveOrderTransfer $saveOrderTransfer,
         QuoteTransfer $quoteTransfer
-    ): MerchantSalesOrderTransfer {
-        $merchantSalesOrderTransfer = (new MerchantSalesOrderTransfer())
-            ->setFkSalesOrder($saveOrderTransfer->getIdSalesOrder())
-            ->setOrderReference($saveOrderTransfer->getOrderReference())
+    ): OrderTransfer {
+        $merchantTransfer = $this->findMerchant($quoteTransfer);
+        $orderTransfer = (new OrderTransfer())->fromArray($saveOrderTransfer->toArray(), true);
+
+        $orderTransfer = $orderTransfer
+            ->setMerchantReference($merchantTransfer->getMerchantReference())
+            ->setMerchantFilialNumber($merchantTransfer->getFilialNumber())
+            ->setIdSalesOrder($saveOrderTransfer->getIdSalesOrder())
             ->setRequestedDeliveryDate($this->getTimeSlotDateTime($quoteTransfer));
 
-        $merchantTransfer = $this->findMerchant($quoteTransfer);
-        $merchantSalesOrderTransfer->setFkMerchant($merchantTransfer->getIdMerchant());
-        $merchantSalesOrderTransfer->setMerchantReference($merchantTransfer->getMerchantReference());
+        foreach ($saveOrderTransfer->getOrderItems() as $saveOrderItem) {
+            $orderTransfer->addItem((new ItemTransfer())->fromArray($saveOrderItem->toArray(), true));
+        }
 
-        return $merchantSalesOrderTransfer;
+        return $orderTransfer;
     }
 
     /**
@@ -78,7 +83,7 @@ class MerchantSalesOrderMapper implements MerchantSalesOrderMapperInterface
      */
     protected function findMerchant(QuoteTransfer $quoteTransfer): MerchantTransfer
     {
-        $merchantCriteriaFilter = (new MerchantCriteriaFilterTransfer())
+        $merchantCriteriaFilter = (new MerchantCriteriaTransfer())
             ->setMerchantReference($quoteTransfer->getMerchantReference());
 
         return $this->merchantFacade->findOne($merchantCriteriaFilter);

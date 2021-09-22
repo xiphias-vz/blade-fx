@@ -7,7 +7,7 @@
 
 namespace Pyz\Zed\Merchant\Communication\FormExpander\DataProvider;
 
-use Generated\Shared\Transfer\MerchantCriteriaFilterTransfer;
+use Generated\Shared\Transfer\MerchantCriteriaTransfer;
 use Pyz\Zed\Merchant\Business\MerchantFacadeInterface;
 use Pyz\Zed\Merchant\Communication\FormExpander\MerchantFormExpander;
 
@@ -41,7 +41,7 @@ class MerchantFormDataProvider
      */
     protected function getMerchants(): array
     {
-        $merchantCollectionTransfer = $this->merchantFacade->find(new MerchantCriteriaFilterTransfer());
+        $merchantCollectionTransfer = $this->merchantFacade->get(new MerchantCriteriaTransfer());
         $options = [];
 
         foreach ($merchantCollectionTransfer->getMerchants() as $merchantTransfer) {

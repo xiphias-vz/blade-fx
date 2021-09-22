@@ -16,6 +16,7 @@ class PriceCartConnectorDependencyProvider extends SpyPriceCartConnectorDependen
 {
     public const FACADE_AVAILABILITY = 'FACADE_AVAILABILITY';
     public const FACADE_CART_MESSENGER = 'FACADE_CART_MESSENGER';
+    public const PLUGINS_CART_ITEM_QUANTITY_COUNTER_STRATEGY = 'PLUGINS_CART_ITEM_QUANTITY_COUNTER_STRATEGY';
 
     /**
      * @param \Spryker\Zed\Kernel\Container $container
@@ -55,6 +56,28 @@ class PriceCartConnectorDependencyProvider extends SpyPriceCartConnectorDependen
         $container[static::FACADE_CART_MESSENGER] = function (Container $container) {
             return new CartToMessengerBridge($container->getLocator()->messenger()->facade());
         };
+
+        return $container;
+    }
+
+    /**
+     * @return \Spryker\Zed\AvailabilityCartConnectorExtension\Dependency\Plugin\CartItemQuantityCounterStrategyPluginInterface[]
+     */
+    public function getCartItemQuantityCounterStrategyPlugins(): array
+    {
+        return [];
+    }
+
+    /**
+     * @param \Spryker\Zed\Kernel\Container $container
+     *
+     * @return \Spryker\Zed\Kernel\Container
+     */
+    protected function addCartItemQuantityCounterStrategyPlugins(Container $container): Container
+    {
+        $container->set(static::PLUGINS_CART_ITEM_QUANTITY_COUNTER_STRATEGY, function () {
+            return $this->getCartItemQuantityCounterStrategyPlugins();
+        });
 
         return $container;
     }

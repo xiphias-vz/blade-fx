@@ -15,6 +15,8 @@ use Spryker\Shared\Twig\Plugin\RoutingTwigPlugin;
 use Spryker\Shared\Twig\Plugin\SecurityTwigPlugin;
 use Spryker\Zed\Application\Communication\Plugin\Twig\ApplicationTwigPlugin;
 use Spryker\Zed\ChartGui\Communication\Plugin\Twig\Chart\ChartGuiTwigPlugin;
+use Spryker\Zed\CmsBlock\Communication\Plugin\Twig\CmsBlockTemplateTwigLoaderPlugin;
+use Spryker\Zed\CmsBlock\Communication\Plugin\Twig\CmsBlockTwigExtensionPlugin;
 use Spryker\Zed\Currency\Communication\Plugin\Twig\CurrencyTwigPlugin;
 use Spryker\Zed\Gui\Communication\Plugin\Twig\AssetsPathTwigPlugin;
 use Spryker\Zed\Gui\Communication\Plugin\Twig\Buttons\Action\BackActionButtonTwigPlugin;
@@ -93,6 +95,8 @@ class TwigDependencyProvider extends SprykerTwigDependencyProvider
             // Form buttons
             new SubmitButtonTwigPlugin(),
             new GuiFilterTwigPlugin(),
+
+            new CmsBlockTwigExtensionPlugin(),
         ];
     }
 
@@ -105,6 +109,7 @@ class TwigDependencyProvider extends SprykerTwigDependencyProvider
             new FilesystemTwigLoaderPlugin(),
             new FormFilesystemTwigLoaderPlugin(),
             new GuiTwigLoaderPlugin(),
+            new CmsBlockTemplateTwigLoaderPlugin(),
         ];
 
         if (class_exists(WebProfilerTwigLoaderPlugin::class)) {

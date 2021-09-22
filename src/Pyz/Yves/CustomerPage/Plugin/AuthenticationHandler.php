@@ -68,7 +68,7 @@ class AuthenticationHandler extends SprykerAuthenticationHandler
         if ($validAddress["code"] == 'VA') {
             $isAuthorized = true;
         }
-        $customerTransfer->setMerchantReference($this->createShopContextResolver()->resolve()->getMerchantReference());
+        $customerTransfer->setMerchantReference($this->getFactory()->createShopContextResolver()->resolve()->getMerchantReference());
         if (isset($_REQUEST['loginForm'])) {
             if (empty($customerTransfer->getEmail())) {
                 $customerTransfer->setEmail($_REQUEST['loginForm']['email']);
@@ -129,14 +129,6 @@ class AuthenticationHandler extends SprykerAuthenticationHandler
         $this->getFactory()
             ->createCustomerAuthenticator()
             ->authenticateCustomer($customerTransfer, $token);
-    }
-
-    /**
-     * @return \Pyz\Yves\MerchantSwitcherWidget\Resolver\ShopContextResolver
-     */
-    public function createShopContextResolver(): ShopContextResolver
-    {
-        return new ShopContextResolver($this->getApplication());
     }
 
     /**

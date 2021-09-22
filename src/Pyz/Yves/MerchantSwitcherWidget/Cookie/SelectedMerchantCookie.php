@@ -22,15 +22,12 @@ class SelectedMerchantCookie extends SprykerSelectedMerchantCookie
      *
      * @return void
      */
-    public function setMerchantReference(string $selectedMerchantReference): void
+    public function setMerchantReference(?string $selectedMerchantReference): void
     {
         $this->cookies->append(Cookie::create(
             $this->merchantSwitcherWidgetConfig->getMerchantSelectorCookieIdentifier(),
             $selectedMerchantReference,
-            time() + $this->merchantSwitcherWidgetConfig->getMerchantSelectorCookieTimeExpiration(),
-            '/',
-            null,
-            $this->merchantSwitcherWidgetConfig->getIsMerchantSelectorCookieSecure()
+            time() + $this->merchantSwitcherWidgetConfig->getMerchantSelectorCookieTimeExpiration()
         ));
     }
 }

@@ -15,7 +15,6 @@ use Pyz\Zed\Mail\Business\Model\Provider\SwiftMailer;
 use Pyz\Zed\Mail\Business\Model\Renderer\CmsBlockRenderer;
 use Pyz\Zed\Mail\MailDependencyProvider;
 use Spryker\Zed\Glossary\Communication\Plugin\TwigTranslatorPlugin;
-use Spryker\Zed\Kernel\Communication\Plugin\Pimple;
 use Spryker\Zed\Mail\Business\MailBusinessFactory as SprykerMailBusinessFactory;
 use Spryker\Zed\Mail\Business\Model\Renderer\RendererInterface;
 use Twig\Environment;
@@ -79,7 +78,7 @@ class MailBusinessFactory extends SprykerMailBusinessFactory
      */
     protected function createTwigEnvironment(): Environment
     {
-        return (new Pimple())->getApplication()['twig'];
+        return $this->getProvidedDependency(MailDependencyProvider::SERVICE_TWIG);
     }
 
     /**

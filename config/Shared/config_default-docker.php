@@ -187,7 +187,6 @@ $config[NewsletterConstants::BASE_URL_YVES] = $config[ApplicationConstants::BASE
 $config[CustomerConstants::BASE_URL_YVES] = $config[ApplicationConstants::BASE_URL_SSL_YVES];
 
 $config[SessionConstants::YVES_SESSION_COOKIE_SECURE]
-    = $config[MerchantSwitcherWidgetConstants::IS_MERCHANT_SELECTOR_COOKIE_SECURE]
     = $config[SessionConstants::YVES_SSL_ENABLED]
     = $config[ApplicationConstants::YVES_SSL_ENABLED]
     = $config[SessionConstants::YVES_SSL_ENABLED] = true;

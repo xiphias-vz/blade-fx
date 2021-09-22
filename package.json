@@ -56,7 +56,8 @@
     "ol": "^6.1.1",
     "select2": "~4.0.11",
     "slick-carousel": "~1.8.1",
-    "whatwg-fetch": "^3.0.0"
+    "whatwg-fetch": "^3.0.0",
+    "password-validator": "~5.1.0"
   },
   "devDependencies": {
     "@babel/core": "~7.9.0",
