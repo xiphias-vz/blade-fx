@@ -113,16 +113,33 @@ $setting-popup-spacing-y: rem(16);
     .title--shop-switcher {
         font: bold 1.625rem "Clearface-Medium", "Fira Sans", "Montserrat", sans-serif;
         margin: rem(20) 0 0.5rem; }
+
     .sub-title--shop-switcher {
         font: bold 2.25rem "Clearface-Medium", "Fira Sans", "Montserrat", sans-serif;
         margin: 0 0 1.25rem; }
+
+    .sub-title--shop-switcher-CZ {
+        font: bold 3rem "Clearface-Medium", "Fira Sans", "Montserrat", sans-serif;
+        margin: 1rem 0 1.25rem; }
+
     .message--shop-switcher {
         margin-bottom: 2.5rem;
+        clear: both;
+    }
+
+    .message--shop-switcher-CZ {
+        margin-bottom: 1rem;
+        font-size: 18px;
         clear: both;
     }
     .form-text--shop-switcher {
         font: bold 0.8rem "Fira Sans", "Montserrat", sans-serif;
         margin-bottom: 0.9375rem; }
+
+    .form-text--shop-switcher-CZ {
+        font: bold 0.8rem "Fira Sans", "Montserrat", sans-serif;
+        margin-bottom: 1.2rem; }
+
     .form-dropdown--shop-switcher{
         margin-bottom: 2rem; }
 

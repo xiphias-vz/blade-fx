@@ -4831,3 +4831,19 @@ shipment.form.saturday,Saturday,en_US
 shipment.form.sunday,Sonntag,de_DE
 shipment.form.sunday,"neděle",cs_CZ
 shipment.form.sunday,Sunday,en_US
+store.switcher.pop-up.welcome.message_1,"Herzlich Willkommen bei",de_DE
+store.switcher.pop-up.welcome.message_1,"Welcome to",en_Us
+store.switcher.pop-up.welcome.message_1,"Vítejte v iGlobus!",cs_CZ
+store.switcher.pop-up.welcome.message_2,"Ihrem Globus Abholservice",de_DE
+store.switcher.pop-up.welcome.message_2,"your Globus pick-up service",en_US
+store.switcher.pop-up.second-message_1,"Einfach online einkaufen und Ihre gewünschten Artikel",de_DE
+store.switcher.pop-up.second-message_1,"Simply shop online and pick up the desired items",en_US
+store.switcher.pop-up.second-message_1,"Objednávejte online a vyzvedávejte na vybraných prodejnách.",cs_CZ
+store.switcher.pop-up.second-message_2,"in gewohnter Globus Qualität im Markt abholen.",de_DE
+store.switcher.pop-up.second-message_2,"from the store in the usual Globus quality.",en_US
+store.switcher.pop-up.second-message_2,"Na iGlobus můžete vybírat z více než 25 000 produktů ze sortimentu Globus Hypermarketů.",cs_CZ
+store.switcher.pop-up.choose.pick-up.location,"Wählen Sie Ihre Abholstation, um mit Ihrem Einkauf zu beginnen",de_DE
+store.switcher.pop-up.choose.pick-up.location,"Choose your pick up location to start shopping.",en_US
+store.switcher.pop-up.password.required,"Für die Auswahl dieses Standorts ist aktuell die Eingabe eines Passworts notwendig.",de_DE
+store.switcher.pop-up.password.required,"A password is currently required to select this location.",en_US
+store.switcher.pop-up.password.required,"Pro výběr tohoto místa je aktuálně potřeba zadat heslo.",cs_CZ
