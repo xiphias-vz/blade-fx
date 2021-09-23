@@ -16,6 +16,7 @@ use SprykerShop\Yves\WishlistPage\Business\MoveToCartHandlerInterface;
 use SprykerShop\Yves\WishlistPage\Dependency\Client\WishlistPageToCustomerClientInterface;
 use SprykerShop\Yves\WishlistPage\WishlistPageFactory as SprykerShopWishlistPageFactory;
 use Symfony\Component\Form\FormInterface;
+use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
 
 class WishlistPageFactory extends SprykerShopWishlistPageFactory
 {
@@ -68,5 +69,13 @@ class WishlistPageFactory extends SprykerShopWishlistPageFactory
     public function getZedRequestClient(): ZedRequestClientInterface
     {
         return $this->getProvidedDependency(WishlistPageDependencyProvider::CLIENT_ZED_REQUEST);
+    }
+
+    /**
+     * @return \Symfony\Component\Security\Csrf\CsrfTokenManagerInterface
+     */
+    public function getCsrfTokenManager(): CsrfTokenManagerInterface
+    {
+        return $this->getProvidedDependency(WishlistPageDependencyProvider::SERVICE_FORM_CSRF_PROVIDER);
     }
 }

@@ -29,13 +29,6 @@ interface MerchantMapperInterface extends SprykerMerchantMapperInterface
     ): SpyMerchant;
 
     /**
-     * @param \Generated\Shared\Transfer\SpyMerchantEntityTransfer $merchantEntityTransfer
-     *
-     * @return \Generated\Shared\Transfer\MerchantTransfer
-     */
-    public function mapMerchantEntityTransferToMerchantTransfer(SpyMerchantEntityTransfer $merchantEntityTransfer): MerchantTransfer;
-
-    /**
      * @param \Orm\Zed\Merchant\Persistence\SpyMerchant $spyMerchant
      * @param \Generated\Shared\Transfer\MerchantTransfer $merchantTransfer
      *
@@ -47,13 +40,13 @@ interface MerchantMapperInterface extends SprykerMerchantMapperInterface
     ): MerchantTransfer;
 
     /**
-     * @param \Generated\Shared\Transfer\SpyMerchantEntityTransfer[] $collection
+     * @param \Generated\Shared\Transfer\SpyMerchantEntityTransfer[] $merchantEntities
      * @param \Generated\Shared\Transfer\MerchantCollectionTransfer $merchantCollectionTransfer
      *
      * @return \Generated\Shared\Transfer\MerchantCollectionTransfer
      */
     public function mapMerchantCollectionToMerchantCollectionTransfer(
-        $collection,
+        $merchantEntities,
         MerchantCollectionTransfer $merchantCollectionTransfer
     ): MerchantCollectionTransfer;
 

@@ -11,7 +11,6 @@ use LogicException;
 use Spryker\Service\UtilText\Model\Url\Url;
 use Spryker\Zed\Gui\Communication\Form\DeleteForm;
 use Spryker\Zed\Gui\Communication\Table\AbstractTable as SprykerAbstractTable;
-use Spryker\Zed\Kernel\Communication\Plugin\Pimple;
 use Twig\Environment;
 use Twig\Loader\FilesystemLoader;
 
@@ -75,7 +74,7 @@ abstract class AbstractTable extends SprykerAbstractTable
     protected function getTwig(): Environment
     {
         /** @var \Twig\Environment|null $twig */
-        $twig = (new Pimple())->getApplication()['twig'];
+        $twig = $this->getApplicationContainer()->get(static::SERVICE_TWIG);
 
         if ($twig === null) {
             throw new LogicException('Twig environment not set up.');

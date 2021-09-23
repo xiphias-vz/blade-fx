@@ -16,6 +16,11 @@ class ProductSetWidgetDependencyProvider extends SprykerProductSetWidgetDependen
     public const CLIENT_PRODUCT_STORAGE = 'CLIENT_PRODUCT_STORAGE';
 
     /**
+     * @uses \Spryker\Yves\Http\Plugin\Application\HttpApplicationPlugin::SERVICE_REQUEST_STACK
+     */
+    public const SERVICE_REQUEST_STACK = 'request_stack';
+
+    /**
      * @param \Spryker\Yves\Kernel\Container $container
      *
      * @return \Spryker\Yves\Kernel\Container
@@ -26,6 +31,7 @@ class ProductSetWidgetDependencyProvider extends SprykerProductSetWidgetDependen
 
         $container = $this->addProductStorageClient($container);
         $container = $this->addProductSetStorageClient($container);
+        $container = $this->addRequestStack($container);
 
         return $container;
     }
@@ -54,6 +60,20 @@ class ProductSetWidgetDependencyProvider extends SprykerProductSetWidgetDependen
         $container[static::CLIENT_PRODUCT_SET_STORAGE] = function (Container $container) {
             return $container->getLocator()->productSetStorage()->client();
         };
+
+        return $container;
+    }
+
+    /**
+     * @param \Spryker\Yves\Kernel\Container $container
+     *
+     * @return \Spryker\Yves\Kernel\Container
+     */
+    protected function addRequestStack(Container $container): Container
+    {
+        $container->set(static::SERVICE_REQUEST_STACK, function (Container $container) {
+            return $container->getApplicationService(static::SERVICE_REQUEST_STACK);
+        });
 
         return $container;
     }

@@ -9,14 +9,14 @@ namespace Pyz\Zed\Merchant\Communication;
 
 use Pyz\Zed\Merchant\Communication\FormExpander\DataProvider\MerchantFormDataProvider;
 use Pyz\Zed\Merchant\Communication\FormExpander\MerchantFormExpander;
-use Spryker\Zed\Kernel\Communication\AbstractCommunicationFactory;
+use Spryker\Zed\Merchant\Communication\MerchantCommunicationFactory as SprykerMerchantCommunicationFactory;
 
 /**
  * @method \Pyz\Zed\Merchant\Business\MerchantFacadeInterface getFacade()
  * @method \Pyz\Zed\Merchant\Persistence\MerchantRepositoryInterface getRepository()
  * @method \Spryker\Zed\Merchant\MerchantConfig getConfig()
  */
-class MerchantCommunicationFactory extends AbstractCommunicationFactory
+class MerchantCommunicationFactory extends SprykerMerchantCommunicationFactory
 {
     /**
      * @return \Pyz\Zed\Merchant\Communication\FormExpander\MerchantFormExpander

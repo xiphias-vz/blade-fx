@@ -32,9 +32,8 @@ class EditMerchantController extends SprykerEditMerchantController
     {
         $idMerchant = $this->castId($request->get(static::REQUEST_ID_MERCHANT));
 
-        $dataProvider = $this->getFactory()->createMerchantUpdateFormDataProvider();
+        $dataProvider = $this->getFactory()->createMerchantFormDataProvider();
         $merchantTransfer = $dataProvider->getData($idMerchant);
-        $merchantReference = $merchantTransfer->getMerchantReference();
 
         if ($merchantTransfer === null) {
             $this->addErrorMessage("Merchant with id %s doesn't exists.", ['%s' => $idMerchant]);
@@ -42,10 +41,12 @@ class EditMerchantController extends SprykerEditMerchantController
             return $this->redirectResponse(MerchantGuiConfig::URL_MERCHANT_LIST);
         }
 
+        $merchantReference = $merchantTransfer->getMerchantReference();
+
         $merchantForm = $this->getFactory()
             ->getMerchantUpdateForm(
                 $merchantTransfer,
-                $dataProvider->getOptions($merchantTransfer)
+                $dataProvider->getOptions($merchantTransfer->getIdMerchant())
             )
             ->handleRequest($request);
 

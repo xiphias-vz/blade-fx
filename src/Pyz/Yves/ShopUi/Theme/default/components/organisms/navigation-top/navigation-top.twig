@@ -6,8 +6,8 @@
 } %}
 
 {% define data = {
-    cartQuantity: app['cart.quantity'] | default,
-    cartAmount: app['cart.amount'] | default,
+    cartQuantity: getCartQuantity(),
+    cartAmount: cartAmount is defined ? cartAmount : app['cart.amount'] | default,
     showUserMenu: true,
     currentCodeBucket: app.currentCodeBucket,
 } %}
@@ -143,8 +143,8 @@
             {% include atom('cart-link') with {
                 class: config.name ~ '__link link link--nav',
                 data: {
-                    cartAmount: data.cartAmount | money,
-                    cartQuantity: data.cartQuantity,
+                    cartAmount: cartAmount | money,
+                    cartQuantity: getCartQuantity(),
                 },
                 attributes: {
                     href: url('cart'),

@@ -7,12 +7,26 @@
 
 namespace Pyz\Zed\Publisher;
 
+use Spryker\Zed\GlossaryStorage\Communication\Plugin\Publisher\GlossaryPublisherTriggerPlugin;
+use Spryker\Zed\MerchantSearch\Communication\Plugin\Publisher\Merchant\MerchantDeletePublisherPlugin;
+use Spryker\Zed\MerchantSearch\Communication\Plugin\Publisher\Merchant\MerchantWritePublisherPlugin;
+use Spryker\Zed\MerchantSearch\Communication\Plugin\Publisher\MerchantCategory\MerchantCategoryWritePublisherPlugin;
+use Spryker\Zed\MerchantStorage\Communication\Plugin\Publisher\MerchantPublisherTriggerPlugin;
+use Spryker\Zed\ProductLabelStorage\Communication\Plugin\Publisher\ProductAbstractLabelPublisherTriggerPlugin;
+use Spryker\Zed\ProductLabelStorage\Communication\Plugin\Publisher\ProductLabelDictionaryPublisherTriggerPlugin;
 use Spryker\Zed\ProductRelationStorage\Communication\Plugin\Publisher\ProductRelation\ProductRelationWriteForPublishingPublisherPlugin;
 use Spryker\Zed\ProductRelationStorage\Communication\Plugin\Publisher\ProductRelation\ProductRelationWritePublisherPlugin;
 use Spryker\Zed\ProductRelationStorage\Communication\Plugin\Publisher\ProductRelationProductAbstract\ProductRelationProductAbstractWritePublisherPlugin;
 use Spryker\Zed\ProductRelationStorage\Communication\Plugin\Publisher\ProductRelationPublisherTriggerPlugin;
 use Spryker\Zed\ProductRelationStorage\Communication\Plugin\Publisher\ProductRelationStore\ProductRelationStoreWritePublisherPlugin;
 use Spryker\Zed\Publisher\PublisherDependencyProvider as SprykerPublisherDependencyProvider;
+use Spryker\Zed\ProductLabelSearch\Communication\Plugin\Publisher\ProductLabel\ProductLabelWritePublisherPlugin as ProductLabelSearchWritePublisherPlugin;
+use Spryker\Zed\ProductLabelSearch\Communication\Plugin\Publisher\ProductLabelProductAbstract\ProductLabelProductAbstractWritePublisherPlugin as ProductLabelProductAbstractSearchWritePublisherPlugin;
+use Spryker\Zed\ProductLabelSearch\Communication\Plugin\Publisher\ProductLabelStore\ProductLabelStoreWritePublisherPlugin as ProductLabelStoreSearchWritePublisherPlugin;
+use Spryker\Zed\ProductLabelStorage\Communication\Plugin\Publisher\ProductAbstractLabel\ProductAbstractLabelWritePublisherPlugin as ProductAbstractLabelStorageWritePublisherPlugin;
+use Spryker\Zed\ProductLabelStorage\Communication\Plugin\Publisher\ProductLabelDictionary\ProductLabelDictionaryDeletePublisherPlugin as ProductLabelDictionaryStorageDeletePublisherPlugin;
+use Spryker\Zed\ProductLabelStorage\Communication\Plugin\Publisher\ProductLabelDictionary\ProductLabelDictionaryWritePublisherPlugin as ProductLabelDictionaryStorageWritePublisherPlugin;
+use Spryker\Zed\ProductLabelStorage\Communication\Plugin\Publisher\ProductLabelProductAbstract\ProductLabelProductAbstractWritePublisherPlugin as ProductLabelProductAbstractStorageWritePublisherPlugin;
 
 class PublisherDependencyProvider extends SprykerPublisherDependencyProvider
 {
@@ -21,7 +35,12 @@ class PublisherDependencyProvider extends SprykerPublisherDependencyProvider
      */
     protected function getPublisherPlugins(): array
     {
-        return $this->getProductRelationStoragePlugins();
+        return array_merge(
+            $this->getProductRelationStoragePlugins(),
+            $this->getProductLabelStoragePlugins(),
+            $this->getProductLabelSearchPlugins(),
+            $this->getMerchantSearchPlugins()
+        );
     }
 
     /**
@@ -31,6 +50,11 @@ class PublisherDependencyProvider extends SprykerPublisherDependencyProvider
     {
         return [
             new ProductRelationPublisherTriggerPlugin(),
+            new ProductAbstractLabelPublisherTriggerPlugin(),
+            new ProductLabelDictionaryPublisherTriggerPlugin(),
+            new GlossaryPublisherTriggerPlugin(),
+            new ProductRelationPublisherTriggerPlugin(),
+            new MerchantPublisherTriggerPlugin(),
         ];
     }
 
@@ -44,6 +68,43 @@ class PublisherDependencyProvider extends SprykerPublisherDependencyProvider
             new ProductRelationWriteForPublishingPublisherPlugin(),
             new ProductRelationProductAbstractWritePublisherPlugin(),
             new ProductRelationStoreWritePublisherPlugin(),
+        ];
+    }
+
+    /**
+     * @return \Spryker\Zed\PublisherExtension\Dependency\Plugin\PublisherPluginInterface[]
+     */
+    protected function getProductLabelSearchPlugins(): array
+    {
+        return [
+            new ProductLabelSearchWritePublisherPlugin(),
+            new ProductLabelProductAbstractSearchWritePublisherPlugin(),
+            new ProductLabelStoreSearchWritePublisherPlugin(),
+        ];
+    }
+
+    /**
+     * @return \Spryker\Zed\PublisherExtension\Dependency\Plugin\PublisherPluginInterface[]
+     */
+    protected function getProductLabelStoragePlugins(): array
+    {
+        return [
+            new ProductAbstractLabelStorageWritePublisherPlugin(),
+            new ProductLabelProductAbstractStorageWritePublisherPlugin(),
+            new ProductLabelDictionaryStorageWritePublisherPlugin(),
+            new ProductLabelDictionaryStorageDeletePublisherPlugin(),
+        ];
+    }
+
+    /**
+     * @return array
+     */
+    protected function getMerchantSearchPlugins(): array
+    {
+        return [
+            new MerchantWritePublisherPlugin(),
+            new MerchantCategoryWritePublisherPlugin(),
+            new MerchantDeletePublisherPlugin(),
         ];
     }
 }

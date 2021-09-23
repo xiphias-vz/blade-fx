@@ -8,15 +8,17 @@
 namespace Pyz\Zed\MerchantDataImport\Business\Model;
 
 use Orm\Zed\Merchant\Persistence\SpyMerchantQuery;
+use Pyz\Zed\DataImport\Business\Model\DataImportStep\PublishAwareStep;
 use Pyz\Zed\MerchantDataImport\Business\Model\DataSet\MerchantDataSetInterface;
 use Spryker\Zed\DataImport\Business\Exception\InvalidDataException;
 use Spryker\Zed\DataImport\Business\Model\DataImportStep\DataImportStepInterface;
 use Spryker\Zed\DataImport\Business\Model\DataSet\DataSetInterface;
+use Spryker\Zed\Merchant\Dependency\MerchantEvents;
 
-class MerchantWriterStep implements DataImportStepInterface
+class MerchantWriterStep extends PublishAwareStep implements DataImportStepInterface
 {
     protected const REQUIRED_DATA_SET_KEYS = [
-        MerchantDataSetInterface::MERCHANT_KEY,
+        MerchantDataSetInterface::MERCHANT_REFERENCE,
         MerchantDataSetInterface::NAME,
         MerchantDataSetInterface::REGISTRATION_NUMBER,
         MerchantDataSetInterface::STATUS,
@@ -42,7 +44,7 @@ class MerchantWriterStep implements DataImportStepInterface
 
         /** @var \Orm\Zed\Merchant\Persistence\SpyMerchant $merchantEntity */
         $merchantEntity = SpyMerchantQuery::create()
-            ->filterByMerchantKey($dataSet[MerchantDataSetInterface::MERCHANT_KEY])
+            ->filterByMerchantReference($dataSet[MerchantDataSetInterface::MERCHANT_REFERENCE])
             ->findOneOrCreate();
 
         $merchantEntity
@@ -63,7 +65,10 @@ class MerchantWriterStep implements DataImportStepInterface
             ->setDeliveryCapacityPerSlot($dataSet[MerchantDataSetInterface::DELIVERY_CAPACITY_PER_SLOT])
             ->setPickingCapacityPerSlot($dataSet[MerchantDataSetInterface::PICKING_CAPACITY_PER_SLOT])
             ->setMerchantShortName($dataSet[MerchantDataSetInterface::STORE])
+            ->setIsActive(true)
             ->save();
+
+        $this->addPublishEvents(MerchantEvents::MERCHANT_PUBLISH, $merchantEntity->getIdMerchant());
     }
 
     /**

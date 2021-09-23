@@ -18,7 +18,6 @@ use Pyz\Zed\Oms\Business\Util\TransitionLog;
 use Pyz\Zed\Oms\OmsDependencyProvider;
 use Pyz\Zed\Sales\Business\SalesFacadeInterface;
 use Spryker\Service\UtilDateTime\UtilDateTimeServiceInterface;
-use Spryker\Zed\Kernel\Communication\Plugin\Pimple;
 use Spryker\Zed\Money\Business\MoneyFacadeInterface;
 use Spryker\Zed\Oms\Business\OmsBusinessFactory as SprykerOmsBusinessFactory;
 use Spryker\Zed\Translator\Business\TranslatorFacadeInterface;
@@ -150,7 +149,7 @@ class OmsBusinessFactory extends SprykerOmsBusinessFactory
      */
     protected function getTwigEnvironment(): Environment
     {
-        return (new Pimple())->getApplication()['twig'];
+        return $this->getProvidedDependency(OmsDependencyProvider::SERVICE_TWIG);
     }
 
     /**

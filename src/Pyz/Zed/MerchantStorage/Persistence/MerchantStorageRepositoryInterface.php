@@ -8,16 +8,16 @@
 namespace Pyz\Zed\MerchantStorage\Persistence;
 
 use Generated\Shared\Transfer\MerchantCollectionTransfer;
-use Generated\Shared\Transfer\MerchantCriteriaFilterTransfer;
+use Generated\Shared\Transfer\MerchantCriteriaTransfer;
 
 interface MerchantStorageRepositoryInterface
 {
     /**
-     * @param \Generated\Shared\Transfer\MerchantCriteriaFilterTransfer $merchantCriteriaFilterTransfer
+     * @param \Generated\Shared\Transfer\MerchantCriteriaTransfer $merchantCriteriaTransfer
      *
      * @return \Generated\Shared\Transfer\MerchantCollectionTransfer
      */
-    public function getMerchants(MerchantCriteriaFilterTransfer $merchantCriteriaFilterTransfer): MerchantCollectionTransfer;
+    public function getMerchants(MerchantCriteriaTransfer $merchantCriteriaTransfer): MerchantCollectionTransfer;
 
     /**
      * @return \Generated\Shared\Transfer\MerchantCollectionTransfer|null

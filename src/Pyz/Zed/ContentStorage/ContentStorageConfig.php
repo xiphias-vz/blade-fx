@@ -8,6 +8,7 @@
 namespace Pyz\Zed\ContentStorage;
 
 use Pyz\Zed\Synchronization\SynchronizationConfig;
+use Spryker\Shared\Publisher\PublisherConfig;
 use Spryker\Zed\ContentStorage\ContentStorageConfig as SpykerContentStorageConfig;
 
 class ContentStorageConfig extends SpykerContentStorageConfig

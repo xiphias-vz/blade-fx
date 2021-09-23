@@ -9,6 +9,7 @@ namespace Pyz\Yves\Payone;
 
 use Pyz\Yves\Payone\Form\CreditCardSubForm;
 use Pyz\Yves\Payone\Form\EWalletSubForm;
+use SprykerEco\Yves\Payone\Form\AbstractPayoneSubForm;
 use SprykerEco\Yves\Payone\PayoneFactory as SprykerEcoPayoneFactory;
 
 /**
@@ -19,7 +20,7 @@ class PayoneFactory extends SprykerEcoPayoneFactory
     /**
      * @return \Pyz\Yves\Payone\Form\CreditCardSubForm
      */
-    public function createCreditCardSubForm()
+    public function createCreditCardSubForm(): AbstractPayoneSubForm
     {
         return new CreditCardSubForm();
     }
@@ -27,7 +28,7 @@ class PayoneFactory extends SprykerEcoPayoneFactory
     /**
      * @return \Pyz\Yves\Payone\Form\EWalletSubForm
      */
-    public function createEWalletSubForm()
+    public function createEWalletSubForm(): AbstractPayoneSubForm
     {
         return new EWalletSubForm();
     }

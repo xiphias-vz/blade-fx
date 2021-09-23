@@ -15,9 +15,9 @@ use Pyz\Yves\CustomerPage\Form\RegisterForm;
 use Pyz\Yves\CustomerPage\Plugin\CheckoutPage\CheckoutAddressFormDataProviderPlugin;
 use Spryker\Client\Customer\CustomerClientInterface;
 use Spryker\Client\Session\SessionClientInterface;
+use Spryker\Shared\Kernel\Container\GlobalContainer;
 use Spryker\Shared\Nopayment\NopaymentConfig;
 use Spryker\Yves\Kernel\Container;
-use Spryker\Yves\Kernel\Plugin\Pimple;
 use Spryker\Yves\Nopayment\Plugin\NopaymentHandlerPlugin;
 use Spryker\Yves\Payment\Plugin\PaymentFormFilterPlugin;
 use Spryker\Yves\StepEngine\Dependency\Form\StepEngineFormDataProviderInterface;
@@ -46,6 +46,16 @@ class CheckoutPageDependencyProvider extends SprykerShopCheckoutPageDependencyPr
     public const CLIENT_SESSION = 'CLIENT_SESSION';
 
     /**
+     * @uses \Spryker\Yves\Form\Plugin\Application\FormApplicationPlugin::SERVICE_FORM_FACTORY
+     */
+    protected const SERVICE_FORM_FACTORY = 'form.factory';
+
+    /**
+     * @uses \Spryker\Yves\Form\Plugin\Application\FormApplicationPlugin::SERVICE_FORM_CSRF_PROVIDER
+     */
+    public const SERVICE_FORM_CSRF_PROVIDER = 'form.csrf_provider';
+
+    /**
      * @param \Spryker\Yves\Kernel\Container $container
      *
      * @return \Spryker\Yves\Kernel\Container
@@ -62,6 +72,7 @@ class CheckoutPageDependencyProvider extends SprykerShopCheckoutPageDependencyPr
         $container = $this->addPyzShipmentService($container);
         $container = $this->addSessionClient($container);
         $container = $this->addPyzCustomerClient($container);
+        $container = $this->addFormCsrfProviderService($container);
 
         return $container;
     }
@@ -149,7 +160,7 @@ class CheckoutPageDependencyProvider extends SprykerShopCheckoutPageDependencyPr
      */
     private function getFormFactory()
     {
-        return (new Pimple())->getApplication()['form.factory'];
+        return (new GlobalContainer())->get(static::SERVICE_FORM_FACTORY);
     }
 
     /**
@@ -321,6 +332,20 @@ class CheckoutPageDependencyProvider extends SprykerShopCheckoutPageDependencyPr
     {
         $container->set(static::PYZ_SERVICE_SHIPMENT, function (Container $container) {
             return $container->getLocator()->shipment()->service();
+        });
+
+        return $container;
+    }
+
+    /**
+     * @param \Spryker\Yves\Kernel\Container $container
+     *
+     * @return \Spryker\Yves\Kernel\Container
+     */
+    protected function addFormCsrfProviderService(Container $container): Container
+    {
+        $container->set(static::SERVICE_FORM_CSRF_PROVIDER, function (Container $container) {
+            return $container->getApplicationService(static::SERVICE_FORM_CSRF_PROVIDER);
         });
 
         return $container;

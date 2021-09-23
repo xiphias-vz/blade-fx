@@ -321,6 +321,8 @@ page.checkout.summary.card_expires,Expiry Date,en_US
 page.checkout.summary.complete_checkout,"Celkem",cs_CZ
 page.checkout.summary.complete_checkout,Gesamtsumme,de_DE
 page.checkout.summary.complete_checkout,Complete checkout,en_US
+page.checkout.summary.accept_terms_and_conditions,I accept the terms and conditions,en_US
+page.checkout.summary.accept_terms_and_conditions,Ich akzeptiere die allgemeinen Geschäftsbedingungen,de_DE
 page.checkout.finalize.heading,"4. Kontrola a uzavření nákupu",cs_CZ
 page.checkout.finalize.heading,4. Prüfen und Kauf abschließen,de_DE
 page.checkout.finalize.heading,4. Check and finalise order,en_US
@@ -4859,3 +4861,41 @@ store.switcher.pop-up.choose.pick-up.location,"Choose your pick up location to s
 store.switcher.pop-up.password.required,"Für die Auswahl dieses Standorts ist aktuell die Eingabe eines Passworts notwendig.",de_DE
 store.switcher.pop-up.password.required,"A password is currently required to select this location.",en_US
 store.switcher.pop-up.password.required,"Pro výběr tohoto místa je aktuálně potřeba zadat heslo.",cs_CZ
+sales.error.customer_order_not_found,Customer Order not found.,en_US
+sales.error.customer_order_not_found,Die Bestellung wurde nicht gefunden.,de_DE
+sales.error.order_cannot_be_canceled_due_to_wrong_item_state,Order cannot be canceled due to wrong item state.,en_US
+sales.error.order_cannot_be_canceled_due_to_wrong_item_state,Die Bestellung kann wegen dem falschen Artikelstatus nicht storniert werden.,de_DE
+oms.state.new,New,en_US
+oms.state.new,Neu,de_DE
+oms.state.payment-pending,Payment pending,en_US
+oms.state.payment-pending,Ausstehende Zahlung,de_DE
+oms.state.invalid,Ivalid,en_US
+oms.state.invalid,Ungültig,de_DE
+oms.state.canceled,Canceled,en_US
+oms.state.canceled,Abgebrochen,de_DE
+oms.state.paid,Paid,en_US
+oms.state.paid,Bezahlt,de_DE
+oms.state.confirmed,Confirmed,en_US
+oms.state.confirmed,Bestätigt,de_DE
+oms.state.waiting,Waiting,en_US
+oms.state.waiting,Warten,de_DE
+oms.state.exported,Exported,en_US
+oms.state.exported,Exportiert,de_DE
+oms.state.shipped,Shipped,en_US
+oms.state.shipped,Versandt,de_DE
+oms.state.delivered,Delivered,en_US
+oms.state.delivered,Geliefert,de_DE
+quote_request.status.closed,Closed,en_US
+quote_request.status.closed,Geschlossen,de_DE
+mail.order_invoice.subject,"Invoice: %invoiceReference%",en_US
+mail.order_invoice.subject,"Rechnung: %invoiceReference%",de_DE
+order_cancel_widget.cancel_order,Cancel Order,en_US
+order_cancel_widget.cancel_order,Bestellung stornieren,de_DE
+order_cancel_widget.order.cancelled,Order was canceled successfully.,en_US
+order_cancel_widget.order.cancelled,Die Bestellung wurde erfolgreich storniert.,de_DE
+merchant.message.removed,Product %sku% is not available at the moment.,en_US
+merchant.message.removed,Das Produkt %sku% ist momentan nicht verfügbar.,de_DE
+merchant.message.inactive,Product %sku% from merchant %merchant_name% is not available at the moment.,en_US
+merchant.message.inactive,Artikel %sku% vom Händler %merchant_name% ist momentan nicht verfügbar.,de_DE
+merchant.message.inactive,Product %sku% from merchant %merchant_name% is not available at the moment.,en_US
+merchant.message.inactive,Artikel %sku% vom Händler %merchant_name% ist momentan nicht verfügbar.,de_DE

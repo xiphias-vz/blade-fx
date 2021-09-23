@@ -15,7 +15,7 @@ class StoreSwitcherWidgetConfig extends AbstractBundleConfig
     /**
      * @return array
      */
-    public function getStoreNames()
+    public function getStoreNames(): array
     {
         return $this->get(StoreConstants::STORE_NAMES);
     }

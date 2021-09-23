@@ -8,6 +8,7 @@
 namespace Pyz\Zed\ProductStorage;
 
 use Pyz\Zed\Synchronization\SynchronizationConfig;
+use Spryker\Shared\ProductStorage\ProductStorageConfig as SprykerSharedProductStorageConfig;
 use Spryker\Zed\ProductStorage\ProductStorageConfig as SprykerProductStorageConfig;
 
 class ProductStorageConfig extends SprykerProductStorageConfig
@@ -26,5 +27,21 @@ class ProductStorageConfig extends SprykerProductStorageConfig
     public function getProductAbstractSynchronizationPoolName(): ?string
     {
         return SynchronizationConfig::DEFAULT_SYNCHRONIZATION_POOL_NAME;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isProductAttributesWithSingleValueIncluded(): bool
+    {
+        return false;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isOptimizedAttributeVariantsMapEnabled(): bool
+    {
+        return true;
     }
 }

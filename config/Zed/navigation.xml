@@ -54,7 +54,28 @@
             <products/>
             <attributes/>
             <product_options/>
-            <product-label-gui/>
+            <product-label-gui>
+                <label>Product Labels</label>
+                <title>Product Labels</title>
+                <bundle>product-label-gui</bundle>
+                <controller>index</controller>
+                <action>index</action>
+            </product-label-gui>
+            <sets>
+                <label>Product Sets</label>
+                <title>Product Sets</title>
+                <bundle>product-set-gui</bundle>
+                <controller>index</controller>
+                <action>index</action>
+            </sets>
+            <configurable-bundle-templates>
+                <label>Configurable Bundle Templates</label>
+                <title>Configurable Bundle Templates</title>
+                <bundle>configurable-bundle-gui</bundle>
+                <controller>template</controller>
+                <action>index</action>
+                <visible>1</visible>
+            </configurable-bundle-templates>
             <AvailabilityGui/>
         </pages>
     </product>
@@ -70,7 +91,6 @@
         <icon>fa-sitemap</icon>
     </category>
     <tax/>
-    <navigation/>
     <search-and-filters/>
     <customer>
         <pages>
@@ -119,6 +139,13 @@
                 <action>index</action>
                 <icon>fa-user</icon>
             </user>
+            <warehouses>
+                <label>Warehouses</label>
+                <title>Warehouses</title>
+                <bundle>stock-gui</bundle>
+                <controller>warehouse</controller>
+                <action>list</action>
+            </warehouses>
             <maintenance>
                 <label>Maintenance</label>
                 <title>Maintenance</title>

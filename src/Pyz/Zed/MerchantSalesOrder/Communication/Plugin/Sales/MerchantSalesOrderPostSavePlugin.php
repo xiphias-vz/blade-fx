@@ -32,11 +32,11 @@ class MerchantSalesOrderPostSavePlugin extends AbstractPlugin implements OrderPo
      */
     public function execute(SaveOrderTransfer $saveOrderTransfer, QuoteTransfer $quoteTransfer): SaveOrderTransfer
     {
-        $merchantSalesOrderTransfer = $this->getFactory()
+        $orderTransfer = $this->getFactory()
             ->getMerchantSalesOrderMapper()
             ->mapFromSaveOrderTransfer($saveOrderTransfer, $quoteTransfer);
 
-        $this->getFacade()->createMerchantSalesOrder($merchantSalesOrderTransfer);
+        $this->getFacade()->createMerchantOrderCollection($orderTransfer);
 
         return $saveOrderTransfer;
     }

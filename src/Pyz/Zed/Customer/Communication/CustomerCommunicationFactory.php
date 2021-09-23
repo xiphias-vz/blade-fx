@@ -13,8 +13,10 @@ use Pyz\Zed\Customer\Communication\Form\CustomerUpdateForm;
 use Pyz\Zed\Customer\Communication\Table\AddressTable;
 use Pyz\Zed\Customer\Communication\Table\CustomerTable;
 use Pyz\Zed\Customer\CustomerDependencyProvider;
+use Pyz\Zed\User\UserDependencyProvider;
 use Spryker\Zed\Acl\Business\AclFacadeInterface;
 use Spryker\Zed\Customer\Communication\CustomerCommunicationFactory as SprykerCustomerCommunicationFactory;
+use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
 
 class CustomerCommunicationFactory extends SprykerCustomerCommunicationFactory
 {
@@ -97,5 +99,13 @@ class CustomerCommunicationFactory extends SprykerCustomerCommunicationFactory
     public function createCustomerUpdateForm(array $data = [], array $options = [])
     {
         return $this->getFormFactory()->create(CustomerUpdateForm::class, $data, $options);
+    }
+
+    /**
+     * @return \Symfony\Component\Security\Csrf\CsrfTokenManagerInterface
+     */
+    public function getCsrfTokenManager(): CsrfTokenManagerInterface
+    {
+        return $this->getProvidedDependency(UserDependencyProvider::SERVICE_FORM_CSRF_PROVIDER);
     }
 }

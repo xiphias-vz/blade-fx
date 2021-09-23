@@ -8,6 +8,8 @@
 namespace Pyz\Client\TimeSlot;
 
 use Pyz\Client\MerchantStorage\MerchantStorageClient;
+use Pyz\Client\TimeSlot\Expander\MerchantStorageDataExpander;
+use Pyz\Client\TimeSlot\Expander\MerchantStorageDataExpanderInterface;
 use Pyz\Client\TimeSlot\Expander\ShipmentSlotsExpanderInterface;
 use Pyz\Client\TimeSlot\Expander\ShipmentTimeSlotsExpander;
 use Pyz\Client\TimeSlot\Reader\MerchantReader;
@@ -17,6 +19,7 @@ use Pyz\Client\TimeSlotStorage\TimeSlotStorageClientInterface;
 use Pyz\Service\DateTimeWithZone\DateTimeWithZoneServiceInterface;
 use Pyz\Service\TimeSlot\TimeSlotServiceInterface;
 use Spryker\Client\Kernel\AbstractFactory;
+use Spryker\Client\MerchantSearch\MerchantSearchClientInterface;
 use Spryker\Client\Quote\QuoteClientInterface;
 
 /**
@@ -68,7 +71,11 @@ class TimeSlotFactory extends AbstractFactory
      */
     public function createMerchantReader(): MerchantReaderInterface
     {
-        return new MerchantReader($this->getMerchantStorageClient(), $this->getQuoteClient());
+        return new MerchantReader(
+            $this->getMerchantSearchClient(),
+            $this->getQuoteClient(),
+            $this->createMerchantStorageDataExpander()
+        );
     }
 
     /**
@@ -101,5 +108,23 @@ class TimeSlotFactory extends AbstractFactory
     protected function getZedRequestClient()
     {
         return $this->getProvidedDependency(TimeSlotDependencyProvider::CLIENT_ZED_REQUEST);
+    }
+
+    /**
+     * @return MerchantSearchClientInterface
+     */
+    protected function getMerchantSearchClient(): MerchantSearchClientInterface
+    {
+        return $this->getProvidedDependency(TimeSlotDependencyProvider::CLIENT_MERCHANT_SEARCH);
+    }
+
+    /**
+     * @return MerchantStorageDataExpanderInterface
+     */
+    public function createMerchantStorageDataExpander(): MerchantStorageDataExpanderInterface
+    {
+        return new MerchantStorageDataExpander(
+            $this->getMerchantStorageClient()
+        );
     }
 }

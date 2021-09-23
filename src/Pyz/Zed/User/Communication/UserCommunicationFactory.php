@@ -15,9 +15,10 @@ use Pyz\Zed\User\Communication\Table\UsersTable;
 use Pyz\Zed\User\UserDependencyProvider;
 use Spryker\Zed\Acl\Business\AclFacadeInterface;
 use Spryker\Zed\User\Communication\UserCommunicationFactory as SprykerUserCommunicationFactory;
+use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
 
 /**
- * @method \Spryker\Zed\User\Persistence\UserQueryContainerInterface getQueryContainer()
+ * @method \Pyz\Zed\User\Persistence\UserQueryContainerInterface getQueryContainer()
  * @method \Spryker\Zed\User\UserConfig getConfig()
  * @method \Spryker\Zed\User\Business\UserFacadeInterface getFacade()
  * @method \Pyz\Service\User\UserService getService()
@@ -90,5 +91,13 @@ class UserCommunicationFactory extends SprykerUserCommunicationFactory
     public function getUserFacade()
     {
         return $this->getProvidedDependency(UserDependencyProvider::FACADE_USER);
+    }
+
+    /**
+     * @return \Symfony\Component\Security\Csrf\CsrfTokenManagerInterface
+     */
+    public function getCsrfTokenManager(): CsrfTokenManagerInterface
+    {
+        return $this->getProvidedDependency(UserDependencyProvider::SERVICE_FORM_CSRF_PROVIDER);
     }
 }

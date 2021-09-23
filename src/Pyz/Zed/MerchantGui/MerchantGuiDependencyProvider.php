@@ -11,9 +11,11 @@ use Pyz\Zed\AssortmentZone\Business\AssortmentZoneFacadeInterface;
 use Pyz\Zed\MerchantStorage\Business\MerchantStorageFacadeInterface;
 use Pyz\Zed\PickingZone\Business\PickingZoneFacadeInterface;
 use Spryker\Zed\Acl\Business\AclFacadeInterface;
+use Spryker\Zed\Kernel\Communication\Form\FormTypeInterface;
 use Spryker\Zed\Kernel\Container;
 use Spryker\Zed\MerchantGui\MerchantGuiDependencyProvider as SpyMerchantGuiDependencyProvider;
 use Spryker\Zed\Sales\Dependency\Facade\SalesToUserBridge;
+use Spryker\Zed\Store\Communication\Plugin\Form\StoreRelationToggleFormTypePlugin;
 
 /**
  * @method \Spryker\Zed\MerchantGui\MerchantGuiConfig getConfig()
@@ -48,7 +50,7 @@ class MerchantGuiDependencyProvider extends SpyMerchantGuiDependencyProvider
      *
      * @return \Spryker\Zed\Kernel\Container
      */
-    protected function addUserFacade(Container $container)
+    protected function addUserFacade(Container $container): Container
     {
         $container[static::FACADE_USER] = function (Container $container) {
             return new SalesToUserBridge($container->getLocator()->user()->facade());
@@ -62,7 +64,7 @@ class MerchantGuiDependencyProvider extends SpyMerchantGuiDependencyProvider
      *
      * @return \Spryker\Zed\Kernel\Container
      */
-    protected function addMerchantStorageFacade(Container $container)
+    protected function addMerchantStorageFacade(Container $container): Container
     {
         $container->set(static::MERCHANT_STORAGE_FACADE, function (Container $container): MerchantStorageFacadeInterface {
             return $container->getLocator()->merchantStorage()->facade();
@@ -111,5 +113,13 @@ class MerchantGuiDependencyProvider extends SpyMerchantGuiDependencyProvider
         });
 
         return $container;
+    }
+
+    /**
+     * @return \Spryker\Zed\Kernel\Communication\Form\FormTypeInterface
+     */
+    protected function getStoreRelationFormTypePlugin(): FormTypeInterface
+    {
+        return new StoreRelationToggleFormTypePlugin();
     }
 }

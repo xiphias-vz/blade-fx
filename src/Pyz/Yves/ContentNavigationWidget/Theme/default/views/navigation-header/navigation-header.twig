@@ -1,0 +1,12 @@
+{% extends template('widget') %}
+
+{% define data = {
+    navigation: navigation,
+} %}
+{% block body %}
+    {% include molecule('navigation-header') with {
+        data: {
+            nodes: data.navigation.nodes
+        },
+    } only %}
+{% endblock %}

@@ -14,6 +14,4 @@ use SprykerEco\Shared\Payone\PayoneTransactionStatusConstants as SprykerEcoPayon
  */
 interface PayoneTransactionStatusConstants extends SprykerEcoPayoneTransactionStatusConstants
 {
-    public const STATUS_CAPTURE_APPROVED = 'capture approved';
-    public const STATUS_CAPTURE_FAILED = 'capture failed';
 }

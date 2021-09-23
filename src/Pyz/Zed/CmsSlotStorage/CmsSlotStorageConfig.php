@@ -8,6 +8,7 @@
 namespace Pyz\Zed\CmsSlotStorage;
 
 use Pyz\Zed\Synchronization\SynchronizationConfig;
+use Spryker\Shared\Publisher\PublisherConfig;
 use Spryker\Zed\CmsSlotStorage\CmsSlotStorageConfig as SprykerCmsSlotStorageConfig;
 
 class CmsSlotStorageConfig extends SprykerCmsSlotStorageConfig

@@ -31,6 +31,11 @@ class InvoiceDependencyProvider extends AbstractBundleDependencyProvider
     public const STORE = 'STORE';
 
     /**
+     * @uses \Spryker\Zed\Twig\Communication\Plugin\Application\TwigApplicationPlugin::SERVICE_TWIG
+     */
+    public const SERVICE_TWIG = 'twig';
+
+    /**
      * @param \Spryker\Zed\Kernel\Container $container
      *
      * @return \Spryker\Zed\Kernel\Container
@@ -62,6 +67,7 @@ class InvoiceDependencyProvider extends AbstractBundleDependencyProvider
         $container = parent::provideCommunicationLayerDependencies($container);
 
         $container = $this->addDateTimeWithZoneService($container);
+        $container = $this->addTwigEnvironment($container);
 
         return $container;
     }
@@ -187,6 +193,20 @@ class InvoiceDependencyProvider extends AbstractBundleDependencyProvider
     {
         $container->set(self::STORE, function (Container $container) {
             return Store::getInstance();
+        });
+
+        return $container;
+    }
+
+    /**
+     * @param \Spryker\Zed\Kernel\Container $container
+     *
+     * @return \Spryker\Zed\Kernel\Container
+     */
+    protected function addTwigEnvironment(Container $container): Container
+    {
+        $container->set(static::SERVICE_TWIG, function (Container $container) {
+            return $container->getApplicationService(static::SERVICE_TWIG);
         });
 
         return $container;

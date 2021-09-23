@@ -9,8 +9,9 @@ namespace Pyz\Client\MerchantSearch;
 
 use Pyz\Client\MerchantStorage\MerchantStorageClient;
 use Spryker\Client\Kernel\AbstractFactory;
+use Spryker\Client\MerchantSearch\MerchantSearchFactory as SprykerMerchantSearchFactory;
 
-class MerchantSearchFactory extends AbstractFactory
+class MerchantSearchFactory extends SprykerMerchantSearchFactory
 {
     /**
      * @return \Pyz\Client\MerchantStorage\MerchantStorageClient

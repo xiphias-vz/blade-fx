@@ -29,7 +29,10 @@ class AuthController extends SprykerAuthControllerAlias
             ->getCsrfTokenManager()
             ->refreshToken(LoginForm::FORM_NAME);
 
-        return parent::executeLoginAction();
+        $data = parent::executeLoginAction();
+        $data['customer'] = [];
+
+        return $data;
     }
 
     /**

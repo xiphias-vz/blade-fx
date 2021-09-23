@@ -62,6 +62,6 @@ class CustomerAuthenticationFailureHandler extends BaseCustomerAuthenticationHan
      */
     public function getFlashMessenger(): FlashMessengerInterface
     {
-        return $this->getApplication()->get(static::SERVICE_FLASH_MESSENGER);
+        return $this->getFactory()->getFlashMessenger();
     }
 }

@@ -11,3 +11,7 @@ template_path,slot_key,content_provider,name,description,is_active
 @HomePage/views/home/home.twig,3-elements-slt-in-frame-grid-content,SprykerCmsSlotBlock,3 elements in-frame Grid Content,"A Content section for square Blocks in the Home Page, below 1st in-frame full width section, and above 2nd in-frame full width section.",1
 @HomePage/views/home/home.twig,4-elements-slt-in-frame-grid-content,SprykerCmsSlotBlock,4 elements in-frame Grid Content,A Content section for square Blocks in the Home Page with 4 element inside.,1
 @ShopUi/templates/page-layout-main/page-layout-main.twig,slt-123,SprykerCmsSlotBlock,Header Top,"A content area in the Header section, that is above the logo, search section and main navigation.",1
+@ShopUi/templates/page-layout-main/page-layout-main.twig,slt-desktop-header,SprykerCmsSlotBlock,Header desktop view,"In the store Header section, On desktop, below the logo.",1
+@ShopUi/templates/page-layout-main/page-layout-main.twig,slt-footer,SprykerCmsSlotBlock,Footer,"In the store Footer section, On desktop, bottom of the page. On mobile, bottom of the page.",1
+@ShopUi/templates/page-layout-main/page-layout-main.twig,slt-mobile-header,SprykerCmsSlotBlock,Header mobile view,"In the store Header section. On mobile, under the hamburger menu.",1
+@HomePage/views/home/home.twig,slt-popular-categories,SprykerCmsSlotBlock,Popular categories view,"In the store section.",1

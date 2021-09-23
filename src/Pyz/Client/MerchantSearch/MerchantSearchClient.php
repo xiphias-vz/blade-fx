@@ -9,11 +9,12 @@ namespace Pyz\Client\MerchantSearch;
 
 use Generated\Shared\Transfer\MerchantCollectionTransfer;
 use Spryker\Client\Kernel\AbstractClient;
+use Spryker\Client\MerchantSearch\MerchantSearchClient as SprykerMerchantSearchClient;
 
 /**
  * @method \Pyz\Client\MerchantSearch\MerchantSearchFactory getFactory()
  */
-class MerchantSearchClient extends AbstractClient implements MerchantSearchClientInterface
+class MerchantSearchClient extends SprykerMerchantSearchClient implements MerchantSearchClientInterface
 {
     /**
      * @return \Generated\Shared\Transfer\MerchantCollectionTransfer

@@ -33,15 +33,7 @@ class CustomerReorderWidgetFactory extends SprykerCustomerReorderWidgetFactory
      */
     public function getCsrfTokenManager(): CsrfTokenManagerInterface
     {
-        return $this->getApplication()->get(static::SERVICE_FORM_CSRF_PROVIDER);
-    }
-
-    /**
-     * @return \Spryker\Yves\Kernel\Application
-     */
-    protected function getApplication(): Application
-    {
-        return $this->getProvidedDependency(CustomerReorderWidgetDependencyProvider::PLUGIN_APPLICATION);
+        return $this->getProvidedDependency(CustomerReorderWidgetDependencyProvider::SERVICE_FORM_CSRF_PROVIDER);
     }
 
     /**
@@ -66,7 +58,8 @@ class CustomerReorderWidgetFactory extends SprykerCustomerReorderWidgetFactory
             $this->getProductStorageClient(),
             $this->getMessengerClient(),
             $this->getGlossaryStorageClient(),
-            $this->getLocaleClient()
+            $this->getLocaleClient(),
+            $this->getReorderItemExpanderPlugins()
         );
     }
 }

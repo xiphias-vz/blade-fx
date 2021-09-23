@@ -50,7 +50,7 @@ tag: 'dev'
 
 environment: docker_dev
 image:
-    tag: spryker/php:7.3-alpine3.12
+    tag: spryker/php:7.4-alpine3.12
     environment:
         SPRYKER_CODE_BUCKET: DE
     php:
@@ -395,7 +395,10 @@ services:
         server-token: aef29b0d3b5de8b7184182b9a6aa82b9bf25fb87ae55fcf9102fe580bd833d25
         client-id: 5655aeff-b940-4f78-8d29-c114345a20b4
         client-token: f19a7ad4697348501266fbdc4b8294b489837bec30ba5fecc7713eb1d4d14bca
-
+    dashboard:
+        engine: dashboard
+        endpoints:
+            globus.local:
 docker:
 
     ssl:
@@ -414,5 +417,8 @@ docker:
 
         docker-sync:
             platforms:
-                - macos
                 - windows
+
+        mutagen:
+            platforms:
+                - macos

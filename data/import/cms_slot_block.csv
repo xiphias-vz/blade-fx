@@ -1,1 +1,5 @@
 template_path,slot_key,block_key,position,conditions.productCategory.all,conditions.productCategory.skus,conditions.productCategory.category_key,conditions.category.all,conditions.category.category_key,conditions.cms_page.all,conditions.cms_page.page_key
+@ShopUi/templates/page-layout-main/page-layout-main.twig,slt-desktop-header,blck-nav-desktop,1,,,,,,,
+@ShopUi/templates/page-layout-main/page-layout-main.twig,slt-footer,blck-nav-footer,1,,,,,,,
+@ShopUi/templates/page-layout-main/page-layout-main.twig,slt-mobile-header,blck-nav-mobile,1,,,,,,,
+@HomePage/views/home/home.twig,slt-popular-categories,blck-nav-popular-categories,1,,,,,,,

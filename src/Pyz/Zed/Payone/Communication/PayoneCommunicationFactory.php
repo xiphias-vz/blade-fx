@@ -9,6 +9,8 @@ namespace Pyz\Zed\Payone\Communication;
 
 use Pyz\Zed\Payone\PayoneDependencyProvider;
 use SprykerEco\Zed\Payone\Communication\PayoneCommunicationFactory as SprykerEcoPayoneCommunicationFactory;
+use SprykerEco\Zed\Payone\Dependency\Facade\PayoneToCalculationInterface;
+use SprykerEco\Zed\Payone\Dependency\Facade\PayoneToSalesInterface;
 
 /**
  * @method \SprykerEco\Zed\Payone\PayoneConfig getConfig()
@@ -20,17 +22,17 @@ use SprykerEco\Zed\Payone\Communication\PayoneCommunicationFactory as SprykerEco
 class PayoneCommunicationFactory extends SprykerEcoPayoneCommunicationFactory
 {
     /**
-     * @return \Spryker\Zed\Sales\Business\SalesFacadeInterface
+     * @return \SprykerEco\Zed\Payone\Dependency\Facade\PayoneToSalesInterface
      */
-    public function getSalesFacade()
+    public function getSalesFacade(): PayoneToSalesInterface
     {
         return $this->getProvidedDependency(PayoneDependencyProvider::FACADE_SALES);
     }
 
     /**
-     * @return \Spryker\Zed\Calculation\Business\CalculationFacadeInterface
+     * @return \SprykerEco\Zed\Payone\Dependency\Facade\PayoneToCalculationInterface
      */
-    public function getCalculationFacade()
+    public function getCalculationFacade(): PayoneToCalculationInterface
     {
         return $this->getProvidedDependency(PayoneDependencyProvider::FACADE_CALCULATION);
     }

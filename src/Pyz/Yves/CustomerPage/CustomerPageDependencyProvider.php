@@ -34,6 +34,11 @@ class CustomerPageDependencyProvider extends SprykerShopCustomerPageDependencyPr
     public const SERVICE_USER = 'SERVICE_USER';
 
     /**
+     * @uses \Spryker\Yves\Form\Plugin\Application\FormApplicationPlugin::SERVICE_FORM_CSRF_PROVIDER
+     */
+    public const SERVICE_FORM_CSRF_PROVIDER = 'form.csrf_provider';
+
+    /**
      * @param \Spryker\Yves\Kernel\Container $container
      *
      * @return \Spryker\Yves\Kernel\Container
@@ -51,6 +56,7 @@ class CustomerPageDependencyProvider extends SprykerShopCustomerPageDependencyPr
         $container = $this->addSelectedMerchantCookiePlugin($container);
         $container = $this->addDataDogService($container);
         $container = $this->addUserService($container);
+        $container = $this->addFormCsrfProviderService($container);
 
         return $container;
     }
@@ -245,6 +251,20 @@ class CustomerPageDependencyProvider extends SprykerShopCustomerPageDependencyPr
     {
         $container->set(static::PLUGIN_REGISTRATION_AUTHENTICATION_HANDLER, function () {
             return new RegistrationCheckoutAuthenticationHandlerPlugin();
+        });
+
+        return $container;
+    }
+
+    /**
+     * @param \Spryker\Yves\Kernel\Container $container
+     *
+     * @return \Spryker\Yves\Kernel\Container
+     */
+    protected function addFormCsrfProviderService(Container $container): Container
+    {
+        $container->set(static::SERVICE_FORM_CSRF_PROVIDER, function (Container $container) {
+            return $container->getApplicationService(static::SERVICE_FORM_CSRF_PROVIDER);
         });
 
         return $container;

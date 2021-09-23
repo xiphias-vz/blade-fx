@@ -28,13 +28,15 @@ class AvailableItemsForStoreFilter extends SpyCheckCartAvailability implements I
 
     /**
      * @param \Spryker\Zed\AvailabilityCartConnector\Dependency\Facade\AvailabilityCartConnectorToAvailabilityInterface $availabilityFacade
+     * @param \Spryker\Zed\AvailabilityCartConnectorExtension\Dependency\Plugin\CartItemQuantityCounterStrategyPluginInterface[] $cartItemQuantityCounterStrategyPlugins
      * @param \Spryker\Zed\Cart\Dependency\Facade\CartToMessengerInterface $messengerFacade
      */
     public function __construct(
         AvailabilityCartConnectorToAvailabilityInterface $availabilityFacade,
+        array $cartItemQuantityCounterStrategyPlugins,
         CartToMessengerInterface $messengerFacade
     ) {
-        parent::__construct($availabilityFacade);
+        parent::__construct($availabilityFacade, $cartItemQuantityCounterStrategyPlugins);
 
         $this->messengerFacade = $messengerFacade;
     }

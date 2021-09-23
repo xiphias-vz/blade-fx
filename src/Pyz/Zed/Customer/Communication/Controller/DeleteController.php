@@ -65,6 +65,6 @@ class DeleteController extends SprykerDeleteController
      */
     protected function getCsrfTokenManager(): CsrfTokenManagerInterface
     {
-        return $this->getApplication()->get(static::SERVICE_FORM_CSRF_PROVIDER);
+        return $this->getFactory()->getCsrfTokenManager();
     }
 }

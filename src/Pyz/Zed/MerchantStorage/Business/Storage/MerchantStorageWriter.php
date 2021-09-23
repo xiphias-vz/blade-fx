@@ -7,7 +7,7 @@
 
 namespace Pyz\Zed\MerchantStorage\Business\Storage;
 
-use Generated\Shared\Transfer\MerchantCriteriaFilterTransfer;
+use Generated\Shared\Transfer\MerchantCriteriaTransfer;
 use Orm\Zed\Merchant\Persistence\Base\SpyMerchantQuery;
 use Orm\Zed\Merchant\Persistence\Map\PyzMerchantDeliveryPostalCodeTableMap;
 use Orm\Zed\Merchant\Persistence\Map\SpyMerchantTableMap;
@@ -74,7 +74,7 @@ class MerchantStorageWriter implements MerchantStorageWriterInterface
 
         foreach ($storeIds as $idStore) {
             $merchantCollectionTransfer = $this->merchantStorageRepository->getMerchants(
-                (new MerchantCriteriaFilterTransfer())->setIdStore($idStore)
+                (new MerchantCriteriaTransfer())->setIdStore($idStore)
                     ->setWithTimeSlots(true)
             );
             $this->merchantStorageEntityManager->saveMerchantsToStorage($merchantCollectionTransfer);
@@ -106,7 +106,7 @@ class MerchantStorageWriter implements MerchantStorageWriterInterface
     {
         foreach ($storeIds as $idStore) {
             $merchantCollectionTransfer = $this->merchantStorageRepository->getMerchants(
-                (new MerchantCriteriaFilterTransfer())->setIdStore($idStore)
+                (new MerchantCriteriaTransfer())->setIdStore($idStore)
                 ->setWithTimeSlots(true)
             );
             $this->merchantStorageEntityManager->saveMerchantsList($merchantCollectionTransfer);

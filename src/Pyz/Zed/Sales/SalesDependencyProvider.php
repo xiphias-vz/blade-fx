@@ -30,17 +30,23 @@ use Spryker\Zed\Acl\Business\AclFacadeInterface;
 use Spryker\Zed\Customer\Communication\Plugin\Sales\CustomerOrderHydratePlugin;
 use Spryker\Zed\Discount\Communication\Plugin\Sales\DiscountOrderHydratePlugin;
 use Spryker\Zed\Kernel\Container;
-use Spryker\Zed\Payment\Communication\Plugin\Sales\PaymentOrderHydratePlugin;
-use Spryker\Zed\ProductMeasurementUnit\Communication\Plugin\Sales\QuantitySalesUnitHydrateOrderPlugin;
+use Spryker\Zed\Oms\Communication\Plugin\Sales\IsCancellableOrderExpanderPlugin;
+use Spryker\Zed\Oms\Communication\Plugin\Sales\IsCancellableSearchOrderExpanderPlugin;
+use Spryker\Zed\Oms\Communication\Plugin\Sales\ItemStateOrderItemExpanderPlugin;
+use Spryker\Zed\Oms\Communication\Plugin\Sales\OrderAggregatedItemStateSearchOrderExpanderPlugin;
+use Spryker\Zed\Oms\Communication\Plugin\Sales\StateHistoryOrderItemExpanderPlugin;
+use Spryker\Zed\ProductMeasurementUnit\Communication\Plugin\Sales\QuantitySalesUnitOrderItemExpanderPlugin;
 use Spryker\Zed\ProductMeasurementUnit\Communication\Plugin\SalesExtension\QuantitySalesUnitOrderItemExpanderPreSavePlugin;
 use Spryker\Zed\ProductOption\Communication\Plugin\Sales\ProductOptionGroupIdHydratorPlugin;
-use Spryker\Zed\ProductOption\Communication\Plugin\Sales\ProductOptionOrderHydratePlugin;
+use Spryker\Zed\ProductOption\Communication\Plugin\Sales\ProductOptionsOrderItemExpanderPlugin;
 use Spryker\Zed\ProductPackagingUnit\Communication\Plugin\Checkout\PackagingUnitSplittableItemTransformerStrategyPlugin;
-use Spryker\Zed\ProductPackagingUnit\Communication\Plugin\Sales\AmountLeadProductHydrateOrderPlugin;
-use Spryker\Zed\ProductPackagingUnit\Communication\Plugin\Sales\AmountSalesUnitHydrateOrderPlugin;
+use Spryker\Zed\ProductPackagingUnit\Communication\Plugin\Sales\AmountLeadProductOrderItemExpanderPlugin;
+use Spryker\Zed\ProductPackagingUnit\Communication\Plugin\Sales\AmountSalesUnitOrderItemExpanderPlugin;
 use Spryker\Zed\ProductPackagingUnit\Communication\Plugin\SalesExtension\AmountSalesUnitOrderItemExpanderPreSavePlugin;
 use Spryker\Zed\ProductPackagingUnit\Communication\Plugin\SalesExtension\ProductPackagingUnitOrderItemExpanderPreSavePlugin;
+use Spryker\Zed\Sales\Communication\Plugin\Sales\CurrencyIsoCodeOrderItemExpanderPlugin;
 use Spryker\Zed\Sales\SalesDependencyProvider as SprykerSalesDependencyProvider;
+use Spryker\Zed\SalesPayment\Communication\Plugin\Sales\SalesPaymentOrderExpanderPlugin;
 use Spryker\Zed\SalesProductConnector\Communication\Plugin\Sales\ItemMetadataHydratorPlugin;
 use Spryker\Zed\SalesProductConnector\Communication\Plugin\Sales\ProductIdHydratorPlugin;
 use Spryker\Zed\SalesQuantity\Communication\Plugin\SalesExtension\IsQuantitySplittableOrderItemExpanderPreSavePlugin;
@@ -244,7 +250,7 @@ class SalesDependencyProvider extends SprykerSalesDependencyProvider
      *
      * @return \Spryker\Zed\Kernel\Container
      */
-    protected function addDateTimeWithZoneService(Container $container)
+    protected function addDateTimeWithZoneService(Container $container): Container
     {
         $container->set(self::SERVICE_DATE_TIME_WITH_ZONE, function (Container $container): DateTimeWithZoneServiceInterface {
             return $container->getLocator()->dateTimeWithZone()->service();
@@ -256,29 +262,26 @@ class SalesDependencyProvider extends SprykerSalesDependencyProvider
     /**
      * @return \Spryker\Zed\SalesExtension\Dependency\Plugin\OrderExpanderPluginInterface[]
      */
-    protected function getOrderHydrationPlugins()
+    protected function getOrderHydrationPlugins(): array
     {
         return [
             new ProductIdHydratorPlugin(),
-            new ProductOptionOrderHydratePlugin(),
             new DiscountOrderHydratePlugin(),
             new ShipmentOrderHydratePlugin(),
-            new PaymentOrderHydratePlugin(),
+            new SalesPaymentOrderExpanderPlugin(),
             new CustomerOrderHydratePlugin(),
             new ItemMetadataHydratorPlugin(),
             new ProductOptionGroupIdHydratorPlugin(),
             new OrderStatusHydratorOrderPlugin(),
             new MerchantRegionOrderExpanderPlugin(),
-            new QuantitySalesUnitHydrateOrderPlugin(),
-            new AmountLeadProductHydrateOrderPlugin(),
-            new AmountSalesUnitHydrateOrderPlugin(),
+            new IsCancellableOrderExpanderPlugin(),
         ];
     }
 
     /**
      * @return \Spryker\Zed\SalesExtension\Dependency\Plugin\OrderItemExpanderPreSavePluginInterface[]
      */
-    protected function getOrderItemExpanderPreSavePlugins()
+    protected function getOrderItemExpanderPreSavePlugins(): array
     {
         return [
             new ProductNumberOrderItemExpanderPreSavePlugin(),
@@ -307,7 +310,7 @@ class SalesDependencyProvider extends SprykerSalesDependencyProvider
     /**
      * @return \Spryker\Zed\SalesExtension\Dependency\Plugin\SalesTablePluginInterface[]
      */
-    protected function getSalesTablePlugins()
+    protected function getSalesTablePlugins(): array
     {
         return [];
     }
@@ -323,7 +326,7 @@ class SalesDependencyProvider extends SprykerSalesDependencyProvider
     /**
      * @return \Spryker\Zed\Sales\Dependency\Plugin\OrderExpanderPreSavePluginInterface[]
      */
-    protected function getOrderExpanderPreSavePlugins()
+    protected function getOrderExpanderPreSavePlugins(): array
     {
         return [
             new MerchantOrderExpanderPreSavePlugin(),
@@ -333,7 +336,7 @@ class SalesDependencyProvider extends SprykerSalesDependencyProvider
     /**
      * @return \Spryker\Zed\SalesExtension\Dependency\Plugin\OrderPostSavePluginInterface[]
      */
-    protected function getOrderPostSavePlugins()
+    protected function getOrderPostSavePlugins(): array
     {
         return [
             new TimeSlotStorageWriterPostSavePlugin(),
@@ -346,7 +349,7 @@ class SalesDependencyProvider extends SprykerSalesDependencyProvider
      *
      * @return \Spryker\Zed\Kernel\Container
      */
-    protected function addHydrateOrderForStoreAppPlugins(Container $container)
+    protected function addHydrateOrderForStoreAppPlugins(Container $container): Container
     {
         $container[static::HYDRATE_ORDER_PLUGINS_FOR_STORE_APP] = function (Container $container) {
             return $this->getOrderHydrationForStoreAppPlugins();
@@ -358,14 +361,13 @@ class SalesDependencyProvider extends SprykerSalesDependencyProvider
     /**
      * @return \Spryker\Zed\SalesExtension\Dependency\Plugin\OrderExpanderPluginInterface[]
      */
-    protected function getOrderHydrationForStoreAppPlugins()
+    protected function getOrderHydrationForStoreAppPlugins(): array
     {
         return [
             new ProductIdHydratorPlugin(),
-            new ProductOptionOrderHydratePlugin(),
             new DiscountOrderHydratePlugin(),
             new ShipmentOrderHydratePlugin(),
-            new PaymentOrderHydratePlugin(),
+            new SalesPaymentOrderExpanderPlugin(),
             new CustomerOrderHydratePlugin(),
             new ItemMetadataHydratorPlugin(),
             new ProductOptionGroupIdHydratorPlugin(),
@@ -402,5 +404,32 @@ class SalesDependencyProvider extends SprykerSalesDependencyProvider
         });
 
         return $container;
+    }
+
+    /**
+     * @return \Spryker\Zed\SalesExtension\Dependency\Plugin\OrderItemExpanderPluginInterface[]
+     */
+    protected function getOrderItemExpanderPlugins(): array
+    {
+        return [
+            new CurrencyIsoCodeOrderItemExpanderPlugin(),
+            new StateHistoryOrderItemExpanderPlugin(),
+            new ItemStateOrderItemExpanderPlugin(),
+            new AmountLeadProductOrderItemExpanderPlugin(),
+            new AmountSalesUnitOrderItemExpanderPlugin(),
+            new ProductOptionsOrderItemExpanderPlugin(),
+            new QuantitySalesUnitOrderItemExpanderPlugin()
+        ];
+    }
+
+    /**
+     * @return \Spryker\Zed\SalesExtension\Dependency\Plugin\SearchOrderExpanderPluginInterface[]
+     */
+    protected function getSearchOrderExpanderPlugins(): array
+    {
+        return [
+            new OrderAggregatedItemStateSearchOrderExpanderPlugin(),
+            new IsCancellableSearchOrderExpanderPlugin(),
+        ];
     }
 }

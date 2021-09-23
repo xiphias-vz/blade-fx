@@ -12,6 +12,7 @@ use Generated\Shared\Transfer\DataImporterReaderConfigurationTransfer;
 use Pyz\Zed\MerchantRegion\Business\DataImport\MerchantRegionWriterStep;
 use Pyz\Zed\MerchantRegion\Business\Expander\OrderExpander;
 use Spryker\Zed\DataImport\Business\Model\DataImporter;
+use Spryker\Zed\DataImport\Business\Model\DataImporterBeforeImportAwareInterface;
 use Spryker\Zed\DataImport\Business\Model\DataReader\CsvReader\CsvReader;
 use Spryker\Zed\DataImport\Business\Model\DataReader\CsvReader\CsvReaderConfiguration;
 use Spryker\Zed\DataImport\Business\Model\DataReader\CsvReader\CsvReaderConfigurationInterface;
@@ -19,8 +20,11 @@ use Spryker\Zed\DataImport\Business\Model\DataReader\DataReaderInterface;
 use Spryker\Zed\DataImport\Business\Model\DataReader\FileResolver\FileResolver;
 use Spryker\Zed\DataImport\Business\Model\DataReader\FileResolver\FileResolverInterface;
 use Spryker\Zed\DataImport\Business\Model\DataSet\DataSet;
+use Spryker\Zed\DataImport\Business\Model\DataSet\DataSetInterface;
 use Spryker\Zed\DataImport\Business\Model\DataSet\DataSetStepBrokerTransactionAware;
 use Spryker\Zed\DataImport\DataImportDependencyProvider;
+use Spryker\Zed\DataImport\Dependency\Facade\DataImportToGracefulRunnerInterface;
+use Spryker\Zed\DataImport\Dependency\Propel\DataImportToPropelConnectionInterface;
 use Spryker\Zed\Kernel\Business\AbstractBusinessFactory;
 
 /**
@@ -69,7 +73,7 @@ class MerchantRegionBusinessFactory extends AbstractBusinessFactory
     /**
      * @return \Spryker\Zed\DataImport\Dependency\Propel\DataImportToPropelConnectionInterface
      */
-    private function getPropelConnection()
+    private function getPropelConnection(): DataImportToPropelConnectionInterface
     {
         return $this->getProvidedDependency(DataImportDependencyProvider::PROPEL_CONNECTION);
     }
@@ -94,7 +98,7 @@ class MerchantRegionBusinessFactory extends AbstractBusinessFactory
      */
     private function createDataImporter($importType, DataReaderInterface $reader)
     {
-        return new DataImporter($importType, $reader);
+        return new DataImporter($importType, $reader, $this->getGracefulRunnerFacade());
     }
 
     /**
@@ -102,7 +106,7 @@ class MerchantRegionBusinessFactory extends AbstractBusinessFactory
      *
      * @return \Spryker\Zed\DataImport\Business\Model\DataReader\DataReaderInterface
      */
-    private function createCsvReaderFromConfig(DataImporterReaderConfigurationTransfer $dataImporterReaderConfigurationTransfer)
+    private function createCsvReaderFromConfig(DataImporterReaderConfigurationTransfer $dataImporterReaderConfigurationTransfer): DataReaderInterface
     {
         $csvReaderConfiguration = new CsvReaderConfiguration(
             $dataImporterReaderConfigurationTransfer,
@@ -135,7 +139,7 @@ class MerchantRegionBusinessFactory extends AbstractBusinessFactory
      *
      * @return \Spryker\Zed\DataImport\Business\Model\DataSet\DataSetInterface
      */
-    private function createDataSet(array $data = [])
+    private function createDataSet(array $data = []): DataSetInterface
     {
         return new DataSet($data);
     }
@@ -146,5 +150,13 @@ class MerchantRegionBusinessFactory extends AbstractBusinessFactory
     private function createMerchantRegionWriterStep(): MerchantRegionWriterStep
     {
         return new MerchantRegionWriterStep();
+    }
+
+    /**
+     * @return \Spryker\Zed\DataImport\Dependency\Facade\DataImportToGracefulRunnerInterface
+     */
+    public function getGracefulRunnerFacade(): DataImportToGracefulRunnerInterface
+    {
+        return $this->getProvidedDependency(DataImportDependencyProvider::FACADE_GRACEFUL_RUNNER);
     }
 }

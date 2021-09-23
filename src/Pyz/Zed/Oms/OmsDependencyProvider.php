@@ -55,11 +55,14 @@ use Spryker\Zed\Availability\Communication\Plugin\AvailabilityHandlerPlugin;
 use Spryker\Zed\Kernel\Container;
 use Spryker\Zed\Oms\Communication\Plugin\Oms\Command\SendOrderConfirmationPlugin;
 use Spryker\Zed\Oms\Communication\Plugin\Oms\Command\SendOrderShippedPlugin;
+use Spryker\Zed\Oms\Communication\Plugin\Oms\ReservationHandler\ReservationVersionPostSaveTerminationAwareStrategyPlugin;
 use Spryker\Zed\Oms\Dependency\Plugin\Command\CommandCollectionInterface;
 use Spryker\Zed\Oms\Dependency\Plugin\Condition\ConditionCollectionInterface;
+use Spryker\Zed\Oms\Dependency\Plugin\ReservationHandlerPluginInterface;
 use Spryker\Zed\Oms\OmsDependencyProvider as SprykerOmsDependencyProvider;
-use Spryker\Zed\ProductPackagingUnit\Communication\Plugin\Oms\ProductPackagingUnitReservationAggregationStrategyPlugin;
-use Spryker\Zed\ProductPackagingUnit\Communication\Plugin\Reservation\LeadProductReservationHandlerPlugin;
+use Spryker\Zed\ProductPackagingUnit\Communication\Plugin\Oms\ProductPackagingUnitOmsReservationAggregationPlugin;
+use Spryker\Zed\ProductPackagingUnit\Communication\Plugin\Reservation\LeadProductReservationPostSaveTerminationAwareStrategyPlugin;
+use Spryker\Zed\SalesInvoice\Communication\Plugin\Oms\GenerateOrderInvoiceCommandPlugin;
 use Spryker\Zed\Shipment\Dependency\Plugin\Oms\ShipmentManualEventGrouperPlugin;
 use Spryker\Zed\Shipment\Dependency\Plugin\Oms\ShipmentOrderMailExpanderPlugin;
 use Spryker\Zed\Translator\Business\TranslatorFacadeInterface;
@@ -96,11 +99,16 @@ class OmsDependencyProvider extends SprykerOmsDependencyProvider
     public const FACADE_MERCHANT_SALES_ORDER = 'FACADE_MERCHANT_SALES_ORDER';
 
     /**
+     * @uses \Spryker\Zed\Twig\Communication\Plugin\Application\TwigApplicationPlugin::SERVICE_TWIG
+     */
+    public const SERVICE_TWIG = 'twig';
+
+    /**
      * @param \Spryker\Zed\Kernel\Container $container
      *
      * @return \Spryker\Zed\Kernel\Container
      */
-    public function provideBusinessLayerDependencies(Container $container)
+    public function provideBusinessLayerDependencies(Container $container): Container
     {
         $container = parent::provideBusinessLayerDependencies($container);
         $container = $this->extendCommandPlugins($container);
@@ -111,6 +119,7 @@ class OmsDependencyProvider extends SprykerOmsDependencyProvider
         $container = $this->addPyzSalesFacade($container);
         $container = $this->addTranslatorsFacade($container);
         $container = $this->addDateTimeWithZoneService($container);
+        $container = $this->addTwigEnvironment($container);
 
         return $container;
     }
@@ -120,12 +129,13 @@ class OmsDependencyProvider extends SprykerOmsDependencyProvider
      *
      * @return \Spryker\Zed\Kernel\Container
      */
-    public function provideCommunicationLayerDependencies(Container $container)
+    public function provideCommunicationLayerDependencies(Container $container): Container
     {
         $container = parent::provideCommunicationLayerDependencies($container);
 
         $container = $this->addPyzSalesFacade($container);
         $container = $this->addMerchantSalesOrderFacade($container);
+        $container = $this->addTwigEnvironment($container);
 
         return $container;
     }
@@ -249,21 +259,10 @@ class OmsDependencyProvider extends SprykerOmsDependencyProvider
      *
      * @return \Spryker\Zed\Oms\Dependency\Plugin\ReservationHandlerPluginInterface[]
      */
-    protected function getReservationHandlerPlugins(Container $container)
+    protected function getReservationHandlerPlugins(Container $container): array
     {
         return [
             new AvailabilityHandlerPlugin(),
-            new LeadProductReservationHandlerPlugin(),
-        ];
-    }
-
-    /**
-     * @return \Spryker\Zed\OmsExtension\Dependency\Plugin\ReservationAggregationStrategyPluginInterface[]
-     */
-    protected function getReservationAggregationStrategyPlugins(): array
-    {
-        return [
-            new ProductPackagingUnitReservationAggregationStrategyPlugin(),
         ];
     }
 
@@ -272,7 +271,7 @@ class OmsDependencyProvider extends SprykerOmsDependencyProvider
      *
      * @return \Spryker\Zed\OmsExtension\Dependency\Plugin\OmsOrderMailExpanderPluginInterface[]
      */
-    protected function getOmsOrderMailExpanderPlugins(Container $container)
+    protected function getOmsOrderMailExpanderPlugins(Container $container): array
     {
         return [
             new ShipmentOrderMailExpanderPlugin(),
@@ -284,7 +283,7 @@ class OmsDependencyProvider extends SprykerOmsDependencyProvider
      *
      * @return \Spryker\Zed\OmsExtension\Dependency\Plugin\OmsManualEventGrouperPluginInterface[]
      */
-    protected function getOmsManualEventGrouperPlugins(Container $container)
+    protected function getOmsManualEventGrouperPlugins(Container $container): array
     {
         return [
             new ShipmentManualEventGrouperPlugin(),
@@ -310,7 +309,7 @@ class OmsDependencyProvider extends SprykerOmsDependencyProvider
      *
      * @return \Spryker\Zed\Kernel\Container
      */
-    private function addMoneyFacade(Container $container)
+    private function addMoneyFacade(Container $container): Container
     {
         $container->set(self::FACADE_MONEY, function (Container $container) {
             return $container->getLocator()->money()->facade();
@@ -366,7 +365,7 @@ class OmsDependencyProvider extends SprykerOmsDependencyProvider
      *
      * @return \Spryker\Zed\Kernel\Container
      */
-    protected function addDateTimeWithZoneService(Container $container)
+    protected function addDateTimeWithZoneService(Container $container): Container
     {
         $container->set(self::SERVICE_DATE_TIME_WITH_ZONE, function (Container $container): DateTimeWithZoneServiceInterface {
             return $container->getLocator()->dateTimeWithZone()->service();
@@ -384,6 +383,41 @@ class OmsDependencyProvider extends SprykerOmsDependencyProvider
     {
         $container->set(static::FACADE_MERCHANT_SALES_ORDER, function (Container $container): MerchantSalesOrderFacadeInterface {
             return $container->getLocator()->merchantSalesOrder()->facade();
+        });
+
+        return $container;
+    }
+
+    /**
+     * @return \Spryker\Zed\OmsExtension\Dependency\Plugin\ReservationPostSaveTerminationAwareStrategyPluginInterface[]
+     */
+    protected function getReservationPostSaveTerminationAwareStrategyPlugins(): array
+    {
+        return [
+            new LeadProductReservationPostSaveTerminationAwareStrategyPlugin(),
+            new ReservationVersionPostSaveTerminationAwareStrategyPlugin()
+        ];
+    }
+
+    /**
+     * @return \Spryker\Zed\OmsExtension\Dependency\Plugin\OmsReservationAggregationPluginInterface[]
+     */
+    protected function getOmsReservationAggregationPlugins(): array
+    {
+        return [
+            new ProductPackagingUnitOmsReservationAggregationPlugin(),
+        ];
+    }
+
+    /**
+     * @param \Spryker\Zed\Kernel\Container $container
+     *
+     * @return \Spryker\Zed\Kernel\Container
+     */
+    protected function addTwigEnvironment(Container $container): Container
+    {
+        $container->set(static::SERVICE_TWIG, function (Container $container) {
+            return $container->getApplicationService(static::SERVICE_TWIG);
         });
 
         return $container;
