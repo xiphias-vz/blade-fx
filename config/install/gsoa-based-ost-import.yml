@@ -1,0 +1,44 @@
+command-timeout: 14400
+
+sections:
+    download-gsoa-categories-products:
+        download-categories:
+            command: "vendor/bin/console gsoa:product -c importCategories"
+
+        download-products:
+            command: "vendor/bin/console gsoa:product -c importProducts"
+
+    import-categories-products:
+        import-categories:
+            command: "vendor/bin/console data:import category -f spryker/1.globusCZ_categories.csv -a UpdateAvailabilityAfterImportPlugin -vvv --no-ansi || true"
+
+        import-products:
+            command: "vendor/bin/console data:import product -f spryker/2.globusCZ_articles.csv -a UpdateAvailabilityAfterImportPlugin -vvv --no-ansi || true"
+
+    download-gsoa-price:
+        download-prices-ost:
+            command: "vendor/bin/console gsoa:product -c importProductPrice -s 4007"
+
+    dowlnoad-gsoa-stock:
+        download-stock-ost:
+            command: "vendor/bin/console gsoa:product -c importProductStock -s 4007"
+
+    import-prices:
+        import-prices-ost:
+            command: "vendor/bin/console data:import product-price -f spryker/4.globus_article_prices.4007.csv -a UpdateAvailabilityAfterImportPlugin -vvv --no-ansi || true"
+
+    import-stock:
+        import-stock-ost:
+            command: "vendor/bin/console data:import product-stock -f spryker/5.globus_article_instock.4007.csv -a UpdateAvailabilityAfterImportPlugin -vvv --no-ansi || true"
+
+    import-alternative-eans:
+        import-alternative-eans:
+            command: "vendor/bin/console data:import alternative-ean -f spryker/99.globusCZ_article_gtins.csv -vvv --no-ansi || true"
+
+    update-availability:
+        import-update-availability:
+            command: "vendor/bin/console import:updateAvailability"
+
+    execute-events:
+        import-exec-events:
+            command: "vendor/bin/console import:execEvents"

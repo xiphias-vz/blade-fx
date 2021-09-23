@@ -80,3 +80,11 @@ sections:
     import-alternative-eans:
         import-alternative-eans:
             command: "vendor/bin/console data:import alternative-ean -f spryker/99.globusCZ_article_gtins.csv -vvv --no-ansi || true"
+
+    update-availability:
+        import-update-availability:
+            command: "vendor/bin/console import:updateAvailability"
+
+    execute-events:
+        import-exec-events:
+            command: "vendor/bin/console import:execEvents"
