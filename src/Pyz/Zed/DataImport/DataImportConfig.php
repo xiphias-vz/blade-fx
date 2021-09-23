@@ -82,17 +82,6 @@ class DataImportConfig extends SprykerDataImportConfig
     {
         return APPLICATION_ROOT_DIR . DIRECTORY_SEPARATOR . 'data/import/local/full_DE.yml';
     }
-    public const IMPORT_COUNTRY_LOCALIZED = 'country-localized';
-    public const IMPORT_TYPE_MERCHANT = 'merchant';
-    public const IMPORT_TYPE_MERCHANT_REGION = 'merchant-region';
-
-    /**
-     * @return string|null
-     */
-    public function getDefaultYamlConfigPath(): ?string
-    {
-        return APPLICATION_ROOT_DIR . DIRECTORY_SEPARATOR . 'data/import/local/full_DE.yml';
-    }
 
     /**
      * @return \Generated\Shared\Transfer\DataImporterConfigurationTransfer
