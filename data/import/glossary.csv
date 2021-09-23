@@ -4844,7 +4844,7 @@ shipment.form.sunday,Sonntag,de_DE
 shipment.form.sunday,"neděle",cs_CZ
 shipment.form.sunday,Sunday,en_US
 store.switcher.pop-up.welcome.message_1,"Herzlich Willkommen bei",de_DE
-store.switcher.pop-up.welcome.message_1,"Welcome to",en_Us
+store.switcher.pop-up.welcome.message_1,"Welcome to",en_US
 store.switcher.pop-up.welcome.message_1,"Vítejte v iGlobus!",cs_CZ
 store.switcher.pop-up.welcome.message_2,"Ihrem Globus Abholservice",de_DE
 store.switcher.pop-up.welcome.message_2,"your Globus pick-up service",en_US
