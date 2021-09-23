@@ -6,6 +6,29 @@
             font-weight: bold;
             color: #000;
         }
+
+        .pictogram-holder,
+        .bio-cider-holder,
+        .safety-instruction-holder,
+        .hazard-warnings-holder,
+        .usage-instructions-holder,
+        .signal-words-holder,
+        .warnings-holder
+        {
+            margin-bottom: 10px;
+        }
+
+        .pictogram-holder {
+            display: flex;
+            align-items: center;
+
+            .pictogram {
+                &:nth-child(1) {
+                    margin-left: 0;
+                }
+                margin:3px 5px 0 5px;
+            }
+        }
     }
 }
 

@@ -53,7 +53,21 @@ class ProductController extends SprykerShopProductController
      */
     protected function executeDetailAction(array $productData, Request $request): array
     {
+        $imagesHostUrl = $this->getFactory()->getConfig()->getImagesHostUrl();
+        $pictogramsImageUrl = [];
         $viewData = parent::executeDetailAction($productData, $request);
+
+        if (isset($viewData[static::PRODUCT_TAG]['attributes']['ghs_piktogramme'])
+            &&
+            !empty($viewData[static::PRODUCT_TAG]['attributes']['ghs_piktogramme'])
+        ) {
+            $pictograms = explode(';', $viewData[static::PRODUCT_TAG]['attributes']['ghs_piktogramme']);
+
+            foreach ($pictograms as $pictogram) {
+                array_push($pictogramsImageUrl, $imagesHostUrl . '/' . $pictogram . '.png');
+            }
+            $viewData['pictograms'] = $pictogramsImageUrl;
+        }
 
         if (isset($viewData[static::PRODUCT_TAG]['attributes']['metatitle'])) {
             $viewData[static::PRODUCT_TAG]['metaTitle'] = $viewData[static::PRODUCT_TAG]['attributes']['metatitle'];

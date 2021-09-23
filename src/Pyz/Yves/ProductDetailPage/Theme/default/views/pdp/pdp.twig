@@ -14,7 +14,8 @@
     preisProKg: _view.pricePerKg,
     characteristics: _view.characteristics,
     productAttributes: _view.product.attributes,
-    currentCodeBucket: app.currentCodeBucket
+    currentCodeBucket: app.currentCodeBucket,
+    pictograms: _view.pictograms | default([]),
 } %}
 
 {% define data = {
@@ -80,7 +81,7 @@
         <div id="product-attributes-data" class="grid grid--indent" style="margin-top: 100px;">
             <div class="col col--spaced-lg col--sm-12 col--lg-12">
                 <div class="container__inner">
-                    {% if data.product.description is defined %}
+                    {% if data.product.description is defined and data.product.description != "" %}
                         {% embed molecule('toggler-item') with {
                             data: {
                                 title: 'product.info.description' | trans,
@@ -164,7 +165,8 @@
                                 targetClass: 'warning-and-notes__target-bundle',
                                 isActive: true,
                                 productAttributes: data.product.attributes,
-                                product: data.product
+                                product: data.product,
+                                pictograms: data.pictograms,
                             },
                             embed: {
                                 bundleItems: data.bundleItems,
@@ -173,7 +175,8 @@
                             {% block contentText %}
                                 {% include molecule('warning-and-notes', 'ProductDetailPage') with {
                                     data: {
-                                        product: data.product
+                                        product: data.product,
+                                        pictograms: data.pictograms,
                                     },
                                 } only %}
                             {% endblock %}

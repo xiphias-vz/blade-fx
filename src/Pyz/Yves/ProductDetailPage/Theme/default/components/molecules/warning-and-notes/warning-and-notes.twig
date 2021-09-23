@@ -6,7 +6,8 @@
 } %}
 
 {% define data = {
-    product:[],
+    product: [],
+    pictograms: [],
 } %}
 
 {% block class -%}
@@ -15,11 +16,59 @@
 
 {% block body %}
     {% if data.product.attributes.warnhinweise is defined %}
-        <span class="description">{{ 'product.info.description.warnings' | trans }}:</span><br>
-        <span>{{ data.product.attributes.warnhinweise }}</span><br>
+        <div class="warnings-holder">
+            <span class="description">{{ 'product.info.description.warnings' | trans }}:</span><br>
+            <span>{{ data.product.attributes.warnhinweise }}</span><br>
+        </div>
     {% endif %}
     {% if data.product.attributes.verwendungshinweise is defined %}
-        <span class="description">{{ 'product.info.description.usage.notes' | trans }}:</span><br>
-        <span>{{ data.product.attributes.verwendungshinweise }}</span><br>
+        <div class="usage-instructions-holder">
+            <span class="description">{{ 'product.info.description.usage.notes' | trans }}:</span><br>
+            <span>{{ data.product.attributes.verwendungshinweise }}</span><br>
+        </div>
+    {% endif %}
+    {% if data.product.attributes.ghs_signalwort is defined %}
+        {% set signalWords = data.product.attributes.ghs_signalwort|split(';') %}
+        <div class="signal-words-holder">
+            <span class="description">{{ 'product.info.description.warnings.signal' | trans }}:</span>
+            {% for key,signalWord in signalWords %}
+                {% if key ==  signalWords|length - 1 %}
+                    <span>{{ signalWord }}</span>
+                    {% else %}
+                    <span>{{ signalWord }},</span>
+                {% endif %}
+            {% endfor %}
+        </div>
+    {% endif %}
+    <div class="pictogram-holder">
+        {% for pictogram in data.pictograms %}
+            <div class="pictogram">
+                <img src="{{ pictogram }}" width="60px" height="60px" alt="{{ 'product.info.description.warnings.pictogram' | trans }}">
+            </div>
+        {% endfor %}
+    </div>
+    {% if data.product.attributes.gefahrenhinweise_h is defined %}
+        {% set gefahrenhinweise = data.product.attributes.gefahrenhinweise_h|split(';') %}
+        <div class="hazard-warnings-holder">
+            <span class="description">{{ 'product.info.description.warnings.hazard' | trans }}:</span><br>
+            {% for gefahrenhinweis in gefahrenhinweise %}
+                <span>{{ gefahrenhinweis }}</span><br>
+            {% endfor %}
+        </div>
+    {% endif %}
+    {% if data.product.attributes.sicherheitshinweise_p is defined %}
+        {% set sicherheitshinweise = data.product.attributes.sicherheitshinweise_p|split(';') %}
+        <div class="safety-instruction-holder">
+            <span class="description">{{ 'product.info.description.warnings.safety.instructions' | trans }}:</span><br>
+            {% for sicherheitsanleitung in sicherheitshinweise %}
+                <span>{{ sicherheitsanleitung }}</span><br>
+            {% endfor %}
+        </div>
+    {% endif %}
+    {% if data.product.attributes.biozid is defined and data.product.attributes.biozid|lower == 'ja' %}
+        <div class="bio-cider-holder">
+            <span class="description">{{ 'product.info.description.warnings.biocide' | trans }}:</span>
+            <span>{{ 'product.info.description.warnings.biocide.label' | trans }}.</span><br>
+        </div>
     {% endif %}
 {% endblock %}

@@ -4018,6 +4018,18 @@ product.info.description.warnings,Warnhinweise,de_DE
 product.info.description.warnings,Warnings,en_US
 product.info.description.warnings,"Varování",cs_CZ
 product.info.description.usage.notes,Verwendungshinweise,de_DE
+product.info.description.warnings.signal,Signal,de_DE
+product.info.description.warnings.signal,Signalwort,de_DE
+product.info.description.warnings.hazard,Gefahrenhinweis,de_DE
+product.info.description.warnings.hazard,Hazard warnings,en_US
+product.info.description.warnings.pictogram,Piktogramm,de_DE
+product.info.description.warnings.pictogram,Pictogram,en_US
+product.info.description.warnings.safety.instructions,Sicherheitshinweise,de_DE
+product.info.description.warnings.safety.instructions,Safety instructions,en_US
+product.info.description.warnings.biocide,Biozidprodukt,de_DE
+product.info.description.warnings.biocide,Biocide,en_US
+product.info.description.warnings.biocide.label,Biozidprodukte vorsichtig verwenden. Vor Gebrauch stets Etikett und Produktinformationen lesen,de_DE
+product.info.description.warnings.biocide.label,Use biocidal products carefully. Always read the label and product information before use,en_US
 product.info.description.usage.notes,Usage notes,en_US
 product.info.description.usage.notes,"Informace k použití",cs_CZ
 product.info.description.warning.usage.notes,Warnhinweise & Verwendungshinweise,de_DE
