@@ -1,0 +1,13 @@
+picking_zone_name;is_default;abbreviation
+Sonstige;1;10
+Nonfood;0;11
+Ovoce/zelenina;0;1OG
+Chlazená zelenina/ovoce;0;2CZ
+Čerstvé;0;2FF
+Mražené;0;3TK
+Suché;0;4FT
+Nápoje;0;5NA
+Pekárna;0;6PE
+Řeznictví;0;7RE
+Pulty;0;8PU
+Výb./Bio maso;0;9VB

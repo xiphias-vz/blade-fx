@@ -103,4 +103,12 @@ class DataImportConfig extends IntDataImportConfig
     {
         return $this->buildBaseImporterConfiguration('spryker/product_location_CZ.csv', static::IMPORT_TYPE_PRODUCT_LOCATION, SharedDataImportConfig::IMPORT_CSV_DELIMITER);
     }
+
+    /**
+     * @return \Generated\Shared\Transfer\DataImporterConfigurationTransfer
+     */
+    public function getPickingZoneDataImporterConfiguration(): DataImporterConfigurationTransfer
+    {
+        return $this->buildBaseImporterConfiguration('picking_zone_CZ.csv', static::IMPORT_TYPE_PICKING_ZONE);
+    }
 }
