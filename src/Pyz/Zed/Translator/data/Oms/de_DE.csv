@@ -4,3 +4,9 @@ mail.order.confirmation.item.quantity,Anzahl
 mail.order.confirmation.collect.number,Dein persönlicher Abholcode
 mail.order.confirmation.deposit,Pfand
 mail.order.confirmation.substitution.available,Ersatzartikel verfügbar
+mail.order.dear,Lieber
+mail.order.mr,Herr
+mail.order.dear.lady,Liebe
+mail.order.ms,Frau
+mail.order.good,Guten
+mail.order.day,Tag

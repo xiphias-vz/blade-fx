@@ -34,6 +34,13 @@ use Twig\Environment;
 
 class MailHandler extends SprykerMailHandler
 {
+    public const MAIL_ORDER_DEAR = 'mail.order.dear';
+    public const MAIL_ORDER_MR = 'mail.order.mr';
+    public const MAIL_ORDER_DEAR_LADY = 'mail.order.dear.lady';
+    public const MAIL_ORDER_MS = 'mail.order.ms';
+    public const MAIL_ORDER_GOOD = 'mail.order.good';
+    public const MAIL_ORDER_DAY = 'mail.order.day';
+
     /**
      * @var \Pyz\Zed\Oms\Persistence\OmsQueryContainerInterface
      */
@@ -374,18 +381,18 @@ class MailHandler extends SprykerMailHandler
     {
         if ($salutation == 'Mr') {
             $salutationParams = [
-                'salutationPrefix' => 'Lieber',
-                'salutation' => 'Herr',
+                'salutationPrefix' => $this->translatorFacade->trans(static::MAIL_ORDER_DEAR),
+                'salutation' => $this->translatorFacade->trans(static::MAIL_ORDER_MR),
             ];
         } elseif ($salutation == 'Ms') {
             $salutationParams = [
-                'salutationPrefix' => 'Liebe',
-                'salutation' => 'Frau',
+                'salutationPrefix' => $this->translatorFacade->trans(static::MAIL_ORDER_DEAR_LADY),
+                'salutation' => $this->translatorFacade->trans(static::MAIL_ORDER_MS),
             ];
         } elseif ($salutation == 'Divers') {
             $salutationParams = [
-                'salutationPrefix' => '',
-                'salutation' => '',
+                'salutationPrefix' => $this->translatorFacade->trans(static::MAIL_ORDER_GOOD),
+                'salutation' => $this->translatorFacade->trans(static::MAIL_ORDER_DAY),
             ];
         } else {
             $salutationParams = [

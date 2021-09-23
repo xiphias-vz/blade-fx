@@ -64,10 +64,11 @@ class CustomerTransferCustom
                 ->setDateOfBirth($data["profile"]["birthYear"] . '-' . $data["profile"]["birthMonth"] . '-' . $data["profile"]["birthDay"])
                 ->setUsername($this->getValue($data["profile"], "email"))
                 ->setGender($this->getMapGender($this->getValue($data["profile"], "gender")))
-                ->setSalutation($this->getMapSalutation($this->getValue($data["data"], "salutation")))
                 ->setAddress1($street)
                 ->setAddress2($houseNo)
                 ->setCountry($country);
+
+            $customerTransfer = $this->handleSalutation($customerTransfer, $data);
 
             if (isset($data["cardNumber"])) {
                 $customerTransfer->setMyGlobusCard($data["cardNumber"]);
@@ -99,6 +100,23 @@ class CustomerTransferCustom
                     }
                 }
             }
+        }
+
+        return $customerTransfer;
+    }
+
+    /**
+     * @param \Generated\Shared\Transfer\CustomerTransfer $customerTransfer
+     * @param array $data
+     *
+     * @return \Generated\Shared\Transfer\CustomerTransfer
+     */
+    public function handleSalutation(CustomerTransfer $customerTransfer, array $data): CustomerTransfer
+    {
+        if (!empty($this->getValue($data["data"], "salutation"))) {
+            $customerTransfer->setSalutation($this->getMapSalutation($this->getValue($data["data"], "salutation")));
+        } else {
+            $customerTransfer->setSalutation($this->getMapSalutation($this->getValue($data["profile"], "salutation")));
         }
 
         return $customerTransfer;
