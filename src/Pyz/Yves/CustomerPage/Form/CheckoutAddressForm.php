@@ -374,7 +374,7 @@ class CheckoutAddressForm extends SprykerShopCheckoutAddressForm
                 'label' => 'profile.form.salutation',
                 'required' => true,
                 'constraints' => [
-                    $this->createNotBlankConstraint(),
+                    $this->createNotBlankConstraint($options),
                 ],
             ]);
         } else {

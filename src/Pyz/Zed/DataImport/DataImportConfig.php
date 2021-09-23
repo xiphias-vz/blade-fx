@@ -70,6 +70,18 @@ class DataImportConfig extends SprykerDataImportConfig
     public const IMPORT_TIME_SLOT = 'time-slot';
     public const IMPORT_ALTERNATIVE_EAN = 'alternative-ean';
     public const IMPORT_ORDER_PICKZONE_COLOR = 'order_pickzone_color';
+    public const IMPORT_TYPE_MERCHANT = 'merchant';
+    public const IMPORT_TYPE_MERCHANT_REGION = 'merchant-region';
+    public const IMPORT_COUNTRY_LOCALIZED = 'country-localized';
+
+
+    /**
+     * @return string|null
+     */
+    public function getDefaultYamlConfigPath(): ?string
+    {
+        return APPLICATION_ROOT_DIR . DIRECTORY_SEPARATOR . 'data/import/local/full_DE.yml';
+    }
     public const IMPORT_COUNTRY_LOCALIZED = 'country-localized';
     public const IMPORT_TYPE_MERCHANT = 'merchant';
     public const IMPORT_TYPE_MERCHANT_REGION = 'merchant-region';

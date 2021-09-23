@@ -206,7 +206,12 @@ class AuthenticationHandler extends SprykerAuthenticationHandler
             $addressStatus = "UN";
         }
 
-        $country = $validAddress["result"]["address"]["country"];
+        if (isset($validAddress["result"]["address"]["country"])){
+            $country = $validAddress["result"]["address"]["country"];
+        }
+        else {
+            $country = "DE";
+        }
 
         if ($customerTransfer->getSalutation() == "Mr") {
             $gender = "m";
