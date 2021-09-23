@@ -80,16 +80,29 @@
                         >
                             <input type="hidden" name="token" value="{{ csrf_token('add-items-to-cart') }}">
                             <input type="hidden" name="quantity" value="{{ data.productItem.quantity }}">
-                            <button class="button button--with-icon button--with-icon-hidden-sm-only" name="idProductAbstract" value="{{ data.productItem.idProductAbstract }}">
-                                {% include atom('icon') with {
-                                    class: 'button__icon is-hidden-sm-only',
-                                    modifiers: ['big'],
-                                    data: {
-                                        name: 'add',
-                                    },
-                                } only %}
-                                {{- 'customer.account.wishlist.add-to-cart' | trans -}}
-                            </button>
+                            {% if app.currentCodeBucket == 'DE' %}
+                                <button class="button button--with-icon button--with-icon-hidden-sm-only" name="idProductAbstract" value="{{ data.productItem.idProductAbstract }}">
+                                    {% include atom('icon') with {
+                                        class: 'button__icon is-hidden-sm-only',
+                                        modifiers: ['big'],
+                                        data: {
+                                            name: 'add',
+                                        },
+                                    } only %}
+                                    {{- 'customer.account.wishlist.add-to-cart' | trans -}}
+                                </button>
+                            {% else %}
+                                <button class="button button--with-icon button--font-CZ button--with-icon-hidden-sm-only" name="idProductAbstract" value="{{ data.productItem.idProductAbstract }}">
+                                    {% include atom('icon') with {
+                                        class: 'button__icon is-hidden-sm-only',
+                                        modifiers: ['big'],
+                                        data: {
+                                            name: 'add',
+                                        },
+                                    } only %}
+                                    {{- 'customer.account.wishlist.add-to-cart' | trans -}}
+                                </button>
+                            {% endif %}
                         </form>
                     {% else %}
                         {{ 'customer.account.wishlist.not_available' | trans }}

@@ -35,9 +35,15 @@
         } only %}
             {% block additionalContent %}
                 {% if embed.orders %}
-                    <a class="page-layout-customer__left-indent button button--hollow" href="{{ url('customer/order') }}">
-                        {{- 'customer.order.view_all' | trans -}}
-                    </a>
+                    {% if app.currentCodeBucket == 'DE' %}
+                        <a class="page-layout-customer__left-indent button button--hollow" href="{{ url('customer/order') }}">
+                            {{- 'customer.order.view_all' | trans -}}
+                        </a>
+                    {% else %}
+                        <a class="page-layout-customer__left-indent button button--hollow button--font-CZ" href="{{ url('customer/order') }}">
+                            {{- 'customer.order.view_all' | trans -}}
+                        </a>
+                    {% endif %}
                 {% endif %}
             {% endblock %}
         {% endembed %}

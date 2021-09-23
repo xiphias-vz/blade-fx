@@ -36,10 +36,15 @@
                     action: path('wishlist/move-all-available-to-cart', { wishlistName: data.wishlistName }),
                     attr: { class: '' }
                 }) }}
-
+            {% if app.currentCodeBucket == 'DE' %}
                 <button class="button button--expand-mobile">
                     {{- 'customer.account.wishlist.add_all_available_to_cart' | trans -}}
                 </button>
+            {% else %}
+                <button class="button button--expand-mobile button--font-CZ">
+                    {{- 'customer.account.wishlist.add_all_available_to_cart' | trans -}}
+                </button>
+            {% endif %}
 
                 {% for wishlistItemMetaField in data.addAllProductsToCart.wishlistItemMetaCollection %}
                     {{ form_widget(wishlistItemMetaField) }}

@@ -15,7 +15,11 @@
 
     {% if data.wishlists is empty %}
         <div class="text-center spacing-top spacing-top--big">
-            <h6>{{ 'customer.account.wishlist.overview.empty' | trans }}</h6>
+            {% if app.currentCodeBucket == 'DE' %}
+                <h6>{{ 'customer.account.wishlist.overview.empty' | trans }}</h6>
+            {% else %}
+                <h6 class="title title--heading-CZ">{{ 'customer.account.wishlist.overview.empty' | trans }}</h6>
+            {% endif %}
         </div>
     {% else %}
         {% include molecule('wishlist-overview-table', 'WishlistPage') with {

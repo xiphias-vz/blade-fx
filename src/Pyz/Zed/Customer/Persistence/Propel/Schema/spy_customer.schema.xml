@@ -4,13 +4,13 @@
     <table name="spy_customer_address" idMethod="native" phpName="SpyCustomerAddress">
         <column name="additional_info" size="255" type="VARCHAR"/>
         <column name="floor" size="255" type="VARCHAR"/>
-        <column name="salutation" type="ENUM" valueSet="Mr, Ms, Divers, Dr"/>
+        <column name="salutation" type="ENUM" valueSet="Mr, Ms, Divers, Dr, "/>
         <column name="cell_phone" type="VARCHAR" />
     </table>
 
     <table name="spy_customer">
         <column name="merchant_reference" size="255" type="VARCHAR"/>
-        <column name="salutation" type="ENUM" valueSet="Mr, Ms, Divers, Dr"/>
+        <column name="salutation" type="ENUM" valueSet="Mr, Ms, Divers, Dr, "/>
         <column name="third_party_registration" type="BOOLEAN"/>
         <column name="phone_prefix" type="VARCHAR" />
         <column name="mobile_phone_prefix" type="VARCHAR" />

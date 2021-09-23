@@ -49,8 +49,11 @@ class ProfileForm extends SprykerProfileForm
      */
     public function addEmailField(FormBuilderInterface $builder)
     {
+        $storeCodeBucket = getenv('SPRYKER_CODE_BUCKET');
+
         $builder->add(self::FIELD_EMAIL, EmailType::class, [
             'label' => 'customer.profile.email',
+            'label_attr' => ($storeCodeBucket == 'CZ') ? ['class' => 'label-CZ'] : [],
             'disabled' => true,
         ]);
 
@@ -65,8 +68,11 @@ class ProfileForm extends SprykerProfileForm
      */
     public function addLastNameField(FormBuilderInterface $builder, array $options = [])
     {
+        $storeCodeBucket = getenv('SPRYKER_CODE_BUCKET');
+
         $builder->add(self::FIELD_LAST_NAME, TextType::class, [
             'label' => 'customer.profile.last_name',
+            'label_attr' => ($storeCodeBucket == 'CZ') ? ['class' => 'label-CZ'] : [],
             'required' => true,
             'constraints' => [
                 $this->createNotBlankConstraint(),
@@ -86,8 +92,11 @@ class ProfileForm extends SprykerProfileForm
      */
     public function addFirstNameField(FormBuilderInterface $builder, array $options = [])
     {
+        $storeCodeBucket = getenv('SPRYKER_CODE_BUCKET');
+
         $builder->add(self::FIELD_FIRST_NAME, TextType::class, [
             'label' => 'customer.profile.first_name',
+            'label_attr' => ($storeCodeBucket == 'CZ') ? ['class' => 'label-CZ'] : [],
             'required' => true,
             'constraints' => [
                 $this->createNotBlankConstraint(),
@@ -149,20 +158,34 @@ class ProfileForm extends SprykerProfileForm
      */
     public function addSalutationField(FormBuilderInterface $builder)
     {
-        $builder->add(self::FIELD_SALUTATION, ChoiceType::class, [
-            'choices' => array_flip([
-                'Mr' => 'customer.salutation.mr',
-                'Ms' => 'customer.salutation.ms',
-                'Divers' => 'customer.salutation.divers',
-                'Dr' => 'customer.salutation.dr',
+        $storeCodeBucket = getenv('SPRYKER_CODE_BUCKET');
 
-            ]),
-            'label' => 'profile.form.salutation',
-            'required' => true,
-            'constraints' => [
-                $this->createNotBlankConstraint(),
-            ],
-        ]);
+        if ($storeCodeBucket == 'DE') {
+            $builder->add(self::FIELD_SALUTATION, ChoiceType::class, [
+                'choices' => array_flip([
+                    'Mr' => 'customer.salutation.mr',
+                    'Ms' => 'customer.salutation.ms',
+                    'Divers' => 'customer.salutation.divers',
+                ]),
+                'label' => 'profile.form.salutation',
+                'required' => true,
+                'constraints' => [
+                    $this->createNotBlankConstraint(),
+                ],
+            ]);
+        } else {
+            $builder->add(self::FIELD_SALUTATION, ChoiceType::class, [
+                'choices' => array_flip([
+                    '' => '',
+                    'Mr' => 'customer.salutation.mr',
+                    'Ms' => 'customer.salutation.ms',
+                    'Divers' => 'customer.salutation.divers',
+                ]),
+                'label' => 'profile.form.salutation',
+                'label_attr' => ['class' => 'label-CZ'],
+                'required' => true,
+            ]);
+        }
 
         return $this;
     }

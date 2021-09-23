@@ -19,7 +19,7 @@
         <column name="delivered_at" type="TIMESTAMP" />
         <column name="picked_at" type="TIMESTAMP" />
         <column name="collected_at" type="TIMESTAMP" />
-        <column name="salutation" type="ENUM" valueSet="Mr, Ms, Divers, Dr" required="false"/>
+        <column name="salutation" type="ENUM" valueSet="Mr, Ms, Divers, Dr, " required="false"/>
         <column name="is_substitution_allowed" type="BOOLEAN" required="false" defaultValue="false"  />
 
         <foreign-key name="spy_sales_order-fk_user" foreignTable="spy_user">
@@ -57,13 +57,13 @@
 
     <table name="spy_sales_order_address">
         <column name="id_sales_order_address" required="true" type="BIGINT" autoIncrement="true" primaryKey="true"/>
-        <column name="salutation" type="ENUM" valueSet="Mr, Ms, Divers, Dr"/>
+        <column name="salutation" type="ENUM" valueSet="Mr, Ms, Divers, Dr, "/>
     </table>
 
     <table name="spy_sales_order_address_history">
         <column name="id_sales_order_address_history" required="true" type="BIGINT" autoIncrement="true" primaryKey="true"/>
         <column name="fk_sales_order_address" type="BIGINT" required="true"/>
-        <column name="salutation" type="ENUM" valueSet="Mr, Ms, Divers, Dr"/>
+        <column name="salutation" type="ENUM" valueSet="Mr, Ms, Divers, Dr, "/>
     </table>
 
     <table name="spy_sales_order_totals">

@@ -40,7 +40,11 @@
         <div class="col col--sm-12 col--xl-9">
             <div class="page-layout-customer__container page-layout-customer__container--content">
                 {% block pageTitle %}
-                    <h1 class="title title--general spacing-bottom spacing-bottom--bigger">{{ data.title }}</h1>
+                    {% if app.currentCodeBucket == 'DE' %}
+                        <h1 class="title title--general spacing-bottom spacing-bottom--bigger">{{ data.title }}</h1>
+                    {% else %}
+                        <h1 class="title title--general title--heading-CZ spacing-bottom spacing-bottom--bigger">{{ data.title }}</h1>
+                    {% endif %}
                 {% endblock %}
 
                 {% block customerContent %}{% endblock %}

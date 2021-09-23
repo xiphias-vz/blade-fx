@@ -364,20 +364,32 @@ class CheckoutAddressForm extends SprykerShopCheckoutAddressForm
     {
         $storeCodeBucket = getenv('SPRYKER_CODE_BUCKET');
 
-        $builder->add(self::FIELD_SALUTATION, ChoiceType::class, [
-            'choices' => array_flip([
-                'Mr' => 'customer.salutation.mr',
-                'Ms' => 'customer.salutation.ms',
-                'Divers' => 'customer.salutation.divers',
-            ]),
-            'label' => 'profile.form.salutation',
-            'label_attr' => ($storeCodeBucket == 'CZ') ? ['class' => 'label-CZ'] : [],
-            'required' => $this->getRequired(),
-            'trim' => true,
-            'constraints' => [
-                $this->createNotBlankConstraint($options),
-            ],
-        ]);
+        if ($storeCodeBucket == 'DE') {
+            $builder->add(self::FIELD_SALUTATION, ChoiceType::class, [
+                'choices' => array_flip([
+                    'Mr' => 'customer.salutation.mr',
+                    'Ms' => 'customer.salutation.ms',
+                    'Divers' => 'customer.salutation.divers',
+                ]),
+                'label' => 'profile.form.salutation',
+                'required' => true,
+                'constraints' => [
+                    $this->createNotBlankConstraint(),
+                ],
+            ]);
+        } else {
+            $builder->add(self::FIELD_SALUTATION, ChoiceType::class, [
+                'choices' => array_flip([
+                    '' => '',
+                    'Mr' => 'customer.salutation.mr',
+                    'Ms' => 'customer.salutation.ms',
+                    'Divers' => 'customer.salutation.divers',
+                ]),
+                'label' => 'profile.form.salutation',
+                'label_attr' => ['class' => 'label-CZ'],
+                'required' => true,
+            ]);
+        }
 
         return $this;
     }
