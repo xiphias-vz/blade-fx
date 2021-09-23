@@ -28,8 +28,14 @@ $storeCodeBucket = getenv('SPRYKER_CODE_BUCKET');
 
 if ($storeCodeBucket == 'CZ') {
     $currentStore = $_COOKIE['current_store'] ?? 'OST';
+    if ($currentStore == '') {
+        $currentStore = 'OST';
+    }
 } else {
     $currentStore = $_COOKIE['current_store'] ?? 'EIN';
+    if ($currentStore == '') {
+        $currentStore = 'EIN';
+    }
 }
 
 define('APPLICATION_STORE', $currentStore);
