@@ -28,7 +28,6 @@ use Pyz\Yves\CustomerPage\Plugin\Provider\CustomerUserProvider;
 use Pyz\Yves\CustomerPage\Plugin\Provider\CustomerUserProviderInterface;
 use Pyz\Yves\MerchantSwitcherWidget\Plugin\SelectedMerchantCookiePlugin;
 use Pyz\Yves\MerchantSwitcherWidget\Resolver\ShopContextResolver;
-use Pyz\Yves\ShopApplication\ShopApplicationDependencyProvider;
 use Spryker\Client\Session\SessionClientInterface;
 use Spryker\Yves\Messenger\FlashMessenger\FlashMessengerInterface;
 use SprykerShop\Yves\CustomerPage\Authenticator\CustomerAuthenticatorInterface;

@@ -64,7 +64,7 @@ class InvoiceBusinessFactory extends AbstractBusinessFactory
             $this->getDateTimeWithZoneService(),
             $this->getOrderDetailClient(),
             $this->getPdfClient(),
-            $this->createTwigEnvironment(),
+            $this->getTwigEnvironment(),
             $this->getConfig(),
             $this->getTranslatorFacade(),
             $this->getMailCmsBlock(),
@@ -99,7 +99,7 @@ class InvoiceBusinessFactory extends AbstractBusinessFactory
     /**
      * @return \Twig\Environment
      */
-    protected function createTwigEnvironment(): Environment
+    protected function getTwigEnvironment(): Environment
     {
         return $this->getProvidedDependency(InvoiceDependencyProvider::SERVICE_TWIG);
     }

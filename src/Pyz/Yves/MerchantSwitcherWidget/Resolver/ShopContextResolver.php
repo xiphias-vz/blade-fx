@@ -8,7 +8,6 @@
 namespace Pyz\Yves\MerchantSwitcherWidget\Resolver;
 
 use Generated\Shared\Transfer\ShopContextTransfer;
-use Spryker\Shared\Kernel\Communication\Application;
 use Spryker\Shared\Kernel\ContainerInterface;
 
 class ShopContextResolver
@@ -16,7 +15,7 @@ class ShopContextResolver
     protected const SERVICE_SHOP_CONTEXT = 'SERVICE_SHOP_CONTEXT';
 
     /**
-     * @param \Spryker\Shared\Kernel\ContainerInterface $container
+     * @var \Spryker\Shared\Kernel\ContainerInterface
      */
     protected $container;
 

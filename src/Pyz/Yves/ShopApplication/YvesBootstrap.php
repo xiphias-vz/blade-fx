@@ -7,8 +7,6 @@
 
 namespace Pyz\Yves\ShopApplication;
 
-use Pyz\Yves\Matomo\Plugin\Provider\MatomoServiceProvider;
-use Spryker\Yves\Application\Plugin\ServiceProvider\KernelLogServiceProvider;
 use SprykerShop\Yves\ShopApplication\YvesBootstrap as SprykerYvesBootstrap;
 
 class YvesBootstrap extends SprykerYvesBootstrap

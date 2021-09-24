@@ -7,7 +7,6 @@
 
 namespace Pyz\Zed\MerchantSalesOrder\Communication\Mapper;
 
-use Generated\Shared\Transfer\MerchantSalesOrderTransfer;
 use Generated\Shared\Transfer\OrderTransfer;
 use Generated\Shared\Transfer\QuoteTransfer;
 use Generated\Shared\Transfer\SaveOrderTransfer;

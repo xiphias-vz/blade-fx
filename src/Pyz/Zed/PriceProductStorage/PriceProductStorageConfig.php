@@ -7,10 +7,8 @@
 
 namespace Pyz\Zed\PriceProductStorage;
 
-use Spryker\Shared\PriceProductStorage\PriceProductStorageConfig as SprykerSharedPriceProductStorageConfig;
 use Spryker\Zed\PriceProductStorage\PriceProductStorageConfig as SprykerPriceProductStorageConfig;
 
 class PriceProductStorageConfig extends SprykerPriceProductStorageConfig
 {
-
 }

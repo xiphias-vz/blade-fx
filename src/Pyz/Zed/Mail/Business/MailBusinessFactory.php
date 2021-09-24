@@ -56,7 +56,7 @@ class MailBusinessFactory extends SprykerMailBusinessFactory
     public function createCmsBlockRenderer(): RendererInterface
     {
         return new CmsBlockRenderer(
-            $this->createTwigEnvironment(),
+            $this->getTwigEnvironment(),
             $this->createTranslator(),
             $this->getCmsBlockStorageFacade()
         );
@@ -76,7 +76,7 @@ class MailBusinessFactory extends SprykerMailBusinessFactory
     /**
      * @return \Twig\Environment
      */
-    protected function createTwigEnvironment(): Environment
+    protected function getTwigEnvironment(): Environment
     {
         return $this->getProvidedDependency(MailDependencyProvider::SERVICE_TWIG);
     }

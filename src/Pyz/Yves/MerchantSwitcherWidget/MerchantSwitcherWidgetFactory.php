@@ -15,7 +15,6 @@ use Pyz\Yves\MerchantSwitcherWidget\MerchantCapacityChecker\MerchantCapacityChec
 use Pyz\Yves\MerchantSwitcherWidget\MerchantSwitcher\MerchantSwitcher;
 use Pyz\Yves\MerchantSwitcherWidget\Reader\MerchantShopContextReader;
 use Pyz\Yves\MerchantSwitcherWidget\Resolver\ShopContextResolver;
-use Pyz\Yves\ShopApplication\ShopApplicationDependencyProvider;
 use SprykerShop\Yves\MerchantSwitcherWidget\Cookie\SelectedMerchantCookieInterface;
 use SprykerShop\Yves\MerchantSwitcherWidget\MerchantSwitcher\MerchantSwitcherInterface;
 use SprykerShop\Yves\MerchantSwitcherWidget\MerchantSwitcherWidgetFactory as SprykerMerchantSwitcherWidgetFactory;

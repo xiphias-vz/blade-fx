@@ -7,7 +7,6 @@
 
 namespace Pyz\Client\MerchantSearch;
 
-use Spryker\Client\Kernel\AbstractDependencyProvider;
 use Spryker\Client\Kernel\Container;
 use Spryker\Client\Kernel\Container as SprykerContainer;
 use Spryker\Client\MerchantSearch\MerchantSearchDependencyProvider as SprykerMerchantSearchDependencyProvider;

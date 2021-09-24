@@ -74,7 +74,6 @@ class DataImportConfig extends SprykerDataImportConfig
     public const IMPORT_TYPE_MERCHANT_REGION = 'merchant-region';
     public const IMPORT_COUNTRY_LOCALIZED = 'country-localized';
 
-
     /**
      * @return string|null
      */

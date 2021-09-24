@@ -18,7 +18,7 @@ class SelectedMerchantCookie extends SprykerSelectedMerchantCookie
     protected $merchantSwitcherWidgetConfig;
 
     /**
-     * @param string $selectedMerchantReference
+     * @param string|null $selectedMerchantReference
      *
      * @return void
      */

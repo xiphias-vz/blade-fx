@@ -7,7 +7,6 @@
 
 namespace Pyz\Yves\MerchantSwitcherWidget;
 
-use Pyz\Shared\MerchantSwitcherWidget\MerchantSwitcherWidgetConstants;
 use SprykerShop\Yves\MerchantSwitcherWidget\MerchantSwitcherWidgetConfig as SprykerMerchantSwitcherWidgetConfig;
 
 class MerchantSwitcherWidgetConfig extends SprykerMerchantSwitcherWidgetConfig

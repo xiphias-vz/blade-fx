@@ -13,7 +13,6 @@ use Spryker\Client\Quote\QuoteClientInterface;
 use Spryker\Client\Session\SessionClientInterface;
 use SprykerShop\Yves\CartPage\CartPageFactory as SprykerCartPageFactory;
 use Symfony\Component\HttpFoundation\Session\Flash\FlashBag;
-use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
 
 class CartPageFactory extends SprykerCartPageFactory
 {

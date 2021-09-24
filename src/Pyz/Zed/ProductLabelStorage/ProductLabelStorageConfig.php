@@ -7,8 +7,8 @@
 
 namespace Pyz\Zed\ProductLabelStorage;
 
-use Spryker\Shared\Publisher\PublisherConfig;
 use Pyz\Zed\Synchronization\SynchronizationConfig;
+use Spryker\Shared\Publisher\PublisherConfig;
 use Spryker\Zed\ProductLabelStorage\ProductLabelStorageConfig as SprykerProductLabelStorageConfig;
 
 class ProductLabelStorageConfig extends SprykerProductLabelStorageConfig

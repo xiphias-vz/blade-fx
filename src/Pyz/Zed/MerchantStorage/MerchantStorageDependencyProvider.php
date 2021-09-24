@@ -7,7 +7,6 @@
 
 namespace Pyz\Zed\MerchantStorage;
 
-use Spryker\Zed\Kernel\AbstractBundleDependencyProvider;
 use Spryker\Zed\Kernel\Container;
 use Spryker\Zed\MerchantStorage\MerchantStorageDependencyProvider as SprykerMerchantStorageDependencyProvider;
 

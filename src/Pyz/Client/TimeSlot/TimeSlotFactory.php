@@ -111,7 +111,7 @@ class TimeSlotFactory extends AbstractFactory
     }
 
     /**
-     * @return MerchantSearchClientInterface
+     * @return \Spryker\Client\MerchantSearch\MerchantSearchClientInterface
      */
     protected function getMerchantSearchClient(): MerchantSearchClientInterface
     {
@@ -119,7 +119,7 @@ class TimeSlotFactory extends AbstractFactory
     }
 
     /**
-     * @return MerchantStorageDataExpanderInterface
+     * @return \Pyz\Client\TimeSlot\Expander\MerchantStorageDataExpanderInterface
      */
     public function createMerchantStorageDataExpander(): MerchantStorageDataExpanderInterface
     {

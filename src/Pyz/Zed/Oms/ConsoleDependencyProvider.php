@@ -8,8 +8,6 @@
 namespace Pyz\Zed\Oms;
 
 use Spryker\Zed\Console\ConsoleDependencyProvider as SprykerConsoleDependencyProvider;
-use Spryker\Zed\Kernel\Container;
-use Spryker\Zed\SalesInvoice\Communication\Console\OrderInvoiceSendConsole;
 
 class ConsoleDependencyProvider extends SprykerConsoleDependencyProvider
 {

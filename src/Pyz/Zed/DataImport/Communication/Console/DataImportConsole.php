@@ -8,7 +8,6 @@
 namespace Pyz\Zed\DataImport\Communication\Console;
 
 use Spryker\Zed\DataImport\Communication\Console\DataImportConsole as SprykerDataImportConsole;
-use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 
 /**

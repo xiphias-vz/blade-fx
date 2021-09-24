@@ -11,12 +11,12 @@ use Pyz\Zed\MerchantDataImport\Business\Model\MerchantStoreEventTrigger;
 use Pyz\Zed\MerchantDataImport\Business\Model\MerchantWriterStep;
 use Pyz\Zed\MerchantDataImport\Business\Model\PrepareMerchantDataStep;
 use Pyz\Zed\MerchantDataImport\MerchantDataImportDependencyProvider;
-use Spryker\Zed\DataImport\Business\DataImportBusinessFactory;
+use Spryker\Zed\MerchantDataImport\Business\MerchantDataImportBusinessFactory as SprykerMerchantDataImportBusinessFactory;
 
 /**
  * @method \Pyz\Zed\MerchantDataImport\MerchantDataImportConfig getConfig()
  */
-class MerchantDataImportBusinessFactory extends \Spryker\Zed\MerchantDataImport\Business\MerchantDataImportBusinessFactory
+class MerchantDataImportBusinessFactory extends SprykerMerchantDataImportBusinessFactory
 {
     /**
      * @return \Spryker\Zed\DataImport\Business\Model\DataImporterAfterImportAwareInterface|\Spryker\Zed\DataImport\Business\Model\DataImporterBeforeImportAwareInterface|\Spryker\Zed\DataImport\Business\Model\DataImporterInterface|\Spryker\Zed\DataImport\Business\Model\DataSet\DataSetStepBrokerAwareInterface

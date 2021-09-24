@@ -7,7 +7,6 @@
 
 namespace Pyz\Zed\Synchronization;
 
-use Pyz\Zed\MerchantStorage\Communication\Plugin\Synchronization\MerchantSynchronizationDataBulkPlugin;
 use Pyz\Zed\ShipmentStorage\Communication\Plugin\Synchronization\ShipmentSynchronizationDataBulkPlugin;
 use Spryker\Zed\AvailabilityStorage\Communication\Plugin\Synchronization\AvailabilitySynchronizationDataPlugin;
 use Spryker\Zed\CategoryImageStorage\Communication\Plugin\Synchronization\CategoryImageSynchronizationDataBulkPlugin;

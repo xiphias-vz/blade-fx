@@ -6,6 +6,7 @@
  */
 
 namespace Pyz\Zed\MerchantSearch;
+
 use Pyz\Zed\Synchronization\SynchronizationConfig;
 use Spryker\Zed\MerchantSearch\MerchantSearchConfig as SprykerMerchantSearchConfig;
 

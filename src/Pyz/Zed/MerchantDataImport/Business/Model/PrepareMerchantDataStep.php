@@ -38,7 +38,7 @@ class PrepareMerchantDataStep implements DataImportStepInterface
      *
      * @return string
      */
-    private function generateMerchantKey(DataSetInterface $dataSet): string
+    public function generateMerchantKey(DataSetInterface $dataSet): string
     {
         return $dataSet[MerchantDataSetInterface::FILIAL_NUMBER];
     }

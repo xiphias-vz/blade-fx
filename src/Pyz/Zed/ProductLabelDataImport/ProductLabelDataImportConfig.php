@@ -1,8 +1,8 @@
 <?php
 
 /**
- * Copyright © 2016-present Spryker Systems GmbH. All rights reserved.
- * Use of this software requires acceptance of the Evaluation License Agreement. See LICENSE file.
+ * This file is part of the Spryker Commerce OS.
+ * For full license information, please view the LICENSE file that was distributed with this source code.
  */
 
 namespace Pyz\Zed\ProductLabelDataImport;
@@ -17,7 +17,7 @@ class ProductLabelDataImportConfig extends SprykerDataImportConfig
     protected function getModuleRoot(): string
     {
         return realpath(
-                dirname(__DIR__, static::MODULE_ROOT_DIRECTORY_LEVEL)
-            ) . DIRECTORY_SEPARATOR;
+            dirname(__DIR__, static::MODULE_ROOT_DIRECTORY_LEVEL)
+        ) . DIRECTORY_SEPARATOR;
     }
 }

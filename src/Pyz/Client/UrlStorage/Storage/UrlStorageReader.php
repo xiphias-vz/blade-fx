@@ -26,6 +26,7 @@ class UrlStorageReader extends SprykerStorageUrlStorageReader
      * @param \Spryker\Client\UrlStorage\Dependency\Service\UrlStorageToSynchronizationServiceInterface $synchronizationService
      * @param \Spryker\Client\UrlStorage\Dependency\Service\UrlStorageToUtilEncodingServiceInterface $utilEncodingService
      * @param \Spryker\Client\UrlStorage\Dependency\Plugin\UrlStorageResourceMapperPluginInterface[] $resourceMapperPlugins
+     * @param \Pyz\Client\UrlStorage\UrlStorageConfig $urlStorageConfig
      */
     public function __construct(
         UrlStorageToStorageInterface $storageClient,

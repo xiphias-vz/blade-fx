@@ -10,7 +10,6 @@ namespace Pyz\Zed\MerchantDataImport\Business\Model;
 use Generated\Shared\Transfer\EventEntityTransfer;
 use Orm\Zed\Merchant\Persistence\Map\SpyMerchantTableMap;
 use Spryker\Zed\DataImport\Dependency\Facade\DataImportToEventBridge;
-use Spryker\Zed\Event\Business\EventFacadeInterface;
 use Spryker\Zed\Merchant\Dependency\MerchantEvents;
 
 class MerchantStoreEventTrigger

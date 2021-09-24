@@ -9,7 +9,6 @@ namespace Pyz\Yves\CustomerPageCZ\Plugin;
 
 use Generated\Shared\Transfer\CustomerResponseTransfer;
 use Generated\Shared\Transfer\CustomerTransfer;
-use Pyz\Yves\MerchantSwitcherWidget\Resolver\ShopContextResolver;
 use SprykerShop\Yves\CustomerPage\Plugin\AuthenticationHandler as SprykerAuthenticationHandler;
 
 /**

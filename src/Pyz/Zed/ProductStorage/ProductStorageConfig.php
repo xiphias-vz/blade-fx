@@ -8,7 +8,6 @@
 namespace Pyz\Zed\ProductStorage;
 
 use Pyz\Zed\Synchronization\SynchronizationConfig;
-use Spryker\Shared\ProductStorage\ProductStorageConfig as SprykerSharedProductStorageConfig;
 use Spryker\Zed\ProductStorage\ProductStorageConfig as SprykerProductStorageConfig;
 
 class ProductStorageConfig extends SprykerProductStorageConfig

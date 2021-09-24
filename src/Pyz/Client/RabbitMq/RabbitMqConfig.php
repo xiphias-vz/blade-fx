@@ -11,7 +11,6 @@ use ArrayObject;
 use Generated\Shared\Transfer\RabbitMqOptionTransfer;
 use Pyz\Shared\MerchantStorage\MerchantStorageConfig;
 use Pyz\Shared\ShipmentStorage\ShipmentStorageConfig;
-use Pyz\Zed\CmsStorage\CmsStorageConfig;
 use Spryker\Client\RabbitMq\Model\Connection\Connection;
 use Spryker\Client\RabbitMq\RabbitMqConfig as SprykerRabbitMqConfig;
 use Spryker\Shared\AvailabilityStorage\AvailabilityStorageConfig;
@@ -163,7 +162,7 @@ class RabbitMqConfig extends SprykerRabbitMqConfig
             UrlStorageConstants::URL_SYNC_STORAGE_QUEUE,
             $this->get(LogConstants::LOG_QUEUE_NAME),
             $this->getPublishQueueConfiguration(),
-            $this->getSynchronizationQueueConfiguration()
+            $this->getSynchronizationQueueConfiguration(),
         ];
     }
 

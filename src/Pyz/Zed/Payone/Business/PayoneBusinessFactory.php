@@ -25,7 +25,6 @@ use SprykerEco\Zed\Payone\Business\TransactionStatus\TransactionStatusUpdateMana
  */
 class PayoneBusinessFactory extends SprykerEcoPayoneBusinessFactory
 {
-
     /**
      * @return \SprykerEco\Zed\Payone\Business\Api\Adapter\AdapterInterface
      */

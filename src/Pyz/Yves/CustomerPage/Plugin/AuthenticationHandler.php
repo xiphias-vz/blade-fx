@@ -13,7 +13,6 @@ use Generated\Shared\Transfer\CustomerTransfer;
 use Pyz\Yves\GlobusRestApiClient\Provider\GlobusRestApiClientAccount;
 use Pyz\Yves\GlobusRestApiClient\Provider\GlobusRestApiClientDigitalCard;
 use Pyz\Yves\GlobusRestApiClient\Provider\GlobusRestApiClientValidation;
-use Pyz\Yves\MerchantSwitcherWidget\Resolver\ShopContextResolver;
 use SprykerShop\Yves\CustomerPage\Plugin\AuthenticationHandler as SprykerAuthenticationHandler;
 
 /**
@@ -206,10 +205,9 @@ class AuthenticationHandler extends SprykerAuthenticationHandler
             $addressStatus = "UN";
         }
 
-        if (isset($validAddress["result"]["address"]["country"])){
+        if (isset($validAddress["result"]["address"]["country"])) {
             $country = $validAddress["result"]["address"]["country"];
-        }
-        else {
+        } else {
             $country = "DE";
         }
 

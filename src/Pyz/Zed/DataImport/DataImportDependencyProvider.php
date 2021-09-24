@@ -34,8 +34,6 @@ use Spryker\Zed\MerchantDataImport\Communication\Plugin\MerchantDataImportPlugin
 use Spryker\Zed\Money\Business\MoneyFacadeInterface;
 use Spryker\Zed\PaymentDataImport\Communication\Plugin\PaymentMethodDataImportPlugin;
 use Spryker\Zed\PaymentDataImport\Communication\Plugin\PaymentMethodStoreDataImportPlugin;
-use Spryker\Zed\PriceProductDataImport\Communication\Plugin\PriceProductDataImportPlugin;
-use Spryker\Zed\PriceProductScheduleDataImport\Communication\Plugin\PriceProductScheduleDataImportPlugin;
 use Spryker\Zed\ProductLabelDataImport\Communication\Plugin\ProductLabelDataImportPlugin;
 use Spryker\Zed\ProductLabelDataImport\Communication\Plugin\ProductLabelStoreDataImportPlugin;
 use Spryker\Zed\ProductMeasurementUnitDataImport\Communication\Plugin\ProductMeasurementBaseUnitDataImportPlugin;

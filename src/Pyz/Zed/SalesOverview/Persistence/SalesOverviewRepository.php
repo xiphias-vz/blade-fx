@@ -7,6 +7,7 @@
 
 namespace Pyz\Zed\SalesOverview\Persistence;
 
+use Exception;
 use PDO;
 use Propel\Runtime\Propel;
 use Pyz\Shared\Oms\OmsConfig;
@@ -89,135 +90,7 @@ class SalesOverviewRepository extends AbstractRepository implements SalesOvervie
      */
     private function getData(string $deliveryDate, string $merchantReference): array
     {
-        $sql = "
-        select o.requested_delivery_date, o.timeSlot, o.deliveryDate, o.pickZone
-            , case when o.statusInner in ('cancelled') and o.zoneItemsCount = o.orderItemsQuantity then 'cancelled'
-                else case when o.statusInner in ('cancelled', 'picked') and o.zoneItemsCount > o.orderItemsQuantity then 'picked'
-                    else case when o.statusInner in ('cancelled', 'ready for collection') and o.zoneItemsCount > o.orderItemsQuantity then 'ready for collection'
-                        else o.statusInner
-                    end
-                end
-            end as status
-            , o.ordersCount, sum(o.orderItemsCount) as orderItemsCount, sum(o.orderItemsQuantity) as orderItemsQuantity
-            , sum(o.orderItemsWeight) as orderItemsWeight
-        from
-            (
-            select
-             sss.requested_delivery_date
-             , right(sss.requested_delivery_date, 11) as timeSlot
-             , date_format(left(sss.requested_delivery_date, 10), '%d.%m.%Y') as deliveryDate
-             , ssoi.pick_zone as pickZone
-             , case when popb.fk_sales_order is not null
-             and ssoi1.id_sales_order_item is not null
-             then 'in picking'
-                 else
-                     case when sit.name in ('order invoiced') then 'order invoiced'
-                     else
-                         case when sit.name in ('ready for picking') then 'ready for picking'
-                         else
-                             case when sit.name in ('ready for collection') then 'ready for collection'
-                             else
-                                case when sit.name in ('cancelled')
-                                    then 'cancelled'
-                                else case when sit.name in ('picked')
-                                    then 'picked'
-                                end
-                             end
-                         end
-                     end
-                  end
-             end as statusInner
-             , count(distinct sso.order_reference) as ordersCount
-             , count(distinct ssoi.sku + sso.order_reference) as orderItemsCount
-             , sum(ssoi.quantity) as orderItemsQuantity
-             , sum(ssoi.new_weight) as orderItemsWeight
-             , countPerZone.zoneItemsCount
-             from spy_sales_order sso
-                 inner join spy_sales_order_item ssoi on sso.id_sales_order = ssoi.fk_sales_order
-                 inner join (select fk_sales_order, pick_zone, count(*) as zoneItemsCount from spy_sales_order_item group by fk_sales_order, pick_zone) countPerZone on countPerZone.fk_sales_order = ssoi.fk_sales_order
-                    AND countPerZone.pick_zone = ssoi.pick_zone
-                 inner join spy_sales_shipment sss on sso.id_sales_order = sss.fk_sales_order
-                 inner join pyz_picking_zone ppz on ssoi.pick_zone = ppz.name
-                 left outer join spy_sales_order_item ssoi1 on sso.id_sales_order = ssoi1.fk_sales_order
-                    AND ssoi.id_sales_order_item = ssoi1.id_sales_order_item
-                    AND ssoi1.fk_oms_order_item_state = (select id_oms_order_item_state from spy_oms_order_item_state where name = '" . OmsConfig::STORE_STATE_READY_FOR_PICKING . "')
-                 left outer join pyz_picking_zone ppz1 on ssoi1.pick_zone = ppz1.name
-                 inner join spy_oms_order_item_state sit on ssoi.fk_oms_order_item_state = sit.id_oms_order_item_state
-                 left outer join pyz_order_picking_block popb on popb.fk_sales_order = sso.id_sales_order
-                 and popb.fk_picking_zone = ppz.id_picking_zone
-                 and popb.fk_picking_zone = ppz1.id_picking_zone
-            where sss.requested_delivery_date like '" . $deliveryDate . "%'
-                 and sso.merchant_reference = '" . $merchantReference . "'
-                 group by
-             sss.requested_delivery_date
-             , ssoi.pick_zone
-             , statusInner
-            ) o
-          group by
-             requested_delivery_date
-             , pickZone
-             , status
-         union
-        SELECT b.requested_delivery_date, b.timeSlot, b.deliveryDate, b.pickZone, right(b.status, length(b.status) -2) as status
-            , sum(b.ordersCount) as ordersCount, sum(b.orderItemsCount) as orderItemsCount
-            , sum(b.orderItemsQuantity) as orderItemsQuantity, sum(b.orderItemsWeight) as orderItemsWeight
-            FROM
-                (
-                 select a.requested_delivery_date, a.timeSlot, a.deliveryDate, a.pickZone
-                     , count(distinct a.id_sales_order) as ordersCount, sum(a.orderItemsCount) as orderItemsCount, sum(a.orderItemsQuantity) as orderItemsQuantity
-                     , sum(a.orderItemsWeight) as orderItemsWeight, a.id_sales_order
-                     , case when min(status) in ('1 picked') and sum(a.readyForPickingCount) > 0 then '0 in picking' else min(status) end  as status
-                from
-                    (
-                select
-                        sss.requested_delivery_date
-                        , sso.id_sales_order
-                       , right(sss.requested_delivery_date, 11) as timeSlot
-                       , date_format(left(sss.requested_delivery_date, 10), '%d.%m.%Y') as deliveryDate
-                       , 'Total' as pickZone
-                       , case when popb.fk_sales_order is not null
-                                   and ssoi1.id_sales_order_item is not null
-                          then '0 in picking'
-                          else
-                              case when sit.name in ('order invoiced') then '1 order invoiced'
-                              else
-                                  case when sit.name in ('ready for picking') then '1 ready for picking'
-                                  else
-                                  case when sit.name in ('ready for collection') then '1 ready for collection'
-                                      else case when sit.name in ('picked') then '1 picked'
-                                      end
-                                   end
-                                 end
-                                 end
-                          end as status
-                       , count(distinct sso.order_reference) as ordersCount
-                       , count(distinct ssoi.sku + sso.order_reference) as orderItemsCount
-                       , sum(ssoi.quantity) as orderItemsQuantity
-                       , sum(ssoi.new_weight) as orderItemsWeight
-                       , sum(case when sit.name in ('ready for picking') then 1 else 0 END) AS readyForPickingCount
-                  from spy_sales_order sso
-                        inner join spy_sales_order_item ssoi on sso.id_sales_order = ssoi.fk_sales_order
-                        inner join spy_sales_shipment sss on sso.id_sales_order = sss.fk_sales_order
-                        inner join pyz_picking_zone ppz on ssoi.pick_zone = ppz.name
-                        left outer join spy_sales_order_item ssoi1 on sso.id_sales_order = ssoi1.fk_sales_order
-                            AND ssoi.id_sales_order_item = ssoi1.id_sales_order_item
-                            AND ssoi1.fk_oms_order_item_state = (select id_oms_order_item_state from spy_oms_order_item_state where name = '" . OmsConfig::STORE_STATE_READY_FOR_PICKING . "')
-                        left outer join pyz_picking_zone ppz1 on ssoi1.pick_zone = ppz1.name
-                        inner join spy_oms_order_item_state sit on ssoi.fk_oms_order_item_state = sit.id_oms_order_item_state
-                        left outer join pyz_order_picking_block popb on popb.fk_sales_order = sso.id_sales_order
-                            and popb.fk_picking_zone = ppz.id_picking_zone
-                            and popb.fk_picking_zone = ppz1.id_picking_zone
-                where sss.requested_delivery_date like '" . $deliveryDate . "%'
-                        and sso.merchant_reference = '" . $merchantReference . "'
-                  group by
-                      sss.requested_delivery_date
-                      , sso.id_sales_order
-                      , status
-                ) a
-              group by requested_delivery_date, id_sales_order
-              ) b
-              group by b.requested_delivery_date, b.status
-        ";
+        $sql = "call pyzx_import_images('" . $deliveryDate . "', '" . $merchantReference . "');";
 
         return $this->getResult($sql, true);
     }
@@ -230,12 +103,15 @@ class SalesOverviewRepository extends AbstractRepository implements SalesOvervie
      */
     private function getResult(string $sql, bool $doFetch = true): array
     {
-        $connection = Propel::getConnection();
-        $statement = $connection->prepare($sql);
-        $statement->execute();
+        try {
+            $connection = Propel::getConnection();
+            $statement = $connection->prepare($sql);
+            $statement->execute();
 
-        if ($doFetch) {
-            return $statement->fetchAll(PDO::FETCH_NAMED);
+            if ($doFetch) {
+                return $statement->fetchAll(PDO::FETCH_NAMED);
+            }
+        } catch (Exception $ex) {
         }
 
         return [];

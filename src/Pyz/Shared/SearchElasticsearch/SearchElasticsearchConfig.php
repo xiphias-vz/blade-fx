@@ -13,6 +13,6 @@ class SearchElasticsearchConfig extends SprykerSearchElasticsearchConfig
 {
     protected const SUPPORTED_SOURCE_IDENTIFIERS = [
         'page',
-        'merchant'
+        'merchant',
     ];
 }

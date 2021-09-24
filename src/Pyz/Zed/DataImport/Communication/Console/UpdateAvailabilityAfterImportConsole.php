@@ -13,6 +13,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 /**
  * @method \Pyz\Zed\DataImport\Business\DataImportFacadeInterface getFacade()
+ * @method \Pyz\Zed\DataImport\Communication\DataImportCommunicationFactory getFactory()
  */
 class UpdateAvailabilityAfterImportConsole extends Console
 {

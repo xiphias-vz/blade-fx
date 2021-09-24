@@ -18,7 +18,6 @@ use Spryker\Zed\User\Business\UserFacadeInterface;
 
 class StorePickingListFormDataProvider
 {
-
     /**
      * @var \Spryker\Zed\User\Business\UserFacadeInterface
      */

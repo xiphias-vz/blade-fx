@@ -71,7 +71,7 @@ class PasswordController extends SprykerPasswordController
     public function passwordChangeAction(Request $request)
     {
         return $this->view([
-            'customerDeleteForm' => []
+            'customerDeleteForm' => [],
         ], [], '@CustomerPage/views/password-change/password-change.twig');
     }
 

@@ -19,7 +19,7 @@ class PriceProductDataImportConfig extends SprykerPriceProductDataImportConfig
     {
         $moduleDataImportDirectory = $this->getModuleRoot() . 'data' . DIRECTORY_SEPARATOR . 'import' . DIRECTORY_SEPARATOR . 'spryker' . DIRECTORY_SEPARATOR;
 
-        return $this->buildImporterConfiguration($moduleDataImportDirectory .  'product_price.csv', static::IMPORT_TYPE_PRODUCT_PRICE);
+        return $this->buildImporterConfiguration($moduleDataImportDirectory . 'product_price.csv', static::IMPORT_TYPE_PRODUCT_PRICE);
     }
 
     /**

@@ -357,7 +357,7 @@ class CheckoutController extends SprykerCheckoutControllerAlias
 
         if (!is_array($response)) {
             //Temp fix for infinite redirect
-            if($request->getRequestUri() !== $response->getTargetUrl()) {
+            if ($request->getRequestUri() !== $response->getTargetUrl()) {
                 return $response;
             }
 

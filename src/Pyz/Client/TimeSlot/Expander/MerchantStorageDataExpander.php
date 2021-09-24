@@ -18,14 +18,12 @@ class MerchantStorageDataExpander implements MerchantStorageDataExpanderInterfac
     protected $storageClient;
 
     /**
-     * MerchantStorageDataExpander constructor.
      * @param \Pyz\Client\MerchantStorage\MerchantStorageClientInterface $storageClient
      */
     public function __construct(MerchantStorageClientInterface $storageClient)
     {
         $this->storageClient = $storageClient;
     }
-
 
     /**
      * @param \Generated\Shared\Transfer\MerchantTransfer $merchantTransfer
@@ -36,8 +34,8 @@ class MerchantStorageDataExpander implements MerchantStorageDataExpanderInterfac
     {
         $merchantCollectionTransfer = $this->storageClient->getMerchantsList();
         foreach ($merchantCollectionTransfer->getMerchants() as $storageMerchantTransfer) {
-            /** @var MerchantTransfer $storageMerchantTransfer */
-            if($storageMerchantTransfer->getMerchantReference() === $merchantTransfer->getMerchantReference()) {
+            /** @var \Generated\Shared\Transfer\MerchantTransfer $storageMerchantTransfer */
+            if ($storageMerchantTransfer->getMerchantReference() === $merchantTransfer->getMerchantReference()) {
                 $merchantTransfer = $merchantTransfer
                     ->setDateTimeSlots($storageMerchantTransfer->getDateTimeSlots())
                     ->setDeliveryCapacityPerSlot($storageMerchantTransfer->getDeliveryCapacityPerSlot())

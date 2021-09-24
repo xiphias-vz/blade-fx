@@ -47,7 +47,6 @@ class CheckoutController extends IntCheckoutController
             if (!empty($customer->getMyGlobusCard())) {
                 $idToken = $this->getFactory()->getSessionClient()->get("id_token");
 
-
                 $eventClass = new GlobusRestApiCustomerEvent();
                 $eventClass->createCustomerEvent(
                     $customer->getMyGlobusCard(),

@@ -9,7 +9,6 @@ namespace Pyz\Client\TimeSlot\Reader;
 
 use Generated\Shared\Transfer\MerchantSearchRequestTransfer;
 use Generated\Shared\Transfer\MerchantTransfer;
-use Pyz\Client\MerchantStorage\MerchantStorageClientInterface;
 use Pyz\Client\TimeSlot\Exception\MerchantNotFound;
 use Pyz\Client\TimeSlot\Expander\MerchantStorageDataExpanderInterface;
 use Spryker\Client\MerchantSearch\MerchantSearchClientInterface;
@@ -33,13 +32,14 @@ class MerchantReader implements MerchantReaderInterface
     protected $quoteClient;
 
     /**
-     * @var MerchantStorageDataExpanderInterface
+     * @var \Pyz\Client\TimeSlot\Expander\MerchantStorageDataExpanderInterface
      */
     protected $merchantStorageDataExpander;
 
     /**
      * @param \Spryker\Client\MerchantSearch\MerchantSearchClientInterface $merchantSearchClient
      * @param \Spryker\Client\Quote\QuoteClientInterface $quoteClient
+     * @param \Pyz\Client\TimeSlot\Expander\MerchantStorageDataExpanderInterface $merchantStorageDataExpander
      */
     public function __construct(
         MerchantSearchClientInterface $merchantSearchClient,

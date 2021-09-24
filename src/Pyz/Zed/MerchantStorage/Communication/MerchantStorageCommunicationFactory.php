@@ -9,9 +9,9 @@ namespace Pyz\Zed\MerchantStorage\Communication;
 
 use Pyz\Zed\MerchantStorage\MerchantStorageDependencyProvider;
 use Spryker\Zed\EventBehavior\Business\EventBehaviorFacadeInterface;
-use Spryker\Zed\Kernel\Communication\AbstractCommunicationFactory;
-use Spryker\Zed\Store\Business\StoreFacadeInterface;
 use Spryker\Zed\MerchantStorage\Communication\MerchantStorageCommunicationFactory as SprykerMerchantStorageCommunicationFactory;
+use Spryker\Zed\Store\Business\StoreFacadeInterface;
+
 /**
  * @method \Pyz\Zed\MerchantStorage\MerchantStorageConfig getConfig()
  * @method \Pyz\Zed\MerchantStorage\Business\MerchantStorageFacadeInterface getFacade()
