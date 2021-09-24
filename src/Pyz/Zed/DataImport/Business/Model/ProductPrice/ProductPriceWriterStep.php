@@ -31,6 +31,8 @@ use Spryker\Zed\PriceProductDataImport\Business\Model\DataSet\PriceProductDataSe
 
 class ProductPriceWriterStep extends PublishAwareStep implements DataImportStepInterface
 {
+    public const KEY_GTIN = 'GTIN';
+
     /**
      * @var array
      */
@@ -107,9 +109,15 @@ class ProductPriceWriterStep extends PublishAwareStep implements DataImportStepI
             }
         }
 
-        $productAbstractEntitiesCollection = SpyProductAbstractQuery::create()
-            ->filterBySapNumber($dataSet[$key])
-            ->find();
+        if (isset($dataSet[static::KEY_GTIN]) && !ctype_space($dataSet[static::KEY_GTIN])) {
+            $productAbstractEntitiesCollection = SpyProductAbstractQuery::create()
+                ->filterBySku($dataSet[static::KEY_GTIN] . '_abstract')
+                ->find();
+        } else {
+            $productAbstractEntitiesCollection = SpyProductAbstractQuery::create()
+                ->filterBySapNumber($dataSet[$key])
+                ->find();
+        }
 
         if ($productAbstractEntitiesCollection->isEmpty()) {
             // according to requirements price data files can be provided with non existing sap number.

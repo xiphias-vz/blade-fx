@@ -31,6 +31,7 @@ class ProductStockWriterStep extends PublishAwareStep implements DataImportStepI
     public const KEY_STOCK_SHELF = 'shelf';
     public const KEY_STOCK_SHELF_FIELD = 'shelffield';
     public const KEY_STOCK_SHELF_FLOR = 'shelffloor';
+    public const KEY_GTIN = 'GTIN';
 
     /**
      * @var string
@@ -86,9 +87,15 @@ class ProductStockWriterStep extends PublishAwareStep implements DataImportStepI
             }
         }
 
-        $productEntityCollection = SpyProductQuery::create()
-            ->filterBySapNumber($dataSet[static::$sapNumberColumn])
-            ->find();
+        if (isset($dataSet[static::KEY_GTIN]) && !ctype_space($dataSet[static::KEY_GTIN])) {
+            $productEntityCollection = SpyProductQuery::create()
+                ->filterBySku($dataSet[static::KEY_GTIN])
+                ->find();
+        } else {
+            $productEntityCollection = SpyProductQuery::create()
+                ->filterBySapNumber($dataSet[static::$sapNumberColumn])
+                ->find();
+        }
 
         if ($productEntityCollection->isEmpty()) {
             return;
