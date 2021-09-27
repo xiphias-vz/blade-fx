@@ -14,8 +14,17 @@ use Pyz\Zed\CashierOrderExport\Business\Builder\CashierOrderContentBuilder as In
 
 class CashierOrderContentBuilder extends IntCashierOrderContentBuilder
 {
+    protected const TAX_RATE = 'tax_rate';
+    protected const UMLAUTS_REPLACE_FROM = ['á', 'č', 'ď', 'é', 'ě', 'í', 'ň', 'ó', 'ř', 'š', 'ť', 'ú', 'ů', 'ý', 'ž', 'Á', 'Č', 'Ď', 'É', 'Ě', 'Í', 'Ň', 'Ó', 'Ř', 'Š', 'Ť', 'Ú', 'Ů', 'Ý', 'Ž'];
+    protected const UMLAUTS_REPLACE_TO = ['a', 'c', 'd', 'e', 'e', 'i', 'n', 'o', 'r', 's', 't', 'u', 'u', 'y', 'z', 'A', 'C', 'D', 'E', 'E', 'I', 'N', 'O', 'R', 'S', 'T', 'U', 'U', 'Y', 'Z'];
+
     protected const HEADER_KEY_IDENTIFIER_CZ = '1072';
     protected const POSITION_KEY_IDENTIFIER_CZ = '1073';
+
+    /**
+     * @var \Pyz\Zed\CashierOrderExportCZ\CashierOrderExportConfig
+     */
+    protected $cashierOrderExportConfig;
 
     /**
      * @param \Generated\Shared\Transfer\OrderTransfer $orderTransfer
@@ -237,5 +246,78 @@ class CashierOrderContentBuilder extends IntCashierOrderContentBuilder
         $this->incrementCashierOrderPositionsQuantity($orderTransfer);
 
         return $this->addEndingZeroSets($content, static::DEFAULT_POSITION_ENDING_ZERO_SETS);
+    }
+
+    /**
+     * @param \Generated\Shared\Transfer\ItemTransfer $itemTransfer
+     *
+     * @return string
+     */
+    protected function getItemName(ItemTransfer $itemTransfer): string
+    {
+        if ($itemTransfer->getBontext() && $itemTransfer->getBontext() != "") {
+            $itemName = $itemTransfer->getBontext();
+        } else {
+            $itemName = $itemTransfer->getName();
+        }
+
+        //$itemName = $this->sanitizeItemNameFromUmlauts($itemName);
+        $itemName = $this->sanitizeItemNameFromNotSupportedChars($itemName);
+
+        return $this->applyLength($itemName);
+    }
+
+    /**
+     * @param string $itemName
+     *
+     * @return string
+     */
+    protected function sanitizeItemNameFromUmlauts(string $itemName): string
+    {
+        return str_replace(static::UMLAUTS_REPLACE_FROM, static::UMLAUTS_REPLACE_TO, $itemName);
+    }
+
+    /**
+     * @param string $itemName
+     *
+     * @return string
+     */
+    protected function sanitizeItemNameFromNotSupportedChars(string $itemName): string
+    {
+        $itemNameInSupportedEncoding = mb_convert_encoding(
+            $itemName,
+            $this->cashierOrderExportConfig->getCashierFileSupportedEncoding()
+        );
+
+        return str_replace('?', '', $itemNameInSupportedEncoding);
+    }
+
+    /**
+     * @param string $taxRate
+     *
+     * @return string
+     */
+    protected function getSapItemTaxIdByTaxRate(string $taxRate)
+    {
+        $taxRateToSapItemTaxIdMap = $this->cashierOrderExportConfig->getTaxRateToSapItemTaxIdMap();
+
+        return $taxRateToSapItemTaxIdMap[$taxRate] ?? static::DEFAULT_EMPTY_NUMBER;
+    }
+
+    /**
+     * @param \Generated\Shared\Transfer\OrderTransfer $orderTransfer
+     *
+     * @return string
+     */
+    protected function getCashierNumberServiceFee(OrderTransfer $orderTransfer): string
+    {
+        $serviceFeeToServiceFeeCashierNumber = $this->cashierOrderExportConfig->getServiceFeeToServiceFeeCashierNumber();
+        $currentOrderShipmentExpensePrice = $this->getShipmentExpensePrice($orderTransfer);
+
+        if ($currentOrderShipmentExpensePrice === null) {
+            return static::DEFAULT_EMPTY_NUMBER;
+        }
+
+        return $serviceFeeToServiceFeeCashierNumber[$currentOrderShipmentExpensePrice] ?? static::DEFAULT_EMPTY_NUMBER;
     }
 }
