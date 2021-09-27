@@ -31,14 +31,17 @@ export default class LazyImage extends Component {
         var self = this;
         img.addEventListener("load", function (){
             if(this.width != this.height){
-                self.removeDefaultHeightAttribute()
+                 self.removeDefaultHeightAttribute(this.height, this.width)
             }
         });
         img.src = url;
     }
 
-    protected removeDefaultHeightAttribute(): void{
-        this.image.parentElement.classList.remove('lazy-image');
+    protected removeDefaultHeightAttribute(height: number, width: number): void{
+        if(width > height)
+        {
+            this.image.parentElement.classList.remove('lazy-image');
+        }
         this.image.classList.remove('js-lazy-image__content');
     }
 
