@@ -90,7 +90,7 @@ class SalesOverviewRepository extends AbstractRepository implements SalesOvervie
      */
     private function getData(string $deliveryDate, string $merchantReference): array
     {
-        $sql = "call pyzx_import_images('" . $deliveryDate . "', '" . $merchantReference . "');";
+        $sql = "call pyzx_picking_progress('" . $deliveryDate . "', '" . $merchantReference . "');";
 
         return $this->getResult($sql, true);
     }
