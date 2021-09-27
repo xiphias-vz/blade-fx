@@ -35,35 +35,6 @@ $config[StoreConstants::STORE_NAMES] = [
     'CCM' => 'Černý Most',
 ];
 
-// ---------- FileSystem
-$config[FileSystemConstants::FILESYSTEM_SERVICE] = [
-    'files' => [
-        'sprykerAdapterClass' => LocalFilesystemBuilderPlugin::class,
-        'root' => APPLICATION_ROOT_DIR . '/data/' . APPLICATION_STORE . '/media/',
-        'path' => 'files/',
-    ],
-    'cashier_order_local' => [
-        'sprykerAdapterClass' => LocalFilesystemBuilderPlugin::class,
-        'root' => APPLICATION_ROOT_DIR . '/data/' . APPLICATION_STORE . '/export/',
-        'path' => 'files/',
-    ],
-//    'globus_sftp' => [
-//        'sprykerAdapterClass' => SftpFileSystemBuilderPlugin::class,
-//        'host' => getenv('GLOBUS_SFTP_HOST'),
-//        'port' => getenv('GLOBUS_SFTP_PORT'),
-//        'username' => getenv('GLOBUS_SFTP_USERNAME'),
-//        'password' => getenv('GLOBUS_SFTP_PASSWORD'),
-//        'root' => getenv('GLOBUS_SFTP_ROOT'),
-//    ],
-    'globus_sftp' => [
-        'sprykerAdapterClass' => SftpFileSystemBuilderPlugin::class,
-        'host' => 'ftp.globus.cz',
-        'port' => '22',
-        'username' => 'spryker',
-        'password' => '8U65f$b_p6vLNMc',
-        'root' => '/home/spryker/',
-    ],
-];
 
 // ----------- Google Tag Manager
 $config[GoogleTagManagerConstants::CONTAINER_ID] = 'GTM-PPGX4LT';
