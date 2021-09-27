@@ -57,7 +57,7 @@
         {% block rightColBottom %}
             <div class="col col--md-4 {{ config.name }}__spacing">
                 {% set tokenName = 'start-picking-%d' | format(data.idSalesOrder) %}
-                <button type="button" class=" button button--round button--addContainers {% if data.overviewForm %} button--disabled {% endif %}" onclick="addContainer('{{ data.itemSku }}')">
+                <button type="button" class=" button button--round button--addContainers {% if data.overviewForm or data.posListeForm %} button--disabled {% endif %}" onclick="addContainer('{{ data.itemSku }}')">
                       <span class="col--md-4">
                             {% include atom('icon') with {
                                 data: {
