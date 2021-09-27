@@ -35,7 +35,7 @@ class EditMerchantController extends SprykerEditMerchantController
         $dataProvider = $this->getFactory()->createMerchantFormDataProvider();
         $merchantTransfer = $dataProvider->getData($idMerchant);
 
-        if ($merchantTransfer === null) {
+        if ($merchantTransfer == null) {
             $this->addErrorMessage("Merchant with id %s doesn't exists.", ['%s' => $idMerchant]);
 
             return $this->redirectResponse(MerchantGuiConfig::URL_MERCHANT_LIST);

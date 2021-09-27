@@ -106,11 +106,11 @@ class DataImportBusinessFactory extends SprykerDataImportBusinessFactory
     {
         switch ($dataImportConfigurationActionTransfer->getDataEntity()) {
             case DataImportConfig::IMPORT_TYPE_STORE:
-                return $this->createStoreImporter($dataImportConfigurationActionTransfer);
+                return $this->createStoreImporter();
             case DataImportConfig::IMPORT_TYPE_MERCHANT_REGION:
                 return $this->getMerchantRegionImporter();
             case DataImportConfig::IMPORT_TYPE_CURRENCY:
-                return $this->createCurrencyImporter($dataImportConfigurationActionTransfer);
+                return $this->createCurrencyImporter();
             case DataImportConfig::IMPORT_TYPE_CATEGORY_TEMPLATE:
                 return $this->createCategoryTemplateImporter($dataImportConfigurationActionTransfer);
             case DataImportConfig::IMPORT_TYPE_CUSTOMER:
@@ -122,7 +122,7 @@ class DataImportBusinessFactory extends SprykerDataImportBusinessFactory
             case DataImportConfig::IMPORT_TYPE_PRODUCT_ATTRIBUTE_KEY:
                 return $this->createProductAttributeKeyImporter($dataImportConfigurationActionTransfer);
             case DataImportConfig::IMPORT_TYPE_PRODUCT_MANAGEMENT_ATTRIBUTE:
-                return $this->createProductManagementAttributeImporter($dataImportConfigurationActionTransfer);
+                return $this->createProductManagementAttributeImporter();
             case DataImportConfig::IMPORT_TYPE_PRODUCT:
                 return $this->getProductImporter();
             case DataImportConfig::IMPORT_TYPE_PRODUCT_OPTION:
@@ -167,6 +167,10 @@ class DataImportBusinessFactory extends SprykerDataImportBusinessFactory
                 return $this->getAlternativeEanImporter($dataImportConfigurationActionTransfer);
             case DataImportConfig::IMPORT_TYPE_PRODUCT_LABEL:
                 return $this->createProductLabelImporter($dataImportConfigurationActionTransfer);
+            case DataImportConfig::IMPORT_ORDER_PICKZONE_COLOR:
+                return $this->getOrderPickzoneImporter($dataImportConfigurationActionTransfer);
+            case DataImportConfig::IMPORT_COUNTRY_LOCALIZED:
+                return $this->getCountryLocalizedImporter();
             default:
                 return null;
         }

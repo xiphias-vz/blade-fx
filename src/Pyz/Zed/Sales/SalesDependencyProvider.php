@@ -418,7 +418,7 @@ class SalesDependencyProvider extends SprykerSalesDependencyProvider
             new AmountLeadProductOrderItemExpanderPlugin(),
             new AmountSalesUnitOrderItemExpanderPlugin(),
             new ProductOptionsOrderItemExpanderPlugin(),
-            new QuantitySalesUnitOrderItemExpanderPlugin()
+            new QuantitySalesUnitOrderItemExpanderPlugin(),
         ];
     }
 

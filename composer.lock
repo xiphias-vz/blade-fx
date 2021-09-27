@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "28cbe7c9d2ce7f5232e473a9e456436c",
+    "content-hash": "5762c4bd189acc7776102bd0816ddb06",
     "packages": [
         {
             "name": "aws/aws-sdk-php",
@@ -24669,6 +24669,104 @@
             "time": "2021-07-22T10:12:00+00:00"
         },
         {
+            "name": "spryker/price-product-offer",
+            "version": "1.1.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/spryker/price-product-offer.git",
+                "reference": "0bac8775db21fbe69b1d778b544c1b0c2fe4bd7f"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/spryker/price-product-offer/zipball/0bac8775db21fbe69b1d778b544c1b0c2fe4bd7f",
+                "reference": "0bac8775db21fbe69b1d778b544c1b0c2fe4bd7f",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=7.3",
+                "spryker/currency": "^3.0.0",
+                "spryker/kernel": "^3.33.0",
+                "spryker/price-product": "^4.16.0",
+                "spryker/price-product-extension": "^1.3.0",
+                "spryker/price-product-offer-extension": "^1.0.0",
+                "spryker/product-offer": "^1.0.0",
+                "spryker/product-offer-extension": "^1.0.0",
+                "spryker/propel-orm": "^1.0.0",
+                "spryker/store": "^1.0.0",
+                "spryker/symfony": "^3.0.0",
+                "spryker/transfer": "^3.25.0",
+                "spryker/translator": "^1.1.0",
+                "spryker/wishlist-extension": "^1.2.0"
+            },
+            "require-dev": {
+                "spryker/code-sniffer": "*",
+                "spryker/propel": "*",
+                "spryker/testify": "*"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.0.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Spryker\\": "src/Spryker/",
+                    "SprykerTest\\Shared\\PriceProductOffer\\Helper\\": "tests/SprykerTest/Shared/PriceProductOffer/_support/Helper/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "proprietary"
+            ],
+            "description": "PriceProductOffer module",
+            "support": {
+                "source": "https://github.com/spryker/price-product-offer/tree/1.1.0"
+            },
+            "time": "2021-08-19T10:54:56+00:00"
+        },
+        {
+            "name": "spryker/price-product-offer-extension",
+            "version": "1.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/spryker/price-product-offer-extension.git",
+                "reference": "83fb8da2b6988650c6992788599ae33505b68e44"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/spryker/price-product-offer-extension/zipball/83fb8da2b6988650c6992788599ae33505b68e44",
+                "reference": "83fb8da2b6988650c6992788599ae33505b68e44",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=7.3"
+            },
+            "require-dev": {
+                "spryker/code-sniffer": "*"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.0.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Spryker\\": "src/Spryker/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "proprietary"
+            ],
+            "description": "PriceProductOfferExtension module",
+            "support": {
+                "source": "https://github.com/spryker/price-product-offer-extension/tree/1.0.0"
+            },
+            "time": "2021-07-12T07:32:25+00:00"
+        },
+        {
             "name": "spryker/price-product-schedule",
             "version": "2.1.3",
             "source": {
@@ -45280,5 +45378,5 @@
     "platform-overrides": {
         "php": "7.3.20"
     },
-    "plugin-api-version": "2.1.0"
+    "plugin-api-version": "2.0.0"
 }

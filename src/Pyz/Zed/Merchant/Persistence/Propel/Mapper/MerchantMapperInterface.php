@@ -10,7 +10,6 @@ namespace Pyz\Zed\Merchant\Persistence\Propel\Mapper;
 use ArrayObject;
 use Generated\Shared\Transfer\MerchantCollectionTransfer;
 use Generated\Shared\Transfer\MerchantTransfer;
-use Generated\Shared\Transfer\SpyMerchantEntityTransfer;
 use Orm\Zed\Merchant\Persistence\SpyMerchant;
 use Propel\Runtime\Collection\ObjectCollection;
 use Spryker\Zed\Merchant\Persistence\Propel\Mapper\MerchantMapperInterface as SprykerMerchantMapperInterface;
@@ -40,7 +39,7 @@ interface MerchantMapperInterface extends SprykerMerchantMapperInterface
     ): MerchantTransfer;
 
     /**
-     * @param \Generated\Shared\Transfer\SpyMerchantEntityTransfer[] $merchantEntities
+     * @param \Orm\Zed\Merchant\Persistence\SpyMerchant[] $merchantEntities
      * @param \Generated\Shared\Transfer\MerchantCollectionTransfer $merchantCollectionTransfer
      *
      * @return \Generated\Shared\Transfer\MerchantCollectionTransfer

@@ -5,7 +5,6 @@ use Pyz\Shared\Console\ConsoleConstants;
 use Pyz\Shared\DataDog\DataDogConstants;
 use Pyz\Shared\DummyPayment\DummyPaymentConfig;
 use Pyz\Shared\Mail\MailConstants;
-use Pyz\Shared\MerchantSwitcherWidget\MerchantSwitcherWidgetConstants;
 use Pyz\Shared\Sales\SalesConstants;
 use Pyz\Shared\Scheduler\SchedulerConfig;
 use Spryker\Glue\Log\Plugin\GlueLoggerConfigPlugin;

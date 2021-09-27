@@ -34,4 +34,16 @@
         <property name="collectedAt" type="string" />
     </transfer>
 
+    <transfer name="MerchantOrder">
+        <property name="fkMerchant" type="int"/>
+        <property name="storeStatus" type="string"/>
+        <property name="requestedDeliveryDate" type="string"/>
+        <property name="fkUser" type="int"/>
+        <property name="orderPickingBlock" type="OrderPickingBlock"/>
+
+        <property name="deliveredAt" type="string" />
+        <property name="pickedAt" type="string" />
+        <property name="collectedAt" type="string" />
+    </transfer>
+
 </transfers>

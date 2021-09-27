@@ -7,6 +7,7 @@
 
 namespace Pyz\Zed\Merchant\Persistence;
 
+use ArrayObject;
 use Generated\Shared\Transfer\MerchantCriteriaTransfer;
 use Generated\Shared\Transfer\MerchantTransfer;
 use Generated\Shared\Transfer\StoreRelationTransfer;
@@ -106,14 +107,13 @@ class MerchantRepository extends SprykerMerchantRepository implements MerchantRe
             $idMerchant = $merchantEntity->getIdMerchant();
             $storeRelationTransfers[$merchantEntity->getIdMerchant()] = (new StoreRelationTransfer())
                 ->setIdEntity($idMerchant)
-                ->setStores(new \ArrayObject(
-                    [(new StoreTransfer)
+                ->setStores(new ArrayObject(
+                    [(new StoreTransfer())
                         ->setIdStore($merchantEntity->getFkStore())
-                        ->setName($merchantEntity->getSpyStore()->getName())
+                        ->setName($merchantEntity->getSpyStore()->getName()),
                     ]
                 ))
-                ->setIdStores([$merchantEntity->getFkStore()])
-            ;
+                ->setIdStores([$merchantEntity->getFkStore()]);
         }
 
         return $storeRelationTransfers;

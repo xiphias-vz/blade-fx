@@ -32,6 +32,7 @@ class CustomerPageDependencyProvider extends SprykerShopCustomerPageDependencyPr
     public const CLIENT_SESSION = 'CLIENT_SESSION';
     public const SERVICE_DATA_DOG = 'SERVICE_DATA_DOG';
     public const SERVICE_USER = 'SERVICE_USER';
+    public const SERVICE_TWIG = 'twig';
 
     /**
      * @uses \Spryker\Yves\Form\Plugin\Application\FormApplicationPlugin::SERVICE_FORM_CSRF_PROVIDER

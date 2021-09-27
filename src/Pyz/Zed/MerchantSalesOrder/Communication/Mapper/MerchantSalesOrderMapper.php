@@ -10,6 +10,7 @@ namespace Pyz\Zed\MerchantSalesOrder\Communication\Mapper;
 use DateTime;
 use Generated\Shared\Transfer\ItemTransfer;
 use Generated\Shared\Transfer\MerchantCriteriaTransfer;
+use Generated\Shared\Transfer\MerchantSalesOrderTransfer;
 use Generated\Shared\Transfer\MerchantTransfer;
 use Generated\Shared\Transfer\OrderTransfer;
 use Generated\Shared\Transfer\QuoteTransfer;
@@ -50,15 +51,26 @@ class MerchantSalesOrderMapper implements MerchantSalesOrderMapperInterface
     ): OrderTransfer {
         $merchantTransfer = $this->findMerchant($quoteTransfer);
         $orderTransfer = (new OrderTransfer())->fromArray($saveOrderTransfer->toArray(), true);
+        $merchantReference = $merchantTransfer->getMerchantReference();
 
-        $orderTransfer = $orderTransfer
-            ->setMerchantReference($merchantTransfer->getMerchantReference())
-            ->setMerchantFilialNumber($merchantTransfer->getFilialNumber())
-            ->setIdSalesOrder($saveOrderTransfer->getIdSalesOrder())
+        $merchantSalesOrderTransfer = (new MerchantSalesOrderTransfer())
             ->setRequestedDeliveryDate($this->getTimeSlotDateTime($quoteTransfer));
 
+        $merchantTransfer = $this->findMerchant($quoteTransfer);
+        $merchantSalesOrderTransfer->setFkMerchant($merchantTransfer->getIdMerchant());
+
+        $orderTransfer = $orderTransfer
+            ->setMerchantReference($merchantReference)
+            ->setMerchantFilialNumber($merchantTransfer->getFilialNumber())
+            ->setIdSalesOrder($saveOrderTransfer->getIdSalesOrder())
+            ->setRequestedDeliveryDate($this->getTimeSlotDateTime($quoteTransfer))
+            ->setPriceMode($quoteTransfer->getPriceMode())
+            ->setMerchantSalesOrder($merchantSalesOrderTransfer);
+
         foreach ($saveOrderTransfer->getOrderItems() as $saveOrderItem) {
-            $orderTransfer->addItem((new ItemTransfer())->fromArray($saveOrderItem->toArray(), true));
+            $orderItem = (new ItemTransfer())->fromArray($saveOrderItem->toArray(), true);
+            $orderItem->setMerchantReference($merchantReference);
+            $orderTransfer->addItem($orderItem);
         }
 
         return $orderTransfer;

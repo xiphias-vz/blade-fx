@@ -40,11 +40,11 @@ class TransactionStatusUpdateManager extends SprykerEcoTransactionStatusUpdateMa
     }
 
     /**
-     * @param string $transactionId
+     * @param int $transactionId
      *
      * @return \Orm\Zed\Payone\Persistence\SpyPaymentPayone|null
      */
-    protected function findPaymentByTransactionId($transactionId): ?SpyPaymentPayone
+    protected function findPaymentByTransactionId(int $transactionId): ?SpyPaymentPayone
     {
         return parent::findPaymentByTransactionId($transactionId);
     }

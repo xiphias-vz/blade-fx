@@ -237,6 +237,7 @@
     "spryker/price-cart-connector": "^6.7.1",
     "spryker/price-product": "^4.32.0",
     "spryker/price-product-extension": "^1.5.0",
+    "spryker/price-product-offer": "^1.1",
     "spryker/price-product-schedule-gui": "^2.2.4",
     "spryker/price-product-storage": "^4.7.0",
     "spryker/product-alternative-product-label-connector": "^1.1.1",

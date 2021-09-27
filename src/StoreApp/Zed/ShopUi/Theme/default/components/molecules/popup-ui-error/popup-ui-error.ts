@@ -37,7 +37,7 @@ export default class PopupUiError extends Component {
             this.$submitButton.on('click', () => this.triggerPopup());
         }
 
-        if(this.$isErrorTrue.attr('error') == 1) {
+        if (this.$isErrorTrue.attr('error') == 1) {
             this.triggerPopup();
         }
 
@@ -45,6 +45,7 @@ export default class PopupUiError extends Component {
             this.$openPopupButton.on('click', (event: Event) => this.triggerPopup(event));
         }
     }
+
     public triggerPopupWithClearingInputFieldForContainer(event?: Event): void {
         this.$this.toggleClass(this.showClass);
         const scanInputField = $('#input_scanner');
@@ -54,8 +55,8 @@ export default class PopupUiError extends Component {
 
     public triggerPopupWithClearingInputField(event?: Event): void {
         this.$this.toggleClass(this.showClass);
-   
-        if(this.$this.find('p.falsche-ean').length !== 0)
+
+        if (this.$this.find('p.falsche-ean').length !== 0)
         {
             const eanScanInputField = $('#txt_ean_scannen');
             eanScanInputField.value = '';
@@ -64,7 +65,7 @@ export default class PopupUiError extends Component {
 
             setTimeout(() => {
                 eanScanInputField.readOnly = false;
-            }, 1000)
+            }, 1000);
         }
         else
         {
@@ -83,8 +84,10 @@ export default class PopupUiError extends Component {
     public singlePickinFalscheEanCheck(event?: Event): void {
         this.$this.toggleClass(this.showClass);
         const eanScanInputField = document.getElementById('txt_ean_scannen__' + this.isPopupErrorForPickingArticles);
-        eanScanInputField.value = '';
-        eanScanInputField.focus();
+        if (eanScanInputField !== null) {
+            eanScanInputField.value = '';
+            eanScanInputField.focus();
+        }
     }
 
     public triggerPopup(event?: Event): void {

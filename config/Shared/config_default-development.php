@@ -6,7 +6,6 @@
 
 use Monolog\Logger;
 use Pyz\Shared\Console\ConsoleConstants;
-use Pyz\Shared\MerchantSwitcherWidget\MerchantSwitcherWidgetConstants;
 use Pyz\Shared\Payone\PayoneConstants;
 use Pyz\Shared\Scheduler\SchedulerConfig;
 use Pyz\Shared\TwigCache\TwigCacheConstants;

@@ -261,4 +261,12 @@ class CustomerPageFactory extends SprykerShopCustomerPageFactory
     {
         return $this->getProvidedDependency(CustomerPageDependencyProvider::SERVICE_FLASH_MESSENGER);
     }
+
+    /**
+     * @return \Twig\Environment
+     */
+    public function getTwigEnvironment(): Environment
+    {
+        return $this->getProvidedDependency(CustomerPageDependencyProvider::SERVICE_TWIG);
+    }
 }

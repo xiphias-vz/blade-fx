@@ -7,7 +7,9 @@
 
 namespace Pyz\Zed\MerchantSalesOrder\Business;
 
+use Pyz\Zed\MerchantSalesOrder\Business\Creator\MerchantOrderCreator;
 use Pyz\Zed\MerchantSalesOrder\Business\Expander\SalesOrderExpander;
+use Spryker\Zed\MerchantSalesOrder\Business\Creator\MerchantOrderCreatorInterface;
 use Spryker\Zed\MerchantSalesOrder\Business\MerchantSalesOrderBusinessFactory as SprykerMerchantSalesOrderBusinessFactory;
 
 /**
@@ -22,6 +24,19 @@ class MerchantSalesOrderBusinessFactory extends SprykerMerchantSalesOrderBusines
     {
         return new SalesOrderExpander(
             $this->getRepository()
+        );
+    }
+
+    /**
+     * @return \Spryker\Zed\MerchantSalesOrder\Business\Creator\MerchantOrderCreatorInterface
+     */
+    public function createMerchantOrderCreator(): MerchantOrderCreatorInterface
+    {
+        return new MerchantOrderCreator(
+            $this->getEntityManager(),
+            $this->createMerchantOrderItemCreator(),
+            $this->createMerchantOrderTotalsCreator(),
+            $this->getMerchantOrderPostCreatePlugins()
         );
     }
 }
