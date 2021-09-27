@@ -351,7 +351,7 @@ class MailHandler extends SprykerMailHandler
                 'email' => $orderTransfer->getBillingAddress()->getEmail() ?: $orderTransfer->getEmail() ?: ' ',
             ];
             $params = array_merge($params, $addressParams);
-            $salutationParams = $this->getSalutationParams($orderTransfer->getBillingAddress()->getSalutation() ?: ' ');
+            $salutationParams = $this->getSalutationParams($orderTransfer->getBillingAddress()->getSalutation() ?: ' ', $orderTransfer->getFirstName() ?: ' ');
             $params = array_merge($params, $salutationParams);
         } else {
             $addressParams = [
@@ -365,7 +365,7 @@ class MailHandler extends SprykerMailHandler
                 'email' => $orderTransfer->getEmail() ?: ' ',
             ];
             $params = array_merge($params, $addressParams);
-            $salutationParams = $this->getSalutationParams($orderTransfer->getSalutation() ?: ' ');
+            $salutationParams = $this->getSalutationParams($orderTransfer->getSalutation() ?: ' ', $orderTransfer->getFirstName() ?: ' ');
             $params = array_merge($params, $salutationParams);
         }
 
@@ -374,30 +374,35 @@ class MailHandler extends SprykerMailHandler
 
     /**
      * @param string $salutation
+     * @param string $firstName
      *
      * @return array
      */
-    protected function getSalutationParams(string $salutation): array
+    protected function getSalutationParams(string $salutation, string $firstName): array
     {
         if ($salutation == 'Mr') {
             $salutationParams = [
                 'salutationPrefix' => $this->translatorFacade->trans(static::MAIL_ORDER_DEAR),
                 'salutation' => $this->translatorFacade->trans(static::MAIL_ORDER_MR),
+                'firstNameDivers' => '',
             ];
         } elseif ($salutation == 'Ms') {
             $salutationParams = [
                 'salutationPrefix' => $this->translatorFacade->trans(static::MAIL_ORDER_DEAR_LADY),
                 'salutation' => $this->translatorFacade->trans(static::MAIL_ORDER_MS),
+                'firstNameDivers' => '',
             ];
         } elseif ($salutation == 'Divers') {
             $salutationParams = [
                 'salutationPrefix' => $this->translatorFacade->trans(static::MAIL_ORDER_GOOD),
                 'salutation' => $this->translatorFacade->trans(static::MAIL_ORDER_DAY),
+                'firstNameDivers' => $firstName ?: '',
             ];
         } else {
             $salutationParams = [
                 'salutationPrefix' => '',
                 'salutation' => $salutation,
+                'firstNameDivers' => '',
             ];
         }
 
