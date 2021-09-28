@@ -87,7 +87,7 @@ class ProductStockWriterStep extends PublishAwareStep implements DataImportStepI
             }
         }
 
-        if (isset($dataSet[static::KEY_GTIN]) && !ctype_space($dataSet[static::KEY_GTIN])) {
+        if (isset($dataSet[static::KEY_GTIN]) && !ctype_space($dataSet[static::KEY_GTIN]) && !empty($dataSet[static::KEY_GTIN])) {
             $productEntityCollection = SpyProductQuery::create()
                 ->filterBySku($dataSet[static::KEY_GTIN])
                 ->find();
