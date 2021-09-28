@@ -61,7 +61,6 @@ use Pyz\Zed\DataImport\Business\Model\ProductQuantity\ProductQuantityWriterStep;
 use Pyz\Zed\DataImport\Business\Model\ProductSearchAttribute\Hook\ProductSearchAfterImportHook;
 use Pyz\Zed\DataImport\Business\Model\ProductSearchAttribute\ProductSearchAttributeWriter;
 use Pyz\Zed\DataImport\Business\Model\ProductSearchAttributeMap\ProductSearchAttributeMapWriter;
-use Pyz\Zed\DataImport\Business\Model\ProductStock\Hook\ProductStockAfterImportPublishHook;
 use Pyz\Zed\DataImport\Business\Model\ProductStock\Hook\UpdateAvailabilityAfterImport;
 use Pyz\Zed\DataImport\Business\Model\ProductStock\Hook\UpdateAvailabilityAfterImportInterface;
 use Pyz\Zed\DataImport\Business\Model\ProductStock\ProductStockWriterStep;
@@ -1349,16 +1348,7 @@ class DataImportBusinessFactory extends SprykerDataImportBusinessFactory
             ->addStep($this->createProductStockWriterStep());
 
         $dataImporter->addDataSetStepBroker($dataSetStepBroker);
-        $dataImporter->addAfterImportHook($this->createProductStockAfterImportPublishHook());
 
         return $dataImporter;
-    }
-
-    /**
-     * @return \Pyz\Zed\DataImport\Business\Model\ProductStock\Hook\ProductStockAfterImportPublishHook
-     */
-    protected function createProductStockAfterImportPublishHook(): ProductStockAfterImportPublishHook
-    {
-        return new ProductStockAfterImportPublishHook();
     }
 }
