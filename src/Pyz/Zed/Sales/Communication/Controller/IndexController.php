@@ -83,12 +83,12 @@ class IndexController extends SprykerIndexController
     public function saveTimeSlotsAction(Request $request)
     {
         $selectedStore = $request->request->get("store");
-        $timeSlots = json_decode($request->request->get("changedData"));
+        $timeSlots = json_decode($request->request->get("changedData"), true);
         $formToSave = $request->request->get("formToSave");
         $isSuccess = [];
         $response = 0;
 
-        foreach ($timeSlots as $key => $value) {
+        foreach ($timeSlots as $value) {
             $timeSlotTimeDate = key($value);
             $capacityToSave = current($value);
 
