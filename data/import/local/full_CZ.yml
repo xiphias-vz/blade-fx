@@ -63,7 +63,7 @@ actions:
     -   data_entity: picking-route
         source: data/import/spryker/pick_reihenfolge.csv
     -   data_entity: picking-zone
-        source: data/import/picking_zone.csv
+        source: data/import/picking_zone_CZ.csv
     -   data_entity: product-location
         source: data/import/spryker/product_location_CZ.csv
     -   data_entity: product-stock

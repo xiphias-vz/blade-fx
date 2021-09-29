@@ -1,6 +1,5 @@
 <?php
 
-use Pyz\Service\FlysystemSftpFileSystem\Plugin\Flysystem\SftpFileSystemBuilderPlugin;
 use Pyz\Shared\Application\ApplicationConstants;
 use Pyz\Shared\BackofficeOverview\BackofficeOverviewConstants;
 use Pyz\Shared\CodeBuckets\CodeBucketConstants;
@@ -10,10 +9,8 @@ use Pyz\Shared\GsoaRestApiClient\Provider\TokenProvider;
 use Pyz\Shared\ProductImage\ProductImageConstants;
 use Pyz\Shared\Shipment\ShipmentConstants;
 use Pyz\Shared\Store\StoreConstants;
-use Spryker\Service\FlysystemLocalFileSystem\Plugin\Flysystem\LocalFilesystemBuilderPlugin;
 use Spryker\Shared\ErrorHandler\ErrorHandlerConstants;
 use Spryker\Shared\ErrorHandler\ErrorRenderer\WebHtmlErrorRenderer;
-use Spryker\Shared\FileSystem\FileSystemConstants;
 use StoreApp\Shared\Picker\PickerConstants;
 
 $config[StoreConstants::SAP_STORE_ID_TO_STORE_MAP] = [
@@ -34,7 +31,6 @@ $config[StoreConstants::STORE_NAMES] = [
     'CAK' => 'Čakovice',
     'CCM' => 'Černý Most',
 ];
-
 
 // ----------- Google Tag Manager
 $config[GoogleTagManagerConstants::CONTAINER_ID] = 'GTM-PPGX4LT';

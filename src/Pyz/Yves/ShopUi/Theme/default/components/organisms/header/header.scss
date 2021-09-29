@@ -192,6 +192,14 @@ $header-sticky-height: rem(69, number);
             display: flex;
             flex-direction: column;
 
+            h4 {
+                overflow-y: scroll;
+
+                ul {
+                    overflow-y: hidden;
+                }
+            }
+
             @include helper-breakpoint-media-min($xl-min) {
                 position: absolute;
                 top: 100%;

@@ -25,7 +25,7 @@ class OrderController extends SprykerOrderController
 
     /**
      * @param int $idSalesOrder
-     * @param \Symfony\Component\HttpFoundation\Request|int $request
+     * @param \Symfony\Component\HttpFoundation\Request $request
      *
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
@@ -73,12 +73,13 @@ class OrderController extends SprykerOrderController
      */
     public function reorderItemsAction(Request $request): RedirectResponse
     {
-        if (!$this->isCsrfTokenValid(static::REORDER_ITEMS_CSRF_TOKEN_NAME, $request)) {
+        $form = $this->getFactory()->createCustomerReorderWidgetFormFactory()
+            ->getCustomerReorderItemsWidgetForm()->handleRequest($request);
+
+        if (!$form->isSubmitted() || !$form->isValid()) {
             $this->getFactory()
                 ->getMessengerClient()
                 ->addErrorMessage(MessagesConfig::MESSAGE_PERMISSION_FAILED);
-
-            return $this->getFailureRedirect();
         }
 
         $idSalesOrder = $request->request->getInt(static::PARAM_ID_ORDER);
