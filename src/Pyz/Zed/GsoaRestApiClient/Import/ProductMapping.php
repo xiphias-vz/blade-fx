@@ -184,6 +184,7 @@ class ProductMapping
                 $countries[] = $this->getCountryNameByIso2Code($country);
             }
             $d["herkunftsland"] = implode(",", $countries);
+            $d["herkunftsland_o_g"] = implode(",", $countries);
         }
         $d["inverkehrbringer"] = $this->trimValue($item["producerName"] . " " . $item["producerAddress"]);
         if (is_array($item["allergens"])) {
