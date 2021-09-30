@@ -44,9 +44,20 @@ class OrderHydrator extends SprykerOrderHydrator implements OrderHydratorInterfa
         SalesToOmsInterface $omsFacade,
         SalesConfig $salesConfig,
         SalesToCustomerInterface $customerFacade,
-        array $hydrateOrderPlugins = []
+        array $hydrateOrderPlugins = [],
+        array $orderItemExpanderPlugins = [],
+        array $customerOrderAccessCheckPlugins = []
     ) {
-        parent::__construct($queryContainer, $omsFacade, $salesConfig, $customerFacade, $hydrateOrderPlugins);
+        parent::__construct(
+            $queryContainer,
+            $omsFacade,
+            $salesConfig,
+            $customerFacade,
+            $hydrateOrderPlugins,
+            $orderItemExpanderPlugins,
+            $customerOrderAccessCheckPlugins
+        );
+
         $this->salesConfig = $salesConfig;
     }
 
@@ -58,10 +69,14 @@ class OrderHydrator extends SprykerOrderHydrator implements OrderHydratorInterfa
      */
     public function hydrateOrderItemsToOrderTransfer(SpySalesOrder $orderEntity, OrderTransfer $orderTransfer)
     {
+        $itemTransfers = [];
+
         foreach ($orderEntity->getItems() as $orderItemEntity) {
-            $itemTransfer = $this->hydrateOrderItemTransfer($orderItemEntity);
-            $orderTransfer->addItem($itemTransfer);
+            $itemTransfers[] = $this->hydrateOrderItemTransfer($orderItemEntity);
         }
+
+        $itemTransfers = $this->executeOrderItemExpanderPlugins($itemTransfers);
+        $orderTransfer->setItems(new \ArrayObject($itemTransfers));
     }
 
     /**

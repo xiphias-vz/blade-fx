@@ -7,8 +7,10 @@
 
 namespace Pyz\Zed\DataImport\Communication\Console\Executor;
 
+use Generated\Shared\Transfer\DataImporterConfigurationTransfer;
 use Generated\Shared\Transfer\DataImporterReportMessageTransfer;
 use Generated\Shared\Transfer\DataImporterReportTransfer;
+use Pyz\Zed\DataImport\Communication\Console\DataImportConsole;
 use Spryker\Zed\DataImport\Communication\Console\Executor\DataImportExecutor as SprykerDataImportExecutor;
 use Symfony\Component\Console\Input\InputInterface;
 
@@ -56,5 +58,32 @@ class DataImportExecutor extends SprykerDataImportExecutor
         }
 
         return $overallDataImporterReportTransfer;
+    }
+
+    /**
+     * @param \Symfony\Component\Console\Input\InputInterface $input
+     * @param string|null $importerType
+     *
+     * @return \Generated\Shared\Transfer\DataImporterConfigurationTransfer
+     */
+    protected function buildDataImportConfiguration(InputInterface $input, ?string $importerType): DataImporterConfigurationTransfer
+    {
+        $dataImporterConfigurationTransfer = new DataImporterConfigurationTransfer();
+        $dataImporterConfigurationTransfer
+            ->setImportType($importerType)
+            ->setImportGroup($input->getOption(DataImportConsole::OPTION_IMPORT_GROUP))
+            ->setThrowException(false);
+
+        if ($input->hasParameterOption('--' . DataImportConsole::OPTION_THROW_EXCEPTION) || $input->hasParameterOption('-' . DataImportConsole::OPTION_THROW_EXCEPTION_SHORT)) {
+            $dataImporterConfigurationTransfer->setThrowException(true);
+        }
+
+        if ($input->hasParameterOption('--' . DataImportConsole::OPTION_SKIP_AFTER_IMPORT_HOOKS) || $input->hasParameterOption('-' . DataImportConsole::OPTION_SKIP_AFTER_IMPORT_HOOKS_SHORT)) {
+            $dataImporterConfigurationTransfer->setAfterImportHooksToSkip($input->getOption(DataImportConsole::OPTION_SKIP_AFTER_IMPORT_HOOKS));
+        }
+
+        $dataImporterConfigurationTransfer->setReaderConfiguration($this->buildReaderConfiguration($input));
+
+        return $dataImporterConfigurationTransfer;
     }
 }
