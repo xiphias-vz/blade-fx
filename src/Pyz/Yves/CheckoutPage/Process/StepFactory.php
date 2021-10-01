@@ -118,7 +118,8 @@ class StepFactory extends SprykerShopStepFactory
             CheckoutPageRouteProviderPlugin::ROUTE_NAME_CHECKOUT_SUMMARY,
             $this->getConfig()->getEscapeRoute(),
             $this->getCheckoutClient(),
-            $this->getOrderDetailClient()
+            $this->getOrderDetailClient(),
+            $this->createAddressStepExecutor()
         );
     }
 

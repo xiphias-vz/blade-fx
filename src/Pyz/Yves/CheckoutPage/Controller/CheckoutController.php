@@ -218,6 +218,7 @@ class CheckoutController extends SprykerCheckoutControllerAlias
             ->getQuote();
 
         $customer = $this->getFactory()->getQuoteClient()->getQuote()->getCustomer();
+
         if ($customer === null) {
             $this->addErrorMessage(static::MESSAGE_NO_CUSTOMER);
 

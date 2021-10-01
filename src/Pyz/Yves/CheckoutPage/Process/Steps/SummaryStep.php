@@ -16,7 +16,9 @@ use SprykerShop\Yves\CheckoutPage\CheckoutPageConfig;
 use SprykerShop\Yves\CheckoutPage\Dependency\Client\CheckoutPageToCheckoutClientInterface;
 use SprykerShop\Yves\CheckoutPage\Dependency\Client\CheckoutPageToProductBundleClientInterface;
 use SprykerShop\Yves\CheckoutPage\Dependency\Service\CheckoutPageToShipmentServiceInterface;
+use SprykerShop\Yves\CheckoutPage\Process\Steps\StepExecutorInterface;
 use SprykerShop\Yves\CheckoutPage\Process\Steps\SummaryStep as SprykerSummaryStep;
+use Symfony\Component\HttpFoundation\Request;
 
 class SummaryStep extends SprykerSummaryStep
 {
@@ -26,13 +28,19 @@ class SummaryStep extends SprykerSummaryStep
     private $orderDetailClient;
 
     /**
+     * @var \SprykerShop\Yves\CheckoutPage\Process\Steps\StepExecutorInterface
+     */
+    private $stepExecutor;
+
+    /**
      * @param \SprykerShop\Yves\CheckoutPage\Dependency\Client\CheckoutPageToProductBundleClientInterface $productBundleClient
      * @param \SprykerShop\Yves\CheckoutPage\Dependency\Service\CheckoutPageToShipmentServiceInterface $shipmentService
      * @param \SprykerShop\Yves\CheckoutPage\CheckoutPageConfig $checkoutPageConfig
-     * @param string $stepRoute
-     * @param string|null $escapeRoute
+     * @param $stepRoute
+     * @param $escapeRoute
      * @param \SprykerShop\Yves\CheckoutPage\Dependency\Client\CheckoutPageToCheckoutClientInterface $checkoutClient
      * @param \Pyz\Client\OrderDetail\OrderDetailClientInterface $orderDetailClient
+     * @param \SprykerShop\Yves\CheckoutPage\Process\Steps\StepExecutorInterface $stepExecutor
      */
     public function __construct(
         CheckoutPageToProductBundleClientInterface $productBundleClient,
@@ -41,10 +49,12 @@ class SummaryStep extends SprykerSummaryStep
         $stepRoute,
         $escapeRoute,
         CheckoutPageToCheckoutClientInterface $checkoutClient,
-        OrderDetailClientInterface $orderDetailClient
+        OrderDetailClientInterface $orderDetailClient,
+        StepExecutorInterface $stepExecutor
     ) {
         parent::__construct($productBundleClient, $shipmentService, $checkoutPageConfig, $stepRoute, $escapeRoute, $checkoutClient);
 
+        $this->stepExecutor = $stepExecutor;
         $this->orderDetailClient = $orderDetailClient;
     }
 
@@ -55,7 +65,9 @@ class SummaryStep extends SprykerSummaryStep
      */
     public function getTemplateVariables(AbstractTransfer $quoteTransfer)
     {
+        $request = new Request();
         $data = parent::getTemplateVariables($quoteTransfer);
+        $quoteTransfer = $this->stepExecutor->execute($request, $quoteTransfer);
 
         $orderDetailRequestTransfer = $this->getOrderDetailRequestTransfer($quoteTransfer);
         $orderDetails = $this->orderDetailClient->getInvoiceOrderDetailDataFromOrder($orderDetailRequestTransfer);
