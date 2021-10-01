@@ -14,6 +14,8 @@ use Pyz\Zed\PickingSalesOrder\Persistence\Propel\Mapper\PickingSalesOrderMapper;
 use Pyz\Zed\PickingZone\Business\PickingZoneFacadeInterface;
 use Spryker\Zed\Kernel\Business\AbstractBusinessFactory;
 use Spryker\Zed\Oms\Business\OmsFacadeInterface;
+use Spryker\Zed\Oms\Dependency\Service\OmsToUtilNetworkInterface;
+use Spryker\Zed\Oms\OmsDependencyProvider;
 use Spryker\Zed\Sales\Business\SalesFacadeInterface;
 use Spryker\Zed\User\Business\UserFacadeInterface;
 use StoreApp\Zed\Picker\Business\Reader\ContainerReader;
@@ -132,7 +134,8 @@ class PickerBusinessFactory extends AbstractBusinessFactory
             $this->getUserFacade(),
             $this->getPickingZoneFacade(),
             $this->createOrderUpdater(),
-            $this->getPickerFacade()
+            $this->getPickerFacade(),
+            $this->getUtilNetworkService()
         );
     }
 
@@ -158,5 +161,13 @@ class PickerBusinessFactory extends AbstractBusinessFactory
     public function getPickerFacade(): PickerFacadeInterface
     {
         return $this->getProvidedDependency(PickerDependencyProvider::FACADE_PICKER);
+    }
+
+    /**
+     * @return \Spryker\Zed\Oms\Dependency\Service\OmsToUtilNetworkInterface
+     */
+    public function getUtilNetworkService(): OmsToUtilNetworkInterface
+    {
+        return $this->getProvidedDependency(OmsDependencyProvider::SERVICE_UTIL_NETWORK);
     }
 }

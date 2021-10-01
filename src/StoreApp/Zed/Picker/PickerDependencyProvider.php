@@ -18,6 +18,8 @@ use Spryker\Shared\Kernel\Store;
 use Spryker\Zed\Kernel\AbstractBundleDependencyProvider;
 use Spryker\Zed\Kernel\Container;
 use Spryker\Zed\Oms\Business\OmsFacadeInterface;
+use Spryker\Zed\Oms\Dependency\Service\OmsToUtilNetworkBridge;
+use Spryker\Zed\Oms\OmsDependencyProvider;
 use Spryker\Zed\Product\Business\ProductFacadeInterface;
 use Spryker\Zed\User\Business\UserFacadeInterface;
 use StoreApp\Zed\PermissionAccess\Business\PermissionAccessFacadeInterface;
@@ -69,6 +71,7 @@ class PickerDependencyProvider extends AbstractBundleDependencyProvider
         $container = $this->addPickingSalesOrderFacade($container);
         $container = $this->addStore($container);
         $container = $this->addPickerFacade($container);
+        $container = $this->addUtilNetworkService($container);
 
         return $container;
     }
@@ -90,6 +93,7 @@ class PickerDependencyProvider extends AbstractBundleDependencyProvider
         $container = $this->addSessionService($container);
         $container = $this->addStore($container);
         $container = $this->addPickerFacade($container);
+        $container = $this->addUtilNetworkService($container);
 
         return $container;
     }
@@ -289,6 +293,24 @@ class PickerDependencyProvider extends AbstractBundleDependencyProvider
         $container[static::STORE] = function () {
             return Store::getInstance();
         };
+
+        return $container;
+    }
+
+    /**
+     * @param \Spryker\Zed\Kernel\Container $container
+     *
+     * @return \Spryker\Zed\Kernel\Container
+     */
+    protected function addUtilNetworkService(Container $container): Container
+    {
+        $container->set(OmsDependencyProvider::SERVICE_UTIL_NETWORK, function (Container $container) {
+            $monitoringToUtilNetworkServiceBridge = new OmsToUtilNetworkBridge(
+                $container->getLocator()->utilNetwork()->service()
+            );
+
+            return $monitoringToUtilNetworkServiceBridge;
+        });
 
         return $container;
     }

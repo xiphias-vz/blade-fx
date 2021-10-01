@@ -8,6 +8,7 @@
 namespace StoreApp\Zed\Picker\Business\Transfer;
 
 use ArrayObject;
+use DateTime;
 use Exception;
 use Generated\Shared\Transfer\OrderChangeRequestTransfer;
 use Generated\Shared\Transfer\OrderItemChangeRequestTransfer;
@@ -19,6 +20,7 @@ use Generated\Shared\Transfer\PickingColorTransfer;
 use Generated\Shared\Transfer\PickingContainerTransfer;
 use Generated\Shared\Transfer\PickingOrderItemTransfer;
 use Generated\Shared\Transfer\PickingOrderTransfer;
+use Orm\Zed\Oms\Persistence\SpyOmsTransitionLog;
 use Orm\Zed\PerformancePickingReport\Persistence\PyzPerformanceGlobalSalesOrderReportQuery;
 use Orm\Zed\PerformancePickingReport\Persistence\PyzPerformanceSalesOrderReportQuery;
 use Orm\Zed\PickingSalesOrder\Persistence\PyzPickingSalesOrderQuery;
@@ -31,6 +33,7 @@ use Pyz\Zed\PickingZone\Business\PickingZoneFacadeInterface;
 use Pyz\Zed\Sales\Business\SalesFacadeInterface;
 use Spryker\Shared\Log\LoggerTrait;
 use Spryker\Zed\Oms\Business\OmsFacadeInterface;
+use Spryker\Zed\Oms\Dependency\Service\OmsToUtilNetworkInterface;
 use Spryker\Zed\User\Business\UserFacadeInterface;
 use StoreApp\Zed\Picker\Business\PickerFacadeInterface;
 use StoreApp\Zed\Picker\Business\Updater\OrderUpdaterInterface;
@@ -81,6 +84,11 @@ class PickingHeaderTransferData
     protected $pickerFacade;
 
     /**
+     * @var \Spryker\Zed\Oms\Dependency\Service\OmsToUtilNetworkInterface
+     */
+    protected $networkService;
+
+    /**
      * @param \Spryker\Zed\Oms\Business\OmsFacadeInterface $omsFacade
      * @param \Pyz\Zed\Sales\Business\SalesFacadeInterface $salesFacade
      * @param \Symfony\Component\HttpFoundation\Session\Session $sessionService
@@ -88,6 +96,7 @@ class PickingHeaderTransferData
      * @param \Pyz\Zed\PickingZone\Business\PickingZoneFacadeInterface $pickingZoneFacade
      * @param \StoreApp\Zed\Picker\Business\Updater\OrderUpdaterInterface $orderUpdater
      * @param \StoreApp\Zed\Picker\Business\PickerFacadeInterface $pickerFacade
+     * @param \Spryker\Zed\Oms\Dependency\Service\OmsToUtilNetworkInterface $networkService
      */
     public function __construct(
         OmsFacadeInterface $omsFacade,
@@ -96,7 +105,8 @@ class PickingHeaderTransferData
         UserFacadeInterface $userFacade,
         PickingZoneFacadeInterface $pickingZoneFacade,
         OrderUpdaterInterface $orderUpdater,
-        PickerFacadeInterface $pickerFacade
+        PickerFacadeInterface $pickerFacade,
+        OmsToUtilNetworkInterface $networkService
     ) {
         $this->omsFacade = $omsFacade;
         $this->salesFacade = $salesFacade;
@@ -105,6 +115,7 @@ class PickingHeaderTransferData
         $this->pickingZoneFacade = $pickingZoneFacade;
         $this->orderUpdater = $orderUpdater;
         $this->pickerFacade = $pickerFacade;
+        $this->networkService = $networkService;
     }
 
     /**
@@ -436,8 +447,38 @@ class PickingHeaderTransferData
         if (count($data) > 0) {
             $whereList = implode($pickedItems, ",");
             $idState = $data[0]["id"];
-            $qry = "update spy_sales_order_item set fk_oms_order_item_state = " . $idState . " where id_sales_order_item in(" . $whereList . ") and fk_oms_order_item_state <> " . $idState;
-            $this->getResult($qry, false);
+            $qry = "select ssoi.fk_sales_order, ssoi.id_sales_order_item, ssoi.fk_oms_order_process, soois.name
+                    from spy_sales_order_item ssoi
+                        inner join spy_oms_order_item_state soois on ssoi.fk_oms_order_item_state = soois.id_oms_order_item_state
+                    where ssoi.id_sales_order_item in(" . $whereList . ") and ssoi.fk_oms_order_item_state <> " . $idState;
+            $data = $this->getResult($qry);
+            $pickedItems = [];
+            foreach ($data as $item) {
+                $pickedItems[] = $item["id_sales_order_item"];
+            }
+            if (count($pickedItems) > 0) {
+                $whereList = implode($pickedItems, ",");
+                $qry = "update spy_sales_order_item set fk_oms_order_item_state = " . $idState . " where id_sales_order_item in(" . $whereList . ")";
+                $this->getResult($qry, false);
+                $qry = "insert into spy_oms_order_item_state_history (fk_oms_order_item_state, fk_sales_order_item, created_at)
+                        select " . $idState . ", id_sales_order_item, now() from spy_sales_order_item where id_sales_order_item in(" . $whereList . ")";
+                $this->getResult($qry, false);
+                foreach ($data as $item) {
+                    $log = new SpyOmsTransitionLog();
+                    $log->setFkOmsOrderProcess($item["fk_oms_order_process"])
+                        ->setFkSalesOrder($item["fk_sales_order"])
+                        ->setFkSalesOrderItem($item["id_sales_order_item"])
+                        ->setPath("multiPicking")
+                        ->setCommand("resetCanceledStatusForCanceledItems")
+                        ->setSourceState($item["name"])
+                        ->setTargetState(OmsConfig::STORE_STATE_READY_FOR_PICKING)
+                        ->setHostname($this->networkService->getHostName())
+                        ->setQuantity(1)
+                        ->setIsError(false)
+                        ->setCreatedAt(new DateTime());
+                    $log->save();
+                }
+            }
         }
     }
 

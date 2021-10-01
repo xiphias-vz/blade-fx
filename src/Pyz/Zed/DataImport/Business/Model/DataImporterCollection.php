@@ -134,12 +134,12 @@ class DataImporterCollection extends SprykerDataImporterCollection
             array_push($filter, "'" . $d[0] . "'");
         }
         if (count($filter) > 0) {
-            $statement = $con->prepare('select id_product from spy_product where is_active = 1 and (not last_import_at in(' . implode(',', $filter) . ') or last_import_at is null)');
+            $statement = $con->prepare('select id_product, fk_product_abstract from spy_product where is_active = 1 and (not last_import_at in(' . implode(',', $filter) . ') or last_import_at is null)');
             $statement->execute();
             $result = $statement->fetchAll();
             $filterId = [];
             foreach ($result as $id) {
-                DataImporterPublisher::addEvent(ProductEvents::PRODUCT_ABSTRACT_UNPUBLISH, $id[0]);
+                DataImporterPublisher::addEvent(ProductEvents::PRODUCT_ABSTRACT_UNPUBLISH, $id[1]);
                 DataImporterPublisher::addEvent(ProductEvents::PRODUCT_CONCRETE_UNPUBLISH, $id[0]);
                 array_push($filterId, $id[0]);
             }

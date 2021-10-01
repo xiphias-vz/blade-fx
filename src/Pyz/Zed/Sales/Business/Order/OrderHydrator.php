@@ -7,6 +7,7 @@
 
 namespace Pyz\Zed\Sales\Business\Order;
 
+use ArrayObject;
 use Generated\Shared\Transfer\ItemStateTransfer;
 use Generated\Shared\Transfer\ItemTransfer;
 use Generated\Shared\Transfer\LocaleTransfer;
@@ -38,6 +39,8 @@ class OrderHydrator extends SprykerOrderHydrator implements OrderHydratorInterfa
      * @param \Pyz\Zed\Sales\SalesConfig $salesConfig
      * @param \Spryker\Zed\Sales\Dependency\Facade\SalesToCustomerInterface $customerFacade
      * @param array $hydrateOrderPlugins
+     * @param array $orderItemExpanderPlugins
+     * @param array $customerOrderAccessCheckPlugins
      */
     public function __construct(
         SalesQueryContainerInterface $queryContainer,
@@ -76,7 +79,7 @@ class OrderHydrator extends SprykerOrderHydrator implements OrderHydratorInterfa
         }
 
         $itemTransfers = $this->executeOrderItemExpanderPlugins($itemTransfers);
-        $orderTransfer->setItems(new \ArrayObject($itemTransfers));
+        $orderTransfer->setItems(new ArrayObject($itemTransfers));
     }
 
     /**
