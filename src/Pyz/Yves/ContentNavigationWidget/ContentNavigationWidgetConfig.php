@@ -19,6 +19,10 @@ class ContentNavigationWidgetConfig extends SprykerContentNavigationWidget
 
     protected const WIDGET_TEMPLATE_IDENTIFIER_LIST_NAVIGATION_POPULAR_CATEGORIES = 'navigation-categories';
 
+    protected const WIDGET_TEMPLATE_IDENTIFIER_LIST_NAVIGATION_LEGAL_INFORMATION = 'navigation-legal-information';
+
+    protected const WIDGET_TEMPLATE_IDENTIFIER_LIST_NAVIGATION_LEGAL_INFORMATION_GREY = 'navigation-legal-information-grey';
+
     /**
      * @api
      *
@@ -32,6 +36,8 @@ class ContentNavigationWidgetConfig extends SprykerContentNavigationWidget
             static::WIDGET_TEMPLATE_IDENTIFIER_LIST_NAVIGATION_HEADER_MOBILE => '@ContentNavigationWidget/views/navigation-header-mobile/navigation-header-mobile.twig',
             static::WIDGET_TEMPLATE_IDENTIFIER_LIST_NAVIGATION_FOOTER => '@ContentNavigationWidget/views/navigation-footer/navigation-footer.twig',
             static::WIDGET_TEMPLATE_IDENTIFIER_LIST_NAVIGATION_POPULAR_CATEGORIES => '@ContentNavigationWidget/views/navigation-categories/navigation-categories.twig',
+            static::WIDGET_TEMPLATE_IDENTIFIER_LIST_NAVIGATION_LEGAL_INFORMATION => '@ContentNavigationWidget/views/navigation-legal-information/navigation-legal-information.twig',
+            static::WIDGET_TEMPLATE_IDENTIFIER_LIST_NAVIGATION_LEGAL_INFORMATION_GREY => '@ContentNavigationWidget/views/navigation-legal-information-grey/navigation-legal-information-grey.twig',
         ];
 
         return $availableTemplates;

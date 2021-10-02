@@ -8,31 +8,11 @@
     showNavigation: true,
 } %}
 
-
-
 {% block body %}
     <div class="data-protection col col--sm-12 col--lg-8">
-        {% include molecule('navigation-inline-links') with {
-            class: config.name ~ '__navigation',
-            data: {
-                items: [
-
-                    {
-                        title:'global.importInfo',
-                        isShow:data.showNavigation,
-                        templates: [
-                        {
-                            template: 'navigation-legal-information',
-                            menu: 'FOOTER_NAVIGATION',
-                        },
-                    ],
-                    },
-
-                ],
-            },
-        } only %}
+        {{ content_navigation('navigation-footer', 'navigation-legal-information-grey') }}
     </div>
     <div class="div-footer-right-text">
-        <p style="margin:0px">{{ 'footer.price.expenses.message' | trans }}</p>
+        <p style="margin: 0;">{{ 'footer.price.expenses.message' | trans }}</p>
     </div>
 {% endblock %}

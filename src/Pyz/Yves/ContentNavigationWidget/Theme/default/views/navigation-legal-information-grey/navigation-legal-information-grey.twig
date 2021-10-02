@@ -1,0 +1,15 @@
+{% extends template('widget') %}
+
+{% define data = {
+    navigation: navigation,
+} %}
+
+{% block body %}
+    {% include molecule('navigation-inline-links-list') with {
+        modifiers: ['copyright'],
+        data: {
+            nodes: data.navigation.nodes
+        },
+    } only %}
+
+{% endblock %}
