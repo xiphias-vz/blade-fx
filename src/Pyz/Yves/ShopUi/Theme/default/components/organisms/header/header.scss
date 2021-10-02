@@ -197,6 +197,10 @@ $header-sticky-height: rem(69, number);
 
                 ul {
                     overflow-y: hidden;
+                    margin-top: rem(20);
+                    a {
+                        text-align: justify;
+                    }
                 }
             }
 
@@ -236,6 +240,18 @@ $header-sticky-height: rem(69, number);
             display: flex;
             flex-direction: column;
 
+            h4 {
+                overflow-y: scroll;
+
+                ul {
+                    overflow-y: hidden;
+                    margin-top: rem(20);
+                    a {
+                        text-align: justify;
+                    }
+                }
+            }
+
             @include helper-breakpoint-media-min($xl-min) {
                 position: absolute;
                 top: 100%;
@@ -268,7 +284,7 @@ $header-sticky-height: rem(69, number);
             position: relative;
             color: $setting-color-globus-darkGray;
             text-align: center;
-            padding: rem(22) rem(20);
+            padding: rem(22) 0;
             box-shadow: 0 rem(2) rem(12) 0 $setting-color-alpha-8;
             z-index: $setting-zi-element;
         }
