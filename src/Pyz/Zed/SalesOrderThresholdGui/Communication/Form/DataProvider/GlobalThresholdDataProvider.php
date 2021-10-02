@@ -72,7 +72,7 @@ class GlobalThresholdDataProvider extends SprykerGlobalThresholdDataProvider
             'allow_extra_fields' => true,
             GlobalThresholdType::OPTION_CURRENCY_CODE => $currencyTransfer->getCode(),
             GlobalThresholdType::OPTION_STORE_CURRENCY_ARRAY => $this->getStoreCurrencyList(),
-            GlobalThresholdType::OPTION_HARD_MAX_TYPES_ARRAY => $this->getHardMaxTypesList(),
+            GlobalThresholdType::OPTION_HARD_MAXIMUM_TYPES_ARRAY => $this->getHardMaxTypesList(),
             GlobalThresholdType::OPTION_HARD_TYPES_ARRAY => $this->getHardTypesList(),
             GlobalThresholdType::OPTION_SOFT_TYPES_ARRAY => $this->getSoftTypesList(),
         ];

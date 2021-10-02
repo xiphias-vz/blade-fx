@@ -48,7 +48,7 @@ class GlobalThresholdType extends SprykerGlobalThresholdType
     {
         parent::configureOptions($resolver);
 
-        $resolver->setRequired(static::OPTION_HARD_MAX_TYPES_ARRAY);
+        $resolver->setRequired(static::OPTION_HARD_MAXIMUM_TYPES_ARRAY);
     }
 
     /**
@@ -76,7 +76,7 @@ class GlobalThresholdType extends SprykerGlobalThresholdType
     protected function addHardThresholdMaxForm(FormBuilderInterface $builder, array $options)
     {
         $builder->add(static::FIELD_HARD_MAX, GlobalHardMaxThresholdType::class, [
-            static::OPTION_HARD_MAX_TYPES_ARRAY => $options[static::OPTION_HARD_MAX_TYPES_ARRAY],
+            static::OPTION_HARD_MAXIMUM_TYPES_ARRAY => $options[static::OPTION_HARD_MAXIMUM_TYPES_ARRAY],
             static::OPTION_CURRENCY_CODE => $options[static::OPTION_CURRENCY_CODE],
         ]);
 

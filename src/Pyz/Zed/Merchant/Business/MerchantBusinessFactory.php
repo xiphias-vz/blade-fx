@@ -12,7 +12,9 @@ use Pyz\Zed\Merchant\Business\Finder\MerchantFinder;
 use Pyz\Zed\Merchant\Business\Finder\MerchantFinderInterface;
 use Pyz\Zed\Merchant\Business\Order\OrderExpander;
 use Pyz\Zed\Merchant\Business\Order\OrderExpanderInterface;
+use Pyz\Zed\Merchant\Business\Updater\MerchantUpdater;
 use Spryker\Zed\Merchant\Business\MerchantBusinessFactory as SprykerMerchantBusinessFactory;
+use Spryker\Zed\Merchant\Business\Updater\MerchantUpdaterInterface;
 
 /**
  * @method \Pyz\Zed\Merchant\Persistence\MerchantRepositoryInterface getRepository()
@@ -49,5 +51,20 @@ class MerchantBusinessFactory extends SprykerMerchantBusinessFactory
     {
         return $this->getRepository()
             ->findMerchantByMerchantReference($merchantReference);
+    }
+
+    /**
+     * @return \Spryker\Zed\Merchant\Business\Updater\MerchantUpdaterInterface
+     */
+    public function createMerchantUpdater(): MerchantUpdaterInterface
+    {
+        return new MerchantUpdater(
+            $this->getEntityManager(),
+            $this->getRepository(),
+            $this->createMerchantStatusValidator(),
+            $this->getMerchantPostUpdatePlugins(),
+            $this->createMerchantUrlSaver(),
+            $this->getEventFacade()
+        );
     }
 }

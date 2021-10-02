@@ -60,8 +60,10 @@
                             </li>
                         {% endif %}
                         <li class="menu__item">
-                            <form method="POST" action="{{ path('wishlist/delete', {wishlistName: wishlist.name}) }}">
-                                <input type="hidden" name="token" value="{{ csrf_token('delete-wishlist') }}">
+                            {% set formName = 'wishlistDeleteForm_' ~ loop.index %}
+
+                            <form method="POST" action="{{ path('wishlist/delete', {wishlistName: wishlist.name}) }}" name="{{ formName }}">
+                                <input type="hidden" name="wishlist_delete_form[_token]" value="{{ csrf_token('wishlist_delete_form') }}">
                                 <button class="link link--darkest link--edit table__action" title="{{ 'customer.account.wishlist.overview.delete' | trans }}">
                                     {% include molecule('icon-tooltip') with {
                                         modifiers: ['medium-up'],

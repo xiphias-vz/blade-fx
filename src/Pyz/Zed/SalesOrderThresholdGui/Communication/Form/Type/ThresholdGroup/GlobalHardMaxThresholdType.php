@@ -30,7 +30,7 @@ class GlobalHardMaxThresholdType extends AbstractGlobalThresholdType
      */
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-        $this->addStrategyField($builder, $options[GlobalThresholdType::OPTION_HARD_MAX_TYPES_ARRAY]);
+        $this->addStrategyField($builder, $options[GlobalThresholdType::OPTION_HARD_MAXIMUM_TYPES_ARRAY]);
         $this->addThresholdValueField($builder, $options);
         $this->addLocalizedForms($builder);
     }
@@ -78,6 +78,6 @@ class GlobalHardMaxThresholdType extends AbstractGlobalThresholdType
     {
         parent::configureOptions($resolver);
 
-        $resolver->setRequired(GlobalThresholdType::OPTION_HARD_MAX_TYPES_ARRAY);
+        $resolver->setRequired(GlobalThresholdType::OPTION_HARD_MAXIMUM_TYPES_ARRAY);
     }
 }
