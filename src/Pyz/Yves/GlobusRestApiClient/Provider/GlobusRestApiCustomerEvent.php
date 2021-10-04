@@ -21,7 +21,7 @@ class GlobusRestApiCustomerEvent
     public const SOURCE_SYSTEM_ID = "ClickCollect";
     public const PRODUCTS_ITEM_TYPE = "SAP_ERP_MATNR";
     public const CONTENT_TITLE = "Order";
-    public const VALUATION = "PROD_REVIEW_CREATED";
+    public const VALUATION = "";
 
     /**
      * @var \Generated\Shared\Transfer\CustomerEventTransfer $event
@@ -52,11 +52,11 @@ class GlobusRestApiCustomerEvent
             ->setCommunicationMedium(static::COMMUNICATION_MEDIUM)
             ->setSourceSystemType(static::SOURCE_SYSTEM_TYPE)
             ->setSourceSystemId(static::SOURCE_SYSTEM_ID)
-            ->setContentTitle(static::CONTENT_TITLE)
+            ->setContentTitle($sourceObjectId)
             ->setCardNumber($cardNumber)
             ->setExternalUserId($externalUserId)
-            ->setSourceObjectId($sourceObjectId);
-            //->setValuation(static::VALUATION);
+            ->setSourceObjectId($sourceObjectId)
+            ->setValuation(static::VALUATION);
         $this->bearerToken = $bearerToken;
 
         return $this->event;
