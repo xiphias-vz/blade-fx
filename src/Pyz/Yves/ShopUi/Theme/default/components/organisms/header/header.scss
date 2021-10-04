@@ -198,7 +198,7 @@ $header-sticky-height: rem(69, number);
                 ul {
                     overflow-y: hidden;
                     margin-top: rem(20);
-                    a {
+                    a, ul {
                         text-align: justify;
                     }
                 }
@@ -246,7 +246,7 @@ $header-sticky-height: rem(69, number);
                 ul {
                     overflow-y: hidden;
                     margin-top: rem(20);
-                    a {
+                    a, ul {
                         text-align: justify;
                     }
                 }
