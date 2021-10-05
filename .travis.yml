@@ -16,7 +16,7 @@ matrix:
         - php: "7.3"
           dist: trusty
 addons:
-    postgresql: 9.6
+    mariadb: 10.4
 
     apt:
         packages:
@@ -32,7 +32,7 @@ cache:
         - /home/travis/.rvm/gems # Mailcatcher is a ruby gem, takes 5 minutes to install.
 
 services:
-    - postgresql
+    - mariadb
     - redis
     - rabbitmq
 
@@ -63,7 +63,7 @@ before_script:
     - chmod -R 660 config/Zed/dev_only_private.key
     - chmod -R 660 config/Zed/dev_only_public.key
 
-    - cat config/Shared/ci/travis/postgresql_ci.config >> config/Shared/ci/travis/config_ci.php
+    - cat config/Shared/ci/travis/mysql_ci.config >> config/Shared/ci/travis/config_ci.php
 
     - cp config/Shared/ci/travis/config_ci.php config/Shared/config_local.php
 
