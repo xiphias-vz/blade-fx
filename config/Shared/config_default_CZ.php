@@ -1,5 +1,6 @@
 <?php
 
+use Pyz\Service\FlysystemSftpFileSystem\Plugin\Flysystem\SftpFileSystemBuilderPlugin;
 use Pyz\Shared\Application\ApplicationConstants;
 use Pyz\Shared\BackofficeOverview\BackofficeOverviewConstants;
 use Pyz\Shared\CodeBuckets\CodeBucketConstants;
@@ -9,8 +10,10 @@ use Pyz\Shared\GsoaRestApiClient\Provider\TokenProvider;
 use Pyz\Shared\ProductImage\ProductImageConstants;
 use Pyz\Shared\Shipment\ShipmentConstants;
 use Pyz\Shared\Store\StoreConstants;
+use Spryker\Service\FlysystemLocalFileSystem\Plugin\Flysystem\LocalFilesystemBuilderPlugin;
 use Spryker\Shared\ErrorHandler\ErrorHandlerConstants;
 use Spryker\Shared\ErrorHandler\ErrorRenderer\WebHtmlErrorRenderer;
+use Spryker\Shared\FileSystem\FileSystemConstants;
 use StoreApp\Shared\Picker\PickerConstants;
 
 $config[StoreConstants::SAP_STORE_ID_TO_STORE_MAP] = [
@@ -52,6 +55,29 @@ $config[TokenProvider::GSOA_CLIENT_ID] = "webAppSpryker";
 $config[TokenProvider::GSOA_CLIENT_SECRET] = "D55910C6-0811-4749-B55C-3BCCEDC9BF91";
 
 $config[ProductImageConstants::IMAGES_HOST_URL] = 'https://gsoat.globus.cz/OnlineAsset/3/asset?assetID=';
+
+// ---------- FileSystem
+$config[FileSystemConstants::FILESYSTEM_SERVICE] = [
+    'files' => [
+        'sprykerAdapterClass' => LocalFilesystemBuilderPlugin::class,
+        'root' => APPLICATION_ROOT_DIR . '/data/' . APPLICATION_STORE . '/media/',
+        'path' => 'files/',
+    ],
+    'cashier_order_local' => [
+        'sprykerAdapterClass' => LocalFilesystemBuilderPlugin::class,
+        'root' => APPLICATION_ROOT_DIR . '/data/' . APPLICATION_STORE . '/export/',
+        'path' => 'files/',
+    ],
+    'globus_sftp' => [
+        'sprykerAdapterClass' => SftpFileSystemBuilderPlugin::class,
+        'host' => getenv('GLOBUS_SFTP_HOST'),
+        'port' => getenv('GLOBUS_SFTP_PORT'),
+        'username' => getenv('GLOBUS_SFTP_USERNAME'),
+        'password' => getenv('GLOBUS_SFTP_PASSWORD'),
+        'root' => getenv('GLOBUS_SFTP_ROOT'),
+    ],
+];
+
 
 // ----------- Days in the week abbr
 $config[PickerConstants::DAYS_IN_THE_WEEK] = [

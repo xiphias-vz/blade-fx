@@ -413,6 +413,9 @@ class GsoaProductConsole extends Console
                                 $key = array_search($item["vanr"], array_column($resultStock, 'productWamasNr'));
                                 if (!empty($key)) {
                                     $d["instock"] = str_replace(",", ".", $resultStock[$key]["availableAmount"]);
+                                    if ($resultStock[$key]["hasFictiveStock"] === true) {
+                                        $d["instock"] = 999999;
+                                    }
                                 } else {
                                     $d["instock"] = str_replace(",", ".", $item["productInHouse"]["stockAmount"]);
                                 }
