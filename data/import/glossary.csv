@@ -86,7 +86,7 @@ cart.price.grand.total,Grand Total,en_US
 cart.total.tax_total,"DPH",cs_CZ
 cart.total.tax_total,Mehrwertsteuer,de_DE
 cart.total.tax_total,Tax,en_US
-sales-order-threshold.hard-minimum-threshold.de.czk.message,"Od celkové částky {{threshold}} (minus zálohy) můžete požadovaný nákup odeslat.",cs_CZ
+sales-order-threshold.hard-minimum-threshold.de.czk.message,"Pro dokončení Vaší objednávky prosím nezapomeňte, že minimální hodnota celého nákupu je {{threshold}}. Děkujeme.",cs_CZ
 sales-order-threshold.hard-minimum-threshold.de.eur.message,"Ab einem Gesamtbetrag von {{threshold}} (abzüglich Pfand) kannst du deinen Wunscheinkauf übermitteln.",de_DE
 sales-order-threshold.hard-minimum-threshold.de.eur.message,"From a total amount of {{threshold}} (minus deposit) you can submit your desired order.",en_US
 sales-order-threshold.hard-maximum-threshold.de.eur.message,"Prosím odeberte ze svého nákupního seznamu produkty, abyste nepřekročili maximální částku {{threshold}} (minus záloha).",cs_CZ

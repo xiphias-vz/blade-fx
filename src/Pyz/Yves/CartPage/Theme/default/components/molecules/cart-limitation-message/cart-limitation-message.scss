@@ -1,6 +1,6 @@
 @mixin cart-page-cart-limitation-message($name: '.cart-limitation-message') {
     #{$name} {
-        padding: rem(13) rem(17);
+        padding: rem(13) rem(15);
         background: $setting-color-alt-3;
         font-weight: fw(medium);
         border-radius: rem(2);
