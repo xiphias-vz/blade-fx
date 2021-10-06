@@ -3016,7 +3016,7 @@ cart.pre.check.quantity.min.failed,Minimum quantity requirements for product SKU
 cart.pre.check.quantity.min.failed,"Požadavek na minimální množství pro SKU produktu '% sku%' nebyl dosažen.",cs_CZ
 cart.pre.check.quantity.max.failed,"Bitte beachte, dass wir Artikel nur in haushaltsüblichen Mengen abgeben.",de_DE
 cart.pre.check.quantity.max.failed,Maximum quantity for product SKU '%sku%' is exceeded.,en_US
-cart.pre.check.quantity.max.failed,"Vezměte prosím na vědomí, že zboží vydáváme pouze v množství běžném pro domácnost.",cs_CZ
+cart.pre.check.quantity.max.failed,"Větší množství tohoto zboží nelze přidat.",cs_CZ
 cart.pre.check.quantity.value.failed,Falsche Menge für Produkt SKU '%sku%'.,de_DE
 cart.pre.check.quantity.value.failed,Wrong quantity for product SKU '%sku%'.,en_US
 cart.pre.check.quantity.value.failed,"Chybné množství pro SKU produktu '%sku%'.",cs_CZ
@@ -4474,7 +4474,7 @@ measurement_units.recommendation.suggestion,Was würden Sie gerne hinzufügen? ,
 cart.pre.check.quantity.min.failed,"Požadavek na minimální množství pro SKU produktu '% sku%' nebyl dosažen.",cs_CZ
 cart.pre.check.quantity.min.failed,Minimum quantity requirements for product SKU '%sku%' are not fulfilled.,en_US
 cart.pre.check.quantity.min.failed,Die Mindestanzahl für Produkt SKU '%sku%' ist nicht erreicht.,de_DE
-cart.pre.check.quantity.max.failed,"Vezměte prosím na vědomí, že zboží vydáváme pouze v množství běžném pro domácnost.",cs_CZ
+cart.pre.check.quantity.max.failed,"Větší množství tohoto zboží nelze přidat.",cs_CZ
 cart.pre.check.quantity.max.failed,Maximum quantity for product '%sku%' is exceeded.,en_US
 cart.pre.check.quantity.max.failed,Die Maximalanzahl für Produkt '%sku%' ist überschritten.,de_DE
 cart.pre.check.quantity.interval.failed,"Počet pro SKU produktu '% sku%' se nenachází ve stanoveném intervalu.",cs_CZ
