@@ -146,6 +146,9 @@ class ProductConcreteWriter extends PublishAwareStep implements DataImportStepIn
     {
         $attributes = $dataSet[static::KEY_ATTRIBUTES];
         $attributes[ProductConfig::KEY_ARTIKELNAME_SPRYKER] = $dataSet[ProductConfig::KEY_ARTIKELNAME_SPRYKER];
+
+        $attributes = $this->removeAttributesWithValueZeroForFiltersCategory($attributes);
+
         unset($attributes[ProductConfig::KEY_ACTIVE]);
         unset($attributes[ProductConfig::KEY_TAX]);
         unset($attributes[ProductConfig::KEY_MAIN_IMAGE_FILE_NAME]);
@@ -153,6 +156,35 @@ class ProductConcreteWriter extends PublishAwareStep implements DataImportStepIn
         unset($attributes[ProductConfig::KEY_PRODUCT_NUMBER]);
         unset($attributes[ProductConfig::KEY_PRODUCT_NUMBER]);
         unset($attributes[ProductConfig::KEY_SAP_NUMBER]);
+
+        return $attributes;
+    }
+
+    /**
+     * @param array $attributes
+     *
+     * @return array
+     */
+    protected function removeAttributesWithValueZeroForFiltersCategory(array $attributes): array
+    {
+        if ($attributes[ProductConfig::BIO] == 0) {
+            unset($attributes[ProductConfig::BIO]);
+        }
+        if ($attributes[ProductConfig::VEGAN] == 0) {
+            unset($attributes[ProductConfig::VEGAN]);
+        }
+        if ($attributes[ProductConfig::VEGETARISCH] == 0) {
+            unset($attributes[ProductConfig::VEGETARISCH]);
+        }
+        if ($attributes[ProductConfig::LAKTOSEFREI] == 0) {
+            unset($attributes[ProductConfig::LAKTOSEFREI]);
+        }
+        if ($attributes[ProductConfig::GLUTENFREI] == 0) {
+            unset($attributes[ProductConfig::GLUTENFREI]);
+        }
+        if ($attributes[ProductConfig::FAIRTRADE] == 0) {
+            unset($attributes[ProductConfig::FAIRTRADE]);
+        }
 
         return $attributes;
     }

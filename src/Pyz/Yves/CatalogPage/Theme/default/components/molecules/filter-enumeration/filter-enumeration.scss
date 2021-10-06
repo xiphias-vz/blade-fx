@@ -3,6 +3,16 @@
         &--sidebar {
             padding-bottom: rem(14);
         }
+
+        .menu {
+            .headline {
+                margin: 25px 0 10px 0;
+            }
+
+            .delete-category-filter-supplier {
+                cursor: pointer;
+            }
+        }
     }
 }
 

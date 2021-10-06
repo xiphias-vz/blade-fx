@@ -57,4 +57,11 @@ class ProductConfig extends SprykerProductConfigAlias
     public const KEY_WEIGHT_PER_ITEM = 'einzelgewicht';
 
     public const PRICE_PER_KG = 'preis_pro_kg';
+
+    public const BIO = 'bio';
+    public const VEGETARISCH = 'vegetarisch';
+    public const VEGAN = 'vegan';
+    public const LAKTOSEFREI = 'laktosefrei';
+    public const GLUTENFREI = 'glutenfrei';
+    public const FAIRTRADE = 'fairtrade';
 }

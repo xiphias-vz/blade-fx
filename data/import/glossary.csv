@@ -4176,7 +4176,15 @@ footer.follow.us,"Sledujte nás zde: ",cs_CZ
 footer.follow.us,Follow us here:,en_US
 footer.follow.us,Folge uns hier:,de_DE
 product.filter.properties,"Vlastnosti",cs_CZ
-product.filter.properties,Eigenschaften,de_DE
+product.filter.properties,Filter,de_DE
+product.filter.supplier.properties,Marke,de_DE
+product.filter.supplier.properties,Supplier,en_US
+product.filter.sales.properties,Angebote,de_DE
+product.filter.sales.properties,Sales,en_US
+product.filter.delete.category,X Auswahl zurücksetzten,de_DE
+product.filter.delete.all,X Alle Filter zurücksetzen,de_DE
+product.filter.sales.product.attributes,Kennzeichen,de_DE
+Angebote,alle Angebote,de_DE
 product.filter.properties,Properties,en_US
 customer.order.cancel_order,"Stornovat nákup",cs_CZ
 customer.order.cancel_order,Cancel order,en_US

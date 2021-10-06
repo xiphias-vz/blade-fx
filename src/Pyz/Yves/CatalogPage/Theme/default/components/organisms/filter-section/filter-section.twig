@@ -6,7 +6,6 @@
 } %}
 
 {% set isEnumerationFilter = false %}
-
 {% block body %}
     <div class="{{ config.name }}__top-panel is-hidden-xl-only">
         <h3 class="text-center title title--medium spacing-bottom">{{ 'catalog.filter.filter' | trans }}</h3>
@@ -139,6 +138,109 @@
                 {% endblock %}
             {% endif %}
         {% endfor %}
+        {% if isEnumerationFilter %}
+            {% embed molecule('toggler-item') with {
+                modifiers: ['border-without-top', 'filter-sidebar'],
+                data: {
+                    title: 'product.filter.properties' | trans,
+                    triggerClass: data.parentJsName ~ '__toggler-trigger',
+                    targetClass: data.parentJsName ~ '__target--enumeration',
+                    isTogglerIncluded: false,
+                    hiddenClass:'',
+                },
+                embed: {
+                    facets: data.facets,
+                    filterPath: data.filterPath,
+                    category: data.category,
+                }
+            } only %}
+                {% block arrow %}
+                    <div class="{{ config.name }}__arrow">
+                        {% include atom('icon') with {
+                            class: config.name ~ '__arrow-icon',
+                            modifiers: ['xsmall'],
+                            data: {
+                                name: 'arrow-right',
+                            },
+                        } only %}
+                    </div>
+                {% endblock %}
+
+                {% block contentText %}
+                    {% set catalogJsName = 'js-catalog' %}
+                    {% include molecule('window-location-applicator', 'CatalogPage') with {
+                        attributes: {
+                            'form-class-name': catalogJsName ~ '__form',
+                            'trigger-class-name': catalogJsName ~ '__trigger',
+                            'sort-trigger-class-name': catalogJsName ~ '__sort-trigger',
+                        },
+                    } only %}
+                    {% set setHeadlineForProductAttributes = false %}
+                    {% for key,filter in embed.facets %}
+                        {% for filterValue in filter.values %}
+                            {% if
+                                ( key is same as('bio') and filterValue.docCount > 0 )
+                                or
+                                ( key is same as('vegan') and filterValue.docCount > 0 )
+                                or
+                                ( key is same as('vegetarisch') and filterValue.docCount > 0 )
+                                or
+                                ( key is same as('laktosefrei') and filterValue.docCount > 0 )
+                                or
+                                ( key is same as('glutenfrei') and filterValue.docCount > 0 )
+                                or
+                                ( key is same as('fairtrade') and filterValue.docCount > 0 )
+                            %}
+                                {% set setHeadlineForProductAttributes = true %}
+                            {% endif %}
+                        {% endfor %}
+                    {% endfor %}
+                    {% if setHeadlineForProductAttributes %}
+                        <h3 class="headline">{{ 'product.filter.sales.product.attributes' | trans }}</h3>
+                    {% endif %}
+                    {% for filter in embed.facets %}
+                        {% if filter.config.parameterName is same as('supplier') %}
+                            <div class="delete-category-filter-product-attributes is-hidden" data-filter-mark="mark-attributes">{{ 'product.filter.delete.category' | trans }}</div>
+                        {% endif %}
+                        {% set filterHasValues = (filter.values is not defined) or (filter.values | length > 0) %}
+                        {% if filterHasValues and 'enumeration' in filter.config.type %}
+                            {% include [
+                                molecule('filter-' ~ filter.config.type, 'CatalogPage')
+                                ] ignore missing with {
+                                data: {
+                                    filterPath: embed.filterPath,
+                                    filter: filter,
+                                    category: embed.category,
+                                    parameter: filter.config.parameterName | default(''),
+                                    min: filter.min | default(0),
+                                    max: filter.max | default(0),
+                                    activeMin: filter.activeMin | default(0),
+                                    activeMax: filter.activeMax | default(0)
+                                },
+                                attributes: {
+                                    'filter': filter.config.parameterName ~ '__filter',
+                                },
+                            } only %}
+                        {% endif %}
+                    {% endfor %}
+                    {% block submitAction %}
+                        <div class="delete-all-filter is-hidden">{{ 'product.filter.delete.all' | trans }}</div>
+                        <div class="{{ config.name }}__actions" id="submitFilterActionButton">
+                            {% if app.currentCodeBucket == 'DE' %}
+                                <button type="button" class="button button--hollow-border-light button--expand">
+                                    {{ 'catalog.filter.button' | trans }}
+                                </button>
+                            {% else %}
+                                <button type="button" class="button button--hollow-border-light--CZ button--expand button--font-CZ button--backgroundcolor-CZ">
+                                    {{ 'catalog.filter.button' | trans }}
+                                </button>
+                            {% endif %}
+                        </div>
+
+                    {% endblock %}
+                {% endblock %}
+            {% endembed %}
+        {% endif %}
     {% endblock %}
 
     {% include molecule('toggler-accordion') with {
@@ -146,10 +248,9 @@
             'trigger-class-name': data.parentJsName ~ '__toggler-trigger',
         },
     } only %}
-
     {% block actions %}
-        {% set triggerButtonJsName = data.parentJsName ? data.parentJsName ~ '__trigger' %}
-        <div class="{{ config.name }}__actions">
+        {% set triggerButtonJsName = data.parentJsName ? data.parentJsName ~ '__trigger' : 'js_catalog__trigger' %}
+        <div id="submitFilterActionButtonToTrigger" class="{{ config.name }}__actions" style="visibility: hidden">
             {% if app.currentCodeBucket == 'DE' %}
                 <button type="button" class="button button--hollow-border-light button--expand {{ triggerButtonJsName }}">
                     {{ 'catalog.filter.button' | trans }}
@@ -160,6 +261,5 @@
                 </button>
             {% endif %}
         </div>
-
     {% endblock %}
 {% endblock %}

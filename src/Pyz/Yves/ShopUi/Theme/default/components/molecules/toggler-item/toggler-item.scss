@@ -7,6 +7,7 @@
             opacity: 1;
             font-size: rem(13);
 
+
             @include helper-breakpoint-media-min($lg-min) {
                 font-size: rem(14);
             }
@@ -163,6 +164,26 @@
         }
 
         &__content {
+
+            .headline {
+                margin: 0 0 15px 0;
+            }
+
+            .delete-category-filter-product-attributes {
+                margin: 15px 0 10px 0;
+                cursor: pointer;
+            }
+
+            .delete-category-filter-supplier, .delete-category-filter-sales {
+                margin: 15px 0 10px 0;
+                cursor: pointer;
+            }
+
+            .delete-all-filter {
+                margin: 35px 0 20px 0;
+                cursor: pointer;
+            }
+
             padding-top: rem(25);
             padding-bottom: rem(15);
 

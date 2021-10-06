@@ -43,6 +43,8 @@ class CatalogController extends SprykerCatalogController
 
         $data = $this->addCategoryImage($categoryNode, $data);
 
+        $data = $this->shiftLabelFacet($data);
+
         $this->getFactory()->getDataDogService()->increment([
             DataDogConfig::DATA_DOG_SEARCH_STAT,
         ]);
@@ -86,10 +88,31 @@ class CatalogController extends SprykerCatalogController
     {
         $searchResults = parent::executeFulltextSearchAction($request);
 
+        $searchResults = $this->shiftLabelFacet($searchResults);
+
         $this->getFactory()->getDataDogService()->increment([
             DataDogConfig::DATA_DOG_SEARCH_STAT,
         ]);
 
         return $searchResults;
+    }
+
+    /**
+     * @param array $data
+     *
+     * @return array
+     */
+    protected function shiftLabelFacet(array $data): array
+    {
+        if (isset($data['facets'])) {
+            foreach ($data['facets'] as $key => $facet) {
+                if ($key == 'label') {
+                    unset($data['facets'][$key]);
+                    $data['facets']['label'] = $facet;
+                }
+            }
+        }
+
+        return $data;
     }
 }

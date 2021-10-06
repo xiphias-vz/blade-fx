@@ -2,6 +2,7 @@
 
 {% define config = {
     name: 'filter-enumeration',
+    tag: 'filter-enumeration'
 } %}
 
 {% define data = {
@@ -14,14 +15,19 @@
 {% set activeValues = isMultiSelect ? data.filter.activeValue : [data.filter.activeValue] %}
 {% set inputComponent = atom('checkbox') %}
 {% set label =  ('product.filter.' ~ data.filter.name | lower) | trans %}
-
+{% set description = (label is same as('supplier')  ? 'Marke' : 'Kennzeichen' ) | trans %}
 {% block body %}
     <ul class="menu">
+        {% if label is same as('supplier') %}
+            <h3 class="headline">{{ 'product.filter.supplier.properties' | trans }}</h3>
+            {% elseif label is same as('Label') %}
+                <h3 class="headline">{{ 'product.filter.sales.properties' | trans }}</h3>
+        {% endif %}
         {% block filterList %}
             {% for filterValue in data.filter.values %}
                 {% block filterItem %}
                     {% set docCountText = filterValue.docCount ? ' (' ~ filterValue.docCount ~ ')' : '' %}
-
+                    {% set label = (label == 'Label' or label == 'supplier') ? filterValue.value : label %}
                     <li class="menu__item">
                         {% include inputComponent with {
                             modifiers: modifiers,
@@ -30,14 +36,20 @@
                                 name: data.filter.config.parameterName ~ (isMultiSelect ? '[]' : ''),
                                 value: filterValue.value,
                                 checked: (filterValue.value in activeValues),
+                                category: data.filter.config.parameterName
                             },
                             data: {
-                                label: label | trans ~ docCountText,
+                                label: label | trans | capitalize ~ docCountText,
                             },
                         } only %}
                     </li>
                 {% endblock %}
             {% endfor %}
+            {% if label|lower is same as('supplier')%}
+                <div class="delete-category-filter-supplier is-hidden">{{ 'product.filter.delete.category' | trans }}</div>
+            {% elseif label|lower is same as('label') %}
+                <div class="delete-category-filter-sales is-hidden">{{ 'product.filter.delete.category' | trans }}</div>
+            {% endif %}
         {% endblock %}
     </ul>
 {% endblock %}

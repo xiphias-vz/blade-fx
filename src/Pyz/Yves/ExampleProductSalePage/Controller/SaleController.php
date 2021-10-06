@@ -39,6 +39,7 @@ class SaleController extends AbstractController
             ->getClient()
             ->saleSearch($parameters);
 
+        $searchResults = $this->shiftLabelFacet($searchResults);
         $searchResults['category'] = $categoryNode;
         $searchResults['filterPath'] = ExampleProductSaleRouteProviderPlugin::ROUTE_SALE;
         $searchResults['viewMode'] = $this->getFactory()
@@ -77,5 +78,24 @@ class SaleController extends AbstractController
         }
 
         return $categoryNode['data'];
+    }
+
+    /**
+     * @param array $data
+     *
+     * @return array
+     */
+    protected function shiftLabelFacet(array $data): array
+    {
+        if (isset($data['facets'])) {
+            foreach ($data['facets'] as $key => $facet) {
+                if ($key == 'label') {
+                    unset($data['facets'][$key]);
+                    $data['facets']['label'] = $facet;
+                }
+            }
+        }
+
+        return $data;
     }
 }
