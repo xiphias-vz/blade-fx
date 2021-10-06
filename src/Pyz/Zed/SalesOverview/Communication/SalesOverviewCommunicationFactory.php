@@ -9,12 +9,14 @@ namespace Pyz\Zed\SalesOverview\Communication;
 
 use Pyz\Zed\SalesOverview\Persistence\SalesOverviewRepositoryInterface;
 use Pyz\Zed\SalesOverview\SalesOverviewDependencyProvider;
+use Spryker\Zed\Acl\Business\AclFacadeInterface;
 use Spryker\Zed\Kernel\Communication\AbstractCommunicationFactory;
 
 /**
  * @method \Pyz\Zed\SalesOverview\SalesOverviewConfig getConfig()
  * @method \Pyz\Zed\SalesOverview\Persistence\SalesOverviewRepositoryInterface getRepository()
  * @method \Pyz\Zed\SalesOverview\Persistence\SalesOverviewQueryContainerInterface getQueryContainer()
+ * @method \Pyz\Zed\SalesOverview\Business\SalesOverviewFacadeInterface getFacade()
  **/
 class SalesOverviewCommunicationFactory extends AbstractCommunicationFactory
 {
@@ -40,6 +42,14 @@ class SalesOverviewCommunicationFactory extends AbstractCommunicationFactory
     public function getUserFacade()
     {
         return $this->getProvidedDependency(SalesOverviewDependencyProvider::FACADE_USER);
+    }
+
+    /**
+     * @return \Spryker\Zed\Acl\Business\AclFacadeInterface
+     */
+    public function getAclFacade(): AclFacadeInterface
+    {
+        return $this->getProvidedDependency(SalesOverviewDependencyProvider::FACADE_ACL);
     }
 
     /**

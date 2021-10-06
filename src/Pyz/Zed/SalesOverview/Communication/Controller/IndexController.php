@@ -11,6 +11,7 @@ use Spryker\Zed\Sales\Communication\Controller\IndexController as SprykerIndexCo
 
 /**
  * @method \Pyz\Zed\SalesOverview\Communication\SalesOverviewCommunicationFactory getFactory()
+ * @method \Pyz\Zed\SalesOverview\Business\SalesOverviewFacadeInterface getFacade()
  */
 class IndexController extends SprykerIndexController
 {
@@ -26,7 +27,15 @@ class IndexController extends SprykerIndexController
         $userTransfer = $this->getFactory()
             ->getUserFacade();
 
+        $isCurrentUserSupervisor = $this->getFacade()->isCurrentUserSupervisor();
+
         $merchantReferenceByUser = $userTransfer->getCurrentUser()->getMerchantReference();
+
+        if ($isCurrentUserSupervisor == true) {
+            $merchant = $merchantReferenceByUser;
+        } else {
+            $merchant = static::CONST_MERCHANT;
+        }
 
         $merchantList = $this->getFactory()->merchantList();
         $choiceFilter = $this->getFactory()->choiceFilter();
@@ -34,7 +43,7 @@ class IndexController extends SprykerIndexController
         $tableTimeSlots = $this->getFactory()->getTimeSlotsForTableRows();
         $tableTimeSlots[static::CONST_SUMME] = static::CONST_SUMME;
         $tableColumnWidth = 100 / count($tableHeader);
-        $merchant = static::CONST_MERCHANT;
+
         $date = date("Y-m-d");
         $choice = static::CONST_CHOICE;
         if (isset($_REQUEST['merchant'])) {

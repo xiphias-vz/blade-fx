@@ -7,6 +7,7 @@
 
 namespace Pyz\Zed\SalesOverview;
 
+use Spryker\Zed\Acl\Business\AclFacadeInterface;
 use Spryker\Zed\Kernel\AbstractBundleDependencyProvider;
 use Spryker\Zed\Kernel\Container;
 use Spryker\Zed\Sales\Dependency\Facade\SalesToUserBridge;
@@ -14,6 +15,7 @@ use Spryker\Zed\Sales\Dependency\Facade\SalesToUserBridge;
 class SalesOverviewDependencyProvider extends AbstractBundleDependencyProvider
 {
     public const FACADE_USER = 'FACADE_USER';
+    public const FACADE_ACL = 'FACADE_ACL';
 
     /**
      * @param \Spryker\Zed\Kernel\Container $container
@@ -22,7 +24,11 @@ class SalesOverviewDependencyProvider extends AbstractBundleDependencyProvider
      */
     public function provideBusinessLayerDependencies(Container $container)
     {
-        return parent::provideBusinessLayerDependencies($container);
+        $container = parent::provideBusinessLayerDependencies($container);
+        $container = $this->addUserFacade($container);
+        $container = $this->addAclFacade($container);
+
+        return $container;
     }
 
     /**
@@ -32,9 +38,11 @@ class SalesOverviewDependencyProvider extends AbstractBundleDependencyProvider
      */
     public function provideCommunicationLayerDependencies(Container $container)
     {
+        $container = parent::provideCommunicationLayerDependencies($container);
         $container = $this->addUserFacade($container);
+        $container = $this->addAclFacade($container);
 
-        return parent::provideCommunicationLayerDependencies($container);
+        return $container;
     }
 
     /**
@@ -47,6 +55,20 @@ class SalesOverviewDependencyProvider extends AbstractBundleDependencyProvider
         $container[static::FACADE_USER] = function (Container $container) {
             return new SalesToUserBridge($container->getLocator()->user()->facade());
         };
+
+        return $container;
+    }
+
+    /**
+     * @param \Spryker\Zed\Kernel\Container $container
+     *
+     * @return \Spryker\Zed\Kernel\Container
+     */
+    protected function addAclFacade(Container $container): Container
+    {
+        $container->set(static::FACADE_ACL, function (Container $container): AclFacadeInterface {
+            return $container->getLocator()->acl()->facade();
+        });
 
         return $container;
     }
