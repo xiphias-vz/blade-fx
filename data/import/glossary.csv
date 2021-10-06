@@ -4232,7 +4232,7 @@ Payment.payone.instant-online-transfer,Sofort-Überweisung,de_DE
 payone.order.payment_details,"Detaily platby",cs_CZ
 payone.order.payment_details,Payment details,en_US
 payone.order.payment_details,Zahlungsdetails,de_DE
-catalog.sort.by,"Třídění podle",cs_CZ
+catalog.sort.by,"Seřadit podle",cs_CZ
 catalog.sort.by,Sort By,en_US
 catalog.sort.by,Sortieren nach,de_DE
 customer.login_subtext,"Již máte účet Můj Globus?",cs_CZ
