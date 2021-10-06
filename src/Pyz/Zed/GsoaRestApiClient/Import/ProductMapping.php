@@ -177,6 +177,7 @@ class ProductMapping
                 }
             }
         }
+
         $d['grundpreispflicht'] = 1;
         $d['assortmentzone'] = 'Trocken';
         $this->setBaseUnits($d);

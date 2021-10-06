@@ -20,8 +20,8 @@ class CashierOrderExportConfig extends IntCashierOrderExportConfig
     ];
 
     protected const SERVICE_FEE_TO_SERVICE_FEE_CASHIER_NUMBER = [
-        '3900' => '00000002070000549869',
-        '0' => '00000002070000573031',
+        '3900' => '00000002040000033064',
+        '0' => '00000002070000251465',
     ];
 
     /**

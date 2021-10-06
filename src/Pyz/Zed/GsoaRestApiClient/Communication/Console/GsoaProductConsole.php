@@ -251,8 +251,6 @@ class GsoaProductConsole extends Console
 
             return Console::CODE_ERROR;
         }
-
-        return Console::CODE_SUCCESS;
     }
 
     /**
