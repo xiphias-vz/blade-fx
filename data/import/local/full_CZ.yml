@@ -82,6 +82,8 @@ actions:
         source: data/import/content_navigation.csv
     -   data_entity: sales-order-threshold
         source: data/import/sales_order_threshold.csv
+    -   data_entity: unit-comparison
+        source: data/import/unit_comparison.csv
     -   data_entity: order-pickzone-color
         source: data/import/spryker/order_pickzone_color.csv
     -   data_entity: country-localized

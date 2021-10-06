@@ -26,6 +26,7 @@ class DataImportConfig extends SprykerDataImportConfig
     public const IMPORT_TYPE_CATEGORY_TEMPLATE = 'category-template';
     public const IMPORT_TYPE_CUSTOMER = 'customer';
     public const IMPORT_TYPE_GLOSSARY = 'glossary';
+    public const IMPORT_TYPE_UNIT_COMPARISON = 'unit-comparison';
     public const IMPORT_TYPE_NAVIGATION = 'navigation';
     public const IMPORT_TYPE_NAVIGATION_NODE = 'navigation-node';
     public const IMPORT_TYPE_PRODUCT = 'product';
@@ -73,6 +74,7 @@ class DataImportConfig extends SprykerDataImportConfig
     public const IMPORT_TYPE_MERCHANT = 'merchant';
     public const IMPORT_TYPE_MERCHANT_REGION = 'merchant-region';
     public const IMPORT_COUNTRY_LOCALIZED = 'country-localized';
+    public const IMPORT_UNIT_COMPARISON = 'unit-comparison';
 
     /**
      * @return string|null
@@ -184,6 +186,14 @@ class DataImportConfig extends SprykerDataImportConfig
     public function getGlossaryDataImporterConfiguration()
     {
         return $this->buildImporterConfiguration('glossary.csv', static::IMPORT_TYPE_GLOSSARY);
+    }
+
+    /**
+     * @return \Generated\Shared\Transfer\DataImporterConfigurationTransfer
+     */
+    public function getComparisonUnitDataImporterConfiguration()
+    {
+        return $this->buildImporterConfiguration('unit_comparison.csv', static::IMPORT_TYPE_UNIT_COMPARISON);
     }
 
     /**

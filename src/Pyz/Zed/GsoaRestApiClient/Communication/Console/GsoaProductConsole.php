@@ -232,25 +232,27 @@ class GsoaProductConsole extends Console
             if ($counter > 0) {
                 $output->writeln("Data rows returned: " . $counter);
 
-                return 0;
+                return Console::CODE_SUCCESS;
             } elseif (empty($result)) {
                 $output->writeln('No data returned');
 
-                return 1;
+                return Console::CODE_ERROR;
             } elseif (count($result) >> 0) {
                 $output->writeln("Data returned: " . count($result));
 
-                return 0;
+                return Console::CODE_SUCCESS;
             } else {
                 $output->writeln('No data returned');
 
-                return 1;
+                return Console::CODE_ERROR;
             }
         } catch (Exception $ex) {
             $output->writeln($ex->getMessage());
+
+            return Console::CODE_ERROR;
         }
 
-        return null;
+        return Console::CODE_SUCCESS;
     }
 
     /**
@@ -322,18 +324,21 @@ class GsoaProductConsole extends Console
     ) {
         $qry = new SpyProductQuery();
         $products = $qry->select(SpyProductTableMap::COL_SAP_NUMBER)->find();
+        $productCount = count($products);
         $page = 0;
-        $pageSize = 50;
+        $pageSize = 130;
         $counter = 0;
+        $progressCounter = 0;
         $fileName = "//data/data/import/spryker/4.globus_article_prices." . $store . ".csv";
         file_put_contents($fileName, "sapnumber;price;pseudoprice;store;promotion;promotionstart;promotionend" . PHP_EOL);
         $p = [];
         $c = 0;
         foreach ($products->getData() as $sapNumber) {
+            $progressCounter++;
             if (empty($sapNumberArray) || in_array($sapNumber, $sapNumberArray)) {
                 $p[] = $sapNumber;
                 $c++;
-                if ($c === 20) {
+                if ($c === $pageSize || $progressCounter == $productCount) {
                     $filter = "ProductWamasNr:in " . implode(",", $p);
                     $c = 0;
                     $p = [];
@@ -386,18 +391,21 @@ class GsoaProductConsole extends Console
     ) {
         $qry = new SpyProductQuery();
         $products = $qry->select(SpyProductTableMap::COL_SAP_NUMBER)->find();
+        $productCount = count($products);
         $page = 0;
-        $pageSize = 100;
-        $counter = 0;
+        $pageSize = 130;
         $fileName = "//data/data/import/spryker/5.globus_article_instock." . $store . ".csv";
         file_put_contents($fileName, "sapnumber;instock;store;shelf;shelffield;shelffloor" . PHP_EOL);
         $p = [];
         $c = 0;
+        $counter = 0;
+        $progressCounter = 0;
         foreach ($products->getData() as $sapNumber) {
+            $progressCounter++;
             if (empty($sapNumberArray) || in_array($sapNumber, $sapNumberArray)) {
                 $p[] = $sapNumber;
                 $c++;
-                if ($c === $pageSize) {
+                if ($c === $pageSize || $progressCounter == $productCount) {
                     $filter = "vanr:in " . implode(",", $p);
                     $filterStock = "ProductWamasNr:in " . implode(",", $p);
                     $c = 0;
@@ -441,7 +449,7 @@ class GsoaProductConsole extends Console
 
                             file_put_contents($fileName, implode(';', $d) . PHP_EOL, FILE_APPEND);
                         }
-                        $output->writeln('Pages done ' . $page . ', rows ' . $counter);
+                        $output->writeln('Pages done ' . $page . ', products ' . $progressCounter . ', rows ' . $counter);
                         $page = $page + 1;
                     }
                 }

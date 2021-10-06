@@ -9,6 +9,7 @@ namespace Pyz\Zed\GsoaRestApiClient\Import;
 
 use Orm\Zed\Country\Persistence\SpyCountryQuery;
 use Orm\Zed\Locale\Persistence\SpyLocaleQuery;
+use Orm\Zed\PriceProduct\Persistence\PyzUnitComparisonsQuery;
 use Orm\Zed\Sales\Persistence\PyzCountryLocalizedQuery;
 
 class ProductMapping
@@ -24,6 +25,11 @@ class ProductMapping
      * @var array $localeArray
      */
     private $localeArray = [];
+
+    /**
+     * @var \Propel\Runtime\Collection\ObjectCollection $conversionUnits
+     */
+    private static $conversionUnits;
 
     /**
      * @var string[]
@@ -172,8 +178,8 @@ class ProductMapping
             }
         }
         $d['grundpreispflicht'] = 1;
-        $d['grundeinheit'] = 1;
         $d['assortmentzone'] = 'Trocken';
+        $this->setBaseUnits($d);
         $this->setNutritionValues($d, $item);
         $this->setAssets($d, $item);
         $this->setProductTags($d, $item);
@@ -204,9 +210,37 @@ class ProductMapping
         if (empty($val)) {
             return null;
         }
-        $val = str_replace("\"", "'", $val);
+        $val = html_entity_decode(str_replace("\"", "'", $val));
 
         return str_replace(["\r\n", "\n", "\r", "|"], ', ', $val);
+    }
+
+    /**
+     * @param array $item
+     *
+     * @return void
+     */
+    protected function setBaseUnits(array &$item): void
+    {
+        if (static::$conversionUnits == null) {
+            static::$conversionUnits = PyzUnitComparisonsQuery::create()->find();
+        }
+
+        /** @var string $unit */
+        $unit = $item['grundpreismasseinheit'];
+        $conversionUnitValue = 1;
+        if (!empty($unit)) {
+            /** @var \Orm\Zed\PriceProduct\Persistence\PyzUnitComparisons $conversionUnit */
+            foreach (static::$conversionUnits as $conversionUnit) {
+                if (strtolower($unit) == strtolower($conversionUnit->getUnitFrom())) {
+                    $conversionUnitValue = $conversionUnit->getRatio();
+                    $unit = $conversionUnit->getUnitTo();
+                    break;
+                }
+            }
+        }
+        $item['grundeinheit'] = $conversionUnitValue;
+        $item['grundpreismasseinheit'] = $unit;
     }
 
     /**
@@ -234,7 +268,7 @@ class ProductMapping
                 $code = $nutritionValue["code"];
                 if (array_key_exists($code, $this->nutritionMap)) {
                     $key = $this->nutritionMap[$code];
-                    $value[$key] = $nutritionValue["value"];
+                    $value[$key] = $this->trimValue($nutritionValue["value"]);
                 }
             }
         }
@@ -249,11 +283,16 @@ class ProductMapping
     protected function setAssets(array &$value, array $item): void
     {
         if (is_array($item["assets"])) {
+            $image = "";
             foreach ($item["assets"] as $asset) {
                 if ($asset["type"] == "ref_czr_online_image") {
-                    $value["mainimage_filename"] = $asset["id"] . "&type=1";
+                    if (!empty($image)) {
+                        $image = $image . ";";
+                    }
+                    $image = $image . $asset["id"] . "&type=1";
                 }
             }
+            $value["mainimage_filename"] = $image;
         }
     }
 

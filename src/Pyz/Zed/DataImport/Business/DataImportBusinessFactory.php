@@ -72,6 +72,7 @@ use Pyz\Zed\DataImport\Business\Model\Store\StoreWriterStep;
 use Pyz\Zed\DataImport\Business\Model\Tax\TaxSetNameToIdTaxSetStep;
 use Pyz\Zed\DataImport\Business\Model\Tax\TaxWriterStep;
 use Pyz\Zed\DataImport\Business\Model\TimeSlotCapacity\TimeSlotWriterStep;
+use Pyz\Zed\DataImport\Business\Model\UnitComparison\UnitComparisonWriterStep;
 use Pyz\Zed\DataImport\DataImportConfig;
 use Pyz\Zed\DataImport\DataImportDependencyProvider;
 use Pyz\Zed\MerchantRegion\Communication\Plugin\DataImport\MerchantRegionDataImportPlugin;
@@ -170,6 +171,8 @@ class DataImportBusinessFactory extends SprykerDataImportBusinessFactory
                 return $this->getOrderPickzoneImporter($dataImportConfigurationActionTransfer);
             case DataImportConfig::IMPORT_COUNTRY_LOCALIZED:
                 return $this->getCountryLocalizedImporter();
+            case DataImportConfig::IMPORT_UNIT_COMPARISON:
+                return $this->createUnitComparisonImporter($dataImportConfigurationActionTransfer);
             default:
                 return null;
         }
@@ -927,6 +930,23 @@ class DataImportBusinessFactory extends SprykerDataImportBusinessFactory
     }
 
     /**
+     * @param \Generated\Shared\Transfer\DataImportConfigurationActionTransfer|null $dataImportConfigurationActionTransfer
+     *
+     * @return \Spryker\Zed\DataImport\Business\Model\DataImporter|\Spryker\Zed\DataImport\Business\Model\DataImporterAfterImportAwareInterface|\Spryker\Zed\DataImport\Business\Model\DataImporterBeforeImportAwareInterface|\Spryker\Zed\DataImport\Business\Model\DataImporterInterface|\Spryker\Zed\DataImport\Business\Model\DataSet\DataSetStepBrokerAwareInterface
+     */
+    protected function createUnitComparisonImporter(?DataImportConfigurationActionTransfer $dataImportConfigurationActionTransfer)
+    {
+        $dataImporter = $this->getCsvDataImporterFromConfig($this->getConfig()->getComparisonUnitDataImporterConfiguration());
+
+        $dataSetStepBroker = $this->createTransactionAwareDataSetStepBroker();
+        $dataSetStepBroker->addStep($this->createUnitComparisonWriterStep());
+
+        $dataImporter->addDataSetStepBroker($dataSetStepBroker);
+
+        return $dataImporter;
+    }
+
+    /**
      * @return \Spryker\Zed\DataImport\Business\Model\DataImporter|\Spryker\Zed\DataImport\Business\Model\DataImporterAfterImportAwareInterface|\Spryker\Zed\DataImport\Business\Model\DataImporterBeforeImportAwareInterface|\Spryker\Zed\DataImport\Business\Model\DataImporterInterface|\Spryker\Zed\DataImport\Business\Model\DataSet\DataSetStepBrokerAwareInterface
      */
     protected function getCountryLocalizedImporter()
@@ -987,6 +1007,14 @@ class DataImportBusinessFactory extends SprykerDataImportBusinessFactory
     public function createOrderPickzoneColorWriterStep(): OrderPickzoneColorWriterStep
     {
         return new OrderPickzoneColorWriterStep();
+    }
+
+    /**
+     * @return \Pyz\Zed\DataImport\Business\Model\UnitComparison\UnitComparisonWriterStep
+     */
+    public function createUnitComparisonWriterStep(): UnitComparisonWriterStep
+    {
+        return new UnitComparisonWriterStep();
     }
 
     /**

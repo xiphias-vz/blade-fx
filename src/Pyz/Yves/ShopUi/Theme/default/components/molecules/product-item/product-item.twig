@@ -246,7 +246,11 @@
                                                                 {% elseif data.preisProKg is null and data.pricePerKg is null and data.basicUnit == 0 %}
 
                                                                 {% else %}
-                                                                    {{ ((((data.product.price / 100) / data.productSaleVolume)) * data.basicUnit ) | round(2, 'common') | replace('.', ',') }} {{ data.currencySymbol }}/{{ data.basicUnit }} {{ data.basePriceUnit }}
+                                                                {% if app.currentCodeBucket == 'CZ' %}
+                                                                        {{ ((((data.product.price / 100) / data.productSaleVolume)) * data.basicUnit ) | round(2, 'common') | replace('.', ',') }} {{ data.currencySymbol }}/1 {{ data.basePriceUnit }}
+                                                                    {% else %}
+                                                                        {{ ((((data.product.price / 100) / data.productSaleVolume)) * data.basicUnit ) | round(2, 'common') | replace('.', ',') }} {{ data.currencySymbol }}/{{ data.basicUnit }} {{ data.basePriceUnit }}
+                                                                {% endif %}
                                                                 {% endif %}
 
                                                             </div>

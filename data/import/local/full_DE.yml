@@ -86,3 +86,5 @@ actions:
         source: data/import/spryker/order_pickzone_color.csv
     -   data_entity: country-localized
         source: data/import/spryker/country_localized.csv
+    -   data_entity: unit-comparison
+        source: data/import/unit_comparison.csv

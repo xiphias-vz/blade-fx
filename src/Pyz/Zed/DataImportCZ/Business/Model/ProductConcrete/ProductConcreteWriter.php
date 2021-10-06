@@ -24,7 +24,6 @@ class ProductConcreteWriter extends PyzProductConcreteWriter
             DataImporterCollection::$importCounters["productStart"] = date_create(date("Y-m-d h:i:s"));
         }
         DataImporterCollection::$importCounters["product"]++;
-        var_dump(DataImporterCollection::$importCounters["product"] . '#' . date("h:i:s") . ' ["sapnumber"=>"' . $dataSet["sapnumber"] . '"]');
         if (DataImporterCollection::$importCounters["product"] % 100 === 0) {
             $now = date_create(date("Y-m-d h:i:s"));
             $diff = date_diff(DataImporterCollection::$importCounters["productStart"], $now);
