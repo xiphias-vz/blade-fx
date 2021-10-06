@@ -63,11 +63,14 @@
                         <input id="idCustomer" type="hidden" value="{{ idCustomer }}" />
                         {% if app.currentCodeBucket == 'DE' %}
                             <h2 class="title title--primary checkout-block__title-with-link">
-                        {% else %}
-                            <h2 class="title title--heading-CZ title--primary checkout-block__title-with-link">
-                        {% endif %}
                                 <div>{{ 'page.checkout.address.billing-address' | trans }}</div>
                             </h2>
+                        {% else %}
+                            <h2 class="title title--heading-CZ title--primary checkout-block__title-with-link">
+                                <div>{{ 'page.checkout.address.billing-address' | trans }}</div>
+                            </h2>
+                        {% endif %}
+
                         {% if idCustomer is not null %}
                             {% set customerData = data.form.vars.value.customer %}
                             {% set isScanAndGo = customerData.isScanAndGo %}
@@ -198,20 +201,20 @@
                                 {{- app['merchant_name'] -}}
                             </span>
                         </div>
-                        {% if app.currentCodeBucket == 'CZ' %}
+                        {% if app.currentCodeBucket != 'CZ'%}
                             <div class="spacing-bottom text-color-1">
                                 <p>{{ 'cart.checkout.address.product.note' | trans }}</p>
                             </div>
+                            <div class="text-color-1">
+                                <p>{{ 'cart.checkout.address.abholstation.note.down' | trans }}</p>
+                            </div>
                         {% endif %}
-                        <div class="text-color-1">
-                            <p>{{ 'cart.checkout.address.abholstation.note.down' | trans }}</p>
-                        </div>
                         <div class="spacing-bottom text-color-1">
                             {{ form_row(data.form.cart_note, {
                                 placeholder: 'cart.checkout.address.abholstation.textarea.note' | trans,
                             }) }}
                         </div>
-                        <div style="display: flex;">
+                        <div {% if app.currentCodeBucket == 'CZ'%} style="display: none;" {% else %} style="display: flex;" {% endif %}>
                             {{ form_row(data.form.is_substitution_allowed, {
                                 label: 'checkout.address.page.substitutions.checkbox' | trans,
                                 attributes: {

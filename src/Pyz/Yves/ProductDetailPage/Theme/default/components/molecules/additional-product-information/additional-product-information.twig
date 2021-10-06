@@ -36,7 +36,7 @@
                 {% endif %}
 
                 {% if data.productAttributes['inverkehrbringer'] is defined %}
-                    <div><div class="{{ config.name }}__headline"><strong>{{ 'product.info.additional.manufacturer' | trans }}:</strong></div><p class="{{ config.name }}__attribute">{{ data.productAttributes['inverkehrbringer'] }}</p></div>
+                    <div><div class="{{ config.name }}__headline"><strong>{{ 'product.info.additional.manufacturer' | trans }}:</strong></div><p class="{{ config.name }}__attribute">{{ data.productAttributes['inverkehrbringer'] | raw }}</p></div>
                 {% endif %}
 
                 <div><div class="{{ config.name }}__headline"><strong>{{ 'product.info.additional.hints' | trans }}:</strong></div><p class="{{ config.name }}__attribute">{{  'product.info.additional.hintsText' | trans }}</p></div>

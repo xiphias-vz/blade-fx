@@ -71,6 +71,7 @@ class CheckoutController extends SprykerCheckoutControllerAlias
      */
     public function addressAction(Request $request)
     {
+        $storeCodeBucket = getenv('SPRYKER_CODE_BUCKET');
         $quoteValidationResponseTransfer = $this->canProceedCheckout();
 
         if (!$quoteValidationResponseTransfer->getIsSuccessful()) {
@@ -121,7 +122,7 @@ class CheckoutController extends SprykerCheckoutControllerAlias
             ->getQuote();
 
         $isSubstitutionAllowed = $quoteTransfer->getIsSubstitutionAllowed();
-        if ($isSubstitutionAllowed === null) {
+        if ($isSubstitutionAllowed === null || $storeCodeBucket == 'CZ') {
             $isSubstitutionAllowed = true;
         }
         $response['isSubstitutionAllowed'] = $isSubstitutionAllowed;
