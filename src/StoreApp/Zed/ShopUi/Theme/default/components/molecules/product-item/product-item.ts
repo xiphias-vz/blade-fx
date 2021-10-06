@@ -58,6 +58,7 @@ export default class ProductItem extends Component {
     protected popupUiError: HTMLElement;
     private weightMax: number;
     private weightMin: number;
+    protected wrongEAN: HTMLInputElement;
 
     protected readyCallback(): void {
     }
@@ -90,6 +91,7 @@ export default class ProductItem extends Component {
         this.mapEvents();
         this.boldLastThreeEanNumbers();
         this.$previousSku = $('#formPreviousSku').val();
+        this.wrongEAN = <HTMLInputElement>document.querySelector('#wrong_EAN');
         if(this.$previousSku == null || this.$previousSku == '')
         {
             this.focusFirstEanField();
@@ -257,7 +259,7 @@ export default class ProductItem extends Component {
 
     protected showPopUpErrorMessageForWrongEan() {
         let popUpInfo = this.popupUiError.querySelector('.error-info');
-        popUpInfo.innerHTML = `<p class="falsche-ean">Falsche EAN</p>`;
+        popUpInfo.innerHTML = `<p class="falsche-ean">${this.wrongEAN.value}</p>`;
         this.popupUiError.classList.add('popup-ui-error--show');
     }
 

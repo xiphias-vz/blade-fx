@@ -286,8 +286,17 @@
         },
     } only %}
         {% block content %}
+            <input type="hidden" id="container_does_not_exist_1" value="{{ 'container.does.not.exist_1' | trans }}">
+            <input type="hidden" id="container_does_not_exist_2" value="{{ 'container.does.not.exist_2' | trans }}">
+            <input type="hidden" id="please_enter_weight" value="{{ 'please.enter.weight' | trans }}">
+            <input type="hidden" id="wrong_EAN" value="{{ 'wrong.ean' | trans }}">
+            <input type="hidden" id="container_scan_order_error_pop-up_1" value="{{ 'container.scan.order.error.pop-up_1' | trans }}">
+            <input type="hidden" id="container_scan_order_error_pop-up_2" value="{{ 'container.scan.order.error.pop-up_2' | trans }}">
+            <input type="hidden" id="container_scan_order_error_pop-up_3" value="{{ 'container.scan.order.error.pop-up_3' | trans }}">
+            <input type="hidden" id="container_scan_order_error_pop-up_4" value="{{ 'container.scan.order.error.pop-up_4' | trans }}">
+            <input type="hidden" id="container_scan_order_error_pop-up_5" value="{{ 'container.scan.order.error.pop-up_5' | trans }}">
             <div class="popup-error-holder">
-                <div class="error-status">Fehler</div>
+                <div class="error-status">{{ 'error_page.title' | trans }}</div>
                 <div class="error-info">
                     <p class="container-desc"></p>
 
@@ -396,11 +405,11 @@
                             {% include atom('icon') with {
                                 data: {
                                     name: 'posliste',
-                                    rowText: 'multi.picking.header.position.liste' | trans
+                                    rowText: 'multi.picking.header.position.list' | trans
                                 }
                             } only %}
                      </span>
-                        <span class="col--md-8">{{ 'multi.picking.header.position.liste' | trans }}</span>
+                        <span class="col--md-8">{{ 'multi.picking.header.position.list' | trans }}</span>
                     </button>
 
                     <button type="button" onclick="location.href='{{ data.urlScanShelves }}'" class="button button--expand js-pick-products__submit">

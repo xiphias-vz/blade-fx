@@ -205,4 +205,9 @@ interface PickerFacadeInterface
      * @return \Generated\Shared\Transfer\PerformanceSalesOrderReportItemTransfer
      */
     public function setOrderItemPickerReport(PerformanceSalesOrderReportItemTransfer $transfer): PerformanceSalesOrderReportItemTransfer;
+
+    /**
+     * @return array
+     */
+    public function getDaysInTheWeek(): array;
 }

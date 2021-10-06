@@ -199,11 +199,18 @@ class PickerFacade extends AbstractFacade implements PickerFacadeInterface
      */
     public function formatErrorMessage(string $isContainerInUseMessage, string $containerCode): string
     {
+        $storeCodeBucket = getenv('SPRYKER_CODE_BUCKET');
+
         $isContainerInUseMessage = $containerCode . ',' . $isContainerInUseMessage;
         $isContainerInUseMessageToArray = explode(',', $isContainerInUseMessage);
 
-        return $isContainerInUseMessageToArray[0] . ' ist bereits für Kunde ' . $isContainerInUseMessageToArray[2] .
-            ' bestellung ' . $isContainerInUseMessageToArray[1] . ' aktiviert';
+        if ($storeCodeBucket == 'DE') {
+            return $isContainerInUseMessageToArray[0] . ' ist bereits für Kunde ' . $isContainerInUseMessageToArray[2] .
+                ' bestellung ' . $isContainerInUseMessageToArray[1] . ' aktiviert';
+        } else {
+            return $isContainerInUseMessageToArray[0] . ' je již aktivován u zákazníka ' . $isContainerInUseMessageToArray[2] . ',' .
+                ' objednávka ' . $isContainerInUseMessageToArray[1];
+        }
     }
 
     /**
@@ -375,5 +382,13 @@ class PickerFacade extends AbstractFacade implements PickerFacadeInterface
             ->setDurationPickingTime($pyzPerformaceOrderItemEntity->getDurationPickTime());
 
         return $orderItemPerformanceReportTransfer;
+    }
+
+    /**
+     * @return array
+     */
+    public function getDaysInTheWeek(): array
+    {
+        return $this->getFactory()->getConfig()->getDaysInTheWeek();
     }
 }

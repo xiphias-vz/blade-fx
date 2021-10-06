@@ -83,6 +83,15 @@ export default class ProductItemMultiplePicking extends Component {
     private weightMax: number;
     private weightMin: number;
     private lastWeight: number;
+    protected containerDoesNotExist1: HTMLInputElement;
+    protected containerDoesNotExist2: HTMLInputElement;
+    protected pleaseEnterWeight: HTMLInputElement;
+    protected wrongEAN: HTMLInputElement;
+    protected containerScanOrderErrorPopUp1: HTMLInputElement;
+    protected containerScanOrderErrorPopUp2: HTMLInputElement;
+    protected containerScanOrderErrorPopUp3: HTMLInputElement;
+    protected containerScanOrderErrorPopUp4: HTMLInputElement;
+    protected containerScanOrderErrorPopUp5: HTMLInputElement;
 
     protected readyCallback(): void {
     }
@@ -136,6 +145,15 @@ export default class ProductItemMultiplePicking extends Component {
         this.removeTemporarilyReadOnlyAttributeForNonActiveFields();
         this.focusEanFieldWithoutDisplayOfKeyboard();
         this.showSubstituteIconIfSubstitutionIsSet(this.isSubstitutionFound.value);
+        this.containerDoesNotExist1 = <HTMLInputElement>document.querySelector('#container_does_not_exist_1');
+        this.containerDoesNotExist2 = <HTMLInputElement>document.querySelector('#container_does_not_exist_2');
+        this.pleaseEnterWeight = <HTMLInputElement>document.querySelector('#please_enter_weight');
+        this.wrongEAN = <HTMLInputElement>document.querySelector('#wrong_EAN');
+        this.containerScanOrderErrorPopUp1 = <HTMLInputElement>document.querySelector('#container_scan_order_error_pop-up_1');
+        this.containerScanOrderErrorPopUp2 = <HTMLInputElement>document.querySelector('#container_scan_order_error_pop-up_2');
+        this.containerScanOrderErrorPopUp3 = <HTMLInputElement>document.querySelector('#container_scan_order_error_pop-up_3');
+        this.containerScanOrderErrorPopUp4 = <HTMLInputElement>document.querySelector('#container_scan_order_error_pop-up_4');
+        this.containerScanOrderErrorPopUp5 = <HTMLInputElement>document.querySelector('#container_scan_order_error_pop-up_5');
     }
 
     protected removeTemporarilyReadOnlyAttributeForNonActiveFields() {
@@ -402,7 +420,7 @@ export default class ProductItemMultiplePicking extends Component {
         let popUpInfo = this.popupUiError.querySelector('.error-info');
         popUpInfo.innerHTML = `
             <p class="container-name">
-               Container: ${containerNumber} existiert nicht.
+               ${this.containerDoesNotExist1.value} ${containerNumber} ${this.containerDoesNotExist2.value}
             </p>
         `;
         this.popupUiError.classList.add('popup-ui-error--show');
@@ -413,7 +431,7 @@ export default class ProductItemMultiplePicking extends Component {
         let linkError = this.popupUiError.querySelector('.link--error');
         popUpInfo.innerHTML = `
             <p style="margin:40px">
-               Bitte ein Gewicht angeben
+               ${this.pleaseEnterWeight.value}
             </p>
         `;
         this.popupUiError.classList.add('popup-ui-error--show');
@@ -614,9 +632,9 @@ export default class ProductItemMultiplePicking extends Component {
         let popUpInfo = this.popupUiError.querySelector('.error-info');
         popUpInfo.innerHTML = `
             <p class="container-name">
-                Container: <span>${this.popupUiErrorInfo.ContainerCode}</span><br>
-                 <span class="container-desc">ist bereits für Kunde ${this.popupUiErrorInfo.firstName} ${this.popupUiErrorInfo.lastName} </span><br>
-                 <span class="container-order">Bestellung: ${this.popupUiErrorInfo.orderReference} aktiviert</span>
+                ${this.containerScanOrderErrorPopUp1.value} <span>${this.popupUiErrorInfo.ContainerCode}</span><br>
+                 <span class="container-desc">${this.containerScanOrderErrorPopUp2.value} ${this.popupUiErrorInfo.firstName} ${this.popupUiErrorInfo.lastName}${this.containerScanOrderErrorPopUp3.value} </span><br>
+                 <span class="container-order">${this.containerScanOrderErrorPopUp4.value} ${this.popupUiErrorInfo.orderReference} ${this.containerScanOrderErrorPopUp5.value}</span>
             </p>
         `;
         this.popupUiError.classList.add('popup-ui-error--show');
@@ -624,7 +642,7 @@ export default class ProductItemMultiplePicking extends Component {
 
     protected showPopUpErrorMessageForWrongEan() {
         let popUpInfo = this.popupUiError.querySelector('.error-info');
-        popUpInfo.innerHTML = `<p class="falsche-ean">Falsche EAN</p>`;
+        popUpInfo.innerHTML = `<p class="falsche-ean">${this.wrongEAN.value}</p>`;
         this.popupUiError.classList.add('popup-ui-error--show');
     }
 

@@ -156,7 +156,7 @@ storeapp.picking.MissingArticle, Missing article
 
 multi.picking.product.attribute.weight,Weight
 multi.picking.header.overview,"Overview"
-multi.picking.header.position.liste,"Pos. List"
+multi.picking.header.position.list,"Pos. List"
 multi.picking.header.add.container,"Add Con."
 
 shelf.first.letter.large,The first letter must be uppercase
@@ -165,7 +165,7 @@ shelf.shelfID.value.not.empty,Shelf ID value should not be empty
 order.search.order.progress,Order in progress
 order.search.order.unknown,Unknown order
 shelf.not.all.fields.entered,Not all fields are entered!
-containerID.eighth.characters.set,Container ID must be set and have 8 characters
+containerID.eighth.characters.set,"Container ID must be set<br>and<br>have 8 characters"
 containerID.eighth.characters,Container ID must have 8 characters
 overview.of.containers.customer,Customer
 overview.of.containers.position.piece,"Pos./Pc."
@@ -176,3 +176,18 @@ popup.ui.info.container,"Container:"
 popup.ui.info.storage.place,"Storage Place:"
 popup.ui.info.order.number,"Order Number:"
 container.not.part.order,This container is not part of the order!
+container.scan.order.please,Please scan a container
+container.does.not.exist_1,"Container:"
+container.does.not.exist_2,"does not exist."
+please.enter.weight,Please enter a weight
+containers.missing,Containers are missing
+collect.by.customer.header,Pickup
+wrong.ean,Wrong EAN
+container.scan.order.error.pop-up_1,"Container:"
+container.scan.order.error.pop-up_2,"is already activated for"
+container.scan.order.error.pop-up_3,","
+container.scan.order.error.pop-up_4,"order:"
+container.scan.order.error.pop-up_5,""
+select.containers.add.box,Add box
+popup.success.ui_1,"was"
+popup.success.ui_2,"assigned"

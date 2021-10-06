@@ -24,6 +24,13 @@ export default class ContainerScanOrder extends Component {
     protected nextOrderPosition: number;
     protected containerTransfer: Array<containerTransfer>;
     protected popupUiErrorInfo: object;
+    protected containerEighthCharactersSet: HTMLInputElement;
+    protected pleaseScanContainer: HTMLInputElement;
+    protected containerScanOrderErrorPopUp1: HTMLInputElement;
+    protected containerScanOrderErrorPopUp2: HTMLInputElement;
+    protected containerScanOrderErrorPopUp3: HTMLInputElement;
+    protected containerScanOrderErrorPopUp4: HTMLInputElement;
+    protected containerScanOrderErrorPopUp5: HTMLInputElement;
 
     protected readyCallback(): void {
     }
@@ -48,6 +55,13 @@ export default class ContainerScanOrder extends Component {
         this.listOfContainersHolder = this.querySelector('.list-containers-holder');
         this.binIconHolder = this.querySelector('.bin-icon-holder');
         this.containerInput = this.querySelector('input[name=idContainers]');
+        this.containerEighthCharactersSet = <HTMLInputElement>document.querySelector('#containerID_eighth_characters_set');
+        this.pleaseScanContainer = <HTMLInputElement>document.querySelector('#please_scan_container');
+        this.containerScanOrderErrorPopUp1 = <HTMLInputElement>document.querySelector('#container_scan_order_error_pop-up_1');
+        this.containerScanOrderErrorPopUp2 = <HTMLInputElement>document.querySelector('#container_scan_order_error_pop-up_2');
+        this.containerScanOrderErrorPopUp3 = <HTMLInputElement>document.querySelector('#container_scan_order_error_pop-up_3');
+        this.containerScanOrderErrorPopUp4 = <HTMLInputElement>document.querySelector('#container_scan_order_error_pop-up_4');
+        this.containerScanOrderErrorPopUp5 = <HTMLInputElement>document.querySelector('#container_scan_order_error_pop-up_5');
 
         this.containerTransfer.push(
             {
@@ -150,7 +164,7 @@ export default class ContainerScanOrder extends Component {
         let popUpInfo = this.popupUiError.querySelector('.error-info');
         popUpInfo.innerHTML = `
             <p class="container-name">
-                Container-ID muss eingestellt werden <br> und  <br> 8 Zeichen haben
+                ${this.containerEighthCharactersSet.value}
             </p>
         `;
         this.popupUiError.classList.add('popup-ui-error--show');
@@ -160,7 +174,7 @@ export default class ContainerScanOrder extends Component {
         let popUpInfo = this.popupUiError.querySelector('.error-info');
         popUpInfo.innerHTML = `
             <p class="container-name">
-               Bitte Container scannen
+               ${this.pleaseScanContainer.value}
             </p>
         `;
         this.popupUiError.classList.add('popup-ui-error--show');
@@ -170,9 +184,9 @@ export default class ContainerScanOrder extends Component {
         let popUpInfo = this.popupUiError.querySelector('.error-info');
         popUpInfo.innerHTML = `
             <p class="container-name">
-                Container: <span>${this.popupUiErrorInfo.ContainerCode}</span><br>
-                 <span class="container-desc">ist bereits für Kunde ${this.popupUiErrorInfo.firstName} ${this.popupUiErrorInfo.lastName} </span><br>
-                 <span class="container-order">Bestellung: ${this.popupUiErrorInfo.orderReference} aktiviert</span>
+                ${this.containerScanOrderErrorPopUp1.value} <span>${this.popupUiErrorInfo.ContainerCode}</span><br>
+                 <span class="container-desc">${this.containerScanOrderErrorPopUp2.value} ${this.popupUiErrorInfo.firstName} ${this.popupUiErrorInfo.lastName}${this.containerScanOrderErrorPopUp3.value} </span><br>
+                 <span class="container-order">${this.containerScanOrderErrorPopUp4.value} ${this.popupUiErrorInfo.orderReference} ${this.containerScanOrderErrorPopUp5.value}</span>
             </p>
         `;
         this.inputScanner.value = '';

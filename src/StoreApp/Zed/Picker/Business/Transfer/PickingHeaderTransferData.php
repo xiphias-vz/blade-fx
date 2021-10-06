@@ -165,7 +165,7 @@ class PickingHeaderTransferData
     ";
 
         $data = $this->getResult($sql);
-        $days = [0 => "SO", 1 => "MO", 2 => "DI", 3 => "MI", 4 => "DO", 5 => "FR", 6 => "SA"];
+        $daysInTheWeek = $this->pickerFacade->getDaysInTheWeek();
         $transfer = new PickingHeaderTransfer();
         $transfer
             ->setIdZone($idZone)
@@ -175,7 +175,7 @@ class PickingHeaderTransferData
             $order->fromArray($item, true);
             $timeSlot = $order->getTimeSlot();
             $index = substr($timeSlot, 0, 1);
-            $timeSlot = $days[(int)$index] . substr($timeSlot, 1);
+            $timeSlot = $daysInTheWeek[(int)$index] . substr($timeSlot, 1);
             $order->setTimeSlot($timeSlot);
             $transfer->addPickingOrders($item["id_order"], $order);
         }

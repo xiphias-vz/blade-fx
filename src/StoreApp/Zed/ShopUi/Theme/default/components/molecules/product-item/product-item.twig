@@ -184,8 +184,9 @@
         },
     } only %}
         {% block content %}
+            <input type="hidden" id="wrong_EAN" value="{{ 'wrong.ean' | trans }}">
             <div class="popup-error-holder">
-                <div class="error-status">Fehler</div>
+                <div class="error-status">{{ 'error_page.title' | trans }}</div>
                 <div class="error-info">
                     <p class="container-desc"></p>
                 </div>

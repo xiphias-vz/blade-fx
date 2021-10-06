@@ -183,7 +183,7 @@ storeapp.innfopopup.under.information.label,bereits zugeordnet
 storeapp.errorpopup.title,Fehler
 
 multi.picking.header.overview,"Übersicht"
-multi.picking.header.position.liste,"Pos. Liste"
+multi.picking.header.position.list,"Pos. Liste"
 multi.picking.header.add.container,"Add Con."
 multi.picking.save.button,Speichern
 multi.picking.placeholder.input, Lagerplatz scannen
@@ -205,7 +205,7 @@ shelf.shelfID.value.not.empty,Shelf ID Wert sollte nicht leer sein
 order.search.order.progress,Bestellung in Bearbeitung
 order.search.order.unknown,Unbekannte Bestellung
 shelf.not.all.fields.entered,Es werden nicht alle Felder eingegeben!
-containerID.eighth.characters.set,Container-ID muss eingestellt werden und 8 Zeichen haben
+containerID.eighth.characters.set,"Container-ID muss eingestellt werden<br>und<br>8 Zeichen haben"
 containerID.eighth.characters,Container-ID muss 8 Zeichen haben
 overview.of.containers.customer,Kunde
 overview.of.containers.position.piece,"Pos./Stck."
@@ -215,3 +215,19 @@ product-item.multiple.picking.placeholder,EAN scannen
 popup.ui.info.container,"Container:"
 popup.ui.info.storage.place,"Lagerplatz:"
 popup.ui.info.order.number,"Bestellnummer:"
+container.scan.order.please,Bitte Container scannen
+container.does.not.exist_1,"Container:"
+container.does.not.exist_2,"existiert nicht."
+please.enter.weight,Bitte ein Gewicht angeben
+containers.missing,Container fehlen
+collect.by.customer.header,Pickup
+wrong.ean,Falsche EAN
+container.scan.order.error.pop-up_1,"Container:"
+container.scan.order.error.pop-up_2,"ist bereits für Kunde"
+container.scan.order.error.pop-up_3,""
+container.scan.order.error.pop-up_4,"Bestellung:"
+container.scan.order.error.pop-up_5,"aktiviert"
+select.containers.add.box,Box hinzufügen
+popup.success.ui_1,"wurde"
+popup.success.ui_2,"zugeordnet"
+

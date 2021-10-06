@@ -32,12 +32,19 @@
         },
     } only %}
          {% block content %}
+            <input type="hidden" id="containerID_eighth_characters_set" value="{{ 'containerID.eighth.characters.set' | trans }}">
+            <input type="hidden" id="please_scan_container" value="{{ 'container.scan.order.please' | trans }}">
+            <input type="hidden" id="container_scan_order_error_pop-up_1" value="{{ 'container.scan.order.error.pop-up_1' | trans }}">
+            <input type="hidden" id="container_scan_order_error_pop-up_2" value="{{ 'container.scan.order.error.pop-up_2' | trans }}">
+            <input type="hidden" id="container_scan_order_error_pop-up_3" value="{{ 'container.scan.order.error.pop-up_3' | trans }}">
+            <input type="hidden" id="container_scan_order_error_pop-up_4" value="{{ 'container.scan.order.error.pop-up_4' | trans }}">
+            <input type="hidden" id="container_scan_order_error_pop-up_5" value="{{ 'container.scan.order.error.pop-up_5' | trans }}">
             <div class="popup-error-holder">
-                <div class="error-status">Fehler</div>
+                <div class="error-status">{{ 'error_page.title' | trans }}</div>
                 <div class="error-info">
-                    <p class="container-name">Container: <span></span></p>
-                    <p class="container-desc">ist bereits für </p>
-                    <p class="container-order">Bestellung: <span></span></p>
+                    <p class="container-name">{{ 'container.scan.order.error.pop-up_1' | trans }} <span></span></p>
+                    <p class="container-desc">{{ 'container.scan.order.error.pop-up_2' | trans }} </p>
+                    <p class="container-order">{{ 'container.scan.order.error_pop-up_4' | trans }} <span></span></p>
                 </div>
             </div>
          {% endblock %}

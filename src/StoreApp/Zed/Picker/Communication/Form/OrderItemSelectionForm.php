@@ -148,7 +148,7 @@ class OrderItemSelectionForm extends AbstractType
                 'label' => false,
                 'required' => false,
                 'entry_options' => [
-                    'label' => 'Box hinzufügen',
+                    'label' => 'select.containers.add.box',
                 ],
                 'prototype' => true,
                 'prototype_name' => '__container_name__',

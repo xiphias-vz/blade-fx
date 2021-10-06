@@ -43,7 +43,7 @@ export default class FormContainers extends Component {
         this.containerCountData = document.querySelector('.js-container-count');
         this.containerCount = this.containerCountData.dataset.containerCount;
         this.submitButtonContainers = <HTMLButtonElement>document.getElementById('submitSelectedContainers');
-        this.containerEighthCharactersSet = <HTMLInputElement>document.querySelector('#containerID_eighth_characters_set,');
+        this.containerEighthCharactersSet = <HTMLInputElement>document.querySelector('#containerID_eighth_characters_set');
         this.containerEighthCharacters = <HTMLInputElement>document.querySelector('#containerID_eighth_characters');
 
         if (this.containerFormsWrapper.innerHTML === "") {
