@@ -8,6 +8,8 @@
     missingArticles: required
 } %}
 
+{% set currentCurrencySymbol = app.currentCurrencySymbol %}
+
 {% block body %}
     <div>
         <span>{{ 'storeapp.picking.MissingArticle' | trans }}</span><br/>
@@ -38,7 +40,7 @@
                                         <td style="width: 10px;text-align: center">|</td>
                                         <td class="pickedProducts" style="width:20px;text-align: left">{{ missingArticle.quantity }}</td>
                                         <td class="item-price">
-                                            {{ missingArticle.itemPrice }} €
+                                            {{ missingArticle.itemPrice }} {{ currentCurrencySymbol }}
                                             {% if missingArticle.isSaleArticle %}
                                                 {% include atom('icon-sale-article') with {
                                                 } only %}

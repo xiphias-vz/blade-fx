@@ -21,6 +21,7 @@ use Spryker\Zed\Session\Communication\Plugin\Application\SessionApplicationPlugi
 use Spryker\Zed\Translator\Communication\Plugin\Application\TranslatorApplicationPlugin;
 use Spryker\Zed\Validator\Communication\Plugin\Application\ValidatorApplicationPlugin;
 use Spryker\Zed\WebProfiler\Communication\Plugin\Application\WebProfilerApplicationPlugin;
+use StoreApp\Zed\CodeBucketPlugin\Plugin\Application\CurrentCodeBucketApplicationPlugin;
 use StoreApp\Zed\Error\Communication\Plugin\ServiceProvider\ErrorHandlerServiceProvider;
 use StoreApp\Zed\Twig\Communication\Plugin\Application\TwigApplicationPlugin;
 
@@ -60,6 +61,7 @@ class ApplicationDependencyProvider extends SprykerApplicationDependencyProvider
             new ErrorHandlerApplicationPlugin(),
             new FormApplicationPlugin(),
             new ValidatorApplicationPlugin(),
+            new CurrentCodeBucketApplicationPlugin(),
         ];
 
         if (class_exists(WebProfilerApplicationPlugin::class)) {

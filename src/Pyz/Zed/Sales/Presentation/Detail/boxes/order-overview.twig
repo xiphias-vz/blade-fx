@@ -1,4 +1,7 @@
 {% embed '@Gui/Partials/widget.twig' with { widget_title: 'checkout.order.overview' | trans } %}
+
+{% set currentCodeBucket = app.currentCodeBucket %}
+
     {% block widget_content %}
         <div class="row">
             <input type="hidden" id="isCurrentUserSupervisorOrAdmin" value="{{ isCurrentUserSupervisorOrAdmin }}">
@@ -311,14 +314,22 @@
                                 {% set customExternalBlock = externalBlock|split('Rabatte und Gutscheine') %}
                                 <div style="margin-bottom: 15px">
                                     <span style="font-weight: bold">{{ 'Discounts & Vouchers' | trans }}</span>
-                                    <div class="discount">{{ customExternalBlock[1] | raw }}</div>
+                                    {% if currentCodeBucket == "DE" %}
+                                        <div class="discount">{{ customExternalBlock[1] | raw }}</div>
+                                    {% else %}
+                                        <div class="discount">{{ customExternalBlock[0] | raw }}</div>
+                                    {% endif %}
                                 </div>
                             {% endif %}
                             {% if blockName == 'refund' %}
                                 {% set customExternalBlock = externalBlock|split('Rückerstattung') %}
                                 <div style="margin-bottom: 15px">
                                     <span style="font-weight: bold">{{ 'Refunds' | trans }}</span>
-                                    <div class="refund">{{ customExternalBlock[1] | raw }}</div>
+                                     {% if app.currentCodeBucket == "DE" %}
+                                         <div class="refund">{{ customExternalBlock[1] | raw }}</div>
+                                     {% else %}
+                                         <div class="refund">{{ customExternalBlock[0] | raw }}</div>
+                                     {% endif %}
                                 </div>
                             {% endif %}
                         {% endfor %}
