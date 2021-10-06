@@ -1459,7 +1459,7 @@ checkout.customer.auth_as_guest,Buy as Guest,en_US
 checkout.customer.auth_as_guest,"Objednávka bez registrace",cs_CZ
 checkout.customer.auth_as_guest,Als Gast bestellen,de_DE
 checkout.customer.submit_as_guest,Weiter,de_DE
-checkout.customer.submit_as_guest,"Dál",cs_CZ
+checkout.customer.submit_as_guest,"Pokračovat",cs_CZ
 checkout.customer.submit_as_guest,Weiter,en_US
 checkout.customer.auth_as_login,Login,en_US
 checkout.customer.auth_as_login,Anmelden,de_DE
@@ -3885,7 +3885,7 @@ cart.code.apply.failed,Gutscheincode konnte nicht angewendet werden,de_DE
 cart.code.enter-code,"Zadejte slevový kód poukazu",cs_CZ
 cart.code.enter-code,Gutscheincode eingeben,de_DE
 cart.code.enter-code,Enter voucher/gift card code,en_US
-general.next.button,"Dál",cs_CZ
+general.next.button,"Pokračovat",cs_CZ
 general.next.button,Next,en_US
 general.next.button,Weiter,de_DE
 shipment.validation.not_found,"Způsob dopravy nebyl nalezen.",cs_CZ
