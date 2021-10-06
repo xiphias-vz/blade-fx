@@ -719,7 +719,7 @@ customer.signup,Neuer Kunde?,de_DE
 customer.signup,New customer?,en_US
 customer.signin,Signin,en_US
 customer.signin,Einloggen,de_DE
-customer.signin,"Nový zákazník?",cs_CZ
+customer.signin,"Přihlásit",cs_CZ
 customer.logout,Logout,en_US
 customer.logout,Abmelden,de_DE
 customer.logout,"Odhlášení",cs_CZ
