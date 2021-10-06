@@ -7,13 +7,16 @@
 
 namespace Pyz\Yves\WishlistPage\Controller;
 
+use Pyz\Yves\WishlistPage\Plugin\Router\WishlistPageRouteProviderPlugin;
 use SprykerShop\Yves\WishlistPage\Controller\WishlistOverviewController as SprykerWishlistOverviewController;
-use SprykerShop\Yves\WishlistPage\Plugin\Provider\WishlistPageControllerProvider;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Csrf\CsrfToken;
 use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
 
+/**
+ * @method \Pyz\Yves\WishlistPage\WishlistPageFactory getFactory()
+ */
 class WishlistOverviewController extends SprykerWishlistOverviewController
 {
     public const REQUEST_HEADER_REFERER = 'referer';
@@ -68,7 +71,7 @@ class WishlistOverviewController extends SprykerWishlistOverviewController
         }
 
         return $this->redirectResponseInternal(
-            WishlistPageControllerProvider::ROUTE_WISHLIST_DETAILS,
+            WishlistPageRouteProviderPlugin::ROUTE_NAME_WISHLIST_DETAILS,
             [
                 'wishlistName' => $wishlistName,
             ]

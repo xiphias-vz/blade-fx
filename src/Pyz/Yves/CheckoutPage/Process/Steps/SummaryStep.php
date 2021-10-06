@@ -36,8 +36,8 @@ class SummaryStep extends SprykerSummaryStep
      * @param \SprykerShop\Yves\CheckoutPage\Dependency\Client\CheckoutPageToProductBundleClientInterface $productBundleClient
      * @param \SprykerShop\Yves\CheckoutPage\Dependency\Service\CheckoutPageToShipmentServiceInterface $shipmentService
      * @param \SprykerShop\Yves\CheckoutPage\CheckoutPageConfig $checkoutPageConfig
-     * @param $stepRoute
-     * @param $escapeRoute
+     * @param string $stepRoute
+     * @param string|null $escapeRoute
      * @param \SprykerShop\Yves\CheckoutPage\Dependency\Client\CheckoutPageToCheckoutClientInterface $checkoutClient
      * @param \Pyz\Client\OrderDetail\OrderDetailClientInterface $orderDetailClient
      * @param \SprykerShop\Yves\CheckoutPage\Process\Steps\StepExecutorInterface $stepExecutor

@@ -24,7 +24,7 @@ class OrderController extends SprykerOrderController
     public const REORDER_ITEMS_CSRF_TOKEN_NAME = 'reorder-items';
 
     /**
-     * @param \Symfony\Component\HttpFoundation\Request|int $request
+     * @param \Symfony\Component\HttpFoundation\Request $request
      * @param int $idSalesOrder
      *
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
