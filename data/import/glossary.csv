@@ -4821,6 +4821,9 @@ popup.shipment.form.available.pick-up.times,Our available pick-up times:,en_US
 popup.shipment.form.footer.message,"Der Globus Abholservice steht unseren Kunden an verschiedenen Standorten zur Verfügung. Wenn Sie Ihre Abholstation wechseln, beachten Sie bitte, dass die Produktauswahl, Preise und Abholzeitfenster variieren können.",de_DE
 popup.shipment.form.footer.message,"Služba vyzvednutí Globus je našim zákazníkům k dispozici na různých pobočkách. Pokud změníte výdejní místo, mějte prosím na paměti, že se může lišit výběr produktů, ceny a časové intervaly vyzvednutí.",cs_CZ
 popup.shipment.form.footer.message,"The Globus pick-up service is available to our customers at various locations. If you change your pick-up station, please note that the product selection, prices and pick-up time windows may vary.",en_US
+popup.shipment.form.footer.message_CZ_1,"Termín vyzvednutí nákupu si vyberete před odesláním objednávky.",cs_CZ
+popup.shipment.form.footer.message_CZ_2,"Tento přehled slouží pouze k náhledu dostupné kapacity výdejních oken.",cs_CZ
+popup.shipment.form.footer.message_CZ_3,"Pro vyzvednutí zítra od 10:00 dokončete objednávku nejpozději v 23:59.",cs_CZ
 popup.shipment.form.locale,de-DE,de_DE
 popup.shipment.form.locale,cs-CZ,cs_CZ
 popup.shipment.form.locale,en-US,en_US
