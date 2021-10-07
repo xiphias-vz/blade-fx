@@ -104,6 +104,7 @@ class ProductMapping
         'Altersempfehlung' => '',
         'NOS Artikel' => '',
         'Classification_ID' => '',
+        'wine_quality_classification' => '',
     ];
 
     /**
@@ -127,6 +128,7 @@ class ProductMapping
         'productGroup' => ['groupid'],
         'bruttoWeightKg' => ['einzelgewicht'],
         'amount' => ['grundpreisinhalt'],
+        'wineQualityClassification' => ['wine_quality_classification'],
     ];
 
     /**

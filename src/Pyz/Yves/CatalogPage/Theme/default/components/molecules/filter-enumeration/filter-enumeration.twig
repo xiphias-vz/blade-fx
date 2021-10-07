@@ -22,37 +22,41 @@
             <h3 class="headline">{{ 'product.filter.supplier.properties' | trans }}</h3>
             {% elseif label is same as('Label') %}
                 <h3 class="headline">{{ 'product.filter.sales.properties' | trans }}</h3>
+            {% elseif label is same as('herkunftsland') %}
+                <h3 class="headline">{{ 'product.filter.country.origin.properties' | trans }}</h3>
+            {% elseif label is same as('wine_quality_classification') %}
+                <h3 class="headline">{{ 'product.filter.wine.quality.properties' | trans }}</h3>
         {% endif %}
         {% block filterList %}
             {% for filterValue in data.filter.values %}
                 {% block filterItem %}
                     {% set docCountText = filterValue.docCount ? ' (' ~ filterValue.docCount ~ ')' : '' %}
-                    {% set label = (label == 'Label' or label == 'supplier') ? filterValue.value : label %}
-                    {% set filterName = data.filter.config.parameterName|lower %}
-                    {% if ( filterName is same as('bio') or filterName is same as('vegan') or filterName is same as('vegetarisch') or filterName is same as('laktosefrei') or filterName is same as('glutenfrei') or filterName is same as('fairtrade') ) and filterValue.value == 0 %}
-                        {% else %}
-                        <li class="menu__item">
-                            {% include inputComponent with {
-                                modifiers: modifiers,
-                                class: data.parentJsName,
-                                attributes: {
-                                    name: data.filter.config.parameterName ~ (isMultiSelect ? '[]' : ''),
-                                    value: filterValue.value,
-                                    checked: (filterValue.value in activeValues),
-                                    category: data.filter.config.parameterName
-                                },
-                                data: {
-                                    label: label | trans | capitalize ~ docCountText,
-                                },
-                            } only %}
-                        </li>
-                    {% endif %}
+                    {% set label = (label == 'Label' or label == 'supplier' or label == 'herkunftsland' or label == 'wine_quality_classification') ? filterValue.value : label %}
+                    <li class="menu__item">
+                        {% include inputComponent with {
+                            modifiers: modifiers,
+                            class: data.parentJsName,
+                            attributes: {
+                                name: data.filter.config.parameterName ~ (isMultiSelect ? '[]' : ''),
+                                value: filterValue.value,
+                                checked: (filterValue.value in activeValues),
+                                category: data.filter.config.parameterName
+                            },
+                            data: {
+                                label: label | trans | capitalize ~ docCountText,
+                            },
+                        } only %}
+                    </li>
                 {% endblock %}
             {% endfor %}
             {% if label|lower is same as('supplier')%}
                 <div class="delete-category-filter-supplier is-hidden">{{ 'product.filter.delete.category' | trans }}</div>
             {% elseif label|lower is same as('label') %}
                 <div class="delete-category-filter-sales is-hidden">{{ 'product.filter.delete.category' | trans }}</div>
+            {% elseif label|lower is same as('herkunftsland') %}
+                <div class="delete-category-filter-country-origin is-hidden">{{ 'product.filter.delete.category' | trans }}</div>
+            {% elseif label|lower is same as('wine_quality_classification') %}
+                <div class="delete-category-filter-wine-quality is-hidden">{{ 'product.filter.delete.category' | trans }}</div>
             {% endif %}
         {% endblock %}
     </ul>

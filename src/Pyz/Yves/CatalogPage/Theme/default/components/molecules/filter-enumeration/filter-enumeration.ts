@@ -9,11 +9,13 @@ export default class FilterEnumeration extends Component {
     private deleteFilterCategoryProductAttribute: HTMLElement;
     private deleteFilterCategoryProductSupplier: HTMLElement;
     private deleteSalesProductCategory: HTMLElement;
+    private deleteCountryOrigin: HTMLElement;
+    private deleteWineQuality: HTMLElement;
     private deleteAllFilter : HTMLElement;
-    private filterEnumerationListForSupplier: HTMLElement;
-    private filterEnumerationListForProductAttributes: HTMLElement;
     private listSuppliersChecked: Array<string>;
     private listProductAttributesChecked: Array<string>;
+    private listCountryOriginChecked: Array<string>;
+    private listWineQualitiesChecked: Array<string>;
     private listSalesChecked: Array<string>;
     protected readyCallback(): void {
     }
@@ -25,8 +27,10 @@ export default class FilterEnumeration extends Component {
 
         this.deleteFilterCategoryProductAttribute = <HTMLElement>this.catalogTargetEnumeration.querySelector('.delete-category-filter-product-attributes')
         this.deleteFilterCategoryProductSupplier = <HTMLElement>this.catalogTargetEnumeration.querySelector('.delete-category-filter-supplier');
-        this.deleteSalesProductCategory = <HTMLElement>this.catalogTargetEnumeration.querySelector('.delete-category-filter-sales')
-        this.deleteAllFilter = <HTMLElement>this.catalogTargetEnumeration.querySelector('.delete-all-filter')
+        this.deleteSalesProductCategory = <HTMLElement>this.catalogTargetEnumeration.querySelector('.delete-category-filter-sales');
+        this.deleteCountryOrigin = <HTMLElement>this.catalogTargetEnumeration.querySelector('.delete-category-filter-country-origin');
+        this.deleteWineQuality = <HTMLElement>this.catalogTargetEnumeration.querySelector('.delete-category-filter-wine-quality');
+        this.deleteAllFilter = <HTMLElement>this.catalogTargetEnumeration.querySelector('.delete-all-filter');
 
         this.submitActionFilterButton = <HTMLElement>this.filterSection.querySelector('#submitFilterActionButton');
         this.submitActionFilterButtonToTrigger = <HTMLElement>this.filterSection.querySelector('#submitFilterActionButtonToTrigger .js-catalog__trigger');
@@ -34,71 +38,94 @@ export default class FilterEnumeration extends Component {
         this.listSuppliersChecked = [];
         this.listProductAttributesChecked = [];
         this.listSalesChecked = [];
+        this.listCountryOriginChecked = [];
+        this.listWineQualitiesChecked = [];
 
         this.checkIfAnyFilterIsSelectedAndDisplayDeleteFilterButtons();
         this.mapEvents();
     }
 
     protected mapEvents() {
-        this.submitActionFilterButton.addEventListener('click', this.triggerFilterAction.bind(this));
-        if(this.deleteFilterCategoryProductSupplier !== null) {
-            this.deleteFilterCategoryProductSupplier.addEventListener('click', this.deleteFiltersForSupplier.bind(this));
-        }
-        if(this.deleteFilterCategoryProductAttribute !== null) {
-            this.deleteFilterCategoryProductAttribute.addEventListener('click', this.deleteFiltersForProductAttributes.bind(this));
-        }
-        if(this.deleteSalesProductCategory !== null) {
-            this.deleteSalesProductCategory.addEventListener('click', this.deleteSalesCategory.bind(this))
-        }
-        if(this.deleteAllFilter !== null) {
-            this.deleteAllFilter.addEventListener('click', this.deleteAllFilters.bind(this));
-        }
+        this.submitActionFilterButton?.addEventListener('click', this.triggerFilterAction.bind(this));
+        this.deleteFilterCategoryProductSupplier?.addEventListener('click', () => this.performDeleteFilterOperation('.filter-enumeration[filter=supplier__filter]', 'supplier'));
+        this.deleteFilterCategoryProductAttribute?.addEventListener('click', () => this.performDeleteFilterOperation('.filter-enumeration:not([filter=supplier__filter]):not([filter=label__filter])', 'productAttributes'));
+        this.deleteSalesProductCategory?.addEventListener('click', () => this.performDeleteFilterOperation('.filter-enumeration[filter=label__filter]', 'sales'));
+        this.deleteCountryOrigin?.addEventListener('click', () => this.performDeleteFilterOperation('.filter-enumeration[filter=herkunftsland__filter]', 'countryOrigin'));
+        this.deleteAllFilter?.addEventListener('click',() => this.performDeleteFilterOperation('.filter-enumeration', 'delete-all'));
+        this.deleteWineQuality?.addEventListener('click', () => this.performDeleteFilterOperation('filter-enumeration[filter=wine_quality_classification__filter]', 'wineQuality'));
+
     }
 
     protected checkIfAnyFilterIsSelectedAndDisplayDeleteFilterButtons() {
-        let countCategoryType = [];
+        let activeFiltersList = [];
         for(let i = 0; i < this.filterEnumerationList.length; i++) {
             let currentEnumeration = this.filterEnumerationList[i];
             let filterAttribute = this.filterEnumerationList[i].getAttribute('filter');
             let checkBoxes = currentEnumeration.querySelectorAll('.checkbox__input');
             let isAnyCheckboxChecked = this.checkIfAnyCheckboxIsChecked(checkBoxes);
-            if(filterAttribute ==='supplier__filter' && isAnyCheckboxChecked) {
-              this.deleteFilterCategoryProductSupplier?.classList.remove('is-hidden');
-              if(!countCategoryType.includes('supplier')) {
-                  countCategoryType.push('supplier');
-              }
-              this.listSuppliersChecked.push('checked');
-
-            } else if ((filterAttribute === 'bio__filter'
-                || filterAttribute === 'vegan__filter'
-                || filterAttribute === 'laktosefrei__filter'
-                || filterAttribute === 'glutenfrei__filter'
-                || filterAttribute === 'vegetarisch__filter'
-                || filterAttribute === 'fairtrade__filter')
-                && isAnyCheckboxChecked === true
-
-            ) {
-                this.deleteFilterCategoryProductAttribute?.classList.remove('is-hidden');
-                if(!countCategoryType.includes('productAttributes')) {
-                    countCategoryType.push('productAttributes');
-                }
-                this.listProductAttributesChecked.push('checked');
-            }
-
-            else if (filterAttribute === 'label__filter' && isAnyCheckboxChecked === true){
-                this.deleteSalesProductCategory.classList.remove('is-hidden');
-                if(!countCategoryType.includes('label')) {
-                    countCategoryType.push('label');
-                }
-                this.listSalesChecked.push('checked');
-            }
+            activeFiltersList = this.countActiveFilterCategories(filterAttribute, isAnyCheckboxChecked, activeFiltersList);
             this.bindEventsInCheckBoxes(checkBoxes);
         }
 
-        let isOneCategoryChecked = countCategoryType.length >= 1;
-        if (isOneCategoryChecked) {
+        let isAtLeastOneFilterActive = activeFiltersList.length >= 1;
+        if (isAtLeastOneFilterActive) {
             this.deleteAllFilter.classList.remove('is-hidden');
         }
+    }
+
+    protected countActiveFilterCategories(filterAttribute, isAnyCheckboxChecked, activeFiltersList) {
+        switch (filterAttribute) {
+            case 'supplier__filter':
+                if (isAnyCheckboxChecked) {
+                    this.deleteFilterCategoryProductSupplier?.classList.remove('is-hidden');
+                    this.listSuppliersChecked.push('checked');
+                    activeFiltersList = this.updateActiveFilterList(activeFiltersList,'supplier');
+                }
+                return activeFiltersList;
+
+            case 'bio__filter':
+            case 'vegan__filter':
+            case 'laktosefrei__filter':
+            case 'glutenfrei__filter':
+            case 'vegetarisch__filter':
+            case 'fairtrade__filter':
+                if (isAnyCheckboxChecked) {
+                    this.deleteFilterCategoryProductAttribute?.classList.remove('is-hidden');
+                    this.listProductAttributesChecked.push('checked');
+                    activeFiltersList = this.updateActiveFilterList(activeFiltersList,'productAttributes');
+                }
+                return activeFiltersList;
+            case 'label__filter':
+                if (isAnyCheckboxChecked) {
+                    this.deleteSalesProductCategory?.classList.remove('is-hidden');
+                    this.listSalesChecked.push('checked');
+                    activeFiltersList = this.updateActiveFilterList(activeFiltersList,'label');
+                }
+                return activeFiltersList;
+
+            case 'wine_quality_classification__filter':
+                if (isAnyCheckboxChecked) {
+                    this.deleteWineQuality?.classList.remove('is-hidden');
+                    this.listWineQualitiesChecked.push('checked');
+                    activeFiltersList = this.updateActiveFilterList(activeFiltersList,'wine_quality_classification');
+                }
+                return activeFiltersList;
+
+            case 'herkunftsland__filter':
+                if (isAnyCheckboxChecked) {
+                    this.deleteCountryOrigin?.classList.remove('is-hidden');
+                    this.listCountryOriginChecked.push('checked');
+                    activeFiltersList = this.updateActiveFilterList(activeFiltersList,'herkunftsland');
+                }
+                return activeFiltersList;
+        }
+    }
+
+    protected updateActiveFilterList(activeFiltersList, filterType) {
+        if(!activeFiltersList.includes(filterType)) {
+            activeFiltersList.push(filterType);
+        }
+        return activeFiltersList;
     }
 
     protected checkIfAnyCheckboxIsChecked(checkboxes): boolean {
@@ -127,9 +154,13 @@ export default class FilterEnumeration extends Component {
             case 'supplier':
                 if(isChecked) {
                     this.listSuppliersChecked.push('checked');
+                    this.deleteFilterCategoryProductSupplier?.classList.remove('is-hidden');
 
                 } else {
                     this.listSuppliersChecked.pop();
+                    if (this.listSuppliersChecked.length === 0) {
+                        this.deleteFilterCategoryProductSupplier?.classList.add('is-hidden');
+                    }
                 }
                 break;
 
@@ -141,97 +172,118 @@ export default class FilterEnumeration extends Component {
             case 'vegetarisch':
                 if (isChecked) {
                     this.listProductAttributesChecked.push('checked');
+                    this.deleteFilterCategoryProductAttribute?.classList.remove('is-hidden');
+
                 } else {
                     this.listProductAttributesChecked.pop();
+                    if (this.listProductAttributesChecked.length === 0) {
+                        this.deleteFilterCategoryProductAttribute?.classList.add('is-hidden');
+                    }
                 }
                 break;
+            case 'wine_quality_classification':
+                if (isChecked) {
+                    this.listWineQualitiesChecked.push('checked');
+                    this.deleteWineQuality?.classList.remove('is-hidden');
 
+
+                } else {
+                    this.listWineQualitiesChecked.pop();
+                    if (this.listWineQualitiesChecked.length === 0) {
+                        this.deleteWineQuality?.classList.add('is-hidden');
+                    }
+                }
+                break;
+            case 'herkunftsland':
+                if (isChecked) {
+                    this.listCountryOriginChecked.push('checked');
+                    this.deleteCountryOrigin?.classList.remove('is-hidden');
+
+                } else {
+                    this.listCountryOriginChecked.pop();
+                    if (this.listCountryOriginChecked.length === 0) {
+                        this.deleteCountryOrigin?.classList.add('is-hidden');
+                    }
+                }
+                break;
             case 'label':
                 if (isChecked) {
                     this.listSalesChecked.push('checked');
+                    this.deleteSalesProductCategory?.classList.remove('is-hidden');
 
                 } else {
                     this.listSalesChecked.pop();
+                    if(this.listSalesChecked.length === 0) {
+                        this.deleteSalesProductCategory?.classList.add('is-hidden');
+                    }
                 }
-        }
 
-        this.removeDeleteFilterButtonIfListInCategoryIsEmpty();
+        }
         this.toggleDeleteAllFilterButton();
-    }
-
-    protected removeDeleteFilterButtonIfListInCategoryIsEmpty() {
-
-        if (this.listSuppliersChecked.length === 0) {
-            this.deleteFilterCategoryProductSupplier?.classList.add('is-hidden');
-        } else {
-            this.deleteFilterCategoryProductSupplier?.classList.remove('is-hidden');
-        }
-        if (this.listProductAttributesChecked.length === 0) {
-            this.deleteFilterCategoryProductAttribute?.classList.add('is-hidden');
-        } else {
-            this.deleteFilterCategoryProductAttribute?.classList.remove('is-hidden');
-        }
-        if (this.listSalesChecked.length === 0) {
-            this.deleteSalesProductCategory?.classList.add('is-hidden');
-        } else {
-            this.deleteSalesProductCategory?.classList.remove('is-hidden');
-        }
     }
 
     protected toggleDeleteAllFilterButton() {
         let isSupplierListNotEmpty = this.isNonEmptyArray(this.listSuppliersChecked);
         let isProductAttributeNotEmpty = this.isNonEmptyArray(this.listProductAttributesChecked);
         let isSalesListCheckedNotEmpty = this.isNonEmptyArray(this.listSalesChecked);
-        if (isSupplierListNotEmpty || isProductAttributeNotEmpty || isSalesListCheckedNotEmpty) {
+        let isCountryOriginCheckedNotEmpty = this.isNonEmptyArray(this.listCountryOriginChecked);
+        let isWineQualityCheckedNotEmpty = this.isNonEmptyArray(this.listWineQualitiesChecked);
+
+        if (isSupplierListNotEmpty || isProductAttributeNotEmpty || isSalesListCheckedNotEmpty || isCountryOriginCheckedNotEmpty || isWineQualityCheckedNotEmpty) {
             this.deleteAllFilter.classList.remove('is-hidden');
         } else {
             this.deleteAllFilter.classList.add('is-hidden');
         }
     }
 
-    protected deleteFiltersForSupplier() {
-        this.filterEnumerationListForSupplier = <HTMLElement>this.catalogTargetEnumeration.querySelectorAll(".filter-enumeration[filter=supplier__filter]");
-        this.uncheckFilters(this.filterEnumerationListForSupplier);
-        this.listSuppliersChecked = [];
-        this.deleteFilterCategoryProductSupplier?.classList.add('is-hidden');
-        this.deleteAllFilter.classList.add('is-hidden');
-        this.toggleDeleteAllFilterButton();
-
-    }
-
-    protected deleteFiltersForProductAttributes() {
-        this.filterEnumerationListForProductAttributes = <HTMLElement>this.catalogTargetEnumeration.querySelectorAll(".filter-enumeration:not([filter=supplier__filter]):not([filter=label__filter])");
-        this.uncheckFilters(this.filterEnumerationListForProductAttributes);
-        this.listProductAttributesChecked = [];
-        this.deleteFilterCategoryProductAttribute?.classList.add('is-hidden');
-        this.toggleDeleteAllFilterButton();
-    }
-
-    protected deleteSalesCategory() {
-        this.filterEnumerationListForSupplier = <HTMLElement>this.catalogTargetEnumeration.querySelectorAll(".filter-enumeration[filter=label__filter]");
-        this.uncheckFilters(this.filterEnumerationListForSupplier);
-        this.listSalesChecked = [];
-        this.deleteSalesProductCategory?.classList.add('is-hidden');
-        this.toggleDeleteAllFilterButton();
-    }
-
-    protected deleteAllFilters() {
-        this.filterEnumerationList = <HTMLElement>this.catalogTargetEnumeration.querySelectorAll(".filter-enumeration");
+    protected performDeleteFilterOperation(filterEnumeration, target) {
+        this.filterEnumerationList = <HTMLElement>this.catalogTargetEnumeration.querySelectorAll(filterEnumeration)
         this.uncheckFilters(this.filterEnumerationList);
-        this.listProductAttributesChecked = [];
-        this.listSuppliersChecked = [];
-        this.listSalesChecked = [];
+
+        switch (target) {
+            case 'supplier':
+                this.listSuppliersChecked = [];
+                this.deleteFilterCategoryProductSupplier?.classList.add('is-hidden');
+                break;
+            case 'sales':
+                this.listSalesChecked = [];
+                this.deleteSalesProductCategory?.classList.add('is-hidden');
+                break;
+            case 'productAttributes':
+                this.listProductAttributesChecked = [];
+                this.deleteFilterCategoryProductAttribute?.classList.add('is-hidden');
+                break;
+            case 'countryOrigin':
+                this.listCountryOriginChecked = [];
+                this.deleteCountryOrigin?.classList.add('is-hidden');
+                break;
+            case 'wineQuality':
+                this.listWineQualitiesChecked = [];
+                this.deleteWineQuality?.classList.add('is-hidden');
+                break;
+
+            case 'delete-all':
+                this.listSalesChecked = [];
+                this.listSuppliersChecked = [];
+                this.listProductAttributesChecked = [];
+                this.listCountryOriginChecked = [];
+                this.listWineQualitiesChecked = [];
+                this.deleteFilterCategoryProductAttribute?.classList.add('is-hidden');
+                this.deleteFilterCategoryProductSupplier?.classList.add('is-hidden');
+                this.deleteCountryOrigin?.classList.add('is-hidden');
+                this.deleteWineQuality?.classList.add('is-hidden');
+                this.deleteSalesProductCategory?.classList.add('is-hidden');
+                this.deleteAllFilter?.classList.add('is-hidden');
+                break;
+        }
         this.toggleDeleteAllFilterButton();
-        this.deleteFilterCategoryProductSupplier?.classList.add('is-hidden');
-        this.deleteFilterCategoryProductAttribute?.classList.add('is-hidden');
-        this.deleteSalesProductCategory?.classList.add('is-hidden');
     }
 
     protected uncheckFilters(filterEnumerationList) {
-        for(let i = 0; i < filterEnumerationList.length; i++) {
+        for (let i = 0; i < filterEnumerationList.length; i++) {
             let checkBoxes = filterEnumerationList[i].querySelectorAll('.checkbox__input');
-            for (let j = 0; j < checkBoxes.length; j++) {
-                checkBoxes[j].checked = false;
+            for(let i = 0; i < checkBoxes.length; i++) {
+                checkBoxes[i].checked = false;
             }
         }
     }

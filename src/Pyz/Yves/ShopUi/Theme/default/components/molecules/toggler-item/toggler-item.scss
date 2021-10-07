@@ -174,7 +174,10 @@
                 cursor: pointer;
             }
 
-            .delete-category-filter-supplier, .delete-category-filter-sales {
+            .delete-category-filter-supplier,
+            .delete-category-filter-sales,
+            .delete-category-filter-country-origin,
+            .delete-category-filter-wine-quality {
                 margin: 15px 0 10px 0;
                 cursor: pointer;
             }
