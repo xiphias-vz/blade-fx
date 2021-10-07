@@ -9,7 +9,7 @@ namespace Pyz\Zed\CodeBucketPlugin\Plugin\Application;
 
 use Spryker\Service\Container\ContainerInterface;
 use Spryker\Shared\ApplicationExtension\Dependency\Plugin\ApplicationPluginInterface;
-use Spryker\Yves\Kernel\AbstractPlugin;
+use Spryker\Zed\Kernel\Communication\AbstractPlugin;
 
 /**
  * @method \Pyz\Zed\CodeBucketPlugin\CodeBucketPluginConfig getConfig()

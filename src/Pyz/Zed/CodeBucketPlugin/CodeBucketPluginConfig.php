@@ -8,7 +8,7 @@
 namespace Pyz\Zed\CodeBucketPlugin;
 
 use Pyz\Shared\CodeBuckets\CodeBucketConstants;
-use Spryker\Yves\Kernel\AbstractBundleConfig;
+use Spryker\Zed\Kernel\AbstractBundleConfig;
 
 class CodeBucketPluginConfig extends AbstractBundleConfig
 {
