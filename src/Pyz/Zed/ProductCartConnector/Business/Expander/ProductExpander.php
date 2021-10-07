@@ -104,6 +104,8 @@ class ProductExpander extends SprykerProductExpander implements ProductExpanderI
         $grossPriceData = null;
         if (isset($priceProductAbstractData['prices']->EUR->GROSS_MODE)) {
             $grossPriceData = $priceProductAbstractData['prices']->EUR->GROSS_MODE;
+        } elseif (isset($priceProductAbstractData['prices']->CZK->GROSS_MODE)) {
+            $grossPriceData = $priceProductAbstractData['prices']->CZK->GROSS_MODE;
         }
         if (isset($grossPriceData->ORIGINAL)) {
             $originalPrice = $grossPriceData->ORIGINAL;

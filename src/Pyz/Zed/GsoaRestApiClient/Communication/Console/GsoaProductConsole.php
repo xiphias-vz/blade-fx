@@ -187,13 +187,15 @@ class GsoaProductConsole extends Console
                     foreach ($result["productCategoriesEshop"] as $item) {
                         if (!str_starts_with($item["categoryId"], 'cls_czc_')) {
                             if ($item["categoryId"] != 'cls_czr_click_and_collect') {
-                                $cat["categoryIdStibo"] = $item["categoryId"];
-                                $cat["parentIdCategoryStibo"] = $item["parentId"];
-                                $cat["name"] = $item["categoryName"];
-                                $cat["metatitle"] = "";
-                                $cat["metadescription"] = "";
-                                file_put_contents("//data/data/import/spryker/1.globusCZ_categories.csv", implode('|', $cat) . PHP_EOL, FILE_APPEND);
-                                $counter++;
+                                if ($item["isActive"] === true && $item["isHidden"] === false) {
+                                    $cat["categoryIdStibo"] = $item["categoryId"];
+                                    $cat["parentIdCategoryStibo"] = $item["parentId"];
+                                    $cat["name"] = $item["categoryName"];
+                                    $cat["metatitle"] = "";
+                                    $cat["metadescription"] = "";
+                                    file_put_contents("//data/data/import/spryker/1.globusCZ_categories.csv", implode('|', $cat) . PHP_EOL, FILE_APPEND);
+                                    $counter++;
+                                }
                             }
                         }
                     }
@@ -321,7 +323,7 @@ class GsoaProductConsole extends Console
         ?array $sapNumberArray
     ) {
         $qry = new SpyProductQuery();
-        $products = $qry->select(SpyProductTableMap::COL_SAP_NUMBER)->find();
+        $products = $qry->select(SpyProductTableMap::COL_SAP_NUMBER)->where(SpyProductTableMap::COL_IS_ACTIVE . ' = 1')->find();
         $productCount = count($products);
         $page = 0;
         $pageSize = 130;
@@ -388,7 +390,7 @@ class GsoaProductConsole extends Console
         ?array $sapNumberArray
     ) {
         $qry = new SpyProductQuery();
-        $products = $qry->select(SpyProductTableMap::COL_SAP_NUMBER)->find();
+        $products = $qry->select(SpyProductTableMap::COL_SAP_NUMBER)->where(SpyProductTableMap::COL_IS_ACTIVE . ' = 1')->find();
         $productCount = count($products);
         $page = 0;
         $pageSize = 130;
@@ -419,9 +421,6 @@ class GsoaProductConsole extends Console
                                 $key = array_search($item["vanr"], array_column($resultStock, 'productWamasNr'));
                                 if (!empty($key)) {
                                     $d["instock"] = str_replace(",", ".", $resultStock[$key]["availableAmount"]);
-                                    if ($resultStock[$key]["hasFictiveStock"] === true) {
-                                        $d["instock"] = 999999;
-                                    }
                                 } else {
                                     $d["instock"] = str_replace(",", ".", $item["productInHouse"]["stockAmount"]);
                                 }

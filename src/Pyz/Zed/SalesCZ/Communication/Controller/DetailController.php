@@ -5,21 +5,14 @@
  * For full license information, please view the LICENSE file that was distributed with this source code.
  */
 
-namespace Pyz\Zed\Sales\Communication\Controller;
+namespace Pyz\Zed\SalesCZ\Communication\Controller;
 
 use Aws\S3\Exception\S3Exception;
-use Aws\S3\S3Client;
-use DateTime;
-use Exception;
 use Orm\Zed\Sales\Persistence\SpySalesOrder;
 use Orm\Zed\Sales\Persistence\SpySalesOrderAddress;
-use Pyz\Shared\Acl\AclConstants;
-use Pyz\Shared\S3Constants\S3Constants;
+use Pyz\Zed\Sales\Communication\Controller\DetailController as IntDetailController;
 use Spryker\Service\UtilText\Model\Url\Url;
-use Spryker\Shared\Config\Config;
-use Spryker\Zed\Sales\Communication\Controller\DetailController as SprykerDetailController;
 use Spryker\Zed\Sales\SalesConfig;
-use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -30,7 +23,7 @@ use Symfony\Component\HttpFoundation\Request;
  * @method \Spryker\Zed\Sales\Persistence\SalesRepositoryInterface getRepository()
  * @method \Pyz\Zed\CashierOrderExport\Business\Exporter\CashierOrderExporter exportCashier()
  */
-class DetailController extends SprykerDetailController
+class DetailController extends IntDetailController
 {
     protected const LOCAL_AWS_CONFIG_CREDENTIALS = 'globus_s3_cashier_file_credentials';
     protected const LOCAL_AWS_CONFIG_CREDENTIALS_KEY = 'key';
@@ -38,8 +31,8 @@ class DetailController extends SprykerDetailController
     protected const EXPORT_ARCHIVE_FILE_PATH = '../../src/Pyz/Zed/Sales/Communication/CashierFiles/';
     protected const EXPORT_XML_FILE_NAME_DATE_FORMAT = 'Ymd';
     protected const LOCAL_SCHEDULER_NAME = 'scheduler.globus.local';
-    protected const SEARCH_TXT_FILE_NAME = '_order.txt';
-    protected const DOWNLOAD_TXT_FILE_NAME = '_order.zip';
+    protected const SEARCH_TXT_FILE_NAME_CZ = '_update.log';
+    protected const DOWNLOAD_TXT_FILE_NAME_CZ = '_update.zip';
     protected const SEARCH_XML_FILE_NAME = '_order.xml';
 
     private const TIMESLOTS_DATA = [
@@ -115,8 +108,8 @@ class DetailController extends SprykerDetailController
             $bucket = $this->getS3Bucket();
             $mrechantReference = $orderTransfer->getMerchantReference();
             if ($isCashierTxt) {
-                $keyName = $mrechantReference . '_' . $idSalesOrder . static::SEARCH_TXT_FILE_NAME;
-                $tempName = $mrechantReference . '_' . $idSalesOrder . static::DOWNLOAD_TXT_FILE_NAME;
+                $keyName = $mrechantReference . '_' . $idSalesOrder . static::SEARCH_TXT_FILE_NAME_CZ;
+                $tempName = $mrechantReference . '_' . $idSalesOrder . static::DOWNLOAD_TXT_FILE_NAME_CZ;
             } else {
                 $keyName = $mrechantReference . '_' . $orderCreateDate . '_' . $orderReference . static::SEARCH_XML_FILE_NAME;
                 $tempName = $mrechantReference . '_' . $orderCreateDate . '_' . $orderReference . static::SEARCH_XML_FILE_NAME;
@@ -275,230 +268,5 @@ class DetailController extends SprykerDetailController
             'timeSlotsData' => $timeSlotsData,
             'cellPhone' => $cellPhone,
         ], $blockResponseData);
-    }
-
-    /**
-     * @param string $storeName
-     *
-     * @return void
-     */
-    protected function executeTimeSlotCheckJenkinsJob(string $storeName): void
-    {
-        $domainName = $_SERVER["HTTP_HOST"];
-        $jenkinsDomainName = str_replace('backoffice', 'jenkins', $domainName);
-        $isDevelopmentEnvironment = $this->checkIsDevelopmentEnvironment($jenkinsDomainName);
-        if ($isDevelopmentEnvironment) {
-            $jenkinsDomainName = static::LOCAL_SCHEDULER_NAME;
-        }
-        $fullUrl = 'http://' . $jenkinsDomainName . '/job/' . $storeName . '__timeslot-check/build';
-        $curl = curl_init();
-        try {
-            curl_setopt_array($curl, [
-                CURLOPT_URL => $fullUrl,
-                CURLOPT_RETURNTRANSFER => true,
-                CURLOPT_ENCODING => '',
-                CURLOPT_MAXREDIRS => 10,
-                CURLOPT_TIMEOUT => 0,
-                CURLOPT_FOLLOWLOCATION => true,
-                CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-                CURLOPT_CUSTOMREQUEST => 'POST',
-            ]);
-            curl_exec($curl);
-        } catch (Exception $e) {
-        } finally {
-            curl_close($curl);
-        }
-    }
-
-    /**
-     * @param string $jenkinsDomainName
-     *
-     * @return bool
-     */
-    protected function checkIsDevelopmentEnvironment(string $jenkinsDomainName): bool
-    {
-        if ($jenkinsDomainName === 'scheduler.shop.globus.local') {
-            return true;
-        }
-
-        return false;
-    }
-
-    /**
-     * @param array $events
-     *
-     * @return array
-     */
-    public function eventsAllowedForSupportUser(array $events): array
-    {
-        foreach ($events as $key => $groupItem) {
-            foreach ($events[$key] as $subKey => $item) {
-                if ($item != 'cancel due to not in stock') {
-                    unset($events[$key][$subKey]);
-                }
-            }
-        }
-
-        return $events;
-    }
-
-    /**
-     * @return bool
-     */
-    protected function isCurrentUserSupervisorOrAdmin(): bool
-    {
-        $userFacade = $this->getFactory()->getUserFacade();
-
-        $idUser = $userFacade->getCurrentUser()->getIdUser();
-        $userGroups = $this->getFactory()->getAclFacade()->getUserGroups($idUser);
-
-        foreach ($userGroups->getGroups() as $group) {
-            if ($group->getName() === AclConstants::SUPERVISOR_GROUP) {
-                return true;
-            } elseif ($group->getName() === AclConstants::ROOT_GROUP) {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-    /**
-     * @return bool
-     */
-    protected function isCurrentUserSupervisor(): bool
-    {
-        $userFacade = $this->getFactory()->getUserFacade();
-
-        $idUser = $userFacade->getCurrentUser()->getIdUser();
-        $userGroups = $this->getFactory()->getAclFacade()->getUserGroups($idUser);
-
-        foreach ($userGroups->getGroups() as $group) {
-            if ($group->getName() === AclConstants::SUPERVISOR_GROUP) {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-    /**
-     * @return array
-     */
-    public function getPickingZones(): array
-    {
-        $qry = $this->getFactory()->getPickingZoneQuery();
-        $zones = $qry->find();
-
-        $pickingZones = [];
-        foreach ($zones as $zone) {
-            $pickingZones[$zone->getIdPickingZone()] = $zone->getName();
-        }
-
-        return $pickingZones;
-    }
-
-    /**
-     * @param \Symfony\Component\HttpFoundation\Request $request
-     *
-     * @return \Symfony\Component\HttpFoundation\JsonResponse
-     */
-    public function setJsonContainerToZoneAction(Request $request)
-    {
-        $error = false;
-        if (isset($_GET['containerID'])) {
-            $containerID = $request->query->get("containerID");
-            $checkContainer = $this->getFactory()->checkUsedContainer($containerID);
-
-            if ($checkContainer === true) {
-                $error = true;
-            } else {
-                if (isset($_GET['idSalesOrder']) && isset($_GET['idZone'])) {
-                    $this->getFactory()->setZoneContainerShelf($_GET['idSalesOrder'], $_GET['idZone'], $_GET['containerID'], '');
-                }
-            }
-        } else {
-            $error = true;
-        }
-
-        $responseArray = [
-            'error' => $error,
-        ];
-
-        return new JsonResponse($responseArray);
-    }
-
-    /**
-     * @return \Aws\S3\S3Client
-     */
-    protected function getS3Client(): S3Client
-    {
-        $credentials = Config::get(S3Constants::S3_CONSTANTS_CASHIER_FILE);
-        $key = '';
-        $secret = '';
-        if (isset($credentials[static::LOCAL_AWS_CONFIG_CREDENTIALS][static::LOCAL_AWS_CONFIG_CREDENTIALS_KEY])) {
-            $key = $credentials[static::LOCAL_AWS_CONFIG_CREDENTIALS][static::LOCAL_AWS_CONFIG_CREDENTIALS_KEY];
-        }
-
-        if (isset($credentials[static::LOCAL_AWS_CONFIG_CREDENTIALS][static::LOCAL_AWS_CONFIG_CREDENTIALS_SECRET])) {
-            $secret = $credentials[static::LOCAL_AWS_CONFIG_CREDENTIALS][static::LOCAL_AWS_CONFIG_CREDENTIALS_SECRET];
-        }
-
-        return new S3Client([
-            'region' => 'eu-central-1',
-            'version' => 'latest',
-            'credentials' => [
-                'key' => $key,
-                'secret' => $secret,
-            ],
-        ]);
-    }
-
-    /**
-     * @return string
-     */
-    protected function getS3Bucket(): string
-    {
-        return Config::get(S3Constants::S3_CASHIER_FILE_BUCKETS);
-    }
-
-    /**
-     * @param string $fileLink
-     *
-     * @return void
-     */
-    protected function downloadFile(string $fileLink)
-    {
-        try {
-            if (file_exists($fileLink)) {
-                header('Content-Description: File Transfer');
-                header('Content-Type: application/octet-stream');
-                header('Content-Disposition: attachment; filename=' . basename($fileLink));
-                header('Expires: 0');
-                header('Cache-Control: must-revalidate');
-                header('Pragma: public');
-                header('Content-Length: ' . filesize($fileLink));
-                ob_clean();
-                flush();
-                readfile($fileLink);
-
-                unlink($fileLink);
-                exit;
-            }
-        } catch (Exception $exception) {
-            $this->addErrorMessage($exception->getMessage());
-        }
-    }
-
-    /**
-     * @param string $orderDate
-     *
-     * @return string
-     */
-    protected function getFilenameDate(string $orderDate): string
-    {
-        $date = new DateTime($orderDate);
-
-        return $date->format(static::EXPORT_XML_FILE_NAME_DATE_FORMAT);
     }
 }
