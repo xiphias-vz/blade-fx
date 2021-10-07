@@ -1,4 +1,6 @@
 import Component from 'ShopUi/models/component';
+import {eventNames} from 'commander';
+import {array} from 'fast-glob/out/utils';
 
 export default class TogglerAccordion extends Component {
     protected triggers: HTMLElement[];
@@ -11,10 +13,14 @@ export default class TogglerAccordion extends Component {
     }
 
     protected mapEvents(): void {
-        this.triggers.forEach(trigger => trigger.addEventListener('click', this.triggerHandler.bind(this, trigger)));
+        this.triggers.forEach(trigger => {
+            const eventFunction = (e: Event) => this.triggerHandler(trigger, e);
+            trigger.addEventListener('click', eventFunction.bind(this));
+        });
     }
 
-    protected triggerHandler(trigger: HTMLElement): void {
+    protected triggerHandler(trigger: HTMLElement, event: Event): void {
+        event.stopImmediatePropagation();
         const togglerContent = document.getElementsByClassName(
             trigger.getAttribute('data-toggle-target-class-name')
         )[0];

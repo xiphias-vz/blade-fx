@@ -9,13 +9,15 @@
         {% set itemNavigation = data.navigation %}
         {% if itemNavigation.key == 'FOOTER_NAVIGATION_CATEGORIES' %}
             {% set title = 'footer.categories' | trans %}
+            {% set counter =  "--1" %}
         {% endif %}
         {% if itemNavigation.key == 'NAVIGATION_FOOTER_ELEMENT' %}
             {% set title = 'footer.globus' | trans %}
+            {% set counter =  "--2" %}
         {% endif %}
 
         {% set triggerClass = 'js-navigation-footer__trigger' %}
-        {% set targetClass = 'js-navigation-footer__target' %}
+        {% set targetClass = 'js-navigation-footer__target' ~ counter%}
         {% set itemClass = 'navigation-footer__col' %}
         {% set itemContentHiddenClass = 'is-hidden-sm-only' %}
 
