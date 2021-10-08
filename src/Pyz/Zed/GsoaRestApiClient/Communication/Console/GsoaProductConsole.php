@@ -493,16 +493,14 @@ class GsoaProductConsole extends Console
                             $counter++;
                             $d = $this->getProductStockArray();
                             $d["sapnumber"] = $item["vanr"];
-                            if (!empty($item["productInHouse"]["stockAmount"])) {
-                                $key = array_search($item["vanr"], array_column($resultStock, 'productWamasNr'));
-                                if (!empty($key)) {
-                                    $d["instock"] = str_replace(",", ".", $resultStock[$key]["availableAmount"]);
-                                    if ($resultStock[$key][static::COLUMN_FICTIVE_STOCK] === true) {
-                                        $d["instock"] = 999999;
-                                    }
-                                } else {
-                                    $d["instock"] = str_replace(",", ".", $item["productInHouse"]["stockAmount"]);
+                            $key = array_search($item["vanr"], array_column($resultStock, 'productWamasNr'));
+                            if (isset($key)) {
+                                $d["instock"] = str_replace(",", ".", $resultStock[$key]["availableAmount"]);
+                                if ($resultStock[$key][static::COLUMN_FICTIVE_STOCK] === true) {
+                                    $d["instock"] = 999999;
                                 }
+                            } else {
+                                $d["instock"] = str_replace(",", ".", $item["productInHouse"]["stockAmount"]);
                             }
                             $d["store"] = $store;
                             if (isset($item["productInHouse"]["placement"])) {
