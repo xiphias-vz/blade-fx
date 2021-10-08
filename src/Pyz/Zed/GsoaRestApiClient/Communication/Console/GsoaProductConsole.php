@@ -352,7 +352,12 @@ class GsoaProductConsole extends Console
                             $d = $this->getProductPriceArray();
                             $d["sapnumber"] = $item["productWamasNr"];
                             $d["store"] = $store;
-                            $price = $item["prices"][0];
+                            if (count($item["prices"]) > 1) {
+                                $price = $this->getValidPrice($item["prices"]);
+                            } else {
+                                $price = $item["prices"][0];
+                            }
+
                             $d["price"] = str_replace(".", ",", $price["actualPrice"]);
                             if (empty($price["actionNumber"])) {
                                 $d["pseudoprice"] = "0,00";
@@ -370,6 +375,76 @@ class GsoaProductConsole extends Console
                 }
             }
         }
+    }
+
+    /**
+     * @param array $prices
+     *
+     * @return mixed|null
+     */
+    private function getValidPrice(array $prices)
+    {
+        $price = $this->getPriceByType($prices, "VKA0", null, null);
+        if ($price == null) {
+            $price = $this->getPriceByType($prices, "ZTP0", ["20", "40", "22", "24"], null);
+        }
+        if ($price == null) {
+            $price = $this->getPriceByType($prices, "ZTP0", null, ["20", "40", "22", "24", null]);
+        }
+        if ($price == null) {
+            $price = $this->getPriceByType($prices, "VKP0", ["10", "60"], null);
+        }
+        if ($price == null) {
+            $price = $this->getPriceByType($prices, "VKP0", null, ["10", "60", null]);
+        }
+        if ($price == null) {
+            $price = $prices[0];
+        }
+
+        return $price;
+    }
+
+    /**
+     * @param array $prices
+     * @param string $priceType
+     * @param array|null $validChangeReason
+     * @param array|null $nonValidChangeReason
+     *
+     * @return mixed|null
+     */
+    private function getPriceByType(array $prices, string $priceType, ?array $validChangeReason, ?array $nonValidChangeReason)
+    {
+        foreach ($prices as $price) {
+            if ($price["priceType"] === $priceType) {
+                $changeReason = $price["changeReason"];
+                $isValid = true;
+                if (!empty($validChangeReason)) {
+                    $isValid = false;
+                    foreach ($validChangeReason as $reason) {
+                        if ($reason === $changeReason || $reason == null) {
+                            $isValid = true;
+                            break;
+                        }
+                    }
+                }
+                if (!empty($nonValidChangeReason)) {
+                    $isValid = true;
+                    foreach ($nonValidChangeReason as $reason) {
+                        if ($reason == null) {
+                            break;
+                        }
+                        if ($reason === $changeReason) {
+                            $isValid = false;
+                            break;
+                        }
+                    }
+                }
+
+                return $isValid ? $price : null;
+            }
+        }
+
+        return null;
     }
 
     /**
