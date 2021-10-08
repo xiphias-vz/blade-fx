@@ -20,6 +20,7 @@ class CashierOrderContentBuilder extends IntCashierOrderContentBuilder
 
     protected const HEADER_KEY_IDENTIFIER_CZ = '1072';
     protected const POSITION_KEY_IDENTIFIER_CZ = '1073';
+    protected const DEFAULT_SERVICE_FEE_POSITION_NAME = 'Poplatek            ';
 
     /**
      * @var \Pyz\Zed\CashierOrderExportCZ\CashierOrderExportConfig
