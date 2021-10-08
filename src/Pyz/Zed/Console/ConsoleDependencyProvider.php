@@ -22,6 +22,7 @@ use Pyz\Zed\DataImport\Communication\Console\DataImportFileManagerConsole;
 use Pyz\Zed\DataImport\Communication\Console\DataImportImagesFileManagerConsole;
 use Pyz\Zed\DataImport\Communication\Console\UpdateAvailabilityAfterImportConsole;
 use Pyz\Zed\DataImport\DataImportConfig;
+use Pyz\Zed\DeleteRowsFromTransitionLogScript\Communication\Console\DeleteRowsFromTransitionLogScriptConsole;
 use Pyz\Zed\Development\Communication\Console\AcceptanceCodeTestConsole;
 use Pyz\Zed\Development\Communication\Console\ApiCodeTestConsole;
 use Pyz\Zed\Development\Communication\Console\FunctionalCodeTestConsole;
@@ -361,6 +362,7 @@ class ConsoleDependencyProvider extends SprykerConsoleDependencyProvider
 
             new DataExportConsole(),
             new MultipleStatusesFixScriptConsole(),
+            new DeleteRowsFromTransitionLogScriptConsole(),
             new PublisherTriggerEventsConsole(),
             new QueueSetupConsole(),
         ];

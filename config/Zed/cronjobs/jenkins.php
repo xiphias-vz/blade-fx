@@ -221,6 +221,15 @@ if ($storeCodeBucket == 'CZ') {
         'enable' => true,
         'stores' => ['OST'],
     ];
+
+    //Maintain log table size
+    $jobs[] = [
+        'name' => 'transition-log-old-date-delete',
+        'command' => 'vendor/bin/console transition-log-old-date:delete',
+        'schedule' => '0 13 * * *',
+        'enable' => true,
+        'stores' => ['OST'],
+    ];
 } else {
     $jobs[] = [
         'name' => 'data-import-full',
@@ -283,5 +292,14 @@ if ($storeCodeBucket == 'CZ') {
     'schedule' => '0 9 * * 3',
     'enable' => true,
     'stores' => ['EIN'],
+    ];
+
+    //Maintain log table size
+    $jobs[] = [
+        'name' => 'transition-log-old-date-delete',
+        'command' => 'vendor/bin/console transition-log-old-date:delete',
+        'schedule' => '0 13 * * *',
+        'enable' => true,
+        'stores' => ['EIN'],
     ];
 }
