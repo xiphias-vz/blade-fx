@@ -87,13 +87,6 @@ $config[ShipmentConstants::MAIN_GLOBUS_CUSTOMER_CLICK_AND_COLLECT_SHIPMENT_METHO
 
 $config[ShipmentConstants::GUEST_CUSTOMER_CLICK_AND_COLLECT_SHIPMENT_METHOD_PRICE] = 3900;
 
-// ----------- GSOA API
-$config[ApiClient::GSOA_ROOT_URL] = 'https://gsoat.globus.cz';
-$config[TokenProvider::GSOA_CLIENT_ID] = "webAppSpryker";
-$config[TokenProvider::GSOA_CLIENT_SECRET] = "D55910C6-0811-4749-B55C-3BCCEDC9BF91";
-
-$config[ProductImageConstants::IMAGES_HOST_URL] = 'https://gsoat.globus.cz/OnlineAsset/3/asset?assetID=';
-
 // ---------- FileSystem
 $config[FileSystemConstants::FILESYSTEM_SERVICE] = [
     'files' => [
