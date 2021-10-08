@@ -74,6 +74,7 @@ class ProfileForm extends SprykerProfileForm
             'label' => 'customer.profile.last_name',
             'label_attr' => ($storeCodeBucket == 'CZ') ? ['class' => 'label-CZ'] : [],
             'required' => true,
+            'disabled' => true,
             'constraints' => [
                 $this->createNotBlankConstraint(),
                 $this->createMinLengthConstraint($options),
@@ -98,6 +99,7 @@ class ProfileForm extends SprykerProfileForm
             'label' => 'customer.profile.first_name',
             'label_attr' => ($storeCodeBucket == 'CZ') ? ['class' => 'label-CZ'] : [],
             'required' => true,
+            'disabled' => true,
             'constraints' => [
                 $this->createNotBlankConstraint(),
                 $this->createMinLengthConstraint($options),
