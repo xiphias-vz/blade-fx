@@ -5,18 +5,10 @@
     tag: 'popup-ui-shipment-form',
 } %}
 
-{% set currentCodeBucket = app.currentCodeBucket %}
-
 {% block body %}
     <div class="{{ config.name }}__overlay">
         <input type="hidden" id="pickup_times" value="{{ 'popup.shipment.form.available.pick-up.times' | trans }}">
-        {% if currentCodeBucket == 'DE' %}
-            <input type="hidden" id="footer_message" value="{{ 'popup.shipment.form.footer.message' | trans }}">
-        {% else %}
-            <input type="hidden" id="footer_message" value="{{ 'popup.shipment.form.footer.message_CZ_1' | trans }}
-                <br>{{ 'popup.shipment.form.footer.message_CZ_2' | trans }}
-                <br>{{ 'popup.shipment.form.footer.message_CZ_3' | trans }}">
-        {% endif %}
+        <input type="hidden" id="footer_message" value="{{ 'popup.shipment.form.footer.message' | trans }}">
         <input type="hidden" id="locale" value="{{ 'popup.shipment.form.locale' | trans }}">
         <div class="{{ config.name }}__container">
             <div class="{{ config.name }}__title">
