@@ -72,7 +72,6 @@ $config[TokenProvider::GSOA_CLIENT_SECRET] = "1A5CE779-02EA-42A5-959C-9909C2C116
 
 $config[ProductImageConstants::IMAGES_HOST_URL] = 'https://gapi.globus.cz/OnlineAsset/3/asset?assetID=';
 
-
 // ----------- Google Tag Manager
 $config[GoogleTagManagerConstants::CONTAINER_ID] = 'GTM-PPGX4LT';
 
@@ -86,29 +85,6 @@ $config[CodeBucketConstants::CURRENCY_SYMBOL] = 'Kč';
 $config[ShipmentConstants::MAIN_GLOBUS_CUSTOMER_CLICK_AND_COLLECT_SHIPMENT_METHOD_PRICE] = 3900;
 
 $config[ShipmentConstants::GUEST_CUSTOMER_CLICK_AND_COLLECT_SHIPMENT_METHOD_PRICE] = 3900;
-
-// ---------- FileSystem
-$config[FileSystemConstants::FILESYSTEM_SERVICE] = [
-    'files' => [
-        'sprykerAdapterClass' => LocalFilesystemBuilderPlugin::class,
-        'root' => APPLICATION_ROOT_DIR . '/data/' . APPLICATION_STORE . '/media/',
-        'path' => 'files/',
-    ],
-    'cashier_order_local' => [
-        'sprykerAdapterClass' => LocalFilesystemBuilderPlugin::class,
-        'root' => APPLICATION_ROOT_DIR . '/data/' . APPLICATION_STORE . '/export/',
-        'path' => 'files/',
-    ],
-    'globus_sftp' => [
-        'sprykerAdapterClass' => SftpFileSystemBuilderPlugin::class,
-        'host' => getenv('GLOBUS_SFTP_HOST'),
-        'port' => getenv('GLOBUS_SFTP_PORT'),
-        'username' => getenv('GLOBUS_SFTP_USERNAME'),
-        'password' => getenv('GLOBUS_SFTP_PASSWORD'),
-        'root' => getenv('GLOBUS_SFTP_ROOT'),
-    ],
-];
-
 
 // ----------- Days in the week abbr
 $config[PickerConstants::DAYS_IN_THE_WEEK] = [
