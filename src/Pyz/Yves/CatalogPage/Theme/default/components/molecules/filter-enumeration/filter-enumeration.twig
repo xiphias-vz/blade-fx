@@ -32,21 +32,25 @@
                 {% block filterItem %}
                     {% set docCountText = filterValue.docCount ? ' (' ~ filterValue.docCount ~ ')' : '' %}
                     {% set label = (label == 'Label' or label == 'supplier' or label == 'herkunftsland' or label == 'wine_quality_classification') ? filterValue.value : label %}
-                    <li class="menu__item">
-                        {% include inputComponent with {
-                            modifiers: modifiers,
-                            class: data.parentJsName,
-                            attributes: {
-                                name: data.filter.config.parameterName ~ (isMultiSelect ? '[]' : ''),
-                                value: filterValue.value,
-                                checked: (filterValue.value in activeValues),
-                                category: data.filter.config.parameterName
-                            },
-                            data: {
-                                label: label | trans | capitalize ~ docCountText,
-                            },
-                        } only %}
-                    </li>
+                    {% set filterName = data.filter.config.parameterName|lower %}
+                    {% if ( filterName is same as('bio') or filterName is same as('vegan') or filterName is same as('vegetarisch') or filterName is same as('laktosefrei') or filterName is same as('glutenfrei') or filterName is same as('fairtrade') ) and filterValue.value == 0 %}
+                    {% else %}
+                        <li class="menu__item">
+                            {% include inputComponent with {
+                                modifiers: modifiers,
+                                class: data.parentJsName,
+                                attributes: {
+                                    name: data.filter.config.parameterName ~ (isMultiSelect ? '[]' : ''),
+                                    value: filterValue.value,
+                                    checked: (filterValue.value in activeValues),
+                                    category: data.filter.config.parameterName
+                                },
+                                data: {
+                                    label: label | trans | capitalize ~ docCountText,
+                                },
+                            } only %}
+                        </li>
+                    {% endif %}
                 {% endblock %}
             {% endfor %}
             {% if label|lower is same as('supplier')%}
