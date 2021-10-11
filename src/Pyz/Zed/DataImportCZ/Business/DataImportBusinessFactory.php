@@ -11,6 +11,7 @@ use Pyz\Zed\DataImport\Business\DataImportBusinessFactory as PyzDataImportBusine
 use Pyz\Zed\DataImportCZ\Business\Model\BaseProduct\ProductDepositOptionStep;
 use Pyz\Zed\DataImportCZ\Business\Model\ProductAbstract\ProductAbstractWriterStep;
 use Pyz\Zed\DataImportCZ\Business\Model\ProductConcrete\ProductConcreteWriter;
+use Pyz\Zed\DataImportCZ\Business\Model\ProductPrice\ProductPriceWriterStep;
 use Spryker\Zed\DataImport\Business\Model\DataImportStep\DataImportStepInterface;
 use Spryker\Zed\DataImport\Business\Model\DataImportStep\PublishAwareStep;
 
@@ -50,5 +51,18 @@ class DataImportBusinessFactory extends PyzDataImportBusinessFactory
     protected function createProductDepositOptionStep(): PublishAwareStep
     {
         return new ProductDepositOptionStep();
+    }
+
+    /**
+     * @return \Pyz\Zed\DataImportCZ\Business\Model\ProductPrice\ProductPriceWriterStep
+     */
+    public function createPriceProductWriterStep()
+    {
+        return new ProductPriceWriterStep(
+            $this->createNumberFormatter(),
+            $this->getMoneyFacade(),
+            $this->getProductUpdateFacade(),
+            $this->getConfig()
+        );
     }
 }

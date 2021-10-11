@@ -42,10 +42,16 @@ class ProductAbstractSearchDataMapper extends SprykerProductAbstractSearchDataMa
         if (isset($data['attributes']['sortingorder'][0])) {
             $sortingOrder = (int)$data['attributes']['sortingorder'][0];
             $this->pageMapBuilder->addIntegerSort($pageMapTransfer, 'sortingOrder', (int)$data['attributes']['sortingorder'][0]);
+        } else {
+            $this->pageMapBuilder->addIntegerSort($pageMapTransfer, 'sortingOrder', 0);
         }
 
         if (isset($data['prices']['EUR']['PRICE_PER_KG']['DEFAULT'])) {
             $pricePerKg = $data['prices']['EUR']['PRICE_PER_KG']['DEFAULT'];
+        }
+
+        if (isset($data['prices']['CZK']['PRICE_PER_KG']['DEFAULT'])) {
+            $pricePerKg = $data['prices']['CZK']['PRICE_PER_KG']['DEFAULT'];
         }
 
         $supplier = null;
