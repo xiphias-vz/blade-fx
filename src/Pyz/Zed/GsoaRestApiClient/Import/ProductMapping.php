@@ -171,7 +171,7 @@ class ProductMapping
                     }
                 }
                 if ($key == 'bruttoWeightKg') {
-                    if ($item["articleType"] === 1) {
+                    if ($item["articleType"] === 1 || $item["articleType"] === 4) {
                         $d[$this->importSchemaPropertyNameMap[$key][0]] = $item[$key];
                     } else {
                         $d[$this->importSchemaPropertyNameMap[$key][0]] = null;

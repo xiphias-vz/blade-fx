@@ -10,7 +10,8 @@
     originalAmount: null,
     noPriceText: '---',
     calculatedPrice: null,
-    itemWeight: null
+    itemWeight: null,
+    prefix: null
 } %}
 
 {% block body %}
@@ -21,7 +22,7 @@
             {{ data.noPriceText }}
         {%- else -%}
             <span class="{{ component.renderClass(config.name ~ '__amount', modifiers) }}">
-                {{ data.amount | money }}
+                {{ data.prefix }}{{ data.amount | money }}
             </span>
         {%- endif -%}
 
