@@ -11,11 +11,11 @@ use Elastica\Query;
 use Elastica\Query\AbstractQuery;
 use Elastica\Query\BoolQuery;
 use Elastica\Query\Nested;
-use Elastica\Query\Script;
 use Elastica\Query\Term;
 use Generated\Shared\Search\PageIndexMap;
 use Generated\Shared\Transfer\SearchContextTransfer;
 use Spryker\Client\Kernel\AbstractPlugin;
+use Spryker\Client\ProductLabel\Plugin\ProductLabelFacetConfigTransferBuilderPlugin;
 use Spryker\Client\Search\Dependency\Plugin\QueryInterface;
 use Spryker\Client\SearchExtension\Dependency\Plugin\SearchContextAwareQueryInterface;
 
@@ -102,10 +102,10 @@ class SaleSearchQueryPlugin extends AbstractPlugin implements QueryInterface, Se
      */
     protected function createSearchQuery()
     {
-//        $saleProductsFilter = $this->createSaleProductsFilter();
-        $scriptQueryFilter = new Script("return doc['search-result-data.prices.EUR.GROSS_MODE.DEFAULT'].value < doc['search-result-data.prices.EUR.GROSS_MODE.ORIGINAL'].value");
+        $saleProductsFilter = $this->createSaleProductsFilter();
+
         $boolQuery = new BoolQuery();
-        $boolQuery->addFilter($scriptQueryFilter);
+        $boolQuery->addFilter($saleProductsFilter);
 
         return $this->createQuery($boolQuery);
     }
@@ -120,7 +120,7 @@ class SaleSearchQueryPlugin extends AbstractPlugin implements QueryInterface, Se
         $saleProductsFilter = new Nested();
         $saleProductsFilter
             ->setQuery($saleProductsQuery)
-            ->setPath(PageIndexMap::INTEGER_FACET);
+            ->setPath(PageIndexMap::STRING_FACET);
 
         return $saleProductsFilter;
     }
@@ -130,33 +130,26 @@ class SaleSearchQueryPlugin extends AbstractPlugin implements QueryInterface, Se
      */
     protected function createSaleProductsQuery()
     {
-        //TODO: temporary solution until we install spryker/product-label: 3.0.0
-//        $localeName = $this->getFactory()
-//            ->getStore()
-//            ->getCurrentLocale();
-//        $labelName = $this->getFactory()
-//            ->getConfig()
-//            ->getLabelSaleName();
-//
-//        $storageProductLabelTransfer = $this->getFactory()
-//            ->getProductLabelStorageClient()
-//            ->findLabelByName($labelName, $localeName);
-//
-//        $labelId = $storageProductLabelTransfer ? $storageProductLabelTransfer->getIdProductLabel() : 0;
+        $store = $this->getFactory()->getStore();
+
+        $labelName = $this->getFactory()
+            ->getConfig()
+            ->getLabelSaleName();
+
+        $storageProductLabelTransfer = $this->getFactory()
+            ->getProductLabelStorageClient()
+            ->findLabelByName($labelName, $store->getCurrentLocale(), $store->getStoreName());
+
+        $labelId = $storageProductLabelTransfer ? $storageProductLabelTransfer->getIdProductLabel() : 0;
+
         $newProductsBoolQuery = new BoolQuery();
-//        $stringFacetFieldFilter = $this->createStringFacetFieldFilter(ProductLabelFacetConfigTransferBuilderPlugin::NAME);
-//        $stringFacetValueFilter = $this->createStringFacetValueFilter($labelId);
 
-
-//        $newProductsBoolQuery
-//            ->addFilter($stringFacetFieldFilter)
-//            ->addFilter($stringFacetValueFilter);
-
-        $termQuery = new Term();
-        $termQuery->setTerm(PageIndexMap::INTEGER_FACET_FACET_NAME, 'price-ORIGINAL-EUR-GROSS_MODE');
+        $stringFacetFieldFilter = $this->createStringFacetFieldFilter(ProductLabelFacetConfigTransferBuilderPlugin::NAME);
+        $stringFacetValueFilter = $this->createStringFacetValueFilter($labelId);
 
         $newProductsBoolQuery
-            ->addFilter($termQuery);
+            ->addFilter($stringFacetFieldFilter)
+            ->addFilter($stringFacetValueFilter);
 
         return $newProductsBoolQuery;
     }
@@ -182,7 +175,7 @@ class SaleSearchQueryPlugin extends AbstractPlugin implements QueryInterface, Se
     protected function createStringFacetValueFilter($idProductLabel)
     {
         $termQuery = new Term();
-        $termQuery->setTerm(PageIndexMap::STRING_FACET_FACET_VALUE, $idProductLabel);
+        $termQuery->setTerm(PageIndexMap::STRING_FACET_FACET_VALUE, (string)$idProductLabel);
 
         return $termQuery;
     }
