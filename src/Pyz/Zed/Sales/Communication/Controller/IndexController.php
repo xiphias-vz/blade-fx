@@ -110,14 +110,13 @@ class IndexController extends SprykerIndexController
 
                         for ($timeId = 0; $timeId < 5; $timeId++) {
                             $time = $this->getTimeSlotByIndex($timeId);
-                            $capacity = "";
                             if ($timeSlot == $time) {
                                 $capacity = $capacityToSave;
                             } else {
                                 $capacity = $capacitiesFromDefaultDay[$timeId]["Capacity"];
                             }
 
-                            $response = $this->getFactory()->getTimeSlotsFacade()->setDefaultTimeSlotsForSelectedDate($selectedStore, $date, $day, $time, $capacitiesFromDefaultDay[$timeId]["Capacity"]);
+                            $response = $this->getFactory()->getTimeSlotsFacade()->setDefaultTimeSlotsForSelectedDate($selectedStore, $date, $day, $time, $capacity);
                         }
                     }
                 } else {
