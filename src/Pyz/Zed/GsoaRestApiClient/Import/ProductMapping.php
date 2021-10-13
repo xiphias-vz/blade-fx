@@ -172,6 +172,11 @@ class ProductMapping
                 ->find()
                 ->toArray(SpyProductTableMap::COL_SAP_NUMBER);
         }
+        if ($item["articleType"] === 4) {
+            if (empty($item['saleUnit'])) {
+                $item['saleUnit'] = 'kg';
+            }
+        }
         $d = ProductMapping::$dataSetSchema;
         foreach (array_keys($item) as $key) {
             if (array_key_exists($key, $this->importSchemaPropertyNameMap)) {
