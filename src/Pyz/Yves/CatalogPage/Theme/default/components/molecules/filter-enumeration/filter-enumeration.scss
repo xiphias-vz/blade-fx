@@ -7,6 +7,24 @@
         .menu {
             .headline {
                 margin: 25px 0 10px 0;
+                font-size: 16px;
+            }
+
+            &__item {
+                .checkbox {
+                    &__label {
+                        font-weight: normal;
+                        color:$setting-color-globus-black;
+                        text-transform: capitalize;
+                    }
+                    &__input:checked {
+                        color: $setting-color-globus-darkOrange;
+
+                        & ~ .checkbox__label {
+                            color: $setting-color-globus-darkOrange;
+                        }
+                    }
+                }
             }
 
             .delete-category-filter-supplier {

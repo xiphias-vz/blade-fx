@@ -34,6 +34,19 @@
             }
         }
 
+        .enumeration-filter-holder {
+            margin-top: 20px;
+            border-top: rem(1) solid $setting-color-globus-lightGray;
+
+            .title {
+                margin-bottom: 10px;
+            }
+
+            .headline {
+                font-size: 16px;
+            }
+        }
+
         &__top-panel-button {
             position: absolute;
             top: 50%;
