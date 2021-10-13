@@ -10,6 +10,8 @@ namespace Pyz\Zed\GsoaRestApiClient\Import;
 use Orm\Zed\Country\Persistence\SpyCountryQuery;
 use Orm\Zed\Locale\Persistence\SpyLocaleQuery;
 use Orm\Zed\PriceProduct\Persistence\PyzUnitComparisonsQuery;
+use Orm\Zed\Product\Persistence\Map\SpyProductTableMap;
+use Orm\Zed\Product\Persistence\SpyProductQuery;
 use Orm\Zed\Sales\Persistence\PyzCountryLocalizedQuery;
 
 class ProductMapping
@@ -153,12 +155,23 @@ class ProductMapping
     private $productWithOutEan = 0;
 
     /**
+     * @var array
+     */
+    private static $productList;
+
+    /**
      * @param array $item
      *
      * @return string[]
      */
     public function mapValues(array $item)
     {
+        if (static::$productList == null) {
+            static::$productList = SpyProductQuery::create()
+                ->select([SpyProductTableMap::COL_SAP_NUMBER, SpyProductTableMap::COL_ASSORTMENT_ZONE])
+                ->find()
+                ->toArray(SpyProductTableMap::COL_SAP_NUMBER);
+        }
         $d = ProductMapping::$dataSetSchema;
         foreach (array_keys($item) as $key) {
             if (array_key_exists($key, $this->importSchemaPropertyNameMap)) {
@@ -181,7 +194,11 @@ class ProductMapping
         }
 
         $d['grundpreispflicht'] = 1;
-        $d['assortmentzone'] = 'Trocken';
+        if (isset(static::$productList[$d["sapnumber"]])) {
+            $d['assortmentzone'] = static::$productList[$d["sapnumber"]][SpyProductTableMap::COL_ASSORTMENT_ZONE];
+        } else {
+            $d['assortmentzone'] = 'Trocken';
+        }
         $this->setBaseUnits($d);
         $this->setNutritionValues($d, $item);
         $this->setAssets($d, $item);
