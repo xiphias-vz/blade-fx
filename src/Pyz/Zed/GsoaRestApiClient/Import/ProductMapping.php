@@ -202,7 +202,7 @@ class ProductMapping
         if (isset(static::$productList[$d["sapnumber"]])) {
             $d['assortmentzone'] = static::$productList[$d["sapnumber"]][SpyProductTableMap::COL_ASSORTMENT_ZONE];
         } else {
-            $d['assortmentzone'] = 'Trocken';
+            $d['assortmentzone'] = 'no_az';
         }
         $this->setBaseUnits($d);
         $this->setNutritionValues($d, $item);
