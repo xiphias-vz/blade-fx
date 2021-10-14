@@ -494,7 +494,7 @@ class GsoaProductConsole extends Console
                             $d = $this->getProductStockArray();
                             $d["sapnumber"] = $item["vanr"];
                             $key = array_search($item["vanr"], array_column($resultStock, 'productWamasNr'));
-                            if (isset($key)) {
+                            if ($key) {
                                 $d["instock"] = str_replace(",", ".", $resultStock[$key]["availableAmount"]);
                                 if ($resultStock[$key][static::COLUMN_FICTIVE_STOCK] === true) {
                                     $d["instock"] = 999999;
@@ -506,14 +506,14 @@ class GsoaProductConsole extends Console
                             if (isset($item["productInHouse"]["placement"])) {
                                 if ((is_array($item["productInHouse"]["placement"])) && (count($item["productInHouse"]["placement"]) > 0)) {
                                     $d["shelf"] = substr($item["productInHouse"]["placement"][0]["placement"], 0, 3);
-                                    $d["shelffield"] = substr($item["productInHouse"]["placement"][0]["placement"], 3, 3);
-                                    $d["shelffloor"] = substr($item["productInHouse"]["placement"][0]["placement"], 6, 2);
+                                    $d["shelffield"] = substr($item["productInHouse"]["placement"][0]["placement"], 3, 2);
+                                    $d["shelffloor"] = substr($item["productInHouse"]["placement"][0]["placement"], 5, 1);
                                 }
                             } elseif (isset($item["productInHouse"]["placements"])) {
                                 if ((is_array($item["productInHouse"]["placements"])) && (count($item["productInHouse"]["placements"]) > 0)) {
                                     $d["shelf"] = substr($item["productInHouse"]["placements"][0]["placement"], 0, 3);
-                                    $d["shelffield"] = substr($item["productInHouse"]["placements"][0]["placement"], 3, 3);
-                                    $d["shelffloor"] = substr($item["productInHouse"]["placements"][0]["placement"], 6, 2);
+                                    $d["shelffield"] = substr($item["productInHouse"]["placements"][0]["placement"], 3, 2);
+                                    $d["shelffloor"] = substr($item["productInHouse"]["placements"][0]["placement"], 5, 1);
                                 }
                             } else {
                                 $d["shelf"] = '000';
