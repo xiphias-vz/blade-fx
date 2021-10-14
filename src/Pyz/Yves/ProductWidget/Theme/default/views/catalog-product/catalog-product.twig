@@ -22,6 +22,12 @@
         {% set firstImage = data.product.images | first %}
         {% if firstImage.external_url_small is defined %}
             {% set image = firstImage.external_url_small %}
+            {% if image ends with "type=1" %}
+                {% set splitUrl = firstImage.external_url_small | split('type=1') %}
+                {% set typeThreeUrlEnd = 'type=3' %}
+                {% set newThumbUrl = splitUrl[0] ~ typeThreeUrlEnd %}
+                {% set image = newThumbUrl %}
+            {% endif %}
         {% endif %}
     {% endif %}
 
