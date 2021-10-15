@@ -178,7 +178,7 @@ if ($storeCodeBucket == 'CZ') {
     $jobs[] = [
         'name' => 'stock-import-2-hours',
         'command' => 'vendor/bin/install -r gsoa-based-ost-stock-import',
-        'schedule' => '0 */2 * * *',
+        'schedule' => '0 02-22/2 * * *',
         'enable' => true,
         'stores' => ['OST'],
     ];
