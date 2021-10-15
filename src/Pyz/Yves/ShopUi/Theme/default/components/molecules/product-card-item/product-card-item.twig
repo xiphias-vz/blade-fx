@@ -20,6 +20,7 @@
 {% set canEditCart = (not is_granted('IS_AUTHENTICATED_FULLY') or can('WriteSharedCartPermissionPlugin', data.idQuote)) and data.canEditCart %}
 {% set productItemBox = (data.productItem.productOptions is defined and data.productItem.productOptions is empty) ? '' : config.name ~ '__box--with-options' %}
 {% set defaultImage = publicPath("/images/kein_bild_vorhanden.png") %}
+{% set currentCodeBucket = app.currentCodeBucket %}
 
 {% block body %}
     <div class="{{ component.renderClass(config.name ~ '__box', modifiers) }} {{ productItemBox }}">
@@ -86,7 +87,16 @@
 
                                     {% block summaryContent %}
                                         {% block summary %}
-                                            {% if data.productItem.productOptions is defined and data.productItem.productOptions is not empty %}
+                                            {% if currentCodeBucket == 'DE' %}
+                                                {% if data.productItem.productOptions is defined and data.productItem.productOptions is not empty %}
+                                                    {% include molecule('product-item-summary') with {
+                                                        modifiers: ['cart'] | merge(data.productOptionsModifiers),
+                                                        data: {
+                                                            productItem: data.productItem,
+                                                        },
+                                                    } only %}
+                                                {% endif %}
+                                            {% else %}
                                                 {% include molecule('product-item-summary') with {
                                                     modifiers: ['cart'] | merge(data.productOptionsModifiers),
                                                     data: {

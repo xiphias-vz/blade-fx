@@ -9,8 +9,14 @@
     pfandbetrag: ''
 } %}
 
+{% set currentCodeBucket = app.currentCodeBucket %}
+
 {% block component %}
-    {% if data.options is not empty %}
+    {% if currentCodeBucket == 'DE' %}
+        {% if data.options is not empty %}
+            {{ parent() }}
+        {% endif %}
+    {% else %}
         {{ parent() }}
     {% endif %}
 {% endblock %}
@@ -19,7 +25,11 @@
     {% if data.pfandbetrag is not empty %}
         <ul>
             <li class="{{ component.renderClass(config.name ~ '__item', modifiers) }} grid">
+            {% if currentCodeBucket == 'DE' %}
                 + {{ 'mail.order.confirmation.deposit' | trans }} {{ data.pfandbetrag | replace('.', ',') }}
+            {% else %}
+                + {{ 'mail.order.confirmation.deposit' | trans }} {{ data.pfandbetrag }} Kč
+            {% endif %}
             </li>
         </ul>
     {% endif %}

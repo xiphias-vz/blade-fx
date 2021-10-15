@@ -132,6 +132,9 @@ class GsoaProductConsole extends Console
                     //$data = [];
                     $fileArticlePath = "//data/data/import/spryker/2.globusCZ_articles.csv";
                     $fileAlternativeEanPath = "//data/data/import/spryker/99.globusCZ_article_gtins.csv";
+                    if (empty($store)) {
+                        $store = 4007;
+                    }
                     file_put_contents($fileAlternativeEanPath, implode('|', array_keys(AlternativeEanMapping::$dataSetSchema)) . PHP_EOL);
                     file_put_contents($fileArticlePath, implode('|', array_keys(ProductMapping::$dataSetSchema)) . PHP_EOL);
 
@@ -140,6 +143,7 @@ class GsoaProductConsole extends Console
                     $counter = 0;
                     $pageSize = 2000;
                     $page = 0;
+                    $returnablePackagingsPrices = [];
                     try {
                         while ($page > -1 && $page < 200) {
                             $result = $client->getProducts($filter, true, $page, $pageSize);
@@ -155,6 +159,20 @@ class GsoaProductConsole extends Console
                             foreach ($result["products"] as $item) {
                                 if (count($item["eshopCategories"]) > 0 && !empty($item["vatRate"])) {
                                     $counter++;
+                                    if (is_array($item["returnablePackagings"])) {
+                                        $returnablePackagingsWamasNr = $item["returnablePackagings"][0]["productWamasNr"];
+                                        $price = null;
+                                        if (!array_key_exists($returnablePackagingsWamasNr, $returnablePackagingsPrices)) {
+                                            $prices = $client->getProductPricesByHouse($store, true, 'ESHOP', "2021-05-01", "ProductWamasNr:in " . $returnablePackagingsWamasNr, 0, 10);
+                                            $price = $this->getValidPrice($prices["productPrices"][0]["prices"]);
+                                            $returnablePackagingsPrices[$returnablePackagingsWamasNr] = $price;
+                                        } else {
+                                            $price = $returnablePackagingsPrices[$returnablePackagingsWamasNr];
+                                        }
+                                        if (!empty($price)) {
+                                            $item["returnablePackagings"]["price"] = $price;
+                                        }
+                                    }
                                     $d = $map->mapValues($item);
                                     $d["Classification_ID"] = implode(";", $item["eshopCategories"]);
                                     file_put_contents($fileArticlePath, implode('|', $d) . PHP_EOL, FILE_APPEND);

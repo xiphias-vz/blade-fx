@@ -126,7 +126,7 @@ class ProductMapping
         'storageInstructions' => ['temperaturecondition'],
         'fsk' => ['ageLimitation'],
         'ageLimitation' => ['Altersempfehlung'],
-         'maximumSalesQuantity' => ['orderlimit'],
+        'maximumSalesQuantity' => ['orderlimit'],
         'productGroup' => ['groupid'],
         'bruttoWeightKg' => ['einzelgewicht'],
         'amount' => ['grundpreisinhalt'],
@@ -209,6 +209,7 @@ class ProductMapping
         $this->setAssets($d, $item);
         $this->setProductTags($d, $item);
         $this->setEanCode($d, $item);
+        $this->setDepositPrice($d, $item);
         if (is_array($item["countriesOfOrigin"])) {
             $countries = [];
             foreach ($item["countriesOfOrigin"] as $country) {
@@ -396,6 +397,21 @@ class ProductMapping
         if (empty($value["ordernumber"])) {
             $value["ordernumber"] = $item["wamasNr"];
             $this->productWithOutEan++;
+        }
+    }
+
+    /**
+     * @param array $value
+     * @param array $item
+     *
+     * @return void
+     */
+    protected function setDepositPrice(array &$value, array $item): void
+    {
+        if (is_array($item["returnablePackagings"])) {
+            if (isset($item["returnablePackagings"]["price"]["actualPrice"])) {
+                $value["pfandbetrag"] = $item["returnablePackagings"]["price"]["actualPrice"];
+            }
         }
     }
 

@@ -3917,7 +3917,7 @@ customer-confirmation.phone.validation.criteria,Handynummer-Richtlinien: +49 XXX
 customer.account.banking-information,"Bankovní údaje",cs_CZ
 customer.account.banking-information,Bank details,en_US
 customer.account.banking-information,Bankdaten,de_DE
-customer.order.item_price.excluding_pfand,"(plus záloha:% s)",cs_CZ
+customer.order.item_price.excluding_pfand,"(+ Záloha láhev %s Kč)",cs_CZ
 customer.order.item_price.excluding_pfand,"(Excl. deposit: %s)",en_US
 customer.order.item_price.excluding_pfand,"(zzgl. Pfand: %s)",de_DE
 merchant_switcher.message,"Přejít z %currentMerchant% na %newMerchant%? Z důvodu odlišné dostupnosti nebude popřípadě možné převzít do nákupního seznamu všechny produkty.",cs_CZ
@@ -4002,7 +4002,7 @@ mail.registration.subject,"Vielen Dank für deine Anmeldung beim Globus Abholser
 mail.registration.subject,"Děkujeme, že jste se zaregistrovali u výdejní služby Globus!",cs_CZ
 mail.registration.subject,"Thank you for your registration in the Spryker Click&Collect&Delivery Shop!",en_US
 cart.clear,Warenkorb löschen,de_DE
-cart.clear,"Vyprázdnit  košík",cs_CZ
+cart.clear,"Vyprázdnit košík",cs_CZ
 cart.clear,Delete cart,en_US
 mail.order-cancelled.subject,"Ihre Bestellung wurde storniert!",de_DE
 mail.order-cancelled.subject,"Váš nákup byl stornován",cs_CZ
@@ -4612,7 +4612,7 @@ mail.order.confirmation.item.quantity,Anzahl,de_DE
 mail.order.confirmation.collect.number,"Váš osobní kód pro vyzvednutí",cs_CZ
 mail.order.confirmation.collect.number,Your personal pick-up code,en_US
 mail.order.confirmation.collect.number,Dein persönlicher Abholcode,de_DE
-mail.order.confirmation.deposit,"Záloha",cs_CZ
+mail.order.confirmation.deposit,"Záloha láhev",cs_CZ
 mail.order.confirmation.deposit,Deposit,en_US
 mail.order.confirmation.deposit,Pfand,de_DE
 Laktosefrei,"Bez laktózy",cs_CZ
