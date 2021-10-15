@@ -242,6 +242,7 @@ class GsoaProductConsole extends Console
                 return Console::CODE_ERROR;
             } elseif (count($result) >> 0) {
                 $output->writeln("Data returned: " . count($result));
+                //$output->write(json_encode($result)); //TODO make optional parameter for console output
 
                 return Console::CODE_SUCCESS;
             } else {
@@ -343,7 +344,7 @@ class GsoaProductConsole extends Console
                     $filter = "ProductWamasNr:in " . implode(",", $p);
                     $c = 0;
                     $p = [];
-                    $result = $client->getProductPricesByHouse($store, true, 'ESHOP', "2021-05-01", $filter, 0, $pageSize);
+                    $result = $client->getProductPricesByHouse($store, true, 'ESHOP', '', $filter, 0, $pageSize);
                     if ((is_array($result))
                         && (count($result) > 0)
                         && (is_array($result["productPrices"]) && count($result["productPrices"]) > 0)) {
