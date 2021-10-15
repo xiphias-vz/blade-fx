@@ -13,6 +13,7 @@
 
     <transfer name="CustomerEvent">
         <property name="InteractionType" type="string" description="SHOP_CHECKOUT_SUCCES"/>
+        <property name="UserName" type="string" description="MKTCLOUDUSER" />
         <property name="CommunicationMedium" type="string" description="Z_CLICK_AND_COLLECT"/>
         <property name="SourceSystemType" type="string" description="Z_CLICK_AND_COLLECT"/>
         <property name="SourceSystemId" type="string" description="GetNow"/>

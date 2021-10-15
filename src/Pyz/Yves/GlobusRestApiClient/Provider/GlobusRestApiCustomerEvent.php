@@ -22,6 +22,7 @@ class GlobusRestApiCustomerEvent
     public const PRODUCTS_ITEM_TYPE = "SAP_ERP_MATNR";
     public const CONTENT_TITLE = "Order";
     public const VALUATION = "";
+    public const USER_NAME = "MKTCLOUDUSER";
 
     /**
      * @var \Generated\Shared\Transfer\CustomerEventTransfer $event
@@ -50,6 +51,7 @@ class GlobusRestApiCustomerEvent
         $this->event = new CustomerEventTransfer();
         $this->event->setInteractionType(static::INTERACTION_TYPE)
             ->setCommunicationMedium(static::COMMUNICATION_MEDIUM)
+            ->setUserName(static::USER_NAME)
             ->setSourceSystemType(static::SOURCE_SYSTEM_TYPE)
             ->setSourceSystemId(static::SOURCE_SYSTEM_ID)
             ->setContentTitle($sourceObjectId)
