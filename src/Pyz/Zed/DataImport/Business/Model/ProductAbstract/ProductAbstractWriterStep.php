@@ -145,8 +145,6 @@ class ProductAbstractWriterStep extends PublishAwareStep implements DataImportSt
      */
     protected function removeUnnecessaryAttributes(array $productAttributes): array
     {
-        $productAttributes = $this->removeAttributesWithValueZeroForFiltersCategory($productAttributes);
-
         unset($productAttributes[ProductConfig::KEY_ACTIVE]);
         unset($productAttributes[ProductConfig::KEY_TAX]);
         unset($productAttributes[ProductConfig::KEY_MAIN_IMAGE_FILE_NAME]);
@@ -157,35 +155,6 @@ class ProductAbstractWriterStep extends PublishAwareStep implements DataImportSt
         unset($productAttributes[ProductConfig::KEY_SAP_NUMBER]);
 
         return $productAttributes;
-    }
-
-    /**
-     * @param array $attributes
-     *
-     * @return array
-     */
-    protected function removeAttributesWithValueZeroForFiltersCategory(array $attributes): array
-    {
-        if ($attributes[ProductConfig::BIO] == 0) {
-            unset($attributes[ProductConfig::BIO]);
-        }
-        if ($attributes[ProductConfig::VEGAN] == 0) {
-            unset($attributes[ProductConfig::VEGAN]);
-        }
-        if ($attributes[ProductConfig::VEGETARISCH] == 0) {
-            unset($attributes[ProductConfig::VEGETARISCH]);
-        }
-        if ($attributes[ProductConfig::LAKTOSEFREI] == 0) {
-            unset($attributes[ProductConfig::LAKTOSEFREI]);
-        }
-        if ($attributes[ProductConfig::GLUTENFREI] == 0) {
-            unset($attributes[ProductConfig::GLUTENFREI]);
-        }
-        if ($attributes[ProductConfig::FAIRTRADE] == 0) {
-            unset($attributes[ProductConfig::FAIRTRADE]);
-        }
-
-        return $attributes;
     }
 
     /**
