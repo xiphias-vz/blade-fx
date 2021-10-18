@@ -294,6 +294,16 @@ class SalesFacade extends SprykerSalesFacade implements SalesFacadeInterface
     }
 
     /**
+     * @param string $storeName
+     *
+     * @return void
+     */
+    public function executeTimeSlotCheckJenkinsJob(string $storeName): void
+    {
+        $this->getFactory()->createExecuteTimeSlotCapacityUpdateJob()->executeTimeSlotCheckJenkinsJob($storeName);
+    }
+
+    /**
      * @param int $idSalesOrder
      *
      * @return \Generated\Shared\Transfer\OrderTransfer
@@ -350,35 +360,6 @@ class SalesFacade extends SprykerSalesFacade implements SalesFacadeInterface
         $transfer->fromArray($item->toArray(), true);
 
         $response = $manager->saveSalesShipment($transfer, $orderTransfer);
-    }
-
-    /**
-     * @return void
-     */
-    public function checkAndUpdateTimeSlotsCapacity(): void
-    {
-        $client = $this->getFactory()->getStorageClient();
-        foreach ($client->getKeys('*click*:*-*:*:*') as $key) {
-            $key = explode(':', $key, 2)[1];
-            $val = $client->get($key);
-            $keyParts = explode('_', $key);
-            $merchantReference = $keyParts[0];
-            $deliveryDate = $keyParts[count($keyParts) - 2] . '_' . $keyParts[count($keyParts) - 1];
-            $deliveryDate = substr($deliveryDate, 0, strrpos($deliveryDate, ':'));
-
-            $currentOrdersCount = count($this
-                ->findIdSalesOrdersByOrderFilterCriteria(
-                    (new OrderCriteriaFilterTransfer())
-                        ->setMerchantReferences([$merchantReference])
-                        ->setRequestedDeliveryDate($deliveryDate)
-                        ->setShipmentName('Click & Collect')
-                        ->setExcludeCancelledOrders(true)
-                ));
-
-            if (!$val || $val !== $currentOrdersCount) {
-                $client->set($key, $currentOrdersCount);
-            }
-        }
     }
 
     /**

@@ -447,6 +447,7 @@
             formData.append("store", store)
             formData.append("changedData", changedData);
             formData.append("formToSave", formToSave);
+            formData.append("storeName", selectedStoreEl.options[selectedStoreEl.selectedIndex].text);
 
             let xhttp = new XMLHttpRequest();
             xhttp.onreadystatechange = function () {

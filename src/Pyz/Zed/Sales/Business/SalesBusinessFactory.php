@@ -14,6 +14,7 @@ use Pyz\Zed\Oms\Business\OmsFacadeInterface;
 use Pyz\Zed\Product\Business\ProductFacadeInterface;
 use Pyz\Zed\Sales\Business\InvoiceOrder\InvoiceSalesOrderReader;
 use Pyz\Zed\Sales\Business\Model\Customer\PaginatedCustomerOrderOverview;
+use Pyz\Zed\Sales\Business\Model\ExecuteTimeSlotCapacityUpdateJob\ExecuteTimeSlotCapacityUpdateJob;
 use Pyz\Zed\Sales\Business\Model\Order\MinimumAgeHydrator;
 use Pyz\Zed\Sales\Business\Model\Order\MinimumAgeHydratorInterface;
 use Pyz\Zed\Sales\Business\Model\Order\OrderStatusHydrator;
@@ -273,6 +274,14 @@ class SalesBusinessFactory extends SprykerSalesBusinessFactory
     public function createOrderItemExpander(): OrderItemExpander
     {
         return new OrderItemExpander($this->getRepository());
+    }
+
+    /**
+     * @return \Pyz\Zed\Sales\Business\Model\ExecuteTimeSlotCapacityUpdateJob\ExecuteTimeSlotCapacityUpdateJob
+     */
+    public function createExecuteTimeSlotCapacityUpdateJob(): ExecuteTimeSlotCapacityUpdateJob
+    {
+        return new ExecuteTimeSlotCapacityUpdateJob();
     }
 
     /**

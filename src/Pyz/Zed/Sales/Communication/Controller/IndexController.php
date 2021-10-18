@@ -87,6 +87,7 @@ class IndexController extends SprykerIndexController
         $formToSave = $request->request->get("formToSave");
         $isSuccess = [];
         $response = 0;
+        $storeName = $request->request->get("storeName");
 
         foreach ($timeSlots as $value) {
             $timeSlotTimeDate = key($value);
@@ -134,7 +135,7 @@ class IndexController extends SprykerIndexController
         }
 
         $this->getFactory()->getTimeSlotsFacade()->executeEvent(['merchants_list']);
-        $this->getFacade()->checkAndUpdateTimeSlotsCapacity();
+        $this->getFacade()->executeTimeSlotCheckJenkinsJob($storeName);
 
         if (in_array(false, $isSuccess)) {
             $response = ["isSuccess" => false];

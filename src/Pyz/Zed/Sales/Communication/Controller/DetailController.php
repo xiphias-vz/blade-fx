@@ -37,7 +37,6 @@ class DetailController extends SprykerDetailController
     protected const LOCAL_AWS_CONFIG_CREDENTIALS_SECRET = 'secret';
     protected const EXPORT_ARCHIVE_FILE_PATH = '../../src/Pyz/Zed/Sales/Communication/CashierFiles/';
     protected const EXPORT_XML_FILE_NAME_DATE_FORMAT = 'Ymd';
-    protected const LOCAL_SCHEDULER_NAME = 'scheduler.globus.local';
     protected const SEARCH_TXT_FILE_NAME = '_order.txt';
     protected const DOWNLOAD_TXT_FILE_NAME = '_order.zip';
     protected const SEARCH_XML_FILE_NAME = '_order.xml';
@@ -160,7 +159,7 @@ class DetailController extends SprykerDetailController
             $spySalesOrderAddress->fromArray($orderTransfer->getBillingAddress()->toArray());
 
             $spySalesOrder->setBillingAddress($spySalesOrderAddress);
-            $this->executeTimeSlotCheckJenkinsJob($orderTransfer->getStore());
+            $this->getFacade()->executeTimeSlotCheckJenkinsJob($orderTransfer->getStore());
             $this->getFacade()->sendOrderConfirmationMail($spySalesOrder);
             $orderTransfer = $this->getFacade()->findOrderWithPickingSalesOrdersByIdSalesOrder($idSalesOrder);
             $groupedOrderItems = $this->getFacade()
@@ -275,53 +274,6 @@ class DetailController extends SprykerDetailController
             'timeSlotsData' => $timeSlotsData,
             'cellPhone' => $cellPhone,
         ], $blockResponseData);
-    }
-
-    /**
-     * @param string $storeName
-     *
-     * @return void
-     */
-    protected function executeTimeSlotCheckJenkinsJob(string $storeName): void
-    {
-        $domainName = $_SERVER["HTTP_HOST"];
-        $jenkinsDomainName = str_replace('backoffice', 'jenkins', $domainName);
-        $isDevelopmentEnvironment = $this->checkIsDevelopmentEnvironment($jenkinsDomainName);
-        if ($isDevelopmentEnvironment) {
-            $jenkinsDomainName = static::LOCAL_SCHEDULER_NAME;
-        }
-        $fullUrl = 'http://' . $jenkinsDomainName . '/job/' . $storeName . '__timeslot-check/build';
-        $curl = curl_init();
-        try {
-            curl_setopt_array($curl, [
-                CURLOPT_URL => $fullUrl,
-                CURLOPT_RETURNTRANSFER => true,
-                CURLOPT_ENCODING => '',
-                CURLOPT_MAXREDIRS => 10,
-                CURLOPT_TIMEOUT => 0,
-                CURLOPT_FOLLOWLOCATION => true,
-                CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-                CURLOPT_CUSTOMREQUEST => 'POST',
-            ]);
-            curl_exec($curl);
-        } catch (Exception $e) {
-        } finally {
-            curl_close($curl);
-        }
-    }
-
-    /**
-     * @param string $jenkinsDomainName
-     *
-     * @return bool
-     */
-    protected function checkIsDevelopmentEnvironment(string $jenkinsDomainName): bool
-    {
-        if ($jenkinsDomainName === 'scheduler.shop.globus.local') {
-            return true;
-        }
-
-        return false;
     }
 
     /**

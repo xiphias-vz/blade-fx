@@ -301,14 +301,16 @@ interface SalesFacadeInterface extends SprykerSalesFacadeInterface
     public function updateRequstedDeliveryDateForOrder(OrderTransfer $orderTransfer, string $requestedDeliveryDate): void;
 
     /**
-     * @return void
-     */
-    public function checkAndUpdateTimeSlotsCapacity(): void;
-
-    /**
      * @param \Orm\Zed\Sales\Persistence\SpySalesOrder $salesOrderEntity
      *
      * @return void
      */
     public function sendOrderConfirmationMail(SpySalesOrder $salesOrderEntity): void;
+
+    /**
+     * @param string $storeName
+     *
+     * @return void
+     */
+    public function executeTimeSlotCheckJenkinsJob(string $storeName): void;
 }

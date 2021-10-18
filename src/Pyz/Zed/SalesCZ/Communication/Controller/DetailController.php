@@ -153,7 +153,7 @@ class DetailController extends IntDetailController
             $spySalesOrderAddress->fromArray($orderTransfer->getBillingAddress()->toArray());
 
             $spySalesOrder->setBillingAddress($spySalesOrderAddress);
-            $this->executeTimeSlotCheckJenkinsJob($orderTransfer->getStore());
+            $this->getFacade()->executeTimeSlotCheckJenkinsJob($orderTransfer->getStore());
             $this->getFacade()->sendOrderConfirmationMail($spySalesOrder);
             $orderTransfer = $this->getFacade()->findOrderWithPickingSalesOrdersByIdSalesOrder($idSalesOrder);
             $groupedOrderItems = $this->getFacade()
