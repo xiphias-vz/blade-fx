@@ -114,7 +114,7 @@
                         {% if currentCodeBucket == 'DE' %}
                             <div class="{{ config.name }}__supplierNameAndWeight"><span class="{{ config.name }}__supplierAndName col--md-8">{{ brand ?? '' }} - {{ title }}</span><span class="{{ config.name }}__weight col--md-4">{{ (basePriceContent / 100)  | replace('.', ',') }} {{ basePriceUnit }}</span></div>
                         {% else %}
-                            <div class="{{ config.name }}__supplierNameAndWeight"><span class="{{ config.name }}__supplierAndName col--md-8">{{ title }}</span><span class="{{ config.name }}__weight col--md-4">{{ (basePriceContent / 100)  | replace('.', ',') }} {{ basePriceUnit }}</span></div>
+                            <div class="{{ config.name }}__supplierNameAndWeight"><span class="{{ config.name }}__supplierAndName col--md-8">{{ title }}</span></div>
                         {% endif %}
                         <div class="{{ config.name }}__eanAndWeight eanData" data-pricePerKg="{{ pricePerKg }}" data-ean="{{ itemSku }}"><span class="{{ config.name }}__ean col--md-8"><span class="{{ config.name }}__toBold">EAN: {{ itemSku ?? '' }}</span></span><span class="{{ config.name }}__price col--md-4">{{ (itemPrice / 100) | replace('.', ',') }} {{ currentCurrencySymbol }}</span></div>
                     {% endblock %}
