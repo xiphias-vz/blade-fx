@@ -121,13 +121,6 @@
                                 <span class="{{ config.name }}__cart-note">{{ data.cartNote }} </span>
                             {% else %}
                                 <span class="{{ config.name }}__title-CZ {{ config.name }}__title-CZ--sub">{{ 'cart.checkout.address.abholstation.note.down' | trans }}</span>
-
-                                {% if data.isSubstitutionAllowed %}
-                                    <span class="{{ config.name }}__title-CZ {{ config.name }}__title-CZ--sub">{{ 'checkout.summary.page.substitutions.info.checked' | trans }}</span>
-                                {% else %}
-                                    <span class="{{ config.name }}__title-CZ {{ config.name }}__title-CZ--sub">{{ 'checkout.summary.page.substitutions.info.unchecked' | trans }}</span>
-                                {% endif %}
-
                                 <span class="{{ config.name }}__cart-note">{{ data.cartNote }} </span>
                             {% endif %}
                         </div>

@@ -17,7 +17,7 @@ actions:
     -   data_entity: tax
         source: data/import/tax_CZ.csv
     -   data_entity: shipment
-        source: data/import/shipment.csv
+        source: data/import/shipment_CZ.csv
     -   data_entity: shipment-price
         source: data/import/shipment_price_CZ.csv
     -   data_entity: shipment-method-store
