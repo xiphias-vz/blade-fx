@@ -539,6 +539,9 @@ class GsoaProductConsole extends Console
                                 $d["shelffield"] = '000';
                                 $d["shelffloor"] = '00';
                             }
+                            $d["shelf"] = str_replace('\\', "", $d["shelf"]);
+                            $d["shelffield"] = str_replace('\\', "", $d["shelffield"]);
+                            $d["shelffloor"] = str_replace('\\', "", $d["shelffloor"]);
 
                             file_put_contents($fileName, implode(';', $d) . PHP_EOL, FILE_APPEND);
                         }
