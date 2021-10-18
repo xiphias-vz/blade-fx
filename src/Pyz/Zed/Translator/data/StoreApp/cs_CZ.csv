@@ -229,3 +229,9 @@ container.scan.order.error.pop-up_5,""
 select.containers.add.box,"Přidat box"
 popup.success.ui_1,"byl"
 popup.success.ui_2,"přidělen"
+barcode.length.error.alert,„EAN musí být 13 nebo 8 znaků dlouhý“
+input.value.error.greater.alert_1,"Vstupní hodnota by neměla být vyšší než"
+input.value.error.greater.alert_2,""
+input.value.error.less.alert_1,"Vstupní hodnota by neměla být nižší než"
+input.value.error.less.alert_2,""
+

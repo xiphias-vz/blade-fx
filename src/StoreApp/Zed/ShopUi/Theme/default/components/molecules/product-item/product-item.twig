@@ -185,6 +185,11 @@
     } only %}
         {% block content %}
             <input type="hidden" id="wrong_EAN" value="{{ 'wrong.ean' | trans }}">
+            <input type="hidden" id="barcode_length_error_alert" value="{{ 'barcode.length.error.alert' | trans }}">
+            <input type="hidden" id="input_value_error_greater_alert_1" value="{{ 'input.value.error.greater.alert_1' | trans }}">
+            <input type="hidden" id="input_value_error_greater_alert_2" value="{{ 'input.value.error.greater.alert_2' | trans }}">
+            <input type="hidden" id="input_value_error_less_alert_1" value="{{ 'input.value.error.less.alert_1' | trans }}">
+            <input type="hidden" id="input_value_error_less_alert_2" value="{{ 'input.value.error.less.alert_2' | trans }}">
             <div class="popup-error-holder">
                 <div class="error-status">{{ 'error_page.title' | trans }}</div>
                 <div class="error-info">

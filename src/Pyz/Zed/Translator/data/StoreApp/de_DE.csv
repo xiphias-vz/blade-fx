@@ -230,4 +230,9 @@ container.scan.order.error.pop-up_5,"aktiviert"
 select.containers.add.box,Box hinzufügen
 popup.success.ui_1,"wurde"
 popup.success.ui_2,"zugeordnet"
+barcode.length.error.alert,Der Barcode sollte 13 oder 8 Zeichen lang sein
+input.value.error.greater.alert_1,"Der Eingabewert sollte nicht größer als"
+input.value.error.greater.alert_2,"sein"
+input.value.error.less.alert_1,"Der Eingabewert sollte nicht kleiner als"
+input.value.error.less.alert_2,"sein"
 

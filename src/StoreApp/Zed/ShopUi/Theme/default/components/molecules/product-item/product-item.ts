@@ -59,6 +59,11 @@ export default class ProductItem extends Component {
     private weightMax: number;
     private weightMin: number;
     protected wrongEAN: HTMLInputElement;
+    protected barcodeLengthErrorAlert: HTMLInputElement;
+    protected inputValueErrorGreaterAlert1: HTMLInputElement;
+    protected inputValueErrorGreaterAlert2: HTMLInputElement;
+    protected inputValueErrorLessAlert1: HTMLInputElement;
+    protected inputValueErrorLessAlert2: HTMLInputElement;
 
     protected readyCallback(): void {
     }
@@ -92,6 +97,11 @@ export default class ProductItem extends Component {
         this.boldLastThreeEanNumbers();
         this.$previousSku = $('#formPreviousSku').val();
         this.wrongEAN = <HTMLInputElement>document.querySelector('#wrong_EAN');
+        this.barcodeLengthErrorAlert = <HTMLInputElement>document.querySelector('#barcode_length_error_alert');
+        this.inputValueErrorGreaterAlert1 = <HTMLInputElement>document.querySelector('#input_value_error_greater_alert_1');
+        this.inputValueErrorGreaterAlert2 = <HTMLInputElement>document.querySelector('#input_value_error_greater_alert_2');
+        this.inputValueErrorLessAlert1 = <HTMLInputElement>document.querySelector('#input_value_error_less_alert_1');
+        this.inputValueErrorLessAlert2 = <HTMLInputElement>document.querySelector('#input_value_error_less_alert_2');
         if(this.$previousSku == null || this.$previousSku == '')
         {
             this.focusFirstEanField();
@@ -237,12 +247,12 @@ export default class ProductItem extends Component {
         const inputWeightMin = Number(this.$weightField.attr('min'));
 
         if (inputWeightValue > inputWeightMax) {
-            alert(`Der Eingabewert sollte nicht größer als ${inputWeightMax} sein`);
+            alert(this.inputValueErrorGreaterAlert1.value ${inputWeightMax} this.inputValueErrorGreaterAlert2.value);
 
             return false;
         }
         if (inputWeightValue < inputWeightMin) {
-            alert(`Der Eingabewert sollte nicht kleiner als ${inputWeightMin} sein`);
+            alert(this.inputValueErrorLessAlert1.value ${inputWeightMin} this.inputValueErrorLessAlert2.value);
 
             return false;
         }else {
@@ -297,7 +307,7 @@ export default class ProductItem extends Component {
             }
 
             if($formattedScanInput.length != 13 && $formattedScanInput.length != 8){
-                alert("Der Barcode sollte 13 oder 8 Zeichen lang sein");
+                alert(this.barcodeLengthErrorAlert.value);
             }
             else if ($formattedScanInput.length == 8)
             {
