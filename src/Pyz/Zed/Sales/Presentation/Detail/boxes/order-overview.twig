@@ -396,7 +396,7 @@
                                 }
                                 else if(action.includes("/oms/trigger/submit-trigger-event-for-order?event=Abholung")){
                                     omsActionForms[i].style.display = "none";
-                                    var nodeAbholung = '<button type="button" id="oms_trigger_form_submit_abholungBest" name="oms_trigger_formAbholungBest[submit]" class="btn btn-primary btn-sm" style="margin-right: 10px;">Abholung bestätigen</button>';
+                                    var nodeAbholung = '<button type="button" id="oms_trigger_form_submit_abholungBest" name="oms_trigger_formAbholungBest[submit]" class="btn btn-primary btn-sm" style="margin-right: 10px;">{{ 'order.overview.pick-up.confirm' | trans }}</button>';
                                     var lastAbholung = btnOmsActions.querySelector(".ibox-content");
                                     lastAbholung.insertAdjacentHTML('beforeend', nodeAbholung);
                                 }
@@ -408,7 +408,7 @@
                                 }
 
                                 if(i === omsActionForms.length - 1){
-                                    var nodeCancel = '<button type="button" id="oms_trigger_form_submit_cancel" name="oms_trigger_formCancel[submit]" class="btn btn-danger btn-sm" style="margin-right: 10px;">Bestellung stornieren</button>';
+                                    var nodeCancel = '<button type="button" id="oms_trigger_form_submit_cancel" name="oms_trigger_formCancel[submit]" class="btn btn-danger btn-sm" style="margin-right: 10px;">{{ 'order.overview.cancel.order' | trans }}</button>';
                                     var lastCancel = btnOmsActions.querySelector(".ibox-content");
                                     lastCancel.insertAdjacentHTML('beforeend', nodeCancel);
                                 }
@@ -499,10 +499,10 @@
 
                     function CancelModalFill()
                     {
-                        let cancelModalTitle = "Bestellung stornieren";
-                        let cancelModalContent = "Möchten Sie die Bestellung: {{ order.orderReference }} wirklich stornieren?";
-                        let cancelModaDecline = "Nein, abbrechen";
-                        let cancelModalConfirm = "Ja, Bestellung stornieren";
+                        let cancelModalTitle = "{{ 'order.overview.cancel.order' | trans }}";
+                        let cancelModalContent = "{{ 'order.overview.cancel.order.question_1' | trans }} {{ order.orderReference }} {{ 'order.overview.cancel.order.question_2' | trans }}";
+                        let cancelModaDecline = "{{ 'order.overview.cancel.order.no' | trans }}";
+                        let cancelModalConfirm = "{{ 'order.overview.cancel.order.yes' | trans }}";
                         let cancelModalButtonHtml = '<button type="button" id="modalConfirmYesCancel" class="btn btn-customPrimary btn-sm">' + cancelModalConfirm + '</button>';
 
                         let hTag = document.createElement("h3");
@@ -572,10 +572,10 @@
 
                     function ConfirmCollectionModalFill()
                     {
-                        let cancelModalTitle = "Abholung bestätigen";
-                        let cancelModalContent = "Möchten Sie die Abholung für die Bestellung: {{ order.orderReference }} wirklich bestätigen?";
-                        let cancelModaDecline = "Nein, abbrechen";
-                        let cancelModalConfirm = "Ja, Abholung bestätigen";
+                        let cancelModalTitle = "{{ 'order.overview.collection.confirm' | trans }}";
+                        let cancelModalContent = "{{ 'order.overview.collection.question_1' | trans }} {{ order.orderReference }} {{ 'order.overview.pick-up.question_2' | trans }}";
+                        let cancelModaDecline = "{{ 'order.overview.collection.no' | trans }}";
+                        let cancelModalConfirm = "{{ 'order.overview.collection.yes' | trans }}";
                         let confirmModalButtonHtml = '<button type="button" id="modalConfirmYesCollection" class="btn btn-customPrimary btn-sm">' + cancelModalConfirm + '</button>';
 
                         let hTag = document.createElement("h3");

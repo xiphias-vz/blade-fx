@@ -175,4 +175,15 @@ Address1,"Adresse 1"
 Address2,"Adresse 2"
 "Cell phone",Mobiltelefon
 "Edit Address for Order: %idSalesOrder%","Adresse für Bestellung %idSalesOrder% bearbeiten"
+order.overview.cancel.order,Bestellung stornieren
+order.overview.cancel.order.question_1,"Möchten Sie die Bestellung:"
+order.overview.cancel.order.question_2,"wirklich stornieren?"
+order.overview.cancel.order.no,"Nein, abbrechen"
+order.overview.cancel.order.yes,"Ja, Bestellung stornieren"
+order.overview.collection.confirm,"Abholung bestätigen"
+order.overview.collection.question_1,"Möchten Sie die Abholung für die Bestellung:"
+order.overview.collection.question_2,"wirklich bestätigen?"
+order.overview.collection.no,"Nein, abbrechen"
+order.overview.collection.yes,"Ja, Abholung bestätigen"
+Reset,Zurücksetzen
 

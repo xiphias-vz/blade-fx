@@ -121,4 +121,14 @@ Address1,"Address 1"
 Address2,"Address 2"
 "Cell phone","Cell Phone"
 "Edit Address for Order: %idSalesOrder%","Edit Address for Order: %idSalesOrder%"
-
+order.overview.cancel.order,Cancel order
+order.overview.cancel.order.question_1,"Would you like the order:"
+order.overview.cancel.order.question_2,"really cancel?"
+order.overview.cancel.order.no,"No, cancel"
+order.overview.cancel.order.yes,"Yes, cancel your order"
+order.overview.collection.confirm,"Confirm collection"
+order.overview.collection.question_1,"Would you like the collection for the order:"
+order.overview.collection.question_2,"really confirm?"
+order.overview.collection.no,"No, cancel"
+order.overview.collection.yes,"Yes, confirm collection"
+Reset,Reset
