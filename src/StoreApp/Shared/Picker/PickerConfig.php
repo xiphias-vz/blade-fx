@@ -18,10 +18,6 @@ class PickerConfig
             'path' => self::URL_ORDER_MULTI_PICKING,
         ],
         [
-            'name' => 'picker.activity.picking',
-            'path' => self::URL_PICKING_LIST,
-        ],
-        [
             'name' => 'picker.activity.container-to-shelf',
             'path' => self::URL_CONTAINER_TO_SHELF,
         ],
@@ -35,10 +31,6 @@ class PickerConfig
         [
             'name' => 'picker.activity.multi-picking',
             'path' => self::URL_DIFF_PICKING_ZONE_FOR_MULTI_PICKING,
-        ],
-        [
-            'name' => 'picker.activity.picking',
-            'path' => self::URL_DIFF_PICKING_ZONE,
         ],
         [
             'name' => 'picker.activity.container-to-shelf',
