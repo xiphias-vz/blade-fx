@@ -42,7 +42,7 @@
 
         &__image {
             @include helper-breakpoint-media-max($sm-max) {
-                margin: 0px auto;
+                margin: -32px auto;
             }
 
 
