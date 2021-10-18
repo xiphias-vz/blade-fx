@@ -41,7 +41,7 @@
 {% block contentClass %} page-layout-main page-layout-main--pdp{% endblock %}
 
 {% block content %}
-    {% if data.currentCodeBucket=='CZ' %}
+    {% if data.currentCodeBucket == 'CZ' %}
         {% embed molecule('popup-age-confirmation') with {
         } only %}
         {% endembed %}
@@ -130,6 +130,33 @@
                                  } only %}
                              {% endblock %}
                          {% endembed %}
+                    {% endif %}
+
+                    {% if data.currentCodeBucket == 'CZ' %}
+                        {% if data.productAttributes.temperaturecondition is defined and data.productAttributes.temperaturecondition != "" %}
+                            {% embed molecule('toggler-item') with {
+                                data: {
+                                    title: 'product.info.additional.storage' | trans,
+                                    triggerClass: 'temperature-condition__trigger-bundle',
+                                    targetClass: 'temperature-condition__target-bundle',
+                                    isActive: true,
+                                    productAttributes: data.product.attributes,
+                                    product: data.product
+                                },
+                                embed: {
+                                    bundleItems: data.bundleItems,
+                                }
+                            } only %}
+                                {% block contentText %}
+                                    {% include molecule('temperature-condition', 'ProductDetailPage') with {
+                                        data: {
+                                            productAttributes: data.product.attributes,
+                                            temperatureConditionText: data.product.attributes.temperaturecondition
+                                        },
+                                    } only %}
+                                {% endblock %}
+                            {% endembed %}
+                        {% endif %}
                     {% endif %}
 
                     {% if data.product.attributes.energiekcalp100gml is defined and data.product.nutritionalInformationContainsReferenceAmount is defined %}

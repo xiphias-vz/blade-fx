@@ -1,0 +1,24 @@
+{% extends model('component') %}
+
+{% define config = {
+    name: 'temperature-condition',
+} %}
+
+{% define data = {
+    productAttributes: required,
+    triggerClassName: 'active',
+    temperatureConditionText: ''
+} %}
+
+{% block class -%}
+    {{ parent() }}
+{%- endblock %}
+
+{% block body %}
+    {% if data.productAttributes.temperaturecondition is defined %}
+        <div>
+            <strong>{{ 'product.info.additional.storage' | trans }}:</strong><br>
+            <span class="{{ config.name }}__description-color">{{ data.temperatureConditionText | raw }}</span>
+        </div>
+    {% endif %}
+{% endblock %}

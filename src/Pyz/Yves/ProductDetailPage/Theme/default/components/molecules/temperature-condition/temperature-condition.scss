@@ -1,0 +1,9 @@
+@mixin temperature-condition($name: '.temperature-condition') {
+    #{$name} {
+        &__description-color {
+            color: $setting-color-globus-darkGray;
+        }
+    }
+}
+
+@include temperature-condition();
