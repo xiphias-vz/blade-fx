@@ -92,7 +92,6 @@ export default class ProductItemMultiplePicking extends Component {
     protected containerScanOrderErrorPopUp3: HTMLInputElement;
     protected containerScanOrderErrorPopUp4: HTMLInputElement;
     protected containerScanOrderErrorPopUp5: HTMLInputElement;
-    protected barcodeLengthErrorAlert: HTMLInputElement;
 
     protected readyCallback(): void {
     }
@@ -155,7 +154,6 @@ export default class ProductItemMultiplePicking extends Component {
         this.containerScanOrderErrorPopUp3 = <HTMLInputElement>document.querySelector('#container_scan_order_error_pop-up_3');
         this.containerScanOrderErrorPopUp4 = <HTMLInputElement>document.querySelector('#container_scan_order_error_pop-up_4');
         this.containerScanOrderErrorPopUp5 = <HTMLInputElement>document.querySelector('#container_scan_order_error_pop-up_5');
-        this.barcodeLengthErrorAlert = <HTMLInputElement>document.querySelector('#barcode_length_error_alert');
     }
 
     protected removeTemporarilyReadOnlyAttributeForNonActiveFields() {
@@ -668,7 +666,7 @@ export default class ProductItemMultiplePicking extends Component {
             let $altEansArr = $alernativeEan.toString().split(',');
 
             if($formattedScanInput.length != 13 && $formattedScanInput.length != 8){
-                alert(this.barcodeLengthErrorAlert.value);
+                alert("Der Barcode sollte 13 oder 8 Zeichen lang sein");
             }
             else if ($formattedScanInput.length == 8)
             {
