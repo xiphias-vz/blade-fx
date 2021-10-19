@@ -4,10 +4,12 @@
 @import 'basics/grid';
 @import 'basics/reset';
 @import 'basics/typography';
+@import "basics/global";
 
 @include basic-reset;
 @include basic-typography;
 @include basic-grid;
+@include global-style;
 
 a {
     color: #71747c; }

@@ -4,6 +4,10 @@
 
         &__list {
             margin: 0 rem(-5) rem(50);
+
+            @include helper-breakpoint-media-max($sm-max) {
+                justify-content: center;
+            }
         }
 
         &__item {

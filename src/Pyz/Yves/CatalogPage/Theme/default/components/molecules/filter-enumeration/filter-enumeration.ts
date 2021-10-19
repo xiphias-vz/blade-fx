@@ -21,10 +21,9 @@ export default class FilterEnumeration extends Component {
     }
 
     protected init() {
-        this.filterSection = this.parentElement.parentElement.parentElement;
+        this.filterSection = document.querySelector('.filter-section');
         this.catalogTargetEnumeration = this.parentElement;
         this.filterEnumerationList = <HTMLElement>this.catalogTargetEnumeration.querySelectorAll('.filter-enumeration');
-
         this.deleteFilterCategoryProductAttribute = <HTMLElement>this.catalogTargetEnumeration.querySelector('.delete-category-filter-product-attributes')
         this.deleteFilterCategoryProductSupplier = <HTMLElement>this.catalogTargetEnumeration.querySelector('.delete-category-filter-supplier');
         this.deleteSalesProductCategory = <HTMLElement>this.catalogTargetEnumeration.querySelector('.delete-category-filter-sales');

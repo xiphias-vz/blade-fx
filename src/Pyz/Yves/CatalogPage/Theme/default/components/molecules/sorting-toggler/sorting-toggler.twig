@@ -1,0 +1,73 @@
+{% extends model('component') %}
+
+{% define config = {
+    name: 'sorting-toggler',
+    tag: 'sorting-toggler'
+} %}
+
+{% define data = {
+    sort: null,
+} %}
+
+{% block body %}
+    {% block filters %}
+        {% if data.sort %}
+            {% set unsortOption = {
+                value: '',
+                docCount: '',
+                label: 'relevance',
+            } %}
+
+            {% set sortParams = data.sort.sortParamNames | map(name => {
+                value: name,
+                docCount: '',
+                label: name,
+            }) %}
+
+            {% set sortFilters = {
+                config: {
+                    parameterName: 'sort'
+                },
+                values: [unsortOption] | merge(sortParams),
+                activeValue: data.sort.currentSortParam,
+                name: 'sort',
+            } %}
+
+            {% embed molecule('toggler-item') with {
+                modifiers: ['border-without-top', 'filter-sidebar'],
+                data: {
+                    title: 'catalog.sort.by' | trans,
+                    triggerClass: data.parentJsName ~ '__toggler-trigger',
+                    targetClass: data.parentJsName ~ '__target--enumeration--sort',
+                    isTogglerIncluded: false,
+                },
+                embed: {
+                    sort: data.sort,
+                    parentJsName: data.parentJsName ~ '__sort-trigger',
+                    sortFilters: sortFilters,
+                },
+            } only %}
+                {% block arrow %}
+                    <div class="{{ config.name }}__arrow">
+                        {% include atom('icon') with {
+                            class: config.name ~ '__arrow-icon',
+                            modifiers: ['xsmall'],
+                            data: {
+                                name: 'arrow-down',
+                            },
+                        } only %}
+                    </div>
+                {% endblock %}
+
+                {% block contentText %}
+                    {% include molecule('filter-sort-select', 'CatalogPage') with {
+                        data: {
+                            filter: embed.sortFilters,
+                            parentJsName: embed.parentJsName,
+                        },
+                    } only %}
+                {% endblock %}
+            {% endembed %}
+        {% endif %}
+    {% endblock %}
+{% endblock %}

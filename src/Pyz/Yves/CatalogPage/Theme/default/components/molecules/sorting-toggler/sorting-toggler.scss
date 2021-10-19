@@ -1,0 +1,43 @@
+@mixin catalog-page-sorting-toggler($name: '.sorting-toggler') {
+    #{$name} {
+        width: 25%;
+
+        @include helper-breakpoint-media-max($md-max)  {
+            width: 30%;
+        }
+
+        @include helper-breakpoint-media-max($sm-max)  {
+            width: 50%;
+        }
+
+        .title {
+            font-weight: normal;
+        }
+
+        .toggler-item {
+            position: relative;
+
+            &__content {
+                position: absolute;
+                z-index: 1;
+                border: 0.0625rem solid #f7f7f7;
+                border-top: none;
+                box-shadow: rgba(100, 100, 111, 0.2) 0 7px 29px 0;
+                margin-top: 1px;
+
+                .menu {
+                    .menu-item {
+                        cursor: pointer;
+                    }
+                }
+            }
+
+            &--border-without-top {
+                border: 1px solid $setting-color-gray-15;
+            }
+        }
+        @content;
+    }
+}
+
+@include catalog-page-sorting-toggler;

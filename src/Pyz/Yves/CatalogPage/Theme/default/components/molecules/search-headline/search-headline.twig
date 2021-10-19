@@ -11,12 +11,12 @@
 } %}
 
 {% block body %}
-    <div class="grid">
-        <div class="col col--sm-12">
-            <h1 class="spacing-bottom spacing-bottom--inner">{{ data.headline }}: {{ data.searchString }}</h1>
-            <div>
+    <div class="grid box grid--center">
+        <div class="col col--sm-12 d-flex flex-center">
+            <h1 class="spacing-bottom spacing-bottom--inner">{{ data.headline }} {{ data.searchString }}</h1>
+            <span class="m-left-m text-grey font-weight-500">
                 {{ 'catalog.itemsFound' | trans({ '%numFound%': data.pagination.numFound }) }}
-            </div>
+            </span>
         </div>
 
     </div>

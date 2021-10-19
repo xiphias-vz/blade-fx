@@ -1,0 +1,49 @@
+@mixin global-style() {
+    .d-flex {
+        display: flex;
+
+        &.flex-center {
+            align-items: center;
+        }
+    }
+
+    .m-left-s {
+        margin-left: 5px;
+    }
+
+    .m-left-m {
+        margin-left: 10px;
+    }
+
+    .m-left-l {
+        margin-left: 15px;
+    }
+
+    .m-left-xl {
+        margin-left: 20px;
+    }
+
+    .m-right-s {
+        margin-right: 5px;
+    }
+
+    .m-right-m {
+        margin-right: 10px;
+    }
+
+    .m-right-l {
+        margin-right: 15px;
+    }
+
+    .m-right-xl {
+        margin-right: 20px;
+    }
+
+    .text-grey {
+        color: grey;
+    }
+
+    .font-weight-500  {
+        font-weight: 500;
+    }
+}

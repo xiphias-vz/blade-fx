@@ -380,7 +380,7 @@ catalog.currency,€,cs_CZ
 catalog.currency,€,de_DE
 catalog.currency,€,en_US
 catalog.filter.filter,"Filtr / Třídění",cs_CZ
-catalog.filter.filter,Filter / Sortierung,de_DE
+catalog.filter.filter,Kategorien / Filter,de_DE
 catalog.filter.filter,Filters / Sorting,en_US
 catalog.filter.button,"Použít",cs_CZ
 catalog.filter.button,Anwenden,de_DE
@@ -422,7 +422,7 @@ catalog.filter.per,"Na stránku",cs_CZ
 catalog.filter.per,Pro Seite,de_DE
 catalog.filter.per,Per Page,en_US
 catalog.itemsFound,"%numFound% výsledky",cs_CZ
-catalog.itemsFound,%numFound% Ergebnisse,de_DE
+catalog.itemsFound,%numFound% Artikel,de_DE
 catalog.itemsFound,%numFound% Results,en_US
 catalog.loading,Načítání,cs_CZ
 catalog.loading,Loading,de_DE
@@ -586,8 +586,8 @@ global.close,Close,en_US
 global.search,"Vyhledávání produktů",cs_CZ
 global.search,Produkte Suchen,de_DE
 global.search,Search,en_US
-global.search.results,"Výsledky hledání",cs_CZ
-global.search.results,Suchergebnisse,de_DE
+global.search.results,"Všechny produkty",cs_CZ
+global.search.results,Alle Produkte,de_DE
 global.search.results,Search Results,en_US
 global.search.results.for,"Výsledky hledání pro",cs_CZ
 global.search.results.for,Suchergebnisse für,de_DE
@@ -1787,7 +1787,7 @@ customer.account.wishlist.price,Price,en_US
 customer.account.wishlist.price,Preis,de_DE
 customer.account.wishlist.price,"Cena",cs_CZ
 customer.account.wishlist.add-to-cart,Add to Cart,en_US
-customer.account.wishlist.add-to-cart,In den Warenkorb,de_DE
+customer.account.wishlist.add-to-cart,Zum Warenkorb,de_DE
 customer.account.wishlist.add-to-cart,"Do košíku",cs_CZ
 customer.account.wishlist.remove,Remove,en_US
 customer.account.wishlist.remove,Löschen,de_DE
@@ -4465,9 +4465,9 @@ product.measurement.sales_unit,Sales Unit,en_US
 product.measurement.sales_unit,Maßeinheit,de_DE
 product.measurement.sales_unit,Sales Unit,en_US
 product.measurement.sales_unit,Maßeinheit,de_DE
-page.detail.add-to-cart,"Do nákupního košíku",cs_CZ
+page.detail.add-to-cart,"Do košíku",cs_CZ
 page.detail.add-to-cart,Add to Cart,en_US
-page.detail.add-to-cart,In den Warenkorb,de_DE
+page.detail.add-to-cart,Zum Warenkorb,de_DE
 measurement_units.recommendation.between-units-info,"Vámi zvolené množství leží mezi 2 základními množstevními jednotkami",cs_CZ
 measurement_units.recommendation.between-units-info,The quantity you have chosen is in between 2 base units,en_US
 measurement_units.recommendation.between-units-info,Ihre gewählte Anzahl liegt zwischen 2 basis Einheiten,de_DE
