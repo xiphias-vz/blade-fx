@@ -222,6 +222,9 @@ class ProductMapping
         if (is_array($item["allergens"])) {
             $d["entallerg"] = $this->trimValue(implode(",", $item["allergens"]));
         }
+        if ($d['active'] === "1") {
+            $d['active'] = $item['activeForOnline'] ? "1" : "0";
+        }
 
         return $d;
     }
