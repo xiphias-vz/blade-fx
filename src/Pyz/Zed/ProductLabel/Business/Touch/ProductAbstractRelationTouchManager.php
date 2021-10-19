@@ -51,8 +51,6 @@ class ProductAbstractRelationTouchManager extends SprykerProductAbstractRelation
     public function touchActiveByIdProductAbstract($idProductAbstract)
     {
         parent::touchActiveByIdProductAbstract($idProductAbstract);
-
-        $this->navigationStorageFacade->publish($this->navigationFacade->getMainNavigationIds());
     }
 
     /**
@@ -63,7 +61,5 @@ class ProductAbstractRelationTouchManager extends SprykerProductAbstractRelation
     public function touchDeletedByIdProductAbstract($idProductAbstract)
     {
         parent::touchDeletedByIdProductAbstract($idProductAbstract);
-
-        $this->navigationStorageFacade->publish($this->navigationFacade->getMainNavigationIds());
     }
 }

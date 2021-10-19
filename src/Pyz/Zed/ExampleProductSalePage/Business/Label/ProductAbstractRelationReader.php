@@ -48,8 +48,9 @@ class ProductAbstractRelationReader implements ProductAbstractRelationReaderInte
             return [];
         }
 
-        $relationsToDeAssign = $this->findRelationsBecomingInactive($productLabelNewEntity);
         $relationsToAssign = $this->findRelationsBecomingActive($productLabelNewEntity);
+        $relationsToDeAssign = $this->findRelationsBecomingInactive($productLabelNewEntity, $relationsToAssign['toStay']);
+        unset($relationsToAssign['toStay']);
 
         $idProductLabels = array_keys($relationsToDeAssign) + array_keys($relationsToAssign);
         foreach ($idProductLabels as $idProductLabel) {
@@ -83,15 +84,16 @@ class ProductAbstractRelationReader implements ProductAbstractRelationReaderInte
 
     /**
      * @param \Orm\Zed\ProductLabel\Persistence\SpyProductLabel $productLabelEntity
+     * @param array $idProductAbstractToExclude
      *
      * @return array
      */
-    protected function findRelationsBecomingInactive(SpyProductLabel $productLabelEntity)
+    protected function findRelationsBecomingInactive(SpyProductLabel $productLabelEntity, array $idProductAbstractToExclude)
     {
         $relations = [];
 
         $productLabelProductAbstractEntities = $this->productSaleQueryContainer
-            ->queryRelationsBecomingInactive($productLabelEntity->getIdProductLabel())
+            ->queryRelationsBecomingInactive($productLabelEntity->getIdProductLabel(), $idProductAbstractToExclude)
             ->find();
 
         foreach ($productLabelProductAbstractEntities as $productLabelProductAbstractEntity) {
@@ -109,14 +111,19 @@ class ProductAbstractRelationReader implements ProductAbstractRelationReaderInte
     protected function findRelationsBecomingActive(SpyProductLabel $productLabelEntity)
     {
         $relations = [];
+        $relationsToStay = [];
 
         $productAbstractEntities = $this->productSaleQueryContainer
             ->queryRelationsBecomingActive($productLabelEntity->getIdProductLabel())
             ->find();
 
-        foreach ($productAbstractEntities as $productAbstractEntity) {
-            $relations[$productLabelEntity->getIdProductLabel()][] = $productAbstractEntity->getIdProductAbstract();
+        foreach ($productAbstractEntities->toArray() as $productAbstractEntity) {
+            if ($productAbstractEntity['fk_product_label'] === null) {
+                $relations[$productLabelEntity->getIdProductLabel()][] = $productAbstractEntity['id_product_abstract'];
+            }
+            $relationsToStay[] = $productAbstractEntity['id_product_abstract'];
         }
+        $relations['toStay'] = $relationsToStay;
 
         return $relations;
     }

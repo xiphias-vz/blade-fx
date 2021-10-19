@@ -25,10 +25,11 @@ interface ExampleProductSalePageQueryContainerInterface
      * @api
      *
      * @param int $idProductLabel
+     * @param array $idProductAbstractToExclude
      *
      * @return \Orm\Zed\ProductLabel\Persistence\SpyProductLabelProductAbstractQuery
      */
-    public function queryRelationsBecomingInactive($idProductLabel);
+    public function queryRelationsBecomingInactive($idProductLabel, array $idProductAbstractToExclude);
 
     /**
      * @api

@@ -32,7 +32,7 @@ class ProductLabelBusinessFactory extends SprykerProductLabelBusinessFactory
     /**
      * @return \Pyz\Zed\Navigation\Business\NavigationFacadeInterface
      */
-    protected function getNavigationFacade(): NavigationFacadeInterface
+    public function getNavigationFacade(): NavigationFacadeInterface
     {
         return $this->getProvidedDependency(ProductLabelDependencyProvider::FACADE_NAVIGATION);
     }
@@ -40,7 +40,7 @@ class ProductLabelBusinessFactory extends SprykerProductLabelBusinessFactory
     /**
      * @return \Spryker\Zed\NavigationStorage\Business\NavigationStorageFacadeInterface
      */
-    protected function getNavigationStorageFacade(): NavigationStorageFacadeInterface
+    public function getNavigationStorageFacade(): NavigationStorageFacadeInterface
     {
         return $this->getProvidedDependency(ProductLabelDependencyProvider::FACADE_NAVIGATION_STORAGE);
     }
