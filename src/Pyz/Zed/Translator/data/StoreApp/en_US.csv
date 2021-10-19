@@ -191,3 +191,8 @@ container.scan.order.error.pop-up_5,""
 select.containers.add.box,Add box
 popup.success.ui_1,"was"
 popup.success.ui_2,"assigned"
+barcode.length.error.alert,The barcode should be 13 or 8 characters long
+input.value.error.greater.alert_1,"The input value should not be greater than"
+input.value.error.greater.alert_2,""
+input.value.error.less.alert_1,"The input value should not be less than"
+input.value.error.less.alert_2,""
