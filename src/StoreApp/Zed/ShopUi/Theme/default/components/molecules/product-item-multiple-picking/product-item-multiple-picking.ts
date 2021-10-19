@@ -93,6 +93,7 @@ export default class ProductItemMultiplePicking extends Component {
     protected containerScanOrderErrorPopUp4: HTMLInputElement;
     protected containerScanOrderErrorPopUp5: HTMLInputElement;
     protected barcodeLengthErrorAlert: HTMLInputElement;
+    private currentEnvironmentHolder: HTMLInputElement;
 
     protected readyCallback(): void {
     }
@@ -156,6 +157,7 @@ export default class ProductItemMultiplePicking extends Component {
         this.containerScanOrderErrorPopUp4 = <HTMLInputElement>document.querySelector('#container_scan_order_error_pop-up_4');
         this.containerScanOrderErrorPopUp5 = <HTMLInputElement>document.querySelector('#container_scan_order_error_pop-up_5');
         this.barcodeLengthErrorAlert = <HTMLInputElement>document.querySelector('#barcode_length_error_alert');
+        this.currentEnvironmentHolder = <HTMLInputElement>document.querySelector('#currentEnvironment');
     }
 
     protected removeTemporarilyReadOnlyAttributeForNonActiveFields() {
@@ -699,7 +701,11 @@ export default class ProductItemMultiplePicking extends Component {
                 let calculatedWeight = 0;
 
                 if($eanPrefix <= 24 && $eanPrefix >= 21){
-                    calculatedWeight = Math.round((Number($gewichtFromScan) / Number(this.pricePerKgData)) * 1000);
+                    if (this.currentEnvironmentHolder.value === 'CZ') {
+                        calculatedWeight = Math.round((Number($gewichtFromScan) / Number(this.pricePerKgData)) * 10000);
+                    } else {
+                        calculatedWeight = Math.round((Number($gewichtFromScan) / Number(this.pricePerKgData)) * 1000);
+                    }
                 }
                 else if($eanPrefix <= 29 && $eanPrefix >= 25) {
                     calculatedWeight = Math.round(Number($gewichtFromScan));

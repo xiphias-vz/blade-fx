@@ -24,6 +24,7 @@
     itemPickingStartTime: '',
     isSubstitutionAllowed: '',
     isSubstitutionFound: '',
+    currentEnvironment: app.currentCodeBucket,
 } %}
 
 {% set title = data.currentPositionData['name'] %}
@@ -61,6 +62,7 @@
 
 {% block body %}
     <div id="gridOfTheProduct" class="grid {{ config.name }}__card" data-sku="{{ itemSku }}">
+        <input type="hidden" id="currentEnvironment" value="{{ data.currentEnvironment }}">
         <input type="hidden" id="formPreviousSku" value="{{ itemSku }}">
         <input type="hidden" id="idOpenModal" value="{{ data.openModal }}">
         <input type="hidden" id="orderReference" value="{{ orderReference }}">
