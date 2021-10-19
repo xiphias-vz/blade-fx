@@ -667,10 +667,10 @@ export default class ProductItemMultiplePicking extends Component {
             let $alernativeEan = this.alternativeEanElement.getAttribute('data-altean');
             let $altEansArr = $alernativeEan.toString().split(',');
 
-            if($formattedScanInput.length != 13 && $formattedScanInput.length != 8){
+            if($formattedScanInput.length != 13 && $formattedScanInput.length != 8 && $formattedScanInput.length != 6){
                 alert(this.barcodeLengthErrorAlert.value);
             }
-            else if ($formattedScanInput.length == 8)
+            else if ($formattedScanInput.length == 8 || $formattedScanInput.length == 6)
             {
                 if(Number($formattedScanInput) === Number($ean)){
                     this.step30();
