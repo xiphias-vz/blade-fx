@@ -17,6 +17,10 @@
             font-size: rem(15);
         }
     }
+    &__amount-red {
+        color: $setting-color-globus-red;
+    }
+
 
     &--align-right {
         @include helper-breakpoint-media-min($md-min) {
