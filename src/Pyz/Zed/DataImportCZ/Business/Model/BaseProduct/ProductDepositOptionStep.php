@@ -12,4 +12,5 @@ use Pyz\Zed\DataImport\Business\Model\BaseProduct\ProductDepositOptionStep as Lo
 class ProductDepositOptionStep extends LocalProductDepositOptionStep
 {
     protected const LOCALE_NAME = 'cs_CZ';
+    protected const DEFAULT_CURRENCY = 'CZK';
 }

@@ -160,17 +160,26 @@ class GsoaProductConsole extends Console
                                 if (count($item["eshopCategories"]) > 0 && !empty($item["vatRate"])) {
                                     $counter++;
                                     if (is_array($item["returnablePackagings"])) {
-                                        $returnablePackagingsWamasNr = $item["returnablePackagings"][0]["productWamasNr"];
-                                        $price = null;
-                                        if (!array_key_exists($returnablePackagingsWamasNr, $returnablePackagingsPrices)) {
-                                            $prices = $client->getProductPricesByHouse($store, true, 'ESHOP', "2021-05-01", "ProductWamasNr:in " . $returnablePackagingsWamasNr, 0, 10);
-                                            $price = $this->getValidPrice($prices["productPrices"][0]["prices"]);
-                                            $returnablePackagingsPrices[$returnablePackagingsWamasNr] = $price;
-                                        } else {
-                                            $price = $returnablePackagingsPrices[$returnablePackagingsWamasNr];
-                                        }
-                                        if (!empty($price)) {
-                                            $item["returnablePackagings"]["price"] = $price;
+                                        $returnableCount = 0;
+                                        foreach ($item["returnablePackagings"] as $packaging) {
+                                            $returnablePackagingsWamasNr = $packaging["productWamasNr"];
+                                            $price = null;
+                                            $plu = null;
+                                            if (!array_key_exists($returnablePackagingsWamasNr, $returnablePackagingsPrices)) {
+                                                $packageProduct = $client->getProducts("WamasNr:in " . $returnablePackagingsWamasNr);
+                                                if (isset($packageProduct["products"][0]["eanCodes"][0]["code"])) {
+                                                    $plu = $packageProduct["products"][0]["eanCodes"][0]["code"];
+                                                }
+                                                $prices = $client->getProductPricesByHouse($store, true, 'ESHOP', "", "ProductWamasNr:in " . $returnablePackagingsWamasNr, 0, 10);
+                                                $price = $this->getValidPrice($prices["productPrices"][0]["prices"]);
+                                                $returnablePackagingsPrices[$returnablePackagingsWamasNr] = ["price" => $price, "plu" => $plu];
+                                            } else {
+                                                $price = $returnablePackagingsPrices[$returnablePackagingsWamasNr]["price"];
+                                                $plu = $returnablePackagingsPrices[$returnablePackagingsWamasNr]["plu"];
+                                            }
+                                            $item["returnablePackagings"][$returnableCount]["price"] = $price;
+                                            $item["returnablePackagings"][$returnableCount]["plu"] = $plu;
+                                            $returnableCount++;
                                         }
                                     }
                                     $d = $map->mapValues($item);
