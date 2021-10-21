@@ -7,6 +7,7 @@
 
 namespace Pyz\Zed\ProductLabel\Business;
 
+use Exception;
 use Psr\Log\LoggerInterface;
 use Spryker\Zed\ProductLabel\Business\ProductLabelFacade as SpryProductLabelFacade;
 
@@ -35,8 +36,19 @@ class ProductLabelFacade extends SpryProductLabelFacade
             ->createProductAbstractRelationUpdater($logger)
             ->updateProductLabelRelations($isTouchEnabled);
 
-        $this->getFactory()
-            ->getNavigationStorageFacade()
-            ->publish($this->getFactory()->getNavigationFacade()->getMainNavigationIds());
+        $this->updateNavigationStorage();
+    }
+
+    /**
+     * @return void
+     */
+    public function updateNavigationStorage()
+    {
+        try {
+            $this->getFactory()
+                ->getNavigationStorageFacade()
+                ->publish($this->getFactory()->getNavigationFacade()->getMainNavigationIds());
+        } catch (Exception $ex) {
+        }
     }
 }
