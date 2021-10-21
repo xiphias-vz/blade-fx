@@ -10,8 +10,16 @@
             width: 50%;
         }
 
+        .toggler-item {
+
+        }
         .title {
             font-weight: normal;
+            font-family: $setting-font-family-fira-sans;
+            padding: rem(13.504) rem(10);
+            @include helper-breakpoint-media-max($smd-max) {
+                padding: rem(13.008) rem(10);
+            }
         }
 
         .toggler-item {

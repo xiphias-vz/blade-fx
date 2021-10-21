@@ -437,19 +437,19 @@ catalog.sort,"Třídění",cs_CZ
 catalog.sort,Sortierung,de_DE
 catalog.sort,Sorting,en_US
 catalog.sort.relevance,"Seřadit podle relevance",cs_CZ
-catalog.sort.relevance,Nach Relevanz sortieren,de_DE
+catalog.sort.relevance,Relevanz,de_DE
 catalog.sort.relevance,Sort by relevance,en_US
 catalog.sort.name_asc,"Seřadit podle názvu vzestupně",cs_CZ
-catalog.sort.name_asc,Nach Name aufsteigend sortieren,de_DE
+catalog.sort.name_asc,Name aufsteigend,de_DE
 catalog.sort.name_asc,Sort by name ascending,en_US
 catalog.sort.name_desc,"Seřadit podle názvu sestupně",cs_CZ
-catalog.sort.name_desc,Nach Name absteigend sortieren,de_DE
+catalog.sort.name_desc,Name absteigend,de_DE
 catalog.sort.name_desc,Sort by name descending,en_US
 catalog.sort.price_asc,"Seřadit podle ceny vzestupně",cs_CZ
-catalog.sort.price_asc,Nach Preis aufsteigend sortieren,de_DE
+catalog.sort.price_asc,Preis aufsteigend,de_DE
 catalog.sort.price_asc,Sort by price ascending,en_US
 catalog.sort.price_desc,"Seřadit podle ceny sestupně",cs_CZ
-catalog.sort.price_desc,Nach Preis absteigend sortieren,de_DE
+catalog.sort.price_desc,Preis absteigend,de_DE
 catalog.sort.price_desc,Sort by price descending,en_US
 catalog.sort.rating,"Seřadit podle hodnocení produktů",cs_CZ
 catalog.sort.rating,Nach Produktbewertungen sortieren,de_DE
@@ -3781,13 +3781,13 @@ global.search.results.view,"Prohlédnout si",cs_CZ
 global.search.results.view,Ansehen,de_DE
 global.search.results.view,View,en_US
 cms.page.sort.relevance,"Seřadit podle relevance",cs_CZ
-cms.page.sort.relevance,Nach Relevanz sortieren,de_DE
+cms.page.sort.relevance,Relevanz,de_DE
 cms.page.sort.relevance,Sort by relevance,en_US
 cms.page.sort.name_asc,"Seřadit podle názvu vzestupně",cs_CZ
-cms.page.sort.name_asc,Nach Name aufsteigend sortieren,de_DE
+cms.page.sort.name_asc,Name aufsteigend,de_DE
 cms.page.sort.name_asc,Sort by name ascending,en_US
 cms.page.sort.name_desc,"Seřadit podle názvu sestupně",cs_CZ
-cms.page.sort.name_desc,Nach Name absteigend sortieren,de_DE
+cms.page.sort.name_desc,Name absteigend,de_DE
 cms.page.sort.name_desc,Sort by name descending,en_US
 cms.page.itemsFound,"Artikl nalezen",cs_CZ
 cms.page.itemsFound,Artikel gefunden,de_DE

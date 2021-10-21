@@ -6,13 +6,7 @@
         font-family: "Clearface-Medium", Arial, sans-serif;
 
         @include helper-breakpoint-media-min($md-min) {
-
-            padding-bottom: rem(30);
-            padding-left: rem(15);
-            padding-right: 0;
-            &:nth-child(4n+4){
-                padding-right: rem(15);
-            }
+            padding: 0 rem(15) rem(30);
         }
 
         @include helper-breakpoint-media-max($sm-max) {
@@ -117,6 +111,13 @@
                 flex-direction: row;
                 padding-bottom: 0;
             }
+
+            @include helper-breakpoint-media-max($smd-max) {
+                .image-link {
+                    width: 85%;
+                }
+            }
+
             height: 100%;
             color: $setting-color-black;
             background: $setting-color-white;

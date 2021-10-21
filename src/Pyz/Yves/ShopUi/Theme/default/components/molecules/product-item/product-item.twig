@@ -91,7 +91,7 @@
                     {% block image %}
                         {% if data.url %}
                             {% block imageLink %}
-                                <a href="{{ data.url }}">
+                                <a class="image-link" href="{{ data.url }}">
                                     {{ _self.thumbnail(data.image, data.name, extraClass, modifiers, data.idProductAbstract) }}
                                 </a>
                             {% endblock %}
@@ -341,7 +341,9 @@
                                     <a href="{{ addAjaxUrl }}"
                                        onclick="productAddToCart('{{ data.idProductAbstract }}','{{ data.name | escape('js') }}','{{ data.product.prices.DEFAULT is defined ? data.product.prices.DEFAULT / 100 : null }}','{{ data.product.abstract_sku }}','{{ data.supplier | escape('js') }}')"
                                        class="
-                                    button button--with-icon button--middle-icon button--font-CZ button--backgroundcolor-CZ
+                                    button button--with-icon button--middle-icon
+                                     button_center_align
+                                     button--font-CZ button--backgroundcolor-CZ
                                     js-product-color-group__image-{{ data.idProductAbstract }}
                                     js-image-animation__link
                                     js-ajax-add-to-cart__link

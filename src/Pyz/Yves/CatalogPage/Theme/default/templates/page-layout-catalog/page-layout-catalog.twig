@@ -46,13 +46,13 @@
     {% block title %}
         <div class="container">
             <div class="container__inner spacing-bottom spacing-bottom--inner spacing-bottom--bigger is-hidden-lg-only">
-                <div class="box is-hidden-sm-md">
+                <div class="box d-flex flex-center is-hidden-sm-md">
                     {% if app.currentCodeBucket == 'DE' %}
                         <h1 class="spacing-bottom spacing-bottom--inner">{{ data.title }}</h1>
                     {% else %}
                         <h1 class="title--heading-CZ spacing-bottom spacing-bottom--inner title">{{ data.title }}</h1>
                     {% endif %}
-                    <span class="text-secondary text-medium ">{{ 'catalog.itemsFound' | trans({ '%numFound%': data.pagination.numFound }) }}</span>
+                    <span class="text-secondary text-medium m-left-m m-bottom-xs">{{ 'catalog.itemsFound' | trans({ '%numFound%': data.pagination.numFound }) }}</span>
                 </div>
             </div>
         </div>
@@ -130,13 +130,13 @@
                                     {% endif %}
                                 </div>
 
-                                <div class="col col--sm-12 col--md-9 col--lg-6 menu--inline">
+                                <div class="col col--sm-12 col--md-12 col--lg-10 menu--inline">
                                     {% include molecule('pagination') with {
                                         data: data.pagination
                                     } only %}
                                 </div>
 
-                                <div id="secondSortElement" class="col col--sm-3 float-right col--md-3 menu--inline" style="z-index: 10">
+                                <div id="secondSortElement" class="col col--lg-2 col--sm-3 float-right col--md-3 menu--inline" style="z-index: 10">
                                     {% include molecule('sort-number-products', 'CatalogPage') with {
                                         data: {
                                             pagination: data.pagination,
