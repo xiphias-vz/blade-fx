@@ -94,6 +94,10 @@ export default class ProductItemMultiplePicking extends Component {
     protected containerScanOrderErrorPopUp5: HTMLInputElement;
     protected barcodeLengthErrorAlert: HTMLInputElement;
     private currentEnvironmentHolder: HTMLInputElement;
+    protected inputValueErrorGreaterAlert1: HTMLInputElement;
+    protected inputValueErrorGreaterAlert2: HTMLInputElement;
+    protected inputValueErrorLessAlert1: HTMLInputElement;
+    protected inputValueErrorLessAlert2: HTMLInputElement;
 
     protected readyCallback(): void {
     }
@@ -158,6 +162,10 @@ export default class ProductItemMultiplePicking extends Component {
         this.containerScanOrderErrorPopUp5 = <HTMLInputElement>document.querySelector('#container_scan_order_error_pop-up_5');
         this.barcodeLengthErrorAlert = <HTMLInputElement>document.querySelector('#barcode_length_error_alert');
         this.currentEnvironmentHolder = <HTMLInputElement>document.querySelector('#currentEnvironment');
+        this.inputValueErrorGreaterAlert1 = <HTMLInputElement>document.querySelector('#input_value_error_greater_alert_1');
+        this.inputValueErrorGreaterAlert2 = <HTMLInputElement>document.querySelector('#input_value_error_greater_alert_2');
+        this.inputValueErrorLessAlert1 = <HTMLInputElement>document.querySelector('#input_value_error_less_alert_1');
+        this.inputValueErrorLessAlert2 = <HTMLInputElement>document.querySelector('#input_value_error_less_alert_2');
     }
 
     protected removeTemporarilyReadOnlyAttributeForNonActiveFields() {
@@ -533,12 +541,12 @@ export default class ProductItemMultiplePicking extends Component {
         const inputWeightMin = Number(this.$weightField.attr('min'));
 
         if (inputWeightValue > inputWeightMax) {
-            alert(`Der Eingabewert sollte nicht größer als ${inputWeightMax} sein`);
+            alert(this.inputValueErrorGreaterAlert1.value + inputWeightMax + this.inputValueErrorGreaterAlert2.value);
 
             return false;
         }
         if (inputWeightValue < inputWeightMin) {
-            alert(`Der Eingabewert sollte nicht kleiner als ${inputWeightMin} sein`);
+            alert(this.inputValueErrorLessAlert1.value + inputWeightMin + this.inputValueErrorLessAlert2.value);
 
             return false;
         }else {
