@@ -65,7 +65,7 @@
 
             <div class="col col--sm-12 col--lg-2 text-right spacing-bottom">
                 {% if data.currentCodeBucket=='DE' %}
-                    <button type="submit" class="button button--hollow button--collapsed" {{ disableAddToWishlist ? 'disabled' }}>
+                    <button type="submit" class="button button--hollow button--collapsed button--backgroundcolor-dark-DE" {{ disableAddToWishlist ? 'disabled' }}>
                         {% include atom('icon') with {
                             modifiers: ['big'],
                             data: {
@@ -74,7 +74,7 @@
                         } only %}
                     </button>
                 {% else %}
-                    <button type="submit" class="button button--hollow button--collapsed button--backgroundcolor-CZ" {{ disableAddToWishlist ? 'disabled' }}>
+                    <button type="submit" class="button button--hollow button--collapsed button--backgroundcolor-main-CZ" {{ disableAddToWishlist ? 'disabled' }}>
                         {% include atom('icon') with {
                             modifiers: ['big'],
                             data: {

@@ -214,6 +214,17 @@
             background: $setting-color-globusCZ-main-green;
         }
 
+        &--backgroundcolor-main-CZ, &--backgroundcolor-main-CZ:hover {
+            background: $setting-color-globusCZ-main-green;
+        }
+
+        &--backgroundcolor-dark-DE {
+            background: $setting-color-main;
+            &:hover {
+                background: $setting-color-globus-darkGreen;
+            }
+        }
+
         &--hollow-border-light {
             border-color: $setting-color-gray-10;
         }

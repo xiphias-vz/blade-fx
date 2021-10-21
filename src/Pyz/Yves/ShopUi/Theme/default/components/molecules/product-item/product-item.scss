@@ -216,6 +216,8 @@
             align-self: flex-end;
             width: 100%;
             a {
+
+
                 .icon-basketplus {
                     font-size: 23px;
                     margin-right: 14px;
@@ -234,6 +236,20 @@
 
                 .add-details-to-cart-text-holder {
                     font-size: 13px;
+                }
+            }
+
+            .button-color-DE {
+                background-color: $setting-color-main;
+                &:hover {
+                    background-color: $setting-color-globus-darkGreen;
+                }
+            }
+
+            .button-color-CZ {
+                background-color: $setting-color-globusCZ-main-green;
+                &:hover {
+                    background-color: $setting-color-globusCZ-main-green;
                 }
             }
 
