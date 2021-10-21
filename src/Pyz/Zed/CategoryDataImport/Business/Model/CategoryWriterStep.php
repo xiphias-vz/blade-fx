@@ -17,6 +17,7 @@ use Orm\Zed\Navigation\Persistence\SpyNavigationNodeLocalizedAttributesQuery;
 use Orm\Zed\Navigation\Persistence\SpyNavigationNodeQuery;
 use Orm\Zed\Navigation\Persistence\SpyNavigationQuery;
 use Orm\Zed\Url\Persistence\SpyUrlQuery;
+use Propel\Runtime\Util\PropelDateTime;
 use Pyz\Zed\DataImport\Business\Exception\EntityNotFoundException;
 use Pyz\Zed\Navigation\Business\Helper\NavigationHelper;
 use Spryker\Zed\Category\Dependency\CategoryEvents;
@@ -43,6 +44,11 @@ class CategoryWriterStep extends SprykerCategoryWriterStep
     protected const ROOT = 'cls_pim_de_cus_class';
     protected const ROOT_NAME = 'DE - Kunden Produkt Hierarchie';
     protected const LOCALE_NAME = 'de_DE';
+
+    /**
+     * @var \DateTime $dtImport
+     */
+    private static $dtImport;
 
     /**
      * @var array
@@ -108,6 +114,10 @@ class CategoryWriterStep extends SprykerCategoryWriterStep
         $categoryEntity->setFkCategoryTemplate($categoryTemplateEntity->getIdCategoryTemplate());
 
         if ($categoryEntity->isNew() || $categoryEntity->isModified()) {
+            if (static::$dtImport === null) {
+                static::$dtImport = PropelDateTime::createHighPrecision();
+            }
+            $categoryEntity->setUpdatedAt(static::$dtImport);
             $categoryEntity->save();
         }
 
@@ -287,7 +297,7 @@ class CategoryWriterStep extends SprykerCategoryWriterStep
      *
      * @return int
      */
-    protected function resolveIdNavigation($navigationKey)
+    public function resolveIdNavigation($navigationKey)
     {
         $navigationEntity = SpyNavigationQuery::create()
             ->findOneByKey($navigationKey);

@@ -5,6 +5,7 @@
         <behavior name="event">
             <parameter name="spy_category_all" column="*"/>
         </behavior>
+        <column name="updated_at" required="false" type="TIMESTAMP"/>
     </table>
 
     <table name="spy_category_attribute">

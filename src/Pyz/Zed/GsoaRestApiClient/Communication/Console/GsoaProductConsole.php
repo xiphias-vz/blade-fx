@@ -212,20 +212,27 @@ class GsoaProductConsole extends Console
                     $result = $client->getProductCategories($page, 20000);
                     $counter = 0;
                     file_put_contents("//data/data/import/spryker/1.globusCZ_categories.csv", "categoryIdStibo|parentIdCategoryStibo|name|metatitle|metadescription" . PHP_EOL);
+                    file_put_contents("//data/data/import/spryker/1.globusCZ_categories.csv", "cls_czr_click_and_collect|cls_czr_click_and_collect|||" . PHP_EOL, FILE_APPEND);
+                    $categories = [];
                     foreach ($result["productCategoriesEshop"] as $item) {
                         if (!str_starts_with($item["categoryId"], 'cls_czc_')) {
                             if ($item["categoryId"] != 'cls_czr_click_and_collect') {
                                 if ($item["isActive"] === true && $item["isHidden"] === false) {
-                                    $cat["categoryIdStibo"] = $item["categoryId"];
-                                    $cat["parentIdCategoryStibo"] = $item["parentId"];
-                                    $cat["name"] = $item["categoryName"];
-                                    $cat["metatitle"] = "";
-                                    $cat["metadescription"] = "";
-                                    file_put_contents("//data/data/import/spryker/1.globusCZ_categories.csv", implode('|', $cat) . PHP_EOL, FILE_APPEND);
+                                    $categories[] = $item;
                                     $counter++;
                                 }
                             }
                         }
+                    }
+                    $sortedCategories = $this->getCategoriesByParentId($categories, "cls_czr_click_and_collect", 0);
+                    ksort($sortedCategories);
+                    foreach ($sortedCategories as $item) {
+                        $cat["categoryIdStibo"] = $item["categoryId"];
+                        $cat["parentIdCategoryStibo"] = $item["parentId"];
+                        $cat["name"] = $item["categoryName"];
+                        $cat["metatitle"] = "";
+                        $cat["metadescription"] = "";
+                        file_put_contents("//data/data/import/spryker/1.globusCZ_categories.csv", implode('|', $cat) . PHP_EOL, FILE_APPEND);
                     }
                     break;
                 case "importProductPrice":
@@ -282,6 +289,32 @@ class GsoaProductConsole extends Console
 
             return Console::CODE_ERROR;
         }
+    }
+
+    /**
+     * @param array $items
+     * @param string $parentId
+     * @param int $deep
+     *
+     * @return array
+     */
+    protected function getCategoriesByParentId(array $items, string $parentId, int $deep): array
+    {
+        $categories = [];
+        $count = 0;
+        $deep++;
+        foreach ($items as $item) {
+            if ($item["parentId"] === $parentId) {
+                $count++;
+                if ($item["rank"] == null) {
+                    $item["rank"] = $count;
+                }
+                $categories[sprintf("%'.09d", $deep) . "!" . $parentId . "-" . $item["rank"]] = $item;
+                $categories = array_merge($categories, $this->getCategoriesByParentId($items, $item["categoryId"], $deep));
+            }
+        }
+
+        return $categories;
     }
 
     /**

@@ -8,10 +8,18 @@
 namespace Pyz\Zed\DataImport\Business\Model;
 
 use Generated\Shared\Transfer\DataImporterConfigurationTransfer;
+use Orm\Zed\Category\Persistence\Map\SpyCategoryNodeTableMap;
+use Orm\Zed\Category\Persistence\Map\SpyCategoryTableMap;
+use Orm\Zed\Category\Persistence\SpyCategoryQuery;
+use Orm\Zed\Navigation\Persistence\SpyNavigationQuery;
 use Propel\Runtime\Propel;
+use Pyz\Zed\CategoryDataImport\Business\Model\CategoryWriterStep;
+use Pyz\Zed\DataImport\Business\Exception\EntityNotFoundException;
 use ReflectionClass;
+use Spryker\Zed\Category\Dependency\CategoryEvents;
 use Spryker\Zed\DataImport\Business\Model\DataImporterCollection as SprykerDataImporterCollection;
 use Spryker\Zed\DataImport\Business\Model\Publisher\DataImporterPublisher;
+use Spryker\Zed\Navigation\Dependency\NavigationEvents;
 use Spryker\Zed\Product\Dependency\ProductEvents;
 
 class DataImporterCollection extends SprykerDataImporterCollection
@@ -40,6 +48,11 @@ class DataImporterCollection extends SprykerDataImporterCollection
             static::$importCounters[$importType] = 0;
             Propel::disableInstancePooling();
 
+            if ($importType == "category") {
+                $this->deactivateAllNavigationNodes($this->resolveIdNavigation(CategoryWriterStep::NAVIGATION_MODE_DESKTOP));
+                $this->deactivateAllNavigationNodes($this->resolveIdNavigation(CategoryWriterStep::NAVIGATION_MODE_MOBILE));
+            }
+
             $this->executeDataImporter(
                 $dataImporters[$importType],
                 $dataImporterReportTransfer,
@@ -55,6 +68,11 @@ class DataImporterCollection extends SprykerDataImporterCollection
             if ($importType == "time-slot") {
                 $this->deleteDuplicatedRows();
             }
+
+            if ($importType == "category") {
+                $this->updateCategoriesActivity();
+            }
+
             Propel::enableInstancePooling();
 
             if (!empty($dataImporterConfigurationTransfer->getAfterImportHooksToSkip())) {
@@ -166,5 +184,60 @@ class DataImporterCollection extends SprykerDataImporterCollection
             INNER JOIN pyz_time_slot b on b.id_time_slot = a.id_time_slot
             WHERE a.rn > 1");
         $statement->execute();
+    }
+
+    /**
+     * @param int $idNavigation
+     *
+     * @return void
+     */
+    protected function deactivateAllNavigationNodes(int $idNavigation)
+    {
+        $con = Propel::getConnection();
+        $statement = $con->prepare("update spy_navigation_node set is_active = 0 where fk_navigation = " . $idNavigation . " and node_type = 'category'");
+        $statement->execute();
+    }
+
+    /**
+     * @return void
+     */
+    protected function updateCategoriesActivity()
+    {
+        $categoriesToDeactivate = SpyCategoryQuery::create()
+            ->withColumn(SpyCategoryNodeTableMap::COL_ID_CATEGORY_NODE, "id_category_node")
+            ->leftJoinNode()
+            ->where(SpyCategoryTableMap::COL_UPDATED_AT . ' <> (select max(sc.updated_at) from spy_category sc)')
+            ->where(SpyCategoryTableMap::COL_IS_ACTIVE . ' = 1')
+            ->find();
+        if ($categoriesToDeactivate->count() > 0) {
+            foreach ($categoriesToDeactivate as $category) {
+                $category->setIsActive(false);
+                $category->save();
+                DataImporterPublisher::addEvent(CategoryEvents::CATEGORY_NODE_UNPUBLISH, $category->getVirtualColumn("id_category_node"));
+            }
+            DataImporterPublisher::triggerEvents();
+            DataImporterPublisher::addEvent(NavigationEvents::NAVIGATION_KEY_PUBLISH, $this->resolveIdNavigation(CategoryWriterStep::NAVIGATION_MODE_DESKTOP));
+            DataImporterPublisher::addEvent(NavigationEvents::NAVIGATION_KEY_PUBLISH, $this->resolveIdNavigation(CategoryWriterStep::NAVIGATION_MODE_MOBILE));
+            DataImporterPublisher::triggerEvents();
+        }
+    }
+
+    /**
+     * @param string $navigationKey
+     *
+     * @throws \Pyz\Zed\DataImport\Business\Exception\EntityNotFoundException
+     *
+     * @return int
+     */
+    public function resolveIdNavigation($navigationKey): int
+    {
+        $navigationEntity = SpyNavigationQuery::create()
+            ->findOneByKey($navigationKey);
+
+        if (!$navigationEntity) {
+            throw new EntityNotFoundException(sprintf('Navigation by key "%s" not found.', $navigationKey));
+        }
+
+        return $navigationEntity->getIdNavigation();
     }
 }
