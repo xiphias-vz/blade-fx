@@ -41,7 +41,7 @@ $jobs[] = [
 $jobs[] = [
     'name' => 'update-product-label-relations',
     'command' => '$PHP_BIN vendor/bin/console product-label:relations:update -vvv',
-    'schedule' => 'H 18 * * *',
+    'schedule' => '0 2,6,7,8,9 * * *',
     'enable' => false,
     'stores' => $allStores,
 ];
@@ -50,7 +50,7 @@ $jobs[] = [
 $jobs[] = [
     'name' => 'apply-price-product-schedule',
     'command' => '$PHP_BIN vendor/bin/console price-product-schedule:apply',
-    'schedule' => '1 4,5,6,7,8 * * *',
+    'schedule' => '30 1,5,6,7,8 * * *',
     'enable' => true,
     'stores' => $allStores,
 ];
@@ -97,11 +97,11 @@ $jobs[] = [
 ];
 
 $jobs[] = [
-  'name' => 'event-trigger-timeout',
-  'command' => '$PHP_BIN vendor/bin/console event:trigger:timeout -vvv',
-  'schedule' => '*/5 * * * *',
-  'enable' => true,
-'stores' => $allStores,
+    'name' => 'event-trigger-timeout',
+    'command' => '$PHP_BIN vendor/bin/console event:trigger:timeout -vvv',
+    'schedule' => '*/5 * * * *',
+    'enable' => true,
+    'stores' => $allStores,
 ];
 
 $jobs[] = [
@@ -202,8 +202,7 @@ if ($storeCodeBucket == 'CZ') {
     ];
 
     /* Sitemap generator*/
-    $jobs[] =
-    [
+    $jobs[] = [
         'name' => 'sitemap-generate',
         'command' => '$PHP_BIN vendor/bin/console sitemap:generate',
         'schedule' => '0 4 * * *',
@@ -212,8 +211,7 @@ if ($storeCodeBucket == 'CZ') {
     ];
 
     /* Export sales order summary*/
-    $jobs[] =
-    [
+    $jobs[] = [
         'name' => 'export-sales-order-summary',
         'command' => '$PHP_BIN vendor/bin/console data:exportSalesOrderSummary',
         'schedule' => '0 1 * * *',
@@ -274,32 +272,30 @@ if ($storeCodeBucket == 'CZ') {
     ];
 
     /* Sitemap generator*/
-    $jobs[] =
-        [
-            'name' => 'sitemap-generate',
-            'command' => '$PHP_BIN vendor/bin/console sitemap:generate',
-            'schedule' => '0 4 * * *',
-            'enable' => true,
-            'stores' => ['EIN'],
-        ];
+    $jobs[] = [
+        'name' => 'sitemap-generate',
+        'command' => '$PHP_BIN vendor/bin/console sitemap:generate',
+        'schedule' => '0 4 * * *',
+        'enable' => true,
+        'stores' => ['EIN'],
+    ];
 
     /* Export sales order summary*/
-    $jobs[] =
-        [
-            'name' => 'export-sales-order-summary',
-            'command' => '$PHP_BIN vendor/bin/console data:exportSalesOrderSummary',
-            'schedule' => '0 1 * * *',
-            'enable' => true,
-            'stores' => ['EIN'],
-        ];
+    $jobs[] = [
+        'name' => 'export-sales-order-summary',
+        'command' => '$PHP_BIN vendor/bin/console data:exportSalesOrderSummary',
+        'schedule' => '0 1 * * *',
+        'enable' => true,
+        'stores' => ['EIN'],
+    ];
 
     /* Export products deep links */
     $jobs[] = [
-    'name' => 'export-product-deep-links',
-    'command' => '$PHP_BIN vendor/bin/console data:exportDeeplink',
-    'schedule' => '0 9 * * 3',
-    'enable' => true,
-    'stores' => ['EIN'],
+        'name' => 'export-product-deep-links',
+        'command' => '$PHP_BIN vendor/bin/console data:exportDeeplink',
+        'schedule' => '0 9 * * 3',
+        'enable' => true,
+        'stores' => ['EIN'],
     ];
 
     //Maintain log table size
