@@ -178,7 +178,7 @@ class DetailController extends SprykerDetailController
                 if ($isCurrentUserSupervisorOrAdmin) {
                     array_push($buttons, "Cancel");
                 }
-            } elseif (stripos($event, "Zurücksetzen") === 0) {
+            } elseif (stripos($event, "Reset") === 0) {
                 if (in_array("picked", $distinctOrderStates) == false && in_array("picked, canceled", $distinctOrderStates) == false) {
                     unset($events[$key]);
                 } else {

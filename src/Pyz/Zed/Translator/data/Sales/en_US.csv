@@ -132,3 +132,4 @@ order.overview.collection.question_2,"really confirm?"
 order.overview.collection.no,"No, cancel"
 order.overview.collection.yes,"Yes, confirm collection"
 Reset,Reset
+order.overview.pick-up.confirm,Confirm pickup
