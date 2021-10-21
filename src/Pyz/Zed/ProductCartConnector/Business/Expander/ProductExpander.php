@@ -94,6 +94,10 @@ class ProductExpander extends SprykerProductExpander implements ProductExpanderI
             }
         }
 
+        if (strlen(trim($pickZone)) < 2) {
+            $pickZone = $this->getDefaultPickZone();
+        }
+
         $weightPerUnit = $this->calculateWeightPerItem($productConcreteTransfer->getAttributes());
 
         $currentStoreName = $cartChangeTransfer->getQuote()->getStore()->getName();
@@ -208,5 +212,32 @@ class ProductExpander extends SprykerProductExpander implements ProductExpanderI
         }
 
         return $attributes[ProductConfig::KEY_WEIGHT_PER_ITEM] * 1000;
+    }
+
+    /**
+     * @return string
+     */
+    protected function getDefaultPickZone(): string
+    {
+        $pickZone = null;
+        $defZone = PyzPickingZoneQuery::create()->findOneByIsDefault(true);
+        if ($defZone) {
+            if (strlen(trim($defZone->getName())) > 2) {
+                $pickZone = $defZone->getName();
+            }
+        }
+        if (!$pickZone) {
+            $defZone = PyzPickingZoneQuery::create()->findOne();
+            if ($defZone) {
+                if (strlen(trim($defZone->getName())) > 2) {
+                    $pickZone = $defZone->getName();
+                }
+            }
+        }
+        if (!$pickZone) {
+            $pickZone = "Sonstiges";
+        }
+
+        return $pickZone;
     }
 }
