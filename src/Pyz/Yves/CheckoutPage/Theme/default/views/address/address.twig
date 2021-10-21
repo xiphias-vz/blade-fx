@@ -122,7 +122,6 @@
                                 <br>
                             </div>
 
-
                             {% include molecule('form') with {
                                 modifiers: ['checkout-form', 'checkout-form-elements'],
                                 data: {
@@ -287,10 +286,9 @@
 
             <script>
                 document.addEventListener("DOMContentLoaded", function(event) {
-
-                    const phoneDivElement = document.getElementById("addressesForm_shippingAddress_phone").parentElement;
                     const idCustomer = document.getElementById("idCustomer").value;
                     if (idCustomer === "") {
+                        const phoneDivElement = document.getElementById("addressesForm_shippingAddress_phone").parentElement;
                         const phoneRequiredFieldsGuest = document.getElementById('phoneRequiredFieldsGuest');
                         phoneDivElement.parentNode.insertBefore(phoneRequiredFieldsGuest, phoneDivElement)
                     }
@@ -327,10 +325,12 @@
                     if (phoneNumber)  phoneNumberValue = phoneNumber.value;
                     const mobileNumber = document.getElementById("addressesForm_shippingAddress_cell_phone");
                     const idCustomer = document.getElementById("idCustomer").value;
+
                     if (phoneNumberValue === "" && mobileNumber.value === "") {
                         event.preventDefault();
                         if (phoneNumber) {
                             if (phoneNumber.value === "") {
+
                                 phoneNumber.style.borderColor = '#cb3d49';
                             }
                         }

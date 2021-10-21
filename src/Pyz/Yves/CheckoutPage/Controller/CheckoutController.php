@@ -93,21 +93,21 @@ class CheckoutController extends SprykerCheckoutControllerAlias
 
         $customerTransfer = $this->getFactory()->getCustomerClient()->getCustomer();
         if (isset($customerTransfer)) {
-            $firstName = $customerTransfer->getFirstName();
-            $lastName = $customerTransfer->getLastName();
-            $zip = $customerTransfer->getZipCode();
-            $houseNo = $customerTransfer->getAddress2();
-            $street = $customerTransfer->getAddress1();
-            $city = $customerTransfer->getCity();
-            $we = $customerTransfer->getIsAdvertise();
-            $meinGlobus = $customerTransfer->getIsMeinGlobus();
+            $firstName = $customerTransfer->getFirstName() ?? '';
+            $lastName = $customerTransfer->getLastName() ?? '';
+            $zip = $customerTransfer->getZipCode() ?? '';
+            $houseNo = $customerTransfer->getAddress2() ?? '';
+            $street = $customerTransfer->getAddress1() ?? '';
+            $city = $customerTransfer->getCity() ?? '';
+            $we = $customerTransfer->getIsAdvertise() ?? '';
+            $meinGlobus = $customerTransfer->getIsMeinGlobus() ?? '';
 
-            if (isset($we) && $we == "true") {
+            if ($we == "true") {
                 $we = true;
             } else {
                 $we = false;
             }
-            if (isset($meinGlobus) && $meinGlobus == "true") {
+            if ($meinGlobus == "true") {
                 $meinGlobus = true;
             } else {
                 $meinGlobus = false;
