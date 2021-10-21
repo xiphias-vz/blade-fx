@@ -11,18 +11,20 @@
 
 {% block body %}
 
-    {% if data.product_type == 'goproduct' %}
-        <span><img src="{{ publicPath('images/globus-product.png') }}" /></span>
+    {% if app.currentCodeBucket=='CZ' %}
+        {% if data.product_type == 'goproduct' %}
+            <span><img src="{{ publicPath('images/globus-product.png') }}" /></span>
+        {% endif %}
     {% endif %}
 
-    {% set tooltip_text = data.text == '' ? 'Discount' : data.text %}
+    {% set tooltip_text = data.text == '' ? 'discount' : data.text %}
 
     {% if data.type == 'direct_discount' %}
         {% if data.discount is defined and data.discount > 0 %}
             <span class="{{ component.renderClass(config.name ~ '__text', modifiers) }} tooltip">
                 {{ data.discount_percentage }} %
                 <span class="tooltiptext">
-                    {{ tooltip_text }}
+                    {{ tooltip_text | trans }}
                 </span>
             </span>
         {% else %}
@@ -30,7 +32,7 @@
             <span class="{{ component.renderClass(config.name ~ '__text', modifiers) }} tooltip">
                 {{data.text}}
                 <span class="tooltiptext">
-                    {{ tooltip_text }}
+                    {{ tooltip_text | trans }}
                 </span>
             </span>
         {% endif %}
@@ -40,7 +42,7 @@
             <span class="{{ component.renderClass(config.name ~ '__text', modifiers) }} tooltip">
                 {{ data.discount_percentage }} %
              <span class="tooltiptext">
-                {{ tooltip_text }}
+                {{ tooltip_text | trans }}
             </span>
         </span>
         {% else %}
@@ -48,7 +50,7 @@
             <span class="{{ component.renderClass(config.name ~ '__text', modifiers) }} tooltip">
                 {{data.text}}
              <span class="tooltiptext">
-                {{ tooltip_text }}
+                {{ tooltip_text | trans }}
             </span>
         </span>
         {% endif %}
@@ -58,12 +60,12 @@
         <span class="{{ component.renderClass(config.name ~ '__text', modifiers) }} tooltip">
             {{ data.discount_percentage }} %
              <span class="tooltiptext">
-                {{ tooltip_text }}
+                {{ tooltip_text | trans }}
             </span>
         </span>
         {% else %}
         <span class="{{ component.renderClass(config.name ~ '__text', modifiers) }} tooltip">
-            {{data.text}}
+            {{data.text | trans}}
         </span>
             {% endif %}
     {% endif %}

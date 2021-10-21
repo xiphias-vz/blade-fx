@@ -107,6 +107,7 @@ class ProductMapping
         'NOS Artikel' => '',
         'Classification_ID' => '',
         'wine_quality_classification' => '',
+        'isGlobusProduction' => '',
         'bioCertificationCode' => '',
     ];
 
@@ -337,6 +338,7 @@ class ProductMapping
         'CMW04' => 'laktosefrei',
         'CMW02' => 'glutenfrei',
         'CMW11' => 'fairtrade',
+        'CMW22' => 'isGlobusProduction',
     ];
 
     /**

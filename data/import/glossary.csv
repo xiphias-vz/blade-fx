@@ -4919,3 +4919,12 @@ merchant.message.inactive,Product %sku% from merchant %merchant_name% is not ava
 merchant.message.inactive,Artikel %sku% vom Händler %merchant_name% ist momentan nicht verfügbar.,de_DE
 merchant.message.inactive,Product %sku% from merchant %merchant_name% is not available at the moment.,en_US
 merchant.message.inactive,Artikel %sku% vom Händler %merchant_name% ist momentan nicht verfügbar.,de_DE
+discount,"Sleva",cs_CZ
+discount,Rabatt,de_DE
+discount,Discount,en_US
+direct.discount.direct,"Přímá sleva",cs_CZ
+direct.discount,Direktrabatt,de_DE
+direct.discount,Direct Discount,en_US
+cashback.discount,"Cashback Sleva",cs_CZ
+cashback.discount,Cashback Rabatt,de_DE
+cashback.discount,Cashback Discount,en_US

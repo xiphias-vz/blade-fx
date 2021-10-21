@@ -8,13 +8,13 @@
 
 {% set labels = labels | default([]) %}
 {% set labelMappings = {
-    'SALE': '%',
+    'SALE': 'discount',
     'Globus Original Product' : ''
 } %}
 
 {% for item in data.dictionary %}
     {% set labels = labels | merge([{
-        text: labelMappings[item.getKey()] is defined ? labelMappings[item.getKey()] : item.getKey(),
+        text: labelMappings[item.getKey()] is defined ? labelMappings[item.getKey()] : item.getFrontEndReference() | lower | replace('_', '.'),
         type: (item.getFrontEndReference() | lower | replace(' ', '-')) | default,
         product_type: data.product_type is defined ? data.product_type : '',
         discount: data.discount is defined ? data.discount : 0,
