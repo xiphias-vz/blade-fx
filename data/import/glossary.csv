@@ -4052,6 +4052,9 @@ product.info.allergens.contained.possible,"Možné alergeny",cs_CZ
 product.info.nutritional.information,"Nutriční hodnoty",cs_CZ
 product.info.nutritional.information,Nutrition information,en_US
 product.info.nutritional.information,Nährwertangaben,de_DE
+product.info.biocertification,"Kód Bio certifikace",cs_CZ
+product.info.biocertification,Bio-Zertifizierungscode,de_DE
+product.info.biocertification,Bio certification code,en_US
 product.info.condensing,"Energetická hodnota",cs_CZ
 product.info.condensing,Calorific value,en_US
 product.info.condensing,Brennwert,de_DE

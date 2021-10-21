@@ -167,7 +167,8 @@
                                 targetClass: 'nutritional-information__target-bundle',
                                 isActive: true,
                                 productAttributes: data.product.attributes,
-                                product: data.product
+                                product: data.product,
+                                bioCertification: 'bio-certification-code'
                             },
                             embed: {
                                 bundleItems: data.bundleItems,
@@ -182,6 +183,11 @@
                                 } only %}
                             {% endblock %}
                         {% endembed %}
+                    {% endif %}
+                    {% if data.productAttributes['bioCertificationCode'] is defined and data.productAttributes['bioCertificationCode'] != "" %}
+                        {% if data.currentCodeBucket == 'CZ' %}
+                            <p style="margin-top: -50px; margin-bottom: 30px;">{{ 'product.info.biocertification' | trans }}: {{ data.productAttributes['bioCertificationCode'] }}</p>
+                        {% endif %}
                     {% endif %}
 
                     {% if data.product.attributes.warnhinweise is defined or data.product.attributes.verwendungshinweise is defined %}

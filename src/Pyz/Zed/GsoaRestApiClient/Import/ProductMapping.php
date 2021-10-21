@@ -107,6 +107,7 @@ class ProductMapping
         'NOS Artikel' => '',
         'Classification_ID' => '',
         'wine_quality_classification' => '',
+        'bioCertificationCode' => '',
     ];
 
     /**
@@ -131,6 +132,7 @@ class ProductMapping
         'bruttoWeightKg' => ['einzelgewicht'],
         'amount' => ['grundpreisinhalt'],
         'wineQualityClassification' => ['wine_quality_classification'],
+        'bioCertificationCode' => ['bioCertificationCode'],
     ];
 
     /**
