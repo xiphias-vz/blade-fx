@@ -19,7 +19,7 @@
         {
             padding: 10px 10px 10px 10px;
             justify-content: center;
-            width: 100%;
+            margin: 0 auto;
 
             @include helper-breakpoint-media-max($lg-max) {
                 min-width: auto;
@@ -39,6 +39,7 @@
         }
 
         &__image-wrap {
+
             cursor: pointer;
             position: relative;
             overflow: hidden;
@@ -49,10 +50,9 @@
             padding-top: rem(35);
 
             @include helper-breakpoint-media-max($sm-max){
-                max-height: 150px;
+                max-height: 130px;
             }
             @include helper-breakpoint-media-max($md-max) {
-                width:150px;
                 height:auto;
                 justify-content: flex-start;
             }
@@ -148,7 +148,6 @@
             padding: 0 rem(20);
             flex-grow: 1;
             @include helper-breakpoint-media-max($sm-max) {
-               width:100%;
                padding-top: 0;
                padding-bottom: 0;
             }
@@ -210,14 +209,8 @@
         .add-to-cart-btn {
             display: flex;
             flex-direction: column;
-            margin: -8px;
-
-            @include helper-breakpoint-media-min($md-min) {
-                text-align: right;
-                position: relative;
-                top: 0px;
-            }
-
+            align-self: flex-end;
+            width: 100%;
             a {
                 background-color: $setting-color-globus-darkGreen;
 
@@ -247,15 +240,17 @@
                 flex-direction: row;
                 justify-content: flex-end;
                 text-align: right;
-                top:0px;
-                right:-5px;
+                border-top: 1px solid $setting-color-lighter;
+                width: 100%;
+                padding: 8px 1px 3px;
+
                 a {
                     justify-content: center;
                     width: 30px;
                     min-width: 30px;
                     padding:15px;
-                    border-radius: 50%;
                     height: 30px;
+                    margin: 0 8px 0 0;
                     .add-details-to-cart-text-holder {
                         display: none;
                     }
@@ -293,35 +288,46 @@
             cursor: pointer;
 
             .money-price{
-
                 display: flex;
                 flex-wrap: wrap;
                 align-content: flex-end;
-                flex-direction: column;
+                flex-direction: row;
+                margin-right: 15px;
+
 
                 @include helper-breakpoint-media-max($sm-max) {
                     padding: 0;
                     text-align: right;
                     margin-right: 15px;
+                    align-items: center;
                 }
 
 
                 &__amount{
                     font-size: 1.3rem;
-                    margin-bottom: 24px;
+                    margin-bottom: 17px;
+                    margin-right: 10px;
 
                     @include helper-breakpoint-media-max($sm-max) {
-                        font-size: 1rem;
+                        font-size: 22px;
+                        margin-bottom: 0;
+                        &:nth-child(1) {
+                            margin-right: 10px;
+
+                        }
                     }
                 }
                 &__amount--original{
                     font-size: .875rem;
+                    margin-top: 5px;
+                    color: $setting-color-globus-black;
                 }
             }
         }
 
         &__info-more-col:nth-child(1) {
-            color:black;
+            color:$setting-color-black;
+
         }
 
         &__info-more-col:nth-child(2) {

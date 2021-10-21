@@ -4,10 +4,6 @@
             margin: 0;
         }
 
-        @include helper-breakpoint-media-max($sm-max) {
-            height: 6rem;
-            top: 2rem;
-        }
 
         &--with-overlay {
             position: relative;
@@ -41,9 +37,6 @@
         }
 
         &__image {
-            @include helper-breakpoint-media-max($sm-max) {
-                margin: -32px auto;
-            }
 
 
             &--cart-bundle {

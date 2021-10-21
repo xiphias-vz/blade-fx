@@ -37,13 +37,13 @@
 {% set isGlobusProduction = data.product.attributes.isGlobusProduction | default(0) %}
 
 {% block body %}
-    <div class="{{ component.renderClass(config.name ~ '__container', modifiers) }}">
+    <div class="grid {{ component.renderClass(config.name ~ '__container', modifiers) }}">
         {% block thumbnailWrapper %}
             {% set extraClass = '' %}
             {% set modifiers = [] %}
 
             {% block imageContainer %}
-                <div class="{{ config.name }}__image-wrap" onclick="productClicked('{{ data.url }}', '{{ data.idProductAbstract }}', '{{ data.name | escape('js') }}', '{{ data.product.prices.DEFAULT is defined ? data.product.prices.DEFAULT / 100 : null  }}', '{{ data.product.abstract_sku }}' )"   >
+                <div class="col--lg-12 col--md-12 col--sm-3 {{ config.name }}__image-wrap" onclick="productClicked('{{ data.url }}', '{{ data.idProductAbstract }}', '{{ data.name | escape('js') }}', '{{ data.product.prices.DEFAULT is defined ? data.product.prices.DEFAULT / 100 : null  }}', '{{ data.product.abstract_sku }}' )"   >
                     {% if isGlobusProduction == true %}
                         {% block goproductLabel %}
                             {% set labels = labels | default([]) %}
@@ -151,7 +151,7 @@
         {% endblock %}
 
         {% block contentContainer %}
-            <div class="{{ config.name }}__content-wrapper">
+            <div class="col--sm-9 col--lg-12 {{ config.name }}__content-wrapper"  >
                 {% block content %}
                     {% block contentTopContainer %}
                         <div class="{{ config.name }}__content-top" onclick="productClicked('{{ data.url }}', '{{ data.idProductAbstract }}', '{{ data.name | escape('js') }}', '{{ data.product.prices.DEFAULT is defined ? data.product.prices.DEFAULT / 100 : null  }}', '{{ data.product.abstract_sku }}' )" >
@@ -282,101 +282,94 @@
                             {% endblock %}
                         </div>
                     {% endblock %}
+                {% endblock %}
+            </div>
 
-                    {% block addToBlock %}
-                        <div class="add-to-cart-btn">
-
-                            <div >
-
-                                {% block price %}
-                                    <div class="{{ config.name }}__info-more-col"  onclick="productClicked('{{ data.url }}', '{{ data.idProductAbstract }}', '{{ data.name | escape('js') }}', '{{ data.product.prices.DEFAULT is defined ? data.product.prices.DEFAULT / 100 : null  }}', '{{ data.product.abstract_sku }}' )" >
-                                        {% include molecule('money-price') with {
-                                            modifiers: modifiers,
-                                            data: {
-                                                amount: data.product.prices.DEFAULT | default(null),
-                                                originalAmount: data.product.prices.ORIGINAL | default(null),
-                                                currencyIsoCode: data.currencyIsoCode,
-                                            },
-                                        } only %}
-                                    </div>
-                                {% endblock %}
-                            </div>
-
-                            {% if app.currentCodeBucket == 'DE' %}
-                                <a href="{{ addAjaxUrl }}"
-                                   rel="nofollow"
-                                   onclick="productAddToCart('{{ data.idProductAbstract }}','{{ data.name | escape('js') }}','{{ data.product.prices.DEFAULT is defined ? data.product.prices.DEFAULT / 100 : null }}','{{ data.product.abstract_sku }}','{{ data.supplier | escape('js') }}')"
-                                   class="
+        {% block addToBlock %}
+            <div class="add-to-cart-btn">
+                {% block price %}
+                    <div class="{{ config.name }}__info-more-col"  onclick="productClicked('{{ data.url }}', '{{ data.idProductAbstract }}', '{{ data.name | escape('js') }}', '{{ data.product.prices.DEFAULT is defined ? data.product.prices.DEFAULT / 100 : null  }}', '{{ data.product.abstract_sku }}' )" >
+                        {% include molecule('money-price') with {
+                            modifiers: modifiers,
+                            data: {
+                                amount: data.product.prices.DEFAULT | default(null),
+                                originalAmount: data.product.prices.ORIGINAL | default(null),
+                                currencyIsoCode: data.currencyIsoCode,
+                            },
+                        } only %}
+                    </div>
+                {% endblock %}
+                {% if app.currentCodeBucket == 'DE' %}
+                <a href="{{ addAjaxUrl }}"
+                   rel="nofollow"
+                   onclick="productAddToCart('{{ data.idProductAbstract }}','{{ data.name | escape('js') }}','{{ data.product.prices.DEFAULT is defined ? data.product.prices.DEFAULT / 100 : null }}','{{ data.product.abstract_sku }}','{{ data.supplier | escape('js') }}')"
+                   class="
                                         button button--with-icon button--middle-icon button_center_align
                                         js-product-color-group__image-{{ data.idProductAbstract }}
                                         js-image-animation__link
                                         js-ajax-add-to-cart__link
                                     "
-                                   data-product-id="{{ data.idProductAbstract }}"
-                                   data-product-sku="{{ data.sku }}"
-                                   data-product-title="{{ data.name | escape('js') }}"
-                                   data-product-price="{{ data.product.prices.ORIGINAL is defined ? data.product.prices.ORIGINAL / 100 : null }}"
-                                   data-csrf-token="{{ csrf_token('add-to-cart-ajax') }}"
-                                >
-                            {% else %}
-                                    <a href="{{ addAjaxUrl }}"
-                                       onclick="productAddToCart('{{ data.idProductAbstract }}','{{ data.name | escape('js') }}','{{ data.product.prices.DEFAULT is defined ? data.product.prices.DEFAULT / 100 : null }}','{{ data.product.abstract_sku }}','{{ data.supplier | escape('js') }}')"
-                                       class="
-                                    button button--with-icon button--middle-icon
-                                     button_center_align
-                                     button--font-CZ button--backgroundcolor-CZ
+                   data-product-id="{{ data.idProductAbstract }}"
+                   data-product-sku="{{ data.sku }}"
+                   data-product-title="{{ data.name | escape('js') }}"
+                   data-product-price="{{ data.product.prices.ORIGINAL is defined ? data.product.prices.ORIGINAL / 100 : null }}"
+                   data-csrf-token="{{ csrf_token('add-to-cart-ajax') }}"
+                >
+                    {% else %}
+                    <a href="{{ addAjaxUrl }}"
+                       onclick="productAddToCart('{{ data.idProductAbstract }}','{{ data.name | escape('js') }}','{{ data.product.prices.DEFAULT is defined ? data.product.prices.DEFAULT / 100 : null }}','{{ data.product.abstract_sku }}','{{ data.supplier | escape('js') }}')"
+                       class="
+                                    button button--with-icon button--middle-icon button--font-CZ button--backgroundcolor-CZ
                                     js-product-color-group__image-{{ data.idProductAbstract }}
                                     js-image-animation__link
                                     js-ajax-add-to-cart__link
                                 "
-                                       data-product-id="{{ data.idProductAbstract }}"
-                                       data-product-sku="{{ data.sku }}"
-                                       data-product-title="{{ data.name | escape('js') }}"
-                                       data-product-price="{{ data.product.prices.ORIGINAL is defined ? data.product.prices.ORIGINAL / 100 : null }}"
-                                       data-csrf-token="{{ csrf_token('add-to-cart-ajax') }}"
-                                    >
-                            {% endif %}
-                                <span class="icon-basketplus"></span>
-                                <div class="add-details-to-cart-text-holder">
-                                    {{- 'page.detail.add-to-cart' | trans -}}
-                                </div>
-                            </a>
+                       data-product-id="{{ data.idProductAbstract }}"
+                       data-product-sku="{{ data.sku }}"
+                       data-product-title="{{ data.name | escape('js') }}"
+                       data-product-price="{{ data.product.prices.ORIGINAL is defined ? data.product.prices.ORIGINAL / 100 : null }}"
+                       data-csrf-token="{{ csrf_token('add-to-cart-ajax') }}"
+                    >
+                        {% endif %}
+                        <span class="icon-basketplus"></span>
+                        <div class="add-details-to-cart-text-holder">
+                            {{- 'page.detail.add-to-cart' | trans -}}
                         </div>
-                    <script type="text/javascript">
-                        window.catalogList = window.catalogList || [];
-                        window.catalogList.push({
-                                    'name': '{{ data.name | escape('js') }}',
-                                    'id': '{{ data.idProductAbstract }}',
-                                    'sku': '{{ data.product.abstract_sku }}',
-                                    'price': '{{ data.product.prices.DEFAULT is defined ? data.product.prices.DEFAULT / 100 : null  }}',
-                                    'url' : '{{ data.url }}',
-                                    'position': '{{ data.position }}',
-                                    'list': 'POP',
-                        });
-
-                        function productAddToCart(productId, productName, productPrice, productSku, productBrand)
-                        {
-                            window.dataLayer = window.dataLayer || [];
-                            window.dataLayer.push({
-                                'event': 'eec.addToCart',
-                                'ecommerce':{
-                                    'add':{
-                                        'currencyCode': '{{ data.currencyIsoCode }}',
-                                        'products': [{
-                                            'id': productId,
-                                            'name': productName,
-                                            'price': productPrice,
-                                            'sku': productSku,
-                                            'brand': productBrand,
-                                        }]
-                                    }
-                                },
-                            });
-                        }
-                    </script>
-                    {% endblock %}
-                {% endblock %}
+                    </a>
             </div>
+            <script type="text/javascript">
+                window.catalogList = window.catalogList || [];
+                window.catalogList.push({
+                    'name': '{{ data.name | escape('js') }}',
+                    'id': '{{ data.idProductAbstract }}',
+                    'sku': '{{ data.product.abstract_sku }}',
+                    'price': '{{ data.product.prices.DEFAULT is defined ? data.product.prices.DEFAULT / 100 : null  }}',
+                    'url' : '{{ data.url }}',
+                    'position': '{{ data.position }}',
+                    'list': 'POP',
+                });
+
+                function productAddToCart(productId, productName, productPrice, productSku, productBrand)
+                {
+                    window.dataLayer = window.dataLayer || [];
+                    window.dataLayer.push({
+                        'event': 'eec.addToCart',
+                        'ecommerce':{
+                            'add':{
+                                'currencyCode': '{{ data.currencyIsoCode }}',
+                                'products': [{
+                                    'id': productId,
+                                    'name': productName,
+                                    'price': productPrice,
+                                    'sku': productSku,
+                                    'brand': productBrand,
+                                }]
+                            }
+                        },
+                    });
+                }
+            </script>
+        {% endblock %}
         {% endblock %}
     </div>
 {% endblock %}
