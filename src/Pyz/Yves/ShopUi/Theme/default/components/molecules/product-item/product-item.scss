@@ -140,6 +140,10 @@
                 justify-content: space-between;
                 height: 100%;
             }
+
+            &--stretch {
+                min-height: rem(400);
+            }
         }
 
         &__content-wrapper {
