@@ -48,7 +48,7 @@ class CategoryWriterStep extends SprykerCategoryWriterStep
     /**
      * @var \DateTime $dtImport
      */
-    private static $dtImport;
+    protected static $dtImport;
 
     /**
      * @var array
