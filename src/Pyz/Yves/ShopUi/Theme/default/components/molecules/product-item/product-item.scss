@@ -20,7 +20,7 @@
             padding: 10px 10px 10px 10px;
             justify-content: center;
             margin: 0 auto;
-
+            width: 90%;
             @include helper-breakpoint-media-max($lg-max) {
                 min-width: auto;
                 font-size: 12px;
@@ -308,9 +308,9 @@
             .money-price{
                 display: flex;
                 flex-wrap: wrap;
-                align-content: flex-end;
-                flex-direction: row;
-                margin-right: 15px;
+                align-items: flex-end;
+                flex-direction: column;
+                margin-right: 0;
 
 
                 @include helper-breakpoint-media-max($sm-max) {
@@ -318,6 +318,7 @@
                     text-align: right;
                     margin-right: 15px;
                     align-items: center;
+                    flex-direction: row;
                 }
 
 
@@ -338,6 +339,7 @@
                 &__amount--original{
                     font-size: .875rem;
                     margin-top: 5px;
+                    margin-bottom: 0;
                     color: $setting-color-globus-black;
                 }
             }
