@@ -239,20 +239,6 @@
                 }
             }
 
-            .button-color-DE {
-                background-color: $setting-color-main;
-                &:hover {
-                    background-color: $setting-color-globus-darkGreen;
-                }
-            }
-
-            .button-color-CZ {
-                background-color: $setting-color-globusCZ-main-green;
-                &:hover {
-                    background-color: $setting-color-globusCZ-main-green;
-                }
-            }
-
             @include helper-breakpoint-media-max($sm-max) {
                 display: flex;
                 flex-direction: row;

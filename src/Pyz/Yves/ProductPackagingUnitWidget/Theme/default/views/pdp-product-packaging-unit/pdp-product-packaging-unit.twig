@@ -106,10 +106,10 @@
 
             {% if not data.salesUnitCount %}
                 {% if app.currentCodeBucket == 'DE' %}
-                    <button type="submit" id="add-to-cart-button" onclick="productAddToCartPDP('{{ data.product.idProductConcrete }}','{{ data.product.name }}','{{ data.product.prices.DEFAULT is defined ? data.product.prices.DEFAULT / 100 : null  }}','{{ data.product.sku }}','{{ data.product.attributes.supplier is defined ? data.product.attributes.supplier : null }}')" class="button button--success button--expand button--backgroundcolor-dark-DE"
+                    <button type="submit" id="add-to-cart-button" onclick="productAddToCartPDP('{{ data.product.idProductConcrete }}','{{ data.product.name }}','{{ data.product.prices.DEFAULT is defined ? data.product.prices.DEFAULT / 100 : null  }}','{{ data.product.sku }}','{{ data.product.attributes.supplier is defined ? data.product.attributes.supplier : null }}')" class="button button--success button--expand button--backgroundcolor-DE"
                             data-init-single-click {{ data.isAddToCartDisabled ? 'disabled' }} {{ qa('add-to-cart-button') }}>
                 {% else %}
-                     <button type="submit" id="add-to-cart-button" onclick="productAddToCartPDP('{{ data.product.idProductConcrete }}','{{ data.product.name }}','{{ data.product.prices.DEFAULT is defined ? data.product.prices.DEFAULT / 100 : null  }}','{{ data.product.sku }}','{{ data.product.attributes.supplier is defined ? data.product.attributes.supplier : null }}')" class="button button--success button--expand button--font-CZ button--backgroundcolor-main-CZ"
+                     <button type="submit" id="add-to-cart-button" onclick="productAddToCartPDP('{{ data.product.idProductConcrete }}','{{ data.product.name }}','{{ data.product.prices.DEFAULT is defined ? data.product.prices.DEFAULT / 100 : null  }}','{{ data.product.sku }}','{{ data.product.attributes.supplier is defined ? data.product.attributes.supplier : null }}')" class="button button--success button--expand button--font-CZ button--backgroundcolor-CZ"
                              data-init-single-click {{ data.isAddToCartDisabled ? 'disabled' }} {{ qa('add-to-cart-button') }}>
                 {% endif %}
                     <span class="basket-and-label-holder">

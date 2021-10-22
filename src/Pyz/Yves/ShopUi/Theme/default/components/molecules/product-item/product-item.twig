@@ -304,11 +304,10 @@
                    rel="nofollow"
                    onclick="productAddToCart('{{ data.idProductAbstract }}','{{ data.name | escape('js') }}','{{ data.product.prices.DEFAULT is defined ? data.product.prices.DEFAULT / 100 : null }}','{{ data.product.abstract_sku }}','{{ data.supplier | escape('js') }}')"
                    class="
-                                        button button--with-icon button--middle-icon button_center_align
+                                        button button--with-icon button--middle-icon button_center_align button--backgroundcolor-DE
                                         js-product-color-group__image-{{ data.idProductAbstract }}
                                         js-image-animation__link
                                         js-ajax-add-to-cart__link
-                                        button-color-DE
                                     "
                    data-product-id="{{ data.idProductAbstract }}"
                    data-product-sku="{{ data.sku }}"
@@ -324,7 +323,6 @@
                                     js-product-color-group__image-{{ data.idProductAbstract }}
                                     js-image-animation__link
                                     js-ajax-add-to-cart__link
-                                    button-color-CZ
                                 "
                        data-product-id="{{ data.idProductAbstract }}"
                        data-product-sku="{{ data.sku }}"
