@@ -141,8 +141,10 @@
                 height: 100%;
             }
 
-            &--stretch {
-                min-height: rem(400);
+            @include helper-breakpoint-media-min($md-min) {
+                &--stretch {
+                    min-height: rem(408);
+                }
             }
         }
 
