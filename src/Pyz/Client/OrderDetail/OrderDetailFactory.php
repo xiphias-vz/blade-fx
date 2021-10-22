@@ -8,6 +8,7 @@
 namespace Pyz\Client\OrderDetail;
 
 use Pyz\Client\OrderDetail\Model\OrderDetailModel;
+use Pyz\Client\OrderDetail\Model\OrderDetailModelInterface;
 use Pyz\Service\DateTimeWithZone\DateTimeWithZoneServiceInterface;
 use Spryker\Client\Customer\CustomerClientInterface;
 use Spryker\Client\Kernel\AbstractFactory;
@@ -19,9 +20,9 @@ use Spryker\Client\Sales\SalesClientInterface;
 class OrderDetailFactory extends AbstractFactory
 {
     /**
-     * @return \Pyz\Client\OrderDetail\Model\OrderDetailModel
+     * @return \Pyz\Client\OrderDetail\Model\OrderDetailModelInterface
      */
-    public function createOrderDetailModel(): OrderDetailModel
+    public function createOrderDetailModel(): OrderDetailModelInterface
     {
         return new OrderDetailModel(
             $this->getSalesClient(),

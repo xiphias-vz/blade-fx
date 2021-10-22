@@ -20,7 +20,7 @@ use Pyz\Shared\Tax\TaxConfig;
 use Spryker\Client\Customer\CustomerClientInterface;
 use Spryker\Client\Sales\SalesClientInterface;
 
-class OrderDetailModel
+class OrderDetailModel implements OrderDetailModelInterface
 {
     /**
      * @var \Spryker\Client\Sales\SalesClientInterface
