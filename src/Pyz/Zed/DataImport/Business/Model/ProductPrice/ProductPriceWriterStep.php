@@ -9,6 +9,7 @@ namespace Pyz\Zed\DataImport\Business\Model\ProductPrice;
 
 use NumberFormatter;
 use Orm\Zed\Currency\Persistence\SpyCurrencyQuery;
+use Orm\Zed\DataImport\Persistence\PyzImpPriceProduct;
 use Orm\Zed\PriceProduct\Persistence\Map\SpyPriceTypeTableMap;
 use Orm\Zed\PriceProduct\Persistence\SpyPriceTypeQuery;
 use Orm\Zed\PriceProductSchedule\Persistence\SpyPriceProductSchedule;
@@ -49,6 +50,11 @@ class ProductPriceWriterStep extends PublishAwareStep implements DataImportStepI
     protected static $idPriceTypeBuffer = [];
 
     protected const ZERO_PSEUDO_PRICE = "0,00";
+
+    /**
+     * @var string
+     */
+    protected static $dtImport;
 
     /**
      * @var \NumberFormatter
@@ -108,6 +114,29 @@ class ProductPriceWriterStep extends PublishAwareStep implements DataImportStepI
                 }
             }
         }
+
+        if (!static::$dtImport) {
+            static::$dtImport = date("Y-m-d h:i:sa");
+        }
+
+        $importEntity = new PyzImpPriceProduct();
+        if (isset($dataSet[static::KEY_GTIN]) && !ctype_space($dataSet[static::KEY_GTIN]) && !empty($dataSet[static::KEY_GTIN])) {
+            $importEntity->setGtin($dataSet[static::KEY_GTIN]);
+        }
+
+        $importEntity
+            ->setStore($dataSet[PriceProductDataSet::KEY_STORE])
+            ->setSapnumber($dataSet[$key])
+            ->setPrice($this->numberFormatter->parse(trim($dataSet[ProductConfig::KEY_PRICE])))
+            ->setPseudoprice($this->numberFormatter->parse(trim($dataSet[ProductConfig::KEY_PSEUDO_PRICE])))
+            ->setDtimported(static::$dtImport);
+        if (!empty($dataSet[ProductConfig::KEY_PRICE_FROM])) {
+            $importEntity
+                ->setPromotion($dataSet[ProductConfig::KEY_PRICE_PROMOTION])
+                ->setPromotionstart($dataSet[ProductConfig::KEY_PRICE_FROM])
+                ->setPromotionend($dataSet[ProductConfig::KEY_PRICE_TO]);
+        }
+        $importEntity->save();
 
         if (isset($dataSet[static::KEY_GTIN]) && !ctype_space($dataSet[static::KEY_GTIN]) && !empty($dataSet[static::KEY_GTIN])) {
             $productAbstractEntitiesCollection = SpyProductAbstractQuery::create()
