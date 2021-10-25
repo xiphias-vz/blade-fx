@@ -309,7 +309,7 @@ class GsoaProductConsole extends Console
                 if ($item["rank"] == null) {
                     $item["rank"] = $count;
                 }
-                $categories[sprintf("%'.09d", $deep) . "!" . $parentId . "-" . $item["rank"]] = $item;
+                $categories[sprintf("%'.09d", $deep) . "!" . $parentId . "-" . str_pad($item["rank"], 20, '0', STR_PAD_LEFT)] = $item;
                 $categories = array_merge($categories, $this->getCategoriesByParentId($items, $item["categoryId"], $deep));
             }
         }
