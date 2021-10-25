@@ -153,6 +153,7 @@ class ProductPriceWriterStep extends PublishAwareStep implements DataImportStepI
             // this data should skipped
             return;
         }
+        $pricePerKg = null;
 
         foreach ($productAbstractEntitiesCollection as $productAbstractEntity) {
             $dataSet[PriceProductDataSet::ID_PRODUCT_ABSTRACT] = $productAbstractEntity->getIdProductAbstract();
@@ -165,7 +166,9 @@ class ProductPriceWriterStep extends PublishAwareStep implements DataImportStepI
 
             if (isset($productAbstractEntityAttributes[ProductConfig::KEY_WEIGHT_PER_ITEM])) {
                 $priceMultiplier = $productAbstractEntityAttributes[ProductConfig::KEY_WEIGHT_PER_ITEM];
-                $pricePerKg = $dataSet[ProductConfig::KEY_PRICE];
+                if (!$pricePerKg) {
+                    $pricePerKg = $dataSet[ProductConfig::KEY_PRICE];
+                }
                 $dataSet[ProductConfig::PRICE_PER_KG] = $pricePerKg;
 
                 $parsedPricePerKg = $this->numberFormatter->parse(trim($pricePerKg));
