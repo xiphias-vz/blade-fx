@@ -71,6 +71,11 @@ class CategoryWriterStep extends SprykerCategoryWriterStep
     protected $idNavigationNodeBuffer = [];
 
     /**
+     * @var int
+     */
+    protected static $categoryOrder = 0;
+
+    /**
      * @param \Spryker\Zed\DataImport\Business\Model\DataSet\DataSetInterface $dataSet
      *
      * @return void
@@ -149,7 +154,7 @@ class CategoryWriterStep extends SprykerCategoryWriterStep
             ->findOneOrCreate();
 
         $navigationNodeEntity
-            ->setPosition((int)1)
+            ->setPosition(static::$categoryOrder)
             ->setIsActive(true)
             ->setNodeType('category');
 
@@ -217,6 +222,7 @@ class CategoryWriterStep extends SprykerCategoryWriterStep
      */
     protected function findOrCreateNode(SpyCategory $categoryEntity, DataSetInterface $dataSet)
     {
+        static::$categoryOrder++;
         $categoryNodeEntity = SpyCategoryNodeQuery::create()
             ->filterByCategory($categoryEntity)
             ->findOneOrCreate();
@@ -233,6 +239,7 @@ class CategoryWriterStep extends SprykerCategoryWriterStep
 
         $categoryNodeEntity->fromArray($dataSet->getArrayCopy());
         $categoryNodeEntity->setIsMain(true);
+        $categoryNodeEntity->setNodeOrder(static::$categoryOrder);
 
         if ($categoryNodeEntity->isNew() || $categoryNodeEntity->isModified()) {
             $categoryNodeEntity->save();
