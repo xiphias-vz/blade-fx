@@ -372,8 +372,6 @@ class CartController extends SprykerCartController
 
         if (count($messageTransfers) !== 0) {
             $this->addErrorMessage($messageTransfers[0]->getValue());
-        } else {
-            $this->addSuccessMessage(static::ADD_ITEMS_SUCCESS);
         }
 
         return $messageTransfers;
