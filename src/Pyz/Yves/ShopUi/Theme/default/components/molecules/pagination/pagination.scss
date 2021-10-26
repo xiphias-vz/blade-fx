@@ -20,8 +20,8 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            width: rem(25);
-            height: rem(25);
+            width: rem(40);
+            height: rem(40);
             font-weight: fw(medium);
             font-size: rem(13);
             text-align: center;
@@ -30,6 +30,11 @@
             border: rem(1) solid $setting-color-gray-15;
             border-radius: rem(2);
             text-decoration: none;
+
+            @include helper-breakpoint-media-max($sm-max) {
+                width: rem(32);
+                height: rem(32);
+            }
 
             @include helper-breakpoint-media-min($md-min) {
                 width: rem(40);
@@ -43,6 +48,7 @@
             &--next {
                 border: none;
                 color: $setting-color-gray-12;
+                width: 1rem;
             }
 
             &:hover {
