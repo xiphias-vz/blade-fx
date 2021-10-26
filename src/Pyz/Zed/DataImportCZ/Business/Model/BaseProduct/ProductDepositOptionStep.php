@@ -14,4 +14,6 @@ class ProductDepositOptionStep extends LocalProductDepositOptionStep
     protected const LOCALE_NAME = 'cs_CZ';
     protected const DEFAULT_CURRENCY = 'CZK';
     protected const DEPOSITS_TAX_SET = 'ZERO';
+
+    protected const DEFAULT_DEPOSIT_NAME = 'Záloha';
 }
