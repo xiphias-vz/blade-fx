@@ -141,15 +141,19 @@ class ProductMapping
      */
     protected $nutritionMap = [
         'atr_czr_fiber_os' => 'ballaststoffe',
-        'atr_czr_fats_os' => 'fettefettungsaeurenp100gml',
         'atr_czr_proteins_os' => 'eiweissp100gml',
         'atr_czr_energy_kcal_os' => 'energiekcalp100gml',
         'atr_czr_energy_kj_os' => 'energiekjp100gml',
-        'atr_czr_carbohydrates_os' => 'kohlhyalkp100gml',
-        'atr_czr_saturated_fatty_acids_os' => 'fettefettmgsaeurenp100gml',
         'atr_czr_salt_os' => 'salz100gml',
         'atr_czr_alcohol_percentage' => 'alkgeh',
         'atr_czr_sugars_os' => 'kohlzkrp100gml',
+        'atr_czr_saturated_fatty_acids_os' => 'fettefettgsaeurenp100gml',
+        'atr_czr_carbohydrates_os' => 'kohlp100gml',
+        'atr_czr_fats_os' => 'fettp100gml',
+        'atr_czr_starches_os' => 'kohlstrp100gml',
+        'atr_czr_polyalcohols_os' => 'kohlhyalkp100gml',
+        'atr_czr_polyunsaturated_fatty_acids_os' => 'fettefettmgsaeurenp100gml',
+        'atr_czr_monounsaturated_fatty_acids_os' => 'fettefettungsaeurenp100gml',
         ];
 
     /**
