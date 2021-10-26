@@ -109,7 +109,7 @@ execute-return,"Execute return"
 cancel-return,"Cancel return"
 ship-return,"Send return back to customer"
 delivery-return,"Deliver return back to customer"
-cancel,Cancel
+cancel.button,Cancel
 "skip timeout","Skip timeout"
 "Refund total","Refund total"
 "Comment successfully added","Comment successfully added."
@@ -133,3 +133,4 @@ order.overview.collection.no,"No, cancel"
 order.overview.collection.yes,"Yes, confirm collection"
 Reset,Reset
 order.overview.pick-up.confirm,Confirm pickup
+select.picking.zone.back.button,Back

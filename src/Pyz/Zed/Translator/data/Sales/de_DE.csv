@@ -163,7 +163,7 @@ execute-return,"Retoure ausführen"
 cancel-return,"Retoure stornieren"
 ship-return,"Retoure zum Kunden zurückschicken"
 delivery-return,"Retoure zum Kunden zurücksenden"
-cancel,Stornieren
+cancel.button,Stornieren
 "skip timeout","Timeout überspringen"
 "Refund total","Rückerstattung insgesamt"
 "Comment successfully added","Kommentar erfolgreich hinzugefügt."
@@ -187,4 +187,4 @@ order.overview.collection.no,"Nein, abbrechen"
 order.overview.collection.yes,"Ja, Abholung bestätigen"
 Reset,Zurücksetzen
 order.overview.pick-up.confirm,Abholung bestätigen
-
+select.picking.zone.back.button,Zurück
