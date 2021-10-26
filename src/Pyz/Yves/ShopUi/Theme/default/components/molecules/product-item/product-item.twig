@@ -186,6 +186,9 @@
                                         {% else %}
                                             {% if productSupplier %}
                                                 {% set fullname = ((productSupplier == 'keine Marke' or productSupplier == 'keine') ? '' : productSupplier ~ " - ") ~ data.name %}
+                                                {% if data.product.attributes.einzelgewicht is defined %}
+                                                    {% set fullname = ((productSupplier == 'keine Marke' or productSupplier == '' or productSupplier == 'keine') ? '' : productSupplier ~ " - ") ~ data.name ~ " - cca " ~ data.einzelgewicht|round(3, 'floor')|replace('.', ',') ~  ' ' ~ productSaleUnit %}
+                                                {% endif %}
                                             {% else %}
                                                 {% set fullname = data.name %}
                                             {% endif %}
