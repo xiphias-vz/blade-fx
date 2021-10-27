@@ -49,7 +49,8 @@ class DataImporterCollection extends SprykerDataImporterCollection
             Propel::disableInstancePooling();
 
             if ($importType == "category") {
-                if (file_exists(getcwd() . '/data/import/' . $dataImporterConfigurationTransfer->getReaderConfiguration()->getFileName())) {
+                $filePath = getcwd() . '/data/import/' . $dataImporterConfigurationTransfer->getReaderConfiguration()->getFileName();
+                if (file_exists($filePath) && filesize($filePath) > 100) {
                     $this->deactivateAllNavigationNodes($this->resolveIdNavigation(CategoryWriterStep::NAVIGATION_MODE_DESKTOP));
                     $this->deactivateAllNavigationNodes($this->resolveIdNavigation(CategoryWriterStep::NAVIGATION_MODE_MOBILE));
                 }
