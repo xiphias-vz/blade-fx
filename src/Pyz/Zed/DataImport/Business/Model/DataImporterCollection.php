@@ -49,8 +49,10 @@ class DataImporterCollection extends SprykerDataImporterCollection
             Propel::disableInstancePooling();
 
             if ($importType == "category") {
-                $this->deactivateAllNavigationNodes($this->resolveIdNavigation(CategoryWriterStep::NAVIGATION_MODE_DESKTOP));
-                $this->deactivateAllNavigationNodes($this->resolveIdNavigation(CategoryWriterStep::NAVIGATION_MODE_MOBILE));
+                if (file_exists(getcwd() . '/data/import/' . $dataImporterConfigurationTransfer->getReaderConfiguration()->getFileName())) {
+                    $this->deactivateAllNavigationNodes($this->resolveIdNavigation(CategoryWriterStep::NAVIGATION_MODE_DESKTOP));
+                    $this->deactivateAllNavigationNodes($this->resolveIdNavigation(CategoryWriterStep::NAVIGATION_MODE_MOBILE));
+                }
             }
 
             $this->executeDataImporter(
