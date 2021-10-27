@@ -9,6 +9,10 @@ sections:
         import-stock-ost:
             command: "vendor/bin/console data:import product-stock -f spryker/5.globus_article_instock.4007.csv -a UpdateAvailabilityAfterImportPlugin -vvv --no-ansi || true"
 
+    update-prices:
+        import-update-prices:
+            command: "vendor/bin/console import:updatePrices -c CZK"
+
     update-availability:
         import-update-availability:
             command: "vendor/bin/console import:updateAvailability"

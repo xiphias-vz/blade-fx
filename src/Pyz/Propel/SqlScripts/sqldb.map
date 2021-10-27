@@ -1,4 +1,5 @@
 # Sqlfile -> Database map
 pyz_time_slot.sql=zed
 pyzx_import_images.sql=zed
+pyzx_import_prices.sql=zed
 pyzx_picking_progress.sql=zed

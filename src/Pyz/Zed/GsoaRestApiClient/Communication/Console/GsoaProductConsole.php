@@ -418,8 +418,13 @@ class GsoaProductConsole extends Console
                             } else {
                                 $price = $item["prices"][0];
                             }
+                            $priceVal = (float)($price["actualPrice"]);
+                            $priceOrgVal = (float)($price["originalPrice"]);
 
                             $d["price"] = str_replace(".", ",", $price["actualPrice"]);
+                            if (empty($price["actionNumber"]) && $priceVal < $priceOrgVal) {
+                                $price["actionNumber"] = 'undefinedAction';
+                            }
                             if (empty($price["actionNumber"])) {
                                 $d["pseudoprice"] = "0,00";
                             } else {

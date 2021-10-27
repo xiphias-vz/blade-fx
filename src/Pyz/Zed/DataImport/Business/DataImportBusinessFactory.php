@@ -238,8 +238,6 @@ class DataImportBusinessFactory extends SprykerDataImportBusinessFactory
     {
         return new ProductPriceWriterStep(
             $this->createNumberFormatter(),
-            $this->getMoneyFacade(),
-            $this->getProductUpdateFacade(),
             $this->getConfig()
         );
     }

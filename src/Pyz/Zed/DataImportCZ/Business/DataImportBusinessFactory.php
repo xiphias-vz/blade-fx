@@ -60,8 +60,6 @@ class DataImportBusinessFactory extends PyzDataImportBusinessFactory
     {
         return new ProductPriceWriterStep(
             $this->createNumberFormatter(),
-            $this->getMoneyFacade(),
-            $this->getProductUpdateFacade(),
             $this->getConfig()
         );
     }

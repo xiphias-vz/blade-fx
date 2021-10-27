@@ -81,6 +81,10 @@ sections:
         import-alternative-eans:
             command: "vendor/bin/console data:import alternative-ean -f spryker/99.globusCZ_article_gtins.csv -vvv --no-ansi || true"
 
+    update-prices:
+        import-update-prices:
+            command: "vendor/bin/console import:updatePrices -c CZK"
+
     update-availability:
         import-update-availability:
             command: "vendor/bin/console import:updateAvailability"
