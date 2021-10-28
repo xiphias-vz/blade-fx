@@ -213,7 +213,7 @@
         &--backgroundcolor-CZ {
             background: $setting-color-globusCZ-main-green;
             &:hover {
-                background: $setting-color-globusCZ-main-green;
+                background: $setting-color-globusCZ-hover !important;;
                 box-shadow: 0 rem(4) rem(18) $setting-color-lightest !important;
             }
         }
@@ -221,7 +221,7 @@
         &--backgroundcolor-DE {
             background: $setting-color-main;
             &:hover {
-                background: $setting-color-globus-darkGreen;
+                background: $setting-color-globus-darkGreen !important;;
                 box-shadow: 0 rem(4) rem(18) $setting-color-lightest !important;
             }
         }

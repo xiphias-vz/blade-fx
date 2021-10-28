@@ -101,10 +101,11 @@
         &__container {
             transition: 0.5s;
             transition-timing-function: ease-in;
+            box-shadow: 0 0 rem(20) $setting-color-lightest;
 
             @include helper-breakpoint-media-min($l-max) {
                 &:hover {
-                    box-shadow: 0px 0px 20px $setting-color-globus-lightOrange;
+                    box-shadow: 0 0 rem(20) $setting-color-lightest;
                 }
                 &:active {
                     transition-timing-function: ease-out;
@@ -226,10 +227,6 @@
             align-self: flex-end;
             width: 100%;
             a {
-
-                &:hover {
-                    background-color: $setting-color-globus-darkGreen;
-                }
                 .icon-basketplus {
                     font-size: 23px;
                     margin-right: 14px;
