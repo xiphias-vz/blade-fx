@@ -333,6 +333,6 @@ class CashierOrderContentBuilder extends IntCashierOrderContentBuilder
             return $itemTransfer->getPricePerKg() - $itemTransfer->getSumDiscountAmountAggregation();
         }
 
-        return $itemTransfer->getSumPriceToPayAggregation();
+        return $itemTransfer->getSumPrice() - $itemTransfer->getSumDiscountAmountAggregation();
     }
 }
