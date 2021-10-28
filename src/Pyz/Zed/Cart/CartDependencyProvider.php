@@ -12,6 +12,7 @@ use Pyz\Zed\ProductUrlCartConnector\Communication\Plugin\ProductUrlCartExpanderP
 use Pyz\Zed\SalesOrderThreshold\Communication\Plugin\Cart\HardMaxThresholdReachedQuoteExpanderPlugin;
 use Pyz\Zed\SalesOrderThreshold\Communication\Plugin\Cart\HardThresholdReachedQuoteExpanderPlugin;
 use Spryker\Zed\AvailabilityCartConnector\Communication\Plugin\CheckAvailabilityPlugin;
+use Spryker\Zed\AvailabilityCartConnector\Dependency\Facade\AvailabilityCartConnectorToAvailabilityBridge;
 use Spryker\Zed\Cart\CartDependencyProvider as SprykerCartDependencyProvider;
 use Spryker\Zed\Cart\Communication\Plugin\CleanUpItemsPreReloadPlugin;
 use Spryker\Zed\Cart\Communication\Plugin\SkuGroupKeyPlugin;
@@ -57,6 +58,21 @@ use Spryker\Zed\ShipmentCartConnector\Communication\Plugin\Cart\CartShipmentPreC
 
 class CartDependencyProvider extends SprykerCartDependencyProvider
 {
+    public const FACADE_AVAILABILITY = 'FACADE_AVAILABILITY';
+
+    /**
+     * @param \Spryker\Zed\Kernel\Container $container
+     *
+     * @return \Spryker\Zed\Kernel\Container
+     */
+    public function provideBusinessLayerDependencies(Container $container)
+    {
+        $container = parent::provideBusinessLayerDependencies($container);
+        $container = $this->addAvailabilityFacade($container);
+
+        return $container;
+    }
+
     /**
      * @param \Spryker\Zed\Kernel\Container $container
      *
@@ -216,5 +232,19 @@ class CartDependencyProvider extends SprykerCartDependencyProvider
         return [
             new CartChangeTransferQuantityNormalizerPlugin(),
         ];
+    }
+
+    /**
+     * @param \Spryker\Zed\Kernel\Container $container
+     *
+     * @return \Spryker\Zed\Kernel\Container
+     */
+    protected function addAvailabilityFacade(Container $container): Container
+    {
+        $container->set(static::FACADE_AVAILABILITY, function (Container $container) {
+            return new AvailabilityCartConnectorToAvailabilityBridge($container->getLocator()->availability()->facade());
+        });
+
+        return $container;
     }
 }

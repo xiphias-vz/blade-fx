@@ -8,6 +8,8 @@
 namespace Pyz\Zed\Cart\Business;
 
 use Pyz\Zed\Cart\Business\Model\Operation;
+use Pyz\Zed\Cart\Business\Model\ProductAvailability;
+use Pyz\Zed\Cart\CartDependencyProvider;
 use Spryker\Zed\Cart\Business\CartBusinessFactory as SprykerCartBusinessFactory;
 use Spryker\Zed\Cart\Business\Model\OperationInterface;
 
@@ -35,5 +37,21 @@ class CartBusinessFactory extends SprykerCartBusinessFactory
         $operation->setPreReloadLoadPlugins($this->getPreReloadItemsPlugins());
 
         return $operation;
+    }
+
+    /**
+     * @return \Pyz\Zed\Cart\Business\Model\ProductAvailability
+     */
+    public function createProductAvailability(): ProductAvailability
+    {
+        return new ProductAvailability($this->getAvailabilityFacade());
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getAvailabilityFacade()
+    {
+        return $this->getProvidedDependency(CartDependencyProvider::FACADE_AVAILABILITY);
     }
 }

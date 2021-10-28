@@ -9,6 +9,7 @@ namespace Pyz\Yves\CartPage;
 
 use Pyz\Client\DepositProductOption\DepositProductOptionClientInterface;
 use Pyz\Client\OrderDetail\OrderDetailClientInterface;
+use Pyz\Yves\CartPage\Dependency\Client\CartPageToZedRequestClientInterface;
 use Spryker\Client\Quote\QuoteClientInterface;
 use Spryker\Client\Session\SessionClientInterface;
 use SprykerShop\Yves\CartPage\CartPageFactory as SprykerCartPageFactory;
@@ -62,5 +63,13 @@ class CartPageFactory extends SprykerCartPageFactory
     public function getDepositProductOptionClient(): DepositProductOptionClientInterface
     {
         return $this->getProvidedDependency(CartPageDependencyProvider::CLIENT_DEPOSIT_PRODUCT_OPTION);
+    }
+
+    /**
+     * @return \Pyz\Yves\CartPage\Dependency\Client\CartPageToZedRequestClientInterface
+     */
+    public function getPyzZedRequestClient(): CartPageToZedRequestClientInterface
+    {
+        return $this->getProvidedDependency(CartPageDependencyProvider::PYZ_CLIENT_ZED_REQUEST);
     }
 }

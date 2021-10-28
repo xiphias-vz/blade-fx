@@ -7,6 +7,7 @@
 
 namespace Pyz\Yves\CartPage;
 
+use Pyz\Yves\CartPage\Dependency\Client\CartPageToZedRequestClientBridge;
 use Spryker\Yves\Kernel\Container;
 use SprykerShop\Yves\CartPage\CartPageDependencyProvider as SprykerCartPageDependencyProvider;
 
@@ -18,6 +19,8 @@ class CartPageDependencyProvider extends SprykerCartPageDependencyProvider
     public const BASE_CLIENT_QUOTE = 'BASE_CLIENT_QUOTE';
     public const CLIENT_SESSION = 'CLIENT_SESSION';
     public const CLIENT_ORDER_DETAIL = 'CLIENT_ORDER_DETAIL';
+    public const CLIENT_AVAILABILITY = 'CLIENT_AVAILABILITY';
+    public const PYZ_CLIENT_ZED_REQUEST = 'PYZ_CLIENT_ZED_REQUEST';
 
     /**
      * @param \Spryker\Yves\Kernel\Container $container
@@ -32,6 +35,7 @@ class CartPageDependencyProvider extends SprykerCartPageDependencyProvider
         $container = $this->addDepositProductOptionClient($container);
         $container = $this->addSessionClient($container);
         $container = $this->addOrderDetailClient($container);
+        $container = $this->addPyzZedRequestClient($container);
 
         return $container;
     }
@@ -87,6 +91,20 @@ class CartPageDependencyProvider extends SprykerCartPageDependencyProvider
     {
         $container->set(static::CLIENT_DEPOSIT_PRODUCT_OPTION, function (Container $container) {
             return $container->getLocator()->depositProductOption()->client();
+        });
+
+        return $container;
+    }
+
+    /**
+     * @param \Spryker\Yves\Kernel\Container $container
+     *
+     * @return \Spryker\Yves\Kernel\Container
+     */
+    protected function addPyzZedRequestClient(Container $container): Container
+    {
+        $container->set(static::PYZ_CLIENT_ZED_REQUEST, function (Container $container) {
+            return new CartPageToZedRequestClientBridge($container->getLocator()->zedRequest()->client());
         });
 
         return $container;

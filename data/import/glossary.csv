@@ -5,6 +5,10 @@ cart.remove.items.success,Products were removed successfully,en_US
 cart.add.items.error.text,"Je nám to líto, něco se bohužel pokazilo.",cs_CZ
 cart.add.items.error.text,Leider ging etwas schief. Tut uns leid.,de_DE
 cart.add.items.error.text,Something went wrong. Sorry.,en_US
+cart.add.item.ajax.success,Artikel hinzugefügt,de_DE
+cart.remove.item.ajax.success,Artikel wurde entfernt,de_DE
+cart.add.item.ajax.success,Položka přidána,cs_CZ
+cart.remove.item.ajax.success,Položka byla odstraněna,cs_CZ
 cart.add.items.success,"Produkty byly úspěšně přidány do košíku.",cs_CZ
 cart.add.items.success,Produkte erfolgreich der Einkaufsliste hinzugefügt.,de_DE
 cart.add.items.success,Items added successfully,en_US
@@ -1939,7 +1943,7 @@ product.groups,Product Groups,en_US
 product.groups,Produktgruppen,de_DE
 product.groups,"Skupiny produktů",cs_CZ
 cart.pre.check.availability.failed,Item %sku% only has availability of %stock%.,en_US
-cart.pre.check.availability.failed,Zurzeit haben wir von %sku% nur %stock% Stück auf Lager.,de_DE
+cart.pre.check.availability.failed,Dieser Artikel ist nur noch %stock% mal verfügbar.,de_DE
 cart.pre.check.availability.failed,"V tuto chvíli máme u %sku% na skladě pouze %stock% kusů.",cs_CZ
 cart.pre.check.availability.failed.empty,Item %sku% no longer available.,en_US
 cart.pre.check.availability.failed.empty,"Produkt s sku '%sku%' je aktuálně nedostupný.",cs_CZ
@@ -4496,7 +4500,7 @@ cart.pre.check.quantity.min.failed,Minimum quantity requirements for product SKU
 cart.pre.check.quantity.min.failed,Die Mindestanzahl für Produkt SKU '%sku%' ist nicht erreicht.,de_DE
 cart.pre.check.quantity.max.failed,"Větší množství tohoto zboží nelze přidat.",cs_CZ
 cart.pre.check.quantity.max.failed,Maximum quantity for product '%sku%' is exceeded.,en_US
-cart.pre.check.quantity.max.failed,Die Maximalanzahl für Produkt '%sku%' ist überschritten.,de_DE
+cart.pre.check.quantity.max.failed,Maximale Artikelanzahl wurde hinzugefügt,de_DE
 cart.pre.check.quantity.interval.failed,"Počet pro SKU produktu '% sku%' se nenachází ve stanoveném intervalu.",cs_CZ
 cart.pre.check.quantity.interval.failed,Quantity interval requirements for product SKU '%sku%' are not fulfilled.,en_US
 cart.pre.check.quantity.interval.failed,Die Anzahl für Produkt SKU '%sku%' liegt nicht innerhalb des vorgegebenen Intervals.,de_DE

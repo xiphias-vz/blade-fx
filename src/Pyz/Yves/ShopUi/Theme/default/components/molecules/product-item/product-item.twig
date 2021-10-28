@@ -327,30 +327,58 @@
                                     js-image-animation__link
                                     js-ajax-add-to-cart__link
                                 "
-                       data-product-id="{{ data.idProductAbstract }}"
-                       data-product-sku="{{ data.sku }}"
-                       data-product-title="{{ data.name | escape('js') }}"
-                       data-product-price="{{ data.product.prices.ORIGINAL is defined ? data.product.prices.ORIGINAL / 100 : null }}"
-                       data-csrf-token="{{ csrf_token('add-to-cart-ajax') }}"
-                    >
-                        {% endif %}
-                        <span class="icon-basketplus"></span>
-                        <div class="add-details-to-cart-text-holder">
-                            {{- 'page.detail.add-to-cart' | trans -}}
+                                       data-product-id="{{ data.idProductAbstract }}"
+                                       data-product-sku="{{ data.sku }}"
+                                       data-product-title="{{ data.name | escape('js') }}"
+                                       data-product-price="{{ data.product.prices.ORIGINAL is defined ? data.product.prices.ORIGINAL / 100 : null }}"
+                                       data-csrf-token="{{ csrf_token('add-to-cart-ajax') }}"
+                                    >
+                            {% endif %}
+                                <span class="icon-basketplus"></span>
+                                <div class="add-details-to-cart-text-holder">
+                                    {{- 'page.detail.add-to-cart' | trans -}}
+                                </div>
+                            </a>
+                            <div class="counter is-hidden">
+                                <span class="is-hidden message item-added">
+                                    <span class="checkmark"></span>
+                                    {{ 'cart.add.item.ajax.success' | trans }}
+                                </span>
+                                <span class="is-hidden message item-removed">
+                                    <span class="checkmark"></span>
+                                    {{ 'cart.remove.item.ajax.success' | trans }}
+                                </span>
+
+                                <a href="{{ path("cart/change-ajax", { "productAbstractId": data.product.id_product_abstract ?? data.product.idProductAbstract })  }}"
+                                   class="
+                                        js-ajax-change-quantity__link
+                                        js-quantity-counter-product__decr"
+                                   data-csrf-token="{{ csrf_token('change-cart-ajax') }}"
+                                >
+                                    -
+                                </a>
+                                <input type="number" id="txt-product-quantity" min="1" max="99" value="1">
+                                <a href="{{ path("cart/change-ajax", { "productAbstractId": data.product.id_product_abstract ?? data.product.idProductAbstract })  }}"
+                                   class="
+                                        js-ajax-change-quantity__link
+                                        js-quantity-counter-product__incr"
+                                   data-csrf-token="{{ csrf_token('change-cart-ajax') }}"
+                                >
+                                    +
+                                </a>
+                            </div>
                         </div>
-                    </a>
-            </div>
-            <script type="text/javascript">
-                window.catalogList = window.catalogList || [];
-                window.catalogList.push({
-                    'name': '{{ data.name | escape('js') }}',
-                    'id': '{{ data.idProductAbstract }}',
-                    'sku': '{{ data.product.abstract_sku }}',
-                    'price': '{{ data.product.prices.DEFAULT is defined ? data.product.prices.DEFAULT / 100 : null  }}',
-                    'url' : '{{ data.url }}',
-                    'position': '{{ data.position }}',
-                    'list': 'POP',
-                });
+                    <script type="text/javascript">
+                        window.catalogList = window.catalogList || [];
+                        window.catalogList.push({
+                                    'name': '{{ data.name | escape('js') }}',
+                                    'id': '{{ data.idProductAbstract }}',
+                                    'sku': '{{ data.product.abstract_sku }}',
+                                    'price': '{{ data.product.prices.DEFAULT is defined ? data.product.prices.DEFAULT / 100 : null  }}',
+                                    'url' : '{{ data.url }}',
+                                    'position': '{{ data.position }}',
+                                    'list': 'POP',
+                        });
 
                 function productAddToCart(productId, productName, productPrice, productSku, productBrand)
                 {
