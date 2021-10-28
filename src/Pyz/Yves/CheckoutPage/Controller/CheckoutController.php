@@ -113,7 +113,7 @@ class CheckoutController extends SprykerCheckoutControllerAlias
                 $meinGlobus = false;
             }
 
-            $validAddress = GlobusRestApiClientValidation::addressValidation($firstName, $lastName, $zip, $houseNo, $street, $city, $meinGlobus, $we);
+            $storeCodeBucket != "CZ" ? $validAddress = GlobusRestApiClientValidation::addressValidation($firstName, $lastName, $zip, $houseNo, $street, $city, $meinGlobus, $we) : $validAddress = '';
             $response["data"] = $validAddress;
         }
 

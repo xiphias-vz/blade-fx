@@ -8,6 +8,7 @@
 } %}
 
 {% block content %}
+
     {% set jsAddressClass = 'js-address' %}
 
     {% embed molecule('form') with {
@@ -71,6 +72,7 @@
                             </h2>
                         {% endif %}
 
+
                         {% if idCustomer is not null %}
                             {% set customerData = data.form.vars.value.customer %}
                             {% set isScanAndGo = customerData.isScanAndGo %}
@@ -80,33 +82,36 @@
                             <br>
                             <div>{{ customerData.email }}</div>
 
+                            {% if embed.addressData is defined and embed.addressData|length > 0%}
+
                             {% set hintsData = embed.addressData %}
 
-                            {% if(hintsData.showWeHint == true) %}
+                                {% if(hintsData.showWeHint == true) %}
 
-                                <div style="padding: 10px 0; display: flex;">
-                                    <div style="display: inline-block; width: 30px; margin-right: 15px; margin-top: 5px;"><img src="{{ publicPath('images/brief.png') }}" style="height: 20px;" /></div>
-                                    <span>{{ 'register.step.success.page.brief.text' | trans }}</span>
-                                </div>
+                                    <div style="padding: 10px 0; display: flex;">
+                                        <div style="display: inline-block; width: 30px; margin-right: 15px; margin-top: 5px;"><img src="{{ publicPath('images/brief.png') }}" style="height: 20px;" /></div>
+                                        <span>{{ 'register.step.success.page.brief.text' | trans }}</span>
+                                    </div>
 
-                            {% endif %}
+                                {% endif %}
 
-                            {% if(hintsData.showScanAndGoActivateHint == true) %}
+                                {% if(hintsData.showScanAndGoActivateHint == true) %}
 
-                                <div style="padding: 10px 0; display: flex;">
-                                    <div style="display: inline-block; width: 30px; margin-right: 15px; margin-top: 5px;"><img src="{{ publicPath('images/scanandgo.png') }}" style="height: 20px; width: 100%;" /></div>
-                                    <span>{{ 'checkout.showScanAndGoActivateHint' | trans }}</span>
-                                </div>
+                                    <div style="padding: 10px 0; display: flex;">
+                                        <div style="display: inline-block; width: 30px; margin-right: 15px; margin-top: 5px;"><img src="{{ publicPath('images/scanandgo.png') }}" style="height: 20px; width: 100%;" /></div>
+                                        <span>{{ 'checkout.showScanAndGoActivateHint' | trans }}</span>
+                                    </div>
 
-                            {% endif %}
+                                {% endif %}
 
-                            {% if(hintsData.showScanAndGoNotActivateHint == true) %}
+                                {% if(hintsData.showScanAndGoNotActivateHint == true) %}
 
-                                <div style="padding: 10px 0; display: flex;">
-                                    <div style="display: inline-block; width: 30px; margin-right: 15px; margin-top: 5px;"><img src="{{ publicPath('images/scanandgo.png') }}" style="height: 20px; width: 100%;" /></div>
-                                    <span>{{ 'checkout.showScanAndGoNotActivateHint' | trans }}</span>
-                                </div>
+                                    <div style="padding: 10px 0; display: flex;">
+                                        <div style="display: inline-block; width: 30px; margin-right: 15px; margin-top: 5px;"><img src="{{ publicPath('images/scanandgo.png') }}" style="height: 20px; width: 100%;" /></div>
+                                        <span>{{ 'checkout.showScanAndGoNotActivateHint' | trans }}</span>
+                                    </div>
 
+                                {% endif %}
                             {% endif %}
 
                             <hr style="border-bottom: 1px solid black !important; margin:1.5rem 0 !important;">
