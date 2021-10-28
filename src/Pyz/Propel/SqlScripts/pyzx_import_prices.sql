@@ -33,7 +33,7 @@ BEGIN
     /* insert missing default prices in spy_price_product */
     insert into spy_price_product
         (fk_price_type, fk_product_abstract, price)
-    select 1 as fk_price_type, spa.id_product_abstract, 0 as price
+    select distinct 1 as fk_price_type, spa.id_product_abstract, 0 as price
     from pyz_imp_price_product pipp
              inner join spy_product sp on pipp.sapnumber = sp.sap_number
              inner join spy_product_abstract spa on sp.fk_product_abstract = spa.id_product_abstract
@@ -44,7 +44,7 @@ BEGIN
     /* insert missing original prices in spy_price_product */
     insert into spy_price_product
         (fk_price_type, fk_product_abstract, price)
-    select 2 as fk_price_type, spa.id_product_abstract, 0 as price
+    select distinct 2 as fk_price_type, spa.id_product_abstract, 0 as price
     from pyz_imp_price_product pipp
              inner join spy_product sp on pipp.sapnumber = sp.sap_number
              inner join spy_product_abstract spa on sp.fk_product_abstract = spa.id_product_abstract
@@ -246,7 +246,8 @@ BEGIN
         (name, is_active, created_at)
     select distinct promotion, 1, now()
     from tmp_tbl_price
-    where not promotion in(select name from spy_price_product_schedule_list);
+    where not promotion in(select name from spy_price_product_schedule_list)
+        and not promotion is null;
 
     update spy_price_product_schedule spps
         inner join tmp_tbl_price tmp on tmp.id_store = spps.fk_store
