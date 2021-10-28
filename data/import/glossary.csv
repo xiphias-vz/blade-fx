@@ -2324,6 +2324,9 @@ product-cart.validation.error.concrete-product-inactive,"Produkt %sku% není akt
 product-cart.info.concrete-product-inactive.removed,"The article %sku% is currently not available and has been removed from your shopping cart.",en_US
 product-cart.info.concrete-product-inactive.removed,"Der Artikel %sku% ist aktuell leider nicht verfügbar und wurde aus Ihrem Warenkorb entfernt.",de_DE
 product-cart.info.concrete-product-inactive.removed,"Článek %sku% momentálně není k dispozici a byl odstraněn z vašeho nákupního košíku.",cs_CZ
+product-cart.info.concrete-product-inactive.removed-with-name,"The article %name% is currently not available and has been removed from your shopping cart.",en_US
+product-cart.info.concrete-product-inactive.removed-with-name,"Der Artikel %name% ist aktuell leider nicht verfügbar und wurde aus Ihrem Warenkorb entfernt.",de_DE
+product-cart.info.concrete-product-inactive.removed-with-name,"Článek %name% momentálně není k dispozici a byl odstraněn z vašeho nákupního košíku.",cs_CZ
 product.filter.label,Label,en_US
 product.filter.label,Label,de_DE
 product.filter.label,Label,cs_CZ

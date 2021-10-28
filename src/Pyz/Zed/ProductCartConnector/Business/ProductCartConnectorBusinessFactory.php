@@ -8,10 +8,13 @@
 namespace Pyz\Zed\ProductCartConnector\Business;
 
 use Pyz\Zed\ProductCartConnector\Business\Expander\ProductExpander;
+use Pyz\Zed\ProductCartConnector\Business\InactiveItemsFilter\InactiveItemsFilter;
 use Pyz\Zed\ProductCartConnector\Business\Validator\ProductValidator;
+use Spryker\Zed\ProductCartConnector\Business\InactiveItemsFilter\InactiveItemsFilterInterface;
 use Spryker\Zed\ProductCartConnector\Business\ProductCartConnectorBusinessFactory as SprykerProductCartConnectorBusinessFactory;
 
 /**
+ * @method \Spryker\Zed\ProductCartConnector\Business\ProductCartConnectorBusinessFactory getFactory()
  * @method \Spryker\Zed\ProductCartConnector\ProductCartConnectorConfig getConfig()
  */
 class ProductCartConnectorBusinessFactory extends SprykerProductCartConnectorBusinessFactory
@@ -34,6 +37,18 @@ class ProductCartConnectorBusinessFactory extends SprykerProductCartConnectorBus
     {
         return new ProductValidator(
             $this->getProductFacade()
+        );
+    }
+
+    /**
+     * @return \Spryker\Zed\ProductCartConnector\Business\InactiveItemsFilter\InactiveItemsFilterInterface
+     */
+    public function createInactiveItemsFilter(): InactiveItemsFilterInterface
+    {
+        return new InactiveItemsFilter(
+            $this->getProductFacade(),
+            $this->getStoreFacade(),
+            $this->getMessengerFacade()
         );
     }
 }
