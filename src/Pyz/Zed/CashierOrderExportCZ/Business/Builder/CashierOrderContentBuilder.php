@@ -321,4 +321,18 @@ class CashierOrderContentBuilder extends IntCashierOrderContentBuilder
 
         return $serviceFeeToServiceFeeCashierNumber[$currentOrderShipmentExpensePrice] ?? static::DEFAULT_EMPTY_NUMBER;
     }
+
+    /**
+     * @param \Generated\Shared\Transfer\ItemTransfer $itemTransfer
+     *
+     * @return int
+     */
+    protected function getItemPrice(ItemTransfer $itemTransfer)
+    {
+        if ($itemTransfer->getPricePerKg()) {
+            return $itemTransfer->getPricePerKg() - $itemTransfer->getSumDiscountAmountAggregation();
+        }
+
+        return $itemTransfer->getSumPriceToPayAggregation();
+    }
 }
