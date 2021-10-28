@@ -43,7 +43,7 @@
             {% set modifiers = [] %}
 
             {% block imageContainer %}
-                <div class="col--lg-12 col--md-12 col--sm-3 {{ config.name }}__image-wrap" onclick="productClicked('{{ data.url }}', '{{ data.idProductAbstract }}', '{{ data.name | escape('js') }}', '{{ data.product.prices.DEFAULT is defined ? data.product.prices.DEFAULT / 100 : null  }}', '{{ data.product.abstract_sku }}' )"   >
+                <div class="col--lg-12 col--md-12 col--sm-3 {{ config.name }}__image-wrap" onclick="productClicked('{{ data.url }}', '{{ data.idProductAbstract }}', '{{ data.name | escape('js') }}', '{{ data.product.prices.DEFAULT is defined ? data.product.prices.DEFAULT / 100 : null  }}', '{{ data.product.abstract_sku }}' )">
                     {% if isGlobusProduction == true %}
                         {% block goproductLabel %}
                             {% set labels = labels | default([]) %}
@@ -205,6 +205,10 @@
                                             <script type="text/javascript">
                                                 function productClicked(productUrl, productId, productName, productPrice, productSku)
                                                 {
+                                                    var ctrlPressed = 0;
+                                                    if(event.ctrlKey){
+                                                        ctrlPressed = 1;
+                                                    }
                                                     var rerouted = 0;
                                                     window.dataLayer = window.dataLayer || [];
                                                     window.dataLayer.push({
@@ -222,12 +226,17 @@
                                                         },
                                                         'eventCallback': function()
                                                         {
-                                                            rerouted = 1;
-                                                            document.location = productUrl;
+                                                            console.log("eventCallback " + rerouted + "---" + ctrlPressed);
+                                                            if(ctrlPressed == 0){
+                                                                rerouted = 1;
+                                                                document.location = productUrl;
+                                                            }
                                                         }
                                                     });
-                                                    setTimeout(function(){
-                                                        if(rerouted==0)
+                                                    setTimeout(function()
+                                                    {
+                                                        console.log("setTimeout " + rerouted + "---" + ctrlPressed);
+                                                        if(rerouted==0 && ctrlPressed==0)
                                                         {
                                                             document.location = productUrl;
                                                         }
