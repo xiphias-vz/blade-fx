@@ -342,7 +342,7 @@ class CashierOrderContentBuilder extends IntCashierOrderContentBuilder
         $this->totalSum += $aggregatedPrice;
 
         if ($itemTransfer->getPricePerKg()) {
-            return $itemTransfer->getPricePerKg() - $itemTransfer->getSumDiscountAmountAggregation();
+            return $itemTransfer->getPricePerKg() - $itemTransfer->getSumDiscountAmountAggregation() / $itemTransfer->getNewWeight();
         }
 
         return $itemTransfer->getSumPrice() - $itemTransfer->getSumDiscountAmountAggregation();
