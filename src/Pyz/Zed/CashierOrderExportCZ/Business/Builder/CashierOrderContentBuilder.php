@@ -207,6 +207,9 @@ class CashierOrderContentBuilder extends IntCashierOrderContentBuilder
 
         foreach ($depositAggregationCollection as $depositSkuIdentifier => $depositAggregation) {
             $positionsContent .= $this->getDepositPositionContent($orderTransfer, $depositAggregation, $depositSkuIdentifier);
+            $itemQuantity = $depositAggregation['quantity'];
+            $priceDeposit = $depositAggregation['price'];
+            $this->totalSum += ($itemQuantity * $priceDeposit);
         }
 
         return $positionsContent;
@@ -335,7 +338,12 @@ class CashierOrderContentBuilder extends IntCashierOrderContentBuilder
      */
     protected function getItemPrice(ItemTransfer $itemTransfer)
     {
-        $this->totalSum = $this->totalSum + $itemTransfer->getSumPrice() - $itemTransfer->getSumDiscountAmountAggregation();
+        $aggregatedPrice = $itemTransfer->getQuantity() * ($itemTransfer->getSumPrice() - $itemTransfer->getSumDiscountAmountAggregation());
+        $this->totalSum += $aggregatedPrice;
+
+        if ($itemTransfer->getPricePerKg()) {
+            return $itemTransfer->getPricePerKg() - $itemTransfer->getSumDiscountAmountAggregation();
+        }
 
         return $itemTransfer->getSumPrice() - $itemTransfer->getSumDiscountAmountAggregation();
     }
