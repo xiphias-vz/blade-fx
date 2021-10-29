@@ -28,6 +28,11 @@ class CashierOrderContentBuilder extends IntCashierOrderContentBuilder
     protected $cashierOrderExportConfig;
 
     /**
+     * @var int
+     */
+    protected $totalSum = 0;
+
+    /**
      * @param \Generated\Shared\Transfer\OrderTransfer $orderTransfer
      *
      * @return string
@@ -59,7 +64,7 @@ class CashierOrderContentBuilder extends IntCashierOrderContentBuilder
              static::CUSTOMER_KEY_IDENTIFIER,
              $renderCardInformation,
              static::ORDER_TOTAL_KEY_IDENTIFIER,
-             $orderTransfer->getTotals()->getGrandTotal() ?? static::DEFAULT_EMPTY_NUMBER,
+             $this->totalSum,
              static::ORDER_PAYMENT_STATE_IDENTIFIER,
              static::DEFAULT_EMPTY_NUMBER,
              static::ORDER_PAYMENT_TYPE_IDENTIFIER,
@@ -185,6 +190,7 @@ class CashierOrderContentBuilder extends IntCashierOrderContentBuilder
         );
 
         $this->incrementCashierOrderPositionsQuantity($orderTransfer);
+        $this->totalSum = $this->totalSum + $this->getShipmentExpensePrice($orderTransfer);
 
         return $this->addEndingZeroSets($content, static::DEFAULT_POSITION_ENDING_ZERO_SETS);
     }
@@ -329,9 +335,7 @@ class CashierOrderContentBuilder extends IntCashierOrderContentBuilder
      */
     protected function getItemPrice(ItemTransfer $itemTransfer)
     {
-        if ($itemTransfer->getPricePerKg()) {
-            return $itemTransfer->getPricePerKg() - $itemTransfer->getSumDiscountAmountAggregation();
-        }
+        $this->totalSum = $this->totalSum + $itemTransfer->getSumPrice() - $itemTransfer->getSumDiscountAmountAggregation();
 
         return $itemTransfer->getSumPrice() - $itemTransfer->getSumDiscountAmountAggregation();
     }
