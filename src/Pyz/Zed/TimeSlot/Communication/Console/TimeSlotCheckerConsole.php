@@ -20,7 +20,6 @@ class TimeSlotCheckerConsole extends Console
 {
     public const COMMAND_NAME = 'timeslot:check'; // e.g. 'catalog:import'
     public const COMMAND_DESCRIPTION = 'Check and update time slots';
-    public const SHIPMENT_NAME = 'Click & Collect';
 
     /**
      * @return void
@@ -41,6 +40,13 @@ class TimeSlotCheckerConsole extends Console
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
+        $storeCodeBucket = getenv('SPRYKER_CODE_BUCKET');
+
+        if ($storeCodeBucket === "CZ") {
+            $shipmentName = 'Poplatek za vychystání';
+        } else {
+            $shipmentName = 'Click & Collect';
+        }
         $client = $this->getFactory()->getStorageClient();
         foreach ($client->getKeys('*click*:*-*:*:*') as $key) {
             $key = explode(':', $key, 2)[1];
@@ -55,7 +61,7 @@ class TimeSlotCheckerConsole extends Console
                     (new OrderCriteriaFilterTransfer())
                         ->setMerchantReferences([$merchantReference])
                         ->setRequestedDeliveryDate($deliveryDate)
-                        ->setShipmentName(static::SHIPMENT_NAME)
+                        ->setShipmentName($shipmentName)
                         ->setExcludeCancelledOrders(true)
                 ));
 
