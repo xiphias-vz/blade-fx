@@ -338,13 +338,18 @@ class CashierOrderContentBuilder extends IntCashierOrderContentBuilder
      */
     protected function getItemPrice(ItemTransfer $itemTransfer)
     {
-        $aggregatedPrice = $itemTransfer->getQuantity() * ($itemTransfer->getSumPrice() - $itemTransfer->getSumDiscountAmountAggregation());
-        $this->totalSum += $aggregatedPrice;
-
         if ($itemTransfer->getPricePerKg()) {
-            return $itemTransfer->getPricePerKg() - $itemTransfer->getSumDiscountAmountAggregation() / $itemTransfer->getNewWeight();
-        }
+            $discountedPricePerKg = round($itemTransfer->getPricePerKg() - ($itemTransfer->getSumDiscountAmountAggregation() / $itemTransfer->getNewWeight()) * 1000);
 
-        return $itemTransfer->getSumPrice() - $itemTransfer->getSumDiscountAmountAggregation();
+            $aggregatedPrice = $discountedPricePerKg * $itemTransfer->getNewWeight();
+            $this->totalSum += round($aggregatedPrice / 1000);
+
+            return round($aggregatedPrice / 1000);
+        } else {
+            $aggregatedPrice = $itemTransfer->getQuantity() * ($itemTransfer->getSumPrice() - $itemTransfer->getSumDiscountAmountAggregation());
+            $this->totalSum += $aggregatedPrice;
+
+            return $itemTransfer->getSumPrice() - $itemTransfer->getSumDiscountAmountAggregation();
+        }
     }
 }
