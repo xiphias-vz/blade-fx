@@ -62,13 +62,13 @@
             } only %}
                 {% block slides %}
                     {% set daysInTheWeek =  {
+                        0: 'shipment.form.sunday' | trans,
                         1: 'shipment.form.monday' | trans,
                         2: 'shipment.form.tuesday' | trans,
                         3: 'shipment.form.wednesday' | trans,
                         4: 'shipment.form.thursday' | trans,
                         5: 'shipment.form.friday' | trans,
-                        6: 'shipment.form.saturday' | trans,
-                        7: 'shipment.form.sunday' | trans
+                        6: 'shipment.form.saturday' | trans
                     }%}
                     {% for day, hours in data.slides if hours | length > 0 %}
                         {% set dayOfTheWeek = day |date('w') %}
