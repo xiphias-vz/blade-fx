@@ -312,42 +312,48 @@
                     </div>
                 {% endblock %}
                 {% if app.currentCodeBucket == 'DE' %}
-                <a href="{{ addAjaxUrl }}"
-                   rel="nofollow"
-                   onclick="productAddToCart('{{ data.idProductAbstract }}','{{ data.name | escape('js') }}','{{ data.product.prices.DEFAULT is defined ? data.product.prices.DEFAULT / 100 : null }}','{{ data.product.abstract_sku }}','{{ data.supplier | escape('js') }}')"
-                   class="
-                                        button button--with-icon button--middle-icon button_center_align button--backgroundcolor-DE
-                                        js-product-color-group__image-{{ data.idProductAbstract }}
-                                        js-image-animation__link
-                                        js-ajax-add-to-cart__link
-                                    "
-                   data-product-id="{{ data.idProductAbstract }}"
-                   data-product-sku="{{ data.sku }}"
-                   data-product-title="{{ data.name | escape('js') }}"
-                   data-product-price="{{ data.product.prices.ORIGINAL is defined ? data.product.prices.ORIGINAL / 100 : null }}"
-                   data-csrf-token="{{ csrf_token('add-to-cart-ajax') }}"
-                >
-                    {% else %}
                     <a href="{{ addAjaxUrl }}"
+                       rel="nofollow"
                        onclick="productAddToCart('{{ data.idProductAbstract }}','{{ data.name | escape('js') }}','{{ data.product.prices.DEFAULT is defined ? data.product.prices.DEFAULT / 100 : null }}','{{ data.product.abstract_sku }}','{{ data.supplier | escape('js') }}')"
                        class="
-                                    button button--with-icon button--middle-icon button--font-CZ button--backgroundcolor-CZ
+                                    button button--with-icon button--middle-icon button_center_align button--backgroundcolor-DE
                                     js-product-color-group__image-{{ data.idProductAbstract }}
                                     js-image-animation__link
                                     js-ajax-add-to-cart__link
                                 "
-                                       data-product-id="{{ data.idProductAbstract }}"
-                                       data-product-sku="{{ data.sku }}"
-                                       data-product-title="{{ data.name | escape('js') }}"
-                                       data-product-price="{{ data.product.prices.ORIGINAL is defined ? data.product.prices.ORIGINAL / 100 : null }}"
-                                       data-csrf-token="{{ csrf_token('add-to-cart-ajax') }}"
-                                    >
-                            {% endif %}
-                                <span class="icon-basketplus"></span>
-                                <div class="add-details-to-cart-text-holder">
-                                    {{- 'page.detail.add-to-cart' | trans -}}
-                                </div>
-                            </a>
+                       data-product-id="{{ data.idProductAbstract }}"
+                       data-product-sku="{{ data.sku }}"
+                       data-product-title="{{ data.name | escape('js') }}"
+                       data-product-price="{{ data.product.prices.ORIGINAL is defined ? data.product.prices.ORIGINAL / 100 : null }}"
+                       data-csrf-token="{{ csrf_token('add-to-cart-ajax') }}"
+                    >
+                        <span class="icon-basketplus"></span>
+                        <div class="add-details-to-cart-text-holder">
+                            {{- 'page.detail.add-to-cart' | trans -}}
+                        </div>
+                    </a>
+               {% else %}
+                   <a href="{{ addAjaxUrl }}"
+                      rel="nofollow"
+                      onclick="productAddToCart('{{ data.idProductAbstract }}','{{ data.name | escape('js') }}','{{ data.product.prices.DEFAULT is defined ? data.product.prices.DEFAULT / 100 : null }}','{{ data.product.abstract_sku }}','{{ data.supplier | escape('js') }}')"
+                      class="
+                                    button button--with-icon button--middle-icon button_center_align button--backgroundcolor-CZ
+                                    js-product-color-group__image-{{ data.idProductAbstract }}
+                                    js-image-animation__link
+                                    js-ajax-add-to-cart__link
+                                "
+                      data-product-id="{{ data.idProductAbstract }}"
+                      data-product-sku="{{ data.sku }}"
+                      data-product-title="{{ data.name | escape('js') }}"
+                      data-product-price="{{ data.product.prices.ORIGINAL is defined ? data.product.prices.ORIGINAL / 100 : null }}"
+                      data-csrf-token="{{ csrf_token('add-to-cart-ajax') }}"
+                   >
+                       <span class="icon-basketplus"></span>
+                       <div class="add-details-to-cart-text-holder">
+                           {{- 'page.detail.add-to-cart' | trans -}}
+                       </div>
+                   </a>
+               {% endif %}
                             <div class="counter is-hidden">
                                 <span class="is-hidden message item-added">
                                     <span class="checkmark"></span>
@@ -357,24 +363,45 @@
                                     <span class="checkmark"></span>
                                     {{ 'cart.remove.item.ajax.success' | trans }}
                                 </span>
-
-                                <a href="{{ path("cart/change-ajax", { "productAbstractId": data.product.id_product_abstract ?? data.product.idProductAbstract })  }}"
-                                   class="
-                                        js-ajax-change-quantity__link
-                                        js-quantity-counter-product__decr"
-                                   data-csrf-token="{{ csrf_token('change-cart-ajax') }}"
-                                >
-                                    -
-                                </a>
+                                {% if app.currentCodeBucket == 'DE' %}
+                                    <a href="{{ path("cart/change-ajax", { "productAbstractId": data.product.id_product_abstract ?? data.product.idProductAbstract })  }}"
+                                       class="
+                                            js-ajax-change-quantity__link
+                                            js-quantity-counter-product__decr"
+                                       data-csrf-token="{{ csrf_token('change-cart-ajax') }}"
+                                    >
+                                        -
+                                    </a>
+                                {% else %}
+                                    <a href="{{ path("cart/change-ajax", { "productAbstractId": data.product.id_product_abstract ?? data.product.idProductAbstract })  }}"
+                                       class="
+                                            js-ajax-change-quantity__link
+                                            js-quantity-counter-product__decr"
+                                       data-csrf-token="{{ csrf_token('change-cart-ajax') }}"
+                                       style="color:#009933; background-color:transparent;">
+                                        -
+                                    </a>
+                                {% endif %}
                                 <input type="number" id="txt-product-quantity" min="1" max="99" value="1">
-                                <a href="{{ path("cart/change-ajax", { "productAbstractId": data.product.id_product_abstract ?? data.product.idProductAbstract })  }}"
-                                   class="
+                                {% if app.currentCodeBucket == 'DE' %}
+                                    <a href="{{ path("cart/change-ajax", { "productAbstractId": data.product.id_product_abstract ?? data.product.idProductAbstract })  }}"
+                                       class="
                                         js-ajax-change-quantity__link
                                         js-quantity-counter-product__incr"
-                                   data-csrf-token="{{ csrf_token('change-cart-ajax') }}"
-                                >
-                                    +
-                                </a>
+                                       data-csrf-token="{{ csrf_token('change-cart-ajax') }}"
+                                    >
+                                        +
+                                    </a>
+                                {% else %}
+                                    <a href="{{ path("cart/change-ajax", { "productAbstractId": data.product.id_product_abstract ?? data.product.idProductAbstract })  }}"
+                                       class="
+                                        js-ajax-change-quantity__link
+                                        js-quantity-counter-product__incr"
+                                       data-csrf-token="{{ csrf_token('change-cart-ajax') }}"
+                                       style="color:#009933; background-color:transparent;" onmouseover="this.style.backgroundColor='#e5f4ea'" onmouseout="this.style.backgroundColor='#ffffff'">
+                                        +
+                                    </a>
+                                {% endif %}
                             </div>
                         </div>
                     <script type="text/javascript">

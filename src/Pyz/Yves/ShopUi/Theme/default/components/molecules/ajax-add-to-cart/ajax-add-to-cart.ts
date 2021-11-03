@@ -99,15 +99,12 @@ export default class AjaxAddToCart extends Component {
         let quantityInput: HTMLInputElement = <HTMLInputElement>decrementer.nextElementSibling;
         let quantity: number = Number(quantityInput.value);
         quantity--;
-        let quantityWithMinimum: number = quantity === 0 ? 1 : quantity;
-        quantityInput.value = String(quantityWithMinimum);
+        quantityInput.value = String(quantity);
         this.toggleCounterAndAjaxButtons(decrementer, 'REMOVE', quantity);
 
         this.timer = setTimeout(() => {
             this.sendRequest(decrementer.href, decrementer, String(quantityInput.value), 'REMOVE');
         }, this.callBackDelay);
-
-
     }
 
     protected linkClickHandler(event: Event, link: HTMLLinkElement): void {

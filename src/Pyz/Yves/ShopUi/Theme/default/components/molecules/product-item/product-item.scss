@@ -4,6 +4,11 @@
         padding: 0 rem(5) rem(30);
         z-index: 0;
         font-family: "Clearface-Medium", Arial, sans-serif;
+        input[type=number]::-webkit-inner-spin-button,
+        input[type=number]::-webkit-outer-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
 
         .font-cz{
             font-family: $setting-font-family;
@@ -231,6 +236,10 @@
             align-self: flex-end;
             width: 100%;
             a {
+
+                &:hover {
+                    background-color: $setting-color-globus-darkGreen;
+                }
                 .icon-basketplus {
                     font-size: rem(18);
                     margin-right: rem(10);
@@ -261,7 +270,7 @@
             .change-cart-counter {
                 display: flex;
                 justify-content: space-evenly;
-                border: 1px solid $setting-color-globus-black;
+                border: 1px solid $setting-color-lightest;
                 border-radius: 5px;
                 margin: 0 11px;
                 position: relative;
@@ -310,7 +319,6 @@
                 #txt-product-quantity {
                     width: 60%;
                     text-align: center;
-                    padding-left: 14px;
                     outline: none;
                     border: none;
 
@@ -320,7 +328,7 @@
                 }
 
                 .js-ajax-change-quantity__link {
-                    background: transparent;
+                    background: $setting-color-lightest;
                     display: inline-block;
                     text-align: center;
                     font-size: 16px;
@@ -328,14 +336,22 @@
                     text-decoration: none;
 
                     &.js-quantity-counter-product__decr {
-                        width: 20%;
-                        border-right: 1px solid $setting-color-globus-black;
+                        width: 40px;
+                        border-right: 1px solid $setting-color-lightest;
+                        border-radius: 5px;
+                        color: $setting-color-globus-darkGreen;
                     }
                     &.js-quantity-counter-product__incr {
-                        width: 20%;
-                        border-left: 1px solid $setting-color-globus-black;
+                        width: 40px;
+                        border-left: 1px solid $setting-color-lightest;
                         background-color: $setting-color-globus-darkGreen;
                         color: $setting-color-globus-white;
+                        border-radius: 5px;
+                        transition-duration: 0.25s;
+                        &:hover {
+                            color:$setting-color-globus-darkGreen;
+                            background-color: $setting-color-globus-lightGreen-2;
+                        }
                     }
 
                     @include helper-breakpoint-media-max($sm-max) {
@@ -376,6 +392,10 @@
                     }
                 }
             }
+        }
+
+        &__hidden-number-arrows {
+            -webkit-appearance: none;
         }
 
         &__info-more {
