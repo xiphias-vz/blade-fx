@@ -4,6 +4,8 @@
         padding: 0 rem(5) rem(30);
         z-index: 0;
         font-family: "Clearface-Medium", Arial, sans-serif;
+        display: flex;
+        align-items: flex-end;
         input[type=number]::-webkit-inner-spin-button,
         input[type=number]::-webkit-outer-spin-button {
             -webkit-appearance: none;
@@ -21,7 +23,7 @@
         @include helper-breakpoint-media-max($sm-max) {
             padding: 0 rem(15) 0;
             margin-bottom: 15px;
-            margin-top: 0px;
+            margin-top: 0;
         }
 
         .button_center_align
@@ -36,6 +38,11 @@
             }
             @include helper-breakpoint-media-max($l-max) {
                 min-width: auto;
+            }
+        }
+        .gridproduct-item {
+            &__container{
+                width:100%;
             }
         }
 
@@ -176,6 +183,10 @@
                padding-bottom: 0;
             }
 
+            @include helper-breakpoint-media-min($sm-max) {
+                min-height: rem(91);
+            }
+
             @include helper-breakpoint-media-max($l-max){
                 padding: 0.8rem;
             }
@@ -258,12 +269,12 @@
                 }
                 @include helper-breakpoint-media-max($sm-max) {
                     &.js-ajax-add-to-cart__link:hover {
-                        box-shadow: 0px 0px 20px $setting-color-globus-lightOrange !important;
+                        box-shadow: 0 0 20px $setting-color-globus-lightOrange !important;
                     }
                 }
 
                 .add-details-to-cart-text-holder {
-                    font-size: rem(11);
+                    font-size: rem(12);
                 }
             }
 
@@ -424,6 +435,11 @@
                 flex-direction: column;
                 margin-right: 0;
 
+                @include helper-breakpoint-media-min($sm-max){
+                    min-height: rem(73);
+                    display: flex;
+                    justify-content: flex-end;
+                }
 
                 @include helper-breakpoint-media-max($sm-max) {
                     padding: 0;
