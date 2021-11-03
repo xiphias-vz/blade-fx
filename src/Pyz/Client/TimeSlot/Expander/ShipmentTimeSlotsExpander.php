@@ -169,9 +169,11 @@ class ShipmentTimeSlotsExpander implements ShipmentSlotsExpanderInterface
         $currentDateTime = $this->dateTimeWithZoneService->getDateTimeInStoreTimeZone(static::TODAY_DATE_TIME_FORMAT);
         $timeSlotTemplate = $this->getTimeSlotTemplateByShipmentMethod($shipmentMethodTransfer);
 
-        // Remove after the demo!
-        if ($merchantTransfer->getMerchantReference() === 'Berlin_84_10557') {
-            $timeSlotTemplate = array_slice($timeSlotTemplate, 3);
+        $storeCodeBucket = getenv('SPRYKER_CODE_BUCKET');
+        if ($storeCodeBucket == "CZ") {
+            $timeSlotWeekUnivialilityDays = SharedTimeSlotConfig::TIME_SLOT_WEEK_UNAVAILABILITY_DAYS_CZ;
+        } else {
+            $timeSlotWeekUnivialilityDays = SharedTimeSlotConfig::TIME_SLOT_WEEK_UNAVAILABILITY_DAYS_DE;
         }
 
         if ($this->isSameDayShipmentAllowed($shipmentMethodTransfer)) {
@@ -187,7 +189,7 @@ class ShipmentTimeSlotsExpander implements ShipmentSlotsExpanderInterface
             $currentDate = $currentDateTime->format(static::DATE_FORMAT);
             $dateOfWeek = $currentDateTime->format(static::DAY_OF_WEEK_FORMAT);
 
-            if (in_array($currentDate, $this->holidays) || in_array($dateOfWeek, SharedTimeSlotConfig::TIME_SLOT_WEEK_UNAVAILABILITY_DAYS)) {
+            if (in_array($currentDate, $this->holidays) || in_array($dateOfWeek, $timeSlotWeekUnivialilityDays)) {
                 $i--;
                 continue;
             }
