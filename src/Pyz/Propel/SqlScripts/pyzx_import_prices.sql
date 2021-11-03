@@ -9,7 +9,7 @@ BEGIN
         select store, max(dtImported) as dtImported
         from pyz_imp_price_product
         group by store
-    ) lastImp on pipp.store = lastImp.store and pipp.dtImported <> lastImp.dtImported;
+    ) lastImp on pipp.store = lastImp.store and pipp.dtImported < DATE_ADD(lastImp.dtImported, interval -30 MINUTE);
 
     DROP TEMPORARY TABLE IF EXISTS tmp_tbl_price;
     CREATE TEMPORARY TABLE tmp_tbl_price (
@@ -134,6 +134,20 @@ BEGIN
 
 
     /* deleting not used price definitions */
+    delete from spy_price_product_store
+    where id_price_product_store IN
+      (
+          select id_price_product_store
+          from
+              (
+                  select spps.id_price_product_store,
+                         ROW_NUMBER() over (PARTITION BY spps.fk_store, spps.fk_price_product, spp.fk_price_type ORDER BY spps.id_price_product_store desc) as priority
+                  from spy_price_product_store spps
+                           inner join spy_price_product spp on spps.fk_price_product = spp.id_price_product
+              ) it
+          where it.priority > 1
+      );
+
     delete from spy_price_product_default
     where fk_price_product_store IN
           (
@@ -199,11 +213,12 @@ BEGIN
 
     insert into spy_price_product_store
         (fk_currency, fk_price_product, fk_store, gross_price, net_price, price_data, price_data_checksum, price_per_kg)
-    select 77 as fk_currency, tmp.id_price_product, tmp.id_store
+    select sc.id_currency as fk_currency, tmp.id_price_product, tmp.id_store
          , tmp.price * 100.0 as gross_price, tmp.price * (100.0 - tmp.taxRate) as net_price
          , '[]' as price_data, tmp.price * 100.0 as price_data_checksum
          , tmp.price_per_kg * 100.0
     from tmp_tbl_price tmp
+             inner join spy_currency sc on sc.code = currencyCode
              left outer join spy_price_product_store spps on spps.fk_price_product = tmp.id_price_product and spps.fk_store = tmp.id_store
     where tmp.isDefault = 1
         and spps.id_price_product_store is null;
@@ -223,11 +238,12 @@ BEGIN
 
     insert into spy_price_product_store
     (fk_currency, fk_price_product, fk_store, gross_price, net_price, price_data, price_data_checksum, price_per_kg)
-    select 77 as fk_currency, tmp.id_price_product, tmp.id_store
+    select sc.id_currency as fk_currency, tmp.id_price_product, tmp.id_store
          , tmp.price * 100.0 as gross_price, tmp.price * (100.0 - tmp.taxRate) as net_price
          , '[]' as price_data, tmp.price * 100.0 as price_data_checksum
          , tmp.price_per_kg * 100.0
     from tmp_tbl_price tmp
+             inner join spy_currency sc on sc.code = currencyCode
              left outer join spy_price_product_store spps on spps.fk_price_product = tmp.id_price_product and spps.fk_store = tmp.id_store
     where tmp.isDefault = 0
         and tmp.fk_price_type = 2
