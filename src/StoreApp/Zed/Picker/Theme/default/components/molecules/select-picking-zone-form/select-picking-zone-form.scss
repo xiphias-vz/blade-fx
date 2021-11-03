@@ -1,13 +1,14 @@
 @mixin picker-select-picking-zone-form($name: '.select-picking-zone-form') {
     #{$name} {
+        padding: rem(15) 0;
 
         &__title {
             font-size: rem(18);
-            padding: 0 0 rem(8);
+            padding: 0 0 rem(20);
         }
 
         &__radio-list {
-            margin: rem(5) 0 rem(15) 0;
+            margin-bottom: rem(40);
         }
 
         &__radio-item {
@@ -19,7 +20,24 @@
         }
 
         #picking_zone_selection_form_buttonSubmit {
-            height: 3rem !important;
+            height: 2.5rem !important;
+        }
+
+        @media screen and (max-width: 360px) {
+            padding: 0;
+
+            #picking_zone_selection_form_buttonSubmit {
+                height: 2.5rem !important;
+            }
+
+            &__title {
+                font-size: rem(18);
+                padding: 0 0 0;
+            }
+
+            &__radio-list {
+                margin: 0 0 0 0;
+            }
         }
     }
 }

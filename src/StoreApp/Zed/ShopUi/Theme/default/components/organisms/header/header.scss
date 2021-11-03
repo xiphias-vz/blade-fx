@@ -2,6 +2,10 @@
     #{$name} {
         height: rem(62);
 
+        @media screen and (max-width: 360px) {
+            height: rem(52) !important;
+        }
+
         &--product-type {
             min-height: rem(84);
             margin-bottom: 0;
