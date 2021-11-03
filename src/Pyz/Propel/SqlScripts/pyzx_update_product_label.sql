@@ -65,6 +65,7 @@ BEGIN
              inner join spy_price_product_default sppdOrg on sppsOrg.id_price_product_store = sppdOrg.fk_price_product_store
              left outer join spy_product_label_product_abstract splpa on spls.fk_product_label = splpa.fk_product_label and sp.fk_product_abstract =splpa.fk_product_abstract
     where sp.is_active = 1
+      and sppsDef.gross_price > 0
       and sppsDef.gross_price < sppsOrg.gross_price
       and splpa.id_product_label_product_abstract is null;
     /*
@@ -104,6 +105,7 @@ BEGIN
                       inner join spy_price_product sppOrg on sppsOrg.fk_price_product = sppOrg.id_price_product and sppOrg.fk_price_type = 2 and sp.fk_product_abstract = sppOrg.fk_product_abstract
                       inner join spy_price_product_default sppdOrg on sppsOrg.id_price_product_store = sppdOrg.fk_price_product_store
              where sp.is_active = 1
+               and sppsDef.gross_price > 0
                and sppsDef.gross_price < sppsOrg.gross_price
          ) ss1 on ss1.id_product_label = splpa.fk_product_label and ss1.fk_product_abstract = splpa.fk_product_abstract
     where ss1.fk_product_abstract is null;
