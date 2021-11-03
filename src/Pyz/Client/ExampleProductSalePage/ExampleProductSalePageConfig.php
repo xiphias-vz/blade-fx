@@ -19,4 +19,14 @@ class ExampleProductSalePageConfig extends AbstractBundleConfig
     {
         return SharedExampleProductSaleConfig::DEFAULT_LABEL_NAME;
     }
+
+    /**
+     * @param string $store
+     *
+     * @return string
+     */
+    public function getLabelSaleStoreName(string $store): string
+    {
+        return implode('-', [SharedExampleProductSaleConfig::DEFAULT_LABEL_NAME, strtoupper($store)]);
+    }
 }

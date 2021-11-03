@@ -134,7 +134,7 @@ class SaleSearchQueryPlugin extends AbstractPlugin implements QueryInterface, Se
 
         $labelName = $this->getFactory()
             ->getConfig()
-            ->getLabelSaleName();
+            ->getLabelSaleStoreName($store->getStoreName());
 
         $storageProductLabelTransfer = $this->getFactory()
             ->getProductLabelStorageClient()

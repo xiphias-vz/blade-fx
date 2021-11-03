@@ -7,11 +7,15 @@
 
 namespace Pyz\Zed\ExampleProductSalePage\Business\Label;
 
+use Exception;
 use Generated\Shared\Transfer\ProductLabelProductAbstractRelationsTransfer;
 use Orm\Zed\ProductLabel\Persistence\SpyProductLabel;
+use PDO;
+use Propel\Runtime\Propel;
 use Pyz\Zed\ExampleProductSalePage\Business\Exception\ProductLabelSaleNotFoundException;
 use Pyz\Zed\ExampleProductSalePage\ExampleProductSalePageConfig;
 use Pyz\Zed\ExampleProductSalePage\Persistence\ExampleProductSalePageQueryContainerInterface;
+use Spryker\Shared\ProductLabelStorage\ProductLabelStorageConfig;
 
 class ProductAbstractRelationReader implements ProductAbstractRelationReaderInterface
 {
@@ -41,16 +45,17 @@ class ProductAbstractRelationReader implements ProductAbstractRelationReaderInte
     public function findProductLabelProductAbstractRelationChanges()
     {
         $result = [];
-
-        $productLabelNewEntity = $this->getProductLabelNewEntity();
-
-        if (!$productLabelNewEntity->getIsActive()) {
-            return [];
+        $sql = "call pyzx_update_product_label;";
+        $publishList = $this->getResult($sql, true);
+        $relationsToDeAssign = [];
+        $relationsToAssign = [];
+        foreach ($publishList as $item) {
+            if ($item["event_name"] == ProductLabelStorageConfig::PRODUCT_LABEL_PRODUCT_ABSTRACT_UNPUBLISH) {
+                $relationsToDeAssign[$item["id_product_label"]][] = (int)$item["entity_id"];
+            } else {
+                $relationsToAssign[$item["id_product_label"]][] = (int)$item["entity_id"];
+            }
         }
-
-        $relationsToAssign = $this->findRelationsBecomingActive($productLabelNewEntity);
-        $relationsToDeAssign = $this->findRelationsBecomingInactive($productLabelNewEntity, $relationsToAssign['toStay']);
-        unset($relationsToAssign['toStay']);
 
         $idProductLabels = array_keys($relationsToDeAssign) + array_keys($relationsToAssign);
         foreach ($idProductLabels as $idProductLabel) {
@@ -149,5 +154,27 @@ class ProductAbstractRelationReader implements ProductAbstractRelationReaderInte
         }
 
         return $productLabelProductAbstractRelationsTransfer;
+    }
+
+    /**
+     * @param string $sql
+     * @param bool $doFetch
+     *
+     * @return array
+     */
+    private function getResult(string $sql, bool $doFetch = true): array
+    {
+        try {
+            $connection = Propel::getConnection();
+            $statement = $connection->prepare($sql);
+            $statement->execute();
+
+            if ($doFetch) {
+                return $statement->fetchAll(PDO::FETCH_NAMED);
+            }
+        } catch (Exception $ex) {
+        }
+
+        return [];
     }
 }
