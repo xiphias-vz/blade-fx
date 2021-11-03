@@ -5,6 +5,10 @@
         z-index: 0;
         font-family: "Clearface-Medium", Arial, sans-serif;
 
+        .font-cz{
+            font-family: $setting-font-family;
+        }
+
         @include helper-breakpoint-media-min($md-min) {
             padding: 0 rem(15) rem(30);
         }
@@ -228,8 +232,8 @@
             width: 100%;
             a {
                 .icon-basketplus {
-                    font-size: 23px;
-                    margin-right: 14px;
+                    font-size: rem(18);
+                    margin-right: rem(10);
 
                     @include helper-breakpoint-media-max($lg-max) {
                         margin-right: 6px;
@@ -250,7 +254,7 @@
                 }
 
                 .add-details-to-cart-text-holder {
-                    font-size: 13px;
+                    font-size: rem(11);
                 }
             }
 
@@ -362,13 +366,13 @@
                     }
 
                     .icon-basketplus {
-                        font-size: 24px;
-                        margin-right: 0px;
+                        font-size: rem(24);
+                        margin-right: 0;
                     }
 
                     .icon {
-                        width: 15px;
-                        margin: 0px;
+                        width: rem(15);
+                        margin: 0;
                     }
                 }
             }

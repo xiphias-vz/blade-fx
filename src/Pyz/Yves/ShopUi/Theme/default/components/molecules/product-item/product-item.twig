@@ -37,7 +37,7 @@
 {% set isGlobusProduction = data.product.attributes.isGlobusProduction | default(0) %}
 
 {% block body %}
-    <div class="grid {{ component.renderClass(config.name ~ '__container', modifiers) }}">
+    <div class="grid{% if app.currentCodeBucket == 'CZ' %} {{ 'font-cz' }} {% endif %}{{ component.renderClass(config.name ~ '__container', modifiers) }}">
         {% block thumbnailWrapper %}
             {% set extraClass = '' %}
             {% set modifiers = [] %}

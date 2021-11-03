@@ -212,6 +212,12 @@
 
         &--backgroundcolor-CZ {
             background: $setting-color-globusCZ-main-green;
+            display: flex;
+            width: 90%;
+            justify-content: center;
+            align-items: center;
+            margin: auto;
+
             &:hover {
                 background: $setting-color-globusCZ-hover !important;;
                 box-shadow: 0 rem(4) rem(18) $setting-color-lightest !important;
@@ -372,12 +378,12 @@
 
         &--with-icon {
             position: relative;
-            padding: rem(9) rem(20) rem(9) rem(25);
+            padding: rem(5) rem(5) rem(5) rem(5);
             line-height: rem(24);
 
             &:not(#{$name}--hollow):not(#{$name}--hollow-white) {
-                padding-top: rem(9);
-                padding-bottom: rem(9);
+                padding-top: rem(7);
+                padding-bottom: rem(7);
             }
         }
 
