@@ -109,6 +109,7 @@ class ProductMapping
         'wine_quality_classification' => '',
         'isGlobusProduction' => '',
         'bioCertificationCode' => '',
+        'referenceUnit' => '',
     ];
 
     /**
@@ -300,13 +301,18 @@ class ProductMapping
     protected function setNutritionValues(array &$value, array $item): void
     {
         if (is_array($item["nutritionValues"])) {
+            $referenceUnit = "";
             foreach ($item["nutritionValues"] as $nutritionValue) {
                 $code = $nutritionValue["code"];
+                if (empty($referenceUnit)) {
+                    $referenceUnit = $nutritionValue["referenceUnit"];
+                }
                 if (array_key_exists($code, $this->nutritionMap)) {
                     $key = $this->nutritionMap[$code];
                     $value[$key] = $this->trimValue($nutritionValue["value"]);
                 }
             }
+            $value["referenceUnit"] = $referenceUnit;
         }
     }
 

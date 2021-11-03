@@ -20,7 +20,12 @@
                         <thead>
                         <th class="{{ config.name }}__col">{{ 'product.info.additional.nutritionalInfo' | trans }}</th>
                         <th class="{{ config.name }}__col">
-                            {{ 'product.info.nutritional.information.prefix' | trans }} 100 g/ml
+                            {{ 'product.info.nutritional.information.prefix' | trans }}
+                            {% if data.attributes['referenceUnit'] is defined %}
+                                {{ data.attributes['referenceUnit'] }}
+                            {% else %}
+                                100 g/ml
+                            {% endif %}
                         </th>
                         </thead>
                         <tbody>
