@@ -347,9 +347,9 @@ class CashierOrderContentBuilder extends IntCashierOrderContentBuilder
             }
 
             $aggregatedPrice = $discountedPricePerKg * ($itemTransfer->getNewWeight() / 1000);
-            $this->totalSum += round($aggregatedPrice);
+            $this->totalSum += (int)round($aggregatedPrice);
 
-            return round($discountedPricePerKg);
+            return (int)round($discountedPricePerKg);
         } else {
             $aggregatedPrice = $itemTransfer->getQuantity() * ($itemTransfer->getSumPrice() - $itemTransfer->getSumDiscountAmountAggregation());
             $this->totalSum += $aggregatedPrice;

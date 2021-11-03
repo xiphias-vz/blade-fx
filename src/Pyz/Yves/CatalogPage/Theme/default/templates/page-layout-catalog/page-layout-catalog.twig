@@ -126,7 +126,9 @@
                                          {% endif %}
                                         {% endfor %}
                                     {% else %}
-                                            {% block noResults %}{{ parent() }}{% endblock %}
+
+                                        {% block noResults %}{{ parent() }}<input action="action" type="button" value="Back" onclick="window.history.go(-1); return false;" style="background-color: green; border-radius: 5px; padding: 5px; color: white; margin-left: auto; margin-right: auto; width: 150px; cursor:pointer; font-family: Fira Sans, sans-serif; line-height: 1.7; font-weight: 500; margin-top: 20px;">Zurück</input>{% endblock %}
+
                                     {% endif %}
                                 </div>
 
@@ -167,6 +169,8 @@
                                                     }
                                             });
                                         }
+
+
                                 </script>
                             {% endblock %}
                         </div>
