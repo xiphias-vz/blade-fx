@@ -37,7 +37,7 @@
 {% set isGlobusProduction = data.product.attributes.isGlobusProduction | default(0) %}
 
 {% block body %}
-    <div class="grid{% if app.currentCodeBucket == 'CZ' %} {{ 'font-cz' }} {% endif %}{{ component.renderClass(config.name ~ '__container', modifiers) }}">
+    <div class="grid {{ component.renderClass(config.name ~ '__container', modifiers) }}">
         {% block thumbnailWrapper %}
             {% set extraClass = '' %}
             {% set modifiers = [] %}
@@ -259,9 +259,9 @@
 
                                                                 {% else %}
                                                                 {% if app.currentCodeBucket == 'CZ' %}
-                                                                        {{ ((((data.product.price / 100) / data.productSaleVolume)) * data.basicUnit ) | round(2, 'common') | replace('.', ',') }} {{ data.currencySymbol }}/1 {{ data.basePriceUnit }}
+                                                                        <span class="font-cz"> {{ ((((data.product.price / 100) / data.productSaleVolume)) * data.basicUnit ) | round(2, 'common') | replace('.', ',') }} {{ data.currencySymbol }}/1 {{ data.basePriceUnit }} </span>
                                                                     {% else %}
-                                                                        {{ ((((data.product.price / 100) / data.productSaleVolume)) * data.basicUnit ) | round(2, 'common') | replace('.', ',') }} {{ data.currencySymbol }}/{{ data.basicUnit }} {{ data.basePriceUnit }}
+                                                                        <span class="font-cz"> {{ ((((data.product.price / 100) / data.productSaleVolume)) * data.basicUnit ) | round(2, 'common') | replace('.', ',') }} {{ data.currencySymbol }}/{{ data.basicUnit }} {{ data.basePriceUnit }} </span>
                                                                 {% endif %}
                                                                 {% endif %}
 
@@ -378,7 +378,7 @@
                                             js-ajax-change-quantity__link
                                             js-quantity-counter-product__decr"
                                        data-csrf-token="{{ csrf_token('change-cart-ajax') }}"
-                                       style="color:#009933; background-color:transparent;">
+                                       style="color:#009933; background-color:transparent;" onmouseover="this.style.backgroundColor='#e5f4ea';" onmouseout="this.style.backgroundColor='#ffffff';">
                                         -
                                     </a>
                                 {% endif %}
@@ -398,7 +398,7 @@
                                         js-ajax-change-quantity__link
                                         js-quantity-counter-product__incr"
                                        data-csrf-token="{{ csrf_token('change-cart-ajax') }}"
-                                       style="color:#009933; background-color:transparent;" onmouseover="this.style.backgroundColor='#e5f4ea'" onmouseout="this.style.backgroundColor='#ffffff'">
+                                       style="color:#009933; background-color:transparent;" onmouseover="this.style.backgroundColor='#e5f4ea';" onmouseout="this.style.backgroundColor='#ffffff';">
                                         +
                                     </a>
                                 {% endif %}
