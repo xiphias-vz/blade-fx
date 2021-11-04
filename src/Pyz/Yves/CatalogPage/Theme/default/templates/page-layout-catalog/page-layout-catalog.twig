@@ -24,6 +24,23 @@
     },
 } %}
 {% block container %}
+    {% if app.currentCodeBucket == 'CZ' %}
+        {% set color = 'greenBtn' %}
+    {% else %}
+        {% set color = 'orangeBtn' %}
+    {% endif %}
+
+    <style>
+        .greenBtn {
+            background-color: green;
+
+        }
+
+        .orangeBtn {
+            background-color: orange;
+        }
+    </style>
+
     {% block breadcrumbs %}
         {% set breadcrumbSteps = _self.renderBreadcrumbSteps(data.category, false, data.filterPath) %}
         <div class="container">
@@ -126,8 +143,9 @@
                                          {% endif %}
                                         {% endfor %}
                                     {% else %}
-
-                                        {% block noResults %}{{ parent() }}<input action="action" type="button" value="Back" onclick="window.history.go(-1); return false;" style="background-color: green; border-radius: 5px; padding: 5px; color: white; margin-left: auto; margin-right: auto; width: 150px; cursor:pointer; font-family: Fira Sans, sans-serif; line-height: 1.7; font-weight: 500; margin-top: 20px;">Zurück</input>{% endblock %}
+                                        {% block noResults %}{{ parent() }}<input action="action" type="button" value="{{ 'homepage.carousel.previous' | trans}}" class="{{ color }}" style=" color: white;
+                                                                            border-radius: 5px; padding: 5px; margin-left: auto; margin-right: auto; width: 150px; cursor:pointer; font-family: Fira Sans, sans-serif; line-height: 1.7; font-weight: 500;
+                                                                            margin-top: 20px;" onclick="window.history.go(-1); return false;"/>{% endblock %}
 
                                     {% endif %}
                                 </div>
@@ -169,8 +187,6 @@
                                                     }
                                             });
                                         }
-
-
                                 </script>
                             {% endblock %}
                         </div>

@@ -464,9 +464,9 @@ catalog.filter.activeFilters,Active filters,en_US
 catalog.filter.resetAllFilters,"Resetovat všechny filtry",cs_CZ
 catalog.filter.resetAllFilters,Alle Filter zurücksetzen,de_DE
 catalog.filter.resetAllFilters,Reset all filters,en_US
-catalog.no-results,"Žádné výsledky.",cs_CZ
-catalog.no-results,Keine Ergebnisse.,de_DE
-catalog.no-results,No results.,en_US
+catalog.no-results,"Bohužel nebyly nalezeny žádné výsledky odpovídající vašemu výběru.",cs_CZ
+catalog.no-results,"Leider wurden zu Ihrer Auswahl keine passenden Ergebnisse gefunden.",de_DE
+catalog.no-results,"Unfortunately no results were found that match your selection.",en_US
 product.filter.category,"Kategorie",cs_CZ
 product.filter.category,Kategorien,de_DE
 product.filter.category,Categories,en_US
