@@ -23,7 +23,7 @@
 {% endblock %}
 
 {% block body %}
-    <label class="{{ component.renderClass(config.name ~ '__container', modifiers) }}" {{ qa('label') }}>
+    <label class="gdpr-form {{ component.renderClass(config.name ~ '__container', modifiers) }}" {{ qa('label') }}>
         <input {{ data.isChecked == true ? 'checked' : '' }} class="{{ config.name }}__input {% block inputClass %}{% endblock %} " {{ block('attributes') }}/>
 
         <span class="{{ component.renderClass(config.name ~ '__box', modifiers) }}">

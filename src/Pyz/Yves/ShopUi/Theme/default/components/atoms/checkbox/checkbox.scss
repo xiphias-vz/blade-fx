@@ -8,6 +8,25 @@
             display: flex;
             align-items: center;
         }
+        .gdpr-form{
+            display: flex;
+            align-items: flex-start;
+            .checkbox__label{
+                font-size: rem(12);
+                color: $setting-color-globus-darkGray;
+            }
+            .link {
+                color: $setting-color-globus-darkOrange;
+                text-decoration: none;
+            }
+            .checkbox__input:checked ~ .checkbox__label  {
+                    color: $setting-color-globus-darkGray;
+            }
+
+            .checkbox__input-CZ:checked ~ .checkbox__label{
+                    color: $setting-color-globus-darkGray;
+            }
+        }
 
         &__box {
             @include helper-effect-transition;

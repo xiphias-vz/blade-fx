@@ -6,6 +6,13 @@
         color:$setting-color-globus-darkOrange;
         text-decoration: underline;
     }
+    .list_style{
+        margin-left: rem(28);
+        font-size: rem(12);
+    }
+    .list__item::before{
+        content: none;
+    }
 
     &__item--check-bullet {
         position: relative;

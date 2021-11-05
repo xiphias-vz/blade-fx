@@ -207,10 +207,12 @@
                             {% block field %}
                                 {% if fieldName == data.agbInputName %}
                                     {% set labelAnchor = 'page.terms.url' | trans %}
-                                    {% set labelText = 'summary.forms.accept_terms.text' | trans %}
+                                    {% set labelLink = 'page.terms.title.word' | trans %}
+                                    {% set labelText1 = 'summary.forms.accept_terms.text1' | trans %}
+                                    {% set labelText2 = 'summary.forms.accept_terms.text2' | trans %}
                                     {{ form_row(field, {
                                         component: atom('checkbox'),
-                                        label: '<a class="link" href="' ~ labelAnchor ~ '" target="_blank">' ~ labelText ~ '</a>',
+                                        label: labelText1 ~'<a class="link" href="' ~ labelAnchor ~ '" target="_blank">' ~ labelLink ~ '</a>'~ labelText2,
                                         rowAttr: {
                                             class: 'spacing-bottom spacing-bottom--bigger' ~ fieldLayoutClass,
                                         },

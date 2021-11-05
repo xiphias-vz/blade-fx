@@ -14,6 +14,12 @@
         &--full-width {
             max-width: 100%;
         }
+        .GDPR-form{
+            .checkbox_container {
+                display: flex;
+                align-items: flex-start;
+            }
+        }
 
         @content;
     }

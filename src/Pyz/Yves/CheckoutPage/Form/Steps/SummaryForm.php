@@ -28,7 +28,7 @@ class SummaryForm extends SprykerShopSummaryForm
     {
         // parent::buildForm($builder, $options);
 
-       // $this->addTermsApprovalField($builder);
+        $this->addTermsApprovalField($builder);
     }
 
     /**

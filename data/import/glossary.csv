@@ -365,12 +365,15 @@ page.imprint.url,/imprint,cs_CZ
 page.imprint.title,Impressum,cs_CZ
 page.imprint.title,Impressum,de_DE
 page.imprint.title,Imprint,en_US
-page.terms.url,/de/agb-online-kauf,de_DE
+page.terms.url,"https://shop.globus.de/de/Allgemeine-Geschaeftsbedingungen/",de_DE
 page.terms.url,/en/gtc-online-purchase,en_US
-page.terms.url,/gtc-online-purchase,cs_CZ
+page.terms.url,"https://shop.iglobus.cz/cs/obchodni-podminky/",cs_CZ
 page.terms.title,VOP,cs_CZ
 page.terms.title,AGB,de_DE
 page.terms.title,GTC,en_US
+page.terms.title.word,"obchodními podmínkami",cs_CZ
+page.terms.title.word,AGB,de_DE
+page.terms.title.word,Terms and Conditions,en_US
 page.privacy.url,/de/datenschutz,de_DE
 page.privacy.url,/en/privacy,en_US
 page.privacy.url,/privacy,cs_CZ
@@ -3444,9 +3447,9 @@ customer.account.shopping_list.quantity,Anzahl,de_DE
 customer.account.shopping_list.remove,"Odstranit",cs_CZ
 customer.account.shopping_list.remove,Remove,en_US
 customer.account.shopping_list.remove,Löschen,de_DE
-validation.not_blank,"Toto pole nesmí být prázdné.",cs_CZ
+validation.not_blank,"Pro odeslání objednávky je potřeba souhlas s obchodními podmínkami a se zpracováním osobních údajů pro účely objednávky.",cs_CZ
 validation.not_blank,This value should not be blank.,en_US
-validation.not_blank,Dieses Feld sollte nicht leer sein,de_DE
+validation.not_blank,Bitte bestätigen Sie die AGB's und die Verarbeitung der personenbezogenen Daten.,de_DE
 validation.invalid_date,"Datum musí být ve správném formátu %s.",cs_CZ
 validation.invalid_date,Date should be in correct format %s.,en_US
 validation.invalid_date,Datum sollte im richtigen Format vorliegen %s.,de_DE
@@ -4441,8 +4444,12 @@ newsletter.subsription.headline,Register now for the newsletter,en_US
 newsletter.subsription.subheadline,"Získejte 10% slevu na svou první objednávku a každý týden obdržíte nové nabídky e-mailem.",cs_CZ
 newsletter.subsription.subheadline,Bekomme 10% Rabatt auf die erste Bestellung und erhalte wöchentlich neue Angebote via E-Mail.,de_DE
 newsletter.subsription.subheadline,Get 10% discount on your first order and receive weekly new offers via e-mail.,en_US
-summary.forms.accept_terms.text,I hereby accept the Terms and Conditions,en_US
-summary.forms.accept_terms.text,Hiermit akzeptiere ich die AGB,de_DE
+summary.forms.accept_terms.text1,I hereby accept the ,en_US
+summary.forms.accept_terms.text2,.,en_US
+summary.forms.accept_terms.text1,Ich erkläre mich mit ,de_DE
+summary.forms.accept_terms.text2, einverstanden und nehme die Informationen über die Verarbeitung personenbezogener Daten zur Kenntnis.,de_DE
+summary.forms.accept_terms.text1,"Souhlasím s ",cs_CZ
+summary.forms.accept_terms.text2," a beru na vědomí informace o zpracování osobních údajů.",cs_CZ
 Filiale,"Výdejní místo",cs_CZ
 Filiale,Branch,en_US
 Filiale,Abholstation,de_DE
