@@ -135,6 +135,7 @@
             @include helper-breakpoint-media-max($sm-max) {
                 flex-direction: row;
                 padding-bottom: 0;
+                width: 100%;
             }
 
             @include helper-breakpoint-media-max($smd-max) {
@@ -326,6 +327,9 @@
                     }
                 }
 
+                .message-cz {
+                    font-size: 12px;
+                }
 
                 #txt-product-quantity {
                     width: 60%;
@@ -336,6 +340,7 @@
                     @include helper-breakpoint-media-max($sm-max) {
                         padding-left: 0;
                         width: 40px;
+                        margin: 0;
                     }
                 }
 
