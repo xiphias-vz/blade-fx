@@ -166,6 +166,7 @@ $jobs[] = [
     'stores' => $allStores,
 ];
 
+
 if ($storeCodeBucket == 'CZ') {
     $jobs[] = [
         'name' => 'data-import-full',
@@ -303,6 +304,42 @@ if ($storeCodeBucket == 'CZ') {
         'name' => 'transition-log-old-date-delete',
         'command' => 'vendor/bin/console transition-log-old-date:delete',
         'schedule' => '0 13 * * *',
+        'enable' => true,
+        'stores' => ['EIN'],
+    ];
+
+    //Generate 'export.Categories.Spryker.csv file
+    $jobs[] = [
+        'name' => 'export-categories-to-csv',
+        'command' => '$PHP_BIN vendor/bin/console export:categories',
+        'schedule' => 'H 1 * * *',
+        'enable' => true,
+        'stores' => ['EIN']
+    ];
+
+//Generate 'export.geoStockData.Spryker.csv file
+    $jobs[] = [
+        'name' => 'export-geo-stock-data-to-csv',
+        'command' => '$PHP_BIN vendor/bin/console export:stock-data',
+        'schedule' => '',
+        'enable' => true,
+        'stores' => ['EIN']
+    ];
+
+//Generate 'export.productData.Spryker.csv file
+    $jobs[] = [
+        'name' => 'export-product-data-to-csv',
+        'command' => '$PHP_BIN vendor/bin/console export:product-data',
+        'schedule' => '',
+        'enable' => true,
+        'stores' => ['EIN']
+    ];
+
+//Upload files to Globus FTP server
+    $jobs[] = [
+        'name' => 'upload-files-to-globus-ftp',
+        'command' => '$PHP_BIN vendor/bin/console export:fact-finder-to-ftp',
+        'schedule' => '',
         'enable' => true,
         'stores' => ['EIN'],
     ];

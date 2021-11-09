@@ -27,8 +27,9 @@ use Pyz\Zed\DeleteRowsFromTransitionLogScript\Communication\Console\DeleteRowsFr
 use Pyz\Zed\Development\Communication\Console\AcceptanceCodeTestConsole;
 use Pyz\Zed\Development\Communication\Console\ApiCodeTestConsole;
 use Pyz\Zed\Development\Communication\Console\FunctionalCodeTestConsole;
-use Pyz\Zed\FactFinderExport\Communication\Console\FactFinderArticleConsole;
 use Pyz\Zed\FactFinderExport\Communication\Console\FactFinderCategoriesConsole;
+use Pyz\Zed\FactFinderExport\Communication\Console\FactFinderConsole;
+use Pyz\Zed\FactFinderExport\Communication\Console\FactFinderExportConsole;
 use Pyz\Zed\FactFinderExport\Communication\Console\FactFinderPriceConsole;
 use Pyz\Zed\GsoaRestApiClient\Communication\Console\GsoaProductConsole;
 use Pyz\Zed\GsoaRestApiClient\Communication\Console\GsoaTokenConsole;
@@ -370,8 +371,9 @@ class ConsoleDependencyProvider extends SprykerConsoleDependencyProvider
             new DeleteRowsFromTransitionLogScriptConsole(),
             new PublisherTriggerEventsConsole(),
             new QueueSetupConsole(),
-            new FactFinderArticleConsole(),
+            new FactFinderConsole(),
             new FactFinderPriceConsole(),
+            new FactFinderExportConsole(),
             new FactFinderCategoriesConsole(),
         ];
 

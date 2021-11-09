@@ -17,9 +17,9 @@ use Symfony\Component\Console\Output\OutputInterface;
 /**
  * @method \Pyz\Zed\FactFinderExport\Communication\FactFinderExportCommunicationFactory getFactory()
  */
-class FactFinderArticleConsole extends Console
+class FactFinderConsole extends Console
 {
-    public const COMMAND_NAME = 'article-console:set';
+    public const COMMAND_NAME = 'export:product-data';
     public const COMMAND_DESCRIPTION = 'importing data to csv';
 
     /**
@@ -66,14 +66,10 @@ class FactFinderArticleConsole extends Console
                 $i++;
             }
 
-            $breaks = ["\r\n", "<br>", "\n", "\r"];
-
             foreach ($result as $fields) {
                 $fields = str_replace('<br>', '', $fields);
                 $fields = str_replace(",,", ",", $fields);
                 fputcsv($fp, $fields, $delimeter);
-
-                //fputcsv($fp, (array)implode(';', $fields[$value]));
             }
             fclose($fp);
         } catch (Exception $e) {

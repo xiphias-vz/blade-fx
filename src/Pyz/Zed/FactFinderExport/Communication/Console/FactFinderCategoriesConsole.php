@@ -14,9 +14,12 @@ use Symfony\Component\Config\Definition\Exception\Exception;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
+/**
+ * @method \Pyz\Zed\FactFinderExport\Communication\FactFinderExportCommunicationFactory getFactory()
+ */
 class FactFinderCategoriesConsole extends Console
 {
-    public const COMMAND_NAME = 'categories:export';
+    public const COMMAND_NAME = 'export:categories';
     public const COMMAND_DESCRIPTION = 'export categories to csv';
 
     /**

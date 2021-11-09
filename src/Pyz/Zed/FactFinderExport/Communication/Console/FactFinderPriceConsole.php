@@ -14,9 +14,12 @@ use Symfony\Component\Config\Definition\Exception\Exception;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
+/**
+ * @method \Pyz\Zed\FactFinderExport\Communication\FactFinderExportCommunicationFactory getFactory()
+ */
 class FactFinderPriceConsole extends Console
 {
-    public const COMMAND_NAME = 'price-console:export';
+    public const COMMAND_NAME = 'export:stock-data';
     public const COMMAND_DESCRIPTION = 'export prices/stock to csv';
 
     /**

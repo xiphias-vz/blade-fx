@@ -2,6 +2,7 @@
 
 use Pyz\Shared\CashierOrderExport\CashierOrderExportConstants;
 use Pyz\Shared\DataImport\DataImportConstants;
+use Pyz\Shared\FactFinder\FactFinderConstants;
 use Pyz\Shared\GsoaRestApiClient\ApiClient;
 use Pyz\Shared\GsoaRestApiClient\Provider\TokenProvider;
 use Pyz\Shared\ProductImage\ProductImageConstants;
@@ -36,3 +37,6 @@ $config[SalesOrderSummaryExportConfig::SFTP_PRODUCT_DEEPLINK_EXPORT_FILES_FOLDER
 $config[ApiClient::GSOA_ROOT_URL] = 'https://gapi.globus.cz';
 $config[TokenProvider::GSOA_CLIENT_ID] = "webAppSpryker";
 $config[TokenProvider::GSOA_CLIENT_SECRET] = "1A5CE779-02EA-42A5-959C-9909C2C11666";
+
+// ---------- FactFinderExport
+$config[FactFinderConstants::FTP_FACT_FINDER_FILES_FOLDER_NAME] = 'factfinder/stage';

@@ -2,6 +2,7 @@
 
 use Pyz\Shared\CashierOrderExport\CashierOrderExportConstants;
 use Pyz\Shared\DataImport\DataImportConstants;
+use Pyz\Shared\FactFinder\FactFinderConstants;
 use Pyz\Shared\ProductImage\ProductImageConstants;
 use Pyz\Zed\SalesOrderSummaryExport\SalesOrderSummaryExportConfig;
 
@@ -29,3 +30,6 @@ $config[\Pyz\Shared\S3Constants\S3Constants::S3_CASHIER_FILE_BUCKETS] = 'globus-
 
 // ---------- ExportDeeplink
 $config[SalesOrderSummaryExportConfig::SFTP_PRODUCT_DEEPLINK_EXPORT_FILES_FOLDER_KEY] = 'IN/productfeed';
+
+// ---------- FactFinderExport
+$config[FactFinderConstants::FTP_FACT_FINDER_FILES_FOLDER_NAME] = 'factfinder/stage';

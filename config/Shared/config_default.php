@@ -83,6 +83,7 @@ use SprykerShop\Shared\ShopApplication\ShopApplicationConstants;
 use SprykerShop\Shared\ShopUi\ShopUiConstants;
 use StoreApp\Shared\Picker\PickerConstants;
 use Twig\Cache\FilesystemCache;
+use Spryker\Service\FlysystemFtpFileSystem\Plugin\Flysystem\FtpFilesystemBuilderPlugin;
 
 $CURRENT_STORE = Store::getInstance()->getStoreName();
 $AVAILABLE_STORES = Store::getInstance()->getAllowedStores();
@@ -575,6 +576,16 @@ $config[FileSystemConstants::FILESYSTEM_SERVICE] = [
         'password' => getenv('GLOBUS_SFTP_PASSWORD'),
         'root' => getenv('GLOBUS_SFTP_ROOT'),
     ],
+
+    'globus_ftp_fact_finder' => [
+        'sprykerAdapterClass' => FtpFileSystemBuilderPlugin::class,
+        'host' => getenv('GLOBUS_FTP_FACT_FINDER_HOST'),
+        'port' => getenv('GLOBUS_FTP_FACT_FINDER_PORT'),
+        'username' => getenv('GLOBUS_FTP_FACT_FINDER_USERNAME'),
+        'password' => getenv('GLOBUS_FTP_FACT_FINDER_PASSWORD'),
+        'root' => getenv('GLOBUS_FTP_FACT_FINDER_ROOT'),
+    ],
+
 ];
 
 // ---------- CDC
