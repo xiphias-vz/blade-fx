@@ -22,6 +22,16 @@
             display: inline-block;
         }
 
+        &--highlight-summary {
+            background-color: $setting-color-alt-4;
+            border: rem(1) solid $setting-color-alt-4;
+            color: $setting-color-white;
+            position: relative;
+            display: inline-block;
+            margin-left: rem(0);
+            padding: 0px 2px;
+        }
+
         &--alternative {
             background: $setting-color-transparent;
             border: rem(1) solid $setting-color-main;

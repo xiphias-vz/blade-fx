@@ -15,8 +15,7 @@
 } %}
 
 {% block body %}
-
-     {% if data.itemWeight is not null -%}
+         {% if data.itemWeight is not null -%}
             {{ data.calculatedPrice }}
         {%- else -%}
             {% if data.originalAmount is not empty and data.originalAmount > data.amount -%}

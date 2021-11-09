@@ -21,7 +21,7 @@
                 'sku': '{{ item.sku }}',
                 'price': '{{ item.unitGrossPrice is defined ? item.unitGrossPrice / 100 : null }}',
                 'quantity': '{{ item.quantity }}',
-                'brand': '{{ item.brand}}'
+                'brand': '{{ item.brand }}'
             });
         </script>
     {% endfor %}
@@ -80,7 +80,7 @@
                                             'actionField':
                                                 {
                                                     'step': '4',
-                                                    'option': '{{data.cart.shipment.requestedDeliveryDate}}',
+                                                    'option': '{{ data.cart.shipment.requestedDeliveryDate }}',
                                                 }
                                         },
                                 },
@@ -106,6 +106,7 @@
                         </div>
                     {% endif %}
 
+
                     {% for item in shipmentGroup.cartItems %}
                         {% set cartItem = item.bundleProduct ?? item %}
                         {% set isGiftCardExists = cartItem.giftCardMetadata is not null and cartItem.giftCardMetadata.isGiftCard %}
@@ -121,9 +122,29 @@
                                 bundleItems: item.bundleItems | default([]),
                             },
                         } only %}
+
+                            {% set price = data.productItem.unitPrice is defined ? data.productItem.unitPrice : data.productItem.price %}
+                            {% set productItemSubTotal = data.productItem.quantity is not empty ? data.productItem.quantity * price : price %}
+                            {% set productItemOriginalPrice = data.productItem.originalPrice %}
+                            {% set labels = labels | default([]) %}
+
                             {% block image %}
                                 <div class="{{ component.renderClass(config.name ~ '__image', modifiers) }} col">
-                                    {% include molecule('product-image') with {
+                                    {% if productItemOriginalPrice > productItemSubTotal %}
+                                        {% set labels = labels | merge([{
+                                            text: '%',
+                                            type: 'highlight-summary',
+                                            product_type: ''
+                                        }]) %}
+
+                                        {% include molecule('label-group', 'ProductLabelWidget') with {
+                                            data: {
+                                                labels: labels,
+                                                parentJsName: '',
+                                            },
+                                        } only %}
+                                    {% endif %}
+                                     {% include molecule('product-image') with {
                                         modifiers: ['summary'],
                                         data: {
                                             name: data.productItem.name,
@@ -131,9 +152,11 @@
                                         },
                                     } only %}
                                 </div>
+
                             {% endblock %}
 
                             {% block contentInner %}
+
                                 {% block headingGrid %}
                                     <div class="grid grid--no-wrap grid--justify spacing-bottom">
                                         {% block heading %}
@@ -143,9 +166,6 @@
                                 {% endblock %}
 
                                 {% block quantityCondition %}
-                                    {% set price = data.productItem.unitPrice is defined ? data.productItem.unitPrice : data.productItem.price %}
-                                    {% set productItemSubTotal = data.productItem.quantity is not empty ? data.productItem.quantity * price : price %}
-
                                     <div class="grid grid--justify grid--bottom">
                                         <div class="col">
                                             {% block summary %}
@@ -153,12 +173,13 @@
                                             {% endblock %}
                                         </div>
                                         <div class="col">
+
                                             {% include molecule('money-price') with {
                                                 modifiers: ['cart'] | merge(modifiers),
                                                 class: component.renderClass(config.name ~ '__price', modifiers),
                                                 data: {
                                                     amount: productItemSubTotal | default(null),
-                                                    originalAmount: null,
+                                                    originalAmount: productItemOriginalPrice,
                                                 },
                                             } only %}
                                         </div>

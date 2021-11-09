@@ -226,7 +226,6 @@
                                                         },
                                                         'eventCallback': function()
                                                         {
-                                                            console.log("eventCallback " + rerouted + "---" + ctrlPressed);
                                                             if(ctrlPressed == 0){
                                                                 rerouted = 1;
                                                                 document.location = productUrl;
@@ -235,7 +234,6 @@
                                                     });
                                                     setTimeout(function()
                                                     {
-                                                        console.log("setTimeout " + rerouted + "---" + ctrlPressed);
                                                         if(rerouted==0 && ctrlPressed==0)
                                                         {
                                                             document.location = productUrl;
