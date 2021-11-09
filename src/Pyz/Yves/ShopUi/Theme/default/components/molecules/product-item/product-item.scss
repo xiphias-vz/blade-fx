@@ -16,8 +16,9 @@
             font-family: $setting-font-family;
         }
 
-        @include helper-breakpoint-media-min($md-min) {
-            padding: 0 rem(15) rem(30);
+        @include helper-breakpoint-media-max($md-max) {
+            width: 30%;
+            margin-left: auto;
         }
 
         @include helper-breakpoint-media-max($sm-max) {
