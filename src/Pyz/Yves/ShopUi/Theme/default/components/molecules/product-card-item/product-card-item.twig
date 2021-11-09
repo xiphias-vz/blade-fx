@@ -37,10 +37,9 @@
                         data: {
                             name: data.productItem.name | default,
                             image: imageProduct,
+                            productItem: data.productItem
                         },
                     } only %}
-
-                    {% block labels %}{% endblock %}
 
                     {% block groups %}{% endblock %}
                 </a>
@@ -105,21 +104,6 @@
                                             {% endif %}
                                         {% endblock %}
                                     {% endblock %}
-
-                                    {% block unitPrice %}
-                                        <div class="{{ config.name }}__price-unit is-hidden-sm-lg">
-                                            {% set price = data.productItem.unitPrice is defined ? data.productItem.unitPrice : data.productItem.price %}
-
-                                            {% include molecule('money-price') with {
-                                                modifiers: ['cart'],
-                                                class: component.renderClass(config.name ~ '__price', modifiers),
-                                                data: {
-                                                    amount: price | default(null),
-                                                    originalAmount: null,
-                                                },
-                                            } only %}
-                                        </div>
-                                    {% endblock %}
                                 </div>
                             {% endblock %}
 
@@ -152,6 +136,21 @@
                                 {% endif %}
                             {% endblock %}
 
+                            {% block unitPrice %}
+                                <div class="{{ config.name }}__price-col">
+                                    {% set price = data.productItem.unitPrice is defined ? data.productItem.unitPrice : data.productItem.unitGrossPrice %}
+                                    {% set originalPrice = data.productItem.originalPrice is defined ? data.productItem.originalPrice %}
+
+                                    {% include molecule('money-price') with {
+                                        class: component.renderClass(config.name ~ '__price', modifiers),
+                                        data: {
+                                            amount: price | default(null),
+                                            originalAmount: originalPrice | default(null),
+                                        },
+                                    } only %}
+                                </div>
+                            {% endblock %}
+
                             {% block price %}
                                 <div class="{{ config.name }}__price-col">
                                     {% set price = data.productItem.unitPrice is defined ? data.productItem.unitPrice : data.productItem.price %}
@@ -174,7 +173,7 @@
                                           action="{{ path('cart/remove', {'sku': data.productItem.sku, 'groupKey': data.productItem.groupKey}) }}">
                                         <input type="hidden" name="token" value="{{ csrf_token('change-cart') }}">
                                         <button
-                                            class="{{ component.renderClass(config.name ~ '__remove', modifiers) }} link link--darkest link--edit"
+                                            class="{{ component.renderClass(config.name ~ '__remove', modifiers) }} link link--darkest link--edit __remove_position"
                                             value="{{- 'product_cart_item.remove' | trans | raw -}}"
                                             onclick="productRemoveFromCart('{{ data.productItem.id }}','{{ data.productItem.name }}','{{ data.productItem.sku }}','{{ data.productItem.quantity }}','{{ data.productItem.unitGrossPrice is defined ? data.productItem.unitGrossPrice / 100 : null }}')">
 

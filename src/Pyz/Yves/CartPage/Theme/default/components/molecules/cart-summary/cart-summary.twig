@@ -74,7 +74,7 @@
                     isQuoteEditable: data.isQuoteEditable,
                 },
             } only %}
-
+            <hr class="{{ config.name }}__border">
             <li class="{{ config.name }}__item {{ config.name }}__total spacing-y spacing-y--big">
                 <strong>{{ 'cart.price.grand.total' | trans }}</strong>
                 <strong class="float-right">{{ data.cart.totals.grandTotal | money }}</strong>
@@ -85,23 +85,32 @@
         </div>
     </div>
 
-    {% if canProceedToCheckout %}
-        {% if app.currentCodeBucket == 'DE' %}
-            <a class="button button--expand" href="javascript:void(0)"
-               onclick="beginCheckout('{{ url('checkout-index') }}')"
-               {{ qa('cart-go-to-checkout') }}>
-                {{ 'cart.checkout' | trans }}
-            </a>
-        {% else %}
-            <a class="button button--expand button--font-CZ button--backgroundcolor-CZ" href="javascript:void(0)"
-               onclick="beginCheckout('{{ url('checkout-index') }}')"
-                {{ qa('cart-go-to-checkout') }}>
-                {{ 'cart.checkout' | trans }}
-            </a>
-        {% endif %}
-    {% endif %}
 
-    <div>
+        {% if canProceedToCheckout %}
+            {% if app.currentCodeBucket == 'DE' %}
+                <a class="button button--expand button--bigfont" href="javascript:void(0)"
+                   onclick="beginCheckout('{{ url('checkout-index') }}')"
+                    {{ qa('cart-go-to-checkout') }}>
+                    {{ 'cart.checkout' | trans }}
+                </a>
+            {% else %}
+                <a class="button button--expand button--bigfont button--font-CZ button--backgroundcolor-CZ" href="javascript:void(0)"
+                   onclick="beginCheckout('{{ url('checkout-index') }}')"
+                    {{ qa('cart-go-to-checkout') }}>
+                    {{ 'cart.checkout' | trans }}
+                </a>
+            {% endif %}
+        {% endif %}
+
+    {% if app.currentCodeBucket == 'DE' %}
+        <div class="{{ config.name }}__substitutions-break"></div>
+        <p class="{{ config.name }}__item">
+            <span style="margin-right:7px"><svg class="{{ config.name }}__substitutions-icon-info icon"><use xlink:href="#:weight"></use></svg></span>
+            {{ 'checkout.cart.page.weightitems.title' | trans }}
+            <span style="float: right;"><svg class="{{ config.name }}__substitutions-icon-sync icon"><use xlink:href="#:info-circle"></use></svg></span>
+        </p>
+        <p class="{{ config.name }}__substitutions-text"> {{ 'checkout.cart.page.weightitems.text' | trans }} </p>
+    {% endif %}
         <div class="{{ config.name }}__substitutions-break"></div>
         <p class="{{ config.name }}__item">
             <span style="margin-right:7px"><svg class="{{ config.name }}__substitutions-icon-info icon"><use xlink:href="#:sync"></use></svg></span>

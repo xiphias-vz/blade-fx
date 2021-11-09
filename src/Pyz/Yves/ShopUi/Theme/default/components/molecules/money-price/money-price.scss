@@ -2,8 +2,8 @@
     $name: '.money-price';
 
     &__amount {
-        font-weight: fw(semibold);
-        font-size: rem(16);
+        font-weight: fw(normal);
+        font-size: rem(15);
 
         &--original {
             font-size: rem(14);
@@ -11,6 +11,9 @@
 
         &--cart {
             font-size: inherit;
+            @include helper-breakpoint-media-max($xl-min){
+                display: none;
+            }
         }
 
         &--summary {

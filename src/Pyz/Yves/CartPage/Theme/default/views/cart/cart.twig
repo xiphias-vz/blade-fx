@@ -15,14 +15,17 @@
     path: '/search',
 } %}
 
+{% set canProceedToCheckout = data.cart.items is not empty
+    and data.isQuoteValid
+    and (not is_granted('IS_AUTHENTICATED_FULLY') or can('WriteSharedCartPermissionPlugin', data.cart.idQuote))
+    and not data.isHardThresholdReached and not data.isHardMaxThresholdReached
+%}
+
 {% block title %}
     {% widget 'CartOperationsWidget' args [data.cart] use view('cart-operations-title', 'MultiCartWidget') only %}{% endwidget %}
 {% endblock %}
 
 {% block content %}
-    <div class="spacing-x spacing-x--big">
-        {% include molecule('breadcrumb') only %}
-    </div>
 
     {% if data.cart.idQuote is not empty %}
         <div>
@@ -49,6 +52,36 @@
             </div>
         {% endif %}
     {% else %}
+
+        <div class="spacing-x spacing-x--big">
+            <div class="floatLeft">
+                {% if app.currentCodeBucket == 'DE' %}
+                    <h1 class="col headline-cart">{{ 'cart.title_content' | trans }}</h1>
+                {% else %}
+                    <h1 class="col headline-cart-CZ">{{ 'cart.title_content' | trans }}</h1>
+                {% endif %}
+                <a class="cart-box--linkDecoration_mobile" href="javascript:history.go(-1)">{{'cart.continue_shopping' | trans }}</a>
+            </div>
+
+            <div class="is-hidden-lg-xl buttonRight">
+
+                {% if canProceedToCheckout %}
+                    {% if app.currentCodeBucket == 'DE' %}
+                        <a class="button bttnStyle" href="javascript:void(0)"
+                           onclick="beginCheckout('{{ url('checkout-index') }}')"
+                            {{ qa('cart-go-to-checkout') }}>
+                            {{ 'cart.checkout' | trans }}
+                        </a>
+                    {% else %}
+                        <a class="button bttnStyle button--expand button--bigfont button--font-CZ button--backgroundcolor-CZ" style="margin-left: 250px" href="javascript:void(0)"
+                           onclick="beginCheckout('{{ url('checkout-index') }}')"
+                            {{ qa('cart-go-to-checkout') }}>
+                            {{ 'cart.checkout' | trans }}
+                        </a>
+                    {% endif %}
+                {% endif %}
+            </div>
+        </div>
         <div class="grid grid--stretch spacing-x spacing-x--big">
             <div class="col col--sm-12 col--lg-8">
 
@@ -59,8 +92,10 @@
                         </div>
                     {% endif %}
 
-                    <div class="cart-box grid grid--middle grid--justify">
-                        <h3 class="col">{{ 'cart.title_content' | trans }}</h3>
+
+                    <div class="cart-box grid grid--middle grid--justify allArticle" >
+                        <span class="ihreArticle">{{ 'cart.mobile.your_articles' | trans}} ({{ data.cartItems|length }})</span>
+                        <a class="cart-box--linkDecoration" href="javascript:history.go(-1)">{{'cart.continue_shopping' | trans }}</a>
                         <span class="col">
                             <form action="{{ path('cart/clear') }}" method="post">
                                 <input type="hidden" name="token" value="{{ csrf_token('clear-cart') }}"/>
@@ -68,6 +103,23 @@
                             </form>
                         </span>
                     </div>
+
+                    <div class="header-articles">
+                        <div class="product">
+                            <p>{{ 'cart.header.product' | trans }}</p>
+                        </div>
+                        <div class="product">
+                            {% if app.currentCodeBucket == 'DE' %}
+                                <p class="product__item1">{{ 'cart.header.quantity' | trans}}</p>
+                                <p class="product__item2">{{ 'cart.header.single_price' | trans}}</p>
+                            {% else %}
+                                <p class="product__item1-CZ">{{ 'cart.header.quantity' | trans}}</p>
+                                <p class="product__item2-CZ">{{ 'cart.header.single_price' | trans}}</p>
+                            {% endif %}
+                            <p class="product__item3">{{ 'cart.header.price' | trans}}</p>
+                        </div>
+                    </div>
+
                     {% for cartItem in data.cartItems %}
                         {% include molecule('product-card-item') with {
                             data: {

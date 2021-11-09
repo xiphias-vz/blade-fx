@@ -9,7 +9,7 @@
 
             &:hover {
                 text-decoration: none;
-                color: $setting-color-green;
+                color: $setting-color-globus-darkGreen;
             }
         }
 
@@ -25,6 +25,35 @@
         &--reset-spacing {
             padding: 0;
         }
+
+        &--linkDecoration {
+            text-decoration: none;
+            color: $setting-color-globus-lightOrange;
+
+            &:hover {
+                color: $setting-color-globus-darkGreen;
+            }
+
+            @include  helper-breakpoint-media-max($lg-max){
+                display: none;
+            }
+        }
+
+        &--linkDecoration_mobile {
+            text-decoration: none;
+            color: $setting-color-globus-lightOrange;
+            font-size: rem(10);
+
+            &:hover {
+                color: $setting-color-globus-darkGreen;
+            }
+
+            @include  helper-breakpoint-media-min($lg-max){
+                display: none;
+            }
+
+        }
+
     }
 }
 

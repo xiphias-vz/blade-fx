@@ -19,6 +19,28 @@
         {% set displayImage = defaultImage %}
     {% endif %}
 
+    {% block labels %}
+        {% if (data.productItem.originalPrice is defined and data.productItem.unitGrossPrice < data.productItem.originalPrice) %}
+
+            {% set labels = labels | default([]) %}
+
+            {% if not data.product.id_product_labels is defined or data.product.id_product_labels|length <= 0 %}
+                {% set labels = labels | merge([{
+                    text: '%',
+                    type: 'highlight',
+                    product_type: '',
+                }]) %}
+
+                {% include molecule('label-group', 'ProductLabelWidget') with {
+                    data: {
+                        labels: labels,
+                        parentJsName: '',
+                    },
+                } only %}
+            {% endif %}
+        {% endif %}
+    {% endblock %}
+
     {% include molecule('lazy-thumbnail') with {
         modifiers: ['small'] | merge(modifiers),
         attributes: {

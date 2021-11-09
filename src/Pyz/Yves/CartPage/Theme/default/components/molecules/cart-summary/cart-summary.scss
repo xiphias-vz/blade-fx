@@ -20,13 +20,18 @@
             margin: rem(16) rem(0) rem(16) rem(0);
         }
 
+        &__border {
+            border: 1px solid $setting-color-gray-16;
+        }
+
         &__total {
             font-weight: fw(semibold);
             color: $setting-color-black;
+            font-size: rem(18);
         }
 
         &__vat {
-            text-align: right;
+            text-align: left;
             position: relative;
             top: rem(-10);
             margin-bottom: rem(20);

@@ -456,7 +456,7 @@
                 @include helper-breakpoint-media-max($sm-max) {
                     padding: 0;
                     text-align: right;
-                    margin-right: 15px;
+                    margin-right: rem(15);
                     align-items: center;
                     flex-direction: row;
                 }

@@ -5,11 +5,18 @@ $additional-info-width: rem(350);
 
 @mixin shop-ui-product-card-item($name: '.product-card-item') {
     #{$name} {
+        display: flex;
+        align-items: center;
         &__box {
+            @include helper-breakpoint-media-max($lg-max){
+                width: 100%;
+                padding-bottom: rem(0);
+            }
             border: rem(1) solid $setting-color-gray-3;
-            padding: rem(10) rem(10) rem(94);
+            padding: rem(10) rem(31) rem(94);
             margin-bottom: rem(10);
             position: relative;
+            width: 100%;
 
             @include helper-breakpoint-media-min($md-min) {
                 padding: rem(15) rem(15) rem(15) 0;
@@ -40,6 +47,12 @@ $additional-info-width: rem(350);
 
         &__heading {
             width: 100%;
+            font-weight: fw(normal);
+
+            @include helper-breakpoint-media-max($xxs-max){
+                margin-left: rem(65);
+                padding-right: rem(70);
+            }
 
             @include helper-breakpoint-media-min($xl-min) {
                 display: flex;
@@ -55,11 +68,15 @@ $additional-info-width: rem(350);
         }
 
         &__title {
-            font-weight: fw(semibold);
+            font-weight: fw(normal);
             font-size: rem(16);
             text-decoration: none;
             color: $setting-color-black;
             margin: 0 rem(5) rem(5) 0;
+
+            @include helper-breakpoint-media-max($xl-min){
+                margin: rem(0);
+            }
 
             &:hover {
                 text-decoration: none;
@@ -97,9 +114,20 @@ $additional-info-width: rem(350);
             position: absolute;
             top: rem(10);
             right: rem(10);
+            :hover{
+                color: $setting-color-globus-lightOrange-2;
+            }
+
+
+            @include helper-breakpoint-media-max($lg-max){
+                position: absolute;
+                top: rem(16);
+                right: rem(14.4);
+            }
+
 
             @include helper-breakpoint-media-min($xl-min) {
-                top: rem(24);
+                top: rem(64);
                 right: rem(15);
             }
         }
@@ -109,7 +137,7 @@ $additional-info-width: rem(350);
             padding-right: rem(30);
 
             @include helper-breakpoint-media-min($xl-min) {
-                padding-right: rem(40);
+                padding-right: rem(20);
             }
 
             &--mini-cart {
@@ -149,6 +177,9 @@ $additional-info-width: rem(350);
             position: absolute;
             bottom: 0;
             left: rem(-15);
+            @include helper-breakpoint-media-max($xxs-max){
+                padding-bottom: rem(60);
+            }
 
             @include helper-breakpoint-media-min($md-min) {
                 position: static;
@@ -191,6 +222,8 @@ $additional-info-width: rem(350);
                 padding: 0 rem(5);
                 width: 20%;
                 flex-shrink: 0;
+                display: flex;
+                align-items: center;
             }
         }
 
@@ -201,11 +234,22 @@ $additional-info-width: rem(350);
         }
 
         &__price {
-            font-weight: fw(semibold);
-            font-size: rem(16);
+            font-weight: fw(normal);
             color: $setting-color-black;
             text-align: right;
-            margin-right: rem(-30);
+            margin-left: rem(45);
+            padding: 0;
+            display: block;
+            align-items: center;
+
+            @include helper-breakpoint-media-max($lg-max){
+                font-size: rem(12);
+                padding: 0;
+                margin-left: rem(240);
+                height: rem(32);
+                margin-bottom:rem(41);
+                margin-top: rem(-45)
+            }
 
             &--subtotal {
                 @include helper-breakpoint-media-min($xl-min) {
@@ -214,8 +258,7 @@ $additional-info-width: rem(350);
             }
 
             @include helper-breakpoint-media-min($lg-min) {
-                padding: rem(8) 0;
-                margin-right: 0;
+                margin-right: rem(27);
             }
 
             &--mini-cart {
@@ -265,6 +308,8 @@ $additional-info-width: rem(350);
             position: absolute;
             right: rem(10);
             bottom: rem(-5);
+            display: flex;
+            align-items: center;
 
             &--summary {
                 position: static;
@@ -275,12 +320,12 @@ $additional-info-width: rem(350);
                 position: static;
             }
 
-            @include helper-breakpoint-media-min($lg-min) {
+            @include helper-breakpoint-media-min($xxs-max) {
                 position: static;
+                margin-left: rem(65);
             }
 
             @include helper-breakpoint-media-min($xl-min) {
-                padding: 0;
                 flex-shrink: 0;
             }
         }
@@ -361,6 +406,9 @@ $additional-info-width: rem(350);
             color: $setting-color-gray-9;
 
             .cart-quantity-input {
+                display: none;
+            }
+            @include helper-breakpoint-media-max($lg-max){
                 display: none;
             }
         }

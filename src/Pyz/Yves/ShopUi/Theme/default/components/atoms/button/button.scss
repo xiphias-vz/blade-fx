@@ -349,6 +349,11 @@
 
         }
 
+        &--bigfont {
+            padding: rem(8) rem(15);
+            font: fw(medium) rem(21)/1.7 $setting-font-family-additional;
+        }
+
         &--font-CZ {
             font: fw(medium) rem(14)/1.7 $setting-font-family;
         }
