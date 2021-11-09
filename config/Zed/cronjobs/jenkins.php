@@ -312,7 +312,7 @@ if ($storeCodeBucket == 'CZ') {
     $jobs[] = [
         'name' => 'export-categories-to-csv',
         'command' => '$PHP_BIN vendor/bin/console export:categories',
-        'schedule' => 'H 1 * * *',
+        'schedule' => '0 1 * * *',
         'enable' => true,
         'stores' => ['EIN']
     ];
@@ -321,7 +321,7 @@ if ($storeCodeBucket == 'CZ') {
     $jobs[] = [
         'name' => 'export-geo-stock-data-to-csv',
         'command' => '$PHP_BIN vendor/bin/console export:stock-data',
-        'schedule' => '',
+        'schedule' => '0 1 * * *',
         'enable' => true,
         'stores' => ['EIN']
     ];
@@ -330,7 +330,7 @@ if ($storeCodeBucket == 'CZ') {
     $jobs[] = [
         'name' => 'export-product-data-to-csv',
         'command' => '$PHP_BIN vendor/bin/console export:product-data',
-        'schedule' => '',
+        'schedule' => '0 1 * * *',
         'enable' => true,
         'stores' => ['EIN']
     ];
@@ -339,7 +339,7 @@ if ($storeCodeBucket == 'CZ') {
     $jobs[] = [
         'name' => 'upload-files-to-globus-ftp',
         'command' => '$PHP_BIN vendor/bin/console export:fact-finder-to-ftp',
-        'schedule' => '',
+        'schedule' => '0 1 * * *',
         'enable' => true,
         'stores' => ['EIN'],
     ];
