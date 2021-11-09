@@ -18,7 +18,7 @@
 
         .title-and-content-holder {
             .title-holder p {
-                margin-top: 0px;
+                margin-top: 0;
                 color:#fff;
             }
             p {
@@ -41,9 +41,12 @@
             }
         }
 
-        .icon-container {
-            display: none;
+        .icon-container_DE {
+            display: block;
+        }
 
+        .icon-container_CZ {
+            visibility: hidden;
         }
 
         .icon-container div  {
@@ -51,10 +54,10 @@
         }
 
         .icon-container .div-margin-right {
-            margin-right: 30px;
+            margin-right: rem(30);
         }
         .icon-container .div-margin-left   {
-            margin-left: 30px;
+            margin-left: rem(30);
         }
 
         &__logo-section {
@@ -83,7 +86,7 @@
             position: relative;
 
             @include helper-breakpoint-media-max($sm-max)  {
-               padding:0px;
+               padding: 0;
             }
         }
 

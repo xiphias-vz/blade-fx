@@ -7,6 +7,7 @@
 
 {% define data = {
     showNavigation: true,
+    codeBucket: app.currentCodeBucket
 } %}
 
 {% block body %}
@@ -27,7 +28,7 @@
                         </div>
 
                         {% block payments %}
-                            <div class="icon-container">
+                            <div class="icon-container {{ data.codeBucket == "DE" ? 'icon-container_DE' : 'icon-container_CZ' }}">
                                 <h3 class="title title--footer">{{ 'global.paymentProviders' | trans }}</h3>
                                 <div class="div-margin-right">
                                     <img src={{ publicPath("/images/visa.svg")}}  width="50px" height="50px" />
@@ -60,7 +61,6 @@
                                 </div>
                             </div>
                         {% endblock %}
-
                     </div>
                 </div>
             </div>
