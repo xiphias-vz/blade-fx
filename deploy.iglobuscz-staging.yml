@@ -34,6 +34,7 @@ x-real-ip: &real-ip
             - 173.45.18.0/24 # Globus VPN
             - 62.159.118.222/32 # Globus VPN
             - 94.100.132.14/32 # Globus VPN
+            - 193.85.203.7/32
 x-frontend-auth: &frontend-auth
     <<: *real-ip
     auth:
@@ -53,6 +54,7 @@ x-frontend-auth: &frontend-auth
             - 185.140.204.0/22
             - 173.45.18.0/24
             - 62.159.118.222/32
+            - 193.85.203.7/32
             - '93.142.251.52/24'
             - '192.168.117.0/24'
             - '195.29.196.22/24'
@@ -62,6 +64,7 @@ x-frontend-auth: &frontend-auth
             - '185.140.204.0/22'
             - '173.45.18.0/24'
             - '62.159.118.222/32'
+            - '193.85.203.7/32'
 namespace: spryker-cloud
 tag: '1.0'
 environment: docker_dev_CZ
