@@ -236,18 +236,20 @@ class RegisterController extends SprykerShopRegisterController
         $id = $request->request->get("id");
         $customerUserProvider = $this->getFactory()->createCustomerUserProvider();
         $result = $customerUserProvider->checkCardNumberAvailability($id);
-        $result = json_decode($result);
+        $resultArr = json_decode($result, true);
 
         $cardNumberToSend = $id;
 
         $dataToSend = ['cardNumber' => $cardNumberToSend, 'is_physical' => true];
 
-        if ($result->status === 'USED') {
-            $dataToSend['is_physical'] = false;
-            $dataToSend['cardNumber'] = 'used_card_error';
-        } elseif ($result->status === 'INVALID' || $result->status === 'BLOCKED') {
-            $dataToSend['is_physical'] = false;
-            $dataToSend['cardNumber'] = GlobusRestApiClientDigitalCard::getNewGlobusCardNumber();
+        if (isset($resultArr["status"])) {
+            if ($resultArr["status"] === 'USED') {
+                $dataToSend['is_physical'] = false;
+                $dataToSend['cardNumber'] = 'used_card_error';
+            } elseif ($resultArr["status"] === 'INVALID' || $resultArr["status"] === 'BLOCKED') {
+                $dataToSend['is_physical'] = false;
+                $dataToSend['cardNumber'] = GlobusRestApiClientDigitalCard::getNewGlobusCardNumber();
+            }
         }
 
         return new JsonResponse($dataToSend);
