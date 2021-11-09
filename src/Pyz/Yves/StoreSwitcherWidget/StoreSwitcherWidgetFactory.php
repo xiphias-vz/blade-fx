@@ -32,7 +32,11 @@ class StoreSwitcherWidgetFactory extends AbstractFactory
      */
     public function getStoreSwitcher()
     {
-        return new StoreSwitcher($this->getQuoteClient(), $this->getStoreClient());
+        return new StoreSwitcher(
+            $this->getQuoteClient(),
+            $this->getStoreClient(),
+            $this->getPersistentCartClient()
+        );
     }
 
     /**
@@ -65,6 +69,14 @@ class StoreSwitcherWidgetFactory extends AbstractFactory
     public function getMerchantStorageClient(): MerchantStorageClient
     {
         return $this->getProvidedDependency(StoreSwitcherWidgetDependencyProvider::CLIENT_MERCHANT_STORAGE);
+    }
+
+    /**
+     * @return \Spryker\Client\PersistentCart\PersistentCartClient
+     */
+    public function getPersistentCartClient()
+    {
+        return $this->getProvidedDependency(StoreSwitcherWidgetDependencyProvider::CLIENT_PERSISTENT_CART);
     }
 
     /**

@@ -18,6 +18,7 @@ class StoreSwitcherWidgetDependencyProvider extends AbstractBundleDependencyProv
     public const CLIENT_STORE = 'CLIENT_STORE';
     public const CLIENT_MERCHANT_STORAGE = 'CLIENT_MERCHANT_STORAGE';
     public const CLIENT_STORE_SWITCHER = 'CLIENT_STORE_SWITCHER';
+    public const CLIENT_PERSISTENT_CART = 'CLIENT_PERSISTENT_CART';
 
     /**
      * @param \Spryker\Yves\Kernel\Container $container
@@ -33,6 +34,7 @@ class StoreSwitcherWidgetDependencyProvider extends AbstractBundleDependencyProv
         $container = $this->addStoreClient($container);
         $container = $this->addStoreWidgetClient($container);
         $container = $this->addMerchantStorageClient($container);
+        $container = $this->addPersistentCartClient($container);
 
         return $container;
     }
@@ -102,6 +104,20 @@ class StoreSwitcherWidgetDependencyProvider extends AbstractBundleDependencyProv
     {
         $container->set(static::CLIENT_STORE_SWITCHER, function (Container $container) {
             return $container->getLocator()->storeSwitcher()->client();
+        });
+
+        return $container;
+    }
+
+    /**
+     * @param \Spryker\Yves\Kernel\Container $container
+     *
+     * @return \Spryker\Yves\Kernel\Container
+     */
+    protected function addPersistentCartClient(Container $container)
+    {
+        $container->set(static::CLIENT_PERSISTENT_CART, function (Container $container) {
+            return $container->getLocator()->persistentCart()->client();
         });
 
         return $container;
