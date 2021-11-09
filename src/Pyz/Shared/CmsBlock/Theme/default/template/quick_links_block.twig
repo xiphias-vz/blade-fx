@@ -1,0 +1,32 @@
+
+{% block quickLinks %}
+
+    <!-- CMS_BLOCK_PLACEHOLDER : "title" -->
+    <!-- CMS_BLOCK_PLACEHOLDER : "content" -->
+    <!-- CMS_BLOCK_PLACEHOLDER : "link" -->
+    <!-- CMS_BLOCK_PLACEHOLDER : "imageUrl" -->
+
+<div class=" quick-links-card col col--sm-12 col--md-4 col--lg-4">
+
+    {% include molecule('quick-links') with {
+        data: {
+            imageUrl: spyCmsBlockPlaceholder('imageUrl'),
+            clickUrl: spyCmsBlockPlaceholder('link'),
+            content: spyCmsBlockPlaceholder('content'),
+            title: spyCmsBlockPlaceholder('title')
+        },
+    } only %}
+
+</div>
+{%  endblock %}
+
+
+
+
+
+
+
+
+
+
+

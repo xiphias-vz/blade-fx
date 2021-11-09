@@ -1,0 +1,1 @@
+import './quick-links.scss';

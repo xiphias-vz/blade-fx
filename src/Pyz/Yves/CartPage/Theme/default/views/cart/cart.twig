@@ -12,6 +12,7 @@
     title: 'cart.cart' | trans,
     orderLimitationMessage: _view.orderLimitationMessage | default,
     taxPayments: _view.taxPayments,
+    path: '/search',
 } %}
 
 {% block title %}
@@ -32,8 +33,14 @@
     {% if data.cart.items is empty %}
         {% if app.currentCodeBucket == 'DE' %}
             <div class="page-layout-cart__empty text-center">
-                <h1>{{ data.title }}</h1>
-                <h6 class="spacing-top spacing-top--bigger">{{ 'cart.empty' | trans }}</h6>
+                <h1 class="spacing-top spacing-top--bigger">{{ 'cart.empty' | trans }}</h1>
+                <div class="warenkorb-content">
+                    <div class="text-and-button">
+                        <p class="info">{{ 'page.detail.add-to-cart.continue.shopping' | trans }}</p>
+                        <a class="button" href="{{ data.path }}">{{ 'cart.empty.button' | trans }}</a>
+                    </div>
+                    <img class="warenkorb-img" src={{ publicPath("/images/warenkorb.png")}} >
+                </div>
             </div>
         {% else %}
             <div class="page-layout-cart__empty text-center">

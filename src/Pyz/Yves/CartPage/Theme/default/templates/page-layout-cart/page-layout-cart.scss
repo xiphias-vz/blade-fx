@@ -2,9 +2,80 @@
     #{$name} {
         display: block;
 
+        .breadcrumb-step__link {
+            font-size: 1.6rem;
+            font-family: $setting-font-family-additional;
+
+            @include helper-breakpoint-media-max($md-max) {
+                font-size: 1.2rem;
+            }
+        }
+        .breadcrumb-step__separator {
+            visibility: hidden;
+        }
         &__empty {
             margin-top: rem(48);
             margin-bottom: rem(50);
+
+            .spacing-top {
+                margin-bottom: 2rem;
+                font-size: 2rem;
+
+                @include helper-breakpoint-media-max($md-max) {
+                    font-size: 1.6rem;
+                }
+            }
+
+            .warenkorb-content {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+
+                @include helper-breakpoint-media-max($sm-max) {
+                    flex-direction: column;
+                }
+
+                .text-and-button {
+                    display: block;
+                    width: 20%;
+
+                    @include helper-breakpoint-media-max($sm-max) {
+                        width: 60%;
+                    }
+
+                    .info {
+                        text-align: left;
+                        color: $setting-color-globus-darkGray;
+                        font-size: 1.1rem;
+                        @include helper-breakpoint-media-max($sm-max) {
+                            text-align: center;
+                            font-size: 1rem;
+                        }
+                    }
+
+                    .button {
+                        width: 100%;
+                        margin-top: 2rem;
+                        padding: 0.5rem 0;
+                        font-size: 1.1rem;
+
+                        @include helper-breakpoint-media-max($md-max) {
+                            margin-top: 1rem;
+                        }
+                    }
+                }
+
+                .warenkorb-img {
+                    height: auto;
+                    width: 45%;
+                    margin-left: 20px;
+                    @include helper-breakpoint-media-max($sm-max) {
+                        width: 90%;
+                        margin-left: 0;
+                    }
+                }
+
+            }
         }
 
         &__col {
