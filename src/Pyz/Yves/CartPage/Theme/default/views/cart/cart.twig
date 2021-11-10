@@ -26,13 +26,6 @@
 {% endblock %}
 
 {% block content %}
-    <div>
-        {% if app.currentCodeBucket == 'DE' %}
-            <h1 class="title title--heading title--padding">{{ data.title }}</h1>
-        {% else %}
-            <h1 class="title title--heading-CZ title--padding">{{ data.title }}</h1>
-        {% endif %}
-    </div>
 
     {% if data.cart.idQuote is not empty %}
         <div>
@@ -41,6 +34,13 @@
     {% endif %}
 
     {% if data.cart.items is empty %}
+        <div>
+            {% if app.currentCodeBucket == 'DE' %}
+                <h1 class="title title--heading title--padding">{{ data.title }}</h1>
+            {% else %}
+                <h1 class="title title--heading-CZ title--padding">{{ data.title }}</h1>
+            {% endif %}
+        </div>
         <div class="page-layout-cart__empty text-center">
             {% if app.currentCodeBucket == 'DE' %}
                 <h1 class="spacing-top spacing-top--bigger">{{ 'cart.empty' | trans }}</h1>
