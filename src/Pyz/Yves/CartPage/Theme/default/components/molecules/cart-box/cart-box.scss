@@ -2,6 +2,10 @@
     #{$name} {
         padding-bottom: rem(18);
 
+        @include helper-breakpoint-media-between($md-min, $md-max){
+            padding: rem(16) 0;
+        }
+
         &__quantity {
             font-weight: fw(medium);
             font-size: rem(14);
@@ -40,6 +44,9 @@
         }
 
         &--linkDecoration_mobile {
+            display: flex;
+            height: rem(45);
+            align-items: center;
             text-decoration: none;
             color: $setting-color-globus-lightOrange;
             font-size: rem(10);
@@ -47,8 +54,11 @@
             &:hover {
                 color: $setting-color-globus-darkGreen;
             }
+            @include helper-breakpoint-media-min($lg-min){
+                font-size: rem(14);
+            }
 
-            @include  helper-breakpoint-media-min($lg-max){
+            @include  helper-breakpoint-media-min($xl-min){
                 display: none;
             }
 

@@ -29,7 +29,7 @@
             .spacing-x {
 
                 .floatLeft{
-                    @include helper-breakpoint-media-max($sm-max) {
+                    @include helper-breakpoint-media-max($lg-max) {
                         display: flex;
                         flex-direction: column;
                     }
@@ -49,7 +49,7 @@
 
                     }
                 .buttonRight{
-                    @include helper-breakpoint-media-max($sm-max){
+                    @include helper-breakpoint-media-max($md-max){
                         display: flex;
                         flex-direction: row;
                         align-items: stretch;
@@ -68,12 +68,16 @@
                 }
 
                     .headline-cart {
-                    padding: rem(16) 0;
-                    @include helper-breakpoint-media-max($sm-max){
-                        padding-block: rem(7) ;
-                        padding-bottom: rem(8);
-                        font-size: rem(21);
-                    }
+                    padding: rem(16) 0 0 0;
+                        @include helper-breakpoint-media-min($xl-min){
+                            padding-bottom: rem(16);
+                        }
+
+                        @include helper-breakpoint-media-max($sm-max){
+                            padding-block: rem(7) ;
+                            padding-bottom: rem(8);
+                            font-size: rem(21);
+                        }
 
                 }
 
@@ -181,8 +185,6 @@
                 }
             }
         }
-
-
 
         &--error {
             #{$name}__content {

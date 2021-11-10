@@ -7,6 +7,13 @@ $additional-info-width: rem(350);
     #{$name} {
         display: flex;
         align-items: center;
+
+        .product-image{
+            @include helper-breakpoint-media-max($sm-max) {
+                margin-bottom: rem(30);
+            }
+        }
+
         &__box {
             @include helper-breakpoint-media-max($lg-max){
                 width: 100%;
@@ -48,6 +55,13 @@ $additional-info-width: rem(350);
         &__heading {
             width: 100%;
             font-weight: fw(normal);
+            @include helper-breakpoint-media-between($xxs-max,$sm-max ){
+                display: flex;
+                flex-direction: column;
+                margin-left: rem(85);
+            }
+
+
 
             @include helper-breakpoint-media-max($xxs-max){
                 margin-left: rem(65);
@@ -311,6 +325,7 @@ $additional-info-width: rem(350);
             display: flex;
             align-items: center;
 
+
             &--summary {
                 position: static;
                 padding: 0;
@@ -322,7 +337,10 @@ $additional-info-width: rem(350);
 
             @include helper-breakpoint-media-min($xxs-max) {
                 position: static;
-                margin-left: rem(65);
+                margin-left: rem(82);
+            }
+            @include helper-breakpoint-media-min($md-min) {
+                margin-left: 0;
             }
 
             @include helper-breakpoint-media-min($xl-min) {
@@ -404,6 +422,7 @@ $additional-info-width: rem(350);
         &__quantity-measurement-line {
             font-size: rem(13);
             color: $setting-color-gray-9;
+            display: none;
 
             .cart-quantity-input {
                 display: none;
