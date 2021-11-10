@@ -40,7 +40,8 @@ cart.empty,"Váš nákupní košík je aktuálně prázdný.",cs_CZ
 cart.empty,Ihr Warenkorb ist zurzeit leer.,de_DE
 cart.empty,Your shopping cart is empty!,en_US
 cart.empty.button,Weiter einkaufen,de_DE
-cart.cart,"Košík",cs_CZ
+cart.empty.button,"Pokračovat v nákupu",cs_CZ
+cart.cart,"Nákupní košík",cs_CZ
 cart.cart,Warenkorb,de_DE
 cart.cart,Cart,en_US
 cart.total.discount,"Sleva",cs_CZ
@@ -368,6 +369,7 @@ page.detail.add-to-cart,"Do nákupního košíku",cs_CZ
 page.detail.add-to-cart,Auf die Einkaufsliste,de_DE
 page.detail.add-to-cart,Add to Cart,en_US
 page.detail.add-to-cart.continue.shopping,Jetzt Shop durchstöbern und passende Produkte finden,de_DE
+page.detail.add-to-cart.continue.shopping,"Prohlédněte si nabídku a najděte vhodné produkty.",cs_CZ
 page.detail.dimensions,"Rozměry",cs_CZ
 page.detail.dimensions,Abmessungen,de_DE
 page.detail.dimensions,Measurements,en_US

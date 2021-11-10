@@ -218,6 +218,10 @@
             font-family: $setting-font-family;
         }
 
+        &--padding {
+            padding: 16px;
+        }
+
         &--product-details {
             padding: rem(16) rem(10);
             cursor: pointer;
