@@ -57,8 +57,15 @@
                             border-bottom: solid 1px $setting-color-globus-darkGray;
                             padding-bottom: 5px;
                             margin: 0 1rem;
+                            max-height: rem(60);
                         }
-
+                        .img{
+                            img{
+                                @include helper-breakpoint-media-max($sm-max) {
+                                    max-width: 70%;
+                                }
+                            }
+                        }
 
                         .block-icon {
                             margin: 0 15px;
@@ -76,11 +83,11 @@
                             }
                             @include helper-breakpoint-media-max($sm-max) {
                                 padding-top: 0;
-                                padding-left: 1rem;
                                 display: flex;
                                 justify-content: space-between;
                                 align-items: center;
                                 width: 90vw;
+                                margin-left: rem(-20);
                             }
                             .arrow-link {
                                 display: none;
