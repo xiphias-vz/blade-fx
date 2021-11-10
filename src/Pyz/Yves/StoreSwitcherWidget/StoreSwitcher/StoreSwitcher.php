@@ -7,10 +7,6 @@
 
 namespace Pyz\Yves\StoreSwitcherWidget\StoreSwitcher;
 
-use Generated\Shared\Transfer\QuoteTransfer;
-use Generated\Shared\Transfer\QuoteUpdateRequestAttributesTransfer;
-use Generated\Shared\Transfer\QuoteUpdateRequestTransfer;
-use Spryker\Client\PersistentCart\PersistentCartClientInterface;
 use Spryker\Client\Quote\QuoteClientInterface;
 use Spryker\Client\Store\StoreClientInterface;
 use Symfony\Component\HttpFoundation\Cookie;
@@ -31,23 +27,13 @@ class StoreSwitcher
     protected $quoteClient;
 
     /**
-     * @var \Spryker\Client\PersistentCart\PersistentCartClientInterface
-     */
-    protected $persistentCartClient;
-
-    /**
      * @param \Spryker\Client\Quote\QuoteClientInterface $quoteClient
      * @param \Spryker\Client\Store\StoreClientInterface $storeClient
-     * @param \Spryker\Client\PersistentCart\PersistentCartClientInterface $persistentCartClient
      */
-    public function __construct(
-        QuoteClientInterface $quoteClient,
-        StoreClientInterface $storeClient,
-        PersistentCartClientInterface $persistentCartClient
-    ) {
+    public function __construct(QuoteClientInterface $quoteClient, StoreClientInterface $storeClient)
+    {
         $this->quoteClient = $quoteClient;
         $this->storeClient = $storeClient;
-        $this->persistentCartClient = $persistentCartClient;
     }
 
     /**
@@ -79,23 +65,7 @@ class StoreSwitcher
     {
         $quoteTransfer = $this->quoteClient->getQuote();
         $store = $this->storeClient->getStoreByName($storeName);
-        $quoteTransfer = $quoteTransfer->setStore($store);
-        $this->quoteClient->setQuote($quoteTransfer);
-        $this->updatePersistentCartQuote($quoteTransfer);
-    }
 
-    /**
-     * @param \Generated\Shared\Transfer\QuoteTransfer $quoteTransfer
-     *
-     * @return void
-     */
-    protected function updatePersistentCartQuote(QuoteTransfer $quoteTransfer): void
-    {
-        $quoteUpdateRequestTransfer = (new QuoteUpdateRequestTransfer())
-            ->setCustomer($quoteTransfer->getCustomer())
-            ->setIdQuote($quoteTransfer->getIdQuote())
-            ->setQuoteUpdateRequestAttributes((new QuoteUpdateRequestAttributesTransfer())->setStore($quoteTransfer->getStore()));
-
-        $this->persistentCartClient->updateQuote($quoteUpdateRequestTransfer);
+        $this->quoteClient->setQuote($quoteTransfer->setStore($store));
     }
 }
