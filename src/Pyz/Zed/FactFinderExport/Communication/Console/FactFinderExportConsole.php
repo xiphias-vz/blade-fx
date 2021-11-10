@@ -69,6 +69,8 @@ class FactFinderExportConsole extends Console
                         ->sendFileToFtp($contentStockData, $archiveRemoteFilePath, $fileName);
                 } else {
                     dump('File: ' . $fileName . ', can not be found on path: ' . $pathToFile);
+
+                    return static::CODE_ERROR;
                 }
             } catch (Exception $e) {
                 dump($e);

@@ -46,7 +46,7 @@ class FactFinderPriceConsole extends Console
 
             $result = $this->getResult($selectSql);
             $fileName = "export.geoStockData.Spryker.csv";
-            $pathToFile = 'data/EIN/export/files/' . $fileName;
+            $pathToFile = 'data/export/files/' . $fileName;
 
             $fp = fopen($pathToFile, 'w');
             $delimeter = ";";

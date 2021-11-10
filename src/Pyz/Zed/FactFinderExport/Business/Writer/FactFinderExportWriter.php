@@ -7,10 +7,12 @@
 
 namespace Pyz\Zed\FactFinderExport\Business\Writer;
 
+use Exception;
 use Generated\Shared\Transfer\FileSystemContentTransfer;
 use Generated\Shared\Transfer\FileSystemQueryTransfer;
 use Pyz\Shared\FactFinder\FactFinderConstants;
 use Pyz\Zed\FactFinderExport\FactFinderExportConfig;
+use Spryker\Service\FileSystem\Dependency\Exception\FileSystemReadException;
 use Spryker\Service\FileSystem\Dependency\Exception\FileSystemWriteException;
 use Spryker\Service\FileSystem\FileSystemServiceInterface;
 
@@ -59,11 +61,48 @@ class FactFinderExportWriter implements FactFinderExportWriterInterface
             ->setFileSystemName($this->exportConfig->getFtpFileSystemServiceProviderKey());
 
         try {
-            $this->fileSystemService->write($transfer);
+            if ($this->fileSystemService->has($queryTransfer)) {
+                $this->updateFtp($transfer);
+            } else {
+                $this->writeFtp($transfer);
+            }
             $this->deleteExportFileLocally($fileName);
-        } catch (FileSystemWriteException $writerException) {
-            dump('fileSystemName: ' . $transfer->getFileSystemName() . ', path: ' . $transfer->getPath());
-            dump($writerException);
+        } catch (FileSystemReadException $fileSystemReadException) {
+            $this->writeFtp($transfer);
+            $this->deleteExportFileLocally($fileName);
+        } catch (Exception $exception) {
+            dump('fileSystemName: ' . $transfer->getFileSystemName() . ', path:' . $transfer->getPath());
+            dump($exception);
+        }
+    }
+
+    /**
+     * @param \Generated\Shared\Transfer\FileSystemContentTransfer $transfer
+     *
+     * @return void
+     */
+    private function updateFtp(FileSystemContentTransfer $transfer)
+    {
+        try {
+            $this->fileSystemService->update($transfer);
+        } catch (FileSystemWriteException $updateEx) {
+            dump('fileSystemName: ' . $transfer->getFileSystemName() . ', path:' . $transfer->getPath() . '. With message: ' . $updateEx->getMessage());
+            dump($updateEx);
+        }
+    }
+
+    /**
+     * @param \Generated\Shared\Transfer\FileSystemContentTransfer $transfer
+     *
+     * @return void
+     */
+    private function writeFtp(FileSystemContentTransfer $transfer)
+    {
+        try {
+            $this->fileSystemService->write($transfer);
+        } catch (FileSystemWriteException $writeEx) {
+            dump('fileSystemName: ' . $transfer->getFileSystemName() . ', path:' . $transfer->getPath() . '. With message: ' . $writeEx->getMessage());
+            dump($writeEx);
         }
     }
 

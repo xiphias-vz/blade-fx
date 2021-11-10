@@ -8,6 +8,7 @@ node_modules
 !/data/font
 !/data/import
 !/data/export
+!/data/export/files
 .unison*
 .docker-sync
 /.nvmrc

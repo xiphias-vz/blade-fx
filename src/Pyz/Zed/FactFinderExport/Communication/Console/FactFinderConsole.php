@@ -47,8 +47,7 @@ class FactFinderConsole extends Console
             $result = $this->getResult($selectSql);
 
             $fileName = "export.productData.Spryker.csv";
-            $pathToFile = 'data/EIN/export/files/' . $fileName;
-            $ex = file_exists($pathToFile);
+            $pathToFile = 'data/export/files/' . $fileName;
             $fp = fopen($pathToFile, 'w');
             $delimeter = ";";
             $headers = ["ArticleNumber", "MasterArticleNumber", "Title", "Description", "Brand", "ReleaseDate", "Availability", "BrandURL", "CategoryPath", "ProductURL", "ImageURL", "MultiAttributeText", "Attribute", "SalesRanking", "Deposit", "BadgeText"];

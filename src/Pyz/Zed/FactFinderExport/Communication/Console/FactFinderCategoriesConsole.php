@@ -9,6 +9,7 @@ namespace Pyz\Zed\FactFinderExport\Communication\Console;
 
 use PDO;
 use Propel\Runtime\Propel;
+use Pyz\Shared\FactFinder\FactFinderConstants;
 use Spryker\Zed\Kernel\Communication\Console\Console;
 use Symfony\Component\Config\Definition\Exception\Exception;
 use Symfony\Component\Console\Input\InputInterface;
@@ -46,11 +47,9 @@ class FactFinderCategoriesConsole extends Console
 
             $result = $this->getResult($selectSql);
 
-            $fileName = "export.Categories.Spryker.csv";
-            $pathToFile = 'data/EIN/export/files/' . $fileName;
-            $ex = file_exists($pathToFile);
+            $fileName = FactFinderConstants::FILE_NAMES[FactFinderConstants::CATEGORIES_FILE_NAME];
+            $pathToFile = 'data/export/files/' . $fileName;
             $fp = fopen($pathToFile, 'w');
-
             $delimeter = ";";
             $headers = ["Facet", "FacetValue", "URL"];
             fputcsv($fp, $headers, $delimeter);
