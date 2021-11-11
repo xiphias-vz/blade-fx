@@ -61,8 +61,11 @@
                         }
                         .img{
                             img{
-                                @include helper-breakpoint-media-max($sm-max) {
+                                @include helper-breakpoint-media-max($xs-max) {
                                     max-width: 70%;
+                                }
+                                @include helper-breakpoint-media-max($sm-max) {
+                                    max-width: 60%;
                                 }
                             }
                         }
