@@ -106,22 +106,43 @@
                         {% endblock %}
                     {% endif %}
                     {% macro thumbnail(src, alt='', extraClass='', modifiers=[], idProductAbstract='') %}
-                        {% embed molecule('lazy-thumbnail') with {
-                            class: extraClass,
-                            modifiers: modifiers,
-                            attributes: {
-                                src: src,
-                                alt: alt,
-                            },
-                            embed: {
-                                idProductAbstract: idProductAbstract,
-                            },
-                        } only %}
-                            {% block image %}
-                                {% set imageExtraClasses = embed.idProductAbstract ? 'js-image-animation__image-' ~ embed.idProductAbstract %}
-                                {{ parent() }}
-                            {% endblock %}
-                        {% endembed %}
+                        {% if app.currentCodeBucket == 'DE' %}
+                            {% set splitUrl = src| split('.com/') %}
+                            {% set newSrc = splitUrl[0] ~ '.com/thumb_'  ~ splitUrl[1] %}
+                            {% embed molecule('lazy-thumbnail') with {
+                                class: extraClass,
+                                modifiers: modifiers,
+                                attributes: {
+                                    src: newSrc,
+                                    alt: alt,
+                                },
+                                embed: {
+                                    idProductAbstract: idProductAbstract,
+                                },
+                            } only %}
+                                {% block image %}
+                                    {% set imageExtraClasses = embed.idProductAbstract ? 'js-image-animation__image-' ~ embed.idProductAbstract %}
+                                    {{ parent() }}
+                                {% endblock %}
+                            {% endembed %}
+                        {% else %}
+                            {% embed molecule('lazy-thumbnail') with {
+                                class: extraClass,
+                                modifiers: modifiers,
+                                attributes: {
+                                    src: src,
+                                    alt: alt,
+                                },
+                                embed: {
+                                    idProductAbstract: idProductAbstract,
+                                },
+                            } only %}
+                                {% block image %}
+                                    {% set imageExtraClasses = embed.idProductAbstract ? 'js-image-animation__image-' ~ embed.idProductAbstract %}
+                                    {{ parent() }}
+                                {% endblock %}
+                            {% endembed %}
+                        {% endif %}
                     {% endmacro %}
 
                     {% block image %}
