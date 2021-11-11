@@ -68,6 +68,7 @@ class FactFinderConsole extends Console
             foreach ($result as $fields) {
                 $fields = str_replace('<br>', '', $fields);
                 $fields = str_replace(",,", ",", $fields);
+                $fields = preg_replace("/<.+>/sU", "", $fields);
                 fputcsv($fp, $fields, $delimeter);
             }
             fclose($fp);
