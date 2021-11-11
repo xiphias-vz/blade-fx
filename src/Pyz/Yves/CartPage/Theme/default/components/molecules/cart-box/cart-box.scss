@@ -49,7 +49,7 @@
             align-items: center;
             text-decoration: none;
             color: $setting-color-globus-lightOrange;
-            font-size: rem(10);
+            font-size: rem(11);
 
             &:hover {
                 color: $setting-color-globus-darkGreen;
@@ -60,6 +60,10 @@
 
             @include  helper-breakpoint-media-min($xl-min){
                 display: none;
+            }
+
+            @include helper-breakpoint-media-max($sm-max){
+                height: rem(10);
             }
 
         }
