@@ -13,7 +13,7 @@ $additional-info-width: rem(350);
                 margin-bottom: rem(30);
             }
             @include helper-breakpoint-media-max($xs-max) {
-                margin-bottom: rem(-5);
+                margin-bottom: 0;
             }
         }
 
@@ -250,9 +250,6 @@ $additional-info-width: rem(350);
                 display: flex;
                 align-items: center;
             }
-            @include helper-breakpoint-media-max($xs-max){
-                display: none;
-            }
         }
 
         &__price-unit {
@@ -282,6 +279,9 @@ $additional-info-width: rem(350);
             &--subtotal {
                 @include helper-breakpoint-media-min($xl-min) {
                     text-align: right;
+                }
+                @include helper-breakpoint-media-max($xs-max){
+                    display: none;
                 }
             }
 
