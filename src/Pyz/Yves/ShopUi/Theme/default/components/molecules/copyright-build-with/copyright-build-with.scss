@@ -8,7 +8,6 @@
         display: flex;
         flex-wrap: wrap;
 
-
         &__text {
             margin-right: rem(18);
             padding-top: rem(12);
@@ -28,17 +27,27 @@
             display: flex;
         }
 
-        .data-protection   {
-            @include helper-breakpoint-media-max($sm-max)  {
-                width: 100%;
+        .full-width-row {
+            width: 100%;
+            @include helper-breakpoint-media-min($l-max)  {
                 display: flex;
-                justify-content: center;
+                justify-content: space-between;
+            }
+        }
+
+        .data-protection{
+            @include helper-breakpoint-media-max($l-max)  {
+                display: flex;
+                justify-content: space-evenly;
                 align-items: center;
-                margin-bottom: 10px;
-                font-size: 10px;
+                margin-bottom: rem(10);
+                font-size: rem(12);
+            }
+            @include helper-breakpoint-media-max($sm-max)  {
+                font-size: rem(10);
             }
             @include helper-breakpoint-media-max($xs-max){
-                font-size: 7px;
+                font-size: rem(7);
             }
         }
 
@@ -59,38 +68,25 @@
         }
 
         .inline-list li {
-            margin: 0px 10px;
-
+            margin: 0 rem(10);
         }
 
-        .inline-list li a
-        {
+        .inline-list li a {
             color:gray;
             text-decoration: none;
         }
 
         .inline-list li a:nth-child(1) {
-            border-right: 1px solid gray;
-            padding-right: 15px;
+            border-right: rem(1) solid gray;
+            padding-right: rem(15);
         }
         .inline-list li a:nth-child(3) {
-            border-left: 1px solid gray;
-            padding-left: 15px;
+            border-left: rem(1) solid gray;
+            padding-left: rem(15);
         }
 
-
-        .div-footer-right-text
-        {
-            float: right;
+        .div-footer-right-text {
             color:gray;
-            position: absolute;
-            right: -100px;
-
-            @include helper-breakpoint-media-max($xl-max)  {
-                position: static;
-                width:100%;
-
-            }
         }
     }
 }

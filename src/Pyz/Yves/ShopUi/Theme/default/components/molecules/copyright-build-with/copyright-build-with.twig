@@ -9,10 +9,12 @@
 } %}
 
 {% block body %}
-    <div class="data-protection col col--sm-12 col--lg-8">
-        {{ content_navigation('navigation-footer', 'navigation-legal-information-grey') }}
-    </div>
-    <div class="div-footer-right-text">
-        <p style="margin: 0;">{{ 'footer.price.expenses.message' | trans }}</p>
+    <div class="row full-width-row">
+        <div class="data-protection">
+            {{ content_navigation('navigation-footer', 'navigation-legal-information-grey') }}
+        </div>
+        <div class="div-footer-right-text" >
+            <p style="margin: 0;">{{ 'footer.price.expenses.message' | trans }}</p>
+        </div>
     </div>
 {% endblock %}
