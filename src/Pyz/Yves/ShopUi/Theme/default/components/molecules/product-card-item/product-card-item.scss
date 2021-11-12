@@ -15,6 +15,9 @@ $additional-info-width: rem(350);
             @include helper-breakpoint-media-max($xs-max) {
                 margin-bottom: 0;
             }
+            @include helper-breakpoint-media-max($xxs-max) {
+                margin-bottom: rem(-30);
+            }
         }
 
         &__box {
@@ -63,12 +66,15 @@ $additional-info-width: rem(350);
                 flex-direction: column;
                 margin-left: rem(85);
             }
-
-
+            @include helper-breakpoint-media-min($xs-max){
+                max-width: 70%;
+            }
 
             @include helper-breakpoint-media-max($xxs-max){
-                margin-left: rem(65);
-                padding-right: rem(70);
+                margin-left: rem(80);
+                padding-right: rem(0);
+                display: flex;
+                flex-direction: column;
             }
 
             @include helper-breakpoint-media-min($xl-min) {
@@ -97,7 +103,7 @@ $additional-info-width: rem(350);
 
             @include helper-breakpoint-media-max($xs-max) {
                 margin-right: rem(50);
-                font-size: rem(15);
+                font-size: rem(14);
             }
 
             &:hover {
@@ -203,7 +209,7 @@ $additional-info-width: rem(350);
             bottom: 0;
             left: rem(-15);
             @include helper-breakpoint-media-max($xxs-max){
-                padding-bottom: rem(60);
+                padding-bottom: rem(30);
             }
 
             @include helper-breakpoint-media-min($md-min) {
@@ -359,6 +365,10 @@ $additional-info-width: rem(350);
 
             @include helper-breakpoint-media-min($xl-min) {
                 flex-shrink: 0;
+            }
+            @include helper-breakpoint-media-max($xxs-max) {
+                position: static;
+                margin-left: rem(65);
             }
         }
 

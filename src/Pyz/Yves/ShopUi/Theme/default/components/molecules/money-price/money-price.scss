@@ -5,6 +5,10 @@
         font-weight: fw(normal);
         font-size: rem(15);
 
+        @include helper-breakpoint-media-max($xxs-max){
+            margin-left: rem(-20);
+        }
+
         &--original {
             font-size: rem(14);
         }
