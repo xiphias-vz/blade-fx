@@ -57,20 +57,51 @@ class FactFinderConsole extends Console
             for ($z = 0; $z < $numberOfResults; $z++) {
                 foreach ($result[$z] as $key => $row) {
                     $result[$z][$key] = transliterator_transliterate('Any-Latin; Latin-ASCII; [\u0080-\u7fff] remove', $row);
+                    if ($z < 100) {
+                        var_dump("transliterator_transliterate function: " . print_r($result[$z][$key]));
+                        dump("transliterator_transliterate function: " . print_r($result[$z][$key]));
+                    }
                     if (json_decode($row) !== null) {
                         $result[$z][$key] = json_decode($row);
+                        if ($z < 100) {
+                            var_dump("json decode function: " . print_r($result[$z][$key]));
+                            dump("json decode function: " . print_r($result[$z][$key]));
+                        }
                     }
                 }
                 $result[$z] = preg_replace('/^(\'(.*)\'|"(.*)")$/', '$2$3', $result[$z]);
+                if ($z < 100) {
+                    var_dump("Preg replace function: " . print_r($result[$z]));
+                    dump("Preg replace function: " . print_r($result[$z]));
+                }
                 $i++;
             }
 
+            $z = 0;
             foreach ($result as $fields) {
                 $fields = str_replace('<br>', '', $fields);
+                if ($z < 100) {
+                    var_dump("Replacing br: " . print_r($fields));
+                    dump("Replacing br: " . print_r($fields));
+                }
                 $fields = str_replace(",,", ",", $fields);
+                if ($z < 100) {
+                    var_dump("Replacing double commas: " . print_r($fields));
+                    dump("Replacing double commas: " . print_r($fields));
+                }
                 $fields = preg_replace("/<.+>/sU", "", $fields);
+                if ($z < 100) {
+                    var_dump("Replacing html tags: " . print_r($fields));
+                    dump("Replacing html tags: " . print_r($fields));
+                }
                 fputcsv($fp, $fields, $delimeter);
+                if ($z < 100) {
+                    var_dump("Dumping exported data: " . print_r(fputcsv($fp, $fields, $delimeter)));
+                    dump("Dumping exported data: " . print_r(fputcsv($fp, $fields, $delimeter)));
+                }
+                $z++;
             }
+
             fclose($fp);
         } catch (Exception $e) {
             dump($e);
