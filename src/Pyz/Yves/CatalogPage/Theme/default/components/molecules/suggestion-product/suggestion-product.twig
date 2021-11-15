@@ -11,12 +11,6 @@
             <span class="col">
                 {% if data.image %}
                     {% set thumbImage = data.image.external_url_small %}
-                    {% if app.currentCodeBucket == 'DE' %}
-                        {% set splitUrl = thumbImage | split('.com/') %}
-                        {% set insertInTheMiddle = '.com/thumb_' %}
-                        {% set newThumbUrl = splitUrl[0] ~ insertInTheMiddle ~ splitUrl[1] %}
-                        {% set thumbImage = newThumbUrl %}
-                    {% endif %}
                 {% else %}
                     {% set thumbImage = defaultImage %}
                 {% endif %}

@@ -52,8 +52,16 @@
 
     <script type="text/javascript">
         function OnErrorChangeImage(ev) {
-            ev.src = '{{ defaultImage }}';
-            ev.setAttribute("data-src", "{{ defaultImage }}");
+            if(ev.src.includes("thumb_") ){
+                let nonThumbImageFromStorage = ev.getAttribute("data-storage");
+                nonThumbImageFromStorage =  nonThumbImageFromStorage.replace("thumb_", "");
+                ev.src = nonThumbImageFromStorage;
+                ev.setAttribute("data-src", nonThumbImageFromStorage);
+            }
+            else{
+                ev.src = '{{ defaultImage }}';
+                ev.setAttribute("data-src", "{{ defaultImage }}");
+            }
         }
     </script>
 

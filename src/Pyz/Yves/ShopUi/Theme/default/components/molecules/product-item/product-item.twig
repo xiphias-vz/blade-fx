@@ -108,7 +108,7 @@
                     {% macro thumbnail(src, alt='', extraClass='', modifiers=[], idProductAbstract='') %}
                         {% if app.currentCodeBucket == 'DE' %}
                             {% set splitUrl = src| split('.com/') %}
-                            {% set newSrc = splitUrl[0] ~ '.com/thumb_'  ~ splitUrl[1] %}
+                            {% set newSrc = splitUrl[0] ~ '.com/thumb_'  ~ splitUrl[1] | default("") %}
                             {% embed molecule('lazy-thumbnail') with {
                                 class: extraClass,
                                 modifiers: modifiers,

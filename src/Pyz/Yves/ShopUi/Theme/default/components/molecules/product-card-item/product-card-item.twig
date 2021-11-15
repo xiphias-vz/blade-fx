@@ -30,12 +30,6 @@
                    class="{{ component.renderClass(config.name ~ '__image', modifiers) }} col">
                     {% if data.productItem.images[0].externalUrlLarge is defined %}
                         {% set imageProduct = data.productItem.images[0].externalUrlLarge %}
-                        {% if app.currentCodeBucket == 'DE' %}
-                            {% set splitUrl = imageProduct | split('.com/') %}
-                            {% set insertInTheMiddle = '.com/thumb_' %}
-                            {% set newThumbUrl = splitUrl[0] ~ insertInTheMiddle ~ splitUrl[1] %}
-                            {% set imageProduct = newThumbUrl %}
-                        {% endif %}
                     {% else %}
                         {% set imageProduct = defaultImage %}
                     {% endif %}
