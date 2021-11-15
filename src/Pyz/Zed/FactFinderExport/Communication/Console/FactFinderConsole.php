@@ -84,6 +84,8 @@ class FactFinderConsole extends Console
                     //dump("Replacing br: " . print_r($fields));
                 }
                 $fields = str_replace(",,", ",", $fields);
+                $fields = str_replace(',', '', $fields);
+
                 if ($z < 100) {
                     var_dump("Replacing double commas: " . print_r($fields));
                     //dump("Replacing double commas: " . print_r($fields));
