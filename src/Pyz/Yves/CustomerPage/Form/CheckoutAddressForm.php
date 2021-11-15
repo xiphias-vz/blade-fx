@@ -39,6 +39,7 @@ class CheckoutAddressForm extends SprykerShopCheckoutAddressForm
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+   //TODO: addFloorLevelField() function will be put back in the future
         $this
             ->addAddressSelectField($builder, $options)
             ->addSalutationField($builder, $options)
@@ -46,7 +47,7 @@ class CheckoutAddressForm extends SprykerShopCheckoutAddressForm
             ->addLastNameField($builder, $options)
             ->addAddress1Field($builder, $options)
             ->addAddress2Field($builder, $options)
-            ->addFloorLevelField($builder)
+//            ->addFloorLevelField($builder)
             ->addAdditionalInformationField($builder, $options)
             ->addZipCodeField($builder, $options)
             ->addCityField($builder, $options)

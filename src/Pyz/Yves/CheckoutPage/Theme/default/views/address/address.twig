@@ -298,6 +298,7 @@
                         phoneDivElement.parentNode.insertBefore(phoneRequiredFieldsGuest, phoneDivElement)
                     }
                     else {
+                        // TODO: a commented line for the floor field in checkout/address will be put back in the future
                         {% if app.currentCodeBucket != 'CZ' %}
                         document.getElementById("{{ embed.forms.shipping.phone.vars.id }}").value = "{{ data.form.vars.value.customer.phone }}";
                         {% endif %}
@@ -307,7 +308,7 @@
                         document.getElementById("{{ embed.forms.shipping.last_name.vars.id }}").value = "{{ data.form.vars.value.customer.lastName }}";
                         document.getElementById("{{ embed.forms.shipping.address1.vars.id }}").value = "{{ data.form.vars.value.customer.address1 }}";
                         document.getElementById("{{ embed.forms.shipping.address2.vars.id }}").value = "{{ data.form.vars.value.customer.address2 }}";
-                        document.getElementById("{{ embed.forms.shipping.floor.vars.id }}").value = "{{ data.form.vars.value.customer.floor }}";
+                        {#document.getElementById("{{ embed.forms.shipping.floor.vars.id }}").value = "{{ data.form.vars.value.customer.floor }}";#}
                         document.getElementById("{{ embed.forms.shipping.additional_info.vars.id }}").value = "{{ data.form.vars.value.customer.additionalInfo }}";
                         document.getElementById("{{ embed.forms.shipping.zip_code.vars.id }}").value = "{{ (data.form.vars.value.customer.zipCode is not null ? data.form.vars.value.customer.zipCode : '____') }}";
                         document.getElementById("{{ embed.forms.shipping.city.vars.id }}").value = "{{ (data.form.vars.value.customer.city is not null ? data.form.vars.value.customer.city : '____') }}";
