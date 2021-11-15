@@ -1,3 +1,17 @@
+var listOfSitesToRedirect = {
+    // local
+    'https://www.welcome.shop.globus.local/' : 'https://www.shop.globus.local/',
+    // production
+    'https://welcome.shop.globus.de/' : 'https://shop.globus.de/',
+    'https://welcome.shop.iglobus.cz/' : 'https://shop.iglobus.cz/',
+    // stage
+    'welcome.shop-t.globus.de/' : 'https://shop-t.globus.de/',
+    'welcome.shop-t.iglobus.cz/' : 'https://shop-t.iglobus.cz/',
+
+};
+var redirecter = document.getElementById("redirecter");
+var newAttrValue = "0; url=" + listOfSitesToRedirect[document.location.href];
+redirecter.setAttribute('content', newAttrValue);
 /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
