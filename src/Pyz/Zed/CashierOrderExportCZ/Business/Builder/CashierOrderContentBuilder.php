@@ -20,6 +20,7 @@ class CashierOrderContentBuilder extends IntCashierOrderContentBuilder
 
     protected const HEADER_KEY_IDENTIFIER_CZ = '1072';
     protected const POSITION_KEY_IDENTIFIER_CZ = '1073';
+    protected const CUSTOMER_KEY_IDENTIFIER_CZ = '0156';
     protected const DEFAULT_SERVICE_FEE_POSITION_NAME = 'Poplatek            ';
 
     /**
@@ -42,7 +43,7 @@ class CashierOrderContentBuilder extends IntCashierOrderContentBuilder
         if ($orderTransfer->getIsConnected()) {
             $renderCardInformation = self::PAYBACK_PREFIX . $orderTransfer->getPaybackNumber() ?? static::DEFAULT_EMPTY_NUMBER;
         } else {
-            $renderCardInformation = ($orderTransfer->getCustomer() === null) ? (static::DEFAULT_EMPTY_NUMBER) : ($orderTransfer->getCustomer()->getMyGlobusCard() ?? static::DEFAULT_EMPTY_NUMBER);
+            $renderCardInformation = ($orderTransfer->getCustomer() === null) ? (static::DEFAULT_EMPTY_NUMBER) : ($this->getRefactoredGlobusCardId($orderTransfer));
         }
 
          $content = sprintf(
@@ -61,7 +62,7 @@ class CashierOrderContentBuilder extends IntCashierOrderContentBuilder
              $orderTransfer->getOrderReference() ?? static::DEFAULT_EMPTY_NUMBER,
              static::ACCOUNT_NUMBER_IDENTIFIER,
              static::DEFAULT_EMPTY_NUMBER,
-             static::CUSTOMER_KEY_IDENTIFIER,
+             static::CUSTOMER_KEY_IDENTIFIER_CZ,
              $renderCardInformation,
              static::ORDER_TOTAL_KEY_IDENTIFIER,
              $this->totalSum,
@@ -356,5 +357,28 @@ class CashierOrderContentBuilder extends IntCashierOrderContentBuilder
 
             return $itemTransfer->getSumPrice() - $itemTransfer->getSumDiscountAmountAggregation();
         }
+    }
+
+    /**
+     * @param \Generated\Shared\Transfer\OrderTransfer $orderTransfer
+     *
+     * @return string
+     */
+    protected function getRefactoredGlobusCardId(OrderTransfer $orderTransfer): string
+    {
+        $globusCardId = $orderTransfer->getCustomer()->getMyGlobusCard() ?? static::DEFAULT_EMPTY_NUMBER;
+        $removeLastNumber = substr($globusCardId, 0, -1);
+        $removeFirstTwoNumbers = substr($removeLastNumber, 2, strlen($removeLastNumber));
+
+        $numLength = strlen((string)$removeFirstTwoNumbers);
+        $numberOfZeroes = 20 - $numLength;
+        if ($numberOfZeroes > 0) {
+            $refactoredGlobusCardId = str_repeat('0', $numberOfZeroes);
+            $refactoredGlobusCardId .= $removeFirstTwoNumbers;
+        } else {
+            $refactoredGlobusCardId = $removeFirstTwoNumbers;
+        }
+
+        return $refactoredGlobusCardId;
     }
 }
