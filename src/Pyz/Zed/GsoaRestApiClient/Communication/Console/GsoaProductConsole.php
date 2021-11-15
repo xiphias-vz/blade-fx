@@ -145,7 +145,7 @@ class GsoaProductConsole extends Console
                     $page = 0;
                     $returnablePackagingsPrices = [];
                     try {
-                        while ($page > -1 && $page < 200) {
+                        while ($page > -1 && $page < 1000) {
                             $result = $client->getProducts($filter, true, $page, $pageSize);
                             if (!is_array($result)) {
                                 break;
