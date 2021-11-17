@@ -9,6 +9,7 @@ namespace Pyz\Zed\FactFinderExport\Communication\Console;
 
 use PDO;
 use Propel\Runtime\Propel;
+use Pyz\Shared\FactFinder\FactFinderConstants;
 use Spryker\Zed\Kernel\Communication\Console\Console;
 use Symfony\Component\Config\Definition\Exception\Exception;
 use Symfony\Component\Console\Input\InputInterface;
@@ -45,18 +46,19 @@ class FactFinderPriceConsole extends Console
             $selectSql = $this->selectSqlQuery();
 
             $result = $this->getResult($selectSql);
-            $fileName = "export.geoStockData.Spryker.csv";
+            $fileName = FactFinderConstants::FILE_NAMES[FactFinderConstants::GEO_STOCK_FILE_NAME];
             $pathToFile = 'data/export/files/' . $fileName;
 
             $fp = fopen($pathToFile, 'w');
             $delimeter = ";";
+            $enclosure = "\"";
             // ShelfInfo and DiscountText are empty elements
             $headers = ["ArticleNumber", "StoreId", "Price", "PseudoPrice", "Stock", "Sale", "ShelfInfo", "DiscountText", "BasePrice"];
-            fputcsv($fp, $headers, $delimeter);
+            fputcsv($fp, $headers, $delimeter, $enclosure);
 
             $i = 0;
             foreach ($result as $fields) {
-                fputcsv($fp, $fields, $delimeter);
+                fputcsv($fp, $fields, $delimeter, $enclosure);
             }
             fclose($fp);
         } catch (Exception $e) {

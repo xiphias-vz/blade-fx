@@ -51,11 +51,12 @@ class FactFinderCategoriesConsole extends Console
             $pathToFile = 'data/export/files/' . $fileName;
             $fp = fopen($pathToFile, 'w');
             $delimeter = ";";
+            $enclosure = "\"";
             $headers = ["Facet", "FacetValue", "URL"];
-            fputcsv($fp, $headers, $delimeter);
+            fputcsv($fp, $headers, $delimeter, $enclosure);
 
             foreach ($result as $fields) {
-                fputcsv($fp, $fields, $delimeter);
+                fputcsv($fp, $fields, $delimeter, $enclosure);
             }
             fclose($fp);
         } catch (Exception $e) {

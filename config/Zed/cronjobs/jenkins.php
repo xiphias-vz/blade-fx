@@ -253,7 +253,7 @@ if ($storeCodeBucket == 'CZ') {
         'stores' => ['EIN'],
     ];
 
-    //Multiple statuses fix
+    // Multiple statuses fix
     $jobs[] = [
         'name' => 'multiple-statuses-fix',
         'command' => 'vendor/bin/console multiple-statuses:fix',
@@ -298,7 +298,7 @@ if ($storeCodeBucket == 'CZ') {
         'stores' => ['EIN'],
     ];
 
-    //Maintain log table size
+    // Maintain log table size
     $jobs[] = [
         'name' => 'transition-log-old-date-delete',
         'command' => 'vendor/bin/console transition-log-old-date:delete',
@@ -307,7 +307,7 @@ if ($storeCodeBucket == 'CZ') {
         'stores' => ['EIN'],
     ];
 
-    //Generate 'export.Categories.Spryker.csv file
+    // Generate 'export.Categories.Spryker.csv file
     $jobs[] = [
         'name' => 'export-categories-to-csv',
         'command' => '$PHP_BIN vendor/bin/console export:categories',
@@ -316,29 +316,29 @@ if ($storeCodeBucket == 'CZ') {
         'stores' => ['EIN'],
     ];
 
-//Generate 'export.geoStockData.Spryker.csv file
+    // Generate 'export.geoStockData.Spryker.csv file
     $jobs[] = [
         'name' => 'export-geo-stock-data-to-csv',
         'command' => '$PHP_BIN vendor/bin/console export:stock-data',
-        'schedule' => '0 1 * * *',
+        'schedule' => '5 1 * * *',
         'enable' => true,
         'stores' => ['EIN'],
     ];
 
-//Generate 'export.productData.Spryker.csv file
+    // Generate 'export.productData.Spryker.csv file
     $jobs[] = [
         'name' => 'export-product-data-to-csv',
         'command' => '$PHP_BIN vendor/bin/console export:product-data',
-        'schedule' => '0 1 * * *',
+        'schedule' => '10 1 * * *',
         'enable' => true,
         'stores' => ['EIN'],
     ];
 
-//Upload files to Globus FTP server
+    // Upload files to Globus FTP server
     $jobs[] = [
         'name' => 'upload-files-to-globus-ftp',
         'command' => '$PHP_BIN vendor/bin/console export:fact-finder-to-ftp',
-        'schedule' => '0 1 * * *',
+        'schedule' => '20 1 * * *',
         'enable' => true,
         'stores' => ['EIN'],
     ];

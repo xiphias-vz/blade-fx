@@ -9,6 +9,7 @@ namespace Pyz\Zed\FactFinderExport\Communication\Console;
 
 use PDO;
 use Propel\Runtime\Propel;
+use Pyz\Shared\FactFinder\FactFinderConstants;
 use Spryker\Zed\Kernel\Communication\Console\Console;
 use Symfony\Component\Config\Definition\Exception\Exception;
 use Symfony\Component\Console\Input\InputInterface;
@@ -46,61 +47,34 @@ class FactFinderConsole extends Console
 
             $result = $this->getResult($selectSql);
 
-            $fileName = "export.productData.Spryker.csv";
+            $fileName = FactFinderConstants::FILE_NAMES[FactFinderConstants::PRODUCT_DATA_FILE_NAME];
             $pathToFile = 'data/export/files/' . $fileName;
             $fp = fopen($pathToFile, 'w');
             $delimeter = ";";
-            $headers = ["ArticleNumber", "MasterArticleNumber", "Title", "Description", "Brand", "ReleaseDate", "Availability", "BrandURL", "CategoryPath", "ProductURL", "ImageURL", "MultiAttributeText", "Attribute", "SalesRanking", "Deposit", "BadgeText"];
-            fputcsv($fp, $headers, $delimeter);
-            $i = 0;
+            $enclosure = "\"";
+            $headers = ["ArticleNumber", "MasterArticleNumber", "Title", "Description", "Brand", "ReleaseDate", "Availability", "BrandURL", "CategoryPath", "ProductURL", "ImageURL", "MultiAttributeText", "Attribute", "SalesRanking", "ArticleType", "Deposit", "BadgeText"];
+            fputcsv($fp, $headers, $delimeter, $enclosure);
+
             $numberOfResults = count($result);
             for ($z = 0; $z < $numberOfResults; $z++) {
                 foreach ($result[$z] as $key => $row) {
-                    $result[$z][$key] = transliterator_transliterate('Any-Latin; Latin-ASCII; [\u0080-\u7fff] remove', $row);
-                    if ($z < 100) {
-                        //var_dump("transliterator_transliterate function: " . print_r($result[$z][$key]));
-                        //dump("transliterator_transliterate function: " . print_r($result[$z][$key]));
+                    if ($key === 'rbr') {
+                        unset($result[$z][$key]);
+                        continue;
                     }
+                    $result[$z][$key] = transliterator_transliterate('Any-Latin; Latin-ASCII; [\u0080-\u7fff] remove', $row);
                     if (json_decode($row) !== null) {
                         $result[$z][$key] = json_decode($row);
-                        if ($z < 100) {
-                            var_dump("json decode function: " . print_r($result[$z][$key]));
-                            //dump("json decode function: " . print_r($result[$z][$key]));
-                        }
                     }
                 }
                 $result[$z] = preg_replace('/^(\'(.*)\'|"(.*)")$/', '$2$3', $result[$z]);
-                if ($z < 100) {
-                    var_dump("Preg replace function: " . print_r($result[$z]));
-                    //dump("Preg replace function: " . print_r($result[$z]));
-                }
-                $i++;
             }
 
             foreach ($result as $fields) {
                 $fields = str_replace('<br>', '', $fields);
-                if ($z < 100) {
-                    var_dump("Replacing br: " . print_r($fields));
-                    //dump("Replacing br: " . print_r($fields));
-                }
                 $fields = str_replace(",,", ",", $fields);
-                $fields = str_replace(',', '', $fields);
-
-                if ($z < 100) {
-                    var_dump("Replacing double commas: " . print_r($fields));
-                    //dump("Replacing double commas: " . print_r($fields));
-                }
                 $fields = preg_replace("/<.+>/sU", "", $fields);
-                if ($z < 100) {
-                    var_dump("Replacing html tags: " . print_r($fields));
-                    //dump("Replacing html tags: " . print_r($fields));
-                }
-                fputcsv($fp, $fields, $delimeter);
-                if ($z < 100) {
-                    var_dump($fp);
-                    var_dump($fields);
-                    var_dump($delimeter);
-                }
+                fputcsv($fp, $fields, $delimeter, $enclosure);
                 $z++;
             }
             fclose($fp);

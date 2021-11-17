@@ -53,16 +53,7 @@ class FactFinderExportConsole extends Console
 
                 $ex = file_exists($pathToFile);
                 if ($ex) {
-                    $fp = fopen($pathToFile, 'r');
-                    $contentStockData = '';
-                    while (true) {
-                        $data = fgetcsv($fp);
-                        if (gettype($data) == 'boolean') {
-                            break;
-                        } else {
-                            $contentStockData .= $data[0] . "\n";
-                        }
-                    }
+                    $contentStockData = file_get_contents($pathToFile);
 
                     $this->getFactory()
                         ->createFactFinderExportWriter()
