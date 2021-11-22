@@ -281,6 +281,8 @@ class MailHandler extends SprykerMailHandler
         $orderTransfer = $this->expandWithItemGroups($orderTransfer);
         $totals = $orderTransfer->getTotals();
         $similarProductsTwig = '0';
+        $sumOptions = $this->getSumOptions($orderTransfer);
+        $subtotalPriceWithoutDeposit = ($totals->getSubtotal() - $totals->getCanceledTotal()) - $sumOptions;
         try {
             $similarProductsTwig = $this->getSimilarProductsList($similarProducts, $orderTransfer);
         } catch (Exception $e) {
@@ -320,6 +322,7 @@ class MailHandler extends SprykerMailHandler
             'similarProducts' => $similarProductsTwig,
             'tax15' => $this->getMoneyValue($this->getSumTaxes($orderTransfer, '15')),
             'tax21' => $this->getMoneyValue($this->getSumTaxes($orderTransfer, '21')),
+            'subtotalPriceWithoutDeposit' => $this->getMoneyValue($subtotalPriceWithoutDeposit),
         ];
 
         $orderTransfer->setItems($items);
