@@ -42,6 +42,16 @@ class ProductAbstractStoreWriterStep implements DataImportStepInterface
             return;
         }
 
+        $productAbstractQuery = SpyProductAbstractQuery::create()
+            ->filterByIdProductAbstract($this->getIdProductAbstractBySku(ProductAbstractWriterStep::getAbstractSku($dataSet)))
+            ->findOne();
+
+        if (isset($productAbstractQuery)) {
+            if ($productAbstractQuery->getIsSetFromBo() === true) {
+                return;
+            }
+        }
+
         $availableStores = Store::getInstance()->getAllowedStores();
 
         foreach ($availableStores as $store) {

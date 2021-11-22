@@ -4,6 +4,7 @@
           package="src.Orm.Zed.Product.Persistence">
 
     <table name="spy_product_abstract">
+        <column name="is_set_from_BO" type="BOOLEAN" required="false"/>
         <column name="sap_number" type="VARCHAR"/>
         <index>
             <index-column name="sap_number"/>
