@@ -125,7 +125,7 @@
 
                             {% set price = data.productItem.unitPrice is defined ? data.productItem.unitPrice : data.productItem.price %}
                             {% set productItemSubTotal = data.productItem.quantity is not empty ? data.productItem.quantity * price : price %}
-                            {% set productItemOriginalPrice = data.productItem.originalPrice %}
+                            {% set productItemOriginalPrice = data.productItem.quantity is not empty ? data.productItem.quantity * data.productItem.originalPrice : data.productItem.originalPrice %}
                             {% set labels = labels | default([]) %}
 
                             {% block image %}
