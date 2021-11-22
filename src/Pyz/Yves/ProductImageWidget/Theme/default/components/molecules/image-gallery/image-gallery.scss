@@ -3,6 +3,7 @@
         position: relative;
         min-width: fit-content;
 
+
         &__container {
             position: relative;
             z-index: $setting-zi-element;
@@ -33,10 +34,12 @@
             @include helper-breakpoint-media-min($lg-min) {
                 display: block;
                 height: rem(400);
+
             }
 
             @include helper-breakpoint-media-min($xl-min) {
                 height: rem(500);
+
             }
         }
 
@@ -88,8 +91,10 @@
             max-width: 100%;
             max-height: rem(250);
 
+
             @include helper-breakpoint-media-min($lg-min) {
                 max-height: 100%;
+                height: inherit !important;
             }
         }
 
