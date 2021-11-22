@@ -476,7 +476,7 @@
                         }
                     }
                     @include  helper-breakpoint-media-max($xxs-max){
-                        margin-left: rem(-50);
+                        margin-left: 0;
                     }
 
                 }
