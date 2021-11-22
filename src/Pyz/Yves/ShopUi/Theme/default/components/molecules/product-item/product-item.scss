@@ -132,7 +132,6 @@
             position: relative;
             z-index: 0;
             display: flex;
-            flex-direction: column;
             @include helper-breakpoint-media-max($sm-max) {
                 flex-direction: row;
                 padding-bottom: 0;
