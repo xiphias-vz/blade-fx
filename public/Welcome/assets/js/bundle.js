@@ -1,17 +1,19 @@
-var listOfSitesToRedirect = {
-    // local
-    'https://www.welcome.shop.globus.local/' : 'https://www.shop.globus.local/',
-    // production
-    'https://welcome.shop.globus.de/' : 'https://shop.globus.de/',
-    'https://welcome.shop.iglobus.cz/' : 'https://shop.iglobus.cz/',
-    // stage
-    'welcome.shop-t.globus.de/' : 'https://shop-t.globus.de/',
-    'welcome.shop-t.iglobus.cz/' : 'https://shop-t.iglobus.cz/',
+function redirectToShop() {
+    var listOfSitesToRedirect = {
+        // local
+        'https://www.welcome.shop.globus.local/' : 'https://www.shop.globus.local/',
+        // production
+        'https://welcome.shop.globus.de/' : 'https://shop.globus.de/',
+        'https://welcome.shop.iglobus.cz/' : 'https://shop.iglobus.cz/',
+        // stage
+        'https://welcome.shop-t.globus.de/' : 'https://shop-t.globus.de/',
+        'https://welcome.shop-t.iglobus.cz/' : 'https://shop-t.iglobus.cz/',
 
-};
-var redirecter = document.getElementById("redirecter");
-var newAttrValue = "0; url=" + listOfSitesToRedirect[document.location.href];
-redirecter.setAttribute('content', newAttrValue);
+    };
+    var redirecter = document.getElementById("redirecter");
+    var newAttrValue = "0; url=" + listOfSitesToRedirect[document.location.href];
+    redirecter.setAttribute('content', newAttrValue);
+}
 /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -277,8 +279,10 @@ var Global = /*#__PURE__*/function () {
   return Global;
 }();
 
-document.addEventListener("DOMContentLoaded", new Global().init());
-
+document.addEventListener("DOMContentLoaded", function() {
+    new Global().init();
+    redirectToShop();
+});
 /***/ }),
 
 /***/ "./frontend/welcome/assets/scss/global.scss":
