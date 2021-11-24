@@ -52,7 +52,7 @@ class FactFinderConsole extends Console
             $fp = fopen($pathToFile, 'w');
             $delimeter = ";";
             $enclosure = "\"";
-            $headers = ["ArticleNumber", "MasterArticleNumber", "Title", "Description", "Brand", "ReleaseDate", "Availability", "BrandURL", "CategoryPath", "ProductURL", "ImageURL", "MultiAttributeText", "Attribute", "SalesRanking", "ArticleType", "Deposit", "BadgeText"];
+            $headers = ["ArticleNumber", "MasterArticleNumber", "Title", "Description", "Brand", "ReleaseDate", "Availability", "BrandURL", "CategoryPath", "ProductURL", "ImageURL", "MultiAttributeText", "Attribute", "SalesRanking", "ArticleType", "BadgeText","Deposit", "SapNumber" ];
             fputcsv($fp, $headers, $delimeter, $enclosure);
 
             $numberOfResults = count($result);
@@ -127,8 +127,9 @@ FROM
   , null as Attribute
   , ifnull(spc.product_order, 0) * -1 as SalesRanking
   , null as ArticleType
-  , json_extract(sp.`attributes`, '$.pfand_1_amount') as Deposit
   , null as BadgeText
+  , json_extract(sp.`attributes`, '$.pfand_1_amount') as Deposit
+  , sp.sap_number as SapNumber
 FROM spy_product sp
     INNER JOIN spy_product_abstract_localized_attributes spala on sp.fk_product_abstract = spala.fk_product_abstract
     INNER JOIN spy_url su on su.fk_resource_product_abstract = sp.fk_product_abstract
