@@ -10,7 +10,7 @@ use Pyz\Zed\SalesOrderSummaryExport\SalesOrderSummaryExportConfig;
 
 require('config_default-docker.php');
 
-$config[ProductImageConstants::IMAGES_HOST_URL] = 'https://gapi.globus.cz/OnlineAsset/3/asset?assetID=';
+$config[ProductImageConstants::IMAGES_HOST_URL] = 'https://gsoat.globus.cz/OnlineAsset/3/asset?assetID=';
 $config[CashierOrderExportConstants::CASHIER_FILE_DOWNLOAD_URL] = 'https://s3.console.aws.amazon.com/s3/object/iglobus-staging-csv-uploads?region=eu-central-1&prefix=';
 
 $config[DataImportConstants::SFTP_DATA_IMPORT_FILES_FOLDER_NAME] = 'RK';
@@ -34,9 +34,9 @@ $config[\Pyz\Shared\S3Constants\S3Constants::S3_CASHIER_FILE_BUCKETS] = 'iglobus
 $config[SalesOrderSummaryExportConfig::SFTP_PRODUCT_DEEPLINK_EXPORT_FILES_FOLDER_KEY] = 'IN/productfeed';
 
 // ----------- GSOA API
-$config[ApiClient::GSOA_ROOT_URL] = 'https://gapi.globus.cz';
+$config[ApiClient::GSOA_ROOT_URL] = 'https://gsoat.globus.cz';
 $config[TokenProvider::GSOA_CLIENT_ID] = "webAppSpryker";
-$config[TokenProvider::GSOA_CLIENT_SECRET] = "1A5CE779-02EA-42A5-959C-9909C2C11666";
+$config[TokenProvider::GSOA_CLIENT_SECRET] = "D55910C6-0811-4749-B55C-3BCCEDC9BF91";
 
 // ---------- FactFinderExport
 $config[FactFinderConstants::FTP_FACT_FINDER_FILES_FOLDER_NAME] = 'factfinder/stage';
