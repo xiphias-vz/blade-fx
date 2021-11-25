@@ -38,13 +38,6 @@ $jobs[] = [
     'enable' => true,
     'stores' => $allStores,
 ];
-$jobs[] = [
-    'name' => 'update-product-label-relations',
-    'command' => '$PHP_BIN vendor/bin/console product-label:relations:update -vvv',
-    'schedule' => '0 2,6,7,8,9 * * *',
-    'enable' => false,
-    'stores' => $allStores,
-];
 
 /* PriceProductSchedule */
 $jobs[] = [
@@ -183,6 +176,14 @@ if ($storeCodeBucket == 'CZ') {
         'stores' => ['OST'],
     ];
 
+    $jobs[] = [
+        'name' => 'update-product-label-relations',
+        'command' => '$PHP_BIN vendor/bin/console product-label:relations:update -vvv',
+        'schedule' => '0 2,6,7,8,9 * * *',
+        'enable' => true,
+        'stores' => ['OST'],
+    ];
+
     //Multiple statuses fix
     $jobs[] = [
         'name' => 'multiple-statuses-fix',
@@ -280,11 +281,21 @@ if ($storeCodeBucket == 'CZ') {
         'stores' => ['EIN'],
     ];
 
+
+
     /* Export sales order summary*/
     $jobs[] = [
         'name' => 'export-sales-order-summary',
         'command' => '$PHP_BIN vendor/bin/console data:exportSalesOrderSummary',
         'schedule' => '0 1 * * *',
+        'enable' => true,
+        'stores' => ['EIN'],
+    ];
+
+    $jobs[] = [
+        'name' => 'update-product-label-relations',
+        'command' => '$PHP_BIN vendor/bin/console product-label:relations:update -vvv',
+        'schedule' => '0 2,6,7,8,9 * * *',
         'enable' => true,
         'stores' => ['EIN'],
     ];
