@@ -65,11 +65,6 @@ $config[FileSystemConstants::FILESYSTEM_SERVICE] = [
     ],
 ];
 
-// ----------- GSOA API
-$config[ApiClient::GSOA_ROOT_URL] = 'https://gapi.globus.cz';
-$config[TokenProvider::GSOA_CLIENT_ID] = "webAppSpryker";
-$config[TokenProvider::GSOA_CLIENT_SECRET] = "1A5CE779-02EA-42A5-959C-9909C2C11666";
-
 $config[ProductImageConstants::IMAGES_HOST_URL] = 'https://gapi.globus.cz/OnlineAsset/3/asset?assetID=';
 
 // ----------- Google Tag Manager
