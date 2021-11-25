@@ -14,6 +14,9 @@ use Spryker\Zed\ProductManagement\Communication\Controller\EditController as Spr
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 
+/**
+ * @method \Pyz\Zed\ProductManagement\Communication\ProductManagementCommunicationFactory getFactory()
+ */
 class EditController extends SprykerEditController
 {
     /**
@@ -70,10 +73,10 @@ class EditController extends SprykerEditController
                     ->filterByIdProductAbstract($idProductAbstract)
                     ->findOne();
 
-                if(isset($productAbstractEntity)){
+                if (isset($productAbstractEntity)) {
                     $productAbstractEntity->setIsSetFromBo(true);
 
-                    if($productAbstractEntity->isModified()){
+                    if ($productAbstractEntity->isModified()) {
                         $productAbstractEntity->save();
                     }
                 }
@@ -97,6 +100,12 @@ class EditController extends SprykerEditController
         $variantTable = $this
             ->getFactory()
             ->createVariantTable($idProductAbstract, $type);
+        $storeRelations = $productAbstractTransfer->getStoreRelation()->getStores()->getArrayCopy();
+        $merchantReferenceByUser = $this->getFactory()->getUserFacade()->getCurrentUser()->getMerchantReference();
+        $userStore = $this->getFactory()
+            ->getMerchantFacade()
+            ->findMerchantTransferFromMerchantReference($merchantReferenceByUser)
+            ->getFkStore();
 
         $viewData = [
             'form' => $form->createView(),
@@ -118,5 +127,24 @@ class EditController extends SprykerEditController
             ->expandEditAbstractProductViewData($viewData);
 
         return $this->viewResponse($viewData);
+    }
+
+    /**
+     * @return bool
+     */
+    protected function isCurrentUserSupervisor(): bool
+    {
+        $userFacade = $this->getFactory()->getUserFacade();
+
+        $idUser = $userFacade->getCurrentUser()->getIdUser();
+        $userGroups = $this->getFactory()->getAclFacade()->getUserGroups($idUser);
+
+        foreach ($userGroups->getGroups() as $group) {
+            if ($group->getName() === 'supervisor_group') {
+                return true;
+            }
+        }
+
+        return false;
     }
 }

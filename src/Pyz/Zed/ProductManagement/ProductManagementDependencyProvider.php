@@ -30,6 +30,22 @@ use Spryker\Zed\Store\Communication\Plugin\Form\StoreRelationToggleFormTypePlugi
 
 class ProductManagementDependencyProvider extends SprykerProductManagementDependencyProvider
 {
+    public const FACADE_USER = 'FACADE_USER';
+
+    public const FACADE_ACL = 'FACADE_ACL';
+
+    public const FACADE_MERCHANT = 'FACADE_MERCHANT';
+
+    public function provideCommunicationLayerDependencies(Container $container)
+    {
+        $container =  parent::provideCommunicationLayerDependencies($container);
+        $container = $this->addUserFacade($container);
+        $container = $this->addAclFacade($container);
+        $container = $this->addMerchantFacade($container);
+
+        return $container;
+    }
+
     /**
      * @return \Spryker\Zed\Kernel\Communication\Form\FormTypeInterface
      */
@@ -125,5 +141,47 @@ class ProductManagementDependencyProvider extends SprykerProductManagementDepend
         return [
             new ScheduledPriceProductConcreteEditViewExpanderPlugin(),
         ];
+    }
+
+    /**
+     * @param \Spryker\Zed\Kernel\Container $container
+     *
+     * @return \Spryker\Zed\Kernel\Container
+     */
+    protected function addUserFacade(Container $container)
+    {
+        $container->set(static::FACADE_USER, function (Container $container) {
+            return $container->getLocator()->user()->facade();
+        });
+
+        return $container;
+    }
+
+    /**
+     * @param \Spryker\Zed\Kernel\Container $container
+     *
+     * @return \Spryker\Zed\Kernel\Container
+     */
+    protected function addAclFacade(Container $container)
+    {
+        $container->set(static::FACADE_ACL, function (Container $container) {
+            return $container->getLocator()->acl()->facade();
+        });
+
+        return $container;
+    }
+
+    /**
+     * @param \Spryker\Zed\Kernel\Container $container
+     *
+     * @return \Spryker\Zed\Kernel\Container
+     */
+    protected function addMerchantFacade(Container $container)
+    {
+        $container->set(static::FACADE_MERCHANT, function (Container $container) {
+            return $container->getLocator()->merchant()->facade();
+        });
+
+        return $container;
     }
 }

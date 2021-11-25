@@ -7,9 +7,13 @@
 
 namespace Pyz\Zed\ProductManagement\Communication;
 
+use Pyz\Zed\Merchant\Business\MerchantFacadeInterface;
 use Pyz\Zed\ProductManagement\Communication\Form\ProductConcreteFormEdit;
 use Pyz\Zed\ProductManagement\Communication\Table\VariantTable;
+use Pyz\Zed\ProductManagement\ProductManagementDependencyProvider;
+use Spryker\Zed\Acl\Business\AclFacadeInterface;
 use Spryker\Zed\ProductManagement\Communication\ProductManagementCommunicationFactory as SpyProductManagementCommunicationFactory;
+use Spryker\Zed\Sales\SalesDependencyProvider;
 
 class ProductManagementCommunicationFactory extends SpyProductManagementCommunicationFactory
 {
@@ -38,5 +42,29 @@ class ProductManagementCommunicationFactory extends SpyProductManagementCommunic
             $this->getLocaleFacade()->getCurrentLocale(),
             $type
         );
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getUserFacade()
+    {
+        return $this->getProvidedDependency(ProductManagementDependencyProvider::FACADE_USER);
+    }
+
+    /**
+     * @return \Spryker\Zed\Acl\Business\AclFacadeInterface
+     */
+    public function getAclFacade(): AclFacadeInterface
+    {
+        return $this->getProvidedDependency(ProductManagementDependencyProvider::FACADE_ACL);
+    }
+
+    /**
+     * @return \Pyz\Zed\Merchant\Business\MerchantFacadeInterface
+     */
+    public function getMerchantFacade(): MerchantFacadeInterface
+    {
+        return $this->getProvidedDependency(ProductManagementDependencyProvider::FACADE_MERCHANT);
     }
 }

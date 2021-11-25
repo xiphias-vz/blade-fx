@@ -7,6 +7,7 @@
         <property name="regionNumber" type="int"/>
         <property name="regionName" type="string"/>
         <property name="filialNumber" type="int"/>
+        <property name="fkStore" type="int"/>
         <property name="zipCode" type="string"/>
         <property name="city" type="string"/>
         <property name="street" type="string"/>

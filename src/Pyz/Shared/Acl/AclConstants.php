@@ -23,6 +23,7 @@ interface AclConstants extends SprykerAclConstants
     public const MODULE_PICKER = 'picker';
     public const MODULE_DELIVERY = 'delivery';
     public const MODULE_SALES = 'sales';
+    public const MODULE_PRODUCT_MANAGEMENT = 'product-management';
     public const MODULE_SALES_OVERVIEW = 'sales-overview';
     public const MODULE_OMS = 'oms';
     public const MODULE_CUSTOMER = 'customer';
