@@ -11,5 +11,5 @@ use Spryker\Zed\PriceProductSchedule\PriceProductScheduleConfig as SprykerPriceP
 
 class PriceProductScheduleConfig extends SprykerPriceProductScheduleConfig
 {
-    protected const APPLY_BATCH_SIZE = 10000;
+    protected const APPLY_BATCH_SIZE = 100000;
 }
