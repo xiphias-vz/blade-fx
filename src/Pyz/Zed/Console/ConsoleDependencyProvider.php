@@ -18,6 +18,7 @@ use Pyz\Zed\DataImport\Communication\Console\DataImportCheckImagesConsole;
 use Pyz\Zed\DataImport\Communication\Console\DataImportCheckProductCsvFileConsole;
 use Pyz\Zed\DataImport\Communication\Console\DataImportConsole;
 use Pyz\Zed\DataImport\Communication\Console\DataImportExecImportEventsConsole;
+use Pyz\Zed\DataImport\Communication\Console\DataImportExecSqlQueryConsole;
 use Pyz\Zed\DataImport\Communication\Console\DataImportFileManagerConsole;
 use Pyz\Zed\DataImport\Communication\Console\DataImportImagesFileManagerConsole;
 use Pyz\Zed\DataImport\Communication\Console\DataImportUpdatePricesConsole;
@@ -253,6 +254,7 @@ class ConsoleDependencyProvider extends SprykerConsoleDependencyProvider
             new DataImportConsole(DataImportConsole::DEFAULT_NAME . ':' . DataImportConfig::IMPORT_COUNTRY_LOCALIZED),
             new DataImportConsole(DataImportConsole::DEFAULT_NAME . ':' . DataImportConfig::IMPORT_UNIT_COMPARISON),
             new DataImportExecImportEventsConsole(),
+            new DataImportExecSqlQueryConsole(),
             new DataImportUpdatePricesConsole(),
             new DataImportCheckImagesConsole(),
             new UpdateAvailabilityAfterImportConsole(),
