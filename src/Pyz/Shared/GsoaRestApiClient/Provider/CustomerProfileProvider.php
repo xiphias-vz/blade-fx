@@ -147,7 +147,7 @@ class CustomerProfileProvider
             ->setDateOfBirth(date("Y-m-j", $birthDay))
             ->setUsername($this->getValue($data["authentication"], "login"))
             ->setSalutation("Divers")
-            ->setMyGlobusCard($this->getValue($data["account"], "card", "cardNumberGPE"))
+            ->setMyGlobusCard($this->getValue($data["account"], "card", "eanGlobusCard"))
             ->setThirdPartyRegistration(true);
 
         return $customerTransfer;
