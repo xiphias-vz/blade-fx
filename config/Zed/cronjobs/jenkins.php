@@ -237,6 +237,15 @@ if ($storeCodeBucket == 'CZ') {
         'enable' => true,
         'stores' => ['OST'],
     ];
+
+    $jobs[] = [
+        'name' => 'check-actionprices-for-weight-articles',
+        'command' => '$PHP_BIN vendor/bin/console import:execSqlQuery -s "call pyzx_update_sceduled_weight_prices()"
+        $PHP_BIN vendor/bin/console import:execEvents',
+        'schedule' => '0 4 * * *',
+        'enable' => true,
+        'stores' => ['OST'],
+    ];
 } else {
     $jobs[] = [
         'name' => 'data-import-full',
@@ -350,6 +359,15 @@ if ($storeCodeBucket == 'CZ') {
         'name' => 'upload-files-to-globus-ftp',
         'command' => '$PHP_BIN vendor/bin/console export:fact-finder-to-ftp',
         'schedule' => '20 1 * * *',
+        'enable' => true,
+        'stores' => ['EIN'],
+    ];
+
+    $jobs[] = [
+        'name' => 'check-actionprices-for-weight-articles',
+        'command' => '$PHP_BIN vendor/bin/console import:execSqlQuery -s "call pyzx_update_sceduled_weight_prices()"
+        $PHP_BIN vendor/bin/console import:execEvents',
+        'schedule' => '0 4 * * *',
         'enable' => true,
         'stores' => ['EIN'],
     ];
