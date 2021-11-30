@@ -52,7 +52,7 @@ class FactFinderConsole extends Console
             $fp = fopen($pathToFile, 'w');
             $delimeter = ";";
             $enclosure = "\"";
-            $headers = ["ArticleNumber", "MasterArticleNumber", "Title", "Description", "Brand", "ReleaseDate", "Availability", "BrandURL", "CategoryPath", "ProductURL", "ImageURL", "MultiAttributeText", "Attribute", "SalesRanking", "ArticleType", "BadgeText","Deposit", "SapNumber" ];
+            $headers = ["ArticleNumber", "MasterArticleNumber", "Title", "Description", "Brand", "ReleaseDate", "Availability", "BrandURL", "CategoryPath", "ProductURL", "ImageURL", "MultiAttributeText", "Attribute", "SalesRanking", "ArticleType", "BadgeText", "Deposit", "SapNumber" ];
             fputcsv($fp, $headers, $delimeter, $enclosure);
 
             $numberOfResults = count($result);

@@ -21,6 +21,9 @@
 
         #picking_zone_selection_form_buttonSubmit {
             height: 2.5rem !important;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
         @media screen and (max-width: 360px) {

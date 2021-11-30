@@ -178,9 +178,7 @@ class MultiPickingController extends BaseOrderPickingController
         }
 
         $isLastPosition = "false";
-        if ($transfer->isLastItem() || $openModal == 'true' || $fromPosListeAndModal == 'true') {
-            $isLastPosition = "true";
-        }
+
         $this->getFacade()->setTransferToSession($transfer);
 
         $urlOverview = PickerConfig::URL_MULTI_PICKING_OVERVIEW;
