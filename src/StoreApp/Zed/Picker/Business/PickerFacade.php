@@ -303,7 +303,7 @@ class PickerFacade extends AbstractFacade implements PickerFacadeInterface
             ->filterByNumberRelatedOrders($transfer->getNumberRelatedOrders())
             ->findOneOrCreate();
 
-        if ($pyzGlobalPerformaceEntity->isNew() || $pyzGlobalPerformaceEntity->isModified()) {
+        if ($pyzGlobalPerformaceEntity->isNew() || $pyzGlobalPerformaceEntity->isModified() || $pyzGlobalPerformaceEntity->isPrimaryKeyNull()) {
             $pyzGlobalPerformaceEntity->save();
         }
 
@@ -335,7 +335,7 @@ class PickerFacade extends AbstractFacade implements PickerFacadeInterface
             ->filterByPickingStart($transfer->getPickingStart())
             ->findOneOrCreate();
 
-        if ($pyzPerformaceOrderEntity->isNew() || $pyzPerformaceOrderEntity->isModified()) {
+        if ($pyzPerformaceOrderEntity->isNew() || $pyzPerformaceOrderEntity->isModified() || $pyzPerformaceOrderEntity->isPrimaryKeyNull()) {
             $pyzPerformaceOrderEntity->save();
         }
 
@@ -368,7 +368,7 @@ class PickerFacade extends AbstractFacade implements PickerFacadeInterface
             ->filterByDurationPickTime($transfer->getDurationPickingTime())
             ->findOneOrCreate();
 
-        if ($pyzPerformaceOrderItemEntity->isNew() || $pyzPerformaceOrderItemEntity->isModified()) {
+        if ($pyzPerformaceOrderItemEntity->isNew() || $pyzPerformaceOrderItemEntity->isModified() || $pyzPerformaceOrderItemEntity->isPrimaryKeyNull()) {
             $pyzPerformaceOrderItemEntity->save();
         }
 
