@@ -19,6 +19,7 @@
                 <meta name="description" content="{% block metaDescription %}{{ data.metaDescription }}{% endblock %}" />
                 <meta name="keywords" content="{% block metaKeywords %}{{ data.metaKeywords }}{% endblock %}" />
                 <meta name="generator" content="spryker" />
+
             {% endblock %}
 
             {% block headStyles %}
@@ -28,6 +29,7 @@
             {% block headScripts %}
                 <script nomodule src="{{publicPath('js/storeapp_default.runtime.legacy.js')}}" crossorigin></script>
                 <script type="module" src="{{publicPath('js/storeapp_default.runtime.esm.js')}}" crossorigin></script>
+                <script>{{ app.newRelicCodeBucket }}</script>
             {% endblock %}
 
             <title>{% block headTitle %}{{ data.title }}{% endblock %}</title>

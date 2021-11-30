@@ -9,6 +9,7 @@ namespace StoreApp\Yves\ShopApplication;
 
 // @codingStandardsIgnoreStart
 use SprykerShop\Yves\ShopApplication\ShopApplicationDependencyProvider as SprykerShopShopApplicationDependencyProvider;
+use StoreApp\Zed\NewRelic\Plugin\Application\NewRelicApplicationPlugin;
 use StoreApp\Zed\Picker\Communication\Widget\SelectPickingZoneWidget;
 // @codingStandardsIgnoreEnd
 class ShopApplicationDependencyProvider extends SprykerShopShopApplicationDependencyProvider
@@ -21,5 +22,17 @@ class ShopApplicationDependencyProvider extends SprykerShopShopApplicationDepend
         return [
             SelectPickingZoneWidget::class,
         ];
+    }
+
+    /**
+     * @return \Spryker\Shared\ApplicationExtension\Dependency\Plugin\ApplicationPluginInterface[]
+     */
+    protected function getApplicationPlugins(): array
+    {
+        $applicationPlugins = [
+            //new NewRelicApplicationPlugin(),
+        ];
+
+        return $applicationPlugins;
     }
 }
