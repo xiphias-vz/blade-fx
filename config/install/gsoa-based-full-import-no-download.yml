@@ -43,6 +43,10 @@ sections:
         import-update-prices:
             command: "vendor/bin/console import:updatePrices -c CZK"
 
+    update-stock:
+        import-update-stock:
+            command: "vendor/bin/console import:updateStock"
+
     update-availability:
         import-update-availability:
             command: "vendor/bin/console import:updateAvailability"

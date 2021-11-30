@@ -370,7 +370,9 @@ class UpdateAvailabilityAfterImport implements UpdateAvailabilityAfterImportInte
     {
         $imagesPublish = $this->getResult($this->getImagesToPublishSql(), $connection, true);
         $connection->beginTransaction();
+        $counter = 0;
         foreach ($imagesPublish as $image) {
+            $counter++;
             if ($image["publish"]) {
                 $this->addPublishEvents(
                     ProductImageEvents::PRODUCT_IMAGE_PRODUCT_CONCRETE_PUBLISH,
@@ -403,6 +405,9 @@ class UpdateAvailabilityAfterImport implements UpdateAvailabilityAfterImportInte
                     null,
                     $connection
                 );
+            }
+            if ($counter % 1000 === 0) {
+                $connection->commit();
             }
         }
         $connection->commit();

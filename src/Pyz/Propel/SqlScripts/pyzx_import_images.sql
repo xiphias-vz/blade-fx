@@ -73,6 +73,14 @@ BEGIN
                               on spis.fk_product = ttim.fk_product and spistpi.fk_product_image = ttim.id_product_image
     );
 
+    DELETE FROM spy_product_image_set_to_product_image
+    WHERE fk_product_image in
+    (
+        select distinct spi.id_product_image
+        FROM spy_product_image spi
+            INNER JOIN tmp_tbl_images_message ttim on spi.id_product_image = ttim.id_product_image
+    );
+
     DELETE FROM spy_product_image
     WHERE id_product_image in
     (

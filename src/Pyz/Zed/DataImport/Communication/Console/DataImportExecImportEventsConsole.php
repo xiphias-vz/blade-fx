@@ -113,17 +113,17 @@ class DataImportExecImportEventsConsole extends Console
                         $con->commit();
                         $con->beginTransaction();
                     }
-                    $eventArcive = new PyzDataImportEventArchive();
-                    $eventArcive->setIdDataImportEvent($event->getIdDataImportEvent())
+                    $eventArchive = new PyzDataImportEventArchive();
+                    $eventArchive->setIdDataImportEvent($event->getIdDataImportEvent())
                         ->setEventName($event->getEventName())
                         ->setEntityId($event->getEntityId())
                         ->setClassName($event->getClassName())
                         ->setEventData($event->getEventData())
                         ->setCreatedAt($event->getCreatedAt())
                         ->setExecutedAt((new DateTime())->getTimestamp());
-                    $eventArcive->save();
+                    $eventArchive->save($con);
                     $idList = $event->getVirtualColumn('itemIdList');
-                    $event->delete();
+                    $event->delete($con);
                     if (str_contains($idList, ',')) {
                         $this->execCommand("delete from " . PyzDataImportEventTableMap::TABLE_NAME . " where " . PyzDataImportEventTableMap::COL_ID_DATA_IMPORT_EVENT . " in (" . $idList . ")", $con);
                     }

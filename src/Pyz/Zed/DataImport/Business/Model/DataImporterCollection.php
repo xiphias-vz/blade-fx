@@ -29,6 +29,8 @@ class DataImporterCollection extends SprykerDataImporterCollection
      */
     public static $importCounters;
 
+    public static $importDateTime;
+
     /**
      * {@inheritDoc}
      *
@@ -41,6 +43,7 @@ class DataImporterCollection extends SprykerDataImporterCollection
         $importType = $this->getCurrentImportType($dataImporterConfigurationTransfer);
         $dataImporterReportTransfer = $this->prepareDataImporterReport($importType);
         $dataImporters = $this->getDataImportersByImportGroup($dataImporterConfigurationTransfer);
+        static::$importDateTime = date("Y-m-d h:i:sa");
 
         $this->beforeImport();
 
@@ -144,30 +147,26 @@ class DataImporterCollection extends SprykerDataImporterCollection
     protected function updateProductActivity()
     {
         $con = Propel::getConnection();
-        $statement = $con->prepare('SELECT MAX(last_import_at) AS last_import_at
-            FROM spy_product sp
-            WHERE NOT file_type IS NULL
-            GROUP BY file_type');
+        $statement = $con->prepare('
+            select id_product, fk_product_abstract
+            from spy_product
+            where is_active = 1 and (not last_import_at in(
+                SELECT MAX(last_import_at)
+                FROM spy_product sp
+                WHERE NOT file_type IS NULL
+                GROUP BY file_type
+            ) or last_import_at is null)');
         $statement->execute();
         $result = $statement->fetchAll();
-        $filter = [];
-        foreach ($result as $d) {
-            array_push($filter, "'" . $d[0] . "'");
+        $filterId = [];
+        foreach ($result as $id) {
+            DataImporterPublisher::addEvent(ProductEvents::PRODUCT_ABSTRACT_UNPUBLISH, $id[1]);
+            DataImporterPublisher::addEvent(ProductEvents::PRODUCT_CONCRETE_UNPUBLISH, $id[0]);
+            array_push($filterId, $id[0]);
         }
-        if (count($filter) > 0) {
-            $statement = $con->prepare('select id_product, fk_product_abstract from spy_product where is_active = 1 and (not last_import_at in(' . implode(',', $filter) . ') or last_import_at is null)');
+        if (count($filterId) > 0) {
+            $statement = $con->prepare('update spy_product set is_active = 0 where id_product in(' . implode(',', $filterId) . ')');
             $statement->execute();
-            $result = $statement->fetchAll();
-            $filterId = [];
-            foreach ($result as $id) {
-                DataImporterPublisher::addEvent(ProductEvents::PRODUCT_ABSTRACT_UNPUBLISH, $id[1]);
-                DataImporterPublisher::addEvent(ProductEvents::PRODUCT_CONCRETE_UNPUBLISH, $id[0]);
-                array_push($filterId, $id[0]);
-            }
-            if (count($filterId) > 0) {
-                $statement = $con->prepare('update spy_product set is_active = 0 where id_product in(' . implode(',', $filterId) . ')');
-                $statement->execute();
-            }
         }
     }
 
