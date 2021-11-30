@@ -57,6 +57,18 @@ class FactFinderConsole extends Console
 
             $numberOfResults = count($result);
             for ($z = 0; $z < $numberOfResults; $z++) {
+                if (isset($result[$z]['Deposit'])) {
+                    $result[$z]['Deposit'] = 'zzgl. Pfand: ' . $result[$z]['Deposit'];
+                }
+                if (isset($result[$z]['ReleaseDate'])) {
+                    $result[$z]['ReleaseDate'] = date("Y/m/d", strtotime($result[$z]['ReleaseDate']));
+                }
+                if (isset($result[$z]['CategoryPath'])) {
+                    $result[$z]['CategoryPath'] = utf8_encode($result[$z]['CategoryPath']);
+                }
+                if (isset($result[$z]['SalesRanking']) && $result[$z]['SalesRanking'] < 0) {
+                    $result[$z]['SalesRanking'] *= -1;
+                }
                 foreach ($result[$z] as $key => $row) {
                     if ($key === 'rbr') {
                         unset($result[$z][$key]);
@@ -119,7 +131,7 @@ FROM
   , sp.created_at as ReleaseDate
   , null as Availability
   , null as BrandURL
-  , CONCAT_WS( ' - ', sca5.name, sca4.name, sca3.name, sca2.name, sca.name) as CategoryPath
+  , CONCAT_WS( '/', sca5.name, sca4.name, sca3.name, sca2.name, sca.name) as CategoryPath
   , su.url as ProductURL
   , spi.external_url_large as ImageURL
   , ROW_NUMBER() OVER(partition by sp.id_product order by spistpi.sort_order) as rbr
