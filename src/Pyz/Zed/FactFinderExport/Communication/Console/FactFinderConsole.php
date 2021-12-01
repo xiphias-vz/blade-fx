@@ -52,19 +52,19 @@ class FactFinderConsole extends Console
             $fp = fopen($pathToFile, 'w');
             $delimeter = ";";
             $enclosure = "\"";
-            $headers = ["ArticleNumber", "MasterArticleNumber", "Title", "Description", "Brand", "ReleaseDate", "Availability", "BrandURL", "CategoryPath", "ProductURL", "ImageURL", "MultiAttributeText", "Attribute", "SalesRanking", "ArticleType", "BadgeText", "Deposit", "SapNumber" ];
+            $headers = ["ArticleNumber", "MasterArticleNumber", "Title", "Description", "Brand", "ReleaseDate", "Availability", "BrandUrl", "CategoryPath", "ProductUrl", "ImageUrl", "MultiAttributeText", "Attribute", "SalesRanking", "ArticleType", "BadgeText", "Deposit", "SapNumber", "PackUnit" ];
             fputcsv($fp, $headers, $delimeter, $enclosure);
 
             $numberOfResults = count($result);
             for ($z = 0; $z < $numberOfResults; $z++) {
                 if (isset($result[$z]['Deposit'])) {
-                    $result[$z]['Deposit'] = 'zzgl. Pfand: ' . $result[$z]['Deposit'];
+                    $result[$z]['Deposit'] = 'zzgl. Pfand: ' . json_decode($result[$z]['Deposit']);
                 }
                 if (isset($result[$z]['ReleaseDate'])) {
                     $result[$z]['ReleaseDate'] = date("Y/m/d", strtotime($result[$z]['ReleaseDate']));
                 }
                 if (isset($result[$z]['CategoryPath'])) {
-                    $result[$z]['CategoryPath'] = utf8_encode($result[$z]['CategoryPath']);
+                    $result[$z]['CategoryPath'] = $this->customUrlEncode($result[$z]['CategoryPath']);
                 }
                 if (isset($result[$z]['SalesRanking']) && $result[$z]['SalesRanking'] < 0) {
                     $result[$z]['SalesRanking'] *= -1;
@@ -74,7 +74,9 @@ class FactFinderConsole extends Console
                         unset($result[$z][$key]);
                         continue;
                     }
-                    $result[$z][$key] = transliterator_transliterate('Any-Latin; Latin-ASCII; [\u0080-\u7fff] remove', $row);
+                    if ($key != 'Title' && $key != 'description' && $key != 'Deposit') {
+                        $result[$z][$key] = transliterator_transliterate('Any-Latin; Latin-ASCII; [\u0080-\u7fff] remove', $row);
+                    }
                     if (json_decode($row) !== null) {
                         $result[$z][$key] = json_decode($row);
                     }
@@ -116,6 +118,19 @@ class FactFinderConsole extends Console
     }
 
     /**
+     * @param string $string
+     *
+     * @return string|string[]
+     */
+    public function customUrlEncode(string $string)
+    {
+        $replacements = ['%25', '%21', '%2A', '%27', '%28', '%29', '%3B', '%3A', '%40', '%26', '%3D', '%2B', '%24', '%2C', '%3F', '%23', '%5B', '%5D', '+'];
+        $entities = ['%', '!', '*', "'", "(", ")", ";", ":", "@", "&", "=", "+", "$", ",", "?", "#", "[", "]", " "];
+
+        return str_replace($entities, $replacements, $string);
+    }
+
+    /**
      * @return string
      */
     public function selectSqlQuery(): string
@@ -142,6 +157,7 @@ FROM
   , null as BadgeText
   , json_extract(sp.`attributes`, '$.pfand_1_amount') as Deposit
   , sp.sap_number as SapNumber
+  , null as PackUnit
 FROM spy_product sp
     INNER JOIN spy_product_abstract_localized_attributes spala on sp.fk_product_abstract = spala.fk_product_abstract
     INNER JOIN spy_url su on su.fk_resource_product_abstract = sp.fk_product_abstract
