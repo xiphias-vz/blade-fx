@@ -112,11 +112,11 @@
             margin-top: 10px;
         }
 
-        #forgotPasswordDiv {
+        #forgotPasswordDiv, #temporarilyLockedOutDiv, #accountDisabledDiv {
             display: none;
         }
 
-        #forgotPasswordMessage, #passwordForgotEmailMessage {
+        #forgotPasswordMessage, #passwordForgotEmailMessage, #temporarilyLockedOutMessage, #accountDisabledMessage {
             color: #FF3400;
         }
 
@@ -459,6 +459,14 @@
                                                 <span id="forgotPasswordMessage">{{ 'checkout.step.customer.login.invalidPassword' | trans }}</span>
                                                 <input id="captchaGeneratedToken" type="hidden" />
                                             </div>
+                                            <div id="temporarilyLockedOutDiv">
+                                                <span id="temporarilyLockedOutMessage">{{ 'checkout.step.customer.login.accountTemporarilyLockedOut' | trans }}</span>
+                                                <input id="captchaGeneratedToken" type="hidden" />
+                                            </div>
+                                            <div id="accountDisabledDiv">
+                                                <span id="accountDisabledMessage">{{ 'checkout.step.customer.login.accountDisabled' | trans }}</span>
+                                                <input id="captchaGeneratedToken" type="hidden" />
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -779,10 +787,20 @@
                         document.querySelector("#loginForm_data").value = JSON.stringify(response);
                         document.getElementsByName("loginForm")[0].submit();
                         localStorage.setItem('cancelLogin', 'false');
-                    }
-                    else{
+
+                    } else {
                         $("#customLoginForm_customer_password").css("border", "1px solid red");
-                        $("#forgotPasswordDiv").css("display", "block");
+                        switch (response.message) {
+                            case "Account temporarily locked out":
+                                $("#temporarilyLockedOutDiv").css("display", "block");
+                                break;
+                            case "Account Disabled":
+                                $("#accountDisabledDiv").css("display", "block");
+                                break;
+                            default:
+                                $("#forgotPasswordDiv").css("display", "block");
+                        }
+
                         if(response["showCaptcha"] === true){
                             grecaptcha.ready(function() {
                                 grecaptcha.execute('{{ data.reCaptchaKey }}', {action: 'login'}).then(function(token) {

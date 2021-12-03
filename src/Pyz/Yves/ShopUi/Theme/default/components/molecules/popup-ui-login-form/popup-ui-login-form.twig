@@ -231,19 +231,29 @@
                             document.querySelector("#loginForm_password.input").value = document.querySelector(".gigya-input-password.gigya-show-checkmark.gigya-valid").value;
                     },
                     "onAfterSubmit": function(event) {
-
                         if(event.response.errorCode == 0 && event.screen === 'gigya-login-screen') {
+
                             checkoutStep('login');
                             document.querySelector("#loginForm_email.input").value = event.profile.email;
                             document.querySelector("#loginForm_data").value = JSON.stringify(event);
                             document.getElementsByName("loginForm")[0].submit();
+
                         } else {
                             passwordInputField.item(0).value = '';
-
+                            let responseMessage = '';
+                            switch(event.response.errorDetails) {
+                                case "Account Disabled":
+                                    responseMessage = "Ihr Account ist gesperrt. Bitte Kundenservice kontaktieren.";
+                                    break;
+                                case "Account temporarily locked out":
+                                        responseMessage = "Ihr Account ist temporär gesperrt. Bitte nach einiger Zeit erneut versuchen.";
+                                    break;
+                                default:
+                                    responseMessage = "Ungültiger Benutzername oder Passwort.";
+                            }
                             setTimeout(() => {
-                                passwordErrorMessage.item(11).innerHTML = "Ungültiger Benutzname oder Passwort";
+                                passwordErrorMessage.item(11).innerHTML = responseMessage;
                             }, 1);
-
                         }
                     }
                 });
