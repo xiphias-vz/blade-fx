@@ -52,7 +52,7 @@ class FactFinderConsole extends Console
             $fp = fopen($pathToFile, 'w');
             $delimeter = ";";
             $enclosure = "\"";
-            $headers = ["ArticleNumber", "MasterArticleNumber", "Title", "Description", "Brand", "ReleaseDate", "Availability", "BrandUrl", "CategoryPath", "ProductUrl", "ImageUrl", "MultiAttributeText", "Attribute", "SalesRanking", "ArticleType", "BadgeText", "Deposit", "SapNumber", "PackUnit" ];
+            $headers = ["ArticleNumber", "MasterArticleNumber", "Title", "Description", "Brand", "ReleaseDate", "Availability", "BrandUrl", "CategoryPath", "ProductUrl", "ImageUrl", "MultiAttributeText", "Attribute", "SalesRanking", "ArticleType", "BadgeText", "Deposit", "SapNumber", "PackUnit", 'IdProductAbstract' ];
             fputcsv($fp, $headers, $delimeter, $enclosure);
 
             $numberOfResults = count($result);
@@ -74,7 +74,7 @@ class FactFinderConsole extends Console
                         unset($result[$z][$key]);
                         continue;
                     }
-                    if ($key != 'Title' && $key != 'description' && $key != 'Deposit') {
+                    if ($key != 'Title' && $key != 'description' && $key != 'Deposit' && $key != 'CategoryPath') {
                         $result[$z][$key] = transliterator_transliterate('Any-Latin; Latin-ASCII; [\u0080-\u7fff] remove', $row);
                     }
                     if (json_decode($row) !== null) {
@@ -155,9 +155,10 @@ FROM
   , ifnull(spc.product_order, 0) * -1 as SalesRanking
   , null as ArticleType
   , null as BadgeText
-  , json_extract(sp.`attributes`, '$.pfand_1_amount') as Deposit
+  , json_extract(sp.`attributes`, '$.pfandbetrag') as Deposit
   , sp.sap_number as SapNumber
   , null as PackUnit
+  , sp.fk_product_abstract as id_product_abstract
 FROM spy_product sp
     INNER JOIN spy_product_abstract_localized_attributes spala on sp.fk_product_abstract = spala.fk_product_abstract
     INNER JOIN spy_url su on su.fk_resource_product_abstract = sp.fk_product_abstract
