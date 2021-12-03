@@ -1,10 +1,12 @@
 import Component from 'ShopUi/models/component';
 import FlashMessage from 'ShopUi/components/molecules/flash-message/flash-message';
+import $ from 'jquery/dist/jquery';
 const HIDDEN_CLASS = 'is-hidden';
 const CLASS_PREFIX = '.';
 const ID_PREFIX = '#';
 
 export default class AjaxAddToCart extends Component {
+    protected $this: $ = $(this);
     protected links: HTMLLinkElement[];
     protected cartBlock: HTMLElement;
     protected amount: HTMLElement[];
@@ -49,7 +51,7 @@ export default class AjaxAddToCart extends Component {
             link.addEventListener('click', (event: Event) => this.linkClickHandler(event, link));
         });
 
-        this.addToCartIncrementerLinks.forEach((incrementer: HTMLLinkElement, index:number) => {
+        this.addToCartIncrementerLinks.forEach((incrementer: HTMLLinkElement, index: number) => {
             incrementer.addEventListener('click', (event: Event) => this.sendAjaxRequestToAddItemToCart(event, incrementer));
         });
 
@@ -58,25 +60,25 @@ export default class AjaxAddToCart extends Component {
         });
 
         this.quantityInputs.forEach((quantityInput: HTMLInputElement) => {
-            quantityInput.addEventListener('keyup', (event: Event) => this.applyQuantityValidation(event))
-            quantityInput.addEventListener('change', (event: Event) => this.sendAjaxRequestToAddMultipleItemsToCart(event))
-        })
+            quantityInput.addEventListener('keyup', (event: Event) => this.applyQuantityValidation(event));
+            quantityInput.addEventListener('change', (event: Event) => this.sendAjaxRequestToAddMultipleItemsToCart(event));
+        });
     }
 
     protected applyQuantityValidation(event: Event) {
-        let quantityInput = <HTMLInputElement>event.target;
-        let quantity = quantityInput.value;
-        if(quantity === ''  || quantity === '0') {
+        const quantityInput = <HTMLInputElement>event.target;
+        const quantity = quantityInput.value;
+        if (quantity === ''  || quantity === '0') {
             quantityInput.value = '1';
-        } else if(quantity.length > 2) {
+        } else if (quantity.length > 2) {
             quantityInput.value = quantity[0] + quantity[1];
         }
     }
 
     protected sendAjaxRequestToAddMultipleItemsToCart(event: Event) {
         const quantityInput = <HTMLInputElement>event.target;
-        let quantity = quantityInput.value;
-        let incrementer: HTMLLinkElement = <HTMLLinkElement>quantityInput.nextElementSibling;
+        const quantity = quantityInput.value;
+        const incrementer: HTMLLinkElement = <HTMLLinkElement>quantityInput.nextElementSibling;
         this.sendRequest(incrementer.href, incrementer, String(quantity), 'ADD_MULTIPLE');
     }
 
@@ -85,7 +87,7 @@ export default class AjaxAddToCart extends Component {
         clearTimeout(this.timer);
         const quantityInput: HTMLInputElement = <HTMLInputElement>incrementer.previousElementSibling;
         let quantity: number = Number(quantityInput.value);
-        quantity++;
+        quantity += 1;
         quantityInput.value = String(quantity);
         this.timer = setTimeout(() => {
             this.sendRequest(incrementer.href, incrementer, String(quantityInput.value), 'ADD');
@@ -96,9 +98,9 @@ export default class AjaxAddToCart extends Component {
     protected sendAjaxRequestToRemoveItemFromCart(event: Event, decrementer) {
         event.preventDefault();
         clearTimeout(this.timer);
-        let quantityInput: HTMLInputElement = <HTMLInputElement>decrementer.nextElementSibling;
+        const quantityInput: HTMLInputElement = <HTMLInputElement>decrementer.nextElementSibling;
         let quantity: number = Number(quantityInput.value);
-        quantity--;
+        quantity -= 1;
         quantityInput.value = String(quantity);
         this.toggleCounterAndAjaxButtons(decrementer, 'REMOVE', quantity);
 
@@ -117,30 +119,36 @@ export default class AjaxAddToCart extends Component {
         formData.append('token', link.dataset.csrfToken);
         formData.append('operation', operation);
         formData.append('quantity', quantity);
+        const that = this;
 
-        fetch(url, {method: 'POST', body: formData})
-            .then(response => response.json())
-            .then(parsedResponse => {
-                if (parsedResponse.error.length > 0) {
-                    this.setMessages(parsedResponse.error);
-                    this.showMessages();
+        $.ajax(url, {
+            type: 'POST',
+            dataType: 'json',
+            data: {
+                myToken: link.dataset.csrfToken,
+                myOperation: operation,
+                myQuantity: quantity
+            },
+            success(data, status, xhr) {
+                that.updateItemQuantityInput(link, data.itemQuantity);
+                that.replaceQuantity(data.quantity);
+                that.replaceAmount(data.amount);
+                that.hideIcon();
+                that.showQuantity();
+
+                that.showCounterAndHideAjaxButton(link);
+                const isCounterVisible = operation !== null;
+
+                if (isCounterVisible) {
+                    that.showMessage(data, link);
                 }
-                this.updateItemQuantityInput(link, parsedResponse.itemQuantity)
-                this.replaceQuantity(parsedResponse.quantity);
-                this.replaceAmount(parsedResponse.amount);
-                this.hideIcon();
-                this.showQuantity();
+            },
+            error(jqXhr, textStatus, errorMessage) {
+                that.setMessages(jqXhr.error);
+                that.showMessages();
+            }
+        });
 
-                this.showCounterAndHideAjaxButton(link);
-                let isCounterVisible = operation !== null;
-
-                if(isCounterVisible) {
-                    this.showMessage(parsedResponse, link);
-                }
-
-            }).catch(error => {
-                console.error(error);
-            });
     }
 
     protected showMessages(): void {
@@ -191,14 +199,14 @@ export default class AjaxAddToCart extends Component {
     }
 
     protected toggleCounterAndAjaxButtons(link: HTMLLinkElement, operation: string, quantity: number) {
-        if(operation === 'REMOVE' && quantity === 0) {
+        if (operation === 'REMOVE' && quantity === 0) {
            this.showAjaxButtonAndHideCounter(link);
         }
     }
 
     protected updateItemQuantityInput(link: HTMLLinkElement, quantity: number) {
         if (quantity !== undefined) {
-            let counter: HTMLInputElement = <HTMLInputElement>link.parentElement.querySelector(ID_PREFIX + this.quantityInputField);
+            const counter: HTMLInputElement = <HTMLInputElement>link.parentElement.querySelector(ID_PREFIX + this.quantityInputField);
             counter.value = String(quantity);
         }
     }
@@ -208,8 +216,8 @@ export default class AjaxAddToCart extends Component {
         const addedItemMessage: HTMLElement = parentCounter.querySelector(CLASS_PREFIX + this.itemAdded);
         const removeItemMessage: HTMLElement = parentCounter.querySelector(CLASS_PREFIX + this.itemRemoved);
         if (response.code === 200 && response.operation === 'ADD') {
-            if(!this.showTopMessageForMobileDevice(addedItemMessage, response)) {
-                if(!this.errorExistsAndQuantityBiggerThanQuantityFromTheCart(response)) {
+            if (!this.showTopMessageForMobileDevice(addedItemMessage, response)) {
+                if (!this.errorExistsAndQuantityBiggerThanQuantityFromTheCart(response)) {
                     addedItemMessage.classList.remove('is-hidden');
                     this.removeItemTimeOut(addedItemMessage);
                 }
@@ -218,7 +226,7 @@ export default class AjaxAddToCart extends Component {
         } else if (response.code === 200 && response.operation === 'ADD_MULTIPLE') {
 
             if (!this.showTopMessageForMobileDevice(addedItemMessage, response)) {
-                if(!this.errorExistsAndQuantityBiggerThanQuantityFromTheCart(response)) {
+                if (!this.errorExistsAndQuantityBiggerThanQuantityFromTheCart(response)) {
                     addedItemMessage.classList.remove('is-hidden');
                     this.removeItemTimeOut(addedItemMessage);
                 }
@@ -227,7 +235,7 @@ export default class AjaxAddToCart extends Component {
         } else {
 
             if (!this.showTopMessageForMobileDevice(removeItemMessage, response)) {
-                if(!this.errorExistsAndQuantityBiggerThanQuantityFromTheCart(response)) {
+                if (!this.errorExistsAndQuantityBiggerThanQuantityFromTheCart(response)) {
                     removeItemMessage.classList.remove('is-hidden');
                     this.removeItemTimeOut(removeItemMessage);
                 }
@@ -237,41 +245,44 @@ export default class AjaxAddToCart extends Component {
 
     protected errorExistsAndQuantityBiggerThanQuantityFromTheCart(response: object) {
 
-        if(response.error.length > 0) {
-            let itemQuantityFromCart: number = response.itemQuantity;
-            let currentQuantity: number = response.quantity;
+        if (response.error.length > 0) {
+            const itemQuantityFromCart: number = response.itemQuantity;
+            const currentQuantity: number = response.quantity;
             if (currentQuantity > itemQuantityFromCart) {
                 return true;
             }
         }
+
         return false;
     }
+
     protected removeItemTimeOut(element: HTMLElement) {
         setTimeout(() => {
             element.classList.add('is-hidden');
-        }, 2000)
+        }, 2000);
     }
 
     protected showTopMessageForMobileDevice(message: HTMLElement, response: object) {
-        let windowWidth: number = window.screen.width;
+        const windowWidth: number = window.screen.width;
 
         if (windowWidth < 574 && !this.errorExistsAndQuantityBiggerThanQuantityFromTheCart(response)) {
             const topMessage: HTMLElement = <HTMLElement>message.cloneNode(true);
-            const body : HTMLBodyElement = <HTMLBodyElement>document.body;
+            const body: HTMLBodyElement = <HTMLBodyElement>document.body;
             topMessage.style.cssText = this.cssMessage();
 
             const checkMark: HTMLElement = topMessage.querySelector('.checkmark');
-            checkMark.style.cssText = this.cssCheckMark()
+            checkMark.style.cssText = this.cssCheckMark();
 
             topMessage.classList.remove('is-hidden');
             body.style.position = 'relative';
             body.insertBefore(topMessage, body.firstElementChild);
             setTimeout(() => {
                 topMessage.remove();
-            }, 2000)
+            }, 2000);
 
             return true;
         }
+
         return false;
     }
 
@@ -284,7 +295,7 @@ export default class AjaxAddToCart extends Component {
 
     protected showAjaxButtonAndHideCounter(link: HTMLLinkElement): void {
         const counter = link?.parentElement;
-        const addAjaxButton = link?.parentElement.parentElement.querySelector(CLASS_PREFIX + this.ajaxAddQuantityLink)
+        const addAjaxButton = link?.parentElement.parentElement.querySelector(CLASS_PREFIX + this.ajaxAddQuantityLink);
         counter?.classList.remove(this.ajaxCartCounterClass);
         counter?.classList.add(HIDDEN_CLASS);
         addAjaxButton?.classList.remove(HIDDEN_CLASS);

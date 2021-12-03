@@ -26,6 +26,7 @@ class CustomerPageRouteProviderPlugin extends SprykerCustomerPageRouteProviderPl
     protected const ROUTE_CUSTOMER_PASSWORD_RESET = 'password/reset';
     protected const ROUTE_CUSTOMER_GLOBUS_CARD_CHECK = 'register/check-card-number';
     public const ROUTE_CUSTOMER_REGISTER_SUCCESS = 'register/register-success';
+    public const ROUTE_CART_ADD_AJAX_ITEM = 'cart/add-ajax';
 
     /**
      * Specification:
@@ -53,6 +54,7 @@ class CustomerPageRouteProviderPlugin extends SprykerCustomerPageRouteProviderPl
         $routeCollection = $this->addCustomerPasswordResetRoute($routeCollection);
         $routeCollection = $this->addCheckingCardRoute($routeCollection);
         $routeCollection = $this->addRegisterSuccessRoute($routeCollection);
+        $routeCollection = $this->addCartAddAjaxItemRoute($routeCollection);
 
         return $routeCollection;
     }
@@ -212,6 +214,20 @@ class CustomerPageRouteProviderPlugin extends SprykerCustomerPageRouteProviderPl
     {
         $route = $this->buildRoute('/register/register-success', 'CustomerPage', 'Register', 'registerSuccessAction');
         $routeCollection->add(static::ROUTE_CUSTOMER_REGISTER_SUCCESS, $route);
+
+        return $routeCollection;
+    }
+
+    /**
+     * @param \Spryker\Yves\Router\Route\RouteCollection $routeCollection
+     *
+     * @return \Spryker\Yves\Router\Route\RouteCollection
+     */
+    public function addCartAddAjaxItemRoute(RouteCollection $routeCollection): RouteCollection
+    {
+        $route = $this->buildRoute('/cart/add-ajax', 'CartPage', 'Cart', 'executeAddAjax');
+        $route = $route->setMethods(['POST']);
+        $routeCollection->add(static::ROUTE_CART_ADD_AJAX_ITEM, $route);
 
         return $routeCollection;
     }

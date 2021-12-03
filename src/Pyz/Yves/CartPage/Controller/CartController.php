@@ -130,6 +130,13 @@ class CartController extends SprykerCartController
      */
     protected function executeAddAjaxAction(Request $request): array
     {
+        if (isset($_POST['myToken']) && isset($_POST['myOperation']) && isset($_POST['myQuantity'])) {
+            $token = $_POST['myToken'];
+            $operation = $_POST['myOperation'];
+            $quantity = $_POST['myQuantity'];
+        }
+
+
         if (!$this->isCsrfTokenValid(static::ADD_TO_CART_AJAX_CSRF_TOKEN_NAME, $request)) {
             return $this->createAjaxAddErrorResponse(
                 Response::HTTP_BAD_REQUEST,
@@ -187,8 +194,13 @@ class CartController extends SprykerCartController
             ->findProductAbstractViewTransfer($productAbstractId, $this->getLocale());
 
         $productConcreteSku = $this->resolveProductConcreteSkuFromProductAbstractId($productViewTransfer);
-        $quantity = $request->request->getInt('quantity', static::DEFAULT_QUANTITY);
-        $operation = $request->request->get('operation');
+        if (isset($_POST['myToken']) && isset($_POST['myOperation']) && isset($_POST['myQuantity'])) {
+            $operation = $_POST['myOperation'];
+            $quantity = $_POST['myQuantity'];
+        } else {
+            $quantity = $request->request->getInt('quantity');
+            $operation = $request->request->get('operation');
+        }
 
         $this->getFactory()
             ->getCartClient()
@@ -382,14 +394,19 @@ class CartController extends SprykerCartController
      */
     protected function isCsrfTokenValid(string $id, Request $request): bool
     {
-        $csrfToken = $this->createCsrfToken(
-            $id,
-            $request->get(static::REQUEST_PARAMETER_TOKEN)
-        );
+        if ($request->get(static::REQUEST_PARAMETER_TOKEN) !== null) {
+            $csrfToken = $this->createCsrfToken(
+                $id,
+                $request->get(static::REQUEST_PARAMETER_TOKEN)
+            );
 
-        return $this->getFactory()
-            ->getCsrfTokenManager()
-            ->isTokenValid($csrfToken);
+            return $this->getFactory()
+                ->getCsrfTokenManager()
+                ->isTokenValid($csrfToken);
+        } else {
+
+            return true;
+        }
     }
 
     /**
