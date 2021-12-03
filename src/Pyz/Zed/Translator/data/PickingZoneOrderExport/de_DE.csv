@@ -1,8 +1,10 @@
-picking_zone_order_export_gui.title,Picking Zone Order Items Export
+picking_zone_order_export_gui.title,Picking Zone Order Export
+picking_zone_order_items_export_gui.title,"Picking Zone Order Items Export - Details"
 picking_zone_order_export_gui.field.picking_zone_id,Kommissionierzone
 picking_zone_order_export_gui.field.picking_date,Kommissionierdatum
 picking_zone_order_export_gui.field.button,Exportieren
 picking_zone_order_export_gui.field.reset,Zurücksetzen
+picking_zone_order_export.column.order_number,ordernumber
 picking_zone_order_export.column.picking_date,Kommissionierdatum
 picking_zone_order_export.column.time_slot,Zeitfenster
 picking_zone_order_export.column.article,Artikel

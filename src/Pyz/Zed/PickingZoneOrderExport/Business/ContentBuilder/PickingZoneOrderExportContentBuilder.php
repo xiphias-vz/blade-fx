@@ -21,6 +21,7 @@ use Spryker\Zed\Translator\Business\TranslatorFacadeInterface;
 class PickingZoneOrderExportContentBuilder implements PickingZoneOrderExportContentBuilderInterface
 {
     protected const FILE_NAME_FORMAT = 'Picking Zone: %s';
+    protected const FILE_NAME_FORMAT_ORDER_ITEMS_EXPORT = 'Picking Zone: %s (Order Items Export)';
 
     protected const DEFAULT_PRICE_DIVISION = 100;
     protected const DEFAULT_PRICE_CURRENCY = 'EUR';
@@ -74,20 +75,38 @@ class PickingZoneOrderExportContentBuilder implements PickingZoneOrderExportCont
         $pickingZoneOrderExportContentsTransfer = new ExportContentsTransfer();
         $pickingZoneOrderExportContentsTransfer->setFilename($this->getFileName($pickingZoneTransfer, $datePicking));
 
-        $pickingZoneOrderExportContentsTransfer->addContentItem([
-            $this->translatorFacade->trans('picking_zone_order_export.column.picking_date'),
-            $this->translatorFacade->trans('picking_zone_order_export.column.time_slot'),
-            $this->translatorFacade->trans('picking_zone_order_export.column.article'),
-            $this->translatorFacade->trans('picking_zone_order_export.column.brand'),
-            $this->translatorFacade->trans('picking_zone_order_export.column.content'),
-            $this->translatorFacade->trans('picking_zone_order_export.column.total_amount'),
-            $this->translatorFacade->trans('picking_zone_order_export.column.weight_per_unit'),
-            $this->translatorFacade->trans('picking_zone_order_export.column.shelf'),
-            $this->translatorFacade->trans('picking_zone_order_export.column.shelf_floor'),
-            $this->translatorFacade->trans('picking_zone_order_export.column.shelf_field'),
-            $this->translatorFacade->trans('picking_zone_order_export.column.ean'),
-            $this->translatorFacade->trans('picking_zone_order_export.column.unit.price'),
-        ]);
+        if (isset($_REQUEST["orderItemsExport"])) {
+            $pickingZoneOrderExportContentsTransfer->addContentItem([
+                $this->translatorFacade->trans('picking_zone_order_export.column.order_number'),
+                $this->translatorFacade->trans('picking_zone_order_export.column.picking_date'),
+                $this->translatorFacade->trans('picking_zone_order_export.column.time_slot'),
+                $this->translatorFacade->trans('picking_zone_order_export.column.article'),
+                $this->translatorFacade->trans('picking_zone_order_export.column.brand'),
+                $this->translatorFacade->trans('picking_zone_order_export.column.content'),
+                $this->translatorFacade->trans('picking_zone_order_export.column.total_amount'),
+                $this->translatorFacade->trans('picking_zone_order_export.column.weight_per_unit'),
+                $this->translatorFacade->trans('picking_zone_order_export.column.shelf'),
+                $this->translatorFacade->trans('picking_zone_order_export.column.shelf_floor'),
+                $this->translatorFacade->trans('picking_zone_order_export.column.shelf_field'),
+                $this->translatorFacade->trans('picking_zone_order_export.column.ean'),
+                $this->translatorFacade->trans('picking_zone_order_export.column.unit.price'),
+            ]);
+        } else {
+            $pickingZoneOrderExportContentsTransfer->addContentItem([
+                $this->translatorFacade->trans('picking_zone_order_export.column.picking_date'),
+                $this->translatorFacade->trans('picking_zone_order_export.column.time_slot'),
+                $this->translatorFacade->trans('picking_zone_order_export.column.article'),
+                $this->translatorFacade->trans('picking_zone_order_export.column.brand'),
+                $this->translatorFacade->trans('picking_zone_order_export.column.content'),
+                $this->translatorFacade->trans('picking_zone_order_export.column.total_amount'),
+                $this->translatorFacade->trans('picking_zone_order_export.column.weight_per_unit'),
+                $this->translatorFacade->trans('picking_zone_order_export.column.shelf'),
+                $this->translatorFacade->trans('picking_zone_order_export.column.shelf_floor'),
+                $this->translatorFacade->trans('picking_zone_order_export.column.shelf_field'),
+                $this->translatorFacade->trans('picking_zone_order_export.column.ean'),
+                $this->translatorFacade->trans('picking_zone_order_export.column.unit.price'),
+            ]);
+        }
 
         $readyForPickingOrderCriteriaFilterTransfer = (new OrderCriteriaFilterTransfer())
             ->setIdPickingZone($pickingZoneTransfer->getIdPickingZone())
@@ -112,21 +131,48 @@ class PickingZoneOrderExportContentBuilder implements PickingZoneOrderExportCont
             $timeSlotDate = $deliveryDate[0];
             $timeSlotTime = $deliveryDate[1];
 
-            if (in_array($timeSlotTime, $timeSlots)) {
-                $pickingZoneOrderExportContentsTransfer->addContentItem([
-                    $timeSlotDate,
-                    $timeSlotTime,
-                    $salesOrderItemData[SpySalesOrderItemTableMap::COL_NAME],
-                    $salesOrderItemData[SpySalesOrderItemTableMap::COL_BRAND] ?? '',
-                    ($salesOrderItemData[SpySalesOrderItemTableMap::COL_BASE_PRICE_CONTENT] / 100) . ' ' . $salesOrderItemData[SpySalesOrderItemTableMap::COL_BASE_PRICE_UNIT],
-                    $salesOrderItemData['quantity'],
-                    $salesOrderItemData[SpySalesOrderItemTableMap::COL_WEIGHT_PER_UNIT] ?? '',
-                    $salesOrderItemData[SpySalesOrderItemTableMap::COL_SHELF],
-                    $salesOrderItemData[SpySalesOrderItemTableMap::COL_SHELF_FLOOR],
-                    $salesOrderItemData[SpySalesOrderItemTableMap::COL_SHELF_FIELD],
-                    $salesOrderItemData[SpySalesOrderItemTableMap::COL_SKU],
-                    str_replace('.', ',', ($salesOrderItemData[SpySalesOrderItemTableMap::COL_PRICE] / static::DEFAULT_PRICE_DIVISION)),
-                ]);
+            $storeCodeBucket = getenv('SPRYKER_CODE_BUCKET');
+            if ($storeCodeBucket == 'CZ') {
+                if ($salesOrderItemData[SpySalesOrderItemTableMap::COL_BRAND] == 'keine') {
+                    $salesOrderItemData['spy_sales_order_item.brand'] = '';
+                }
+            }
+
+            if (isset($_REQUEST["orderItemsExport"])) {
+                if (in_array($timeSlotTime, $timeSlots)) {
+                    $pickingZoneOrderExportContentsTransfer->addContentItem([
+                        $salesOrderItemData[SpySalesOrderItemTableMap::COL_FK_SALES_ORDER],
+                        $timeSlotDate,
+                        $timeSlotTime,
+                        $salesOrderItemData[SpySalesOrderItemTableMap::COL_NAME],
+                        $salesOrderItemData[SpySalesOrderItemTableMap::COL_BRAND] ?? '',
+                        ($salesOrderItemData[SpySalesOrderItemTableMap::COL_BASE_PRICE_CONTENT] / 100) . ' ' . $salesOrderItemData[SpySalesOrderItemTableMap::COL_BASE_PRICE_UNIT],
+                        $salesOrderItemData['quantity'],
+                        $salesOrderItemData[SpySalesOrderItemTableMap::COL_WEIGHT_PER_UNIT] ?? '',
+                        $salesOrderItemData[SpySalesOrderItemTableMap::COL_SHELF],
+                        $salesOrderItemData[SpySalesOrderItemTableMap::COL_SHELF_FLOOR],
+                        $salesOrderItemData[SpySalesOrderItemTableMap::COL_SHELF_FIELD],
+                        $salesOrderItemData[SpySalesOrderItemTableMap::COL_SKU],
+                        str_replace('.', ',', ($salesOrderItemData[SpySalesOrderItemTableMap::COL_PRICE] / static::DEFAULT_PRICE_DIVISION)),
+                    ]);
+                }
+            } else {
+                if (in_array($timeSlotTime, $timeSlots)) {
+                    $pickingZoneOrderExportContentsTransfer->addContentItem([
+                        $timeSlotDate,
+                        $timeSlotTime,
+                        $salesOrderItemData[SpySalesOrderItemTableMap::COL_NAME],
+                        $salesOrderItemData[SpySalesOrderItemTableMap::COL_BRAND] ?? '',
+                        ($salesOrderItemData[SpySalesOrderItemTableMap::COL_BASE_PRICE_CONTENT] / 100) . ' ' . $salesOrderItemData[SpySalesOrderItemTableMap::COL_BASE_PRICE_UNIT],
+                        $salesOrderItemData['quantity'],
+                        $salesOrderItemData[SpySalesOrderItemTableMap::COL_WEIGHT_PER_UNIT] ?? '',
+                        $salesOrderItemData[SpySalesOrderItemTableMap::COL_SHELF],
+                        $salesOrderItemData[SpySalesOrderItemTableMap::COL_SHELF_FLOOR],
+                        $salesOrderItemData[SpySalesOrderItemTableMap::COL_SHELF_FIELD],
+                        $salesOrderItemData[SpySalesOrderItemTableMap::COL_SKU],
+                        str_replace('.', ',', ($salesOrderItemData[SpySalesOrderItemTableMap::COL_PRICE] / static::DEFAULT_PRICE_DIVISION)),
+                    ]);
+                }
             }
         }
 
@@ -146,9 +192,16 @@ class PickingZoneOrderExportContentBuilder implements PickingZoneOrderExportCont
             $datePicking->format(PickingZoneOrderExportConfig::DATE_FORMAT),
         ];
 
-        return sprintf(
-            self::FILE_NAME_FORMAT,
-            implode('-', $filenameFragments)
-        );
+        if (isset($_REQUEST["orderItemsExport"])) {
+            return sprintf(
+                self::FILE_NAME_FORMAT_ORDER_ITEMS_EXPORT,
+                implode('-', $filenameFragments)
+            );
+        } else {
+            return sprintf(
+                self::FILE_NAME_FORMAT,
+                implode('-', $filenameFragments)
+            );
+        }
     }
 }

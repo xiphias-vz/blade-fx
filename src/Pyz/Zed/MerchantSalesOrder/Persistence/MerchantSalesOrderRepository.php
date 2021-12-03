@@ -57,7 +57,47 @@ class MerchantSalesOrderRepository extends SprykerMerchantSalesOrderRepository i
         $maxDeliveryDateTime = (clone $minDeliveryDateTime)
             ->setTime(23, 59);
 
-        return $merchantSalesOrderQuery->select([
+        if (isset($_REQUEST["orderItemsExport"])) {
+            return $merchantSalesOrderQuery->select([
+                SpySalesOrderItemTableMap::COL_SKU,
+                SpySalesOrderItemTableMap::COL_NAME,
+                SpySalesOrderItemTableMap::COL_BRAND,
+                SpySalesOrderItemTableMap::COL_BASE_PRICE_CONTENT,
+                SpySalesOrderItemTableMap::COL_BASE_PRICE_UNIT,
+                SpySalesShipmentTableMap::COL_REQUESTED_DELIVERY_DATE,
+                SpySalesOrderItemTableMap::COL_PRICE,
+                SpySalesOrderItemTableMap::COL_WEIGHT_PER_UNIT,
+                SpySalesOrderItemTableMap::COL_SHELF,
+                SpySalesOrderItemTableMap::COL_SHELF_FLOOR,
+                SpySalesOrderItemTableMap::COL_SHELF_FIELD,
+                SpySalesOrderItemTableMap::COL_FK_SALES_ORDER,
+            ])
+                ->withColumn(sprintf('SUM(%s)', SpySalesOrderItemTableMap::COL_QUANTITY), 'quantity')
+                ->useOrderQuery()
+                ->joinSpySalesShipment()
+                ->useItemQuery()
+                ->addJoin(
+                    SpySalesOrderItemTableMap::COL_PICK_ZONE,
+                    PyzPickingZoneTableMap::COL_NAME,
+                    Criteria::INNER_JOIN
+                )
+                ->endUse()
+                ->endUse()
+                ->filterByRequestedDeliveryDate_Between(
+                    [
+                        'min' => $minDeliveryDateTime,
+                        'max' => $maxDeliveryDateTime,
+                    ]
+                )
+                ->addAnd(PyzPickingZoneTableMap::COL_ID_PICKING_ZONE, $orderFilterCriteriaTransfer->getIdPickingZone())
+                ->addAnd(SpySalesOrderItemTableMap::COL_STORE, $orderFilterCriteriaTransfer->getPickingStore())
+                ->where(SpySalesOrderItemTableMap::COL_FK_OMS_ORDER_ITEM_STATE . " in (SELECT id_oms_order_item_state FROM spy_oms_order_item_state WHERE name IN ('" . implode("','", $orderFilterCriteriaTransfer->getItemStatuses()) . "'))")
+                ->groupBy(['spy_sales_shipment.requested_delivery_date', 'spy_sales_order_item.sku', 'spy_sales_order_item.fk_sales_order'])
+                ->orderBy('spy_sales_order_item.fk_sales_order')
+                ->find()
+                ->getArrayCopy();
+        } else {
+            return $merchantSalesOrderQuery->select([
                 SpySalesOrderItemTableMap::COL_SKU,
                 SpySalesOrderItemTableMap::COL_NAME,
                 SpySalesOrderItemTableMap::COL_BRAND,
@@ -70,30 +110,31 @@ class MerchantSalesOrderRepository extends SprykerMerchantSalesOrderRepository i
                 SpySalesOrderItemTableMap::COL_SHELF_FLOOR,
                 SpySalesOrderItemTableMap::COL_SHELF_FIELD,
             ])
-            ->withColumn(sprintf('SUM(%s)', SpySalesOrderItemTableMap::COL_QUANTITY), 'quantity')
-            ->useOrderQuery()
+                ->withColumn(sprintf('SUM(%s)', SpySalesOrderItemTableMap::COL_QUANTITY), 'quantity')
+                ->useOrderQuery()
                 ->joinSpySalesShipment()
                 ->useItemQuery()
-                    ->addJoin(
-                        SpySalesOrderItemTableMap::COL_PICK_ZONE,
-                        PyzPickingZoneTableMap::COL_NAME,
-                        Criteria::INNER_JOIN
-                    )
+                ->addJoin(
+                    SpySalesOrderItemTableMap::COL_PICK_ZONE,
+                    PyzPickingZoneTableMap::COL_NAME,
+                    Criteria::INNER_JOIN
+                )
                 ->endUse()
-            ->endUse()
-            ->filterByRequestedDeliveryDate_Between(
-                [
-                    'min' => $minDeliveryDateTime,
-                    'max' => $maxDeliveryDateTime,
-                ]
-            )
-            ->addAnd(PyzPickingZoneTableMap::COL_ID_PICKING_ZONE, $orderFilterCriteriaTransfer->getIdPickingZone())
-            ->addAnd(SpySalesOrderItemTableMap::COL_STORE, $orderFilterCriteriaTransfer->getPickingStore())
-            ->where(SpySalesOrderItemTableMap::COL_FK_OMS_ORDER_ITEM_STATE . " in (SELECT id_oms_order_item_state FROM spy_oms_order_item_state WHERE name IN ('" . implode("','", $orderFilterCriteriaTransfer->getItemStatuses()) . "'))")
-            ->groupBy(['spy_sales_shipment.requested_delivery_date', 'spy_sales_order_item.sku'])
-            ->orderBy('spy_sales_shipment.requested_delivery_date')
-            ->find()
-            ->getArrayCopy();
+                ->endUse()
+                ->filterByRequestedDeliveryDate_Between(
+                    [
+                        'min' => $minDeliveryDateTime,
+                        'max' => $maxDeliveryDateTime,
+                    ]
+                )
+                ->addAnd(PyzPickingZoneTableMap::COL_ID_PICKING_ZONE, $orderFilterCriteriaTransfer->getIdPickingZone())
+                ->addAnd(SpySalesOrderItemTableMap::COL_STORE, $orderFilterCriteriaTransfer->getPickingStore())
+                ->where(SpySalesOrderItemTableMap::COL_FK_OMS_ORDER_ITEM_STATE . " in (SELECT id_oms_order_item_state FROM spy_oms_order_item_state WHERE name IN ('" . implode("','", $orderFilterCriteriaTransfer->getItemStatuses()) . "'))")
+                ->groupBy(['spy_sales_shipment.requested_delivery_date', 'spy_sales_order_item.sku'])
+                ->orderBy('spy_sales_shipment.requested_delivery_date')
+                ->find()
+                ->getArrayCopy();
+        }
     }
 
     /**
@@ -110,43 +151,84 @@ class MerchantSalesOrderRepository extends SprykerMerchantSalesOrderRepository i
         $maxDeliveryDateTime = (clone $minDeliveryDateTime)
             ->setTime(23, 59);
 
-        return $merchantSalesOrderQuery->select([
-            SpySalesOrderItemTableMap::COL_SKU,
-            SpySalesOrderItemTableMap::COL_NAME,
-            SpySalesOrderItemTableMap::COL_BRAND,
-            SpySalesOrderItemTableMap::COL_BASE_PRICE_CONTENT,
-            SpySalesOrderItemTableMap::COL_BASE_PRICE_UNIT,
-            SpySalesShipmentTableMap::COL_REQUESTED_DELIVERY_DATE,
-            SpySalesOrderItemTableMap::COL_PRICE,
-            SpySalesOrderItemTableMap::COL_WEIGHT_PER_UNIT,
-            SpySalesOrderItemTableMap::COL_SHELF,
-            SpySalesOrderItemTableMap::COL_SHELF_FLOOR,
-            SpySalesOrderItemTableMap::COL_SHELF_FIELD,
-        ])
-            ->withColumn(sprintf('SUM(%s)', SpySalesOrderItemTableMap::COL_QUANTITY), 'quantity')
-            ->useOrderQuery()
-            ->joinSpySalesShipment()
-            ->useItemQuery()
-            ->addJoin(
-                SpySalesOrderItemTableMap::COL_PICK_ZONE,
-                PyzPickingZoneTableMap::COL_NAME,
-                Criteria::INNER_JOIN
-            )
-            ->endUse()
-            ->endUse()
-            ->filterByRequestedDeliveryDate_Between(
-                [
-                    'min' => $minDeliveryDateTime,
-                    'max' => $maxDeliveryDateTime,
-                ]
-            )
-            ->addAnd(PyzPickingZoneTableMap::COL_ID_PICKING_ZONE, $orderFilterCriteriaTransfer->getIdPickingZone())
-            ->addAnd(SpySalesOrderItemTableMap::COL_STORE, $orderFilterCriteriaTransfer->getPickingStore())
-            ->where(SpySalesOrderItemTableMap::COL_ITEM_PAUSED . " = 1")
-            ->groupBy(['spy_sales_shipment.requested_delivery_date', 'spy_sales_order_item.sku'])
-            ->orderBy('spy_sales_shipment.requested_delivery_date')
-            ->find()
-            ->getArrayCopy();
+        if (isset($_REQUEST["orderItemsExport"])) {
+            return $merchantSalesOrderQuery->select([
+                SpySalesOrderItemTableMap::COL_SKU,
+                SpySalesOrderItemTableMap::COL_NAME,
+                SpySalesOrderItemTableMap::COL_BRAND,
+                SpySalesOrderItemTableMap::COL_BASE_PRICE_CONTENT,
+                SpySalesOrderItemTableMap::COL_BASE_PRICE_UNIT,
+                SpySalesShipmentTableMap::COL_REQUESTED_DELIVERY_DATE,
+                SpySalesOrderItemTableMap::COL_PRICE,
+                SpySalesOrderItemTableMap::COL_WEIGHT_PER_UNIT,
+                SpySalesOrderItemTableMap::COL_SHELF,
+                SpySalesOrderItemTableMap::COL_SHELF_FLOOR,
+                SpySalesOrderItemTableMap::COL_SHELF_FIELD,
+                SpySalesOrderItemTableMap::COL_FK_SALES_ORDER,
+            ])
+                ->withColumn(sprintf('SUM(%s)', SpySalesOrderItemTableMap::COL_QUANTITY), 'quantity')
+                ->useOrderQuery()
+                ->joinSpySalesShipment()
+                ->useItemQuery()
+                ->addJoin(
+                    SpySalesOrderItemTableMap::COL_PICK_ZONE,
+                    PyzPickingZoneTableMap::COL_NAME,
+                    Criteria::INNER_JOIN
+                )
+                ->endUse()
+                ->endUse()
+                ->filterByRequestedDeliveryDate_Between(
+                    [
+                        'min' => $minDeliveryDateTime,
+                        'max' => $maxDeliveryDateTime,
+                    ]
+                )
+                ->addAnd(PyzPickingZoneTableMap::COL_ID_PICKING_ZONE, $orderFilterCriteriaTransfer->getIdPickingZone())
+                ->addAnd(SpySalesOrderItemTableMap::COL_STORE, $orderFilterCriteriaTransfer->getPickingStore())
+                ->where(SpySalesOrderItemTableMap::COL_ITEM_PAUSED . " = 1")
+                ->groupBy(['spy_sales_shipment.requested_delivery_date', 'spy_sales_order_item.sku', 'spy_sales_order_item.fk_sales_order'])
+                ->orderBy('spy_sales_order_item.fk_sales_order')
+                ->find()
+                ->getArrayCopy();
+        } else {
+            return $merchantSalesOrderQuery->select([
+                SpySalesOrderItemTableMap::COL_SKU,
+                SpySalesOrderItemTableMap::COL_NAME,
+                SpySalesOrderItemTableMap::COL_BRAND,
+                SpySalesOrderItemTableMap::COL_BASE_PRICE_CONTENT,
+                SpySalesOrderItemTableMap::COL_BASE_PRICE_UNIT,
+                SpySalesShipmentTableMap::COL_REQUESTED_DELIVERY_DATE,
+                SpySalesOrderItemTableMap::COL_PRICE,
+                SpySalesOrderItemTableMap::COL_WEIGHT_PER_UNIT,
+                SpySalesOrderItemTableMap::COL_SHELF,
+                SpySalesOrderItemTableMap::COL_SHELF_FLOOR,
+                SpySalesOrderItemTableMap::COL_SHELF_FIELD,
+            ])
+                ->withColumn(sprintf('SUM(%s)', SpySalesOrderItemTableMap::COL_QUANTITY), 'quantity')
+                ->useOrderQuery()
+                ->joinSpySalesShipment()
+                ->useItemQuery()
+                ->addJoin(
+                    SpySalesOrderItemTableMap::COL_PICK_ZONE,
+                    PyzPickingZoneTableMap::COL_NAME,
+                    Criteria::INNER_JOIN
+                )
+                ->endUse()
+                ->endUse()
+                ->filterByRequestedDeliveryDate_Between(
+                    [
+                        'min' => $minDeliveryDateTime,
+                        'max' => $maxDeliveryDateTime,
+                    ]
+                )
+                ->addAnd(PyzPickingZoneTableMap::COL_ID_PICKING_ZONE, $orderFilterCriteriaTransfer->getIdPickingZone())
+                ->addAnd(SpySalesOrderItemTableMap::COL_STORE, $orderFilterCriteriaTransfer->getPickingStore())
+                ->where(SpySalesOrderItemTableMap::COL_ITEM_PAUSED . " = 1")
+                ->groupBy(['spy_sales_shipment.requested_delivery_date', 'spy_sales_order_item.sku'])
+                ->orderBy('spy_sales_shipment.requested_delivery_date')
+                ->find()
+                ->getArrayCopy();
+        }
     }
 
     /**

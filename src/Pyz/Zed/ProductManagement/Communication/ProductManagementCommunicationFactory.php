@@ -13,7 +13,6 @@ use Pyz\Zed\ProductManagement\Communication\Table\VariantTable;
 use Pyz\Zed\ProductManagement\ProductManagementDependencyProvider;
 use Spryker\Zed\Acl\Business\AclFacadeInterface;
 use Spryker\Zed\ProductManagement\Communication\ProductManagementCommunicationFactory as SpyProductManagementCommunicationFactory;
-use Spryker\Zed\Sales\SalesDependencyProvider;
 
 class ProductManagementCommunicationFactory extends SpyProductManagementCommunicationFactory
 {

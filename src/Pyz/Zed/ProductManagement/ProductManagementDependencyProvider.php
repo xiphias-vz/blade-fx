@@ -38,7 +38,7 @@ class ProductManagementDependencyProvider extends SprykerProductManagementDepend
 
     public function provideCommunicationLayerDependencies(Container $container)
     {
-        $container =  parent::provideCommunicationLayerDependencies($container);
+        $container = parent::provideCommunicationLayerDependencies($container);
         $container = $this->addUserFacade($container);
         $container = $this->addAclFacade($container);
         $container = $this->addMerchantFacade($container);

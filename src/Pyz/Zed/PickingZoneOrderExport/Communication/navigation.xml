@@ -6,11 +6,18 @@
         <pages>
             <picking-zone-order-export>
                 <label>Picking Zone Order Export</label>
-                <title>Picking Zone Order Expor</title>
+                <title>Picking Zone Order Export</title>
                 <bundle>picking-zone-order-export</bundle>
                 <controller>index</controller>
                 <action>index</action>
             </picking-zone-order-export>
+            <picking-zone-order-items-export>
+                <label>Picking Zone Order Items Export - Details</label>
+                <title>Picking Zone Order Items Export - Details</title>
+                <bundle>picking-zone-order-export</bundle>
+                <controller>picking-zone-order-items-export</controller>
+                <action>index</action>
+            </picking-zone-order-items-export>
         </pages>
     </export>
 </config>
