@@ -64,9 +64,12 @@ BEGIN
              inner join spy_price_product sppOrg on sppsOrg.fk_price_product = sppOrg.id_price_product and sppOrg.fk_price_type = 2 and sp.fk_product_abstract = sppOrg.fk_product_abstract
              inner join spy_price_product_default sppdOrg on sppsOrg.id_price_product_store = sppdOrg.fk_price_product_store
              left outer join spy_product_label_product_abstract splpa on spls.fk_product_label = splpa.fk_product_label and sp.fk_product_abstract =splpa.fk_product_abstract
+             inner join spy_stock_store sss on ss.id_store = sss.fk_store
+             inner join spy_stock_product ssp on sss.fk_stock = ssp.fk_stock and sp.id_product = ssp.fk_product
     where sp.is_active = 1
       and sppsDef.gross_price > 0
       and sppsDef.gross_price < sppsOrg.gross_price
+      and ssp.quantity > 0
       and splpa.id_product_label_product_abstract is null;
     /*
         insert into spy_product_label_product_abstract
@@ -104,9 +107,12 @@ BEGIN
                       inner join spy_price_product_store sppsOrg on ss.id_store = sppsOrg.fk_store
                       inner join spy_price_product sppOrg on sppsOrg.fk_price_product = sppOrg.id_price_product and sppOrg.fk_price_type = 2 and sp.fk_product_abstract = sppOrg.fk_product_abstract
                       inner join spy_price_product_default sppdOrg on sppsOrg.id_price_product_store = sppdOrg.fk_price_product_store
+                      inner join spy_stock_store sss on ss.id_store = sss.fk_store
+                      inner join spy_stock_product ssp on sss.fk_stock = ssp.fk_stock and sp.id_product = ssp.fk_product
              where sp.is_active = 1
                and sppsDef.gross_price > 0
                and sppsDef.gross_price < sppsOrg.gross_price
+               and ssp.quantity > 0
          ) ss1 on ss1.id_product_label = splpa.fk_product_label and ss1.fk_product_abstract = splpa.fk_product_abstract
     where ss1.fk_product_abstract is null;
     /*
