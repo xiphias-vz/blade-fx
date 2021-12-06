@@ -372,12 +372,6 @@
                     {% endverbatim %}
                 {% endset %}
 
-                {% block productDataContainer %}
-                    <div class="{{ config.name }}__info-more">
-                        {{ priceInfo }}
-                    </div>
-                {% endblock %}
-
                     {% block price %}
                     {% if data.itemWeight is not null -%}
                         {{ data.calculatedPrice }}
