@@ -1,6 +1,8 @@
 @mixin breadcrumb($name: '.breadcrumb') {
     #{$name} {
 
+        font-size: rem(12);
+
     }
 }
 

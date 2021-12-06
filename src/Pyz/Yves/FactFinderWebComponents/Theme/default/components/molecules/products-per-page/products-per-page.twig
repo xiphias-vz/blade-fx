@@ -14,32 +14,6 @@
 
 {% block body %}
 
-{#        <ff-products-per-page-select>#}
-{#            <option data-template>#}
-{#                    {% verbatim %}#}
-{#                    {{ value }}#}
-{#                    {% endverbatim %}#}
-{#            </option>#}
-{#        </ff-products-per-page-select>#}
-
-{#    <ff-products-per-page-dropdown {{ data.properties.dropdown|raw }}>#}
-{#        <ff-products-per-page-item {{ data.properties.item|raw }}>#}
-{#            <div>#}
-{#                {% verbatim %}#}
-{#                        {{ value }}#}
-{#                    {% endverbatim %}#}
-{#            </div>#}
-
-{#            {% include atom('icon') with {#}
-{#                class: config.name ~ '__caret',#}
-{#                data: {#}
-{#                    name: 'arrow-down'#}
-{#                }#}
-{#            } only %}#}
-{#        </ff-products-per-page-item>#}
-
-{#    </ff-products-per-page-dropdown>#}
-
     <ff-products-per-page-dropdown id="dropdown" {{ data.properties.dropdown|raw }}>
         <ff-products-per-page-item {{ data.properties.item|raw }}>
             <div>
@@ -51,34 +25,20 @@
     </ff-products-per-page-dropdown>
 
     <script>
-        let dropdown = document.getElementById("dropdown");
-        // let attribute = dropdown.attributes;
+        let dropdownBox = document.getElementById("dropdown");
 
-        function toggleAttribute(){
-            if(dropdown.hasAttribute("opened")){
-                dropdown.removeAttribute("opened");
-                dropdown.setAttribute("closed", "closed");
-            }else if(dropdown.hasAttribute("closed")){
-                dropdown.removeAttribute("closed");
-                dropdown.setAttribute("opened", "opened");
+        function toggleAttributeProductsPerPage(){
+            if(dropdownBox.hasAttribute("opened")){
+                dropdownBox.removeAttribute("opened");
+                dropdownBox.setAttribute("closed", "closed");
+            }else if(dropdownBox.hasAttribute("closed")){
+                dropdownBox.removeAttribute("closed");
+                dropdownBox.setAttribute("opened", "opened");
             }
-            // console.log(attribute);
         };
 
-        dropdown.addEventListener("click", toggleAttribute);
-        dropdown.addEventListener("blur", toggleAttribute);
-
-        // dropdown.addEventListener("click", function(){
-        //     if(dropdown.hasAttribute("opened")){
-        //         dropdown.removeAttribute("opened");
-        //         dropdown.setAttribute("closed", "closed");
-        //     }else if(dropdown.hasAttribute("closed")){
-        //         dropdown.removeAttribute("closed");
-        //         dropdown.setAttribute("opened", "opened");
-        //     }
-        //     // console.log(attribute);
-        // });
-
+        dropdownBox.addEventListener("click", toggleAttributeProductsPerPage);
+        dropdownBox.addEventListener("blur", toggleAttributeProductsPerPage);
 
     </script>
 

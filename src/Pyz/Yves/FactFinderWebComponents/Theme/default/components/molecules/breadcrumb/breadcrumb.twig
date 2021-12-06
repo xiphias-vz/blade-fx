@@ -12,10 +12,8 @@
 } %}
 
 {% block body %}
-    <span>You are searching for: </span>
-    {#{{ dump(data) }}#}
     <ff-breadcrumb-trail {{ data.properties.component|raw }}>
-
+        <span data-separator> &#8226 </span>
         {% for item in data.properties.items %}
             <ff-breadcrumb-trail-item type="{{ item }}">
                 <span class="{{ item ~ '__item' }}">

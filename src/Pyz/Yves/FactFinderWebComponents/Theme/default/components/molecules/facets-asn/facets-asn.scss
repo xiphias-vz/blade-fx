@@ -1,0 +1,193 @@
+@mixin facets-asn($name: '.facets-asn') {
+    #{$name} {
+
+
+        ff-asn {
+
+            font-family: $setting-font-family;
+
+            strong {
+                font-weight: 500;
+            }
+
+            .groupCaption {
+                font-size: 1.25rem;
+                font-family: $setting-font-family-additional;
+                display: flex;
+                justify-content: space-between;
+                padding: 5px;
+            }
+            .groupCaption::after {
+                content: url("data:image/svg+xml; utf8, <svg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 24 24'><path d='M5 3l3.057-3 11.943 12-11.943 12-3.057-3 9-9z'/></svg>");
+            }
+
+            ff-asn-group[for-group = CategoryPathROOT] {
+
+                border:  rem(1) solid $setting-color-globus-lightGray;
+                padding: rem(5);
+
+                .ffw-asn-group-container {
+                    padding-left: 1rem;
+
+                    .ffw-wrapper {
+
+                        ff-asn-group-element {
+                            display: flex;
+                            justify-content: space-between;
+                            padding: rem(5);
+                        }
+                        ff-asn-group-element:hover {
+                            color: $setting-color-globus-darkOrange;
+                        }
+                        ff-asn-group-element::after {
+                            content: url("data:image/svg+xml; utf8, <svg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 24 24'><path d='M5 3l3.057-3 11.943 12-11.943 12-3.057-3 9-9z'/></svg>");
+                        }
+                        .clusterLevel1 {
+                            color: $setting-color-gray-13;
+                        }
+                        .clusterLevel1:hover {
+                            color: $setting-color-orange;
+                            cursor: pointer;
+                        }
+                        .clusterLevel1::after {
+                            color: $setting-color-gray-13;
+                            content: "";
+                        }
+                        .clusterLevel2 {
+                            color: $setting-color-gray-13;
+                            margin-left: rem(30);
+                        }
+                        .clusterLevel2:hover {
+                            color: $setting-color-orange;
+                            cursor: pointer;
+                        }
+                        .clusterLevel2::after {
+                            color: $setting-color-gray-13;
+                            content: "";
+                        }
+                        .clusterLevel3 {
+                            color: $setting-color-gray-13;
+                            margin-left: rem(60);
+                        }
+                        .clusterLevel3:hover {
+                            color: $setting-color-orange;
+                            cursor: pointer;
+                        }
+                        .clusterLevel3::after {
+                            color: $setting-color-gray-13;
+                            content: "";
+                        }
+
+                    }
+                }
+            }
+            ff-asn-group-slider {
+
+                border:  rem(1) solid $setting-color-globus-lightGray;
+                padding: rem(5);
+
+                .ffw-sliderSection {
+
+                    input {
+                        max-width: 5rem;
+                        font-family: $setting-font-family;
+                        font-size: 1rem;
+                        font-weight: 500;
+                    }
+                    input[data-control = '2'] {
+                        float: right;
+                        text-align: right;
+                    }
+                    ff-slider {
+
+                        height: rem(4);
+                        background-color: $setting-color-gray-9;
+                        border-radius: 10px;
+                        .ffw-sliderBar {
+                            bottom: 4px;
+
+                            .sliderBtn {
+                                background-color: $setting-color-orange;
+                                border: none;
+                                border-radius: 100%;
+                                height: rem(12);
+                                width: rem(12);
+                            }
+                        }
+                    }
+                }
+            }
+            ff-asn-group[for-group = Brand] {
+
+                border:  rem(1) solid $setting-color-globus-lightGray;
+                padding: rem(5);
+
+                .ffw-asn-group-container {
+                    padding-left: 1rem;
+
+                    .ffw-wrapper {
+
+                        ff-asn-group-element {
+                            display: flex;
+                            justify-content: space-between;
+                            padding: rem(5);
+                        }
+                        ff-asn-group-element:hover {
+                            color: $setting-color-orange;
+                            cursor: pointer;
+                        }
+
+                        .ffw-asn-selected {
+                            input[type = checkbox] {
+                                width: 1rem;
+                                min-width: 1rem;
+                                height: 1rem;
+                                vertical-align: top;
+                                margin-right: 0.5rem;
+                            }
+
+                        }
+                        .ffw-asn-unselected {
+                            input[type = checkbox] {
+                                width: 1rem;
+                                min-width: 1rem;
+                                height: 1rem;
+                                vertical-align: top;
+                                margin-right: 0.5rem;
+                            }
+                        }
+
+                    }
+                }
+            }
+            div[data-container = showMore] {
+                font-size: rem(13);
+                margin-top: rem(10);
+                color: $setting-color-globus-darkGray;
+            }
+
+            div[data-container = showMore]:hover {
+                color: $setting-color-orange;
+                cursor: pointer;
+            }
+
+            div[data-container = removeFilter] {
+                font-size: rem(13);
+                margin-top: rem(10);
+                color: $setting-color-globus-darkGray;
+            }
+            div[data-container = removeFilter]::before {
+                content: "X";
+                padding-right: rem(5);
+            }
+
+            div[data-container = removeFilter]:hover {
+                color: $setting-color-globus-red;
+                cursor: pointer;
+            }
+        }
+
+    }
+}
+
+@include facets-asn();

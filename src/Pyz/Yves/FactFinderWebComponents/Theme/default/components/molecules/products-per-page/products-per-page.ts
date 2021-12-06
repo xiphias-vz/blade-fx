@@ -1,31 +1,28 @@
-// import $ from 'jquery/dist/jquery';
 // import Component from 'ShopUi/models/component';
 //
 // export default class ProductsPerPage extends Component
 // {
-//     // let dropdown = document.getElementById("dropdown");
-//     // let attribute = dropdown.attributes;
-//     protected dropdown: HTMLElement;
-//     protected attribute;
+//     protected dropdownBox: HTMLElement;
 //
 //     protected readyCallback(): void {
 //
-//         this.dropdown = document.getElementById('dropdown');
+//         this.dropdownBox = document.getElementById('dropdown');
 //
 //         this.mapEvents();
 //     }
 //
 //     protected mapEvents(): void {
-//         this.dropdown.addEventListener('click', () => this.toggleDropdown());
+//         this.dropdownBox.addEventListener('click', () => this.toggleDropdownProductsPerPage());
+//         this.dropdownBox.addEventListener('blur', () => this.toggleDropdownProductsPerPage());
 //     }
 //
-//     protected toggleDropdown(): void{
-//         if (this.dropdown.hasAttribute('opened')){
-//             this.dropdown.removeAttribute('opened');
-//             this.dropdown.setAttribute('closed', 'closed');
-//         }else if (this.dropdown.hasAttribute('closed')){
-//             this.dropdown.removeAttribute('closed');
-//             this.dropdown.setAttribute('opened', 'opened');
+//     protected toggleDropdownProductsPerPage(): void{
+//         if (this.dropdownBox.hasAttribute('opened')){
+//             this.dropdownBox.removeAttribute('opened');
+//             this.dropdownBox.setAttribute('closed', 'closed');
+//         }else if (this.dropdownBox.hasAttribute('closed')){
+//             this.dropdownBox.removeAttribute('closed');
+//             this.dropdownBox.setAttribute('opened', 'opened');
 //         }
 //     }
 // }
