@@ -2,47 +2,109 @@
 
 {% define data = {
     navigation: navigation,
+    currentCodeBucket: app.currentCodeBucket,
+    storeId: app.sapStoreId
 } %}
+
 {% block body %}
-    <style>
-        .my-item {
-            background-color: white;
-            padding: 5px;
-            width: 200px;
-        }
-        ff-navigation-item {
-            width: 25em;
-            height: 24px;
-            float: right;
-            margin-top: 10px;
-            margin-right: 5px;
-            left: unset!important;
-        }
-        .ffw-item-container {
-            left: unset!important;
-            right: 100%;
-        }
-    </style>
-{#    {% include molecule('navigation-header') with {#}
-{#        data: {#}
-{#            nodes: data.navigation.nodes#}
+
+{#    {% if data.currentCodeBucket == 'DE' %}#}
+
+        <style>
+            .my-item {
+                background-color: white;
+                padding: 5px;
+                width: 200px;
+            }
+            ff-navigation-item {
+                width: 25em;
+                height: 24px;
+                float: right;
+                margin-top: 10px;
+                margin-right: 5px;
+                left: unset!important;
+            }
+            .ffw-item-container {
+                left: unset!important;
+                right: 100%;
+            }
+        </style>
+
+        <ff-navigation layout="vertical">
+            <ff-navigation-item>
+                <div class="navigation-multilevel-node__link navigation-multilevel-node__link--header navigation-multilevel-node__link--lvl-1 ">
+                    <a href="#" class="navigation-multilevel-node__link-inner navigation-multilevel-node__link-inner--lvl-1">
+                        {{"{{name}}"}}
+                    </a>
+                </div>
+            </ff-navigation-item>
+            <ff-navigation-item type="header">
+                <div class="navigation-multilevel-node__link navigation-multilevel-node__link--header navigation-multilevel-node__link--lvl-1 ">
+                    <a href="#" class="navigation-multilevel-node__link-inner navigation-multilevel-node__link-inner--lvl-1">
+                        {{"{{name}}"}}
+                    </a>
+                </div>
+            </ff-navigation-item>
+        </ff-navigation>
+
+        <script type="text/javascript">
+            function getParameterByName(name, url = window.location.href) {
+                name = name.replace(/[\[\]]/g, '\\$&');
+                var regex = new RegExp('[?&]' + name + '(=([^&#]*)|&|#|$)'),
+                    results = regex.exec(url);
+                if (!results) return null;
+                if (!results[2]) return '';
+                return decodeURIComponent(results[2].replace(/\+/g, ' '));
+            }
+
+            function isSearchPage() {
+                return document.getElementsByTagName('ff-record-list').length > 0;
+            }
+
+            var indexCatalogPageCounter = 0;
+
+            document.addEventListener("ffReady", function (event) {
+                const factfinder = event.factfinder;
+                const eventAggregator = event.eventAggregator;
+                eventAggregator.addBeforeDispatchingCallback(function (event) {
+                    const isSearchEvent = event.type === "search" || event.type === "navigation-search";
+                    if (isSearchEvent && !isSearchPage()) {
+                        event.cancel(); // prevents the request from being sent before redirecting
+
+                        ["channel", "version", "sid", "dispatchId"].forEach(function (param) {
+                            delete event[param];
+                        });
+
+                        const dict = factfinder.common.encodeDict(event);
+                        const params = factfinder.common.dictToParameterString(dict);
+
+                        window.location.href = '/de/search' + params;
+                    } else {
+                        if(indexCatalogPageCounter === 0 && isSearchPage()) {
+                            indexCatalogPageCounter++;
+                            if(getParameterByName("navigation")=="true") {
+                                eventAggregator.addFFEvent({
+                                    type: "navigation-search",
+                                    filter : getParameterByName("filter"),
+                                    query: "*"
+                                });
+                            } else {
+                                eventAggregator.addFFEvent({
+                                    type: "search",
+                                    query: getParameterByName("query")
+                                });
+                            }
+                        }
+                    }
+                });
+            });
+        </script>
+{#    {% else %}#}
+{#    {% include molecule('navigation-header') with }#}
+{#        data: }#}
+{#        nodes: data.navigation.nodes#}
 {#        },#}
-{#    } only %}#}
-    <ff-navigation layout="vertical">
-        <ff-navigation-item>
-            <div class="navigation-multilevel-node__link navigation-multilevel-node__link--header navigation-multilevel-node__link--lvl-1 ">
-                <a href="{{"{{previewImageURL}}"}}" class="navigation-multilevel-node__link-inner navigation-multilevel-node__link-inner--lvl-1">
-                    {{"{{name}}"}}
-                </a>
-            </div>
-        </ff-navigation-item>
-        <ff-navigation-item type="header">
-            <div class="navigation-multilevel-node__link navigation-multilevel-node__link--header navigation-multilevel-node__link--lvl-1 ">
-                <a href="{{"{{previewImageURL}}"}}" class="navigation-multilevel-node__link-inner navigation-multilevel-node__link-inner--lvl-1">
-                    {{"{{name}}"}}
-                </a>
-            </div>
-        </ff-navigation-item>
-    </ff-navigation>
+{#        } only %}#}
+    {#    {% endif %}#}
 
 {% endblock %}

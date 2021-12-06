@@ -10,8 +10,6 @@ namespace Pyz\Yves\CatalogPageDE\Controller;
 use Pyz\Shared\DataDog\DataDogConfig;
 use SprykerShop\Yves\CatalogPage\Controller\CatalogController as SprykerCatalogController;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use Throwable;
 
 /**
  * @method \Pyz\Yves\CatalogPage\CatalogPageFactory getFactory()
