@@ -76,6 +76,8 @@ use Spryker\Yves\Log\Plugin\YvesLoggerConfigPlugin;
 use Spryker\Zed\Log\Communication\Plugin\ZedLoggerConfigPlugin;
 use Spryker\Zed\Oms\OmsConfig;
 use Spryker\Zed\Propel\PropelConfig;
+use SprykerEco\Shared\FactFinderNg\FactFinderNgConstants;
+use SprykerEco\Shared\FactFinderWebComponents\FactFinderWebComponentsConstants;
 use SprykerEco\Shared\Loggly\LogglyConstants;
 use SprykerEco\Zed\Payone\PayoneConfig;
 use SprykerShop\Shared\CalculationPage\CalculationPageConstants;
@@ -979,4 +981,288 @@ $config[BackofficeOverviewConstants::TABLE_HEADER] = [
     'NON' => 'NON',
     'OBS' => 'OBS',
     'TKK' => 'TKK',
+];
+
+
+
+
+///*******************************************************************************************************************************************************************************************************************
+/// ******************************************************************************************************************************************************************************************************************
+/// ******************************************************************************************************************************************************************************************************************
+/// ***** FACT FINDER CONFIGS FROM Integration guide -> basically copied from vendor/spryker-eco/fact-finder-sdk/config/config_default.php.dist **********************************************************************
+/// ******************************************************************************************************************************************************************************************************************
+///*******************************************************************************************************************************************************************************************************************
+
+/**
+ * Fact Finder
+ */
+
+use SprykerEco\Shared\FactFinderSdk\FactFinderSdkConstants;
+
+$config[FactFinderSdkConstants::ENVIRONMENT] = FactFinderSdkConstants::ENVIRONMENT_PRODUCTION;
+$config[FactFinderSdkConstants::ENVIRONMENT . FactFinderSdkConstants::ENVIRONMENT_PRODUCTION] = [
+    'debug' => true,
+    'requestProtocol' => 'https', //http
+    'serverAddress' => 'globus-sb.fact-finder.de/fact-finder',
+    'port' => '80',
+    'context' => 'context',
+    'channel' => 'Spryker',
+    'language' => 'de',
+    'authenticationType' => 'advanced',
+// This is another possible option for authentication type
+//  'authenticationType' => 'manual',
+    'userName' => 'kps_admin',
+    'password' => 'glo123SPRY!kps',
+    'authenticationPrefix' => 'FACT-FINDER',
+    'authenticationPostfix' => 'FACT-FINDER',
+    'clientMappings' => [],
+    'serverMappings' => [],
+    'ignoredClientParameters' => [],
+    'ignoredServerParameters' => [],
+    'whitelistClientParameters' => [],
+    'whitelistServerParameters' => [],
+    'requiredClientParameters' => [],
+    'requiredServerParameters' => [],
+    'defaultConnectTimeout' => 2,
+    'defaultTimeout' => 4,
+    'suggestConnectTimeout' => 2,
+    'suggestTimeout' => 2,
+    'trackingConnectTimeout' => 1,
+    'trackingTimeout' => 2,
+    'importConnectTimeout' => 10,
+    'importTimeout' => 360,
+    'pageContentEncoding' => 'UTF-8',
+    'clientUrlEncoding' => 'UTF-8',
+    FactFinderSdkConstants::ADMIN_PANEL_URL => 'https://globus-sb.fact-finder.de/fact-finder-ui/'
+];
+
+$config[FactFinderSdkConstants::CSV_DIRECTORY] = APPLICATION_ROOT_DIR . '/data/export/files/';
+$config[FactFinderSdkConstants::EXPORT_QUERY_LIMIT] = 1000;
+$config[FactFinderSdkConstants::EXPORT_FILE_NAME_PREFIX] = 'export';
+$config[FactFinderSdkConstants::EXPORT_FILE_NAME_DELIMITER] = '.';
+$config[FactFinderSdkConstants::EXPORT_FILE_EXTENSION] = '.csv';
+$config[FactFinderSdkConstants::PHP_LOGGER_CONFIG_PATH] = APPLICATION_ROOT_DIR . '/config/Shared/log4php.xml';
+$config[FactFinderSdkConstants::CHANNEL_PREFIX] = '';
+$config[FactFinderSdkConstants::DEFAULT_PRODUCTS_PER_PAGE] = 20;
+$config[FactFinderSdkConstants::CATEGORIES_MAX_COUNT] = 4;
+$config[FactFinderSdkConstants::REDIRECT_IF_ONE_RESULT] = true;
+
+$config[FactFinderSdkConstants::ITEM_FIELDS] = [
+    FactFinderSdkConstants::ITEM_MASTER_ID,
+    FactFinderSdkConstants::ITEM_PRODUCT_NUMBER,
+    FactFinderSdkConstants::ITEM_NAME,
+    FactFinderSdkConstants::ITEM_PRICE,
+    FactFinderSdkConstants::ITEM_STOCK,
+    FactFinderSdkConstants::ITEM_CATEGORY_PATH,
+    FactFinderSdkConstants::ITEM_PRODUCT_URL,
+    FactFinderSdkConstants::ITEM_IMAGE_URL,
+    FactFinderSdkConstants::ITEM_DESCRIPTION,
+    FactFinderSdkConstants::ITEM_ATTRIBUTES,
+    FactFinderSdkConstants::ITEM_RATING,
+    FactFinderSdkConstants::ITEM_CREATED_AT,
+    FactFinderSdkConstants::ITEM_IS_NEW,
+];
+
+// ---------- FACT-Finder NG API
+
+$config[FactFinderNgConstants::FACT_FINDER_URL] = 'https://globus-sb.fact-finder.de/fact-finder'; # Fact-Finder URL
+$config[FactFinderNgConstants::FACT_FINDER_CHANNEL] = 'Spryker'; # Fact-Finder channel value
+$config[FactFinderNgConstants::FACT_FINDER_USERNAME] = 'kps_admin'; # Fact-Finder user for authorization.
+$config[FactFinderNgConstants::FACT_FINDER_PASSWORD] = 'glo123SPRY!kps'; # Fact-Finder password for authorization.
+
+// ---------- FACT-Finder WEB COMPONENTS components
+$config[FactFinderWebComponentsConstants::COMMUNICATION_COMPONENT_CONFIG] = [
+    'properties' => [
+        'url' => 'https://globus-sb.fact-finder.de/fact-finder',
+        'version' => 'ng',
+        'api' => 'v4',
+        'channel' => 'Spryker',
+        'default-query' => '',
+        'search-immediate' => false,
+    ],
+];
+
+$config[FactFinderWebComponentsConstants::BREADCRUMB_COMPONENT_CONFIG] = [
+    'properties' => [
+        'show-only' => false,
+    ],
+    'items' => [
+        'search',
+        'filter',
+        'advisor',
+    ],
+];
+
+$config[FactFinderWebComponentsConstants::SEARCH_BOX_COMPONENT_CONFIG] = [
+    'properties' => [
+        'suggest-onfocus' => 'true',
+        'use-suggest' => 'true',
+    ],
+];
+
+$config[FactFinderWebComponentsConstants::SEARCH_BUTTON_COMPONENT_CONFIG] = [
+    'suggest-onfocus' => false,
+    'hide-suggest-onblur' => true,
+    'select-onclick' => false,
+    'use-suggest' => true,
+    'suggest-delay' => 0,
+];
+
+$config[FactFinderWebComponentsConstants::HEADER_NAVIGATION_COMPONENT_CONFIG] = [
+    'properties' => [
+        'group-count' => 4,
+        'group-size' => 4,
+        'hide-empty-groups' => '1',
+        'fetch-initial' => '1',
+    ],
+];
+
+$config[FactFinderWebComponentsConstants::SUGGEST_CONFIG] = [
+    'properties' => [],
+    'productItemType' => 'productName',
+    'searchItems' => [
+        [
+            'type' => 'searchTerm',
+            'title' => 'Search term',
+        ],
+        [
+            'type' => 'category',
+            'title' => 'Category',
+        ],
+        [
+            'type' => 'brand',
+            'title' => 'Brand',
+        ],
+    ],
+];
+
+$config[FactFinderWebComponentsConstants::RECORD_LIST_COMPONENT_CONFIG] = [
+    'properties' => [],
+    'record' => '',
+];
+
+$config[FactFinderWebComponentsConstants::CHECKOUT_TRACKING_CONFIG] = [
+    'properties' => [
+        'disable-auto-tracking' => true,
+    ],
+    'items' => [
+        [
+            'recordId' => 'd44c3c7b5e52f7a6b27041c1e789e954',
+            'count' => '2',
+        ],
+        [
+            'recordId' => '19532fa96a8e60a27328f01520cc4',
+            'count' => '4',
+        ],
+    ],
+];
+
+$config[FactFinderWebComponentsConstants::RECORD_COMPONENT_CONFIG] = [
+    'subscribe' => 'true',
+    'is-recommendation' => false,
+    'infinite-scrolling' => true,
+    'infinite-debounce-delay' => 32,
+    'infinite-scroll-margin' => 0,
+];
+
+$config[FactFinderWebComponentsConstants::ASN_GROUP_COMPONENT_CONFIG] = [
+    'opened' => false,
+    'collapsible' => true,
+    'lazy-load' => true,
+];
+
+$config[FactFinderWebComponentsConstants::ASN_GROUP_ELEMENT_CONFIG] = [
+    'selected' => true,
+];
+
+$config[FactFinderWebComponentsConstants::ASN_REMOVE_ALL_FILTER_CONFIG] = [
+    'align' => 'vertical',
+    'show-always' => true,
+    'remove-params' => false,
+];
+
+$config[FactFinderWebComponentsConstants::ASN_SLIDER_CONFIG] = [
+    'properties' => [
+        'align' => 'vertical',
+    ],
+];
+
+$config[FactFinderWebComponentsConstants::ASN_SLIDER_CONTROL_CONFIG] = [
+    'submit-on-input' => true,
+];
+
+$config[FactFinderWebComponentsConstants::PAGING_COMPONENT_CONFIG] = [
+    'properties' => [
+    ],
+];
+
+$config[FactFinderWebComponentsConstants::PRODUCTS_PER_PAGE_COMPONENT_CONFIG] = [
+    'properties' => [
+    ],
+    'dropdown' => '',
+    'list' => '',
+    'item' => '',
+];
+
+$config[FactFinderWebComponentsConstants::SORT_BOX_COMPONENT_CONFIG] = [
+    'properties' => [
+    ],
+    'items' => [
+        [
+            'key' => 'default.template',
+            'title' => 'factfinder.web-components.sort.box.default.style',
+        ],
+        [
+            'key' => 'Price.asc',
+            'title' => 'factfinder.web-components.sort.box.overriden.for',
+        ],
+        [
+            'key' => 'null.desc',
+            'title' => 'factfinder.web-components.sort.box.relevance',
+        ],
+    ],
+];
+
+$config[FactFinderWebComponentsConstants::SIMILAR_PRODUCTS_COMPONENT_CONFIG] = [
+    'properties' => [
+        'max-results' => 4,
+    ],
+    'list' => '',
+    'record' => '',
+];
+
+$config[FactFinderWebComponentsConstants::SIMILAR_PRODUCT_ID_CONFIG] = [
+    'recordId' => 'd44c3c7b5e52f7a6b27041c1e789e954',
+];
+
+$config[FactFinderWebComponentsConstants::RECOMMENDATION_CONFIG] = [
+    'properties' => [
+        'max-results' => 4,
+    ],
+    'list' => '',
+    'record' => '',
+];
+
+$config[FactFinderWebComponentsConstants::RECOMMENDATION_RECORD_ID_CONFIG] = [
+    'recordId' => '19532fa96a8e60a27328f01520cc4',
+];
+
+$config[FactFinderWebComponentsConstants::TAG_CLOUD_COMPONENT_CONFIG] = [
+    'properties' => [
+    ],
+];
+
+$config[FactFinderWebComponentsConstants::PUSHED_PRODUCTS_COMPONENT_CONFIG] = [
+    'properties' => [
+    ],
+    'list' => '',
+    'record' => '',
+];
+
+$config[FactFinderWebComponentsConstants::CAMPAIGN_COMPONENT_CONFIG] = [
+    'properties' => [
+    ],
+    'answer' => '',
+    'question' => '',
+    'feedbacktext' => '',
 ];

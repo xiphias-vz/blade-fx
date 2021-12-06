@@ -1,0 +1,36 @@
+@mixin searchbox($name: '.searchbox') {
+    #{$name} {
+        &__input {
+            border: none;
+            border-radius: 0;
+            padding-left: rem(60);
+        }
+
+        &__clear {
+            position: absolute;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            z-index: $setting-zi-navigation-top;
+
+            @include helper-breakpoint-media-max($sm-max) {
+                right:rem(40);
+            }
+        }
+
+        &__submit {
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            z-index: $setting-zi-navigation-top;
+
+            @include helper-breakpoint-media-max($sm-max) {
+                left:unset;
+                right:0;
+            }
+        }
+    }
+}
+
+@include searchbox();

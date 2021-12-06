@@ -42,6 +42,7 @@
     "npm": ">=6.4.1"
   },
   "dependencies": {
+    "ff-web-components": "https://github.com/FACT-Finder-Web-Components/ff-web-components.git#4.0.4",
     "@webcomponents/custom-elements": "~1.3.1",
     "@webcomponents/webcomponents-platform": "~1.0.1",
     "@webcomponents/webcomponentsjs": "~2.4.0",
@@ -60,6 +61,9 @@
     "password-validator": "~5.1.0"
   },
   "devDependencies": {
+    "connect": "^3.7.0",
+    "open": "^8.4.0",
+    "serve-static": "^1.14.1",
     "@babel/core": "~7.9.0",
     "@babel/plugin-proposal-class-properties": "~7.8.3",
     "@babel/plugin-transform-runtime": "~7.9.0",

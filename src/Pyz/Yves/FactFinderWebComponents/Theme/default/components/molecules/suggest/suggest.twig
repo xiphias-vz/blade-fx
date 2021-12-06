@@ -1,0 +1,90 @@
+{% extends model('component') %}
+
+{% define config = {
+    name: 'suggest',
+    tag: 'suggest-ff'
+} %}
+
+{% define data = {
+    properties: {
+        component: '',
+        searchItems: [],
+        productItemType: ''
+    }
+} %}
+
+{% block body %}
+    <ff-suggest layout="list" class="input--expand" ~ {{ data.properties.component|raw }}>
+        {% block searchContainer %}
+            <section id="searchContainer" class="searchTermContainer">
+
+                {% for item in data.properties.searchItems %}
+                    <div data-container="{{ item.type }}">
+                        <p class="containerCaption">{{ item.title }}</p>
+                        <ff-suggest-item type="{{ item.type }}">
+                            <span>
+                                {% verbatim %}
+                                    {{{ name }}}
+                                {% endverbatim %}
+                            </span>
+                            {% if item.type == 'productName' %}
+                                <button type="button" class="{{ config.name }}__button-search-cart" onclick="submitToCartButton(
+                                '{{ 106 }}',
+                                '{{ 4067800007604 }}',
+                                '{{ 'Rotlicht Bier 6% (27 x 0.33 Liter)' }}',
+                                '{{ 1000 }}',
+                                '{{ '/de/cart/add-ajax/106' }}'
+                                )">
+                                {% include atom('icon') with {
+                                    class: 'link__icon icon--color-orange',
+                                    modifiers: ['big'],
+                                    data: {
+                                        name: 'cart',
+                                    },
+                                } only %}
+                            </button>
+                            {% endif %}
+                        </ff-suggest-item>
+                    </div>
+                {% endfor %}
+
+            </section>
+        {% endblock %}
+
+        {% block productContainer %}
+            <section id="productContainer" class="productsContainer">
+                <div data-container="productName">
+                    <p class="containerCaption">Find products</p>
+                    {{ dump(data.properties.productItemType) }}
+                    <div data-container="all">
+                        <ff-suggest-item {{ data.properties.productItemType|raw }} onclick="changeSearchTerm(this)">
+                            <img data-image>
+                            <div class="product-center">
+                                <div class="product-name">
+                                    {% verbatim %}
+                                        {{{ name }}}
+                                    {% endverbatim %}
+                                </div>
+                                <div>Shipping</div>
+                                <div>Rating</div>
+                            </div>
+
+                            <div class="product-right">
+                                <div class="product-price">
+                                    {% verbatim %}
+                                        {{ attributes.Price }} &euro;
+                                    {% endverbatim %}
+                                </div>
+                                <div class="product-availabilitytext">
+                                    {% verbatim %}
+                                        {{ attributes.availabilitytext }}
+                                    {% endverbatim %}
+                                </div>
+                            </div>
+                        </ff-suggest-item>
+                    </div>
+                </div>
+            </section>
+        {% endblock %}
+    </ff-suggest>
+{% endblock %}

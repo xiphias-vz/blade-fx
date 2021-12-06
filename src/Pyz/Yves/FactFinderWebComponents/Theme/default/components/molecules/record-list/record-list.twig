@@ -1,0 +1,534 @@
+{% extends model('component') %}
+
+{% define config = {
+    name: 'record-list'
+} %}
+
+{% define data = {
+    properties: {
+        component: '',
+        record: required
+    },
+    products: required,
+    name: data.product.name | default,
+    sku: data.product.sku | default,
+    url: data.product.url | default,
+    image: data.product.images is defined ? data.product.images.0.externalUrlSmall | default,
+    idProductAbstract: data.product.idProductAbstract | default,
+    viewMode: _view.viewMode | default,
+    currencySymbol: app.currentCurrencySymbol,
+    currencyIsoCode: app.currentCurrencyISOCode,
+    storeId: app.sapStoreId,
+    noPriceText: '---',
+    currencySymbol: app.currentCurrencySymbol,
+    calculatedPrice: null,
+    itemWeight: null,
+    prefix: null,
+} %}
+
+{#supplier: data.product.supplier | default,
+    currencyIsoCode: null,
+    productSaleUnit: data.product.attributes.verpackungseinheit | default(null),
+    productSaleVolume: data.product.attributes.grundpreisinhalt | default(null),
+    basicUnit: data.product.attributes.grundeinheit | default(null),
+    basePriceUnit: data.product.attributes.grundpreismasseinheit | default(null),
+    preisProKg: data.product.attributes.preis_pro_kg | default(null),
+    pricePerKg: data.product.pricePerKg | default(null),
+    depositPrice: data.depositPrice | default(null),
+    einzelgewicht: data.product.attributes.einzelgewicht | default(null),
+    position: position | default(null),
+    currencySymbol: app.currentCurrencySymbol,
+    currencyIsoCode: app.currentCurrencyISOCode#}
+
+{%- block extraClass %}{% endblock -%}
+
+{% set productSaleUnit = data.product.attributes.grundpreismasseinheit | default(null) %}
+{% set productSupplier = data.product.attributes.supplier | default(null) %}
+{% set productSaleVolume = data.product.attributes.grundpreisinhalt | default(null) %}
+{% set isGlobusProduction = data.product.attributes.isGlobusProduction | default(0) %}
+
+{% set extraClass = '' %}
+
+{% block body %}
+ <div class="grid {{ component.renderClass(config.name ~ '__container', modifiers) }}">
+    <ff-record-list {{ data.properties.component|raw }}>
+        {% block record %}
+            <ff-record {{ data.properties.record|raw }} class="col--sm-12 col--md-3 col--lg-3 {{ config.name}}__record-item ">
+                {#
+                Setam vrijednosti koje vraća api i koje
+                mogu vidjeti preko record varijable unutar verbatim tagova
+                kako bi ih kasnije mogao upotrijebiti po twigu
+            #}
+            {% set sku %}
+                {% verbatim %}
+                    {{ record.MasterArticleNumber }}
+                {% endverbatim %}
+            {% endset %}
+            {% set productName %}
+                {% verbatim %}
+                    {{ record.Title }}
+                {% endverbatim %}
+            {% endset %}
+            {% set description %}
+                {% verbatim %}
+                    {{ record.Description }}
+                {% endverbatim %}
+            {% endset %}
+            {% set brand %}
+                {% verbatim %}
+                    {{ record.Brand }}
+                {% endverbatim %}
+            {% endset %}
+            {% set productUrl %}
+                {% verbatim %}
+                    {{ record.ProductURL }}
+                {% endverbatim %}
+            {% endset %}
+            {% set imageName %}
+                {% verbatim %}
+                    {{ record.ImageName }}
+                {% endverbatim %}
+            {% endset %}
+            {% set imageUrl %}
+                {% verbatim %}
+                    {{ record.ImageURL }}
+                {% endverbatim %}
+            {% endset %}
+            {#{{ dump(imageUrl) }}#}
+            {% set categoryPath %}
+                {% verbatim %}
+                    {{ record.CategoryPath }}
+                {% endverbatim %}
+            {% endset %}
+            {% set sapNumber %}
+                {% verbatim %}
+                    {{ record.SapNumber }}
+                {% endverbatim %}
+            {% endset %}
+
+            {# ovi još fale ali ću ih dodat tako da je kasnije lakše #}
+
+            {% set price %}
+                {% verbatim %}
+                    {{ record.geoInformation.0.geoValues.Price }}
+                {% endverbatim %}
+            {% endset %}
+
+            {% set pricePerWeight %}
+                {% verbatim %}
+                    {{ record.record.geoInformation.0.geoValues.BasePrice }}
+                {% endverbatim %}
+            {% endset %}
+
+           {# {{ dump(pricePerWeight) }}#}
+
+            {% set isGlobusProduction %}
+                {% verbatim %}
+                    {{ record.isGlobusProduction }}
+                {% endverbatim %}
+            {% endset %}
+            {% if isGlobusProduction is not defined or isGlobusProduction | length == 0 %}
+                {% set isGlobusProduction = true %}
+            {% endif %}
+            {% set bioCertificationCode %}
+                {% verbatim %}
+                    {{ record.bioCertificationCode }}
+                {% endverbatim %}
+            {% endset %}
+
+
+                {% verbatim %}
+                    <div data-redirect="{{ record.ProductURL }}"
+                         data-redirect-target="_blank">
+                {% endverbatim %}
+
+                {# SLIKA #}
+                {% block imageContainer %}
+                    <div class="{{ config.name }}__myImg" onclick="productClicked('{{ productUrl }}', '{{ sku }}', '{{ productName | escape('js') }}', '{{ price }}', '{{ sku }}' )">
+                        {% macro thumbnail(src, alt='', extraClass='', modifiers=[], idProductAbstract='') %}
+                            {#{{ dump(src) }}#}
+                            {% if app.currentCodeBucket == 'DE' %}
+                                {% set splitUrl = src | split('.com/') %}
+                                {% set newSrc = splitUrl[0] ~ '.com/thumb_'  ~ splitUrl[1] | default("") %}
+
+                                {% embed molecule('lazy-thumbnail') with {
+                                    class: extraClass,
+                                    modifiers: modifiers,
+                                    attributes: {
+                                        src: src,
+                                        alt: alt,
+                                    },
+                                    embed: {
+                                        idProductAbstract: idProductAbstract,
+                                    },
+                                } only %}
+                                    {% block image %}
+                                            {% set imageExtraClasses = embed.idProductAbstract ? 'js-image-animation__image-' ~ embed.idProductAbstract %}
+                                            {{ parent() }}
+                                    {% endblock %}
+                                {% endembed %}
+                            {% endif %}
+                        {% endmacro %}
+
+                        {% block image %}
+                            {% if productUrl %}
+                                {% block imageLink %}
+                                    <a class="image-link" href="{{ productUrl }}">
+                                        {{ _self.thumbnail(imageUrl, productName , extraClass, modifiers) }}
+                                    </a>
+                                {% endblock %}
+                            {% endif %}
+                            {% if not productUrl %}
+                                {% block productThumbnail %}
+                                    {{ _self.thumbnail(imageUrl, productName, extraClass, modifiers, config.jsName) }}
+                                {% endblock %}
+                            {% endif %}
+                        {% endblock %}
+                    </div>
+                {% endblock %}
+
+                {#{% verbatim %}
+                        <span>{{ record.Name }}</span>
+                    </div>
+                    <div class="record-product-info">
+                        <h3 class="record-product-name">
+                            {{record.Title}}
+                        </h3>
+
+                        <div class="record-product-brand">{{record.Manufacturer}}đ</div>
+                        <div class="record-product-price">{{record.Price}}ž</div>
+                    </div>
+                {% endverbatim %}#}
+
+                <div class="{{ config.name ~ '__record-product-info' }}">
+                    <h3 class="{{ config.name ~ '__record-product-name' }}" style="font-weight: bold;">
+                        {{ brand ~ ' - ' ~ productName }}
+                    </h3>
+                    <p class="{{ config.name ~ '__sale-volume' }}">{{ pricePerWeight }}</p>
+                </div>
+
+                {# Below are all elements that should be in exported CSV file(Article export). <br/>
+                <span>{{ "Article Number:" }}</span>
+                {% verbatim %}
+                    <span>{{ record.ArticleNumber }}</span>
+                    <br/>
+                {% endverbatim %}
+                <span>{{ "Master Article Number:" }}</span>
+                {% verbatim %}
+                    <span>{{ record.MasterArticleNumber }}</span>
+                    <br/>
+                {% endverbatim %}
+                    <span>{{ "Title:" }}</span>
+                {% verbatim %}
+                    <span>{{ record.Title }}</span>
+                    <br/>
+                {% endverbatim %}
+                    <span>{{ "Description:" }}</span>
+                {% verbatim %}
+                    <span>{{ record.Description }}</span>
+                    <br/>
+                {% endverbatim %}
+                    <span>{{ "Brand:" }}</span>
+                {% verbatim %}
+                    <span>{{ record.Brand }}</span>
+                    <br/>
+                {% endverbatim %}
+                <span>{{ "Release Date:" }}</span>
+                {% verbatim %}
+                    <span>{{ record.ReleaseDate }}</span>
+                    <br/>
+                {% endverbatim %}
+                <span>{{ "Availability:" }}</span>
+                {% verbatim %}
+                    <span>{{ record.Availability }}</span>
+                    <br/>
+                {% endverbatim %}
+                <span>{{ "Brand Url:" }}</span>
+                {% verbatim %}
+                    <span>{{ record.BrandURL }}</span>
+                    <br/>
+                {% endverbatim %}
+                <span>{{ "Category Path:" }}</span>
+                {% verbatim %}
+                    <span>{{ record.CategoryPath }}</span>
+                    <br/>
+                {% endverbatim %}
+                    <span>{{ "Product Url:" }}</span>
+                {% verbatim %}
+                    <span>{{ record.ProductURL }}</span>
+                    <br/>
+                {% endverbatim %}
+                    <span>{{ "Image URL:" }}</span>
+                {% verbatim %}
+                    <span>{{ record.ImageURL }}</span>
+                    <br/>
+                {% endverbatim %}
+                <span>{{ "MultiAttributeText:" }}</span>
+                {% verbatim %}
+                    <span>{{ record.MultiAttributeText }}</span>
+                    <br/>
+                {% endverbatim %}
+                <span>{{ "Attribute:" }}</span>
+                {% verbatim %}
+                    <span>{{ record.Attribute }}</span>
+                    <br/>
+                {% endverbatim %}
+                    <span>{{ "Sales ranking:" }}</span>
+                {% verbatim %}
+                    <span>{{ record.SalesRanking }}</span>
+                    <br/>
+                {% endverbatim %}
+                <span>{{ "Article Type:" }}</span>
+                {% verbatim %}
+                    <span>{{ record.ArticleType }}</span>
+                    <br/>
+                {% endverbatim %}
+                    <span>{{ "Badge text:" }}</span>
+                {% verbatim %}
+                    <span>{{ record.BadgeText }}</span>
+                    <br/>
+                {% endverbatim %}
+                <span>{{ "Deposit:" }}</span>
+                {% verbatim %}
+                    <span>{{ record.Deposit }}</span>
+                    <br/>
+                {% endverbatim %}
+                <span>{{ "Sap Number:" }}</span>
+                {% verbatim %}
+                    <span>{{ record.SapNumber }}</span>
+                    <br/>
+                {% endverbatim %}
+
+
+                Other things that have columns in admin panel(but apparently can't see them): <br/>
+                <span>{{ "Score:" }}</span>
+                {% verbatim %}
+                    <span>{{ record.Score }}</span>
+                    <br/>
+                {% endverbatim %}
+                <span>{{ "Info:" }}</span>
+                {% verbatim %}
+                    <span>{{ record.Info }}</span>
+                    <br/>
+                {% endverbatim %}
+                <span>{{ "Image:" }}</span>
+                {% verbatim %}
+                    <span>{{ record.Image }}</span>
+                    <br/>
+                {% endverbatim %}
+                <span>{{ "??Image Name:" }}</span>
+                {% verbatim %}
+                    <span>{{ record.ImageName }}</span>
+                    <br/>
+                {% endverbatim %}
+                {#<div class="record-product-add-to-cart">
+                    <button onclick="addToCart(event)">Add to Cart</button>
+                </div>#}
+
+
+                {#Stuff that i get from api and to show it here:
+                <br/> <span>{{ "Record Price:" }}</span>
+                {% verbatim %}
+                    {{ record.Price }}
+                {% endverbatim %}
+                <br/>
+                <span>{{ "Categoriy ID:" }}</span>
+                {% verbatim %}
+                    <span>{{ record.CategoryId }}</span>
+                    <br/>
+                {% endverbatim %}
+                <span>{{ "Price for first store:" }}</span>
+                {% verbatim %}
+                    <span>{{ record.scoreLastHit }}</span>
+                    <br/>
+                {% endverbatim %}#}
+                {% set priceInfo %}
+                    {% verbatim %}
+                        {{ record.geoInformation.0.geoValues.BasePrice }}
+                    {% endverbatim %}
+                {% endset %}
+
+                {% block productDataContainer %}
+                    <div class="{{ config.name }}__info-more">
+                        {{ priceInfo }}
+                    </div>
+                {% endblock %}
+                <hr class="{{ config.name }}__divider" />
+                <div class="{{ config.name }}__add-to-cart-btn">
+                {% set amount %}
+                    {% verbatim %}
+                        {{ record.geoInformation.0.geoValues.Price }}
+                    {% endverbatim %}
+                {% endset %}
+                {% set originalAmount %}
+                    {% verbatim %}
+                        {{ record.geoInformation.0.geoValues.PseudoPrice }}
+                    {% endverbatim %}
+                {% endset %}
+
+{#                {% set priceInfo %}#}
+{#                 {% verbatim %}#}
+{#                        {{ record.geoInformation.0.geoValues.BasePrice }}#}
+{#                    {% endverbatim %}#}
+{#                {% endset %}#}
+
+{#                {% block productDataContainer %}#}
+{#                    <div class="{{ config.name }}__info-more">#}
+{#                        {{ priceInfo }}#}
+{#                    </div>#}
+{#                {% endblock %}#}
+
+                    {% block price %}
+                    {% if data.itemWeight is not null -%}
+                        {{ data.calculatedPrice }}
+                    {%- else -%}
+                        {% if originalAmount is not empty and originalAmount > amount -%}
+                            <span class="{{ config.name }}__amount {{ config.name }}__amount--original">{{ originalAmount }}</span>
+                        {%- endif -%}
+
+                        {%- if amount is empty -%}
+                            {{ data.noPriceText }}
+                        {%- else -%}
+                            {% if originalAmount is not empty and originalAmount > amount -%}
+                                <span class="{{ component.renderClass(config.name ~ '__amount', modifiers) }} {{ config.name }}__amount-red">
+                                    {{ data.prefix }}{{ amount }}
+                                </span>
+                            {%- else -%}
+                                <span class="{{ component.renderClass(config.name ~ '__amount', modifiers) }}">
+                                    {{ data.prefix }}{{ amount }}
+                                </span>
+                            {%- endif -%}
+
+                        {%- endif -%}
+
+                    {%- endif -%}
+
+
+
+{#                        <div class="{{ config.name }}__info-more-col"  onclick="productClicked('{{ productUrl }}', '{{ sku }}', '{{ productName | escape('js') }}', '{{ price  }}', '{{ sku }}' )" >#}
+{#                            {% include molecule('money-price') with {#}
+{#                                modifiers: modifiers,#}
+{#                                data: {#}
+{#                                    amount: price | default(null),#}
+{#                                    originalAmount: price | default(null),#}
+{#                                    currencyIsoCode: data.currencyIsoCode,#}
+{#                                },#}
+{#                            } only %}#}
+{#                        </div>#}
+                        <script type="text/javascript">
+                            function productClicked(productUrl, productId, productName, productPrice, productSku)
+                            {
+                                var ctrlPressed = 0;
+                                if(event.ctrlKey){
+                                    ctrlPressed = 1;
+                                }
+                                var rerouted = 0;
+                                window.dataLayer = window.dataLayer || [];
+                                window.dataLayer.push({
+                                    'event': 'eec.productClick',
+                                    'ecommerce':{
+                                        'click':{
+                                            'actionField': {'list':'Catalog'},
+                                            'products': [{
+                                                'id': productId,
+                                                'name': productName,
+                                                'price': productPrice,
+                                                'sku': productSku,
+                                            }]
+                                        }
+                                    },
+                                    'eventCallback': function()
+                                    {
+                                        if(ctrlPressed == 0){
+                                            rerouted = 1;
+                                            document.location = productUrl;
+                                        }
+                                    }
+                                });
+                                setTimeout(function()
+                                {
+                                    if(rerouted==0 && ctrlPressed==0)
+                                    {
+                                        document.location = productUrl;
+                                    }
+                                },1000);
+                            }
+                        </script>
+                    {% endblock %}
+                    {% if app.currentCodeBucket == 'DE' %}
+                        {% set addAjaxUrl %}
+                            {% verbatim %}
+                              /de/cart/add-ajax/{{ record.IdProductAbstract }}
+                            {% endverbatim %}
+                        {% endset %}
+
+                        <a href="{{ addAjaxUrl|trim }}"
+                           rel="nofollow"
+                           onclick="productAddToCart('{{ sku }}','{{ productName }}','{{ price }}','{{ sku }}','{{ brand | escape('js') }}')"
+                           class="
+                                    button button--with-icon button--middle-icon button_center_align button--backgroundcolor-DE
+                                    js-product-color-group__image-{{ sku }}
+                                    js-image-animation__link
+                                    js-ajax-add-to-cart__link
+                                    myBtn
+                                "
+                           data-product-id="{{ sku }}"
+                           data-product-sku="{{ sku }}"
+                           data-product-title="{{ productName }}"
+                           data-product-price="{{ price }}"
+                           data-csrf-token="{{ csrf_token('add-to-cart-ajax') }}"
+                        >
+                            <span class="icon-basketplus"></span>
+                            <div class="add-details-to-cart-text-holder">
+                                {{- 'page.detail.add-to-cart' | trans -}}
+                            </div>
+                        </a>
+                    {% endif %}
+                    <div class="counter is-hidden">
+                        {% if app.currentCodeBucket == 'DE' %}
+                            <span class="is-hidden message item-added">
+                            <span class="checkmark"></span>
+                            {{ 'cart.add.item.ajax.success' | trans }}
+                         </span>
+                            <span class="is-hidden message item-removed">
+                            <span class="checkmark"></span>
+                            {{ 'cart.remove.item.ajax.success' | trans }}
+                        </span>
+                        {% endif %}
+
+                        {% if app.currentCodeBucket == 'DE' %}
+                           {% set changeAjaxUrl %}
+                                {% verbatim %}
+                                  /de/cart/change-ajax/{{ record.IdProductAbstract }}
+                                {% endverbatim %}
+                            {% endset %}
+
+                            <a href="{{ changeAjaxUrl|trim }}"
+                               class="
+                                js-ajax-change-quantity__link
+                                js-quantity-counter-product__decr"
+                               data-csrf-token="{{ csrf_token('change-cart-ajax') }}"
+                            >
+                                -
+                            </a>
+                        {% endif %}
+
+                        <input type="number" id="txt-product-quantity" min="1" max="99" value="1">
+                        {% if app.currentCodeBucket == 'DE' %}
+                            <a href="{{ changeAjaxUrl  }}"
+                               class="
+                            js-ajax-change-quantity__link
+                            js-quantity-counter-product__incr"
+                               data-csrf-token="{{ csrf_token('change-cart-ajax') }}"
+                            >
+                                +
+                            </a>
+                        {% endif %}
+                    </div>
+                </div>
+            </ff-record>
+        {% endblock %}
+    </ff-record-list>
+ </div>
+{% endblock %}
+

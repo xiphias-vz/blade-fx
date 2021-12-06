@@ -7,6 +7,8 @@
 
 namespace Pyz\Yves\CheckoutPage\Process\Steps;
 
+use Generated\Shared\Transfer\CartOrCheckoutEventTransfer;
+use Generated\Shared\Transfer\QuoteTransfer;
 use Spryker\Shared\Kernel\Transfer\AbstractTransfer;
 use SprykerShop\Yves\CheckoutPage\Process\Steps\SuccessStep as SprykerSuccessStep;
 use Symfony\Component\HttpFoundation\Request;
@@ -19,6 +21,11 @@ class SuccessStep extends SprykerSuccessStep
     private $copyQuoteTransfer;
 
     /**
+     * @var \SprykerEco\Client\FactFinderNg\FactFinderNgClient
+     */
+    private $factFinderNgClient;
+
+    /**
      * @param \Symfony\Component\HttpFoundation\Request $request
      * @param \Generated\Shared\Transfer\QuoteTransfer $quoteTransfer
      *
@@ -26,9 +33,32 @@ class SuccessStep extends SprykerSuccessStep
      */
     public function execute(Request $request, AbstractTransfer $quoteTransfer)
     {
+        $this->factFinderNgClient->trackCheckoutEvent($this->preparedCheckoutEventTransfer($quoteTransfer));
         $this->copyQuoteTransfer = $quoteTransfer;
 
         return parent::execute($request, $quoteTransfer);
+    }
+
+    /**
+     * @param \Generated\Shared\Transfer\QuoteTransfer $quoteTransfer
+     *
+     * @return \Generated\Shared\Transfer\CartOrCheckoutEventTransfer[]
+     */
+    protected function preparedCheckoutEventTransfer(QuoteTransfer $quoteTransfer): array
+    {
+        $eventTransfers = [];
+        foreach ($quoteTransfer->getItems() as $itemTransfer) {
+            $eventTransfer = new CartOrCheckoutEventTransfer();
+            $eventTransfer->setCount($itemTransfer->getQuantity());
+            $eventTransfer->setId($itemTransfer->getSku());
+            $eventTransfer->setMasterId($itemTransfer->getAbstractSku());
+            $eventTransfer->setPrice($itemTransfer->getUnitPriceToPayAggregation());
+            $eventTransfer->setSid(uniqid());
+
+            $eventTransfers[] = $eventTransfer;
+        }
+
+        return $eventTransfers;
     }
 
     /**

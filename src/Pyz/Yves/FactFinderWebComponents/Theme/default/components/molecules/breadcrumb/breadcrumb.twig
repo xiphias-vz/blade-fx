@@ -1,0 +1,30 @@
+{% extends model('component') %}
+
+{% define config = {
+    name: 'breadcrumb'
+} %}
+
+{% define data = {
+    properties: {
+        component: '',
+        items: []
+    }
+} %}
+
+{% block body %}
+    <span>You are searching for: </span>
+    {#{{ dump(data) }}#}
+    <ff-breadcrumb-trail {{ data.properties.component|raw }}>
+
+        {% for item in data.properties.items %}
+            <ff-breadcrumb-trail-item type="{{ item }}">
+                <span class="{{ item ~ '__item' }}">
+                    {% verbatim %}
+                        {{{ text }}}
+                    {% endverbatim %}
+                </span>
+            </ff-breadcrumb-trail-item>
+        {% endfor %}
+
+    </ff-breadcrumb-trail>
+{% endblock %}

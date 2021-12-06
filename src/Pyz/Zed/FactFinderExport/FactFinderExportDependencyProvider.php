@@ -14,6 +14,41 @@ class FactFinderExportDependencyProvider extends AbstractBundleDependencyProvide
 {
     public const SERVICE_FILE_SYSTEM = 'SERVICE_FILE_SYSTEM';
 
+    //su sumnjam da trebamo povezati clienta FactFindera SDK jer je ova
+    // cijela logika radila bez toga. ali ću napisati sad samo zato da sam
+    // prošao cijele integration guiove.
+    // PLUS OVO JE SVE U YVESU A OVAJ EXPORT JE U ZEDU!!!!!!!!!!!!!
+    public const FACT_FINDER_SDK_CLIENT = 'FACT_FINDER_SDK_CLIENT';
+
+    /**
+     * @param \Spryker\Zed\Kernel\Container $container
+     *
+     * @return \Spryker\Zed\Kernel\Container
+     */
+    public function provideDependencies(Container $container): Container
+    {
+        return $this->provideClients($container);
+    }
+
+    /**
+     * @param \Spryker\Zed\Kernel\Container $container
+     *
+     * @return \Spryker\Zed\Kernel\Container
+     */
+    protected function provideClients(Container $container): Container
+    {
+        $container[self::FACT_FINDER_SDK_CLIENT] = function () use ($container) {
+            return $container->getLocator()
+                ->factFinderSdk()
+                ->client();
+        };
+
+        return $container;
+    }
+
+// Stari dio još od tiketa 961 i 1150
+// DALEKO BITNIJI DIO OD OVOG IZNAD
+
     /**
      * @param \Spryker\Zed\Kernel\Container $container
      *
@@ -22,9 +57,8 @@ class FactFinderExportDependencyProvider extends AbstractBundleDependencyProvide
     public function provideBusinessLayerDependencies(Container $container): Container
     {
         $container = parent::provideBusinessLayerDependencies($container);
-        $container = $this->addFileSystemService($container);
 
-        return $container;
+        return $this->addFileSystemService($container);
     }
 
     /**
@@ -35,9 +69,8 @@ class FactFinderExportDependencyProvider extends AbstractBundleDependencyProvide
     public function provideCommunicationLayerDependencies(Container $container): Container
     {
         $container = parent::provideBusinessLayerDependencies($container);
-        $container = $this->addFileSystemService($container);
 
-        return $container;
+        return $this->addFileSystemService($container);
     }
 
     /**

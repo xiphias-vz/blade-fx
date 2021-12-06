@@ -113,6 +113,15 @@
                     {% block pageInfo %}
                         {% block breadcrumbs %}
                             {% include molecule('breadcrumb') only %}
+                            {#{% include molecule('breadcrumb', 'FactFinderWebComponents') only %}
+                            {% include molecule('breadcrumb', 'FactFinderWebComponents') with {
+                                data: {
+                                    properties: {
+                                        component: 'show-only="false"',
+                                        items: [],
+                                    }
+                                }
+                            } %}#}
                         {% endblock %}
 
                         {% block title %}
@@ -196,15 +205,18 @@
 
             let suggestSearchContainer = document.querySelector(".suggest-search__container");
             let searchTerm = document.querySelector(".suggest-search__input").value;
+            let noResultsForSearchSuggestion = document.getElementById("NoResultsForSearchSuggestion");
 
-            if(suggestSearchContainer.contains(document.getElementById("NoResultsForSearchSuggestion"))){
-                if(searchTerm != "")
-                {
-                    window.dataLayer.push({
+            if(noResultsForSearchSuggestion !== null) {
+                if(suggestSearchContainer.contains(noResultsForSearchSuggestion)){
+                    if(searchTerm != "")
+                    {
+                        window.dataLayer.push({
                         'event': 'zeroResultsSearch',
                         'searchTerm': searchTerm,
                         'searchResults': 0
                     });
+                    }
                 }
             }
         }

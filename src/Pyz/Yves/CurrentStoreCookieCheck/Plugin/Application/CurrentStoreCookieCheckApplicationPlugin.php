@@ -11,9 +11,13 @@ use Spryker\Service\Container\ContainerInterface;
 use Spryker\Shared\ApplicationExtension\Dependency\Plugin\ApplicationPluginInterface;
 use Spryker\Yves\Kernel\AbstractPlugin;
 
+/**
+ * @method \Pyz\Yves\CurrentStoreCookieCheck\CurrentStoreCookieCheckConfig getConfig()
+ */
 class CurrentStoreCookieCheckApplicationPlugin extends AbstractPlugin implements ApplicationPluginInterface
 {
     public const CURRENT_STORE_COOKIE = 'currentStoreCookie';
+    public const CURRENT_STORE_SAP_ID = 'sapStoreId';
 
     /**
      * @param \Spryker\Service\Container\ContainerInterface $container
@@ -23,6 +27,7 @@ class CurrentStoreCookieCheckApplicationPlugin extends AbstractPlugin implements
     public function provide(ContainerInterface $container): ContainerInterface
     {
         $container = $this->getCurrentStoreCookie($container);
+        $container = $this->getCurrentStoreSapId($container);
 
         return $container;
     }
@@ -36,6 +41,23 @@ class CurrentStoreCookieCheckApplicationPlugin extends AbstractPlugin implements
     {
         $container->set(static::CURRENT_STORE_COOKIE, function () {
             return $_COOKIE['current_store'] ?? null;
+        });
+
+        return $container;
+    }
+
+    /**
+     * @param \Spryker\Service\Container\ContainerInterface $container
+     *
+     * @return \Spryker\Service\Container\ContainerInterface
+     */
+    protected function getCurrentStoreSapId(ContainerInterface $container): ContainerInterface
+    {
+        $container->set(static::CURRENT_STORE_SAP_ID, function () {
+            $sapIdList = $this->getConfig()->getCurrentStoreSapId();
+            $currentStore = $_COOKIE['current_store'] ?? null;
+
+            return array_search($currentStore, $sapIdList);
         });
 
         return $container;

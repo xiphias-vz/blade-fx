@@ -166,6 +166,8 @@ use Spryker\Zed\Twig\Communication\Console\CacheWarmerConsole;
 use Spryker\Zed\Twig\Communication\Plugin\Application\TwigApplicationPlugin;
 use Spryker\Zed\Uuid\Communication\Console\UuidGeneratorConsole;
 use Spryker\Zed\ZedNavigation\Communication\Console\BuildNavigationConsole;
+use SprykerEco\Zed\FactFinderNg\Communication\Console\FactFinderNgImportSearchConsole;
+use SprykerEco\Zed\FactFinderSdk\Communication\Console\FactFinderSdkExportConsole;
 use SprykerSdk\Spryk\Console\SprykBuildConsole;
 use SprykerSdk\Spryk\Console\SprykDumpConsole;
 use SprykerSdk\Spryk\Console\SprykRunConsole;
@@ -381,6 +383,10 @@ class ConsoleDependencyProvider extends SprykerConsoleDependencyProvider
             new FactFinderPriceConsole(),
             new FactFinderExportConsole(),
             new FactFinderCategoriesConsole(),
+
+            new FactFinderNgImportSearchConsole(),
+            new FactFinderSdkExportConsole(),
+
         ];
 
         $propelCommands = $container->getLocator()->propel()->facade()->getConsoleCommands();

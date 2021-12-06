@@ -1,0 +1,24 @@
+{% extends template('page-layout-catalog', 'CatalogPage') %}
+
+{% define data = {
+} %}
+
+{% block form %}
+    {{parent()}}
+
+{#    afterSearchNavigation: factFinderSearchResponse.getAfterSearchNavigation#}
+
+    {% include '@FactFinder/layout/catalog/filters.twig' with {
+    } %}
+
+    {% include '@FactFinder/layout/partials/sort.twig' %}
+
+    {% include '@FactFinder/search/partials/pagination.twig' with {
+        showAlwaysFirstAndLast: true
+    } %}
+
+{#    {% if data.searchString is not empty %}#}
+{#        <input type="hidden" name="q" value="{{ data.searchString }}">#}
+{#    {% endif %}#}
+
+{% endblock %}

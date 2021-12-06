@@ -37,9 +37,9 @@ use Spryker\Client\SearchElasticsearch\Plugin\QueryExpander\SuggestionByTypeQuer
 use Spryker\Client\SearchElasticsearch\Plugin\ResultFormatter\CompletionResultFormatterPlugin;
 use Spryker\Client\SearchElasticsearch\Plugin\ResultFormatter\FacetResultFormatterPlugin;
 use Spryker\Client\SearchElasticsearch\Plugin\ResultFormatter\PaginatedResultFormatterPlugin;
-use Spryker\Client\SearchElasticsearch\Plugin\ResultFormatter\SortedResultFormatterPlugin;
 use Spryker\Client\SearchElasticsearch\Plugin\ResultFormatter\SpellingSuggestionResultFormatterPlugin;
 use Spryker\Client\SearchElasticsearch\Plugin\ResultFormatter\SuggestionByTypeResultFormatterPlugin;
+use SprykerEco\Client\FactFinderNg\Plugin\ElasticSearch\ResultFormatter\FactFinderSortedResultFormatterPlugin;
 
 class CatalogDependencyProvider extends SprykerCatalogDependencyProvider
 {
@@ -106,7 +106,8 @@ class CatalogDependencyProvider extends SprykerCatalogDependencyProvider
     {
         return [
             new FacetResultFormatterPlugin(),
-            new SortedResultFormatterPlugin(),
+            // new SortedResultFormatterPlugin(),
+            new FactFinderSortedResultFormatterPlugin(),
             new PaginatedResultFormatterPlugin(),
             new CurrencyAwareCatalogSearchResultFormatterPlugin(
                 new RawCatalogSearchResultFormatterPlugin()

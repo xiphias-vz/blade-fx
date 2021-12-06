@@ -1,0 +1,22 @@
+@mixin paging($name: '.paging') {
+    #{$name} {
+        .ffw-page-item-container {
+            display: flex;
+            border: rem(1) solid $setting-color-gray-15;
+            width: rem(40);
+            height: rem(40);
+            padding: rem(5);
+            align-items: center;
+            justify-content: center;
+        }
+        .ffw-selected{
+            background-color: $setting-color-gray-1;
+            color: $setting-color-black
+        }
+        .step {
+            color: $setting-color-gray-9;
+        }
+    }
+}
+
+@include paging();

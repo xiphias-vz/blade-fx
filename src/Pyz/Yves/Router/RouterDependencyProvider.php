@@ -12,6 +12,7 @@ use Pyz\Yves\CheckoutPage\Plugin\Router\CheckoutPageRouteProviderPlugin;
 use Pyz\Yves\CustomerPage\Plugin\Router\CustomerPageRouteProviderPlugin;
 use Pyz\Yves\ErrorPage\Plugin\Router\ErrorPageRouteProviderPlugin;
 use Pyz\Yves\ExampleProductSalePage\Plugin\Router\ExampleProductSaleRouteProviderPlugin;
+use Pyz\Yves\FactFinderGui\Plugin\Router\FactFinderGuiRouteProviderPlugin;
 use Pyz\Yves\StoreSwitcherWidget\Plugin\Router\StoreSwitcherWidgetRouteProviderPlugin;
 use Pyz\Yves\WishlistPage\Plugin\Router\WishlistPageRouteProviderPlugin;
 use Spryker\Yves\HealthCheck\Plugin\Router\HealthCheckRouteProviderPlugin;
@@ -98,6 +99,7 @@ class RouterDependencyProvider extends SprykerRouterDependencyProvider
             new PayoneRouteProviderPlugin(), #Payone
             new StoreSwitcherWidgetRouteProviderPlugin(),
             new OrderCancelWidgetRouteProviderPlugin(),
+            new FactFinderGuiRouteProviderPlugin(),
         ];
     }
 

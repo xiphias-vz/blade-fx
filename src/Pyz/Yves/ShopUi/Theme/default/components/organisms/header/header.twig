@@ -5,6 +5,7 @@
     showStoreSwitches: true,
     showLangCurrencySwitches: true,
     currentCodeBucket: app.currentCodeBucket,
+    storeId: app.sapStoreId
 } %}
 
 {% define hamburgerIcon = {
@@ -26,6 +27,22 @@
     {% embed molecule('popup-ui-shipment-form') with {
     } only %}
     {% endembed %}
+
+    {# ovo je samo za test primjer jer lokalno imam češku a tiket je za njemačku #}
+    {% if data.currentCodeBucket == 'DE' %}
+        {% include atom('communication', 'FactFinderWebComponents') with {
+            data: {
+                properties: {
+                    component: 'url="https://globus-sb.fact-finder.de/fact-finder"
+                        version="ng"
+                        api="v4"
+                        channel="Spryker"
+                        default-query="globus"
+                        search-immediate="true"
+                        add-params="marketId=' ~ data.storeId ~ '"'                },
+            }
+        } only %}
+    {% endif %}
 
     {% if data.currentCodeBucket=='DE' %}
         <div class="{{ config.name }}__meta-navigation-top">
@@ -223,6 +240,8 @@
                                                 'data-search-id': 'desktop',
                                             },
                                         } only %}
+                                        {#{% include molecule('search-form', 'FactFinder') only %}#}
+
                                     </div>
                                 {% endif %}
 

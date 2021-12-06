@@ -1,0 +1,23 @@
+{% extends model('component') %}
+
+{% define config = {
+    name: 'paging'
+} %}
+
+{% define data = {
+    properties: {
+        component: ''
+    }
+} %}
+
+{% block body %}
+    <ff-paging {{ data.properties.component|raw }} id="paging">
+        {% verbatim %}
+            <ff-paging-item class="step" type="currentLink -2">{{  caption }}</ff-paging-item>
+            <ff-paging-item class="step" type="currentLink -1">{{caption }}</ff-paging-item>
+            <ff-paging-item type="currentLink">{{ caption }}</ff-paging-item>
+            <ff-paging-item class="step" type="currentLink +1">{{ caption }}</ff-paging-item>
+            <ff-paging-item class="step" type="currentLink +2">{{ caption }}</ff-paging-item>
+        {% endverbatim %}
+    </ff-paging>
+{% endblock %}

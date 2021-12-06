@@ -22,6 +22,7 @@
         config: _view.pagination.config,
         currentItemsPerPage: _view.pagination.currentItemsPerPage,
     },
+    currentCodeBucket: app.currentCodeBucket
 } %}
 {% block container %}
     {% if app.currentCodeBucket == 'CZ' %}
@@ -45,18 +46,24 @@
         {% set breadcrumbSteps = _self.renderBreadcrumbSteps(data.category, false, data.filterPath) %}
         <div class="container">
             <div class="container__inner">
-                {% block breadcrumb %}
-                    {% embed molecule('breadcrumb') with {
-                        modifiers: ['no-border'],
-                        embed: {
-                            breadcrumbs: breadcrumbSteps
-                        }
-                    } only %}
-                        {% block breadcrumbs %}
-                            {{ embed.breadcrumbs }}
-                        {% endblock %}
-                    {% endembed %}
-                {% endblock %}
+                {% if data.currentCodeBucket != 'DE' %}
+                    {% block breadcrumb %}
+                        {% embed molecule('breadcrumb') with {
+                            modifiers: ['no-border'],
+                            embed: {
+                                breadcrumbs: breadcrumbSteps
+                            }
+                        } only %}
+                            {% block breadcrumbs %}
+                                {{ embed.breadcrumbs }}
+                            {% endblock %}
+                        {% endembed %}
+                    {% endblock %}
+                {% else %}
+                    {% include molecule('breadcrumb', 'FactFinderWebComponents') with {
+
+                    } %}
+                {% endif %}
             </div>
         </div>
     {% endblock %}
@@ -88,19 +95,30 @@
                 <form method="GET" class="grid js-catalog-filter-target js-form-input-default-value-disabler__catalog-form {{ catalogJsName }}__form">
                     {% block form %}
                         <div class="col col--sm-12 col--xl-3 catalog-left-side">
-                            {% block filterSection %}
-                                {% include organism('filter-section', 'CatalogPage') with {
+                            {% if data.currentCodeBucket != 'DE' %}
+                                {% block filterSection %}
+                                    {% include organism('filter-section', 'CatalogPage') with {
+                                        data: {
+                                            facets: data.facets,
+                                            category: data.category,
+                                            filterPath: data.filterPath,
+                                            categories: data.categories,
+                                            togglerClass: 'js-catalog-toggler-click__trigger',
+                                            parentJsName: catalogJsName,
+                                            sort: data.sort,
+                                        },
+                                    } only %}
+                                {% endblock %}
+                            {% else %}
+                                {% include molecule('facets-asn', 'FactFinderWebComponents') with {
                                     data: {
-                                        facets: data.facets,
-                                        category: data.category,
-                                        filterPath: data.filterPath,
-                                        categories: data.categories,
-                                        togglerClass: 'js-catalog-toggler-click__trigger',
-                                        parentJsName: catalogJsName,
-                                        sort: data.sort,
-                                    },
+                                        properties: {
+                                            component: '',
+                                            record: ''
+                                        },
+                                    }
                                 } only %}
-                            {% endblock %}
+                            {% endif %}
                         </div>
                         <div class="col col--sm-12 col--xl-9 catalog-right-side">
                             <button type="button" class="button button--hollow button--expand spacing-y spacing-y--big is-hidden-xl-only js-catalog-toggler-click__trigger">
@@ -114,14 +132,97 @@
                             </button>
                             {% block catalogContent %}
                                 <div class="grid">
-                                    {% include molecule('sorting-toggler', 'CatalogPage') with {
+                                    {% if data.currentCodeBucket != 'DE' %}
+                                        {% include molecule('sorting-toggler', 'CatalogPage') with {
+                                            data: {
+                                                sort: data.sort,
+                                                togglerClass: 'js-catalog-toggler-click__trigger',
+                                                parentJsName: catalogJsName,
+                                            },
+                                        } only %}
+                                    {% else %}
+                                        {% include molecule('sortbox', 'FactFinderWebComponents') with {
+                                            data: {
+                                                properties: {
+                                                    compontnt: 'collapse-onblur="true"'
+                                                },
+                                            }
+                                        } only %}
+                                    {% endif %}
+                                    <div id="firstSortElement" class="col col--lg-8 col--md-6 col--sm-2 col--right" style="z-index: 10">
+                                        {% if data.currentCodeBucket != 'DE' %}
+                                            {% include molecule('sort-number-products', 'CatalogPage') with {
+                                                data: {
+                                                    pagination: data.pagination,
+                                                    sort: data.sort,
+                                                    parentJsName: catalogJsName,
+                                                },
+                                            } only %}
+                                    {% else %}
+                                            {% include molecule('products-per-page', 'FactFinderWebComponents') with {
+                                                data: {
+                                                    properties: {
+                                                        dropdown: 'show-selected="true"
+                                                            collapse-onblur="true"'
+                                                    },
+                                                }
+                                            } only %}
+                                        {% endif %}
+                                    </div>
+                                </div>
+
+                                {#{{ dump(data.products[0]) }}#}
+                                {#{{ dump(product) }}#}
+                                {#{{ dump(data.viewMode) }}#}
+                                {% if data.currentCodeBucket != 'DE' %}
+                                    <div class="grid {% if data.viewMode != 'list' %}grid--stretch product-list{% endif %}">
+                                        {% if data.products %}
+                                            {% for product in data.products %}
+                                                {% if data.pagination.currentPage == 1  %}
+                                                    {% widget 'CatalogPageProductWidget' args [product, data.viewMode, loop.index] only %}{% endwidget %}
+                                                {% else %}
+                                                    {% set index = loop.index + ((data.pagination.currentPage - 1) * data.pagination.currentItemsPerPage) | default(0) %}
+                                                    {% widget 'CatalogPageProductWidget' args [product, data.viewMode, index] only %}{% endwidget %}
+                                             {% endif %}
+                                            {% endfor %}
+                                        {% else %}
+                                            {% block noResults %}{{ parent() }}<input action="action" type="button" value="{{ 'homepage.carousel.previous' | trans}}" class="{{ color }}" style=" color: white;
+                                                                                border-radius: 5px; padding: 5px; margin-left: auto; margin-right: auto; width: 150px; cursor:pointer; font-family: Fira Sans, sans-serif; line-height: 1.7; font-weight: 500;
+                                                                                margin-top: 20px;" onclick="window.history.go(-1); return false;"/>{% endblock %}
+
+                                        {% endif %}
+                                    </div>
+                                {% else %}
+                                    {% include molecule('record-list', 'FactFinderWebComponents') with {
                                         data: {
-                                            sort: data.sort,
-                                            togglerClass: 'js-catalog-toggler-click__trigger',
-                                            parentJsName: catalogJsName,
-                                        },
+                                            properties: {
+                                                component: '',
+                                                record: ''
+                                            },
+                                            products: data.products
+                                        }
                                     } only %}
-                                    <div id="firstSortElement" class="col col--sm-6 col--right" style="z-index: 10">
+                                {% endif %}
+
+                                <div class="col col--sm-12 col--md-9 col--lg-10 menu--inline">
+                                    {% if data.currentCodeBucket != 'DE' %}
+                                        {% include molecule('pagination') with {
+                                            data: data.pagination
+                                        } only %}
+                                    {% else %}
+                                        {% include molecule('paging', 'FactFinderWebComponents') with {
+                                            data: {
+                                                properties: {
+                                                    dropdown: 'show-selected="true"
+                                                            collapse-onblur="true"'
+                                                },
+                                            }
+                                        } only %}
+                                    {% endif %}
+                                </div>
+
+                                <div id="secondSortElement" class="col col--lg-2 col--sm-3 float-right col--md-3 menu--inline" style="z-index: 10">
+                                    {% if data.currentCodeBucket != 'DE' %}
                                         {% include molecule('sort-number-products', 'CatalogPage') with {
                                             data: {
                                                 pagination: data.pagination,
@@ -129,41 +230,16 @@
                                                 parentJsName: catalogJsName,
                                             },
                                         } only %}
-                                    </div>
-                                </div>
-
-                                <div class="grid {% if data.viewMode != 'list' %}grid--stretch product-list{% endif %}">
-                                    {% if data.products %}
-                                        {% for product in data.products %}
-                                            {% if data.pagination.currentPage == 1  %}
-                                                {% widget 'CatalogPageProductWidget' args [product, data.viewMode, loop.index] only %}{% endwidget %}
-                                            {% else %}
-                                                {% set index = loop.index + ((data.pagination.currentPage - 1) * data.pagination.currentItemsPerPage) | default(0) %}
-                                                {% widget 'CatalogPageProductWidget' args [product, data.viewMode, index] only %}{% endwidget %}
-                                         {% endif %}
-                                        {% endfor %}
                                     {% else %}
-                                        {% block noResults %}{{ parent() }}<input action="action" type="button" value="{{ 'homepage.carousel.previous' | trans}}" class="{{ color }}" style=" color: white;
-                                                                            border-radius: 5px; padding: 5px; margin-left: auto; margin-right: auto; width: 150px; cursor:pointer; font-family: Fira Sans, sans-serif; line-height: 1.7; font-weight: 500;
-                                                                            margin-top: 20px;" onclick="window.history.go(-1); return false;"/>{% endblock %}
-
+                                        {% include molecule('products-per-page', 'FactFinderWebComponents') with {
+                                            data: {
+                                                properties: {
+                                                    dropdown: 'show-selected="true"
+                                                            collapse-onblur="true"'
+                                                },
+                                            }
+                                        } only %}
                                     {% endif %}
-                                </div>
-
-                                <div class="col col--sm-12 col--md-9 col--lg-10 menu--inline">
-                                    {% include molecule('pagination') with {
-                                        data: data.pagination
-                                    } only %}
-                                </div>
-
-                                <div id="secondSortElement" class="col col--lg-2 col--sm-3 float-right col--md-3 menu--inline" style="z-index: 10">
-                                    {% include molecule('sort-number-products', 'CatalogPage') with {
-                                        data: {
-                                            pagination: data.pagination,
-                                            sort: data.sort,
-                                            parentJsName: catalogJsName,
-                                        },
-                                    } only %}
                                 </div>
                                 <script type="text/javascript">
                                         window.dataLayer = window.dataLayer || [];

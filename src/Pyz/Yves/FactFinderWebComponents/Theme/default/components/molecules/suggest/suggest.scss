@@ -1,0 +1,40 @@
+@mixin suggest($name: '.suggest') {
+    #{$name} {
+        .ffw-suggestContainerWrapper {
+            /*display: inline-block;*/
+            padding-top: rem(14);
+            min-width: auto;
+            background-color: white;
+            width: inherit;
+        }
+
+        .ffw-suggestContainer {
+            padding-left: rem(60);
+        }
+
+        &__button-search-cart{
+            background-color: white;
+            padding-left:15px;
+            padding-right:0px;
+            padding-top:7px;
+            padding-bottom:7px;
+            margin-top:20px;
+            margin-left:20px;
+            float: right;
+
+            &:hover {
+                cursor: pointer;
+                text-decoration: none;
+                border-radius: 25px;
+                padding-left:18px;
+                padding-right:3px;
+                padding-top:10px;
+                padding-bottom:10px;
+                background: $setting-color-gray-2;
+            }
+        }
+    }
+}
+
+@include suggest();
+

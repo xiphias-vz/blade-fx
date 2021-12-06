@@ -11,10 +11,12 @@
     noPriceText: '---',
     calculatedPrice: null,
     itemWeight: null,
-    prefix: null
+    prefix: null,
+    currencySymbol: app.currentCurrencySymbol,
 } %}
 
 {% block body %}
+    {#{{ dump(data) }}#}
          {% if data.itemWeight is not null -%}
             {{ data.calculatedPrice }}
         {%- else -%}

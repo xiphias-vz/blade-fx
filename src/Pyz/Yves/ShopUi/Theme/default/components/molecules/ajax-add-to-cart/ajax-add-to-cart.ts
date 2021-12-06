@@ -23,27 +23,32 @@ export default class AjaxAddToCart extends Component {
     protected timer;
     protected callBackDelay: number;
 
+    protected load() {
+        window.addEventListener('load', () => {
+            this.links = <HTMLLinkElement[]>Array.from(document.getElementsByClassName(this.addToCartLinkClass));
+            this.addToCartIncrementerLinks = <HTMLElement[]>Array.from(document.getElementsByClassName(this.addToCartIncrementer));
+            this.addtoCartDecrementerLinks = <HTMLElement[]>Array.from(document.getElementsByClassName(this.addToCartDecrementer));
+            this.quantityInputs = <HTMLInputElement[]>Array.from(document.querySelectorAll('#txt-product-quantity'));
+
+            if (!this.links.length) {
+                return;
+            }
+            this.icon = <HTMLElement>document.getElementsByClassName(this.iconClass)[0];
+            this.cartBlock = <HTMLElement>document.getElementsByClassName(this.cartClass)[0];
+            this.amount = <HTMLElement[]>Array.from(document.getElementsByClassName(this.amountClass));
+            this.quantity = <HTMLElement[]>Array.from(document.getElementsByClassName(this.quantityClass));
+            this.flashMessages = <FlashMessage[]>Array.from(this.getElementsByClassName(this.flashMessagesClass));
+            this.notificationArea = <HTMLElement>this.getElementsByClassName(this.notificationAreaClass)[0];
+            this.messagesTextHolders = <HTMLElement[]>Array.from(
+                this.getElementsByClassName(this.messagesTextHolderClass)
+            );
+            this.callBackDelay = 800;
+
+            this.mapEvents();
+        })
+    }
     protected readyCallback(): void {
-        this.links = <HTMLLinkElement[]>Array.from(document.getElementsByClassName(this.addToCartLinkClass));
-        this.addToCartIncrementerLinks = <HTMLElement[]>Array.from(document.getElementsByClassName(this.addToCartIncrementer));
-        this.addtoCartDecrementerLinks = <HTMLElement[]>Array.from(document.getElementsByClassName(this.addToCartDecrementer));
-        this.quantityInputs = <HTMLInputElement[]>Array.from(document.querySelectorAll('#txt-product-quantity'));
-
-        if (!this.links.length) {
-            return;
-        }
-        this.icon = <HTMLElement>document.getElementsByClassName(this.iconClass)[0];
-        this.cartBlock = <HTMLElement>document.getElementsByClassName(this.cartClass)[0];
-        this.amount = <HTMLElement[]>Array.from(document.getElementsByClassName(this.amountClass));
-        this.quantity = <HTMLElement[]>Array.from(document.getElementsByClassName(this.quantityClass));
-        this.flashMessages = <FlashMessage[]>Array.from(this.getElementsByClassName(this.flashMessagesClass));
-        this.notificationArea = <HTMLElement>this.getElementsByClassName(this.notificationAreaClass)[0];
-        this.messagesTextHolders = <HTMLElement[]>Array.from(
-            this.getElementsByClassName(this.messagesTextHolderClass)
-        );
-        this.callBackDelay = 800;
-
-        this.mapEvents();
+        this.load();
     }
 
     protected mapEvents(): void {
@@ -87,7 +92,7 @@ export default class AjaxAddToCart extends Component {
         clearTimeout(this.timer);
         const quantityInput: HTMLInputElement = <HTMLInputElement>incrementer.previousElementSibling;
         let quantity: number = Number(quantityInput.value);
-        quantity += 1;
+        quantity++;
         quantityInput.value = String(quantity);
         this.timer = setTimeout(() => {
             this.sendRequest(incrementer.href, incrementer, String(quantityInput.value), 'ADD');
@@ -100,7 +105,7 @@ export default class AjaxAddToCart extends Component {
         clearTimeout(this.timer);
         const quantityInput: HTMLInputElement = <HTMLInputElement>decrementer.nextElementSibling;
         let quantity: number = Number(quantityInput.value);
-        quantity -= 1;
+        quantity--;
         quantityInput.value = String(quantity);
         this.toggleCounterAndAjaxButtons(decrementer, 'REMOVE', quantity);
 
@@ -130,17 +135,24 @@ export default class AjaxAddToCart extends Component {
                 myQuantity: quantity
             },
             success(data, status, xhr) {
+                if(data.error !== '') {
+                    that.setMessages(data.error);
+                    that.showMessages();
+                    return;
+                }
+
                 that.updateItemQuantityInput(link, data.itemQuantity);
                 that.replaceQuantity(data.quantity);
                 that.replaceAmount(data.amount);
                 that.hideIcon();
                 that.showQuantity();
 
-                that.showCounterAndHideAjaxButton(link);
                 const isCounterVisible = operation !== null;
 
                 if (isCounterVisible) {
                     that.showMessage(data, link);
+                } else {
+                    that.showCounterAndHideAjaxButton(link);
                 }
             },
             error(jqXhr, textStatus, errorMessage) {

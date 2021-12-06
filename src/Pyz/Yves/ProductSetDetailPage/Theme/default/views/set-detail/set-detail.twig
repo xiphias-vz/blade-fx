@@ -18,4 +18,13 @@
             images: data.set.imageSets.0.images | default([])
         }
     } only %}
+
+    {#{% include molecule('record-list', 'FactFinderWebComponents') with {
+        data: {
+            properties: {
+                component: '',
+                record: ''
+            }
+        }
+    } only %}#}
 {% endblock %}

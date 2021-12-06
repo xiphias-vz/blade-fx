@@ -11,6 +11,7 @@ use Pyz\Yves\CartPage\Plugin\Twig\CartTwigPlugin;
 use Pyz\Yves\CatalogPage\Plugin\Twig\CategoryFilterTwigPlugin;
 use Pyz\Yves\CmsPage\Plugin\Twig\CmsTwigPlugin;
 use Pyz\Yves\Matomo\Plugin\Twig\MatomoTwigPlugin;
+use Pyz\Yves\Twig\Plugin\TypeCastingPlugin;
 use Pyz\Yves\TwigCache\Plugin\Twig\TwigCacheExtensionTwigPlugin;
 use Spryker\Service\UtilDateTime\Plugin\Twig\DateTimeFormatterTwigPlugin;
 use Spryker\Shared\Twig\Plugin\DebugTwigPlugin;
@@ -90,6 +91,7 @@ class TwigDependencyProvider extends SprykerTwigDependencyProvider
             new TwigCacheExtensionTwigPlugin(),
             new ContentNavigationTwigPlugin(),
             new MatomoTwigPlugin(),
+            new TypeCastingPlugin(),
         ];
     }
 

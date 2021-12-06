@@ -4,9 +4,45 @@
     navigation: navigation,
 } %}
 {% block body %}
-    {% include molecule('navigation-header') with {
-        data: {
-            nodes: data.navigation.nodes
-        },
-    } only %}
+    <style>
+        .my-item {
+            background-color: white;
+            padding: 5px;
+            width: 200px;
+        }
+        ff-navigation-item {
+            width: 25em;
+            height: 24px;
+            float: right;
+            margin-top: 10px;
+            margin-right: 5px;
+            left: unset!important;
+        }
+        .ffw-item-container {
+            left: unset!important;
+            right: 100%;
+        }
+    </style>
+{#    {% include molecule('navigation-header') with {#}
+{#        data: {#}
+{#            nodes: data.navigation.nodes#}
+{#        },#}
+{#    } only %}#}
+    <ff-navigation layout="vertical">
+        <ff-navigation-item>
+            <div class="navigation-multilevel-node__link navigation-multilevel-node__link--header navigation-multilevel-node__link--lvl-1 ">
+                <a href="{{"{{previewImageURL}}"}}" class="navigation-multilevel-node__link-inner navigation-multilevel-node__link-inner--lvl-1">
+                    {{"{{name}}"}}
+                </a>
+            </div>
+        </ff-navigation-item>
+        <ff-navigation-item type="header">
+            <div class="navigation-multilevel-node__link navigation-multilevel-node__link--header navigation-multilevel-node__link--lvl-1 ">
+                <a href="{{"{{previewImageURL}}"}}" class="navigation-multilevel-node__link-inner navigation-multilevel-node__link-inner--lvl-1">
+                    {{"{{name}}"}}
+                </a>
+            </div>
+        </ff-navigation-item>
+    </ff-navigation>
+
 {% endblock %}

@@ -1,0 +1,75 @@
+{% extends model('component') %}
+
+{% block extraClass %} {{ config.jsName }}{% endblock %}
+
+{% define config = {
+    name: 'searchbox',
+    tag: 'search-box'
+} %}
+
+{% define data = {
+    properties: {
+        component: ''
+    },
+} %}
+
+{% block body %}
+    {#{{ dump(data) }}#}
+    {% block searchButton %}
+        <ff-searchbutton>
+            <button class="{{ config.name }}__submit button button--skinless">
+                {% if app.currentCodeBucket == 'DE' %}
+                    {% include atom('icon') with {
+                        class: 'icon--color-orange',
+                        modifiers: ['big'],
+                        data: {
+                            name: 'search',
+                        },
+                    } only %}
+                {% else %}
+                    {% include atom('icon') with {
+                        class: 'icon--color-green',
+                        modifiers: ['big'],
+                        data: {
+                            name: 'search',
+                        },
+                    } only %}
+                {% endif %}
+            </button>
+        </ff-searchbutton>
+    {% endblock %}
+
+
+    {% block searchField %}
+        <ff-searchbox {{ data.properties.component|raw }}>
+            <input name="q"
+                   type="text"
+                   class="input input--expand input--search suggest-search__input {{ config.name }}__input {{ config.jsName }}__input--{{ attributes['data-search-id'] }}"
+                   placeholder="{{ 'global.search' | trans }}"
+                   value="{{ data.searchValue }}"
+                   autocomplete="off">
+        </ff-searchbox>
+    {% endblock %}
+
+
+
+    {% block cancelSearchButton %}
+        <button class="{{ config.name }}__clear button button--clear is-hidden" type="button" >
+            {% if app.currentCodeBucket == 'DE' %}
+                {% include atom('icon') with {
+                    class: 'icon--color-orange',
+                    data: {
+                        name: 'close-circle',
+                    },
+                } only %}
+            {% else %}
+                {% include atom('icon') with {
+                    class: 'icon--color-green',
+                    data: {
+                        name: 'close-circle',
+                    },
+                } only %}
+            {% endif %}
+        </button>
+    {% endblock %}
+{% endblock %}

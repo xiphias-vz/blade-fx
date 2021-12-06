@@ -24,6 +24,15 @@
             {% set market = data.markt %}
         {% endif %}
 
+        <!-- Fact finder head -->
+        <!-- Do not change the order of the scripts to ensure all required polyfills are loaded before our script -->
+        {#<script src="../node_modules/ff-web-components/dist/vendor/custom-elements-es5-adapter.js"></script>
+        <script src="../node_modules/ff-web-components/dist/vendor/webcomponents-loader.js"></script>
+        <script defer src="../node_modules/ff-web-components/dist/bundle.js"></script>#}
+      {#  <script src="{{ publicPath('js/custom-elements-es5-adapter.js') }}"></script>
+        <script src="{{ publicPath('js/webcomponents-loader.js') }}"></script>
+        <script defer src="{{ publicPath('js/bundle.js') }}"></script>#}
+
         {% if is_granted('IS_AUTHENTICATED_FULLY') %}
             <script>
                 window.dataLayer = window.dataLayer || [];

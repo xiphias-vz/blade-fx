@@ -116,7 +116,9 @@ const getAppSettingsByTheme = (namespaceConfig, theme, pathToConfig) => {
         core: globalSettings.paths.core,
 
         // eco folders
-        eco: globalSettings.paths.eco,
+        eco: {
+            modules: globalSettings.paths.eco
+        },
 
         // project folders
         project: globalSettings.paths.project
@@ -160,7 +162,8 @@ const getAppSettingsByTheme = (namespaceConfig, theme, pathToConfig) => {
                 // absolute dirs in which look for
                 dirs: [
                     join(globalSettings.context, paths.core),
-                    join(globalSettings.context, paths.eco),
+                    // join(globalSettings.context, paths.eco),
+                    join(globalSettings.context, paths.eco.modules),
                     join(globalSettings.context, paths.project)
                 ],
                 // files/dirs patterns

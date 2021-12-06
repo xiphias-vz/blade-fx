@@ -17,6 +17,18 @@ use Spryker\Zed\Kernel\Communication\AbstractCommunicationFactory;
  */
 class FactFinderExportCommunicationFactory extends AbstractCommunicationFactory
 {
+    // funkcija getFactFinderClient() je napisana tu samo da se kao s ovim modulom poveže FactFinderSDK
+    // nakon što su dodate stvari u dependency provider, treba se u factory dodati ovo. zato je to tu.
+    // makar najvjerojatnije nikad to nećemo trebati
+
+    /**
+     * @return \SprykerEco\Client\FactFinderSdk\FactFinderSdkClient
+     */
+    public function getFactFinderClient()
+    {
+        return $this->getProvidedDependency(FactFinderExportDependencyProvider::FACT_FINDER_SDK_CLIENT);
+    }
+
     /**
      * @return \Pyz\Zed\FactFinderExport\Business\Writer\FactFinderExportWriter
      */

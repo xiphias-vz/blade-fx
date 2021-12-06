@@ -29,12 +29,13 @@
 {% endblock %}
 
 {% block body %}
+    {#{{ dump(data) }}#}
     {% block image %}
         {% set attributesWithoutSrc = attributes | merge({'src': ''}) %}
-
+        {#{{ dump(attributesWithoutSrc) }}#}
         {% if data.isImage %}
             {% if attributes.src is defined %}
-                <img onerror="OnErrorChangeImage(this);" class="{{ data.imageClasses }} {{ config.jsName }}__content is-invisible" src="{{ attributes.src }}" data-src="{{ data.imageSrc }}" data-storage="{{ attributes.src }}" {{ component.renderAttributes(attributesWithoutSrc) }}>
+                <img onerror="OnErrorChangeImage(this);" class="{{ data.imageClasses }} {{ config.jsName }}__content" src="{{ attributes.src }}" data-src="{{ data.imageSrc }}" data-storage="{{ attributes.src }}" {{ component.renderAttributes(attributesWithoutSrc) }}>
             {% endif %}
         {% else %}
             <div class="{{ data.imageClasses }} {{ config.jsName }}__content is-invisible" data-background-image="{{ attributes.src }}"></div>

@@ -17,6 +17,7 @@
 {% set isSuggestionsEmpty = not isCompletionVisible and not isProductsVisible and not isCategoriesVisible %}
 
 {% block body %}
+
     {% if isCompletionVisible %}
         {% include molecule('suggestion-links-list', 'CatalogPage') with {
             data: {
@@ -28,7 +29,6 @@
             },
         } only %}
     {% endif %}
-
     {% if isProductsVisible %}
         <h4 class="title title--with-border title--bottom-indent grid grid--justify grid--middle">
             <span class="col">
