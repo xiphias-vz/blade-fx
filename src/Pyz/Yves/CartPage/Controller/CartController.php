@@ -136,7 +136,6 @@ class CartController extends SprykerCartController
             $quantity = $_POST['myQuantity'];
         }
 
-
         if (!$this->isCsrfTokenValid(static::ADD_TO_CART_AJAX_CSRF_TOKEN_NAME, $request)) {
             return $this->createAjaxAddErrorResponse(
                 Response::HTTP_BAD_REQUEST,
@@ -404,7 +403,6 @@ class CartController extends SprykerCartController
                 ->getCsrfTokenManager()
                 ->isTokenValid($csrfToken);
         } else {
-
             return true;
         }
     }

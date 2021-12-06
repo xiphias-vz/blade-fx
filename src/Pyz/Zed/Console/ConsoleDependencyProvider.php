@@ -29,6 +29,7 @@ use Pyz\Zed\DeleteRowsFromTransitionLogScript\Communication\Console\DeleteRowsFr
 use Pyz\Zed\Development\Communication\Console\AcceptanceCodeTestConsole;
 use Pyz\Zed\Development\Communication\Console\ApiCodeTestConsole;
 use Pyz\Zed\Development\Communication\Console\FunctionalCodeTestConsole;
+use Pyz\Zed\FactFinderExport\Communication\Console\FactFinderApiConsole;
 use Pyz\Zed\FactFinderExport\Communication\Console\FactFinderCategoriesConsole;
 use Pyz\Zed\FactFinderExport\Communication\Console\FactFinderConsole;
 use Pyz\Zed\FactFinderExport\Communication\Console\FactFinderExportConsole;
@@ -42,6 +43,7 @@ use Pyz\Zed\Maintenance\Communication\Console\MaintenanceEnableConsole;
 use Pyz\Zed\MultipleStatusesFixScript\Communication\Console\MultipleStatusesFixScriptConsole;
 use Pyz\Zed\Oms\Communication\Console\CheckConditionConsole as OmsCheckConditionConsole;
 use Pyz\Zed\Oms\Communication\Console\CheckTimeoutConsole as OmsCheckTimeoutConsole;
+use Pyz\Zed\PriceProductSchedule\Communication\Console\PriceProductScheduleApplyConsole;
 use Pyz\Zed\PriceProductScheduleDataImport\PriceProductScheduleDataImportConfig;
 use Pyz\Zed\ProductQuantityDataImport\ProductQuantityDataImportConfig;
 use Pyz\Zed\RabbitMq\Communication\Console\InitVirtualHostConsole;
@@ -92,7 +94,6 @@ use Spryker\Zed\Oms\Communication\Console\ClearLocksConsole as OmsClearLocksCons
 use Spryker\Zed\PaymentDataImport\PaymentDataImportConfig;
 use Spryker\Zed\PriceProduct\Communication\Console\PriceProductStoreOptimizeConsole;
 use Spryker\Zed\PriceProductDataImport\PriceProductDataImportConfig;
-use Spryker\Zed\PriceProductSchedule\Communication\Console\PriceProductScheduleApplyConsole;
 use Spryker\Zed\PriceProductSchedule\Communication\Console\PriceProductScheduleCleanupConsole;
 use Spryker\Zed\ProductAlternativeDataImport\ProductAlternativeDataImportConfig;
 use Spryker\Zed\ProductDiscontinued\Communication\Console\DeactivateDiscontinuedProductsConsole;
@@ -376,6 +377,7 @@ class ConsoleDependencyProvider extends SprykerConsoleDependencyProvider
             new PublisherTriggerEventsConsole(),
             new QueueSetupConsole(),
             new FactFinderConsole(),
+            new FactFinderApiConsole(),
             new FactFinderPriceConsole(),
             new FactFinderExportConsole(),
             new FactFinderCategoriesConsole(),

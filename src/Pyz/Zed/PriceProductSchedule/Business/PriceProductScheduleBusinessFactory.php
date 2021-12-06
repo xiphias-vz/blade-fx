@@ -9,8 +9,10 @@ namespace Pyz\Zed\PriceProductSchedule\Business;
 
 use Pyz\Zed\PriceProductSchedule\Business\PriceProductSchedule\Executor\PriceProductScheduleApplyTransactionExecutor;
 use Pyz\Zed\PriceProductSchedule\Business\PriceProductSchedule\PriceProductScheduleApplier;
+use Pyz\Zed\PriceProductSchedule\Business\PriceProductSchedule\PriceProductScheduleDisabler;
 use Spryker\Zed\PriceProductSchedule\Business\PriceProductSchedule\Executor\PriceProductScheduleApplyTransactionExecutorInterface;
 use Spryker\Zed\PriceProductSchedule\Business\PriceProductSchedule\PriceProductScheduleApplierInterface;
+use Spryker\Zed\PriceProductSchedule\Business\PriceProductSchedule\PriceProductScheduleDisablerInterface;
 use Spryker\Zed\PriceProductSchedule\Business\PriceProductScheduleBusinessFactory as SprykerPriceProductScheduleBusinessFactory;
 
 /**
@@ -42,6 +44,20 @@ class PriceProductScheduleBusinessFactory extends SprykerPriceProductScheduleBus
             $this->getRepository(),
             $this->getStoreFacade(),
             $this->createPriceProductScheduleApplyTransactionExecutor()
+        );
+    }
+
+    /**
+     * @return \Spryker\Zed\PriceProductSchedule\Business\PriceProductSchedule\PriceProductScheduleDisablerInterface
+     */
+    public function createPriceProductScheduleDisabler(): PriceProductScheduleDisablerInterface
+    {
+        return new PriceProductScheduleDisabler(
+            $this->getEntityManager(),
+            $this->getRepository(),
+            $this->createPriceProductFallbackFinder(),
+            $this->createProductPriceUpdater(),
+            $this->getPriceProductFacade()
         );
     }
 }

@@ -29,6 +29,9 @@ class DataImporterCollection extends SprykerDataImporterCollection
      */
     public static $importCounters;
 
+    /**
+     * @var string
+     */
     public static $importDateTime;
 
     /**

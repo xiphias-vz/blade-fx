@@ -11,6 +11,7 @@ use Generated\Shared\Transfer\PriceProductScheduleTransfer;
 use Orm\Zed\PriceProduct\Persistence\SpyPriceProductDefaultQuery;
 use Orm\Zed\PriceProduct\Persistence\SpyPriceProductQuery;
 use Orm\Zed\PriceProduct\Persistence\SpyPriceProductStoreQuery;
+use Pyz\Zed\FactFinderExport\Business\Model\FactFinderEventManager;
 use Spryker\Zed\PriceProductSchedule\Business\PriceProductSchedule\Executor\PriceProductScheduleApplyTransactionExecutor as SprykerPriceProductScheduleApplyTransactionExecutor;
 use Symfony\Component\Config\Definition\Exception\Exception;
 
@@ -47,6 +48,8 @@ class PriceProductScheduleApplyTransactionExecutor extends SprykerPriceProductSc
         $priceProductScheduleTransfer->setIsCurrent(true);
 
         $this->priceProductScheduleEntityManager->savePriceProductSchedule($priceProductScheduleTransfer);
+
+        FactFinderEventManager::addEvent(FactFinderEventManager::FF_EVENT_GEODATA_UPDATE, $priceProductScheduleTransfer->getPriceProduct()->getIdProductAbstract());
     }
 
     /**

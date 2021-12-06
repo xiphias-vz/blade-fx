@@ -8,6 +8,7 @@
 namespace Pyz\Zed\ProductManagement\Communication\Controller;
 
 use Orm\Zed\Product\Persistence\SpyProductAbstractQuery;
+use Pyz\Zed\FactFinderExport\Business\Model\FactFinderEventManager;
 use Spryker\Service\UtilText\Model\Url\Url;
 use Spryker\Zed\Category\Business\Exception\CategoryUrlExistsException;
 use Spryker\Zed\ProductManagement\Communication\Controller\EditController as SprykerEditController;
@@ -73,6 +74,8 @@ class EditController extends SprykerEditController
                     ->filterByIdProductAbstract($idProductAbstract)
                     ->findOne();
 
+                FactFinderEventManager::addEvent(FactFinderEventManager::FF_EVENT_RECORD_UPDATE, $idProductAbstract);
+
                 if (isset($productAbstractEntity)) {
                     $productAbstractEntity->setIsSetFromBo(true);
 
@@ -100,12 +103,6 @@ class EditController extends SprykerEditController
         $variantTable = $this
             ->getFactory()
             ->createVariantTable($idProductAbstract, $type);
-        $storeRelations = $productAbstractTransfer->getStoreRelation()->getStores()->getArrayCopy();
-        $merchantReferenceByUser = $this->getFactory()->getUserFacade()->getCurrentUser()->getMerchantReference();
-        $userStore = $this->getFactory()
-            ->getMerchantFacade()
-            ->findMerchantTransferFromMerchantReference($merchantReferenceByUser)
-            ->getFkStore();
 
         $viewData = [
             'form' => $form->createView(),

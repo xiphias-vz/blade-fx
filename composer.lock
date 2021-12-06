@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "5762c4bd189acc7776102bd0816ddb06",
+    "content-hash": "c7c460c8b0f32e0ba8d6d764a3e37601",
     "packages": [
         {
             "name": "aws/aws-sdk-php",
@@ -940,6 +940,50 @@
                 "source": "https://github.com/oliwierptak/everon-utils/tree/master"
             },
             "time": "2016-03-20T14:52:54+00:00"
+        },
+        {
+            "name": "fact-finder/fact-finder-php-library",
+            "version": "1.3.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/FACT-Finder/FACT-Finder-PHP-Library.git",
+                "reference": "5c795b94117fa7ac40f5e80d4edc93999a76fc90"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/FACT-Finder/FACT-Finder-PHP-Library/zipball/5c795b94117fa7ac40f5e80d4edc93999a76fc90",
+                "reference": "5c795b94117fa7ac40f5e80d4edc93999a76fc90",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "FACTFinder\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "GPL-3.0"
+            ],
+            "authors": [
+                {
+                    "name": "Martin Büttner"
+                }
+            ],
+            "description": "FACT Finder PHP Library",
+            "homepage": "https://github.com/FACT-Finder/FACT-Finder-PHP-Library",
+            "keywords": [
+                "fact finder",
+                "fact finder php library"
+            ],
+            "support": {
+                "issues": "https://github.com/FACT-Finder/FACT-Finder-PHP-Library/issues",
+                "source": "https://github.com/FACT-Finder/FACT-Finder-PHP-Library/tree/master"
+            },
+            "time": "2017-10-20T13:39:36+00:00"
         },
         {
             "name": "filp/whoops",
@@ -3634,6 +3678,118 @@
                 "pdf"
             ],
             "time": "2020-03-23T15:53:59+00:00"
+        },
+        {
+            "name": "spryker-eco/fact-finder-sdk",
+            "version": "1.1.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/spryker-eco/fact-finder-sdk.git",
+                "reference": "9e6b5242d1b3770fb0e5adc931755689265a5bd8"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/spryker-eco/fact-finder-sdk/zipball/9e6b5242d1b3770fb0e5adc931755689265a5bd8",
+                "reference": "9e6b5242d1b3770fb0e5adc931755689265a5bd8",
+                "shasum": ""
+            },
+            "require": {
+                "fact-finder/fact-finder-php-library": "1.3.*",
+                "php": ">=7.3",
+                "spryker/category": "^3.0.0 || ^4.0.0 || ^5.0.0",
+                "spryker/category-data-feed": "^0.2.0",
+                "spryker/currency": "^3.2.0",
+                "spryker/kernel": "^3.30.0",
+                "spryker/locale": "^3.0.0",
+                "spryker/log": "^3.0.0",
+                "spryker/monolog": "^2.0.0",
+                "spryker/price-product": "^1.0.0 || ^2.0.0 || ^3.0.0 || ^4.0.0",
+                "spryker/product": "^5.0.0 || ^6.0.0",
+                "spryker/product-abstract-data-feed": "^0.2.0",
+                "spryker/product-category": "^4.0.0",
+                "spryker/product-image": "^3.0.0",
+                "spryker/product-review": "^1.0.0 || ^2.0.0",
+                "spryker/propel-orm": "^1.0.0",
+                "spryker/stock": "^4.0.0 || ^5.0.0 || ^7.0.0 || ^8.0.0",
+                "spryker/store": "^1.1.0",
+                "spryker/symfony": "^3.0.0",
+                "spryker/url": "^3.0.0"
+            },
+            "require-dev": {
+                "spryker/code-sniffer": "*",
+                "spryker/propel": "*",
+                "spryker/testify": "*"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.0.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "SprykerEco\\": "src/SprykerEco/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "FactFinderSdk module",
+            "support": {
+                "issues": "https://github.com/spryker-eco/fact-finder-sdk/issues",
+                "source": "https://github.com/spryker-eco/fact-finder-sdk/tree/1.1.0"
+            },
+            "time": "2021-02-12T10:19:25+00:00"
+        },
+        {
+            "name": "spryker-eco/fact-finder-web-components",
+            "version": "1.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/spryker-eco/fact-finder-web-components.git",
+                "reference": "7f62a4bf1b057ef71a73b8c28701c46acf1dd12f"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/spryker-eco/fact-finder-web-components/zipball/7f62a4bf1b057ef71a73b8c28701c46acf1dd12f",
+                "reference": "7f62a4bf1b057ef71a73b8c28701c46acf1dd12f",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=7.1",
+                "spryker/kernel": "^3.8.0",
+                "spryker/symfony": "^3.0.0"
+            },
+            "require-dev": {
+                "spryker/silex": "^2.0.0",
+                "spryker/testify": "*"
+            },
+            "suggest": {
+                "spryker/application": "^3.10.0",
+                "spryker/silex": "^2.0.0"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.0.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "SprykerEco\\": "src/SprykerEco/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "FactFinderWebComponents module",
+            "support": {
+                "issues": "https://github.com/spryker-eco/fact-finder-web-components/issues",
+                "source": "https://github.com/spryker-eco/fact-finder-web-components/tree/master"
+            },
+            "time": "2019-03-12T15:38:51+00:00"
         },
         {
             "name": "spryker-eco/loggly",
@@ -28976,6 +29132,72 @@
             "time": "2020-06-16T13:43:22+00:00"
         },
         {
+            "name": "spryker/product-review",
+            "version": "2.8.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/spryker/product-review.git",
+                "reference": "70a57e957ae9632d08228bbabc926322d3117d16"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/spryker/product-review/zipball/70a57e957ae9632d08228bbabc926322d3117d16",
+                "reference": "70a57e957ae9632d08228bbabc926322d3117d16",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=7.3",
+                "spryker/kernel": "^3.52.0",
+                "spryker/key-builder": "^1.0.0",
+                "spryker/locale": "^3.1.0",
+                "spryker/product": "^5.2.0 || ^6.0.0",
+                "spryker/propel-orm": "^1.1.0",
+                "spryker/search": "^6.3.0 || ^7.0.0 || ^8.0.0",
+                "spryker/search-extension": "^1.0.0",
+                "spryker/storage": "^3.0.0",
+                "spryker/touch": "^3.1.0 || ^4.0.0",
+                "spryker/twig": "^3.0.0",
+                "spryker/zed-request": "^3.0.0"
+            },
+            "require-dev": {
+                "spryker/catalog": "*",
+                "spryker/code-sniffer": "*",
+                "spryker/customer": "*",
+                "spryker/elastica": "*",
+                "spryker/propel": "^3.0.0",
+                "spryker/search-elasticsearch": "*",
+                "spryker/silex": "^2.0.0",
+                "spryker/testify": "*"
+            },
+            "suggest": {
+                "spryker/catalog": "If you want to use Catalog plugins, minimum required version: 5.2.0.",
+                "spryker/elastica": "Allow sending log messages to an Elastic Search server.",
+                "spryker/search-elasticsearch": "If you want to use search plugins.",
+                "spryker/silex": "If you want to use ServiceProvider."
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "2.0.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Spryker\\": "src/Spryker/",
+                    "SprykerTest\\Shared\\ProductReview\\Helper\\": "tests/SprykerTest/Shared/ProductReview/_support/Helper/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "proprietary"
+            ],
+            "description": "ProductReview module",
+            "support": {
+                "source": "https://github.com/spryker/product-review/tree/2.8.0"
+            },
+            "time": "2021-09-03T11:28:52+00:00"
+        },
+        {
             "name": "spryker/product-search",
             "version": "5.12.1",
             "source": {
@@ -45378,5 +45600,5 @@
     "platform-overrides": {
         "php": "7.3.20"
     },
-    "plugin-api-version": "2.0.0"
+    "plugin-api-version": "2.1.0"
 }
