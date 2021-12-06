@@ -1,6 +1,10 @@
 @mixin record-list($name: '.record-list') {
     #{$name} {
 
+        ff-record-list {
+            width: 100%;
+        }
+
         .ff-record-item {
             padding: rem(10);
             z-index: 0;

@@ -1,10 +1,5 @@
 <?php
 
-/**
- * This file is part of the Spryker Commerce OS.
- * For full license information, please view the LICENSE file that was distributed with this source code.
- */
-
 namespace Pyz\Yves\Twig\Plugin;
 
 use Spryker\Service\Container\ContainerInterface;
@@ -16,10 +11,10 @@ use Twig\TwigFilter;
 class TypeCastingPlugin extends AbstractPlugin implements TwigPluginInterface
 {
     /**
-     * @param \Twig\Environment $twig
-     * @param \Spryker\Service\Container\ContainerInterface $container
+     * @param Environment $twig
+     * @param ContainerInterface $container
      *
-     * @return \Twig\Environment
+     * @return Environment
      */
     public function extend(Environment $twig, ContainerInterface $container): Environment
     {
@@ -29,40 +24,40 @@ class TypeCastingPlugin extends AbstractPlugin implements TwigPluginInterface
     }
 
     /**
-     * @param \Twig\Environment $twig
+     * @param Environment $twig
      *
-     * @return \Twig\Environment
+     * @return Environment
      */
     protected function addTwigFilters(Environment $twig): Environment
     {
         $twig->addFilter(
             new TwigFilter('int', function ($value) {
-                return (int)$value;
+                return (int) $value;
             })
         );
         $twig->addFilter(
             new TwigFilter('float', function ($value) {
-                return (float)$value;
+                return (float) $value;
             })
         );
         $twig->addFilter(
             new TwigFilter('string', function ($value) {
-                return (string)$value;
+                return (string) $value;
             })
         );
         $twig->addFilter(
             new TwigFilter('bool', function ($value) {
-                return (bool)$value;
+                return (bool) $value;
             })
         );
         $twig->addFilter(
             new TwigFilter('array', function ($value) {
-                return (array)$value;
+                return (array) $value;
             })
         );
         $twig->addFilter(
             new TwigFilter('object', function ($value) {
-                return (object)$value;
+                return (object) $value;
             })
         );
 

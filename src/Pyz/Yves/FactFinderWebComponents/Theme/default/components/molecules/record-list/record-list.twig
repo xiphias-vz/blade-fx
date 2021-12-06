@@ -366,17 +366,17 @@
                     {% endverbatim %}
                 {% endset %}
 
-{#                {% set priceInfo %}#}
-{#                 {% verbatim %}#}
-{#                        {{ record.geoInformation.0.geoValues.BasePrice }}#}
-{#                    {% endverbatim %}#}
-{#                {% endset %}#}
+                {% set priceInfo %}
+                 {% verbatim %}
+                        {{ record.geoInformation.0.geoValues.BasePrice }}
+                    {% endverbatim %}
+                {% endset %}
 
-{#                {% block productDataContainer %}#}
-{#                    <div class="{{ config.name }}__info-more">#}
-{#                        {{ priceInfo }}#}
-{#                    </div>#}
-{#                {% endblock %}#}
+                {% block productDataContainer %}
+                    <div class="{{ config.name }}__info-more">
+                        {{ priceInfo }}
+                    </div>
+                {% endblock %}
 
                     {% block price %}
                     {% if data.itemWeight is not null -%}
