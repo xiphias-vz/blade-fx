@@ -55,7 +55,6 @@
             <section id="productContainer" class="productsContainer">
                 <div data-container="productName">
                     <p class="containerCaption">Find products</p>
-                    {{ dump(data.properties.productItemType) }}
                     <div data-container="all">
                         <ff-suggest-item {{ data.properties.productItemType|raw }} onclick="changeSearchTerm(this)">
                             <img data-image>
