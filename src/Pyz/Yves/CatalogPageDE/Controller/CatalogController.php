@@ -10,6 +10,8 @@ namespace Pyz\Yves\CatalogPageDE\Controller;
 use Pyz\Shared\DataDog\DataDogConfig;
 use SprykerShop\Yves\CatalogPage\Controller\CatalogController as SprykerCatalogController;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Throwable;
 
 /**
  * @method \Pyz\Yves\CatalogPage\CatalogPageFactory getFactory()
@@ -112,5 +114,30 @@ class CatalogController extends SprykerCatalogController
         }
 
         return $data;
+    }
+
+    public function fulltextSearchAction(Request $request)
+    {
+        $viewData = [
+            'products' => [],
+            'facets' => [],
+            'sort' => 0,
+            'searchString' => '',
+            'spellingSuggestion' => '',
+            'pressEnter' => '1',
+            'pagination' => [
+                'currentPage' => 1,
+                'maxPage' => 999,
+                'numFound' => 1,
+                'config' => '',
+                'currentItemsPerPage' => 1,
+            ],
+        ];
+
+        return $this->view(
+            $viewData,
+            $this->getFactory()->getCatalogPageWidgetPlugins(),
+            '@CatalogPage/views/search/search.twig'
+        );
     }
 }
