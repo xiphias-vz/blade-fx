@@ -57,6 +57,24 @@ $jobs[] = [
     'stores' => $allStores,
 ];
 
+/* Oms */
+$jobs[] = [
+    'name' => 'check-oms-conditions-orders-100-200',
+    'command' => '$PHP_BIN vendor/bin/console oms:check-condition -p11',
+    'schedule' => '* * * * *',
+    'enable' => true,
+    'stores' => $allStores,
+];
+
+/* Oms */
+$jobs[] = [
+    'name' => 'check-oms-conditions-orders-200-and-more',
+    'command' => '$PHP_BIN vendor/bin/console oms:check-condition -p12',
+    'schedule' => '* * * * *',
+    'enable' => true,
+    'stores' => $allStores,
+];
+
 $jobs[] = [
     'name' => 'check-oms-timeouts',
     'command' => '$PHP_BIN vendor/bin/console oms:check-timeout',
