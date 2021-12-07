@@ -14,7 +14,7 @@
 } %}
 
 {% block body %}
-    <ff-suggest layout="list" class="input--expand" ~ {{ data.properties.component|raw }}>
+    <ff-suggest layout="block" class="input--expand" ~ {{ data.properties.component|raw }}>
         {% block searchContainer %}
             <section id="searchContainer" class="searchTermContainer">
 
@@ -22,67 +22,108 @@
                     <div data-container="{{ item.type }}">
                         <p class="containerCaption">{{ item.title }}</p>
                         <ff-suggest-item type="{{ item.type }}">
+
+                            {% set imageUrl %}
+                                {% verbatim %}
+                                    {{ record.ImageUrl }}
+                                {% endverbatim %}
+                            {% endset %}
+
+                            {% set name %}
+                                {% verbatim %}
+                                    {{ name }}
+                                {% endverbatim %}
+                            {% endset %}
+
+                            {% set price %}
+                                {% verbatim %}
+                                    {{ attributes.geoInformation.0.geoValues.Price }}
+                                {% endverbatim %}
+                            {% endset %}
+
+
+                            {% if item.type == 'productName' %}
+                                <span class="col">
+
+                                    {% include atom('thumbnail') with {
+                                        modifiers: ['catalog', 'with-overlay'],
+                                        attributes: {
+                                            alt: name,
+                                            src: '{{ attributes.geoInformation.0.geoValues.Price }}',
+                                            title: name,
+                                        },
+                                    } only %}
+                                </span>
+                                <span>
+
+
+                                     {% block imageContainer %}
+                                         <div class="{{ config.name }}__myImg" onclick="productClicked('{{ name }}', '{{ name }}', '{{ name | escape('js') }}', '{{ price }}', '{{ name }}' )">
+                        {% macro thumbnail(src, alt='', extraClass='', modifiers=[], idProductAbstract='') %}
+                            {% if app.currentCodeBucket == 'DE' %}
+                                {% set splitUrl = src | split('.com/') %}
+                                {% set newSrc = splitUrl[0] ~ '.com/thumb_'  ~ splitUrl[1] | default("") %}
+
+                                {% embed molecule('lazy-thumbnail') with {
+                                    class: '',
+                                    modifiers: modifiers,
+                                    attributes: {
+                                        src: src,
+                                        alt: alt,
+                                    },
+                                    embed: {
+                                        idProductAbstract: 1,
+                                    },
+                                } only %}
+                                    {% block image %}
+                                        {% set imageExtraClasses = embed.idProductAbstract ? 'js-image-animation__image-' ~ embed.idProductAbstract %}
+                                        {{ parent() }}
+                                    {% endblock %}
+                                {% endembed %}
+                            {% endif %}
+                        {% endmacro %}
+                                             {% block image %}
+                                             {% block imageLink %}
+                                                 <a class="image-link" href="{{ name }}">
+                                        {{ _self.thumbnail(imageUrl, name , '', modifiers) }}
+                                    </a>
+                                             {% endblock %}
+                                             {% endblock %}
+
+#}
+                                         </div>
+                                 {% endblock %}
+                                </span>
+                            {% endif %}
+
+
                             <span>
                                 {% verbatim %}
                                     {{{ name }}}
                                 {% endverbatim %}
                             </span>
-                            {% if item.type == 'productName' %}
-                                <button type="button" class="{{ config.name }}__button-search-cart" onclick="submitToCartButton(
-                                '{{ 106 }}',
-                                '{{ 4067800007604 }}',
-                                '{{ 'Rotlicht Bier 6% (27 x 0.33 Liter)' }}',
-                                '{{ 1000 }}',
-                                '{{ '/de/cart/add-ajax/106' }}'
-                                )">
+
+                                {% if item.type == 'productName' %}
+                                    <span>{{ price }} &euro;</span>
+                                    <button type="button" class="{{ config.name }}__button-search-cart" onclick="submitToCartButton(
+                                        '{{ 106 }}',
+                                        '{{ 4067800007604 }}',
+                                        '{{ 'Rotlicht Bier 6% (27 x 0.33 Liter)' }}',
+                                        '{{ 1000 }}',
+                                        '{{ '/de/cart/add-ajax/106' }}'
+                                    )">
                                 {% include atom('icon') with {
                                     class: 'link__icon icon--color-orange',
                                     modifiers: ['big'],
-                                    data: {
+                                        data: {
                                         name: 'cart',
-                                    },
+                                        },
                                 } only %}
                             </button>
                             {% endif %}
                         </ff-suggest-item>
                     </div>
                 {% endfor %}
-
-            </section>
-        {% endblock %}
-
-        {% block productContainer %}
-            <section id="productContainer" class="productsContainer">
-                <div data-container="productName">
-                    <p class="containerCaption">Find products</p>
-                    <div data-container="all">
-                        <ff-suggest-item {{ data.properties.productItemType|raw }} onclick="changeSearchTerm(this)">
-                            <img data-image>
-                            <div class="product-center">
-                                <div class="product-name">
-                                    {% verbatim %}
-                                        {{{ name }}}
-                                    {% endverbatim %}
-                                </div>
-                                <div>Shipping</div>
-                                <div>Rating</div>
-                            </div>
-
-                            <div class="product-right">
-                                <div class="product-price">
-                                    {% verbatim %}
-                                        {{ attributes.Price }} &euro;
-                                    {% endverbatim %}
-                                </div>
-                                <div class="product-availabilitytext">
-                                    {% verbatim %}
-                                        {{ attributes.availabilitytext }}
-                                    {% endverbatim %}
-                                </div>
-                            </div>
-                        </ff-suggest-item>
-                    </div>
-                </div>
             </section>
         {% endblock %}
     </ff-suggest>
