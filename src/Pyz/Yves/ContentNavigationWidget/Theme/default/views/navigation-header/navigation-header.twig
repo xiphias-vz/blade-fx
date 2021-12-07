@@ -38,6 +38,9 @@
                 padding-top: 5px;
                 z-index: 100;
             }
+            .record-list__amount--original {
+                text-decoration: line-through;
+            }
         </style>
 
         <ff-navigation layout="vertical">
@@ -135,7 +138,10 @@
                     el.innerHTML = "---";
                 } else if (!elDef.innerText.endsWith('€') && elDef.innerText !== '---') {
                     elDef.innerText = elDef.innerText.replace('.', ',') + ' €';
-                    if(elOrig.innerText.length > 0) elOrig.innerText = elOrig.innerText.replace('.', ',') + ' €';
+                    if(elOrig.innerText.length > 0) {
+                        elOrig.innerText = elOrig.innerText.replace('.', ',') + ' €';
+                        elDef.style.color = "red";
+                    }
                 }
             }
 
