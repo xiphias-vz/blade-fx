@@ -59,7 +59,12 @@
                 mogu vidjeti preko record varijable unutar verbatim tagova
                 kako bi ih kasnije mogao upotrijebiti po twigu
             #}
-            {% set sku %}
+
+                <div class="labelDiscount">
+                    {{ "{{ record.geoInformation.0.geoValues.DiscountText }}" }}
+                </div>
+
+           {% set sku %}
                 {% verbatim %}
                     {{ record.MasterArticleNumber }}
                 {% endverbatim %}

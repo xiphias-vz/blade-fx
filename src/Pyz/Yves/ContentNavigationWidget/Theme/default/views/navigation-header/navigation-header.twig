@@ -8,7 +8,7 @@
 
 {% block body %}
 
-{#    {% if data.currentCodeBucket == 'DE' %}#}
+    {% if data.currentCodeBucket == 'DE' %}
 
         <style>
             .my-item {
@@ -27,6 +27,16 @@
             .ffw-item-container {
                 left: unset!important;
                 right: 100%;
+            }
+            .labelDiscount {
+                width: 30px;
+                height: 30px;
+                background-color: red;
+                position: absolute;
+                text-align: center;
+                color: white;
+                padding-top: 5px;
+                z-index: 100;
             }
         </style>
 
@@ -67,6 +77,7 @@
                 const factfinder = event.factfinder;
                 const eventAggregator = event.eventAggregator;
                 eventAggregator.addBeforeDispatchingCallback(function (event) {
+                    // debugger;
                     const isSearchEvent = event.type === "search" || event.type === "navigation-search";
                     if (isSearchEvent && !isSearchPage()) {
                         event.cancel(); // prevents the request from being sent before redirecting
@@ -98,13 +109,42 @@
                     }
                 });
             });
+
+            window.addEventListener("DOMNodeInserted", function (event) {
+                if(event.relatedNode.localName == 'ff-record') {
+                    checkDiscountLabel(event.relatedNode);
+                    checkOriginalAndDefaultPrices(event.relatedNode);
+                }
+            }, false);
+
+            function checkDiscountLabel(element) {
+                el = element.getElementsByClassName('labelDiscount')[0];
+                val = el.innerText.trim();
+                if(val === "") val = "0";
+                if(parseInt(val) === 0) el.style.display = "none";
+            }
+
+            function checkOriginalAndDefaultPrices(element) {
+                elOrig = element.getElementsByClassName('record-list__amount record-list__amount--original')[0];
+                elDef = element.getElementsByClassName('record-list__amount record-list__amount-red')[0];
+                if(elOrig.innerText.trim() === elDef.innerText.trim()) elOrig.innerHTML = "";
+                if(elDef.innerText.trim() === "") {
+                    elDef.innerHTML = "---";
+                    el = element.getElementsByClassName('record-list__info-more')[0];
+                    el.innerHTML = "---";
+                } else if (!elDef.innerText.endsWith('€') && elDef.innerText !== '---') {
+                    elDef.innerText = elDef.innerText.replace('.', ',') + ' €';
+                    if(elOrig.innerText.length > 0) elOrig.innerText = elOrig.innerText.replace('.', ',') + ' €';
+                }
+            }
         </script>
-{#    {% else %}#}
-{#    {% include molecule('navigation-header') with }#}
-{#        data: }#}
-{#        nodes: data.navigation.nodes#}
-{#        },#}
-{#        } only %}#}
-    {#    {% endif %}#}
+
+    {% else %}
+       {% include molecule('navigation-header') with {
+            data: {
+                nodes: data.navigation.nodes
+            },
+       } only %}
+    {% endif %}
 
 {% endblock %}

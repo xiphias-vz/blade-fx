@@ -509,20 +509,23 @@ class CartController extends SprykerCartController
         $productViewTransfer = $this->getFactory()
             ->getProductStorageClient()
             ->findProductAbstractViewTransfer($productAbstractId, $this->getLocale());
+        if ($productViewTransfer) {
+            $productConcreteSku = $this->resolveProductConcreteSkuFromProductAbstractId($productViewTransfer);
+            $itemTransfer = (new ItemTransfer())
+                ->setSku($productConcreteSku)
+                ->setQuantity($quantity);
 
-        $productConcreteSku = $this->resolveProductConcreteSkuFromProductAbstractId($productViewTransfer);
-        $itemTransfer = (new ItemTransfer())
-            ->setSku($productConcreteSku)
-            ->setQuantity($quantity);
+            $depositProductOptions = $this->getFactory()
+                ->getDepositProductOptionClient()
+                ->getDepositProductOptionsByIdProductAbstract($productAbstractId, $productViewTransfer);
 
-        $depositProductOptions = $this->getFactory()
-            ->getDepositProductOptionClient()
-            ->getDepositProductOptionsByIdProductAbstract($productAbstractId, $productViewTransfer);
+            $this->addProductOptions($depositProductOptions, $itemTransfer);
+            $itemTransfer = $this->executePreAddToCartPlugins($itemTransfer, $request->request->all());
 
-        $this->addProductOptions($depositProductOptions, $itemTransfer);
-        $itemTransfer = $this->executePreAddToCartPlugins($itemTransfer, $request->request->all());
-
-        $this->getFactory()->getCartClient()->addItem($itemTransfer, $request->request->all());
+            $this->getFactory()->getCartClient()->addItem($itemTransfer, $request->request->all());
+        } else {
+            $this->addErrorMessage("Item not found!");
+        }
 
         $messageTransfers = $this->getFactory()
             ->getZedRequestClient()
