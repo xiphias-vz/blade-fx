@@ -295,7 +295,7 @@ class PickerFacade extends AbstractFacade implements PickerFacadeInterface
      */
     public function setGlobalPickerReport(PerformanceGlobalSalesOrderReportTransfer $transfer): PerformanceGlobalSalesOrderReportTransfer
     {
-        $pyzGlobalPerformaceEntity = PyzPerformanceGlobalSalesOrderReportQuery::create()
+        $pyzGlobalPerformanceEntity = PyzPerformanceGlobalSalesOrderReportQuery::create()
             ->filterByIdPicker($transfer->getIdPicker())
             ->filterByPickZone($transfer->getPickZone())
             ->filterByIsMultiPick($transfer->getIsMultiPick())
@@ -303,17 +303,17 @@ class PickerFacade extends AbstractFacade implements PickerFacadeInterface
             ->filterByNumberRelatedOrders($transfer->getNumberRelatedOrders())
             ->findOneOrCreate();
 
-        if ($pyzGlobalPerformaceEntity->isNew() || $pyzGlobalPerformaceEntity->isModified() || $pyzGlobalPerformaceEntity->isPrimaryKeyNull()) {
-            $pyzGlobalPerformaceEntity->save();
+        if ($pyzGlobalPerformanceEntity->isNew() || $pyzGlobalPerformanceEntity->isModified() || $pyzGlobalPerformanceEntity->isPrimaryKeyNull()) {
+            $pyzGlobalPerformanceEntity->save();
         }
 
         $globalPickerReportTransfer = (new PerformanceGlobalSalesOrderReportTransfer())
-            ->setIdGlobalPickReport($pyzGlobalPerformaceEntity->getIdGlobalPickReport())
-            ->setIdPicker($pyzGlobalPerformaceEntity->getIdPicker())
-            ->setPickZone($pyzGlobalPerformaceEntity->getPickZone())
-            ->setIsMultiPick($pyzGlobalPerformaceEntity->getIsMultiPick())
-            ->setPickTimeBegin(date("Y-m-d H:i:s", $pyzGlobalPerformaceEntity->getPickTimeBegin()->getTimestamp()))
-            ->setNumberRelatedOrders($pyzGlobalPerformaceEntity->getNumberRelatedOrders());
+            ->setIdGlobalPickReport($pyzGlobalPerformanceEntity->getIdGlobalPickReport())
+            ->setIdPicker($pyzGlobalPerformanceEntity->getIdPicker())
+            ->setPickZone($pyzGlobalPerformanceEntity->getPickZone())
+            ->setIsMultiPick($pyzGlobalPerformanceEntity->getIsMultiPick())
+            ->setPickTimeBegin(date("Y-m-d H:i:s", $pyzGlobalPerformanceEntity->getPickTimeBegin()->getTimestamp()))
+            ->setNumberRelatedOrders($pyzGlobalPerformanceEntity->getNumberRelatedOrders());
 
         return $globalPickerReportTransfer;
     }
@@ -325,7 +325,7 @@ class PickerFacade extends AbstractFacade implements PickerFacadeInterface
      */
     public function setOrderPickerReport(PerformanceSalesOrderReportTransfer $transfer): PerformanceSalesOrderReportTransfer
     {
-        $pyzPerformaceOrderEntity = PyzPerformanceSalesOrderReportQuery::create()
+        $pyzPerformanceOrderEntity = PyzPerformanceSalesOrderReportQuery::create()
             ->filterByFkGlobalPickReport($transfer->getFkGlobalPickReport())
             ->filterByIdSalesOrder($transfer->getIdSalesOrder())
             ->filterByOrderDate($transfer->getOrderDate())
@@ -335,19 +335,19 @@ class PickerFacade extends AbstractFacade implements PickerFacadeInterface
             ->filterByPickingStart($transfer->getPickingStart())
             ->findOneOrCreate();
 
-        if ($pyzPerformaceOrderEntity->isNew() || $pyzPerformaceOrderEntity->isModified() || $pyzPerformaceOrderEntity->isPrimaryKeyNull()) {
-            $pyzPerformaceOrderEntity->save();
+        if ($pyzPerformanceOrderEntity->isNew() || $pyzPerformanceOrderEntity->isModified() || $pyzPerformanceOrderEntity->isPrimaryKeyNull()) {
+            $pyzPerformanceOrderEntity->save();
         }
 
         $orderPerformanceReportTransfer = (new PerformanceSalesOrderReportTransfer())
-            ->setIdPerformanceSalesOrderReport($pyzPerformaceOrderEntity->getIdPerformanceSalesOrderReport())
-            ->setFkGlobalPickReport($pyzPerformaceOrderEntity->getFkGlobalPickReport())
-            ->setIdSalesOrder($pyzPerformaceOrderEntity->getIdSalesOrder())
-            ->setOrderDate(date("Y-m-d", $pyzPerformaceOrderEntity->getOrderDate()->getTimestamp()))
-            ->setContainersUsed($pyzPerformaceOrderEntity->getContainersUsed())
-            ->setPositionsUsed($pyzPerformaceOrderEntity->getPositionsUsed())
-            ->setPieces($pyzPerformaceOrderEntity->getPieces())
-            ->setPickingStart(date("Y-m-d H:i:s", $pyzPerformaceOrderEntity->getPickingStart()->getTimestamp()));
+            ->setIdPerformanceSalesOrderReport($pyzPerformanceOrderEntity->getIdPerformanceSalesOrderReport())
+            ->setFkGlobalPickReport($pyzPerformanceOrderEntity->getFkGlobalPickReport())
+            ->setIdSalesOrder($pyzPerformanceOrderEntity->getIdSalesOrder())
+            ->setOrderDate(date("Y-m-d", $pyzPerformanceOrderEntity->getOrderDate()->getTimestamp()))
+            ->setContainersUsed($pyzPerformanceOrderEntity->getContainersUsed())
+            ->setPositionsUsed($pyzPerformanceOrderEntity->getPositionsUsed())
+            ->setPieces($pyzPerformanceOrderEntity->getPieces())
+            ->setPickingStart(date("Y-m-d H:i:s", $pyzPerformanceOrderEntity->getPickingStart()->getTimestamp()));
 
         return $orderPerformanceReportTransfer;
     }
@@ -359,7 +359,7 @@ class PickerFacade extends AbstractFacade implements PickerFacadeInterface
      */
     public function setOrderItemPickerReport(PerformanceSalesOrderReportItemTransfer $transfer): PerformanceSalesOrderReportItemTransfer
     {
-        $pyzPerformaceOrderItemEntity = PyzPerformanceSalesOrderReportItemQuery::create()
+        $pyzPerformanceOrderItemEntity = PyzPerformanceSalesOrderReportItemQuery::create()
             ->filterByFkPerformanceSalesOrderReport($transfer->getFkPerformanceSalesOrderReport())
             ->filterByIdSalesOrderItem($transfer->getIdSalesOrderItem())
             ->filterByPickingStartTime($transfer->getPickingStartTime())
@@ -368,18 +368,18 @@ class PickerFacade extends AbstractFacade implements PickerFacadeInterface
             ->filterByDurationPickTime($transfer->getDurationPickingTime())
             ->findOneOrCreate();
 
-        if ($pyzPerformaceOrderItemEntity->isNew() || $pyzPerformaceOrderItemEntity->isModified() || $pyzPerformaceOrderItemEntity->isPrimaryKeyNull()) {
-            $pyzPerformaceOrderItemEntity->save();
+        if ($pyzPerformanceOrderItemEntity->isNew() || $pyzPerformanceOrderItemEntity->isModified() || $pyzPerformanceOrderItemEntity->isPrimaryKeyNull()) {
+            $pyzPerformanceOrderItemEntity->save();
         }
 
         $orderItemPerformanceReportTransfer = (new PerformanceSalesOrderReportItemTransfer())
-            ->setIdPerformanceSalesOrderItemReport($pyzPerformaceOrderItemEntity->getIdPerformanceSalesOrderItemReport())
-            ->setFkPerformanceSalesOrderReport($pyzPerformaceOrderItemEntity->getFkPerformanceSalesOrderReport())
-            ->setIdSalesOrderItem($pyzPerformaceOrderItemEntity->getIdSalesOrderItem())
-            ->setPickingStartTime(date("Y-m-d", $pyzPerformaceOrderItemEntity->getPickingStartTime()->getTimestamp()))
-            ->setPickingEndTime(date("Y-m-d", $pyzPerformaceOrderItemEntity->getPickingEndTime()->getTimestamp()))
+            ->setIdPerformanceSalesOrderItemReport($pyzPerformanceOrderItemEntity->getIdPerformanceSalesOrderItemReport())
+            ->setFkPerformanceSalesOrderReport($pyzPerformanceOrderItemEntity->getFkPerformanceSalesOrderReport())
+            ->setIdSalesOrderItem($pyzPerformanceOrderItemEntity->getIdSalesOrderItem())
+            ->setPickingStartTime(date("Y-m-d", $pyzPerformanceOrderItemEntity->getPickingStartTime()->getTimestamp()))
+            ->setPickingEndTime(date("Y-m-d", $pyzPerformanceOrderItemEntity->getPickingEndTime()->getTimestamp()))
             ->setPickupEndStatus($transfer->getPickupEndStatus())
-            ->setDurationPickingTime($pyzPerformaceOrderItemEntity->getDurationPickTime());
+            ->setDurationPickingTime($pyzPerformanceOrderItemEntity->getDurationPickTime());
 
         return $orderItemPerformanceReportTransfer;
     }

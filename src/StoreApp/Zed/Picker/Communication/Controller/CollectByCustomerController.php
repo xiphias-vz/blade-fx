@@ -960,10 +960,9 @@ class CollectByCustomerController extends AbstractController
             }
             $this->deleteIdSalesOrderItemPerformanceOrderItem($orderPerformanceOrderTransferEntity->getIdPerformanceSalesOrderReport());
 
-            if (!$orderPerformanceOrderTransferEntity->isModified()) {
-                $orderPerformanceOrderTransferEntity->setIdSalesOrder(null);
+            if ($orderPerformanceOrderTransferEntity->isModified()) {
+                $orderPerformanceOrderTransferEntity->save();
             }
-            $orderPerformanceOrderTransferEntity->save();
 
             return $orderPerformanceOrderTransferEntity->getFkGlobalPickReport();
         } catch (Exception $exceptionSaveGlobal) {
@@ -990,10 +989,9 @@ class CollectByCustomerController extends AbstractController
 
             $orderPerformanceGlobalOrderTransferEntity->setIdPicker(null);
 
-            if (!$orderPerformanceGlobalOrderTransferEntity->isModified()) {
-                $orderPerformanceGlobalOrderTransferEntity->setIdPicker(null);
+            if ($orderPerformanceGlobalOrderTransferEntity->isModified()) {
+                $orderPerformanceGlobalOrderTransferEntity->save();
             }
-            $orderPerformanceGlobalOrderTransferEntity->save();
         } catch (Exception $exceptionSaveGlobal) {
             $this->logError($exceptionSaveGlobal->getMessage(), $exceptionSaveGlobal->getTrace());
         }
@@ -1021,10 +1019,9 @@ class CollectByCustomerController extends AbstractController
 
                 $deleteOrderItemPerformanceEntity->setIdSalesOrderItem(null);
 
-                if (!$deleteOrderItemPerformanceEntity->isModified()) {
-                    $deleteOrderItemPerformanceEntity->setIdSalesOrderItem(null);
+                if ($deleteOrderItemPerformanceEntity->isModified()) {
+                    $deleteOrderItemPerformanceEntity->save();
                 }
-                $deleteOrderItemPerformanceEntity->save();
             }
         } catch (Exception $exceptionSaveGlobal) {
             $this->logError($exceptionSaveGlobal->getMessage(), $exceptionSaveGlobal->getTrace());
