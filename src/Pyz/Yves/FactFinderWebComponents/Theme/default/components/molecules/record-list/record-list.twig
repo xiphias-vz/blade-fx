@@ -139,8 +139,9 @@
 
                 {% verbatim %}
                     <div data-redirect="{{ record.ProductUrl }}"
-                         data-redirect-target="_blank">
+                        data-redirect-target="_self">
                 {% endverbatim %}
+
 
                 {# SLIKA #}
                 {% block imageContainer %}
@@ -354,6 +355,7 @@
                     </div>
                 {% endblock %}
                 <hr class="{{ config.name }}__divider" />
+                </div>
                 <div class="{{ config.name }}__add-to-cart-btn">
                 {% set amount %}
                     {% verbatim %}
@@ -519,7 +521,7 @@
                             </a>
                         {% endif %}
                     </div>
-                </div>
+
             </ff-record>
         {% endblock %}
     </ff-record-list>
