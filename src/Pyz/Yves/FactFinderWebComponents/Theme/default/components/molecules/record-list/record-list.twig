@@ -81,7 +81,7 @@
             {% endset %}
             {% set productUrl %}
                 {% verbatim %}
-                    {{ record.ProductURL }}
+                    {{ record.ProductUrl }}
                 {% endverbatim %}
             {% endset %}
             {% set imageName %}
@@ -91,7 +91,7 @@
             {% endset %}
             {% set imageUrl %}
                 {% verbatim %}
-                    {{ record.ImageURL }}
+                    {{ record.ImageUrl }}
                 {% endverbatim %}
             {% endset %}
             {#{{ dump(imageUrl) }}#}
@@ -138,7 +138,7 @@
 
 
                 {% verbatim %}
-                    <div data-redirect="{{ record.ProductURL }}"
+                    <div data-redirect="{{ record.ProductUrl }}"
                          data-redirect-target="_blank">
                 {% endverbatim %}
 
@@ -255,12 +255,12 @@
                 {% endverbatim %}
                     <span>{{ "Product Url:" }}</span>
                 {% verbatim %}
-                    <span>{{ record.ProductURL }}</span>
+                    <span>{{ record.ProductUrl }}</span>
                     <br/>
                 {% endverbatim %}
                     <span>{{ "Image URL:" }}</span>
                 {% verbatim %}
-                    <span>{{ record.ImageURL }}</span>
+                    <span>{{ record.ImageUrl }}</span>
                     <br/>
                 {% endverbatim %}
                 <span>{{ "MultiAttributeText:" }}</span>
