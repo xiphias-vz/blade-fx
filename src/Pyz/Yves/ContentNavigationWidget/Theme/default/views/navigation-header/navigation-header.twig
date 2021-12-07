@@ -114,6 +114,7 @@
                 if(event.relatedNode.localName == 'ff-record') {
                     checkDiscountLabel(event.relatedNode);
                     checkOriginalAndDefaultPrices(event.relatedNode);
+                    checkBrandIsSet(event.relatedNode);
                 }
             }, false);
 
@@ -135,6 +136,15 @@
                 } else if (!elDef.innerText.endsWith('€') && elDef.innerText !== '---') {
                     elDef.innerText = elDef.innerText.replace('.', ',') + ' €';
                     if(elOrig.innerText.length > 0) elOrig.innerText = elOrig.innerText.replace('.', ',') + ' €';
+                }
+            }
+
+            function checkBrandIsSet(element){
+                el = element.getElementsByClassName('record-list__record-product-name')[0];
+                text = el.innerText.trim();
+                if(text.startsWith('-')){
+                    text = text.substring(1);
+                    el.innerText = text;
                 }
             }
         </script>
