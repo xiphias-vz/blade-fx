@@ -72,11 +72,13 @@
             <div class="container__inner spacing-bottom spacing-bottom--inner spacing-bottom--bigger is-hidden-lg-only">
                 <div class="box d-flex flex-center is-hidden-sm-md">
                     {% if app.currentCodeBucket == 'DE' %}
-                        <h1 class="spacing-bottom spacing-bottom--inner">{{ data.title }}</h1>
+                        <h1 class="spacing-bottom spacing-bottom--inner">{{ data.title }} </h1>
+                        <span class="text-secondary text-medium m-left-m m-bottom-xs">{{ 'catalog.itemsFound' | trans }}</span> dfd
                     {% else %}
                         <h1 class="title--heading-CZ spacing-bottom spacing-bottom--inner title">{{ data.title }}</h1>
+                        <span class="text-secondary text-medium m-left-m m-bottom-xs">{{ 'catalog.itemsFound' | trans({ '%numFound%': data.pagination.numFound }) }}</span>
                     {% endif %}
-                    <span class="text-secondary text-medium m-left-m m-bottom-xs">{{ 'catalog.itemsFound' | trans({ '%numFound%': data.pagination.numFound }) }}</span>
+
                 </div>
             </div>
         </div>

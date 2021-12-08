@@ -16,7 +16,9 @@ var indexCatalogPageCounter = 0;
 document.addEventListener("ffReady", function (event) {
     const factfinder = event.factfinder;
     const eventAggregator = event.eventAggregator;
+    const resultDispatcher = event.resultDispatcher;
     eventAggregator.addBeforeDispatchingCallback(function (event) {
+        event["marketId"] = storeId;
         const isSearchEvent = event.type === "search" || event.type === "navigation-search";
         if (isSearchEvent && !isSearchPage()) {
             event.cancel(); // prevents the request from being sent before redirecting
@@ -45,6 +47,22 @@ document.addEventListener("ffReady", function (event) {
                     });
                 }
             }
+        }
+    });
+    resultDispatcher.addCallback("asn", function (asnData) {
+        var sum = 0;
+        if(asnData[0].selectedElements.length > 0) {
+            sum = asnData[0].selectedElements[asnData[0].selectedElements.length - 1].recordCount;
+        } else {
+            for(i=0; i < asnData[0].elements.length; i++) {
+                sum = sum + asnData[0].elements[i].recordCount;
+            }
+        }
+        var el = document.getElementById("searchResultCount");
+        if (el) {
+            searchResultText = el.getAttribute('data-text');
+            searchResultText = searchResultText.replace('%numFound%', sum);
+            el.innerText = searchResultText;
         }
     });
 });
@@ -76,7 +94,9 @@ function checkOriginalAndDefaultPrices(element) {
         elDef.innerText = elDef.innerText.replace('.', ',') + ' €';
         if(elOrig.innerText.length > 0) {
             elOrig.innerText = elOrig.innerText.replace('.', ',') + ' €';
-            elDef.style.color = "red";
+            elDef.style.color = "#e60000";
+        } else {
+            elDef.style.color = "black";
         }
     }
 }

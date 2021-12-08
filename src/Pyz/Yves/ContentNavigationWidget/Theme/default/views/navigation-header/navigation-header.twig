@@ -7,6 +7,9 @@
 } %}
 
 {% block body %}
+    <script type="text/javascript">
+        var storeId = '{{ data.storeId }}';
+    </script>
     {% if data.currentCodeBucket == 'DE' %}
         {{ include('@ContentNavigationWidget/views/navigation-header/navigation-header-de.twig') }}
     {% else %}
