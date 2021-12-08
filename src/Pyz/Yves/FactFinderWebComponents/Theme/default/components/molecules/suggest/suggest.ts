@@ -9,8 +9,14 @@ export default class Suggest extends Component {
         this.clearButton = <HTMLElement>document.getElementsByClassName(this.clearButtonClassName)[0];
         this.searchInput = <HTMLInputElement>document.getElementsByClassName(this.searchInputClassName)[0];
         this.changesInInputField();
-
+        this.load();
         this.mapEvents();
+    }
+
+    protected load() {
+       window.addEventListener('load', () => {
+           this.classList.remove(`suggest__hide`);
+       })
     }
 
     protected mapEvents(): void {

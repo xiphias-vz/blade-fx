@@ -52,6 +52,10 @@
                 background: $setting-color-gray-2;
             }
         }
+
+        &__hide {
+            display: none;
+        }
     }
 }
 
