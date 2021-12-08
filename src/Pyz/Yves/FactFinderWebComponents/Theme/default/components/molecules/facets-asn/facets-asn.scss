@@ -2,9 +2,21 @@
     #{$name} {
 
 
+        @include helper-breakpoint-media-max($md-max){
+            display: flex;
+            justify-content: center;
+        }
+
         ff-asn {
 
             font-family: $setting-font-family;
+
+            @include helper-breakpoint-media-max($md-max){
+                width: 100%;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+            }
 
             strong {
                 font-weight: 500;
@@ -26,10 +38,23 @@
                 border:  rem(1) solid $setting-color-globus-lightGray;
                 padding: rem(5);
 
+                @include helper-breakpoint-media-max($md-max){
+                    min-width: 95vw;
+                }
+
                 .ffw-asn-group-container {
                     padding-left: 1rem;
 
                     .ffw-wrapper {
+
+                        div[data-content = detailedLinks] {
+                            overflow-y: scroll;
+                            max-height: rem(300);
+
+                            @include helper-breakpoint-media-max($md-max){
+                                max-height: 30vh;
+                            }
+                        }
 
                         ff-asn-group-element {
                             display: flex;
@@ -86,6 +111,22 @@
                 border:  rem(1) solid $setting-color-globus-lightGray;
                 padding: rem(5);
 
+                @include helper-breakpoint-media-max($md-max){
+                    min-width: 95vw;
+                }
+                groupCaption {
+                    @include helper-breakpoint-media-max($xs-max){
+                        padding-bottom: 0;
+                    }
+                }
+
+                ff-slider-control {
+                    @include helper-breakpoint-media-max($xs-max){
+                        padding-top: 0;
+                        margin-top: 0;
+                    }
+                }
+
                 .ffw-sliderSection {
 
                     input {
@@ -101,7 +142,7 @@
                     ff-slider {
 
                         height: rem(4);
-                        background-color: $setting-color-gray-9;
+                        background-color: $setting-color-gray-1;
                         border-radius: 10px;
                         .ffw-sliderBar {
                             bottom: 4px;
@@ -122,10 +163,23 @@
                 border:  rem(1) solid $setting-color-globus-lightGray;
                 padding: rem(5);
 
+                @include helper-breakpoint-media-max($md-max){
+                    min-width: 95vw;
+                }
+
                 .ffw-asn-group-container {
                     padding-left: 1rem;
 
                     .ffw-wrapper {
+
+                        div[data-content = detailedLinks] {
+                            overflow-y: scroll;
+                            max-height: rem(300);
+
+                            @include helper-breakpoint-media-max($md-max){
+                                max-height: 30vh;
+                            }
+                        }
 
                         ff-asn-group-element {
                             display: flex;
@@ -184,6 +238,21 @@
             div[data-container = removeFilter]:hover {
                 color: $setting-color-globus-red;
                 cursor: pointer;
+            }
+
+
+            div[data-content = detailedLinks]::-webkit-scrollbar {
+                width: rem(7);
+            }
+
+            div[data-content = detailedLinks]::-webkit-scrollbar-track {
+                background-color: $setting-color-gray-1;
+                border-radius: rem(10);
+            }
+
+            div[data-content = detailedLinks]::-webkit-scrollbar-thumb {
+                background: $setting-color-orange;
+                border-radius: rem(5);
             }
         }
 
