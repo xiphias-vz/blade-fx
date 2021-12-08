@@ -1,5 +1,9 @@
 @mixin shop-ui-page-layout-main($name: '.page-layout-main') {
     #{$name} {
+        [unresolved] {
+            display: none;
+        }
+
         &__container {
             display: flex;
             flex-direction: column;

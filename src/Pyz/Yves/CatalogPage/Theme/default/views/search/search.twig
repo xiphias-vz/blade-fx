@@ -7,6 +7,7 @@
     pagination: {
         paginationPath: app.request.attributes.get('_route'),
     },
+    hideClass: app.currentCodeBucket is same as('DE') ? 'hide': '',
 } %}
 
 {% block breadcrumb %}
@@ -24,6 +25,7 @@
     <div class="container">
         <div class="container__inner spacing-y spacing-y--inner spacing-y--bigger">
             {% include molecule('search-headline', 'CatalogPage') with {
+                class: data.hideClass,
                 data: {
                     headline: data.searchString | trim ? 'global.search.results.for' | trans : 'global.search.results' | trans,
                     searchString: data.searchString,

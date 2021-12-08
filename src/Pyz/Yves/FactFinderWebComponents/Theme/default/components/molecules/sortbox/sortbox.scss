@@ -3,6 +3,10 @@
         display: flex;
         justify-content: flex-end;
 
+        &.hide {
+            visibility: hidden;
+        }
+
         ff-sortbox {
             min-width: 12rem;
             border: rem(1) solid $setting-color-gray-15;

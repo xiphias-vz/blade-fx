@@ -12,10 +12,10 @@
 } %}
 
 {% block body %}
-    <ff-breadcrumb-trail {{ data.properties.component|raw }}>
+    <ff-breadcrumb-trail {{ data.properties.component|raw }} unresolved>
         <span data-separator> &#8226 </span>
         {% for item in data.properties.items %}
-            <ff-breadcrumb-trail-item type="{{ item }}">
+            <ff-breadcrumb-trail-item type="{{ item }}" unresolved>
                 <span class="{{ item ~ '__item' }}">
                     {% verbatim %}
                         {{{ text }}}

@@ -11,7 +11,7 @@
 } %}
 
 {% block body %}
-    <ff-paging {{ data.properties.component|raw }} id="paging">
+    <ff-paging {{ data.properties.component|raw }} id="paging" unresolved>
         {% verbatim %}
             <ff-paging-item class="step" type="currentLink -2">{{  caption }}</ff-paging-item>
             <ff-paging-item class="step" type="currentLink -1">{{caption }}</ff-paging-item>

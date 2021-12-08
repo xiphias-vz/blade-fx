@@ -142,6 +142,7 @@
                                         } only %}
                                     {% else %}
                                         {% include molecule('sortbox', 'FactFinderWebComponents') with {
+                                            class: 'hide',
                                             data: {
                                                 properties: {
                                                     compontnt: 'collapse-onblur="true"'
@@ -160,6 +161,7 @@
                                             } only %}
                                     {% else %}
                                             {% include molecule('products-per-page', 'FactFinderWebComponents') with {
+                                                class: 'hide',
                                                 data: {
                                                     properties: {
                                                         dropdown: 'show-selected="true"
@@ -229,6 +231,7 @@
                                         } only %}
                                     {% else %}
                                         {% include molecule('products-per-page', 'FactFinderWebComponents') with {
+                                            class: 'hide',
                                             data: {
                                                 properties: {
                                                     dropdown: 'show-selected="true"

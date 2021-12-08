@@ -1,0 +1,9 @@
+@mixin catalog-page-filter-rating($name: '.search-headline') {
+    #{$name} {
+        &.hide {
+            visibility: hidden;
+        }
+    }
+}
+
+@include catalog-page-filter-rating;

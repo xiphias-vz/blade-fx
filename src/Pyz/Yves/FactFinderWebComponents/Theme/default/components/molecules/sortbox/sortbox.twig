@@ -13,9 +13,9 @@
 
 {% block body %}
 
-    <ff-sortbox id="sortbox" show-selected="true" {{ data.properties.component|raw }}>
+    <ff-sortbox id="sortbox" show-selected="true" {{ data.properties.component|raw }} unresolved>
         {% for item in data.properties.items %}
-            <ff-sortbox-item key="{{ item.key }}">
+            <ff-sortbox-item key="{{ item.key }}" unresolved>
                 <span>{{ item.title | trans }}:
                     {% verbatim %}
                         {{ description }}
@@ -29,6 +29,9 @@
     <script>
         let sortbox = document.getElementById("sortbox");
 
+        window.addEventListener('load', () => {
+            sortbox.parentElement.classList.remove('hide');
+        })
         function toggleAttributeSortBox(){
             if(sortbox.hasAttribute("opened")){
                 sortbox.removeAttribute("opened");
