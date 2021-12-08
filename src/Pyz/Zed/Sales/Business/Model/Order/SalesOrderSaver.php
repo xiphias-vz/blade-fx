@@ -86,7 +86,6 @@ class SalesOrderSaver extends SprykerSalesOrderSaver
             $salesOrderItemEntity->setOmsProcessorId($this->omsProcessNumber);
         }
 
-        $salesOrderItemEntity->setOmsProcessorId($this->omsProcessNumber);
         $salesOrderItemEntity->setStore($salesOrderEntity->getStore());
     }
 }
