@@ -12,6 +12,7 @@ use Generated\Shared\Transfer\ExportContentsTransfer;
 use Generated\Shared\Transfer\OrderCriteriaFilterTransfer;
 use Generated\Shared\Transfer\PickingZoneTransfer;
 use Orm\Zed\Sales\Persistence\Map\SpySalesOrderItemTableMap;
+use Orm\Zed\Sales\Persistence\Map\SpySalesOrderTableMap;
 use Orm\Zed\Sales\Persistence\Map\SpySalesShipmentTableMap;
 use Pyz\Zed\MerchantSalesOrder\Business\MerchantSalesOrderFacadeInterface;
 use Pyz\Zed\PickingZone\Business\PickingZoneFacadeInterface;
@@ -141,7 +142,7 @@ class PickingZoneOrderExportContentBuilder implements PickingZoneOrderExportCont
             if (isset($_REQUEST["orderItemsExport"])) {
                 if (in_array($timeSlotTime, $timeSlots)) {
                     $pickingZoneOrderExportContentsTransfer->addContentItem([
-                        $salesOrderItemData[SpySalesOrderItemTableMap::COL_FK_SALES_ORDER],
+                        $salesOrderItemData[SpySalesOrderTableMap::COL_ORDER_REFERENCE],
                         $timeSlotDate,
                         $timeSlotTime,
                         $salesOrderItemData[SpySalesOrderItemTableMap::COL_NAME],

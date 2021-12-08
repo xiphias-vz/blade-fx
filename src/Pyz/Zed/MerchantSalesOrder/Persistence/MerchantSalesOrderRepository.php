@@ -16,6 +16,7 @@ use Orm\Zed\MerchantSalesOrder\Persistence\SpyMerchantSalesOrderQuery;
 use Orm\Zed\PickingZone\Persistence\Map\PyzOrderPickingBlockTableMap;
 use Orm\Zed\PickingZone\Persistence\Map\PyzPickingZoneTableMap;
 use Orm\Zed\Sales\Persistence\Map\SpySalesOrderItemTableMap;
+use Orm\Zed\Sales\Persistence\Map\SpySalesOrderTableMap;
 use Orm\Zed\Sales\Persistence\Map\SpySalesShipmentTableMap;
 use Propel\Runtime\ActiveQuery\Criteria;
 use Spryker\Zed\MerchantSalesOrder\Persistence\MerchantSalesOrderRepository as SprykerMerchantSalesOrderRepository;
@@ -70,7 +71,7 @@ class MerchantSalesOrderRepository extends SprykerMerchantSalesOrderRepository i
                 SpySalesOrderItemTableMap::COL_SHELF,
                 SpySalesOrderItemTableMap::COL_SHELF_FLOOR,
                 SpySalesOrderItemTableMap::COL_SHELF_FIELD,
-                SpySalesOrderItemTableMap::COL_FK_SALES_ORDER,
+                SpySalesOrderTableMap::COL_ORDER_REFERENCE,
             ])
                 ->withColumn(sprintf('SUM(%s)', SpySalesOrderItemTableMap::COL_QUANTITY), 'quantity')
                 ->useOrderQuery()
@@ -83,6 +84,7 @@ class MerchantSalesOrderRepository extends SprykerMerchantSalesOrderRepository i
                 )
                 ->endUse()
                 ->endUse()
+                ->joinOrder()
                 ->filterByRequestedDeliveryDate_Between(
                     [
                         'min' => $minDeliveryDateTime,
@@ -92,8 +94,8 @@ class MerchantSalesOrderRepository extends SprykerMerchantSalesOrderRepository i
                 ->addAnd(PyzPickingZoneTableMap::COL_ID_PICKING_ZONE, $orderFilterCriteriaTransfer->getIdPickingZone())
                 ->addAnd(SpySalesOrderItemTableMap::COL_STORE, $orderFilterCriteriaTransfer->getPickingStore())
                 ->where(SpySalesOrderItemTableMap::COL_FK_OMS_ORDER_ITEM_STATE . " in (SELECT id_oms_order_item_state FROM spy_oms_order_item_state WHERE name IN ('" . implode("','", $orderFilterCriteriaTransfer->getItemStatuses()) . "'))")
-                ->groupBy(['spy_sales_shipment.requested_delivery_date', 'spy_sales_order_item.sku', 'spy_sales_order_item.fk_sales_order'])
-                ->orderBy('spy_sales_order_item.fk_sales_order')
+                ->groupBy(['spy_sales_shipment.requested_delivery_date', 'spy_sales_order_item.sku', 'spy_sales_order.order_reference'])
+                ->orderBy('spy_sales_order.order_reference')
                 ->find()
                 ->getArrayCopy();
         } else {
@@ -165,6 +167,7 @@ class MerchantSalesOrderRepository extends SprykerMerchantSalesOrderRepository i
                 SpySalesOrderItemTableMap::COL_SHELF_FLOOR,
                 SpySalesOrderItemTableMap::COL_SHELF_FIELD,
                 SpySalesOrderItemTableMap::COL_FK_SALES_ORDER,
+                SpySalesOrderTableMap::COL_ORDER_REFERENCE,
             ])
                 ->withColumn(sprintf('SUM(%s)', SpySalesOrderItemTableMap::COL_QUANTITY), 'quantity')
                 ->useOrderQuery()
@@ -177,6 +180,7 @@ class MerchantSalesOrderRepository extends SprykerMerchantSalesOrderRepository i
                 )
                 ->endUse()
                 ->endUse()
+                ->joinOrder()
                 ->filterByRequestedDeliveryDate_Between(
                     [
                         'min' => $minDeliveryDateTime,
@@ -186,8 +190,8 @@ class MerchantSalesOrderRepository extends SprykerMerchantSalesOrderRepository i
                 ->addAnd(PyzPickingZoneTableMap::COL_ID_PICKING_ZONE, $orderFilterCriteriaTransfer->getIdPickingZone())
                 ->addAnd(SpySalesOrderItemTableMap::COL_STORE, $orderFilterCriteriaTransfer->getPickingStore())
                 ->where(SpySalesOrderItemTableMap::COL_ITEM_PAUSED . " = 1")
-                ->groupBy(['spy_sales_shipment.requested_delivery_date', 'spy_sales_order_item.sku', 'spy_sales_order_item.fk_sales_order'])
-                ->orderBy('spy_sales_order_item.fk_sales_order')
+                ->groupBy(['spy_sales_shipment.requested_delivery_date', 'spy_sales_order_item.sku', 'spy_sales_order.order_reference'])
+                ->orderBy('spy_sales_order.order_reference')
                 ->find()
                 ->getArrayCopy();
         } else {
