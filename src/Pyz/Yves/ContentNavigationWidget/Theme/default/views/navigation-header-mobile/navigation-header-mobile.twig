@@ -2,12 +2,17 @@
 
 {% define data = {
     navigation: navigation,
+    currentCodeBucket: app.currentCodeBucket
 } %}
 
 {% block body %}
-    {% include molecule('navigation-header-mobile', 'NavigationWidget') with {
-        data: {
-            nodes: data.navigation.nodes
-        },
-    } only %}
+    {% if data.currentCodeBucket == 'DE' %}
+        {{ include('@ContentNavigationWidget/views/navigation-header-mobile/navigation-header-mobile-de.twig') }}
+    {% else %}
+        {% include molecule('navigation-header-mobile', 'NavigationWidget') with {
+            data: {
+                nodes: data.navigation.nodes
+            },
+        } only %}
+    {% endif %}
 {% endblock %}

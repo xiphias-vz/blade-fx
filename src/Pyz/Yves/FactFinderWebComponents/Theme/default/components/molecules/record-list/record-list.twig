@@ -40,12 +40,9 @@
     <ff-record-list {{ data.properties.component|raw }}>
         {% block record %}
             <ff-record {{ data.properties.record|raw }} class="col--sm-12 col--md-3 col--lg-3 {{ config.name}}__record-item ">
-
-
                 <div class="labelDiscount">
                     {{ "{{ record.geoInformation.0.geoValues.DiscountText }}" }}
                 </div>
-
            {% set sku %}
                 {% verbatim %}
                     {{ record.MasterArticleNumber }}

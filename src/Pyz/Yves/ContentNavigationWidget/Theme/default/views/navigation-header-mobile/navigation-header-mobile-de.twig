@@ -1,0 +1,49 @@
+        <style>
+            #mobile_ff-navigation ff-navigation-item {
+                width: 25em;
+                height: 24px;
+                float: unset;
+                margin-top: 10px;
+                margin-right: 5px;
+                left: unset!important;
+            }
+            #mobile_ff-navigation .ffw-item-container {
+                left: unset!important;
+                right: 50%;
+                position: relative!important;
+            }
+            .labelDiscount {
+                width: 30px;
+                height: 30px;
+                background-color: red;
+                position: absolute;
+                text-align: center;
+                color: white;
+                padding-top: 5px;
+                z-index: 100;
+            }
+            .record-list__amount--original {
+                text-decoration: line-through;
+            }
+        </style>
+
+        <ff-navigation layout="vertical" id="mobile_ff-navigation">
+            <ff-navigation-item>
+                <div class="navigation-multilevel-node__link navigation-multilevel-node__link--header navigation-multilevel-node__link--lvl-1 ">
+                    <a href="#" class="navigation-multilevel-node__link-inner navigation-multilevel-node__link-inner--lvl-1">
+                        {{"{{name}}"}}
+                    </a>
+                </div>
+            </ff-navigation-item>
+            <ff-navigation-item type="header">
+                <div class="navigation-multilevel-node__link navigation-multilevel-node__link--header navigation-multilevel-node__link--lvl-1 ">
+                    <a href="#" class="navigation-multilevel-node__link-inner navigation-multilevel-node__link-inner--lvl-1">
+                        {{"{{name}}"}}
+                    </a>
+                </div>
+            </ff-navigation-item>
+        </ff-navigation>
+
+        <script type="text/javascript">
+            {% include '@ContentNavigationWidget/views/navigation-header/navigation-header-de.js' %}
+        </script>
