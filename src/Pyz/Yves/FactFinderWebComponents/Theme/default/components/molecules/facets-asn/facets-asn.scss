@@ -1,10 +1,10 @@
 @mixin facets-asn($name: '.facets-asn') {
     #{$name} {
 
-
         @include helper-breakpoint-media-max($md-max){
             display: flex;
             justify-content: center;
+            flex-direction: column;
         }
 
         ff-asn {
@@ -16,6 +16,8 @@
                 display: flex;
                 flex-direction: column;
                 align-items: center;
+                max-height: 90vh;
+                overflow-y: auto;
             }
 
             strong {
@@ -48,7 +50,7 @@
                     .ffw-wrapper {
 
                         div[data-content = detailedLinks] {
-                            overflow-y: scroll;
+                            overflow-y: auto;
                             max-height: rem(300);
 
                             @include helper-breakpoint-media-max($md-max){
@@ -158,7 +160,7 @@
                     }
                 }
             }
-            ff-asn-group[for-group = Brand] {
+            ff-asn-group[for-group = Brand], ff-asn-group[for-group = Sale] {
 
                 border:  rem(1) solid $setting-color-globus-lightGray;
                 padding: rem(5);
@@ -173,7 +175,7 @@
                     .ffw-wrapper {
 
                         div[data-content = detailedLinks] {
-                            overflow-y: scroll;
+                            overflow-y: auto;
                             max-height: rem(300);
 
                             @include helper-breakpoint-media-max($md-max){
@@ -214,6 +216,12 @@
                     }
                 }
             }
+            ff-asn-group[for-group = Sale]{
+                div[data-content = detailedLinks] {
+                    overflow-y: auto;
+                }
+            }
+
             div[data-container = showMore] {
                 font-size: rem(13);
                 margin-top: rem(10);

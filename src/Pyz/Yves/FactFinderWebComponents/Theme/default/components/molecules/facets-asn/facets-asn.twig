@@ -11,6 +11,17 @@
 } %}
 
 {% block body %}
+
+    <button type="button" id="toggleFilterButtonForMobile" class="button button--hollow button--expand spacing-y spacing-y--big is-hidden-xl-only js-catalog-toggler-click__trigger">
+        {%- include atom('icon') with {
+            class: 'spacing-right',
+            data: {
+                name: 'filters',
+            },
+        } only -%}
+        {{- 'catalog.filter.filter' | trans -}}
+    </button>
+
     <ff-asn {{ data.properties.component|raw }} unresolved>
         <ff-asn-group for-group="all" class="cursor" unresolved>
             <ff-asn-group-element unresolved>
