@@ -74,6 +74,18 @@
             }
         }
 
+        &__labelDiscount{
+            background-color: $setting-color-globus-red;
+            padding: rem(2) rem(9);
+            position: absolute;
+            bottom: auto;
+            font-size: rem(14);
+            color: $setting-color-globus-lightGray;
+            pointer-events: none;
+            border-radius: 3px;
+            font-family: Fira Sans,Open Sans,Arial,Lucida Grande,sans-serif;
+        }
+
         .lazy-thumbnail{
             @include  helper-breakpoint-media-max($sm-max){
                 display: flex;
@@ -240,6 +252,7 @@
 
         }
         &__amount--original{
+            text-decoration: line-through;
             display: flex;
             font-family: $setting-font-family-additional;
             margin-top: rem(25);
@@ -252,6 +265,7 @@
 
         }
         &__amount-red{
+            color: $setting-color-globus-red;
             display: flex;
             justify-content: flex-end;
             font-size: rem(23);
