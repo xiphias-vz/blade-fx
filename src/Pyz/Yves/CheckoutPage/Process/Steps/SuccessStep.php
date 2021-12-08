@@ -21,11 +21,6 @@ class SuccessStep extends SprykerSuccessStep
     private $copyQuoteTransfer;
 
     /**
-     * @var \SprykerEco\Client\FactFinderNg\FactFinderNgClient
-     */
-    private $factFinderNgClient;
-
-    /**
      * @param \Symfony\Component\HttpFoundation\Request $request
      * @param \Generated\Shared\Transfer\QuoteTransfer $quoteTransfer
      *
@@ -33,7 +28,6 @@ class SuccessStep extends SprykerSuccessStep
      */
     public function execute(Request $request, AbstractTransfer $quoteTransfer)
     {
-        $this->factFinderNgClient->trackCheckoutEvent($this->preparedCheckoutEventTransfer($quoteTransfer));
         $this->copyQuoteTransfer = $quoteTransfer;
 
         return parent::execute($request, $quoteTransfer);
