@@ -39,7 +39,9 @@
                         channel="Spryker"
                         default-query="*"
                         search-immediate="false"
-                        add-params="marketId=' ~ data.storeId ~ '"'                },
+                        marketId="' ~ data.storeId ~ '"
+                        add-params="marketId=' ~ data.storeId ~ '"'
+                },
             }
         } only %}
     {% endif %}

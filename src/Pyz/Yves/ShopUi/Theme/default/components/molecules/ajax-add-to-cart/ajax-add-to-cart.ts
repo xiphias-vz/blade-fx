@@ -28,7 +28,7 @@ export default class AjaxAddToCart extends Component {
             this.links = <HTMLLinkElement[]>Array.from(document.getElementsByClassName(this.addToCartLinkClass));
             this.addToCartIncrementerLinks = <HTMLElement[]>Array.from(document.getElementsByClassName(this.addToCartIncrementer));
             this.addtoCartDecrementerLinks = <HTMLElement[]>Array.from(document.getElementsByClassName(this.addToCartDecrementer));
-            this.quantityInputs = <HTMLInputElement[]>Array.from(document.querySelectorAll('#txt-product-quantity'));
+            this.quantityInputs = <HTMLInputElement[]>Array.from(document.querySelectorAll(CLASS_PREFIX + this.quantityInputField));
 
             if (!this.links.length) {
                 return;
@@ -218,7 +218,7 @@ export default class AjaxAddToCart extends Component {
 
     protected updateItemQuantityInput(link: HTMLLinkElement, quantity: number) {
         if (quantity !== undefined) {
-            const counter: HTMLInputElement = <HTMLInputElement>link.parentElement.querySelector(ID_PREFIX + this.quantityInputField);
+            const counter: HTMLInputElement = <HTMLInputElement>link.parentElement.querySelector(CLASS_PREFIX + this.quantityInputField);
             counter.value = String(quantity);
         }
     }
