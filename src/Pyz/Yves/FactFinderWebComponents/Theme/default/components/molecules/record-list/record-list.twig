@@ -32,6 +32,7 @@
 {% set productSupplier = data.product.attributes.supplier | default(null) %}
 {% set productSaleVolume = data.product.attributes.grundpreisinhalt | default(null) %}
 {% set isGlobusProduction = data.product.attributes.isGlobusProduction | default(0) %}
+{% set defaultImage = publicPath("images/kein_bild_vorhanden.png") %}
 
 {% set extraClass = '' %}
 
@@ -89,8 +90,19 @@
                     {{ record.SapNumber }}
                 {% endverbatim %}
             {% endset %}
+                {% set idProductAbstractRecord %}
+                    {% verbatim %}
+                        {{ record.IdProductAbstract }}
+                    {% endverbatim %}
+                {% endset %}
 
-            {% set price %}
+                {% set imageExtraClasses %}
+                    {% verbatim %}
+                        js-image-animation__image-{{ record.IdProductAbstract }}
+                    {% endverbatim %}
+                {% endset %}
+
+                {% set price %}
                 {% verbatim %}
                     {{ record.geoInformation.0.geoValues.Price }}
                 {% endverbatim %}
@@ -121,48 +133,11 @@
                     <div data-redirect="{{ record.ProductUrl }}"
                         data-redirect-target="_self">
                 {% endverbatim %}
-
-
                 {% block imageContainer %}
-                    <div class="{{ config.name }}__myImg" onclick="productClicked('{{ productUrl }}', '{{ sku }}', '{{ productName | escape('js') }}', '{{ price }}', '{{ sku }}' )">
-                        {% macro thumbnail(src, alt='', extraClass='', modifiers=[], idProductAbstract='') %}
-                            {% if app.currentCodeBucket == 'DE' %}
-                                {% set splitUrl = src | split('.com/') %}
-                                {% set newSrc = splitUrl[0] ~ '.com/thumb_'  ~ splitUrl[1] | default("") %}
-
-                                {% embed molecule('lazy-thumbnail') with {
-                                    class: extraClass,
-                                    modifiers: modifiers,
-                                    attributes: {
-                                        src: src,
-                                        alt: alt,
-                                    },
-                                    embed: {
-                                        idProductAbstract: idProductAbstract,
-                                    },
-                                } only %}
-                                    {% block image %}
-                                            {% set imageExtraClasses = embed.idProductAbstract ? 'js-image-animation__image-' ~ embed.idProductAbstract %}
-                                            {{ parent() }}
-                                    {% endblock %}
-                                {% endembed %}
-                            {% endif %}
-                        {% endmacro %}
-
-                        {% block image %}
-                            {% if productUrl %}
-                                {% block imageLink %}
-                                    <a class="image-link" href="{{ productUrl }}">
-                                        {{ _self.thumbnail(imageUrl, productName , extraClass, modifiers) }}
-                                    </a>
-                                {% endblock %}
-                            {% endif %}
-                            {% if not productUrl %}
-                                {% block productThumbnail %}
-                                    {{ _self.thumbnail(imageUrl, productName, extraClass, modifiers, config.jsName) }}
-                                {% endblock %}
-                            {% endif %}
-                        {% endblock %}
+                    <div class="col--lg-12 col--md-12 col--sm-3 {{ config.jsName }}__image-wrap" onclick="productClicked('{{ productUrl }}', '{{ sku }}', '{{ productName | escape('js') }}', '{{ price }}', '{{ sku }}' )">
+                        {% set splitUrl = imageUrl | split('.com/') %}
+                        {% set newSrc = splitUrl[0] ~ '.com/thumb_'  ~ splitUrl[1] | default("") %}
+                        <img onerror="OnErrorChangeImage(this);" class="{{ imageExtraClasses}}" src="{{ imageUrl }}"  data-storage="{{ imageUrl }}">
                     </div>
                 {% endblock %}
 
@@ -281,7 +256,7 @@
                                     js-ajax-add-to-cart__link
                                     myBtn
                                 "
-                           data-product-id="{{ sku }}"
+                           data-product-id="{{ idProductAbstractRecord }}"
                            data-product-sku="{{ sku }}"
                            data-product-title="{{ productName }}"
                            data-product-price="{{ price }}"
@@ -339,5 +314,19 @@
         {% endblock %}
     </ff-record-list>
  </div>
+    <script>
+        function OnErrorChangeImage(ev) {
+            if(ev.src.includes("thumb_") ){
+                let nonThumbImageFromStorage = ev.getAttribute("data-storage");
+                nonThumbImageFromStorage =  nonThumbImageFromStorage.replace("thumb_", "");
+                ev.src = nonThumbImageFromStorage;
+                ev.setAttribute("data-src", nonThumbImageFromStorage);
+            }
+            else{
+                ev.src = '{{ defaultImage }}';
+                ev.setAttribute("data-src", "{{ defaultImage }}");
+            }
+        }
+    </script>
 {% endblock %}
 

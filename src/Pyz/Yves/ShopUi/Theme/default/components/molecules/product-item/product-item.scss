@@ -567,7 +567,6 @@
 
         .lazy-thumbnail__image {
 
-
             @include helper-breakpoint-media-max($md-max) {
                 max-height: 160px;
                 height: auto;

@@ -17,15 +17,28 @@ export default class ImageAnimation extends Component {
     protected exponent: number = 2;
     protected cartLinks: HTMLElement[];
     protected cartLinkCoordinates: DOMRect;
+    private environment: HTMLInputElement;
 
     protected readyCallback(): void {
-        this.links = <HTMLLinkElement[]>Array.from(document.getElementsByClassName(this.linksClass));
+        this.environment = document.querySelector('#environment');
+        if (this.environment.value === 'DE') {
+            let checkRecordsAreRendered = setInterval(() => {
+                this.links = <HTMLLinkElement[]>Array.from(document.getElementsByClassName(this.linksClass));
+                if(this.links.length > 0) {
+                    this.body = <HTMLBodyElement>document.getElementsByTagName('body')[0];
+                    this.cartLinks = <HTMLElement[]>Array.from(document.getElementsByClassName('cart-link'));
+                    this.mapEvents();
+                    clearInterval(checkRecordsAreRendered);
+                }
+            }, 500);
+        } else {
+            this.links = <HTMLLinkElement[]>Array.from(document.getElementsByClassName(this.linksClass));
+            if (this.links.length) {
+                this.body = <HTMLBodyElement>document.getElementsByTagName('body')[0];
+                this.cartLinks = <HTMLElement[]>Array.from(document.getElementsByClassName('cart-link'));
 
-        if (this.links.length) {
-            this.body = <HTMLBodyElement>document.getElementsByTagName('body')[0];
-            this.cartLinks = <HTMLElement[]>Array.from(document.getElementsByClassName('cart-link'));
-
-            this.mapEvents();
+                this.mapEvents();
+            }
         }
     }
 
@@ -118,7 +131,8 @@ export default class ImageAnimation extends Component {
     }
 
     protected imageClass(link: HTMLLinkElement): string {
-        return `${this.jsName}__image-${link.dataset.productId}`;
+        let productId = link.dataset.productId.replaceAll('\n', '').trim();
+        return `${this.jsName}__image-${productId}`;
     }
 
     protected get linksClass(): string {
