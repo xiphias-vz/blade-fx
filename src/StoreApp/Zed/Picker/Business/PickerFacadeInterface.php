@@ -210,4 +210,17 @@ interface PickerFacadeInterface
      * @return array
      */
     public function getDaysInTheWeek(): array;
+
+    /**
+     * @param int $IdGlobalPickReport
+     */
+    public function updateGlobalPerformanceOrder(int $IdGlobalPickReport): void;
+
+    /**
+     * @param int $IdPerformanceSalesOrderReport
+     * @param int $containerCount
+     *
+     * @return int
+     */
+    public function updatePerformanceOrder(int $IdPerformanceSalesOrderReport, int $containerCount): int;
 }

@@ -873,7 +873,7 @@ class PickingHeaderTransferData
      *
      * @return int
      */
-    protected function updatePerformanceOrder(int $IdPerformanceSalesOrderReport, int $containerCount): int
+    public function updatePerformanceOrder(int $IdPerformanceSalesOrderReport, int $containerCount): int
     {
         $orderPerformanceOrderTransfer = (new PerformanceSalesOrderReportTransfer())
             ->setIdPerformanceSalesOrderReport($IdPerformanceSalesOrderReport)
@@ -907,7 +907,7 @@ class PickingHeaderTransferData
      *
      * @return void
      */
-    protected function updateGlobalPerformanceOrder(int $IdGlobalPickReport)
+    public function updateGlobalPerformanceOrder(int $IdGlobalPickReport)
     {
         $orderGlobalPerformanceOrderTransfer = (new PerformanceGlobalSalesOrderReportTransfer())
             ->setIdGlobalPickReport($IdGlobalPickReport)

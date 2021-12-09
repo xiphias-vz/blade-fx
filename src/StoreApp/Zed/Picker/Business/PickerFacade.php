@@ -391,4 +391,29 @@ class PickerFacade extends AbstractFacade implements PickerFacadeInterface
     {
         return $this->getFactory()->getConfig()->getDaysInTheWeek();
     }
+
+    /**
+     * @param int $IdGlobalPickReport
+     *
+     * @return void
+     */
+    public function updateGlobalPerformanceOrder(int $IdGlobalPickReport): void
+    {
+        $this->getFactory()
+            ->createPickingHeaderTransferData()
+            ->updateGlobalPerformanceOrder($IdGlobalPickReport);
+    }
+
+    /**
+     * @param int $IdPerformanceSalesOrderReport
+     * @param int $containerCount
+     *
+     * @return int
+     */
+    public function updatePerformanceOrder(int $IdPerformanceSalesOrderReport, int $containerCount): int
+    {
+        return $this->getFactory()
+            ->createPickingHeaderTransferData()
+            ->updatePerformanceOrder($IdPerformanceSalesOrderReport, $containerCount);
+    }
 }

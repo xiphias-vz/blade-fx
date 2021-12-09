@@ -42,6 +42,10 @@ class MultiPickingScanningContainerController extends AbstractController
             foreach ($containersShelf as $key => $containerWithShelf) {
                 $this->getFacade()->setContainerToOrder($orderForScanningContainer, $containerWithShelf->ContainerCode, $containerWithShelf->ShelfCode);
             }
+            if (empty($containersShelf)) {
+                $this->getFacade()->updateGlobalPerformanceOrder($transfer->getIdGlobalPickReport());
+                $this->getFacade()->updatePerformanceOrder($orderForScanningContainer->getIdPerformanceSalesOrderReport(), count($orderForScanningContainer->getPickingContainers()));
+            }
             $orderForScanningContainer = $transfer->getNextOrder($nextOrderPosition);
 
             if ($orderForScanningContainer == null) {
