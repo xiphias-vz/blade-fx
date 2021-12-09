@@ -39,7 +39,7 @@
  <div class="grid {{ component.renderClass(config.name ~ '__container', modifiers) }}">
     <ff-record-list {{ data.properties.component|raw }} unresolved>
         {% block record %}
-            <ff-record {{ data.properties.record|raw }} class="col--sm-12 col--md-3 col--lg-3 {{ config.name}}__record-item" unresolved>
+            <ff-record {{ data.properties.record|raw }} class="col--sm-12 col--md-4 col--lg-3 {{ config.name}}__record-item" unresolved>
                 <div class="labelDiscount">
                     {{ "{{ record.geoInformation.0.geoValues.DiscountText }}" }}
                 </div>

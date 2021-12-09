@@ -24,17 +24,15 @@
                min-width: 100%;
             }
             @include helper-breakpoint-media-between($md-min, $md-max){
-                min-width: 29%;
-                margin: rem(10);
+                min-width: 0;
+                margin: 0;
             }
         }
 
         ff-record {
             padding: rem(10);
             margin-bottom: rem(30);
-            @include helper-breakpoint-media-max($md-max){
-                margin: rem(21);
-            }
+
             @include helper-breakpoint-media-max($sm-max){
                 margin: rem(0);
             }
