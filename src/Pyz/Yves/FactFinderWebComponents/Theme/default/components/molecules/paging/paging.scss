@@ -3,18 +3,50 @@
         .ffw-page-item-container {
             display: flex;
             border: rem(1) solid $setting-color-gray-15;
+            border-radius: rem(2);
             width: rem(36);
             height: rem(36);
             padding: rem(5);
             align-items: center;
             justify-content: center;
+            color: $setting-color-gray-13;
         }
+
+        .pagingDots {
+           margin: rem(5) 0;
+           color: $setting-color-gray-13;
+        }
+
+        .ffw-page-item-container:hover {
+            background-color: $setting-color-gray-1;
+        }
+
         .ffw-selected{
             background-color: $setting-color-gray-1;
-            color: $setting-color-black
+            .ffw-cursor {
+                color: $setting-color-black;
+            }
         }
         .step {
             color: $setting-color-gray-9;
+        }
+        .paggingArrow {
+
+            .ffw-page-item-container {
+                border: none;
+                width: auto;
+
+                svg {
+                    color: $setting-color-gray-6;
+                }
+                svg:active {
+                    color: $setting-color-gray-9;
+                    transform: scale(1.2);
+                }
+            }
+            .ffw-page-item-container:hover {
+                background-color: transparent;
+            }
         }
     }
 }

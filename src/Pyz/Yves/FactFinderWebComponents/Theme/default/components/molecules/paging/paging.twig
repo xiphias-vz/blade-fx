@@ -13,11 +13,48 @@
 {% block body %}
     <ff-paging {{ data.properties.component|raw }} id="paging" unresolved>
         {% verbatim %}
-            <ff-paging-item class="step" type="currentLink -2">{{  caption }}</ff-paging-item>
-            <ff-paging-item class="step" type="currentLink -1">{{caption }}</ff-paging-item>
-            <ff-paging-item type="currentLink">{{ caption }}</ff-paging-item>
-            <ff-paging-item class="step" type="currentLink +1">{{ caption }}</ff-paging-item>
-            <ff-paging-item class="step" type="currentLink +2">{{ caption }}</ff-paging-item>
+
+        <ff-paging-set id="paggingSet1" state="currentPage <= 3">
+
+            <ff-paging-item class="paggingArrow" type="previousLink"><svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" width="12" height="12" viewBox="0 0 24 24"><path d="M16.67 0l2.83 2.829-9.339 9.175 9.339 9.167-2.83 2.829-12.17-11.996z"/></svg></ff-paging-item>
+
+            <ff-paging-item type="currentLink -2">{{caption}}</ff-paging-item>
+            <ff-paging-item type="currentLink -1">{{caption}}</ff-paging-item>
+            <ff-paging-item type="currentLink">{{caption}}</ff-paging-item>
+            <ff-paging-item type="currentLink +1">{{caption}}</ff-paging-item>
+            <ff-paging-item type="currentLink +2">{{caption}}</ff-paging-item>
+            <span class="pagingDots">...</span>
+            <ff-paging-item type="lastLink">{{caption}}</ff-paging-item>
+            <ff-paging-item class="paggingArrow" type="nextLink"><svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" width="12" height="12" viewBox="0 0 24 24"><path d="M5 3l3.057-3 11.943 12-11.943 12-3.057-3 9-9z"/></svg></ff-paging-item>
+
+        </ff-paging-set>
+
+        <ff-paging-set id="paggingSet2" state="currentPage > 3 && pageCount-currentPage >= 3">
+            <ff-paging-item class="paggingArrow" type="previousLink"><svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" width="12" height="12" viewBox="0 0 24 24"><path d="M16.67 0l2.83 2.829-9.339 9.175 9.339 9.167-2.83 2.829-12.17-11.996z"/></svg></ff-paging-item>
+            <ff-paging-item type="firstLink">{{caption}}</ff-paging-item>
+            <span class="pagingDots">...</span>
+            <ff-paging-item type="currentLink -1">{{caption}}</ff-paging-item>
+            <ff-paging-item type="currentLink">{{caption}}</ff-paging-item>
+            <ff-paging-item type="currentLink +1">{{caption}}</ff-paging-item>
+            <ff-paging-item type="currentLink +2">{{caption}}</ff-paging-item>
+            <span class="pagingDots">...</span>
+            <ff-paging-item type="lastLink">{{caption}}</ff-paging-item>
+            <ff-paging-item class="paggingArrow" type="nextLink"><svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" width="12" height="12" viewBox="0 0 24 24"><path d="M5 3l3.057-3 11.943 12-11.943 12-3.057-3 9-9z"/></svg></ff-paging-item>
+
+        </ff-paging-set>
+
+        <ff-paging-set id="paggingSet3" state="pageCount-currentPage < 3 && currentPage > 3">
+            <ff-paging-item class="paggingArrow" type="previousLink"><svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" width="12" height="12" viewBox="0 0 24 24"><path d="M16.67 0l2.83 2.829-9.339 9.175 9.339 9.167-2.83 2.829-12.17-11.996z"/></svg></ff-paging-item>
+            <ff-paging-item type="firstLink">{{caption}}</ff-paging-item>
+            <span class="pagingDots">...</span>
+            <ff-paging-item type="currentLink -1">{{caption}}</ff-paging-item>
+            <ff-paging-item type="currentLink">{{caption}}</ff-paging-item>
+            <ff-paging-item type="currentLink +1">{{caption}}</ff-paging-item>
+            <ff-paging-item type="currentLink +2">{{caption}}</ff-paging-item>
+            <ff-paging-item class="paggingArrow" type="nextLink"><svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" width="12" height="12" viewBox="0 0 24 24"><path d="M5 3l3.057-3 11.943 12-11.943 12-3.057-3 9-9z"/></svg></ff-paging-item>
+        </ff-paging-set>
+
         {% endverbatim %}
     </ff-paging>
 {% endblock %}
+
