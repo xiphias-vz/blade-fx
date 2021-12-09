@@ -32,6 +32,7 @@ document.addEventListener("ffReady", function (event) {
 
             window.location.href = '/de/search' + params;
         } else {
+            //debugger;
             if(indexCatalogPageCounter === 0 && isSearchPage()) {
                 indexCatalogPageCounter++;
                 if(getParameterByName("navigation")=="true") {
@@ -41,28 +42,48 @@ document.addEventListener("ffReady", function (event) {
                         query: "*"
                     });
                 } else {
-                    eventAggregator.addFFEvent({
-                        type: "search",
-                        query: getParameterByName("query")
-                    });
+                    if(getParameterByName("query")) {
+                        eventAggregator.addFFEvent({
+                            type: "search",
+                            query: getParameterByName("query")
+                        });
+                    } else if (document.location.pathname.includes('/outlet')) {
+                        eventAggregator.addFFEvent({
+                            type: "search",
+                            query: "*",
+                            filter: "Sale:true"
+                        });
+                    } else {
+                        eventAggregator.addFFEvent({
+                            type: "navigation-search",
+                            filter : "CategoryPath: " + document.title,
+                            query: "*"
+                        });
+                    }
                 }
             }
         }
     });
     resultDispatcher.addCallback("asn", function (asnData) {
         var sum = 0;
-        if(asnData[0].selectedElements.length > 0) {
-            sum = asnData[0].selectedElements[asnData[0].selectedElements.length - 1].recordCount;
-        } else {
-            for(i=0; i < asnData[0].elements.length; i++) {
-                sum = sum + asnData[0].elements[i].recordCount;
-            }
-        }
+        var title = "";
         var el = document.getElementById("searchResultCount");
         if (el) {
+            if(asnData[0].selectedElements.length > 0) {
+                var data = asnData[0].selectedElements[asnData[0].selectedElements.length - 1];
+                sum = data.recordCount;
+                title = data.name;
+            } else {
+                for(i=0; i < asnData[0].elements.length; i++) {
+                    sum = sum + asnData[0].elements[i].recordCount;
+                }
+                title = el.getAttribute('data-title') + ' ' + asnData[0].elements[0].__ngSearchParams.query;
+            }
             searchResultText = el.getAttribute('data-text');
             searchResultText = searchResultText.replace('%numFound%', sum);
             el.innerText = searchResultText;
+            document.getElementById("searchResultCountTitle").innerText = title;
+            document.title = title;
         }
     });
 });
@@ -96,7 +117,7 @@ function checkOriginalAndDefaultPrices(element) {
             elOrig.innerText = elOrig.innerText.replace('.', ',') + ' €';
             elDef.style.color = "#e60000";
         } else {
-            elDef.style.color = "black";
+            elDef.style.color = "#111";
         }
     }
 }

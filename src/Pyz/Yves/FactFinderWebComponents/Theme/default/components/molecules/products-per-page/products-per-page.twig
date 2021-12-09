@@ -24,22 +24,4 @@
         </ff-products-per-page-item>
     </ff-products-per-page-dropdown>
 
-    <script>
-        let dropdownBox = document.getElementById("dropdown");
-
-        function toggleAttributeProductsPerPage(){
-            if(dropdownBox.hasAttribute("opened")){
-                dropdownBox.removeAttribute("opened");
-                dropdownBox.setAttribute("closed", "closed");
-            }else if(dropdownBox.hasAttribute("closed")){
-                dropdownBox.removeAttribute("closed");
-                dropdownBox.setAttribute("opened", "opened");
-            }
-        };
-
-        dropdownBox.addEventListener("click", toggleAttributeProductsPerPage);
-        dropdownBox.addEventListener("blur", toggleAttributeProductsPerPage);
-
-    </script>
-
 {% endblock %}
