@@ -22,45 +22,75 @@ export default class AjaxAddToCart extends Component {
     private quantityInputs: HTMLInputElement[];
     protected timer;
     protected callBackDelay: number;
+    protected environment: HTMLInputElement;
 
-    protected load() {
-        window.addEventListener('load', () => {
-            this.links = <HTMLLinkElement[]>Array.from(document.getElementsByClassName(this.addToCartLinkClass));
-            this.addToCartIncrementerLinks = <HTMLElement[]>Array.from(document.getElementsByClassName(this.addToCartIncrementer));
-            this.addtoCartDecrementerLinks = <HTMLElement[]>Array.from(document.getElementsByClassName(this.addToCartDecrementer));
-            this.quantityInputs = <HTMLInputElement[]>Array.from(document.querySelectorAll(CLASS_PREFIX + this.quantityInputField));
-
-            if (!this.links.length) {
-                return;
-            }
-            this.icon = <HTMLElement>document.getElementsByClassName(this.iconClass)[0];
-            this.cartBlock = <HTMLElement>document.getElementsByClassName(this.cartClass)[0];
-            this.amount = <HTMLElement[]>Array.from(document.getElementsByClassName(this.amountClass));
-            this.quantity = <HTMLElement[]>Array.from(document.getElementsByClassName(this.quantityClass));
-            this.flashMessages = <FlashMessage[]>Array.from(this.getElementsByClassName(this.flashMessagesClass));
-            this.notificationArea = <HTMLElement>this.getElementsByClassName(this.notificationAreaClass)[0];
-            this.messagesTextHolders = <HTMLElement[]>Array.from(
-                this.getElementsByClassName(this.messagesTextHolderClass)
-            );
-            this.callBackDelay = 800;
-
-            this.mapEvents();
-        })
-    }
     protected readyCallback(): void {
-        this.load();
+        this.environment = <HTMLInputElement>document.querySelector('#environment');
+        if (this.environment.value === 'DE') {
+            let checkRecordsAreRendered = setInterval(() => {
+                this.links = <HTMLLinkElement[]>Array.from(document.getElementsByClassName(this.addToCartLinkClass));
+                if(this.links.length > 0) {
+                    this.load();
+                    clearInterval(checkRecordsAreRendered);
+                }
+            }, 500);
+
+        } else {
+            this.load();
+        }
+
+    }
+
+    public load() {
+        this.links = <HTMLLinkElement[]>Array.from(document.getElementsByClassName(this.addToCartLinkClass));
+        this.addToCartIncrementerLinks = <HTMLElement[]>Array.from(document.getElementsByClassName(this.addToCartIncrementer));
+        this.addtoCartDecrementerLinks = <HTMLElement[]>Array.from(document.getElementsByClassName(this.addToCartDecrementer));
+        this.quantityInputs = <HTMLInputElement[]>Array.from(document.querySelectorAll(CLASS_PREFIX + this.quantityInputField));
+
+        if (!this.links.length) {
+            return;
+        }
+        this.icon = <HTMLElement>document.getElementsByClassName(this.iconClass)[0];
+        this.cartBlock = <HTMLElement>document.getElementsByClassName(this.cartClass)[0];
+        this.amount = <HTMLElement[]>Array.from(document.getElementsByClassName(this.amountClass));
+        this.quantity = <HTMLElement[]>Array.from(document.getElementsByClassName(this.quantityClass));
+        this.flashMessages = <FlashMessage[]>Array.from(this.getElementsByClassName(this.flashMessagesClass));
+        this.notificationArea = <HTMLElement>this.getElementsByClassName(this.notificationAreaClass)[0];
+        this.messagesTextHolders = <HTMLElement[]>Array.from(
+            this.getElementsByClassName(this.messagesTextHolderClass)
+        );
+        this.callBackDelay = 800;
+        if(this.environment.value === 'DE') {
+            this.listenForUrlChanges();
+        }
+        this.mapEvents();
+    }
+
+    protected listenForUrlChanges() {
+        let currentPage = location.href;
+        setInterval(() =>
+        {
+            if (currentPage != location.href)
+            {
+                currentPage = location.href;
+                this.load();
+            }
+        }, 500);
     }
 
     protected mapEvents(): void {
         this.links.forEach((link: HTMLLinkElement) => {
+            link.removeEventListener('click', (event: Event) => this.linkClickHandler(event, link));
             link.addEventListener('click', (event: Event) => this.linkClickHandler(event, link));
         });
 
         this.addToCartIncrementerLinks.forEach((incrementer: HTMLLinkElement, index: number) => {
+            incrementer.removeEventListener('click', (event: Event) => this.sendAjaxRequestToAddItemToCart(event, incrementer));
             incrementer.addEventListener('click', (event: Event) => this.sendAjaxRequestToAddItemToCart(event, incrementer));
         });
 
         this.addtoCartDecrementerLinks.forEach((decrementer: HTMLLinkElement, index: number) => {
+            decrementer.removeEventListener('click', (event: Event) => this.sendAjaxRequestToRemoveItemFromCart(event, decrementer));
             decrementer.addEventListener('click', (event: Event) => this.sendAjaxRequestToRemoveItemFromCart(event, decrementer));
         });
 

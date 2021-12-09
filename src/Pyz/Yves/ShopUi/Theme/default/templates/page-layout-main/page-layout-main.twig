@@ -25,7 +25,8 @@
             {% endembed %}
         {% endif %}
 
-        <input id="current_store_cookie" class="display-none" type="text" value="{{ data.currentCookieStore }}" />
+    <input id="current_store_cookie" class="display-none" type="text" value="{{ data.currentCookieStore }}" />
+    <input id="environment" type="hidden" type="text" value="{{ data.currentCodeBucket }}" />
     <div class="page-layout-main__container">
         {% cms_slot 'slt-123' %}
         {% block sidebar %}
