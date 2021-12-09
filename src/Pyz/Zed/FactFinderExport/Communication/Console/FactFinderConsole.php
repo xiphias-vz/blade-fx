@@ -135,10 +135,7 @@ class FactFinderConsole extends Console
      */
     public function selectSqlQuery(): string
     {
-        return "SELECT *
-FROM
- (
- SELECT sp.sku as ArticleNumber
+        return "SELECT sp.sku as ArticleNumber
   , sp.product_number as MasterArticleNumber
   , spala.name as Title
   , spala.description
@@ -146,10 +143,12 @@ FROM
   , sp.created_at as ReleaseDate
   , null as Availability
   , null as BrandURL
-  , CONCAT_WS( '/', sca5.name, sca4.name, sca3.name, sca2.name, sca.name) as CategoryPath
+  , CONCAT(
+  		REPLACE(REPLACE(GROUP_CONCAT(CONCAT_WS( '/', sca5.name, sca4.name, sca3.name, sca2.name, sca.name, '|')), '/|,', '|'), '/|', ''),
+  		CASE WHEN NOT price.fk_product_abstract IS NULL THEN '|Angebote' ELSE '' END) as CategoryPath
   , su.url as ProductURL
-  , spi.external_url_large as ImageURL
-  , ROW_NUMBER() OVER(partition by sp.id_product order by spistpi.sort_order) as rbr
+  , img.external_url_large as ImageURL
+  , img.rbr
   , null as MultiAttributeText
   , null as Attribute
   , ifnull(spc.product_order, 0) * -1 as SalesRanking
@@ -163,10 +162,24 @@ FROM spy_product sp
     INNER JOIN spy_product_abstract_localized_attributes spala on sp.fk_product_abstract = spala.fk_product_abstract
     INNER JOIN spy_url su on su.fk_resource_product_abstract = sp.fk_product_abstract
         AND spala.fk_locale = su.fk_locale
-    LEFT OUTER JOIN spy_product_image_set spis on spis.fk_product_abstract = sp.fk_product_abstract
-        AND spis.fk_locale = spala.fk_locale
-    LEFT OUTER JOIN spy_product_image_set_to_product_image spistpi on spistpi.fk_product_image_set = spis.id_product_image_set
-    LEFT OUTER JOIN spy_product_image spi on spi.id_product_image = spistpi.fk_product_image
+    LEFT OUTER JOIN
+    (
+    	SELECT spis.fk_locale, spis.fk_product_abstract, MAX(spi.external_url_large) as external_url_large
+    		, ROW_NUMBER() OVER(partition by spis.fk_product_abstract order by spistpi.sort_order) as rbr
+    	FROM spy_product_image_set spis
+    	LEFT OUTER JOIN spy_product_image_set_to_product_image spistpi on spistpi.fk_product_image_set = spis.id_product_image_set
+    	LEFT OUTER JOIN spy_product_image spi on spi.id_product_image = spistpi.fk_product_image
+    ) img ON sp.fk_product_abstract = img.fk_product_abstract AND spala.fk_locale = img.fk_locale AND img.rbr = 1
+    LEFT OUTER JOIN
+    (
+	    SELECT spp.fk_product_abstract
+		FROM spy_price_product spp
+		INNER JOIN spy_price_product_store spps ON spp.id_price_product = spps.fk_price_product AND spp.fk_price_type = 1
+		INNER JOIN spy_price_product spp2 ON spp.fk_product_abstract = spp2.fk_product_abstract AND spp2.fk_price_type  = 2
+		INNER JOIN spy_price_product_store spps2 ON spp2.id_price_product = spps2.fk_price_product
+		WHERE spps.gross_price < spps2.gross_price
+		GROUP BY spp.fk_product_abstract
+    ) 	price ON sp.fk_product_abstract = price.fk_product_abstract
     LEFT OUTER JOIN spy_product_category spc on sp.fk_product_abstract = spc.fk_product_abstract
     LEFT OUTER JOIN spy_category sc on spc.fk_category = sc.id_category AND sc.is_active = 1 AND sc.is_in_menu = 1
     LEFT OUTER JOIN spy_category_attribute sca on sc.id_category = sca.fk_category
@@ -184,7 +197,6 @@ FROM spy_product sp
     LEFT OUTER JOIN spy_category_attribute sca5 on sc5.id_category = sca5.fk_category
     LEFT OUTER JOIN spy_category_node scn5 on sc5.id_category = scn5.fk_category
  WHERE sp.is_active = 1
-  ) a
-WHERE a.rbr = 1";
+ GROUP BY sp.sku, sp.product_number";
     }
 }
