@@ -10,7 +10,11 @@
         component: '',
         searchItems: [],
         productItemType: ''
-    }
+    },
+    itemWeight: null,
+    noPriceText: '---',
+    prefix: null,
+    calculatedPrice: null,
 } %}
 
 {% block body %}
@@ -34,13 +38,19 @@
                                 {% endverbatim %}
                             {% endset %}
 
-                            {% set price %}
+                            {% set amount %}
                                 {% verbatim %}
                                     {{ attributes.geoInformation.0.geoValues.Price }}
                                 {% endverbatim %}
                             {% endset %}
 
-                            <div class="{{ config.name }}__link"> {# class="{{ config.name }}__suggested-product-link" #}
+                            {% set originalAmount %}
+                                {% verbatim %}
+                                    {{ attributes.geoInformation.0.geoValues.PseudoPrice }}
+                                {% endverbatim %}
+                            {% endset %}
+
+                            <div class="{{ config.name }}__link">
                             {% if item.type == 'productName' %}
                                 <span class="col">
                                     {% include atom('thumbnail') with {
@@ -62,11 +72,33 @@
                             </span>
 
                             {% if item.type == 'productName' %}
-                                 <span class="col">
-                                    {% verbatim %}
-                                        {{{ attributes.geoInformation.0.geoValues.Price }}} &euro;
-                                    {% endverbatim %}
-                                </span>
+                                {% block price %}
+                                    <span class="col">
+                                        {% if data.itemWeight is not null -%}
+                                            {{ data.calculatedPrice }}
+                                        {%- else -%}
+                                            {% if originalAmount is not empty and originalAmount > amount -%}
+                                                <span class="{{ config.name }}__amount {{ config.name }}__amount--original">
+                                                    {{ originalAmount }}
+                                                </span>
+                                            {%- endif -%}
+
+                                            {%- if amount is empty -%}
+                                                {{ data.noPriceText }}
+                                            {%- else -%}
+                                                {% if originalAmount is not empty and originalAmount > amount -%}
+                                                    <span class="{{ component.renderClass(config.name ~ '__amount', modifiers) }} {{ config.name }}__amount-red">
+                                                        {{ data.prefix }}{{ amount }}
+                                                    </span>
+                                                {%- else -%}
+                                                    <span class="{{ component.renderClass(config.name ~ '__amount', modifiers) }}">
+                                                        {{ data.prefix }}{{ amount }}
+                                                    </span>
+                                                {%- endif -%}
+                                            {%- endif -%}
+                                        {%- endif -%}
+                                    </span>
+                                {% endblock %}
                             {% endif %}
 
                             </div>

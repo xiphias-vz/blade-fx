@@ -12,11 +12,19 @@
             padding-left: rem(10);
             display: flex;
         }
+
         .containerCaption {
             font-size: 1rem;
             font-weight: bold;
             border-bottom: rem(1) solid $setting-color-gray-6;
         }
+
+        ff-suggest-item {
+            &:first-child {
+                width: 100%;
+            }
+        }
+
         ff-suggest-item[type=productName]{
             display: inline-flex;
             align-items: center;
@@ -45,14 +53,36 @@
             justify-content: space-around;
 
             &:hover {
-                /*text-decoration: none;*/
                 color: $setting-color-orange;
                 background: $setting-color-gray-2;
+            }
+
+            .col {
+                margin-top: auto;
+                margin-bottom: auto;
             }
         }
 
         &__hide {
             display: none;
+        }
+
+        &__amount--original {
+            text-decoration: line-through;
+            color: $setting-color-globus-darkGray-2;
+            display: flex;
+            font-family: $setting-font-family-additional;
+            margin-top: rem(15);
+            justify-content: flex-end;
+            min-height: rem(23);
+        }
+
+        &__amount-red {
+            color: $setting-color-globus-red;
+            display: flex;
+            justify-content: flex-end;
+            font-family: $setting-font-family-additional;
+            margin-bottom: rem(15);
         }
     }
 }

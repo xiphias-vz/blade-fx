@@ -32,7 +32,6 @@ document.addEventListener("ffReady", function (event) {
 
             window.location.href = '/de/search' + params;
         } else {
-            //debugger;
             if(indexCatalogPageCounter === 0 && isSearchPage()) {
                 indexCatalogPageCounter++;
                 if(getParameterByName("navigation")=="true") {
@@ -90,9 +89,11 @@ document.addEventListener("ffReady", function (event) {
 
 window.addEventListener("DOMNodeInserted", function (event) {
     if(event.relatedNode.localName == 'ff-record') {
-        checkDiscountLabel(event.relatedNode);
-        checkOriginalAndDefaultPrices(event.relatedNode);
-        checkBrandIsSet(event.relatedNode);
+        checkDiscountLabel(event.relatedNode, 'ff-record');
+        checkOriginalAndDefaultPrices(event.relatedNode, 'ff-record');
+        checkBrandIsSet(event.relatedNode, 'ff-record');
+    } else if (event.relatedNode.localName == 'ff-suggest-item') {
+        checkOriginalAndDefaultPrices(event.relatedNode, 'ff-suggest-item');
     }
 }, false);
 
@@ -103,21 +104,29 @@ function checkDiscountLabel(element) {
     if(parseInt(val) === 0) el.style.display = "none";
 }
 
-function checkOriginalAndDefaultPrices(element) {
-    elOrig = element.getElementsByClassName('record-list__amount record-list__amount--original')[0];
-    elDef = element.getElementsByClassName('record-list__amount record-list__amount-red')[0];
-    if(elOrig.innerText.trim() === elDef.innerText.trim()) elOrig.innerHTML = "";
-    if(elDef.innerText.trim() === "") {
-        elDef.innerHTML = "---";
-        el = element.getElementsByClassName('record-list__info-more')[0];
-        el.innerHTML = "---";
-    } else if (!elDef.innerText.endsWith('€') && elDef.innerText !== '---') {
-        elDef.innerText = elDef.innerText.replace('.', ',') + ' €';
-        if(elOrig.innerText.length > 0) {
-            elOrig.innerText = elOrig.innerText.replace('.', ',') + ' €';
-            elDef.style.color = "#e60000";
-        } else {
-            elDef.style.color = "#111";
+function checkOriginalAndDefaultPrices(element, flag) {
+    elOrig = flag === 'ff-record' ? element.getElementsByClassName('record-list__amount record-list__amount--original')[0] : element.getElementsByClassName('suggest__amount suggest__amount--original')[0];
+    elDef = flag === 'ff-record' ? element.getElementsByClassName('record-list__amount record-list__amount-red')[0] : element.getElementsByClassName('suggest__amount suggest__amount-red')[0];
+    if (elOrig !== undefined && elDef !== undefined) {
+        if(elOrig.innerText.trim() === elDef.innerText.trim()) elOrig.innerHTML = "";
+        if(elDef.innerText.trim() === "") {
+            elDef.innerHTML = "---";
+            if(flag === 'ff-record') {
+                el = element.getElementsByClassName('record-list__info-more')[0];
+                el.innerHTML = "---";
+            }
+        } else if (!elDef.innerText.endsWith('€') && elDef.innerText !== '---') {
+            elDef.innerText = elDef.innerText.replace('.', ',') + ' €';
+            if(elOrig.innerText.length > 0) {
+                elOrig.innerText = elOrig.innerText.replace('.', ',') + ' €';
+                elDef.style.color = "#e60000";
+            } else {
+                elDef.style.color = "#111";
+                if(flag === 'ff-suggest-item') {
+                    elOrig.style.display = "none";
+                    elDef.style.marginBottom = "0";
+                }
+            }
         }
     }
 }
