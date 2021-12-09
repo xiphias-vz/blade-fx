@@ -39,8 +39,9 @@
                         channel="Spryker"
                         default-query="*"
                         search-immediate="false"
-                        marketId="' ~ data.storeId ~ '"
-                        add-params="marketId=' ~ data.storeId ~ '"'
+                        use-url-parameters="true"
+                        use-browser-history="true"
+                        currency-fields="Price"'
                 },
             }
         } only %}

@@ -52,6 +52,12 @@ document.addEventListener("ffReady", function (event) {
                             query: "*",
                             filter: "Sale:true"
                         });
+                    } else if (document.location.search.includes('?filter')) {
+                        eventAggregator.addFFEvent({
+                            type: "navigation-search",
+                            filter : getParameterByName("filter"),
+                            query: "*"
+                        });
                     } else {
                         eventAggregator.addFFEvent({
                             type: "navigation-search",
@@ -116,9 +122,11 @@ function checkOriginalAndDefaultPrices(element, flag) {
                 el.innerHTML = "---";
             }
         } else if (!elDef.innerText.endsWith('€') && elDef.innerText !== '---') {
-            elDef.innerText = elDef.innerText.replace('.', ',') + ' €';
+            var p = parseFloat(elDef.innerText).toFixed(2).toString();
+            elDef.innerText = p.replace('.', ',') + ' €';
             if(elOrig.innerText.length > 0) {
-                elOrig.innerText = elOrig.innerText.replace('.', ',') + ' €';
+                var p2 = parseFloat(elOrig.innerText).toFixed(2).toString();
+                elOrig.innerText = p2.replace('.', ',') + ' €';
                 elDef.style.color = "#e60000";
             } else {
                 elDef.style.color = "#111";
