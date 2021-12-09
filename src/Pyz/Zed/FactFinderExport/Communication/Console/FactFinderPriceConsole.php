@@ -98,7 +98,6 @@ class FactFinderPriceConsole extends Console
      , CASE WHEN MAX(sppsDef.gross_price) < MAX(sppsOrig.gross_price) THEN 1 else 0 end as sale
      , null as ShelfInfo
      , CASE WHEN MAX(sppsDef.gross_price) < MAX(sppsOrig.gross_price) THEN CONCAT('-',FORMAT((1-(ROUND(MAX(sppsDef.gross_price) / 100, 2)/ROUND(MAX(sppsOrig.gross_price) / 100, 2))) * 100,0),'%') ELSE NULL END as DicountText
-     , sppsDef.price_per_kg as pricePerKG
      , MAX(CASE
                WHEN sppsDef.price_per_kg > 0 THEN
                    REPLACE(CONCAT(ROUND(sppsDef.price_per_kg / 100, 2),
