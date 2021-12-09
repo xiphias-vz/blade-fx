@@ -23,6 +23,7 @@ export default class AjaxAddToCart extends Component {
     protected timer;
     protected callBackDelay: number;
     protected environment: HTMLInputElement;
+    protected url: string;
 
     protected readyCallback(): void {
         this.environment = <HTMLInputElement>document.querySelector('#environment');
@@ -62,17 +63,17 @@ export default class AjaxAddToCart extends Component {
         this.callBackDelay = 800;
         if(this.environment.value === 'DE') {
             this.listenForUrlChanges();
+            this.url = location.href;
         }
         this.mapEvents();
     }
 
     protected listenForUrlChanges() {
-        let currentPage = location.href;
         setInterval(() =>
         {
-            if (currentPage != location.href)
+            if (this.url != location.href)
             {
-                currentPage = location.href;
+                this.url = location.href;
                 this.load();
             }
         }, 500);
@@ -80,18 +81,24 @@ export default class AjaxAddToCart extends Component {
 
     protected mapEvents(): void {
         this.links.forEach((link: HTMLLinkElement) => {
-            link.removeEventListener('click', (event: Event) => this.linkClickHandler(event, link));
-            link.addEventListener('click', (event: Event) => this.linkClickHandler(event, link));
+            if (link.getAttribute('flag') !== "1") {
+                link.addEventListener('click', (event: Event) => this.linkClickHandler(event, link));
+                link.setAttribute('flag', '1');
+            }
         });
 
         this.addToCartIncrementerLinks.forEach((incrementer: HTMLLinkElement, index: number) => {
-            incrementer.removeEventListener('click', (event: Event) => this.sendAjaxRequestToAddItemToCart(event, incrementer));
-            incrementer.addEventListener('click', (event: Event) => this.sendAjaxRequestToAddItemToCart(event, incrementer));
+            if (incrementer.getAttribute('flag') !== "1") {
+                incrementer.addEventListener('click', (event: Event) => this.sendAjaxRequestToAddItemToCart(event, incrementer));
+                incrementer.setAttribute('flag', '1');
+            }
         });
 
         this.addtoCartDecrementerLinks.forEach((decrementer: HTMLLinkElement, index: number) => {
-            decrementer.removeEventListener('click', (event: Event) => this.sendAjaxRequestToRemoveItemFromCart(event, decrementer));
-            decrementer.addEventListener('click', (event: Event) => this.sendAjaxRequestToRemoveItemFromCart(event, decrementer));
+            if (decrementer.getAttribute('flag') !== "1") {
+                decrementer.addEventListener('click', (event: Event) => this.sendAjaxRequestToRemoveItemFromCart(event, decrementer));
+                decrementer.setAttribute('flag', '1');
+            }
         });
 
         this.quantityInputs.forEach((quantityInput: HTMLInputElement) => {
