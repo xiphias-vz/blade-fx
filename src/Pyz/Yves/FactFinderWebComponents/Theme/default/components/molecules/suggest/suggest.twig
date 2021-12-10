@@ -20,11 +20,11 @@
 {% block body %}
     <ff-suggest layout="block" class="input--expand" ~ {{ data.properties.component|raw }}>
         {% block searchContainer %}
-            <section id="searchContainer" class="searchTermContainer">
+            <section id="searchContainer" class="searchTermContainer {{ config.name }}__search-container">
 
                 {% for item in data.properties.searchItems %}
                     <div data-container="{{ item.type }}">
-                        <p class="containerCaption">{{ item.title }}</p>
+                        <p class="containerCaption" hidden>{{ item.title }}</p>
                         <ff-suggest-item type="{{ item.type }}" class="{{ config.name }}__suggested-product-slot">
                             {% set imageUrl %}
                                 {% verbatim %}

@@ -79,7 +79,6 @@
                     {{ record.ImageUrl }}
                 {% endverbatim %}
             {% endset %}
-            {#{{ dump(imageUrl) }}#}
             {% set categoryPath %}
                 {% verbatim %}
                     {{ record.CategoryPath }}
@@ -127,7 +126,6 @@
                     {{ record.bioCertificationCode }}
                 {% endverbatim %}
             {% endset %}
-
 
                 {% verbatim %}
                     <div data-redirect="{{ record.ProductUrl }}"

@@ -1,7 +1,6 @@
 @mixin suggest($name: '.suggest') {
     #{$name} {
         .ffw-suggestContainerWrapper {
-            /*display: inline-block;*/
             padding-top: rem(14);
             min-width: auto;
             background-color: white;
@@ -19,21 +18,19 @@
             border-bottom: rem(1) solid $setting-color-gray-6;
         }
 
-        ff-suggest-item {
-            &:first-child {
-                width: 100%;
-            }
-        }
-
         ff-suggest-item[type=productName]{
             display: inline-flex;
-            align-items: center;
-            justify-content: space-around;
             width: 100%;
             padding: rem(3) rem(10);
+            min-height: rem(65);
         }
+
         button[type=productName]{
             display: flex;
+        }
+
+        &__search-container {
+            width: 100%;
         }
 
         &__suggestion-product-slot{
