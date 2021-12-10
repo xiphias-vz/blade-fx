@@ -38,7 +38,7 @@ $config[FactFinderConstants::FTP_FACT_FINDER_FILES_FOLDER_NAME] = 'factfinder/st
 // ---------- NewRelicEnvironment
 //$config[NewRelicConstants::NEW_RELIC_ENVIRONMENT] = 'DE';
 
-$config[NewRelicConstants::NEW_RELIC_ENVIRONMENT] = 'CZ';
+$config[NewRelicConstants::NEW_RELIC_ENVIRONMENT] = 'DE_stage';
 
 /*
 $config[NewRelicConstants::NEW_RELIC_ENVIRONMENT] = ';window.NREUM||(NREUM={});NREUM.init={distributed_tracing:{enabled:true},privacy:{cookies_enabled:true},ajax:{deny_list:["bam.eu01.nr-data.net"]}};

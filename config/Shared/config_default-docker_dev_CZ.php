@@ -43,5 +43,5 @@ $config[TokenProvider::GSOA_CLIENT_SECRET] = "D55910C6-0811-4749-B55C-3BCCEDC9BF
 $config[FactFinderConstants::FTP_FACT_FINDER_FILES_FOLDER_NAME] = 'factfinder/stage';
 
 // ---------- NewRelicEnvironment
-//$config[NewRelicConstants::NEW_RELIC_ENVIRONMENT] = 'CZ';
+$config[NewRelicConstants::NEW_RELIC_ENVIRONMENT] = 'CZ_stage';
 
