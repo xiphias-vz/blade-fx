@@ -18,33 +18,56 @@ export default class ImageAnimation extends Component {
     protected cartLinks: HTMLElement[];
     protected cartLinkCoordinates: DOMRect;
     private environment: HTMLInputElement;
+    private url: string;
 
     protected readyCallback(): void {
         this.environment = document.querySelector('#environment');
+        this.url = location.href;
+
         if (this.environment.value === 'DE') {
             let checkRecordsAreRendered = setInterval(() => {
                 this.links = <HTMLLinkElement[]>Array.from(document.getElementsByClassName(this.linksClass));
                 if(this.links.length > 0) {
-                    this.body = <HTMLBodyElement>document.getElementsByTagName('body')[0];
-                    this.cartLinks = <HTMLElement[]>Array.from(document.getElementsByClassName('cart-link'));
-                    this.mapEvents();
+                    this.load();
+                    this.listenForUrlChanges();
                     clearInterval(checkRecordsAreRendered);
                 }
             }, 500);
         } else {
-            this.links = <HTMLLinkElement[]>Array.from(document.getElementsByClassName(this.linksClass));
-            if (this.links.length) {
-                this.body = <HTMLBodyElement>document.getElementsByTagName('body')[0];
-                this.cartLinks = <HTMLElement[]>Array.from(document.getElementsByClassName('cart-link'));
-
-                this.mapEvents();
-            }
+            this.loadDOM();
         }
+    }
+
+    protected listenForUrlChanges() {
+        setInterval(() =>
+        {
+            if (this.url != location.href)
+            {
+                this.url = location.href;
+                this.loadDOM();
+            }
+        }, 500);
+    }
+
+    protected loadDOM() {
+        this.links = <HTMLLinkElement[]>Array.from(document.getElementsByClassName(this.linksClass));
+        if (this.links.length > 0) {
+            this.load();
+        }
+    }
+
+    protected load() {
+        this.body = <HTMLBodyElement>document.getElementsByTagName('body')[0];
+        this.cartLinks = <HTMLElement[]>Array.from(document.getElementsByClassName('cart-link'));
+        this.mapEvents();
     }
 
     protected mapEvents(): void {
         this.links.forEach((link: HTMLLinkElement) => {
-            link.addEventListener('click', (event: Event) => this.clickTrigger(event, link));
+            if (link.getAttribute('animation') !== "1") {
+                link.addEventListener('click', (event: Event) => this.clickTrigger(event, link));
+                link.setAttribute('animation', '1');
+            }
         });
 
         window.addEventListener('scroll', () => {
