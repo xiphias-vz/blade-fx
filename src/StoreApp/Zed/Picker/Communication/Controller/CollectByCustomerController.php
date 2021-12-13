@@ -17,13 +17,9 @@ use Generated\Shared\Transfer\MerchantTransfer;
 use Generated\Shared\Transfer\OrderCriteriaFilterTransfer;
 use Generated\Shared\Transfer\OrderTransfer;
 use Generated\Shared\Transfer\OrderUpdateRequestTransfer;
-use Generated\Shared\Transfer\PerformanceGlobalSalesOrderReportTransfer;
-use Generated\Shared\Transfer\PerformanceSalesOrderReportItemTransfer;
 use Generated\Shared\Transfer\PerformanceSalesOrderReportTransfer;
 use Generated\Shared\Transfer\PickingSalesOrderCriteriaTransfer;
 use Generated\Shared\Transfer\UserTransfer;
-use Orm\Zed\PerformancePickingReport\Persistence\PyzPerformanceGlobalSalesOrderReportQuery;
-use Orm\Zed\PerformancePickingReport\Persistence\PyzPerformanceSalesOrderReportItemQuery;
 use Orm\Zed\PerformancePickingReport\Persistence\PyzPerformanceSalesOrderReportQuery;
 use Orm\Zed\Sales\Persistence\Map\SpySalesOrderTableMap;
 use Pyz\Shared\Messages\MessagesConfig;
@@ -385,7 +381,6 @@ class CollectByCustomerController extends AbstractController
 
         $idSalesOrderItems = $this->getIdOrderItems($salesOrderTransfer);
         $this->getFacade()->markOrderItemsAsCanceledByCustomer($idSalesOrderItems);
-        $this->deletePerformanceReportFields($idSalesOrder);
 
         return $this->redirectResponse(PickerConfig::URL_COLLECT_BY_CUSTOMER_LIST);
     }
@@ -960,12 +955,7 @@ class CollectByCustomerController extends AbstractController
 
             foreach ($orderPerformanceOrderTransferEntity as $item) {
                 if (!(($item->getPickupDate() == null) && ($item->getPickingEnd() == null) && ($item->getPickupStart() == null))) {
-                    $item->setIdSalesOrder(null);
                     $item->setPickupEnd($orderPerformanceOrderTransfer->getPickupEnd());
-                    if ($item->getFkGlobalPickReport()) {
-                        $this->deleteIdPickerGlobalPerformanceReport($item->getFkGlobalPickReport());
-                    }
-                    $this->deleteIdSalesOrderItemPerformanceOrderItem($item->getIdPerformanceSalesOrderReport());
 
                     if ($item->isModified()) {
                         $item->save();
@@ -979,88 +969,5 @@ class CollectByCustomerController extends AbstractController
         }
 
         return null;
-    }
-
-    /**
-     * @param int $IdGlobalPickReport
-     *
-     * @return void
-     */
-    protected function deleteIdPickerGlobalPerformanceReport(int $IdGlobalPickReport)
-    {
-        $orderGlobalPerformanceOrderTransfer = (new PerformanceGlobalSalesOrderReportTransfer())
-            ->setIdGlobalPickReport($IdGlobalPickReport);
-
-        try {
-            $orderPerformanceGlobalOrderTransferEntity = PyzPerformanceGlobalSalesOrderReportQuery::create()
-                ->filterByIdGlobalPickReport($orderGlobalPerformanceOrderTransfer->getIdGlobalPickReport())
-                ->findOneOrCreate();
-
-            $orderPerformanceGlobalOrderTransferEntity->setIdPicker(null);
-
-            if ($orderPerformanceGlobalOrderTransferEntity->isModified()) {
-                $orderPerformanceGlobalOrderTransferEntity->save();
-            }
-        } catch (Exception $exceptionSaveGlobal) {
-            $this->logError($exceptionSaveGlobal->getMessage(), $exceptionSaveGlobal->getTrace());
-        }
-    }
-
-    /**
-     * @param string $idPerformanceSalesOrderReport
-     *
-     * @return void
-     */
-    protected function deleteIdSalesOrderItemPerformanceOrderItem(string $idPerformanceSalesOrderReport)
-    {
-        $orderItemPickerReportTransfer = (new PerformanceSalesOrderReportItemTransfer())
-            ->setFkPerformanceSalesOrderReport($idPerformanceSalesOrderReport);
-
-        try {
-            $orderPerformanceOrderItemTransferEntity = PyzPerformanceSalesOrderReportItemQuery::create()
-                ->filterByFkPerformanceSalesOrderReport($orderItemPickerReportTransfer->getFkPerformanceSalesOrderReport())
-                ->findByFkPerformanceSalesOrderReport($orderItemPickerReportTransfer->getFkPerformanceSalesOrderReport());
-
-            foreach ($orderPerformanceOrderItemTransferEntity->getData() as $orderItem) {
-                $deleteOrderItemPerformanceEntity = PyzPerformanceSalesOrderReportItemQuery::create()
-                    ->filterByIdPerformanceSalesOrderItemReport($orderItem->getIdPerformanceSalesOrderItemReport())
-                    ->findOne();
-
-                $deleteOrderItemPerformanceEntity->setIdSalesOrderItem(null);
-
-                if ($deleteOrderItemPerformanceEntity->isModified()) {
-                    $deleteOrderItemPerformanceEntity->save();
-                }
-            }
-        } catch (Exception $exceptionSaveGlobal) {
-            $this->logError($exceptionSaveGlobal->getMessage(), $exceptionSaveGlobal->getTrace());
-        }
-    }
-
-    /**
-     * @param $idSalesOrder
-     *
-     * @return void
-     */
-    private function deletePerformanceReportFields($idSalesOrder)
-    {
-        $orderPerformanceOrderTransfer = (new PerformanceSalesOrderReportTransfer())
-            ->setIdSalesOrder($idSalesOrder);
-
-        $orderPerformanceOrderTransferEntity = PyzPerformanceSalesOrderReportQuery::create()
-            ->filterByIdSalesOrder($orderPerformanceOrderTransfer->getIdSalesOrder())
-            ->find();
-
-        foreach ($orderPerformanceOrderTransferEntity as $item) {
-            $item->setIdSalesOrder(null);
-            if ($item->getFkGlobalPickReport()) {
-                $this->deleteIdPickerGlobalPerformanceReport($item->getFkGlobalPickReport());
-            }
-            $this->deleteIdSalesOrderItemPerformanceOrderItem($item->getIdPerformanceSalesOrderReport());
-
-            if ($item->isModified()) {
-                $item->save();
-            }
-        }
     }
 }
