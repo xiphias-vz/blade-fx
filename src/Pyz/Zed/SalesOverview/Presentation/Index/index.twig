@@ -277,7 +277,6 @@
                         </div>
                     </div>
                 {% elseif currentCodeBucket == 'CZ' %}
-
                     <div class="row">
                         <div class="col-md-12">
                             <table id="picking-overview-table" style="width: 100%; border-bottom: 1px solid #a3a8a5;  border-right: 1px solid #a3a8a5">
@@ -321,7 +320,7 @@
                                                 <td style="padding: 0.7rem">0</td>
                                             {% endif %}
 
-                                        {% elseif header == 'TRO' %}
+                                        {% elseif header == 'SUCH' %}
                                             {% if tableData[timeslot] is defined %}
                                                 {% if tableData[timeslot]['Suché'] is defined %}
                                                     {% if choice == 1 %}
@@ -336,7 +335,7 @@
                                                 <td style="padding: 0.7rem">0</td>
                                             {% endif %}
 
-                                        {% elseif header == 'BÄCK' %}
+                                        {% elseif header == 'PEK' %}
                                             {% if tableData[timeslot] is defined %}
                                                 {% if tableData[timeslot]['Pekárna'] is defined %}
                                                     {% if choice == 1 %}
@@ -359,14 +358,14 @@
                                                     {% else %}
                                                         <td style="padding: 0.7rem">{{ tableData[timeslot]['Drogerie']['ready for picking'] }}/{{ tableData[timeslot]['Drogerie']['picked'] }}</td>
                                                     {% endif %}
-                                                {% elseif tableData[timeslot]['Total'] is defined %}
+                                                {% else %}
                                                     <td style="padding: 0.7rem">0</td>
                                                 {% endif %}
                                             {% else %}
                                                 <td style="padding: 0.7rem">0</td>
                                             {% endif %}
 
-                                        {% elseif header == 'FIS' %}
+                                        {% elseif header == 'RYB' %}
                                             {% if tableData[timeslot] is defined %}
                                                 {% if tableData[timeslot]['Výb.'] is defined %}
                                                     {% if choice == 1 %}
@@ -381,7 +380,7 @@
                                                 <td style="padding: 0.7rem">0</td>
                                             {% endif %}
 
-                                        {% elseif header == 'FRI' %}
+                                        {% elseif header == 'ČER' %}
                                             {% if tableData[timeslot] is defined %}
                                                 {% if tableData[timeslot]['Čerstvé'] is defined %}
                                                     {% if choice == 1 %}
@@ -396,7 +395,7 @@
                                                 <td style="padding: 0.7rem">0</td>
                                             {% endif %}
 
-                                        {% elseif header == 'GET' %}
+                                        {% elseif header == 'NÁP' %}
                                             {% if tableData[timeslot] is defined %}
                                                 {% if tableData[timeslot]['Nápoje'] is defined %}
                                                     {% if choice == 1 %}
@@ -426,7 +425,7 @@
                                                 <td style="padding: 0.7rem">0</td>
                                             {% endif %}
 
-                                        {% elseif header == 'METZ' %}
+                                        {% elseif header == 'SÝR' %}
                                             {% if tableData[timeslot] is defined %}
                                                 {% if tableData[timeslot]['Řeznictví'] is defined %}
                                                     {% if choice == 1 %}
@@ -456,7 +455,7 @@
                                                 <td style="padding: 0.7rem">0</td>
                                             {% endif %}
 
-                                        {% elseif header == 'OBS' %}
+                                        {% elseif header == 'OVO' %}
                                             {% if tableData[timeslot] is defined %}
                                                 {% if tableData[timeslot]['Ovoce+Zelenina'] is defined %}
                                                     {% if choice == 1 %}
@@ -471,7 +470,7 @@
                                                 <td style="padding: 0.7rem">0</td>
                                             {% endif %}
 
-                                        {% elseif header == 'TKK' %}
+                                        {% elseif header == 'MRA' %}
                                             {% if tableData[timeslot] is defined %}
                                                 {% if tableData[timeslot]['Mražené'] is defined %}
                                                     {% if choice == 1 %}
