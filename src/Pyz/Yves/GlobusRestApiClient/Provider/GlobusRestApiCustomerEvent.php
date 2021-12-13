@@ -12,6 +12,7 @@ use Generated\Shared\Transfer\CustomerEventTransfer;
 use Pyz\Shared\Customer\CustomerConstants;
 use Pyz\Yves\GlobusRestApiClient\GlobusRestApiClient;
 use Pyz\Yves\GlobusRestApiClient\GlobusRestApiConfig;
+use Spryker\Service\UtilEncoding\Model\Json;
 
 class GlobusRestApiCustomerEvent
 {
@@ -95,7 +96,14 @@ class GlobusRestApiCustomerEvent
     public function postEvent(): GlobusRestApiResult
     {
         $url = GlobusRestApiConfig::getGlobusApiEndPoint(CustomerConstants::GLOBUS_API_END_POINT_CHECKOUT_EVENT);
-        $data = $this->event->serialize();
+        $jsonUtil = new Json();
+        $dataArray = $this->event->modifiedToArray(false, true);
+
+        $arrayKeys = array_keys($dataArray);
+        $arrayMap = array_map('ucfirst', $arrayKeys);
+        $arrayCombine = array_combine($arrayMap, $dataArray);
+
+        $data = $jsonUtil->encode($arrayCombine);
 
         return GlobusRestApiClient::post($url, $data, [], $this->bearerToken);
     }
