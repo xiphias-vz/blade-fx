@@ -60,7 +60,7 @@ $jobs[] = [
 /* Oms */
 $jobs[] = [
     'name' => 'check-oms-conditions-orders-100-200',
-    'command' => '$PHP_BIN vendor/bin/console oms:check-condition -p11',
+    'command' => '$PHP_BIN vendor/bin/console oms:check-condition -P11',
     'schedule' => '* * * * *',
     'enable' => true,
     'stores' => $allStores,
@@ -69,7 +69,7 @@ $jobs[] = [
 /* Oms */
 $jobs[] = [
     'name' => 'check-oms-conditions-orders-200-and-more',
-    'command' => '$PHP_BIN vendor/bin/console oms:check-condition -p12',
+    'command' => '$PHP_BIN vendor/bin/console oms:check-condition -P12',
     'schedule' => '* * * * *',
     'enable' => true,
     'stores' => $allStores,

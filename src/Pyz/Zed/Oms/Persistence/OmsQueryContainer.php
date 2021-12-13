@@ -39,7 +39,8 @@ class OmsQueryContainer extends SprykerOmsQueryContainer implements OmsQueryCont
             select " . SpySalesOrderItemTableMap::COL_FK_SALES_ORDER . "
             from " . SpySalesOrderItemTableMap::TABLE_NAME . "
                 INNER JOIN " . SpyOmsOrderItemStateTableMap::TABLE_NAME . " on " . SpySalesOrderItemTableMap::COL_FK_OMS_ORDER_ITEM_STATE . " = " . SpyOmsOrderItemStateTableMap::COL_ID_OMS_ORDER_ITEM_STATE . "
-            where " . SpyOmsOrderItemStateTableMap::COL_NAME . " = '" . OmsConfig::STORE_STATE_READY_FOR_PICKING . "')");
+            where " . SpyOmsOrderItemStateTableMap::COL_NAME . " = '" . OmsConfig::STORE_STATE_READY_FOR_PICKING . "')" .
+            " AND " . (empty($processId) ? SpySalesOrderItemTableMap::COL_OMS_PROCESSOR_ID . " BETWEEN 1 AND 10" : SpySalesOrderItemTableMap::COL_OMS_PROCESSOR_ID . " = " . $processId));
 
         if ($processId !== null) {
             $query->filterByOmsProcessorId($processId);
@@ -60,7 +61,8 @@ class OmsQueryContainer extends SprykerOmsQueryContainer implements OmsQueryCont
             select " . SpySalesOrderItemTableMap::COL_FK_SALES_ORDER . "
             from " . SpySalesOrderItemTableMap::TABLE_NAME . "
                 INNER JOIN " . SpyOmsOrderItemStateTableMap::TABLE_NAME . " on " . SpySalesOrderItemTableMap::COL_FK_OMS_ORDER_ITEM_STATE . " = " . SpyOmsOrderItemStateTableMap::COL_ID_OMS_ORDER_ITEM_STATE . "
-            where " . SpyOmsOrderItemStateTableMap::COL_NAME . " = '" . OmsConfig::STORE_STATE_READY_FOR_PICKING . "')");
+            where " . SpyOmsOrderItemStateTableMap::COL_NAME . " = '" . OmsConfig::STORE_STATE_READY_FOR_PICKING . "')" .
+            " AND " . (empty($processId) ? SpySalesOrderItemTableMap::COL_OMS_PROCESSOR_ID . " BETWEEN 1 AND 10" : SpySalesOrderItemTableMap::COL_OMS_PROCESSOR_ID . " = " . $processId));
 
             if (!empty($salesOrderIds)) {
                 $query->filterByFkSalesOrder_In($salesOrderIds);
