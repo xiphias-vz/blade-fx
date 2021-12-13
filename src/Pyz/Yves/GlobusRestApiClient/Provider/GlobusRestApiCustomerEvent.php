@@ -97,7 +97,7 @@ class GlobusRestApiCustomerEvent
     {
         $url = GlobusRestApiConfig::getGlobusApiEndPoint(CustomerConstants::GLOBUS_API_END_POINT_CHECKOUT_EVENT);
         $jsonUtil = new Json();
-        $dataArray = $this->event->modifiedToArray(false, true);
+        $dataArray = $this->event->modifiedToArray(true, true);
 
         $arrayKeys = array_keys($dataArray);
         $arrayMap = array_map('ucfirst', $arrayKeys);
