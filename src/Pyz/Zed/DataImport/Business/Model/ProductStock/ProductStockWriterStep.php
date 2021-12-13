@@ -63,7 +63,9 @@ class ProductStockWriterStep extends PublishAwareStep implements DataImportStepI
      */
     public function execute(DataSetInterface $dataSet)
     {
+        $fileName = $GLOBALS["argv"][4];
         $sapStoreIdToStoreMap = $this->dataImportConfig->getSapStoreIdToStoreMap();
+
         $storeName = $sapStoreIdToStoreMap[$dataSet[static::KEY_STOCK_STORE]];
 
         if (!isset($sapStoreIdToStoreMap[$dataSet[static::KEY_STOCK_STORE]])) {
@@ -92,7 +94,8 @@ class ProductStockWriterStep extends PublishAwareStep implements DataImportStepI
             ->setShelf($dataSet[static::KEY_STOCK_SHELF])
             ->setShelffield($dataSet[static::KEY_STOCK_SHELF_FIELD])
             ->setShelffloor($dataSet[static::KEY_STOCK_SHELF_FLOR])
-            ->setDtimported(DataImporterCollection::$importDateTime);
+            ->setDtimported(DataImporterCollection::$importDateTime)
+            ->setFilename($fileName);
 
         $importEntity->save();
     }

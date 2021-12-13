@@ -10,6 +10,7 @@
         <column name="shelf" type="VARCHAR" size="50"/>
         <column name="shelffield" type="VARCHAR" size="50"/>
         <column name="shelffloor" type="VARCHAR" size="50"/>
+        <column name="filename" type="VARCHAR" size="200"/>
         <column name="dtImported" type="TIMESTAMP"/>
     </table>
 
