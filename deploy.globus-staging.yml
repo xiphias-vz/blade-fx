@@ -80,7 +80,7 @@ composer:
     mode: --no-dev
     autoload: --classmap-authoritative
 assets:
-    image: fholzer/nginx-brotli:v1.18.0
+    image: fholzer/nginx-brotli:v1.19.1
     mode: production
     compression:
         brotli:
