@@ -21,6 +21,7 @@
         <property name="deliveryCapacityPerSlot" type="int"/>
         <property name="pickingCapacityPerSlot" type="int"/>
         <property name="visibleStoresArray" type="array"/>
+        <property name="isTransportboxEnabled" type="bool"/>
     </transfer>
 
     <transfer name="MerchantCriteriaFilter">
@@ -31,5 +32,6 @@
     <transfer name="MerchantCriteria">
         <property name="idStore" type="int"/>
         <property name="withDeliveryPostalCodes" type="bool"/>
+        <property name="isTransportboxEnabled" type="bool"/>
     </transfer>
 </transfers>

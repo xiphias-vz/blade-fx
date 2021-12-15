@@ -21,6 +21,7 @@
         <column name="is_cashier_txt" required="false" default="1" type="BOOLEAN" />
         <column name="is_cashier_xml" required="false" default="0" type="BOOLEAN" />
         <column name="merchant_short_name" required="false" size="255" type="VARCHAR"/>
+        <column name="is_transportbox_enabled" default="0" required="false" type="BOOLEAN"/>
 
         <foreign-key name="spy_merchant-fk_store" foreignTable="spy_store">
             <reference local="fk_store" foreign="id_store"/>

@@ -32,7 +32,8 @@ class MerchantStorageMapper
                 ->setName($merchantEntity->getName())
                 ->setMerchantReference($merchantEntity->getMerchantReference())
                 ->setPickingCapacityPerSlot($merchantEntity->getPickingCapacityPerSlot())
-                ->setDeliveryCapacityPerSlot($merchantEntity->getDeliveryCapacityPerSlot());
+                ->setDeliveryCapacityPerSlot($merchantEntity->getDeliveryCapacityPerSlot())
+                ->setIsTransportboxEnabled($merchantEntity->getIsTransportboxEnabled());
 
             $merchantTransfer = $this->mapDeliveryPostalCodesToMerchantTransfer($merchantEntity, $merchantTransfer);
 

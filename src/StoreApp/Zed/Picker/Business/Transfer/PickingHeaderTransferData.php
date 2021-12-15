@@ -140,7 +140,8 @@ class PickingHeaderTransferData
            so.is_paused,
            sso.created_at as performance_order_date,
            case when popb.fk_user is null then 0 else 1 end as isLocked,
-           sso.is_substitution_allowed
+           sso.is_substitution_allowed,
+           sm.is_transportbox_enabled
     from spy_sales_order sso
         inner join
          (
@@ -156,6 +157,7 @@ class PickingHeaderTransferData
                 and ppz.id_picking_zone = " . $idZone . "
              group by ssoi.fk_sales_order
          ) so on sso.id_sales_order = so.fk_sales_order
+        inner join spy_merchant sm on sso.merchant_reference = sm.merchant_reference
         left outer join spy_customer sc on sso.customer_reference = sc.customer_reference
         left outer join spy_sales_shipment sss on sso.id_sales_order = sss.fk_sales_order
         left outer join pyz_order_picking_block popb on sso.id_sales_order = popb.fk_sales_order
