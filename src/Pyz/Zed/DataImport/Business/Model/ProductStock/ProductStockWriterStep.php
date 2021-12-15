@@ -63,7 +63,10 @@ class ProductStockWriterStep extends PublishAwareStep implements DataImportStepI
      */
     public function execute(DataSetInterface $dataSet)
     {
-        $fileName = $GLOBALS["argv"][4];
+        $fileName = "";
+        if (isset($GLOBALS["argv"][4])) {
+            $fileName = $GLOBALS["argv"][4];
+        }
         $sapStoreIdToStoreMap = $this->dataImportConfig->getSapStoreIdToStoreMap();
 
         $storeName = $sapStoreIdToStoreMap[$dataSet[static::KEY_STOCK_STORE]];
