@@ -156,6 +156,7 @@ class GsoaProductConsole extends Console
                             if (is_array($result["products"]) && count($result["products"]) < 1) {
                                 break;
                             }
+                            $result["products"] = $this->getPresentationStock($client, $result["products"], 0, $store);
                             foreach ($result["products"] as $item) {
                                 if (count($item["eshopCategories"]) > 0 && !empty($item["vatRate"])) {
                                     $counter++;
@@ -364,6 +365,57 @@ class GsoaProductConsole extends Console
             "shelffield" => "000",
             "shelffloor" => "00",
         ];
+    }
+
+    /**
+     * @param \Pyz\Shared\GsoaRestApiClient\Provider\ProductCatalogProvider $client
+     * @param array $products
+     * @param int $index
+     * @param string $store
+     *
+     * @return array
+     */
+    private function getPresentationStock(ProductCatalogProvider $client, array $products, int $index, string $store): array
+    {
+        $limit = 100;
+        $counter = 0;
+        $sortOrderFilter = [];
+        $productCount = count($products);
+        for ($i = $index; $i < $productCount; $i++) {
+            if (count($products[$i]["eshopCategories"]) > 0 && !empty($products[$i]["vatRate"])) {
+                $sortOrderFilter[] = $products[$i]['wamasNr'];
+                $counter++;
+                if ($counter > $limit) {
+                    break;
+                }
+            }
+        }
+        $resultSortOrder = $client->getProductsByHouse($store, 'vanr:in ' . implode(",", $sortOrderFilter), 'vanr;ean;productInHouse', 0, 2000);
+        $counter = 0;
+        for ($i = $index; $i < $productCount; $i++) {
+            $wNr = $products[$i]['wamasNr'];
+            $key = array_search($wNr, array_column($resultSortOrder, 'vanr'));
+            $sortOrder = 0;
+            if ($key > 0) {
+                if (isset($resultSortOrder[$key]["productInHouse"]["placements"][0]["presentationStock"])) {
+                    $sortOrder = $resultSortOrder[$key]["productInHouse"]["placements"][0]["presentationStock"];
+                } elseif (isset($resultSortOrder[$key]["productInHouse"]["placement"][0]["presentationStock"])) {
+                    $sortOrder = $resultSortOrder[$key]["productInHouse"]["placement"][0]["presentationStock"];
+                }
+                $sortOrder = is_numeric($sortOrder) ? abs($sortOrder) * (-1) : $sortOrder;
+            }
+            $products[$i]["sortingorder"] = $sortOrder;
+            $counter++;
+            if ($counter > $limit) {
+                break;
+            }
+        }
+        $index = $i;
+        if ($index < $productCount) {
+            return $this->getPresentationStock($client, $products, $index, $store);
+        }
+
+        return $products;
     }
 
     /**

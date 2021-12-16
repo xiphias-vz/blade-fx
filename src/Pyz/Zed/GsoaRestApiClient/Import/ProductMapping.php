@@ -110,6 +110,7 @@ class ProductMapping
         'isGlobusProduction' => '',
         'bioCertificationCode' => '',
         'referenceUnit' => '',
+        'sortingorder' => '',
     ];
 
     /**
@@ -135,6 +136,7 @@ class ProductMapping
         'amount' => ['grundpreisinhalt'],
         'wineQualityClassification' => ['wine_quality_classification'],
         'bioCertificationCode' => ['bioCertificationCode'],
+        'sortingorder' => ['sortingorder'],
     ];
 
     /**
