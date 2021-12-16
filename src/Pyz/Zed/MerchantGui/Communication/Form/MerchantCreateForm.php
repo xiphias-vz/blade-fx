@@ -48,6 +48,9 @@ class MerchantCreateForm extends ExtendedMerchantCreateForm
     protected const LABEL_ASORTMENT_ZONES = 'asortment_zones';
     protected const LABEL_PICK_ZONES = 'pick_zones';
 
+    protected const FIELD_IS_TRANSPORTBOX_ENABLED = 'is_transportbox_enabled';
+    protected const LABEL_IS_TRANSPORTBOX_ENABLED = 'Deposit';
+
     /**
      * @param \Symfony\Component\Form\FormBuilderInterface $builder
      * @param array $options
@@ -63,7 +66,8 @@ class MerchantCreateForm extends ExtendedMerchantCreateForm
             ->addRegistrationNumberField($builder)
             ->addCashierTxtField($builder)
             ->addCashierXmlField($builder)
-            ->addMerchantReferenceField($builder, $options[static::OPTION_CURRENT_ID]);
+            ->addMerchantReferenceField($builder, $options[static::OPTION_CURRENT_ID])
+            ->addIsTransportboxChecked($builder);
 
         $isCurrentUserAdmin = $this->isCurrentUserAdmin();
         if ($isCurrentUserAdmin) {
@@ -114,6 +118,21 @@ class MerchantCreateForm extends ExtendedMerchantCreateForm
     {
         $builder->add(static::FIELD_IS_SHOP_VISIBLE, CheckboxType::class, [
             'label' => static::LABEL_IS_SHOP_VISIBLE,
+            'required' => false,
+        ]);
+
+        return $this;
+    }
+
+    /**
+     * @param \Symfony\Component\Form\FormBuilderInterface $builder
+     *
+     * @return $this
+     */
+    protected function addIsTransportboxChecked(FormBuilderInterface $builder)
+    {
+        $builder->add(static::FIELD_IS_TRANSPORTBOX_ENABLED, CheckboxType::class, [
+            'label' => static::LABEL_IS_TRANSPORTBOX_ENABLED,
             'required' => false,
         ]);
 
