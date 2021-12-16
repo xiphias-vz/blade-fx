@@ -323,6 +323,7 @@ class MailHandler extends SprykerMailHandler
             'tax15' => $this->getMoneyValue($this->getSumTaxes($orderTransfer, '15')),
             'tax21' => $this->getMoneyValue($this->getSumTaxes($orderTransfer, '21')),
             'subtotalPriceWithoutDeposit' => $this->getMoneyValue($subtotalPriceWithoutDeposit),
+            'transportBox' => ($orderTransfer->getIsDepositAllowed() == true) ? $this->getTransportBox() : ' ',
         ];
 
         $orderTransfer->setItems($items);
@@ -493,6 +494,16 @@ class MailHandler extends SprykerMailHandler
         return $this->twigEnvironment->render(
             $this->config->getOrderShippedProductListTemplate(),
             [ 'order' => $orderTransfer, 'itemStatus' => $itemStatus]
+        );
+    }
+
+    /**
+     * @return string
+     */
+    protected function getTransportBox(): string
+    {
+        return $this->twigEnvironment->render(
+            $this->config->getTransportBoxTemplate()
         );
     }
 

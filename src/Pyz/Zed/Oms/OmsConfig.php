@@ -17,6 +17,7 @@ class OmsConfig extends SprykerOmsConfig
     protected const ORDER_CONFIRMATION_COLLECT_NUMBER_TEMPLATE = '@Oms/template/collect_number.twig';
     protected const ORDER_SHIPPED_PRODUCT_LIST = '@Oms/template/order_canceled_product_list.twig';
     protected const ORDER_SIMILAR_PRODUCT_LIST = '@Oms/template/similar_product.twig';
+    protected const ORDER_TRANSPORT_BOX = '@Oms/template/transport_box.twig';
 
     /**
      * @return int|null
@@ -53,6 +54,14 @@ class OmsConfig extends SprykerOmsConfig
     public function getOrderShippedProductListTemplate(): string
     {
         return static::ORDER_SHIPPED_PRODUCT_LIST;
+    }
+
+    /**
+     * @return string
+     */
+    public function getTransportBoxTemplate(): string
+    {
+        return static::ORDER_TRANSPORT_BOX;
     }
 
     /**
