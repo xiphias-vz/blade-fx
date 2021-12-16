@@ -203,6 +203,15 @@
             overflow-wrap: anywhere;
         }
 
+        &__image {
+            max-height: rem(80);
+            width: auto;
+        }
+
+        &__image-div {
+           text-align: center;
+        }
+
         @content;
     }
 }

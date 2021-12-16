@@ -8,6 +8,7 @@
 namespace Pyz\Yves\CheckoutPage;
 
 use Generated\Shared\Transfer\PaymentTransfer;
+use Pyz\Client\Merchant\MerchantClientInterface;
 use Pyz\Yves\CustomerPage\Form\CheckoutAddressCollectionForm;
 use Pyz\Yves\CustomerPage\Form\GuestForm;
 use Pyz\Yves\CustomerPage\Form\LoginForm;
@@ -44,6 +45,7 @@ class CheckoutPageDependencyProvider extends SprykerShopCheckoutPageDependencyPr
     public const CLIENT_ORDER_DETAIL = 'CLIENT_ORDER_DETAIL';
     public const PYZ_SERVICE_SHIPMENT = 'PYZ_SERVICE_SHIPMENT';
     public const CLIENT_SESSION = 'CLIENT_SESSION';
+    public const MERCHANT_CLIENT = 'MERCHANT_CLIENT';
 
     /**
      * @uses \Spryker\Yves\Form\Plugin\Application\FormApplicationPlugin::SERVICE_FORM_FACTORY
@@ -73,6 +75,7 @@ class CheckoutPageDependencyProvider extends SprykerShopCheckoutPageDependencyPr
         $container = $this->addSessionClient($container);
         $container = $this->addPyzCustomerClient($container);
         $container = $this->addFormCsrfProviderService($container);
+        $container = $this->addMerchantClient($container);
 
         return $container;
     }
@@ -346,6 +349,20 @@ class CheckoutPageDependencyProvider extends SprykerShopCheckoutPageDependencyPr
     {
         $container->set(static::SERVICE_FORM_CSRF_PROVIDER, function (Container $container) {
             return $container->getApplicationService(static::SERVICE_FORM_CSRF_PROVIDER);
+        });
+
+        return $container;
+    }
+
+    /**
+     * @param \Spryker\Yves\Kernel\Container $container
+     *
+     * @return \Pyz\Client\Merchant\MerchantClientInterface
+     */
+    protected function addMerchantClient(Container $container): Container
+    {
+        $container->set(self::MERCHANT_CLIENT, function (Container $container): MerchantClientInterface {
+            return $container->getLocator()->merchant()->client();
         });
 
         return $container;

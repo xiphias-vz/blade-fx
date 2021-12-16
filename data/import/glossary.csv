@@ -4968,3 +4968,25 @@ direct.discount,Direct Discount,en_US
 cashback.discount,"Cashback Sleva",cs_CZ
 cashback.discount,Cashback Rabatt,de_DE
 cashback.discount,Cashback Discount,en_US
+checkout.transport.box.headline,"Nachhaltige Transportboxen",cs_CZ
+checkout.transport.box.headline,"Nachhaltige Transportboxen",de_DE
+checkout.transport.box.headline,"Nachhaltige Transportboxen",en_US
+checkout.transport.box.text,"Mit unseren nachhaltigen Transportboxen können Sie Ihren Einkauf direkt und ohne zusätzliches Umpacken mit nach Hause nehmen. Die Gebühr pro Box beträgt 8€ und kann direkt an der Abholstation wieder getauscht werden.",cs_CZ
+checkout.transport.box.text,"Mit unseren nachhaltigen Transportboxen können Sie Ihren Einkauf direkt und ohne zusätzliches Umpacken mit nach Hause nehmen. Die Gebühr pro Box beträgt 8€ und kann direkt an der Abholstation wieder getauscht werden.",de_DE
+checkout.transport.box.text,"Mit unseren nachhaltigen Transportboxen können Sie Ihren Einkauf direkt und ohne zusätzliches Umpacken mit nach Hause nehmen. Die Gebühr pro Box beträgt 8€ und kann direkt an der Abholstation wieder getauscht werden.",en_US
+checkout.transport.box.bullet-point_1,"Kein zusätzlicher Verpackungsmüll",cs_CZ
+checkout.transport.box.bullet-point_1,"Kein zusätzlicher Verpackungsmüll",de_DE
+checkout.transport.box.bullet-point_1,"Kein zusätzlicher Verpackungsmüll",en_US
+checkout.transport.box.bullet-point_2,"Einfacher Tausch & Rückgabe direkt an der Abholstation",cs_CZ
+checkout.transport.box.bullet-point_2,"Einfacher Tausch & Rückgabe direkt an der Abholstation",de_DE
+checkout.transport.box.bullet-point_2,"Einfacher Tausch & Rückgabe direkt an der Abholstation",en_US
+checkout.transport.box.bullet-point_3,"Einfacher & sicherer Transport Ihres Einkaufs",cs_CZ
+checkout.transport.box.bullet-point_3,"Einfacher & sicherer Transport Ihres Einkaufs",de_DE
+checkout.transport.box.bullet-point_3,"Einfacher & sicherer Transport Ihres Einkaufs",en_US
+checkout.transport.box.checkbox,"Ja, ich möchte Transportboxen nutzen",cs_CZ
+checkout.transport.box.checkbox,"Ja, ich möchte Transportboxen nutzen",de_DE
+checkout.transport.box.checkbox,"Ja, ich möchte Transportboxen nutzen",en_US
+checkout.overview.transport.box.text,"Ihr Einkauf wird in unseren nachhaltigen Transportboxen vorbereitet. Die Gebühr pro Box beträgt 8€. Gebühr und Rückgabe erfolgt bei der Abholung ganz einfach in der Abholstation",cs_CZ
+checkout.overview.transport.box.text,"Ihr Einkauf wird in unseren nachhaltigen Transportboxen vorbereitet. Die Gebühr pro Box beträgt 8€. Gebühr und Rückgabe erfolgt bei der Abholung ganz einfach in der Abholstation",de_DE
+checkout.overview.transport.box.text,"Ihr Einkauf wird in unseren nachhaltigen Transportboxen vorbereitet. Die Gebühr pro Box beträgt 8€. Gebühr und Rückgabe erfolgt bei der Abholung ganz einfach in der Abholstation",en_US
+

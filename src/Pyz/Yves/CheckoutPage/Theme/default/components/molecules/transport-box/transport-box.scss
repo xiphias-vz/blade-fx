@@ -1,0 +1,72 @@
+@mixin checkout-page-transport-box($name: '.transport-box') {
+    #{$name} {
+        background-color: white;
+        height: rem(250);
+        padding: rem(12);
+        margin-top: rem(10);
+        margin-bottom: rem(10);
+        color: $setting-color-globus-black;
+
+        @include helper-breakpoint-media-between($xl-min, $l-max){
+            height: rem(270);
+        }
+
+        @include helper-breakpoint-media-max($md-min) {
+            height: rem(450);
+            padding: rem(8);
+        }
+
+        &__image-div {
+            text-align: center;
+        }
+
+        &__text {
+            font-size: rem(10);
+            margin-left: rem(25);
+        }
+
+        &__bullet-points {
+            font-size: rem(10);
+        }
+
+        .bullet-point {
+            display: flex;
+            align-items: center;
+            margin-left: -3px;
+            margin-bottom: rem(5);
+            &:nth-child(1) {
+                margin-top: rem(10);
+            }
+            img {
+                margin-right: rem(8);
+            }
+        }
+
+        &__depositeAllowed_checkbox{
+            color: $setting-color-globus-black;
+            margin-left: rem(6);
+            margin-top: rem(10);
+        }
+
+        &__icon_right {
+            width: rem(16);
+            height: rem(16);
+            vertical-align:bottom;
+            margin-right: rem(2);
+            margin-left: rem(10);
+        }
+
+        &__horizontal-line {
+            display: block;
+            border-top: rem(1) solid $setting-color-gray-6;
+        }
+
+        @content;
+    }
+
+    .checkbox__label {
+        color: $setting-color-globus-black !important;
+    }
+}
+
+@include checkout-page-transport-box();

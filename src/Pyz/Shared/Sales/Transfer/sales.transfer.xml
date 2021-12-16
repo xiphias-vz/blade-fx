@@ -26,6 +26,7 @@
         <property name="isConnected" type="bool"/>
         <property name="pickingSalesOrderCollection" type="PickingSalesOrderCollection"/>
         <property name="isSubstitutionAllowed" type="bool" />
+        <property name="isDepositAllowed" type="bool" />
     </transfer>
 
     <transfer name="Item">

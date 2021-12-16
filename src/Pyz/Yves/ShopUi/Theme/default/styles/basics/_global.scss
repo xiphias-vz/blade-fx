@@ -50,4 +50,9 @@
     .font-weight-500  {
         font-weight: 500;
     }
+
+    .horizontal-line {
+        display: block;
+        border-top: rem(1) solid $setting-color-gray-6;
+    }
 }

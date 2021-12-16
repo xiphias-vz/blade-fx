@@ -8,7 +8,8 @@
         totalItems: _view.totalItems,
     },
     agbInputName: 'terms_approval',
-    isSubstitutionAllowed:_view.quoteTransfer.isSubstitutionAllowed
+    isSubstitutionAllowed:_view.quoteTransfer.isSubstitutionAllowed,
+    isDepositAllowed: _view.isDepositAllowed
 } %}
 
 {% block content %}
@@ -38,7 +39,8 @@
                         customer: data.customer,
                         canEdit: true,
                         payment: data.payment,
-                        isSubstitutionAllowed: data.isSubstitutionAllowed
+                        isSubstitutionAllowed: data.isSubstitutionAllowed,
+                        isDepositAllowed: data.isDepositAllowed
                     },
                 } only %}
                 {% if app.currentCodeBucket == 'DE' %}

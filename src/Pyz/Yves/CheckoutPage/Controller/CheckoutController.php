@@ -121,11 +121,16 @@ class CheckoutController extends SprykerCheckoutControllerAlias
             ->getQuoteClient()
             ->getQuote();
 
+        $merchantTransfer = $this->getFactory()
+            ->getMerchantClient()
+            ->getMerchant();
+
         $isSubstitutionAllowed = $quoteTransfer->getIsSubstitutionAllowed();
         if ($isSubstitutionAllowed === null || $storeCodeBucket == 'CZ') {
             $isSubstitutionAllowed = true;
         }
         $response['isSubstitutionAllowed'] = $isSubstitutionAllowed;
+        $response['isTransportboxEnabled'] = $merchantTransfer->getIsTransportboxEnabled();
 
         return $this->view(
             $response,
@@ -270,6 +275,9 @@ class CheckoutController extends SprykerCheckoutControllerAlias
         if (!is_array($viewData)) {
             return $viewData;
         }
+
+        $isDepositAllowed = $this->getFactory()->getQuoteClient()->getQuote()->getIsDepositAllowed();
+        $viewData['isDepositAllowed'] = $isDepositAllowed;
 
         return $this->view(
             $viewData,

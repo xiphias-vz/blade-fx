@@ -101,4 +101,12 @@ class CheckoutPageFactory extends SprykerShopCheckoutPageFactory
     {
         return $this->getProvidedDependency(CustomerPageDependencyProvider::PLUGIN_AUTHENTICATION_HANDLER);
     }
+
+    /**
+     * @return \Pyz\Client\Merchant\MerchantClientInterface
+     */
+    public function getMerchantClient()
+    {
+        return $this->getProvidedDependency(CheckoutPageDependencyProvider::MERCHANT_CLIENT);
+    }
 }

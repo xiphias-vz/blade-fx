@@ -23,6 +23,7 @@ class CheckoutAddressCollectionForm extends SprykerShopCheckoutAddressCollection
 {
     public const OPTION_CART_NOTE = 'cart_note';
     public const OPTION_IS_SUBSTITUTION_ALLOWED = 'is_substitution_allowed';
+    public const OPTION_IS_DEPOSIT_ALLOWED = 'is_deposit_allowed';
 
     /**
      * @param \Symfony\Component\Form\FormBuilderInterface $builder
@@ -39,7 +40,8 @@ class CheckoutAddressCollectionForm extends SprykerShopCheckoutAddressCollection
             ->addSubstitutionCheckbox($builder)
             ->addSameAsShippingCheckboxField($builder)
             ->addBillingAddressSubForm($builder, $options)
-            ->addIsMultipleShipmentEnabledField($builder, $options);
+            ->addIsMultipleShipmentEnabledField($builder, $options)
+            ->addDepositEnabledCheckbox($builder);
     }
 
     /**
@@ -71,6 +73,22 @@ class CheckoutAddressCollectionForm extends SprykerShopCheckoutAddressCollection
     {
         $builder->add(self::OPTION_IS_SUBSTITUTION_ALLOWED, CheckboxType::class, [
             'label' => 'checkout.address.page.substitutions.checkbox',
+            'required' => false,
+            'trim' => false,
+        ]);
+
+        return $this;
+    }
+
+    /**
+     * @param \Symfony\Component\Form\FormBuilderInterface $builder
+     *
+     * @return $this
+     */
+    protected function addDepositEnabledCheckbox(FormBuilderInterface $builder)
+    {
+        $builder->add(self::OPTION_IS_DEPOSIT_ALLOWED, CheckboxType::class, [
+            'label' => 'checkout.transport.box.checkbox',
             'required' => false,
             'trim' => false,
         ]);

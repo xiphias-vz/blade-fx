@@ -4,7 +4,8 @@
     isBillingSameAsShippingChecked: _view.isBillingSameAsShippingChecked,
     merchantName: app['merchant_name'] | default,
     addressData: _view.data,
-    isSubstitutionAllowed: _view.isSubstitutionAllowed
+    isSubstitutionAllowed: _view.isSubstitutionAllowed,
+    isTransportboxEnabled: _view.isTransportboxEnabled
 } %}
 
 {% block content %}
@@ -33,6 +34,7 @@
             isBillingSameAsShippingChecked: data.isBillingSameAsShippingChecked,
             addressData: data.addressData,
             isSubstitutionAllowed: data.isSubstitutionAllowed,
+            isTransportboxEnabled: data.isTransportboxEnabled
         },
     } only %}
         {% block fieldset %}
@@ -206,9 +208,23 @@
                             </span>
                         </div>
                         {% if app.currentCodeBucket != 'CZ'%}
+                            <div class="horizontal-line"></div>
+
+                            {% if embed.isTransportboxEnabled %}
+                                {% include molecule('transport-box', 'CheckoutPage') with {
+                                    data: {
+                                        formCheckbox: data.form.is_deposit_allowed,
+                                        withHorizontalTopBorder: false,
+                                        withHorizontalBottomBorder: false
+                                    }
+                                } only %}
+                            {% endif %}
+
                             <div class="spacing-bottom text-color-1">
                                 <p>{{ 'cart.checkout.address.product.note' | trans }}</p>
                             </div>
+
+                            <div class="horizontal-line"></div>
                             <div class="text-color-1">
                                 <p>{{ 'cart.checkout.address.abholstation.note.down' | trans }}</p>
                             </div>

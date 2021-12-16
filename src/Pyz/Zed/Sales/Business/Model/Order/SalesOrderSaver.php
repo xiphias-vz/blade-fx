@@ -60,6 +60,7 @@ class SalesOrderSaver extends SprykerSalesOrderSaver
         $this->hydrateAddresses($quoteTransfer, $salesOrderEntity);
         $this->addLocale($salesOrderEntity);
         $salesOrderEntity->setIsSubstitutionAllowed($quoteTransfer->getIsSubstitutionAllowed());
+        $salesOrderEntity->setIsDepositAllowed($quoteTransfer->getIsDepositAllowed());
         $salesOrderEntity->save();
 
         return $salesOrderEntity;

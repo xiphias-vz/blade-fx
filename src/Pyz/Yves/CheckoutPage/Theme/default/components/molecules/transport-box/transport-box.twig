@@ -1,0 +1,67 @@
+{% extends model('component') %}
+
+{% define config = {
+    name: 'transport-box',
+} %}
+
+{% define data = {
+    formCheckbox: required,
+    withHorizontalTopBorder: false,
+    withHorizontalBottomBorder: false
+} %}
+
+{% block body %}
+
+    {% if data.withHorizontalTopBorder == true %}
+        <div class="{{ config.name }}__horizontal-line"></div>
+    {% endif %}
+
+    <div class="row">
+        <h2 class="title title--primary">{{ 'checkout.transport.box.headline' | trans }}</h2>
+    </div>
+
+    <div class="row">
+       <div class="{{ config.name }}__image-div col col--sm-12 col--md-3 col--lg-3">
+           <img class="{{ config.name }}__image" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAQMAAADCCAMAAAB6zFdcAAAAQlBMVEX///+hoaGenp6ampr39/fHx8fOzs7j4+P8/Pyvr6/d3d3FxcX29va6urqYmJjs7OzU1NSlpaW1tbWtra3n5+e/v78TS0zBAAACkUlEQVR4nO3b63KCMBCGYUwUUVEO6v3fagWVY4LYZMbZnff51xaZ5jON7CZNEgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABQb5tvI8qzX4/nH84XG5Upfj2ir2V2E5fZ/XpIX9saMnhkYLIkiyRJjdgMoiEDMmiQgfwM8rSu77ew2wnPoLTmwdZBs0J2BuXrYckcQm4nOoP+WcmWAbcTnUHZPy9eA24nOoN7n0HI54ToDM5k8PjluwyqgNuJzqDoaugPg8gWZ4noDAYLwuIg75fLeeHHsjNIzrZJwWwW+0DNsmEWPjiEZ5AcD8ZUu8VZ8HyQMifvBdIz+PS33i8adu+7Qn4Gn1Tdupl7rlCfQb9seosK7RkcBy1o30iVZ5CPOtDW3WhQnsF13IV3v0p3BqfJRoSpXVepzmA/24+yqeMyzRm4tqOs44lSUwa3yfgOri25av5CPRnklR33VlPnrqSZV09qMsiqSWV082xOz1uPajJ49pTM/f115k6guWa6JGjJ4N1lt8fXN2rv/vysjFaSQdFXBc/KKF04ptFPliclGVR9Bu27XCyeVOkmy5OODAZN9rYyyip/AIPJ8qIig+PoXbf7YdPdncFoSdCQQT4ZceV+MhiFMBy0hgyu0yGvOLI17KwpyGBaHK5jtt0N5GcwLw7XZdB31sRn8O+ziqYro8Vn4CwOV+k6a9Iz+PwRsKC7h+gMfMXhKu/OmuwM/MXhKq8yWnYG/uJw5Uxoy2jRGZTBZ/jboxuSM1guDtdNhKazJjiDbNMe0AxzKUVnkO+jEJxBxNtJzWCTxlNLzSB8KehJ/H+mJGYAjaDjzj9SnHZRuXZiAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAECXP1XDHv7U4SNFAAAAAElFTkSuQmCC">
+       </div>
+       <div class="col col--sm-12 col--md-8 col--lg-8">
+           <div class="row">
+               <div class="{{ config.name }}__text">
+                   <p>{{ 'checkout.transport.box.text' | trans }}</p>
+               </div>
+           </div>
+           <div class="row">
+               <div class="{{ config.name }}__bullet-points">
+                   <div class="bullet-point">
+                       <img src="{{ publicPath('images/check-circle.svg') }}" class="{{ config.name }}__icon_right"/>
+                       {{ 'checkout.transport.box.bullet-point_1' | trans}}
+                   </div>
+                   <div class="bullet-point">
+                       <img src="{{ publicPath('images/check-circle.svg') }}" class="{{ config.name }}__icon_right"/>
+                       {{ 'checkout.transport.box.bullet-point_2' | trans}}
+                   </div>
+                   <div class="bullet-point">
+                       <img src="{{ publicPath('images/check-circle.svg') }}" class="{{ config.name }}__icon_right"/>
+                       {{ 'checkout.transport.box.bullet-point_3' | trans}}
+                   </div>
+               </div>
+           </div>
+           <div class="row">
+               <div class="{{ config.name }}__depositeAllowed_checkbox">
+                   {{ form_row(data.formCheckbox, {
+                       label: 'checkout.transport.box.checkbox' | trans,
+                       attributes: {
+                           'checked': false,
+                           'style': 'margin-top:3px'
+                       }
+                   }) }}
+               </div>
+           </div>
+       </div>
+    </div>
+
+    {% if data.withHorizontalBottomBorder == true %}
+        <div class="{{ config.name }}__horizontal-line"></div>
+    {% endif %}
+
+{% endblock %}
