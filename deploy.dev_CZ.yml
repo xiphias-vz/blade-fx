@@ -48,7 +48,7 @@ x-frontend-auth: &frontend-auth
             - '195.29.196.22/24'
             - '193.85.203.7/32'
 
-namespace: spryker-click-and-collect
+namespace: spryker-click-and-collect-cz
 tag: 'dev'
 
 environment: docker_dev

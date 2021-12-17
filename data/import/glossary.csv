@@ -68,6 +68,9 @@ cart.checkout.address.abholstation.note.down,Message to the pick-up station,en_U
 cart.checkout.address.abholstation.textarea.note," ",cs_CZ
 cart.checkout.address.abholstation.textarea.note,Kein Interesse an Ersatzprodukten? Was auch immer bei Ihrem aktuellen Einkauf wichtig ist. Sagen Sie es uns einfach.,de_DE
 cart.checkout.address.abholstation.textarea.note,Not interested in replacement products? Whatever is important in your current purchase. Just tell us.,en_US
+storeapp.picking.warning,Varování! Přepravní boxy se skenují!.,cs_CZ
+storeapp.picking.warning,Warnung! Transportboxen scannen!.,de_DE
+storeapp.picking.warning,Warning! Transport boxes is scanning!.,en_US
 cart.header.product,"Produkt",de_DE
 cart.header.product,"Produkt",cs_CZ
 cart.header.product,"Product",en_US

@@ -10,6 +10,11 @@ $setting-item-border-radius: rem(8);
             }
         }
 
+        .greenIcon{
+            float: right;
+            margin-right: rem(4);
+        }
+
         &--picked {
             #{$name} {
                 &__left-col,

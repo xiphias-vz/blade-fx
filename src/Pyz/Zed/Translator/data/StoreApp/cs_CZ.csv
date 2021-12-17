@@ -165,6 +165,7 @@ picking.app.weight_per_unit,"Jednotková hmotnost: "
 picking.app.error_shelfID_wrong_letter,"První písmeno musí být velké"
 
 storeapp.picking.barcode,"Čárový kód"
+storeapp.picking.warning,"Varování! Přepravní boxy se skenují!."
 storeapp.picking.MissingArticle,"Chybějící artikl"
 storeapp.picking.message.error.container-not-known,"Není známo ID kontejneru"
 

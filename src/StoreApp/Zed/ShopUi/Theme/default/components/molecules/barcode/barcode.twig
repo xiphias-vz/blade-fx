@@ -7,6 +7,7 @@
 {% define data = {
     encodedBarcode: '',
     barcodeNumber: '',
+    isTransportboxEnabled: false
 } %}
 
 {% block body %}
@@ -16,6 +17,13 @@
             <p class="barcode--number"> {{ data.barcodeNumber }}</p>
         {% else %}
             <p>{{ 'storeapp.picking.barcode' | trans }}</p>
+        {% endif %}
+    </div>
+    <div class="achtung" >
+        {% if data.isTransportboxEnabled %}
+            <div class="none"></div>
+        {% else %}
+            <h2>{{ 'storeapp.picking.warning' | trans }}</h2>
         {% endif %}
     </div>
 {% endblock %}
