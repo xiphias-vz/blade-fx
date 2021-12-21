@@ -23,7 +23,7 @@
     </button>
 
     <ff-asn {{ data.properties.component|raw }} unresolved>
-        <ff-asn-group for-group="all" class="cursor" unresolved>
+        <ff-asn-group for-group="Brand" class="cursor" unresolved>
             <ff-asn-group-element unresolved>
                 <div slot="selected">
                     <input type="checkbox" checked>
@@ -63,6 +63,28 @@
                 <div data-container="showLess">
                     <span class="text">Show Less</span>
                 </div>
+            </div>
+        </ff-asn-group>
+
+        <ff-asn-group for-group="Sale" class="cursor" unresolved>
+            <div slot="groupCaption" class="groupCaption">
+                <span>{{ 'ff.sale.group.caption' | trans }}</span>
+                <span class="filterArrowDown"></span>
+            </div>
+
+            <ff-asn-group-element unresolved>
+                <div slot="selected">
+                    <input type="checkbox" checked>
+                    <span class="filterName">{{ 'ff.sale.group.element' | trans }}</span>
+                </div>
+                <div slot="unselected">
+                    <input type="checkbox">
+                    <span class="filterName">{{ 'ff.sale.group.element' | trans }}</span>
+                </div>
+            </ff-asn-group-element>
+
+            <div opened data-container="detailedLinks">
+                <div id="sale_group" data-content="detailedLinks"></div>
             </div>
         </ff-asn-group>
 

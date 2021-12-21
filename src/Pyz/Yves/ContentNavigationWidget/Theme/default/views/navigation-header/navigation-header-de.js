@@ -13,6 +13,11 @@ function isSearchPage() {
 
 var indexCatalogPageCounter = 0;
 
+document.addEventListener("dom-updated", function(event) {
+    const saleGroupElements = document.getElementById("sale_group").children;
+    saleGroupElements[1].remove();
+});
+
 document.addEventListener("ffReady", function (event) {
     const factfinder = event.factfinder;
     const eventAggregator = event.eventAggregator;

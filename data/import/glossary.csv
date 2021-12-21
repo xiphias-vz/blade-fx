@@ -4993,4 +4993,9 @@ checkout.transport.box.checkbox,"Ja, ich möchte Transportboxen nutzen",en_US
 checkout.overview.transport.box.text,"Ihr Einkauf wird in unseren nachhaltigen Transportboxen vorbereitet. Die Gebühr pro Box beträgt 8€. Gebühr und Rückgabe erfolgt bei der Abholung ganz einfach in der Abholstation",cs_CZ
 checkout.overview.transport.box.text,"Ihr Einkauf wird in unseren nachhaltigen Transportboxen vorbereitet. Die Gebühr pro Box beträgt 8€. Gebühr und Rückgabe erfolgt bei der Abholung ganz einfach in der Abholstation",de_DE
 checkout.overview.transport.box.text,"Ihr Einkauf wird in unseren nachhaltigen Transportboxen vorbereitet. Die Gebühr pro Box beträgt 8€. Gebühr und Rückgabe erfolgt bei der Abholung ganz einfach in der Abholstation",en_US
-
+ff.sale.group.caption,"Angebote",de_DE
+ff.sale.group.caption,"Prodej",cs_CZ
+ff.sale.group.caption,"Sales",en_US
+ff.sale.group.element,"Alle Angebote",de_DE
+ff.sale.group.element,"Prodej",cs_CZ
+ff.sale.group.element,"All offers",en_US
