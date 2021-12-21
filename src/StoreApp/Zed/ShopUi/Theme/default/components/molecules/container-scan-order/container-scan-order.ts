@@ -17,6 +17,7 @@ export default class ContainerScanOrder extends Component {
     protected listContainersShelf: HTMLElement;
     protected binIconHolder: HTMLElement;
     protected popupUiError: HTMLElement;
+    protected popupUiDeposit: HTMLElement;
     protected applicationUrl: URL;
     protected orderReferenceNumber: string;
     protected existingContainers: object[];
@@ -31,6 +32,7 @@ export default class ContainerScanOrder extends Component {
     protected containerScanOrderErrorPopUp3: HTMLInputElement;
     protected containerScanOrderErrorPopUp4: HTMLInputElement;
     protected containerScanOrderErrorPopUp5: HTMLInputElement;
+    protected openPopupButton: HTMLButtonElement;
 
     protected readyCallback(): void {
     }
@@ -46,6 +48,7 @@ export default class ContainerScanOrder extends Component {
         this.isContainerUsedInput = <HTMLInputElement>this.querySelector('input[name=isContainerUsed]');
         this.form = this.querySelector('#frm_scanContainerOrder');
         this.popupUiError = this.querySelector('.popup-ui-error');
+        this.popupUiDeposit = this.querySelector('.popup-ui-deposit');
         this.existingContainers = JSON.parse(this.form.getAttribute('data-containers'));
         this.allPacksForCustomerNumber = this.querySelector('.checkbox-holder input[type=checkbox]');
         this.listContainersShelf = this.querySelector('.list-containers-shelf');
@@ -62,6 +65,7 @@ export default class ContainerScanOrder extends Component {
         this.containerScanOrderErrorPopUp3 = <HTMLInputElement>document.querySelector('#container_scan_order_error_pop-up_3');
         this.containerScanOrderErrorPopUp4 = <HTMLInputElement>document.querySelector('#container_scan_order_error_pop-up_4');
         this.containerScanOrderErrorPopUp5 = <HTMLInputElement>document.querySelector('#container_scan_order_error_pop-up_5');
+        this.openPopupButton = this.querySelector('.popup-ui-deposit__open');
 
         this.containerTransfer.push(
             {
@@ -82,7 +86,7 @@ export default class ContainerScanOrder extends Component {
 
             if(!this.atLeastOneContainerIsAdded(this.listOfContainersHolder, this.listContainersShelf)) {
                 e.preventDefault();
-                // this.showPopUpErrorMessageForNonValidContainer();
+
                 this.clearInputField(this.inputScanner);
                 return false;
             }
@@ -95,6 +99,8 @@ export default class ContainerScanOrder extends Component {
             this.nextOrderPositionInput.value = String(this.nextOrderPosition);
 
         });
+
+        this.openPopupButton.addEventListener('click', (event:MouseEvent) => this.showDepositPopup(event));
     }
 
     protected atLeastOneContainerIsAdded(listOfContainersHolder, listContainersShelf) {
@@ -257,5 +263,28 @@ export default class ContainerScanOrder extends Component {
         }
 
         return this.containerTransfer;
+    }
+
+    protected confirmButtonForScannedContainersClick(event): void {
+        this.popupUiDeposit.classList.add('popup-ui-deposit--show');
+    }
+
+    protected get submitButtonSelector(): string {
+        return `.${this.jsName}__submit`;
+    }
+
+    public showDepositPopup(event?: Event): void {
+        if (event) {
+            event.preventDefault();
+        }
+
+        if(!this.atLeastOneContainerIsAdded(this.listOfContainersHolder, this.listContainersShelf)) {
+            event.preventDefault();
+
+            this.clearInputField(this.inputScanner);
+        }
+        else{
+            this.popupUiDeposit.classList.add('popup-ui-deposit--show');
+        }
     }
 }

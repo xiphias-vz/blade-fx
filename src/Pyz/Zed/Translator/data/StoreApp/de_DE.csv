@@ -236,4 +236,7 @@ input.value.error.greater.alert_1,"Der Eingabewert sollte nicht größer als "
 input.value.error.greater.alert_2," sein"
 input.value.error.less.alert_1,"Der Eingabewert sollte nicht kleiner als "
 input.value.error.less.alert_2," sein"
-
+picking.scanning-container.continue, "Weiter"
+picking.scanning-container.cancel, "Abbrechen"
+picking.scanning-container.isDepositAllowedChecked.popup.title, "Pfandbox"
+picking.scanning-container.isDepositAllowedChecked.popup.text, "Der Kunde möchte Transportboxen. Bist du sicher, dass eine Transportbox gescannt wurde?"

@@ -16,6 +16,7 @@
     requestFromPickingArticles: '',
     redirectToPickingArticles: '',
     isContainerUsed: '',
+    isDepositAllowed: false
 } %}
 
 {% block body %}
@@ -31,6 +32,7 @@
             },
         },
     } only %}
+
          {% block content %}
             <input type="hidden" id="containerID_eighth_characters_set" value="{{ 'containerID.eighth.characters.set' | trans }}">
             <input type="hidden" id="please_scan_container" value="{{ 'container.scan.order.please' | trans }}">
@@ -49,6 +51,7 @@
             </div>
          {% endblock %}
     {% endembed %}
+
     <div class="bin-icon-holder" style="display: none">
         {% include atom('icon') with {
             modifiers: ['big'],
@@ -107,9 +110,31 @@
                 </div>
             </div>
         </div>
+
+        {% if data.isDepositAllowed == true %}
+            {% set btnContinueType = 'button' %}
+            {% set btnContinueClass = 'popup-ui-deposit__open' %}
+
+            {% embed molecule('popup-ui-deposit') with {
+                data: {
+                    isDepositAllowed: data.isDepositAllowed,
+                    buttons: {
+                        submit: {
+                            isButton: true,
+                            additionalClass: 'js-container-scan-order__submit',
+                        },
+                    },
+                },
+            } only %}
+            {% endembed %}
+        {% else %}
+            {% set btnContinueType = 'submit' %}
+            {% set btnContinueClass = '' %}
+        {% endif %}
+
         {% block button %}
             <div id="confirm-scan-containers" class="text-center" style="margin-top:20px">
-                <button type="submit" class="button button--expand button--disabled js-pick-products__submit-button">
+                <button type="{{ btnContinueType }}" class="button button--expand button--disabled js-pick-products__submit-button {{ btnContinueClass }}">
                     {{ 'picker.picking.confirmation' | trans }}
                 </button>
             </div>

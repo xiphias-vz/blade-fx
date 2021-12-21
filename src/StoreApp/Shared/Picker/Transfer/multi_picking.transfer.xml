@@ -40,6 +40,7 @@
         <property name="idPerformanceSalesOrderReport" type="int"/>
         <property name="isSubstitutionAllowed" type="bool"/>
         <property name="isTransportboxEnabled" type="bool"/>
+        <property name="isDepositAllowed" type="bool"/>
     </transfer>
 
     <transfer name="PickingContainerTransfer">

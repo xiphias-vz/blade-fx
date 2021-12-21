@@ -146,6 +146,7 @@ class ScanningContainerController extends AbstractController
             'isScanFromPickingProcess' => $isScanFromPickingProcess,
             'isMultiPickingProcess' => '1',
             'pickZoneName' => $pickZoneById->getName(),
+            'isDepositAllowed' => $orderForScanningContainer->getIsDepositAllowed(),
         ]);
     }
 

@@ -141,7 +141,8 @@ class PickingHeaderTransferData
            sso.created_at as performance_order_date,
            case when popb.fk_user is null then 0 else 1 end as isLocked,
            sso.is_substitution_allowed,
-           sm.is_transportbox_enabled
+           sm.is_transportbox_enabled,
+           sso.is_deposit_allowed
     from spy_sales_order sso
         inner join
          (

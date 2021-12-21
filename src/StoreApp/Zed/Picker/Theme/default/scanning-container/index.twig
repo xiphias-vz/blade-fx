@@ -13,9 +13,9 @@
     isUsedContainerMessage: isUsedContainerMessage,
     isScanFromPickingProcess: isScanFromPickingProcess | default,
     isMultiPickingProcess: isMultiPickingProcess | default('0'),
-    pickZoneName: pickZoneName | default
+    pickZoneName: pickZoneName | default,
+    isDepositAllowed: isDepositAllowed
 } %}
-
 
 
 {% block header %}
@@ -53,6 +53,7 @@
             colorNumber: data.orderForScanningContainer.pickingColor.idColor,
             textColor: data.orderForScanningContainer.pickingColor.foreColor,
             isSubstitutionAllowed: data.orderForScanningContainer.isSubstitutionAllowed | default,
+            isDepositAllowed: data.isDepositAllowed
         }
     } only %}
 
@@ -68,6 +69,7 @@
             requestFromPickingArticles: requestFromPickingArticles,
             redirectToPickingArticles: redirectToPickingArticles,
             isContainerUsed: data.isContainerUsed,
+            isDepositAllowed: data.isDepositAllowed
         }
     } only %}
 {% endblock content %}

@@ -10,7 +10,6 @@ namespace Pyz\Zed\SalesCZ\Communication\Controller;
 use Aws\S3\Exception\S3Exception;
 use Orm\Zed\Sales\Persistence\SpySalesOrder;
 use Orm\Zed\Sales\Persistence\SpySalesOrderAddress;
-use Pyz\Zed\MerchantStorage\Persistence\Propel\MerchantStorageMapper;
 use Pyz\Zed\Sales\Communication\Controller\DetailController as IntDetailController;
 use Spryker\Service\UtilText\Model\Url\Url;
 use Spryker\Zed\Sales\SalesConfig;
@@ -236,7 +235,6 @@ class DetailController extends IntDetailController
             $idZone = $container->getIdPickingZone();
             $container["zoneName"] = $pickingZonesForContainers[$idZone];
         }
-
 
         return array_merge([
             'eventsGroupedByItem' => $eventsGroupedByItem,

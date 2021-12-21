@@ -9,13 +9,14 @@
     colorCode: '',
     colorNumber: '',
     textColor: '',
-    isSubstitutionAllowed: ''
+    isSubstitutionAllowed: '',
+    isDepositAllowed: false
 } %}
 
 {% block body %}
     <div class="container-color-holder" style="background-color: {{ data.colorCode }}">
 
-        <p class="color-number" style="color: {{ data.textColor }}">{{ data.colorNumber }}
+        <div class="color-number" style="color: {{ data.textColor }}"><span>{{ data.colorNumber }}</span>
             {% if data.isSubstitutionAllowed == '' or data.isSubstitutionAllowed == '0' %}
                 {% include atom('icon') with {
                     class: 'icon-substitutes',
@@ -25,6 +26,16 @@
                     },
                 } only %}
             {% endif %}
-        </p>
+
+            {% if data.isDepositAllowed == true %}
+                {% include atom('icon') with {
+                    class: 'icon-depositAllowed',
+                    modifiers: ['big'],
+                    data: {
+                        name: 'icon-depositAllowed',
+                    },
+                } only %}
+            {% endif %}
+        </div>
     </div>
 {% endblock %}

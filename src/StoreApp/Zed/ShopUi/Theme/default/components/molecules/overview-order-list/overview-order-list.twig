@@ -46,6 +46,15 @@
                     {% endfor %}
                     </div>
                     <div class="button-note-div">
+                        {% if order.isDepositAllowed == true %}
+                            {% include atom('icon') with {
+                                class: 'icon-depositAllowed',
+                                modifiers: ['big'],
+                                data: {
+                                    name: 'icon-depositAllowed',
+                                },
+                            } only %}
+                        {% endif %}
                         {% if order.isSubstitutionAllowed == '' or order.isSubstitutionAllowed == '0' %}
                             {% include atom('icon') with {
                                 modifiers: ['big'],

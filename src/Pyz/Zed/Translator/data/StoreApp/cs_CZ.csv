@@ -235,4 +235,7 @@ input.value.error.greater.alert_1,"Vstupní hodnota by neměla být vyšší ne�
 input.value.error.greater.alert_2,""
 input.value.error.less.alert_1,"Vstupní hodnota by neměla být nižší než "
 input.value.error.less.alert_2,""
-
+picking.scanning-container.continue, "Pokračovat"
+picking.scanning-container.cancel, "Zrušení"
+picking.scanning-container.isDepositAllowedChecked.popup.title, "Schránka"
+picking.scanning-container.isDepositAllowedChecked.popup.text, "Zákazník chce přepravní boxy. Jste si jisti, že byla naskenována přepravní krabice?"

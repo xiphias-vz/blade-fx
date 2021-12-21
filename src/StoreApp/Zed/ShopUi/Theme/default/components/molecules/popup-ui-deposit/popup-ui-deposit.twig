@@ -1,0 +1,60 @@
+{% extends model('component') %}
+
+{% define config = {
+    name: 'popup-ui-deposit',
+    tag: 'popup-ui-deposit'
+} %}
+
+{% define data = {
+    isDepositAllowed: false
+} %}
+
+{% define attributes = {
+    'close-on-submit': true
+} %}
+
+{% block body %}
+    <div class="{{ config.name }}__overlay error-holder" >
+        <div class="{{ config.name }}__container">
+
+            {% block header %}
+                <div class="grid grid--top spacing-y">
+                    <div class="col--sm-12 {{ config.name }}__header">
+                        {{ 'picking.scanning-container.isDepositAllowedChecked.popup.title' | trans }}
+                    </div>
+                </div>
+            {% endblock %}
+
+            <div class="row horizontal-line"></div>
+
+            <div class="{{ config.name }}__content">
+                {% block content %}
+                    <div class="grid grid--center {{ config.name }}__main-content">
+                        <div id="firstBlock" class="col--sm-12">
+                            {{ 'picking.scanning-container.isDepositAllowedChecked.popup.text' | trans }}
+                        </div>
+                    </div>
+                {% endblock %}
+
+                {% block popupActions %}
+                    <div class="text-center spacing-top">
+                        {% block submitButton %}
+                            <button type="submit" class="{{ config.name }}__button-continue button">
+                                {{ 'picking.scanning-container.continue' | trans }}
+                            </button>
+                        {% endblock %}
+                    </div>
+
+                    <div class="text-center spacing-top">
+                        {% block cancelButton %}
+                            <button type="button" class="{{ config.name }}__button-cancel button {{ config.jsName }}__close">
+                                {{ 'picking.scanning-container.cancel' | trans }}
+                            </button>
+                        {% endblock %}
+                    </div>
+                {% endblock %}
+            </div>
+        </div>
+    </div>
+    {% block button %}{% endblock %}
+{% endblock %}
