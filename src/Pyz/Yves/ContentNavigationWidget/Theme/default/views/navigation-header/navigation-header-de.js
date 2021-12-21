@@ -22,8 +22,9 @@ document.addEventListener("ffReady", function (event) {
     const factfinder = event.factfinder;
     const eventAggregator = event.eventAggregator;
     const resultDispatcher = event.resultDispatcher;
+
     eventAggregator.addBeforeDispatchingCallback(function (event) {
-        event["marketId"] = storeId;
+        factfinder.communication.globalSearchParameter["marketId"] = storeId;
         const isSearchEvent = event.type === "search" || event.type === "navigation-search";
         if (isSearchEvent && !isSearchPage()) {
             event.cancel(); // prevents the request from being sent before redirecting
