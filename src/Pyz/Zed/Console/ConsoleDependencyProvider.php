@@ -53,6 +53,7 @@ use Pyz\Zed\SalesOrderSummaryExport\Communication\Console\SalesOrderSummaryExpor
 use Pyz\Zed\SalesOrderThresholdDataImport\SalesOrderThresholdDataImportConfig;
 use Pyz\Zed\Sitemap\Communication\Console\SitemapConsole;
 use Pyz\Zed\TimeSlot\Communication\Console\TimeSlotCheckerConsole;
+use Pyz\Zed\ZeroPricesReportMail\Communication\Console\ZeroPricesReportMailConsole;
 use Spryker\Shared\Config\Environment;
 use Spryker\Zed\Cache\Communication\Console\EmptyAllCachesConsole;
 use Spryker\Zed\CodeGenerator\Communication\Console\BundleClientCodeGeneratorConsole;
@@ -372,6 +373,7 @@ class ConsoleDependencyProvider extends SprykerConsoleDependencyProvider
             new GsoaTokenConsole(),
             new GsoaProductConsole(),
             new CashierOrderExportConsole(),
+            new ZeroPricesReportMailConsole(),
 
             new DataExportConsole(),
             new MultipleStatusesFixScriptConsole(),
