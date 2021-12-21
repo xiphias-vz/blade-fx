@@ -2355,6 +2355,7 @@ product-cart.info.concrete-product-inactive.removed,"Článek %sku% momentálně
 product-cart.info.concrete-product-inactive.removed-with-name,"The article %name% is currently not available and has been removed from your shopping cart.",en_US
 product-cart.info.concrete-product-inactive.removed-with-name,"Der Artikel %name% ist aktuell leider nicht verfügbar und wurde aus Ihrem Warenkorb entfernt.",de_DE
 product-cart.info.concrete-product-inactive.removed-with-name,"Článek %name% momentálně není k dispozici a byl odstraněn z vašeho nákupního košíku.",cs_CZ
+filters.show-more,Alle anzeigen,de_DE
 product.filter.label,Label,en_US
 product.filter.label,Label,de_DE
 product.filter.label,Label,cs_CZ
