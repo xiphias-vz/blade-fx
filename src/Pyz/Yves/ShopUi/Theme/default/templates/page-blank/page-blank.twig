@@ -17,11 +17,7 @@
     <!doctype html>
     <html lang="{{ data.locale }}">
     <head>
-        {% if app.currentCodeBucket == 'CZ' %}
-            <script id="Cookiebot" src="https://consent.cookiebot.com/uc.js" data-cbid="{{ data.cookieBotId }}" data-blockingmode="auto" type="text/javascript" async></script>
-            {% else %}
-            <script id="Cookiebot" src="https://consent.cookiebot.com/uc.js" data-cbid="{{ data.cookieBotId }}" type="text/javascript" async></script>
-        {% endif %}
+        <script id="Cookiebot" src="https://consent.cookiebot.com/uc.js" data-cbid="{{ data.cookieBotId }}" type="text/javascript" async></script>
         {% if data.currentCookieStore == '' %}
             {% set market = 'NO_STORE' %}
         {% else %}
