@@ -7,6 +7,20 @@
             flex-direction: column;
         }
 
+        &__filter-mobile-header {
+            background-color: $setting-color-gray-1;
+            color: $setting-color-globus-black;
+        }
+
+        .btn-transparent-right {
+            background-color: $setting-color-gray-1;
+            color: $setting-color-globus-black;
+            float: right;
+            text-align: center;
+            width: rem(50);
+            min-width: unset;
+        }
+
         ff-asn {
 
             font-family: $setting-font-family;
