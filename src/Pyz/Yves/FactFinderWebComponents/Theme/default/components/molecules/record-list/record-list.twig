@@ -132,7 +132,7 @@
                         data-redirect-target="_self">
                 {% endverbatim %}
                 {% block imageContainer %}
-                    <div class="col--lg-12 col--md-12 col--sm-3 {{ config.jsName }}__image-wrap" onclick="productClicked('{{ productUrl }}', '{{ sku }}', '{{ productName | escape('js') }}', '{{ price }}', '{{ sku }}' )">
+                    <div class="col--lg-12 col--md-12 col--sm-3  {{ config.name }}__image-wrap {{ config.jsName }}__image-wrap" onclick="productClicked('{{ productUrl }}', '{{ sku }}', '{{ productName | escape('js') }}', '{{ price }}', '{{ sku }}' )">
                         {% set splitUrl = imageUrl | split('.com/') %}
                         {% set newSrc = splitUrl[0] ~ '.com/thumb_'  ~ splitUrl[1] | default("") %}
                         <img onerror="OnErrorChangeImage(this);" class="{{ imageExtraClasses}}" src="{{ imageUrl }}"  data-storage="{{ imageUrl }}">

@@ -1,6 +1,16 @@
 @mixin record-list($name: '.record-list') {
     #{$name} {
 
+        &__image-wrap {
+            min-height: rem(170);
+            max-height: rem(202);
+            text-align: center;
+
+            img {
+                max-height: inherit;
+            }
+        }
+
         ff-record-list {
             width: 100%;
         }
@@ -45,6 +55,10 @@
             transition: 0.5s;
             transition-timing-function: ease-in;
             box-shadow: 0 0 rem(20) $setting-color-lightest;
+
+            @include helper-breakpoint-media-min($md-min){
+                height: rem(430);
+            }
 
         }
         .myBtn{
@@ -239,6 +253,7 @@
             }
         }
         &__info-more{
+            height: rem(22);
             display: flex;
             margin-top: rem(-26);
             color: #71747c;
@@ -246,8 +261,6 @@
                 margin-left: rem(109);
 
             }
-
-
         }
         &__amount--original{
             text-decoration: line-through;
@@ -327,7 +340,6 @@
                 margin: rem(25) auto;
             }
         }
-
     }
 }
 
