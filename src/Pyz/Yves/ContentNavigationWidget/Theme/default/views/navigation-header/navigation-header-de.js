@@ -153,6 +153,18 @@ function checkBrandIsSet(element){
     }
 }
 
+function toggleNavigationCategoriesMenu(ev){
+    document.querySelector("button.js-header__navigation-trigger").click();
+}
+
+function toggleMobileNavigationCategoriesMenu(ev){
+   var el = ev.parentElement.closest(".ffw-item-caption").nextSibling;
+   if(el.classList.contains("ffw-item-container")){
+       if(el.children.length < 1){
+           document.querySelector(".header__navigation-top > button").click();
+       }
+   }
+}
 
 
 function removeResetFilters(element) {

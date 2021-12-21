@@ -213,8 +213,7 @@
                                 {% if data.showNavigation %}
                                     <div class="col is-hidden-sm-lg">
                                         <div class="{{ config.name }}__navigation-button-container">
-                                            <button
-                                                class="button button--with-icon button--expand button--ghost {{ config.jsName }}__navigation-trigger js-page-layout-main--block-scroll-trigger" style="box-shadow: none !important;">
+                                            <button class="button button--with-icon button--expand button--ghost {{ config.jsName }}__navigation-trigger js-page-layout-main--block-scroll-trigger" style="box-shadow: none !important;">
                                                 {% include atom('icon') with {
                                                     class: 'button__icon ' ~ config.jsName ~ '__navigation-target',
                                                     modifiers: ['big', 'with-stroke'],

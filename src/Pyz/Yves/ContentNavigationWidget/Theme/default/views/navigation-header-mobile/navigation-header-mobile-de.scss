@@ -1,5 +1,10 @@
 @mixin navigation-header-mobile-de($name: '.navigation-header-mobile-de') {
     #{$name} {
+        button{
+            background-color: transparent;
+            font-family: "Clearface-Medium", Arial, sans-serif;
+        }
+
         #ffMobileNavigationDe{
             background-color: transparent;
             text-align: left;

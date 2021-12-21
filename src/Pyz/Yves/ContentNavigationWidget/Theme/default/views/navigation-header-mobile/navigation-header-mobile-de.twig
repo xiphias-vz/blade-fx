@@ -9,18 +9,21 @@
     {% verbatim %}
         <ff-navigation layout="vertical" id="ffMobileNavigationDe" mobile="true">
             <ff-navigation-item>
-                <div class="my-item">{{name}}</div>
+                <div class="my-item" onclick="toggleMobileNavigationCategoriesMenu(this);">
+                  {{name}}
+                </div>
             </ff-navigation-item>
 
             <ff-navigation-item type="header">
-                <div class="my-header">{{name}}
+                <div class="my-header">
+                   <button onclick="toggleMobileNavigationCategoriesMenu(this);">{{name}}</button>
                    <svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 24 24"><path fill="currentColor" d="M0 7.33l2.829-2.83 9.175 9.339 9.167-9.339 2.829 2.83-11.996 12.17z"/></svg>
                 </div>
             </ff-navigation-item>
 
             <ff-navigation-item type="parent">
                 <div class="my-item my-parent-item">
-                    {{name}}
+                    <button>{{name}}</button>
                     <svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 24 24"><path fill="currentColor" d="M0 7.33l2.829-2.83 9.175 9.339 9.167-9.339 2.829 2.83-11.996 12.17z"/></svg>
                 </div>
             </ff-navigation-item>
