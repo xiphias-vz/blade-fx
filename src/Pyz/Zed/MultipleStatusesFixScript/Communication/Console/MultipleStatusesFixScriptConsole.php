@@ -58,6 +58,17 @@ class MultipleStatusesFixScriptConsole extends Console
             } else {
                 dump("Currently there are no items with incorrect statuses!");
             }
+
+            $selectCancelledDueToNotInStockSql = $this->selectSqlQueryForCancelledDueToNotInStockStatus();
+            $wrongStatusesForCancelledDueToNotInStockStatus = $this->getResult($selectCancelledDueToNotInStockSql);
+
+            if (count($wrongStatusesForCancelledDueToNotInStockStatus) != 0) {
+                $updateCancelledDueToNotInStockSql = $this->updateSqlQueryForCancelledDueToNotInStockStatus();
+                $this->getResult($updateCancelledDueToNotInStockSql, false);
+            } else {
+                dump("Currently there are no items with incorrect 'canceled due to not in stock' statuses!");
+            }
+
         } catch (Exception $e) {
             dump($e);
 
@@ -156,5 +167,45 @@ class MultipleStatusesFixScriptConsole extends Console
             ) s ON s.id_sales_order = ssoi.fk_sales_order
         INNER JOIN spy_oms_order_item_state soois on soois.id_oms_order_item_state = ssoi.fk_oms_order_item_state
             AND soois.name in ('collection process', 'ready for collection', 'collection cancelled by store', 'cancellation process', 'order cancellation recalculated', 'cashier order exporting', 'cashier order exported', 'collected by customer', 'accepted by customer', 'invoice process', 'started invoice process', 'generated invoice reference', 'invoice generated', 'order invoiced', 'picking cancelled by timeout', 'collection cancelled by timeout', 'cancelled by timeout', 'shipped mail sending', 'shipped mail sent', 'confirm mail sending', 'cashier export process', 'ready for cashier export', 'ready for return', 'refund - not received', 'ready for refund', 'refund items group', 'closed', 'cashier order exporting fail', 'release time slot and cancel', 'need to release time slot')";
+    }
+
+    /**
+     * @return string
+     */
+    public function selectSqlQueryForCancelledDueToNotInStockStatus(): string
+    {
+        return "SELECT distinct sso.*
+                FROM spy_sales_order_item m_ssoi
+                    INNER JOIN spy_sales_order sso on sso.id_sales_order = m_ssoi.fk_sales_order
+                    INNER JOIN spy_sales_order_item cdnis_ssoi on cdnis_ssoi.fk_sales_order = m_ssoi.fk_sales_order
+                    INNER JOIN spy_oms_order_item_state cdnis_soois ON cdnis_soois.id_oms_order_item_state = cdnis_ssoi.fk_oms_order_item_state
+                        AND cdnis_soois.name in ('cancelled due to not in stock')
+                    INNER JOIN spy_sales_order_item picked_ssoi on picked_ssoi.fk_sales_order = m_ssoi.fk_sales_order
+                    INNER JOIN spy_oms_order_item_state picked_soois ON picked_soois.id_oms_order_item_state = picked_ssoi.fk_oms_order_item_state
+                        AND picked_soois.name in ('picked')";
+    }
+
+    /**
+     * @return string
+     */
+    public function updateSqlQueryForCancelledDueToNotInStockStatus(): string
+    {
+        return "UPDATE spy_sales_order_item m_ssoi
+                    INNER JOIN spy_sales_order_item cdnis_ssoi on cdnis_ssoi.fk_sales_order = m_ssoi.fk_sales_order
+                    INNER JOIN spy_oms_order_item_state cdnis_soois ON cdnis_soois.id_oms_order_item_state = cdnis_ssoi.fk_oms_order_item_state
+                        AND cdnis_soois.name in ('cancelled due to not in stock')
+                    INNER JOIN spy_sales_order_item picked_ssoi on picked_ssoi.fk_sales_order = m_ssoi.fk_sales_order
+                    INNER JOIN spy_oms_order_item_state picked_soois ON picked_soois.id_oms_order_item_state = picked_ssoi.fk_oms_order_item_state
+                        AND picked_soois.name in ('picked')
+                    LEFT OUTER JOIN
+                        (
+                        SELECT DISTINCT ready_for_picking_ssoi.fk_sales_order
+                        FROM spy_sales_order_item ready_for_picking_ssoi
+                            INNER JOIN spy_oms_order_item_state ready_for_picking_soois ON ready_for_picking_soois.id_oms_order_item_state = ready_for_picking_ssoi.fk_oms_order_item_state
+                        WHERE ready_for_picking_soois.name in ('ready for picking', 'new' )
+                        ) ready_for_picking ON ready_for_picking.fk_sales_order = m_ssoi.fk_sales_order
+                SET m_ssoi.fk_oms_order_item_state = (SELECT id_oms_order_item_state FROM spy_oms_order_item_state WHERE name = 'cancelled')
+                WHERE ready_for_picking.fk_sales_order is null
+                    AND m_ssoi.fk_oms_order_item_state = (SELECT id_oms_order_item_state FROM spy_oms_order_item_state WHERE name = 'cancelled due to not in stock')";
     }
 }
