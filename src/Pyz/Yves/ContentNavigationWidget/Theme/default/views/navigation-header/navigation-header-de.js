@@ -2,7 +2,7 @@ function getParameterByName(name, url = window.location.href) {
     name = name.replace(/[\[\]]/g, '\\$&');
     var regex = new RegExp('[?&]' + name + '(=([^&#]*)|&|#|$)'),
         results = regex.exec(url);
-    if (!results) return null;
+    if (!results) return '';
     if (!results[2]) return '';
     return decodeURIComponent(results[2].replace(/\+/g, ' '));
 }
@@ -43,38 +43,40 @@ document.addEventListener("ffReady", function (event) {
                 if(getParameterByName("navigation")=="true") {
                     eventAggregator.addFFEvent({
                         type: "navigation-search",
-                        filter : getParameterByName("filter"),
+                        filter : ffCategoryFilter,
                         query: "*"
                     });
                 } else {
-                    if(getParameterByName("query")) {
-                        eventAggregator.addFFEvent({
-                            type: "search",
-                            query: getParameterByName("query")
-                        });
-                    } else if (document.location.pathname.includes('/outlet')) {
-                        eventAggregator.addFFEvent({
-                            type: "search",
-                            query: "*",
-                            filter: "Sale:true"
-                        });
-                    } else if (document.location.search.includes('?filter')) {
-                        eventAggregator.addFFEvent({
-                            type: "navigation-search",
-                            filter : getParameterByName("filter"),
-                            query: "*"
-                        });
-                    } else {
-                        eventAggregator.addFFEvent({
-                            type: "navigation-search",
-                            filter : "CategoryPath: " + document.title,
-                            query: "*"
-                        });
-                    }
+                        if(window.history.state) {
+                            url = window.history.state.searchResult.searchParams;
+                            if(getParameterByName("filter", url).length > 0) {
+                                eventAggregator.addFFEvent({
+                                    type: "navigation-search",
+                                    filter : getParameterByName("filter", url),
+                                    query: getParameterByName("query", url)
+                                });
+                            } else {
+                                eventAggregator.addFFEvent({
+                                    type: "search",
+                                    query: getParameterByName("query", url)
+                                });
+                            }
+                        } else {
+                            eventAggregator.addFFEvent({
+                                type: "navigation-search",
+                                filter: ffCategoryFilter,
+                                query: "*"
+                            });
+                        }
+                }
+            } else {
+                if(event.type === "navigation-search" && indexCatalogPageCounter > 10) {
+                    event.cancel();
                 }
             }
         }
     });
+
     resultDispatcher.addCallback("asn", function (asnData) {
         var sum = 0;
         var title = "";
@@ -95,6 +97,7 @@ document.addEventListener("ffReady", function (event) {
             el.innerText = searchResultText;
             document.getElementById("searchResultCountTitle").innerText = title;
             document.title = title;
+            indexCatalogPageCounter = indexCatalogPageCounter * 10;
         }
     });
 });

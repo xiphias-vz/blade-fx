@@ -1,9 +1,13 @@
 {% extends template('page-layout-catalog', 'CatalogPage') %}
 
 {% define data = {
+    ffCategoryFilter: _view.ffCategoryFilter
 } %}
 
 {% block form %}
+    <script language="JavaScript" type="text/javascript">
+        var ffCategoryFilter  = "{{ data.ffCategoryFilter }}";
+    </script>
     {{parent()}}
 
 {#    afterSearchNavigation: factFinderSearchResponse.getAfterSearchNavigation#}

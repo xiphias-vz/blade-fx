@@ -21,8 +21,6 @@ class CatalogController extends SprykerCatalogController
     public const CATEGORIES_WITH_IMAGE = [];
 
     /**
-     * @phpstan-param array<mixed> $categoryNode
-     *
      * @param array $categoryNode
      * @param \Symfony\Component\HttpFoundation\Request $request
      *
@@ -31,11 +29,15 @@ class CatalogController extends SprykerCatalogController
     public function indexAction(array $categoryNode, Request $request)
     {
         $idCategoryNode = $categoryNode['node_id'];
+        $categoryPath = $categoryNode["name"];
+        $categoryPath = $this->getParentCategoryName($categoryNode, $categoryPath);
+
         $viewData = [
             'products' => [],
             'facets' => [],
             'sort' => 0,
             'searchString' => '',
+            'ffCategoryFilter' => 'CategoryPath:' . str_replace("&", "%26", $categoryPath),
             'category' => ['name' => $categoryNode["name"]],
             'pagination' => [
                 'currentPage' => 1,
@@ -51,6 +53,26 @@ class CatalogController extends SprykerCatalogController
              $this->getFactory()->getCatalogPageWidgetPlugins(),
              '@CatalogPage/views/catalog/catalog-de.twig'
          );
+    }
+
+    /**
+     * @param array $categoryNode
+     * @param string $categoryPath
+     *
+     * @return string
+     */
+    protected function getParentCategoryName(array $categoryNode, string $categoryPath): string
+    {
+        if (isset($categoryNode["parents"][0])) {
+            $parent = $categoryNode["parents"][0];
+            if (isset($parent["parents"])) {
+                $categoryPath = $parent["name"] . "/" . $categoryPath;
+
+                return $this->getParentCategoryName($parent, $categoryPath);
+            }
+        }
+
+        return $categoryPath;
     }
 
     /**
@@ -115,6 +137,11 @@ class CatalogController extends SprykerCatalogController
         return $data;
     }
 
+    /**
+     * @param \Symfony\Component\HttpFoundation\Request $request
+     *
+     * @return \Spryker\Yves\Kernel\View\View|\Symfony\Component\HttpFoundation\RedirectResponse
+     */
     public function fulltextSearchAction(Request $request)
     {
         $viewData = [

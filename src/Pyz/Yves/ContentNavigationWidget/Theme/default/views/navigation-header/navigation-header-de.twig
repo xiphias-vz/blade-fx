@@ -29,19 +29,18 @@
         <ff-navigation layout="vertical" id="desktop_ff-navigation">
             <ff-navigation-item>
                 <div class="navigation-multilevel-node__link navigation-multilevel-node__link--header navigation-multilevel-node__link--lvl-1 ">
-                    <a href="#" class="navigation-multilevel-node__link-inner navigation-multilevel-node__link-inner--lvl-1" onclick="toggleNavigationCategoriesMenu(this);">
-                        {{"{{name}}"}}
+                    <a href="{{ "{{previewImageURL}}" }}" class="navigation-multilevel-node__link-inner navigation-multilevel-node__link-inner--lvl-1" onclick="toggleNavigationCategoriesMenu(this);">
+                        {{ "{{name}}" }}&nbsp;
                     </a>
                 </div>
             </ff-navigation-item>
             <ff-navigation-item type="header">
                 <div class="navigation-multilevel-node__link navigation-multilevel-node__link--header navigation-multilevel-node__link--lvl-1 ">
-                    <a href="#" class="navigation-multilevel-node__link-inner navigation-multilevel-node__link-inner--lvl-1" onclick="toggleNavigationCategoriesMenu(this);">
-                        {{"{{name}}"}}
+                    <a href="{{ "{{previewImageURL}}" }}" class="navigation-multilevel-node__link-inner navigation-multilevel-node__link-inner--lvl-1" onclick="toggleNavigationCategoriesMenu(this);">
+                        {{"{{name}}"}}&nbsp;
                     </a>
                 </div>
             </ff-navigation-item>
-        </ff-navigation>
 
         <script type="text/javascript">
             {% include '@ContentNavigationWidget/views/navigation-header/navigation-header-de.js' %}
