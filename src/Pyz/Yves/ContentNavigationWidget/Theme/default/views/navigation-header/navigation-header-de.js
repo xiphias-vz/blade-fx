@@ -166,25 +166,3 @@ function toggleMobileNavigationCategoriesMenu(ev){
        }
    }
 }
-
-
-function removeResetFilters(element) {
-    el = element.getAttribute("data-container");
-}
-
-document.addEventListener('DOMContentLoaded', function () {
-    var maxDim = 0;
-    var maxImg = null;
-   let ffFilters = document.querySelectorAll('ff-record-list')[0];
-   if(ffFilters !== undefined) {
-       ffFilters.addEventListener('dom-updated', function(event) {
-           let listOfPictures = ffFilters.querySelectorAll('img');
-           if(listOfPictures !== undefined) {
-               listOfPictures.forEach(picture => {
-                   picture.style.width = "12.25rem";
-                   picture.style.height = "12.25rem";
-               });
-           }
-       });
-   }
-});

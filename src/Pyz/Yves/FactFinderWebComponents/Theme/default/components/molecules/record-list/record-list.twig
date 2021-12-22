@@ -127,36 +127,41 @@
                 {% endverbatim %}
             {% endset %}
 
-                {% verbatim %}
-                    <div data-redirect="{{ record.ProductUrl }}"
-                        data-redirect-target="_self">
-                {% endverbatim %}
-                {% block imageContainer %}
-                    <div class="col--lg-12 col--md-12 col--sm-3  {{ config.name }}__image-wrap {{ config.jsName }}__image-wrap" onclick="productClicked('{{ productUrl }}', '{{ sku }}', '{{ productName | escape('js') }}', '{{ price }}', '{{ sku }}' )">
-                        {% set splitUrl = imageUrl | split('.com/') %}
-                        {% set newSrc = splitUrl[0] ~ '.com/thumb_'  ~ splitUrl[1] | default("") %}
-                        <img onerror="OnErrorChangeImage(this);" class="{{ imageExtraClasses}}" src="{{ imageUrl }}"  data-storage="{{ imageUrl }}">
-                    </div>
-                {% endblock %}
+            {% verbatim %}
+                <div data-redirect="{{ record.ProductUrl }}"
+                    data-redirect-target="_self">
+            {% endverbatim %}
 
-                <div class="{{ config.name ~ '__record-product-info' }}">
-                    <h3 class="{{ config.name ~ '__record-product-name' }}" style="font-weight: bold;">
-                        {{ brand ~ ' - ' ~ productName }}
-                    </h3>
-                    <p class="{{ config.name ~ '__sale-volume' }}">{{ pricePerWeight }}</p>
+                <div class="{{ config.name }}__record-product-container">
+                    {% block imageContainer %}
+                        <div class="col--lg-12 col--md-12 col--sm-3 {{ config.name }}__image-wrap" onclick="productClicked('{{ productUrl }}', '{{ sku }}', '{{ productName | escape('js') }}', '{{ price }}', '{{ sku }}' )">
+                            {% set splitUrl = imageUrl | split('.com/') %}
+                            {% set newSrc = splitUrl[0] ~ '.com/thumb_'  ~ splitUrl[1] | default("") %}
+                            <img onerror="OnErrorChangeImage(this);" class="{{ imageExtraClasses}}" src="{{ imageUrl }}"  data-storage="{{ imageUrl }}">
+                        </div>
+                    {% endblock %}
+
+                    {% block contentContainer %}
+                        <div class="col--sm-9 col--lg-12 {{ config.name }}__record-product-info">
+                            <div class="{{ config.name }}__record-product-name">
+                                <div>{{ brand ~ ' - ' ~ productName }}</div>
+                                <div class="{{ config.name ~ '__sale-volume' }}">{{ pricePerWeight }}</div>
+                            </div>
+                            <div class="{{ config.name }}__info-more">
+                                {% set priceInfo %}
+                                    {% verbatim %}
+                                        {{ record.geoInformation.0.geoValues.BasePrice }}
+                                    {% endverbatim %}
+                                {% endset %}
+
+                                {% block productDataContainer %}
+                                    <div>{{ priceInfo }}</div>
+                                {% endblock %}
+                            </div>
+                        </div>
+                    {% endblock %}
                 </div>
 
-                {% set priceInfo %}
-                    {% verbatim %}
-                        {{ record.geoInformation.0.geoValues.BasePrice }}
-                    {% endverbatim %}
-                {% endset %}
-
-                {% block productDataContainer %}
-                    <div class="{{ config.name }}__info-more">
-                        {{ priceInfo }}
-                    </div>
-                {% endblock %}
                 <hr class="{{ config.name }}__divider" />
                 </div>
                 <div class="{{ config.name }}__add-to-cart-btn">
