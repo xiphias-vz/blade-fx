@@ -102,10 +102,19 @@ document.addEventListener("ffReady", function (event) {
                             }
                         } else {
                             if(ffCategoryFilter.startsWith("Q:")) {
-                                eventAggregator.addFFEvent({
-                                    type: "search",
-                                    query: ffCategoryFilter.slice(2)
-                                });
+                                if(ffCategoryFilter.includes("|F:")){
+                                    eventAggregator.addFFEvent({
+                                        type: "search",
+                                        filter: ffCategoryFilter.split("|F:")[1],
+                                        query: ffCategoryFilter.split("|F:")[0].slice(2)
+                                    });
+
+                                } else {
+                                    eventAggregator.addFFEvent({
+                                        type: "search",
+                                        query: ffCategoryFilter.slice(2)
+                                    });
+                                }
                             } else {
                                 eventAggregator.addFFEvent({
                                     type: "navigation-search",

@@ -19,12 +19,28 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 class SaleController extends AbstractController
 {
     /**
-     * @param string $categoryPath
+     * @param string|null $categoryPath
      * @param \Symfony\Component\HttpFoundation\Request $request
      *
      * @return \Spryker\Yves\Kernel\View\View
      */
-    public function indexAction($categoryPath, Request $request)
+    public function indexAction(?string $categoryPath, Request $request)
+    {
+        $storeCodeBucket = getenv('SPRYKER_CODE_BUCKET');
+        if ($storeCodeBucket == "CZ") {
+            return $this->indexCZAction($categoryPath, $request);
+        } else {
+            return $this->indexDEAction($categoryPath, $request);
+        }
+    }
+
+    /**
+     * @param string|null $categoryPath
+     * @param \Symfony\Component\HttpFoundation\Request $request
+     *
+     * @return \Spryker\Yves\Kernel\View\View
+     */
+    protected function indexCZAction(?string $categoryPath, Request $request)
     {
         $parameters = $request->query->all();
 
@@ -50,6 +66,38 @@ class SaleController extends AbstractController
             $searchResults,
             [],
             '@ExampleProductSalePage/views/sale-example/sale-example.twig'
+        );
+    }
+
+    /**
+     * @param string|null $categoryPath
+     * @param \Symfony\Component\HttpFoundation\Request $request
+     *
+     * @return \Spryker\Yves\Kernel\View\View
+     */
+    public function indexDEAction(?string $categoryPath, Request $request)
+    {
+        $viewData = [
+            'products' => [],
+            'facets' => [],
+            'sort' => 0,
+            'searchString' => '',
+            'ffCategoryFilter' => 'Q:*|F:Sale:true',
+            'spellingSuggestion' => '',
+            'pressEnter' => '1',
+            'pagination' => [
+                'currentPage' => 1,
+                'maxPage' => 999,
+                'numFound' => 1,
+                'config' => '',
+                'currentItemsPerPage' => 1,
+            ],
+        ];
+
+        return $this->view(
+            $viewData,
+            [],
+            '@CatalogPage/views/search/search.twig'
         );
     }
 
