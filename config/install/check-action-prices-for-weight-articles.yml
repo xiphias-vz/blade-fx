@@ -1,0 +1,10 @@
+command-timeout: 14400
+
+sections:
+    execute-query:
+        execute-query:
+            command: "vendor/bin/console import:execSqlQuery -s 'call pyzx_update_sceduled_weight_prices()'"
+
+    execute-events:
+        execute-events:
+            command: "vendor/bin/console import:execEvents"

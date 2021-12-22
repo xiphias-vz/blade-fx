@@ -1,0 +1,14 @@
+command-timeout: 14400
+
+sections:
+    generate-csv:
+        generate-category-csv:
+            command: "vendor/bin/console export:categories"
+        generate-geo-csv:
+            command: "vendor/bin/console export:stock-data"
+        generate-product-csv:
+            command: "vendor/bin/console export:product-data"
+    upload-to-ftp:
+        upload-files:
+            command: "vendor/bin/console export:fact-finder-to-ftp"
+

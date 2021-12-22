@@ -258,8 +258,7 @@ if ($storeCodeBucket == 'CZ') {
 
     $jobs[] = [
         'name' => 'check-actionprices-for-weight-articles',
-        'command' => '$PHP_BIN vendor/bin/console import:execSqlQuery -s "call pyzx_update_sceduled_weight_prices()"
-        $PHP_BIN vendor/bin/console import:execEvents',
+        'command' => 'vendor/bin/install -r check-action-prices-for-weight-articles',
         'schedule' => '0 4 * * *',
         'enable' => true,
         'stores' => ['OST'],
@@ -345,46 +344,18 @@ if ($storeCodeBucket == 'CZ') {
         'stores' => ['EIN'],
     ];
 
-    // Generate 'export.Categories.Spryker.csv file
+    // Generate FF csv files and push them to the Globus FTP
     $jobs[] = [
-        'name' => 'export-categories-to-csv',
-        'command' => '$PHP_BIN vendor/bin/console export:categories',
+        'name' => 'fact-finder-export',
+        'command' => 'vendor/bin/install -r fact-finder-export',
         'schedule' => '0 1 * * *',
-        'enable' => true,
-        'stores' => ['EIN'],
-    ];
-
-    // Generate 'export.geoStockData.Spryker.csv file
-    $jobs[] = [
-        'name' => 'export-geo-stock-data-to-csv',
-        'command' => '$PHP_BIN vendor/bin/console export:stock-data',
-        'schedule' => '5 1 * * *',
-        'enable' => true,
-        'stores' => ['EIN'],
-    ];
-
-    // Generate 'export.productData.Spryker.csv file
-    $jobs[] = [
-        'name' => 'export-product-data-to-csv',
-        'command' => '$PHP_BIN vendor/bin/console export:product-data',
-        'schedule' => '10 1 * * *',
-        'enable' => true,
-        'stores' => ['EIN'],
-    ];
-
-    // Upload files to Globus FTP server
-    $jobs[] = [
-        'name' => 'upload-files-to-globus-ftp',
-        'command' => '$PHP_BIN vendor/bin/console export:fact-finder-to-ftp',
-        'schedule' => '20 1 * * *',
         'enable' => true,
         'stores' => ['EIN'],
     ];
 
     $jobs[] = [
         'name' => 'check-actionprices-for-weight-articles',
-        'command' => '$PHP_BIN vendor/bin/console import:execSqlQuery -s "call pyzx_update_sceduled_weight_prices()"
-        $PHP_BIN vendor/bin/console import:execEvents',
+        'command' => 'vendor/bin/install -r check-action-prices-for-weight-articles',
         'schedule' => '0 4 * * *',
         'enable' => true,
         'stores' => ['EIN'],
