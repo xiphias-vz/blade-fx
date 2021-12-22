@@ -52,7 +52,7 @@ class FactFinderConsole extends Console
             $fp = fopen($pathToFile, 'w');
             $delimeter = ";";
             $enclosure = "\"";
-            $headers = ["ArticleNumber", "MasterArticleNumber", "Title", "Description", "Brand", "ReleaseDate", "Availability", "BrandUrl", "CategoryPath", "ProductUrl", "ImageUrl", "MultiAttributeText", "Attribute", "SalesRanking", "ArticleType", "BadgeText", "Deposit", "SapNumber", "PackUnit", 'IdProductAbstract' ];
+            $headers = ["ArticleNumber", "MasterArticleNumber", "Title", "Description", "Brand", "ReleaseDate", "Availability", "BrandUrl", "CategoryPath", "ProductUrl", "ImageUrl", "MultiAttributeText", "Attribute", "SalesRanking", "ArticleType", "BadgeText", "Deposit", "SapNumber", "PackUnit", "IdProductAbstract", "popNameExtension"];
             fputcsv($fp, $headers, $delimeter, $enclosure);
 
             $numberOfResults = count($result);
@@ -74,7 +74,7 @@ class FactFinderConsole extends Console
                         unset($result[$z][$key]);
                         continue;
                     }
-                    if ($key != 'Title' && $key != 'description' && $key != 'Deposit' && $key != 'CategoryPath') {
+                    if ($key != 'Title' && $key != 'description' && $key != 'Deposit' && $key != 'CategoryPath' && $key != 'popNameExtension') {
                         $result[$z][$key] = transliterator_transliterate('Any-Latin; Latin-ASCII; [\u0080-\u7fff] remove', $row);
                     }
                     if (json_decode($row) !== null) {
@@ -158,7 +158,17 @@ class FactFinderConsole extends Console
   , sp.sap_number as SapNumber
   , null as PackUnit
   , sp.fk_product_abstract as id_product_abstract
+  , CASE WHEN CAST(JSON_VALUE(spa.`attributes`, '$.grundpreisinhalt[0]') as decimal(9,3)) > 0
+  		AND NOT JSON_VALUE(spa.`attributes`, '$.verpackungseinheit[0]') IS NULL THEN
+  			CASE WHEN CAST(JSON_VALUE(spa.`attributes`, '$.einzelgewicht[0]') as decimal(9,3)) > 0 THEN
+  				CONCAT(' - ', REPLACE(TRIM(CAST(JSON_VALUE(spa.`attributes`, '$.einzelgewicht[0]') as decimal(9,3))) + 0, '.', ','), ' ', JSON_VALUE(spa.`attributes`, '$.grundpreismasseinheit[0]'))
+  			ELSE
+  				CONCAT(' - ', REPLACE(TRIM(CAST(JSON_VALUE(spa.`attributes`, '$.grundpreisinhalt[0]') as decimal(9,3))) + 0, '.', ','), ' ', JSON_VALUE(spa.`attributes`, '$.grundpreismasseinheit[0]'))
+  			END
+  	ELSE ''
+  END as popNameExtension
 FROM spy_product sp
+    INNER JOIN spy_product_abstract spa on sp.fk_product_abstract = spa.id_product_abstract
     INNER JOIN spy_product_abstract_localized_attributes spala on sp.fk_product_abstract = spala.fk_product_abstract
     INNER JOIN spy_url su on su.fk_resource_product_abstract = sp.fk_product_abstract
         AND spala.fk_locale = su.fk_locale
