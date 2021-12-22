@@ -15,7 +15,7 @@
     cartNote: _view.quoteTransfer.cartNote,
     currentCodeBucket: app.currentCodeBucket,
     isSubstitutionAllowed: _view.quoteTransfer.isSubstitutionAllowed,
-    isDepositAllowed: false
+    isTransportboxEnabled: false
 } %}
 
 {% block body %}
@@ -129,7 +129,7 @@
                 </div>
             </div>
             {% if app.currentCodeBucket != 'CZ' %}
-                {% if data.isDepositAllowed == true %}
+                {% if data.isTransportboxEnabled == true %}
                     {% block transportbox %}
                         <div class="{{ config.name }}__row">
                             <div class="{{ config.name }}__col">

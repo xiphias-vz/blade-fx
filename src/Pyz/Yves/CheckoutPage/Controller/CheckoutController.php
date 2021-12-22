@@ -130,7 +130,12 @@ class CheckoutController extends SprykerCheckoutControllerAlias
             $isSubstitutionAllowed = true;
         }
         $response['isSubstitutionAllowed'] = $isSubstitutionAllowed;
-        $response['isTransportboxEnabled'] = $merchantTransfer->getIsTransportboxEnabled();
+
+        if ($merchantTransfer->getIsTransportboxEnabled() == true) {
+            $response['isTransportboxEnabled'] = true;
+        } else {
+            $response['isTransportboxEnabled'] = false;
+        }
 
         return $this->view(
             $response,
@@ -265,6 +270,10 @@ class CheckoutController extends SprykerCheckoutControllerAlias
             }
         }
 
+        $merchantTransfer = $this->getFactory()
+            ->getMerchantClient()
+            ->getMerchant();
+
         $viewData = $this->createStepProcess()->process(
             $request,
             $this->getFactory()
@@ -276,8 +285,11 @@ class CheckoutController extends SprykerCheckoutControllerAlias
             return $viewData;
         }
 
-        $isDepositAllowed = $this->getFactory()->getQuoteClient()->getQuote()->getIsDepositAllowed();
-        $viewData['isDepositAllowed'] = $isDepositAllowed;
+        if ($merchantTransfer->getIsTransportboxEnabled() == true) {
+            $viewData['isTransportboxEnabled'] = true;
+        } else {
+            $viewData['isTransportboxEnabled'] = false;
+        }
 
         return $this->view(
             $viewData,

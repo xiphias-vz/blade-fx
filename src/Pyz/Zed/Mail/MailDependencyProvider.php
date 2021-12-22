@@ -16,6 +16,7 @@ use Pyz\Zed\CustomerConfirmationPage\Communication\Plugin\Mail\OrderCancelledMai
 use Pyz\Zed\CustomerConfirmationPage\Communication\Plugin\Mail\OrderRefundedMailTypePlugin;
 use Pyz\Zed\CustomerConfirmationPage\Communication\Plugin\Mail\RegistrationMailTypePlugin;
 use Pyz\Zed\Mail\Communication\Plugin\MailFromCmsBlockProviderPlugin;
+use Pyz\Zed\Mail\Dependency\Mailer\MailToMailerBridge;
 use Pyz\Zed\Oms\Communication\Plugin\Mail\OrderConfirmationMailTypePlugin;
 use Pyz\Zed\ZeroPricesReportMail\Communication\Plugin\Mail\ZeroPricesReportMailTypePlugin;
 use Spryker\Zed\AuthMailConnector\Communication\Plugin\Mail\RestorePasswordMailTypePlugin;
@@ -32,6 +33,7 @@ use Spryker\Zed\Newsletter\Communication\Plugin\Mail\NewsletterSubscribedMailTyp
 use Spryker\Zed\Newsletter\Communication\Plugin\Mail\NewsletterUnsubscribedMailTypePlugin;
 use Spryker\Zed\Oms\Communication\Plugin\Mail\OrderShippedMailTypePlugin;
 use Spryker\Zed\SalesInvoice\Communication\Plugin\Mail\OrderInvoiceMailTypePlugin;
+use Swift_Message;
 
 /**
  * @method \Pyz\Zed\Mail\MailConfig getConfig()
@@ -139,6 +141,18 @@ class MailDependencyProvider extends SprykerMailDependencyProvider
 
             return $container->getApplicationService(static::SERVICE_TWIG);
         });
+
+        return $container;
+    }
+
+    protected function addMailer(Container $container)
+    {
+        $container->set(static::MAILER, $container->factory(function (Container $container) {
+            $message = new Swift_Message();
+            $swiftMailer = $container->get(static::SWIFT_MAILER);
+
+            return new MailToMailerBridge($message, $swiftMailer);
+        }));
 
         return $container;
     }

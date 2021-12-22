@@ -210,7 +210,7 @@
                         {% if app.currentCodeBucket != 'CZ'%}
                             <div class="horizontal-line"></div>
 
-                            {% if embed.isTransportboxEnabled %}
+                            {% if embed.isTransportboxEnabled == true %}
                                 {% include molecule('transport-box', 'CheckoutPage') with {
                                     data: {
                                         formCheckbox: data.form.is_deposit_allowed,
@@ -218,6 +218,16 @@
                                         withHorizontalBottomBorder: false
                                     }
                                 } only %}
+                            {% else %}
+                                <div class="hidden">
+                                    {{ form_row(data.form.is_deposit_allowed, {
+                                        label: 'checkout.transport.box.checkbox' | trans,
+                                        attributes: {
+                                            'checked': false,
+                                            'style': 'margin-top:3px'
+                                        }
+                                    }) }}
+                                </div>
                             {% endif %}
 
                             <div class="spacing-bottom text-color-1">
