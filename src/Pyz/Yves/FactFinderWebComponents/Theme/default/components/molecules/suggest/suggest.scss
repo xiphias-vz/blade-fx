@@ -47,16 +47,48 @@
             color: $setting-color-gray-6;
             width: 100%;
             display: flex;
-            justify-content: space-around;
+            justify-content: flex-start;
+            border-bottom: 1px solid $setting-color-gray-2;
 
             &:hover {
                 color: $setting-color-orange;
                 background: $setting-color-gray-2;
+                cursor: pointer;
             }
+            .suggestImage{
+                margin-right: rem(20);
+                display: flex;
+                align-items: center;
+            }
+            .nameAndMoneyContainer {
+                display: flex;
+                flex-direction: column;
 
-            .col {
-                margin-top: auto;
-                margin-bottom: auto;
+                .suggestBrand{
+                    display: flex;
+
+                    .suggest__brand{
+                        margin-right: rem(5);
+                        text-decoration: underline white;
+                    }
+
+                    .suggest__brand::after{
+                        content: ",";
+                        margin-left: -2px;
+                    }
+                }
+
+                .moneyTag {
+                    margin-right: auto;
+                    .suggest__amount{
+                        margin: 0;
+                        text-decoration: underline white;
+                    }
+                    .suggest__amount--original{
+                        margin: 0;
+                        text-decoration: line-through;
+                    }
+                }
             }
         }
 
@@ -80,20 +112,6 @@
             justify-content: flex-end;
             font-family: $setting-font-family-additional;
             margin-bottom: rem(15);
-        }
-
-        hr {
-            border: 0;
-            height: rem(7);
-            position: relative;
-            border-top-left-radius: rem(4);
-            border-top-right-radius: rem(4);
-            border-bottom-right-radius: rem(4);
-            border-bottom-left-radius: rem(4);
-            background: #F5F5F5;
-            box-shadow: rem(0.5) rem(1.2) rem(1.2) rem(0.5) #686868 inset;
-            width: 100%;
-            margin-left: rem(-5);
         }
     }
 }
