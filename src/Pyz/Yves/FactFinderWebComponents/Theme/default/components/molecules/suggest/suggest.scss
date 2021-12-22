@@ -81,6 +81,20 @@
             font-family: $setting-font-family-additional;
             margin-bottom: rem(15);
         }
+
+        hr {
+            border: 0;
+            height: rem(7);
+            position: relative;
+            border-top-left-radius: rem(4);
+            border-top-right-radius: rem(4);
+            border-bottom-right-radius: rem(4);
+            border-bottom-left-radius: rem(4);
+            background: #F5F5F5;
+            box-shadow: rem(0.5) rem(1.2) rem(1.2) rem(0.5) #686868 inset;
+            width: 100%;
+            margin-left: rem(-5);
+        }
     }
 }
 
