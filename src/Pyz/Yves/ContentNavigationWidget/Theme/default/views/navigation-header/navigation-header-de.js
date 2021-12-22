@@ -31,7 +31,9 @@ document.addEventListener("DOMContentLoaded", function (event) {
                 childrenCount = breadCrumbUnorderedList.childElementCount;
             }
 
-            createLinksInBreadcrumbs(breadCrumbFFElement, breadCrumbUnorderedList, breadCrumbChild, childrenCount);
+            if (isSearchPage()) {
+                createLinksInBreadcrumbs(breadCrumbFFElement, breadCrumbUnorderedList, breadCrumbChild, childrenCount);
+            }
         });
     }
 
