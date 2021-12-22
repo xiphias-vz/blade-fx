@@ -55,10 +55,18 @@ class FactFinderCategoriesConsole extends Console
             $headers = ["Facet", "FacetValue", "URL"];
             fputcsv($fp, $headers, $delimeter, $enclosure);
 
+            $fileNameSequence = FactFinderConstants::FILE_NAMES[FactFinderConstants::SEQUENCES_FILE_NAME];
+            $pathToFileSequence = 'data/export/files/' . $fileNameSequence;
+            $fpSequence = fopen($pathToFileSequence, 'w');
+            $headersSequence = ["GroupName", "GroupElement"];
+            fputcsv($fpSequence, $headersSequence, $delimeter, $enclosure);
+
             foreach ($result as $fields) {
                 fputcsv($fp, $fields, $delimeter, $enclosure);
+                fputcsv($fpSequence, ["Category", $fields["FacetValue"]], $delimeter, $enclosure);
             }
             fclose($fp);
+            fclose($fpSequence);
         } catch (Exception $e) {
             dump($e);
 

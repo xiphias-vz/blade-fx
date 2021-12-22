@@ -16,10 +16,12 @@ interface FactFinderConstants
     public const CATEGORIES_FILE_NAME = 'categoriesFileName';
     public const GEO_STOCK_FILE_NAME = 'geoStockFileName';
     public const PRODUCT_DATA_FILE_NAME = 'productDataFileName';
+    public const SEQUENCES_FILE_NAME = 'sequencesFileName';
 
     public const FILE_NAMES = [
         self::CATEGORIES_FILE_NAME => 'export.Categories.Spryker.csv',
         self::GEO_STOCK_FILE_NAME => 'export.geoStockData.Spryker.csv',
         self::PRODUCT_DATA_FILE_NAME => 'export.productData.Spryker.csv',
+        self::SEQUENCES_FILE_NAME => 'sequences.csv',
     ];
 }
