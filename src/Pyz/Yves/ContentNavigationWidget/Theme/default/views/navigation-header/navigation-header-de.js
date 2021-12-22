@@ -106,6 +106,7 @@ window.addEventListener("DOMNodeInserted", function (event) {
         checkBrandIsSet(event.relatedNode, 'ff-record');
     } else if (event.relatedNode.localName == 'ff-suggest-item') {
         checkOriginalAndDefaultPrices(event.relatedNode, 'ff-suggest-item');
+        addCommaAfterBrand(event.relatedNode);
     }
 }, false);
 
@@ -165,4 +166,18 @@ function toggleMobileNavigationCategoriesMenu(ev){
            document.querySelector(".header__navigation-top > button").click();
        }
    }
+}
+
+
+function addCommaAfterBrand(element) {
+
+    let brands = element.querySelectorAll('span.suggest__brand');
+
+    if (brands[0] !== undefined) {
+        if(brands[0].length > 0) {
+            if(!brands[0].textContent.includes(',')) {
+                brands[0].textContent += ', ';
+            }
+        }
+    }
 }

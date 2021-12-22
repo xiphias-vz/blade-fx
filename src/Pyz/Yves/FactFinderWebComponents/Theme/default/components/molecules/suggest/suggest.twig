@@ -25,6 +25,25 @@
                     <div data-container="{{ item.type }}">
                         <p class="containerCaption" hidden>{{ item.title }}</p>
                         <ff-suggest-item type="{{ item.type }}" class="{{ config.name }}__suggested-product-slot">
+                            <style>
+                                .col-2 {
+                                    display: flex;
+                                    flex-direction: row;
+                                    margin-left: -15rem;
+                                    margin-right: 0.625rem;
+                                }
+                                .suggest__amount--original {
+                                    float: left;
+                                    margin-left: -31.25rem;
+                                    margin-top: 1.875rem;
+                                }
+                                .suggest__amount-red {
+                                    float: left;
+                                    margin-left: -31.25rem;
+                                    margin-top: 3.125rem;
+                                }
+
+                            </style>
                             {% set imageUrl %}
                                 {% verbatim %}
                                     {{ attributes.ImageUrl }}
@@ -62,13 +81,20 @@
                                     } only %}
                                 </span>
                             {% endif %}
+                                <div>
+                                    <span class="col-2 {{ config.name }}__brand">
+                                        {% verbatim %}
+                                            {{{ attributes.Brand }}}
+                                        {% endverbatim %}
+                                    </span>
 
 
-                            <span class="col">
+                            <span class="col-2 col-2 {{ config.name }}__name">
                                 {% verbatim %}
                                     {{{ name }}}
                                 {% endverbatim %}
                             </span>
+                                </div>
                             {% if item.type == 'productName' %}
                                 {% block price %}
                                     <span class="col">
