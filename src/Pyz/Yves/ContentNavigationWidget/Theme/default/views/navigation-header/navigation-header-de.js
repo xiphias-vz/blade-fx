@@ -13,11 +13,6 @@ function isSearchPage() {
 
 var indexCatalogPageCounter = 0;
 
-document.addEventListener("dom-updated", function(event) {
-    const saleGroupElements = document.getElementById("sale_group").children;
-    saleGroupElements[1].remove();
-});
-
 document.addEventListener("ffReady", function (event) {
     const factfinder = event.factfinder;
     const eventAggregator = event.eventAggregator;
@@ -184,3 +179,15 @@ function addCommaAfterBrand(element) {
         }
     }
 }
+
+document.addEventListener("DOMContentLoaded", function(event) {
+    let saleGroupElement = document.querySelectorAll("#sale_group");
+    let saleGroupElementChildren = saleGroupElement[0].children;
+
+    document.addEventListener("dom-updated", function(event) {
+        let saleGroupSecondElement = saleGroupElementChildren[1];
+        if(saleGroupElementChildren.length === 2) {
+            saleGroupSecondElement.remove();
+        }
+    });
+});
