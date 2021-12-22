@@ -127,6 +127,12 @@
                 {% endverbatim %}
             {% endset %}
 
+            {% set popNameExtension %}
+                {% verbatim %}
+                    {{ record.popNameExtension }}
+                {% endverbatim %}
+            {% endset %}
+
             {% verbatim %}
                 <div data-redirect="{{ record.ProductUrl }}"
                     data-redirect-target="_self">
@@ -144,7 +150,7 @@
                     {% block contentContainer %}
                         <div class="col--sm-9 col--lg-12 {{ config.name }}__record-product-info">
                             <div class="{{ config.name }}__record-product-name">
-                                <div>{{ brand ~ ' - ' ~ productName }}</div>
+                                <div>{{ brand ~ ' - ' ~ productName ~ popNameExtension }}</div>
                                 <div class="{{ config.name ~ '__sale-volume' }}">{{ pricePerWeight }}</div>
                             </div>
                             <div class="{{ config.name }}__info-more">
