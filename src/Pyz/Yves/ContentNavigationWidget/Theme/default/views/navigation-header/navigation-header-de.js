@@ -12,6 +12,48 @@ function isSearchPage() {
 }
 
 var indexCatalogPageCounter = 0;
+document.addEventListener("DOMContentLoaded", function (event) {
+    let breadCrumbFFElement = document.getElementsByTagName('ff-breadcrumb-trail')[0];
+    let breadCrumbUnorderedList = document.querySelectorAll('ul.breadcrumb')[0];
+    let breadCrumbChild;
+    let childrenCount;
+
+    if (breadCrumbUnorderedList !== undefined) {
+        if (breadCrumbUnorderedList.childElementCount < 2) {
+            breadCrumbChild = breadCrumbUnorderedList.children[0];
+        }
+        childrenCount = breadCrumbUnorderedList.childElementCount;
+    }
+
+    if (breadCrumbFFElement !== undefined) {
+        breadCrumbFFElement.addEventListener("dom-updated", function(event) {
+            if (breadCrumbUnorderedList !== undefined) {
+                childrenCount = breadCrumbUnorderedList.childElementCount;
+            }
+
+            createLinksInBreadcrumbs(breadCrumbFFElement, breadCrumbUnorderedList, breadCrumbChild, childrenCount);
+        });
+    }
+
+
+    let saleGroupElement = document.querySelectorAll("#sale_group");
+    let filterElement = document.querySelectorAll('ff-asn')[0];
+
+    if(filterElement !== undefined) {
+        filterElement.addEventListener("dom-updated", function(event) {
+            if(saleGroupElement !== undefined) {
+                let saleGroupElementChildren = saleGroupElement[0].children;
+                if(saleGroupElementChildren !== undefined) {
+                    let saleGroupSecondElement = saleGroupElementChildren[1];
+                    if(saleGroupElementChildren.length === 2) {
+                        saleGroupSecondElement.remove();
+                    }
+                }
+            }
+        });
+    }
+});
+
 
 document.addEventListener("ffReady", function (event) {
     const factfinder = event.factfinder;
@@ -173,9 +215,7 @@ function toggleMobileNavigationCategoriesMenu(ev){
    }
 }
 
-
 function addCommaAfterBrand(element) {
-
     let brands = element.querySelectorAll('span.suggest__brand');
 
     if (brands[0] !== undefined) {
@@ -187,14 +227,48 @@ function addCommaAfterBrand(element) {
     }
 }
 
-document.addEventListener("DOMContentLoaded", function(event) {
-    let saleGroupElement = document.querySelectorAll("#sale_group");
-    let saleGroupElementChildren = saleGroupElement[0].children;
+function createLinksInBreadcrumbs(ffElement, newBreadCrumbWrapper, newBreadCrumbItem, childrenCount) {
+    let breadCrumbChildClone = document.importNode(newBreadCrumbItem, true);
+    let ffBreadCrumbItem = ffElement.querySelectorAll('ff-breadcrumb-trail-item[type=filter]')[0];
 
-    document.addEventListener("dom-updated", function(event) {
-        let saleGroupSecondElement = saleGroupElementChildren[1];
-        if(saleGroupElementChildren.length === 2) {
-            saleGroupSecondElement.remove();
+    let steps = '';
+    if (ffBreadCrumbItem !== undefined) {
+        const bciText = ffBreadCrumbItem.textContent.replace(/[\n\r]+|[\s]{2,}/g, ' ').trim();
+        steps = bciText.length > 0 ? bciText.split('/') : '';
+        refreshBreadCrumbSteps(newBreadCrumbWrapper, newBreadCrumbItem);
+
+        breadCrumbSteps(steps, newBreadCrumbWrapper, newBreadCrumbItem);
+    } else {
+        if (childrenCount !== 1) {
+            refreshBreadCrumbSteps(newBreadCrumbWrapper, newBreadCrumbItem);
         }
-    });
-});
+        defaultBreadCrumb(newBreadCrumbWrapper, breadCrumbChildClone);
+    }
+}
+
+
+function breadCrumbSteps(steps, newBreadCrumbWrapper, newBreadCrumbItem) {
+    const stepsLength = steps.length;
+    let fullPath = "/de";
+
+    if(stepsLength > 0) {
+        steps.forEach(step =>  {
+            step = step.trim();
+            let breadCrumbChildCloneInStep = document.importNode(newBreadCrumbItem, true);
+            breadCrumbChildCloneInStep.children[0].textContent = step;
+            fullPath += "/" + step;
+            breadCrumbChildCloneInStep.children[0].href = fullPath;
+            newBreadCrumbWrapper.appendChild(breadCrumbChildCloneInStep);
+        });
+    }
+}
+
+function defaultBreadCrumb(newBreadCrumbWrapper, breadCrumbChildClone) {
+    breadCrumbChildClone.children[0].textContent = " Alle produkte";
+    breadCrumbChildClone.children[0].href = "/de/search";
+    newBreadCrumbWrapper.appendChild(breadCrumbChildClone);
+}
+
+function refreshBreadCrumbSteps(newBreadCrumbWrapper, newBreadCrumbItem) {
+    newBreadCrumbWrapper.replaceChildren(newBreadCrumbItem);
+}

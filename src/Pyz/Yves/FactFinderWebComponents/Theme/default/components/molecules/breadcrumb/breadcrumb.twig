@@ -12,17 +12,23 @@
 } %}
 
 {% block body %}
-    <ff-breadcrumb-trail {{ data.properties.component|raw }} unresolved>
+    <ff-breadcrumb-trail {{ data.properties.component|raw }}>
         <span data-separator> &#8226 </span>
-        {% for item in data.properties.items %}
-            <ff-breadcrumb-trail-item type="{{ item }}" unresolved>
-                <span class="{{ item ~ '__item' }}">
-                    {% verbatim %}
-                        {{{ text }}}
-                    {% endverbatim %}
-                </span>
-            </ff-breadcrumb-trail-item>
-        {% endfor %}
+        <!-- The search item is the content of the search query-->
+        <ff-breadcrumb-trail-item type="search">
+            <span class="{{ 'search__item' }}">
+                {% verbatim %}
+                    {{ text }}
+                {% endverbatim %}
+            </span>
+        </ff-breadcrumb-trail-item>
 
+        <ff-breadcrumb-trail-item type="filter">
+            <span class="{{ 'filter__item' }}">
+                {% verbatim %}
+                    {{ text }}
+                {% endverbatim %}
+            </span>
+        </ff-breadcrumb-trail-item>
     </ff-breadcrumb-trail>
 {% endblock %}

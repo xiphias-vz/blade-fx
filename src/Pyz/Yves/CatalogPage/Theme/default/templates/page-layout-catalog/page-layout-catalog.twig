@@ -60,9 +60,19 @@
                         {% endembed %}
                     {% endblock %}
                 {% else %}
-                    {% include molecule('breadcrumb', 'FactFinderWebComponents') with {
-
-                    } %}
+                    <div hidden>
+                        {% include molecule('breadcrumb', 'FactFinderWebComponents') with {} %}
+                    </div>
+                    {% embed molecule('breadcrumb') with {
+                        modifiers: ['no-border'],
+                        embed: {
+                            breadcrumbs: ''
+                        }
+                    } only %}
+                        {% block breadcrumbs %}
+                            {{ embed.breadcrumbs }}
+                        {% endblock %}
+                    {% endembed %}
                 {% endif %}
             </div>
         </div>
