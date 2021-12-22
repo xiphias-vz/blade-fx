@@ -1,7 +1,7 @@
 {% extends template('page-layout-catalog', 'CatalogPage') %}
 
 {% define data = {
-    ffCategoryFilter: _view.ffCategoryFilter
+    ffCategoryFilter: _view.ffCategoryFilter | default
 } %}
 
 {% block form %}

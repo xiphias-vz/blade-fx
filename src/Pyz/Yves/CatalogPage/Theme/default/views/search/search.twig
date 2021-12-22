@@ -8,6 +8,7 @@
         paginationPath: app.request.attributes.get('_route'),
     },
     hideClass: app.currentCodeBucket is same as('DE') ? 'hide': '',
+    ffCategoryFilter: _view.ffCategoryFilter | default,
 } %}
 
 {% block breadcrumb %}
@@ -37,6 +38,7 @@
     </div>
     <script type="text/javascript">
         window.searchSuggestion = "{{ data.searchString }}";
+        var ffCategoryFilter  = "{{ data.ffCategoryFilter }}";
     </script>
 {% endblock %}
 

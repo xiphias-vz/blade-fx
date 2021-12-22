@@ -68,7 +68,6 @@ class MultipleStatusesFixScriptConsole extends Console
             } else {
                 dump("Currently there are no items with incorrect 'canceled due to not in stock' statuses!");
             }
-
         } catch (Exception $e) {
             dump($e);
 

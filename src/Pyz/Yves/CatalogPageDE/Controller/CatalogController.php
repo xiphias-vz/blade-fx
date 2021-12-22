@@ -144,11 +144,13 @@ class CatalogController extends SprykerCatalogController
      */
     public function fulltextSearchAction(Request $request)
     {
+        $searchText = $request->query->get("query", "*");
         $viewData = [
             'products' => [],
             'facets' => [],
             'sort' => 0,
             'searchString' => '',
+            'ffCategoryFilter' => 'Q:' . $searchText,
             'spellingSuggestion' => '',
             'pressEnter' => '1',
             'pagination' => [

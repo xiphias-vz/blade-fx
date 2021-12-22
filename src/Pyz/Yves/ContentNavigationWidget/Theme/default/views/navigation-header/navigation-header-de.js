@@ -57,11 +57,18 @@ document.addEventListener("ffReady", function (event) {
                                 });
                             }
                         } else {
-                            eventAggregator.addFFEvent({
-                                type: "navigation-search",
-                                filter: ffCategoryFilter,
-                                query: "*"
-                            });
+                            if(ffCategoryFilter.startsWith("Q:")) {
+                                eventAggregator.addFFEvent({
+                                    type: "search",
+                                    query: ffCategoryFilter.slice(2)
+                                });
+                            } else {
+                                eventAggregator.addFFEvent({
+                                    type: "navigation-search",
+                                    filter: ffCategoryFilter,
+                                    query: "*"
+                                });
+                            }
                         }
                 }
             } else {
