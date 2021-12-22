@@ -256,6 +256,8 @@ function breadCrumbSteps(steps, newBreadCrumbWrapper, newBreadCrumbItem) {
             step = step.trim();
             let breadCrumbChildCloneInStep = document.importNode(newBreadCrumbItem, true);
             breadCrumbChildCloneInStep.children[0].textContent = step;
+            step = step.toLowerCase();
+            step = step.replaceAll(' ', '-');
             fullPath += "/" + step;
             breadCrumbChildCloneInStep.children[0].href = fullPath;
             newBreadCrumbWrapper.appendChild(breadCrumbChildCloneInStep);
