@@ -234,10 +234,12 @@ function addCommaAfterBrand(element) {
     let brands = element.querySelectorAll('span.suggest__brand');
 
     if (brands[0] !== undefined) {
-        if(brands[0].length > 0) {
+        if(brands[0].textContent.trim().length > 0) {
             if(!brands[0].textContent.includes(',')) {
-                brands[0].textContent += ', ';
+                brands[0].textContent = brands[0].textContent.trim() + ', ';
             }
+        }else{
+         brands[0].style.display = "none";
         }
     }
 }

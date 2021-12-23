@@ -40,7 +40,6 @@
         &__link {
             @include helper-effect-transition(color background);
             text-transform: capitalize;
-            text-decoration: none;
             padding: rem(3) rem(10);
             margin: 0 rem(-10);
             border-radius: rem(5);
@@ -63,31 +62,19 @@
             .nameAndMoneyContainer {
                 display: flex;
                 flex-direction: column;
+                text-decoration: underline;
+                text-decoration-color: #ffffff;
 
                 .suggestBrand{
                     display: flex;
 
                     .suggest__brand{
                         margin-right: rem(5);
-                        text-decoration: underline white;
-                    }
-
-                    .suggest__brand::after{
-                        content: ",";
-                        margin-left: -2px;
                     }
                 }
 
                 .moneyTag {
                     margin-right: auto;
-                    .suggest__amount{
-                        margin: 0;
-                        text-decoration: underline white;
-                    }
-                    .suggest__amount--original{
-                        margin: 0;
-                        text-decoration: line-through;
-                    }
                 }
             }
         }
@@ -101,7 +88,7 @@
             color: $setting-color-globus-darkGray-2;
             display: flex;
             font-family: $setting-font-family-additional;
-            margin-top: rem(15);
+            margin-top: 0;
             justify-content: flex-end;
             min-height: rem(23);
         }
@@ -111,7 +98,7 @@
             display: flex;
             justify-content: flex-end;
             font-family: $setting-font-family-additional;
-            margin-bottom: rem(15);
+            margin-bottom: 0;
         }
     }
 }
