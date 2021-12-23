@@ -11,6 +11,10 @@ function isSearchPage() {
     return document.getElementsByTagName('ff-record-list').length > 0;
 }
 
+function isPageWithBreadcrumbs() {
+    return document.getElementsByTagName('breadcrumb-step').length > 0;
+}
+
 var indexCatalogPageCounter = 0;
 document.addEventListener("DOMContentLoaded", function (event) {
     let breadCrumbFFElement = document.getElementsByTagName('ff-breadcrumb-trail')[0];
@@ -31,7 +35,7 @@ document.addEventListener("DOMContentLoaded", function (event) {
                 childrenCount = breadCrumbUnorderedList.childElementCount;
             }
 
-            if (isSearchPage()) {
+            if(isPageWithBreadcrumbs()) {
                 createLinksInBreadcrumbs(breadCrumbFFElement, breadCrumbUnorderedList, breadCrumbChild, childrenCount);
             }
         });

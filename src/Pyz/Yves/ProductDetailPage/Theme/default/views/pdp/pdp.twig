@@ -32,15 +32,9 @@
 
 {% block pageInfo %}
     <div class="container__inner">
-        {% if data.currentCodeBucket == 'DE' %}
-            {% include molecule('breadcrumb', 'FactFinderWebComponents') with {
-
-            } %}
-        {% else %}
-            {% block breadcrumbs %}
-                {% widget 'ProductBreadcrumbsWithCategoriesWidget' args [data.product] only %}{% endwidget %}
-            {% endblock %}
-        {% endif %}
+        {% block breadcrumbs %}
+            {% widget 'ProductBreadcrumbsWithCategoriesWidget' args [data.product] only %}{% endwidget %}
+        {% endblock %}
     </div>
 {% endblock %}
 
