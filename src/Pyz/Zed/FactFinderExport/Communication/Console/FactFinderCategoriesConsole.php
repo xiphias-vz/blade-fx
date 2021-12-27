@@ -63,7 +63,7 @@ class FactFinderCategoriesConsole extends Console
 
             foreach ($result as $fields) {
                 fputcsv($fp, $fields, $delimeter, $enclosure);
-                fputcsv($fpSequence, ["Category", $fields["FacetValue"]], $delimeter, $enclosure);
+                fputcsv($fpSequence, ["Kategorie", $fields["FacetValue"]], $delimeter, $enclosure);
             }
             fclose($fp);
             fclose($fpSequence);
