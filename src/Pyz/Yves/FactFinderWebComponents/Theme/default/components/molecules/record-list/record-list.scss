@@ -25,6 +25,12 @@
             img {
                 padding: rem(10);
                 max-height: inherit;
+
+                @include helper-breakpoint-media-min($md-min){
+                    max-height: rem(160);
+                    min-height: rem(160);
+                }
+
             }
         }
 
@@ -76,7 +82,7 @@
             border: rem(1) solid $setting-color-gray-1;
 
             @include helper-breakpoint-media-min($md-min){
-                height: rem(450);
+                height: rem(435);
             }
 
         }
@@ -310,7 +316,7 @@
         }
 
         &__record-product-info {
-            display: grid;
+            display: flex;
             flex-direction: column;
             padding: 0 rem(5);
             flex-grow: 1;
@@ -321,7 +327,7 @@
             }
 
             @include helper-breakpoint-media-min($sm-max) {
-                min-height: rem(91);
+                min-height: rem(115);
             }
 
             @include helper-breakpoint-media-max($l-max){
