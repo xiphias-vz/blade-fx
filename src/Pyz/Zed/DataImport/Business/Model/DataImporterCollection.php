@@ -52,6 +52,7 @@ class DataImporterCollection extends SprykerDataImporterCollection
 
         if ($importType !== $this->getImportType()) {
             static::$importCounters[$importType] = 0;
+
             Propel::disableInstancePooling();
 
             if ($importType == "category") {

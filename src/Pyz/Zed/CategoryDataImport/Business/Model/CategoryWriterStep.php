@@ -7,6 +7,7 @@
 
 namespace Pyz\Zed\CategoryDataImport\Business\Model;
 
+use Orm\Zed\Category\Persistence\Base\SpyCategoryNode;
 use Orm\Zed\Category\Persistence\SpyCategory;
 use Orm\Zed\Category\Persistence\SpyCategoryAttributeQuery;
 use Orm\Zed\Category\Persistence\SpyCategoryNodeQuery;
@@ -23,6 +24,7 @@ use Pyz\Zed\Navigation\Business\Helper\NavigationHelper;
 use Spryker\Zed\Category\Dependency\CategoryEvents;
 use Spryker\Zed\CategoryDataImport\Business\Model\CategoryWriterStep as SprykerCategoryWriterStep;
 use Spryker\Zed\DataImport\Business\Model\DataImportStep\AddLocalesStep;
+use Spryker\Zed\DataImport\Business\Model\DataSet\DataSet;
 use Spryker\Zed\DataImport\Business\Model\DataSet\DataSetInterface;
 use Spryker\Zed\Navigation\Dependency\NavigationEvents;
 use Spryker\Zed\Url\Dependency\UrlEvents;
@@ -83,7 +85,7 @@ class CategoryWriterStep extends SprykerCategoryWriterStep
     public function execute(DataSetInterface $dataSet)
     {
         if ($dataSet[static::KEY_PARENT_CATEGORY_KEY] === static::ROOT && !static::$isRootImported) {
-            $dataSetRootCategory = clone $dataSet;
+            $dataSetRootCategory = new DataSet($dataSet->getArrayCopy());
             $dataSetRootCategory[static::KEY_CATEGORY_KEY] = static::ROOT;
             $dataSetRootCategory[static::KEY_PARENT_CATEGORY_KEY] = null;
             $dataSetRootCategory[static::KEY_NAME] = static::ROOT_NAME;
@@ -227,12 +229,14 @@ class CategoryWriterStep extends SprykerCategoryWriterStep
             ->filterByCategory($categoryEntity)
             ->findOneOrCreate();
 
+        $this->setCategoryNodeId($dataSet, $categoryNodeEntity);
+
         if ($dataSet[static::KEY_CATEGORY_KEY] === static::ROOT) {
             $categoryNodeEntity->setIsRoot(true);
             static::$isRootImported = true;
         }
 
-        $idParentCategoryNode = $this->getParentCategoryId($dataSet, $dataSet['locales'][static::LOCALE_NAME]);
+        $idParentCategoryNode = $this->getCategoryParentNodeId($dataSet);
         if ($idParentCategoryNode) {
             $categoryNodeEntity->setFkParentCategoryNode($idParentCategoryNode);
         }
@@ -346,17 +350,6 @@ class CategoryWriterStep extends SprykerCategoryWriterStep
      * @param \Spryker\Zed\DataImport\Business\Model\DataSet\DataSetInterface $dataSet
      * @param int $idLocale
      *
-     * @return int
-     */
-    protected function getParentCategoryId(DataSetInterface $dataSet, int $idLocale)
-    {
-        return static::$idCategoryBuffer[$dataSet[static::KEY_PARENT_CATEGORY_KEY]][$idLocale]['id'] ?? 0;
-    }
-
-    /**
-     * @param \Spryker\Zed\DataImport\Business\Model\DataSet\DataSetInterface $dataSet
-     * @param int $idLocale
-     *
      * @return string
      */
     protected function getParentCategoryUrl(DataSetInterface $dataSet, int $idLocale)
@@ -373,6 +366,27 @@ class CategoryWriterStep extends SprykerCategoryWriterStep
     protected function getParentNavigationNodeId(DataSetInterface $dataSet, string $navigationMode)
     {
         return static::$idCategoryBuffer[$dataSet[static::KEY_PARENT_CATEGORY_KEY]]['idNavigationNode'][$navigationMode] ?? 0;
+    }
+
+    /**
+     * @param \Spryker\Zed\DataImport\Business\Model\DataSet\DataSetInterface $dataSet
+     *
+     * @return int
+     */
+    protected function getCategoryParentNodeId(DataSetInterface $dataSet): int
+    {
+        return static::$idCategoryBuffer[$dataSet[static::KEY_PARENT_CATEGORY_KEY]]['categoryNodeId'] ?? 0;
+    }
+
+    /**
+     * @param \Spryker\Zed\DataImport\Business\Model\DataSet\DataSetInterface $dataSet
+     * @param \Orm\Zed\Category\Persistence\Base\SpyCategoryNode $categoryNodeEntity
+     *
+     * @return void
+     */
+    protected function setCategoryNodeId(DataSetInterface $dataSet, SpyCategoryNode $categoryNodeEntity)
+    {
+        static::$idCategoryBuffer[$dataSet[static::KEY_CATEGORY_KEY]]['categoryNodeId'] = $categoryNodeEntity->getIdCategoryNode();
     }
 
     /**
