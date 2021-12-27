@@ -50,6 +50,18 @@
                                 {% endverbatim %}
                             {% endset %}
 
+                            {% set addAjaxUrl %}
+                                {% verbatim %}
+                              /de/cart/add-ajax/{{ attributes.IdProductAbstract }}
+                            {% endverbatim %}
+                            {% endset %}
+
+                            {% set IdProductAbstract %}
+                                {% verbatim %}
+                                    {{ attributes.IdProductAbstract }}
+                                {% endverbatim %}
+                            {% endset %}
+
                             <div class="{{ config.name }}__link">
                             {% if item.type == 'productName' %}
                                 <span class="suggestImage">
@@ -108,10 +120,43 @@
                             {% endif %}
                                 </div>
                             </div>
+
+                            <button type="button" class="{{ config.name }}__button-suggest-cart"  onclick="addToCartItemClick('{{ IdProductAbstract | trim }}','{{ addAjaxUrl | trim }}');event.stopPropagation();">
+                                {% include atom('icon') with {
+                                    class: 'link__icon icon--color-orange',
+                                    modifiers: ['big'],
+                                    data: {
+                                        name: 'cart',
+                                    },
+                                } only %}
+                            </button>
+
                         </ff-suggest-item>
                     </div>
                 {% endfor %}
+
+                <form class="add-to-cart-ajax" method="POST" name="submit-suggested-search-products" id="submit-suggested-search-product" style="display: none;"
+                      action="">
+                    <input type="hidden" id="addAjaxUrl" />
+                    <input type="hidden" name="is-cart-button-clicked" id="is-cart-button-clicked" value="n" />
+                    <input type="hidden" name="data-product-id" id="data-product-id" value="" />
+                    <input type="hidden" name="token" id="token" value="{{ csrf_token('add-to-cart-ajax') }}" />
+                </form>
             </section>
         {% endblock %}
     </ff-suggest>
+    <button type="button" id="callTs" class="hidden"></button>
+    <script>
+        function addToCartItemClick(idProductAbstract, addAjaxUrl){
+            let addAjaxUrlEl = document.getElementById("addAjaxUrl");
+            addAjaxUrlEl.value = addAjaxUrl;
+
+            let form = document.getElementById("submit-suggested-search-product");
+            form.action = addAjaxUrl;
+            let product_id = document.getElementById("data-product-id");
+            product_id.value = idProductAbstract;
+
+            document.querySelector("#callTs").click();
+        }
+    </script>
 {% endblock %}

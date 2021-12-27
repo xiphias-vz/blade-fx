@@ -37,6 +37,21 @@
             border-bottom: 1px solid #dedddd !important;
         }
 
+        &__button-suggest-cart {
+            padding-left: rem(15);
+            margin-left: rem(15);
+            background-color: transparent;
+            display: flex;
+            align-items: center;
+            z-index: 10000;
+
+            &:hover {
+                background: $setting-color-gray-2;
+                border-radius: rem(5);
+                cursor: pointer;
+            }
+        }
+
         &__link {
             @include helper-effect-transition(color background);
             text-transform: capitalize;
@@ -54,6 +69,12 @@
                 background: $setting-color-gray-2;
                 cursor: pointer;
             }
+
+            .col {
+                margin-top: auto;
+                margin-bottom: auto;
+            }
+
             .suggestImage{
                 margin-right: rem(20);
                 display: flex;
