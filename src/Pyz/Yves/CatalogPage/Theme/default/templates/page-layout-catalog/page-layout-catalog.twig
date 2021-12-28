@@ -181,6 +181,9 @@
                                                     },
                                                 }
                                             } only %}
+                                        {% include molecule('products-per-page-custom', 'FactFinderWebComponents') with {
+
+                                        } only %}
                                         {% endif %}
                                     </div>
                                 </div>
@@ -242,14 +245,8 @@
                                             },
                                         } only %}
                                     {% else %}
-                                        {% include molecule('products-per-page', 'FactFinderWebComponents') with {
-                                            class: 'hide',
-                                            data: {
-                                                properties: {
-                                                    dropdown: 'show-selected="true"
-                                                            collapse-onblur="true"'
-                                                },
-                                            }
+                                        {% include molecule('products-per-page-custom', 'FactFinderWebComponents') with {
+
                                         } only %}
                                     {% endif %}
                                 </div>

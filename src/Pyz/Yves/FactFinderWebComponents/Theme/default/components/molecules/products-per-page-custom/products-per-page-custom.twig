@@ -1,0 +1,18 @@
+{% extends model('component') %}
+
+{% define config = {
+    name: 'products-per-page-custom'
+} %}
+
+{% define data = {} %}
+
+{% block body %}
+    <div class="dropdown">
+        <div class="dropbtn">48</div>
+        <div class="dropdown-content myDropdown">
+            <span class="pppOption24">24</span>
+            <span class="pppOption48 selected">48</span>
+            <span class="pppOption72">72</span>
+        </div>
+    </div>
+{% endblock %}

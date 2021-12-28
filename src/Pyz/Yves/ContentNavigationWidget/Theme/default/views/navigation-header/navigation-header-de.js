@@ -16,6 +16,7 @@ function isPageWithBreadcrumbs() {
 }
 
 var indexCatalogPageCounter = 0;
+var productsPerPageCounter = 0;
 document.addEventListener("DOMContentLoaded", function (event) {
     let breadCrumbFFElement = document.getElementsByTagName('ff-breadcrumb-trail')[0];
     let breadCrumbUnorderedList = document.querySelectorAll('ul.breadcrumb')[0];
@@ -58,6 +59,71 @@ document.addEventListener("DOMContentLoaded", function (event) {
             }
         });
     }
+
+    let myDropdowns;
+    let dropDownClick = document.querySelectorAll('div.dropbtn');
+    if(dropDownClick !== undefined) {
+        dropDownClick.forEach(ddClick => {
+            ddClick.addEventListener('click', (event) => {
+                event.stopImmediatePropagation();
+                let parentOfDdClick = ddClick.parentElement;
+                myDropdowns = parentOfDdClick.querySelector('div.myDropdown');
+                if(myDropdowns !== undefined && myDropdowns !== null) {
+                    myDropdowns.classList.toggle('show');
+                }
+            });
+        });
+    }
+
+    window.onclick = function(event) {
+        if (!event.target.matches('.dropbtn')) {
+            var dropdowns = document.getElementsByClassName("dropdown-content");
+            var i;
+            for (i = 0; i < dropdowns.length; i++) {
+                var openDropdown = dropdowns[i];
+                if (openDropdown.classList.contains('show')) {
+                    openDropdown.classList.remove('show');
+                }
+            }
+        }
+    }
+
+
+    let selectedOptionText;
+    let firstSelectedOption;
+    let secondSelectedOption;
+    let thirdSelectedOption;
+
+
+    firstSelectedOption = Array.from(document.getElementsByClassName('pppOption24'));
+    firstSelectedOption.forEach(option => {
+        option.addEventListener('click', (event) => {
+            event.stopImmediatePropagation();
+            selectedOptionText = option.innerText;
+            simulateClick(selectedOptionText);
+            switchSelectedOptionInDropDown(option);
+        });
+    });
+
+    secondSelectedOption = Array.from(document.getElementsByClassName('pppOption48'));
+    secondSelectedOption.forEach(option => {
+        option.addEventListener('click', (event) => {
+            event.stopImmediatePropagation();
+            selectedOptionText = option.innerText;
+            simulateClick(selectedOptionText);
+            switchSelectedOptionInDropDown(option);
+        });
+    });
+
+    thirdSelectedOption = Array.from(document.getElementsByClassName('pppOption72'));
+    thirdSelectedOption.forEach(option => {
+        option.addEventListener('click', (event) => {
+            event.stopImmediatePropagation();
+            selectedOptionText = option.innerText;
+            simulateClick(selectedOptionText);
+            switchSelectedOptionInDropDown(option);
+        });
+    });
 });
 
 
@@ -90,50 +156,63 @@ document.addEventListener("ffReady", function (event) {
                         query: "*"
                     });
                 } else {
-                        if(window.history.state) {
-                            url = window.history.state.searchResult.searchParams;
-                            if(getParameterByName("filter", url).length > 0) {
+                    if(window.history.state) {
+                        url = window.history.state.searchResult.searchParams;
+                        if(getParameterByName("filter", url).length > 0) {
+                            eventAggregator.addFFEvent({
+                                type: "navigation-search",
+                                filter : getParameterByName("filter", url),
+                                query: getParameterByName("query", url)
+                            });
+                        } else {
+                            eventAggregator.addFFEvent({
+                                type: "search",
+                                query: getParameterByName("query", url)
+                            });
+                        }
+                    } else {
+                        if(ffCategoryFilter.startsWith("Q:")) {
+                            if(ffCategoryFilter.includes("|F:")){
                                 eventAggregator.addFFEvent({
-                                    type: "navigation-search",
-                                    filter : getParameterByName("filter", url),
-                                    query: getParameterByName("query", url)
+                                    type: "search",
+                                    filter: ffCategoryFilter.split("|F:")[1],
+                                    query: ffCategoryFilter.split("|F:")[0].slice(2)
                                 });
+
                             } else {
                                 eventAggregator.addFFEvent({
                                     type: "search",
-                                    query: getParameterByName("query", url)
+                                    query: ffCategoryFilter.slice(2)
                                 });
                             }
                         } else {
-                            if(ffCategoryFilter.startsWith("Q:")) {
-                                if(ffCategoryFilter.includes("|F:")){
-                                    eventAggregator.addFFEvent({
-                                        type: "search",
-                                        filter: ffCategoryFilter.split("|F:")[1],
-                                        query: ffCategoryFilter.split("|F:")[0].slice(2)
-                                    });
-
-                                } else {
-                                    eventAggregator.addFFEvent({
-                                        type: "search",
-                                        query: ffCategoryFilter.slice(2)
-                                    });
-                                }
-                            } else {
-                                eventAggregator.addFFEvent({
-                                    type: "navigation-search",
-                                    filter: ffCategoryFilter,
-                                    query: "*"
-                                });
-                            }
+                            eventAggregator.addFFEvent({
+                                type: "navigation-search",
+                                filter: ffCategoryFilter,
+                                query: "*"
+                            });
                         }
+                    }
                 }
             } else {
                 if(event.type === "navigation-search" && indexCatalogPageCounter > 10) {
                     event.cancel();
+                } else if (event.type === 'ppp') {
+                    event.hitsPerPage = event.value;
                 }
             }
         }
+    });
+
+    resultDispatcher.addCallback('ppp', function (pppData) {
+        const number = 48;
+        pppData.forEach(pppItem => {
+           if (pppItem['value'] < number) {
+               if (pppItem['value'] * 2 !== number) {
+                   pppItem['value'] = pppItem['value'] * 2;
+               }
+           }
+        });
     });
 
     resultDispatcher.addCallback("asn", function (asnData) {
@@ -141,15 +220,17 @@ document.addEventListener("ffReady", function (event) {
         var title = "";
         var el = document.getElementById("searchResultCount");
         if (el) {
-            if(asnData[0].selectedElements.length > 0) {
-                var data = asnData[0].selectedElements[asnData[0].selectedElements.length - 1];
-                sum = data.recordCount;
-                title = data.name;
-            } else {
-                for(i=0; i < asnData[0].elements.length; i++) {
-                    sum = sum + asnData[0].elements[i].recordCount;
+            if(asnData[0] !== undefined) {
+                if(asnData[0].selectedElements.length > 0) {
+                    var data = asnData[0].selectedElements[asnData[0].selectedElements.length - 1];
+                    sum = data.recordCount;
+                    title = data.name;
+                } else {
+                    for(i=0; i < asnData[0].elements.length; i++) {
+                        sum = sum + asnData[0].elements[i].recordCount;
+                    }
+                    title = el.getAttribute('data-title') + ' ' + asnData[0].elements[0].__ngSearchParams.query;
                 }
-                title = el.getAttribute('data-title') + ' ' + asnData[0].elements[0].__ngSearchParams.query;
             }
             searchResultText = el.getAttribute('data-text');
             searchResultText = searchResultText.replace('%numFound%', sum);
@@ -290,4 +371,40 @@ function defaultBreadCrumb(newBreadCrumbWrapper, breadCrumbChildClone) {
 
 function refreshBreadCrumbSteps(newBreadCrumbWrapper, newBreadCrumbItem) {
     newBreadCrumbWrapper.replaceChildren(newBreadCrumbItem);
+}
+
+
+function simulateClick(text) {
+    const ffDropdown = document.querySelectorAll('ff-products-per-page-dropdown')[0];
+    const dropDownDiv = ffDropdown.querySelector('div.ffw-ppp-dropdown-container');
+    const pppItems = dropDownDiv.querySelectorAll('ff-products-per-page-item');
+
+    pppItems.forEach(item => {
+        let innerDiv = item.querySelector('div');
+        if (text === innerDiv.innerText.trim()) {
+            item.click();
+        }
+    });
+}
+
+function switchSelectedOptionInDropDown(element) {
+    let allDivs = document.querySelectorAll('div.products-per-page-custom');
+    allDivs.forEach(dropDownDiv => {
+        let allSpans = dropDownDiv.querySelectorAll('div.myDropdown > span');
+        if (allSpans !== undefined) {
+            allSpans.forEach(span => {
+                span.classList.remove('selected');
+            });
+            allSpans.forEach(span => {
+                if (span.innerText === element.innerText) {
+                    span.classList.add('selected');
+                }
+            });
+        }
+
+        let buttonDiv = dropDownDiv.querySelector('div.dropbtn');
+        if (buttonDiv !== undefined) {
+            buttonDiv.innerText = element.innerText;
+        }
+    });
 }

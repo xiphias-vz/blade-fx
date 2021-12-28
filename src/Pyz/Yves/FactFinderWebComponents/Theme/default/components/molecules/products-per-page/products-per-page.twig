@@ -1,8 +1,7 @@
 {% extends model('component') %}
 
 {% define config = {
-    name: 'products-per-page',
-    tag: 'products-per-page'
+    name: 'products-per-page'
 } %}
 
 {% define data = {
@@ -13,9 +12,8 @@
 } %}
 
 {% block body %}
-
-    <ff-products-per-page-dropdown id="dropdown" {{ data.properties.dropdown|raw }} unresolved>
-        <ff-products-per-page-item {{ data.properties.item|raw }} unresolved>
+    <ff-products-per-page-dropdown class="dropdown" {{ data.properties.dropdown|raw }}>
+        <ff-products-per-page-item {{ data.properties.item|raw }}>
             <div>
                 {% verbatim %}
                     {{ value }}
@@ -23,5 +21,4 @@
             </div>
         </ff-products-per-page-item>
     </ff-products-per-page-dropdown>
-
 {% endblock %}
