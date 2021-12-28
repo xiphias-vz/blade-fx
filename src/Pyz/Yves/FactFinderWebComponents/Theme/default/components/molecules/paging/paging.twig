@@ -56,5 +56,21 @@
 
         {% endverbatim %}
     </ff-paging>
+
+    <script>
+        let pagingItem = document.querySelectorAll("ff-paging-item");
+        pagingItem.forEach((item) => {
+                item.addEventListener("click", () => {
+                    if(item.classList.contains("ffw-selected") === false) {
+                        window.scroll({
+                            top: 250,
+                            left: 0,
+                            behavior: 'smooth'
+                        });
+                    }
+                });
+        });
+    </script>
+
 {% endblock %}
 
