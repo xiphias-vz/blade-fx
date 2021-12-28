@@ -364,7 +364,8 @@ function breadCrumbSteps(steps, newBreadCrumbWrapper, newBreadCrumbItem) {
 }
 
 function defaultBreadCrumb(newBreadCrumbWrapper, breadCrumbChildClone) {
-    breadCrumbChildClone.children[0].textContent = " Alle produkte";
+    var navigationAlleProdukte = document.getElementById('alleProdukteID').value;
+    breadCrumbChildClone.children[0].textContent = navigationAlleProdukte;
     breadCrumbChildClone.children[0].href = "/de/search";
     newBreadCrumbWrapper.appendChild(breadCrumbChildClone);
 }
