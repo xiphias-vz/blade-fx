@@ -235,8 +235,19 @@ document.addEventListener("ffReady", function (event) {
             searchResultText = el.getAttribute('data-text');
             searchResultText = searchResultText.replace('%numFound%', sum);
             el.innerText = searchResultText;
+
+            var changeTitleToAngebote = document.getElementById('idGlossaryAngebote').innerText;
+
+            let currentUrl = location.pathname;
+            if(currentUrl.includes('/de/outlet')) {
+                title = changeTitleToAngebote;
+            }
+
             document.getElementById("searchResultCountTitle").innerText = title;
             document.title = title;
+
+
+
             indexCatalogPageCounter = indexCatalogPageCounter * 10;
         }
     });
@@ -409,3 +420,5 @@ function switchSelectedOptionInDropDown(element) {
         }
     });
 }
+
+
