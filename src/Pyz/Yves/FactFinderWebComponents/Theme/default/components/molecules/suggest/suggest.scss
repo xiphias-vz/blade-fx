@@ -1,9 +1,14 @@
 @mixin suggest($name: '.suggest') {
     #{$name} {
+
+        .transitionDisplay{
+            display: block!important;
+            background: transparent;
+        }
+
         .ffw-suggestContainerWrapper {
             padding-top: rem(14);
             min-width: auto;
-            background-color: white;
             width: inherit;
         }
 

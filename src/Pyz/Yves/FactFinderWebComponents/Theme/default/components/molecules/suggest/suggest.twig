@@ -18,7 +18,7 @@
 } %}
 
 {% block body %}
-    <ff-suggest layout="block" class="input--expand" ~ {{ data.properties.component|raw }}>
+    <ff-suggest layout="block" class="input--expand transitionDisplay" ~ {{ data.properties.component|raw }}>
         {% block searchContainer %}
             <section id="searchContainer" class="searchTermContainer {{ config.name }}__search-container">
                 {% for item in data.properties.searchItems %}
@@ -157,6 +157,27 @@
             product_id.value = idProductAbstract;
 
             document.querySelector("#callTs").click();
-        }
+         }
+
+        document.getElementsByClassName("suggest-search__input")[0].addEventListener("click", () => {
+            if(document.getElementsByClassName("suggest-search__input")[0].value.length > 0){
+                document.getElementsByTagName("ff-suggest")[0].classList.add("transitionDisplay");
+            }
+        })
+
+        document.getElementsByClassName("suggest-search__input")[0].addEventListener("input", () => {
+            if(document.getElementsByClassName("suggest-search__input")[0].value.length > 0){
+                document.getElementsByTagName("ff-suggest")[0].classList.add("transitionDisplay");
+            }else if(document.getElementsByClassName("suggest-search__input")[0].value.length === 0){
+                document.getElementsByTagName("ff-suggest")[0].classList.remove("transitionDisplay");
+            }
+        })
+        document.addEventListener("scroll", () => {
+                document.getElementsByTagName("ff-suggest")[0].classList.remove("transitionDisplay");
+        })
+
+        document.getElementsByClassName("searchbox__clear")[0].addEventListener("click", () => {
+            document.getElementsByTagName("ff-suggest")[0].classList.remove("transitionDisplay");
+        })
     </script>
 {% endblock %}
