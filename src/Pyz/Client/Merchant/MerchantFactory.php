@@ -7,6 +7,8 @@
 
 namespace Pyz\Client\Merchant;
 
+use Pyz\Client\Merchant\Reader\Context\MerchantContextReader;
+use Pyz\Client\Merchant\Reader\Context\MerchantContextReaderInterface;
 use Pyz\Client\Merchant\Reader\MerchantReader;
 use Pyz\Client\Merchant\Reader\MerchantReaderInterface;
 use Pyz\Client\MerchantStorage\MerchantStorageClient;
@@ -32,9 +34,21 @@ class MerchantFactory extends AbstractFactory
     public function createMerchantReader(): MerchantReaderInterface
     {
         return new MerchantReader(
+            $this->getMerchantStorageClient(),
+            $this->createMerchantContextReader(),
             $this->getMerchantSearchClient(),
             $this->getQuoteClient(),
             $this->createMerchantStorageDataExpander()
+        );
+    }
+
+    /**
+     * @return \Pyz\Client\Merchant\Reader\Context\MerchantContextReaderInterface
+     */
+    public function createMerchantContextReader(): MerchantContextReaderInterface
+    {
+        return new MerchantContextReader(
+            $this->getContainer()
         );
     }
 

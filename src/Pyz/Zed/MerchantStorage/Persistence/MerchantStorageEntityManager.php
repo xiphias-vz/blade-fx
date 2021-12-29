@@ -22,6 +22,7 @@ class MerchantStorageEntityManager extends AbstractEntityManager implements Merc
     protected const MERCHANT_IS_PASSWORD_PROTECTED = 'isPasswordProtected';
     protected const MERCHANT_PASSWORD = 'shop_password';
     protected const FILIAL_NUMBER = 'fillialNumber';
+    protected const IS_TRANSPORT_BOX_ENABLED = 'is_transportbox_enabled';
 
     /**
      * @param \Generated\Shared\Transfer\MerchantCollectionTransfer $merchantCollectionTransfer
@@ -71,6 +72,7 @@ class MerchantStorageEntityManager extends AbstractEntityManager implements Merc
             $storageData[$store->getMerchantShortName()][static::MERCHANT_PASSWORD] = $store->getShopPassword();
             $storageData[$store->getMerchantShortName()][static::FILIAL_NUMBER] = $store->getMerchantReference();
             $storageData[$store->getMerchantShortName()][static::ID_MERCHANT] = $store->getIdMerchant();
+            $storageData[$store->getMerchantShortName()][static::IS_TRANSPORT_BOX_ENABLED] = $store->getIsTransportboxEnabled();
         }
 
         $merchantsListStorageMapper
@@ -94,6 +96,7 @@ class MerchantStorageEntityManager extends AbstractEntityManager implements Merc
             $storageData[$store->getMerchantShortName()][static::MERCHANT_PASSWORD] = $store->getShopPassword();
             $storageData[$store->getMerchantShortName()][static::FILIAL_NUMBER] = $store->getMerchantReference();
             $storageData[$store->getMerchantShortName()][static::ID_MERCHANT] = $store->getIdMerchant();
+            $storageData[$store->getMerchantShortName()][static::IS_TRANSPORT_BOX_ENABLED] = $store->getIsTransportboxEnabled();
         }
 
           return $storageData;
