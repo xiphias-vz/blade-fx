@@ -235,8 +235,7 @@ document.addEventListener("ffReady", function (event) {
             searchResultText = el.getAttribute('data-text');
             searchResultText = searchResultText.replace('%numFound%', sum);
             el.innerText = searchResultText;
-
-            var changeTitleToAngebote = document.getElementById('idGlossaryAngebote').innerText;
+            var changeTitleToAngebote = document.getElementById('idGlossaryAngebote').value;
 
             let currentUrl = location.pathname;
             if(currentUrl.includes('/de/outlet')) {
