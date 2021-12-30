@@ -1,18 +1,17 @@
 @mixin navigation-header-mobile-de($name: '.navigation-header-mobile-de') {
     #{$name} {
-        button{
-            background-color: transparent;
-            font-family: "Clearface-Medium", Arial, sans-serif;
-        }
 
         #ffMobileNavigationDe{
             background-color: transparent;
             text-align: left;
             margin-top: rem(20);
 
+            .navigationMenuArrowDown {
+                width: rem(30);
+            }
+
             ff-navigation-item[cluster-level="0"]{
                 .ffw-item-caption{
-                    padding: rem(20) 0 rem(20) rem(80);
                     color: $setting-color-gray-6;
                     font-family: $setting-font-family-additional;
                     font-weight: 500;
@@ -24,11 +23,19 @@
                         display: flex;
                         justify-content: space-between;
                         margin-right: rem(30);
+                        align-items: center;
                     }
                 }
             }
 
             ff-navigation-item[cluster-level="1"]{
+                margin: rem(15) 0 rem(15) rem(10);
+                padding-top: 0;
+                padding-bottom: 0;
+
+                .ffw-item-container{
+                    margin-top: rem(10);
+                }
                 .ffw-item-caption{
                     max-width: 94%;
                     margin-left: rem(20);
@@ -36,6 +43,10 @@
                     color: $setting-color-gray-6;
                     background-color: $setting-color-white;
                     border-bottom: none;
+
+                    .navigation-multilevel-node__link-inner--lvl-1{
+                        padding: 0;
+                    }
                 }
             }
             ff-navigation-item[cluster-level="2"]{
