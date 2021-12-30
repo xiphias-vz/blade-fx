@@ -158,13 +158,11 @@
 
             document.querySelector("#callTs").click();
          }
-
         document.getElementsByClassName("suggest-search__input")[0].addEventListener("click", () => {
             if(document.getElementsByClassName("suggest-search__input")[0].value.length > 0){
                 document.getElementsByTagName("ff-suggest")[0].classList.add("transitionDisplay");
             }
         })
-
         document.getElementsByClassName("suggest-search__input")[0].addEventListener("input", () => {
             if(document.getElementsByClassName("suggest-search__input")[0].value.length > 0){
                 document.getElementsByTagName("ff-suggest")[0].classList.add("transitionDisplay");
@@ -172,12 +170,14 @@
                 document.getElementsByTagName("ff-suggest")[0].classList.remove("transitionDisplay");
             }
         })
-        document.addEventListener("scroll", () => {
-                document.getElementsByTagName("ff-suggest")[0].classList.remove("transitionDisplay");
-        })
-
         document.getElementsByClassName("searchbox__clear")[0].addEventListener("click", () => {
             document.getElementsByTagName("ff-suggest")[0].classList.remove("transitionDisplay");
+        })
+        document.getElementsByTagName("suggest-ff")[0].addEventListener("mouseleave", () => {
+            document.getElementsByTagName("ff-suggest")[0].classList.remove("transitionDisplay");
+        })
+        document.getElementsByTagName("suggest-ff")[0].addEventListener("mouseenter", () => {
+            document.getElementsByTagName("ff-suggest")[0].classList.add("transitionDisplay");
         })
     </script>
 {% endblock %}
