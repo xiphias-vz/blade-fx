@@ -242,8 +242,6 @@ class DetailController extends SprykerDetailController
             $container["zoneName"] = $pickingZonesForContainers[$idZone];
         }
 
-        $isTransportboxEnabled = $merchantTransfer->getIsTransportboxEnabled();
-
         return array_merge([
             'eventsGroupedByItem' => $eventsGroupedByItem,
             'events' => $events,
@@ -275,7 +273,7 @@ class DetailController extends SprykerDetailController
             'containers' => $containers,
             'timeSlotsData' => $timeSlotsData,
             'cellPhone' => $cellPhone,
-            'isTransportboxEnabled' => $isTransportboxEnabled,
+            'isTransportBoxEnabled' => $merchantTransfer->getIsTransportboxEnabled(),
         ], $blockResponseData);
     }
 

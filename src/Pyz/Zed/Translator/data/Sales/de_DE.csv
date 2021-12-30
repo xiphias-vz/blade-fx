@@ -54,8 +54,9 @@ Customer Comment, Kundenkommentar
 Phone Number, Telefon
 Cell phone number, Mobile
 order.overview.replacement.article.title, Ersatzartikel
-order.overview.replacement.article.yes, Ja
-order.overview.replacement.article.no, Nein
+order.overview.yes, Ja
+order.overview.no, Nein
+order.overview.transportbox.article,Pfandboxen
 order.overview.select.zone,Zone auswählen
 Location,Standort
 Date From,Datum von
