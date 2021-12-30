@@ -158,11 +158,13 @@
 
             document.querySelector("#callTs").click();
          }
+
         document.getElementsByClassName("suggest-search__input")[0].addEventListener("click", () => {
             if(document.getElementsByClassName("suggest-search__input")[0].value.length > 0){
                 document.getElementsByTagName("ff-suggest")[0].classList.add("transitionDisplay");
             }
         })
+
         document.getElementsByClassName("suggest-search__input")[0].addEventListener("input", () => {
             if(document.getElementsByClassName("suggest-search__input")[0].value.length > 0){
                 document.getElementsByTagName("ff-suggest")[0].classList.add("transitionDisplay");
@@ -178,6 +180,9 @@
         })
         document.getElementsByTagName("suggest-ff")[0].addEventListener("mouseenter", () => {
             document.getElementsByTagName("ff-suggest")[0].classList.add("transitionDisplay");
+        })
+        document.getElementsByClassName("search-form")[0].addEventListener("mouseleave", () => {
+            document.getElementsByTagName("ff-suggest")[0].classList.remove("transitionDisplay");
         })
     </script>
 {% endblock %}
