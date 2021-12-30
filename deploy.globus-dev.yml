@@ -1,0 +1,399 @@
+version: "0.1"
+
+x-real-ip: &real-ip
+    real-ip:
+        from:
+            - 10.0.0.0/8 # AWS VPC network
+            - 103.21.244.0/22 # Cloudflare
+            - 103.22.200.0/22 # Cloudflare
+            - 103.31.4.0/22 # Cloudflare
+            - 104.16.0.0/12 # Cloudflare
+            - 108.162.192.0/18 # Cloudflare
+            - 131.0.72.0/22 # Cloudflare
+            - 141.101.64.0/18 # Cloudflare
+            - 162.158.0.0/15 # Cloudflare
+            - 172.64.0.0/13 # Cloudflare
+            - 173.245.48.0/20 # Cloudflare
+            - 188.114.96.0/20 # Cloudflare
+            - 190.93.240.0/20 # Cloudflare
+            - 197.234.240.0/22 # Cloudflare
+            - 198.41.128.0/17 # Cloudflare
+            - 2400:cb00::/32 # Cloudflare
+            - 2606:4700::/32 # Cloudflare
+            - 2803:f800::/32 # Cloudflare
+            - 2405:b500::/32 # Cloudflare
+            - 2405:8100::/32 # Cloudflare
+            - 2c0f:f248::/32 # Cloudflare
+            - 2a06:98c0::/29 # Cloudflare
+            - 83.246.65.0/24 # Globus VPN
+            - 217.64.175.0/24 # Globus VPN
+            - 94.100.128.0/20 # Globus VPN
+            - 185.140.204.0/22 # Globus VPN
+            - 173.45.18.0/24 # Globus VPN
+            - 62.159.118.222/32 # Globus VPN
+            - 94.100.132.14/32 # Globus VPN
+
+x-frontend-auth: &frontend-auth
+    <<: *real-ip
+    auth:
+        engine: basic
+        users:
+            - username: globus
+              password: glo123SPRY!
+        exclude:
+            - '${ALLOWED_IP}' # AWS gateway
+            - 94.100.132.14/32
+            - 83.246.65.0/24
+            - 217.64.175.0/24
+            - 94.100.128.0/20
+            - 185.140.204.0/22
+            - 173.45.18.0/24
+            - 62.159.118.222/32
+            - '83.246.65.0/24'
+            - '217.64.175.0/24'
+            - '94.100.128.0/20'
+            - '185.140.204.0/22'
+            - '173.45.18.0/24'
+            - '62.159.118.222/32'
+            - '94.100.132.14/32'
+
+namespace: spryker-cloud
+tag: '1.0'
+
+environment: docker_pre_prod
+image:
+    tag: spryker/php:7.3-alpine3.12
+    environment:
+        SPRYKER_CODE_BUCKET: DE
+    php:
+        enabled-extensions:
+            - newrelic
+            - blackfire
+        ini:
+            "memory_limit": 2048m
+composer:
+    mode: --no-dev
+    autoload: --classmap-authoritative
+
+assets:
+    image: fholzer/nginx-brotli:v1.18.0
+    mode: production
+    compression:
+        brotli:
+            static: only
+        gzip:
+            level: 5
+
+regions:
+    DE:
+        services:
+            database:
+                database: globus_pre_prod
+                username: spryker
+                password: secret
+
+        stores:
+            EIN:
+                services:
+                    broker:
+                        namespace: ein_queue
+                    key_value_store:
+                        namespace: 1
+                    search:
+                        namespace: ein_search
+                    session:
+                        namespace: 2
+            KMD:
+                services:
+                    broker:
+                        namespace: kmd_queue
+                    key_value_store:
+                        namespace: 3
+                    search:
+                        namespace: kmd_search
+                    session:
+                        namespace: 4
+            LPZ:
+                services:
+                    broker:
+                        namespace: lpz_queue
+                    key_value_store:
+                        namespace: 5
+                    search:
+                        namespace: lpz_search
+                    session:
+                        namespace: 6
+            HAD:
+                services:
+                    broker:
+                        namespace: had_queue
+                    key_value_store:
+                        namespace: 7
+                    search:
+                        namespace: had_search
+                    session:
+                        namespace: 8
+            ISS:
+                services:
+                    broker:
+                        namespace: iss_queue
+                    key_value_store:
+                        namespace: 9
+                    search:
+                        namespace: iss_search
+                    session:
+                        namespace: 10
+            RUE:
+                services:
+                    broker:
+                        namespace: rue_queue
+                    key_value_store:
+                        namespace: 11
+                    search:
+                        namespace: rue_search
+                    session:
+                        namespace: 12
+            WIE:
+                services:
+                    broker:
+                        namespace: wie_queue
+                    key_value_store:
+                        namespace: 13
+                    search:
+                        namespace: wie_search
+                    session:
+                        namespace: 14
+            WND:
+                services:
+                    broker:
+                        namespace: wnd_queue
+                    key_value_store:
+                        namespace: 15
+                    search:
+                        namespace: wnd_search
+                    session:
+                        namespace: 16
+
+            KRE:
+                services:
+                    broker:
+                        namespace: kre_queue
+                    key_value_store:
+                        namespace: 17
+                    search:
+                        namespace: kre_search
+                    session:
+                        namespace: 18
+            GEN:
+                services:
+                    broker:
+                        namespace: gen_queue
+                    key_value_store:
+                        namespace: 19
+                    search:
+                        namespace: gen_search
+                    session:
+                        namespace: 20
+            ESS:
+                services:
+                    broker:
+                        namespace: ess_queue
+                    key_value_store:
+                        namespace: 21
+                    search:
+                        namespace: ess_search
+                    session:
+                        namespace: 22
+            GUE:
+                services:
+                    broker:
+                        namespace: gue_queue
+                    key_value_store:
+                        namespace: 23
+                    search:
+                        namespace: gue_search
+                    session:
+                        namespace: 24
+            BSG:
+                services:
+                    broker:
+                        namespace: bsg_queue
+                    key_value_store:
+                        namespace: 25
+                    search:
+                        namespace: bsg_search
+                    session:
+                        namespace: 26
+            ESB:
+                services:
+                    broker:
+                        namespace: esb_queue
+                    key_value_store:
+                        namespace: 27
+                    search:
+                        namespace: esb_search
+                    session:
+                        namespace: 28
+            WLZ:
+                services:
+                    broker:
+                        namespace: wlz_queue
+                    key_value_store:
+                        namespace: 29
+                    search:
+                        namespace: wlz_search
+                    session:
+                        namespace: 30
+
+groups:
+    DE-1:
+        region: DE
+        applications:
+            Welcome:
+                application: static
+                endpoints:
+                    welcome.shop-d.globus.de:
+                        entry-point: Welcome
+            Yves:
+                application: yves
+                endpoints:
+                    shop-d.globus.de:
+                        store: EIN
+            Glue:
+                application: glue
+                endpoints:
+                    api.shop-d.globus.de:
+                        store: EIN
+            Zed:
+                application: zed
+                endpoints:
+                    backoffice.shop-d.globus.de:
+                        store: EIN
+                        <<: *frontend-auth
+
+                    zed.ein.shop-d.globus.de:
+                        store: EIN
+                        <<: *frontend-auth
+                        primal: true
+                    zed.kmd.shop-d.globus.de:
+                        store: KMD
+                        <<: *frontend-auth
+                        primal: true
+                    zed.lpz.shop-d.globus.de:
+                        store: LPZ
+                        <<: *frontend-auth
+                        primal: true
+                    zed.iss.shop-d.globus.de:
+                        store: ISS
+                        <<: *frontend-auth
+                        primal: true
+                    zed.had.shop-d.globus.de:
+                        store: HAD
+                        <<: *frontend-auth
+                        primal: true
+                    zed.rue.shop-d.globus.de:
+                        store: RUE
+                        <<: *frontend-auth
+                        primal: true
+                    zed.wie.shop-d.globus.de:
+                        store: WIE
+                        <<: *frontend-auth
+                        primal: true
+                    zed.wnd.shop-d.globus.de:
+                        store: WND
+                        <<: *frontend-auth
+                        primal: true
+                    zed.kre.shop-d.globus.de:
+                        store: KRE
+                        <<: *frontend-auth
+                        primal: true
+                    zed.gen.shop-d.globus.de:
+                        store: GEN
+                        <<: *frontend-auth
+                        primal: true
+                    zed.ess.shop-d.globus.de:
+                        store: ESS
+                        <<: *frontend-auth
+                        primal: true
+                    zed.gue.shop-d.globus.de:
+                        store: GUE
+                        <<: *frontend-auth
+                        primal: true
+                    zed.bsg.shop-d.globus.de:
+                        store: BSG
+                        <<: *frontend-auth
+                        primal: true
+                    zed.esb.shop-d.globus.de:
+                        store: ESB
+                        <<: *frontend-auth
+                        primal: true
+                    zed.wlz.shop-d.globus.de:
+                        store: WLZ
+                        <<: *frontend-auth
+                        primal: true
+                    pick.shop-d.globus.de:
+                        store: EIN
+                        entry-point: StoreApp
+                        <<: *frontend-auth
+
+services:
+    database:
+        engine: mysql
+        version: mariadb-10.4
+        root:
+            username: "root"
+            password: "secret"
+        endpoints:
+            localhost:3306:
+                protocol: tcp
+    broker:
+        engine: rabbitmq
+        api:
+            username: "spryker"
+            password: "secret"
+        endpoints:
+            queue.shop-d.globus.de:
+            localhost:5672:
+                protocol: tcp
+    session:
+        engine: redis
+    key_value_store:
+        engine: redis
+        endpoints:
+            localhost:16379:
+                protocol: tcp
+    search:
+        engine: elastic
+        version: 6.8
+        endpoints:
+            localhost:9200:
+                protocol: tcp
+    scheduler:
+        engine: jenkins
+        endpoints:
+            scheduler.shop-d.globus.de:
+    mail_catcher:
+        engine: mailhog
+        endpoints:
+            mail.shop-d.globus.de:
+
+docker:
+
+    ssl:
+        enabled: true
+
+    testing:
+        store: EIN
+
+    debug:
+        enabled: false
+        xdebug:
+            enabled: false
+
+    mount:
+        baked:
+
+        docker-sync:
+            platforms:
+                - macos
+                - windows

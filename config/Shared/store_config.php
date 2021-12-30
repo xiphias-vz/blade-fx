@@ -14,6 +14,8 @@ if ($applicationEnv === 'docker_prod' || $applicationEnv === 'docker_prod_CZ') {
     $environment = 'stage';
 } elseif ($applicationEnv === 'docker_dev_CZ') {
     $environment = 'stage';
+} elseif($applicationEnv === 'docker_pre_prod'){
+    $environment = 'dev';
 } else {
     $environment = 'local';
 }
@@ -91,6 +93,7 @@ if ($codeBucket == 'CZ') {
     [
       'local' => 'https://www.welcome.shop.globus.local/',
       'stage' => 'https://welcome.shop-t.globus.de/',
+      'dev' => 'https://welcome.shop-d.globus.de/',
       'prod' => 'https://welcome.shop.globus.de/',
     ];
 
@@ -98,76 +101,91 @@ if ($codeBucket == 'CZ') {
     'EIN' => [
         'local' => 'zed.ein.shop.globus.local',
         'stage' => 'zed.ein.shop-t.globus.de',
+        'dev' => 'zed.ein.shop-d.globus.de',
         'prod' => 'zed.ein.shop.globus.de',
     ],
     'KMD' => [
         'local' => 'zed.kmd.shop.globus.local',
         'stage' => 'zed.kmd.shop-t.globus.de',
+        'dev' => 'zed.kmd.shop-d.globus.de',
         'prod' => 'zed.kmd.shop.globus.de',
     ],
     'LPZ' => [
         'local' => 'zed.lpz.shop.globus.local',
         'stage' => 'zed.lpz.shop-t.globus.de',
+        'dev' => 'zed.lpz.shop-d.globus.de',
         'prod' => 'zed.lpz.shop.globus.de',
     ],
     'HAD' => [
         'local' => 'zed.had.shop.globus.local',
         'stage' => 'zed.had.shop-t.globus.de',
+        'dev' => 'zed.had.shop-d.globus.de',
         'prod' => 'zed.had.shop.globus.de',
     ],
     'ISS' => [
         'local' => 'zed.iss.shop.globus.local',
         'stage' => 'zed.iss.shop-t.globus.de',
+        'dev' => 'zed.iss.shop-d.globus.de',
         'prod' => 'zed.iss.shop.globus.de',
     ],
     'RUE' => [
         'local' => 'zed.rue.shop.globus.local',
         'stage' => 'zed.rue.shop-t.globus.de',
+        'dev' => 'zed.rue.shop-d.globus.de',
         'prod' => 'zed.rue.shop.globus.de',
     ],
     'WIE' => [
         'local' => 'zed.wie.shop.globus.local',
         'stage' => 'zed.wie.shop-t.globus.de',
+        'dev' => 'zed.wie.shop-d.globus.de',
         'prod' => 'zed.wie.shop.globus.de',
     ],
     'WND' => [
         'local' => 'zed.wnd.shop.globus.local',
         'stage' => 'zed.wnd.shop-t.globus.de',
+        'dev' => 'zed.wnd.shop-d.globus.de',
         'prod' => 'zed.wnd.shop.globus.de',
     ],
     'KRE' => [
         'local' => 'zed.kre.shop.globus.local',
         'stage' => 'zed.kre.shop-t.globus.de',
+        'dev' => 'zed.kre.shop-d.globus.de',
         'prod' => 'zed.kre.shop.globus.de',
     ],
     'GEN' => [
         'local' => 'zed.gen.shop.globus.local',
         'stage' => 'zed.gen.shop-t.globus.de',
+        'dev' => 'zed.gen.shop-d.globus.de',
         'prod' => 'zed.gen.shop.globus.de',
     ],
     'ESS' => [
         'local' => 'zed.ess.shop.globus.local',
         'stage' => 'zed.ess.shop-t.globus.de',
+        'dev' => 'zed.ess.shop-d.globus.de',
         'prod' => 'zed.ess.shop.globus.de',
     ],
     'GUE' => [
         'local' => 'zed.gue.shop.globus.local',
         'stage' => 'zed.gue.shop-t.globus.de',
+        'dev' => 'zed.gue.shop-d.globus.de',
         'prod' => 'zed.gue.shop.globus.de',
     ],
     'BSG' => [
         'local' => 'zed.bsg.shop.globus.local',
         'stage' => 'zed.bsg.shop-t.globus.de',
+        'dev' => 'zed.bsg.shop-d.globus.de',
         'prod' => 'zed.bsg.shop.globus.de',
     ],
     'ESB' => [
         'local' => 'zed.esb.shop.globus.local',
         'stage' => 'zed.esb.shop-t.globus.de',
+        'dev' => 'zed.esb.shop-d.globus.de',
         'prod' => 'zed.esb.shop.globus.de',
     ],
     'WLZ' => [
         'local' => 'zed.wlz.shop.globus.local',
         'stage' => 'zed.wlz.shop-t.globus.de',
+        'dev' => 'zed.wlz.shop-d.globus.de',
         'prod' => 'zed.wlz.shop.globus.de',
     ],
     ];
