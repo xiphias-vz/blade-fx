@@ -15,10 +15,10 @@ use Pyz\Zed\CustomerConfirmationPage\Communication\Plugin\Mail\CustomerRestorePa
 use Pyz\Zed\CustomerConfirmationPage\Communication\Plugin\Mail\OrderCancelledMailTypePlugin;
 use Pyz\Zed\CustomerConfirmationPage\Communication\Plugin\Mail\OrderRefundedMailTypePlugin;
 use Pyz\Zed\CustomerConfirmationPage\Communication\Plugin\Mail\RegistrationMailTypePlugin;
+use Pyz\Zed\Mail\Business\Model\Provider\MailProviderCollection;
 use Pyz\Zed\Mail\Communication\Plugin\MailFromCmsBlockProviderPlugin;
 use Pyz\Zed\Mail\Dependency\Mailer\MailToMailerBridge;
 use Pyz\Zed\Oms\Communication\Plugin\Mail\OrderConfirmationMailTypePlugin;
-use Pyz\Zed\ZeroPricesReportMail\Communication\Plugin\Mail\ZeroPricesReportMailTypePlugin;
 use Spryker\Zed\AuthMailConnector\Communication\Plugin\Mail\RestorePasswordMailTypePlugin;
 use Spryker\Zed\AvailabilityNotification\Communication\Plugin\Mail\AvailabilityNotificationMailTypePlugin;
 use Spryker\Zed\AvailabilityNotification\Communication\Plugin\Mail\AvailabilityNotificationSubscriptionMailTypePlugin;
@@ -33,7 +33,9 @@ use Spryker\Zed\Newsletter\Communication\Plugin\Mail\NewsletterSubscribedMailTyp
 use Spryker\Zed\Newsletter\Communication\Plugin\Mail\NewsletterUnsubscribedMailTypePlugin;
 use Spryker\Zed\Oms\Communication\Plugin\Mail\OrderShippedMailTypePlugin;
 use Spryker\Zed\SalesInvoice\Communication\Plugin\Mail\OrderInvoiceMailTypePlugin;
+use Swift_Mailer;
 use Swift_Message;
+use Swift_SmtpTransport;
 
 /**
  * @method \Pyz\Zed\Mail\MailConfig getConfig()
@@ -73,7 +75,6 @@ class MailDependencyProvider extends SprykerMailDependencyProvider
                 ->add(new RegistrationMailTypePlugin())
                 ->add(new OrderRefundedMailTypePlugin())
                 ->add(new OrderCancelledMailTypePlugin())
-                ->add(new ZeroPricesReportMailTypePlugin())
                 ->add(new OrderInvoiceMailTypePlugin());
 
             return $mailCollection;
@@ -121,6 +122,69 @@ class MailDependencyProvider extends SprykerMailDependencyProvider
      *
      * @return \Spryker\Zed\Kernel\Container
      */
+    protected function addMailer(Container $container): Container
+    {
+        $container[static::MAILER] = function () {
+            $message = new Swift_Message();
+            $mailer = new Swift_Mailer($this->createSwiftSmtpTransport());
+            $mailerBridge = new MailToMailerBridge($message, $mailer);
+
+            return $mailerBridge;
+        };
+
+        return $container;
+    }
+
+    /**
+     * @return \Swift_SmtpTransport
+     */
+    private function createSwiftSmtpTransport(): Swift_SmtpTransport
+    {
+        $transport = new Swift_SmtpTransport(
+            $this->getConfig()->getSmtpHost(),
+            $this->getConfig()->getSmtpPort()
+        );
+
+        if ($this->getConfig()->getSmtpUsername() !== '') {
+            $transport->setUsername(
+                $this->getConfig()->getSmtpUsername()
+            );
+        }
+
+        if ($this->getConfig()->getSmtpPassword() !== '') {
+            $transport->setPassword(
+                $this->getConfig()->getSmtpPassword()
+            );
+        }
+
+        if ($this->getConfig()->getSmtpAuthMode() !== '') {
+            $transport->setAuthMode(
+                $this->getConfig()->getSmtpAuthMode()
+            );
+        }
+
+        if ($this->getConfig()->getSmtpEncryption() !== '') {
+            $transport->setEncryption(
+                $this->getConfig()->getSmtpEncryption()
+            );
+        }
+
+        return $transport;
+    }
+
+    /**
+     * @return \Spryker\Zed\Mail\Business\Model\Provider\MailProviderCollectionAddInterface
+     */
+    protected function getMailProviderCollection(): MailProviderCollectionAddInterface
+    {
+        return new MailProviderCollection();
+    }
+
+    /**
+     * @param \Spryker\Zed\Kernel\Container $container
+     *
+     * @return \Spryker\Zed\Kernel\Container
+     */
     protected function addDataDogService(Container $container): Container
     {
         $container->set(self::SERVICE_DATA_DOG, function (Container $container): DataDogServiceInterface {
@@ -141,18 +205,6 @@ class MailDependencyProvider extends SprykerMailDependencyProvider
 
             return $container->getApplicationService(static::SERVICE_TWIG);
         });
-
-        return $container;
-    }
-
-    protected function addMailer(Container $container)
-    {
-        $container->set(static::MAILER, $container->factory(function (Container $container) {
-            $message = new Swift_Message();
-            $swiftMailer = $container->get(static::SWIFT_MAILER);
-
-            return new MailToMailerBridge($message, $swiftMailer);
-        }));
 
         return $container;
     }

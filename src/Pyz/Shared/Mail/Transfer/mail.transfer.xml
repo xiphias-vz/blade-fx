@@ -7,7 +7,6 @@
         <property name="cmsBlockName" type="string" />
         <property name="cmsBlockPlaceholders" type="array" />
         <property name="bcc" type="array" />
-        <property name="additionalData" type="array" />
     </transfer>
 
 </transfers>

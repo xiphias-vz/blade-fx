@@ -13,13 +13,10 @@ use Pyz\Zed\Mail\Business\Model\Mailer\MailHandler;
 use Pyz\Zed\Mail\Business\Model\Provider\CmsBlockMailer;
 use Pyz\Zed\Mail\Business\Model\Provider\SwiftMailer;
 use Pyz\Zed\Mail\Business\Model\Renderer\CmsBlockRenderer;
-use Pyz\Zed\Mail\Dependency\Renderer\MailToRendererBridge;
 use Pyz\Zed\Mail\MailDependencyProvider;
 use Spryker\Zed\Glossary\Communication\Plugin\TwigTranslatorPlugin;
 use Spryker\Zed\Mail\Business\MailBusinessFactory as SprykerMailBusinessFactory;
 use Spryker\Zed\Mail\Business\Model\Renderer\RendererInterface;
-use Spryker\Zed\Mail\Business\Model\Renderer\TwigRenderer;
-use Spryker\Zed\Mail\MailDependencyProvider as SprykerMailDependencyProvider;
 use Twig\Environment;
 
 /**
@@ -106,23 +103,5 @@ class MailBusinessFactory extends SprykerMailBusinessFactory
     protected function createTranslator(): TwigTranslatorPlugin
     {
         return new TwigTranslatorPlugin();
-    }
-
-    /**
-     * @return \Spryker\Zed\Mail\Business\Model\Renderer\TwigRenderer
-     */
-    public function createRenderer()
-    {
-        return new TwigRenderer($this->getRenderer());
-    }
-
-    /**
-     * @return \Spryker\Zed\Mail\Dependency\Renderer\MailToRendererInterface
-     */
-    protected function getRenderer()
-    {
-        $twig = $this->getProvidedDependency(SprykerMailDependencyProvider::RENDERER);
-
-        return new MailToRendererBridge($twig);
     }
 }

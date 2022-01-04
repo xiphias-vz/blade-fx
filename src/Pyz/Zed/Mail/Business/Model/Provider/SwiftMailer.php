@@ -13,24 +13,49 @@ use Spryker\Zed\Mail\Business\Model\Provider\SwiftMailer as SprykerSwiftMailer;
 class SwiftMailer extends SprykerSwiftMailer
 {
     /**
+     * @var \Pyz\Zed\Mail\Dependency\Mailer\MailToMailerInterface
+     */
+    protected $mailer;
+
+    /**
      * @param \Generated\Shared\Transfer\MailTransfer $mailTransfer
      *
-     * @return \Spryker\Zed\Mail\Business\Model\Provider\SwiftMailer
+     * @return void
      */
-    protected function addContent(MailTransfer $mailTransfer)
+    public function sendMail(MailTransfer $mailTransfer): void
     {
-        $this->renderer->render($mailTransfer);
+        $this
+            ->addSubject($mailTransfer)
+            ->addFrom($mailTransfer)
+            ->addTo($mailTransfer)
+            ->setBcc($mailTransfer)
+            ->addContent($mailTransfer)
+            ->addAttachments($mailTransfer);
 
-        foreach ($mailTransfer->requireTemplates()->getTemplates() as $templateTransfer) {
-            if ($templateTransfer->getIsHtml()) {
-                $this->mailer->setHtmlContent($templateTransfer->getContent());
-            }
+        $this->mailer->send();
+    }
 
-            if (!$templateTransfer->getIsHtml()) {
-                $this->mailer->setTextContent($templateTransfer->getContent());
-            }
-        }
+    /**
+     * @param \Generated\Shared\Transfer\MailTransfer $mailTransfer
+     *
+     * @return $this
+     */
+    protected function setBcc(MailTransfer $mailTransfer)
+    {
+        $this->mailer->setBcc($mailTransfer->getBcc());
 
         return $this;
+    }
+
+    /**
+     * @param \Generated\Shared\Transfer\MailTransfer $mailTransfer
+     *
+     * @return void
+     */
+    protected function addAttachments(MailTransfer $mailTransfer): void
+    {
+        foreach ($mailTransfer->getAttachments() as $attachment) {
+            $this->mailer->addAttachment($attachment->getAttachmentUrl(), $attachment->getDisplayName());
+        }
     }
 }
