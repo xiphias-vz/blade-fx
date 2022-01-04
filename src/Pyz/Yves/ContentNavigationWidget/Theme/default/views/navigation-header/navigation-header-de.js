@@ -156,42 +156,26 @@ document.addEventListener("ffReady", function (event) {
                         query: "*"
                     });
                 } else {
-                    if(window.history.state) {
-                        url = window.history.state.searchResult.searchParams;
-                        if(getParameterByName("filter", url).length > 0) {
+                    if(ffCategoryFilter.startsWith("Q:")) {
+                        if(ffCategoryFilter.includes("|F:")){
                             eventAggregator.addFFEvent({
-                                type: "navigation-search",
-                                filter : getParameterByName("filter", url),
-                                query: getParameterByName("query", url)
+                                type: "search",
+                                filter: ffCategoryFilter.split("|F:")[1],
+                                query: ffCategoryFilter.split("|F:")[0].slice(2)
                             });
+
                         } else {
                             eventAggregator.addFFEvent({
                                 type: "search",
-                                query: getParameterByName("query", url)
+                                query: ffCategoryFilter.slice(2)
                             });
                         }
                     } else {
-                        if(ffCategoryFilter.startsWith("Q:")) {
-                            if(ffCategoryFilter.includes("|F:")){
-                                eventAggregator.addFFEvent({
-                                    type: "search",
-                                    filter: ffCategoryFilter.split("|F:")[1],
-                                    query: ffCategoryFilter.split("|F:")[0].slice(2)
-                                });
-
-                            } else {
-                                eventAggregator.addFFEvent({
-                                    type: "search",
-                                    query: ffCategoryFilter.slice(2)
-                                });
-                            }
-                        } else {
-                            eventAggregator.addFFEvent({
-                                type: "navigation-search",
-                                filter: ffCategoryFilter,
-                                query: "*"
-                            });
-                        }
+                        eventAggregator.addFFEvent({
+                            type: "navigation-search",
+                            filter: ffCategoryFilter,
+                            query: "*"
+                        });
                     }
                 }
             } else {

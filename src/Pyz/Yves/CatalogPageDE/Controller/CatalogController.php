@@ -31,13 +31,17 @@ class CatalogController extends SprykerCatalogController
         $idCategoryNode = $categoryNode['node_id'];
         $categoryPath = $categoryNode["name"];
         $categoryPath = $this->getParentCategoryName($categoryNode, $categoryPath);
+        $filter = "";
+        if (!$this->buildFilter($request, $filter)) {
+            $filter = 'CategoryPath:' . str_replace("&", "%26", $categoryPath);
+        }
 
         $viewData = [
             'products' => [],
             'facets' => [],
             'sort' => 0,
             'searchString' => '',
-            'ffCategoryFilter' => 'CategoryPath:' . str_replace("&", "%26", $categoryPath),
+            'ffCategoryFilter' => $filter,
             'category' => ['name' => $categoryNode["name"]],
             'pagination' => [
                 'currentPage' => 1,
@@ -167,5 +171,30 @@ class CatalogController extends SprykerCatalogController
             $this->getFactory()->getCatalogPageWidgetPlugins(),
             '@CatalogPage/views/search/search.twig'
         );
+    }
+
+    /**
+     * @param \Symfony\Component\HttpFoundation\Request $request
+     * @param string $result
+     *
+     * @return bool
+     */
+    protected function buildFilter(Request $request, string &$result): bool
+    {
+        $query = $request->query->get("query");
+        $filter = $request->query->get("filter");
+        $result = "";
+        if ($query) {
+            $result = $result . "Q:" . $query;
+        }
+        if ($filter) {
+            if (strlen($result) > 0) {
+                $result = $result . "|F:";
+            }
+            $result = $result . $filter;
+        }
+        $result = str_replace("&", "%26", $result);
+
+        return $query || $filter;
     }
 }
