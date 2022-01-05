@@ -11,6 +11,14 @@ function isSearchPage() {
     return document.getElementsByTagName('ff-record-list').length > 0;
 }
 
+function isSearchPageUrl() {
+    return document.location.href.includes("/search?");
+}
+
+function isOutlet() {
+    return document.location.href.includes("/outlet");
+}
+
 function isPageWithBreadcrumbs() {
     return document.getElementsByTagName('breadcrumb-step').length > 0;
 }
@@ -134,8 +142,8 @@ document.addEventListener("ffReady", function (event) {
 
     eventAggregator.addBeforeDispatchingCallback(function (event) {
         factfinder.communication.globalSearchParameter["marketId"] = storeId;
-        const isSearchEvent = event.type === "search" || event.type === "navigation-search";
-        if (isSearchEvent && !isSearchPage()) {
+        const isSearchEvent = event.type === "search";// || event.type === "navigation-search";
+        if (isSearchEvent && !isSearchPageUrl() && !isOutlet()) {
             event.cancel(); // prevents the request from being sent before redirecting
 
             ["channel", "version", "sid", "dispatchId"].forEach(function (param) {
@@ -149,7 +157,7 @@ document.addEventListener("ffReady", function (event) {
         } else {
             if(indexCatalogPageCounter === 0 && isSearchPage()) {
                 indexCatalogPageCounter++;
-                if(ffCategoryFilter["Type"] === 'search') {
+                if(ffCategoryFilter["Type"] === 'search' && !isOutlet()) {
                     factfinder.communication.globalCommunicationParameter.onlySearchParams = true;
                     factfinder.communication.globalCommunicationParameter.useUrlParameters = true;
                 }
@@ -212,8 +220,6 @@ document.addEventListener("ffReady", function (event) {
             factfinder.communication.globalCommunicationParameter.useUrlParameters = true;
             factfinder.communication.globalCommunicationParameter.onlySearchParams = true;
 
-
-
             indexCatalogPageCounter = indexCatalogPageCounter * 10;
         }
     });
@@ -227,6 +233,10 @@ window.addEventListener("DOMNodeInserted", function (event) {
     } else if (event.relatedNode.localName == 'ff-suggest-item') {
         checkOriginalAndDefaultPrices(event.relatedNode, 'ff-suggest-item');
         addCommaAfterBrand(event.relatedNode);
+    } else if (event.relatedNode.localName == 'ff-asn-group-element') {
+        var treeElement = document.querySelector('ff-asn-group[filter-style="TREE"]');
+        treeElement.querySelector('div[data-container="removeFilter"]').style.display='none';
+        treeElement.querySelector('ff-asn-group-element').style.display='none';
     }
 }, false);
 

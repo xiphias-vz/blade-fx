@@ -82,7 +82,7 @@ class SaleController extends AbstractController
             'facets' => [],
             'sort' => 0,
             'searchString' => '',
-            'ffCategoryFilter' => $this->getFilterData("*", "search", ["Sale:true"]),
+            'ffCategoryFilter' => $this->buildFilter($request),
             'spellingSuggestion' => '',
             'pressEnter' => '1',
             'pagination' => [
@@ -148,18 +148,49 @@ class SaleController extends AbstractController
     }
 
     /**
-     * @param string|null $query
-     * @param string $type
-     * @param array $filter
+     * @param \Symfony\Component\HttpFoundation\Request $request
      *
      * @return string
      */
-    protected function getFilterData(?string $query, string $type, array $filter): string
+    protected function buildFilter(Request $request): string
+    {
+        $query = $request->query->get("query");
+        $filter = [];
+        $page = 1;
+        if (isset(parse_url($request->getRequestUri())["query"])) {
+            $ff = parse_url($request->getRequestUri())["query"];
+            $params = explode("&", $ff);
+            foreach ($params as $param) {
+                parse_str($param, $par);
+                if (strtolower(array_keys($par)[0]) === "filter") {
+                    $filter[] = $par["filter"];
+                }
+                if (strtolower(array_keys($par)[0]) === "page") {
+                    $page = $par["page"];
+                }
+            }
+        }
+        if (!in_array("Sale:true", $filter)) {
+            $filter[] = "Sale:true";
+        }
+
+        return $this->getFilterData($query, "search", $filter, $page);
+    }
+
+    /**
+     * @param string|null $query
+     * @param string $type
+     * @param array $filter
+     * @param string $page
+     *
+     * @return string
+     */
+    protected function getFilterData(?string $query, string $type, array $filter, string $page): string
     {
         if ($query === null) {
             $query = "";
         }
 
-        return base64_encode(json_encode(['Query' => $query, 'Type' => $type, 'Filter' => $filter, 'Page' => 1]));
+        return base64_encode(json_encode(['Query' => $query, 'Type' => $type, 'Filter' => $filter, 'Page' => $page]));
     }
 }
