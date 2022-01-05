@@ -270,10 +270,6 @@ class CheckoutController extends SprykerCheckoutControllerAlias
             }
         }
 
-        $merchantTransfer = $this->getFactory()
-            ->getMerchantClient()
-            ->getMerchant();
-
         $viewData = $this->createStepProcess()->process(
             $request,
             $this->getFactory()
@@ -285,11 +281,8 @@ class CheckoutController extends SprykerCheckoutControllerAlias
             return $viewData;
         }
 
-        if ($merchantTransfer->getIsTransportboxEnabled() == true) {
-            $viewData['isTransportboxEnabled'] = true;
-        } else {
-            $viewData['isTransportboxEnabled'] = false;
-        }
+        $isDepositAllowed = $this->getFactory()->getQuoteClient()->getQuote()->getIsDepositAllowed();
+        $viewData['isTransportboxEnabled'] = $isDepositAllowed;
 
         return $this->view(
             $viewData,

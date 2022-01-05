@@ -1,28 +1,54 @@
 @mixin checkout-page-transport-box($name: '.transport-box') {
     #{$name} {
         background-color: white;
-        height: rem(250);
+        height: rem(280);
         padding: rem(12);
         margin-top: rem(10);
         margin-bottom: rem(10);
         color: $setting-color-globus-black;
+        font-size: rem(13);
+
+        @include helper-breakpoint-media-max(300px) {
+            height: rem(520);
+        }
+
+        @include helper-breakpoint-media-between(300px, 320px){
+            height: rem(500);
+        }
+
+        @include helper-breakpoint-media-between(320px, 335px){
+            height: rem(460);
+        }
+
+        @include helper-breakpoint-media-between(335px, 400px){
+            height: rem(440);
+        }
+
+        @include helper-breakpoint-media-between($xs-max, $sm-max){
+                height: rem(450);
+        }
 
         @include helper-breakpoint-media-between($xl-min, $l-max){
             height: rem(270);
         }
 
-        @include helper-breakpoint-media-max($md-min) {
-            height: rem(450);
-            padding: rem(8);
+        &__image-div {
+            @include helper-breakpoint-media-max($sm-max) {
+                text-align: center;
+            }
         }
 
-        &__image-div {
-            text-align: center;
+        &__image {
+            margin-top: rem(12);
+
+            @include helper-breakpoint-media-max($sm-max) {
+                max-width: 50%;
+            }
         }
 
         &__text {
-            font-size: rem(10);
-            margin-left: rem(25);
+            font-size: rem(13);
+            margin-left: rem(10);
         }
 
         &__bullet-points {
