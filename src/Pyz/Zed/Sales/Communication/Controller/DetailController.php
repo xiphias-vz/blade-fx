@@ -68,6 +68,7 @@ class DetailController extends SprykerDetailController
             ->getMerchantFacade()
             ->findMerchantTransferFromMerchantReference($orderTransfer->getMerchantReference());
         $isCashierTxt = $merchantTransfer->getIsCashierTxt();
+        $isDepositAllowed = $orderTransfer->getIsDepositAllowed();
         $orderTransfer->setCartNote(json_decode($orderTransfer->getCartNote()));
         $cellPhone = $orderTransfer->getBillingAddress()->getCellPhone();
         $userFacade = $this->getFactory()->getUserFacade();
@@ -273,7 +274,7 @@ class DetailController extends SprykerDetailController
             'containers' => $containers,
             'timeSlotsData' => $timeSlotsData,
             'cellPhone' => $cellPhone,
-            'isTransportBoxEnabled' => $merchantTransfer->getIsTransportboxEnabled(),
+            'isTransportBoxEnabled' => $isDepositAllowed,
         ], $blockResponseData);
     }
 
