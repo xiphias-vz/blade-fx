@@ -12,7 +12,7 @@
     dayOfTheWeek: '',
     detailPage: false,
     isSubstitutionAllowed: false,
-    isTransportboxEnabled: false
+    isDepositAllowed: false,
 } %}
 
 {% block body %}
@@ -39,18 +39,17 @@
                     {% endif %}
                 </div>
 
-                {% if data.isTransportboxEnabled %}
-                    <div class="none"></div>
-                {% else %}
-                <div class="greenIcon" >
-                    {% include atom('icon') with {
-                        modifiers: ['big'],
-                        class: 'custom__icon',
-                        data: {
-                            name: 'icon-green',
-                        },
-                    } only %}
-                </div>
+
+                {% if data.isDepositAllowed %}
+                    <div class="greenIcon" >
+                        {% include atom('icon') with {
+                            modifiers: ['big'],
+                            class: 'custom__icon',
+                            data: {
+                                name: 'icon-green',
+                            },
+                        } only %}
+                    </div>
                 {% endif %}
 
                 <div>

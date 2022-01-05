@@ -24,7 +24,8 @@
     containerInfo: containerInfo,
     containerNumber: containerNumber,
     encodedBarcode: encodedBarcode,
-    barcodeNumber: barcodeNumber
+    barcodeNumber: barcodeNumber,
+    isDepositAllowed: isDepositAllowed,
 } %}
 
 {% set pickedItemCount = data.collectOrder.pickedItemsCount %}
@@ -63,6 +64,7 @@
                 detailPage: true,
                 containerInfo: data.containerInfo,
                 containerNumber: data.containerNumber,
+                isDepositAllowed: data.isDepositAllowed,
             },
             attributes: {
                 'data-order': data.collectNumber | lower,
@@ -89,8 +91,7 @@
                 containerNumber: data.containerNumber,
                 encodedBarcode: data.encodedBarcode,
                 barcodeNumber: data.barcodeNumber,
-
-
+                isDepositAllowed: data.isDepositAllowed,
             }
         } only %}
             {% block action %}{% endblock %}
@@ -180,7 +181,8 @@
                     {% include molecule('barcode') with {
                         data: {
                             encodedBarcode: embed.encodedBarcode,
-                            barcodeNumber: embed.barcodeNumber
+                            barcodeNumber: embed.barcodeNumber,
+                            isDepositAllowed: embed.isDepositAllowed
                         },
                     } only %}
                 </div>

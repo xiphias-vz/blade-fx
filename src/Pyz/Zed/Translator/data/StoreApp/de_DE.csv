@@ -166,7 +166,7 @@ picking.app.weight_per_unit,"Gewicht pro Einheit: "
 picking.app.error_shelfID_wrong_letter,"Der erste Buchstabe muss Großbuchstaben sein"
 
 storeapp.picking.barcode, Barcode
-storeapp.picking.warning,"Warnung! Transportboxen scannen!"
+storeapp.picking.warning,"Achtung! Transportboxen scannen!"
 storeapp.picking.MissingArticle, Fehlartikel
 storeapp.picking.message.error.container-not-known, Container ID nicht bekant
 

@@ -48,11 +48,11 @@ class MerchantReader implements MerchantReaderInterface
     protected $merchantContextReader;
 
     /**
-     * @param MerchantStorageClientInterface $merchantStorageClient
-     * @param MerchantContextReaderInterface $merchantContextReader
-     * @param MerchantSearchClientInterface $merchantSearchClient
-     * @param QuoteClientInterface $quoteClient
-     * @param MerchantStorageDataExpanderInterface $merchantStorageDataExpander
+     * @param \Pyz\Client\MerchantStorage\MerchantStorageClientInterface $merchantStorageClient
+     * @param \Pyz\Client\Merchant\Reader\Context\MerchantContextReaderInterface $merchantContextReader
+     * @param \Spryker\Client\MerchantSearch\MerchantSearchClientInterface $merchantSearchClient
+     * @param \Spryker\Client\Quote\QuoteClientInterface $quoteClient
+     * @param \Pyz\Client\TimeSlot\Expander\MerchantStorageDataExpanderInterface $merchantStorageDataExpander
      */
     public function __construct(
         MerchantStorageClientInterface $merchantStorageClient,
