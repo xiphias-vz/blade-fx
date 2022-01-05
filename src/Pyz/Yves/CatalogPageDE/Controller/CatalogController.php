@@ -33,7 +33,7 @@ class CatalogController extends SprykerCatalogController
         $categoryPath = $this->getParentCategoryName($categoryNode, $categoryPath);
         $filter = "";
         if (!$this->buildFilter($request, $filter)) {
-            $filter = 'CategoryPath:' . str_replace("&", "%26", $categoryPath);
+            $filter = $this->getFilterData("", "navigation-search", ['CategoryPath:' . $categoryPath], 1);
         }
 
         $viewData = [
@@ -148,13 +148,14 @@ class CatalogController extends SprykerCatalogController
      */
     public function fulltextSearchAction(Request $request)
     {
-        $searchText = $request->query->get("query", "*");
+        $filter = "";
+        $this->buildFilter($request, $filter);
         $viewData = [
             'products' => [],
             'facets' => [],
             'sort' => 0,
             'searchString' => '',
-            'ffCategoryFilter' => 'Q:' . $searchText,
+            'ffCategoryFilter' => $filter,
             'spellingSuggestion' => '',
             'pressEnter' => '1',
             'pagination' => [
@@ -182,19 +183,40 @@ class CatalogController extends SprykerCatalogController
     protected function buildFilter(Request $request, string &$result): bool
     {
         $query = $request->query->get("query");
-        $filter = $request->query->get("filter");
-        $result = "";
-        if ($query) {
-            $result = $result . "Q:" . $query;
-        }
-        if ($filter) {
-            if (strlen($result) > 0) {
-                $result = $result . "|F:";
+        $filter = [];
+        $page = 1;
+        if (isset(parse_url($request->getRequestUri())["query"])) {
+            $ff = parse_url($request->getRequestUri())["query"];
+            $params = explode("&", $ff);
+            foreach ($params as $param) {
+                parse_str($param, $par);
+                if (strtolower(array_keys($par)[0]) === "filter") {
+                    $filter[] = $par["filter"];
+                }
+                if (strtolower(array_keys($par)[0]) === "page") {
+                    $page = $par["page"];
+                }
             }
-            $result = $result . $filter;
         }
-        $result = str_replace("&", "%26", $result);
+        $result = $this->getFilterData($query, "search", $filter, $page);
 
-        return $query || $filter;
+        return $query || count($filter) > 0;
+    }
+
+    /**
+     * @param string|null $query
+     * @param string $type
+     * @param array $filter
+     * @param string $page
+     *
+     * @return string
+     */
+    protected function getFilterData(?string $query, string $type, array $filter, string $page): string
+    {
+        if ($query === null) {
+            $query = "";
+        }
+
+        return base64_encode(json_encode(['Query' => $query, 'Type' => $type, 'Filter' => $filter, 'Page' => $page]));
     }
 }

@@ -149,35 +149,16 @@ document.addEventListener("ffReady", function (event) {
         } else {
             if(indexCatalogPageCounter === 0 && isSearchPage()) {
                 indexCatalogPageCounter++;
-                if(getParameterByName("navigation")=="true") {
-                    eventAggregator.addFFEvent({
-                        type: "navigation-search",
-                        filter : ffCategoryFilter,
-                        query: "*"
-                    });
-                } else {
-                    if(ffCategoryFilter.startsWith("Q:")) {
-                        if(ffCategoryFilter.includes("|F:")){
-                            eventAggregator.addFFEvent({
-                                type: "search",
-                                filter: ffCategoryFilter.split("|F:")[1],
-                                query: ffCategoryFilter.split("|F:")[0].slice(2)
-                            });
-
-                        } else {
-                            eventAggregator.addFFEvent({
-                                type: "search",
-                                query: ffCategoryFilter.slice(2)
-                            });
-                        }
-                    } else {
-                        eventAggregator.addFFEvent({
-                            type: "navigation-search",
-                            filter: ffCategoryFilter,
-                            query: "*"
-                        });
-                    }
+                if(ffCategoryFilter["Type"] === 'search') {
+                    factfinder.communication.globalCommunicationParameter.onlySearchParams = true;
+                    factfinder.communication.globalCommunicationParameter.useUrlParameters = true;
                 }
+                eventAggregator.addFFEvent({
+                    type: ffCategoryFilter["Type"],
+                    filter : ffCategoryFilter["Filter"],
+                    query: ffCategoryFilter["Query"],
+                    page: ffCategoryFilter["Page"]
+                });
             } else {
                 if(event.type === "navigation-search" && indexCatalogPageCounter > 10) {
                     event.cancel();
@@ -228,6 +209,8 @@ document.addEventListener("ffReady", function (event) {
 
             document.getElementById("searchResultCountTitle").innerText = title;
             document.title = title;
+            factfinder.communication.globalCommunicationParameter.useUrlParameters = true;
+            factfinder.communication.globalCommunicationParameter.onlySearchParams = true;
 
 
 

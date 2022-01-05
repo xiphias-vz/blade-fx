@@ -29,6 +29,10 @@
     {% endembed %}
 
     {# ovo je samo za test primjer jer lokalno imam češku a tiket je za njemačku #}
+    {#    https://web-components.fact-finder.de/documentation/4.x/category-urls#}
+    {#    parameter-whitelist="page,query,filter"#}
+    {#    only-search-params#}
+
     {% if data.currentCodeBucket == 'DE' %}
         {% include atom('communication', 'FactFinderWebComponents') with {
             data: {
@@ -39,9 +43,8 @@
                         channel="Spryker"
                         default-query="*"
                         search-immediate="false"
-                        use-url-parameters="true"
+                        use-url-parameters="false"
                         use-browser-history="true"
-                        parameter-whitelist="page,query,filter"
                         currency-fields="Price"'
                 },
             }

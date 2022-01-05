@@ -6,7 +6,7 @@
 
 {% block form %}
     <script language="JavaScript" type="text/javascript">
-        var ffCategoryFilter  = "{{ data.ffCategoryFilter }}";
+        var ffCategoryFilter  = JSON.parse(atob("{{ data.ffCategoryFilter }}"));
     </script>
     {{parent()}}
 

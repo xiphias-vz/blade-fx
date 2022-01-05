@@ -82,7 +82,7 @@ class SaleController extends AbstractController
             'facets' => [],
             'sort' => 0,
             'searchString' => '',
-            'ffCategoryFilter' => 'Q:*|F:Sale:true',
+            'ffCategoryFilter' => $this->getFilterData("*", "search", ["Sale:true"]),
             'spellingSuggestion' => '',
             'pressEnter' => '1',
             'pagination' => [
@@ -145,5 +145,21 @@ class SaleController extends AbstractController
         }
 
         return $data;
+    }
+
+    /**
+     * @param string|null $query
+     * @param string $type
+     * @param array $filter
+     *
+     * @return string
+     */
+    protected function getFilterData(?string $query, string $type, array $filter): string
+    {
+        if ($query === null) {
+            $query = "";
+        }
+
+        return base64_encode(json_encode(['Query' => $query, 'Type' => $type, 'Filter' => $filter, 'Page' => 1]));
     }
 }
