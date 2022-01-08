@@ -16,7 +16,7 @@ function isSearchPageUrl() {
 }
 
 function isOutlet() {
-    return document.location.href.includes("/outlet");
+    return document.location.href.includes("/outlet") && !document.location.href.includes("query=*");
 }
 
 function isPageWithBreadcrumbs() {
@@ -134,7 +134,6 @@ document.addEventListener("DOMContentLoaded", function (event) {
     });
 });
 
-
 document.addEventListener("ffReady", function (event) {
     const factfinder = event.factfinder;
     const eventAggregator = event.eventAggregator;
@@ -142,8 +141,8 @@ document.addEventListener("ffReady", function (event) {
 
     eventAggregator.addBeforeDispatchingCallback(function (event) {
         factfinder.communication.globalSearchParameter["marketId"] = storeId;
-        const isSearchEvent = event.type === "search";// || event.type === "navigation-search";
-        if (isSearchEvent && !isSearchPageUrl() && !isOutlet()) {
+        const isSearchEvent = event.type === "search";
+        if (isSearchEvent && !isSearchPageUrl() && (!isOutlet() || (event.query != "" && event.query != "*"))) {
             event.cancel(); // prevents the request from being sent before redirecting
 
             ["channel", "version", "sid", "dispatchId"].forEach(function (param) {
@@ -235,8 +234,12 @@ window.addEventListener("DOMNodeInserted", function (event) {
         addCommaAfterBrand(event.relatedNode);
     } else if (event.relatedNode.localName == 'ff-asn-group-element') {
         var treeElement = document.querySelector('ff-asn-group[filter-style="TREE"]');
-        treeElement.querySelector('div[data-container="removeFilter"]').style.display='none';
-        treeElement.querySelector('ff-asn-group-element').style.display='none';
+        if(treeElement) {
+            var el = treeElement.querySelector('div[data-container="removeFilter"]');
+            if(el) el.style.display='none';
+            el = treeElement.querySelector('ff-asn-group-element');
+            if(el) el.style.display='none';
+        }
     }
 }, false);
 
