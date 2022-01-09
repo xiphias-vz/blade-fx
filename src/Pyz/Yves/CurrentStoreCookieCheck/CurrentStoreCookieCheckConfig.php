@@ -12,6 +12,9 @@ use Spryker\Yves\Kernel\AbstractBundleConfig;
 
 class CurrentStoreCookieCheckConfig extends AbstractBundleConfig
 {
+    /**
+     * @return array
+     */
     public function getCurrentStoreSapId(): array
     {
         return $this->get(StoreConstants::SAP_STORE_ID_TO_STORE_MAP);

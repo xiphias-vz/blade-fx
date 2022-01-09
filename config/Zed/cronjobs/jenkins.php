@@ -307,8 +307,6 @@ if ($storeCodeBucket == 'CZ') {
         'stores' => ['EIN'],
     ];
 
-
-
     /* Export sales order summary*/
     $jobs[] = [
         'name' => 'export-sales-order-summary',

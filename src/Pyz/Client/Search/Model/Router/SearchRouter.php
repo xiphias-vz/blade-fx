@@ -69,24 +69,42 @@ class SearchRouter implements SearchRouterInterface
         return [];
     }
 
+    /**
+     * @param array $cartOrCheckoutEventTransfers
+     *
+     * @return \Generated\Shared\Transfer\FactFinderNgResponseTransfer
+     */
     public function trackCheckoutEvent(array $cartOrCheckoutEventTransfers): FactFinderNgResponseTransfer
     {
         // TODO: Implement trackCheckoutEvent() method.
         return new FactFinderNgResponseTransfer();
     }
 
+    /**
+     * @param array $cartOrCheckoutEventTransfers
+     *
+     * @return \Generated\Shared\Transfer\FactFinderNgResponseTransfer
+     */
     public function trackCartEvent(array $cartOrCheckoutEventTransfers): FactFinderNgResponseTransfer
     {
         // TODO: Implement trackCartEvent() method.
         return new FactFinderNgResponseTransfer();
     }
 
+    /**
+     * @param array $clickEventTransfers
+     *
+     * @return \Generated\Shared\Transfer\FactFinderNgResponseTransfer
+     */
     public function trackClickEvent(array $clickEventTransfers): FactFinderNgResponseTransfer
     {
         // TODO: Implement trackClickEvent() method.
         return new FactFinderNgResponseTransfer();
     }
 
+    /**
+     * @return \Generated\Shared\Transfer\FactFinderNgResponseTransfer
+     */
     public function triggerSearchImport(): FactFinderNgResponseTransfer
     {
         // TODO: Implement triggerSearchImport() method.

@@ -5,8 +5,6 @@ use Pyz\Shared\Application\ApplicationConstants;
 use Pyz\Shared\BackofficeOverview\BackofficeOverviewConstants;
 use Pyz\Shared\CodeBuckets\CodeBucketConstants;
 use Pyz\Shared\GoogleTagManager\GoogleTagManagerConstants;
-use Pyz\Shared\GsoaRestApiClient\ApiClient;
-use Pyz\Shared\GsoaRestApiClient\Provider\TokenProvider;
 use Pyz\Shared\ProductImage\ProductImageConstants;
 use Pyz\Shared\Shipment\ShipmentConstants;
 use Pyz\Shared\Store\StoreConstants;
@@ -82,7 +80,6 @@ $config[ShipmentConstants::MAIN_GLOBUS_CUSTOMER_CLICK_AND_COLLECT_SHIPMENT_METHO
 $config[ShipmentConstants::GUEST_CUSTOMER_CLICK_AND_COLLECT_SHIPMENT_METHOD_PRICE] = 3900;
 
 $config[\Pyz\Shared\CookieBot\CookieBotConstants::DOMAIN_GROUP_ID] = '372fb05e-ddeb-46e1-a699-334ffa7e6bec';
-
 
 // ----------- Days in the week abbr
 $config[PickerConstants::DAYS_IN_THE_WEEK] = [

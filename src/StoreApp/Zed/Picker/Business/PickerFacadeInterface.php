@@ -213,6 +213,8 @@ interface PickerFacadeInterface
 
     /**
      * @param int $IdGlobalPickReport
+     *
+     * @return void
      */
     public function updateGlobalPerformanceOrder(int $IdGlobalPickReport): void;
 

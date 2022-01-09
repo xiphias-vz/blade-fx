@@ -25,7 +25,7 @@ use Pyz\Shared\TimeSlot\TimeSlotConstants;
 use Pyz\Shared\TwigCache\TwigCacheConstants;
 use Spryker\Client\RabbitMq\Model\RabbitMqAdapter;
 use Spryker\Glue\Log\Plugin\GlueLoggerConfigPlugin;
-use Spryker\Service\FlysystemFtpFileSystem\Plugin\Flysystem\FtpFilesystemBuilderPlugin;
+use Spryker\Service\FlysystemFtpFileSystem\Plugin\Flysystem\FtpFileSystemBuilderPlugin;
 use Spryker\Service\FlysystemLocalFileSystem\Plugin\Flysystem\LocalFilesystemBuilderPlugin;
 use Spryker\Shared\Acl\AclConstants;
 use Spryker\Shared\Auth\AuthConstants;
@@ -76,7 +76,7 @@ use Spryker\Yves\Log\Plugin\YvesLoggerConfigPlugin;
 use Spryker\Zed\Log\Communication\Plugin\ZedLoggerConfigPlugin;
 use Spryker\Zed\Oms\OmsConfig;
 use Spryker\Zed\Propel\PropelConfig;
-use SprykerEco\Shared\FactFinderNg\FactFinderNgConstants;
+use SprykerEco\Shared\FactFinderSdk\FactFinderSdkConstants;
 use SprykerEco\Shared\FactFinderWebComponents\FactFinderWebComponentsConstants;
 use SprykerEco\Shared\Loggly\LogglyConstants;
 use SprykerEco\Zed\Payone\PayoneConfig;
@@ -983,9 +983,6 @@ $config[BackofficeOverviewConstants::TABLE_HEADER] = [
     'TKK' => 'TKK',
 ];
 
-
-
-
 ///*******************************************************************************************************************************************************************************************************************
 /// ******************************************************************************************************************************************************************************************************************
 /// ******************************************************************************************************************************************************************************************************************
@@ -996,8 +993,6 @@ $config[BackofficeOverviewConstants::TABLE_HEADER] = [
 /**
  * Fact Finder
  */
-
-use SprykerEco\Shared\FactFinderSdk\FactFinderSdkConstants;
 
 $config[FactFinderSdkConstants::ENVIRONMENT] = FactFinderSdkConstants::ENVIRONMENT_PRODUCTION;
 $config[FactFinderSdkConstants::ENVIRONMENT . FactFinderSdkConstants::ENVIRONMENT_PRODUCTION] = [
@@ -1033,7 +1028,7 @@ $config[FactFinderSdkConstants::ENVIRONMENT . FactFinderSdkConstants::ENVIRONMEN
     'importTimeout' => 360,
     'pageContentEncoding' => 'UTF-8',
     'clientUrlEncoding' => 'UTF-8',
-    FactFinderSdkConstants::ADMIN_PANEL_URL => 'https://globus-sb.fact-finder.de/fact-finder-ui/'
+    FactFinderSdkConstants::ADMIN_PANEL_URL => 'https://globus-sb.fact-finder.de/fact-finder-ui/',
 ];
 
 $config[FactFinderSdkConstants::CSV_DIRECTORY] = APPLICATION_ROOT_DIR . '/data/export/files/';
@@ -1062,13 +1057,6 @@ $config[FactFinderSdkConstants::ITEM_FIELDS] = [
     FactFinderSdkConstants::ITEM_CREATED_AT,
     FactFinderSdkConstants::ITEM_IS_NEW,
 ];
-
-// ---------- FACT-Finder NG API
-
-$config[FactFinderNgConstants::FACT_FINDER_URL] = 'https://globus-sb.fact-finder.de/fact-finder'; # Fact-Finder URL
-$config[FactFinderNgConstants::FACT_FINDER_CHANNEL] = 'Spryker'; # Fact-Finder channel value
-$config[FactFinderNgConstants::FACT_FINDER_USERNAME] = 'kps_admin'; # Fact-Finder user for authorization.
-$config[FactFinderNgConstants::FACT_FINDER_PASSWORD] = 'glo123SPRY!kps'; # Fact-Finder password for authorization.
 
 // ---------- FACT-Finder WEB COMPONENTS components
 $config[FactFinderWebComponentsConstants::COMMUNICATION_COMPONENT_CONFIG] = [

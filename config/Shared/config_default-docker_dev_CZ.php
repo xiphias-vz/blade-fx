@@ -44,4 +44,3 @@ $config[FactFinderConstants::FTP_FACT_FINDER_FILES_FOLDER_NAME] = 'factfinder/st
 
 // ---------- NewRelicEnvironment
 $config[NewRelicConstants::NEW_RELIC_ENVIRONMENT] = 'CZ_stage';
-

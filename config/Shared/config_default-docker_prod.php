@@ -5,6 +5,7 @@ use Pyz\Shared\DataImport\DataImportConstants;
 use Pyz\Shared\FactFinder\FactFinderConstants;
 use Pyz\Shared\ProductImage\ProductImageConstants;
 use Pyz\Zed\SalesOrderSummaryExport\SalesOrderSummaryExportConfig;
+use SprykerEco\Shared\FactFinderNg\FactFinderNgConstants;
 use StoreApp\Shared\NewRelic\NewRelicConstants;
 
 require('config_default-docker.php');
@@ -34,5 +35,10 @@ $config[SalesOrderSummaryExportConfig::SFTP_PRODUCT_DEEPLINK_EXPORT_FILES_FOLDER
 // ---------- FactFinderExport
 $config[FactFinderConstants::FTP_FACT_FINDER_FILES_FOLDER_NAME] = 'factfinder/prod';
 
-
 $config[NewRelicConstants::NEW_RELIC_ENVIRONMENT] = 'DE_prod';
+
+// ---------- FACT-Finder NG API
+$config[FactFinderNgConstants::FACT_FINDER_URL] = 'https://globus-sb.fact-finder.de/fact-finder'; # Fact-Finder URL
+$config[FactFinderNgConstants::FACT_FINDER_CHANNEL] = 'Spryker'; # Fact-Finder channel value
+$config[FactFinderNgConstants::FACT_FINDER_USERNAME] = 'kps_admin'; # Fact-Finder user for authorization.
+$config[FactFinderNgConstants::FACT_FINDER_PASSWORD] = 'glo123SPRY!kps'; # Fact-Finder password for authorization.

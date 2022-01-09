@@ -36,6 +36,11 @@ class ProductManagementDependencyProvider extends SprykerProductManagementDepend
 
     public const FACADE_MERCHANT = 'FACADE_MERCHANT';
 
+    /**
+     * @param \Spryker\Zed\Kernel\Container $container
+     *
+     * @return \Spryker\Zed\Kernel\Container
+     */
     public function provideCommunicationLayerDependencies(Container $container)
     {
         $container = parent::provideCommunicationLayerDependencies($container);

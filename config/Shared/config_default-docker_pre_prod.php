@@ -36,6 +36,3 @@ $config[SalesOrderSummaryExportConfig::SFTP_PRODUCT_DEEPLINK_EXPORT_FILES_FOLDER
 $config[FactFinderConstants::FTP_FACT_FINDER_FILES_FOLDER_NAME] = 'factfinder/stage';
 
 $config[NewRelicConstants::NEW_RELIC_ENVIRONMENT] = 'DE_dev';
-
-
-

@@ -14,7 +14,7 @@ if ($applicationEnv === 'docker_prod' || $applicationEnv === 'docker_prod_CZ') {
     $environment = 'stage';
 } elseif ($applicationEnv === 'docker_dev_CZ') {
     $environment = 'stage';
-} elseif($applicationEnv === 'docker_pre_prod'){
+} elseif ($applicationEnv === 'docker_pre_prod') {
     $environment = 'dev';
 } else {
     $environment = 'local';
