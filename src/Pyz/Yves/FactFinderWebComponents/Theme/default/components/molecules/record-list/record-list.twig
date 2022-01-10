@@ -134,6 +134,7 @@
             {% endset %}
 
             {% verbatim %}
+                <a href="{{ record.ProductUrl }}" style="text-decoration: none;">
                 <div data-redirect="{{ record.ProductUrl }}"
                     data-redirect-target="_self">
             {% endverbatim %}
@@ -170,6 +171,7 @@
 
                 <hr class="{{ config.name }}__divider" />
                 </div>
+                </a>
                 <div class="{{ config.name }}__add-to-cart-btn">
 
                 {% set amount %}

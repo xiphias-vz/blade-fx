@@ -38,37 +38,38 @@
             width: 100%;
         }
 
-        .ff-record-item {
-            padding: rem(10);
-            z-index: 0;
-            margin: rem(5);
-            max-width: 23%;
-            transition: 0.5s;
-            transition-timing-function: ease-in;
-            box-shadow: 0 0 rem(20) $setting-color-lightest;
-            height: 100%;
-            color: $setting-color-black;
-            background: $setting-color-white;
-            padding-bottom: rem(14);
-            border-radius: rem(2);
-            border: rem(1) solid $setting-color-gray-1;
-
-            @include helper-breakpoint-media-max($sm-max){
-               min-width: 100%;
-            }
-            @include helper-breakpoint-media-between($md-min, $md-max){
-                min-width: 0;
-                margin: 0;
-            }
-        }
-
         ff-record {
-            padding: rem(10);
             margin-bottom: rem(30);
+            cursor: pointer;
+
+            @include helper-breakpoint-media-min($md-min){
+                margin: 0 rem(10) rem(32);
+            }
+
+            @include helper-breakpoint-media-between($md-min, $smd-max){
+                margin: 0 rem(8) rem(32);
+            }
+
+            @include helper-breakpoint-media-min($lg-min){
+                margin: 0 rem(5) rem(32);
+            }
 
             @include helper-breakpoint-media-max($sm-max){
                 margin-bottom: rem(15);
                 margin-top: 0;
+            }
+        }
+            @include helper-breakpoint-media-min($md-min){
+                .col--md-4{
+                    width: 30%;
+                    min-width: 30%;
+            }
+        }
+
+            @include helper-breakpoint-media-min($lg-min){
+            .col--lg-3{
+                width: 23.5%;
+                min-width: 23.5%;
             }
         }
 
@@ -81,14 +82,18 @@
             box-shadow: 0 0 rem(20) $setting-color-lightest;
             border: rem(1) solid $setting-color-gray-1;
 
+            @include helper-breakpoint-media-max($sm-max){
+                padding: rem(0) rem(5) rem(5);
+            }
+
             @include helper-breakpoint-media-min($md-min){
-                height: rem(435);
+                height: rem(425);
             }
 
         }
         .myBtn{
             justify-content: center;
-            min-width: 100%;
+            min-width: 90%;
             font-size: rem(11);
             @include helper-breakpoint-media-max($sm-max){
                 margin-top: rem(12);
@@ -280,6 +285,10 @@
         &__info-more{
             color: #71747c;
             padding-top: 5px;
+        }
+
+        &__amount{
+            padding: 0 rem(10);
         }
 
         &__amount--original{
