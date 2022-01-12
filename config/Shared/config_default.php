@@ -25,7 +25,7 @@ use Pyz\Shared\TimeSlot\TimeSlotConstants;
 use Pyz\Shared\TwigCache\TwigCacheConstants;
 use Spryker\Client\RabbitMq\Model\RabbitMqAdapter;
 use Spryker\Glue\Log\Plugin\GlueLoggerConfigPlugin;
-use Spryker\Service\FlysystemFtpFileSystem\Plugin\Flysystem\FtpFileSystemBuilderPlugin;
+use Spryker\Service\FlysystemFtpFileSystem\Plugin\Flysystem\FtpFilesystemBuilderPlugin;
 use Spryker\Service\FlysystemLocalFileSystem\Plugin\Flysystem\LocalFilesystemBuilderPlugin;
 use Spryker\Shared\Acl\AclConstants;
 use Spryker\Shared\Auth\AuthConstants;
@@ -588,7 +588,7 @@ $config[FileSystemConstants::FILESYSTEM_SERVICE] = [
         'root' => getenv('GLOBUS_FTP_FACT_FINDER_ROOT'),
     ],*/
     'globus_ftp_fact_finder' => [
-        'sprykerAdapterClass' => FtpFileSystemBuilderPlugin::class,
+        'sprykerAdapterClass' => FtpFilesystemBuilderPlugin::class,
         'host' => 'globus-sb.fact-finder.de',
         'port' => 21,
         'username' => 'globus-sb',
