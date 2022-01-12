@@ -213,7 +213,6 @@ class GsoaProductConsole extends Console
                     $result = $client->getProductCategories($page, 20000);
                     $counter = 0;
                     file_put_contents("//data/data/import/spryker/1.globusCZ_categories.csv", "categoryIdStibo|parentIdCategoryStibo|name|metatitle|metadescription" . PHP_EOL);
-                    file_put_contents("//data/data/import/spryker/1.globusCZ_categories.csv", "cls_czr_click_and_collect|cls_czr_click_and_collect|||" . PHP_EOL, FILE_APPEND);
                     $categories = [];
                     foreach ($result["productCategoriesEshop"] as $item) {
                         if (!str_starts_with($item["categoryId"], 'cls_czc_')) {
