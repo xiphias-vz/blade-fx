@@ -26,6 +26,9 @@
     encodedBarcode: encodedBarcode,
     barcodeNumber: barcodeNumber,
     isDepositAllowed: isDepositAllowed,
+    barcodeNumber: barcodeNumber,
+    numberOfOrders: numberOfOrders,
+    meinGlobusCart: meinGlobusCart,
 } %}
 
 {% set pickedItemCount = data.collectOrder.pickedItemsCount %}
@@ -65,6 +68,10 @@
                 containerInfo: data.containerInfo,
                 containerNumber: data.containerNumber,
                 isDepositAllowed: data.isDepositAllowed,
+                orderReference: data.orderReference,
+                fullName: data.fullName,
+                numberOfOrders: data.numberOfOrders,
+                meinGlobusCart: data.meinGlobusCart,
             },
             attributes: {
                 'data-order': data.collectNumber | lower,

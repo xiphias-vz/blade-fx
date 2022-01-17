@@ -20,8 +20,10 @@ use Generated\Shared\Transfer\OrderUpdateRequestTransfer;
 use Generated\Shared\Transfer\PerformanceSalesOrderReportTransfer;
 use Generated\Shared\Transfer\PickingSalesOrderCriteriaTransfer;
 use Generated\Shared\Transfer\UserTransfer;
+use Orm\Zed\Customer\Persistence\SpyCustomerQuery;
 use Orm\Zed\PerformancePickingReport\Persistence\PyzPerformanceSalesOrderReportQuery;
 use Orm\Zed\Sales\Persistence\Map\SpySalesOrderTableMap;
+use Orm\Zed\Sales\Persistence\SpySalesOrderQuery;
 use Pyz\Shared\Messages\MessagesConfig;
 use Pyz\Shared\Oms\OmsConfig;
 use Pyz\Shared\Product\ProductConfig;
@@ -175,6 +177,24 @@ class CollectByCustomerController extends AbstractController
             ->findOrderByIdSalesOrderForStoreApp($idSalesOrder);
         $userTransfer = $this->getCurrentUser($request);
 
+        $emailName = $salesOrderTransfer->getEmail();
+
+        $query = SpySalesOrderQuery::create()
+                ->filterByEmail($emailName)
+                ->select([SpySalesOrderTableMap::COL_ORDER_REFERENCE])
+                ->find();
+
+        $meinGlobus = SpyCustomerQuery::create()
+                        ->filterByEmail($emailName)
+                        ->findOne();
+
+        $meinGlobusCart = '';
+        if (isset($meinGlobus)) {
+            $meinGlobusCart = $meinGlobus->getMyGlobusCard();
+        }
+
+        $numberOfOrders = count($query->getData());
+
         if (!$this->getFactory()->getPermissionAccessFacade()->isAccessAllowed(
             $salesOrderTransfer,
             $userTransfer,
@@ -308,6 +328,8 @@ class CollectByCustomerController extends AbstractController
             'encodedBarcode' => $this->getFactory()->getBarcodeGenerator()->getEncodedBarcode($salesOrderTransfer->getOrderReference()),
             'barcodeNumber' => '97400' . $salesOrderTransfer->getOrderReference(),
             'isDepositAllowed' => $salesOrderTransfer->getIsDepositAllowed(),
+            'numberOfOrders' => $numberOfOrders,
+            'meinGlobusCart' => $meinGlobusCart,
         ];
     }
 

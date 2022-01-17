@@ -64,6 +64,20 @@ $setting-item-border-radius: rem(8);
             padding: 0 0 rem(12);
             line-height: rem(25);
             color: $setting-color-gray-11;
+            span {
+                margin-left: rem(5);
+            }
+        }
+
+        &__customer-info {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        &__order-reference {
+            padding: rem(12) 0 rem(12);
+            line-height: rem(25);
+            font-size: rem(16);
         }
 
         &__collect {

@@ -240,3 +240,4 @@ picking.scanning-container.continue, "Weiter"
 picking.scanning-container.cancel, "Abbrechen"
 picking.scanning-container.isDepositAllowedChecked.popup.title, "Transportbox"
 picking.scanning-container.isDepositAllowedChecked.popup.text, "Der Kunde möchte Transportboxen. Bist du sicher, dass eine Transportbox gescannt wurde?"
+first.customer,ERSTKUNDE

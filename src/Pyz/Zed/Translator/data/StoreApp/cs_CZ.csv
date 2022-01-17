@@ -239,3 +239,4 @@ picking.scanning-container.continue, "Pokračovat"
 picking.scanning-container.cancel, "Zrušení"
 picking.scanning-container.isDepositAllowedChecked.popup.title, "Schránka"
 picking.scanning-container.isDepositAllowedChecked.popup.text, "Zákazník chce přepravní boxy. Jste si jisti, že byla naskenována přepravní krabice?"
+first.customer,PRVNÍ ZÁKAZNÍK

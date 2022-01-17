@@ -201,3 +201,4 @@ picking.scanning-container.continue, "Continue"
 picking.scanning-container.cancel, "Cancel"
 picking.scanning-container.isDepositAllowedChecked.popup.title, "Deposit box"
 picking.scanning-container.isDepositAllowedChecked.popup.text, "The customer wants transport boxes. Are you sure that a transport box has been scanned?"
+first.customer,FIRST CUSTOMER
