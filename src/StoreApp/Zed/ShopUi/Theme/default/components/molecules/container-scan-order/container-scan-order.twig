@@ -76,7 +76,7 @@
                 <div class="list-containers-shelf" style="margin-bottom: 20px">
                     {% for container in data.usedContainersWithShelf %}
                         <p>
-                            <span>{{ container.containerID }}</span> > <span style="font-weight: bold">{{ container.shelfID }}</span>
+                           <span>{{ container.zoneAbbrevation }}</span> > <span>{{ container.containerID }}</span> > <span style="font-weight: bold">{{ container.shelfID }}</span>
                         </p>
                     {% endfor %}
                 </div>

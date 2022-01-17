@@ -10,6 +10,20 @@
         &__containers {
             display: flex;
             flex-direction: column;
+            min-width: rem(250);
+
+            @include helper-breakpoint-media-max(400px)  {
+                margin-left: rem(5);
+            }
+        }
+
+        &__position {
+            width: rem(50);
+
+            @include helper-breakpoint-media-max(400px)  {
+                margin-left: rem(5);
+            }
+
         }
 
         &__hr-line{

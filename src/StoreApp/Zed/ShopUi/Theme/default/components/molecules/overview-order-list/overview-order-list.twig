@@ -32,7 +32,7 @@
                             }
                         } %}
                     </div>
-                    <div>
+                    <div class="{{ config.name }}__position">
                             <span>{{ order.articlesCount }}</span>/<span>{{ order.articlesQuantity }}</span>
                     </div>
                     <div class="{{ config.name }}__containers">
@@ -41,7 +41,11 @@
                         {% set countContainer = countContainer + 1 %}
                         <div>
                             <span style="font-weight: normal" >- {{ countContainer }} -</span>
+                            <span style="font-weight: normal">{{ container.zoneAbbrevation }}</span> >
                             <span>{{ container.containerID }}</span>
+                            {% if container.shelfID != "" %}
+                                <span> > {{ container.shelfID }}</span>
+                            {% endif %}
                         </div>
                     {% endfor %}
                     </div>

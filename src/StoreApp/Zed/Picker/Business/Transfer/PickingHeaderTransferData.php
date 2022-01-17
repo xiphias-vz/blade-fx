@@ -142,21 +142,23 @@ class PickingHeaderTransferData
            case when popb.fk_user is null then 0 else 1 end as isLocked,
            sso.is_substitution_allowed,
            sm.is_transportbox_enabled,
-           sso.is_deposit_allowed
+           sso.is_deposit_allowed,
+           so.zone_abbreviation
     from spy_sales_order sso
         inner join
          (
              select ssoi.fk_sales_order,
                 count(distinct ssoi.product_number) as articles_count,
                 sum(ssoi.quantity) as articles_quantity,
-                max(IFNULL(ssoi.item_paused, 0)) as is_paused
+                max(IFNULL(ssoi.item_paused, 0)) as is_paused,
+                ppz.abbreviation as zone_abbreviation
              from spy_sales_order_item ssoi
                       inner join spy_oms_order_item_state soois
                                  on ssoi.fk_oms_order_item_state = soois.id_oms_order_item_state
                 inner join pyz_picking_zone ppz on ssoi.pick_zone = ppz.name
              where soois.name like '" . OmsConfig::STORE_STATE_READY_FOR_PICKING . "'
                 and ppz.id_picking_zone = " . $idZone . "
-             group by ssoi.fk_sales_order
+             group by ssoi.fk_sales_order, ppz.abbreviation
          ) so on sso.id_sales_order = so.fk_sales_order
         inner join spy_merchant sm on sso.merchant_reference = sm.merchant_reference
         left outer join spy_customer sc on sso.customer_reference = sc.customer_reference
@@ -172,6 +174,7 @@ class PickingHeaderTransferData
         $transfer = new PickingHeaderTransfer();
         $transfer
             ->setIdZone($idZone)
+            ->setZoneAbbrevation($data[0]["zone_abbreviation"])
             ->setIdUser($this->userFacade->getCurrentUser()->getIdUser());
         foreach ($data as $item) {
             $order = new PickingOrderTransfer();
@@ -294,7 +297,8 @@ class PickingHeaderTransferData
                 ->setIdUser($transfer->getIdUser())
                 ->setIdZone($transfer->getIdZone())
                 ->setIsAdded(true)
-                ->setPickingColor($orderMod->getPickingColor());
+                ->setPickingColor($orderMod->getPickingColor())
+                ->setZoneAbbrevation($transfer->getZoneAbbrevation());
             $orderMod->addPickingContainer($containerId, $container);
             $dataUpdated = true;
         }
@@ -641,9 +645,11 @@ class PickingHeaderTransferData
                 ppso.shelf_code as shelfID,
                 popb.fk_user as id_user,
                 ppso.fk_picking_zone as id_zone,
-                false as is_added
+                false as is_added,
+                ppz.abbreviation as zone_abbrevation
             from pyz_picking_sales_order ppso
                 left outer join pyz_order_picking_block popb on ppso.fk_sales_order = popb.fk_sales_order and ppso.fk_picking_zone = popb.fk_picking_zone
+                left outer join pyz_picking_zone ppz on ppso.fk_picking_zone = ppz.id_picking_zone
             where ppso.fk_sales_order in (" . $whereList . ")";
         $data = $this->getResult($sql);
 

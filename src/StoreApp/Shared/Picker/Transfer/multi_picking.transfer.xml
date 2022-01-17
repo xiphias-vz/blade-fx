@@ -15,6 +15,7 @@
         <property name="pickedArticlesCount" type="int"/>
         <property name="idUser" type="int"/>
         <property name="idGlobalPickReport" type="int"/>
+        <property name="zoneAbbrevation" type="string"/>
     </transfer>
 
     <transfer name="PickingOrderTransfer">
@@ -53,6 +54,7 @@
         <property name="idZone" type="int"/>
         <property name="isAdded" type="bool"/>
         <property name="parent" type="PickingOrder"/>
+        <property name="zoneAbbrevation" type="string"/>
     </transfer>
 
     <transfer name="PickingOrderItemTransfer">
