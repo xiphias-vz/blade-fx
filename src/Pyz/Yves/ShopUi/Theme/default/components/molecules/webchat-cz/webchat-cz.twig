@@ -1,0 +1,17 @@
+<script type="text/javascript">
+    (function () {
+        var scr = document.createElement('script');
+        scr.type = 'text/javascript';
+        scr.charset = 'UTF-8';
+        scr.async = true;
+        scr.src = '//app.mluvii.com/widget/OOWidget.js';
+        scr.$owidgetOnLoad = function (owidget)
+        {  if (!owidget.isSupported)
+        { return; }
+            owidget.init(["210bfdba-ca18-4e6b-98a0-267a68623a64",443], "Globus");
+            owidget.connectToServer();
+        };
+        var ffs = document.getElementsByTagName('script')[0];
+        ffs.parentNode.insertBefore(scr, ffs);
+    })();
+</script>

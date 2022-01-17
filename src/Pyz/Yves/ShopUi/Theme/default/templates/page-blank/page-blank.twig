@@ -18,6 +18,11 @@
     <html lang="{{ data.locale }}">
     <head>
         <script id="Cookiebot" src="https://consent.cookiebot.com/uc.js" data-cbid="{{ data.cookieBotId }}" type="text/javascript" async></script>
+
+        {% if data.currentCodeBucket == 'CZ' %}
+            {% include molecule('webchat-cz') only %}
+        {% endif %}
+
         {% if data.currentCookieStore == '' %}
             {% set market = 'NO_STORE' %}
         {% else %}
