@@ -2435,7 +2435,7 @@ cart.quantity.adjusted,"Die angeforderte Artikelmenge wurde angepasst, soweit di
 cart.quantity.adjusted,"Požadované množství produktu bylo upraveno, protože požadované množství není k dispozici.",cs_CZ
 catalog.sale,Sale,en_US
 catalog.sale,Angebote,de_DE
-catalog.sale,"prodej",cs_CZ
+catalog.sale,"Akce",cs_CZ
 catalog.new,New,en_US
 catalog.new,Neu,de_DE
 catalog.new,"Nové",cs_CZ
@@ -4223,7 +4223,7 @@ product.filter.country.origin.properties,Země původu,cs_CZ
 product.filter.wine.quality.properties,Klasifikace kvality vína,cs_CZ
 product.filter.wine.quality.properties,Klassifizierung der Weinqualität,de_DE
 product.filter.sales.properties,Angebote,de_DE
-product.filter.sales.properties,Prodej,cs_CZ
+product.filter.sales.properties,"Akce",cs_CZ
 product.filter.sales.properties,Sales,en_US
 product.filter.delete.category,X Auswahl zurücksetzen,de_DE
 product.filter.delete.category,X Resetovat výběr,cs_CZ
