@@ -5046,3 +5046,5 @@ ff.sale.group.caption,"Sales",en_US
 ff.sale.group.element,"Alle Angebote",de_DE
 ff.sale.group.element,"Prodej",cs_CZ
 ff.sale.group.element,"All offers",en_US
+ff.remove.filter.checkbox,"Filter zurücksetzen",de_DE
+ff.remove.filter.checkbox,"Remove filter",en_US

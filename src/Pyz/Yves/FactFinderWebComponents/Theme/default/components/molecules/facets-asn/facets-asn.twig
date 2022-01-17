@@ -42,6 +42,8 @@
                         {% endverbatim %}
                     </span>
                 </div>
+
+                <div data-container="removeFilter">{{ 'ff.remove.filter.checkbox' | trans }}</div>
             </ff-asn-group-element>
 
             <div slot="groupCaption" class="groupCaption">
@@ -79,6 +81,8 @@
             <div opened data-container="detailedLinks">
                 <div id="sale_group" data-content="detailedLinks"></div>
             </div>
+
+            <div data-container="removeFilter">{{ 'ff.remove.filter.checkbox' | trans }}</div>
         </ff-asn-group>
 
         <ff-asn-group filter-style="TREE" opened class="cursor" unresolved>
@@ -124,7 +128,7 @@
                 <span class="filterArrowDown"></span>
             </div>
 
-            <div data-container="removeFilter">Remove Filter</div>
+            <div data-container="removeFilter">{{ 'ff.remove.filter.checkbox' | trans }}</div>
 
             <ff-slider-control submit-on-input="true" unresolved>
                 <input data-control='1'>
