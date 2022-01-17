@@ -12,6 +12,8 @@ use Spryker\Shared\Auth\AuthConstants;
 use Spryker\Zed\Auth\Communication\Controller\LoginController as SprykerLoginController;
 use StoreApp\Zed\Auth\AuthConfig;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Security\Csrf\CsrfToken;
+use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
 
 /**
  * @method \Spryker\Zed\Auth\Communication\AuthCommunicationFactory getFactory()
@@ -20,6 +22,8 @@ use Symfony\Component\HttpFoundation\Request;
  */
 class LoginController extends SprykerLoginController
 {
+    protected const SERVICE_FORM_CSRF_PROVIDER = 'form.csrf_provider';
+
     /**
      * @param \Symfony\Component\HttpFoundation\Request $request
      *
@@ -27,6 +31,17 @@ class LoginController extends SprykerLoginController
      */
     public function indexAction(Request $request)
     {
+        $tokenInfo = $request->request->get('auth');
+
+        if ($tokenInfo != null) {
+            $tokenValidation = $this->isCsrfTokenValid('auth', $request);
+            if ($tokenValidation === false) {
+                $refreshedToken = $this->getCsrfTokenManager()->refreshToken('auth');
+                $tokenInfo['_token'] = $refreshedToken->getValue();
+                $request->request->set('auth', $tokenInfo);
+            }
+        }
+
         $form = $this
             ->getFactory()
             ->createLoginForm()
@@ -63,5 +78,30 @@ class LoginController extends SprykerLoginController
         return $this->viewResponse([
             'form' => $form->createView(),
         ]);
+    }
+
+    /**
+     * @param string $id
+     * @param \Symfony\Component\HttpFoundation\Request $request
+     *
+     * @return bool
+     */
+    protected function isCsrfTokenValid(string $id, Request $request): bool
+    {
+        $tokenInfo = $request->request->get('auth');
+
+        $tokenValue = $tokenInfo['_token'];
+
+        $csrfToken = new CsrfToken($id, $tokenValue);
+
+        return $this->getCsrfTokenManager()->isTokenValid($csrfToken);
+    }
+
+    /**
+     * @return \Symfony\Component\Security\Csrf\CsrfTokenManagerInterface
+     */
+    protected function getCsrfTokenManager(): CsrfTokenManagerInterface
+    {
+        return $this->getApplication()->get(static::SERVICE_FORM_CSRF_PROVIDER);
     }
 }
