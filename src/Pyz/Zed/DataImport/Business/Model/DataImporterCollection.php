@@ -56,10 +56,12 @@ class DataImporterCollection extends SprykerDataImporterCollection
             Propel::disableInstancePooling();
 
             if ($importType == "category") {
-                $filePath = getcwd() . '/data/import/' . $dataImporterConfigurationTransfer->getReaderConfiguration()->getFileName();
-                if (file_exists($filePath) && filesize($filePath) > 100) {
-                    $this->deactivateAllNavigationNodes($this->resolveIdNavigation(CategoryWriterStep::NAVIGATION_MODE_DESKTOP));
-                    $this->deactivateAllNavigationNodes($this->resolveIdNavigation(CategoryWriterStep::NAVIGATION_MODE_MOBILE));
+                if (!$this->getIsPartialImport($dataImporterConfigurationTransfer)) {
+                    $filePath = getcwd() . '/data/import/' . $dataImporterConfigurationTransfer->getReaderConfiguration()->getFileName();
+                    if (file_exists($filePath) && filesize($filePath) > 100) {
+                        $this->deactivateAllNavigationNodes($this->resolveIdNavigation(CategoryWriterStep::NAVIGATION_MODE_DESKTOP));
+                        $this->deactivateAllNavigationNodes($this->resolveIdNavigation(CategoryWriterStep::NAVIGATION_MODE_MOBILE));
+                    }
                 }
             }
 
@@ -70,7 +72,9 @@ class DataImporterCollection extends SprykerDataImporterCollection
             );
 
             if ($importType == "product") {
-                $this->updateProductActivity();
+                if (!$this->getIsPartialImport($dataImporterConfigurationTransfer)) {
+                    $this->updateProductActivity();
+                }
                 $this->insertDataToAssortmentZoneTable();
                 $this->mapAssortmentZoneWithPickZoneAndMerchant();
             }
@@ -80,7 +84,9 @@ class DataImporterCollection extends SprykerDataImporterCollection
             }
 
             if ($importType == "category") {
-                $this->updateCategoriesActivity();
+                if (!$this->getIsPartialImport($dataImporterConfigurationTransfer)) {
+                    $this->updateCategoriesActivity();
+                }
             }
 
             Propel::enableInstancePooling();
@@ -245,5 +251,19 @@ class DataImporterCollection extends SprykerDataImporterCollection
         }
 
         return $navigationEntity->getIdNavigation();
+    }
+
+    /**
+     * @param \Generated\Shared\Transfer\DataImporterConfigurationTransfer|null $dataImporterConfigurationTransfer
+     *
+     * @return bool
+     */
+    protected function getIsPartialImport(?DataImporterConfigurationTransfer $dataImporterConfigurationTransfer): bool
+    {
+        if ($dataImporterConfigurationTransfer->getReaderConfiguration()->getFileName()) {
+            return str_contains($dataImporterConfigurationTransfer->getReaderConfiguration()->getFileName(), '_partial.');
+        }
+
+        return false;
     }
 }

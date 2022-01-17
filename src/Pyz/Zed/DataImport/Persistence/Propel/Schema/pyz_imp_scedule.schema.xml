@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<database xmlns="spryker:schema-01"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          name="zed"
+          namespace="Orm\Zed\DataImport\Persistence"
+          package="src.Orm.Zed.DataImport.Persistence"
+          xsi:schemaLocation="spryker:schema-01 https://static.spryker.com/schema-01.xsd">
+
+    <table name="pyz_imp_scedule">
+        <column name="id_imp_scedule" required="true" type="BIGINT" autoIncrement="true" primaryKey="true"/>
+        <column name="import_name" type="VARCHAR" size="100" required="true"/>
+        <column name="store" type="VARCHAR" size="100"/>
+        <column name="modified_from" required="true" type="TIMESTAMP"/>
+        <column name="updated_at" required="true" type="TIMESTAMP"/>
+
+        <index>
+            <index-column name="import_name"/>
+        </index>
+    </table>
+
+</database>

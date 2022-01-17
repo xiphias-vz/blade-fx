@@ -7,11 +7,10 @@
 
 namespace Pyz\Zed\GsoaRestApiClient\Communication\Console;
 
+use DateInterval;
+use DateTime;
 use Exception;
-use Orm\Zed\AvailabilityStorage\Persistence\Map\SpyAvailabilityStorageTableMap;
-use Orm\Zed\AvailabilityStorage\Persistence\SpyAvailabilityStorageQuery;
-use Orm\Zed\PriceProductStorage\Persistence\Map\SpyPriceProductAbstractStorageTableMap;
-use Orm\Zed\PriceProductStorage\Persistence\SpyPriceProductAbstractStorageQuery;
+use Orm\Zed\DataImport\Persistence\PyzImpSceduleQuery;
 use Orm\Zed\Product\Persistence\Map\SpyProductTableMap;
 use Orm\Zed\Product\Persistence\SpyProductQuery;
 use Pyz\Shared\GsoaRestApiClient\Provider\ProductCatalogProvider;
@@ -43,6 +42,8 @@ class GsoaProductConsole extends Console
     public const OPTION_LIMIT = 'limit';
     public const OPTION_LIMIT_SHORT = 'l';
     private const COLUMN_FICTIVE_STOCK = 'hasFictiveStock';
+    private const REQUEST_MAX_ARRAY_LENGTH = 100;
+    private const DATA_IMPORT_FOLDER = "//data/data/import/spryker/";
 
     /**
      * @return void
@@ -84,7 +85,11 @@ class GsoaProductConsole extends Console
         } else {
             $limit = (int)$limit;
         }
+        $dateTo = (new DateTime('NOW'))->format('Y-m-d H:i');
         $counter = 0;
+        if (empty($store)) {
+            $store = 4007;
+        }
 
         try {
             $client = new ProductCatalogProvider();
@@ -98,19 +103,82 @@ class GsoaProductConsole extends Console
                 case "getProducts":
                     $result = $client->getProducts($filter, true, $page, $pageSize);
                     break;
-                case "getProductsModified":
-                    $result = $client->getProductsModified($modifiedFrom, true);
+                case "updateProducts":
+                    if (empty($modifiedFrom)) {
+                        $modifiedFrom = $this->getLastImportDate("product", null);
+                    }
+                    $fileArticlePath = $this->getImportFilePathAndName("2.globusCZ_articles", true);
+                    $fileAlternativeEanPath = $this->getImportFilePathAndName("99.globusCZ_article_gtins", true);
+                    file_put_contents($fileAlternativeEanPath, implode('|', array_keys(AlternativeEanMapping::$dataSetSchema)) . PHP_EOL);
+                    file_put_contents($fileArticlePath, implode('|', array_keys(ProductMapping::$dataSetSchema)) . PHP_EOL);
+
+                    $map = new ProductMapping();
+                    $mapAlternativeEan = new AlternativeEanMapping();
+                    $pageSize = 200;
+                    $pageCounter = 0;
+                    $returnablePackagingsPrices = [];
+
+                    $qry = new SpyProductQuery();
+                    $products = $qry->select([SpyProductTableMap::COL_SAP_NUMBER, SpyProductTableMap::COL_IS_ACTIVE])
+                        ->find()->getArrayCopy('spy_product.sap_number');
+
+                    try {
+                        $result = $client->getProductsModified($modifiedFrom, true);
+                        $modifiedProducts = array_unique($result["modifiedProducts"]);
+                        $productsToRequest = array_slice($modifiedProducts, 0, static::REQUEST_MAX_ARRAY_LENGTH);
+                        $output->writeln("Modified products: " . count($modifiedProducts) . " from " . $modifiedFrom);
+                        while (count($productsToRequest) > 0) {
+                            $sapFilter = "WamasNr:in " . implode(",", $productsToRequest);
+                            $result = $client->getProducts($sapFilter, true, $page, $pageSize);
+                            if (isset($result["products"])) {
+                                $result["products"] = $this->getPresentationStock($output, $client, $result["products"], 0, $store);
+                                foreach ($result["products"] as $item) {
+                                    $this->setReturnablePackagins($item, $returnablePackagingsPrices, $client, $store);
+                                    $d = $map->mapValues($item);
+                                    if ($d["active"] === "1" || array_key_exists($d["sapnumber"], $products)) {
+                                        $counter++;
+                                        $d["Classification_ID"] = implode(";", $item["eshopCategories"]);
+                                        file_put_contents($fileArticlePath, implode('|', $d) . PHP_EOL, FILE_APPEND);
+                                        $linesAlternativeEan = $mapAlternativeEan->getEanLines($item);
+                                        if (count($linesAlternativeEan) > 1) {
+                                            foreach ($linesAlternativeEan as $line) {
+                                                file_put_contents($fileAlternativeEanPath, implode('|', $line) . PHP_EOL, FILE_APPEND);
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                            $pageCounter++;
+                            $output->writeln('Pages done ' . $pageCounter . ', rows ' . $counter);
+                            $modifiedProducts = array_slice($modifiedProducts, static::REQUEST_MAX_ARRAY_LENGTH);
+                            $productsToRequest = array_slice($modifiedProducts, 0, static::REQUEST_MAX_ARRAY_LENGTH);
+                        }
+                        $this->setLastImportDate("product", null, $modifiedFrom, $dateTo);
+                    } catch (Exception $ex) {
+                        $output->writeln("ERROR: " . $ex->getMessage());
+                    }
+                    if ($map->getProductCountWithOutEan() > 0) {
+                        $output->writeln("Product count with no EAN code: " . $map->getProductCountWithOutEan());
+                    }
+                    $output->writeln("imported: " . $counter . " rows");
+
                     break;
                 case "getProductPricesByHouse":
                     $result = $client->getProductPricesByHouse($store, true, 'DEFAULT', $validFrom, $filter, $page, $pageSize);
                     break;
                 case "getProductPricesByHouseModified":
+                    if (empty($modifiedFrom)) {
+                        $modifiedFrom = $this->getLastImportDate("product-price");
+                    }
                     $result = $client->getProductPricesByHouseModified($store, $modifiedFrom, true);
                     break;
                 case "getProductStocksByHouse":
                     $result = $client->getProductStocksByHouse($store, true, $filter, $page, $pageSize);
                     break;
                 case "getProductStocksByHouseModified":
+                    if (empty($modifiedFrom)) {
+                        $modifiedFrom = $this->getLastImportDate("product-stock");
+                    }
                     $result = $client->getProductStocksByHouseModified($store, $modifiedFrom, true);
                     break;
                 case "getProductRebatesByHouse":
@@ -130,11 +198,8 @@ class GsoaProductConsole extends Console
                     break;
                 case "importProducts":
                     //$data = [];
-                    $fileArticlePath = "//data/data/import/spryker/2.globusCZ_articles.csv";
-                    $fileAlternativeEanPath = "//data/data/import/spryker/99.globusCZ_article_gtins.csv";
-                    if (empty($store)) {
-                        $store = 4007;
-                    }
+                    $fileArticlePath = $this->getImportFilePathAndName("2.globusCZ_articles", false);
+                    $fileAlternativeEanPath = $this->getImportFilePathAndName("99.globusCZ_article_gtins", false);
                     file_put_contents($fileAlternativeEanPath, implode('|', array_keys(AlternativeEanMapping::$dataSetSchema)) . PHP_EOL);
                     file_put_contents($fileArticlePath, implode('|', array_keys(ProductMapping::$dataSetSchema)) . PHP_EOL);
 
@@ -156,33 +221,11 @@ class GsoaProductConsole extends Console
                             if (is_array($result["products"]) && count($result["products"]) < 1) {
                                 break;
                             }
-                            $result["products"] = $this->getPresentationStock($client, $result["products"], 0, $store);
+                            $result["products"] = $this->getPresentationStock($output, $client, $result["products"], 0, $store);
                             foreach ($result["products"] as $item) {
                                 if (count($item["eshopCategories"]) > 0 && !empty($item["vatRate"])) {
                                     $counter++;
-                                    if (is_array($item["returnablePackagings"])) {
-                                        $returnableCount = 0;
-                                        foreach ($item["returnablePackagings"] as $packaging) {
-                                            $returnablePackagingsWamasNr = $packaging["productWamasNr"];
-                                            $price = null;
-                                            $plu = null;
-                                            if (!array_key_exists($returnablePackagingsWamasNr, $returnablePackagingsPrices)) {
-                                                $packageProduct = $client->getProducts("WamasNr:in " . $returnablePackagingsWamasNr);
-                                                if (isset($packageProduct["products"][0]["eanCodes"][0]["code"])) {
-                                                    $plu = $packageProduct["products"][0]["eanCodes"][0]["code"];
-                                                }
-                                                $prices = $client->getProductPricesByHouse($store, true, 'ESHOP', "", "ProductWamasNr:in " . $returnablePackagingsWamasNr, 0, 10);
-                                                $price = $this->getValidPrice($prices["productPrices"][0]["prices"]);
-                                                $returnablePackagingsPrices[$returnablePackagingsWamasNr] = ["price" => $price, "plu" => $plu];
-                                            } else {
-                                                $price = $returnablePackagingsPrices[$returnablePackagingsWamasNr]["price"];
-                                                $plu = $returnablePackagingsPrices[$returnablePackagingsWamasNr]["plu"];
-                                            }
-                                            $item["returnablePackagings"][$returnableCount]["price"] = $price;
-                                            $item["returnablePackagings"][$returnableCount]["plu"] = $plu;
-                                            $returnableCount++;
-                                        }
-                                    }
+                                    $this->setReturnablePackagins($item, $returnablePackagingsPrices, $client, $store);
                                     $d = $map->mapValues($item);
                                     $d["Classification_ID"] = implode(";", $item["eshopCategories"]);
                                     file_put_contents($fileArticlePath, implode('|', $d) . PHP_EOL, FILE_APPEND);
@@ -210,8 +253,10 @@ class GsoaProductConsole extends Console
                     $output->writeln("imported: " . $counter . " rows");
                     break;
                 case "importCategories":
+                    $fileCategoryPath = $this->getImportFilePathAndName("1.globusCZ_categories", false);
                     $result = $client->getProductCategories($page, 20000);
                     $counter = 0;
+                    file_put_contents($fileCategoryPath, "categoryIdStibo|parentIdCategoryStibo|name|metatitle|metadescription" . PHP_EOL);
                     file_put_contents("//data/data/import/spryker/1.globusCZ_categories.csv", "categoryIdStibo|parentIdCategoryStibo|name|metatitle|metadescription" . PHP_EOL);
                     $categories = [];
                     foreach ($result["productCategoriesEshop"] as $item) {
@@ -232,7 +277,7 @@ class GsoaProductConsole extends Console
                         $cat["name"] = $item["categoryName"];
                         $cat["metatitle"] = "";
                         $cat["metadescription"] = "";
-                        file_put_contents("//data/data/import/spryker/1.globusCZ_categories.csv", implode('|', $cat) . PHP_EOL, FILE_APPEND);
+                        file_put_contents($fileCategoryPath, implode('|', $cat) . PHP_EOL, FILE_APPEND);
                     }
                     break;
                 case "importProductPrice":
@@ -241,29 +286,47 @@ class GsoaProductConsole extends Console
                 case "importProductStock":
                     $this->generateProductStockFile($output, $client, $store, $counter, $result, null);
                     break;
+                case "updateCategories":
+                    if (empty($modifiedFrom)) {
+                        $modifiedFrom = $this->getLastImportDate("category", null);
+                    }
+                    $result = $client->getProductCategoriesModified($modifiedFrom);
+                    $modifiedCategories = array_unique($result["modifiedProductCategoriesEshop"]);
+                    $output->writeln("Modified categories: " . count($modifiedCategories) . " from " . $modifiedFrom);
+                    if (count($modifiedCategories) > 0) {
+                        $this->setLastImportDate("category", null, $modifiedFrom, $dateTo);
+                    }
+                    break;
                 case "updatePrices":
-                    $qry1 = new SpyPriceProductAbstractStorageQuery();
-                    $lastImport = $qry1
-                        ->select(SpyPriceProductAbstractStorageTableMap::COL_ID_PRICE_PRODUCT_ABSTRACT_STORAGE)
-                        ->withColumn('max(' . SpyPriceProductAbstractStorageTableMap::COL_UPDATED_AT . ')', 'dateUpdated')
-                        ->findOne();
-                    $lastDate = $lastImport['dateUpdated'];
-                    $result = $client->getProductPricesByHouseModified($store, $lastDate, true);
-                    if (!empty($result)) {
+                    if (empty($modifiedFrom)) {
+                        $modifiedFrom = $this->getLastImportDate("product-price", $store);
+                    }
+                    $result = $client->getProductPricesByHouseModified($store, $modifiedFrom, true);
+                    $modifiedProducts = array_unique($result["modifiedProducts"]);
+                    $output->writeln("Modified product prices: " . count($modifiedProducts) . " from " . $modifiedFrom);
+
+                    if (count($modifiedProducts) > 0) {
                         $this->generateProductPriceFile($output, $client, $store, $counter, $result, $result["modifiedProducts"]);
+                        $this->setLastImportDate("product-price", $store, $modifiedFrom, $dateTo);
                     }
                     break;
                 case "updateStock":
-                    $qry1 = new SpyAvailabilityStorageQuery();
-                    $lastImport = $qry1
-                        ->select(SpyAvailabilityStorageTableMap::COL_ID_AVAILABILITY_STORAGE)
-                        ->withColumn('max(' . SpyAvailabilityStorageTableMap::COL_UPDATED_AT . ')', 'dateUpdated')
-                        ->findOne();
-                    $lastDate = $lastImport['dateUpdated'];
-                    $result = $client->getProductStocksByHouseModified($store, $lastDate, true);
-                    if (!empty($result)) {
-                        $this->generateProductStockFile($output, $client, $store, $counter, $result, $result["modifiedProducts"]);
+                    if (empty($modifiedFrom)) {
+                        $modifiedFrom = $this->getLastImportDate("product-stock", $store);
                     }
+                    $result = $client->getProductStocksByHouseModified($store, $modifiedFrom, true);
+                    if (isset($result["modifiedProducts"])) {
+                        $modifiedProducts = array_unique($result["modifiedProducts"]);
+                        $output->writeln("Modified product stocks: " . count($modifiedProducts) . " from " . $modifiedFrom);
+
+                        if (count($modifiedProducts) > 0) {
+                            $this->generateProductStockFile($output, $client, $store, $counter, $result, $modifiedProducts);
+                            $this->setLastImportDate("product-stock", $store, $modifiedFrom, $dateTo);
+                        }
+                    } else {
+                        $output->writeln("Product stocks not modified since " . $modifiedFrom);
+                    }
+
                     break;
             }
             if ($counter > 0) {
@@ -367,6 +430,7 @@ class GsoaProductConsole extends Console
     }
 
     /**
+     * @param \Symfony\Component\Console\Output\OutputInterface $output
      * @param \Pyz\Shared\GsoaRestApiClient\Provider\ProductCatalogProvider $client
      * @param array $products
      * @param int $index
@@ -374,7 +438,7 @@ class GsoaProductConsole extends Console
      *
      * @return array
      */
-    private function getPresentationStock(ProductCatalogProvider $client, array $products, int $index, string $store): array
+    private function getPresentationStock(OutputInterface $output, ProductCatalogProvider $client, array $products, int $index, string $store): array
     {
         $limit = 100;
         $counter = 0;
@@ -389,29 +453,34 @@ class GsoaProductConsole extends Console
                 }
             }
         }
-        $resultSortOrder = $client->getProductsByHouse($store, 'vanr:in ' . implode(",", $sortOrderFilter), 'vanr;ean;productInHouse', 0, 2000);
-        $counter = 0;
-        for ($i = $index; $i < $productCount; $i++) {
-            $wNr = $products[$i]['wamasNr'];
-            $key = array_search($wNr, array_column($resultSortOrder, 'vanr'));
-            $sortOrder = 0;
-            if ($key > 0) {
-                if (isset($resultSortOrder[$key]["productInHouse"]["placements"][0]["presentationStock"])) {
-                    $sortOrder = $resultSortOrder[$key]["productInHouse"]["placements"][0]["presentationStock"];
-                } elseif (isset($resultSortOrder[$key]["productInHouse"]["placement"][0]["presentationStock"])) {
-                    $sortOrder = $resultSortOrder[$key]["productInHouse"]["placement"][0]["presentationStock"];
+        try {
+            $resultSortOrder = $client->getProductsByHouse($store, 'vanr:in ' . implode(",", $sortOrderFilter), 'vanr;ean;productInHouse', 0, 2000);
+            $counter = 0;
+            for ($i = $index; $i < $productCount; $i++) {
+                $wNr = $products[$i]['wamasNr'];
+                $key = array_search($wNr, array_column($resultSortOrder, 'vanr'));
+                $sortOrder = 0;
+                if ($key > 0) {
+                    if (isset($resultSortOrder[$key]["productInHouse"]["placements"][0]["presentationStock"])) {
+                        $sortOrder = $resultSortOrder[$key]["productInHouse"]["placements"][0]["presentationStock"];
+                    } elseif (isset($resultSortOrder[$key]["productInHouse"]["placement"][0]["presentationStock"])) {
+                        $sortOrder = $resultSortOrder[$key]["productInHouse"]["placement"][0]["presentationStock"];
+                    }
+                    $sortOrder = is_numeric($sortOrder) ? abs($sortOrder) * (-1) : $sortOrder;
                 }
-                $sortOrder = is_numeric($sortOrder) ? abs($sortOrder) * (-1) : $sortOrder;
+                $products[$i]["sortingorder"] = $sortOrder;
+                $counter++;
+                if ($counter > $limit) {
+                    break;
+                }
             }
-            $products[$i]["sortingorder"] = $sortOrder;
-            $counter++;
-            if ($counter > $limit) {
-                break;
-            }
+            $index = $i;
+        } catch (Exception $ex) {
+            $index = $index + $limit;
+            $output->write($ex->getMessage());
         }
-        $index = $i;
         if ($index < $productCount) {
-            return $this->getPresentationStock($client, $products, $index, $store);
+            return $this->getPresentationStock($output, $client, $products, $index, $store);
         }
 
         return $products;
@@ -442,7 +511,7 @@ class GsoaProductConsole extends Console
         $pageSize = 130;
         $counter = 0;
         $progressCounter = 0;
-        $fileName = "//data/data/import/spryker/4.globus_article_prices." . $store . ".csv";
+        $fileName = $this->getImportFilePathAndName("4.globus_article_prices." . $store, !empty($sapNumberArray));
         file_put_contents($fileName, "sapnumber;price;pseudoprice;store;promotion;promotionstart;promotionend" . PHP_EOL);
         $p = [];
         $c = 0;
@@ -587,15 +656,24 @@ class GsoaProductConsole extends Console
         $productCount = count($products);
         $page = 0;
         $pageSize = 130;
-        $fileName = "//data/data/import/spryker/5.globus_article_instock." . $store . ".csv";
+        $fileName = $this->getImportFilePathAndName("5.globus_article_instock." . $store, empty($sapNumberArray));
         file_put_contents($fileName, "sapnumber;instock;store;shelf;shelffield;shelffloor" . PHP_EOL);
         $p = [];
         $c = 0;
         $counter = 0;
         $progressCounter = 0;
-        foreach ($products->getData() as $sapNumber) {
+        $data = $products->getData();
+        $isEmptyArray = empty($sapNumberArray);
+        if (!$isEmptyArray) {
+            $s = [];
+            foreach ($sapNumberArray as $item) {
+                $s[$item] = $item;
+            }
+            $sapNumberArray = $s;
+        }
+        foreach ($data as $sapNumber) {
             $progressCounter++;
-            if (empty($sapNumberArray) || in_array($sapNumber, $sapNumberArray)) {
+            if ($isEmptyArray || isset($sapNumberArray[$sapNumber])) {
                 $p[] = $sapNumber;
                 $c++;
                 if ($c === $pageSize || $progressCounter == $productCount) {
@@ -649,5 +727,101 @@ class GsoaProductConsole extends Console
                 }
             }
         }
+    }
+
+    /**
+     * @param array $item
+     * @param array $returnablePackagingsPrices
+     * @param \Pyz\Shared\GsoaRestApiClient\Provider\ProductCatalogProvider $client
+     * @param string $store
+     *
+     * @return void
+     */
+    protected function setReturnablePackagins(array &$item, array &$returnablePackagingsPrices, ProductCatalogProvider $client, string $store)
+    {
+        if (is_array($item["returnablePackagings"])) {
+            $returnableCount = 0;
+            foreach ($item["returnablePackagings"] as $packaging) {
+                $returnablePackagingsWamasNr = $packaging["productWamasNr"];
+                $price = null;
+                $plu = null;
+                if (!array_key_exists($returnablePackagingsWamasNr, $returnablePackagingsPrices)) {
+                    $packageProduct = $client->getProducts("WamasNr:in " . $returnablePackagingsWamasNr);
+                    if (isset($packageProduct["products"][0]["eanCodes"][0]["code"])) {
+                        $plu = $packageProduct["products"][0]["eanCodes"][0]["code"];
+                    }
+                    $prices = $client->getProductPricesByHouse($store, true, 'ESHOP', "", "ProductWamasNr:in " . $returnablePackagingsWamasNr, 0, 10);
+                    if (isset($prices["productPrices"])) {
+                        $price = $this->getValidPrice($prices["productPrices"][0]["prices"]);
+                    }
+                    $returnablePackagingsPrices[$returnablePackagingsWamasNr] = ["price" => $price, "plu" => $plu];
+                } else {
+                    $price = $returnablePackagingsPrices[$returnablePackagingsWamasNr]["price"];
+                    $plu = $returnablePackagingsPrices[$returnablePackagingsWamasNr]["plu"];
+                }
+                $item["returnablePackagings"][$returnableCount]["price"] = $price;
+                $item["returnablePackagings"][$returnableCount]["plu"] = $plu;
+                $returnableCount++;
+            }
+        }
+    }
+
+    /**
+     * @param string $fileName
+     * @param bool $isPartial
+     *
+     * @return string
+     */
+    protected function getImportFilePathAndName(string $fileName, bool $isPartial): string
+    {
+        $partial = $isPartial ? "_partial" : "";
+
+        return static::DATA_IMPORT_FOLDER . $fileName . $partial . ".csv";
+    }
+
+    /**
+     * @param string $importName
+     * @param string|null $store
+     *
+     * @return string
+     */
+    protected function getLastImportDate(string $importName, ?string $store): string
+    {
+        $qry = PyzImpSceduleQuery::create();
+        if ($store) {
+            $ent = $qry->filterByStore($store)->findOneByImportName($importName);
+        } else {
+            $ent = $qry->findOneByImportName($importName);
+        }
+        $date = new DateTime('NOW');
+        if ($ent == null) {
+            $date = $date->sub(DateInterval::createFromDateString('1 days'));
+        } else {
+            $date = $ent->getUpdatedAt();
+        }
+
+        return $date->format('Y-m-d H:i');
+    }
+
+    /**
+     * @param string $importName
+     * @param string|null $modifiedFrom
+     * @param string $modifiedTo
+     *
+     * @return int
+     */
+    protected function setLastImportDate(string $importName, ?string $store, string $modifiedFrom, string $modifiedTo): int
+    {
+        $qry = PyzImpSceduleQuery::create();
+        if ($store) {
+            $ent = $qry->filterByStore($store)->filterByImportName($importName)->findOneOrCreate();
+        } else {
+            $ent = $qry->filterByImportName($importName)->findOneOrCreate();
+        }
+        $ent->setUpdatedAt($modifiedTo);
+        $ent->setModifiedFrom($modifiedFrom);
+        $ent->setStore($store);
+
+        return $ent->save();
     }
 }

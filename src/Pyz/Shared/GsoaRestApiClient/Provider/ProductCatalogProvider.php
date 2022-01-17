@@ -179,14 +179,14 @@ class ProductCatalogProvider
      * Get product identifiers with price changes
      * ProductCatalogService /houses/{houseNumber}/modifiedProductPrices
      *
-     * @param int $houseNumber
+     * @param string $houseNumber
      * @param string $modifiedFrom
      * @param bool $activeForOnlineOnly If True, it returns data for all products that have the activeForOnline = true property and isActive = true at the same time. Otherwise, it will return all products.
      *
      * @return array
      */
     public function getProductPricesByHouseModified(
-        int $houseNumber,
+        string $houseNumber,
         string $modifiedFrom = '',
         bool $activeForOnlineOnly = false
     ): array {

@@ -1,0 +1,88 @@
+command-timeout: 14400
+
+sections:
+    category:
+        download-categories:
+            command: "vendor/bin/console gsoa:product -c importCategories"
+
+        import-categories:
+            command: "vendor/bin/console data:import category -f spryker/1.globusCZ_categories.csv -a UpdateAvailabilityAfterImportPlugin -vvv --no-ansi || true"
+
+    products:
+        download-products:
+            command: "vendor/bin/console gsoa:product -c updateProducts"
+
+        import-products:
+            command: "vendor/bin/console data:import product -f spryker/2.globusCZ_articles_partial.csv -a UpdateAvailabilityAfterImportPlugin -vvv --no-ansi || true"
+
+    prices:
+        download-prices-ost:
+            command: "vendor/bin/console gsoa:product -c updatePrices -s 4007"
+        download-prices-olo:
+            command: "vendor/bin/console gsoa:product -c updatePrices -s 4008"
+        download-prices-zli:
+            command: "vendor/bin/console gsoa:product -c updatePrices -s 4003"
+        download-prices-lib:
+            command: "vendor/bin/console gsoa:product -c updatePrices -s 4006"
+        download-prices-cak:
+            command: "vendor/bin/console gsoa:product -c updatePrices -s 4005"
+        download-prices-ccm:
+            command: "vendor/bin/console gsoa:product -c updatePrices -s 4002"
+        import-prices-ost:
+            command: "vendor/bin/console data:import product-price -f spryker/4.globus_article_prices.4007_partial.csv -a UpdateAvailabilityAfterImportPlugin -vvv --no-ansi || true"
+        import-prices-olo:
+            command: "vendor/bin/console data:import product-price -f spryker/4.globus_article_prices.4008_partial.csv -a UpdateAvailabilityAfterImportPlugin -vvv --no-ansi || true"
+        import-prices-zli:
+            command: "vendor/bin/console data:import product-price -f spryker/4.globus_article_prices.4003_partial.csv -a UpdateAvailabilityAfterImportPlugin -vvv --no-ansi || true"
+        import-prices-lib:
+            command: "vendor/bin/console data:import product-price -f spryker/4.globus_article_prices.4006_partial.csv -a UpdateAvailabilityAfterImportPlugin -vvv --no-ansi || true"
+        import-prices-cak:
+            command: "vendor/bin/console data:import product-price -f spryker/4.globus_article_prices.4005_partial.csv -a UpdateAvailabilityAfterImportPlugin -vvv --no-ansi || true"
+        import-prices-ccm:
+            command: "vendor/bin/console data:import product-price -f spryker/4.globus_article_prices.4002_partial.csv -a UpdateAvailabilityAfterImportPlugin -vvv --no-ansi || true"
+
+    stock:
+        download-stock-ost:
+            command: "vendor/bin/console gsoa:product -c updateStock -s 4007"
+        download-stock-olo:
+            command: "vendor/bin/console gsoa:product -c updateStock -s 4008"
+        download-stock-zli:
+            command: "vendor/bin/console gsoa:product -c updateStock -s 4003"
+        download-stock-lib:
+            command: "vendor/bin/console gsoa:product -c updateStock -s 4006"
+        download-stock-cak:
+            command: "vendor/bin/console gsoa:product -c updateStock -s 4005"
+        download-stock-ccm:
+            command: "vendor/bin/console gsoa:product -c updateStock -s 4002"
+        import-stock-ost:
+            command: "vendor/bin/console data:import product-stock -f spryker/5.globus_article_instock.4007_partial.csv -a UpdateAvailabilityAfterImportPlugin -vvv --no-ansi || true"
+        import-stock-olo:
+            command: "vendor/bin/console data:import product-stock -f spryker/5.globus_article_instock.4008_partial.csv -a UpdateAvailabilityAfterImportPlugin -vvv --no-ansi || true"
+        import-stock-zli:
+            command: "vendor/bin/console data:import product-stock -f spryker/5.globus_article_instock.4003_partial.csv -a UpdateAvailabilityAfterImportPlugin -vvv --no-ansi || true"
+        import-stock-lib:
+            command: "vendor/bin/console data:import product-stock -f spryker/5.globus_article_instock.4006_partial.csv -a UpdateAvailabilityAfterImportPlugin -vvv --no-ansi || true"
+        import-stock-cak:
+            command: "vendor/bin/console data:import product-stock -f spryker/5.globus_article_instock.4005_partial.csv -a UpdateAvailabilityAfterImportPlugin -vvv --no-ansi || true"
+        import-stock-ccm:
+            command: "vendor/bin/console data:import product-stock -f spryker/5.globus_article_instock.4002_partial.csv -a UpdateAvailabilityAfterImportPlugin -vvv --no-ansi || true"
+
+    import-alternative-eans:
+        import-alternative-eans:
+            command: "vendor/bin/console data:import alternative-ean -f spryker/99.globusCZ_article_gtins.csv -a UpdateAvailabilityAfterImportPlugin -vvv --no-ansi || true"
+
+    update-prices:
+        import-update-prices:
+            command: "vendor/bin/console import:updatePrices -c CZK"
+
+    update-stock:
+        import-update-stock:
+            command: "vendor/bin/console import:updateStock"
+
+    update-availability:
+        import-update-availability:
+            command: "vendor/bin/console import:updateAvailability"
+
+    execute-events:
+        import-exec-events:
+            command: "vendor/bin/console import:execEvents"

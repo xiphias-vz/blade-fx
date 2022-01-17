@@ -430,19 +430,21 @@ class ProductMapping
         if (is_array($item["returnablePackagings"])) {
             $counter = 1;
             foreach ($item["returnablePackagings"] as $packaging) {
-                $productWamasNr = $packaging['productWamasNr'];
-                $sapnumber = substr($productWamasNr, 1, 7);
-                if ($counter === 1) {
-                    $value["pfandbetrag"] = $packaging["price"]["actualPrice"];
-                    $value["pfandpflicht"] = true;
-                }
-                $value["pfand_" . $counter . "_sapnumber"] = $sapnumber;
-                $value["pfand_" . $counter . "_plu"] = $packaging["plu"];
-                $value["pfand_" . $counter . "_count"] = $packaging["count"];
-                $value["pfand_" . $counter . "_amount"] = $packaging["price"]["actualPrice"];
-                $counter++;
-                if ($counter > 2) {
-                    break;
+                if (isset($packaging["price"]["actualPrice"])) {
+                    $productWamasNr = $packaging['productWamasNr'];
+                    $sapnumber = substr($productWamasNr, 1, 7);
+                    if ($counter === 1) {
+                        $value["pfandbetrag"] = $packaging["price"]["actualPrice"];
+                        $value["pfandpflicht"] = true;
+                    }
+                    $value["pfand_" . $counter . "_sapnumber"] = $sapnumber;
+                    $value["pfand_" . $counter . "_plu"] = $packaging["plu"];
+                    $value["pfand_" . $counter . "_count"] = $packaging["count"];
+                    $value["pfand_" . $counter . "_amount"] = $packaging["price"]["actualPrice"];
+                    $counter++;
+                    if ($counter > 2) {
+                        break;
+                    }
                 }
             }
         }
