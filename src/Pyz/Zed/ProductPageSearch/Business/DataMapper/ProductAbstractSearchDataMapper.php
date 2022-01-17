@@ -74,6 +74,17 @@ class ProductAbstractSearchDataMapper extends SprykerProductAbstractSearchDataMa
             $verpackungseinheit = $data['attributes']['verpackungseinheit'][0];
         }
 
+        $sapNumber = null;
+
+        if (isset($data['sap_number'])) {
+            $this->pageMapBuilder->addSearchResultData($pageMapTransfer, 'sap_number', $data['sap_number'])
+                ->addFullText($pageMapTransfer, $data['sap_number'])
+                ->addFullTextBoosted($pageMapTransfer, $data['sap_number'])
+                ->addSuggestionTerms($pageMapTransfer, $data['sap_number'])
+                ->addCompletionTerms($pageMapTransfer, $data['sap_number']);
+            $sapNumber = $data['sap_number'];
+        }
+
         $this->addIfNotNull($einzelgewicht, 'einzelgewicht', $pageMapTransfer);
         $this->addIfNotNull($pricePerKg, 'pricePerKg', $pageMapTransfer);
         $this->addIfNotNull($supplier, 'supplier', $pageMapTransfer);
@@ -81,6 +92,7 @@ class ProductAbstractSearchDataMapper extends SprykerProductAbstractSearchDataMa
         $this->addIfNotNull($grundpreismasseinheit, 'grundpreismasseinheit', $pageMapTransfer);
         $this->addIfNotNull($verpackungseinheit, 'verpackungseinheit', $pageMapTransfer);
         $this->addIfNotNull($sortingOrder, 'sortingorder', $pageMapTransfer);
+        $this->addIfNotNull($sapNumber, 'sap_number', $pageMapTransfer);
 
         return $pageMapTransfer;
     }
