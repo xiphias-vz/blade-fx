@@ -34,7 +34,7 @@ class CreateAddressOnRegistrationPlugin extends AbstractPlugin implements PostCu
     public function execute(CustomerTransfer $customerTransfer): void
     {
         $addressTransfer = $this->extractAddressFromCustomer($customerTransfer);
-        
+
         if (!$addressTransfer) {
             return;
         }
@@ -57,12 +57,18 @@ class CreateAddressOnRegistrationPlugin extends AbstractPlugin implements PostCu
             return null;
         }
 
+        $customerTransfer
+            ->setPhone($customerTransfer->getPhonePrefix().$customerTransfer->getPhone())
+            ->setMobilePhoneNumber($customerTransfer->getMobilePhonePrefix().$customerTransfer->getMobilePhoneNumber());
+
+
         $addressTransfer = new AddressTransfer();
         $addressTransfer->fromArray($customerTransfer->toArray(), true);
         $addressTransfer
             ->setIsDefaultBilling(true)
+            ->setFkCountry($addressTransfer->getCountry())
+            ->setCellPhone($customerTransfer->getMobilePhoneNumber())
             ->setIsDefaultShipping(true);
-
         return $addressTransfer;
     }
 }

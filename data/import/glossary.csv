@@ -1449,9 +1449,27 @@ customer.address.save_new_address,Neue Adresse in Adressbuch speichern,de_DE
 countries.iso.AT,Austria,en_US
 countries.iso.AT,"Rakousko",cs_CZ
 countries.iso.AT,Österreich,de_DE
+countries.iso.BE,Belgium,en_US
+countries.iso.BE,"Belgie",cs_CZ
+countries.iso.BE,Belgien,de_DE
 countries.iso.DE,Germany,en_US
 countries.iso.DE,"Německo",cs_CZ
 countries.iso.DE,Deutschland,de_DE
+countries.iso.FR,France,en_US
+countries.iso.FR,"Francie",cs_CZ
+countries.iso.FR,Frankreich,de_DE
+countries.iso.PL,Poland,en_US
+countries.iso.PL,"Polsko",cs_CZ
+countries.iso.PL,Polen,de_DE
+countries.iso.NL,Netherlands,en_US
+countries.iso.NL,"Holandsko",cs_CZ
+countries.iso.NL,Niederlande,de_DE
+countries.iso.DK,Denmark,en_US
+countries.iso.DK,"Dánsko",cs_CZ
+countries.iso.DK,Dänemark,de_DE
+countries.iso.LU,Luxembourg,en_US
+countries.iso.LU,"Lucembursko",cs_CZ
+countries.iso.LU,Luxemburg,de_DE
 countries.iso.NO,Norway,en_US
 countries.iso.NO,"Norsko",cs_CZ
 countries.iso.NO,Norwegen,de_DE
@@ -4669,12 +4687,42 @@ Vegetarisch,Vegetarisch,de_DE
 register.accept_terms,"Četl/a jsem <a href='/de/agb-online-kauf' style='color:#ea8901; text-decoration:none' target='_blank'>Podmínky ochrany dat</a> a akceptuji je.*",cs_CZ
 register.accept_terms,Ich habe die <a href='/de/agb-online-kauf' style='color:#ea8901; text-decoration:none' target='_blank'>Datenschutzbedingungen</a> gelesen und akzeptiere diese.*,en_US
 register.accept_terms,Ich habe die <a href='/de/agb-online-kauf' style='color:#ea8901; text-decoration:none' target='_blank'>Datenschutzbedingungen</a> gelesen und akzeptiere diese.*,de_DE
+customer.registration.country_placeholder_CZ,"Česká republika",cs_CZ
+customer.registration.country_placeholder_CZ,"Czech Republic",en_US
+customer.registration.country_placeholder_CZ,Tschechische Republik,de_DE
 customer.registration.country_placeholder,"Německo",cs_CZ
 customer.registration.country_placeholder,"Germany",en_US
 customer.registration.country_placeholder,Deutschland,de_DE
 customer.registration.phone.prefix_placeholder,DE +49,cs_CZ
-customer.registration.phone.prefix_placeholder,DE +50,en_US
+customer.registration.phone.prefix_placeholder,DE +49,en_US
 customer.registration.phone.prefix_placeholder,DE +49,de_DE
+customer.registration.phone.prefix_placeholder_FR,FR +33,cs_CZ
+customer.registration.phone.prefix_placeholder_FR,FR +33,en_US
+customer.registration.phone.prefix_placeholder_FR,FR +33,de_DE
+customer.registration.phone.prefix_placeholder_PL,PL +48,cs_CZ
+customer.registration.phone.prefix_placeholder_PL,PL +48,en_US
+customer.registration.phone.prefix_placeholder_PL,PL +48,de_DE
+customer.registration.phone.prefix_placeholder_DK,DK +45,cs_CZ
+customer.registration.phone.prefix_placeholder_DK,DK +45,en_US
+customer.registration.phone.prefix_placeholder_DK,DK +45,de_DE
+customer.registration.phone.prefix_placeholder_CH,CH +41,cs_CZ
+customer.registration.phone.prefix_placeholder_CH,CH +41,en_US
+customer.registration.phone.prefix_placeholder_CH,CH +41,de_DE
+customer.registration.phone.prefix_placeholder_LU,LU +352,cs_CZ
+customer.registration.phone.prefix_placeholder_LU,LU +352,en_US
+customer.registration.phone.prefix_placeholder_LU,LU +352,de_DE
+customer.registration.phone.prefix_placeholder_AU,AU +43,cs_CZ
+customer.registration.phone.prefix_placeholder_AU,AU +43,en_US
+customer.registration.phone.prefix_placeholder_AU,AU +43,de_DE
+customer.registration.phone.prefix_placeholder_NL,NL +31,cs_CZ
+customer.registration.phone.prefix_placeholder_NL,NL +31,en_US
+customer.registration.phone.prefix_placeholder_NL,NL +31,de_DE
+customer.registration.phone.prefix_placeholder_BE,BE +32,cs_CZ
+customer.registration.phone.prefix_placeholder_BE,BE +32,en_US
+customer.registration.phone.prefix_placeholder_BE,BE +32,de_DE
+customer.registration.phone.prefix_placeholder_CZ,CZ +420,cs_CZ
+customer.registration.phone.prefix_placeholder_CZ,CZ +420,en_US
+customer.registration.phone.prefix_placeholder_CZ,CZ +420,de_DE
 customer.register.phone,"Telefon (je vyžadován alespoň jeden údaj)",cs_CZ
 customer.register.phone,Telefon (mindestens eine Angabe ist Pflicht),de_DE
 checkout.customer.register_as_guest,"Objednávka bez registrace",cs_CZ

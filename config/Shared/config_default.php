@@ -927,11 +927,29 @@ $config[CodeBucketConstants::CURRENCY_SYMBOL] = '€';
 // ---------- Customer dropdowns
 $config[\Pyz\Shared\Customer\CustomerConstants::CUSTOMER_COUNTRY] = [
     60 => 'customer.registration.country_placeholder',
+    79 => 'countries.iso.FR',
+    183 => 'countries.iso.PL',
+    63 => 'countries.iso.DK',
+    45 => 'countries.iso.CH',
+    138 => 'countries.iso.LU',
+    14 => 'countries.iso.AT',
+    170 => 'countries.iso.NL',
+    22 => 'countries.iso.BE',
+    59 => 'customer.registration.country_placeholder_CZ',
 ];
 
 $config[\Pyz\Shared\Customer\CustomerConstants::CUSTOMER_PHONE_PREFIX] =
 [
     '+49' => 'customer.registration.phone.prefix_placeholder',
+    '+33' => 'customer.registration.phone.prefix_placeholder_FR',
+    '+48' => 'customer.registration.phone.prefix_placeholder_PL',
+    '+45' => 'customer.registration.phone.prefix_placeholder_DK',
+    '+41' => 'customer.registration.phone.prefix_placeholder_CH',
+    '+352' => 'customer.registration.phone.prefix_placeholder_LU',
+    '+43' => 'customer.registration.phone.prefix_placeholder_AU',
+    '+31' => 'customer.registration.phone.prefix_placeholder_NL',
+    '+32' => 'customer.registration.phone.prefix_placeholder_BE',
+    '+420' => 'customer.registration.phone.prefix_placeholder_CZ',
 ];
 
 $config[\Pyz\Shared\Customer\CustomerConstants::CDC_API_USER_KEY] = 'AOOFJuSjBzxx';
