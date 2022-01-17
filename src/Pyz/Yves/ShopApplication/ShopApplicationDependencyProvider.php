@@ -11,6 +11,7 @@ use Pyz\Yves\CodeBucketPlugin\Plugin\Application\CurrentCodeBucketApplicationPlu
 use Pyz\Yves\CookieBot\Plugin\Application\CookieBotApplicationPlugin;
 use Pyz\Yves\CurrentStoreCookieCheck\Plugin\Application\CurrentStoreCookieCheckApplicationPlugin;
 use Pyz\Yves\CustomerPage\Plugin\Application\CustomerPageApplicationPlugin;
+use Pyz\Yves\FactFinderWebComponents\Plugin\Application\FactFinderWebComponentsApplicationPlugin;
 use Pyz\Yves\GoogleTagManager\Plugin\Application\GoogleTagManagerIdApplicationPlugin;
 use Pyz\Yves\LanguageSwitcherWidget\Widget\LanguageSwitcherWidget;
 use Pyz\Yves\MerchantSwitcherWidget\Plugin\Application\CurrentMerchantApplicationPlugin;
@@ -160,6 +161,7 @@ class ShopApplicationDependencyProvider extends SprykerShopApplicationDependency
             new CookieBotApplicationPlugin(),
             new CurrentStoreCookieCheckApplicationPlugin(),
             new CurrentCodeBucketApplicationPlugin(),
+            new FactFinderWebComponentsApplicationPlugin(),
         ];
 
         if (class_exists(WebProfilerApplicationPlugin::class)) {

@@ -5,7 +5,8 @@
     showStoreSwitches: true,
     showLangCurrencySwitches: true,
     currentCodeBucket: app.currentCodeBucket,
-    storeId: app.sapStoreId
+    storeId: app.sapStoreId,
+    channelName: app.factFinderChannel,
 } %}
 
 {% define hamburgerIcon = {
@@ -40,7 +41,7 @@
                     component: 'url="https://globus-sb.fact-finder.de/fact-finder"
                         version="ng"
                         api="v4"
-                        channel="Spryker"
+                        channel="' ~ data.channelName ~'"
                         default-query="*"
                         search-immediate="false"
                         use-url-parameters="false"
