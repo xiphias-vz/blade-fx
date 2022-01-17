@@ -31,8 +31,8 @@ export default class ProductItemMultiplePicking extends Component {
     currentValue = 0;
     isAccepted = false;
     isNotFullyAccepted = false;
-    isDeclined = false;
-    isPaused = false;
+    isDeclined: boolean = false;
+    isPaused: boolean = false;
     weight = 0;
     empty= '';
     showInfo = false;
@@ -166,6 +166,10 @@ export default class ProductItemMultiplePicking extends Component {
         this.inputValueErrorGreaterAlert2 = <HTMLInputElement>document.querySelector('#input_value_error_greater_alert_2');
         this.inputValueErrorLessAlert1 = <HTMLInputElement>document.querySelector('#input_value_error_less_alert_1');
         this.inputValueErrorLessAlert2 = <HTMLInputElement>document.querySelector('#input_value_error_less_alert_2');
+        const declinedInputField: HTMLInputElement = document.querySelector('#isItemCanceled');
+        declinedInputField.value === '1' ? this.isDeclined = true : this.isDeclined = false;
+        const pausedInputField: HTMLInputElement = document.querySelector('#isItemPaused');
+        pausedInputField.value === '1' ? this.isPaused = true : this.isPaused = false;
     }
 
     protected removeTemporarilyReadOnlyAttributeForNonActiveFields() {
@@ -489,8 +493,16 @@ export default class ProductItemMultiplePicking extends Component {
             this.acceptClickHandler();
         }
 
+        if (item.isPaused !== this.isPaused) {
+            item.isPaused = this.isPaused;
+        }
+
         if (item.isPaused) {
             this.$pauseButton.click();
+        }
+
+        if (item.isDeclined !== this.isDeclined) {
+            item.isDeclined = this.isDeclined;
         }
 
         if (item.isDeclined) {

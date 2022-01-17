@@ -56,7 +56,6 @@
         <div>
             <span class="{{ config.name }}__label-text">{{ 'multi.picking.placeholder.input' | trans }}</span>
             <input id="inputScanningShelf" name="inputScanningShelf" type="text" class="input input--expand spacing-bottom spacing-bottom--big" placeholder="{{ 'multi.picking.placeholder.input' | trans }}">
-            <input type="hidden" id="substituteContainer_{{ counter }}" name="hasSubstitutedItem" value="{% if shelf.hasSubstitutedItem %}1{% else %}0{% endif %}">
         </div>
 
         <div>

@@ -72,6 +72,8 @@
         <input type="hidden" id="isSubstitutionAllowed" value="{{ data.isSubstitutionAllowed }}">
         <input type="hidden" id="isSubstitutionPicked" value="false">
         <input type="hidden" id="isSubstitutionFound" value="{{ data.isSubstitutionFound }}">
+        <input type="hidden" id="isItemPaused" value="{{ data.currentPositionData['isPaused'] }}">
+        <input type="hidden" id="isItemCanceled" value="{{ data.currentPositionData['isCancelled'] }}">
         <div class="col col--expand">
             <div class="box {{ config.name }}__info">
                 <div class="{{ config.name }}__item-head-box">

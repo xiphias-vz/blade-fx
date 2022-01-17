@@ -233,10 +233,12 @@ class MultiPickingController extends BaseOrderPickingController
         $isLastPosition = "false";
 
         $transfer = $this->getFacade()->getPickingHeaderTransfer();
+        $orderItem = $transfer->getOrderItem($transfer->getLastPickingItemPosition());
 
-        $currentItemResponse = $this->getFacade()->setCurrentOrderItemPaused(true);
-
-        if ($currentItemResponse == false) {
+        if ($this->getFacade()->setCurrentOrderItemPaused(true)) {
+            $transfer->setParents(true);
+            $this->getFacade()->setTransferToSession($transfer);
+        } else {
             $errorMessage = $transfer->getErrorMessage();
         }
 

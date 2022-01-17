@@ -157,6 +157,7 @@ class PickingHeaderTransferData
                                  on ssoi.fk_oms_order_item_state = soois.id_oms_order_item_state
                 inner join pyz_picking_zone ppz on ssoi.pick_zone = ppz.name
              where soois.name like '" . OmsConfig::STORE_STATE_READY_FOR_PICKING . "'
+             or soois.name like '" . OmsConfig::STORE_STATE_READY_FOR_SELECTING_SHELVES . "'
                 and ppz.id_picking_zone = " . $idZone . "
              group by ssoi.fk_sales_order, ppz.abbreviation
          ) so on sso.id_sales_order = so.fk_sales_order
@@ -435,16 +436,48 @@ class PickingHeaderTransferData
     private function saveCurrentOrderItemPaused(PickingOrderItemTransfer $orderItem, bool $isPaused): bool
     {
         //save data to spy_sales_order_item - SpySalesOrderItemQuery
+        $idState = $this->getIdState(OmsConfig::STORE_STATE_READY_FOR_PICKING);
         $idList = $this->getOrderItemIdArray($orderItem);
         $paused = $isPaused ? 1 : 0;
         $isSubstitutionFound = $orderItem->getIsSubstitutionFound() ? 1 : 0;
-        if (count($idList) > 0) {
+        if (count($idList) > 0 && $idState) {
             $whereList = implode($idList, ",");
-            $qry = "update spy_sales_order_item set item_paused = " . $paused . ", is_substitution_found = " . $isSubstitutionFound . " where id_sales_order_item in(" . $whereList . ")";
+            if ($paused) {
+                $qry = "update spy_sales_order_item set item_paused = " . $paused
+                    . ", fk_oms_order_item_state = " . $idState
+                    . ", is_substitution_found = " . $isSubstitutionFound
+                    . " where id_sales_order_item in(" . $whereList . ")";
+            } else {
+                $qry = "update spy_sales_order_item set item_paused = " . $paused
+                    . ", is_substitution_found = " . $isSubstitutionFound
+                    . " where id_sales_order_item in(" . $whereList . ")";
+            }
             $this->getResult($qry, false);
+
+            if ($paused) {
+                $qry = "insert into spy_oms_order_item_state_history (fk_oms_order_item_state, fk_sales_order_item, created_at)
+                        select " . $idState . ", id_sales_order_item, now() from spy_sales_order_item where id_sales_order_item in(" . $whereList . ")";
+                $this->getResult($qry, false);
+            }
         }
 
         return true;
+    }
+
+    /**
+     * @param string $stateName
+     *
+     * @return int|null
+     */
+    protected function getIdState(string $stateName): ?int
+    {
+        $qry = "select id_oms_order_item_state as id from spy_oms_order_item_state where name = '" . $stateName . "'";
+        $data = $this->getResult($qry);
+        if (count($data) > 0) {
+            return $data[0]["id"];
+        }
+
+        return null;
     }
 
     /**
@@ -454,11 +487,9 @@ class PickingHeaderTransferData
      */
     private function resetCanceledStatusForCanceledItems(array $pickedItems): void
     {
-        $qry = "select id_oms_order_item_state as id from spy_oms_order_item_state where name = '" . OmsConfig::STORE_STATE_READY_FOR_PICKING . "'";
-        $data = $this->getResult($qry);
-        if (count($data) > 0) {
+        $idState = $this->getIdState(OmsConfig::STORE_STATE_READY_FOR_PICKING);
+        if ($idState) {
             $whereList = implode($pickedItems, ",");
-            $idState = $data[0]["id"];
             $qry = "select ssoi.fk_sales_order, ssoi.id_sales_order_item, ssoi.fk_oms_order_process, soois.name
                     from spy_sales_order_item ssoi
                         inner join spy_oms_order_item_state soois on ssoi.fk_oms_order_item_state = soois.id_oms_order_item_state

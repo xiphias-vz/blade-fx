@@ -578,15 +578,14 @@ class PickingHeaderTransfer extends SpyPickingHeaderTransfer
     {
         $this->setErrorMessage(null);
         $orderItem = $this->getOrderItem($this->getLastPickingItemPosition());
-        if ($orderItem->getQuantityPicked() > 0) {
-            $this->setErrorMessage(static::ERR_MESSAGE_ITEM_PICKED);
 
-            return false;
-        } else {
             $orderItem->setIsPaused($isPaused);
+        if ($isPaused) {
+            $orderItem->setQuantityPicked(0);
+            $orderItem->setIsCancelled(false);
+        }
             $this->getOrderItemOrder($orderItem)->setIsPaused($isPaused);
             $this->updateItemsPickedCount();
-        }
 
         return true;
     }
