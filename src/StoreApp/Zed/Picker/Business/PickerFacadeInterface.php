@@ -225,4 +225,9 @@ interface PickerFacadeInterface
      * @return int
      */
     public function updatePerformanceOrder(int $IdPerformanceSalesOrderReport, int $containerCount): int;
+
+    /**
+     * @return \StoreApp\Zed\Picker\Business\PickerBusinessFactory
+     */
+    public function getBusinessFactory(): PickerBusinessFactory;
 }

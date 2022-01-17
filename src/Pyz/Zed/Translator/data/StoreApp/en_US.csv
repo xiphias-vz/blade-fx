@@ -85,6 +85,7 @@ picker.collect-by-customer.details.picked-items,Packed
 picker.collect-by-customer.details.not-found-items,Not found
 picker.collect-by-customer.details.frozen,Products are in the freezer
 picker.collect-by-customer.details.chilled,Products are in the fridge
+picker.collect-by-customer.details.container,container
 picker.collect-by-customer.details.containers,containers
 
 delivery.at,at

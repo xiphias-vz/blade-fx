@@ -1,15 +1,14 @@
-
 @mixin shop-ui-shelf-scan-order($name: '.shelf-scan-order') {
     #{$name} {
         &__containerAndShelf {
             font-weight: bold;
-            margin-bottom:20px;
-            font-size:20px;
+            margin-bottom: rem(20);
+            font-size: rem(20);
         }
 
         &__shelfOnContainer {
-            margin-bottom:20px;
-            font-size:20px;
+            margin-bottom: rem(20);
+            font-size: rem(20);
         }
 
         &__font-weight {
@@ -17,8 +16,73 @@
         }
 
         &__hrElement {
-            margin:30px 0px 30px 0px;
+            margin:rem(30) 0 rem(30) 0;
             border-bottom: 0.0625rem solid #707070;
+        }
+
+        &__label-text {
+            font-weight: bold;
+            padding-left: rem(5);
+        }
+
+        &__checked-circle {
+            background: $setting-color-green;
+            color: $setting-color-globus-white;
+            width: rem(32);
+            text-align: center;
+            border-radius: 50%;
+            height: rem(32);
+            padding: rem(4);
+            display: none;
+        }
+
+        &__container-row {
+            min-height: rem(40);
+            margin: rem(10) rem(5) 0;
+            color: $setting-color-globus-red;
+        }
+
+        &__abb {
+            padding-left: rem(5);
+        }
+
+        #inputScanningContainer, #inputScanningShelf {
+            margin-top: rem(5);
+        }
+
+        .error-status {
+            margin: rem(5) 0 rem(10);
+            font-weight: bold;
+            font-size: large;
+        }
+
+        .error-horizontal-line {
+            background-color: $setting-color-gray-9;
+            width: 110%;
+            min-height: rem(2);
+            margin-left: -5%;
+            margin-bottom: rem(20);
+        }
+
+        &__container-name {
+            margin: rem(10) 0 rem(10);
+            font-weight: bold;
+            font-size: large;
+        }
+
+        .error-info {
+            margin-bottom: rem(15);
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        &__successful-scan-notification {
+            background: $setting-color-lighter-green;
+            padding: rem(20);
+            margin-top: rem(-10);
+            margin-bottom: rem(20);
         }
     }
 }

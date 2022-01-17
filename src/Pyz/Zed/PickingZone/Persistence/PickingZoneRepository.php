@@ -104,7 +104,7 @@ class PickingZoneRepository extends AbstractRepository implements PickingZoneRep
                                     FROM spy_merchant_sales_order smso
                                 	  	INNER JOIN spy_sales_order_item ssoi on ssoi.fk_sales_order = smso.fk_sales_order
   		                                INNER JOIN spy_oms_order_item_state soois on soois.id_oms_order_item_state = ssoi.fk_oms_order_item_state
-	  		                            AND soois.name in('ready for picking')
+	  		                            AND soois.name in('ready for picking', 'ready for selecting shelves')
                                 	WHERE smso.requested_delivery_date > DATE_ADD(now(), INTERVAL -1 day)
                                 		AND smso.merchant_reference = '" . $merchantReference . "'
                                 		AND  ssoi.pick_zone = " . PyzPickingZoneTableMap::COL_NAME . "

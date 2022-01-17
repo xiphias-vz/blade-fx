@@ -100,7 +100,9 @@ export default class ContainerScanOrder extends Component {
 
         });
 
-        this.openPopupButton.addEventListener('click', (event:MouseEvent) => this.showDepositPopup(event));
+        if (this.openPopupButton != undefined) {
+            this.openPopupButton.addEventListener('click', (event:MouseEvent) => this.showDepositPopup(event));
+        }
     }
 
     protected atLeastOneContainerIsAdded(listOfContainersHolder, listContainersShelf) {

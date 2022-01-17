@@ -364,7 +364,6 @@ class PickingHeaderTransferData
             }
             $this->resetCanceledStatusForCanceledItems($pickedItems);
             $this->orderUpdater->markOrderItemsAsContainerSelected($pickedItems);
-            $this->orderUpdater->markOrderItemsAsPicked($pickedItems);
 
             $this->updatePerformanceOrderItem($order, $orderItem, static::PERFORMANCE_ORDER_ITEM_REPORT_PICKED);
         }

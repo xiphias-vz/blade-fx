@@ -27,46 +27,41 @@ class MultiPickingScanningContainerController extends AbstractController
     {
         $transfer = $this->getFacade()->getPickingHeaderTransfer();
         $dataWithContainers = $transfer->getOrderList();
-        $totalQuantity = count($dataWithContainers);
-        $lastOrder = false;
 
         $transfer->setParents(true);
+        $zoneAbbreviation = $transfer->getZoneAbbrevation();
 
-        $nextOrderPosition = $request->get(static::NEXT_ORDER_POSITION) == null ?
-            0 : (int)$request->get(static::NEXT_ORDER_POSITION);
-
-        $orderForScanningContainer = $transfer->getOrder($nextOrderPosition);
-        $containersShelf = [];
         if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $containersShelf = json_decode($request->get('containersShelf'));
+            $counter = 0;
             foreach ($containersShelf as $key => $containerWithShelf) {
+                $orderForScanningContainer = $transfer->getPickingOrders()[$counter];
                 $this->getFacade()->setContainerToOrder($orderForScanningContainer, $containerWithShelf->ContainerCode, $containerWithShelf->ShelfCode);
+                $counter++;
             }
-            if (empty($containersShelf)) {
-                $this->getFacade()->updateGlobalPerformanceOrder($transfer->getIdGlobalPickReport());
-                $this->getFacade()->updatePerformanceOrder($orderForScanningContainer->getIdPerformanceSalesOrderReport(), count($orderForScanningContainer->getPickingContainers()));
+
+            $transfer->updatePausedOrders();
+            $this->getFacade()->clearLockForPausedOrders($transfer);
+
+            $orderUpdater = $this->getFacade()->getBusinessFactory()->createOrderUpdater();
+            $pickedItems = [];
+            $data = $this->getFacade()->getBusinessFactory()->createPickingHeaderTransferData();
+            foreach ($transfer->getPickingOrders() as $order) {
+                foreach ($order->getPickingOrderItems() as $item) {
+                    $counter = 0;
+                    if ($item->getQuantityPicked() > 0) {
+                        foreach ($data->getOrderItemIdArray($item) as $id) {
+                            if ($counter < $item->getQuantityPicked()) {
+                                $pickedItems[] = $id;
+                            }
+                            $counter++;
+                        }
+                    }
+                }
             }
-            $orderForScanningContainer = $transfer->getNextOrder($nextOrderPosition);
+            $orderUpdater->markOrderItemsAsPicked($pickedItems);
 
-            if ($orderForScanningContainer == null) {
-                $transfer->updatePausedOrders();
-                $this->getFacade()->clearLockForPausedOrders($transfer);
-
-                return $this->redirectResponse($this->getFactory()->getConfig()->getDiffSectionsUri());
-            }
-        } else {
-            $orderForScanningContainer = $transfer->getNextOrder($nextOrderPosition);
-        }
-
-        $containersWithoutShelf = $transfer->getOnlyCurrentUserAndZonePickingContainers($orderForScanningContainer, true);
-        while ($totalQuantity > $nextOrderPosition + 1 && count($containersWithoutShelf) == 0) {
-            $nextOrderPosition++;
-            $orderForScanningContainer = $transfer->getNextOrder($nextOrderPosition);
-            $containersWithoutShelf = $transfer->getOnlyCurrentUserAndZonePickingContainers($orderForScanningContainer, true);
-        }
-
-        if ($totalQuantity == $nextOrderPosition + 1) {
-            $lastOrder = true;
+            return $this->redirectResponse($this->getFactory()->getConfig()->getDiffSectionsUri());
         }
 
         $listOfExistingContainers = $this->getFactory()
@@ -74,13 +69,20 @@ class MultiPickingScanningContainerController extends AbstractController
             ->createContainerReader()
             ->getUsedContainers();
 
+        $selectedContainersData = [];
+        foreach ($listOfExistingContainers as $existingContainer) {
+            foreach ($dataWithContainers as $containerData) {
+                if ($existingContainer['orderReference'] === $containerData['orderReference']) {
+                    $selectedContainersData[] = $existingContainer;
+                }
+            }
+        }
+
         return [
-            'orderForScanningContainer' => $orderForScanningContainer,
-            'containersShelf' => $containersShelf,
             'listOfExistingContainers' => json_encode($listOfExistingContainers),
-            'nextOrderPosition' => $nextOrderPosition,
-            'lastOrder' => $lastOrder,
-            'containersWithoutShelf' => $containersWithoutShelf,
+            'dataWithContainers' => $dataWithContainers,
+            'zoneAbbreviation' => $zoneAbbreviation,
+            'selectedContainers' => $selectedContainersData,
         ];
     }
 }

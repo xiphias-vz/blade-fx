@@ -416,4 +416,9 @@ class PickerFacade extends AbstractFacade implements PickerFacadeInterface
             ->createPickingHeaderTransferData()
             ->updatePerformanceOrder($IdPerformanceSalesOrderReport, $containerCount);
     }
+
+    public function getBusinessFactory(): PickerBusinessFactory
+    {
+        return $this->getFactory();
+    }
 }

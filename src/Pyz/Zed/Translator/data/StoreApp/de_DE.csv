@@ -87,6 +87,7 @@ picker.collect-by-customer.details.picked-items,Eingepackt
 picker.collect-by-customer.details.not-found-items,Nicht gefunden
 picker.collect-by-customer.details.frozen,Produkte sind im Gefrierschrank
 picker.collect-by-customer.details.chilled,Produkte sind im Kühlschrank
+picker.collect-by-customer.details.container,Container
 picker.collect-by-customer.details.containers,Container
 
 delivery.at,bei
@@ -228,6 +229,7 @@ container.scan.order.error.pop-up_2,"ist bereits für Kunde"
 container.scan.order.error.pop-up_3,""
 container.scan.order.error.pop-up_4,"Bestellung:"
 container.scan.order.error.pop-up_5,"aktiviert"
+container.scan.error.pop-up_1,"gehört nicht zu Ihrem Pickautrag / kann nicht platziert werden"
 select.containers.add.box,Box hinzufügen
 popup.success.ui_1,"wurde"
 popup.success.ui_2,"zugeordnet"
@@ -240,4 +242,6 @@ picking.scanning-container.continue, "Weiter"
 picking.scanning-container.cancel, "Abbrechen"
 picking.scanning-container.isDepositAllowedChecked.popup.title, "Transportbox"
 picking.scanning-container.isDepositAllowedChecked.popup.text, "Der Kunde möchte Transportboxen. Bist du sicher, dass eine Transportbox gescannt wurde?"
+multi.sentence.part.one,"wurde"
+multi.sentence.part.two,"zugeordnet"
 first.customer,ERSTKUNDE
