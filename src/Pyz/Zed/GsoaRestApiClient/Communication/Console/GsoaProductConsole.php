@@ -307,7 +307,7 @@ class GsoaProductConsole extends Console
             if ($item["parentId"] === $parentId) {
                 $count++;
                 if ($item["rank"] == null) {
-                    $item["rank"] = $count;
+                    $item["rank"] = str_pad(substr($item["categoryName"], 0, 20), 20, '0', STR_PAD_RIGHT);
                 }
                 $categories[sprintf("%'.09d", $deep) . "!" . $parentId . "-" . str_pad($item["rank"], 20, '0', STR_PAD_LEFT)] = $item;
                 $categories = array_merge($categories, $this->getCategoriesByParentId($items, $item["categoryId"], $deep));
