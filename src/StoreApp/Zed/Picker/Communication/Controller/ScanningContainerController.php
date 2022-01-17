@@ -39,6 +39,15 @@ class ScanningContainerController extends AbstractController
      */
     public function indexAction(Request $request)
     {
+        $addContainerToSubstitutedItem = false;
+
+        if (isset($_REQUEST['flag'])) {
+            if ($_REQUEST['flag'] === 'substitution') {
+                $addContainerToSubstitutedItem = true;
+                $this->getFacade()->setCurrentOrderItemCanceled(true, true);
+            }
+        }
+
         $factory = $this->getFactory();
         $transfer = $this->getFacade()->getPickingHeaderTransfer();
         $transfer->setParents(true);
@@ -74,6 +83,7 @@ class ScanningContainerController extends AbstractController
                                 'nextOrderPosition' => $nextOrderPosition,
                                 'merchant' => $this->getMerchantFromRequest($request),
                                 'isUsedContainerMessage' => $usedError,
+                                'addContainerToSubstitutedItem' => $addContainerToSubstitutedItem,
                             ]);
                         }
                     }
@@ -88,6 +98,11 @@ class ScanningContainerController extends AbstractController
                     foreach ($submittedContainers as $container) {
                         foreach ($container->containers as $containerId) {
                             $usedError = $this->getFacade()->checkContainerUsage($containerId, $merchant, $orderForScanningContainer->getIdOrder());
+
+                            $substituteContainer = false;
+                            if ($request->request->get('addContainerToSubstitutedItem')) {
+                                $substituteContainer = true;
+                            }
                             if (!empty($usedError)) {
                                 $isContainerUsed = 1;
                                 $usedError = $this->getFacade()->formatErrorMessage($usedError, $containerId);
@@ -103,9 +118,10 @@ class ScanningContainerController extends AbstractController
                                    'nextOrderPosition' => $nextOrderPosition,
                                    'merchant' => $this->getMerchantFromRequest($request),
                                    'isUsedContainerMessage' => $usedError,
+                                   'addContainerToSubstitutedItem' => $addContainerToSubstitutedItem,
                                 ]);
                             } else {
-                                $this->getFacade()->setContainerToOrder($orderForScanningContainer, $containerId, '');
+                                $this->getFacade()->setContainerToOrder($orderForScanningContainer, $containerId, '', $substituteContainer);
                                 if ($isContainerUsed == 1) {
                                     $isContainerUsed = 0;
                                 }
@@ -147,6 +163,7 @@ class ScanningContainerController extends AbstractController
             'isMultiPickingProcess' => '1',
             'pickZoneName' => $pickZoneById->getName(),
             'isDepositAllowed' => $orderForScanningContainer->getIsDepositAllowed(),
+            'addContainerToSubstitutedItem' => $addContainerToSubstitutedItem,
         ]);
     }
 
@@ -185,6 +202,10 @@ class ScanningContainerController extends AbstractController
      */
     public function setContainersToOrderAndRedirectToPickingArticles(Request $request, PickingHeaderTransfer $transfer): SymfonyRedirectResponse
     {
+        $substituteContainer = false;
+        if ($request->request->get('addContainerToSubstitutedItem')) {
+            $substituteContainer = true;
+        }
         $submittedContainers = json_decode($request->get(static::CONTAINERS_ID)) ?? [];
         $orderForScanningContainer = $transfer->getOrder($request->get(static::ORDER_POSITION));
         $position = $request->get(static::ORDER_ITEM_POSITION);
@@ -192,7 +213,7 @@ class ScanningContainerController extends AbstractController
         if (count($submittedContainers)) {
             foreach ($submittedContainers as $container) {
                 foreach ($container->containers as $containerId) {
-                    $this->getFacade()->setContainerToOrder($orderForScanningContainer, $containerId, '');
+                    $this->getFacade()->setContainerToOrder($orderForScanningContainer, $containerId, '', $substituteContainer);
                 }
             }
         }

@@ -46,6 +46,18 @@
                             {% if container.shelfID != "" %}
                                 <span> > {{ container.shelfID }}</span>
                             {% endif %}
+                            {% if container.hasSubstitutedItem == true %}
+                            <span>{{ container.containerID }}
+                                    {% include atom('icon') with {
+                                        modifiers: ['big'],
+                                        data: {
+                                            name: 'icon-substitutes',
+                                        },
+                                    } only %}
+                                </span>
+                                {% else %}
+                                    <span>{{ container.containerID }}</span>
+                            {% endif %}
                         </div>
                     {% endfor %}
                     </div>

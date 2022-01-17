@@ -4,20 +4,40 @@
     name: 'container-checkboxes'
 } %}
 
+{% set substitute %}
+    {% include atom('icon') with {
+        class: 'substitute-icon',
+        modifiers: ['big'],
+        data: {
+            name: 'icon-substitutes',
+        },
+    } only %}
+{% endset %}
+
 {% define data = {
-    listContainers: required
+    listContainers: required,
 } %}
 
 {% block body %}
     <div class="grid grid--middle">
         {% for container in data.listContainers %}
             <div class="col col--md-12">
+                {% if container.has_substituted_item == true %}
                 {% include atom('checkbox') with {
                     data: {
                         label: '<span class="abbreviation">'~container.abbreviation ~' ></span>' ~ container.shelf_code ~ ' > ' ~ container.container_code,
                         containerID: container.container_code
                     },
                 } only %}
+                <span>{{ substitute }}</span>
+            {% else %}
+                {% include atom('checkbox') with {
+                    data: {
+                        label: '<span class="abbreviation">'~container.abbreviation ~' ></span>' ~ container.shelf_code ~ ' > ' ~ container.container_code,
+                        containerID: container.container_code
+                    },
+                } only %}
+            {% endif %}
             </div>
         {% endfor %}
     </div>

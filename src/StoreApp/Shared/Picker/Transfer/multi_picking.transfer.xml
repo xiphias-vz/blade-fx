@@ -54,6 +54,7 @@
         <property name="idZone" type="int"/>
         <property name="isAdded" type="bool"/>
         <property name="parent" type="PickingOrder"/>
+        <property name="hasSubstitutedItem" type="bool"/>
         <property name="zoneAbbrevation" type="string"/>
     </transfer>
 

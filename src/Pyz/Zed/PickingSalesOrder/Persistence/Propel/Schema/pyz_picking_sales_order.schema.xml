@@ -8,6 +8,7 @@
         <column name="fk_sales_order" type="BIGINT" required="true"/>
         <column name="fk_picking_zone" type="INTEGER" required="true"/>
         <column name="container_code" type="VARCHAR" required="true"/>
+        <column name="has_substituted_item" type="BOOLEAN"/>
         <column name="shelf_code" required="false" type="VARCHAR" default="NULL"/>
 
         <unique name="pyz_picking_sales_order-unique-key">

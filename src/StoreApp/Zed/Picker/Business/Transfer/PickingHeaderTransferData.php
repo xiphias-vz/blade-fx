@@ -273,10 +273,11 @@ class PickingHeaderTransferData
      * @param \Generated\Shared\Transfer\PickingOrderTransfer $order
      * @param string $containerId
      * @param string $shelfId
+     * @param bool $isSubstituteContainer
      *
      * @return bool
      */
-    public function setContainerToOrder(PickingOrderTransfer $order, string $containerId, string $shelfId): bool
+    public function setContainerToOrder(PickingOrderTransfer $order, string $containerId, string $shelfId, bool $isSubstituteContainer): bool
     {
         $transfer = $this->getTransferFromSession();
         $orderMod = $transfer->getOrder($order->getPickingPosition());
@@ -298,7 +299,8 @@ class PickingHeaderTransferData
                 ->setIdZone($transfer->getIdZone())
                 ->setIsAdded(true)
                 ->setPickingColor($orderMod->getPickingColor())
-                ->setZoneAbbrevation($transfer->getZoneAbbrevation());
+                ->setZoneAbbrevation($transfer->getZoneAbbrevation())
+                ->setHasSubstitutedItem($isSubstituteContainer);
             $orderMod->addPickingContainer($containerId, $container);
             $dataUpdated = true;
         }
@@ -307,9 +309,13 @@ class PickingHeaderTransferData
             ->filterByFkSalesOrder($orderMod->getIdOrder())
             ->filterByContainerCode($containerId)
             ->findOneOrCreate();
-        $containerEntity->setFkPickingZone($transfer->getIdZone());
+        $containerEntity->setFkPickingZone($transfer->getIdZone())
+            ->setHasSubstitutedItem($isSubstituteContainer);
+
         if (!empty($shelfId)) {
-            $containerEntity->setShelfCode($shelfId);
+            $containerEntity
+                ->setShelfCode($shelfId)
+                ->setHasSubstitutedItem($isSubstituteContainer);
 
             $containerCount = count($orderMod->getPickingContainers());
             $fkGlobalPickReport = $this->updatePerformanceOrder($orderMod->getIdPerformanceSalesOrderReport(), $containerCount);
@@ -645,7 +651,8 @@ class PickingHeaderTransferData
                 popb.fk_user as id_user,
                 ppso.fk_picking_zone as id_zone,
                 false as is_added,
-                ppz.abbreviation as zone_abbrevation
+                ppz.abbreviation as zone_abbrevation,
+                ppso.has_substituted_item
             from pyz_picking_sales_order ppso
                 left outer join pyz_order_picking_block popb on ppso.fk_sales_order = popb.fk_sales_order and ppso.fk_picking_zone = popb.fk_picking_zone
                 left outer join pyz_picking_zone ppz on ppso.fk_picking_zone = ppz.id_picking_zone

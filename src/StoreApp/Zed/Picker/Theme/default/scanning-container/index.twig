@@ -14,7 +14,8 @@
     isScanFromPickingProcess: isScanFromPickingProcess | default,
     isMultiPickingProcess: isMultiPickingProcess | default('0'),
     pickZoneName: pickZoneName | default,
-    isDepositAllowed: isDepositAllowed
+    isDepositAllowed: isDepositAllowed,
+    addContainerToSubstitutedItem: addContainerToSubstitutedItem,
 } %}
 
 {% block header %}
@@ -68,7 +69,8 @@
             requestFromPickingArticles: requestFromPickingArticles,
             redirectToPickingArticles: redirectToPickingArticles,
             isContainerUsed: data.isContainerUsed,
-            isDepositAllowed: data.isDepositAllowed
+            isDepositAllowed: data.isDepositAllowed,
+            addContainerToSubstitutedItem: data.addContainerToSubstitutedItem,
         }
     } only %}
 {% endblock content %}

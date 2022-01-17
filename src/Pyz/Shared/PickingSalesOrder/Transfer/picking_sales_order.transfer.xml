@@ -7,6 +7,7 @@
         <property name="idPickingSalesOrder" type="int"/>
         <property name="containerCode" type="string"/>
         <property name="shelfCode" type="string"/>
+        <property name="hasSubstitutedItem" type="bool"/>
         <property name="idSalesOrder" type="int"/>
         <property name="idPickingZone" type="int"/>
         <property name="abbreviation" type="string"/>

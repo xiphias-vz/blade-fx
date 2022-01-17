@@ -16,7 +16,8 @@
     requestFromPickingArticles: '',
     redirectToPickingArticles: '',
     isContainerUsed: '',
-    isDepositAllowed: false
+    isDepositAllowed: false,
+    addContainerToSubstitutedItem: '',
 } %}
 
 {% block body %}
@@ -70,6 +71,7 @@
         <input type="hidden" name="orderItemPosition" value="{{ data.orderItemPosition }}">
         <input type="hidden" name="nextOrderPosition" value="{{ data.nextOrderPosition }}">
         <input type="hidden" name="isContainerUsed" value="{{ data.isContainerUsed }}">
+        <input type="hidden" name="addContainerToSubstitutedItem" value="{{ data.addContainerToSubstitutedItem }}">
         <div class="box">
             <div class="sub-box">
                 <p style="font-weight: bold;margin: 0">{{ 'picking.app.containers.select.title' | trans }}</p>
@@ -78,6 +80,21 @@
                         <p>
                            <span>{{ container.zoneAbbrevation }}</span> > <span>{{ container.containerID }}</span> > <span style="font-weight: bold">{{ container.shelfID }}</span>
                         </p>
+                        {% if container.hasSubstitutedItem == true %}
+                            <p>
+                            <span>{{ container.containerID }}
+                                </span>  >
+                                <span style="font-weight: bold">{{ container.shelfID }}</span>{% include atom('icon') with {
+                                    modifiers: ['big'],
+                                    data: {
+                                        name: 'icon-substitutes',
+                                    },
+                                } only %}</p>
+                        {% else %}
+                            <p>
+                                <span>{{ container.containerID }}</span> > <span style="font-weight: bold">{{ container.shelfID }}</span>
+                            </p>
+                        {% endif %}
                     {% endfor %}
                 </div>
                 <div class="input-scanner-holder">

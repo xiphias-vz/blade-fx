@@ -165,15 +165,16 @@ class PickerFacade extends AbstractFacade implements PickerFacadeInterface
      * @param \Generated\Shared\Transfer\PickingOrderTransfer $order
      * @param string $containerId
      * @param string $shelfId
+     * @param bool $isSubstituteContainer
      *
      * @return bool
      */
-    public function setContainerToOrder(PickingOrderTransfer $order, string $containerId, string $shelfId): bool
+    public function setContainerToOrder(PickingOrderTransfer $order, string $containerId, string $shelfId, bool $isSubstituteContainer): bool
     {
         return $this
             ->getFactory()
             ->createPickingHeaderTransferData()
-            ->setContainerToOrder($order, $containerId, $shelfId);
+            ->setContainerToOrder($order, $containerId, $shelfId, $isSubstituteContainer);
     }
 
     /**

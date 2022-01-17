@@ -36,8 +36,7 @@ class MultiPickingScanningContainerController extends AbstractController
             $counter = 0;
             foreach ($containersShelf as $key => $containerWithShelf) {
                 $orderForScanningContainer = $transfer->getPickingOrders()[$counter];
-                $this->getFacade()->setContainerToOrder($orderForScanningContainer, $containerWithShelf->ContainerCode, $containerWithShelf->ShelfCode);
-                $counter++;
+                $this->getFacade()->setContainerToOrder($orderForScanningContainer, $containerWithShelf->ContainerCode, $containerWithShelf->ShelfCode, $containerWithShelf->HasSubstitutedItem);
             }
 
             $transfer->updatePausedOrders();

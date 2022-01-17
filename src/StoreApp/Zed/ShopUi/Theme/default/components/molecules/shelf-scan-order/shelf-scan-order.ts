@@ -2,15 +2,17 @@ import Component from 'ShopUi/models/component';
 import $ from 'jquery/dist/jquery';
 import {array} from 'fast-glob/out/utils';
 
-interface ContainersShelf {
+type ContainersShelf {
     ContainerCode: string;
     ShelfCode: string;
-}
+    HasSubstitutedItem: string;
+};
 
 export default class ShelfScanOrder extends Component {
     protected containerNumberLength: number = 8;
     protected notificationMessageDelay: number = 3000;
     protected positionId: HTMLElement;
+    protected hasSubstitutedItem: HTMLInputElement;
     protected form: HTMLFormElement;
     protected formItems: HTMLInputElement[];
     protected buttonConfirm: HTMLButtonElement;
@@ -38,6 +40,7 @@ export default class ShelfScanOrder extends Component {
 
     protected readyCallback(): void {
         this.popUpUiInfo = <HTMLElement>document.getElementsByClassName('popup-ui-info')[0];
+        this.hasSubstitutedItem = <HTMLInputElement>this.querySelector('input[name=hasSubstitutedItem]');
         this.form = <HTMLFormElement>document.getElementById('frmMultiPickingScanningContainer');
         this.formItems = Array.from(this.form.querySelectorAll('input[type=text]'));
         this.buttonConfirm = <HTMLButtonElement>document.getElementsByClassName('btnMultiPickingScanningContainer')[0];
@@ -47,7 +50,8 @@ export default class ShelfScanOrder extends Component {
         this.notAllFields = <HTMLInputElement>document.querySelector('#not_all_fields');
         this.containerShelf = {
             ContainerCode:'',
-            ShelfCode:''
+            ShelfCode:'',
+            HasSubstitutedItem: ''
         };
         this.containerScanInput = this.querySelector('#inputScanningContainer');
         this.shelfScanInput = this.querySelector('#inputScanningShelf');
@@ -123,12 +127,15 @@ export default class ShelfScanOrder extends Component {
     protected updateContainerShelfTransfer(event): void {
         const containerCode = this.formItems[0].value;
         const shelfCode = this.formItems[1].value;
+        const hasSubstitutedItem = event.target.nextElementSibling.value;
         this.containerShelf = {
             ContainerCode: '',
-            ShelfCode: ''
+            ShelfCode: '',
+            HasSubstitutedItem: ''
         };
         this.containerShelf.ContainerCode = containerCode;
         this.containerShelf.ShelfCode = shelfCode;
+        this.containerShelf.HasSubstitutedItem = hasSubstitutedItem;
         this.containerShelfTransfer.push(this.containerShelf);
         this.containerShelfInputField.value = JSON.stringify(this.containerShelfTransfer);
         this.cleanInputFieldsAndResetFocus();

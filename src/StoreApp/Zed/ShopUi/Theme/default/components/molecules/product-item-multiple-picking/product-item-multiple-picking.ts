@@ -970,6 +970,7 @@ export default class ProductItemMultiplePicking extends Component {
         this.isSubstitutionPicked = true;
         this.iconSubstitute.classList.remove(this.showIconSubstitute);
         this.popupUiSubstitute.classList.add('popup-ui-substitute--hide');
+        window.location.replace("/picker/scanning-container?flag=substitution");
     }
 
     protected showSubstituteIconIfSubstitutionIsSet(isSubstitutionFound) {
