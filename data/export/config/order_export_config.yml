@@ -4,7 +4,7 @@ defaults:
         order_created_at:
             type: between
             from: '2021-01-01 00:00:00'
-            to: '2021-12-31 23:59:59'
+            to: '2299-12-31 23:59:59'
 actions:
     - data_entity: order-item
       destination: '{data_entity}s_DE_{timestamp}.{extension}'
