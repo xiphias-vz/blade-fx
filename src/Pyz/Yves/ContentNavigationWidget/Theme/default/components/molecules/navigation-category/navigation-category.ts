@@ -13,4 +13,7 @@ window.addEventListener('DOMContentLoaded', (e) => {
             filterCategoryLink[i].setAttribute('data-url', categorySalesLink);
         }
     }
+    else if(currentUrl.includes('/cs/outlet')) {
+        document.location += '?label%5B%5D=Akce';
+    }
 })
