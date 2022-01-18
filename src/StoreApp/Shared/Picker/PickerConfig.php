@@ -53,6 +53,7 @@ class PickerConfig
     public const URL_ORDER_PICKING = '/picker/picking/order-picking';
     public const URL_ORDER_MULTI_PICKING = '/picker/multi-picking';
     public const URL_POS_LISTE = '/picker/pos-liste';
+    public const URL_MULTI_PICKING_SELECT_CONTAINERS_MERGE = '/picker/scanning-container-merge';
     public const URL_MULTI_PICKING_SELECT_CONTAINERS = '/picker/scanning-container?add_multiple_containers=1';
     public const URL_MULTI_PICKING_OVERVIEW = '/picker/multi-picking-overview-of-containers-on-order';
     public const URL_MULTI_PICKING_START_PICKING = '/picker/multi-picking/multi-order-picking';

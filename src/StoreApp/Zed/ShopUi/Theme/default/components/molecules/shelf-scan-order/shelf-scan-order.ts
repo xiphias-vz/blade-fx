@@ -2,7 +2,7 @@ import Component from 'ShopUi/models/component';
 import $ from 'jquery/dist/jquery';
 import {array} from 'fast-glob/out/utils';
 
-type ContainersShelf {
+type ContainersShelf = {
     ContainerCode: string;
     ShelfCode: string;
     HasSubstitutedItem: string;

@@ -1,0 +1,123 @@
+{% extends model('component') %}
+
+{% define config = {
+    name: 'container-scan-order-merge',
+    tag: 'container-scan-order-merge'
+} %}
+
+{% define data = {
+    idOrderReference: 0,
+    orderForScanningContainer: '',
+} %}
+
+{% block body %}
+    {% embed molecule('popup-ui-error') with {
+        data: {
+            isErrorTrue: false,
+            isPopUpErrorForPickingArticles: 2,
+            buttons: {
+                submit: {
+                    isButton: true,
+                    additionalClass: 'js-pick-products__submit',
+                },
+            },
+        },
+    } only %}
+
+        {% block content %}
+            <input type="hidden" id="containerID_eighth_characters_set" value="{{ 'containerID.eighth.characters.set' | trans }}">
+            <input type="hidden" id="please_scan_container" value="{{ 'container.scan.order.please' | trans }}">
+            <input type="hidden" id="container_is_already_used" value="{{ 'container.scan.merge.error.container-is-already-used' | trans }}">
+            <input type="hidden" id="container_scan_order_error_pop-up_1" value="{{ 'container.scan.order.error.pop-up_1' | trans }}">
+            <input type="hidden" id="container_scan_order_error_pop-up_2" value="{{ 'container.scan.order.error.pop-up_2' | trans }}">
+            <input type="hidden" id="container_scan_order_error_pop-up_3" value="{{ 'container.scan.order.error.pop-up_3' | trans }}">
+            <input type="hidden" id="container_scan_order_error_pop-up_4" value="{{ 'container.scan.order.error.pop-up_4' | trans }}">
+            <input type="hidden" id="container_scan_order_error_pop-up_6" value="{{ 'container.scan.order.error.pop-up_6' | trans }}">
+            <div class="popup-error-holder">
+                <div class="error-status">{{ 'error_page.title' | trans }}</div>
+                <div class="error-info">
+                    <p class="container-name">{{ 'container.scan.order.error.pop-up_1' | trans }} <span></span></p>
+                    <p class="container-desc">{{ 'container.scan.order.error.pop-up_2' | trans }} </p>
+                    <p class="container-order">{{ 'container.scan.order.error_pop-up_4' | trans }} <span></span></p>
+                </div>
+            </div>
+        {% endblock %}
+    {% endembed %}
+
+    <div class="input-scanner-holder">
+        <div class="grid grid--no-wrap">
+            <div class="col col--expand">
+                <label for="input_scannerNew" style="font-weight: bold;margin-bottom: 10px">{{ 'picking.app.containers.scan.container' | trans }}</label>
+                <input id="input_scannerNew" type="text" class="input input--expand spacing-bottom spacing-bottom--big" placeholder="{{ 'picking.app.containers.scan.container' | trans }}">
+            </div>
+        </div>
+    </div>
+
+    <div id="showFullForm" class="hidden">
+        {% include molecule('container-color') with {
+            data: {
+                colorCode: "#FFFF00",
+                colorNumber: 1,
+                textColor: "#000000",
+                isSubstitutionAllowed: data.orderForScanningContainer.isSubstitutionAllowed | default
+            }
+        } only %}
+
+        <form id="frm_scanContainerOrder" method="post">
+            <div class="box">
+                <div class="sub-box">
+                    <p style="font-weight: bold;margin: 0">{{ 'picking.app.containers.select.title' | trans }}</p>
+                    <div id="listContainersShelf" class="list-containers-shelf" style="margin-bottom: 20px">
+
+                    </div>
+                    <div class="input-scanner-holder">
+                        <div class="grid grid--no-wrap">
+                            <div class="col col--expand">
+                                <label for="input_scanner_merge_container" style="font-weight: bold;margin-bottom: 10px">{{ 'container.scan.merge.label.unpack-container' | trans }}</label>
+                                <input id="input_scanner_merge_container" type="text" class="input input--expand spacing-bottom spacing-bottom--big" placeholder="{{ 'picking.app.containers.scan.container' | trans }}">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="list-containers-holder"></div>
+                <div class="checkbox-holder" style="padding-left: 1rem;">
+                    {% include atom('checkbox') with {
+                    } only %}
+                    <div class="label-for-checkbox">
+                        <span class="description">{{ 'picking.app.containers.all.packs.container' | trans }}</span>
+                        <span>
+                         {% include atom('circle') with {
+                             data: {
+                                 content: 1,
+                                 backgroundColor: "#FFFF00",
+                                 paddingLeft: '13px',
+                                 paddingTop: '4px',
+                                 textColor: "#000"
+                             }
+                         } only %}
+                    </span>
+                    </div>
+                </div>
+            </div>
+
+            {% block buttonContinueUnpacking %}
+                <div id="btnContinueUnpacking" class="text-center" style="margin-top:20px">
+                    <button type="button" class="button button--expand button--disabled">
+                        {{ 'container.scan.merge.button.further-unpack' | trans }}
+                    </button>
+                </div>
+            {% endblock %}
+
+            {% block buttonConfirmZone %}
+                <div id="btnConfirmZone" class="text-center" style="margin-top:20px">
+                    <button onclick="location.href='/picker/multi-picking-scanning-container'" type="button" class="button button--expand">
+                        {{ 'container.scan.merge.button.confirm-zone' | trans }}
+                    </button>
+                </div>
+            {% endblock %}
+        </form>
+
+    </div>
+
+{% endblock %}

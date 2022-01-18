@@ -205,6 +205,22 @@ class PickingHeaderTransfer extends SpyPickingHeaderTransfer
     }
 
     /**
+     * @param int $idOrder
+     *
+     * @return \Generated\Shared\Transfer\PickingOrderTransfer|null
+     */
+    public function getOrderById(int $idOrder): ?PickingOrderTransfer
+    {
+        foreach ($this->getPickingOrders() as $order) {
+            if ($order->getIdOrder() == $idOrder) {
+                return $order;
+            }
+        }
+
+        return null;
+    }
+
+    /**
      * @param int $oldPosition
      *
      * @return \Generated\Shared\Transfer\PickingOrderItemTransfer|null
@@ -501,6 +517,20 @@ class PickingHeaderTransfer extends SpyPickingHeaderTransfer
     }
 
     /**
+     * @return array
+     */
+    public function getContainersArray(): array
+    {
+        $array = [];
+
+        foreach ($this->getPickingOrders() as $order) {
+            array_push($array, $order->getPickingContainers());
+        }
+
+        return $array;
+    }
+
+    /**
      * @return bool
      */
     public function isLastItem(): bool
@@ -729,5 +759,24 @@ class PickingHeaderTransfer extends SpyPickingHeaderTransfer
         $obj->setParents(false);
 
         return $obj;
+    }
+
+    /**
+     * @param int|string $container
+     *
+     * @return array
+     */
+    public function getPickingOrderByContainer(string $container): array
+    {
+        $containers = [];
+        foreach ($this->getPickingOrders() as $order) {
+            foreach ($order->getPickingContainers()->getArrayCopy() as $pickingContainer) {
+                if ($pickingContainer->getContainerID() == $container) {
+                    array_push($containers, $pickingContainer->toArray());
+                }
+            }
+        }
+
+        return $containers;
     }
 }

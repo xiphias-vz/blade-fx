@@ -228,6 +228,15 @@ interface PickerFacadeInterface
     public function updatePerformanceOrder(int $IdPerformanceSalesOrderReport, int $containerCount): int;
 
     /**
+     * @param \StoreApp\Zed\Picker\Business\Transfer\PickingHeaderTransfer $transfer
+     * @param string $containerToMove
+     * @param string $containerToFill
+     *
+     * @return string
+     */
+    public function moveContainerToContainer(PickingHeaderTransfer $transfer, string $containerToMove, string $containerToFill): string;
+
+    /**
      * @return \StoreApp\Zed\Picker\Business\PickerBusinessFactory
      */
     public function getBusinessFactory(): PickerBusinessFactory;

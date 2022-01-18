@@ -50,6 +50,7 @@ class PickerConfig extends AbstractBundleConfig
             'container-to-shelf',
             'multi-picking',
             'scanning-container',
+            'scanning-container-merge',
         ];
     }
 
@@ -77,6 +78,14 @@ class PickerConfig extends AbstractBundleConfig
     public function getScanningContainerUri(): string
     {
         return '/picker/scanning-container';
+    }
+
+    /**
+     * @return string
+     */
+    public function getScanningContainerMergeUri(): string
+    {
+        return '/picker/scanning-container-merge';
     }
 
     /**

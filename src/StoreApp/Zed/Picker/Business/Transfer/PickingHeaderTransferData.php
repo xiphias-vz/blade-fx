@@ -845,6 +845,41 @@ class PickingHeaderTransferData
     }
 
     /**
+     * @param \StoreApp\Zed\Picker\Business\Transfer\PickingHeaderTransfer $transfer
+     * @param string $containerToMove
+     * @param string $containerToFill
+     *
+     * @return string
+     */
+    public function moveContainerToContainer(PickingHeaderTransfer $transfer, string $containerToMove, string $containerToFill): string
+    {
+        $sql = "select ppso.fk_sales_order as fk_sales_order
+		    from pyz_picking_sales_order ppso
+		        inner join pyz_picking_sales_order ppso2 on ppso.fk_sales_order = ppso2.fk_sales_order
+                inner join spy_sales_order sso on ppso.fk_sales_order = sso.id_sales_order and sso.invoice_reference is null
+		    where ppso.container_code = '" . $containerToMove . "' and ppso2.container_code = '" . $containerToFill . "'";
+        $data = $this->getResult($sql);
+        if (isset($data[0])) {
+            $id = $data[0]["fk_sales_order"];
+            $sql = "delete from pyz_picking_sales_order where fk_sales_order = " . $id . " and container_code = '" . $containerToMove . "'";
+            $this->getResult($sql, false);
+            $order = $transfer->getOrderById($id);
+            $containers = [];
+            foreach ($order->getPickingContainers() as $container) {
+                if ($container->getContainerID() !== $containerToMove) {
+                    $containers[] = $container;
+                }
+            }
+            $order->setPickingContainers($containers);
+            $this->setTransferToSession($transfer);
+
+            return "OK";
+        }
+
+        return "Not valid container";
+    }
+
+    /**
      * @param string $sql
      * @param bool $doFetch
      *

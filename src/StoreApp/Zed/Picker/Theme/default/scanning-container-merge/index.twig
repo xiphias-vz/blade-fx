@@ -1,0 +1,43 @@
+{% extends template('page-layout-main') %}
+
+{% define data = {
+    merchant: merchant,
+    orderPosition: orderPosition,
+    orderItemPosition: orderPosition,
+    requestFromPickingArticles: requestFromPickingArticles,
+    redirectToPickingArticles: redirectToPickingArticles,
+    itemSku: itemSku,
+    isScanFromPickingProcess: isScanFromPickingProcess | default,
+    isMultiPickingProcess: isMultiPickingProcess | default('0'),
+    pickZoneName: pickZoneName | default,
+    orderForScanningContainer: orderForScanningContainer,
+    ordersContainers: ordersContainers | default(null),
+} %}
+
+{% block header %}
+    {% include organism('header') with {
+        data: {
+            headerLocationTitle: data.pickZoneName,
+            withoutLogo: true,
+            pickingZone: true,
+            isScanFromPickingProcess: data.isScanFromPickingProcess,
+            isMultiPickingProcess: data.isMultiPickingProcess,
+            buttonUrl:'/picker/multi-picking?unlock=true'
+        }
+    } only %}
+{% endblock %}
+
+
+{% block content %}
+
+    {% include molecule('container-scan-order-merge') with {
+        data: {
+            idOrderReference: 1,
+            orderForScanningContainer: data.orderForScanningContainer,
+        },
+        attributes: {
+            'data-ordersContainers': data.ordersContainers
+        }
+    } only %}
+
+{% endblock content %}

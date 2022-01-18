@@ -418,6 +418,20 @@ class PickerFacade extends AbstractFacade implements PickerFacadeInterface
             ->updatePerformanceOrder($IdPerformanceSalesOrderReport, $containerCount);
     }
 
+    /**
+     * @param \StoreApp\Zed\Picker\Business\Transfer\PickingHeaderTransfer $transfer
+     * @param string $containerToMove
+     * @param string $containerToFill
+     *
+     * @return string
+     */
+    public function moveContainerToContainer(PickingHeaderTransfer $transfer, string $containerToMove, string $containerToFill): string
+    {
+        return $this->getFactory()
+            ->createPickingHeaderTransferData()
+            ->moveContainerToContainer($transfer, $containerToMove, $containerToFill);
+    }
+
     public function getBusinessFactory(): PickerBusinessFactory
     {
         return $this->getFactory();

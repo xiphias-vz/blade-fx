@@ -80,7 +80,7 @@
                             <span> > </span>
                             <span id="{{ config.name }}__container-{{ counter }}" class="{{ config.name }}__container">{{ selectedContainer.ContainerCode }}</span>
                         </div>
-                        <input type="hidden" id="substituteContainer_{{ counter }}" name="hasSubstitutedItem" value="{% if selectedContainer.hasSubstitutedItem %}1{% else %}0{% endif %}">
+                        <input type="hidden" id="substituteContainer_{{ counter }}" name="hasSubstitutedItem" value="{% if selectedContainer.HasSubstitutedItem %}1{% else %}0{% endif %}">
                         <input type="hidden" class="{{ config.name }}__scanned-container"data-id="{{ counter - 1 }}" value="false" />
                     </li>
                     {% set counter = counter + 1 %}

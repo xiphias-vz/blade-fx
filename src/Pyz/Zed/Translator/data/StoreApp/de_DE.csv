@@ -195,6 +195,7 @@ multi.picking.done.dialog.content, Du hast alle deine Container einem Lagerplatz
 multi.picking.order.dialog.title, Check deinen Pick
 multi.picking.order.dialog.content, Zone fertigstellt oder willst du nochmal prüfen?
 multi.picking.order.dialog.button, Zone Bestätigen
+multi.picking.order.dialog.button.merge.containers, Container aufpacken
 multi.picking.product.attribute.weight,Gewicht
 multi.picking.substitutes.popupui.title,Ersatzartikel
 multi.picking.substitutes.popupui.confirm.button,Ja
@@ -229,6 +230,7 @@ container.scan.order.error.pop-up_2,"ist bereits für Kunde"
 container.scan.order.error.pop-up_3,""
 container.scan.order.error.pop-up_4,"Bestellung:"
 container.scan.order.error.pop-up_5,"aktiviert"
+container.scan.order.error.pop-up_6,"genutzt"
 container.scan.error.pop-up_1,"gehört nicht zu Ihrem Pickautrag / kann nicht platziert werden"
 select.containers.add.box,Box hinzufügen
 popup.success.ui_1,"wurde"
@@ -242,6 +244,11 @@ picking.scanning-container.continue, "Weiter"
 picking.scanning-container.cancel, "Abbrechen"
 picking.scanning-container.isDepositAllowedChecked.popup.title, "Transportbox"
 picking.scanning-container.isDepositAllowedChecked.popup.text, "Der Kunde möchte Transportboxen. Bist du sicher, dass eine Transportbox gescannt wurde?"
+container.scan.merge.button.further-unpack, "Weiter aufpacken"
+container.scan.merge.button.confirm-zone, "Zone bestätigen"
+container.scan.merge.label.unpack-container, "Container aufpacken auf"
 multi.sentence.part.one,"wurde"
 multi.sentence.part.two,"zugeordnet"
 first.customer,ERSTKUNDE
+container.scan.merge.error.container-is-already-used,"Container ist bereits gebraucht"
+

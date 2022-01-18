@@ -55,6 +55,13 @@
                 {% block content %}{% endblock %}
 
                 {% block popupActions %}
+
+{#                    {% block mergeContainersButton %}#}
+{#                        <button type="{{ data.buttons.submit.type }}" class="button button--expand {{ config.jsName }}__merge">#}
+{#                            {{  }}#}
+{#                        </button>#}
+{#                    {% endblock %}#}
+
                     {% block confirmButton %}
                         {% if data.buttons.submit.isButton %}
                             <button type="{{ data.buttons.submit.type }}" class="button button--expand {{ data.buttons.submit.additionalClass }} {{ config.jsName }}__submit" {% if data.buttons.submit.blank %}target="_blank"{% endif %}>

@@ -58,9 +58,8 @@ class CreateAddressOnRegistrationPlugin extends AbstractPlugin implements PostCu
         }
 
         $customerTransfer
-            ->setPhone($customerTransfer->getPhonePrefix().$customerTransfer->getPhone())
-            ->setMobilePhoneNumber($customerTransfer->getMobilePhonePrefix().$customerTransfer->getMobilePhoneNumber());
-
+            ->setPhone($customerTransfer->getPhonePrefix() . $customerTransfer->getPhone())
+            ->setMobilePhoneNumber($customerTransfer->getMobilePhonePrefix() . $customerTransfer->getMobilePhoneNumber());
 
         $addressTransfer = new AddressTransfer();
         $addressTransfer->fromArray($customerTransfer->toArray(), true);
@@ -69,6 +68,7 @@ class CreateAddressOnRegistrationPlugin extends AbstractPlugin implements PostCu
             ->setFkCountry($addressTransfer->getCountry())
             ->setCellPhone($customerTransfer->getMobilePhoneNumber())
             ->setIsDefaultShipping(true);
+
         return $addressTransfer;
     }
 }

@@ -194,6 +194,7 @@ multi.picking.done.dialog.content,"Přiřadili jste všechny Vaše kontejnery sk
 multi.picking.order.dialog.title,"Zktrolujte svoje pickování"
 multi.picking.order.dialog.content,"Zóna dokončena, nebo chcete ještě zkontrolovat?"
 multi.picking.order.dialog.button,"Potvrdit zónu"
+multi.picking.order.dialog.button.merge.containers,"Container aufpacken"
 multi.picking.product.attribute.weight,"Hmotnost"
 multi.picking.substitutes.popupui.title,"Náhrada"
 multi.picking.substitutes.popupui.confirm.button,"Ano"
@@ -244,3 +245,7 @@ picking.scanning-container.isDepositAllowedChecked.popup.text, "Zákazník chce 
 multi.shelving.success.sentence.part.one,"byl přiřazen k"
 multi.shelving.success.sentence.part.two,""
 first.customer,PRVNÍ ZÁKAZNÍK
+container.scan.merge.button.further-unpack, "Další spojení"
+container.scan.merge.button.confirm-zone, "Potvrďte zónu"
+container.scan.merge.label.unpack-container, "Container aufpacken auf"
+container.scan.merge.error.container-is-already-used,"Kontejner je již použit"
