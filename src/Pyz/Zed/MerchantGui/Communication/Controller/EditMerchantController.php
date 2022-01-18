@@ -10,6 +10,7 @@ namespace Pyz\Zed\MerchantGui\Communication\Controller;
 use Orm\Zed\AssortmentZone\Persistence\PyzAssortmentPickZoneRelationQuery;
 use phpDocumentor\GraphViz\Exception;
 use Pyz\Shared\Acl\AclConstants;
+use Pyz\Shared\DataSettings\DataSettings;
 use Spryker\Zed\MerchantGui\Communication\Controller\EditMerchantController as SprykerEditMerchantController;
 use Spryker\Zed\MerchantGui\MerchantGuiConfig;
 use Symfony\Component\HttpFoundation\Request;
@@ -30,6 +31,8 @@ class EditMerchantController extends SprykerEditMerchantController
      */
     public function indexAction(Request $request)
     {
+        $settings = DataSettings::getJsonSettings("pickingAppVersion");
+
         $idMerchant = $this->castId($request->get(static::REQUEST_ID_MERCHANT));
 
         $dataProvider = $this->getFactory()->createMerchantFormDataProvider();
@@ -86,6 +89,7 @@ class EditMerchantController extends SprykerEditMerchantController
             ->getMappedAsortmentPickingZonesArray($idMerchant);
 
         $isCurrentUserAdmin = $this->isCurrentUserAdmin();
+        $pickingAppVersionDisplay = $settings["NewVersion"]["Visible"] ? "block" : "none";
 
         return $this->viewResponse([
             'form' => $merchantForm->createView(),
@@ -96,6 +100,8 @@ class EditMerchantController extends SprykerEditMerchantController
             'pickingZones' => $pickingZones,
             'mappedAssortmentPickingZones' => $mappedAssortmentPickingZones,
             'merchantReference' => $merchantReference,
+            'pickingAppVersion' => "(" . $settings["NewVersion"]["Release"] . ": " . implode(", ", $settings["NewVersion"]["Tickets"]) . ")",
+            'pickingAppVersionDisplay' => $pickingAppVersionDisplay,
         ]);
     }
 

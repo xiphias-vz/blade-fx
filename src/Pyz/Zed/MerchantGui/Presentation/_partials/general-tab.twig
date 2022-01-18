@@ -12,3 +12,8 @@
 {% endif %}
 
 {{ form_row(merchantForm.is_transportbox_enabled) }}
+<div style="display: {{ pickingAppVersionDisplay }}">
+    {{ form_row(merchantForm.isNewPickingAppFunctionEnabled) }}
+    <div style="margin-left: 30px;margin-top: -15px">{{ pickingAppVersion }}</div>
+</div>
+

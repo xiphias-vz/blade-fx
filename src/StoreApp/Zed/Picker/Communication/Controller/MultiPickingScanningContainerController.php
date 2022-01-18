@@ -25,6 +25,10 @@ class MultiPickingScanningContainerController extends AbstractController
      */
     public function indexAction(Request $request)
     {
+        if ($this->getFactory()->isOldPickingVersionEnabled()) {
+            return $this->getFactory()->getOldMultiPickingScanningContainerController()->indexAction($request);
+        }
+
         $transfer = $this->getFacade()->getPickingHeaderTransfer();
         $dataWithContainers = $transfer->getOrderList();
 

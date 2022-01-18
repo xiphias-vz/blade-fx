@@ -22,6 +22,7 @@
         <property name="pickingCapacityPerSlot" type="int"/>
         <property name="visibleStoresArray" type="array"/>
         <property name="isTransportboxEnabled" type="bool"/>
+        <property name="isNewPickingAppFunctionEnabled" type="bool"/>
     </transfer>
 
     <transfer name="MerchantCriteriaFilter">

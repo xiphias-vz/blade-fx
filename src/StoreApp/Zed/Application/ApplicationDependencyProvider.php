@@ -24,6 +24,7 @@ use Spryker\Zed\WebProfiler\Communication\Plugin\Application\WebProfilerApplicat
 use StoreApp\Zed\CodeBucketPlugin\Plugin\Application\CurrentCodeBucketApplicationPlugin;
 use StoreApp\Zed\Error\Communication\Plugin\ServiceProvider\ErrorHandlerServiceProvider;
 use StoreApp\Zed\NewRelic\Plugin\Application\NewRelicApplicationPlugin;
+use StoreApp\Zed\PickingAppVersion\Plugin\Application\PickingAppVersionPlugin;
 use StoreApp\Zed\Twig\Communication\Plugin\Application\TwigApplicationPlugin;
 
 class ApplicationDependencyProvider extends SprykerApplicationDependencyProvider
@@ -64,6 +65,7 @@ class ApplicationDependencyProvider extends SprykerApplicationDependencyProvider
             new ValidatorApplicationPlugin(),
             new CurrentCodeBucketApplicationPlugin(),
             new NewRelicApplicationPlugin(),
+            new PickingAppVersionPlugin(),
         ];
 
         if (class_exists(WebProfilerApplicationPlugin::class)) {

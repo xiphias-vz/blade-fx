@@ -79,6 +79,8 @@
 {% endblock %}
 
 {% block content %}
+    {% if app.pickingAppNewVersionVisible == true %}
+
         {% embed molecule('product-item-multiple-picking') with {
             class: 'spacing-top spacing-top--big',
             data: {
@@ -116,6 +118,49 @@
 
             {% endblock %}
         {% endembed %}
+
+    {% else %}
+
+        <!-- OLD: multi-picking/multi-order-picking.twig -->
+        {% embed molecule('product-item-multiple-picking-old') with {
+            class: 'spacing-top spacing-top--big',
+            data: {
+                currentPositionData: currentPosition,
+                pickingOrderItemsData: pickingOrderItems,
+                productsCount: currentPosition.quantity,
+                idSalesOrder: currentPosition.idOrder,
+                urlContainerSelect: data.urlContainerSelect,
+                orderPosition: data.orderPosition,
+                orderItemPosition: data.orderItemPosition,
+                urlMultiPickingOverview: data.urlMultiPickingOverview,
+                urlPosListe: data.urlPosListe,
+                listOfContainers: data.listOfContainers,
+                isLastPosition: data.isLastPosition,
+                urlScanShelves: data.urlScanShelves,
+                openModal: data.openModal,
+                fromPosListeAndModal: data.fromPosListeAndModal,
+                orderItemStatus: data.orderItemStatus,
+                itemPickingStartTime: data.itemPickingStartTime,
+                isSubstitutionAllowed: data.isSubstitutionAllowed,
+                isSubstitutionFound: data.isSubstitutionFound
+            },
+            attributes: {
+                'data-sku': currentPosition.ean,
+            },
+            embed: {
+                weightField: weightField,
+            }
+        } only %}
+            {% block formElement %}
+
+            {% endblock %}
+
+            {% block formElementWeight %}
+
+            {% endblock %}
+        {% endembed %}
+
+    {% endif %}
 
     <input type="hidden" name="{{ data.requestParamIdSalesOrder }}" value="{{ currentPosition.idOrder }}">
 

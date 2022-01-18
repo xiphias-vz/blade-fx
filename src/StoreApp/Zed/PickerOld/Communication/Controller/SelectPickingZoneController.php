@@ -5,18 +5,18 @@
  * For full license information, please view the LICENSE file that was distributed with this source code.
  */
 
-namespace StoreApp\Zed\Picker\Communication\Controller;
+namespace StoreApp\Zed\PickerOld\Communication\Controller;
 
 use phpDocumentor\GraphViz\Exception;
-use Spryker\Zed\Kernel\Communication\Controller\AbstractController;
+use StoreApp\Zed\Picker\Communication\Controller\SelectPickingZoneController as IntSelectPickingZoneController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
- * @method \StoreApp\Zed\Picker\Communication\PickerCommunicationFactory getFactory()
- * @method \StoreApp\Zed\Picker\Business\PickerFacadeInterface getFacade()
+ * @method \StoreApp\Zed\PickerOld\Communication\PickerOldCommunicationFactory getFactory()
+ * @method \StoreApp\Zed\PickerOld\Business\PickerOldFacade getFacade()
  */
-class SelectPickingZoneController extends AbstractController
+class SelectPickingZoneController extends IntSelectPickingZoneController
 {
     public const ID_PICKING_ZONE = 'idPickingZone';
 
@@ -28,11 +28,7 @@ class SelectPickingZoneController extends AbstractController
     public function indexAction(Request $request)
     {
         $factory = $this->getFactory();
-        if ($factory->isOldPickingVersionEnabled()) {
-            return $factory->getOldSelectPickingZoneController()->indexAction($request);
-        }
-
-        $merchantReference = $factory->getUserFacade()->getCurrentUser()->getMerchantReference();
+        $merchantReference = $this->getFactory()->getUserFacade()->getCurrentUser()->getMerchantReference();
         $idPickingZone = $request->get(static::ID_PICKING_ZONE) == null ?
             0 : (int)$request->get(static::ID_PICKING_ZONE);
 
@@ -59,9 +55,6 @@ class SelectPickingZoneController extends AbstractController
     public function submitFormWithoutQueryingDataBase(int $idPickingZone): RedirectResponse
     {
         $factory = $this->getFactory();
-        if ($factory->isOldPickingVersionEnabled()) {
-            return $factory->getOldSelectPickingZoneController()->submitFormWithoutQueryingDataBase($idPickingZone);
-        }
 
         try {
             $this->getFacade()->savePickingZoneInSession(

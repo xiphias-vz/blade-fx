@@ -1,0 +1,89 @@
+{% extends model('component') %}
+
+{% define config = {
+    name: 'shelf-scan-order-old',
+    jsName: 'js-shelf-scan-order-old',
+    tag: 'shelf-scan-order-old',
+} %}
+
+{% define data = {
+    listOfExistingContainers: [],
+    lastOrder: false,
+    orderForScanningContainer: [],
+    containersWithoutShelf: []
+} %}
+
+{% block body %}
+    <!-- OLD: shelf-scan-order-old/shelf-scan-order-old.twig -->
+    <div>
+        <input type="hidden" class="listOfExistingContainers" data-listOfExistingContainers="{{ data.listOfExistingContainers }}">
+        <input type="hidden" name="containersShelf" value="[]">
+        <input type="hidden" id="first_letter" value="{{ 'shelf.first.letter.large' | trans }}">
+        <input type="hidden" id="not_all_fields" value="{{ 'shelf.not.all.fields.entered' | trans }}">
+        {% set counter = 1 %}
+        {% for shelf in data.containersWithoutShelf %}
+            <div id="container_{{ counter }}">
+                <div class="{{ config.name }}__containerAndShelf">
+                    {{ counter }} : {{ shelf.containerID }}
+                </div>
+                <div>
+                    <span style="display: none">{{ shelf.containerID }}</span>
+                    <input id="inputScanningShelf_{{ counter }}" name="inputScanningShelf_{{ counter }}" type="text" class="input input--expand spacing-bottom spacing-bottom--big" placeholder="{{ 'multi.picking.placeholder.input' | trans }}">
+                </div>
+            </div>
+
+            <div id="containerToShelf_{{ counter }}" class="is-hidden {{ config.name }}__shelfOnContainer">
+                <span>{{ counter }} : </span>
+                <span class="{{ config.name }}__font-weight"> {{ shelf.containerID }} - </span>
+                <span class="{{ config.name }}__font-weight" id="shelfCode_{{ counter }}">{{ shelf.shelfID }}</span>
+            </div>
+            <hr id="hrId_{{ counter }}" class="{{ config.name }}__hrElement" />
+
+            {% set counter = counter + 1 %}
+        {% endfor %}
+    </div>
+
+{% if (data.lastOrder == true) %}
+    <div>
+        {% embed molecule('popup-ui-container-scan') with {
+            data: {
+                title: 'multi.picking.done.dialog.title' | trans,
+                buttons: {
+                    submit: {
+                        title: 'multi.picking.done.dialog.button.submit' | trans,
+                        isButton: true,
+                        type:'submit',
+                        url:'/picker/multi-picking-scanning-container'
+                    },
+                    close: false
+                },
+                headerBorderBottomColor: '#707070',
+                borderRadius: 0,
+                textAlign: "left"
+            },
+        } only %}
+            {% block content %}
+                <div class="grid grid--center">
+                    <div style="margin-bottom: 50px">{{ 'multi.picking.done.dialog.content' | trans }}</div>
+                </div>
+            {% endblock %}
+        {% endembed %}
+    </div>
+
+    <div class="text-center">
+        <div class="button button--expand btnMultiPickingScanningContainer lastOrder">
+            {{ 'multi.picking.save.button' | trans }}
+        </div>
+    </div>
+
+{% else %}
+
+        <div class="text-center">
+            <button type="submit" class="button button--expand btnMultiPickingScanningContainer">
+                {{ 'multi.picking.save.button' | trans }}
+            </button>
+        </div>
+
+{% endif %}
+
+{% endblock %}

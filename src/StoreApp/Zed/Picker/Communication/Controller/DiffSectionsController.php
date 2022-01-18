@@ -21,6 +21,8 @@ class DiffSectionsController extends AbstractController
      */
     public function indexAction()
     {
+        $this->getFactory()->setPickingVersion();
+
         return [
             'activities' => PickerConfig::SECTIONS,
         ];

@@ -1,0 +1,429 @@
+$setting-item-border-radius: rem(8);
+
+@mixin picker-product-item-multiple-picking-old($name: '.product-item-multiple-picking-old') {
+    #{$name} {
+        margin-bottom: rem(30);
+
+        #{$name} {
+            &__undo {
+                display: none;
+            }
+            &__continue {
+                display: none;
+            }
+        }
+
+        &--hide {
+            display: none;
+        }
+
+        &__info {
+            position: relative;
+            border: rem(2) solid transparent;
+        }
+
+        .button--delete {
+            background-color: $setting-color-globus-red;
+            color: white;
+        }
+
+        .button--pause {
+            background-color: $setting-color-gray-2;
+            color: $setting-color-gray-10;
+        }
+
+        .button--undo {
+            background-color: $setting-color-gray-2;
+            color: $setting-color-gray-10;
+        }
+
+        &__quantity {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding-top: rem(5);
+        }
+
+        &__counter {
+            min-width: rem(75);
+            background: $setting-color-white;
+            font-weight: fw(bold);
+        }
+
+        &__status {
+            position: absolute;
+            top: rem(10);
+            right: rem(10);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            width: rem(30);
+            height: rem(30);
+            border-radius: rem(15);
+            border: rem(2) solid map-get($setting-color-actions, success);
+            color: map-get($setting-color-actions, success);
+        }
+
+        &__icon-close {
+            display: none;
+        }
+
+        &__action-col {
+            min-width: rem(48);
+        }
+
+        &--picked,
+        &--picked-not-fully,
+        &--paused,
+        &--not-picked {
+            #{$name} {
+                &__info {
+                    background: $setting-color-white;
+                }
+
+                &__status {
+                    display: flex;
+                }
+
+                &__minus,
+                &__plus {
+                    display: none;
+                }
+
+                &__close,
+                &__pick {
+                    display: none;
+                }
+
+                &__undo {
+                    display: block;
+                }
+            }
+        }
+
+        &--picked,
+        &--picked-not-fully,
+        &--paused {
+            #{$name} {
+                &__info {
+                    border-color: map-get($setting-color-actions, success);
+                }
+
+                &__icon-close {
+                    display: none;
+                }
+
+                &__icon-pause {
+                    display: none;
+                }
+
+                &__icon-check {
+                    display: block;
+                }
+            }
+        }
+
+        &--picked-not-fully {
+            #{$name} {
+                &__info {
+                    border-color: $setting-color-blue-info;
+                }
+
+                &__status {
+                    border-color: $setting-color-blue-info;
+                    color: $setting-color-blue-info;
+                }
+            }
+        }
+
+        &--paused {
+            #{$name} {
+                &__info {
+                    border-color: $setting-color-blue-info;
+                }
+
+                &__status {
+                    border-color: $setting-color-blue-info;
+                    color: $setting-color-blue-info;
+                }
+
+                &__icon-close {
+                    display: none;
+                }
+
+                &__icon-pause {
+                    display: block;
+                }
+
+                &__icon-check {
+                    display: none;
+                }
+            }
+        }
+
+        &--not-picked {
+            #{$name} {
+                &__info {
+                    border-color: map-get($setting-color-actions, alert);
+                }
+
+                &__status {
+                    border-color: map-get($setting-color-actions, alert);
+                    color: map-get($setting-color-actions, alert);
+                }
+
+                &__icon-close {
+                    display: block;
+                }
+
+                &__icon-pause {
+                    display: none;
+                }
+
+                &__icon-check {
+                    display: none;
+                }
+            }
+        }
+
+        &__image-wrapper {
+            position: relative;
+            max-width: rem(150);
+            margin: 0 auto rem(8);
+        }
+
+        &__title {
+            text-align: center;
+            color: $setting-color-blue-midi;
+            word-break: break-all;
+        }
+
+        &__decline,
+        &__pick,
+        &__pause {
+            padding: rem(16);
+            width: calc(50% - 5px);
+
+            .icon {
+                width: rem(20);
+                height: rem(20);
+            }
+        }
+
+        &__item-head-box {
+            height: rem(55);
+        }
+
+        &__item-position {
+            float: left;
+        }
+
+        &__item-location {
+            font-weight: bolder;
+            text-align: center;
+            font-size: rem(24);
+            margin-top: rem(-16);
+            padding-top: rem(6);
+        }
+
+        &__supplierNameAndWeight {
+            background-color: $setting-color-gray-3;
+            padding: rem(10) rem(5);
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            height: auto;
+        }
+
+        &__eanAndWeight {
+            height: auto;
+            padding: rem(10) rem(5) 0 rem(5);
+            clear: both;
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+        }
+
+        &__supplierAndName,
+        &__ean {
+            float: left;
+            text-align: left;
+        }
+
+
+        &__weight,
+        &__price {
+            float: right;
+            text-align: right;
+        }
+
+        .hr-line-solid {
+            border-bottom: 1px solid black;
+            background-color: rgba(0, 0, 0, 0);
+            border-style: solid !important;
+            margin-top: 5px;
+            margin-bottom: 5px;
+            clear: both;
+        }
+
+        .button--accept,
+        .button--pause,
+        .button--delete {
+            width: 33%;
+        }
+
+        #eanScannenDiv {
+            margin-top: rem(10);
+        }
+
+        .button--confirm {
+            background-color: #1bbea0;
+            border-radius: rem(10);
+            padding-bottom: rem(18);
+            display: none;
+        }
+
+        &--picked,
+        &--picked-not-fully,
+        &--paused,
+        &--not-picked {
+            .button--delete,
+            .button--confirm,
+            .button--continue{
+                width: calc(50% - 5px);
+                display: block;
+            }
+
+            .button--pause,
+            .button--accept{
+                display: none;
+            }
+        }
+
+        .pick-products__action--fixed {
+            position: static !important;
+        }
+
+        .button--confirm-btn {
+            width: 100%;
+            height: 100%;
+        }
+
+        &__text-continue {
+            font-size: 12px;
+            color: white;
+        }
+
+        .barcodeAndWeightContainer {
+            background-color: #dedede;
+            height: rem(50);
+            padding: rem(5);
+            margin: rem(10) 0;
+        }
+
+        div[class^="bawContainerRemove"]{
+            padding: rem(10) rem(30);
+        }
+
+        .bawContainerButton {
+            background-color: #dedede;
+            cursor: pointer;
+        }
+
+        .lastThreeDigits {
+            font-weight: bold;
+            font-size: rem(16);
+        }
+
+        .outer_div{
+            display: flex;
+            justify-content: center;
+            padding-top: rem(0);
+        }
+        .avg_weight{
+            text-align: right;
+            margin-top: rem(16);
+        }
+
+        .dialogCheckPickButtons {
+            background-color: white;
+            border: 1px solid #71747c;
+            color: #71747c;
+        }
+
+        .popup-ui-error__container {
+            border-radius:0;
+
+            .popup-ui-error__content {
+                padding: 0;
+                .popup-error-holder {
+                    margin-bottom: 30px;
+
+                    .error-info {
+                        .container-name {
+                            margin-top:30px;
+
+                            span {
+                                font-weight: bold;
+                            }
+                        }
+                        .container-desc, .container-order {
+                            font-weight: bold;
+                        }
+                    }
+
+                    .error-status {
+                        font-weight: bold;
+                        padding: 10px;
+                        border-bottom: 1px solid #fff;
+                    }
+                }
+            }
+            .link--error {
+                width: 80%;
+            }
+        }
+
+        #lastPickingPositionDialog {
+            display: none;
+        }
+
+        &__weightContainer{
+            margin: rem(10) 0;
+            padding-bottom: rem(0);
+
+            .label {
+                line-height: rem(40);
+            }
+
+            .input {
+                height: rem(0) !important;
+            }
+        }
+
+        &__circle-position {
+            border-radius: 50%;
+            background-color: lightskyblue;
+            text-align: center;
+            width: 2rem;
+            height: 2rem;
+
+            &__content {
+                padding: rem(16);
+                background: $setting-color-white;
+            }
+        }
+
+        .icon-substitute-item{
+            width: rem(32) !important;
+            height: rem(32) !important;
+        }
+
+        #gridOfTheProduct {
+            margin-top: rem(-22);
+        }
+
+    }
+}
+
+@include picker-product-item-multiple-picking-old();

@@ -36,6 +36,10 @@ use StoreApp\Zed\Picker\Communication\Mapper\FormDataMapperInterface;
 use StoreApp\Zed\Picker\Communication\Mapper\OrderItemsMapper;
 use StoreApp\Zed\Picker\Communication\Mapper\OrderItemsMapperInterface;
 use StoreApp\Zed\Picker\PickerDependencyProvider;
+use StoreApp\Zed\PickerOld\Communication\Controller\MultiPickingController;
+use StoreApp\Zed\PickerOld\Communication\Controller\MultiPickingScanningContainerController;
+use StoreApp\Zed\PickerOld\Communication\Controller\SelectPickingZoneController;
+use StoreApp\Zed\PickingAppVersion\PickingAppVersionConfig;
 use Symfony\Component\Form\FormInterface;
 
 /**
@@ -253,5 +257,53 @@ class PickerCommunicationFactory extends AbstractCommunicationFactory
     public function queryOrdersForPickingZone(): SpySalesOrderQuery
     {
         return SpySalesOrderQuery::create();
+    }
+
+    /**
+     * Check current user merchant and set variable isNewPickingAppFunctionEnabled from merchant
+     *
+     * @return bool
+     */
+    public function setPickingVersion(): bool
+    {
+        $merchant = $this->getMerchantFacade()->findMerchantByUser($this->getUserFacade()->getCurrentUser());
+        PickingAppVersionConfig::setMerchantRef($merchant->getMerchantReference());
+        PickingAppVersionConfig::setPickingAppNewVersionVisible($merchant->getIsNewPickingAppFunctionEnabled() ?? false);
+
+        return true;
+    }
+
+    /**
+     * Check if is new picking app version disabled in backoffice
+     *
+     * @return bool
+     */
+    public function isOldPickingVersionEnabled(): bool
+    {
+        return !PickingAppVersionConfig::getPickingAppNewVersionVisible();
+    }
+
+    /**
+     * @return \StoreApp\Zed\PickerOld\Communication\Controller\SelectPickingZoneController
+     */
+    public function getOldSelectPickingZoneController(): SelectPickingZoneController
+    {
+        return new SelectPickingZoneController();
+    }
+
+    /**
+     * @return \StoreApp\Zed\PickerOld\Communication\Controller\MultiPickingController
+     */
+    public function getOldMultiPickingController(): MultiPickingController
+    {
+        return new MultiPickingController();
+    }
+
+    /**
+     * @return \StoreApp\Zed\PickerOld\Communication\Controller\MultiPickingScanningContainerController
+     */
+    public function getOldMultiPickingScanningContainerController(): MultiPickingScanningContainerController
+    {
+        return new MultiPickingScanningContainerController();
     }
 }

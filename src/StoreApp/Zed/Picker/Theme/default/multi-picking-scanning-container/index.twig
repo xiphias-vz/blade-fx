@@ -1,32 +1,101 @@
 {% extends template('page-layout-main') %}
 
-{% define data = {
-    listOfExistingContainers: listOfExistingContainers | default(null),
-    dataWithContainers: dataWithContainers,
-    zoneAbbreviation: zoneAbbreviation,
-    selectedContainers: selectedContainers
-} %}
-
-{% block header %}
-    {% include organism('header') with {
-        data: {
-            headerLocationTitle: '',
-            withoutLogo: true,
-            pickingZone: true,
-            buttonUrl: ''
-        }
-    } only %}
-{% endblock %}
-
-{% block content %}
-    <form id="frmMultiPickingScanningContainer" method="post" action="/picker/multi-picking-scanning-container">
-        {% include molecule('shelf-scan-order') with {
+    {% block header %}
+        {% include organism('header') with {
             data: {
-                listOfExistingContainers: data.listOfExistingContainers,
-                dataWithContainers: data.dataWithContainers,
-                zoneAbbreviation: data.zoneAbbreviation,
-                selectedContainers: data.selectedContainers
+                headerLocationTitle: '',
+                withoutLogo: true,
+                pickingZone: true,
+                buttonUrl: ''
             }
         } only %}
-    </form>
+    {% endblock %}
+
+{% if app.pickingAppNewVersionVisible == true %}
+
+    {% define data = {
+        listOfExistingContainers: listOfExistingContainers | default(null),
+        dataWithContainers: dataWithContainers,
+        zoneAbbreviation: zoneAbbreviation,
+        selectedContainers: selectedContainers
+    } %}
+
+{% else %}
+
+    {% define data = {
+        listOfExistingContainers: listOfExistingContainers | default(null),
+        lastOrder: lastOrder,
+        orderForScanningContainer: orderForScanningContainer,
+        nextOrderPosition: nextOrderPosition,
+        containersShelf: containersShelf,
+        containersWithoutShelf: containersWithoutShelf | default(null)
+    } %}
+
+{% endif %}
+
+{% block content %}
+    {% if app.pickingAppNewVersionVisible == true %}
+
+        <form id="frmMultiPickingScanningContainer" method="post" action="/picker/multi-picking-scanning-container">
+            {% include molecule('shelf-scan-order') with {
+                data: {
+                    listOfExistingContainers: data.listOfExistingContainers,
+                    dataWithContainers: data.dataWithContainers,
+                    zoneAbbreviation: data.zoneAbbreviation,
+                    selectedContainers: data.selectedContainers
+                }
+            } only %}
+        </form>
+
+    {% else %}
+
+        <!-- OLD: multi-picking-scanning-container/index.twig -->
+        {% embed molecule('popup-ui-info') with {
+            data: {
+                isUpdated: false,
+                containerId: "1",
+                shelfId: "1",
+                orderId: "1",
+                buttons: {
+                    submit: {
+                        isButton: true,
+                        additionalClass: 'js-pick-products__submit',
+                    },
+                },
+            },
+        } only %}
+        {% endembed %}
+
+        {% include molecule('container-color') with {
+            data: {
+                colorCode: data.orderForScanningContainer.pickingColor.backColor,
+                colorNumber:  data.orderForScanningContainer.pickingColor.idColor,
+                textColor:  data.orderForScanningContainer.pickingColor.foreColor,
+                isSubstitutionAllowed: 'noIcon',
+            }
+        } only %}
+
+        {% if(data.containersShelf | length > 0) %}
+            {% embed molecule('popup-ui-container-shelf') with {
+                data: {
+                    containersShelf: data.containersShelf
+                },
+            } only %}
+            {% endembed %}
+        {% endif %}
+
+        <form id="frmMultiPickingScanningContainer" method="post" action="/picker/multi-picking-scanning-container">
+            <input type="hidden" name="nextOrderPosition" value="{{ data.nextOrderPosition }}">
+            {% include molecule('shelf-scan-order-old') with {
+                data: {
+                    listOfExistingContainers: data.listOfExistingContainers,
+                    lastOrder: data.lastOrder,
+                    orderForScanningContainer: data.orderForScanningContainer,
+                    containersWithoutShelf: data.containersWithoutShelf
+                }
+            } only %}
+        </form>
+
+    {% endif %}
+
 {% endblock %}

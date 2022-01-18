@@ -32,6 +32,7 @@ class MerchantCreateForm extends ExtendedMerchantCreateForm
     protected const FIELD_SHOP_PASSWORD = 'shopPassword';
     protected const FIELD_IS_CASHIER_TXT = 'isCashierTxt';
     protected const FIELD_IS_CASHIER_XML = 'isCashierXml';
+    protected const FIELD_NEW_PICKING_APP_ENABLED = 'isNewPickingAppFunctionEnabled';
 
     protected const LABEL_NAME = 'Name';
     protected const LABEL_REGISTRATION_NUMBER = 'Registration number';
@@ -42,6 +43,7 @@ class MerchantCreateForm extends ExtendedMerchantCreateForm
     protected const LABEL_IS_CASHIER_XML = 'Is cashier xml';
     protected const LABEL_IS_PASSWORD_PROTECTED = 'Is password protected';
     protected const LABEL_SHOP_PASSWORD = 'Shop password';
+    protected const LABEL_NEW_PICKING_APP_ENABLED = 'NewPickingAppFunctionEnabled';
 
     protected const FIELD_ASORTMENT_ZONES = 'idAsortmentZones';
     protected const FIELD_PICK_ZONES = 'idPickZones';
@@ -67,7 +69,8 @@ class MerchantCreateForm extends ExtendedMerchantCreateForm
             ->addCashierTxtField($builder)
             ->addCashierXmlField($builder)
             ->addMerchantReferenceField($builder, $options[static::OPTION_CURRENT_ID])
-            ->addIsTransportboxChecked($builder);
+            ->addIsTransportboxChecked($builder)
+            ->addIsNewPickingAppFunctionEnabled($builder);
 
         $isCurrentUserAdmin = $this->isCurrentUserAdmin();
         if ($isCurrentUserAdmin) {
@@ -133,6 +136,21 @@ class MerchantCreateForm extends ExtendedMerchantCreateForm
     {
         $builder->add(static::FIELD_IS_TRANSPORTBOX_ENABLED, CheckboxType::class, [
             'label' => static::LABEL_IS_TRANSPORTBOX_ENABLED,
+            'required' => false,
+        ]);
+
+        return $this;
+    }
+
+    /**
+     * @param \Symfony\Component\Form\FormBuilderInterface $builder
+     *
+     * @return $this
+     */
+    protected function addIsNewPickingAppFunctionEnabled(FormBuilderInterface $builder)
+    {
+        $builder->add(static::FIELD_NEW_PICKING_APP_ENABLED, CheckboxType::class, [
+            'label' => static::LABEL_NEW_PICKING_APP_ENABLED,
             'required' => false,
         ]);
 

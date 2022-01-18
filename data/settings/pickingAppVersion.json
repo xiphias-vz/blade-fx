@@ -1,0 +1,17 @@
+{
+  "NewVersion":{
+    "Visible": true,
+    "Release":5.3,
+    "Tickets":[
+      "OS11SPRYKE-1387",
+      "OS11SPRYKE-1425"
+    ]
+  },
+  "History":[
+    {
+      "Release":5.0,
+      "Tickets":[
+      ]
+    }
+  ]
+}
