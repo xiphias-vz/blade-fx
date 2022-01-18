@@ -8,6 +8,9 @@
 namespace StoreApp\Zed\Picker\Communication\Controller;
 
 use Generated\Shared\Transfer\MerchantTransfer;
+use Orm\Zed\Sales\Persistence\SpySalesOrderItemQuery;
+use Orm\Zed\Sales\Persistence\SpySalesOrderTotalsQuery;
+use Propel\Runtime\ActiveQuery\Criteria;
 use Pyz\Shared\Oms\OmsConfig;
 use StoreApp\Shared\Picker\PickerConfig;
 use StoreApp\Zed\Merchant\Communication\Plugin\EventDispatcher\MerchantProviderEventDispatcherPlugin;
@@ -118,6 +121,40 @@ class MultiPickingController extends BaseOrderPickingController
                     $status = $request->request->get("status");
                     switch ($status) {
                         case "accepted":
+                            $currentOrderItem = $this->getFacade()->getPickingHeaderTransfer()->getOrderItems($position);
+                            if ($currentOrderItem[0]['isCancelled'] == true) {
+                                $groupedOrderItems = $this->getFacade()->getPickingHeaderTransfer()->getGroupedOrderItems();
+                                foreach ($groupedOrderItems as $item) {
+                                    if ($item['isCancelled'] == true) {
+                                        $this->getFacade()->setCurrentOrderItemPicked($quantity, $weight);
+                                        $spySalesOrderItemEntity = SpySalesOrderItemQuery::create()
+                                            ->filterByFkSalesOrder($item['idOrder'])
+                                            ->filterByGroupKey($item['ean'])
+                                            ->joinWithState(Criteria::INNER_JOIN)
+                                            ->find();
+                                        foreach ($spySalesOrderItemEntity as $newPickedItem) {
+                                            if ($newPickedItem->getState()->getName() == 'ready for selecting shelves') {
+                                                $newPickedItem->setCanceledAmount(0);
+                                                $newPickedItem->setOriginalPrice(null);
+                                                $newPickedItem->setRefundableAmount($item['price']);
+                                                $spySalesOrderItemEntity->save();
+
+                                                $taxAmount = $newPickedItem->getTaxAmount();
+
+                                                $spySalesOrderTotalsEntity = SpySalesOrderTotalsQuery::create()
+                                                    ->filterByFkSalesOrder($item['idOrder'])
+                                                    ->findOneOrCreate();
+                                                $spySalesOrderTotalsEntity->setCanceledTotal($spySalesOrderTotalsEntity->getCanceledTotal() - $newPickedItem->getPrice());
+                                                $spySalesOrderTotalsEntity->setGrandTotal($spySalesOrderTotalsEntity->getGrandTotal() + $newPickedItem->getPrice());
+                                                $spySalesOrderTotalsEntity->setRefundTotal($spySalesOrderTotalsEntity->getRefundTotal() + $newPickedItem->getPrice());
+                                                $spySalesOrderTotalsEntity->setTaxTotal($spySalesOrderTotalsEntity->getTaxTotal() + $taxAmount);
+                                                $spySalesOrderTotalsEntity->save();
+                                            }
+                                        }
+                                    }
+                                }
+                                break;
+                            }
                             $this->getFacade()->setCurrentOrderItemPicked($quantity, $weight);
                             break;
                         case "declined":
