@@ -288,6 +288,32 @@ class ProductCatalogProvider
     }
 
     /**
+     * @param int $houseNumber
+     * @param string $filter ProductWamasNr:in Abc,def,ghi
+     * @param int $page
+     * @param int $pageSize
+     *
+     * @return array
+     */
+    public function getPlacementsByHouse(
+        int $houseNumber,
+        string $filter = '',
+        int $page = 0,
+        int $pageSize = 50
+    ): array {
+        $url = $this->url . '/houses/' . $houseNumber . '/placements';
+        $data = [
+            'page' => $page,
+            'pageSize' => $pageSize,
+        ];
+        if (!empty($filter)) {
+            $data['filter'] = $filter;
+        }
+
+        return ApiClient::get($url, $this->getBearerToken(), $data);
+    }
+
+    /**
      * Get identifiers of changed rebates in a given house (store)
      * ProductCatalogService /houses/{houseNumber}/modifiedRebates
      *

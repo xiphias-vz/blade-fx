@@ -131,7 +131,7 @@ class GsoaProductConsole extends Console
                             $sapFilter = "WamasNr:in " . implode(",", $productsToRequest);
                             $result = $client->getProducts($sapFilter, true, $page, $pageSize);
                             if (isset($result["products"])) {
-                                $result["products"] = $this->getPresentationStock($output, $client, $result["products"], 0, $store);
+                                $result["products"] = $this->getPlacementsInStock($output, $client, $result["products"], 0, $store);
                                 foreach ($result["products"] as $item) {
                                     $this->setReturnablePackagins($item, $returnablePackagingsPrices, $client, $store);
                                     $d = $map->mapValues($item);
@@ -205,7 +205,6 @@ class GsoaProductConsole extends Console
 
                     $map = new ProductMapping();
                     $mapAlternativeEan = new AlternativeEanMapping();
-                    $counter = 0;
                     $pageSize = 2000;
                     $page = 0;
                     $returnablePackagingsPrices = [];
@@ -221,7 +220,7 @@ class GsoaProductConsole extends Console
                             if (is_array($result["products"]) && count($result["products"]) < 1) {
                                 break;
                             }
-                            $result["products"] = $this->getPresentationStock($output, $client, $result["products"], 0, $store);
+                            $result["products"] = $this->getPlacementsInStock($output, $client, $result["products"], 0, $store);
                             foreach ($result["products"] as $item) {
                                 if (count($item["eshopCategories"]) > 0 && !empty($item["vatRate"])) {
                                     $counter++;
@@ -255,9 +254,7 @@ class GsoaProductConsole extends Console
                 case "importCategories":
                     $fileCategoryPath = $this->getImportFilePathAndName("1.globusCZ_categories", false);
                     $result = $client->getProductCategories($page, 20000);
-                    $counter = 0;
                     file_put_contents($fileCategoryPath, "categoryIdStibo|parentIdCategoryStibo|name|metatitle|metadescription" . PHP_EOL);
-                    file_put_contents("//data/data/import/spryker/1.globusCZ_categories.csv", "categoryIdStibo|parentIdCategoryStibo|name|metatitle|metadescription" . PHP_EOL);
                     $categories = [];
                     foreach ($result["productCategoriesEshop"] as $item) {
                         if (!str_starts_with($item["categoryId"], 'cls_czc_')) {
@@ -427,6 +424,63 @@ class GsoaProductConsole extends Console
             "shelffield" => "000",
             "shelffloor" => "00",
         ];
+    }
+
+    /**
+     * @param \Symfony\Component\Console\Output\OutputInterface $output
+     * @param \Pyz\Shared\GsoaRestApiClient\Provider\ProductCatalogProvider $client
+     * @param array $products
+     * @param int $index
+     * @param string $store
+     *
+     * @return array
+     */
+    private function getPlacementsInStock(OutputInterface $output, ProductCatalogProvider $client, array $products, int $index, string $store): array
+    {
+        $limit = 100;
+        $counter = 0;
+        $sortOrderFilter = [];
+        $productCount = count($products);
+        for ($i = $index; $i < $productCount; $i++) {
+            if (count($products[$i]["eshopCategories"]) > 0 && !empty($products[$i]["vatRate"])) {
+                $sortOrderFilter[] = $products[$i]['wamasNr'];
+                $counter++;
+                if ($counter > $limit) {
+                    break;
+                }
+            }
+        }
+        try {
+            $resultSortOrder = $client->getPlacementsByHouse($store, 'ProductWamasNr:in ' . implode(",", $sortOrderFilter), 0, 2000);
+            $counter = 0;
+            for ($i = $index; $i < $productCount; $i++) {
+                $wNr = $products[$i]['wamasNr'];
+                $key = array_search($wNr, array_column($resultSortOrder, 'productWamasNr'));
+                $sortOrder = 0;
+                if ($key > 0) {
+                    if (isset($resultSortOrder[$key]["placements"][0]["presentationStock"])) {
+                        $sortOrder = $resultSortOrder[$key]["placements"][0]["presentationStock"];
+                    } elseif (isset($resultSortOrder[$key]["placement"][0]["presentationStock"])) {
+                        $sortOrder = $resultSortOrder[$key]["placement"][0]["presentationStock"];
+                    }
+                    $sortOrder = is_numeric($sortOrder) ? abs($sortOrder) * (-1) : $sortOrder;
+                }
+                $products[$i]["sortingorder"] = $sortOrder;
+                $counter++;
+                if ($counter > $limit) {
+                    break;
+                }
+            }
+            $index = $i;
+        } catch (Exception $ex) {
+            $index = $index + $limit;
+            $output->write($ex->getMessage());
+        }
+        if ($index < $productCount) {
+            return $this->getPlacementsInStock($output, $client, $products, $index, $store);
+        }
+
+        return $products;
     }
 
     /**
@@ -805,7 +859,8 @@ class GsoaProductConsole extends Console
 
     /**
      * @param string $importName
-     * @param string|null $modifiedFrom
+     * @param string|null $store
+     * @param string $modifiedFrom
      * @param string $modifiedTo
      *
      * @return int

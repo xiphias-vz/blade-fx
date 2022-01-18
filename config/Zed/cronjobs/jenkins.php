@@ -187,8 +187,16 @@ if ($storeCodeBucket == 'CZ') {
     ];
 
     $jobs[] = [
-        'name' => 'stock-import-2-hours',
-        'command' => 'vendor/bin/install -r gsoa-based-ost-stock-import',
+        'name' => 'partial-import-product-prices-stock',
+        'command' => 'vendor/bin/install -r gsoa-sceduled-partial-import',
+        'schedule' => '0,15,30,45 02-22 * * *',
+        'enable' => true,
+        'stores' => ['OST'],
+    ];
+
+    $jobs[] = [
+        'name' => 'partial-import-categories',
+        'command' => 'vendor/bin/install -r gsoa-category-import',
         'schedule' => '0 02-22/2 * * *',
         'enable' => true,
         'stores' => ['OST'],
