@@ -7,3 +7,6 @@ pyzx_picking_progress.sql=zed
 pyzx_update_product_label.sql=zed
 pyzx_update_sceduled_weight_prices.sql=zed
 pyzx_get_factfinder_event.sql=zed
+pyzx_ff_export_products.sql=zed
+pyzx_ff_export_prices.sql=zed
+pyzx_ff_export_categories.sql=zed
