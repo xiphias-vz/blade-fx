@@ -140,7 +140,7 @@ class PickingHeaderTransferData
            so.is_paused,
            sso.created_at as performance_order_date,
            case when popb.fk_user is null then 0 else 1 end as isLocked,
-           sso.is_substitution_allowed,
+           IFNULL(sso.is_substitution_allowed, 0) as is_substitution_allowed,
            sm.is_transportbox_enabled,
            sso.is_deposit_allowed,
            so.zone_abbreviation
@@ -156,8 +156,9 @@ class PickingHeaderTransferData
                       inner join spy_oms_order_item_state soois
                                  on ssoi.fk_oms_order_item_state = soois.id_oms_order_item_state
                 inner join pyz_picking_zone ppz on ssoi.pick_zone = ppz.name
-             where soois.name like '" . OmsConfig::STORE_STATE_READY_FOR_PICKING . "'
-             or soois.name like '" . OmsConfig::STORE_STATE_READY_FOR_SELECTING_SHELVES . "'
+             where (
+                    soois.name like '" . OmsConfig::STORE_STATE_READY_FOR_PICKING . "'
+                    or soois.name like '" . OmsConfig::STORE_STATE_READY_FOR_SELECTING_SHELVES . "')
                 and ppz.id_picking_zone = " . $idZone . "
              group by ssoi.fk_sales_order, ppz.abbreviation
          ) so on sso.id_sales_order = so.fk_sales_order
