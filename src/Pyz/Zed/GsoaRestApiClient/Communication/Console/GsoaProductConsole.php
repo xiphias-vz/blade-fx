@@ -124,34 +124,38 @@ class GsoaProductConsole extends Console
 
                     try {
                         $result = $client->getProductsModified($modifiedFrom, true);
-                        $modifiedProducts = array_unique($result["modifiedProducts"]);
-                        $productsToRequest = array_slice($modifiedProducts, 0, static::REQUEST_MAX_ARRAY_LENGTH);
-                        $output->writeln("Modified products: " . count($modifiedProducts) . " from " . $modifiedFrom);
-                        while (count($productsToRequest) > 0) {
-                            $sapFilter = "WamasNr:in " . implode(",", $productsToRequest);
-                            $result = $client->getProducts($sapFilter, true, $page, $pageSize);
-                            if (isset($result["products"])) {
-                                $result["products"] = $this->getPlacementsInStock($output, $client, $result["products"], 0, $store);
-                                foreach ($result["products"] as $item) {
-                                    $this->setReturnablePackagins($item, $returnablePackagingsPrices, $client, $store);
-                                    $d = $map->mapValues($item);
-                                    if ($d["active"] === "1" || array_key_exists($d["sapnumber"], $products)) {
-                                        $counter++;
-                                        $d["Classification_ID"] = implode(";", $item["eshopCategories"]);
-                                        file_put_contents($fileArticlePath, implode('|', $d) . PHP_EOL, FILE_APPEND);
-                                        $linesAlternativeEan = $mapAlternativeEan->getEanLines($item);
-                                        if (count($linesAlternativeEan) > 1) {
-                                            foreach ($linesAlternativeEan as $line) {
-                                                file_put_contents($fileAlternativeEanPath, implode('|', $line) . PHP_EOL, FILE_APPEND);
+                        if (count($result) > 0) {
+                            $modifiedProducts = array_unique($result["modifiedProducts"]);
+                            $productsToRequest = array_slice($modifiedProducts, 0, static::REQUEST_MAX_ARRAY_LENGTH);
+                            $output->writeln("Modified products: " . count($modifiedProducts) . " from " . $modifiedFrom);
+                            while (count($productsToRequest) > 0) {
+                                $sapFilter = "WamasNr:in " . implode(",", $productsToRequest);
+                                $result = $client->getProducts($sapFilter, true, $page, $pageSize);
+                                if (isset($result["products"])) {
+                                    $result["products"] = $this->getPlacementsInStock($output, $client, $result["products"], 0, $store);
+                                    foreach ($result["products"] as $item) {
+                                        $this->setReturnablePackagins($item, $returnablePackagingsPrices, $client, $store);
+                                        $d = $map->mapValues($item);
+                                        if ($d["active"] === "1" || array_key_exists($d["sapnumber"], $products)) {
+                                            $counter++;
+                                            $d["Classification_ID"] = implode(";", $item["eshopCategories"]);
+                                            file_put_contents($fileArticlePath, implode('|', $d) . PHP_EOL, FILE_APPEND);
+                                            $linesAlternativeEan = $mapAlternativeEan->getEanLines($item);
+                                            if (count($linesAlternativeEan) > 1) {
+                                                foreach ($linesAlternativeEan as $line) {
+                                                    file_put_contents($fileAlternativeEanPath, implode('|', $line) . PHP_EOL, FILE_APPEND);
+                                                }
                                             }
                                         }
                                     }
                                 }
+                                $pageCounter++;
+                                $output->writeln('Pages done ' . $pageCounter . ', rows ' . $counter);
+                                $modifiedProducts = array_slice($modifiedProducts, static::REQUEST_MAX_ARRAY_LENGTH);
+                                $productsToRequest = array_slice($modifiedProducts, 0, static::REQUEST_MAX_ARRAY_LENGTH);
                             }
-                            $pageCounter++;
-                            $output->writeln('Pages done ' . $pageCounter . ', rows ' . $counter);
-                            $modifiedProducts = array_slice($modifiedProducts, static::REQUEST_MAX_ARRAY_LENGTH);
-                            $productsToRequest = array_slice($modifiedProducts, 0, static::REQUEST_MAX_ARRAY_LENGTH);
+                        } else {
+                            $output->writeln('No modified products!');
                         }
                         $this->setLastImportDate("product", null, $modifiedFrom, $dateTo);
                     } catch (Exception $ex) {
@@ -299,12 +303,16 @@ class GsoaProductConsole extends Console
                         $modifiedFrom = $this->getLastImportDate("product-price", $store);
                     }
                     $result = $client->getProductPricesByHouseModified($store, $modifiedFrom, true);
-                    $modifiedProducts = array_unique($result["modifiedProducts"]);
-                    $output->writeln("Modified product prices: " . count($modifiedProducts) . " from " . $modifiedFrom);
+                    if (count($result) > 0) {
+                        $modifiedProducts = array_unique($result["modifiedProducts"]);
+                        $output->writeln("Modified product prices: " . count($modifiedProducts) . " from " . $modifiedFrom);
 
-                    if (count($modifiedProducts) > 0) {
-                        $this->generateProductPriceFile($output, $client, $store, $counter, $result, $result["modifiedProducts"]);
-                        $this->setLastImportDate("product-price", $store, $modifiedFrom, $dateTo);
+                        if (count($modifiedProducts) > 0) {
+                            $this->generateProductPriceFile($output, $client, $store, $counter, $result, $result["modifiedProducts"]);
+                            $this->setLastImportDate("product-price", $store, $modifiedFrom, $dateTo);
+                        }
+                    } else {
+                        $output->writeln("No modified product prices from " . $modifiedFrom);
                     }
                     break;
                 case "updateStock":
