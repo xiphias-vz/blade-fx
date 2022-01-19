@@ -40,7 +40,7 @@ class MultiPickingScanningContainerController extends IntMultiPickingScanningCon
         if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $containersShelf = json_decode($request->get('containersShelf'));
             foreach ($containersShelf as $key => $containerWithShelf) {
-                $this->getFacade()->setContainerToOrder($orderForScanningContainer, $containerWithShelf->ContainerCode, $containerWithShelf->ShelfCode);
+                $this->getFacade()->setContainerToOrder($orderForScanningContainer, $containerWithShelf->ContainerCode, $containerWithShelf->ShelfCode, false);
             }
             if (empty($containersShelf)) {
                 $this->getFacade()->updateGlobalPerformanceOrder($transfer->getIdGlobalPickReport());
