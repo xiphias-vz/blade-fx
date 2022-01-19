@@ -14,6 +14,11 @@ window.addEventListener('DOMContentLoaded', (e) => {
         }
     }
     else if(currentUrl.includes('/cs/outlet')) {
-        document.location += '?label%5B%5D=Akce';
+        const filterCategoryLink = filterSection.querySelectorAll('.filter-category .filter-category__item--level-1 .filter-category__link');
+        for(let i = 0; i < filterCategoryLink.length; i++) {
+            let urlCategoryLink = filterCategoryLink[i].getAttribute('data-url');
+            let categorySalesLink = '/cs/outlet'+ urlCategoryLink.substring(urlCategoryLink.indexOf("/") + 4);
+            filterCategoryLink[i].setAttribute('data-url', categorySalesLink);
+        }
     }
 })
