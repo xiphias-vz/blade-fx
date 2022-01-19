@@ -41,6 +41,23 @@ BEGIN
     SET @cur_number_of_images = @cur_number_of_images + 1;
     END WHILE;
 
+    INSERT INTO tmp_tbl_images_message (fk_product, id_product_image, image_name, publish)
+    SELECT spis.fk_product, spi.id_product_image, spi.image_name, 1
+    FROM spy_product_image_set_to_product_image spistpi
+             INNER JOIN spy_product_image_set spis on spistpi.fk_product_image_set = spis.id_product_image_set
+             INNER JOIN spy_product_image spi on spistpi.fk_product_image = spi.id_product_image
+             INNER JOIN spy_product sp on spis.fk_product_abstract = sp.fk_product_abstract
+             INNER JOIN tmp_tbl_images tti on sp.id_product = tti.fk_product AND spi.image_name = tti.image_name
+    WHERE spistpi.sort_order <> tti.sort_order;
+
+    UPDATE spy_product_image_set_to_product_image spistpi
+        INNER JOIN spy_product_image_set spis on spistpi.fk_product_image_set = spis.id_product_image_set
+        INNER JOIN spy_product_image spi on spistpi.fk_product_image = spi.id_product_image
+        INNER JOIN spy_product sp on spis.fk_product_abstract = sp.fk_product_abstract
+        INNER JOIN tmp_tbl_images tti on sp.id_product = tti.fk_product AND spi.image_name = tti.image_name
+        SET	spistpi.sort_order = tti.sort_order
+    WHERE spistpi.sort_order <> tti.sort_order;
+
     /*marking images that needs to be un-publish*/
     INSERT INTO tmp_tbl_images_message (fk_product, id_product_image, image_name, publish)
     SELECT s.fk_product, s.id_product_image, s.image_name, 0
