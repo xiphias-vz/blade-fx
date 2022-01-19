@@ -105,11 +105,21 @@ class MultiPickingController extends BaseOrderPickingController
     public function multiOrderPickingAction(Request $request)
     {
         $transfer = $this->getFacade()->getPickingHeaderTransfer();
+        $redirectToScanningContainers = false;
         $productToDisplay = $_REQUEST['sku'] ?? '';
         $positionToDisplay = $_REQUEST['position'] ?? '';
         $openModal = $_REQUEST['fromModal'] ?? 'false';
         $fromPosListeAndModal = $_REQUEST['fromPosListeAndModal'] ?? 'false';
         $isSubstitutionPicked = $_REQUEST['isSubstitutionPicked'] ?? 'false';
+
+        $status = $request->request->get("status");
+        if ($status === "declined" && $isSubstitutionPicked === "true") {
+            if (!$transfer->getOrderItem($transfer->getLastPickingItemPosition())->getIsSubstitutionFound() ?? false) {
+                $transfer->getOrderItem($transfer->getLastPickingItemPosition())->setIsSubstitutionFound(true);
+
+                $redirectToScanningContainers = true;
+            }
+        }
 
         if ($request->request->count() > 0) {
             if ($request->request->has('saveAndGoToNext')) {
@@ -174,7 +184,11 @@ class MultiPickingController extends BaseOrderPickingController
             $nextOIData = $transfer->getOrderItem($positionToDisplay);
             $transfer->setLastPickingItemPosition($nextOIData->getPickingItemPosition());
         } else {
-            $nextOIData = $transfer->getNextOrderItem(0);
+            if ($redirectToScanningContainers) {
+                $nextOIData = $transfer->getOrderItem($transfer->getLastPickingItemPosition());
+            } else {
+                $nextOIData = $transfer->getNextOrderItem(0);
+            }
             if ($nextOIData == null) {
                 $nextOIData = $transfer->getOrderItem($transfer->getLastPickingItemPosition());
                 $openModal = 'true';
@@ -251,6 +265,7 @@ class MultiPickingController extends BaseOrderPickingController
             'urlPosListe' => PickerConfig::URL_POS_LISTE,
             'urlScanShelves' => PickerConfig::URL_MULTI_PICKING_SCAN_SHELVES,
             'isLastPosition' => $isLastPosition,
+            'redirectToScanningContainers' => $redirectToScanningContainers,
             'openModal' => $openModal,
             'fromPosListeAndModal' => $fromPosListeAndModal,
             'itemPickingStartTime' => $itemPickingStartTime,
@@ -273,6 +288,7 @@ class MultiPickingController extends BaseOrderPickingController
         $orderItem = $transfer->getOrderItem($transfer->getLastPickingItemPosition());
 
         if ($this->getFacade()->setCurrentOrderItemPaused(true)) {
+            $orderItem->setIsSubstitutionFound(false);
             $transfer->setParents(true);
             $this->getFacade()->setTransferToSession($transfer);
         } else {

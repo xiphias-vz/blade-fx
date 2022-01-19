@@ -50,6 +50,7 @@ export default class ProductItemMultiplePicking extends Component {
     protected $weightField: $;
     protected $previousSku: $;
     protected $openModal: $;
+    protected $redirectToScanningContainers: $;
     protected popupUiErrorInfo: object;
     protected currentItem: StorageItem;
     protected $containerScanConfirmation: HTMLInputElement;
@@ -144,8 +145,15 @@ export default class ProductItemMultiplePicking extends Component {
         this.mapEvents();
         this.boldLastThreeEanNumbers();
 
+        this.$redirectToScanningContainers = $('#redirectToScanningContainers').val();
+
         this.$openModal = $('#idOpenModal').val();
         this.$isSubstitutionAllowed = $('#isSubstitutionAllowed').val();
+
+        if (this.$redirectToScanningContainers === "1") {
+            this.backToScanningContainersIfSubstitutionIsPicked();
+        }
+
         this.openModal(this.$openModal);
 
         this.removeTemporarilyReadOnlyAttributeForNonActiveFields();
@@ -341,8 +349,8 @@ export default class ProductItemMultiplePicking extends Component {
         if(paused === true){
             this.setPausedStateForItem();
         }
-        else if(declined === true || (accepted === true && isAlreadyPicked === true)){
-            if(declined === true){
+        else if(declined === true || (accepted === true && isAlreadyPicked === true)) {
+            if (declined === true) {
                 $(".weightScanContainer").empty();
                 this.containerData = [];
                 this.weight = 0;
@@ -353,7 +361,7 @@ export default class ProductItemMultiplePicking extends Component {
             this.pickProducts.updateStorageItem(this, this.orderItemStatus);
 
             let saveAndGoToNext = "true";
-            if(Boolean(isLastPosition) === true){
+            if (Boolean(isLastPosition) === true) {
                 saveAndGoToNext = "End";
             }
             this.pickProducts.update();
@@ -982,6 +990,36 @@ export default class ProductItemMultiplePicking extends Component {
         this.isSubstitutionPicked = true;
         this.iconSubstitute.classList.remove(this.showIconSubstitute);
         this.popupUiSubstitute.classList.add('popup-ui-substitute--hide');
+        if(this.isSubstitutionPicked === true){
+            this.ifIsSubstitutionPicked();
+        }
+    }
+
+    protected ifIsSubstitutionPicked() {
+        const urlSave = window.location.origin + "/picker/multi-picking/multi-order-picking";
+        let pickingPosition = this.pickingItemPosition;
+        let quantity = this.$quantityOutput.text();
+
+        let declined = this.isDeclined;
+
+        let status = "";
+        if(declined === true){
+            status = "declined"
+        }
+
+        let weight = 0;
+        let form = $('<form action="' + urlSave + '" method="post" style="visibility: hidden;">' +
+            '<input type="text" name="position" value="' + pickingPosition + '" />' +
+            '<input type="text" name="quantity" value="' + quantity + '" />' +
+            '<input type="text" name="weight" value="' + weight + '" />' +
+            '<input type="text" name="status" value="' + status + '" />' +
+            '<input type="text" name="isSubstitutionPicked" value="' + this.isSubstitutionPicked + '" />' +
+            '</form>');
+        $('body').append(form);
+        form.submit();
+    }
+
+    protected backToScanningContainersIfSubstitutionIsPicked(){
         window.location.replace("/picker/scanning-container?flag=substitution");
     }
 

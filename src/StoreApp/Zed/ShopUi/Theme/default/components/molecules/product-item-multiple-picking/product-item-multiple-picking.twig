@@ -18,6 +18,7 @@
     orderItemPosition: '',
     isLastPosition: '',
     listOfContainers: '',
+    redirectToScanningContainers: data.redirectToScanningContainers,
     openModal: '',
     fromPosListeAndModal: '',
     orderItemStatus: '',
@@ -64,6 +65,7 @@
     <div id="gridOfTheProduct" class="grid {{ config.name }}__card" data-sku="{{ itemSku }}">
         <input type="hidden" id="currentEnvironment" value="{{ data.currentEnvironment }}">
         <input type="hidden" id="formPreviousSku" value="{{ itemSku }}">
+        <input type="hidden" id="redirectToScanningContainers" value="{{ data.redirectToScanningContainers }}">
         <input type="hidden" id="idOpenModal" value="{{ data.openModal }}">
         <input type="hidden" id="orderReference" value="{{ orderReference }}">
         <input type="hidden" id="orderItemStatus" value="{{ data.orderItemStatus }}">

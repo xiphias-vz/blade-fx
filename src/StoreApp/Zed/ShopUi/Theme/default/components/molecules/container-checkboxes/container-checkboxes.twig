@@ -25,7 +25,7 @@
                 {% if container.has_substituted_item == true %}
                 {% include atom('checkbox') with {
                     data: {
-                        label: '<span class="abbreviation">'~container.abbreviation ~' ></span>' ~ container.shelf_code ~ ' > ' ~ container.container_code,
+                        label: '<span class="abbreviation">'~ container.abbreviation ~' ></span>' ~ container.shelf_code ~ ' > ' ~ container.container_code,
                         containerID: container.container_code
                     },
                 } only %}
@@ -33,7 +33,7 @@
             {% else %}
                 {% include atom('checkbox') with {
                     data: {
-                        label: '<span class="abbreviation">'~container.abbreviation ~' ></span>' ~ container.shelf_code ~ ' > ' ~ container.container_code,
+                        label: '<span class="abbreviation">'~ container.abbreviation ~' ></span>' ~ container.shelf_code ~ ' > ' ~ container.container_code,
                         containerID: container.container_code
                     },
                 } only %}

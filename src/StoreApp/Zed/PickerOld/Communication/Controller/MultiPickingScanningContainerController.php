@@ -52,6 +52,24 @@ class MultiPickingScanningContainerController extends IntMultiPickingScanningCon
                 $transfer->updatePausedOrders();
                 $this->getFacade()->clearLockForPausedOrders($transfer);
 
+                $orderUpdater = $this->getFacade()->getBusinessFactory()->createOrderUpdater();
+                $pickedItems = [];
+                $data = $this->getFacade()->getBusinessFactory()->createPickingHeaderTransferData();
+                foreach ($transfer->getPickingOrders() as $order) {
+                    foreach ($order->getPickingOrderItems() as $item) {
+                        $counter = 0;
+                        if ($item->getQuantityPicked() > 0) {
+                            foreach ($data->getOrderItemIdArray($item) as $id) {
+                                if ($counter < $item->getQuantityPicked()) {
+                                    $pickedItems[] = $id;
+                                }
+                                $counter++;
+                            }
+                        }
+                    }
+                }
+                $orderUpdater->markOrderItemsAsPicked($pickedItems);
+
                 return $this->redirectResponse($this->getFactory()->getConfig()->getDiffSectionsUri());
             }
         } else {

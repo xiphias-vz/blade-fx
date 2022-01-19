@@ -77,12 +77,10 @@
                 <p style="font-weight: bold;margin: 0">{{ 'picking.app.containers.select.title' | trans }}</p>
                 <div class="list-containers-shelf" style="margin-bottom: 20px">
                     {% for container in data.usedContainersWithShelf %}
-                        <p>
-                           <span>{{ container.zoneAbbrevation }}</span> > <span>{{ container.containerID }}</span> > <span style="font-weight: bold">{{ container.shelfID }}</span>
-                        </p>
                         {% if container.hasSubstitutedItem == true %}
                             <p>
-                            <span>{{ container.containerID }}
+                                <span>{{ container.zoneAbbrevation }}</span> >
+                                <span>{{ container.containerID }}
                                 </span>  >
                                 <span style="font-weight: bold">{{ container.shelfID }}</span>{% include atom('icon') with {
                                     modifiers: ['big'],
@@ -92,7 +90,7 @@
                                 } only %}</p>
                         {% else %}
                             <p>
-                                <span>{{ container.containerID }}</span> > <span style="font-weight: bold">{{ container.shelfID }}</span>
+                                <span>{{ container.zoneAbbrevation }}</span> > <span>{{ container.containerID }}</span> > <span style="font-weight: bold">{{ container.shelfID }}</span>
                             </p>
                         {% endif %}
                     {% endfor %}

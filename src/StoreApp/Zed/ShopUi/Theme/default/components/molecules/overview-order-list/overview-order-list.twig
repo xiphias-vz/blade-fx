@@ -41,13 +41,12 @@
                         {% set countContainer = countContainer + 1 %}
                         <div>
                             <span style="font-weight: normal" >- {{ countContainer }} -</span>
-                            <span style="font-weight: normal">{{ container.zoneAbbrevation }}</span> >
-                            <span>{{ container.containerID }}</span>
-                            {% if container.shelfID != "" %}
-                                <span> > {{ container.shelfID }}</span>
-                            {% endif %}
                             {% if container.hasSubstitutedItem == true %}
+                                <span style="font-weight: normal">{{ container.zoneAbbrevation }}</span> >
                             <span>{{ container.containerID }}
+                                {% if container.shelfID != "" %}
+                                    <span> > {{ container.shelfID }}</span>
+                                {% endif %}
                                     {% include atom('icon') with {
                                         modifiers: ['big'],
                                         data: {
@@ -56,7 +55,11 @@
                                     } only %}
                                 </span>
                                 {% else %}
+                                    <span style="font-weight: normal">{{ container.zoneAbbrevation }}</span> >
                                     <span>{{ container.containerID }}</span>
+                                    {% if container.shelfID != "" %}
+                                        <span> > {{ container.shelfID }}</span>
+                                    {% endif %}
                             {% endif %}
                         </div>
                     {% endfor %}

@@ -44,7 +44,6 @@ class ScanningContainerController extends AbstractController
         if (isset($_REQUEST['flag'])) {
             if ($_REQUEST['flag'] === 'substitution') {
                 $addContainerToSubstitutedItem = true;
-                $this->getFacade()->setCurrentOrderItemCanceled(true, true);
             }
         }
 
@@ -94,7 +93,11 @@ class ScanningContainerController extends AbstractController
 
             if ($orderForScanningContainer == null) {
                 if (count($submittedContainers)) {
-                    $orderForScanningContainer = $transfer->getOrder($nextOrderPosition);
+                    if ($addContainerToSubstitutedItem === true) {
+                        $orderForScanningContainer = $transfer->getOrderById($transfer->getOrderItem($transfer->getLastPickingItemPosition())->getIdOrder());
+                    } else {
+                        $orderForScanningContainer = $transfer->getOrder($nextOrderPosition);
+                    }
                     foreach ($submittedContainers as $container) {
                         foreach ($container->containers as $containerId) {
                             $usedError = $this->getFacade()->checkContainerUsage($containerId, $merchant, $orderForScanningContainer->getIdOrder());
@@ -129,8 +132,16 @@ class ScanningContainerController extends AbstractController
                         }
                     }
                 }
+                if ($addContainerToSubstitutedItem) {
+                    $orderForScanningContainer = null;
+                } else {
+                    $orderForScanningContainer = $transfer->getNextOrder($nextOrderPosition);
+                }
+            }
 
-                $orderForScanningContainer = $transfer->getNextOrder($nextOrderPosition);
+            if ($addContainerToSubstitutedItem === true) {
+                $transfer->setLastPickingItemPosition($transfer->getLastPickingItemPosition() - 1);
+                $this->getFacade()->setTransferToSession($transfer);
             }
 
             if ($orderForScanningContainer == null) {
@@ -139,6 +150,8 @@ class ScanningContainerController extends AbstractController
 
                 return $this->redirectResponse($urlOverview);
             }
+        } elseif ($addContainerToSubstitutedItem === true) {
+            $orderForScanningContainer = $transfer->getOrderById($transfer->getOrderItem($transfer->getLastPickingItemPosition())->getIdOrder());
         } else {
             $orderForScanningContainer = $transfer->getNextOrder($nextOrderPosition);
         }

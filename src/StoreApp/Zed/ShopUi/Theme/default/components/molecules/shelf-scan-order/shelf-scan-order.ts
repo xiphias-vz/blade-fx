@@ -12,7 +12,7 @@ export default class ShelfScanOrder extends Component {
     protected containerNumberLength: number = 8;
     protected notificationMessageDelay: number = 3000;
     protected positionId: HTMLElement;
-    protected hasSubstitutedItem: HTMLInputElement;
+    protected hasSubstitutedItem: HTMLElement[];
     protected form: HTMLFormElement;
     protected formItems: HTMLInputElement[];
     protected buttonConfirm: HTMLButtonElement;
@@ -40,7 +40,7 @@ export default class ShelfScanOrder extends Component {
 
     protected readyCallback(): void {
         this.popUpUiInfo = <HTMLElement>document.getElementsByClassName('popup-ui-info')[0];
-        this.hasSubstitutedItem = <HTMLInputElement>this.querySelector('input[name=hasSubstitutedItem]');
+        this.hasSubstitutedItem = Array.from(this.querySelectorAll('input[name=hasSubstitutedItem]'));
         this.form = <HTMLFormElement>document.getElementById('frmMultiPickingScanningContainer');
         this.formItems = Array.from(this.form.querySelectorAll('input[type=text]'));
         this.buttonConfirm = <HTMLButtonElement>document.getElementsByClassName('btnMultiPickingScanningContainer')[0];
@@ -127,7 +127,13 @@ export default class ShelfScanOrder extends Component {
     protected updateContainerShelfTransfer(event): void {
         const containerCode = this.formItems[0].value;
         const shelfCode = this.formItems[1].value;
-        const hasSubstitutedItem = event.target.nextElementSibling.value;
+        const lengthOfLists = this.listOfContainers.length;
+        let hasSubstitutedItem;
+        for (let i = 0; i < lengthOfLists; i += 1) {
+            if (containerCode === this.listOfContainers[i].innerText) {
+                hasSubstitutedItem = this.hasSubstitutedItem[i].value;
+            }
+        }
         this.containerShelf = {
             ContainerCode: '',
             ShelfCode: '',

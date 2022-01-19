@@ -149,14 +149,14 @@
                         {
                             containerId = id[i].attributes[2].value;
 
-                            if(barcode == containerId)
+                            if(barcode === containerId)
                             {
                                 id[i].checked = true;
                                 containerExists = true;
                                 break;
                             }
                         }
-                        if(containerExists == false)
+                        if(containerExists === false)
                         {
                             alert("This container is not part of the order!");
                         }

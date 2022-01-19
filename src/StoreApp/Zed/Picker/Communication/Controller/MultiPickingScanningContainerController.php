@@ -36,12 +36,17 @@ class MultiPickingScanningContainerController extends AbstractController
         $zoneAbbreviation = $transfer->getZoneAbbrevation();
 
         if ($_SERVER["REQUEST_METHOD"] == "POST") {
-            $containersShelf = json_decode($request->get('containersShelf'));
-            $counter = 0;
-            foreach ($containersShelf as $key => $containerWithShelf) {
-                $orderForScanningContainer = $transfer->getPickingOrders()[$counter];
-                $this->getFacade()->setContainerToOrder($orderForScanningContainer, $containerWithShelf->ContainerCode, $containerWithShelf->ShelfCode, $containerWithShelf->HasSubstitutedItem);
-                $counter++;
+            foreach ($dataWithContainers as $order) {
+                $orderContainers = $order->getPickingContainers();
+                $containersShelf = json_decode($request->get('containersShelf'));
+                foreach ($orderContainers as $container) {
+                    foreach ($containersShelf as $key => $containerWithShelf) {
+                        if ($container->getContainerID() === $containerWithShelf->ContainerCode) {
+                            $this->getFacade()->setContainerToOrder($order, $container->getContainerID(), $containerWithShelf->ShelfCode, $container->getHasSubstitutedItem());
+                            break;
+                        }
+                    }
+                }
             }
 
             $transfer->updatePausedOrders();
