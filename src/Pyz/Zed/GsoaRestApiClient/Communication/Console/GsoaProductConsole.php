@@ -155,6 +155,7 @@ class GsoaProductConsole extends Console
                                 $productsToRequest = array_slice($modifiedProducts, 0, static::REQUEST_MAX_ARRAY_LENGTH);
                             }
                         } else {
+                            $result = [1];
                             $output->writeln('No modified products!');
                         }
                         $this->setLastImportDate("product", null, $modifiedFrom, $dateTo);
@@ -312,6 +313,7 @@ class GsoaProductConsole extends Console
                             $this->setLastImportDate("product-price", $store, $modifiedFrom, $dateTo);
                         }
                     } else {
+                        $result = [1];
                         $output->writeln("No modified product prices from " . $modifiedFrom);
                     }
                     break;
@@ -329,6 +331,7 @@ class GsoaProductConsole extends Console
                             $this->setLastImportDate("product-stock", $store, $modifiedFrom, $dateTo);
                         }
                     } else {
+                        $result = [1];
                         $output->writeln("Product stocks not modified since " . $modifiedFrom);
                     }
 
