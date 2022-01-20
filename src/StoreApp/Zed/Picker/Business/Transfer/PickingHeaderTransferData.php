@@ -898,7 +898,7 @@ class PickingHeaderTransferData
                     $containers[] = $container;
                 }
             }
-            $order->setPickingContainers($containers);
+            $order->setPickingContainers(new ArrayObject($containers));
             $this->setTransferToSession($transfer);
 
             return "OK";

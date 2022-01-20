@@ -35,4 +35,11 @@ interface ContainerReaderInterface
      * @return array
      */
     public function getUsedContainers(): array;
+
+    /**
+     * @param string $customerFullName
+     *
+     * @return array
+     */
+    public function getOrderIdsByCustomer(string $customerFullName): array;
 }

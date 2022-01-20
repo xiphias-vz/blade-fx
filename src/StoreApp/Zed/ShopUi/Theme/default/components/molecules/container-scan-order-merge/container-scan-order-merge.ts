@@ -113,7 +113,7 @@ export default class ContainerScanOrderMerge extends Component {
                         $("#listContainersShelf").empty();
                         for (let i = 0; i < parsedData.length; i++) {
                             if(parsedData[i].shelf_id == null){
-                                $("#listContainersShelf").append('<p><span>' + parsedData[i].zone_abbrevation + '</span> ></p>');
+                                $("#listContainersShelf").append('<p><span>' + parsedData[i].zone_abbrevation + '</span> > <span>' + parsedData[i].container_id + '</span></p>');
                             }
                             else{
                                 $("#listContainersShelf").append('<p><span>' + parsedData[i].zone_abbrevation + '</span> > <span>' + parsedData[i].container_id + '</span> > <span style="font-weight: bold">' + parsedData[i].shelf_id + '</span></p>');

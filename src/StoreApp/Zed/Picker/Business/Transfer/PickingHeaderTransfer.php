@@ -777,9 +777,19 @@ class PickingHeaderTransfer extends SpyPickingHeaderTransfer
     public function getPickingOrderByContainer(string $container): array
     {
         $containers = [];
+        $idOrder = 0;
         foreach ($this->getPickingOrders() as $order) {
-            foreach ($order->getPickingContainers()->getArrayCopy() as $pickingContainer) {
+            foreach ($order->getPickingContainers() as $pickingContainer) {
                 if ($pickingContainer->getContainerID() == $container) {
+                    $idOrder = $pickingContainer->getIdOrder();
+                    break;
+                }
+            }
+        }
+
+        foreach ($this->getPickingOrders() as $order) {
+            foreach ($order->getPickingContainers() as $pickingContainer) {
+                if ($pickingContainer->getIdOrder() == $idOrder) {
                     array_push($containers, $pickingContainer->toArray());
                 }
             }

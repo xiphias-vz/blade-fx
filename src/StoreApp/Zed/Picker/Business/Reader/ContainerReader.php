@@ -159,4 +159,20 @@ class ContainerReader implements ContainerReaderInterface
             ->find()
             ->toArray();
     }
+
+    /**
+     * @param string $customerFullName
+     *
+     * @return array
+     */
+    public function getOrderIdsByCustomer(string $customerFullName): array
+    {
+        return $this->pyzPickingSalesOrderQuery
+            ->joinSpySalesOrder()
+            ->withColumn(SpySalesOrderTableMap::COL_FIRST_NAME, 'firstName')
+            ->withColumn(SpySalesOrderTableMap::COL_LAST_NAME, 'lastName')
+            ->where("concat(" . SpySalesOrderTableMap::COL_FIRST_NAME . ", ' ', " . SpySalesOrderTableMap::COL_LAST_NAME . ")" . " = '" . $customerFullName . "'")
+            ->find()
+            ->toArray();
+    }
 }

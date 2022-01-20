@@ -44,7 +44,7 @@ class ScanningContainerMergeController extends AbstractController
         $transfer->setParents(true);
         $pickZoneById = $factory->getPickingZoneFacade()->findPickingZoneById($transfer->getIdZone());
 
-        $currentPosition = $request->get('addOrderPosition');
+        $currentPosition = $request->get('addOrderPosition') ?? 0;
         $orderForScanningContainer = $transfer->getOrder($currentPosition);
 
         $isScanFromPickingProcess = "0";
@@ -53,15 +53,11 @@ class ScanningContainerMergeController extends AbstractController
         }
 
         $ordersContainers = [];
-        foreach ($transfer->getContainersArray() as $cont) {
-            $test = array_values($cont->getArrayCopy());
-            array_push($ordersContainers, $test[0]['containerID']);
+        foreach ($transfer->getContainersArray() as $cont1) {
+            foreach ($cont1 as $cont) {
+                $ordersContainers[] = $cont->getContainerID();
+            }
         }
-
-        $listOfContainers = $this->getFactory()
-            ->getPickerBusinessFactory()
-            ->createContainerReader()
-            ->getUsedContainers();
 
         return $this->viewResponse([
             'itemSku' => $request->get(static::ORDER_ITEM_SKU),
