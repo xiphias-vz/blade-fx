@@ -18,7 +18,7 @@
     orderItemPosition: '',
     isLastPosition: '',
     listOfContainers: '',
-    redirectToScanningContainers: data.redirectToScanningContainers,
+    setItemDeclined: data.setItemDeclined,
     openModal: '',
     fromPosListeAndModal: '',
     orderItemStatus: '',
@@ -65,7 +65,7 @@
     <div id="gridOfTheProduct" class="grid {{ config.name }}__card" data-sku="{{ itemSku }}">
         <input type="hidden" id="currentEnvironment" value="{{ data.currentEnvironment }}">
         <input type="hidden" id="formPreviousSku" value="{{ itemSku }}">
-        <input type="hidden" id="redirectToScanningContainers" value="{{ data.redirectToScanningContainers }}">
+        <input type="hidden" id="setItemDeclined" value="{{ data.setItemDeclined }}">
         <input type="hidden" id="idOpenModal" value="{{ data.openModal }}">
         <input type="hidden" id="orderReference" value="{{ orderReference }}">
         <input type="hidden" id="orderItemStatus" value="{{ data.orderItemStatus }}">
@@ -76,6 +76,10 @@
         <input type="hidden" id="isSubstitutionFound" value="{{ data.isSubstitutionFound }}">
         <input type="hidden" id="isItemPaused" value="{{ data.currentPositionData['isPaused'] }}">
         <input type="hidden" id="isItemCanceled" value="{{ data.currentPositionData['isCancelled'] }}">
+        <input type="hidden" id="isFullPicked" value="{{ data.currentPositionData.isFullPicked }}">
+        <input type="hidden" id="isPartiallyPicked" value="{{ data.currentPositionData.isPartiallyPicked }}">
+        <input type="hidden" id="isCancelledStatus" value="{{ data.currentPositionData.isCancelledStatus }}">
+        <input type="hidden" id="isPausedStatus" value="{{ data.currentPositionData.isPausedStatus }}">
         <div class="col col--expand">
             <div class="box {{ config.name }}__info">
                 <div class="{{ config.name }}__item-head-box">

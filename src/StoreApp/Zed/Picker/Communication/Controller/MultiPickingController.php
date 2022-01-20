@@ -106,6 +106,7 @@ class MultiPickingController extends BaseOrderPickingController
     {
         $transfer = $this->getFacade()->getPickingHeaderTransfer();
         $redirectToScanningContainers = false;
+        $setItemDeclined = false;
         $productToDisplay = $_REQUEST['sku'] ?? '';
         $positionToDisplay = $_REQUEST['position'] ?? '';
         $openModal = $_REQUEST['fromModal'] ?? 'false';
@@ -114,9 +115,106 @@ class MultiPickingController extends BaseOrderPickingController
 
         $status = $request->request->get("status");
         if ($status === "declined" && $isSubstitutionPicked === "true") {
-            if (!$transfer->getOrderItem($transfer->getLastPickingItemPosition())->getIsSubstitutionFound() ?? false) {
+            $isSubstitutionFoundOnItem = $transfer->getOrderItem($transfer->getLastPickingItemPosition());
+            if ($isSubstitutionFoundOnItem === null) {
+                $isSubstitutionFoundOnItem = $transfer->getOrderItem($transfer->getLastPickingItemPosition() + 1)->getIsSubstitutionFound();
+            } else {
+                $isSubstitutionFoundOnItem = $transfer->getOrderItem($transfer->getLastPickingItemPosition())->getIsSubstitutionFound();
+            }
+            if (!$isSubstitutionFoundOnItem ?? false) {
                 $transfer->getOrderItem($transfer->getLastPickingItemPosition())->setIsSubstitutionFound(true);
+                $redirectToScanningContainers = true;
+                $factory = $this->getFactory();
+                $urlScan = $factory->getConfig()->getScanningContainerUri();
+                $urlScan .= '?flag=substitution';
 
+                return $this->redirectResponse($urlScan);
+            }
+        }
+        $pickingItem = $transfer->getOrderItem($transfer->getLastPickingItemPosition() == null ? 0 : $transfer->getLastPickingItemPosition());
+        if ($pickingItem === null) {
+            $pickingItem = $transfer->getOrderItem($transfer->getLastPickingItemPosition() + 1);
+        }
+        $pickingItemHasBeenSubstituted = false;
+        if ($pickingItem !== null) {
+            $orderItemTransfer = $transfer->getGroupedOrderItems();
+            $pickingItemPosition = $transfer->getLastPickingItemPosition();
+            if ($pickingItemPosition === 0 || $pickingItemPosition === null) {
+                $pickingItemPosition = 1;
+            }
+            if (!$positionToDisplay == "") {
+                $item = $orderItemTransfer[$positionToDisplay];
+            } else {
+                $item = $orderItemTransfer[$pickingItemPosition];
+            }
+
+            if ($item->getIsPaused() === true && $item->getIsCancelled() === false && $item['counterPaused'] < 0) {
+                $item->setIsCancelled(true);
+                $item['isCancelledStatus'] = true;
+                $item['isPausedStatus'] = false;
+                $item->setIsPaused(false);
+            }
+            if ($item->getIsSubstitutionFound() === true && $item['quantityPicked'] > 0) {
+                $item['isFullPicked'] = false;
+                $item['counterFullPicked'] = $item['counterFullPicked'] - 1;
+                $item['quantityPicked'] = 0;
+                $item->setIsCancelled(true);
+                $item['isCancelledStatus'] = true;
+                $item->setIsSubstitutionFound(true);
+            }
+            if ($item['isFullPicked'] === true && $item->getIsCancelled() === true) {
+                $item['isFullPicked'] = true;
+                $item['counterCancelled'] = $item['counterCancelled'] - 1;
+                $item->setIsCancelled(false);
+                $item['isCancelledStatus'] = false;
+                $item->setIsSubstitutionFound(false);
+            }
+            if ($item['isCancelledStatus'] === true && $item->getIsCancelled() === true && $item->getIsSubstitutionFound() === true) {
+                $item['isFullPicked'] = false;
+                $item['isPausedStatus'] = false;
+                $item->setIsPaused(false);
+                $item->setIsCancelled(true);
+                $item['isCancelledStatus'] = true;
+                $item->setIsSubstitutionFound(true);
+            }
+            if ($item['isFullPicked'] === true && $item->getIsSubstitutionFound() === true) {
+                $item['isFullPicked'] = false;
+                $item->setIsCancelled(true);
+                $item['isCancelledStatus'] = true;
+                $item->setIsSubstitutionFound(true);
+            }
+            if ($item->getIsPaused() === true && $item['isPausedStatus'] === true && $item->getIsSubstitutionFound() === false) {
+                $item['isFullPicked'] = false;
+                $item['isPausedStatus'] = true;
+                $item->setIsPaused(true);
+                $item->setIsCancelled(false);
+                $item['isCancelledStatus'] = false;
+                $item->setIsSubstitutionFound(false);
+            }
+            if ($item->getIsPaused() === true && $item->getIsSubstitutionFound() === true) {
+                $item['isFullPicked'] = false;
+                $item['isPausedStatus'] = false;
+                $item['counterPaused'] = $item['counterPaused'] - 1;
+                $item['counterCancelled'] = $item['counterCancelled'] + 1;
+                $item->setIsPaused(false);
+                $item->setIsCancelled(true);
+                $item['isCancelledStatus'] = true;
+                $item->setIsSubstitutionFound(true);
+            }
+            if ($item['isCancelled'] === "0" && $item->getIsSubstitutionFound() === true) {
+                $item['counterCancelled'] = $item['counterCancelled'] + 1;
+                $item->setIsCancelled(true);
+                $item['isCancelledStatus'] = true;
+                $item->setIsSubstitutionFound(true);
+            }
+
+            $dataForItemStatus = $item;
+
+            $pickingItemHasBeenSubstituted = $pickingItem->getIsSubstitutionFound();
+        }
+        if ($status === null && $isSubstitutionPicked === "false" && ($pickingItemHasBeenSubstituted === true && ($pickingItem !== null))) {
+            if ($pickingItem->getIsSubstitutionFound()) {
+                $setItemDeclined = true;
                 $redirectToScanningContainers = true;
             }
         }
@@ -171,6 +269,9 @@ class MultiPickingController extends BaseOrderPickingController
                             }
                             break;
                         case "declined":
+                            if ($transfer->getLastPickingItemPosition() === 0) {
+                                $transfer->setLastPickingItemPosition(1);
+                            }
                             $currentItemResponse = $this->getFacade()->setCurrentOrderItemCanceled(true, strtolower($isSubstitutionPicked) == 'true' ? true : false);
                             break;
                     }
@@ -189,6 +290,10 @@ class MultiPickingController extends BaseOrderPickingController
         } else {
             if ($redirectToScanningContainers) {
                 $nextOIData = $transfer->getOrderItem($transfer->getLastPickingItemPosition());
+                if ($nextOIData === null) {
+                    $nextOIData = $transfer->getOrderItem($transfer->getLastPickingItemPosition() + 1);
+                    $nextOIData->setPickingItemPosition(1);
+                }
             } else {
                 $nextOIData = $transfer->getNextOrderItem(0);
             }
@@ -268,7 +373,7 @@ class MultiPickingController extends BaseOrderPickingController
             'urlPosListe' => PickerConfig::URL_POS_LISTE,
             'urlScanShelves' => PickerConfig::URL_MULTI_PICKING_SCAN_SHELVES,
             'isLastPosition' => $isLastPosition,
-            'redirectToScanningContainers' => $redirectToScanningContainers,
+            'setItemDeclined' => $setItemDeclined,
             'openModal' => $openModal,
             'fromPosListeAndModal' => $fromPosListeAndModal,
             'itemPickingStartTime' => $itemPickingStartTime,

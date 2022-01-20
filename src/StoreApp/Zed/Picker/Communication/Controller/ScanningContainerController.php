@@ -140,8 +140,15 @@ class ScanningContainerController extends AbstractController
             }
 
             if ($addContainerToSubstitutedItem === true) {
-                $transfer->setLastPickingItemPosition($transfer->getLastPickingItemPosition() - 1);
-                $this->getFacade()->setTransferToSession($transfer);
+                $itemPosition = $transfer->setLastPickingItemPosition($transfer->getLastPickingItemPosition());
+                if ($itemPosition->getLastPickingItemPosition() === $itemPosition->getMaxPickingItemPosition()) {
+                    $itemPosition = $transfer->setLastPickingItemPosition($transfer->getLastPickingItemPosition());
+                } elseif ($itemPosition->getLastPickingItemPosition() === 1) {
+                    $itemPosition = $transfer->setLastPickingItemPosition($transfer->getLastPickingItemPosition() - 1);
+                } else {
+                    $itemPosition = $transfer->setLastPickingItemPosition($transfer->getLastPickingItemPosition());
+                }
+                $this->getFacade()->setTransferToSession($itemPosition);
             }
 
             if ($orderForScanningContainer == null) {

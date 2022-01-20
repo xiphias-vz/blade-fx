@@ -50,7 +50,7 @@ export default class ProductItemMultiplePicking extends Component {
     protected $weightField: $;
     protected $previousSku: $;
     protected $openModal: $;
-    protected $redirectToScanningContainers: $;
+    protected $setItemDeclined: $;
     protected popupUiErrorInfo: object;
     protected currentItem: StorageItem;
     protected $containerScanConfirmation: HTMLInputElement;
@@ -145,13 +145,13 @@ export default class ProductItemMultiplePicking extends Component {
         this.mapEvents();
         this.boldLastThreeEanNumbers();
 
-        this.$redirectToScanningContainers = $('#redirectToScanningContainers').val();
+        this.$setItemDeclined = $('#setItemDeclined').val();
 
         this.$openModal = $('#idOpenModal').val();
         this.$isSubstitutionAllowed = $('#isSubstitutionAllowed').val();
 
-        if (this.$redirectToScanningContainers === "1") {
-            this.backToScanningContainersIfSubstitutionIsPicked();
+        if (this.$setItemDeclined === "1") {
+            this.setProductAsDeclinedWithSubstitution();
         }
 
         this.openModal(this.$openModal);
@@ -178,6 +178,12 @@ export default class ProductItemMultiplePicking extends Component {
         declinedInputField.value === '1' ? this.isDeclined = true : this.isDeclined = false;
         const pausedInputField: HTMLInputElement = document.querySelector('#isItemPaused');
         pausedInputField.value === '1' ? this.isPaused = true : this.isPaused = false;
+        const isFullPicked: HTMLInputElement = document.querySelector('#isFullPicked');
+        isFullPicked.value === '1' ? this.isAccepted = true : this.isAccepted = false;
+        const isPartiallyPicked: HTMLInputElement = document.querySelector('#isPartiallyPicked');
+        isPartiallyPicked.value === '1' ? this.isNotFullyAccepted = true : this.isNotFullyAccepted = false;
+
+        this.changeItemVisualState();
     }
 
     protected removeTemporarilyReadOnlyAttributeForNonActiveFields() {
@@ -470,9 +476,17 @@ export default class ProductItemMultiplePicking extends Component {
     }
 
     async updateItem(item: StorageItem): Promise<void> {
-        await this.updateQuantityInput(item.count);
-        let orderItemStatus = localStorage.getItem('orderItemStatus');
+        this.updateQuantityInput(item.count);
         this.currentItem = item;
+
+        if (this.isAccepted) {
+            if(item.weight != NaN){
+                this.weight = Number(item.weight);
+                if(this.$weightField !== undefined) {
+                    this.$weightField.val(Number(this.weight));
+                }
+            }
+        }
 
 
         if(item.containerData.length > 0){
@@ -487,34 +501,6 @@ export default class ProductItemMultiplePicking extends Component {
                     this.$weightField.val(Number(this.weight));
                 }
             }
-        }
-
-
-        if (item.isAccepted || item.isNotFullyAccepted) {
-            if(item.weight != NaN){
-                this.weight = Number(item.weight);
-                if(this.$weightField !== undefined) {
-                    this.$weightField.val(Number(this.weight));
-                }
-            }
-
-            this.acceptClickHandler();
-        }
-
-        if (item.isPaused !== this.isPaused) {
-            item.isPaused = this.isPaused;
-        }
-
-        if (item.isPaused) {
-            this.$pauseButton.click();
-        }
-
-        if (item.isDeclined !== this.isDeclined) {
-            item.isDeclined = this.isDeclined;
-        }
-
-        if (item.isDeclined) {
-            this.declineClickHandler();
         }
     }
 
@@ -996,7 +982,7 @@ export default class ProductItemMultiplePicking extends Component {
         }
     }
 
-    protected ifIsSubstitutionPicked() {
+    protected ifIsSubstitutionPicked (){
         const urlSave = window.location.origin + "/picker/multi-picking/multi-order-picking";
         let pickingPosition = this.pickingItemPosition;
         let quantity = this.$quantityOutput.text();
@@ -1007,6 +993,8 @@ export default class ProductItemMultiplePicking extends Component {
         if(declined === true){
             status = "declined"
         }
+        let itemPickingStartTime = this.itemPickingStartTime.value;
+
 
         let weight = 0;
         let form = $('<form action="' + urlSave + '" method="post" style="visibility: hidden;">' +
@@ -1014,14 +1002,20 @@ export default class ProductItemMultiplePicking extends Component {
             '<input type="text" name="quantity" value="' + quantity + '" />' +
             '<input type="text" name="weight" value="' + weight + '" />' +
             '<input type="text" name="status" value="' + status + '" />' +
+            '<input type="text" name="itemPickingStartTime" value="' + itemPickingStartTime + '" />' +
             '<input type="text" name="isSubstitutionPicked" value="' + this.isSubstitutionPicked + '" />' +
             '</form>');
         $('body').append(form);
         form.submit();
     }
 
-    protected backToScanningContainersIfSubstitutionIsPicked(){
-        window.location.replace("/picker/scanning-container?flag=substitution");
+    protected setProductAsDeclinedWithSubstitution(){
+        this.isSubstitutionPicked = true;
+        this.iconSubstitute.classList.remove(this.showIconSubstitute);
+        this.popupUiSubstitute.classList.remove('popup-ui-substitute--hide');
+        this.$declineButton = this.$this.find(this.declineButtonSelector);
+        this.$declineButton.click();
+
     }
 
     protected showSubstituteIconIfSubstitutionIsSet(isSubstitutionFound) {
@@ -1044,6 +1038,22 @@ export default class ProductItemMultiplePicking extends Component {
     protected findAncestor (el, cls) {
         while ((el = el.parentElement) && !el.classList.contains(cls));
         return el;
+    }
+
+    protected changeItemVisualState() {
+
+        if (this.isAccepted) {
+            this.$this.removeClass(this.notPickedCLass);
+            this.iconSubstitute.classList.add(this.showIconSubstitute);
+            this.acceptClickHandler();
+        } else if (this.isPaused) {
+            this.$this.removeClass(this.notPickedCLass);
+            this.iconSubstitute.classList.add(this.showIconSubstitute);
+            this.pauseClickHandler();
+        } else if (this.isDeclined) {
+            this.declineClickHandler();
+        }
+
     }
 
     protected get minusButtonSelector(): string {
