@@ -609,6 +609,7 @@ export default class ProductItemMultiplePickingOld extends Component {
                     '<input type="text" name="quantity" value="' + quantity + '" />' +
                     '<input type="text" name="weight" value="' + weight + '" />' +
                     '<input type="text" name="status" value="' + status + '" />' +
+                    '<input type="text" name="containerID" value="' + inputContainerID + '" />' +
                     '<input type="text" name="itemPickingStartTime" value="' + itemPickingStartTime + '" />' +
                     '</form>');
                 $('body').append(form);

@@ -185,7 +185,7 @@ class PickerFacade extends AbstractFacade implements PickerFacadeInterface
      */
     public function updateContainerPickZone(PickingOrderTransfer $order, string $containerId)
     {
-        return $this
+        $this
             ->getFactory()
             ->createPickingHeaderTransferData()
             ->updateContainerPickZone($order, $containerId);

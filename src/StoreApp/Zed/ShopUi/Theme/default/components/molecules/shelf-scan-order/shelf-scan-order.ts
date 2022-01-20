@@ -37,6 +37,7 @@ export default class ShelfScanOrder extends Component {
     protected listOfScannedContainers: HTMLInputElement[];
     protected errorCloseButton: HTMLButtonElement;
     protected successfulScanningNotificationMessage: HTMLDivElement;
+    protected numberOfContainersSpanElement: HTMLSpanElement;
 
     protected readyCallback(): void {
         this.popUpUiInfo = <HTMLElement>document.getElementsByClassName('popup-ui-info')[0];
@@ -64,8 +65,15 @@ export default class ShelfScanOrder extends Component {
         this.listOfShelves = Array.from(this.querySelectorAll('.shelf-scan-order__shelf'));
         this.listOfScannedContainers = Array.from(this.querySelectorAll('.shelf-scan-order__scanned-container'));
         this.successfulScanningNotificationMessage = this.querySelector('.shelf-scan-order__successful-scan-notification');
+        this.numberOfContainersSpanElement = this.querySelector('#number_of_containers');
+        const numberOfContainersNumber = Number(this.numberOfContainersSpanElement.innerHTML.split(' ')[0]);
 
         this.mapEventsForInputs();
+
+        if (numberOfContainersNumber === 0) {
+            this.checkHowManyContainersAreScanned();
+        }
+
     }
 
     protected mapEventsForInputs(): void {
