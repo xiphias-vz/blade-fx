@@ -40,7 +40,7 @@ function disableFieldsWithNoOrders(radioItem, radioItemInputFields) {
         let labelPickZone = radioItemInputFields[i].parentNode.lastChild;
         let pickZoneWithOrderNumber = labelPickZone.innerHTML.split('/');
         labelPickZone.innerHTML =  pickZoneWithOrderNumber[0];
-        let numberOfOrders = pickZoneWithOrderNumber[1];
+        let numberOfOrders = pickZoneWithOrderNumber[pickZoneWithOrderNumber.length - 1];
         if(numberOfOrders == 0) {
             radioItemInputFields[i].setAttribute('disabled', 'disabled');
             labelPickZone.classList.add('disable-field')

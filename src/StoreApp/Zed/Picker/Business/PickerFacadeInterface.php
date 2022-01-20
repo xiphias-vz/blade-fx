@@ -125,6 +125,14 @@ interface PickerFacadeInterface
     public function setContainerToOrder(PickingOrderTransfer $order, string $containerId, string $shelfId, bool $isSubstituteContainer): bool;
 
     /**
+     * @param \Generated\Shared\Transfer\PickingOrderTransfer $order
+     * @param string $containerId
+     *
+     * @return void
+     */
+    public function updateContainerPickZone(PickingOrderTransfer $order, string $containerId);
+
+    /**
      * @param string $containerID
      * @param string $merchantReference
      * @param int $idSalesOrder

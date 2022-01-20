@@ -178,6 +178,20 @@ class PickerFacade extends AbstractFacade implements PickerFacadeInterface
     }
 
     /**
+     * @param \Generated\Shared\Transfer\PickingOrderTransfer $order
+     * @param string $containerId
+     *
+     * @return void
+     */
+    public function updateContainerPickZone(PickingOrderTransfer $order, string $containerId)
+    {
+        return $this
+            ->getFactory()
+            ->createPickingHeaderTransferData()
+            ->updateContainerPickZone($order, $containerId);
+    }
+
+    /**
      * @param string $containerID
      * @param string $merchantReference
      * @param int $idSalesOrder
@@ -432,6 +446,9 @@ class PickerFacade extends AbstractFacade implements PickerFacadeInterface
             ->moveContainerToContainer($transfer, $containerToMove, $containerToFill);
     }
 
+    /**
+     * @return \StoreApp\Zed\Picker\Business\PickerBusinessFactory
+     */
     public function getBusinessFactory(): PickerBusinessFactory
     {
         return $this->getFactory();

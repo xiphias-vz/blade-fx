@@ -163,9 +163,12 @@ class MultiPickingController extends BaseOrderPickingController
                                         }
                                     }
                                 }
-                                break;
                             }
                             $this->getFacade()->setCurrentOrderItemPicked($quantity, $weight);
+                            $containerId = $request->request->get("containerID");
+                            if ($containerId) {
+                                $this->getFacade()->updateContainerPickZone($transfer->getOrderById($currentOrderItem[0]->getIdOrder()), $containerId);
+                            }
                             break;
                         case "declined":
                             $currentItemResponse = $this->getFacade()->setCurrentOrderItemCanceled(true, strtolower($isSubstitutionPicked) == 'true' ? true : false);

@@ -176,17 +176,20 @@ class PickingHeaderTransferData
         $transfer = new PickingHeaderTransfer();
         $transfer
             ->setIdZone($idZone)
-            ->setZoneAbbrevation($data[0]["zone_abbreviation"])
             ->setIdUser($this->userFacade->getCurrentUser()->getIdUser());
-        foreach ($data as $item) {
-            $order = new PickingOrderTransfer();
-            $order->fromArray($item, true);
-            $timeSlot = $order->getTimeSlot();
-            $index = substr($timeSlot, 0, 1);
-            $timeSlot = $daysInTheWeek[(int)$index] . substr($timeSlot, 1);
-            $order->setTimeSlot($timeSlot);
-            $transfer->addPickingOrders($item["id_order"], $order);
+        if (count($data) > 0) {
+            $transfer->setZoneAbbrevation($data[0]["zone_abbreviation"]);
+            foreach ($data as $item) {
+                $order = new PickingOrderTransfer();
+                $order->fromArray($item, true);
+                $timeSlot = $order->getTimeSlot();
+                $index = substr($timeSlot, 0, 1);
+                $timeSlot = $daysInTheWeek[(int)$index] . substr($timeSlot, 1);
+                $order->setTimeSlot($timeSlot);
+                $transfer->addPickingOrders($item["id_order"], $order);
+            }
         }
+
         $transfer->recalculateAll(false);
         $this->setTransferToSession($transfer);
 
@@ -287,7 +290,7 @@ class PickingHeaderTransferData
 
         foreach ($orderMod->getPickingContainers() as $container) {
             if ($container->getContainerID() == $containerId) {
-                $container->setShelfID($shelfId);
+                $container->setShelfID($shelfId === "--" ? null : $shelfId);
                 $dataUpdated = true;
             }
         }
@@ -314,7 +317,9 @@ class PickingHeaderTransferData
         $containerEntity->setFkPickingZone($transfer->getIdZone())
             ->setHasSubstitutedItem($isSubstituteContainer);
 
-        if (!empty($shelfId)) {
+        if ($shelfId === "--") {
+            $containerEntity->setShelfCode(null);
+        } elseif (!empty($shelfId)) {
             $containerEntity
                 ->setShelfCode($shelfId)
                 ->setHasSubstitutedItem($isSubstituteContainer);
@@ -332,6 +337,28 @@ class PickingHeaderTransferData
         $this->setTransferToSession($transfer);
 
         return $dataUpdated;
+    }
+
+    /**
+     * @param \Generated\Shared\Transfer\PickingOrderTransfer $order
+     * @param string $containerId
+     *
+     * @return void
+     */
+    public function updateContainerPickZone(PickingOrderTransfer $order, string $containerId)
+    {
+        $transfer = $this->getTransferFromSession();
+        foreach ($order->getPickingContainers() as $container) {
+            if ($container->getContainerID() == $containerId) {
+                if ($container->getZoneAbbrevation() != $transfer->getZoneAbbrevation()) {
+                    $container->setZoneAbbrevation($transfer->getZoneAbbrevation());
+                    $container->setShelfID(null);
+                    $this->setTransferToSession($transfer);
+                    $this->setContainerToOrder($order, $containerId, "--", $container->getHasSubstitutedItem() ?? false);
+                }
+                break;
+            }
+        }
     }
 
     /**

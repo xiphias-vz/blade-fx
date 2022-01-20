@@ -11,6 +11,7 @@ use Generated\Shared\Transfer\OrderPickingBlockTransfer;
 use Generated\Shared\Transfer\PickingZoneTransfer;
 use Orm\Zed\PickingZone\Persistence\Map\PyzPickingZoneTableMap;
 use Propel\Runtime\Propel;
+use Pyz\Shared\PropelExtension\PropelExtension;
 use Spryker\Zed\Kernel\Persistence\AbstractRepository;
 
 /**
@@ -97,21 +98,24 @@ class PickingZoneRepository extends AbstractRepository implements PickingZoneRep
      */
     public function getPickingZoneWithOrdersCount(string $merchantReference): array
     {
-        return $this->getFactory()->createPickingZoneQuery()
-            ->select([PyzPickingZoneTableMap::COL_ID_PICKING_ZONE, PyzPickingZoneTableMap::COL_NAME])
-            ->withColumn("(
-                                  	SELECT count(*) as noOrders
-                                    FROM spy_merchant_sales_order smso
-                                	  	INNER JOIN spy_sales_order_item ssoi on ssoi.fk_sales_order = smso.fk_sales_order
-  		                                INNER JOIN spy_oms_order_item_state soois on soois.id_oms_order_item_state = ssoi.fk_oms_order_item_state
-	  		                            AND soois.name in('ready for picking', 'ready for selecting shelves')
-                                	WHERE smso.requested_delivery_date > DATE_ADD(now(), INTERVAL -1 day)
-                                		AND smso.merchant_reference = '" . $merchantReference . "'
-                                		AND  ssoi.pick_zone = " . PyzPickingZoneTableMap::COL_NAME . "
-                                    GROUP BY ssoi.pick_zone
-                            )", "orderCount")
-            ->find()
-            ->toArray();
+        $query = "select ppz.id_picking_zone as 'pyz_picking_zone.id_picking_zone',
+                ppz.name as 'pyz_picking_zone.name',
+                ppz.is_default as 'pyz_picking_zone.is_default',
+                ppz.abbreviation as 'pyz_picking_zone.abbreviation',
+                IFNULL(orders.orderCount, 0) as orderCount
+            from pyz_picking_zone ppz
+            left outer join (
+                SELECT count(distinct smso.fk_sales_order) as orderCount, ssoi.pick_zone, smso.merchant_reference
+                FROM spy_merchant_sales_order smso
+                    INNER JOIN spy_sales_order_item ssoi on ssoi.fk_sales_order = smso.fk_sales_order
+                    INNER JOIN spy_oms_order_item_state soois on soois.id_oms_order_item_state = ssoi.fk_oms_order_item_state
+                    AND soois.name in('ready for picking', 'ready for selecting shelves')
+                WHERE smso.requested_delivery_date > DATE_ADD(now(), INTERVAL -1 day)
+                    AND smso.merchant_reference = '" . $merchantReference . "'
+                GROUP BY ssoi.pick_zone
+            ) orders on ppz.name = orders.pick_zone";
+
+        return PropelExtension::getResultAssoc($query);
     }
 
     /**

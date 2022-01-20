@@ -221,6 +221,14 @@ class PickingHeaderTransfer extends SpyPickingHeaderTransfer
     }
 
     /**
+     * @return \Generated\Shared\Transfer\PickingOrderTransfer|null
+     */
+    public function getCurrentOrder(): ?PickingOrderTransfer
+    {
+        return $this->getOrderById($this->getOrderItem($this->getLastPickingItemPosition())->getIdOrder());
+    }
+
+    /**
      * @param int $oldPosition
      *
      * @return \Generated\Shared\Transfer\PickingOrderItemTransfer|null
