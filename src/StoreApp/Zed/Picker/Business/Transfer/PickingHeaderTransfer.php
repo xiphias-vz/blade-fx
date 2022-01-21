@@ -367,6 +367,22 @@ class PickingHeaderTransfer extends SpyPickingHeaderTransfer
     }
 
     /**
+     * @param int $position
+     *
+     * @return \Generated\Shared\Transfer\PickingOrderItemTransfer[]
+     */
+    public function getOrderItemsExtended(int $position): array
+    {
+        $items = $this->getOrderItems($position);
+        $result = [];
+        foreach ($items as $item) {
+            $result[] = $this->convertItemToExtended($item);
+        }
+
+        return $result;
+    }
+
+    /**
      * @return array
      */
     public function getOrderItemsByAisle(): array
@@ -496,6 +512,55 @@ class PickingHeaderTransfer extends SpyPickingHeaderTransfer
         $this->setParents(true);
 
         return $items;
+    }
+
+    /**
+     * @param int $position
+     *
+     * @return \Generated\Shared\Transfer\PickingOrderItemTransfer|null
+     */
+    public function getOrderItemExtended(int $position): ?PickingOrderItemTransfer
+    {
+        return $this->convertItemToExtended($this->getOrderItem($position));
+    }
+
+    /**
+     * @param int $oldPosition
+     *
+     * @return \Generated\Shared\Transfer\PickingOrderItemTransfer|null
+     */
+    public function getNextOrderItemExtended(int $oldPosition): ?PickingOrderItemTransfer
+    {
+        $item = $this->getNextOrderItem($oldPosition);
+
+        return $this->convertItemToExtended($item);
+    }
+
+    /**
+     * @param \Generated\Shared\Transfer\PickingOrderItemTransfer|null $item
+     *
+     * @return \Generated\Shared\Transfer\PickingOrderItemTransfer|null
+     */
+    public function convertItemToExtended(?PickingOrderItemTransfer $item): ?PickingOrderItemTransfer
+    {
+        if ($item) {
+            if ($item->getIsSubstitutionFound()) {
+                $item->setIsCancelled(true);
+                $item->setIsPaused(false);
+            }
+            $item["isFullPicked"] = !$item->getIsPaused() && !$item->getIsCancelled() && ($item->getQuantityPicked() == $item->getQuantity() || ($item->getTotalWeight() > 0 && $item->getQuantityPicked() === 1 ));
+            $item["isPartiallyPicked"] = !$item->getIsPaused() && !$item->getIsCancelled() && $item->getQuantityPicked() > 0 && $item->getQuantityPicked() < $item->getQuantity() && ($item->getTotalWeight() ?? 0) === 0;
+            $item["isCancelledStatus"] = $item->getIsCancelled() || $item->getIsSubstitutionFound();
+            $item["isPausedStatus"] = $item->getIsPaused();
+            $item["counterOrder"] = 1;
+            $item["counterFullPicked"] = $item["isFullPicked"] ? 1 : 0;
+            $item["counterPartiallyPicked"] = $item["isPartiallyPicked"] ? 1 : 0;
+            $item["counterCancelled"] = $item->getIsCancelled() ? 1 : 0;
+            $item["counterPaused"] = $item->getIsPaused() ? 1 : 0;
+            $item["itemsQuantity"] = $item->getQuantity();
+        }
+
+        return $item;
     }
 
     /**

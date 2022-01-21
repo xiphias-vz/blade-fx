@@ -372,6 +372,8 @@ class PickingHeaderTransferData
         $transfer = $this->getTransferFromSession();
         $orderItem = $transfer->setCurrentOrderItemPicked($quantityPicked, $weight);
         $orderItem->setPerformancePickingStartedAt($this->getPerformancePickingStartedAt());
+
+        $this->saveCurrentOrderItemReadyForPicking($orderItem);
         $idList = $this->getOrderItemIdArray($orderItem);
         $counter = 0;
         $pickedItems = [];
@@ -405,6 +407,7 @@ class PickingHeaderTransferData
         if (count($nonPickedItems) > 0) {
             $this->orderUpdater->markOrderItemsAsNotPicked($nonPickedItems);
         }
+
         $orderItem->setIsPaused(false);
         $this->saveCurrentOrderItemPaused($orderItem, false);
         $transfer->updateItemsPickedCount();
@@ -487,6 +490,29 @@ class PickingHeaderTransferData
                         select " . $idState . ", id_sales_order_item, now() from spy_sales_order_item where id_sales_order_item in(" . $whereList . ")";
                 $this->getResult($qry, false);
             }
+        }
+
+        return true;
+    }
+
+    /**
+     * @param \Generated\Shared\Transfer\PickingOrderItemTransfer $orderItem
+     *
+     * @return bool
+     */
+    private function saveCurrentOrderItemReadyForPicking(PickingOrderItemTransfer $orderItem): bool
+    {
+        $idState = $this->getIdState(OmsConfig::STORE_STATE_READY_FOR_PICKING);
+        $idList = $this->getOrderItemIdArray($orderItem);
+        if (count($idList) > 0 && $idState) {
+            $whereList = implode($idList, ",");
+            $qry = "update spy_sales_order_item set item_paused = 0"
+                . ", fk_oms_order_item_state = " . $idState
+                . " where id_sales_order_item in(" . $whereList . ")";
+            $this->getResult($qry, false);
+            $qry = "insert into spy_oms_order_item_state_history (fk_oms_order_item_state, fk_sales_order_item, created_at)
+                        select " . $idState . ", id_sales_order_item, now() from spy_sales_order_item where id_sales_order_item in(" . $whereList . ")";
+            $this->getResult($qry, false);
         }
 
         return true;
@@ -578,6 +604,7 @@ class PickingHeaderTransferData
 
             $idList = $this->getOrderItemIdArray($orderItem);
             if (count($idList) > 0) {
+                $this->saveCurrentOrderItemReadyForPicking($orderItem);
                 $this->orderUpdater->markOrderItemsAsNotPicked($idList);
             }
 
@@ -648,7 +675,7 @@ class PickingHeaderTransferData
                         , ssoi.alternative_ean, count(*) as quantity, ssoi.price, ssoi.base_price_unit as price_unit, ssoi.base_price_content as price_content
                         , ssoi.price_per_kg, sum(ssoi.price) as sum_price, ssoi.name, ssoi.brand as brand_name, ssoi.weight_per_unit as weight
                         , IFNULL(ssoi.item_paused, 0) as is_paused, ssoi.sequence, ssoi.shelf, ssoi.shelf_floor, ssoi.shelf_field,ssoi.aisle
-                        , sum(case when sit.name = 'picked' then ssoi.quantity else 0 end) as quantityPicked
+                        , sum(case when sit.name = 'picked' or sit.name = 'ready for selecting shelves' then ssoi.quantity else 0 end) as quantityPicked
                         , IF(sum(case when sit.name = 'cancelled' then 1 else 0 end) > 0, 1, 0) as is_cancelled
                         , sit.name as status, MAX(ssoi.picked_at) as last_picked_at, MAX(ssoi.weight_per_unit) * SUM(ssoi.quantity) * 0.8 as min_weight
                         , MAX(ssoi.weight_per_unit) * SUM(ssoi.quantity) * 1.2 as max_weight, MAX(ssoi.weight_per_unit) * SUM(ssoi.quantity) as total_weight

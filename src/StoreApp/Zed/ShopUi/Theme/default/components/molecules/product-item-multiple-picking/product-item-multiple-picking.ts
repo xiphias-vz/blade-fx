@@ -1046,6 +1046,10 @@ export default class ProductItemMultiplePicking extends Component {
             this.$this.removeClass(this.notPickedCLass);
             this.iconSubstitute.classList.add(this.showIconSubstitute);
             this.acceptClickHandler();
+        } else if (this.isNotFullyAccepted) {
+            this.$this.removeClass(this.notPickedCLass);
+            this.iconSubstitute.classList.add(this.showIconSubstitute);
+            this.acceptClickHandler();
         } else if (this.isPaused) {
             this.$this.removeClass(this.notPickedCLass);
             this.iconSubstitute.classList.add(this.showIconSubstitute);
