@@ -10,3 +10,4 @@ pyzx_get_factfinder_event.sql=zed
 pyzx_ff_export_products.sql=zed
 pyzx_ff_export_prices.sql=zed
 pyzx_ff_export_categories.sql=zed
+pyzx_get_timeslot_capacity.sql=zed

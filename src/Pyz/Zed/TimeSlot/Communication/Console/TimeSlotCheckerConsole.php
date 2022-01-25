@@ -7,7 +7,7 @@
 
 namespace Pyz\Zed\TimeSlot\Communication\Console;
 
-use Generated\Shared\Transfer\OrderCriteriaFilterTransfer;
+use Pyz\Shared\PropelExtension\PropelExtension;
 use Spryker\Zed\Kernel\Communication\Console\Console;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -40,39 +40,21 @@ class TimeSlotCheckerConsole extends Console
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $storeCodeBucket = getenv('SPRYKER_CODE_BUCKET');
-
-        if ($storeCodeBucket === "CZ") {
-            $shipmentName = 'Poplatek za vychystání';
-        } else {
-            $shipmentName = 'Click & Collect';
-        }
-        $client = $this->getFactory()->getStorageClient();
-        foreach ($client->getKeys('*click*:*-*:*:*') as $key) {
-            $key = explode(':', $key, 2)[1];
-            $val = $client->get($key);
-            $keyParts = explode('_', $key);
-            $merchantReference = $keyParts[0];
-            $deliveryDate = $keyParts[count($keyParts) - 2] . '_' . $keyParts[count($keyParts) - 1];
-            $deliveryDate = substr($deliveryDate, 0, strrpos($deliveryDate, ':'));
-
-            $currentOrdersCount = count($this->getFactory()->getSalesFacade()
-                ->findIdSalesOrdersByOrderFilterCriteria(
-                    (new OrderCriteriaFilterTransfer())
-                        ->setMerchantReferences([$merchantReference])
-                        ->setRequestedDeliveryDate($deliveryDate)
-                        ->setShipmentName($shipmentName)
-                        ->setExcludeCancelledOrders(true)
-                ));
-
-            if (!$val || $val !== $currentOrdersCount) {
-                $client->set($key, $currentOrdersCount);
-                $output->writeln(sprintf('%s updated %d => %d', $key, $val, $currentOrdersCount));
+        $data = PropelExtension::getResultAssoc("call pyzx_get_timeslot_capacity()");
+        if (count($data) > 0) {
+            $client = $this->getFactory()->getStorageClient();
+            foreach ($data as $item) {
+                $key = $item["key_name"];
+                $ordersCount = (int)$item["ordersCount"];
+                $val = $client->get($key);
+                if ($val === null || $val !== $ordersCount) {
+                    $client->set($key, $ordersCount);
+                    $output->writeln(sprintf('%s updated %d => %d', $key, $val, $ordersCount));
+                }
             }
-
-            $output->writeln(sprintf('%s = %d', $key, $currentOrdersCount));
         }
+        $output->writeln(sprintf('Timeslot check executed! Checked %d keys.', count($data)));
 
-        return null;
+        return static::CODE_SUCCESS;
     }
 }
