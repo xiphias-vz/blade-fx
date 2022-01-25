@@ -29,8 +29,10 @@ class OrdersTableQueryBuilder extends SprykerOrdersTableQueryBuilder implements 
         $query = parent::buildQuery($idOrderItemProcess, $idOrderItemState, $dateFilter);
 
         $query->joinSpySalesShipment();
+        $query->joinPyzPickingSalesOrder();
         $query->joinWithBillingAddress();
         $query = $this->addTimeSlot($query);
+        $query->usePyzPickingSalesOrderQuery();
 
         return $query;
     }
