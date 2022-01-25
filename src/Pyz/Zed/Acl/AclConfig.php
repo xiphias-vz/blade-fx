@@ -175,6 +175,13 @@ class AclConfig extends SprykerAclConfig
             'role' => AclConstants::SUPERVISOR_ROLE,
         ];
         $rules[] = [
+            'bundle' => AclConstants::MODULE_PRICE_PRODUCT_SCHEDULE_GUI,
+            'controller' => AclConstants::VALIDATOR_WILDCARD,
+            'action' => AclConstants::VALIDATOR_WILDCARD,
+            'type' => AclConstants::ALLOW,
+            'role' => AclConstants::SUPERVISOR_ROLE,
+        ];
+        $rules[] = [
             'bundle' => AclConstants::MODULE_OMS,
             'controller' => AclConstants::VALIDATOR_WILDCARD,
             'action' => AclConstants::VALIDATOR_WILDCARD,

@@ -8,6 +8,7 @@
 namespace Pyz\Zed\ProductManagement\Communication;
 
 use Pyz\Zed\Merchant\Business\MerchantFacadeInterface;
+use Pyz\Zed\ProductManagement\Communication\Form\DataProvider\ProductFormEditDataProvider;
 use Pyz\Zed\ProductManagement\Communication\Form\ProductConcreteFormEdit;
 use Pyz\Zed\ProductManagement\Communication\Table\ProductTable;
 use Pyz\Zed\ProductManagement\Communication\Table\VariantTable;
@@ -77,6 +78,30 @@ class ProductManagementCommunicationFactory extends SpyProductManagementCommunic
             $this->getProductQueryContainer(),
             $this->getLocaleFacade()->getCurrentLocale(),
             $this->createProductTypeHelper()
+        );
+    }
+
+    /**
+     * @return \Spryker\Zed\ProductManagement\Communication\Form\DataProvider\ProductFormEditDataProvider
+     */
+    public function createProductFormEditDataProvider()
+    {
+        $currentLocale = $this->getLocaleFacade()->getCurrentLocale();
+
+        return new ProductFormEditDataProvider(
+            $this->getCategoryQueryContainer(),
+            $this->getQueryContainer(),
+            $this->getProductQueryContainer(),
+            $this->getStockQueryContainer(),
+            $this->getProductFacade(),
+            $this->getProductImageFacade(),
+            $this->getPriceProductFacade(),
+            $this->createLocaleProvider(),
+            $currentLocale,
+            $this->getProductAttributeCollection(),
+            $this->getProductTaxCollection(),
+            $this->getConfig()->getImageUrlPrefix(),
+            $this->getStore()
         );
     }
 }

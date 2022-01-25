@@ -44,10 +44,12 @@ class EditController extends SprykerEditController
         }
 
         $dataProvider = $this->getFactory()->createProductFormEditDataProvider();
+        $userSupervisor = $this->isCurrentUserSupervisor();
+        $userDataTransfer = $this->getFactory()->getAclFacade()->getCurrentUser();
         $form = $this
             ->getFactory()
             ->createProductFormEdit(
-                $dataProvider->getData($idProductAbstract, $request->query->get(static::PARAM_PRICE_DIMENSION)),
+                $dataProvider->getDataExtended($idProductAbstract, $request->query->get(static::PARAM_PRICE_DIMENSION), $userSupervisor, $userDataTransfer),
                 $dataProvider->getOptions($idProductAbstract)
             )
             ->handleRequest($request);
