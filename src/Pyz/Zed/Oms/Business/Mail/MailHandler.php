@@ -8,6 +8,7 @@
 namespace Pyz\Zed\Oms\Business\Mail;
 
 use ArrayObject;
+use CodeItNow\BarcodeBundle\Utils\QrCode;
 use Generated\Shared\Transfer\MailTransfer;
 use Generated\Shared\Transfer\OrderTransfer;
 use Orm\Zed\Sales\Persistence\SpySalesOrder;
@@ -288,11 +289,22 @@ class MailHandler extends SprykerMailHandler
         } catch (Exception $e) {
         }
 
+        $qrCode = new QrCode();
+        $qrCode
+            ->setText($orderTransfer->getOrderReference())
+            ->setImageType(QrCode::IMAGE_TYPE_PNG)
+            ->setForegroundColor(['r' => 0, 'g' => 0, 'b' => 0, 'a' => 0])
+            ->setBackgroundColor(['r' => 255, 'g' => 255, 'b' => 255, 'a' => 0])
+            ->setPadding(10);
+        $qrCodeHtml = '<img src="data:' . $qrCode->getContentType() . ';base64,' . $qrCode->generate() . '" />';
+
         $params = [
             'totalPriceOfTheOrder' => $this->getMoneyValue($totals->getGrandTotal()),
             'subtotalPriceOfTheOrder' => $this->getMoneyValue($totals->getSubtotal() - $totals->getCanceledTotal()),
             'vat' => $this->getMoneyValue($totals->getTaxTotal()->getAmount()),
             'deliveryDate' => $this->dateTimeWithZoneService->getDateTimeInStoreTimeZone($deliveryDate)->format("d.m.Y") . " " . $timeInterval,
+            'deliveryDateOnly' => $this->dateTimeWithZoneService->getDateTimeInStoreTimeZone($deliveryDate)->format("d.m.Y"),
+            'deliveryTimeOnly' => $timeInterval,
             'deliveryCost' => $this->getShipmentMoneyValue($orderTransfer),
             'productList' => $this->getProductList($orderTransfer),
             'baseUrlYves' => $this->config->getBaseUrlYves(),
@@ -324,6 +336,7 @@ class MailHandler extends SprykerMailHandler
             'tax21' => $this->getMoneyValue($this->getSumTaxes($orderTransfer, '21')),
             'subtotalPriceWithoutDeposit' => $this->getMoneyValue($subtotalPriceWithoutDeposit),
             'transportBox' => ($orderTransfer->getIsDepositAllowed() == true) ? $this->getTransportBox() : ' ',
+            'qrCodeHtml' => $qrCodeHtml,
         ];
 
         $orderTransfer->setItems($items);
