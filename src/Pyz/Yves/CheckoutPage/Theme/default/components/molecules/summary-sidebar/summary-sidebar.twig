@@ -49,7 +49,7 @@
                         {% block billingAddress %}
                             {% if app.currentCodeBucket == 'DE' %}
                                 {% set address = data.billingAddress %}
-                                {% set fullShippingName = address.firstName ~ ' ' ~ address.lastName %}
+                                {% set fullShippingName = address.lastName ~ ' ' ~ address.firstName %}
                                 {% set fullAddress = address.address1 ~ ' ' ~ address.address2 ~ ' ' ~ (address.floor | default | trans) ~ ',' %}
 
                                 <span class="{{ config.name }}__title">{{ 'checkout.step.summary.billing_address' | trans }}</span>
@@ -61,14 +61,14 @@
                                 <span class="{{ config.name }}__text">{{ fullShippingName }}</span>
                                 <span class="{{ config.name }}__text">{{ fullAddress }}</span>
 
-                                {% if address.phone %}
+                                {% if address.phone|length > 4 %}
                                     <span class="{{ config.name }}__text">{{ address.phone }}</span>
                                 {% endif %}
 
-                                <span class="{{ config.name }}__text">{{ address.zipCode }}, {{ ('countries.iso.' ~ address.iso2code) | trans }}</span>
+                                <span class="{{ config.name }}__text">{{ address.zipCode }} {{ address.city }}, {{ ('countries.iso.' ~ address.iso2code) | trans }}</span>
                             {% else %}
                                 {% set address = data.billingAddress %}
-                                {% set fullShippingName = address.firstName ~ ' ' ~ address.lastName %}
+                                {% set fullShippingName = address.lastName ~ ' ' ~ address.firstName %}
                                 {% set fullAddress = address.address1 ~ ' ' ~ address.address2 ~ ' ' ~ (address.floor | default | trans) ~ ',' %}
 
                                 <span class="{{ config.name }}__title-CZ">{{ 'checkout.step.summary.billing_address' | trans }}</span>
@@ -84,7 +84,7 @@
                                     <span class="{{ config.name }}__text-CZ">{{ address.phone }}</span>
                                 {% endif %}
 
-                                <span class="{{ config.name }}__text-CZ">{{ address.zipCode }}, {{ ('countries.iso.' ~ address.iso2code) | trans }}</span>
+                                <span class="{{ config.name }}__text-CZ">{{ address.zipCode }} {{ address.city }}, {{ ('countries.iso.' ~ address.iso2code) | trans }}</span>
                             {% endif %}
                         {% endblock %}
                     </div>

@@ -23,7 +23,7 @@
     {% endif %}
     <li class="{{ config.name }}__item">{{ data.address.zipCode }} {{ data.address.city }}, {{ ('countries.iso.' ~ data.address.iso2code) | trans }}</li>
 
-    {% if data.address.phone is not empty %}
+    {% if data.address.phone|length > 4 %}
         <li class="{{ config.name }}__item spacing-top"><a href="tel:{{ data.address.phone }}">{{ data.address.phone }}</a></li>
     {% endif %}
 
