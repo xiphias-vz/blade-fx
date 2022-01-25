@@ -9,6 +9,8 @@ namespace Pyz\Zed\ProductQuantity\Business;
 
 use Generated\Shared\Transfer\CartChangeTransfer;
 use Generated\Shared\Transfer\CartPreCheckResponseTransfer;
+use Generated\Shared\Transfer\ProductQuantityResponseTransfer;
+use Generated\Shared\Transfer\ProductQuantityTransfer;
 use Spryker\Zed\ProductQuantity\Business\ProductQuantityFacade as SprykerProductQuantityFacade;
 
 /**
@@ -18,6 +20,20 @@ use Spryker\Zed\ProductQuantity\Business\ProductQuantityFacade as SprykerProduct
  */
 class ProductQuantityFacade extends SprykerProductQuantityFacade
 {
+    /**
+     * {@inheritDoc}
+     *
+     * @api
+     *
+     * @param \Generated\Shared\Transfer\ProductQuantityTransfer $productQuantityTransfer
+     *
+     * @return \Generated\Shared\Transfer\ProductQuantityResponseTransfer
+     */
+    public function saveProductQuantity(ProductQuantityTransfer $productQuantityTransfer): ProductQuantityResponseTransfer
+    {
+        return $this->getFactory()->createProductQuantityWriter()->saveProductQuantity($productQuantityTransfer);
+    }
+
     /**
      * {@inheritDoc}
      *
