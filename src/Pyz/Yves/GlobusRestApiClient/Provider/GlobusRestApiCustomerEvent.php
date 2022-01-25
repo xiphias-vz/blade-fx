@@ -105,6 +105,16 @@ class GlobusRestApiCustomerEvent
 
         $data = $jsonUtil->encode($arrayCombine);
 
+        $data = $this->customUtfEncoding($data);
+
         return GlobusRestApiClient::post($url, $data, [], $this->bearerToken);
+    }
+
+    public function customUtfEncoding(string $unEncodedData): string
+    {
+        $arrayOfNotEncodedData = ['%'];
+        $arrayOfEncodedData = ['\u0025'];
+
+        return str_replace($arrayOfNotEncodedData, $arrayOfEncodedData, $unEncodedData);
     }
 }
