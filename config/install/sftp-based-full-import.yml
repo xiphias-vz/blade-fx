@@ -105,36 +105,6 @@ sections:
         import-product-stock-1057:
             command: "vendor/bin/console data:import product-stock -f spryker/5.globus_article_instock.1057.csv -a UpdateAvailabilityAfterImportPlugin -vvv --no-ansi || true"
 
-        import-product-stock-1005:
-            command: "vendor/bin/console data:import product-stock -f spryker/5.globus_article_instock.1005.csv -a UpdateAvailabilityAfterImportPlugin -vvv --no-ansi || true"
-
-        import-product-stock-1007:
-            command: "vendor/bin/console data:import product-stock -f spryker/5.globus_article_instock.1007.csv -a UpdateAvailabilityAfterImportPlugin -vvv --no-ansi || true"
-
-        import-product-stock-1023:
-            command: "vendor/bin/console data:import product-stock -f spryker/5.globus_article_instock.1023.csv -a UpdateAvailabilityAfterImportPlugin -vvv --no-ansi || true"
-
-        import-product-stock-1027:
-            command: "vendor/bin/console data:import product-stock -f spryker/5.globus_article_instock.1027.csv -a UpdateAvailabilityAfterImportPlugin -vvv --no-ansi || true"
-
-        import-product-stock-1030:
-            command: "vendor/bin/console data:import product-stock -f spryker/5.globus_article_instock.1030.csv -a UpdateAvailabilityAfterImportPlugin -vvv --no-ansi || true"
-
-        import-product-stock-1033:
-            command: "vendor/bin/console data:import product-stock -f spryker/5.globus_article_instock.1033.csv -a UpdateAvailabilityAfterImportPlugin -vvv --no-ansi || true"
-
-        import-product-stock-1037:
-            command: "vendor/bin/console data:import product-stock -f spryker/5.globus_article_instock.1037.csv -a UpdateAvailabilityAfterImportPlugin -vvv --no-ansi || true"
-
-        import-product-stock-1043:
-            command: "vendor/bin/console data:import product-stock -f spryker/5.globus_article_instock.1043.csv -a UpdateAvailabilityAfterImportPlugin -vvv --no-ansi || true"
-
-        import-product-stock-1048:
-            command: "vendor/bin/console data:import product-stock -f spryker/5.globus_article_instock.1048.csv -a UpdateAvailabilityAfterImportPlugin -vvv --no-ansi || true"
-
-        import-product-stock-1063:
-            command: "vendor/bin/console data:import product-stock -f spryker/5.globus_article_instock.1063.csv -a UpdateAvailabilityAfterImportPlugin -vvv --no-ansi || true"
-
         import-time-slot:
             command: "vendor/bin/console data:import time-slot -f spryker/1.globus_time_slot.csv -a UpdateAvailabilityAfterImportPlugin -vvv --no-ansi || true"
 
@@ -238,36 +208,6 @@ sections:
         reset-product-stock-1057:
             command: "cp data/import/spryker/product_stock.csv data/import/spryker/5.globus_article_instock.1057.csv"
 
-        reset-product-stock-1005:
-            command: "cp data/import/spryker/product_stock.csv data/import/spryker/5.globus_article_instock.1005.csv"
-
-        reset-product-stock-1007:
-            command: "cp data/import/spryker/product_stock.csv data/import/spryker/5.globus_article_instock.1007.csv"
-
-        reset-product-stock-1023:
-            command: "cp data/import/spryker/product_stock.csv data/import/spryker/5.globus_article_instock.1023.csv"
-
-        reset-product-stock-1027:
-            command: "cp data/import/spryker/product_stock.csv data/import/spryker/5.globus_article_instock.1027.csv"
-
-        reset-product-stock-1030:
-            command: "cp data/import/spryker/product_stock.csv data/import/spryker/5.globus_article_instock.1030.csv"
-
-        reset-product-stock-1033:
-            command: "cp data/import/spryker/product_stock.csv data/import/spryker/5.globus_article_instock.1033.csv"
-
-        reset-product-stock-1037:
-            command: "cp data/import/spryker/product_stock.csv data/import/spryker/5.globus_article_instock.1037.csv"
-
-        reset-product-stock-1043:
-            command: "cp data/import/spryker/product_stock.csv data/import/spryker/5.globus_article_instock.1043.csv"
-
-        reset-product-stock-1048:
-            command: "cp data/import/spryker/product_stock.csv data/import/spryker/5.globus_article_instock.1048.csv"
-
-        reset-product-stock-1063:
-            command: "cp data/import/spryker/product_stock.csv data/import/spryker/5.globus_article_instock.1063.csv"
-
         reset-time-slot:
             command: "cp data/import/spryker/time_slot.csv data/import/spryker/1.globus_time_slot.csv"
 
@@ -323,36 +263,6 @@ sections:
         import-metzgerei-product-price-1057:
             command: "vendor/bin/console data:import product-price -f spryker/4.globus_article_prices.metzgerei.1057.csv -a UpdateAvailabilityAfterImportPlugin -vvv --no-ansi || true"
 
-        import-metzgerei-product-price-1005:
-            command: "vendor/bin/console data:import product-price -f spryker/4.globus_article_prices.metzgerei.1005.csv -a UpdateAvailabilityAfterImportPlugin -vvv --no-ansi || true"
-
-        import-metzgerei-product-price-1007:
-            command: "vendor/bin/console data:import product-price -f spryker/4.globus_article_prices.metzgerei.1007.csv -a UpdateAvailabilityAfterImportPlugin -vvv --no-ansi || true"
-
-        import-metzgerei-product-price-1023:
-            command: "vendor/bin/console data:import product-price -f spryker/4.globus_article_prices.metzgerei.1023.csv -a UpdateAvailabilityAfterImportPlugin -vvv --no-ansi || true"
-
-        import-metzgerei-product-price-1027:
-            command: "vendor/bin/console data:import product-price -f spryker/4.globus_article_prices.metzgerei.1027.csv -a UpdateAvailabilityAfterImportPlugin -vvv --no-ansi || true"
-
-        import-metzgerei-product-price-1030:
-            command: "vendor/bin/console data:import product-price -f spryker/4.globus_article_prices.metzgerei.1030.csv -a UpdateAvailabilityAfterImportPlugin -vvv --no-ansi || true"
-
-        import-metzgerei-product-price-1033:
-            command: "vendor/bin/console data:import product-price -f spryker/4.globus_article_prices.metzgerei.1033.csv -a UpdateAvailabilityAfterImportPlugin -vvv --no-ansi || true"
-
-        import-metzgerei-product-price-1037:
-            command: "vendor/bin/console data:import product-price -f spryker/4.globus_article_prices.metzgerei.1037.csv -a UpdateAvailabilityAfterImportPlugin -vvv --no-ansi || true"
-
-        import-metzgerei-product-price-1043:
-            command: "vendor/bin/console data:import product-price -f spryker/4.globus_article_prices.metzgerei.1043.csv -a UpdateAvailabilityAfterImportPlugin -vvv --no-ansi || true"
-
-        import-metzgerei-product-price-1048:
-            command: "vendor/bin/console data:import product-price -f spryker/4.globus_article_prices.metzgerei.1048.csv -a UpdateAvailabilityAfterImportPlugin -vvv --no-ansi || true"
-
-        import-metzgerei-product-price-1063:
-            command: "vendor/bin/console data:import product-price -f spryker/4.globus_article_prices.metzgerei.1063.csv -a UpdateAvailabilityAfterImportPlugin -vvv --no-ansi || true"
-
         import-metzgerei-product-stock-1004:
             command: "vendor/bin/console data:import product-stock -f spryker/5.globus_article_instock.metzgerei.1004.csv -a UpdateAvailabilityAfterImportPlugin -vvv --no-ansi || true"
 
@@ -398,36 +308,6 @@ sections:
         import-metzgerei-product-stock-1057:
             command: "vendor/bin/console data:import product-stock -f spryker/5.globus_article_instock.metzgerei.1057.csv -a UpdateAvailabilityAfterImportPlugin -vvv --no-ansi || true"
 
-        import-metzgerei-product-stock-1005:
-            command: "vendor/bin/console data:import product-stock -f spryker/5.globus_article_instock.metzgerei.1005.csv -a UpdateAvailabilityAfterImportPlugin -vvv --no-ansi || true"
-
-        import-metzgerei-product-stock-1007:
-            command: "vendor/bin/console data:import product-stock -f spryker/5.globus_article_instock.metzgerei.1007.csv -a UpdateAvailabilityAfterImportPlugin -vvv --no-ansi || true"
-
-        import-metzgerei-product-stock-1023:
-            command: "vendor/bin/console data:import product-stock -f spryker/5.globus_article_instock.metzgerei.1023.csv -a UpdateAvailabilityAfterImportPlugin -vvv --no-ansi || true"
-
-        import-metzgerei-product-stock-1027:
-            command: "vendor/bin/console data:import product-stock -f spryker/5.globus_article_instock.metzgerei.1027.csv -a UpdateAvailabilityAfterImportPlugin -vvv --no-ansi || true"
-
-        import-metzgerei-product-stock-1030:
-            command: "vendor/bin/console data:import product-stock -f spryker/5.globus_article_instock.metzgerei.1030.csv -a UpdateAvailabilityAfterImportPlugin -vvv --no-ansi || true"
-
-        import-metzgerei-product-stock-1033:
-            command: "vendor/bin/console data:import product-stock -f spryker/5.globus_article_instock.metzgerei.1033.csv -a UpdateAvailabilityAfterImportPlugin -vvv --no-ansi || true"
-
-        import-metzgerei-product-stock-1037:
-            command: "vendor/bin/console data:import product-stock -f spryker/5.globus_article_instock.metzgerei.1037.csv -a UpdateAvailabilityAfterImportPlugin -vvv --no-ansi || true"
-
-        import-metzgerei-product-stock-1043:
-            command: "vendor/bin/console data:import product-stock -f spryker/5.globus_article_instock.metzgerei.1043.csv -a UpdateAvailabilityAfterImportPlugin -vvv --no-ansi || true"
-
-        import-metzgerei-product-stock-1048:
-            command: "vendor/bin/console data:import product-stock -f spryker/5.globus_article_instock.metzgerei.1048.csv -a UpdateAvailabilityAfterImportPlugin -vvv --no-ansi || true"
-
-        import-metzgerei-product-stock-1063:
-            command: "vendor/bin/console data:import product-stock -f spryker/5.globus_article_instock.metzgerei.1063.csv -a UpdateAvailabilityAfterImportPlugin -vvv --no-ansi || true"
-
         import-metzgerei-product-stock-nos-1004:
             command: "vendor/bin/console data:import product-stock -f spryker/5.globus_article_instock.NOS.1004.csv -a UpdateAvailabilityAfterImportPlugin -vvv --no-ansi || true"
 
@@ -472,36 +352,6 @@ sections:
 
         import-metzgerei-product-stock-nos-1057:
             command: "vendor/bin/console data:import product-stock -f spryker/5.globus_article_instock.NOS.1057.csv -a UpdateAvailabilityAfterImportPlugin -vvv --no-ansi || true"
-
-        import-metzgerei-product-stock-nos-1005:
-            command: "vendor/bin/console data:import product-stock -f spryker/5.globus_article_instock.NOS.1005.csv -a UpdateAvailabilityAfterImportPlugin -vvv --no-ansi || true"
-
-        import-metzgerei-product-stock-nos-1007:
-            command: "vendor/bin/console data:import product-stock -f spryker/5.globus_article_instock.NOS.1007.csv -a UpdateAvailabilityAfterImportPlugin -vvv --no-ansi || true"
-
-        import-metzgerei-product-stock-nos-1023:
-            command: "vendor/bin/console data:import product-stock -f spryker/5.globus_article_instock.NOS.1023.csv -a UpdateAvailabilityAfterImportPlugin -vvv --no-ansi || true"
-
-        import-metzgerei-product-stock-nos-1027:
-            command: "vendor/bin/console data:import product-stock -f spryker/5.globus_article_instock.NOS.1027.csv -a UpdateAvailabilityAfterImportPlugin -vvv --no-ansi || true"
-
-        import-metzgerei-product-stock-nos-1030:
-            command: "vendor/bin/console data:import product-stock -f spryker/5.globus_article_instock.NOS.1030.csv -a UpdateAvailabilityAfterImportPlugin -vvv --no-ansi || true"
-
-        import-metzgerei-product-stock-nos-1033:
-            command: "vendor/bin/console data:import product-stock -f spryker/5.globus_article_instock.NOS.1033.csv -a UpdateAvailabilityAfterImportPlugin -vvv --no-ansi || true"
-
-        import-metzgerei-product-stock-nos-1037:
-            command: "vendor/bin/console data:import product-stock -f spryker/5.globus_article_instock.NOS.1037.csv -a UpdateAvailabilityAfterImportPlugin -vvv --no-ansi || true"
-
-        import-metzgerei-product-stock-nos-1043:
-            command: "vendor/bin/console data:import product-stock -f spryker/5.globus_article_instock.NOS.1043.csv -a UpdateAvailabilityAfterImportPlugin -vvv --no-ansi || true"
-
-        import-metzgerei-product-stock-nos-1048:
-            command: "vendor/bin/console data:import product-stock -f spryker/5.globus_article_instock.NOS.1048.csv -a UpdateAvailabilityAfterImportPlugin -vvv --no-ansi || true"
-
-        import-metzgerei-product-stock-nos-1063:
-            command: "vendor/bin/console data:import product-stock -f spryker/5.globus_article_instock.NOS.1063.csv -a UpdateAvailabilityAfterImportPlugin -vvv --no-ansi || true"
 
     reset-metzgerei:
         reset-metzgerei-product:
@@ -552,36 +402,6 @@ sections:
         reset-metzgerei-product-price-1057:
             command: "cp data/import/spryker/product_price.csv data/import/spryker/4.globus_article_prices.metzgerei.1057.csv"
 
-        reset-metzgerei-product-price-1005:
-            command: "cp data/import/spryker/product_price.csv data/import/spryker/4.globus_article_prices.metzgerei.1005.csv"
-
-        reset-metzgerei-product-price-1007:
-            command: "cp data/import/spryker/product_price.csv data/import/spryker/4.globus_article_prices.metzgerei.1007.csv"
-
-        reset-metzgerei-product-price-1023:
-            command: "cp data/import/spryker/product_price.csv data/import/spryker/4.globus_article_prices.metzgerei.1023.csv"
-
-        reset-metzgerei-product-price-1027:
-            command: "cp data/import/spryker/product_price.csv data/import/spryker/4.globus_article_prices.metzgerei.1027.csv"
-
-        reset-metzgerei-product-price-1030:
-            command: "cp data/import/spryker/product_price.csv data/import/spryker/4.globus_article_prices.metzgerei.1030.csv"
-
-        reset-metzgerei-product-price-1033:
-            command: "cp data/import/spryker/product_price.csv data/import/spryker/4.globus_article_prices.metzgerei.1033.csv"
-
-        reset-metzgerei-product-price-1037:
-            command: "cp data/import/spryker/product_price.csv data/import/spryker/4.globus_article_prices.metzgerei.1037.csv"
-
-        reset-metzgerei-product-price-1043:
-            command: "cp data/import/spryker/product_price.csv data/import/spryker/4.globus_article_prices.metzgerei.1043.csv"
-
-        reset-metzgerei-product-price-1048:
-            command: "cp data/import/spryker/product_price.csv data/import/spryker/4.globus_article_prices.metzgerei.1048.csv"
-
-        reset-metzgerei-product-price-1063:
-            command: "cp data/import/spryker/product_price.csv data/import/spryker/4.globus_article_prices.metzgerei.1063.csv"
-
         reset-metzgerei-product-stock-1004:
             command: "cp data/import/spryker/product_stock.csv data/import/spryker/5.globus_article_instock.metzgerei.1004.csv"
 
@@ -627,36 +447,6 @@ sections:
         reset-metzgerei-product-stock-1057:
             command: "cp data/import/spryker/product_stock.csv data/import/spryker/5.globus_article_instock.metzgerei.1057.csv"
 
-        reset-metzgerei-product-stock-1005:
-            command: "cp data/import/spryker/product_stock.csv data/import/spryker/5.globus_article_instock.metzgerei.1005.csv"
-
-        reset-metzgerei-product-stock-1007:
-            command: "cp data/import/spryker/product_stock.csv data/import/spryker/5.globus_article_instock.metzgerei.1007.csv"
-
-        reset-metzgerei-product-stock-1023:
-            command: "cp data/import/spryker/product_stock.csv data/import/spryker/5.globus_article_instock.metzgerei.1023.csv"
-
-        reset-metzgerei-product-stock-1027:
-            command: "cp data/import/spryker/product_stock.csv data/import/spryker/5.globus_article_instock.metzgerei.1027.csv"
-
-        reset-metzgerei-product-stock-1030:
-            command: "cp data/import/spryker/product_stock.csv data/import/spryker/5.globus_article_instock.metzgerei.1030.csv"
-
-        reset-metzgerei-product-stock-1033:
-            command: "cp data/import/spryker/product_stock.csv data/import/spryker/5.globus_article_instock.metzgerei.1033.csv"
-
-        reset-metzgerei-product-stock-1037:
-            command: "cp data/import/spryker/product_stock.csv data/import/spryker/5.globus_article_instock.metzgerei.1037.csv"
-
-        reset-metzgerei-product-stock-1043:
-            command: "cp data/import/spryker/product_stock.csv data/import/spryker/5.globus_article_instock.metzgerei.1043.csv"
-
-        reset-metzgerei-product-stock-1048:
-            command: "cp data/import/spryker/product_stock.csv data/import/spryker/5.globus_article_instock.metzgerei.1048.csv"
-
-        reset-metzgerei-product-stock-1063:
-            command: "cp data/import/spryker/product_stock.csv data/import/spryker/5.globus_article_instock.metzgerei.1063.csv"
-
         reset-metzgerei-product-stock-nos-1004:
             command: "cp data/import/spryker/product_stock.csv data/import/spryker/5.globus_article_instock.NOS.1004.csv"
 
@@ -701,36 +491,6 @@ sections:
 
         reset-metzgerei-product-stock-nos-1057:
             command: "cp data/import/spryker/product_stock.csv data/import/spryker/5.globus_article_instock.NOS.1057.csv"
-
-        reset-metzgerei-product-stock-nos-1005:
-            command: "cp data/import/spryker/product_stock.csv data/import/spryker/5.globus_article_instock.NOS.1005.csv"
-
-        reset-metzgerei-product-stock-nos-1007:
-            command: "cp data/import/spryker/product_stock.csv data/import/spryker/5.globus_article_instock.NOS.1007.csv"
-
-        reset-metzgerei-product-stock-nos-1023:
-            command: "cp data/import/spryker/product_stock.csv data/import/spryker/5.globus_article_instock.NOS.1023.csv"
-
-        reset-metzgerei-product-stock-nos-1027:
-            command: "cp data/import/spryker/product_stock.csv data/import/spryker/5.globus_article_instock.NOS.1027.csv"
-
-        reset-metzgerei-product-stock-nos-1030:
-            command: "cp data/import/spryker/product_stock.csv data/import/spryker/5.globus_article_instock.NOS.1030.csv"
-
-        reset-metzgerei-product-stock-nos-1033:
-            command: "cp data/import/spryker/product_stock.csv data/import/spryker/5.globus_article_instock.NOS.1033.csv"
-
-        reset-metzgerei-product-stock-nos-1037:
-            command: "cp data/import/spryker/product_stock.csv data/import/spryker/5.globus_article_instock.NOS.1037.csv"
-
-        reset-metzgerei-product-stock-nos-1043:
-            command: "cp data/import/spryker/product_stock.csv data/import/spryker/5.globus_article_instock.NOS.1043.csv"
-
-        reset-metzgerei-product-stock-nos-1048:
-            command: "cp data/import/spryker/product_stock.csv data/import/spryker/5.globus_article_instock.NOS.1048.csv"
-
-        reset-metzgerei-product-stock-nos-1063:
-            command: "cp data/import/spryker/product_stock.csv data/import/spryker/5.globus_article_instock.NOS.1063.csv"
 
     update-prices:
         import-update-prices:

@@ -191,36 +191,6 @@ sections:
         import-product-location-1032:
             command: "vendor/bin/console data:import product-location -f spryker/90.globus_article_location.01_1032.csv"
 
-        import-product-location-1005:
-            command: "vendor/bin/console data:import product-location -f spryker/90.globus_article_location.01_1005.csv"
-
-        import-product-location-1007:
-            command: "vendor/bin/console data:import product-location -f spryker/90.globus_article_location.01_1007.csv"
-
-        import-product-location-1023:
-            command: "vendor/bin/console data:import product-location -f spryker/90.globus_article_location.01_1023.csv"
-
-        import-product-location-1027:
-            command: "vendor/bin/console data:import product-location -f spryker/90.globus_article_location.01_1027.csv"
-
-        import-product-location-1030:
-            command: "vendor/bin/console data:import product-location -f spryker/90.globus_article_location.01_1030.csv"
-
-        import-product-location-1033:
-            command: "vendor/bin/console data:import product-location -f spryker/90.globus_article_location.01_1033.csv"
-
-        import-product-location-1037:
-            command: "vendor/bin/console data:import product-location -f spryker/90.globus_article_location.01_1037.csv"
-
-        import-product-location-1043:
-            command: "vendor/bin/console data:import product-location -f spryker/90.globus_article_location.01_1043.csv"
-
-        import-product-location-1048:
-            command: "vendor/bin/console data:import product-location -f spryker/90.globus_article_location.01_1048.csv"
-
-        import-product-location-1063:
-            command: "vendor/bin/console data:import product-location -f spryker/90.globus_article_location.01_1063.csv"
-
         import-mu:
             command: "vendor/bin/console data:import product-measurement-unit"
 

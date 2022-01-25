@@ -188,66 +188,6 @@ if ($codeBucket == 'CZ') {
         'dev' => 'zed.wlz.shop-d.globus.de',
         'prod' => 'zed.wlz.shop.globus.de',
     ],
-    'I-O' => [
-        'local' => 'zed.i-o.shop.globus.local',
-        'stage' => 'zed.i-o.shop-t.globus.de',
-        'dev' => 'zed.i-o.shop-d.globus.de',
-        'prod' => 'zed.i-o.shop.globus.de',
-    ],
-    'SLS' => [
-        'local' => 'zed.sls.shop.globus.local',
-        'stage' => 'zed.sls.shop-t.globus.de',
-        'dev' => 'zed.sls.shop-d.globus.de',
-        'prod' => 'zed.sls.shop.globus.de',
-    ],
-    'GER' => [
-        'local' => 'zed.ger.shop.globus.local',
-        'stage' => 'zed.ger.shop-t.globus.de',
-        'dev' => 'zed.ger.shop-d.globus.de',
-        'prod' => 'zed.ger.shop.globus.de',
-    ],
-    'HER'  => [
-        'local' => 'zed.her.shop.globus.local',
-        'stage' => 'zed.her.shop-t.globus.de',
-        'dev' => 'zed.her.shop-d.globus.de',
-        'prod' => 'zed.her.shop.globus.de',
-    ],
-    'LUD' => [
-        'local' => 'zed.lud.shop.globus.local',
-        'stage' => 'zed.lud.shop-t.globus.de',
-        'dev' => 'zed.lud.shop-d.globus.de',
-        'prod' => 'zed.lud.shop.globus.de',
-    ],
-    'PLT'  => [
-        'local' => 'zed.plt.shop.globus.local',
-        'stage' => 'zed.plt.shop-t.globus.de',
-        'dev' => 'zed.plt.shop-d.globus.de',
-        'prod' => 'zed.plt.shop.globus.de',
-    ],
-    'ZWI' => [
-        'local' => 'zed.zwi.shop.globus.local',
-        'stage' => 'zed.zwi.shop-t.globus.de',
-        'dev' => 'zed.zwi.shop-d.globus.de',
-        'prod' => 'zed.zwi.shop.globus.de',
-    ],
-    'KLA' => [
-        'local' => 'zed.kla.shop.globus.local',
-        'stage' => 'zed.kla.shop-t.globus.de',
-        'dev' => 'zed.kla.shop-d.globus.de',
-        'prod' => 'zed.kla.shop.globus.de',
-    ],
-    'WIB' => [
-        'local' => 'zed.wib.shop.globus.local',
-        'stage' => 'zed.wib.shop-t.globus.de',
-        'dev' => 'zed.wib.shop-d.globus.de',
-        'prod' => 'zed.wib.shop.globus.de',
-    ],
-    'NKS' => [
-        'local' => 'zed.nks.shop.globus.local',
-        'stage' => 'zed.nks.shop-t.globus.de',
-        'dev' => 'zed.nks.shop-d.globus.de',
-        'prod' => 'zed.nks.shop.globus.de',
-    ],
     ];
 
     return [
@@ -312,46 +252,6 @@ if ($codeBucket == 'CZ') {
     'WLZ' => [
         'key_value_store_namespace' => 29,
         'zed' => $zedMap['WLZ'][$environment],
-    ],
-    'I-O' => [
-        'key_value_store_namespace' => 31,
-        'zed' => $zedMap['I-O'][$environment],
-    ],
-    'SLS' => [
-        'key_value_store_namespace' => 33,
-        'zed' => $zedMap['SLS'][$environment],
-    ],
-    'GER' => [
-        'key_value_store_namespace' => 35,
-        'zed' => $zedMap['GER'][$environment],
-    ],
-    'HER' => [
-        'key_value_store_namespace' => 37,
-        'zed' => $zedMap['HER'][$environment],
-    ],
-    'LUD' => [
-        'key_value_store_namespace' => 39,
-        'zed' => $zedMap['LUD'][$environment],
-    ],
-    'PLT' => [
-        'key_value_store_namespace' => 41,
-        'zed' => $zedMap['PLT'][$environment],
-    ],
-    'ZWI' => [
-        'key_value_store_namespace' => 43,
-        'zed' => $zedMap['ZWI'][$environment],
-    ],
-    'KLA' => [
-        'key_value_store_namespace' => 45,
-        'zed' => $zedMap['KLA'][$environment],
-    ],
-    'WIB' => [
-        'key_value_store_namespace' => 47,
-        'zed' => $zedMap['WIB'][$environment],
-    ],
-    'NKS' => [
-        'key_value_store_namespace' => 49,
-        'zed' => $zedMap['NKS'][$environment],
     ],
     ];
 }
