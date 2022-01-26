@@ -230,6 +230,115 @@ regions:
                     session:
                         namespace: 30
 
+            I-O:
+                services:
+                    broker:
+                        namespace: i-o_queue
+                    key_value_store:
+                        namespace: 31
+                    search:
+                        namespace: i-o_search
+                    session:
+                        namespace: 32
+
+            SLS:
+                services:
+                    broker:
+                        namespace: sls_queue
+                    key_value_store:
+                        namespace: 33
+                    search:
+                        namespace: sls_search
+                    session:
+                        namespace: 34
+
+            GER:
+                services:
+                    broker:
+                        namespace: ger_queue
+                    key_value_store:
+                        namespace: 35
+                    search:
+                        namespace: ger_search
+                    session:
+                        namespace: 36
+
+            HER:
+                services:
+                    broker:
+                        namespace: her_queue
+                    key_value_store:
+                        namespace: 37
+                    search:
+                        namespace: her_search
+                    session:
+                        namespace: 38
+
+            LUD:
+                services:
+                    broker:
+                        namespace: lud_queue
+                    key_value_store:
+                        namespace: 39
+                    search:
+                        namespace: lud_search
+                    session:
+                        namespace: 40
+
+            PLT:
+                services:
+                    broker:
+                        namespace: plt_queue
+                    key_value_store:
+                        namespace: 41
+                    search:
+                        namespace: plt_search
+                    session:
+                        namespace: 42
+
+            ZWI:
+                services:
+                    broker:
+                        namespace: zwi_queue
+                    key_value_store:
+                        namespace: 43
+                    search:
+                        namespace: zwi_search
+                    session:
+                        namespace: 44
+
+            KLA:
+                services:
+                    broker:
+                        namespace: kla_queue
+                    key_value_store:
+                        namespace: 45
+                    search:
+                        namespace: kla_search
+                    session:
+                        namespace: 46
+
+            WIB:
+                services:
+                    broker:
+                        namespace: wib_queue
+                    key_value_store:
+                        namespace: 47
+                    search:
+                        namespace: wib_search
+                    session:
+                        namespace: 48
+
+            NKS:
+                services:
+                    broker:
+                        namespace: nks_queue
+                    key_value_store:
+                        namespace: 49
+                    search:
+                        namespace: nks_search
+                    session:
+                        namespace: 50
 groups:
     DE-1:
         region: DE
@@ -296,6 +405,36 @@ groups:
                     zed.wlz.shop.globus.local:
                         store: WLZ
                         primal: true
+                    zed.i-o.shop.globus.local:
+                        store: I-O
+                        primal: true
+                    zed.sls.shop.globus.local:
+                        store: SLS
+                        primal: true
+                    zed.ger.shop.globus.local:
+                        store: GER
+                        primal: true
+                    zed.her.shop.globus.local:
+                        store: HER
+                        primal: true
+                    zed.lud.shop.globus.local:
+                        store: LUD
+                        primal: true
+                    zed.plt.shop.globus.local:
+                        store: PLT
+                        primal: true
+                    zed.zwi.shop.globus.local:
+                        store: ZWI
+                        primal: true
+                    zed.kla.shop.globus.local:
+                        store: KLA
+                        primal: true
+                    zed.wib.shop.globus.local:
+                        store: WIB
+                        primal: true
+                    zed.nks.shop.globus.local:
+                        store: NKS
+                        primal: true
 
                     filial-app.ein.shop.globus.local:
                         store: EIN
@@ -341,6 +480,36 @@ groups:
                         entry-point: StoreApp
                     filial-app.wlz.shop.globus.local:
                         store: WLZ
+                        entry-point: StoreApp
+                    filial-app.i-o.shop.globus.local:
+                        store: I-O
+                        entry-point: StoreApp
+                    filial-app.sls.shop.globus.local:
+                        store: SLS
+                        entry-point: StoreApp
+                    filial-app.ger.shop.globus.local:
+                        store: GER
+                        entry-point: StoreApp
+                    filial-app.her.shop.globus.local:
+                        store: HER
+                        entry-point: StoreApp
+                    filial-app.lud.shop.globus.local:
+                        store: LUD
+                        entry-point: StoreApp
+                    filial-app.plt.shop.globus.local:
+                        store: PLT
+                        entry-point: StoreApp
+                    filial-app.zwi.shop.globus.local:
+                        store: ZWI
+                        entry-point: StoreApp
+                    filial-app.kla.shop.globus.local:
+                        store: KLA
+                        entry-point: StoreApp
+                    filial-app.wib.shop.globus.local:
+                        store: WIB
+                        entry-point: StoreApp
+                    filial-app.nks.shop.globus.local:
+                        store: NKS
                         entry-point: StoreApp
 
 services:
