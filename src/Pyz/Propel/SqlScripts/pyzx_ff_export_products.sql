@@ -56,8 +56,8 @@ BEGIN
              WHERE spps.gross_price < spps2.gross_price
              GROUP BY spp.fk_product_abstract
         ) 	price ON sp.fk_product_abstract = price.fk_product_abstract
-        LEFT OUTER JOIN spy_product_category spc on sp.fk_product_abstract = spc.fk_product_abstract
-        LEFT OUTER JOIN spy_category sc on spc.fk_category = sc.id_category AND sc.is_active = 1 AND sc.is_in_menu = 1
+        INNER JOIN spy_product_category spc on sp.fk_product_abstract = spc.fk_product_abstract
+        INNER JOIN spy_category sc on spc.fk_category = sc.id_category AND sc.is_active = 1 AND sc.is_in_menu = 1
         LEFT OUTER JOIN spy_category_attribute sca on sc.id_category = sca.fk_category
         LEFT OUTER JOIN spy_category_node scn on sc.id_category = scn.fk_category
         LEFT OUTER JOIN spy_category_node scn2 on scn.fk_parent_category_node = scn2.id_category_node
