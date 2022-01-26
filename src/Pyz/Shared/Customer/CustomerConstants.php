@@ -15,6 +15,7 @@ namespace Pyz\Shared\Customer;
 interface CustomerConstants
 {
     public const CUSTOMER_COUNTRY = 'CUSTOMER_COUNTRY_DROPDOWN';
+    public const CUSTOMER_COUNTRY_ISO_2_CODE = 'CUSTOMER_COUNTRY_ISO_2_CODE';
     public const CUSTOMER_PHONE_PREFIX = 'CUSTOMER_PHONE_PREFIX';
     public const CUSTOMER_PROFILE_URL = 'CUSTOMER_PROFILE_URL';
     public const CDC_API_KEY = 'cdcApiKey';

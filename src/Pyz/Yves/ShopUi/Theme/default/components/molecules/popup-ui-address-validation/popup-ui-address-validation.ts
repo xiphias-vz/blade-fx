@@ -435,15 +435,6 @@ export default class PopupUiAddressValidation extends Component{
             flag = 1;
             this.addErrorMessageToTheInputField(this.$zip, 3);
         }
-        else
-        {
-            if(this.$zip.value.length !== 5 || isNumbersOnly === false){
-                $("#registerForm_customer_zip_code").parent(".form__field").children(".errorValidationMessage").remove();
-                this.$zip.classList.add('input--error');
-                flag = 1;
-                this.addErrorMessageToTheInputField(this.$zip, 4);
-            }
-        }
 
         if (this.$city.value === '' || this.$city.value === null){
             this.$city.classList.add('input--error');

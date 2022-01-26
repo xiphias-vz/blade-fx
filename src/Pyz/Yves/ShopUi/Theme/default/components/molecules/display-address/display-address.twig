@@ -8,6 +8,8 @@
 {% define data = {
     address: required,
     showAddressLabel: false,
+    mobilePrefix: '',
+    phonePrefix: '',
 } %}
 
 {% block body %}
@@ -23,8 +25,12 @@
     {% endif %}
     <li class="{{ config.name }}__item">{{ data.address.zipCode }} {{ data.address.city }}, {{ ('countries.iso.' ~ data.address.iso2code) | trans }}</li>
 
-    {% if data.address.phone|length > 4 %}
-        <li class="{{ config.name }}__item spacing-top"><a href="tel:{{ data.address.phone }}">{{ data.address.phone }}</a></li>
+    {% if (data.address.phone is not empty) and (data.address.phone|length > 4)  %}
+        <li class="{{ config.name }}__item spacing-top"><span>{{ 'customer.address.phone' | trans }}: </span><a href="tel:{{ data.address.phone }}">{{ data.address.phone }}</a></li>
+    {% endif %}
+
+    {% if (data.address.cellPhone is not empty) and (data.address.cellPhone|length > 4) %}
+        <li class="{{ config.name }}__item spacing-top"><span>{{ 'customer.address.cellPhone' | trans }}: </span><a href="tel:{{ data.address.cellPhone }}">{{ data.address.cellPhone}}</a></li>
     {% endif %}
 
     {% if data.showAddressLabel %}

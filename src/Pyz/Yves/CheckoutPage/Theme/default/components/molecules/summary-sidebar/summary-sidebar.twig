@@ -61,8 +61,12 @@
                                 <span class="{{ config.name }}__text">{{ fullShippingName }}</span>
                                 <span class="{{ config.name }}__text">{{ fullAddress }}</span>
 
-                                {% if address.phone|length > 4 %}
-                                    <span class="{{ config.name }}__text">{{ address.phone }}</span>
+                                {% if address.phone %}
+                                    <span class="{{ config.name }}__text">{{ 'customer.address.phone' | trans }}: {{ address.phone }}</span>
+                                {% endif %}
+
+                                {% if address.cellPhone %}
+                                    <span class="{{ config.name }}__text">{{ 'customer.address.cellPhone' | trans }}: {{ address.cellPhone }}</span>
                                 {% endif %}
 
                                 <span class="{{ config.name }}__text">{{ address.zipCode }} {{ address.city }}, {{ ('countries.iso.' ~ address.iso2code) | trans }}</span>

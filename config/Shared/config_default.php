@@ -947,7 +947,7 @@ $config[CodeBucketConstants::CURRENCY_SYMBOL] = '€';
 
 // ---------- Customer dropdowns
 $config[\Pyz\Shared\Customer\CustomerConstants::CUSTOMER_COUNTRY] = [
-    60 => 'customer.registration.country_placeholder',
+    60 => 'countries.iso.DE',
     79 => 'countries.iso.FR',
     183 => 'countries.iso.PL',
     63 => 'countries.iso.DK',
@@ -956,7 +956,20 @@ $config[\Pyz\Shared\Customer\CustomerConstants::CUSTOMER_COUNTRY] = [
     14 => 'countries.iso.AT',
     170 => 'countries.iso.NL',
     22 => 'countries.iso.BE',
-    59 => 'customer.registration.country_placeholder_CZ',
+    59 => 'countries.iso.CZ',
+];
+
+$config[\Pyz\Shared\Customer\CustomerConstants::CUSTOMER_COUNTRY_ISO_2_CODE] = [
+    60 => 'DE',
+    79 => 'FR',
+    183 => 'PL',
+    63 => 'DK',
+    45 => 'CH',
+    138 => 'LU',
+    14 => 'AT',
+    170 => 'NL',
+    22 => 'BE',
+    59 => 'CZ',
 ];
 
 $config[\Pyz\Shared\Customer\CustomerConstants::CUSTOMER_PHONE_PREFIX] =

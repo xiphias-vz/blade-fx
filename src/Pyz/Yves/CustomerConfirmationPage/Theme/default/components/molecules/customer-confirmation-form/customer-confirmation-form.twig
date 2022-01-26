@@ -168,9 +168,9 @@
                                 <div class="{{ embed.jsName }}__password-criteria {{ passwordCriteriaFieldLayoutClass }} is-hidden">
                                     {{ 'customer-confirmation.new.password.criteria' | trans | raw }}
                                 </div>
-                            {% elseif fieldName == 'phone_prefix' %}
+                            {% elseif fieldName == 'mobile_phone_prefix' %}
                                 {% if data.form.vars.full_name == 'registerForm' %}
-                                    <label for="phone_prefix" class="margin-telefon-title">{{ 'customer.register.telefon.title' | trans }}</label>
+                                    <label for="mobile_phone_prefix" class="margin-telefon-title">{{ 'customer.register.telefon.title' | trans }}</label>
                                     {{ form_row(field, {
                                         rowAttr: {
                                             class: 'form__field ' ~ fieldLayoutClass,
@@ -178,7 +178,7 @@
                                     }) }}
                                 {% elseif data.form.vars.full_name == 'registerForm[customer]' %}
                                     <div class="col col--order-3 col--lg-12 col--md-12 col--sm-12">
-                                        <label for="phone_prefix" class="margin-telefon-title">{{ 'customer.register.telefon.title' | trans }}</label>
+                                        <label for="mobile_phone_prefix" class="margin-telefon-title">{{ 'customer.register.telefon.title' | trans }}</label>
                                     </div>
                                     {{ form_row(field, {
                                         rowAttr: {

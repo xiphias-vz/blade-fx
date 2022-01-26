@@ -10,9 +10,11 @@ namespace Pyz\Yves\CustomerPage\Plugin;
 use Elastica\JSON;
 use Generated\Shared\Transfer\CustomerResponseTransfer;
 use Generated\Shared\Transfer\CustomerTransfer;
+use Pyz\Shared\Customer\CustomerConstants;
 use Pyz\Yves\GlobusRestApiClient\Provider\GlobusRestApiClientAccount;
 use Pyz\Yves\GlobusRestApiClient\Provider\GlobusRestApiClientDigitalCard;
 use Pyz\Yves\GlobusRestApiClient\Provider\GlobusRestApiClientValidation;
+use Spryker\Shared\Config\Config;
 use SprykerShop\Yves\CustomerPage\Plugin\AuthenticationHandler as SprykerAuthenticationHandler;
 
 /**
@@ -55,6 +57,13 @@ class AuthenticationHandler extends SprykerAuthenticationHandler
 
         $customerTransfer->setCity($this->getCityFromApiResult($validAddress));
         $customerTransfer->setAddress1($this->getStreetNameFromApiResult($validAddress));
+
+        $mobilePhoneWithPrefix = $customerTransfer->getMobilePhonePrefix() . $customerTransfer->getMobilePhoneNumber();
+        $phoneWithPrefix = $customerTransfer->getPhonePrefix() . $customerTransfer->getPhone();
+
+        $customerTransfer
+            ->setPhone($mobilePhoneWithPrefix)
+            ->setMobilePhoneNumber($phoneWithPrefix);
 
         $ssoRegister = true;
         if (isset($_COOKIE['localLogin'])) {
@@ -208,7 +217,7 @@ class AuthenticationHandler extends SprykerAuthenticationHandler
         if (isset($validAddress["result"]["address"]["country"])) {
             $country = $validAddress["result"]["address"]["country"];
         } else {
-            $country = "DE";
+            $country = $this->getCountryISO2CodeFromConfig($customerTransfer->getCountry());
         }
 
         if ($customerTransfer->getSalutation() == "Mr") {
@@ -258,7 +267,7 @@ class AuthenticationHandler extends SprykerAuthenticationHandler
                         "birthMonth": ' . $customerTransfer->getBirthMonth() . ',
                         "birthYear": ' . $customerTransfer->getBirthYear() . ',
                         "preferredStore": "' . $customerTransfer->getMerchantReference() . '",
-                        "languages": "DE",
+                        "languages": "' . $country . '",
                         "phones": [
                           {
                             "number": "' . $customerTransfer->getMobilePhoneNumber() . '",
@@ -361,12 +370,12 @@ class AuthenticationHandler extends SprykerAuthenticationHandler
      */
     protected function getApiAdressCheck($customerTransfer, bool $mainGlobus, bool $we): array
     {
-        $firstName = $customerTransfer->getFirstName();
-        $lastName = $customerTransfer->getLastName();
-        $zip = $customerTransfer->getZipCode();
-        $houseNo = $customerTransfer->getAddress2();
-        $street = $customerTransfer->getAddress1();
-        $city = $customerTransfer->getCity();
+        $firstName = $customerTransfer->getFirstName() ?? '';
+        $lastName = $customerTransfer->getLastName() ?? '';
+        $zip = $customerTransfer->getZipCode() ?? '';
+        $houseNo = $customerTransfer->getAddress2() ?? '';
+        $street = $customerTransfer->getAddress1() ?? '';
+        $city = $customerTransfer->getCity() ?? '';
 
         return GlobusRestApiClientValidation::addressValidation($firstName, $lastName, $zip, $houseNo, $street, $city, $mainGlobus, $we);
     }
@@ -386,10 +395,14 @@ class AuthenticationHandler extends SprykerAuthenticationHandler
      */
     public function getStreetNameFromApiResult(array $validAddress): string
     {
-        if (is_array($validAddress["result"]["address"]["street"])) {
-            return $validAddress["result"]["address"]["street"]["value"];
+        if (isset($validAddress["result"]["address"]["street"])) {
+            if (is_array($validAddress["result"]["address"]["street"])) {
+                return $validAddress["result"]["address"]["street"]["value"];
+            } else {
+                return $validAddress["result"]["address"]["street"];
+            }
         } else {
-            return $validAddress["result"]["address"]["street"];
+            return '';
         }
     }
 
@@ -400,10 +413,33 @@ class AuthenticationHandler extends SprykerAuthenticationHandler
      */
     public function getCityFromApiResult(array $validAddress): string
     {
-        if (is_array($validAddress["result"]["address"]["city"])) {
-            return $validAddress["result"]["address"]["city"]["value"];
+        if (isset($validAddress["result"]["address"]["city"])) {
+            if (is_array($validAddress["result"]["address"]["city"])) {
+                return $validAddress["result"]["address"]["city"]["value"];
+            } else {
+                return $validAddress["result"]["address"]["city"];
+            }
         } else {
-            return $validAddress["result"]["address"]["city"];
+            return '';
+        }
+    }
+
+    /**
+     * @param int|null $idCountry
+     *
+     * @return string
+     */
+    public function getCountryISO2CodeFromConfig(?int $idCountry): string
+    {
+        $countries = Config::get(CustomerConstants::CUSTOMER_COUNTRY_ISO_2_CODE);
+        if ($idCountry == null) {
+            return 'DE';
+        } else {
+            if ($countries != null) {
+                return $countries[$idCountry];
+            } else {
+                return 'DE';
+            }
         }
     }
 }

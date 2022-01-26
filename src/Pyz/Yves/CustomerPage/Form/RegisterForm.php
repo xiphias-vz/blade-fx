@@ -38,8 +38,8 @@ class RegisterForm extends SprykerRegisterForm
     public const FIELD_MERCHANT = 'merchant_reference';
     public const FORM_NAME = self::BLOCK_PREFIX;
     public const FIELD_COUNTRY = 'country';
-    public const FIELD_PHONE_PREFIX_1 = 'phone_prefix';
-    public const FIELD_PHONE_PREFIX_2 = 'mobile_phone_prefix';
+    public const FIELD_PHONE_PREFIX_2 = 'phone_prefix';
+    public const FIELD_PHONE_PREFIX_1 = 'mobile_phone_prefix';
     public const FIELD_MOBILE_PHONE = 'mobile_phone_number';
     public const FIELD_DAY = 'birth_day';
     public const FIELD_MONTH = 'birth_month';
@@ -399,7 +399,7 @@ class RegisterForm extends SprykerRegisterForm
             'label' => false,
             'attr' =>
                 [
-                    'placeholder' => 'mobile.phone.number',
+                    'placeholder' => 'customer.land.phone',
                 ],
         ]);
 
@@ -491,7 +491,7 @@ class RegisterForm extends SprykerRegisterForm
             ],
             'attr' =>
             [
-                'placeholder' => 'customer.land.phone',
+                'placeholder' => 'mobile.phone.number',
             ],
         ]);
 

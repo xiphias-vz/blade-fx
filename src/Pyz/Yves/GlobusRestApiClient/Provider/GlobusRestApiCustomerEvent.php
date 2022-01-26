@@ -103,18 +103,18 @@ class GlobusRestApiCustomerEvent
         $arrayMap = array_map('ucfirst', $arrayKeys);
         $arrayCombine = array_combine($arrayMap, $dataArray);
 
+        if (isset($arrayCombine['Products'])) {
+            $lengthOfProducts = count($arrayCombine['Products']);
+            for ($i = 0; $i < $lengthOfProducts; $i++) {
+                $productArrayKeys = array_keys($arrayCombine['Products'][$i]);
+                $productArrayMap = array_map('ucfirst', $productArrayKeys);
+                $productArrayCombine = array_combine($productArrayMap, $arrayCombine['Products'][$i]);
+                $arrayCombine['Products'][$i] = $productArrayCombine;
+            }
+        }
+
         $data = $jsonUtil->encode($arrayCombine);
 
-        $data = $this->customUtfEncoding($data);
-
         return GlobusRestApiClient::post($url, $data, [], $this->bearerToken);
-    }
-
-    public function customUtfEncoding(string $unEncodedData): string
-    {
-        $arrayOfNotEncodedData = ['%'];
-        $arrayOfEncodedData = ['\u0025'];
-
-        return str_replace($arrayOfNotEncodedData, $arrayOfEncodedData, $unEncodedData);
     }
 }

@@ -74,8 +74,6 @@ image:
         enabled-extensions:
             - newrelic
             - blackfire
-        ini:
-            "memory_limit": 2048m
 composer:
     mode: --no-dev
     autoload: --classmap-authoritative

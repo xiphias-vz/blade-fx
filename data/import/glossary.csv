@@ -881,6 +881,7 @@ customer.address.country,"Země",cs_CZ
 customer.address.phone,Phone,en_US
 customer.address.phone,Festnetz,de_DE
 customer.address.phone,"Pevná linka",cs_CZ
+customer.address.cellPhone,Mobil,de_DE
 customer.address.mobile_phone,Cell phone,en_US
 customer.address.mobile_phone,Mobiltelefon,de_DE
 customer.address.mobile_phone,"Mobilní telefon",cs_CZ

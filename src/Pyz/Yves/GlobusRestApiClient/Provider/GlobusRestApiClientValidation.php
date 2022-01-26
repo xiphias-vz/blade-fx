@@ -14,26 +14,26 @@ use Pyz\Yves\GlobusRestApiClient\GlobusRestApiConfig;
 class GlobusRestApiClientValidation
 {
     /**
-     * @param string $firstName
-     * @param string $lastName
-     * @param string $zip
-     * @param string $houseNumber
-     * @param string $street
-     * @param string $city
-     * @param bool $mainGlobus
-     * @param bool $we
+     * @param string|null $firstName
+     * @param string|null $lastName
+     * @param string|null $zip
+     * @param string|null $houseNumber
+     * @param string|null $street
+     * @param string|null $city
+     * @param bool|null $mainGlobus
+     * @param bool|null $we
      *
      * @return array
      */
     public static function addressValidation(
-        string $firstName,
-        string $lastName,
-        string $zip,
-        string $houseNumber,
-        string $street,
-        string $city,
-        bool $mainGlobus,
-        bool $we
+        ?string $firstName = "",
+        ?string $lastName = "",
+        ?string $zip = "",
+        ?string $houseNumber = "",
+        ?string $street = "",
+        ?string $city = "",
+        ?bool $mainGlobus = false,
+        ?bool $we = false
     ): array {
         $url = GlobusRestApiConfig::getGlobusApiEndPoint(CustomerConstants::GLOBUS_API_END_POINT_ADDRESS_VALIDATION);
         $data = [

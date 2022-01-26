@@ -10,7 +10,9 @@ namespace Pyz\Yves\CustomerPage\Controller;
 use Generated\Shared\Transfer\AddressTransfer;
 use Generated\Shared\Transfer\CountryTransfer;
 use Generated\Shared\Transfer\CustomerTransfer;
+use Pyz\Shared\Customer\CustomerConstants;
 use Pyz\Yves\CustomerPage\Plugin\Application\CustomerTransferCustom;
+use Spryker\Shared\Config\Config;
 use SprykerShop\Yves\CustomerPage\Controller\ProfileController as SprykerShopProfileController;
 
 /**
@@ -54,9 +56,12 @@ class ProfileController extends SprykerShopProfileController
                  ->getCustomerByEmail($customerTransfer);
 
              $isNewAddress = $customerTransfer->getDefaultBillingAddress() == null;
-             $countryIso2Code = $customerTransfer->getCountry();
-            if (empty($countryIso2Code)) {
-                $countryIso2Code = 'DE';
+            $idCountry = $customerTransfer->getCountry();
+            if (is_string($idCountry) == true) {
+                $countryIso2Code = $idCountry;
+                $idCountry = $this->getIdCountryFromISO2CodeFromConfig($countryIso2Code);
+            } else {
+                $countryIso2Code = $this->getCountryISO2CodeFromConfig($idCountry);
             }
 
              $addressTransfer = new AddressTransfer();
@@ -71,7 +76,8 @@ class ProfileController extends SprykerShopProfileController
                  ->setFirstName($customerTransfer->getFirstName())
                  ->setLastName($customerTransfer->getLastName())
                  ->setEmail($customerTransfer->getEmail())
-                 ->setCountry((new CountryTransfer())->setIso2Code($countryIso2Code));
+                 ->setFkCountry($idCountry)
+                 ->setCountry((new CountryTransfer())->setIso2Code($countryIso2Code)->setIdCountry($idCountry));
 
             if (!empty($customerTransfer->getCity()) &&
                  !empty($customerTransfer->getZipCode())) {
@@ -104,5 +110,43 @@ class ProfileController extends SprykerShopProfileController
         $this->processResponseErrors($customerResponseTransfer);
 
         return false;
+    }
+
+    /**
+     * @param int|null $idCountry
+     *
+     * @return string
+     */
+    public function getCountryISO2CodeFromConfig(?int $idCountry): string
+    {
+        $countries = Config::get(CustomerConstants::CUSTOMER_COUNTRY_ISO_2_CODE);
+        if ($idCountry == null) {
+            return 'DE';
+        } else {
+            if ($countries != null) {
+                return $countries[$idCountry];
+            } else {
+                return 'DE';
+            }
+        }
+    }
+
+    /**
+     * @param int|string|null $iso2Code
+     *
+     * @return string
+     */
+    public function getIdCountryFromISO2CodeFromConfig(?string $iso2Code): int
+    {
+        $countries = Config::get(CustomerConstants::CUSTOMER_COUNTRY_ISO_2_CODE);
+        if ($iso2Code == null) {
+            return 60;
+        } else {
+            if ($countries != null) {
+                return array_search($iso2Code, $countries);
+            } else {
+                return 60;
+            }
+        }
     }
 }
