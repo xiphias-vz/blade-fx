@@ -9,6 +9,7 @@ namespace Pyz\Zed\Product\Business;
 
 use Pyz\Zed\Product\Business\Product\ConcreteAttributesRetriever;
 use Pyz\Zed\Product\Business\Product\ConcreteAttributesRetrieverInterface;
+use Pyz\Zed\Product\Business\Product\Url\ProductUrlGenerator;
 use Spryker\Zed\Product\Business\ProductBusinessFactory as SprykerProductBusinessFactory;
 
 /**
@@ -24,5 +25,17 @@ class ProductBusinessFactory extends SprykerProductBusinessFactory
     public function createConcreteAttributesRetriever(): ConcreteAttributesRetrieverInterface
     {
         return new ConcreteAttributesRetriever($this->createProductConcreteManager());
+    }
+
+    /**
+     * @return \Pyz\Zed\Product\Business\Product\Url\ProductUrlGenerator
+     */
+    public function createProductUrlGenerator()
+    {
+        return new ProductUrlGenerator(
+            $this->createProductAbstractNameGenerator(),
+            $this->getLocaleFacade(),
+            $this->getUtilTextService()
+        );
     }
 }

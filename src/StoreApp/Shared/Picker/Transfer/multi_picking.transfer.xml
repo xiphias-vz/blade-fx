@@ -68,7 +68,7 @@
         <property name="alternativeEan" type="string"/>
         <property name="ean" type="string"/>
         <property name="quantity" type="int"/>
-        <property name="quantityPicked" type="string"/>
+        <property name="quantityPicked" type="int"/>
         <property name="price" type="int"/>
         <property name="priceUnit" type="string"/>
         <property name="priceContent" type="string"/>
