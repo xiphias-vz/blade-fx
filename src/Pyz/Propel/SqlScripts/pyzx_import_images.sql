@@ -152,16 +152,88 @@ BEGIN
          INNER JOIN spy_product_image spi on spi.image_name = imp.image_name
     ON DUPLICATE KEY UPDATE sort_order = imp.sort_order;
 
+    /* Publish events for images */
+    INSERT INTO pyz_data_import_event(entity_id, event_name, created_at)
+    SELECT fk_product, 'ProductImage.product_concrete_image.publish' as event_name, NOW()
+    FROM (
+        SELECT ttim.fk_product,
+            ttim.publish,
+            sp.fk_product_abstract,
+            ROW_NUMBER() over (partition by ttim.fk_product order by ttim.publish desc) as rbr
+        FROM tmp_tbl_images_message ttim
+            LEFT OUTER JOIN spy_product sp on ttim.fk_product = sp.id_product
+    ) img
+    WHERE img.rbr = 1
+    AND img.publish = 1;
+
+    INSERT INTO pyz_data_import_event(entity_id, event_name, created_at)
+    SELECT fk_product_abstract, 'Product.product_abstract.publish' as event_name, NOW()
+    FROM (
+        SELECT ttim.fk_product,
+            ttim.publish,
+            sp.fk_product_abstract,
+            ROW_NUMBER() over (partition by ttim.fk_product order by ttim.publish desc) as rbr
+        FROM tmp_tbl_images_message ttim
+            LEFT OUTER JOIN spy_product sp on ttim.fk_product = sp.id_product
+    ) img
+    WHERE img.rbr = 1
+        AND img.publish = 1
+        AND NOT img.fk_product_abstract IS NULL;
+
+    INSERT INTO pyz_data_import_event(entity_id, event_name, created_at)
+    SELECT fk_product_abstract, 'ProductImage.product_abstract_image.publish' as event_name, NOW()
+    FROM (
+        SELECT ttim.fk_product,
+            ttim.publish,
+            sp.fk_product_abstract,
+            ROW_NUMBER() over (partition by ttim.fk_product order by ttim.publish desc) as rbr
+        FROM tmp_tbl_images_message ttim
+            LEFT OUTER JOIN spy_product sp on ttim.fk_product = sp.id_product
+    ) img
+    WHERE img.rbr = 1
+        AND img.publish = 1
+        AND NOT img.fk_product_abstract IS NULL;
+
+    /* Unpublish events for images */
+    INSERT INTO pyz_data_import_event(entity_id, event_name, created_at)
+    SELECT fk_product, 'ProductImage.product_concrete_image.unpublish' as event_name, NOW()
+    FROM (
+        SELECT ttim.fk_product,
+            ttim.publish,
+            sp.fk_product_abstract,
+            ROW_NUMBER() over (partition by ttim.fk_product order by ttim.publish desc) as rbr
+        FROM tmp_tbl_images_message ttim
+            LEFT OUTER JOIN spy_product sp on ttim.fk_product = sp.id_product
+    ) img
+    WHERE img.rbr = 1
+        AND img.publish = 0
+        AND NOT img.fk_product IS NULL;
+
+    INSERT INTO pyz_data_import_event(entity_id, event_name, created_at)
+    SELECT fk_product_abstract, 'ProductImage.product_abstract_image.unpublish' as event_name, NOW()
+    FROM (
+        SELECT ttim.fk_product,
+            ttim.publish,
+            sp.fk_product_abstract,
+            ROW_NUMBER() over (partition by ttim.fk_product order by ttim.publish desc) as rbr
+        FROM tmp_tbl_images_message ttim
+            LEFT OUTER JOIN spy_product sp on ttim.fk_product = sp.id_product
+    ) img
+    WHERE img.rbr = 1
+        AND img.publish = 0
+        AND NOT img.fk_product_abstract IS NULL;
+
     SELECT fk_product, fk_product_abstract, publish
     FROM (
-         SELECT ttim.fk_product,
-                ttim.publish,
-                sp.fk_product_abstract,
-                ROW_NUMBER() over (partition by ttim.fk_product order by ttim.publish desc) as rbr
-         FROM tmp_tbl_images_message ttim
-                  LEFT OUTER JOIN spy_product sp on ttim.fk_product = sp.id_product
+        SELECT ttim.fk_product,
+        ttim.publish,
+        sp.fk_product_abstract,
+        ROW_NUMBER() over (partition by ttim.fk_product order by ttim.publish desc) as rbr
+        FROM tmp_tbl_images_message ttim
+            LEFT OUTER JOIN spy_product sp on ttim.fk_product = sp.id_product
     ) img
-    WHERE img.rbr = 1;
+    WHERE img.rbr = 1
+    LIMIT 0;
 
     DROP TEMPORARY TABLE IF EXISTS tmp_tbl_images;
     DROP TEMPORARY TABLE IF EXISTS tmp_tbl_images_message;
