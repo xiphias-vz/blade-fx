@@ -184,5 +184,17 @@
         document.getElementsByClassName("search-form")[0].addEventListener("mouseleave", () => {
             document.getElementsByTagName("ff-suggest")[0].classList.remove("transitionDisplay");
         })
+
+        document.getElementsByClassName('searchbox__submit')[0].onclick = () => {
+            if (document.getElementsByTagName('ff-suggest')[0].classList.contains("transitionDisplay")){
+                document.getElementsByTagName('ff-suggest')[0].classList.remove("transitionDisplay");
+            }
+        }
+        document.addEventListener("keypress", function onSuggestEnterPress(event) {
+            if (event.key === "Enter" && document.getElementsByTagName('ff-suggest')[0].classList.contains("transitionDisplay") == true) {
+                document.getElementsByTagName('ff-suggest')[0].classList.remove("transitionDisplay");
+            }
+        });
+
     </script>
 {% endblock %}
