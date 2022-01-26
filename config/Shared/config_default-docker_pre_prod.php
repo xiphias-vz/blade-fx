@@ -5,6 +5,7 @@ use Pyz\Shared\DataImport\DataImportConstants;
 use Pyz\Shared\FactFinder\FactFinderConstants;
 use Pyz\Shared\ProductImage\ProductImageConstants;
 use Pyz\Zed\SalesOrderSummaryExport\SalesOrderSummaryExportConfig;
+use SprykerEco\Shared\FactFinderNg\FactFinderNgConstants;
 use StoreApp\Shared\NewRelic\NewRelicConstants;
 
 $config[ProductImageConstants::IMAGES_HOST_URL] = 'https://globus-staging-product-images.s3.eu-central-1.amazonaws.com';
@@ -36,3 +37,8 @@ $config[SalesOrderSummaryExportConfig::SFTP_PRODUCT_DEEPLINK_EXPORT_FILES_FOLDER
 $config[FactFinderConstants::FTP_FACT_FINDER_FILES_FOLDER_NAME] = 'factfinder/stage';
 
 $config[NewRelicConstants::NEW_RELIC_ENVIRONMENT] = 'DE_dev';
+
+$config[FactFinderNgConstants::FACT_FINDER_URL] = 'https://globus-sb.fact-finder.de/fact-finder'; # Fact-Finder URL
+$config[FactFinderNgConstants::FACT_FINDER_CHANNEL] = 'TestSpryker'; # Fact-Finder channel value
+$config[FactFinderNgConstants::FACT_FINDER_USERNAME] = 'kps_admin'; # Fact-Finder user for authorization.
+$config[FactFinderNgConstants::FACT_FINDER_PASSWORD] = 'glo123SPRY!kps'; # Fact-Finder password for authorization.
