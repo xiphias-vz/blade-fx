@@ -8,6 +8,7 @@
 namespace Pyz\Zed\TimeSlot\Business;
 
 use Generated\Shared\Transfer\CheckoutResponseTransfer;
+use Generated\Shared\Transfer\PyzTimeSlotHistoryTransfer;
 use Generated\Shared\Transfer\QuoteTransfer;
 use Generated\Shared\Transfer\ShipmentTransfer;
 use Generated\Shared\Transfer\WeekDayTimeSlotsTransfer;
@@ -183,6 +184,16 @@ class TimeSlotFacade extends AbstractFacade implements TimeSlotFacadeInterface
     public function getTimeSlotCapacityForDefaultDay(string $store, string $day): array
     {
         return $this->getFactory()->createTimeSlotReader()->getTimeSlotCapacityForDefaultDay($store, $day);
+    }
+
+    /**
+     * @param \Generated\Shared\Transfer\PyzTimeSlotHistoryTransfer $timeSlotHistoryTransfer
+     *
+     * @return int
+     */
+    public function setTimeSlotsHistory(PyzTimeSlotHistoryTransfer $timeSlotHistoryTransfer): int
+    {
+        return $this->getFactory()->createTimeSlotWriter()->saveTimeSlotHistory($timeSlotHistoryTransfer);
     }
 
     /**

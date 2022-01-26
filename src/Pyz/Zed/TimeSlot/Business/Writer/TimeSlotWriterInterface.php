@@ -7,6 +7,7 @@
 
 namespace Pyz\Zed\TimeSlot\Business\Writer;
 
+use Generated\Shared\Transfer\PyzTimeSlotHistoryTransfer;
 use Generated\Shared\Transfer\QuoteTransfer;
 
 interface TimeSlotWriterInterface
@@ -49,4 +50,11 @@ interface TimeSlotWriterInterface
      * @return int
      */
     public function saveDefaultTimeSlotsDataForDate(string $merchantReference, string $date, string $day, string $time, string $capacity): int;
+
+    /**
+     * @param \Generated\Shared\Transfer\PyzTimeSlotHistoryTransfer $timeSlotHistoryTransfer
+     *
+     * @return int
+     */
+    public function saveTimeSlotHistory(PyzTimeSlotHistoryTransfer $timeSlotHistoryTransfer): int;
 }

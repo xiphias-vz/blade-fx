@@ -1,0 +1,8 @@
+{% embed '@Gui/Partials/widget.twig' with { widget_title: 'Capacities history' | trans } %}
+
+    {% block widget_content %}
+
+        {{ capacitiesHistoryTable | raw }}
+
+    {% endblock %}
+{% endembed %}

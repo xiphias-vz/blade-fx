@@ -17,12 +17,15 @@ use Pyz\Zed\MerchantSalesOrder\Business\MerchantSalesOrderFacadeInterface;
 use Pyz\Zed\MerchantSalesOrder\MerchantSalesOrderDependencyProvider;
 use Pyz\Zed\Oms\Business\OmsFacadeInterface;
 use Pyz\Zed\PickingZone\Business\PickingZoneFacadeInterface;
+use Pyz\Zed\Sales\Communication\Table\CapacitiesHistoryTable;
 use Pyz\Zed\Sales\Communication\Table\OrdersTable;
 use Pyz\Zed\Sales\Communication\Table\OrdersTableQueryBuilder;
 use Pyz\Zed\Sales\SalesDependencyProvider;
 use Pyz\Zed\TimeSlot\Business\TimeSlotFacadeInterface;
+use Pyz\Zed\User\UserDependencyProvider;
 use Spryker\Zed\Acl\Business\AclFacadeInterface;
 use Spryker\Zed\Sales\Communication\SalesCommunicationFactory as SprykerSalesCommunicationFactory;
+use Spryker\Zed\Sales\Dependency\Facade\SalesToUserBridge;
 use Spryker\Zed\Sales\SalesDependencyProvider as SprykerSalesDependencyProvider;
 
 /**
@@ -169,5 +172,23 @@ class SalesCommunicationFactory extends SprykerSalesCommunicationFactory
     public function getTimeSlotsFacade(): TimeSlotFacadeInterface
     {
         return $this->getProvidedDependency(SalesDependencyProvider::FACADE_TIME_SLOTS_ORDER_OVERVIEW);
+    }
+
+    /**
+     * @return \Pyz\Zed\Sales\Communication\Table\CapacitiesHistoryTable
+     */
+    public function createCapacitiesHistoryTable(): CapacitiesHistoryTable
+    {
+        return new CapacitiesHistoryTable(
+            $this->getQueryContainer()
+        );
+    }
+
+    /**
+     * @return \Spryker\Zed\Sales\Dependency\Facade\SalesToUserBridge
+     */
+    public function getUserFacade(): SalesToUserBridge
+    {
+        return $this->getProvidedDependency(UserDependencyProvider::FACADE_USER);
     }
 }

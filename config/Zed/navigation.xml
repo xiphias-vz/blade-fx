@@ -39,8 +39,8 @@
                 <label>Capacities</label>
                 <title>Capacities</title>
                 <bundle>sales</bundle>
-                <controller>index</controller>
-                <action>capacities</action>
+                <controller>capacities</controller>
+                <action>index</action>
                 <visible>1</visible>
             </capacity>
         </pages>

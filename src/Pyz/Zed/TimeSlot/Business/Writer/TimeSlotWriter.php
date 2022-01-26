@@ -8,9 +8,11 @@
 namespace Pyz\Zed\TimeSlot\Business\Writer;
 
 use Generated\Shared\Transfer\OrderCriteriaFilterTransfer;
+use Generated\Shared\Transfer\PyzTimeSlotHistoryTransfer;
 use Generated\Shared\Transfer\QuoteTransfer;
 use Generated\Shared\Transfer\SynchronizationDataTransfer;
 use Orm\Zed\TimeSlot\Persistence\Map\PyzTimeSlotTableMap;
+use Orm\Zed\TimeSlot\Persistence\PyzTimeSlotHistory;
 use Orm\Zed\TimeSlot\Persistence\PyzTimeSlotQuery;
 use Pyz\Service\TimeSlotStorage\TimeSlotStorageServiceInterface;
 use Pyz\Zed\Sales\Business\SalesFacadeInterface;
@@ -184,6 +186,29 @@ class TimeSlotWriter implements TimeSlotWriterInterface
         $entity->setMerchantReference($merchantReference)
             ->setDay($day)
             ->setCapacity($capacity);
+        $result = $entity->save();
+
+        return $result;
+    }
+
+    /**
+     * @param \Generated\Shared\Transfer\PyzTimeSlotHistoryTransfer $timeSlotHistoryTransfer
+     *
+     * @return int
+     */
+    public function saveTimeSlotHistory(PyzTimeSlotHistoryTransfer $timeSlotHistoryTransfer): int
+    {
+        $entity = new PyzTimeSlotHistory();
+        $entity->setCreatedAt($timeSlotHistoryTransfer->getCreatedAt())
+            ->setMerchantReference($timeSlotHistoryTransfer->getMerchantReference())
+            ->setFkUser($timeSlotHistoryTransfer->getFkUser())
+            ->setTimeSlotChanged($timeSlotHistoryTransfer->getTimeSlotChanged())
+            ->setDayChanged($timeSlotHistoryTransfer->getDayChanged())
+            ->setDateChanged($timeSlotHistoryTransfer->getDateChanged())
+            ->setCapacitySetFrom($timeSlotHistoryTransfer->getCapacitySetFrom())
+            ->setCapacitySetTo($timeSlotHistoryTransfer->getCapacitySetTo())
+            ->setActionPerformed($timeSlotHistoryTransfer->getActionPerformed())
+            ->setIsTrigger($timeSlotHistoryTransfer->getIsTrigger());
         $result = $entity->save();
 
         return $result;
