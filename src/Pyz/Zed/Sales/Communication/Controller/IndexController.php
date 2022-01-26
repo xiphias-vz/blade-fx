@@ -37,10 +37,12 @@ class IndexController extends SprykerIndexController
     public function indexAction()
     {
         $table = $this->getFactory()->createOrdersTable();
+        $stores = $table->getMerchantFilterButtonsData();
+        asort($stores);
 
         return [
             'orders' => $table->render(),
-            'merchantFilterButtonsData' => $table->getMerchantFilterButtonsData(),
+            'merchantFilterButtonsData' => $stores,
             'pickingZones' => $table->getPickingZones(),
         ];
     }
@@ -52,6 +54,7 @@ class IndexController extends SprykerIndexController
     {
         $table = $this->getFactory()->createOrdersTable();
         $stores = $table->getStoresByUser();
+        asort($stores);
         $isAdmin = $table->getIsUserAdmin();
         $datetime = new DateTime('tomorrow');
 

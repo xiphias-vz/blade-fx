@@ -52,6 +52,7 @@ class StoreSwitcherWidget extends AbstractWidget
             setcookie("current_store", "", time() - 3600);
         }
 
+        asort($visibleStoreNames);
         $this->addParameter('stores', $visibleStoreNames)
             ->addParameter('currentStore', $storeName)
             ->addParameter('isPasswordProtected', $visibleStorePass)

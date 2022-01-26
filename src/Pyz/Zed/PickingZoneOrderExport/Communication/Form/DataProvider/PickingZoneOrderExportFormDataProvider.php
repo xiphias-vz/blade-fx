@@ -46,7 +46,9 @@ class PickingZoneOrderExportFormDataProvider
     public function getOptions(): array
     {
         $options[PickingZoneOrderExportForm::OPTION_PICKING_ZONES] = $this->getPickingZones();
-        $options[PickingZoneOrderExportForm::OPTION_PICKING_STORES] = $this->getPickingStores();
+        $stores = $this->getPickingStores();
+        asort($stores);
+        $options[PickingZoneOrderExportForm::OPTION_PICKING_STORES] = $stores;
         $options[PickingZoneOrderExportForm::OPTION_PICKING_TIMESLOTS] = $this->getPickingTimeSlots();
         $options[PickingZoneOrderExportForm::OPTION_PICKING_STATUS] = $this->getPickingStatus();
 

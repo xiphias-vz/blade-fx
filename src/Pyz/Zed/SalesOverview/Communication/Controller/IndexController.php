@@ -38,6 +38,7 @@ class IndexController extends SprykerIndexController
         }
 
         $merchantList = $this->getFactory()->merchantList();
+        asort($merchantList);
         $choiceFilter = $this->getFactory()->choiceFilter();
         $tableHeader = $this->getFactory()->getTableHeaderContent();
         $tableTimeSlots = $this->getFactory()->getTimeSlotsForTableRows();

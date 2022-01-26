@@ -1,10 +1,10 @@
 region_number,store,region_name,filial_number,zip_code,city,street,latitude,longitude,picking_capacity_per_slot,delivery_capacity_per_slot
-41,KMD,Germany,1031,50858,Köln,"Max-Planck-Straße 9",52.532278,13.384491,10,
+41,KMD,Germany,1031,50858,"Köln-Marsdorf","Max-Planck-Straße 9",52.532278,13.384491,10,
 41,EIN,Germany,1004,66424,Homburg,"Neunmorgenstraße 8",52.532278,13.384491,10,
-41,LPZ,Germany,1042,04356,Leipzig,"An der Passage 1",52.532278,13.384491,10,
+41,LPZ,Germany,1042,04356,"Leipzig-Seehausen","An der Passage 1",52.532278,13.384491,10,
 41,HAD,Germany,1057,06130,"Halle (Saale)","Dieselstraße 47",52.532278,13.384491,10,
 41,ISS,Germany,1021,07751,"Jena-Isserstadt","Weimarische Straße 3",52.532278,13.384491,10,
-41,RUE,Germany,1053,65428,Rüsselsheim am Main,Am Steinmarkt 1,52.532278,13.384491,10,
+41,RUE,Germany,1053,65428,"Rüsselsheim Bauschheim",Am Steinmarkt 1,52.532278,13.384491,10,
 41,WIE,Germany,1013,68753,Wiesental,Hambrücker Landstraße 4,52.532278,52.532278,10,
 41,WND,Germany,1001,66606,St. Wendel,Am Wirthembösch,52.532278,52.532278,10,
 41,KRE,Germany,1071,47809,Krefeld,Hafelsstraße 200,52.532278,52.532278,10,
