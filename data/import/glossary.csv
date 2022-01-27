@@ -881,7 +881,6 @@ customer.address.country,"Země",cs_CZ
 customer.address.phone,Phone,en_US
 customer.address.phone,Festnetz,de_DE
 customer.address.phone,"Pevná linka",cs_CZ
-customer.address.cellPhone,Mobil,de_DE
 customer.address.mobile_phone,Cell phone,en_US
 customer.address.mobile_phone,Mobiltelefon,de_DE
 customer.address.mobile_phone,"Mobilní telefon",cs_CZ
@@ -1486,6 +1485,36 @@ countries.iso.GB,Großbritannien,de_DE
 countries.iso.CZ,Czechia,en_US
 countries.iso.CZ,Tschechien,de_DE
 countries.iso.CZ,ČR,cs_CZ
+countries.code.14,Austria,en_US
+countries.code.14,"Rakousko",cs_CZ
+countries.code.14,Österreich,de_DE
+countries.code.22,Belgium,en_US
+countries.code.22,"Belgie",cs_CZ
+countries.code.22,Belgien,de_DE
+countries.code.60,Germany,en_US
+countries.code.60,"Německo",cs_CZ
+countries.code.60,Deutschland,de_DE
+countries.code.79,France,en_US
+countries.code.79,"Francie",cs_CZ
+countries.code.79,Frankreich,de_DE
+countries.code.183,Poland,en_US
+countries.code.183,"Polsko",cs_CZ
+countries.code.183,Polen,de_DE
+countries.code.170,Netherlands,en_US
+countries.code.170,"Holandsko",cs_CZ
+countries.code.170,Niederlande,de_DE
+countries.code.63,Denmark,en_US
+countries.code.63,"Dánsko",cs_CZ
+countries.code.63,Dänemark,de_DE
+countries.code.138,Luxembourg,en_US
+countries.code.138,"Lucembursko",cs_CZ
+countries.code.138,Luxemburg,de_DE
+countries.code.45,Switzerland,en_US
+countries.code.45,"Švýcarsko",cs_CZ
+countries.code.45,Schweiz,de_DE
+countries.code.59,Czechia,en_US
+countries.code.59,Tschechien,de_DE
+countries.code.59,ČR,cs_CZ
 customer.billingSameAsShipping,Billing address same as shipping address,en_US
 customer.billingSameAsShipping,"Dodací a fakturační adresa jsou stejné",cs_CZ
 customer.billingSameAsShipping,Liefer- und Rechnungsadresse sind gleich,de_DE

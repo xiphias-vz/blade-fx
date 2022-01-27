@@ -30,7 +30,7 @@
     {% endif %}
 
     {% if (data.address.cellPhone is not empty) and (data.address.cellPhone|length > 4) %}
-        <li class="{{ config.name }}__item spacing-top"><span>{{ 'customer.address.cellPhone' | trans }}: </span><a href="tel:{{ data.address.cellPhone }}">{{ data.address.cellPhone}}</a></li>
+        <li class="{{ config.name }}__item spacing-top"><span>{{ 'customer.address.mobile_phone' | trans }}: </span><a href="tel:{{ data.address.cellPhone }}">{{ data.address.cellPhone}}</a></li>
     {% endif %}
 
     {% if data.showAddressLabel %}

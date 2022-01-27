@@ -78,9 +78,9 @@
                         {% if idCustomer is not null %}
                             {% set customerData = data.form.vars.value.customer %}
                             {% set isScanAndGo = customerData.isScanAndGo %}
-                            <div>{{ customerData.company }} {{ customerData.firstName }} {{ customerData.lastName }}</div>
+                            <div>{{ customerData.company }} {{ customerData.lastName }} {{ customerData.firstName }}</div>
                             <div>{{ customerData.address1 }} {{ customerData.address2 }}</div>
-                            <div>{{ customerData.zipCode }} {{ customerData.city }}</div>
+                            <div>{{ customerData.zipCode }} {{ customerData.city }}, {{ ('countries.code.' ~ customerData.country) | trans }}</div>
                             <br>
                             <div>{{ customerData.email }}</div>
 
