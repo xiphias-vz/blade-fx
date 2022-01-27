@@ -79,6 +79,12 @@ class MerchantReader implements MerchantReaderInterface
         $merchants = $this->merchantStorageClient->getMerchantsList()->getMerchants()[0]->getVisibleStoresArray();
         $currentStore = $this->merchantContextReader->getCurrentStore();
 
+        if (empty($currentMerchantReference)) {
+            if (isset($_COOKIE['merchant_switcher_selector-merchant_reference'])) {
+                $currentMerchantReference = $_COOKIE['merchant_switcher_selector-merchant_reference'];
+                $currentStore = $_COOKIE['current_store'];
+            }
+        }
         foreach ($merchants as $store => $merchant) {
             if ($store === $currentStore) {
                 return (new MerchantTransfer())->fromArray($merchant, true);
@@ -86,7 +92,7 @@ class MerchantReader implements MerchantReaderInterface
         }
 
         throw new MerchantNotFound(
-            "Current user Merchant with merchantReference: `$currentMerchantReference` was't found in the merchant storage"
+            "Current user Merchant with merchantReference: `$currentMerchantReference` wasn't found in the merchant storage"
         );
     }
 }
