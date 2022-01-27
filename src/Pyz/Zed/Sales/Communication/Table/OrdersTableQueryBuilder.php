@@ -11,6 +11,7 @@ use DateTime;
 use Orm\Zed\Sales\Persistence\Map\SpySalesOrderTableMap;
 use Orm\Zed\Sales\Persistence\Map\SpySalesShipmentTableMap;
 use Orm\Zed\Sales\Persistence\SpySalesOrderQuery;
+use Propel\Runtime\ActiveQuery\Criteria;
 use Spryker\Zed\Sales\Communication\Table\OrdersTableQueryBuilder as SprykerOrdersTableQueryBuilder;
 
 class OrdersTableQueryBuilder extends SprykerOrdersTableQueryBuilder implements OrdersTableQueryBuilderInterface
@@ -29,10 +30,9 @@ class OrdersTableQueryBuilder extends SprykerOrdersTableQueryBuilder implements 
         $query = parent::buildQuery($idOrderItemProcess, $idOrderItemState, $dateFilter);
 
         $query->joinSpySalesShipment();
-        $query->joinPyzPickingSalesOrder();
+        $query->joinPyzPickingSalesOrder(null, Criteria::LEFT_JOIN);
         $query->joinWithBillingAddress();
         $query = $this->addTimeSlot($query);
-        $query->usePyzPickingSalesOrderQuery();
 
         return $query;
     }
