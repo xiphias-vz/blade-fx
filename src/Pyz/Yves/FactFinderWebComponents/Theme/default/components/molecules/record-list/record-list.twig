@@ -327,13 +327,12 @@
  </div>
     <script>
         function OnErrorChangeImage(ev) {
-            if(ev.src.includes("thumb_") ){
+            if(ev.src.includes("thumb_")) {
                 let nonThumbImageFromStorage = ev.getAttribute("data-storage");
-                nonThumbImageFromStorage =  nonThumbImageFromStorage.replace("thumb_", "");
+                nonThumbImageFromStorage = nonThumbImageFromStorage.replace("thumb_", "");
                 ev.src = nonThumbImageFromStorage;
                 ev.setAttribute("data-src", nonThumbImageFromStorage);
-            }
-            else{
+            } else {
                 ev.src = '{{ defaultImage }}';
                 ev.setAttribute("data-src", "{{ defaultImage }}");
             }

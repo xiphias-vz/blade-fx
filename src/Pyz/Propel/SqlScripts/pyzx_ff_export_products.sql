@@ -13,7 +13,7 @@ BEGIN
                 REPLACE(REPLACE(GROUP_CONCAT(CONCAT_WS( '/', sca5.name, sca4.name, sca3.name, sca2.name, sca.name, '|')), '/|,', '|'), '/|', ''),
                 CASE WHEN NOT price.fk_product_abstract IS NULL THEN '|Angebote' ELSE '' END) as CategoryPath
          , su.url as ProductURL
-         , img.external_url_large as ImageURL
+         , REPLACE(img.external_url_large, '.com/', '.com/thumb_') as ImageURL
          , img.rbr
          , null as MultiAttributeText
          , null as Attribute
