@@ -41,8 +41,9 @@ class CapacitiesController extends AbstractController
         $stores = $table->getStoresByUser();
         $isAdmin = $table->getIsUserAdmin();
         $datetime = new DateTime('tomorrow');
+        $merchantsToShow = $this->getMerchantsToShow($stores);
         $capacitiesHistoryTable = $this->getFactory()
-            ->createCapacitiesHistoryTable();
+            ->createCapacitiesHistoryTable($merchantsToShow);
 
         return [
             'storesData' => $stores,
@@ -144,7 +145,7 @@ class CapacitiesController extends AbstractController
      * @param string $timeSlot
      * @param string $day
      * @param string $date
-     * @param ?int|int|null $oldCapacityValue
+     * @param int|null $oldCapacityValue
      * @param int $newCapacityValue
      * @param string $actionPerformed
      *
@@ -315,10 +316,30 @@ class CapacitiesController extends AbstractController
      */
     public function tableAction(Request $request): JsonResponse
     {
-        $table = $this->getFactory()->createCapacitiesHistoryTable();
+        $table = $this->getFactory()->createOrdersTable();
+        $stores = $table->getStoresByUser();
+        $table = $this->getFactory()->createCapacitiesHistoryTable(
+            $this->getMerchantsToShow($stores)
+        );
 
         return $this->jsonResponse(
             $table->fetchData()
         );
+    }
+
+    /**
+     * @param array $stores
+     *
+     * @return string[]
+     */
+    protected function getMerchantsToShow(array $stores): array
+    {
+        if (count($stores) >> 0) {
+            $merchantsToShow = array_keys($stores);
+        } else {
+            $merchantsToShow = ['0'];
+        }
+
+        return $merchantsToShow;
     }
 }

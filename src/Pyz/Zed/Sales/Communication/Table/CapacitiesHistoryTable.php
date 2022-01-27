@@ -45,13 +45,21 @@ class CapacitiesHistoryTable extends AbstractTable
     protected $queryContainer;
 
     /**
+     * @var array
+     */
+    protected $merchantsToShow;
+
+    /**
      * @param \Spryker\Zed\Sales\Persistence\SalesQueryContainerInterface $queryContainer
+     * @param array $merchantsToShow
      */
     public function __construct(
-        SalesQueryContainerInterface $queryContainer
+        SalesQueryContainerInterface $queryContainer,
+        array $merchantsToShow
     ) {
         $this->setTableIdentifier('capacities-history-table');
         $this->queryContainer = $queryContainer;
+        $this->merchantsToShow = $merchantsToShow;
     }
 
     /**
@@ -142,6 +150,7 @@ class CapacitiesHistoryTable extends AbstractTable
     {
         $result = PyzTimeSlotHistoryQuery::create()
             ->withColumn("(select username from spy_user where spy_user.id_user = pyz_time_slot_history.fk_user)", "username")
+            ->filterByMerchantReference_In($this->merchantsToShow)
             ->orderByCreatedAt(Criteria::DESC)
             ->orderByTimeSlotChanged(Criteria::ASC)
             ->orderByActionPerformed(Criteria::DESC);

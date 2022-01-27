@@ -160,7 +160,7 @@ class OrdersTable extends SprykerOrdersTable
 
         if ($isCurrentUserSupervisor) {
             $stores = $this->getMerchantsForSupervisor();
-        } else {
+        } elseif ($this->getIsUserAdmin()) {
             $stores = $this->getMerchantsIdToNameMap();
         }
 

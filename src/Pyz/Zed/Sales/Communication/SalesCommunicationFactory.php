@@ -175,12 +175,15 @@ class SalesCommunicationFactory extends SprykerSalesCommunicationFactory
     }
 
     /**
+     * @param array $merchantsToShow
+     *
      * @return \Pyz\Zed\Sales\Communication\Table\CapacitiesHistoryTable
      */
-    public function createCapacitiesHistoryTable(): CapacitiesHistoryTable
+    public function createCapacitiesHistoryTable(array $merchantsToShow): CapacitiesHistoryTable
     {
         return new CapacitiesHistoryTable(
-            $this->getQueryContainer()
+            $this->getQueryContainer(),
+            $merchantsToShow
         );
     }
 
