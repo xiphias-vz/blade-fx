@@ -354,11 +354,13 @@ groups:
                 endpoints:
                     welcome.shop-d.globus.de:
                         entry-point: Welcome
+                        <<: *frontend-auth
             Yves:
                 application: yves
                 endpoints:
                     shop-d.globus.de:
                         store: EIN
+                        <<: *frontend-auth
             Glue:
                 application: glue
                 endpoints:
