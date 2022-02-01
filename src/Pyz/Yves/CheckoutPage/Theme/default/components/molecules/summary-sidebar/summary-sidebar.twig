@@ -50,7 +50,7 @@
                             {% if app.currentCodeBucket == 'DE' %}
                                 {% set address = data.billingAddress %}
                                 {% set fullShippingName = address.lastName ~ ' ' ~ address.firstName %}
-                                {% set fullAddress = address.address1 ~ ' ' ~ address.address2 ~ ' ' ~ (address.floor | default | trans) ~ ',' %}
+                                {% set fullAddress = address.address1 ~ ' ' ~ address.address2 ~ ' ' ~ (address.floor | default | trans) %}
 
                                 <span class="{{ config.name }}__title">{{ 'checkout.step.summary.billing_address' | trans }}</span>
 
@@ -60,6 +60,7 @@
 
                                 <span class="{{ config.name }}__text">{{ fullShippingName }}</span>
                                 <span class="{{ config.name }}__text">{{ fullAddress }}</span>
+                                <span class="{{ config.name }}__text">{{ address.zipCode }} {{ address.city }}, {{ ('countries.iso.' ~ address.iso2code) | trans }}</span>
 
                                 {% if (address.phone is not empty) and (address.phone|length > 4) %}
                                     <span class="{{ config.name }}__text">{{ 'customer.address.phone' | trans }}: {{ address.phone }}</span>
@@ -69,7 +70,6 @@
                                     <span class="{{ config.name }}__text">{{ 'customer.address.mobile_phone' | trans }}: {{ address.cellPhone }}</span>
                                 {% endif %}
 
-                                <span class="{{ config.name }}__text">{{ address.zipCode }} {{ address.city }}, {{ ('countries.iso.' ~ address.iso2code) | trans }}</span>
                             {% else %}
                                 {% set address = data.billingAddress %}
                                 {% set fullShippingName = address.lastName ~ ' ' ~ address.firstName %}
