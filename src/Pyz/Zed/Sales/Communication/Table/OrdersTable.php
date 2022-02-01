@@ -285,6 +285,8 @@ class OrdersTable extends SprykerOrdersTable
     {
         $query = parent::buildQuery();
         $query->withColumn("(select max(item_paused) from spy_sales_order_item where fk_sales_order = spy_sales_order.id_sales_order)", "isPaused");
+        $query->withColumn("GROUP_CONCAT(pyz_picking_sales_order.container_code)", "container_code");
+        $query->groupBy(SpySalesOrderTableMap::COL_ID_SALES_ORDER);
         $dayRangeFilter = $this->request->query->get(static::DAY_RANGE_FILTER);
         $merchantReferenceFilter = $this->request->query->get(static::MERCHANT_REFERENCE_FILTER);
         $dateRangeFilter = $this->request->query->get(static::DATE_RANGE_FILTER);
