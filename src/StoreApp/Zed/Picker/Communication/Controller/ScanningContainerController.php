@@ -152,7 +152,12 @@ class ScanningContainerController extends AbstractController
             }
 
             if ($orderForScanningContainer == null) {
-                $urlOverview = $factory->getConfig()->getOverviewUri();
+                if (!$addContainerToSubstitutedItem) {
+                    $urlOverview = $factory->getConfig()->getOverviewUri();
+                } else {
+                    $urlOverview = $factory->getConfig()->getMultiPicking();
+                }
+
                 $urlOverview .= '?skipToken=' . static::REDIRECT_SKIP_TOKEN;
 
                 return $this->redirectResponse($urlOverview);
