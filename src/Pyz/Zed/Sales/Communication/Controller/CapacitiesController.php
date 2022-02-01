@@ -88,7 +88,7 @@ class CapacitiesController extends AbstractController
                         $actionPerformed = "UPDATE";
                         $response = $this->getFactory()->getTimeSlotsFacade()->setTimeSlotsForSelectedDate($selectedStore, $date, $day, $timeSlot, $capacityToSave);
                         if ($response == 1) {
-                            $result = $this->saveTimeSlotsHistoryData($timeSlot, $day, $date, $oldCapacityValue, $capacityToSave, $actionPerformed);
+                            $result = $this->saveTimeSlotsHistoryData($timeSlot, $day, $date, $oldCapacityValue, $capacityToSave, $actionPerformed, $selectedStore);
                         }
                     } else {
                         $capacitiesFromDefaultDay = $this->getFactory()->getTimeSlotsFacade()->getTimeSlotCapacityForDefaultDay($selectedStore, $day);
@@ -103,7 +103,7 @@ class CapacitiesController extends AbstractController
 
                             $response = $this->getFactory()->getTimeSlotsFacade()->setDefaultTimeSlotsForSelectedDate($selectedStore, $date, $day, $time, $capacity);
                             if ($response == 1) {
-                                $result = $this->saveTimeSlotsHistoryData($time, $day, $date, null, $capacity, $actionPerformed);
+                                $result = $this->saveTimeSlotsHistoryData($time, $day, $date, null, $capacity, $actionPerformed, $selectedStore);
                             }
                         }
                     }
@@ -111,14 +111,14 @@ class CapacitiesController extends AbstractController
                     $actionPerformed = "UPDATE";
                     $response = $this->getFactory()->getTimeSlotsFacade()->setTimeSlotsForSelectedDate($selectedStore, $date, $day, $timeSlot, $capacityToSave);
                     if ($response == 1) {
-                        $result = $this->saveTimeSlotsHistoryData($timeSlot, $day, $date, $oldCapacityValue, $capacityToSave, $actionPerformed);
+                        $result = $this->saveTimeSlotsHistoryData($timeSlot, $day, $date, $oldCapacityValue, $capacityToSave, $actionPerformed, $selectedStore);
                     }
                 }
             } elseif ($formToSave == "DefaultByStore") {
                 $actionPerformed = "UPDATE";
                 $response = $this->getFactory()->getTimeSlotsFacade()->setTimeSlotsForSelectedStore($selectedStore, $day, $timeSlot, $capacityToSave);
                 if ($response == 1) {
-                    $result = $this->saveTimeSlotsHistoryData($timeSlot, $day, $date, $oldCapacityValue, $capacityToSave, $actionPerformed);
+                    $result = $this->saveTimeSlotsHistoryData($timeSlot, $day, $date, $oldCapacityValue, $capacityToSave, $actionPerformed, $selectedStore);
                 }
             } else {
                 $response = 0;
@@ -148,16 +148,16 @@ class CapacitiesController extends AbstractController
      * @param int|null $oldCapacityValue
      * @param int $newCapacityValue
      * @param string $actionPerformed
+     * @param string $selectedStore
      *
      * @return int
      */
-    private function saveTimeSlotsHistoryData(string $timeSlot, string $day, string $date, ?int $oldCapacityValue, int $newCapacityValue, string $actionPerformed)
+    private function saveTimeSlotsHistoryData(string $timeSlot, string $day, string $date, ?int $oldCapacityValue, int $newCapacityValue, string $actionPerformed, string $selectedStore)
     {
         $userFacade = $this->getFactory()->getUserFacade();
-        $merchantFacade = $this->getFactory()->getMerchantFacade();
         $currentUser = $userFacade->getCurrentUser();
         $idUser = $currentUser->getIdUser();
-        $merchantReference = $merchantFacade->findMerchantByUser($currentUser)->getMerchantReference();
+        $merchantReference = $selectedStore;
         date_default_timezone_set("Europe/Berlin");
         $dateAndTime = date("Y-m-d G:i:s");
 
