@@ -43,9 +43,7 @@
     const storeRelationCheckbox = document.getElementsByClassName('checkbox');
 
     for (var i = 0; i < storeRelationCheckbox.length; i++) {
-        if (storeRelationCheckbox[i].children[0].firstElementChild['checked']) {
-            storeRelationCheckbox[i].children[0].firstElementChild.setAttribute('disabled', true);
-        } else {
+        if (!(storeRelationCheckbox[i].children[0].firstElementChild['checked'])) {
             storeRelationCheckbox[i].children[0].remove();
         }
     }
