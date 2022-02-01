@@ -275,7 +275,7 @@ if ($storeCodeBucket == 'CZ') {
     $jobs[] = [
         'name' => 'data-import-full',
         'command' => 'vendor/bin/install -r sftp-based-full-import',
-        'schedule' => 'H 21 * * *',
+        'schedule' => '30 7,21 * * *',
         'enable' => true,
         'stores' => ['EIN'],
     ];
