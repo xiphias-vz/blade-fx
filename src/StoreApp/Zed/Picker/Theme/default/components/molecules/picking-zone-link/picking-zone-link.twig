@@ -6,10 +6,17 @@
 
 {% define data = {
     currentPickingZone: required,
+    isDisabled: required | default(false)
 } %}
 
 {% block body %}
-    <a href="/picker/select-picking-zone?multi_picking=1" class="{{ config.name }}__link">
-        {{ data.currentPickingZone.name }}
-    </a>
+    {% if data.isDisabled %}
+        <span class="{{ config.name }}__link">
+            {{ data.currentPickingZone.name }}
+        </span>
+    {% else %}
+        <a href="/picker/select-picking-zone?multi_picking=1" class="{{ config.name }}__link">
+            {{ data.currentPickingZone.name }}
+        </a>
+    {% endif %}
 {% endblock %}

@@ -161,7 +161,11 @@
                                         {% else %}
                                             <div class="link__header__zone">
                                                 {% block selectPickingZone %}
-                                                    {% widget 'SelectPickingZoneWidget' only %}{% endwidget %}
+                                                    {% widget 'SelectPickingZoneWidget' with {
+                                                        data: {
+                                                            isDisabled: true
+                                                        }
+                                                    } only %}{% endwidget %}
                                                 {% endblock %}
                                             </div>
                                         {% endif %}
