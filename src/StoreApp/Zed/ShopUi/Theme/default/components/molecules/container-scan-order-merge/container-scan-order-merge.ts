@@ -8,8 +8,6 @@ type containerTransfer = {
 }
 
 export default class ContainerScanOrderMerge extends Component {
-    // protected form: HTMLFormElement;
-    // protected allPacksForCustomerNumber: HTMLInputElement;
     protected containerScanner: HTMLInputElement;
     protected mergingContainerScanner: HTMLInputElement;
     protected containerInput: HTMLInputElement;
@@ -36,6 +34,7 @@ export default class ContainerScanOrderMerge extends Component {
     protected containerScanOrderErrorPopUp3: HTMLInputElement;
     protected containerScanOrderErrorPopUp4: HTMLInputElement;
     protected containerScanOrderErrorPopUp5: HTMLInputElement;
+    protected continueUnpacking: HTMLButtonElement;
     listOfContainers: object[];
     listOfContainersInput: HTMLInputElement;
 
@@ -60,7 +59,10 @@ export default class ContainerScanOrderMerge extends Component {
         this.pleaseScanContainer = <HTMLInputElement>document.querySelector('#please_scan_container');
         this.containerIsAlreadyUsed = <HTMLInputElement>document.querySelector('#container_is_already_used');
         this.containerScanOrderErrorPopUp1 = <HTMLInputElement>document.querySelector('#container_scan_order_error_pop-up_1');
+        this.continueUnpacking = <HTMLInputElement>document.querySelector('#btnContinueUnpacking > button');
 
+        let backLink = document.querySelector('.header__content a.link');
+        backLink.style.display = "none";
         this.containerScanner.focus();
         this.mapEvents();
     }
@@ -68,6 +70,7 @@ export default class ContainerScanOrderMerge extends Component {
     protected mapEvents(): void {
         this.containerScanner.addEventListener('keypress', (event: KeyboardEvent) => this.formKeyPressHandler(event));
         this.mergingContainerScanner.addEventListener('keypress', (event: KeyboardEvent) => this.mergingContainerEntered(event));
+        this.continueUnpacking.addEventListener('click', (event: MouseEvent) => this.continueUnpackingClick(event));
     }
 
     protected atLeastOneContainerIsAdded(listOfContainersHolder, listContainersShelf) {
@@ -121,12 +124,16 @@ export default class ContainerScanOrderMerge extends Component {
                         }
 
                         let backLink = document.querySelector('.header__content a.link');
+                        backLink.style.display = "block";
                         backLink.setAttribute('href', '#');
                         backLink.addEventListener('click',
                     function(){
                                 document.querySelector("#showFullForm").classList.replace("visible", "hidden");
                                 $("#listContainersShelf").empty();
                                 that.clearInputField(document.querySelector("#input_scannerNew"));
+                                that.mergingContainerScanner.value = "";
+                                document.querySelector(".checkbox-holder input").checked = false;
+                                backLink.style.display = "none";
                             }
                         );
 
@@ -201,6 +208,11 @@ export default class ContainerScanOrderMerge extends Component {
         }
 
         return containerExists;
+    }
+
+    protected continueUnpackingClick(event) {
+        let backLink = document.querySelector('.header__content a.link');
+        backLink.click();
     }
 
     protected showPopUpErrorMessageForNonValidContainer() {
