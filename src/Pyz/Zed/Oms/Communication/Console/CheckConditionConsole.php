@@ -47,6 +47,7 @@ class CheckConditionConsole extends SprykerCheckConditionConsole
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         Propel::disableInstancePooling();
+        $time_start = microtime(true);
         $processId = null;
         if ($input->getOption(static::PROCESS_ID)) {
             $processId = (int)$input->getOption(static::PROCESS_ID);
@@ -55,6 +56,8 @@ class CheckConditionConsole extends SprykerCheckConditionConsole
         $this->getFacade()->checkConditions([], $processId);
         static::$ordersTransfers = null;
         Propel::enableInstancePooling();
+        $time_end = microtime(true);
+        $output->writeln("Execution time: " . ($time_end - $time_start));
 
         return (int)null;
     }

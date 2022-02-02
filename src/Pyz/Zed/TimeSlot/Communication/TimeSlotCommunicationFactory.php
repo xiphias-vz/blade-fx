@@ -7,7 +7,9 @@
 
 namespace Pyz\Zed\TimeSlot\Communication;
 
+use Pyz\Zed\Sales\SalesDependencyProvider;
 use Pyz\Zed\TimeSlot\Business\TimeSlotBusinessFactory;
+use Pyz\Zed\TimeSlot\Business\TimeSlotFacadeInterface;
 
 class TimeSlotCommunicationFactory extends TimeSlotBusinessFactory
 {
@@ -17,5 +19,13 @@ class TimeSlotCommunicationFactory extends TimeSlotBusinessFactory
     public function getPickerBusinessFactory(): TimeSlotBusinessFactory
     {
         return new TimeSlotBusinessFactory();
+    }
+
+    /**
+     * @return \Pyz\Zed\TimeSlot\Business\TimeSlotFacadeInterface
+     */
+    public function getTimeSlotsFacade(): TimeSlotFacadeInterface
+    {
+        return $this->getProvidedDependency(SalesDependencyProvider::FACADE_TIME_SLOTS_ORDER_OVERVIEW);
     }
 }

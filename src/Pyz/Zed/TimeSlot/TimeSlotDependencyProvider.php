@@ -8,6 +8,8 @@
 namespace Pyz\Zed\TimeSlot;
 
 use Pyz\Service\DateTimeWithZone\DateTimeWithZoneServiceInterface;
+use Pyz\Zed\Sales\SalesDependencyProvider;
+use Pyz\Zed\TimeSlot\Business\TimeSlotFacadeInterface;
 use Spryker\Service\Shipment\ShipmentServiceInterface;
 use Spryker\Zed\Kernel\AbstractBundleDependencyProvider;
 use Spryker\Zed\Kernel\Container;
@@ -45,6 +47,7 @@ class TimeSlotDependencyProvider extends AbstractBundleDependencyProvider
         $container = $this->addDateTimeWithZoneService($container);
         $container = $this->addShipmentService($container);
         $container = $this->addEventBehaviourFacade($container);
+        $container = $this->addTimeSlotFacade($container);
 
         return $container;
     }
@@ -198,6 +201,20 @@ class TimeSlotDependencyProvider extends AbstractBundleDependencyProvider
     {
         $container->set(static::FACADE_EVENT_BEHAVIOUR, function (Container $container) {
             return $container->getLocator()->eventBehavior()->facade();
+        });
+
+        return $container;
+    }
+
+    /**
+     * @param \Spryker\Zed\Kernel\Container $container
+     *
+     * @return \Spryker\Zed\Kernel\Container
+     */
+    protected function addTimeSlotFacade(Container $container): Container
+    {
+        $container->set(SalesDependencyProvider::FACADE_TIME_SLOTS_ORDER_OVERVIEW, function (Container $container): TimeSlotFacadeInterface {
+            return $container->getLocator()->timeSlot()->facade();
         });
 
         return $container;

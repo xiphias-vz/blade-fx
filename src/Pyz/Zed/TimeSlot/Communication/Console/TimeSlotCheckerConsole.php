@@ -10,6 +10,7 @@ namespace Pyz\Zed\TimeSlot\Communication\Console;
 use Pyz\Shared\PropelExtension\PropelExtension;
 use Spryker\Zed\Kernel\Communication\Console\Console;
 use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
@@ -20,6 +21,8 @@ class TimeSlotCheckerConsole extends Console
 {
     public const COMMAND_NAME = 'timeslot:check'; // e.g. 'catalog:import'
     public const COMMAND_DESCRIPTION = 'Check and update time slots';
+    public const OPTION_EXEC_MERCHANT_LIST = 'merchant_list';
+    public const OPTION_EXEC_MERCHANT_LIST_SHORT = 'm';
 
     /**
      * @return void
@@ -28,6 +31,7 @@ class TimeSlotCheckerConsole extends Console
     {
         $this->setName(static::COMMAND_NAME);
         $this->setDescription(static::COMMAND_DESCRIPTION);
+        $this->addOption(static::OPTION_EXEC_MERCHANT_LIST, static::OPTION_EXEC_MERCHANT_LIST_SHORT, InputOption::VALUE_OPTIONAL, 'Execute merchant list synchronization.');
 
         parent::configure();
     }
@@ -51,6 +55,9 @@ class TimeSlotCheckerConsole extends Console
                     $client->set($key, $ordersCount);
                     $output->writeln(sprintf('%s updated %d => %d', $key, $val, $ordersCount));
                 }
+            }
+            if ($input->hasParameterOption('--' . static::OPTION_EXEC_MERCHANT_LIST) || $input->hasParameterOption('-' . static::OPTION_EXEC_MERCHANT_LIST_SHORT)) {
+                $this->getFactory()->getTimeSlotsFacade()->executeEvent(['merchants_list']);
             }
         }
         $output->writeln(sprintf('Timeslot check executed! Checked %d keys.', count($data)));
