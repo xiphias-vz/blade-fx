@@ -57,10 +57,6 @@ class CreateAddressOnRegistrationPlugin extends AbstractPlugin implements PostCu
             return null;
         }
 
-        $customerTransfer
-            ->setPhone($customerTransfer->getPhonePrefix() . $customerTransfer->getPhone())
-            ->setMobilePhoneNumber($customerTransfer->getMobilePhonePrefix() . $customerTransfer->getMobilePhoneNumber());
-
         $addressTransfer = new AddressTransfer();
         $addressTransfer->fromArray($customerTransfer->toArray(), true);
         $addressTransfer
