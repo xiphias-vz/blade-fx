@@ -107,6 +107,14 @@
             display: none;
         }
 
+        #btnContinueUnpacking {
+            margin-top: rem(20);
+        }
+
+        #btnConfirmZone {
+            margin-top: rem(20);
+        }
+
         #btnContinueUnpacking > button {
             background-color: $setting-color-pickingApp-lightBlue;
         }

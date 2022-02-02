@@ -102,7 +102,7 @@
             </div>
 
             {% block buttonContinueUnpacking %}
-                <div id="btnContinueUnpacking" class="text-center" style="margin-top:20px">
+                <div id="btnContinueUnpacking" class="text-center">
                     <button type="button" class="button button--expand button--disabled">
                         {{ 'container.scan.merge.button.further-unpack' | trans }}
                     </button>
@@ -110,8 +110,8 @@
             {% endblock %}
 
             {% block buttonConfirmZone %}
-                <div id="btnConfirmZone" class="text-center" style="margin-top:20px">
-                    <button onclick="location.href='/picker/multi-picking-scanning-container'" type="button" class="button button--expand">
+                <div id="btnConfirmZone" class="text-center">
+                    <button onclick="location.href='/picker/multi-picking-scanning-container'" type="button" class="button button--expand button--disabled">
                         {{ 'container.scan.merge.button.confirm-zone' | trans }}
                     </button>
                 </div>

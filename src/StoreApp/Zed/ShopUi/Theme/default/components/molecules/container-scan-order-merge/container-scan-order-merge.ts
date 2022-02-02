@@ -35,6 +35,7 @@ export default class ContainerScanOrderMerge extends Component {
     protected containerScanOrderErrorPopUp4: HTMLInputElement;
     protected containerScanOrderErrorPopUp5: HTMLInputElement;
     protected continueUnpacking: HTMLButtonElement;
+    protected confirmScanningContainers: HTMLInputElement;
     listOfContainers: object[];
     listOfContainersInput: HTMLInputElement;
 
@@ -60,6 +61,8 @@ export default class ContainerScanOrderMerge extends Component {
         this.containerIsAlreadyUsed = <HTMLInputElement>document.querySelector('#container_is_already_used');
         this.containerScanOrderErrorPopUp1 = <HTMLInputElement>document.querySelector('#container_scan_order_error_pop-up_1');
         this.continueUnpacking = <HTMLInputElement>document.querySelector('#btnContinueUnpacking > button');
+        this.confirmScanningContainers = this.querySelector('.checkbox-holder input[type=checkbox]');
+        this.confirmButtonForScannedContainers = this.parentElement.querySelector('#btnConfirmZone button');
 
         let backLink = document.querySelector('.header__content a.link');
         backLink.style.display = "none";
@@ -68,6 +71,7 @@ export default class ContainerScanOrderMerge extends Component {
     }
 
     protected mapEvents(): void {
+        this.confirmScanningContainers.addEventListener('click', (event:MouseEvent) => this.toggleConfirmButton(event));
         this.containerScanner.addEventListener('keypress', (event: KeyboardEvent) => this.formKeyPressHandler(event));
         this.mergingContainerScanner.addEventListener('keypress', (event: KeyboardEvent) => this.mergingContainerEntered(event));
         this.continueUnpacking.addEventListener('click', (event: MouseEvent) => this.continueUnpackingClick(event));
@@ -132,7 +136,8 @@ export default class ContainerScanOrderMerge extends Component {
                                 $("#listContainersShelf").empty();
                                 that.clearInputField(document.querySelector("#input_scannerNew"));
                                 that.mergingContainerScanner.value = "";
-                                document.querySelector(".checkbox-holder input").checked = false;
+                                that.confirmScanningContainers.checked = false;
+                                that.continueUnpacking.classList.add("button--disabled");
                                 backLink.style.display = "none";
                             }
                         );
@@ -178,7 +183,7 @@ export default class ContainerScanOrderMerge extends Component {
                     success(data, status, xhr) {
                         let parsedData = JSON.parse(data);
                         if(parsedData === "OK"){
-                            document.querySelector("#btnContinueUnpacking > button").classList.remove("button--disabled");
+                            that.continueUnpacking.classList.remove("button--disabled");
                         }
                         else {
                             that.showPopUpErrorMessageForEmptyContainer();
