@@ -21,7 +21,8 @@
     openedItems: 0,
     editedItems: 0,
     isMultiPickingProcess: 0,
-    isScanFromPickingProcess: ''
+    isScanFromPickingProcess: '',
+    isDisabled: false,
 } %}
 
 {% block extraClass %}
@@ -163,7 +164,7 @@
                                                 {% block selectPickingZone %}
                                                     {% widget 'SelectPickingZoneWidget' with {
                                                         data: {
-                                                            isDisabled: true
+                                                            isDisabled: data.isDisabled
                                                         }
                                                     } only %}{% endwidget %}
                                                 {% endblock %}
