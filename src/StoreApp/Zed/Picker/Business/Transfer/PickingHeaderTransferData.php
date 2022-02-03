@@ -912,7 +912,7 @@ class PickingHeaderTransferData
 		    from pyz_picking_sales_order ppso
 		        inner join pyz_picking_sales_order ppso2 on ppso.fk_sales_order = ppso2.fk_sales_order
                 inner join spy_sales_order sso on ppso.fk_sales_order = sso.id_sales_order and sso.invoice_reference is null
-		    where ppso.container_code = '" . $containerToMove . "' and ppso2.container_code = '" . $containerToFill . "'";
+		    where ppso.container_code = '" . $containerToMove . "' and ppso2.container_code = '" . $containerToFill . "' and ppso.container_code <> ppso2.container_code";
         $data = $this->getResult($sql);
         if (isset($data[0])) {
             $id = $data[0]["fk_sales_order"];

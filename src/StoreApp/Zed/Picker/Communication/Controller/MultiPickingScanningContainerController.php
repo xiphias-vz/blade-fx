@@ -79,11 +79,14 @@ class MultiPickingScanningContainerController extends AbstractController
             ->getUsedContainers();
 
         $selectedContainersData = [];
-        foreach ($listOfExistingContainers as $existingContainer) {
-            foreach ($dataWithContainers as $containerData) {
-                if ($existingContainer['orderReference'] === $containerData['orderReference']) {
-                    if ($existingContainer['FkPickingZone'] === $transfer->getIdZone()) {
-                        $selectedContainersData[] = $existingContainer;
+        foreach ($dataWithContainers as $containerData) {
+            /** @var \Generated\Shared\Transfer\PickingContainerTransfer $container */
+            foreach ($containerData["pickingContainers"] as $container) {
+                if ($container->getHasItems()) {
+                    foreach ($listOfExistingContainers as $existingContainer) {
+                        if ($existingContainer["ContainerCode"] === $container->getContainerID()) {
+                            $selectedContainersData[] = $existingContainer;
+                        }
                     }
                 }
             }
