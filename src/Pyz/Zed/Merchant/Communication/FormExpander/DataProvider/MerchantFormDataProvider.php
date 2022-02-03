@@ -42,12 +42,24 @@ class MerchantFormDataProvider
     protected function getMerchants(): array
     {
         $merchantCollectionTransfer = $this->merchantFacade->get(new MerchantCriteriaTransfer());
-        $options = [];
+        $merchantsArray = $merchantCollectionTransfer->getMerchants()->getArrayCopy();
 
-        foreach ($merchantCollectionTransfer->getMerchants() as $merchantTransfer) {
-            $options[$merchantTransfer->getName()] = $merchantTransfer->getMerchantReference();
+        $options = [];
+        $sortedOptions = [];
+
+        foreach ($merchantsArray as $merchant) {
+            $options[$merchant["city"] . ', ' . $merchant["street"]] = $merchant["merchantReference"] . '_' . $merchant["zipCode"];
         }
 
-        return $options;
+        ksort($options);
+
+        foreach ($options as $option => $value) {
+            $merchantReference_zipCode = explode('_', $value);
+            $merchantReference = $merchantReference_zipCode[0];
+            $zipCode = $merchantReference_zipCode[1];
+            $sortedOptions[$zipCode . ' ' . $option] = $merchantReference;
+        }
+
+        return $sortedOptions;
     }
 }
