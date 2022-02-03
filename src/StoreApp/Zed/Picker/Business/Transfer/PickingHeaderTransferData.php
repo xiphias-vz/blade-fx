@@ -314,20 +314,20 @@ class PickingHeaderTransferData
             ->filterByFkSalesOrder($orderMod->getIdOrder())
             ->filterByContainerCode($containerId)
             ->findOneOrCreate();
-        $containerEntity->setFkPickingZone($transfer->getIdZone())
-            ->setHasSubstitutedItem($isSubstituteContainer);
+        $containerEntity->setHasSubstitutedItem($isSubstituteContainer);
 
         if ($shelfId === "--") {
             $containerEntity->setShelfCode(null);
         } elseif (!empty($shelfId)) {
-            $containerEntity
-                ->setShelfCode($shelfId)
-                ->setHasSubstitutedItem($isSubstituteContainer);
+            $containerEntity->setShelfCode($shelfId);
 
             $containerCount = count($orderMod->getPickingContainers());
             $fkGlobalPickReport = $this->updatePerformanceOrder($orderMod->getIdPerformanceSalesOrderReport(), $containerCount);
 
             $this->updateGlobalPerformanceOrder($fkGlobalPickReport);
+        }
+        if ($containerEntity->isNew()) {
+            $containerEntity->setFkPickingZone($transfer->getIdZone());
         }
 
         if ($containerEntity->isModified() || $containerEntity->isNew()) {
@@ -350,8 +350,8 @@ class PickingHeaderTransferData
         $transfer = $this->getTransferFromSession();
         foreach ($order->getPickingContainers() as $container) {
             if ($container->getContainerID() == $containerId) {
-                if ($container->getZoneAbbrevation() != $transfer->getZoneAbbrevation()) {
-                    $container->setZoneAbbrevation($transfer->getZoneAbbrevation());
+                if (!$container->getHasItems()) {
+                    $container->setHasItems(true);
                     $container->setShelfID(null);
                     $this->setTransferToSession($transfer);
                     $this->setContainerToOrder($order, $containerId, "--", $container->getHasSubstitutedItem() ?? false);
