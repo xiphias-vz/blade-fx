@@ -126,6 +126,7 @@ class MailDependencyProvider extends SprykerMailDependencyProvider
     {
         $container[static::MAILER] = function () {
             $message = new Swift_Message();
+            $message->setReplyTo($this->getConfig()->getReplyEmail());
             $mailer = new Swift_Mailer($this->createSwiftSmtpTransport());
             $mailerBridge = new MailToMailerBridge($message, $mailer);
 

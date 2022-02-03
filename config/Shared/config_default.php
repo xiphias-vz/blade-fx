@@ -10,6 +10,7 @@ use Pyz\Shared\DataImport\DataImportConstants;
 use Pyz\Shared\DummyPayment\DummyPaymentConfig;
 use Pyz\Shared\GoogleTagManager\GoogleTagManagerConstants;
 use Pyz\Shared\Invoice\InvoiceConstants;
+use Pyz\Shared\Mail\MailConstants;
 use Pyz\Shared\Matomo\MatomoConstants;
 use Pyz\Shared\Oms\OmsConstants;
 use Pyz\Shared\Pdf\PdfConstants;
@@ -706,6 +707,9 @@ $config[ShopUiConstants::YVES_ASSETS_URL_PATTERN] = '/assets/' . (getenv('SPRYKE
 
 // ----------- HTTP Security
 $config[KernelConstants::STRICT_DOMAIN_REDIRECT] = true;
+
+// ----------- Reply to email
+$config[MailConstants::DEFAULT_EMAIL_REPLY_EMAIL] = 'support@globus.zendesk.com';
 
 // ALDI
 $config[ProductPageSearchConstants::SEARCHABLE_ATTRIBUTE_KEYS] = [];

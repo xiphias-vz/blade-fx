@@ -5,6 +5,7 @@ use Pyz\Shared\Application\ApplicationConstants;
 use Pyz\Shared\BackofficeOverview\BackofficeOverviewConstants;
 use Pyz\Shared\CodeBuckets\CodeBucketConstants;
 use Pyz\Shared\GoogleTagManager\GoogleTagManagerConstants;
+use Pyz\Shared\Mail\MailConstants;
 use Pyz\Shared\ProductImage\ProductImageConstants;
 use Pyz\Shared\Shipment\ShipmentConstants;
 use Pyz\Shared\Store\StoreConstants;
@@ -74,6 +75,9 @@ $config[ApplicationConstants::CURRENCY_CODE] = 'CZK';
 
 // ----------- Currency symbol
 $config[CodeBucketConstants::CURRENCY_SYMBOL] = 'Kč';
+
+// ----------- Reply to email
+$config[MailConstants::DEFAULT_EMAIL_REPLY_EMAIL] = 'info@globus.cz';
 
 //------------ Shipment consts
 $config[ShipmentConstants::MAIN_GLOBUS_CUSTOMER_CLICK_AND_COLLECT_SHIPMENT_METHOD_PRICE] = 3900;

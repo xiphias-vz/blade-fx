@@ -29,4 +29,12 @@ interface MailConstants extends SprykerMailConstants
      * @api
      */
     public const DEFAULT_EMAIL_SENDER_NAME = 'MAIL_CONSTANTS:DEFAULT_EMAIL_SENDER_NAME';
+
+    /**
+     * Specification:
+     *  - Defines default email reply address that will be used as reply address in all mails
+     *
+     * @api
+     */
+    public const DEFAULT_EMAIL_REPLY_EMAIL = 'MAIL_CONSTANTS:DEFAULT_EMAIL_REPLY_EMAIL';
 }

@@ -59,4 +59,12 @@ class MailConfig extends SprykerMailConfig
     {
         return $this->get(MailConstants::SMTP_ENCRYPTION, '');
     }
+
+    /**
+     * @return string
+     */
+    public function getReplyEmail(): string
+    {
+        return $this->get(MailConstants::DEFAULT_EMAIL_REPLY_EMAIL);
+    }
 }
