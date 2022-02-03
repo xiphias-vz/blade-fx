@@ -13,7 +13,7 @@
 } %}
 
 {% block body %}
-    <li class="{{ config.name }}__item">{{ data.address.firstName }} {{ data.address.lastName }}</li>
+    <li class="{{ config.name }}__item">{{ data.address.lastName }} {{ data.address.firstName }}</li>
 
     {% if data.address.company is not empty %}
         <li class="{{ config.name }}__item">{{ data.address.company }}</li>

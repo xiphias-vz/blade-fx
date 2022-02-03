@@ -73,7 +73,7 @@
                             {% else %}
                                 {% set address = data.billingAddress %}
                                 {% set fullShippingName = address.lastName ~ ' ' ~ address.firstName %}
-                                {% set fullAddress = address.address1 ~ ' ' ~ address.address2 ~ ' ' ~ (address.floor | default | trans) ~ ',' %}
+                                {% set fullAddress = address.address1 ~ ' ' ~ address.address2 ~ ' ' ~ (address.floor | default | trans) %}
 
                                 <span class="{{ config.name }}__title-CZ">{{ 'checkout.step.summary.billing_address' | trans }}</span>
 

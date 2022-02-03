@@ -16,7 +16,6 @@
 } %}
 
 {% block body %}
-    {#{{ dump(data) }}#}
          {% if data.itemWeight is not null -%}
             {{ data.calculatedPrice }}
         {%- else -%}

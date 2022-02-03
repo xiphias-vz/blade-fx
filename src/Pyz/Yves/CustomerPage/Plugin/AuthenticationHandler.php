@@ -259,8 +259,8 @@ class AuthenticationHandler extends SprykerAuthenticationHandler
                       ' . $cardTypeAPIVariable . '
                       "origin": "' . $cardOrigin . '",
                       "profile": {
-                        "lastName": "' . $customerTransfer->getFirstName() . '",
-                        "firstName": "' . $customerTransfer->getLastName() . '",
+                        "lastName": "' . $customerTransfer->getLastName() . '",
+                        "firstName": "' . $customerTransfer->getFirstName() . '",
                         "title": "",
                         "gender": "' . $gender . '",
                         "birthDay": ' . $customerTransfer->getBirthDay() . ',
