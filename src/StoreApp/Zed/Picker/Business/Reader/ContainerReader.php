@@ -150,11 +150,13 @@ class ContainerReader implements ContainerReaderInterface
                 ppso.shelf_code as ShelfCode,
                 sso.order_reference as orderReference,
                 sso.first_name as firstName,
-                sso.last_name as lastName
+                sso.last_name as lastName,
+                ppz.abbreviation as pickingZone
             from pyz_picking_sales_order ppso
             inner join spy_sales_order sso on ppso.fk_sales_order = sso.id_sales_order
             inner join spy_sales_order_item ssoi on sso.id_sales_order = ssoi.fk_sales_order
             inner join spy_oms_order_item_state soois on ssoi.fk_oms_order_item_state = soois.id_oms_order_item_state
+            inner join pyz_picking_zone ppz on ppso.fk_picking_zone = ppz.id_picking_zone
             where (sso.invoice_reference is null or sso.is_cashier_export_success  = 0)
                 and sso.merchant_filial_number = '" . $merchantRef . "'
             group by ppso.id_picking_sales_order,

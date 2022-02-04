@@ -81,7 +81,7 @@
                                     <svg class="icon button__icon"><use xlink:href="#:check"></use></svg>
                                 </span>
                                 <input type="hidden" id="substituteContainer_{{ counter }}" name="hasSubstitutedItem" value="{% if selectedContainer.HasSubstitutedItem %}1{% else %}0{% endif %}">
-                                <span id="{{ config.name }}__abb-{{ counter }}" class="{{ config.name }}__abb">{{ data.zoneAbbreviation }}</span>
+                                <span id="{{ config.name }}__abb-{{ counter }}" class="{{ config.name }}__abb">{{ selectedContainer.pickingZone }}</span>
                                 <span> > </span>
                                 <span id="{{ config.name }}__shelf-{{ counter }}" class="{{ config.name }}__shelf">{{ selectedContainer.ShelfCode }}</span>
                                 <span> > </span>
