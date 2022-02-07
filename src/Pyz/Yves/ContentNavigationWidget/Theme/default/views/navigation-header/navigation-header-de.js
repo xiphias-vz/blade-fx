@@ -187,32 +187,39 @@ document.addEventListener("ffReady", function (event) {
         });
     });
 
-    resultDispatcher.addCallback("asn", function (asnData) {
+
+    resultDispatcher.addCallback('result', function (resultData) {
         var sum = 0;
-        var title = "";
         var el = document.getElementById("searchResultCount");
         if (el) {
-            if(asnData[0] !== undefined) {
-                if(asnData[0].selectedElements.length > 0) {
-                    var data = asnData[0].selectedElements[asnData[0].selectedElements.length - 1];
-                    sum = data.recordCount;
-                    title = data.name;
-                } else {
-                    for(i=0; i < asnData[0].elements.length; i++) {
-                        sum = sum + asnData[0].elements[i].recordCount;
-                    }
-                    title = el.getAttribute('data-title') + ' ' + asnData[0].elements[0].__ngSearchParams.query;
-                }
+            if(resultData.resultCount !== undefined) {
+                sum = resultData.resultCount;
             }
             searchResultText = el.getAttribute('data-text');
             searchResultText = searchResultText.replace('%numFound%', sum);
             el.innerText = searchResultText;
+        }
+    });
+
+    resultDispatcher.addCallback("asn", function (asnData) {
+        var title = "";
+        var el = document.getElementById("searchResultCount");
+        if (el) {
+            if (asnData[0] !== undefined) {
+                if (asnData[0].selectedElements.length > 0) {
+                    var data = asnData[0].selectedElements[asnData[0].selectedElements.length - 1];
+                    title = data.name;
+                } else {
+                    title = el.getAttribute('data-title') + ' ' + asnData[0].elements[0].__ngSearchParams.query;
+                }
+            }
             var changeTitleToAngebote = document.getElementById('idGlossaryAngebote').value;
 
             let currentUrl = location.pathname;
-            if(currentUrl.includes('/de/outlet')) {
+            if (currentUrl.includes('/de/outlet')) {
                 title = changeTitleToAngebote;
             }
+        }
 
             document.getElementById("searchResultCountTitle").innerText = title;
             document.title = title;
@@ -220,7 +227,6 @@ document.addEventListener("ffReady", function (event) {
             factfinder.communication.globalCommunicationParameter.onlySearchParams = true;
 
             indexCatalogPageCounter = indexCatalogPageCounter * 10;
-        }
     });
 });
 
