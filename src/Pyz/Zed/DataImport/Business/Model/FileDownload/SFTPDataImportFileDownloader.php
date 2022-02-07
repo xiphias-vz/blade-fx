@@ -110,18 +110,24 @@ class SFTPDataImportFileDownloader
      */
     protected function moveDownloadedFilesToArchive(FileSystemResourceTransfer $resourceTransfer): void
     {
-        $destinationPath = static::SFTP_PATH .
+        date_default_timezone_set("CET");
+        $currentTime = date("H-i-s", time());
+        $destinationPathWithTime = static::SFTP_PATH .
             $this->dataImportConfig->getDataImportFilesFolderName() .
             '/' .
             self::SFTP_ARCHIVE_NAME .
             '/' .
-            $resourceTransfer->getBasename();
+            $resourceTransfer->getFilename() .
+            '-' .
+            $currentTime .
+            '.' .
+            $resourceTransfer->getExtension();
 
         try {
-            $this->copyFile($resourceTransfer->getPath(), $destinationPath);
+            $this->copyFile($resourceTransfer->getPath(), $destinationPathWithTime);
         } catch (FileSystemWriteException $e) {
-            $this->deleteFile($destinationPath);
-            $this->copyFile($resourceTransfer->getPath(), $destinationPath);
+            $this->deleteFile($destinationPathWithTime);
+            $this->copyFile($resourceTransfer->getPath(), $destinationPathWithTime);
         }
 
         $this->deleteFile($resourceTransfer->getPath());
