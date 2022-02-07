@@ -9,6 +9,7 @@ window.addEventListener('DOMContentLoaded', (e) => {
         contactStoreInfo.prepend(slotInfo);
         checkAndSetFooter();
     }
+    checkAndSetFooter();
 });
 
 window.addEventListener('resize', function(event){
@@ -17,11 +18,15 @@ window.addEventListener('resize', function(event){
 
 function checkAndSetFooter(){
     var width = window.innerWidth;
-    var element = document.querySelector("#footerNav");
+
+    var elementTextCenter = document.querySelector(".copyright-build-with");
+    var footerNav = document.querySelector("#footerNav");
     if(width > 575){
-        element.classList.add("footer__navigation");
+       elementTextCenter.classList.add("text-center");
+       footerNav.classList.add("footer__navigation");      
     }
     else {
-        element.classList.remove("footer__navigation");
+       elementTextCenter.classList.remove("text-center");
+       footerNav.classList.remove("footer__navigation");
     }
 }

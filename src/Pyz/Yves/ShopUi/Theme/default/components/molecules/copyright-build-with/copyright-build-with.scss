@@ -44,10 +44,12 @@
                 font-size: rem(12);
             }
             @include helper-breakpoint-media-max($sm-max)  {
-                font-size: rem(10);
+                justify-content: flex-start;
+                text-align: left;
+                font-size: rem(12);
             }
             @include helper-breakpoint-media-max($xs-max){
-                font-size: rem(7);
+                font-size: rem(12);
             }
         }
 
@@ -67,27 +69,39 @@
             }
         }
 
-        .inline-list li {
+        li {
             margin: 0 rem(10);
         }
 
-        .inline-list li a {
+        li a {
             color:gray;
             text-decoration: none;
         }
 
-        .inline-list li a:nth-child(1) {
+        li a:nth-child(1) {
             border-right: rem(1) solid gray;
             padding-right: rem(15);
         }
-        .inline-list li a:nth-child(3) {
+        li a:nth-child(3) {
             border-left: rem(1) solid gray;
             padding-left: rem(15);
         }
 
         .div-footer-right-text {
             color:gray;
+            margin-top:rem(0);
+            margin-left:rem(10);
+            margin-right:rem(10);
+            margin-bottom:rem(0);
+
+            @include helper-breakpoint-media-max($sm-max)  {
+                margin-top:rem(10);
+                margin-left:rem(10);
+                margin-right:rem(10);
+                margin-bottom:rem(0);
+            }
         }
+
     }
 }
 
