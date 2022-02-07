@@ -30,16 +30,15 @@ export default class AjaxAddToCart extends Component {
         if (this.environment.value === 'DE') {
             let checkRecordsAreRendered = setInterval(() => {
                 this.links = <HTMLLinkElement[]>Array.from(document.getElementsByClassName(this.addToCartLinkClass));
+
                 if(this.links.length > 0) {
                     this.load();
                     clearInterval(checkRecordsAreRendered);
                 }
             }, 500);
-
         } else {
             this.load();
         }
-
     }
 
     public load() {

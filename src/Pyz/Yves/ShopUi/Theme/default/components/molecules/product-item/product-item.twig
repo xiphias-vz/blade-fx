@@ -449,6 +449,10 @@
 
                 function productAddToCart(productId, productName, productPrice, productSku, productBrand)
                 {
+                    let selectedElement = document.querySelector(`[data-product-id="${productId}"]`);
+                    if (selectedElement !== undefined || selectedElement !== null) {
+                        selectedElement.setAttribute("disabled", "true");
+                    }
                     window.dataLayer = window.dataLayer || [];
                     window.dataLayer.push({
                         'event': 'eec.addToCart',

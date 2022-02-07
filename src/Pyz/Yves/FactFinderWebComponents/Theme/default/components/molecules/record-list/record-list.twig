@@ -259,7 +259,7 @@
 
                         <a href="{{ addAjaxUrl|trim }}"
                            rel="nofollow"
-                           onclick="productAddToCart('{{ sku }}','{{ productName }}','{{ price }}','{{ sku }}','{{ brand | escape('js') }}')"
+                           onclick="productAddToCartRecordList({{ idProductAbstractRecord | trim }}, '{{ productName |trim }}', {{ price | trim }}, {{ sku | trim }}, '{{ brand | trim }}')"
                            class="
                                     button button--with-icon button--middle-icon button_center_align button--backgroundcolor-DE
                                     js-product-color-group__image-{{ sku }}
@@ -267,10 +267,10 @@
                                     js-ajax-add-to-cart__link
                                     myBtn
                                 "
-                           data-product-id="{{ idProductAbstractRecord }}"
-                           data-product-sku="{{ sku }}"
-                           data-product-title="{{ productName }}"
-                           data-product-price="{{ price }}"
+                           data-product-id="{{ idProductAbstractRecord | trim }}"
+                           data-product-sku="{{ sku | trim }}"
+                           data-product-title="{{ productName | trim }}"
+                           data-product-price="{{ price | trim }}"
                            data-csrf-token="{{ csrf_token('add-to-cart-ajax') }}"
                         >
                             <span class="icon-basketplus"></span>
@@ -336,6 +336,31 @@
                 ev.src = '{{ defaultImage }}';
                 ev.setAttribute("data-src", "{{ defaultImage }}");
             }
+        }
+    </script>
+    <script type="text/javascript">
+        function productAddToCartRecordList(productId, productName, productPrice, productSku, productBrand)
+        {
+            let selectedElement = document.querySelector(`[data-product-id="${productId}"]`);
+            if (selectedElement !== undefined || selectedElement !== null) {
+                selectedElement.setAttribute("disabled", "true");
+            }
+            window.dataLayer = window.dataLayer || [];
+            window.dataLayer.push({
+                'event': 'eec.addToCart',
+                'ecommerce':{
+                    'add':{
+                        'currencyCode': '{{ data.currencyIsoCode }}',
+                        'products': [{
+                            'id': productId,
+                            'name': productName,
+                            'price': productPrice,
+                            'sku': productSku,
+                            'brand': productBrand,
+                        }]
+                    }
+                },
+            });
         }
     </script>
 {% endblock %}

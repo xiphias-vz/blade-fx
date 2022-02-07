@@ -28,16 +28,6 @@
 
 {% block form %}
     {{parent()}}
-{#    afterSearchNavigation: factFinderSearchResponse.getAfterSearchNavigation#}
-    {% include '@FactFinder/layout/catalog/filters.twig' with {
-        afterSearchNavigation: filterGroup.isRegularStyle
-    } %}
-
-    {% include '@FactFinder/layout/partials/sort.twig' %}
-
-    {% include '@FactFinder/search/partials/pagination.twig' with {
-        showAlwaysFirstAndLast: true
-    } %}
 
     {% if data.searchString is not empty %}
         <input type="hidden" name="q" value="{{ data.searchString }}">

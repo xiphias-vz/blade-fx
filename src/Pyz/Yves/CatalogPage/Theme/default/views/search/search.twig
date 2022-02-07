@@ -38,7 +38,9 @@
     </div>
     <script type="text/javascript">
         window.searchSuggestion = "{{ data.searchString }}";
-        var ffCategoryFilter  = JSON.parse(atob("{{ data.ffCategoryFilter }}"));
+        {% if app.currentCodeBucket == 'DE' %}
+            var ffCategoryFilter  = JSON.parse(atob("{{ data.ffCategoryFilter }}"));
+        {% endif %}
     </script>
 {% endblock %}
 
