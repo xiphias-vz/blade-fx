@@ -19,6 +19,8 @@ use Pyz\Zed\Oms\OmsDependencyProvider;
 use Pyz\Zed\Sales\Business\SalesFacadeInterface;
 use Spryker\Service\UtilDateTime\UtilDateTimeServiceInterface;
 use Spryker\Zed\Money\Business\MoneyFacadeInterface;
+use Spryker\Zed\Oms\Business\Expander\StateHistoryExpander;
+use Spryker\Zed\Oms\Business\Expander\StateHistoryExpanderInterface;
 use Spryker\Zed\Oms\Business\OmsBusinessFactory as SprykerOmsBusinessFactory;
 use Spryker\Zed\Translator\Business\TranslatorFacadeInterface;
 use Twig\Environment;
@@ -126,6 +128,14 @@ class OmsBusinessFactory extends SprykerOmsBusinessFactory
             $this->getConfig(),
             $this->getStoreFacade()
         );
+    }
+
+    /**
+     * @return \Spryker\Zed\Oms\Business\Expander\StateHistoryExpanderInterface
+     */
+    public function createStateHistoryExpander(): StateHistoryExpanderInterface
+    {
+        return new StateHistoryExpander($this->getRepository());
     }
 
     /**

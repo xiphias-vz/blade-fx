@@ -8,9 +8,11 @@
 namespace Pyz\Zed\Oms\Business\OrderStateMachine;
 
 use DateTime;
+use Generated\Shared\Transfer\ReservationRequestTransfer;
 use Orm\Zed\Sales\Persistence\Map\SpySalesOrderItemTableMap;
 use Orm\Zed\Sales\Persistence\SpySalesOrderItem;
 use PDO;
+use Propel\Runtime\Exception\LogicException;
 use Propel\Runtime\Propel;
 use Pyz\Zed\Oms\OmsConfig;
 use Spryker\Zed\Oms\Business\OrderStateMachine\BuilderInterface;
@@ -77,6 +79,44 @@ class OrderStateMachine extends SprykerOrderStateMachine implements OrderStateMa
 
         $this->omsConfig = $omsConfig;
         $this->storeFacade = $storeFacade;
+    }
+
+    /**
+     * @var array
+     */
+    private $stateList;
+
+    /**
+     * @param \Orm\Zed\Sales\Persistence\SpySalesOrderItem $orderItemEntity
+     *
+     * @return mixed|\Orm\Zed\Oms\Persistence\SpyOmsOrderItemState
+     */
+    private function getState(SpySalesOrderItem $orderItemEntity)
+    {
+        if (!isset($this->stateList[$orderItemEntity->getFkOmsOrderItemState()])) {
+            $this->stateList[$orderItemEntity->getFkOmsOrderItemState()] = $orderItemEntity->getState();
+        }
+
+        return $this->stateList[$orderItemEntity->getFkOmsOrderItemState()];
+    }
+
+    /**
+     * @var array
+     */
+    private $processList;
+
+    /**
+     * @param \Orm\Zed\Sales\Persistence\SpySalesOrderItem $orderItemEntity
+     *
+     * @return mixed|\Orm\Zed\Oms\Persistence\SpyOmsOrderItemState
+     */
+    private function getProcess(SpySalesOrderItem $orderItemEntity)
+    {
+        if (!isset($this->processList[$orderItemEntity->getFkOmsOrderProcess()])) {
+            $this->processList[$orderItemEntity->getFkOmsOrderProcess()] = $orderItemEntity->getProcess();
+        }
+
+        return $this->processList[$orderItemEntity->getFkOmsOrderProcess()];
     }
 
     /**
@@ -168,7 +208,7 @@ class OrderStateMachine extends SprykerOrderStateMachine implements OrderStateMa
             return [];
         }
 
-        $currentProcessName = $orderItems[0]->getProcess()->getName();
+        $currentProcessName = $this->getProcess($orderItems[0])->getName();
 
         $filteredItems = $this->filterAffectedOrderItems(
             $eventId,
@@ -300,9 +340,9 @@ class OrderStateMachine extends SprykerOrderStateMachine implements OrderStateMa
         $deleteOldTimeoutEvents = [];
         $newTimeoutEvents = [];
         foreach ($orderItems as $orderItem) {
-            $process = $processes[$orderItem->getProcess()->getName()];
+            $process = $processes[$this->getProcess($orderItem)->getName()];
             $sourceState = $sourceStateBuffer[$orderItem->getIdSalesOrderItem()];
-            $targetState = $orderItem->getState()->getName();
+            $targetState = $this->getState($orderItem)->getName();
 
             if ($sourceState !== $targetState) {
                 if ($timeoutModel->dropOldTimeoutNeeded($process, $sourceState)) {
@@ -332,10 +372,10 @@ class OrderStateMachine extends SprykerOrderStateMachine implements OrderStateMa
         $newTimeoutEvents = [];
         $currentTime = new DateTime('now');
         foreach ($orderItems as $orderItem) {
-            $process = $processes[$orderItem->getProcess()->getName()];
+            $process = $processes[$this->getProcess($orderItem)->getName()];
 
             $sourceStateId = $sourceStateBuffer[$orderItem->getIdSalesOrderItem()];
-            $targetStateId = $orderItem->getState()->getName();
+            $targetStateId = $this->getState($orderItem)->getName();
             $targetState = $process->getStateFromAllProcesses($targetStateId);
 
             if ($targetState->hasTimeoutEvent()) {
@@ -558,5 +598,145 @@ class OrderStateMachine extends SprykerOrderStateMachine implements OrderStateMa
     protected function encodeParams(array $params): string
     {
         return '| ' . implode(' | ', $params) . ' |';
+    }
+
+    /**
+     * @param string $eventId
+     * @param \Orm\Zed\Sales\Persistence\SpySalesOrderItem[] $orderItems
+     * @param \Spryker\Zed\Oms\Business\Process\ProcessInterface[] $processes
+     *
+     * @return array
+     */
+    protected function groupByOrderAndState($eventId, array $orderItems, $processes)
+    {
+        $orderEventGroup = [];
+        $orders = [];
+        foreach ($orderItems as $orderItem) {
+            if (!isset($orders[$orderItem->getFkSalesOrder()])) {
+                $orders[$orderItem->getFkSalesOrder()] = $orderItem->getOrder();
+            }
+            $processId = $this->getProcess($orderItem)->getName();
+            $process = $processes[$processId];
+
+            $stateId = $this->getState($orderItem)->getName();
+            $orderId = $orders[$orderItem->getFkSalesOrder()]->getIdSalesOrder();
+
+            $state = $process->getStateFromAllProcesses($stateId);
+
+            if ($state->hasEvent($eventId)) {
+                $key = $orderId . '-' . $stateId;
+                if (!isset($orderEventGroup[$key])) {
+                    $orderEventGroup[$key] = [];
+                }
+                $orderEventGroup[$key][] = $orderItem;
+            }
+        }
+
+        return $orderEventGroup;
+    }
+
+    /**
+     * @param array $stateToTransitionsMap
+     * @param \Orm\Zed\Sales\Persistence\SpySalesOrderItem[] $orderItems
+     * @param array $sourceStateBuffer
+     * @param \Spryker\Zed\Oms\Business\Util\TransitionLogInterface $log
+     *
+     * @return array
+     */
+    protected function updateStateByTransition($stateToTransitionsMap, array $orderItems, array $sourceStateBuffer, TransitionLogInterface $log)
+    {
+        $targetStateMap = [];
+        foreach ($orderItems as $i => $orderItem) {
+            $stateId = $this->getState($orderItem)->getName();
+            $sourceStateBuffer[$orderItem->getIdSalesOrderItem()] = $stateId;
+            $process = $this->builder->createProcess($this->getProcess($orderItem)->getName());
+            $sourceState = $process->getStateFromAllProcesses($stateId);
+
+            $log->addSourceState($orderItem, $sourceState->getName());
+
+            $transitions = $stateToTransitionsMap[$this->getState($orderItem)->getName()];
+
+            $targetState = $sourceState;
+            if (count($transitions) > 0) {
+                $targetState = $this->checkCondition($transitions, $orderItem, $sourceState, $log);
+            }
+
+            $log->addTargetState($orderItem, $targetState->getName());
+
+            $targetStateMap[$i] = $targetState->getName();
+        }
+
+        foreach ($orderItems as $i => $orderItem) {
+            $this->setState($orderItems[$i], $targetStateMap[$i]);
+        }
+
+        return $sourceStateBuffer;
+    }
+
+    /**
+     * @param \Orm\Zed\Sales\Persistence\SpySalesOrderItem[] $orderItems
+     * @param \Spryker\Zed\Oms\Business\Process\ProcessInterface[] $processes
+     * @param array $sourceStateBuffer
+     *
+     * @throws \LogicException
+     *
+     * @return \Orm\Zed\Sales\Persistence\SpySalesOrderItem[][]
+     */
+    protected function filterItemsWithOnEnterEvent(array $orderItems, array $processes, array $sourceStateBuffer)
+    {
+        $orderItemsWithOnEnterEvent = [];
+        foreach ($orderItems as $orderItem) {
+            $stateId = $this->getState($orderItem)->getName();
+            $processId = $this->getProcess($orderItem)->getName();
+
+            if (!isset($processes[$processId])) {
+                throw new LogicException("Unknown process $processId");
+            }
+
+            $process = $processes[$processId];
+            $targetState = $process->getStateFromAllProcesses($stateId);
+
+            if (isset($sourceStateBuffer[$orderItem->getIdSalesOrderItem()])) {
+                $sourceState = $sourceStateBuffer[$orderItem->getIdSalesOrderItem()];
+            } else {
+                $sourceState = $process->getStateFromAllProcesses($this->getState($orderItem)->getName());
+            }
+
+            if ($sourceState === $targetState && $targetState->isReserved()) {
+                $reservationRequestTransfer = (new ReservationRequestTransfer())
+                    ->fromArray($orderItem->toArray(), true);
+                $this->reservation->updateReservation($reservationRequestTransfer);
+            }
+
+            if ($sourceState !== $targetState->getName()
+                && $targetState->hasOnEnterEvent()
+            ) {
+                $event = $targetState->getOnEnterEvent();
+                if (array_key_exists($event->getName(), $orderItemsWithOnEnterEvent) === false) {
+                    $orderItemsWithOnEnterEvent[$event->getName()] = [];
+                }
+                $orderItemsWithOnEnterEvent[$event->getName()][] = $orderItem;
+            }
+        }
+
+        return $orderItemsWithOnEnterEvent;
+    }
+
+    /**
+     * @param \Orm\Zed\Sales\Persistence\SpySalesOrderItem[] $orderItems
+     *
+     * @return \Spryker\Zed\Oms\Business\Process\ProcessInterface[]
+     */
+    protected function getProcesses(array $orderItems)
+    {
+        $processes = [];
+        foreach ($orderItems as $orderItem) {
+            $processName = $this->getProcess($orderItem)->getName();
+            if (array_key_exists($processName, $processes) === false) {
+                $processes[$processName] = $this->builder->createProcess($processName);
+            }
+        }
+
+        return $processes;
     }
 }

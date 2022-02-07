@@ -65,6 +65,16 @@ class OrderHydrator extends SprykerOrderHydrator implements OrderHydratorInterfa
     }
 
     /**
+     * @var array
+     */
+    private $processList;
+
+    /**
+     * @var array
+     */
+    private $stateList;
+
+    /**
      * @param \Orm\Zed\Sales\Persistence\SpySalesOrder $orderEntity
      * @param \Generated\Shared\Transfer\OrderTransfer $orderTransfer
      *
@@ -80,6 +90,100 @@ class OrderHydrator extends SprykerOrderHydrator implements OrderHydratorInterfa
 
         $itemTransfers = $this->executeOrderItemExpanderPlugins($itemTransfers);
         $orderTransfer->setItems(new ArrayObject($itemTransfers));
+    }
+
+    /**
+     * @param \Orm\Zed\Sales\Persistence\SpySalesOrderItem $orderItemEntity
+     *
+     * @return mixed|\Orm\Zed\Oms\Persistence\SpyOmsOrderProcess|null
+     */
+    private function getProcess(SpySalesOrderItem $orderItemEntity)
+    {
+        if (!isset($this->processList[$orderItemEntity->getFkOmsOrderProcess()])) {
+            $this->processList[$orderItemEntity->getFkOmsOrderProcess()] = $orderItemEntity->getProcess();
+        }
+
+        return $this->processList[$orderItemEntity->getFkOmsOrderProcess()];
+    }
+
+    /**
+     * @param \Orm\Zed\Sales\Persistence\SpySalesOrderItem $orderItemEntity
+     * @param \Orm\Zed\Oms\Persistence\SpyOmsOrderItemStateHistory|null $orderItemHistoryEntity
+     *
+     * @return mixed|\Orm\Zed\Oms\Persistence\SpyOmsOrderItemState
+     */
+    private function getState(SpySalesOrderItem $orderItemEntity, ?SpyOmsOrderItemStateHistory $orderItemHistoryEntity = null)
+    {
+        if ($orderItemHistoryEntity) {
+            if (!isset($this->stateList[$orderItemHistoryEntity->getFkOmsOrderItemState()])) {
+                $this->stateList[$orderItemHistoryEntity->getFkOmsOrderItemState()] = $orderItemHistoryEntity->getState();
+            }
+
+            return $this->stateList[$orderItemHistoryEntity->getFkOmsOrderItemState()];
+        } elseif (!isset($this->stateList[$orderItemEntity->getFkOmsOrderItemState()])) {
+            $this->stateList[$orderItemEntity->getFkOmsOrderItemState()] = $orderItemEntity->getState();
+        }
+
+        return $this->stateList[$orderItemEntity->getFkOmsOrderItemState()];
+    }
+
+    /**
+     * @param \Orm\Zed\Sales\Persistence\SpySalesOrderItem $orderItemEntity
+     *
+     * @return \Generated\Shared\Transfer\ItemTransfer
+     */
+    public function hydrateOrderItemTransfer(SpySalesOrderItem $orderItemEntity)
+    {
+        $itemTransfer = new ItemTransfer();
+        $itemTransfer->fromArray($orderItemEntity->toArray(), true);
+        $itemTransfer->setProcess($this->getProcess($orderItemEntity)->getName());
+
+        $itemTransfer->setQuantity($orderItemEntity->getQuantity());
+        $itemTransfer->setSumGrossPrice($orderItemEntity->getGrossPrice());
+        $itemTransfer->setSumNetPrice($orderItemEntity->getNetPrice());
+        $itemTransfer->setSumPrice($orderItemEntity->getPrice());
+        $itemTransfer->setSumSubtotalAggregation($orderItemEntity->getSubtotalAggregation());
+        $itemTransfer->setRefundableAmount($orderItemEntity->getRefundableAmount());
+        $itemTransfer->setSumDiscountAmountAggregation($orderItemEntity->getDiscountAmountAggregation());
+        $itemTransfer->setSumDiscountAmountFullAggregation($orderItemEntity->getDiscountAmountFullAggregation());
+        $itemTransfer->setSumExpensePriceAggregation($orderItemEntity->getExpensePriceAggregation());
+        $itemTransfer->setSumTaxAmount($orderItemEntity->getTaxAmount());
+        $itemTransfer->setSumTaxAmountFullAggregation($orderItemEntity->getTaxAmountFullAggregation());
+        $itemTransfer->setSumPriceToPayAggregation($orderItemEntity->getPriceToPayAggregation());
+
+        $itemTransfer->setIsOrdered(true);
+        $itemTransfer->setIsReturnable(true);
+
+        $this->deriveOrderItemUnitPrices($itemTransfer);
+
+        $this->hydrateStateHistory($orderItemEntity, $itemTransfer);
+        $this->hydrateCurrentSalesOrderItemState($orderItemEntity, $itemTransfer);
+
+        return $itemTransfer;
+    }
+
+    /**
+     * @deprecated Use {@link \Spryker\Zed\Oms\Communication\Plugin\Sales\StateHistoryOrderItemExpanderPlugin} instead.
+     *
+     * @param \Orm\Zed\Sales\Persistence\SpySalesOrderItem $orderItemEntity
+     * @param \Generated\Shared\Transfer\ItemTransfer $itemTransfer
+     *
+     * @return void
+     */
+    protected function hydrateStateHistory(SpySalesOrderItem $orderItemEntity, ItemTransfer $itemTransfer)
+    {
+        // For BC reasons
+        if (!$this->salesConfig->isHydrateOrderHistoryToItems()) {
+            return;
+        }
+
+        foreach ($orderItemEntity->getStateHistories() as $stateHistoryEntity) {
+            $itemStateTransfer = new ItemStateTransfer();
+            $itemStateTransfer->fromArray($stateHistoryEntity->toArray(), true);
+            $itemStateTransfer->setName($this->getState($orderItemEntity, $stateHistoryEntity)->getName());
+            $itemStateTransfer->setIdSalesOrder($orderItemEntity->getFkSalesOrder());
+            $itemTransfer->addStateHistory($itemStateTransfer);
+        }
     }
 
     /**
@@ -186,7 +290,7 @@ class OrderHydrator extends SprykerOrderHydrator implements OrderHydratorInterfa
     protected function hydrateCurrentSalesOrderItemState(SpySalesOrderItem $orderItemEntity, ItemTransfer $itemTransfer)
     {
         $itemStateTransfer = new ItemStateTransfer();
-        $itemStateTransfer->fromArray($orderItemEntity->getState()->toArray(), true);
+        $itemStateTransfer->fromArray($this->getState($orderItemEntity)->toArray(), true);
         $itemStateTransfer->setIdSalesOrder($orderItemEntity->getIdSalesOrderItem());
 
         $lastStateHistory = $orderItemEntity->getStateHistories()->getFirst();
