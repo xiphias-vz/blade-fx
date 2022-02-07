@@ -12,6 +12,7 @@ export default class OrderSearch extends Component {
     protected debounceDelay = 300;
     orderProgress: HTMLInputElement;
     orderUnknown: HTMLInputElement;
+    protected barcodePrefix: string = '/x11';
 
     protected readyCallback(): void {}
 
@@ -40,7 +41,10 @@ export default class OrderSearch extends Component {
     }
 
     protected searchChangedHandler(): void {
-        this.currentInputValue = String(this.$input.val()).toLowerCase();
+        const selectedValue = String(this.$input.val()).toLowerCase();
+        this.currentInputValue = selectedValue.replace(this.barcodePrefix, '');
+
+        this.$input.val(this.currentInputValue);
 
         if (this.$select.length) {
             this.currentSelectValue = this.$select.val();
