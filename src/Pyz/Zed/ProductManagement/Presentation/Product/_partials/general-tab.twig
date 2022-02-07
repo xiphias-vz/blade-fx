@@ -1,3 +1,6 @@
+<input type="hidden" id="supervisorStoreId" value= {{ supervisorStoreId }}>
+{% set additionalClass = supervisorStoreId != null ? 'hidden' : '' %}
+
 <div class="well">
     {% filter trans|raw %}
         <h3>{{ 'Add General Information' | trans }}</h3>
@@ -7,7 +10,9 @@
 </div>
 
 {% if form.store_relation is defined %}
+    <div class="store-holder {{ additionalClass }}">
         {{ form_widget(form.store_relation) }}
+    </div>
 {% endif %}
 
 {{ form_row(form.sku) }}
@@ -38,13 +43,3 @@
 {% if form.new_to is defined %}
     <p>{{ form_row(form.new_to) }}</p>
 {% endif %}
-
-<script>
-    const storeRelationCheckbox = document.getElementsByClassName('checkbox');
-
-    for (var i = 0; i < storeRelationCheckbox.length; i++) {
-        if (!(storeRelationCheckbox[i].children[0].firstElementChild['checked'])) {
-            storeRelationCheckbox[i].children[0].remove();
-        }
-    }
-</script>

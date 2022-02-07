@@ -7,6 +7,7 @@
 
 namespace Pyz\Zed\ProductManagement\Communication\Controller;
 
+use Generated\Shared\Transfer\StoreTransfer;
 use Orm\Zed\Product\Persistence\SpyProductAbstractQuery;
 use Pyz\Zed\FactFinderExport\Business\Model\FactFinderEventManager;
 use Spryker\Service\UtilText\Model\Url\Url;
@@ -44,12 +45,10 @@ class EditController extends SprykerEditController
         }
 
         $dataProvider = $this->getFactory()->createProductFormEditDataProvider();
-        $userSupervisor = $this->isCurrentUserSupervisor();
-        $userDataTransfer = $this->getFactory()->getAclFacade()->getCurrentUser();
         $form = $this
             ->getFactory()
             ->createProductFormEdit(
-                $dataProvider->getDataExtended($idProductAbstract, $request->query->get(static::PARAM_PRICE_DIMENSION), $userSupervisor, $userDataTransfer),
+                $dataProvider->getDataExtended($idProductAbstract, $request->query->get(static::PARAM_PRICE_DIMENSION)),
                 $dataProvider->getOptions($idProductAbstract)
             )
             ->handleRequest($request);
@@ -119,6 +118,7 @@ class EditController extends SprykerEditController
             'idProductAbstract' => $idProductAbstract,
             'priceDimension' => $request->get(static::PARAM_PRICE_DIMENSION, []),
             'productFormEditTabs' => $this->getFactory()->createProductFormEditTabs()->createView(),
+            'supervisorStoreId' => $this->getIdStoreForSupervisor(),
         ];
 
         $viewData = $this->getFactory()
@@ -129,21 +129,22 @@ class EditController extends SprykerEditController
     }
 
     /**
-     * @return bool
+     * @return int|null
      */
-    protected function isCurrentUserSupervisor(): bool
+    protected function getIdStoreForSupervisor(): ?int
     {
-        $userFacade = $this->getFactory()->getUserFacade();
+        $supervisorStoreTransfer = new StoreTransfer();
 
-        $idUser = $userFacade->getCurrentUser()->getIdUser();
-        $userGroups = $this->getFactory()->getAclFacade()->getUserGroups($idUser);
+        $isCurrentUserSupervisor = $this->getFactory()
+            ->getUserFacade()
+            ->isCurrentUserSupervisor();
 
-        foreach ($userGroups->getGroups() as $group) {
-            if ($group->getName() === 'supervisor_group') {
-                return true;
-            }
+        if ($isCurrentUserSupervisor) {
+            $supervisorStoreTransfer = $this->getFactory()
+                ->getUserFacade()
+                ->findStoreRelationForSupervisor();
         }
 
-        return false;
+        return $supervisorStoreTransfer->getIdStore();
     }
 }

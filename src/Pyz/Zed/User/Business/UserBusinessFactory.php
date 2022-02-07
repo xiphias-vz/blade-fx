@@ -7,6 +7,10 @@
 
 namespace Pyz\Zed\User\Business;
 
+use Pyz\Zed\User\Business\Model\UserRoleChecker;
+use Pyz\Zed\User\Business\Model\UserRoleCheckerInterface;
+use Pyz\Zed\User\Business\Model\UserStoreRelationChecker;
+use Pyz\Zed\User\Business\Model\UserStoreRelationCheckerInterface;
 use Pyz\Zed\User\UserDependencyProvider;
 use Spryker\Zed\Acl\Business\AclFacadeInterface;
 use Spryker\Zed\Sales\Dependency\Facade\SalesToUserInterface;
@@ -14,6 +18,27 @@ use Spryker\Zed\User\Business\UserBusinessFactory as SpyUserBusinessFactory;
 
 class UserBusinessFactory extends SpyUserBusinessFactory
 {
+    /**
+     * @return \Pyz\Zed\User\Business\Model\UserStoreRelationCheckerInterface
+     */
+    public function createUserStoreRelationChecker(): UserStoreRelationCheckerInterface
+    {
+        return new UserStoreRelationChecker(
+            $this->getUserFacade()
+        );
+    }
+
+    /**
+     * @return \Pyz\Zed\User\Business\Model\UserRoleCheckerInterface
+     */
+    public function createUserRoleChecker(): UserRoleCheckerInterface
+    {
+        return new UserRoleChecker(
+            $this->getAclFacade(),
+            $this->getUserFacade()
+        );
+    }
+
     /**
      * @return \Spryker\Zed\Acl\Business\AclFacadeInterface
      */

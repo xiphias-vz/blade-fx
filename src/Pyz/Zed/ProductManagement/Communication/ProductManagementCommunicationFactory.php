@@ -13,6 +13,7 @@ use Pyz\Zed\ProductManagement\Communication\Form\ProductConcreteFormEdit;
 use Pyz\Zed\ProductManagement\Communication\Table\ProductTable;
 use Pyz\Zed\ProductManagement\Communication\Table\VariantTable;
 use Pyz\Zed\ProductManagement\ProductManagementDependencyProvider;
+use Pyz\Zed\User\Business\UserFacadeInterface;
 use Spryker\Zed\Acl\Business\AclFacadeInterface;
 use Spryker\Zed\ProductManagement\Communication\ProductManagementCommunicationFactory as SpyProductManagementCommunicationFactory;
 
@@ -48,7 +49,7 @@ class ProductManagementCommunicationFactory extends SpyProductManagementCommunic
     /**
      * @return mixed
      */
-    public function getUserFacade()
+    public function getUserFacade(): UserFacadeInterface
     {
         return $this->getProvidedDependency(ProductManagementDependencyProvider::FACADE_USER);
     }

@@ -5,25 +5,16 @@
  * For full license information, please view the LICENSE file that was distributed with this source code.
  */
 
-namespace Pyz\Zed\User\Business;
+namespace Pyz\Zed\User\Business\Model;
 
 use Generated\Shared\Transfer\StoreTransfer;
-use Spryker\Zed\User\Business\UserFacadeInterface as SpyUserFacadeInterface;
 
-interface UserFacadeInterface extends SpyUserFacadeInterface
+interface UserStoreRelationCheckerInterface
 {
     /**
+     * @param int $idProductAbstract
+     *
      * @return \Generated\Shared\Transfer\StoreTransfer
      */
     public function findStoreRelationForSupervisor(): StoreTransfer;
-
-    /**
-     * @return bool
-     */
-    public function isCurrentUserSupervisor(): bool;
-
-    /**
-     * @return bool
-     */
-    public function isEditedUserPicker(): bool;
 }
