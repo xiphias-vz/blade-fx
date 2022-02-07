@@ -29,6 +29,9 @@
     itemsQuantity: '',
     allPaused: false,
     itemSkuFrom: '',
+    shortEan: '',
+    totalWeight: '',
+    priceUnit: ''
 } %}
 
 {% block body %}
@@ -100,10 +103,19 @@
                     <td style="width: 80%">
                         <table>
                             <tr>
-                                <div class="{{ config.name }}__display-flex {{ config.name }}__circle-spacing {{ config.name }}__mobile-text-class">
-                                       <p>{{ data.shelf }}-{{ data.shelfField }}-</p>
-                                       <p class="{{ config.name }}__location">{{ data.shelfFloor }}</p>&nbsp;
-                                       <p class="{{ config.name }}__name"> {{ data.name }} </p>
+                                <div class="{{ config.name }}__display-flex {{ config.name }}__circle-spacing {{ config.name }}__mobile-text-class {{ config.name }}__infoRow">
+                                       <span>{{ data.shelf }}-{{ data.shelfField }}-</span>
+                                       <span class="{{ config.name }}__location">{{ data.shelfFloor }}</span>&nbsp;
+                                       <span class="{{ config.name }}__name"> {{ data.name }} </span>
+                                </div>
+                            </tr>
+                            <tr>
+                                <div class="{{ config.name }}__display-flex {{ config.name }}__circle-spacing {{ config.name }}__mobile-text-class {{ config.name }}__infoRow">
+                                    <span class="{{ config.name }}__ean">{{ data.shortEan }}</span>
+                                    {% if data.totalWeight is defined and data.totalWeight is not null %}
+                                    {% set weightField = (data.totalWeight / 1000) %}
+                                        <span class="{{ config.name }}__weight"> - {{ weightField }} {{ data.priceUnit }}</span>
+                                    {% endif %}
                                 </div>
                             </tr>
                             <tr>

@@ -50,6 +50,7 @@ class PosListeController extends AbstractController
             if ($item["isPausedStatus"] == false) {
                 $allPaused = false;
             }
+            $item["shortEan"] = substr($item["ean"], -4);
         }
 
         $idOrder = $request->get(static::REQUEST_PARAM_ID_ORDER);

@@ -113,7 +113,6 @@
         &__number-empty-wrapper
         {
             font-size: rem(24);
-            margin-top: rem(35.2);
             margin-left: rem(8);
         }
 
@@ -125,6 +124,18 @@
         }
         &__cursor-pointer{
             cursor: pointer;
+        }
+
+        &__ean {
+            font-weight: bold;
+        }
+
+        &__weight {
+            font-weight: bold;
+        }
+
+        &__infoRow {
+            margin-top: rem(4);
         }
     }
 }
