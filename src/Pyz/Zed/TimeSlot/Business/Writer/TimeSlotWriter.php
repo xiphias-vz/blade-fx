@@ -7,6 +7,7 @@
 
 namespace Pyz\Zed\TimeSlot\Business\Writer;
 
+use DateTime;
 use Generated\Shared\Transfer\OrderCriteriaFilterTransfer;
 use Generated\Shared\Transfer\PyzTimeSlotHistoryTransfer;
 use Generated\Shared\Transfer\QuoteTransfer;
@@ -138,6 +139,7 @@ class TimeSlotWriter implements TimeSlotWriterInterface
             ->where(PyzTimeSlotTableMap::COL_DATE . ' is null or ' . PyzTimeSlotTableMap::COL_DATE . ' = ""')
             ->findOne()
             ->setCapacity($capacity)
+            ->setCreatedAt((new DateTime())->getTimestamp())
             ->save();
 
         return $result;
@@ -162,6 +164,7 @@ class TimeSlotWriter implements TimeSlotWriterInterface
             ->findOneOrCreate()
             ->setDay($day)
             ->setCapacity($capacity)
+            ->setCreatedAt((new DateTime())->getTimestamp())
             ->save();
 
         return $result;
@@ -185,6 +188,7 @@ class TimeSlotWriter implements TimeSlotWriterInterface
             ->findOneOrCreate();
         $entity->setMerchantReference($merchantReference)
             ->setDay($day)
+            ->setCreatedAt((new DateTime())->getTimestamp())
             ->setCapacity($capacity);
         $result = $entity->save();
 

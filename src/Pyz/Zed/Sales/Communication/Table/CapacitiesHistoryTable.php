@@ -9,7 +9,6 @@ namespace Pyz\Zed\Sales\Communication\Table;
 
 use Orm\Zed\TimeSlot\Persistence\Map\PyzTimeSlotHistoryTableMap;
 use Orm\Zed\TimeSlot\Persistence\PyzTimeSlotHistoryQuery;
-use Propel\Runtime\ActiveQuery\Criteria;
 use Pyz\Zed\Gui\Communication\Table\AbstractTable;
 use Spryker\Zed\Gui\Communication\Table\TableConfiguration;
 use Spryker\Zed\Sales\Persistence\SalesQueryContainerInterface;
@@ -79,7 +78,7 @@ class CapacitiesHistoryTable extends AbstractTable
             static::COL_CAPACITY_SET_FROM => 'Capacity set from',
             static::COL_CAPACITY_SET_TO => 'Capacity set to',
             static::COL_ACTION_PERFORMED => 'Action performed',
-            static::COL_ID_USER => 'Id user',
+            static::COL_USER => 'User name',
         ]);
 
         $config->setRawColumns([
@@ -92,7 +91,7 @@ class CapacitiesHistoryTable extends AbstractTable
             static::COL_CAPACITY_SET_FROM,
             static::COL_CAPACITY_SET_TO,
             static::COL_ACTION_PERFORMED,
-            static::COL_ID_USER,
+            static::COL_USER,
         ]);
 
         $config->setSearchable([
@@ -109,8 +108,10 @@ class CapacitiesHistoryTable extends AbstractTable
             static::COL_CAPACITY_SET_FROM,
             static::COL_CAPACITY_SET_TO,
             static::COL_ACTION_PERFORMED,
-            static::COL_ID_USER,
+            static::COL_USER,
         ]);
+
+        $config->setDefaultSortField(static::COL_CREATED_AT, TableConfiguration::SORT_DESC);
 
         $this->persistFilters($config);
 
@@ -150,10 +151,7 @@ class CapacitiesHistoryTable extends AbstractTable
     {
         $result = PyzTimeSlotHistoryQuery::create()
             ->withColumn("(select username from spy_user where spy_user.id_user = pyz_time_slot_history.fk_user)", "username")
-            ->filterByMerchantReference_In($this->merchantsToShow)
-            ->orderByCreatedAt(Criteria::DESC)
-            ->orderByTimeSlotChanged(Criteria::ASC)
-            ->orderByActionPerformed(Criteria::DESC);
+            ->filterByMerchantReference_In($this->merchantsToShow);
 
         return $result;
     }
@@ -198,7 +196,7 @@ class CapacitiesHistoryTable extends AbstractTable
                 static::COL_CAPACITY_SET_FROM => $item[PyzTimeSlotHistoryTableMap::COL_CAPACITY_SET_FROM],
                 static::COL_CAPACITY_SET_TO => $item[PyzTimeSlotHistoryTableMap::COL_CAPACITY_SET_TO],
                 static::COL_ACTION_PERFORMED => $item[PyzTimeSlotHistoryTableMap::COL_ACTION_PERFORMED],
-                static::COL_ID_USER => $item[PyzTimeSlotHistoryTableMap::COL_FK_USER],
+                static::COL_USER => $item[static::COL_USER],
             ];
         }
 

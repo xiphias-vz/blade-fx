@@ -12,6 +12,7 @@
         <column name="date" type="DATE"/>
         <column name="time_slot" type="VARCHAR" required="true"/>
         <column name="capacity" type="INTEGER" defaultValue="0" required="true"/>
+        <column name="created_at" required="false" type="TIMESTAMP"/>
     </table>
 
 </database>
