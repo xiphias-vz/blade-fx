@@ -61,11 +61,13 @@
             color: #ea8901;
             background-color: transparent;
             cursor: pointer;
+            font-weight: 700;
         }
 
         .cancelBtn {
             border: 1px solid;
         }
+
         #customerPasswordDiv, #ForgotPasswordLinkDiv, #btnLogin {
             display: none;
         }
@@ -74,11 +76,11 @@
             margin-top: 10px;
         }
 
-        #forgotPasswordDiv {
+        #forgotPasswordDiv, #temporarilyLockedOutDiv, #accountDisabledDiv {
             display: none;
         }
 
-        #forgotPasswordMessage {
+        #forgotPasswordMessage, #passwordForgotEmailMessage, #temporarilyLockedOutMessage, #accountDisabledMessage {
             color: #FF3400;
         }
 
@@ -110,22 +112,15 @@
             position: relative;
         }
 
+        #additionalLoginForm {
+            display: none;
+        }
+
         #checkoutCustomerRegister {
             display: none;
         }
 
-        #btnContinueRegistrationAsGuest {
-            background-color: transparent;
-            border: 1px solid #ea8901;
-            color: #ea8901;
-            margin-bottom: 20px;
-        }
-
         #startRegister_passwordCheckBoxes {
-            display: none;
-        }
-
-        #hiddenGuestForm {
             display: none;
         }
 
@@ -133,7 +128,7 @@
             text-decoration: none;
         }
 
-        #btnContinueRegistration, #btnContinueRegistrationAsGuest, #btnCancelLogin, #btnCheckMailOrCard  {
+        #btnContinueRegistration, #btnCancelLogin, #btnCheckMailOrCard, #btnBackToLogin  {
             cursor: pointer;
         }
 
@@ -157,28 +152,13 @@
             border-radius: 3px;
         }
 
-        #link-to-address-modal{
-            float: right;
-        }
-        .list-switches {
-            visibility: collapse;
-            height: 0px;
-        }
         .page-layout-customer__form-wrap {
             border-style: hidden;
         }
 
-        .margin-telefon-title {
-            margin-left: 1rem;
-            margin-bottom: 0.5rem;
-            display: block;
-            width: 100%;
-            font: 500 0.75rem "Clearface-Medium", Arial, sans-serif;
-        }
-
         @media screen and (max-width: 768px) {
             .register-form-tablet-width {
-                width: 96%;
+                margin: 0 1rem 0;
             }
         }
 
@@ -192,9 +172,35 @@
             }
         }
 
+        .form--checkout-actions {
+            width: 100%;
+        }
+
+        .description-passwordForgot {
+            margin-bottom: 25px;
+        }
+
+        #passwordForgotEmail, #customLoginFormEmail, #emailAlreadyUsed {
+            height: 40px;
+            padding: 10px;
+        }
+
+        .validation-success {
+            background-color: #B8DCC3;
+        }
+
+        .validation-invalid {
+            background-color: #cb3d49;
+        }
+
+        #passwordForgotEmailMessage, #customLoginFormEmailMessage, #emailAlreadyUsedMessage {
+            color: black;
+        }
+
     </style>
-    <div class="page-layout-customer page-layout-customer--login-wrap">
-        <div class="page-layout-customer__form-wrap">
+
+    <div class="page-layout-customer page-layout-customer--login-wrap register-form-tablet-width">
+        <div class="box box--checkout page-layout-customer__form-wrap">
 
             <div id="additionalLoginForm" class="form form--login form--checkout-actions">
                 <h2 class="createCustomerTitle">{{ 'checkout.step.customer.login.create_customer_title' | trans }}</h2>
@@ -208,6 +214,9 @@
                                             <label for="startRegistrationForm_customer_email" class="label label--required">{{ 'checkout.step.customer.login.emailField.labelCreate' | trans }}</label>
                                             <input id="startRegistrationForm_customer_email" name="startRegistrationForm[customer][email]" required="required" placeholder="{{ 'checkout.step.customer.login.emailField.placeholderCreate' | trans }}" class="input input--expand" type="email" >
                                             <span id="startRegister_emailCheckIcon" class="icon-check"></span>
+                                            <div id="emailAlreadyUsed" class="is-hidden">
+                                                <span id="emailAlreadyUsedMessage"></span>
+                                            </div>
                                         </div>
                                     </div>
                                     <div id="startRegister_customerPasswordDiv" class="form__fields grid grid--top">
@@ -235,7 +244,7 @@
                         </div>
 
                         <div class="form__actions">
-                            <button id="btnContinueRegistration" type="button" class="form__action col col--middle button button--expand-tablet button--maxLarge" disabled>{{ 'general.next.button' | trans }}</button>
+                            <button id="btnContinueRegistration" type="button" class="col col--middle button button--expand-tablet button--maxLarge" disabled>{{ 'general.next.button' | trans }}</button>
                         </div>
 
                         <div class="customLogin-footer form__actions">
@@ -247,6 +256,70 @@
                         <p id="basicHelpText" class="hintText">> <a class="helpLink" href="https://globus.zendesk.com/hc/de" target="_blank">{{ 'checkout.step.customer.login.help_text' | trans }}</a></p>
                     </div>
                 </form>
+            </div>
+
+            <div id="loginAPI" class="form form--login form--checkout-actions register-form">
+                <h2 class="stepTitle">{{ 'global.login' | trans }}</h2>
+                <p class="form-desc">{{ 'checkout.step.customer.desc.form' | trans }}</p>
+                <form name="customLoginForm" method="post" novalidate="novalidate">
+                    <div class="form__container">
+                        <div class="form__fields grid grid--top">
+                            <div class="form form--login form--checkout-actions form--grid-indent" data-qa="component form">
+                                <div class="form__container">
+                                    <div id="customerEmailDiv" class="form__fields grid grid--top">
+                                        <div class="form__field col col--sm-12">
+                                            <label for="customLoginForm_customer_email" class="label label--required">{{ 'checkout.step.customer.login.emailField.label' | trans }}</label>
+                                            <input id="customLoginForm_customer_email" name="customLoginForm[customer][email]" required="required" placeholder="{{ 'checkout.step.customer.login.emailField.placeholderCreate' | trans }}" class="input input--expand" type="email" >
+                                            <span id="emailCheckIcon" class="icon-check"></span>
+                                        </div>
+                                    </div>
+                                    <div id="customerPasswordDiv" class="form__fields grid grid--top" >
+                                        <div class="form__field col col--sm-12">
+                                            <label for="customLoginForm_customer_password" class="label label--required">{{ 'auth.password' | trans }}</label>
+                                            <input id="customLoginForm_customer_password" name="customLoginForm[customer][password]" placeholder="{{ 'customer.login.password_placeholder' | trans }}" class="input input--expand" type="password" >
+                                            <button type="button" id="passwordToggleEye" class="icon-eye"></button>
+                                        </div>
+                                    </div>
+                                    <div id="customLoginFormEmail" class="is-hidden">
+                                        <span id="customLoginFormEmailMessage"></span>
+                                    </div>
+                                    <div id="forgotPasswordDiv">
+                                        <span id="forgotPasswordMessage">{{ 'checkout.step.customer.login.invalidPassword' | trans }}</span>
+                                        <input id="captchaGeneratedToken" type="hidden" />
+                                    </div>
+                                    <div id="temporarilyLockedOutDiv">
+                                        <span id="temporarilyLockedOutMessage">{{ 'checkout.step.customer.login.accountTemporarilyLockedOut' | trans }}</span>
+                                        <input id="captchaGeneratedToken" type="hidden" />
+                                    </div>
+                                    <div id="accountDisabledDiv">
+                                        <span id="accountDisabledMessage">{{ 'checkout.step.customer.login.accountDisabled' | trans }}</span>
+                                        <input id="captchaGeneratedToken" type="hidden" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form__actions">
+                            <button id="btnCheckMailOrCard" type="button" class="col col--middle button button--expand-tablet button--maxLarge" data-qa="submit-button">
+                                {{ 'general.next.button' | trans }}
+                            </button>
+                            <button id="btnLogin" type="button" class="col col--middle button button--expand-tablet button--maxLarge">{{ 'general.next.button' | trans }}</button>
+                        </div>
+
+                        <div id="ForgotPasswordLinkDiv" onclick="showForgotPassword()">
+                            <a class="helpLink"  href="#">{{ 'global.recover.password' | trans }}?</a>
+                        </div>
+
+                    </div>
+                </form>
+                <div class="customLogin-footer form__actions">
+                    <a id="btnCancelLogin" onclick="cancelLogin()" type="button" class="btn btn-link col col--middle">{{ 'general.cancel.button' | trans }}</a>
+                </div>
+
+                <div class="hr-line-solid"></div>
+
+                <p id="basicHelpText" class="hintText">> <a class="helpLink" href="https://globus.zendesk.com/hc/de" target="_blank">{{ 'checkout.step.customer.login.help_text' | trans }}</a></p>
+                <p id="newUserHelpText" class="hintText">> {{ 'checkout.step.customer.login.new_user_text' | trans }} <button id="btnRegisterUser" class="helpLink linkOrange">{{ 'checkout.step.customer.login.globus_account_text' | trans }}</button></p>
             </div>
 
             <div id="checkoutCustomerRegister" class="js-customer-page-login-register grid">
@@ -283,32 +356,87 @@
                     <span id="errorMessageAboveSubmitButton"></span>
                 </div>
 
-
-{#                <div id="customerRegistrationFormButtons">#}
                     {% block CancelRegisterButton %}
                         <div class="col col--sm-12 col--lg-6 spacing spacing--bigger spacing--inner btn-cancel-margin">
                             <button id="btnCancelRegister" type="button" class="btn-link form__action form__action--checkout col col--middle button button--expand-tablet button--large cancelBtn" style="margin-bottom: 5px;">{{ 'general.cancel.button' | trans }}</button>
                         </div>
                     {% endblock %}
-{#                </div>#}
+            </div>
+
+            <div id="passwordForgotFormDiv" class="form form--login form--checkout-actions register-form is-hidden">
+                <h2 class="stepTitle">{{ 'forget.password' | trans }}</h2>
+                <form name="passwordForgotForm" method="post" novalidate="novalidate">
+                    <div class="form__container">
+                        <div class="form__fields grid grid--top">
+                            <div class="form form--login form--checkout-actions form--grid-indent" data-qa="component form">
+                                <div class="form__container">
+                                    <div id="passwordForgotEmailDiv" class="form__fields grid grid--top">
+                                        <div class="form__field col col--sm-12">
+                                            <p class="description-passwordForgot">{{ 'enter.your.email.address.for.reset.password.title.1' | trans }}, {{ 'enter.your.email.address.for.reset.password.title.2' | trans }}:</p>
+                                            <label for="txt_email_or_card_for_pass_reset" class="label label--required">{{ 'checkout.step.customer.login.emailField.label' | trans }}</label>
+                                            <input id="txt_email_or_card_for_pass_reset" name="forgotPassForms[customer][email]" required="required" placeholder="{{ 'checkout.step.customer.login.emailField.placeholder' | trans }}" class="input input--expand" type="email" >
+                                        </div>
+                                    </div>
+                                    <div id="passwordForgotEmail" class="is-hidden">
+                                        <span id="passwordForgotEmailMessage"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form__actions">
+                            <button id="btnCallForgotPasswordApi" type="button" class="form__action col col--middle button button--expand-tablet button--maxLarge" data-qa="submit-button">
+                                {{ 'send' | trans }}
+                            </button>
+                            <button id="btnLogin" type="button" class="form__action col col--middle button button--expand-tablet button--maxLarge">{{ 'general.next.button' | trans }}</button>
+                        </div>
+                    </div>
+                </form>
+                <div class="customLogin-footer form__actions">
+                    <a id="btnBackToLogin" onclick="backToLoginForm()" type="button" class="btn btn-link col col--middle">{{ 'return.sign.in' | trans }}</a>
+                </div>
+
+                <div class="hr-line-solid"></div>
+
+                <p id="basicHelpText" class="hintText">> <a class="helpLink" href="https://globus.zendesk.com/hc/de" target="_blank">{{ 'checkout.step.customer.login.help_text' | trans }}</a></p>
+                <p id="newUserHelpText" class="hintText">> {{ 'checkout.step.customer.login.new_user_text' | trans }} <a id="lnkRegisterUser" class="helpLink linkOrange" href="/register">{{ 'checkout.step.customer.login.globus_account_text' | trans }}</a></p>
+
             </div>
         </div>
     </div>
 
     <script type="text/javascript">
+
+        function showForgotPassword() {
+            $("#loginAPI").css("display", "none");
+            $("#passwordForgotFormDiv").removeClass("is-hidden");
+        }
+
+        function backToLoginForm() {
+            $("#passwordForgotFormDiv").addClass("is-hidden");
+            $("#customerPasswordDiv").css("display", "block");
+            $("#ForgotPasswordLinkDiv").css("display", "block");
+            $("#newUserHelpText").css("display", "none");
+            $('#btnCheckMailOrCard').css("display", "none");
+            $("#btnLogin").css("display", "block");
+            $("#emailCheckIcon").css("display", "block");
+            $("#loginAPI").css("display", "block");
+            $("#passwordForgotEmail").remove();
+        }
+
         function cancelLogin() {
             localStorage.setItem('cancelLogin', "true");
             location.reload();
         }
 
         $(document).ready(function () {
-            let passwordField = document.querySelector('#startRegister__customer_password');
-            passwordField.removeAttribute('autocomplete');
-            passwordField.value = "";
-            let emailField = document.querySelector('#startRegistrationForm_customer_email');
-            emailField.removeAttribute('autocomplete');
-            emailField.value = "";
-            $('form__action js-form-register__submit-button form__action--login button button--large button--expand-tablet').attr("id",'link-to-address-modal');
+            let passwordField = document.querySelector('#customLoginForm_customer_password');
+            let isLoginCancelled = localStorage.getItem('cancelLogin');
+            if(isLoginCancelled === "true") {
+                passwordField.setAttribute('autocomplete', 'new-password');
+            } else {
+                passwordField.removeAttribute('autocomplete');
+            }
         })
 
         function checkoutStep(option)
@@ -349,6 +477,7 @@
                         success: function (data, status, xhr) {
                             let response = JSON.parse(data);
                             if(response.isAvailable === true){
+                                $("#loginAPI").css("display", "none");
                                 $("#additionalLoginForm").css("display", "block");
 
                                 $("#startRegistrationForm_customer_email").val(emailOrCardNumber);
@@ -358,8 +487,9 @@
                                 $("#customerPasswordDiv").css("display", "block");
                                 $("#ForgotPasswordLinkDiv").css("display", "block");
                                 $('#btnCheckMailOrCard').css("display", "none");
+                                $("#btnLogin").css("display", "block");
                                 $("#emailCheckIcon").css("display", "block");
-
+                                $('#newUserHelpText').css("display", "none");
                             }
                         },
                         error: function (jqXhr, textStatus, errorMessage) {
@@ -367,10 +497,97 @@
                     });
                 }
                 else {
-                    $("#additionalLoginForm").css("display", "block");
+                    $("#customLoginFormEmail").removeClass("is-hidden");
+                    $("#customLoginFormEmail").addClass("validation-invalid");
+                    $("#customLoginFormEmailMessage").text("{{ 'validation.not_blank' | trans }}");
+                    return false;
                 }
             });
         }
+
+        var btnContinueRegistrationCheck = document.getElementById('btnContinueRegistration');
+        if(btnContinueRegistrationCheck != null)
+        {
+            btnContinueRegistrationCheck.addEventListener('click', function()
+            {
+                var emailOrCardNumber = $("#startRegistrationForm_customer_email").val();
+                const url = "/login/check-availability"
+
+                if(emailOrCardNumber != ""){
+                    $.ajax(url, {
+                        type: 'POST',  // http method
+                        data: { id: emailOrCardNumber },  // data to submit
+                        success: function (data, status, xhr) {
+                            let response = JSON.parse(data);
+                            if (response.isAvailable === true) {
+                                checkoutStep('register');
+                                $("#additionalLoginForm").css("display", "none");
+                                $("#checkoutCustomerRegister").css("display", "block");
+                                $("#registerForm_customer_email").val($("#startRegistrationForm_customer_email").val());
+                                $("#registerForm_customer_password_pass").val($("#startRegister__customer_password").val());
+                                $("#registerForm_customer_password_confirm").val($("#startRegister__customer_password").val());
+                            }
+                            else {
+                                $("#emailAlreadyUsed").removeClass("is-hidden");
+                                $("#emailAlreadyUsed").addClass("validation-invalid");
+                                $("#emailAlreadyUsedMessage").text("{{ 'customer.email.already.used' | trans }}");
+                                return false;
+                            }
+                        },
+                        error: function (jqXhr, textStatus, errorMessage) {
+                        }
+                    });
+                }
+            });
+        }
+
+        $("#btnLogin").click(function()
+        {
+            var emailOrCardNumber = $("#customLoginForm_customer_email").val();
+            var password = $("#customLoginForm_customer_password").val();
+            var captchaGeneratedToken = $("#captchaGeneratedToken").val();
+            const loginUrl = '/login/globus-login';
+
+            $.ajax(loginUrl, {
+                type: 'POST',  // http method
+                data: { id: emailOrCardNumber, password: password, captchaToken: captchaGeneratedToken  },  // data to submit
+                success: function (data, status, xhr) {
+                    var response = JSON.parse(data);
+                    console.log(response);
+
+                    if(response["successfullyLoggedIn"] === true){
+                        document.querySelector("#loginForm_email.input").value = emailOrCardNumber;
+                        document.querySelector("#loginForm_password.input").value = password
+                        document.querySelector("#loginForm_data").value = JSON.stringify(response);
+                        document.getElementsByName("loginForm")[0].submit();
+                        localStorage.setItem('cancelLogin', 'false');
+
+                    } else {
+                        $("#customLoginForm_customer_password").css("border", "1px solid red");
+                        switch (response.message) {
+                            case "Account temporarily locked out":
+                                $("#temporarilyLockedOutDiv").css("display", "block");
+                                break;
+                            case "Account Disabled":
+                                $("#accountDisabledDiv").css("display", "block");
+                                break;
+                            default:
+                                $("#forgotPasswordDiv").css("display", "block");
+                        }
+
+                        if(response["showCaptcha"] === true){
+                            grecaptcha.ready(function() {
+                                grecaptcha.execute('{{ data.reCaptchaKey }}', {action: 'login'}).then(function(token) {
+                                    $("#captchaGeneratedToken").val(token);
+                                });
+                            });
+                        }
+                    }
+                },
+                error: function (jqXhr, textStatus, errorMessage) {
+                }
+            });
+        });
 
         $("#btnCancelLogin").click(function(){
             window.location.reload();
@@ -417,6 +634,7 @@
                 $("#btnContinueRegistration").removeAttr("disabled");
             }
             else {
+                $("#startRegistrationForm_customer_email").css("border", "2px solid red");
                 $("#btnContinueRegistration").prop("disabled", "true");
             }
         });
@@ -476,14 +694,51 @@
 
         });
 
-        $("#btnContinueRegistration").click(function(){
+
+        $("#btnRegisterUser").click(function(){
             checkoutStep('register');
-            $("#additionalLoginForm").css("display", "none");
-            $("#checkoutCustomerRegister").css("display", "block");
-            $("#registerForm_customer_email").val($("#startRegistrationForm_customer_email").val());
-            $("#registerForm_customer_password_pass").val($("#startRegister__customer_password").val());
-            $("#registerForm_customer_password_confirm").val($("#startRegister__customer_password").val());
+            $("#loginAPI").css("display", "none");
+            $("#additionalLoginForm").css("display", "block");
         });
+
+        $("#lnkRegisterUser").click(function(){
+            checkoutStep('register');
+        });
+
+        $("#btnCallForgotPasswordApi").click(function(){
+            const url = '/password/reset';
+            var emailOrKundenkartenummer = $("#txt_email_or_card_for_pass_reset").val();
+            if(emailOrKundenkartenummer === ""){
+                showErrorBox("{{ 'validation.not_blank' | trans }}");
+                return false;
+            }
+
+            $.ajax(url, {
+                type: 'POST',
+                dataType: 'json',
+                data: {
+                    id: emailOrKundenkartenummer
+                },
+                success(data, status, xhr) {
+                    showSuccessBox("{{ 'checkout.validation.mailSentMsg' | trans }}");
+                },
+                error(jqXhr, textStatus, errorMessage) {
+                    showErrorBox("Error");
+                },
+            });
+        });
+
+        function showSuccessBox(message){
+            $("#passwordForgotEmail").removeClass("is-hidden");
+            $("#passwordForgotEmail").addClass("validation-success");
+            $("#passwordForgotEmailMessage").text(message);
+        }
+
+        function showErrorBox(message){
+            $("#passwordForgotEmail").removeClass("is-hidden");
+            $("#passwordForgotEmail").addClass("validation-invalid");
+            $("#passwordForgotEmailMessage").text(message);
+        }
 
     </script>
 
