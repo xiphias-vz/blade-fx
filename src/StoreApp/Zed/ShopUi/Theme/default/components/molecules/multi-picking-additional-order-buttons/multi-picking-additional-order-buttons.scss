@@ -2,10 +2,10 @@ $setting-item-border-radius: rem(8);
 
 @mixin multi-picking-additional-order-buttons($name: '.multi-picking-additional-order-buttons') {
 
-    @media screen and (max-width: 360px) {
+    @media screen and (max-width: 370px) {
         .button {
             height: 2.2rem !important;
-            padding: 0.2rem 0.9375rem!important;
+            padding: rem(3) rem(13);
         }
     }
 
