@@ -8,9 +8,11 @@
 namespace Pyz\Zed\PickingZoneOrderExport\Communication\Form\DataProvider;
 
 use Orm\Zed\Oms\Persistence\SpyOmsOrderItemStateQuery;
+use Pyz\Zed\Merchant\Business\MerchantFacadeInterface;
 use Pyz\Zed\PickingZone\Business\PickingZoneFacadeInterface;
 use Pyz\Zed\PickingZoneOrderExport\Communication\Form\PickingZoneOrderExportForm;
 use Pyz\Zed\TimeSlot\Business\TimeSlotFacadeInterface;
+use Pyz\Zed\User\Business\UserFacadeInterface;
 use Spryker\Shared\Kernel\Store;
 
 class PickingZoneOrderExportFormDataProvider
@@ -26,6 +28,16 @@ class PickingZoneOrderExportFormDataProvider
     protected $timeSlotFacade;
 
     /**
+     * @var \Pyz\Zed\User\Business\UserFacadeInterface
+     */
+    protected $userFacade;
+
+    /**
+     * @var \Pyz\Zed\Merchant\Business\MerchantFacadeInterface
+     */
+    protected $merchantFacade;
+
+    /**
      * @var \Generated\Shared\Transfer\SpyOmsOrderItemStateEntityTransfer
      */
     protected $stateTransfer;
@@ -33,11 +45,14 @@ class PickingZoneOrderExportFormDataProvider
     /**
      * @param \Pyz\Zed\PickingZone\Business\PickingZoneFacadeInterface $pickingZoneFacade
      * @param \Pyz\Zed\TimeSlot\Business\TimeSlotFacadeInterface $timeSlotsFacade
+     * @param \Pyz\Zed\User\Business\UserFacadeInterface $userFacade
      */
-    public function __construct(PickingZoneFacadeInterface $pickingZoneFacade, TimeSlotFacadeInterface $timeSlotsFacade)
+    public function __construct(PickingZoneFacadeInterface $pickingZoneFacade, TimeSlotFacadeInterface $timeSlotsFacade, UserFacadeInterface $userFacade, MerchantFacadeInterface $merchantFacade)
     {
         $this->pickingZoneFacade = $pickingZoneFacade;
         $this->timeSlotFacade = $timeSlotsFacade;
+        $this->userFacade = $userFacade;
+        $this->merchantFacade = $merchantFacade;
     }
 
     /**
@@ -76,9 +91,22 @@ class PickingZoneOrderExportFormDataProvider
     protected function getPickingStores(): array
     {
         $pickingStores = [];
+        $isCurrentUserSupervisor = $this->userFacade->isCurrentUserSupervisor();
 
-        foreach (Store::getInstance()->getAllowedStores() as $allowedStore) {
-            $pickingStores[$allowedStore] = $allowedStore;
+        if (isset($isCurrentUserSupervisor) && $isCurrentUserSupervisor) {
+            $currentUser = $this->userFacade->getCurrentUser();
+            $merchantByCurrentUser = $this->merchantFacade->findMerchantByUser($currentUser);
+            if ($merchantByCurrentUser) {
+                $currentStore = $merchantByCurrentUser->getStoreRelation()->getStores();
+                foreach ($currentStore as $store) {
+                    $storeName = $store->getName();
+                    $pickingStores[$storeName] = $storeName;
+                }
+            }
+        } else {
+            foreach (Store::getInstance()->getAllowedStores() as $allowedStore) {
+                $pickingStores[$allowedStore] = $allowedStore;
+            }
         }
 
         return $pickingStores;

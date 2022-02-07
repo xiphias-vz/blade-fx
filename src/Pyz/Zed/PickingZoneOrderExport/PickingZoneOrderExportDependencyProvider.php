@@ -7,9 +7,11 @@
 
 namespace Pyz\Zed\PickingZoneOrderExport;
 
+use Pyz\Zed\Merchant\Business\MerchantFacadeInterface;
 use Pyz\Zed\MerchantSalesOrder\Business\MerchantSalesOrderFacadeInterface;
 use Pyz\Zed\PickingZone\Business\PickingZoneFacadeInterface;
 use Pyz\Zed\TimeSlot\Business\TimeSlotFacadeInterface;
+use Pyz\Zed\User\Business\UserFacadeInterface;
 use Spryker\Zed\Kernel\AbstractBundleDependencyProvider;
 use Spryker\Zed\Kernel\Container;
 use Spryker\Zed\Translator\Business\TranslatorFacadeInterface;
@@ -20,6 +22,8 @@ class PickingZoneOrderExportDependencyProvider extends AbstractBundleDependencyP
     public const FACADE_PICKING_ZONE = 'FACADE_PICKING_ZONE';
     public const FACADE_TIME_SLOTS = 'FACADE_TIME_SLOTS';
     public const FACADE_MERCHANT_SALES_ORDER = 'FACADE_MERCHANT_SALES_ORDER';
+    public const FACADE_USER = 'FACADE_USER';
+    public const FACADE_MERCHANT = 'FACADE_MERCHANT';
 
     /**
      * @param \Spryker\Zed\Kernel\Container $container
@@ -30,6 +34,8 @@ class PickingZoneOrderExportDependencyProvider extends AbstractBundleDependencyP
     {
         $container = $this->addPickingZoneFacade($container);
         $container = $this->addTimeSlotsFacade($container);
+        $container = $this->addUserFacade($container);
+        $container = $this->addMerchantFacade($container);
 
         return $container;
     }
@@ -100,6 +106,34 @@ class PickingZoneOrderExportDependencyProvider extends AbstractBundleDependencyP
         $container->set(static::FACADE_TIME_SLOTS, function (Container $container): TimeSlotFacadeInterface {
             return $container->getLocator()->timeSlot()->facade();
         });
+
+        return $container;
+    }
+
+    /**
+     * @param \Spryker\Zed\Kernel\Container $container
+     *
+     * @return \Spryker\Zed\Kernel\Container
+     */
+    protected function addUserFacade(Container $container)
+    {
+        $container[static::FACADE_USER] = function (Container $container): UserFacadeInterface {
+            return $container->getLocator()->user()->facade();
+        };
+
+        return $container;
+    }
+
+    /**
+     * @param \Spryker\Zed\Kernel\Container $container
+     *
+     * @return \Spryker\Zed\Kernel\Container
+     */
+    protected function addMerchantFacade(Container $container)
+    {
+        $container[static::FACADE_MERCHANT] = function (Container $container): MerchantFacadeInterface {
+            return $container->getLocator()->merchant()->facade();
+        };
 
         return $container;
     }
