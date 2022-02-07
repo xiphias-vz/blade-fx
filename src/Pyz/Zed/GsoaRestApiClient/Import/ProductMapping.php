@@ -137,6 +137,7 @@ class ProductMapping
         'wineQualityClassification' => ['wine_quality_classification'],
         'bioCertificationCode' => ['bioCertificationCode'],
         'sortingorder' => ['sortingorder'],
+        'assortmentZone' => ['assortmentzone'],
     ];
 
     /**
@@ -209,10 +210,12 @@ class ProductMapping
         }
 
         $d['grundpreispflicht'] = 1;
-        if (isset(static::$productList[$d["sapnumber"]])) {
-            $d['assortmentzone'] = static::$productList[$d["sapnumber"]][SpyProductTableMap::COL_ASSORTMENT_ZONE];
-        } else {
-            $d['assortmentzone'] = 'no_az';
+        if (empty($d['assortmentzone'])) {
+            if (isset(static::$productList[$d["sapnumber"]])) {
+                $d['assortmentzone'] = static::$productList[$d["sapnumber"]][SpyProductTableMap::COL_ASSORTMENT_ZONE];
+            } else {
+                $d['assortmentzone'] = 'no_az';
+            }
         }
         $this->setBaseUnits($d);
         $this->setNutritionValues($d, $item);
