@@ -13,6 +13,7 @@ class ContentBannerGuiConfig extends SprykerContentBannerGuiConfig
 {
     protected const WIDGET_TEMPLATE_IDENTIFIER_SLIDER_WITHOUT_LINK = 'slider-without-link';
     protected const WIDGET_TEMPLATE_IDENTIFIER_SLIDER = 'slider';
+    protected const WIDGET_TEMPLATE_IDENTIFIER_BANNER_FOR_MOBILE = 'banner-for-mobile';
 
     /**
      * Content item banner default template name
@@ -25,6 +26,11 @@ class ContentBannerGuiConfig extends SprykerContentBannerGuiConfig
     protected const WIDGET_TEMPLATE_DISPLAY_NAME_SLIDER_WITHOUT_LINK = 'content_banner.template.slider-without-link';
 
     /**
+     * Content item banner default template name
+     */
+    protected const WIDGET_TEMPLATE_DISPLAY_NAME_BANNER_FOR_MOBILE = 'content_banner.template.banner-for-mobile';
+
+    /**
      * @return array
      */
     public function getContentWidgetTemplates(): array
@@ -34,6 +40,7 @@ class ContentBannerGuiConfig extends SprykerContentBannerGuiConfig
             [
                 static::WIDGET_TEMPLATE_IDENTIFIER_SLIDER => static::WIDGET_TEMPLATE_DISPLAY_NAME_SLIDER,
                 static::WIDGET_TEMPLATE_IDENTIFIER_SLIDER_WITHOUT_LINK => static::WIDGET_TEMPLATE_DISPLAY_NAME_SLIDER_WITHOUT_LINK,
+                static::WIDGET_TEMPLATE_IDENTIFIER_BANNER_FOR_MOBILE => static::WIDGET_TEMPLATE_DISPLAY_NAME_BANNER_FOR_MOBILE,
             ]
         );
     }

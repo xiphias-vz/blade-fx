@@ -3,29 +3,39 @@
         &--align-left {
             .slick-track {
                 margin-left: 0;
+                height: rem(400);
             }
         }
 
         &__container {
             position: relative;
 
+            @include helper-breakpoint-media-max($lg-max) {
+                max-height: rem(240);
+            }
+
             @include helper-breakpoint-media-max($sm-max) {
-                padding: 0 rem(11);
+                max-height: rem(160);
             }
 
             .slick-arrow {
                 position: absolute;
-                top: rem(152);
+                top: rem(185);
                 font-size: 0;
                 width: rem(30);
                 height: rem(30);
-                background: url('../images/right-chevron.svg') no-repeat center / rem(15);
+                background: url('../images/right-chevron-slider.svg') no-repeat center / rem(15);
+                background-color: $setting-color-globus-lightGray;
                 border-radius: 50%;
                 z-index: $setting-zi-element + 1;
                 opacity: 0.7;
 
+                @include helper-breakpoint-media-max($lg-max) {
+                    top: rem(110);
+                }
+
                 @include helper-breakpoint-media-max($sm-max) {
-                    top: rem(66);
+                    top: rem(70);
                 }
 
                 &:hover {
@@ -36,27 +46,35 @@
             }
 
             .slick-prev {
-                left: rem(-30);
+                left: rem(-48);
                 transform: rotate(180deg);
 
                 @include helper-breakpoint-media-max($xl-max) {
-                    left: rem(-16);
+                    left: rem(-48);
+                }
+
+                @include helper-breakpoint-media-max($md-max) {
+                    left: rem(-32);
                 }
 
                 @include helper-breakpoint-media-max($sm-max) {
-                    left: rem(-8);
+                    left: rem(-25);
                 }
             }
 
             .slick-next {
-                right: rem(-30);
+                right: rem(-48);
 
                 @include helper-breakpoint-media-max($xl-max) {
-                    right: rem(-16);
+                    right: rem(-48);
+                }
+
+                @include helper-breakpoint-media-max($md-max) {
+                    right: rem(-32);
                 }
 
                 @include helper-breakpoint-media-max($sm-max) {
-                    right: rem(-8);
+                    right: rem(-25);
                 }
             }
         }
@@ -146,7 +164,7 @@
 
         &--timeslots {
             margin: 0 rem(-15);
-
+            height: rem(500);
             #{$name}__container {
                 padding-top: rem(56);
             }
@@ -212,6 +230,7 @@
                 left: auto;
                 width: rem(36);
                 height: rem(36);
+                background: url('../images/right-chevron.svg') no-repeat center / rem(15);
                 background-color: $setting-color-white;
                 border-radius: rem(4);
 

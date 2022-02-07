@@ -18,6 +18,20 @@
             {% endblock %}
         {% endembed %}
 
+        {% embed organism('jumbotron-slider-mobile') only %}
+            {% block body %}
+                {% embed molecule('slick-carousel') with {
+                    attributes: {
+                        'data-json': attributes['data-json'],
+                    },
+                } only %}
+                    {% block slides %}
+                        {% cms_slot 'slt-2-mobile' %}
+                    {% endblock %}
+                {% endembed %}
+            {% endblock %}
+        {% endembed %}
+
         <div class="container">
 
             {% embed organism('section') with {
