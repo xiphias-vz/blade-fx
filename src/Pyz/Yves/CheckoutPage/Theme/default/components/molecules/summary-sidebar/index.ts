@@ -6,19 +6,27 @@ const linkPayBackInput = <HTMLInputElement>document.querySelector('input[name=li
 const additionalInfo = <HTMLElement>document.querySelector('.additional-info');
 const prefix = '308342';
 const checkbox = <HTMLInputElement>document.querySelector('.checkbox__input');
+const myGlobusCard = <HTMLInputElement>document.querySelector('#myGlobusCard');
+const isPaybackConnected = <HTMLInputElement>document.querySelector('#isPaybackConnected');
+
 window.addEventListener('DOMContentLoaded', () => {
     if (payBackForm !== null) {
-        if(paymentNumberInputField.value !== "") {
+        if (paymentNumberInputField.value !== '') {
                 linkPayBackInput.value = '1';
         }
+
         payBackForm.addEventListener('submit',e => {
             const paymentNumberInputFieldValue = prefix.concat(paymentNumberInputField.value);
-
-            if (valid_credit_card(paymentNumberInputFieldValue)) {
+            if (valid_credit_card(paymentNumberInputFieldValue) && myGlobusCard.value !== '' && isPaybackConnected.value === '') {
                 linkPayBackInput.value = '1';
                 checkbox.checked = true;
                 additionalInfo.style.display = 'block';
-            }else {
+                localStorage.setItem('RefreshFlag', 'value');
+            } else if (valid_credit_card(paymentNumberInputFieldValue) && myGlobusCard.value === '' && isPaybackConnected.value === '') {
+                linkPayBackInput.value = '1';
+                checkbox.checked = true;
+                additionalInfo.style.display = 'none';
+            } else {
                 errorMessageHolder.style.visibility = 'visible';
                 errorMessageHolder.style.color = 'red';
 
@@ -30,21 +38,28 @@ window.addEventListener('DOMContentLoaded', () => {
 
                 return false;
             }
-
         });
 
-        if (!checkbox.checked) {
+        if (myGlobusCard.value !== '' && isPaybackConnected.value === '1') {
+            linkPayBackInput.value = '1';
+            checkbox.checked = true;
+            additionalInfo.style.display = 'none';
+        } else if (myGlobusCard.value !== '' && isPaybackConnected.value === '') {
+            checkbox.checked = false;
+            additionalInfo.style.display = 'block';
+        } else if (myGlobusCard.value === '' && isPaybackConnected.value === '') {
+            checkbox.checked = false;
+            additionalInfo.style.display = 'none';
+        } else if (myGlobusCard.value === '' && isPaybackConnected.value === '1') {
+            linkPayBackInput.value = '1';
+            checkbox.checked = true;
             additionalInfo.style.display = 'none';
         }
 
-        checkbox.addEventListener('change',e => {
-            if (e.target.checked) {
-                additionalInfo.style.display = 'block';
-            }else {
-                additionalInfo.style.display = 'none';
-                paymentNumberInputField.value = '';
-            }
-        });
+        if (localStorage.getItem('RefreshFlag')) {
+            additionalInfo.style.display = 'block';
+            localStorage.removeItem('RefreshFlag');
+        }
     }
 });
 
@@ -62,6 +77,5 @@ function valid_credit_card(value) {
         nCheck += nDigit;
         bEven = !bEven;
     }
-
     return (nCheck % 10) == 0;
 }

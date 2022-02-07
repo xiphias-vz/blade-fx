@@ -254,6 +254,8 @@
                                     } only %}
                                     <span style="margin-bottom: 3px;color: #000;font-weight: normal">{{ 'checkout.step.payback.checkbox.mark' | trans }}</span>
                                 </div>
+                                <input type="hidden" id="myGlobusCard" value= {{ data.customer.myGlobusCard }}>
+                                <input type="hidden" id="isPaybackConnected" value= {{ data.customer.isConnected }} >
                                 <div class="additional-info" style="color: #000;font-weight: normal">{{ 'checkout.step.payback.label' | trans }}. {{ 'checkout.step.payback.label.two' | trans }}, {{ 'checkout.step.payback.label.three' | trans }} <a target="_blank" href="https://www.globus.de/kundenprogramme/payback/index.php" style="text-decoration:none;color:#ea8901;">{{ 'checkout.step.payback.checkbox.marked' | trans }}</a></div>
                             </form>
                         </div>
