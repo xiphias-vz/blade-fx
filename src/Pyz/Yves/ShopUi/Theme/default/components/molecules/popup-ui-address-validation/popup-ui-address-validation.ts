@@ -54,6 +54,8 @@ export default class PopupUiAddressValidation extends Component{
     protected $cmbMonth;
     protected $cmbYear;
 
+    protected ageDiff;
+    protected flagRadio;
     protected registerForma = false;
     protected requiredCard = false;
     protected globalCardNumber;
@@ -400,8 +402,24 @@ export default class PopupUiAddressValidation extends Component{
         return dataToSend;
     }
 
+    protected getAgeDifference(){
+        let dateFromInput = new Date(this.$cmbYear.value, (this.$cmbMonth.value-1), this.$cmbDay.value);
+        let sixteenYearsAgo = new Date();
+        sixteenYearsAgo.setTime(sixteenYearsAgo.valueOf() - 16 * 365.25 * 24 * 60 * 60 * 1000);
+        this.ageDiff = sixteenYearsAgo < dateFromInput;
+    }
+
+
     protected async checkIfDataIsInputed(){
         let flag = 0;
+
+        this.getAgeDifference();
+
+        if (this.ageDiff) {
+            this.$cmbYear.parentNode.classList.add('input--error-birthday');
+            this.addErrorMessageToTheInputField(this.$cmbYear.parentNode.parentNode, 5);
+            flag = 1;
+        }
 
         if (this.$firstName.value === '' || this.$firstName.value === null){
             this.$firstName.classList.add('input--error');
@@ -487,7 +505,10 @@ export default class PopupUiAddressValidation extends Component{
             if (!this.$radioButtons[1].checked) {
                 this.$radioButtons[0].parentNode.parentNode.classList.add('input--error');
                 this.addErrorMessageToTheInputField(this.$radioButtons[0].parentNode.parentNode, 2);
+                this.flagRadio = true;
                 flag = 1;
+            } else {
+                this.flagRadio = false;
             }
 
         }
@@ -551,6 +572,12 @@ export default class PopupUiAddressValidation extends Component{
             errorSpan.classList.add('form__field', 'col', 'col--order-4', 'col--sm-12', 'col--md-12');
             $(element).parent().append(errorSpan);
         }
+        else if (flag === 5) {
+            errorSpan.textContent = '• Sie müssen mindestens 16 Jahre alt sein.';
+            errorSpan.style.marginLeft = "116px";
+            errorSpan.classList.add('form__field', 'col', 'col--order-4', 'col--sm-12', 'col--md-12');
+            $(element).parent().append(errorSpan);
+        }
         else {
             errorSpan.textContent = '• Dieses Feld sollte nicht leer sein';
             $(element).parent().append(errorSpan);
@@ -564,6 +591,9 @@ export default class PopupUiAddressValidation extends Component{
             $(errorSpan).css('position', 'absolute');
             $(errorSpan).css('margin-bottom', '45px');
             errorSpan.textContent = 'Bitte füllen Sie die Pflichtfelder aus.';
+            if(this.registerForma == true && this.ageDiff == true && this.flagRadio == false){
+                errorSpan.textContent = '';
+            }
             this.linkToAddressModal.parentNode.prepend(errorSpan);
         } else {
             this.$errorDivAboveSubmitButton.setAttribute('class', 'errorSubmitMessage');
