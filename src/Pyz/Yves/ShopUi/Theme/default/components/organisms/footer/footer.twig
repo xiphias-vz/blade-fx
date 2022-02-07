@@ -11,15 +11,16 @@
 } %}
 
 {% block body %}
+    {% set fontClass = data.codeBucket == "CZ" ? 'cz-font' : '' %}
     {% block footerTop %}
-        <div class="container">
+        <div class="container {{ fontClass }}">
             <div class="{{ config.name }}__top">
                 <div class="{{ config.name }}__content">
                     <div class="grid grid--justify grid--expand">
                         <div class="contact-store-info">
                         </div>
                         <div class="col col--sm-12 col--lg-7">
-                            <div class="custom-element navigation-footer footer__navigation">
+                            <div id="footerNav" class="custom-element navigation-footer footer__navigation">
                             {% block footerNavigation %}
                                 {% cms_slot 'slt-footer' %}
                             {% endblock %}

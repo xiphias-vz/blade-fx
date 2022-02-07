@@ -181,6 +181,21 @@
             }
 
         }
+
+        @include helper-breakpoint-media-max($sm-max) {
+            .node--footer {
+                padding-bottom: rem(0) !important;
+            }
+        }
+
+        .cz-font {
+            font-family: $setting-font-family-fira-sans !important;
+        }
+
+        h3 .cz-font, h4  .cz-font{
+            font-family: $setting-font-family-fira-sans !important;
+        }
+
     }
 }
 

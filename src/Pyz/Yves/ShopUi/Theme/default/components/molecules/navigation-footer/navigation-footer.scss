@@ -16,6 +16,16 @@
             padding: 0 rem(15) !important;
         }
 
+        &__subcategory {
+            margin-right: rem(40);
+        }
+
+        @include helper-breakpoint-media-max($sm-max) {
+            &__items-space {
+                margin-bottom: rem(10);
+            }
+        }
+
         @content;
     }
 }
