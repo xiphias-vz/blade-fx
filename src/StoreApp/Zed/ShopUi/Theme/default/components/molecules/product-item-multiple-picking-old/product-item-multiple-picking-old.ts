@@ -31,8 +31,8 @@ export default class ProductItemMultiplePickingOld extends Component {
     currentValue = 0;
     isAccepted = false;
     isNotFullyAccepted = false;
-    isDeclined = false;
-    isPaused = false;
+    isDeclined: boolean = false;
+    isPaused: boolean = false;
     weight = 0;
     empty= '';
     showInfo = false;
@@ -50,6 +50,7 @@ export default class ProductItemMultiplePickingOld extends Component {
     protected $weightField: $;
     protected $previousSku: $;
     protected $openModal: $;
+    protected $setItemDeclined: $;
     protected popupUiErrorInfo: object;
     protected currentItem: StorageItem;
     protected $containerScanConfirmation: HTMLInputElement;
@@ -144,8 +145,15 @@ export default class ProductItemMultiplePickingOld extends Component {
         this.mapEvents();
         this.boldLastThreeEanNumbers();
 
+        this.$setItemDeclined = $('#setItemDeclined').val();
+
         this.$openModal = $('#idOpenModal').val();
         this.$isSubstitutionAllowed = $('#isSubstitutionAllowed').val();
+
+        if (this.$setItemDeclined === "1") {
+            this.setProductAsDeclinedWithSubstitution();
+        }
+
         this.openModal(this.$openModal);
 
         this.removeTemporarilyReadOnlyAttributeForNonActiveFields();
@@ -166,6 +174,16 @@ export default class ProductItemMultiplePickingOld extends Component {
         this.inputValueErrorGreaterAlert2 = <HTMLInputElement>document.querySelector('#input_value_error_greater_alert_2');
         this.inputValueErrorLessAlert1 = <HTMLInputElement>document.querySelector('#input_value_error_less_alert_1');
         this.inputValueErrorLessAlert2 = <HTMLInputElement>document.querySelector('#input_value_error_less_alert_2');
+        const declinedInputField: HTMLInputElement = document.querySelector('#isItemCanceled');
+        declinedInputField.value === '1' ? this.isDeclined = true : this.isDeclined = false;
+        const pausedInputField: HTMLInputElement = document.querySelector('#isItemPaused');
+        pausedInputField.value === '1' ? this.isPaused = true : this.isPaused = false;
+        const isFullPicked: HTMLInputElement = document.querySelector('#isFullPicked');
+        isFullPicked.value === '1' ? this.isAccepted = true : this.isAccepted = false;
+        const isPartiallyPicked: HTMLInputElement = document.querySelector('#isPartiallyPicked');
+        isPartiallyPicked.value === '1' ? this.isNotFullyAccepted = true : this.isNotFullyAccepted = false;
+
+        this.changeItemVisualState();
     }
 
     protected removeTemporarilyReadOnlyAttributeForNonActiveFields() {
@@ -273,8 +291,8 @@ export default class ProductItemMultiplePickingOld extends Component {
             let statusOfArticle = this.classList;
 
             if (statusOfArticle.contains(this.pickedCLass)) {
-               if(Boolean(this.showErrorMessageForNotValidWeight()))
-                   return false;
+                if(Boolean(this.showErrorMessageForNotValidWeight()))
+                    return false;
             }
             else if(statusOfArticle.contains((this.pickedNotFullyCLass))) {
                 if(Boolean(this.showErrorMessageForNotValidWeight()))
@@ -337,8 +355,8 @@ export default class ProductItemMultiplePickingOld extends Component {
         if(paused === true){
             this.setPausedStateForItem();
         }
-        else if(declined === true || (accepted === true && isAlreadyPicked === true)){
-            if(declined === true){
+        else if(declined === true || (accepted === true && isAlreadyPicked === true)) {
+            if (declined === true) {
                 $(".weightScanContainer").empty();
                 this.containerData = [];
                 this.weight = 0;
@@ -349,7 +367,7 @@ export default class ProductItemMultiplePickingOld extends Component {
             this.pickProducts.updateStorageItem(this, this.orderItemStatus);
 
             let saveAndGoToNext = "true";
-            if(Boolean(isLastPosition) === true){
+            if (Boolean(isLastPosition) === true) {
                 saveAndGoToNext = "End";
             }
             this.pickProducts.update();
@@ -458,9 +476,17 @@ export default class ProductItemMultiplePickingOld extends Component {
     }
 
     async updateItem(item: StorageItem): Promise<void> {
-        await this.updateQuantityInput(item.count);
-        let orderItemStatus = localStorage.getItem('orderItemStatus');
+        this.updateQuantityInput(item.count);
         this.currentItem = item;
+
+        if (this.isAccepted) {
+            if(item.weight != NaN){
+                this.weight = Number(item.weight);
+                if(this.$weightField !== undefined) {
+                    this.$weightField.val(Number(this.weight));
+                }
+            }
+        }
 
 
         if(item.containerData.length > 0){
@@ -475,26 +501,6 @@ export default class ProductItemMultiplePickingOld extends Component {
                     this.$weightField.val(Number(this.weight));
                 }
             }
-        }
-
-
-        if (item.isAccepted || item.isNotFullyAccepted) {
-            if(item.weight != NaN){
-                this.weight = Number(item.weight);
-                if(this.$weightField !== undefined) {
-                    this.$weightField.val(Number(this.weight));
-                }
-            }
-
-            this.acceptClickHandler();
-        }
-
-        if (item.isPaused) {
-            this.$pauseButton.click();
-        }
-
-        if (item.isDeclined) {
-            this.declineClickHandler();
         }
     }
 
@@ -844,7 +850,7 @@ export default class ProductItemMultiplePickingOld extends Component {
             this.showInfo = false;
         }
 
-      this.focusEanFieldWithoutDisplayOfKeyboard();
+        this.focusEanFieldWithoutDisplayOfKeyboard();
     }
 
     protected updateQuantityInput(value: number): void {
@@ -905,8 +911,8 @@ export default class ProductItemMultiplePickingOld extends Component {
     protected declineClickHandler(): void {
         if(this.$isSubstitutionAllowed == '1' && this.isSubstitutionFound.value === "0")
         {
-        this.popupUiSubstitute.classList.remove('popup-ui-substitute--hide');
-        this.popupUiSubstitute.classList.add('popup-ui-substitute--show');
+            this.popupUiSubstitute.classList.remove('popup-ui-substitute--hide');
+            this.popupUiSubstitute.classList.add('popup-ui-substitute--show');
         }
 
         this.$weightField.removeAttr('required');
@@ -971,6 +977,45 @@ export default class ProductItemMultiplePickingOld extends Component {
         this.isSubstitutionPicked = true;
         this.iconSubstitute.classList.remove(this.showIconSubstitute);
         this.popupUiSubstitute.classList.add('popup-ui-substitute--hide');
+        if(this.isSubstitutionPicked === true){
+            this.ifIsSubstitutionPicked();
+        }
+    }
+
+    protected ifIsSubstitutionPicked (){
+        const urlSave = window.location.origin + "/picker/multi-picking/multi-order-picking";
+        let pickingPosition = this.pickingItemPosition;
+        let quantity = this.$quantityOutput.text();
+
+        let declined = this.isDeclined;
+
+        let status = "";
+        if(declined === true){
+            status = "declined"
+        }
+        let itemPickingStartTime = this.itemPickingStartTime.value;
+
+
+        let weight = 0;
+        let form = $('<form action="' + urlSave + '" method="post" style="visibility: hidden;">' +
+            '<input type="text" name="position" value="' + pickingPosition + '" />' +
+            '<input type="text" name="quantity" value="' + quantity + '" />' +
+            '<input type="text" name="weight" value="' + weight + '" />' +
+            '<input type="text" name="status" value="' + status + '" />' +
+            '<input type="text" name="itemPickingStartTime" value="' + itemPickingStartTime + '" />' +
+            '<input type="text" name="isSubstitutionPicked" value="' + this.isSubstitutionPicked + '" />' +
+            '</form>');
+        $('body').append(form);
+        form.submit();
+    }
+
+    protected setProductAsDeclinedWithSubstitution(){
+        this.isSubstitutionPicked = true;
+        this.iconSubstitute.classList.remove(this.showIconSubstitute);
+        this.popupUiSubstitute.classList.remove('popup-ui-substitute--hide');
+        this.$declineButton = this.$this.find(this.declineButtonSelector);
+        this.$declineButton.click();
+
     }
 
     protected showSubstituteIconIfSubstitutionIsSet(isSubstitutionFound) {
@@ -993,6 +1038,26 @@ export default class ProductItemMultiplePickingOld extends Component {
     protected findAncestor (el, cls) {
         while ((el = el.parentElement) && !el.classList.contains(cls));
         return el;
+    }
+
+    protected changeItemVisualState() {
+
+        if (this.isAccepted) {
+            this.$this.removeClass(this.notPickedCLass);
+            this.iconSubstitute.classList.add(this.showIconSubstitute);
+            this.acceptClickHandler();
+        } else if (this.isNotFullyAccepted) {
+            this.$this.removeClass(this.notPickedCLass);
+            this.iconSubstitute.classList.add(this.showIconSubstitute);
+            this.acceptClickHandler();
+        } else if (this.isPaused) {
+            this.$this.removeClass(this.notPickedCLass);
+            this.iconSubstitute.classList.add(this.showIconSubstitute);
+            this.pauseClickHandler();
+        } else if (this.isDeclined) {
+            this.declineClickHandler();
+        }
+
     }
 
     protected get minusButtonSelector(): string {

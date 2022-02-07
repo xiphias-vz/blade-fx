@@ -90,7 +90,8 @@
                                 <span>{{ container.zoneAbbrevation }}</span> >
                                 <span>{{ container.containerID }}
                                 </span>  >
-                                <span style="font-weight: bold">{{ container.shelfID }}</span>{% include atom('icon') with {
+                                <span style="font-weight: bold">{{ container.shelfID }}</span>
+                                {% include atom('icon') with {
                                     modifiers: ['big'],
                                     data: {
                                         name: 'icon-substitutes',

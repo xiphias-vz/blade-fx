@@ -123,6 +123,10 @@ class MultiPickingController extends BaseOrderPickingController
             }
             if (!$isSubstitutionFoundOnItem ?? false) {
                 $transfer->getOrderItem($transfer->getLastPickingItemPosition())->setIsSubstitutionFound(true);
+                $quantityPicked = $transfer->getOrderItem($transfer->getLastPickingItemPosition())->getQuantityPicked();
+                if ($quantityPicked > 0) {
+                    $transfer->getOrderItem($transfer->getLastPickingItemPosition())->setQuantityPicked(0);
+                }
                 $redirectToScanningContainers = true;
                 $factory = $this->getFactory();
                 $urlScan = $factory->getConfig()->getScanningContainerUri();

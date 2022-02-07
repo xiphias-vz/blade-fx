@@ -8,6 +8,9 @@
 namespace StoreApp\Zed\PickerOld\Communication\Controller;
 
 use Generated\Shared\Transfer\MerchantTransfer;
+use Orm\Zed\Sales\Persistence\SpySalesOrderItemQuery;
+use Orm\Zed\Sales\Persistence\SpySalesOrderTotalsQuery;
+use Propel\Runtime\ActiveQuery\Criteria;
 use Pyz\Shared\Oms\OmsConfig;
 use StoreApp\Shared\Picker\PickerConfig;
 use StoreApp\Zed\Merchant\Communication\Plugin\EventDispatcher\MerchantProviderEventDispatcherPlugin;
@@ -103,11 +106,50 @@ class MultiPickingController extends IntMultiPickingController
     public function multiOrderPickingAction(Request $request)
     {
         $transfer = $this->getFacade()->getPickingHeaderTransfer();
+        $redirectToScanningContainers = false;
+        $setItemDeclined = false;
         $productToDisplay = $_REQUEST['sku'] ?? '';
         $positionToDisplay = $_REQUEST['position'] ?? '';
         $openModal = $_REQUEST['fromModal'] ?? 'false';
         $fromPosListeAndModal = $_REQUEST['fromPosListeAndModal'] ?? 'false';
         $isSubstitutionPicked = $_REQUEST['isSubstitutionPicked'] ?? 'false';
+
+        $status = $request->request->get("status");
+        if ($status === "declined" && $isSubstitutionPicked === "true") {
+            $isSubstitutionFoundOnItem = $transfer->getOrderItem($transfer->getLastPickingItemPosition());
+            if ($isSubstitutionFoundOnItem === null) {
+                $isSubstitutionFoundOnItem = $transfer->getOrderItem($transfer->getLastPickingItemPosition() + 1)->getIsSubstitutionFound();
+            } else {
+                $isSubstitutionFoundOnItem = $transfer->getOrderItem($transfer->getLastPickingItemPosition())->getIsSubstitutionFound();
+            }
+            if (!$isSubstitutionFoundOnItem ?? false) {
+                $transfer->getOrderItem($transfer->getLastPickingItemPosition())->setIsSubstitutionFound(true);
+                $quantityPicked = $transfer->getOrderItem($transfer->getLastPickingItemPosition())->getQuantityPicked();
+                if ($quantityPicked > 0) {
+                    $transfer->getOrderItem($transfer->getLastPickingItemPosition())->setQuantityPicked(0);
+                }
+                $redirectToScanningContainers = true;
+                $factory = $this->getFactory();
+                $urlScan = $factory->getConfig()->getScanningContainerUri();
+                $urlScan .= '?flag=substitution';
+
+                return $this->redirectResponse($urlScan);
+            }
+        }
+        $pickingItem = $transfer->getOrderItemExtended($transfer->getLastPickingItemPosition() == null ? 0 : $transfer->getLastPickingItemPosition());
+        if ($pickingItem === null) {
+            $pickingItem = $transfer->getOrderItemExtended($transfer->getLastPickingItemPosition() + 1);
+        }
+        $pickingItemHasBeenSubstituted = false;
+        if ($pickingItem !== null) {
+            $pickingItemHasBeenSubstituted = $pickingItem->getIsSubstitutionFound();
+        }
+        if ($status === null && $isSubstitutionPicked === "false" && ($pickingItemHasBeenSubstituted === true && ($pickingItem !== null))) {
+            if ($pickingItem->getIsSubstitutionFound()) {
+                $setItemDeclined = true;
+                $redirectToScanningContainers = true;
+            }
+        }
 
         if ($request->request->count() > 0) {
             if ($request->request->has('saveAndGoToNext')) {
@@ -119,10 +161,51 @@ class MultiPickingController extends IntMultiPickingController
                     $status = $request->request->get("status");
                     switch ($status) {
                         case "accepted":
+                            $currentOrderItem = $this->getFacade()->getPickingHeaderTransfer()->getOrderItems($position);
+                            $isCanceled = $currentOrderItem[0]->getIsCancelled();
+                            $groupedOrderItems = unserialize(serialize($this->getFacade()->getPickingHeaderTransfer()->getGroupedOrderItems()));
                             $this->getFacade()->setCurrentOrderItemPicked($quantity, $weight);
+                            if ($isCanceled) {
+                                foreach ($groupedOrderItems as $item) {
+                                    if ($item['isCancelled'] == true) {
+                                        $spySalesOrderItemEntity = SpySalesOrderItemQuery::create()
+                                            ->filterByFkSalesOrder($item['idOrder'])
+                                            ->filterByGroupKey($item['ean'])
+                                            ->joinWithState(Criteria::INNER_JOIN)
+                                            ->find();
+                                        foreach ($spySalesOrderItemEntity as $newPickedItem) {
+                                            if ($newPickedItem->getState()->getName() == 'ready for selecting shelves') {
+                                                $newPickedItem->setCanceledAmount(0);
+                                                $newPickedItem->setOriginalPrice(null);
+                                                $newPickedItem->setRefundableAmount($item['price']);
+                                                $spySalesOrderItemEntity->save();
+
+                                                $taxAmount = $newPickedItem->getTaxAmount();
+
+                                                $spySalesOrderTotalsEntity = SpySalesOrderTotalsQuery::create()
+                                                    ->filterByFkSalesOrder($item['idOrder'])
+                                                    ->findOneOrCreate();
+                                                $spySalesOrderTotalsEntity->setCanceledTotal($spySalesOrderTotalsEntity->getCanceledTotal() - $newPickedItem->getPrice());
+                                                $spySalesOrderTotalsEntity->setGrandTotal($spySalesOrderTotalsEntity->getGrandTotal() + $newPickedItem->getPrice());
+                                                $spySalesOrderTotalsEntity->setRefundTotal($spySalesOrderTotalsEntity->getRefundTotal() + $newPickedItem->getPrice());
+                                                $spySalesOrderTotalsEntity->setTaxTotal($spySalesOrderTotalsEntity->getTaxTotal() + $taxAmount);
+                                                $spySalesOrderTotalsEntity->save();
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                            $containerId = $request->request->get("containerID");
+                            if ($containerId) {
+                                $this->getFacade()->updateContainerPickZone($transfer->getOrderById($currentOrderItem[0]->getIdOrder()), $containerId);
+                            }
                             break;
                         case "declined":
+                            if ($transfer->getLastPickingItemPosition() === 0) {
+                                $transfer->setLastPickingItemPosition(1);
+                            }
                             $currentItemResponse = $this->getFacade()->setCurrentOrderItemCanceled(true, strtolower($isSubstitutionPicked) == 'true' ? true : false);
+                            $transfer = $this->getFacade()->getPickingHeaderTransfer();
                             break;
                     }
                     if ($keyValue == "End") {
@@ -135,19 +218,27 @@ class MultiPickingController extends IntMultiPickingController
         }
 
         if ($productToDisplay != '' && $positionToDisplay != '') {
-            $nextOIData = $transfer->getOrderItem($positionToDisplay);
+            $nextOIData = $transfer->getOrderItemExtended($positionToDisplay);
             $transfer->setLastPickingItemPosition($nextOIData->getPickingItemPosition());
         } else {
-            $nextOIData = $transfer->getNextOrderItem(0);
+            if ($redirectToScanningContainers) {
+                $nextOIData = $transfer->getOrderItemExtended($transfer->getLastPickingItemPosition());
+                if ($nextOIData === null) {
+                    $nextOIData = $transfer->getOrderItemExtended($transfer->getLastPickingItemPosition() + 1);
+                    $nextOIData->setPickingItemPosition(1);
+                }
+            } else {
+                $nextOIData = $transfer->getNextOrderItemExtended(0);
+            }
             if ($nextOIData == null) {
-                $nextOIData = $transfer->getOrderItem($transfer->getLastPickingItemPosition());
+                $nextOIData = $transfer->getOrderItemExtended($transfer->getLastPickingItemPosition());
                 $openModal = 'true';
             } elseif ($nextOIData->getQuantityPicked() > 0) {
                 $next = $transfer->getFirstNonPickedOrderItem();
                 if ($next != null) {
                     $nextOIData = $next;
                 } else {
-                    $nextOIData = $transfer->getOrderItem($transfer->getLastPickingItemPosition());
+                    $nextOIData = $transfer->getOrderItemExtended($transfer->getLastPickingItemPosition());
                     $openModal = 'true';
                 }
                 $transfer->setLastPickingItemPosition($nextOIData->getPickingItemPosition());
@@ -172,7 +263,7 @@ class MultiPickingController extends IntMultiPickingController
         $openedItems = $articlesTotalForZone - $quantityProcessed < 0 ? 0 : $articlesTotalForZone - $quantityProcessed;
         $editedItems = $quantityProcessed;
 
-        $positionsData = $transfer->getOrderItems($nextOIData->getPickingItemPosition());
+        $positionsData = $transfer->getOrderItemsExtended($nextOIData->getPickingItemPosition());
         $orderItemStatus = '';
         foreach ($positionsData as $positionData) {
             $orderItemStatus = $positionData['status'];
@@ -215,6 +306,7 @@ class MultiPickingController extends IntMultiPickingController
             'urlPosListe' => PickerConfig::URL_POS_LISTE,
             'urlScanShelves' => PickerConfig::URL_MULTI_PICKING_SCAN_SHELVES,
             'isLastPosition' => $isLastPosition,
+            'setItemDeclined' => $setItemDeclined,
             'openModal' => $openModal,
             'fromPosListeAndModal' => $fromPosListeAndModal,
             'itemPickingStartTime' => $itemPickingStartTime,
@@ -234,10 +326,13 @@ class MultiPickingController extends IntMultiPickingController
         $isLastPosition = "false";
 
         $transfer = $this->getFacade()->getPickingHeaderTransfer();
+        $orderItem = $transfer->getOrderItem($transfer->getLastPickingItemPosition());
 
-        $currentItemResponse = $this->getFacade()->setCurrentOrderItemPaused(true);
-
-        if ($currentItemResponse == false) {
+        if ($this->getFacade()->setCurrentOrderItemPaused(true)) {
+            $orderItem->setIsSubstitutionFound(false);
+            $transfer->setParents(true);
+            $this->getFacade()->setTransferToSession($transfer);
+        } else {
             $errorMessage = $transfer->getErrorMessage();
         }
 
