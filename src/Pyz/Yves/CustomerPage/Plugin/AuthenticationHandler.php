@@ -350,18 +350,6 @@ class AuthenticationHandler extends SprykerAuthenticationHandler
     }
 
     /**
-     * @param string $uid
-     *
-     * @return array
-     */
-    protected function getCdcAccountInfo(string $uid): array
-    {
-        $postData = ['UID' => $uid, 'include' => 'profile, data, subscriptions, preferences'];
-
-        return $this->executeCdcApiCall('accounts.getAccountInfo', 'POST', $postData);
-    }
-
-    /**
      * @param \Generated\Shared\Transfer\CustomerTransfer $customerTransfer
      * @param bool $mainGlobus
      * @param bool $we

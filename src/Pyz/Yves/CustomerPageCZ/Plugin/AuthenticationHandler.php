@@ -25,27 +25,10 @@ class AuthenticationHandler extends SprykerAuthenticationHandler
      */
     public function registerCustomer(CustomerTransfer $customerTransfer)
     {
-//        $customerTransfer->setEmail($_REQUEST['registerForm_customer_email']);
-//        $customerTransfer->setPassword($_REQUEST['registerForm_customer_password_pass']);
-//        $decodeAdress = json_decode($validAddress);
-//        $isAddresAuthorized = false;
-//        $isRegistrationAuthorized = false;
-//        if ($decodeAdress->code == 'VA') {
-//            $isAddresAuthorized = true;
-//        }
-
         $customerResponseTransfer = new CustomerResponseTransfer();
         $customerTransfer->setMerchantReference($this->getFactory()->createShopContextResolver()->resolve()->getMerchantReference());
-        //$isAuthorized = $this->getCdcAuthorization($customerTransfer->getEmail(), $customerTransfer->getPassword());
-        //$customerResponseTransfer->setIsSuccess($isAddresAuthorized);
-
-        //if (!$isAddresAuthorized) {
-            //$isRegistrationAuthorized = $this->registerCdcUser($customerTransfer);
-        //}
         $customerResponseTransfer->setIsSuccess(true);
-        //if ($isRegistrationAuthorized) {
         $customerResponseTransfer = parent::registerCustomer($customerTransfer);
-        //}
 
         $this->getFactory()
             ->getMessenger()

@@ -9,6 +9,8 @@ namespace Pyz\Yves\CustomerPage\Plugin\Application;
 
 use Elastica\JSON;
 use Generated\Shared\Transfer\CustomerTransfer;
+use Pyz\Shared\Customer\CustomerConstants;
+use Spryker\Shared\Config\Config;
 
 /**
  * Class CustomerTransferCustom
@@ -66,7 +68,7 @@ class CustomerTransferCustom
                 ->setGender($this->getMapGender($this->getValue($data["profile"], "gender")))
                 ->setAddress1($street)
                 ->setAddress2($houseNo)
-                ->setCountry($country);
+                ->setCountry($this->getIdCountryFromISO2CodeFromConfig($country));
 
             $customerTransfer = $this->handleSalutation($customerTransfer, $data);
 
@@ -169,5 +171,24 @@ class CustomerTransferCustom
         }
 
         return null;
+    }
+
+    /**
+     * @param int|string|null $iso2Code
+     *
+     * @return string
+     */
+    public function getIdCountryFromISO2CodeFromConfig(?string $iso2Code): int
+    {
+        $countries = Config::get(CustomerConstants::CUSTOMER_COUNTRY_ISO_2_CODE);
+        if ($iso2Code == null) {
+            return 60;
+        } else {
+            if ($countries != null) {
+                return array_search($iso2Code, $countries);
+            } else {
+                return 60;
+            }
+        }
     }
 }

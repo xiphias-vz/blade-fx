@@ -43,7 +43,8 @@ class CustomerUserProvider extends SprykerCustomerUserProvider implements Custom
         if (isset($_POST["loginForm"]["password"])) {
             $pass = $_POST["loginForm"]["password"];
         }
-        $authCheck = $this->getCdcAuthorization($email, $pass);
+        $authCheck = $this->globusLogin($email, $pass);
+        $authCheck = JSON::parse($authCheck);
         if (isset($authCheck["statusCode"])) {
             if ($authCheck["statusCode"] === 403) {
                 $result = $this->globusLoginWithCookie();
@@ -58,13 +59,7 @@ class CustomerUserProvider extends SprykerCustomerUserProvider implements Custom
         }
         if (isset($authCheck["UID"])) {
             $this->getFactory()->getSessionClient()->set("cdcUID", $authCheck["UID"]);
-        }
-
-        if (isset($authCheck["errorCode"]) && $authCheck["errorCode"] == 0) {
-            $data = $_POST["loginForm"]["data"];
-            if (!str_contains($email, "@")) {
-                $email = json_decode($data, true)["email"];
-            }
+            $data = $authCheck;
             try {
                 $customerTransfer = parent::loadCustomerByEmail($email);
                 $customerTransfer = $this->updateCustomerData($data, $pass, $customerTransfer);
@@ -72,24 +67,19 @@ class CustomerUserProvider extends SprykerCustomerUserProvider implements Custom
                 $profile->processProfileUpdateByTransfer($customerTransfer, false);
             } catch (AuthenticationException $e) {
                 if (isset($authCheck["UID"])) {
-                    $accountInfo = $this->getCdcAccountInfo($authCheck["UID"]);
-                    $customerTransfer = $this->createNewCustomer($accountInfo, $email, $pass);
+                     $customerTransfer = $this->createNewCustomer($authCheck, $email, $pass);
                 } else {
                     throw new AuthenticationException(self::ERROR_NOT_VERIFIED_CUSTOMER);
                 }
             }
 
             try {
-                $dataParsed = JSON::parse($data);
-                $token = $dataParsed["response"]["id_token"];
-                $res = GlobusRestApiClientAccount::loginWithToken($token);
-                $cook = new GlobusRestApiClientCookie();
-                $cook->setLoginCookiePhp($res, $this->getFactory()->getSessionClient());
-                $cook->setLoginConfirmedCookiePhp();
-
-                if ($dataParsed["screen"] === "gigya-register-screen") {
-                    $this->setCdcPreferredStore($dataParsed["response"]["UID"], $customerTransfer->getMerchantReference());
-                    $this->sendCdcMailForRegistration($dataParsed["response"]["UID"]);
+                if (is_array($data)) {
+                    $token = $data["id_token"];
+                    $res = GlobusRestApiClientAccount::loginWithToken($token);
+                    $cook = new GlobusRestApiClientCookie();
+                    $cook->setLoginCookiePhp($res, $this->getFactory()->getSessionClient());
+                    $cook->setLoginConfirmedCookiePhp();
                 }
             } catch (Exception $ex) {
             }
@@ -220,38 +210,6 @@ class CustomerUserProvider extends SprykerCustomerUserProvider implements Custom
 
     /**
      * @param string $uid
-     *
-     * @return array
-     */
-    protected function getCdcAccountInfo(string $uid): array
-    {
-        $apiKey = $this->getCdcApiKey();
-        $apiSecretKey = $this->getCdcSecretKey();
-        $apiUserKey = $this->getCdcUserKey();
-        $urlPrefix = $this->getCdcUrlPrefix();
-        $url = $urlPrefix . "accounts.getAccountInfo";
-        $data = [
-        'apiKey' => $apiKey,
-            'secret' => $apiSecretKey,
-            'userKey' => $apiUserKey,
-            'UID' => $uid,
-            'include' => 'profile,data,preferences',
-            'extraProfileFields' => 'firstName,lastName,birthDay,birthMonth,birthYear,zip,city,country,gender,phones,samlData'];
-        $options = [
-            'http' => [
-                'header' => "Content-type: application/x-www-form-urlencoded\r\n",
-                'method' => 'POST',
-                'content' => http_build_query($data),
-            ],
-        ];
-        $context = stream_context_create($options);
-        $result = file_get_contents($url, false, $context);
-
-        return JSON::parse($result);
-    }
-
-    /**
-     * @param string $uid
      * @param \Generated\Shared\Transfer\CustomerTransfer $customerTransfer
      *
      * @return array
@@ -286,60 +244,6 @@ class CustomerUserProvider extends SprykerCustomerUserProvider implements Custom
 
         $profile = new ProfileController();
         $profile->processProfileUpdateByTransfer($customerTransfer, false);
-
-        return JSON::parse($result);
-    }
-
-    /**
-     * @param string $uid
-     *
-     * @return array
-     */
-    protected function sendCdcMailForRegistration(string $uid): array
-    {
-        $apiKey = $this->getCdcApiKey();
-        $apiSecretKey = $this->getCdcSecretKey();
-        $apiUserKey = $this->getCdcUserKey();
-        $urlPrefix = $this->getCdcUrlPrefix();
-
-        $url = $urlPrefix . "accounts.resendVerificationCode";
-        $data = ['apiKey' => $apiKey, 'secret' => $apiSecretKey, 'userKey' => $apiUserKey, 'UID' => $uid];
-        $options = [
-            'http' => [
-                'header' => "Content-type: application/x-www-form-urlencoded\r\n",
-                'method' => 'POST',
-                'content' => http_build_query($data),
-            ],
-        ];
-        $context = stream_context_create($options);
-        $result = file_get_contents($url, false, $context);
-
-        return JSON::parse($result);
-    }
-
-    /**
-     * @param string $uid
-     * @param string $merchantReference
-     *
-     * @return array
-     */
-    protected function setCdcPreferredStore(string $uid, string $merchantReference): array
-    {
-        $apiKey = $this->getCdcApiKey();
-        $apiSecretKey = $this->getCdcSecretKey();
-        $apiUserKey = $this->getCdcUserKey();
-        $urlPrefix = $this->getCdcUrlPrefix();
-        $url = $urlPrefix . "accounts.setAccountInfo";
-        $data = ['apiKey' => $apiKey, 'secret' => $apiSecretKey, 'userKey' => $apiUserKey, 'UID' => $uid, 'httpStatusCodes' => true, 'data' => '{"preferredStore":"' . $merchantReference . '"}'];
-        $options = [
-            'http' => [
-                'header' => "Content-type: application/x-www-form-urlencoded\r\n",
-                'method' => 'POST',
-                'content' => http_build_query($data),
-            ],
-        ];
-        $context = stream_context_create($options);
-        $result = file_get_contents($url, false, $context);
 
         return JSON::parse($result);
     }
@@ -415,21 +319,6 @@ class CustomerUserProvider extends SprykerCustomerUserProvider implements Custom
         }
 
         return $urlPrefix;
-    }
-
-    /**
-     * @return string
-     */
-    public function getCdcScreensUrl(): string
-    {
-        $globus_cdc_credentials = Config::get(CustomerConstants::CDC_CONSTANTS);
-
-        $urlScreens = '';
-        if (isset($globus_cdc_credentials[CustomerConstants::CDC_LOCAL_CREDENTIALS][CustomerConstants::CDC_SCREENS_URL])) {
-            $urlScreens = $globus_cdc_credentials[CustomerConstants::CDC_LOCAL_CREDENTIALS][CustomerConstants::CDC_SCREENS_URL];
-        }
-
-        return $urlScreens;
     }
 
      /**
