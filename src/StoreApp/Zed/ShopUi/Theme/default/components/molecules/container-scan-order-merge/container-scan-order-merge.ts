@@ -96,7 +96,6 @@ export default class ContainerScanOrderMerge extends Component {
 
         if(event.key == 'Enter') {
             event.preventDefault();
-
             let containerNumber = event.target.value;
             const formattedContainerInput = containerNumber.replace('/x11', '').replace('/X11', '');
 
@@ -120,10 +119,10 @@ export default class ContainerScanOrderMerge extends Component {
                         $("#listContainersShelf").empty();
                         for (let i = 0; i < parsedData.length; i++) {
                             if(parsedData[i].shelf_id == null){
-                                $("#listContainersShelf").append('<p><span>' + parsedData[i].zone_abbrevation + '</span> > <span>' + parsedData[i].container_id + '</span></p>');
+                                $("#listContainersShelf").append('<p id="cnt_' + parsedData[i].container_id + '"><span>' + parsedData[i].zone_abbrevation + '</span> > <span>' + parsedData[i].container_id + '</span></p>');
                             }
                             else{
-                                $("#listContainersShelf").append('<p><span>' + parsedData[i].zone_abbrevation + '</span> > <span>' + parsedData[i].container_id + '</span> > <span style="font-weight: bold">' + parsedData[i].shelf_id + '</span></p>');
+                                $("#listContainersShelf").append('<p id="cnt_' + parsedData[i].container_id + '"><span>' + parsedData[i].zone_abbrevation + '</span> > <span>' + parsedData[i].container_id + '</span> > <span style="font-weight: bold">' + parsedData[i].shelf_id + '</span></p>');
                             }
                         }
 
@@ -166,7 +165,8 @@ export default class ContainerScanOrderMerge extends Component {
             event.preventDefault();
 
             let containerNumberFill = event.target.value;
-            let containerNumberMove = this.containerScanner.value;
+            const containerNumber = this.containerScanner;
+            const containerNumberMove = this.containerScanner.value;
             const formattedContainerNumberFill = containerNumberFill.replace('/x11', '').replace('/X11', '');
             const formattedContainerNumberMove = containerNumberMove.replace('/x11', '').replace('/X11', '');
 
@@ -184,6 +184,9 @@ export default class ContainerScanOrderMerge extends Component {
                         let parsedData = JSON.parse(data);
                         if(parsedData === "OK"){
                             that.continueUnpacking.classList.remove("button--disabled");
+                            let id = '#cnt_' + containerNumberMove;
+                            $(id).remove();
+                            containerNumber.value = "";
                         }
                         else {
                             that.showPopUpErrorMessageForEmptyContainer();
