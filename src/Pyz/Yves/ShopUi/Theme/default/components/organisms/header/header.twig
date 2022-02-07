@@ -218,7 +218,7 @@
                                 {% if data.showNavigation %}
                                     <div class="col is-hidden-sm-lg">
                                         <div class="{{ config.name }}__navigation-button-container">
-                                            <button class="button button--with-icon button--expand button--ghost {{ config.jsName }}__navigation-trigger js-page-layout-main--block-scroll-trigger" style="box-shadow: none !important;">
+                                            <button class="button button--with-icon button--expand button--ghost {{ app.currentCodeBucket == 'DE' ? '' : 'button--font-CZ' }} {{ config.jsName }}__navigation-trigger js-page-layout-main--block-scroll-trigger" style="box-shadow: none !important;">
                                                 {% include atom('icon') with {
                                                     class: 'button__icon ' ~ config.jsName ~ '__navigation-target',
                                                     modifiers: ['big', 'with-stroke'],
@@ -247,8 +247,6 @@
                                                 'data-search-id': 'desktop',
                                             },
                                         } only %}
-                                        {#{% include molecule('search-form', 'FactFinder') only %}#}
-
                                     </div>
                                 {% endif %}
 
@@ -317,7 +315,7 @@
 
                             <div
                                 class="{{ config.name }}__navigation-main {{ config.jsName }}__navigation-target is-hidden is-hidden-xl-only">
-                                <h4 class="{{ config.name }}__navigation-title title title--h6">
+                                <h4 class="{{ config.name }}__navigation-title title title--{{ app.currentCodeBucket == 'DE' ? 'h6' : 'heading-CZ' }}">
                                     {{- 'global.all_products' | trans -}}
                                     {% block mobileNavigation %}
                                         {% cms_slot 'slt-mobile-header' %}
