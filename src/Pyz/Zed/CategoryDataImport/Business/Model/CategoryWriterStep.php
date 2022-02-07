@@ -37,6 +37,8 @@ class CategoryWriterStep extends SprykerCategoryWriterStep
     public const KEY_NAME = 'name';
     public const KEY_CATEGORY_KEY = 'categoryIdStibo';
     public const KEY_PARENT_CATEGORY_KEY = 'parentIdCategoryStibo';
+    public const KEY_DISPLAY_SEQUENCE = 'displaysequence';
+    public const KEY_POSITION = 'position';
     public const KEY_URL_ID = 'url_id';
     public const KEY_LOCALE_ID = 'locale_id';
 
@@ -111,11 +113,26 @@ class CategoryWriterStep extends SprykerCategoryWriterStep
             ->filterByCategoryKey($dataSet[static::KEY_CATEGORY_KEY])
             ->findOneOrCreate();
 
+        $displaySequence = '999';
+        $position = '999999999';
+        if (isset($dataSet[static::KEY_DISPLAY_SEQUENCE])) {
+            if (!empty($dataSet[static::KEY_DISPLAY_SEQUENCE])) {
+                $displaySequence = str_pad($dataSet[static::KEY_DISPLAY_SEQUENCE], 3, '0', STR_PAD_LEFT);
+            }
+        }
+        if (isset($dataSet[static::KEY_POSITION])) {
+            if (!empty($dataSet[static::KEY_DISPLAY_SEQUENCE])) {
+                $position = str_pad($dataSet[static::KEY_POSITION], 9, '0', STR_PAD_LEFT);
+            }
+        }
+
         $categoryEntity->setIsActive(true)
             ->setCategoryKey($dataSet[static::KEY_CATEGORY_KEY])
             ->setIsClickable($dataSet[static::KEY_CATEGORY_KEY] !== static::ROOT)
             ->setIsInMenu($dataSet[static::KEY_CATEGORY_KEY] !== static::ROOT)
-            ->setIsSearchable($dataSet[static::KEY_CATEGORY_KEY] !== static::ROOT);
+            ->setIsSearchable($dataSet[static::KEY_CATEGORY_KEY] !== static::ROOT)
+            ->setDisplaysequence($displaySequence)
+            ->setPosition($position);
 
         $categoryTemplateEntity = $this->getCategoryTemplate($dataSet);
         $categoryEntity->setFkCategoryTemplate($categoryTemplateEntity->getIdCategoryTemplate());

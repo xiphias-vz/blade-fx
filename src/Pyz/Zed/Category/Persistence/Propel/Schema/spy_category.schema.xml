@@ -6,6 +6,8 @@
             <parameter name="spy_category_all" column="*"/>
         </behavior>
         <column name="updated_at" required="false" type="TIMESTAMP"/>
+        <column name="displaysequence" type="VARCHAR" size="20"/>
+        <column name="position" type="VARCHAR" size="20"/>
     </table>
 
     <table name="spy_category_attribute">

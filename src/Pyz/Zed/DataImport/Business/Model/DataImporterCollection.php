@@ -10,9 +10,11 @@ namespace Pyz\Zed\DataImport\Business\Model;
 use Generated\Shared\Transfer\DataImporterConfigurationTransfer;
 use Orm\Zed\Category\Persistence\Map\SpyCategoryNodeTableMap;
 use Orm\Zed\Category\Persistence\Map\SpyCategoryTableMap;
+use Orm\Zed\Category\Persistence\SpyCategoryNodeQuery;
 use Orm\Zed\Category\Persistence\SpyCategoryQuery;
 use Orm\Zed\Navigation\Persistence\SpyNavigationQuery;
 use Propel\Runtime\Propel;
+use Pyz\Shared\PropelExtension\PropelExtension;
 use Pyz\Zed\CategoryDataImport\Business\Model\CategoryWriterStep;
 use Pyz\Zed\DataImport\Business\Exception\EntityNotFoundException;
 use ReflectionClass;
@@ -121,13 +123,11 @@ class DataImporterCollection extends SprykerDataImporterCollection
      */
     protected function insertDataToAssortmentZoneTable()
     {
-        $con = Propel::getConnection();
-        $statement = $con->prepare('INSERT INTO pyz_assortment_zone (assortment_zone)
+        PropelExtension::execute('INSERT INTO pyz_assortment_zone (assortment_zone)
                     SELECT distinct sp.assortment_zone
                     FROM spy_product sp
                     LEFT OUTER JOIN pyz_assortment_zone paz on paz.assortment_zone = sp.assortment_zone
                     WHERE paz.id_assortment_zone is null and not sp.assortment_zone is null ');
-        $statement->execute();
     }
 
     /**
@@ -135,8 +135,7 @@ class DataImporterCollection extends SprykerDataImporterCollection
      */
     protected function mapAssortmentZoneWithPickZoneAndMerchant()
     {
-        $con = Propel::getConnection();
-        $statement = $con->prepare('INSERT INTO pyz_assortment_pick_zone_relation (fk_assortment_zone, fk_merchant, fk_picking_zone)
+        PropelExtension::execute('INSERT INTO pyz_assortment_pick_zone_relation (fk_assortment_zone, fk_merchant, fk_picking_zone)
                     SELECT allAsortmentZonesPerMerchant.*
                         , def_picking_zone.id_picking_zone
                     FROM (
@@ -148,7 +147,6 @@ class DataImporterCollection extends SprykerDataImporterCollection
                     AND papzr.fk_assortment_zone = allAsortmentZonesPerMerchant.id_assortment_zone
                     CROSS JOIN (SELECT id_picking_zone FROM pyz_picking_zone ORDER BY is_default DESC, id_picking_zone DESC LIMIT 1) def_picking_zone
                     WHERE papzr.id_assortment_pick_zone_relation is null');
-        $statement->execute();
     }
 
     /**
@@ -175,8 +173,7 @@ class DataImporterCollection extends SprykerDataImporterCollection
             array_push($filterId, $id[0]);
         }
         if (count($filterId) > 0) {
-            $statement = $con->prepare('update spy_product set is_active = 0 where id_product in(' . implode(',', $filterId) . ')');
-            $statement->execute();
+            PropelExtension::execute('update spy_product set is_active = 0 where id_product in(' . implode(',', $filterId) . ')');
         }
     }
 
@@ -185,8 +182,7 @@ class DataImporterCollection extends SprykerDataImporterCollection
      */
     protected function deleteDuplicatedRows()
     {
-        $con = Propel::getConnection();
-        $statement = $con->prepare("DELETE b
+        PropelExtension::execute("DELETE b
             FROM
              (
                 SELECT id_time_slot, merchant_reference, day, date, time_slot
@@ -195,7 +191,6 @@ class DataImporterCollection extends SprykerDataImporterCollection
              ) a
             INNER JOIN pyz_time_slot b on b.id_time_slot = a.id_time_slot
             WHERE a.rn > 1");
-        $statement->execute();
     }
 
     /**
@@ -205,9 +200,7 @@ class DataImporterCollection extends SprykerDataImporterCollection
      */
     protected function deactivateAllNavigationNodes(int $idNavigation)
     {
-        $con = Propel::getConnection();
-        $statement = $con->prepare("update spy_navigation_node set is_active = 0 where fk_navigation = " . $idNavigation . " and node_type = 'category'");
-        $statement->execute();
+        PropelExtension::execute("update spy_navigation_node set is_active = 0 where fk_navigation = " . $idNavigation . " and node_type = 'category'");
     }
 
     /**
@@ -228,10 +221,23 @@ class DataImporterCollection extends SprykerDataImporterCollection
                 DataImporterPublisher::addEvent(CategoryEvents::CATEGORY_NODE_UNPUBLISH, $category->getVirtualColumn("id_category_node"));
             }
             DataImporterPublisher::triggerEvents();
-            DataImporterPublisher::addEvent(NavigationEvents::NAVIGATION_KEY_PUBLISH, $this->resolveIdNavigation(CategoryWriterStep::NAVIGATION_MODE_DESKTOP));
-            DataImporterPublisher::addEvent(NavigationEvents::NAVIGATION_KEY_PUBLISH, $this->resolveIdNavigation(CategoryWriterStep::NAVIGATION_MODE_MOBILE));
-            DataImporterPublisher::triggerEvents();
         }
+        PropelExtension::execute("call pyzx_category_order_update()");
+        $nodeQuery = SpyCategoryNodeQuery::create()
+            ->innerJoinCategory()
+            ->useCategoryQuery()
+            ->filterByIsActive(true)
+            ->endUse();
+        $allNodes = $nodeQuery->find();
+        foreach ($allNodes as $node) {
+            DataImporterPublisher::addEvent(CategoryEvents::CATEGORY_NODE_PUBLISH, $node->getIdCategoryNode());
+        }
+        DataImporterPublisher::triggerEvents();
+        $rootIdCategoryNode = $nodeQuery->findOneByIsRoot(true)->getIdCategoryNode();
+        DataImporterPublisher::addEvent(CategoryEvents::CATEGORY_TREE_PUBLISH, $rootIdCategoryNode);
+        DataImporterPublisher::addEvent(NavigationEvents::NAVIGATION_KEY_PUBLISH, $this->resolveIdNavigation(CategoryWriterStep::NAVIGATION_MODE_DESKTOP));
+        DataImporterPublisher::addEvent(NavigationEvents::NAVIGATION_KEY_PUBLISH, $this->resolveIdNavigation(CategoryWriterStep::NAVIGATION_MODE_MOBILE));
+        DataImporterPublisher::triggerEvents();
     }
 
     /**

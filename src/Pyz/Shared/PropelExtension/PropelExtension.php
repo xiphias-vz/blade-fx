@@ -51,6 +51,9 @@ class PropelExtension
     public static function getResultNamed(string $sql, ?ConnectionInterface $connection = null): array
     {
         try {
+            if ($connection === null) {
+                $connection = Propel::getConnection();
+            }
             $statement = $connection->prepare($sql);
             $statement->execute();
 
@@ -59,5 +62,26 @@ class PropelExtension
         }
 
         return [];
+    }
+
+    /**
+     * @param string $sql
+     * @param \Propel\Runtime\Connection\ConnectionInterface|null $connection
+     *
+     * @return bool
+     */
+    public static function execute(string $sql, ?ConnectionInterface $connection = null): bool
+    {
+        try {
+            if ($connection === null) {
+                $connection = Propel::getConnection();
+            }
+            $statement = $connection->prepare($sql);
+
+            return $statement->execute();
+        } catch (PDOException $ex) {
+        }
+
+        return false;
     }
 }
