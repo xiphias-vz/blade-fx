@@ -98,6 +98,7 @@ export default class ContainerScanOrderMerge extends Component {
             event.preventDefault();
             let containerNumber = event.target.value;
             const formattedContainerInput = containerNumber.replace('/x11', '').replace('/X11', '');
+            event.target.value = formattedContainerInput;
 
             let containerExists = this.containerExists(formattedContainerInput);
 

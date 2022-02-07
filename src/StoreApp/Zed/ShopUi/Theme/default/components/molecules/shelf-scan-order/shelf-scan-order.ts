@@ -110,7 +110,8 @@ export default class ShelfScanOrder extends Component {
         if (event.key == 'Enter') {
             event.preventDefault();
 
-            const inputFieldNumber = event.target.value;
+            const inputFieldNumber = event.target.value.replace(this.barcodePrefix, '');
+            event.target.value = inputFieldNumber;
 
             if (inputFieldNumber != undefined && inputFieldNumber !== '') {
                 if (flag === 'container') {
