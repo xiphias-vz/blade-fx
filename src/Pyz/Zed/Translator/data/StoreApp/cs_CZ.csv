@@ -249,3 +249,4 @@ container.scan.merge.error.container-is-already-used,"Kontejner je již použit"
 first.customer,PRVNÍ ZÁKAZNÍK
 multi.shelving.success.sentence.part.one,"byl přiřazen k"
 multi.shelving.success.sentence.part.two,""
+container.already.used, Tento kontejner se již používá

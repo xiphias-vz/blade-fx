@@ -33,6 +33,8 @@ export default class ContainerScanOrder extends Component {
     protected containerScanOrderErrorPopUp4: HTMLInputElement;
     protected containerScanOrderErrorPopUp5: HTMLInputElement;
     protected openPopupButton: HTMLButtonElement;
+    protected containersIdList: HTMLInputElement;
+    protected containerAlreadyUsed: HTMLInputElement;
 
     protected readyCallback(): void {
     }
@@ -65,7 +67,9 @@ export default class ContainerScanOrder extends Component {
         this.containerScanOrderErrorPopUp3 = <HTMLInputElement>document.querySelector('#container_scan_order_error_pop-up_3');
         this.containerScanOrderErrorPopUp4 = <HTMLInputElement>document.querySelector('#container_scan_order_error_pop-up_4');
         this.containerScanOrderErrorPopUp5 = <HTMLInputElement>document.querySelector('#container_scan_order_error_pop-up_5');
+        this.containerAlreadyUsed = <HTMLInputElement>document.querySelector('#container_already_used');
         this.openPopupButton = this.querySelector('.popup-ui-deposit__open');
+        this.containersIdList = this.querySelector('#containerArrayIds');
 
         this.containerTransfer.push(
             {
@@ -126,6 +130,8 @@ export default class ContainerScanOrder extends Component {
             event.preventDefault();
 
             let containerNumber = event.target.value;
+            let container = this.containersIdList.value;
+            let containerSplit = container.split(":");
             const formattedContainerInput = containerNumber.replace('/x11', '').replace('/X11', '');
 
             if(formattedContainerInput == "") {
@@ -134,6 +140,11 @@ export default class ContainerScanOrder extends Component {
 
             if(formattedContainerInput.length != 8) {
                 this.showPopUpErrorMessageForNonValidContainer();
+                return;
+            }
+
+            if(containerSplit.includes(formattedContainerInput)) {
+                this.showPopUpErrorMessageForUsedContainer();
                 return;
             }
             this.updateContainerInputFieldValue(formattedContainerInput, 'ADD_CONTAINER');
@@ -183,6 +194,16 @@ export default class ContainerScanOrder extends Component {
         popUpInfo.innerHTML = `
             <p class="container-name">
                ${this.pleaseScanContainer.value}
+            </p>
+        `;
+        this.popupUiError.classList.add('popup-ui-error--show');
+    }
+
+    protected showPopUpErrorMessageForUsedContainer() {
+        let popUpInfo = this.popupUiError.querySelector('.error-info');
+        popUpInfo.innerHTML = `
+            <p class="container-name">
+                ${this.containerAlreadyUsed.value}
             </p>
         `;
         this.popupUiError.classList.add('popup-ui-error--show');

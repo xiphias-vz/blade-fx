@@ -251,3 +251,4 @@ container.scan.merge.error.container-is-already-used,"Container ist bereits gebr
 first.customer,ERSTKUNDE
 multi.shelving.success.sentence.part.one,"wurde"
 multi.shelving.success.sentence.part.two,"zugeordnet"
+container.already.used, Dieser Container wird bereits verwendet

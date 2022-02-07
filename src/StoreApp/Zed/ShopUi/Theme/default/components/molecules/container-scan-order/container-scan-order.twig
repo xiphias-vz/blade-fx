@@ -42,6 +42,8 @@
             <input type="hidden" id="container_scan_order_error_pop-up_3" value="{{ 'container.scan.order.error.pop-up_3' | trans }}">
             <input type="hidden" id="container_scan_order_error_pop-up_4" value="{{ 'container.scan.order.error.pop-up_4' | trans }}">
             <input type="hidden" id="container_scan_order_error_pop-up_5" value="{{ 'container.scan.order.error.pop-up_5' | trans }}">
+            <input type="hidden" id="container_already_used" value="{{ 'container.already.used' | trans }}">
+
             <div class="popup-error-holder">
                 <div class="error-status">{{ 'error_page.title' | trans }}</div>
                 <div class="error-info">
@@ -76,6 +78,12 @@
             <div class="sub-box">
                 <p style="font-weight: bold;margin: 0">{{ 'picking.app.containers.select.title' | trans }}</p>
                 <div class="list-containers-shelf" style="margin-bottom: 20px">
+                    {% set containerIdArray = [] %}
+                    {% for con in data.usedContainersWithShelf %}
+                        {% set containerIdArray = containerIdArray | merge([ con.containerID ]) %}
+                    {% endfor %}
+                    {% set containerIdArray = containerIdArray | join(':') %}
+                    <input id="containerArrayIds" type="hidden" name="containerID" value="{{ containerIdArray }}">
                     {% for container in data.usedContainersWithShelf %}
                         {% if container.hasSubstitutedItem == true %}
                             <p>

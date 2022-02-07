@@ -71,6 +71,11 @@ class ScanningContainerController extends AbstractController
                             $isContainerUsed = 1;
                             $usedError = $this->getFacade()->formatErrorMessage($usedError, $containerId);
 
+                            $isScanFromPickingProcess = "0";
+                            if (isset($_REQUEST['add_multiple_containers'])) {
+                                $isScanFromPickingProcess = $_REQUEST['add_multiple_containers'];
+                            }
+
                             return $this->viewResponse([
                                 'isContainerUsed' => $isContainerUsed,
                                 'orderForScanningContainer' => $orderForScanningContainer,
@@ -83,6 +88,9 @@ class ScanningContainerController extends AbstractController
                                 'merchant' => $this->getMerchantFromRequest($request),
                                 'isUsedContainerMessage' => $usedError,
                                 'addContainerToSubstitutedItem' => $addContainerToSubstitutedItem,
+                                'isDepositAllowed' => $orderForScanningContainer->getIsDepositAllowed(),
+                                'isScanFromPickingProcess' => $isScanFromPickingProcess,
+                                'isMultiPickingProcess' => '1',
                             ]);
                         }
                     }
@@ -110,18 +118,26 @@ class ScanningContainerController extends AbstractController
                                 $isContainerUsed = 1;
                                 $usedError = $this->getFacade()->formatErrorMessage($usedError, $containerId);
 
+                                $isScanFromPickingProcess = "0";
+                                if (isset($_REQUEST['add_multiple_containers'])) {
+                                    $isScanFromPickingProcess = $_REQUEST['add_multiple_containers'];
+                                }
+
                                 return $this->viewResponse([
-                                   'isContainerUsed' => $isContainerUsed,
-                                   'orderForScanningContainer' => $orderForScanningContainer,
-                                   'itemSku' => $request->get(static::ORDER_ITEM_SKU),
-                                   'requestFromPickingArticles' => $request->get(static::REQUEST_FROM_ADD_CONTAINER_IN_SKU),
-                                   'redirectToPickingArticles' => $request->get(static::REQUEST_FROM_ADD_CONTAINER_IN_SKU) == 1,
-                                   'orderPosition' => $request->get(static::ORDER_POSITION),
-                                   'orderItemPosition' => $request->get(static::ORDER_ITEM_POSITION),
-                                   'nextOrderPosition' => $nextOrderPosition,
-                                   'merchant' => $this->getMerchantFromRequest($request),
-                                   'isUsedContainerMessage' => $usedError,
-                                   'addContainerToSubstitutedItem' => $addContainerToSubstitutedItem,
+                                    'isContainerUsed' => $isContainerUsed,
+                                    'orderForScanningContainer' => $orderForScanningContainer,
+                                    'itemSku' => $request->get(static::ORDER_ITEM_SKU),
+                                    'requestFromPickingArticles' => $request->get(static::REQUEST_FROM_ADD_CONTAINER_IN_SKU),
+                                    'redirectToPickingArticles' => $request->get(static::REQUEST_FROM_ADD_CONTAINER_IN_SKU) == 1,
+                                    'orderPosition' => $request->get(static::ORDER_POSITION),
+                                    'orderItemPosition' => $request->get(static::ORDER_ITEM_POSITION),
+                                    'nextOrderPosition' => $nextOrderPosition,
+                                    'merchant' => $this->getMerchantFromRequest($request),
+                                    'isUsedContainerMessage' => $usedError,
+                                    'addContainerToSubstitutedItem' => $addContainerToSubstitutedItem,
+                                    'isDepositAllowed' => $orderForScanningContainer->getIsDepositAllowed(),
+                                    'isScanFromPickingProcess' => $isScanFromPickingProcess,
+                                    'isMultiPickingProcess' => '1',
                                 ]);
                             } else {
                                 $this->getFacade()->setContainerToOrder($orderForScanningContainer, $containerId, '', $substituteContainer);
