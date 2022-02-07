@@ -453,4 +453,16 @@ class PickerFacade extends AbstractFacade implements PickerFacadeInterface
     {
         return $this->getFactory();
     }
+
+    /**
+     * @param int $position
+     *
+     * @return bool
+     */
+    public function setCurrentOrderItemWeightReset(int $position): bool
+    {
+        return $this->getFactory()
+            ->createPickingHeaderTransferData()
+            ->setCurrentOrderItemWeightReset($position);
+    }
 }

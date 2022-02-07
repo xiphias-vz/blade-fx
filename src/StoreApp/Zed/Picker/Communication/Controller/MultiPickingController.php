@@ -210,6 +210,11 @@ class MultiPickingController extends BaseOrderPickingController
                     }
                 }
             }
+
+            if ($request->request->has('resetWeight')) {
+                $position = (int)$request->request->get("position");
+                $currentItemResponse = $this->getFacade()->setCurrentOrderItemWeightReset($position);
+            }
         }
 
         if ($productToDisplay != '' && $positionToDisplay != '') {

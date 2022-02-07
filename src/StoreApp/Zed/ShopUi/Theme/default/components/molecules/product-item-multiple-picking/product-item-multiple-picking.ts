@@ -99,6 +99,7 @@ export default class ProductItemMultiplePicking extends Component {
     protected inputValueErrorGreaterAlert2: HTMLInputElement;
     protected inputValueErrorLessAlert1: HTMLInputElement;
     protected inputValueErrorLessAlert2: HTMLInputElement;
+    protected resetWeightButton: HTMLButtonElement;
 
     protected readyCallback(): void {
     }
@@ -142,6 +143,8 @@ export default class ProductItemMultiplePicking extends Component {
         this.iconSubstitute = this.querySelector('.icon-substitute-item');
         this.isSubstitutionFound = <HTMLInputElement>this.querySelector('#isSubstitutionFound');
         this.isSubstitutionPicked = false;
+        this.resetWeightButton = <HTMLButtonElement>this.querySelector('#btnResetWeight');
+
         this.mapEvents();
         this.boldLastThreeEanNumbers();
 
@@ -278,7 +281,46 @@ export default class ProductItemMultiplePicking extends Component {
             if(weight < min || weight > max){
                 this.$weightField.val("");
             }
+            else {
+                this.resetWeightButton.style.display = "block";
+            }
         });
+
+        this.resetWeightButton.addEventListener('click', evt => this.resetWeight(evt));
+
+    }
+
+    protected resetWeight(event) {
+        this.resetWeightButton.style.display = "none";
+        $(".weightScanContainer").empty();
+        this.containerData = [];
+        this.weight = 0;
+        this.$weightField.val("");
+        this.$this.find(this.quantityOutputSelector).html(0);
+        this.updateQuantityInput(0);
+        this.pickProducts.updateStorageItem(this, this.orderItemStatus);
+        this.pickProducts.update();
+
+        const urlSave = window.location.origin + "/picker/multi-picking/multi-order-picking";
+
+        let pickingPosition = this.pickingItemPosition;
+        let quantity = this.$quantityOutput.text();
+        let weight = 0;
+
+        if(this.$weightField.val() != 0){
+            weight = this.$weightField.val();
+        }
+
+        let form = $('<form action="' + urlSave + '" method="post" style="visibility: hidden;">' +
+            '<input type="text" name="resetWeight" value="true" />' +
+            '<input type="text" name="position" value="' + pickingPosition + '" />' +
+            '<input type="text" name="quantity" value="' + quantity + '" />' +
+            '<input type="text" name="weight" value="' + weight + '" />' +
+            '</form>');
+        $('body').append(form);
+        form.submit();
+
+        this.focusEanFieldWithoutDisplayOfKeyboard();
     }
 
     protected clearInputFields() {
@@ -738,6 +780,8 @@ export default class ProductItemMultiplePicking extends Component {
                     }
 
                     this.setQuantityToValue(1);
+                    this.resetWeightButton.style.display = "block";
+
                     return;
                 }
                 else

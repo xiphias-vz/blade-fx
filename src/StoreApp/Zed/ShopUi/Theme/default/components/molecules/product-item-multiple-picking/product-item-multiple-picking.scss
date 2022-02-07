@@ -428,6 +428,16 @@ $setting-item-border-radius: rem(8);
             margin-bottom: rem(12);
         }
 
+        #btnResetWeight {
+            border-radius: 50%;
+            background-color: #7b7b7b;
+            width: rem(40);
+            height: rem(40);
+            margin: rem(10) rem(0);
+            cursor: pointer;
+            display: none;
+        }
+
     }
 }
 

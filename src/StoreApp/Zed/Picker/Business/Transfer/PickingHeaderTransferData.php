@@ -1079,4 +1079,17 @@ class PickingHeaderTransferData
             return $itemPickingStartTime;
         }
     }
+
+    /**
+     * @param int $position
+     *
+     * @return bool
+     */
+    public function setCurrentOrderItemWeightReset(int $position): bool
+    {
+        $transfer = $this->getTransferFromSession();
+        $result = $transfer->resetCurrentOrderItemWeight($position);
+
+        return $result;
+    }
 }

@@ -862,4 +862,20 @@ class PickingHeaderTransfer extends SpyPickingHeaderTransfer
 
         return $containers;
     }
+
+    /**
+     * @param int $position
+     *
+     * @return bool
+     */
+    public function resetCurrentOrderItemWeight(int $position): bool
+    {
+        $this->setErrorMessage(null);
+        $orderItem = $this->getOrderItem($this->getLastPickingItemPosition());
+        $orderItem
+            ->setQuantityPicked(0);
+        $this->updateItemsPickedCount();
+
+        return true;
+    }
 }

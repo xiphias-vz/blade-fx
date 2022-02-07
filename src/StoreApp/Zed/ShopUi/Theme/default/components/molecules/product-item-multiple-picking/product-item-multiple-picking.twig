@@ -163,7 +163,7 @@
                 {% block quantity %}
                     {% if data.productsCount >= 1 %}
                         <div class="outer_div">
-                            <div class="col--md-4 col--sm-3"></div>
+                            <div class="col--md-4 col--sm-3"><button id="btnResetWeight"></button></div>
                             <div class="col--md-4 col--sm-6 {{ config.name }}__quantity">
                                 <div class="{{ config.jsName }}__minus {{ config.name }}__minus spacing-right spacing-right--inner">
                                     {% include atom('icon') with {
