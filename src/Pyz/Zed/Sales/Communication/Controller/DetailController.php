@@ -64,6 +64,11 @@ class DetailController extends SprykerDetailController
         }
 
         $orderTransfer = $this->getFacade()->findOrderWithPickingSalesOrdersByIdSalesOrder($idSalesOrder);
+        if ($orderTransfer === null) {
+            $this->addErrorMessage('Sales order #%d not found.', ['%d' => $idSalesOrder]);
+
+            return $this->redirectResponse(Url::generate('/sales')->build());
+        }
         $merchantTransfer = $this->getFactory()
             ->getMerchantFacade()
             ->findMerchantTransferFromMerchantReference($orderTransfer->getMerchantReference());
@@ -136,12 +141,6 @@ class DetailController extends SprykerDetailController
             }
 
             $this->downloadFile($tempFilePath);
-        }
-
-        if ($orderTransfer === null) {
-            $this->addErrorMessage('Sales order #%d not found.', ['%d' => $idSalesOrder]);
-
-            return $this->redirectResponse(Url::generate('/sales')->build());
         }
 
         if ($request->get("isTimeslotsFormSubmit") == true) {

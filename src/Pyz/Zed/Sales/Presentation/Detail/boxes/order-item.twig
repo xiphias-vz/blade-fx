@@ -55,14 +55,16 @@
     </td>
 {% else %}
 {% endif %}
-<td rowspan="1" class="state-history">
-    <div>
-        {% if orderItem.itemPaused == true %}
-            <a style="color: #1AB394" href="{{ url('/oms/index/draw', {'process': orderItem.process, 'state': orderItem.state.name}) }}" target="_blank" class="item-state">{{ (orderItem.stateHistory | first).name }} (paused)</a>
-        {% else %}
-            <a style="color: #1AB394" href="{{ url('/oms/index/draw', {'process': orderItem.process, 'state': orderItem.state.name}) }}" target="_blank" class="item-state">{{ (orderItem.stateHistory | first).name }}</a>
-        {% endif %}
-    </div>
+{% if orderItem.stateHistory | length > 1   %}
+    <td rowspan="1" class="state-history">
+        <div>
+            {% if orderItem.itemPaused == true %}
+                <a style="color: #1AB394" href="{{ url('/oms/index/draw', {'process': orderItem.process, 'state': orderItem.state.name}) }}" target="_blank" class="item-state">{{ (orderItem.stateHistory | first).name }} (paused)</a>
+            {% else %}
+                <a style="color: #1AB394" href="{{ url('/oms/index/draw', {'process': orderItem.process, 'state': orderItem.state.name}) }}" target="_blank" class="item-state">{{ (orderItem.stateHistory | first).name }}</a>
+            {% endif %}
+        </div>
+{% endif %}
   {% if orderItem.stateHistory | length > 1 %}
       <div id="history_details_{{ orderItem.idSalesOrderItem }}" class="hidden">
         {% for stateHistory in orderItem.stateHistory | slice(1) %}

@@ -41,6 +41,9 @@ class DeleteRowsFromTransitionLogScriptConsole extends Console
         try {
             $sql = $this->deleteRowsFromTransitionLog();
             $this->getResult($sql, false);
+
+            $sqlDeleteStateHistoryLog = $this->deleteRowsFromOrderItemStateHistoryLog();
+            $this->getResult($sqlDeleteStateHistoryLog, false);
         } catch (Exception $e) {
             dump($e);
 
@@ -80,5 +83,15 @@ class DeleteRowsFromTransitionLogScriptConsole extends Console
     {
         return "DELETE FROM spy_oms_transition_log
                 WHERE created_at < DATE_ADD(now(), interval -14 day) ";
+    }
+
+    /**
+     * @return string
+     */
+    protected function deleteRowsFromOrderItemStateHistoryLog(): string
+    {
+        return "DELETE
+                FROM spy_oms_order_item_state_history
+                WHERE created_at < DATE_ADD(now(), INTERVAL - 3 MONTH) ";
     }
 }
