@@ -5,6 +5,7 @@ use Pyz\Shared\DataImport\DataImportConstants;
 use Pyz\Shared\FactFinder\FactFinderConstants;
 use Pyz\Shared\ProductImage\ProductImageConstants;
 use Pyz\Zed\SalesOrderSummaryExport\SalesOrderSummaryExportConfig;
+use Spryker\Shared\Event\EventConstants;
 use SprykerEco\Shared\FactFinderNg\FactFinderNgConstants;
 use StoreApp\Shared\NewRelic\NewRelicConstants;
 
@@ -38,6 +39,8 @@ $config[FactFinderConstants::FTP_FACT_FINDER_FILES_FOLDER_NAME] = 'factfinder/st
 
 // ---------- NewRelicEnvironment
 $config[NewRelicConstants::NEW_RELIC_ENVIRONMENT] = 'DE_stage';
+
+$config[EventConstants::LOGGER_ACTIVE] = true;
 
 // ---------- FACT-Finder NG API
 $config[FactFinderNgConstants::FACT_FINDER_URL] = 'https://globus-sb.fact-finder.de/fact-finder'; # Fact-Finder URL

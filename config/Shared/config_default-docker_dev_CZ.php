@@ -7,6 +7,7 @@ use Pyz\Shared\GsoaRestApiClient\ApiClient;
 use Pyz\Shared\GsoaRestApiClient\Provider\TokenProvider;
 use Pyz\Shared\ProductImage\ProductImageConstants;
 use Pyz\Zed\SalesOrderSummaryExport\SalesOrderSummaryExportConfig;
+use Spryker\Shared\Event\EventConstants;
 use StoreApp\Shared\NewRelic\NewRelicConstants;
 
 require('config_default-docker.php');
@@ -41,6 +42,8 @@ $config[TokenProvider::GSOA_CLIENT_SECRET] = "D55910C6-0811-4749-B55C-3BCCEDC9BF
 
 // ---------- FactFinderExport
 $config[FactFinderConstants::FTP_FACT_FINDER_FILES_FOLDER_NAME] = 'factfinder/stage';
+
+$config[EventConstants::LOGGER_ACTIVE] = true;
 
 // ---------- NewRelicEnvironment
 $config[NewRelicConstants::NEW_RELIC_ENVIRONMENT] = 'CZ_stage';

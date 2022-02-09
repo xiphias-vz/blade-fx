@@ -12,6 +12,7 @@ use Pyz\Shared\Store\StoreConstants;
 use Spryker\Service\FlysystemLocalFileSystem\Plugin\Flysystem\LocalFilesystemBuilderPlugin;
 use Spryker\Shared\ErrorHandler\ErrorHandlerConstants;
 use Spryker\Shared\ErrorHandler\ErrorRenderer\WebHtmlErrorRenderer;
+use Spryker\Shared\Event\EventConstants;
 use Spryker\Shared\FileSystem\FileSystemConstants;
 use SprykerEco\Shared\FactFinderNg\FactFinderNgConstants;
 use StoreApp\Shared\Picker\PickerConstants;
@@ -126,5 +127,7 @@ $config[BackofficeOverviewConstants::TABLE_HEADER] = [
 $config[ErrorHandlerConstants::YVES_ERROR_PAGE] = APPLICATION_ROOT_DIR . '/public/Yves/errorpage/5xx-CZ.html';
 $config[ErrorHandlerConstants::ZED_ERROR_PAGE] = APPLICATION_ROOT_DIR . '/public/Zed/errorpage/5xx-CZ.html';
 $config[ErrorHandlerConstants::ERROR_RENDERER] = WebHtmlErrorRenderer::class;
+
+$config[EventConstants::LOGGER_ACTIVE] = true;
 
 $config[FactFinderNgConstants::FACT_FINDER_CHANNEL] = ''; // This is needed in order for header.twig not to break

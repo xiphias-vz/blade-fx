@@ -368,6 +368,8 @@ $config[LogConstants::EXCEPTION_LOG_FILE_PATH_ZED] = (bool)getenv('SPRYKER_DEBUG
 $config[LogConstants::EXCEPTION_LOG_FILE_PATH_GLUE] = (bool)getenv('SPRYKER_DEBUG_ENABLED')
     ? $logDir . '/GLUE/exception.log'
     : 'php://stderr';
+
+$config[EventConstants::LOGGER_ACTIVE] = true;
 /* End Logging */
 
 // ----------- Kernel test
