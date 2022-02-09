@@ -76,6 +76,9 @@ class SalesOrderSaver extends SprykerSalesOrderSaver
      */
     protected function hydrateSalesOrderItemEntity(SpySalesOrder $salesOrderEntity, QuoteTransfer $quoteTransfer, SpySalesOrderItem $salesOrderItemEntity, ItemTransfer $itemTransfer)
     {
+        $basePriceContent = $itemTransfer->getBasePriceContent() * 100;
+        $itemTransfer->setBasePriceContent($basePriceContent);
+
         parent::hydrateSalesOrderItemEntity($salesOrderEntity, $quoteTransfer, $salesOrderItemEntity, $itemTransfer);
 
         $itemsCount = count($quoteTransfer->getItems()->getArrayCopy());
