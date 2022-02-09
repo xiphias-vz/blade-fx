@@ -306,7 +306,7 @@ export default class ProductItem extends Component {
                 $alernativeEan = [];
             }
 
-            if($formattedScanInput.length != 13 && $formattedScanInput.length != 8){
+            if(!($formattedScanInput.length <= 13 && $formattedScanInput.length >= 11) && $formattedScanInput.length != 8){
                 alert(this.barcodeLengthErrorAlert.value);
             }
             else if ($formattedScanInput.length == 8)
