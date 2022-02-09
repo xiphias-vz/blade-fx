@@ -574,7 +574,7 @@ export default class PopupUiAddressValidation extends Component{
         }
         else if (flag === 5) {
             errorSpan.textContent = '• Sie müssen mindestens 16 Jahre alt sein.';
-            errorSpan.style.marginLeft = "116px";
+            errorSpan.style.textAlign = "right";
             errorSpan.classList.add('form__field', 'col', 'col--order-4', 'col--sm-12', 'col--md-12');
             $(element).parent().append(errorSpan);
         }

@@ -565,7 +565,8 @@ class RegisterForm extends SprykerRegisterForm
     {
         $years = [];
         $currentYear = date("Y");
-        for ($i = (int)$currentYear; $i >= 1900; $i--) {
+        $startYear = (int)$currentYear - 16;
+        for ($i = $startYear; $i >= 1900; $i--) {
             $years[$i] = $i;
         }
         $builder->add(static::FIELD_YEAR, ChoiceType::class, [
