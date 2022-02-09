@@ -160,12 +160,20 @@ document.addEventListener("ffReady", function (event) {
                     factfinder.communication.globalCommunicationParameter.onlySearchParams = true;
                     factfinder.communication.globalCommunicationParameter.useUrlParameters = true;
                 }
-                eventAggregator.addFFEvent({
+                let ev = {
                     type: ffCategoryFilter["Type"],
                     filter : ffCategoryFilter["Filter"],
                     query: ffCategoryFilter["Query"],
                     page: ffCategoryFilter["Page"]
-                });
+                };
+                if (document.location.href.includes("utm_")) {
+                    ev.utm_source = getParameterByName("utm_source");
+                    ev.utm_medium = getParameterByName("utm_medium");
+                    ev.utm_campaign = getParameterByName("utm_campaign");
+                    ev.utm_content = getParameterByName("utm_content");
+                    ev.utm_term = getParameterByName("utm_term");
+                }
+                eventAggregator.addFFEvent(ev);
             } else {
                 if(event.type === "navigation-search" && indexCatalogPageCounter > 10) {
                     event.cancel();
