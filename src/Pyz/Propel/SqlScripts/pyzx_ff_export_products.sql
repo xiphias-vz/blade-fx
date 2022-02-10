@@ -33,6 +33,8 @@ BEGIN
                         END
                 ELSE ''
         END as popNameExtension
+         , '' as Quality
+         , '' as ValidUntil
     FROM spy_product sp
         INNER JOIN spy_product_abstract spa on sp.fk_product_abstract = spa.id_product_abstract
         INNER JOIN spy_product_abstract_localized_attributes spala on sp.fk_product_abstract = spala.fk_product_abstract
