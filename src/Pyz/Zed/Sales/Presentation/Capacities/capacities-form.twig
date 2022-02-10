@@ -601,7 +601,7 @@
 
                                         document.getElementById("tbody_" + key).insertAdjacentHTML("beforeend",
                                             '<tr class="ts-table-' + rowCounter + '-row">' +
-                                            '<td>' + value1["TimeSlot"] + '</td>' +
+                                            '<td title="default: ' + value1["DefaultCapacity"] + '">' + value1["TimeSlot"] + '</td>' +
                                             '<td><div id="capacityRow_' + value1["Date"] + '_' + value1["Day"] + '_' + rowCounter + '_' + defaultClass + '"  class="ts-table-capacityField capacityField_' + rowCounter + ' cf_' + key + '_' + rowCounter + '" contenteditable="' + userIsAdmin + '">' + value1["Capacity"] + '</div></td>' +
                                             '<td>' + usedCapacity + '</td>' +
                                             '<td>' + capacityLeft + '</td>' +

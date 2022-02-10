@@ -28,6 +28,7 @@ class CapacitiesController extends AbstractController
     protected const CAPACITY_COLUMN = 'Capacity';
     protected const DATE_COLUMN = 'Date';
     protected const DAY_COLUMN = 'Day';
+    protected const DEFAULT_CAPACITY = 'DefaultCapacity';
     protected const COUNT_DATE = 'date';
     protected const COUNT_TIMESLOT = 'timeSlot';
     protected const COUNT_ORDER_COUNT = 'orderCount';
@@ -97,13 +98,15 @@ class CapacitiesController extends AbstractController
                             $time = $this->getTimeSlotByIndex($timeId);
                             if ($timeSlot == $time) {
                                 $capacity = $capacityToSave;
+                                $capacityOld = $capacitiesFromDefaultDay[$timeId]["Capacity"];
                             } else {
                                 $capacity = $capacitiesFromDefaultDay[$timeId]["Capacity"];
+                                $capacityOld = $capacity;
                             }
 
                             $response = $this->getFactory()->getTimeSlotsFacade()->setDefaultTimeSlotsForSelectedDate($selectedStore, $date, $day, $time, $capacity);
                             if ($response == 1) {
-                                $result = $this->saveTimeSlotsHistoryData($time, $day, $date, null, $capacity, $actionPerformed, $selectedStore);
+                                $result = $this->saveTimeSlotsHistoryData($time, $day, $date, $capacityOld, $capacity, $actionPerformed, $selectedStore);
                             }
                         }
                     }
@@ -211,11 +214,13 @@ class CapacitiesController extends AbstractController
                         static::USED_CAPACITY_COLUMN => 0,
                         static::CAPACITY_LEFT_COLUMN => $def[static::CAPACITY_COLUMN],
                         static::IS_DEFAULT_COLUMN => true,
+                        static::DEFAULT_CAPACITY => $def[static::CAPACITY_COLUMN],
                         ];
                     foreach ($tsCapacitiesDef as $defDay) {
                         if ($defDay[static::DATE_COLUMN] === $date) {
                             if ($defDay[static::TIMESLOT_COLUMN] === $timeSlot[static::TIMESLOT_COLUMN]) {
                                 $timeSlot[static::CAPACITY_COLUMN] = $defDay[static::CAPACITY_COLUMN];
+                                $timeSlot[static::IS_DEFAULT_COLUMN] = false;
                                 break;
                             }
                         }
