@@ -37,6 +37,7 @@ class MultiPickingScanningContainerController extends IntMultiPickingScanningCon
 
         $orderForScanningContainer = $transfer->getOrder($nextOrderPosition);
         $containersShelf = [];
+        $changeCounter = 0;
         if ($_SERVER["REQUEST_METHOD"] == "POST") {
             foreach ($dataWithContainers as $order) {
                 $orderContainers = $order->getPickingContainers();
@@ -44,18 +45,15 @@ class MultiPickingScanningContainerController extends IntMultiPickingScanningCon
                 foreach ($orderContainers as $container) {
                     foreach ($containersShelf as $key => $containerWithShelf) {
                         if ($container->getContainerID() === $containerWithShelf->ContainerCode) {
-                            $substituteContainer = $container->getHasSubstitutedItem();
+                            $this->getFacade()->setContainerToOrder($order, $container->getContainerID(), $containerWithShelf->ShelfCode, $container->getHasSubstitutedItem());
+                            $changeCounter++;
                             break;
                         }
                     }
                 }
             }
 
-            $containersShelf = json_decode($request->get('containersShelf'));
-            foreach ($containersShelf as $key => $containerWithShelf) {
-                $this->getFacade()->setContainerToOrder($orderForScanningContainer, $containerWithShelf->ContainerCode, $containerWithShelf->ShelfCode, $substituteContainer);
-            }
-            if (empty($containersShelf)) {
+            if ($changeCounter > 0) {
                 $this->getFacade()->updateGlobalPerformanceOrder($transfer->getIdGlobalPickReport());
                 $this->getFacade()->updatePerformanceOrder($orderForScanningContainer->getIdPerformanceSalesOrderReport(), count($orderForScanningContainer->getPickingContainers()));
             }

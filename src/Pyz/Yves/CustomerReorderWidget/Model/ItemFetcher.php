@@ -28,8 +28,13 @@ class ItemFetcher extends SpryItemFetcher
 
             $idSaleOrderItem = $itemTransfer->getIdSalesOrderItem();
             $itemTransfer->setIdSalesOrderItem(null);
+            $itemTransfer->setUuid(null);
+            $itemTransfer->setIsOrdered(false);
+            $itemTransfer->setIdSalesOrderItem(null);
             $itemTransfer->setIsOrdered(false);
             $itemTransfer->setItemPaused(false);
+            $itemTransfer->setIsSubstitutionFound(false);
+            $itemTransfer->setNewWeight(null);
             $itemTransfer = $this->cleanUpProductOptions($itemTransfer);
             $itemTransfer = $this->cleanUpItemShipmentAddress($itemTransfer);
 
