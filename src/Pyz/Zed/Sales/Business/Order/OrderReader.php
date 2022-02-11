@@ -8,6 +8,8 @@
 namespace Pyz\Zed\Sales\Business\Order;
 
 use Generated\Shared\Transfer\OrderTransfer;
+use Orm\Zed\MerchantSalesOrder\Persistence\SpyMerchantSalesOrder;
+use Orm\Zed\MerchantSalesOrder\Persistence\SpyMerchantSalesOrderQuery;
 use Pyz\Zed\Sales\Persistence\SalesQueryContainerInterface as PyzSalesQueryContainerInterface;
 use Spryker\Zed\Sales\Business\Model\Order\OrderHydratorInterface;
 use Spryker\Zed\Sales\Business\Order\OrderReader as SprykerOrderReader;
@@ -116,5 +118,18 @@ class OrderReader extends SprykerOrderReader implements OrderReaderInterface
         }
 
         return $states;
+    }
+
+    /**
+     * @param int $idSalesOrder
+     *
+     * @return \Orm\Zed\MerchantSalesOrder\Persistence\SpyMerchantSalesOrder
+     */
+    public function findMerchantSalesOrderByIdSalesOrder(int $idSalesOrder): SpyMerchantSalesOrder
+    {
+        $merchantSalesOrderQuery = SpyMerchantSalesOrderQuery::create();
+        $merchantSalesOrder = $merchantSalesOrderQuery->findOneByFkSalesOrder($idSalesOrder);
+
+        return $merchantSalesOrder;
     }
 }

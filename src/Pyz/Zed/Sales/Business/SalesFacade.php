@@ -359,7 +359,14 @@ class SalesFacade extends SprykerSalesFacade implements SalesFacadeInterface
         $transfer = new ShipmentTransfer();
         $transfer->fromArray($item->toArray(), true);
 
-        $response = $manager->saveSalesShipment($transfer, $orderTransfer);
+        $manager->saveSalesShipment($transfer, $orderTransfer);
+
+        $merchantSalesOrder = $this->getFactory()->createOrderReaderForStoreApp()->findMerchantSalesOrderByIdSalesOrder($orderTransfer->getIdSalesOrder());
+        [$shipmentDate, $shipmentTime] = explode('_', $requestedDeliveryDate);
+        [$startTime, $endTime] = explode('-', $shipmentTime);
+        $completeRequestedDeliveryTime = $shipmentDate . ' ' . $startTime . ':00';
+        $merchantSalesOrder->setRequestedDeliveryDate($completeRequestedDeliveryTime);
+        $merchantSalesOrder->save();
     }
 
     /**

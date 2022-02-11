@@ -8,6 +8,7 @@
 namespace Pyz\Zed\Sales\Business\Order;
 
 use Generated\Shared\Transfer\OrderTransfer;
+use Orm\Zed\MerchantSalesOrder\Persistence\SpyMerchantSalesOrder;
 use Spryker\Zed\Sales\Business\Order\OrderReaderInterface as SprykerOrderReaderInterface;
 
 interface OrderReaderInterface extends SprykerOrderReaderInterface
@@ -26,4 +27,11 @@ interface OrderReaderInterface extends SprykerOrderReaderInterface
      * @return \Generated\Shared\Transfer\OrderTransfer|null
      */
     public function findOrderWithPickingSalesOrdersByIdSalesOrder(int $idSalesOrder): ?OrderTransfer;
+
+    /**
+     * @param int $idSalesOrder
+     *
+     * @return \Orm\Zed\MerchantSalesOrder\Persistence\SpyMerchantSalesOrder
+     */
+    public function findMerchantSalesOrderByIdSalesOrder(int $idSalesOrder): SpyMerchantSalesOrder;
 }
