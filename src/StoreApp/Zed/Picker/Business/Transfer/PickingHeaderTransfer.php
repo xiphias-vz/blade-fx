@@ -754,7 +754,7 @@ class PickingHeaderTransfer extends SpyPickingHeaderTransfer
     {
         $containers = [];
         foreach ($order->getPickingContainers() as $container) {
-            if ($container->getIdUser() == $this->getIdUser() && $container->getIdZone() == $this->getIdZone()) {
+            if ($container->getIdZone() == $this->getIdZone()) {
                 if ($onlyContainersWithoutShelf) {
                     if (empty($container->getShelfID())) {
                         array_push($containers, $container);
