@@ -19,6 +19,8 @@ use Spryker\Zed\Kernel\Persistence\AbstractRepository;
  */
 class PickingZoneRepository extends AbstractRepository implements PickingZoneRepositoryInterface
 {
+    public const PICKING_ZONE_SEPARATOR = '__';
+
     /**
      * @param string $merchantReference
      *
@@ -36,7 +38,7 @@ class PickingZoneRepository extends AbstractRepository implements PickingZoneRep
             $zones = $this->getPickingZoneWithOrdersCount($merchantReference);
             $pickingZones = [];
             foreach ($zones as $zone) {
-                $pickingZones[$zone[PyzPickingZoneTableMap::COL_ID_PICKING_ZONE]] = $zone[PyzPickingZoneTableMap::COL_NAME] . '/' . $zone['orderCount'];
+                $pickingZones[$zone[PyzPickingZoneTableMap::COL_ID_PICKING_ZONE]] = $zone[PyzPickingZoneTableMap::COL_NAME] . self::PICKING_ZONE_SEPARATOR . $zone['orderCount'];
             }
 
             return $pickingZones;

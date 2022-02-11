@@ -38,7 +38,7 @@ function disableSubmitButtonWhenNoItemIsSelected() {
 function disableFieldsWithNoOrders(radioItem, radioItemInputFields) {
     for(let i = 0; i < radioItemInputFields.length; i++) {
         let labelPickZone = radioItemInputFields[i].parentNode.lastChild;
-        let pickZoneWithOrderNumber = labelPickZone.innerHTML.split('/');
+        let pickZoneWithOrderNumber = labelPickZone.innerHTML.split('__');
         labelPickZone.innerHTML =  pickZoneWithOrderNumber[0];
         let numberOfOrders = pickZoneWithOrderNumber[pickZoneWithOrderNumber.length - 1];
         if(numberOfOrders == 0) {
