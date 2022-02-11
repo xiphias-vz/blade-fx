@@ -226,6 +226,50 @@ document.addEventListener("ffReady", function (event) {
                 }
             });
         }
+
+        window.catalogList = [];
+        let searchTerm = resultData.__ngSearchParams.query;
+        let currencyIsoCode = document.querySelector('#currency_iso_code').value;
+        let twoTimesHitFlag = localStorage.getItem('twoTimesHitFlag')
+
+        if (!twoTimesHitFlag) {
+            for (let i = 0; i < resultData.records.length; i++) {
+                window.catalogList.push({
+                    'name': resultData.records[i].record.Title,
+                    'id': resultData.records[i].record.IdProductAbstract,
+                    'sku': resultData.records[i].record.ArticleNumber + '_abstract',
+                    'price': resultData.records[i].record.geoInformation[0].geoValues.Price.toString(),
+                    'url' : resultData.records[i].record.ProductUrl,
+                    'position': resultData.records[i].position.toString(),
+                    'list': 'POP',
+                });
+            }
+        }
+
+        window.dataLayer = window.dataLayer || [];
+        let impressions = window.catalogList;
+
+        if (!twoTimesHitFlag) {
+            if (impressions.length === 0) {
+                window.dataLayer.push({
+                    'event': 'zeroResultsSearch',
+                    'searchTerm': searchTerm,
+                    'searchResults': 0,
+                });
+            } else {
+                window.dataLayer.push({
+                    'event': 'eec.POP',
+                    'ecommerce':
+                        {
+                            'currency': currencyIsoCode,
+                            impressions,
+                        }
+                });
+            }
+            localStorage.setItem('twoTimesHitFlag', 'value');
+        } else {
+            localStorage.removeItem('twoTimesHitFlag');
+        }
     });
 
     resultDispatcher.addCallback("asn", function (asnData) {

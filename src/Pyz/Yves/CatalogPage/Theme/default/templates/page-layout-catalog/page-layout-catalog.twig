@@ -244,35 +244,36 @@
                                                 parentJsName: catalogJsName,
                                             },
                                         } only %}
+                                        <script type="text/javascript">
+                                            window.dataLayer = window.dataLayer || [];
+                                            var impressions =  window.catalogList;
+                                            var searchTerm = window.searchSuggestion || "";
+
+                                            if(!impressions)
+                                            {
+                                                window.dataLayer.push({
+                                                    'event': 'zeroResultsSearch',
+                                                    'searchTerm': searchTerm,
+                                                    'searchResults': 0,
+                                                });
+                                            }
+                                            else{
+                                                window.dataLayer.push({
+                                                    'event': 'eec.POP',
+                                                    'ecommerce':
+                                                        {
+                                                            'currency': '{{ data.currencyIsoCode }}',
+                                                            impressions,
+                                                        }
+                                                });
+                                            }
+                                        </script>
                                     {% else %}
                                         {% include molecule('products-per-page-custom', 'FactFinderWebComponents') with {
 
                                         } only %}
                                     {% endif %}
                                 </div>
-                                <script type="text/javascript">
-                                        window.dataLayer = window.dataLayer || [];
-                                        var impressions =  window.catalogList;
-                                        var searchTerm = window.searchSuggestion || "";
-                                        if(impressions == undefined || impressions == null)
-                                        {
-                                            window.dataLayer.push({
-                                                'event': 'zeroResultsSearch',
-                                                'searchTerm': searchTerm,
-                                               'searchResults': 0,
-                                            });
-                                        }
-                                        else{
-                                            window.dataLayer.push({
-                                                'event': 'eec.POP',
-                                                'ecommerce':
-                                                    {
-                                                        'currency': '{{ data.currencyIsoCode }}',
-                                                        impressions,
-                                                    }
-                                            });
-                                        }
-                                </script>
                             {% endblock %}
                         </div>
                         {% include molecule('toggler-click') with {
