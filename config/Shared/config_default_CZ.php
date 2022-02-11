@@ -81,9 +81,9 @@ $config[CodeBucketConstants::CURRENCY_SYMBOL] = 'Kč';
 $config[MailConstants::DEFAULT_EMAIL_REPLY_EMAIL] = 'info@globus.cz';
 
 //------------ Shipment consts
-$config[ShipmentConstants::MAIN_GLOBUS_CUSTOMER_CLICK_AND_COLLECT_SHIPMENT_METHOD_PRICE] = 3900;
+$config[ShipmentConstants::MAIN_GLOBUS_CUSTOMER_CLICK_AND_COLLECT_SHIPMENT_METHOD_PRICE] = 0;
 
-$config[ShipmentConstants::GUEST_CUSTOMER_CLICK_AND_COLLECT_SHIPMENT_METHOD_PRICE] = 3900;
+$config[ShipmentConstants::GUEST_CUSTOMER_CLICK_AND_COLLECT_SHIPMENT_METHOD_PRICE] = 0;
 
 $config[\Pyz\Shared\CookieBot\CookieBotConstants::DOMAIN_GROUP_ID] = '372fb05e-ddeb-46e1-a699-334ffa7e6bec';
 
