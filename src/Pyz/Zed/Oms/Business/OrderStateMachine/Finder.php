@@ -9,11 +9,31 @@ namespace Pyz\Zed\Oms\Business\OrderStateMachine;
 
 use Exception;
 use Orm\Zed\Sales\Persistence\SpySalesOrder;
+use Orm\Zed\Sales\Persistence\SpySalesOrderItem;
 use Pyz\Shared\Oms\OmsConfig;
 use Spryker\Zed\Oms\Business\OrderStateMachine\Finder as SprykerFinder;
 
 class Finder extends SprykerFinder implements FinderInterface
 {
+    /**
+     * @var array
+     */
+    private $stateList;
+
+    /**
+     * @param \Orm\Zed\Sales\Persistence\SpySalesOrderItem $orderItemEntity
+     *
+     * @return mixed|\Orm\Zed\Oms\Persistence\SpyOmsOrderItemState
+     */
+    private function getState(SpySalesOrderItem $orderItemEntity)
+    {
+        if (!isset($this->stateList[$orderItemEntity->getFkOmsOrderItemState()])) {
+            $this->stateList[$orderItemEntity->getFkOmsOrderItemState()] = $orderItemEntity->getState();
+        }
+
+        return $this->stateList[$orderItemEntity->getFkOmsOrderItemState()];
+    }
+
     /**
      * @param int $idOrder
      *
@@ -51,6 +71,32 @@ class Finder extends SprykerFinder implements FinderInterface
         $flaggedOrderItems = $this->getItemsByFlag($order, $flag, true);
 
         return $flaggedOrderItems && (count($flaggedOrderItems) === count($order->getItems()));
+    }
+
+    /**
+     * @param \Orm\Zed\Sales\Persistence\SpySalesOrder $order
+     * @param string $flag
+     * @param bool $hasFlag
+     *
+     * @return \Orm\Zed\Sales\Persistence\SpySalesOrderItem[]
+     */
+    protected function getItemsByFlag(SpySalesOrder $order, $flag, $hasFlag)
+    {
+        $items = $order->getItems();
+        $states = $this->getStatesByFlag(
+            $items->getFirst()->getProcess()->getName(),
+            $flag,
+            $hasFlag
+        );
+
+        $selectedItems = [];
+        foreach ($items as $item) {
+            if (array_key_exists($this->getState($item)->getName(), $states)) {
+                $selectedItems[] = $item;
+            }
+        }
+
+        return $selectedItems;
     }
 
     /**
@@ -99,7 +145,7 @@ class Finder extends SprykerFinder implements FinderInterface
         );
 
         foreach ($items as $item) {
-            if (in_array($item->getState()->getName(), $states)) {
+            if (in_array($this->getState($item)->getName(), $states)) {
                 $itemsCount++;
             }
         }

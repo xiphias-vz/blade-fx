@@ -610,16 +610,12 @@ class OrderStateMachine extends SprykerOrderStateMachine implements OrderStateMa
     protected function groupByOrderAndState($eventId, array $orderItems, $processes)
     {
         $orderEventGroup = [];
-        $orders = [];
         foreach ($orderItems as $orderItem) {
-            if (!isset($orders[$orderItem->getFkSalesOrder()])) {
-                $orders[$orderItem->getFkSalesOrder()] = $orderItem->getOrder();
-            }
             $processId = $this->getProcess($orderItem)->getName();
             $process = $processes[$processId];
 
             $stateId = $this->getState($orderItem)->getName();
-            $orderId = $orders[$orderItem->getFkSalesOrder()]->getIdSalesOrder();
+            $orderId = $orderItem->getFkSalesOrder();
 
             $state = $process->getStateFromAllProcesses($stateId);
 
