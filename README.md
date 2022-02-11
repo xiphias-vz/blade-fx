@@ -37,7 +37,7 @@ docker/sdk up
 ```
 Add hosts as suggested by docker/sdk bootstrap command
 
-Install SSL certificate: https://documentation.spryker.com/docs/self-signed-ssl-certificate-setup
+Install SSL certificate: https://docs.spryker.com/docs/scos/dev/setup/installing-spryker-with-docker/configuration/setting-up-a-self-signed-ssl-certificate.html
 
 Hosts:
 - https://www.welcome.shop.globus.local
