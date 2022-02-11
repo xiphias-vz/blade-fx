@@ -438,6 +438,11 @@ $setting-item-border-radius: rem(8);
             display: none;
         }
 
+        .custom__icon {
+            width: rem(32);
+            height: rem(32);
+            margin-right: rem(1);
+        }
     }
 }
 

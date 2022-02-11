@@ -312,8 +312,11 @@ export default class ProductItemMultiplePicking extends Component {
         this.$weightField.val("");
         this.$this.find(this.quantityOutputSelector).html(0);
         this.updateQuantityInput(0);
-        this.pickProducts.updateStorageItem(this, this.orderItemStatus);
+        this.isAccepted = false;
+        this.isPaused = false;
+        this.isDeclined = false;
         this.pickProducts.update();
+        this.pickProducts.updateStorageItem(this, this.orderItemStatus);
 
         const urlSave = window.location.origin + "/picker/multi-picking/multi-order-picking";
 
@@ -982,6 +985,7 @@ export default class ProductItemMultiplePicking extends Component {
                 }, 1000)
 
             }
+            this.resetWeightButton.style.display = "block";
             return;
         }
         this.$this.addClass(this.pickedNotFullyCLass);
