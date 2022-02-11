@@ -43,26 +43,10 @@
                             <span style="font-weight: normal" >- {{ countContainer }} -</span>
                             {% if container.hasSubstitutedItem == true %}
                                 <span style="font-weight: normal">{{ container.zoneAbbrevation }}</span> >
-                            <span>{{ container.containerID }}
-                                {% if container.shelfID != "" %}
-                                    <span> > {{ container.shelfID }}</span>
-                                {% endif %}
-                                    {% include atom('icon') with {
-                                        modifiers: ['big'],
-                                        data: {
-                                            name: 'icon-substitutes',
-                                        },
-                                    } only %}
-                                </span>
-                                {% else %}
-                                    <span style="font-weight: normal">{{ container.zoneAbbrevation }}</span> >
-                                    <span>{{ container.containerID }}</span>
+                                <span>{{ container.containerID }}
                                     {% if container.shelfID != "" %}
                                         <span> > {{ container.shelfID }}</span>
                                     {% endif %}
-                            {% endif %}
-                            {% if container.hasSubstitutedItem == true %}
-                            <span>{{ container.containerID }}
                                     {% include atom('icon') with {
                                         modifiers: ['big'],
                                         data: {
@@ -70,8 +54,12 @@
                                         },
                                     } only %}
                                 </span>
-                                {% else %}
-                                    <span>{{ container.containerID }}</span>
+                            {% else %}
+                                <span style="font-weight: normal">{{ container.zoneAbbrevation }}</span> >
+                                <span>{{ container.containerID }}</span>
+                                {% if container.shelfID != "" %}
+                                    <span> > {{ container.shelfID }}</span>
+                                {% endif %}
                             {% endif %}
                         </div>
                     {% endfor %}

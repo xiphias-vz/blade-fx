@@ -117,13 +117,18 @@ export default class ContainerScanOrderMerge extends Component {
                     success(data, status, xhr) {
                         let parsedData = JSON.parse(data);
 
+                        let substitute = "";
+
                         $("#listContainersShelf").empty();
                         for (let i = 0; i < parsedData.length; i++) {
+                            if(parsedData[i].has_substituted_item > 0){
+                                substitute = '<span style="font-weight: bold"></span><svg class="icon icon--big" data-qa="component icon" title="icon-substitutes"> <use xlink:href="#:icon-substitutes"></use></svg>';
+                            }
                             if(parsedData[i].shelf_id == null){
-                                $("#listContainersShelf").append('<p id="cnt_' + parsedData[i].container_id + '"><span>' + parsedData[i].zone_abbrevation + '</span> > <span>' + parsedData[i].container_id + '</span></p>');
+                                $("#listContainersShelf").append('<p id="cnt_' + parsedData[i].container_id + '"><span>' + parsedData[i].zone_abbrevation + '</span> > <span>' + parsedData[i].container_id + '</span>' + substitute + '</p>');
                             }
                             else{
-                                $("#listContainersShelf").append('<p id="cnt_' + parsedData[i].container_id + '"><span>' + parsedData[i].zone_abbrevation + '</span> > <span>' + parsedData[i].container_id + '</span> > <span style="font-weight: bold">' + parsedData[i].shelf_id + '</span></p>');
+                                $("#listContainersShelf").append('<p id="cnt_' + parsedData[i].container_id + '"><span>' + parsedData[i].zone_abbrevation + '</span> > <span>' + parsedData[i].container_id + '</span> > <span style="font-weight: bold">' + parsedData[i].shelf_id + '</span>' + " " + substitute + '</p>');
                             }
                         }
 
