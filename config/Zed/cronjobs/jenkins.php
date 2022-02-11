@@ -259,7 +259,7 @@ if ($storeCodeBucket == 'CZ') {
     $jobs[] = [
         'name' => 'transition-log-old-date-delete',
         'command' => 'vendor/bin/console transition-log-old-date:delete',
-        'schedule' => '0 13 * * *',
+        'schedule' => '0 13 * * 0',
         'enable' => true,
         'stores' => ['OST'],
     ];
@@ -345,7 +345,7 @@ if ($storeCodeBucket == 'CZ') {
     $jobs[] = [
         'name' => 'transition-log-old-date-delete',
         'command' => 'vendor/bin/console transition-log-old-date:delete',
-        'schedule' => '0 13 * * *',
+        'schedule' => '0 13 * * 0',
         'enable' => true,
         'stores' => ['EIN'],
     ];

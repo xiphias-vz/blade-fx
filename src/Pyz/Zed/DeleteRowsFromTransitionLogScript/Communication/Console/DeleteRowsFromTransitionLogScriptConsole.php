@@ -44,6 +44,9 @@ class DeleteRowsFromTransitionLogScriptConsole extends Console
 
             $sqlDeleteStateHistoryLog = $this->deleteRowsFromOrderItemStateHistoryLog();
             $this->getResult($sqlDeleteStateHistoryLog, false);
+
+            $sqlDataImportEventArchive = $this->deleteRowsFromDataImportEventArchive();
+            $this->getResult($sqlDataImportEventArchive, false);
         } catch (Exception $e) {
             dump($e);
 
@@ -93,5 +96,15 @@ class DeleteRowsFromTransitionLogScriptConsole extends Console
         return "DELETE
                 FROM spy_oms_order_item_state_history
                 WHERE created_at < DATE_ADD(now(), INTERVAL - 3 MONTH) ";
+    }
+
+    /**
+     * @return string
+     */
+    protected function deleteRowsFromDataImportEventArchive(): string
+    {
+        return "DELETE
+                FROM pyz_data_import_event_archive
+                WHERE created_at < DATE_ADD(now(), INTERVAL -2 WEEK)";
     }
 }
