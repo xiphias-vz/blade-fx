@@ -2,7 +2,19 @@
 
 {% block body %}
     {% set imageExtraClasses = '' %}
+    {% set thumbImage = attributes.src | replace({'.com/': '.com/thumb_'}) %}
+    {% set defaultUrl = publicPath("/images/kein_bild_vorhanden.png") %}
     {% block image %}
-        <img class="{{ component.renderClass(config.name ~ '__image', modifiers) }} {{ imageExtraClasses }}" {{ component.renderAttributes(attributes) }}>
+        <img onerror="loadNonThumbImage(this)" class="{{ component.renderClass(config.name ~ '__image', modifiers) }} {{ imageExtraClasses }}" src="{{ thumbImage }}" alt="{{ attributes.alt }}">
     {% endblock %}
+    <script>
+        function loadNonThumbImage(ev){
+            let image = ev;
+            if(image.src.includes("thumb_")){
+                image.src = image.src.replace('thumb_', '');
+            }else{
+                image.src = '{{ defaultUrl }}';
+            }
+        }
+    </script>
 {% endblock %}
