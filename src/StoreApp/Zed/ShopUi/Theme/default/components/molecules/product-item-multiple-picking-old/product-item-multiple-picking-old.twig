@@ -81,6 +81,7 @@
         <input type="hidden" id="isPartiallyPicked" value="{{ data.currentPositionData.isPartiallyPicked }}">
         <input type="hidden" id="isCancelledStatus" value="{{ data.currentPositionData.isCancelledStatus }}">
         <input type="hidden" id="isPausedStatus" value="{{ data.currentPositionData.isPausedStatus }}">
+        <input type="hidden" id="approxWeight" value="{{ orderWeight }}">
         <div class="col col--expand">
             <div class="box {{ config.name }}__info">
                 <div class="{{ config.name }}__item-head-box">
@@ -368,6 +369,32 @@
                 {% block formMessage %}
                     <div id="substituteMessage">
                         <p>{{ 'multi.picking.substitutes.popupui.message' | trans }}</p>
+                    </div>
+                {% endblock %}
+            </div>
+        {% endblock %}
+
+    {% endembed %}
+
+    {% embed molecule('popup-ui-weight') with {
+        data: {
+            title: 'multi.picking.weight.popupui.title' | trans,
+            buttons: {
+                submit: {
+                    isButton: true
+                },
+                cancel: {
+                    isButton: true
+                },
+            },
+            borderRadius: 0
+        }
+    } only %}
+        {% block content %}
+            <div>
+                {% block formMessage %}
+                    <div id="substituteMessage">
+                        <p>{{ 'multi.picking.weight.popupui.message' | trans }}</p>
                     </div>
                 {% endblock %}
             </div>

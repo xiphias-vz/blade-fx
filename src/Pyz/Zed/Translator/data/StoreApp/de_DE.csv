@@ -251,4 +251,9 @@ container.scan.merge.error.container-is-already-used,"Container ist bereits gebr
 first.customer,ERSTKUNDE
 multi.shelving.success.sentence.part.one,"wurde"
 multi.shelving.success.sentence.part.two,"zugeordnet"
+multi.picking.weight.popupui.title, Hinzufügen
+multi.picking.weight.popupui.message, Möchtest du noch einem weiteren Gewichtsartikel hinzufügen
+multi.picking.weight.popupui.confirm.button, "Ja, hinzufügen"
+multi.picking.weight.popupui.cancel.button, Nein
 container.already.used, Dieser Container wird bereits verwendet
+

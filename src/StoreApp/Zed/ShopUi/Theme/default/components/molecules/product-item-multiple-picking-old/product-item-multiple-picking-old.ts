@@ -56,6 +56,7 @@ export default class ProductItemMultiplePickingOld extends Component {
     protected $containerScanConfirmation: HTMLInputElement;
     protected popupUiError: HTMLElement;
     protected popupUiSubstitute: HTMLElement;
+    protected popupUiWeight: HTMLElement;
     protected $isSubstitutionAllowed: $;
     eanScanInputElements:HTMLInputElement;
     eanScanInputElement: HTMLInputElement;
@@ -78,8 +79,11 @@ export default class ProductItemMultiplePickingOld extends Component {
     productBlockWrapper: HTMLElement;
     yesSubstitute: HTMLButtonElement;
     noSubstitute: HTMLButtonElement;
+    yesWeightInputError: HTMLButtonElement;
+    noWeightInputError: HTMLButtonElement;
     iconSubstitute: HTMLElement;
     isSubstitutionFound: HTMLInputElement;
+    approxWeight: HTMLElement;
     protected isSubstitutionPicked: boolean;
     private weightMax: number;
     private weightMin: number;
@@ -99,6 +103,9 @@ export default class ProductItemMultiplePickingOld extends Component {
     protected inputValueErrorGreaterAlert2: HTMLInputElement;
     protected inputValueErrorLessAlert1: HTMLInputElement;
     protected inputValueErrorLessAlert2: HTMLInputElement;
+    protected additionalItem = false;
+    protected quantityCounterItem = false;
+    protected quantityCounterDecrease = false;
 
     protected readyCallback(): void {
     }
@@ -137,8 +144,12 @@ export default class ProductItemMultiplePickingOld extends Component {
         this.pickingItemPosition = $('#pickingItemPositionDiv').data('pickingitemposition');
         this.lastPositionDataFromDiv = $('#lastPositionDataDiv').data('lastpositiondata');
         this.popupUiSubstitute = this.querySelector('.popup-ui-substitute');
+        this.popupUiWeight = this.querySelector('.popup-ui-weight');
         this.yesSubstitute = this.querySelector('.popup-ui-substitute__yes-substitute');
         this.noSubstitute = this.querySelector('.popup-ui-substitute__no-substitute');
+        this.approxWeight = <HTMLElement>document.querySelector('#approxWeight');
+        this.yesWeightInputError = this.querySelector('.popup-ui-weight__yes-weight');
+        this.noWeightInputError = this.querySelector('.popup-ui-weight__no-weight');
         this.iconSubstitute = this.querySelector('.icon-substitute-item');
         this.isSubstitutionFound = <HTMLInputElement>this.querySelector('#isSubstitutionFound');
         this.isSubstitutionPicked = false;
@@ -211,6 +222,8 @@ export default class ProductItemMultiplePickingOld extends Component {
         this.btnSubmitPick.addEventListener('click', evt => this.onSubmitClick(evt));
         this.noSubstitute.addEventListener('click', evt => this.onClickNoSubstitute());
         this.yesSubstitute.addEventListener('click', evt => this.onClickYesSubstitute());
+        this.noWeightInputError.addEventListener('click', evt => this.onClickNoWeightInputError());
+        this.yesWeightInputError.addEventListener('click', evt => this.onClickYesWeightInputError());
         if(this.eanScanInputElement != undefined){
             this.eanScanInputElement.addEventListener('keypress', (event: KeyboardEvent) => this.formKeyPressHandler(event));
         }
@@ -520,7 +533,11 @@ export default class ProductItemMultiplePickingOld extends Component {
         let inputValue = Number(this.$quantityField.val());
 
         if (isPicked) {
-            inputValue += 1;
+            if(!this.quantityCounterItem) {
+                inputValue += 1;
+            } else {
+                inputValue += 0;
+            }
         } else {
             inputValue -= 1;
         }
@@ -531,10 +548,6 @@ export default class ProductItemMultiplePickingOld extends Component {
 
         this.updateQuantityInput(inputValue);
         this.pickProducts.updateStorageItem(this, this.orderItemStatus);
-        if(Number(this.currentQuantity) === Number(this.maxQuantity)){
-            this.acceptClickHandler();
-            this.pressSubmit();
-        }
     }
 
     protected validateWeightInput(): boolean {
@@ -674,6 +687,7 @@ export default class ProductItemMultiplePickingOld extends Component {
             const eanScanInput = this.eanScanInputElement;
             let $inputValue = eanScanInput.value;
             const $formattedScanInput = $inputValue.replace('/x11', '').replace('/X11', '');
+            let quantity = this.$quantityOutput.text();
 
             const $eanPrefix = Number($formattedScanInput.substr(0,2));
             const $plu = $formattedScanInput.substr(2,4);  //Check with ean
@@ -737,7 +751,12 @@ export default class ProductItemMultiplePickingOld extends Component {
                         this.step20($selForQuantityElement, $formattedScanInput, Number(calculatedWeight), val);
                     }
 
-                    this.setQuantityToValue(1);
+                    if(valueOfQuantityElement <= this.weightMax) {
+                        if(!this.quantityCounterDecrease) {
+                            quantity++;
+                        }
+                        this.setQuantityToValue(quantity);
+                    }
                     return;
                 }
                 else
@@ -758,11 +777,6 @@ export default class ProductItemMultiplePickingOld extends Component {
                     }
                 }
             }
-
-            if(Number(this.currentQuantity) === Number(this.maxQuantity)){
-                this.acceptClickHandler();
-            }
-
         }
     }
 
@@ -790,6 +804,7 @@ export default class ProductItemMultiplePickingOld extends Component {
         this.barcodeAndWeightContainer++;
         this.showInfo = true;
         this.weight = this.currentWeight;
+        let approxWeight = this.approxWeight.value;
         let scanBox = {} as ScanningBox
         scanBox.fullScannedId = id;
         scanBox.id = this.barcodeAndWeightContainer;
@@ -799,9 +814,29 @@ export default class ProductItemMultiplePickingOld extends Component {
 
         const inputWeightMax = Number(this.$weightField.attr('max'));
         const inputWeightMin = Number(this.$weightField.attr('min'));
-        if(valueOfWeightElement > inputWeightMin && valueOfWeightElement < inputWeightMax) {
-            this.acceptClickHandler();
-            this.pressSubmit();
+        if(valueOfWeightElement >= approxWeight && valueOfWeightElement <= inputWeightMax) {
+            if(this.additionalItem) {
+                this.eanScanInputElement.value = '';
+                if(this.quantityCounterItem) {
+                    this.quantityCounterItem = false;
+                }
+                if(valueOfWeightElement == inputWeightMax) {
+                    this.acceptClickHandler();
+                    this.pressSubmit();
+                }
+            } else {
+                this.acceptClickHandler();
+                this.pressSubmit();
+            }
+        } else if(valueOfWeightElement >= inputWeightMin && valueOfWeightElement <= approxWeight) {
+            if(!this.additionalItem) {
+                this.popupUiWeight.classList.remove('popup-ui-weight--hide');
+                this.popupUiWeight.classList.add('popup-ui-weight--show');
+            }
+        } else if(valueOfWeightElement >= inputWeightMax) {
+            this.removeCurrentItem(valueOfWeightElement, scanBox);
+            this.quantityCounterDecrease = true;
+            alert(this.inputValueErrorGreaterAlert1.value + inputWeightMax + this.inputValueErrorGreaterAlert2.value);
         } else {
             this.step30();
         }
@@ -909,8 +944,7 @@ export default class ProductItemMultiplePickingOld extends Component {
     }
 
     protected declineClickHandler(): void {
-        if(this.$isSubstitutionAllowed == '1' && this.isSubstitutionFound.value === "0")
-        {
+        if(this.$isSubstitutionAllowed == '1' && this.isSubstitutionFound.value === "0") {
             this.popupUiSubstitute.classList.remove('popup-ui-substitute--hide');
             this.popupUiSubstitute.classList.add('popup-ui-substitute--show');
         }
@@ -921,6 +955,7 @@ export default class ProductItemMultiplePickingOld extends Component {
         this.updateQuantityInput(0);
         this.$this.addClass(this.notPickedCLass);
         this.$this[0].$declineButton.addClass(this.addUndoCLass);
+        this.additionalItem = false;
 
         let elementForFocus: HTMLInputElement = null;
         const elements = <HTMLInputElement>document.getElementsByClassName('ean_scan_input');
@@ -944,6 +979,7 @@ export default class ProductItemMultiplePickingOld extends Component {
 
     protected pauseClickHandler(): void {
         this.$weightField.removeAttr('required');
+        this.additionalItem = false;
 
         this.$this.addClass(this.pausedClass);
         this.$this[0].$declineButton.addClass(this.addUndoCLass);
@@ -965,6 +1001,9 @@ export default class ProductItemMultiplePickingOld extends Component {
         this.$this[0].$declineButton.removeClass(this.addUndoCLass);
         this.iconSubstitute.classList.add(this.showIconSubstitute);
         this.isSubstitutionFound.value = "0";
+
+        this.setQuantityToValue(0);
+        this.eanScanInputElement.value = "";
     }
 
     protected onClickNoSubstitute(){
@@ -980,6 +1019,29 @@ export default class ProductItemMultiplePickingOld extends Component {
         if(this.isSubstitutionPicked === true){
             this.ifIsSubstitutionPicked();
         }
+    }
+
+    protected onClickNoWeightInputError() {
+        this.acceptClickHandler();
+        this.pressSubmit();
+        this.popupUiWeight.classList.add('popup-ui-weight--hide');
+    }
+
+    protected onClickYesWeightInputError() {
+        this.popupUiWeight.classList.add('popup-ui-weight--hide');
+        this.quantityCounterItem = true;
+        this.step30();
+        this.additionalItem = true;
+    }
+
+    protected removeCurrentItem(valueOfWeightElement: number, scanBox) {
+        $(".weightScanContainer > div:last-child").remove();
+        valueOfWeightElement = valueOfWeightElement - scanBox.scannedWeight;
+        this.weight = valueOfWeightElement;
+        this.$weightField[0].value = valueOfWeightElement;
+        this.containerData.pop();
+        const element = this.eanScanInputElement;
+        element.value = "";
     }
 
     protected ifIsSubstitutionPicked (){
@@ -1138,7 +1200,7 @@ export default class ProductItemMultiplePickingOld extends Component {
     }
 
     get currentWeight(): number {
-        return Number(this.$weightField.val());
+        return Number(this.$weightField !== undefined ? this.$weightField.val() : "0");
     }
 
     get sku(): string {

@@ -1,0 +1,164 @@
+$setting-popup-spacing-x: rem(24);
+$setting-popup-spacing-y: rem(16);
+
+@mixin shop-ui-popup-ui-substitute($name: '.popup-ui-weight') {
+    #{$name} {
+        display: none;
+        &--show {
+            display: block;
+            #{$name} {
+                &__overlay {
+                    display: flex;
+                }
+            }
+        }
+
+        &--hide {
+            display: none;
+        }
+
+        &__overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 800 !important;
+            display: none;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            height: 100%;
+            padding: rem(15);
+            background-color: rgba($setting-color-black, 0.7);
+        }
+
+        &__container {
+            flex-grow: 1;
+            max-width: rem(480);
+            background: $setting-color-white;
+            border-radius: rem(24);
+
+            .store-app-label-holder {
+                background: $setting-color-white-1;
+
+                .spacing-y-label {
+                    margin-top: 0.2rem;
+                    margin-bottom: 0.2rem;
+                }
+                table {
+                    .item-quantity {
+                        width: 60px;
+                        text-align: right;
+                    }
+                }
+
+                .label-text{
+                    padding-left: 5px;
+                }
+
+                .label-text-green {
+                    color:$setting-color-green;
+                    padding-left: 5px;
+                }
+                .label-text-brown {
+                    color:$setting-color-brown;
+                    padding-left: 5px;
+                }
+            }
+            .horizontal-spacing {
+                margin-bottom: 15px;
+            }
+        }
+
+        &__title-container {
+            height: rem(50);
+        }
+
+        &__title {
+            padding: 0.9rem 1.5rem 0.5rem;
+            font: fw(bold) rem(18) $setting-font-family-additional;
+        }
+
+        &__content {
+            padding: $setting-popup-spacing-y $setting-popup-spacing-x;
+            clear: both;
+
+            .horizontal-spacing {
+                p {
+                    padding: 0px 35px;
+                    text-align: left;
+                }
+            }
+            .total-articles {
+                width: 100%;
+                padding:0.5rem 2.7rem 0rem;
+                font-weight: bold;
+                font-size: 18px;
+                align-items: center;
+
+                .total-amount {
+                    padding: 0px 5px 0px 9px;
+                }
+            }
+
+            .submit-confirmation {
+                width: 80%;
+                margin: 0px auto;
+                display: block;
+            }
+
+            .cancel-confirmation {
+                padding: 10px;
+                border: 1px solid $setting-color-green;
+                display: block;
+                width: 80%;
+                margin: 10px auto;
+                border-radius: 0.5rem;
+            }
+        }
+
+        &--buttons-div {
+            width:100%;
+            margin-top:2rem;
+            @include helper-breakpoint-media-max($sm-max) {
+                display: flex;
+                flex-direction: column-reverse;
+            }
+        }
+
+        &--no-button
+        {
+            margin-bottom: 2rem;
+            width: 70%;
+            color: black;
+            text-align: center;
+            background-color: transparent;
+            border: 1px solid black;
+
+            &:hover{
+                color: black;
+            }
+        }
+
+        &--yes-button {
+            margin-bottom: 2rem;
+            width: 70%;
+            text-align: center;
+        }
+
+        &--div-button {
+            display: flex;
+            justify-content: center;
+            width: 50%;
+            @include helper-breakpoint-media-max($sm-max) {
+                width: 100%;
+            }
+        }
+
+        .link--close {
+            text-align: right;
+            padding-top: rem(15);
+        }
+    }
+}
+
+@include shop-ui-popup-ui-substitute();
