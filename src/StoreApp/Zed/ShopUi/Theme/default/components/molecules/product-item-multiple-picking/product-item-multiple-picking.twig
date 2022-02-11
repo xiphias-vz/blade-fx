@@ -123,11 +123,21 @@
                     {% block brandNameAndWeight %}
                         {% set itemPrice = pricePerKg ?? price %}
                         {% if currentCodeBucket == 'DE' %}
-                            {% if basePriceUnit == 'kg' %}
-                                <div class="{{ config.name }}__supplierNameAndWeight"><span class="{{ config.name }}__supplierAndName col--md-8">{{ brand ?? '' }} - {{ title }}</span><span class="{{ config.name }}__weight col--md-4">{{ orderItemWeight | replace('.', ',') }} {{ basePriceUnit }}</span></div>
-                            {% else %}
-                                <div class="{{ config.name }}__supplierNameAndWeight"><span class="{{ config.name }}__supplierAndName col--md-8">{{ brand ?? '' }} - {{ title }}</span><span class="{{ config.name }}__weight col--md-4">{{ (basePriceContent / 100)  | replace('.', ',') }} {{ basePriceUnit }}</span></div>
-                            {% endif %}
+                                {% if basePriceUnit == 'kg' %}
+                                    <div class="{{ config.name }}__supplierNameAndWeight">
+                                        <span class="{{ config.name }}__supplierAndName col--md-8">{{ brand ?? '' }} - {{ title }}</span>
+                                        {% if (basePriceUnit != "") and (orderItemWeight != 0) %}
+                                            <span class="{{ config.name }}__weight col--md-4">{{ orderItemWeight | replace('.', ',') }} {{ basePriceUnit }}</span>
+                                        {% endif %}
+                                    </div>
+                                {% else %}
+                                    <div class="{{ config.name }}__supplierNameAndWeight">
+                                        <span class="{{ config.name }}__supplierAndName col--md-8">{{ brand ?? '' }} - {{ title }}</span>
+                                    {% if (basePriceUnit != "") and (basePriceContent != 0)  %}
+                                        <span class="{{ config.name }}__weight col--md-4">{{ (basePriceContent / 100)  | replace('.', ',') }} {{ basePriceUnit }}</span>
+                                    {% endif %}
+                                    </div>
+                                {% endif %}
                         {% else %}
                             <div class="{{ config.name }}__supplierNameAndWeight"><span class="{{ config.name }}__supplierAndName col--md-8">{{ title }}</span></div>
                         {% endif %}
