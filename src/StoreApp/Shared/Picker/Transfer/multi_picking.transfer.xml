@@ -57,6 +57,7 @@
         <property name="hasSubstitutedItem" type="bool"/>
         <property name="zoneAbbrevation" type="string"/>
         <property name="hasItems" type="bool"/>
+        <property name="idZoneCurrent" type="int"/>
     </transfer>
 
     <transfer name="PickingOrderItemTransfer">

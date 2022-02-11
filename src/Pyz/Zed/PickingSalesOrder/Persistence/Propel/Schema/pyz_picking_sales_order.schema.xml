@@ -10,6 +10,7 @@
         <column name="container_code" type="VARCHAR" required="true"/>
         <column name="has_substituted_item" type="BOOLEAN"/>
         <column name="shelf_code" required="false" type="VARCHAR" default="NULL"/>
+        <column name="fk_picking_zone_current" type="INTEGER" required="false"/>
 
         <unique name="pyz_picking_sales_order-unique-key">
             <unique-column name="container_code"/>
@@ -22,6 +23,9 @@
 
         <foreign-key name="pyz_picking_sales_order-fk_picking_zone" foreignTable="pyz_picking_zone" phpName="PickingZone">
             <reference local="fk_picking_zone" foreign="id_picking_zone"/>
+        </foreign-key>
+        <foreign-key name="pyz_picking_sales_order-fk_picking_zone_current" foreignTable="pyz_picking_zone" phpName="PickingZoneCurrent">
+            <reference local="fk_picking_zone_current" foreign="id_picking_zone"/>
         </foreign-key>
         <index name="index-picking_sales_order-fk_picking_zone">
             <index-column name="fk_picking_zone"/>

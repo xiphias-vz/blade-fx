@@ -291,6 +291,7 @@ class PickingHeaderTransferData
         foreach ($orderMod->getPickingContainers() as $container) {
             if ($container->getContainerID() == $containerId) {
                 $container->setShelfID($shelfId === "--" ? null : $shelfId);
+                $container->setIdZoneCurrent($transfer->getIdZone());
                 $dataUpdated = true;
             }
         }
@@ -305,21 +306,24 @@ class PickingHeaderTransferData
                 ->setIsAdded(true)
                 ->setPickingColor($orderMod->getPickingColor())
                 ->setZoneAbbrevation($transfer->getZoneAbbrevation())
+                ->setIdZoneCurrent($transfer->getIdZone())
                 ->setHasSubstitutedItem($isSubstituteContainer);
             $orderMod->addPickingContainer($containerId, $container);
             $dataUpdated = true;
         }
-        //save data to pyz_picking_sales_order - PyzPickingSalesOrderQuery
+
         $containerEntity = PyzPickingSalesOrderQuery::create()
             ->filterByFkSalesOrder($orderMod->getIdOrder())
             ->filterByContainerCode($containerId)
             ->findOneOrCreate();
         $containerEntity->setHasSubstitutedItem($isSubstituteContainer);
+        $containerEntity->setFkPickingZoneCurrent($transfer->getIdZone());
 
         if ($shelfId === "--") {
             $containerEntity->setShelfCode(null);
         } elseif (!empty($shelfId)) {
             $containerEntity->setShelfCode($shelfId);
+            $containerEntity->setFkPickingZoneCurrent(null);
 
             $containerCount = count($orderMod->getPickingContainers());
             $fkGlobalPickReport = $this->updatePerformanceOrder($orderMod->getIdPerformanceSalesOrderReport(), $containerCount);
@@ -353,6 +357,7 @@ class PickingHeaderTransferData
                 if (!$container->getHasItems()) {
                     $container->setHasItems(true);
                     $container->setShelfID(null);
+                    $container->setIdZoneCurrent($transfer->getIdZone());
                     $this->setTransferToSession($transfer);
                     $this->setContainerToOrder($order, $containerId, "--", $container->getHasSubstitutedItem() ?? false);
                 }
@@ -738,7 +743,8 @@ class PickingHeaderTransferData
                 ppso.fk_picking_zone as id_zone,
                 false as is_added,
                 ppz.abbreviation as zone_abbrevation,
-                ppso.has_substituted_item
+                ppso.has_substituted_item,
+                ppso.fk_picking_zone_current as id_zone_current
             from pyz_picking_sales_order ppso
                 left outer join pyz_order_picking_block popb on ppso.fk_sales_order = popb.fk_sales_order and ppso.fk_picking_zone = popb.fk_picking_zone
                 left outer join pyz_picking_zone ppz on ppso.fk_picking_zone = ppz.id_picking_zone
