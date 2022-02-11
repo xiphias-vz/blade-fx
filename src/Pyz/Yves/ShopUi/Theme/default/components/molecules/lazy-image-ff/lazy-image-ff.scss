@@ -1,0 +1,41 @@
+@mixin shop-ui-lazy-image($name: '.lazy-image') {
+    #{$name} {
+        line-height: 1;
+        height: -webkit-fill-available !important;
+
+
+
+        &--bg {
+            position: relative;
+        }
+
+        &--bg-cover {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+        }
+
+        &--no-pointer {
+            pointer-events: none;
+        }
+
+        &__bg-fallback {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        .js-lazy-image__content {
+            height: -webkit-fill-available;
+        }
+
+        @content;
+    }
+}
+
+@include shop-ui-lazy-image();

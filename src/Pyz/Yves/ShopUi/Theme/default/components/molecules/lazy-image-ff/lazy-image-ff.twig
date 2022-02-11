@@ -1,0 +1,29 @@
+{% extends model('component') %}
+
+{% define config = {
+    name: 'lazy-image-ff',
+    tag: 'lazy-image-ff',
+} %}
+
+{% define data = {
+    imageClasses: '',
+    imageSrc: '',
+    imageTitle: '',
+} %}
+
+{% define attributes = {
+    loading: 'lazy',
+} %}
+
+{% block attributes %}{% endblock %}
+
+{% block extraClass %}
+    {{ parent() }}
+{% endblock %}
+
+{% block body %}
+    {% block image %}
+        {% set attributesWithoutSrc = attributes | merge({'src': ''}) %}
+        <img class="{{ data.imageClasses }} {{ config.jsName }}__content" src="{{ data.imageSrc }}" data-src="{{ data.imageSrc }}" data-storage="{{ data.imageSrc }}" {{ component.renderAttributes(attributesWithoutSrc) }}>
+    {% endblock %}
+{% endblock %}

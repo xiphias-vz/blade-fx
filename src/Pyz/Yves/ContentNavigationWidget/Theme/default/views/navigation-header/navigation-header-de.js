@@ -195,6 +195,14 @@ document.addEventListener("ffReady", function (event) {
         });
     });
 
+    resultDispatcher.addCallback('suggest', function(resultData) {
+        resultData.forEach(item => {
+           if(!item.attributes.ImageUrl.includes('/thumb_'))
+           {
+               item.attributes.ImageUrl = item.attributes.ImageUrl.replace('.com/', '.com/thumb_');
+           }
+        });
+    });
 
     resultDispatcher.addCallback('result', function (resultData) {
         var sum = 0;
@@ -206,6 +214,17 @@ document.addEventListener("ffReady", function (event) {
             searchResultText = el.getAttribute('data-text');
             searchResultText = searchResultText.replace('%numFound%', sum);
             el.innerText = searchResultText;
+        }
+
+        if (resultData.records !== undefined && resultData.records !== null) {
+            resultData.records.forEach(item => {
+                if (item.record !== undefined && item.record !== null) {
+                    if(!item.record.ImageUrl.includes('/thumb_'))
+                    {
+                        item.record.ImageUrl = item.record.ImageUrl.replace('.com/', '.com/thumb_');
+                    }
+                }
+            });
         }
     });
 
@@ -240,10 +259,12 @@ document.addEventListener("ffReady", function (event) {
 
 window.addEventListener("DOMNodeInserted", function (event) {
     if(event.relatedNode.localName == 'ff-record') {
+        checkPictureAvailability(event.relatedNode);
         checkDiscountLabel(event.relatedNode, 'ff-record');
         checkOriginalAndDefaultPrices(event.relatedNode, 'ff-record');
         checkBrandIsSet(event.relatedNode, 'ff-record');
     } else if (event.relatedNode.localName == 'ff-suggest-item') {
+        checkPictureAvailability(event.relatedNode);
         checkOriginalAndDefaultPrices(event.relatedNode, 'ff-suggest-item');
         addCommaAfterBrand(event.relatedNode);
     } else if (event.relatedNode.localName == 'ff-asn-group-element') {
@@ -414,4 +435,20 @@ function switchSelectedOptionInDropDown(element) {
     });
 }
 
-
+function checkPictureAvailability(element) {
+    const defaultUrl = "/assets/current/default/images/kein_bild_vorhanden.png";
+    let picture = element.querySelector('img');
+    if (picture !== undefined && picture !== null) {
+        if (picture.src !== null && picture.src !== undefined) {
+            picture.onerror = function () {
+                if(picture.src.includes('/thumb_'))
+                {
+                    picture.src = picture.src.replace('thumb_', '');
+                    picture.setAttribute("data-src", picture.src);
+                } else {
+                    picture.src = defaultUrl;
+                }
+            }
+        }
+    }
+}
