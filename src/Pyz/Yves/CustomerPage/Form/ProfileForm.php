@@ -19,7 +19,7 @@ use Symfony\Component\Validator\Constraints\Regex;
 
 class ProfileForm extends SprykerProfileForm
 {
-    private const REGEXP_SAFE_STRING = '/^[^<>;]+$/i';
+    private const REGEXP_SAFE_STRING = '/^[^<>;"]+$/i';
     private const MESSAGE_NOT_SAFE_STRING = 'general.error.message.field_contain_not_valid_characters';
     private const VALIDATION_MIN_LENGTH_MESSAGE = 'validation.min_length';
     private const OPTION_VALIDATION_GROUP = 'validation_group';
