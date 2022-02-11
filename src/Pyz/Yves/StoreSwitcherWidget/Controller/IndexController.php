@@ -35,10 +35,12 @@ class IndexController extends AbstractController
     {
         $store = $request->query->get(static::URL_PARAM_STORE);
         $checkStore = $request->query->get(static::IS_PASSWORD_PROTECTED);
-        $refererUrl = $request->query->get(static::URL_PARAM_REFERER_URL);
+        $refererUrl = $request->query->get(static::URL_PARAM_REFERER_URL, '');
+
         if (str_contains($refererUrl, "AND")) {
             $refererUrl = str_replace("AND", "-&-", $refererUrl);
         }
+
         $path = $request->query->get(static::URL_PARAM_PATH);
         $refererUrl = $refererUrl . $path;
 
