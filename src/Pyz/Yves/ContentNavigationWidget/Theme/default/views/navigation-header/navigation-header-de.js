@@ -491,6 +491,7 @@ function checkPictureAvailability(element) {
                     picture.setAttribute("data-src", picture.src);
                 } else {
                     picture.src = defaultUrl;
+                    picture.setAttribute("data-src", defaultUrl);
                 }
             }
         }
