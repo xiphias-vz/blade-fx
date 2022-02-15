@@ -17,6 +17,11 @@ use Spryker\Zed\Oms\Communication\Plugin\Oms\Condition\AbstractCondition;
 class IsOrderExportedToCashierConditionPlugin extends AbstractCondition
 {
     /**
+     * @var array
+     */
+    protected $orderCashierExportSuccess = [];
+
+    /**
      * @api
      *
      * @param \Orm\Zed\Sales\Persistence\SpySalesOrderItem $orderItem
@@ -25,6 +30,10 @@ class IsOrderExportedToCashierConditionPlugin extends AbstractCondition
      */
     public function check(SpySalesOrderItem $orderItem)
     {
-        return $this->getFacade()->checkIsOrderExportedToCashierSuccessfully($orderItem->getFkSalesOrder());
+        if (!isset($this->orderCashierExportSuccess[$orderItem->getFkSalesOrder()])) {
+            $this->orderCashierExportSuccess[$orderItem->getFkSalesOrder()] = $this->getFacade()->checkIsOrderExportedToCashierSuccessfully($orderItem->getFkSalesOrder());
+        }
+
+        return $this->orderCashierExportSuccess[$orderItem->getFkSalesOrder()];
     }
 }

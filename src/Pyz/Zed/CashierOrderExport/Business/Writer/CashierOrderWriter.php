@@ -132,7 +132,7 @@ class CashierOrderWriter implements CashierOrderWriterInterface
             file_put_contents($archiveXmlFilePath, $contentXml->outputMemory());
             unset($contentXml);
         } catch (Exception $exceptionSaveFile) {
-            $this->logError($exceptionSaveFile->getMessage(), $archiveFileName, $exceptionSaveFile->getTrace());
+            $this->logError($exceptionSaveFile->getMessage(), $archiveFileName);
         }
 
         try {
@@ -146,12 +146,12 @@ class CashierOrderWriter implements CashierOrderWriterInterface
                 $this->uploadCashierFileToAws($archiveFilePath, $fileNameForS3);
                 $this->uploadCashierFileToAws($archiveXmlFilePath, $xmlFileNameForS3);
             } catch (Exception $exception) {
-                $this->logError($exception->getMessage(), $archiveFileName, $exception->getTrace());
+                $this->logError($exception->getMessage(), $archiveFileName);
             }
             $this->cashierOrderDeleter->delete($archiveFileName);
             $this->cashierOrderDeleter->delete($xmlFileName);
         } catch (Exception $exception) {
-            $this->logError(static::FILE_CREATE_FAIL_MESSAGE, $archiveFileName, $exception->getTrace());
+            $this->logError(static::FILE_CREATE_FAIL_MESSAGE, $archiveFileName, [$exception->getMessage()]);
 
             return $orderTransfer;
         }

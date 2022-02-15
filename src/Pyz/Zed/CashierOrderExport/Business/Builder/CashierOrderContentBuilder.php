@@ -630,7 +630,7 @@ class CashierOrderContentBuilder implements CashierOrderContentBuilderInterface
             $writer->endElement();
             $writer->endDocument();
         } catch (Exception $exception) {
-            $this->logError($exception->getMessage(), $exception->getTrace());
+            $this->logError($exception->getMessage());
         }
 
         return $writer;
@@ -695,7 +695,7 @@ class CashierOrderContentBuilder implements CashierOrderContentBuilderInterface
             $writer->writeElement(static::XML_PERSONNEL_NUMBER);
             $writer->writeElement(static::XML_TIMESTAMP, date(static::XML_TIMESTAMP_FORMAT));
         } catch (Exception $exception) {
-            $this->logError($exception->getMessage(), $exception->getTrace());
+            $this->logError($exception->getMessage());
         }
         $writer->endElement();
 
@@ -813,7 +813,7 @@ class CashierOrderContentBuilder implements CashierOrderContentBuilderInterface
 
             static::$numberOfItems = $counter;
         } catch (Exception $exception) {
-            $this->logError($exception->getMessage(), $exception->getTrace());
+            $this->logError($exception->getMessage());
         }
         $writer->endElement();
 
@@ -842,7 +842,7 @@ class CashierOrderContentBuilder implements CashierOrderContentBuilderInterface
             $writer->writeElement(static::XML_TIMESTAMP, date(static::XML_TIMESTAMP_FORMAT));
             $writer->writeElement(static::XML_RESCAN_REQUIRED, static::XML_RESCAN_REQUIRED_VALUE);
         } catch (Exception $exception) {
-            $this->logError($exception->getMessage(), $exception->getTrace());
+            $this->logError($exception->getMessage());
         }
         $writer->endElement();
 

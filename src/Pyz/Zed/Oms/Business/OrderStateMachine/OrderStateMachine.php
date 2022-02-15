@@ -632,6 +632,43 @@ class OrderStateMachine extends SprykerOrderStateMachine implements OrderStateMa
     }
 
     /**
+     * @param string $eventId
+     * @param \Orm\Zed\Sales\Persistence\SpySalesOrderItem[] $orderItems
+     * @param array $sourceStateBuffer
+     * @param \Spryker\Zed\Oms\Business\Util\TransitionLogInterface $log
+     *
+     * @return array
+     */
+    protected function updateStateByEvent($eventId, array $orderItems, array $sourceStateBuffer, TransitionLogInterface $log)
+    {
+        $targetStateMap = [];
+        foreach ($orderItems as $i => $orderItem) {
+            $stateId = $this->getState($orderItem)->getName();
+            $sourceStateBuffer[$orderItem->getIdSalesOrderItem()] = $stateId;
+
+            $process = $this->builder->createProcess($this->getProcess($orderItem)->getName());
+            $sourceState = $process->getStateFromAllProcesses($stateId);
+
+            $log->addSourceState($orderItem, $sourceState->getName());
+
+            $targetState = $sourceState;
+            if ($eventId && $sourceState->hasEvent($eventId)) {
+                $transitions = $sourceState->getEvent($eventId)->getTransitionsBySource($sourceState);
+                $targetState = $this->checkCondition($transitions, $orderItem, $sourceState, $log);
+                $log->addTargetState($orderItem, $targetState->getName());
+            }
+
+            $targetStateMap[$i] = $targetState->getName();
+        }
+
+        foreach ($orderItems as $i => $orderItem) {
+            $this->setState($orderItems[$i], $targetStateMap[$i]);
+        }
+
+        return $sourceStateBuffer;
+    }
+
+    /**
      * @param array $stateToTransitionsMap
      * @param \Orm\Zed\Sales\Persistence\SpySalesOrderItem[] $orderItems
      * @param array $sourceStateBuffer
