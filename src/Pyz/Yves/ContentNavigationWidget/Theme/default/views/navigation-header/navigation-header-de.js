@@ -480,7 +480,7 @@ function switchSelectedOptionInDropDown(element) {
 }
 
 function checkPictureAvailability(element) {
-    const defaultUrl = "/assets/current/default/images/kein_bild_vorhanden.png";
+    const defaultUrl = "/assets/current/default//images/kein_bild_vorhanden.png";
     let picture = element.querySelector('img');
     if (picture !== undefined && picture !== null) {
         if (picture.src !== null && picture.src !== undefined) {
@@ -491,7 +491,6 @@ function checkPictureAvailability(element) {
                     picture.setAttribute("data-src", picture.src);
                 } else {
                     picture.src = defaultUrl;
-                    picture.setAttribute("data-src", defaultUrl);
                 }
             }
         }
