@@ -44,6 +44,7 @@ class OrdersTable extends SprykerOrdersTable
     protected const TIMESLOT_DELIMITER = '_';
     protected const TIMESLOT_DELIMITER_REPLACEMENT = ' ';
     protected const TIMESLOT_SEARCHABLE_FIELD_PATTERN = 'REPLACE(%s, \'%s\', \'%s\')';
+    protected const COL_CUSTOMER_CELL_PHONE = 'customer_cell_phone';
 
     /**
      * @var \Pyz\Zed\Sales\Communication\Table\OrdersTableQueryBuilderInterface
@@ -286,6 +287,13 @@ class OrdersTable extends SprykerOrdersTable
         $query = parent::buildQuery();
         $query->withColumn("(select max(item_paused) from spy_sales_order_item where fk_sales_order = spy_sales_order.id_sales_order)", "isPaused");
         $query->withColumn("GROUP_CONCAT(pyz_picking_sales_order.container_code)", "container_code");
+        $query->withColumn("case when spy_sales_order_address.cell_phone IS NULL AND spy_sales_order_address.phone IS NULL THEN
+            (select sca.cell_phone
+                from spy_customer sc
+                left outer join spy_customer_address sca on sc.id_customer = sca.fk_customer
+                where sc.customer_reference = spy_sales_order.customer_reference
+                    AND not sca.cell_phone is null LIMIT 1)
+            else NULL END", static::COL_CUSTOMER_CELL_PHONE);
         $query->groupBy(SpySalesOrderTableMap::COL_ID_SALES_ORDER);
         $dayRangeFilter = $this->request->query->get(static::DAY_RANGE_FILTER);
         $merchantReferenceFilter = $this->request->query->get(static::MERCHANT_REFERENCE_FILTER);
@@ -505,7 +513,9 @@ class OrdersTable extends SprykerOrdersTable
      */
     protected function getAddressMobilePhone(array $item): string
     {
-        return $item[static::ADDRESS_PHONE][SpySalesOrderAddressTableMap::COL_CELL_PHONE] ?? 'No Billing address or Phone was set';
+        return $item[static::ADDRESS_PHONE][SpySalesOrderAddressTableMap::COL_CELL_PHONE] ??
+            $item[static::COL_CUSTOMER_CELL_PHONE] ??
+            'No Billing address or Phone was set';
     }
 
     /**

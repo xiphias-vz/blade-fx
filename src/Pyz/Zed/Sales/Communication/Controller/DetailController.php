@@ -89,6 +89,25 @@ class DetailController extends SprykerDetailController
             ->getUniqueItemsFromOrder($orderTransfer);
         $requestDeliveryDate = $groupedOrderItems[0]->getShipment()->getRequestedDeliveryDate();
         $address = $groupedOrderItems[0]->getShipment()->getShippingAddress();
+        if ($customerTransfer) {
+            if (!$cellPhone) {
+                foreach ($customerTransfer->getBillingAddress() as $billAddress) {
+                    if ($billAddress->getCellPhone()) {
+                        $cellPhone = $billAddress->getCellPhone();
+                        break;
+                    }
+                }
+            }
+            if (!$address->getPhone()) {
+                foreach ($customerTransfer->getBillingAddress() as $billAddress) {
+                    if ($billAddress->getPhone()) {
+                        $address->setPhone($billAddress->getPhone());
+                        break;
+                    }
+                }
+            }
+        }
+
         $payments = $orderTransfer->getPayments();
         $orderState = $groupedOrderItems[0]["state"]["name"];
         $dateAndTimeSlot = explode('_', $requestDeliveryDate);
