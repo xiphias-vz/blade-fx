@@ -160,6 +160,7 @@ export default class ContainerScanOrderMerge extends Component {
                 this.showPopUpErrorMessageForEmptyContainer();
             }
 
+            this.mergingContainerScanner.value = "";
             this.toggleInputScanner();
 
         }
@@ -192,7 +193,7 @@ export default class ContainerScanOrderMerge extends Component {
                             that.continueUnpacking.classList.remove("button--disabled");
                             let id = '#cnt_' + containerNumberMove;
                             $(id).remove();
-                            containerNumber.value = "";
+                            that.clearInputField(that.mergingContainerScanner);
                         }
                         else {
                             that.showPopUpErrorMessageForEmptyContainer();
