@@ -25,8 +25,10 @@
 }
 %}
 {% block body %}
-    {% embed molecule('popup-ui-shipment-form') with {
-    } only %}
+    {% set defaultUrl = publicPath("/images/kein_bild_vorhanden.png") %}
+    <input type="hidden" id="defaultUrlToTheBoxPicture" value="{{ defaultUrl }}" />
+
+    {% embed molecule('popup-ui-shipment-form') with {} only %}
     {% endembed %}
 
     {# ovo je samo za test primjer jer lokalno imam češku a tiket je za njemačku #}

@@ -480,7 +480,12 @@ function switchSelectedOptionInDropDown(element) {
 }
 
 function checkPictureAvailability(element) {
-    const defaultUrl = "/assets/current/default//images/kein_bild_vorhanden.png";
+    let defaultUrl = '';
+    const defaultUrlInputField = document.querySelector('#defaultUrlToTheBoxPicture');
+    if (defaultUrlInputField !== undefined && defaultUrlInputField !== null) {
+        defaultUrl = defaultUrlInputField.value;
+    }
+
     let picture = element.querySelector('img');
     if (picture !== undefined && picture !== null) {
         if (picture.src !== null && picture.src !== undefined) {
@@ -490,7 +495,10 @@ function checkPictureAvailability(element) {
                     picture.src = picture.src.replace('thumb_', '');
                     picture.setAttribute("data-src", picture.src);
                 } else {
-                    picture.src = defaultUrl;
+                    if (defaultUrl !== '') {
+                        picture.src = defaultUrl;
+                        picture.setAttribute("data-src", picture.src);
+                    }
                 }
             }
         }
