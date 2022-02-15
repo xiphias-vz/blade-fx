@@ -37,32 +37,32 @@
                     </div>
                     <div class="{{ config.name }}__containers">
                     {% set countContainer = 0 %}
-                    {% for container in order.pickingContainers %}
-                        {% set countContainer = countContainer + 1 %}
-                        <div>
-                            <span style="font-weight: normal" >- {{ countContainer }} -</span>
-                            {% if container.hasSubstitutedItem == true %}
-                                <span style="font-weight: normal">{{ container.zoneAbbrevation }}</span> >
-                                <span>{{ container.containerID }}
+                        {% for container in order.pickingContainers %}
+                            {% set countContainer = countContainer + 1 %}
+                            <div>
+                                <span style="font-weight: normal" >- {{ countContainer }} -</span>
+                                {% if container.hasSubstitutedItem == true %}
+                                    <span style="font-weight: normal">{{ container.zoneAbbrevation }}</span> >
+                                    <span>{{ container.containerID }}
+                                        {% if container.shelfID != "" %}
+                                            <span> > {{ container.shelfID }}</span>
+                                        {% endif %}
+                                        {% include atom('icon') with {
+                                            modifiers: ['big'],
+                                            data: {
+                                                name: 'icon-substitutes',
+                                            },
+                                        } only %}
+                                </span>
+                                {% else %}
+                                    <span style="font-weight: normal">{{ container.zoneAbbrevation }}</span> >
+                                    <span>{{ container.containerID }}</span>
                                     {% if container.shelfID != "" %}
                                         <span> > {{ container.shelfID }}</span>
                                     {% endif %}
-                                    {% include atom('icon') with {
-                                        modifiers: ['big'],
-                                        data: {
-                                            name: 'icon-substitutes',
-                                        },
-                                    } only %}
-                                </span>
-                            {% else %}
-                                <span style="font-weight: normal">{{ container.zoneAbbrevation }}</span> >
-                                <span>{{ container.containerID }}</span>
-                                {% if container.shelfID != "" %}
-                                    <span> > {{ container.shelfID }}</span>
                                 {% endif %}
-                            {% endif %}
-                        </div>
-                    {% endfor %}
+                            </div>
+                        {% endfor %}
                     </div>
                     <div class="button-note-div">
                         {% if order.isDepositAllowed == true %}
