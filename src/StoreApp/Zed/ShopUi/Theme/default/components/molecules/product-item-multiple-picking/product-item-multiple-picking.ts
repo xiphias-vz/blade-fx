@@ -105,8 +105,9 @@ export default class ProductItemMultiplePicking extends Component {
     protected inputValueErrorLessAlert1: HTMLInputElement;
     protected inputValueErrorLessAlert2: HTMLInputElement;
     protected additionalItem = false;
-    protected quantityCounterDecrease = false;
+    protected quantityCounterDecrease = true;
     protected resetWeightButton: HTMLButtonElement;
+    protected fromPosListeAndModal: HTMLInputElement;
 
     protected readyCallback(): void {
     }
@@ -155,6 +156,7 @@ export default class ProductItemMultiplePicking extends Component {
         this.isSubstitutionFound = <HTMLInputElement>this.querySelector('#isSubstitutionFound');
         this.isSubstitutionPicked = false;
         this.resetWeightButton = <HTMLButtonElement>this.querySelector('#btnResetWeight');
+        this.fromPosListeAndModal = <HTMLInputElement>this.querySelector('#fromPosListeAndModal');
 
         this.mapEvents();
         this.boldLastThreeEanNumbers();
@@ -166,6 +168,15 @@ export default class ProductItemMultiplePicking extends Component {
 
         if (this.$setItemDeclined === "1") {
             this.setProductAsDeclinedWithSubstitution();
+        }
+
+        if(this.fromPosListeAndModal.value) {
+            this.containerData = [];
+            this.weight = 0;
+            $(".weightScanContainer").empty();
+            this.updateQuantityInput(0);
+            this.pickProducts.updateStorageItem(this, this.orderItemStatus);
+            this.pickProducts.update();
         }
 
         this.openModal(this.$openModal);
@@ -312,6 +323,8 @@ export default class ProductItemMultiplePicking extends Component {
         this.containerData = [];
         this.weight = 0;
         this.$weightField.val("");
+        this.quantityCounterDecrease = true;
+        this.additionalItem = false;
         this.$this.find(this.quantityOutputSelector).html(0);
         this.updateQuantityInput(0);
         this.isAccepted = false;
@@ -770,7 +783,6 @@ export default class ProductItemMultiplePicking extends Component {
             }
             else
             {
-
                 const $selForWeightElement = this.$this.find(".js-product-item-multiple-picking__weight");
                 let valueOfWeightElement = $selForWeightElement.val();
 
@@ -802,7 +814,7 @@ export default class ProductItemMultiplePicking extends Component {
                     }
 
                     if (valueOfWeightElement <= this.weightMax) {
-                        if(!this.quantityCounterDecrease) {
+                        if(this.quantityCounterDecrease) {
                             quantity++;
                         }
                         this.setQuantityToValue(quantity);
@@ -831,11 +843,6 @@ export default class ProductItemMultiplePicking extends Component {
                     }
                 }
             }
-
-            if(Number(this.currentQuantity) === Number(this.maxQuantity)){
-                this.acceptClickHandler();
-            }
-
         }
     }
 
@@ -891,7 +898,7 @@ export default class ProductItemMultiplePicking extends Component {
             }
         } else if(valueOfWeightElement >= inputWeightMax) {
             this.removeCurrentItem(valueOfWeightElement, scanBox);
-            this.quantityCounterDecrease = true;
+            this.quantityCounterDecrease = false;
             alert(this.inputValueErrorGreaterAlert1.value + inputWeightMax + this.inputValueErrorGreaterAlert2.value);
         } else {
             this.step30();
@@ -1016,7 +1023,7 @@ export default class ProductItemMultiplePicking extends Component {
         this.$this.addClass(this.notPickedCLass);
         this.$this[0].$declineButton.addClass(this.addUndoCLass);
         this.additionalItem = false;
-
+        this.quantityCounterDecrease = true;
 
         let elementForFocus: HTMLInputElement = null;
         const elements = <HTMLInputElement>document.getElementsByClassName('ean_scan_input');
@@ -1091,6 +1098,7 @@ export default class ProductItemMultiplePicking extends Component {
     protected onClickYesWeightInputError() {
         this.popupUiWeight.classList.add('popup-ui-weight--hide');
         this.additionalItem = true;
+        this.eanScanInputElement.value = "";
     }
 
     protected removeCurrentItem(valueOfWeightElement: number, scanBox) {
