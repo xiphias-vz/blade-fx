@@ -296,7 +296,9 @@ export default class ProductItemMultiplePicking extends Component {
                 this.$weightField.val("");
             }
             else {
-                this.resetWeightButton.style.display = "block";
+                if(document.querySelector(".product-item-multiple-picking__info").querySelectorAll(".weightFieldDiv").length > 0){
+                    this.resetWeightButton.style.display = "block";
+                }
             }
         });
 
@@ -320,6 +322,7 @@ export default class ProductItemMultiplePicking extends Component {
 
         const urlSave = window.location.origin + "/picker/multi-picking/multi-order-picking";
 
+        let sku = document.querySelector('.eanData').dataset.ean;
         let pickingPosition = this.pickingItemPosition;
         let quantity = this.$quantityOutput.text();
         let weight = 0;
@@ -331,6 +334,7 @@ export default class ProductItemMultiplePicking extends Component {
         let form = $('<form action="' + urlSave + '" method="post" style="visibility: hidden;">' +
             '<input type="text" name="resetWeight" value="true" />' +
             '<input type="text" name="position" value="' + pickingPosition + '" />' +
+            '<input type="text" name="sku" value="' + sku + '" />' +
             '<input type="text" name="quantity" value="' + quantity + '" />' +
             '<input type="text" name="weight" value="' + weight + '" />' +
             '</form>');
@@ -803,7 +807,10 @@ export default class ProductItemMultiplePicking extends Component {
                         }
                         this.setQuantityToValue(quantity);
                     }
-                    this.resetWeightButton.style.display = "block";
+                    if(document.querySelector(".product-item-multiple-picking__info").querySelectorAll(".weightFieldDiv").length > 0){
+                        this.resetWeightButton.style.display = "block";
+                    }
+
                     return;
                 }
                 else
@@ -985,7 +992,10 @@ export default class ProductItemMultiplePicking extends Component {
                 }, 1000)
 
             }
-            this.resetWeightButton.style.display = "block";
+            if(document.querySelector(".product-item-multiple-picking__info").querySelectorAll(".weightFieldDiv").length > 0){
+                this.resetWeightButton.style.display = "block";
+            }
+
             return;
         }
         this.$this.addClass(this.pickedNotFullyCLass);
