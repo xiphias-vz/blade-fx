@@ -84,7 +84,7 @@ class MultiPickingScanningContainerController extends AbstractController
             foreach ($containerData["pickingContainers"] as $container) {
                 foreach ($listOfExistingContainers as $existingContainer) {
                     if ($existingContainer["ContainerCode"] === $container->getContainerID()
-                        && $container->getIdZoneCurrent() === $transfer->getIdZone()) {
+                        && (int)$container->getIdZoneCurrent() === $transfer->getIdZone()) {
                         $selectedContainersData[] = $existingContainer;
                     }
                 }
