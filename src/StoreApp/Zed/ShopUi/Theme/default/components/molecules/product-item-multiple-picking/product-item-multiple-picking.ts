@@ -97,7 +97,6 @@ export default class ProductItemMultiplePicking extends Component {
     protected containerScanOrderErrorPopUp3: HTMLInputElement;
     protected containerScanOrderErrorPopUp4: HTMLInputElement;
     protected containerScanOrderErrorPopUp5: HTMLInputElement;
-    protected containerScanOrderErrorPopUp6: HTMLInputElement;
     protected barcodeLengthErrorAlert: HTMLInputElement;
     private currentEnvironmentHolder: HTMLInputElement;
     protected inputValueErrorGreaterAlert1: HTMLInputElement;
@@ -193,7 +192,6 @@ export default class ProductItemMultiplePicking extends Component {
         this.containerScanOrderErrorPopUp3 = <HTMLInputElement>document.querySelector('#container_scan_order_error_pop-up_3');
         this.containerScanOrderErrorPopUp4 = <HTMLInputElement>document.querySelector('#container_scan_order_error_pop-up_4');
         this.containerScanOrderErrorPopUp5 = <HTMLInputElement>document.querySelector('#container_scan_order_error_pop-up_5');
-        this.containerScanOrderErrorPopUp6 = <HTMLInputElement>document.querySelector('#container_scan_order_error_pop-up_6');
         this.barcodeLengthErrorAlert = <HTMLInputElement>document.querySelector('#barcode_length_error_alert');
         this.currentEnvironmentHolder = <HTMLInputElement>document.querySelector('#currentEnvironment');
         this.inputValueErrorGreaterAlert1 = <HTMLInputElement>document.querySelector('#input_value_error_greater_alert_1');
@@ -713,7 +711,6 @@ export default class ProductItemMultiplePicking extends Component {
                 this.popupUiErrorInfo.orderReference = currentContainer.orderReference;
                 this.popupUiErrorInfo.firstName = currentContainer.firstName;
                 this.popupUiErrorInfo.lastName = currentContainer.lastName;
-                this.popupUiErrorInfo.orderNumber = currentContainer.FkSalesOrder;
                 this.showPopUpErrorMessage();
                 return containerExists;
             }
@@ -729,7 +726,7 @@ export default class ProductItemMultiplePicking extends Component {
             <p class="container-name">
                 ${this.containerScanOrderErrorPopUp1.value} <span>${this.popupUiErrorInfo.ContainerCode}</span><br>
                  <span class="container-desc">${this.containerScanOrderErrorPopUp2.value} ${this.popupUiErrorInfo.firstName} ${this.popupUiErrorInfo.lastName}${this.containerScanOrderErrorPopUp3.value} </span><br>
-                 <span class="container-order">${this.containerScanOrderErrorPopUp4.value} ${this.popupUiErrorInfo.orderNumber} ${this.containerScanOrderErrorPopUp6.value}</span>
+                 <span class="container-order">${this.containerScanOrderErrorPopUp4.value} ${this.popupUiErrorInfo.orderReference} ${this.containerScanOrderErrorPopUp5.value}</span>
             </p>
         `;
         this.popupUiError.classList.add('popup-ui-error--show');
