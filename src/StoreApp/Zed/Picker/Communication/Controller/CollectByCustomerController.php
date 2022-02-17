@@ -21,6 +21,7 @@ use Generated\Shared\Transfer\PerformanceSalesOrderReportTransfer;
 use Generated\Shared\Transfer\PickingSalesOrderCriteriaTransfer;
 use Generated\Shared\Transfer\UserTransfer;
 use Orm\Zed\Customer\Persistence\SpyCustomerQuery;
+use Orm\Zed\MerchantSalesOrder\Persistence\Map\SpyMerchantSalesOrderTableMap;
 use Orm\Zed\PerformancePickingReport\Persistence\PyzPerformanceSalesOrderReportQuery;
 use Orm\Zed\Sales\Persistence\Map\SpySalesOrderTableMap;
 use Orm\Zed\Sales\Persistence\SpySalesOrderQuery;
@@ -30,6 +31,7 @@ use Pyz\Shared\Product\ProductConfig;
 use Spryker\Shared\Log\LoggerTrait;
 use Spryker\Zed\Kernel\Communication\Controller\AbstractController;
 use StoreApp\Shared\Picker\PickerConfig;
+use StoreApp\Shared\Picker\PickerConstants;
 use StoreApp\Zed\Merchant\Communication\Plugin\EventDispatcher\MerchantProviderEventDispatcherPlugin;
 use StoreApp\Zed\Picker\Communication\Form\OrderItemSelectionForm;
 use Symfony\Component\Form\FormInterface;
@@ -97,10 +99,13 @@ class CollectByCustomerController extends AbstractController
 
         $qryOrdersInStatus = $this->getFactory()
             ->queryOrdersForPickingZone()
+            ->useSpyMerchantSalesOrderQuery()
+            ->endUse()
             ->withColumn("(select count(*) from spy_sales_order_item i inner join spy_oms_order_item_state s on i.fk_oms_order_item_state = s.id_oms_order_item_state where i.fk_sales_order = spy_sales_order.id_sales_order and s.name = 'ready for collection')", "pickedProductCount")
             ->withColumn("(select requested_delivery_date from spy_sales_shipment ss where ss.fk_sales_order = spy_sales_order.id_sales_order)", "requestedDeliveryDate")
             ->withColumn("(select count(*) from pyz_picking_sales_order pso where pso.fk_sales_order = spy_sales_order.id_sales_order)", "numberOfContainersInOrder")
             ->where("spy_sales_order.id_sales_order in(" . implode(',', $idSalesOrdersForCollection) . ")")
+            ->where(SpyMerchantSalesOrderTableMap::COL_REQUESTED_DELIVERY_DATE . " > DATE_ADD(now(), INTERVAL " . PickerConstants::PICKUP_DATE_INTERVAL_MINUS . " day)")
             ->orderBy('requestedDeliveryDate')
             ->find()
             ->toArray();

@@ -30,6 +30,7 @@ use PDO;
 use Propel\Runtime\Propel;
 use Pyz\Shared\Oms\OmsConfig;
 use Pyz\Zed\PickingZone\Business\PickingZoneFacadeInterface;
+use Pyz\Zed\PickingZone\Persistence\PickingZoneRepository;
 use Pyz\Zed\Sales\Business\SalesFacadeInterface;
 use Spryker\Shared\Log\LoggerTrait;
 use Spryker\Zed\Oms\Business\OmsFacadeInterface;
@@ -130,7 +131,7 @@ class PickingHeaderTransferData
            sso.order_reference,
            CONCAT_WS(' ', sso.first_name, sso.last_name) as customer_name,
            substring(sss.requested_delivery_date, 1, 10) as requested_delivery_date,
-           CONCAT(DATE_FORMAT(substring(requested_delivery_date, 1, 10), '%w %d.%m.%y'), ' ', substring(requested_delivery_date, 12, 11)) as time_slot,
+           CONCAT(DATE_FORMAT(substring(sss.requested_delivery_date, 1, 10), '%w %d.%m.%y'), ' ', substring(sss.requested_delivery_date, 12, 11)) as time_slot,
            sss.requested_delivery_date as time_slot_sort,
            0 as is_checked,
            sso.cart_note as note,
@@ -153,21 +154,21 @@ class PickingHeaderTransferData
                 max(IFNULL(ssoi.item_paused, 0)) as is_paused,
                 ppz.abbreviation as zone_abbreviation
              from spy_sales_order_item ssoi
-                      inner join spy_oms_order_item_state soois
-                                 on ssoi.fk_oms_order_item_state = soois.id_oms_order_item_state
+                inner join spy_oms_order_item_state soois
+                    on ssoi.fk_oms_order_item_state = soois.id_oms_order_item_state
                 inner join pyz_picking_zone ppz on ssoi.pick_zone = ppz.name
-             where (
-                    soois.name like '" . OmsConfig::STORE_STATE_READY_FOR_PICKING . "'
-                    or soois.name like '" . OmsConfig::STORE_STATE_READY_FOR_SELECTING_SHELVES . "')
+             where soois.name in('" . OmsConfig::STORE_STATE_READY_FOR_PICKING . "', '" . OmsConfig::STORE_STATE_READY_FOR_SELECTING_SHELVES . "')
                 and ppz.id_picking_zone = " . $idZone . "
              group by ssoi.fk_sales_order, ppz.abbreviation
          ) so on sso.id_sales_order = so.fk_sales_order
         inner join spy_merchant sm on sso.merchant_reference = sm.merchant_reference
+        inner join spy_merchant_sales_order smso on sso.id_sales_order = smso.fk_sales_order
         left outer join spy_customer sc on sso.customer_reference = sc.customer_reference
         left outer join spy_sales_shipment sss on sso.id_sales_order = sss.fk_sales_order
         left outer join pyz_order_picking_block popb on sso.id_sales_order = popb.fk_sales_order
             and popb.fk_picking_zone = " . $idZone . "
     where sso.merchant_reference = '" . $merchantReference . "'
+        and (smso.requested_delivery_date > DATE_ADD(now(), INTERVAL " . PickingZoneRepository::PICKING_DATE_INTERVAL . " day))
         and (popb.fk_user is null or popb.fk_user = " . $this->userFacade->getCurrentUser()->getIdUser() . ")
     ";
 
