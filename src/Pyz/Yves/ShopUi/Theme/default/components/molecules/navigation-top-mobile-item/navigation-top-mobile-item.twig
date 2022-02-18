@@ -16,12 +16,21 @@
     {% if data.isButton %}
         <button type="button" class="{{ config.name }}__item button button--skinless {{ data.jsClass }} button--no-inner-events">
             {% block icon %}
-                {% include atom('icon') with {
-                    modifiers: ['big', 'lightOrange'],
-                    data: {
-                        name: data.iconName,
-                    },
-                } only %}
+                {% if app.currentCodeBucket == 'DE' %}
+                    {% include atom('icon') with {
+                        modifiers: ['big', 'lightOrange'],
+                        data: {
+                            name: data.iconName,
+                        },
+                    } only %}
+                {% else %}
+                    {% include atom('icon') with {
+                        modifiers: ['big', 'color-green'],
+                        data: {
+                            name: data.iconName,
+                        },
+                    } only %}
+                {% endif %}
             {% endblock %}
         </button>
     {% else %}

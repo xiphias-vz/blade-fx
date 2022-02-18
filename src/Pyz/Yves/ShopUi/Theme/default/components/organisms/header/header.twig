@@ -264,15 +264,23 @@
 
                                     <button type="button" class="navigation-top-left-mobile__item tablet-style {{ hamburgerIcon.jsClass }} button--no-inner-events">
                                         {% block icon %}
-                                            {% include atom('icon') with {
-                                                modifiers: ['big', 'lightOrange'],
-                                                data: {
-                                                    name: hamburgerIcon.iconName,
-                                                },
-                                            } only %}
-                                        {% endblock %}
-                                    </button>
-
+                                                {% if app.currentCodeBucket == 'DE' %}
+                                                            {% include atom('icon') with {
+                                                                modifiers: ['big', 'lightOrange'],
+                                                                data: {
+                                                                    name: hamburgerIcon.iconName,
+                                                                },
+                                                            } only %}
+                                                {% else %}
+                                                            {% include atom('icon') with {
+                                                                modifiers: ['big', 'color-green'],
+                                                                data: {
+                                                                    name: hamburgerIcon.iconName,
+                                                                },
+                                                            } only %}
+                                                {% endif %}
+                                            {% endblock %}
+                                        </button>
 
                                     {% block logoMobile %}
                                         {% if app.currentCodeBucket == 'DE' %}

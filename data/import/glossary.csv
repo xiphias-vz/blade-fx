@@ -2262,7 +2262,7 @@ invoice.header,"Faktura",cs_CZ
 invoice.header,Rechnung,de_DE
 mein.markt.label,Mein Markt,de_DE
 mein.markt.label,Mein Markt,en_US
-mein.markt.label,"Můj market",cs_CZ
+mein.markt.label,"Můj obchod",cs_CZ
 invoice.order.number,Order reference,en_US
 invoice.order.number,Nummer,de_DE
 invoice.order.number,"Číslo",cs_CZ
@@ -4045,7 +4045,7 @@ customer.order.item_price.excluding_pfand,"(zzgl. Pfand: %s)",de_DE
 merchant_switcher.message,"Přejít z %currentMerchant% na %newMerchant%? Z důvodu odlišné dostupnosti nebude popřípadě možné převzít do nákupního seznamu všechny produkty.",cs_CZ
 merchant_switcher.message,"Wechseln von %currentMerchant% zu %newMerchant%? Aufgrund unterschiedlicher Verfügbarkeit können ggf. nicht alle Produkte in Einkaufsliste übernommen werden.",de_DE
 merchant_switcher.message,"Switch from %currentMerchant% to %newMerchant%? Due to different availability, not all products may be added to your shopping cart.",en_US
-merchant_switcher.label,"Můj market",cs_CZ
+merchant_switcher.label,"Můj obchod",cs_CZ
 merchant_switcher.label,Meine Filiale,de_DE
 merchant_switcher.label,My Merchant,en_US
 product_comparative_price.output.unit.gram,g,cs_CZ
