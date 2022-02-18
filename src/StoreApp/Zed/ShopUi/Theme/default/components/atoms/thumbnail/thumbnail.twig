@@ -3,15 +3,29 @@
 {% block body %}
     {% set imageExtraClasses = '' %}
     {% set thumbImage = attributes.src | replace({'.com/': '.com/thumb_'}) %}
+    {% set typeThreeImage = attributes.src | replace({'type=1': 'type=3'}) %}
     {% set defaultUrl = publicPath("/images/kein_bild_vorhanden.png") %}
     {% block image %}
-        <img onerror="loadNonThumbImage(this)" class="{{ component.renderClass(config.name ~ '__image', modifiers) }} {{ imageExtraClasses }}" src="{{ thumbImage }}" alt="{{ attributes.alt }}">
+        {% if app.currentCodeBucket == 'DE' %}
+            <img onerror="loadNonThumbImage(this)" class="{{ component.renderClass(config.name ~ '__image', modifiers) }} {{ imageExtraClasses }}" src="{{ thumbImage }}" alt="{{ attributes.alt }}">
+        {% else %}
+            <img onerror="loadTypeOneImage(this)" class="{{ component.renderClass(config.name ~ '__image', modifiers) }} {{ imageExtraClasses }}" src="{{ typeThreeImage }}" alt="{{ attributes.alt }}">
+        {% endif %}
     {% endblock %}
     <script>
         function loadNonThumbImage(ev){
             let image = ev;
             if(image.src.includes("thumb_")){
                 image.src = image.src.replace('thumb_', '');
+            }else{
+                image.src = '{{ defaultUrl }}';
+            }
+        }
+
+        function loadTypeOneImage(ev){
+            let image = ev;
+            if(image.src.includes("type=3")){
+                image.src = image.src.replace('type=3', 'type=1');
             }else{
                 image.src = '{{ defaultUrl }}';
             }
