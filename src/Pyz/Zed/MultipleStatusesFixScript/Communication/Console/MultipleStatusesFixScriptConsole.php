@@ -68,6 +68,16 @@ class MultipleStatusesFixScriptConsole extends Console
             } else {
                 dump("Currently there are no items with incorrect 'canceled due to not in stock' statuses!");
             }
+
+            $selectOrdersWithStatusNew = $this->fromSqlQueryRemoveStatusNew();
+            $ordersWithStatusNew = $this->getResult($selectOrdersWithStatusNew);
+
+            if (count($ordersWithStatusNew) != 0) {
+                $deletionQuery = $this->updateRowsWhereIsStatusNew();
+                $this->getResult($deletionQuery, false);
+            } else {
+                dump("Currently there are no items with status new.");
+            }
         } catch (Exception $e) {
             dump($e);
 
@@ -206,5 +216,21 @@ class MultipleStatusesFixScriptConsole extends Console
                 SET m_ssoi.fk_oms_order_item_state = (SELECT id_oms_order_item_state FROM spy_oms_order_item_state WHERE name = 'cancelled')
                 WHERE ready_for_picking.fk_sales_order is null
                     AND m_ssoi.fk_oms_order_item_state = (SELECT id_oms_order_item_state FROM spy_oms_order_item_state WHERE name = 'cancelled due to not in stock')";
+    }
+
+    /**
+     * @return string
+     */
+    public function fromSqlQueryRemoveStatusNew(): string
+    {
+        return "call pyzx_select_order_status()";
+    }
+
+    /**
+     * @return string
+     */
+    public function updateRowsWhereIsStatusNew(): string
+    {
+        return "call pyzx_update_order_status()";
     }
 }
