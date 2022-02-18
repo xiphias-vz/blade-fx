@@ -41,6 +41,7 @@
 {% set shelfFloor = data.currentPositionData['shelfFloor'] %}
 {% set shelfField = data.currentPositionData['shelfField'] %}
 
+{% set orderItemWeight = data.currentPositionData['weight'] / 1000 %}
 {% set orderWeight = (data.currentPositionData['weight'] ?? 0) * data.productsCount  %}
 {% set basePriceContent = data.currentPositionData['priceContent'] / 100 %}
 {% set basePriceUnit = data.currentPositionData['priceUnit'] %}
@@ -166,7 +167,19 @@
                 {% block quantity %}
                     {% if data.productsCount >= 1 %}
                         <div class="outer_div">
-                            <div class="col--md-4 col--sm-3"></div>
+                            {% if data.currentPositionData.totalWeight is defined and data.currentPositionData.totalWeight is not null %}
+                                <div class="col--md-4 col--sm-3"><button id="btnResetWeight">
+                                        {% include atom('icon') with {
+                                            modifiers: [],
+                                            class: 'custom__icon',
+                                            data: {
+                                                name: 'icon-resetWeightArticle',
+                                            },
+                                        } only %}
+                                    </button></div>
+                            {% else %}
+                                <div class="col--md-4 col--sm-3"><button id="btnResetWeight"></button></div>
+                            {% endif %}
                             <div class="col--md-4 col--sm-6 {{ config.name }}__quantity">
                                 <div class="{{ config.jsName }}__minus {{ config.name }}__minus spacing-right spacing-right--inner">
                                     {% include atom('icon') with {
@@ -198,7 +211,7 @@
                         {% block newFormElement %}
                             <label for="order_item_selection_form_field_sales_order_item_sku__{{ itemSku }}" class="label label--required">{{ itemSku }} -
                                 {{ title }}</label>
-                            <input id="order_item_selection_form_field_sales_order_item_sku__{{ itemSku }}" type="number" class="js-product-item-multiple-picking__quantity" min="0" max="{{ data.productsCount }}" />
+                            <input id="order_item_selection_form_field_sales_order_item_sku__{{ itemSku }}" type="number" class="js-product-item-multiple-picking-old__quantity" min="0" max="{{ data.productsCount }}" />
                         {% endblock %}
                     </div>
                 {% endblock %}
@@ -222,7 +235,7 @@
                                            required="required"
                                            min="{{ minWeight }}"
                                            max="{{ maxWeight }}"
-                                           class="input input--expand js-product-item-multiple-picking__weight"
+                                           class="input input--expand js-product-item-multiple-picking-old__weight"
                                            type="number">
                                 </div>
                             </div>

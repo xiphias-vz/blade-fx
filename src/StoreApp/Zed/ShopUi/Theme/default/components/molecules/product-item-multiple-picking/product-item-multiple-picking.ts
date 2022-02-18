@@ -316,31 +316,42 @@ export default class ProductItemMultiplePicking extends Component {
     }
 
     protected resetWeight(event) {
-        this.resetWeightButton.style.display = "none";
-        $(".weightScanContainer").empty();
-        this.containerData = [];
-        this.weight = 0;
-        this.$weightField.val("");
-        this.quantityCounterDecrease = true;
+        event.currentTarget.style.display = "none";
+        this.resetWeightForCurrentItem();
+        this.resetQuantityForCurrentItem();
+        this.resetVisualOrderStateForCurrentItem();
         this.additionalItem = false;
+        this.containerData = [];
+        this.pickProducts.update();
+        this.pickProducts.updateStorageItem(this, this.orderItemStatus);
+        this.submitFormToResetWeight();
+        this.focusEanFieldWithoutDisplayOfKeyboard();
+    }
+
+    protected resetQuantityForCurrentItem(){
+        this.quantityCounterDecrease = true;
         this.$this.find(this.quantityOutputSelector).html(0);
         this.updateQuantityInput(0);
+    }
+
+    protected resetWeightForCurrentItem(){
+        $(".weightScanContainer").empty();
+        this.weight = 0;
+        this.$weightField.val("");
+    }
+
+    protected resetVisualOrderStateForCurrentItem(){
         this.isAccepted = false;
         this.isPaused = false;
         this.isDeclined = false;
-        this.pickProducts.update();
-        this.pickProducts.updateStorageItem(this, this.orderItemStatus);
+    }
 
-        const urlSave = window.location.origin + "/picker/multi-picking/multi-order-picking";
-
+    protected submitFormToResetWeight() {
+        let weight = 0;
         let sku = document.querySelector('.eanData').dataset.ean;
         let pickingPosition = this.pickingItemPosition;
         let quantity = this.$quantityOutput.text();
-        let weight = 0;
-
-        if(this.$weightField.val() != 0){
-            weight = this.$weightField.val();
-        }
+        const urlSave = window.location.origin + "/picker/multi-picking/multi-order-picking";
 
         let form = $('<form action="' + urlSave + '" method="post" style="visibility: hidden;">' +
             '<input type="text" name="resetWeight" value="true" />' +
@@ -351,8 +362,6 @@ export default class ProductItemMultiplePicking extends Component {
             '</form>');
         $('body').append(form);
         form.submit();
-
-        this.focusEanFieldWithoutDisplayOfKeyboard();
     }
 
     protected clearInputFields() {
