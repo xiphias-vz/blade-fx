@@ -74,20 +74,14 @@
 {% block url %}
     {% if app.currentCodeBucket == 'DE' %}
         <span class="{{ component.renderClass(config.name ~ '__link', modifiers) }} {{ config.name }}__link--lvl-{{ data.levelMenu }} {{ data.node.cssClass }}">
-        <a href="{{ data.node.url }}" class="{{ config.name }}__link-inner {{ config.name }}__link-inner--lvl-{{ data.levelMenu }}">
-           {{ data.node.title }}
-        </a>
-        {{ block('linkIcon') }}
-    </span>
     {% else %}
         <span class="{{ component.renderClass(config.name ~ '__link', modifiers) }} {{ config.name }}__link-CZ {{ config.name }}__link-CZ--lvl-{{ data.levelMenu }} {{ data.node.cssClass }}">
-        <a href="{{ data.node.url }}" class="{{ config.name }}__link-inner {{ config.name }}__link-inner--lvl-{{ data.levelMenu }}">
-           {{ data.node.title }}
-        </a>
-        {{ block('linkIcon') }}
-    </span>
     {% endif %}
-
+            <a href="{{ data.node.url }}" class="{{ config.name }}__link-inner {{ config.name }}__link-inner--lvl-{{ data.levelMenu }}">
+               {{ data.node.title }}
+            </a>
+            {{ block('linkIcon') }}
+        </span>
 {% endblock %}
 
 {% block link %}
@@ -100,12 +94,17 @@
 {% endblock %}
 
 {% block externalUrl %}
-    <span class="{{ component.renderClass(config.name ~ '__link', modifiers) }} {{ config.name }}__link--lvl-{{ data.levelMenu }} {{ data.node.cssClass }}" href="{{ data.node.url }}" target="_blank">
-        <a href="{{ data.node.url }}" class="{{ config.name }}__link-inner {{ config.name }}__link-inner--lvl-{{ data.levelMenu }}">
-            {{ data.node.title }}
-        </a>
-        {{ block('linkIcon') }}
-    </span>
+    {% if app.currentCodeBucket == 'DE' %}
+        <span class="{{ component.renderClass(config.name ~ '__link', modifiers) }} {{ config.name }}__link--lvl-{{ data.levelMenu }} {{ data.node.cssClass }}" href="{{ data.node.url }}" target="_blank">
+    {% else %}
+        <span class="{{ component.renderClass(config.name ~ '__link', modifiers) }} {{ config.name }}__link-CZ {{ config.name }}__link-CZ--lvl-{{ data.levelMenu }} {{ data.node.cssClass }}" href="{{ data.node.url }}" target="_blank">
+    {% endif %}
+            <a href="{{ data.node.url }}" class="{{ config.name }}__link-inner {{ config.name }}__link-inner--lvl-{{ data.levelMenu }}">
+               {{ data.node.title }}
+            </a>
+            {{ block('linkIcon') }}
+        </span>
+
 {% endblock %}
 
 {% block other %}

@@ -264,7 +264,7 @@
                 }
 
                 @include helper-breakpoint-media-max($xl-min) {
-                    padding:0;
+                    padding: 0;
                 }
 
                 @include helper-media-ie() {
@@ -286,10 +286,18 @@
             }
 
             &--lvl-3 {
-                color: $setting-color-gray-9;
+                color: $setting-color-gray-12;
 
                 @include helper-breakpoint-media-max($xl-min) {
                     padding-left: rem(25);
+                }
+            }
+
+            &--lvl-4 {
+                color: $setting-color-gray-9;
+
+                @include helper-breakpoint-media-max($xl-min) {
+                    padding-left: rem(35);
                 }
             }
         }
@@ -453,6 +461,12 @@
                 @include helper-breakpoint-media-min($xl-min) {
                     margin-bottom: 0;
                 }
+            }
+        }
+
+        &--lvl-4 {
+            &:last-child {
+                margin-bottom: rem(12);
             }
         }
     }
