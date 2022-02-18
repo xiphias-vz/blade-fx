@@ -128,9 +128,10 @@
                         {% else %}
                             {% if src ends with "type=1" %}
                                 {% set splitUrl = src| split('type=1') %}
-                                {% set typeThreeEnd = 'type=3' %}
-                                {% set newThumbUrl = splitUrl[0] ~ typeThreeUrlEnd %}
-                                {% set src = newThumbUrl %}
+                                {% set newThumbUrl = splitUrl[0] ~ 'type=3' %}
+                                {% set newSrcCz = newThumbUrl %}
+                            {% else %}
+                                {% set newSrcCz = src %}
                             {% endif %}
                             {% embed molecule('lazy-thumbnail') with {
                                 class: extraClass,
