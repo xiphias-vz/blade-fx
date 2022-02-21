@@ -10,14 +10,6 @@
         &__container {
             position: relative;
 
-            @include helper-breakpoint-media-max($lg-max) {
-                max-height: rem(240);
-            }
-
-            @include helper-breakpoint-media-max($sm-max) {
-                max-height: rem(160);
-            }
-
             .slick-arrow {
                 position: absolute;
                 top: rem(185);
