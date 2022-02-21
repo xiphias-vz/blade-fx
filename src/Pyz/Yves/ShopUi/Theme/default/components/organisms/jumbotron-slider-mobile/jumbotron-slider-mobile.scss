@@ -6,8 +6,18 @@
             min-height: rem(290);
         }
 
-        @include helper-breakpoint-media-min($lg-min) {
-            min-height: rem(450);
+        //@include helper-breakpoint-media-min($lg-min) {
+        //    min-height: rem(450);
+        //}
+
+        .slick-carousel__container {
+            @include helper-breakpoint-media-max($lg-max) {
+                max-height: rem(240);
+            }
+
+            @include helper-breakpoint-media-max($sm-max) {
+                max-height: rem(160);
+            }
         }
 
         .slick-carousel__container {

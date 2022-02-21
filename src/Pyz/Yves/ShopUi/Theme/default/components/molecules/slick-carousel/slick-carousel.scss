@@ -38,15 +38,15 @@
             }
 
             .slick-prev {
-                left: rem(-48);
+                left: rem(-32);
                 transform: rotate(180deg);
 
                 @include helper-breakpoint-media-max($xl-max) {
-                    left: rem(-48);
+                    left: rem(-32);
                 }
 
-                @include helper-breakpoint-media-max($md-max) {
-                    left: rem(-32);
+                @include helper-breakpoint-media-max($l-max) {
+                    left: rem(-16);
                 }
 
                 @include helper-breakpoint-media-max($sm-max) {
@@ -55,14 +55,14 @@
             }
 
             .slick-next {
-                right: rem(-48);
+                right: rem(-32);
 
                 @include helper-breakpoint-media-max($xl-max) {
-                    right: rem(-48);
+                    right: rem(-32);
                 }
 
-                @include helper-breakpoint-media-max($md-max) {
-                    right: rem(-32);
+                @include helper-breakpoint-media-max($l-max) {
+                    right: rem(-16);
                 }
 
                 @include helper-breakpoint-media-max($sm-max) {
