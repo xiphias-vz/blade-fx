@@ -186,6 +186,23 @@ if ($storeCodeBucket == 'CZ') {
         'stores' => ['OST'],
     ];
 
+    /* Monitoring */
+    $jobs[] = [
+        'name' => 'monitor-check-jenkins',
+        'command' => '$PHP_BIN vendor/bin/console monitor:check-jenkins',
+        'schedule' => '*/10 * * * *',
+        'enable' => true,
+        'stores' => ['OST'],
+    ];
+
+    $jobs[] = [
+        'name' => 'alarm-send-email',
+        'command' => '$PHP_BIN vendor/bin/console monitor:alarm-email',
+        'schedule' => '*/10 * * * *',
+        'enable' => true,
+        'stores' => ['OST'],
+    ];
+
     $jobs[] = [
         'name' => 'partial-import-product-prices-stock',
         'command' => 'vendor/bin/install -r gsoa-sceduled-partial-import',
@@ -276,6 +293,24 @@ if ($storeCodeBucket == 'CZ') {
         'name' => 'data-import-full',
         'command' => 'vendor/bin/install -r sftp-based-full-import',
         'schedule' => '30 7,21 * * *',
+        'enable' => true,
+        'stores' => ['EIN'],
+    ];
+
+
+    /* Monitoring */
+    $jobs[] = [
+        'name' => 'monitor-check-jenkins',
+        'command' => '$PHP_BIN vendor/bin/console monitor:check-jenkins',
+        'schedule' => '*/10 * * * *',
+        'enable' => true,
+        'stores' => ['EIN'],
+    ];
+
+    $jobs[] = [
+        'name' => 'alarm-send-email',
+        'command' => '$PHP_BIN vendor/bin/console monitor:alarm-email',
+        'schedule' => '*/10 * * * *',
         'enable' => true,
         'stores' => ['EIN'],
     ];

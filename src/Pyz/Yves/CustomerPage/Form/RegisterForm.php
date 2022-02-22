@@ -443,7 +443,6 @@ class RegisterForm extends SprykerRegisterForm
             'attr' => [
                 'placeholder' => 'customer.registration.zip_placeholder',
                 'pattern' => '/^[0-9]{5}$/',
-                'maxlength' => 5,
             ],
         ]);
 

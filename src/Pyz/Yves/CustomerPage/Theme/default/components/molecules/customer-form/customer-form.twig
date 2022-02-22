@@ -91,7 +91,8 @@
 
                 {% if data.submit.enable %}
                     {% block submit %}
-                        <button type="submit" class="{{config.name}}__action spacing spacing--reset {{data.submit.class}}" {{qa(data.submit.qa)}}>{% if data.submit.icon is not empty %}
+                        <button type="submit" class="{{config.name}}__action spacing spacing--reset {{data.submit.class}}" {{qa(data.submit.qa)}}>
+                            {% if data.submit.icon is not empty %}
                                 {% include atom('icon') with {
                                     modifiers: ['small'],
                                     data: {

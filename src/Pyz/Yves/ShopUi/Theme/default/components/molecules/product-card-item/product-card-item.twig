@@ -59,8 +59,7 @@
 
                                     {% block productQuantityInformation %}
                                         <div class="{{ config.name }}__quantity-measurement-line grid">
-                                            {% if data.productItem.amountSalesUnit is defined and data.productItem.amountSalesUnit is not empty %}
-                                                {% include molecule('packaging-unit-cart') ignore missing with {
+                                            {% if data.productItem.amountSalesUnit is defined and data.productItem.amountSalesUnit is not empty %}                                                {% include molecule('packaging-unit-cart') ignore missing with {
                                                     data: {
                                                         amount: data.productItem.amount,
                                                         quantity: data.productItem.quantity,
