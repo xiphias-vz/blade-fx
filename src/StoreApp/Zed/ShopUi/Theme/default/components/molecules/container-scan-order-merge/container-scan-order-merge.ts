@@ -121,6 +121,7 @@ export default class ContainerScanOrderMerge extends Component {
 
                         $("#listContainersShelf").empty();
                         for (let i = 0; i < parsedData.length; i++) {
+                            substitute = "";
                             if(parsedData[i].has_substituted_item > 0){
                                 substitute = '<span style="font-weight: bold"></span><svg class="icon icon--big" data-qa="component icon" title="icon-substitutes"> <use xlink:href="#:icon-substitutes"></use></svg>';
                             }
