@@ -3561,7 +3561,7 @@ customer.account.shopping_list.remove,Remove,en_US
 customer.account.shopping_list.remove,Löschen,de_DE
 validation.not_blank,"Pro odeslání objednávky je potřeba souhlas s obchodními podmínkami a se zpracováním osobních údajů pro účely objednávky.",cs_CZ
 validation.not_blank,This value should not be blank.,en_US
-validation.not_blank,"Bitte bestätigen Sie die AGB's und die Verarbeitung der personenbezogenen Daten.",de_DE
+validation.not_blank,"Bitte bestätigen Sie die AGBs und die Verarbeitung der personenbezogenen Daten.",de_DE
 validation.invalid_date,"Datum musí být ve správném formátu %s.",cs_CZ
 validation.invalid_date,Date should be in correct format %s.,en_US
 validation.invalid_date,Datum sollte im richtigen Format vorliegen %s.,de_DE

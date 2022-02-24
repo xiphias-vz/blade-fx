@@ -468,6 +468,78 @@ export default class PopupUiAddressValidation extends Component{
             flag = 1;
         }
 
+        const regexFirstNameCheck = new RegExp(/^[^<>;"]+$/, 'g');
+        const firstNameCheck = regexFirstNameCheck.test(this.$firstName.value);
+
+        if (firstNameCheck === false) {
+            this.$firstName.classList.add('input--error');
+            this.addRegexErrorMessageToTheField(this.$firstName);
+            flag = 1;
+        }
+
+        const regexLastNameCheck = new RegExp(/^[^<>;"]+$/, 'g');
+        const lastNameCheck = regexLastNameCheck.test(this.$lastName.value);
+
+        if (lastNameCheck === false) {
+            this.$lastName.classList.add('input--error');
+            this.addRegexErrorMessageToTheField(this.$lastName);
+            flag = 1;
+        }
+
+        const regexStreetNameCheck = new RegExp(/^[^<>;"]+$/, 'g');
+        const streetNameCheck = regexStreetNameCheck.test(this.$streetName.value);
+
+        if (streetNameCheck === false) {
+            this.$streetName.classList.add('input--error');
+            this.addRegexErrorMessageToTheField(this.$streetName);
+            flag = 1;
+        }
+
+        const regexHouseNumberCheck = new RegExp(/^[^<>;"]+$/, 'g');
+        const houseNumberCheck = regexHouseNumberCheck.test(this.$houseNumber.value);
+
+        if (houseNumberCheck === false) {
+            this.$houseNumber.classList.add('input--error');
+            this.addRegexErrorMessageToTheField(this.$houseNumber);
+            flag = 1;
+        }
+
+        const regexCityNameCheck = new RegExp(/^[^<>;"]+$/, 'g');
+        const cityNameCheck = regexCityNameCheck.test(this.$city.value);
+
+        if (cityNameCheck === false) {
+            this.$city.classList.add('input--error');
+            this.addRegexErrorMessageToTheField(this.$city);
+            flag = 1;
+        }
+
+        const regexZipNumberCheck = new RegExp(/^[^<>;"]+$/, 'g');
+        const zipNumberCheck = regexZipNumberCheck.test(this.$zip.value);
+
+        if (zipNumberCheck === false) {
+            this.$zip.classList.add('input--error');
+            this.addRegexErrorMessageToTheField(this.$zip);
+            flag = 1;
+        }
+
+        const regexMobilePhoneNumberCheck = new RegExp(/^[^<>;"]+$/, 'g');
+        const mobilePhoneNumberCheck = regexMobilePhoneNumberCheck.test(this.$mobilePhoneNumber.value);
+
+        if (mobilePhoneNumberCheck === false) {
+            this.$mobilePhoneNumber.classList.add('input--error');
+            this.addRegexErrorMessageToTheField(this.$mobilePhoneNumber);
+            flag = 1;
+        }
+
+        const regexPhoneNumberCheck = new RegExp(/^[^<>;"]+$/, 'g');
+        const phoneNumberCheck = regexPhoneNumberCheck.test(this.$phoneNumber.value);
+
+        if (phoneNumberCheck === false) {
+            this.$phoneNumber.classList.add('input--error');
+            this.addRegexErrorMessageToTheField(this.$phoneNumber);
+            flag = 1;
+        }
+
         if ($(this.$cmbDay).val() === '' || $(this.$cmbDay).val() === null
             || $(this.$cmbMonth).val() === '' || $(this.$cmbMonth).val() === null
             || $(this.$cmbYear).val() === '' || $(this.$cmbYear).val() === null)
@@ -601,6 +673,15 @@ export default class PopupUiAddressValidation extends Component{
         }
 
     }
+
+    protected addRegexErrorMessageToTheField(element): void {
+        const errorSpan = document.createElement('span');
+        errorSpan.setAttribute('class', 'errorValidationMessage');
+        errorSpan.textContent = '• Bitte trage hier nur Buchstaben ein';
+        errorSpan.classList.add('form__field', 'col', 'col--order-4', 'col--sm-12', 'col--md-12');
+        $(element).parent().append(errorSpan);
+    }
+
 
     protected addContentToModal(data): void{
         const firstName = data.result.firstName;
