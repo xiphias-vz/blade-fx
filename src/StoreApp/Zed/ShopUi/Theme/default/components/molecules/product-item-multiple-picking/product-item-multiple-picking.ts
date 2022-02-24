@@ -886,7 +886,7 @@ export default class ProductItemMultiplePicking extends Component {
         if(valueOfWeightElement >= approxWeight && valueOfWeightElement <= inputWeightMax) {
             if (this.additionalItem) {
                 this.eanScanInputElement.value = '';
-                if (valueOfWeightElement == inputWeightMax) {
+                if (valueOfWeightElement >= approxWeight) {
                     this.acceptClickHandler();
                     this.pressSubmit();
                 }
@@ -898,6 +898,8 @@ export default class ProductItemMultiplePicking extends Component {
             if(!this.additionalItem) {
                 this.popupUiWeight.classList.remove('popup-ui-weight--hide');
                 this.popupUiWeight.classList.add('popup-ui-weight--show');
+            } else {
+                this.eanScanInputElement.value = '';
             }
         } else if(valueOfWeightElement >= inputWeightMax) {
             this.removeCurrentItem(valueOfWeightElement, scanBox);
