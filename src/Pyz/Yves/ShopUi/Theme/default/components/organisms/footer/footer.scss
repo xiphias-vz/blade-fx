@@ -5,6 +5,9 @@
         color: $setting-color-white;
 
         .contact-store-info {
+
+            margin-right: rem(50);
+
             @include helper-breakpoint-media-max($lg-min) {
                 margin-bottom: rem(20);
             }
@@ -20,6 +23,13 @@
         }
 
         .title-and-content-holder {
+            .title-holder {
+                font-size: rem(18);
+                font-family: $setting-font-family-additional;
+                @include helper-breakpoint-media-max($md-max){
+                    font-size: rem(15);
+                }
+            }
             .title-holder p {
                 margin-top: 0;
                 color:#fff;
@@ -49,7 +59,13 @@
         }
 
         .icon-container_CZ {
-            display: none;
+            visibility: hidden;
+
+         @include helper-breakpoint-media-max($md-max){
+             visibility: visible;
+             display: none;
+         }
+
         }
 
         .icon-container div  {
@@ -97,6 +113,10 @@
             display: flex;
             flex-wrap: wrap;
             flex: 1;
+
+            .alignLeft {
+                margin-left: 0;
+            }
         }
 
         &__socials {
@@ -120,14 +140,20 @@
         &__navigation {
             color: $setting-color-white;
             display: flex;
-            justify-content: center;
+            justify-content: flex-start;
             flex-wrap: wrap;
             flex-grow: 1;
             padding-bottom: rem(30);
+            font-family: $setting-font-family-fira-sans;
 
             @include helper-breakpoint-media-max($lg-min) {
                 padding-right: 6%;
                 padding-bottom: 0;
+                flex-direction: row;
+            }
+
+            @include helper-breakpoint-media-max($md-max) {
+                flex-direction: column;
             }
         }
 
