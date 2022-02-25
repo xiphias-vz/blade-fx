@@ -11,11 +11,6 @@ use Spryker\Zed\ProductPageSearch\Business\Mapper\ProductPageSearchMapper as Spr
 
 class ProductPageSearchMapper extends SprykerProductPageSearchMapper implements ProductPageSearchMapperInterface
 {
-    /**
-     * @param array $productAbstractLocalizedData
-     *
-     * @return \Generated\Shared\Transfer\ProductPageSearchTransfer
-     */
     public function mapToProductPageSearchTransfer(array $productAbstractLocalizedData)
     {
         $productPageTransfer = parent::mapToProductPageSearchTransfer($productAbstractLocalizedData);

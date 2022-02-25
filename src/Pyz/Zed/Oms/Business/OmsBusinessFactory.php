@@ -27,7 +27,7 @@ use Twig\Environment;
 
 /**
  * @method \Pyz\Zed\Oms\OmsConfig getConfig()
- * @method \Pyz\Zed\Oms\Persistence\OmsQueryContainerInterface getQueryContainer()
+ * @method \Spryker\Zed\Oms\Persistence\OmsQueryContainerInterface getQueryContainer()
  * @method \Spryker\Zed\Oms\Persistence\OmsRepositoryInterface getRepository()
  */
 class OmsBusinessFactory extends SprykerOmsBusinessFactory

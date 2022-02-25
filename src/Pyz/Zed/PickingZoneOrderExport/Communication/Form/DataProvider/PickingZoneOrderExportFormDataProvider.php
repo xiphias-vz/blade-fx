@@ -46,7 +46,6 @@ class PickingZoneOrderExportFormDataProvider
      * @param \Pyz\Zed\PickingZone\Business\PickingZoneFacadeInterface $pickingZoneFacade
      * @param \Pyz\Zed\TimeSlot\Business\TimeSlotFacadeInterface $timeSlotsFacade
      * @param \Pyz\Zed\User\Business\UserFacadeInterface $userFacade
-     * @param \Pyz\Zed\Merchant\Business\MerchantFacadeInterface $merchantFacade
      */
     public function __construct(PickingZoneFacadeInterface $pickingZoneFacade, TimeSlotFacadeInterface $timeSlotsFacade, UserFacadeInterface $userFacade, MerchantFacadeInterface $merchantFacade)
     {

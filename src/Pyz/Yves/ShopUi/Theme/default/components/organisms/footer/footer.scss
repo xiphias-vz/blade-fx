@@ -105,7 +105,7 @@
             position: relative;
 
             @include helper-breakpoint-media-max($sm-max)  {
-                padding: 0;
+               padding: 0;
             }
         }
 

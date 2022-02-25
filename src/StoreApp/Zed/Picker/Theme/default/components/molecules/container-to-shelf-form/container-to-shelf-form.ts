@@ -141,7 +141,7 @@ export default class ContainerToShelfForm extends Component {
         let containerId = this.containerId.value;
         let shelfId = this.shelfId.value;
         let shelfCheck = this.shelfCheck.value;
-        //control for inputted values for containerId and ShelfId before submitting the form data
+            //control for inputted values for containerId and ShelfId before submitting the form data
         if (containerId == '' || containerId == null)
         {
             this.popUpUiError.querySelector("#firstBlock").innerHTML = this.containerIDNotEmpty.value;

@@ -110,8 +110,6 @@ class ScanningContainerMergeController extends AbstractController
     {
         $container = $request->request->get('container');
 
-        $container = $this->removeScannerInput($container);
-
         $transfer = $this->getFacade()->getPickingHeaderTransfer();
         $transfer->setParents(true);
         $result = $transfer->getPickingOrderByContainer($container);
@@ -130,10 +128,7 @@ class ScanningContainerMergeController extends AbstractController
     public function mergingContainerScanAction(Request $request): JsonResponse
     {
         $containerToMove = $request->request->get('containerToMove');
-        $containerToMove = $this->removeScannerInput($containerToMove);
-
         $containerToFill = $request->request->get('containerToFill');
-        $containerToFill = $this->removeScannerInput($containerToFill);
 
         $transfer = $this->getFacade()->getPickingHeaderTransfer();
         $result = $this->getFacade()->moveContainerToContainer($transfer, $containerToMove, $containerToFill);
@@ -142,21 +137,5 @@ class ScanningContainerMergeController extends AbstractController
         $jsonResponse = new JsonResponse($encodedJson);
 
         return $jsonResponse;
-    }
-
-    /**
-     * @param string $input
-     *
-     * @return string
-     */
-    protected function removeScannerInput(string $input): string
-    {
-        if (str_contains($input, '/x11')) {
-            $input = str_replace('/x11', '', $input);
-        } elseif (str_contains($input, '/X11')) {
-            $input = str_replace('/X11', '', $input);
-        }
-
-        return $input;
     }
 }

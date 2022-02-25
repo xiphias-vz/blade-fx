@@ -8,16 +8,19 @@
     labels: []
 }  %}
 
+
 {% set isOther = false %}
 {% set isHighlighted = false %}
 {% set currentDiscount = 0 %}
 
 {% block body %}
+
     {% set leftColumnComponents = [] %}
     {% set rightColumnComponents = [] %}
     {% set sameItem = false %}
 
     {% for label in data.labels %}
+
         {% set componentName = 'flag' %}
         {% set componentModifiers = [label.type] %}
 
@@ -25,6 +28,7 @@
             {% set componentName = 'tag' %}
             {% set componentModifiers = [] %}
         {% endif %}
+
 
         {% set component = include(
             [
@@ -59,7 +63,10 @@
         {% else %}
             {% set rightColumnComponents = rightColumnComponents | merge([component]) %}
         {% endif %}
+
+
     {% endfor %}
+
 
     <div class="grid grid--right">
         {% if leftColumnComponents is not empty %}

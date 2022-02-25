@@ -14,10 +14,11 @@ use Spryker\Shared\Log\LoggerTrait;
 use Spryker\Zed\Mail\Business\Model\Mail\Builder\MailBuilderInterface;
 use Spryker\Zed\Mail\Business\Model\Mail\MailTypeCollectionGetInterface;
 use Spryker\Zed\Mail\Business\Model\Mailer\MailHandler as SprykerMailHandler;
+use Spryker\Zed\Mail\Business\Model\Mailer\MailHandlerInterface;
 use Spryker\Zed\Mail\Business\Model\Provider\MailProviderCollectionGetInterface;
 use Swift_SwiftException;
 
-class MailHandler extends SprykerMailHandler
+class MailHandler extends SprykerMailHandler implements MailHandlerInterface
 {
     use LoggerTrait;
 

@@ -13,4 +13,3 @@ pyzx_ff_export_categories.sql=zed
 pyzx_get_timeslot_capacity.sql=zed
 pyzx_select_order_status.sql=zed
 pyzx_update_order_status.sql=zed
-pyzx_monitoring_redis.sql=zed

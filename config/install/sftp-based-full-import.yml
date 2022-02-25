@@ -743,12 +743,5 @@ sections:
     exec-after-import:
         update-availability:
             command: "vendor/bin/console import:updateAvailability"
-
-        exec-apply-price-product-schedule:
-            command: "vendor/bin/console price-product-schedule:apply"
-
         exec-events:
             command: "vendor/bin/console import:execEvents"
-
-        fact-finder-export:
-            command: "vendor/bin/install -r fact-finder-export"

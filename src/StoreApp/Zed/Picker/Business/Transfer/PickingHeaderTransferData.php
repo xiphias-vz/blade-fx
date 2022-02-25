@@ -288,6 +288,7 @@ class PickingHeaderTransferData
         $transfer = $this->getTransferFromSession();
         $orderMod = $transfer->getOrder($order->getPickingPosition());
         $dataUpdated = false;
+
         foreach ($orderMod->getPickingContainers() as $container) {
             if ($container->getContainerID() == $containerId) {
                 $container->setShelfID($shelfId === "--" ? null : $shelfId);

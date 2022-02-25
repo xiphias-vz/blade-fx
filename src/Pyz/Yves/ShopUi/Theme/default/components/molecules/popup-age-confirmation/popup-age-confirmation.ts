@@ -36,6 +36,7 @@ export default class PopupAgeConfirmation extends Component{
     {
         this.$this.addClass(`${this.name}--show`);
     }
+
     protected closeModal(className): void{
         className.removeClass(`${this.name}--show`);
     }
