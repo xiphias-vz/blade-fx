@@ -471,11 +471,23 @@ class GsoaProductConsole extends Console
                 $key = array_search($wNr, array_column($resultSortOrder, 'productWamasNr'));
                 $sortOrder = 0;
                 if ($key > 0) {
-                    if (isset($resultSortOrder[$key]["placements"][0]["presentationStock"])) {
-                        $sortOrder = $resultSortOrder[$key]["placements"][0]["presentationStock"];
-                    } elseif (isset($resultSortOrder[$key]["placement"][0]["presentationStock"])) {
-                        $sortOrder = $resultSortOrder[$key]["placement"][0]["presentationStock"];
+                    $placements = [];
+                    if (isset($resultSortOrder[$key]["placements"])) {
+                        $placements = $resultSortOrder[$key]["placements"];
+                    } elseif (isset($resultSortOrder[$key]["placement"])) {
+                        $placements = $resultSortOrder[$key]["placement"];
                     }
+                    $sortOrderSum = 0;
+                    foreach ($placements as $placement) {
+                        $sortOrder = $placement["presentationStock"];
+                        if (substr($placement["placement"], 0, 1) != "9") {
+                            $sortOrderSum += $sortOrder;
+                        }
+                    }
+                    if ($sortOrderSum != 0) {
+                        $sortOrder = $sortOrderSum;
+                    }
+
                     $sortOrder = is_numeric($sortOrder) ? abs($sortOrder) * (-1) : $sortOrder;
                 }
                 $products[$i]["sortingorder"] = $sortOrder;
@@ -491,63 +503,6 @@ class GsoaProductConsole extends Console
         }
         if ($index < $productCount) {
             return $this->getPlacementsInStock($output, $client, $products, $index, $store);
-        }
-
-        return $products;
-    }
-
-    /**
-     * @param \Symfony\Component\Console\Output\OutputInterface $output
-     * @param \Pyz\Shared\GsoaRestApiClient\Provider\ProductCatalogProvider $client
-     * @param array $products
-     * @param int $index
-     * @param string $store
-     *
-     * @return array
-     */
-    private function getPresentationStock(OutputInterface $output, ProductCatalogProvider $client, array $products, int $index, string $store): array
-    {
-        $limit = 100;
-        $counter = 0;
-        $sortOrderFilter = [];
-        $productCount = count($products);
-        for ($i = $index; $i < $productCount; $i++) {
-            if (count($products[$i]["eshopCategories"]) > 0 && !empty($products[$i]["vatRate"])) {
-                $sortOrderFilter[] = $products[$i]['wamasNr'];
-                $counter++;
-                if ($counter > $limit) {
-                    break;
-                }
-            }
-        }
-        try {
-            $resultSortOrder = $client->getProductsByHouse($store, 'vanr:in ' . implode(",", $sortOrderFilter), 'vanr;ean;productInHouse', 0, 2000);
-            $counter = 0;
-            for ($i = $index; $i < $productCount; $i++) {
-                $wNr = $products[$i]['wamasNr'];
-                $key = array_search($wNr, array_column($resultSortOrder, 'vanr'));
-                $sortOrder = 0;
-                if ($key > 0) {
-                    if (isset($resultSortOrder[$key]["productInHouse"]["placements"][0]["presentationStock"])) {
-                        $sortOrder = $resultSortOrder[$key]["productInHouse"]["placements"][0]["presentationStock"];
-                    } elseif (isset($resultSortOrder[$key]["productInHouse"]["placement"][0]["presentationStock"])) {
-                        $sortOrder = $resultSortOrder[$key]["productInHouse"]["placement"][0]["presentationStock"];
-                    }
-                    $sortOrder = is_numeric($sortOrder) ? abs($sortOrder) * (-1) : $sortOrder;
-                }
-                $products[$i]["sortingorder"] = $sortOrder;
-                $counter++;
-                if ($counter > $limit) {
-                    break;
-                }
-            }
-            $index = $i;
-        } catch (Exception $ex) {
-            $index = $index + $limit;
-            $output->write($ex->getMessage());
-        }
-        if ($index < $productCount) {
-            return $this->getPresentationStock($output, $client, $products, $index, $store);
         }
 
         return $products;
@@ -723,7 +678,7 @@ class GsoaProductConsole extends Console
         $productCount = count($products);
         $page = 0;
         $pageSize = 130;
-        $fileName = $this->getImportFilePathAndName("5.globus_article_instock." . $store, empty($sapNumberArray));
+        $fileName = $this->getImportFilePathAndName("5.globus_article_instock." . $store, !empty($sapNumberArray));
         file_put_contents($fileName, "sapnumber;instock;store;shelf;shelffield;shelffloor" . PHP_EOL);
         $p = [];
         $c = 0;
@@ -765,23 +720,37 @@ class GsoaProductConsole extends Console
                                 $d["instock"] = str_replace(",", ".", $item["productInHouse"]["stockAmount"]);
                             }
                             $d["store"] = $store;
+
+                            $placements = [];
+                            $presentationStock = -999;
+                            $isSet = false;
                             if (isset($item["productInHouse"]["placement"])) {
-                                if ((is_array($item["productInHouse"]["placement"])) && (count($item["productInHouse"]["placement"]) > 0)) {
-                                    $d["shelf"] = substr($item["productInHouse"]["placement"][0]["placement"], 0, 3);
-                                    $d["shelffield"] = substr($item["productInHouse"]["placement"][0]["placement"], 3, 2);
-                                    $d["shelffloor"] = substr($item["productInHouse"]["placement"][0]["placement"], 5, 1);
-                                }
+                                $placements = $item["productInHouse"]["placement"];
                             } elseif (isset($item["productInHouse"]["placements"])) {
-                                if ((is_array($item["productInHouse"]["placements"])) && (count($item["productInHouse"]["placements"]) > 0)) {
-                                    $d["shelf"] = substr($item["productInHouse"]["placements"][0]["placement"], 0, 3);
-                                    $d["shelffield"] = substr($item["productInHouse"]["placements"][0]["placement"], 3, 2);
-                                    $d["shelffloor"] = substr($item["productInHouse"]["placements"][0]["placement"], 5, 1);
+                                $placements = $item["productInHouse"]["placements"];
+                            }
+                            foreach ($placements as $placement) {
+                                $placementShelf = $placement["placement"];
+                                if ($placement["presentationStock"] > $presentationStock && substr($placementShelf, 0, 1) != "9") {
+                                    $presentationStock = $placement["presentationStock"];
+                                    $d["shelf"] = substr($placementShelf, 0, 3);
+                                    $d["shelffield"] = substr($placementShelf, 3, 2);
+                                    $d["shelffloor"] = substr($placementShelf, 5, 1);
+                                    $isSet = true;
                                 }
-                            } else {
+                            }
+                            if (!$isSet && count($placements) > 0) {
+                                $placementShelf = $placements[0]["placement"];
+                                $d["shelf"] = substr($placementShelf, 0, 3);
+                                $d["shelffield"] = substr($placementShelf, 3, 2);
+                                $d["shelffloor"] = substr($placementShelf, 5, 1);
+                            }
+                            if (count($placements) < 1) {
                                 $d["shelf"] = '000';
                                 $d["shelffield"] = '000';
                                 $d["shelffloor"] = '00';
                             }
+
                             $d["shelf"] = str_replace('\\', "", $d["shelf"]);
                             $d["shelffield"] = str_replace('\\', "", $d["shelffield"]);
                             $d["shelffloor"] = str_replace('\\', "", $d["shelffloor"]);
