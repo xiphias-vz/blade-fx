@@ -45,7 +45,7 @@
             {% block labels %}
                 {% if (data.product.prices['ORIGINAL'] is defined and data.product.prices['DEFAULT'] < data.product.prices['ORIGINAL']) %}
                     {% set discount = data.product.prices.ORIGINAL - data.product.prices.DEFAULT %}
-                    {% set discount_percentage = ((discount / data.product.prices.ORIGINAL) * 100)|round %}
+                    {% set discount_percentage = ((discount / data.product.prices.ORIGINAL) * 100)|round(0,'floor') %}
 
                     {% set labels = labels | default([]) %}
 
