@@ -31,8 +31,10 @@ class ProductStorageDataMapper extends SprykerProductStorageDataMapper
         $productViewTransfer = $this->createProductViewTransfer($productStorageData);
         $productViewTransfer->setSelectedAttributes($selectedAttributes);
 
-        $currentMerchant = $productStorageCriteriaTransfer->getStore();
-        $productViewTransfer->setCurrentMerchant($currentMerchant);
+        if ($productStorageCriteriaTransfer != null){
+            $currentMerchant = $productStorageCriteriaTransfer->getStore();
+            $productViewTransfer->setCurrentMerchant($currentMerchant);
+        }
 
         foreach ($this->productStorageExpanderPlugins as $productViewExpanderPlugin) {
             if ($productViewExpanderPlugin instanceof ProductViewExpanderByCriteriaPluginInterface) {
