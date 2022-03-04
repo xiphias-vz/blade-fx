@@ -18,16 +18,24 @@ sections:
     download-gsoa-price-stock:
         download-prices-ost:
             command: "vendor/bin/console gsoa:product -c importProductPrice -s 4007"
+        download-prices-zli:
+            command: "vendor/bin/console gsoa:product -c importProductPrice -s 4003"
 
         download-stock-ost:
             command: "vendor/bin/console gsoa:product -c importProductStock -s 4007"
+        download-stock-zli:
+            command: "vendor/bin/console gsoa:product -c importProductStock -s 4003"
 
     import-prices-stock:
-        import-prices-opa:
+        import-prices-ost:
             command: "vendor/bin/console data:import product-price -f spryker/4.globus_article_prices.4007.csv -a UpdateAvailabilityAfterImportPlugin -vvv --no-ansi || true"
+        import-prices-zli:
+            command: "vendor/bin/console data:import product-price -f spryker/4.globus_article_prices.4003.csv -a UpdateAvailabilityAfterImportPlugin -vvv --no-ansi || true"
 
-        import-stock-opa:
+        import-stock-ost:
             command: "vendor/bin/console data:import product-stock -f spryker/5.globus_article_instock.4007.csv -a UpdateAvailabilityAfterImportPlugin -vvv --no-ansi || true"
+        import-stock-zli:
+            command: "vendor/bin/console data:import product-stock -f spryker/5.globus_article_instock.4003.csv -a UpdateAvailabilityAfterImportPlugin -vvv --no-ansi || true"
 
     import-alternative-eans:
         import-alternative-eans:

@@ -108,7 +108,13 @@ class ProductAbstractWriterStep extends PublishAwareStep implements DataImportSt
      */
     public static function getAbstractSku(DataSetInterface $dataSet): string
     {
-        return $dataSet[static::KEY_PRODUCT_NUMBER] . '_abstract';
+        $sku = $dataSet[static::KEY_PRODUCT_NUMBER];
+        $pos = strpos($sku, '_');
+        if ($pos > 0) {
+            $sku = substr($sku, 0, $pos);
+        }
+
+        return $sku . '_abstract';
     }
 
     /**

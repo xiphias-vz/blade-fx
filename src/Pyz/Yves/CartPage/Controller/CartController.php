@@ -419,6 +419,13 @@ class CartController extends SprykerCartController
             return $productViewTransfer->getSku();
         }
 
+        $merchantRef = $this->getFactory()->getBaseQuoteClient()->getQuote()->getMerchantReference();
+        foreach ($productConcreteIds as $key => $id) {
+            if (str_contains($key, "_" . $merchantRef)) {
+                return $key;
+            }
+        }
+
         return array_key_first($productConcreteIds);
     }
 

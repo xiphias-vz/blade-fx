@@ -240,6 +240,20 @@ class GsoaProductConsole extends Console
                                         }
                                     }
                                 }
+                                if (isset($item["houseSpecificData"])) {
+                                    $ean = $item["mainEan"];
+                                    foreach ($item["houseSpecificData"] as $specific) {
+                                        foreach (array_keys($specific) as $key) {
+                                            if ($key != "houseNumber") {
+                                                $item[$key] = $specific[$key];
+                                            }
+                                        }
+                                        $item["mainEan"] = $ean . "_" . $specific["houseNumber"];
+                                        $d = $map->mapValues($item);
+                                        $d["Classification_ID"] = implode(";", $item["eshopCategories"]);
+                                        file_put_contents($fileArticlePath, implode('|', $d) . PHP_EOL, FILE_APPEND);
+                                    }
+                                }
                                 if ($limit > 0 && $limit === $counter) {
                                     $page = 2000;
                                     break;
@@ -673,15 +687,17 @@ class GsoaProductConsole extends Console
         &$result,
         ?array $sapNumberArray
     ) {
-        $qry = new SpyProductQuery();
-        $products = $qry->select(SpyProductTableMap::COL_SAP_NUMBER)->where(SpyProductTableMap::COL_IS_ACTIVE . ' = 1')->find();
+        $qry = SpyProductQuery::create();
+        $products = $qry
+            ->select([SpyProductTableMap::COL_SAP_NUMBER, SpyProductTableMap::COL_SKU])
+            ->where(SpyProductTableMap::COL_IS_ACTIVE . ' = 1')
+            ->where(" NOT " . SpyProductTableMap::COL_SKU . " like '%\_____'")
+            ->find();
         $productCount = count($products);
         $page = 0;
         $pageSize = 130;
         $fileName = $this->getImportFilePathAndName("5.globus_article_instock." . $store, !empty($sapNumberArray));
-        file_put_contents($fileName, "sapnumber;instock;store;shelf;shelffield;shelffloor" . PHP_EOL);
-        $p = [];
-        $c = 0;
+        file_put_contents($fileName, "sapnumber;GTIN;instock;store;shelf;shelffield;shelffloor" . PHP_EOL);
         $counter = 0;
         $progressCounter = 0;
         $data = $products->getData();
@@ -693,7 +709,74 @@ class GsoaProductConsole extends Console
             }
             $sapNumberArray = $s;
         }
-        foreach ($data as $sapNumber) {
+        $this->writeDataToCsvFile($output, $client, $store, $data, $counter, $progressCounter, $page, $productCount, $pageSize, $isEmptyArray, $fileName, $sapNumberArray, false);
+
+        $qry = SpyProductQuery::create();
+        $products = $qry
+            ->select([SpyProductTableMap::COL_SAP_NUMBER, SpyProductTableMap::COL_SKU])
+            ->where(SpyProductTableMap::COL_IS_ACTIVE . ' = 1')
+            ->where(SpyProductTableMap::COL_SKU . " like '%\_____'")
+            ->find();
+        $data = $products->getData();
+        $this->writeDataToCsvFile($output, $client, $store, $data, $counter, $progressCounter, $page, $productCount, $pageSize, $isEmptyArray, $fileName, $sapNumberArray, true);
+    }
+
+    /**
+     * @param \Symfony\Component\Console\Output\OutputInterface $output
+     * @param \Pyz\Shared\GsoaRestApiClient\Provider\ProductCatalogProvider $client
+     * @param string $store
+     * @param array $data
+     * @param int $counter
+     * @param int $progressCounter
+     * @param int $page
+     * @param int $productCount
+     * @param int $pageSize
+     * @param bool $isEmptyArray
+     * @param string $fileName
+     * @param array|null $sapNumberArray
+     * @param bool $isStoreSpecific
+     *
+     * @return void
+     */
+    private function writeDataToCsvFile(
+        OutputInterface $output,
+        ProductCatalogProvider $client,
+        string $store,
+        array $data,
+        int &$counter,
+        int &$progressCounter,
+        int &$page,
+        int $productCount,
+        int $pageSize,
+        bool $isEmptyArray,
+        string $fileName,
+        ?array $sapNumberArray,
+        bool $isStoreSpecific
+    ) {
+        $c = 0;
+        $p = [];
+        if ($isStoreSpecific) {
+            $newData = [];
+            foreach ($data as $spryProduct) {
+                $sapNumber = $spryProduct[SpyProductTableMap::COL_SAP_NUMBER];
+                $skuSpry = $spryProduct[SpyProductTableMap::COL_SKU];
+                if (!str_contains($skuSpry, "_" . $store)) {
+                    $d = $this->getProductStockArray();
+                    $d["sapnumber"] = $sapNumber;
+                    $d["GTIN"] = $skuSpry;
+                    $d["store"] = $store;
+                    $d["instock"] = 0;
+                    file_put_contents($fileName, implode(';', $d) . PHP_EOL, FILE_APPEND);
+                } else {
+                    $newData[] = $spryProduct;
+                }
+            }
+            $data = $newData;
+            $productCount += count($data);
+        }
+        foreach ($data as $spryProduct) {
+            $sapNumber = $spryProduct[SpyProductTableMap::COL_SAP_NUMBER];
+            $skuSpry = $spryProduct[SpyProductTableMap::COL_SKU];
             $progressCounter++;
             if ($isEmptyArray || isset($sapNumberArray[$sapNumber])) {
                 $p[] = $sapNumber;
@@ -703,13 +786,20 @@ class GsoaProductConsole extends Console
                     $filterStock = "ProductWamasNr:in " . implode(",", $p);
                     $c = 0;
                     $p = [];
-                    $result = $client->getProductsByHouse($store, $filter, '', 0, $pageSize);
-                    $resultStock = $client->getProductStocksByHouse($store, true, $filterStock, 0, $pageSize)['productStocks'];
+                    $result = [];
+                    $resultStock = [];
+                    try {
+                        $result = $client->getProductsByHouse($store, $filter, '', 0, $pageSize);
+                        $resultStock = $client->getProductStocksByHouse($store, true, $filterStock, 0, $pageSize)['productStocks'];
+                    } catch (Exception $ex) {
+                        $output->writeln($ex->getMessage());
+                    }
                     if ((is_array($result)) && (count($result) > 0)) {
                         foreach ($result as $item) {
                             $counter++;
                             $d = $this->getProductStockArray();
                             $d["sapnumber"] = $item["vanr"];
+                            $d["GTIN"] = $skuSpry;
                             $key = array_search($item["vanr"], array_column($resultStock, 'productWamasNr'));
                             if ($key) {
                                 $d["instock"] = str_replace(",", ".", $resultStock[$key]["availableAmount"]);

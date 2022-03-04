@@ -416,6 +416,9 @@ class ProductMapping
                 }
             }
         }
+        if (isset($item["mainEan"])) {
+            $value["ordernumber"] = $item["mainEan"];
+        }
         if (empty($value["ordernumber"])) {
             $value["ordernumber"] = $item["wamasNr"];
             $this->productWithOutEan++;

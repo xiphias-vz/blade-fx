@@ -240,7 +240,7 @@ services:
                 protocol: tcp
     search:
         engine: elastic
-        version: 7.6
+        version: 6.8
         endpoints:
             localhost:9200:
                 protocol: tcp
@@ -254,7 +254,7 @@ services:
             mail.globus.local:
     kibana:
         engine: kibana
-        version: 7.6
+        version: 6.8
         endpoints:
             kibana.globus.local:
 

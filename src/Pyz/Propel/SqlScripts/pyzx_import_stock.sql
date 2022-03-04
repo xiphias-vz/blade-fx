@@ -88,6 +88,11 @@ BEGIN
     from tmp_stock ts
     where ts.id_stock_product is null;
 
+    update tmp_stock ts
+        inner join spy_stock_product ssp on ts.fk_stock = ssp.fk_stock and ts.fk_product = ssp.fk_product
+        set ts.id_stock_product = ssp.id_stock_product
+    where ts.id_stock_product is null;
+
     INSERT INTO pyz_data_import_event
     (entity_id, event_name, created_at)
     select DISTINCT ts.fk_product_abstract, 'Product.product_abstract.publish', now()
