@@ -6,6 +6,7 @@ export default class OrderSearch extends Component {
     protected $searchItems: $;
     protected $input: $;
     protected currentInputValue: string;
+    protected currentInputValueUppercase: string;
     protected $select: $;
     protected currentSelectValue: string;
     protected isTimeActive = false;
@@ -13,6 +14,7 @@ export default class OrderSearch extends Component {
     orderProgress: HTMLInputElement;
     orderUnknown: HTMLInputElement;
     protected barcodePrefix: string = '/x11';
+    protected barcodePrefixUppercase: string = '/X11';
 
     protected readyCallback(): void {}
 
@@ -41,9 +43,13 @@ export default class OrderSearch extends Component {
     }
 
     protected searchChangedHandler(): void {
-        const selectedValue = String(this.$input.val()).toLowerCase();
-        this.currentInputValue = selectedValue.replace(this.barcodePrefix, '');
+        const selectedValue = String(this.$input.val());
 
+        if (selectedValue.includes(this.barcodePrefixUppercase)) {
+            this.currentInputValue = selectedValue.replace(this.barcodePrefixUppercase, '');
+        } else {
+            this.currentInputValue = selectedValue.replace(this.barcodePrefix, '');
+        }
         this.$input.val(this.currentInputValue);
 
         if (this.$select.length) {
