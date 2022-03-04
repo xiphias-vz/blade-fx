@@ -445,6 +445,7 @@ class GsoaProductConsole extends Console
     {
         return [
             "sapnumber" => "",
+            "GTIN" => "",
             "instock" => "0",
             "store" => "",
             "shelf" => "000",
