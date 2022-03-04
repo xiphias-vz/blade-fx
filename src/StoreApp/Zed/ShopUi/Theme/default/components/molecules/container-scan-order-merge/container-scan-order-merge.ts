@@ -133,6 +133,8 @@ export default class ContainerScanOrderMerge extends Component {
                             }
                         }
 
+                        that.toggleMergingContainerInput();
+
                         let backLink = document.querySelector('.header__content a.link');
                         backLink.style.display = "block";
                         backLink.setAttribute('href', '#');
@@ -267,6 +269,16 @@ export default class ContainerScanOrderMerge extends Component {
         containerHolder.innerHTML = `<span class="container-number">${containerNumber}</span>`;
 
         return containerHolder;
+    }
+
+    protected toggleMergingContainerInput(): void{
+        this.mergingContainerScanner.value = "";
+        this.mergingContainerScanner.readOnly = true;
+        this.mergingContainerScanner.focus();
+
+        setTimeout(() => {
+            this.mergingContainerScanner.readOnly = false;
+        }, 1000);
     }
 
     protected createBinIcon(): HTMLElement {
