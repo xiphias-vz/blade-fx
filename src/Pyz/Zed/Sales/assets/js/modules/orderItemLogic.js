@@ -51,8 +51,14 @@ $(document).ready(function () {
         let individualQuantity = parseInt(orderItem.querySelector('.quantity-balance .quantity').innerHTML);
         let currentQuantity = parseInt(currentOrderItem.querySelector('.quantity-balance .quantity').innerHTML);
         let pickedQuantity = parseInt(currentOrderItem.querySelector('.quantity-balance .picked').innerHTML);
-        let currentItemState = currentOrderItem.querySelector('.item-state').innerHTML;
-        let itemState = orderItem.querySelector('.item-state').textContent;
+        let currentItemState = '';
+        if(currentOrderItem.querySelector('.item-state') !== undefined && currentOrderItem.querySelector('.item-state') !== null) {
+            currentItemState = currentOrderItem.querySelector('.item-state').innerHTML;
+        }
+        let itemState = '';
+        if(orderItem.querySelector('.item-state') !== undefined && orderItem.querySelector('.item-state') !== null) {
+            itemState = orderItem.querySelector('.item-state').textContent;
+        }
         let averageWeight = orderItem.getAttribute('data-weightPerUnit');
         let newWeight = orderItem.getAttribute('data-newWeight');
 
@@ -101,19 +107,27 @@ $(document).ready(function () {
         clonedOrderItem.querySelector('img').remove();
         clonedOrderItem.classList.add('nested-element');
         currentOrderItem.querySelector('.quantity-balance .quantity').innerHTML = clonedOrderItem.getAttribute('data-quantity');
-        if(clonedOrderItem.querySelector('.item-state').innerHTML !== "cancelled"
-            && clonedOrderItem.querySelector('.item-state').innerHTML !== "ready for picking"
-            && clonedOrderItem.querySelector('.item-state').innerHTML !== "ready for picking (paused)"
-        ) {
-            currentOrderItem.querySelector('.quantity-balance .picked').innerHTML = clonedOrderItem.getAttribute('data-quantity');
-        } else {
-            currentOrderItem.querySelector('.quantity-balance .picked').innerHTML = "0";
+        if(clonedOrderItem.querySelector('.item-state') !== undefined && clonedOrderItem.querySelector('.item-state') !== null) {
+            if(clonedOrderItem.querySelector('.item-state').innerHTML !== "cancelled"
+                && clonedOrderItem.querySelector('.item-state').innerHTML !== "ready for picking"
+                && clonedOrderItem.querySelector('.item-state').innerHTML !== "ready for picking (paused)"
+            ) {
+                currentOrderItem.querySelector('.quantity-balance .picked').innerHTML = clonedOrderItem.getAttribute('data-quantity');
+            } else {
+                currentOrderItem.querySelector('.quantity-balance .picked').innerHTML = "0";
+            }
         }
         if(weightPerUnit !== "") {
             currentOrderItem.querySelector('.total-weight').innerHTML = weightPerUnit + ' gr';
             currentOrderItem.querySelector('.cumulative-weight').innerHTML = (newWeight !== "" ? newWeight : 0) + ' gr';
         }
-        currentOrderItem.querySelector('.item-state').innerHTML = clonedOrderItem.querySelector('.item-state').innerHTML;
+        if(currentOrderItem.querySelector('.item-state') !== undefined
+            && currentOrderItem.querySelector('.item-state') !== null
+            && clonedOrderItem.querySelector('.item-state') !== undefined
+            && clonedOrderItem.querySelector('.item-state') !== null
+        ) {
+            currentOrderItem.querySelector('.item-state').innerHTML = clonedOrderItem.querySelector('.item-state').innerHTML;
+        }
         clonedOrderItem.querySelector('.quantity-balance').innerHTML = clonedOrderItem.getAttribute('data-quantity');
         let arrowIcon = document.createElement('i');
         arrowIcon.classList.add('arrow');

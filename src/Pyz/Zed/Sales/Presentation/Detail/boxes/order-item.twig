@@ -64,6 +64,13 @@
                 <a style="color: #1AB394" href="{{ url('/oms/index/draw', {'process': orderItem.process, 'state': orderItem.state.name}) }}" target="_blank" class="item-state">{{ (orderItem.stateHistory | first).name }}</a>
             {% endif %}
         </div>
+{% else %}
+    <td rowspan="1" class="state-history">
+    <div>
+        {% if orderItem.state.name != '' %}
+            <a style="color: #1AB394" href="{{ url('/oms/index/draw', {'process': orderItem.process, 'state': orderItem.state.name}) }}" target="_blank" class="item-state">{{ orderItem.state.name }}</a>
+        {% endif %}
+    </div>
 {% endif %}
   {% if orderItem.stateHistory | length > 1 %}
       <div id="history_details_{{ orderItem.idSalesOrderItem }}" class="hidden">
