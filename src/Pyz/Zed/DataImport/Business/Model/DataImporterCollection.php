@@ -7,13 +7,16 @@
 
 namespace Pyz\Zed\DataImport\Business\Model;
 
+use Exception;
 use Generated\Shared\Transfer\DataImporterConfigurationTransfer;
 use Orm\Zed\Category\Persistence\Map\SpyCategoryNodeTableMap;
 use Orm\Zed\Category\Persistence\Map\SpyCategoryTableMap;
 use Orm\Zed\Category\Persistence\SpyCategoryNodeQuery;
 use Orm\Zed\Category\Persistence\SpyCategoryQuery;
+use Orm\Zed\DataImport\Persistence\PyzImportCsvNew;
 use Orm\Zed\Navigation\Persistence\SpyNavigationQuery;
 use Propel\Runtime\Propel;
+use Pyz\Shared\Product\ProductConfig;
 use Pyz\Shared\PropelExtension\PropelExtension;
 use Pyz\Zed\CategoryDataImport\Business\Model\CategoryWriterStep;
 use Pyz\Zed\DataImport\Business\Exception\EntityNotFoundException;
@@ -65,6 +68,10 @@ class DataImporterCollection extends SprykerDataImporterCollection
                         $this->deactivateAllNavigationNodes($this->resolveIdNavigation(CategoryWriterStep::NAVIGATION_MODE_MOBILE));
                     }
                 }
+            }
+
+            if ($importType == "product") {
+                $this->setCsvToArchive($dataImporterConfigurationTransfer);
             }
 
             $this->executeDataImporter(
@@ -271,5 +278,67 @@ class DataImporterCollection extends SprykerDataImporterCollection
         }
 
         return false;
+    }
+
+    /**
+     * @param \Generated\Shared\Transfer\DataImporterConfigurationTransfer $dataImporterConfigurationTransfer
+     *
+     * @return void
+     */
+    protected function setCsvToArchive(DataImporterConfigurationTransfer $dataImporterConfigurationTransfer)
+    {
+        $fp = fopen('//data/data/import/' . $dataImporterConfigurationTransfer->getReaderConfiguration()->getFileName(), "r");
+        $lineCounter = 0;
+        if ($fp) {
+            $orderNumberIndex = -1;
+            $sapNumberIndex = -1;
+            while (($buffer = fgets($fp)) !== false) {
+                $sku = "";
+                $sapNumber = "";
+                try {
+                    $line = str_getcsv($buffer, "|");
+                    if ($orderNumberIndex < 0) {
+                        $orderNumberIndex = array_search(ProductConfig::KEY_PRODUCT_NUMBER, $line);
+                        $sapNumberIndex = array_search(ProductConfig::KEY_SAP_NUMBER, $line);
+                    } else {
+                        $sku = $line[$orderNumberIndex];
+                        $sapNumber = $line[$sapNumberIndex];
+                    }
+                } catch (Exception $ex) {
+                }
+                $buffer = $this->checkString($buffer);
+                $this->insertProductCsvToTable($buffer, $sku, $sapNumber);
+                $lineCounter++;
+            }
+
+            fclose($fp);
+        }
+    }
+
+    /**
+     * @param string $line
+     * @param string $sku
+     * @param string $sapNumber
+     *
+     * @return void
+     */
+    protected function insertProductCsvToTable(string $line, string $sku, string $sapNumber)
+    {
+        $entity = new PyzImportCsvNew();
+        $entity->setCreatedAt(static::$importDateTime)
+            ->setCsvValueNew($line)
+            ->setSku($sku)
+            ->setSapNumber($sapNumber);
+        $entity->save();
+    }
+
+    /**
+     * @param string $line
+     *
+     * @return string
+     */
+    protected function checkString(string $line): string
+    {
+        return preg_replace('/[\x00-\x1F\x7F-\xFF]/', '', $line);
     }
 }

@@ -14,6 +14,7 @@ use Pyz\Zed\CategoryDataImport\CategoryDataImportConfig;
 use Pyz\Zed\CmsPageDataImport\CmsPageDataImportConfig;
 use Pyz\Zed\Console\Communication\Plugin\ConsoleLogPlugin;
 use Pyz\Zed\DatabaseLoad\Communication\Console\DatabaseLoadTestConsole;
+use Pyz\Zed\DataImport\Communication\Console\CopyValuesFromPICOldToPICNewConsole;
 use Pyz\Zed\DataImport\Communication\Console\DataImportCheckImagesConsole;
 use Pyz\Zed\DataImport\Communication\Console\DataImportCheckProductCsvFileConsole;
 use Pyz\Zed\DataImport\Communication\Console\DataImportConsole;
@@ -23,6 +24,9 @@ use Pyz\Zed\DataImport\Communication\Console\DataImportFileManagerConsole;
 use Pyz\Zed\DataImport\Communication\Console\DataImportImagesFileManagerConsole;
 use Pyz\Zed\DataImport\Communication\Console\DataImportUpdatePricesConsole;
 use Pyz\Zed\DataImport\Communication\Console\DataImportUpdateStockConsole;
+use Pyz\Zed\DataImport\Communication\Console\DeleteValuesFromPyzImportCsvNewConsole;
+use Pyz\Zed\DataImport\Communication\Console\DeleteValuesFromPyzImportCsvOldConsole;
+use Pyz\Zed\DataImport\Communication\Console\FilterEventsAfterProductDataImportConsole;
 use Pyz\Zed\DataImport\Communication\Console\UpdateAvailabilityAfterImportConsole;
 use Pyz\Zed\DataImport\DataImportConfig;
 use Pyz\Zed\DeleteRowsFromTransitionLogScript\Communication\Console\DeleteRowsFromTransitionLogScriptConsole;
@@ -264,6 +268,10 @@ class ConsoleDependencyProvider extends SprykerConsoleDependencyProvider
             new DataImportUpdateStockConsole(),
             new UpdateAvailabilityAfterImportConsole(),
             new DataImportCheckProductCsvFileConsole(),
+            new FilterEventsAfterProductDataImportConsole(),
+            new DeleteValuesFromPyzImportCsvOldConsole(),
+            new CopyValuesFromPICOldToPICNewConsole(),
+            new DeleteValuesFromPyzImportCsvNewConsole(),
 
             //core data importers
             new DataImportConsole(DataImportConsole::DEFAULT_NAME . ':' . PriceProductDataImportConfig::IMPORT_TYPE_PRODUCT_PRICE),

@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<database xmlns="spryker:schema-01"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          name="zed"
+          namespace="Orm\Zed\DataImport\Persistence"
+          package="src.Orm.Zed.DataImport.Persistence"
+          xsi:schemaLocation="spryker:schema-01 https://static.spryker.com/schema-01.xsd">
+
+
+    <table name="pyz_import_csv_new">
+        <column name="id_csv_value_new" required="true" type="INTEGER" autoIncrement="true" primaryKey="true"/>
+        <column name="csv_value_new" required="true" type="LONGVARCHAR"/>
+        <column name="created_at" required="true" type="TIMESTAMP"/>
+        <column name="sku" type="VARCHAR" size="50"/>
+        <column name="sap_number" type="VARCHAR" size="50"/>
+    </table>
+
+</database>
