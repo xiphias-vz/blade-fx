@@ -13,6 +13,7 @@ use Generated\Shared\Transfer\OrderCriteriaFilterTransfer;
 use Generated\Shared\Transfer\OrderTransfer;
 use Generated\Shared\Transfer\OrderUpdateRequestTransfer;
 use Generated\Shared\Transfer\QuoteTransfer;
+use Generated\Shared\Transfer\SaveOrderTransfer;
 use Generated\Shared\Transfer\ShipmentTransfer;
 use Generated\Shared\Transfer\SpySalesOrderItemEntityTransfer;
 use Orm\Zed\Sales\Persistence\SpySalesOrder;
@@ -377,5 +378,38 @@ class SalesFacade extends SprykerSalesFacade implements SalesFacadeInterface
     public function sendOrderConfirmationMail(SpySalesOrder $salesOrderEntity): void
     {
         $this->getFactory()->getNewOmsFacade()->sendEmail($salesOrderEntity);
+    }
+
+    /**
+     * @param \Generated\Shared\Transfer\QuoteTransfer $quoteTransfer
+     * @param \Generated\Shared\Transfer\SaveOrderTransfer $saveOrderTransfer
+     *
+     * @return void
+     */
+    public function saveSalesOrder(QuoteTransfer $quoteTransfer, SaveOrderTransfer $saveOrderTransfer)
+    {
+        $orderUuid = $quoteTransfer->getUuid();
+        $uuid = $this->getOrderByUid($orderUuid);
+        if ($uuid == null) {
+            $this->getFactory()
+                ->createSalesOrderSaver()
+                ->saveOrderSales($quoteTransfer, $saveOrderTransfer);
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * @api
+     *
+     * @param int $idSalesOrder
+     *
+     * @return \Generated\Shared\Transfer\OrderTransfer|null
+     */
+    public function getOrderByUid($uid)
+    {
+        return $this->getFactory()
+            ->createOrderReaderForStoreApp()
+            ->findOrderByOrderUid($uid);
     }
 }

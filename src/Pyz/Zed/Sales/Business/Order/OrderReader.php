@@ -132,4 +132,24 @@ class OrderReader extends SprykerOrderReader implements OrderReaderInterface
 
         return $merchantSalesOrder;
     }
+
+    /**
+     * @param string $orderUid
+     *
+     * @return \Generated\Shared\Transfer\OrderTransfer|null
+     */
+    public function findOrderByOrderUid(string $orderUid): ?OrderTransfer
+    {
+        $orderEntity = $this->queryContainer
+            ->querySalesOrder()
+            ->filterByOrderUid($orderUid)
+            ->find()
+            ->getFirst();
+
+        if (!$orderEntity) {
+            return null;
+        }
+
+        return $this->orderHydrator->hydrateOrderTransferFromPersistenceBySalesOrder($orderEntity);
+    }
 }

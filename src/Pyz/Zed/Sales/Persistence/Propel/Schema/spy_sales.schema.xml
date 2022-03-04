@@ -22,6 +22,7 @@
         <column name="salutation" type="ENUM" valueSet="Mr, Ms, Divers, Dr, " required="false"/>
         <column name="is_substitution_allowed" type="BOOLEAN" required="false" defaultValue="false"  />
         <column name="is_deposit_allowed" type="BOOLEAN" required="false" defaultValue="false"/>
+        <column name="order_uid" type="VARCHAR" size="2048"/>
 
         <foreign-key name="spy_sales_order-fk_user" foreignTable="spy_user">
             <reference local="fk_user" foreign="id_user"/>

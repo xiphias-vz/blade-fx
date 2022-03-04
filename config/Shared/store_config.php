@@ -206,7 +206,7 @@ if ($codeBucket == 'CZ') {
         'dev' => 'zed.ger.shop-d.globus.de',
         'prod' => 'zed.ger.shop.globus.de',
     ],
-    'HER'  => [
+    'HER' => [
         'local' => 'zed.her.shop.globus.local',
         'stage' => 'zed.her.shop-t.globus.de',
         'dev' => 'zed.her.shop-d.globus.de',
@@ -218,7 +218,7 @@ if ($codeBucket == 'CZ') {
         'dev' => 'zed.lud.shop-d.globus.de',
         'prod' => 'zed.lud.shop.globus.de',
     ],
-    'PLT'  => [
+    'PLT' => [
         'local' => 'zed.plt.shop.globus.local',
         'stage' => 'zed.plt.shop-t.globus.de',
         'dev' => 'zed.plt.shop-d.globus.de',

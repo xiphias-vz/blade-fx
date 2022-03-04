@@ -9,6 +9,7 @@ namespace Pyz\Zed\Checkout;
 
 use Pyz\Zed\CollectNumber\Communication\Plugin\CheckoutOrderSaver\GenerateCollectNumberCheckoutOrderSaverPlugin;
 use Pyz\Zed\DataDog\Communication\Plugin\Checkout\DataDogCheckoutPostSaveHookPlugin;
+use Pyz\Zed\Sales\Business\SalesFacadeInterface;
 use Pyz\Zed\TimeSlot\Communication\Plugin\TimeSlotAvailabilityPreConditionCheckerPlugin;
 use Spryker\Zed\CartNote\Communication\Plugin\Checkout\CartNoteSaverPlugin;
 use Spryker\Zed\Checkout\CheckoutDependencyProvider as SprykerCheckoutDependencyProvider;
@@ -33,6 +34,37 @@ use Spryker\Zed\ShipmentCheckoutConnector\Communication\Plugin\Checkout\Shipment
 
 class CheckoutDependencyProvider extends SprykerCheckoutDependencyProvider
 {
+    public const FACADE_SALES = 'FACADE_SALES';
+
+    /**
+     * @param \Spryker\Zed\Kernel\Container $container
+     *
+     * @return \Spryker\Zed\Kernel\Container
+     */
+    public function provideBusinessLayerDependencies(Container $container)
+    {
+        $container->set(static::CHECKOUT_PRE_CONDITIONS, function (Container $container) {
+            return $this->getCheckoutPreConditions($container);
+        });
+
+        $container->set(static::CHECKOUT_ORDER_SAVERS, function (Container $container) {
+            return $this->getCheckoutOrderSavers($container);
+        });
+
+        $container->set(static::CHECKOUT_POST_HOOKS, function (Container $container) {
+            return $this->getCheckoutPostHooks($container);
+        });
+
+        $container->set(static::CHECKOUT_PRE_SAVE_HOOKS, function (Container $container) {
+            return $this->getCheckoutPreSaveHooks($container);
+        });
+
+        $container = $this->addOmsFacade($container);
+        $container = $this->addSalesOrderFacade($container);
+
+        return $container;
+    }
+
     /**
      * @param \Spryker\Zed\Kernel\Container $container ’
      *
@@ -99,5 +131,19 @@ class CheckoutDependencyProvider extends SprykerCheckoutDependencyProvider
         return [
             new SalesOrderExpanderPlugin(),
         ];
+    }
+
+    /**
+     * @param \Spryker\Zed\Kernel\Container $container
+     *
+     * @return \Spryker\Zed\Kernel\Container
+     */
+    protected function addSalesOrderFacade(Container $container)
+    {
+        $container->set(self::FACADE_SALES, function (Container $container): SalesFacadeInterface {
+            return $container->getLocator()->sales()->facade();
+        });
+
+        return $container;
     }
 }

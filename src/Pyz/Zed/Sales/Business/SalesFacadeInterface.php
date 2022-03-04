@@ -13,6 +13,7 @@ use Generated\Shared\Transfer\OrderCriteriaFilterTransfer;
 use Generated\Shared\Transfer\OrderTransfer;
 use Generated\Shared\Transfer\OrderUpdateRequestTransfer;
 use Generated\Shared\Transfer\QuoteTransfer;
+use Generated\Shared\Transfer\SaveOrderTransfer;
 use Generated\Shared\Transfer\SpySalesOrderItemEntityTransfer;
 use Orm\Zed\Sales\Persistence\SpySalesOrder;
 use Spryker\Zed\Sales\Business\SalesFacadeInterface as SprykerSalesFacadeInterface;
@@ -313,4 +314,34 @@ interface SalesFacadeInterface extends SprykerSalesFacadeInterface
      * @return void
      */
     public function executeTimeSlotCheckJenkinsJob(string $storeName): void;
+
+    /**
+     * Specification:
+     * - Saves order and items to Persistence.
+     * - Sets "is test" flag.
+     * - Updates checkout response with saved order data.
+     * - Sets initial state for state machine.
+     * - Executes `OrderPostSavePluginInterface` stack of plugins.
+     *
+     * @api
+     *
+     * @deprecated Use {@link \Spryker\Zed\Sales\Business\SalesFacadeInterface::saveOrderRaw()} instead
+     *
+     * @param \Generated\Shared\Transfer\QuoteTransfer $quoteTransfer
+     * @param \Generated\Shared\Transfer\SaveOrderTransfer $saveOrderTransfer
+     *
+     * @return void
+     */
+    public function saveSalesOrder(QuoteTransfer $quoteTransfer, SaveOrderTransfer $saveOrderTransfer);
+
+    /**
+     * {@inheritDoc}
+     *
+     * @api
+     *
+     * @param int $idSalesOrder
+     *
+     * @return \Generated\Shared\Transfer\OrderTransfer|null
+     */
+    public function getOrderByUid($uid);
 }

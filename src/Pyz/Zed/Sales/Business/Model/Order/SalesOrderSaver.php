@@ -61,6 +61,7 @@ class SalesOrderSaver extends SprykerSalesOrderSaver
         $this->addLocale($salesOrderEntity);
         $salesOrderEntity->setIsSubstitutionAllowed($quoteTransfer->getIsSubstitutionAllowed());
         $salesOrderEntity->setIsDepositAllowed($quoteTransfer->getIsDepositAllowed());
+        $salesOrderEntity->setOrderUid($quoteTransfer->getUuid());
         $salesOrderEntity->save();
 
         return $salesOrderEntity;

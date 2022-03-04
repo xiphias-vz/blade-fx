@@ -34,4 +34,11 @@ interface OrderReaderInterface extends SprykerOrderReaderInterface
      * @return \Orm\Zed\MerchantSalesOrder\Persistence\SpyMerchantSalesOrder
      */
     public function findMerchantSalesOrderByIdSalesOrder(int $idSalesOrder): SpyMerchantSalesOrder;
+
+    /**
+     * @param string $orderUid
+     *
+     * @return \Generated\Shared\Transfer\OrderTransfer|null
+     */
+    public function findOrderByOrderUid(string $orderUid): ?OrderTransfer;
 }
