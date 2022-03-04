@@ -16,6 +16,7 @@
         <property name="productSetIds" type="array"/>
         <property name="nutritionalInformationContainsReferenceAmount" type="bool"/>
         <property name="additionalProductInformationIsShown" type="bool"/>
+        <property name="currentMerchant" type="string" />
     </transfer>
 
 </transfers>
