@@ -98,6 +98,20 @@ class CatalogController extends SprykerCatalogController
     }
 
     /**
+     * @param array $searchResults
+     * @return array
+     */
+    protected function reduceRestrictedSortingOptions(array $searchResults): array
+    {
+        if (!$this->can('SeePricePermissionPlugin') && isset($searchResults[static::URL_PARAM_SORTING])) {
+            $sortParamNames = $searchResults[static::URL_PARAM_SORTING]->getSortParamNames();
+            $searchResults[static::URL_PARAM_SORTING]->setSortParamNames($sortParamNames);
+        }
+
+        return $searchResults;
+    }
+
+    /**
      * @param array $data
      *
      * @return array
@@ -114,5 +128,16 @@ class CatalogController extends SprykerCatalogController
         }
 
         return $data;
+    }
+
+    /**
+     * @param Request $request
+     * @return array
+     */
+    protected function getAllowedRequestParameters(Request $request): array
+    {
+        $parameters = $request->query->all();
+
+        return $parameters;
     }
 }

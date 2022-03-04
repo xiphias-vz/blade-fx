@@ -37,6 +37,7 @@ use Spryker\Client\SearchElasticsearch\Plugin\QueryExpander\SuggestionByTypeQuer
 use Spryker\Client\SearchElasticsearch\Plugin\ResultFormatter\CompletionResultFormatterPlugin;
 use Spryker\Client\SearchElasticsearch\Plugin\ResultFormatter\FacetResultFormatterPlugin;
 use Spryker\Client\SearchElasticsearch\Plugin\ResultFormatter\PaginatedResultFormatterPlugin;
+use Spryker\Client\SearchElasticsearch\Plugin\ResultFormatter\SortedResultFormatterPlugin;
 use Spryker\Client\SearchElasticsearch\Plugin\ResultFormatter\SpellingSuggestionResultFormatterPlugin;
 use Spryker\Client\SearchElasticsearch\Plugin\ResultFormatter\SuggestionByTypeResultFormatterPlugin;
 use SprykerEco\Client\FactFinderNg\Plugin\ElasticSearch\ResultFormatter\FactFinderSortedResultFormatterPlugin;
@@ -104,16 +105,28 @@ class CatalogDependencyProvider extends SprykerCatalogDependencyProvider
      */
     protected function createCatalogSearchResultFormatterPlugins(): array
     {
-        return [
-            new FacetResultFormatterPlugin(),
-            // new SortedResultFormatterPlugin(),
-            new FactFinderSortedResultFormatterPlugin(),
-            new PaginatedResultFormatterPlugin(),
-            new CurrencyAwareCatalogSearchResultFormatterPlugin(
-                new RawCatalogSearchResultFormatterPlugin()
-            ),
-            new SpellingSuggestionResultFormatterPlugin(),
-        ];
+        $storeCodeBucket = getenv('SPRYKER_CODE_BUCKET');
+        if ($storeCodeBucket == "CZ") {
+            return [
+                new FacetResultFormatterPlugin(),
+                new SortedResultFormatterPlugin(),
+                new PaginatedResultFormatterPlugin(),
+                new CurrencyAwareCatalogSearchResultFormatterPlugin(
+                    new RawCatalogSearchResultFormatterPlugin()
+                ),
+                new SpellingSuggestionResultFormatterPlugin(),
+            ];
+        } else {
+            return [
+                new FacetResultFormatterPlugin(),
+                new FactFinderSortedResultFormatterPlugin(),
+                new PaginatedResultFormatterPlugin(),
+                new CurrencyAwareCatalogSearchResultFormatterPlugin(
+                    new RawCatalogSearchResultFormatterPlugin()
+                ),
+                new SpellingSuggestionResultFormatterPlugin(),
+            ];
+        }
     }
 
     /**
