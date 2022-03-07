@@ -775,9 +775,11 @@ class GsoaProductConsole extends Console
             $data = $newData;
             $productCount += count($data);
         }
+        $skuArray = [];
         foreach ($data as $spryProduct) {
             $sapNumber = $spryProduct[SpyProductTableMap::COL_SAP_NUMBER];
             $skuSpry = $spryProduct[SpyProductTableMap::COL_SKU];
+            $skuArray[$sapNumber] = $skuSpry;
             $progressCounter++;
             if ($isEmptyArray || isset($sapNumberArray[$sapNumber])) {
                 $p[] = $sapNumber;
@@ -800,7 +802,7 @@ class GsoaProductConsole extends Console
                             $counter++;
                             $d = $this->getProductStockArray();
                             $d["sapnumber"] = $item["vanr"];
-                            $d["GTIN"] = $skuSpry;
+                            $d["GTIN"] = $skuArray[$item["vanr"]];
                             $key = array_search($item["vanr"], array_column($resultStock, 'productWamasNr'));
                             if ($key) {
                                 $d["instock"] = str_replace(",", ".", $resultStock[$key]["availableAmount"]);
@@ -851,6 +853,7 @@ class GsoaProductConsole extends Console
                         $output->writeln('Pages done ' . $page . ', products ' . $progressCounter . ', rows ' . $counter);
                         $page = $page + 1;
                     }
+                    $skuArray = [];
                 }
             }
         }
