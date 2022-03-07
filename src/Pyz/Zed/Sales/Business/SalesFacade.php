@@ -29,7 +29,10 @@ use Spryker\Zed\Shipment\Persistence\ShipmentEntityManager;
 class SalesFacade extends SprykerSalesFacade implements SalesFacadeInterface
 {
     /**
-     * @inheritDoc
+     * @param int $idSalesOrder
+     * @param int $pickingBagsCount
+     *
+     * @return bool
      */
     public function updateOrderPickingBagsCount(int $idSalesOrder, int $pickingBagsCount): bool
     {
@@ -37,7 +40,10 @@ class SalesFacade extends SprykerSalesFacade implements SalesFacadeInterface
     }
 
     /**
-     * @inheritDoc
+     * @param int $idSalesOrder
+     * @param string $status
+     *
+     * @return bool
      */
     public function updateOrderStoreStatus(int $idSalesOrder, string $status): bool
     {
@@ -45,7 +51,10 @@ class SalesFacade extends SprykerSalesFacade implements SalesFacadeInterface
     }
 
     /**
-     * @inheritDoc
+     * @param int $idSalesShipment
+     * @param string $shipmentMethodKey
+     *
+     * @return bool
      */
     public function checkOrderShipment(int $idSalesShipment, string $shipmentMethodKey): bool
     {
@@ -54,10 +63,6 @@ class SalesFacade extends SprykerSalesFacade implements SalesFacadeInterface
     }
 
     /**
-     * @inheritDoc
-     *
-     * @api
-     *
      * @param int $idSalesOrder
      * @param string $invoiceReference
      * @param \DateTime $invoiceDateTime
@@ -71,10 +76,6 @@ class SalesFacade extends SprykerSalesFacade implements SalesFacadeInterface
     }
 
     /**
-     * @inheritDoc
-     *
-     * @api
-     *
      * @param \Generated\Shared\Transfer\OrderTransfer $orderTransfer
      *
      * @return \Generated\Shared\Transfer\OrderTransfer
@@ -87,10 +88,6 @@ class SalesFacade extends SprykerSalesFacade implements SalesFacadeInterface
     }
 
     /**
-     * @inheritDoc
-     *
-     * @api
-     *
      * @param string $customerReference
      * @param int $idSalesOrder
      *
@@ -102,12 +99,8 @@ class SalesFacade extends SprykerSalesFacade implements SalesFacadeInterface
     }
 
     /**
-     * @inheritDoc
-     *
-     * @api
-     *
      * @param int $idSalesOrder
-     * @param string[] $states
+     * @param array $states
      *
      * @return string[]
      */
@@ -117,13 +110,9 @@ class SalesFacade extends SprykerSalesFacade implements SalesFacadeInterface
     }
 
     /**
-     * {@inheritDoc}
-     *
-     * @api
-     *
      * @param int $idSalesOrder
      * @param int $idPickingZone
-     * @param string[] $states
+     * @param array $states
      *
      * @return string[]
      */
@@ -137,7 +126,10 @@ class SalesFacade extends SprykerSalesFacade implements SalesFacadeInterface
     }
 
     /**
-     * @inheritDoc
+     * @param \DateTime|null $dateFrom
+     * @param \DateTime|null $dateTo
+     *
+     * @return array
      */
     public function getOrdersInfoByInvoiceDateTimeRange(?DateTime $dateFrom, ?DateTime $dateTo): array
     {
@@ -147,7 +139,9 @@ class SalesFacade extends SprykerSalesFacade implements SalesFacadeInterface
     }
 
     /**
-     * @inheritDoc
+     * @param \Generated\Shared\Transfer\OrderCriteriaFilterTransfer $orderFilterCriteriaTransport
+     *
+     * @return int[]
      */
     public function findIdSalesOrdersByOrderFilterCriteria(
         OrderCriteriaFilterTransfer $orderFilterCriteriaTransport
@@ -156,7 +150,9 @@ class SalesFacade extends SprykerSalesFacade implements SalesFacadeInterface
     }
 
     /**
-     * @inheritDoc
+     * @param \Generated\Shared\Transfer\OrderCriteriaFilterTransfer $orderFilterCriteriaTransport
+     *
+     * @return array
      */
     public function findSalesOrdersReferenceByOrderFilterCriteria(
         OrderCriteriaFilterTransfer $orderFilterCriteriaTransport
@@ -165,7 +161,10 @@ class SalesFacade extends SprykerSalesFacade implements SalesFacadeInterface
     }
 
     /**
-     * @inheritDoc
+     * @param int $idSalesOrder
+     * @param \Generated\Shared\Transfer\OrderUpdateRequestTransfer $orderUpdateRequestTransfer
+     *
+     * @return bool
      */
     public function updateOrderWithOrderUpdateRequest(int $idSalesOrder, OrderUpdateRequestTransfer $orderUpdateRequestTransfer): bool
     {
@@ -186,7 +185,9 @@ class SalesFacade extends SprykerSalesFacade implements SalesFacadeInterface
     }
 
     /**
-     * @inheritDoc
+     * @param array $idSalesOrders
+     *
+     * @return int[]
      */
     public function findIdOrderItemsByIdSalesOrders(array $idSalesOrders): array
     {
@@ -194,7 +195,9 @@ class SalesFacade extends SprykerSalesFacade implements SalesFacadeInterface
     }
 
     /**
-     * @inheritDoc
+     * @param array $idSalesOrders
+     *
+     * @return string[]
      */
     public function findRequestedDeliveryDatesByIdSalesOrders(array $idSalesOrders): array
     {
@@ -202,8 +205,6 @@ class SalesFacade extends SprykerSalesFacade implements SalesFacadeInterface
     }
 
     /**
-     * {@inheritDoc}
-     *
      * @param \Generated\Shared\Transfer\OrderTransfer $orderTransfer
      *
      * @return \Generated\Shared\Transfer\OrderTransfer
@@ -216,8 +217,6 @@ class SalesFacade extends SprykerSalesFacade implements SalesFacadeInterface
     }
 
     /**
-     * {@inheritDoc}
-     *
      * @param string $requestedDeliveryDate
      * @param int $hours
      *
@@ -231,10 +230,6 @@ class SalesFacade extends SprykerSalesFacade implements SalesFacadeInterface
     }
 
     /**
-     * {@inheritDoc}
-     *
-     * @api
-     *
      * @param int $idSalesOrder
      *
      * @return \Generated\Shared\Transfer\OrderTransfer|null
@@ -247,10 +242,6 @@ class SalesFacade extends SprykerSalesFacade implements SalesFacadeInterface
     }
 
     /**
-     * {@inheritDoc}
-     *
-     * @api
-     *
      * @param int $idSalesOrder
      *
      * @return \Generated\Shared\Transfer\OrderTransfer|null
@@ -263,10 +254,6 @@ class SalesFacade extends SprykerSalesFacade implements SalesFacadeInterface
     }
 
     /**
-     * {@inheritDoc}
-     *
-     * @api
-     *
      * @param int $idSalesOrder
      * @param string $pickingZoneName
      *
@@ -325,11 +312,7 @@ class SalesFacade extends SprykerSalesFacade implements SalesFacadeInterface
     }
 
     /**
-     * {@inheritDoc}
-     *
-     * @api
-     *
-     * @param int $idSalesOrder
+     * @param mixed $idSalesOrder
      *
      * @return string[]
      */
@@ -341,10 +324,6 @@ class SalesFacade extends SprykerSalesFacade implements SalesFacadeInterface
     }
 
     /**
-     * @inheritDoc
-     *
-     * @api
-     *
      * @param \Generated\Shared\Transfer\OrderTransfer $orderTransfer
      * @param string $requestedDeliveryDate
      *
@@ -389,7 +368,11 @@ class SalesFacade extends SprykerSalesFacade implements SalesFacadeInterface
     public function saveSalesOrder(QuoteTransfer $quoteTransfer, SaveOrderTransfer $saveOrderTransfer)
     {
         $orderUuid = $quoteTransfer->getUuid();
-        $uuid = $this->getOrderByUid($orderUuid);
+        if ($orderUuid != null) {
+            $uuid = $this->getOrderByUid($orderUuid);
+        } else {
+            $uuid = null;
+        }
         if ($uuid == null) {
             $this->getFactory()
                 ->createSalesOrderSaver()
@@ -398,15 +381,11 @@ class SalesFacade extends SprykerSalesFacade implements SalesFacadeInterface
     }
 
     /**
-     * {@inheritDoc}
-     *
-     * @api
-     *
-     * @param int $idSalesOrder
+     * @param string $uid
      *
      * @return \Generated\Shared\Transfer\OrderTransfer|null
      */
-    public function getOrderByUid($uid)
+    public function getOrderByUid(string $uid)
     {
         return $this->getFactory()
             ->createOrderReaderForStoreApp()

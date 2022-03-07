@@ -335,13 +335,9 @@ interface SalesFacadeInterface extends SprykerSalesFacadeInterface
     public function saveSalesOrder(QuoteTransfer $quoteTransfer, SaveOrderTransfer $saveOrderTransfer);
 
     /**
-     * {@inheritDoc}
+     * @param string $uid
      *
-     * @api
-     *
-     * @param int $idSalesOrder
-     *
-     * @return \Generated\Shared\Transfer\OrderTransfer|null
+     * @return mixed
      */
-    public function getOrderByUid($uid);
+    public function getOrderByUid(string $uid);
 }

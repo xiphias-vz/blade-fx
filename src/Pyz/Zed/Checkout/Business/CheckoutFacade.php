@@ -29,7 +29,11 @@ class CheckoutFacade extends SprykerCheckoutFacade implements CheckoutFacadeInte
      */
     public function placeOrder(QuoteTransfer $quoteTransfer)
     {
-        $orderUuid = $this->getFactory()->getSalesOrderFacade()->getOrderByUid($quoteTransfer->getUuid());
+        if ($quoteTransfer->getUuid() != null) {
+            $orderUuid = $this->getFactory()->getSalesOrderFacade()->getOrderByUid($quoteTransfer->getUuid());
+        } else {
+            $orderUuid = null;
+        }
         if ($orderUuid == null) {
             $checkoutResponseTransfer = $this
                 ->getFactory()
