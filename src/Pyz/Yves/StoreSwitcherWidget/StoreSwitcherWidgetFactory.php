@@ -35,6 +35,7 @@ class StoreSwitcherWidgetFactory extends AbstractFactory
         return new StoreSwitcher(
             $this->getQuoteClient(),
             $this->getStoreClient(),
+            $this->getMerchantStorageClient(),
             $this->getPersistentCartClient()
         );
     }

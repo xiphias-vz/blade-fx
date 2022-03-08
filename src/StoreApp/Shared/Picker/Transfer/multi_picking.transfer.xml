@@ -69,6 +69,7 @@
         <property name="pickingItemPosition" type="int" description="pickingPosition from order and item position 1-999"/>
         <property name="alternativeEan" type="string"/>
         <property name="ean" type="string"/>
+        <property name="eanOrg" type="string"/>
         <property name="quantity" type="int"/>
         <property name="quantityPicked" type="int"/>
         <property name="price" type="int"/>

@@ -10,6 +10,7 @@ namespace Pyz\Yves\StoreSwitcherWidget\StoreSwitcher;
 use Generated\Shared\Transfer\QuoteTransfer;
 use Generated\Shared\Transfer\QuoteUpdateRequestAttributesTransfer;
 use Generated\Shared\Transfer\QuoteUpdateRequestTransfer;
+use Pyz\Client\MerchantStorage\MerchantStorageClient;
 use Spryker\Client\PersistentCart\PersistentCartClientInterface;
 use Spryker\Client\Quote\QuoteClientInterface;
 use Spryker\Client\Store\StoreClientInterface;
@@ -19,6 +20,7 @@ use Symfony\Component\HttpFoundation\Response;
 class StoreSwitcher
 {
     public const COOKIE_STORE_IDENTIFIER = 'current_store';
+    public const FIELD_MERCHANT_REF = 'fillialNumber';
 
     /**
      * @var \Spryker\Client\Store\StoreClientInterface
@@ -31,6 +33,11 @@ class StoreSwitcher
     protected $quoteClient;
 
     /**
+     * @var \Pyz\Client\MerchantStorage\MerchantStorageClient
+     */
+    protected $merchantClient;
+
+    /**
      * @var \Spryker\Client\PersistentCart\PersistentCartClientInterface
      */
     protected $persistentCartClient;
@@ -38,15 +45,18 @@ class StoreSwitcher
     /**
      * @param \Spryker\Client\Quote\QuoteClientInterface $quoteClient
      * @param \Spryker\Client\Store\StoreClientInterface $storeClient
+     * @param \Pyz\Client\MerchantStorage\MerchantStorageClient $merchantClient
      * @param \Spryker\Client\PersistentCart\PersistentCartClientInterface $persistentCartClient
      */
     public function __construct(
         QuoteClientInterface $quoteClient,
         StoreClientInterface $storeClient,
+        MerchantStorageClient $merchantClient,
         PersistentCartClientInterface $persistentCartClient
     ) {
         $this->quoteClient = $quoteClient;
         $this->storeClient = $storeClient;
+        $this->merchantClient = $merchantClient;
         $this->persistentCartClient = $persistentCartClient;
     }
 
@@ -78,6 +88,10 @@ class StoreSwitcher
     public function switchStoreInQuote(string $storeName): void
     {
         $quoteTransfer = $this->quoteClient->getQuote();
+        $merchant = $this->merchantClient->getMerchantsList()->getMerchants()[0];
+        if (isset($merchant->getVisibleStoresArray()[$storeName])) {
+            $quoteTransfer->setMerchantReference($merchant->getVisibleStoresArray()[$storeName][static::FIELD_MERCHANT_REF]);
+        }
         $store = $this->storeClient->getStoreByName($storeName);
         $quoteTransfer = $quoteTransfer->setStore($store);
         $this->quoteClient->setQuote($quoteTransfer);

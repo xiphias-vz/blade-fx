@@ -431,7 +431,7 @@ class PickingHeaderTransferData
         $qry = SpySalesOrderItemQuery::create();
         $items = $qry->select(SpySalesOrderItemTableMap::COL_ID_SALES_ORDER_ITEM)
             ->filterByFkSalesOrder($orderItem->getIdOrder())
-            ->filterByProductNumber($orderItem->getEan())
+            ->filterByProductNumber($orderItem->getEanOrg())
             ->find();
 
         return $items->getData();
@@ -665,7 +665,7 @@ class PickingHeaderTransferData
     {
         $whereList = implode($transfer->getIdOrderArray(), ",");
         $sql = "SELECT m.id_order, m.order_reference, m.id_order_item
-                        , m.id_product, m.ean
+                        , m.id_product, m.ean, m.eanOrg
                         , m.alternative_ean, m.quantity, m.price, m.price_unit, m.price_content
                         , m.price_per_kg, m.sum_price, m.name, m.brand_name, m.weight
                         , m.is_paused, m.sequence, m.shelf, m.shelf_floor, m.shelf_field, m.aisle
@@ -677,7 +677,9 @@ class PickingHeaderTransferData
                 FROM
                     (
                     select sso.id_sales_order as id_order, sso.order_reference, min(ssoi.id_sales_order_item) as id_order_item
-                        , sp.id_product, sp.product_number as ean
+                        , sp.id_product
+                        , case when sp.product_number like '%\_____' then SUBSTRING_INDEX(sp.product_number, '_', 1) else sp.product_number end as ean
+                        , sp.product_number as eanOrg
                         , ssoi.alternative_ean, count(*) as quantity, ssoi.price, ssoi.base_price_unit as price_unit, ssoi.base_price_content as price_content
                         , ssoi.price_per_kg, sum(ssoi.price) as sum_price, ssoi.name, ssoi.brand as brand_name, ssoi.weight_per_unit as weight
                         , IFNULL(ssoi.item_paused, 0) as is_paused, ssoi.sequence, ssoi.shelf, ssoi.shelf_floor, ssoi.shelf_field,ssoi.aisle
