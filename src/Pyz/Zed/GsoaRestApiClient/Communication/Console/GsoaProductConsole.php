@@ -693,6 +693,7 @@ class GsoaProductConsole extends Console
             ->select([SpyProductTableMap::COL_SAP_NUMBER, SpyProductTableMap::COL_SKU])
             ->where(SpyProductTableMap::COL_IS_ACTIVE . ' = 1')
             ->where(" NOT " . SpyProductTableMap::COL_SKU . " like '%\_____'")
+            ->where(" NOT " . SpyProductTableMap::COL_SAP_NUMBER . " IN(select DISTINCT sp2.sap_number from spy_product sp2 where sp2.sku like '%\_" . $store . "')")
             ->find();
         $productCount = count($products);
         $page = 0;
@@ -797,7 +798,7 @@ class GsoaProductConsole extends Console
                     } catch (Exception $ex) {
                         $output->writeln($ex->getMessage());
                     }
-                    if ((is_array($result)) && (count($result) > 0)) {
+                    if (count($result) > 0) {
                         foreach ($result as $item) {
                             $counter++;
                             $d = $this->getProductStockArray();
@@ -848,6 +849,11 @@ class GsoaProductConsole extends Console
                             $d["shelffield"] = str_replace('\\', "", $d["shelffield"]);
                             $d["shelffloor"] = str_replace('\\', "", $d["shelffloor"]);
 
+                            if ($isStoreSpecific) {
+                                file_put_contents($fileName, implode(';', $d) . PHP_EOL, FILE_APPEND);
+                                $d["instock"] = 0;
+                                $d["GTIN"] = str_replace("_" . $store, "", $d["GTIN"]);
+                            }
                             file_put_contents($fileName, implode(';', $d) . PHP_EOL, FILE_APPEND);
                         }
                         $output->writeln('Pages done ' . $page . ', products ' . $progressCounter . ', rows ' . $counter);
