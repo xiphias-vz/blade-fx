@@ -13,6 +13,7 @@ use Pyz\Zed\CashierOrderExport\Communication\Console\CashierOrderExportConsole;
 use Pyz\Zed\CategoryDataImport\CategoryDataImportConfig;
 use Pyz\Zed\CmsPageDataImport\CmsPageDataImportConfig;
 use Pyz\Zed\Console\Communication\Plugin\ConsoleLogPlugin;
+use Pyz\Zed\CustomerRegistrationQueueEmptyScript\Communication\Console\CustomerRegistrationQueueEmptyConsole;
 use Pyz\Zed\DatabaseLoad\Communication\Console\DatabaseLoadTestConsole;
 use Pyz\Zed\DataImport\Communication\Console\CopyValuesFromPICOldToPICNewConsole;
 use Pyz\Zed\DataImport\Communication\Console\DataImportCheckImagesConsole;
@@ -384,6 +385,7 @@ class ConsoleDependencyProvider extends SprykerConsoleDependencyProvider
             new DataExportConsole(),
             new MultipleStatusesFixScriptConsole(),
             new DeleteRowsFromTransitionLogScriptConsole(),
+            new CustomerRegistrationQueueEmptyConsole(),
             new PublisherTriggerEventsConsole(),
             new QueueSetupConsole(),
             new FactFinderConsole(),

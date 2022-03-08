@@ -271,6 +271,15 @@ if ($storeCodeBucket == 'CZ') {
         'enable' => true,
         'stores' => ['OST'],
     ];
+
+    /* Empty customer registration queue */
+    $jobs[] = [
+        'name' => 'customer-registration-queue-empty',
+        'command' => 'vendor/bin/console customer-registration-queue:empty',
+        'schedule' => '0 17 * * *',
+        'enable' => true,
+        'stores' => ['OST'],
+    ];
 } else {
     $jobs[] = [
         'name' => 'data-import-full',
@@ -363,6 +372,15 @@ if ($storeCodeBucket == 'CZ') {
         'name' => 'check-actionprices-for-weight-articles',
         'command' => 'vendor/bin/install -r check-action-prices-for-weight-articles',
         'schedule' => '0 4 * * *',
+        'enable' => true,
+        'stores' => ['EIN'],
+    ];
+
+    /* Empty customer registration queue */
+    $jobs[] = [
+        'name' => 'customer-registration-queue-empty',
+        'command' => 'vendor/bin/console customer-registration-queue:empty',
+        'schedule' => '0 17 * * *',
         'enable' => true,
         'stores' => ['EIN'],
     ];
