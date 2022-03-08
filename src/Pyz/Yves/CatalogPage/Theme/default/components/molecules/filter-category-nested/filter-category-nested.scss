@@ -8,18 +8,26 @@
             @include helper-breakpoint-media-min($xl-min) {
                 display: block;
             }
-        }
 
+            .menu {
+                display: flex;
+                flex-direction: column-reverse;
+            }
+        }
         &__item {
             margin: 0 0 0 rem(10);
             font: fw(medium) rem(14) $setting-font-family;
 
             &--level-1 {
                 margin: 0;
+                display: none;
             }
 
             [disabled] {
                 color: $setting-color-gray-6;
+            }
+            &--active {
+                display: block;
             }
         }
 

@@ -26,7 +26,12 @@
                         type="button"
                         data-url={{ categoryUrl }}>
                         {{ categoryNode.name }}
-                        <span class="{{ config.name }}__quantity text-secondary">({{ categoryNode.quantity }})</span>
+                        {% if categoryNode.quantity == 1 %}
+                            <span class="{{ config.name }}__quantity text-secondary">(0)</span>
+                        {% endif %}
+                        {% if categoryNode.quantity > 1 %}
+                            <span class="{{ config.name }}__quantity text-secondary">({{ categoryNode.quantity }})</span>
+                        {% endif %}
                     </button>
                 {% endif %}
 
@@ -57,7 +62,12 @@
                                     type="button"
                                     data-url={{ embed.categoryUrl }}>
                                     {{ data.title }}
-                                    <span class="{{ embed.parentConfigName }}__quantity">({{ embed.quantity }})</span>
+                                    {% if embed.quantity == 1 %}
+                                        <span class="{{ embed.parentConfigName }}__quantity">(0)</span>
+                                    {% endif %}
+                                    {% if embed.quantity > 1 %}
+                                        <span class="{{ embed.parentConfigName }}__quantity">({{ embed.quantity }})</span>
+                                    {% endif %}
                                 </button>
 
                                 {% set iconActiveClass = data.isActive ? 'active' %}
@@ -88,4 +98,13 @@
             </li>
         {% endfor %}
     </ul>
+    <script>
+        window.addEventListener("DOMContentLoaded", showAllCategories);
+
+        function showAllCategories(){
+            if(window.location.href.includes("search")){
+                document.querySelectorAll(".filter-category__item--level-1").forEach(element => {element.style.display = "block"});
+            }
+        }
+    </script>
 {% endblock %}

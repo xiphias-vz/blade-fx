@@ -55,7 +55,7 @@ class CategoryNodeWalker
             $categoryNode->nodeId = $category->getNodeId();
 
             $children = $category->getChildren();
-            $quantity = $this->quantities[$categoryNode->nodeId] ?? 0;
+            $quantity = $this->quantities[$categoryNode->nodeId] ?? 1;
             $childQuantity += $quantity;
 
             $categoryNode->name = $category->getName();

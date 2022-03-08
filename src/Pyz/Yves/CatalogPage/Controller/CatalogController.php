@@ -99,6 +99,7 @@ class CatalogController extends SprykerCatalogController
 
     /**
      * @param array $searchResults
+     *
      * @return array
      */
     protected function reduceRestrictedSortingOptions(array $searchResults): array
@@ -131,7 +132,8 @@ class CatalogController extends SprykerCatalogController
     }
 
     /**
-     * @param Request $request
+     * @param \Symfony\Component\HttpFoundation\Request $request
+     *
      * @return array
      */
     protected function getAllowedRequestParameters(Request $request): array
