@@ -218,6 +218,12 @@ class DetailController extends SprykerDetailController
             }
         }
 
+        $orderItems = $orderTransfer->getItems();
+
+        foreach ($orderItems as $orderItem) {
+            $this->removeHouseNumber($orderItem);
+        }
+
         if ($blockResponseData instanceof RedirectResponse) {
             return $blockResponseData;
         }
@@ -472,5 +478,20 @@ class DetailController extends SprykerDetailController
         $date = new DateTime($orderDate);
 
         return $date->format(static::EXPORT_XML_FILE_NAME_DATE_FORMAT);
+    }
+
+    /**
+     * @return void
+     */
+    protected function removeHouseNumber($orderItem)
+    {
+        $newSku = $orderItem->getSku();
+
+        if (strpos($newSku, '_')) {
+            $underscorePosition = strpos($newSku, '_');
+            $houseNumber = substr($newSku, $underscorePosition, 5);
+            $withoutHouseNumber = str_replace($houseNumber, '', $newSku);
+            $orderItem->setSku($withoutHouseNumber);
+        }
     }
 }

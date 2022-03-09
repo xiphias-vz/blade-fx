@@ -56,4 +56,32 @@ class VariantTable extends SpyVariantTable
 
         return $urls;
     }
+
+    /**
+     * @param \Orm\Zed\Product\Persistence\SpyProduct $productEntity
+     *
+     * @return array
+     */
+    protected function generateItem(SpyProduct $productEntity)
+    {
+        $newSku = $productEntity->getSku();
+
+        if (strpos($newSku, '_')) {
+            $position = strpos($newSku, '_');
+            $houseNumber = substr($newSku, $position, 5);
+            $withoutHouseNumber = str_replace($houseNumber, '', $newSku);
+            $productEntity->setSku($withoutHouseNumber);
+        }
+
+        return [
+            static::COL_ID_PRODUCT => $productEntity->getIdProduct(),
+            static::COL_SKU => $productEntity->getSku(),
+            static::COL_NAME => $productEntity->getVirtualColumn(static::COL_NAME),
+            static::COL_STATUS => $this->getStatusLabel($productEntity->getIsActive()),
+            static::COL_IS_BUNDLE => $this->getIsBundleProduct($productEntity),
+            static::COL_ACTIONS => implode(' ', $this->createActionColumn($productEntity)),
+            static::COL_VALID_FROM => $productEntity->getVirtualColumn(static::COL_VALID_FROM),
+            static::COL_VALID_TO => $productEntity->getVirtualColumn(static::COL_VALID_TO),
+        ];
+    }
 }

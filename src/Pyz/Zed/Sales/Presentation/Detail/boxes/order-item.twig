@@ -12,9 +12,7 @@
           {{ orderItem.name }}
         </a>
     </div>
-    <div class="sku">
-       {{ orderItem.Sku }}
-    </div>
+    <div class="sku">{{ orderItem.Sku }}</div>
 
   {% if orderItem.metadata.superAttributes is not null and orderItem.metadata.superAttributes | length > 0 %}
     <div class="variant-details">
