@@ -163,7 +163,8 @@ class MultiPickingController extends BaseOrderPickingController
                             $currentOrderItem = $this->getFacade()->getPickingHeaderTransfer()->getOrderItems($position);
                             $isCanceled = $currentOrderItem[0]->getIsCancelled();
                             $groupedOrderItems = unserialize(serialize($this->getFacade()->getPickingHeaderTransfer()->getGroupedOrderItems()));
-                            $this->getFacade()->setCurrentOrderItemPicked($quantity, $weight);
+                            $containerId = $request->request->get("containerID");
+                            $this->getFacade()->setCurrentOrderItemPicked($quantity, $weight, $containerId);
                             if ($isCanceled) {
                                 foreach ($groupedOrderItems as $item) {
                                     if ($item['isCancelled'] == true) {
@@ -194,7 +195,6 @@ class MultiPickingController extends BaseOrderPickingController
                                     }
                                 }
                             }
-                            $containerId = $request->request->get("containerID");
                             if ($containerId) {
                                 $this->getFacade()->updateContainerPickZone($transfer->getOrderById($currentOrderItem[0]->getIdOrder()), $containerId);
                             }
@@ -407,7 +407,7 @@ class MultiPickingController extends BaseOrderPickingController
      */
     public function multiOrderPickingActionPost(Request $request)
     {
-        $this->getFacade()->setCurrentOrderItemPicked(1, 0);
+        $this->getFacade()->setCurrentOrderItemPicked(1, 0, "");
     }
 
     /**

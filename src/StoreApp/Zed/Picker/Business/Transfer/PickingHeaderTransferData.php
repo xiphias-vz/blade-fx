@@ -90,6 +90,11 @@ class PickingHeaderTransferData
     protected $networkService;
 
     /**
+     * @var array
+     */
+    public static $states;
+
+    /**
      * @param \Spryker\Zed\Oms\Business\OmsFacadeInterface $omsFacade
      * @param \Pyz\Zed\Sales\Business\SalesFacadeInterface $salesFacade
      * @param \Symfony\Component\HttpFoundation\Session\Session $sessionService
@@ -370,10 +375,11 @@ class PickingHeaderTransferData
     /**
      * @param int $quantityPicked
      * @param int $weight
+     * @param string $containerCode
      *
      * @return void
      */
-    public function setCurrentOrderItemPicked(int $quantityPicked, int $weight): void
+    public function setCurrentOrderItemPicked(int $quantityPicked, int $weight, string $containerCode): void
     {
         $transfer = $this->getTransferFromSession();
         $orderItem = $transfer->setCurrentOrderItemPicked($quantityPicked, $weight);
@@ -412,6 +418,11 @@ class PickingHeaderTransferData
         }
         if (count($nonPickedItems) > 0) {
             $this->orderUpdater->markOrderItemsAsNotPicked($nonPickedItems);
+        }
+
+        if (!empty($containerCode)) {
+            $this->saveContainerToItems($containerCode, $pickedItems);
+            $this->saveContainerToItems("", $nonPickedItems);
         }
 
         $orderItem->setIsPaused(false);
@@ -483,6 +494,7 @@ class PickingHeaderTransferData
                 $qry = "update spy_sales_order_item set item_paused = " . $paused
                     . ", fk_oms_order_item_state = " . $idState
                     . ", is_substitution_found = " . $isSubstitutionFound
+                    . ", container_code = null"
                     . " where id_sales_order_item in(" . $whereList . ")";
             } else {
                 $qry = "update spy_sales_order_item set item_paused = " . $paused
@@ -514,6 +526,7 @@ class PickingHeaderTransferData
             $whereList = implode($idList, ",");
             $qry = "update spy_sales_order_item set item_paused = 0"
                 . ", fk_oms_order_item_state = " . $idState
+                . ", container_code = '' "
                 . " where id_sales_order_item in(" . $whereList . ")";
             $this->getResult($qry, false);
             $qry = "insert into spy_oms_order_item_state_history (fk_oms_order_item_state, fk_sales_order_item, created_at)
@@ -531,13 +544,17 @@ class PickingHeaderTransferData
      */
     protected function getIdState(string $stateName): ?int
     {
-        $qry = "select id_oms_order_item_state as id from spy_oms_order_item_state where name = '" . $stateName . "'";
-        $data = $this->getResult($qry);
-        if (count($data) > 0) {
-            return $data[0]["id"];
+        if (!isset(self::$states[$stateName])) {
+            $qry = "select id_oms_order_item_state as id from spy_oms_order_item_state where name = '" . $stateName . "'";
+            $data = $this->getResult($qry);
+            if (count($data) > 0) {
+                self::$states[$stateName] = $data[0]["id"];
+            } else {
+                return null;
+            }
         }
 
-        return null;
+        return self::$states[$stateName];
     }
 
     /**
@@ -676,29 +693,47 @@ class PickingHeaderTransferData
                         , i.external_url_small as picture_url
                 FROM
                     (
-                    select sso.id_sales_order as id_order, sso.order_reference, min(ssoi.id_sales_order_item) as id_order_item
+                    select sso.id_sales_order as id_order, sso.order_reference, ssoi.id_sales_order_item as id_order_item
                         , sp.id_product
                         , case when sp.product_number like '%\_____' then SUBSTRING_INDEX(sp.product_number, '_', 1) else sp.product_number end as ean
                         , sp.product_number as eanOrg
-                        , ssoi.alternative_ean, count(*) as quantity, ssoi.price, ssoi.base_price_unit as price_unit, ssoi.base_price_content as price_content
-                        , ssoi.price_per_kg, sum(ssoi.price) as sum_price, ssoi.name, ssoi.brand as brand_name, ssoi.weight_per_unit as weight
+                        , ssoi.alternative_ean
+                        , ssoi3.quantity as quantity, ssoi.price, ssoi.base_price_unit as price_unit, ssoi.base_price_content as price_content
+                        , ssoi.price_per_kg, ssoi3.sum_price as sum_price, ssoi.name, ssoi.brand as brand_name, ssoi.weight_per_unit as weight
                         , IFNULL(ssoi.item_paused, 0) as is_paused, ssoi.sequence, ssoi.shelf, ssoi.shelf_floor, ssoi.shelf_field,ssoi.aisle
-                        , sum(case when sit.name = 'picked' or sit.name = 'ready for selecting shelves' then ssoi.quantity else 0 end) as quantityPicked
-                        , IF(sum(case when sit.name = 'cancelled' then 1 else 0 end) > 0, 1, 0) as is_cancelled
-                        , sit.name as status, MAX(ssoi.picked_at) as last_picked_at, MAX(ssoi.weight_per_unit) * SUM(ssoi.quantity) * 0.8 as min_weight
-                        , MAX(ssoi.weight_per_unit) * SUM(ssoi.quantity) * 1.2 as max_weight, MAX(ssoi.weight_per_unit) * SUM(ssoi.quantity) as total_weight
+                        , ssoi3.quantityPicked as quantityPicked
+                        , case when not ssoi.weight_per_unit is null then
+                        	IF(ssoi3.quantity > ssoi3.canceled_count, 0, 1)
+                          else
+                          	IF(ssoi3.canceled_count > 0, 1, 0)
+                          end as is_cancelled
+                        , sit.name as status
+                        , ssoi3.last_picked_at as last_picked_at
+                        , ssoi3.weight_per_unit * ssoi3.quantity * 0.8 as min_weight
+                        , ssoi3.weight_per_unit * ssoi3.quantity * 1.2 as max_weight
+                        , ssoi3.weight_per_unit * ssoi3.quantity as total_weight
                     from spy_sales_order sso
-                        inner join spy_sales_order_item ssoi on sso.id_sales_order = ssoi.fk_sales_order
+                        inner join
+                        (
+							select ssoi2.fk_sales_order
+								, min(ssoi2.id_sales_order_item) as id_sales_order_item
+								, count(*) as quantity
+								, sum(ssoi2.price) as sum_price
+								, MAX(ssoi2.picked_at) as last_picked_at
+								, MAX(ssoi2.weight_per_unit) as weight_per_unit
+								, sum(case when sit2.name = 'picked' or sit2.name = 'ready for selecting shelves' then ssoi2.quantity else 0 end) as quantityPicked
+								, sum(case when sit2.name = 'cancelled' then 1 else 0 end) as canceled_count
+								, ssoi2.product_number
+							from spy_sales_order_item ssoi2
+								inner join spy_oms_order_item_state sit2 on ssoi2.fk_oms_order_item_state = sit2.id_oms_order_item_state
+							where ssoi2.fk_sales_order in (" . $whereList . ")
+							group by ssoi2.product_number, ssoi2.fk_sales_order
+						) ssoi3 on sso.id_sales_order = ssoi3.fk_sales_order
+                        inner join spy_sales_order_item ssoi on ssoi.id_sales_order_item = ssoi3.id_sales_order_item
                         inner join pyz_picking_zone ppz on ssoi.pick_zone = ppz.name
                         inner join spy_product sp on ssoi.product_number = sp.product_number
                         inner join spy_oms_order_item_state sit on ssoi.fk_oms_order_item_state = sit.id_oms_order_item_state
-                    where sso.id_sales_order in (" . $whereList . ")
-                        and ppz.id_picking_zone = " . $idZone . "
-                    group by sso.id_sales_order, sso.order_reference
-                        , sp.id_product, sp.product_number
-                        , ssoi.alternative_ean, ssoi.quantity_base_measurement_unit_name, ssoi.price, ssoi.base_price_unit, ssoi.base_price_content
-                        , ssoi.price_per_kg, ssoi.name, ssoi.brand, ssoi.weight_per_unit, ssoi.item_paused, ssoi.sequence, ssoi.shelf, ssoi.shelf_floor
-                        , ssoi.shelf_field, ssoi.aisle, sit.name
+                    where ppz.id_picking_zone = " . $idZone . "
                     ) m
                     left outer join
                     (
@@ -1100,5 +1135,20 @@ class PickingHeaderTransferData
         $result = $transfer->resetCurrentOrderItemWeight($position);
 
         return $result;
+    }
+
+    /**
+     * @param string $containerCode
+     * @param array|null $pickedItems
+     *
+     * @return void
+     */
+    private function saveContainerToItems(string $containerCode, ?array $pickedItems)
+    {
+        if ($pickedItems && count($pickedItems) > 0) {
+            $whereList = implode($pickedItems, ",");
+            $sql = "update spy_sales_order_item set container_code = '" . $containerCode . "' where id_sales_order_item in(" . $whereList . ")";
+            $this->getResult($sql, false);
+        }
     }
 }

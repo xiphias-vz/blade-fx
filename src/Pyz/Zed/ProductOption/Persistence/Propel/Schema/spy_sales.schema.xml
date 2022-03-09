@@ -10,5 +10,6 @@
         <column name="color_id" type="INTEGER"/>
         <column name="aisle" type="INTEGER" />
         <column name="picked_at" type="TIMESTAMP" />
+        <column name="container_code" type="VARCHAR" size="20"/>
     </table>
 </database>
