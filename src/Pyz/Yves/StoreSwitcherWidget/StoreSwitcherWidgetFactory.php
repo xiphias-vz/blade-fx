@@ -13,6 +13,7 @@ use Pyz\Yves\StoreSwitcherWidget\StoreSwitcher\StoreSwitcher;
 use Spryker\Client\Quote\QuoteClientInterface;
 use Spryker\Client\Store\StoreClientInterface;
 use Spryker\Yves\Kernel\AbstractFactory;
+use voku\helper\AntiXSS;
 
 /**
  * @method \Pyz\Client\StoreSwitcher\StoreSwitcherClient getClient()
@@ -86,5 +87,13 @@ class StoreSwitcherWidgetFactory extends AbstractFactory
     public function getVisibleStoreNames()
     {
         return $this->getClient()->getVisibleStores();
+    }
+
+    /**
+     * @return \voku\helper\AntiXSS
+     */
+    public function getAntiXss(): AntiXSS
+    {
+        return new AntiXSS();
     }
 }

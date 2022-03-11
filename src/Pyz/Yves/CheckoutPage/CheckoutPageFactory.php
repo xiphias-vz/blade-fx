@@ -17,6 +17,7 @@ use Pyz\Yves\CustomerPage\CustomerPageDependencyProvider;
 use Spryker\Client\Customer\CustomerClientInterface;
 use Spryker\Client\Session\SessionClientInterface;
 use SprykerShop\Yves\CheckoutPage\CheckoutPageFactory as SprykerShopCheckoutPageFactory;
+use voku\helper\AntiXSS;
 
 class CheckoutPageFactory extends SprykerShopCheckoutPageFactory
 {
@@ -108,5 +109,13 @@ class CheckoutPageFactory extends SprykerShopCheckoutPageFactory
     public function getMerchantClient()
     {
         return $this->getProvidedDependency(CheckoutPageDependencyProvider::MERCHANT_CLIENT);
+    }
+
+    /**
+     * @return \voku\helper\AntiXSS
+     */
+    public function getAntiXss(): AntiXSS
+    {
+        return new AntiXSS();
     }
 }

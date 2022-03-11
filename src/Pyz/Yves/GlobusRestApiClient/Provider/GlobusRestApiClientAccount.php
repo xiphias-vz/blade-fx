@@ -10,6 +10,7 @@ namespace Pyz\Yves\GlobusRestApiClient\Provider;
 use Pyz\Shared\Customer\CustomerConstants;
 use Pyz\Yves\GlobusRestApiClient\GlobusRestApiClient;
 use Pyz\Yves\GlobusRestApiClient\GlobusRestApiConfig;
+use voku\helper\AntiXSS;
 
 class GlobusRestApiClientAccount
 {
@@ -21,6 +22,10 @@ class GlobusRestApiClientAccount
      */
     public static function login(string $emailOrCardNumber, string $password): string
     {
+        $antiXss = self::getAntiXss();
+        $emailOrCardNumber = $antiXss->xss_clean($emailOrCardNumber);
+        $password = $antiXss->xss_clean($password);
+
         $url = GlobusRestApiConfig::getGlobusApiEndPoint(CustomerConstants::GLOBUS_API_END_POINT_ACCOUNT_LOGIN);
         $data = ['id' => $emailOrCardNumber, 'password' => $password, 'strongToken' => true];
         $result = GlobusRestApiClient::post($url, $data, []);
@@ -39,8 +44,10 @@ class GlobusRestApiClientAccount
      */
     public static function loginWithToken(string $token): string
     {
+        $antiXss = self::getAntiXss();
+
         $url = GlobusRestApiConfig::getGlobusApiEndPoint(CustomerConstants::GLOBUS_API_END_POINT_ACCOUNT_LOGIN);
-        $data = ['cdcToken' => $token];
+        $data = ['cdcToken' => $antiXss->xss_clean($token)];
         $result = GlobusRestApiClient::post($url, $data, []);
 
         return $result->result;
@@ -189,5 +196,13 @@ class GlobusRestApiClientAccount
         $url = GlobusRestApiConfig::getGlobusApiEndPoint(CustomerConstants::GLOBUS_API_END_POINT_ACCOUNT_REGISTRATION_FULL);
 
         return GlobusRestApiClient::post($url, $data, []);
+    }
+
+    /**
+     * @return \voku\helper\AntiXSS
+     */
+    protected static function getAntiXss(): AntiXSS
+    {
+        return new AntiXSS();
     }
 }

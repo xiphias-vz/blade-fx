@@ -33,15 +33,15 @@ class IndexController extends AbstractController
      */
     public function switchStoreAction(Request $request)
     {
-        $store = $request->query->get(static::URL_PARAM_STORE);
+        $store = $this->getFactory()->getAntiXss()->xss_clean($request->query->get(static::URL_PARAM_STORE));
         $checkStore = $request->query->get(static::IS_PASSWORD_PROTECTED);
-        $refererUrl = $request->query->get(static::URL_PARAM_REFERER_URL, '');
+        $refererUrl = $this->getFactory()->getAntiXss()->xss_clean($request->query->get(static::URL_PARAM_REFERER_URL, ''));
 
         if (str_contains($refererUrl, "AND")) {
             $refererUrl = str_replace("AND", "-&-", $refererUrl);
         }
 
-        $path = $request->query->get(static::URL_PARAM_PATH);
+        $path = $this->getFactory()->getAntiXss()->xss_clean($request->query->get(static::URL_PARAM_PATH));
         $refererUrl = $refererUrl . $path;
 
         $response = $refererUrl ? $this->redirectResponseExternal($refererUrl) : new RedirectResponse('/');
@@ -78,8 +78,8 @@ class IndexController extends AbstractController
      */
     public function checkStoreAction(Request $request)
     {
-        $password = $request->request->get('password');
-        $url = $request->request->get('url');
+        $password = $this->getFactory()->getAntiXss()->xss_clean($request->request->get('password'));
+        $url = $this->getFactory()->getAntiXss()->xss_clean($request->request->get('url'));
         $visibleMerchants = $this->getFactory()->getStoreSwitcherClient()->getVisibleStores()->getVisibleStoresArray();
         $merchantsFromConfig = Config::get(StoreConstants::SAP_STORE_ID_TO_STORE_MAP);
 

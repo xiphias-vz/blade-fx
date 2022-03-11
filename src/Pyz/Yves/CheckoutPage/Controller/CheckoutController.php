@@ -234,8 +234,8 @@ class CheckoutController extends SprykerCheckoutControllerAlias
 
         $linkAccountWithPayback = $request->get(static::LINK_ACCOUNT_WITH_PAYBACK) == null ?
             0 : (int)$request->get(static::LINK_ACCOUNT_WITH_PAYBACK);
-        $paybackNumber = $request->get(static::PAYBACK_NUMBER) == null ?
-            "" : (string)$request->get(static::PAYBACK_NUMBER);
+        $paybackNumber = $this->getFactory()->getAntiXss()->xss_clean($request->get(static::PAYBACK_NUMBER)) == null ?
+            "" : (string)$this->getFactory()->getAntiXss()->xss_clean($request->get(static::PAYBACK_NUMBER));
 
         $isOrderConnectedWithPayback = $this->getFactory()
             ->getQuoteClient()

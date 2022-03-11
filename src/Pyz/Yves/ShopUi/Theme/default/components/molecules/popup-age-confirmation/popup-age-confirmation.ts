@@ -18,7 +18,6 @@ export default class PopupAgeConfirmation extends Component{
                 this.openModal();
             }
         } catch (e) {
-            console.log(e);
         }
         this.mapEvents();
     }

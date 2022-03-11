@@ -35,6 +35,7 @@ use SprykerShop\Yves\CustomerPage\CustomerPageFactory as SprykerShopCustomerPage
 use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
 use Twig\Environment;
 use Twig\Loader\FilesystemLoader;
+use voku\helper\AntiXSS;
 
 /**
  * @method \Pyz\Yves\CustomerPage\CustomerPageConfig getConfig()
@@ -57,6 +58,14 @@ class CustomerPageFactory extends SprykerShopCustomerPageFactory
     public function createCustomerFormFactory()
     {
         return new FormFactory();
+    }
+
+    /**
+     * @return \voku\helper\AntiXSS
+     */
+    public function getAntiXss()
+    {
+        return new AntiXSS();
     }
 
     /**

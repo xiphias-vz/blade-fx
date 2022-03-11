@@ -778,7 +778,6 @@
                 data: { id: emailOrCardNumber, password: password, captchaToken: captchaGeneratedToken  },  // data to submit
                 success: function (data, status, xhr) {
                     var response = JSON.parse(data);
-                    console.log(response);
 
                     if(response["successfullyLoggedIn"] === true){
                         checkoutStep('login');

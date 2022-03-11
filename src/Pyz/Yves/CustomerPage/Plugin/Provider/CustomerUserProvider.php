@@ -38,9 +38,12 @@ class CustomerUserProvider extends SprykerCustomerUserProvider implements Custom
     {
         $customerTransfer = null;
         $pass = '';
+        $accountInfo = [];
+        $email = $this->getFactory()->getAntiXss()->xss_clean($email);
 
         if (isset($_POST["loginForm"]["password"])) {
             $pass = $_POST["loginForm"]["password"];
+            $pass = $this->getFactory()->getAntiXss()->xss_clean($pass);
         }
         $authCheck = $this->globusLogin($email, $pass);
         $authCheck = JSON::parse($authCheck);
@@ -137,6 +140,8 @@ class CustomerUserProvider extends SprykerCustomerUserProvider implements Custom
      */
     private function createNewCustomer($data, string $email, string $password): CustomerTransfer
     {
+        $email = $this->getFactory()->getAntiXss()->xss_clean($email);
+        $password = $this->getFactory()->getAntiXss()->xss_clean($password);
         $customerTransfer = $this->getFactory()->createCustomerTransferCustom()->fromProfileEvent($data);
         $customerTransfer->setUsername($email);
         $customerTransfer->setPassword($password);
