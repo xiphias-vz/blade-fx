@@ -22,8 +22,12 @@ class GlobusRestApiClientAccount
     public static function login(string $emailOrCardNumber, string $password): string
     {
         $url = GlobusRestApiConfig::getGlobusApiEndPoint(CustomerConstants::GLOBUS_API_END_POINT_ACCOUNT_LOGIN);
-        $data = ['id' => $emailOrCardNumber, 'password' => $password];
+        $data = ['id' => $emailOrCardNumber, 'password' => $password, 'strongToken' => true];
         $result = GlobusRestApiClient::post($url, $data, []);
+        $parsed = json_decode($result->result);
+        if (isset($parsed->strongToken) && $parsed->strongToken) {
+            $_SESSION["_sf2_attributes"]["id_token_strong"] = $parsed->id_token;
+        }
 
         return $result->result;
     }
@@ -140,6 +144,39 @@ class GlobusRestApiClientAccount
         $result = GlobusRestApiClient::get($url, [], $idToken);
 
         return $result->result;
+    }
+
+    /**
+     * @param string $uid
+     * @param string $idToken
+     *
+     * @return string
+     */
+    public static function getAccountInfo(string $uid, string $idToken): string
+    {
+        $url = GlobusRestApiConfig::getGlobusApiEndPoint(CustomerConstants::GLOBUS_API_END_POINT_ACCOUNT_INFO);
+        $url = str_replace("{UID}", $uid, $url);
+        $result = GlobusRestApiClient::get($url, [], $idToken);
+
+        return $result->result;
+    }
+
+    /**
+     * @param string $uid
+     * @param array $data
+     * @param string $idToken
+     *
+     * @return \Pyz\Yves\GlobusRestApiClient\Provider\GlobusRestApiResult
+     */
+    public static function changeAccountData(string $uid, array $data, string $idToken): GlobusRestApiResult
+    {
+        if (isset($_SESSION["_sf2_attributes"]["id_token_strong"])) {
+            $idToken = $_SESSION["_sf2_attributes"]["id_token_strong"];
+        }
+        $url = GlobusRestApiConfig::getGlobusApiEndPoint(CustomerConstants::GLOBUS_API_END_POINT_ACCOUNT_CHANGE_PROFILE_DATA);
+        $url = str_replace("{UID}", $uid, $url);
+
+        return GlobusRestApiClient::patch($url, $data, [], $idToken);
     }
 
     /**

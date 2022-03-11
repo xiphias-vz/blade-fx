@@ -82,7 +82,6 @@ class AuthenticationHandler extends SprykerAuthenticationHandler
                 $customerTransfer->setEmail($_REQUEST['loginForm']['email']);
             }
             $customerTransfer->setPassword($_REQUEST['loginForm']['password']);
-            $isAuthorized = $this->getCdcAuthorization($customerTransfer->getEmail(), $customerTransfer->getPassword());
 
             $data = JSON::parse($_REQUEST['loginForm']['data']);
             if (array_key_exists("cardID", $data['data'])) {
@@ -137,56 +136,6 @@ class AuthenticationHandler extends SprykerAuthenticationHandler
         $this->getFactory()
             ->createCustomerAuthenticator()
             ->authenticateCustomer($customerTransfer, $token);
-    }
-
-    /**
-     * @param string $action
-     * @param string $method
-     * @param array $postData
-     *
-     * @return array
-     */
-    protected function executeCdcApiCall($action, $method, $postData)
-    {
-        $apiKey = $this->getFactory()->createCustomerUserProvider()->getCdcApiKey();
-        $apiSecretKey = $this->getFactory()->createCustomerUserProvider()->getCdcSecretKey();
-        $urlPrefix = $this->getFactory()->createCustomerUserProvider()->getCdcUrlPrefix();
-        $url = $urlPrefix . $action . "?apiKey=" . $apiKey . "&sec=" . $apiSecretKey;
-        $options = [
-            'http' => [
-                'method' => 'GET',
-            ],
-        ];
-
-        if ($method == 'POST') {
-            $options = [
-                'http' => [
-                    'header' => "Content-Type: application/x-www-form-urlencoded\r\n" .
-                        "Accept: application/json\r\n",
-                    'method' => 'POST',
-                    'content' => http_build_query($postData),
-                ],
-            ];
-        }
-
-        $context = stream_context_create($options);
-        $result = file_get_contents($url, false, $context);
-
-        return JSON::parse($result);
-    }
-
-    /**
-     * @return string
-     */
-    protected function getCdcAuthorizationToken(): string
-    {
-        $result = $this->executeCdcApiCall('accounts.initRegistration', 'GET', null);
-
-        if ($result["errorCode"] == 0) {
-            return $result["regToken"];
-        } else {
-            return "ERROR";
-        }
     }
 
     /**
@@ -326,24 +275,6 @@ class AuthenticationHandler extends SprykerAuthenticationHandler
             } else {
                 return false;
             }
-        } else {
-            return false;
-        }
-    }
-
-    /**
-     * @param string $username
-     * @param string $pass
-     *
-     * @return bool
-     */
-    protected function getCdcAuthorization(string $username, string $pass): bool
-    {
-        $postData = ['loginID' => $username, 'password' => $pass];
-        $result = $this->executeCdcApiCall('accounts.login', 'POST', $postData);
-
-        if ($result["errorCode"] == 0) {
-            return true;
         } else {
             return false;
         }

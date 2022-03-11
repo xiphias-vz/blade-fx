@@ -628,6 +628,8 @@ $config[\Pyz\Shared\Customer\CustomerConstants::GLOBUS_API_CONSTANTS] = [
         'globusApiEndPointAccountPasswordReset' => 'v2/meinglobus/accounts/password/reset',
         'globusApiEndPointAccountRegistrationFull' => 'v2/meinglobus/accounts/registrations/full',
         'globusApiEndPointAccountPaybackInfo' => 'v1/meinglobus/accounts/data/uuid/payback',
+        'globusApiEndPointAccountInfo' => 'v1/meinglobus/accounts/data/{UID}',
+        'globusApiEndPointAccountChangeProfileData' => 'v1/meinglobus/accounts/data/{UID}/profile',
         'globusApiEndPointAccountLogout' => '/v2/meinglobus/accounts/logout',
         'globusApiEndPointCheckoutEvent' => '/v3/meinglobus/events',
     ],

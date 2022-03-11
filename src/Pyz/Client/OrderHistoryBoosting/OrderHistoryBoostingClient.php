@@ -50,7 +50,7 @@ class OrderHistoryBoostingClient extends AbstractClient implements OrderHistoryB
 
         if ($this->getFactory()->getCodeBucket() != 'CZ') {
             $userProvider = new CustomerUserProvider();
-            $userProvider->setCdcAccountInfo('', $customerTransfer);
+            $userProvider->updateAccountInfo($customerTransfer);
         }
     }
 }

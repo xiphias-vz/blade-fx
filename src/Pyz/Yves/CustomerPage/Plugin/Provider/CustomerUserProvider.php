@@ -38,7 +38,6 @@ class CustomerUserProvider extends SprykerCustomerUserProvider implements Custom
     {
         $customerTransfer = null;
         $pass = '';
-        $accountInfo = [];
 
         if (isset($_POST["loginForm"]["password"])) {
             $pass = $_POST["loginForm"]["password"];
@@ -66,11 +65,7 @@ class CustomerUserProvider extends SprykerCustomerUserProvider implements Custom
                 $profile = $this->getFactory()->createProfileController();
                 $profile->processProfileUpdateByTransfer($customerTransfer, false);
             } catch (AuthenticationException $e) {
-                if (isset($authCheck["UID"])) {
-                     $customerTransfer = $this->createNewCustomer($authCheck, $email, $pass);
-                } else {
-                    throw new AuthenticationException(self::ERROR_NOT_VERIFIED_CUSTOMER);
-                }
+                $customerTransfer = $this->createNewCustomer($authCheck, $email, $pass);
             }
 
             try {
@@ -183,69 +178,24 @@ class CustomerUserProvider extends SprykerCustomerUserProvider implements Custom
     }
 
     /**
-     * @param string $username
-     * @param string $pass
-     *
-     * @return array
-     */
-    protected function getCdcAuthorization(string $username, string $pass): array
-    {
-        $apiKey = $this->getCdcApiKey();
-        $apiSecretKey = $this->getCdcSecretKey();
-        $urlPrefix = $this->getCdcUrlPrefix();
-        $url = $urlPrefix . "accounts.login?apiKey=" . $apiKey . "&sec=" . $apiSecretKey;
-        $data = ['loginID' => $username, 'password' => $pass, 'include' => 'profile', 'extraProfileFields' => 'firstName,lastName,birthDay,birthMonth,birthYear,zip,city,country,gender,phones,samlData'];
-        $options = [
-            'http' => [
-                'header' => "Content-type: application/x-www-form-urlencoded\r\n",
-                'method' => 'POST',
-                'content' => http_build_query($data),
-            ],
-        ];
-        $context = stream_context_create($options);
-        $result = file_get_contents($url, false, $context);
-
-        return JSON::parse($result);
-    }
-
-    /**
-     * @param string $uid
      * @param \Generated\Shared\Transfer\CustomerTransfer $customerTransfer
      *
      * @return array
      */
-    public function setCdcAccountInfo(string $uid, CustomerTransfer $customerTransfer): array
+    public function updateAccountInfo(CustomerTransfer $customerTransfer): array
     {
-        if (empty($uid)) {
-            $uid = $this->getFactory()->getSessionClient()->get("cdcUID");
-        }
-        $apiKey = $this->getCdcApiKey();
-        $apiSecretKey = $this->getCdcSecretKey();
-        $apiUserKey = $this->getCdcUserKey();
-        $urlPrefix = $this->getCdcUrlPrefix();
-        $url = $urlPrefix . "accounts.setAccountInfo";
+        $uid = $this->getFactory()->getSessionClient()->get("cdcUID");
+        $idToken = $this->getFactory()->getSessionClient()->get("id_token");
         $data = [
-            'apiKey' => $apiKey,
-            'secret' => $apiSecretKey,
-            'userKey' => $apiUserKey,
-            'UID' => $uid,
-            'profile' => '{"phones": [{"type":"home", "number":"' . $customerTransfer->getPhone() . '"}, {"type":"mobile", "number":"' . $customerTransfer->getMobilePhoneNumber() . '"}]}',
+            'profile' => '{"phones": [{"type":"landLine", "number":"' . $customerTransfer->getPhone() . '"}, {"type":"mobile", "number":"' . $customerTransfer->getMobilePhoneNumber() . '"}]}',
         ];
 
-        $options = [
-            'http' => [
-                'header' => "Content-type: application/x-www-form-urlencoded\r\n",
-                'method' => 'POST',
-                'content' => http_build_query($data),
-            ],
-        ];
-        $context = stream_context_create($options);
-        $result = file_get_contents($url, false, $context);
+        $result = GlobusRestApiClientAccount::changeAccountData($uid, $data, $idToken);
 
         $profile = new ProfileController();
         $profile->processProfileUpdateByTransfer($customerTransfer, false);
 
-        return JSON::parse($result);
+        return $result->resultToJson();
     }
 
     /**
