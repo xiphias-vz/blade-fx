@@ -1,7 +1,8 @@
 {% extends model('component') %}
 
 {% define config = {
-    name: 'order-item',
+    name: 'order-item-abholung',
+    tag: 'order-item-abholung',
 } %}
 
 {% define data = {
@@ -18,10 +19,14 @@
     fullName: data.fullName,
     numberOfOrders: '',
     meinGlobusCart: '',
+    queuedTime: '',
+    calculatedWaitingTime: '',
+    isOrderInQueue: '',
 } %}
 
 {% block body %}
-    <div class="{{ component.renderClass('box', modifiers) }} order-item-pickup">
+    <input type="hidden" id="calculatedWaitingTime" value="{{ data.calculatedWaitingTime }}">
+    <div class="{{ component.renderClass('box', modifiers) }} order-item-abholung__pickup">
         {% if data.detailPage %}
             <div class="header-content">
                 <div class="icon-substitution">
@@ -58,6 +63,7 @@
                 {% endif %}
 
                 <div>
+                    <input type="hidden" id="isOrderInQueue" value="{% if data.isOrderInQueue %}1{% else %}0{% endif %}">
                     {% if data.collectNumber %}
                         <div class="{{ config.name }}__collect">
                             {{ 'Collect Number' | trans }}: {{ data.collectNumber }}
@@ -105,11 +111,12 @@
 
         {% else %}
             <div>
-                <div>
+                <div class="{{ config.name }}__holder">
                     {% if data.collectNumber %}
                         <div class="{{ config.name }}__collect">
                             {{ 'Collect Number' | trans }}: {{ data.collectNumber }}
                         </div>
+                        <div class="{{ config.name }}__queued-time">{{ data.queuedTime }}</div>
                     {% endif %}
                 </div>
                 <div>

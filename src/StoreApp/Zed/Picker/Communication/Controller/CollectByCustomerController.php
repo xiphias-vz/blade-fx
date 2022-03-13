@@ -23,8 +23,10 @@ use Generated\Shared\Transfer\UserTransfer;
 use Orm\Zed\Customer\Persistence\SpyCustomerQuery;
 use Orm\Zed\MerchantSalesOrder\Persistence\Map\SpyMerchantSalesOrderTableMap;
 use Orm\Zed\PerformancePickingReport\Persistence\PyzPerformanceSalesOrderReportQuery;
+use Orm\Zed\PickupQueue\Persistence\PyzOrderPickupQueueQuery;
 use Orm\Zed\Sales\Persistence\Map\SpySalesOrderTableMap;
 use Orm\Zed\Sales\Persistence\SpySalesOrderQuery;
+use Propel\Runtime\Util\PropelDateTime;
 use Pyz\Shared\Messages\MessagesConfig;
 use Pyz\Shared\Oms\OmsConfig;
 use Pyz\Shared\Product\ProductConfig;
@@ -35,6 +37,7 @@ use StoreApp\Shared\Picker\PickerConstants;
 use StoreApp\Zed\Merchant\Communication\Plugin\EventDispatcher\MerchantProviderEventDispatcherPlugin;
 use StoreApp\Zed\Picker\Communication\Form\OrderItemSelectionForm;
 use Symfony\Component\Form\FormInterface;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -104,6 +107,8 @@ class CollectByCustomerController extends AbstractController
             ->withColumn("(select count(*) from spy_sales_order_item i inner join spy_oms_order_item_state s on i.fk_oms_order_item_state = s.id_oms_order_item_state where i.fk_sales_order = spy_sales_order.id_sales_order and s.name = 'ready for collection')", "pickedProductCount")
             ->withColumn("(select requested_delivery_date from spy_sales_shipment ss where ss.fk_sales_order = spy_sales_order.id_sales_order)", "requestedDeliveryDate")
             ->withColumn("(select count(*) from pyz_picking_sales_order pso where pso.fk_sales_order = spy_sales_order.id_sales_order)", "numberOfContainersInOrder")
+            ->withColumn("(select popq.created_at from pyz_order_pickup_queue popq where popq.fk_sales_order = spy_sales_order.id_sales_order)", "isInQueue")
+            ->withColumn("(select sm.queue_alert_seconds from spy_merchant sm where sm.filial_number = spy_sales_order.merchant_filial_number)", "queueAlertCountdown")
             ->where("spy_sales_order.id_sales_order in(" . implode(',', $idSalesOrdersForCollection) . ")")
             ->where(SpyMerchantSalesOrderTableMap::COL_REQUESTED_DELIVERY_DATE . " > DATE_ADD(now(), INTERVAL " . PickerConstants::PICKUP_DATE_INTERVAL_MINUS . " day)")
             ->orderBy('requestedDeliveryDate')
@@ -122,6 +127,21 @@ class CollectByCustomerController extends AbstractController
             $dayInTheWeek = date('w', strtotime($deliveryDate[0]));
             $dayOfTheWeek = $daysInTheWeek[$dayInTheWeek];
             $decodedCartNote = json_decode($order->getCartNote());
+            $queuedDate = explode(' ', $item['isInQueue']);
+            $timeCheckedInSeconds = strtotime($item['isInQueue']); // to get to milliseconds
+            $waitingTimeInSeconds = $item['queueAlertCountdown'];
+
+            if ($timeCheckedInSeconds) {
+                $calculatedWaitingTime = $timeCheckedInSeconds + $waitingTimeInSeconds;
+            } else {
+                $calculatedWaitingTime = null;
+            }
+
+            if (isset($queuedDate[1])) {
+                $queuedTime = substr($queuedDate[1], 0, (strlen($queuedDate[1]) - 3));
+            } else {
+                $queuedTime = null;
+            }
 
             $collectionOrders[] = [
                 'idSalesOrder' => $order->getIdSalesOrder(),
@@ -139,8 +159,34 @@ class CollectByCustomerController extends AbstractController
                 'fullName' => $order->getFirstName() . " " . $order->getLastName(),
                 'pickupStatus' => $collectionMerchantSalesOrder->getStoreStatus(),
                 'ordersBeforeReadyToCollectStatus' => json_encode($newArray),
+                'queuedTime' => $queuedTime,
+                'calculatedWaitingTime' => $calculatedWaitingTime,
             ];
         }
+
+        $collectionOrdersSize = count($collectionOrders);
+        for ($i = 0; $i < $collectionOrdersSize - 1; $i++) {
+            for ($j = 0; $j < $collectionOrdersSize - $i - 1; $j++) {
+                if ($collectionOrders[$j]['calculatedWaitingTime'] > $collectionOrders[$j + 1]['calculatedWaitingTime']) {
+                    $tmp = $collectionOrders[$j];
+                    $collectionOrders[$j] = $collectionOrders[$j + 1];
+                    $collectionOrders[$j + 1] = $tmp;
+                }
+            }
+        }
+
+        $notQueued = [];
+        $queued = [];
+
+        foreach ($collectionOrders as $order) {
+            if ($order['calculatedWaitingTime'] == null) {
+                $notQueued[] = $order;
+            } else {
+                $queued[] = $order;
+            }
+        }
+
+        $collectionOrders = array_merge($queued, $notQueued);
 
         return $this->getIndexResponseData($request, $collectionOrders, $requestedDeliveryDatesByIdSalesOrders);
     }
@@ -177,6 +223,14 @@ class CollectByCustomerController extends AbstractController
     public function detailsAction(Request $request)
     {
         $idSalesOrder = $request->get(PickerConfig::REQUEST_PARAM_ID_ORDER) ?? 0;
+
+        $qry = PyzOrderPickupQueueQuery::create();
+        $item = $qry->findOneByFkSalesOrder($idSalesOrder);
+        if ($item && $item->getCreatedAt() != null) {
+            $isOrderInQueue = true;
+        } else {
+            $isOrderInQueue = false;
+        }
 
         $salesOrderTransfer = $this->getFactory()->getSalesFacade()
             ->findOrderByIdSalesOrderForStoreApp($idSalesOrder);
@@ -335,7 +389,47 @@ class CollectByCustomerController extends AbstractController
             'isDepositAllowed' => $salesOrderTransfer->getIsDepositAllowed(),
             'numberOfOrders' => $numberOfOrders,
             'meinGlobusCart' => $meinGlobusCart,
+            'isOrderInQueue' => $isOrderInQueue,
         ];
+    }
+
+    /**
+     * @param \Symfony\Component\HttpFoundation\Request $request
+     *
+     * @return \Symfony\Component\HttpFoundation\JsonResponse
+     */
+    public function checkContainersAction(Request $request)
+    {
+        $requestDataFromQueuedOrder = $request->request->all();
+
+        if (isset($requestDataFromQueuedOrder['flag'])) {
+            if ($requestDataFromQueuedOrder['flag'] === 'checkedContainers') {
+                $orderId = $requestDataFromQueuedOrder['order_id'];
+                array_splice($requestDataFromQueuedOrder, 1);
+                $containersJson = json_encode($requestDataFromQueuedOrder);
+
+                try {
+                    $qry = PyzOrderPickupQueueQuery::create();
+                    $item = $qry->findOneByFkSalesOrder($orderId);
+                    if ($item && $item->getCreatedAt() != null) {
+                        $item->setDataStructured($containersJson);
+                        $item->save();
+                    }
+                } catch (Exception $exception) {
+                    $responseArray = [
+                        "errorMessage" => $exception,
+                    ];
+
+                    return new JsonResponse($responseArray);
+                }
+            }
+        }
+        $responseArray = [
+            "errorMessage" => "",
+            "response" => $containersJson,
+        ];
+
+        return new JsonResponse($responseArray);
     }
 
     /**
@@ -377,6 +471,12 @@ class CollectByCustomerController extends AbstractController
             );
 
             $this->updatePerformanceOrderReportPickupEnd($idSalesOrder);
+            $qry = PyzOrderPickupQueueQuery::create();
+            $item = $qry->findOneByFkSalesOrder($idSalesOrder);
+            if ($item && $item->getCreatedAt() != null) {
+                $item->setPickedUpAt(PropelDateTime::createHighPrecision());
+                $item->save();
+            }
         } catch (Exception $e) {
             $this->addErrorMessage($e->getMessage());
         }

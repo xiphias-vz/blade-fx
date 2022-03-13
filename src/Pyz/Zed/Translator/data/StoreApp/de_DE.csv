@@ -256,4 +256,5 @@ multi.picking.weight.popupui.message, Möchtest du noch einem weiteren Gewichtsa
 multi.picking.weight.popupui.confirm.button, "Ja, hinzufügen"
 multi.picking.weight.popupui.cancel.button, Nein
 container.already.used, Dieser Container wird bereits verwendet
-
+customer.queue.orders,Registriert
+customer.queue.orders.notification,Achtung! Ein neuer Kunde hat sich registriert!

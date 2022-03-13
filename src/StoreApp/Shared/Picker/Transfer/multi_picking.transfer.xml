@@ -42,6 +42,7 @@
         <property name="isSubstitutionAllowed" type="bool"/>
         <property name="isTransportboxEnabled" type="bool"/>
         <property name="isDepositAllowed" type="bool"/>
+        <property name="isInQueue" type="bool"/>
     </transfer>
 
     <transfer name="PickingContainerTransfer">

@@ -52,6 +52,8 @@
                     date: collectionOrder.requestedDeliveryDate | split(' ') | first | date('d/m/Y'),
                     deadline: collectionOrder.requestedDeliveryDate | split(' ') | last ~ ' ' ~ 'hour' | trans,
                     dayOfTheWeek: collectionOrder.dayOfTheWeek,
+                    queuedTime: collectionOrder.queuedTime,
+                    calculatedWaitingTime: collectionOrder.calculatedWaitingTime,
                     fullName: collectionOrder.fullName,
                     pickupStatus: collectionOrder.pickupStatus
                 },
@@ -60,7 +62,8 @@
                     'data-pickupstatus': collectionOrder.pickupStatus | lower,
                     'data-reference': collectionOrder.reference | lower,
                     'data-ordersBeforeReadyToCollectStatus': collectionOrder.ordersBeforeReadyToCollectStatus,
-                    'data-time': collectionOrder.requestedDeliveryDate | split(' ') | last
+                    'data-time': collectionOrder.requestedDeliveryDate | split(' ') | last,
+                    'data-queued-time': collectionOrder.queuedTime,
                 },
                 embed: {
                     collectionOrder: collectionOrder,

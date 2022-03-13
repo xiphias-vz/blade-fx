@@ -1,0 +1,36 @@
+@mixin picker-order-search($name: '.order-search') {
+    #{$name} {
+        &__checkbox{
+            margin-bottom: 3%;
+            margin-top: 1%;
+            margin-left: 1%;
+        }
+
+        &__popup_notification-hidden {
+            visibility: hidden;
+        }
+
+        &__popup_notification-show {
+            display: block;
+            text-align: center;
+            background-color: $setting-color-brown-lightDark;
+            padding: rem(25);
+            z-index: 400;
+            position: fixed;
+            top: 0;
+            border-radius: rem(8);
+            font-size: rem(20);
+            font-weight: 800;
+        }
+
+        &__notification-holder {
+            display: flex;
+            justify-content: center;
+            width: 100%;
+        }
+    }
+    .checkbox__label {
+        color: $setting-color-gray-9;
+    }
+}
+@include picker-order-search();

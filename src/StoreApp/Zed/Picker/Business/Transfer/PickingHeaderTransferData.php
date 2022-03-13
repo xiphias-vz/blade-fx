@@ -149,7 +149,8 @@ class PickingHeaderTransferData
            IFNULL(sso.is_substitution_allowed, 0) as is_substitution_allowed,
            sm.is_transportbox_enabled,
            sso.is_deposit_allowed,
-           so.zone_abbreviation
+           so.zone_abbreviation,
+           case when popq.created_at is null then 0 else 1 end as isInQueue
     from spy_sales_order sso
         inner join
          (
@@ -172,6 +173,7 @@ class PickingHeaderTransferData
         left outer join spy_sales_shipment sss on sso.id_sales_order = sss.fk_sales_order
         left outer join pyz_order_picking_block popb on sso.id_sales_order = popb.fk_sales_order
             and popb.fk_picking_zone = " . $idZone . "
+        left outer join pyz_order_pickup_queue popq on sso.id_sales_order = popq.fk_sales_order
     where sso.merchant_reference = '" . $merchantReference . "'
         and (smso.requested_delivery_date > DATE_ADD(now(), INTERVAL " . PickingZoneRepository::PICKING_DATE_INTERVAL . " day))
         and (popb.fk_user is null or popb.fk_user = " . $this->userFacade->getCurrentUser()->getIdUser() . ")

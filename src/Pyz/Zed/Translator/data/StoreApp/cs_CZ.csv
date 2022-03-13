@@ -254,4 +254,6 @@ multi.picking.weight.popupui.message, Chcete přidat další hmotnost položky?
 multi.picking.weight.popupui.confirm.button, "Ano, přidat"
 multi.picking.weight.popupui.cancel.button, Ne
 container.already.used, Tento kontejner se již používá
+customer.queue.orders,Registrovaný
+customer.queue.orders.notification,Pozor! Zaregistroval se nový zákazník!
 

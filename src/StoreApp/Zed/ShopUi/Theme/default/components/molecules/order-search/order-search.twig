@@ -15,6 +15,9 @@
 } %}
 
 {% block body %}
+    <div class="{{ config.name }}__notification-holder">
+        <div class="{{ config.name }}__popup_notification-show {{ config.name }}__popup_notification-hidden">{{ 'customer.queue.orders.notification'|trans }}</div>
+    </div>
     <div class="grid grid--no-wrap">
         <div class="col col--expand">
             <input type="hidden" id="order_progress" value="{{ 'order.search.order.progress' | trans }}">
@@ -22,5 +25,14 @@
             <input type="text" class="input input--expand spacing-bottom spacing-bottom--big {{ config.jsName }}__input" placeholder="{{ 'Order Search' | trans }}">
         </div>
     </div>
+    {% include atom('checkbox') with {
+        class: 'order-search__checkbox',
+        attributes: {
+            id: 'filter-queued-orders',
+        },
+        data: {
+            label: 'customer.queue.orders' | trans,
+        },
+    } only %}
 {% endblock %}
 

@@ -1,6 +1,6 @@
 $setting-item-border-radius: rem(8);
 
-@mixin picker-order-item($name: '.order-item') {
+@mixin picker-order-item($name: '.order-item-abholung') {
     #{$name} {
         margin-bottom: rem(8);
 
@@ -8,6 +8,10 @@ $setting-item-border-radius: rem(8);
             .icon-substitution {
                 float: right;
             }
+        }
+
+        &__pickup-alert{
+            background-color: rgba(255, 0, 0, 0.2);
         }
 
         .greenIcon{
@@ -36,6 +40,17 @@ $setting-item-border-radius: rem(8);
                     padding-bottom: rem(4);
                 }
             }
+        }
+
+        &__holder{
+            display: flex;
+            justify-content: space-between;
+        }
+
+        &__queued-time {
+            color: $setting-color-pickingApp-darkerGreen;
+            font-size: rem(18);
+            font-weight: bold;
         }
 
         &__content {

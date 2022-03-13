@@ -23,6 +23,7 @@
         <column name="merchant_short_name" required="false" size="255" type="VARCHAR"/>
         <column name="is_transportbox_enabled" default="0" required="false" type="BOOLEAN"/>
         <column name="is_new_picking_app_function_enabled" default="0" required="false" type="BOOLEAN"/>
+        <column name="queue_alert_seconds" required="true" type="INTEGER" default="900"/>
 
         <foreign-key name="spy_merchant-fk_store" foreignTable="spy_store">
             <reference local="fk_store" foreign="id_store"/>

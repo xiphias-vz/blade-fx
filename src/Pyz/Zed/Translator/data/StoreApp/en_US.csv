@@ -208,4 +208,6 @@ multi.picking.weight.popupui.message, Would you like to add another weight item?
 multi.picking.weight.popupui.confirm.button, "Yes, add"
 multi.picking.weight.popupui.cancel.button, No
 container.already.used,This container is already in use
+customer.queue.orders,Registered
+customer.queue.orders.notification,Attention! New customer has registered!
 

@@ -29,6 +29,7 @@
     barcodeNumber: barcodeNumber,
     numberOfOrders: numberOfOrders,
     meinGlobusCart: meinGlobusCart,
+    isOrderInQueue: isOrderInQueue,
 } %}
 
 {% set pickedItemCount = data.collectOrder.pickedItemsCount %}
@@ -72,6 +73,7 @@
                 fullName: data.fullName,
                 numberOfOrders: data.numberOfOrders,
                 meinGlobusCart: data.meinGlobusCart,
+                isOrderInQueue: data.isOrderInQueue,
             },
             attributes: {
                 'data-order': data.collectNumber | lower,
@@ -136,34 +138,6 @@
                     <label class="label">{{ 'picker.collect-by-customer.details.containers' | trans }}</label>
                     <input id="containerInput" class="input input--expand" type="text" autofocus />
                 </div>
-                <script>
-                    var input = document.getElementById('containerInput');
-                    input.addEventListener("change", function()
-                    {
-                        var inputValue = document.getElementById("containerInput").value;
-                        var id = document.getElementsByClassName('checkbox__input');
-                        var containerExists = false;
-                        var barcode = inputValue.replace('/x11', '').replace('/X11', '');
-
-                        for(i= 0; i< id.length; i++)
-                        {
-                            containerId = id[i].attributes[2].value;
-
-                            if(barcode === containerId)
-                            {
-                                id[i].checked = true;
-                                containerExists = true;
-                                break;
-                            }
-                        }
-                        if(containerExists === false)
-                        {
-                            alert("This container is not part of the order!");
-                        }
-                        document.getElementById("containerInput").value = "";
-
-                    });
-                </script>
                 <div>
                     {% if embed.pickedAndNotFoundItems|length > 0 %}
                         {% include molecule('missing-articles') with {
