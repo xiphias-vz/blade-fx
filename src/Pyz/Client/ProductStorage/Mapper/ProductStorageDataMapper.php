@@ -8,13 +8,14 @@
 namespace Pyz\Client\ProductStorage\Mapper;
 
 use Generated\Shared\Transfer\ProductStorageCriteriaTransfer;
+use Generated\Shared\Transfer\ProductViewTransfer;
 use Spryker\Client\ProductStorage\Mapper\ProductStorageDataMapper as SprykerProductStorageDataMapper;
 use Spryker\Client\ProductStorageExtension\Dependency\Plugin\ProductViewExpanderByCriteriaPluginInterface;
 
 class ProductStorageDataMapper extends SprykerProductStorageDataMapper
 {
     /**
-     * @param $locale
+     * @param string $locale
      * @param array $productStorageData
      * @param array $selectedAttributes
      * @param \Generated\Shared\Transfer\ProductStorageCriteriaTransfer|null $productStorageCriteriaTransfer
@@ -32,8 +33,9 @@ class ProductStorageDataMapper extends SprykerProductStorageDataMapper
         $productViewTransfer->setSelectedAttributes($selectedAttributes);
 
         if ($productStorageCriteriaTransfer != null) {
-            $currentMerchant = $productStorageCriteriaTransfer->getStore();
+            $currentMerchant = $productStorageCriteriaTransfer->getMerchantReference();
             $productViewTransfer->setCurrentMerchant($currentMerchant);
+            $this->setProductConcreteId($productViewTransfer);
         }
 
         foreach ($this->productStorageExpanderPlugins as $productViewExpanderPlugin) {
@@ -47,5 +49,23 @@ class ProductStorageDataMapper extends SprykerProductStorageDataMapper
         }
 
         return $productViewTransfer;
+    }
+
+    /**
+     * @param \Generated\Shared\Transfer\ProductViewTransfer $productViewTransfer
+     *
+     * @return void
+     */
+    protected function setProductConcreteId(ProductViewTransfer &$productViewTransfer)
+    {
+        if (count($productViewTransfer->getAttributeMap()->getProductConcreteIds()) > 1) {
+            $extension = "_" . $productViewTransfer->getCurrentMerchant();
+            foreach ($productViewTransfer->getAttributeMap()->getProductConcreteIds() as $key => $concreteId) {
+                if (str_contains($key, $extension)) {
+                    $productViewTransfer->setIdProductConcrete((int)$concreteId);
+                    $productViewTransfer->getAttributeMap()->setProductConcreteIds([$concreteId]);
+                }
+            }
+        }
     }
 }

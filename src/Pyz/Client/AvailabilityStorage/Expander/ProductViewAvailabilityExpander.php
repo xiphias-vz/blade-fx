@@ -36,7 +36,7 @@ class ProductViewAvailabilityExpander extends SprykerProductViewAvailabilityExpa
         $currentMerchantKey = 0;
 
         foreach ($merchantsFromConfig as $key => $merchant) {
-            if ($merchant == $currentMerchant) {
+            if ($key == $currentMerchant) {
                 $currentMerchantKey = $key;
                 break;
             }

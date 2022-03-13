@@ -146,6 +146,20 @@ class GsoaProductConsole extends Console
                                                     file_put_contents($fileAlternativeEanPath, implode('|', $line) . PHP_EOL, FILE_APPEND);
                                                 }
                                             }
+                                            if (isset($item["houseSpecificData"])) {
+                                                $ean = $item["mainEan"];
+                                                foreach ($item["houseSpecificData"] as $specific) {
+                                                    foreach (array_keys($specific) as $key) {
+                                                        if ($key != "houseNumber") {
+                                                            $item[$key] = $specific[$key];
+                                                        }
+                                                    }
+                                                    $item["mainEan"] = $ean . "_" . $specific["houseNumber"];
+                                                    $d = $map->mapValues($item);
+                                                    $d["Classification_ID"] = implode(";", $item["eshopCategories"]);
+                                                    file_put_contents($fileArticlePath, implode('|', $d) . PHP_EOL, FILE_APPEND);
+                                                }
+                                            }
                                         }
                                     }
                                 }
@@ -323,7 +337,7 @@ class GsoaProductConsole extends Console
                         $output->writeln("Modified product prices: " . count($modifiedProducts) . " from " . $modifiedFrom);
 
                         if (count($modifiedProducts) > 0) {
-                            $this->generateProductPriceFile($output, $client, $store, $counter, $result, $result["modifiedProducts"]);
+                            $this->generateProductPriceFile($output, $client, $store, $counter, $result, $modifiedProducts);
                             $this->setLastImportDate("product-price", $store, $modifiedFrom, $dateTo);
                         }
                     } else {
