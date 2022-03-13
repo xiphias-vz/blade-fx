@@ -19,3 +19,5 @@ pyzx_event_filtering.sql=zed
 pyzx_event_purge_new.sql=zed
 pyzx_event_purge_old.sql=zed
 pyzx_monitoring_redis.sql=zed
+pyzx_pickup_queue_add_queue.sql=zed
+pyzx_pickup_queue_get_orders_queue.sql=zed

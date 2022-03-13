@@ -7,6 +7,8 @@
 
 namespace Pyz\Glue\GlueApplication;
 
+use Pyz\Glue\PickupQueueRestApi\Plugin\GlueApplication\AddToQueueResourceRoutePlugin;
+use Pyz\Glue\PickupQueueRestApi\Plugin\GlueApplication\GetOrdersQueueResourceRoutePlugin;
 use Spryker\Glue\AlternativeProductsRestApi\Plugin\GlueApplication\AbstractAlternativeProductsResourceRoutePlugin;
 use Spryker\Glue\AlternativeProductsRestApi\Plugin\GlueApplication\ConcreteAlternativeProductsResourceRoutePlugin;
 use Spryker\Glue\AuthRestApi\Plugin\AccessTokenRestRequestValidatorPlugin;
@@ -57,6 +59,7 @@ use Spryker\Glue\GlueApplication\Plugin\GlueApplication\PaginationParametersVali
 use Spryker\Glue\GlueApplication\Plugin\Rest\SetStoreCurrentLocaleBeforeActionPlugin;
 use Spryker\Glue\GlueApplicationExtension\Dependency\Plugin\ResourceRelationshipCollectionInterface;
 use Spryker\Glue\HealthCheck\Plugin\HealthCheckResourceRoutePlugin;
+use Spryker\Glue\Http\Plugin\Application\HttpApplicationPlugin;
 use Spryker\Glue\NavigationsCategoryNodesResourceRelationship\Plugin\GlueApplication\CategoryNodeByResourceIdResourceRelationshipPlugin;
 use Spryker\Glue\NavigationsRestApi\NavigationsRestApiConfig;
 use Spryker\Glue\NavigationsRestApi\Plugin\ResourceRoute\NavigationsResourceRoutePlugin;
@@ -162,6 +165,8 @@ class GlueApplicationDependencyProvider extends SprykerGlueApplicationDependency
             new HealthCheckResourceRoutePlugin(),
             new CartVouchersResourceRoutePlugin(),
             new GuestCartVouchersResourceRoutePlugin(),
+            new AddToQueueResourceRoutePlugin(),
+            new GetOrdersQueueResourceRoutePlugin(),
         ];
     }
 
@@ -380,6 +385,7 @@ class GlueApplicationDependencyProvider extends SprykerGlueApplicationDependency
     protected function getApplicationPlugins(): array
     {
         return [
+            new HttpApplicationPlugin(),
             new SessionApplicationPlugin(),
             new EventDispatcherApplicationPlugin(),
             new GlueApplicationApplicationPlugin(),

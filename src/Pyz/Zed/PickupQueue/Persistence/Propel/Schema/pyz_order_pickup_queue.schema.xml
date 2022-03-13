@@ -1,0 +1,26 @@
+<?xml version="1.0"?>
+<database xmlns="spryker:schema-01" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" name="zed" xsi:schemaLocation="spryker:schema-01 https://static.spryker.com/schema-01.xsd"
+          namespace="Orm\Zed\PickupQueue\Persistence"
+          package="src.Orm.Zed.PickupQueue.Persistence">
+
+    <table name="pyz_order_pickup_queue">
+        <column name="id_order_pickup_queue" required="true" type="INTEGER" autoIncrement="true" primaryKey="true"/>
+        <column name="merchant_filial_number" type="INTEGER"/>
+        <column name="fk_sales_order" type="BIGINT" required="true"/>
+        <column name="data_structured" type="LONGVARCHAR"/>
+        <column name="is_remote" type="BOOLEAN"/>
+        <column name="created_at" required="true" type="TIMESTAMP"/>
+        <column name="picked_up_at" type="TIMESTAMP"/>
+        <column name="updated_at" type="TIMESTAMP"/>
+
+        <foreign-key name="pyz_order_pickup_queue-fk_sales_order" foreignTable="spy_sales_order">
+            <reference local="fk_sales_order" foreign="id_sales_order"/>
+        </foreign-key>
+
+        <unique name="pyz_order_pickup_queue-fk_sales_order_unique">
+            <unique-column name="fk_sales_order"/>
+        </unique>
+
+    </table>
+
+</database>

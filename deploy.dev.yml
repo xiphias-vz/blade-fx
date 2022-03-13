@@ -354,6 +354,13 @@ groups:
                 endpoints:
                     www.shop.globus.local:
                         store: EIN
+
+            Glue:
+                application: glue
+                endpoints:
+                    glue.shop.globus.local:
+                        store: EIN
+
             Zed:
                 application: zed
                 endpoints:
@@ -553,6 +560,10 @@ services:
         engine: mailhog
         endpoints:
             mail.globus.local:
+    swagger:
+        engine: swagger-ui
+        endpoints:
+            swagger.globus.local:
     kibana:
         engine: kibana
         version: 7.6

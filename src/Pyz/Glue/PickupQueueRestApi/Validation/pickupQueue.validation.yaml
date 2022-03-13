@@ -1,0 +1,21 @@
+add-to-queue:
+    post:
+        orderReference:
+            - Optional:
+                constraints:
+                    - NotBlank
+        storeReference:
+            - Optional:
+                constraints:
+                    - NotBlank
+        isRemote:
+            - Optional:
+                constraints:
+                    - NotBlank
+
+get-orders-queue:
+    get:
+        storeReference:
+            - Optional:
+                  constraints:
+                      - NotBlank
