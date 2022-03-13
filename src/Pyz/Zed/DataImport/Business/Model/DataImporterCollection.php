@@ -13,7 +13,7 @@ use Orm\Zed\Category\Persistence\Map\SpyCategoryNodeTableMap;
 use Orm\Zed\Category\Persistence\Map\SpyCategoryTableMap;
 use Orm\Zed\Category\Persistence\SpyCategoryNodeQuery;
 use Orm\Zed\Category\Persistence\SpyCategoryQuery;
-use Orm\Zed\DataImport\Persistence\PyzImportCsvNew;
+use Orm\Zed\MonitoringReport\Persistence\PyzImportHistory;
 use Orm\Zed\Navigation\Persistence\SpyNavigationQuery;
 use Propel\Runtime\Propel;
 use Pyz\Shared\Product\ProductConfig;
@@ -29,6 +29,9 @@ use Spryker\Zed\Product\Dependency\ProductEvents;
 
 class DataImporterCollection extends SprykerDataImporterCollection
 {
+    public const CSV_ARCHIVE_BUFFER_LIMIT = 1000;
+    public const ROOT_DATA_IMPORT_DIR = '//data/data/import/';
+
     /**
      * @var array
      */
@@ -59,6 +62,8 @@ class DataImporterCollection extends SprykerDataImporterCollection
             static::$importCounters[$importType] = 0;
 
             Propel::disableInstancePooling();
+
+            $history = $this->saveImportToHistory($dataImporterConfigurationTransfer, $importType);
 
             if ($importType == "category") {
                 if (!$this->getIsPartialImport($dataImporterConfigurationTransfer)) {
@@ -99,6 +104,9 @@ class DataImporterCollection extends SprykerDataImporterCollection
             }
 
             Propel::enableInstancePooling();
+
+            $history->setNumberOfRowsDb($dataImporterReportTransfer->getImportedDataSetCount());
+            $history->save();
 
             if (!empty($dataImporterConfigurationTransfer->getAfterImportHooksToSkip())) {
                 foreach ($this->afterImportHooks as $afterImportHook) {
@@ -287,7 +295,8 @@ class DataImporterCollection extends SprykerDataImporterCollection
      */
     protected function setCsvToArchive(DataImporterConfigurationTransfer $dataImporterConfigurationTransfer)
     {
-        $fp = fopen('//data/data/import/' . $dataImporterConfigurationTransfer->getReaderConfiguration()->getFileName(), "r");
+        $csvArchive = [];
+        $fp = fopen(self::ROOT_DATA_IMPORT_DIR . $dataImporterConfigurationTransfer->getReaderConfiguration()->getFileName(), "r");
         $lineCounter = 0;
         if ($fp) {
             $orderNumberIndex = -1;
@@ -307,29 +316,34 @@ class DataImporterCollection extends SprykerDataImporterCollection
                 } catch (Exception $ex) {
                 }
                 $buffer = $this->checkString($buffer);
-                $this->insertProductCsvToTable($buffer, $sku, $sapNumber);
+                $csvArchive[] = ['sku' => $sku, 'sapNumber' => $sapNumber, 'buffer' => $buffer];
+                //$this->insertProductCsvToTable($buffer, $sku, $sapNumber);
+                $this->insertProductCsvToTable($csvArchive);
                 $lineCounter++;
             }
 
             fclose($fp);
+            $this->insertProductCsvToTable($csvArchive, true);
         }
     }
 
     /**
-     * @param string $line
-     * @param string $sku
-     * @param string $sapNumber
+     * @param array $csvArchive
+     * @param bool $doInsert
      *
      * @return void
      */
-    protected function insertProductCsvToTable(string $line, string $sku, string $sapNumber)
+    protected function insertProductCsvToTable(array &$csvArchive, bool $doInsert = false)
     {
-        $entity = new PyzImportCsvNew();
-        $entity->setCreatedAt(static::$importDateTime)
-            ->setCsvValueNew($line)
-            ->setSku($sku)
-            ->setSapNumber($sapNumber);
-        $entity->save();
+        if ($doInsert || self::CSV_ARCHIVE_BUFFER_LIMIT <= count($csvArchive)) {
+            $sql = "insert into pyz_import_csv_new (created_at, sku, sap_number, csv_value) values ";
+            foreach ($csvArchive as $line) {
+                $sql = $sql . "('" . static::$importDateTime . "', '" . $line["sku"] . "', '" . $line["sapNumber"] . "', '" . str_replace("'", "''", $line["buffer"]) . "'), ";
+            }
+            $sql = substr($sql, 0, -2);
+            PropelExtension::execute($sql);
+            $csvArchive = [];
+        }
     }
 
     /**
@@ -340,5 +354,45 @@ class DataImporterCollection extends SprykerDataImporterCollection
     protected function checkString(string $line): string
     {
         return preg_replace('/[\x00-\x1F\x7F-\xFF]/', '', $line);
+    }
+
+    /**
+     * @param \Generated\Shared\Transfer\DataImporterConfigurationTransfer $dataImporterConfigurationTransfer
+     * @param string $importType
+     *
+     * @return \Orm\Zed\MonitoringReport\Persistence\PyzImportHistory
+     */
+    protected function saveImportToHistory(DataImporterConfigurationTransfer $dataImporterConfigurationTransfer, string $importType): PyzImportHistory
+    {
+        $fileName = $dataImporterConfigurationTransfer->getReaderConfiguration()->getFileName();
+        $history = new PyzImportHistory();
+        $history
+            ->setCreatedAt(static::$importDateTime)
+            ->setFileType($importType)
+            ->setFileName($fileName)
+            ->setNumberOfRowsCsv($this->getRowCountInCsv($fileName));
+        $history->save();
+
+        return $history;
+    }
+
+    /**
+     * @param string $fileName
+     *
+     * @return int
+     */
+    protected function getRowCountInCsv(string $fileName): int
+    {
+        $fp = fopen(self::ROOT_DATA_IMPORT_DIR . $fileName, "r");
+        $lineCounter = 0;
+        if ($fp) {
+            while (($buffer = fgets($fp)) !== false) {
+                $lineCounter++;
+            }
+            fclose($fp);
+            $lineCounter--;
+        }
+
+        return $lineCounter;
     }
 }

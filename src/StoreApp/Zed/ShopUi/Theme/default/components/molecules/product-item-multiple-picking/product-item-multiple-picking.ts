@@ -257,7 +257,6 @@ export default class ProductItemMultiplePicking extends Component {
         });
 
         this.$declineButton.on('click', () => {
-
             if(document.querySelector("#gridOfTheProduct").classList.contains("paused--state")){
                 document.querySelector("#gridOfTheProduct").classList.remove("paused--state");
             }
@@ -278,7 +277,6 @@ export default class ProductItemMultiplePicking extends Component {
                 }, 600)
                 return;
             }
-
             else{
                 this.$weightField.val("0");
             }
@@ -735,8 +733,7 @@ export default class ProductItemMultiplePicking extends Component {
             <p class="container-name">
                 ${this.containerScanOrderErrorPopUp1.value} <span>${this.popupUiErrorInfo.ContainerCode}</span><br>
                  <span class="container-desc">${this.containerScanOrderErrorPopUp2.value} ${this.popupUiErrorInfo.firstName} ${this.popupUiErrorInfo.lastName}${this.containerScanOrderErrorPopUp3.value} </span><br>
-                 <span class="container-order">${this.containerScanOrderErrorPopUp4.value} ${this.popupUiErrorInfo.orderReference} ${this.containerScanOrderErrorPopUp5.value}</span>
-            </p>
+                 <span class="container-order">${this.containerScanOrderErrorPopUp4.value} ${this.popupUiErrorInfo.orderReference} ${this.containerScanOrderErrorPopUp5.value}</span>            </p>
         `;
         this.popupUiError.classList.add('popup-ui-error--show');
     }

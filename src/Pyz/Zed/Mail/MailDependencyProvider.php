@@ -18,6 +18,7 @@ use Pyz\Zed\CustomerConfirmationPage\Communication\Plugin\Mail\RegistrationMailT
 use Pyz\Zed\Mail\Business\Model\Provider\MailProviderCollection;
 use Pyz\Zed\Mail\Communication\Plugin\MailFromCmsBlockProviderPlugin;
 use Pyz\Zed\Mail\Dependency\Mailer\MailToMailerBridge;
+use Pyz\Zed\MonitoringReport\Communication\Plugin\Mail\AlarmEmailMailTypePlugin;
 use Pyz\Zed\Oms\Communication\Plugin\Mail\OrderConfirmationMailTypePlugin;
 use Spryker\Zed\AuthMailConnector\Communication\Plugin\Mail\RestorePasswordMailTypePlugin;
 use Spryker\Zed\AvailabilityNotification\Communication\Plugin\Mail\AvailabilityNotificationMailTypePlugin;
@@ -75,6 +76,7 @@ class MailDependencyProvider extends SprykerMailDependencyProvider
                 ->add(new RegistrationMailTypePlugin())
                 ->add(new OrderRefundedMailTypePlugin())
                 ->add(new OrderCancelledMailTypePlugin())
+                ->add(new AlarmEmailMailTypePlugin())
                 ->add(new OrderInvoiceMailTypePlugin());
 
             return $mailCollection;

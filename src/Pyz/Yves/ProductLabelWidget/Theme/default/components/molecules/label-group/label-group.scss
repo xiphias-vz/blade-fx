@@ -11,8 +11,6 @@
         padding: rem(16);
         font-family: $setting-font-family;
 
-
-
         @include helper-breakpoint-media-max($sm-max) {
             position: absolute;
             bottom: auto;
@@ -22,7 +20,6 @@
             padding: rem(16);
             font-family: $setting-font-family;
         }
-
 
         @media only screen and (max-width: 575px) {
             position: absolute;
@@ -37,7 +34,6 @@
         }
 
         @content;
-
     }
 }
 

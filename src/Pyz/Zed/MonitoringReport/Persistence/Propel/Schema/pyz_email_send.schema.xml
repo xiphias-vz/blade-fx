@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<database xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          name="zed"
+          xsi:noNamespaceSchemaLocation="http://static.spryker.com/schema-01.xsd"
+          namespace="Orm\Zed\MonitoringReport\Persistence"
+          package="src.Orm.Zed.MonitoringReport.Persistence">
+
+    <table name="pyz_email_send" idMethod="native" allowPkInsert="true">
+        <column name="id_email_identity" required="true" type="INTEGER" primaryKey="true" autoIncrement="true"/>
+        <column name="sender_job_description" required="true" size="500" type="VARCHAR"/>
+        <column name="send_to_email" required="true" size="255" type="VARCHAR"/>
+        <column name="subject" required="true" size="255" type="VARCHAR"/>
+        <column name="body_description" required="true" size="20000" type="VARCHAR"/>
+        <column name="sent_at" required="false" type="TIMESTAMP"/>
+
+        <unique name="pyz_email_send-id_monitoring_job">
+            <unique-column name="id_email_identity"/>
+        </unique>
+
+        <behavior name="timestampable"/>
+    </table>
+
+</database>

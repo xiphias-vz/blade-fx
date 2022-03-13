@@ -403,6 +403,7 @@ class PickingController extends BaseOrderPickingController
 
         $idGlobalPickReport = 0;
         $idPerformanceSalesOrderReport = 0;
+
         $globalPickerReportTransfer = (new PerformanceGlobalSalesOrderReportTransfer())
             ->setIdPicker($userTransfer->getIdUser())
             ->setPickZone($pickingZoneTransfer->getIdPickingZone())

@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<database xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          name="zed"
+          xsi:noNamespaceSchemaLocation="http://static.spryker.com/schema-01.xsd"
+          namespace="Orm\Zed\MonitoringReport\Persistence"
+          package="src.Orm.Zed.MonitoringReport.Persistence">
+
+    <table name="pyz_import_history" idMethod="native" allowPkInsert="true">
+        <column name="id_import_history" required="true" type="INTEGER" primaryKey="true" autoIncrement="true"/>
+        <column name="created_at" required="true" type="TIMESTAMP"/>
+        <column name="file_type" required="true" size="50" type="VARCHAR"/>
+        <column name="file_name" required="true" size="250" type="VARCHAR"/>
+        <column name="number_of_rows_csv" required="true" type="INTEGER"/>
+        <column name="number_of_rows_db" required="false" type="INTEGER"/>
+
+        <unique name="pyz_import_history-id_import_history">
+            <unique-column name="id_import_history"/>
+        </unique>
+
+    </table>
+
+</database>

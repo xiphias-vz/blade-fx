@@ -45,6 +45,8 @@ use Pyz\Zed\ImageImportToS3\Communication\Console\ImageImportToS3Console;
 use Pyz\Zed\Installer\Communication\Console\PerStoreInstallerConsole;
 use Pyz\Zed\Maintenance\Communication\Console\MaintenanceDisableConsole;
 use Pyz\Zed\Maintenance\Communication\Console\MaintenanceEnableConsole;
+use Pyz\Zed\MonitoringReport\Communication\Console\AlarmEmailConsole;
+use Pyz\Zed\MonitoringReport\Communication\Console\JenkinsCheckConsole;
 use Pyz\Zed\MultipleStatusesFixScript\Communication\Console\MultipleStatusesFixScriptConsole;
 use Pyz\Zed\Oms\Communication\Console\CheckConditionConsole as OmsCheckConditionConsole;
 use Pyz\Zed\Oms\Communication\Console\CheckTimeoutConsole as OmsCheckTimeoutConsole;
@@ -397,6 +399,9 @@ class ConsoleDependencyProvider extends SprykerConsoleDependencyProvider
 
             new FactFinderNgImportSearchConsole(),
             new FactFinderSdkExportConsole(),
+
+            new JenkinsCheckConsole(),
+            new AlarmEmailConsole(),
 
         ];
 
