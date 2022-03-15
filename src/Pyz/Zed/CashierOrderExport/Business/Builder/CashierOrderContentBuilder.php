@@ -602,7 +602,33 @@ class CashierOrderContentBuilder implements CashierOrderContentBuilderInterface
      */
     protected function getItemProductNumber(ItemTransfer $itemTransfer): ?string
     {
-        return static::PICKING_ZONE_TO_PRODUCT_NUMBER_MAPPER[$itemTransfer->getPickZone()] ?? $itemTransfer->getProductNumber();
+        return static::PICKING_ZONE_TO_PRODUCT_NUMBER_MAPPER[$itemTransfer->getPickZone()] ?? $this->getProductNumber($itemTransfer);
+    }
+
+    /**
+     * @param \Generated\Shared\Transfer\ItemTransfer $itemTransfer
+     *
+     * @return string|null
+     */
+    protected function getProductNumber(ItemTransfer $itemTransfer): ?string
+    {
+        return $this->getSku($itemTransfer->getProductNumber());
+    }
+
+    /**
+     * Remove house number from SKU
+     *
+     * @param string $sku
+     *
+     * @return string|null
+     */
+    protected function getSku(string $sku): ?string
+    {
+        if (str_contains($sku, '_')) {
+            $sku = substr($sku, 0, strpos($sku, '_'));
+        }
+
+        return $sku;
     }
 
     /**
@@ -749,7 +775,7 @@ class CashierOrderContentBuilder implements CashierOrderContentBuilderInterface
                         $writer->writeElement(static::XML_ORIGIN, static::XML_ORIGIN_VALUE);
                         $writer->writeElement(static::XML_POSITION_NUMBER, $counter);
                         $writer->writeElement(static::XML_BARCODE, $this->extractPluFromProductDepositSku($productOption->getSku()) ?? static::DEFAULT_EMPTY_XML_NUMBER);
-                        $writer->writeElement(static::XML_ITEM_NUMBER, $productSku[$item->getSku()]);
+                        $writer->writeElement(static::XML_ITEM_NUMBER, $this->getSku($productSku[$item->getSku()]));
                         $writer->writeElement(static::XML_DEPARTMENT_NUMBER, $item->getSapWgr());
                         $writer->writeElement(static::XML_DESCRIPTION, static::XML_DEPOSIT_DESCRIPTION);
                         $writer->writeElement(static::XML_NETTO_PRICE, $productOption->getUnitGrossPrice());
