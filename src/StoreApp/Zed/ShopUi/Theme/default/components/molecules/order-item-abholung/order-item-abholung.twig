@@ -112,6 +112,7 @@
         {% else %}
             <div>
                 <div class="{{ config.name }}__holder">
+                    <input type="hidden" id="lastOrderInQueue" value="">
                     {% if data.collectNumber %}
                         <div class="{{ config.name }}__collect">
                             {{ 'Collect Number' | trans }}: {{ data.collectNumber }}

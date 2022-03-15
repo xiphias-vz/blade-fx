@@ -23,6 +23,7 @@ use Generated\Shared\Transfer\UserTransfer;
 use Orm\Zed\Customer\Persistence\SpyCustomerQuery;
 use Orm\Zed\MerchantSalesOrder\Persistence\Map\SpyMerchantSalesOrderTableMap;
 use Orm\Zed\PerformancePickingReport\Persistence\PyzPerformanceSalesOrderReportQuery;
+use Orm\Zed\PickupQueue\Persistence\Map\PyzOrderPickupQueueTableMap;
 use Orm\Zed\PickupQueue\Persistence\PyzOrderPickupQueueQuery;
 use Orm\Zed\Sales\Persistence\Map\SpySalesOrderTableMap;
 use Orm\Zed\Sales\Persistence\SpySalesOrderQuery;
@@ -428,6 +429,37 @@ class CollectByCustomerController extends AbstractController
             "errorMessage" => "",
             "response" => $containersJson,
         ];
+
+        return new JsonResponse($responseArray);
+    }
+
+    /**
+     * @param \Symfony\Component\HttpFoundation\Request $request
+     *
+     * @return \Symfony\Component\HttpFoundation\JsonResponse
+     */
+    public function newQueueCheckAction(Request $request)
+    {
+        $orderCheck = $request->request->all();
+
+        if (isset($orderCheck['lastId'])) {
+            try {
+                $qry = PyzOrderPickupQueueQuery::create();
+                $qry->select('id');
+                $qry->addAsColumn('id', 'MAX(' . PyzOrderPickupQueueTableMap::COL_ID_ORDER_PICKUP_QUEUE . ')');
+                $lastId = $qry->findOne();
+                $responseArray = [
+                    'lastId' => $lastId,
+                    "errorMessage" => "",
+                ];
+            } catch (Exception $exception) {
+                $responseArray = [
+                    "errorMessage" => $exception,
+                ];
+
+                return new JsonResponse($responseArray);
+            }
+        }
 
         return new JsonResponse($responseArray);
     }

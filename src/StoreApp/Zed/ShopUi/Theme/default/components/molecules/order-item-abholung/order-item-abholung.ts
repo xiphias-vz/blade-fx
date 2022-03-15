@@ -9,9 +9,13 @@ export default class OrderItemAbholung extends Component {
     protected queuedOrderList = [];
     protected newCustomerInQueueInfo: HTMLElement;
     protected notificationMessageDelay: number = 3000;
+    protected checkOrderInQueueDelay: number = 5000;
+    protected checkIfNewCustomerIsInQueue: number = 30000;
     protected containerScanInput: HTMLInputElement;
     protected containerScanCheckBoxID: HTMLInputElement;
     protected orderId: HTMLInputElement;
+    protected lastOrderInQueueInput: HTMLInputElement;
+    protected lastOrderInQueue: string;
     protected isOrderInQueue: Boolean;
     protected counterChecked = 0;
 
@@ -23,12 +27,13 @@ export default class OrderItemAbholung extends Component {
         this.newCustomerInQueueInfo = document.querySelector<HTMLElement>(".order-search__popup_notification-hidden");
         this.filteringCheckbox = document.querySelector<HTMLInputElement>('input[id="filter-queued-orders"]');
         this.order = this.querySelector<HTMLElement>(".order-item-abholung__pickup");
-        this.containerScanInput  = <HTMLInputElement>document.getElementById('containerInput');
-        this.containerScanCheckBoxID  = <HTMLInputElement>this.getElementsByClassName('checkbox__input');
-        this.orderId  = <HTMLInputElement>document.querySelector('input[name="idOrder"]');
-        this.isOrderInQueue  = <Boolean>document.querySelector('input[id="isOrderInQueue"]');
+        this.containerScanInput = <HTMLInputElement>document.getElementById('containerInput');
+        this.containerScanCheckBoxID = <HTMLInputElement>this.getElementsByClassName('checkbox__input');
+        this.orderId = <HTMLInputElement>document.querySelector('input[name="idOrder"]');
+        this.isOrderInQueue = <Boolean>document.querySelector('input[id="isOrderInQueue"]');
+        this.lastOrderInQueueInput = <HTMLInputElement>document.querySelector('input[id="lastOrderInQueue"]');
         this.checkForWaitingQueue();
-        setInterval(this.checkForWaitingQueue.bind(this), 5000);
+        setInterval(this.checkForWaitingQueue.bind(this), this.checkOrderInQueueDelay);
         this.mapEvents();
     }
 
@@ -92,6 +97,7 @@ export default class OrderItemAbholung extends Component {
         if (currentTime > timeAfterWaiting && this.waitingTime.value) {
             this.order.classList.add("order-item-abholung__pickup-alert");
         }
+        this.checkForNewOrderInQueue();
     }
 
     protected showPopupInfoIfInQueue(): void {
@@ -128,11 +134,10 @@ export default class OrderItemAbholung extends Component {
         dataToSend['order_id'] = orderId;
 
         $.ajax({
-            type : "POST",  //type of method
-            url  : urlCheck,  //your page
-            data : dataToSend,// passing the values
+            type : "POST",
+            url  : urlCheck,
+            data : dataToSend,
             success: function(res){
-                // let parsedResponse = JSON.parse(res);
                 let errorMsg = res.errorMessage;
 
                 if(errorMsg != ""){
@@ -141,5 +146,31 @@ export default class OrderItemAbholung extends Component {
                 }
             },
         });
+    }
+
+    protected checkForNewOrderInQueue(){
+        let urlCheck = window.location.origin + "/picker/collect-by-customer/new-queue-check";
+        let dataToSend = {};
+        this.lastOrderInQueue = this.lastOrderInQueueInput.value;
+        dataToSend['lastId'] = this.lastOrderInQueue;
+        let that = this;
+        $.ajax({
+            type : "POST",
+            url  : urlCheck,
+            data : dataToSend,
+            success: function(res){
+                let errorMsg = res.errorMessage;
+                let lastId = res.lastId;
+                if(errorMsg != ""){
+                    alert(errorMsg)
+                    return;
+                }
+                if(lastId > that.lastOrderInQueue) {
+                    that.lastOrderInQueueInput.value = lastId;
+                    that.showPopupInfoIfInQueue();
+                }
+            },
+        });
+
     }
 }
