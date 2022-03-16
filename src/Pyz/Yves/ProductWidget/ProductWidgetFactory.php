@@ -8,6 +8,7 @@
 namespace Pyz\Yves\ProductWidget;
 
 use Spryker\Client\ProductStorage\ProductStorageClientInterface;
+use Spryker\Client\Quote\QuoteClientInterface;
 use SprykerShop\Yves\ProductWidget\ProductWidgetFactory as SprykerProductWidgetFactory;
 
 /**
@@ -21,5 +22,13 @@ class ProductWidgetFactory extends SprykerProductWidgetFactory
     public function getProductStorageClient(): ProductStorageClientInterface
     {
         return $this->getProvidedDependency(ProductWidgetDependencyProvider::CLIENT_PRODUCT_STORAGE);
+    }
+
+    /**
+     * @return \Spryker\Client\Quote\QuoteClientInterface
+     */
+    public function getQuoteClient(): QuoteClientInterface
+    {
+        return $this->getProvidedDependency(ProductWidgetDependencyProvider::CLIENT_QUOTE);
     }
 }
