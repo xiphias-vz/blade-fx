@@ -1,5 +1,5 @@
 DELIMITER //
-create or replace procedure pyzx_pickup_queue_add_queue(
+CREATE OR REPLACE PROCEDURE pyzx_pickup_queue_add_queue(
     IN order_reference VARCHAR(50),
     IN store_reference VARCHAR(50),
     IN is_remote TINYINT
@@ -18,8 +18,8 @@ BEGIN
                                  END
                        END
         END as error_data
-         , 1
-    INTO @error_code, @error_data, @flag
+         , 1, b.no_rows
+    INTO @error_code, @error_data, @flag, @no_rows
     FROM
         (
             SELECT CASE WHEN a.order_status LIKE '%Collected by customer%' OR a.order_status LIKE 'order invoiced' THEN 10
@@ -34,6 +34,7 @@ BEGIN
                  , a.requested_delivery_date_timeslot
                  , a.store
                  , a.cbc_status_dt
+                 , count(*) as no_rows
             FROM
                 (
                     SELECT sso.id_sales_order, sso.order_reference, sso.store, sss.requested_delivery_date as requested_delivery_date_timeslot
@@ -61,45 +62,47 @@ BEGIN
                 ) a
         ) b;
 
-        SET @error_code = (SELECT CASE WHEN @flag is null then 30 else @error_code END);
+    SET @error_code = (SELECT CASE WHEN @no_rows = 0 then 30 else @error_code END);
 
-        INSERT INTO pyz_order_pickup_queue (fk_sales_order, created_at, is_remote, merchant_filial_number, data_structured)
-        SELECT sso.id_sales_order, NOW(), @is_remote, @store_short_code
-             , CONCAT('{"order_data":{"no_of_containers_total":'
-            , COUNT(DISTINCT ssoi.container_code) -- number_of_containers_total
-            , ',"no_of_containers_collected":'
-            , COUNT(DISTINCT ppso.container_code) -- number_of_containers_on_shelf
-            , ',"no_of_articles_total":'
-            , COUNT(DISTINCT ssoi.id_sales_order_item) -- number_of_articles_total
-            , ',"no_of_articles_collected":'
-            , SUM(CASE WHEN ppso.id_picking_sales_order IS NULL THEN 0 ELSE 1 END) -- number_of_articles_on_shelf
-            , '}}') AS data_structured
-        FROM spy_sales_order sso
+    SELECT @error_code;
+
+    INSERT INTO pyz_order_pickup_queue (fk_sales_order, created_at, is_remote, merchant_filial_number, data_structured)
+    SELECT sso.id_sales_order, NOW(), @is_remote, @store_short_code
+         , CONCAT('{"order_data":{"no_of_containers_total":'
+        , COUNT(DISTINCT ssoi.container_code) -- number_of_containers_total
+        , ',"no_of_containers_collected":'
+        , COUNT(DISTINCT ppso.container_code) -- number_of_containers_on_shelf
+        , ',"no_of_articles_total":'
+        , COUNT(DISTINCT ssoi.id_sales_order_item) -- number_of_articles_total
+        , ',"no_of_articles_collected":'
+        , SUM(CASE WHEN ppso.id_picking_sales_order IS NULL THEN 0 ELSE 1 END) -- number_of_articles_on_shelf
+        , '}}') AS data_structured
+    FROM spy_sales_order sso
              INNER JOIN spy_sales_order_item ssoi on ssoi.fk_sales_order = sso.id_sales_order
              LEFT JOIN pyz_picking_sales_order ppso on ppso.fk_sales_order = sso.id_sales_order
         AND ppso.container_code = ssoi.container_code
     WHERE sso.order_reference = @order_reference
       AND @error_code = 0
     GROUP BY sso.id_sales_order
-        ON DUPLICATE KEY UPDATE data_structured =
-                             (
-                             SELECT CONCAT('{"order_data":{"no_of_containers_total":'
-                             , COUNT(DISTINCT ssoi.container_code) -- number_of_containers_total
-                             , ',"no_of_containers_collected":'
-                             , COUNT(DISTINCT ppso.container_code) -- number_of_containers_on_shelf
-                             , ',"no_of_articles_total":'
-                             , COUNT(DISTINCT ssoi.id_sales_order_item) -- number_of_articles_total
-                             , ',"no_of_articles_collected":'
-                             , SUM(CASE WHEN ppso.id_picking_sales_order IS NULL THEN 0 ELSE 1 END) -- number_of_articles_on_shelf
-                             , '}}') AS data_structured
-                             FROM spy_sales_order sso
-                             INNER JOIN spy_sales_order_item ssoi on ssoi.fk_sales_order = sso.id_sales_order
-                             LEFT JOIN pyz_picking_sales_order ppso on ppso.fk_sales_order = sso.id_sales_order
-                             AND ppso.container_code = ssoi.container_code
-                             WHERE sso.order_reference = @order_reference
-                             GROUP BY sso.id_sales_order
-                             ),
-                                updated_at = NOW();
+    ON DUPLICATE KEY UPDATE data_structured =
+                                (
+                                    SELECT CONCAT('{"order_data":{"no_of_containers_total":'
+                                               , COUNT(DISTINCT ssoi.container_code) -- number_of_containers_total
+                                               , ',"no_of_containers_collected":'
+                                               , COUNT(DISTINCT ppso.container_code) -- number_of_containers_on_shelf
+                                               , ',"no_of_articles_total":'
+                                               , COUNT(DISTINCT ssoi.id_sales_order_item) -- number_of_articles_total
+                                               , ',"no_of_articles_collected":'
+                                               , SUM(CASE WHEN ppso.id_picking_sales_order IS NULL THEN 0 ELSE 1 END) -- number_of_articles_on_shelf
+                                               , '}}') AS data_structured
+                                    FROM spy_sales_order sso
+                                             INNER JOIN spy_sales_order_item ssoi on ssoi.fk_sales_order = sso.id_sales_order
+                                             LEFT JOIN pyz_picking_sales_order ppso on ppso.fk_sales_order = sso.id_sales_order
+                                        AND ppso.container_code = ssoi.container_code
+                                    WHERE sso.order_reference = @order_reference
+                                    GROUP BY sso.id_sales_order
+                                ),
+                            updated_at = NOW();
 
     SELECT @error_code as error_code, @error_data as error_data;
 END;
