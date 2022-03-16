@@ -211,6 +211,12 @@ class DetailController extends IntDetailController
             }
         }
 
+        $orderItems = $orderTransfer->getItems();
+
+        foreach ($orderItems as $orderItem) {
+            $this->removeHouseNumber($orderItem);
+        }
+
         if ($blockResponseData instanceof RedirectResponse) {
             return $blockResponseData;
         }

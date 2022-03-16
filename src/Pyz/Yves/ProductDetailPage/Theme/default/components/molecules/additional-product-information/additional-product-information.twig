@@ -16,7 +16,17 @@
                     <div><div class="{{ config.name }}__headline"><strong>{{ 'product.info.additional.article_number' | trans }}:</strong></div><p class="{{ config.name }}__attribute">{{ data.product['idProductConcrete'] }}</p></div>
                 {% endif %}
                 {% if data.product['sku'] is defined %}
-                    <div><div class="{{ config.name }}__headline"><strong>EAN/GTIN:</strong></div><p class="{{ config.name }}__attribute">{{ data.product['sku'] }}</p></div>
+
+                    {% if '_' in data.product['sku'] %}
+                        {% set length = data.product['sku'] | length %}
+                        {% set beginerLength = data.product['sku'] | length - 5 %}
+                        {% set houseNumber = data.product['sku'] | slice( beginerLength, length ) %}
+
+                        <div><div class="{{ config.name }}__headline"><strong>EAN/GTIN:</strong></div><p class="{{ config.name }}__attribute">{{ data.product['sku']|replace({ (houseNumber): '' }) }}</p></div>
+                    {% else %}
+                        <div><div class="{{ config.name }}__headline"><strong>EAN/GTIN:</strong></div><p class="{{ config.name }}__attribute">{{ data.product['sku'] }}</p></div>
+                    {% endif %}
+
                 {% endif %}
                 {% if data.productAttributes['alkgeh'] is defined %}
                     <div><div class="{{ config.name }}__headline"><strong>{{ 'product.info.additional.alcohol' | trans }}:</strong></div><p class="{{ config.name }}__attribute">{{ data.productAttributes['alkgeh'] }}</p></div>
