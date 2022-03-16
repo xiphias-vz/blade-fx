@@ -64,8 +64,6 @@ BEGIN
 
     SET @error_code = (SELECT CASE WHEN @no_rows = 0 then 30 else @error_code END);
 
-    SELECT @error_code;
-
     INSERT INTO pyz_order_pickup_queue (fk_sales_order, created_at, is_remote, merchant_filial_number, data_structured)
     SELECT sso.id_sales_order, NOW(), @is_remote, @store_short_code
          , CONCAT('{"order_data":{"no_of_containers_total":'
