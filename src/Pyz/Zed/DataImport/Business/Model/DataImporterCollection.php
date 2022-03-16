@@ -105,8 +105,10 @@ class DataImporterCollection extends SprykerDataImporterCollection
 
             Propel::enableInstancePooling();
 
-            $history->setNumberOfRowsDb($dataImporterReportTransfer->getImportedDataSetCount());
-            $history->save();
+            if ($history) {
+                $history->setNumberOfRowsDb($dataImporterReportTransfer->getImportedDataSetCount());
+                $history->save();
+            }
 
             if (!empty($dataImporterConfigurationTransfer->getAfterImportHooksToSkip())) {
                 foreach ($this->afterImportHooks as $afterImportHook) {
@@ -296,34 +298,36 @@ class DataImporterCollection extends SprykerDataImporterCollection
     protected function setCsvToArchive(DataImporterConfigurationTransfer $dataImporterConfigurationTransfer)
     {
         $csvArchive = [];
-        $fp = fopen(self::ROOT_DATA_IMPORT_DIR . $dataImporterConfigurationTransfer->getReaderConfiguration()->getFileName(), "r");
-        $lineCounter = 0;
-        if ($fp) {
-            $orderNumberIndex = -1;
-            $sapNumberIndex = -1;
-            while (($buffer = fgets($fp)) !== false) {
-                $sku = "";
-                $sapNumber = "";
-                try {
-                    $line = str_getcsv($buffer, "|");
-                    if ($orderNumberIndex < 0) {
-                        $orderNumberIndex = array_search(ProductConfig::KEY_PRODUCT_NUMBER, $line);
-                        $sapNumberIndex = array_search(ProductConfig::KEY_SAP_NUMBER, $line);
-                    } else {
-                        $sku = $line[$orderNumberIndex];
-                        $sapNumber = $line[$sapNumberIndex];
+        $fileName = $this->checkFileName($dataImporterConfigurationTransfer->getReaderConfiguration()->getFileName());
+        if ($fileName) {
+            $fp = fopen($fileName, "r");
+            $lineCounter = 0;
+            if ($fp) {
+                $orderNumberIndex = -1;
+                $sapNumberIndex = -1;
+                while (($buffer = fgets($fp)) !== false) {
+                    $sku = "";
+                    $sapNumber = "";
+                    try {
+                        $line = str_getcsv($buffer, "|");
+                        if ($orderNumberIndex < 0) {
+                            $orderNumberIndex = array_search(ProductConfig::KEY_PRODUCT_NUMBER, $line);
+                            $sapNumberIndex = array_search(ProductConfig::KEY_SAP_NUMBER, $line);
+                        } else {
+                            $sku = $line[$orderNumberIndex];
+                            $sapNumber = $line[$sapNumberIndex];
+                        }
+                    } catch (Exception $ex) {
                     }
-                } catch (Exception $ex) {
+                    $buffer = $this->checkString($buffer);
+                    $csvArchive[] = ['sku' => $sku, 'sapNumber' => $sapNumber, 'buffer' => $buffer];
+                    $this->insertProductCsvToTable($csvArchive);
+                    $lineCounter++;
                 }
-                $buffer = $this->checkString($buffer);
-                $csvArchive[] = ['sku' => $sku, 'sapNumber' => $sapNumber, 'buffer' => $buffer];
-                //$this->insertProductCsvToTable($buffer, $sku, $sapNumber);
-                $this->insertProductCsvToTable($csvArchive);
-                $lineCounter++;
-            }
 
-            fclose($fp);
-            $this->insertProductCsvToTable($csvArchive, true);
+                fclose($fp);
+                $this->insertProductCsvToTable($csvArchive, true);
+            }
         }
     }
 
@@ -360,20 +364,24 @@ class DataImporterCollection extends SprykerDataImporterCollection
      * @param \Generated\Shared\Transfer\DataImporterConfigurationTransfer $dataImporterConfigurationTransfer
      * @param string $importType
      *
-     * @return \Orm\Zed\MonitoringReport\Persistence\PyzImportHistory
+     * @return \Orm\Zed\MonitoringReport\Persistence\PyzImportHistory|null
      */
-    protected function saveImportToHistory(DataImporterConfigurationTransfer $dataImporterConfigurationTransfer, string $importType): PyzImportHistory
+    protected function saveImportToHistory(DataImporterConfigurationTransfer $dataImporterConfigurationTransfer, string $importType): ?PyzImportHistory
     {
         $fileName = $dataImporterConfigurationTransfer->getReaderConfiguration()->getFileName();
-        $history = new PyzImportHistory();
-        $history
-            ->setCreatedAt(static::$importDateTime)
-            ->setFileType($importType)
-            ->setFileName($fileName)
-            ->setNumberOfRowsCsv($this->getRowCountInCsv($fileName));
-        $history->save();
+        if ($fileName) {
+            $history = new PyzImportHistory();
+            $history
+                ->setCreatedAt(static::$importDateTime)
+                ->setFileType($importType)
+                ->setFileName($fileName)
+                ->setNumberOfRowsCsv($this->getRowCountInCsv($fileName));
+            $history->save();
 
-        return $history;
+            return $history;
+        }
+
+        return null;
     }
 
     /**
@@ -383,16 +391,42 @@ class DataImporterCollection extends SprykerDataImporterCollection
      */
     protected function getRowCountInCsv(string $fileName): int
     {
-        $fp = fopen(self::ROOT_DATA_IMPORT_DIR . $fileName, "r");
-        $lineCounter = 0;
-        if ($fp) {
-            while (($buffer = fgets($fp)) !== false) {
-                $lineCounter++;
+        $lineCounter = -1;
+        $fileName = $this->checkFileName($fileName);
+        try {
+            if ($fileName) {
+                $fp = fopen('/' . $fileName, "r");
+                if ($fp) {
+                    $lineCounter = 0;
+                    while (($buffer = fgets($fp)) !== false) {
+                        $lineCounter++;
+                    }
+                    fclose($fp);
+                    $lineCounter--;
+                }
             }
-            fclose($fp);
-            $lineCounter--;
+        } catch (Exception $ex) {
         }
 
         return $lineCounter;
+    }
+
+    /**
+     * @param string|null $fileName
+     *
+     * @return string|null
+     */
+    protected function checkFileName(?string $fileName): ?string
+    {
+        if ($fileName) {
+            if (!str_contains($fileName, "/data/data/import/")) {
+                $fileName = self::ROOT_DATA_IMPORT_DIR . $fileName;
+            }
+            if (file_exists($fileName)) {
+                return $fileName;
+            }
+        }
+
+        return null;
     }
 }
