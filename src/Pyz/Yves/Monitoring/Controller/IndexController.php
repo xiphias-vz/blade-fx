@@ -177,10 +177,19 @@ class IndexController extends AbstractController
     protected function setStoreCookie(string $store): void
     {
         if($store != ''){
-            setcookie("current_store", $store, time() + 100);
+            setcookie("current_store", $store, time() + 3600, '/');
+            $_COOKIE['current_store'] = $store;
         }
         else{
-            setcookie("current_store", $store, time() + 100);
+            $codeBucket = getenv('SPRYKER_CODE_BUCKET');
+            if($codeBucket == 'DE'){
+                $store = 'EIN';
+            }else{
+                $store = 'OST';
+            }
+            setcookie("current_store", $store, time() + 3600, '/');
+            $_COOKIE['current_store'] = $store;
+
         }
     }
 }
