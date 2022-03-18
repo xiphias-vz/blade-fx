@@ -93,7 +93,7 @@ export default class OrderItemAbholung extends Component {
     protected checkForWaitingQueue(): void
     {
         let currentTime = new Date().getTime();
-        let timeAfterWaiting = (this.waitingTime.value - 3600) * 1000;
+        let timeAfterWaiting = this.waitingTime.value * 1000;
         if (currentTime > timeAfterWaiting && this.waitingTime.value) {
             this.order.classList.add("order-item-abholung__pickup-alert");
         }
