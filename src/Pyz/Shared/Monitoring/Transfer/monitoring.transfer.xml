@@ -8,5 +8,7 @@
         <property name="redisKeys" type="array" />
         <property name="redisResponse" type="array" />
         <property name="esResponse" type="array" />
+        <property name="nextStore" type="string" />
+        <property name="lastStore" type="bool" default="false" />
     </transfer>
 </transfers>

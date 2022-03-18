@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<database xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          name="zed"
+          xsi:noNamespaceSchemaLocation="http://static.spryker.com/schema-01.xsd"
+          namespace="Orm\Zed\MonitoringReport\Persistence"
+          package="src.Orm.Zed.MonitoringReport.Persistence">
+
+    <table name="pyz_monitor_email_definition" idMethod="native" allowPkInsert="true">
+        <column name="id_definition" required="true" type="INTEGER" primaryKey="true" autoIncrement="true"/>
+        <column name="role_name" required="true" size="50" type="VARCHAR"/>
+        <column name="send_to_email" required="true" size="255" type="VARCHAR"/>
+
+        <unique name="pyz_monitor_email_definition-id_definition">
+            <unique-column name="id_definition"/>
+        </unique>
+    </table>
+
+</database>

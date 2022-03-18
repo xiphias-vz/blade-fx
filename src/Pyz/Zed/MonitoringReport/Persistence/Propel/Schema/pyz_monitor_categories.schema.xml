@@ -8,8 +8,10 @@
     <table name="pyz_monitor_categories" idMethod="native" allowPkInsert="true">
         <column name="id_monitor_categories" required="true" type="INTEGER" primaryKey="true" autoIncrement="true"/>
         <column name="created_at" required="true" type="TIMESTAMP"/>
+        <column name="store_name" required="true"  size="100" type="VARCHAR"/>
         <column name="category_name" required="true" size="100" type="VARCHAR"/>
         <column name="category_url" required="true" size="200" type="VARCHAR"/>
+        <column name="fk_category" type="INTEGER"/>
         <column name="number_of_products_db" required="true" type="INTEGER"/>
         <column name="number_of_products_search" required="false" type="INTEGER"/>
         <column name="is_total" required="true" type="BOOLEAN" default="false"/>

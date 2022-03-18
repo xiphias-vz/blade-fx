@@ -46,6 +46,7 @@ use Pyz\Zed\Installer\Communication\Console\PerStoreInstallerConsole;
 use Pyz\Zed\Maintenance\Communication\Console\MaintenanceDisableConsole;
 use Pyz\Zed\Maintenance\Communication\Console\MaintenanceEnableConsole;
 use Pyz\Zed\MonitoringReport\Communication\Console\AlarmEmailConsole;
+use Pyz\Zed\MonitoringReport\Communication\Console\CategoryCheckConsole;
 use Pyz\Zed\MonitoringReport\Communication\Console\JenkinsCheckConsole;
 use Pyz\Zed\MultipleStatusesFixScript\Communication\Console\MultipleStatusesFixScriptConsole;
 use Pyz\Zed\Oms\Communication\Console\CheckConditionConsole as OmsCheckConditionConsole;
@@ -402,6 +403,7 @@ class ConsoleDependencyProvider extends SprykerConsoleDependencyProvider
 
             new JenkinsCheckConsole(),
             new AlarmEmailConsole(),
+            new CategoryCheckConsole(),
 
         ];
 

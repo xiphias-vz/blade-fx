@@ -103,12 +103,14 @@ class IndexController extends AbstractController
             $monitoringTransfer = $this->getStorageClient()
                 ->getKeysFromRedis($monitoringTransfer);
             $redisResponse = $monitoringTransfer->getRedisResponse();
-            foreach ($monitoringTransfer->getRedisKeys() as $key => $item) {
-                if ($item['ms_count'] != count($redisResponse)) {
-                    $this->setError404Header();
-                } elseif ($redisResponse[$item['key']] == null) {
-                    $this->setError404Header();
-                }
+            if ($redisResponse[0] == null || $redisResponse[1] == null) {
+                $this->setError404Header();
+            }
+            if ($monitoringTransfer->getLastStore() == false) {
+                $this->setStoreCookie($monitoringTransfer->getNextStore());
+                header("Refresh:0");
+            }else{
+                $this->setStoreCookie($monitoringTransfer->getNextStore());
             }
             $redisDB = $monitoringTransfer->getRedisKeys();
         } catch (Exception $e) {
@@ -167,5 +169,18 @@ class IndexController extends AbstractController
     protected function getStorageClient(): MonitoringStorageClientInterface
     {
         return new MonitoringStorageClient();
+    }
+
+    /**
+     * @return void
+     */
+    protected function setStoreCookie(string $store): void
+    {
+        if($store != ''){
+            setcookie("current_store", $store, time() + 100);
+        }
+        else{
+            setcookie("current_store", $store, time() + 100);
+        }
     }
 }

@@ -22,6 +22,8 @@ use Spryker\Zed\Kernel\Communication\AbstractPlugin;
  */
 class JenkinsHandlerPlugin extends AbstractPlugin
 {
+    public const ROLE_NAME = 'JENKINS';
+
     /**
      * @param string $jobName
      * @param int $httpCode
@@ -77,18 +79,21 @@ class JenkinsHandlerPlugin extends AbstractPlugin
                 $this->parseJobData($job, $job->getJobName(), $data, $httpCode, $returnResult);
             }
         }
+        $mailsToSend = $this->getRepository()->getEmailListForRoleName(static::ROLE_NAME);
 
         foreach ($returnResult as $key => $result) {
             if (!$result["check"]) {
-                $this->getRepository()->setEmailToSend(
-                    JenkinsCheckConsole::COMMAND_DESCRIPTION,
-                    'marin.jelinek@kps.com',
-                    'JOB: ' . $key,
-                    "job: " . $key
-                    . ' lastSuccess: ' . ($result['lastSuccess'] ? $result['lastSuccess']->format('Y-m-d H:i:s') : '')
-                    . ' lastFailure: ' . ($result['lastFailure'] ? $result['lastFailure']->format('Y-m-d H:i:s') : '')
-                    . ' error: ' . $result['error']
-                );
+                foreach ($mailsToSend as $mail) {
+                    $this->getRepository()->setEmailToSend(
+                        JenkinsCheckConsole::COMMAND_DESCRIPTION,
+                        $mail,
+                        'JOB: ' . $key,
+                        "job: " . $key
+                        . ' lastSuccess: ' . ($result['lastSuccess'] ? $result['lastSuccess']->format('Y-m-d H:i:s') : '')
+                        . ' lastFailure: ' . ($result['lastFailure'] ? $result['lastFailure']->format('Y-m-d H:i:s') : '')
+                        . ' error: ' . $result['error']
+                    );
+                }
             }
         }
 

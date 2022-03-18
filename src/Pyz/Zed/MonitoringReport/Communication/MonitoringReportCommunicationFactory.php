@@ -9,7 +9,11 @@ namespace Pyz\Zed\MonitoringReport\Communication;
 
 use Exception;
 use Orm\Zed\MonitoringReport\Persistence\PyzMonitoringJobsQuery;
+use Pyz\Zed\MonitoringReport\Communication\Plugin\Category\CategoryHandlerPlugin;
 use Pyz\Zed\MonitoringReport\Communication\Plugin\Jenkins\JenkinsHandlerPlugin;
+use Pyz\Zed\MonitoringReport\MonitoringReportDependencyProvider;
+use Spryker\Client\Search\Dependency\Plugin\SearchStringSetterInterface;
+use Spryker\Client\SearchElasticsearch\SearchElasticsearchClientInterface;
 use Spryker\Zed\Kernel\Communication\AbstractCommunicationFactory;
 
 /**
@@ -45,14 +49,21 @@ class MonitoringReportCommunicationFactory extends AbstractCommunicationFactory
     }
 
     /**
-     * @param string $hash
+     * @return \Pyz\Zed\MonitoringReport\Communication\Plugin\Category\CategoryHandlerPlugin
+     */
+    public function createCategoryHandlerPlugin(): CategoryHandlerPlugin
+    {
+        return new CategoryHandlerPlugin();
+    }
+
+    /**
+     * @param string $url
      *
      * @return bool
      */
-    public function getHeartbeat(string $hash): bool
+    public function getHeartbeat(string $url): bool
     {
         try {
-            $url = 'http://www.google.com';
             $curl = curl_init($url);
             curl_setopt($curl, CURLOPT_URL, $url);
             curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
@@ -64,5 +75,37 @@ class MonitoringReportCommunicationFactory extends AbstractCommunicationFactory
         }
 
         return true;
+    }
+
+    /**
+     * @return \Spryker\Client\SearchElasticsearch\SearchElasticsearchClientInterface
+     */
+    public function getSearchClient(): SearchElasticsearchClientInterface
+    {
+        return $this->getProvidedDependency(MonitoringReportDependencyProvider::CLIENT_SEARCH);
+    }
+
+    /**
+     * @param string $searchString
+     *
+     * @return \Spryker\Client\Search\Dependency\Plugin\QueryInterface
+     */
+    public function getCatalogSearchQuery($searchString)
+    {
+        $searchQuery = $this->getCatalogSearchQueryPlugin();
+
+        if ($searchQuery instanceof SearchStringSetterInterface) {
+            $searchQuery->setSearchString($searchString);
+        }
+
+        return $searchQuery;
+    }
+
+    /**
+     * @return \Spryker\Client\Search\Dependency\Plugin\QueryInterface
+     */
+    public function getCatalogSearchQueryPlugin()
+    {
+        return $this->getProvidedDependency(MonitoringReportDependencyProvider::CATALOG_SEARCH_QUERY_PLUGIN);
     }
 }

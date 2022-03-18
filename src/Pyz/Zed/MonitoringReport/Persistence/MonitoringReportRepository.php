@@ -9,7 +9,10 @@ namespace Pyz\Zed\MonitoringReport\Persistence;
 
 use DateTime;
 use Orm\Zed\Merchant\Persistence\SpyMerchantQuery;
+use Orm\Zed\MonitoringReport\Persistence\Map\PyzMonitorEmailDefinitionTableMap;
 use Orm\Zed\MonitoringReport\Persistence\PyzEmailSend;
+use Orm\Zed\MonitoringReport\Persistence\PyzMonitorCategoriesQuery;
+use Orm\Zed\MonitoringReport\Persistence\PyzMonitorEmailDefinitionQuery;
 use Orm\Zed\MonitoringReport\Persistence\PyzMonitoringJobsQuery;
 use Orm\Zed\Store\Persistence\SpyStoreQuery;
 use Propel\Runtime\Connection\ConnectionInterface;
@@ -80,5 +83,28 @@ class MonitoringReportRepository extends AbstractRepository implements Monitorin
             ->setBodyDescription($body)
             ->setCreatedAt((new DateTime())->getTimestamp());
         $entity->save();
+    }
+
+    /**
+     * @param string $roleName
+     *
+     * @return array
+     */
+    public function getEmailListForRoleName(string $roleName): array
+    {
+        return (new PyzMonitorEmailDefinitionQuery())
+            ->select([PyzMonitorEmailDefinitionTableMap::COL_SEND_TO_EMAIL])
+            ->findByRoleName($roleName)
+            ->toArray();
+    }
+
+    /**
+     * @return \Orm\Zed\MonitoringReport\Persistence\PyzMonitorCategories[]|\Propel\Runtime\Collection\ObjectCollection
+     */
+    public function getCategoryMonitoringData()
+    {
+        $qry = new PyzMonitorCategoriesQuery();
+
+        return $qry->find();
     }
 }

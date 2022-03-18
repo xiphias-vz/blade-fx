@@ -8,6 +8,8 @@
 namespace Pyz\Zed\MonitoringReport;
 
 use Pyz\Zed\Mail\Business\MailFacadeInterface;
+use Spryker\Client\Catalog\Plugin\Elasticsearch\Query\ProductCatalogSearchQueryPlugin;
+use Spryker\Client\Search\Dependency\Plugin\QueryInterface;
 use Spryker\Shared\Kernel\Store;
 use Spryker\Zed\Kernel\AbstractBundleDependencyProvider;
 use Spryker\Zed\Kernel\Container;
@@ -19,6 +21,8 @@ class MonitoringReportDependencyProvider extends AbstractBundleDependencyProvide
     public const STORE = 'STORE';
     public const FACADE_TRANSLATOR = 'FACADE_TRANSLATOR';
     public const SERVICE_MAIL_CMS_BLOCK = 'SERVICE_MAIL_CMS_BLOCK';
+    public const CLIENT_SEARCH = 'CLIENT_SEARCH';
+    public const CATALOG_SEARCH_QUERY_PLUGIN = 'catalog search query plugin';
 
     /**
      * @uses \Spryker\Zed\Twig\Communication\Plugin\Application\TwigApplicationPlugin::SERVICE_TWIG
@@ -38,6 +42,7 @@ class MonitoringReportDependencyProvider extends AbstractBundleDependencyProvide
         $container = $this->addTranslatorsFacade($container);
         $container = $this->addMailCmsBlockService($container);
         $container = $this->addStore($container);
+        $container = $this->addSearchClient($container);
 
         return $container;
     }
@@ -51,6 +56,8 @@ class MonitoringReportDependencyProvider extends AbstractBundleDependencyProvide
     {
         $container = parent::provideCommunicationLayerDependencies($container);
         $container = $this->addTwigEnvironment($container);
+        $container = $this->addSearchClient($container);
+        $container = $this->addCatalogSearchQueryPlugin($container);
 
         return $container;
     }
@@ -123,5 +130,41 @@ class MonitoringReportDependencyProvider extends AbstractBundleDependencyProvide
         });
 
         return $container;
+    }
+
+    /**
+     * @param \Spryker\Zed\Kernel\Container $container
+     *
+     * @return \Spryker\Zed\Kernel\Container
+     */
+    protected function addSearchClient(Container $container): Container
+    {
+        $container->set(static::CLIENT_SEARCH, function (Container $container) {
+            return $container->getLocator()->searchElasticsearch()->client();
+        });
+
+        return $container;
+    }
+
+    /**
+     * @param \Spryker\Zed\Kernel\Container $container
+     *
+     * @return \Spryker\Zed\Kernel\Container
+     */
+    protected function addCatalogSearchQueryPlugin(Container $container)
+    {
+        $container[static::CATALOG_SEARCH_QUERY_PLUGIN] = function () {
+            return $this->createCatalogSearchQueryPlugin();
+        };
+
+        return $container;
+    }
+
+    /**
+     * @return \Spryker\Client\Search\Dependency\Plugin\QueryInterface
+     */
+    protected function createCatalogSearchQueryPlugin(): QueryInterface
+    {
+        return new ProductCatalogSearchQueryPlugin();
     }
 }

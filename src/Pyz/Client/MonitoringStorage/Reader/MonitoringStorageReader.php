@@ -33,10 +33,28 @@ class MonitoringStorageReader implements MonitoringStorageReaderInterface
     public function getKeysFromRedis(TransferInterface $monitoringTransfer)
     {
         $redisResponse = [];
-
-        foreach ($monitoringTransfer->getRedisKeys() as $index => $key) {
-            $redisResponse[$key['key']] = $this->storageClient->get($key['key']);
+        $storeCookie = 'EIN';
+        if (isset($_COOKIE['current_store'])) {
+            $storeCookie = $_COOKIE['current_store'];
         }
+
+        $redisKeys = $monitoringTransfer->getRedisKeys();
+        for ($i = 0; $i < count($redisKeys); $i += 2) {
+            $store = $redisKeys[$i]['store'];
+            if ($storeCookie == $store) {
+                $redisResponse[0] = $this->storageClient->get($redisKeys[$i]['key']);
+                $redisResponse[1] = $this->storageClient->get($redisKeys[$i + 1]['key']);
+                if (isset($redisKeys[$i + 2])) {
+                    $monitoringTransfer->setNextStore($redisKeys[$i + 2]['store']);
+                    $monitoringTransfer->setLastStore(false);
+                } else {
+                    $monitoringTransfer->setNextStore('EIN');
+                    $monitoringTransfer->setLastStore(true);
+                }
+                break;
+            }
+        }
+
         $monitoringTransfer->setRedisResponse($redisResponse);
 
         return $monitoringTransfer;

@@ -26,11 +26,27 @@ class MonitoringMailer
         $this->mailConfig = new MailConfig();
     }
 
+    /**
+     * @param string $subject
+     * @param string $mailTo
+     * @param string $body
+     *
+     * @return int
+     */
     public function send(string $subject, string $mailTo, string $body): int
     {
-        $transport = (new Swift_SmtpTransport($this->mailConfig->getSmtpHost(), $this->mailConfig->getSmtpPort()))
-            ->setUsername($this->mailConfig->getSmtpUsername())
-            ->setPassword($this->mailConfig->getSmtpPassword());
+        $transport = new Swift_SmtpTransport(
+            $this->mailConfig->getSmtpHost(),
+            $this->mailConfig->getSmtpPort(),
+            $this->mailConfig->getSmtpEncryption()
+        );
+
+        if ($this->mailConfig->getSmtpAuthMode() !== '') {
+            $transport
+                ->setAuthMode($this->mailConfig->getSmtpAuthMode())
+                ->setUsername($this->mailConfig->getSmtpUsername())
+                ->setPassword($this->mailConfig->getSmtpPassword());
+        }
 
         $mailer = new Swift_Mailer($transport);
 
