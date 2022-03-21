@@ -185,9 +185,9 @@ class CustomerUserProvider extends SprykerCustomerUserProvider implements Custom
     /**
      * @param \Generated\Shared\Transfer\CustomerTransfer $customerTransfer
      *
-     * @return array
+     * @return mixed
      */
-    public function updateAccountInfo(CustomerTransfer $customerTransfer): array
+    public function updateAccountInfo(CustomerTransfer $customerTransfer)
     {
         $uid = $this->getFactory()->getSessionClient()->get("cdcUID");
         $idToken = $this->getFactory()->getSessionClient()->get("id_token");
