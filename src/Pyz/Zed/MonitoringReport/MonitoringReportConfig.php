@@ -8,6 +8,7 @@
 namespace Pyz\Zed\MonitoringReport;
 
 use Pyz\Shared\Mail\MailConstants;
+use Pyz\Shared\MonitoringReport\MonitoringReportConstants;
 use Spryker\Zed\Kernel\AbstractBundleConfig;
 
 class MonitoringReportConfig extends AbstractBundleConfig
@@ -20,23 +21,20 @@ class MonitoringReportConfig extends AbstractBundleConfig
      */
     public function getJenkinsUrl(): string
     {
-        //$config = $this->get(SchedulerJenkinsConstants::JENKINS_CONFIGURATION);
-        // $config[SchedulerConfig::SCHEDULER_JENKINS];
-        $url = getenv(static::JENKINS_URL);
+        $url = $this->get(MonitoringReportConstants::JENKINS_BASE_URL);
         if (!$url) {
             $url = 'https://scheduler.globus.local/';
         }
 
-        //return $url[SchedulerJenkinsConfig::SCHEDULER_JENKINS_BASE_URL];
         return $url;
     }
 
     /**
      * @return mixed
      */
-    public function getHeartbeatUrl()
+    public function getJenkinsHeartbeatUrl()
     {
-        $url = getenv(static::HEARTBEAT_URL);
+        $url = $this->get(MonitoringReportConstants::JENKINS_HEARTBEAT_URL);
         if (!$url) {
             $url = 'https://heartbeat.uptimerobot.com/m790706896-67260c4c15b4815d1553056adbec1e02084ccdb6';
         }
@@ -50,5 +48,13 @@ class MonitoringReportConfig extends AbstractBundleConfig
     public function getMailSender(): string
     {
         return $this->get(MailConstants::DEFAULT_EMAIL_SENDER_EMAIL);
+    }
+
+    /**
+     * @return string
+     */
+    public function getEmailSendHeartbeatUrl(): string
+    {
+        return $this->get(MonitoringReportConstants::EMAIL_SEND_CONSOLE_HEARTBEAT);
     }
 }

@@ -8,7 +8,9 @@
 namespace Pyz\Zed\MonitoringReport\Communication\Console;
 
 use Orm\Zed\MonitoringReport\Persistence\PyzEmailSendQuery;
+use Pyz\Shared\MonitoringReport\MonitoringReportConstants;
 use Pyz\Zed\MonitoringReport\Communication\Plugin\Mail\AlarmEmailMailTypePlugin;
+use Spryker\Shared\Config\Config;
 use Spryker\Zed\Kernel\Communication\Console\Console;
 use Symfony\Component\Config\Definition\Exception\Exception;
 use Symfony\Component\Console\Input\InputInterface;
@@ -45,6 +47,10 @@ class AlarmEmailConsole extends Console
     {
         try {
             $this->sentReportMail();
+            $heartbeat = Config::get(MonitoringReportConstants::EMAIL_SEND_CONSOLE_HEARTBEAT);
+            if ($heartbeat != '') {
+                $this->getFactory()->createHeartBeat()->getHeartbeat($heartbeat);
+            }
 
             return self::CODE_SUCCESS;
         } catch (Exception $exception) {

@@ -7,8 +7,8 @@
 
 namespace Pyz\Zed\MonitoringReport\Communication;
 
-use Exception;
 use Orm\Zed\MonitoringReport\Persistence\PyzMonitoringJobsQuery;
+use Pyz\Zed\MonitoringReport\Business\Helper\HeartbeatHelper;
 use Pyz\Zed\MonitoringReport\Communication\Plugin\Category\CategoryHandlerPlugin;
 use Pyz\Zed\MonitoringReport\Communication\Plugin\Jenkins\JenkinsHandlerPlugin;
 use Pyz\Zed\MonitoringReport\MonitoringReportDependencyProvider;
@@ -57,24 +57,11 @@ class MonitoringReportCommunicationFactory extends AbstractCommunicationFactory
     }
 
     /**
-     * @param string $url
-     *
-     * @return bool
+     * @return \Pyz\Zed\MonitoringReport\Business\Helper\HeartbeatHelper
      */
-    public function getHeartbeat(string $url): bool
+    public function createHeartBeat(): HeartbeatHelper
     {
-        try {
-            $curl = curl_init($url);
-            curl_setopt($curl, CURLOPT_URL, $url);
-            curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
-
-            $resp = curl_exec($curl);
-            curl_close($curl);
-        } catch (Exception $exception) {
-            return false;
-        }
-
-        return true;
+        return new HeartbeatHelper();
     }
 
     /**

@@ -7,6 +7,7 @@
 
 namespace Pyz\Zed\MonitoringReport\Communication\Console;
 
+use Exception;
 use Spryker\Zed\Kernel\Communication\Console\Console;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -42,7 +43,13 @@ class CategoryCheckConsole extends Console
      */
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $result = $this->getFactory()->createCategoryHandlerPlugin()->execute();
+        try {
+            $this->getFactory()->createCategoryHandlerPlugin()->execute();
+        } catch (Exception $ex) {
+            $output->writeln($ex->getMessage());
+
+            return self::CODE_ERROR;
+        }
 
         return self::CODE_SUCCESS;
     }

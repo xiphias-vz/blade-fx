@@ -15,6 +15,7 @@ use Generated\Shared\Transfer\ElasticsearchSearchContextTransfer;
 use Generated\Shared\Transfer\SearchContextTransfer;
 use InvalidArgumentException;
 use Pyz\Shared\PropelExtension\PropelExtension;
+use Pyz\Zed\MonitoringReport\Communication\Console\CategoryCheckConsole;
 use Spryker\Client\Search\Dependency\Plugin\QueryInterface;
 use Spryker\Zed\Kernel\Communication\AbstractPlugin;
 
@@ -37,12 +38,14 @@ class CategoryHandlerPlugin extends AbstractPlugin
     {
         PropelExtension::execute("call pyzx_monitoring_category()");
         $this->updateSearchResults();
+        $this->sendResultsToEmail();
     }
 
     /**
      * @return void
      */
-    protected function updateSearchResults() {
+    protected function updateSearchResults()
+    {
         $data = $this->getRepository()->getCategoryMonitoringData();
         /**@var \Orm\Zed\MonitoringReport\Persistence\PyzMonitorCategories $item */
         foreach ($data as $item) {
@@ -54,6 +57,43 @@ class CategoryHandlerPlugin extends AbstractPlugin
                 $item->save();
             }
         }
+    }
+
+    /**
+     * @return void
+     */
+    protected function sendResultsToEmail()
+    {
+        $mailsToSend = $this->getRepository()->getEmailListForRoleName(static::ROLE_NAME);
+        if (count($mailsToSend) > 0) {
+            $content = $this->getMailContent();
+            foreach ($mailsToSend as $mail) {
+                $this->getRepository()->setEmailToSend(CategoryCheckConsole::COMMAND_DESCRIPTION, $mail, '', $content);
+            }
+        }
+    }
+
+    /**
+     * @return string
+     */
+    protected function getMailContent(): string
+    {
+        $data = $this->getRepository()->getCategoryMonitoringData();
+        /**@var \Orm\Zed\MonitoringReport\Persistence\PyzMonitorCategories $item */
+        $content = "store;category;url;products_db;products_search";
+        foreach ($data as $item) {
+            $content .= PHP_EOL;
+            $content .= sprintf(
+                '%s;%s;%s;%d;%d',
+                $item->getStoreName(),
+                $item->getCategoryName(),
+                $item->getCategoryUrl(),
+                $item->getNumberOfProductsDb(),
+                $item->getNumberOfProductsSearch()
+            );
+        }
+
+        return $content;
     }
 
     /**

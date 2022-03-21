@@ -5,6 +5,7 @@ use Pyz\Shared\DataImport\DataImportConstants;
 use Pyz\Shared\FactFinder\FactFinderConstants;
 use Pyz\Shared\GsoaRestApiClient\ApiClient;
 use Pyz\Shared\GsoaRestApiClient\Provider\TokenProvider;
+use Pyz\Shared\MonitoringReport\MonitoringReportConstants;
 use Pyz\Shared\ProductImage\ProductImageConstants;
 use Pyz\Zed\SalesOrderSummaryExport\SalesOrderSummaryExportConfig;
 use Spryker\Shared\Event\EventConstants;
@@ -47,3 +48,5 @@ $config[EventConstants::LOGGER_ACTIVE] = true;
 
 // ---------- NewRelicEnvironment
 $config[NewRelicConstants::NEW_RELIC_ENVIRONMENT] = 'CZ_stage';
+
+$config[MonitoringReportConstants::JENKINS_BASE_URL] = 'https://scheduler.shop-t.iglobus.cz/';

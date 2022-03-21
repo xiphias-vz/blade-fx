@@ -34,13 +34,16 @@ class MonitoringStorageReader implements MonitoringStorageReaderInterface
     {
         $redisResponse = [];
         $codeBucket = getenv('SPRYKER_CODE_BUCKET');
-        if($codeBucket == 'DE'){
+        if ($codeBucket == 'DE') {
             $storeCookie = 'EIN';
-        }else{
+        } else {
             $storeCookie = 'OST';
         }
         if (isset($_COOKIE['current_store'])) {
             $storeCookie = $_COOKIE['current_store'];
+        } else {
+            setcookie("current_store", $storeCookie, time() + 3600, '/');
+            $_COOKIE['current_store'] = $storeCookie;
         }
 
         $redisKeys = $monitoringTransfer->getRedisKeys();
@@ -53,9 +56,9 @@ class MonitoringStorageReader implements MonitoringStorageReaderInterface
                     $monitoringTransfer->setNextStore($redisKeys[$i + 2]['store']);
                     $monitoringTransfer->setLastStore(false);
                 } else {
-                    if($codeBucket == 'DE'){
+                    if ($codeBucket == 'DE') {
                         $monitoringTransfer->setNextStore('EIN');
-                    }else{
+                    } else {
                         $monitoringTransfer->setNextStore('OST');
                     }
                     $monitoringTransfer->setLastStore(true);

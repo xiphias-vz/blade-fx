@@ -6,6 +6,7 @@ use Pyz\Shared\BackofficeOverview\BackofficeOverviewConstants;
 use Pyz\Shared\CodeBuckets\CodeBucketConstants;
 use Pyz\Shared\GoogleTagManager\GoogleTagManagerConstants;
 use Pyz\Shared\Mail\MailConstants;
+use Pyz\Shared\MonitoringReport\MonitoringReportConstants;
 use Pyz\Shared\ProductImage\ProductImageConstants;
 use Pyz\Shared\Shipment\ShipmentConstants;
 use Pyz\Shared\Store\StoreConstants;
@@ -131,3 +132,7 @@ $config[ErrorHandlerConstants::ERROR_RENDERER] = WebHtmlErrorRenderer::class;
 $config[EventConstants::LOGGER_ACTIVE] = true;
 
 $config[FactFinderNgConstants::FACT_FINDER_CHANNEL] = ''; // This is needed in order for header.twig not to break
+
+$config[MonitoringReportConstants::EMAIL_SEND_CONSOLE_HEARTBEAT] = 'https://heartbeat.uptimerobot.com/m790983050-36d1bc2f23b78203694f73a9dcd877af62943f99';
+$config[MonitoringReportConstants::JENKINS_HEARTBEAT_URL] = 'https://heartbeat.uptimerobot.com/m790983107-63231926e53ec4ad37a8a080d1fd677337f54822';
+

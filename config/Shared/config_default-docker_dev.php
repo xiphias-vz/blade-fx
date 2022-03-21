@@ -3,6 +3,7 @@
 use Pyz\Shared\CashierOrderExport\CashierOrderExportConstants;
 use Pyz\Shared\DataImport\DataImportConstants;
 use Pyz\Shared\FactFinder\FactFinderConstants;
+use Pyz\Shared\MonitoringReport\MonitoringReportConstants;
 use Pyz\Shared\ProductImage\ProductImageConstants;
 use Pyz\Zed\SalesOrderSummaryExport\SalesOrderSummaryExportConfig;
 use Spryker\Shared\Event\EventConstants;
@@ -47,3 +48,5 @@ $config[FactFinderNgConstants::FACT_FINDER_URL] = 'https://globus-sb.fact-finder
 $config[FactFinderNgConstants::FACT_FINDER_CHANNEL] = 'TestSpryker'; # Fact-Finder channel value
 $config[FactFinderNgConstants::FACT_FINDER_USERNAME] = 'kps_admin'; # Fact-Finder user for authorization.
 $config[FactFinderNgConstants::FACT_FINDER_PASSWORD] = 'glo123SPRY!kps'; # Fact-Finder password for authorization.
+
+$config[MonitoringReportConstants::JENKINS_BASE_URL] = 'https://scheduler.shop-t.globus.de/';

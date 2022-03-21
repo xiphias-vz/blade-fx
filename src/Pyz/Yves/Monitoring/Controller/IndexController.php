@@ -109,7 +109,7 @@ class IndexController extends AbstractController
             if ($monitoringTransfer->getLastStore() == false) {
                 $this->setStoreCookie($monitoringTransfer->getNextStore());
                 header("Refresh:0");
-            }else{
+            } else {
                 $this->setStoreCookie($monitoringTransfer->getNextStore());
             }
             $redisDB = $monitoringTransfer->getRedisKeys();
@@ -172,24 +172,24 @@ class IndexController extends AbstractController
     }
 
     /**
+     * @param string $store
+     *
      * @return void
      */
     protected function setStoreCookie(string $store): void
     {
-        if($store != ''){
+        if ($store != '') {
             setcookie("current_store", $store, time() + 3600, '/');
             $_COOKIE['current_store'] = $store;
-        }
-        else{
+        } else {
             $codeBucket = getenv('SPRYKER_CODE_BUCKET');
-            if($codeBucket == 'DE'){
+            if ($codeBucket == 'DE') {
                 $store = 'EIN';
-            }else{
+            } else {
                 $store = 'OST';
             }
             setcookie("current_store", $store, time() + 3600, '/');
             $_COOKIE['current_store'] = $store;
-
         }
     }
 }

@@ -62,7 +62,8 @@ class JenkinsHandlerPlugin extends AbstractPlugin
      */
     public function checkAllJobs(): array
     {
-        $this->getFactory()->getHeartbeat($this->getConfig()->getHeartbeatUrl());
+        $this->getFactory()->createHeartBeat()
+            ->getHeartbeat($this->getConfig()->getJenkinsHeartbeatUrl());
         $returnResult = [];
         $jobs = $this->getFactory()->getPyzMonitoringJobsQuery()->find();
         $merchantList = $this->getRepository()->getActiveMerchants();
