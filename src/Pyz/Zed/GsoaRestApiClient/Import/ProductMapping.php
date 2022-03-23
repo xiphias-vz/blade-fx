@@ -235,8 +235,13 @@ class ProductMapping
         if (is_array($item["allergens"])) {
             $d["entallerg"] = $this->trimValue(implode(",", $item["allergens"]));
         }
-        if ($d['active'] === "1") {
-            $d['active'] = $item['activeForOnline'] ? "1" : "0";
+        /*if product is active check in product is for online sell*/
+        if ($this->checkIsTrue($d['active'])) {
+            $d['active'] = $this->checkIsTrue($item['activeForOnline']) ? "1" : "0";
+        }
+        /*if product is active for online sell check if product is active for store*/
+        if ($this->checkIsTrue($d['active'])) {
+            $d['active'] = $this->checkIsTrue($item['statusOnlineSell']) ? "1" : "0";
         }
 
         return $d;
@@ -485,7 +490,7 @@ class ProductMapping
                 $countryLocale = PyzCountryLocalizedQuery::create()
                     ->filterByFkCountry($country->getIdCountry())
                     ->findOneByFkLocale($this->localeId);
-                if ($countryLocale != null) {
+                if ($countryLocale !== null) {
                     if (!empty($countryLocale->getNameLocalized())) {
                         $this->localeArray[$code] = $countryLocale->getNameLocalized();
                     }
@@ -500,5 +505,19 @@ class ProductMapping
         }
 
         return $this->localeArray[$code];
+    }
+
+    /**
+     * @param string|null $value
+     *
+     * @return bool
+     */
+    protected function checkIsTrue(?string $value): bool
+    {
+        if ($value === null || $value != "1") {
+            return false;
+        }
+
+        return true;
     }
 }

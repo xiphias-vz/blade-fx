@@ -151,7 +151,7 @@ class GsoaProductConsole extends Console
                                                 foreach ($item["houseSpecificData"] as $specific) {
                                                     foreach (array_keys($specific) as $key) {
                                                         if ($key != "houseNumber") {
-                                                            if ($specific[$key] != null) {
+                                                            if (($specific[$key] !== null)) {
                                                                 $item[$key] = $specific[$key];
                                                             }
                                                         }
@@ -261,7 +261,7 @@ class GsoaProductConsole extends Console
                                         foreach ($item["houseSpecificData"] as $specific) {
                                             foreach (array_keys($specific) as $key) {
                                                 if ($key != "houseNumber") {
-                                                    if ($specific[$key] != null) {
+                                                    if (($specific[$key] !== null)) {
                                                         $item[$key] = $specific[$key];
                                                     }
                                                 }
@@ -411,7 +411,7 @@ class GsoaProductConsole extends Console
         foreach ($items as $item) {
             if ($item["parentId"] === $parentId) {
                 $count++;
-                if ($item["rank"] == null) {
+                if (($item["rank"] === null)) {
                     $item["rank"] = str_pad(substr($item["categoryName"], 0, 30), 30, '0', STR_PAD_RIGHT);
                 } else {
                     $item["rank"] = str_pad(substr($item["rank"], 0, 20), 20, '0', STR_PAD_LEFT) . str_pad($count, 10, '0', STR_PAD_LEFT);
@@ -628,19 +628,19 @@ class GsoaProductConsole extends Console
     private function getValidPrice(array $prices)
     {
         $price = $this->getPriceByType($prices, "VKA0", null, null);
-        if ($price == null) {
+        if ($price === null) {
             $price = $this->getPriceByType($prices, "ZTP0", ["20", "40", "22", "24"], null);
         }
-        if ($price == null) {
+        if ($price === null) {
             $price = $this->getPriceByType($prices, "ZTP0", null, ["20", "40", "22", "24", null]);
         }
-        if ($price == null) {
+        if ($price === null) {
             $price = $this->getPriceByType($prices, "VKP0", ["10", "60"], null);
         }
-        if ($price == null) {
+        if ($price === null) {
             $price = $this->getPriceByType($prices, "VKP0", null, ["10", "60", null]);
         }
-        if ($price == null) {
+        if ($price === null) {
             $price = $prices[0];
         }
 
@@ -664,7 +664,7 @@ class GsoaProductConsole extends Console
                 if (!empty($validChangeReason)) {
                     $isValid = false;
                     foreach ($validChangeReason as $reason) {
-                        if ($reason === $changeReason || $reason == null) {
+                        if ($reason === $changeReason || $reason === null) {
                             $isValid = true;
                             break;
                         }
@@ -673,7 +673,7 @@ class GsoaProductConsole extends Console
                 if (!empty($nonValidChangeReason)) {
                     $isValid = true;
                     foreach ($nonValidChangeReason as $reason) {
-                        if ($reason == null) {
+                        if ($reason === null) {
                             break;
                         }
                         if ($reason === $changeReason) {
@@ -950,7 +950,7 @@ class GsoaProductConsole extends Console
             $ent = $qry->findOneByImportName($importName);
         }
         $date = new DateTime('NOW');
-        if ($ent == null) {
+        if ($ent === null) {
             $date = $date->sub(DateInterval::createFromDateString('1 days'));
         } else {
             $date = $ent->getUpdatedAt();
