@@ -7,7 +7,10 @@ BEGIN
         , ROUND(MAX(sa.quantity)) as quantity
         , CASE WHEN MAX(sppsDef.gross_price) < MAX(sppsOrig.gross_price) THEN 1 else 0 end as sale
         , null as ShelfInfo
-        , CASE WHEN MAX(sppsDef.gross_price) < MAX(sppsOrig.gross_price) THEN CONCAT('-',FORMAT((1-(ROUND(MAX(sppsDef.gross_price) / 100, 2)/ROUND(MAX(sppsOrig.gross_price) / 100, 2))) * 100,0),'%') ELSE NULL END as DicountText
+        , CASE WHEN MAX(sppsDef.gross_price) < MAX(sppsOrig.gross_price) THEN
+                CONCAT('-', FLOOR((1 - (MAX(sppsDef.gross_price) / 100) / (MAX(sppsOrig.gross_price) / 100)) * 100),'%')
+            ELSE NULL
+            END as DicountText
         , MAX(CASE
                WHEN sppsDef.price_per_kg > 0 THEN
                    REPLACE(CONCAT(ROUND(sppsDef.price_per_kg / 100, 2),
