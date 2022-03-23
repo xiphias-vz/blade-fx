@@ -107,7 +107,9 @@ BEGIN
         ssp.shelf = ts.shelf,
         ssp.shelf_field = ts.shelf_field,
         ssp.shelf_floor = ts.shelf_floor
-    where ssp.quantity is null or ssp.quantity <> ts.instock;
+    where ssp.quantity is null
+       or ssp.quantity <> ts.instock
+       or IFNULL(ssp.shelf, '') <> IFNULL(ts.shelf, '');
 
     update spy_stock_product ssp
     left outer join tmp_stock ts on ssp.id_stock_product = ts.id_stock_product
