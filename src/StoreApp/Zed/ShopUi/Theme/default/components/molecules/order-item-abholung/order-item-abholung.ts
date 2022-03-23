@@ -10,7 +10,6 @@ export default class OrderItemAbholung extends Component {
     protected newCustomerInQueueInfo: HTMLElement;
     protected notificationMessageDelay: number = 3000;
     protected checkOrderInQueueDelay: number = 5000;
-    protected checkIfNewCustomerIsInQueue: number = 30000;
     protected containerScanInput: HTMLInputElement;
     protected containerScanCheckBoxID: HTMLInputElement;
     protected orderId: HTMLInputElement;
@@ -97,7 +96,9 @@ export default class OrderItemAbholung extends Component {
         if (currentTime > timeAfterWaiting && this.waitingTime.value) {
             this.order.classList.add("order-item-abholung__pickup-alert");
         }
-        this.checkForNewOrderInQueue();
+        if (this.lastOrderInQueueInput){
+            this.checkForNewOrderInQueue();
+        }
     }
 
     protected showPopupInfoIfInQueue(): void {
@@ -151,8 +152,7 @@ export default class OrderItemAbholung extends Component {
     protected checkForNewOrderInQueue(){
         let urlCheck = window.location.origin + "/picker/collect-by-customer/new-queue-check";
         let dataToSend = {};
-        this.lastOrderInQueue = this.lastOrderInQueueInput.value;
-        dataToSend['lastId'] = this.lastOrderInQueue;
+        dataToSend['lastId'] = this.lastOrderInQueueInput.value;
         let that = this;
         $.ajax({
             type : "POST",
@@ -161,16 +161,17 @@ export default class OrderItemAbholung extends Component {
             success: function(res){
                 let errorMsg = res.errorMessage;
                 let lastId = res.lastId;
-                if(errorMsg != ""){
-                    alert(errorMsg)
+                if (errorMsg != "") {
+                    alert(errorMsg);
                     return;
                 }
-                if(lastId > that.lastOrderInQueue) {
+                if (that.lastOrderInQueueInput.value === '') {
+                    that.lastOrderInQueueInput.value = lastId;
+                } else if (lastId > that.lastOrderInQueueInput.value) {
                     that.lastOrderInQueueInput.value = lastId;
                     that.showPopupInfoIfInQueue();
                 }
             },
         });
-
     }
 }
