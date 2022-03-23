@@ -112,7 +112,6 @@ class MultiPickingController extends BaseOrderPickingController
         $openModal = $_REQUEST['fromModal'] ?? 'false';
         $fromPosListeAndModal = $_REQUEST['fromPosListeAndModal'] ?? 'false';
         $isSubstitutionPicked = $_REQUEST['isSubstitutionPicked'] ?? 'false';
-
         $status = $request->request->get("status");
         if ($status === "declined" && $isSubstitutionPicked === "true") {
             $isSubstitutionFoundOnItem = $transfer->getOrderItem($transfer->getLastPickingItemPosition());
@@ -164,7 +163,9 @@ class MultiPickingController extends BaseOrderPickingController
                             $isCanceled = $currentOrderItem[0]->getIsCancelled();
                             $groupedOrderItems = unserialize(serialize($this->getFacade()->getPickingHeaderTransfer()->getGroupedOrderItems()));
                             $containerId = $request->request->get("containerID");
-                            $this->getFacade()->setCurrentOrderItemPicked($quantity, $weight, $containerId);
+                            if (isset($containerId)) {
+                                $this->getFacade()->setCurrentOrderItemPicked($quantity, $weight, $containerId);
+                            }
                             if ($isCanceled) {
                                 foreach ($groupedOrderItems as $item) {
                                     if ($item['isCancelled'] == true) {
