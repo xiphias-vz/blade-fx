@@ -14,7 +14,6 @@ export default class OrderItemAbholung extends Component {
     protected containerScanCheckBoxID: HTMLInputElement;
     protected orderId: HTMLInputElement;
     protected lastOrderInQueueInput: HTMLInputElement;
-    protected lastOrderInQueue: string;
     protected isOrderInQueue: Boolean;
     protected counterChecked = 0;
 
@@ -141,8 +140,9 @@ export default class OrderItemAbholung extends Component {
             success: function(res){
                 let errorMsg = res.errorMessage;
 
-                if(errorMsg != ""){
-                    alert(errorMsg)
+                if (errorMsg != "") {
+                    alert(errorMsg);
+
                     return;
                 }
             },

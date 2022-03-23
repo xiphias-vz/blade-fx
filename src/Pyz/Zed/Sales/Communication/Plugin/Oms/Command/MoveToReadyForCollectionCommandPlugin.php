@@ -12,6 +12,7 @@ use Generated\Shared\Transfer\OrderTransfer;
 use Generated\Shared\Transfer\OrderUpdateRequestTransfer;
 use Orm\Zed\Sales\Persistence\SpySalesOrder;
 use Pyz\Shared\Oms\OmsConfig;
+use Pyz\Shared\PropelExtension\PropelExtension;
 use Spryker\Zed\Kernel\Communication\AbstractPlugin;
 use Spryker\Zed\Oms\Business\Util\ReadOnlyArrayObject;
 use Spryker\Zed\Oms\Dependency\Plugin\Command\CommandByOrderInterface;
@@ -41,6 +42,8 @@ class MoveToReadyForCollectionCommandPlugin extends AbstractPlugin implements Co
         if (!$this->isAllItemsReadyForCollection($orderItems, $orderTransfer)) {
             return [];
         }
+
+        PropelExtension::execute("call pyzx_picking_collection_signal_set('" . $orderTransfer->getMerchantReference() . "');");
 
         $orderUpdateRequestTransfer = (new OrderUpdateRequestTransfer())
             ->setStoreStatus(OmsConfig::STORE_STATE_READY_FOR_COLLECT_BY_CUSTOMER);
@@ -82,6 +85,22 @@ class MoveToReadyForCollectionCommandPlugin extends AbstractPlugin implements Co
         return true;
     }
 
+    private $states = [];
+
+    /**
+     * @param \Generated\Shared\Transfer\ItemTransfer $itemTransfer
+     *
+     * @return string
+     */
+    private function getStateName(ItemTransfer $itemTransfer): string
+    {
+        if (!isset($this->states[$itemTransfer->getFkOmsOrderItemState()])) {
+            $this->states[$itemTransfer->getFkOmsOrderItemState()] = $itemTransfer->getState()->getName();
+        }
+
+        return $this->states[$itemTransfer->getFkOmsOrderItemState()];
+    }
+
     /**
      * @param \Generated\Shared\Transfer\ItemTransfer $itemTransfer
      *
@@ -89,7 +108,7 @@ class MoveToReadyForCollectionCommandPlugin extends AbstractPlugin implements Co
      */
     protected function isItemReadyForCollection(ItemTransfer $itemTransfer): bool
     {
-        $itemStateName = $itemTransfer->getState()->getName();
+        $itemStateName = $this->getStateName($itemTransfer);
 
         if ($itemStateName === OmsConfig::STORE_STATE_READY_FOR_COLLECT_BY_CUSTOMER
             || $itemStateName === OmsConfig::STATE_CANCELLED

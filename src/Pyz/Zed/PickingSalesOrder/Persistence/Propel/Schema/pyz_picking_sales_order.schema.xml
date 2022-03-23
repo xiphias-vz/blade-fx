@@ -34,4 +34,15 @@
         <id-method-parameter value="pyz_picking_sales_order_pk_seq"/>
     </table>
 
+    <table name="pyz_picking_collection_signal">
+        <column name="id_collection_signal" required="true" type="INTEGER" autoIncrement="true" primaryKey="true"/>
+        <column name="merchant_reference" type="VARCHAR" size="20" required="true"/>
+        <column name="has_new_item" type="BOOLEAN"/>
+
+        <index name="index-pyz_picking_collection_signal">
+            <index-column name="merchant_reference"/>
+        </index>
+
+    </table>
+
 </database>

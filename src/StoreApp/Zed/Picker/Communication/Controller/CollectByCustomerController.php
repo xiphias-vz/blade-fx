@@ -23,6 +23,7 @@ use Generated\Shared\Transfer\UserTransfer;
 use Orm\Zed\Customer\Persistence\SpyCustomerQuery;
 use Orm\Zed\MerchantSalesOrder\Persistence\Map\SpyMerchantSalesOrderTableMap;
 use Orm\Zed\PerformancePickingReport\Persistence\PyzPerformanceSalesOrderReportQuery;
+use Orm\Zed\PickingSalesOrder\Persistence\PyzPickingCollectionSignalQuery;
 use Orm\Zed\PickupQueue\Persistence\Map\PyzOrderPickupQueueTableMap;
 use Orm\Zed\PickupQueue\Persistence\PyzOrderPickupQueueQuery;
 use Orm\Zed\Sales\Persistence\Map\SpySalesOrderTableMap;
@@ -66,6 +67,34 @@ class CollectByCustomerController extends AbstractController
     ];
 
     protected const PRICE_DIVISION = 100;
+
+    protected const REQUEST_ID = 'id';
+
+    /**
+     * @param \Symfony\Component\HttpFoundation\Request $request
+     *
+     * @return \Symfony\Component\HttpFoundation\JsonResponse
+     */
+    public function provideListOfOrdersAction(Request $request): JsonResponse
+    {
+        $merchantRef = $request->get("merchant")["merchantReference"];
+        $isNewOrderInReadyForCollectionFound = false;
+
+        $res = PyzPickingCollectionSignalQuery::create()->findOneByMerchantReference($merchantRef);
+        if ($res) {
+            $isNewOrderInReadyForCollectionFound = $res->getHasNewItem();
+            if ($isNewOrderInReadyForCollectionFound === true) {
+                $res->setHasNewItem(false);
+                $res->save();
+            }
+        }
+
+        return new JsonResponse(
+            [
+                'newOrders' => $isNewOrderInReadyForCollectionFound,
+            ]
+        );
+    }
 
     /**
      * @param \Symfony\Component\HttpFoundation\Request $request
@@ -129,7 +158,7 @@ class CollectByCustomerController extends AbstractController
             $dayOfTheWeek = $daysInTheWeek[$dayInTheWeek];
             $decodedCartNote = json_decode($order->getCartNote());
             $queuedDate = explode(' ', $item['isInQueue']);
-            $timeCheckedInSeconds = strtotime($item['isInQueue']); // to get to milliseconds
+            $timeCheckedInSeconds = strtotime($item['isInQueue']);
             $waitingTimeInSeconds = $item['queueAlertCountdown'];
 
             if ($timeCheckedInSeconds) {
