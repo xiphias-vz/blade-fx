@@ -191,6 +191,9 @@ class CustomerUserProvider extends SprykerCustomerUserProvider implements Custom
     {
         $uid = $this->getFactory()->getSessionClient()->get("cdcUID");
         $idToken = $this->getFactory()->getSessionClient()->get("id_token");
+        if (!$uid || !$idToken) {
+            return null;
+        }
         $data = [
             'profile' => '{"phones": [{"type":"landLine", "number":"' . $customerTransfer->getPhone() . '"}, {"type":"mobile", "number":"' . $customerTransfer->getMobilePhoneNumber() . '"}]}',
         ];
