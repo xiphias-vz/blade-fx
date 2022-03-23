@@ -51,8 +51,6 @@ class ProductViewAvailabilityExpander extends SprykerProductViewAvailabilityExpa
             }
         } elseif (count($concreteProductAvailableItems) === 1) {
             $productViewTransfer->setAvailable($concreteProductAvailableItems[array_keys($concreteProductAvailableItems)[0]]);
-        } else {
-            $productViewTransfer->setAvailable($concreteProductAvailableItems[$productViewTransfer->getSku()]);
         }
 
         $productViewTransfer = $this->executeAvailabilityStorageStrategyPlugins($productViewTransfer);
