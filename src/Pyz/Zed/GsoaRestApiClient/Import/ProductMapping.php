@@ -416,7 +416,7 @@ class ProductMapping
                 }
             }
         }
-        if (isset($item["mainEan"])) {
+        if (isset($item["mainEan"]) && !empty($item["mainEan"])) {
             $value["ordernumber"] = $item["mainEan"];
         }
         if (empty($value["ordernumber"])) {

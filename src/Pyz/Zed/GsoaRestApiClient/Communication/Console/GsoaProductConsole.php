@@ -130,7 +130,7 @@ class GsoaProductConsole extends Console
                             $output->writeln("Modified products: " . count($modifiedProducts) . " from " . $modifiedFrom);
                             while (count($productsToRequest) > 0) {
                                 $sapFilter = "WamasNr:in " . implode(",", $productsToRequest);
-                                $result = $client->getProducts($sapFilter, true, $page, $pageSize);
+                                $result = $client->getProducts($sapFilter, false, $page, $pageSize);
                                 if (isset($result["products"])) {
                                     $result["products"] = $this->getPlacementsInStock($output, $client, $result["products"], 0, $store);
                                     foreach ($result["products"] as $item) {
@@ -147,11 +147,13 @@ class GsoaProductConsole extends Console
                                                 }
                                             }
                                             if (isset($item["houseSpecificData"])) {
-                                                $ean = $item["mainEan"];
+                                                $ean = $d["ordernumber"];
                                                 foreach ($item["houseSpecificData"] as $specific) {
                                                     foreach (array_keys($specific) as $key) {
                                                         if ($key != "houseNumber") {
-                                                            $item[$key] = $specific[$key];
+                                                            if ($specific[$key] != null) {
+                                                                $item[$key] = $specific[$key];
+                                                            }
                                                         }
                                                     }
                                                     $item["mainEan"] = $ean . "_" . $specific["houseNumber"];
@@ -183,7 +185,7 @@ class GsoaProductConsole extends Console
 
                     break;
                 case "getProductPricesByHouse":
-                    $result = $client->getProductPricesByHouse($store, true, 'DEFAULT', $validFrom, $filter, $page, $pageSize);
+                    $result = $client->getProductPricesByHouse($store, false, 'DEFAULT', $validFrom, $filter, $page, $pageSize);
                     break;
                 case "getProductPricesByHouseModified":
                     if (empty($modifiedFrom)) {
@@ -192,7 +194,7 @@ class GsoaProductConsole extends Console
                     $result = $client->getProductPricesByHouseModified($store, $modifiedFrom, true);
                     break;
                 case "getProductStocksByHouse":
-                    $result = $client->getProductStocksByHouse($store, true, $filter, $page, $pageSize);
+                    $result = $client->getProductStocksByHouse($store, false, $filter, $page, $pageSize);
                     break;
                 case "getProductStocksByHouseModified":
                     if (empty($modifiedFrom)) {
@@ -253,21 +255,25 @@ class GsoaProductConsole extends Console
                                             file_put_contents($fileAlternativeEanPath, implode('|', $line) . PHP_EOL, FILE_APPEND);
                                         }
                                     }
-                                }
-                                if (isset($item["houseSpecificData"])) {
-                                    $ean = $item["mainEan"];
-                                    foreach ($item["houseSpecificData"] as $specific) {
-                                        foreach (array_keys($specific) as $key) {
-                                            if ($key != "houseNumber") {
-                                                $item[$key] = $specific[$key];
+                                    if (isset($item["houseSpecificData"])) {
+                                        $ean = $d["ordernumber"];
+
+                                        foreach ($item["houseSpecificData"] as $specific) {
+                                            foreach (array_keys($specific) as $key) {
+                                                if ($key != "houseNumber") {
+                                                    if ($specific[$key] != null) {
+                                                        $item[$key] = $specific[$key];
+                                                    }
+                                                }
                                             }
+                                            $item["mainEan"] = $ean . "_" . $specific["houseNumber"];
+                                            $d = $map->mapValues($item);
+                                            $d["Classification_ID"] = implode(";", $item["eshopCategories"]);
+                                            file_put_contents($fileArticlePath, implode('|', $d) . PHP_EOL, FILE_APPEND);
                                         }
-                                        $item["mainEan"] = $ean . "_" . $specific["houseNumber"];
-                                        $d = $map->mapValues($item);
-                                        $d["Classification_ID"] = implode(";", $item["eshopCategories"]);
-                                        file_put_contents($fileArticlePath, implode('|', $d) . PHP_EOL, FILE_APPEND);
                                     }
                                 }
+
                                 if ($limit > 0 && $limit === $counter) {
                                     $page = 2000;
                                     break;
@@ -575,7 +581,7 @@ class GsoaProductConsole extends Console
                     $filter = "ProductWamasNr:in " . implode(",", $p);
                     $c = 0;
                     $p = [];
-                    $result = $client->getProductPricesByHouse($store, true, 'ESHOP', '', $filter, 0, $pageSize);
+                    $result = $client->getProductPricesByHouse($store, false, 'ESHOP', '', $filter, 0, $pageSize);
                     if ((is_array($result))
                         && (count($result) > 0)
                         && (is_array($result["productPrices"]) && count($result["productPrices"]) > 0)) {
@@ -808,7 +814,7 @@ class GsoaProductConsole extends Console
                     $resultStock = [];
                     try {
                         $result = $client->getProductsByHouse($store, $filter, '', 0, $pageSize);
-                        $resultStock = $client->getProductStocksByHouse($store, true, $filterStock, 0, $pageSize)['productStocks'];
+                        $resultStock = $client->getProductStocksByHouse($store, false, $filterStock, 0, $pageSize)['productStocks'];
                     } catch (Exception $ex) {
                         $output->writeln($ex->getMessage());
                     }
@@ -900,7 +906,7 @@ class GsoaProductConsole extends Console
                     if (isset($packageProduct["products"][0]["eanCodes"][0]["code"])) {
                         $plu = $packageProduct["products"][0]["eanCodes"][0]["code"];
                     }
-                    $prices = $client->getProductPricesByHouse($store, true, 'ESHOP', "", "ProductWamasNr:in " . $returnablePackagingsWamasNr, 0, 10);
+                    $prices = $client->getProductPricesByHouse($store, false, 'ESHOP', "", "ProductWamasNr:in " . $returnablePackagingsWamasNr, 0, 10);
                     if (isset($prices["productPrices"])) {
                         $price = $this->getValidPrice($prices["productPrices"][0]["prices"]);
                     }
