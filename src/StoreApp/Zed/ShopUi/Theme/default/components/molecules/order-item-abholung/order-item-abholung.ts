@@ -166,7 +166,7 @@ export default class OrderItemAbholung extends Component {
                     return;
                 }
                 if (that.lastOrderInQueueInput.value === '') {
-                    that.lastOrderInQueueInput.value = lastId;
+                    that.lastOrderInQueueInput.value = lastId === null ? 0 : lastId;
                 } else if (lastId > that.lastOrderInQueueInput.value) {
                     that.lastOrderInQueueInput.value = lastId;
                     that.showPopupInfoIfInQueue();
