@@ -95,16 +95,6 @@ export default class OrderItemAbholung extends Component {
         if (currentTime > timeAfterWaiting && this.waitingTime.value) {
             this.order.classList.add("order-item-abholung__pickup-alert");
         }
-        if (this.lastOrderInQueueInput){
-            this.checkForNewOrderInQueue();
-        }
-    }
-
-    protected showPopupInfoIfInQueue(): void {
-        this.newCustomerInQueueInfo.classList.remove('order-search__popup_notification-hidden');
-        setTimeout(() => {
-            this.newCustomerInQueueInfo.classList.add('order-search__popup_notification-hidden');
-        }, this.notificationMessageDelay);
     }
 
     protected countCheckedContainers(): void {
@@ -144,32 +134,6 @@ export default class OrderItemAbholung extends Component {
                     alert(errorMsg);
 
                     return;
-                }
-            },
-        });
-    }
-
-    protected checkForNewOrderInQueue(){
-        let urlCheck = window.location.origin + "/picker/collect-by-customer/new-queue-check";
-        let dataToSend = {};
-        dataToSend['lastId'] = this.lastOrderInQueueInput.value;
-        let that = this;
-        $.ajax({
-            type : "POST",
-            url  : urlCheck,
-            data : dataToSend,
-            success: function(res){
-                let errorMsg = res.errorMessage;
-                let lastId = res.lastId;
-                if (errorMsg != "") {
-                    alert(errorMsg);
-                    return;
-                }
-                if (that.lastOrderInQueueInput.value === '') {
-                    that.lastOrderInQueueInput.value = lastId === null ? 0 : lastId;
-                } else if (lastId > that.lastOrderInQueueInput.value) {
-                    that.lastOrderInQueueInput.value = lastId;
-                    that.showPopupInfoIfInQueue();
                 }
             },
         });

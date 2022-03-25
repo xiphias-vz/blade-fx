@@ -23,8 +23,8 @@ BEGIN
     FROM
         (
             SELECT CASE WHEN a.order_status LIKE '%Collected by customer%' OR a.order_status LIKE 'order invoiced' THEN 10
-                        ELSE CASE WHEN a.order_status NOT LIKE '%Ready for collection%' AND now() > a.requested_delivery_date_to THEN 21
-                                  ELSE CASE WHEN a.order_status NOT LIKE '%Ready for collection%' AND now() < a.requested_delivery_date_from THEN 22
+                        ELSE CASE WHEN a.order_status NOT LIKE '%Ready for collection%' AND DATE_ADD(now(), INTERVAL 1 HOUR) > a.requested_delivery_date_to THEN 21
+                                  ELSE CASE WHEN a.order_status NOT LIKE '%Ready for collection%' AND DATE_ADD(now(), INTERVAL 1 HOUR) < a.requested_delivery_date_from THEN 22
                                             ELSE CASE WHEN a.merchant_filial_number <> @store_short_code THEN 40
                                                       ELSE 0
                                                 END
@@ -100,7 +100,7 @@ BEGIN
                                     WHERE sso.order_reference = @order_reference
                                     GROUP BY sso.id_sales_order
                                 ),
-                            updated_at = NOW();
+                            updated_at = DATE_ADD(NOW(), INTERVAL 1 HOUR);
 
     SELECT @error_code as error_code, @error_data as error_data;
 END;
