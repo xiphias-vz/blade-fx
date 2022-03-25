@@ -218,7 +218,6 @@ class GsoaProductConsole extends Console
                     $result = $client->getPriceTags($filter, $page, $pageSize);
                     break;
                 case "importProducts":
-                    //$data = [];
                     $fileArticlePath = $this->getImportFilePathAndName("2.globusCZ_articles", false);
                     $fileAlternativeEanPath = $this->getImportFilePathAndName("99.globusCZ_article_gtins", false);
                     file_put_contents($fileAlternativeEanPath, implode('|', array_keys(AlternativeEanMapping::$dataSetSchema)) . PHP_EOL);

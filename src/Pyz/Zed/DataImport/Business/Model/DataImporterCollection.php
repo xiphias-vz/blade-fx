@@ -29,7 +29,7 @@ use Spryker\Zed\Product\Dependency\ProductEvents;
 
 class DataImporterCollection extends SprykerDataImporterCollection
 {
-    public const CSV_ARCHIVE_BUFFER_LIMIT = 1000;
+    public const CSV_ARCHIVE_BUFFER_LIMIT = 200;
     public const ROOT_DATA_IMPORT_DIR = '//data/data/import/';
 
     /**

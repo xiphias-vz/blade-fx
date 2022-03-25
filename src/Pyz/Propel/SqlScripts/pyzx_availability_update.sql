@@ -1,6 +1,14 @@
 delimiter //
 CREATE OR REPLACE PROCEDURE pyzx_availability_update()
 BEGIN
+
+	delete spas
+	from spy_product sp
+        inner join spy_merchant sm on sp.sku like concat('%\_', sm.filial_number)
+        inner join spy_store ss on sm.merchant_short_name  = ss.name
+        inner join spy_product_abstract_store spas on sp.fk_product_abstract = spas.fk_product_abstract and ss.id_store = spas.fk_store
+	where sp.is_active = 0;
+
 	DROP TEMPORARY TABLE IF EXISTS tbl_availability;
 
 	CREATE TEMPORARY TABLE tbl_availability

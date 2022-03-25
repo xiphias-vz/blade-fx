@@ -7,6 +7,7 @@
 
 namespace Pyz\Shared\GsoaRestApiClient\Provider;
 
+use Exception;
 use Pyz\Shared\GsoaRestApiClient\ApiClient;
 
 class ProductCatalogProvider
@@ -88,7 +89,11 @@ class ProductCatalogProvider
             'modifiedFrom' => $modifiedFrom,
         ];
 
-        return ApiClient::get($url, $this->getBearerToken(), $data);
+        try {
+            return ApiClient::get($url, $this->getBearerToken(), $data);
+        } catch (Exception $ex) {
+            return [];
+        }
     }
 
     /**
@@ -132,7 +137,11 @@ class ProductCatalogProvider
             'modifiedFrom' => $modifiedFrom,
         ];
 
-        return ApiClient::get($url, $this->getBearerToken(), $data);
+        try {
+            return ApiClient::get($url, $this->getBearerToken(), $data);
+        } catch (Exception $ex) {
+            return [];
+        }
     }
 
     /**
@@ -196,7 +205,11 @@ class ProductCatalogProvider
             'modifiedFrom' => $modifiedFrom,
         ];
 
-        return ApiClient::get($url, $this->getBearerToken(), $data);
+        try {
+            return ApiClient::get($url, $this->getBearerToken(), $data);
+        } catch (Exception $ex) {
+            return [];
+        }
     }
 
     /**
@@ -252,7 +265,11 @@ class ProductCatalogProvider
             'modifiedFrom' => $modifiedFrom,
         ];
 
-        return ApiClient::get($url, $this->getBearerToken(), $data);
+        try {
+            return ApiClient::get($url, $this->getBearerToken(), $data);
+        } catch (Exception $ex) {
+            return [];
+        }
     }
 
     /**

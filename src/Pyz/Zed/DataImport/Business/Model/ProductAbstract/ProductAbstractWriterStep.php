@@ -128,15 +128,17 @@ class ProductAbstractWriterStep extends PublishAwareStep implements DataImportSt
             ->filterBySku(static::getAbstractSku($dataSet))
             ->findOneOrCreate();
 
-        $productAttributes = $this->removeUnnecessaryAttributes($dataSet[AttributesExtractorStep::KEY_ATTRIBUTES]);
+        if (preg_match_all("/(.*?)_\d{4}$/", $dataSet[ProductConfig::KEY_PRODUCT_NUMBER], $out) < 1) {
+            $productAttributes = $this->removeUnnecessaryAttributes($dataSet[AttributesExtractorStep::KEY_ATTRIBUTES]);
 
-        $productAbstractEntity
-            ->setFkTaxSet($this->getIdTaxSet($dataSet[ProductConfig::KEY_TAX]))
-            ->setSapNumber($dataSet[ProductConfig::KEY_SAP_NUMBER])
-            ->setAttributes(json_encode($productAttributes));
+            $productAbstractEntity
+                ->setFkTaxSet($this->getIdTaxSet($dataSet[ProductConfig::KEY_TAX]))
+                ->setSapNumber($dataSet[ProductConfig::KEY_SAP_NUMBER])
+                ->setAttributes(json_encode($productAttributes));
 
-        if ($productAbstractEntity->isNew() || $productAbstractEntity->isModified()) {
-            $productAbstractEntity->save();
+            if ($productAbstractEntity->isNew() || $productAbstractEntity->isModified()) {
+                $productAbstractEntity->save();
+            }
         }
 
         $dataSet[static::ID_PRODUCT_ABSTRACT] = $productAbstractEntity->getIdProductAbstract();
