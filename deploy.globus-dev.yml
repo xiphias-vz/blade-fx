@@ -368,6 +368,8 @@ groups:
                         store: EIN
             Zed:
                 application: zed
+                limits:
+                    workers: 5
                 endpoints:
                     backoffice.shop-d.globus.de:
                         store: EIN
