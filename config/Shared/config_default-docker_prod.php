@@ -50,5 +50,5 @@ $config[FactFinderNgConstants::FACT_FINDER_PASSWORD] = 'glo123SPRY!kps'; # Fact-
 
 $config[MonitoringReportConstants::EMAIL_SEND_CONSOLE_HEARTBEAT] = 'https://heartbeat.uptimerobot.com/m790982228-f2b83f61ac39379c86ab110c878c353d5640c701';
 $config[MonitoringReportConstants::JENKINS_HEARTBEAT_URL] = 'https://heartbeat.uptimerobot.com/m790706896-67260c4c15b4815d1553056adbec1e02084ccdb6';
-$config[MonitoringReportConstants::JENKINS_BASE_URL] = 'https://scheduler.shop.globus.de/';
+$config[MonitoringReportConstants::JENKINS_BASE_URL] = 'http://jenkins.shop.globus.de/';
 

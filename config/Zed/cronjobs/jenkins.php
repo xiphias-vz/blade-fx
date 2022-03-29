@@ -196,6 +196,14 @@ if ($storeCodeBucket == 'CZ') {
     ];
 
     $jobs[] = [
+        'name' => 'monitor-categories',
+        'command' => '$PHP_BIN vendor/bin/console monitor:check-category',
+        'schedule' => '0 4 * * *',
+        'enable' => true,
+        'stores' => ['OST'],
+    ];
+
+    $jobs[] = [
         'name' => 'alarm-send-email',
         'command' => '$PHP_BIN vendor/bin/console monitor:alarm-email',
         'schedule' => '*/10 * * * *',
@@ -312,6 +320,14 @@ if ($storeCodeBucket == 'CZ') {
         'name' => 'monitor-check-jenkins',
         'command' => '$PHP_BIN vendor/bin/console monitor:check-jenkins',
         'schedule' => '*/10 * * * *',
+        'enable' => true,
+        'stores' => ['EIN'],
+    ];
+
+    $jobs[] = [
+        'name' => 'monitor-categories',
+        'command' => '$PHP_BIN vendor/bin/console monitor:check-category',
+        'schedule' => '0 4 * * *',
         'enable' => true,
         'stores' => ['EIN'],
     ];

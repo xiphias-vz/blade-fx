@@ -46,4 +46,4 @@ $config[FactFinderNgConstants::FACT_FINDER_URL] = 'https://globus-sb.fact-finder
 $config[FactFinderNgConstants::FACT_FINDER_CHANNEL] = 'DevSpryker'; # Fact-Finder channel value
 $config[FactFinderNgConstants::FACT_FINDER_USERNAME] = 'kps_admin'; # Fact-Finder user for authorization.
 $config[FactFinderNgConstants::FACT_FINDER_PASSWORD] = 'glo123SPRY!kps'; # Fact-Finder password for authorization.
-$config[MonitoringReportConstants::JENKINS_BASE_URL] = 'https://scheduler.shop-d.globus.de/';
+$config[MonitoringReportConstants::JENKINS_BASE_URL] = 'http://localhost:8080/';

@@ -49,4 +49,4 @@ $config[EventConstants::LOGGER_ACTIVE] = true;
 // ---------- NewRelicEnvironment
 $config[NewRelicConstants::NEW_RELIC_ENVIRONMENT] = 'CZ_stage';
 
-$config[MonitoringReportConstants::JENKINS_BASE_URL] = 'https://scheduler.shop-t.iglobus.cz/';
+$config[MonitoringReportConstants::JENKINS_BASE_URL] = 'http://jenkins.shop-t.iglobus.cz/';

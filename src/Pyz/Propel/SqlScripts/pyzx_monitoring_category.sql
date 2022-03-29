@@ -10,62 +10,62 @@ BEGIN
         AND sc.is_active = 1 AND scn.is_root = 1;
 
     DROP TEMPORARY TABLE IF EXISTS tmp_category;
-    CREATE TEMPORARY TABLE tmp_category(id_category int not null, id_category_child int null, deep int);
+    CREATE TEMPORARY TABLE tmp_category(id_category int not null, id_category_child int null, deep int, id_category_node int null);
 
-    INSERT INTO tmp_category (id_category, deep)
-    SELECT sc.id_category, 0
+    INSERT INTO tmp_category (id_category, deep, id_category_node)
+    SELECT sc.id_category, 0, scn.id_category_node
     FROM spy_category_node scn
-        INNER JOIN spy_category sc on scn.fk_category = sc.id_category
+         INNER JOIN spy_category sc on scn.fk_category = sc.id_category
     WHERE scn.fk_parent_category_node = @id_parent_category_node
         AND sc.is_active = 1;
 
-    INSERT INTO tmp_category (id_category, id_category_child, deep)
-    SELECT tc.id_category, scn.fk_category, 1
+    INSERT INTO tmp_category (id_category, id_category_child, deep, id_category_node)
+    SELECT tc.id_category, scn.fk_category, 1, scn.id_category_node
     FROM tmp_category tc
-        INNER JOIN spy_category_node scn on tc.id_category = scn.fk_parent_category_node
-        INNER JOIN spy_category sc on scn.fk_category = sc.id_category AND sc.is_active = 1
+         INNER JOIN spy_category_node scn on tc.id_category_node = scn.fk_parent_category_node
+         INNER JOIN spy_category sc on scn.fk_category = sc.id_category AND sc.is_active = 1
     WHERE tc.deep = 0;
 
-    INSERT INTO tmp_category (id_category, id_category_child, deep)
-    SELECT tc.id_category, scn.fk_category, 2
+    INSERT INTO tmp_category (id_category, id_category_child, deep, id_category_node)
+    SELECT tc.id_category, scn.fk_category, 2, scn.id_category_node
     FROM tmp_category tc
-        INNER JOIN spy_category_node scn on tc.id_category_child = scn.fk_parent_category_node
-        INNER JOIN spy_category sc on scn.fk_category = sc.id_category AND sc.is_active = 1
+         INNER JOIN spy_category_node scn on tc.id_category_node = scn.fk_parent_category_node
+         INNER JOIN spy_category sc on scn.fk_category = sc.id_category AND sc.is_active = 1
     WHERE tc.deep = 1;
 
-    INSERT INTO tmp_category (id_category, id_category_child, deep)
-    SELECT tc.id_category, scn.fk_category, 3
+    INSERT INTO tmp_category (id_category, id_category_child, deep, id_category_node)
+    SELECT tc.id_category, scn.fk_category, 3, scn.id_category_node
     FROM tmp_category tc
-        INNER JOIN spy_category_node scn on tc.id_category_child = scn.fk_parent_category_node
-        INNER JOIN spy_category sc on scn.fk_category = sc.id_category AND sc.is_active = 1
+         INNER JOIN spy_category_node scn on tc.id_category_node = scn.fk_parent_category_node
+         INNER JOIN spy_category sc on scn.fk_category = sc.id_category AND sc.is_active = 1
     WHERE tc.deep = 2;
 
-    INSERT INTO tmp_category (id_category, id_category_child, deep)
-    SELECT tc.id_category, scn.fk_category, 4
+    INSERT INTO tmp_category (id_category, id_category_child, deep, id_category_node)
+    SELECT tc.id_category, scn.fk_category, 4, scn.id_category_node
     FROM tmp_category tc
-        INNER JOIN spy_category_node scn on tc.id_category_child = scn.fk_parent_category_node
-        INNER JOIN spy_category sc on scn.fk_category = sc.id_category AND sc.is_active = 1
+         INNER JOIN spy_category_node scn on tc.id_category_node = scn.fk_parent_category_node
+         INNER JOIN spy_category sc on scn.fk_category = sc.id_category AND sc.is_active = 1
     WHERE tc.deep = 3;
 
-    INSERT INTO tmp_category (id_category, id_category_child, deep)
-    SELECT tc.id_category, scn.fk_category, 5
+    INSERT INTO tmp_category (id_category, id_category_child, deep, id_category_node)
+    SELECT tc.id_category, scn.fk_category, 5, scn.id_category_node
     FROM tmp_category tc
-        INNER JOIN spy_category_node scn on tc.id_category_child = scn.fk_parent_category_node
-        INNER JOIN spy_category sc on scn.fk_category = sc.id_category AND sc.is_active = 1
+         INNER JOIN spy_category_node scn on tc.id_category_node = scn.fk_parent_category_node
+         INNER JOIN spy_category sc on scn.fk_category = sc.id_category AND sc.is_active = 1
     WHERE tc.deep = 4;
 
-    INSERT INTO tmp_category (id_category, id_category_child, deep)
-    SELECT tc.id_category, scn.fk_category, 6
+    INSERT INTO tmp_category (id_category, id_category_child, deep, id_category_node)
+    SELECT tc.id_category, scn.fk_category, 6, scn.id_category_node
     FROM tmp_category tc
-        INNER JOIN spy_category_node scn on tc.id_category_child = scn.fk_parent_category_node
-        INNER JOIN spy_category sc on scn.fk_category = sc.id_category AND sc.is_active = 1
+         INNER JOIN spy_category_node scn on tc.id_category_node = scn.fk_parent_category_node
+         INNER JOIN spy_category sc on scn.fk_category = sc.id_category AND sc.is_active = 1
     WHERE tc.deep = 5;
 
-    INSERT INTO tmp_category (id_category, id_category_child, deep)
-    SELECT tc.id_category, scn.fk_category, 7
+    INSERT INTO tmp_category (id_category, id_category_child, deep, id_category_node)
+    SELECT tc.id_category, scn.fk_category, 7, scn.id_category_node
     FROM tmp_category tc
-        INNER JOIN spy_category_node scn on tc.id_category_child = scn.fk_parent_category_node
-        INNER JOIN spy_category sc on scn.fk_category = sc.id_category AND sc.is_active = 1
+         INNER JOIN spy_category_node scn on tc.id_category_node = scn.fk_parent_category_node
+         INNER JOIN spy_category sc on scn.fk_category = sc.id_category AND sc.is_active = 1
     WHERE tc.deep = 6;
 
     DROP TEMPORARY TABLE IF EXISTS tbl_availability;

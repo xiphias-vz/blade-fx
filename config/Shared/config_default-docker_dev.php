@@ -49,4 +49,4 @@ $config[FactFinderNgConstants::FACT_FINDER_CHANNEL] = 'TestSpryker'; # Fact-Find
 $config[FactFinderNgConstants::FACT_FINDER_USERNAME] = 'kps_admin'; # Fact-Finder user for authorization.
 $config[FactFinderNgConstants::FACT_FINDER_PASSWORD] = 'glo123SPRY!kps'; # Fact-Finder password for authorization.
 
-$config[MonitoringReportConstants::JENKINS_BASE_URL] = 'https://scheduler.shop-t.globus.de/';
+$config[MonitoringReportConstants::JENKINS_BASE_URL] = 'http://jenkins.shop-t.globus.de/';
