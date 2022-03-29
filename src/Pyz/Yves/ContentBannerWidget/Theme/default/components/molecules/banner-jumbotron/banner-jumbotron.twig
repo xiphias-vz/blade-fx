@@ -23,6 +23,8 @@
         </div>
     </div>
     <script>
-        document.getElementsByClassName("jumbotron-slider-mobile")[0].style.display = "none";
+        window.addEventListener('load', function() {
+            document.getElementsByClassName("jumbotron-slider")[0].style.display = "block";
+        });
     </script>
 {% endblock %}

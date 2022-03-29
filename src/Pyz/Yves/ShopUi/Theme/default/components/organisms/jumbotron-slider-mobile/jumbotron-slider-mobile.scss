@@ -1,14 +1,11 @@
 @mixin shop-ui-jumbotron-slider-mobile($name: '.jumbotron-slider-mobile') {
     #{$name} {
         min-height: rem(212);
+        display: none;
 
         @include helper-breakpoint-media-min($md-min) {
             min-height: rem(290);
         }
-
-        //@include helper-breakpoint-media-min($lg-min) {
-        //    min-height: rem(450);
-        //}
 
         .slick-carousel__container {
             @include helper-breakpoint-media-max($lg-max) {
