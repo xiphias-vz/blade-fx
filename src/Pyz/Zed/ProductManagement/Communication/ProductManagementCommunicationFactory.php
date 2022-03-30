@@ -16,6 +16,9 @@ use Pyz\Zed\ProductManagement\ProductManagementDependencyProvider;
 use Pyz\Zed\User\Business\UserFacadeInterface;
 use Spryker\Zed\Acl\Business\AclFacadeInterface;
 use Spryker\Zed\ProductManagement\Communication\ProductManagementCommunicationFactory as SpyProductManagementCommunicationFactory;
+use Spryker\Zed\ProductManagement\Dependency\Facade\ProductManagementToProductInterface;
+use Spryker\Zed\ProductManagement\Persistence\ProductManagementRepository;
+use Spryker\Zed\ProductManagement\Persistence\ProductManagementRepositoryInterface;
 
 class ProductManagementCommunicationFactory extends SpyProductManagementCommunicationFactory
 {
@@ -78,7 +81,10 @@ class ProductManagementCommunicationFactory extends SpyProductManagementCommunic
         return new ProductTable(
             $this->getProductQueryContainer(),
             $this->getLocaleFacade()->getCurrentLocale(),
-            $this->createProductTypeHelper()
+            $this->createProductTypeHelper(),
+            $this->getRepository(),
+            $this->getProductTableDataExpanderPlugins(),
+            $this->getProductFacade()
         );
     }
 
@@ -99,10 +105,8 @@ class ProductManagementCommunicationFactory extends SpyProductManagementCommunic
             $this->getPriceProductFacade(),
             $this->createLocaleProvider(),
             $currentLocale,
-            $this->getProductAttributeCollection(),
             $this->getProductTaxCollection(),
-            $this->getConfig()->getImageUrlPrefix(),
-            $this->getStore()
+            $this->getConfig()->getImageUrlPrefix()
         );
     }
 }

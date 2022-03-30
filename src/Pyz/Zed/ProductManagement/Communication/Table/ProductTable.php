@@ -29,16 +29,14 @@ class ProductTable extends SprykerProductTable
             static::COL_TAX_SET => 'Tax Set',
             static::COL_VARIANT_COUNT => 'Variants',
             static::COL_STATUS => 'Status',
-            static::COL_IS_BUNDLE => 'Contains bundles',
-            static::COL_PRODUCT_TYPE => 'Product type',
+            static::COL_PRODUCT_TYPES => 'Product type',
             static::COL_STORE_RELATION => 'Stores',
             static::COL_ACTIONS => 'Actions',
         ]);
 
         $config->setRawColumns([
             static::COL_STATUS,
-            static::COL_IS_BUNDLE,
-            static::COL_PRODUCT_TYPE,
+            static::COL_PRODUCT_TYPES,
             static::COL_STORE_RELATION,
             static::COL_ACTIONS,
         ]);
