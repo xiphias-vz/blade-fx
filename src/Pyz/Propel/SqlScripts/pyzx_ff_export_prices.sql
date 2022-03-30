@@ -36,6 +36,8 @@ BEGIN
             AND sppsOrig.fk_store = sa.fk_store
         LEFT JOIN spy_price_product_default sppdOrig on sppdOrig.fk_price_product_store = sppsOrig.id_price_product_store
         LEFT JOIN spy_merchant sm on sm.fk_store = sppsDef.fk_store
+        INNER JOIN spy_product_abstract_store spas on sm.fk_store = spas.fk_store
+            AND spa.id_product_abstract = spas.fk_product_abstract
     WHERE IFNULL(sa.quantity, 0) > 0
         AND sppsDef.gross_price > 0
         AND sp.is_active = 1
