@@ -9,6 +9,7 @@ namespace Pyz\Yves\CheckoutPage\Controller;
 
 use Generated\Shared\Transfer\QuoteTransfer;
 use Generated\Shared\Transfer\ShipmentMethodTransfer;
+use Pyz\Shared\FactFinder\Business\Api\FactFinderApiClient;
 use Pyz\Yves\GlobusRestApiClient\Provider\GlobusRestApiClientAccount;
 use Pyz\Yves\GlobusRestApiClient\Provider\GlobusRestApiClientValidation;
 use SprykerShop\Yves\CheckoutPage\Controller\CheckoutController as SprykerCheckoutControllerAlias;
@@ -151,6 +152,8 @@ class CheckoutController extends SprykerCheckoutControllerAlias
      */
     public function placeOrderAction(Request $request)
     {
+        $storeCodeBucket = getenv('SPRYKER_CODE_BUCKET');
+
         $quoteValidationResponseTransfer = $this->canProceedCheckout();
 
         if (!$quoteValidationResponseTransfer->getIsSuccessful()) {
@@ -173,6 +176,19 @@ class CheckoutController extends SprykerCheckoutControllerAlias
             $this->addErrorMessage(static::MESSAGE_PERMISSION_FAILED);
 
             return $this->redirectResponseInternal(CheckoutPageControllerProvider::CHECKOUT_SUMMARY);
+        }
+
+        if ($storeCodeBucket == 'DE') {
+            $customerId = $quoteTransfer->getCustomer()->getIdCustomer() ?: '';
+
+            foreach ($quoteTransfer->getItems() as $item) {
+                $count = $item->getQuantity() ?: null;
+                $productSku = $item->getSku() ?: '';
+                $productPrice = $item->getUnitPrice() ?: null;
+                $productTitle = $item->getName() ?: '';
+
+                $this->checkoutTrackingEvent($count, $productSku, $productPrice, $customerId, $productTitle);
+            }
         }
 
         return $this->createStepProcess()->process($request);
@@ -376,5 +392,30 @@ class CheckoutController extends SprykerCheckoutControllerAlias
         }
 
         return $this->view($response, [], '@CheckoutPage/views/order-fail/order-fail.twig');
+    }
+
+    /**
+     * @param $count
+     * @param $productSku
+     * @param $productPrice
+     * @param $customerId
+     * @param $productTitle
+     *
+     * @return array
+     */
+    public function checkoutTrackingEvent($count, $productSku, $productPrice, $customerId, $productTitle): array
+    {
+        $data = [[
+            'count' => $count,
+            'id' => $productSku,
+            'masterId' => $productSku,
+            'price' => $productPrice / 100,
+            'purchaserId' => $customerId,
+            'sid' => session_id(),
+            'title' => $productTitle,
+            'userId' => $customerId,
+        ]];
+
+        return FactFinderApiClient::postTrackCheckoutData($data);
     }
 }

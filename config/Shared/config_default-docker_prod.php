@@ -45,10 +45,10 @@ $config[EventConstants::LOGGER_ACTIVE] = true;
 // ---------- FACT-Finder NG API
 $config[FactFinderNgConstants::FACT_FINDER_URL] = 'https://globus-sb.fact-finder.de/fact-finder'; # Fact-Finder URL
 $config[FactFinderNgConstants::FACT_FINDER_CHANNEL] = 'Spryker'; # Fact-Finder channel value
+$config[FactFinderConstants::FACT_FINDER_SHOPWARE_CHANNEL] = 'Shopware'; # Fact-Finder Shopware channel value
 $config[FactFinderNgConstants::FACT_FINDER_USERNAME] = 'kps_admin'; # Fact-Finder user for authorization.
 $config[FactFinderNgConstants::FACT_FINDER_PASSWORD] = 'glo123SPRY!kps'; # Fact-Finder password for authorization.
 
 $config[MonitoringReportConstants::EMAIL_SEND_CONSOLE_HEARTBEAT] = 'https://heartbeat.uptimerobot.com/m790982228-f2b83f61ac39379c86ab110c878c353d5640c701';
 $config[MonitoringReportConstants::JENKINS_HEARTBEAT_URL] = 'https://heartbeat.uptimerobot.com/m790706896-67260c4c15b4815d1553056adbec1e02084ccdb6';
 $config[MonitoringReportConstants::JENKINS_BASE_URL] = 'http://jenkins.shop.globus.de/';
-

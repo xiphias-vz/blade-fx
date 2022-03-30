@@ -156,6 +156,10 @@ export default class AjaxAddToCart extends Component {
     }
 
     protected async sendRequest(url: string, link: HTMLLinkElement, quantity: string, operation: string): Promise<void> {
+        let productSku = link.dataset.productSku;
+        let productPrice = link.dataset.productPrice * 100;
+        let productTitle = link.dataset.productTitle;
+
         const formData = new FormData();
         formData.append('token', link.dataset.csrfToken);
         formData.append('operation', operation);
@@ -168,7 +172,10 @@ export default class AjaxAddToCart extends Component {
             data: {
                 myToken: link.dataset.csrfToken,
                 myOperation: operation,
-                myQuantity: quantity
+                myQuantity: quantity,
+                productSku: productSku,
+                productPrice: productPrice,
+                productTitle: productTitle
             },
             success(data, status, xhr) {
                 if(data.error !== '') {

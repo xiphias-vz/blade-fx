@@ -40,7 +40,6 @@
 
         ff-record {
             margin-bottom: rem(30);
-            cursor: pointer;
 
             @include helper-breakpoint-media-min($md-min){
                 margin: 0 rem(10) rem(32);

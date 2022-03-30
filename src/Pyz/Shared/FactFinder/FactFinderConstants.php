@@ -24,4 +24,7 @@ interface FactFinderConstants
         self::PRODUCT_DATA_FILE_NAME => 'export.productData.Spryker.csv',
         self::SEQUENCES_FILE_NAME => 'sequences.csv',
     ];
+
+    public const FACT_FINDER_ROOT_URL = 'FACT_FINDER_ROOT_URL';
+    public const FACT_FINDER_SHOPWARE_CHANNEL = 'FACT_FINDER_SHOPWARE_CHANNEL';
 }

@@ -37,4 +37,12 @@ class ProductDetailPageConfig extends AbstractBundleConfig
     {
         return $this->get(ProductImageConstants::IMAGES_HOST_URL, '');
     }
+
+    /**
+     * @return string
+     */
+    public function getCodeBucket(): string
+    {
+        return getenv('SPRYKER_CODE_BUCKET');
+    }
 }

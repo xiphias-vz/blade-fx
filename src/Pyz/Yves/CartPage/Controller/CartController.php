@@ -13,6 +13,7 @@ use Generated\Shared\Transfer\ProductAvailabilityTransfer;
 use Generated\Shared\Transfer\ProductConcreteAvailabilityTransfer;
 use Generated\Shared\Transfer\ProductViewTransfer;
 use Generated\Shared\Transfer\QuoteTransfer;
+use Pyz\Shared\FactFinder\Business\Api\FactFinderApiClient;
 use Pyz\Shared\Messages\MessagesConfig;
 use Pyz\Shared\OrderDetail\OrderDetailConstants;
 use Pyz\Yves\CartPage\Plugin\Router\CartPageRouteProviderPlugin;
@@ -181,6 +182,8 @@ class CartController extends SprykerCartController
      */
     public function changeAjaxAction(Request $request): JsonResponse
     {
+        $storeCodeBucket = getenv('SPRYKER_CODE_BUCKET');
+
         if (!$this->isCsrfTokenValid(static::CHANGE_CART_AJAX_CSRF_TOKEN_NAME, $request)) {
             return $this->createChangeAjaxErrorResponse(
                 Response::HTTP_BAD_REQUEST,
@@ -224,6 +227,21 @@ class CartController extends SprykerCartController
         $cartQuantity = $this->getFactory()
             ->getCartClient()
             ->getItemCount();
+
+        if ($storeCodeBucket == 'DE') {
+            if ($operation !== "REMOVE") {
+                if ($operation == "ADD") {
+                    $count = 1;
+                } else {
+                    $count = $_REQUEST['myQuantity'] ?? $quantity;
+                }
+                $productSku = $_REQUEST['productSku'] ?? $productViewTransfer->getSku();
+                $productPrice = $_REQUEST['productPrice'] ?? $productViewTransfer->getPrice();
+                $productTitle = $_REQUEST['productTitle'] ?? $productViewTransfer->getName();
+
+                $this->cartTrackingEvent($count, $productSku, $productPrice, $productTitle);
+            }
+        }
 
         $response = [
             static::KEY_CODE => Response::HTTP_OK,
@@ -512,6 +530,8 @@ class CartController extends SprykerCartController
      */
     protected function addItemToCart(Request $request, int $productAbstractId): array
     {
+        $storeCodeBucket = getenv('SPRYKER_CODE_BUCKET');
+
         $quantity = $request->get('quantity', 1);
         $productViewTransfer = $this->getFactory()
             ->getProductStorageClient()
@@ -542,6 +562,37 @@ class CartController extends SprykerCartController
             $this->addErrorMessage($messageTransfers[0]->getValue());
         }
 
+        if ($storeCodeBucket == 'DE') {
+            $count = $_REQUEST['myQuantity'] ?? $quantity;
+            $productSku = $_REQUEST['productSku'] ?? $productViewTransfer->getSku();
+            $productPrice = $_REQUEST['productPrice'] ?? $productViewTransfer->getPrice();
+            $productTitle = $_REQUEST['productTitle'] ?? $productViewTransfer->getName();
+
+            $this->cartTrackingEvent($count, $productSku, $productPrice, $productTitle);
+        }
+
         return $messageTransfers;
+    }
+
+    /**
+     * @param $count
+     * @param $productSku
+     * @param $productPrice
+     * @param $productTitle
+     *
+     * @return array
+     */
+    public function cartTrackingEvent($count, $productSku, $productPrice, $productTitle): array
+    {
+        $data = [[
+            'count' => (int)$count,
+            'id' => $productSku,
+            'masterId' => $productSku,
+            'price' => $productPrice / 100,
+            'sid' => session_id(),
+            'title' => $productTitle,
+        ]];
+
+        return FactFinderApiClient::postTrackCartData($data);
     }
 }
