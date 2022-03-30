@@ -1,4 +1,4 @@
-@mixin shop-ui-lazy-image($name: '.lazy-image') {
+@mixin shop-ui-lazy-image($name: '.lazy-image-ff') {
     #{$name} {
         line-height: 1;
         height: -webkit-fill-available !important;

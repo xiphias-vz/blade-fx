@@ -9,6 +9,7 @@
     imageClasses: '',
     imageSrc: '',
     imageTitle: '',
+    abstractId: '',
 } %}
 
 {% define attributes = {
@@ -24,6 +25,6 @@
 {% block body %}
     {% block image %}
         {% set attributesWithoutSrc = attributes | merge({'src': ''}) %}
-        <img class="{{ data.imageClasses }} {{ config.jsName }}__content" src="{{ data.imageSrc }}" data-src="{{ data.imageSrc }}" data-storage="{{ data.imageSrc }}" {{ component.renderAttributes(attributesWithoutSrc) }}>
+        <img class="{{ data.imageClasses }} {{ config.jsName }}__content js-image-animation__image-{{- data.abstractId -}}" src="{{ data.imageSrc }}" data-src="{{ data.imageSrc }}" data-storage="{{ data.imageSrc }}" {{ component.renderAttributes(attributesWithoutSrc) }}>
     {% endblock %}
 {% endblock %}
