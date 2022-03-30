@@ -5,7 +5,7 @@
     orderForScanningContainer: orderForScanningContainer,
     nextOrderPosition: nextOrderPosition,
     orderPosition: orderPosition,
-    orderItemPosition: orderPosition,
+    orderItemPosition: orderItemPosition,
     requestFromPickingArticles: requestFromPickingArticles,
     redirectToPickingArticles: redirectToPickingArticles,
     itemSku: itemSku,
@@ -18,6 +18,11 @@
     addContainerToSubstitutedItem: addContainerToSubstitutedItem,
 } %}
 
+{% set backButtonUrl = '/picker/multi-picking?unlock=true' %}
+{% if data.addContainerToSubstitutedItem %}
+    {% set backButtonUrl = '/picker/multi-picking/multi-order-picking?sku=' ~ data.itemSku ~ '&position=' ~ data.orderItemPosition %}
+{% endif %}
+
 {% block header %}
     {% include organism('header') with {
         data: {
@@ -26,7 +31,7 @@
             pickingZone: true,
             isScanFromPickingProcess: isScanFromPickingProcess,
             isMultiPickingProcess: isMultiPickingProcess,
-            buttonUrl:'/picker/multi-picking?unlock=true'
+            buttonUrl: backButtonUrl
         }
     } only %}
 {% endblock %}

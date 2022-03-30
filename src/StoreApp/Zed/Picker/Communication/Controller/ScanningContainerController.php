@@ -25,6 +25,7 @@ class ScanningContainerController extends AbstractController
     public const REDIRECT_TO_PICKING_ARTICLES = 'redirectToPickingArticles';
     public const CONTAINERS_ID = 'idContainers';
     public const ORDER_ITEM_SKU = 'itemSku';
+    public const ITEM_SKU = 'sku';
     public const NEXT_ORDER_POSITION = 'nextOrderPosition';
     public const IS_CONTAINER_USED = 'isContainerUsed';
     public const ORDER_POSITION = 'orderPosition';
@@ -39,6 +40,8 @@ class ScanningContainerController extends AbstractController
      */
     public function indexAction(Request $request)
     {
+        $transfer = $this->getFacade()->getPickingHeaderTransfer();
+        $transfer->setParents(true);
         $addContainerToSubstitutedItem = false;
 
         if (isset($_REQUEST['flag'])) {
@@ -47,9 +50,20 @@ class ScanningContainerController extends AbstractController
             }
         }
 
+        $itemSku = $request->get(static::ORDER_ITEM_SKU) ?? $request->get(static::ITEM_SKU) ?? '';
+        $orderPosition = $request->get(static::ORDER_POSITION) ?? '';
+        $orderItemPosition = $request->get(static::ORDER_ITEM_POSITION) ?? '';
+        $requestFromPickingArticles = $request->get(static::REQUEST_FROM_ADD_CONTAINER_IN_SKU) ?? '';
+        $redirectToPickingArticles = $request->get(static::REQUEST_FROM_ADD_CONTAINER_IN_SKU) == 1;
+
+        if ($addContainerToSubstitutedItem === true) {
+            $itemSku = $transfer->getOrderItem($transfer->getLastPickingItemPosition())->getEan();
+            $orderPosition = $transfer->getCurrentOrder()->getPickingPosition();
+            $orderItemPosition = $transfer->getLastPickingItemPosition();
+        }
+
         $factory = $this->getFactory();
-        $transfer = $this->getFacade()->getPickingHeaderTransfer();
-        $transfer->setParents(true);
+
         $nextOrderPosition = $request->get(static::NEXT_ORDER_POSITION) == null ?
             0 : (int)$request->get(static::NEXT_ORDER_POSITION);
         $isContainerUsed = $request->get(static::IS_CONTAINER_USED) == null ?
@@ -79,11 +93,11 @@ class ScanningContainerController extends AbstractController
                             return $this->viewResponse([
                                 'isContainerUsed' => $isContainerUsed,
                                 'orderForScanningContainer' => $orderForScanningContainer,
-                                'itemSku' => $request->get(static::ORDER_ITEM_SKU),
-                                'requestFromPickingArticles' => $request->get(static::REQUEST_FROM_ADD_CONTAINER_IN_SKU),
-                                'redirectToPickingArticles' => $request->get(static::REQUEST_FROM_ADD_CONTAINER_IN_SKU) == 1,
-                                'orderPosition' => $request->get(static::ORDER_POSITION),
-                                'orderItemPosition' => $request->get(static::ORDER_ITEM_POSITION),
+                                'itemSku' => $itemSku,
+                                'requestFromPickingArticles' => $requestFromPickingArticles,
+                                'redirectToPickingArticles' => $redirectToPickingArticles,
+                                'orderPosition' => $orderPosition,
+                                'orderItemPosition' => $orderItemPosition,
                                 'nextOrderPosition' => $nextOrderPosition,
                                 'merchant' => $this->getMerchantFromRequest($request),
                                 'isUsedContainerMessage' => $usedError,
@@ -126,11 +140,11 @@ class ScanningContainerController extends AbstractController
                                 return $this->viewResponse([
                                     'isContainerUsed' => $isContainerUsed,
                                     'orderForScanningContainer' => $orderForScanningContainer,
-                                    'itemSku' => $request->get(static::ORDER_ITEM_SKU),
-                                    'requestFromPickingArticles' => $request->get(static::REQUEST_FROM_ADD_CONTAINER_IN_SKU),
-                                    'redirectToPickingArticles' => $request->get(static::REQUEST_FROM_ADD_CONTAINER_IN_SKU) == 1,
-                                    'orderPosition' => $request->get(static::ORDER_POSITION),
-                                    'orderItemPosition' => $request->get(static::ORDER_ITEM_POSITION),
+                                    'itemSku' => $itemSku,
+                                    'requestFromPickingArticles' => $requestFromPickingArticles,
+                                    'redirectToPickingArticles' => $redirectToPickingArticles,
+                                    'orderPosition' => $orderPosition,
+                                    'orderItemPosition' => $orderItemPosition,
                                     'nextOrderPosition' => $nextOrderPosition,
                                     'merchant' => $this->getMerchantFromRequest($request),
                                     'isUsedContainerMessage' => $usedError,
@@ -171,6 +185,7 @@ class ScanningContainerController extends AbstractController
                 if (!$addContainerToSubstitutedItem) {
                     $urlOverview = $factory->getConfig()->getOverviewUri();
                 } else {
+                    $transfer->getOrderItem($transfer->getLastPickingItemPosition())->setIsSubstitutionFound(true);
                     $urlOverview = $factory->getConfig()->getMultiPicking();
                 }
 
@@ -191,11 +206,11 @@ class ScanningContainerController extends AbstractController
 
         return $this->viewResponse([
             'orderForScanningContainer' => $orderForScanningContainer,
-            'itemSku' => $request->get(static::ORDER_ITEM_SKU),
-            'requestFromPickingArticles' => $request->get(static::REQUEST_FROM_ADD_CONTAINER_IN_SKU),
-            'redirectToPickingArticles' => $request->get(static::REQUEST_FROM_ADD_CONTAINER_IN_SKU) == 1,
-            'orderPosition' => $request->get(static::ORDER_POSITION),
-            'orderItemPosition' => $request->get(static::ORDER_ITEM_POSITION),
+            'itemSku' => $itemSku,
+            'requestFromPickingArticles' => $requestFromPickingArticles,
+            'redirectToPickingArticles' => $redirectToPickingArticles,
+            'orderPosition' => $orderPosition,
+            'orderItemPosition' => $orderItemPosition,
             'nextOrderPosition' => $nextOrderPosition,
             'merchant' => $this->getMerchantFromRequest($request),
             'isContainerUsed' => $isContainerUsed,

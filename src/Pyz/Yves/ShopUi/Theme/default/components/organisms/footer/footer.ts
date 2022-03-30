@@ -23,7 +23,7 @@ function checkAndSetFooter(){
     var footerNav = document.querySelector("#footerNav");
     if(width > 575){
        elementTextCenter.classList.add("text-center");
-       footerNav.classList.add("footer__navigation");      
+       footerNav.classList.add("footer__navigation");
     }
     else {
        elementTextCenter.classList.remove("text-center");

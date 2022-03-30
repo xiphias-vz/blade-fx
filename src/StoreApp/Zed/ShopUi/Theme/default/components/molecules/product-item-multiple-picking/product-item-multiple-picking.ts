@@ -85,6 +85,7 @@ export default class ProductItemMultiplePicking extends Component {
     isSubstitutionFound: HTMLInputElement;
     approxWeight: HTMLElement;
     protected isSubstitutionPicked: boolean;
+    protected isYesInSubstitutionModalChosen: boolean;
     private weightMax: number;
     private weightMin: number;
     private lastWeight: number;
@@ -154,6 +155,7 @@ export default class ProductItemMultiplePicking extends Component {
         this.iconSubstitute = this.querySelector('.icon-substitute-item');
         this.isSubstitutionFound = <HTMLInputElement>this.querySelector('#isSubstitutionFound');
         this.isSubstitutionPicked = false;
+        this.isYesInSubstitutionModalChosen = false;
         this.resetWeightButton = <HTMLButtonElement>this.querySelector('#btnResetWeight');
         this.fromPosListeAndModal = <HTMLInputElement>this.querySelector('#fromPosListeAndModal');
 
@@ -460,6 +462,7 @@ export default class ProductItemMultiplePicking extends Component {
                 '<input type="text" name="status" value="' + status + '" />' +
                 '<input type="text" name="itemPickingStartTime" value="' + itemPickingStartTime + '" />' +
                 '<input type="text" name="isSubstitutionPicked" value="' + this.isSubstitutionPicked + '" />' +
+                '<input type="text" name="isYesInSubstitutionModalChosen" value="' + this.isYesInSubstitutionModalChosen + '" />' +
                 '</form>');
             $('body').append(form);
             form.submit();
@@ -1081,17 +1084,16 @@ export default class ProductItemMultiplePicking extends Component {
 
     protected onClickNoSubstitute(){
         this.isSubstitutionPicked = false;
+        this.isYesInSubstitutionModalChosen = false;
         this.iconSubstitute.classList.add(this.showIconSubstitute);
         this.popupUiSubstitute.classList.add('popup-ui-substitute--hide');
     }
 
     protected onClickYesSubstitute(){
-        this.isSubstitutionPicked = true;
-        this.iconSubstitute.classList.remove(this.showIconSubstitute);
+        this.isSubstitutionPicked = false;
+        this.isYesInSubstitutionModalChosen = true;
         this.popupUiSubstitute.classList.add('popup-ui-substitute--hide');
-        if(this.isSubstitutionPicked === true){
-            this.ifIsSubstitutionPicked();
-        }
+        this.ifIsSubstitutionPicked();
     }
 
     protected onClickNoWeightInputError() {
@@ -1138,6 +1140,7 @@ export default class ProductItemMultiplePicking extends Component {
             '<input type="text" name="status" value="' + status + '" />' +
             '<input type="text" name="itemPickingStartTime" value="' + itemPickingStartTime + '" />' +
             '<input type="text" name="isSubstitutionPicked" value="' + this.isSubstitutionPicked + '" />' +
+            '<input type="text" name="isYesInSubstitutionModalChosen" value="' + this.isYesInSubstitutionModalChosen + '" />' +
             '</form>');
         $('body').append(form);
         form.submit();
@@ -1145,6 +1148,7 @@ export default class ProductItemMultiplePicking extends Component {
 
     protected setProductAsDeclinedWithSubstitution(){
         this.isSubstitutionPicked = true;
+        this.isYesInSubstitutionModalChosen = false;
         this.iconSubstitute.classList.remove(this.showIconSubstitute);
         this.popupUiSubstitute.classList.remove('popup-ui-substitute--hide');
         this.$declineButton = this.$this.find(this.declineButtonSelector);
@@ -1169,29 +1173,24 @@ export default class ProductItemMultiplePicking extends Component {
         this.eanScanInputElement.focus();
     }
 
-    protected findAncestor (el, cls) {
+    protected findAncestor(el, cls) {
         while ((el = el.parentElement) && !el.classList.contains(cls));
         return el;
     }
 
     protected changeItemVisualState() {
-
-        if (this.isAccepted) {
-            this.$this.removeClass(this.notPickedCLass);
-            this.iconSubstitute.classList.add(this.showIconSubstitute);
-            this.acceptClickHandler();
-        } else if (this.isNotFullyAccepted) {
-            this.$this.removeClass(this.notPickedCLass);
-            this.iconSubstitute.classList.add(this.showIconSubstitute);
-            this.acceptClickHandler();
-        } else if (this.isPaused) {
-            this.$this.removeClass(this.notPickedCLass);
-            this.iconSubstitute.classList.add(this.showIconSubstitute);
-            this.pauseClickHandler();
-        } else if (this.isDeclined) {
+        if (this.isDeclined) {
             this.declineClickHandler();
-        }
+        } else {
+            this.$this.removeClass(this.notPickedCLass);
+            this.iconSubstitute.classList.add(this.showIconSubstitute);
 
+            if (this.isAccepted || this.isNotFullyAccepted) {
+                this.acceptClickHandler();
+            } else if (this.isPaused) {
+                this.pauseClickHandler();
+            }
+        }
     }
 
     protected get minusButtonSelector(): string {
