@@ -102,7 +102,7 @@
         window.addEventListener("DOMContentLoaded", showAllCategories);
 
         function showAllCategories(){
-            if(window.location.href.includes("search")){
+            if(window.location.href.includes("search") || window.location.href.includes("outlet")){
                 document.querySelectorAll(".filter-category__item--level-1").forEach(element => {element.style.display = "block"});
             }
         }
