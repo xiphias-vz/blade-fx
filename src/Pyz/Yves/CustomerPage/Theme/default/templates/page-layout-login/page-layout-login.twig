@@ -178,63 +178,9 @@
         </div>
     </div>
     <script type="text/javascript">
-
-        function gigyaRegistrationScreen() {
-            var params = {
-                screenSet: 'CCCustomer-RegistrationLogin',
-                startScreen: 'gigya-register-screen',
-                containerID: 'page-layout-customer_register',
-                // context: '<the-number-of-the-Globus-store>'
-                "onBeforeSubmit": function(event) {
-                    document.querySelector("#loginForm_password.input").value = document.querySelector(".gigya-register-form input[type='password'][data-gigya-placeholder]").value;
-                },
-                "onAfterSubmit": function(event) {
-                    if(event.response.errorCode == 0 && event.screen === 'gigya-register-screen') {
-                        document.querySelector("#loginForm_email.input").value = event.profile.email;
-                        document.querySelector("#loginForm_data").value = JSON.stringify(event);
-                        document.getElementsByName("loginForm")[0].submit();
-                        //alert(JSON.stringify(event));
-                    }
-                }
-            }
-            gigya.accounts.showScreenSet( params );
-        }
-
         function GoToRegistration() {
             document.getElementsByName('accountLoginSwitcher')[3].click();
         }
-
-        function gigyaLoginScreen() {
-            gigya.accounts.showScreenSet({
-                screenSet: 'CCCustomer-RegistrationLogin',
-                startScreen: 'gigya-login-screen',
-                containerID: 'page-layout-customer_login',
-                "onAfterScreenLoad": function(event) {
-                    //gigya-composite-control gigya-composite-control-link
-                    var lnk = document.getElementsByClassName('globus_register_link');
-                    lnk[0].setAttribute("href", "/register");
-                    lnk[0].removeAttribute("target");
-                    //lnk[1].setAttribute("href", "/register");
-                    lnk[1].removeAttribute("target");
-                    lnk[1].setAttribute("href", "javascript: document.getElementsByName('accountLoginSwitcher')[3].click()")
-                },
-                "onBeforeSubmit": function(event) {
-                    if(event.screen === 'gigya-login-screen')
-                        document.querySelector("#loginForm_password.input").value = document.querySelector(".gigya-input-password.gigya-show-checkmark.gigya-valid").value;
-                },
-                "onAfterSubmit": function(event) {
-                    if(event.response.errorCode == 0 && event.screen === 'gigya-login-screen') {
-                        document.querySelector("#loginForm_email.input").value = event.profile.email;
-                        document.querySelector("#loginForm_data").value = JSON.stringify(event);
-                        document.getElementsByName("loginForm")[0].submit();
-                    }
-                }
-            });
-        }
-
-        gigyaRegistrationScreen();
-        gigyaLoginScreen();
-
     </script>
     {% endif %}
 {% endblock %}
