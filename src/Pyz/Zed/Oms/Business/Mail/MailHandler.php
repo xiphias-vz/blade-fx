@@ -337,6 +337,9 @@ class MailHandler extends SprykerMailHandler
             'subtotalPriceWithoutDeposit' => $this->getMoneyValue($subtotalPriceWithoutDeposit),
             'transportBox' => ($orderTransfer->getIsDepositAllowed() == true) ? $this->getTransportBox() : ' ',
             'qrCodeHtml' => $qrCodeHtml,
+            'customerInfo' => $this->getCustomerInfo($orderTransfer),
+            'firstName' => $orderTransfer->getFirstName(),
+            'lastName' => $orderTransfer->getLastName(),
         ];
 
         $orderTransfer->setItems($items);
@@ -357,31 +360,9 @@ class MailHandler extends SprykerMailHandler
         }
 
         if ($orderTransfer->getBillingAddress() !== null) {
-            $addressParams = [
-                'address1' => $orderTransfer->getBillingAddress()->getAddress1() ?: ' ',
-                'address2' => $orderTransfer->getBillingAddress()->getAddress2() ?: ' ',
-                'zipCode' => $orderTransfer->getBillingAddress()->getZipCode() ?: ' ',
-                'city' => $orderTransfer->getBillingAddress()->getCity() ?: ' ',
-                'phone' => $orderTransfer->getBillingAddress()->getPhone() ?: ' ',
-                'firstName' => $orderTransfer->getBillingAddress()->getFirstName() ?: ' ',
-                'lastName' => $orderTransfer->getBillingAddress()->getLastName() ?: ' ',
-                'email' => $orderTransfer->getBillingAddress()->getEmail() ?: $orderTransfer->getEmail() ?: ' ',
-            ];
-            $params = array_merge($params, $addressParams);
             $salutationParams = $this->getSalutationParams($orderTransfer->getBillingAddress()->getSalutation() ?: ' ', $orderTransfer->getFirstName() ?: ' ');
             $params = array_merge($params, $salutationParams);
         } else {
-            $addressParams = [
-                'address1' => ' ',
-                'address2' => ' ',
-                'zipCode' => ' ',
-                'city' => ' ',
-                'phone' => ' ',
-                'firstName' => $orderTransfer->getFirstName() ?: ' ',
-                'lastName' => $orderTransfer->getLastName() ?: ' ',
-                'email' => $orderTransfer->getEmail() ?: ' ',
-            ];
-            $params = array_merge($params, $addressParams);
             $salutationParams = $this->getSalutationParams($orderTransfer->getSalutation() ?: ' ', $orderTransfer->getFirstName() ?: ' ');
             $params = array_merge($params, $salutationParams);
         }
@@ -401,25 +382,22 @@ class MailHandler extends SprykerMailHandler
             $salutationParams = [
                 'salutationPrefix' => $this->translatorFacade->trans(static::MAIL_ORDER_DEAR),
                 'salutation' => $this->translatorFacade->trans(static::MAIL_ORDER_MR),
+                'salutationPrefixCancelled' => $this->translatorFacade->trans(static::MAIL_ORDER_DEAR),
                 'firstNameDivers' => '',
             ];
         } elseif ($salutation == 'Ms') {
             $salutationParams = [
                 'salutationPrefix' => $this->translatorFacade->trans(static::MAIL_ORDER_DEAR_LADY),
                 'salutation' => $this->translatorFacade->trans(static::MAIL_ORDER_MS),
+                'salutationPrefixCancelled' => $this->translatorFacade->trans(static::MAIL_ORDER_DEAR_LADY),
                 'firstNameDivers' => '',
             ];
-        } elseif ($salutation == 'Divers') {
+        } elseif (($salutation == 'Divers') || ($salutation == ' ')) {
             $salutationParams = [
                 'salutationPrefix' => $this->translatorFacade->trans(static::MAIL_ORDER_GOOD),
                 'salutation' => $this->translatorFacade->trans(static::MAIL_ORDER_DAY),
+                'salutationPrefixCancelled' => '',
                 'firstNameDivers' => $firstName ?: '',
-            ];
-        } else {
-            $salutationParams = [
-                'salutationPrefix' => '',
-                'salutation' => $salutation,
-                'firstNameDivers' => '',
             ];
         }
 
@@ -489,6 +467,19 @@ class MailHandler extends SprykerMailHandler
     {
         return $this->twigEnvironment->render(
             $this->config->getOrderConfirmationProductListTemplate(),
+            ['order' => $orderTransfer]
+        );
+    }
+
+    /**
+     * @param \Generated\Shared\Transfer\OrderTransfer $orderTransfer
+     *
+     * @return string
+     */
+    protected function getCustomerInfo(OrderTransfer $orderTransfer): string
+    {
+        return $this->twigEnvironment->render(
+            $this->config->getCustomerInfoTemplate(),
             ['order' => $orderTransfer]
         );
     }

@@ -60,7 +60,10 @@
 
                                 <span class="{{ config.name }}__text">{{ fullShippingName }}</span>
                                 <span class="{{ config.name }}__text">{{ fullAddress }}</span>
-                                <span class="{{ config.name }}__text">{{ address.zipCode }} {{ address.city }}, {{ ('countries.iso.' ~ address.iso2code) | trans }}</span>
+
+                                {% if address.zipCode or address.city is not empty %}
+                                    <span class="{{ config.name }}__text">{{ address.zipCode }} {{ address.city }}, {{ ('countries.iso.' ~ address.iso2code) | trans }}</span>
+                                {% endif %}
 
                                 {% if (address.phone is not empty) and (address.phone|length > 4) %}
                                     <span class="{{ config.name }}__text">{{ 'customer.address.phone' | trans }}: {{ address.phone }}</span>
@@ -88,7 +91,9 @@
                                     <span class="{{ config.name }}__text-CZ">{{ address.phone }}</span>
                                 {% endif %}
 
-                                <span class="{{ config.name }}__text-CZ">{{ address.zipCode }} {{ address.city }}, {{ ('countries.iso.' ~ address.iso2code) | trans }}</span>
+                                {% if address.zipCode or address.city is not empty %}
+                                    <span class="{{ config.name }}__text-CZ">{{ address.zipCode }} {{ address.city }}, {{ ('countries.iso.' ~ address.iso2code) | trans }}</span>
+                                {% endif %}
                             {% endif %}
                         {% endblock %}
                     </div>

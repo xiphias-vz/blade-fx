@@ -1,0 +1,59 @@
+{% block content %}
+
+    {% set salutation = order.salutation %}
+
+    {% if order.billingAddress.firstName is not empty %}
+        {% set firstName = order.billingAddress.firstName %}
+    {% else %}
+        {% set firstName = order.firstName %}
+    {% endif %}
+
+    {% if order.billingAddress.lastName is not empty %}
+        {% set lastName = order.billingAddress.lastName %}
+    {% else %}
+        {% set lastName = order.lastName %}
+    {% endif %}
+
+    {% set address1 = order.billingAddress.address1 %}
+    {% set address2 = order.billingAddress.address2 %}
+    {% set zipCode = order.billingAddress.zipCode %}
+    {% set city = order.billingAddress.city %}
+    {% set phone = order.billingAddress.phone %}
+
+    {% if order.billingAddress.email is not empty %}
+        {% set email = order.billingAddress.email %}
+    {% else %}
+        {% set email = order.email %}
+    {% endif %}
+
+    {% if address1 is empty and address2 is empty and zipCode is empty and city is empty %}
+        {% if phone is empty %}
+            <div>
+                {{ salutation }} {{ firstName }} {{ lastName }} <br>
+                {{ email }}
+            </div>
+        {% else %}
+            <div>
+                {{ salutation }} {{ firstName }} {{ lastName }} <br>
+                {{ phone }} <br>
+                {{ email }}
+            </div>
+        {% endif %}
+    {% elseif phone is empty %}
+        <div>
+            {{ salutation }} {{ firstName }} {{ lastName }} <br>
+            {{ address1 }} {{ address2 }} <br>
+            {{ zipCode }} {{ city }} <br>
+            {{ email }}
+        </div>
+    {% else %}
+        <div>
+            {{ salutation }} {{ firstName }} {{ lastName }} <br>
+            {{ address1 }} {{ address2 }} <br>
+            {{ zipCode }} {{ city }} <br>
+            {{ phone }} <br>
+            {{ email }}
+        </div>
+    {% endif %}
+
+{% endblock %}

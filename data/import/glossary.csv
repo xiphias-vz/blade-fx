@@ -189,7 +189,7 @@ page.checkout.address.heading,1. Address Data,en_US
 page.checkout.address.name,"Jméno",cs_CZ
 page.checkout.address.name,Name,de_DE
 page.checkout.address.name,Name,en_US
-page.checkout.address.billing-address,"Fakturační adresa",cs_CZ
+page.checkout.address.billing-address,"Osobní údaje",cs_CZ
 page.checkout.address.billing-address,Rechnungsadresse,de_DE
 page.checkout.address.billing-address,Billing Address,en_US
 page.checkout.address.abhol-address,"Výdejní místo",cs_CZ
@@ -1740,7 +1740,7 @@ checkout.step.error.text,"Versuchen Sie es bitte später noch einmal oder kontak
 checkout.step.error.text,"Zkuste to prosím ještě jednou později nebo kontaktujte naší zákaznickou podporu. Vaše objednávka nebyla přijata.",cs_CZ
 checkout.step.summary.billing_address,Billing Address,en_US
 checkout.step.summary.billing_address,Rechnungsadresse,de_DE
-checkout.step.summary.billing_address,"Fakturační adresa",cs_CZ
+checkout.step.summary.billing_address,"Osobní údaje",cs_CZ
 checkout.step.summary.merchant-name,Merchant,en_US
 checkout.step.summary.merchant-name,Abholstation,de_DE
 checkout.step.summary.merchant-name,"Výdejní místo",cs_CZ
@@ -3559,9 +3559,12 @@ customer.account.shopping_list.quantity,Anzahl,de_DE
 customer.account.shopping_list.remove,"Odstranit",cs_CZ
 customer.account.shopping_list.remove,Remove,en_US
 customer.account.shopping_list.remove,Löschen,de_DE
-validation.not_blank,"Pro odeslání objednávky je potřeba souhlas s obchodními podmínkami a se zpracováním osobních údajů pro účely objednávky.",cs_CZ
+validation.not_blank,"Toto pole nesmí být prázdné.",cs_CZ
 validation.not_blank,This value should not be blank.,en_US
-validation.not_blank,"Bitte bestätigen Sie die AGBs und die Verarbeitung der personenbezogenen Daten.",de_DE
+validation.not_blank,"Dieses Feld sollte nicht leer sein.",de_DE
+checkout.gdpr.checkbox.error.message,"Pro odeslání objednávky je potřeba souhlas s obchodními podmínkami a se zpracováním osobních údajů pro účely objednávky.",cs_CZ
+checkout.gdpr.checkbox.error.message,"Bitte bestätigen Sie die AGB's und die Verarbeitung der personenbezogenen Daten.",de_DE
+checkout.gdpr.checkbox.error.message,"Please confirm the terms and conditions and the processing of personal data.",en_US
 validation.invalid_date,"Datum musí být ve správném formátu %s.",cs_CZ
 validation.invalid_date,Date should be in correct format %s.,en_US
 validation.invalid_date,Datum sollte im richtigen Format vorliegen %s.,de_DE

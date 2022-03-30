@@ -17,6 +17,7 @@ class SummaryForm extends SprykerShopSummaryForm
     public const FIELD_TERMS_APPROVAL = 'terms_approval';
 
     protected const VALIDATION_NOT_BLANK_MESSAGE = 'validation.not_blank';
+    protected const TERMS_APPROVAL_ERROR_MESSAGE = 'checkout.gdpr.checkbox.error.message';
 
     /**
      * @param \Symfony\Component\Form\FormBuilderInterface $builder
@@ -56,7 +57,7 @@ class SummaryForm extends SprykerShopSummaryForm
     {
         return new NotBlank(
             [
-                'message' => static::VALIDATION_NOT_BLANK_MESSAGE,
+                'message' => static::TERMS_APPROVAL_ERROR_MESSAGE,
             ]
         );
     }
