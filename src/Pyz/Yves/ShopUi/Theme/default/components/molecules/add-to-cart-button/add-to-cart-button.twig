@@ -1,0 +1,146 @@
+{% extends model('component') %}
+
+{% define config = {
+    name: 'add-to-cart-button'
+} %}
+
+{% define data = {
+    product: [],
+    currencyIsoCode: app.currentCurrencyISOCode
+}  %}
+
+{% set addAjaxUrl = path("cart/add-ajax", { "productAbstractId": data.product.id_product_abstract ?? data.product.idProductAbstract }) %}
+
+{% block body %}
+
+    <div class="add-to-cart-btn">
+        {% if app.currentCodeBucket == 'DE' %}
+            <a href="{{ addAjaxUrl }}"
+               rel="nofollow"
+               onclick="productAddToCart('{{ data.product.idProductAbstract }}','{{ data.product.name  | escape('js') }}','{{ data.product.prices.DEFAULT is defined ? data.product.prices.DEFAULT / 100 : null }}','{{ data.product.attributes.supplier | escape('js') }}')"
+               class="button button--middle-icon button--center-align button--backgroundcolor-DE
+                      js-product-color-group__image-{{ data.product.idProductAbstract }}
+                      js-image-animation__link
+                      js-ajax-add-to-cart__link"
+               data-product-id="{{ data.product.idProductAbstract }}"
+               data-product-sku="{{ data.product.sku }}"
+               data-product-title="{{ data.product.name }}"
+               data-product-price="{{ data.product.prices.DEFAULT is defined ? data.product.prices.DEFAULT / 100 : null }}"
+               data-csrf-token="{{ csrf_token('add-to-cart-ajax') }}"
+            >
+                <span class="icon-basketplus"></span>
+                <div class="add-details-to-cart-text-holder">
+                    {{- 'page.detail.add-to-cart' | trans -}}
+                </div>
+            </a>
+        {% else %}
+            <a href="{{ addAjaxUrl }}"
+               rel="nofollow"
+               onclick="productAddToCart('{{ data.product.idProductAbstract }}','{{ data.product.name | escape('js') }}','{{ data.product.prices.DEFAULT is defined ? data.product.prices.DEFAULT / 100 : null }}','{{ data.product.attributes.supplier | escape('js') }}')"
+               class="button button--middle-icon button--center-align button--backgroundcolor-CZ
+                      js-product-color-group__image-{{ data.product.idProductAbstract }}
+                      js-image-animation__link
+                      js-ajax-add-to-cart__link"
+               data-product-id="{{ data.product.idProductAbstract }}"
+               data-product-sku="{{ data.product.sku }}"
+               data-product-title="{{ data.product.name | escape('js') }}"
+               data-product-price="{{ data.product.prices.ORIGINAL is defined ? data.product.prices.ORIGINAL / 100 : null }}"
+               data-csrf-token="{{ csrf_token('add-to-cart-ajax') }}"
+            >
+                <span class="icon-basketplus"></span>
+                <div class="add-details-to-cart-text-holder font-cz">
+                    {{- 'page.detail.add-to-cart' | trans -}}
+                </div>
+            </a>
+        {% endif %}
+
+        <div class="counter is-hidden">
+            {% if app.currentCodeBucket == 'DE' %}
+                <span class="is-hidden message item-added">
+                    <span class="checkmark"></span>
+                    {{ 'cart.add.item.ajax.success' | trans }}
+                </span>
+                <span class="is-hidden message item-removed">
+                    <span class="checkmark"></span>
+                    {{ 'cart.remove.item.ajax.success' | trans }}
+                </span>
+            {% else %}
+                <span class="is-hidden message message-cz item-added font-cz">
+                    <span class="checkmark"></span>
+                    {{ 'cart.add.item.ajax.success' | trans }}
+                </span>
+                <span class="is-hidden message message-cz item-removed font-cz">
+                    <span class="checkmark"></span>
+                    {{ 'cart.remove.item.ajax.success' | trans }}
+                </span>
+            {% endif %}
+
+            {% if app.currentCodeBucket == 'DE' %}
+                <a href="{{ path("cart/change-ajax", { "productAbstractId": data.product.id_product_abstract ?? data.product.idProductAbstract })  }}"
+                   class="js-ajax-change-quantity__link
+                          js-quantity-counter-product__decr"
+                   data-csrf-token="{{ csrf_token('change-cart-ajax') }}"
+                >
+                    -
+                </a>
+            {% else %}
+                <a href="{{ path("cart/change-ajax", { "productAbstractId": data.product.id_product_abstract ?? data.product.idProductAbstract })  }}"
+                   class="js-ajax-change-quantity__link
+                          js-quantity-counter-product__decr"
+                   data-csrf-token="{{ csrf_token('change-cart-ajax') }}"
+                   style="color:#009933; background-color:transparent;" onmouseover="this.style.backgroundColor='#e5f4ea';" onmouseout="this.style.backgroundColor='#ffffff';">
+                    -
+                </a>
+            {% endif %}
+
+            <input type="number" class="txt-product-quantity" min="1" max="99" value="1">
+            {% if app.currentCodeBucket == 'DE' %}
+                <a href="{{ path("cart/change-ajax", { "productAbstractId": data.product.id_product_abstract ?? data.product.idProductAbstract })  }}"
+                   class="js-ajax-change-quantity__link
+                          js-quantity-counter-product__incr"
+                   data-product-sku="{{ data.product.sku }}"
+                   data-product-title="{{ data.product.name }}"
+                   data-product-price="{{ data.product.prices.DEFAULT is defined ? data.product.prices.DEFAULT / 100 : null }}"
+                   data-csrf-token="{{ csrf_token('change-cart-ajax') }}"
+                >
+                    +
+                </a>
+            {% else %}
+                <a href="{{ path("cart/change-ajax", { "productAbstractId": data.product.id_product_abstract ?? data.product.idProductAbstract })  }}"
+                   class="js-ajax-change-quantity__link
+                          js-quantity-counter-product__incr"
+                   data-csrf-token="{{ csrf_token('change-cart-ajax') }}"
+                   style="color:#009933; background-color:transparent;" onmouseover="this.style.backgroundColor='#e5f4ea';" onmouseout="this.style.backgroundColor='#ffffff';">
+                    +
+                </a>
+            {% endif %}
+        </div>
+    </div>
+
+    <script type="text/javascript">
+        function productAddToCart(productId, productName, productPrice, productSku, productBrand)
+        {
+            let selectedElement = document.querySelector(`[data-product-id="${productId}"]`);
+            if (selectedElement !== undefined || selectedElement !== null) {
+                selectedElement.setAttribute("disabled", "true");
+            }
+            window.dataLayer = window.dataLayer || [];
+            window.dataLayer.push({
+                'event': 'eec.addToCart',
+                'ecommerce':{
+                    'add':{
+                        'currencyCode': '{{ data.currencyIsoCode }}',
+                        'products': [{
+                            'id': productId,
+                            'name': productName,
+                            'price': productPrice,
+                            'sku': productSku,
+                            'brand': productBrand,
+                        }]
+                    }
+                },
+            });
+        }
+    </script>
+
+{% endblock %}

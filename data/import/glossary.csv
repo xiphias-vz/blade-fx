@@ -4620,9 +4620,12 @@ measurement_units.recommendation.suggestion,Was würden Sie gerne hinzufügen? ,
 cart.pre.check.quantity.min.failed,"Požadavek na minimální množství pro SKU produktu '% sku%' nebyl dosažen.",cs_CZ
 cart.pre.check.quantity.min.failed,Minimum quantity requirements for product SKU '%sku%' are not fulfilled.,en_US
 cart.pre.check.quantity.min.failed,Die Mindestanzahl für Produkt SKU '%sku%' ist nicht erreicht.,de_DE
-cart.pre.check.quantity.max.failed,"Větší množství tohoto zboží nelze přidat.",cs_CZ
-cart.pre.check.quantity.max.failed,Maximum quantity for product '%sku%' is exceeded.,en_US
-cart.pre.check.quantity.max.failed,Maximale Artikelanzahl wurde hinzugefügt,de_DE
+cart.pre.check.quantity.max.failed,"Větší množství tohoto zboží nelze přidat. Limit = %restrictionValue%.",cs_CZ
+cart.pre.check.quantity.max.failed,"Maximum quantity for product SKU '%sku%' is exceeded. Limit = %restrictionValue%.",en_US
+cart.pre.check.quantity.max.failed,"Maximale Artikelanzahl wurde hinzugefügt. Limit = %restrictionValue%.",de_DE
+cart.pre.check.quantity.limit,"Limit je 99.",cs_CZ
+cart.pre.check.quantity.limit,"Limit is 99.",en_US
+cart.pre.check.quantity.limit,"Bestelllimit ist 99.",de_DE
 cart.pre.check.quantity.interval.failed,"Počet pro SKU produktu '% sku%' se nenachází ve stanoveném intervalu.",cs_CZ
 cart.pre.check.quantity.interval.failed,Quantity interval requirements for product SKU '%sku%' are not fulfilled.,en_US
 cart.pre.check.quantity.interval.failed,Die Anzahl für Produkt SKU '%sku%' liegt nicht innerhalb des vorgegebenen Intervals.,de_DE

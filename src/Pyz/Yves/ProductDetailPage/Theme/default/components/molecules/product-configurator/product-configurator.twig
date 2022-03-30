@@ -173,34 +173,12 @@
             </div>
         {% endif %}
 
-        {% widget 'ProductPackagingUnitWidget' args [data.product, isDisabled, options] only %}
-        {% elsewidget 'ManageProductMeasurementUnitWidget' args [data.product, isDisabled, options] only %}
-        {% nowidget %}
-
-            <div class="grid grid--justify">
-                <div class="col col--sm-12 col--lg-5 spacing-bottom">
-                    {% if not isDisabled %}
-                        {% include molecule('quantity-counter') with {
-                            modifiers: ['quantity-large', 'no-spacing'],
-                            data: {
-                                readOnly: true,
-                            },
-                        } only %}
-                    {% else %}
-                        <input type="hidden" class="js-volume-price__quantity"/>
-                    {% endif %}
-
-                    {% widget 'ProductDiscontinuedNoteWidget' args [data.product.sku] only %}{% endwidget %}
-                </div>
-                <div class="col col--sm-12 col--lg-7 spacing-bottom">
-                    <button type="submit" class="button button--large button--expand button--alternative" {{ isDisabled ? 'disabled' }} {{ qa('add-to-cart-button') }} data-init-single-click>
-
-                        <span class="icon-basketplus"></span>
-                        {{ 'page.detail.add-to-cart' | trans }}
-                    </button>
-                </div>
-            </div>
-        {% endwidget %}
+        {% embed molecule('add-to-cart-button') with {
+            data: {
+                product: data.product,
+            },
+        } only %}
+        {% endembed %}
     </form>
     {% endif %}
 

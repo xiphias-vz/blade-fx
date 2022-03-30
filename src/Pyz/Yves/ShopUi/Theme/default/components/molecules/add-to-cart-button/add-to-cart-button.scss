@@ -1,0 +1,200 @@
+@mixin shop-ui-add-to-cart-button($name: '.add-to-cart-button') {
+    #{$name} {
+        position: relative;
+        z-index: 0;
+        font-family: "Clearface-Medium", Arial, sans-serif;
+        display: flex;
+        align-items: flex-end;
+        width: 55%;
+        margin-top: rem(16);
+        input[type=number]::-webkit-inner-spin-button,
+        input[type=number]::-webkit-outer-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+
+        input[type=number] {
+            -moz-appearance:textfield;
+        }
+
+        .font-cz {
+            font-family: $setting-font-family;
+        }
+
+        .add-to-cart-btn {
+            display: flex;
+            flex-direction: column;
+            align-self: flex-end;
+            width: 100%;
+            a {
+                justify-content: center;
+
+                &:hover {
+                    background-color: $setting-color-globus-darkGreen;
+                }
+                .icon-basketplus {
+                    font-size: rem(18);
+                    margin-right: rem(10);
+
+                    @include helper-breakpoint-media-max($lg-max) {
+                        margin-right: 6px;
+                        font-size: 20px;
+                        justify-content: center;
+                    }
+
+                    @include helper-breakpoint-media-max($l-max){
+                        font-size: 20px;
+                        margin-right: 8px;
+                        justify-content: center;
+                    }
+                }
+                @include helper-breakpoint-media-max($sm-max) {
+                    &.js-ajax-add-to-cart__link:hover {
+                        box-shadow: 0 0 20px $setting-color-globus-lightOrange !important;
+                    }
+                }
+
+                .add-details-to-cart-text-holder {
+                    font-size: rem(12);
+                }
+            }
+
+            .change-cart-counter {
+                display: flex;
+                justify-content: space-evenly;
+                border: 1px solid $setting-color-lightest;
+                border-radius: 5px;
+                position: relative;
+                height: 40px;
+
+                .message {
+                    width: 190px;
+                    display: flex;
+                    align-items: center;
+                    justify-content: space-around;
+                    position: absolute;
+                    top: -60px;
+                    padding: 10px;
+                    background-color:#7b7b7b;
+                    color: #fff;
+                    z-index: 1;
+
+                    &.is-hidden {
+                        display: none !important;
+                    }
+
+                    .checkmark {
+                        position: relative;
+                        top: -4px;
+                        display: inline-block;
+                        transform: rotate(45deg);
+                        height: 22px;
+                        width: 11px;
+                        border-bottom: 2px solid $setting-color-globus-white;
+                        border-right: 2px solid $setting-color-globus-white;
+                    }
+
+                    &:after {
+                        content: "";
+                        position: absolute;
+                        top: 100%;
+                        left: 48%;
+                        margin-left: -5px;
+                        border-top: 19px solid $setting-color-globus-darkGray-2;
+                        border-bottom: 19px solid transparent;
+                        border-right: 8px solid transparent;
+                        border-left: 8px solid transparent;
+                    }
+                }
+
+                .message-cz {
+                    font-size: 12px;
+                }
+
+                .txt-product-quantity {
+                    width: 60%;
+                    text-align: center;
+                    outline: none;
+                    border: none;
+
+                    @include helper-breakpoint-media-max($sm-max) {
+                        padding-left: 0;
+                        width: 40px;
+                        margin: 0;
+                    }
+                }
+
+                .js-ajax-change-quantity__link {
+                    background: $setting-color-lightest;
+                    display: inline-block;
+                    text-align: center;
+                    font-size: 16px;
+                    padding: 5px 10px;
+                    text-decoration: none;
+
+                    &.js-quantity-counter-product__decr {
+                        width: 60px;
+                        border-right: 1px solid $setting-color-lightest;
+                        color: $setting-color-globus-darkGreen;
+                        border-radius: 5px;
+                        transition-duration: 0.25s;
+                        &:hover {
+                            color:$setting-color-globus-darkGreen;
+                            background-color: $setting-color-globus-lightGreen-2;
+                        }
+                    }
+                    &.js-quantity-counter-product__incr {
+                        width: 60px;
+                        border-left: 1px solid $setting-color-lightest;
+                        background-color: $setting-color-globus-darkGreen;
+                        color: $setting-color-globus-white;
+                        border-radius: 5px;
+                        transition-duration: 0.25s;
+                        &:hover {
+                            color:$setting-color-globus-darkGreen;
+                            background-color: $setting-color-globus-lightGreen-2;
+                        }
+                    }
+
+                    @include helper-breakpoint-media-max($sm-max) {
+                        height: auto;
+                        margin: 0;
+                    }
+                }
+            }
+
+            @include helper-breakpoint-media-max($xs-max) {
+                display: flex;
+                justify-content: flex-end;
+                text-align: right;
+                border-top: 1px solid $setting-color-lighter;
+                width: 100%;
+                padding: 8px 1px 3px;
+
+                a {
+                    justify-content: center;
+                    width: 100%;
+                    min-width: 40px;
+                    padding: 15px;
+                    height: 40px;
+                    margin: 0 8px 6px 0;
+                    .add-details-to-cart-text-holder {
+                        display: none;
+                    }
+
+                    .icon-basketplus {
+                        font-size: rem(24);
+                        margin-right: 0;
+                    }
+
+                    .icon {
+                        width: rem(15);
+                        margin: 0;
+                    }
+                }
+            }
+        }
+    }
+}
+
+@include shop-ui-add-to-cart-button();

@@ -15,6 +15,8 @@ use Spryker\Zed\ProductQuantity\Business\Model\Validator\ProductQuantityRestrict
 
 class ProductQuantityRestrictionValidator extends SpryProductQuantityRestrictionValidator
 {
+    protected const ERROR_QUANTITY_LIMIT = 'cart.pre.check.quantity.limit';
+
     /**
      * @param \Spryker\Zed\ProductQuantity\Business\Model\ProductQuantityReaderInterface $productQuantityReader
      */
@@ -43,6 +45,10 @@ class ProductQuantityRestrictionValidator extends SpryProductQuantityRestriction
         /** @var string $att */
         $att = $productQuantityTransfer->getProduct()->getAttributes();
         $productName = json_decode($att, true)['name'];
+
+        if ($quantity > 99) {
+            $this->addViolationProductOrderLimit(static::ERROR_QUANTITY_LIMIT, $responseTransfer);
+        }
 
         if ($quantity !== 0 && $quantity < $min) {
             $this->addViolation(static::ERROR_QUANTITY_MIN_NOT_FULFILLED, $sku, $min, $quantity, $responseTransfer);
@@ -74,6 +80,21 @@ class ProductQuantityRestrictionValidator extends SpryProductQuantityRestriction
             (new MessageTransfer())
                 ->setValue($message)
                 ->setParameters(['%sku%' => $productName, '%restrictionValue%' => $restrictionValue, '%actualValue%' => $actualValue])
+        );
+    }
+
+    /**
+     * @param string $message
+     * @param \Generated\Shared\Transfer\CartPreCheckResponseTransfer $responseTransfer
+     *
+     * @return void
+     */
+    protected function addViolationProductOrderLimit(string $message, CartPreCheckResponseTransfer $responseTransfer): void
+    {
+        $responseTransfer->setIsSuccess(false);
+        $responseTransfer->addMessage(
+            (new MessageTransfer())
+                ->setValue($message)
         );
     }
 }

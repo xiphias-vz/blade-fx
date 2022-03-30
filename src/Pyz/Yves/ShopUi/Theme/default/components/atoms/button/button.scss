@@ -231,6 +231,10 @@
             }
         }
 
+        &--center-align {
+            justify-content: center;
+        }
+
         &--hollow-border-light {
             border-color: $setting-color-gray-10;
         }
