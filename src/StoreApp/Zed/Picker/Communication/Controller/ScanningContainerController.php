@@ -194,7 +194,11 @@ class ScanningContainerController extends AbstractController
                 return $this->redirectResponse($urlOverview);
             }
         } elseif ($addContainerToSubstitutedItem === true) {
-            $orderForScanningContainer = $transfer->getOrderById($transfer->getOrderItem($transfer->getLastPickingItemPosition())->getIdOrder());
+            if ($transfer->getLastPickingItemPosition() !== null) {
+                $orderForScanningContainer = $transfer->getOrderById($transfer->getOrderItem($transfer->getLastPickingItemPosition())->getIdOrder());
+            } else {
+                $orderForScanningContainer = $transfer->getNextOrder($nextOrderPosition);
+            }
         } else {
             $orderForScanningContainer = $transfer->getNextOrder($nextOrderPosition);
         }
