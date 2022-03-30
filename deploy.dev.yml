@@ -519,12 +519,6 @@ groups:
                         store: NKS
                         entry-point: StoreApp
 
-            Glue:
-                application: glue
-                endpoints:
-                    glue.shop.globus.local:
-                        store: EIN
-
 services:
     database:
         engine: mysql
