@@ -347,6 +347,7 @@ export default class AjaxAddToCart extends Component {
         counter?.classList.remove(this.ajaxCartCounterClass);
         counter?.classList.add(HIDDEN_CLASS);
         addAjaxButton?.classList.remove(HIDDEN_CLASS);
+        addAjaxButton.removeAttribute('disabled');
     }
 
     protected get addToCartLinkClass(): string {
