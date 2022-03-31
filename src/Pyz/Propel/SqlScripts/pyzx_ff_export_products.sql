@@ -1,6 +1,29 @@
 delimiter //
 create or replace procedure pyzx_ff_export_products()
 BEGIN
+    DROP TEMPORARY TABLE IF EXISTS tbl_ffAttribute;
+
+    CREATE TEMPORARY TABLE tbl_ffAttribute AS
+    select spa.id_product_abstract,
+           GROUP_CONCAT(DISTINCT case when json_extract(spa.attributes, CONCAT('$[0].' , k.key)) = "1" THEN
+               IFNULL(sgt.value, k.key) ELSE null END SEPARATOR '#') as ffMultiAttributeText
+    from spy_product_abstract spa
+        inner join spy_product sp ON spa.id_product_abstract = sp.fk_product_abstract AND sp.is_active = 1
+        cross join (
+            select spak.`key`
+            from spy_product_attribute_key spak
+            where spak.ff_export = 1
+        ) k
+        left outer join spy_glossary_key sgk on sgk.`key` = CONCAT('product.attribute.', k.key)
+        left outer join spy_locale sl on sl.locale_name = 'de_DE'
+        left outer join spy_glossary_translation sgt on sgk.id_glossary_key = sgt.fk_glossary_key
+            and sgt.fk_locale = sl.id_locale
+    GROUP BY spa.id_product_abstract;
+
+    DELETE FROM tbl_ffAttribute WHERE ffMultiAttributeText IS NULL;
+
+    CREATE INDEX ix_ffAttribute ON tbl_ffAttribute (id_product_abstract);
+
     SELECT sp.sku as ArticleNumber
          , sp.product_number as MasterArticleNumber
          , spala.name as Title
@@ -15,7 +38,9 @@ BEGIN
          , su.url as ProductURL
          , REPLACE(img.external_url_large, '.com/', '.com/thumb_') as ImageURL
          , img.rbr
-         , null as MultiAttributeText
+         , CASE WHEN tatt.id_product_abstract IS NULL THEN NULL ELSE
+                CONCAT('|Eigenschaften=', tatt.ffMultiAttributeText, '|')
+            END as MultiAttributeText
          , null as Attribute
          , ifnull(spc.product_order, 0) * -1 as SalesRanking
          , null as ArticleType
@@ -74,6 +99,7 @@ BEGIN
         LEFT OUTER JOIN spy_category_attribute sca3 on sc3.id_category = sca3.fk_category
         LEFT OUTER JOIN spy_category_attribute sca4 on sc4.id_category = sca4.fk_category
         LEFT OUTER JOIN spy_category_attribute sca5 on sc5.id_category = sca5.fk_category
+        LEFT OUTER JOIN tbl_ffAttribute tatt on sp.fk_product_abstract = tatt.id_product_abstract
     WHERE sp.is_active = 1
     GROUP BY sp.sku, sp.product_number;
 END;

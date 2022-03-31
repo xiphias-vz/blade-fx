@@ -42,6 +42,7 @@
     </table>
 
     <table name="spy_product_attribute_key">
+        <column name="ff_export" type="BOOLEAN" required="false" defaultValue="false"/>
         <behavior name="event">
             <parameter name="spy_product_attribute_key_all" column="*"/>
         </behavior>

@@ -14,5 +14,12 @@
         <property name="lastUpdatedAt" type="string"/>
     </transfer>
 
+    <transfer name="ProductAttributeKey">
+        <property name="idProductAttributeKey" type="int"/>
+        <property name="key" type="string"/>
+        <property name="isSuper" type="bool"/>
+        <property name="ffExport" type="bool"/>
+    </transfer>
+
 </transfers>
 
