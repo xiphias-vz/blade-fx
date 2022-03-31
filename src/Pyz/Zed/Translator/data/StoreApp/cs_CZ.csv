@@ -194,7 +194,7 @@ multi.picking.done.dialog.content,"Přiřadili jste všechny Vaše kontejnery sk
 multi.picking.order.dialog.title,"Zktrolujte svoje pickování"
 multi.picking.order.dialog.content,"Zóna dokončena, nebo chcete ještě zkontrolovat?"
 multi.picking.order.dialog.button,"Potvrdit zónu"
-multi.picking.order.dialog.button.merge.containers,"Container aufpacken"
+multi.picking.order.dialog.button.merge.containers,"Spojení kontejnerů"
 multi.picking.product.attribute.weight,"Hmotnost"
 multi.picking.substitutes.popupui.title,"Náhrada"
 multi.picking.substitutes.popupui.confirm.button,"Ano"

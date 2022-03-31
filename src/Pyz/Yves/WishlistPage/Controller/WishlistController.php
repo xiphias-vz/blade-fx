@@ -33,7 +33,8 @@ class WishlistController extends SprykerWishlistController
     public const MESSAGE_PERMISSION_FAILED = 'global.permission.failed';
     private const REQUEST_PARAM_CSRF_TOKEN = 'token';
 
-    public const DEFAULT_NAME = 'Meine Einkaufsliste';
+    public const DEFAULT_NAME_DE = 'Meine Einkaufsliste';
+    public const DEFAULT_NAME_CZ = 'Můj nákupní seznam';
     public const REQUEST_HEADER_REFERER = 'referer';
     public const PARAM_WISHLIST_QUANTITY = 'quantity';
     public const PARAM_ID_PRODUCT_ABSTRACT = 'idProductAbstract';
@@ -135,10 +136,16 @@ class WishlistController extends SprykerWishlistController
      */
     protected function getWishlistItemTransferFromRequest(Request $request)
     {
+        $storeCodeBucket = getenv('SPRYKER_CODE_BUCKET');
+
         $wishlistItemTransfer = parent::getWishlistItemTransferFromRequest($request);
 
         if ($wishlistItemTransfer) {
-            $wishlistItemTransfer->setWishlistName($request->get(self::PARAM_WISHLIST_NAME) ?: static::DEFAULT_NAME);
+            if ($storeCodeBucket == 'DE') {
+                $wishlistItemTransfer->setWishlistName($request->get(self::PARAM_WISHLIST_NAME) ?: self::DEFAULT_NAME_DE);
+            } else {
+                $wishlistItemTransfer->setWishlistName($request->get(self::PARAM_WISHLIST_NAME) ?: self::DEFAULT_NAME_CZ);
+            }
             $wishlistItemTransfer->setQuantity($this->getWishlistItemQuantityFromRequest($request));
             $wishlistItemTransfer->setIdProductAbstract($this->getIdProductAbstractFromRequest($request));
 

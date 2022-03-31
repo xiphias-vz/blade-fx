@@ -12,3 +12,5 @@ mail.order.good,Guten
 mail.order.day,Tag
 mail.order.transport.box.heading,Nachhaltige Transportboxen
 mail.order.transport.box.text,Ihr Einkauf wird in unseren nachhaltigen Transportboxen vorbereitet. Die Gebühr pro Box beträgt 10€. Gebühr und Rückgabe erfolgt bei der Abholung ganz einfach in der Abholstation.
+mail.order.items.available_1,"Nur noch"
+mail.order.items.available_2,"Artikel verfügbar"

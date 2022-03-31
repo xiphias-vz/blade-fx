@@ -187,5 +187,6 @@ order.overview.collection.no,"Ne, zrušit"
 order.overview.collection.yes,"Ano, vyzvednutí potvrdit"
 Reset,"Resetovat"
 order.overview.pick-up.confirm,"Potvrdit vyzvednutí"
+order.overview.pick-up.confirm.picking,"Potvrdit výběr"
 select.picking.zone.back.button,"Zrušit"
 

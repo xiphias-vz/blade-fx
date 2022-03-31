@@ -188,4 +188,5 @@ order.overview.collection.no,"Nein, abbrechen"
 order.overview.collection.yes,"Ja, Abholung bestätigen"
 Reset,Zurücksetzen
 order.overview.pick-up.confirm,Abholung bestätigen
+order.overview.pick-up.confirm.picking,"Picking bestätigen"
 select.picking.zone.back.button,Zurück

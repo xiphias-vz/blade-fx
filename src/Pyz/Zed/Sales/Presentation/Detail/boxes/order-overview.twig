@@ -461,7 +461,7 @@
                                 }
                                 else if(action.includes("/oms/trigger/submit-trigger-event-for-order?event=Picking+best")){
                                     omsActionForms[i].style.display = "none";
-                                    var nodePicking = '<button type="button" id="oms_trigger_form_submit_pickingBest" name="oms_trigger_formPickingBest[submit]" class="btn btn-primary btn-sm" style="margin-right: 10px;">Picking bestätigen</button>';
+                                    var nodePicking = '<button type="button" id="oms_trigger_form_submit_pickingBest" name="oms_trigger_formPickingBest[submit]" class="btn btn-primary btn-sm" style="margin-right: 10px;">{{ 'order.overview.pick-up.confirm.picking' | trans }}</button>';
                                     var lastPicking = btnOmsActions.querySelector(".ibox-content");
                                     lastPicking.insertAdjacentHTML('beforeend', nodePicking);
                                 }

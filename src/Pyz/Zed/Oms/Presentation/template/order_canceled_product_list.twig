@@ -54,14 +54,14 @@
                                                                         {% endif %}
                                                                         {% if (itemStatus == 'canceled') %}
                                                                             <br>
-                                                                            <span style="font-size:10px;">Nur noch {{ availableItems }} Artikel verfügbar</span>
+                                                                            <span style="font-size:10px;">{{ 'mail.order.items.available_1' | trans }} {{ availableItems }} {{ 'mail.order.items.available_2' | trans }}</span>
                                                                         {% else %}
                                                                             {% if (orderItem.pricePerKg != null and orderItem.newWeight != null) %}
                                                                                 <br>
                                                                                 <span style="font-size:12px;">{{ orderItem.newWeight }} gr</span>
                                                                             {% else  %}
                                                                                 <br>
-                                                                                <span style="font-size:10px;">Nur noch {{ orderItem.quantity }}  Artikel verfügbar</span>
+                                                                                <span style="font-size:10px;">{{ 'mail.order.items.available_1' | trans }} {{ orderItem.quantity }} {{ 'mail.order.items.available_2' | trans }}</span>
                                                                             {% endif %}
                                                                         {% endif %}
                                                                     {% else %}

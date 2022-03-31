@@ -14,6 +14,8 @@ use Spryker\Zed\Wishlist\Business\Model\Writer as SprykerWriter;
 
 class Writer extends SprykerWriter implements WriterInterface
 {
+    protected const WISH_LIST_NAME_VALIDATION_REGEX = '/^[ äöüÄÖÜßěščřžýáíéóúůďťňĎŇŤŠČŘŽÝÁÍÉÚŮĚÓA-z0-9-]+$/';
+
     /**
      * @param \Generated\Shared\Transfer\WishlistItemTransfer $wishlistItemTransfer
      *
@@ -112,5 +114,17 @@ class Writer extends SprykerWriter implements WriterInterface
             ->setFkCustomer($wishlistItemTransfer->getFkCustomer());
 
         return $this->isWishListNameValid($wishlistTransfer);
+    }
+
+    /**
+     * @param \Generated\Shared\Transfer\WishlistTransfer $wishlistTransfer
+     *
+     * @return bool
+     */
+    protected function isWishListNameValid(WishlistTransfer $wishlistTransfer): bool
+    {
+        $wishlistTransfer->requireName();
+
+        return (bool)preg_match(static::WISH_LIST_NAME_VALIDATION_REGEX, $wishlistTransfer->getName());
     }
 }
