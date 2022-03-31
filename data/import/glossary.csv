@@ -1107,6 +1107,9 @@ customer.order.state.accepted-by-customer,vom Kunden akzeptiert,de_DE
 customer.order.state.order-invoiced,Order invoiced,en_US
 customer.order.state.order-invoiced,Bestellung in Rechnung gestellt,de_DE
 customer.order.state.order-invoiced,"Objednávka fakturována",cs_CZ
+customer.order.state.invoiced,Order invoiced,en_US
+customer.order.state.invoiced,Abgeholt,de_DE
+customer.order.state.invoiced,"Vyzvednuto",cs_CZ
 customer.order.state.closed,closed,en_US
 customer.order.state.closed,geschlossen,de_DE
 customer.order.state.closed,"uzavřeno",cs_CZ
@@ -1123,7 +1126,7 @@ customer.order.state.collection-process,Collection process,en_US
 customer.order.state.collection-process,Sammelprozess,de_DE
 customer.order.state.collection-process,"Hromadný proces",cs_CZ
 customer.order.state.ready-for-collection,ready for collection,en_US
-customer.order.state.ready-for-collection,bereit zur Abholung,de_DE
+customer.order.state.ready-for-collection,Abholbereit,de_DE
 customer.order.state.ready-for-collection,"Připraveno k vyzvednutí",cs_CZ
 customer.order.state.collected-by-customer,picked up by the customer,en_US
 customer.order.state.collected-by-customer,vom Kunden abgeholt,de_DE
@@ -1162,8 +1165,8 @@ customer.order.state.ready-to-start-picking,ready to pick,en_US
 customer.order.state.ready-to-start-picking,bereit zu pflücken,de_DE
 customer.order.state.ready-to-start-picking,"Připraveno na vychystání",cs_CZ
 customer.order.state.ready-for-picking,ready to pick,en_US
-customer.order.state.ready-for-picking,bereit zum pflücken,de_DE
-customer.order.state.ready-for-picking,"Připraveno na vychystání",cs_CZ
+customer.order.state.ready-for-picking,Offen,de_DE
+customer.order.state.ready-for-picking,"Otevřeno,cs_CZ
 customer.order.state.picked,picked,en_US
 customer.order.state.picked,gepflückt,de_DE
 customer.order.state.picked,"vychystané",cs_CZ
@@ -1262,7 +1265,7 @@ customer.order.state.completed,Abgeschlossen,de_DE
 customer.order.state.completed,"Uzavřeno",cs_CZ
 customer.order.state.in-processing,In process,en_US
 customer.order.state.in-processing,In Bearbeitung,de_DE
-customer.order.state.in-processing,"Zpracovává se",cs_CZ
+customer.order.state.in-processing,"Probíhá",cs_CZ
 customer.order.state.invalid,Failed,en_US
 customer.order.state.invalid,Fehlgeschlagen,de_DE
 customer.order.state.invalid,"Došlo k selhání",cs_CZ

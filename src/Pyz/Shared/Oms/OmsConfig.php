@@ -32,6 +32,7 @@ class OmsConfig extends SprykerOmsConfig
 
     public const STORE_STATE_READY_FOR_COLLECT_BY_CUSTOMER = 'ready for collection';
     public const STORE_STATE_COLLECTED_BY_CUSTOMER = 'collected by customer';
+    public const STORE_STATE_ORDER_INVOICED = 'order invoiced';
     public const STORE_STATE_COLLECTION_CANCELLED_BY_CUSTOMER = 'collection cancelled by customer';
     public const STORE_STATE_COLLECTION_CANCELLED_BY_STORE = 'collection cancelled by store';
 
@@ -50,12 +51,17 @@ class OmsConfig extends SprykerOmsConfig
     public const STORE_EVENT_CANCEL_DELIVERY_BY_CUSTOMER = 'cancel delivery by customer';
     public const STORE_STATE_CANCELLED_BY_TIMEOUT = 'cancelled by timeout';
 
+    /* Weight products */
+    public const STORE_STATE_READY_FOR_COLLECT_BY_CUSTOMER_CANCELED = 'ready for collection, cancelled';
+    public const STORE_STATE_ORDER_INVOICED_CANCELED = 'order invoiced, cancelled';
+
     public const STATE_NEW = 'new';
     public const STATE_CANCELLED = 'cancelled';
     public const STATE_CLOSED = 'closed';
     public const STATE_IN_PROCESSING = 'in processing';
     public const STATE_INVALID = 'invalid';
     public const STATE_COMPLETED = 'completed';
+    public const STATE_INVOICED = "invoiced";
     public const STATE_CANCELLED_BY_CUSTOMER = 'cancelled by customer';
     public const STATE_CANCELLED_BY_BACKOFFICE = 'cancelled by backoffice';
     public const STATE_COLLECTION_PROCESS = 'collection process';
