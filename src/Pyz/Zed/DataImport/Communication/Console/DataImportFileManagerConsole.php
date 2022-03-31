@@ -8,6 +8,7 @@
 namespace Pyz\Zed\DataImport\Communication\Console;
 
 use Spryker\Zed\Kernel\Communication\Console\Console;
+use Symfony\Component\Config\Definition\Exception\Exception;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
@@ -37,7 +38,13 @@ class DataImportFileManagerConsole extends Console
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $this->getFacade()->downloadDataImportFiles();
+        try {
+            $this->getFacade()->downloadDataImportFiles();
+        } catch (Exception $e) {
+            dump($e);
+
+            return static::CODE_ERROR;
+        }
 
         return static::CODE_SUCCESS;
     }

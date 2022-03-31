@@ -31,6 +31,8 @@ class SFTPDataImportFileDownloader
      */
     protected $dataImportConfig;
 
+    protected $counter = 0;
+
     protected const SFTP_PATH = '/OUT/';
     protected const SFTP_ARCHIVE_NAME = 'archiv';
     protected const SFTP_FILE_SYSTEM_NAME = 'globus_sftp';
@@ -72,6 +74,11 @@ class SFTPDataImportFileDownloader
                     $this->moveDownloadedFilesToArchive($content);
                 }
             }
+        }
+
+        if (!empty($listContents) && $this->counter < 3) {
+            $this->counter++;
+            $this->downloadDataImportFiles();
         }
     }
 
