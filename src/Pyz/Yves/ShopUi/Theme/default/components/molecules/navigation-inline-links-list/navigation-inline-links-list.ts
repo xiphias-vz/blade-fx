@@ -9,10 +9,11 @@ window.addEventListener('resize', function(event){
 function checkAndSetNavigationLinksList(){
     var width = window.innerWidth;
     var element = document.querySelector("#unorderedListId");
-    if(width > 575){
-        element.classList.add("inline-list");
-    }
-    else {
-        element.classList.remove("inline-list");
+    if (element !== undefined && element !== null) {
+        if (width > 575) {
+            element.classList.add('inline-list');
+        } else {
+            element.classList.remove('inline-list');
+        }
     }
 }

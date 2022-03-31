@@ -21,12 +21,19 @@ function checkAndSetFooter(){
 
     var elementTextCenter = document.querySelector(".copyright-build-with");
     var footerNav = document.querySelector("#footerNav");
-    if(width > 575){
-       elementTextCenter.classList.add("text-center");
-       footerNav.classList.add("footer__navigation");
-    }
-    else {
-       elementTextCenter.classList.remove("text-center");
-       footerNav.classList.remove("footer__navigation");
+    if (width > 575) {
+        if (elementTextCenter !== null && elementTextCenter !== undefined) {
+            elementTextCenter.classList.add("text-center");
+        }
+        if (footerNav !== null && footerNav !== undefined) {
+            footerNav.classList.add("footer__navigation");
+        }
+    } else {
+        if (elementTextCenter !== null && elementTextCenter !== undefined) {
+            elementTextCenter.classList.remove("text-center");
+        }
+        if (footerNav !== null && footerNav !== undefined) {
+            footerNav.classList.remove("footer__navigation");
+        }
     }
 }
