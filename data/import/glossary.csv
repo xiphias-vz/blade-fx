@@ -4285,6 +4285,11 @@ product.info.avarage.adult,* Referenzmenge für einen durchschnittlichen Erwachs
 product.info.nutritional.information.prefix,"na",cs_CZ
 product.info.nutritional.information.prefix,per,en_US
 product.info.nutritional.information.prefix,pro,de_DE
+product.info.medicines.usecases,"Anwendungsgebiete",de_DE
+product.info.medicines.sideeffects,"mögl. Nebenwirkungen",de_DE
+product.info.medicines.limitation,"Dosierbeschränkung",de_DE
+product.info.medicines.recommendation,"Dosierempfehlung",de_DE
+product.info.medicines.interaction,"Wechselwirkungen",de_DE
 PRODUCT_PAGE_SEARCH:SEARCHABLE_ATTRIBUTE_VALUE_YES,"Ano",cs_CZ
 PRODUCT_PAGE_SEARCH:SEARCHABLE_ATTRIBUTE_VALUE_YES,Yes,de_DE
 PRODUCT_PAGE_SEARCH:SEARCHABLE_ATTRIBUTE_VALUE_YES,Ja,de_DE
