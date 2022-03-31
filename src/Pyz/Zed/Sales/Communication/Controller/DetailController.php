@@ -76,6 +76,7 @@ class DetailController extends SprykerDetailController
         $isDepositAllowed = $orderTransfer->getIsDepositAllowed();
         $orderTransfer->setCartNote(json_decode($orderTransfer->getCartNote()));
         $cellPhone = $orderTransfer->getBillingAddress()->getCellPhone();
+        $phone = $orderTransfer->getBillingAddress()->getPhone();
         $userFacade = $this->getFactory()->getUserFacade();
         $idUser = $userFacade->getCurrentUser()->getIdUser();
         $userGroup = $this->getFactory()->getAclFacade()->getUserGroups($idUser)->getGroups()[0]->getName();
@@ -98,10 +99,10 @@ class DetailController extends SprykerDetailController
                     }
                 }
             }
-            if (!$address->getPhone()) {
+            if (!$phone) {
                 foreach ($customerTransfer->getBillingAddress() as $billAddress) {
                     if ($billAddress->getPhone()) {
-                        $address->setPhone($billAddress->getPhone());
+                        $phone = $billAddress->getPhone();
                         break;
                     }
                 }
@@ -297,6 +298,7 @@ class DetailController extends SprykerDetailController
             'pickingZonesForContainers' => $pickingZonesForContainers,
             'containers' => $containers,
             'timeSlotsData' => $timeSlotsData,
+            'phone' => $phone,
             'cellPhone' => $cellPhone,
             'isTransportBoxEnabled' => $isDepositAllowed,
         ], $blockResponseData);

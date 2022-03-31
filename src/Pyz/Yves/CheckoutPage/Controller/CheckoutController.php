@@ -241,6 +241,43 @@ class CheckoutController extends SprykerCheckoutControllerAlias
         }
 
         $customer = $this->getFactory()->getQuoteClient()->getQuote()->getCustomer();
+        $quoteTransfer = $this->getFactory()->getQuoteClient()->getQuote();
+        $customerProfileFromApi = (array)$this->getAccountInfo();
+
+        $customerPhone = $customer->getPhone();
+        $customerMobile = $customer->getMobilePhoneNumber();
+
+        $billingPhone = $quoteTransfer->getBillingAddress()->getPhone();
+        $billingMobile = $quoteTransfer->getBillingAddress()->getCellPhone();
+
+        if ($customerPhone !== $billingPhone) {
+            $this->getFactory()
+                ->getCustomerClient()
+                ->getCustomer()
+                ->setPhone($customerPhone);
+            $this->getFactory()
+                ->getQuoteClient()
+                ->getQuote()
+                ->getBillingAddress()
+                ->setPhone($customerPhone);
+            $customerProfileFromApi["profile"]->phones[1]->number = $customerPhone;
+        }
+
+        if ($customerMobile !== $billingMobile) {
+            $this->getFactory()
+                ->getCustomerClient()
+                ->getCustomer()
+                ->setMobilePhoneNumber($customerMobile);
+            $this->getFactory()
+                ->getQuoteClient()
+                ->getQuote()
+                ->getBillingAddress()
+                ->setCellPhone($customerMobile);
+            $customerProfileFromApi["profile"]->phones[0]->number = $customerMobile;
+        }
+        $dataProfilePhones = ['profile' => ['phones' => $customerProfileFromApi["profile"]->phones]];
+
+        $this->changeAccountData($dataProfilePhones);
 
         if ($customer === null) {
             $this->addErrorMessage(static::MESSAGE_NO_CUSTOMER);
@@ -321,6 +358,47 @@ class CheckoutController extends SprykerCheckoutControllerAlias
         $result = GlobusRestApiClientAccount::getPayBackInfoFromAccount($uuid, $idToken);
 
         return json_decode($result);
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getAccountInfo()
+    {
+        $uid = $this->getFactory()->getSessionClient()->get("cdcUID");
+        $idToken = $this->getFactory()->getSessionClient()->get("id_token");
+
+        if ($uid == null || $idToken == null) {
+            return "";
+        }
+        $result = GlobusRestApiClientAccount::getAccountInfo($uid, $idToken);
+
+        return json_decode($result);
+    }
+
+    /**
+     * @return mixed
+     */
+    public function changeAccountData($data)
+    {
+        $uid = $this->getFactory()->getSessionClient()->get("cdcUID");
+
+        if ($_SESSION["_sf2_attributes"]["id_token_strong"]) {
+            $idToken = $this->getFactory()->getSessionClient()->get("id_token_strong");
+        } else {
+            $idToken = $this->getFactory()->getSessionClient()->get("id_token");
+        }
+
+        if ($uid == null || $idToken == null) {
+            return "";
+        }
+        $result = GlobusRestApiClientAccount::changeAccountData($uid, $data, $idToken);
+
+        if ($result->isSuccess) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     /**
