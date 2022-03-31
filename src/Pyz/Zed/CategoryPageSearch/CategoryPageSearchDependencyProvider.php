@@ -14,22 +14,19 @@ class CategoryPageSearchDependencyProvider extends SprykerCategoryPageSearchDepe
 {
     public const FACADE_LOCALE = 'FACADE_LOCALE';
     public const FACADE_PRODUCT_CATEGORY = 'FACADE_PRODUCT_CATEGORY';
-    public const FACADE_CATEGORY_PAGE_SEARCH = 'FACADE_CATEGORY_PAGE_SEARCH';
-    public const FACADE_SPRYKER_CATEGORY = 'FACADE_SPRYKER_CATEGORY';
 
     /**
      * @param \Spryker\Zed\Kernel\Container $container
      *
      * @return \Spryker\Zed\Kernel\Container
      */
-    public function provideBusinessLayerDependencies(Container $container): Container
+    public function provideBusinessLayerDependencies(Container $container)
     {
         $container = parent::provideBusinessLayerDependencies($container);
 
         $container = $this->addLocaleFacade($container);
+        $container = $this->addCategoryFacade($container);
         $container = $this->addProductCategoryFacade($container);
-        $container = $this->addCategoryPageSearchFacade($container);
-        $container = $this->addSprykerCategoryFacade($container);
 
         return $container;
     }
@@ -53,38 +50,24 @@ class CategoryPageSearchDependencyProvider extends SprykerCategoryPageSearchDepe
      *
      * @return \Spryker\Zed\Kernel\Container
      */
+    private function addCategoryFacade(Container $container): Container
+    {
+        $container->set(static::FACADE_CATEGORY, function (Container $container) {
+            return $container->getLocator()->category()->facade();
+        });
+
+        return $container;
+    }
+
+    /**
+     * @param \Spryker\Zed\Kernel\Container $container
+     *
+     * @return \Spryker\Zed\Kernel\Container
+     */
     private function addLocaleFacade(Container $container): Container
     {
         $container->set(static::FACADE_LOCALE, function (Container $container) {
             return $container->getLocator()->locale()->facade();
-        });
-
-        return $container;
-    }
-
-    /**
-     * @param \Spryker\Zed\Kernel\Container $container
-     *
-     * @return \Spryker\Zed\Kernel\Container
-     */
-    protected function addCategoryPageSearchFacade(Container $container): Container
-    {
-        $container->set(static::FACADE_CATEGORY_PAGE_SEARCH, function (Container $container) {
-            return $container->getLocator()->categoryPageSearch()->facade();
-        });
-
-        return $container;
-    }
-
-    /**
-     * @param \Spryker\Zed\Kernel\Container $container
-     *
-     * @return \Spryker\Zed\Kernel\Container
-     */
-    public function addSprykerCategoryFacade(Container $container): Container
-    {
-        $container->set(static::FACADE_SPRYKER_CATEGORY, function (Container $container) {
-            return $container->getLocator()->category()->facade();
         });
 
         return $container;
