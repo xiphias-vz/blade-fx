@@ -82,14 +82,7 @@ class SalesOrderSaver extends SprykerSalesOrderSaver
 
         parent::hydrateSalesOrderItemEntity($salesOrderEntity, $quoteTransfer, $salesOrderItemEntity, $itemTransfer);
 
-        $itemsCount = count($quoteTransfer->getItems()->getArrayCopy());
-        if ($itemsCount > 100 && $itemsCount < 200) {
-            $salesOrderItemEntity->setOmsProcessorId(11);
-        } elseif ($itemsCount > 200) {
-            $salesOrderItemEntity->setOmsProcessorId(12);
-        } else {
-            $salesOrderItemEntity->setOmsProcessorId($this->omsProcessNumber);
-        }
+        $salesOrderItemEntity->setOmsProcessorId($this->omsProcessNumber);
 
         $salesOrderItemEntity->setStore($salesOrderEntity->getStore());
     }
