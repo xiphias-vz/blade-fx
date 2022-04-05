@@ -152,20 +152,20 @@
                         {% endif %}
                     {% endmacro %}
 
-{#                    {% block image %}#}
-{#                        {% if data.url %}#}
-{#                            {% block imageLink %}#}
-{#                                <a class="image-link" href="{{ data.url }}">#}
-{#                                    {{ _self.thumbnail(data.image, data.name, extraClass, modifiers, data.idProductAbstract) }}#}
-{#                                </a>#}
-{#                            {% endblock %}#}
-{#                        {% endif %}#}
-{#                        {% if not data.url %}#}
-{#                            {% block productThumbnail %}#}
-{#                                {{ _self.thumbnail(data.image, data.name, extraClass, modifiers, config.jsName) }}#}
-{#                            {% endblock %}#}
-{#                        {% endif %}#}
-{#                    {% endblock %}#}
+                    {% block image %}
+                        {% if data.url %}
+                            {% block imageLink %}
+                                <a class="image-link" href="{{ data.url }}">
+                                    {{ _self.thumbnail(data.image, data.name, extraClass, modifiers, data.idProductAbstract) }}
+                                </a>
+                            {% endblock %}
+                        {% endif %}
+                        {% if not data.url %}
+                            {% block productThumbnail %}
+                                {{ _self.thumbnail(data.image, data.name, extraClass, modifiers, config.jsName) }}
+                            {% endblock %}
+                        {% endif %}
+                    {% endblock %}
                 </div>
             {% endblock %}
         {% endblock %}
