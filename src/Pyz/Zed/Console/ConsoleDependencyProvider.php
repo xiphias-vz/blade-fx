@@ -11,6 +11,7 @@ use Pyz\Zed\Acl\Communication\Console\AclInstallConsole;
 use Pyz\Zed\Cache\Communication\Console\DirectoryCacheCleanerConsole;
 use Pyz\Zed\CashierOrderExport\Communication\Console\CashierOrderExportConsole;
 use Pyz\Zed\CategoryDataImport\CategoryDataImportConfig;
+use Pyz\Zed\Checkout\Communication\Console\ProcessOrderNewItemsConsole;
 use Pyz\Zed\CmsPageDataImport\CmsPageDataImportConfig;
 use Pyz\Zed\Console\Communication\Plugin\ConsoleLogPlugin;
 use Pyz\Zed\CustomerRegistrationQueueEmptyScript\Communication\Console\CustomerRegistrationQueueEmptyConsole;
@@ -386,6 +387,7 @@ class ConsoleDependencyProvider extends SprykerConsoleDependencyProvider
             new GsoaTokenConsole(),
             new GsoaProductConsole(),
             new CashierOrderExportConsole(),
+            new ProcessOrderNewItemsConsole(),
 
             new DataExportConsole(),
             new MultipleStatusesFixScriptConsole(),

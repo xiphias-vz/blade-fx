@@ -62,6 +62,7 @@ class SalesOrderSaver extends SprykerSalesOrderSaver
         $salesOrderEntity->setIsSubstitutionAllowed($quoteTransfer->getIsSubstitutionAllowed());
         $salesOrderEntity->setIsDepositAllowed($quoteTransfer->getIsDepositAllowed());
         $salesOrderEntity->setOrderUid($quoteTransfer->getUuid());
+        $salesOrderEntity->setIsNew(true);
         $salesOrderEntity->save();
 
         return $salesOrderEntity;

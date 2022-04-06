@@ -31,8 +31,6 @@ class CheckoutWorkflow extends SpykerCheckoutWorkflow implements CheckoutWorkflo
         $quoteTransfer = $this->doPreSave($quoteTransfer, $checkoutResponseTransfer);
         $quoteTransfer = $this->doSaveOrder($quoteTransfer, $checkoutResponseTransfer);
 
-        $this->runStateMachine($checkoutResponseTransfer->getSaveOrder());
-
         $this->doPostSave($quoteTransfer, $checkoutResponseTransfer);
 
         return $checkoutResponseTransfer;

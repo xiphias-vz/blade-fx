@@ -7,7 +7,10 @@
 
 namespace Pyz\Zed\Checkout\Business;
 
+use Everon\Component\CriteriaBuilder\Criteria;
 use Generated\Shared\Transfer\QuoteTransfer;
+use Orm\Zed\Sales\Persistence\Map\SpySalesOrderItemTableMap;
+use Orm\Zed\Sales\Persistence\SpySalesOrder;
 use Spryker\Zed\Checkout\Business\CheckoutFacade as SprykerCheckoutFacade;
 use Spryker\Zed\Checkout\Business\CheckoutFacadeInterface;
 
@@ -47,5 +50,40 @@ class CheckoutFacade extends SprykerCheckoutFacade implements CheckoutFacadeInte
         }
 
         return $checkoutResponseTransfer;
+    }
+
+    /**
+     * @param int $greaterThanIdOrder
+     *
+     * @return SpySalesOrder|null
+     */
+    public function getNewOrderEntity(int $greaterThanIdOrder): ?SpySalesOrder
+    {
+        return $this->getFactory()
+            ->getSalesOrderOuery()
+            ->filterByIdSalesOrder($greaterThanIdOrder,   \Propel\Runtime\ActiveQuery\Criteria::GREATER_THAN)
+            ->findOneByIsNew(true);
+    }
+
+    /**
+     * @param int $idOrder
+     *
+     * @return array
+     */
+    public function getOrderItemsIdList(int $idOrder): array
+    {
+        return $this->getFactory()
+            ->getSalesOrderItemOuery()
+            ->select([SpySalesOrderItemTableMap::COL_ID_SALES_ORDER_ITEM])
+            ->findByFkSalesOrder($idOrder)
+            ->toArray();
+    }
+
+    /**
+     * @return \Spryker\Zed\Checkout\Dependency\Facade\CheckoutToOmsFacadeInterface
+     */
+    public function getOmsFacade()
+    {
+        return $this->getFactory()->getOmsFacade();
     }
 }

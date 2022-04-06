@@ -162,6 +162,14 @@ $jobs[] = [
 
 if ($storeCodeBucket == 'CZ') {
     $jobs[] = [
+        'name' => 'order-process-new-items',
+        'command' => '$PHP_BIN vendor/bin/console order:processNewItems',
+        'schedule' => '* * * * *',
+        'enable' => true,
+        'stores' => ['OST'],
+    ];
+
+    $jobs[] = [
         'name' => 'data-import-full',
         'command' => 'vendor/bin/install -r gsoa-based-ost-import',
         'schedule' => '5 0 * * *',
@@ -289,6 +297,14 @@ if ($storeCodeBucket == 'CZ') {
         'stores' => ['OST'],
     ];
 } else {
+    $jobs[] = [
+        'name' => 'order-process-new-items',
+        'command' => '$PHP_BIN vendor/bin/console order:processNewItems',
+        'schedule' => '* * * * *',
+        'enable' => true,
+        'stores' => ['EIN'],
+    ];
+
     $jobs[] = [
         'name' => 'data-import-full',
         'command' => 'vendor/bin/install -r sftp-based-full-import',

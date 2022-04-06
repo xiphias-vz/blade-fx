@@ -7,6 +7,8 @@
 
 namespace Pyz\Zed\Checkout\Business;
 
+use Orm\Zed\Sales\Persistence\SpySalesOrderItemQuery;
+use Orm\Zed\Sales\Persistence\SpySalesOrderQuery;
 use Pyz\Zed\Checkout\Business\Workflow\CheckoutWorkflow;
 use Pyz\Zed\Checkout\CheckoutDependencyProvider;
 use Pyz\Zed\Sales\Business\SalesFacadeInterface;
@@ -37,5 +39,29 @@ class CheckoutBusinessFactory extends SprykerCheckoutBusinessFactory
     public function getSalesOrderFacade(): SalesFacadeInterface
     {
         return $this->getProvidedDependency(CheckoutDependencyProvider::FACADE_SALES);
+    }
+
+    /**
+     * @return \Orm\Zed\Sales\Persistence\SpySalesOrderQuery
+     */
+    public function getSalesOrderOuery(): SpySalesOrderQuery
+    {
+        return new SpySalesOrderQuery();
+    }
+
+    /**
+     * @return \Orm\Zed\Sales\Persistence\SpySalesOrderItemQuery
+     */
+    public function getSalesOrderItemOuery(): SpySalesOrderItemQuery
+    {
+        return new SpySalesOrderItemQuery();
+    }
+
+    /**
+     * @return \Spryker\Zed\Checkout\Dependency\Facade\CheckoutToOmsFacadeInterface
+     */
+    public function getOmsFacade()
+    {
+        return parent::getOmsFacade();
     }
 }
