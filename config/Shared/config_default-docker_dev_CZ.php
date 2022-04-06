@@ -34,7 +34,7 @@ $config[\Pyz\Shared\S3Constants\S3Constants::S3_IMAGES_BUCKETS] = 'iglobuscz-sta
 $config[\Pyz\Shared\S3Constants\S3Constants::S3_CASHIER_FILE_BUCKETS] = 'iglobuscz-staging-csv-uploads';
 
 // ---------- ExportDeeplink
-$config[SalesOrderSummaryExportConfig::SFTP_PRODUCT_DEEPLINK_EXPORT_FILES_FOLDER_KEY] = 'IN/productfeed';
+$config[SalesOrderSummaryExportConfig::SFTP_PRODUCT_DEEPLINK_EXPORT_FILES_FOLDER_KEY] = 'IN/productfeed/RK';
 
 // ----------- GSOA API
 $config[ApiClient::GSOA_ROOT_URL] = 'https://gsoat.globus.cz';
