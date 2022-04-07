@@ -22,3 +22,4 @@ pyzx_pickup_queue_add_queue.sql=zed
 pyzx_pickup_queue_get_orders_queue.sql=zed
 pyzx_monitoring_category.sql=zed
 pyzx_picking_collection_signal_set.sql=zed
+pyzx_execute_sql.sql=zed
