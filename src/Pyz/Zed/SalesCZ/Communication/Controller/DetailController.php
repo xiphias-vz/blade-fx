@@ -291,6 +291,7 @@ class DetailController extends IntDetailController
             'containers' => $containers,
             'timeSlotsData' => $timeSlotsData,
             'cellPhone' => $cellPhone,
+            'phone' => $address->getPhone(),
         ], $blockResponseData);
     }
 }

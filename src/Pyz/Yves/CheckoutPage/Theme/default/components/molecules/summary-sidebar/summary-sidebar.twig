@@ -79,6 +79,7 @@
                                 {% set address = data.billingAddress %}
                                 {% set fullShippingName = address.lastName ~ ' ' ~ address.firstName %}
                                 {% set fullAddress = address.address1 ~ ' ' ~ address.address2 ~ ' ' ~ (address.floor | default | trans) %}
+                                {% set mobileNumber = data.customer.mobilePhoneNumber %}
 
                                 <span class="{{ config.name }}__title-CZ">{{ 'checkout.step.summary.billing_address' | trans }}</span>
 
@@ -89,8 +90,8 @@
                                 <span class="{{ config.name }}__text-CZ">{{ fullShippingName }}</span>
                                 <span class="{{ config.name }}__text-CZ">{{ fullAddress }}</span>
 
-                                {% if address.phone %}
-                                    <span class="{{ config.name }}__text-CZ">{{ address.phone }}</span>
+                                {% if mobileNumber %}
+                                    <span class="{{ config.name }}__text-CZ">{{ mobileNumber }}</span>
                                 {% endif %}
 
                                 {% if address.zipCode or address.city is not empty %}

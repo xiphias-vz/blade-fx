@@ -9,6 +9,7 @@ namespace Pyz\Yves\CheckoutPage\Controller;
 
 use Generated\Shared\Transfer\QuoteTransfer;
 use Generated\Shared\Transfer\ShipmentMethodTransfer;
+use Orm\Zed\Sales\Persistence\SpySalesOrderAddress;
 use Pyz\Shared\FactFinder\Business\Api\FactFinderApiClient;
 use Pyz\Yves\GlobusRestApiClient\Provider\GlobusRestApiClientAccount;
 use Pyz\Yves\GlobusRestApiClient\Provider\GlobusRestApiClientValidation;
@@ -233,6 +234,8 @@ class CheckoutController extends SprykerCheckoutControllerAlias
      */
     public function summaryAction(Request $request)
     {
+        $storeCodeBucket = getenv('SPRYKER_CODE_BUCKET');
+
         $quoteValidationResponseTransfer = $this->canProceedCheckout();
         if (!$quoteValidationResponseTransfer->getIsSuccessful()) {
             $this->processErrorMessages($quoteValidationResponseTransfer->getMessages());
@@ -243,27 +246,54 @@ class CheckoutController extends SprykerCheckoutControllerAlias
         $customer = $this->getFactory()->getQuoteClient()->getQuote()->getCustomer();
         $quoteTransfer = $this->getFactory()->getQuoteClient()->getQuote();
 
-        if ($customer->getRegistered() !== null) {
+        if ($customer->getEmail() !== null && $storeCodeBucket == 'DE') {
             $customerProfileFromApi = (array)$this->getAccountInfo();
-            
+
             $customerPhone = $customer->getPhone();
             $customerMobile = $customer->getMobilePhoneNumber();
 
-            $billingPhone = $quoteTransfer->getBillingAddress()->getPhone();
-            $billingMobile = $quoteTransfer->getBillingAddress()->getCellPhone();
+            if (isset($customerProfileFromApi['profile']->phones)) {
+                $customerPhoneFromApi = $customerProfileFromApi['profile']->phones[1]->number;
+                $customerMobilePhoneFromApi = $customerProfileFromApi['profile']->phones[0]->number;
 
-            if ($customerPhone !== $billingPhone) {
-                $this->getFactory()
-                    ->getCustomerClient()
-                    ->getCustomer()
-                    ->setPhone($customerPhone);
-                $this->getFactory()
-                    ->getQuoteClient()
-                    ->getQuote()
-                    ->getBillingAddress()
-                    ->setPhone($customerPhone);
-                $customerProfileFromApi["profile"]->phones[1]->number = $customerPhone;
+                if ($customerPhone !== $customerPhoneFromApi) {
+                    $this->getFactory()
+                        ->getCustomerClient()
+                        ->getCustomer()
+                        ->setPhone($customerPhone);
+                    $this->getFactory()
+                        ->getQuoteClient()
+                        ->getQuote()
+                        ->getBillingAddress()
+                        ->setPhone($customerPhone);
+                    $customerProfileFromApi['profile']->phones[1]->number = $customerPhone;
+                }
+
+                if ($customerMobile !== $customerMobilePhoneFromApi) {
+                    $this->getFactory()
+                        ->getCustomerClient()
+                        ->getCustomer()
+                        ->setMobilePhoneNumber($customerMobile);
+                    $this->getFactory()
+                        ->getQuoteClient()
+                        ->getQuote()
+                        ->getBillingAddress()
+                        ->setCellPhone($customerMobile);
+                    $customerProfileFromApi['profile']->phones[0]->number = $customerMobile;
+                }
+
+                $spySalesOrderAddress = new SpySalesOrderAddress();
+                $spySalesOrderAddress->fromArray($quoteTransfer->getBillingAddress()->toArray());
+                $spySalesOrderAddress->setPhone($customerPhone);
+                $spySalesOrderAddress->setCellPhone($customerMobile);
+
+                $dataProfilePhones = ['profile' => ['phones' => $customerProfileFromApi["profile"]->phones]];
+
+                $this->changeAccountData($dataProfilePhones);
             }
+        } else {
+            $billingMobile = $quoteTransfer->getBillingAddress()->getCellPhone();
+            $customerMobile = $customer->getMobilePhoneNumber();
 
             if ($customerMobile !== $billingMobile) {
                 $this->getFactory()
@@ -275,11 +305,7 @@ class CheckoutController extends SprykerCheckoutControllerAlias
                     ->getQuote()
                     ->getBillingAddress()
                     ->setCellPhone($customerMobile);
-                $customerProfileFromApi["profile"]->phones[0]->number = $customerMobile;
             }
-            $dataProfilePhones = ['profile' => ['phones' => $customerProfileFromApi["profile"]->phones]];
-
-            $this->changeAccountData($dataProfilePhones);
         }
 
         if ($customer === null) {

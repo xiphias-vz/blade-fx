@@ -75,8 +75,6 @@ class DetailController extends SprykerDetailController
         $isCashierTxt = $merchantTransfer->getIsCashierTxt();
         $isDepositAllowed = $orderTransfer->getIsDepositAllowed();
         $orderTransfer->setCartNote(json_decode($orderTransfer->getCartNote()));
-        $cellPhone = $orderTransfer->getBillingAddress()->getCellPhone();
-        $phone = $orderTransfer->getBillingAddress()->getPhone();
         $userFacade = $this->getFactory()->getUserFacade();
         $idUser = $userFacade->getCurrentUser()->getIdUser();
         $userGroup = $this->getFactory()->getAclFacade()->getUserGroups($idUser)->getGroups()[0]->getName();
@@ -86,6 +84,8 @@ class DetailController extends SprykerDetailController
         $orderItemSplitFormCollection = $this->getFactory()->createOrderItemSplitFormCollection($orderTransfer->getItems());
         $events = $this->getFactory()->getOmsFacade()->getDistinctManualEventsByIdSalesOrder($idSalesOrder);
         $customerTransfer = $orderTransfer->getCustomer();
+        $cellPhone = $customerTransfer->getMobilePhoneNumber();
+        $phone = $customerTransfer->getPhone();
         $groupedOrderItems = $this->getFacade()
             ->getUniqueItemsFromOrder($orderTransfer);
         $requestDeliveryDate = $groupedOrderItems[0]->getShipment()->getRequestedDeliveryDate();
