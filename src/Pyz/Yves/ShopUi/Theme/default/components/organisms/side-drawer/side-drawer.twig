@@ -122,7 +122,7 @@
                                 {{ 'customer.logout' | trans }}
                             </a>
                         {% else %}
-                            <a href="{{ url('login') }}"
+                            <a href="{{ data.currentCodeBucket == 'DE' ? url('register') : url('login') }}"
                                class="{{ config.name }}__navigation-item link link--reset-focus">
                                 {% include atom('icon') with {
                                     modifiers: ['small'],
