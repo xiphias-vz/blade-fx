@@ -54,7 +54,7 @@ class DataImporterCollection extends SprykerDataImporterCollection
         $importType = $this->getCurrentImportType($dataImporterConfigurationTransfer);
         $dataImporterReportTransfer = $this->prepareDataImporterReport($importType);
         $dataImporters = $this->getDataImportersByImportGroup($dataImporterConfigurationTransfer);
-        static::$importDateTime = date("Y-m-d h:i:sa");
+        static::$importDateTime = date("Y-m-d h:i:s");
 
         $this->beforeImport();
 
@@ -321,7 +321,7 @@ class DataImporterCollection extends SprykerDataImporterCollection
                     }
                     $buffer = $this->checkString($buffer);
                     $csvArchive[] = ['sku' => $sku, 'sapNumber' => $sapNumber, 'buffer' => $buffer];
-                    $this->insertProductCsvToTable($csvArchive);
+                    $this->insertProductCsvToTable($csvArchive, true);
                     $lineCounter++;
                 }
 
@@ -340,7 +340,7 @@ class DataImporterCollection extends SprykerDataImporterCollection
     protected function insertProductCsvToTable(array &$csvArchive, bool $doInsert = false)
     {
         if ($doInsert || self::CSV_ARCHIVE_BUFFER_LIMIT <= count($csvArchive)) {
-            $sql = "insert into pyz_import_csv_new (created_at, sku, sap_number, csv_value) values ";
+            $sql = "insert into pyz_import_csv_new (created_at, sku, sap_number, csv_value_new) values ";
             foreach ($csvArchive as $line) {
                 $sql = $sql . "('" . static::$importDateTime . "', '" . $line["sku"] . "', '" . $line["sapNumber"] . "', '" . str_replace("'", "''", $line["buffer"]) . "'), ";
             }
