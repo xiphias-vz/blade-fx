@@ -1,0 +1,22 @@
+{% extends '@Gui/Layout/layout.twig' %}
+
+{% set widget_title = 'Create Scenario' | trans %}
+{% block section_title %}{{ widget_title }}{% endblock %}
+
+{% block action %}
+    {{ backActionButton(url('/recommendations/scenario'), 'Back to Scenario' | trans) }}
+{% endblock %}
+
+{% block content %}
+
+    {% embed '@Gui/Partials/widget.twig' with { widget_title: 'Scenario data' | trans } %}
+
+        {% block widget_content %}
+
+            {% include '@Recommendations/Scenario/partials/scenario-form.twig' %}
+
+        {% endblock %}
+
+    {% endembed %}
+
+{% endblock %}

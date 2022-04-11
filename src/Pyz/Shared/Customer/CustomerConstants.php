@@ -44,6 +44,7 @@ interface CustomerConstants
     public const GLOBUS_API_END_POINT_ACCOUNT_INFO = 'globusApiEndPointAccountInfo';
     public const GLOBUS_API_END_POINT_ACCOUNT_CHANGE_PROFILE_DATA = 'globusApiEndPointAccountChangeProfileData';
     public const GLOBUS_API_END_POINT_CHECKOUT_EVENT = 'globusApiEndPointCheckoutEvent';
+    public const GLOBUS_API_END_POINT_RECOMMENDATIONS = 'globusApiEndPointRecommendations';
 
     public const GOOGLE_CAPTCHA_CONSTANTS = 'GOOGLE_CAPTCHA_CONSTANTS';
     public const GOOGLE_CAPTCHA_CREDENTIALS = 'google_captcha_credentials';

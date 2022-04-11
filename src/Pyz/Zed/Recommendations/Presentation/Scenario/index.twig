@@ -1,0 +1,40 @@
+{% extends '@Application/Layout/layout.twig' %}
+
+{% set widget_title = 'Scenario overview' | trans %}
+{% block section_title %}{{ widget_title }}{% endblock %}
+
+{% block action %}
+    {{ createActionButton('/recommendations/scenario/create', 'Create New Scenario' | trans) }}
+{% endblock %}
+
+{% block content %}
+    {% embed '@Gui/Partials/widget.twig' with { widget_title: 'Scenario overview' } %}
+
+        {% block widget_content %}
+            {{ scenariosTable | raw }}
+        {% endblock %}
+
+    {% endembed %}
+
+    {% embed '@Gui/Partials/widget.twig' with { widget_title: 'Recommendations' } %}
+        {% block widget_content %}
+        {{ form_start(enableRecommendationForm) }}
+
+            {{ form_row(enableRecommendationForm.recommendationsEnabled) }}
+
+            <input type="submit" class="btn btn-primary safe-submit" value="{{ 'Save' | trans }} " />
+        {{ form_end(enableRecommendationForm) }}
+        {% endblock %}
+    {% endembed %}
+
+    {% embed '@Gui/Partials/widget.twig' with { widget_title: 'Fact Finder snippet' } %}
+        {% block widget_content %}
+            {{ form_start(enableFfSnippetForm) }}
+
+                {{ form_row(enableFfSnippetForm.recommendationsFfSnippetEnabled) }}
+
+                <input type="submit" class="btn btn-primary safe-submit" value="{{ 'Save' | trans }} " />
+            {{ form_end(enableFfSnippetForm) }}
+        {% endblock %}
+    {% endembed %}
+{% endblock %}

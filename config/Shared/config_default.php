@@ -647,6 +647,7 @@ $config[\Pyz\Shared\Customer\CustomerConstants::GLOBUS_API_CONSTANTS] = [
         'globusApiEndPointAccountChangeProfileData' => 'v1/meinglobus/accounts/data/{UID}/profile',
         'globusApiEndPointAccountLogout' => '/v2/meinglobus/accounts/logout',
         'globusApiEndPointCheckoutEvent' => '/v3/meinglobus/events',
+        'globusApiEndPointRecommendations' => '/v1/meinglobus/recommendations'
     ],
 ];
 

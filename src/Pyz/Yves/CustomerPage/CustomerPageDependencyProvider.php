@@ -24,6 +24,8 @@ use SprykerShop\Yves\MerchantSwitcherWidget\Plugin\CustomerPage\MerchantSwitchCa
 class CustomerPageDependencyProvider extends SprykerShopCustomerPageDependencyProvider
 {
     public const CLIENT_BASE_CUSTOMER = 'CLIENT_BASE_CUSTOMER';
+    public const CLIENT_RECOMMENDATIONS = 'CLIENT_RECOMMENDATIONS';
+    public const CLIENT_RECOMMENDATIONS_STORAGE = 'CLIENT_RECOMMENDATIONS_STORAGE';
     public const CLIENT_PDF = 'CLIENT_PDF';
     public const CLIENT_ORDER_DETAIL = 'CLIENT_ORDER_DETAIL';
     public const CLIENT_MERCHANT_SEARCH = 'CLIENT_MERCHANT_SEARCH';
@@ -58,6 +60,8 @@ class CustomerPageDependencyProvider extends SprykerShopCustomerPageDependencyPr
         $container = $this->addDataDogService($container);
         $container = $this->addUserService($container);
         $container = $this->addFormCsrfProviderService($container);
+        $container = $this->addRecommendationsClient($container);
+        $container = $this->addRecommendationsStorageClient($container);
 
         return $container;
     }
@@ -85,6 +89,34 @@ class CustomerPageDependencyProvider extends SprykerShopCustomerPageDependencyPr
     {
         $container[self::CLIENT_BASE_CUSTOMER] = function (Container $container) {
             return $container->getLocator()->customer()->client();
+        };
+
+        return $container;
+    }
+
+    /**
+     * @param Container $container
+     *
+     * @return Container
+     */
+    protected function addRecommendationsClient(Container $container): Container
+    {
+        $container[self::CLIENT_RECOMMENDATIONS] = function (Container $container) {
+            return $container->getLocator()->recommendations()->client();
+        };
+
+        return $container;
+    }
+
+    /**
+     * @param Container $container
+     *
+     * @return Container
+     */
+    protected function addRecommendationsStorageClient(Container $container): Container
+    {
+        $container[self::CLIENT_RECOMMENDATIONS_STORAGE] = function (Container $container) {
+            return $container->getLocator()->recommendationsStorage()->client();
         };
 
         return $container;

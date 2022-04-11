@@ -5133,3 +5133,6 @@ ff.sale.group.element,"Prodej",cs_CZ
 ff.sale.group.element,"All offers",en_US
 ff.remove.filter.checkbox,"Filter zurücksetzen",de_DE
 ff.remove.filter.checkbox,"Remove filter",en_US
+recommendations.use,"Verwenden Sie Empfehlungen",de_DE
+recommendations.use,"Použijte doporučení",cs_CZ
+recommendations.use,"Use recommendations",en_US

@@ -8,10 +8,15 @@
 namespace Pyz\Yves\CustomerPage;
 
 use Generated\Shared\Transfer\PdfParametersTransfer;
+use Generated\Shared\Transfer\RecoTransfer;
 use Pyz\Client\Customer\CustomerClientInterface;
 use Pyz\Client\MerchantSearch\MerchantSearchClientInterface;
 use Pyz\Client\OrderDetail\OrderDetailClientInterface;
 use Pyz\Client\Pdf\PdfClientInterface;
+use Pyz\Client\Recommendations\RecommendationsClientInterface;
+use Pyz\Client\Recommendations\RecommendationsDependencyProvider;
+use Pyz\Client\RecommendationsStorage\RecommendationsStorageClient;
+use Pyz\Client\RecommendationsStorage\RecommendationsStorageClientInterface;
 use Pyz\Client\SalesOrderActions\SalesOrderActionsClientInterface;
 use Pyz\Service\DataDog\DataDogServiceInterface;
 use Pyz\Service\User\UserServiceInterface;
@@ -26,9 +31,14 @@ use Pyz\Yves\CustomerPage\Plugin\Provider\CustomerAuthenticationFailureHandler;
 use Pyz\Yves\CustomerPage\Plugin\Provider\CustomerAuthenticationSuccessHandler;
 use Pyz\Yves\CustomerPage\Plugin\Provider\CustomerUserProvider;
 use Pyz\Yves\CustomerPage\Plugin\Provider\CustomerUserProviderInterface;
+use Pyz\Yves\CustomerPage\Processor\Mapper\RecommendationsMapper;
+use Pyz\Yves\CustomerPage\Processor\Mapper\RecommendationsMapperInterface;
+use Pyz\Yves\GlobusRestApiClient\Provider\GlobusRestApiRecommendations;
 use Pyz\Yves\MerchantSwitcherWidget\Plugin\SelectedMerchantCookiePlugin;
 use Pyz\Yves\MerchantSwitcherWidget\Resolver\ShopContextResolver;
 use Spryker\Client\Session\SessionClientInterface;
+use Spryker\Service\UtilEncoding\Model\Json;
+use Spryker\Service\UtilEncoding\Model\JsonInterface;
 use Spryker\Yves\Messenger\FlashMessenger\FlashMessengerInterface;
 use SprykerShop\Yves\CustomerPage\Authenticator\CustomerAuthenticatorInterface;
 use SprykerShop\Yves\CustomerPage\CustomerPageFactory as SprykerShopCustomerPageFactory;
@@ -82,6 +92,14 @@ class CustomerPageFactory extends SprykerShopCustomerPageFactory
     public function getBaseCustomerClient(): CustomerClientInterface
     {
         return $this->getProvidedDependency(CustomerPageDependencyProvider::CLIENT_BASE_CUSTOMER);
+    }
+
+    /**
+     * @return RecommendationsClientInterface
+     */
+    public function getRecommendationsClient(): RecommendationsClientInterface
+    {
+        return $this->getProvidedDependency(CustomerPageDependencyProvider::CLIENT_RECOMMENDATIONS);
     }
 
     /**
@@ -277,5 +295,29 @@ class CustomerPageFactory extends SprykerShopCustomerPageFactory
     public function getTwigEnvironment(): Environment
     {
         return $this->getProvidedDependency(CustomerPageDependencyProvider::SERVICE_TWIG);
+    }
+
+    /**
+     * @return RecommendationsMapperInterface
+     */
+    public function createRecommendationsMapper(): RecommendationsMapperInterface
+    {
+        return new RecommendationsMapper();
+    }
+
+    /**
+     * @return GlobusRestApiRecommendations
+     */
+    public function createGlobusRestApiRecommendations(): GlobusRestApiRecommendations
+    {
+        return new GlobusRestApiRecommendations();
+    }
+
+    /**
+     * @return RecommendationsStorageClientInterface
+     */
+    public function getStorageClient(): RecommendationsStorageClientInterface
+    {
+        return $this->getProvidedDependency(CustomerPageDependencyProvider::CLIENT_RECOMMENDATIONS_STORAGE);
     }
 }

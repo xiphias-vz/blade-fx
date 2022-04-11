@@ -17,7 +17,7 @@ use Spryker\Zed\SynchronizationExtension\Dependency\Plugin\SynchronizationDataBu
  * @method \Pyz\Zed\MerchantStorage\Business\MerchantStorageFacadeInterface getFacade()
  * @method \Pyz\Zed\MerchantStorage\Communication\MerchantStorageCommunicationFactory getFactory()
  * @method \Pyz\Zed\MerchantStorage\MerchantStorageConfig getConfig()
- * @method \Pyz\Zed\MerchantStorage\Persistence\MerchantStorageRepositoryInterface getRepository()()
+ * @method \Pyz\Zed\MerchantStorage\Persistence\MerchantStorageRepositoryInterface getRepository()
  */
 class MerchantSynchronizationDataBulkPlugin extends AbstractPlugin implements SynchronizationDataBulkRepositoryPluginInterface
 {

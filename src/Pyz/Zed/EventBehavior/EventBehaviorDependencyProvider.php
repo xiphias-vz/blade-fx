@@ -8,6 +8,7 @@
 namespace Pyz\Zed\EventBehavior;
 
 use Pyz\Zed\MerchantStorage\Communication\Plugin\Event\MerchantEventResourceBulkRepositoryPlugin;
+use Pyz\Zed\RecommendationsStorage\Communication\Plugin\Event\RecommendationsEventResourceBulkRepositoryPlugin;
 use Spryker\Zed\AvailabilityStorage\Communication\Plugin\Event\AvailabilityEventResourceQueryContainerPlugin;
 use Spryker\Zed\CategoryPageSearch\Communication\Plugin\Event\CategoryPageEventResourceQueryContainerPlugin;
 use Spryker\Zed\CategoryStorage\Communication\Plugin\Event\CategoryNodeEventResourceQueryContainerPlugin;
@@ -86,6 +87,7 @@ class EventBehaviorDependencyProvider extends SprykerEventBehaviorDependencyProv
             new CmsSlotEventResourceBulkRepositoryPlugin(),
             new CmsSlotBlockEventResourceBulkRepositoryPlugin(),
             new MerchantEventResourceBulkRepositoryPlugin(),
+            new RecommendationsEventResourceBulkRepositoryPlugin(),
 
             new ProductMeasurementUnitEventResourceBulkRepositoryPlugin(),
             new ProductConcreteMeasurementUnitEventResourceBulkRepositoryPlugin(),

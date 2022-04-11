@@ -1,0 +1,86 @@
+<?xml version="1.0"?>
+<transfers xmlns="spryker:transfer-01"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="spryker:transfer-01 http://static.spryker.com/transfer-01.xsd">
+
+    <transfer name="RecommendationsApi">
+        <property name="UserId" type="string" />
+        <property name="UserType" type="string" />
+        <property name="ExternalTracking" type="bool" />
+        <property name="Scenarios" type="ScenariosApi[]" />
+        <property name="ContextParams" type="ContextParam[]" />
+        <property name="ScenarioHashes" type="ScenarioHash[]" />
+        <property name="ResultObjects" type="ResultObject[]" />
+    </transfer>
+
+    <transfer name="Scenario">
+        <property name="idRecommendationScenarios" type="int"/>
+        <property name="scenarioId" type="string"/>
+        <property name="hashId" type="string" />
+    </transfer>
+
+    <transfer name="RecommendationDefinition">
+        <property name="recommendationsEnabled" type="bool" />
+        <property name="recommendationsFfSnippetEnabled" type="bool" />
+    </transfer>
+
+    <transfer name="RecommendationDefinitionResponse">
+        <property name="recommendationDefinition" type="RecommendationDefinition"/>
+        <property name="isSuccess" type="bool"/>
+        <property name="errors" type="RecommendationDefinitionError[]" singular="error"/>
+    </transfer>
+
+    <transfer name="RecommendationDefinitionError">
+        <property name="message" type="string"/>
+    </transfer>
+
+    <transfer name="ScenariosApi">
+        <property name="ScenarioId" type="string" />
+        <property name="HashId" type="string" />
+        <property name="LeadingObjects" type="LeadingObject[]"/>
+        <property name="BasketObjects" type="BasketObject[]" />
+    </transfer>
+
+    <transfer name="LeadingObject">
+        <property name="LeadingObjectType" type="string" />
+        <property name="LeadingObjectId" type="string" />
+    </transfer>
+
+    <transfer name="BasketObject">
+        <property name="BasketObjectType" type="string"/>
+        <property name="BasketObjectId" type="string" />
+    </transfer>
+
+    <transfer name="ContextParam">
+        <property name="ScenarioId" type="string" />
+        <property name="ContextParamId" type="string" />
+    </transfer>
+
+    <transfer name="ScenarioHash">
+        <property name="ScenarioId" type="string" />
+        <property name="HashId" type="string" />
+        <property name="ExpiresOn" type="string" />
+        <property name="ResultScope" type="string" />
+    </transfer>
+
+    <transfer name="ResultObject">
+        <property name="ScenarioId" type="string" />
+        <property name="ResultObjectType" type="string" />
+        <property name="ResultObjectId" type="string" />
+        <property name="ResultObjectScore" type="int" />
+    </transfer>
+
+    <transfer name="Reco">
+        <property name="data" type="string" />
+        <property name="apiResult" type="string" />
+        <property name="token" type="string" />
+        <property name="customer" type="Customer" />
+        <property name="isInserted" type="bool" />
+        <property name="isDeleted" type="bool" />
+        <property name="redisKeys" type="array" />
+        <property name="redisResponse" type="array" />
+        <property name="recommendationsEnabled" type="string" />
+        <property name="recommendationsFfSnippetEnabled" type="string" />
+    </transfer>
+
+</transfers>

@@ -1,0 +1,36 @@
+<?xml version="1.0"?>
+<database xmlns="spryker:schema-01"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          name="zed"
+          namespace="Orm\Zed\Recommendations\Persistence"
+          package="src.Orm.Zed.Recommendations.Persistence"
+          xsi:schemaLocation="spryker:schema-01 https://static.spryker.com/schema-01.xsd">
+
+    <table name="pyz_recommendation_scenarios">
+        <column name="id_recommendation_scenarios" required="true" type="INTEGER" autoIncrement="true" primaryKey="true" />
+        <column name="scenario_id" type="VARCHAR" />
+        <column name="hash_id" type="VARCHAR" />
+    </table>
+
+    <table name="pyz_recommendation_definition">
+        <column name="id_recommendation_definition" required="true" type="INTEGER" autoIncrement="true" primaryKey="true" />
+        <column name="recommendations_enabled" type="BOOLEAN" />
+        <column name="recommendations_ff_snippet_enabled" type="BOOLEAN" />
+    </table>
+
+    <table name="pyz_recommendation_leading_objects">
+        <column name="id_recommendation_leading_objects" required="true" type="INTEGER" autoIncrement="true" primaryKey="true" />
+        <column name="fk_id_recommendation_scenarios" type="INTEGER" />
+        <column name="leading_object_type" type="VARCHAR" />
+        <column name="leading_object_id" type="VARCHAR" />
+    </table>
+
+    <table name="pyz_recommendation_basket_objects">
+        <column name="id_recommendation_basket_objects" required="true" type="INTEGER" autoIncrement="true" primaryKey="true" />
+        <column name="fk_id_recommendation_scenarios" type="INTEGER" />
+        <column name="basket_object_type" type="VARCHAR" />
+        <column name="basket_object_id" type="VARCHAR" />
+    </table>
+
+
+</database>

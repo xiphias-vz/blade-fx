@@ -10,6 +10,7 @@ namespace Pyz\Client\RabbitMq;
 use ArrayObject;
 use Generated\Shared\Transfer\RabbitMqOptionTransfer;
 use Pyz\Shared\MerchantStorage\MerchantStorageConfig;
+use Pyz\Shared\RecommendationsStorage\RecommendationsStorageConfig;
 use Pyz\Shared\ShipmentStorage\ShipmentStorageConfig;
 use Spryker\Client\RabbitMq\Model\Connection\Connection;
 use Spryker\Client\RabbitMq\RabbitMqConfig as SprykerRabbitMqConfig;
@@ -74,6 +75,7 @@ class RabbitMqConfig extends SprykerRabbitMqConfig
         $queueOptionCollection->append($this->createQueueOption(ShipmentStorageConfig::SHIPMENT_SYNC_STORAGE_QUEUE, ShipmentStorageConfig::SHIPMENT_SYNC_STORAGE_ERROR_QUEUE));
         $queueOptionCollection->append($this->createQueueOption(ProductQuantityStorageConfig::PRODUCT_QUANTITY_SYNC_STORAGE_QUEUE, ProductQuantityStorageConfig::PRODUCT_QUANTITY_SYNC_STORAGE_ERROR_QUEUE));
         $queueOptionCollection->append($this->createQueueOption(MerchantSearchConfig::SYNC_SEARCH_MERCHANT, MerchantSearchConfig::SYNC_SEARCH_MERCHANT . '_error'));
+        $queueOptionCollection->append($this->createQueueOption(RecommendationsStorageConfig::RECOMMENDATIONS_SYNC_STORAGE_QUEUE, RecommendationsStorageConfig::RECOMMENDATIONS_SYNC_STORAGE_ERROR_QUEUE));
 
         $queueOptionCollection->append(
             $this->createQueueOption(

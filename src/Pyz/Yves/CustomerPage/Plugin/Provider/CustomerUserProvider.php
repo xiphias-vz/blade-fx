@@ -11,16 +11,20 @@ use ArrayObject;
 use Elastica\JSON;
 use Exception;
 use Generated\Shared\Transfer\CustomerTransfer;
+use Generated\Shared\Transfer\RecoTransfer;
+use Pyz\Client\Recommendations\RecommendationsClient;
 use Pyz\Shared\Customer\CustomerConstants;
 use Pyz\Yves\CustomerPage\Controller\ProfileController;
 use Pyz\Yves\GlobusRestApiClient\Provider\GlobusRestApiClientAccount;
 use Pyz\Yves\GlobusRestApiClient\Provider\GlobusRestApiClientCookie;
+use Pyz\Yves\GlobusRestApiClient\Provider\GlobusRestApiResult;
 use Spryker\Shared\Config\Config;
 use SprykerShop\Yves\CustomerPage\Plugin\Provider\CustomerUserProvider as SprykerCustomerUserProvider;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
 
 /**
  * @method \Pyz\Yves\CustomerPage\CustomerPageFactory getFactory()
+ * @method RecommendationsClient getClient()
  */
 class CustomerUserProvider extends SprykerCustomerUserProvider implements CustomerUserProviderInterface
 {
@@ -47,6 +51,7 @@ class CustomerUserProvider extends SprykerCustomerUserProvider implements Custom
         }
         $authCheck = $this->globusLogin($email, $pass);
         $authCheck = JSON::parse($authCheck);
+
         if (isset($authCheck["statusCode"])) {
             if ($authCheck["statusCode"] === 403) {
                 $result = $this->globusLoginWithCookie();
@@ -75,6 +80,29 @@ class CustomerUserProvider extends SprykerCustomerUserProvider implements Custom
                 if (is_array($data)) {
                     $token = $data["id_token"];
                     $res = GlobusRestApiClientAccount::loginWithToken($token);
+
+                    $recoTransfer = $this->getFactory()->getStorageClient()->getIsRecommendationsEnabled(new RecoTransfer());
+                    $recoTransfer->setCustomer($customerTransfer);
+
+                    if ($recoTransfer->getRecommendationsEnabled() === "true") {
+                        $recommendationsResult = $this->globusRecommendationsData($authCheck["UID"], false, $token);
+
+                        // $recommendationsResult->result = '{"UserId": "931bed344d82471cba084791ca6b39a6", "UserType": "GIGYA_ID", "ExternalTracking": false, "ScenarioHashes": {"results": [{"ScenarioId": "TOPSELLER_60", "HashId": "2B188A50B02794B67F6CB4F50947E64E", "ExpiresOn": "/Date(1649128410479)/", "ResultScope": "G"}]}, "ResultObjects": {"results": [{"ScenarioId": "TOPSELLER_60", "ResultObjectType": "SAP_ERP_MATNR", "ResultObjectId": "4001432058030", "ResultObjectScore": "1.00000"},{"ScenarioId": "TOPSELLER_60", "ResultObjectType": "SAP_ERP_MATNR", "ResultObjectId": "4001432058040", "ResultObjectScore": "1.00000"}]}, "code": "200", "message": "success"}';
+
+                        $recoTransfer = $this->getFactory()->createRecommendationsMapper()->mapResultAndTokenToRecoTransfer($recommendationsResult, $token, $recoTransfer);
+
+                        if ($this->checkIfRecommendationsResponseIsGood($recoTransfer)) {
+                            $recoTransfer = $this->addRecommendationResultsToDataTable($recommendationsResult, $token, $recoTransfer);
+                        } else {
+                            // when api call fails take what is written in database
+                            $recoTransfer = $this->getExistingRecoData($recoTransfer);
+                        }
+
+                    } else {
+                        // if recommendations are not enabled than clear reco field data
+                        $recoTransfer = $this->getFactory()->getRecommendationsClient()->clearRecoData($recoTransfer);
+                    }
+                    $nekaj = $recoTransfer;
                     $cook = new GlobusRestApiClientCookie();
                     $cook->setLoginCookiePhp($res, $this->getFactory()->getSessionClient());
                     $cook->setLoginConfirmedCookiePhp();
@@ -323,6 +351,70 @@ class CustomerUserProvider extends SprykerCustomerUserProvider implements Custom
     public function globusLogin(string $emailOrCardNumber, string $password): string
     {
         return GlobusRestApiClientAccount::login($emailOrCardNumber, $password);
+    }
+
+    /**
+     * @param string $uid
+     * @param bool $remoteTracking
+     * @param string $bearerToken
+     *
+     * @return GlobusRestApiResult
+     */
+    public function globusRecommendationsData(string $uid, bool $remoteTracking, string $bearerToken): GlobusRestApiResult
+    {
+        $recommendation = $this->getFactory()->createGlobusRestApiRecommendations();
+
+        $recommendation->createRecommendation($uid, $remoteTracking, $bearerToken);
+
+        $recommendation->createScenario('TOPSELLER_60', '');
+
+        $recommendation->addLeadingObject('1', 'productLeading');
+        $recommendation->addBasketObject('1', 'productBasket');
+
+        $recommendation->addScenario();
+
+        // $recommendation->addContextParam('TOPSELLER_60', 'context_Moj');
+        // $recommendation->addScenarioHash('TOPSELLER_60', '24', '2022-05-05 23:59:59', 'all');
+        // $recommendation->addResultObject('TOPSELLER_60', 'product', '15', '100');
+
+        return $recommendation->postRecommendations();
+    }
+
+    /**
+     * @param GlobusRestApiResult $result
+     * @param string $token
+     * @param RecoTransfer $recoTransfer
+     *
+     * @return void
+     */
+    protected function addRecommendationResultsToDataTable(GlobusRestApiResult $result, string $token, RecoTransfer $recoTransfer): RecoTransfer
+    {
+        return $this->getFactory()->getRecommendationsClient()->insertRecoData($recoTransfer);
+    }
+
+    /**
+     * @param RecoTransfer $recoTransfer
+     *
+     * @return bool
+     */
+    protected function checkIfRecommendationsResponseIsGood(RecoTransfer $recoTransfer): bool
+    {
+        $parsedResult = JSON::parse($recoTransfer->getApiResult());
+        if (isset($parsedResult['code']) && $parsedResult['code'] === '200') {
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * @param RecoTransfer $recoTransfer
+     *
+     * @return RecoTransfer
+     */
+    protected function getExistingRecoData(RecoTransfer $recoTransfer): RecoTransfer
+    {
+        return $this->getFactory()->getRecommendationsClient()->getExistingRecoData($recoTransfer);
     }
 
     /**

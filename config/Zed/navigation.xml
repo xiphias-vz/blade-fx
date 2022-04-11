@@ -167,6 +167,21 @@
     <maintenance>
         <visible>0</visible>
     </maintenance>
+    <recommendations>
+        <label>Recommendation</label>
+        <title>Recommendation</title>
+        <icon>fa-sitemap</icon>
+        <pages>
+            <scenarios>
+                <label>Scenarios</label>
+                <title>Scenarios</title>
+                <bundle>recommendations</bundle>
+                <controller>scenario</controller>
+                <action>index</action>
+                <icon>fa-sitemap</icon>
+            </scenarios>
+        </pages>
+    </recommendations>
     <discount>
         <visible>1</visible>
     </discount>

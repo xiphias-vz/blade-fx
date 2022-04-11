@@ -7,6 +7,7 @@
     currentCodeBucket: app.currentCodeBucket,
     storeId: app.sapStoreId,
     channelName: app.factFinderChannel,
+    ffSnippetEnabled: app.ffSnippetEnabled,
 } %}
 
 {% define hamburgerIcon = {
@@ -27,6 +28,7 @@
 {% block body %}
     {% set defaultUrl = publicPath("/images/kein_bild_vorhanden.png") %}
     <input type="hidden" id="defaultUrlToTheBoxPicture" value="{{ defaultUrl }}" />
+    <input type="hidden" id="ffSnippetEnabled" value="{{ data.ffSnippetEnabled }}"
 
     {% embed molecule('popup-ui-shipment-form') with {} only %}
     {% endembed %}

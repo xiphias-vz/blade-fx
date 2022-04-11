@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<database xmlns="spryker:schema-01"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          name="zed" xsi:schemaLocation="spryker:schema-01 https://static.spryker.com/schema-01.xsd"
+          namespace="Orm\Zed\RecommendationsStorage\Persistence"
+          package="src.Orm.Zed.RecommendationsStorage.Persistence">
+
+    <table name="pyz_recommendation_definition_storage" identifierQuoting="true">
+        <column name="id_recommendations_storage" type="BIGINT" autoIncrement="true" primaryKey="true" />
+        <column name="data" type="LONGVARCHAR" required="false" />
+        <column name="key" type="VARCHAR" required="true" />
+
+        <id-method-parameter value="pyz_recommendation_definition_storage_pk_seq"/>
+
+        <behavior name="synchronization">
+            <parameter name="resource" value="recommendations" />
+            <parameter name="queue_group" value="sync.storage.recommendations" />
+            <parameter name="store" required="true" />
+        </behavior>
+
+        <behavior name="timestampable" />
+    </table>
+
+</database>

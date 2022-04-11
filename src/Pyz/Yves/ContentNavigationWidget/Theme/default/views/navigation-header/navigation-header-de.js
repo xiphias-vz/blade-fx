@@ -184,6 +184,30 @@ document.addEventListener("ffReady", function (event) {
         }
     });
 
+    let isFfSnippetEnabled = document.querySelector('#ffSnippetEnabled');
+    // const arrayOfRecommendedItems = document.querySelector('#arrayOfRecommendedItems');
+    const arrayOfRecommendedItems = [`4001432058030`, `4001432058040`];
+    if (isFfSnippetEnabled !== null && isFfSnippetEnabled !== undefined) {
+        if(isFfSnippetEnabled.value === "true") {
+            console.log("FF SNIPPET JE ENABLED");
+            factfinder.communication.EventAggregator.addBeforeDispatchingCallback(e => {
+                // debugger;
+                e.pushedArticleIds = arrayOfRecommendedItems;
+            });
+
+            factfinder.communication.EventAggregator.addBeforeHistoryPushCallback((result, event, url) => {
+                    delete event.pushedArticleIds;
+                    url = url.replace(/pushedArticleIds=[^&]*(&|$)/gi, ``);
+                    factfinder.communication.Util.pushParameterToHistory(result, url, event);
+                    return false;
+                }
+            );
+        } else {
+            console.log("NIje enabled FF snippet!!");
+        }
+    }
+
+
     resultDispatcher.addCallback('ppp', function (pppData) {
         const number = 48;
         pppData.forEach(pppItem => {

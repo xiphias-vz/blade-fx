@@ -7,6 +7,8 @@
 
 namespace Pyz\Zed\Publisher;
 
+use Pyz\Shared\RecommendationsStorage\RecommendationsStorageConfig;
+use Pyz\Zed\RecommendationsStorage\Communication\Plugin\Publisher\RecommendationsPublisherTriggerPlugin;
 use Spryker\Zed\GlossaryStorage\Communication\Plugin\Publisher\GlossaryPublisherTriggerPlugin;
 use Spryker\Zed\MerchantSearch\Communication\Plugin\Publisher\Merchant\MerchantDeletePublisherPlugin;
 use Spryker\Zed\MerchantSearch\Communication\Plugin\Publisher\Merchant\MerchantWritePublisherPlugin;
@@ -55,6 +57,7 @@ class PublisherDependencyProvider extends SprykerPublisherDependencyProvider
             new GlossaryPublisherTriggerPlugin(),
             new ProductRelationPublisherTriggerPlugin(),
             new MerchantPublisherTriggerPlugin(),
+            new RecommendationsPublisherTriggerPlugin(),
         ];
     }
 
