@@ -39,7 +39,9 @@ class MerchantStorageDataExpander implements MerchantStorageDataExpanderInterfac
                 $merchantTransfer = $merchantTransfer
                     ->setDateTimeSlots($storageMerchantTransfer->getDateTimeSlots())
                     ->setDeliveryCapacityPerSlot($storageMerchantTransfer->getDeliveryCapacityPerSlot())
+                    ->setTimeSlotsCutoffTime($storageMerchantTransfer->getTimeSlotsCutoffTime())
                     ->setWeekDaysTimeSlots($storageMerchantTransfer->getWeekDaysTimeSlots());
+
                 break;
             }
         }

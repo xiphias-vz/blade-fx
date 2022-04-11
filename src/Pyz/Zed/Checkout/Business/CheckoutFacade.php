@@ -7,10 +7,10 @@
 
 namespace Pyz\Zed\Checkout\Business;
 
-use Everon\Component\CriteriaBuilder\Criteria;
 use Generated\Shared\Transfer\QuoteTransfer;
 use Orm\Zed\Sales\Persistence\Map\SpySalesOrderItemTableMap;
 use Orm\Zed\Sales\Persistence\SpySalesOrder;
+use Propel\Runtime\ActiveQuery\Criteria as PropelCriteria;
 use Spryker\Zed\Checkout\Business\CheckoutFacade as SprykerCheckoutFacade;
 use Spryker\Zed\Checkout\Business\CheckoutFacadeInterface;
 
@@ -55,13 +55,13 @@ class CheckoutFacade extends SprykerCheckoutFacade implements CheckoutFacadeInte
     /**
      * @param int $greaterThanIdOrder
      *
-     * @return SpySalesOrder|null
+     * @return \Orm\Zed\Sales\Persistence\SpySalesOrder|null
      */
     public function getNewOrderEntity(int $greaterThanIdOrder): ?SpySalesOrder
     {
         return $this->getFactory()
             ->getSalesOrderOuery()
-            ->filterByIdSalesOrder($greaterThanIdOrder,   \Propel\Runtime\ActiveQuery\Criteria::GREATER_THAN)
+            ->filterByIdSalesOrder($greaterThanIdOrder, PropelCriteria::GREATER_THAN)
             ->findOneByIsNew(true);
     }
 

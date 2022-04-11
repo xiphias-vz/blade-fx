@@ -179,6 +179,16 @@ class OrdersTable extends SprykerOrdersTable
     }
 
     /**
+     * @return bool
+     */
+    public function getIsUserSupervisor(): bool
+    {
+        $currentUser = $this->userFacade->getCurrentUser();
+
+        return $this->isCurrentUserSupervisor($currentUser);
+    }
+
+    /**
      * @return string[]
      */
     public function getPickingZones(): array

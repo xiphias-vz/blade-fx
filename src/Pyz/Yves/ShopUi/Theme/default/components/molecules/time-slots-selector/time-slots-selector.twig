@@ -72,9 +72,13 @@
                     }%}
                     {% for day, hours in data.slides if hours | length > 0 %}
                         {% set dayOfTheWeek = day |date('w') %}
+                        {% set currentDate = "now"|date("w") %}
                         <div class="{{ config.name }}__column spacing-bottom spacing-bottom--biggest">
-                            <div class="{{ config.name }}__date">{{ daysInTheWeek[dayOfTheWeek] }}, {{ day | date("d.m.y") }}</div>
-                            {% set parentIndex = 'day-' ~ loop.index %}
+                            {% if currentDate == dayOfTheWeek %}
+                                <div class="{{ config.name }}__date">{{ 'shipment.form.today' | trans  }}, {{ day | date("d.m.y") }}</div>
+                            {% else %}
+                                <div class="{{ config.name }}__date">{{ daysInTheWeek[dayOfTheWeek] }}, {{ day | date("d.m.y") }}</div>
+                            {% endif %}                            {% set parentIndex = 'day-' ~ loop.index %}
                             {% for hour in hours %}
                                 <div class="{{ config.name }}__slot">
                                     <input id="timeslot-hour-{{ embed.shimpentMethodIndex }}-{{ parentIndex }}-{{ loop.index }}" class="{{ config.name }}__input {{ embed.jsName }}__input" type="radio" name="timeslot-hour" value="{{ day }}_{{ hour }}">

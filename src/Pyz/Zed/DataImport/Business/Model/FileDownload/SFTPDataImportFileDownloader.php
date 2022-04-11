@@ -31,6 +31,9 @@ class SFTPDataImportFileDownloader
      */
     protected $dataImportConfig;
 
+    /**
+     * @var int
+     */
     protected $counter = 0;
 
     protected const SFTP_PATH = '/OUT/';

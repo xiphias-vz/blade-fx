@@ -15,6 +15,7 @@ use Spryker\Service\Kernel\AbstractService;
 class TimeSlotService extends AbstractService implements TimeSlotServiceInterface
 {
     protected const ZERO_CAPACITY = 0;
+    protected const ZERO_CUTOFF = 10;
 
     /**
      * {@inheritDoc}
@@ -62,7 +63,26 @@ class TimeSlotService extends AbstractService implements TimeSlotServiceInterfac
      *
      * @return int|null
      */
-    protected function getDateTimeSlotCapacity(MerchantTransfer $merchantTransfer, string $currentDate, string $timeSlot): ?int
+    public function getMerchantCutOffTime(
+        MerchantTransfer $merchantTransfer,
+        string $currentDate,
+        string $timeSlot
+    ): ?int {
+        if ($merchantTransfer->getTimeSlotsCutoffTime()) {
+            return $this->getCutoffTimeSlot($merchantTransfer, $currentDate, $timeSlot);
+        }
+
+        return static::ZERO_CUTOFF;
+    }
+
+    /**
+     * @param \Generated\Shared\Transfer\MerchantTransfer $merchantTransfer
+     * @param string $currentDate
+     * @param string $timeSlot
+     *
+     * @return int|null
+     */
+    protected function getDateTimeSlotCapacity(MerchantTransfer $merchantTransfer, string $currentDate, string $timeSlot): ?int //TODO: SET current date to be today
     {
         foreach ($merchantTransfer->getDateTimeSlots() as $dateTimeSlotsTransfer) {
             if ($dateTimeSlotsTransfer->getDate() !== $currentDate) {
@@ -88,7 +108,34 @@ class TimeSlotService extends AbstractService implements TimeSlotServiceInterfac
      *
      * @return int|null
      */
-    protected function getWeekDayTimeSlotCapacity(MerchantTransfer $merchantTransfer, string $currentDate, string $timeSlot): ?int
+    protected function getCutoffTimeSlot(MerchantTransfer $merchantTransfer, string $currentDate, string $timeSlot): ?int
+    {
+        $dayOfWeek = date('l', strtotime($currentDate));
+
+        foreach ($merchantTransfer->getTimeSlotsCutoffTime() as $cutoffTimeTransfer) {
+            if ($cutoffTimeTransfer->getWeekDayName() !== $dayOfWeek) {
+                continue;
+            }
+            foreach ($cutoffTimeTransfer->getCutoffTime() as $timeTransfer) {
+                if ($timeTransfer->getTimeSlot() !== $timeSlot) {
+                    continue;
+                }
+
+                return $timeTransfer->getCutoffTime();
+            }
+        }
+
+        return null;
+    }
+
+    /**
+     * @param \Generated\Shared\Transfer\MerchantTransfer $merchantTransfer
+     * @param string $currentDate
+     * @param string $timeSlot
+     *
+     * @return int|null
+     */
+    protected function getWeekDayTimeSlotCapacity(MerchantTransfer $merchantTransfer, string $currentDate, string $timeSlot): ?int //TODO: In here is the check against the transfer
     {
         $dayOfWeek = date('l', strtotime($currentDate));
 

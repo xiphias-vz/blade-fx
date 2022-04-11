@@ -8,9 +8,11 @@
 namespace Pyz\Client\MerchantStorage\Mapper;
 
 use ArrayObject;
+use Generated\Shared\Transfer\CutOffTimeTransfer;
 use Generated\Shared\Transfer\DateTimeSlotsTransfer;
 use Generated\Shared\Transfer\MerchantTransfer;
 use Generated\Shared\Transfer\TimeSlotCapacityTransfer;
+use Generated\Shared\Transfer\TimeSlotsCutoffTimeTransfer;
 use Generated\Shared\Transfer\WeekDayTimeSlotsTransfer;
 
 class MerchantStorageMapper implements MerchantStorageMapperInterface
@@ -43,6 +45,7 @@ class MerchantStorageMapper implements MerchantStorageMapperInterface
     ): MerchantTransfer {
         $merchantTransfer = $this->mapWeekDaysTimeSlots($merchantStorageData, $merchantTransfer);
         $merchantTransfer = $this->mapDateTimeSlots($merchantStorageData, $merchantTransfer);
+        $merchantTransfer = $this->mapTimeSlotsCutoffTime($merchantStorageData, $merchantTransfer);
 
         return $merchantTransfer;
     }
@@ -98,6 +101,35 @@ class MerchantStorageMapper implements MerchantStorageMapperInterface
             }
 
             $merchantTransfer->addWeekDaysTimeSlots($weekDayTimeSlotsTransfer);
+        }
+
+        return $merchantTransfer;
+    }
+
+    /**
+     * @param array $merchantStorageData
+     * @param \Generated\Shared\Transfer\MerchantTransfer $merchantTransfer
+     *
+     * @return \Generated\Shared\Transfer\MerchantTransfer
+     */
+    protected function mapTimeSlotsCutoffTime(
+        array $merchantStorageData,
+        MerchantTransfer $merchantTransfer
+    ): MerchantTransfer {
+        $merchantTransfer->setTimeSlotsCutoffTime(new ArrayObject());
+        $timeSlotsCutoffTime = $merchantStorageData[MerchantTransfer::TIME_SLOTS_CUTOFF_TIME] ?? [];
+
+        foreach ($timeSlotsCutoffTime as $dayName => $cutoffTime) {
+            $cutoffTimeTransfer = (new TimeSlotsCutoffTimeTransfer())->setWeekDayName($dayName);
+            foreach ($cutoffTime as $timeSlot => $time) {
+                if ($time == null) {
+                    $time = 10; //TODO: get first number from the timeslot variable
+                }
+                $cutoffTimeTransfer->addCutoffTime(
+                    (new CutOffTimeTransfer())->setTimeSlot($timeSlot)->setCutoffTime($time)
+                );
+            }
+            $merchantTransfer->addTimeSlotsCutoffTime($cutoffTimeTransfer);
         }
 
         return $merchantTransfer;

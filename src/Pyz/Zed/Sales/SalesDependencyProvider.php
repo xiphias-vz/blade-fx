@@ -16,6 +16,7 @@ use Pyz\Zed\MerchantRegion\Communication\Plugin\Sales\MerchantRegionOrderExpande
 use Pyz\Zed\MerchantSalesOrder\Business\MerchantSalesOrderFacadeInterface;
 use Pyz\Zed\MerchantSalesOrder\Communication\Plugin\Sales\MerchantSalesOrderExpanderPlugin;
 use Pyz\Zed\MerchantSalesOrder\Communication\Plugin\Sales\MerchantSalesOrderPostSavePlugin;
+use Pyz\Zed\MerchantStorage\Business\MerchantStorageFacadeInterface;
 use Pyz\Zed\Product\Business\ProductFacadeInterface;
 use Pyz\Zed\Sales\Communication\Plugin\MinimumAgeOrderExpanderPlugin;
 use Pyz\Zed\Sales\Communication\Plugin\OrderItemAttributesExpanderPreSavePlugin;
@@ -66,6 +67,7 @@ class SalesDependencyProvider extends SprykerSalesDependencyProvider
     public const FACADE_TIME_SLOTS_ORDER_OVERVIEW = 'FACADE_TIME_SLOTS';
     public const SERVICE_TIME_SLOTS = 'SERVICE_TIME_SLOTS';
     public const CLIENT_STORAGE = 'CLIENT_STORAGE';
+    public const MERCHANT_STORAGE_FACADE = 'MERCHANT_STORAGE_FACADE';
 
     public const PLUGINS_OMS_ORDER_MAIL_EXPANDER = 'PLUGINS_OMS_ORDER_MAIL_EXPANDER';
     public const FACADE_MAIL = 'FACADE_MAIL';
@@ -109,6 +111,7 @@ class SalesDependencyProvider extends SprykerSalesDependencyProvider
 
         $container = $this->addDateTimeWithZoneService($container);
         $container = $this->addMerchantSalesOrderFacade($container);
+        $container = $this->addMerchantStorageFacade($container);
         $container = $this->addBaseOmsFacade($container);
         $container = $this->addAclFacade($container);
         $container = $this->addPickingZoneFacade($container);
@@ -431,5 +434,19 @@ class SalesDependencyProvider extends SprykerSalesDependencyProvider
             new OrderAggregatedItemStateSearchOrderExpanderPlugin(),
             new IsCancellableSearchOrderExpanderPlugin(),
         ];
+    }
+
+    /**
+     * @param \Spryker\Zed\Kernel\Container $container
+     *
+     * @return \Spryker\Zed\Kernel\Container
+     */
+    protected function addMerchantStorageFacade(Container $container): Container
+    {
+        $container->set(static::MERCHANT_STORAGE_FACADE, function (Container $container): MerchantStorageFacadeInterface {
+            return $container->getLocator()->merchantStorage()->facade();
+        });
+
+        return $container;
     }
 }

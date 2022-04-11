@@ -5018,6 +5018,8 @@ popup.shipment.form.footer.message,"The Globus pick-up service is available to o
 popup.shipment.form.locale,de-DE,de_DE
 popup.shipment.form.locale,cs-CZ,cs_CZ
 popup.shipment.form.locale,en-US,en_US
+shipment.form.today,Heute,de_DE
+shipment.form.today,"Dnes",cs_CZ
 shipment.form.monday,Montag,de_DE
 shipment.form.monday,"pondělí",cs_CZ
 shipment.form.monday,Monday,en_US

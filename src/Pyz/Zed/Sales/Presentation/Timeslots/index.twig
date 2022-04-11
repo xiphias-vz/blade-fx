@@ -1,0 +1,420 @@
+{% extends '@Sales/Layout/layout.twig' %}
+
+{% set widget_title = 'Timeslots' | trans %}
+
+{% block action %}
+{% endblock %}
+
+{% block section_title %}
+    {{ widget_title }}
+{% endblock %}
+
+{% block content %}
+    <style>
+        .btn-customPrimary {
+            background-color: #1ab394;
+            border-color: #1ab394;
+            color: #FFFFFF;
+            border-radius: unset;
+            margin-left: 10px;
+        }
+
+        .btn-invertedPrimary {
+            background-color: #FFF;
+            border-color: #1ab394;
+            color: #1ab394;
+            border-radius: unset;
+            margin-right: 10px;
+        }
+
+        #cmbStores, #dateFrom, #dateTo {
+            width: 130px;
+            height: 35px;
+        }
+
+        #btnFilterByStore, #btnResetDefaultDayFilter, #btnResetDefaultDateFilter, #btnFilterByDate {
+            margin-left: 10px;
+            min-width: 50px;
+            height: 35px;
+            margin-top: 23px;
+        }
+
+        #timeSlotTables {
+            margin-top: 30px;
+            min-height: 1100px;
+        }
+
+        #timeSlotTables table {
+            width: 95%;
+            margin-bottom: 20px;
+        }
+
+        #timeSlotTables thead {
+            background-color: #333333;
+            color: white;
+        }
+
+        #timeSlotTables th {
+            max-width: 60px;
+        }
+
+        #timeSlotTables th, td {
+            padding: 8px !important;
+        }
+
+        #timeSlotTables tr {
+            text-align: center;
+        }
+
+        #timeSlotTables.ts-table-sum-row {
+            background-color: #c1e1ca;
+            color: black;
+        }
+
+        .btn-custom-cancel {
+            background-color: #ed5565;
+            border-color: #ed5565;
+            color: #ffffff;
+            border-radius: 0px;
+
+        }
+
+        #savingAndMessageDiv {
+            background-color: #dedede;
+            display: none;
+            padding: 10px;
+            justify-content: space-between;
+            margin: 20px 0;
+        }
+
+        #infoBox {
+            background-color: #e3a858;
+            color: black;
+            padding: 10px;
+            display: none;
+        }
+
+        #infoBoxText {
+            vertical-align: middle;
+        }
+
+        #infoBox .close {
+            margin-left: 30px;
+            vertical-align: middle;
+            color: black;
+        }
+
+        #btnSave {
+            margin-left: 10px;
+        }
+
+        #btnCancel, #btnResetDefaultDayFilter, #btnSave {
+            min-width: 50px;
+        }
+
+        #btnResetDefaultDayFilter, #btnResetDefaultDateFilter {
+            display: none;
+        }
+
+        .ts-table-info-row,
+        .ts-table-0-row,
+        .ts-table-2-row,
+        .ts-table-4-row,
+        .cutOffTimeField_1,
+        .cutOffTimeField_3,
+        .cutOffTimeField_5
+        {
+            background-color: #ffffff;
+        }
+
+        .ts-table-1-row,
+        .ts-table-3-row,
+        .ts-table-5-row,
+        .cutOffTimeField_0,
+        .cutOffTimeField_2,
+        .cutOffTimeField_4
+        {
+            background-color: #f7f7f7;
+        }
+
+        .ts-table-cutOffTimeField {
+            text-align: center;
+        }
+
+        .modal {
+            display: none; /* Hidden by default */
+            position: fixed; /* Stay in place */
+            z-index: 1; /* Sit on top */
+            padding-top: 100px; /* Location of the box */
+            left: 0;
+            top: 0;
+            width: 100%; /* Full width */
+            height: 100%; /* Full height */
+            overflow: auto; /* Enable scroll if needed */
+            background-color: rgb(0,0,0); /* Fallback color */
+            background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+        }
+
+        .popUp-modal-content {
+            position: relative;
+            background-color: #fefefe;
+            margin: auto;
+            padding: 0;
+            border: 1px solid #888;
+            border-radius: 0px;
+            width: 40%;
+            box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.19);
+            -webkit-animation-name: animatetop;
+            -webkit-animation-duration: 0.4s;
+            animation-name: animatetop;
+            animation-duration: 0.4s
+        }
+
+
+        .popUp-modal-body {
+            padding: 0 20px;
+            margin-top: 20px;
+        }
+
+        .popUp-modal-header {
+            padding: 5px 20px;
+            background-color: #f7f7f7;
+            color: black;
+        }
+
+        .popUp-modal-footer {
+            padding: 10px 20px;
+            text-align: center;
+        }
+
+        .close {
+            color: #000;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: #000;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .popUp-modal-header .close {
+            margin-top: 5px;
+        }
+
+        .btn-customPrimary {
+            background-color: #1ab394;
+            border-color: #1ab394;
+            color: #FFFFFF;
+            border-radius: unset;
+            margin-left: 10px;
+        }
+
+        .btn-invertedPrimary {
+            background-color: #FFF;
+            border-color: #1ab394;
+            color: #1ab394;
+            border-radius: unset;
+            margin-right: 10px;
+        }
+
+        .defaultTable {
+            background-color: #000000;
+        }
+
+        .defaultTable th {
+            width: 700px;
+            color: white;
+            padding: 5px 0 5px 15px;
+        }
+
+        .notDefaultTable {
+            background-color: #ce6200;
+        }
+
+        input[type="button"], button {
+            cursor: pointer;
+        }
+
+        #formatedTables {
+            display: flow-root;
+        }
+
+        {% if isUserAdmin != 1 %}
+        #savingAndMessageDiv {
+            visibility: hidden;
+        }
+        {% else %}
+        #savingAndMessageDiv {
+            display: flex;
+        }
+        {% endif %}
+
+
+    </style>
+    <form id="cutoffTimesData" style="display:flex;">
+        <div class="filters-holder">
+            <div class="filter-component">
+                <label for="cmbStores">{{ 'Location' | trans }}</label> <br>
+                <select id="cmbStores" name="location">
+                    {% for storeId, storeName in storesData  %}
+                        <option value="{{ storeId }}">{{ storeName }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+        </div>
+        <div id="dayFilterButtons">
+            <input id="btnFilterByStore" type="button" class="btn btn-customPrimary" value="{{ 'edit_standard_plan' | trans }}">
+            <input id="btnResetDefaultDayFilter" type="button" class="btn btn-custom-cancel" value="{{ 'Cancel' | trans }}">
+        </div>
+
+
+    <div id="savingAndMessageDiv">
+        <div style="margin-top: 8px">
+            <form>
+                <span style="margin-left: 10px;">{{ 'edit_standard_plan' | trans }}</span>
+                <input id="btnSave" type="button" class="btn btn-customPrimary" value="&#10003; {{ 'Save' | trans }}">
+                <input id="btnCancel" type="button" class="btn btn-custom-cancel" value="X  {{ 'Cancel' | trans }}" >
+            </form>
+        </div>
+        <div id="infoBox">
+            <span id="infoBoxText">{{ 'timeslot_capacity_edit_warning' | trans }}</span>
+            <button id="infoBoxClose" class="close">x</button>
+        </div>
+    </div>
+
+    <div id="timeSlotTables" data-changed="">
+
+    </div>
+
+    </form>
+
+
+    <script type="text/javascript">
+        var formatedTablesDiv = document.getElementById("timeSlotTables");
+        let daysOfTheWeek = [];
+        let timeSlots = [];
+        let cutoffTimes = [];
+        let timeSave = [];
+        //TODO: add logic for the CB
+        daysOfTheWeek = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
+        timeSlots = ['10:00-12:00', '12:00-14:00', '14:00-16:00', '16:00-18:00', '18:00-20:00'];
+        cutoffTimes = ['10', '12', '14', '16', '18'];
+        daysOfTheWeek.forEach(createTableForEachDay);
+        let savingAndMessageDiv = document.getElementById("savingAndMessageDiv");
+        let mondayElements = document.getElementsByName("Monday");
+        let tuesdayElements = document.getElementsByName("Tuesday");
+        let wednesdayElements = document.getElementsByName("Wednesday");
+        let thursdayElements = document.getElementsByName("Thursday");
+        let fridayElements = document.getElementsByName("Friday");
+        let saturdayElements = document.getElementsByName("Saturday");
+        let sundayElements = document.getElementsByName("Sunday");
+
+        let currentStore = document.getElementById("cmbStores");
+        let tableCutoffs = document.getElementsByClassName("tablica");
+        var btnSaveChangedData = document.getElementById("btnSave");
+        var btnCancelTimeSlotChange = document.getElementById("btnCancel");
+
+
+        function createTableForEachDay(day){
+            formatedTablesDiv.insertAdjacentHTML('beforeend',
+                '<did class="timeSlotTable_' + day + ' col col-md-6">' +
+                    '<table>' +
+                        '<thead>' +
+                            '<tr class="defaultTable">' +
+                                '<th>' + day + '</th>' +
+                                '<th>' + 'Default' + '</th>' +
+                            '</tr>'+
+                        '</thead>'+
+                        '<tbody>' +
+                            '<tr class="ts-table-info-row">' +
+                                '<td>' + 'Timeslot' + '</td>' +
+                                '<td>' + 'Cut-off time' + '</td>' +
+                            '</tr>'+
+                        '</tbody>'+
+                    '</table>'+
+                '</did>')
+            // debugger;
+
+            //Need to retrieve real "Cut-off time" data!
+            for(let i = 0; i < timeSlots.length; i++){
+                document.querySelectorAll(".timeSlotTable_" + day + " tbody")[0].insertAdjacentHTML('beforeend',
+                    '<tr class="ts-table-' + i + '-row">' +
+                    '<td>' + timeSlots[i] + '</td>' +
+                    '<td><div  id="timeslotRow__' + day + '__'+timeSlots[i]+'" class="tablica ts-table-cutOffTimeField cutOffTimeField_' + i + '" contenteditable="true"  slot="'+timeSlots[i]+'" name="'+day+'">' + '-' + cutoffTimes[i] + '</div></td>' +
+                    // '<td><div  id="timeslotRow__' + day + '__'+timeSlots[i]+'" class="tablica ts-table-cutOffTimeField cutOffTimeField_' + i + '" contenteditable="true"  slot="'+timeSlots[i]+'" value="'+ cutoffTimes[i]+'" name="'+ day + '__'+ timeSlots[i]+'"></div></td>' +
+                    '</tr>');
+            };
+        }
+
+        btnSaveChangedData.addEventListener("click", function(ev) {
+            createDataArray()
+            saveTimeSlotCutoff(currentStore.value);
+        });
+
+        function saveTimeSlotCutoff(store){
+            debugger;
+            let formData = new FormData();
+            let json = JSON.stringify(timeSave);
+            formData.append("store", store);
+            formData.append("data", json);
+
+            let xhttp = new XMLHttpRequest();
+            xhttp.onreadystatechange = function(){
+                //TODO: CHECK the response
+            }
+            xhttp.open("POST", window.location.origin + "/sales/timeslots/saveTimeslotCutoffs");
+            xhttp.send(formData);
+        }
+
+        function createDataArray() {
+            for (let i = 0; i < daysOfTheWeek.length; i++) {
+                switch (daysOfTheWeek[i]) {
+                    case 'Monday':
+                        createObjectForParticularDay(mondayElements);
+                        break;
+                    case 'Tuesday':
+                        createObjectForParticularDay(tuesdayElements);
+                        break;
+                    case 'Wednesday':
+                        createObjectForParticularDay(wednesdayElements);
+                        break;
+                    case 'Thursday':
+                        createObjectForParticularDay(thursdayElements);
+                        break;
+                    case 'Friday':
+                        createObjectForParticularDay(fridayElements);
+                        break;
+                    case 'Saturday':
+                        createObjectForParticularDay(saturdayElements);
+                        break;
+                    case 'Sunday':
+                        createObjectForParticularDay(sundayElements);
+                        break;
+                }
+            }
+        }
+
+        function createObjectForParticularDay(object){
+            let day = object[0].getAttribute("name");
+            let slotsObject = {};
+            let objectWithSpecifiedDay = {};
+            for(let i = 0; i< object.length; i++){
+                let slot = object[i].getAttribute("slot");
+                let value = object[i].innerHTML;
+                let time = value;
+                if(value.includes('-')){
+                    time = value.substring(1)
+                }
+                slotsObject[slot] = time;
+            }
+            objectWithSpecifiedDay[day] = slotsObject;
+            timeSave.push(objectWithSpecifiedDay);
+        }
+    </script>
+
+
+    {% endblock %}

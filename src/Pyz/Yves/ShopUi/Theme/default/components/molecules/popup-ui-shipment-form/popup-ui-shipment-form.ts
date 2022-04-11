@@ -254,7 +254,6 @@ export default class PopupUiShipmentForm extends Component {
         for (const property in data) {
             if(this.daysCounter < maxDayCounter){
                 this.daysCounter++;
-
                 let dateObj = new Date(property);
                 let germanFormatDate = dateObj.toLocaleDateString(this.locale.value);
 

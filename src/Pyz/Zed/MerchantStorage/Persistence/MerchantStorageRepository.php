@@ -58,8 +58,13 @@ class MerchantStorageRepository extends AbstractRepository implements MerchantSt
                     ->createMerchantStorageMapper()
                     ->mapTimeslotEntitiesToDateTimeSlotsTransferRaw($timeslotEntities);
 
+                $cutoffTimeRaw = $this->getFactory()
+                    ->createMerchantStorageMapper()
+                    ->matCutoffTimeEntitiesToCuttofTimesSlotTransferRaw($timeslotEntities);
+
                 $merchantTransfer->setWeekDaysTimeSlotsRaw($weekDaysTimeSlotsRaw);
                 $merchantTransfer->setDateTimeSlotsRaw($dateTimeSlotsRaw);
+                $merchantTransfer->setTimeSlotsCutoffRaw($cutoffTimeRaw);
             }
         }
 

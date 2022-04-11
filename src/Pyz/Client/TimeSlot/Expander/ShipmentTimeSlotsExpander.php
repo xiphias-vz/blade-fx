@@ -184,18 +184,28 @@ class ShipmentTimeSlotsExpander implements ShipmentSlotsExpanderInterface
             );
         }
 
-        for ($i = 0; $i < $this->maxShowDays; $i++) {
-            $currentDateTime->add(new DateInterval(static::INTERVAL_STEP));
+        for ($i = 0; $i <= $this->maxShowDays; $i++) {
+            if ($i != 0) {
+                $currentDateTime->add(new DateInterval(static::INTERVAL_STEP));
+            }
             $currentDate = $currentDateTime->format(static::DATE_FORMAT);
             $dateOfWeek = $currentDateTime->format(static::DAY_OF_WEEK_FORMAT);
 
             if (in_array($currentDate, $this->holidays) || in_array($dateOfWeek, $timeSlotWeekUnivialilityDays)) {
-                $i--;
+                if ($i != 0) {
+                    $i--;
+                }
                 continue;
             }
 
             $availableTimeSlots = $this->filterTimeSlotTemplateAgainstCapacity(
                 $shipmentMethodTransfer,
+                $merchantTransfer,
+                $currentDate,
+                $timeSlotTemplate
+            );
+
+            $availableTimeSlots = $this->filterTimeSlotTemplateAgainstCutoffTime(
                 $merchantTransfer,
                 $currentDate,
                 $timeSlotTemplate
@@ -303,6 +313,68 @@ class ShipmentTimeSlotsExpander implements ShipmentSlotsExpanderInterface
     }
 
     /**
+     * @param \Generated\Shared\Transfer\MerchantTransfer $merchantTransfer
+     * @param string $currentDate
+     * @param array $timeSlotTemplate
+     *
+     * @return array
+     */
+    protected function filterTimeSlotTemplateAgainstCutoffTime(
+        MerchantTransfer $merchantTransfer,
+        string $currentDate,
+        array $timeSlotTemplate
+    ) {
+        foreach ($timeSlotTemplate as $key => $timeSlot) {
+            $cutOffTime = $this->timeSlotService->getMerchantCutOffTime(
+                $merchantTransfer,
+                $currentDate,
+                $timeSlot
+            );
+
+            $beginningTime = $this->getBeginningTimeFromTimeSlot($timeSlot);
+            $cutoffDateTime = date('d/m/y H:i:s', $this->createCutOffRealTime($beginningTime, $currentDate, $cutOffTime));
+            date_default_timezone_set('Europe/Berlin');
+            $currentTime = date('d/m/y H:i:s', strtotime("now"));
+            $cutoffDateTimeArray = explode(' ', $cutoffDateTime);
+            $currentDateTimeArray = explode(' ', $currentTime);
+
+            if ($cutoffDateTimeArray[0] < $currentDateTimeArray[0]) {
+                unset($timeSlotTemplate[$key]);
+            } elseif ($currentDateTimeArray[1] >= $cutoffDateTimeArray[1]) {
+                if ($cutoffDateTimeArray[0] > $currentDateTimeArray[0]) {
+                    continue;
+                }
+                unset($timeSlotTemplate[$key]);
+            }
+        }
+
+        return array_values($timeSlotTemplate);
+    }
+
+    /**
+     * @param int $beginningTime
+     * @param string $currentDate
+     * @param int $cuttofTime
+     *
+     * @return int
+     */
+    protected function createCutOffRealTime(int $beginningTime, string $currentDate, int $cuttofTime): int
+    {
+        $realCutoof = $beginningTime - $cuttofTime;
+        if ($realCutoof < 0) {
+            $realCutoof = 24 + $realCutoof;
+            $currentDate = date('m/d/Y', strtotime('-1 day', strtotime($currentDate)));
+        }
+        $realCutoffString = (string)$realCutoof;
+        if (strlen($realCutoffString) == 1) {
+            $realCutoffString = '0' . $realCutoffString;
+        }
+        $cutoffDate = $currentDate . ' ' . $realCutoffString . ':00:00';
+
+        return strtotime($cutoffDate);
+    }
+
+    /**
      * @param \Generated\Shared\Transfer\ShipmentMethodTransfer $shipmentMethodTransfer
      *
      * @throws \Pyz\Client\TimeSlot\Exception\TimeSlotKeyNotFound
@@ -342,5 +414,17 @@ class ShipmentTimeSlotsExpander implements ShipmentSlotsExpanderInterface
         }
 
         return $shipmentTimeSlots;
+    }
+
+    /**
+     * @param string $timeSlot
+     *
+     * @return int
+     */
+    protected function getBeginningTimeFromTimeSlot(string $timeSlot): int
+    {
+        $beginningTime = substr($timeSlot, 0, 2);
+
+        return (int)$beginningTime;
     }
 }

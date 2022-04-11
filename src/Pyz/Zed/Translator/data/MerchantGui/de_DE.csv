@@ -40,6 +40,7 @@ edit_standard_plan, Standardplan bearbeiten
 date_from,Datum von
 date_to,Datum bis
 select,Auswählen
+proceed,Bearbeiten
 edit_days,Tage bearbeiten
 timeslot_capacity_edit_warning,"ACHTUNG: ""Achtung: Sie ändern die Kapazitäten für einen expliziten Tag"""
 Is active,Ist aktiv

@@ -88,6 +88,7 @@ class MerchantStorageMapper
                 MerchantTransfer::MERCHANT_REFERENCE => $merchant->getMerchantReference(),
                 MerchantTransfer::PICKING_CAPACITY_PER_SLOT => $merchant->getPickingCapacityPerSlot(),
                 MerchantTransfer::WEEK_DAYS_TIME_SLOTS => $merchant->getWeekDaysTimeSlotsRaw(),
+                MerchantTransfer::TIME_SLOTS_CUTOFF_TIME => $merchant->getTimeSlotsCutoffRaw(),
                 MerchantTransfer::DATE_TIME_SLOTS => $merchant->getDateTimeSlotsRaw(),
                 MerchantTransfer::DELIVERY_POSTAL_CODES => $merchant->getDeliveryPostalCodes(),
                 MerchantTransfer::VISIBLE_STORES_ARRAY => $availableMerchants,
@@ -138,6 +139,26 @@ class MerchantStorageMapper
         }
 
         return $timeSlotsIndexedByDate;
+    }
+
+    /**
+     * @param \Propel\Runtime\Collection\ObjectCollection $timeSlots
+     *
+     * @return array
+     */
+    public function matCutoffTimeEntitiesToCuttofTimesSlotTransferRaw(ObjectCollection $timeSlots): array
+    {
+        $cutoffTimesIndexedByDates = [];
+
+        foreach ($timeSlots as $timeSlot) {
+            if ($timeSlot->getDate()) {
+                continue;
+            }
+
+            $cutoffTimesIndexedByDates[$timeSlot->getDay()][$timeSlot->getTimeSlot()] = $timeSlot->getCutOffTime();
+        }
+
+        return $cutoffTimesIndexedByDates;
     }
 
     /**

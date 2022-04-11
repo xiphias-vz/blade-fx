@@ -10,11 +10,17 @@ namespace Pyz\Zed\Sales\Communication;
 use Orm\Zed\PickingSalesOrder\Persistence\PyzPickingSalesOrderQuery;
 use Orm\Zed\PickingZone\Persistence\PyzPickingZoneQuery;
 use Orm\Zed\Sales\Persistence\Map\SpySalesOrderTableMap;
+use Orm\Zed\TimeSlot\Persistence\PyzTimeSlotQuery;
+use Propel\Runtime\ActiveQuery\Criteria;
+use Propel\Runtime\Connection\ConnectionInterface;
+use Propel\Runtime\Propel;
 use Pyz\Service\DateTimeWithZone\DateTimeWithZoneServiceInterface;
 use Pyz\Shared\Oms\OmsConfig;
 use Pyz\Zed\Merchant\Business\MerchantFacadeInterface;
+use Pyz\Zed\MerchantGui\MerchantGuiDependencyProvider;
 use Pyz\Zed\MerchantSalesOrder\Business\MerchantSalesOrderFacadeInterface;
 use Pyz\Zed\MerchantSalesOrder\MerchantSalesOrderDependencyProvider;
+use Pyz\Zed\MerchantStorage\Business\MerchantStorageFacadeInterface;
 use Pyz\Zed\Oms\Business\OmsFacadeInterface;
 use Pyz\Zed\PickingZone\Business\PickingZoneFacadeInterface;
 use Pyz\Zed\Sales\Communication\Table\CapacitiesHistoryTable;
@@ -118,6 +124,14 @@ class SalesCommunicationFactory extends SprykerSalesCommunicationFactory
     }
 
     /**
+     * @return \Pyz\Zed\MerchantStorage\Business\MerchantStorageFacadeInterface
+     */
+    public function getMerchantStorageFacade(): MerchantStorageFacadeInterface
+    {
+        return $this->getProvidedDependency(MerchantGuiDependencyProvider::MERCHANT_STORAGE_FACADE);
+    }
+
+    /**
      * @param string $containerCode
      *
      * @return bool
@@ -193,5 +207,28 @@ class SalesCommunicationFactory extends SprykerSalesCommunicationFactory
     public function getUserFacade(): SalesToUserBridge
     {
         return $this->getProvidedDependency(UserDependencyProvider::FACADE_USER);
+    }
+
+    /**
+     * @param int|null $merchantReference
+     *
+     * @return array
+     */
+    public function getCurrentTimeslotCuttoffs(?int $merchantReference)
+    {
+        $containerEntity = PyzTimeSlotQuery::create()
+            ->filterByMerchantReference($merchantReference)
+            ->filterByDay(null, Criteria::NOT_EQUAL)
+            ->find();
+
+        return $containerEntity->getData();
+    }
+
+    /**
+     * @return \Propel\Runtime\Connection\ConnectionInterface
+     */
+    public function createPropelConnection(): ConnectionInterface
+    {
+        return Propel::getConnection();
     }
 }

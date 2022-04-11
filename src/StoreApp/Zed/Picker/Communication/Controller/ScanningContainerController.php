@@ -186,7 +186,7 @@ class ScanningContainerController extends AbstractController
                     $urlOverview = $factory->getConfig()->getOverviewUri();
                 } else {
                     $lastPickingPosition = $transfer->getLastPickingItemPosition();
-                    if($lastPickingPosition == 0){
+                    if ($lastPickingPosition == 0) {
                         $lastPickingPosition = 1;
                     }
                     $transfer->getOrderItem($lastPickingPosition)->setIsSubstitutionFound(true);
