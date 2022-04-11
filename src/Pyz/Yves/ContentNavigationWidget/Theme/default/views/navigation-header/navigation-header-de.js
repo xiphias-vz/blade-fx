@@ -189,7 +189,7 @@ document.addEventListener("ffReady", function (event) {
     const arrayOfRecommendedItems = [`4001432058030`, `4001432058040`];
     if (isFfSnippetEnabled !== null && isFfSnippetEnabled !== undefined) {
         if(isFfSnippetEnabled.value === "true") {
-            console.log("FF SNIPPET JE ENABLED");
+            // console.log("FF SNIPPET JE ENABLED");
             factfinder.communication.EventAggregator.addBeforeDispatchingCallback(e => {
                 // debugger;
                 e.pushedArticleIds = arrayOfRecommendedItems;
@@ -203,7 +203,7 @@ document.addEventListener("ffReady", function (event) {
                 }
             );
         } else {
-            console.log("NIje enabled FF snippet!!");
+            // console.log("NIje enabled FF snippet!!");
         }
     }
 
