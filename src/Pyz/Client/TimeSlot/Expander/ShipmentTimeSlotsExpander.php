@@ -332,6 +332,9 @@ class ShipmentTimeSlotsExpander implements ShipmentSlotsExpanderInterface
             );
 
             $beginningTime = $this->getBeginningTimeFromTimeSlot($timeSlot);
+            if($cutOffTime == null){
+                return array_values($timeSlotTemplate);
+            }
             $cutoffDateTime = date('d/m/y H:i:s', $this->createCutOffRealTime($beginningTime, $currentDate, $cutOffTime));
             date_default_timezone_set('Europe/Berlin');
             $currentTime = date('d/m/y H:i:s', strtotime("now"));

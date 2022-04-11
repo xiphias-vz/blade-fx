@@ -70,7 +70,6 @@ class TimeslotsController extends AbstractController
     {
         $response = $request->request->get("data");
         $merchantId = $request->request->get("store");
-
         if ($response != null) {
             $response = json_decode($response, true);
             $response = $this->cleanUpArray($response);
@@ -82,10 +81,12 @@ class TimeslotsController extends AbstractController
             }
             $this->getFactory()->getMerchantStorageFacade()->synchronizeMerchantToStorage();
         } else {
-            return new JsonResponse('Mising parameters'); //TODO: Insert error message that something is missing.
+            $responseData = '{error: true, response: "Missing parameters"}';
+            return new JsonResponse($responseData);
         }
+        $responseData = '{error: false, response: "Success"}';
 
-        return new JsonResponse($response);
+        return new JsonResponse($responseData);
     }
 
     /**
