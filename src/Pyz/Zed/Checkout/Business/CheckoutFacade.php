@@ -7,6 +7,7 @@
 
 namespace Pyz\Zed\Checkout\Business;
 
+use Everon\Component\CriteriaBuilder\Criteria;
 use Generated\Shared\Transfer\QuoteTransfer;
 use Orm\Zed\Sales\Persistence\Map\SpySalesOrderItemTableMap;
 use Orm\Zed\Sales\Persistence\SpySalesOrder;
@@ -32,6 +33,9 @@ class CheckoutFacade extends SprykerCheckoutFacade implements CheckoutFacadeInte
      */
     public function placeOrder(QuoteTransfer $quoteTransfer)
     {
+        if ($quoteTransfer->getUuid() === null) {
+            $quoteTransfer->setUuid(uniqid("", true));
+        }
         if ($quoteTransfer->getUuid() != null) {
             $orderUuid = $this->getFactory()->getSalesOrderFacade()->getOrderByUid($quoteTransfer->getUuid());
         } else {
