@@ -9,7 +9,6 @@ namespace Pyz\Yves\CheckoutPage\Controller;
 
 use Generated\Shared\Transfer\QuoteTransfer;
 use Generated\Shared\Transfer\ShipmentMethodTransfer;
-use Orm\Zed\Sales\Persistence\SpySalesOrderAddress;
 use Pyz\Shared\FactFinder\Business\Api\FactFinderApiClient;
 use Pyz\Yves\GlobusRestApiClient\Provider\GlobusRestApiClientAccount;
 use Pyz\Yves\GlobusRestApiClient\Provider\GlobusRestApiClientValidation;
@@ -287,10 +286,10 @@ class CheckoutController extends SprykerCheckoutControllerAlias
                     $customerProfileFromApi['profile']->phones[0]->number = $customerMobile;
                 }
 
-                $spySalesOrderAddress = new SpySalesOrderAddress();
-                $spySalesOrderAddress->fromArray($quoteTransfer->getBillingAddress()->toArray());
-                $spySalesOrderAddress->setPhone($customerPhone);
-                $spySalesOrderAddress->setCellPhone($customerMobile);
+                foreach ($customer->getBillingAddress() as $billingAddress) {
+                    $billingAddress->setPhone($customerPhone);
+                    $billingAddress->setCellPhone($customerMobile);
+                }
 
                 $dataProfilePhones = ['profile' => ['phones' => $customerProfileFromApi["profile"]->phones]];
 
@@ -417,7 +416,7 @@ class CheckoutController extends SprykerCheckoutControllerAlias
     {
         $uid = $this->getFactory()->getSessionClient()->get("cdcUID");
 
-        if ($_SESSION["_sf2_attributes"]["id_token_strong"]) {
+        if (isset($_SESSION["_sf2_attributes"]["id_token_strong"])) {
             $idToken = $this->getFactory()->getSessionClient()->get("id_token_strong");
         } else {
             $idToken = $this->getFactory()->getSessionClient()->get("id_token");
