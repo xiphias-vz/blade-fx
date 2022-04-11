@@ -50,4 +50,4 @@ $config[FactFinderConstants::FACT_FINDER_SHOPWARE_CHANNEL] = 'TestShopware'; # F
 $config[FactFinderNgConstants::FACT_FINDER_USERNAME] = 'kps_admin'; # Fact-Finder user for authorization.
 $config[FactFinderNgConstants::FACT_FINDER_PASSWORD] = 'glo123SPRY!kps'; # Fact-Finder password for authorization.
 
-$config[MonitoringReportConstants::JENKINS_BASE_URL] = 'http://jenkins.shop-t.globus.de/';
+$config[MonitoringReportConstants::JENKINS_BASE_URL] = 'http://localhost:8080/';

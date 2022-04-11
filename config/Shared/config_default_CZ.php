@@ -133,6 +133,6 @@ $config[EventConstants::LOGGER_ACTIVE] = true;
 
 $config[FactFinderNgConstants::FACT_FINDER_CHANNEL] = ''; // This is needed in order for header.twig not to break
 
-$config[MonitoringReportConstants::EMAIL_SEND_CONSOLE_HEARTBEAT] = 'https://heartbeat.uptimerobot.com/m790983050-36d1bc2f23b78203694f73a9dcd877af62943f99';
-$config[MonitoringReportConstants::JENKINS_HEARTBEAT_URL] = 'https://heartbeat.uptimerobot.com/m790983107-63231926e53ec4ad37a8a080d1fd677337f54822';
+$config[MonitoringReportConstants::EMAIL_SEND_CONSOLE_HEARTBEAT] = '';
+$config[MonitoringReportConstants::JENKINS_HEARTBEAT_URL] = '';
 
