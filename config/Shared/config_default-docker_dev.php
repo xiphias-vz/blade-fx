@@ -51,3 +51,6 @@ $config[FactFinderNgConstants::FACT_FINDER_USERNAME] = 'kps_admin'; # Fact-Finde
 $config[FactFinderNgConstants::FACT_FINDER_PASSWORD] = 'glo123SPRY!kps'; # Fact-Finder password for authorization.
 
 $config[MonitoringReportConstants::JENKINS_BASE_URL] = 'http://localhost:8080/';
+
+$config[MonitoringReportConstants::EMAIL_SEND_CONSOLE_HEARTBEAT] = 'https://heartbeat.uptimerobot.com/m791385810-5dfa8db38dc5678036c03ab080f6f694ff51a216';
+$config[MonitoringReportConstants::JENKINS_HEARTBEAT_URL] = 'https://heartbeat.uptimerobot.com/m790580341-58f4299ca241fe0381a3428efb7247fe1844f848';

@@ -50,3 +50,6 @@ $config[EventConstants::LOGGER_ACTIVE] = true;
 $config[NewRelicConstants::NEW_RELIC_ENVIRONMENT] = 'CZ_stage';
 
 $config[MonitoringReportConstants::JENKINS_BASE_URL] = 'http://localhost:8080/';
+
+$config[MonitoringReportConstants::EMAIL_SEND_CONSOLE_HEARTBEAT] = 'https://heartbeat.uptimerobot.com/m791385893-59eb35c87bb80e06725ac7c5818538eff38bd78c';
+$config[MonitoringReportConstants::JENKINS_HEARTBEAT_URL] = 'https://heartbeat.uptimerobot.com/m791385884-2801a2eb8913dc6b501cd460b8a635bd625dd619';

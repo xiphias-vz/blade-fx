@@ -44,7 +44,7 @@ $config[FactFinderConstants::FTP_FACT_FINDER_FILES_FOLDER_NAME] = 'factfinder/pr
 
 $config[NewRelicConstants::NEW_RELIC_ENVIRONMENT] = 'CZ_prod';
 
-$config[MonitoringReportConstants::JENKINS_HEARTBEAT_URL] = 'https://heartbeat.uptimerobot.com/m790706896-67260c4c15b4815d1553056adbec1e02084ccdb6';
+$config[MonitoringReportConstants::JENKINS_HEARTBEAT_URL] = 'https://heartbeat.uptimerobot.com/m790983107-63231926e53ec4ad37a8a080d1fd677337f54822';
 $config[MonitoringReportConstants::JENKINS_BASE_URL] = 'http://localhost:8080/';
 
 $config[MonitoringReportConstants::EMAIL_SEND_CONSOLE_HEARTBEAT] = 'https://heartbeat.uptimerobot.com/m790983050-36d1bc2f23b78203694f73a9dcd877af62943f99';

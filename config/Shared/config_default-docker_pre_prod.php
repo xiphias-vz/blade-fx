@@ -48,3 +48,6 @@ $config[FactFinderConstants::FACT_FINDER_SHOPWARE_CHANNEL] = 'DevShopware'; # Fa
 $config[FactFinderNgConstants::FACT_FINDER_USERNAME] = 'kps_admin'; # Fact-Finder user for authorization.
 $config[FactFinderNgConstants::FACT_FINDER_PASSWORD] = 'glo123SPRY!kps'; # Fact-Finder password for authorization.
 $config[MonitoringReportConstants::JENKINS_BASE_URL] = 'http://localhost:8080/';
+
+$config[MonitoringReportConstants::EMAIL_SEND_CONSOLE_HEARTBEAT] = 'https://heartbeat.uptimerobot.com/m791385819-a77506fb716517ef70f77ac288a06d195fb22686';
+$config[MonitoringReportConstants::JENKINS_HEARTBEAT_URL] = 'https://heartbeat.uptimerobot.com/m791385860-c0e9076a5382dd13d328032d7bef1ab99a574633';
