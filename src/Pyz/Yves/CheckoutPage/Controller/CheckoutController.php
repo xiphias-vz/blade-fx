@@ -42,6 +42,11 @@ class CheckoutController extends SprykerCheckoutControllerAlias
     {
         $quoteValidationResponseTransfer = $this->canProceedCheckout();
 
+        $this->getFactory()
+            ->getQuoteClient()
+            ->getQuote()
+            ->setCustomer(null);
+
         if (!$quoteValidationResponseTransfer->getIsSuccessful()) {
             $this->processErrorMessages($quoteValidationResponseTransfer->getMessages());
 
