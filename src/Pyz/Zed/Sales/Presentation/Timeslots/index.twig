@@ -112,6 +112,10 @@
             min-width: 50px;
         }
 
+        #btnCancel {
+            margin-left: 15px;
+        }
+
         #btnResetDefaultDayFilter, #btnResetDefaultDateFilter {
             display: none;
         }
@@ -231,6 +235,19 @@
             padding: 5px 0 5px 15px;
         }
 
+        .filter-component {
+            display: inline-block;
+        }
+
+        .filters-holder {
+            display: flex;
+            align-items: end;
+        }
+
+        #dayFilterButtons {
+            display: inline-block;
+        }
+
         .notDefaultTable {
             background-color: #ce6200;
         }
@@ -243,10 +260,12 @@
             display: flow-root;
         }
 
-        {% if isUserAdmin != 1 %}
+        {% if isUserAdmin != 1 and isUserSupervisor !=1 %}
         #savingAndMessageDiv {
             visibility: hidden;
+            display: none;
         }
+
         {% else %}
         #savingAndMessageDiv {
             display: flex;
@@ -255,7 +274,7 @@
 
 
     </style>
-    <form id="cutoffTimesData" style="display:flex;">
+    <form id="cutoffTimesData">
         <div class="filters-holder">
             <div class="filter-component">
                 <label for="cmbStores">{{ 'Location' | trans }}</label> <br>
@@ -265,15 +284,15 @@
                     {% endfor %}
                 </select>
             </div>
-        </div>
-        <div id="dayFilterButtons">
-            <input id="btnFilterByStore" type="button" class="btn btn-customPrimary" value="{{ 'edit_standard_plan' | trans }}">
-            <input id="btnResetDefaultDayFilter" type="button" class="btn btn-custom-cancel" value="{{ 'Cancel' | trans }}">
-        </div>
 
+            <div id="dayFilterButtons">
+                <input id="btnFilterByStore" type="button" class="btn btn-customPrimary" value="{{ 'edit_standard_plan' | trans }}">
+                <input id="btnResetDefaultDayFilter" type="button" class="btn btn-custom-cancel" value="{{ 'Cancel' | trans }}">
+            </div>
+        </div>
 
     <div id="savingAndMessageDiv">
-        <div style="margin-top: 8px">
+        <div>
             <form>
                 <span style="margin-left: 10px;">{{ 'edit_standard_plan' | trans }}</span>
                 <input id="btnSave" type="button" class="btn btn-customPrimary" value="&#10003; {{ 'Save' | trans }}">
@@ -319,6 +338,9 @@
         var btnCancelTimeSlotChange = document.getElementById("btnCancel");
 
 
+        btnCancelTimeSlotChange.addEventListener('click', ()=>{location.reload()})
+
+
         function createTableForEachDay(day){
             formatedTablesDiv.insertAdjacentHTML('beforeend',
                 '<did class="timeSlotTable_' + day + ' col col-md-6">' +
@@ -356,7 +378,6 @@
         });
 
         function saveTimeSlotCutoff(store){
-            debugger;
             let formData = new FormData();
             let json = JSON.stringify(timeSave);
             formData.append("store", store);
@@ -364,7 +385,10 @@
 
             let xhttp = new XMLHttpRequest();
             xhttp.onreadystatechange = function(){
-                //TODO: CHECK the response
+                if (this.readyState === 4 && this.status === 200) {
+                    let dataParse = JSON.parse(this.response);
+                    alert(dataParse);
+                }
             }
             xhttp.open("POST", window.location.origin + "/sales/timeslots/saveTimeslotCutoffs");
             xhttp.send(formData);
@@ -414,6 +438,26 @@
             objectWithSpecifiedDay[day] = slotsObject;
             timeSave.push(objectWithSpecifiedDay);
         }
+
+        for(let i = 0; i < document.getElementsByClassName("tablica").length ; i++){
+            document.getElementsByClassName("tablica")[i].addEventListener('keypress', (e) => {
+                if (e.key === 'Enter'){
+                    e.preventDefault();
+                }
+                if (document.getElementsByClassName("tablica")[i].textContent.length >= 3){
+                    e.preventDefault();
+                }
+                if (e.keyCode < 48 || e.keyCode > 57){
+                    if(e.keyCode != 45){
+                        e.preventDefault();
+                    }
+                }
+            });
+            document.getElementsByClassName("tablica")[i].addEventListener('paste', (e) => {
+                e.preventDefault();
+            })
+        }
+
     </script>
 
 

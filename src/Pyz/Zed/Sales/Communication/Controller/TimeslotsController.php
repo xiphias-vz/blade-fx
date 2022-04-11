@@ -42,6 +42,7 @@ class TimeslotsController extends AbstractController
             'storesData' => $stores,
             'isUserAdmin' => $isAdmin,
             'currentCutoffs' => $currentCutoffs,
+            'isUserSupervisor' => $isSupervisor,
         ];
     }
 
@@ -81,10 +82,17 @@ class TimeslotsController extends AbstractController
             }
             $this->getFactory()->getMerchantStorageFacade()->synchronizeMerchantToStorage();
         } else {
-            $responseData = '{error: true, response: "Missing parameters"}';
+            $responseData = 'error';
+//            $responseData["error"] = true;
+//            $responseData["message"] = 'MissingParameters';
+//            $responseData = json_encode($responseData);
             return new JsonResponse($responseData);
         }
-        $responseData = '{error: false, response: "Success"}';
+//        $responseData["error"] = false;
+//        $responseData["message"] = 'Success';
+//        $responseData = json_encode($responseData);
+//        $responseData = 'error: false, message: "Success"';
+        $responseData = 'success';
 
         return new JsonResponse($responseData);
     }
