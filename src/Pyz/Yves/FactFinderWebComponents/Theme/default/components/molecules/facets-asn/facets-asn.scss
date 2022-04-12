@@ -43,7 +43,7 @@
                 font-family: $setting-font-family-additional;
                 display: flex;
                 justify-content: space-between;
-                padding: 5px;
+                padding: rem(5);
             }
             .groupCaption::after {
                 content: url("data:image/svg+xml; utf8, <svg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 24 24'><path d='M5 3l3.057-3 11.943 12-11.943 12-3.057-3 9-9z'/></svg>");
@@ -125,6 +125,57 @@
                     }
                 }
             }
+
+            ff-asn-group[for-group = Eigenschaften] {
+                border:  rem(1) solid $setting-color-globus-lightGray;
+                padding: rem(5);
+
+                @include helper-breakpoint-media-max($md-max){
+                    min-width: 95vw;
+                }
+                div[slot = groupCaption]{
+                    font-size: 1.25rem;
+                    font-family: $setting-font-family-additional;
+                    display: flex;
+                    justify-content: space-between;
+                    padding: rem(5);
+                }
+                div[slot = groupCaption]::after {
+                    content: url("data:image/svg+xml; utf8, <svg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 24 24'><path d='M5 3l3.057-3 11.943 12-11.943 12-3.057-3 9-9z'/></svg>");
+                }
+                .ffw-asn-group-container {
+                    padding-left: 1rem;
+
+                    .ffw-wrapper {
+
+                        div[data-content = detailedLinks] {
+                            overflow-y: auto;
+                            max-height: rem(300);
+
+                            @include helper-breakpoint-media-max($md-max){
+                                max-height: 30vh;
+                            }
+                        }
+
+                        ff-asn-group-element {
+                            display: flex;
+                            justify-content: space-between;
+                            padding: rem(5);
+                        }
+                        ff-asn-group-element:hover {
+                            color: $setting-color-orange;
+                            cursor: pointer;
+                        }
+
+                        .ffw-asn-selected {
+                            div[slot = selected] {
+                                color: $setting-color-globus-darkOrange;
+                            }
+                        }
+                    }
+                }
+            }
+
             ff-asn-group-slider {
 
                 border:  rem(1) solid $setting-color-globus-lightGray;
@@ -162,9 +213,9 @@
 
                         height: rem(4);
                         background-color: $setting-color-gray-1;
-                        border-radius: 10px;
+                        border-radius: rem(10);
                         .ffw-sliderBar {
-                            bottom: 4px;
+                            bottom: rem(4);
 
                             .sliderBtn {
                                 background-color: $setting-color-orange;
