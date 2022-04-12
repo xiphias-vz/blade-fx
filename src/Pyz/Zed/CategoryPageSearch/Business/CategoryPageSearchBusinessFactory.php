@@ -12,6 +12,7 @@ use Pyz\Zed\CategoryPageSearch\Business\Search\DataMapper\CategoryNodePageSearch
 use Pyz\Zed\CategoryPageSearch\CategoryPageSearchDependencyProvider;
 use Spryker\Zed\Category\Business\CategoryFacadeInterface;
 use Spryker\Zed\CategoryPageSearch\Business\CategoryPageSearchBusinessFactory as SprykerCategoryPageSearchBusinessFactory;
+use Spryker\Zed\CategoryPageSearch\Business\CategoryPageSearchFacadeInterface;
 use Spryker\Zed\CategoryPageSearch\Business\Search\DataMapper\CategoryNodePageSearchDataMapperInterface;
 use Spryker\Zed\Locale\Business\LocaleFacadeInterface;
 use Spryker\Zed\ProductCategory\Business\ProductCategoryFacadeInterface;
@@ -24,23 +25,27 @@ class CategoryPageSearchBusinessFactory extends SprykerCategoryPageSearchBusines
     public function createCategoryNodeSearch(): CategoryNodePageSearch
     {
         return new CategoryNodePageSearch(
-            $this->getUtilEncoding(),
-            $this->createCategoryNodePageSearchDataMapper(),
-            $this->getQueryContainer(),
-            $this->getStoreFacade(),
-            $this->getConfig()->isSendingToQueue(),
-            $this->getCategoryFacade(),
+            $this->getSprykerCategoryFacade(),
             $this->getProductCategoryFacade(),
-            $this->getLocaleFacade()
+            $this->getLocaleFacade(),
+            $this->getCategoryPageSearchFacade()
         );
     }
 
     /**
      * @return \Spryker\Zed\Category\Business\CategoryFacadeInterface
      */
-    public function getCategoryFacade(): CategoryFacadeInterface
+    public function getSprykerCategoryFacade(): CategoryFacadeInterface
     {
-        return $this->getProvidedDependency(CategoryPageSearchDependencyProvider::FACADE_CATEGORY);
+        return $this->getProvidedDependency(CategoryPageSearchDependencyProvider::FACADE_SPRYKER_CATEGORY);
+    }
+
+    /**
+     * @return \Spryker\Zed\CategoryPageSearch\Business\CategoryPageSearchFacadeInterface
+     */
+    public function getCategoryPageSearchFacade(): CategoryPageSearchFacadeInterface
+    {
+        return $this->getProvidedDependency(CategoryPageSearchDependencyProvider::FACADE_CATEGORY_PAGE_SEARCH);
     }
 
     /**
