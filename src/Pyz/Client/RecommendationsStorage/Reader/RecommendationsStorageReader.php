@@ -9,13 +9,12 @@ namespace Pyz\Client\RecommendationsStorage\Reader;
 
 use Generated\Shared\Transfer\RecoTransfer;
 use Spryker\Client\Storage\StorageClientInterface;
+use Spryker\Client\Store\StoreClientInterface;
 use Spryker\Shared\Kernel\Transfer\TransferInterface;
 
 class RecommendationsStorageReader implements RecommendationsStorageReaderInterface
 {
-    private const IS_RECOMMENDATIONS_ENABLED = 'is_recommendations_enabled';
-    private const MY_CUSTOME_RECOMMENDATIONS_KEY = 'my_recommendations_key';
-    private const RECOMMENDATIONS_ENABLED = 'recommendations:ein';
+    private const RECOMMENDATIONS_ENABLED = 'recommendations:';
 
     /**
      * @var StorageClientInterface
@@ -23,11 +22,17 @@ class RecommendationsStorageReader implements RecommendationsStorageReaderInterf
     protected $storageClient;
 
     /**
+     * @var StoreClientInterface
+     */
+    protected $storeClient;
+
+    /**
      * @param StorageClientInterface $storageClient
      */
-    public function __construct(StorageClientInterface $storageClient)
+    public function __construct(StorageClientInterface $storageClient, StoreClientInterface $storeClient)
     {
         $this->storageClient = $storageClient;
+        $this->storeClient = $storeClient;
     }
 
     /**
@@ -51,7 +56,9 @@ class RecommendationsStorageReader implements RecommendationsStorageReaderInterf
      */
     public function getIsRecommendationsEnabled(RecoTransfer $recoTransfer): RecoTransfer
     {
-        $result = $this->storageClient->get(self::MY_CUSTOME_RECOMMENDATIONS_KEY);
+        $store = $this->storeClient->getCurrentStore();
+        $storeShortName = strtolower($store->getName());
+        $result = $this->storageClient->get(self::RECOMMENDATIONS_ENABLED . $storeShortName);
 
         if (is_array($result)) {
             $result = $result[0];
@@ -71,7 +78,9 @@ class RecommendationsStorageReader implements RecommendationsStorageReaderInterf
      */
     public function getIsFfSnippetEnabled(RecoTransfer $recoTransfer): RecoTransfer
     {
-        $result = $this->storageClient->get(self::MY_CUSTOME_RECOMMENDATIONS_KEY);
+        $store = $this->storeClient->getCurrentStore();
+        $storeShortName = strtolower($store->getName());
+        $result = $this->storageClient->get(self::RECOMMENDATIONS_ENABLED . $storeShortName);
 
         if (is_array($result)) {
             $result = $result[0];

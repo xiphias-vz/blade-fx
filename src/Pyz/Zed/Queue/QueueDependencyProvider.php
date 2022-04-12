@@ -8,6 +8,7 @@
 namespace Pyz\Zed\Queue;
 
 use Pyz\Shared\MerchantStorage\MerchantStorageConfig;
+use Pyz\Shared\RecommendationsStorage\RecommendationsStorageConfig;
 use Pyz\Shared\ShipmentStorage\ShipmentStorageConfig;
 use Spryker\Shared\AvailabilityStorage\AvailabilityStorageConstants;
 use Spryker\Shared\CategoryPageSearch\CategoryPageSearchConstants;
@@ -69,6 +70,7 @@ class QueueDependencyProvider extends SprykerDependencyProvider
             MerchantStorageConfig::MERCHANT_SYNC_STORAGE_QUEUE => new SynchronizationStorageQueueMessageProcessorPlugin(),
             ShipmentStorageConfig::SHIPMENT_SYNC_STORAGE_QUEUE => new SynchronizationStorageQueueMessageProcessorPlugin(),
             MerchantSearchConfig::SYNC_SEARCH_MERCHANT => new SynchronizationSearchQueueMessageProcessorPlugin(),
+            RecommendationsStorageConfig::RECOMMENDATIONS_SYNC_STORAGE_QUEUE => new SynchronizationStorageQueueMessageProcessorPlugin()
         ];
     }
 }

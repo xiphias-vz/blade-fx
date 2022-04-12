@@ -13,6 +13,7 @@ use Spryker\Client\Kernel\Container;
 class RecommendationsStorageDependencyProvider extends AbstractDependencyProvider
 {
     public const CLIENT_STORAGE = 'CLIENT_STORAGE';
+    public const CLIENT_STORE = 'CLIENT_STORE';
 
     /**
      * @param Container $container
@@ -23,6 +24,7 @@ class RecommendationsStorageDependencyProvider extends AbstractDependencyProvide
     {
         $container = parent::provideServiceLayerDependencies($container);
         $container = $this->addStorageClient($container);
+        $container = $this->addStoreClient($container);
 
         return $container;
     }
@@ -36,6 +38,20 @@ class RecommendationsStorageDependencyProvider extends AbstractDependencyProvide
     {
         $container->set(static::CLIENT_STORAGE, function (Container $container) {
             return $container->getLocator()->storage()->client();
+        });
+
+        return $container;
+    }
+
+    /**
+     * @param Container $container
+     *
+     * @return Container
+     */
+    public function addStoreClient(Container $container): Container
+    {
+        $container->set(static::CLIENT_STORE, function (Container $container) {
+            return $container->getLocator()->store()->client();
         });
 
         return $container;

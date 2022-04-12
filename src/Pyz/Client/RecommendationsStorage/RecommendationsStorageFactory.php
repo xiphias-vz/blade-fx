@@ -11,6 +11,7 @@ use Pyz\Client\RecommendationsStorage\Reader\RecommendationsStorageReader;
 use Pyz\Client\RecommendationsStorage\Reader\RecommendationsStorageReaderInterface;
 use Spryker\Client\Kernel\AbstractFactory;
 use Spryker\Client\Storage\StorageClientInterface;
+use Spryker\Client\Store\StoreClientInterface;
 
 class RecommendationsStorageFactory extends AbstractFactory
 {
@@ -23,12 +24,21 @@ class RecommendationsStorageFactory extends AbstractFactory
     }
 
     /**
+     * @return StoreClientInterface
+     */
+    public function getStoreClient(): StoreClientInterface
+    {
+        return $this->getProvidedDependency(RecommendationsStorageDependencyProvider::CLIENT_STORE);
+    }
+
+    /**
      * @return RecommendationsStorageReaderInterface
      */
     public function createRecommendationsStorageReader(): RecommendationsStorageReaderInterface
     {
         return new RecommendationsStorageReader(
-            $this->getStorageClient()
+            $this->getStorageClient(),
+            $this->getStoreClient()
         );
     }
 }
