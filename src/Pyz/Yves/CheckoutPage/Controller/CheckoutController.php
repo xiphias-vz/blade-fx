@@ -185,15 +185,16 @@ class CheckoutController extends SprykerCheckoutControllerAlias
 
         if ($storeCodeBucket == 'DE') {
             $customerId = $quoteTransfer->getCustomer()->getIdCustomer() ?: '';
+            $data = [];
 
             foreach ($quoteTransfer->getItems() as $item) {
                 $count = $item->getQuantity() ?: null;
                 $productSku = $item->getSku() ?: '';
                 $productPrice = $item->getUnitPrice() ?: null;
                 $productTitle = $item->getName() ?: '';
-
-                $this->checkoutTrackingEvent($count, $productSku, $productPrice, $customerId, $productTitle);
+                $data = $this->checkoutTrackingEvent($data, $count, $productSku, $productPrice, $customerId, $productTitle);
             }
+            $this->postCheckoutTrackingEvent($data);
         }
 
         return $this->createStepProcess()->process($request);
@@ -506,27 +507,48 @@ class CheckoutController extends SprykerCheckoutControllerAlias
     }
 
     /**
-     * @param $count
-     * @param $productSku
-     * @param $productPrice
-     * @param $customerId
-     * @param $productTitle
+     * @param array $data
+     * @param int $count
+     * @param string $productSku
+     * @param string $productPrice
+     * @param string $customerId
+     * @param string $productTitle
      *
      * @return array
      */
-    public function checkoutTrackingEvent($count, $productSku, $productPrice, $customerId, $productTitle): array
+    public function checkoutTrackingEvent(array $data, int $count, string $productSku, string $productPrice, string $customerId, string $productTitle): array
     {
-        $data = [[
-            'count' => $count,
-            'id' => $productSku,
-            'masterId' => $productSku,
-            'price' => $productPrice / 100,
-            'purchaserId' => $customerId,
-            'sid' => session_id(),
-            'title' => $productTitle,
-            'userId' => $customerId,
-        ]];
+        if (isset($data[$productSku])) {
+            $count = $count + $data[$productSku]['count'];
+            $data[$productSku]['count'] = $count;
+        } else {
+            $data[$productSku] = [
+                'count' => $count,
+                'id' => $productSku,
+                'masterId' => $productSku,
+                'price' => $productPrice / 100,
+                'purchaserId' => $customerId,
+                'sid' => session_id(),
+                'title' => $productTitle,
+                'userId' => $customerId,
+            ];
+        }
 
-        return FactFinderApiClient::postTrackCheckoutData($data);
+        return $data;
+    }
+
+    /**
+     * @param array $data
+     *
+     * @return array
+     */
+    public function postCheckoutTrackingEvent(array $data): array
+    {
+        $postData = [];
+        foreach ($data as $item) {
+            $postData[] = $item;
+        }
+
+        return FactFinderApiClient::postTrackCheckoutData($postData);
     }
 }
