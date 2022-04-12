@@ -11,7 +11,6 @@ use Pyz\Zed\CategoryGui\CategoryGuiDependencyProvider;
 use Pyz\Zed\CategoryGui\Communication\Table\CategoryTable;
 use Spryker\Zed\CategoryGui\Communication\CategoryGuiCommunicationFactory as SprykerCategoryGuiCommunicationFactory;
 use Spryker\Zed\CategoryGui\Communication\Table\CategoryTable as SprykerCategoryTable;
-use Spryker\Zed\CategoryGui\Dependency\Facade\CategoryGuiToTranslatorFacadeInterface;
 use Spryker\Zed\Translator\Business\TranslatorFacadeInterface;
 
 class CategoryGuiCommunicationFactory extends SprykerCategoryGuiCommunicationFactory
@@ -23,15 +22,14 @@ class CategoryGuiCommunicationFactory extends SprykerCategoryGuiCommunicationFac
     {
         return new CategoryTable(
             $this->getLocaleFacade(),
-            $this->getRepository(),
             $this->getTranslatorFacade()
         );
     }
 
     /**
-     * @return CategoryGuiToTranslatorFacadeInterface
+     * @return \Spryker\Zed\Translator\Business\TranslatorFacadeInterface
      */
-    public function getTranslatorFacade(): CategoryGuiToTranslatorFacadeInterface
+    public function getTranslatorFacade(): TranslatorFacadeInterface
     {
         return $this->getProvidedDependency(CategoryGuiDependencyProvider::FACADE_TRANSLATOR);
     }

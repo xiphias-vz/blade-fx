@@ -12,8 +12,6 @@ use Spryker\Service\UtilText\Model\Url\Url;
 use Spryker\Shared\Category\CategoryConstants;
 use Spryker\Zed\CategoryGui\Communication\Table\CategoryTable as SprykerCategoryTable;
 use Spryker\Zed\CategoryGui\Dependency\Facade\CategoryGuiToLocaleFacadeInterface;
-use Spryker\Zed\CategoryGui\Dependency\Facade\CategoryGuiToTranslatorFacadeInterface;
-use Spryker\Zed\CategoryGui\Persistence\CategoryGuiRepositoryInterface;
 use Spryker\Zed\Translator\Business\TranslatorFacadeInterface;
 
 class CategoryTable extends SprykerCategoryTable
@@ -25,15 +23,13 @@ class CategoryTable extends SprykerCategoryTable
 
     /**
      * @param \Spryker\Zed\CategoryGui\Dependency\Facade\CategoryGuiToLocaleFacadeInterface $localeFacade
-     * @param CategoryGuiRepositoryInterface $categoryGuiRepository
-     * @param CategoryGuiToTranslatorFacadeInterface $translatorFacade
+     * @param \Spryker\Zed\Translator\Business\TranslatorFacadeInterface $translatorFacade
      */
     public function __construct(
         CategoryGuiToLocaleFacadeInterface $localeFacade,
-        CategoryGuiRepositoryInterface $categoryGuiRepository,
-        CategoryGuiToTranslatorFacadeInterface $translatorFacade
+        TranslatorFacadeInterface $translatorFacade
     ) {
-        parent::__construct($localeFacade, $categoryGuiRepository);
+        parent::__construct($localeFacade);
         $this->translatorFacade = $translatorFacade;
     }
 

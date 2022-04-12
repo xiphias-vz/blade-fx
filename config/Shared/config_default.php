@@ -383,8 +383,6 @@ $config[ApplicationConstants::ZED_HTTP_STRICT_TRANSPORT_SECURITY_ENABLED]
 $config[ApplicationConstants::YVES_HTTP_STRICT_TRANSPORT_SECURITY_ENABLED]
     = $config[HttpConstants::YVES_HTTP_STRICT_TRANSPORT_SECURITY_ENABLED]
     = $HSTS_ENABLED;
-$config[HttpConstants::URI_SIGNER_SECRET_KEY] = getenv('SPRYKER_ZED_REQUEST_TOKEN') ?: null;
-if (!$config[HttpConstants::URI_SIGNER_SECRET_KEY]) {     throw new \Exception('Environment variable SPRYKER_ZED_REQUEST_TOKEN must be set. Please, define it in your environment.'); }
 $HSTS_CONFIG = [
     'max_age' => 31536000,
     'include_sub_domains' => true,
