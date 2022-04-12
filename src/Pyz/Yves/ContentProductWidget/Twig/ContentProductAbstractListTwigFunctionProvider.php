@@ -7,16 +7,31 @@
 
 namespace Pyz\Yves\ContentProductWidget\Twig;
 
-use SprykerShop\Yves\ContentProductWidget\Twig\ContentProductAbstractListTwigFunction as SprykerContentProductAbstractListTwigFunction;
+use SprykerShop\Yves\ContentProductWidget\Twig\ContentProductAbstractListTwigFunctionProvider as SprykerContentProductAbstractListTwigFunctionProvider;
 
 /**
- * @method \SprykerShop\Yves\ContentProductWidget\ContentProductWidgetFactory getFactory()
+ * @method \Pyz\Yves\ContentProductWidget\ContentProductWidgetFactory getFactory()
  */
-class ContentProductAbstractListTwigFunction extends SprykerContentProductAbstractListTwigFunction
+class ContentProductAbstractListTwigFunctionProvider extends SprykerContentProductAbstractListTwigFunctionProvider
 {
+    /**
+     * @uses \Pyz\Shared\ContentProductGui\ContentProductGuiConfig::WIDGET_TEMPLATE_IDENTIFIER_NAME_SLIDER_WITH_BUTTON
+     */
     protected const WIDGET_TEMPLATE_IDENTIFIER_SLIDER_WITH_BUTTON = 'slider-with-button';
+
+    /**
+     * @uses \Pyz\Shared\ContentProductGui\ContentProductGuiConfig::WIDGET_TEMPLATE_IDENTIFIER_SLIDER
+     */
     protected const WIDGET_TEMPLATE_IDENTIFIER_SLIDER = 'slider';
+
+    /**
+     * @uses \Pyz\Shared\ContentProductGui\ContentProductGuiConfig::WIDGET_TEMPLATE_IDENTIFIER_SLIDER_NOT_INCLUDE_GROUP
+     */
     protected const WIDGET_TEMPLATE_IDENTIFIER_SLIDER_NOT_INCLUDE_GROUP = 'slider-not-include-group';
+
+    /**
+     * @uses \Pyz\Shared\ContentProductGui\ContentProductGuiConfig::WIDGET_TEMPLATE_IDENTIFIER_PRODUCT_SLIDER_WITH_BUTTON
+     */
     protected const WIDGET_TEMPLATE_DISPLAY_PRODUCT_SLIDER_WITH_BUTTON = 'slider-product-with-button';
 
         /**
