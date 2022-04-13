@@ -7,12 +7,12 @@
 
 namespace Pyz\Yves\ContentProductWidget\Twig;
 
-use SprykerShop\Yves\ContentProductWidget\Twig\ContentProductAbstractListTwigFunctionProvider as SprykerContentProductAbstractListTwigFunctionProvider;
+use SprykerShop\Yves\ContentProductWidget\Twig\ContentProductAbstractListTwigFunction as SprykerContentProductAbstractListTwigFunction;
 
 /**
  * @method \Pyz\Yves\ContentProductWidget\ContentProductWidgetFactory getFactory()
  */
-class ContentProductAbstractListTwigFunctionProvider extends SprykerContentProductAbstractListTwigFunctionProvider
+class ContentProductAbstractListTwigFunction extends SprykerContentProductAbstractListTwigFunction
 {
     /**
      * @uses \Pyz\Shared\ContentProductGui\ContentProductGuiConfig::WIDGET_TEMPLATE_IDENTIFIER_NAME_SLIDER_WITH_BUTTON

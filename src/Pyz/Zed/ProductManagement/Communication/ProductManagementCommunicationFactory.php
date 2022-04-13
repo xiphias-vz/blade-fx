@@ -78,10 +78,7 @@ class ProductManagementCommunicationFactory extends SpyProductManagementCommunic
         return new ProductTable(
             $this->getProductQueryContainer(),
             $this->getLocaleFacade()->getCurrentLocale(),
-            $this->createProductTypeHelper(),
-            $this->getRepository(),
-            $this->getProductTableDataExpanderPlugins(),
-            $this->getProductFacade()
+            $this->createProductTypeHelper()
         );
     }
 
@@ -102,8 +99,10 @@ class ProductManagementCommunicationFactory extends SpyProductManagementCommunic
             $this->getPriceProductFacade(),
             $this->createLocaleProvider(),
             $currentLocale,
+            $this->getProductAttributeCollection(),
             $this->getProductTaxCollection(),
-            $this->getConfig()->getImageUrlPrefix()
+            $this->getConfig()->getImageUrlPrefix(),
+            $this->getStore()
         );
     }
 }

@@ -210,7 +210,7 @@ class ShipmentTimeSlotsExpander implements ShipmentSlotsExpanderInterface
                 $currentDate,
                 $timeSlotTemplate
             );
-            if(count($availableTimeSlots) == 0 && $i == 0){
+            if (count($availableTimeSlots) == 0 && $i == 0) {
                 continue;
             }
             $shipmentSlots[$shipmentMethodTransfer->getShipmentMethodKey()][$currentDate] = $availableTimeSlots;
