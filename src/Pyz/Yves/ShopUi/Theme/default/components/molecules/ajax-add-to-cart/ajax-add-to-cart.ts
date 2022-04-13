@@ -80,6 +80,16 @@ export default class AjaxAddToCart extends Component {
 
     protected mapEvents(): void {
         this.links.forEach((link: HTMLLinkElement) => {
+            if (link.id === 'addToCartButtonFromPDP') {
+                if (localStorage.getItem('QuantityFromCart')) {
+                    let quantityFromCart = parseInt(localStorage.getItem('QuantityFromCart'))
+                    if (quantityFromCart !== 0) {
+                        this.updateItemQuantityInput(link, quantityFromCart);
+                        this.showCounterAndHideAjaxButton(link);
+                    }
+                }
+            }
+
             if (link.getAttribute('flag') !== "1") {
                 link.addEventListener('click', (event: Event) => this.linkClickHandler(event, link));
                 link.setAttribute('flag', '1');
@@ -263,6 +273,8 @@ export default class AjaxAddToCart extends Component {
         if (quantity !== undefined) {
             const counter: HTMLInputElement = <HTMLInputElement>link.parentElement.querySelector(CLASS_PREFIX + this.quantityInputField);
             counter.value = String(quantity);
+            let quantityFromCart = counter.value;
+            localStorage.setItem('QuantityFromCart', quantityFromCart);
         }
     }
 

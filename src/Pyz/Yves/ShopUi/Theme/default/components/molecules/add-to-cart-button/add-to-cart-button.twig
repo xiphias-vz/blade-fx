@@ -16,6 +16,7 @@
     <div class="add-to-cart-btn">
         {% if app.currentCodeBucket == 'DE' %}
             <a href="{{ addAjaxUrl }}"
+               id = "addToCartButtonFromPDP"
                rel="nofollow"
                onclick="productAddToCart('{{ data.product.idProductAbstract }}','{{ data.product.name  | escape('js') }}','{{ data.product.prices.DEFAULT is defined ? data.product.prices.DEFAULT / 100 : null }}','{{ data.product.attributes.supplier | escape('js') }}')"
                class="button button--middle-icon button--center-align button--backgroundcolor-DE
@@ -35,6 +36,7 @@
             </a>
         {% else %}
             <a href="{{ addAjaxUrl }}"
+               id = "addToCartButtonFromPDP"
                rel="nofollow"
                onclick="productAddToCart('{{ data.product.idProductAbstract }}','{{ data.product.name | escape('js') }}','{{ data.product.prices.DEFAULT is defined ? data.product.prices.DEFAULT / 100 : null }}','{{ data.product.attributes.supplier | escape('js') }}')"
                class="button button--middle-icon button--center-align button--backgroundcolor-CZ

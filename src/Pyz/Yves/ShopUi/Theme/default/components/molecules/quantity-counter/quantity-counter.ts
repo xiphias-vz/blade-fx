@@ -34,6 +34,8 @@ export default class QuantityCounter extends Component {
 
         if (value > this.minQuantity) {
             this.quantityInput.value = (value - 1).toString();
+            let quantityFromCart = this.quantityInput.value;
+            localStorage.setItem('QuantityFromCart', quantityFromCart);
         }
 
         if (this.isRemovalUrlAllowed && value === this.minQuantity) {
@@ -57,6 +59,8 @@ export default class QuantityCounter extends Component {
 
         if (value < this.maxQuantity) {
             this.quantityInput.value = (value + 1).toString();
+            let quantityFromCart = this.quantityInput.value;
+            localStorage.setItem('QuantityFromCart', quantityFromCart);
 
             this.autoUpdateOnChange();
             this.triggerInputEvent();
@@ -67,6 +71,8 @@ export default class QuantityCounter extends Component {
         if (this.autoUpdate) {
             this.timer();
         }
+        let quantityFromCart = this.quantityInput.value;
+        localStorage.setItem('QuantityFromCart', quantityFromCart);
     }
 
     protected triggerInputEvent(): void {
