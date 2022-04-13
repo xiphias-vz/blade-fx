@@ -23,15 +23,28 @@ class TimeslotsController extends AbstractController
     /**
      * @return array
      */
-    public function indexAction(): array
+    public function indexAction(Request $request): array
     {
+        $locale = $this->getFactory()->getCodeBucket();
         $table = $this->getFactory()->createOrdersTable();
         $stores = $table->getStoresByUser();
+
+        if(isset($_REQUEST['store'])){
+            $storeId = (int)$_REQUEST['store'];
+        } else {
+            if($locale === 'DE'){
+            $storeId = 1004;
+            }
+            else {
+                $storeId = 4007;
+            }
+        }
+
         $isAdmin = $table->getIsUserAdmin();
         $isSupervisor = $table->getIsUserSupervisor();
         $currentCutoffs = '';
         if ($isAdmin == true) {
-            $currentCutoffs = $this->getFactory()->getCurrentTimeslotCuttoffs(1031);
+            $currentCutoffs = $this->getFactory()->getCurrentTimeslotCuttoffs($storeId);
         } elseif ($isSupervisor == true) {
             foreach ($stores as $key => $store) {
                 $currentCutoffs = $this->getFactory()->getCurrentTimeslotCuttoffs($key);

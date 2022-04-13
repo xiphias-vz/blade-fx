@@ -17,6 +17,8 @@ export default class PopupUiShipmentForm extends Component {
     pickUpTimes: HTMLInputElement;
     footerMessage: HTMLInputElement;
     locale: HTMLInputElement;
+    todayTranslation: HTMLInputElement;
+
 
     protected readyCallback(): void {
         this.linkToTimeSlots = document.getElementById(this.getLinkToTimeSlots);
@@ -26,6 +28,7 @@ export default class PopupUiShipmentForm extends Component {
         this.currentItemForMobile = 0;
         this.pickUpTimes = <HTMLInputElement>document.querySelector('#pickup_times');
         this.footerMessage = <HTMLInputElement>document.querySelector('#footer_message');
+        this.todayTranslation = <HTMLInputElement>document.querySelector('#today_translation');
         this.locale = <HTMLInputElement>document.querySelector('#locale');
 
         this.mapEvents();
@@ -139,7 +142,6 @@ export default class PopupUiShipmentForm extends Component {
                 if(dateInc != undefined){
                     let dateObj = new Date(dateInc);
                     let germanFormatDate = dateObj.toLocaleDateString(this.locale.value);
-
                     let slickSlideDaysContainer = $('<div class="slick-popup-slide slick-popup-current slick-popup-active col--md-4 col--sm-12" style="float: left;"><div class="spaceBetweenCol"><div class="popup-ui-shipment-form-popup__column spacing-bottom spacing-bottom--biggest" style="width: 100%; display: inline-block;"><div class="popup-ui-shipment-form-popup__date">' + this.getDayName(dateInc) + ', ' + germanFormatDate + '</div><div class="slots_' + dateInc + '"></div></div></div></div>');
                     slickSlideDaysContainer.appendTo(this.slickTrack);
 
@@ -283,7 +285,13 @@ export default class PopupUiShipmentForm extends Component {
 
     protected getDayName(dateStr)
     {
+        let today = new Date();
+        today.setHours(0,0,0,0);
         let date = new Date(dateStr);
+        date.setHours(0,0,0,0);
+        if(today.toISOString() === date.toISOString()){
+            return this.todayTranslation.value;
+        }
         return date.toLocaleDateString(this.locale.value, { weekday: 'long' });
     }
 

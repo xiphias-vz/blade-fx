@@ -231,4 +231,12 @@ class SalesCommunicationFactory extends SprykerSalesCommunicationFactory
     {
         return Propel::getConnection();
     }
+
+    /**
+     * @return string
+     */
+    public function getCodeBucket(): string
+    {
+        return getenv('SPRYKER_CODE_BUCKET');
+    }
 }

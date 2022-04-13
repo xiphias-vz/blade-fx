@@ -88,10 +88,12 @@
         }
 
         #infoBox {
-            background-color: #e3a858;
+            background-color: rgb(193, 225, 202);
             color: black;
             padding: 10px;
             display: none;
+            justify-content: center;
+            align-items: center;
         }
 
         #infoBoxText {
@@ -269,6 +271,7 @@
         {% else %}
         #savingAndMessageDiv {
             display: flex;
+            align-items: center;
         }
         {% endif %}
 
@@ -300,13 +303,51 @@
             </form>
         </div>
         <div id="infoBox">
-            <span id="infoBoxText">{{ 'timeslot_capacity_edit_warning' | trans }}</span>
+            <span id="infoBoxText">Success</span>
             <button id="infoBoxClose" class="close">x</button>
         </div>
     </div>
 
     <div id="timeSlotTables" data-changed="">
+        {% set daysOfWeek = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'] %}
 
+        {% for day in daysOfWeek %}
+            <table style="width: auto; display: inline-block; padding: 30px">
+                <thead>
+                    <tr>
+                        <td>{{ day }}</td>
+                        <td>Default</td>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Timeslot</td>
+                        <td>Cut-off time</td>
+                    </tr>
+
+                    {% if not currentCutoffs %}
+                        {% set timeslotArray = ["10:00-12:00","12:00-14:00","14:00-16:00","16:00-18:00","18:00-20:00"] %}
+                        {% set cutOffsArray = ["10","12","14","16","18"] %}
+                        {% for key in timeslotArray|keys %}
+                            <tr>
+                                <td style="width: 350px;">{{ timeslotArray[key] }}</td>
+                                <td style="width: 350px;"><input name="{{ day }}" slot="{{ cutOffsArray[key] }}" style="border: none; text-align: center" type="text" max="99" maxlength="2" required pattern="[0-9]+" value="{{ cutOffsArray[key] }}"></td>
+                            </tr>
+                        {% endfor %}
+                    {% endif %}
+
+                    {% for key in currentCutoffs|keys %}
+                        {% set cutOffDay = currentCutoffs[key].day %}
+                        {% if cutOffDay == day %}
+                            <tr class="timeslot-row-id-{{ currentCutoffs[key].idTimeSlot }}" style="border: 1px solid white">
+                                <td style="width: 350px;">{{ currentCutoffs[key].timeSlot }}</td>
+                                <td style="width: 350px;"><input id="{{ currentCutoffs[key].idTimeSlot }}" name="{{ day }}" slot="{{ currentCutoffs[key].timeSlot }}" style="border: none; text-align: center" type="text" max="99" maxlength="2" required pattern="[0-9]+" value="{{ currentCutoffs[key].cutOffTime }}"></td>
+                            </tr>
+                        {% endif %}
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% endfor %}
     </div>
 
     </form>
@@ -322,7 +363,7 @@
         daysOfTheWeek = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
         timeSlots = ['10:00-12:00', '12:00-14:00', '14:00-16:00', '16:00-18:00', '18:00-20:00'];
         cutoffTimes = ['10', '12', '14', '16', '18'];
-        daysOfTheWeek.forEach(createTableForEachDay);
+        //daysOfTheWeek.forEach(createTableForEachDay);
         let savingAndMessageDiv = document.getElementById("savingAndMessageDiv");
         let mondayElements = document.getElementsByName("Monday");
         let tuesdayElements = document.getElementsByName("Tuesday");
@@ -332,49 +373,60 @@
         let saturdayElements = document.getElementsByName("Saturday");
         let sundayElements = document.getElementsByName("Sunday");
 
+
+
         let currentStore = document.getElementById("cmbStores");
         let tableCutoffs = document.getElementsByClassName("tablica");
         var btnSaveChangedData = document.getElementById("btnSave");
         var btnCancelTimeSlotChange = document.getElementById("btnCancel");
-
+        let btnFilterByStore = document.getElementById('btnFilterByStore')
 
         btnCancelTimeSlotChange.addEventListener('click', ()=>{location.reload()})
+
 
 
         function createTableForEachDay(day){
             formatedTablesDiv.insertAdjacentHTML('beforeend',
                 '<did class="timeSlotTable_' + day + ' col col-md-6">' +
-                    '<table>' +
-                        '<thead>' +
-                            '<tr class="defaultTable">' +
-                                '<th>' + day + '</th>' +
-                                '<th>' + 'Default' + '</th>' +
-                            '</tr>'+
-                        '</thead>'+
-                        '<tbody>' +
-                            '<tr class="ts-table-info-row">' +
-                                '<td>' + 'Timeslot' + '</td>' +
-                                '<td>' + 'Cut-off time' + '</td>' +
-                            '</tr>'+
-                        '</tbody>'+
-                    '</table>'+
+                '<table>' +
+                '<thead>' +
+                '<tr class="defaultTable">' +
+                '<th>' + day + '</th>' +
+                '<th>' + 'Default' + '</th>' +
+                '</tr>'+
+                '</thead>'+
+                '<tbody>' +
+                '<tr class="ts-table-info-row">' +
+                '<td>' + 'Timeslot' + '</td>' +
+                '<td>' + 'Cut-off time' + '</td>' +
+                '</tr>'+
+                '</tbody>'+
+                '</table>'+
                 '</did>')
-            // debugger;
+// debugger;
 
-            //Need to retrieve real "Cut-off time" data!
+
+
+//Need to retrieve real "Cut-off time" data!
             for(let i = 0; i < timeSlots.length; i++){
                 document.querySelectorAll(".timeSlotTable_" + day + " tbody")[0].insertAdjacentHTML('beforeend',
                     '<tr class="ts-table-' + i + '-row">' +
                     '<td>' + timeSlots[i] + '</td>' +
-                    '<td><div  id="timeslotRow__' + day + '__'+timeSlots[i]+'" class="tablica ts-table-cutOffTimeField cutOffTimeField_' + i + '" contenteditable="true"  slot="'+timeSlots[i]+'" name="'+day+'">' + '-' + cutoffTimes[i] + '</div></td>' +
-                    // '<td><div  id="timeslotRow__' + day + '__'+timeSlots[i]+'" class="tablica ts-table-cutOffTimeField cutOffTimeField_' + i + '" contenteditable="true"  slot="'+timeSlots[i]+'" value="'+ cutoffTimes[i]+'" name="'+ day + '__'+ timeSlots[i]+'"></div></td>' +
+                    '<td><div id="timeslotRow__' + day + '__'+timeSlots[i]+'" class="tablica ts-table-cutOffTimeField cutOffTimeField_' + i + '" contenteditable="true" slot="'+timeSlots[i]+'" name="'+day+'">' + '-' + cutoffTimes[i] + '</div></td>' +
+                    // '<td><div id="timeslotRow__' + day + '__'+timeSlots[i]+'" class="tablica ts-table-cutOffTimeField cutOffTimeField_' + i + '" contenteditable="true" slot="'+timeSlots[i]+'" value="'+ cutoffTimes[i]+'" name="'+ day + '__'+ timeSlots[i]+'"></div></td>' +
                     '</tr>');
             };
         }
 
+
+
         btnSaveChangedData.addEventListener("click", function(ev) {
             createDataArray()
             saveTimeSlotCutoff(currentStore.value);
+        });
+
+        btnFilterByStore.addEventListener("click", function(ev) {
+            filterTablesByStore(currentStore.value)
         });
 
         function saveTimeSlotCutoff(store){
@@ -383,14 +435,30 @@
             formData.append("store", store);
             formData.append("data", json);
 
+
+
             let xhttp = new XMLHttpRequest();
             xhttp.onreadystatechange = function(){
                 if (this.readyState === 4 && this.status === 200) {
                     let dataParse = JSON.parse(this.response);
-                    alert(dataParse);
+                    document.getElementById("infoBox").style.display = "flex";
                 }
             }
             xhttp.open("POST", window.location.origin + "/sales/timeslots/saveTimeslotCutoffs");
+            xhttp.send(formData);
+        }
+
+        function filterTablesByStore(store){
+            let formData = new FormData();
+            formData.append("store", store);
+
+            let xhttp = new XMLHttpRequest();
+            xhttp.onreadystatechange = function(){
+                if (this.readyState === 4 && this.status === 200) {
+                    let dataParse = JSON.parse(this.response);
+                }
+            }
+            xhttp.open("POST", window.location.origin + "/sales/timeslots/index");
             xhttp.send(formData);
         }
 
@@ -422,15 +490,17 @@
             }
         }
 
+
+
         function createObjectForParticularDay(object){
             let day = object[0].getAttribute("name");
             let slotsObject = {};
             let objectWithSpecifiedDay = {};
             for(let i = 0; i< object.length; i++){
                 let slot = object[i].getAttribute("slot");
-                let value = object[i].innerHTML;
+                let value = object[i].value;
                 let time = value;
-                if(value.includes('-')){
+                if(value.includes('-') && value !== undefined){
                     time = value.substring(1)
                 }
                 slotsObject[slot] = time;
@@ -438,27 +508,6 @@
             objectWithSpecifiedDay[day] = slotsObject;
             timeSave.push(objectWithSpecifiedDay);
         }
-
-        for(let i = 0; i < document.getElementsByClassName("tablica").length ; i++){
-            document.getElementsByClassName("tablica")[i].addEventListener('keypress', (e) => {
-                if (e.key === 'Enter'){
-                    e.preventDefault();
-                }
-                if (document.getElementsByClassName("tablica")[i].textContent.length >= 3){
-                    e.preventDefault();
-                }
-                if (e.keyCode < 48 || e.keyCode > 57){
-                    if(e.keyCode != 45){
-                        e.preventDefault();
-                    }
-                }
-            });
-            document.getElementsByClassName("tablica")[i].addEventListener('paste', (e) => {
-                e.preventDefault();
-            })
-        }
-
     </script>
-
 
     {% endblock %}
