@@ -20,6 +20,7 @@ export default class AjaxAddToCart extends Component {
     private addToCartIncrementerLinks: HTMLElement[];
     private addtoCartDecrementerLinks: HTMLElement[];
     private quantityInputs: HTMLInputElement[];
+    protected quantityAdded;
     protected timer;
     protected callBackDelay: number;
     protected environment: HTMLInputElement;
@@ -46,6 +47,7 @@ export default class AjaxAddToCart extends Component {
         this.addToCartIncrementerLinks = <HTMLElement[]>Array.from(document.getElementsByClassName(this.addToCartIncrementer));
         this.addtoCartDecrementerLinks = <HTMLElement[]>Array.from(document.getElementsByClassName(this.addToCartDecrementer));
         this.quantityInputs = <HTMLInputElement[]>Array.from(document.querySelectorAll(CLASS_PREFIX + this.quantityInputField));
+        this.quantityAdded = 0;
 
         if (!this.links.length) {
             return;
@@ -139,6 +141,7 @@ export default class AjaxAddToCart extends Component {
         const quantityInput: HTMLInputElement = <HTMLInputElement>incrementer.previousElementSibling;
         let quantity: number = Number(quantityInput.value);
         quantity++;
+        this.quantityAdded++;
         quantityInput.value = String(quantity);
         this.timer = setTimeout(() => {
             this.sendRequest(incrementer.href, incrementer, String(quantityInput.value), 'ADD');
@@ -185,7 +188,8 @@ export default class AjaxAddToCart extends Component {
                 myQuantity: quantity,
                 productSku: productSku,
                 productPrice: productPrice,
-                productTitle: productTitle
+                productTitle: productTitle,
+                addedQuantity: that.quantityAdded
             },
             success(data, status, xhr) {
                 if(data.error !== '') {
@@ -199,6 +203,7 @@ export default class AjaxAddToCart extends Component {
                 that.replaceAmount(data.amount);
                 that.hideIcon();
                 that.showQuantity();
+                that.quantityAdded = 0;
 
                 const isCounterVisible = operation !== null;
 

@@ -231,7 +231,7 @@ class CartController extends SprykerCartController
         if ($storeCodeBucket == 'DE') {
             if ($operation !== "REMOVE") {
                 if ($operation == "ADD") {
-                    $count = 1;
+                    $count = $_REQUEST['addedQuantity'] ?? 0;
                 } else {
                     $count = $_REQUEST['myQuantity'] ?? $quantity;
                 }

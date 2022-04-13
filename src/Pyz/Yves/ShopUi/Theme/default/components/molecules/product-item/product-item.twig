@@ -182,7 +182,7 @@
             <div class="col--sm-9 col--lg-12 {{ config.name }}__content-wrapper"  >
                 {% block content %}
                     {% block contentTopContainer %}
-                        <div class="{{ config.name }}__content-top" onclick="productClicked('{{ data.url }}', '{{ data.idProductAbstract }}', '{{ data.name | escape('js') }}', '{{ data.product.prices.DEFAULT is defined ? data.product.prices.DEFAULT / 100 : null  }}', '{{ data.product.abstract_sku }}' )" >
+                        <div class="{{ config.name }}__content-top" onclick="productClicked('{{ data.url }}', '{{ data.idProductAbstract }}', '{{ data.name }}', '{{ data.product.prices.DEFAULT is defined ? data.product.prices.DEFAULT / 100 : null  }}', '{{ data.product.abstract_sku }}' )" >
                             {% block contentTop %}
                                 {% block colors %}
                                     {% widget 'ProductGroupColorWidget' args [data.idProductAbstract, data.product.selectedAttributes ?? []] use view('product-item-color-selector', 'ProductGroupWidget') with {
@@ -326,7 +326,7 @@
         {% block addToBlock %}
             <div class="add-to-cart-btn">
                 {% block price %}
-                    <div class="{{ config.name }}__info-more-col"  onclick="productClicked('{{ data.url }}', '{{ data.idProductAbstract }}', '{{ data.name | escape('js') }}', '{{ data.product.prices.DEFAULT is defined ? data.product.prices.DEFAULT / 100 : null  }}', '{{ data.product.abstract_sku }}' )" >
+                    <div class="{{ config.name }}__info-more-col"  onclick="productClicked('{{ data.url }}', '{{ data.idProductAbstract }}', '{{ data.name }}', '{{ data.product.prices.DEFAULT is defined ? data.product.prices.DEFAULT / 100 : null  }}', '{{ data.product.abstract_sku }}' )" >
                         {% include molecule('money-price') with {
                             modifiers: modifiers,
                             data: {
@@ -340,7 +340,7 @@
                 {% if app.currentCodeBucket == 'DE' %}
                     <a href="{{ addAjaxUrl }}"
                        rel="nofollow"
-                       onclick="productAddToCart('{{ data.idProductAbstract }}','{{ data.name | escape('js') }}','{{ data.product.prices.DEFAULT is defined ? data.product.prices.DEFAULT / 100 : null }}','{{ data.product.abstract_sku }}','{{ data.supplier | escape('js') }}')"
+                       onclick="productAddToCart('{{ data.idProductAbstract }}','{{ data.name }}','{{ data.product.prices.DEFAULT is defined ? data.product.prices.DEFAULT / 100 : null }}','{{ data.product.abstract_sku }}','{{ data.supplier | escape('js') }}')"
                        class="
                                     button button--with-icon button--middle-icon button_center_align button--backgroundcolor-DE
                                     js-product-color-group__image-{{ data.idProductAbstract }}
@@ -349,8 +349,8 @@
                                 "
                        data-product-id="{{ data.idProductAbstract }}"
                        data-product-sku="{{ data.sku }}"
-                       data-product-title="{{ data.name | escape('js') }}"
-                       data-product-price="{{ data.product.prices.ORIGINAL is defined ? data.product.prices.ORIGINAL / 100 : null }}"
+                       data-product-title="{{ data.name }}"
+                       data-product-price="{{ data.product.prices.DEFAULT is defined ? data.product.prices.DEFAULT / 100 : null }}"
                        data-csrf-token="{{ csrf_token('add-to-cart-ajax') }}"
                     >
                         <span class="icon-basketplus"></span>
@@ -426,6 +426,10 @@
                            class="
                             js-ajax-change-quantity__link
                             js-quantity-counter-product__incr"
+                           data-product-id="{{ data.idProductAbstract }}"
+                           data-product-sku="{{ data.product.abstract_sku }}"
+                           data-product-title="{{ data.name }}"
+                           data-product-price="{{ data.product.prices.DEFAULT is defined ? data.product.prices.DEFAULT / 100 : null }}"
                            data-csrf-token="{{ csrf_token('change-cart-ajax') }}"
                         >
                             +
