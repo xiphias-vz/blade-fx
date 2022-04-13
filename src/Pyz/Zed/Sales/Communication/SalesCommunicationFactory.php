@@ -219,6 +219,7 @@ class SalesCommunicationFactory extends SprykerSalesCommunicationFactory
         $containerEntity = PyzTimeSlotQuery::create()
             ->filterByMerchantReference($merchantReference)
             ->filterByDay(null, Criteria::NOT_EQUAL)
+            ->filterByDate(null)
             ->find();
 
         return $containerEntity->getData();

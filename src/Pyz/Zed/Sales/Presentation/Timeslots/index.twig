@@ -277,7 +277,7 @@
 
 
     </style>
-    <form id="cutoffTimesData">
+    <form id="cutoffTimesData" method="post" action="/sales/timeslots/index">
         <div class="filters-holder">
             <div class="filter-component">
                 <label for="cmbStores">{{ 'Location' | trans }}</label> <br>
@@ -289,7 +289,7 @@
             </div>
 
             <div id="dayFilterButtons">
-                <input id="btnFilterByStore" type="button" class="btn btn-customPrimary" value="{{ 'edit_standard_plan' | trans }}">
+                <input id="btnFilterByStore" type="submit" class="btn btn-customPrimary" value="{{ 'edit_standard_plan' | trans }}">
                 <input id="btnResetDefaultDayFilter" type="button" class="btn btn-custom-cancel" value="{{ 'Cancel' | trans }}">
             </div>
         </div>
@@ -426,7 +426,6 @@
         });
 
         btnFilterByStore.addEventListener("click", function(ev) {
-            filterTablesByStore(currentStore.value)
         });
 
         function saveTimeSlotCutoff(store){
