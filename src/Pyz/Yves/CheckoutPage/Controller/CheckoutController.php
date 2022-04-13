@@ -257,64 +257,75 @@ class CheckoutController extends SprykerCheckoutControllerAlias
         $quoteTransfer = $this->getFactory()->getQuoteClient()->getQuote();
 
         if ($customer->getEmail() !== null && $storeCodeBucket == 'DE') {
+            $customerNewPhone = $customer->getPhone();
+            $customerNewMobile = $customer->getMobilePhoneNumber();
+
             $customerProfileFromApi = (array)$this->getAccountInfo();
-
-            $customerPhone = $customer->getPhone();
-            $customerMobile = $customer->getMobilePhoneNumber();
-
             if (isset($customerProfileFromApi['profile']->phones)) {
                 $customerPhoneFromApi = $customerProfileFromApi['profile']->phones[1]->number;
                 $customerMobilePhoneFromApi = $customerProfileFromApi['profile']->phones[0]->number;
 
-                if ($customerPhone !== $customerPhoneFromApi) {
-                    $this->getFactory()
-                        ->getCustomerClient()
-                        ->getCustomer()
-                        ->setPhone($customerPhone);
-                    $this->getFactory()
-                        ->getQuoteClient()
-                        ->getQuote()
-                        ->getBillingAddress()
-                        ->setPhone($customerPhone);
-                    $customerProfileFromApi['profile']->phones[1]->number = $customerPhone;
+                if ($customerNewPhone !== $customerPhoneFromApi || $customerNewMobile !== $customerMobilePhoneFromApi) {
+                    $customerProfileFromApi['profile']->phones[1]->number = $customerNewPhone;
+                    $customerProfileFromApi['profile']->phones[0]->number = $customerNewMobile;
+
+                    $dataProfilePhones = ['profile' => ['phones' => $customerProfileFromApi["profile"]->phones]];
+
+                    $this->changeAccountData($dataProfilePhones);
                 }
-
-                if ($customerMobile !== $customerMobilePhoneFromApi) {
-                    $this->getFactory()
-                        ->getCustomerClient()
-                        ->getCustomer()
-                        ->setMobilePhoneNumber($customerMobile);
-                    $this->getFactory()
-                        ->getQuoteClient()
-                        ->getQuote()
-                        ->getBillingAddress()
-                        ->setCellPhone($customerMobile);
-                    $customerProfileFromApi['profile']->phones[0]->number = $customerMobile;
-                }
-
-                foreach ($customer->getBillingAddress() as $billingAddress) {
-                    $billingAddress->setPhone($customerPhone);
-                    $billingAddress->setCellPhone($customerMobile);
-                }
-
-                $dataProfilePhones = ['profile' => ['phones' => $customerProfileFromApi["profile"]->phones]];
-
-                $this->changeAccountData($dataProfilePhones);
             }
-        } else {
-            $billingMobile = $quoteTransfer->getBillingAddress()->getCellPhone();
-            $customerMobile = $customer->getMobilePhoneNumber();
 
-            if ($customerMobile !== $billingMobile) {
+            if ($customerNewPhone !== $quoteTransfer->getBillingAddress()->getPhone()) {
                 $this->getFactory()
                     ->getCustomerClient()
                     ->getCustomer()
-                    ->setMobilePhoneNumber($customerMobile);
+                    ->setPhone($customerNewPhone);
                 $this->getFactory()
                     ->getQuoteClient()
                     ->getQuote()
                     ->getBillingAddress()
-                    ->setCellPhone($customerMobile);
+                    ->setPhone($customerNewPhone);
+                $this->getFactory()
+                    ->getQuoteClient()
+                    ->getQuote()
+                    ->getShippingAddress()
+                    ->setPhone($customerNewPhone);
+            }
+
+            if ($customerNewMobile !== $quoteTransfer->getBillingAddress()->getCellPhone()) {
+                $this->getFactory()
+                    ->getCustomerClient()
+                    ->getCustomer()
+                    ->setMobilePhoneNumber($customerNewMobile);
+                $this->getFactory()
+                    ->getQuoteClient()
+                    ->getQuote()
+                    ->getBillingAddress()
+                    ->setCellPhone($customerNewMobile);
+                $this->getFactory()
+                    ->getQuoteClient()
+                    ->getQuote()
+                    ->getShippingAddress()
+                    ->setCellPhone($customerNewMobile);
+            }
+        } else {
+            $customerNewMobile = $customer->getMobilePhoneNumber();
+
+            if ($customerNewMobile !== $quoteTransfer->getBillingAddress()->getCellPhone()) {
+                $this->getFactory()
+                    ->getCustomerClient()
+                    ->getCustomer()
+                    ->setMobilePhoneNumber($customerNewMobile);
+                $this->getFactory()
+                    ->getQuoteClient()
+                    ->getQuote()
+                    ->getBillingAddress()
+                    ->setCellPhone($customerNewMobile);
+                $this->getFactory()
+                    ->getQuoteClient()
+                    ->getQuote()
+                    ->getShippingAddress()
+                    ->setCellPhone($customerNewMobile);
             }
         }
 
