@@ -7,16 +7,15 @@
 
 namespace Pyz\Yves\CustomerPage\Processor\Mapper;
 
-use Generated\Shared\Transfer\CustomerTransfer;
 use Generated\Shared\Transfer\RecoTransfer;
 use Pyz\Yves\GlobusRestApiClient\Provider\GlobusRestApiResult;
 
 interface RecommendationsMapperInterface
 {
     /**
-     * @param GlobusRestApiResult $restApiResult
+     * @param \Pyz\Yves\GlobusRestApiClient\Provider\GlobusRestApiResult $restApiResult
      * @param string $token
-     * @param RecoTransfer $recoTransfer
+     * @param \Generated\Shared\Transfer\RecoTransfer $recoTransfer
      *
      * @return mixed
      */

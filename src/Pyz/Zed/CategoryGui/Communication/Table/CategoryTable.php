@@ -14,7 +14,6 @@ use Spryker\Zed\CategoryGui\Communication\Table\CategoryTable as SprykerCategory
 use Spryker\Zed\CategoryGui\Dependency\Facade\CategoryGuiToLocaleFacadeInterface;
 use Spryker\Zed\CategoryGui\Dependency\Facade\CategoryGuiToTranslatorFacadeInterface;
 use Spryker\Zed\CategoryGui\Persistence\CategoryGuiRepositoryInterface;
-use Spryker\Zed\Translator\Business\TranslatorFacadeInterface;
 
 class CategoryTable extends SprykerCategoryTable
 {
@@ -25,8 +24,8 @@ class CategoryTable extends SprykerCategoryTable
 
     /**
      * @param \Spryker\Zed\CategoryGui\Dependency\Facade\CategoryGuiToLocaleFacadeInterface $localeFacade
-     * @param CategoryGuiRepositoryInterface $categoryGuiRepository
-     * @param CategoryGuiToTranslatorFacadeInterface $translatorFacade
+     * @param \Spryker\Zed\CategoryGui\Persistence\CategoryGuiRepositoryInterface $categoryGuiRepository
+     * @param \Spryker\Zed\CategoryGui\Dependency\Facade\CategoryGuiToTranslatorFacadeInterface $translatorFacade
      */
     public function __construct(
         CategoryGuiToLocaleFacadeInterface $localeFacade,

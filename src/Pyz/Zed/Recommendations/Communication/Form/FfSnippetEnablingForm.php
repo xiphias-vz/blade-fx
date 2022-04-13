@@ -1,15 +1,14 @@
 <?php
 
 /**
- * Copyright © 2016-present Spryker Systems GmbH. All rights reserved.
- * Use of this software requires acceptance of the Evaluation License Agreement. See LICENSE file.
+ * This file is part of the Spryker Commerce OS.
+ * For full license information, please view the LICENSE file that was distributed with this source code.
  */
 
 namespace Pyz\Zed\Recommendations\Communication\Form;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
-use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 
 class FfSnippetEnablingForm extends abstractType
@@ -17,7 +16,7 @@ class FfSnippetEnablingForm extends abstractType
     public const RECOMMENDATIONS_FF_SNIPPET_ENABLED = "recommendationsFfSnippetEnabled";
 
     /**
-     * @param FormBuilderInterface $builder
+     * @param \Symfony\Component\Form\FormBuilderInterface $builder
      * @param array $options
      *
      * @return void
@@ -29,14 +28,14 @@ class FfSnippetEnablingForm extends abstractType
     }
 
     /**
-     * @param FormBuilderInterface $builder
+     * @param \Symfony\Component\Form\FormBuilderInterface $builder
      *
      * @return $this
      */
-    public function addEnablingSnippetCheckBox(FormBuilderInterface $builder): FfSnippetEnablingForm
+    public function addEnablingSnippetCheckBox(FormBuilderInterface $builder)
     {
         $builder->add(static::RECOMMENDATIONS_FF_SNIPPET_ENABLED, CheckboxType::class, [
-            'label'    => 'Enable Fact Finder snippet',
+            'label' => 'Enable Fact Finder snippet',
             'required' => false,
         ]);
 

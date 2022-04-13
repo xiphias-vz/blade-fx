@@ -1,20 +1,22 @@
 <?php
 
+/**
+ * This file is part of the Spryker Commerce OS.
+ * For full license information, please view the LICENSE file that was distributed with this source code.
+ */
+
 namespace Pyz\Zed\RecommendationsStorage\Persistence;
 
-use Generated\Shared\Transfer\MerchantCollectionTransfer;
 use Generated\Shared\Transfer\RecommendationDefinitionCollectionTransfer;
-use Orm\Zed\RecommendationsStorage\Persistence\PyzRecommendationDefinitionStorage;
-use Orm\Zed\RecommendationsStorage\Persistence\PyzRecommendationDefinitionStorageQuery;
 use Spryker\Zed\Kernel\Persistence\AbstractEntityManager;
 
 /**
- * @method RecommendationsStoragePersistenceFactory getFactory()
+ * @method \Pyz\Zed\RecommendationsStorage\Persistence\RecommendationsStoragePersistenceFactory getFactory()
  */
 class RecommendationsStorageEntityManager extends AbstractEntityManager implements RecommendationsStorageEntityManagerInterface
 {
     /**
-     * @param RecommendationDefinitionCollectionTransfer $collectionTransfer
+     * @param \Generated\Shared\Transfer\RecommendationDefinitionCollectionTransfer $collectionTransfer
      *
      * @return void
      */

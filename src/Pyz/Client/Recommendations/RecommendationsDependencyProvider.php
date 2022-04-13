@@ -16,9 +16,9 @@ class RecommendationsDependencyProvider extends AbstractDependencyProvider
     public const CLIENT_RECOMMENDATIONS_STORAGE = 'CLIENT_RECOMMENDATIONS_STORAGE';
 
     /**
-     * @param Container $container
+     * @param \Spryker\Client\Kernel\Container $container
      *
-     * @return Container
+     * @return \Spryker\Client\Kernel\Container
      */
     public function provideServiceLayerDependencies(Container $container): Container
     {
@@ -29,9 +29,9 @@ class RecommendationsDependencyProvider extends AbstractDependencyProvider
     }
 
     /**
-     * @param Container $container
+     * @param \Spryker\Client\Kernel\Container $container
      *
-     * @return Container
+     * @return \Spryker\Client\Kernel\Container
      */
     protected function addZedRequestClient(Container $container): Container
     {
@@ -43,12 +43,13 @@ class RecommendationsDependencyProvider extends AbstractDependencyProvider
     }
 
     /**
-     * @param Container $container
-     * @return Container
+     * @param \Spryker\Client\Kernel\Container $container
+     *
+     * @return \Spryker\Client\Kernel\Container
      */
     protected function addRecommendationsStorageClient(Container $container): Container
     {
-        $container->set(static::CLIENT_RECOMMENDATIONS_STORAGE, function(Container $container) {
+        $container->set(static::CLIENT_RECOMMENDATIONS_STORAGE, function (Container $container) {
             return $container->getLocator()->recommendationsStorage()->client();
         });
 

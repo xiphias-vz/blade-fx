@@ -29,9 +29,19 @@ class GlobusRestApiRecommendations
     protected const RESULT_OBJECT_ARRAY_NAME = 'ResultObjects';
     protected const SCENARIOS_ARRAY_NAME = 'Scenarios';
 
-
+    /**
+     * @var \Generated\Shared\Transfer\RecommendationsApiTransfer
+     */
     private $recommendation;
+
+    /**
+     * @var \Generated\Shared\Transfer\ScenariosApiTransfer
+     */
     private $scenario;
+
+    /**
+     * @var string
+     */
     private $bearerToken;
 
     /**
@@ -39,14 +49,13 @@ class GlobusRestApiRecommendations
      * @param bool $externalTracking
      * @param string $bearerToken
      *
-     * @return RecommendationsApiTransfer
+     * @return \Generated\Shared\Transfer\RecommendationsApiTransfer
      */
     public function createRecommendation(
         string $userId,
         bool $externalTracking,
         string $bearerToken
-    ): RecommendationsApiTransfer
-    {
+    ): RecommendationsApiTransfer {
         $this->recommendation = new RecommendationsApiTransfer();
         $this->recommendation->setUserId($userId);
         $this->recommendation->setUserType(static::USER_TYPE);
@@ -57,11 +66,16 @@ class GlobusRestApiRecommendations
         return $this->recommendation;
     }
 
+    /**
+     * @param string $scenarioId
+     * @param string $hashId
+     *
+     * @return \Generated\Shared\Transfer\RecommendationsApiTransfer
+     */
     public function createScenario(
         string $scenarioId,
         string $hashId
-    ): RecommendationsApiTransfer
-    {
+    ): RecommendationsApiTransfer {
         $this->scenario = new ScenariosApiTransfer();
         $this->scenario->setScenarioId($scenarioId);
         $this->scenario->setHashId($hashId);
@@ -81,13 +95,12 @@ class GlobusRestApiRecommendations
      * @param string $scenarioId
      * @param string $contextParamId
      *
-     * @return RecommendationsApiTransfer
+     * @return \Generated\Shared\Transfer\RecommendationsApiTransfer
      */
     public function addContextParam(
         string $scenarioId,
         string $contextParamId
-    ): RecommendationsApiTransfer
-    {
+    ): RecommendationsApiTransfer {
         $context = new ContextParamTransfer();
         $context->setScenarioId($scenarioId);
         $context->setContextParamId($contextParamId);
@@ -103,15 +116,14 @@ class GlobusRestApiRecommendations
      * @param string $expiresOn
      * @param string $resultScope
      *
-     * @return RecommendationsApiTransfer
+     * @return \Generated\Shared\Transfer\RecommendationsApiTransfer
      */
     public function addScenarioHash(
         string $scenarioId,
         string $hashId,
         string $expiresOn,
         string $resultScope
-    ): RecommendationsApiTransfer
-    {
+    ): RecommendationsApiTransfer {
         $scenarioHash = new ScenarioHashTransfer();
         $scenarioHash->setScenarioId($scenarioId);
         $scenarioHash->setHashId($hashId);
@@ -129,15 +141,14 @@ class GlobusRestApiRecommendations
      * @param string $resultObjectId
      * @param string $resultObjectScore
      *
-     * @return RecommendationsApiTransfer
+     * @return \Generated\Shared\Transfer\RecommendationsApiTransfer
      */
     public function addResultObject(
         string $scenarioId,
         string $resultObjectType,
         string $resultObjectId,
         string $resultObjectScore
-    ): RecommendationsApiTransfer
-    {
+    ): RecommendationsApiTransfer {
         $resultObject = new ResultObjectTransfer();
         $resultObject->setScenarioId($scenarioId);
         $resultObject->setResultObjectType($resultObjectType);
@@ -153,13 +164,12 @@ class GlobusRestApiRecommendations
      * @param string $leadingObjectId
      * @param string $leadingObjectType
      *
-     * @return ScenariosApiTransfer
+     * @return \Generated\Shared\Transfer\ScenariosApiTransfer
      */
     public function addLeadingObject(
         string $leadingObjectId,
         string $leadingObjectType
-    ): ScenariosApiTransfer
-    {
+    ): ScenariosApiTransfer {
         $leadingObject = new LeadingObjectTransfer();
         $leadingObject->setLeadingObjectId($leadingObjectId);
         $leadingObject->setLeadingObjectType($leadingObjectType);
@@ -173,13 +183,12 @@ class GlobusRestApiRecommendations
      * @param string $basketObjectId
      * @param string $basketObjectType
      *
-     * @return ScenariosApiTransfer
+     * @return \Generated\Shared\Transfer\ScenariosApiTransfer
      */
     public function addBasketObject(
         string $basketObjectId,
         string $basketObjectType
-    ): ScenariosApiTransfer
-    {
+    ): ScenariosApiTransfer {
         $basketObject = new BasketObjectTransfer();
         $basketObject->setBasketObjectId($basketObjectId);
         $basketObject->setBasketObjectType($basketObjectType);
@@ -190,7 +199,7 @@ class GlobusRestApiRecommendations
     }
 
     /**
-     * @return GlobusRestApiResult
+     * @return \Pyz\Yves\GlobusRestApiClient\Provider\GlobusRestApiResult
      */
     public function postRecommendations(): GlobusRestApiResult
     {
@@ -203,11 +212,11 @@ class GlobusRestApiRecommendations
         $arrayCombine = array_combine($arrayMap, $dataArray);
 
         foreach ($arrayCombine as $key => $value) {
-            if(is_array($value)) {
+            if (is_array($value)) {
                 $arrayCombine[$key] = $this->makeKeysPascalCase($value);
 
                 $lengthOfInnerArray = count($value);
-                for($i = 0; $i < $lengthOfInnerArray; $i++) {
+                for ($i = 0; $i < $lengthOfInnerArray; $i++) {
                     foreach ($value[$i] as $childKey => $childValue) {
                         if (is_array($childValue)) {
                             $arrayCombine[$key][$i][ucfirst($childKey)] = $this->makeKeysPascalCase($childValue);
@@ -217,15 +226,15 @@ class GlobusRestApiRecommendations
             }
         }
 
-        $requiredRequestArrays = array(
+        $requiredRequestArrays = [
             static::SCENARIOS_ARRAY_NAME,
             static::CONTEXT_PARAMS_ARRAY_NAME,
             static::SCENARIO_HASH_ARRAY_NAME,
-            static::RESULT_OBJECT_ARRAY_NAME
-        );
+            static::RESULT_OBJECT_ARRAY_NAME,
+        ];
         foreach ($requiredRequestArrays as $key) {
             if (!array_key_exists($key, $arrayCombine)) {
-                $arrayToAdd = array();
+                $arrayToAdd = [];
                 $arrayCombine[$key] = $arrayToAdd;
             }
         }
@@ -236,13 +245,14 @@ class GlobusRestApiRecommendations
     }
 
     /**
-     * @param $array
+     * @param array $array
      *
      * @return array
      */
-    protected function makeKeysPascalCase($array): array {
+    protected function makeKeysPascalCase(array $array): array
+    {
         $lengthOfArray = count($array);
-        for($i = 0; $i < $lengthOfArray; $i++) {
+        for ($i = 0; $i < $lengthOfArray; $i++) {
             $arrayKeys = array_keys($array[$i]);
             $arrayMap = array_map('ucfirst', $arrayKeys);
             $arrayCombine = array_combine($arrayMap, $array[$i]);
@@ -251,5 +261,4 @@ class GlobusRestApiRecommendations
 
         return $array;
     }
-
 }

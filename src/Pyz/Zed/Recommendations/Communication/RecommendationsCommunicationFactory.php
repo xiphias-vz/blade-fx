@@ -1,8 +1,8 @@
 <?php
 
 /**
- * Copyright © 2016-present Spryker Systems GmbH. All rights reserved.
- * Use of this software requires acceptance of the Evaluation License Agreement. See LICENSE file.
+ * This file is part of the Spryker Commerce OS.
+ * For full license information, please view the LICENSE file that was distributed with this source code.
  */
 
 namespace Pyz\Zed\Recommendations\Communication;
@@ -13,21 +13,27 @@ use Pyz\Zed\Recommendations\Communication\Form\DataProvider\RecommendationFormDa
 use Pyz\Zed\Recommendations\Communication\Form\DataProvider\ScenarioFormDataProvider;
 use Pyz\Zed\Recommendations\Communication\Form\DeleteScenarioForm;
 use Pyz\Zed\Recommendations\Communication\Form\FfSnippetEnablingForm;
-use Pyz\Zed\Recommendations\Communication\Form\ScenarioForm;
 use Pyz\Zed\Recommendations\Communication\Form\RecommendationsEnablingForm;
+use Pyz\Zed\Recommendations\Communication\Form\ScenarioForm;
 use Pyz\Zed\Recommendations\Communication\Table\ScenariosTable;
 use Pyz\Zed\Recommendations\Communication\Transfer\ScenarioFormTransferMapper;
 use Pyz\Zed\Recommendations\RecommendationsDependencyProvider;
 use Spryker\Zed\Kernel\Communication\AbstractCommunicationFactory;
 use Symfony\Component\Form\FormInterface;
 
+/**
+ * @method \Pyz\Zed\Recommendations\Persistence\RecommendationsRepositoryInterface getRepository()
+ * @method \Pyz\Zed\Recommendations\Business\RecommendationsFacadeInterface getFacade()
+ * @method \Pyz\Zed\Recommendations\RecommendationsConfig getConfig()
+ * @method \Pyz\Zed\Recommendations\Persistence\RecommendationsQueryContainerInterface getQueryContainer()
+ */
 class RecommendationsCommunicationFactory extends AbstractCommunicationFactory
 {
     /**
-     * @param RecommendationFormDataProvider|null $dataProvider
-     * @param RecommendationDefinitionTransfer|null $definitionTransfer
+     * @param \Pyz\Zed\Recommendations\Communication\Form\DataProvider\RecommendationFormDataProvider|null $dataProvider
+     * @param \Generated\Shared\Transfer\RecommendationDefinitionTransfer|null $definitionTransfer
      *
-     * @return FormInterface
+     * @return \Symfony\Component\Form\FormInterface
      */
     public function createFfSnippetEnablingForm(?RecommendationFormDataProvider $dataProvider = null, ?RecommendationDefinitionTransfer $definitionTransfer = null): FormInterface
     {
@@ -41,10 +47,10 @@ class RecommendationsCommunicationFactory extends AbstractCommunicationFactory
     }
 
     /**
-     * @param RecommendationFormDataProvider|null $dataProvider
-     * @param RecommendationDefinitionTransfer|null $definitionTransfer
+     * @param \Pyz\Zed\Recommendations\Communication\Form\DataProvider\RecommendationFormDataProvider|null $dataProvider
+     * @param \Generated\Shared\Transfer\RecommendationDefinitionTransfer|null $definitionTransfer
      *
-     * @return FormInterface
+     * @return \Symfony\Component\Form\FormInterface
      */
     public function createRecommendationsEnablingForm(?RecommendationFormDataProvider $dataProvider = null, ?RecommendationDefinitionTransfer $definitionTransfer = null): FormInterface
     {
@@ -58,10 +64,10 @@ class RecommendationsCommunicationFactory extends AbstractCommunicationFactory
     }
 
     /**
-     * @param ScenarioFormDataProvider|null $dataProvider
-     * @param ScenarioTransfer|null $scenarioTransfer
+     * @param \Pyz\Zed\Recommendations\Communication\Form\DataProvider\ScenarioFormDataProvider|null $dataProvider
+     * @param \Generated\Shared\Transfer\ScenarioTransfer|null $scenarioTransfer
      *
-     * @return FormInterface
+     * @return \Symfony\Component\Form\FormInterface
      */
     public function createScenarioForm(?ScenarioFormDataProvider $dataProvider = null, ?ScenarioTransfer $scenarioTransfer = null): FormInterface
     {
@@ -75,7 +81,7 @@ class RecommendationsCommunicationFactory extends AbstractCommunicationFactory
     }
 
     /**
-     * @return FormInterface
+     * @return \Symfony\Component\Form\FormInterface
      */
     public function createDeleteScenarioForm(): FormInterface
     {
@@ -83,9 +89,9 @@ class RecommendationsCommunicationFactory extends AbstractCommunicationFactory
     }
 
     /**
-     * @param ScenarioFormDataProvider|null $dataProvider
+     * @param \Pyz\Zed\Recommendations\Communication\Form\DataProvider\ScenarioFormDataProvider|null $dataProvider
      *
-     * @return ScenarioTransfer|null
+     * @return \Generated\Shared\Transfer\ScenarioTransfer|null
      */
     public function getScenarioFormData(?ScenarioFormDataProvider $dataProvider = null): ?ScenarioTransfer
     {
@@ -93,9 +99,9 @@ class RecommendationsCommunicationFactory extends AbstractCommunicationFactory
     }
 
     /**
-     * @param RecommendationFormDataProvider|null $dataProvider
+     * @param \Pyz\Zed\Recommendations\Communication\Form\DataProvider\RecommendationFormDataProvider|null $dataProvider
      *
-     * @return RecommendationDefinitionTransfer|null
+     * @return \Generated\Shared\Transfer\RecommendationDefinitionTransfer|null
      */
     public function getDefinitionFormData(?RecommendationFormDataProvider $dataProvider = null): ?RecommendationDefinitionTransfer
     {
@@ -103,7 +109,7 @@ class RecommendationsCommunicationFactory extends AbstractCommunicationFactory
     }
 
     /**
-     * @return ScenarioFormTransferMapper
+     * @return \Pyz\Zed\Recommendations\Communication\Transfer\ScenarioFormTransferMapper
      */
     public function createScenarioFormTransferGenerator(): ScenarioFormTransferMapper
     {
@@ -111,9 +117,9 @@ class RecommendationsCommunicationFactory extends AbstractCommunicationFactory
     }
 
     /**
-     * @param ScenarioTransfer|null $scenarioTransfer
+     * @param \Generated\Shared\Transfer\ScenarioTransfer|null $scenarioTransfer
      *
-     * @return ScenarioFormDataProvider
+     * @return \Pyz\Zed\Recommendations\Communication\Form\DataProvider\ScenarioFormDataProvider
      */
     public function createScenarioFormDataProvider(?ScenarioTransfer $scenarioTransfer = null): ScenarioFormDataProvider
     {
@@ -141,7 +147,7 @@ class RecommendationsCommunicationFactory extends AbstractCommunicationFactory
     }
 
     /**
-     * @return ScenariosTable
+     * @return \Pyz\Zed\Recommendations\Communication\Table\ScenariosTable
      */
     public function createScenariosTable(): ScenariosTable
     {

@@ -1,16 +1,18 @@
 <?php
 
+/**
+ * This file is part of the Spryker Commerce OS.
+ * For full license information, please view the LICENSE file that was distributed with this source code.
+ */
+
 namespace Pyz\Zed\RecommendationsStorage\Business;
 
-use Generated\Shared\Transfer\EventEntityTransfer;
-use Pyz\Zed\RecommendationsStorage\Persistence\RecommendationsStorageEntityManagerInterface;
-use Pyz\Zed\RecommendationsStorage\Persistence\RecommendationsStorageRepositoryInterface;
 use Spryker\Zed\Kernel\Business\AbstractFacade;
 
 /**
- * @method RecommendationsStorageBusinessFactory getFactory()
- * @method RecommendationsStorageRepositoryInterface getRepository()
- * @method RecommendationsStorageEntityManagerInterface getEntityManager()
+ * @method \Pyz\Zed\RecommendationsStorage\Business\RecommendationsStorageBusinessFactory getFactory()
+ * @method \Pyz\Zed\RecommendationsStorage\Persistence\RecommendationsStorageRepositoryInterface getRepository()
+ * @method \Pyz\Zed\RecommendationsStorage\Persistence\RecommendationsStorageEntityManagerInterface getEntityManager()
  */
 class RecommendationsStorageFacade extends AbstractFacade implements RecommendationsStorageFacadeInterface
 {
@@ -22,13 +24,5 @@ class RecommendationsStorageFacade extends AbstractFacade implements Recommendat
     public function publish(array $eventTransfers): void
     {
         $this->getFactory()->createRecommendationsStorageWriter()->publish($eventTransfers);
-    }
-
-    /**
-     * @return void
-     */
-    public function synchronizeMerchantToStorage(): void
-    {
-        $this->getFactory()->createRecommendationsStorageWriter()->updateRecommendationDefinitionToStorage();
     }
 }

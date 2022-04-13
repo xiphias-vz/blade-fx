@@ -7,7 +7,6 @@
 
 namespace Pyz\Zed\Checkout\Business;
 
-use Everon\Component\CriteriaBuilder\Criteria;
 use Generated\Shared\Transfer\QuoteTransfer;
 use Orm\Zed\Sales\Persistence\Map\SpySalesOrderItemTableMap;
 use Orm\Zed\Sales\Persistence\SpySalesOrder;

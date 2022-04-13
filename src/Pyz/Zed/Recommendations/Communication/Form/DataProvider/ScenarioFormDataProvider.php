@@ -1,5 +1,10 @@
 <?php
 
+/**
+ * This file is part of the Spryker Commerce OS.
+ * For full license information, please view the LICENSE file that was distributed with this source code.
+ */
+
 namespace Pyz\Zed\Recommendations\Communication\Form\DataProvider;
 
 use Generated\Shared\Transfer\ScenarioTransfer;
@@ -11,30 +16,30 @@ use Pyz\Zed\Recommendations\Persistence\RecommendationsQueryContainerInterface;
 class ScenarioFormDataProvider
 {
     /**
-     * @var RecommendationsQueryContainerInterface
+     * @var \Pyz\Zed\Recommendations\Persistence\RecommendationsQueryContainerInterface
      */
     protected $recommendationsQueryContainer;
 
     /**
-     * @var RecommendationsFacadeInterface
+     * @var \Pyz\Zed\Recommendations\Business\RecommendationsFacadeInterface
      */
     protected $recommendationsFacade;
 
     /**
-     * @var ScenarioTransfer
+     * @var \Generated\Shared\Transfer\ScenarioTransfer
      */
     protected $scenarioTransfer;
 
     /**
-     * @param RecommendationsQueryContainerInterface $recommendationsQueryContainer
-     * @param RecommendationsFacadeInterface $recommendationsFacade
-     * @param ScenarioTransfer|null $scenarioTransfer
+     * @param \Pyz\Zed\Recommendations\Persistence\RecommendationsQueryContainerInterface $recommendationsQueryContainer
+     * @param \Pyz\Zed\Recommendations\Business\RecommendationsFacadeInterface $recommendationsFacade
+     * @param \Generated\Shared\Transfer\ScenarioTransfer|null $scenarioTransfer
      */
     public function __construct(
         RecommendationsQueryContainerInterface $recommendationsQueryContainer,
         RecommendationsFacadeInterface $recommendationsFacade,
         ?ScenarioTransfer $scenarioTransfer = null
-    ){
+    ) {
         $this->recommendationsQueryContainer = $recommendationsQueryContainer;
         $this->recommendationsFacade = $recommendationsFacade;
         $this->scenarioTransfer = $scenarioTransfer;
@@ -43,7 +48,7 @@ class ScenarioFormDataProvider
     /**
      * @param int|null $idRecommendationsScenario
      *
-     * @return ScenarioTransfer|null
+     * @return \Generated\Shared\Transfer\ScenarioTransfer|null
      */
     public function getData(?int $idRecommendationsScenario = null): ?ScenarioTransfer
     {
@@ -55,7 +60,7 @@ class ScenarioFormDataProvider
     }
 
     /**
-     * @param $idScenario
+     * @param $idScenario|null
      *
      * @return array
      */
@@ -84,7 +89,7 @@ class ScenarioFormDataProvider
     /**
      * @param $idRecommendationsScenario
      *
-     * @return PyzRecommendationScenarios
+     * @return \Orm\Zed\Recommendations\Persistence\PyzRecommendationScenarios
      */
     protected function getScenarioEntity($idRecommendationsScenario): PyzRecommendationScenarios
     {

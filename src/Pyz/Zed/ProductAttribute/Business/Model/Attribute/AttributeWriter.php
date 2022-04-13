@@ -37,6 +37,7 @@ class AttributeWriter extends SprykerAttributeWriter
      * @param \Spryker\Zed\ProductAttribute\Dependency\Facade\ProductAttributeToGlossaryInterface $glossaryFacade
      * @param \Spryker\Zed\ProductAttribute\Business\Model\Attribute\AttributeValueWriterInterface $attributeValueWriter
      * @param \Spryker\Shared\ProductAttribute\Code\KeyBuilder\GlossaryKeyBuilderInterface $glossaryKeyBuilder
+     * @param \Spryker\Zed\Product\Persistence\ProductQueryContainerInterface $productQueryContainer
      */
     public function __construct(
         ProductAttributeQueryContainerInterface $productAttributeQueryContainer,

@@ -16,9 +16,9 @@ class RecommendationsStorageDependencyProvider extends AbstractDependencyProvide
     public const CLIENT_STORE = 'CLIENT_STORE';
 
     /**
-     * @param Container $container
+     * @param \Spryker\Client\Kernel\Container $container
      *
-     * @return Container
+     * @return \Spryker\Client\Kernel\Container
      */
     public function provideServiceLayerDependencies(Container $container)
     {
@@ -30,9 +30,9 @@ class RecommendationsStorageDependencyProvider extends AbstractDependencyProvide
     }
 
     /**
-     * @param Container $container
+     * @param \Spryker\Client\Kernel\Container $container
      *
-     * @return Container
+     * @return \Spryker\Client\Kernel\Container
      */
     public function addStorageClient(Container $container): Container
     {
@@ -44,9 +44,9 @@ class RecommendationsStorageDependencyProvider extends AbstractDependencyProvide
     }
 
     /**
-     * @param Container $container
+     * @param \Spryker\Client\Kernel\Container $container
      *
-     * @return Container
+     * @return \Spryker\Client\Kernel\Container
      */
     public function addStoreClient(Container $container): Container
     {

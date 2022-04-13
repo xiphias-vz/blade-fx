@@ -13,23 +13,23 @@ use Spryker\Shared\Kernel\Transfer\TransferInterface;
 interface RecommendationsStorageReaderInterface
 {
     /**
-     * @param TransferInterface $recommendationsTransfer
+     * @param \Spryker\Shared\Kernel\Transfer\TransferInterface $recommendationsTransfer
      *
      * @return mixed
      */
     public function getKeysFromRedis(TransferInterface $recommendationsTransfer);
 
     /**
-     * @param RecoTransfer $recoTransfer
+     * @param \Generated\Shared\Transfer\RecoTransfer $recoTransfer
      *
-     * @return RecoTransfer
+     * @return \Generated\Shared\Transfer\RecoTransfer
      */
     public function getIsRecommendationsEnabled(RecoTransfer $recoTransfer): RecoTransfer;
 
     /**
-     * @param RecoTransfer $recoTransfer
+     * @param \Generated\Shared\Transfer\RecoTransfer $recoTransfer
      *
-     * @return RecoTransfer
+     * @return \Generated\Shared\Transfer\RecoTransfer
      */
     public function getIsFfSnippetEnabled(RecoTransfer $recoTransfer): RecoTransfer;
 }

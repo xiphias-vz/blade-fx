@@ -16,7 +16,7 @@ use Spryker\Client\Store\StoreClientInterface;
 class RecommendationsStorageFactory extends AbstractFactory
 {
     /**
-     * @return StorageClientInterface
+     * @return \Spryker\Client\Storage\StorageClientInterface
      */
     public function getStorageClient(): StorageClientInterface
     {
@@ -24,7 +24,7 @@ class RecommendationsStorageFactory extends AbstractFactory
     }
 
     /**
-     * @return StoreClientInterface
+     * @return \Spryker\Client\Store\StoreClientInterface
      */
     public function getStoreClient(): StoreClientInterface
     {
@@ -32,7 +32,7 @@ class RecommendationsStorageFactory extends AbstractFactory
     }
 
     /**
-     * @return RecommendationsStorageReaderInterface
+     * @return \Pyz\Client\RecommendationsStorage\Reader\RecommendationsStorageReaderInterface
      */
     public function createRecommendationsStorageReader(): RecommendationsStorageReaderInterface
     {

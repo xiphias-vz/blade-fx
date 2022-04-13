@@ -83,6 +83,7 @@ class TimeslotsController extends AbstractController
             $this->getFactory()->getMerchantStorageFacade()->synchronizeMerchantToStorage();
         } else {
             $responseData = 'error';
+
 //            $responseData["error"] = true;
 //            $responseData["message"] = 'MissingParameters';
 //            $responseData = json_encode($responseData);

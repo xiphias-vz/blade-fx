@@ -8,51 +8,58 @@
 namespace Pyz\Yves\Recommendations\Plugin\Application;
 
 use Generated\Shared\Transfer\RecoTransfer;
-use Pyz\Yves\Recommendations\RecommendationsConfig;
-use Pyz\Yves\Recommendations\RecommendationsDependencyProvider;
-use Pyz\Yves\Recommendations\RecommendationsFactory;
 use Spryker\Service\Container\ContainerInterface;
 use Spryker\Shared\ApplicationExtension\Dependency\Plugin\ApplicationPluginInterface;
 use Spryker\Yves\Kernel\AbstractPlugin;
-use Spryker\Yves\Kernel\Container;
 
 /**
- * @method RecommendationsConfig getConfig()
- * @method RecommendationsFactory getFactory()
+ * @method \Pyz\Yves\Recommendations\RecommendationsConfig getConfig()
+ * @method \Pyz\Yves\Recommendations\RecommendationsFactory getFactory()
  */
 class RecommendationsApplicationPlugin extends AbstractPlugin implements ApplicationPluginInterface
 {
     public const FF_SNIPEPT_ENABLED = 'ffSnippetEnabled';
+    public const CUSTOMER_USER_RECO_DATA = 'customerUserRecoData';
 
     /**
-     * @param ContainerInterface $container
+     * @param \Spryker\Service\Container\ContainerInterface $container
      *
-     * @return ContainerInterface
+     * @return \Spryker\Service\Container\ContainerInterface
      */
     public function provide(ContainerInterface $container): ContainerInterface
     {
-        // $container = $this->addRecommendationsStorageClient($container);
-        // $container = $this->addRecommendationsClient($container);
+        $container = $this->getCustomerRecoData($container);
 
         return $this->getIsFfSnippetEnabled($container);
     }
 
     /**
-     * @param ContainerInterface $container
+     * @param \Spryker\Service\Container\ContainerInterface $container
      *
-     * @return ContainerInterface
+     * @return \Spryker\Service\Container\ContainerInterface
      */
     protected function getIsFfSnippetEnabled(ContainerInterface $container): ContainerInterface
     {
         $container->set(static::FF_SNIPEPT_ENABLED, function () {
             $recoTransfer = $this->getFactory()->getRecommendationsStorageClient()->getIsFfSnippetEnabled(new RecoTransfer());
-            $customer = $this->getFactory()->getCustomerClient()->getCustomer();
-            if ($customer !== null) {
-                $recoTransfer->setCustomer($customer);
-                // $recoTransfer = $this->getFactory()->getRecommendationsClient()->getExistingRecoData($recoTransfer);
-            }
 
-            return $recoTransfer->getRecommendationsFfSnippetEnabled() . $recoTransfer->getData();
+            return $recoTransfer->getRecommendationsFfSnippetEnabled();
+        });
+
+        return $container;
+    }
+
+    /**
+     * @param \Spryker\Service\Container\ContainerInterface $container
+     *
+     * @return \Spryker\Service\Container\ContainerInterface
+     */
+    protected function getCustomerRecoData(ContainerInterface $container): ContainerInterface
+    {
+        $container->set(static::CUSTOMER_USER_RECO_DATA, function () {
+            $customerRecoData = $this->getFactory()->getSessionClient()->get('recoData');
+
+            return $customerRecoData;
         });
 
         return $container;

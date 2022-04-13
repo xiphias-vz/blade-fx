@@ -1,8 +1,8 @@
 <?php
 
 /**
- * Copyright © 2016-present Spryker Systems GmbH. All rights reserved.
- * Use of this software requires acceptance of the Evaluation License Agreement. See LICENSE file.
+ * This file is part of the Spryker Commerce OS.
+ * For full license information, please view the LICENSE file that was distributed with this source code.
  */
 
 namespace Pyz\Zed\Recommendations\Persistence;
@@ -12,7 +12,7 @@ use Generated\Shared\Transfer\ScenarioTransfer;
 use Spryker\Zed\Kernel\Persistence\AbstractRepository;
 
 /**
- * @method RecommendationsPersistenceFactory getFactory()
+ * @method \Pyz\Zed\Recommendations\Persistence\RecommendationsPersistenceFactory getFactory()
  */
 class RecommendationsRepository extends AbstractRepository implements RecommendationsRepositoryInterface
 {
@@ -21,7 +21,7 @@ class RecommendationsRepository extends AbstractRepository implements Recommenda
     /**
      * @param int $idRecommendationsScenario
      *
-     * @return ScenarioTransfer|null
+     * @return \Generated\Shared\Transfer\ScenarioTransfer|null
      */
     public function findScenario(int $idRecommendationsScenario): ?ScenarioTransfer
     {
@@ -42,7 +42,7 @@ class RecommendationsRepository extends AbstractRepository implements Recommenda
     }
 
     /**
-     * @return ScenarioTransfer|null
+     * @return \Generated\Shared\Transfer\ScenarioTransfer|null
      */
     public function getRecommendationsDefinition(): ?RecommendationDefinitionTransfer
     {

@@ -10,12 +10,13 @@ namespace Pyz\Yves\Recommendations;
 use Pyz\Client\Customer\CustomerClientInterface;
 use Pyz\Client\Recommendations\RecommendationsClientInterface;
 use Pyz\Client\RecommendationsStorage\RecommendationsStorageClientInterface;
+use Spryker\Client\Session\SessionClientInterface;
 use Spryker\Yves\Kernel\AbstractFactory;
 
 class RecommendationsFactory extends AbstractFactory
 {
     /**
-     * @return RecommendationsStorageClientInterface
+     * @return \Pyz\Client\RecommendationsStorage\RecommendationsStorageClientInterface
      */
     public function getRecommendationsStorageClient(): RecommendationsStorageClientInterface
     {
@@ -23,7 +24,7 @@ class RecommendationsFactory extends AbstractFactory
     }
 
     /**
-     * @return RecommendationsClientInterface
+     * @return \Pyz\Client\Recommendations\RecommendationsClientInterface
      */
     public function getRecommendationsClient(): RecommendationsClientInterface
     {
@@ -31,10 +32,18 @@ class RecommendationsFactory extends AbstractFactory
     }
 
     /**
-     * @return CustomerClientInterface
+     * @return \Pyz\Client\Customer\CustomerClientInterface
      */
     public function getCustomerClient(): CustomerClientInterface
     {
         return $this->getProvidedDependency(RecommendationsDependencyProvider::CLIENT_CUSTOMER);
+    }
+
+    /**
+     * @return \Spryker\Client\Session\SessionClientInterface
+     */
+    public function getSessionClient(): SessionClientInterface
+    {
+        return $this->getProvidedDependency(RecommendationsDependencyProvider::CLIENT_SESSION);
     }
 }

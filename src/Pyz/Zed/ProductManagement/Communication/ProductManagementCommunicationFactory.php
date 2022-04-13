@@ -16,9 +16,6 @@ use Pyz\Zed\ProductManagement\ProductManagementDependencyProvider;
 use Pyz\Zed\User\Business\UserFacadeInterface;
 use Spryker\Zed\Acl\Business\AclFacadeInterface;
 use Spryker\Zed\ProductManagement\Communication\ProductManagementCommunicationFactory as SpyProductManagementCommunicationFactory;
-use Spryker\Zed\ProductManagement\Dependency\Facade\ProductManagementToProductInterface;
-use Spryker\Zed\ProductManagement\Persistence\ProductManagementRepository;
-use Spryker\Zed\ProductManagement\Persistence\ProductManagementRepositoryInterface;
 
 class ProductManagementCommunicationFactory extends SpyProductManagementCommunicationFactory
 {

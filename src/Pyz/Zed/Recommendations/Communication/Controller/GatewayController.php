@@ -1,23 +1,23 @@
 <?php
 
 /**
- * Copyright © 2016-present Spryker Systems GmbH. All rights reserved.
- * Use of this software requires acceptance of the Evaluation License Agreement. See LICENSE file.
+ * This file is part of the Spryker Commerce OS.
+ * For full license information, please view the LICENSE file that was distributed with this source code.
  */
 
 namespace Pyz\Zed\Recommendations\Communication\Controller;
 
 use Generated\Shared\Transfer\RecoTransfer;
-use Pyz\Zed\Recommendations\Business\RecommendationsFacadeInterface;
+use Generated\Shared\Transfer\ScenarioTransfer;
 use Spryker\Zed\Kernel\Communication\Controller\AbstractGatewayController;
 
 /**
- * @method RecommendationsFacadeInterface getFacade()
+ * @method \Pyz\Zed\Recommendations\Business\RecommendationsFacadeInterface getFacade()
  */
 class GatewayController extends AbstractGatewayController
 {
     /**
-     * @param RecoTransfer|null $recoTransfer
+     * @param \Generated\Shared\Transfer\RecoTransfer $recoTransfer
      *
      * @return mixed
      */
@@ -28,9 +28,9 @@ class GatewayController extends AbstractGatewayController
     }
 
     /**
-     * @param RecoTransfer $recoTransfer
+     * @param \Generated\Shared\Transfer\RecoTransfer $recoTransfer
      *
-     * @return RecoTransfer
+     * @return \Generated\Shared\Transfer\RecoTransfer
      */
     public function clearRecoDataAction(RecoTransfer $recoTransfer): RecoTransfer
     {
@@ -39,13 +39,24 @@ class GatewayController extends AbstractGatewayController
     }
 
     /**
-     * @param RecoTransfer $recoTransfer
+     * @param \Generated\Shared\Transfer\RecoTransfer $recoTransfer
      *
-     * @return RecoTransfer
+     * @return \Generated\Shared\Transfer\RecoTransfer
      */
     public function getExistingRecoData(RecoTransfer $recoTransfer): RecoTransfer
     {
         return $this->getFacade()
             ->getExistingRecoData($recoTransfer);
+    }
+
+    /**
+     * @param \Generated\Shared\Transfer\ScenarioTransfer $scenarioTransfer
+     *
+     * @return \Generated\Shared\Transfer\ScenarioTransfer
+     */
+    public function getActiveScenarioName(ScenarioTransfer $scenarioTransfer): ScenarioTransfer
+    {
+        return $this->getFacade()
+            ->getActiveScenarioName($scenarioTransfer);
     }
 }

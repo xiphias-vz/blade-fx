@@ -185,13 +185,20 @@ document.addEventListener("ffReady", function (event) {
     });
 
     let isFfSnippetEnabled = document.querySelector('#ffSnippetEnabled');
-    // const arrayOfRecommendedItems = document.querySelector('#arrayOfRecommendedItems');
-    const arrayOfRecommendedItems = [`4001432058030`, `4001432058040`];
+    let isUserLoggedIn = document.querySelector('#isUserLoggedIn');
+    let customerRecoData = document.querySelector('#customerUserRecoData');
+    let arrayOfRecommendedItems = [];
+
+    if (customerRecoData !== null && customerRecoData !== undefined && customerRecoData.value.length > 0) {
+        arrayOfRecommendedItems = JSON.parse(customerRecoData.value);
+    }
+
     if (isFfSnippetEnabled !== null && isFfSnippetEnabled !== undefined) {
-        if(isFfSnippetEnabled.value === '1') {
-            // console.log("FF SNIPPET JE ENABLED");
+        if(isFfSnippetEnabled.value === '1'
+        && isUserLoggedIn.value === "true"
+        && arrayOfRecommendedItems['ResultObjectId'] !== undefined) {
             factfinder.communication.EventAggregator.addBeforeDispatchingCallback(e => {
-                e.pushedArticleIds = arrayOfRecommendedItems;
+                e.pushedArticleIds = arrayOfRecommendedItems['ResultObjectId'];
             });
 
             factfinder.communication.EventAggregator.addBeforeHistoryPushCallback((result, event, url) => {
@@ -201,8 +208,6 @@ document.addEventListener("ffReady", function (event) {
                     return false;
                 }
             );
-        } else {
-            // console.log("NIje enabled FF snippet!!");
         }
     }
 

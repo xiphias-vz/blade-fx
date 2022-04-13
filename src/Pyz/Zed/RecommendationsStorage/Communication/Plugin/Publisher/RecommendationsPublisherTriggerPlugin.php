@@ -1,8 +1,8 @@
 <?php
 
 /**
- * Copyright © 2016-present Spryker Systems GmbH. All rights reserved.
- * Use of this software requires acceptance of the Spryker Marketplace License Agreement. See LICENSE file.
+ * This file is part of the Spryker Commerce OS.
+ * For full license information, please view the LICENSE file that was distributed with this source code.
  */
 
 namespace Pyz\Zed\RecommendationsStorage\Communication\Plugin\Publisher;
@@ -14,12 +14,19 @@ use Pyz\Zed\Recommendations\Dependency\RecommendationsEvents;
 use Spryker\Zed\Kernel\Communication\AbstractPlugin;
 use Spryker\Zed\PublisherExtension\Dependency\Plugin\PublisherTriggerPluginInterface;
 
+/**
+ * @method \Pyz\Zed\RecommendationsStorage\Communication\RecommendationsStorageCommunicationFactory getFactory()
+ * @method \Pyz\Zed\RecommendationsStorage\Business\RecommendationsStorageFacadeInterface getFacade()
+ * @method \Pyz\Zed\RecommendationsStorage\RecommendationsStorageConfig getConfig()
+ * @method \Pyz\Zed\RecommendationsStorage\Persistence\RecommendationsStorageQueryContainerInterface getQueryContainer()
+ */
 class RecommendationsPublisherTriggerPlugin extends AbstractPlugin implements PublisherTriggerPluginInterface
 {
     /**
      * @param int $offset
      * @param int $limit
-     * @return array|\Spryker\Shared\Kernel\Transfer\AbstractTransfer[]
+     *
+     * @return \Spryker\Shared\Kernel\Transfer\AbstractTransfer[]
      */
     public function getData(int $offset, int $limit): array
     {
@@ -28,7 +35,7 @@ class RecommendationsPublisherTriggerPlugin extends AbstractPlugin implements Pu
             ->getAllStores();
 
         $eventEntityTransfers = [];
-        foreach($stores as $store) {
+        foreach ($stores as $store) {
             $eventEntityTransfers[] = (new EventEntityTransfer())->setAdditionalValues([
                 'storeId' => $store->getIdStore(),
                 'store' => $store->getName(),

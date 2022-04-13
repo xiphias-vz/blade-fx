@@ -1,8 +1,8 @@
 <?php
 
 /**
- * Copyright © 2016-present Spryker Systems GmbH. All rights reserved.
- * Use of this software requires acceptance of the Evaluation License Agreement. See LICENSE file.
+ * This file is part of the Spryker Commerce OS.
+ * For full license information, please view the LICENSE file that was distributed with this source code.
  */
 
 namespace Pyz\Zed\Recommendations\Business;
@@ -14,25 +14,32 @@ use Generated\Shared\Transfer\ScenarioTransfer;
 interface RecommendationsFacadeInterface
 {
     /**
-     * @param RecoTransfer $recoTransfer
+     * @param \Generated\Shared\Transfer\RecoTransfer $recoTransfer
      *
      * @return mixed
      */
     public function insertRecoData(RecoTransfer $recoTransfer): RecoTransfer;
 
     /**
-     * @param RecoTransfer $recoTransfer
+     * @param \Generated\Shared\Transfer\RecoTransfer $recoTransfer
      *
-     * @return RecoTransfer
+     * @return \Generated\Shared\Transfer\RecoTransfer
      */
     public function clearRecoData(RecoTransfer $recoTransfer): RecoTransfer;
 
     /**
-     * @param RecoTransfer $recoTransfer
+     * @param \Generated\Shared\Transfer\RecoTransfer $recoTransfer
      *
-     * @return RecoTransfer
+     * @return \Generated\Shared\Transfer\RecoTransfer
      */
     public function getExistingRecoData(RecoTransfer $recoTransfer): RecoTransfer;
+
+    /**
+     * @param \Generated\Shared\Transfer\ScenarioTransfer $scenarioTransfer
+     *
+     * @return \Generated\Shared\Transfer\ScenarioTransfer
+     */
+    public function getActiveScenarioName(ScenarioTransfer $scenarioTransfer): ScenarioTransfer;
 
     /**
      * @return array
@@ -40,28 +47,28 @@ interface RecommendationsFacadeInterface
     public function getRecommendationsAvailableTypes(): array;
 
     /**
-     * @param RecoTransfer $recoTransfer
+     * @param \Generated\Shared\Transfer\RecoTransfer $recoTransfer
      *
-     * @return RecoTransfer
+     * @return \Generated\Shared\Transfer\RecoTransfer
      */
     public function getRedisKeys(RecoTransfer $recoTransfer): RecoTransfer;
 
     /**
-     * @param ScenarioTransfer $scenarioTransfer
+     * @param \Generated\Shared\Transfer\ScenarioTransfer $scenarioTransfer
      *
-     * @return ScenarioTransfer
+     * @return \Generated\Shared\Transfer\ScenarioTransfer
      */
     public function createScenario(ScenarioTransfer $scenarioTransfer): ScenarioTransfer;
 
     /**
      * @param int $idRecommendationsScenario
      *
-     * @return ScenarioTransfer
+     * @return \Generated\Shared\Transfer\ScenarioTransfer|null
      */
     public function findScenario(int $idRecommendationsScenario): ?ScenarioTransfer;
 
     /**
-     * @param ScenarioTransfer $scenarioTransfer
+     * @param \Generated\Shared\Transfer\ScenarioTransfer $scenarioTransfer
      *
      * @return int
      */
@@ -73,7 +80,6 @@ interface RecommendationsFacadeInterface
      * @return void
      */
     public function deleteScenario($id): void;
-
 
     public function getRecommendationsDefinition();
 

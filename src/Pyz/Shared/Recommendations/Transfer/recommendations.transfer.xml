@@ -17,6 +17,7 @@
         <property name="idRecommendationScenarios" type="int"/>
         <property name="scenarioId" type="string"/>
         <property name="hashId" type="string" />
+        <property name="active" type="bool" />
     </transfer>
 
     <transfer name="RecommendationDefinition">

@@ -32,6 +32,7 @@
         <property name="paybackNumber" type="string"/>
         <property name="isConnected" type="bool" />
         <property name="isAccountConnected" type="bool" />
+        <property name="recoData" type="string" />
     </transfer>
 
     <transfer name="CustomerAddressResponse">

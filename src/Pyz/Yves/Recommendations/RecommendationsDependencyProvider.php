@@ -16,11 +16,12 @@ class RecommendationsDependencyProvider extends AbstractBundleDependencyProvider
     public const CLIENT_RECOMMENDATIONS_STORAGE = 'CLIENT_RECOMMENDATIONS_STORAGE';
 
     public const CLIENT_CUSTOMER = 'CLIENT_CUSTOMER';
+    public const CLIENT_SESSION = 'CLIENT_SESSION';
 
     /**
-     * @param Container $container
+     * @param \Spryker\Yves\Kernel\Container $container
      *
-     * @return Container
+     * @return \Spryker\Yves\Kernel\Container
      */
     public function provideDependencies(Container $container)
     {
@@ -28,14 +29,15 @@ class RecommendationsDependencyProvider extends AbstractBundleDependencyProvider
         $container = $this->addRecommendationsStorageClient($container);
         $container = $this->addRecommendationsClient($container);
         $container = $this->addCustomerClient($container);
+        $container = $this->addSessionClient($container);
 
         return $container;
     }
 
     /**
-     * @param Container $container
+     * @param \Spryker\Yves\Kernel\Container $container
      *
-     * @return Container
+     * @return \Spryker\Yves\Kernel\Container
      */
     protected function addRecommendationsStorageClient(Container $container): Container
     {
@@ -47,9 +49,9 @@ class RecommendationsDependencyProvider extends AbstractBundleDependencyProvider
     }
 
     /**
-     * @param Container $container
+     * @param \Spryker\Yves\Kernel\Container $container
      *
-     * @return Container
+     * @return \Spryker\Yves\Kernel\Container
      */
     protected function addRecommendationsClient(Container $container): Container
     {
@@ -61,14 +63,28 @@ class RecommendationsDependencyProvider extends AbstractBundleDependencyProvider
     }
 
     /**
-     * @param Container $container
+     * @param \Spryker\Yves\Kernel\Container $container
      *
-     * @return Container
+     * @return \Spryker\Yves\Kernel\Container
      */
     protected function addCustomerClient(Container $container): Container
     {
         $container->set(static::CLIENT_CUSTOMER, function (Container $container) {
             return $container->getLocator()->customer()->client();
+        });
+
+        return $container;
+    }
+
+    /**
+     * @param \Spryker\Yves\Kernel\Container $container
+     *
+     * @return \Spryker\Yves\Kernel\Container
+     */
+    protected function addSessionClient(Container $container): Container
+    {
+        $container->set(self::CLIENT_SESSION, function (Container $container) {
+            return $container->getLocator()->session()->client();
         });
 
         return $container;

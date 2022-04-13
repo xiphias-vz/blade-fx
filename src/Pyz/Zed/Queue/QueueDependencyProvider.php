@@ -70,7 +70,7 @@ class QueueDependencyProvider extends SprykerDependencyProvider
             MerchantStorageConfig::MERCHANT_SYNC_STORAGE_QUEUE => new SynchronizationStorageQueueMessageProcessorPlugin(),
             ShipmentStorageConfig::SHIPMENT_SYNC_STORAGE_QUEUE => new SynchronizationStorageQueueMessageProcessorPlugin(),
             MerchantSearchConfig::SYNC_SEARCH_MERCHANT => new SynchronizationSearchQueueMessageProcessorPlugin(),
-            RecommendationsStorageConfig::RECOMMENDATIONS_SYNC_STORAGE_QUEUE => new SynchronizationStorageQueueMessageProcessorPlugin()
+            RecommendationsStorageConfig::RECOMMENDATIONS_SYNC_STORAGE_QUEUE => new SynchronizationStorageQueueMessageProcessorPlugin(),
         ];
     }
 }

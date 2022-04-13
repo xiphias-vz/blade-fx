@@ -8,14 +8,11 @@
 namespace Pyz\Yves\CustomerPage;
 
 use Generated\Shared\Transfer\PdfParametersTransfer;
-use Generated\Shared\Transfer\RecoTransfer;
 use Pyz\Client\Customer\CustomerClientInterface;
 use Pyz\Client\MerchantSearch\MerchantSearchClientInterface;
 use Pyz\Client\OrderDetail\OrderDetailClientInterface;
 use Pyz\Client\Pdf\PdfClientInterface;
 use Pyz\Client\Recommendations\RecommendationsClientInterface;
-use Pyz\Client\Recommendations\RecommendationsDependencyProvider;
-use Pyz\Client\RecommendationsStorage\RecommendationsStorageClient;
 use Pyz\Client\RecommendationsStorage\RecommendationsStorageClientInterface;
 use Pyz\Client\SalesOrderActions\SalesOrderActionsClientInterface;
 use Pyz\Service\DataDog\DataDogServiceInterface;
@@ -37,8 +34,6 @@ use Pyz\Yves\GlobusRestApiClient\Provider\GlobusRestApiRecommendations;
 use Pyz\Yves\MerchantSwitcherWidget\Plugin\SelectedMerchantCookiePlugin;
 use Pyz\Yves\MerchantSwitcherWidget\Resolver\ShopContextResolver;
 use Spryker\Client\Session\SessionClientInterface;
-use Spryker\Service\UtilEncoding\Model\Json;
-use Spryker\Service\UtilEncoding\Model\JsonInterface;
 use Spryker\Yves\Messenger\FlashMessenger\FlashMessengerInterface;
 use SprykerShop\Yves\CustomerPage\Authenticator\CustomerAuthenticatorInterface;
 use SprykerShop\Yves\CustomerPage\CustomerPageFactory as SprykerShopCustomerPageFactory;
@@ -95,7 +90,7 @@ class CustomerPageFactory extends SprykerShopCustomerPageFactory
     }
 
     /**
-     * @return RecommendationsClientInterface
+     * @return \Pyz\Client\Recommendations\RecommendationsClientInterface
      */
     public function getRecommendationsClient(): RecommendationsClientInterface
     {
@@ -298,7 +293,7 @@ class CustomerPageFactory extends SprykerShopCustomerPageFactory
     }
 
     /**
-     * @return RecommendationsMapperInterface
+     * @return \Pyz\Yves\CustomerPage\Processor\Mapper\RecommendationsMapperInterface
      */
     public function createRecommendationsMapper(): RecommendationsMapperInterface
     {
@@ -306,7 +301,7 @@ class CustomerPageFactory extends SprykerShopCustomerPageFactory
     }
 
     /**
-     * @return GlobusRestApiRecommendations
+     * @return \Pyz\Yves\GlobusRestApiClient\Provider\GlobusRestApiRecommendations
      */
     public function createGlobusRestApiRecommendations(): GlobusRestApiRecommendations
     {
@@ -314,7 +309,7 @@ class CustomerPageFactory extends SprykerShopCustomerPageFactory
     }
 
     /**
-     * @return RecommendationsStorageClientInterface
+     * @return \Pyz\Client\RecommendationsStorage\RecommendationsStorageClientInterface
      */
     public function getStorageClient(): RecommendationsStorageClientInterface
     {

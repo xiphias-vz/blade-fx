@@ -8,27 +8,35 @@
 namespace Pyz\Client\Recommendations;
 
 use Generated\Shared\Transfer\RecoTransfer;
+use Generated\Shared\Transfer\ScenarioTransfer;
 
 interface RecommendationsClientInterface
 {
     /**
-     * @param RecoTransfer $recoTransfer
+     * @param \Generated\Shared\Transfer\RecoTransfer $recoTransfer
      *
      * @return mixed
      */
     public function insertRecoData(RecoTransfer $recoTransfer): RecoTransfer;
 
     /**
-     * @param RecoTransfer $recoTransfer
+     * @param \Generated\Shared\Transfer\RecoTransfer $recoTransfer
      *
      * @return mixed
      */
     public function clearRecoData(RecoTransfer $recoTransfer): RecoTransfer;
 
     /**
-     * @param RecoTransfer $recoTransfer
+     * @param \Generated\Shared\Transfer\RecoTransfer $recoTransfer
      *
-     * @return RecoTransfer
+     * @return \Generated\Shared\Transfer\RecoTransfer
      */
     public function getExistingRecoData(RecoTransfer $recoTransfer): RecoTransfer;
+
+    /**
+     * @param \Generated\Shared\Transfer\ScenarioTransfer $scenarioTransfer
+     *
+     * @return string
+     */
+    public function getActiveScenarioName(ScenarioTransfer $scenarioTransfer): ScenarioTransfer;
 }

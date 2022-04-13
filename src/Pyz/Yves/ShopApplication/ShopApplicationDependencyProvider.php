@@ -163,7 +163,7 @@ class ShopApplicationDependencyProvider extends SprykerShopApplicationDependency
             new CurrentStoreCookieCheckApplicationPlugin(),
             new CurrentCodeBucketApplicationPlugin(),
             new FactFinderWebComponentsApplicationPlugin(),
-            new RecommendationsApplicationPlugin()
+            new RecommendationsApplicationPlugin(),
         ];
 
         if (class_exists(WebProfilerApplicationPlugin::class)) {

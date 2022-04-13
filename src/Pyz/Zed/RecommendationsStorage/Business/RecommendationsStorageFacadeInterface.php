@@ -1,20 +1,18 @@
 <?php
 
-namespace Pyz\Zed\RecommendationsStorage\Business;
+/**
+ * This file is part of the Spryker Commerce OS.
+ * For full license information, please view the LICENSE file that was distributed with this source code.
+ */
 
-use Generated\Shared\Transfer\EventEntityTransfer;
+namespace Pyz\Zed\RecommendationsStorage\Business;
 
 interface RecommendationsStorageFacadeInterface
 {
     /**
-     * @param EventEntityTransfer[] $eventTransfers
+     * @param \Generated\Shared\Transfer\EventEntityTransfer[] $eventTransfers
      *
      * @return void
      */
     public function publish(array $eventTransfers): void;
-
-    /**
-     * @return void
-     */
-    public function synchronizeMerchantToStorage(): void;
 }

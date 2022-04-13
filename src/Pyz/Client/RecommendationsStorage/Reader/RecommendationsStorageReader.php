@@ -17,17 +17,17 @@ class RecommendationsStorageReader implements RecommendationsStorageReaderInterf
     private const RECOMMENDATIONS_ENABLED = 'recommendations:';
 
     /**
-     * @var StorageClientInterface
+     * @var \Spryker\Client\Storage\StorageClientInterface
      */
     protected $storageClient;
 
     /**
-     * @var StoreClientInterface
+     * @var \Spryker\Client\Store\StoreClientInterface
      */
     protected $storeClient;
 
     /**
-     * @param StorageClientInterface $storageClient
+     * @param \Spryker\Client\Storage\StorageClientInterface $storageClient
      */
     public function __construct(StorageClientInterface $storageClient, StoreClientInterface $storeClient)
     {
@@ -36,7 +36,7 @@ class RecommendationsStorageReader implements RecommendationsStorageReaderInterf
     }
 
     /**
-     * @param TransferInterface $recommendationsTransfer
+     * @param \Spryker\Shared\Kernel\Transfer\TransferInterface $recommendationsTransfer
      *
      * @return mixed|void
      */
@@ -50,15 +50,13 @@ class RecommendationsStorageReader implements RecommendationsStorageReaderInterf
     }
 
     /**
-     * @param RecoTransfer $recoTransfer
+     * @param \Generated\Shared\Transfer\RecoTransfer $recoTransfer
      *
-     * @return RecoTransfer
+     * @return \Generated\Shared\Transfer\RecoTransfer
      */
     public function getIsRecommendationsEnabled(RecoTransfer $recoTransfer): RecoTransfer
     {
-        $store = $this->storeClient->getCurrentStore();
-        $storeShortName = strtolower($store->getName());
-        $result = $this->storageClient->get(self::RECOMMENDATIONS_ENABLED . $storeShortName);
+        $result = $this->storageClient->get($this->getRedisKeyNameForRecommendations());
 
         if (is_array($result)) {
             $result = $result[0];
@@ -72,15 +70,13 @@ class RecommendationsStorageReader implements RecommendationsStorageReaderInterf
     }
 
     /**
-     * @param RecoTransfer $recoTransfer
+     * @param \Generated\Shared\Transfer\RecoTransfer $recoTransfer
      *
-     * @return RecoTransfer
+     * @return \Generated\Shared\Transfer\RecoTransfer
      */
     public function getIsFfSnippetEnabled(RecoTransfer $recoTransfer): RecoTransfer
     {
-        $store = $this->storeClient->getCurrentStore();
-        $storeShortName = strtolower($store->getName());
-        $result = $this->storageClient->get(self::RECOMMENDATIONS_ENABLED . $storeShortName);
+        $result = $this->storageClient->get($this->getRedisKeyNameForRecommendations());
 
         if (is_array($result)) {
             $result = $result[0];
@@ -91,5 +87,16 @@ class RecommendationsStorageReader implements RecommendationsStorageReaderInterf
         }
 
         return $recoTransfer;
+    }
+
+    /**
+     * @return string
+     */
+    protected function getRedisKeyNameForRecommendations(): string
+    {
+        $store = $this->storeClient->getCurrentStore();
+        $storeShortName = strtolower($store->getName());
+
+        return self::RECOMMENDATIONS_ENABLED . $storeShortName;
     }
 }

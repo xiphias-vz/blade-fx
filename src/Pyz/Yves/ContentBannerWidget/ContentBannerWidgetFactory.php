@@ -17,7 +17,7 @@ class ContentBannerWidgetFactory extends SprykerContentBannerWidgetFactory
      * @param \Twig\Environment $twig
      * @param string $localeName
      *
-     * @return TwigFunction
+     * @return \Twig\TwigFunction
      */
     public function createContentBannerTwigFunction(Environment $twig, string $localeName): TwigFunction
     {

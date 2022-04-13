@@ -7,6 +7,7 @@
 
 namespace Pyz\Zed\Application;
 
+use Pyz\Yves\Recommendations\Plugin\Application\RecommendationsApplicationPlugin;
 use Pyz\Zed\CodeBucketPlugin\Plugin\Application\CurrentCodeBucketApplicationPlugin;
 use Spryker\Zed\Application\ApplicationDependencyProvider as SprykerApplicationDependencyProvider;
 use Spryker\Zed\ErrorHandler\Communication\Plugin\Application\ErrorHandlerApplicationPlugin;
@@ -44,6 +45,7 @@ class ApplicationDependencyProvider extends SprykerApplicationDependencyProvider
             new FormApplicationPlugin(),
             new ValidatorApplicationPlugin(),
             new CurrentCodeBucketApplicationPlugin(),
+            new RecommendationsApplicationPlugin(),
         ];
 
         if (class_exists(WebProfilerApplicationPlugin::class)) {

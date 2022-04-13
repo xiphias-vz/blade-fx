@@ -1,33 +1,32 @@
 <?php
 
 /**
- * Copyright © 2016-present Spryker Systems GmbH. All rights reserved.
- * Use of this software requires acceptance of the Evaluation License Agreement. See LICENSE file.
+ * This file is part of the Spryker Commerce OS.
+ * For full license information, please view the LICENSE file that was distributed with this source code.
  */
 
 namespace Pyz\Zed\Recommendations\Communication\Table;
 
-use Pyz\Zed\Recommendations\Communication\RecommendationsCommunicationFactory;
-use Spryker\Service\UtilText\Model\Url\Url;
 use Orm\Zed\Recommendations\Persistence\Map\PyzRecommendationScenariosTableMap;
 use Pyz\Zed\Gui\Communication\Table\AbstractTable;
 use Pyz\Zed\Recommendations\Persistence\RecommendationsQueryContainerInterface;
+use Spryker\Service\UtilText\Model\Url\Url;
 use Spryker\Zed\Gui\Communication\Table\TableConfiguration;
 
 /**
- * @method RecommendationsCommunicationFactory getFactory()
+ * @method \Pyz\Zed\Recommendations\Communication\RecommendationsCommunicationFactory getFactory()
  */
 class ScenariosTable extends AbstractTable
 {
     public const COL_ACTIONS = 'actions';
 
     /**
-     * @var RecommendationsQueryContainerInterface
+     * @var \Pyz\Zed\Recommendations\Persistence\RecommendationsQueryContainerInterface
      */
     protected $recommendationsQueryContainer;
 
     /**
-     * @param RecommendationsQueryContainerInterface $recommendationsQueryContainer
+     * @param \Pyz\Zed\Recommendations\Persistence\RecommendationsQueryContainerInterface $recommendationsQueryContainer
      */
     public function __construct(RecommendationsQueryContainerInterface $recommendationsQueryContainer)
     {
@@ -35,17 +34,17 @@ class ScenariosTable extends AbstractTable
     }
 
     /**
-     * @param TableConfiguration $config
+     * @param \Spryker\Zed\Gui\Communication\Table\TableConfiguration $config
      *
-     * @return TableConfiguration
+     * @return \Spryker\Zed\Gui\Communication\Table\TableConfiguration
      */
     protected function configure(TableConfiguration $config): TableConfiguration
     {
         $config->setHeader([
             PyzRecommendationScenariosTableMap::COL_ID_RECOMMENDATION_SCENARIOS => 'Scenario ID',
             PyzRecommendationScenariosTableMap::COL_SCENARIO_ID => 'Scenario Name',
-            PyzRecommendationScenariosTableMap::COL_HASH_ID => 'Hash ID',
-            static::COL_ACTIONS => 'actions'
+            PyzRecommendationScenariosTableMap::COL_ACTIVE => 'Status',
+            static::COL_ACTIONS => 'actions',
         ]);
 
         $config->setRawColumns([
@@ -53,20 +52,20 @@ class ScenariosTable extends AbstractTable
         ]);
 
         $config->setSearchable([
-            PyzRecommendationScenariosTableMap::COL_SCENARIO_ID
+            PyzRecommendationScenariosTableMap::COL_SCENARIO_ID,
         ]);
 
         $config->setSortable([
             PyzRecommendationScenariosTableMap::COL_ID_RECOMMENDATION_SCENARIOS,
             PyzRecommendationScenariosTableMap::COL_SCENARIO_ID,
-            PyzRecommendationScenariosTableMap::COL_HASH_ID,
+            PyzRecommendationScenariosTableMap::COL_ACTIVE,
         ]);
 
         return $config;
     }
 
     /**
-     * @param TableConfiguration $config
+     * @param \Spryker\Zed\Gui\Communication\Table\TableConfiguration $config
      *
      * @return array
      */
@@ -79,12 +78,11 @@ class ScenariosTable extends AbstractTable
         $queryResult = $this->runQuery($query, $config);
 
         $scenariosCollection = [];
-        foreach($queryResult as $item)
-        {
+        foreach ($queryResult as $item) {
             $scenariosCollection[] = [
                 PyzRecommendationScenariosTableMap::COL_ID_RECOMMENDATION_SCENARIOS => $item[PyzRecommendationScenariosTableMap::COL_ID_RECOMMENDATION_SCENARIOS],
                 PyzRecommendationScenariosTableMap::COL_SCENARIO_ID => $item[PyzRecommendationScenariosTableMap::COL_SCENARIO_ID],
-                PyzRecommendationScenariosTableMap::COL_HASH_ID => $item[PyzRecommendationScenariosTableMap::COL_HASH_ID],
+                PyzRecommendationScenariosTableMap::COL_ACTIVE => $this->generateStatusLabels($item),
                 static::COL_ACTIONS => implode(' ', $this->createActionColumn($item)),
             ];
         }
@@ -116,5 +114,19 @@ class ScenariosTable extends AbstractTable
         );
 
         return $urls;
+    }
+
+    /**
+     * @param array $item
+     *
+     * @return string
+     */
+    protected function generateStatusLabels(array $item): string
+    {
+        if ($item[PyzRecommendationScenariosTableMap::COL_ACTIVE]) {
+            return $this->generateLabel('Active', 'label-info');
+        }
+
+        return $this->generateLabel('Inactive', 'label-danger');
     }
 }

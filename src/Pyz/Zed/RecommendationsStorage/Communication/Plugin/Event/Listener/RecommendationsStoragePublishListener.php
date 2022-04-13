@@ -7,18 +7,14 @@
 
 namespace Pyz\Zed\RecommendationsStorage\Communication\Plugin\Event\Listener;
 
-use Pyz\Zed\RecommendationsStorage\Business\RecommendationsStorageFacadeInterface;
-use Pyz\Zed\RecommendationsStorage\Communication\RecommendationsStorageCommunicationFactory;
-use Pyz\Zed\RecommendationsStorage\RecommendationsStorageConfig;
 use Spryker\Zed\Event\Dependency\Plugin\EventBulkHandlerInterface;
-use Spryker\Zed\Kernel\Business\AbstractFacade;
-use Spryker\Zed\Kernel\Communication\AbstractCommunicationFactory;
 use Spryker\Zed\Kernel\Communication\AbstractPlugin;
 
 /**
- * @method RecommendationsStorageCommunicationFactory getFactory()
- * @method RecommendationsStorageFacadeInterface getFacade()
- * @method RecommendationsStorageConfig getConfig()
+ * @method \Pyz\Zed\RecommendationsStorage\Communication\RecommendationsStorageCommunicationFactory getFactory()
+ * @method \Pyz\Zed\RecommendationsStorage\Business\RecommendationsStorageFacadeInterface getFacade()
+ * @method \Pyz\Zed\RecommendationsStorage\RecommendationsStorageConfig getConfig()
+ * @method \Pyz\Zed\RecommendationsStorage\Persistence\RecommendationsStorageQueryContainerInterface getQueryContainer()
  */
 class RecommendationsStoragePublishListener extends AbstractPlugin implements EventBulkHandlerInterface
 {

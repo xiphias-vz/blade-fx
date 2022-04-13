@@ -1,8 +1,8 @@
 <?php
 
 /**
- * Copyright © 2016-present Spryker Systems GmbH. All rights reserved.
- * Use of this software requires acceptance of the Evaluation License Agreement. See LICENSE file.
+ * This file is part of the Spryker Commerce OS.
+ * For full license information, please view the LICENSE file that was distributed with this source code.
  */
 
 namespace Pyz\Zed\Recommendations\Persistence;
@@ -15,16 +15,17 @@ use Pyz\Zed\Recommendations\Persistence\Propel\Mapper\ScenarioMapper;
 use Pyz\Zed\Recommendations\Persistence\Propel\Mapper\ScenarioMapperInterface;
 use Pyz\Zed\Recommendations\RecommendationsDependencyProvider;
 use Spryker\Zed\Kernel\Persistence\AbstractPersistenceFactory;
-use SprykerShop\Yves\CustomerPage\Dependency\Client\CustomerPageToCustomerClientBridge;
 use SprykerShop\Yves\CustomerPage\Dependency\Client\CustomerPageToCustomerClientInterface;
 
 /**
- * @method RecommendationsQueryContainerInterface getQueryContainer()
+ * @method \Pyz\Zed\Recommendations\Persistence\RecommendationsQueryContainerInterface getQueryContainer()
+ * @method \Pyz\Zed\Recommendations\Persistence\RecommendationsRepositoryInterface getRepository()
+ * @method \Pyz\Zed\Recommendations\RecommendationsConfig getConfig()
  */
 class RecommendationsPersistenceFactory extends AbstractPersistenceFactory
 {
     /**
-     * @return SpyCustomerQuery
+     * @return \Orm\Zed\Customer\Persistence\SpyCustomerQuery
      */
     public function createSpyCustomerQuery(): SpyCustomerQuery
     {
@@ -32,7 +33,7 @@ class RecommendationsPersistenceFactory extends AbstractPersistenceFactory
     }
 
     /**
-     * @return PyzRecommendationScenariosQuery
+     * @return \Orm\Zed\Recommendations\Persistence\PyzRecommendationScenariosQuery
      */
     public function createPyzRecommendationsScenariosQuery(): PyzRecommendationScenariosQuery
     {
@@ -40,7 +41,7 @@ class RecommendationsPersistenceFactory extends AbstractPersistenceFactory
     }
 
     /**
-     * @return PyzRecommendationDefinitionQuery
+     * @return \Orm\Zed\Recommendations\Persistence\PyzRecommendationDefinitionQuery
      */
     public function createPyzRecommendationsDefinitionQuery(): PyzRecommendationDefinitionQuery
     {
@@ -48,7 +49,7 @@ class RecommendationsPersistenceFactory extends AbstractPersistenceFactory
     }
 
     /**
-     * @return SpyMerchantQuery
+     * @return \Orm\Zed\Merchant\Persistence\SpyMerchantQuery
      */
     public function createSpyMerchantQuery(): SpyMerchantQuery
     {
@@ -56,7 +57,7 @@ class RecommendationsPersistenceFactory extends AbstractPersistenceFactory
     }
 
     /**
-     * @return ScenarioMapperInterface
+     * @return \Pyz\Zed\Recommendations\Persistence\Propel\Mapper\ScenarioMapperInterface
      */
     public function createScenarioMapper(): ScenarioMapperInterface
     {

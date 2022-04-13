@@ -22,7 +22,7 @@ class RecommendationsFactory extends AbstractFactory
     }
 
     /**
-     * @return RecommendationsStubInterface
+     * @return \Pyz\Client\Recommendations\Zed\RecommendationsStubInterface
      */
     public function createZedStub(): RecommendationsStubInterface
     {

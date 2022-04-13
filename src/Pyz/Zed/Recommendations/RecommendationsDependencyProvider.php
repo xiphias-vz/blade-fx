@@ -22,9 +22,9 @@ class RecommendationsDependencyProvider extends AbstractBundleDependencyProvider
     public const QUERY_CONTAINER_RECOMMENDATIONS = 'QUERY_CONTAINER_RECOMMENDATIONS';
 
     /**
-     * @param Container $container
+     * @param \Spryker\Zed\Kernel\Container $container
      *
-     * @return Container
+     * @return \Spryker\Zed\Kernel\Container
      */
     public function providePersistenceLayerDependencies(Container $container): Container
     {
@@ -36,9 +36,9 @@ class RecommendationsDependencyProvider extends AbstractBundleDependencyProvider
     }
 
     /**
-     * @param Container $container
+     * @param \Spryker\Zed\Kernel\Container $container
      *
-     * @return Container
+     * @return \Spryker\Zed\Kernel\Container
      */
     public function provideCommunicationLayerDependencies(Container $container): Container
     {
@@ -47,14 +47,13 @@ class RecommendationsDependencyProvider extends AbstractBundleDependencyProvider
         $container = $this->addRecommendationsQueryContainer($container);
         $container = $this->addRecommendationsFacade($container);
 
-
         return $container;
     }
 
     /**
-     * @param Container $container
+     * @param \Spryker\Zed\Kernel\Container $container
      *
-     * @return Container
+     * @return \Spryker\Zed\Kernel\Container
      */
     public function provideBusinessLayerDependencies(Container $container)
     {
@@ -62,18 +61,17 @@ class RecommendationsDependencyProvider extends AbstractBundleDependencyProvider
         $container = $this->addEventFacade($container);
         $container = $this->addStoreFacade($container);
 
-
         return $container;
     }
 
     /**
-     * @param Container $container
+     * @param \Spryker\Zed\Kernel\Container $container
      *
-     * @return Container
+     * @return \Spryker\Zed\Kernel\Container
      */
     protected function addCustomerClient(Container $container): Container
     {
-        $container->set(static::CUSTOMER_CLIENT, function(Container $container) {
+        $container->set(static::CUSTOMER_CLIENT, function (Container $container) {
             return new CustomerPageToCustomerClientBridge($container->getLocator()->customer()->client());
         });
 
@@ -81,9 +79,9 @@ class RecommendationsDependencyProvider extends AbstractBundleDependencyProvider
     }
 
     /**
-     * @param Container $container
+     * @param \Spryker\Zed\Kernel\Container $container
      *
-     * @return Container
+     * @return \Spryker\Zed\Kernel\Container
      */
     protected function addRecommendationsQueryContainer(Container $container): Container
     {
@@ -95,13 +93,13 @@ class RecommendationsDependencyProvider extends AbstractBundleDependencyProvider
     }
 
     /**
-     * @param Container $container
+     * @param \Spryker\Zed\Kernel\Container $container
      *
-     * @return Container
+     * @return \Spryker\Zed\Kernel\Container
      */
     protected function addRecommendationsFacade(Container $container): Container
     {
-        $container->set(static::RECOMMENDATIONS_FACADE, function(Container $container) {
+        $container->set(static::RECOMMENDATIONS_FACADE, function (Container $container) {
             return $container->getLocator()->recommendations()->facade();
         });
 
@@ -135,5 +133,4 @@ class RecommendationsDependencyProvider extends AbstractBundleDependencyProvider
 
         return $container;
     }
-
 }

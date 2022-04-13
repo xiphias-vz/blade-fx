@@ -1,8 +1,8 @@
 <?php
 
 /**
- * Copyright © 2016-present Spryker Systems GmbH. All rights reserved.
- * Use of this software requires acceptance of the Evaluation License Agreement. See LICENSE file.
+ * This file is part of the Spryker Commerce OS.
+ * For full license information, please view the LICENSE file that was distributed with this source code.
  */
 
 namespace Pyz\Zed\Recommendations\Business;
@@ -11,16 +11,16 @@ use Generated\Shared\Transfer\RecommendationDefinitionTransfer;
 use Generated\Shared\Transfer\RecoTransfer;
 use Generated\Shared\Transfer\ScenarioTransfer;
 use Pyz\Zed\Recommendations\Persistence\RecommendationsQueryContainer;
-use Pyz\Zed\Recommendations\RecommendationsConfig;
 use Spryker\Zed\Kernel\Business\AbstractFacade;
 
 /**
- * @method RecommendationsBusinessFactory getFactory()
+ * @method \Pyz\Zed\Recommendations\Business\RecommendationsBusinessFactory getFactory()
+ * @method \Pyz\Zed\Recommendations\Persistence\RecommendationsRepositoryInterface getRepository()
  */
 class RecommendationsFacade extends AbstractFacade implements RecommendationsFacadeInterface
 {
     /**
-     * @param RecoTransfer $recoTransfer
+     * @param \Generated\Shared\Transfer\RecoTransfer $recoTransfer
      *
      * @return mixed
      */
@@ -32,9 +32,9 @@ class RecommendationsFacade extends AbstractFacade implements RecommendationsFac
     }
 
     /**
-     * @param RecoTransfer $recoTransfer
+     * @param \Generated\Shared\Transfer\RecoTransfer $recoTransfer
      *
-     * @return RecoTransfer
+     * @return \Generated\Shared\Transfer\RecoTransfer
      */
     public function clearRecoData(RecoTransfer $recoTransfer): RecoTransfer
     {
@@ -44,15 +44,27 @@ class RecommendationsFacade extends AbstractFacade implements RecommendationsFac
     }
 
     /**
-     * @param RecoTransfer $recoTransfer
+     * @param \Generated\Shared\Transfer\RecoTransfer $recoTransfer
      *
-     * @return RecoTransfer
+     * @return \Generated\Shared\Transfer\RecoTransfer
      */
     public function getExistingRecoData(RecoTransfer $recoTransfer): RecoTransfer
     {
         return $this->getFactory()
             ->createRecoWriter()
             ->getExistingRecoData($recoTransfer);
+    }
+
+    /**
+     * @param \Generated\Shared\Transfer\ScenarioTransfer $scenarioTransfer
+     *
+     * @return \Generated\Shared\Transfer\ScenarioTransfer
+     */
+    public function getActiveScenarioName(ScenarioTransfer $scenarioTransfer): ScenarioTransfer
+    {
+        return $this->getFactory()
+            ->createRecoWriter()
+            ->getActiveScenarioName($scenarioTransfer);
     }
 
     /**
@@ -66,9 +78,9 @@ class RecommendationsFacade extends AbstractFacade implements RecommendationsFac
     }
 
     /**
-     * @param RecoTransfer $recoTransfer
+     * @param \Generated\Shared\Transfer\RecoTransfer $recoTransfer
      *
-     * @return RecoTransfer
+     * @return \Generated\Shared\Transfer\RecoTransfer
      */
     public function getRedisKeys(RecoTransfer $recoTransfer): RecoTransfer
     {
@@ -79,9 +91,9 @@ class RecommendationsFacade extends AbstractFacade implements RecommendationsFac
     }
 
     /**
-     * @param ScenarioTransfer $scenarioTransfer
+     * @param \Generated\Shared\Transfer\ScenarioTransfer $scenarioTransfer
      *
-     * @return ScenarioTransfer
+     * @return \Generated\Shared\Transfer\ScenarioTransfer
      */
     public function createScenario(ScenarioTransfer $scenarioTransfer): ScenarioTransfer
     {
@@ -93,7 +105,7 @@ class RecommendationsFacade extends AbstractFacade implements RecommendationsFac
     /**
      * @param int $idRecommendationsScenario
      *
-     * @return ScenarioTransfer
+     * @return \Generated\Shared\Transfer\ScenarioTransfer|null
      */
     public function findScenario(int $idRecommendationsScenario): ?ScenarioTransfer
     {
@@ -103,7 +115,7 @@ class RecommendationsFacade extends AbstractFacade implements RecommendationsFac
     }
 
     /**
-     * @param ScenarioTransfer $scenarioTransfer
+     * @param \Generated\Shared\Transfer\ScenarioTransfer $scenarioTransfer
      *
      * @return int
      */
@@ -127,7 +139,7 @@ class RecommendationsFacade extends AbstractFacade implements RecommendationsFac
     }
 
     /**
-     * @return RecommendationDefinitionTransfer|null
+     * @return \Generated\Shared\Transfer\RecommendationDefinitionTransfer|null
      */
     public function getRecommendationsDefinition(): ?RecommendationDefinitionTransfer
     {
@@ -139,7 +151,7 @@ class RecommendationsFacade extends AbstractFacade implements RecommendationsFac
     /**
      * @param int $idRecommendationsScenario
      *
-     * @return ScenarioTransfer
+     * @return \Generated\Shared\Transfer\ScenarioTransfer
      */
     public function updateDefinitions(RecommendationDefinitionTransfer $definitionTransfer): int
     {

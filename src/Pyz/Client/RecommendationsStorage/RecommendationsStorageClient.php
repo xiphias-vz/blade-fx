@@ -12,12 +12,12 @@ use Spryker\Client\Kernel\AbstractClient;
 use Spryker\Shared\Kernel\Transfer\TransferInterface;
 
 /**
- * @method RecommendationsStorageFactory getFactory()
+ * @method \Pyz\Client\RecommendationsStorage\RecommendationsStorageFactory getFactory()
  */
 class RecommendationsStorageClient extends AbstractClient implements RecommendationsStorageClientInterface
 {
     /**
-     * @param TransferInterface $recommendationsTransfer
+     * @param \Spryker\Shared\Kernel\Transfer\TransferInterface $recommendationsTransfer
      *
      * @return mixed
      */
@@ -29,9 +29,9 @@ class RecommendationsStorageClient extends AbstractClient implements Recommendat
     }
 
     /**
-     * @param RecoTransfer $recoTransfer
+     * @param \Generated\Shared\Transfer\RecoTransfer $recoTransfer
      *
-     * @return RecoTransfer
+     * @return \Generated\Shared\Transfer\RecoTransfer
      */
     public function getIsRecommendationsEnabled(RecoTransfer $recoTransfer): RecoTransfer
     {
@@ -41,9 +41,9 @@ class RecommendationsStorageClient extends AbstractClient implements Recommendat
     }
 
     /**
-     * @param RecoTransfer $recoTransfer
+     * @param \Generated\Shared\Transfer\RecoTransfer $recoTransfer
      *
-     * @return RecoTransfer
+     * @return \Generated\Shared\Transfer\RecoTransfer
      */
     public function getIsFfSnippetEnabled(RecoTransfer $recoTransfer): RecoTransfer
     {

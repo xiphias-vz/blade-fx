@@ -1,8 +1,8 @@
 <?php
 
 /**
- * Copyright © 2016-present Spryker Systems GmbH. All rights reserved.
- * Use of this software requires acceptance of the Evaluation License Agreement. See LICENSE file.
+ * This file is part of the Spryker Commerce OS.
+ * For full license information, please view the LICENSE file that was distributed with this source code.
  */
 
 namespace Pyz\Zed\Recommendations\Business\Model;
@@ -12,14 +12,14 @@ use Generated\Shared\Transfer\ScenarioTransfer;
 interface ScenarioWriterInterface
 {
     /**
-     * @param ScenarioTransfer $scenarioTransfer
+     * @param \Generated\Shared\Transfer\ScenarioTransfer $scenarioTransfer
      *
-     * @return ScenarioTransfer
+     * @return \Generated\Shared\Transfer\ScenarioTransfer
      */
     public function createScenario(ScenarioTransfer $scenarioTransfer): ScenarioTransfer;
 
     /**
-     * @param ScenarioTransfer $scenarioTransfer
+     * @param \Generated\Shared\Transfer\ScenarioTransfer $scenarioTransfer
      *
      * @return int
      */

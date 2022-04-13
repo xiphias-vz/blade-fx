@@ -1,44 +1,42 @@
 <?php
 
 /**
- * Copyright © 2016-present Spryker Systems GmbH. All rights reserved.
- * Use of this software requires acceptance of the Evaluation License Agreement. See LICENSE file.
+ * This file is part of the Spryker Commerce OS.
+ * For full license information, please view the LICENSE file that was distributed with this source code.
  */
 
 namespace Pyz\Zed\Recommendations\Persistence\Propel\Mapper;
 
-use Generated\Shared\Transfer\ScenarioTransfer;
 use Generated\Shared\Transfer\RecommendationDefinitionTransfer;
+use Generated\Shared\Transfer\ScenarioTransfer;
 use Orm\Zed\Recommendations\Persistence\PyzRecommendationDefinition;
 use Orm\Zed\Recommendations\Persistence\PyzRecommendationScenarios;
 
 class ScenarioMapper implements ScenarioMapperInterface
 {
     /**
-     * @param PyzRecommendationScenarios $scenarioEntity
-     * @param ScenarioTransfer $scenarioTransfer
+     * @param \Orm\Zed\Recommendations\Persistence\PyzRecommendationScenarios $scenarioEntity
+     * @param \Generated\Shared\Transfer\ScenarioTransfer $scenarioTransfer
      *
-     * @return ScenarioTransfer
+     * @return \Generated\Shared\Transfer\ScenarioTransfer
      */
     public function mapScenarioEntityToScenarioTransfer(
         PyzRecommendationScenarios $scenarioEntity,
         ScenarioTransfer $scenarioTransfer
-    ): ScenarioTransfer
-    {
+    ): ScenarioTransfer {
         return $scenarioTransfer->fromArray($scenarioEntity->toArray(), true);
     }
 
     /**
-     * @param PyzRecommendationDefinition $definitionEntity
-     * @param RecommendationDefinitionTransfer $definitionTransfer
+     * @param \Orm\Zed\Recommendations\Persistence\PyzRecommendationDefinition $definitionEntity
+     * @param \Generated\Shared\Transfer\RecommendationDefinitionTransfer $definitionTransfer
      *
-     * @return RecommendationDefinitionTransfer
+     * @return \Generated\Shared\Transfer\RecommendationDefinitionTransfer
      */
     public function mapDefinitionEntityToRecommendationDefinitionTransfer(
         PyzRecommendationDefinition $definitionEntity,
         RecommendationDefinitionTransfer $definitionTransfer
-    ): RecommendationDefinitionTransfer
-    {
-        return  $definitionTransfer->fromArray($definitionEntity->toArray(), true);
+    ): RecommendationDefinitionTransfer {
+        return $definitionTransfer->fromArray($definitionEntity->toArray(), true);
     }
 }

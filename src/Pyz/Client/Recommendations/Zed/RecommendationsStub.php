@@ -8,15 +8,16 @@
 namespace Pyz\Client\Recommendations\Zed;
 
 use Generated\Shared\Transfer\RecoTransfer;
+use Generated\Shared\Transfer\ScenarioTransfer;
 use Spryker\Client\ZedRequest\Stub\ZedRequestStub;
 use Spryker\Shared\Kernel\Transfer\TransferInterface;
 
 class RecommendationsStub extends ZedRequestStub implements RecommendationsStubInterface
 {
     /**
-     * @param RecoTransfer $recoTransfer
+     * @param \Generated\Shared\Transfer\RecoTransfer $recoTransfer
      *
-     * @return TransferInterface
+     * @return \Spryker\Shared\Kernel\Transfer\TransferInterface
      */
     public function insertRecoData(RecoTransfer $recoTransfer): TransferInterface
     {
@@ -24,9 +25,9 @@ class RecommendationsStub extends ZedRequestStub implements RecommendationsStubI
     }
 
     /**
-     * @param RecoTransfer $recoTransfer
+     * @param \Generated\Shared\Transfer\RecoTransfer $recoTransfer
      *
-     * @return TransferInterface
+     * @return \Spryker\Shared\Kernel\Transfer\TransferInterface
      */
     public function clearRecoData(RecoTransfer $recoTransfer): TransferInterface
     {
@@ -34,12 +35,22 @@ class RecommendationsStub extends ZedRequestStub implements RecommendationsStubI
     }
 
     /**
-     * @param RecoTransfer $recoTransfer
+     * @param \Generated\Shared\Transfer\RecoTransfer $recoTransfer
      *
-     * @return TransferInterface
+     * @return \Spryker\Shared\Kernel\Transfer\TransferInterface
      */
     public function getExistingRecoData(RecoTransfer $recoTransfer): TransferInterface
     {
         return $this->zedStub->call('/recommendations/gateway/get-existing-reco-data', $recoTransfer);
+    }
+
+    /**
+     * @param \Generated\Shared\Transfer\ScenarioTransfer $scenarioTransfer
+     *
+     * @return \Spryker\Shared\Kernel\Transfer\TransferInterface
+     */
+    public function getActiveScenarioName(ScenarioTransfer $scenarioTransfer): TransferInterface
+    {
+        return $this->zedStub->call('/recommendations/gateway/get-active-scenario-name', $scenarioTransfer);
     }
 }

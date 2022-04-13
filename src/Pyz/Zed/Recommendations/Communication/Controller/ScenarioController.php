@@ -1,28 +1,22 @@
 <?php
 
 /**
- * Copyright © 2016-present Spryker Systems GmbH. All rights reserved.
- * Use of this software requires acceptance of the Evaluation License Agreement. See LICENSE file.
+ * This file is part of the Spryker Commerce OS.
+ * For full license information, please view the LICENSE file that was distributed with this source code.
  */
 
 namespace Pyz\Zed\Recommendations\Communication\Controller;
 
-use Generated\Shared\Transfer\RecoTransfer;
-use Generated\Shared\Transfer\ScenarioTransfer;
-use Helper\Scenario;
-use Pyz\Zed\Recommendations\Business\RecommendationsFacadeInterface;
-use Pyz\Zed\Recommendations\Communication\RecommendationsCommunicationFactory;
-use Pyz\Zed\Recommendations\Persistence\RecommendationsQueryContainerInterface;
 use Spryker\Service\UtilText\Model\Url\Url;
 use Spryker\Zed\Kernel\Communication\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
- * @method RecommendationsCommunicationFactory getFactory()
- * @method RecommendationsFacadeInterface getFacade()
- * @method RecommendationsQueryContainerInterface getQueryContainer()
+ * @method \Pyz\Zed\Recommendations\Communication\RecommendationsCommunicationFactory getFactory()
+ * @method \Pyz\Zed\Recommendations\Business\RecommendationsFacadeInterface getFacade()
+ * @method \Pyz\Zed\Recommendations\Persistence\RecommendationsQueryContainerInterface getQueryContainer()
+ * @method \Pyz\Zed\Recommendations\Persistence\RecommendationsRepositoryInterface getRepository()
  */
 class ScenarioController extends AbstractController
 {
@@ -32,9 +26,9 @@ class ScenarioController extends AbstractController
     public const ID = 'id';
 
     /**
-     * @param Request $request
+     * @param \Symfony\Component\HttpFoundation\Request $request
      *
-     * @return array|RedirectResponse
+     * @return array|\Symfony\Component\HttpFoundation\RedirectResponse
      */
     public function indexAction(Request $request)
     {
@@ -88,9 +82,9 @@ class ScenarioController extends AbstractController
     }
 
     /**
-     * @param Request $request
+     * @param \Symfony\Component\HttpFoundation\Request $request
      *
-     * @return array|RedirectResponse
+     * @return array|\Symfony\Component\HttpFoundation\RedirectResponse
      */
     public function editAction(Request $request)
     {
@@ -118,14 +112,27 @@ class ScenarioController extends AbstractController
             $scenarioTransfer->setIdRecommendationScenarios($idRecommendationsScenario);
 
             $rowCount = $this->getQueryContainer()
-                ->queryScenariosWithScenarioIdAndHashId(
+                ->queryScenariosWithScenarioIdAndActiveField(
                     $scenarioTransfer->getScenarioId(),
-                    $scenarioTransfer->getHashId()
+                    $scenarioTransfer->getActive()
                 )->filterByIdRecommendationScenarios($idRecommendationsScenario)
                 ->count();
 
+            $rowCountForActiveScenarios = 1;
+
+            if (!$scenarioTransfer->getActive()) {
+                $rowCountForActiveScenarios = $this->getQueryContainer()
+                    ->queryScenariosWithNotEqualScenarioIdAndActiveField($idRecommendationsScenario, true)
+                    ->count();
+            }
+
             if ($rowCount > 0) {
-                $this->addErrorMessage('Scenario with provided Scenario Name and Hash ID already exists');
+                $this->addErrorMessage('Scenario with provided Scenario Name and Hash ID already exists or you did not make any changes');
+            } elseif ($rowCountForActiveScenarios == 0) {
+                $this->addErrorMessage('At least one scenario must be ACTIVE');
+                $redirectUrl = Url::generate('/recommendations/scenario/edit', [static::ID => $scenarioTransfer->getIdRecommendationScenarios()])->build();
+
+                return $this->redirectResponse($redirectUrl);
             } else {
                 $rowsAffected = $this->getFacade()->updateScenario($scenarioTransfer);
                 if ($rowsAffected > 0) {
@@ -141,8 +148,9 @@ class ScenarioController extends AbstractController
     }
 
     /**
-     * @param Request $request
-     * @return array|RedirectResponse
+     * @param \Symfony\Component\HttpFoundation\Request $request
+     *
+     * @return array|\Symfony\Component\HttpFoundation\RedirectResponse
      */
     public function createAction(Request $request)
     {
@@ -161,14 +169,27 @@ class ScenarioController extends AbstractController
             }
 
             $rowCount = $this->getQueryContainer()
-                ->queryScenariosWithScenarioIdAndHashId(
+                ->queryScenariosWithScenarioIdAndActiveField(
                     $scenarioTransfer->getScenarioId(),
-                    $scenarioTransfer->getHashId()
+                    $scenarioTransfer->getActive()
                 )
                 ->count();
 
+            $rowCountForActiveScenarios = 1;
+
+            if (!$scenarioTransfer->getActive()) {
+                $rowCountForActiveScenarios = $this->getQueryContainer()
+                    ->queryScenariosWithNotEqualScenarioIdAndActiveField($scenarioTransfer->getScenarioId(), true)
+                    ->count();
+            }
+
             if ($rowCount > 0) {
                 $this->addErrorMessage('Scenario with provided scenario ID and hash ID already exists!');
+            } elseif ($rowCountForActiveScenarios == 0) {
+                $this->addErrorMessage('At least one scenario must be ACTIVE');
+                $redirectUrl = Url::generate('/recommendations/scenario/create')->build();
+
+                return $this->redirectResponse($redirectUrl);
             } else {
                 $scenarioTransfer = $this->getFacade()->createScenario($scenarioTransfer);
                 if ($scenarioTransfer->getIdRecommendationScenarios()) {
@@ -186,7 +207,7 @@ class ScenarioController extends AbstractController
     }
 
     /**
-     * @return JsonResponse
+     * @return \Symfony\Component\HttpFoundation\JsonResponse
      */
     public function tableAction(): JsonResponse
     {

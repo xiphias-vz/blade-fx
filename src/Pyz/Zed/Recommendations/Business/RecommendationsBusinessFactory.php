@@ -1,8 +1,8 @@
 <?php
 
 /**
- * Copyright © 2016-present Spryker Systems GmbH. All rights reserved.
- * Use of this software requires acceptance of the Evaluation License Agreement. See LICENSE file.
+ * This file is part of the Spryker Commerce OS.
+ * For full license information, please view the LICENSE file that was distributed with this source code.
  */
 
 namespace Pyz\Zed\Recommendations\Business;
@@ -11,26 +11,23 @@ use Pyz\Zed\Recommendations\Business\Model\DefinitionReader;
 use Pyz\Zed\Recommendations\Business\Model\DefinitionWriter;
 use Pyz\Zed\Recommendations\Business\Model\DefinitionWriterInterface;
 use Pyz\Zed\Recommendations\Business\Model\RecoWriter;
+use Pyz\Zed\Recommendations\Business\Model\RecoWriterInterface;
 use Pyz\Zed\Recommendations\Business\Model\ScenarioReader;
 use Pyz\Zed\Recommendations\Business\Model\ScenarioReaderInterface;
 use Pyz\Zed\Recommendations\Business\Model\ScenarioWriter;
 use Pyz\Zed\Recommendations\Business\Model\ScenarioWriterInterface;
-use Pyz\Zed\Recommendations\Business\Model\RecoWriterInterface;
-use Pyz\Zed\Recommendations\Persistence\RecommendationsQueryContainerInterface;
-use Pyz\Zed\Recommendations\Persistence\RecommendationsRepositoryInterface;
-use Pyz\Zed\Recommendations\RecommendationsConfig;
 use Pyz\Zed\Recommendations\RecommendationsDependencyProvider;
 use Spryker\Zed\Kernel\Business\AbstractBusinessFactory;
 
 /**
- * @method RecommendationsQueryContainerInterface getQueryContainer()
- * @method RecommendationsConfig getConfig()
- * @method RecommendationsRepositoryInterface getRepository()
+ * @method \Pyz\Zed\Recommendations\Persistence\RecommendationsQueryContainerInterface getQueryContainer()
+ * @method \Pyz\Zed\Recommendations\RecommendationsConfig getConfig()
+ * @method \Pyz\Zed\Recommendations\Persistence\RecommendationsRepositoryInterface getRepository()
  */
 class RecommendationsBusinessFactory extends AbstractBusinessFactory
 {
     /**
-     * @return RecoWriterInterface
+     * @return \Pyz\Zed\Recommendations\Business\Model\RecoWriterInterface
      */
     public function createRecoWriter(): RecoWriterInterface
     {
@@ -40,7 +37,7 @@ class RecommendationsBusinessFactory extends AbstractBusinessFactory
     }
 
     /**
-     * @return ScenarioWriterInterface
+     * @return \Pyz\Zed\Recommendations\Business\Model\ScenarioWriterInterface
      */
     public function createScenarioWriter(): ScenarioWriterInterface
     {
@@ -50,7 +47,7 @@ class RecommendationsBusinessFactory extends AbstractBusinessFactory
     }
 
     /**
-     * @return ScenarioReaderInterface
+     * @return \Pyz\Zed\Recommendations\Business\Model\ScenarioReaderInterface
      */
     public function createScenarioReader(): ScenarioReaderInterface
     {
@@ -61,7 +58,7 @@ class RecommendationsBusinessFactory extends AbstractBusinessFactory
     }
 
     /**
-     * @return DefinitionReader
+     * @return \Pyz\Zed\Recommendations\Business\Model\DefinitionReader
      */
     public function createDefinitionReader(): DefinitionReader
     {
@@ -71,7 +68,7 @@ class RecommendationsBusinessFactory extends AbstractBusinessFactory
     }
 
     /**
-     * @return DefinitionWriterInterface
+     * @return \Pyz\Zed\Recommendations\Business\Model\DefinitionWriterInterface
      */
     public function createDefinitionWriter(): DefinitionWriterInterface
     {

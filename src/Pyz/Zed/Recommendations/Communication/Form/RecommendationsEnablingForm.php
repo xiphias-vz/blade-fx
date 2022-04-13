@@ -1,23 +1,29 @@
 <?php
 
 /**
- * Copyright © 2016-present Spryker Systems GmbH. All rights reserved.
- * Use of this software requires acceptance of the Evaluation License Agreement. See LICENSE file.
+ * This file is part of the Spryker Commerce OS.
+ * For full license information, please view the LICENSE file that was distributed with this source code.
  */
 
 namespace Pyz\Zed\Recommendations\Communication\Form;
 
-use Mpdf\Form;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
-use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 
+/**
+ * @method \Pyz\Zed\Recommendations\Persistence\RecommendationsRepositoryInterface getRepository()
+ * @method \Pyz\Zed\Recommendations\Communication\RecommendationsCommunicationFactory getFactory()
+ * @method \Pyz\Zed\Recommendations\Business\RecommendationsFacadeInterface getFacade()
+ * @method \Pyz\Zed\Recommendations\RecommendationsConfig getConfig()
+ * @method \Pyz\Zed\Recommendations\Persistence\RecommendationsQueryContainerInterface getQueryContainer()
+ */
 class RecommendationsEnablingForm extends AbstractType
 {
     public const FIELD_ARE_RECOMMENDATIONS_ENABLED = 'recommendationsEnabled';
+
     /**
-     * @param FormBuilderInterface $builder
+     * @param \Symfony\Component\Form\FormBuilderInterface $builder
      * @param array $options
      *
      * @return void
@@ -29,14 +35,14 @@ class RecommendationsEnablingForm extends AbstractType
     }
 
     /**
-     * @param FormBuilderInterface $builder
+     * @param \Symfony\Component\Form\FormBuilderInterface $builder
      *
      * @return $this
      */
-    public function addRecommendationsEnabledCheckBox(FormBuilderInterface $builder): RecommendationsEnablingForm
+    public function addRecommendationsEnabledCheckBox(FormBuilderInterface $builder)
     {
         $builder->add(static::FIELD_ARE_RECOMMENDATIONS_ENABLED, CheckboxType::class, [
-            'label'    => 'Use recommendations',
+            'label' => 'Use recommendations',
             'required' => false,
         ]);
 

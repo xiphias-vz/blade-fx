@@ -1,22 +1,24 @@
 <?php
 
 /**
- * Copyright © 2016-present Spryker Systems GmbH. All rights reserved.
- * Use of this software requires acceptance of the Evaluation License Agreement. See LICENSE file.
+ * This file is part of the Spryker Commerce OS.
+ * For full license information, please view the LICENSE file that was distributed with this source code.
  */
 
 namespace Pyz\Zed\Recommendations\Persistence;
 
 use Elastica\JSON;
 use Generated\Shared\Transfer\RecoTransfer;
+use Generated\Shared\Transfer\ScenarioTransfer;
 use Orm\Zed\Customer\Persistence\SpyCustomer;
 use Orm\Zed\Customer\Persistence\SpyCustomerQuery;
 use Orm\Zed\Recommendations\Persistence\PyzRecommendationDefinitionQuery;
 use Orm\Zed\Recommendations\Persistence\PyzRecommendationScenariosQuery;
+use Propel\Runtime\ActiveQuery\Criteria;
 use Spryker\Zed\Kernel\Persistence\AbstractQueryContainer;
 
 /**
- * @method RecommendationsPersistenceFactory getFactory()
+ * @method \Pyz\Zed\Recommendations\Persistence\RecommendationsPersistenceFactory getFactory()
  */
 class RecommendationsQueryContainer extends AbstractQueryContainer implements RecommendationsQueryContainerInterface
 {
@@ -25,14 +27,14 @@ class RecommendationsQueryContainer extends AbstractQueryContainer implements Re
     protected const RESULT_OBJECT_TYPE_NAME = 'SAP_ERP_MATNR';
 
     /**
-     * @param RecoTransfer $recoTransfer
+     * @param \Generated\Shared\Transfer\RecoTransfer $recoTransfer
      *
-     * @return RecoTransfer
+     * @return \Generated\Shared\Transfer\RecoTransfer
      */
     public function insertRecoData(RecoTransfer $recoTransfer): RecoTransfer
     {
         $parsedResult = JSON::parse($recoTransfer->getApiResult());
-        $resultObjects = $parsedResult['ResultObjects']['results'] ?? array();
+        $resultObjects = $parsedResult['ResultObjects']['results'] ?? [];
         $isInserted = false;
         if (count($resultObjects) > 0) {
             $isInserted = $this->insertRecoDataToDatabase($resultObjects, $recoTransfer);
@@ -40,20 +42,13 @@ class RecommendationsQueryContainer extends AbstractQueryContainer implements Re
 
         $recoTransfer->setIsInserted($isInserted);
 
-        /*$query = SpyCustomerQuery::create();
-        $query->select('reco')
-            ->addAsColumn('reco', 'spy_customer.reco')
-            ->where("spy_customer.id_customer =" . $customer->getIdCustomer())
-            ->find()
-            ->toArray();*/
-
         return $recoTransfer;
     }
 
     /**
-     * @param RecoTransfer $recoTransfer
+     * @param \Generated\Shared\Transfer\RecoTransfer $recoTransfer
      *
-     * @return RecoTransfer
+     * @return \Generated\Shared\Transfer\RecoTransfer
      */
     public function clearRecoData(RecoTransfer $recoTransfer): RecoTransfer
     {
@@ -61,6 +56,7 @@ class RecommendationsQueryContainer extends AbstractQueryContainer implements Re
 
         if (!$customerEntity) {
             $recoTransfer->setIsDeleted(false);
+
             return $recoTransfer;
         }
 
@@ -74,7 +70,7 @@ class RecommendationsQueryContainer extends AbstractQueryContainer implements Re
 
     /**
      * @param array $resultObjects
-     * @param RecoTransfer $recoTransfer
+     * @param \Generated\Shared\Transfer\RecoTransfer $recoTransfer
      *
      * @return bool
      */
@@ -82,12 +78,12 @@ class RecommendationsQueryContainer extends AbstractQueryContainer implements Re
     {
         $customerEntity = $this->getCustomerEntity($recoTransfer);
 
-        if(!$customerEntity) {
+        if (!$customerEntity) {
             return false;
         }
 
-        $resultObjectsIds = array();
-        foreach($resultObjects as $productEans) {
+        $resultObjectsIds = [];
+        foreach ($resultObjects as $productEans) {
             if (isset($productEans[static::RESULT_OBJECT_ID])
                 && isset($productEans[static::RESULT_OBJECT_TYPE])
                 && $productEans[static::RESULT_OBJECT_TYPE] === self::RESULT_OBJECT_TYPE_NAME
@@ -96,9 +92,9 @@ class RecommendationsQueryContainer extends AbstractQueryContainer implements Re
             }
         }
 
-        $dataToInsert = array(
-            'ResultObjectId' => $resultObjectsIds
-        );
+        $dataToInsert = [
+            'ResultObjectId' => $resultObjectsIds,
+        ];
 
         $resultObjectsString = JSON::stringify($dataToInsert);
         $customerEntity->setReco($resultObjectsString);
@@ -110,9 +106,9 @@ class RecommendationsQueryContainer extends AbstractQueryContainer implements Re
     }
 
     /**
-     * @param RecoTransfer $recoTransfer
+     * @param \Generated\Shared\Transfer\RecoTransfer $recoTransfer
      *
-     * @return RecoTransfer
+     * @return \Generated\Shared\Transfer\RecoTransfer
      */
     public function getExistingRecoData(RecoTransfer $recoTransfer): RecoTransfer
     {
@@ -130,7 +126,26 @@ class RecommendationsQueryContainer extends AbstractQueryContainer implements Re
     }
 
     /**
-     * @return PyzRecommendationScenariosQuery
+     * @param \Generated\Shared\Transfer\ScenarioTransfer $scenarioTransfer
+     *
+     * @return \Generated\Shared\Transfer\ScenarioTransfer
+     */
+    public function getActiveScenarioName(ScenarioTransfer $scenarioTransfer): ScenarioTransfer
+    {
+        $scenarioEntity = $this->getFactory()
+            ->createPyzRecommendationsScenariosQuery()
+            ->filterByActive(true)
+            ->findOne();
+
+        $mapper = $this->getFactory()->createScenarioMapper();
+
+        $mapper->mapScenarioEntityToScenarioTransfer($scenarioEntity, $scenarioTransfer);
+
+        return $scenarioTransfer;
+    }
+
+    /**
+     * @return \Orm\Zed\Recommendations\Persistence\PyzRecommendationScenariosQuery
      */
     public function getPyzRecommendationsScenarioQuery(): PyzRecommendationScenariosQuery
     {
@@ -138,7 +153,7 @@ class RecommendationsQueryContainer extends AbstractQueryContainer implements Re
     }
 
     /**
-     * @return SpyCustomerQuery
+     * @return \Orm\Zed\Customer\Persistence\SpyCustomerQuery
      */
     public function getSpyCustomerQuery(): SpyCustomerQuery
     {
@@ -146,9 +161,9 @@ class RecommendationsQueryContainer extends AbstractQueryContainer implements Re
     }
 
     /**
-     * @param RecoTransfer $recoTransfer
+     * @param \Generated\Shared\Transfer\RecoTransfer $recoTransfer
      *
-     * @return SpyCustomer
+     * @return \Orm\Zed\Customer\Persistence\SpyCustomer
      */
     protected function getCustomerEntity(RecoTransfer $recoTransfer): SpyCustomer
     {
@@ -160,20 +175,18 @@ class RecommendationsQueryContainer extends AbstractQueryContainer implements Re
             ->findOne();
     }
 
-
-
-
     public function getRedisKeys(): array
     {
-        return array(
-            'recommendations_enabed' => 1
-        );
+        return [
+            'recommendations_enabed' => 1,
+        ];
     }
 
     /**
      * @param string $scenarioId
      * @param string $hashId
-     * @return PyzRecommendationScenariosQuery
+     *
+     * @return \Orm\Zed\Recommendations\Persistence\PyzRecommendationScenariosQuery
      */
     public function queryScenariosWithScenarioIdAndHashId(string $scenarioId, string $hashId): PyzRecommendationScenariosQuery
     {
@@ -184,11 +197,39 @@ class RecommendationsQueryContainer extends AbstractQueryContainer implements Re
     }
 
     /**
-     * @param $id
+     * @param string $scenarioId
+     * @param bool $isActive
      *
-     * @return PyzRecommendationScenariosQuery
+     * @return \Orm\Zed\Recommendations\Persistence\PyzRecommendationScenariosQuery
      */
-    public function queryScenarioWithIdRecommendationScenarios($id): PyzRecommendationScenariosQuery
+    public function queryScenariosWithScenarioIdAndActiveField(string $scenarioId, bool $isActive): PyzRecommendationScenariosQuery
+    {
+        return $this->getFactory()
+            ->createPyzRecommendationsScenariosQuery()
+            ->filterByActive($isActive)
+            ->filterByScenarioId($scenarioId);
+    }
+
+    /**
+     * @param string $scenarioId
+     * @param bool $isActive
+     *
+     * @return \Orm\Zed\Recommendations\Persistence\PyzRecommendationScenariosQuery
+     */
+    public function queryScenariosWithNotEqualScenarioIdAndActiveField(string $scenarioId, bool $isActive): PyzRecommendationScenariosQuery
+    {
+        return $this->getFactory()
+            ->createPyzRecommendationsScenariosQuery()
+            ->filterByActive($isActive)
+            ->filterByIdRecommendationScenarios($scenarioId, Criteria::NOT_EQUAL);
+    }
+
+    /**
+     * @param int $id
+     *
+     * @return \Orm\Zed\Recommendations\Persistence\PyzRecommendationScenariosQuery
+     */
+    public function queryScenarioWithIdRecommendationScenarios(int $id): PyzRecommendationScenariosQuery
     {
         return $this->getFactory()
             ->createPyzRecommendationsScenariosQuery()
@@ -196,7 +237,19 @@ class RecommendationsQueryContainer extends AbstractQueryContainer implements Re
     }
 
     /**
-     * @return PyzRecommendationScenariosQuery
+     * @param int $id
+     *
+     * @return \Orm\Zed\Recommendations\Persistence\PyzRecommendationScenariosQuery
+     */
+    public function queryScenarioWithNotEqualIdRecommendationScenarios(int $id): PyzRecommendationScenariosQuery
+    {
+        return $this->getFactory()
+            ->createPyzRecommendationsScenariosQuery()
+            ->filterByIdRecommendationScenarios($id, Criteria::NOT_EQUAL);
+    }
+
+    /**
+     * @return \Orm\Zed\Recommendations\Persistence\PyzRecommendationScenariosQuery
      */
     public function queryAllScenarios(): PyzRecommendationScenariosQuery
     {
@@ -205,7 +258,7 @@ class RecommendationsQueryContainer extends AbstractQueryContainer implements Re
     }
 
     /**
-     * @return PyzRecommendationDefinitionQuery
+     * @return \Orm\Zed\Recommendations\Persistence\PyzRecommendationDefinitionQuery
      */
     public function queryDefinitions(): PyzRecommendationDefinitionQuery
     {

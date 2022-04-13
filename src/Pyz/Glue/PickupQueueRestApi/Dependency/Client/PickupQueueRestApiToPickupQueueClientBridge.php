@@ -36,6 +36,11 @@ class PickupQueueRestApiToPickupQueueClientBridge implements PickupQueueRestApiT
         return $this->pickupQueueClient->addOrderToQueue($addToQueueTransfer);
     }
 
+    /**
+     * @param \Generated\Shared\Transfer\GetOrdersQueueTransfer $getOrdersQueueTransfer
+     *
+     * @return \Generated\Shared\Transfer\GetOrdersQueueTransfer
+     */
     public function getOrdersQueue(GetOrdersQueueTransfer $getOrdersQueueTransfer): GetOrdersQueueTransfer
     {
         return $this->pickupQueueClient->getOrdersQueued($getOrdersQueueTransfer);

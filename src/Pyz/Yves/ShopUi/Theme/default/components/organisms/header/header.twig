@@ -8,6 +8,7 @@
     storeId: app.sapStoreId,
     channelName: app.factFinderChannel,
     ffSnippetEnabled: app.ffSnippetEnabled,
+    customerUserRecoData: app.customerUserRecoData,
 } %}
 
 {% define hamburgerIcon = {
@@ -26,9 +27,12 @@
 }
 %}
 {% block body %}
+    {% set isUserLoggedIn = is_granted('IS_AUTHENTICATED_FULLY') ? "true" : "false" %}
     {% set defaultUrl = publicPath("/images/kein_bild_vorhanden.png") %}
     <input type="hidden" id="defaultUrlToTheBoxPicture" value="{{ defaultUrl }}" />
     <input type="hidden" id="ffSnippetEnabled" value="{{ data.ffSnippetEnabled }}" />
+    <input type="hidden" id="isUserLoggedIn" value="{{ isUserLoggedIn }}" />
+    <input type="hidden" id="customerUserRecoData" value="{{ data.customerUserRecoData }}" />
 
     {% embed molecule('popup-ui-shipment-form') with {} only %}
     {% endembed %}

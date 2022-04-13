@@ -122,7 +122,7 @@ class SynchronizationDependencyProvider extends SprykerSynchronizationDependency
             new ProductPackagingUnitSynchronizationDataBulkPlugin(),
             new ProductRelationSynchronizationDataRepositoryPlugin(),
             new MerchantSynchronizationDataBulkRepositoryPlugin(),
-            new RecommendationsStorageSynchronizationDataBulkPlugin()
+            new RecommendationsStorageSynchronizationDataBulkPlugin(),
         ];
     }
 }

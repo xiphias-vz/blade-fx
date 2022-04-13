@@ -1,8 +1,8 @@
 <?php
 
 /**
- * Copyright © 2016-present Spryker Systems GmbH. All rights reserved.
- * Use of this software requires acceptance of the Evaluation License Agreement. See LICENSE file.
+ * This file is part of the Spryker Commerce OS.
+ * For full license information, please view the LICENSE file that was distributed with this source code.
  */
 
 namespace Pyz\Zed\Recommendations\Business\Model;
@@ -14,18 +14,18 @@ use Pyz\Zed\Recommendations\Persistence\RecommendationsRepositoryInterface;
 class ScenarioReader implements ScenarioReaderInterface
 {
     /**
-     * @var RecommendationsQueryContainerInterface
+     * @var \Pyz\Zed\Recommendations\Persistence\RecommendationsQueryContainerInterface
      */
     protected $recommendationsQueryContainer;
 
     /**
-     * @var RecommendationsRepositoryInterface
+     * @var \Pyz\Zed\Recommendations\Persistence\RecommendationsRepositoryInterface
      */
     protected $recommendationsRepository;
 
     /**
-     * @param RecommendationsQueryContainerInterface $recommendationsQueryContainer
-     * @param RecommendationsRepositoryInterface $recommendationsRepository
+     * @param \Pyz\Zed\Recommendations\Persistence\RecommendationsQueryContainerInterface $recommendationsQueryContainer
+     * @param \Pyz\Zed\Recommendations\Persistence\RecommendationsRepositoryInterface $recommendationsRepository
      */
     public function __construct(
         RecommendationsQueryContainerInterface $recommendationsQueryContainer,
@@ -38,7 +38,7 @@ class ScenarioReader implements ScenarioReaderInterface
     /**
      * @param int $idRecommendationsScenario
      *
-     * @return ScenarioTransfer
+     * @return \Generated\Shared\Transfer\ScenarioTransfer|null
      */
     public function findScenario(int $idRecommendationsScenario): ?ScenarioTransfer
     {

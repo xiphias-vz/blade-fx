@@ -8,28 +8,36 @@
 namespace Pyz\Client\Recommendations\Zed;
 
 use Generated\Shared\Transfer\RecoTransfer;
+use Generated\Shared\Transfer\ScenarioTransfer;
 use Spryker\Shared\Kernel\Transfer\TransferInterface;
 
 interface RecommendationsStubInterface
 {
     /**
-     * @param RecoTransfer $recoTransfer
+     * @param \Generated\Shared\Transfer\RecoTransfer $recoTransfer
      *
      * @return mixed
      */
     public function insertRecoData(RecoTransfer $recoTransfer): TransferInterface;
 
     /**
-     * @param RecoTransfer $recoTransfer
+     * @param \Generated\Shared\Transfer\RecoTransfer $recoTransfer
      *
      * @return mixed
      */
     public function clearRecoData(RecoTransfer $recoTransfer): TransferInterface;
 
     /**
-     * @param RecoTransfer $recoTransfer
+     * @param \Generated\Shared\Transfer\RecoTransfer $recoTransfer
      *
-     * @return RecoTransfer
+     * @return \Generated\Shared\Transfer\RecoTransfer
      */
     public function getExistingRecoData(RecoTransfer $recoTransfer): TransferInterface;
+
+    /**
+     * @param \Generated\Shared\Transfer\ScenarioTransfer $scenarioTransfer
+     *
+     * @return \Generated\Shared\Transfer\ScenarioTransfer
+     */
+    public function getActiveScenarioName(ScenarioTransfer $scenarioTransfer): TransferInterface;
 }

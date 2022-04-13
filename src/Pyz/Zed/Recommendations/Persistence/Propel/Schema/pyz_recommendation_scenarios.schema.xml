@@ -10,6 +10,7 @@
         <column name="id_recommendation_scenarios" required="true" type="INTEGER" autoIncrement="true" primaryKey="true" />
         <column name="scenario_id" type="VARCHAR" />
         <column name="hash_id" type="VARCHAR" />
+        <column name="active" type="BOOLEAN" />
     </table>
 
     <table name="pyz_recommendation_definition">

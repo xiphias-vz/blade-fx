@@ -15,24 +15,24 @@ use Spryker\Zed\EventBehavior\Business\EventBehaviorFacadeInterface;
 class RecommendationsStorageWriter implements RecommendationsStorageWriterInterface
 {
     /**
-     * @var RecommendationsStorageRepositoryInterface
+     * @var \Pyz\Zed\RecommendationsStorage\Persistence\RecommendationsStorageRepositoryInterface
      */
     protected $recommendationsStorageRepository;
 
     /**
-     * @var RecommendationsStorageEntityManagerInterface
+     * @var \Pyz\Zed\RecommendationsStorage\Persistence\RecommendationsStorageEntityManagerInterface
      */
     protected $recommendationsStorageEntityManager;
 
     /**
-     * @var EventBehaviorFacadeInterface
+     * @var \Spryker\Zed\EventBehavior\Business\EventBehaviorFacadeInterface
      */
     protected $eventBehaviorFacade;
 
     /**
-     * @param RecommendationsStorageRepositoryInterface $recommendationsStorageRepository
-     * @param RecommendationsStorageEntityManagerInterface $recommendationsStorageEntityManager
-     * @param EventBehaviorFacadeInterface $eventBehaviorFacade
+     * @param \Pyz\Zed\RecommendationsStorage\Persistence\RecommendationsStorageRepositoryInterface $recommendationsStorageRepository
+     * @param \Pyz\Zed\RecommendationsStorage\Persistence\RecommendationsStorageEntityManagerInterface $recommendationsStorageEntityManager
+     * @param \Spryker\Zed\EventBehavior\Business\EventBehaviorFacadeInterface $eventBehaviorFacade
      */
     public function __construct(
         RecommendationsStorageRepositoryInterface $recommendationsStorageRepository,
@@ -73,11 +73,5 @@ class RecommendationsStorageWriter implements RecommendationsStorageWriterInterf
 
             $this->recommendationsStorageEntityManager->saveRecommendationDefinition($recommendationCollectionTransfer);
         }
-    }
-
-    public function updateRecommendationDefinitionToStorage(): void
-    {
-        $nekaj = "neeka";
-        // TODO: Implement updateRecommendationDefinitionToStorage() method.
     }
 }

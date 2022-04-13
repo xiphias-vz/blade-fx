@@ -38,7 +38,7 @@ class CategoryNodePageSearch
      * @param \Spryker\Zed\Category\Business\CategoryFacadeInterface $categoryFacade
      * @param \Spryker\Zed\ProductCategory\Business\ProductCategoryFacadeInterface $productCategoryFacade
      * @param \Spryker\Zed\Locale\Business\LocaleFacadeInterface $localeFacade
-     * @param CategoryPageSearchFacadeInterface $categoryPageSearchFacade
+     * @param \Spryker\Zed\CategoryPageSearch\Business\CategoryPageSearchFacadeInterface $categoryPageSearchFacade
      */
     public function __construct(
         CategoryFacadeInterface $categoryFacade,

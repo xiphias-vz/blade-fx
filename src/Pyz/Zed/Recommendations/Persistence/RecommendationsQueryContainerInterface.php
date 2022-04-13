@@ -1,13 +1,14 @@
 <?php
 
 /**
- * Copyright © 2016-present Spryker Systems GmbH. All rights reserved.
- * Use of this software requires acceptance of the Evaluation License Agreement. See LICENSE file.
+ * This file is part of the Spryker Commerce OS.
+ * For full license information, please view the LICENSE file that was distributed with this source code.
  */
 
 namespace Pyz\Zed\Recommendations\Persistence;
 
 use Generated\Shared\Transfer\RecoTransfer;
+use Generated\Shared\Transfer\ScenarioTransfer;
 use Orm\Zed\Customer\Persistence\SpyCustomerQuery;
 use Orm\Zed\Recommendations\Persistence\PyzRecommendationDefinitionQuery;
 use Orm\Zed\Recommendations\Persistence\PyzRecommendationScenariosQuery;
@@ -15,55 +16,88 @@ use Orm\Zed\Recommendations\Persistence\PyzRecommendationScenariosQuery;
 interface RecommendationsQueryContainerInterface
 {
     /**
-     * @param RecoTransfer $recoTransfer
+     * @param \Generated\Shared\Transfer\RecoTransfer $recoTransfer
      *
      * @return mixed
      */
     public function insertRecoData(RecoTransfer $recoTransfer): RecoTransfer;
 
     /**
-     * @param RecoTransfer $recoTransfer
+     * @param \Generated\Shared\Transfer\RecoTransfer $recoTransfer
      *
-     * @return RecoTransfer
+     * @return \Generated\Shared\Transfer\RecoTransfer
      */
     public function clearRecoData(RecoTransfer $recoTransfer): RecoTransfer;
 
     /**
-     * @param RecoTransfer $recoTransfer
+     * @param \Generated\Shared\Transfer\RecoTransfer $recoTransfer
      *
-     * @return RecoTransfer
+     * @return \Generated\Shared\Transfer\RecoTransfer
      */
     public function getExistingRecoData(RecoTransfer $recoTransfer): RecoTransfer;
 
     /**
-     * @return PyzRecommendationScenariosQuery
+     * @param \Generated\Shared\Transfer\ScenarioTransfer $scenarioTransfer
+     *
+     * @return \Generated\Shared\Transfer\ScenarioTransfer
+     */
+    public function getActiveScenarioName(ScenarioTransfer $scenarioTransfer): ScenarioTransfer;
+
+    /**
+     * @return \Orm\Zed\Recommendations\Persistence\PyzRecommendationScenariosQuery
      */
     public function getPyzRecommendationsScenarioQuery(): PyzRecommendationScenariosQuery;
 
     /**
-     * @return SpyCustomerQuery
+     * @return \Orm\Zed\Customer\Persistence\SpyCustomerQuery
      */
     public function getSpyCustomerQuery(): SpyCustomerQuery;
 
     /**
-     * @return mixed
-     */
-    public function queryScenariosWithScenarioIdAndHashId(string $scenarioId, string $hashId);
-
-    /**
-     * @param $id
+     * @param string $scenarioId
+     * @param string $hashId
      *
-     * @return PyzRecommendationScenariosQuery
+     * @return \Orm\Zed\Recommendations\Persistence\PyzRecommendationScenariosQuery
      */
-    public function queryScenarioWithIdRecommendationScenarios($id): PyzRecommendationScenariosQuery;
+    public function queryScenariosWithScenarioIdAndHashId(string $scenarioId, string $hashId): PyzRecommendationScenariosQuery;
 
     /**
-     * @return PyzRecommendationScenariosQuery
+     * @param string $scenarioId
+     * @param bool $isActive
+     *
+     * @return \Orm\Zed\Recommendations\Persistence\PyzRecommendationScenariosQuery
+     */
+    public function queryScenariosWithScenarioIdAndActiveField(string $scenarioId, bool $isActive): PyzRecommendationScenariosQuery;
+
+    /**
+     * @param string $scenarioId
+     * @param bool $isActive
+     *
+     * @return \Orm\Zed\Recommendations\Persistence\PyzRecommendationScenariosQuery
+     */
+    public function queryScenariosWithNotEqualScenarioIdAndActiveField(string $scenarioId, bool $isActive): PyzRecommendationScenariosQuery;
+
+    /**
+     * @param int $id
+     *
+     * @return \Orm\Zed\Recommendations\Persistence\PyzRecommendationScenariosQuery
+     */
+    public function queryScenarioWithIdRecommendationScenarios(int $id): PyzRecommendationScenariosQuery;
+
+    /**
+     * @param int $id
+     *
+     * @return \Orm\Zed\Recommendations\Persistence\PyzRecommendationScenariosQuery
+     */
+    public function queryScenarioWithNotEqualIdRecommendationScenarios(int $id): PyzRecommendationScenariosQuery;
+
+    /**
+     * @return \Orm\Zed\Recommendations\Persistence\PyzRecommendationScenariosQuery
      */
     public function queryAllScenarios(): PyzRecommendationScenariosQuery;
 
     /**
-     * @return PyzRecommendationDefinitionQuery
+     * @return \Orm\Zed\Recommendations\Persistence\PyzRecommendationDefinitionQuery
      */
     public function queryDefinitions(): PyzRecommendationDefinitionQuery;
 }

@@ -8,19 +8,16 @@
 namespace Pyz\Zed\RecommendationsStorage\Communication\Plugin\Synchronization;
 
 use Generated\Shared\Transfer\SynchronizationDataTransfer;
-use Orm\Zed\RecommendationsStorage\Persistence\PyzRecommendationDefinitionStorageQuery;
-use Pyz\Zed\RecommendationsStorage\Business\RecommendationsStorageFacadeInterface;
-use Pyz\Zed\RecommendationsStorage\Communication\RecommendationsStorageCommunicationFactory;
-use Pyz\Zed\RecommendationsStorage\Persistence\RecommendationsStorageRepositoryInterface;
 use Pyz\Shared\RecommendationsStorage\RecommendationsStorageConfig;
 use Spryker\Zed\Kernel\Communication\AbstractPlugin;
 use Spryker\Zed\SynchronizationExtension\Dependency\Plugin\SynchronizationDataBulkRepositoryPluginInterface;
 
 /**
- * @method RecommendationsStorageCommunicationFactory getFactory()
- * @method RecommendationsStorageFacadeInterface getFacade()
+ * @method \Pyz\Zed\RecommendationsStorage\Communication\RecommendationsStorageCommunicationFactory getFactory()
+ * @method \Pyz\Zed\RecommendationsStorage\Business\RecommendationsStorageFacadeInterface getFacade()
  * @method \Pyz\Zed\RecommendationsStorage\RecommendationsStorageConfig getConfig()
- * @method RecommendationsStorageRepositoryInterface getRepository()
+ * @method \Pyz\Zed\RecommendationsStorage\Persistence\RecommendationsStorageRepositoryInterface getRepository()
+ * @method \Pyz\Zed\RecommendationsStorage\Persistence\RecommendationsStorageQueryContainerInterface getQueryContainer()
  */
 class RecommendationsStorageSynchronizationDataBulkPlugin extends AbstractPlugin implements SynchronizationDataBulkRepositoryPluginInterface
 {
@@ -34,7 +31,7 @@ class RecommendationsStorageSynchronizationDataBulkPlugin extends AbstractPlugin
      * @param int $limit
      * @param array $ids
      *
-     * @return array|\Generated\Shared\Transfer\SynchronizationDataTransfer[]
+     * @return \Generated\Shared\Transfer\SynchronizationDataTransfer[]
      */
     public function getData(int $offset, int $limit, array $ids = []): array
     {
@@ -46,18 +43,11 @@ class RecommendationsStorageSynchronizationDataBulkPlugin extends AbstractPlugin
             }
         }
 
-        // nesmije ::create biti tu ali sprykerovci su isto tako napisali
-        $recommendationsStorageEntity = PyzRecommendationDefinitionStorageQuery::create()
+        $recommendationsStorageEntity = $this->getQueryContainer()->getPyzRecommendationDefinitionStorageQuery()
             ->offset($offset)
             ->limit($limit)
             ->filterByIdRecommendationsStorage_In($ids)
             ->find();
-
-        $recommendationsStorageString = PyzRecommendationDefinitionStorageQuery::create()
-            ->offset($offset)
-            ->limit($limit)
-            ->filterByIdRecommendationsStorage_In($ids)
-            ->toString();
 
         $synchronizationDataTransfers = [];
 

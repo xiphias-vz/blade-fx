@@ -483,6 +483,8 @@ class DetailController extends SprykerDetailController
     }
 
     /**
+     * @param $orderItem
+     *
      * @return void
      */
     protected function removeHouseNumber($orderItem)

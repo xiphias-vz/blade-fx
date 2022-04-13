@@ -1,8 +1,9 @@
 {{ form_start(form) }}
     {# {{ form_widget(form) }} #}
+    {{ form_row(form.hashId) }}
     {{ form_row(form.idRecommendationScenarios) }}
     {{ form_row(form.scenarioId) }}
-    {{ form_row(form.hashId) }}
+    {{ form_row(form.active) }}
 
         <input type="submit" class="btn btn-primary safe-submit" value="{{ 'Save' | trans }} " />
 {{ form_end(form) }}

@@ -1,38 +1,41 @@
 <?php
 
+/**
+ * This file is part of the Spryker Commerce OS.
+ * For full license information, please view the LICENSE file that was distributed with this source code.
+ */
+
 namespace Pyz\Zed\Recommendations\Communication\Form\DataProvider;
 
 use Generated\Shared\Transfer\RecommendationDefinitionTransfer;
-use Generated\Shared\Transfer\ScenarioTransfer;
 use Pyz\Zed\Recommendations\Business\RecommendationsFacadeInterface;
-use Pyz\Zed\Recommendations\Persistence\RecommendationsQueryContainerInterface;
 
 class RecommendationFormDataProvider
 {
     /**
-     * @var RecommendationsFacadeInterface
+     * @var \Pyz\Zed\Recommendations\Business\RecommendationsFacadeInterface
      */
     protected $recommendationsFacade;
 
     /**
-     * @var ScenarioTransfer
+     * @var \Generated\Shared\Transfer\ScenarioTransfer
      */
     protected $definitionTransfer;
 
     /**
-     * @param RecommendationsFacadeInterface $recommendationsFacade
-     * @param RecommendationDefinitionTransfer|null $definitionTransfer
+     * @param \Pyz\Zed\Recommendations\Business\RecommendationsFacadeInterface $recommendationsFacade
+     * @param \Generated\Shared\Transfer\RecommendationDefinitionTransfer|null $definitionTransfer
      */
     public function __construct(
         RecommendationsFacadeInterface $recommendationsFacade,
         ?RecommendationDefinitionTransfer $definitionTransfer = null
-    ){
+    ) {
         $this->recommendationsFacade = $recommendationsFacade;
         $this->definitionTransfer = $definitionTransfer;
     }
 
     /**
-     * @return RecommendationDefinitionTransfer|null
+     * @return \Generated\Shared\Transfer\RecommendationDefinitionTransfer|null
      */
     public function getData(): ?RecommendationDefinitionTransfer
     {

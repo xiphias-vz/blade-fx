@@ -58,6 +58,12 @@ class AddToQueueWriter implements AddToQueueWriterInterface
         $this->restApiError = $restApiError;
     }
 
+    /**
+     * @param \Spryker\Glue\GlueApplication\Rest\Request\Data\RestRequestInterface $restRequest
+     * @param \Generated\Shared\Transfer\RestAddToQueueAttributesTransfer $restAddToQueueAttributesTransfer
+     *
+     * @return \Spryker\Glue\GlueApplication\Rest\JsonApi\RestResponseInterface
+     */
     public function postOrderInQueue(RestRequestInterface $restRequest, RestAddToQueueAttributesTransfer $restAddToQueueAttributesTransfer): RestResponseInterface
     {
         $restResponse = $this->addToQueueRestResponseBuilder->createRestResponse();

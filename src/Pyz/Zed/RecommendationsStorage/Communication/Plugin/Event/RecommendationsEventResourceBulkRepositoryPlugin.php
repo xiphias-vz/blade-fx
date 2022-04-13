@@ -8,21 +8,17 @@
 namespace Pyz\Zed\RecommendationsStorage\Communication\Plugin\Event;
 
 use Generated\Shared\Transfer\EventEntityTransfer;
-use Orm\Zed\Merchant\Persistence\Map\SpyMerchantTableMap;
-use Orm\Zed\Recommendations\Persistence\Map\PyzRecommendationDefinitionTableMap;
 use Pyz\Shared\RecommendationsStorage\RecommendationsStorageConfig;
 use Pyz\Zed\Recommendations\Dependency\RecommendationsEvents;
-use Pyz\Zed\RecommendationsStorage\Business\RecommendationsStorageFacadeInterface;
-use Pyz\Zed\RecommendationsStorage\Communication\RecommendationsStorageCommunicationFactory;
-use Pyz\Zed\RecommendationsStorage\Persistence\RecommendationsStorageRepositoryInterface;
 use Spryker\Zed\EventBehavior\Dependency\Plugin\EventResourceBulkRepositoryPluginInterface;
 use Spryker\Zed\Kernel\Communication\AbstractPlugin;
 
 /**
- * @method RecommendationsStorageCommunicationFactory getFactory()
- * @method RecommendationsStorageRepositoryInterface getRepository()
- * @method RecommendationsStorageFacadeInterface getFacade()
+ * @method \Pyz\Zed\RecommendationsStorage\Communication\RecommendationsStorageCommunicationFactory getFactory()
+ * @method \Pyz\Zed\RecommendationsStorage\Persistence\RecommendationsStorageRepositoryInterface getRepository()
+ * @method \Pyz\Zed\RecommendationsStorage\Business\RecommendationsStorageFacadeInterface getFacade()
  * @method \Pyz\Zed\RecommendationsStorage\RecommendationsStorageConfig getConfig()
+ * @method \Pyz\Zed\RecommendationsStorage\Persistence\RecommendationsStorageQueryContainerInterface getQueryContainer()
  */
 class RecommendationsEventResourceBulkRepositoryPlugin extends AbstractPlugin implements EventResourceBulkRepositoryPluginInterface
 {
@@ -30,7 +26,7 @@ class RecommendationsEventResourceBulkRepositoryPlugin extends AbstractPlugin im
      * @param int $offset
      * @param int $limit
      *
-     * @return array|\Spryker\Shared\Kernel\Transfer\AbstractTransfer[]
+     * @return \Spryker\Shared\Kernel\Transfer\AbstractTransfer[]
      */
     public function getData(int $offset, int $limit): array
     {
@@ -39,7 +35,7 @@ class RecommendationsEventResourceBulkRepositoryPlugin extends AbstractPlugin im
             ->getAllStores();
 
         $eventEntityTransfers = [];
-        foreach($stores as $store) {
+        foreach ($stores as $store) {
             $eventEntityTransfers[] = (new EventEntityTransfer())->setAdditionalValues([
                 'storeId' => $store->getIdStore(),
                 'store' => $store->getName(),

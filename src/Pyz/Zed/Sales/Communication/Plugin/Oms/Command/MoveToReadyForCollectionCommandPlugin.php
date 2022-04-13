@@ -85,6 +85,9 @@ class MoveToReadyForCollectionCommandPlugin extends AbstractPlugin implements Co
         return true;
     }
 
+    /**
+     * @var array
+     */
     private $states = [];
 
     /**

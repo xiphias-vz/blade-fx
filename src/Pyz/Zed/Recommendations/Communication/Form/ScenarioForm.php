@@ -1,8 +1,8 @@
 <?php
 
 /**
- * Copyright © 2016-present Spryker Systems GmbH. All rights reserved.
- * Use of this software requires acceptance of the Evaluation License Agreement. See LICENSE file.
+ * This file is part of the Spryker Commerce OS.
+ * For full license information, please view the LICENSE file that was distributed with this source code.
  */
 
 namespace Pyz\Zed\Recommendations\Communication\Form;
@@ -13,13 +13,20 @@ use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Validator\Constraints\NotBlank;
-use Symfony\Component\Validator\Constraints\Regex;
 
+/**
+ * @method \Pyz\Zed\Recommendations\Persistence\RecommendationsRepositoryInterface getRepository()
+ * @method \Pyz\Zed\Recommendations\Communication\RecommendationsCommunicationFactory getFactory()
+ * @method \Pyz\Zed\Recommendations\Business\RecommendationsFacadeInterface getFacade()
+ * @method \Pyz\Zed\Recommendations\RecommendationsConfig getConfig()
+ * @method \Pyz\Zed\Recommendations\Persistence\RecommendationsQueryContainerInterface getQueryContainer()
+ */
 class ScenarioForm extends AbstractType
 {
     public const FIELD_ID_RECOMMENDATION_SCENARIOS = 'idRecommendationScenarios';
     public const FIELD_SCENARIO_ID = 'scenarioId';
     public const FIELD_HASH_ID = 'hashId';
+    public const FIELD_ACTIVE = 'active';
 
     public const FIELD_ALLOW_INPUT = 'allow_input';
     public const FIELD_VALUES = 'values';
@@ -27,7 +34,7 @@ class ScenarioForm extends AbstractType
     public const OPTION_RECOMMENDATIONS_TYPE_CHOICES = 'recommendations_type_choices';
 
     /**
-     * @param FormBuilderInterface $builder
+     * @param \Symfony\Component\Form\FormBuilderInterface $builder
      * @param array $options
      *
      * @return void
@@ -36,16 +43,29 @@ class ScenarioForm extends AbstractType
     {
         $this
             ->addIdRecomendationSenariosField($builder)
+            ->addHashIdField($builder)
             ->addScenarioIdField($builder)
-            ->addHashIdField($builder);
+            ->addActivatedField($builder);
     }
 
     /**
-     * @param FormBuilderInterface $builder
+     * @param \Symfony\Component\Form\FormBuilderInterface $builder
      *
      * @return $this
      */
-    protected function addIdRecomendationSenariosField(FormBuilderInterface $builder): ScenarioForm
+    protected function addHashIdField(FormBuilderInterface $builder)
+    {
+        $builder->add(self::FIELD_HASH_ID, HiddenType::class);
+
+        return $this;
+    }
+
+    /**
+     * @param \Symfony\Component\Form\FormBuilderInterface $builder
+     *
+     * @return $this
+     */
+    protected function addIdRecomendationSenariosField(FormBuilderInterface $builder)
     {
         $builder->add(self::FIELD_ID_RECOMMENDATION_SCENARIOS, HiddenType::class);
 
@@ -53,11 +73,11 @@ class ScenarioForm extends AbstractType
     }
 
     /**
-     * @param FormBuilderInterface $builder
+     * @param \Symfony\Component\Form\FormBuilderInterface $builder
      *
      * @return $this
      */
-    protected function addScenarioIdField(FormBuilderInterface $builder): ScenarioForm
+    protected function addScenarioIdField(FormBuilderInterface $builder)
     {
         $builder->add(self::FIELD_SCENARIO_ID, TextType::class, [
             'label' => 'Scenario ID',
@@ -73,23 +93,17 @@ class ScenarioForm extends AbstractType
     }
 
     /**
-     * @param FormBuilderInterface $builder
+     * @param \Symfony\Component\Form\FormBuilderInterface $builder
      *
      * @return $this
      */
-    protected function addHashIdField(FormBuilderInterface $builder): ScenarioForm
+    protected function addActivatedField(FormBuilderInterface $builder)
     {
-        $builder->add(self::FIELD_HASH_ID, TextType::class, [
-            'label' => 'Hash ID',
-            'constraints' => [
-                new NotBlank(),
-            ],
-            'attr' => [
-                'placeholder' => 'Scenarios Hash Name/ID',
-            ]
+        $builder->add(self::FIELD_ACTIVE, CheckboxType::class, [
+            'label' => 'Active',
+            'required' => false,
         ]);
 
         return $this;
     }
-
 }

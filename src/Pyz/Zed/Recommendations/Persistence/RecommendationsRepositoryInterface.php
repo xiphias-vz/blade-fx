@@ -1,8 +1,8 @@
 <?php
 
 /**
- * Copyright © 2016-present Spryker Systems GmbH. All rights reserved.
- * Use of this software requires acceptance of the Evaluation License Agreement. See LICENSE file.
+ * This file is part of the Spryker Commerce OS.
+ * For full license information, please view the LICENSE file that was distributed with this source code.
  */
 
 namespace Pyz\Zed\Recommendations\Persistence;
@@ -15,12 +15,12 @@ interface RecommendationsRepositoryInterface
     /**
      * @param int $idRecommendationsScenario
      *
-     * @return ScenarioTransfer
+     * @return \Generated\Shared\Transfer\ScenarioTransfer|null
      */
     public function findScenario(int $idRecommendationsScenario): ?ScenarioTransfer;
 
     /**
-     * @return RecommendationDefinitionTransfer|null
+     * @return \Generated\Shared\Transfer\RecommendationDefinitionTransfer|null
      */
     public function getRecommendationsDefinition(): ?RecommendationDefinitionTransfer;
 }

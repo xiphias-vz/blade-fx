@@ -15,9 +15,4 @@ interface RecommendationsStorageWriterInterface
      * @return void
      */
     public function publish(array $eventTransfers): void;
-
-    /**
-     * @return void
-     */
-    public function updateRecommendationDefinitionToStorage(): void;
 }

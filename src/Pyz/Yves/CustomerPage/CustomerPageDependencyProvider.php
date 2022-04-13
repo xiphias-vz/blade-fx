@@ -95,9 +95,9 @@ class CustomerPageDependencyProvider extends SprykerShopCustomerPageDependencyPr
     }
 
     /**
-     * @param Container $container
+     * @param \Spryker\Yves\Kernel\Container $container
      *
-     * @return Container
+     * @return \Spryker\Yves\Kernel\Container
      */
     protected function addRecommendationsClient(Container $container): Container
     {
@@ -109,9 +109,9 @@ class CustomerPageDependencyProvider extends SprykerShopCustomerPageDependencyPr
     }
 
     /**
-     * @param Container $container
+     * @param \Spryker\Yves\Kernel\Container $container
      *
-     * @return Container
+     * @return \Spryker\Yves\Kernel\Container
      */
     protected function addRecommendationsStorageClient(Container $container): Container
     {

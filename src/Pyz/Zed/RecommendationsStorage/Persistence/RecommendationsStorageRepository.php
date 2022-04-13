@@ -1,5 +1,10 @@
 <?php
 
+/**
+ * This file is part of the Spryker Commerce OS.
+ * For full license information, please view the LICENSE file that was distributed with this source code.
+ */
+
 namespace Pyz\Zed\RecommendationsStorage\Persistence;
 
 use Generated\Shared\Transfer\RecommendationDefinitionCollectionTransfer;
@@ -7,14 +12,14 @@ use Generated\Shared\Transfer\RecommendationDefinitionCriteriaTransfer;
 use Spryker\Zed\Kernel\Persistence\AbstractRepository;
 
 /**
- * @method RecommendationsStoragePersistenceFactory getFactory()
+ * @method \Pyz\Zed\RecommendationsStorage\Persistence\RecommendationsStoragePersistenceFactory getFactory()
  */
 class RecommendationsStorageRepository extends AbstractRepository implements RecommendationsStorageRepositoryInterface
 {
     /**
-     * @param RecommendationDefinitionCriteriaTransfer $criteriaTransfer
+     * @param \Generated\Shared\Transfer\RecommendationDefinitionCriteriaTransfer $criteriaTransfer
      *
-     * @return RecommendationDefinitionCollectionTransfer
+     * @return \Generated\Shared\Transfer\RecommendationDefinitionCollectionTransfer
      */
     public function getRecommendationDefinition(RecommendationDefinitionCriteriaTransfer $criteriaTransfer): RecommendationDefinitionCollectionTransfer
     {
@@ -25,24 +30,5 @@ class RecommendationsStorageRepository extends AbstractRepository implements Rec
         return $this->getFactory()
             ->createRecommendationsStorageMapper()
             ->mapRecommendationDefinitionEntityToRecommendationDefinitionCollection($definitionEntity, $criteriaTransfer, new RecommendationDefinitionCollectionTransfer());
-    }
-
-    /**
-     * @return RecommendationDefinitionCollectionTransfer|null
-     */
-    public function findRecommendationDefinitionStorage(): ?RecommendationDefinitionCollectionTransfer
-    {
-        $definitionStorageEntity = $this->getFactory()
-            ->createRecommendationDefinitionStorageQuery()
-            ->findOne();
-
-        if ($definitionStorageEntity === null) {
-            return null;
-        }
-
-        return $this->getFactory()
-            ->createRecommendationsStorageMapper()
-            ->mapRecommendationDefinitionStorageEntityToRecommendationDefinitionCollection($definitionEntity, new RecommendationDefinitionCollectionTransfer());
-
     }
 }
