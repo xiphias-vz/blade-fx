@@ -9,15 +9,15 @@ namespace Pyz\Zed\CategoryDataImportCZ\Business;
 
 use Generated\Shared\Transfer\DataImporterConfigurationTransfer;
 use Generated\Shared\Transfer\DataImporterReportTransfer;
+use Spryker\Zed\CategoryDataImport\Business\CategoryDataImportFacade as SprykerCategoryDataImportFacade;
 use Spryker\Zed\CategoryDataImport\Business\CategoryDataImportFacadeInterface;
-use Spryker\Zed\Kernel\Business\AbstractFacade;
 
 /**
  * @api
  *
  * @method \Pyz\Zed\CategoryDataImportCZ\Business\CategoryDataImportBusinessFactory getFactory()
  */
-class CategoryDataImportFacade extends AbstractFacade implements CategoryDataImportFacadeInterface
+class CategoryDataImportFacade extends SprykerCategoryDataImportFacade implements CategoryDataImportFacadeInterface
 {
     /**
      * {@inheritDoc}
