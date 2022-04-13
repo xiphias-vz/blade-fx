@@ -22,9 +22,6 @@ class PlaceOrderStep extends SprykerPlaceOrderStep
     public function execute(Request $request, AbstractTransfer $quoteTransfer)
     {
         /** @var \Generated\Shared\Transfer\QuoteTransfer $quoteTransfer */
-        if ($quoteTransfer->getUuid() === null) {
-            $quoteTransfer->setUuid(uniqid("", true));
-        }
         $quoteTransfer = parent::execute($request, $quoteTransfer);
 
         if ($this->checkoutResponseTransfer->getSaveOrder() !== null) {

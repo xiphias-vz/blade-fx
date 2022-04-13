@@ -115,6 +115,6 @@ class GlobusRestApiCustomerEvent
 
         $data = $jsonUtil->encode($arrayCombine);
 
-        return GlobusRestApiClient::post($url, $data, [], $this->bearerToken);
+        return GlobusRestApiClient::post($url, $data, [], $this->bearerToken, 5);
     }
 }

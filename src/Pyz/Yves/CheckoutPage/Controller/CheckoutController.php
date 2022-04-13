@@ -171,6 +171,11 @@ class CheckoutController extends SprykerCheckoutControllerAlias
             ->getQuoteClient()
             ->getQuote();
 
+        if ($quoteTransfer->getUuid() === null) {
+            $quoteTransfer->setUuid(uniqid("", true));
+            $this->getFactory()->getQuoteClient()->setQuote($quoteTransfer);
+        }
+
         $quoteTransfer->setCartNote(json_encode($quoteTransfer->getCartNote()));
 
         $grandTotal = $quoteTransfer

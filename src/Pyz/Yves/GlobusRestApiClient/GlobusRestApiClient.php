@@ -58,10 +58,11 @@ class GlobusRestApiClient
      * @param mixed $data
      * @param array $params $params = ['id' => 1, 'name' => 'spry']
      * @param string|null $bearerToken
+     * @param int $timeOutSecond
      *
      * @return \Pyz\Yves\GlobusRestApiClient\Provider\GlobusRestApiResult
      */
-    public static function post(string $url, $data, array $params, ?string $bearerToken = null): GlobusRestApiResult
+    public static function post(string $url, $data, array $params, ?string $bearerToken = null, int $timeOutSecond = 0): GlobusRestApiResult
     {
         $urlPrefix = GlobusRestApiConfig::getGlobusApiUrlPrefix();
         $fullUrl = $urlPrefix . $url;
@@ -91,7 +92,7 @@ class GlobusRestApiClient
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_ENCODING => '',
             CURLOPT_MAXREDIRS => 10,
-            CURLOPT_TIMEOUT => 0,
+            CURLOPT_TIMEOUT => $timeOutSecond,
             CURLOPT_FOLLOWLOCATION => true,
             CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
             CURLOPT_CUSTOMREQUEST => 'POST',

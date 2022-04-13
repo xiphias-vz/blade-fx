@@ -86,14 +86,16 @@ class FactFinderApiClient
 
     /**
      * @param string $url
+     * @param int $timeOutSec
      *
      * @return resource|false
      */
-    protected static function createCurl(string $url)
+    protected static function createCurl(string $url, int $timeOutSec = 13)
     {
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $url);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_TIMEOUT, $timeOutSec);
         curl_setopt($ch, CURLOPT_USERPWD, static::getUserName() . ":" . static::getPassword());
         curl_setopt($ch, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
         curl_setopt($ch, CURLOPT_HTTPHEADER, [
@@ -158,12 +160,13 @@ class FactFinderApiClient
     /**
      * @param string $url
      * @param array $data
+     * @param int $timeOutSec
      *
      * @return array
      */
-    protected static function postData(string $url, array $data): array
+    protected static function postData(string $url, array $data, int $timeOutSec = 13): array
     {
-        $ch = static::createCurl($url);
+        $ch = static::createCurl($url, $timeOutSec);
         curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'POST');
         curl_setopt($ch, CURLOPT_POSTFIELDS, JSON::stringify($data));
 
@@ -228,8 +231,8 @@ class FactFinderApiClient
         $urlSpryker = static::getRootUrl() . 'track/' . static::getChannel() . '/cart';
         $urlShopware = static::getRootUrl() . 'track/' . static::getShopwareChannel() . '/cart';
 
-        $sprykerChannelPostData = static::postData($urlSpryker, $data);
-        $shopwareChannelPostData = static::postData($urlShopware, $data);
+        $sprykerChannelPostData = static::postData($urlSpryker, $data, 5);
+        $shopwareChannelPostData = static::postData($urlShopware, $data, 5);
 
         return [$sprykerChannelPostData, $shopwareChannelPostData];
     }
@@ -244,8 +247,8 @@ class FactFinderApiClient
         $urlSpryker = static::getRootUrl() . 'track/' . static::getChannel() . '/checkout';
         $urlShopware = static::getRootUrl() . 'track/' . static::getShopwareChannel() . '/checkout';
 
-        $sprykerChannelPostData = static::postData($urlSpryker, $data);
-        $shopwareChannelPostData = static::postData($urlShopware, $data);
+        $sprykerChannelPostData = static::postData($urlSpryker, $data, 5);
+        $shopwareChannelPostData = static::postData($urlShopware, $data, 5);
 
         return [$sprykerChannelPostData, $shopwareChannelPostData];
     }
@@ -260,8 +263,8 @@ class FactFinderApiClient
         $urlSpryker = static::getRootUrl() . 'track/' . static::getChannel() . '/click';
         $urlShopware = static::getRootUrl() . 'track/' . static::getShopwareChannel() . '/click';
 
-        $sprykerChannelPostData = static::postData($urlSpryker, $data);
-        $shopwareChannelPostData = static::postData($urlShopware, $data);
+        $sprykerChannelPostData = static::postData($urlSpryker, $data, 5);
+        $shopwareChannelPostData = static::postData($urlShopware, $data, 5);
 
         return [$sprykerChannelPostData, $shopwareChannelPostData];
     }
