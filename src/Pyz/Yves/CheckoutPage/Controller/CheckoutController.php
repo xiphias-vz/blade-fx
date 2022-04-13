@@ -256,7 +256,7 @@ class CheckoutController extends SprykerCheckoutControllerAlias
         $customer = $this->getFactory()->getQuoteClient()->getQuote()->getCustomer();
         $quoteTransfer = $this->getFactory()->getQuoteClient()->getQuote();
 
-        if ($customer->getEmail() !== null && $storeCodeBucket == 'DE') {
+        if ($customer->getEmail() !== null && $customer->getIsGuest() !== true && $storeCodeBucket == 'DE') {
             $customerNewPhone = $customer->getPhone();
             $customerNewMobile = $customer->getMobilePhoneNumber();
 
@@ -308,7 +308,7 @@ class CheckoutController extends SprykerCheckoutControllerAlias
                     ->getShippingAddress()
                     ->setCellPhone($customerNewMobile);
             }
-        } else {
+        } elseif ($customer->getEmail() !== null && $customer->getIsGuest() !== true && $storeCodeBucket == 'CZ') {
             $customerNewMobile = $customer->getMobilePhoneNumber();
 
             if ($customerNewMobile !== $quoteTransfer->getBillingAddress()->getCellPhone()) {

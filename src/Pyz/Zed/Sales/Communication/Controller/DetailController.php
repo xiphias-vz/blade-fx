@@ -84,8 +84,8 @@ class DetailController extends SprykerDetailController
         $orderItemSplitFormCollection = $this->getFactory()->createOrderItemSplitFormCollection($orderTransfer->getItems());
         $events = $this->getFactory()->getOmsFacade()->getDistinctManualEventsByIdSalesOrder($idSalesOrder);
         $customerTransfer = $orderTransfer->getCustomer();
-        $cellPhone = $customerTransfer->getMobilePhoneNumber();
-        $phone = $customerTransfer->getPhone();
+        $cellPhone = $orderTransfer->getBillingAddress()->getCellPhone();
+        $phone = $orderTransfer->getBillingAddress()->getPhone();
         $groupedOrderItems = $this->getFacade()
             ->getUniqueItemsFromOrder($orderTransfer);
         $requestDeliveryDate = $groupedOrderItems[0]->getShipment()->getRequestedDeliveryDate();
