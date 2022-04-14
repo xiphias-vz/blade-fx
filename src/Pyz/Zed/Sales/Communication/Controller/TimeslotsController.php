@@ -51,6 +51,7 @@ class TimeslotsController extends AbstractController
         }
 
         return [
+            'currentStore' => $storeId,
             'storesData' => $stores,
             'isUserAdmin' => $isAdmin,
             'currentCutoffs' => $currentCutoffs,
