@@ -43,7 +43,7 @@ $jobs[] = [
 $jobs[] = [
     'name' => 'apply-price-product-schedule',
     'command' => '$PHP_BIN vendor/bin/console price-product-schedule:apply',
-    'schedule' => '30 1,5,6,7,8 * * *',
+    'schedule' => '30 0,1,5,6,7,8 * * *',
     'enable' => true,
     'stores' => $allStores,
 ];
@@ -221,7 +221,7 @@ if ($storeCodeBucket == 'CZ') {
     $jobs[] = [
         'name' => 'update-product-label-relations',
         'command' => '$PHP_BIN vendor/bin/console product-label:relations:update -vvv',
-        'schedule' => '0 2,6,7,8,9 * * *',
+        'schedule' => '33 0,1,5,6,7,8 * * *',
         'enable' => true,
         'stores' => ['OST'],
     ];
@@ -257,7 +257,7 @@ if ($storeCodeBucket == 'CZ') {
     $jobs[] = [
         'name' => 'export-sales-order-summary',
         'command' => '$PHP_BIN vendor/bin/console data:exportSalesOrderSummary',
-        'schedule' => '0 1 * * *',
+        'schedule' => '15 1 * * *',
         'enable' => true,
         'stores' => ['OST'],
     ];
@@ -283,7 +283,7 @@ if ($storeCodeBucket == 'CZ') {
     $jobs[] = [
         'name' => 'check-actionprices-for-weight-articles',
         'command' => 'vendor/bin/install -r check-action-prices-for-weight-articles',
-        'schedule' => '0 4 * * *',
+        'schedule' => '35 0,1,5,6,7,8 * * *',
         'enable' => true,
         'stores' => ['OST'],
     ];
@@ -378,7 +378,7 @@ if ($storeCodeBucket == 'CZ') {
     $jobs[] = [
         'name' => 'export-sales-order-summary',
         'command' => '$PHP_BIN vendor/bin/console data:exportSalesOrderSummary',
-        'schedule' => '0 1 * * *',
+        'schedule' => '15 1 * * *',
         'enable' => true,
         'stores' => ['EIN'],
     ];
@@ -386,7 +386,7 @@ if ($storeCodeBucket == 'CZ') {
     $jobs[] = [
         'name' => 'update-product-label-relations',
         'command' => '$PHP_BIN vendor/bin/console product-label:relations:update -vvv',
-        'schedule' => '0 2,6,7,8,9 * * *',
+        'schedule' => '33 0,1,5,6,7,8 * * *',
         'enable' => true,
         'stores' => ['EIN'],
     ];
@@ -421,7 +421,7 @@ if ($storeCodeBucket == 'CZ') {
     $jobs[] = [
         'name' => 'check-actionprices-for-weight-articles',
         'command' => 'vendor/bin/install -r check-action-prices-for-weight-articles',
-        'schedule' => '0 4 * * *',
+        'schedule' => '35 0,1,5,6,7,8 * * *',
         'enable' => true,
         'stores' => ['EIN'],
     ];
