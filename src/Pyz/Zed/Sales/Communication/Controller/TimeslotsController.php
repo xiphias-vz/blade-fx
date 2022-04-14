@@ -29,7 +29,7 @@ class TimeslotsController extends AbstractController
         $table = $this->getFactory()->createOrdersTable();
         $stores = $table->getStoresByUser();
 
-        if(isset($_REQUEST['location'])){
+        if (isset($_REQUEST['location'])) {
             $storeId = (int)$_REQUEST['location'];
         } else {
             if ($locale === 'DE') {

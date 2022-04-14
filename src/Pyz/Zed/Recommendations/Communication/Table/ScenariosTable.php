@@ -19,6 +19,7 @@ use Spryker\Zed\Gui\Communication\Table\TableConfiguration;
 class ScenariosTable extends AbstractTable
 {
     public const COL_ACTIONS = 'actions';
+    public const COL_ACTIVE = PyzRecommendationScenariosTableMap::COL_ACTIVE;
 
     /**
      * @var \Pyz\Zed\Recommendations\Persistence\RecommendationsQueryContainerInterface
@@ -48,6 +49,7 @@ class ScenariosTable extends AbstractTable
         ]);
 
         $config->setRawColumns([
+            static::COL_ACTIVE,
             static::COL_ACTIONS,
         ]);
 

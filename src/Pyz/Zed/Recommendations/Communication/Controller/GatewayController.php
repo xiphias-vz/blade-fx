@@ -19,7 +19,7 @@ class GatewayController extends AbstractGatewayController
     /**
      * @param \Generated\Shared\Transfer\RecoTransfer $recoTransfer
      *
-     * @return mixed
+     * @return \Generated\Shared\Transfer\RecoTransfer
      */
     public function insertRecoDataAction(RecoTransfer $recoTransfer): RecoTransfer
     {
@@ -43,7 +43,7 @@ class GatewayController extends AbstractGatewayController
      *
      * @return \Generated\Shared\Transfer\RecoTransfer
      */
-    public function getExistingRecoData(RecoTransfer $recoTransfer): RecoTransfer
+    public function getExistingRecoDataAction(RecoTransfer $recoTransfer): RecoTransfer
     {
         return $this->getFacade()
             ->getExistingRecoData($recoTransfer);
@@ -54,7 +54,7 @@ class GatewayController extends AbstractGatewayController
      *
      * @return \Generated\Shared\Transfer\ScenarioTransfer
      */
-    public function getActiveScenarioName(ScenarioTransfer $scenarioTransfer): ScenarioTransfer
+    public function getActiveScenarioNameAction(ScenarioTransfer $scenarioTransfer): ScenarioTransfer
     {
         return $this->getFacade()
             ->getActiveScenarioName($scenarioTransfer);

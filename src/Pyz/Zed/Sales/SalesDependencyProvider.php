@@ -54,8 +54,6 @@ use Spryker\Zed\SalesQuantity\Communication\Plugin\SalesExtension\IsQuantitySpli
 use Spryker\Zed\SalesQuantity\Communication\Plugin\SalesExtension\NonSplittableItemTransformerStrategyPlugin;
 use Spryker\Zed\Shipment\Business\ShipmentFacadeInterface;
 use Spryker\Zed\Shipment\Communication\Plugin\ShipmentOrderHydratePlugin;
-use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\Request;
 
 class SalesDependencyProvider extends SprykerSalesDependencyProvider
 {
