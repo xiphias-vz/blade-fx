@@ -1,7 +1,7 @@
 @mixin facets-asn($name: '.facets-asn') {
     #{$name} {
 
-        @include helper-breakpoint-media-max($md-max){
+        @include helper-breakpoint-media-max($md-max) {
             display: flex;
             justify-content: center;
             flex-direction: column;
@@ -21,17 +21,37 @@
             min-width: unset;
         }
 
+
+        ff-asn-group .expand-arrow::after, ff-asn-group-slider .expand-arrow::after {
+            width: 0.8rem;
+            height: 0.8rem;
+            background: url('../images/right-chevron.svg');
+            background-size: cover;
+            content: " ";
+            transition: all .3s ease;
+        }
+        ff-asn-group[opened] .expand-arrow::after, ff-asn-group-slider[opened] .expand-arrow::after {
+            transform: rotate(90deg);
+            transition: all .3s ease;
+        }
+
         ff-asn {
 
             font-family: $setting-font-family;
+            border: rem(1) solid $setting-color-globus-lightGray;
+            padding: rem(5);
 
-            @include helper-breakpoint-media-max($md-max){
+            @include helper-breakpoint-media-max($md-max) {
                 width: 100%;
                 display: flex;
                 flex-direction: column;
                 align-items: center;
                 max-height: 90vh;
                 overflow-y: auto;
+            }
+
+            .sectionBorder {
+                border-bottom: solid $setting-color-globus-lightGray rem(1);
             }
 
             strong {
@@ -43,155 +63,74 @@
                 font-family: $setting-font-family-additional;
                 display: flex;
                 justify-content: space-between;
+                align-items: center;
                 padding: rem(5);
             }
-            .groupCaption::after {
-                content: url("data:image/svg+xml; utf8, <svg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 24 24'><path d='M5 3l3.057-3 11.943 12-11.943 12-3.057-3 9-9z'/></svg>");
-            }
-            ff-asn-group, ff-asn-group-slider{
+
+            ff-asn-group, ff-asn-group-slider {
                 min-width: 100%;
+                padding: rem(5);
             }
 
-            ff-asn-group[for-group = CategoryPathROOT] {
+            .ffw-asn-group-container {
+                padding-left: 1rem;
 
-                border:  rem(1) solid $setting-color-globus-lightGray;
-                padding: rem(5);
+                .ffw-wrapper {
 
-                @include helper-breakpoint-media-max($md-max){
-                    min-width: 95vw;
-                }
+                    div[data-content = detailedLinks] {
+                        overflow-y: auto;
+                        max-height: rem(300);
 
-                .ffw-asn-group-container {
-                    padding-left: 1rem;
-
-                    .ffw-wrapper {
-
-                        div[data-content = detailedLinks] {
-                            overflow-y: auto;
-                            max-height: rem(300);
-
-                            @include helper-breakpoint-media-max($md-max){
-                                max-height: 30vh;
-                            }
+                        @include helper-breakpoint-media-max($md-max) {
+                            max-height: 30vh;
                         }
-
-                        ff-asn-group-element {
-                            display: flex;
-                            justify-content: space-between;
-                            padding: rem(5);
-                        }
-                        ff-asn-group-element:hover {
-                            color: $setting-color-globus-darkOrange;
-                        }
-                        ff-asn-group-element::after {
-                            content: url("data:image/svg+xml; utf8, <svg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 24 24'><path d='M5 3l3.057-3 11.943 12-11.943 12-3.057-3 9-9z'/></svg>");
-                        }
-                        .clusterLevel1 {
-                            color: $setting-color-gray-13;
-                        }
-                        .clusterLevel1:hover {
-                            color: $setting-color-orange;
-                            cursor: pointer;
-                        }
-                        .clusterLevel1::after {
-                            color: $setting-color-gray-13;
-                            content: "";
-                        }
-                        .clusterLevel2 {
-                            color: $setting-color-gray-13;
-                            margin-left: rem(30);
-                        }
-                        .clusterLevel2:hover {
-                            color: $setting-color-orange;
-                            cursor: pointer;
-                        }
-                        .clusterLevel2::after {
-                            color: $setting-color-gray-13;
-                            content: "";
-                        }
-                        .clusterLevel3 {
-                            color: $setting-color-gray-13;
-                            margin-left: rem(60);
-                        }
-                        .clusterLevel3:hover {
-                            color: $setting-color-orange;
-                            cursor: pointer;
-                        }
-                        .clusterLevel3::after {
-                            color: $setting-color-gray-13;
-                            content: "";
-                        }
-
                     }
-                }
-            }
 
-            ff-asn-group[for-group = Eigenschaften] {
-                border:  rem(1) solid $setting-color-globus-lightGray;
-                padding: rem(5);
+                    ff-asn-group-element {
+                        display: flex;
+                        justify-content: space-between;
+                        padding: rem(5);
+                    }
 
-                @include helper-breakpoint-media-max($md-max){
-                    min-width: 95vw;
-                }
-                div[slot = groupCaption]{
-                    font-size: 1.25rem;
-                    font-family: $setting-font-family-additional;
-                    display: flex;
-                    justify-content: space-between;
-                    padding: rem(5);
-                }
-                div[slot = groupCaption]::after {
-                    content: url("data:image/svg+xml; utf8, <svg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 24 24'><path d='M5 3l3.057-3 11.943 12-11.943 12-3.057-3 9-9z'/></svg>");
-                }
-                .ffw-asn-group-container {
-                    padding-left: 1rem;
+                    ff-asn-group-element:hover {
+                        color: $setting-color-globus-darkOrange;
+                        cursor: pointer;
+                    }
 
-                    .ffw-wrapper {
+                    .clusterLevel1, .clusterLevel2, .clusterLevel3 {
+                        color: $setting-color-gray-13;
+                    }
 
-                        div[data-content = detailedLinks] {
-                            overflow-y: auto;
-                            max-height: rem(300);
+                    .clusterLevel1:hover {
+                        color: $setting-color-orange;
+                        cursor: pointer;
+                    }
 
-                            @include helper-breakpoint-media-max($md-max){
-                                max-height: 30vh;
-                            }
-                        }
+                    .clusterLevel1::after, .clusterLevel2::after, .clusterLevel3::after {
+                        color: $setting-color-gray-13;
+                        content: "";
+                    }
 
-                        ff-asn-group-element {
-                            display: flex;
-                            justify-content: space-between;
-                            padding: rem(5);
-                        }
-                        ff-asn-group-element:hover {
-                            color: $setting-color-orange;
-                            cursor: pointer;
-                        }
+                    .clusterLevel2 {
+                        margin-left: rem(30);
+                    }
 
-                        .ffw-asn-selected {
-                            div[slot = selected] {
-                                color: $setting-color-globus-darkOrange;
-                            }
-                        }
+                    .clusterLevel3 {
+                        margin-left: rem(60);
                     }
                 }
             }
 
             ff-asn-group-slider {
 
-                border:  rem(1) solid $setting-color-globus-lightGray;
-                padding: rem(5);
-
-                @include helper-breakpoint-media-max($md-max){
-                    min-width: 95vw;
-                }
                 groupCaption {
-                    @include helper-breakpoint-media-max($xs-max){
+                    @include helper-breakpoint-media-max($xs-max) {
                         padding-bottom: 0;
                     }
                 }
 
                 ff-slider-control {
-                    @include helper-breakpoint-media-max($xs-max){
+                    @include helper-breakpoint-media-max($xs-max) {
                         padding-top: 0;
                         margin-top: 0;
                     }
@@ -205,15 +144,18 @@
                         font-size: 1rem;
                         font-weight: 500;
                     }
+
                     input[data-control = '2'] {
                         float: right;
                         text-align: right;
                     }
+
                     ff-slider {
 
                         height: rem(4);
                         background-color: $setting-color-gray-1;
                         border-radius: rem(10);
+
                         .ffw-sliderBar {
                             bottom: rem(4);
 
@@ -228,63 +170,23 @@
                     }
                 }
             }
-            ff-asn-group[for-group = Brand], ff-asn-group[for-group = Sale] {
 
-                border:  rem(1) solid $setting-color-globus-lightGray;
-                padding: rem(5);
-
-                @include helper-breakpoint-media-max($md-max){
-                    min-width: 95vw;
-                }
-
-                .ffw-asn-group-container {
-                    padding-left: 1rem;
-
-                    .ffw-wrapper {
-
-                        div[data-content = detailedLinks] {
-                            overflow-y: auto;
-                            max-height: rem(300);
-
-                            @include helper-breakpoint-media-max($md-max){
-                                max-height: 30vh;
-                            }
-                        }
-
-                        ff-asn-group-element {
-                            display: flex;
-                            justify-content: space-between;
-                            padding: rem(5);
-                        }
-                        ff-asn-group-element:hover {
-                            color: $setting-color-orange;
-                            cursor: pointer;
-                        }
-
-                        .ffw-asn-selected {
-                            input[type = checkbox] {
-                                width: 1rem;
-                                min-width: 1rem;
-                                height: 1rem;
-                                vertical-align: top;
-                                margin-right: 0.5rem;
-                            }
-
-                        }
-                        .ffw-asn-unselected {
-                            input[type = checkbox] {
-                                width: 1rem;
-                                min-width: 1rem;
-                                height: 1rem;
-                                vertical-align: top;
-                                margin-right: 0.5rem;
-                            }
-                        }
-
-                    }
+            .ffw-asn-selected, .ffw-asn-unselected {
+                input[type = checkbox] {
+                    width: 1rem;
+                    min-width: 1rem;
+                    height: 1rem;
+                    vertical-align: top;
+                    margin-right: 0.5rem;
                 }
             }
-            ff-asn-group[for-group = Sale]{
+            .multiAttributes, .brandsSection {
+                .ffw-asn-selected {
+                    color: $setting-color-globus-darkOrange;
+                }
+            }
+
+            ff-asn-group[for-group = Sale] {
                 div[data-content = detailedLinks] {
                     overflow-y: auto;
                 }
@@ -306,6 +208,7 @@
                 margin-top: rem(10);
                 color: $setting-color-globus-darkGray;
             }
+
             div[data-container = removeFilter]::before {
                 content: "X";
                 padding-right: rem(5);
@@ -315,7 +218,6 @@
                 color: $setting-color-globus-red;
                 cursor: pointer;
             }
-
 
             div[data-content = detailedLinks]::-webkit-scrollbar {
                 width: rem(7);
@@ -331,7 +233,6 @@
                 border-radius: rem(5);
             }
         }
-
     }
 }
 

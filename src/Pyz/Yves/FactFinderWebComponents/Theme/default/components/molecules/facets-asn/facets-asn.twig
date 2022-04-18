@@ -23,7 +23,7 @@
     </div>
 
     <ff-asn {{ data.properties.component|raw }} unresolved>
-        <ff-asn-group for-group="Brand" class="cursor" unresolved>
+        <ff-asn-group for-group="Brand" class="cursor brandsSection" unresolved>
             <ff-asn-group-element unresolved>
                 <div slot="selected">
                     <input type="checkbox" checked>
@@ -46,11 +46,10 @@
                 <div data-container="removeFilter">{{ 'ff.remove.filter.checkbox' | trans }}</div>
             </ff-asn-group-element>
 
-            <div slot="groupCaption" class="groupCaption">
+            <div slot="groupCaption" class="groupCaption expand-arrow">
                 {% verbatim %}
                     {{ group.name }}
                 {% endverbatim %}
-                <span class="filterArrowDown"></span>
             </div>
 
             <div data-container="hiddenLinks">
@@ -61,10 +60,9 @@
             </div>
         </ff-asn-group>
 
-        <ff-asn-group for-group="Sale" class="cursor" unresolved>
-            <div slot="groupCaption" class="groupCaption">
+        <ff-asn-group for-group="Sale" class="cursor sectionBorder" unresolved>
+            <div slot="groupCaption" class="groupCaption expand-arrow">
                 <span>{{ 'ff.sale.group.caption' | trans }}</span>
-                <span class="filterArrowDown"></span>
             </div>
 
             <ff-asn-group-element unresolved>
@@ -85,8 +83,8 @@
             <div data-container="removeFilter">{{ 'ff.remove.filter.checkbox' | trans }}</div>
         </ff-asn-group>
 
-        <ff-asn-group filter-style="TREE" opened class="cursor" unresolved>
-            <ff-asn-group-element unresolved>
+        <ff-asn-group filter-style="TREE" opened class="cursor mainCategoryMenu sectionBorder">
+            <ff-asn-group-element>
                 <div slot="selected">
                     <span class="filterName">
                         <strong>
@@ -96,9 +94,7 @@
                         </strong>
                     </span>
                 </div>
-
                 <div slot="unselected">
-                    <span class="filterArrowRight"></span>
                     <span class="filterName">
                         {% verbatim %}
                             {{ element.name }}
@@ -106,30 +102,48 @@
                     </span>
                 </div>
             </ff-asn-group-element>
-
-            <div slot="groupCaption" class="groupCaption">
+            <div slot="groupCaption" class="groupCaption expand-arrow">
                 {% verbatim %}
                     {{ group.name }}
                 {% endverbatim %}
-                <span class="filterArrowDown"></span>
-            </div>
-
-            <div opened data-container="detailedLinks">
-                <div data-content="detailedLinks"></div>
-                <div class="marginBottom"></div>
             </div>
         </ff-asn-group>
 
-        <ff-asn-group-slider unresolved>
-            <div slot="groupCaption" class="groupCaption">
+        <ff-asn-group filter-style="MULTISELECT" closed class="cursor sectionBorder">
+            <div slot="groupCaption" class="groupCaption multiselectTitle expand-arrow">
                 {% verbatim %}
                     {{ group.name }}
                 {% endverbatim %}
-                <span class="filterArrowDown"></span>
             </div>
-
+            <ff-asn-group-element class="multiAttributes">
+                <div slot="selected">
+                    <input type="checkbox" checked>
+                    <span class="filterName">
+                        <strong>
+                            {% verbatim %}
+                                {{ element.name }}
+                            {% endverbatim %}
+                        </strong>
+                    </span>
+                </div>
+                <div slot="unselected">
+                    <input type="checkbox">
+                    <span class="filterName">
+                        {% verbatim %}
+                            {{ element.name }}
+                        {% endverbatim %}
+                    </span>
+                </div>
+            </ff-asn-group-element>
             <div data-container="removeFilter">{{ 'ff.remove.filter.checkbox' | trans }}</div>
+        </ff-asn-group>
 
+        <ff-asn-group-slider class="sectionBorder">
+            <div slot="groupCaption" class="groupCaption expand-arrow">
+                {% verbatim %}
+                    {{ group.name }}
+                {% endverbatim %}
+            </div>
             <ff-slider-control submit-on-input="true" unresolved>
                 <input data-control='1'>
                 <input data-control='2'>
@@ -138,6 +152,7 @@
                     <div slot="slider2" id="slider2" class="sliderBtn"></div>
                 </ff-slider>
             </ff-slider-control>
+            <div data-container="removeFilter">{{ 'ff.remove.filter.checkbox' | trans }}</div>
         </ff-asn-group-slider>
     </ff-asn>
 {% endblock %}
