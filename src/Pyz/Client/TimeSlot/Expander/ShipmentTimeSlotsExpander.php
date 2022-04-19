@@ -208,7 +208,7 @@ class ShipmentTimeSlotsExpander implements ShipmentSlotsExpanderInterface
             $availableTimeSlots = $this->filterTimeSlotTemplateAgainstCutoffTime(
                 $merchantTransfer,
                 $currentDate,
-                $timeSlotTemplate
+                $availableTimeSlots
             );
             if (count($availableTimeSlots) == 0 && $i == 0) {
                 continue;
