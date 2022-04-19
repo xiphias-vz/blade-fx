@@ -24,7 +24,7 @@ use Symfony\Component\Security\Core\Exception\AuthenticationException;
 
 /**
  * @method \Pyz\Yves\CustomerPage\CustomerPageFactory getFactory()
- * @method \Pyz\Client\Recommendations\RecommendationsClient getClient()
+ * @method RecommendationsClient getClient()
  */
 class CustomerUserProvider extends SprykerCustomerUserProvider implements CustomerUserProviderInterface
 {

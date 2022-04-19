@@ -602,13 +602,14 @@ class CartController extends SprykerCartController
      *
      * @return array
      */
-    public function getProductSkuWithQuantity($data): array {
+    public function getProductSkuWithQuantity($data): array
+    {
         $cartItems = $data['cartItems'];
         $cartItemsSku = [];
         foreach ($cartItems as $item) {
             $key = $item['sku'];
-            $value= $item['quantity'];
-            $cartItemsSku[] = array($key, $value);
+            $value = $item['quantity'];
+            $cartItemsSku[] = [$key, $value];
         }
 
         return $cartItemsSku;
