@@ -82,14 +82,19 @@ export default class AjaxAddToCart extends Component {
 
     protected mapEvents(): void {
         this.links.forEach((link: HTMLLinkElement) => {
-            if (link.id === 'addToCartButtonFromPDP') {
-                if (localStorage.getItem('QuantityFromCart')) {
-                    let quantityFromCart = parseInt(localStorage.getItem('QuantityFromCart'))
-                    if (quantityFromCart !== 0) {
-                        this.updateItemQuantityInput(link, quantityFromCart);
-                        this.showCounterAndHideAjaxButton(link);
+            if (localStorage.getItem('productItemsFromCartWithQuantity')) {
+                let productItemsFromCart = JSON.parse(localStorage.getItem('productItemsFromCartWithQuantity'));
+
+                productItemsFromCart.forEach(([key, value]) => {
+                    let productSkuFromPOP = link.dataset.productSku;
+                    if (key === productSkuFromPOP) {
+                        let quantityFromCart = value;
+                        if (quantityFromCart !== 0) {
+                            this.updateItemQuantityInput(link, quantityFromCart);
+                            this.showCounterAndHideAjaxButton(link);
+                        }
                     }
-                }
+                })
             }
 
             if (link.getAttribute('flag') !== "1") {
@@ -278,8 +283,6 @@ export default class AjaxAddToCart extends Component {
         if (quantity !== undefined) {
             const counter: HTMLInputElement = <HTMLInputElement>link.parentElement.querySelector(CLASS_PREFIX + this.quantityInputField);
             counter.value = String(quantity);
-            let quantityFromCart = counter.value;
-            localStorage.setItem('QuantityFromCart', quantityFromCart);
         }
     }
 
