@@ -77,7 +77,6 @@ class CartController extends SprykerCartController
 
         $data['taxPayments'] = $orderDetails[OrderDetailConstants::KEY_TAX_PAYMENTS] ?? [];
         $data['orderLimitationMessage'] = $this->getCartLimitationMessage();
-        $data['cartItemsSkuWithQuantity'] = $this->getProductSkuWithQuantity($data);
 
         return $data;
     }
@@ -596,22 +595,4 @@ class CartController extends SprykerCartController
 
         return FactFinderApiClient::postTrackCartData($data);
     }
-
-    /**
-     * @param $data
-     *
-     * @return array
-     */
-    public function getProductSkuWithQuantity($data): array {
-        $cartItems = $data['cartItems'];
-        $cartItemsSku = [];
-        foreach ($cartItems as $item) {
-            $key = $item['sku'];
-            $value= $item['quantity'];
-            $cartItemsSku[] = array($key, $value);
-        }
-
-        return $cartItemsSku;
-    }
-
 }

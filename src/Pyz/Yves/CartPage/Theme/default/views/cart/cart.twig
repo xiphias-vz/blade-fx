@@ -12,7 +12,6 @@
     title: 'cart.cart' | trans,
     orderLimitationMessage: _view.orderLimitationMessage | default,
     taxPayments: _view.taxPayments,
-    cartItemsSkuWithQuantity: _view.cartItemsSkuWithQuantity,
     path: '/',
 } %}
 
@@ -108,7 +107,7 @@
                         <span class="col">
                             <form action="{{ path('cart/clear') }}" method="post">
                                 <input type="hidden" name="token" value="{{ csrf_token('clear-cart') }}"/>
-                                <input class="cart-box__quantity link" onclick="localStorage.removeItem('productItemsFromCartWithQuantity')" type="submit" value="{{ 'cart.clear' | trans }}">
+                                <input class="cart-box__quantity link" type="submit" value="{{ 'cart.clear' | trans }}">
                             </form>
                         </span>
                     </div>
@@ -128,7 +127,7 @@
                             <p class="product__item3">{{ 'cart.header.price' | trans}}</p>
                         </div>
                     </div>
-                    <input type="hidden" id="productItemsFromCart" value="{{ data.cartItemsSkuWithQuantity | json_encode }}">
+
                     {% for cartItem in data.cartItems %}
                         {% include molecule('product-card-item') with {
                             data: {
@@ -180,10 +179,6 @@
                             }
                         </script>
                     {% endfor %}
-                    <script>
-                        let cartItemsSkuWithQuantity = document.querySelector('#productItemsFromCart').value;
-                        localStorage.setItem('productItemsFromCartWithQuantity', cartItemsSkuWithQuantity);
-                    </script>
 
                     {% widget 'CartDiscountPromotionProductListWidget' args [data.cart, data.request] only %}{% endwidget %}
                 </div>

@@ -211,7 +211,7 @@
                                 submit: {
                                     enable: true,
                                     text: 'checkout.step.place.order' | trans,
-                                    class:  app.currentCodeBucket == 'DE' ? 'submit_button form__action--checkout button button--large button--expand' : 'submit_button form__action--checkout button button--large button--expand button--font-CZ button--backgroundcolor-CZ',
+                                    class:  app.currentCodeBucket == 'DE' ? 'form__action--checkout button button--large button--expand' : 'form__action--checkout button button--large button--expand button--font-CZ button--backgroundcolor-CZ',
                                 },
                                 cancel: {
                                     enable: true,
@@ -266,10 +266,4 @@
             </div>
         </article>
     {% endfor %}
-    <script>
-        const submitButton = document.querySelector('.submit_button');
-        submitButton.addEventListener('click', () => {
-            localStorage.removeItem('productItemsFromCartWithQuantity');
-        });
-    </script>
 {% endblock %}

@@ -369,9 +369,9 @@
                                     js-ajax-add-to-cart__link
                                 "
                       data-product-id="{{ data.idProductAbstract }}"
-                      data-product-sku="{{ data.product.abstract_sku | replace({'_abstract': ''}) }}"
-                      data-product-title="{{ data.name }}"
-                      data-product-price="{{ data.product.prices.DEFAULT is defined ? data.product.prices.DEFAULT / 100 : null }}"
+                      data-product-sku="{{ data.sku }}"
+                      data-product-title="{{ data.name | escape('js') }}"
+                      data-product-price="{{ data.product.prices.ORIGINAL is defined ? data.product.prices.ORIGINAL / 100 : null }}"
                       data-csrf-token="{{ csrf_token('add-to-cart-ajax') }}"
                    >
                        <span class="icon-basketplus"></span>
