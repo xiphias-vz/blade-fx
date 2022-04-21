@@ -46,6 +46,7 @@ use Pyz\Zed\ImageImportToS3\Communication\Console\ImageImportToS3Console;
 use Pyz\Zed\Installer\Communication\Console\PerStoreInstallerConsole;
 use Pyz\Zed\Maintenance\Communication\Console\MaintenanceDisableConsole;
 use Pyz\Zed\Maintenance\Communication\Console\MaintenanceEnableConsole;
+use Pyz\Zed\MonitoringReport\Communication\Console\AdditionalMonitoringProcedure;
 use Pyz\Zed\MonitoringReport\Communication\Console\AlarmEmailConsole;
 use Pyz\Zed\MonitoringReport\Communication\Console\CategoryCheckConsole;
 use Pyz\Zed\MonitoringReport\Communication\Console\JenkinsCheckConsole;
@@ -408,6 +409,7 @@ class ConsoleDependencyProvider extends SprykerConsoleDependencyProvider
             new JenkinsCheckUrlConsole(),
             new AlarmEmailConsole(),
             new CategoryCheckConsole(),
+            new AdditionalMonitoringProcedure(),
 
         ];
 
