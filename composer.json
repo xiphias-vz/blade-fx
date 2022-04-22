@@ -170,7 +170,7 @@
     "spryker/cms-slot-store-connector": "^1.0.1",
     "spryker/cms-storage": "^2.4.0",
     "spryker/cms-user-connector": "^1.1.0",
-    "spryker/code-it-now": "^1.0",
+    "spryker/code-it-now": "1.0.1",
     "spryker/content": "^2.2.1",
     "spryker/content-banner": "^2.2.0",
     "spryker/content-banners-rest-api": "^2.2.0",
