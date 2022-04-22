@@ -1181,7 +1181,7 @@ export default class ProductItemMultiplePicking extends Component {
     protected changeItemVisualState() {
         if (this.isDeclined) {
             this.declineClickHandler();
-        } else {
+        } else if(this.isAccepted || this.isNotFullyAccepted || this.isPaused){
             this.$this.removeClass(this.notPickedCLass);
             this.iconSubstitute.classList.add(this.showIconSubstitute);
 
