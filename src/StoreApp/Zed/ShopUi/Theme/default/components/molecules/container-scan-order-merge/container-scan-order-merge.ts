@@ -116,6 +116,8 @@ export default class ContainerScanOrderMerge extends Component {
                     },
                     success(data, status, xhr) {
                         let parsedData = JSON.parse(data);
+                        that.containerAndCircleColorHolder(parsedData);
+                        document.querySelector("#showFullForm").classList.replace("hidden", "visible");
 
                         let substitute = "";
 
@@ -155,8 +157,6 @@ export default class ContainerScanOrderMerge extends Component {
                         console.log(jqXhr.error);
                     }
                 });
-
-               document.querySelector("#showFullForm").classList.replace("hidden", "visible");
             }
             else {
                 document.querySelector("#showFullForm").classList.replace("visible", "hidden");
@@ -279,6 +279,19 @@ export default class ContainerScanOrderMerge extends Component {
         setTimeout(() => {
             this.mergingContainerScanner.readOnly = false;
         }, 1000);
+    }
+
+    protected containerAndCircleColorHolder(parsedData): void {
+        const colorCode = parsedData[0]['picking_color']['back_color'];
+        const colorNumber = parsedData[0]['picking_color']['id_color'];
+        const textColor = parsedData[0]['picking_color']['fore_color'];
+
+        document.querySelector(".container-color-holder").style.backgroundColor = colorCode;
+        document.querySelector(".color-number").style.color = textColor;
+        document.querySelector(".id-number").textContent = colorNumber;
+        document.querySelector(".circle").style.backgroundColor = colorCode;
+        document.querySelector(".circle").style.color = textColor;
+        document.querySelector(".circle").textContent = colorNumber;
     }
 
     protected createBinIcon(): HTMLElement {

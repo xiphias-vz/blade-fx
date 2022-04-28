@@ -52,16 +52,12 @@
             </div>
         </div>
     </div>
-
     <div id="showFullForm" class="hidden">
-        {% include molecule('container-color') with {
-            data: {
-                colorCode: "#FFFF00",
-                colorNumber: 1,
-                textColor: "#000000",
-                isSubstitutionAllowed: data.orderForScanningContainer.isSubstitutionAllowed | default
-            }
-        } only %}
+        <div class="container-color-holder">
+            <div class="color-number">
+                <div class="id-number"></div>
+            </div>
+        </div>
 
         <form id="frm_scanContainerOrder" method="post">
             <div class="box">
@@ -86,17 +82,7 @@
                     } only %}
                     <div class="label-for-checkbox">
                         <span class="description">{{ 'picking.app.containers.all.packs.container' | trans }}</span>
-                        <span>
-                         {% include atom('circle') with {
-                             data: {
-                                 content: 1,
-                                 backgroundColor: "#FFFF00",
-                                 paddingLeft: '13px',
-                                 paddingTop: '4px',
-                                 textColor: "#000"
-                             }
-                         } only %}
-                    </span>
+                        <span class="circle"></span>
                     </div>
                 </div>
             </div>

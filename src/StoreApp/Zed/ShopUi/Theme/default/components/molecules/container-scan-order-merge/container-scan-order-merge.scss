@@ -118,6 +118,31 @@
         #btnContinueUnpacking > button {
             background-color: $setting-color-pickingApp-lightBlue;
         }
+
+        .container-color-holder {
+            height: 40px;
+            margin: 6px 0;
+
+            .color-number {
+                text-align: center;
+                margin: -12px 0px 0px 0px;
+                font-size: 20px;
+                font-weight: bold;
+            }
+
+            .id-number {
+                padding-top: 5px;
+            }
+        }
+
+        .circle {
+            border-radius: 50%;
+            text-align: center;
+            width: 2rem;
+            height: 2rem;
+            border: 2px solid transparent;
+            padding-top: 4px;
+        }
     }
 }
 
