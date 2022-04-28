@@ -385,6 +385,10 @@ class PickingHeaderTransferData
         $transfer = $this->getTransferFromSession();
         $orderItem = $transfer->setCurrentOrderItemPicked($quantityPicked, $weight);
         $orderItem->setPerformancePickingStartedAt($this->getPerformancePickingStartedAt());
+        $pickerFirstName = $this->userFacade->getCurrentUser()->getFirstName();
+        $pickerLastName = $this->userFacade->getCurrentUser()->getLastName();
+        $orderItem->setCurrentPickerFirstName($pickerFirstName);
+        $orderItem->setCurrentPickerLastName($pickerLastName);
 
         $this->saveCurrentOrderItemReadyForPicking($orderItem);
         $idList = $this->getOrderItemIdArray($orderItem);
@@ -463,6 +467,10 @@ class PickingHeaderTransferData
             //save data to spy_sales_order_item - SpySalesOrderItemQuery
             $orderItem = $transfer->getOrderItem($transfer->getLastPickingItemPosition());
             $orderItem->setIsSubstitutionFound(false);
+            $pickerFirstName = $orderItem->getCurrentPickerFirstName();
+            $pickerLastName = $orderItem->getCurrentPickerLastName();
+            $orderItem->setCurrentPickerFirstName($pickerFirstName);
+            $orderItem->setCurrentPickerLastName($pickerLastName);
             $this->saveCurrentOrderItemPaused($orderItem, $isPaused);
 
             $orderItem->setPerformancePickingStartedAt($this->getPerformancePickingStartedAt());
@@ -489,6 +497,8 @@ class PickingHeaderTransferData
         $idList = $this->getOrderItemIdArray($orderItem);
         $paused = $isPaused ? 1 : 0;
         $isSubstitutionFound = $orderItem->getIsSubstitutionFound() ? 1 : 0;
+        $currentPickerFirstName = $orderItem->getCurrentPickerFirstName();
+        $currentPickerLastName = $orderItem->getCurrentPickerLastName();
         if (count($idList) > 0 && $idState) {
             $whereList = implode($idList, ",");
             if ($paused) {
@@ -496,10 +506,14 @@ class PickingHeaderTransferData
                     . ", fk_oms_order_item_state = " . $idState
                     . ", is_substitution_found = " . $isSubstitutionFound
                     . ", container_code = null"
+                    . ", current_picker_first_name = '" . $currentPickerFirstName . "'"
+                    . ", current_picker_last_name = '" . $currentPickerLastName . "'"
                     . " where id_sales_order_item in(" . $whereList . ")";
             } else {
                 $qry = "update spy_sales_order_item set item_paused = " . $paused
                     . ", is_substitution_found = " . $isSubstitutionFound
+                    . ", current_picker_first_name = '" . $currentPickerFirstName . "'"
+                    . ", current_picker_last_name = '" . $currentPickerLastName . "'"
                     . " where id_sales_order_item in(" . $whereList . ")";
             }
             $this->getResult($qry, false);
@@ -523,11 +537,15 @@ class PickingHeaderTransferData
     {
         $idState = $this->getIdState(OmsConfig::STORE_STATE_READY_FOR_PICKING);
         $idList = $this->getOrderItemIdArray($orderItem);
+        $currentPickerFirstName = $orderItem->getCurrentPickerFirstName();
+        $currentPickerLastName = $orderItem->getCurrentPickerLastName();
         if (count($idList) > 0 && $idState) {
             $whereList = implode($idList, ",");
             $qry = "update spy_sales_order_item set item_paused = 0"
                 . ", fk_oms_order_item_state = " . $idState
                 . ", container_code = '' "
+                . ", current_picker_first_name = '" .  $currentPickerFirstName . "'"
+                . ", current_picker_last_name = '" . $currentPickerLastName . "'"
                 . " where id_sales_order_item in(" . $whereList . ")";
             $this->getResult($qry, false);
             $qry = "insert into spy_oms_order_item_state_history (fk_oms_order_item_state, fk_sales_order_item, created_at)
@@ -612,12 +630,18 @@ class PickingHeaderTransferData
     public function setCurrentOrderItemCanceled(bool $isCanceled, bool $isSubstitutionPicked): bool
     {
         $transfer = $this->getTransferFromSession();
+        $pickerFirstName = $this->userFacade->getCurrentUser()->getFirstName();
+        $pickerLastName = $this->userFacade->getCurrentUser()->getLastName();
+
+
         if ($transfer->setCurrentOrderItemCanceled($isCanceled)) {
             //save data to spy_sales_order_item - SpySalesOrderItemQuery
 
             $orderItem = $transfer->getOrderItem($transfer->getLastPickingItemPosition());
             $orderItem->setIsPaused(false);
             $orderItem->setIsSubstitutionFound($isSubstitutionPicked);
+            $orderItem->setCurrentPickerFirstName($pickerFirstName);
+            $orderItem->setCurrentPickerLastName($pickerLastName);
             $this->saveCurrentOrderItemPaused($orderItem, false);
 
             $orderItem->setPerformancePickingStartedAt($this->getPerformancePickingStartedAt());

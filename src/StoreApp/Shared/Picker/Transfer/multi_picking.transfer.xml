@@ -101,6 +101,8 @@
         <property name="performancePickingStartedAt" type="string"/>
         <property name="isSubstitutionFound" type="bool"/>
         <property name="isSubstitutionAllowedOnOrder" type="bool"/>
+        <property name="currentPickerFirstName" type="string"/>
+        <property name="currentPickerLastName" type="string"/>
     </transfer>
 
     <transfer name="PickingColorTransfer">

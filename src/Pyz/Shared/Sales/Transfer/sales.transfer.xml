@@ -54,6 +54,8 @@
         <property name="discountedPriceFrom" type="string" />
         <property name="discountedPriceTo" type="string" />
         <property name="isSubstitutionFound" type="bool" />
+        <property name="currentPickerFirstName" type="string"/>
+        <property name="currentPickerLastName" type="string"/>
         <property name="billName" type="string"/>
     </transfer>
 

@@ -1,18 +1,14 @@
 <?php
-
 /**
  * This file is part of the Spryker Commerce OS.
  * For full license information, please view the LICENSE file that was distributed with this source code.
  */
-
 namespace Pyz\Zed\ShipmentGui;
-
 use Spryker\Zed\Kernel\Communication\Form\FormTypeInterface;
 use Spryker\Zed\Kernel\Container;
 use Spryker\Zed\Money\Communication\Plugin\Form\MoneyCollectionFormTypePlugin;
 use Spryker\Zed\ShipmentGui\ShipmentGuiDependencyProvider as SprykerShipmentGuiDependencyProvider;
 use Spryker\Zed\Store\Communication\Plugin\Form\StoreRelationToggleFormTypePlugin;
-
 class ShipmentGuiDependencyProvider extends SprykerShipmentGuiDependencyProvider
 {
     /**
@@ -24,7 +20,6 @@ class ShipmentGuiDependencyProvider extends SprykerShipmentGuiDependencyProvider
     {
         return new MoneyCollectionFormTypePlugin();
     }
-
     /**
      * @return \Spryker\Zed\Kernel\Communication\Form\FormTypeInterface
      */

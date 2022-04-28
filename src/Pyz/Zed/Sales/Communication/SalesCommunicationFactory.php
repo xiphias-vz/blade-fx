@@ -33,7 +33,6 @@ use Spryker\Zed\Acl\Business\AclFacadeInterface;
 use Spryker\Zed\Sales\Communication\SalesCommunicationFactory as SprykerSalesCommunicationFactory;
 use Spryker\Zed\Sales\Dependency\Facade\SalesToUserBridge;
 use Spryker\Zed\Sales\SalesDependencyProvider as SprykerSalesDependencyProvider;
-
 /**
  * @method \Pyz\Zed\Sales\SalesConfig getConfig()
  **/
