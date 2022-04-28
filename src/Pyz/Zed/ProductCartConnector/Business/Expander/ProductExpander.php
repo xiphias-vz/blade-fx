@@ -92,6 +92,7 @@ class ProductExpander extends SprykerProductExpander implements ProductExpanderI
         }
 
         $pricePerKg = $pricePerKg ?: ($productConcreteTransfer->getAttributes()[ProductConfig::PRICE_PER_KG] ?? null);
+        $billName = $productConcreteTransfer->getAttributes()[ProductConfig::BILLNAME] ?? '';
 
         $itemTransfer
             ->setPickZone($pickZone)
@@ -106,7 +107,8 @@ class ProductExpander extends SprykerProductExpander implements ProductExpanderI
             ->setBasePriceUnit($productConcreteTransfer->getAttributes()[ProductConfig::KEY_BASE_PRICE_UNIT] ?? '')
             ->setOriginalPrice($originalPrice)
             ->setDiscountedPriceFrom($priceActiveFrom)
-            ->setDiscountedPriceTo($priceActiveTo);
+            ->setDiscountedPriceTo($priceActiveTo)
+            ->setBillName($billName);
     }
 
     /**

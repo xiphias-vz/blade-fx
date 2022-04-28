@@ -111,6 +111,7 @@ class ProductMapping
         'bioCertificationCode' => '',
         'referenceUnit' => '',
         'sortingorder' => '',
+        'billName' => '',
     ];
 
     /**
@@ -138,6 +139,7 @@ class ProductMapping
         'bioCertificationCode' => ['bioCertificationCode'],
         'sortingorder' => ['sortingorder'],
         'assortmentZone' => ['assortmentzone'],
+        'billName' => ['billName'],
     ];
 
     /**

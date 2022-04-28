@@ -266,13 +266,14 @@ class CashierOrderContentBuilder extends IntCashierOrderContentBuilder
      */
     protected function getItemName(ItemTransfer $itemTransfer): string
     {
-        if ($itemTransfer->getBontext() && $itemTransfer->getBontext() != "") {
+        if ($itemTransfer->getBillName() !== null && $itemTransfer->getBillName() !== "") {
+            $itemName = $itemTransfer->getBillName();
+        } else if ($itemTransfer->getBontext() && $itemTransfer->getBontext() !== "") {
             $itemName = $itemTransfer->getBontext();
         } else {
             $itemName = $itemTransfer->getName();
         }
 
-        //$itemName = $this->sanitizeItemNameFromUmlauts($itemName);
         $itemName = $this->sanitizeItemNameFromNotSupportedChars($itemName);
 
         return $this->applyLength($itemName);

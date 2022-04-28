@@ -7,6 +7,7 @@
 
     <table name="spy_sales_order_item">
         <column name="cart_note" required="false" size="5000" type="VARCHAR"/>
+        <column name="bill_name" required="false" size="255" type="VARCHAR"/>
     </table>
 
 </database>
