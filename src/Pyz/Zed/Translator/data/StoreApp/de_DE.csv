@@ -218,6 +218,7 @@ product-item.multiple.picking.placeholder,EAN scannen
 popup.ui.info.container,"Container:"
 popup.ui.info.storage.place,"Lagerplatz:"
 popup.ui.info.order.number,"Bestellnummer:"
+container.not.part.order,"Dieser Container ist nicht Bestandteil der Bestellung!"
 container.scan.order.please,Bitte Container scannen
 container.does.not.exist_1,"Container:"
 container.does.not.exist_2,"existiert nicht."

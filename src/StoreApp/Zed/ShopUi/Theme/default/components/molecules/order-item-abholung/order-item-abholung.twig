@@ -26,6 +26,7 @@
 
 {% block body %}
     <input type="hidden" id="calculatedWaitingTime" value="{{ data.calculatedWaitingTime }}">
+    <input type="hidden" id="containerNotPartOfOrder" value="{{ 'container.not.part.order' | trans }}">
     <div class="{{ component.renderClass('box', modifiers) }} order-item-abholung__pickup">
         {% if data.detailPage %}
             <div class="header-content">

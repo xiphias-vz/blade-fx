@@ -3,6 +3,7 @@ import $ from 'jquery/dist/jquery';
 
 export default class OrderItemAbholung extends Component {
     protected waitingTime: HTMLInputElement;
+    protected containerNotPartOfOrder: HTMLInputElement;
     protected filteringCheckbox: HTMLInputElement;
     protected order: HTMLElement;
     protected queuedOrder: HTMLElement;
@@ -21,6 +22,7 @@ export default class OrderItemAbholung extends Component {
 
     protected init(): void {
         this.waitingTime = this.querySelector<HTMLInputElement>("#calculatedWaitingTime");
+        this.containerNotPartOfOrder = this.querySelector<HTMLInputElement>("#containerNotPartOfOrder");
         this.queuedOrder = this.querySelector<HTMLElement>(".order-item-abholung__queued-time");
         this.newCustomerInQueueInfo = document.querySelector<HTMLElement>(".order-search__popup_notification-hidden");
         this.filteringCheckbox = document.querySelector<HTMLInputElement>('input[id="filter-queued-orders"]');
@@ -71,7 +73,7 @@ export default class OrderItemAbholung extends Component {
                 }
                 if(containerExists === false)
                 {
-                    alert("This container is not part of the order!");
+                    alert(that.containerNotPartOfOrder.value);
                 }
                 that.containerScanInput.value = "";
             });
