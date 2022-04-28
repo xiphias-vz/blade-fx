@@ -77,5 +77,8 @@
                 {% endblock %}
             </div>
         </div>
+        {% block downbar %}
+                {% cms_slot 'downbar-slt' %}
+        {% endblock %}
     </main>
 {% endblock %}

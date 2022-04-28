@@ -1,0 +1,17 @@
+{% block content %}
+
+    <!-- CMS_BLOCK_PLACEHOLDER : "icon" -->
+    <!-- CMS_BLOCK_PLACEHOLDER : "title" -->
+    <!-- CMS_BLOCK_PLACEHOLDER : "linkText" -->
+    <!-- CMS_BLOCK_PLACEHOLDER : "backgroundColor" -->
+
+    {% include molecule('downbar-timeslot') with {
+        data: {
+            icon: spyCmsBlockPlaceholder('icon'),
+            linkText: spyCmsBlockPlaceholder('linkText'),
+            title: spyCmsBlockPlaceholder('title'),
+            backgroundColor: spyCmsBlockPlaceholder('backgroundColor')
+        },
+    } only %}
+
+{%  endblock %}

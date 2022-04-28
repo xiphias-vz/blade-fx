@@ -1,0 +1,19 @@
+{% block content %}
+
+    <!-- CMS_BLOCK_PLACEHOLDER : "icon" -->
+    <!-- CMS_BLOCK_PLACEHOLDER : "title" -->
+    <!-- CMS_BLOCK_PLACEHOLDER : "content" -->
+    <!-- CMS_BLOCK_PLACEHOLDER : "link" -->
+    <!-- CMS_BLOCK_PLACEHOLDER : "backgroundColor" -->
+
+        {% include molecule('downbar') with {
+            data: {
+                icon: spyCmsBlockPlaceholder('icon'),
+                title: spyCmsBlockPlaceholder('title'),
+                content: spyCmsBlockPlaceholder('content'),
+                link: spyCmsBlockPlaceholder('link'),
+                backgroundColor: spyCmsBlockPlaceholder('backgroundColor')
+            },
+        } only %}
+
+{%  endblock %}

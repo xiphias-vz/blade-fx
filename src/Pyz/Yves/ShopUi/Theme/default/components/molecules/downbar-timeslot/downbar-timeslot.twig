@@ -1,0 +1,141 @@
+
+{% define config = {
+    name: 'downbar-timeslot',
+} %}
+
+{% define data = {
+    icon: '',
+    linkText: '',
+    title:'',
+    backgroundColor:'',
+} %}
+
+{% block downbar %}
+    <div class="{{ config.name }}__container" style="background-color:{{ data.backgroundColor }}">
+        <input type="hidden" id="codeBucket" value="{{ app.currentCodeBucket }}">
+        <div class="{{ config.name }}__content-section">
+            <div class="{{ config.name }}__icon">
+                {{ data.icon | raw }}
+            </div>
+
+            <div class="{{ config.name }}__title">
+                {{ data.title | raw }}
+            </div>
+
+            <div class="{{ config.name }}__content">
+                <div class="{{ config.name }}__timeslot">
+
+                </div>
+
+                <div class="{{ config.name }}__link">
+                    {{ data.linkText | raw }}
+                </div>
+            </div>
+
+        </div>
+        <div class="{{ config.name }}__close">
+            <svg height="20" width="20">
+                <line x1="0" y1="0" x2="20" y2="20" stroke="orange" stroke-width="3" />
+                <line x1="0" y1="20" x2="20" y2="0" stroke="orange" stroke-width="3" />
+            </svg>
+        </div>
+        <div class="{{ config.name }}__toggler-arrow">
+            <svg width="24" height="24" xmlns="http://www.w3.org/2000/svg" fill="currentColor" fill-rule="evenodd" clip-rule="evenodd"><path d="M23.245 20l-11.245-14.374-11.219 14.374-.781-.619 12-15.381 12 15.391-.755.609z"/></svg>
+        </div>
+    </div>
+
+    <script>
+
+        let closeTimeslotBtn = document.getElementsByClassName("downbar-timeslot__close")[0];
+        let downbarTimeslotContainer = document.getElementsByClassName("downbar-timeslot__container")[0];
+        let togglerTimeslotArrow = document.getElementsByClassName("downbar-timeslot__toggler-arrow")[0];
+        let downbarTimeslotContent = document.getElementsByClassName("downbar-timeslot__content")[0];
+        let downbarTimeslotLink = document.getElementsByClassName("downbar-timeslot__link")[0];
+        let downbarTimeslotField = document.getElementsByClassName("downbar-timeslot__timeslot")[0];
+        let codeBucket = document.getElementById("codeBucket");
+
+        if(sessionStorage.getItem("downbar-timeslot")){
+            downbarTimeslotContainer.style.display = "none";
+        }
+
+        closeTimeslotBtn.addEventListener("click", closeDownbar);
+        togglerTimeslotArrow.addEventListener("click", toggleDownbar);
+        downbarTimeslotLink.addEventListener("click", openTimeSlotPopup);
+        window.addEventListener('resize', resizeDownbar);
+
+        function closeDownbar(){
+            downbarTimeslotContainer.style.display = "none";
+            sessionStorage.setItem("downbar-timeslot", "closed");
+        }
+
+        function toggleDownbar(){
+            downbarTimeslotContent.classList.toggle("downbar-timeslot__show");
+            downbarTimeslotLink.classList.toggle("downbar-timeslot__show");
+            togglerTimeslotArrow.classList.toggle("downbar-timeslot__toggler-arrow-rotate");
+            downbarTimeslotContainer.classList.toggle("downbar-timeslot__toggle-height");
+            document.getElementsByClassName("downbar-timeslot__content-section")[0].classList.toggle("downbar-timeslot__mobileGrid");
+            document.getElementsByClassName("downbar-timeslot__content")[0].classList.toggle("downbar-timeslot__textblockGrid");
+        }
+
+        function openTimeSlotPopup(){
+            if(!document.querySelector("popup-ui-shipment-form").classList.contains("popup-ui-shipment-form--show")){
+                document.getElementById("link-to-time-slots").click();
+            }
+        }
+
+        const timeSlotsUrl = "/checkout/time-slots-data";
+        fetch(timeSlotsUrl, {method: 'POST'})
+            .then(response => response.json())
+            .then(parsedResponse => {
+                if(parsedResponse != undefined && parsedResponse != []){
+                    getAvailableTimeSlot(parsedResponse);
+                }
+            })
+            .catch(error => {
+                console.error(error);
+            });
+
+        function getAvailableTimeSlot(parsedResponse){
+
+            let timeRange = '';
+            let availableDate = '';
+
+            for(let count = 0; count < Object.entries(parsedResponse).length; count++){
+                if(Object.entries(parsedResponse)[count][1].length > 0){
+                    timeRange = Object.entries(parsedResponse)[count][1][0];
+                    availableDate = Object.entries(parsedResponse)[count][0];
+                    break;
+                }
+            }
+
+            let testDay = availableDate.substring(8, 10);
+            if (testDay < 10 && testDay.includes("0")){
+                testDay = testDay.slice(1, 2);
+            }
+
+            let date = new Date(availableDate);
+            let dayLong = '';
+            let monthLong = '';
+
+            if(codeBucket.value === 'DE'){
+                 dayLong = date.toLocaleString('de-DE', {weekday: 'long'});
+                 monthLong = date.toLocaleString('de-DE', {month: 'long'});
+            } else {
+                 dayLong = date.toLocaleString('cs-CZ', {weekday: 'long'});
+                 monthLong = date.toLocaleString('cs-CZ', {month: 'long'});
+            }
+
+            downbarTimeslotField.textContent = dayLong + ' - ' + testDay + '. ' + monthLong + ' ' + ' ' + timeRange;
+        }
+
+        function resizeDownbar(){
+            if(window.innerWidth > 768){
+                if(togglerTimeslotArrow.classList.contains("downbar-timeslot__toggler-arrow-rotate")){
+                    togglerTimeslotArrow.click();
+                }
+            }
+        }
+    </script>
+{% endblock %}
+
+

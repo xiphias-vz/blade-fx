@@ -1,0 +1,92 @@
+{% define config = {
+    name: 'downbar',
+} %}
+
+{% define data = {
+    icon: '',
+    link: '',
+    content: '',
+    title:'',
+    backgroundColor:'',
+} %}
+
+{% block downbar %}
+    <div class="{{ config.name }}__container" style="background-color:{{ data.backgroundColor }}">
+        <div class="{{ config.name }}__content-section">
+
+            <div class="{{ config.name }}__icon">
+                {{ data.icon | raw }}
+            </div>
+
+            <div class="{{ config.name }}__title">
+                {{ data.title | raw }}
+            </div>
+
+            <div class="{{ config.name }}__content">
+                {{ data.content | raw }}
+            </div>
+
+            <div class="{{ config.name }}__link">
+                {{ data.link | raw }}
+            </div>
+        </div>
+
+        <div class="{{ config.name }}__close">
+            <svg height="20" width="20">
+                <line x1="0" y1="0" x2="20" y2="20" stroke="white" stroke-width="3"/>
+                <line x1="0" y1="20" x2="20" y2="0" stroke="white" stroke-width="3"/>
+            </svg>
+        </div>
+
+        <div class="{{ config.name }}__toggler-arrow">
+            <svg width="24" height="24" xmlns="http://www.w3.org/2000/svg" fill="white" fill-rule="evenodd"
+                 clip-rule="evenodd">
+                <path d="M23.245 20l-11.245-14.374-11.219 14.374-.781-.619 12-15.381 12 15.391-.755.609z"/>
+            </svg>
+        </div>
+    </div>
+
+
+    <script>
+        let closeBtn = document.getElementsByClassName("downbar__close")[0];
+        let downbarContainer = document.getElementsByClassName("downbar__container")[0];
+        let togglerArrow = document.getElementsByClassName("downbar__toggler-arrow")[0];
+        let downbarContent = document.getElementsByClassName("downbar__content")[0];
+        let downbarContentSection = document.getElementsByClassName("downbar__content-section")[0];
+        let downbarLink = document.getElementsByClassName("downbar__link")[0];
+
+        if(sessionStorage.getItem("downbar")){
+            downbarContainer.style.display = "none";
+        }
+
+        closeBtn.addEventListener("click", closeDownbar);
+        togglerArrow.addEventListener("click", toggleDownbar);
+        window.addEventListener('resize', resizeDownbarHeight);
+
+        function closeDownbar() {
+            downbarContainer.style.display = "none";
+            sessionStorage.setItem("downbar", "closed");
+        }
+
+        function toggleDownbar() {
+            downbarContent.classList.toggle("downbar__show");
+            downbarLink.classList.toggle("downbar__show");
+            togglerArrow.classList.toggle("downbar__toggler-arrow-rotate");
+            downbarContainer.classList.toggle("downbar__toggle-height");
+            downbarContentSection.classList.toggle("downbar__mobileGrid");
+            downbarLink.classList.toggle("downbar__linkGrid");
+            downbarContent.classList.toggle("downbar__textblockGrid");
+        }
+
+        function resizeDownbarHeight(){
+            if(window.innerWidth > 768){
+                if(togglerArrow.classList.contains("downbar__toggler-arrow-rotate")){
+                    togglerArrow.click();
+                }
+            }
+        }
+    </script>
+
+{% endblock %}
+
+
