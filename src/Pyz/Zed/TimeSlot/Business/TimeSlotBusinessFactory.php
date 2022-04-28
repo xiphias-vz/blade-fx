@@ -29,6 +29,7 @@ use Spryker\Zed\EventBehavior\Business\EventBehaviorFacadeInterface;
 use Spryker\Zed\Kernel\Business\AbstractBusinessFactory;
 
 /**
+ * @method \Pyz\Zed\TimeSlot\Persistence\TimeSlotQueryContainer getQueryContainer()
  * @method \Pyz\Zed\TimeSlot\TimeSlotConfig getConfig()
  */
 class TimeSlotBusinessFactory extends AbstractBusinessFactory
@@ -43,7 +44,8 @@ class TimeSlotBusinessFactory extends AbstractBusinessFactory
             $this->getStorageClient(),
             $this->getStoreClient(),
             $this->getTimeSlotStorageService(),
-            $this->getSalesFacade()
+            $this->getSalesFacade(),
+            $this->getQueryContainer()
         );
     }
 
@@ -160,7 +162,7 @@ class TimeSlotBusinessFactory extends AbstractBusinessFactory
      */
     public function createTimeSlotReader(): TimeSlotReaderInterface
     {
-        return new TimeSlotReader();
+        return new TimeSlotReader($this->getQueryContainer());
     }
 
     /**

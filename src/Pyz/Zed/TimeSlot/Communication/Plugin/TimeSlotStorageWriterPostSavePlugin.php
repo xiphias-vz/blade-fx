@@ -16,6 +16,7 @@ use Spryker\Zed\SalesExtension\Dependency\Plugin\OrderPostSavePluginInterface;
  * @method \Pyz\Zed\TimeSlot\Business\TimeSlotFacadeInterface getFacade()
  * @method \Pyz\Zed\TimeSlot\TimeSlotConfig getConfig()
  * @method \Pyz\Zed\TimeSlot\Communication\TimeSlotCommunicationFactory getFactory()
+ * @method \Pyz\Zed\TimeSlot\Persistence\TimeSlotQueryContainerInterface getQueryContainer()
  */
 class TimeSlotStorageWriterPostSavePlugin extends AbstractPlugin implements OrderPostSavePluginInterface
 {

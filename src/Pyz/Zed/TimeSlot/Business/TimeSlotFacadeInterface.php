@@ -11,6 +11,7 @@ use Generated\Shared\Transfer\CheckoutResponseTransfer;
 use Generated\Shared\Transfer\PyzTimeSlotHistoryTransfer;
 use Generated\Shared\Transfer\QuoteTransfer;
 use Generated\Shared\Transfer\ShipmentTransfer;
+use Generated\Shared\Transfer\TimeSlotsDefinitionTransfer;
 use Generated\Shared\Transfer\WeekDayTimeSlotsTransfer;
 
 /**
@@ -156,4 +157,18 @@ interface TimeSlotFacadeInterface
      * @return void
      */
     public function executeEvent(array $event): void;
+
+    /**
+     * @param \Generated\Shared\Transfer\TimeSlotsDefinitionTransfer $timeslotDefinitionTransfer
+     *
+     * @return mixed
+     */
+    public function setTimeslotDefinitionForStore(TimeSlotsDefinitionTransfer $timeslotDefinitionTransfer);
+
+    /**
+     * @param \Generated\Shared\Transfer\TimeSlotsDefinitionTransfer $timeslotDefinitionTransfer
+     *
+     * @return mixed
+     */
+    public function getTimeslotDefinition(TimeSlotsDefinitionTransfer $timeslotDefinitionTransfer);
 }

@@ -12,11 +12,13 @@ use Generated\Shared\Transfer\OrderCriteriaFilterTransfer;
 use Generated\Shared\Transfer\PyzTimeSlotHistoryTransfer;
 use Generated\Shared\Transfer\QuoteTransfer;
 use Generated\Shared\Transfer\SynchronizationDataTransfer;
+use Generated\Shared\Transfer\TimeSlotsDefinitionTransfer;
 use Orm\Zed\TimeSlot\Persistence\Map\PyzTimeSlotTableMap;
 use Orm\Zed\TimeSlot\Persistence\PyzTimeSlotHistory;
 use Orm\Zed\TimeSlot\Persistence\PyzTimeSlotQuery;
 use Pyz\Service\TimeSlotStorage\TimeSlotStorageServiceInterface;
 use Pyz\Zed\Sales\Business\SalesFacadeInterface;
+use Pyz\Zed\TimeSlot\Persistence\TimeSlotQueryContainerInterface;
 use Spryker\Client\Storage\StorageClientInterface;
 use Spryker\Client\Store\StoreClientInterface;
 use Spryker\Service\Synchronization\SynchronizationServiceInterface;
@@ -51,24 +53,32 @@ class TimeSlotWriter implements TimeSlotWriterInterface
     protected $salesFacade;
 
     /**
+     * @var \Pyz\Zed\TimeSlot\Persistence\TimeSlotQueryContainerInterface
+     */
+    protected $queryContainer;
+
+    /**
      * @param \Spryker\Service\Synchronization\SynchronizationServiceInterface $synchronizationService
      * @param \Spryker\Client\Storage\StorageClientInterface $storageClient
      * @param \Spryker\Client\Store\StoreClientInterface $storeClient
      * @param \Pyz\Service\TimeSlotStorage\TimeSlotStorageServiceInterface $timeSlotStorageService
      * @param \Pyz\Zed\Sales\Business\SalesFacadeInterface $salesFacade
+     * @param \Pyz\Zed\TimeSlot\Persistence\TimeSlotQueryContainerInterface $queryContainer
      */
     public function __construct(
         SynchronizationServiceInterface $synchronizationService,
         StorageClientInterface $storageClient,
         StoreClientInterface $storeClient,
         TimeSlotStorageServiceInterface $timeSlotStorageService,
-        SalesFacadeInterface $salesFacade
+        SalesFacadeInterface $salesFacade,
+        TimeSlotQueryContainerInterface $queryContainer
     ) {
         $this->synchronizationService = $synchronizationService;
         $this->storageClient = $storageClient;
         $this->storeClient = $storeClient;
         $this->timeSlotStorageService = $timeSlotStorageService;
         $this->salesFacade = $salesFacade;
+        $this->queryContainer = $queryContainer;
     }
 
     /**
@@ -216,5 +226,15 @@ class TimeSlotWriter implements TimeSlotWriterInterface
         $result = $entity->save();
 
         return $result;
+    }
+
+    /**
+     * @param \Generated\Shared\Transfer\TimeSlotsDefinitionTransfer $timeslotDefinitionTransfer
+     *
+     * @return \Generated\Shared\Transfer\TimeSlotsDefinitionTransfer
+     */
+    public function saveTimeSlotDefinitionForStore(TimeSlotsDefinitionTransfer $timeslotDefinitionTransfer): TimeSlotsDefinitionTransfer
+    {
+        return $this->queryContainer->saveTimeSlotDefinitionForStore($timeslotDefinitionTransfer);
     }
 }

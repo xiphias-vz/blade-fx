@@ -134,3 +134,7 @@ order.overview.collection.yes,"Yes, confirm collection"
 Reset,Reset
 order.overview.pick-up.confirm,Confirm pickup
 select.picking.zone.back.button,Back
+sales.timeslotDefinitions.start-time, "Start time"
+sales.timeslotDefinitions.end-time, "End time"
+sales.timeslotDefinitions.timeslots-size, "Timeslots size"
+sales.timeslotDefinitions.default-capacity, "Default capacity"

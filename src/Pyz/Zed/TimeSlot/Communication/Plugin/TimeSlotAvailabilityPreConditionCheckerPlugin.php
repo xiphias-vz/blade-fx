@@ -16,6 +16,7 @@ use Spryker\Zed\Kernel\Communication\AbstractPlugin;
  * @method \Pyz\Zed\TimeSlot\Business\TimeSlotFacade getFacade()
  * @method \Pyz\Zed\TimeSlot\TimeSlotConfig getConfig()
  * @method \Pyz\Zed\TimeSlot\Communication\TimeSlotCommunicationFactory getFactory()
+ * @method \Pyz\Zed\TimeSlot\Persistence\TimeSlotQueryContainerInterface getQueryContainer()
  */
 class TimeSlotAvailabilityPreConditionCheckerPlugin extends AbstractPlugin implements CheckoutPreConditionPluginInterface
 {

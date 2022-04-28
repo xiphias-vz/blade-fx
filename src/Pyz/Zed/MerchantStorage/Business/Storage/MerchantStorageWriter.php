@@ -69,7 +69,7 @@ class MerchantStorageWriter implements MerchantStorageWriterInterface
     {
         $storeIds = SpyMerchantQuery::create()
             ->select(['fk_store'])
-            ->find()
+            ->findByIsActive(true)
             ->getData();
 
         foreach ($storeIds as $idStore) {

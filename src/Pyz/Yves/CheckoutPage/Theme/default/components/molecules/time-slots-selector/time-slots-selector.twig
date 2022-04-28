@@ -73,7 +73,7 @@
                     {% for day, hours in data.slides if hours | length > 0 %}
                         {% set dayOfTheWeek = day |date('w') %}
                         {% set currentDate = "now"|date("w") %}
-                        <div class="{{ config.name }}__column spacing-bottom spacing-bottom--biggest">
+                        <div class="{{ config.name }}__column spacing-bottom spacing-bottom--biggest" style="overflow-x: hidden;overflow-y: auto;height: 400px;">
                             {% if currentDate == dayOfTheWeek %}
                                 <div class="{{ config.name }}__date">{{ 'shipment.form.today' | trans  }}, {{ day | date("d.m.y") }}</div>
                             {% else %}

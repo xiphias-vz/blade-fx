@@ -292,6 +292,23 @@ class ShipmentTimeSlotsExpander implements ShipmentSlotsExpanderInterface
         string $currentDate,
         array $timeSlotTemplate
     ): array {
+        $timeSlotTemplate = [];
+        foreach ($merchantTransfer->getDateTimeSlots() as $dateTimeSlot) {
+            if ($dateTimeSlot->getDate() == $currentDate) {
+                foreach ($dateTimeSlot->getTimeSlotsCapacity() as $capacity) {
+                    $timeSlotTemplate[] = $capacity->getTimeSlot();
+                }
+            }
+        }
+        if (count($timeSlotTemplate) === 0) {
+            foreach ($merchantTransfer->getWeekDaysTimeSlots() as $timeSlot) {
+                if (getdate(strtotime($currentDate))["weekday"] === $timeSlot->getWeekDayName()) {
+                    foreach ($timeSlot->getTimeSlotsCapacity() as $capacity) {
+                        $timeSlotTemplate[] = $capacity->getTimeSlot();
+                    }
+                }
+            }
+        }
         foreach ($timeSlotTemplate as $key => $timeSlot) {
             $timeSlotOrdersCount = $this->timeSlotStorageClient->getTimeSlotOrdersCount(
                 $shipmentMethodTransfer,

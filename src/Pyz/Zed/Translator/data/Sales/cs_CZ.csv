@@ -189,4 +189,7 @@ Reset,"Resetovat"
 order.overview.pick-up.confirm,"Potvrdit vyzvednutí"
 order.overview.pick-up.confirm.picking,"Potvrdit výběr"
 select.picking.zone.back.button,"Zrušit"
-
+sales.timeslotDefinitions.start-time, "Doba spuštění"
+sales.timeslotDefinitions.end-time, "Čas ukončení"
+sales.timeslotDefinitions.timeslots-size, "Velikost timeslotů"
+sales.timeslotDefinitions.default-capacity, "Výchozí kapacita"

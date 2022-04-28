@@ -20,6 +20,13 @@ use Symfony\Component\HttpFoundation\Request;
  */
 class TimeslotsController extends AbstractController
 {
+    private const TIMESLOTS_SIZE = [
+        '15' => '15 min',
+        '30' => '30 min',
+        '60' => '1h',
+        '120' => '2h',
+    ];
+
     /**
      * @return array
      */
@@ -50,12 +57,23 @@ class TimeslotsController extends AbstractController
             }
         }
 
+        $hoursOfTheDay = [];
+        for ($h = 0; $h < 24; $h++) {
+            if ($h < 10) {
+                $hoursOfTheDay[$h] = '0' . $h . ':00';
+            } else {
+                $hoursOfTheDay[$h] = $h . ':00';
+            }
+        }
+
         return [
             'currentStore' => $storeId,
             'storesData' => $stores,
             'isUserAdmin' => $isAdmin,
             'currentCutoffs' => $currentCutoffs,
             'isUserSupervisor' => $isSupervisor,
+            'hoursOfTheDay' => $hoursOfTheDay,
+            'timeSlotSize' => self::TIMESLOTS_SIZE,
         ];
     }
 

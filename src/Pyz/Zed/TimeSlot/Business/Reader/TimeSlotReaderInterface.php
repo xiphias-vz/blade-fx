@@ -7,6 +7,7 @@
 
 namespace Pyz\Zed\TimeSlot\Business\Reader;
 
+use Generated\Shared\Transfer\TimeSlotsDefinitionTransfer;
 use Generated\Shared\Transfer\WeekDayTimeSlotsTransfer;
 
 interface TimeSlotReaderInterface
@@ -74,4 +75,11 @@ interface TimeSlotReaderInterface
      * @return array
      */
     public function getTimeSlotCapacityForDefaultDay(string $store, string $day): array;
+
+    /**
+     * @param \Generated\Shared\Transfer\TimeSlotsDefinitionTransfer $timeslotDefinitionTransfer
+     *
+     * @return array
+     */
+    public function getTimeSlotDefinition(TimeSlotsDefinitionTransfer $timeslotDefinitionTransfer): array;
 }

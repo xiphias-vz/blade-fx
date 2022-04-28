@@ -33,6 +33,7 @@ class PickingZoneOrderExportForm extends AbstractType
     public const OPTION_PICKING_STORES = 'option_picking_stores';
     public const OPTION_PICKING_STATUS = 'option_picking_status';
     public const OPTION_PICKING_TIMESLOTS = 'option_picking_time_slots';
+    public const OPTION_PICKING_TIMESLOT_DEFINITIONS = 'option_picking_time_slot_definitions';
 
     private const STATUS_DATA = [
         'ready for picking' => 'ready for picking',
@@ -40,15 +41,6 @@ class PickingZoneOrderExportForm extends AbstractType
         'ready for collection' => 'ready for collection',
         'paused' => 'paused',
         'cancelled' => 'cancelled',
-    ];
-
-    private const TIMESLOTS_DATA = [
-        '10:00-12:00' => '10:00-12:00',
-        '12:00-14:00' => '12:00-14:00',
-        '14:00-16:00' => '14:00-16:00',
-        '16:00-18:00' => '16:00-18:00',
-        '18:00-20:00' => '18:00-20:00',
-        '10:00-18:00' => '10:00-18:00',
     ];
 
     /**
@@ -62,6 +54,7 @@ class PickingZoneOrderExportForm extends AbstractType
         $resolver->setRequired(static::OPTION_PICKING_STORES);
         $resolver->setRequired(static::OPTION_PICKING_TIMESLOTS);
         $resolver->setRequired(static::OPTION_PICKING_STATUS);
+        $resolver->setRequired(static::OPTION_PICKING_TIMESLOT_DEFINITIONS);
     }
 
     /**
@@ -177,7 +170,7 @@ class PickingZoneOrderExportForm extends AbstractType
                 'expanded' => true,
                 'multiple' => true,
                 'required' => true,
-                'choices' => array_flip(self::TIMESLOTS_DATA),
+                'choices' => array_flip($options[static::OPTION_PICKING_TIMESLOT_DEFINITIONS]),
                 'constraints' => [
                     new NotBlank(),
                 ],

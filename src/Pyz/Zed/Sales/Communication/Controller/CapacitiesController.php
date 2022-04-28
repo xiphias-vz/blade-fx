@@ -9,6 +9,7 @@ namespace Pyz\Zed\Sales\Communication\Controller;
 
 use DateTime;
 use Generated\Shared\Transfer\PyzTimeSlotHistoryTransfer;
+use Generated\Shared\Transfer\TimeSlotsDefinitionTransfer;
 use Spryker\Zed\Kernel\Communication\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -79,7 +80,7 @@ class CapacitiesController extends AbstractController
             $isDefault = $pieces[3];
             $oldCapacityValue = $pieces[4];
 
-            $timeSlot = $this->getTimeSlotByIndex($timeIndex);
+            $timeSlot = $this->getTimeSlotByIndex($timeIndex, $selectedStore);
             $actionPerformed = "";
 
             if ($formToSave == "ByDate") {
@@ -95,7 +96,7 @@ class CapacitiesController extends AbstractController
                         $capacitiesFromDefaultDay = $this->getFactory()->getTimeSlotsFacade()->getTimeSlotCapacityForDefaultDay($selectedStore, $day);
                         $actionPerformed = "INSERT";
                         for ($timeId = 0; $timeId < 5; $timeId++) {
-                            $time = $this->getTimeSlotByIndex($timeId);
+                            $time = $this->getTimeSlotByIndex($timeId, $selectedStore);
                             if ($timeSlot == $time) {
                                 $capacity = $capacityToSave;
                                 $capacityOld = $capacitiesFromDefaultDay[$timeId]["Capacity"];
@@ -263,11 +264,15 @@ class CapacitiesController extends AbstractController
      *
      * @return string
      */
-    public function getTimeSlotByIndex(string $indexOfTime): string
+    public function getTimeSlotByIndex(string $indexOfTime, string $merchantReference): string
     {
-        $timeSlotsArr = ['10:00-12:00', '12:00-14:00', '14:00-16:00', '16:00-18:00', '18:00-20:00'];
+        $timeslotDefinitionTransfer = new TimeSlotsDefinitionTransfer();
+        $timeslotDefinitionTransfer->setMerchantReference($merchantReference);
+        $timeSlotsArr = $this->getFactory()
+            ->getTimeSlotsFacade()
+            ->getTimeslotDefinition($timeslotDefinitionTransfer);
 
-        return $timeSlotsArr[$indexOfTime];
+        return $timeSlotsArr[$indexOfTime]["time_slot"];
     }
 
     /**

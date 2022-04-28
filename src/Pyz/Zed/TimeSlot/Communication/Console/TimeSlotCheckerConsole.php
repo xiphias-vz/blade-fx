@@ -16,6 +16,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 /**
  * @method \Pyz\Zed\TimeSlot\Business\TimeSlotFacadeInterface getFacade()
  * @method \Pyz\Zed\TimeSlot\Communication\TimeSlotCommunicationFactory getFactory()
+ * @method \Pyz\Zed\TimeSlot\Persistence\TimeSlotQueryContainerInterface getQueryContainer()
  */
 class TimeSlotCheckerConsole extends Console
 {

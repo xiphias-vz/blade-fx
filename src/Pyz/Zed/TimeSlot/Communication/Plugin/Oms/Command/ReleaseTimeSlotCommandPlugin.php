@@ -17,6 +17,7 @@ use Spryker\Zed\Oms\Dependency\Plugin\Command\CommandByOrderInterface;
  * @method \Pyz\Zed\TimeSlot\Business\TimeSlotFacadeInterface getFacade()
  * @method \Pyz\Zed\TimeSlot\TimeSlotConfig getConfig()
  * @method \Pyz\Zed\TimeSlot\Communication\TimeSlotCommunicationFactory getFactory()
+ * @method \Pyz\Zed\TimeSlot\Persistence\TimeSlotQueryContainerInterface getQueryContainer()
  */
 class ReleaseTimeSlotCommandPlugin extends AbstractPlugin implements CommandByOrderInterface
 {

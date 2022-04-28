@@ -11,6 +11,7 @@ use Generated\Shared\Transfer\CheckoutResponseTransfer;
 use Generated\Shared\Transfer\PyzTimeSlotHistoryTransfer;
 use Generated\Shared\Transfer\QuoteTransfer;
 use Generated\Shared\Transfer\ShipmentTransfer;
+use Generated\Shared\Transfer\TimeSlotsDefinitionTransfer;
 use Generated\Shared\Transfer\WeekDayTimeSlotsTransfer;
 use Spryker\Zed\Kernel\Business\AbstractFacade;
 
@@ -204,5 +205,30 @@ class TimeSlotFacade extends AbstractFacade implements TimeSlotFacadeInterface
     public function executeEvent(array $event): void
     {
         $this->getFactory()->getEventBehaviourFacade()->executeResolvedPluginsBySources($event, []);
+    }
+
+    /**
+     * @param \Generated\Shared\Transfer\TimeSlotsDefinitionTransfer $timeslotDefinitionTransfer
+     *
+     * @return mixed
+     */
+    public function setTimeslotDefinitionForStore(TimeSlotsDefinitionTransfer $timeslotDefinitionTransfer)
+    {
+        return $this->getFactory()->createTimeSlotWriter()->saveTimeSlotDefinitionForStore($timeslotDefinitionTransfer);
+    }
+
+    /**
+     * @param \Generated\Shared\Transfer\TimeSlotsDefinitionTransfer $timeslotDefinitionTransfer
+     *
+     * @return array
+     */
+    public function getTimeslotDefinition(TimeSlotsDefinitionTransfer $timeslotDefinitionTransfer)
+    {
+        if ($timeslotDefinitionTransfer->getMerchantReference() == "") {
+            $merchantReference = $this->getMerchantByStoreName();
+            $timeslotDefinitionTransfer->setMerchantReference($merchantReference);
+        }
+
+        return $this->getFactory()->createTimeSlotReader()->getTimeSlotDefinition($timeslotDefinitionTransfer);
     }
 }

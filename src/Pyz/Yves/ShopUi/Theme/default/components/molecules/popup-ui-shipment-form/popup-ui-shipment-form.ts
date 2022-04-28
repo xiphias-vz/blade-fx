@@ -142,7 +142,7 @@ export default class PopupUiShipmentForm extends Component {
                 if(dateInc != undefined){
                     let dateObj = new Date(dateInc);
                     let germanFormatDate = dateObj.toLocaleDateString(this.locale.value);
-                    let slickSlideDaysContainer = $('<div class="slick-popup-slide slick-popup-current slick-popup-active col--md-4 col--sm-12" style="float: left;"><div class="spaceBetweenCol"><div class="popup-ui-shipment-form-popup__column spacing-bottom spacing-bottom--biggest" style="width: 100%; display: inline-block;"><div class="popup-ui-shipment-form-popup__date">' + this.getDayName(dateInc) + ', ' + germanFormatDate + '</div><div class="slots_' + dateInc + '"></div></div></div></div>');
+                    let slickSlideDaysContainer = $('<div class="slick-popup-slide slick-popup-current slick-popup-active col--md-4 col--sm-12" style="float: left;"><div class="spaceBetweenCol"><div class="popup-ui-shipment-form-popup__column spacing-bottom spacing-bottom--biggest" style="width: 100%; display: inline-block;overflow-x: hidden;overflow-y: scroll;height: 400px;"><div class="popup-ui-shipment-form-popup__date">' + this.getDayName(dateInc) + ', ' + germanFormatDate + '</div><div class="slots_' + dateInc + '"></div></div></div></div>');
                     slickSlideDaysContainer.appendTo(this.slickTrack);
 
                     let arrayOfTimeSlots = Object.values(data)[item] as Array<string>;
@@ -176,7 +176,7 @@ export default class PopupUiShipmentForm extends Component {
                     let dateObj = new Date(dateDec);
                     let germanFormatDate = dateObj.toLocaleDateString(this.locale.value);
 
-                    let slickSlideDaysContainer = $('<div class="slick-popup-slide slick-popup-current slick-popup-active col--md-4 col--sm-12" style="float: left;"><div class="spaceBetweenCol"><div class="popup-ui-shipment-form-popup__column spacing-bottom spacing-bottom--biggest" style="width: 100%; display: inline-block;"><div class="popup-ui-shipment-form-popup__date">' + this.getDayName(dateDec) + ', ' + germanFormatDate + '</div><div class="slots_' + dateDec + '"></div></div></div></div>');
+                    let slickSlideDaysContainer = $('<div class="slick-popup-slide slick-popup-current slick-popup-active col--md-4 col--sm-12" style="float: left;"><div class="spaceBetweenCol"><div class="popup-ui-shipment-form-popup__column spacing-bottom spacing-bottom--biggest" style="width: 100%; display: inline-block;overflow-x: hidden;overflow-y: scroll;height: 400px;"><div class="popup-ui-shipment-form-popup__date">' + this.getDayName(dateDec) + ', ' + germanFormatDate + '</div><div class="slots_' + dateDec + '"></div></div></div></div>');
                     slickSlideDaysContainer.appendTo(this.slickTrack);
 
                     let arrayOfTimeSlots = Object.values(data)[item] as Array<string>;
@@ -259,7 +259,7 @@ export default class PopupUiShipmentForm extends Component {
                 let dateObj = new Date(property);
                 let germanFormatDate = dateObj.toLocaleDateString(this.locale.value);
 
-                let slickSlideDaysContainer = $('<div class="slick-popup-slide slick-popup-current slick-popup-active col--md-4 col--sm-12" style="float: left;"><div class="spaceBetweenCol"><div class="popup-ui-shipment-form-popup__column spacing-bottom spacing-bottom--biggest" style="width: 100%; display: inline-block;"><div class="popup-ui-shipment-form-popup__date">' + this.getDayName(property) + ', ' + germanFormatDate + '</div><div class="slots_' + property + '"></div></div></div></div>');
+                let slickSlideDaysContainer = $('<div class="slick-popup-slide slick-popup-current slick-popup-active col--md-4 col--sm-12" style="float: left;"><div class="spaceBetweenCol"><div class="popup-ui-shipment-form-popup__column spacing-bottom spacing-bottom--biggest" style="width: 100%; display: inline-block;overflow-x: hidden;overflow-y: scroll;height: 400px;"><div class="popup-ui-shipment-form-popup__date">' + this.getDayName(property) + ', ' + germanFormatDate + '</div><div class="slots_' + property + '"></div></div></div></div>');
                 slickSlideDaysContainer.appendTo(this.slickTrack);
 
                 for (const time_slot in data[property]) {

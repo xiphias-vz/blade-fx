@@ -1,0 +1,115 @@
+{% extends '@Sales/Layout/layout.twig' %}
+
+{% set widget_title = 'Timeslots definition' | trans %}
+
+{% block action %}
+{% endblock %}
+
+{% block section_title %}
+    {{ widget_title }}
+{% endblock %}
+
+{% block content %}
+    <style>
+        .btn-customPrimary {
+            background-color: #1ab394;
+            border-color: #1ab394;
+            color: #FFFFFF;
+            border-radius: unset;
+            margin-left: 10px;
+            margin-top: 10px;
+        }
+        #cmbStores, #cmbStartTime, #cmbEndTime, #cmbEndTime, #cmbTimeslotSize, #txtDefaultCapacity {
+            width: 130px;
+            height: 35px;
+            margin: 10px 0;
+        }
+        label {
+            width: 120px;
+        }
+    </style>
+
+    <form id="timeSlotDefinitionData" method="post">
+        <div class="filters-holder">
+            <div class="filter-component">
+                <label for="cmbStores">{{ 'Location' | trans }}</label>
+                <select id="cmbStores" name="location">
+                    {% for storeId, storeName in storesData  %}
+                        <option value="{{ storeId }}" {%  if currentStore == storeId %}selected{% endif %}>{{ storeName }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="filter-component">
+                <label for="cmbStartTime">{{ 'sales.timeslotDefinitions.start-time' | trans }}</label>
+                <select id="cmbStartTime" name="startTime">
+                    {% for id, hour in hoursOfTheDay  %}
+                        <option value="{{ id }}">{{ hour }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="filter-component">
+                <label for="cmbEndTime">{{ 'sales.timeslotDefinitions.end-time' | trans }}</label>
+                <select id="cmbEndTime" name="endTime">
+                    {% for id, hour in hoursOfTheDay  %}
+                        <option value="{{ id }}">{{ hour }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="filter-component">
+                <label for="cmbTimeslotSize">{{ 'sales.timeslotDefinitions.timeslots-size' | trans }}</label>
+                <select id="cmbTimeslotSize" name="timeslotSize">
+                    {% for id, size in timeSlotSize  %}
+                        <option value="{{ id }}">{{ size }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="filter-component">
+                <label for="txtDefaultCapacity">{{ 'sales.timeslotDefinitions.default-capacity' | trans }}</label>
+                <input id="txtDefaultCapacity" type="text" name="defaultCapacity" value="0" />
+            </div>
+
+            <div id="timeSlotDefinitionSave">
+                <input id="btnSaveTimeslotDefinition" type="button" class="btn btn-customPrimary" value="&#10003; {{ 'Save' | trans }}">
+            </div>
+        </div>
+    </form>
+
+    <script type="text/javascript">
+        let currentStoresTSD = document.getElementById("cmbStores");
+        let startTime = document.getElementById("cmbStartTime");
+        let endTime = document.getElementById("cmbEndTime");
+        let timeslotSize = document.getElementById("cmbTimeslotSize");
+        let defaultCapacity = document.getElementById("txtDefaultCapacity");
+        let btnSaveTimeslotDefinition = document.getElementById("btnSaveTimeslotDefinition");
+
+
+        btnSaveTimeslotDefinition.addEventListener("click", function(ev) {
+            saveTimeSlotDefinitionForStore(currentStoresTSD.value, startTime.value, endTime.value, timeslotSize.value, defaultCapacity.value);
+        });
+
+        function saveTimeSlotDefinitionForStore(store, startTime, endTime, intervalMinutes, defaultCapacity){
+            let formData = new FormData();
+            var data = { "merchantReference": store, "startTime": startTime, "endTime": endTime, "intervalMinutes": intervalMinutes, "defaultCapacity": defaultCapacity };
+            let json = JSON.stringify(data);
+            formData.append("data", json);
+
+            let xhttp = new XMLHttpRequest();
+            xhttp.onreadystatechange = function(){
+                if (this.readyState === 4 && this.status === 200) {
+                    let dataParse = JSON.parse(this.response);
+                    document.getElementById("infoBox").style.display = "flex";
+                    setTimeout(hideInfoBox, 5000);
+                }
+            }
+            xhttp.open("POST", window.location.origin + "/sales/timeslots-definition/save-timeslot-definition");
+            xhttp.send(formData);
+            timeSave = [];
+        }
+
+    </script>
+
+{% endblock %}

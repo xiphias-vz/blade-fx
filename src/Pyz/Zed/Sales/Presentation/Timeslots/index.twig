@@ -76,6 +76,7 @@
             padding: 10px;
             justify-content: space-between;
             margin: 20px 0;
+            clear: both;
         }
 
         #infoBox {
@@ -101,7 +102,7 @@
             margin-left: 10px;
         }
 
-        #btnCancel, #btnResetDefaultDayFilter, #btnSave {
+        #btnCancel, #btnResetDefaultDayFilter, #btnSave, #btnSaveTimeslotDefinition {
             min-width: 50px;
         }
 
@@ -175,25 +176,83 @@
         }
         {% endif %}
 
+        #storeFilter {
+            margin-bottom: 20px;
+        }
+
+        #cmbStoresTSD, #cmbStartTime, #cmbEndTime, #cmbEndTime, #cmbTimeslotSize, #txtDefaultCapacity {
+            width: 130px;
+            height: 35px;
+            margin: 0 10px;
+        }
+
+        #timeslotDefinition label {
+            margin: 5px 10px !important;
+        }
+
 
     </style>
     <form id="cutoffTimesData" method="post" action="/sales/timeslots/index">
-        <div class="filters-holder">
-            <div class="filter-component">
-                <label for="cmbStores">{{ 'Location' | trans }}</label> <br>
-                <select id="cmbStores" name="location">
-                    {% for storeId, storeName in storesData  %}
-                        <option value="{{ storeId }}" {%  if currentStore == storeId %}selected{% endif %}>{{ storeName }}</option>
-                    {% endfor %}
-                </select>
+        <div style="margin-bottom: 20px;">
+            <div id="storeFilter" class="col-md-4 col-lg-4">
+                <div class="filters-holder">
+                    <div class="filter-component">
+                        <label for="cmbStores">{{ 'Location' | trans }}</label> <br>
+                        <select id="cmbStores" name="location">
+                            {% for storeId, storeName in storesData  %}
+                                <option value="{{ storeId }}" {%  if currentStore == storeId %}selected{% endif %}>{{ storeName }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                    <div id="dayFilterButtons">
+                        <input id="btnFilterByStore" type="submit" class="btn btn-customPrimary" value="{{ 'edit_standard_plan' | trans }}">
+                        <input id="btnResetDefaultDayFilter" type="button" class="btn btn-custom-cancel" value="{{ 'Cancel' | trans }}">
+                    </div>
+                </div>
             </div>
 
-            <div id="dayFilterButtons">
-                <input id="btnFilterByStore" type="submit" class="btn btn-customPrimary" value="{{ 'edit_standard_plan' | trans }}">
-                <input id="btnResetDefaultDayFilter" type="button" class="btn btn-custom-cancel" value="{{ 'Cancel' | trans }}">
+            <div id="timeslotDefinition" class="col-md-8 col-lg-8">
+                <div class="filters-holder">
+
+                    <div class="filter-component">
+                        <label for="cmbStartTime">{{ 'sales.timeslotDefinitions.start-time' | trans }}</label><br>
+                        <select id="cmbStartTime" name="startTime">
+                            {% for id, hour in hoursOfTheDay  %}
+                                <option value="{{ id }}">{{ hour }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                    <div class="filter-component">
+                        <label for="cmbEndTime">{{ 'sales.timeslotDefinitions.end-time' | trans }}</label><br>
+                        <select id="cmbEndTime" name="endTime">
+                            {% for id, hour in hoursOfTheDay  %}
+                                <option value="{{ id }}">{{ hour }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                    <div class="filter-component">
+                        <label for="cmbTimeslotSize">{{ 'sales.timeslotDefinitions.timeslots-size' | trans }}</label><br>
+                        <select id="cmbTimeslotSize" name="timeslotSize">
+                            {% for id, size in timeSlotSize  %}
+                                <option value="{{ id }}">{{ size }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                    <div class="filter-component">
+                        <label for="txtDefaultCapacity">{{ 'sales.timeslotDefinitions.default-capacity' | trans }}</label><br>
+                        <input id="txtDefaultCapacity" type="text" name="defaultCapacity" value="0" />
+                    </div>
+
+                    <div id="timeSlotDefinitionSave">
+                        <input id="btnSaveTimeslotDefinition" type="button" class="btn btn-customPrimary" value="&#10003; {{ 'Save' | trans }}">
+                    </div>
+                </div>
             </div>
         </div>
-
     <div id="savingAndMessageDiv">
         <div>
             <form>
@@ -266,7 +325,7 @@
         let currentStore = document.getElementById("cmbStores");
         let btnSaveChangedData = document.getElementById("btnSave");
         let btnCancelTimeSlotChange = document.getElementById("btnCancel");
-        let btnFilterByStore = document.getElementById('btnFilterByStore')
+        var btnFilterByStore = document.getElementById('btnFilterByStore');
 
         btnCancelTimeSlotChange.addEventListener('click', ()=>{location.reload()})
 
@@ -356,6 +415,32 @@
             }
             objectWithSpecifiedDay[day] = slotsObject;
             timeSave.push(objectWithSpecifiedDay);
+        }
+
+
+        let currentStores = document.getElementById("cmbStores");
+        let startTime = document.getElementById("cmbStartTime");
+        let endTime = document.getElementById("cmbEndTime");
+        let timeslotSize = document.getElementById("cmbTimeslotSize");
+        let defaultCapacity = document.getElementById("txtDefaultCapacity");
+        let btnSaveTimeslotDefinition = document.getElementById("btnSaveTimeslotDefinition");
+
+
+        btnSaveTimeslotDefinition.addEventListener("click", function(ev) {
+            saveTimeSlotDefinitionForStore(currentStores.value, startTime.value, endTime.value, timeslotSize.value, defaultCapacity.value);
+            setTimeout(function (){  btnFilterByStore.click(); }, 2000);
+        });
+
+        function saveTimeSlotDefinitionForStore(store, startTime, endTime, intervalMinutes, defaultCapacity){
+            let formData = new FormData();
+            var data = { "merchantReference": store, "startTime": startTime, "endTime": endTime, "intervalMinutes": intervalMinutes, "defaultCapacity": defaultCapacity };
+            let json = JSON.stringify(data);
+            formData.append("data", json);
+
+            let xhttp = new XMLHttpRequest();
+            xhttp.open("POST", window.location.origin + "/sales/timeslots-definition/save-timeslot-definition");
+            xhttp.send(formData);
+            timeSave = [];
         }
     </script>
 

@@ -30,6 +30,18 @@
         <property name="capacity" type="int"/>
     </transfer>
 
+    <transfer name="TimeSlotsDefinition">
+        <property name="startTime" type="string"/>
+        <property name="endTime" type="string"/>
+        <property name="intervalMinutes" type="int"/>
+        <property name="defaultCapacity" type="int"/>
+        <property name="merchantReference" type="int"/>
+        <property name="fkUser" type="int"/>
+        <property name="dbResponse" type="array" />
+        <property name="exactDate" type="string"/>
+        <property name="workDay" type="string"/>
+    </transfer>
+
     <transfer name="CutOffTime">
         <property name="merchantReference" type="string"/>
         <property name="day" type="string"/>

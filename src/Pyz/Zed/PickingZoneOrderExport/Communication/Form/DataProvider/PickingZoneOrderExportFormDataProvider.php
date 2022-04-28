@@ -7,6 +7,7 @@
 
 namespace Pyz\Zed\PickingZoneOrderExport\Communication\Form\DataProvider;
 
+use Generated\Shared\Transfer\TimeSlotsDefinitionTransfer;
 use Orm\Zed\Oms\Persistence\SpyOmsOrderItemStateQuery;
 use Pyz\Zed\Merchant\Business\MerchantFacadeInterface;
 use Pyz\Zed\PickingZone\Business\PickingZoneFacadeInterface;
@@ -67,6 +68,7 @@ class PickingZoneOrderExportFormDataProvider
         $options[PickingZoneOrderExportForm::OPTION_PICKING_STORES] = $stores;
         $options[PickingZoneOrderExportForm::OPTION_PICKING_TIMESLOTS] = $this->getPickingTimeSlots();
         $options[PickingZoneOrderExportForm::OPTION_PICKING_STATUS] = $this->getPickingStatus();
+        $options[PickingZoneOrderExportForm::OPTION_PICKING_TIMESLOT_DEFINITIONS] = $this->getTimeSlotDefinitions();
 
         return $options;
     }
@@ -141,5 +143,20 @@ class PickingZoneOrderExportFormDataProvider
         $pickingStatuses = [];
 
         return $pickingStatuses;
+    }
+
+    /**
+     * @return string[]
+     */
+    protected function getTimeSlotDefinitions(): array
+    {
+        $timeSlotDefinitionTransfer = new TimeSlotsDefinitionTransfer();
+        $timeSlotsDef = $this->timeSlotFacade->getTimeslotDefinition($timeSlotDefinitionTransfer);
+        $choicesDef = [];
+        for ($i = 0; $i < count($timeSlotsDef); $i++) {
+            array_push($choicesDef, $timeSlotsDef[$i]["time_slot"]);
+        }
+
+        return $choicesDef;
     }
 }

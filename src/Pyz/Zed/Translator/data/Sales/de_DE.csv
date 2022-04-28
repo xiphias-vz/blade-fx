@@ -190,3 +190,7 @@ Reset,Zurücksetzen
 order.overview.pick-up.confirm,Abholung bestätigen
 order.overview.pick-up.confirm.picking,"Picking bestätigen"
 select.picking.zone.back.button,Zurück
+sales.timeslotDefinitions.start-time, "Startzeit"
+sales.timeslotDefinitions.end-time, "Endzeit"
+sales.timeslotDefinitions.timeslots-size, "Größe der Zeitfenster"
+sales.timeslotDefinitions.default-capacity, "Standardkapazität"

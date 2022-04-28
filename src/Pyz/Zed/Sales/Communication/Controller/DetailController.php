@@ -11,6 +11,7 @@ use Aws\S3\Exception\S3Exception;
 use Aws\S3\S3Client;
 use DateTime;
 use Exception;
+use Generated\Shared\Transfer\TimeSlotsDefinitionTransfer;
 use Orm\Zed\Sales\Persistence\SpySalesOrder;
 use Orm\Zed\Sales\Persistence\SpySalesOrderAddress;
 use Pyz\Shared\Acl\AclConstants;
@@ -40,14 +41,6 @@ class DetailController extends SprykerDetailController
     protected const SEARCH_TXT_FILE_NAME = '_order.txt';
     protected const DOWNLOAD_TXT_FILE_NAME = '_order.zip';
     protected const SEARCH_XML_FILE_NAME = '_order.xml';
-
-    private const TIMESLOTS_DATA = [
-        '10:00-12:00' => '10:00-12:00',
-        '12:00-14:00' => '12:00-14:00',
-        '14:00-16:00' => '14:00-16:00',
-        '16:00-18:00' => '16:00-18:00',
-        '18:00-20:00' => '18:00-20:00',
-    ];
 
     /**
      * @param \Symfony\Component\HttpFoundation\Request $request
@@ -258,10 +251,11 @@ class DetailController extends SprykerDetailController
             }
         }
 
-        $timeSlotsData = self::TIMESLOTS_DATA;
-        if ($merchantReference === '1021') {
-            $timeSlotsData['10:00-18:00'] = '10:00-18:00';
-        }
+        $timeslotDefinitionTransfer = new TimeSlotsDefinitionTransfer();
+        $timeslotDefinitionTransfer->setMerchantReference($merchantReference);
+        $timeSlotsData = $this->getFactory()
+            ->getTimeSlotsFacade()
+            ->getTimeslotDefinition($timeslotDefinitionTransfer);
 
         foreach ($containers as $container) {
             $idZone = $container->getIdPickingZone();

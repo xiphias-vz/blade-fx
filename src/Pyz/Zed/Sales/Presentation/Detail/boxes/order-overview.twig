@@ -77,7 +77,7 @@
                                         <input type="date" id="pickup-time-window" name="pickupDate" style="outline: none;height: 30px;margin-right: 10px;"/>
                                         <select class="form-control input-sm" name="pickupTimeSlot" style="width:140px;height: 30px;margin-right: 10px;">
                                             {% for timeSlot in timeSlotsData %}
-                                                <option value="{{ timeSlot }}">{{ timeSlot }}</option>
+                                                <option value="{{ timeSlot.time_slot }}">{{ timeSlot.time_slot }}</option>
                                             {% endfor %}
                                         </select>
                                         <div style="float: right;">

@@ -9,6 +9,7 @@ namespace Pyz\Zed\TimeSlot\Business\Reader;
 
 use ArrayObject;
 use Generated\Shared\Transfer\TimeSlotCapacityTransfer;
+use Generated\Shared\Transfer\TimeSlotsDefinitionTransfer;
 use Generated\Shared\Transfer\WeekDayTimeSlotsTransfer;
 use Orm\Zed\Merchant\Persistence\SpyMerchantQuery;
 use Orm\Zed\Sales\Persistence\Map\SpySalesShipmentTableMap;
@@ -16,11 +17,21 @@ use Orm\Zed\Sales\Persistence\SpySalesShipmentQuery;
 use Orm\Zed\Store\Persistence\SpyStoreQuery;
 use Orm\Zed\TimeSlot\Persistence\Map\PyzTimeSlotTableMap;
 use Orm\Zed\TimeSlot\Persistence\PyzTimeSlotQuery;
+use Pyz\Zed\TimeSlot\Persistence\TimeSlotQueryContainerInterface;
 
 class TimeSlotReader implements TimeSlotReaderInterface
 {
-    public function __construct()
+    /**
+     * @var \Pyz\Zed\TimeSlot\Persistence\TimeSlotQueryContainerInterface
+     */
+    protected $queryContainer;
+
+    /**
+     * @param \Pyz\Zed\TimeSlot\Persistence\TimeSlotQueryContainerInterface $queryContainer
+     */
+    public function __construct(TimeSlotQueryContainerInterface $queryContainer)
     {
+        $this->queryContainer = $queryContainer;
     }
 
     /**
@@ -278,5 +289,15 @@ class TimeSlotReader implements TimeSlotReaderInterface
             ->toArray();
 
         return $result;
+    }
+
+    /**
+     * @param \Generated\Shared\Transfer\TimeSlotsDefinitionTransfer $timeslotDefinitionTransfer
+     *
+     * @return array
+     */
+    public function getTimeSlotDefinition(TimeSlotsDefinitionTransfer $timeslotDefinitionTransfer): array
+    {
+        return $this->queryContainer->getTimeSlotDefinition($timeslotDefinitionTransfer);
     }
 }
