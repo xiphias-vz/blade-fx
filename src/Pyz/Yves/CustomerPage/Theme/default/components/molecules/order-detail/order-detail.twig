@@ -18,7 +18,6 @@
             order: data.order,
         },
     } only %}
-
     <div class="box spacing-bottom spacing-bottom--biggest">
         {% include molecule('title-box', 'CustomerPage') with {
             modifiers: ['borderless'],
@@ -76,7 +75,7 @@
                         {% set splittedDeliveryDate = shipmentGroup.shipment.requestedDeliveryDate | split('_') %}
 
                         <strong class="menu__title">{{ 'checkout.date.and.time' | trans }}:</strong>
-                        {{ splittedDeliveryDate | first | formatDate }} - {{ splittedDeliveryDate | last -}}
+                        {{ splittedDeliveryDate | first | date("d.m.Y") }} - {{ splittedDeliveryDate | last }}
                     </li>
                 </ul>
             </div>

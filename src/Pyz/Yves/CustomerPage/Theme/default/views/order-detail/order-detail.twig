@@ -44,7 +44,7 @@
 
                 <li class="menu__item">
                     <strong class="menu__title">{{ 'customer.order.date' | trans }}:</strong>
-                    {{ embed.order.createdAt | formatDateTime -}}
+                    {{ embed.order.createdAt | date("d.m.Y H:i", "Europe/Berlin") }}
                 </li>
 
                 <li class="menu__item">

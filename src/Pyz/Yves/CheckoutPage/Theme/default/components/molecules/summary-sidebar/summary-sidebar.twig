@@ -195,10 +195,11 @@
                     <div class="{{ config.name }}__col">
                         {% block date %}
                             {% set splittedDeliveryDate = data.shipment.requestedDeliveryDate | split('_') %}
+
                             {% if app.currentCodeBucket == 'DE' %}
-                                <span class="{{ config.name }}__text">{{  splittedDeliveryDate | first | formatDate }} - {{ splittedDeliveryDate | last }}</span>
+                                <span class="{{ config.name }}__text">{{ splittedDeliveryDate | first | date("d.m.Y") }} - {{ splittedDeliveryDate | last }}</span>
                             {% else %}
-                                <span class="{{ config.name }}__text-CZ">{{  splittedDeliveryDate | first | formatDate }} - {{ splittedDeliveryDate | last }}</span>
+                                <span class="{{ config.name }}__text-CZ">{{  splittedDeliveryDate | first | date("d.m.Y") }} - {{ splittedDeliveryDate | last }}</span>
                             {% endif %}
                         {% endblock %}
                     </div>

@@ -43,7 +43,7 @@
                     {% endif %}
                 </td>
                 <td class="table__col table__col--responsive" data-content="{{ 'customer.account.wishlist.overview.item_count' | trans }}"><span class="spacing-x spacing-x--inner spacing-x--big">{{ wishlist.numberOfItems }}</span></td>
-                <td class="table__col table__col--responsive" data-content="{{ 'customer.account.wishlist.overview.date' | trans }}">{{ wishlist.createdAt | formatDate }}</td>
+                <td class="table__col table__col--responsive" data-content="{{ 'customer.account.wishlist.overview.date' | trans }}">{{ wishlist.createdAt | date("d.m.Y") }}</td>
                 <td class="table__col table__col--right">
                     <ul class="menu menu--inline menu--customer-account">
                         {% if not hasWishlistForm %}

@@ -75,9 +75,9 @@
                         {% set currentDate = "now"|date("w") %}
                         <div class="{{ config.name }}__column spacing-bottom spacing-bottom--biggest" style="overflow-x: hidden;overflow-y: auto;height: 400px;">
                             {% if currentDate == dayOfTheWeek %}
-                                <div class="{{ config.name }}__date">{{ 'shipment.form.today' | trans  }}, {{ day | date("d.m.y") }}</div>
+                                <div class="{{ config.name }}__date">{{ 'shipment.form.today' | trans  }}, {{ day | date("d.m.Y") }}</div>
                             {% else %}
-                                <div class="{{ config.name }}__date">{{ daysInTheWeek[dayOfTheWeek] }}, {{ day | date("d.m.y") }}</div>
+                                <div class="{{ config.name }}__date">{{ daysInTheWeek[dayOfTheWeek] }}, {{ day | date("d.m.Y") }}</div>
                             {% endif %}
                             {% set parentIndex = 'day-' ~ loop.index %}
                             {% for hour in hours %}
