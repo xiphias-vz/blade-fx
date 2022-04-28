@@ -8,6 +8,7 @@ BEGIN
     SET @order_reference = LPAD(order_reference, 9, 0);
     SET @store_short_code = store_reference;
     SET @is_remote = is_remote;
+
 SELECT b.error_code
      , CASE WHEN b.error_code IN (21, 22) THEN b.requested_delivery_date_timeslot
             ELSE CASE WHEN b.error_code = 40 THEN b.store
@@ -19,11 +20,18 @@ SELECT b.error_code
 INTO @error_code, @error_data, @flag, @no_rows
 FROM
     (
-        SELECT CASE WHEN a.order_status LIKE '%Collected by customer%' OR a.order_status LIKE 'order invoiced' THEN 10
+        SELECT CASE WHEN SUBSTRING_INDEX(a.order_status, ',', 1) IN ('Collected by customer', 'Order invoiced', 'accepted by customer', 'invoice process', 'started invoice process', 'generated invoice reference', 'invoice generated')
+            OR SUBSTRING_INDEX(a.order_status, ',', -1) IN ('Collected by customer', 'Order invoiced', 'accepted by customer', 'invoice process', 'started invoice process', 'generated invoice reference', 'invoice generated')
+            OR SUBSTRING_INDEX(SUBSTRING_INDEX(a.order_status, ',', 2),',', -1) IN ('Collected by customer', 'Order invoiced', 'accepted by customer', 'invoice process', 'started invoice process', 'generated invoice reference', 'invoice generated')
+                        THEN 10
                     ELSE CASE WHEN a.order_status NOT LIKE '%Ready for collection%' AND DATE_ADD(now(), INTERVAL 1 HOUR) > a.requested_delivery_date_to THEN 21
                               ELSE CASE WHEN a.order_status NOT LIKE '%Ready for collection%' AND DATE_ADD(now(), INTERVAL 1 HOUR) < a.requested_delivery_date_from THEN 22
                                         ELSE CASE WHEN a.merchant_filial_number <> @store_short_code THEN 40
-                                                  ELSE 0
+                                                  ELSE CASE WHEN SUBSTRING_INDEX(a.order_status, ',', 1) IN ('Ready for collection', 'cashier export process', 'cashier order exporting', 'cashier order exported', 'collection process', 'shipped mail sending', 'shipped mail sent')
+                                                      OR SUBSTRING_INDEX(a.order_status, ',', -1) IN ('Ready for collection', 'cashier export process', 'cashier order exporting', 'cashier order exported', 'collection process', 'shipped mail sending', 'shipped mail sent')
+                                                      OR SUBSTRING_INDEX(SUBSTRING_INDEX(a.order_status, ',', 2),',', -1) IN ('Ready for collection', 'cashier export process', 'cashier order exporting', 'cashier order exported', 'collection process', 'shipped mail sending', 'shipped mail sent')
+                                                                THEN 0
+                                                      END
                                             END
                                   END
                         END
@@ -58,9 +66,7 @@ FROM
                 GROUP BY sso.id_sales_order, sso.order_reference, smso.requested_delivery_date
             ) a
     ) b;
-
 SET @error_code = (SELECT CASE WHEN @no_rows = 0 then 30 else @error_code END);
-
 INSERT INTO pyz_order_pickup_queue (fk_sales_order, created_at, is_remote, merchant_filial_number, data_structured)
 SELECT sso.id_sales_order, DATE_ADD(NOW(), INTERVAL 1 HOUR), @is_remote, @store_short_code
      , CONCAT('{"order_data":{"no_of_containers_total":'
@@ -80,6 +86,5 @@ WHERE sso.order_reference = @order_reference
   AND @error_code = 0
 GROUP BY sso.id_sales_order
     ON DUPLICATE KEY UPDATE updated_at = DATE_ADD(NOW(), INTERVAL 1 HOUR);
-
 SELECT @error_code as error_code, @error_data as error_data;
 END

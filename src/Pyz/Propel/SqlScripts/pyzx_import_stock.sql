@@ -124,8 +124,7 @@ BEGIN
         INNER JOIN spy_store ss on ssoi.store = ss.name
         INNER JOIN spy_stock_store sss on ss.id_store = sss.fk_store
         INNER JOIN spy_stock_product ssp on sss.fk_stock = ssp.fk_stock and sp.id_product = ssp.fk_product
-        INNER JOIN spy_merchant_sales_order_item smsoi on ssoi.id_sales_order_item and smsoi.fk_sales_order_item
-        INNER JOIN spy_merchant_sales_order smso on smso.id_merchant_sales_order and smsoi.fk_merchant_sales_order
+        INNER JOIN spy_merchant_sales_order smso on smso.fk_sales_order = sso.id_sales_order
     SET
         ssoi.shelf = ssp.shelf,
         ssoi.shelf_field = ssp.shelf_field,
