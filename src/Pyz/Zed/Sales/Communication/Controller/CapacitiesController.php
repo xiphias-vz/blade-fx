@@ -236,6 +236,8 @@ class CapacitiesController extends AbstractController
                                 }
                                 break;
                             }
+                        } else {
+                            $timeSlot[static::CAPACITY_LEFT_COLUMN] = $timeSlot[static::CAPACITY_COLUMN] - $timeSlot[static::USED_CAPACITY_COLUMN];
                         }
                     }
                     $newArray[$date][$def[static::TIMESLOT_COLUMN]] = $timeSlot;
