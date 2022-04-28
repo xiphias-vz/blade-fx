@@ -7,6 +7,7 @@
         <property name="termsApproval" type="bool"/>
         <property name="IsSubstitutionAllowed" type="bool" />
         <property name="isDepositAllowed" type="bool" />
+        <property name="quoteZoneMapping" type="QuoteZoneMapping[]" />
     </transfer>
 
     <transfer name="Customer">
@@ -14,6 +15,12 @@
         <property name="addressStatus" type="string"/>
         <property name="isScanAndGo" type="bool"/>
         <property name="isMeinGlobus" type="bool"/>
+    </transfer>
+
+    <transfer name="QuoteZoneMapping">
+        <property name="merchantReference" type="string" />
+        <property name="assortmentZone" type="string" />
+        <property name="pickZone" type="string" />
     </transfer>
 
 </transfers>

@@ -10,6 +10,7 @@ namespace Pyz\Zed\ProductCartConnector\Business\Expander;
 use Generated\Shared\Transfer\CartChangeTransfer;
 use Generated\Shared\Transfer\ItemTransfer;
 use Generated\Shared\Transfer\ProductConcreteTransfer;
+use Generated\Shared\Transfer\QuoteZoneMappingTransfer;
 use Orm\Zed\AssortmentZone\Persistence\Map\PyzAssortmentZoneTableMap;
 use Orm\Zed\Merchant\Persistence\Map\SpyMerchantTableMap;
 use Orm\Zed\PickingZone\Persistence\Map\PyzPickingZoneTableMap;
@@ -56,48 +57,9 @@ class ProductExpander extends SprykerProductExpander implements ProductExpanderI
     protected function expandItemWithProductConcreteLocal(ProductConcreteTransfer $productConcreteTransfer, ItemTransfer $itemTransfer, CartChangeTransfer $cartChangeTransfer)
     {
         parent::expandItemWithProductConcrete($productConcreteTransfer, $itemTransfer);
+        $this->setAssortmentZoneMapping($cartChangeTransfer);
 
-        $pickZone = '';
-        $assortmentZone = '';
-        if (isset($productConcreteTransfer->getAttributes()[ProductConfig::KEY_PICK_ZONE_ATTRIBUTE])) {
-            $pickZone = $productConcreteTransfer->getAttributes()[ProductConfig::KEY_PICK_ZONE_ATTRIBUTE];
-        }
-        if (isset($productConcreteTransfer->getAttributes()[mb_strtolower(ProductConfig::KEY_PICK_ZONE_ATTRIBUTE)])) {
-            $pickZone = $productConcreteTransfer->getAttributes()[mb_strtolower(ProductConfig::KEY_PICK_ZONE_ATTRIBUTE)];
-        }
-
-        if (empty($pickZone)) {
-            if (isset($productConcreteTransfer->getAttributes()[ProductConfig::KEY_ASSORTMENT_ZONE_ATTRIBUTE])) {
-                $assortmentZone = $productConcreteTransfer->getAttributes()[ProductConfig::KEY_ASSORTMENT_ZONE_ATTRIBUTE];
-            }
-
-            if (isset($productConcreteTransfer->getAttributes()[mb_strtolower(ProductConfig::KEY_ASSORTMENT_ZONE_ATTRIBUTE)])) {
-                $assortmentZone = $productConcreteTransfer->getAttributes()[mb_strtolower(ProductConfig::KEY_ASSORTMENT_ZONE_ATTRIBUTE)];
-            }
-
-            if (!empty($assortmentZone)) {
-                $merchantReference = $cartChangeTransfer->getQuote()->getMerchantReference();
-                $query = PyzPickingZoneQuery::create();
-                $query->joinWithPyzAssortmentPickZoneRelation()
-                    ->usePyzAssortmentPickZoneRelationQuery()
-                    ->joinWithAssortmentZone()
-                    ->joinWithMerchant()
-                    ->endUse()
-                    ->where(PyzAssortmentZoneTableMap::COL_ASSORTMENT_ZONE . ' = ?', $assortmentZone, PDO::PARAM_STR)
-                    ->where(SpyMerchantTableMap::COL_FILIAL_NUMBER . ' = ?', $merchantReference, PDO::PARAM_STR)
-                    ->select([PyzPickingZoneTableMap::COL_NAME]);
-
-                $entity = $query->find();
-                if (!empty($entity->getData())) {
-                    $pickZone = $entity->getFirst();
-                }
-            }
-        }
-
-        if (strlen(trim($pickZone)) < 2) {
-            $pickZone = $this->getDefaultPickZone();
-        }
-
+        $pickZone = $this->getPickZoneName($productConcreteTransfer, $cartChangeTransfer, $assortmentZone);
         $weightPerUnit = $this->calculateWeightPerItem($productConcreteTransfer->getAttributes());
 
         $currentStoreName = $cartChangeTransfer->getQuote()->getStore()->getName();
@@ -236,6 +198,80 @@ class ProductExpander extends SprykerProductExpander implements ProductExpanderI
         }
         if (!$pickZone) {
             $pickZone = "Sonstiges";
+        }
+
+        return $pickZone;
+    }
+
+    /**
+     * @param \Generated\Shared\Transfer\CartChangeTransfer $cartChangeTransfer
+     *
+     * @return void
+     */
+    protected function setAssortmentZoneMapping(CartChangeTransfer $cartChangeTransfer)
+    {
+        $merchantReference = $cartChangeTransfer->getQuote()->getMerchantReference();
+        if (count($cartChangeTransfer->getQuote()->getQuoteZoneMapping()) === 0 ||
+            $cartChangeTransfer->getQuote()->getQuoteZoneMapping()[0]->getMerchantReference() !== $merchantReference) {
+            $quote = $cartChangeTransfer->getQuote();
+            $query = PyzPickingZoneQuery::create();
+            $query->joinWithPyzAssortmentPickZoneRelation()
+                ->usePyzAssortmentPickZoneRelationQuery()
+                ->joinWithAssortmentZone()
+                ->joinWithMerchant()
+                ->endUse()
+                ->where(SpyMerchantTableMap::COL_FILIAL_NUMBER . ' = ?', $merchantReference, PDO::PARAM_STR)
+                ->select([PyzAssortmentZoneTableMap::COL_ASSORTMENT_ZONE, PyzPickingZoneTableMap::COL_NAME]);
+
+            $zones = $query->find();
+            foreach ($zones as $zone) {
+                $quote->addQuoteZoneMapping((new QuoteZoneMappingTransfer())
+                    ->setAssortmentZone($zone[PyzAssortmentZoneTableMap::COL_ASSORTMENT_ZONE])
+                    ->setPickZone($zone[PyzPickingZoneTableMap::COL_NAME])
+                    ->setMerchantReference($merchantReference));
+            }
+            $cartChangeTransfer->setQuote($quote);
+        }
+    }
+
+    /**
+     * @param \Generated\Shared\Transfer\ProductConcreteTransfer $productConcreteTransfer
+     * @param \Generated\Shared\Transfer\CartChangeTransfer $cartChangeTransfer
+     * @param string|null $assortmentZone
+     *
+     * @return string
+     */
+    protected function getPickZoneName(ProductConcreteTransfer $productConcreteTransfer, CartChangeTransfer $cartChangeTransfer, ?string &$assortmentZone): string
+    {
+        $pickZone = '';
+        if (isset($productConcreteTransfer->getAttributes()[ProductConfig::KEY_PICK_ZONE_ATTRIBUTE])) {
+            $pickZone = $productConcreteTransfer->getAttributes()[ProductConfig::KEY_PICK_ZONE_ATTRIBUTE];
+        }
+        if (isset($productConcreteTransfer->getAttributes()[mb_strtolower(ProductConfig::KEY_PICK_ZONE_ATTRIBUTE)])) {
+            $pickZone = $productConcreteTransfer->getAttributes()[mb_strtolower(ProductConfig::KEY_PICK_ZONE_ATTRIBUTE)];
+        }
+
+        if (empty($pickZone)) {
+            if (isset($productConcreteTransfer->getAttributes()[ProductConfig::KEY_ASSORTMENT_ZONE_ATTRIBUTE])) {
+                $assortmentZone = $productConcreteTransfer->getAttributes()[ProductConfig::KEY_ASSORTMENT_ZONE_ATTRIBUTE];
+            }
+
+            if (isset($productConcreteTransfer->getAttributes()[mb_strtolower(ProductConfig::KEY_ASSORTMENT_ZONE_ATTRIBUTE)])) {
+                $assortmentZone = $productConcreteTransfer->getAttributes()[mb_strtolower(ProductConfig::KEY_ASSORTMENT_ZONE_ATTRIBUTE)];
+            }
+
+            if (!empty($assortmentZone)) {
+                foreach ($cartChangeTransfer->getQuote()->getQuoteZoneMapping() as $zoneMapping) {
+                    if ($zoneMapping->getAssortmentZone() === $assortmentZone) {
+                        $pickZone = $zoneMapping->getPickZone();
+                        break;
+                    }
+                }
+            }
+        }
+
+        if (strlen(trim($pickZone)) < 2) {
+            $pickZone = $this->getDefaultPickZone();
         }
 
         return $pickZone;
