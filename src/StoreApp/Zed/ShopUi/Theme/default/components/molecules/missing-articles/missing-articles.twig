@@ -12,7 +12,7 @@
 
 {% block body %}
     <div>
-        <span>{{ 'storeapp.picking.MissingArticle' | trans }}</span><br/>
+        <div class="title">{{ 'storeapp.picking.MissingArticle' | trans }}</div>
 
         <div class="container">
             {% for missingArticle in data.missingArticles %}

@@ -384,7 +384,6 @@ class CollectByCustomerController extends AbstractController
                 $item4["quantity"] = $item4["imageUrl"] - $item4["quantity"];
             }
             $item4['name'] = str_replace($item4["sku"] . ' - ', "", $item4["name"]);
-            $item4['name'] = substr($item4["name"], 0, 25);
         }
 
         $decodedCartNote = json_decode($salesOrderTransfer->getCartNote());
