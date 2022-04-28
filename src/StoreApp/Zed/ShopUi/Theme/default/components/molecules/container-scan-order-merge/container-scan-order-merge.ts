@@ -29,6 +29,7 @@ export default class ContainerScanOrderMerge extends Component {
     protected containerEighthCharactersSet: HTMLInputElement;
     protected pleaseScanContainer: HTMLInputElement;
     protected containerIsAlreadyUsed: HTMLInputElement;
+    protected containerScanIsNotAllowed: HTMLInputElement;
     protected containerScanOrderErrorPopUp1: HTMLInputElement;
     protected containerScanOrderErrorPopUp2: HTMLInputElement;
     protected containerScanOrderErrorPopUp3: HTMLInputElement;
@@ -59,6 +60,7 @@ export default class ContainerScanOrderMerge extends Component {
         this.containerEighthCharactersSet = <HTMLInputElement>document.querySelector('#containerID_eighth_characters_set');
         this.pleaseScanContainer = <HTMLInputElement>document.querySelector('#please_scan_container');
         this.containerIsAlreadyUsed = <HTMLInputElement>document.querySelector('#container_is_already_used');
+        this.containerScanIsNotAllowed = <HTMLInputElement>document.querySelector('#container-scan-not-allowed');
         this.containerScanOrderErrorPopUp1 = <HTMLInputElement>document.querySelector('#container_scan_order_error_pop-up_1');
         this.continueUnpacking = <HTMLInputElement>document.querySelector('#btnContinueUnpacking > button');
         this.confirmScanningContainers = this.querySelector('.checkbox-holder input[type=checkbox]');
@@ -101,8 +103,9 @@ export default class ContainerScanOrderMerge extends Component {
             event.target.value = formattedContainerInput;
 
             let containerExists = this.containerExists(formattedContainerInput);
+            let containerInTheCurrentPickZone = this.containerInTheCurrentPickZone(formattedContainerInput);
 
-            if(containerExists) {
+            if (containerExists && containerInTheCurrentPickZone) {
                 const url = window.location.origin + "/picker/scanning-container-merge/get-container-info";
                 const formData = new FormData();
                 formData.append('container', containerNumber);
@@ -157,6 +160,9 @@ export default class ContainerScanOrderMerge extends Component {
                         console.log(jqXhr.error);
                     }
                 });
+            }
+            else if (containerExists && !containerInTheCurrentPickZone) {
+                this.showPopUpErrorMessageForContainerScanNotAllowed();
             }
             else {
                 document.querySelector("#showFullForm").classList.replace("visible", "hidden");
@@ -228,6 +234,14 @@ export default class ContainerScanOrderMerge extends Component {
         return containerExists;
     }
 
+    protected containerInTheCurrentPickZone(containerNumber): boolean {
+        const listOfContainers = JSON.parse(document.querySelector(this.getOrdersContainersData).dataset.orderscontainers);
+        let containerInTheCurrentPickZone;
+        containerInTheCurrentPickZone = containerNumber === listOfContainers[listOfContainers.length - 1];
+
+        return containerInTheCurrentPickZone;
+    }
+
     protected continueUnpackingClick(event) {
         let backLink = document.querySelector('.header__content a.link');
         backLink.click();
@@ -250,6 +264,12 @@ export default class ContainerScanOrderMerge extends Component {
                ${this.containerIsAlreadyUsed.value}
             </p>
         `;
+        this.popupUiError.classList.add('popup-ui-error--show');
+    }
+
+    protected showPopUpErrorMessageForContainerScanNotAllowed() {
+        const popUpInfo = this.popupUiError.querySelector('.error-info');
+        popUpInfo.innerHTML = `<p class="container-name">${this.containerScanIsNotAllowed.value}</p>`;
         this.popupUiError.classList.add('popup-ui-error--show');
     }
 

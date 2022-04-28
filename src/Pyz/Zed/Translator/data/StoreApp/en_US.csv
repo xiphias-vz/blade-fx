@@ -190,6 +190,7 @@ container.scan.order.error.pop-up_2,"is already activated for"
 container.scan.order.error.pop-up_3,","
 container.scan.order.error.pop-up_4,"order:"
 container.scan.order.error.pop-up_5,""
+container.scan.merge.error.container-scan-not-allowed,"Container scan not allowed"
 select.containers.add.box,Add box
 popup.success.ui_1,"was"
 popup.success.ui_2,"assigned"
