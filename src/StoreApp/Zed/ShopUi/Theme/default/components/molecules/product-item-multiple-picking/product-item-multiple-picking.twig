@@ -130,6 +130,8 @@
                                         <span class="{{ config.name }}__supplierAndName col--md-8">{{ brand ?? '' }} - {{ title }}</span>
                                         {% if (basePriceUnit != "") and (orderItemWeight != 0) %}
                                             <span class="{{ config.name }}__weight col--md-4">{{ orderItemWeight | replace('.', ',') }} {{ basePriceUnit }}</span>
+                                        {% elseif (basePriceUnit != "") and (basePriceContent != 0) %}
+                                            <span class="{{ config.name }}__weight col--md-4">{{ (basePriceContent / 100) | replace('.', ',') }} {{ basePriceUnit }}</span>
                                         {% endif %}
                                     </div>
                                 {% else %}
