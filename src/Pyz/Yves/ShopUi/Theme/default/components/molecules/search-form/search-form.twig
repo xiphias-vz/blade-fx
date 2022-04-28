@@ -104,6 +104,25 @@
                 });
                 //turns back focus on searchbox - condition for triggering logic for closing this element
                 document.getElementsByClassName("suggest-search__input")[0].focus();
+
+                const productSkuFromSuggest = data_product_sku.split('_abstract');
+                const productSkuFromSuggestWithQuantity = [[productSkuFromSuggest[0], 1]];
+                if (localStorage.getItem('productItemsForSyncCounter')) {
+                    let productItemsForSyncCounter = JSON.parse(localStorage.getItem('productItemsForSyncCounter'));
+
+                    for (let i = 0; i < productItemsForSyncCounter.length; i++) {
+                        if (productItemsForSyncCounter[i][0].includes(productSkuFromSuggest[0])) {
+                            productItemsForSyncCounter[i][1]++;
+                        }
+                    }
+                    if (!JSON.stringify(productItemsForSyncCounter).includes(JSON.stringify(productSkuFromSuggestWithQuantity[0][0]))) {
+                        productItemsForSyncCounter.push(productSkuFromSuggestWithQuantity[0]);
+                    }
+
+                    localStorage.setItem('productItemsForSyncCounter', JSON.stringify(productItemsForSyncCounter));
+                } else {
+                    localStorage.setItem('productItemsForSyncCounter', JSON.stringify(productSkuFromSuggestWithQuantity));
+                }
             }
 
             function replaceQuantity(quantity){

@@ -219,6 +219,12 @@
                                                 }
                                             },
                                         });
+
+                                        const itemsFromTheCart = JSON.parse(localStorage.getItem('productItemsForSyncCounter'));
+
+                                        if (itemsFromTheCart.length === 1) {
+                                            localStorage.removeItem('productItemsForSyncCounter');
+                                        }
                                     }
                                 </script>
                             {% endblock %}

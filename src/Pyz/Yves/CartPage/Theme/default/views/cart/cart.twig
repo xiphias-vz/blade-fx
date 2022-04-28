@@ -108,7 +108,7 @@
                         <span class="col">
                             <form action="{{ path('cart/clear') }}" method="post">
                                 <input type="hidden" name="token" value="{{ csrf_token('clear-cart') }}"/>
-                                <input class="cart-box__quantity link" onclick="localStorage.removeItem('productItemsFromCartWithQuantity')" type="submit" value="{{ 'cart.clear' | trans }}">
+                                <input class="cart-box__quantity link" onclick="localStorage.removeItem('productItemsForSyncCounter')" type="submit" value="{{ 'cart.clear' | trans }}">
                             </form>
                         </span>
                     </div>
@@ -181,8 +181,8 @@
                         </script>
                     {% endfor %}
                     <script>
-                        let cartItemsSkuWithQuantity = document.querySelector('#productItemsFromCart').value;
-                        localStorage.setItem('productItemsFromCartWithQuantity', cartItemsSkuWithQuantity);
+                        const cartItemsSkuWithQuantity = document.querySelector('#productItemsFromCart').value;
+                        localStorage.setItem('productItemsForSyncCounter', cartItemsSkuWithQuantity);
                     </script>
 
                     {% widget 'CartDiscountPromotionProductListWidget' args [data.cart, data.request] only %}{% endwidget %}

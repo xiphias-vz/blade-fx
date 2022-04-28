@@ -82,19 +82,8 @@ export default class AjaxAddToCart extends Component {
 
     protected mapEvents(): void {
         this.links.forEach((link: HTMLLinkElement) => {
-            if (localStorage.getItem('productItemsFromCartWithQuantity')) {
-                let productItemsFromCart = JSON.parse(localStorage.getItem('productItemsFromCartWithQuantity'));
-
-                productItemsFromCart.forEach(([key, value]) => {
-                    let productSkuFromPOP = link.dataset.productSku;
-                    if (key === productSkuFromPOP) {
-                        let quantityFromCart = value;
-                        if (quantityFromCart !== 0) {
-                            this.updateItemQuantityInput(link, quantityFromCart);
-                            this.showCounterAndHideAjaxButton(link);
-                        }
-                    }
-                })
+            if (localStorage.getItem('productItemsForSyncCounter')) {
+                this.syncCounterFromLocalStorage(link);
             }
 
             if (link.getAttribute('flag') !== "1") {
@@ -120,6 +109,35 @@ export default class AjaxAddToCart extends Component {
         this.quantityInputs.forEach((quantityInput: HTMLInputElement) => {
             quantityInput.addEventListener('keyup', (event: Event) => this.applyQuantityValidation(event));
             quantityInput.addEventListener('change', (event: Event) => this.sendAjaxRequestToAddMultipleItemsToCart(event));
+        });
+    }
+
+    protected syncCounterFromLocalStorage(link): void {
+        let productItemsForSyncCounter = JSON.parse(localStorage.getItem('productItemsForSyncCounter'));
+
+        productItemsForSyncCounter.forEach(([key, value]) => {
+            let productSkuFromPOP = link.dataset.productSku;
+            if (productSkuFromPOP === '' || productSkuFromPOP === undefined) {
+                let productUrl = link.dataset.productUrl;
+                if (productUrl) {
+                    productSkuFromPOP = productUrl.split("/")[3];
+                }
+            }
+            if (key === productSkuFromPOP) {
+                let quantityFromCart = value;
+                if (quantityFromCart !== 0) {
+                    this.updateItemQuantityInput(link, quantityFromCart);
+                    this.showCounterAndHideAjaxButton(link);
+                } else {
+                    let filteredProductItemsFromCart = productItemsForSyncCounter.filter(([key, value]) => {
+                        return value !== 0;
+                    });
+                    localStorage.setItem('productItemsForSyncCounter', JSON.stringify(filteredProductItemsFromCart));
+                    if (localStorage.getItem('productItemsForSyncCounter') === '[]') {
+                        localStorage.removeItem('productItemsForSyncCounter');
+                    }
+                }
+            }
         });
     }
 
@@ -281,6 +299,30 @@ export default class AjaxAddToCart extends Component {
 
     protected updateItemQuantityInput(link: HTMLLinkElement, quantity: number) {
         if (quantity !== undefined) {
+            let productSkuFromPOP = link.dataset.productSku;
+            if (productSkuFromPOP === '' || productSkuFromPOP === undefined) {
+                let productUrl = link.dataset.productUrl;
+                if (productUrl) {
+                    productSkuFromPOP = productUrl.split("/")[3];
+                }
+            }
+            const itemAddedInCartWithQuantity = [[productSkuFromPOP, quantity]];
+
+            if (localStorage.getItem('productItemsForSyncCounter')) {
+                let productItemsForSyncCounter = JSON.parse(localStorage.getItem('productItemsForSyncCounter'));
+
+                for (let i = 0; i < productItemsForSyncCounter.length; i++) {
+                    if (productItemsForSyncCounter[i][0].includes(productSkuFromPOP)) {
+                        productItemsForSyncCounter[i][1] = quantity;
+                    }
+                }
+                if (!JSON.stringify(productItemsForSyncCounter).includes(JSON.stringify(itemAddedInCartWithQuantity[0][0]))) {
+                    productItemsForSyncCounter.push(itemAddedInCartWithQuantity[0]);
+                }
+                localStorage.setItem('productItemsForSyncCounter', JSON.stringify(productItemsForSyncCounter));
+            } else {
+                localStorage.setItem('productItemsForSyncCounter', JSON.stringify(itemAddedInCartWithQuantity));
+            }
             const counter: HTMLInputElement = <HTMLInputElement>link.parentElement.querySelector(CLASS_PREFIX + this.quantityInputField);
             counter.value = String(quantity);
         }

@@ -16,7 +16,6 @@
     <div class="add-to-cart-btn">
         {% if app.currentCodeBucket == 'DE' %}
             <a href="{{ addAjaxUrl }}"
-               id = "addToCartButtonFromPDP"
                rel="nofollow"
                onclick="productAddToCart('{{ data.product.idProductAbstract }}','{{ data.product.name  | escape('js') }}','{{ data.product.prices.DEFAULT is defined ? data.product.prices.DEFAULT / 100 : null }}','{{ data.product.attributes.supplier | escape('js') }}')"
                class="button button--middle-icon button--center-align button--backgroundcolor-DE
@@ -36,7 +35,6 @@
             </a>
         {% else %}
             <a href="{{ addAjaxUrl }}"
-               id = "addToCartButtonFromPDP"
                rel="nofollow"
                onclick="productAddToCart('{{ data.product.idProductAbstract }}','{{ data.product.name | escape('js') }}','{{ data.product.prices.DEFAULT is defined ? data.product.prices.DEFAULT / 100 : null }}','{{ data.product.attributes.supplier | escape('js') }}')"
                class="button button--middle-icon button--center-align button--backgroundcolor-CZ
@@ -82,6 +80,7 @@
                    class="js-ajax-change-quantity__link
                           js-quantity-counter-product__decr"
                    data-csrf-token="{{ csrf_token('change-cart-ajax') }}"
+                   data-product-sku="{{ data.product.sku }}"
                 >
                     -
                 </a>
@@ -90,6 +89,7 @@
                    class="js-ajax-change-quantity__link
                           js-quantity-counter-product__decr"
                    data-csrf-token="{{ csrf_token('change-cart-ajax') }}"
+                   data-product-sku="{{ data.product.sku }}"
                    style="color:#009933; background-color:transparent;" onmouseover="this.style.backgroundColor='#e5f4ea';" onmouseout="this.style.backgroundColor='#ffffff';">
                     -
                 </a>
@@ -112,6 +112,7 @@
                    class="js-ajax-change-quantity__link
                           js-quantity-counter-product__incr"
                    data-csrf-token="{{ csrf_token('change-cart-ajax') }}"
+                   data-product-sku="{{ data.product.sku }}"
                    style="color:#009933; background-color:transparent;" onmouseover="this.style.backgroundColor='#e5f4ea';" onmouseout="this.style.backgroundColor='#ffffff';">
                     +
                 </a>
