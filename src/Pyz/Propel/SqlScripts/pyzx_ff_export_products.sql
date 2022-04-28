@@ -58,7 +58,7 @@ BEGIN
                         END
                 ELSE ''
         END as popNameExtension
-         , '' as Quality
+         , json_extract(sp.`attributes`, '$.quality') as Quality
          , '' as ValidUntil
     FROM spy_product sp
         INNER JOIN spy_product_abstract spa on sp.fk_product_abstract = spa.id_product_abstract
