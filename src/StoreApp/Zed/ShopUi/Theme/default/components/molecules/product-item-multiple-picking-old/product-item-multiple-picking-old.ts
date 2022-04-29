@@ -173,7 +173,6 @@ export default class ProductItemMultiplePickingOld extends Component {
             this.containerData = [];
             this.weight = 0;
             $(".weightScanContainer").empty();
-            this.updateQuantityInput(0);
             this.pickProducts.updateStorageItem(this, this.orderItemStatus);
             this.pickProducts.update();
         }
@@ -420,14 +419,20 @@ export default class ProductItemMultiplePickingOld extends Component {
         }
         else if(paused === true){
             status = "paused"
+            if(this.currentItem.isAccepted !== undefined){
+                this.currentItem.isAccepted === false;
+            }
         }
         else if(declined === true){
             status = "declined"
+            if(this.currentItem.isAccepted !== undefined){
+                this.currentItem.isAccepted === false;
+            }
         }
 
         let isAlreadyPicked = false;
         if(this.currentItem != undefined){
-            if(this.currentItem.isAccepted === true || this.currentItem.isNotFullyAccepted === true){
+            if(this.currentItem.isNotFullyAccepted !== true && this.currentItem.isAccepted === true){
                 isAlreadyPicked = true;
             }
         }
@@ -1013,6 +1018,7 @@ export default class ProductItemMultiplePickingOld extends Component {
         this.$this.addClass(this.pickedNotFullyCLass);
         this.$this[0].$declineButton.addClass(this.addUndoCLass);
         this.isNotFullyAccepted = true;
+        this.currentItem.isNotFullyAccepted = true;
     }
 
     protected declineClickHandler(): void {

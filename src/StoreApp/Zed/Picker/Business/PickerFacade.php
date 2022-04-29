@@ -242,6 +242,20 @@ class PickerFacade extends AbstractFacade implements PickerFacadeInterface
             ->setCurrentOrderItemPicked($quantityPicked, $weight, $containerCode);
     }
 
+
+    /**
+     * @param int $orderId
+     * @param int $itemEan
+     * @param int $itemPrice
+     * @return void
+     */
+    public function removeCanceledAmountForRepickedItems(int $orderId, int $itemEan, int $itemPrice): void
+    {
+        $this->getFactory()
+            ->createPickingHeaderTransferData()
+            ->removeCanceledAmountForRepickedItems($orderId, $itemEan, $itemPrice);
+    }
+
     /**
      * @param bool $isPaused
      *

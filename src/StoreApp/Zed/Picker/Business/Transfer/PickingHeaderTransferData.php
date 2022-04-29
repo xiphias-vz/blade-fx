@@ -26,7 +26,9 @@ use Orm\Zed\PerformancePickingReport\Persistence\PyzPerformanceSalesOrderReportQ
 use Orm\Zed\PickingSalesOrder\Persistence\PyzPickingSalesOrderQuery;
 use Orm\Zed\Sales\Persistence\Map\SpySalesOrderItemTableMap;
 use Orm\Zed\Sales\Persistence\SpySalesOrderItemQuery;
+use Orm\Zed\Sales\Persistence\SpySalesOrderTotalsQuery;
 use PDO;
+use Propel\Runtime\ActiveQuery\Criteria;
 use Propel\Runtime\Propel;
 use Pyz\Shared\Oms\OmsConfig;
 use Pyz\Zed\PickingZone\Business\PickingZoneFacadeInterface;
@@ -418,7 +420,6 @@ class PickingHeaderTransferData
             }
             $this->resetCanceledStatusForCanceledItems($pickedItems);
             $this->orderUpdater->markOrderItemsAsContainerSelected($pickedItems);
-
             $this->updatePerformanceOrderItem($order, $orderItem, static::PERFORMANCE_ORDER_ITEM_REPORT_PICKED);
         }
         if (count($nonPickedItems) > 0) {
@@ -541,10 +542,23 @@ class PickingHeaderTransferData
         $currentPickerLastName = $orderItem->getCurrentPickerLastName();
         if (count($idList) > 0 && $idState) {
             $whereList = implode($idList, ",");
+            $qry = "update spy_sales_order_totals ssot
+                    inner join
+                    (
+                        select ssoi.fk_sales_order,  sum(ssoi.canceled_amount) as canceled_amount
+                        from spy_sales_order_item ssoi
+                        where ssoi.id_sales_order_item in(" . $whereList . ")
+                    ) oi on ssot.fk_sales_order = oi.fk_sales_order
+                    set ssot.canceled_total = ssot.canceled_total - ifnull(oi.canceled_amount, 0)
+                    	, ssot.grand_total = ssot.grand_total + ifnull(oi.canceled_amount, 0)
+	                    , ssot.refund_total = ssot.refund_total + ifnull(oi.canceled_amount, 0)";
+            $this->getResult($qry, false);
             $qry = "update spy_sales_order_item set item_paused = 0"
                 . ", fk_oms_order_item_state = " . $idState
                 . ", container_code = '' "
-                . ", current_picker_first_name = '" .  $currentPickerFirstName . "'"
+                . ", refundable_amount = gross_price "
+                . ", canceled_amount = 0 "
+                . ", current_picker_first_name = '" . $currentPickerFirstName . "'"
                 . ", current_picker_last_name = '" . $currentPickerLastName . "'"
                 . " where id_sales_order_item in(" . $whereList . ")";
             $this->getResult($qry, false);
@@ -591,13 +605,19 @@ class PickingHeaderTransferData
                         inner join spy_oms_order_item_state soois on ssoi.fk_oms_order_item_state = soois.id_oms_order_item_state
                     where ssoi.id_sales_order_item in(" . $whereList . ") and ssoi.fk_oms_order_item_state <> " . $idState;
             $data = $this->getResult($qry);
+
+            $qry = "select ssoi.fk_sales_order, ssoi.price, ssoi.sku
+                    from spy_sales_order_item ssoi
+                    where ssoi.id_sales_order_item in(" . $whereList . ")";
+            $dataForPartialyCanceledItems = $this->getResult($qry);
+
             $pickedItems = [];
             foreach ($data as $item) {
                 $pickedItems[] = $item["id_sales_order_item"];
             }
             if (count($pickedItems) > 0) {
                 $whereList = implode($pickedItems, ",");
-                $qry = "update spy_sales_order_item set fk_oms_order_item_state = " . $idState . " where id_sales_order_item in(" . $whereList . ")";
+                $qry = "update spy_sales_order_item set fk_oms_order_item_state = " . $idState . ", canceled_amount = 0 where id_sales_order_item in(" . $whereList . ")";
                 $this->getResult($qry, false);
                 $qry = "insert into spy_oms_order_item_state_history (fk_oms_order_item_state, fk_sales_order_item, created_at)
                         select " . $idState . ", id_sales_order_item, now() from spy_sales_order_item where id_sales_order_item in(" . $whereList . ")";
@@ -632,7 +652,6 @@ class PickingHeaderTransferData
         $transfer = $this->getTransferFromSession();
         $pickerFirstName = $this->userFacade->getCurrentUser()->getFirstName();
         $pickerLastName = $this->userFacade->getCurrentUser()->getLastName();
-
 
         if ($transfer->setCurrentOrderItemCanceled($isCanceled)) {
             //save data to spy_sales_order_item - SpySalesOrderItemQuery
@@ -1174,6 +1193,41 @@ class PickingHeaderTransferData
             $whereList = implode($pickedItems, ",");
             $sql = "update spy_sales_order_item set container_code = '" . $containerCode . "' where id_sales_order_item in(" . $whereList . ")";
             $this->getResult($sql, false);
+        }
+    }
+
+    /**
+     * @param int $orderId
+     * @param int $itemEan
+     * @param int $itemPrice
+     *
+     * @return void
+     */
+    public function removeCanceledAmountForRepickedItems(int $orderId, int $itemEan, int $itemPrice)
+    {
+        $spySalesOrderItemEntity = SpySalesOrderItemQuery::create()
+            ->filterByFkSalesOrder($orderId)
+            ->filterByGroupKey($itemEan)
+            ->joinWithState(Criteria::INNER_JOIN)
+            ->find();
+        foreach ($spySalesOrderItemEntity as $newPickedItem) {
+            if ($newPickedItem->getState()->getName() == 'ready for selecting shelves') {
+                $newPickedItem->setCanceledAmount(0);
+                $newPickedItem->setOriginalPrice(null);
+                $newPickedItem->setRefundableAmount($itemPrice);
+                $spySalesOrderItemEntity->save();
+
+                $taxAmount = $newPickedItem->getTaxAmount();
+
+                $spySalesOrderTotalsEntity = SpySalesOrderTotalsQuery::create()
+                    ->filterByFkSalesOrder($orderId)
+                    ->findOneOrCreate();
+                $spySalesOrderTotalsEntity->setCanceledTotal($spySalesOrderTotalsEntity->getCanceledTotal() - $newPickedItem->getPrice());
+                $spySalesOrderTotalsEntity->setGrandTotal($spySalesOrderTotalsEntity->getGrandTotal() + $newPickedItem->getPrice());
+                $spySalesOrderTotalsEntity->setRefundTotal($spySalesOrderTotalsEntity->getRefundTotal() + $newPickedItem->getPrice());
+                $spySalesOrderTotalsEntity->setTaxTotal($spySalesOrderTotalsEntity->getTaxTotal() + $taxAmount);
+                $spySalesOrderTotalsEntity->save();
+            }
         }
     }
 }

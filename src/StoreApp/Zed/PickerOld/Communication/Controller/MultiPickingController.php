@@ -169,30 +169,7 @@ class MultiPickingController extends IntMultiPickingController
                             if ($isCanceled) {
                                 foreach ($groupedOrderItems as $item) {
                                     if ($item['isCancelled'] == true) {
-                                        $spySalesOrderItemEntity = SpySalesOrderItemQuery::create()
-                                            ->filterByFkSalesOrder($item['idOrder'])
-                                            ->filterByGroupKey($item['ean'])
-                                            ->joinWithState(Criteria::INNER_JOIN)
-                                            ->find();
-                                        foreach ($spySalesOrderItemEntity as $newPickedItem) {
-                                            if ($newPickedItem->getState()->getName() == 'ready for selecting shelves') {
-                                                $newPickedItem->setCanceledAmount(0);
-                                                $newPickedItem->setOriginalPrice(null);
-                                                $newPickedItem->setRefundableAmount($item['price']);
-                                                $spySalesOrderItemEntity->save();
-
-                                                $taxAmount = $newPickedItem->getTaxAmount();
-
-                                                $spySalesOrderTotalsEntity = SpySalesOrderTotalsQuery::create()
-                                                    ->filterByFkSalesOrder($item['idOrder'])
-                                                    ->findOneOrCreate();
-                                                $spySalesOrderTotalsEntity->setCanceledTotal($spySalesOrderTotalsEntity->getCanceledTotal() - $newPickedItem->getPrice());
-                                                $spySalesOrderTotalsEntity->setGrandTotal($spySalesOrderTotalsEntity->getGrandTotal() + $newPickedItem->getPrice());
-                                                $spySalesOrderTotalsEntity->setRefundTotal($spySalesOrderTotalsEntity->getRefundTotal() + $newPickedItem->getPrice());
-                                                $spySalesOrderTotalsEntity->setTaxTotal($spySalesOrderTotalsEntity->getTaxTotal() + $taxAmount);
-                                                $spySalesOrderTotalsEntity->save();
-                                            }
-                                        }
+                                        $this->getFacade()->removeCanceledAmountForRepickedItems($item['idOrder'], $item['ean'], $item['price']);
                                     }
                                 }
                             }
