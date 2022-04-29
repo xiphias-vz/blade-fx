@@ -59,7 +59,7 @@ class MonitoringReportFacade extends AbstractFacade implements MonitoringReportF
              * @var \Orm\Zed\MonitoringReport\Persistence\PyzEmailSend $mail
              */
             foreach ($mailsForSending as $mail) {
-                $monitorMail->send($mail->getSubject(), $mail->getSendToEmail(), $mail->getBodyDescription());
+                $monitorMail->send($mail->getSubject(), $mail->getSendToEmail(), $mail->getBodyDescription(), $mail->getIsHtml());
                 $mail->setSentAt(time());
                 if ($mail->isModified()) {
                     $mail->save();

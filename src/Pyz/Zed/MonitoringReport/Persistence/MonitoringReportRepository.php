@@ -17,6 +17,7 @@ use Orm\Zed\MonitoringReport\Persistence\PyzMonitoringJobsQuery;
 use Orm\Zed\Store\Persistence\SpyStoreQuery;
 use Propel\Runtime\Connection\ConnectionInterface;
 use Propel\Runtime\Propel;
+use Pyz\Shared\PropelExtension\PropelExtension;
 use Spryker\Zed\Kernel\Persistence\AbstractRepository;
 
 /**
@@ -71,17 +72,20 @@ class MonitoringReportRepository extends AbstractRepository implements Monitorin
      * @param string $sendToEmail
      * @param string $subject
      * @param string $body
+     * @param bool|null $isHtml
      *
      * @return void
      */
-    public function setEmailToSend(string $senderJobDescription, string $sendToEmail, string $subject, string $body)
+    public function setEmailToSend(string $senderJobDescription, string $sendToEmail, string $subject, string $body, ?bool $isHtml = false)
     {
+        $isHtml = $isHtml === null ? false : $isHtml;
         $entity = new PyzEmailSend();
         $entity->setSenderJobDescription($senderJobDescription)
             ->setSendToEmail($sendToEmail)
             ->setSubject($subject)
             ->setBodyDescription($body)
-            ->setCreatedAt((new DateTime())->getTimestamp());
+            ->setCreatedAt((new DateTime())->getTimestamp())
+            ->setIsHtml($isHtml);
         $entity->save();
     }
 
@@ -106,5 +110,19 @@ class MonitoringReportRepository extends AbstractRepository implements Monitorin
         $qry = new PyzMonitorCategoriesQuery();
 
         return $qry->find();
+    }
+
+    /**
+     * @return array
+     */
+    public function getZeroPricesData(): array
+    {
+        $sql = "select pipp.store , pipp.sapnumber, pipp.gtin, pipp.price, pipp.pseudoprice, pipp.promotion, pipp.promotionstart, pipp.promotionend
+                from pyz_imp_price_product pipp
+                where dtImported > (select DATE_ADD(max(dtImported), INTERVAL -1 DAY) from pyz_imp_price_product)
+                	and (price = 0 or (pseudoprice = 0 and promotionend > now()))
+                order by pipp.store , pipp.sapnumber";
+
+        return PropelExtension::getResultNamed($sql);
     }
 }

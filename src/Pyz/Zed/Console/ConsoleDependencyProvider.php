@@ -51,6 +51,7 @@ use Pyz\Zed\MonitoringReport\Communication\Console\AlarmEmailConsole;
 use Pyz\Zed\MonitoringReport\Communication\Console\CategoryCheckConsole;
 use Pyz\Zed\MonitoringReport\Communication\Console\JenkinsCheckConsole;
 use Pyz\Zed\MonitoringReport\Communication\Console\JenkinsCheckUrlConsole;
+use Pyz\Zed\MonitoringReport\Communication\Console\ZeroPricesReportMailConsole;
 use Pyz\Zed\MultipleStatusesFixScript\Communication\Console\MultipleStatusesFixScriptConsole;
 use Pyz\Zed\Oms\Communication\Console\CheckConditionConsole as OmsCheckConditionConsole;
 use Pyz\Zed\Oms\Communication\Console\CheckTimeoutConsole as OmsCheckTimeoutConsole;
@@ -410,6 +411,7 @@ class ConsoleDependencyProvider extends SprykerConsoleDependencyProvider
             new AlarmEmailConsole(),
             new CategoryCheckConsole(),
             new AdditionalMonitoringProcedure(),
+            new ZeroPricesReportMailConsole(),
 
         ];
 

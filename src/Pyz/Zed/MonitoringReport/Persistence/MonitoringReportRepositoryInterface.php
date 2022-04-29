@@ -44,10 +44,11 @@ interface MonitoringReportRepositoryInterface
      * @param string $sendToEmail
      * @param string $subject
      * @param string $body
+     * @param bool|null $isHtml
      *
      * @return void
      */
-    public function setEmailToSend(string $senderJobDescription, string $sendToEmail, string $subject, string $body);
+    public function setEmailToSend(string $senderJobDescription, string $sendToEmail, string $subject, string $body, ?bool $isHtml = false);
 
     /**
      * @param string $roleName
@@ -60,4 +61,9 @@ interface MonitoringReportRepositoryInterface
      * @return \Orm\Zed\MonitoringReport\Persistence\PyzMonitorCategories[]|\Propel\Runtime\Collection\ObjectCollection
      */
     public function getCategoryMonitoringData();
+
+    /**
+     * @return array
+     */
+    public function getZeroPricesData(): array;
 }

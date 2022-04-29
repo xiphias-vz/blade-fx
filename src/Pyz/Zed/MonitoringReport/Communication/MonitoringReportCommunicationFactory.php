@@ -11,6 +11,7 @@ use Orm\Zed\MonitoringReport\Persistence\PyzMonitoringJobsQuery;
 use Pyz\Zed\MonitoringReport\Business\Helper\HeartbeatHelper;
 use Pyz\Zed\MonitoringReport\Communication\Plugin\Category\CategoryHandlerPlugin;
 use Pyz\Zed\MonitoringReport\Communication\Plugin\Jenkins\JenkinsHandlerPlugin;
+use Pyz\Zed\MonitoringReport\Communication\Plugin\ZeroPrices\ZeroPricesReportPlugin;
 use Pyz\Zed\MonitoringReport\MonitoringReportDependencyProvider;
 use Spryker\Client\Search\Dependency\Plugin\SearchStringSetterInterface;
 use Spryker\Client\SearchElasticsearch\SearchElasticsearchClientInterface;
@@ -94,5 +95,13 @@ class MonitoringReportCommunicationFactory extends AbstractCommunicationFactory
     public function getCatalogSearchQueryPlugin()
     {
         return $this->getProvidedDependency(MonitoringReportDependencyProvider::CATALOG_SEARCH_QUERY_PLUGIN);
+    }
+
+    /**
+     * @return \Pyz\Zed\MonitoringReport\Communication\Plugin\ZeroPrices\ZeroPricesReportPlugin
+     */
+    public function createZeroPricesReportPlugin(): ZeroPricesReportPlugin
+    {
+        return new ZeroPricesReportPlugin();
     }
 }

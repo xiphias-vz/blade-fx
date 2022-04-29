@@ -10,8 +10,9 @@
         <column name="sender_job_description" required="true" size="500" type="VARCHAR"/>
         <column name="send_to_email" required="true" size="255" type="VARCHAR"/>
         <column name="subject" required="true" size="255" type="VARCHAR"/>
-        <column name="body_description" required="true" size="20000" type="VARCHAR"/>
+        <column name="body_description" required="true" type="CLOB"/>
         <column name="sent_at" required="false" type="TIMESTAMP"/>
+        <column name="is_html" required="false" type="BOOLEAN" default="false"/>
 
         <unique name="pyz_email_send-id_monitoring_job">
             <unique-column name="id_email_identity"/>

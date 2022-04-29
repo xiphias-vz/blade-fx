@@ -30,10 +30,11 @@ class MonitoringMailer
      * @param string $subject
      * @param string $mailTo
      * @param string $body
+     * @param bool $isHtml
      *
      * @return int
      */
-    public function send(string $subject, string $mailTo, string $body): int
+    public function send(string $subject, string $mailTo, string $body, bool $isHtml): int
     {
         $transport = new Swift_SmtpTransport(
             $this->mailConfig->getSmtpHost(),
@@ -53,7 +54,7 @@ class MonitoringMailer
         $message = (new Swift_Message($subject))
             ->setFrom([$this->getSenderMail()])
             ->setTo([$mailTo])
-            ->setBody($body);
+            ->setBody($body, $isHtml ? "text/html" : null);
 
         return $mailer->send($message);
     }
