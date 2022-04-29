@@ -78,7 +78,7 @@ BEGIN
 
     INSERT INTO pyz_time_slot(merchant_reference, `day`, `date`, time_slot, cut_off_time, capacity)
     SELECT merchant_reference, DAYNAME(a.time_slot_start) as week_day, null
-         , CONCAT(LEFT(CAST(a.time_slot_start AS time),5), '-', LEFT(CAST(a.time_slot_end AS time),5)) as time_slot
+         , CONCAT(LEFT(CAST(a.time_slot_start AS time),5), '-', CASE WHEN CAST(a.time_slot_end AS TIME) <= @endTime THEN LEFT(CAST(a.time_slot_end AS time),5) ELSE LEFT(@endTime,5) END) as time_slot
          ,CEILING(((HOUR(TIMEDIFF(CAST(a.time_slot_start AS TIME), @cut_off_time_reference)) * 60) + MINUTE(TIMEDIFF(CAST(a.time_slot_start AS TIME), @cut_off_time_reference))) / 60) AS cut_off_time
          , defaultCapacity as new_capacity
     FROM
