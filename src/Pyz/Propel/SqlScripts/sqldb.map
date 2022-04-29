@@ -27,3 +27,4 @@ pyzx_monitoring_procedure.sql=zed
 pyzx_check_default_prices.sql=zed
 pyzx_set_timeslot_definition_per_store.sql=zed
 pyzx_get_timeslot_definition.sql=zed
+pyzx_check_scheduled_prices.sql=zed
