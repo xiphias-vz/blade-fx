@@ -149,7 +149,7 @@ groups:
                 application: static
                 endpoints:
                     www.welcome.shop.globus.local:
-                        entry-point: Welcome
+                        entry-point: WelcomeCZ
 
             Yves:
                 application: yves
