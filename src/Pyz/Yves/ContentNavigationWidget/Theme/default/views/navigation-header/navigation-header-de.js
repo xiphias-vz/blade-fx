@@ -15,8 +15,16 @@ function isSearchPageUrl() {
     return document.location.href.includes("/search?");
 }
 
+function isSearchPageUrlWithoutQuestionMark() {
+    return document.location.href.includes("/search");
+}
+
 function isOutlet() {
     return document.location.href.includes("/outlet") && !document.location.href.includes("query=*");
+}
+
+function isMyProducts() {
+    return document.location.href.includes("/my-products") && !document.location.href.includes("query=*");
 }
 
 function isPageWithBreadcrumbs() {
@@ -139,24 +147,19 @@ document.addEventListener("ffReady", function (event) {
     const eventAggregator = event.eventAggregator;
     const resultDispatcher = event.resultDispatcher;
 
-    eventAggregator.addBeforeDispatchingCallback(function (event) {
+    const key = eventAggregator.addBeforeDispatchingCallback(function (event) {
         factfinder.communication.globalSearchParameter["marketId"] = storeId;
         const isSearchEvent = event.type === "search";
-        if (isSearchEvent && !isSearchPageUrl() && (!isOutlet() || (event.query != "" && event.query != "*"))) {
-            event.cancel(); // prevents the request from being sent before redirecting
+        if (isMyProducts() && isSearchPageUrl()) {
+            clearSearchBoxValue();
+        }
 
-            ["channel", "version", "sid", "dispatchId"].forEach(function (param) {
-                delete event[param];
-            });
-
-            const dict = factfinder.common.encodeDict(event);
-            const params = factfinder.common.dictToParameterString(dict);
-
-            window.location.href = '/de/search' + params;
+        if (isSearchEvent && !isSearchPageUrl() && ((!isOutlet() && !isMyProducts()) || (event.query != "" && event.query != "*"))) {
+            redirectToFactFinderSearch(event);
         } else {
             if(indexCatalogPageCounter === 0 && isSearchPage()) {
                 indexCatalogPageCounter++;
-                if(ffCategoryFilter["Type"] === 'search' && !isOutlet()) {
+                if(ffCategoryFilter["Type"] === 'search' && !isOutlet() && !isMyProducts()) {
                     factfinder.communication.globalCommunicationParameter.onlySearchParams = true;
                     factfinder.communication.globalCommunicationParameter.useUrlParameters = true;
                 }
@@ -173,12 +176,43 @@ document.addEventListener("ffReady", function (event) {
                     ev.utm_content = getParameterByName("utm_content");
                     ev.utm_term = getParameterByName("utm_term");
                 }
+
                 eventAggregator.addFFEvent(ev);
             } else {
                 if(event.type === "navigation-search" && indexCatalogPageCounter > 10) {
                     event.cancel();
                 } else if (event.type === 'ppp') {
                     event.hitsPerPage = event.value;
+                } else if (event.type === "search" && isMyProducts()) {
+                    if (!location.pathname.includes('/de/my-products/search')) {
+                        clearSearchBoxValue();
+
+                        let queryParams = createQueryForRecommendedProducts(arrayOfRecommendedItems, false);
+
+                        event.cancel(); // prevents the request from being sent before redirecting
+
+                        ["channel", "version", "sid", "dispatchId"].forEach(function (param) {
+                            delete event[param];
+                        });
+
+                        const dict = factfinder.common.encodeDict(event);
+                        let params = factfinder.common.dictToParameterString(dict);
+
+                        let queryPart = params.slice(0, 7);
+                        let pageFlagPart = params.slice(7);
+
+
+                        params = queryPart + queryParams + pageFlagPart;
+                        if (params.endsWith("&")) {
+                            params = params.substring(0, params.length - 1);
+                        }
+
+                        window.location.href = '/de/my-products/search' + params;
+                    } else {
+                        if (event.query === "" || event.query === "*") {
+                            redirectToFactFinderSearch(event);
+                        }
+                    }
                 }
             }
         }
@@ -232,7 +266,144 @@ document.addEventListener("ffReady", function (event) {
         });
     });
 
+    resultDispatcher.addCallback("asn", function (asnData) {
+        if (isMyProducts() && isSearchPageUrlWithoutQuestionMark()) {
+            clearSearchBoxValue();
+            // window.history.replaceState(null, document.title, "/de/my-products");
+        }
+
+        var title = "";
+        var el = document.getElementById("searchResultCount");
+        if (el) {
+            if (asnData[0] !== undefined) {
+                if (asnData[0].selectedElements.length > 0) {
+                    var data = asnData[0].selectedElements[asnData[0].selectedElements.length - 1];
+                    title = data.name;
+                } else {
+                    title = el.getAttribute('data-title') + ' ' + asnData[0].elements[0].__ngSearchParams.query;
+                }
+            }
+            var changeTitleToAngebote = document.getElementById('idGlossaryAngebote').value;
+            var changeTitleToMyProducts = document.getElementById('idGlossaryMyProducts').value;
+
+            let currentUrl = location.pathname;
+            if (currentUrl.includes('/de/outlet')) {
+                title = changeTitleToAngebote;
+            } else if (currentUrl.includes('de/my-products')) {
+                title = changeTitleToMyProducts;
+            }
+        }
+
+        document.getElementById("searchResultCountTitle").innerText = title;
+        document.title = title;
+        factfinder.communication.globalCommunicationParameter.useUrlParameters = true;
+        factfinder.communication.globalCommunicationParameter.onlySearchParams = true;
+
+        indexCatalogPageCounter = indexCatalogPageCounter * 10;
+    });
+
+    resultDispatcher.addCallback("navigation", function (navigationData) {
+        const channelName = document.querySelector('#ffChannelName');
+        const storeId = document.querySelector('#storeId');
+
+        let recordCount = 0;
+
+        if (arrayOfRecommendedItems['ResultObjectId'] !== undefined) {
+            recordCount = arrayOfRecommendedItems['ResultObjectId'].length;
+        }
+
+        const query = createQueryForRecommendedProducts(arrayOfRecommendedItems, false);
+
+        var searchParams = createSearchParamsForCustomCategory(arrayOfRecommendedItems);
+        var targetUrl = createTargetUrlForCustomCategory(arrayOfRecommendedItems);
+
+        var dynamicNavigation = {
+            "searchParams": searchParams,
+            "selected": false,
+            "clusterLevel": 0,
+            "previewImageURL": "/de/my-products",
+            "associatedFieldName": "CategoryPathROOT",
+            "implicitSelection": false,
+            "name": "Meine Produkte",
+            "recordCount": recordCount,
+            "__ngSearchParams": {
+                "query": "",
+                "filters": [
+                    {
+                        "name": "CategoryPath",
+                        "values": [
+                            {
+                                "value": [
+                                    "Meine Produkte"
+                                ],
+                                "type": "or",
+                                "exclude": false
+                            }
+                        ],
+                        "substring": false
+                    }
+                ],
+                "channel": channelName,
+                "customParameters": [
+                    {
+                        "name": "endLevel",
+                        "values": [
+                            "2"
+                        ],
+                        "cacheIrrelevant": false
+                    },
+                    {
+                        "name": "format",
+                        "values": [
+                            "json"
+                        ],
+                        "cacheIrrelevant": false
+                    },
+                    {
+                        "name": "initialNavigation",
+                        "values": [
+                            "true"
+                        ],
+                        "cacheIrrelevant": false
+                    },
+                    {
+                        "name": "key",
+                        "values": [
+                            "a9qjqJ0iTB"
+                        ],
+                        "cacheIrrelevant": false
+                    },
+                    {
+                        "name": "startLevel",
+                        "values": [
+                            "0"
+                        ],
+                        "cacheIrrelevant": false
+                    }
+                ],
+                "marketIds": [
+                    storeId
+                ]
+            },
+            "__TARGET_URL__": {
+                "url": targetUrl,
+                "isCustomized": false
+            },
+            "__SUB_ELEMENTS__": []
+        };
+
+        var elements = navigationData['searchResult']['groups'][0]['elements'];
+        if (elements[0] !== undefined) {
+            if (elements[0]['name'] !== 'Meine Produkte' && isUserLoggedIn.value === "true") {
+                elements.unshift(dynamicNavigation);
+            }
+        }
+
+        clearSearchBoxValue();
+    });
+
     resultDispatcher.addCallback('result', function (resultData) {
+        clearSearchBoxValue();
         var sum = 0;
         var el = document.getElementById("searchResultCount");
         if (el) {
@@ -299,34 +470,6 @@ document.addEventListener("ffReady", function (event) {
             localStorage.removeItem('twoTimesHitFlag');
         }
     });
-
-    resultDispatcher.addCallback("asn", function (asnData) {
-        var title = "";
-        var el = document.getElementById("searchResultCount");
-        if (el) {
-            if (asnData[0] !== undefined) {
-                if (asnData[0].selectedElements.length > 0) {
-                    var data = asnData[0].selectedElements[asnData[0].selectedElements.length - 1];
-                    title = data.name;
-                } else {
-                    title = el.getAttribute('data-title') + ' ' + asnData[0].elements[0].__ngSearchParams.query;
-                }
-            }
-            var changeTitleToAngebote = document.getElementById('idGlossaryAngebote').value;
-
-            let currentUrl = location.pathname;
-            if (currentUrl.includes('/de/outlet')) {
-                title = changeTitleToAngebote;
-            }
-        }
-
-            document.getElementById("searchResultCountTitle").innerText = title;
-            document.title = title;
-            factfinder.communication.globalCommunicationParameter.useUrlParameters = true;
-            factfinder.communication.globalCommunicationParameter.onlySearchParams = true;
-
-            indexCatalogPageCounter = indexCatalogPageCounter * 10;
-    });
 });
 
 window.addEventListener("DOMNodeInserted", function (event) {
@@ -345,7 +488,6 @@ window.addEventListener("DOMNodeInserted", function (event) {
             var el = treeElement.querySelector('div[data-container="removeFilter"]');
             if(el) el.style.display='none';
             el = treeElement.querySelector('ff-asn-group-element');
-            if(el) el.style.display='none';
         }
     }
 }, false);
@@ -531,4 +673,70 @@ function checkPictureAvailability(element) {
             }
         }
     }
+}
+
+function createSearchParamsForCustomCategory(arrayOfRecommendedItems) {
+    const channelName = document.querySelector('#ffChannelName');
+    var storeId = document.querySelector('#storeId');
+
+    var searchParamsUrlPrefix = 'https://globus-sb.fact-finder.de/fact-finder/rest/v4/search/' + channelName.value + '?query=';
+    var searchParamsUrlSufix = '&marketId=' + storeId.value + '&endLevel=2&format=json' + '&initialNavigation=true&startLevel=0';;
+
+    let productsForQuery = createQueryForRecommendedProducts(arrayOfRecommendedItems, false);
+
+    return searchParamsUrlPrefix + productsForQuery + searchParamsUrlSufix;
+}
+
+function createTargetUrlForCustomCategory(arrayOfRecommendedItems) {
+    const storeId = document.querySelector('#storeId');
+    const baseUrl = window.location.origin;
+
+    var searchParamsUrlPrefix = baseUrl + '/de/search?query=';
+    var searchParamsUrlSufix = '&marketId=' + storeId.value + '&endLevel=2&initialNavigation=true&startLevel=0';
+
+    let productsForQuery = createQueryForRecommendedProducts(arrayOfRecommendedItems, false);
+
+    return searchParamsUrlPrefix + productsForQuery + searchParamsUrlSufix;
+}
+
+function createQueryForRecommendedProducts(arrayOfRecommendedItems, usePipes) {
+    let productsForQuery = '';
+    const pipes = usePipes === true ? '||' : '+%7C%7C+';
+    if (arrayOfRecommendedItems['ResultObjectId'] !== undefined) {
+        arrayOfRecommendedItems['ResultObjectId'].forEach(item => {
+            productsForQuery += item + pipes
+        });
+
+        if (usePipes) {
+            productsForQuery = productsForQuery.substring(0, productsForQuery.length - 2);
+        } else {
+             productsForQuery = productsForQuery.substring(0, productsForQuery.length - 8);
+        }
+    }
+
+    return productsForQuery;
+}
+
+function clearSearchBoxValue() {
+    let ffSearchBox = document.querySelector('ff-searchbox > input');
+    if (isMyProducts()) {
+        if(ffSearchBox !== undefined && ffSearchBox !== null) {
+            if(ffSearchBox.value !== '') {
+                ffSearchBox.value = '';
+            }
+        }
+    }
+}
+
+function redirectToFactFinderSearch(event) {
+    event.cancel(); // prevents the request from being sent before redirecting
+
+    ["channel", "version", "sid", "dispatchId"].forEach(function (param) {
+        delete event[param];
+    });
+
+    const dict = factfinder.common.encodeDict(event);
+    const params = factfinder.common.dictToParameterString(dict);
+
+    window.location.href = '/de/search' + params;
 }

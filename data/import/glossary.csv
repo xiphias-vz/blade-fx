@@ -1166,7 +1166,7 @@ customer.order.state.ready-to-start-picking,bereit zu pflücken,de_DE
 customer.order.state.ready-to-start-picking,"Připraveno na vychystání",cs_CZ
 customer.order.state.ready-for-picking,ready to pick,en_US
 customer.order.state.ready-for-picking,Offen,de_DE
-customer.order.state.ready-for-picking,"Otevřeno,cs_CZ
+customer.order.state.ready-for-picking,"Otevřeno",cs_CZ
 customer.order.state.picked,picked,en_US
 customer.order.state.picked,gepflückt,de_DE
 customer.order.state.picked,"vychystané",cs_CZ
@@ -2098,7 +2098,7 @@ mail.customer.restore_password.subject,Neues Passwort für dein Benutzerkonto,de
 mail.customer.restore_password.subject,"Nové heslo pro váš uživatelský účet",cs_CZ
 mail.customer.restore_password.text,"""Es wurde ein neues Passwort für deinen Account angefordert. Wenn Sie nicht um eine Neueinrichtung des Passworts gebeten haben, ignoriere bitte diese Email. Klicke auf den folgedenen Link, um dein Passwort zu ändern:"".",de_DE
 mail.customer.restore_password.text,"""Somebody has requested a new password for your account. If it's not you, just ignore this email. If it's you, please follow the link bellow:""",en_US
-mail.customer.restore_password.text,"""Pro váš účet bylo požadováno nové heslo. Pokud jste o obnovení hesla nepožádali, tento e-mail ignorujte. Chcete-li změnit heslo, klikněte na následující odkaz: ".",cs_CZ
+mail.customer.restore_password.text,"""Pro váš účet bylo požadováno nové heslo. Pokud jste o obnovení hesla nepožádali, tento e-mail ignorujte. Chcete-li změnit heslo, klikněte na následující odkaz:"".",cs_CZ
 mail.customer.restore_password_confirmation.subject,Dein Passwort wurde erfolgreich geändert!,de_DE
 mail.customer.restore_password_confirmation.subject,"Vaše heslo bylo úspěšně změněno!",cs_CZ
 mail.customer.restore_password_confirmation.subject,Your password was changed successfully!,en_US
@@ -5136,3 +5136,6 @@ ff.remove.filter.checkbox,"Remove filter",en_US
 recommendations.use,"Verwenden Sie Empfehlungen",de_DE
 recommendations.use,"Použijte doporučení",cs_CZ
 recommendations.use,"Use recommendations",en_US
+my.products,"My Products",en_US
+my.products,"Meine Produkte",de_DE
+my.products,"Moje Produkty",cs_CZ

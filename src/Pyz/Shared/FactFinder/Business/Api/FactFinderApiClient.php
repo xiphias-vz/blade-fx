@@ -190,6 +190,18 @@ class FactFinderApiClient
      *
      * @return array
      */
+    public function getRecords(array $data): array
+    {
+        $url = static::getRootUrl() . 'records/' . static::getChannel();
+
+        return static::getData($url, $data);
+    }
+
+    /**
+     * @param array $data
+     *
+     * @return array
+     */
     public static function insertRecords(array $data): array
     {
         $url = static::getRootUrl() . 'records/' . static::getChannel();

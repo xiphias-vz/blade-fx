@@ -33,6 +33,9 @@
     <input type="hidden" id="ffSnippetEnabled" value="{{ data.ffSnippetEnabled }}" />
     <input type="hidden" id="isUserLoggedIn" value="{{ isUserLoggedIn }}" />
     <input type="hidden" id="customerUserRecoData" value="{{ data.customerUserRecoData }}" />
+    <input type="hidden" id="ffChannelName" value="{{ data.channelName }}" />
+    <input type="hidden" id="storeId" value="{{ data.storeId }}" />
+
 
     {% embed molecule('popup-ui-shipment-form') with {} only %}
     {% endembed %}

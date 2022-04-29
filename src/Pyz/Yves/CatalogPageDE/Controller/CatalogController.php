@@ -187,6 +187,21 @@ class CatalogController extends SprykerCatalogController
         $page = 1;
         if (isset(parse_url($request->getRequestUri())["query"])) {
             $ff = parse_url($request->getRequestUri())["query"];
+            $stringLength = strlen($ff);
+            $tmpString = [];
+            for ($i = 0; $i < $stringLength; $i++) {
+                if ($ff[$i] === '&' && $ff[$i] === $ff[$i - 1]) {
+                    continue;
+                } else {
+                    $tmpString[] = $ff[$i];
+                }
+            }
+            $ff = implode('', $tmpString);
+
+            if (substr($ff, -1) === "&") {
+                $ff = substr($ff, 0, strlen($ff) - 1);
+            }
+
             $params = explode("&", $ff);
             foreach ($params as $param) {
                 parse_str($param, $par);

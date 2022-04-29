@@ -8,7 +8,9 @@
 namespace Pyz\Yves\Router;
 
 use Pyz\Yves\CartPage\Plugin\Router\CartPageRouteProviderPlugin;
+use Pyz\Yves\CatalogPage\Plugin\Router\CatalogPageRouteProviderPlugin;
 use Pyz\Yves\CheckoutPage\Plugin\Router\CheckoutPageRouteProviderPlugin;
+use Pyz\Yves\CustomerCategoryPage\Plugin\Router\CustomerCategoryRouteProviderPlugin;
 use Pyz\Yves\CustomerPage\Plugin\Router\CustomerPageRouteProviderPlugin;
 use Pyz\Yves\ErrorPage\Plugin\Router\ErrorPageRouteProviderPlugin;
 use Pyz\Yves\ExampleProductSalePage\Plugin\Router\ExampleProductSaleRouteProviderPlugin;
@@ -31,7 +33,6 @@ use SprykerShop\Yves\AvailabilityNotificationWidget\Plugin\Router\AvailabilityNo
 use SprykerShop\Yves\CalculationPage\Plugin\Router\CalculationPageRouteProviderPlugin;
 use SprykerShop\Yves\CartCodeWidget\Plugin\Router\CartCodeWidgetRouteProviderPlugin;
 use SprykerShop\Yves\CartNoteWidget\Plugin\Router\CartNoteWidgetRouteProviderPlugin;
-use SprykerShop\Yves\CatalogPage\Plugin\Router\CatalogPageRouteProviderPlugin;
 use SprykerShop\Yves\CmsPage\Plugin\Router\CmsPageRouteProviderPlugin;
 use SprykerShop\Yves\CmsSearchPage\Plugin\Router\CmsSearchPageRouteProviderPlugin;
 use SprykerShop\Yves\CurrencyWidget\Plugin\Router\CurrencyWidgetRouteProviderPlugin;
@@ -102,6 +103,7 @@ class RouterDependencyProvider extends SprykerRouterDependencyProvider
             new OrderCancelWidgetRouteProviderPlugin(),
             new FactFinderGuiRouteProviderPlugin(),
             new MonitoringRouteProviderPlugin(),
+            new CustomerCategoryRouteProviderPlugin(),
         ];
     }
 
