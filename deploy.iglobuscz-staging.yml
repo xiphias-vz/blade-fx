@@ -166,7 +166,7 @@ groups:
                 application: static
                 endpoints:
                     welcome.shop-t.iglobus.cz:
-                        entry-point: Welcome
+                        entry-point: WelcomeCZ
                         <<: *frontend-auth
             Yves:
                 application: yves
