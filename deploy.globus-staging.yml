@@ -352,7 +352,7 @@ groups:
                 application: static
                 endpoints:
                     welcome.shop-t.globus.de:
-                        entry-point: Welcome
+                        entry-point: WelcomeCZ
                         <<: *frontend-auth
             Yves:
                 application: yves
