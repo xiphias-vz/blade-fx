@@ -187,6 +187,14 @@ if ($storeCodeBucket == 'CZ') {
     ];
 
     $jobs[] = [
+        'name' => 'monitoring-zero-prices-check',
+        'command' => '$PHP_BIN vendor/bin/console report:zero_prices:mail',
+        'schedule' => '0 4 * * *',
+        'enable' => true,
+        'stores' => ['OST'],
+    ];
+
+    $jobs[] = [
         'name' => 'monitor-categories',
         'command' => '$PHP_BIN vendor/bin/console monitor:check-category',
         'schedule' => '0 4 * * *',
@@ -313,12 +321,19 @@ if ($storeCodeBucket == 'CZ') {
         'stores' => ['EIN'],
     ];
 
-
     /* Monitoring */
     $jobs[] = [
         'name' => 'monitor-check-jenkins',
         'command' => '$PHP_BIN vendor/bin/console monitor:check-jenkins',
         'schedule' => '*/10 * * * *',
+        'enable' => true,
+        'stores' => ['EIN'],
+    ];
+
+    $jobs[] = [
+        'name' => 'monitoring-zero-prices-check',
+        'command' => '$PHP_BIN vendor/bin/console report:zero_prices:mail',
+        'schedule' => '0 4 * * *',
         'enable' => true,
         'stores' => ['EIN'],
     ];
