@@ -8,9 +8,6 @@
 namespace StoreApp\Zed\PickerOld\Communication\Controller;
 
 use Generated\Shared\Transfer\MerchantTransfer;
-use Orm\Zed\Sales\Persistence\SpySalesOrderItemQuery;
-use Orm\Zed\Sales\Persistence\SpySalesOrderTotalsQuery;
-use Propel\Runtime\ActiveQuery\Criteria;
 use Pyz\Shared\Oms\OmsConfig;
 use StoreApp\Shared\Picker\PickerConfig;
 use StoreApp\Zed\Merchant\Communication\Plugin\EventDispatcher\MerchantProviderEventDispatcherPlugin;

@@ -57,7 +57,11 @@ export default class PickProductsMultiplePicking extends Component {
     protected readyCallback(): void {}
 
     protected init(): void {
-        this.productItems = <ProductItemMultiplePicking[]>Array.from(document.getElementsByTagName('product-item-multiple-picking'));
+        if(document.getElementsByTagName('product-item-multiple-picking').length > 0) {
+            this.productItems = <ProductItemMultiplePicking[]>Array.from(document.getElementsByTagName('product-item-multiple-picking'));
+        } else {
+            this.productItems = <ProductItemMultiplePicking[]>Array.from(document.getElementsByTagName('product-item-multiple-picking-old'));
+        }
         this.quantityInput = $(document).find('.quantity-counter input')[0];
         this.$notPickedField = $(document).find(this.notPickedFieldSelector);
         this.$pickedField = $(document).find(this.pickedFieldSelector);

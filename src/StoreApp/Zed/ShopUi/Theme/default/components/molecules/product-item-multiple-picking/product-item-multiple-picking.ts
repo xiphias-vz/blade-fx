@@ -421,13 +421,13 @@ export default class ProductItemMultiplePicking extends Component {
         }
         else if(paused === true){
             status = "paused"
-            if(this.currentItem.isAccepted !== undefined){
+            if(this.currentItem?.isAccepted !== undefined){
                 this.currentItem.isAccepted === false;
             }
         }
         else if(declined === true){
             status = "declined"
-            if(this.currentItem.isAccepted !== undefined){
+            if(this.currentItem?.isAccepted !== undefined){
                 this.currentItem.isAccepted === false;
             }
         }
@@ -565,7 +565,7 @@ export default class ProductItemMultiplePicking extends Component {
         })
     }
 
-    async updateItem(item: StorageItem): Promise<void> {
+    public updateItem(item: StorageItem): void {
         this.updateQuantityInput(item.count);
         this.currentItem = item;
 

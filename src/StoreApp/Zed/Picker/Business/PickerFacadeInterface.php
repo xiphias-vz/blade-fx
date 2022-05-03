@@ -158,10 +158,10 @@ interface PickerFacadeInterface
      */
     public function setCurrentOrderItemPicked(int $quantityPicked, int $weight, string $containerCode): void;
 
-
     /**
      * @param int $orderId
      * @param int $itemEan
+     *
      * @return void
      */
     public function removeCanceledAmountForRepickedItems(int $orderId, int $itemEan, int $itemPrice): void;
