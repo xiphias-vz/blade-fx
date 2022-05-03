@@ -10,7 +10,7 @@
         }
 
         @include helper-breakpoint-media-min($lg-min) {
-            position: absolute;
+            position: absolute !important;
             top: 115%;
             left: rem(100);
             transform: translateY(-50%);
