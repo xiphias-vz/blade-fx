@@ -116,8 +116,26 @@ class ScanningContainerMergeController extends AbstractController
         $transfer->setParents(true);
         $result = $transfer->getPickingOrderByContainer($container);
 
-        $encodedJson = json_encode($result);
-        $jsonResponse = new JsonResponse($encodedJson);
+        foreach ($result as $currentContainer) {
+            if ($currentContainer['container_id'] === $container) {
+                $scannedContainerPickZoneId = $currentContainer["id_zone"];
+            }
+        }
+
+        $pickZoneId = $transfer->getIdZone();
+        $pickZoneById = $this->getFactory()->getPickingZoneFacade()->findPickingZoneById($scannedContainerPickZoneId);
+        $pickZoneName = $pickZoneById->getName();
+
+        if ((int)$scannedContainerPickZoneId === $pickZoneId) {
+            $encodedJson = json_encode($result);
+            $jsonResponse = new JsonResponse($encodedJson);
+        } else {
+            $errorResult = [];
+            $errorResult['error'] = 'error';
+            $errorResult['pickZoneName'] = $pickZoneName;
+            $encodedJson = json_encode($errorResult);
+            $jsonResponse = new JsonResponse($encodedJson);
+        }
 
         return $jsonResponse;
     }

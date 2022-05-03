@@ -95,7 +95,6 @@ export default class ContainerScanOrderMerge extends Component {
     }
 
     protected formKeyPressHandler(event) {
-
         if(event.key == 'Enter') {
             event.preventDefault();
             let containerNumber = event.target.value;
@@ -103,9 +102,8 @@ export default class ContainerScanOrderMerge extends Component {
             event.target.value = formattedContainerInput;
 
             let containerExists = this.containerExists(formattedContainerInput);
-            let containerInTheCurrentPickZone = this.containerInTheCurrentPickZone(formattedContainerInput);
 
-            if (containerExists && containerInTheCurrentPickZone) {
+            if (containerExists) {
                 const url = window.location.origin + "/picker/scanning-container-merge/get-container-info";
                 const formData = new FormData();
                 formData.append('container', containerNumber);
@@ -119,49 +117,51 @@ export default class ContainerScanOrderMerge extends Component {
                     },
                     success(data, status, xhr) {
                         let parsedData = JSON.parse(data);
-                        that.containerAndCircleColorHolder(parsedData);
-                        document.querySelector("#showFullForm").classList.replace("hidden", "visible");
+                        if(parsedData['error'] === 'error'){
+                            that.showPopUpErrorMessageForContainerScanNotAllowed();
+                        } else {
+                            that.containerAndCircleColorHolder(parsedData);
+                            document.querySelector("#showFullForm").classList.replace("hidden", "visible");
 
-                        let substitute = "";
+                            let substitute = "";
 
-                        $("#listContainersShelf").empty();
-                        for (let i = 0; i < parsedData.length; i++) {
-                            substitute = "";
-                            if(parsedData[i].has_substituted_item > 0){
-                                substitute = '<span style="font-weight: bold"></span><svg class="icon icon--big" data-qa="component icon" title="icon-substitutes"> <use xlink:href="#:icon-substitutes"></use></svg>';
+                            $("#listContainersShelf").empty();
+                            for (let i = 0; i < parsedData.length; i++) {
+                                substitute = "";
+                                if (parsedData[i].has_substituted_item > 0) {
+                                    substitute = '<span style="font-weight: bold"></span><svg class="icon icon--big" data-qa="component icon" title="icon-substitutes"> <use xlink:href="#:icon-substitutes"></use></svg>';
+                                }
+                                if (parsedData[i].shelf_id == null) {
+                                    $("#listContainersShelf").append('<p id="cnt_' + parsedData[i].container_id + '"><span>' + parsedData[i].zone_abbrevation + '</span> > <span>' + parsedData[i].container_id + '</span>' + substitute + '</p>');
+                                } else {
+                                    $("#listContainersShelf").append('<p id="cnt_' + parsedData[i].container_id + '"><span>' + parsedData[i].zone_abbrevation + '</span> > <span>' + parsedData[i].container_id + '</span> > <span style="font-weight: bold">' + parsedData[i].shelf_id + '</span>' + " " + substitute + '</p>');
+                                }
                             }
-                            if(parsedData[i].shelf_id == null){
-                                $("#listContainersShelf").append('<p id="cnt_' + parsedData[i].container_id + '"><span>' + parsedData[i].zone_abbrevation + '</span> > <span>' + parsedData[i].container_id + '</span>' + substitute + '</p>');
-                            }
-                            else{
-                                $("#listContainersShelf").append('<p id="cnt_' + parsedData[i].container_id + '"><span>' + parsedData[i].zone_abbrevation + '</span> > <span>' + parsedData[i].container_id + '</span> > <span style="font-weight: bold">' + parsedData[i].shelf_id + '</span>' + " " + substitute + '</p>');
-                            }
+
+                            that.toggleMergingContainerInput();
+
+                            let backLink = document.querySelector('.header__content a.link');
+                            backLink.style.display = "block";
+                            backLink.setAttribute('href', '#');
+                            backLink.addEventListener('click',
+                                function() {
+                                    document.querySelector("#showFullForm").classList.replace("visible", "hidden");
+                                    $("#listContainersShelf").empty();
+                                    that.clearInputField(document.querySelector("#input_scannerNew"));
+                                    that.mergingContainerScanner.value = "";
+                                    that.confirmScanningContainers.checked = false;
+                                    that.continueUnpacking.classList.add("button--disabled");
+                                    backLink.style.display = "none";
+                                }
+                            );
                         }
-
-                        that.toggleMergingContainerInput();
-
-                        let backLink = document.querySelector('.header__content a.link');
-                        backLink.style.display = "block";
-                        backLink.setAttribute('href', '#');
-                        backLink.addEventListener('click',
-                    function(){
-                                document.querySelector("#showFullForm").classList.replace("visible", "hidden");
-                                $("#listContainersShelf").empty();
-                                that.clearInputField(document.querySelector("#input_scannerNew"));
-                                that.mergingContainerScanner.value = "";
-                                that.confirmScanningContainers.checked = false;
-                                that.continueUnpacking.classList.add("button--disabled");
-                                backLink.style.display = "none";
-                            }
-                        );
-
                     },
                     error(jqXhr, textStatus, errorMessage) {
                         console.log(jqXhr.error);
                     }
                 });
             }
-            else if (containerExists && !containerInTheCurrentPickZone) {
+            else if (containerExists) {
                 this.showPopUpErrorMessageForContainerScanNotAllowed();
             }
             else {
@@ -232,14 +232,6 @@ export default class ContainerScanOrderMerge extends Component {
         }
 
         return containerExists;
-    }
-
-    protected containerInTheCurrentPickZone(containerNumber): boolean {
-        const listOfContainers = JSON.parse(document.querySelector(this.getOrdersContainersData).dataset.orderscontainers);
-        let containerInTheCurrentPickZone;
-        containerInTheCurrentPickZone = containerNumber === listOfContainers[listOfContainers.length - 1];
-
-        return containerInTheCurrentPickZone;
     }
 
     protected continueUnpackingClick(event) {
