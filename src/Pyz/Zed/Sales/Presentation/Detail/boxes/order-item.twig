@@ -108,5 +108,7 @@
     {% endif %}
 </td>
 <td class="order-item-picker-name">
-    {{ orderItem.currentPickerFirstName }} {{ orderItem.currentPickerLastName }}
+    {% if isAdmin %}
+        {{ orderItem.currentPickerFirstName }} {{ orderItem.currentPickerLastName }}
+    {% endif %}
 </td>
