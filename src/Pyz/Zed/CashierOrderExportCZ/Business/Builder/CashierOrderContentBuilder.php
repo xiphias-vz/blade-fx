@@ -268,7 +268,7 @@ class CashierOrderContentBuilder extends IntCashierOrderContentBuilder
     {
         if ($itemTransfer->getBillName() !== null && $itemTransfer->getBillName() !== "") {
             $itemName = $itemTransfer->getBillName();
-        } else if ($itemTransfer->getBontext() && $itemTransfer->getBontext() !== "") {
+        } elseif ($itemTransfer->getBontext() && $itemTransfer->getBontext() !== "") {
             $itemName = $itemTransfer->getBontext();
         } else {
             $itemName = $itemTransfer->getName();

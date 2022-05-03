@@ -14,7 +14,9 @@ use Orm\Zed\Customer\Persistence\SpyCustomer;
 use Orm\Zed\Customer\Persistence\SpyCustomerQuery;
 use Orm\Zed\Recommendations\Persistence\PyzRecommendationDefinitionQuery;
 use Orm\Zed\Recommendations\Persistence\PyzRecommendationScenariosQuery;
+use PDO;
 use Propel\Runtime\ActiveQuery\Criteria;
+use Propel\Runtime\Propel;
 use Spryker\Zed\Kernel\Persistence\AbstractQueryContainer;
 
 /**
@@ -33,11 +35,18 @@ class RecommendationsQueryContainer extends AbstractQueryContainer implements Re
      */
     public function insertRecoData(RecoTransfer $recoTransfer): RecoTransfer
     {
+        $customerEntity = $this->getCustomerEntity($recoTransfer);
+
         $parsedResult = JSON::parse($recoTransfer->getApiResult());
         $resultObjects = $parsedResult['ResultObjects']['results'] ?? [];
+
         $isInserted = false;
         if (count($resultObjects) > 0) {
-            $isInserted = $this->insertRecoDataToDatabase($resultObjects, $recoTransfer);
+            $isInserted = $this->insertRecoDataToDatabase($resultObjects, $recoTransfer, $customerEntity);
+        }
+
+        if ($isInserted) {
+            $this->filterResultObjects($recoTransfer, $customerEntity);
         }
 
         $recoTransfer->setIsInserted($isInserted);
@@ -71,17 +80,12 @@ class RecommendationsQueryContainer extends AbstractQueryContainer implements Re
     /**
      * @param array $resultObjects
      * @param \Generated\Shared\Transfer\RecoTransfer $recoTransfer
+     * @param \Orm\Zed\Customer\Persistence\SpyCustomer $customerEntity
      *
      * @return bool
      */
-    protected function insertRecoDataToDatabase(array $resultObjects, RecoTransfer $recoTransfer): bool
+    protected function insertRecoDataToDatabase(array $resultObjects, RecoTransfer $recoTransfer, SpyCustomer $customerEntity): bool
     {
-        $customerEntity = $this->getCustomerEntity($recoTransfer);
-
-        if (!$customerEntity) {
-            return false;
-        }
-
         $resultObjectsIds = [];
         foreach ($resultObjects as $productEans) {
             if (isset($productEans[static::RESULT_OBJECT_ID])
@@ -103,6 +107,25 @@ class RecommendationsQueryContainer extends AbstractQueryContainer implements Re
         $recoTransfer->setData($resultObjectsString);
 
         return true;
+    }
+
+    /**
+     * @param \Generated\Shared\Transfer\RecoTransfer $recoTransfer
+     * @param \Orm\Zed\Customer\Persistence\SpyCustomer $customerEntity
+     *
+     * @return void
+     */
+    protected function filterResultObjects(RecoTransfer $recoTransfer, SpyCustomer $customerEntity): void
+    {
+        $selectSql = $this->callProcedureForFilteringAvailableSkus($customerEntity->getIdCustomer());
+
+        $result = $this->getResult($selectSql);
+        $resultString = '';
+        if (isset($result[0]['reco_available'])) {
+            $resultString = $result[0]['reco_available'];
+        }
+
+        $recoTransfer->setData($resultString);
     }
 
     /**
@@ -264,5 +287,31 @@ class RecommendationsQueryContainer extends AbstractQueryContainer implements Re
     {
         return $this->getFactory()
             ->createPyzRecommendationsDefinitionQuery();
+    }
+
+    /**
+     * @param string $customerReference
+     *
+     * @return string
+     */
+    protected function callProcedureForFilteringAvailableSkus(string $customerReference): string
+    {
+        return "call pyzx_check_product_availability_for_recommendations(" . $customerReference . ")";
+    }
+
+    /**
+     * @param string $sql
+     *
+     * @return array
+     */
+    protected function getResult(string $sql): array
+    {
+        $connection = Propel::getConnection();
+        $stmt = $connection->prepare($sql);
+        $stmt->execute();
+
+        $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        return $data;
     }
 }

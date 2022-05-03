@@ -360,7 +360,7 @@ class ShipmentTimeSlotsExpander implements ShipmentSlotsExpanderInterface
             $cutoffTimestamp = strtotime($cutoffDateTime);
             $currentTimestamp = strtotime($currentTime);
 
-            if($cutoffTimestamp < $currentTimestamp){
+            if ($cutoffTimestamp < $currentTimestamp) {
                 unset($timeSlotTemplate[$key]);
             }
         }

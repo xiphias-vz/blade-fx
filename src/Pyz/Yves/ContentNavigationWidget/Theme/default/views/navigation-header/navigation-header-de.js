@@ -221,18 +221,23 @@ document.addEventListener("ffReady", function (event) {
     let isFfSnippetEnabled = document.querySelector('#ffSnippetEnabled');
     let isUserLoggedIn = document.querySelector('#isUserLoggedIn');
     let customerRecoData = document.querySelector('#customerUserRecoData');
+    let storeIdValue = document.querySelector('#storeId').value ?? 0;
     let arrayOfRecommendedItems = [];
 
     if (customerRecoData !== null && customerRecoData !== undefined && customerRecoData.value.length > 0) {
         arrayOfRecommendedItems = JSON.parse(customerRecoData.value);
+        arrayOfRecommendedItems = arrayOfRecommendedItems[storeIdValue];
+    }
+
+    if (arrayOfRecommendedItems === undefined || arrayOfRecommendedItems === null) {
+        arrayOfRecommendedItems = [];
     }
 
     if (isFfSnippetEnabled !== null && isFfSnippetEnabled !== undefined) {
         if(isFfSnippetEnabled.value === '1'
-        && isUserLoggedIn.value === "true"
-        && arrayOfRecommendedItems['ResultObjectId'] !== undefined) {
+            && isUserLoggedIn.value === "true") {
             factfinder.communication.EventAggregator.addBeforeDispatchingCallback(e => {
-                e.pushedArticleIds = arrayOfRecommendedItems['ResultObjectId'];
+                e.pushedArticleIds = arrayOfRecommendedItems;
             });
 
             factfinder.communication.EventAggregator.addBeforeHistoryPushCallback((result, event, url) => {
@@ -308,11 +313,9 @@ document.addEventListener("ffReady", function (event) {
 
         let recordCount = 0;
 
-        if (arrayOfRecommendedItems['ResultObjectId'] !== undefined) {
-            recordCount = arrayOfRecommendedItems['ResultObjectId'].length;
+        if (arrayOfRecommendedItems !== undefined) {
+            recordCount = arrayOfRecommendedItems.length;
         }
-
-        const query = createQueryForRecommendedProducts(arrayOfRecommendedItems, false);
 
         var searchParams = createSearchParamsForCustomCategory(arrayOfRecommendedItems);
         var targetUrl = createTargetUrlForCustomCategory(arrayOfRecommendedItems);
@@ -392,9 +395,13 @@ document.addEventListener("ffReady", function (event) {
             "__SUB_ELEMENTS__": []
         };
 
-        var elements = navigationData['searchResult']['groups'][0]['elements'];
+        let elements = '';
+        if (navigationData['searchResult']['groups'][0] !== undefined) {
+            elements = navigationData['searchResult']['groups'][0]['elements'];
+        }
+
         if (elements[0] !== undefined) {
-            if (elements[0]['name'] !== 'Meine Produkte' && isUserLoggedIn.value === "true") {
+            if (elements[0]['name'] !== 'Meine Produkte' && isUserLoggedIn.value === "true" && recordCount > 7) {
                 elements.unshift(dynamicNavigation);
             }
         }
@@ -702,8 +709,8 @@ function createTargetUrlForCustomCategory(arrayOfRecommendedItems) {
 function createQueryForRecommendedProducts(arrayOfRecommendedItems, usePipes) {
     let productsForQuery = '';
     const pipes = usePipes === true ? '||' : '+%7C%7C+';
-    if (arrayOfRecommendedItems['ResultObjectId'] !== undefined) {
-        arrayOfRecommendedItems['ResultObjectId'].forEach(item => {
+    if (arrayOfRecommendedItems !== undefined) {
+        arrayOfRecommendedItems.forEach(item => {
             productsForQuery += item + pipes
         });
 
