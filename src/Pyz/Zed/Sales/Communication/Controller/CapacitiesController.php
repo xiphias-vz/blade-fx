@@ -221,6 +221,7 @@ class CapacitiesController extends AbstractController
                         if ($defDay[static::DATE_COLUMN] === $date) {
                             if ($defDay[static::TIMESLOT_COLUMN] === $timeSlot[static::TIMESLOT_COLUMN]) {
                                 $timeSlot[static::CAPACITY_COLUMN] = $defDay[static::CAPACITY_COLUMN];
+                                $timeSlot[static::CAPACITY_LEFT_COLUMN] = $defDay[static::CAPACITY_COLUMN];
                                 $timeSlot[static::IS_DEFAULT_COLUMN] = false;
                                 break;
                             }
