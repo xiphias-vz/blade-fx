@@ -269,6 +269,63 @@
                                             {% else %}
                                                 <td style="padding: 0.7rem">0</td>
                                             {% endif %}
+
+                                        {% elseif header == 'SUS' %}
+                                            {% if tableData[timeslot] is defined %}
+                                                {% if tableData[timeslot]['Sushi'] is defined %}
+                                                    {% if choice == 1 %}
+                                                        <td style="padding: 0.7rem">{{ tableData[timeslot]['Sushi']['ready for picking'] }}/{{ tableData[timeslot]['Sushi']['in picking'] }}/{{ tableData[timeslot]['Sushi']['picked'] }}</td>
+                                                    {% else %}
+                                                        <td style="padding: 0.7rem">{{ tableData[timeslot]['Sushi']['ready for picking'] }}/{{ tableData[timeslot]['Sushi']['picked'] }}</td>
+                                                    {% endif %}
+                                                {% else %}
+                                                    <td style="padding: 0.7rem">0</td>
+                                                {% endif %}
+                                            {% else %}
+                                                <td style="padding: 0.7rem">0</td>
+                                            {% endif %}
+                                        {% elseif header == 'TAB' %}
+                                            {% if tableData[timeslot] is defined %}
+                                                {% if tableData[timeslot]['Tabak'] is defined %}
+                                                    {% if choice == 1 %}
+                                                        <td style="padding: 0.7rem">{{ tableData[timeslot]['Tabak']['ready for picking'] }}/{{ tableData[timeslot]['Tabak']['in picking'] }}/{{ tableData[timeslot]['Tabak']['picked'] }}</td>
+                                                    {% else %}
+                                                        <td style="padding: 0.7rem">{{ tableData[timeslot]['Tabak']['ready for picking'] }}/{{ tableData[timeslot]['Tabak']['picked'] }}</td>
+                                                    {% endif %}
+                                                {% else %}
+                                                    <td style="padding: 0.7rem">0</td>
+                                                {% endif %}
+                                            {% else %}
+                                                <td style="padding: 0.7rem">0</td>
+                                            {% endif %}
+                                        {% elseif header == 'GAS' %}
+                                            {% if tableData[timeslot] is defined %}
+                                                {% if tableData[timeslot]['Gastro'] is defined %}
+                                                    {% if choice == 1 %}
+                                                        <td style="padding: 0.7rem">{{ tableData[timeslot]['Gastro']['ready for picking'] }}/{{ tableData[timeslot]['Gastro']['in picking'] }}/{{ tableData[timeslot]['Gastro']['picked'] }}</td>
+                                                    {% else %}
+                                                        <td style="padding: 0.7rem">{{ tableData[timeslot]['Gastro']['ready for picking'] }}/{{ tableData[timeslot]['Gastro']['picked'] }}</td>
+                                                    {% endif %}
+                                                {% else %}
+                                                    <td style="padding: 0.7rem">0</td>
+                                                {% endif %}
+                                            {% else %}
+                                                <td style="padding: 0.7rem">0</td>
+                                            {% endif %}
+                                        {% elseif header == 'SON' %}
+                                            {% if tableData[timeslot] is defined %}
+                                                {% if tableData[timeslot]['Sonstiges'] is defined %}
+                                                    {% if choice == 1 %}
+                                                        <td style="padding: 0.7rem">{{ tableData[timeslot]['Sonstiges']['ready for picking'] }}/{{ tableData[timeslot]['Sonstiges']['in picking'] }}/{{ tableData[timeslot]['Sonstiges']['picked'] }}</td>
+                                                    {% else %}
+                                                        <td style="padding: 0.7rem">{{ tableData[timeslot]['Sonstiges']['ready for picking'] }}/{{ tableData[timeslot]['Sonstiges']['picked'] }}</td>
+                                                    {% endif %}
+                                                {% else %}
+                                                    <td style="padding: 0.7rem">0</td>
+                                                {% endif %}
+                                            {% else %}
+                                                <td style="padding: 0.7rem">0</td>
+                                            {% endif %}
                                         {% endif %}
                                     {% endfor %}
                                     </tr>
