@@ -132,6 +132,10 @@ export default class PopupUiLoginForm extends Component {
         usernameLabel.textContent = 'E-Mail-Adresse oder Kundenkartennummer ';
         usernameLabel.append(starSpan);
 
+        const popupLoginEyeIcon = document.createElement('span');
+        popupLoginEyeIcon.setAttribute('id', 'popupLoginEyeIconDE');
+        popupLoginEyeIcon.classList.add('icon-eye', 'popup-login-eye-icon');
+
         const starSpanPass = document.createElement('span');
         starSpanPass.setAttribute('class', 'login-modal-star');
         starSpanPass.textContent = '*';
@@ -143,6 +147,9 @@ export default class PopupUiLoginForm extends Component {
         passwordLabel.append(starSpanPass);
 
         this.gigyaUsernameDiv.item(1).prepend(usernameLabel);
+
+        this.gigyaPasswordDiv.item(8).prepend(popupLoginEyeIcon);
+
         this.gigyaPasswordDiv.item(8).prepend(passwordLabel);
 
         // appending Password forget link
@@ -151,7 +158,8 @@ export default class PopupUiLoginForm extends Component {
         passwordForgetLink.setAttribute('href', '#');
         passwordForgetLink.textContent = 'Passwort vergessen?';
         passwordForgetLink.style.float = 'left';
-        $(passwordForgetLink).css('padding-bottom', '0.7rem');
+        // $(passwordForgetLink).css('padding-bottom', '0.7rem');
+        $(passwordForgetLink).css('padding', '10px 15px');
         this.gigyaLayoutRow.item(158).append(passwordForgetLink);
         passwordForgetLink.addEventListener('click', event => {
             this.loginFormHolder.style.display = 'none';
@@ -161,12 +169,12 @@ export default class PopupUiLoginForm extends Component {
         // bottom line horizontal line
         $(this.gigyaUsernameDiv).parent().css('position', 'relative');
         $(this.gigyaUsernameDiv).parent().css('border-bottom-style', 'solid');
-        $(this.gigyaUsernameDiv).parent().css('border-bottom-color', 'black');
+        $(this.gigyaUsernameDiv).parent().css('border-bottom-color', '#CDCFCC');
         $(this.gigyaUsernameDiv).parent().css('border-bottom-width', '1px');
 
         const textSpan = document.createElement('span');
         textSpan.setAttribute('class', 'span-in-link');
-        textSpan.textContent = '> Neu beim Abholservice? ';
+        textSpan.textContent = 'Neu beim Abholservice? ';
 
         // registriren link
         const registerLink = document.createElement('a');
@@ -180,7 +188,7 @@ export default class PopupUiLoginForm extends Component {
         divForLink.setAttribute('class', 'gigya-layout-row');
         divForLink.setAttribute('display', 'inline-flex');
         $(divForLink).css('text-align', 'left');
-        $(divForLink).css('padding-top', '0.6rem');
+        $(divForLink).css('padding', '10px 15px');
         divForLink.append(textSpan);
         divForLink.append(registerLink);
 

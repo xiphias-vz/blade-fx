@@ -344,8 +344,8 @@
                 display: flex;
                 justify-content: center;
                 .icon-basketplus {
-                    font-size: 20px;
-                    margin-right: 10px;
+                    font-size: rem(20);
+                    margin-right: rem(10);
                 }
             }
 
@@ -357,7 +357,7 @@
         }
 
         &--font-CZ {
-            font: fw(medium) rem(14)/1.7 $setting-font-family;
+            font: fw(medium) rem(16)/1.7 $setting-font-family;
         }
 
         &--expand-mobile {

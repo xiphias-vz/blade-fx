@@ -24,9 +24,9 @@
 
         &__container {
             flex-grow: 1;
-            max-width: rem(400);
+            max-width: rem(500);
             height: 100%;
-            background-color: $setting-color-globus-lightGray;
+            background-color: $setting-color-light-tentgray-3;
             border-radius: 0;
 
 
@@ -43,13 +43,19 @@
 
         &__title {
             padding: 0.9rem 1.5rem 0.5rem;
-            font: fw(bold) rem(18) $setting-font-family-additional;
-            text-align: right;
-            border-bottom: rem(1) solid $setting-color-globus-black;
+            font-family: $setting-font-family-additional;
+            font-size: rem(31);
+            line-height: rem(37);
+            font-weight: 500;
+            color: $setting-color-tentgray;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: rem(1) solid $setting-color-fresh-orange;
         }
 
         &__title--text {
-            color: black;
+            color: $setting-color-tentgray;
             text-align: left;
             float: left;
             padding-top: rem(6);
@@ -57,16 +63,16 @@
         }
 
         &__close {
-            color: $setting-color-globus-lightOrange;
+            color: $setting-color-tentgray;
             text-align: right;
             cursor: pointer;
-            font-size: rem(24);
+            font-size: rem(17);
+            font-weight: bold;
             background-color: transparent;
             margin: rem(10) -10px 0 0;
         }
 
         &__content {
-            padding: rem(10);
 
             .link-cursor {
                 cursor: pointer;
@@ -86,27 +92,46 @@
             }
         }
 
-
-
-        #checkoutCustomerLogin {
-            padding: rem(10);
-        }
-
         #usernameLabel, #passwordLabel {
-            color: $setting-color-gray-13 !important;
+            color: $setting-color-tentgray !important;
             font-size: rem(14) !important;
+            margin-left: rem(10);
         }
 
         .login-modal-star {
-            color: $setting-color-orange !important;
+            color: $setting-color-tentgray !important;
         }
 
         .span-in-link {
-            color: $setting-color-gray-13 !important;
+            color: $setting-color-tentgray !important;
+        }
+
+        #popupLoginEyeIconDE {
+            position: relative;
+            float: right;
+            margin-right: rem(25);
+            top: rem(36);
+            font-size: rem(20);
+            cursor: pointer;
         }
 
         #register-now-link {
-            color: $setting-color-orange !important;
+            color: $setting-color-fresh-orange !important;
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            align-items: center;
+            border: rem(2) solid $setting-color-fresh-orange;
+            border-radius: rem(25);
+            background-color: white;
+            padding: rem(10) rem(24);
+            margin-top: rem(10);
+            text-decoration: none;
+        }
+
+        #register-now-link:hover {
+            color: $setting-color-gigya-darkOrange !important;
+            border-color: $setting-color-gigya-darkOrange;
         }
 
         .notRegisteredYet-box {

@@ -17,14 +17,17 @@
                     <div class="form form--grid-indent form--login form--checkout-actions" data-qa="component form">
                         <form name="loginForm" method="post" action="/login_check">
                             <div class="form__container">
-                                <div class="form__fields grid grid--top">
+                                <div class="login-margin-cz form__fields grid grid--top">
                                     <div class="form__field col col--sm-12">
                                         <label for="loginForm_email" class="label label--required label-CZ">{{ 'customer.login.email' | trans }}</label>
                                         <input id="loginForm_email" name="loginForm[email]" required="required" placeholder="{{ 'customer.login.email_placeholder' | trans }}" class="input input--expand" type="text">
                                     </div>
                                     <div class="form__field col col--sm-12">
                                         <label for="loginForm_password" class="label label--required label-CZ">{{ 'customer.password' | trans }}</label>
-                                        <input id="loginForm_password" name="loginForm[password]" required="required" autocomplete="off" placeholder="{{ 'customer.login.password_placeholder' | trans }}" class="input input--expand" type="password">
+                                        <div class="password-and-eye-input">
+                                            <input id="loginForm_password" name="loginForm[password]" required="required" autocomplete="off" placeholder="{{ 'customer.login.password_placeholder' | trans }}" class="input input--expand" type="password">
+                                            <i id="eye-icon-password-cz" class="icon-eye eye-icon-login-cz"></i>
+                                        </div>
                                     </div>
                                     <input id="loginForm_data" name="loginForm[data]" class="input input--expand" type="hidden">
                                     <input id="loginForm__token" name="loginForm[_token]" class="input input--expand" type="hidden" value="{{ csrf_token('loginForm') }}">
@@ -36,17 +39,17 @@
                                     {#                                    {% endif %}#}
 
                                 </div>
-                                <div class="form__actions">
+                                <div class="login-margin-cz form__actions">
                                     <button type="submit" class="form__action form__action--login button button--large button--expand button--font-CZ button--backgroundcolor-CZ" data-qa="submit-button">
                                         {{ 'customer.signin' | trans }}
                                     </button>
                                 </div>
                                 <br>
-                                <a class="link-cursor" href="https://www.globusbonus.cz/prihlaseni/zapomenute-heslo" target="_blank">{{ 'customer.forgotten-password.title' | trans }}?</a>
+                                <a class="login-margin-cz link-cursor" href="https://www.globusbonus.cz/prihlaseni/zapomenute-heslo" target="_blank">{{ 'customer.forgotten-password.title' | trans }}?</a>
                                 <hr class='box-separator'>
-                                <p style="color:#71747c">
-                                    > {{ 'customer.signup_subtext' | trans }}
-                                    <a class="link-cursor-registration" href="https://www.globusbonus.cz/prihlaseni/registrace" target="_blank">{{ 'customer.login.form.join_now' | trans }}</a>
+                                <p class=" login-margin-cz register-now-cz">
+                                    {{ 'customer.signup_subtext' | trans }}
+                                    <a class="register-now-link-cz link-cursor-registration" href="https://www.globusbonus.cz/prihlaseni/registrace" target="_blank">{{ 'customer.login.form.join_now' | trans }}</a>
                                 </p>
                             </div>
                         </form>
@@ -56,4 +59,23 @@
         </div>
     </div>
     {% block button %}{% endblock %}
+    <script>
+        let passwordInputField = document.getElementById("loginForm_password");
+        let eyeIcon = document.getElementById("eye-icon-password-cz");
+
+        eyeIcon.addEventListener("click", togglePasswordVisibility);
+
+        function togglePasswordVisibility(){
+            if(passwordInputField != 'undefined'){
+                if(passwordInputField.type == "password"){
+                    passwordInputField.type = "textbox";
+                    document.getElementById("eye-icon-password-cz").classList.add("icon-eyeclosed");
+                }
+                else if(passwordInputField.type == "text"){
+                    passwordInputField.type = "password";
+                    document.getElementById("eye-icon-password-cz").classList.remove("icon-eyeclosed");
+                }
+            }
+        }
+    </script>
 {% endblock %}

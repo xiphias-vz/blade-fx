@@ -17,26 +17,44 @@
         <script language="JavaScript" src="{{ data.scriptSrc }}"></script>
 
         <style>
+
+            .gigya-composite-control {
+                padding: 10px 15px 0 15px !important;
+            }
+
             .gigya-screen-content div.gigya-screen.landscape {
                 padding: 10px;
             }
+
             .gigya-screen, .gigya-screen * {
-                margin: 2px;
-                font-family: "Fira Sans";
+                font-family: 'Roboto', sans-serif;
             }
+
+            .gigya-screen .gigya-error-msg.gigya-error-msg-active {
+                color: #E30613;
+            }
+
             .gigya-screen .gigya-label-text{
-                font-family: "Fira Sans";
+                font-family: 'Roboto', sans-serif;
             }
             .gigya-screen-caption {
                 display: none;
             }
             .gigya-screen a
             {
-                color: grey !important;
+                color: #373936 !important;
             }
 
-            input.gigya-input-text, input.gigya-input-password{
-                border-radius: 0px !important;
+            input.gigya-input-text, input.gigya-input-password, .gigya-input-submit{
+                border-radius: 25px !important;
+                border-color: #CDCFCC !important;
+                height: 48px !important;
+            }
+
+            .gigya-screen input[type=submit]{
+                font-size: 16px;
+                font-weight: bold;
+                background-color: #FFA500;
             }
 
             .globus_pwforget_link {
@@ -77,7 +95,7 @@
             #frm_resetPassword .btn-submit {
                 width: 100%;
                 color: #fff;
-                background: #ff7f27;
+                background: #FFA500;
                 margin-top: 15px;
                 padding: 10px;
                 cursor: pointer;
@@ -183,7 +201,7 @@
                     <button type="button" class="btn-return-sign-in">{{ 'return.sign.in' | trans }}</button>
 
                     <div class="notRegisteredYet-box">
-                        <span class="span-in-link">&gt; Neu beim Abholservice? </span>
+                        <span class="span-in-link"> Neu beim Abholservice? </span>
                         <a id="register-now-link" href="/register" style="cursor: pointer;">Jetzt registrieren</a>
                     </div>
 
@@ -288,6 +306,33 @@
                 {
                     checkoutStep('guestCheckout');
                 });
+            }
+
+            let passwordInputFieldDE = '';
+            let popupLoginEyeIconDE = '';
+            let myAccount = '';
+
+            window.setTimeout(getGigyaElements,1000);
+
+            function getGigyaElements(){
+                myAccount = document.getElementById("link-to-login-modal");
+
+                myAccount.addEventListener("click", ()=>{
+                    popupLoginEyeIconDE = document.getElementById("popupLoginEyeIconDE");
+                    passwordInputFieldDE = document.getElementsByClassName("gigya-input-password")[8];
+                    popupLoginEyeIconDE.addEventListener("click", togglePasswordVisibilityDE);
+                });
+            }
+
+            function togglePasswordVisibilityDE(){
+                if(passwordInputFieldDE.type == "password"){
+                    passwordInputFieldDE.type = "textbox";
+                    popupLoginEyeIconDE.classList.add("icon-eyeclosed");
+                }
+                else if(passwordInputFieldDE.type == "text"){
+                    passwordInputFieldDE.type = "password";
+                    popupLoginEyeIconDE.classList.remove("icon-eyeclosed");
+                }
             }
 
         </script>
