@@ -10,7 +10,11 @@
 
 {% block body %}
     {% if data.orders is empty %}
-        <p>{{ 'customer.account.no_order' | trans }}</p>
+        {% if app.currentCodeBucket == 'DE' %}
+            <p>{{ 'customer.account.no_order' | trans }}</p>
+        {% else %}
+            <p class="font-family-CZ">{{ 'customer.account.no_order' | trans }}</p>
+        {% endif %}
     {% else %}
         <table class="table table--expand table--customer-account table--order table--responsive">
             <thead>

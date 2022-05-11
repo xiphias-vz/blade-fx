@@ -2,6 +2,25 @@
     #{$name} {
         padding-top: rem(20);
         padding-bottom: rem(30);
+        font-family: $setting-font-family-additional;
+        font-weight: 400;
+        color: $setting-color-tentgray;
+
+        .order-table-box {
+            background-color: white;
+
+            .box{
+                background-color: white;
+            }
+        }
+
+        .font-family-CZ{
+            font-family: $setting-font-family;
+        }
+
+        .title{
+            font-weight: 500;
+        }
 
         &__container {
             background: $setting-color-white;
@@ -60,6 +79,19 @@
             }
         }
 
+        &__col-first, &__col-last {
+
+            padding: rem(23) rem(27);
+            min-height: rem(210);
+
+            .title{
+                padding: 0;
+            }
+            .title-box{
+                padding: 0;
+            }
+        }
+
         &__col-first {
             @include helper-breakpoint-media-min($lg-min) {
                 margin-right: rem(20);
@@ -69,13 +101,12 @@
 
         &__col-last {
             @include helper-breakpoint-media-min($lg-min) {
-                padding-left: rem(20);
                 height: 100%;
             }
         }
 
         &__left-indent {
-            margin: rem(16) 0;
+            border-radius: rem(25);
 
             @include helper-breakpoint-media-min($lg-min) {
                 margin: 0 0 0 rem(30);

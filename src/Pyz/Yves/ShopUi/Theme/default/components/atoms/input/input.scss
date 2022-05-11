@@ -1,10 +1,10 @@
 @include shop-ui-input {
     @include helper-effect-transition(border-color, box-shadow);
-    font: fw(medium) rem(14)/rem(18) $setting-font-family;
+    font: fw(medium) rem(14)/rem(18) $setting-font-family-additional;
     color: $setting-color-black;
     padding: rem(15);
     border: rem(1) solid $setting-color-input-border;
-    border-radius: rem(2);
+    border-radius: rem(25);
     appearance: none;
     border-radius: rem(25);
 

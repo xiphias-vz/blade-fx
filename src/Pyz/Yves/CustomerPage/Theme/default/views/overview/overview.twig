@@ -3,7 +3,7 @@
 {% block customerContent %}
     {% widget 'MerchantSwitcherSelectorFormWidget' %}
         {% block body %}
-            <div class="box spacing-bottom spacing-bottom--biggest">
+            <div class="spacing-bottom spacing-bottom--biggest">
                 {% include molecule('title-box', 'CustomerPage') with {
                     modifiers: ['borderless'],
                     data: {
@@ -23,7 +23,7 @@
         {% endblock %}
     {% endwidget %}
 
-    <div class="box spacing-bottom spacing-bottom--biggest">
+    <div class="order-table-box spacing-bottom spacing-bottom--biggest">
         {% embed molecule('title-box', 'CustomerPage') with {
             modifiers: ['borderless'],
             data: {
@@ -40,7 +40,7 @@
                             {{- 'customer.order.view_all' | trans -}}
                         </a>
                     {% else %}
-                        <a class="page-layout-customer__left-indent button button--hollow button--font-CZ" href="{{ url('customer/order') }}">
+                        <a class="page-layout-customer__left-indent button button--hollow-CZ button--font-CZ" href="{{ url('customer/order') }}">
                             {{- 'customer.order.view_all' | trans -}}
                         </a>
                     {% endif %}
@@ -65,7 +65,7 @@
                     },
                 } only %}
                     {% block additionalContent %}
-                        {% if app.currentCodeBucket != 'DE' %}
+                        {% if app.currentCodeBucket == 'DE' %}
                             <a href="{{ url('customer/profile') }}" class="link link--darkest link--edit col">
                                 {% include molecule('icon-tooltip') with {
                                     modifiers: ['medium-up'],
@@ -79,7 +79,11 @@
                     {% endblock %}
                 {% endembed %}
 
-                <ul class="menu">
+                {% if app.currentCodeBucket == 'DE'%}
+                        <ul class="menu">
+                {% else %}
+                        <ul class="menu font-family-CZ">
+                {% endif %}
                     <li class="menu__item">{{ data.customer.firstName }} {{ data.customer.lastName }}</li>
                     <li class="menu__item"><a class="menu__link"
                                               href="mailto:{{ data.customer.email }}">{{ data.customer.email }}</a></li>

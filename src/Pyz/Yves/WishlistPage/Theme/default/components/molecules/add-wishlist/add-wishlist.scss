@@ -1,5 +1,10 @@
 @mixin wishlist-page-add-wishlist($name: '.add-wishlist') {
     #{$name} {
+        .button {
+            min-width: rem(248);
+            height: 100%;
+        }
+
         &__row {
             display: flex;
             flex-wrap: wrap;

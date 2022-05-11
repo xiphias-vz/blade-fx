@@ -1,5 +1,5 @@
 @mixin shop-ui-button($name: '.button') {
-    $button-min-width: rem(146, number);
+    $button-min-width: rem(162, number);
     $button-tight-min-width: rem(130, number);
     $button-medium-min-width: rem(120, number);
 
@@ -15,7 +15,7 @@
         background: $setting-color-fresh-orange;
         color: $setting-color-white;
         text-decoration: none;
-        border-radius: rem(30);
+        border-radius: rem(25);
         box-shadow: 0 rem(4) rem(18) $setting-color-transparent;
 
         @include helper-breakpoint-media-min($md-min) {

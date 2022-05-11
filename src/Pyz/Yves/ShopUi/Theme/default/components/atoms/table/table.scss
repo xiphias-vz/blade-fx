@@ -8,8 +8,8 @@
 
         thead,
         &__head {
-            font-weight: fw(bold);
-            border-bottom: none;
+            font-weight: 500;
+            border: rem(1) solid $setting-color-input-border-tentgray;
             background-color: $setting-color-globus-tableHeader;
         }
 
@@ -27,7 +27,7 @@
         }
 
         tr.table__row:nth-child(even) {
-            background-color: $setting-color-globus-lightGray;
+            background-color: $setting-color-light-tentgray-3;
         }
 
         &__row {
@@ -71,7 +71,7 @@
             }
 
             &--with-border-bottom {
-                border-bottom: rem(1) solid $setting-color-gray-3;
+                border: rem(1) solid $setting-color-input-border-tentgray;
             }
 
             &--additional {
@@ -114,7 +114,7 @@
                 font-size: rem(13);
 
                 @include helper-breakpoint-media-min($md-min) {
-                    font-size: rem(15);
+                    font-size: rem(16);
                 }
             }
 
@@ -182,7 +182,7 @@
                                 content: attr(data-content) ':';
                                 display: inline-block;
                                 margin-right: rem(5);
-                                font-weight: fw(bold);
+                                font-weight: 500;
                             }
                         }
 
