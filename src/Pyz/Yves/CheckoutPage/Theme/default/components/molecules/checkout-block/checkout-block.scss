@@ -1,9 +1,14 @@
 @mixin checkout-page-checkout-block($name: '.checkout-block') {
     #{$name} {
-        background-color: $setting-color-gray-1;
+        background-color: $setting-color-light-tentgray-3;
         color: $setting-color-gray-9;
         border-radius: rem(2);
         padding: rem(20) rem(15);
+        font-family: $setting-font-family-additional;
+
+        .customer-info, .paragraph-text, .form__field .label, .abholstation-text, #addressesForm_cart_note, .substitution-text .checkbox__label, .submit-button#js-address__buttonSubmit {
+            font-size: rem(16);
+        }
 
         @include helper-breakpoint-media-min($xl-min) {
             padding: rem(30);
@@ -18,6 +23,13 @@
             background: none;
             padding: 0;
             border-radius: 0;
+        }
+
+        .title--primary {
+            font-weight: fw(medium);
+            font-size: rem(28);
+            line-height: rem(37);
+            color: $setting-color-tentgray;
         }
 
         &__title-with-link {
@@ -89,7 +101,127 @@
             }
         }
 
+        .customer-info {
+            font-weight: fw(regular);
+            line-height: rem(24);
+            color: $setting-color-light-tentgray-2;
+            margin-bottom: rem(28);
+        }
+
+        .paragraph-title {
+            font-weight: fw(semibold);
+            font-size: rem(16);
+            line-height: rem(24);
+            color: $setting-color-tentgray;
+            margin-bottom: rem(20);
+        }
+
+        .paragraph-text {
+            font-weight: fw(regular);
+            line-height: rem(24);
+            color: $setting-color-light-tentgray-2;
+            margin-bottom: rem(20);
+        }
+
+        .form__field {
+            .label {
+                font-weight: fw(medium);
+                line-height: rem(19);
+                color: $setting-color-tentgray;
+            }
+
+            #addressesForm_shippingAddress_phone, #addressesForm_shippingAddress_cell_phone {
+                border: 1px solid $setting-color-input-border-tentgray;
+                border-radius: rem(30);
+                font-weight: fw(regular);
+                font-size: rem(16);
+                line-height: rem(19);
+                color: $setting-color-tentgray;
+            }
+        }
+
+        .abholstation-text {
+            font-weight: fw(regular);
+            line-height: rem(24);
+            color: $setting-color-tentgray;
+
+            p {
+                margin-bottom: 0;
+            }
+        }
+
+        #addressesForm_cart_note {
+            font-weight: fw(regular);
+            line-height: rem(19);
+            border-radius: rem(25);
+            border: rem(1) solid $setting-color-input-border-tentgray;
+        }
+
+        .substitution-text {
+            .checkbox__box {
+                width: rem(30);
+                height: rem(30);
+
+                @include helper-breakpoint-media-max($xs-max) {
+                    width: rem(38);
+                    height: rem(32);
+                }
+
+                svg {
+                    width: rem(20);
+                    height: rem(20);
+
+                    @include helper-breakpoint-media-max($xs-max) {
+                        width: rem(22);
+                        height: rem(20);
+                    }
+                }
+            }
+
+            .checkbox__label {
+                font-weight: fw(regular);
+                line-height: rem(19);
+                color: $setting-color-tentgray;
+                align-self: center;
+            }
+
+            .substitution-tooltip-icon {
+                align-self: center;
+
+                svg {
+                    @include helper-breakpoint-media-max($xs-max) {
+                        margin-left: 0;
+                    }
+                }
+            }
+
+            @include helper-breakpoint-media-max($xs-max) {
+                display: block !important;
+            }
+        }
+
+        textarea {
+            font-family: $setting-font-family-additional;
+        }
+
         @content;
+    }
+
+    .CZ {
+        font-family: $setting-font-family-fira-sans !important;
+    }
+
+    .submit-button {
+        #js-address__buttonSubmit {
+            width: rem(240);
+            font-weight: fw(black);
+            font-size: rem(16);
+            line-height: rem(19);
+
+            @include helper-breakpoint-media-max($xs-max) {
+                margin: 0 auto;
+            }
+        }
     }
 }
 

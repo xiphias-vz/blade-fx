@@ -63,8 +63,8 @@
 
         &__input:checked {
             & + #{$name}__box {
-                border-color: $setting-color-globus-darkOrange;
-                background: $setting-color-globus-darkOrange;
+                border-color: $setting-color-forest-green;
+                background: $setting-color-forest-green;
 
                 #{$name}__check {
                     opacity: 1;
@@ -79,8 +79,8 @@
 
         &__input-CZ:checked {
             & + #{$name}__box {
-                border-color: $setting-color-globusCZ-main-green;
-                background: $setting-color-globusCZ-main-green;
+                border-color: $setting-color-forest-green;
+                background: $setting-color-forest-green;
 
                 #{$name}__check {
                     opacity: 1;
@@ -89,12 +89,12 @@
             }
 
             & ~ #{$name}__label {
-                color: $setting-color-globus-darkOrange;
+                color: $setting-color-tentgray;
             }
         }
 
         &__input:focus + #{$name}__box {
-            border-color: $setting-color-globus-darkOrange;
+            border-color: $setting-color-forest-green;
         }
 
         &__label {

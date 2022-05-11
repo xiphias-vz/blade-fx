@@ -1,8 +1,7 @@
 @mixin checkout-page-transport-box($name: '.transport-box') {
     #{$name} {
-        background-color: white;
         height: rem(280);
-        padding: rem(12);
+        padding: rem(12) 0;
         margin-top: rem(10);
         margin-bottom: rem(10);
         color: $setting-color-globus-black;
@@ -40,6 +39,8 @@
 
         &__image {
             margin-top: rem(12);
+            width: rem(177);
+            height: rem(139);
 
             @include helper-breakpoint-media-max($sm-max) {
                 max-width: 50%;
@@ -47,7 +48,8 @@
         }
 
         &__text {
-            font-size: rem(13);
+            color: $setting-color-tentgray;
+            font: fw(regular) rem(16) / rem(24) $setting-font-family-additional;
             margin-left: rem(10);
         }
 
@@ -58,20 +60,51 @@
         .bullet-point {
             display: flex;
             align-items: center;
-            margin-left: -3px;
-            margin-bottom: rem(5);
+            margin-bottom: rem(18);
+            font: fw(regular) rem(16) / rem(19) $setting-font-family-additional;
+            color: $setting-color-tentgray;
             &:nth-child(1) {
                 margin-top: rem(10);
             }
             img {
                 margin-right: rem(8);
+                width: rem(22);
+                height: rem(16);
             }
         }
 
-        &__depositAllowed_checkbox{
+        &__depositAllowed_checkbox {
             color: $setting-color-globus-black;
-            margin-left: rem(6);
             margin-top: rem(10);
+
+            .checkbox__box {
+                width: rem(30);
+                height: rem(30);
+
+                @include helper-breakpoint-media-max($xs-max) {
+                    width: rem(38);
+                    height: rem(30);
+                }
+                svg {
+                    width: rem(20);
+                    height: rem(20);
+
+                    @include helper-breakpoint-media-max($xs-max) {
+                        width: rem(22);
+                    }
+                }
+            }
+
+            .checkbox__box:focus {
+                border: rem(1) solid $setting-color-gray-15;
+            }
+
+            .checkbox__label {
+                font: fw(regular) rem(16) / rem(19) $setting-font-family-additional !important;
+                color: $setting-color-tentgray;
+                align-self: center;
+            }
+
         }
 
         &__icon_right {
@@ -79,12 +112,15 @@
             height: rem(16);
             vertical-align:bottom;
             margin-right: rem(2);
-            margin-left: rem(10);
         }
 
         &__horizontal-line {
             display: block;
             border-top: rem(1) solid $setting-color-gray-6;
+        }
+
+        .title {
+            margin-bottom: rem(8);
         }
 
         @content;

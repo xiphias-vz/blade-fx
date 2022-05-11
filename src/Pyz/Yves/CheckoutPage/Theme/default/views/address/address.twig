@@ -61,7 +61,7 @@
             </script>
             <div class="{{ config.name }}__fields grid grid--indent">
                 <div class="col col--sm-12 col--xl-6 spacing-x spacing-x--big spacing-x--inner spacing-bottom spacing-bottom--bigger">
-                    <div class="checkout-block">
+                    <div {% if app.currentCodeBucket == 'DE' %}class="checkout-block" {% else %}class="checkout-block CZ" {% endif %}>
                         {% set idCustomer = data.form.vars.value.customer.idCustomer %}
                         <input id="idCustomer" type="hidden" value="{{ idCustomer }}" />
                         {% if app.currentCodeBucket == 'DE' %}
@@ -69,7 +69,7 @@
                                 <div>{{ 'page.checkout.address.billing-address' | trans }}</div>
                             </h2>
                         {% else %}
-                            <h2 class="title title--heading-CZ title--primary checkout-block__title-with-link">
+                            <h2 class="title title--primary title--heading-CZ checkout-block__title-with-link">
                                 <div>{{ 'page.checkout.address.billing-address' | trans }}</div>
                             </h2>
                         {% endif %}
@@ -78,53 +78,22 @@
                         {% if idCustomer is not null %}
                             {% set customerData = data.form.vars.value.customer %}
                             {% set isScanAndGo = customerData.isScanAndGo %}
-                            <div>{{ customerData.company }} {{ customerData.lastName }} {{ customerData.firstName }}</div>
-                            <div>{{ customerData.address1 }} {{ customerData.address2 }}</div>
-                            <div>{{ customerData.zipCode }} {{ customerData.city }}, {{ ('countries.code.' ~ customerData.country) | trans }}</div>
-                            <br>
-                            <div>{{ customerData.email }}</div>
+                            <div class="customer-info">
+                                <div>{{ customerData.company }} {{ customerData.lastName }} {{ customerData.firstName }}</div>
+                                <div>{{ customerData.address1 }} {{ customerData.address2 }}</div>
+                                <div>{{ customerData.zipCode }} {{ customerData.city }}, {{ ('countries.code.' ~ customerData.country) | trans }}</div>
+                                <br>
+                                <div>{{ customerData.email }}</div>
+                            </div>
 
-                            {% if embed.addressData is defined and embed.addressData|length > 0%}
-
-                            {% set hintsData = embed.addressData %}
-
-                                {% if(hintsData.showWeHint == true) %}
-
-                                    <div style="padding: 10px 0; display: flex;">
-                                        <div style="display: inline-block; width: 30px; margin-right: 15px; margin-top: 5px;"><img src="{{ publicPath('images/brief.png') }}" style="height: 20px;" /></div>
-                                        <span>{{ 'register.step.success.page.brief.text' | trans }}</span>
-                                    </div>
-
-                                {% endif %}
-
-                                {% if(hintsData.showScanAndGoActivateHint == true) %}
-
-                                    <div style="padding: 10px 0; display: flex;">
-                                        <div style="display: inline-block; width: 30px; margin-right: 15px; margin-top: 5px;"><img src="{{ publicPath('images/scanandgo.png') }}" style="height: 20px; width: 100%;" /></div>
-                                        <span>{{ 'checkout.showScanAndGoActivateHint' | trans }}</span>
-                                    </div>
-
-                                {% endif %}
-
-                                {% if(hintsData.showScanAndGoNotActivateHint == true) %}
-
-                                    <div style="padding: 10px 0; display: flex;">
-                                        <div style="display: inline-block; width: 30px; margin-right: 15px; margin-top: 5px;"><img src="{{ publicPath('images/scanandgo.png') }}" style="height: 20px; width: 100%;" /></div>
-                                        <span>{{ 'checkout.showScanAndGoNotActivateHint' | trans }}</span>
-                                    </div>
-
-                                {% endif %}
-                            {% endif %}
-
-                            <hr style="border-bottom: 1px solid black !important; margin:1.5rem 0 !important;">
-                            <div class="text-color-1">
+                            <div class="paragraph-title">
                                 {{ 'page.checkout.address.phone.paragraph1' | trans }}
                             </div>
-                            <div>
+                            <div class="paragraph-text">
                                 {{ 'page.checkout.address.phone.paragraph2' | trans }}
                             </div>
                             <br>
-                            <div class="text-color-1" id="phoneRequiredFields">
+                            <div class="paragraph-title" id="phoneRequiredFields">
                                 {{ 'page.checkout.address.phone.paragraph3' | trans }}
                                 <br>
                             </div>
@@ -196,19 +165,22 @@
                 </div>
 
                 <div class="col col--sm-12 col--xl-6 spacing-x spacing-x--big spacing-x--inner">
-                    <div class="checkout-block">
-                        <h2 class="title title--primary">{{ 'page.checkout.address.abhol-address' | trans }}</h2>
+                    <div {% if app.currentCodeBucket == 'DE' %}class="checkout-block" {% else %}class="checkout-block CZ"{% endif %}>
+                        {% if app.currentCodeBucket == 'DE'%}
+                            <h2 class="title title--primary">{{ 'page.checkout.address.abhol-address' | trans }}</h2>
+                        {% else %}
+                            <h2 class="title title--primary CZ">{{ 'page.checkout.address.abhol-address' | trans }}</h2>
+                        {% endif%}
 
-                        <p class="spacing-bottom spacing-bottom--bigger text-color-1">{{ 'cart.checkout.address.abholstation.note.up' | trans }}</p>
+                        <p class="spacing-bottom spacing-bottom--bigger abholstation-text">{{ 'cart.checkout.address.abholstation.note.up' | trans }}</p>
 
-                        <div class="spacing-bottom spacing-bottom--bigger text-color-1">
+                        <div class="spacing-bottom spacing-bottom--bigger abholstation-text">
                             <p>{{ 'checkout.step.address.title' | trans }}</p>
                             <span>
                                 {{- app['merchant_name'] -}}
                             </span>
                         </div>
                         {% if app.currentCodeBucket != 'CZ'%}
-                            <div class="horizontal-line"></div>
 
                             {% if embed.isTransportboxEnabled == true %}
                                 {% include molecule('transport-box', 'CheckoutPage') with {
@@ -230,8 +202,7 @@
                                 </div>
                             {% endif %}
 
-                            <div class="horizontal-line"></div>
-                            <div class="text-color-1">
+                            <div class="title--primary" style="display: flex; width: 100%; margin-bottom: 0px">
                                 <p>{{ 'cart.checkout.address.abholstation.note.down' | trans }}</p>
                             </div>
                         {% else %}
@@ -250,7 +221,7 @@
                                 placeholder: 'cart.checkout.address.abholstation.textarea.note' | trans,
                             }) }}
                         </div>
-                        <div {% if app.currentCodeBucket == 'CZ'%} style="display: none;" {% else %} style="display: flex;" {% endif %}>
+                        <div {% if app.currentCodeBucket == 'CZ'%} style="display: none;" {% else %} style="display: flex;" class="substitution-text"{% endif %}>
                             {{ form_row(data.form.is_substitution_allowed, {
                                 label: 'checkout.address.page.substitutions.checkbox' | trans,
                                 attributes: {
@@ -258,7 +229,7 @@
                                     'style': 'margin-top:3px'
                                 }
                             }) }}
-                            <div>
+                            <div class="substitution-tooltip-icon">
                                 {% include molecule('substitutions-tooltip', 'CheckoutPage') with { } only %}
                             </div>
                         </div>
@@ -312,7 +283,7 @@
 
         {% block actions %}
             {% if app.currentCodeBucket=='DE' %}
-                <div class="{{ config.name }}__actions spacing-top spacing-top--bigger">
+                <div class="{{ config.name }}__actions spacing-top spacing-top--bigger submit-button">
                     <button id="js-address__buttonSubmit" type="submit" class="{{ data.submit.class }}">{{ data.submit.text }}</button>
                 </div>
             {% else %}

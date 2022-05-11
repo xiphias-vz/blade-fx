@@ -22,45 +22,47 @@
     </div>
 
     <div class="row">
-      <div class="col col--sm-12 col--md-3 col--lg-3">
-          <div class="row {{ config.name }}__image-div">
-              <img class="{{ config.name }}__image" src="{{ transportboxImageUrl }}">
-          </div>
-       </div>
-       <div class="col col--sm-12 col--md-8 col--lg-8">
-           <div class="row">
-               <div class="{{ config.name }}__text">
-                   <p>{{ 'checkout.transport.box.text' | trans }}</p>
-               </div>
-           </div>
-           <div class="row">
-               <div class="{{ config.name }}__bullet-points">
-                   <div class="bullet-point">
-                       <img src="{{ publicPath('images/check-circle.svg') }}" class="{{ config.name }}__icon_right"/>
-                       {{ 'checkout.transport.box.bullet-point_1' | trans}}
-                   </div>
-                   <div class="bullet-point">
-                       <img src="{{ publicPath('images/check-circle.svg') }}" class="{{ config.name }}__icon_right"/>
-                       {{ 'checkout.transport.box.bullet-point_2' | trans}}
-                   </div>
-                   <div class="bullet-point">
-                       <img src="{{ publicPath('images/check-circle.svg') }}" class="{{ config.name }}__icon_right"/>
-                       {{ 'checkout.transport.box.bullet-point_3' | trans}}
-                   </div>
-               </div>
-           </div>
-           <div class="row">
-               <div class="{{ config.name }}__depositAllowed_checkbox">
-                   {{ form_row(data.formCheckbox, {
-                       label: 'checkout.transport.box.checkbox' | trans,
-                       attributes: {
-                           'checked': false,
-                           'style': 'margin-top:3px'
-                       }
-                   }) }}
-               </div>
-           </div>
-       </div>
+        <div class="col col--sm-12 col--md-3 col--lg-3">
+            <div class="row {{ config.name }}__image-div">
+                <img class="{{ config.name }}__image" src="{{ transportboxImageUrl }}">
+            </div>
+        </div>
+        <div class="col col--sm-12 col--md-8 col--lg-8">
+            <div class="row">
+                <div class="{{ config.name }}__text">
+                    <p>{{ 'checkout.transport.box.text' | trans }}</p>
+                </div>
+            </div>
+        </div>
+        <div class="col col--sm-12 col--md-8 col--lg-12">
+            <div class="row">
+                <div class="{{ config.name }}__bullet-points">
+                    <div class="bullet-point">
+                        <img src="{{ publicPath('images/check-orange.svg') }}" class="{{ config.name }}__icon_right"/>
+                        {{ 'checkout.transport.box.bullet-point_1' | trans }}
+                    </div>
+                    <div class="bullet-point">
+                        <img src="{{ publicPath('images/check-orange.svg') }}" class="{{ config.name }}__icon_right"/>
+                        {{ 'checkout.transport.box.bullet-point_2' | trans }}
+                    </div>
+                    <div class="bullet-point">
+                        <img src="{{ publicPath('images/check-orange.svg') }}" class="{{ config.name }}__icon_right"/>
+                        {{ 'checkout.transport.box.bullet-point_3' | trans }}
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="{{ config.name }}__depositAllowed_checkbox">
+                    {{ form_row(data.formCheckbox, {
+                        label: 'checkout.transport.box.checkbox' | trans,
+                        attributes: {
+                            'checked': false,
+                            'style': 'margin-top:3px'
+                        }
+                    }) }}
+                </div>
+            </div>
+        </div>
     </div>
 
     {% if data.withHorizontalBottomBorder == true %}

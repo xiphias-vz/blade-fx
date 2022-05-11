@@ -22,6 +22,15 @@
                 top: 50%;
                 transform: translateY(-50%);
             }
+
+            a {
+                @include helper-breakpoint-media-min() {
+                    width: rem(240);
+                    font-size: rem(16);
+                    font-weight: fw(black);
+                    border-radius: rem(30);
+                }
+            }
         }
 
         &__progress-wrap {

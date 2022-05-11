@@ -38,9 +38,9 @@
 
         &--progress {
             position: relative;
-            font: fw(medium) rem(14)/rem(24) $setting-font-family;
+            font: fw(regular) rem(18)/rem(22) $setting-font-family-additional;
             letter-spacing: rem(0.1);
-            color: $setting-color-gray-9;
+            color: $setting-color-tentgray;
             flex: 1;
             display: block;
             padding-right: rem(24);
@@ -75,8 +75,9 @@
         }
 
         &--active {
-            color: $setting-color-black;
+            color: $setting-color-forest-green;
             margin-right: 0;
+            font-weight: fw(bold);
 
             &::after {
                 content: '';
@@ -85,8 +86,9 @@
                 left: 0;
                 right: rem(22);
                 bottom: rem(-4);
-                height: rem(1);
-                background: $setting-color-black;
+                height: rem(6);
+                background: $setting-color-forest-green;
+                border-radius: rem(3);
             }
         }
 
