@@ -1,16 +1,23 @@
 @mixin shop-ui-footer($name: '.footer') {
     #{$name} {
         $footer-socials-width: rem(300);
-        background: $setting-color-grey-footer;
+        background: $setting-color-light-tentgray;
         color: $setting-color-white;
 
-        .contact-store-info {
-
-            margin-right: rem(50);
-
-            @include helper-breakpoint-media-max($lg-min) {
-                margin-bottom: rem(20);
+        .grid {
+            @include helper-breakpoint-media-max($xl-min) {
+                flex-direction: column;
             }
+        }
+
+        .footer-container {
+            padding-top: rem(30);
+        }
+
+        .contact-store-info {
+            margin-right: rem(50);
+            text-align: center;
+
             h1,h2,h3,h4,h5,h6 {
                 font-size: 14px;
                 p {
@@ -19,6 +26,18 @@
             }
             p {
                 color: #d4d5d7;
+            }
+
+            @include helper-breakpoint-media-max($lg-min) {
+                margin-bottom: rem(20);
+            }
+
+            @include helper-breakpoint-media-max($xl-min) {
+                margin: 0 auto;
+            }
+
+            @include helper-breakpoint-media-max($md-min) {
+                margin-top: rem(20);
             }
         }
 
@@ -54,18 +73,26 @@
             }
         }
 
+        .icon-container {
+            h3 {
+                font-weight: fw(medium);
+                line-height: rem(22);
+            }
+
+            @include helper-breakpoint-media-max($xl-min) {
+                margin: 0 auto;
+            }
+        }
+
         .icon-container_DE {
             display: block;
         }
 
         .icon-container_CZ {
-            visibility: hidden;
-
-         @include helper-breakpoint-media-max($md-max){
-             visibility: visible;
-             display: none;
-         }
-
+            font-family: $setting-font-family !important;
+            .title, .title--footer {
+                font-family: $setting-font-family;
+            }
         }
 
         .icon-container div  {
@@ -73,10 +100,10 @@
         }
 
         .icon-container .div-margin-right {
-            margin-right: rem(30);
+            margin-right: rem(20);
         }
         .icon-container .div-margin-left   {
-            margin-left: rem(30);
+            margin-left: rem(20);
         }
 
         &__logo-section {
@@ -99,8 +126,8 @@
 
         &__bottom {
             display: block;
-            padding:1rem;
-            background: $setting-color-gray-17;
+            padding: rem(5);
+            background: $setting-color-tentgray;
             color: $setting-color-white;
             position: relative;
 
@@ -115,7 +142,22 @@
             flex: 1;
 
             .alignLeft {
-                margin-left: 0;
+                margin-left: rem(130);
+
+                @include helper-breakpoint-media-max($xl-min) {
+                    margin: auto;
+                }
+                #footerNav {
+                    width: rem(570);
+                    justify-content: space-between;
+
+                    @include helper-breakpoint-media-max($xl-min) {
+                        width: auto;
+                        padding: rem(15) 0 0 0;
+                        flex-direction: column;
+                        text-align: center;
+                    }
+                }
             }
         }
 
@@ -144,7 +186,6 @@
             flex-wrap: wrap;
             flex-grow: 1;
             padding-bottom: rem(30);
-            font-family: $setting-font-family-fira-sans;
 
             @include helper-breakpoint-media-max($lg-min) {
                 padding-right: 6%;
@@ -222,6 +263,44 @@
             font-family: $setting-font-family-fira-sans !important;
         }
 
+        .footer-logo {
+            text-align: center;
+
+            .footer-logo-icon {
+                span {
+                    height: rem(48);
+                    img {
+                        width: rem(55);
+                        background: #fff;
+                        border-radius: rem(50);
+                        padding: 6px;
+                    }
+                }
+            }
+
+            .footer-logo-text {
+                p {
+                    display: inline;
+                    font-size: rem(20);
+                    font-weight: fw(semibold);
+                    color: $setting-color-fresh-orange;
+                    background: #fff;
+                    padding: rem(0) rem(5);
+                    border-radius: rem(12.8);
+                }
+            }
+
+            @include helper-breakpoint-media-max($lg-max) {
+                margin: auto;
+            }
+        }
+    }
+
+    .curved-line {
+        background: $setting-color-white;
+        width: 100%;
+        height: rem(100);
+        clip-path: ellipse(55% 100% at 50% 0%)
     }
 }
 

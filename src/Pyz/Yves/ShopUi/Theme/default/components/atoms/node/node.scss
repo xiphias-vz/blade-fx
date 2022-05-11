@@ -2,12 +2,12 @@
     #{$name} {
         &__link {
             &--footer {
-                color: $setting-color-gray-10;
+                color: $setting-color-white;
                 text-decoration: none;
 
                 &:hover,
                 &:active {
-                    color: $setting-color-gray-10;
+                    color: $setting-color-white;
                     text-decoration: underline;
                 }
             }

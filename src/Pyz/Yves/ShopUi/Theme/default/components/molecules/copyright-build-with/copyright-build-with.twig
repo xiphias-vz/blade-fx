@@ -6,14 +6,16 @@
 
 {% define data = {
     showNavigation: true,
+    codeBucket: app.currentCodeBucket,
 } %}
 
 {% block body %}
+    {% set fontClass = data.codeBucket == "CZ" ? 'cz-font' : '' %}
     <div class="row full-width-row">
-        <div class="data-protection">
+        <div class="data-protection {{ fontClass }}">
             {{ content_navigation('navigation-footer', 'navigation-legal-information-grey') }}
         </div>
-        <div class="div-footer-right-text" >
+        <div class="div-footer-right-text {{ fontClass }}" >
             <p style="margin: 0;">{{ 'footer.price.expenses.message' | trans }}</p>
         </div>
     </div>

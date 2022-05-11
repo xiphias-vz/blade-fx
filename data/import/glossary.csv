@@ -3833,7 +3833,7 @@ agent.login.email,E-mail,cs_CZ
 agent.login.email,Email,en_US
 agent.login.email,E-Mail,de_DE
 global.paymentProviders,"Tato aktivita není povolena",cs_CZ
-global.paymentProviders,Zahlarten bei Abholung,de_DE
+global.paymentProviders,Zahlarten bei der Abholung,de_DE
 agent.login.password,Heslo,cs_CZ
 agent.login.password,Password,en_US
 agent.login.password,Passwort,de_DE
@@ -3870,6 +3870,9 @@ autocomplete.placeholder,Suche,de_DE
 footer.logo.text,"Vytvořeno s",cs_CZ
 footer.logo.text,Built with,en_US
 footer.logo.text,Erstellt mit,de_DE
+footer.logo.text.globus,GLOBUS,cs_CZ
+footer.logo.text.globus,GLOBUS,en_US
+footer.logo.text.globus,GLOBUS,de_DE
 footer.logo.url,https://spryker.com,en_US
 footer.logo.url,https://spryker.com,cs_CZ
 footer.logo.url,https://spryker.com/?lang=de,de_DE

@@ -1,0 +1,21 @@
+@mixin navigation-footer($name: '.navigation-footer') {
+    #{$name} {
+        font-family: $setting-font-family-additional;
+        &__subcategory {
+            h4 {
+                font-weight: 500;
+                line-height: rem(22);
+            }
+
+            @include helper-breakpoint-media-max($xl-min) {
+                margin-right: 0 !important;
+            }
+        }
+    }
+
+    .font-cz {
+        font-family: $setting-font-family;
+    }
+}
+
+@include navigation-footer();
