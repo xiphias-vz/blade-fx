@@ -166,6 +166,7 @@ export default class AjaxAddToCart extends Component {
         quantity++;
         this.quantityAdded++;
         quantityInput.value = String(quantity);
+        this.addOrRemoveBinIcon(incrementer.parentElement)
         this.timer = setTimeout(() => {
             this.sendRequest(incrementer.href, incrementer, String(quantityInput.value), 'ADD');
         }, this.callBackDelay);
@@ -180,6 +181,7 @@ export default class AjaxAddToCart extends Component {
         quantity--;
         quantityInput.value = String(quantity);
         this.toggleCounterAndAjaxButtons(decrementer, 'REMOVE', quantity);
+        this.addOrRemoveBinIcon(decrementer.parentElement);
 
         this.timer = setTimeout(() => {
             this.sendRequest(decrementer.href, decrementer, String(quantityInput.value), 'REMOVE');
@@ -323,7 +325,7 @@ export default class AjaxAddToCart extends Component {
             } else {
                 localStorage.setItem('productItemsForSyncCounter', JSON.stringify(itemAddedInCartWithQuantity));
             }
-            const counter: HTMLInputElement = <HTMLInputElement>link.parentElement.querySelector(CLASS_PREFIX + this.quantityInputField);
+            const counter: HTMLInputElement = <HTMLInputElement>link.parentElement.parentElement.querySelector(CLASS_PREFIX + this.quantityInputField);
             counter.value = String(quantity);
         }
     }
@@ -408,7 +410,20 @@ export default class AjaxAddToCart extends Component {
         counter?.classList.add(this.ajaxCartCounterClass);
         counter?.classList.remove(HIDDEN_CLASS);
         link?.classList.add(HIDDEN_CLASS);
+        this.addOrRemoveBinIcon(counter)
     }
+
+    protected addOrRemoveBinIcon(element) {
+       let decreaseButtonElement = element.getElementsByClassName(this.addToCartDecrementer)[0];
+       let quantityElement = element.getElementsByClassName(this.quantityInputField)[0];
+       if (quantityElement.valueAsNumber > 1 && decreaseButtonElement.classList.contains(this.addBinIcon)) {
+           decreaseButtonElement.classList.remove(this.addBinIcon);
+           decreaseButtonElement.innerText = "-";
+       } else if(quantityElement.valueAsNumber === 1) {
+           decreaseButtonElement.classList.add(this.addBinIcon);
+           decreaseButtonElement.innerText = "";
+       }
+   }
 
     protected showAjaxButtonAndHideCounter(link: HTMLLinkElement): void {
         const counter = link?.parentElement;
@@ -445,6 +460,10 @@ export default class AjaxAddToCart extends Component {
 
     protected get quantityInputField(): string {
         return 'txt-product-quantity';
+    }
+
+    protected get addBinIcon(): string {
+        return 'add-bin';
     }
 
     protected get itemAdded(): string {

@@ -1,5 +1,6 @@
 @mixin record-list($name: '.record-list') {
     #{$name} {
+
         input[type=number]::-webkit-inner-spin-button,
         input[type=number]::-webkit-outer-spin-button {
             -webkit-appearance: none;
@@ -10,20 +11,29 @@
             -moz-appearance:textfield;
         }
 
+        &__content-wrapper {
+            @include helper-breakpoint-media-max($sm-max) {
+                height: 62.5%;
+            }
+        }
+
         &__image-wrap {
             text-align: center;
+            background-color: $setting-color-white;
 
             @include helper-breakpoint-media-min($md-min){
                 min-height: rem(170);
                 max-height: rem(202);
+                clip-path: ellipse(123% 100% at 50% 0%);
             }
 
             @include helper-breakpoint-media-max($sm-max){
-                max-height: rem(90);
+                max-height: rem(180);
+                margin-left: 2%;
+                margin-top: 2%;
             }
 
             img {
-                padding: rem(10);
                 max-height: inherit;
 
                 @include helper-breakpoint-media-min($md-min){
@@ -34,15 +44,46 @@
             }
         }
 
+        .fromTop {
+            @include helper-breakpoint-media-max($md-min){
+                top: rem(-40.5);
+            }
+        }
+
+
+        .add-bin {
+            background: url('../images/bin-new.svg') center no-repeat;
+
+            &:hover {
+                background: url('../images/bin-new-green.svg') center no-repeat;
+            }
+        }
+
         ff-record-list {
             width: 100%;
+
+            @include helper-breakpoint-media-min($md-min){
+                display: flex;
+                flex-flow: wrap;
+            }
+
+            @include helper-breakpoint-media-between($md-min, $lg-min) {
+                .col--md-3 {
+                    width: 46%;
+                    min-width: 46%;
+                }
+            }
         }
 
         ff-record {
             margin-bottom: rem(30);
-
+            background-color: $setting-color-white;
             @include helper-breakpoint-media-min($md-min){
                 margin: 0 rem(10) rem(32);
+                background-color: $setting-color-stonegray;
+                display: flex;
+                flex-flow: column;
+                justify-content: space-between;
             }
 
             @include helper-breakpoint-media-between($md-min, $smd-max){
@@ -67,26 +108,23 @@
 
             @include helper-breakpoint-media-min($lg-min){
             .col--lg-3{
-                width: 23.5%;
-                min-width: 23.5%;
+                width: 29.5%;
+                min-width: 29.5%;
             }
         }
 
         &__record-item{
             position: relative;
-            padding: rem(0) rem(5) rem(30);
-            z-index: 0;
             transition: 0.5s;
             transition-timing-function: ease-in;
             box-shadow: 0 0 rem(20) $setting-color-lightest;
             border: rem(1) solid $setting-color-gray-1;
-
-            @include helper-breakpoint-media-max($sm-max){
-                padding: rem(0) rem(5) rem(5);
-            }
+            font-family: $setting-font-family-additional;
+            height: rem(250);
 
             @include helper-breakpoint-media-min($md-min){
-                height: rem(425);
+                height: rem(480);
+                z-index: 0;
             }
 
         }
@@ -96,9 +134,9 @@
             font-size: rem(11);
             @include helper-breakpoint-media-max($sm-max){
                 margin-top: rem(12);
-                min-width: 10%;
+                min-width: 40%;
                 font-size: rem(22);
-                margin-left: rem(20);
+                margin-right: rem(10);
             }
         }
 
@@ -107,24 +145,37 @@
             margin-top: rem(20);
         }
 
-        &__divider{
-            @include helper-breakpoint-media-max($sm-max) {
-                border-top: 1px solid $setting-color-gray-1;
-                margin-left: rem(-10);
-                margin-right: rem(-10);
-            }
-        }
 
         &__labelDiscount{
-            background-color: $setting-color-globus-red;
-            padding: rem(2) rem(9);
+            width: rem(40);
+            height: rem(22.5);
+            background-color: $setting-color-red-tomato;
+            padding: rem(2);
+            border-radius: 0 rem(29) rem(29) 0;
             position: absolute;
             bottom: auto;
             font-size: rem(14);
-            color: $setting-color-globus-lightGray;
+            font-weight: 700;
+            color: $setting-color-white;
             pointer-events: none;
-            border-radius: 3px;
-            font-family: Fira Sans,Open Sans,Arial,Lucida Grande,sans-serif;
+            font-family: $setting-font-family-additional;
+            z-index: 100;
+            top: rem(6);
+            left: rem(0);
+            text-align: center;
+        }
+
+        &__button-wrapper{
+            background-color: $setting-color-stonegray;
+            width: 100%;
+            display: flex;
+            justify-content: flex-end;
+            padding-bottom: rem(5);
+            padding-top: rem(5);
+            @include helper-breakpoint-media-min($md-min){
+               background-color: transparent;
+                justify-content: center;
+            }
         }
 
         .lazy-thumbnail{
@@ -149,12 +200,16 @@
 
         &__add-to-cart-btn {
             display: block;
-            margin: auto;
             text-align: center;
+            position: relative;
+            margin-bottom: rem(5);
             @include helper-breakpoint-media-max($sm-max) {
                 display: flex;
-                justify-content: end;
-                align-items: center;
+                flex-direction: column;
+                align-items: flex-end;
+                height: 25%;
+                margin: auto;
+
 
                 .button_center_align {
                     margin-top: 0;
@@ -163,22 +218,30 @@
 
             .change-cart-counter {
                 display: flex;
-                justify-content: space-evenly;
-                border: 1px solid $setting-color-lightest;
-                border-radius: 5px;
-                margin-left: rem(20);
-                margin-right: 0;
+                justify-content: space-between;
+                background-color: $setting-color-white;
+                margin: 0 rem(10) 0;
                 position: relative;
+                border-bottom-right-radius: rem(35);
+                border-top-right-radius: rem(35);
+                border-top-left-radius: rem(35);
+                border-bottom-left-radius: rem(35);
+                min-width: 40%;
+
+                @include helper-breakpoint-media-min($md-min){
+                    min-width: 90%;
+                }
 
                 .message {
-                    width: 190px;
+                    width: rem(190);
                     display: flex;
                     align-items: center;
                     justify-content: space-around;
                     position: absolute;
-                    top: -60px;
-                    padding: 10px;
+                    top: rem(-60);
+                    padding: rem(10);
                     background-color:#7b7b7b;
+                    font-family: $setting-font-family-additional;
                     color: #fff;
                     z-index: 1;
 
@@ -211,10 +274,12 @@
                 }
 
                 .message-cz {
-                    font-size: 12px;
+                    font-size: rem(12);
+                    font-family: $setting-font-family-additional;
                 }
 
                 .txt-product-quantity {
+                    font-family: $setting-font-family-additional;
                     width: 60%;
                     text-align: center;
                     outline: none;
@@ -222,17 +287,16 @@
 
                     @include helper-breakpoint-media-max($sm-max) {
                         padding-left: 0;
-                        width: 40px;
+                        width: rem(40);
                         margin: 0;
                     }
                 }
 
                 .js-ajax-change-quantity__link {
-                    background: $setting-color-lightest;
                     display: inline-block;
                     text-align: center;
-                    font-size: 16px;
-                    padding: 5px 10px;
+                    font-size: rem(16);
+                    padding: rem(5) rem(10);
                     text-decoration: none;
 
                     @include helper-breakpoint-media-max($sm-max) {
@@ -244,26 +308,28 @@
                     }
 
                     &.js-quantity-counter-product__decr {
-                        width: 40px;
-                        border-right: 1px solid $setting-color-lightest;
-                        color: $setting-color-globus-darkGreen;
-                        border-radius: 5px;
+                        width: rem(40);
+                        border: rem(2) solid $setting-color-fresh-orange;
+                        color: $setting-color-fresh-orange;
+                        background-color: $setting-color-white;
+                        border-radius: 100%;
                         transition-duration: 0.25s;
                         &:hover {
-                            color:$setting-color-globus-darkGreen;
-                            background-color: $setting-color-globus-lightGreen-2;
+                            color:$setting-color-forest-green;
+                            border: rem(2) solid $setting-color-forest-green;
                         }
                     }
+
                     &.js-quantity-counter-product__incr {
-                        width: 40px;
-                        border-left: 1px solid $setting-color-lightest;
-                        background-color: $setting-color-globus-darkGreen;
-                        color: $setting-color-globus-white;
-                        border-radius: 5px;
+                        width: rem(40);
+                        border: rem(2) solid $setting-color-fresh-orange;
+                        color: $setting-color-fresh-orange;
+                        background-color: $setting-color-white;
+                        border-radius: 100%;
                         transition-duration: 0.25s;
                         &:hover {
-                            color:$setting-color-globus-darkGreen;
-                            background-color: $setting-color-globus-lightGreen-2;
+                            color:$setting-color-forest-green;
+                            border: rem(2) solid $setting-color-forest-green;
                         }
                     }
 
@@ -277,40 +343,49 @@
         }
         .add-details-to-cart-text-holder{
             @include helper-breakpoint-media-max($sm-max) {
-                display: none;
-
+                font-size:rem(12)
             }
         }
         &__info-more{
-            color: #71747c;
-            padding-top: 5px;
+            color: $setting-color-light-tentgray-4;
+            font-weight: 400;
+            padding-top: rem(5);
+            font-size: rem(14);
+            margin: 0 rem(8) 0;
         }
 
         &__amount{
+            font-family: $setting-font-family-additional;
             padding: 0 rem(10);
+            font-weight: 700;
+            font-size: rem(20);
         }
 
         &__amount--original{
             text-decoration: line-through;
+            text-decoration-color: $setting-color-red-tomato;
+            font-size: rem(12);
+            font-weight: 400;
+            position: relative;
+            top: rem(16);
             display: flex;
-            font-family: $setting-font-family-additional;
             margin-top: rem(5);
             justify-content: flex-end;
-            min-height: rem(23);
+            min-height: rem(30);
+            color: $setting-color-tentgray;
+
+
 
             @include helper-breakpoint-media-max($sm-max){
-                margin-right: rem(12);
                 margin-top: rem(10);
             }
         }
 
         &__amount-red{
-            color: $setting-color-globus-red;
+            color: $setting-color-red-tomato;
             display: flex;
             justify-content: flex-end;
-            font-size: rem(23);
-            font-family: $setting-font-family-additional;
-            margin-bottom: rem(15);
+            font-size: rem(30);
             @include helper-breakpoint-media-max($sm-max){
                 margin-bottom: rem(0);
             }
@@ -328,41 +403,48 @@
             flex-direction: column;
             padding: 0 rem(5);
             flex-grow: 1;
+            position: relative;
+            top: rem(30);
 
             @include helper-breakpoint-media-max($sm-max) {
                 padding-top: 0;
                 padding-bottom: 0;
+                margin-top: -29%;
+                margin-left: 29%;
             }
 
             @include helper-breakpoint-media-min($sm-max) {
                 min-height: rem(115);
             }
+        }
 
-            @include helper-breakpoint-media-max($l-max){
-                padding: rem(12) rem(12) rem(12) rem(20)
-            }
+        &__record-product-brand {
+            color: $setting-color-light-tentgray-4;
+            font-weight: 700;
+            font-size: rem(14);
+            margin: 0 rem(8) rem(4);
         }
 
         &__record-product-name{
             text-decoration: none;
-            font-weight: fw(semibold);
-            font-size: rem(16);
-            line-height: 1.3;
-            letter-spacing: rem(0.1);
-            color: $setting-color-black;
+            font-weight: 700;
+            font-size: rem(20);
+            color: $setting-color-tentgray;
             display: -webkit-box;
-            -webkit-line-clamp: 3;
+            -webkit-line-clamp: 2;
             -webkit-box-orient: vertical;
             overflow: hidden;
             text-overflow: ellipsis;
+            margin: 0 rem(8) 0;
 
             &:hover {
-                color: $setting-color-globus-darkOrange;
+                color: $setting-color-fresh-orange;
                 text-decoration: none;
             }
 
             @include helper-breakpoint-media-max($sm-max){
-                font-size: rem(14);
+                font-size: rem(17.6);
+                margin: 0 rem(8) 0;
             }
         }
 

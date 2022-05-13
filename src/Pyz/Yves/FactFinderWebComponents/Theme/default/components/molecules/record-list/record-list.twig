@@ -37,330 +37,351 @@
 {% set extraClass = '' %}
 
 {% block body %}
- <div class="grid {{ component.renderClass(config.name ~ '__container', modifiers) }}">
+    <div class="grid {{ component.renderClass(config.name ~ '__container', modifiers) }}">
      <input type="hidden" id="currency_iso_code" value="{{ data.currencyIsoCode }}">
      <ff-record-list {{ data.properties.component|raw }} unresolved>
         {% block record %}
-            <ff-record {{ data.properties.record|raw }} class="col--sm-12 col--md-4 col--lg-3 {{ config.name}}__record-item" unresolved>
-                <div class="labelDiscount">
-                    {{ "{{ record.geoInformation.0.geoValues.DiscountText }}" }}
-                </div>
-           {% set sku %}
-                {% verbatim %}
-                    {{ record.MasterArticleNumber }}
-                {% endverbatim %}
-            {% endset %}
-            {% set position %}
-                {% verbatim %}
-                    {{ position }}
-                {% endverbatim %}
-            {% endset %}
-            {% set productName %}
-                {% verbatim %}
-                    {{ record.Title }}
-                {% endverbatim %}
-            {% endset %}
-            {% set description %}
-                {% verbatim %}
-                    {{ record.Description }}
-                {% endverbatim %}
-            {% endset %}
-            {% set brand %}
-                {% verbatim %}
-                    {{ record.Brand }}
-                {% endverbatim %}
-            {% endset %}
-            {% set productUrl %}
-                {% verbatim %}
-                    {{ record.ProductUrl }}
-                {% endverbatim %}
-            {% endset %}
-            {% set imageName %}
-                {% verbatim %}
-                    {{ record.ImageName }}
-                {% endverbatim %}
-            {% endset %}
-            {% set imageUrl %}
-                {% verbatim %}
-                    {{ record.ImageUrl }}
-                {% endverbatim %}
-            {% endset %}
-            {% set categoryPath %}
-                {% verbatim %}
-                    {{ record.CategoryPath }}
-                {% endverbatim %}
-            {% endset %}
-            {% set sapNumber %}
-                {% verbatim %}
-                    {{ record.SapNumber }}
-                {% endverbatim %}
-            {% endset %}
-                {% set idProductAbstractRecord %}
-                    {% verbatim %}
-                        {{ record.IdProductAbstract }}
-                    {% endverbatim %}
-                {% endset %}
+            <ff-record {{ data.properties.record|raw }} class="col--sm-12 col--md-3 col--lg-3 {{ config.name}}__record-item" unresolved>
+                <div class="{{ config.name }}__content-wrapper">
+                    <div class="{{ config.name }}__labelDiscount">
+                        {{ "{{ record.geoInformation.0.geoValues.DiscountText }}" }}
+                    </div>
 
-                {% set imageExtraClasses %}
-                    {% verbatim %}
-                        js-image-animation__image-{{ record.IdProductAbstract }}
-                    {% endverbatim %}
-                {% endset %}
-
-                {% set price %}
-                {% verbatim %}
-                    {{ record.geoInformation.0.geoValues.Price }}
-                {% endverbatim %}
-            {% endset %}
-
-            {% set pricePerWeight %}
-                {% verbatim %}
-                    {{ record.record.geoInformation.0.geoValues.BasePrice }}
-                {% endverbatim %}
-            {% endset %}
-
-            {% set isGlobusProduction %}
-                {% verbatim %}
-                    {{ record.isGlobusProduction }}
-                {% endverbatim %}
-            {% endset %}
-            {% if isGlobusProduction is not defined or isGlobusProduction | length == 0 %}
-                {% set isGlobusProduction = true %}
-            {% endif %}
-            {% set bioCertificationCode %}
-                {% verbatim %}
-                    {{ record.bioCertificationCode }}
-                {% endverbatim %}
-            {% endset %}
-
-            {% set popNameExtension %}
-                {% verbatim %}
-                    {{ record.popNameExtension }}
-                {% endverbatim %}
-            {% endset %}
-
-            {% verbatim %}
-                <a href="{{ record.ProductUrl }}" style="text-decoration: none;">
-                <div data-redirect="{{ record.ProductUrl }}"
-                    data-redirect-target="_self">
-            {% endverbatim %}
-
-                <div class="{{ config.name }}__record-product-container" onclick="productClicked('{{ productUrl | trim }}', '{{ sku | trim }}', '{{ productName | trim }}', '{{ price | trim }}', '{{ sku | trim }}', '{{ position | trim }}' )">
-                    {% block imageContainer %}
-                        <div class="col--lg-12 col--md-12 col--sm-3 {{ config.name }}__image-wrap">
-                            {% set splitUrl = imageUrl | split('.com/') %}
-                            {% set newSrc = splitUrl[0] ~ '.com/thumb_'  ~ splitUrl[1] | default("") %}
-                            {% include molecule('lazy-image-ff') with {
-                                modifiers: ['catalog', 'with-overlay'],
-                                data: {
-                                    imageSrc: imageUrl | trim,
-                                    imageTitle: productName | trim,
-                                    abstractId: idProductAbstractRecord | trim
-                                },
-                            } only %}
-                        </div>
-                    {% endblock %}
-
-                    {% block contentContainer %}
-                        <div class="col--sm-9 col--lg-12 {{ config.name }}__record-product-info">
-                            <div class="{{ config.name }}__record-product-name">
-                                <div>{{ brand ~ ' - ' ~ productName ~ popNameExtension }}</div>
-                                <div class="{{ config.name ~ '__sale-volume' }}">{{ pricePerWeight }}</div>
-                            </div>
-                            <div class="{{ config.name }}__info-more">
-                                {% set priceInfo %}
-                                    {% verbatim %}
-                                        {{ record.geoInformation.0.geoValues.BasePrice }}
-                                    {% endverbatim %}
-                                {% endset %}
-
-                                {% block productDataContainer %}
-                                    <div>{{ priceInfo }}</div>
-                                {% endblock %}
-                            </div>
-                        </div>
-                    {% endblock %}
-                </div>
-
-                <hr class="{{ config.name }}__divider" />
-                </div>
-                </a>
-                <div class="{{ config.name }}__add-to-cart-btn">
-
-                {% set amount %}
-                    {% verbatim %}
-                        {{ record.geoInformation.0.geoValues.Price }}
-                    {% endverbatim %}
-                {% endset %}
-
-                {% set originalAmount %}
-                    {% verbatim %}
-                        {{ record.geoInformation.0.geoValues.PseudoPrice }}
-                    {% endverbatim %}
-                {% endset %}
-
-
-                    {% block price %}
-                    {% if data.itemWeight is not null -%}
-                        {{ data.calculatedPrice }}
-                    {%- else -%}
-                        {% if originalAmount is not empty and originalAmount > amount -%}
-                            <span class="{{ config.name }}__amount {{ config.name }}__amount--original">{{ originalAmount }}</span>
-                        {%- endif -%}
-
-                        {%- if amount is empty -%}
-                            {{ data.noPriceText }}
-                        {%- else -%}
-                            {% if originalAmount is not empty and originalAmount > amount -%}
-                                <span class="{{ component.renderClass(config.name ~ '__amount', modifiers) }} {{ config.name }}__amount-red">
-                                    {{ data.prefix }}{{ amount }}
-                                </span>
-                            {%- else -%}
-                                <span class="{{ component.renderClass(config.name ~ '__amount', modifiers) }}">
-                                    {{ data.prefix }}{{ amount }}
-                                </span>
-                            {%- endif -%}
-                        {%- endif -%}
-                    {%- endif -%}
-
-                        <script type="text/javascript">
-                            function productClicked(productUrl, productId, productName, productPrice, productSku, productPosition)
-                            {
-                                let urlCheck = window.location.origin + productUrl;
-
-                                let baseURI = document.getElementsByTagName('ff-record-list')[0].baseURI;
-                                let resultQuery = baseURI.substring(baseURI.indexOf('?') + 1, baseURI.indexOf('&'));
-                                let resultPage = baseURI.substring(baseURI.indexOf('&') + 1);
-                                let query = resultQuery.substring(resultQuery.indexOf('=') + 1);
-                                let page = resultPage.substring(resultPage.indexOf('=') + 1);
-
-                                let dataToSend = {};
-                                let resultData = {};
-                                resultData['product_sku'] = productSku;
-                                resultData['master_id'] = productSku;
-                                resultData['page'] = page;
-                                resultData['position'] = productPosition;
-                                resultData['query'] = query;
-                                resultData['title'] = productName;
-                                dataToSend['result_data'] = resultData;
-
-                                $.ajax({
-                                    type : "POST",
-                                    url  : urlCheck,
-                                    data : dataToSend,
-                                });
-
-                                var ctrlPressed = 0;
-                                if(event.ctrlKey){
-                                    ctrlPressed = 1;
-                                }
-                                var rerouted = 0;
-                                window.dataLayer = window.dataLayer || [];
-                                window.dataLayer.push({
-                                    'event': 'eec.productClick',
-                                    'ecommerce':{
-                                        'click':{
-                                            'actionField': {'list':'Catalog'},
-                                            'products': [{
-                                                'id': productId,
-                                                'name': productName,
-                                                'price': productPrice,
-                                                'sku': productSku,
-                                            }]
-                                        }
-                                    },
-                                    'eventCallback': function()
-                                    {
-                                        if(ctrlPressed == 0){
-                                            rerouted = 1;
-                                            document.location = productUrl;
-                                        }
-                                    }
-                                });
-                                setTimeout(function()
-                                {
-                                    if(rerouted==0 && ctrlPressed==0)
-                                    {
-                                        document.location = productUrl;
-                                    }
-                                },1000);
-                            }
-                        </script>
-                    {% endblock %}
-                    {% if app.currentCodeBucket == 'DE' %}
-                        {% set addAjaxUrl %}
+                   {% set sku %}
+                        {% verbatim %}
+                            {{ record.MasterArticleNumber }}
+                        {% endverbatim %}
+                    {% endset %}
+                    {% set position %}
+                        {% verbatim %}
+                            {{ position }}
+                        {% endverbatim %}
+                    {% endset %}
+                    {% set productName %}
+                        {% verbatim %}
+                            {{ record.Title }}
+                        {% endverbatim %}
+                    {% endset %}
+                    {% set description %}
+                        {% verbatim %}
+                            {{ record.Description }}
+                        {% endverbatim %}
+                    {% endset %}
+                    {% set deposit %}
+                        {% verbatim %}
+                            {{ record.Deposit }}
+                        {% endverbatim %}
+                    {% endset %}
+                    {% set brand %}
+                        {% verbatim %}
+                            {{ record.Brand }}
+                        {% endverbatim %}
+                    {% endset %}
+                    {% set productUrl %}
+                        {% verbatim %}
+                            {{ record.ProductUrl }}
+                        {% endverbatim %}
+                    {% endset %}
+                    {% set imageName %}
+                        {% verbatim %}
+                            {{ record.ImageName }}
+                        {% endverbatim %}
+                    {% endset %}
+                    {% set imageUrl %}
+                        {% verbatim %}
+                            {{ record.ImageUrl }}
+                        {% endverbatim %}
+                    {% endset %}
+                    {% set categoryPath %}
+                        {% verbatim %}
+                            {{ record.CategoryPath }}
+                        {% endverbatim %}
+                    {% endset %}
+                    {% set sapNumber %}
+                        {% verbatim %}
+                            {{ record.SapNumber }}
+                        {% endverbatim %}
+                    {% endset %}
+                        {% set idProductAbstractRecord %}
                             {% verbatim %}
-                              /de/cart/add-ajax/{{ record.IdProductAbstract }}
+                                {{ record.IdProductAbstract }}
                             {% endverbatim %}
                         {% endset %}
 
-                        <a href="{{ addAjaxUrl|trim }}"
-                           rel="nofollow"
-                           onclick="productAddToCartRecordList({{ idProductAbstractRecord | trim }}, '{{ productName | trim }}', {{ price | trim }}, {{ sku | trim }}, '{{ brand | trim }}')"
-                           class="
-                                    button button--with-icon button--middle-icon button_center_align button--backgroundcolor-DE
-                                    js-product-color-group__image-{{ sku }}
-                                    js-image-animation__link
-                                    js-ajax-add-to-cart__link
-                                    myBtn
-                                "
-                           data-product-id="{{ idProductAbstractRecord | trim }}"
-                           data-product-sku="{{ sku | trim }}"
-                           data-product-title="{{ productName | trim }}"
-                           data-product-price="{{ price | trim }}"
-                           data-csrf-token="{{ csrf_token('add-to-cart-ajax') }}"
-                        >
-                            <span class="icon-basketplus"></span>
-                            <div class="add-details-to-cart-text-holder">
-                                {{- 'page.detail.add-to-cart' | trans -}}
-                            </div>
-                        </a>
-                    {% endif %}
-                    <div class="counter is-hidden">
-                        {% if app.currentCodeBucket == 'DE' %}
-                            <span class="is-hidden message item-added">
-                            <span class="checkmark"></span>
-                            {{ 'cart.add.item.ajax.success' | trans }}
-                         </span>
-                            <span class="is-hidden message item-removed">
-                            <span class="checkmark"></span>
-                            {{ 'cart.remove.item.ajax.success' | trans }}
-                        </span>
-                        {% endif %}
+                        {% set imageExtraClasses %}
+                            {% verbatim %}
+                                js-image-animation__image-{{ record.IdProductAbstract }}
+                            {% endverbatim %}
+                        {% endset %}
 
+                        {% set price %}
+                        {% verbatim %}
+                            {{ record.geoInformation.0.geoValues.Price }}
+                        {% endverbatim %}
+                    {% endset %}
+
+                    {% set pricePerWeight %}
+                        {% verbatim %}
+                            {{ record.record.geoInformation.0.geoValues.BasePrice }}
+                        {% endverbatim %}
+                    {% endset %}
+
+                    {% set isGlobusProduction %}
+                        {% verbatim %}
+                            {{ record.isGlobusProduction }}
+                        {% endverbatim %}
+                    {% endset %}
+                    {% if isGlobusProduction is not defined or isGlobusProduction | length == 0 %}
+                        {% set isGlobusProduction = true %}
+                    {% endif %}
+                    {% set bioCertificationCode %}
+                        {% verbatim %}
+                            {{ record.bioCertificationCode }}
+                        {% endverbatim %}
+                    {% endset %}
+
+                    {% set popNameExtension %}
+                        {% verbatim %}
+                            {{ record.popNameExtension }}
+                        {% endverbatim %}
+                    {% endset %}
+                        {% verbatim %}
+                        <a href="{{ record.ProductUrl }}" style="text-decoration: none;">
+                        <div data-redirect="{{ record.ProductUrl }}"
+                            data-redirect-target="_self">
+                    {% endverbatim %}
+                        <div class="{{ config.name }}__record-product-container" onclick="productClicked('{{ productUrl | trim }}', '{{ sku | trim }}', '{{ productName | trim }}', '{{ price | trim }}', '{{ sku | trim }}', '{{ position | trim }}' )">
+                            {% block imageContainer %}
+                                <div class="col--lg-12 col--md-12 col--sm-3 {{ config.name }}__image-wrap">
+                                    {% set splitUrl = imageUrl | split('.com/') %}
+                                    {% set newSrc = splitUrl[0] ~ '.com/thumb_'  ~ splitUrl[1] | default("") %}
+                                    {% include molecule('lazy-image-ff') with {
+                                        modifiers: ['catalog', 'with-overlay'],
+                                        data: {
+                                            imageSrc: imageUrl | trim,
+                                            imageTitle: productName | trim,
+                                            abstractId: idProductAbstractRecord | trim
+                                        },
+                                    } only %}
+                                </div>
+                            {% endblock %}
+                        </div>
+
+                        </div>
+                        </a>
+                        {% block contentContainer %}
+                            <div class="col--sm-9 col--lg-12 {{ config.name }}__record-product-info">
+                                <div class="{{ config.name }}__record-product-brand">{{ brand }}</div>
+                                <div class="{{ config.name }}__record-product-name">
+                                    {% set productTitle = productName  %}
+                                    <div>
+                                        {{ productTitle }}
+                                    </div>
+                                    <div class="{{ config.name ~ '__sale-volume' }}">
+                                        {{ pricePerWeight }}
+                                    </div>
+                                </div>
+                                <div class="{{ config.name }}__info-more">
+                                    {% set priceInfo %}
+                                        {% verbatim %}
+                                            {{ record.geoInformation.0.geoValues.BasePrice }}
+                                        {% endverbatim %}
+                                    {% endset %}
+
+                                    {% block productDataContainer %}
+                                        <span class="popNameExtension">{{ popNameExtension | raw }}</span>
+                                        <span class="priceInfo">{{ priceInfo | raw }}</span>
+                                        <br>
+                                        <span class="deposit">{{ deposit }}</span>
+                                    {% endblock %}
+                                </div>
+                            </div>
+                        {% endblock %}
+                </div>
+                    <div class="{{ config.name }}__add-to-cart-btn">
+
+                    {% set amount %}
+                        {% verbatim %}
+                            {{ record.geoInformation.0.geoValues.Price }}
+                        {% endverbatim %}
+                    {% endset %}
+
+                    {% set originalAmount %}
+                        {% verbatim %}
+                            {{ record.geoInformation.0.geoValues.PseudoPrice }}
+                        {% endverbatim %}
+                    {% endset %}
+
+
+                        {% block price %}
+                        {% if data.itemWeight is not null -%}
+                            {{ data.calculatedPrice }}
+                        {%- else -%}
+                            {% if originalAmount is not empty and originalAmount > amount -%}
+                                <span class="{{ config.name }}__amount {{ config.name }}__amount--original">{{ originalAmount | trim }}</span>
+                            {%- endif -%}
+
+                            {%- if amount is empty -%}
+                                {{ data.noPriceText }}
+                            {%- else -%}
+                                {% if originalAmount is not empty and originalAmount > amount -%}
+                                    <span class="{{ component.renderClass(config.name ~ '__amount', modifiers) }} {{ config.name }}__amount-red">
+                                        {{ data.prefix }}{{ amount }}
+                                    </span>
+                                {%- else -%}
+                                    <span class="{{ component.renderClass(config.name ~ '__amount', modifiers) }}">
+                                        {{ data.prefix }}{{ amount }}
+                                    </span>
+                                {%- endif -%}
+                            {%- endif -%}
+                        {%- endif -%}
+
+                            <script type="text/javascript">
+                                function productClicked(productUrl, productId, productName, productPrice, productSku, productPosition)
+                                {
+                                    let urlCheck = window.location.origin + productUrl;
+
+                                    let baseURI = document.getElementsByTagName('ff-record-list')[0].baseURI;
+                                    let resultQuery = baseURI.substring(baseURI.indexOf('?') + 1, baseURI.indexOf('&'));
+                                    let resultPage = baseURI.substring(baseURI.indexOf('&') + 1);
+                                    let query = resultQuery.substring(resultQuery.indexOf('=') + 1);
+                                    let page = resultPage.substring(resultPage.indexOf('=') + 1);
+
+                                    let dataToSend = {};
+                                    let resultData = {};
+                                    resultData['product_sku'] = productSku;
+                                    resultData['master_id'] = productSku;
+                                    resultData['page'] = page;
+                                    resultData['position'] = productPosition;
+                                    resultData['query'] = query;
+                                    resultData['title'] = productName;
+                                    dataToSend['result_data'] = resultData;
+
+                                    $.ajax({
+                                        type : "POST",
+                                        url  : urlCheck,
+                                        data : dataToSend,
+                                    });
+
+                                    var ctrlPressed = 0;
+                                    if(event.ctrlKey){
+                                        ctrlPressed = 1;
+                                    }
+                                    var rerouted = 0;
+                                    window.dataLayer = window.dataLayer || [];
+                                    window.dataLayer.push({
+                                        'event': 'eec.productClick',
+                                        'ecommerce':{
+                                            'click':{
+                                                'actionField': {'list':'Catalog'},
+                                                'products': [{
+                                                    'id': productId,
+                                                    'name': productName,
+                                                    'price': productPrice,
+                                                    'sku': productSku,
+                                                }]
+                                            }
+                                        },
+                                        'eventCallback': function()
+                                        {
+                                            if(ctrlPressed == 0){
+                                                rerouted = 1;
+                                                document.location = productUrl;
+                                            }
+                                        }
+                                    });
+                                    setTimeout(function()
+                                    {
+                                        if(rerouted==0 && ctrlPressed==0)
+                                        {
+                                            document.location = productUrl;
+                                        }
+                                    },1000);
+                                }
+                            </script>
+                        {% endblock %}
                         {% if app.currentCodeBucket == 'DE' %}
-                           {% set changeAjaxUrl %}
+                            {% set addAjaxUrl %}
                                 {% verbatim %}
-                                  /de/cart/change-ajax/{{ record.IdProductAbstract }}
+                                  /de/cart/add-ajax/{{ record.IdProductAbstract }}
                                 {% endverbatim %}
                             {% endset %}
-
-                            <a href="{{ changeAjaxUrl|trim }}"
+                            <div class="{{ config.name }}__button-wrapper">
+                            <a href="{{ addAjaxUrl|trim }}"
+                               rel="nofollow"
+                               onclick="productAddToCartRecordList({{ idProductAbstractRecord | trim }}, '{{ productName | trim }}', {{ price | trim }}, {{ sku | trim }}, '{{ brand | trim }}')"
                                class="
-                                js-ajax-change-quantity__link
-                                js-quantity-counter-product__decr"
-                               data-csrf-token="{{ csrf_token('change-cart-ajax') }}"
-                            >
-                                -
-                            </a>
-                        {% endif %}
-
-                        <input type="number" class="txt-product-quantity" min="1" max="99" value="1">
-                        {% if app.currentCodeBucket == 'DE' %}
-                            <a href="{{ changeAjaxUrl  }}"
-                               class="
-                            js-ajax-change-quantity__link
-                            js-quantity-counter-product__incr"
-                               data-csrf-token="{{ csrf_token('change-cart-ajax') }}"
+                                        button button--with-icon button--middle-icon button_center_align button--backgroundcolor-DE
+                                        js-product-color-group__image-{{ sku }}
+                                        js-image-animation__link
+                                        js-ajax-add-to-cart__link
+                                        myBtn
+                                    "
+                               data-product-id="{{ idProductAbstractRecord | trim }}"
                                data-product-sku="{{ sku | trim }}"
                                data-product-title="{{ productName | trim }}"
                                data-product-price="{{ price | trim }}"
+                               data-csrf-token="{{ csrf_token('add-to-cart-ajax') }}"
                             >
-                                +
+                                {% include atom('icon') with {
+                                    modifiers:['record-list-new-cart'],
+                                    class: 'new_cart',
+                                    data: {
+                                        name: 'new_cart',
+                                    },
+                                } only %}
+                                <div class="add-details-to-cart-text-holder">
+                                    {{- 'page.detail.add-to-cart' | trans -}}
+                                </div>
                             </a>
                         {% endif %}
+                        <div class="counter is-hidden">
+                            {% if app.currentCodeBucket == 'DE' %}
+                                <span class="is-hidden message item-added">
+                                <span class="checkmark"></span>
+                                {{ 'cart.add.item.ajax.success' | trans }}
+                             </span>
+                                <span class="is-hidden message item-removed">
+                                <span class="checkmark"></span>
+                                {{ 'cart.remove.item.ajax.success' | trans }}
+                            </span>
+                            {% endif %}
+
+                            {% if app.currentCodeBucket == 'DE' %}
+                               {% set changeAjaxUrl %}
+                                    {% verbatim %}
+                                      /de/cart/change-ajax/{{ record.IdProductAbstract }}
+                                    {% endverbatim %}
+                                {% endset %}
+
+                                <a href="{{ changeAjaxUrl|trim }}"
+                                   class="
+                                    js-ajax-change-quantity__link
+                                    js-quantity-counter-product__decr add-bin"
+                                   data-csrf-token="{{ csrf_token('change-cart-ajax') }}"
+                                >
+                                    -
+                                </a>
+                            {% endif %}
+
+                            <input type="number" class="txt-product-quantity" min="1" max="99" value="1">
+                            {% if app.currentCodeBucket == 'DE' %}
+                                <a href="{{ changeAjaxUrl  }}"
+                                   class="
+                                js-ajax-change-quantity__link
+                                js-quantity-counter-product__incr"
+                                   data-csrf-token="{{ csrf_token('change-cart-ajax') }}"
+                                   data-product-sku="{{ sku | trim }}"
+                                   data-product-title="{{ productName | trim }}"
+                                   data-product-price="{{ price | trim }}"
+                                >
+                                    +
+                                </a>
+                            {% endif %}
+                        </div>
+                        </div>
                     </div>
-            </ff-record>
+                </ff-record>
         {% endblock %}
     </ff-record-list>
  </div>

@@ -4291,11 +4291,6 @@ product.info.avarage.adult,* Referenzmenge für einen durchschnittlichen Erwachs
 product.info.nutritional.information.prefix,"na",cs_CZ
 product.info.nutritional.information.prefix,per,en_US
 product.info.nutritional.information.prefix,pro,de_DE
-product.info.medicines.usecases,"Anwendungsgebiete",de_DE
-product.info.medicines.sideeffects,"mögl. Nebenwirkungen",de_DE
-product.info.medicines.limitation,"Dosierbeschränkung",de_DE
-product.info.medicines.recommendation,"Dosierempfehlung",de_DE
-product.info.medicines.interaction,"Wechselwirkungen",de_DE
 PRODUCT_PAGE_SEARCH:SEARCHABLE_ATTRIBUTE_VALUE_YES,"Ano",cs_CZ
 PRODUCT_PAGE_SEARCH:SEARCHABLE_ATTRIBUTE_VALUE_YES,Yes,de_DE
 PRODUCT_PAGE_SEARCH:SEARCHABLE_ATTRIBUTE_VALUE_YES,Ja,de_DE
@@ -4610,7 +4605,7 @@ product.measurement.sales_unit,Sales Unit,en_US
 product.measurement.sales_unit,Maßeinheit,de_DE
 page.detail.add-to-cart,"Do nákupního košíku",cs_CZ
 page.detail.add-to-cart,Add to Cart,en_US
-page.detail.add-to-cart,Zum Warenkorb,de_DE
+page.detail.add-to-cart,In den Warenkorb,de_DE
 measurement_units.recommendation.between-units-info,"Vámi zvolené množství leží mezi 2 základními množstevními jednotkami",cs_CZ
 measurement_units.recommendation.between-units-info,The quantity you have chosen is in between 2 base units,en_US
 measurement_units.recommendation.between-units-info,Ihre gewählte Anzahl liegt zwischen 2 basis Einheiten,de_DE

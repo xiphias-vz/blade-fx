@@ -177,11 +177,11 @@
                 {% endblock %}
             {% endif %}
         {% endblock %}
-
         {% block contentContainer %}
             <div class="col--sm-9 col--lg-12 {{ config.name }}__content-wrapper"  >
                 {% block content %}
                     {% block contentTopContainer %}
+                        <span class="supplier">{{ productSupplier }}</span>
                         <div class="{{ config.name }}__content-top" onclick="productClicked('{{ data.url }}', '{{ data.idProductAbstract }}', '{{ data.name }}', '{{ data.product.prices.DEFAULT is defined ? data.product.prices.DEFAULT / 100 : null  }}', '{{ data.product.abstract_sku }}' )" >
                             {% block contentTop %}
                                 {% block colors %}
@@ -285,7 +285,9 @@
 
                                                                 {% else %}
                                                                 {% if app.currentCodeBucket == 'CZ' %}
-                                                                        <span class="font-cz"> {{ ((((data.product.price / 100) / data.productSaleVolume)) * data.basicUnit ) | round(2, 'common') | replace('.', ',') }} {{ data.currencySymbol }}/1 {{ data.basePriceUnit }} </span>
+                                                                        {# <span class="font-cz"> {{ ((((data.product.price / 100) / data.productSaleVolume)) * data.basicUnit ) | round(2, 'common') | replace('.', ',') }} {{ data.currencySymbol }}/1 {{ data.basePriceUnit }} </span>#}
+                                                                        <div class="font-cz">{{ data.productSaleVolume }} {{ data.productSaleUnit }} ( {{(data.pricePerKg / 100 ) | round(2, 'common') | replace('.', ',') }} {{ data.currencySymbol }} / {{ data.basePriceUnit }} )</div>
+                                                                        <div class="font-cz">{{ data.depositPrice }} {{ data.currencySymbol }}</div>
                                                                     {% else %}
                                                                         <span class="font-cz"> {{ ((((data.product.price / 100) / data.productSaleVolume)) * data.basicUnit ) | round(2, 'common') | replace('.', ',') }} {{ data.currencySymbol }}/{{ data.basicUnit }} {{ data.basePriceUnit }} </span>
                                                                 {% endif %}
@@ -375,7 +377,12 @@
                       data-product-price="{{ data.product.prices.ORIGINAL is defined ? data.product.prices.ORIGINAL / 100 : null }}"
                       data-csrf-token="{{ csrf_token('add-to-cart-ajax') }}"
                    >
-                       <span class="icon-basketplus"></span>
+                       {% include atom('icon') with {
+                               class: 'new_cart',
+                               data: {
+                                   name: 'new_cart',
+                               },
+                       } only %}
                        <div class="add-details-to-cart-text-holder font-cz">
                            {{- 'page.detail.add-to-cart' | trans -}}
                        </div>

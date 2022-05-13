@@ -10,8 +10,6 @@
     product:[],
 } %}
 
-{% set productAttributes = data.product.attributes %}
-
 {% block class -%}
     {{ parent() }}
 {%- endblock %}
@@ -21,37 +19,6 @@
         <div class="description-holder">
             <div>{{ data.product.description | raw }}</div>
         </div>
-        {% if app.currentCodeBucket == 'DE' %}
-            {% if productAttributes['med_usecases'] is defined %}
-                <div class="{{ config.name }}__attribute_info">
-                    <strong>{{ 'product.info.medicines.usecases' | trans }}:</strong><span class="{{ config.name }}__attribute_info_text"> {{ productAttributes['med_usecases'] }}</span>
-                </div>
-            {% endif %}
-
-            {% if productAttributes['med_sideeffects'] is defined %}
-                <div class="{{ config.name }}__attribute_info">
-                    <strong>{{ 'product.info.medicines.sideeffects' | trans }}:</strong><span class="{{ config.name }}__attribute_info_text"> {{ productAttributes['med_sideeffects'] }}</span>
-                </div>
-            {% endif %}
-
-            {% if productAttributes['med_limitation'] is defined %}
-                <div class="{{ config.name }}__attribute_info">
-                    <strong>{{ 'product.info.medicines.limitation' | trans }}:</strong><span class="{{ config.name }}__attribute_info_text"> {{ productAttributes['med_limitation'] }}</span>
-                </div>
-            {% endif %}
-
-            {% if productAttributes['med_recommendation'] is defined %}
-                <div class="{{ config.name }}__attribute_info">
-                    <strong>{{ 'product.info.medicines.recommendation' | trans }}:</strong><span class="{{ config.name }}__attribute_info_text"> {{ productAttributes['med_recommendation'] }}</span>
-                </div>
-            {% endif %}
-
-            {% if productAttributes['med_interaction'] is defined %}
-                <div class="{{ config.name }}__attribute_info">
-                    <strong>{{ 'product.info.medicines.interaction' | trans }}:</strong><span class="{{ config.name }}__attribute_info_text"> {{ productAttributes['med_interaction'] }}</span>
-                </div>
-            {% endif %}
-        {% endif %}
         {% if data.product.attributes.bulletpoints is defined %}
             {% set bulletPoints =  data.product.attributes.bulletpoints|split(';') %}
             {% for key,bulletPoint in bulletPoints %}

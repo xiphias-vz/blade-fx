@@ -18,6 +18,12 @@
         border-radius: rem(25);
         box-shadow: 0 rem(4) rem(18) $setting-color-transparent;
 
+        .add-details-to-cart-text-holder {
+            font-family: $setting-font-family-additional;
+            font-weight: 900;
+
+        }
+
         @include helper-breakpoint-media-min($md-min) {
             min-width: $button-min-width;
         }
@@ -357,7 +363,7 @@
         }
 
         &--font-CZ {
-            font: fw(medium) rem(16)/1.7 $setting-font-family;
+            font: fw(900) rem(14)/1.7 $setting-font-family;
         }
 
         &--expand-mobile {
@@ -386,6 +392,8 @@
             position: relative;
             padding: rem(5) rem(5) rem(5) rem(5);
             line-height: rem(24);
+            background: $setting-color-fresh-orange;
+            border-radius: rem(64);
 
             &:not(#{$name}--hollow):not(#{$name}--hollow-white) {
                 padding-top: rem(7);

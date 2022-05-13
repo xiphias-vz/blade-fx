@@ -485,6 +485,9 @@ window.addEventListener("DOMNodeInserted", function (event) {
         checkDiscountLabel(event.relatedNode, 'ff-record');
         checkOriginalAndDefaultPrices(event.relatedNode, 'ff-record');
         checkBrandIsSet(event.relatedNode, 'ff-record');
+        checkWeightPriceHasHyphen(event.relatedNode, 'ff-record');
+        addParenthesisToGrundPreis(event.relatedNode, 'ff-record');
+        changeTopPositionForDiscountAddToCart(event.relatedNode, 'ff-record');
     } else if (event.relatedNode.localName == 'ff-suggest-item') {
         checkPictureAvailability(event.relatedNode);
         checkOriginalAndDefaultPrices(event.relatedNode, 'ff-suggest-item');
@@ -500,10 +503,20 @@ window.addEventListener("DOMNodeInserted", function (event) {
 }, false);
 
 function checkDiscountLabel(element) {
-    el = element.getElementsByClassName('labelDiscount')[0];
+    el = element.getElementsByClassName('record-list__labelDiscount')[0];
     val = el.innerText.trim();
     if(val === "") val = "0";
     if(parseInt(val) === 0) el.style.display = "none";
+}
+
+function changeTopPositionForDiscountAddToCart(element){
+    let discountPriceEl = element.getElementsByClassName('record-list__amount--original')[0];
+    let addToCartEl = element.getElementsByClassName('record-list__add-to-cart-btn')[0];
+    if(discountPriceEl && addToCartEl){
+        if(discountPriceEl.innerText !== ""){
+            addToCartEl.classList.add("fromTop");
+        }
+    }
 }
 
 function checkOriginalAndDefaultPrices(element, flag) {
@@ -523,9 +536,11 @@ function checkOriginalAndDefaultPrices(element, flag) {
             if(elOrig.innerText.length > 0) {
                 var p2 = parseFloat(elOrig.innerText).toFixed(2).toString();
                 elOrig.innerText = p2.replace('.', ',') + ' €';
-                elDef.style.color = "#e60000";
+                elOrig.innerText = "UVP: " + elOrig.innerText;
+                elDef.style.color = "#E30613";
             } else {
-                elDef.style.color = "#111";
+                elDef.style.color = "#373936";
+                elOrig.style.display="none";
                 if(flag === 'ff-suggest-item') {
                     elOrig.style.display = "none";
                     elDef.style.marginBottom = "0";
@@ -541,6 +556,29 @@ function checkBrandIsSet(element){
     if(text.startsWith('-')){
         text = text.substring(1);
         el.innerText = text;
+    }
+}
+
+function checkWeightPriceHasHyphen(element){
+    el = element.getElementsByClassName('popNameExtension')[0];
+    text = el.innerText.trim();
+    if(text.startsWith('-')){
+        text = text.substring(1);
+        el.innerText = text;
+    }
+}
+
+function addParenthesisToGrundPreis(element){
+    let el = element.querySelector('.priceInfo');
+    if(el !== undefined && el !== null){
+        let text = el.innerText;
+        if(text !== ""){
+            text = text.trim();
+            if(!text.startsWith('(')){
+                text = "(" + text + ")";
+                el.innerText = text;
+            }
+        }
     }
 }
 
