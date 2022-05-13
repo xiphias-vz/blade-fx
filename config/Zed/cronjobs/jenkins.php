@@ -211,6 +211,14 @@ if ($storeCodeBucket == 'CZ') {
     ];
 
     $jobs[] = [
+        'name' => 'monitor-scheduled-checks',
+        'command' => "vendor/bin/console import:execSqlQuery -s 'call pyzx_monitor_scheduled_checks()'",
+        'schedule' => '*/30 * * * *',
+        'enable' => true,
+        'stores' => ['OST'],
+    ];
+
+    $jobs[] = [
         'name' => 'partial-import-product-prices-stock',
         'command' => 'vendor/bin/install -r gsoa-sceduled-partial-import',
         'schedule' => '0,15,30,45 02-22 * * *',
@@ -353,6 +361,16 @@ if ($storeCodeBucket == 'CZ') {
         'enable' => true,
         'stores' => ['EIN'],
     ];
+
+    $jobs[] = [
+        'name' => 'monitor-scheduled-checks',
+        'command' => "vendor/bin/console import:execSqlQuery -s 'call pyzx_monitor_scheduled_checks()'",
+        'schedule' => '*/30 * * * *',
+        'enable' => true,
+        'stores' => ['EIN'],
+    ];
+
+
 
     $jobs[] = [
         'name' => 'data-import-images',

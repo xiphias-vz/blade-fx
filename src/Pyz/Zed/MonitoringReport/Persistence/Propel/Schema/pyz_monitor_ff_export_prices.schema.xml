@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<database xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          name="zed"
+          xsi:noNamespaceSchemaLocation="http://static.spryker.com/schema-01.xsd"
+          namespace="Orm\Zed\MonitoringReport\Persistence"
+          package="src.Orm.Zed.MonitoringReport.Persistence">
+
+    <table name="pyz_monitor_ff_export_prices" idMethod="native" allowPkInsert="true">
+        <column name="ean" required="true" size="25" type="VARCHAR"/>
+        <column name="storeID" required="true" size="10" type="VARCHAR"/>
+        <column name="price" type="DECIMAL" size="13" scale="2"/>
+        <column name="pseudoPrice" type="DECIMAL" size="13" scale="2"/>
+        <column name="quantity" type="INTEGER"/>
+        <column name="sale" required="true" type="INTEGER"/>
+        <column name="ShelfInfo" size="100" type="VARCHAR"/>
+        <column name="DicountText" size="100" type="VARCHAR"/>
+        <column name="basePrice" size="100" type="VARCHAR"/>
+        <column name="fk_product" required="true" type="INTEGER"/>
+        <column name="dt_created" required="true" type="TIMESTAMP"/>
+
+        <unique name="pyz_monitor_ff_export_prices-id">
+            <unique-column name="ean"/>
+            <unique-column name="storeID"/>
+        </unique>
+        <index name="pyz_monitor_ff_export_prices-ix-product-store">
+            <index-column name="fk_product"/>
+            <index-column name="storeID"/>
+        </index>
+    </table>
+</database>

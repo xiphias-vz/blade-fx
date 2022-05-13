@@ -1,6 +1,10 @@
 delimiter //
 create or replace procedure pyzx_ff_export_prices()
 BEGIN
+    TRUNCATE TABLE pyz_monitor_ff_export_prices;
+
+    INSERT INTO pyz_monitor_ff_export_prices
+        (ean, storeID, price, pseudoPrice, quantity, sale, ShelfInfo, DicountText, basePrice, fk_product, dt_created)
     SELECT sp.sku as ean, sm.filial_number as storeID
          , ROUND(sppsDef.gross_price / 100, 2) as price
          , CASE WHEN sppsDef.gross_price < orig.gross_price THEN ROUND(orig.gross_price / 100, 2) ELSE null end as pseudoPrice
@@ -21,6 +25,8 @@ BEGIN
                ELSE
                    REPLACE(CONCAT(ROUND(sppsDef.gross_price / 100, 2), ' ', sc.symbol, '/1 ',  JSON_VALUE(spa.`attributes`, '$.grundpreismasseinheit[0]')), '.', ',')
             END as basePrice
+         , sp.id_product
+         , now()
     FROM spy_product sp
         INNER JOIN spy_product_abstract spa on sp.fk_product_abstract = spa.id_product_abstract
         INNER JOIN spy_price_product spp on spp.fk_product_abstract = sp.fk_product_abstract
@@ -45,5 +51,9 @@ BEGIN
     WHERE IFNULL(sa.quantity, 0) > 0
         AND sppsDef.gross_price > 0
         AND sp.is_active = 1;
+
+    SELECT ean, storeID, price, pseudoPrice, quantity, sale, ShelfInfo, DicountText, basePrice
+    FROM pyz_monitor_ff_export_prices;
+
 END;
 
