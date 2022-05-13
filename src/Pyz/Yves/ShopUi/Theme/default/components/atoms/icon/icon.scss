@@ -17,6 +17,10 @@
         stroke: currentColor;
     }
 
+    &--error {
+        fill: $setting-color-globus-white;
+    }
+
     &--medium {
         width: rem(10);
         height: rem(10);

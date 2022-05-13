@@ -109,7 +109,6 @@
                     }
 
                 }
-
                 .header-articles {
                     font-size: rem(16);
                     @include helper-breakpoint-media-max($lg-max){
@@ -214,17 +213,15 @@
         }
 
         &--error {
-            #{$name}__content {
-                background: url('../images/background-orange.jpg') no-repeat center top / 100% auto;
-            }
 
             .title--general {
                 color: $setting-color-black;
             }
 
             #{$name}__main {
+                display: flex;
                 background: $setting-color-white;
-                margin: rem(46) auto;
+                margin: 0 auto;
                 min-height: rem(352);
                 text-align: center;
                 padding: rem(20);
@@ -233,7 +230,7 @@
                 justify-content: space-between;
                 max-width: rem(800);
                 color: $setting-color-black;
-                border: 2px solid $setting-color-globus-lightOrange;
+                border: 2px solid $setting-color-fresh-orange;
                 border-top-width: 5px;
 
                 @include helper-breakpoint-media-min($lg-min) {
@@ -241,11 +238,15 @@
                     padding: rem(30);
                 }
 
+                @include helper-breakpoint-media-max($sm-max) {
+                    display: flex;
+                    flex-flow: column-reverse;
+                }
+
                 a {
                     color: $setting-color-white;
                 }
             }
-
             #{$name}__icon {
                 display: inline-flex;
                 justify-content: center;
