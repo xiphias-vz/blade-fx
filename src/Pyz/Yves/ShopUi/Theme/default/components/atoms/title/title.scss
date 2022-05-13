@@ -46,7 +46,9 @@
         }
 
         &--shipment {
-            font: fw(regular) rem(14)/rem(17) $setting-font-family-additional;
+            font-weight: fw(regular);
+            font-size: rem(14);
+            font-family: inherit;
             margin-bottom: rem(13);
         }
 
@@ -56,6 +58,10 @@
             font-size: rem(20);
             font-weight: fw(semibold);
             color: $setting-color-black;
+        }
+
+        &--font-cz {
+            font-family: $setting-font-family-fira-sans;
         }
 
         &--secondary {

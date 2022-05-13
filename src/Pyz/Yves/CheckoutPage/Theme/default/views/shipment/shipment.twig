@@ -8,7 +8,7 @@
             submit: {
                 enable: true,
                 text: 'general.next.button' | trans,
-                class: app.currentCodeBucket == 'DE' ? 'form__action--checkout button button--large button--expand js-time-slots-selector__submit-button' : 'form__action--checkout button button--large button--expand button--font-CZ button--backgroundcolor-CZ js-time-slots-selector__submit-button',
+                class: app.currentCodeBucket == 'DE' ? 'form__action--checkout button button--large button--expand js-time-slots-selector__submit-button' : 'form__action--checkout button button--large button--expand button--font-CZ button--backgroundcolor-CZ js-time-slots-selector-cz__submit-button',
             },
             cancel: {
                 enable: true,
@@ -20,6 +20,7 @@
     } only %}
         {% block fieldset %}
             {% set shipmentGroupCollectionForm = data.form.shipmentGroups | default %}
+            {% set fontClass = app.currentCodeBucket == "CZ" ? 'cz-font' : '' %}
 
             <div class="grid">
                 {% for shipmentGroupForm in shipmentGroupCollectionForm %}
@@ -27,9 +28,13 @@
                         {% do shipmentGroupForm.hash.setRendered %}
                     {% endif %}
 
-                    <article class="checkout-block checkout-block--shipment {{ loop.last ? 'checkout-block--border-bottom-less' }} grid col col--sm-12">
+                    <article class="checkout-block checkout-block--shipment {{ loop.last ? 'checkout-block--border-bottom-less' }} {{ fontClass }} grid col col--sm-12">
                         <div class="col col--sm-12">
-                            <h2 class="title title--primary spacing-bottom spacing-bottom--big">{{ 'checkout.step.shipment.title' | trans }}</h2>
+                            {% if app.currentCodeBucket == 'DE' %}
+                                <h2 class="title title--primary spacing-bottom spacing-bottom--big ">{{ 'checkout.step.shipment.title' | trans }}</h2>
+                            {% else %}
+                                <h2 class="title title--primary title--font-cz spacing-bottom spacing-bottom--big ">{{ 'checkout.step.shipment.title' | trans }}</h2>
+                            {% endif %}
                             <p class="spacing-bottom spacing-bottom--bigger text-color-1">{{ 'checkout.step.shipment.note' | trans }}</p>
 
                             {% include molecule('delivery-type-switcher', 'CheckoutPage') with {
@@ -40,12 +45,21 @@
                                 },
                             } only %}
 
+                            {% if app.currentCodeBucket == 'DE' %}
                             {% include molecule('time-slots-selector', 'CheckoutPage') with {
                                 data: {
                                     shipment: shipmentGroupForm.shipment,
                                     shipmentMethods: shipmentGroupForm.vars.data.availableShipmentMethods.methods,
                                 },
                             } only %}
+                            {% else %}
+                                {% include molecule('time-slots-selector-cz', 'CheckoutPage') with {
+                                    data: {
+                                        shipment: shipmentGroupForm.shipment,
+                                        shipmentMethods: shipmentGroupForm.vars.data.availableShipmentMethods.methods,
+                                    },
+                                } only %}
+                            {% endif %}
                         </div>
                     </article>
                 {% endfor %}
@@ -72,18 +86,26 @@
                 <div class="grid grid--tablet-revers grid--justify">
                     {% if data.cancel.enable %}
                         {% block cancel %}
-                            <div class="col col--sm-12 col--xl-2 spacing-bottom spacing-bottom--big">
-                                <a href="{{ data.cancel.url }}" class="{{ config.name }}__action {{ data.cancel.class }} col " {{ qa(data.cancel.qa) }}>
-                                    {{ data.cancel.text }}
-                                </a>
-                            </div>
+                            {% if app.currentCodeBucket == 'DE' %}
+                                <div class="col col--sm-12 col--xl-2 spacing-bottom spacing-bottom--big {{ config.name }}__checkout-actions-btn">
+                                    <a href="{{ data.cancel.url }}" class="{{ config.name }}__action--cancel {{ data.cancel.class }} col " {{ qa(data.cancel.qa) }}>
+                                        {{ data.cancel.text }}
+                                    </a>
+                                </div>
+                            {% else %}
+                                <div class="col col--sm-12 col--xl-2 spacing-bottom spacing-bottom--big {{ config.name }}__checkout-actions-btn">
+                                    <a href="{{ data.cancel.url }}" class="{{ config.name }}__action--cancel-cz {{ data.cancel.class }} col " {{ qa(data.cancel.qa) }}>
+                                        {{ data.cancel.text }}
+                                    </a>
+                                </div>
+                            {% endif %}
                         {% endblock %}
                     {% endif %}
 
                     {% if data.submit.enable %}
                         {% block submit %}
-                            <div class="col col--sm-12 col--xl-2 spacing-bottom spacing-bottom--big">
-                                <button type="submit" class="{{ config.name }}__action {{ data.submit.class }}" {{ qa(data.submit.qa) }} disabled>
+                            <div class="col col--sm-12 col--xl-2 spacing-bottom spacing-bottom--big {{ config.name }}__checkout-actions-btn">
+                                <button type="submit" class="{{ config.name }}__action--submit {{ data.submit.class }}" {{ qa(data.submit.qa) }} disabled>
                                     {% if data.submit.icon is not empty %}
                                         {% include atom('icon') with {
                                             modifiers: ['small'],

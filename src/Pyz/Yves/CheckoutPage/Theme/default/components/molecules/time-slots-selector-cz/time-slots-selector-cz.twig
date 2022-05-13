@@ -1,8 +1,8 @@
 {% extends model('component') %}
 
 {% define config = {
-    name: 'time-slots-selector',
-    tag: 'time-slots-selector',
+    name: 'time-slots-selector-cz',
+    tag: 'time-slots-selector-cz',
 } %}
 
 {% define data = {
@@ -46,7 +46,7 @@
 
         <div class="js-delivery-type-{{ loop.index ~ '-' ~ shipmentSelectionIndex }}">
             {% embed molecule('slick-carousel') with {
-                modifiers: ['timeslots'],
+                modifiers: ['timeslots-CZ'],
                 data: {
                     slides: timeSlots,
                     containerClass: 'js-list-switches__item-' ~ loop.index,
@@ -84,7 +84,7 @@
                                 <div class="{{ config.name }}__slot">
                                     <input id="timeslot-hour-{{ embed.shimpentMethodIndex }}-{{ parentIndex }}-{{ loop.index }}" class="{{ config.name }}__input {{ embed.jsName }}__input" type="radio" name="timeslot-hour" value="{{ day }}_{{ hour }}">
                                     <label class="{{ config.name }}__slot-label" for="timeslot-hour-{{ embed.shimpentMethodIndex }}-{{ parentIndex }}-{{ loop.index }}">
-                                        {{ hour|slice(0,5) ~ " " ~ "-" ~ " " ~ hour|slice(6,) }}
+                                        {{ hour }}
                                     </label>
                                 </div>
                             {% endfor %}

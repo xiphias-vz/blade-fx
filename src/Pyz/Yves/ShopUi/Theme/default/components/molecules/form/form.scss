@@ -29,6 +29,11 @@ $review-rating-field-width: rem(154);
             }
         }
 
+        &__checkout-actions-btn {
+            width: 20%;
+            margin: 0;
+        }
+
         &__actions {
             text-align: right;
             padding-top: rem(10);
@@ -61,7 +66,39 @@ $review-rating-field-width: rem(154);
                 }
             }
 
+            &--submit {
+                &:hover {
+                    box-shadow: none !important;
+                }
+            }
+
+            &--cancel {
+                margin: 0;
+                color: $setting-color-fresh-orange;
+                background-color: $setting-color-globus-white !important;
+
+                &:hover {
+                    background-color: $setting-color-fresh-orange !important;
+                    color: $setting-color-globus-white !important;
+                    box-shadow: none !important;
+                }
+            }
+
+            &--cancel-cz {
+                margin: 0;
+                color: $setting-color-forest-green;
+                background-color: $setting-color-globus-white;
+                border-color: $setting-color-forest-green;
+
+                &:hover {
+                    background-color: $setting-color-globusCZ-hover;
+                    box-shadow: none !important;
+                }
+            }
+
             &--checkout {
+                border-radius: rem(30);
+                padding: rem(5);
                 margin: 0;
 
                 &:not(:last-child) {

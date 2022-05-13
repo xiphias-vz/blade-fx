@@ -21,6 +21,7 @@
             .spacing-bottom--inner.spacing-bottom--bigger {
                 @include helper-breakpoint-media-max($sm-max) {
                     padding-bottom: 5px;
+                    font-weight: 400;
                 }
             }
 

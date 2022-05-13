@@ -88,8 +88,10 @@
             }
 
             #{$name}__label {
-                font: bold rem(22) $setting-font-family;
-                color: $setting-color-gray-6;
+                font-weight: bold;
+                font-size: rem(22);
+                font-family: inherit;
+                color: $setting-color-tentgray;
                 display: inline-block;
             }
 
@@ -109,12 +111,15 @@
         &--alternative,
         &--alternative & {
             #{$name}__container {
-                padding: rem(17) rem(13);
+                padding: unset;
+                //padding: rem(17) rem(13);
                 margin-bottom: rem(-3);
             }
 
             #{$name}__label {
-                font: fw(semibold) rem(16)/1.4 $setting-font-family;
+                font-weight: fw(semibold);
+                font-size: rem(20);
+                font-family: inherit;
                 color: $setting-color-gray-9;
             }
 
@@ -135,10 +140,11 @@
                 & + #{$name}__box {
                     background-color: $setting-color-transparent;
                     border-color: $setting-color-globus-darkOrange;
+                    border: unset;
                 }
 
                 & ~ #{$name}__label {
-                    color: $setting-color-gray-6;
+                    color: $setting-color-tentgray;
                 }
             }
         }
@@ -206,7 +212,7 @@
                     }
 
                     & ~ #{$name}__label {
-                        color: $setting-color-gray-6;
+                        color: $setting-color-tentgray;
 
                         &::before {
                             border: rem(5) solid $setting-color-globus-darkOrange;
@@ -216,8 +222,10 @@
             }
 
             #{$name}__label {
-                font: fw(semibold) rem(16) $setting-font-family-additional;
-                color: $setting-color-gray-9;
+                font-weight: fw(semibold);
+                font-size: rem(16);
+                font-family: inherit;
+                color: $setting-color-tentgray;
                 letter-spacing: rem(0.1);
                 display: inline-block;
 

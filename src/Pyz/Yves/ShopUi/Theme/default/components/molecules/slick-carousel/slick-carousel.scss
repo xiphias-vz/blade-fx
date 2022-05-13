@@ -173,9 +173,9 @@
 
                 /* stylelint-disable selector-max-combinators, selector-max-compound-selectors */
                 #{$name}__input:checked + #{$name}__slot-label {
-                    border-color: $setting-color-globus-darkOrange;
-                    color: $setting-color-white;
-                    background-color: $setting-color-globus-darkOrange;
+                    border: rem(2) solid $setting-color-fresh-orange;
+                    color: $setting-color-light-tentgray-5;
+                    background-color: $setting-color-globus-white;
                     position: relative;
 
                     &::after {
@@ -194,28 +194,31 @@
                 /* stylelint-enable */
 
                 #{$name}__slot-label {
-                    background: $setting-color-lighter;
-                    border-radius: rem(2);
-                    border: rem(1) solid $setting-color-transparent;
+                    font-family: $setting-font-family-additional;
+                    background: $setting-color-white;
+                    border: rem(1) solid $setting-color-input-border-tentgray;
                     padding: rem(9);
                     margin: rem(8) 0;
                     text-align: center;
-                    color: $setting-color-black-1;
+                    color: $setting-color-light-tentgray-5;
                     line-height: rem(28);
+                    //border-radius: 25px;
+                    //box-shadow: inset #00000061 -7px -7px 17px -10px;
 
                     &:hover {
                         cursor: pointer;
-                        color: $setting-color-globus-darkOrange;
-                        border-color: $setting-color-globus-darkOrange;
+                        border: rem(1) solid $setting-color-fresh-orange;
                         background: $setting-color-white;
                     }
                 }
             }
 
             #{$name}__date {
-                font: fw(semibold) rem(16) / rem(22) $setting-font-family;
-                color: $setting-color-black;
-                margin-bottom: rem(30);
+                font: rem(24) / rem(18) inherit;
+                font-weight: 500;
+                color: $setting-color-light-tentgray-5;
+                margin-bottom: rem(24);
+                text-align: center;
             }
 
             .slick-arrow {
@@ -224,9 +227,102 @@
                 left: auto;
                 width: rem(36);
                 height: rem(36);
-                background: url('../images/right-chevron.svg') no-repeat center / rem(15);
+                background: url('../images/right-chevron-orange.svg') no-repeat center / rem(6);
                 background-color: $setting-color-white;
-                border-radius: rem(4);
+                border-radius: 50%;
+                border: rem(2) solid $setting-color-fresh-orange;
+
+                &:hover {
+                    background-color: $setting-color-white;
+                }
+            }
+
+            .slick-prev {
+                right: rem(69);
+            }
+
+            .slick-slide {
+                margin: 0 rem(15);
+            }
+        }
+
+        &--timeslots-CZ {
+            margin: 0 rem(-15);
+            height: rem(500);
+            #{$name}__container {
+                padding-top: rem(56);
+            }
+
+            #{$name}__column {
+                padding: rem(30) rem(26);
+                background: $setting-color-white;
+
+                #{$name}__input {
+                    display: none;
+                }
+
+                /* stylelint-disable selector-max-combinators, selector-max-compound-selectors */
+                #{$name}__input:checked + #{$name}__slot-label {
+                    border: rem(2) solid $setting-color-forest-green;
+                    color: $setting-color-light-tentgray-5;
+                    background-color: $setting-color-globus-white;
+                    position: relative;
+
+                    &::after {
+                        content: '';
+                        position: absolute;
+                        right: rem(20);
+                        top: rem(15);
+                        display: block;
+                        width: rem(8);
+                        height: rem(12);
+                        transform: rotate(45deg);
+                        border-right: rem(2) solid $setting-color-white;
+                        border-bottom: rem(2) solid $setting-color-white;
+                    }
+                }
+                /* stylelint-enable */
+
+                #{$name}__slot-label {
+                    font-family: inherit;
+                    background: $setting-color-white;
+                    border: rem(1) solid $setting-color-input-border-tentgray;
+                    padding: rem(9);
+                    margin: rem(8) 0;
+                    text-align: center;
+                    color: $setting-color-light-tentgray-5;
+                    line-height: rem(28);
+                    //border-radius: 25px;
+                    //box-shadow: inset #00000061 -7px -7px 17px -10px;
+
+                    &:hover {
+                        cursor: pointer;
+                        border: rem(1) solid $setting-color-forest-green;
+                        background: $setting-color-white;
+                    }
+                }
+            }
+
+            #{$name}__date {
+                font-size: rem(24);
+                line-height: rem(18);
+                font-family: inherit;
+                font-weight: 500;
+                color: $setting-color-light-tentgray-5;
+                margin-bottom: rem(24);
+                text-align: center;
+            }
+
+            .slick-arrow {
+                top: 0;
+                right: rem(15);
+                left: auto;
+                width: rem(36);
+                height: rem(36);
+                background: url('../images/right-chevron-green.svg') no-repeat center / rem(6);
+                background-color: $setting-color-white;
+                border-radius: 50%;
+                border: rem(2) solid $setting-color-forest-green;
 
                 &:hover {
                     background-color: $setting-color-white;

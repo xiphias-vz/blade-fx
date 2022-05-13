@@ -1,4 +1,4 @@
-@mixin checkout-page-time-slots-selector($name: '.time-slots-selector') {
+@mixin checkout-page-time-slots-selector-cz($name: '.time-slots-selector-cz') {
     #{$name} {
         position: relative;
 
@@ -7,7 +7,7 @@
                 position: absolute;
                 left: 0;
                 top: rem(6);
-                font-family: $setting-font-family-additional;
+                font-family: $setting-font-family-fira-sans;
             }
         }
 
@@ -15,4 +15,4 @@
     }
 }
 
-@include checkout-page-time-slots-selector();
+@include checkout-page-time-slots-selector-cz()
