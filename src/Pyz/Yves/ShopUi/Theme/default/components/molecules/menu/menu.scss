@@ -90,35 +90,47 @@
             padding: 0;
             border-top: none;
 
+            .icon-overview-user-menu:before,
+            .icon-order-user-menu:before,
+            .icon-password-user-menu:before,
+            .icon-order-user-menu:before,
+            .icon-wishlist-user-menu:before
+            {
+                min-width: rem(22);
+            }
+
             #{$name}__item {
+                display: flex;
+                align-items: center;
                 margin: 0 0 rem(5);
-                background: $setting-color-gray-1;
-                border: rem(1) solid $setting-color-gray-1;
+                background: $setting-color-white;
+                padding: rem(5) rem(10);
 
                 &:hover {
-                    background: $setting-color-white;
                     color: $setting-color-gray-6;
 
                     & > #{$name}__link {
                         color: $setting-color-gray-6;
+                        font-weight: fw(bold);
                     }
                 }
 
                 &--active {
-                    background: $setting-color-white;
-                    border-left: rem(4) solid $setting-color-globus-lightOrange;
+                    background: $setting-color-forest-green-light;
 
                     & > #{$name}__link {
-                        color: $setting-color-gray-6;
+                        color: $setting-color-forest-green;
+                        font-weight: bold;
                     }
                 }
             }
 
             #{$name}__link {
                 display: block;
-                font-weight: fw(bold);
+                color: $setting-color-tentgray;
+                font-weight: fw(regular);
                 text-decoration: none;
-                padding: rem(9) rem(20);
+                padding: rem(9) rem(10);
             }
         }
 
