@@ -167,6 +167,17 @@
         color: $setting-color-white;
     }
 
+    &--magnifier {
+        width: rem(12);
+        height: rem(13);
+        cursor: pointer;
+    }
+
+    &--clear-x {
+        height: rem(12);
+        cursor: pointer;
+    }
+
     &--color-orange {
         color: $setting-color-globus-lightOrange;
     }

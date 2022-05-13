@@ -1,9 +1,17 @@
 @mixin searchbox($name: '.searchbox') {
     #{$name} {
         &__input {
-            border: none;
-            border-radius: 0;
-            padding-left: rem(60);
+            border-radius: rem(0) rem(30) rem(30) rem(0);
+            border-color: transparent;
+            background-color: $setting-color-light-tentgray-3;
+            color: $setting-color-tentgray;
+            font-family:  $setting-font-family-additional;
+            font-size: rem(12);
+            width: 100%;
+
+            @include helper-breakpoint-media-max($sm-max) {
+                width: 100%;
+            }
         }
 
         &__clear {
@@ -11,10 +19,13 @@
             top: 0;
             right: 0;
             bottom: 0;
+            border-top-right-radius: rem(24);
+            background: none;
+            padding-right: rem(16);
             z-index: $setting-zi-navigation-top;
 
             @include helper-breakpoint-media-max($sm-max) {
-                right:rem(40);
+                right: rem(40);
             }
         }
 
@@ -23,11 +34,13 @@
             left: 0;
             top: 0;
             bottom: 0;
+            background: none;
+            padding-left: rem(16);
             z-index: $setting-zi-navigation-top;
 
             @include helper-breakpoint-media-max($sm-max) {
                 left:unset;
-                right:0;
+                right:rem(25);
             }
         }
     }

@@ -18,29 +18,8 @@
 
 {% block body %}
 
-    {% if isCompletionVisible %}
-        {% include molecule('suggestion-links-list', 'CatalogPage') with {
-            data: {
-                name: '',
-                items: data.completion,
-                length: data.suggestionsLength,
-                isTitleHiddenOnTablet: true,
-                isSuggestion: true,
-            },
-        } only %}
-    {% endif %}
-    {% if isProductsVisible %}
-        <h4 class="title title--with-border title--bottom-indent grid grid--justify grid--middle">
-            <span class="col">
-                {{- 'global.search.suggestion.in_products' | trans -}}
-            </span>
-            <div class="col is-hidden-lg-xl">
-                <button class="button button--link-secondary">
-                    {{- 'global.search.suggestion.see_all_products' | trans -}}
-                </button>
-            </div>
-        </h4>
-        <ul class="spacing-top spacing-top--big">
+    {% if isProductsVisible and isCompletionVisible %}
+        <ul class="spacing-top spacing-top--big spacing-bottom spacing-bottom--bigger">
             {% for product in data.product_abstract | slice(0, data.productsLength) if product is not empty %}
                 <li class="list__item spacing-y spacing-y--small">
                     {% include molecule('suggestion-product', 'CatalogPage') with {
@@ -57,11 +36,6 @@
                 </li>
             {% endfor %}
         </ul>
-        <div class="is-hidden-sm-md">
-            <button class="button button--link-secondary">
-                {{- 'global.search.suggestion.see_all_products' | trans -}}
-            </button>
-        </div>
     {% endif %}
 
     {% if isCategoriesVisible %}

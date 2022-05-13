@@ -16,28 +16,16 @@
 {% block body %}
     {% block searchButton %}
         <ff-searchbutton>
-            <button class="{{ config.name }}__submit button button--skinless">
-                {% if app.currentCodeBucket == 'DE' %}
-                    {% include atom('icon') with {
-                        class: 'icon--color-orange',
-                        modifiers: ['big'],
-                        data: {
-                            name: 'search',
-                        },
-                    } only %}
-                {% else %}
-                    {% include atom('icon') with {
-                        class: 'icon--color-green',
-                        modifiers: ['big'],
-                        data: {
-                            name: 'search',
-                        },
-                    } only %}
-                {% endif %}
+            <button class="{{ config.name }}__submit">
+                {% include atom('icon') with {
+                    class: 'icon--magnifier',
+                    data: {
+                        name: 'magnifier',
+                    },
+                } only %}
             </button>
         </ff-searchbutton>
     {% endblock %}
-
 
     {% block searchField %}
         <ff-searchbox {{ data.properties.component|raw }}>
@@ -50,25 +38,69 @@
         </ff-searchbox>
     {% endblock %}
 
-
-
     {% block cancelSearchButton %}
-        <button class="{{ config.name }}__clear button button--clear is-hidden" type="button" >
-            {% if app.currentCodeBucket == 'DE' %}
-                {% include atom('icon') with {
-                    class: 'icon--color-orange',
-                    data: {
-                        name: 'close-circle',
-                    },
-                } only %}
-            {% else %}
-                {% include atom('icon') with {
-                    class: 'icon--color-green',
-                    data: {
-                        name: 'close-circle',
-                    },
-                } only %}
-            {% endif %}
+        <button class="{{ config.name }}__clear is-hidden" type="button" >
+            {% include atom('icon') with {
+                class: 'icon--clear-x',
+                data: {
+                    name: 'clear-x',
+                },
+            } only %}
         </button>
     {% endblock %}
+    <script>
+        const suggestSearchInput = document.querySelector('.suggest-search__input');
+        const iconClearX = document.querySelector('.icon--clear-x');
+        const magnifierButton = document.querySelector('.icon--magnifier');
+
+        suggestSearchInput.addEventListener('input', () => {
+            if (suggestSearchInput.value.length > 0) {
+                suggestSearchInput.style.borderTopRightRadius = '24px';
+                suggestSearchInput.style.borderBottomRightRadius = '0';
+                suggestSearchInput.style.borderLeft = '2px solid #ffa500';
+                suggestSearchInput.style.borderTop = '2px solid #ffa500';
+                suggestSearchInput.style.borderRight = '2px solid #ffa500';
+                suggestSearchInput.style.borderBottom = '0';
+                document.querySelector('.ffw-suggestContainerWrapper').classList.remove('is-hidden');
+            } else if (suggestSearchInput.value.length === 0) {
+                suggestSearchInput.style.borderRadius = '0 30px 30px 0';
+                suggestSearchInput.style.border = null;
+            }
+        })
+
+        suggestSearchInput.addEventListener('click', () => {
+            if (suggestSearchInput.value !== '') {
+                suggestSearchInput.style.borderTopRightRadius = '24px';
+                suggestSearchInput.style.borderBottomRightRadius = '0';
+                suggestSearchInput.style.borderLeft = '2px solid #ffa500';
+                suggestSearchInput.style.borderTop = '2px solid #ffa500';
+                suggestSearchInput.style.borderRight = '2px solid #ffa500';
+                document.querySelector('.ffw-suggestContainerWrapper').classList.remove('is-hidden');
+                document.querySelector('.ffw-suggestContainerWrapper').style.borderBottom = '2px solid';
+                document.querySelector('.ffw-suggestContainerWrapper').style.borderBottomColor = '#ffa500';
+            }
+        });
+
+        suggestSearchInput.addEventListener('keypress', () => {
+            suggestSearchInput.style.borderRadius = '0 30px 30px 0';
+            suggestSearchInput.style.border = null;
+        });
+
+        document.addEventListener('click', event => {
+            if (!suggestSearchInput.contains(event.target) && !document.querySelector('.ffw-suggestContainerWrapper').contains(event.target)) {
+                suggestSearchInput.style.borderRadius = '0 30px 30px 0';
+                suggestSearchInput.style.border = null;
+            }
+        })
+
+        magnifierButton.addEventListener('click', () => {
+            suggestSearchInput.style.borderRadius = '0 30px 30px 0';
+            suggestSearchInput.style.border = null;
+        });
+
+        iconClearX.addEventListener('click', () => {
+            suggestSearchInput.style.borderRadius = '0 30px 30px 0';
+            suggestSearchInput.style.border = null;
+        });
+    </script>
 {% endblock %}

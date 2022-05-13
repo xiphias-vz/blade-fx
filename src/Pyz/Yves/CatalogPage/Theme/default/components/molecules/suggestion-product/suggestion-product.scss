@@ -16,11 +16,7 @@
     }
 
     &__button-search-cart{
-        background-color: white;
-        padding-left:15px;
-        padding-right:0px;
-        padding-top:7px;
-        padding-bottom:7px;
+        padding: 7px 0px 7px 15px;
         margin-top:20px;
         margin-left:20px;
         float: right;
@@ -29,10 +25,7 @@
             cursor: pointer;
             text-decoration: none;
             border-radius: 25px;
-            padding-left:18px;
-            padding-right:3px;
-            padding-top:10px;
-            padding-bottom:10px;
+            padding: 10px 3px 10px 18px;
             background: $setting-color-gray-2;
         }
     }
@@ -40,7 +33,7 @@
     .suggested-product-link{
     float:left;
     width:85%;
-    padding-bottom:7px;
+    padding-bottom:10px;
     padding-top:10px;
 
         @include helper-breakpoint-media-max($sm-max)  {
@@ -49,8 +42,8 @@
     }
 
     .suggestion-product-slot{
-        display: flex;
-        border-bottom: 1px solid #dedddd;
+        display: block;
+        border-bottom: 1px solid $setting-color-light-tentgray-2;
     }
 
     .search-suggestion-supplier{

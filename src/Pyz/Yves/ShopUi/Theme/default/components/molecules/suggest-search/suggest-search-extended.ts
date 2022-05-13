@@ -7,12 +7,14 @@ export default class SuggestSearchExtended extends SuggestSearch {
     triggers: HTMLElement[];
     target: HTMLElement;
     searchCartButton: HTMLInputElement;
+    private suggestSearchInput: HTMLElement;
 
     protected init() {
         this.wrap = <HTMLElement> document.getElementsByClassName(this.wrapClassName)[0];
         this.clearButton = <HTMLElement> document.getElementsByClassName(this.clearButtonClassName)[0];
         this.triggers = <HTMLElement[]> Array.from(document.getElementsByClassName(`${this.jsName}--trigger`));
         this.target = <HTMLElement> document.getElementsByClassName(`${this.jsName}--target`)[0];
+        this.suggestSearchInput = <HTMLElement> document.querySelector('.suggest-search__input');
         super.init();
         this.toggleClearButton(!this.searchInput.value);
         this.searchCartButton = <HTMLInputElement> document.getElementById('is-cart-button-clicked');
@@ -25,11 +27,23 @@ export default class SuggestSearchExtended extends SuggestSearch {
             trigger.addEventListener('click', (event: Event) => this.onTriggerClick(event));
         });
         this.searchInput.addEventListener('blur', debounce((event) => this.onInputFocusOutWithEvent(event), this.debounceDelay));
+        this.searchInput.addEventListener('click', () => this.onInputClick());
     }
 
     protected async onInputKeyUp(): Promise<void> {
         super.onInputKeyUp();
         this.toggleClearButton(Boolean(!this.currentSearchValue));
+    }
+
+    protected onInputClick(): void {
+        this.activeItemIndex = 0;
+
+        if (this.isNavigationExist()) {
+            this.updateNavigation();
+            if (this.searchInput.value !== '' && this.currentSearchValue !== '') {
+                this.showSugestions();
+            }
+        }
     }
 
     protected async getSuggestions(): Promise<void> {
@@ -56,13 +70,23 @@ export default class SuggestSearchExtended extends SuggestSearch {
     }
 
     showSugestions(): void {
-        super.showSugestions();
+        this.suggestionsContainer.classList.remove('is-hidden');
+        this.suggestSearchInput.style.borderTopRightRadius = '24px';
+        this.suggestSearchInput.style.borderBottomRightRadius = '0';
+        this.suggestSearchInput.style.borderLeft = '2px solid';
+        this.suggestSearchInput.style.borderTop = '2px solid';
+        this.suggestSearchInput.style.borderRight = '2px solid';
+        this.suggestSearchInput.style.borderColor = '#009933';
+        this.suggestSearchInput.style.borderBottom = '0';
+
         this.wrap.classList.add(this.wrapActiveClassName);
         this.hintInput.classList.add(`${this.name}__hint--active`);
     }
 
     hideSugestions(): void {
-        super.hideSugestions();
+        this.suggestionsContainer.classList.add('is-hidden');
+        this.suggestSearchInput.style.borderRadius = '0 30px 30px 0';
+        this.suggestSearchInput.style.border = null;
         this.wrap.classList.remove(this.wrapActiveClassName);
         this.hintInput.classList.remove(`${this.name}__hint--active`);
     }
@@ -82,6 +106,7 @@ export default class SuggestSearchExtended extends SuggestSearch {
 
     protected clearSearchField(): void {
         this.searchInput.value = '';
+        this.currentSearchValue = '';
         this.hideSugestions();
         this.toggleClearButton(true);
         this.setHintValue('');

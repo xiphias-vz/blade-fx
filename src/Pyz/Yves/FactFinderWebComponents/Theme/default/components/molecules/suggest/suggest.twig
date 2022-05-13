@@ -20,9 +20,9 @@
 {% block body %}
     <ff-suggest layout="block" class="input--expand transitionDisplay" ~ {{ data.properties.component|raw }}>
         {% block searchContainer %}
-            <section id="searchContainer" class="searchTermContainer {{ config.name }}__search-container">
+            <section id="searchContainer" class="searchTermContainer">
                 {% for item in data.properties.searchItems %}
-                    <div data-container="{{ item.type }}">
+                    <div class="{{ config.name }}__search-container" data-container="{{ item.type }}">
                         <p class="containerCaption" hidden>{{ item.title }}</p>
                         <ff-suggest-item type="{{ item.type }}" class="{{ config.name }}__suggested-product-slot">
 
@@ -129,8 +129,7 @@
 
                             <button type="button" class="{{ config.name }}__button-suggest-cart"  onclick="addToCartItemClick('{{ IdProductAbstract | trim }}','{{ addAjaxUrl | trim }}', '{{ productSku | trim }}');event.stopPropagation();">
                                 {% include atom('icon') with {
-                                    class: 'link__icon icon--color-orange',
-                                    modifiers: ['big'],
+                                    class: 'icon--color-orange',
                                     data: {
                                         name: 'cart',
                                     },
@@ -181,7 +180,15 @@
             } else {
                 localStorage.setItem('productItemsForSyncCounter', JSON.stringify(productSkuFromSuggestWithQuantity));
             }
-         }
+
+            const suggestSearchInput = document.querySelector('.suggest-search__input');
+            suggestSearchInput.style.borderTopRightRadius = '24px';
+            suggestSearchInput.style.borderBottomRightRadius = '0';
+            suggestSearchInput.style.borderLeft = '2px solid #ffa500';
+            suggestSearchInput.style.borderTop = '2px solid #ffa500';
+            suggestSearchInput.style.borderRight = '2px solid #ffa500';
+            suggestSearchInput.style.borderBottom = '0';
+        }
 
         document.getElementsByClassName("suggest-search__input")[0].addEventListener("click", () => {
             if(document.getElementsByClassName("suggest-search__input")[0].value.length > 0){
@@ -192,6 +199,8 @@
         document.getElementsByClassName("suggest-search__input")[0].addEventListener("input", () => {
             if(document.getElementsByClassName("suggest-search__input")[0].value.length > 0){
                 document.getElementsByTagName("ff-suggest")[0].classList.add("transitionDisplay");
+                document.querySelector('.ffw-suggestContainerWrapper').style.borderBottom = '2px solid';
+                document.querySelector('.ffw-suggestContainerWrapper').style.borderBottomColor = '#ffa500';
             }else if(document.getElementsByClassName("suggest-search__input")[0].value.length === 0){
                 document.getElementsByTagName("ff-suggest")[0].classList.remove("transitionDisplay");
             }

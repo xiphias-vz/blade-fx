@@ -9,11 +9,19 @@
         .ffw-suggestContainerWrapper {
             min-width: auto;
             width: inherit;
+            border-top: 0;
+            border-right: 2px solid;
+            border-left: 2px solid;
+            border-color: $setting-color-fresh-orange;
+            border-bottom-right-radius: 24px;
+            background-color: $setting-color-light-tentgray-3;
         }
 
         .ffw-suggestContainer {
             padding-left: rem(10);
             display: flex;
+            border-radius: 0 0 24px 0;
+            background-color: $setting-color-light-tentgray-3;
         }
 
         .containerCaption {
@@ -25,8 +33,10 @@
         ff-suggest-item[type=productName]{
             display: inline-flex;
             width: 100%;
-            padding: rem(3) rem(10);
-            min-height: rem(65);
+            padding-bottom: rem(10);
+            min-height: rem(75);
+            border-bottom: 1px solid $setting-color-light-tentgray-2;
+            margin-bottom: 10px;
         }
 
         button[type=productName]{
@@ -35,6 +45,7 @@
 
         &__search-container {
             width: 100%;
+            padding: 0 30px 15px 24px;
         }
 
         &__suggestion-product-slot{
@@ -43,15 +54,14 @@
 
         &__button-suggest-cart {
             padding-left: rem(15);
-            margin-left: rem(15);
             background-color: transparent;
             display: flex;
             align-items: center;
             z-index: 10000;
 
             &:hover {
-                background: $setting-color-gray-2;
-                border-radius: rem(5);
+                padding-top: rem(3);
+                padding-left: rem(12);
                 cursor: pointer;
             }
         }
@@ -63,7 +73,7 @@
             margin: 0 rem(-10);
             border-radius: rem(5);
             color: $setting-color-gray-6;
-            width: 100%;
+            width: 98%;
             display: flex;
             justify-content: flex-start;
             border-bottom: 1px solid $setting-color-gray-2;
@@ -80,7 +90,7 @@
             }
 
             .suggestImage{
-                margin-right: rem(20);
+                margin-right: rem(8);
                 display: flex;
                 align-items: center;
             }
@@ -88,7 +98,12 @@
                 display: flex;
                 flex-direction: column;
                 text-decoration: underline;
-                text-decoration-color: #ffffff;
+                text-decoration-color: $setting-color-light-tentgray-3;
+                font-family: "Roboto Thin", sans-serif;
+                font-size: rem(12);
+                font-weight: 700;
+                color: $setting-color-tentgray;
+                padding-top: rem(14);
 
                 .suggestBrand{
                     display: flex;
