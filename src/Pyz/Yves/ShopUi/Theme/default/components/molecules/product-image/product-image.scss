@@ -3,6 +3,12 @@
         position: relative;
         padding: rem(12) rem(15);
 
+        @include helper-breakpoint-media-max($sm-max) {
+            position: relative;
+            bottom: rem(20);
+        }
+
+
         &--summary {
             padding: 0;
         }

@@ -7,6 +7,7 @@
 
             .grid {
                 margin: 0;
+                padding-right: rem(15);
             }
         }
 
@@ -19,20 +20,21 @@
         }
 
         .input {
-            border-radius: rem(2) 0 0 rem(2);
+            border-radius: rem(20);
             height: rem(48);
         }
 
         .title {
-            font-size: 1.12rem;
-            font-weight: 500;
+            font-size: rem(20);
+            font-weight: 600;
             padding: 0;
-            color: #7c7c7c;
             margin: rem(5) 0 rem(5) 0;
+            color: $setting-color-tentgray;
         }
 
         .form__action {
             margin: 0 0 rem(2) rem(-3);
+            font-weight: fw(semibold);
         }
 
         .form__actions {

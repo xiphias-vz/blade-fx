@@ -1,15 +1,15 @@
 @mixin cart-page-cart-box($name: '.cart-box') {
     #{$name} {
-        padding-bottom: rem(18);
+        padding-bottom: rem(8);
 
         @include helper-breakpoint-media-between($md-min, $md-max){
             padding: rem(16) 0;
         }
 
         &__quantity {
-            font-weight: fw(medium);
-            font-size: rem(14);
-            color: $setting-color-gray-9;
+            font-weight: fw(semibold);
+            font-size: rem(16);
+            color: $setting-color-stonegray-2;
 
             &:hover {
                 text-decoration: none;
@@ -32,7 +32,9 @@
 
         &--linkDecoration {
             text-decoration: none;
-            color: $setting-color-globus-lightOrange;
+            color: $setting-color-fresh-orange;
+            font-size: rem(16);
+            font-weight: fw(semibold);
 
             &:hover {
                 color: $setting-color-globus-darkGreen;

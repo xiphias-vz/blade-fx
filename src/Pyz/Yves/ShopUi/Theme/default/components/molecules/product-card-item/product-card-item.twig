@@ -27,217 +27,217 @@
 {% set productSaleVolume = data.productItem.concreteAttributes['grundpreisinhalt'] | default(null) %}
 
 {% block body %}
-    <div class="{{ component.renderClass(config.name ~ '__box', modifiers) }} {{ productItemBox }}">
-        <div class="grid {{ data.additionalContainerClass }}">
-            {% block image %}
-                <a href="{{ data.productItem.url }}"
-                   class="{{ component.renderClass(config.name ~ '__image', modifiers) }} col">
-                    {% if data.productItem.images[0].externalUrlLarge is defined %}
-                        {% set imageProduct = data.productItem.images[0].externalUrlLarge %}
-                    {% else %}
-                        {% set imageProduct = defaultImage %}
-                    {% endif %}
-                    {% include molecule('product-image') with {
-                        data: {
-                            name: data.productItem.name | default,
-                            image: imageProduct,
-                            productItem: data.productItem
-                        },
-                    } only %}
+    {% set fontClass = app.currentCodeBucket == "CZ" ? 'cz-font' : '' %}
+    <div class="{{ component.renderClass(config.name ~ '__box', modifiers) }} {{ productItemBox }} {{ fontClass }}">
+        {% block image %}
+            <a href="{{ data.productItem.url }}"
+               class="{{ component.renderClass(config.name ~ '__image', modifiers) }} col col--lg-2 col--md-2 col--sm-1">
+                {% if data.productItem.images[0].externalUrlLarge is defined %}
+                    {% set imageProduct = data.productItem.images[0].externalUrlLarge %}
+                {% else %}
+                    {% set imageProduct = defaultImage %}
+                {% endif %}
+                {% include molecule('product-image') with {
+                    data: {
+                        name: data.productItem.name | default,
+                        image: imageProduct,
+                        productItem: data.productItem
+                    },
+                } only %}
 
-                    {% block groups %}{% endblock %}
-                </a>
-            {% endblock %}
-            <div class="{{ component.renderClass(config.name ~ '__content', modifiers) }} col">
-                {% block contentInner %}
-                    {% block headingGrid %}
-                        <div class="{{ component.renderClass(config.name ~ '__general-information', modifiers) }}">
-                            {% block heading %}
-                                <div class="{{ component.renderClass(config.name ~ '__heading', modifiers) }}">
-                                    {% block title %}
-                                        <a href="{{ data.productItem.url }}"
-                                           class="{{ component.renderClass(config.name ~ '__title', modifiers) }}">
-                                            {% if app.currentCodeBucket == 'DE' %}
-                                                {{ productName }}
-                                            {% else %}
-                                                {{ productName }}
-                                                    {% if data.productItem.concreteAttributes.einzelgewicht is defined %}
-                                                        -
-                                                        cca
-                                                        {{ data.productItem.concreteAttributes.einzelgewicht|replace('.', ',') }}
-                                                        {% if data.productItem.concreteAttributes["grundpreismasseinheit"] is defined %}
-                                                            {{ (productSaleVolume|round(3, 'floor') > 0 ? data.productItem.concreteAttributes["grundpreismasseinheit"] : '' ) }}
-                                                        {% endif %}
-                                                    {% endif %}
-                                            {% endif %}
-                                        </a>
-                                    {% endblock %}
+                {% block groups %}{% endblock %}
+            </a>
+        {% endblock %}
 
-                                    {% block productQuantityInformation %}
-                                        <div class="{{ config.name }}__quantity-measurement-line grid">
-                                            {% if data.productItem.amountSalesUnit is defined and data.productItem.amountSalesUnit is not empty %}                                                {% include molecule('packaging-unit-cart') ignore missing with {
-                                                    data: {
-                                                        amount: data.productItem.amount,
-                                                        quantity: data.productItem.quantity,
-                                                        quantitySalesUnit: data.productItem.quantitySalesUnit,
-                                                        quantityConversion: data.productItem.quantitySalesUnit.conversion,
-                                                        quantityProductMeasurementUnit: data.productItem.quantitySalesUnit.productMeasurementUnit,
-                                                        amountSalesUnit: data.productItem.amountSalesUnit,
-                                                        amountConversion: data.productItem.amountSalesUnit.conversion,
-                                                        amountProductMeasurementUnit: data.productItem.amountSalesUnit.productMeasurementUnit,
-                                                        amountValue: data.productItem.amountSalesUnit.value
-                                                    }
-                                                } only %}
-                                            {% elseif data.productItem.quantitySalesUnit is defined and data.productItem.quantitySalesUnit is not empty %}
-                                                <span class="spacing-right">{{ 'cart.item_quantity' | trans }}: {{ data.productItem.quantity }}</span>
-                                                {% widget 'CartProductMeasurementUnitQuantitySelectorWidget' args [data.productItem] only %}{% endwidget %}
-                                            {% else %}
-                                                <span class="spacing-right">{{ 'cart.item_quantity' | trans }}: {{ data.productItem.quantity }}</span>
-                                            {% endif %}
-
-                                        </div>
-                                    {% endblock %}
-
-                                    {% block summaryContent %}
-                                        {% block summary %}
-                                            {% if currentCodeBucket == 'DE' %}
-                                                {% if data.productItem.productOptions is defined and data.productItem.productOptions is not empty %}
-                                                    {% include molecule('product-item-summary') with {
-                                                        modifiers: ['cart'] | merge(data.productOptionsModifiers),
-                                                        data: {
-                                                            productItem: data.productItem,
-                                                        },
-                                                    } only %}
-                                                {% endif %}
-                                            {% else %}
-                                                {% include molecule('product-item-summary') with {
-                                                    modifiers: ['cart'] | merge(data.productOptionsModifiers),
-                                                    data: {
-                                                        productItem: data.productItem,
-                                                    },
-                                                } only %}
-                                            {% endif %}
-                                        {% endblock %}
-                                    {% endblock %}
-                                </div>
-                            {% endblock %}
-
-                            {% block quantityCondition %}
-                                {% if not data.isPromotionItem %}
-                                    {% block quantity %}
-                                        {% set removeUrl = path('cart/remove', {'sku': data.productItem.sku, 'groupKey': data.productItem.groupKey }) %}
-                                        <div class="{{ component.renderClass(config.name ~ '__quantity', modifiers) }}">
-                                            {% if canEditCart %}
-                                                <form method="POST"
-                                                      action="{{ path('cart/change/quantity', {'sku': data.productItem.sku }) }}">
-                                                    <input type="hidden" name="token"
-                                                           value="{{ csrf_token('change-cart') }}">
-                                                    {% include molecule('product-quantity-input') with {
-                                                        data: {
-                                                            maxQuantity: data.productItem.maxQuantity,
-                                                            value: data.productItem.quantity,
-                                                            removeUrl: removeUrl,
-                                                        },
-                                                    } only %}
-                                                    <input type="hidden" value="{{ data.productItem.groupKey }}"
-                                                           name="groupKey">
-                                                </form>
-                                            {% else %}
-                                                <span
-                                                    class="{{ component.renderClass(config.name ~ '__text-quantity', modifiers) }}">{{ 'cart.item_quantity' | trans }}: {{ data.productItem.quantity }}</span>
-                                            {% endif %}
-                                        </div>
-                                    {% endblock %}
+        {% block contentInner %}
+            {% block headingGrid %}
+            {% block heading %}
+                <div
+                    {% if app.currentCodeBucket == 'DE' %}class="{{ component.renderClass(config.name ~ '__heading', modifiers) }} col--lg-2 col--md-3 col--sm-7"
+                    {% else %}class="{{ component.renderClass(config.name ~ '__heading CZ', modifiers) }} col--lg-2 col--md-3 col--sm-7"{% endif %}>
+                    {% block title %}
+                        {% if data.productItem.brand is not empty %}
+                            <div
+                                class="{{ config.name }}__brand-title">{{ data.productItem.brand }}</div>
+                        {% endif %}
+                        <a href="{{ data.productItem.url }}"
+                           class="{{ component.renderClass(config.name ~ '__title', modifiers) }}">
+                            {% if app.currentCodeBucket == 'DE' %}
+                                {{ productName }}
+                            {% else %}
+                                {{ productName }}
+                                {% if data.productItem.concreteAttributes.einzelgewicht is defined %}
+                                    -
+                                    cca
+                                    {{ data.productItem.concreteAttributes.einzelgewicht|replace('.', ',') }}
+                                    {% if data.productItem.concreteAttributes["grundpreismasseinheit"] is defined %}
+                                        {{ (productSaleVolume|round(3, 'floor') > 0 ? data.productItem.concreteAttributes["grundpreismasseinheit"] : '' ) }}
+                                    {% endif %}
                                 {% endif %}
-                            {% endblock %}
+                            {% endif %}
+                        </a>
+                    {% endblock %}
 
-                            {% block unitPrice %}
-                                <div class="{{ config.name }}__price-col">
-                                    {% set price = data.productItem.unitPrice is defined ? data.productItem.unitPrice : data.productItem.unitGrossPrice %}
-                                    {% set originalPrice = data.productItem.originalPrice is defined ? data.productItem.originalPrice %}
+                    {% block productQuantityInformation %}
+                        <div class="{{ config.name }}__quantity-measurement-line grid">
+                            {% if data.productItem.amountSalesUnit is defined and data.productItem.amountSalesUnit is not empty %}                                                {% include molecule('packaging-unit-cart') ignore missing with {
+                                data: {
+                                    amount: data.productItem.amount,
+                                    quantity: data.productItem.quantity,
+                                    quantitySalesUnit: data.productItem.quantitySalesUnit,
+                                    quantityConversion: data.productItem.quantitySalesUnit.conversion,
+                                    quantityProductMeasurementUnit: data.productItem.quantitySalesUnit.productMeasurementUnit,
+                                    amountSalesUnit: data.productItem.amountSalesUnit,
+                                    amountConversion: data.productItem.amountSalesUnit.conversion,
+                                    amountProductMeasurementUnit: data.productItem.amountSalesUnit.productMeasurementUnit,
+                                    amountValue: data.productItem.amountSalesUnit.value
+                                }
+                            } only %}
+                            {% elseif data.productItem.quantitySalesUnit is defined and data.productItem.quantitySalesUnit is not empty %}
+                                <span
+                                    class="spacing-right">{{ 'cart.item_quantity' | trans }}: {{ data.productItem.quantity }}</span>
+                                {% widget 'CartProductMeasurementUnitQuantitySelectorWidget' args [data.productItem] only %}{% endwidget %}
+                            {% else %}
+                                <span
+                                    class="spacing-right">{{ 'cart.item_quantity' | trans }}: {{ data.productItem.quantity }}</span>
+                            {% endif %}
 
-                                    {% include molecule('money-price') with {
-                                        class: component.renderClass(config.name ~ '__price', modifiers),
-                                        data: {
-                                            amount: price | default(null),
-                                            originalAmount: originalPrice | default(null),
-                                        },
-                                    } only %}
-                                </div>
-                            {% endblock %}
-
-                            {% block price %}
-                                <div class="{{ config.name }}__price-col">
-                                    {% set price = data.productItem.unitPrice is defined ? data.productItem.unitPrice : data.productItem.price %}
-                                    {% set productItemSubTotal = data.productItem.quantity is not empty ? data.productItem.quantity * price : price %}
-
-                                    {% include molecule('money-price') with {
-                                        modifiers: ['cart'],
-                                        class: component.renderClass(config.name ~ '__price', modifiers | merge(['subtotal'])),
-                                        data: {
-                                            amount: productItemSubTotal | default(null),
-                                            originalAmount: null,
-                                        },
-                                    } only %}
-                                </div>
-                            {% endblock %}
-
-                            {% block removeButton %}
-                                {% if canEditCart and not data.isPromotionItem %}
-                                <form method="POST"
-                                      action="{{ path('cart/remove', {'sku': data.productItem.sku, 'groupKey': data.productItem.groupKey}) }}">
-                                    <input type="hidden" name="token" value="{{ csrf_token('change-cart') }}">
-                                    <button
-                                        class="{{ component.renderClass(config.name ~ '__remove', modifiers) }} link link--darkest link--edit __remove_position"
-                                        value="{{- 'product_cart_item.remove' | trans | raw -}}"
-                                        onclick="productRemoveFromCart('{{ data.productItem.id }}','{{ data.productItem.name }}','{{ data.productItem.sku }}','{{ data.productItem.quantity }}','{{ data.productItem.unitGrossPrice is defined ? data.productItem.unitGrossPrice / 100 : null }}')">
-
-                                        {% include atom('icon') with {
-                                            data: {
-                                                name: 'bin',
-                                            },
-                                        } only %}
-                                    </button>
-                                </form>
-                                {% endif %}
-                                <script>
-                                    function productRemoveFromCart(productId, productName, productSku, productQuantity,productPrice)
-                                    {
-                                        window.dataLayer = window.dataLayer || [];
-                                        window.dataLayer.push({
-                                            'event': 'eec.removeFromCart',
-                                            'ecommerce':{
-                                                'click':{
-                                                    'actionField': {'list':'ShoppingCart'},
-                                                    'products': [{
-                                                        'id': productId,
-                                                        'name': productName,
-                                                        'sku': productSku,
-                                                        'quantity': productQuantity,
-                                                        'price': productPrice,
-                                                    }]
-                                                }
-                                            },
-                                        });
-
-                                        const itemsFromTheCart = JSON.parse(localStorage.getItem('productItemsForSyncCounter'));
-
-                                        if (itemsFromTheCart.length === 1) {
-                                            localStorage.removeItem('productItemsForSyncCounter');
-                                        }
-                                    }
-                                </script>
-                            {% endblock %}
                         </div>
                     {% endblock %}
 
-                    {% block content %}{% endblock %}
+                    {% block summaryContent %}
+                        {% block summary %}
+                            {% if currentCodeBucket == 'DE' %}
+                                {% if data.productItem.productOptions is defined and data.productItem.productOptions is not empty %}
+                                    {% include molecule('product-item-summary') with {
+                                        modifiers: ['cart'] | merge(data.productOptionsModifiers),
+                                        data: {
+                                            productItem: data.productItem,
+                                        },
+                                    } only %}
+                                {% endif %}
+                            {% else %}
+                                {% include molecule('product-item-summary') with {
+                                    modifiers: ['cart'] | merge(data.productOptionsModifiers),
+                                    data: {
+                                        productItem: data.productItem,
+                                    },
+                                } only %}
+                            {% endif %}
+                        {% endblock %}
+                    {% endblock %}
+                </div>
+            {% endblock %}
 
-                    {% block actions %}{% endblock %}
-                {% endblock %}
-            </div>
+            {% block quantityCondition %}
+                {% if not data.isPromotionItem %}
+            {% block quantity %}
+                {% set removeUrl = path('cart/remove', {'sku': data.productItem.sku, 'groupKey': data.productItem.groupKey }) %}
+                <div
+                    class="{{ component.renderClass(config.name ~ '__quantity', modifiers) }} col--lg-2 col--md-2 col--sm-5">
+                    {% if canEditCart %}
+                        <form method="POST"
+                              action="{{ path('cart/change/quantity', {'sku': data.productItem.sku }) }}">
+                            <input type="hidden" name="token"
+                                   value="{{ csrf_token('change-cart') }}">
+                            {% include molecule('product-quantity-input') with {
+                                data: {
+                                    maxQuantity: data.productItem.maxQuantity,
+                                    value: data.productItem.quantity,
+                                    removeUrl: removeUrl,
+                                },
+                            } only %}
+                            <input type="hidden" value="{{ data.productItem.groupKey }}"
+                                   name="groupKey">
+                        </form>
+                    {% else %}
+                        <span
+                            class="{{ component.renderClass(config.name ~ '__text-quantity', modifiers) }}">{{ 'cart.item_quantity' | trans }}: {{ data.productItem.quantity }}</span>
+                    {% endif %}
+                </div>
+            {% endblock %}
+                {% endif %}
+            {% endblock %}
 
-            {% block additionalInfo %}{% endblock %}
-        </div>
+            {% block unitPrice %}
+                <div class="{{ config.name }}__price-col col--lg-2 col--md-2 col--sm-2">
+                    {% set price = data.productItem.unitPrice is defined ? data.productItem.unitPrice : data.productItem.unitGrossPrice %}
+                    {% set originalPrice = data.productItem.originalPrice is defined ? data.productItem.originalPrice %}
+
+                    {% include molecule('money-price') with {
+                        class: component.renderClass(config.name ~ '__price', modifiers),
+                        data: {
+                            amount: price | default(null),
+                            originalAmount: originalPrice | default(null),
+                        },
+                    } only %}
+                </div>
+            {% endblock %}
+
+            {% block price %}
+                <div class="{{ config.name }}__price-col col--lg-2 col--md-1 col--sm-2 col--xs-1">
+                    {% set price = data.productItem.unitPrice is defined ? data.productItem.unitPrice : data.productItem.price %}
+                    {% set productItemSubTotal = data.productItem.quantity is not empty ? data.productItem.quantity * price : price %}
+
+                    {% include molecule('money-price') with {
+                        modifiers: ['cart'],
+                        class: component.renderClass(config.name ~ '__price', modifiers | merge(['subtotal'])),
+                        data: {
+                            amount: productItemSubTotal | default(null),
+                            originalAmount: null,
+                        },
+                    } only %}
+                </div>
+            {% endblock %}
+
+            {% block removeButton %}
+                {% if canEditCart and not data.isPromotionItem %}
+                <form method="POST"
+                      class="trash-bin col--lg-1 col--md-1 col--sm-1 col--xs-1"
+                      action="{{ path('cart/remove', {'sku': data.productItem.sku, 'groupKey': data.productItem.groupKey}) }}">
+                    <input type="hidden" name="token" value="{{ csrf_token('change-cart') }}">
+                    <button
+                        class="{{ component.renderClass(config.name ~ '__remove', modifiers) }} link link--darkest link--edit __remove_position"
+                        value="{{- 'product_cart_item.remove' | trans | raw -}}"
+                        onclick="productRemoveFromCart('{{ data.productItem.id }}','{{ data.productItem.name }}','{{ data.productItem.sku }}','{{ data.productItem.quantity }}','{{ data.productItem.unitGrossPrice is defined ? data.productItem.unitGrossPrice / 100 : null }}')">
+                        <div class="{{ config.name }}__remove-btn-container">
+                            {% include atom('icon') with {
+                                modifiers:['dark-bin'] ,
+                                data: {
+                                    name: 'dark-bin',
+                                },
+                            } only %}
+                        </div>
+                    </button>
+                </form>
+                {% endif %}
+                <script>
+                    function productRemoveFromCart(productId, productName, productSku, productQuantity, productPrice) {
+                        window.dataLayer = window.dataLayer || [];
+                        window.dataLayer.push({
+                            'event': 'eec.removeFromCart',
+                            'ecommerce': {
+                                'click': {
+                                    'actionField': {'list': 'ShoppingCart'},
+                                    'products': [{
+                                        'id': productId,
+                                        'name': productName,
+                                        'sku': productSku,
+                                        'quantity': productQuantity,
+                                        'price': productPrice,
+                                    }]
+                                }
+                            },
+                        });
+                    }
+                </script>
+            {% endblock %}
+            {% endblock %}
+
+            {% block content %}{% endblock %}
+
+            {% block actions %}{% endblock %}
+        {% endblock %}
+        {% block additionalInfo %}{% endblock %}
     </div>
 {% endblock %}

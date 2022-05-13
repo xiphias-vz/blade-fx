@@ -8,6 +8,8 @@
         &__container {
             padding: 0 rem(10);
             max-width: rem(136);
+            border: rem(1) solid $setting-color-input-border-tentgray;
+            border-radius: rem(20);
 
             &--quantity-large {
                 max-width: rem(170);
@@ -15,6 +17,7 @@
 
             &--no-spacing {
                 padding: 0;
+                display: flex;
             }
         }
 
@@ -26,13 +29,18 @@
             display: flex;
             justify-content: center;
             align-items: center;
+            background-color: $setting-color-globus-white;
+            color: $setting-color-forest-green;
 
             &--decr {
-                border-radius: rem(2) 0 0 rem(2);
+                border-radius: rem(20);
+                border: rem(2) solid $setting-color-forest-green;
+                align-items: normal;
             }
 
             &--incr {
-                border-radius: 0 rem(2) rem(2) 0;
+                border-radius: rem(20);
+                border: rem(2) solid $setting-color-forest-green;
             }
         }
 
@@ -40,7 +48,9 @@
             margin: 0;
             padding: 0;
             display: block;
-            font: fw(bold) rem(16)/1 $setting-font-family-additional;
+            font-weight: 100;
+            font-size: rem(16);
+            font-family: $setting-font-family-additional;
             width: 100%;
             height: rem(38);
             text-align: center;
@@ -59,7 +69,8 @@
             }
 
             &--quantity-lighter {
-                border-color: $setting-color-gray-3;
+                border: none;
+                color: black;
             }
 
             &--quantity-large {

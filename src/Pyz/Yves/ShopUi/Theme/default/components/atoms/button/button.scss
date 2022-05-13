@@ -31,13 +31,13 @@
         &:hover,
         &:focus,
         &:active {
-            background: $setting-color-globus-lightOrange;
+            background: $setting-color-fresh-orange;
             color: $setting-color-white;
-            box-shadow: 0 rem(4) rem(18) $setting-color-globus-darkOrange !important;
+            box-shadow: 0 rem(4) rem(18) $setting-color-fresh-orange !important;
         }
 
         &:focus {
-            background: $setting-color-globus-darkOrange;
+            background: $setting-color-fresh-orange;
             color: $setting-color-white;
         }
 
@@ -172,7 +172,7 @@
             &:hover,
             &:focus,
             &:active {
-                box-shadow: 0 rem(4) rem(18) $setting-color-globus-darkOrange;
+                box-shadow: 0 rem(4) rem(18) $setting-color-fresh-orange;
             }
 
             &[disabled],
@@ -268,8 +268,8 @@
             background-color: transparent;
             border-width: thin;
             border-style: solid;
-            border-color: $setting-color-globus-lightOrange;
-            color: $setting-color-globus-lightOrange;
+            border-color: $setting-color-fresh-orange;
+            color: $setting-color-fresh-orange;
         }
 
         &--hollow-ghost-CZ {
@@ -288,9 +288,9 @@
             &:hover,
             &:active,
             &:focus {
-                border-color: $setting-color-globus-lightOrange;
+                border-color: $setting-color-fresh-orange;
                 color: $setting-color-white;
-                background: $setting-color-globus-lightOrange;
+                background: $setting-color-fresh-orange;
             }
 
             &:focus {
@@ -332,12 +332,16 @@
         }
 
         &--combined {
-            border-radius: 0 rem(2) rem(2) 0;
+            border-radius: rem(20);
             min-width: rem(113);
             font-weight: fw(regular);
             font-size: rem(13);
         }
 
+        &__begin-checkout {
+            background-color: $setting-color-fresh-orange;
+            border-radius: rem(20);
+        }
         &--combined-small {
             min-width: 0;
             padding-left: rem(12);
@@ -359,7 +363,8 @@
 
         &--bigfont {
             padding: rem(8) rem(15);
-            font: fw(medium) rem(21)/1.7 $setting-font-family-additional;
+            font: fw(semibold) rem(21)/1.7 $setting-font-family-additional;
+            border-radius: rem(30);
         }
 
         &--font-CZ {

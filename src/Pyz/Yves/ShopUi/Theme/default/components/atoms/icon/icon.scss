@@ -174,4 +174,16 @@
     &--color-black {
         color: $setting-color-globus-black;
     }
+
+    &--gray-trash-icon {
+        width: rem(10);
+        height: rem(18);
+        margin-bottom: rem(6);
+    }
+
+    &--dark-bin {
+        width: rem(12);
+        height: rem(22);
+        margin-bottom: rem(6);
+    }
 }

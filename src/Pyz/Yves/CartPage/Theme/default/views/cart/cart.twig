@@ -19,15 +19,14 @@
 {% set canProceedToCheckout = data.cart.items is not empty
     and data.isQuoteValid
     and (not is_granted('IS_AUTHENTICATED_FULLY') or can('WriteSharedCartPermissionPlugin', data.cart.idQuote))
-    and not data.isHardThresholdReached and not data.isHardMaxThresholdReached
-%}
+    and not data.isHardThresholdReached and not data.isHardMaxThresholdReached %}
 
 {% block title %}
     {% widget 'CartOperationsWidget' args [data.cart] use view('cart-operations-title', 'MultiCartWidget') only %}{% endwidget %}
 {% endblock %}
 
 {% block content %}
-
+    {% set fontClass = app.currentCodeBucket == "CZ" ? 'cz-font' : '' %}
     {% if data.cart.idQuote is not empty %}
         <div>
             {% widget 'CreateShoppingListFromCartWidget' args [data.cart.idQuote] only %}{% endwidget %}
@@ -57,7 +56,7 @@
                         <a class="button button--font-CZ" href="{{ data.path }}">{{ 'cart.empty.button' | trans }}</a>
                     {% endif %}
                 </div>
-                <img class="warenkorb-img" src={{ publicPath("/images/warenkorb.png")}} >
+                <img class="warenkorb-img" src={{ publicPath("/images/new-warenkorb.png") }}>
             </div>
         </div>
     {% else %}
@@ -69,20 +68,22 @@
                 {% else %}
                     <h1 class="col headline-cart-CZ">{{ 'cart.title_content' | trans }}</h1>
                 {% endif %}
-                <a class="cart-box--linkDecoration_mobile" href="javascript:history.go(-1)">{{'cart.continue_shopping' | trans }}</a>
+                <a class="cart-box--linkDecoration_mobile"
+                   href="javascript:history.go(-1)">{{ 'cart.continue_shopping' | trans }}</a>
             </div>
 
             <div class="is-hidden-lg-xl buttonRight">
 
                 {% if canProceedToCheckout %}
                     {% if app.currentCodeBucket == 'DE' %}
-                        <a class="button bttnStyle" href="javascript:void(0)"
+                        <a class="button button__begin-checkout bttnStyle" href="javascript:void(0)"
                            onclick="beginCheckout('{{ url('checkout-index') }}')"
                             {{ qa('cart-go-to-checkout') }}>
                             {{ 'cart.checkout' | trans }}
                         </a>
                     {% else %}
-                        <a class="button bttnStyle-CZ button--expand button--bigfont button--font-CZ button--backgroundcolor-CZ" style="margin-left: 520px" href="javascript:void(0)"
+                        <a class="button bttnStyle-CZ button--expand button--bigfont button--font-CZ button--backgroundcolor-CZ"
+                           style="margin-left: 520px" href="javascript:void(0)"
                            onclick="beginCheckout('{{ url('checkout-index') }}')"
                             {{ qa('cart-go-to-checkout') }}>
                             {{ 'cart.checkout' | trans }}
@@ -102,33 +103,47 @@
                     {% endif %}
 
 
-                    <div class="cart-box grid grid--middle grid--justify allArticle" >
-                        <span class="ihreArticle">{{ 'cart.mobile.your_articles' | trans}} ({{ data.cartItems|length }})</span>
-                        <a class="cart-box--linkDecoration" href="javascript:history.go(-1)">{{'cart.continue_shopping' | trans }}</a>
+                    <div class="cart-box grid grid--middle grid--justify allArticle">
+                        <span class="ihreArticle">{{ 'cart.mobile.your_articles' | trans }} ({{ data.cartItems|length }})</span>
+                        <a class="cart-box--linkDecoration"
+                           href="javascript:history.go(-1)">{{ 'cart.continue_shopping' | trans }}</a>
                         <span class="col">
-                            <form action="{{ path('cart/clear') }}" method="post">
-                                <input type="hidden" name="token" value="{{ csrf_token('clear-cart') }}"/>
-                                <input class="cart-box__quantity link" onclick="localStorage.removeItem('productItemsForSyncCounter')" type="submit" value="{{ 'cart.clear' | trans }}">
-                            </form>
-                        </span>
+                                <form action="{{ path('cart/clear') }}" method="post">
+                                    <input type="hidden" name="token" value="{{ csrf_token('clear-cart') }}"/>
+                                    {% include atom('icon') with {
+                                        modifiers:['gray-trash-icon'],
+                                        data: {
+                                            name: 'gray-bin',
+                                        },
+                                    } only %}
+                                    <input class="cart-box__quantity link"
+                                           onclick="localStorage.removeItem('productItemsFromCartWithQuantity')"
+                                           type="submit" value="{{ 'cart.clear' | trans }}">
+                                </form>
+                            </span>
                     </div>
 
                     <div class="header-articles">
                         <div class="product">
-                            <p>{{ 'cart.header.product' | trans }}</p>
-                        </div>
-                        <div class="product">
                             {% if app.currentCodeBucket == 'DE' %}
-                                <p class="product__item1">{{ 'cart.header.quantity' | trans}}</p>
-                                <p class="product__item2">{{ 'cart.header.single_price' | trans}}</p>
+                                <p class="header-cart-title col--lg-5 col--md-5">{{ 'cart.header.product' | trans }}</p>
                             {% else %}
-                                <p class="product__item1-CZ">{{ 'cart.header.quantity' | trans}}</p>
-                                <p class="product__item2-CZ">{{ 'cart.header.single_price' | trans}}</p>
+                                <p class="header-cart-title col--lg-5 col--md-5 CZ">{{ 'cart.header.product' | trans }}</p>
                             {% endif %}
-                            <p class="product__item3">{{ 'cart.header.price' | trans}}</p>
+
+                            {% if app.currentCodeBucket == 'DE' %}
+                                <p class="header-cart-title col--lg-2 col--md-2">{{ 'cart.header.quantity' | trans }}</p>
+                                <p class="header-cart-title col--lg-2 col--md-2">{{ 'cart.header.single_price' | trans }}</p>
+                                <p class="header-cart-title col--lg-2 col--md-2">{{ 'cart.header.price' | trans }}</p>
+                            {% else %}
+                                <p class="header-cart-title CZ col--lg-2 col--md-2">{{ 'cart.header.quantity' | trans }}</p>
+                                <p class="header-cart-title CZ col--lg-2 col--md-2">{{ 'cart.header.single_price' | trans }}</p>
+                                <p class="header-cart-title CZ col--lg-2 col--md-2">{{ 'cart.header.price' | trans }}</p>
+                            {% endif %}
                         </div>
                     </div>
-                    <input type="hidden" id="productItemsFromCart" value="{{ data.cartItemsSkuWithQuantity | json_encode }}">
+                    <input type="hidden" id="productItemsFromCart"
+                           value="{{ data.cartItemsSkuWithQuantity | json_encode }}">
                     {% for cartItem in data.cartItems %}
                         {% include molecule('product-card-item') with {
                             data: {
@@ -151,7 +166,7 @@
                             {
                                 var rerouted = 0;
                                 window.dataLayer = window.dataLayer || [];
-                                var products =  window.shoppingCartList;
+                                var products = window.shoppingCartList;
                                 window.dataLayer.push({
                                     'event': 'eec.checkout',
                                     'ecommerce':
@@ -171,12 +186,11 @@
                                         document.location = actionUrl;
                                     }
                                 });
-                               setTimeout(function(){
-                                   if(rerouted==0)
-                                   {
-                                       document.location = actionUrl;
-                                   }
-                               },1000);
+                                setTimeout(function () {
+                                    if (rerouted == 0) {
+                                        document.location = actionUrl;
+                                    }
+                                }, 1000);
                             }
                         </script>
                     {% endfor %}
@@ -190,7 +204,7 @@
             </div>
 
             <div class="col col--sm-12 col--lg-4">
-                <div class="page-layout-cart__col page-layout-cart__col--sidebar">
+                <div class="page-layout-cart__col page-layout-cart__col--sidebar {{ fontClass }}">
                     {% include molecule('cart-summary', 'CartPage') with {
                         data: {
                             cart: data.cart,

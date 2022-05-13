@@ -105,20 +105,20 @@
     {% if app.currentCodeBucket == 'DE' %}
         <div class="{{ config.name }}__substitutions-break"></div>
         <p class="{{ config.name }}__item">
-            <span style="margin-right:7px"><svg class="{{ config.name }}__substitutions-icon-info icon"><use xlink:href="#:weight"></use></svg></span>
+            <span style="margin-right:7px"><svg class="{{ config.name }}__substitutions-icon-info icon"><use xlink:href="#:weight-article"></use></svg></span>
             {{ 'checkout.cart.page.weightitems.title' | trans }}
-            <span style="float: right;"><svg class="{{ config.name }}__substitutions-icon-sync icon"><use xlink:href="#:info-circle"></use></svg></span>
+            <span style="float: right;"><svg class="{{ config.name }}__substitutions-icon-sync icon"><use xlink:href="#:globus-info"></use></svg></span>
         </p>
         <p class="{{ config.name }}__substitutions-text"> {{ 'checkout.cart.page.weightitems.text' | trans }} </p>
     {% endif %}
         <div class="{{ config.name }}__substitutions-break"></div>
         <p class="{{ config.name }}__item">
-            <span style="margin-right:7px"><svg class="{{ config.name }}__substitutions-icon-info icon"><use xlink:href="#:sync"></use></svg></span>
+            <span style="margin-right:7px"><svg class="{{ config.name }}__substitutions-icon-info icon"><use xlink:href="#:sync-dark"></use></svg></span>
             {{ 'checkout.cart.page.substitutions.title' | trans }}
             {% if app.currentCodeBucket == 'DE' %}
-                <span style="float: right;"><svg class="{{ config.name }}__substitutions-icon-sync icon"><use xlink:href="#:info-circle"></use></svg></span>
+                <span style="float: right;"><svg class="{{ config.name }}__substitutions-icon-sync icon"><use xlink:href="#:globus-info"></use></svg></span>
             {% else %}
-                <span style="float: right;"><svg class="{{ config.name }}__substitutions-icon-sync-CZ icon"><use xlink:href="#:info-circle"></use></svg></span>
+                <span style="float: right;"><svg class="{{ config.name }}__substitutions-icon-sync-CZ icon"><use xlink:href="#:globus-info"></use></svg></span>
             {% endif %}
         </p>
         <p class="{{ config.name }}__substitutions-text"> {{ 'checkout.cart.page.substitutions.text' | trans }} </p>

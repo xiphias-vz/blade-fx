@@ -11,22 +11,23 @@
 {%- block class -%}page-layout-main js-page-layout-main js-page-layout-main--side-drawer-container js-page-layout-main--block-scroll{%- endblock -%}
 
 {% block body %}
-        {% embed molecule('popup-ui-store-switcher') with {
+    {% set fontClass = app.currentCodeBucket == "CZ" ? 'cz-font' : '' %}
+    {% embed molecule('popup-ui-store-switcher') with {
+    } only %}
+    {% endembed %}
+
+    {% if data.currentCodeBucket == 'DE' %}
+        {% embed molecule('popup-ui-login-form') with {
         } only %}
         {% endembed %}
+    {% elseif data.currentCodeBucket == 'CZ' %}
+        {% embed molecule('popup-ui-login-form-cz') with {
+        } only %}
+        {% endembed %}
+    {% endif %}
 
-        {% if data.currentCodeBucket == 'DE' %}
-            {% embed molecule('popup-ui-login-form') with {
-            } only %}
-            {% endembed %}
-        {% elseif data.currentCodeBucket == 'CZ' %}
-            {% embed molecule('popup-ui-login-form-cz') with {
-            } only %}
-            {% endembed %}
-        {% endif %}
-
-    <input id="current_store_cookie" class="display-none" type="text" value="{{ data.currentCookieStore }}" />
-    <input id="environment" type="hidden" type="text" value="{{ data.currentCodeBucket }}" />
+    <input id="current_store_cookie" class="display-none" type="text" value="{{ data.currentCookieStore }}"/>
+    <input id="environment" type="hidden" type="text" value="{{ data.currentCodeBucket }}"/>
     <div class="page-layout-main__container">
         {% cms_slot 'slt-123' %}
         {% block sidebar %}
@@ -56,7 +57,7 @@
                     {% block topBar %}
                         {% set user = app['user'].customerTransfer ?? app['user'].userTransfer %}
 
-                        <div class="{{config.name}}__top-bar grid grid--justify">
+                        <div class="{{ config.name }}__top-bar grid grid--justify">
                             <div class="col grid">
                                 <div class="col">
                                     {% include atom('icon') with {
@@ -78,7 +79,7 @@
                     {% endblock %}
 
                     {% block content %}
-                        <div class="{{config.name}}__navigation">
+                        <div class="{{ config.name }}__navigation">
                             {% widget 'CustomerNavigationWidget' args [embed.activePage] only %}
                                 {% block body %}
                                     {% define data = {
@@ -114,15 +115,15 @@
                     {% block pageInfo %}
                         {% block breadcrumbs %}
                             {% include molecule('breadcrumb') only %}
-                            {#{% include molecule('breadcrumb', 'FactFinderWebComponents') only %}
-                            {% include molecule('breadcrumb', 'FactFinderWebComponents') with {
-                                data: {
-                                    properties: {
-                                        component: 'show-only="false"',
-                                        items: [],
+                            {# {% include molecule('breadcrumb', 'FactFinderWebComponents') only %}
+                                {% include molecule('breadcrumb', 'FactFinderWebComponents') with {
+                                    data: {
+                                        properties: {
+                                            component: 'show-only="false"',
+                                            items: [],
+                                        }
                                     }
-                                }
-                            } %}#}
+                                } %} #}
                         {% endblock %}
 
                         {% block title %}
@@ -199,24 +200,24 @@
 
     <script type="text/javascript">
         let suggestSearchInputElement = document.querySelector(".suggest-search__input");
-        if(suggestSearchInputElement !== null) {
+        if (suggestSearchInputElement !== null) {
             suggestSearchInputElement.addEventListener("change", SearchInputChange);
         }
+
         function SearchInputChange() {
 
             let suggestSearchContainer = document.querySelector(".suggest-search__container");
             let searchTerm = document.querySelector(".suggest-search__input").value;
             let noResultsForSearchSuggestion = document.getElementById("NoResultsForSearchSuggestion");
 
-            if(noResultsForSearchSuggestion !== null) {
-                if(suggestSearchContainer.contains(noResultsForSearchSuggestion)){
-                    if(searchTerm != "")
-                    {
+            if (noResultsForSearchSuggestion !== null) {
+                if (suggestSearchContainer.contains(noResultsForSearchSuggestion)) {
+                    if (searchTerm != "") {
                         window.dataLayer.push({
-                        'event': 'zeroResultsSearch',
-                        'searchTerm': searchTerm,
-                        'searchResults': 0
-                    });
+                            'event': 'zeroResultsSearch',
+                            'searchTerm': searchTerm,
+                            'searchResults': 0
+                        });
                     }
                 }
             }

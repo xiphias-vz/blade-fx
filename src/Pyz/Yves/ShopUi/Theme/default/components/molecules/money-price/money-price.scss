@@ -2,8 +2,20 @@
     $name: '.money-price';
 
     &__amount {
-        font-weight: fw(normal);
-        font-size: rem(15);
+        font-size: rem(16);
+        font-weight: 100;
+
+        @include helper-breakpoint-media-max($sm-max) {
+            position: relative;
+            top: rem(10);
+            right: rem(40);
+        }
+
+        @include helper-breakpoint-media-between($md-min,$md-max) {
+            position: relative;
+            bottom: rem(30);
+            right: rem(70);
+        }
 
         @include helper-breakpoint-media-max($xxs-max){
             margin-left: rem(-20);
@@ -14,7 +26,7 @@
         }
 
         &--cart {
-            font-size: inherit;
+            font-size: rem(16);
             @include helper-breakpoint-media-max($xl-min){
                 display: none;
             }

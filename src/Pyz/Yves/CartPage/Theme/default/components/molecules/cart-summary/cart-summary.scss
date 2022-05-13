@@ -4,7 +4,6 @@
         top: rem(80);
         background: $setting-color-gray-1;
         padding: rem(10) rem(30) rem(20);
-        color: $setting-color-gray-13;
 
         @include helper-breakpoint-media-min($lg-min) {
             padding: rem(10) rem(20) rem(20);
@@ -15,9 +14,10 @@
         }
 
         &__item {
-            font-weight: fw(medium);
+            font-weight: fw(semibold);
             font-size: rem(16);
             margin: rem(16) rem(0) rem(16) rem(0);
+            color: $setting-color-tentgray;
         }
 
         &__border {
@@ -47,12 +47,12 @@
         &__substitutions-icon-info {
             width:20px !important;
             height: 20px !important;
+            color: $setting-color-tentgray;
         }
 
         &__substitutions-icon-sync {
             width:25px !important;
             height: 25px !important;
-            color: $setting-color-orange;
         }
 
         &__substitutions-icon-sync-CZ {
@@ -62,6 +62,7 @@
         }
 
         &__substitutions-text {
+            color: $setting-color-tentgray;
             font-weight: 100;
         }
         @content;

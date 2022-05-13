@@ -1,10 +1,8 @@
 @mixin cart-page-layout-cart($name: '.page-layout-cart') {
     #{$name} {
         display: block;
-
         .breadcrumb-step__link {
             font-size: 1.6rem;
-            font-family: $setting-font-family-additional;
 
             @include helper-breakpoint-media-max($md-max) {
                 font-size: 1.2rem;
@@ -28,8 +26,9 @@
 
             .warenkorb-content {
                 display: flex;
-                justify-content: center;
-                align-items: center;
+                flex-flow: row-reverse;
+                align-items: end;
+                justify-content: space-evenly;
 
                 @include helper-breakpoint-media-max($sm-max) {
                     flex-direction: column;
@@ -45,7 +44,7 @@
 
                     .info {
                         text-align: left;
-                        color: $setting-color-globus-darkGray;
+                        color: $setting-color-tentgray;
                         font-size: 1.1rem;
                         @include helper-breakpoint-media-max($sm-max) {
                             text-align: center;
@@ -58,6 +57,8 @@
                         margin-top: 2rem;
                         padding: 0.5rem 0;
                         font-size: 1.1rem;
+                        border-radius: rem(20);
+                        background: $setting-color-fresh-orange;
 
                         @include helper-breakpoint-media-max($md-max) {
                             margin-top: 1rem;
@@ -101,6 +102,18 @@
                     margin: 0;
                     padding: 0 0 rem(60);
                 }
+            }
+        }
+
+        @include helper-breakpoint-media-max(l-max) {
+            .col--lg-8 {
+                width: 100%;
+                min-width: 100%;
+            }
+
+            .col--lg-4 {
+                width: 100%;
+                min-width: 100%;
             }
         }
     }
