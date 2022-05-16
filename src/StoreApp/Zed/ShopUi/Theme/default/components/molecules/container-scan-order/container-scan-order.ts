@@ -1,4 +1,5 @@
 import Component from 'ShopUi/models/component';
+import {array} from 'fast-glob/out/utils';
 
 type containerTransfer = {
     orderReference: string;
@@ -35,6 +36,8 @@ export default class ContainerScanOrder extends Component {
     protected openPopupButton: HTMLButtonElement;
     protected containersIdList: HTMLInputElement;
     protected containerAlreadyUsed: HTMLInputElement;
+    protected addMultipleSubstituteContainer: boolean;
+    protected substituteContainersArray: [];
 
     protected readyCallback(): void {
     }
@@ -70,6 +73,8 @@ export default class ContainerScanOrder extends Component {
         this.containerAlreadyUsed = <HTMLInputElement>document.querySelector('#container_already_used');
         this.openPopupButton = this.querySelector('.popup-ui-deposit__open');
         this.containersIdList = this.querySelector('#containerArrayIds');
+        this.addMultipleSubstituteContainer = this.querySelector('input[name=addContainerToSubstitutedItem]').value;
+        this.substituteContainersArray = [];
 
         this.containerTransfer.push(
             {
@@ -125,7 +130,6 @@ export default class ContainerScanOrder extends Component {
     }
 
     protected formKeyPressHandler(event) {
-
         if(event.key == 'Enter') {
             event.preventDefault();
 
@@ -143,10 +147,16 @@ export default class ContainerScanOrder extends Component {
                 return;
             }
 
-            if(containerSplit.includes(formattedContainerInput)) {
+
+            if(containerSplit.includes(formattedContainerInput) || this.substituteContainersArray.includes(formattedContainerInput)) {
                 this.showPopUpErrorMessageForUsedContainer();
                 return;
             }
+
+            if(this.addMultipleSubstituteContainer) {
+                this.substituteContainersArray.push(formattedContainerInput);
+            }
+
             this.updateContainerInputFieldValue(formattedContainerInput, 'ADD_CONTAINER');
 
             let containerHolder = this.createContainerHolder(formattedContainerInput);
@@ -224,10 +234,13 @@ export default class ContainerScanOrder extends Component {
     }
 
     protected toggleInputScanner(): void {
-
         let addMultipleContainer = this.applicationUrl.searchParams.get('add_multiple_containers');
         if(!Boolean(addMultipleContainer)) {
             this.inputScanner.style.display = this.numberOfAddedContainers == 1 ? 'none' : 'block';
+            this.inputScanner.focus();
+        }
+        if(this.addMultipleSubstituteContainer){
+            this.inputScanner.style.display = 'block';
             this.inputScanner.focus();
         }
     }
@@ -266,7 +279,6 @@ export default class ContainerScanOrder extends Component {
     }
 
     protected updateContainerTransfer(containerNumber, operation): Array<containerTransfer> {
-
         if(operation == 'ADD_CONTAINER') {
              this.containerTransfer.forEach(field => {
                  if(field.containers) {
@@ -284,7 +296,6 @@ export default class ContainerScanOrder extends Component {
                 }
             });
         }
-
         return this.containerTransfer;
     }
 

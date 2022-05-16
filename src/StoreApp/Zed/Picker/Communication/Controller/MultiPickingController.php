@@ -113,7 +113,7 @@ class MultiPickingController extends BaseOrderPickingController
         $isSubstitutionPicked = $_REQUEST['isSubstitutionPicked'] ?? 'false';
         $isYesPressedInSubstitutionModal = $request->get(static::YES_CHOSEN_IN_SUBSTITUTE_MODAL) ?? 'false';
         $status = $request->request->get("status");
-        if ($status === "declined" && $isYesPressedInSubstitutionModal === "true") {
+        if ($status === "declined" && ($isYesPressedInSubstitutionModal === "true")) {
             $isSubstitutionFoundOnItem = $transfer->getOrderItem($transfer->getLastPickingItemPosition());
             if ($isSubstitutionFoundOnItem === null) {
                 $isSubstitutionFoundOnItem = $transfer->getOrderItem($transfer->getLastPickingItemPosition() + 1)->getIsSubstitutionFound();

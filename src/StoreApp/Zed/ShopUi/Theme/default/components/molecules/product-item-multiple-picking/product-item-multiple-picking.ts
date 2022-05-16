@@ -175,6 +175,10 @@ export default class ProductItemMultiplePicking extends Component {
         if(this.fromPosListeAndModal.value) {
             this.containerData = [];
             this.weight = 0;
+            let scannedWeightItems = $(".weightScanContainer")[0].childElementCount;
+            if(scannedWeightItems > 0){
+                this.updateQuantityInput(scannedWeightItems);
+            }
             $(".weightScanContainer").empty();
             this.pickProducts.updateStorageItem(this, this.orderItemStatus);
             this.pickProducts.update();

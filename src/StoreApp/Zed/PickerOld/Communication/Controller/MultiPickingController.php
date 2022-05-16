@@ -110,28 +110,26 @@ class MultiPickingController extends IntMultiPickingController
         $openModal = $_REQUEST['fromModal'] ?? 'false';
         $fromPosListeAndModal = $_REQUEST['fromPosListeAndModal'] ?? 'false';
         $isSubstitutionPicked = $_REQUEST['isSubstitutionPicked'] ?? 'false';
-
+        $isYesPressedInSubstitutionModal = $request->get(static::YES_CHOSEN_IN_SUBSTITUTE_MODAL) ?? 'false';
         $status = $request->request->get("status");
-        if ($status === "declined" && $isSubstitutionPicked === "true") {
+        if ($status === "declined" && $isYesPressedInSubstitutionModal === "true") {
             $isSubstitutionFoundOnItem = $transfer->getOrderItem($transfer->getLastPickingItemPosition());
             if ($isSubstitutionFoundOnItem === null) {
                 $isSubstitutionFoundOnItem = $transfer->getOrderItem($transfer->getLastPickingItemPosition() + 1)->getIsSubstitutionFound();
             } else {
                 $isSubstitutionFoundOnItem = $transfer->getOrderItem($transfer->getLastPickingItemPosition())->getIsSubstitutionFound();
             }
-            if (!$isSubstitutionFoundOnItem ?? false) {
-                $transfer->getOrderItem($transfer->getLastPickingItemPosition())->setIsSubstitutionFound(true);
-                $quantityPicked = $transfer->getOrderItem($transfer->getLastPickingItemPosition())->getQuantityPicked();
-                if ($quantityPicked > 0) {
-                    $transfer->getOrderItem($transfer->getLastPickingItemPosition())->setQuantityPicked(0);
-                }
-                $redirectToScanningContainers = true;
-                $factory = $this->getFactory();
-                $urlScan = $factory->getConfig()->getScanningContainerUri();
-                $urlScan .= '?flag=substitution';
 
-                return $this->redirectResponse($urlScan);
+            $quantityPicked = $transfer->getOrderItem($transfer->getLastPickingItemPosition())->getQuantityPicked();
+            if ($quantityPicked > 0) {
+                $transfer->getOrderItem($transfer->getLastPickingItemPosition())->setQuantityPicked(0);
             }
+
+            $factory = $this->getFactory();
+            $urlScan = $factory->getConfig()->getScanningContainerUri();
+            $urlScan .= '?flag=substitution';
+
+            return $this->redirectResponse($urlScan);
         }
         $pickingItem = $transfer->getOrderItemExtended($transfer->getLastPickingItemPosition() == null ? 0 : $transfer->getLastPickingItemPosition());
         if ($pickingItem === null) {

@@ -731,6 +731,7 @@ class PickingHeaderTransferData
                         , m.status, m.last_picked_at, m.min_weight
                         , m.max_weight, m.total_weight
                         , i.external_url_small as picture_url
+                        , m.is_substitution_found
                 FROM
                     (
                     select sso.id_sales_order as id_order, sso.order_reference, ssoi.id_sales_order_item as id_order_item
@@ -753,6 +754,7 @@ class PickingHeaderTransferData
                         , ssoi3.weight_per_unit * ssoi3.quantity * 0.8 as min_weight
                         , ssoi3.weight_per_unit * ssoi3.quantity * 1.2 as max_weight
                         , ssoi3.weight_per_unit * ssoi3.quantity as total_weight
+                        , ssoi3.is_substitution_found
                     from spy_sales_order sso
                         inner join
                         (
@@ -765,6 +767,7 @@ class PickingHeaderTransferData
 								, sum(case when sit2.name = 'picked' or sit2.name = 'ready for selecting shelves' then ssoi2.quantity else 0 end) as quantityPicked
 								, sum(case when sit2.name = 'cancelled' then 1 else 0 end) as canceled_count
 								, ssoi2.product_number
+							    , ssoi2.is_substitution_found
 							    , ssoi2.rlz_regal
 							from spy_sales_order_item ssoi2
 								inner join spy_oms_order_item_state sit2 on ssoi2.fk_oms_order_item_state = sit2.id_oms_order_item_state

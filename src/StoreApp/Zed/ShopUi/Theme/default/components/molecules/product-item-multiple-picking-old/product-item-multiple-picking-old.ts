@@ -85,6 +85,7 @@ export default class ProductItemMultiplePickingOld extends Component {
     isSubstitutionFound: HTMLInputElement;
     approxWeight: HTMLElement;
     protected isSubstitutionPicked: boolean;
+    protected isYesInSubstitutionModalChosen: boolean;
     private weightMax: number;
     private weightMin: number;
     private lastWeight: number;
@@ -154,6 +155,7 @@ export default class ProductItemMultiplePickingOld extends Component {
         this.iconSubstitute = this.querySelector('.icon-substitute-item');
         this.isSubstitutionFound = <HTMLInputElement>this.querySelector('#isSubstitutionFound');
         this.isSubstitutionPicked = false;
+        this.isYesInSubstitutionModalChosen = false;
         this.resetWeightButton = <HTMLButtonElement>this.querySelector('#btnResetWeight');
         this.fromPosListeAndModal = <HTMLInputElement>this.querySelector('#fromPosListeAndModal');
 
@@ -172,6 +174,10 @@ export default class ProductItemMultiplePickingOld extends Component {
         if(this.fromPosListeAndModal.value) {
             this.containerData = [];
             this.weight = 0;
+            let scannedWeightItems = $(".weightScanContainer")[0].childElementCount;
+            if(scannedWeightItems > 0){
+                this.updateQuantityInput(scannedWeightItems);
+            }
             $(".weightScanContainer").empty();
             this.pickProducts.updateStorageItem(this, this.orderItemStatus);
             this.pickProducts.update();
@@ -466,6 +472,7 @@ export default class ProductItemMultiplePickingOld extends Component {
                 '<input type="text" name="status" value="' + status + '" />' +
                 '<input type="text" name="itemPickingStartTime" value="' + itemPickingStartTime + '" />' +
                 '<input type="text" name="isSubstitutionPicked" value="' + this.isSubstitutionPicked + '" />' +
+                '<input type="text" name="isYesInSubstitutionModalChosen" value="' + this.isYesInSubstitutionModalChosen + '" />' +
                 '</form>');
             $('body').append(form);
             form.submit();
@@ -1086,17 +1093,17 @@ export default class ProductItemMultiplePickingOld extends Component {
 
     protected onClickNoSubstitute(){
         this.isSubstitutionPicked = false;
+        this.isYesInSubstitutionModalChosen = false;
         this.iconSubstitute.classList.add(this.showIconSubstitute);
         this.popupUiSubstitute.classList.add('popup-ui-substitute--hide');
     }
 
     protected onClickYesSubstitute(){
         this.isSubstitutionPicked = true;
+        this.isYesInSubstitutionModalChosen = true;
         this.iconSubstitute.classList.remove(this.showIconSubstitute);
         this.popupUiSubstitute.classList.add('popup-ui-substitute--hide');
-        if(this.isSubstitutionPicked === true){
-            this.ifIsSubstitutionPicked();
-        }
+        this.ifIsSubstitutionPicked();
     }
 
     protected onClickNoWeightInputError() {
@@ -1143,6 +1150,7 @@ export default class ProductItemMultiplePickingOld extends Component {
             '<input type="text" name="status" value="' + status + '" />' +
             '<input type="text" name="itemPickingStartTime" value="' + itemPickingStartTime + '" />' +
             '<input type="text" name="isSubstitutionPicked" value="' + this.isSubstitutionPicked + '" />' +
+            '<input type="text" name="isYesInSubstitutionModalChosen" value="' + this.isYesInSubstitutionModalChosen + '" />' +
             '</form>');
         $('body').append(form);
         form.submit();
@@ -1150,6 +1158,7 @@ export default class ProductItemMultiplePickingOld extends Component {
 
     protected setProductAsDeclinedWithSubstitution(){
         this.isSubstitutionPicked = true;
+        this.isYesInSubstitutionModalChosen = false;
         this.iconSubstitute.classList.remove(this.showIconSubstitute);
         this.popupUiSubstitute.classList.remove('popup-ui-substitute--hide');
         this.$declineButton = this.$this.find(this.declineButtonSelector);
