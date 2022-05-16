@@ -1078,7 +1078,6 @@ export default class ProductItemMultiplePickingOld extends Component {
 
         this.$this.removeClass(`${this.notPickedCLass} ${this.pickedCLass} ${this.pickedNotFullyCLass} ${this.pausedClass}`);
         this.$this[0].$declineButton.removeClass(this.addUndoCLass);
-        this.iconSubstitute.classList.add(this.showIconSubstitute);
         this.isSubstitutionFound.value = "0";
 
         this.setQuantityToValue(0);
@@ -1184,15 +1183,12 @@ export default class ProductItemMultiplePickingOld extends Component {
 
         if (this.isAccepted) {
             this.$this.removeClass(this.notPickedCLass);
-            this.iconSubstitute.classList.add(this.showIconSubstitute);
             this.acceptClickHandler();
         } else if (this.isNotFullyAccepted) {
             this.$this.removeClass(this.notPickedCLass);
-            this.iconSubstitute.classList.add(this.showIconSubstitute);
             this.acceptClickHandler();
         } else if (this.isPaused) {
             this.$this.removeClass(this.notPickedCLass);
-            this.iconSubstitute.classList.add(this.showIconSubstitute);
             this.pauseClickHandler();
         } else if (this.isDeclined) {
             this.declineClickHandler();
