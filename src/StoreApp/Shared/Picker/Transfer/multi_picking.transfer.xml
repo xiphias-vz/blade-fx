@@ -74,6 +74,7 @@
         <property name="quantity" type="int"/>
         <property name="quantityPicked" type="int"/>
         <property name="price" type="int"/>
+        <property name="priceAgg" type="int"/>
         <property name="priceUnit" type="string"/>
         <property name="priceContent" type="string"/>
         <property name="pricePerKg" type="int"/>

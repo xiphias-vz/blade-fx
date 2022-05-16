@@ -167,7 +167,7 @@ class MultiPickingController extends BaseOrderPickingController
                             if ($isCanceled) {
                                 foreach ($groupedOrderItems as $item) {
                                     if ($item['isCancelled'] == true) {
-                                        $this->getFacade()->removeCanceledAmountForRepickedItems($item['idOrder'], $item['ean'], $item['price']);
+                                        $this->getFacade()->removeCanceledAmountForRepickedItems($item['idOrder'], $item['ean'], $item['priceAgg']);
                                     }
                                 }
                             }

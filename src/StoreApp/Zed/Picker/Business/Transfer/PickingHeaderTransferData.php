@@ -556,7 +556,7 @@ class PickingHeaderTransferData
             $qry = "update spy_sales_order_item set item_paused = 0"
                 . ", fk_oms_order_item_state = " . $idState
                 . ", container_code = '' "
-                . ", refundable_amount = gross_price "
+                . ", refundable_amount = price_to_pay_aggregation "
                 . ", canceled_amount = 0 "
                 . ", current_picker_first_name = '" . $currentPickerFirstName . "'"
                 . ", current_picker_last_name = '" . $currentPickerLastName . "'"
@@ -605,11 +605,6 @@ class PickingHeaderTransferData
                         inner join spy_oms_order_item_state soois on ssoi.fk_oms_order_item_state = soois.id_oms_order_item_state
                     where ssoi.id_sales_order_item in(" . $whereList . ") and ssoi.fk_oms_order_item_state <> " . $idState;
             $data = $this->getResult($qry);
-
-            $qry = "select ssoi.fk_sales_order, ssoi.price, ssoi.sku
-                    from spy_sales_order_item ssoi
-                    where ssoi.id_sales_order_item in(" . $whereList . ")";
-            $dataForPartialyCanceledItems = $this->getResult($qry);
 
             $pickedItems = [];
             foreach ($data as $item) {
@@ -728,7 +723,7 @@ class PickingHeaderTransferData
         $sql = "SELECT m.id_order, m.order_reference, m.id_order_item
                         , m.id_product, m.ean, m.eanOrg
                         , m.rlz_regal
-                        , m.alternative_ean, m.quantity, m.price, m.price_unit, m.price_content
+                        , m.alternative_ean, m.quantity, m.price, m.price_agg, m.price_unit, m.price_content
                         , m.price_per_kg, m.sum_price, m.name, m.brand_name, m.weight
                         , m.is_paused, m.sequence, m.shelf, m.shelf_floor, m.shelf_field, m.aisle
                         , m.quantityPicked
@@ -744,7 +739,7 @@ class PickingHeaderTransferData
                         , sp.product_number as eanOrg
                         , ssoi3.rlz_regal as rlz_regal
                         , ssoi.alternative_ean
-                        , ssoi3.quantity as quantity, ssoi.price, ssoi.base_price_unit as price_unit, ssoi.base_price_content as price_content
+                        , ssoi3.quantity as quantity, ssoi.price, ssoi.price_to_pay_aggregation as price_agg, ssoi.base_price_unit as price_unit, ssoi.base_price_content as price_content
                         , ssoi.price_per_kg, ssoi3.sum_price as sum_price, ssoi.name, ssoi.brand as brand_name, ssoi.weight_per_unit as weight
                         , IFNULL(ssoi.item_paused, 0) as is_paused, ssoi.sequence, ssoi.shelf, ssoi.shelf_floor, ssoi.shelf_field,ssoi.aisle
                         , ssoi3.quantityPicked as quantityPicked
@@ -1225,9 +1220,9 @@ class PickingHeaderTransferData
                 $spySalesOrderTotalsEntity = SpySalesOrderTotalsQuery::create()
                     ->filterByFkSalesOrder($orderId)
                     ->findOneOrCreate();
-                $spySalesOrderTotalsEntity->setCanceledTotal($spySalesOrderTotalsEntity->getCanceledTotal() - $newPickedItem->getPrice());
-                $spySalesOrderTotalsEntity->setGrandTotal($spySalesOrderTotalsEntity->getGrandTotal() + $newPickedItem->getPrice());
-                $spySalesOrderTotalsEntity->setRefundTotal($spySalesOrderTotalsEntity->getRefundTotal() + $newPickedItem->getPrice());
+                $spySalesOrderTotalsEntity->setCanceledTotal($spySalesOrderTotalsEntity->getCanceledTotal() - $newPickedItem->getPriceToPayAggregation());
+                $spySalesOrderTotalsEntity->setGrandTotal($spySalesOrderTotalsEntity->getGrandTotal() + $newPickedItem->getPriceToPayAggregation());
+                $spySalesOrderTotalsEntity->setRefundTotal($spySalesOrderTotalsEntity->getRefundTotal() + $newPickedItem->getPriceToPayAggregation());
                 $spySalesOrderTotalsEntity->setTaxTotal($spySalesOrderTotalsEntity->getTaxTotal() + $taxAmount);
                 $spySalesOrderTotalsEntity->save();
             }
