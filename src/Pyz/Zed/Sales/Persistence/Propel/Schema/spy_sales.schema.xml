@@ -52,6 +52,7 @@
         <column name="discounted_price_from" type="TIMESTAMP" required="false" />
         <column name="discounted_price_to" type="TIMESTAMP" required="false" />
         <column name="is_substitution_found" type="BOOLEAN" required="false" defaultValue="false" />
+        <column name="rlz_regal" type="INTEGER" required="false"/>
         <index name="index-pick_zone">
             <index-column name="pick_zone"/>
         </index>

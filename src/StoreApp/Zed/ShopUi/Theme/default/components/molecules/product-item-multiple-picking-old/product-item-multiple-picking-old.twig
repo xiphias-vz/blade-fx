@@ -25,6 +25,7 @@
     itemPickingStartTime: '',
     isSubstitutionAllowed: '',
     isSubstitutionFound: '',
+    remainingDate: '',
     currentEnvironment: app.currentCodeBucket,
 } %}
 
@@ -36,6 +37,8 @@
 {% set ean = data.currentPositionData['ean'] %}
 {% set alternativeEan = data.currentPositionData['alternativeEan'] %}
 {% set pickingItemPosition = data.currentPositionData['pickingItemPosition'] %}
+{% set remaingDaysForPickUp = data.currentPositionData.rlzRegal %}
+{% set remainingDate = data.remainingDate %}
 
 {% set shelf = data.currentPositionData['shelf'] %}
 {% set shelfFloor = data.currentPositionData['shelfFloor'] %}
@@ -120,6 +123,11 @@
                             alt: title
                         }
                     } only %}
+                    <div class="remaining-pick-up-date">
+                        {% if remaingDaysForPickUp > 0 %}
+                            <strong>{{ remainingDate }}</strong>
+                        {% endif %}
+                    </div>
                 </div>
 
                 <div class="{{ config.name }}__generalInfo">

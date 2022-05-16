@@ -103,6 +103,7 @@
         <property name="isSubstitutionAllowedOnOrder" type="bool"/>
         <property name="currentPickerFirstName" type="string"/>
         <property name="currentPickerLastName" type="string"/>
+        <property name="rlzRegal" type="int"/>
     </transfer>
 
     <transfer name="PickingColorTransfer">

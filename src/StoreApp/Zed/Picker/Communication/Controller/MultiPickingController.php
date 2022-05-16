@@ -268,6 +268,10 @@ class MultiPickingController extends BaseOrderPickingController
             $isSubstitutionAllowedOnOrder = "0";
         }
 
+        $pickUpDate = $transfer->getOrder($orderPosition)->getRequestedDeliveryDate();
+        $remainingDays = $transfer->getOrderItem($orderItemPosition)->getRlzRegal();
+        $remainingDate = date('d.m.y', strtotime($pickUpDate . ' + ' . $remainingDays . ' days'));
+
         return [
             'currentPositionData' => $nextOIData,
             'orderPosition' => $orderPosition,
@@ -292,6 +296,8 @@ class MultiPickingController extends BaseOrderPickingController
             'itemPickingStartTime' => $itemPickingStartTime,
             'isSubstitutionAllowed' => $isSubstitutionAllowedOnOrder,
             'isSubstitutionFound' => $nextOIData->getIsSubstitutionFound() ?? '0',
+            'pickUpDate' => $pickUpDate,
+            'remainingDate' => $remainingDate,
         ];
     }
 

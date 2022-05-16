@@ -444,6 +444,13 @@ $setting-item-border-radius: rem(8);
             margin-right: rem(1);
         }
 
+        .remaining-pick-up-date {
+            font-size: rem(12);
+            position: absolute;
+            left: rem(152);
+            bottom: rem(-4);
+        }
+
     }
 }
 

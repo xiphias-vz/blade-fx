@@ -112,6 +112,7 @@ class ProductMapping
         'referenceUnit' => '',
         'sortingorder' => '',
         'billName' => '',
+        'rlzRegal' => '',
     ];
 
     /**
@@ -140,6 +141,7 @@ class ProductMapping
         'sortingorder' => ['sortingorder'],
         'assortmentZone' => ['assortmentzone'],
         'billName' => ['billName'],
+        'rlzRegal' => ['rlzRegal'],
     ];
 
     /**

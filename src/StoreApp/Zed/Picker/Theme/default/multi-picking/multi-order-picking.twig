@@ -24,6 +24,7 @@
     itemPickingStartTime: itemPickingStartTime,
     isSubstitutionAllowed: isSubstitutionAllowed,
     isSubstitutionFound: isSubstitutionFound,
+    remainingDate: remainingDate,
 } %}
 
  {% if data.currentPositionData is defined %}
@@ -103,7 +104,8 @@
                 orderItemStatus: data.orderItemStatus,
                 itemPickingStartTime: data.itemPickingStartTime,
                 isSubstitutionAllowed: data.isSubstitutionAllowed,
-                isSubstitutionFound: data.isSubstitutionFound
+                isSubstitutionFound: data.isSubstitutionFound,
+                remainingDate: remainingDate,
             },
             attributes: {
                 'data-sku': currentPosition.ean,
@@ -145,7 +147,8 @@
                 orderItemStatus: data.orderItemStatus,
                 itemPickingStartTime: data.itemPickingStartTime,
                 isSubstitutionAllowed: data.isSubstitutionAllowed,
-                isSubstitutionFound: data.isSubstitutionFound
+                isSubstitutionFound: data.isSubstitutionFound,
+                remainingDate: remainingDate,
             },
             attributes: {
                 'data-sku': currentPosition.ean,

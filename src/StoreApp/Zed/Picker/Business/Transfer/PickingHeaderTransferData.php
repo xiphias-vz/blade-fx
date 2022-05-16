@@ -727,6 +727,7 @@ class PickingHeaderTransferData
         $whereList = implode($transfer->getIdOrderArray(), ",");
         $sql = "SELECT m.id_order, m.order_reference, m.id_order_item
                         , m.id_product, m.ean, m.eanOrg
+                        , m.rlz_regal
                         , m.alternative_ean, m.quantity, m.price, m.price_unit, m.price_content
                         , m.price_per_kg, m.sum_price, m.name, m.brand_name, m.weight
                         , m.is_paused, m.sequence, m.shelf, m.shelf_floor, m.shelf_field, m.aisle
@@ -741,6 +742,7 @@ class PickingHeaderTransferData
                         , sp.id_product
                         , case when sp.product_number like '%\_____' then SUBSTRING_INDEX(sp.product_number, '_', 1) else sp.product_number end as ean
                         , sp.product_number as eanOrg
+                        , ssoi3.rlz_regal as rlz_regal
                         , ssoi.alternative_ean
                         , ssoi3.quantity as quantity, ssoi.price, ssoi.base_price_unit as price_unit, ssoi.base_price_content as price_content
                         , ssoi.price_per_kg, ssoi3.sum_price as sum_price, ssoi.name, ssoi.brand as brand_name, ssoi.weight_per_unit as weight
@@ -768,6 +770,7 @@ class PickingHeaderTransferData
 								, sum(case when sit2.name = 'picked' or sit2.name = 'ready for selecting shelves' then ssoi2.quantity else 0 end) as quantityPicked
 								, sum(case when sit2.name = 'cancelled' then 1 else 0 end) as canceled_count
 								, ssoi2.product_number
+							    , ssoi2.rlz_regal
 							from spy_sales_order_item ssoi2
 								inner join spy_oms_order_item_state sit2 on ssoi2.fk_oms_order_item_state = sit2.id_oms_order_item_state
 							where ssoi2.fk_sales_order in (" . $whereList . ")

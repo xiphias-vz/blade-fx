@@ -48,6 +48,7 @@ class OrderItemAttributesExpanderPreSavePlugin extends AbstractPlugin implements
         $salesOrderItemEntity->setBrand($itemTransfer->getBrand());
         $salesOrderItemEntity->setBasePriceContent((int)$itemTransfer->getBasePriceContent() * self::DEFAULT_PRICE_MULTIPLICATION);
         $salesOrderItemEntity->setBasePriceUnit($itemTransfer->getBasePriceUnit());
+        $salesOrderItemEntity->setRlzRegal($itemTransfer->getRlzRegal());
 
         return $salesOrderItemEntity;
     }

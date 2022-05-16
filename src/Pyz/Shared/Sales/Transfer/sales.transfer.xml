@@ -57,6 +57,7 @@
         <property name="currentPickerFirstName" type="string"/>
         <property name="currentPickerLastName" type="string"/>
         <property name="billName" type="string"/>
+        <property name="rlzRegal" type="int"/>
     </transfer>
 
     <transfer name="ProductConcrete">

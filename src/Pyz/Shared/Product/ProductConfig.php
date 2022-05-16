@@ -65,4 +65,5 @@ class ProductConfig extends SprykerProductConfigAlias
     public const GLUTENFREI = 'glutenfrei';
     public const FAIRTRADE = 'fairtrade';
     public const BILLNAME = 'billName';
+    public const RLZREGAL = 'rlz_regal';
 }
