@@ -160,7 +160,6 @@ class ProductAbstractWriterStep extends PublishAwareStep implements DataImportSt
         unset($productAttributes[ProductConfig::KEY_DESCRIPTION]);
         unset($productAttributes[ProductConfig::KEY_PRODUCT_NUMBER]);
         unset($productAttributes[ProductConfig::KEY_PRODUCT_NUMBER]);
-        unset($productAttributes[ProductConfig::KEY_SAP_NUMBER]);
 
         return $productAttributes;
     }

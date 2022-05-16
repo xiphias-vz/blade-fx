@@ -13,7 +13,14 @@
 {% block body %}
 
                 {% if data.product['idProductConcrete'] is defined %}
-                    <div><div class="{{ config.name }}__headline"><strong>{{ 'product.info.additional.article_number' | trans }}:</strong></div><p class="{{ config.name }}__attribute">{{ data.product['idProductConcrete'] }}</p></div>
+                    <div>
+                        <div class="{{ config.name }}__headline">
+                            <strong>{{ 'product.info.additional.article_number' | trans }}:</strong>
+                        </div>
+                        {% if data.productAttributes['sapnumber'] is defined %}
+                        <p class="{{ config.name }}__attribute"> {{ data.productAttributes['sapnumber'] }} </p>
+                        {% endif %}
+                    </div>
                 {% endif %}
                 {% if data.product['sku'] is defined %}
 
