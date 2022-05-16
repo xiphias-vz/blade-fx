@@ -1,24 +1,46 @@
 @mixin shop-ui-breadcrumb-step($name: '.breadcrumb-step') {
     #{$name} {
         display: flex;
-        font-size: rem(12);
+        font-size: rem(14);
+
+        &:last-of-type > &__separator {
+            display: none;
+        }
+
+        &:last-of-type > &__link {
+            font-weight: 600;
+        }
 
         &__link {
+            font-family: $setting-font-family-additional;
             @include helper-effect-transition(color);
             text-decoration: none;
             color: $setting-color-tentgray;
-            font-size: rem(13);
 
             &:hover {
                 color: $setting-color-fresh-orange;
             }
         }
 
+        &__link-CZ {
+            font-family: $setting-font-family-fira-sans;
+            @include helper-effect-transition(color);
+            text-decoration: none;
+            color: $setting-color-tentgray;
+            font-size: rem(13);
+            color: $setting-color-tentgray;
+
+            &:hover {
+                color: $setting-color-globusCZ-main-green;
+            }
+        }
+
         &__separator {
             width: rem(25);
-            color: $setting-color-gray-3;
+            color: $setting-color-tentgray;
             position: relative;
             display: none;
+            align-self: center;
         }
 
         &__separator {
@@ -42,22 +64,15 @@
             margin: 0;
             white-space: nowrap;
 
-            &:last-child {
-                /*padding-right: 0;*/
-
-                /*&::after {
-                    right: rem(-3);
-                }*/
-            }
-
             #{$name}__link {
+                color: $setting-color-fresh-orange;
                 font-size: rem(18);
                 text-decoration: none;
             }
 
             #{$name}__link-CZ {
-                color: $setting-color-globusCZ-main-green;
                 text-decoration: none;
+                color: $setting-color-globusCZ-main-green;
             }
         }
 

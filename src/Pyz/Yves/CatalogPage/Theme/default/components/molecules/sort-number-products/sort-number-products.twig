@@ -11,6 +11,7 @@
         <div class="col col--lg-10 col--xl-10" style="z-index: 10">
             <div class="grid grid--right">
                 {% block selects %}
+                    {% if app.currentCodeBucket =='DE' %}
                     <div class="col col--sm-12 col--md-12" data-block-to="js-filter-section__sorting" data-breakpoint="769">
                         {% embed molecule('custom-select') with {
                             modifiers: ['hollow'],
@@ -35,6 +36,32 @@
                             {% endblock %}
                         {% endembed %}
                     </div>
+                    {% else %}
+                    <div class="col col--sm-12 col--md-12" data-block-to="js-filter-section__sorting" data-breakpoint="769">
+                        {% embed molecule('custom-select') with {
+                            modifiers: ['hollow', 'style-CZ'],
+                            class: 'float-right',
+                            attributes: {
+                                name: 'ipp',
+                                'config-theme': 'secondary',
+                            },
+                            embed: {
+                                pagination: data.pagination,
+                                parentJsName: data.parentJsName,
+                            },
+                        } only %}
+                            {% block selectClass %}{{ parent() }} {{ embed.parentJsName ? embed.parentJsName ~ '__sort-trigger' }}{% endblock %}
+
+                            {% block options %}
+                                {% for limit in embed.pagination.config.validItemsPerPageOptions %}
+                                    {% set selectedAttribute = (limit == embed.pagination.currentItemsPerPage) ? 'selected' %}
+
+                                    <option value="{{ limit }}" {{ selectedAttribute }}>{{ limit }}</option>
+                                {% endfor %}
+                            {% endblock %}
+                        {% endembed %}
+                    </div>
+                    {% endif %}
 
                 {% endblock %}
             </div>

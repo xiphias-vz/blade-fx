@@ -254,20 +254,20 @@ document.addEventListener("ffReady", function (event) {
     resultDispatcher.addCallback('ppp', function (pppData) {
         const number = 48;
         pppData.forEach(pppItem => {
-           if (pppItem['value'] < number) {
-               if (pppItem['value'] * 2 !== number) {
-                   pppItem['value'] = pppItem['value'] * 2;
-               }
-           }
+            if (pppItem['value'] < number) {
+                if (pppItem['value'] * 2 !== number) {
+                    pppItem['value'] = pppItem['value'] * 2;
+                }
+            }
         });
     });
 
     resultDispatcher.addCallback('suggest', function(resultData) {
         resultData.forEach(item => {
-           if(!item.attributes.ImageUrl.includes('/thumb_'))
-           {
-               item.attributes.ImageUrl = item.attributes.ImageUrl.replace('.com/', '.com/thumb_');
-           }
+            if(!item.attributes.ImageUrl.includes('/thumb_'))
+            {
+                item.attributes.ImageUrl = item.attributes.ImageUrl.replace('.com/', '.com/thumb_');
+            }
         });
     });
 
@@ -587,12 +587,12 @@ function toggleNavigationCategoriesMenu(ev){
 }
 
 function toggleMobileNavigationCategoriesMenu(ev){
-   var el = ev.parentElement.closest(".ffw-item-caption").nextSibling;
-   if(el.classList.contains("ffw-item-container")){
-       if(el.children.length < 1){
-           document.querySelector(".header__navigation-top > button").click();
-       }
-   }
+    var el = ev.parentElement.closest(".ffw-item-caption").nextSibling;
+    if(el.classList.contains("ffw-item-container")){
+        if(el.children.length < 1){
+            document.querySelector(".header__navigation-top > button").click();
+        }
+    }
 }
 
 function addCommaAfterBrand(element) {
@@ -604,7 +604,7 @@ function addCommaAfterBrand(element) {
                 brands[0].textContent = brands[0].textContent.trim() + ', ';
             }
         }else{
-         brands[0].style.display = "none";
+            brands[0].style.display = "none";
         }
     }
 }

@@ -37,7 +37,7 @@
                     {% else %}
                         <li class="menu__item">
                             {% include inputComponent with {
-                                modifiers: modifiers,
+                                modifiers: ['category-filter', 'font-CZ'],
                                 class: data.parentJsName,
                                 attributes: {
                                     name: data.filter.config.parameterName ~ (isMultiSelect ? '[]' : ''),

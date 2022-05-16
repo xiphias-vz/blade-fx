@@ -24,28 +24,37 @@
             <ff-paging-item type="currentLink +1">{{caption}}</ff-paging-item>
             <ff-paging-item type="currentLink +2">{{caption}}</ff-paging-item>
             <span class="pagingDots">...</span>
-            <ff-paging-item type="lastLink">{{caption}}</ff-paging-item>
             <ff-paging-item class="paggingArrow" type="nextLink"><svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" width="12" height="12" viewBox="0 0 24 24"><path d="M5 3l3.057-3 11.943 12-11.943 12-3.057-3 9-9z"/></svg></ff-paging-item>
-
+            <ff-paging-item class="paggingArrow" type="lastLink"><svg width="12" height="12" viewBox="0 0 12 12"  fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+            <path d="M1.28957 2.10995L5.17957 5.99995L1.28957 9.88995C0.89957 10.2799 0.89957 10.9099 1.28957 11.2999C1.67957 11.6899 2.30957 11.6899 2.69957 11.2999L7.28957 6.70995C7.67957 6.31995 7.67957 5.68995 7.28957 5.29995L2.69957 0.699946C2.30957 0.309946 1.67957 0.309946 1.28957 0.699946C0.90957 1.08995 0.90957 1.72995 1.28957 2.10995ZM11.9996 -5.34058e-05C12.5496 -5.34058e-05 12.9996 0.449947 12.9996 0.999947V10.9999C12.9996 11.5499 12.5496 11.9999 11.9996 11.9999C11.4496 11.9999 10.9996 11.5499 10.9996 10.9999V0.999947C10.9996 0.449947 11.4496 -5.34058e-05 11.9996 -5.34058e-05Z"/>
+            </svg></ff-paging-item>
         </ff-paging-set>
 
         <ff-paging-set id="paggingSet2" state="currentPage > 3 && pageCount-currentPage >= 3">
+            <ff-paging-item class="paggingArrow" type="firstLink">
+            <svg width="12" height="12" viewBox="0 0 12 12"  fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+            <path d="M11.7 9.88995L7.82 5.99995L11.71 2.10995C12.1 1.71995 12.1 1.08995 11.71 0.699946C11.32 0.309946 10.69 0.309946 10.3 0.699946L5.71 5.28995C5.32 5.67995 5.32 6.30995 5.71 6.69995L10.3 11.2899C10.69 11.6799 11.32 11.6799 11.71 11.2899C12.09 10.9099 12.09 10.2699 11.7 9.88995ZM1 -5.34058e-05C1.55 -5.34058e-05 2 0.449947 2 0.999947V10.9999C2 11.5499 1.55 11.9999 1 11.9999C0.45 11.9999 0 11.5499 0 10.9999V0.999947C0 0.449947 0.45 -5.34058e-05 1 -5.34058e-05Z"/>
+            </svg>
+            </ff-paging-item>
             <ff-paging-item class="paggingArrow" type="previousLink"><svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" width="12" height="12" viewBox="0 0 24 24"><path d="M16.67 0l2.83 2.829-9.339 9.175 9.339 9.167-2.83 2.829-12.17-11.996z"/></svg></ff-paging-item>
-            <ff-paging-item type="firstLink">{{caption}}</ff-paging-item>
-            <span class="pagingDots">...</span>
             <ff-paging-item type="currentLink -1">{{caption}}</ff-paging-item>
             <ff-paging-item type="currentLink">{{caption}}</ff-paging-item>
+            <span class="pagingDots">...</span>
             <ff-paging-item type="currentLink +1">{{caption}}</ff-paging-item>
             <ff-paging-item type="currentLink +2">{{caption}}</ff-paging-item>
-            <span class="pagingDots">...</span>
-            <ff-paging-item type="lastLink">{{caption}}</ff-paging-item>
             <ff-paging-item class="paggingArrow" type="nextLink"><svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" width="12" height="12" viewBox="0 0 24 24"><path d="M5 3l3.057-3 11.943 12-11.943 12-3.057-3 9-9z"/></svg></ff-paging-item>
-
+            <ff-paging-item class="paggingArrow" type="lastLink"><svg width="12" height="12" viewBox="0 0 12 12"  fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+            <path d="M1.28957 2.10995L5.17957 5.99995L1.28957 9.88995C0.89957 10.2799 0.89957 10.9099 1.28957 11.2999C1.67957 11.6899 2.30957 11.6899 2.69957 11.2999L7.28957 6.70995C7.67957 6.31995 7.67957 5.68995 7.28957 5.29995L2.69957 0.699946C2.30957 0.309946 1.67957 0.309946 1.28957 0.699946C0.90957 1.08995 0.90957 1.72995 1.28957 2.10995ZM11.9996 -5.34058e-05C12.5496 -5.34058e-05 12.9996 0.449947 12.9996 0.999947V10.9999C12.9996 11.5499 12.5496 11.9999 11.9996 11.9999C11.4496 11.9999 10.9996 11.5499 10.9996 10.9999V0.999947C10.9996 0.449947 11.4496 -5.34058e-05 11.9996 -5.34058e-05Z"/>
+            </svg></ff-paging-item>
         </ff-paging-set>
 
         <ff-paging-set id="paggingSet3" state="pageCount-currentPage < 3 && currentPage > 3">
+            <ff-paging-item class="paggingArrow" type="firstLink">
+            <svg width="12" height="12" viewBox="0 0 12 12"  fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+            <path d="M11.7 9.88995L7.82 5.99995L11.71 2.10995C12.1 1.71995 12.1 1.08995 11.71 0.699946C11.32 0.309946 10.69 0.309946 10.3 0.699946L5.71 5.28995C5.32 5.67995 5.32 6.30995 5.71 6.69995L10.3 11.2899C10.69 11.6799 11.32 11.6799 11.71 11.2899C12.09 10.9099 12.09 10.2699 11.7 9.88995ZM1 -5.34058e-05C1.55 -5.34058e-05 2 0.449947 2 0.999947V10.9999C2 11.5499 1.55 11.9999 1 11.9999C0.45 11.9999 0 11.5499 0 10.9999V0.999947C0 0.449947 0.45 -5.34058e-05 1 -5.34058e-05Z"/>
+            </svg>
+            </ff-paging-item>
             <ff-paging-item class="paggingArrow" type="previousLink"><svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" width="12" height="12" viewBox="0 0 24 24"><path d="M16.67 0l2.83 2.829-9.339 9.175 9.339 9.167-2.83 2.829-12.17-11.996z"/></svg></ff-paging-item>
-            <ff-paging-item type="firstLink">{{caption}}</ff-paging-item>
             <span class="pagingDots">...</span>
             <ff-paging-item type="currentLink -1">{{caption}}</ff-paging-item>
             <ff-paging-item type="currentLink">{{caption}}</ff-paging-item>

@@ -51,9 +51,18 @@
         }
 
         &--custom {
-            padding: rem(12) rem(25) !important;
-            background-color: white !important;
-            border: rem(1) solid lightgrey !important;
+            padding: rem(12) rem(25);
+            background-color: white;
+            border: rem(1) solid lightgrey;
+        }
+
+        &--custom-cz{
+            min-width: rem(80);
+            border: rem(1) solid $setting-color-globusCZ-main-green;
+            padding: rem(12) rem(25);
+            background-color: white;
+            border-radius: rem(64);
+            color: $setting-color-globusCZ-main-green;
         }
 
         @content;

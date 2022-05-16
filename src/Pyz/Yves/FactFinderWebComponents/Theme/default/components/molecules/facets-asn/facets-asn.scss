@@ -101,7 +101,7 @@
                         color: $setting-color-gray-13;
                     }
 
-                    .clusterLevel1:hover {
+                    .clusterLevel1:hover, .clusterLevel2:hover, .clusterLevel3:hover {
                         color: $setting-color-orange;
                         cursor: pointer;
                     }

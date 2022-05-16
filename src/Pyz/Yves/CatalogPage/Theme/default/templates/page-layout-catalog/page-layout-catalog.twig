@@ -82,11 +82,11 @@
             <div class="container__inner spacing-bottom spacing-bottom--inner spacing-bottom--bigger is-hidden-lg-only">
                 <div class="box d-flex flex-center is-hidden-sm-md">
                     {% if app.currentCodeBucket == 'DE' %}
-                        <h1 class="spacing-bottom spacing-bottom--inner" id="searchResultCountTitle">{{ data.title }} </h1>
-                        <span class="text-secondary text-medium m-left-m m-bottom-xs" id="searchResultCount" data-text="{{ 'catalog.itemsFound' | trans }}" data-title="{{ 'global.search.results.for' | trans }}"></span>
+                        <h1 class="spacing-bottom spacing-bottom--inner category-title" id="searchResultCountTitle">{{ data.title }} </h1>
+                        <span class="text-secondary text-medium m-left-m m-bottom-xs category-number-of-products" id="searchResultCount" data-text="{{ 'catalog.itemsFound' | trans }}" data-title="{{ 'global.search.results.for' | trans }}"></span>
                     {% else %}
-                        <h1 class="title--heading-CZ spacing-bottom spacing-bottom--inner title">{{ data.title }}</h1>
-                        <span class="text-secondary text-medium m-left-m m-bottom-xs">{{ 'catalog.itemsFound' | trans({ '%numFound%': data.pagination.numFound }) }}</span>
+                        <h1 class="title--heading-CZ spacing-bottom spacing-bottom--inner category-title">{{ data.title }}</h1>
+                        <span class="text-secondary text-medium m-left-m m-bottom-xs category-number-of-products">{{ 'catalog.itemsFound' | trans({ '%numFound%': data.pagination.numFound }) }}</span>
                     {% endif %}
 
                 </div>
@@ -162,7 +162,7 @@
                                             }
                                         } only %}
                                     {% endif %}
-                                    <div id="firstSortElement" class="col col--lg-8 col--md-6 col--sm-2 col--right" style="z-index: 10">
+                                    <div id="firstSortElement" class="col col--md-6 col--sm-2 col--right" style="z-index: 10">
                                         {% if data.currentCodeBucket != 'DE' %}
                                             {% include molecule('sort-number-products', 'CatalogPage') with {
                                                 data: {

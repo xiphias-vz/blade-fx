@@ -55,7 +55,7 @@
         {% endembed %}
     {% else %}
         {% embed molecule('custom-select-cz') with {
-            modifiers: data.additionalModifiers,
+            modifiers: ['header-cz'],
             attributes: {
                 'config-theme': 'secondary',
                 'additional-class-name': data.additionalClassName,

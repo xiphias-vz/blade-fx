@@ -1,7 +1,40 @@
 @mixin catalog-page-filter-rating($name: '.search-headline') {
     #{$name} {
+
         &.hide {
             visibility: hidden;
+        }
+
+        &__title {
+            font-family: $setting-font-family-additional;
+            color: $setting-color-tentgray;
+            font-size: rem(24);
+            font-weight: fw(semibold);
+            @include helper-breakpoint-media-max($md-min) {
+                font-size: rem(20);
+            }
+        }
+
+        &__title-cz {
+            font-family: $setting-font-family-fira-sans;
+            color: $setting-color-tentgray;
+            font-weight: fw(normal);
+        }
+
+        &__number-of-products{
+            font-family: $setting-font-family-additional;
+            color: $setting-color-stonegray-2;
+            font-size: rem(20);
+            font-weight: fw(medium);
+            @include helper-breakpoint-media-max($md-min) {
+                font-size: rem(16);
+            }
+        }
+
+        &__number-of-products-cz{
+            font-family: $setting-font-family-fira-sans;
+            color: $setting-color-stonegray-2;
+            font-weight: fw(medium);
         }
     }
 }

@@ -34,7 +34,7 @@
             } %}
 
             {% embed molecule('toggler-item') with {
-                modifiers: ['border-without-top', 'filter-sidebar'],
+                modifiers: ['filter-sidebar'],
                 data: {
                     title: 'catalog.sort.by' | trans,
                     triggerClass: data.parentJsName ~ '__toggler-trigger',
@@ -50,7 +50,7 @@
                 {% block arrow %}
                     <div class="{{ config.name }}__arrow">
                         {% include atom('icon') with {
-                            class: config.name ~ '__arrow-icon',
+                            class: config.name ~ '__arrow-icon-cz',
                             modifiers: ['xsmall'],
                             data: {
                                 name: 'arrow-down',

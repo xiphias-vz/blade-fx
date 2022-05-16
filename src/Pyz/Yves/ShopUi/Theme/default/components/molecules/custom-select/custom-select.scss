@@ -4,6 +4,7 @@
     @include shop-ui-select($name) {
         line-height: 0;
 
+
         &__select {
             font-size: inherit;
             font-weight: normal;
@@ -68,6 +69,43 @@
         &--hollow {
             .select2-selection {
                 text-align: right;
+            }
+        }
+
+        &--style-CZ {
+            min-width: rem(80);
+            border: rem(1) solid $setting-color-globusCZ-main-green;
+            background-color: transparent;
+            border-radius: rem(64);
+            font: rem(15) $setting-font-family-fira-sans;
+            .select2-selection--single{
+                min-width: rem(80);
+                border: rem(1) solid $setting-color-globusCZ-main-green;
+                background-color: transparent;
+                border-radius: rem(64);
+            }
+
+            .custom-select__select {
+                min-width: rem(80);
+                border: rem(1) solid $setting-color-globusCZ-main-green;
+                background-color: transparent;
+                border-radius: rem(64);
+                color: $setting-color-globusCZ-main-green;
+                padding-top: rem(9);
+                padding-bottom: rem(9);
+                padding-left: rem(25);
+                font: fw(normal) rem(16) $setting-font-family-fira-sans;
+            }
+
+
+            .select2-selection--single .select2-selection__rendered {
+                color: $setting-color-globusCZ-main-green;
+                padding: rem(9);
+                font: fw(normal) rem(16) $setting-font-family-fira-sans;
+            }
+
+            .custom-select__caret {
+                color: $setting-color-globusCZ-main-green;
             }
         }
 

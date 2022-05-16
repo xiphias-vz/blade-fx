@@ -105,7 +105,7 @@
     }
 
     .select2-results__option {
-        color: $setting-color-gray-6;
+        color: $setting-color-gray-9;
         font-size: rem(16);
         font-weight: fw(regular);
         line-height: rem(26);
@@ -152,6 +152,7 @@
                 background: url('../images/icon-chosen.svg') no-repeat 0 0;
             }
         }
+
 
         &--secondary {
             .select2-results {

@@ -50,6 +50,20 @@
             flex-grow: 1;
         }
 
+        .category-title {
+            font-family: $setting-font-family-additional;
+            color: $setting-color-tentgray;
+            font-size: rem(31);
+            font-weight: fw(semibold);
+        }
+
+        .category-number-of-products{
+            font-family: $setting-font-family-additional;
+            color: $setting-color-stonegray-2;
+            font-size: rem(20);
+            font-weight: fw(medium);
+        }
+
         &__content {
             flex-grow: 1;
             flex-shrink: 0;
@@ -190,16 +204,6 @@
                 }
                 .product__item3 {
                     padding: rem(5) rem(70) rem(5) rem(58);
-                }
-            }
-            .sorting-toggler {
-                .toggler-item {
-                    .title {
-                        font-size: inherit;
-                        height: rem(38);
-                        display: flex;
-                        align-items: center;
-                    }
                 }
             }
         }

@@ -236,6 +236,10 @@
             height: rem(20);
             cursor: pointer;
 
+            &-icon-cz {
+                fill: $setting-color-globusCZ-main-green;
+            }
+
             &--filter {
                 top: 0;
                 right: rem(-20);

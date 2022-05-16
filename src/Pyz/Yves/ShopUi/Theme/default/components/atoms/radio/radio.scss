@@ -39,6 +39,13 @@
         font-weight: fw(medium);
         color: $setting-color-gray-9;
         cursor: pointer;
+
+        &--font-CZ {
+            color: $setting-color-gray-9;
+            &:hover {
+             color: $setting-color-globusCZ-hover;
+            }
+        }
     }
 
     &__check {
@@ -49,6 +56,10 @@
             position: static;
             background: none;
             color: $setting-color-gray-11;
+        }
+
+        &--font-CZ {
+            fill: $setting-color-globusCZ-main-green
         }
     }
 
@@ -68,7 +79,7 @@
         }
 
         & ~ #{$name}__label {
-            color: $setting-color-black;
+            color: $setting-color-globusCZ-main-green;
         }
     }
 
