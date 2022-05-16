@@ -242,21 +242,6 @@
             }
         }
 
-        &--success-page {
-            #{$name}__content {
-                background-image: url('../images/welcome.jpg');
-                background-repeat: no-repeat;
-                background-size: cover;
-                background-position: center;
-                margin-bottom: 0;
-                height: 100%;
-
-                @include helper-breakpoint-media-min($lg-min) {
-                    margin-bottom: rem(100);
-                }
-            }
-        }
-
         &--error {
 
             .title--general {

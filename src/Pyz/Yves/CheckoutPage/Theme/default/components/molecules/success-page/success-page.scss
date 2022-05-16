@@ -1,53 +1,76 @@
 @mixin checkout-page-success($name: '.success-page') {
     #{$name} {
-        padding: rem(24) rem(16);
+        padding: rem(85) rem(16);
 
-        @include helper-breakpoint-media-min($lg-min) {
-            padding: rem(85) rem(16);
+        @include helper-breakpoint-media-max($md-max) {
+
         }
 
         &__container {
-            padding: rem(60) rem(40);
             background-color: $setting-color-white;
-            border-top: rem(4) solid $setting-color-globus-darkOrange;
+
+            .success-title {
+                @include helper-breakpoint-media-max($l-max) {
+                    position: relative;
+                    top: rem(144);
+                }
+            }
 
             .not-linked-payback {
                 display: flex;
                 flex-direction: row;
-                width: 80%;
-                margin: 3rem auto 0 auto;
+                width: 100%;
+                margin: rem(48) 0 0 0;
                 padding-top: 30px;
-                border-top: 1px solid #000;
+                border-top: 1px solid $setting-color-stonegray-2;
 
-                .payback-img {
-                    width: 250px;
-                    height:150px;
-                    margin-left: auto;
-                    display: block;
+                .badge-pdp {
+                    width: 16%;
+                    text-align: start;
+
+                    @include helper-breakpoint-media-max($l-max) {
+                        margin: 0 auto rem(30);
+                        width: 100%;
+                        text-align: center;
+                    }
+
+                    img {
+                        width: rem(140);
+                        height: rem(55);
+                    }
+                }
+
+                .payback-discovery {
+                    margin-top: rem(30);
                 }
 
                 @include helper-breakpoint-media-max($l-max)  {
                     flex-direction: column;
+                    width: 80%;
+                    margin: auto;
 
-                    .info-left-banner {
-                        p {
-                            width: 100%;
-                            .payback-tip {
+                    .info-banner {
+                        .info-left-banner {
+                            .title {
+                                justify-content: center;
+                            }
+
+                            p {
                                 width: 100%;
-                                text-align: center;
+
+                                .payback-tip {
+                                    width: 100%;
+                                    text-align: center;
+                                }
+                            }
+
+                            .payback-discovery {
+                                width: 100% !important;
+                                margin-top: 10px;
+                                margin-bottom: 10px;
                             }
                         }
-
-                        .payback-discovery {
-                            width: 100% !important;
-                            margin-top: 10px;
-                            margin-bottom: 10px;
-                        }
                     }
-                    .payback-img  {
-                        margin: 0 auto;
-                    }
-
                 }
 
                 .info-left-banner {
@@ -70,18 +93,48 @@
                         display: flex;
                         margin-bottom: 10px;
                     }
+
+                    .check-orange {
+                        width: rem(22);
+                        height: rem(16);
+                    }
                 }
 
                 .title {
                     display: flex;
                     margin-bottom: 10px;
-                    margin-left: 10px;
+                }
 
-                    h3 {
-                        margin-left: 10px;
+            }
+
+            .flex-container {
+                display: flex;
+
+                @include helper-breakpoint-media-max($l-max) {
+                    flex-direction: column;
+                }
+
+                .abhol-service {
+                    position: relative;
+                    bottom: rem(145);
+
+                    @include helper-breakpoint-media-max($l-max) {
+                        bottom: rem(128);
+                    }
+
+                    img {
+                        width: rem(144);
+                        height: rem(144);
                     }
                 }
 
+                .success-information-holder {
+                    color: $setting-color-tentgray;
+
+                    .support-link {
+                        color: $setting-color-fresh-orange;
+                    }
+                }
             }
 
         }
