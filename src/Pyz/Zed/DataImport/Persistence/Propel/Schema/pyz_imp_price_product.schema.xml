@@ -13,10 +13,11 @@
         <column name="promotionend" type="TIMESTAMP"/>
         <column name="dtImported" type="TIMESTAMP"/>
 
-<!--        <index>-->
-<!--            <index-column name="store"/>-->
-<!--            <index-column name="sapnumber"/>-->
-<!--        </index>-->
+        <index name="pyz_imp_price_product_store_IDX">
+            <index-column name="store"/>
+            <index-column name="sapnumber"/>
+            <index-column name="gtin"/>
+        </index>
 
 <!--        <index>-->
 <!--            <index-column name="store"/>-->
