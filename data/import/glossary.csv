@@ -249,9 +249,9 @@ page.checkout.address.phone.paragraph1,Please enter or check your phone number!,
 page.checkout.address.phone.paragraph2,"Abychom mohli vaši objednávku bez problémů zpracovat, potřebujeme telefonní číslo, abychom vás mohli v případě potřeby kontaktovat. Vaše údaje budou vyplněny nebo nahrazeny na vašem Globus účtu.",cs_CZ
 page.checkout.address.phone.paragraph2,Zur reibungsfreien Abwicklung ihrer Bestellung benötigen wir eine Telefonnummer um Sie gegebenfalls kontaktieren zu können. Ihre Angaben werden in Ihrem Globus Konto vervollständigt oder ersetzt.,de_DE
 page.checkout.address.phone.paragraph2,"In order to process your order smoothly, we need a telephone number so that we can contact you if necessary. Your details will be completed or replaced in your Globus account.",en_US
-page.checkout.address.phone.paragraph3,"Telefon (je vyžadován alespoň jeden údaj)*",cs_CZ
-page.checkout.address.phone.paragraph3,"Telefon (mind. eine Angabe ist Pflicht)*",de_DE
-page.checkout.address.phone.paragraph3,"Telefon (mind. eine Angabe ist Pflicht)*",en_US
+page.checkout.address.phone.paragraph3,"Telefon (je vyžadován alespoň jeden údaj)",cs_CZ
+page.checkout.address.phone.paragraph3,"Telefon (mind. eine Angabe ist Pflicht)",de_DE
+page.checkout.address.phone.paragraph3,"Telefon (mind. eine Angabe ist Pflicht)",en_US
 page.checkout.shipment.heading,"2. Výběr způsobu dodání",cs_CZ
 page.checkout.shipment.heading,2. Lieferart wählen,de_DE
 page.checkout.shipment.heading,2. Shipping Method,en_US
@@ -867,7 +867,7 @@ customer.address.address3,Additional address field,en_US
 customer.address.address3,Adresszusatz,de_DE
 customer.address.address3,"Další adresa",cs_CZ
 customer.address.zip_code,Postcode,en_US
-customer.address.zip_code,PLZ,de_DE
+customer.address.zip_code,"Postleitzahl",de_DE
 customer.address.zip_code,"PSČ",cs_CZ
 customer.address.zip_code_invalid,"Dear customer, unfortunately we cannot serve you in your area.",en_US
 customer.address.zip_code_invalid,"Sehr geehrter Kunde, leider können wir Sie in Ihrer Nähe nicht bedienen.",de_DE
@@ -1587,11 +1587,11 @@ checkout.customer.auth_as_login,Login,en_US
 checkout.customer.auth_as_login,Anmelden,de_DE
 checkout.customer.auth_as_login,"Přihlášení",cs_CZ
 checkout.step.customer.desc.form,Please enter your e-mail adress. You need this to log into your personal customer account,en_US
-checkout.step.customer.desc.form,Bitte geben Sie Ihre E-Mail-Adresse an. Diese benötigen Sie zur Anmeldung in Ihrem persönlichen Kundenkonto,de_DE
+checkout.step.customer.desc.form,"Bitte geben Sie Ihre E-Mail-Adresse an. Diese benötigen Sie zur Anmeldung in Ihrem persönlichen Kundenkonto.",de_DE
 checkout.step.customer.title,Login,en_US
 checkout.step.customer.title,Anmelden,de_DE
 checkout.step.customer.login.emailField.label,Email address or customer card number,en_US
-checkout.step.customer.login.emailField.label,"E-mail Adresse oder Kundenkartennummer",de_DE
+checkout.step.customer.login.emailField.label,"E-Mail Adresse oder Kundenkartennummer",de_DE
 checkout.step.customer.login.emailField.placeholder,Enter your e-mail address or customer card number,en_US
 checkout.step.customer.login.emailField.placeholder,E-mail Adresse oder Kundenkartennummer eingeben,de_DE
 checkout.step.customer.login.emailField.labelCreate,Email address or customer card number,en_US
@@ -1600,8 +1600,8 @@ checkout.step.customer.login.emailField.placeholderCreate,Enter your e-mail addr
 checkout.step.customer.login.emailField.placeholderCreate,Email Adresse eingeben,de_DE
 checkout.step.customer.login.new_user_text,New to the pick-up service? Create your,en_US
 checkout.step.customer.login.new_user_text,Neu beim Abholservice? Erstellen Sie Ihr,de_DE
-checkout.step.customer.login.globus_account_text,Globus account,en_US
-checkout.step.customer.login.globus_account_text,Globus Konto,de_DE
+checkout.step.customer.login.globus_account_text,"GLOBUS account",en_US
+checkout.step.customer.login.globus_account_text,"GLOBUS Konto",de_DE
 checkout.step.customer.title,"Přihlásit se",cs_CZ
 checkout.step.address.title,Address,en_US
 checkout.step.address.title,Abholstation,de_DE
@@ -4079,7 +4079,7 @@ header.call_us.number,+49 (0) 30 208 498 350,cs_CZ
 header.call_us.number,+49 (0) 30 208 498 350,de_DE
 header.call_us.number,+49 (0) 30 208 498 350,en_US
 header.back_to_cart_link,"Zpět na nákupní seznam",cs_CZ
-header.back_to_cart_link,Zurück zur Einkaufsliste,de_DE
+header.back_to_cart_link,"Zurück zum Warenkorb",de_DE
 header.back_to_cart_link,Back to cart,en_US
 customer.account.wishlist.item.added_to_cart.failed,"Tuto položku bohužel nemůžeme přidat do košíku.",cs_CZ
 customer.account.wishlist.item.added_to_cart.failed,The item could not be added to the cart.,en_US
@@ -4971,14 +4971,27 @@ checkout.showScanAndGoNotActivateHint, "Scan & Go freischalten. Wenn Sie Scan & 
 checkout.showScanAndGoNotActivateHint, "Activate Scan & Go. If you would like to use Scan & Go, have yourself activated at the information desk in your store.",en_US
 checkout.step.success.page.title,Vielen Dank für Ihre Registrierung,de_DE
 checkout.step.success.page.button,Jetzt den Shop durchstöbern,de_DE
+register.page.left.side.globus.card.first.header,"1€ Servicegebühr sparen und jetzt registrieren!",de_DE
+register.page.left.side.globus.card.font.medium_1,"Entdecken Sie mit Ihrer persönlichen ",de_DE
+register.page.left.side.globus.card.my,"mein",de_DE
+register.page.left.side.globus.card.font.medium_2," GLOBUS Tankeschön-Kundenkarte viele Vorteile.",de_DE
+register.page.left.side.globus.card.font.smaller_1,"Mit Tankeschön bis zu 4 Cent pro Liter sparen",de_DE
+register.page.left.side.globus.card.font.smaller_2,"Scan & Go nutzen und Zeit sparen",de_DE
+register.page.left.side.globus.card.font.smaller_3,"Exklusive Angebote, Coupons, Veranstaltungen und mehr",de_DE
+register.page.left.side.globus.card.second.header_1,"Möchten Sie eine Kundenkarte, um die ",de_DE
+register.page.left.side.globus.card.second.header_2," GLOBUS Vorteile zu nutzen?",de_DE
+register.page.left.side.globus.card.yes,"Ja",de_DE
+register.page.left.side.globus.card.no,"Nein",de_DE
 register.page.left.side.globus.card.top,"Wenn Sie bereits eine Karte im Markt mitgenommen haben, können Sie hier die Kartennummer eingeben.",de_DE
-register.page.left.side.globus.card.bottom,"Mit dem Klick auf Weiter bestätigen Sie die Mein Globus-",de_DE
-register.page.left.side.globus.card.bottom.hyperlink,"Teilnahmebedingungen",de_DE
+register.page.left.side.globus.card.placeholder,"Kartennummer eingeben",de_DE
+register.page.left.side.globus.card.bottom,"Mit dem Klick auf Weiter bestätigen Sie die ",de_DE
+register.page.left.side.globus.card.bottom.globus," GLOBUS",de_DE
+register.page.left.side.globus.card.bottom.hyperlink," Teilnahmebedingungen",de_DE
 register.page.password.check.length,"mind. 8 Zeichen lang",de_DE
 register.page.password.check.spec.char,"mind. 1 Sonderzeichen (außer_)",de_DE
 register.page.password.check.digit,"mind. 1 Ziffer",de_DE
 register.page.password.check.letter,"mind. 1 Buchstabe",de_DE
-register.page.password.checkboxes.label,"Ihr Passwort muss folgende Kriterien erfüllen:",de_DE
+register.page.password.checkboxes.label,"Ihr Passwort muss folgende Kriterien erfüllen",de_DE
 register.step.success.page.brief.text,"Um Ihre Registrierung abzuschließen, bestätigen Sie bitte unsere E-Mails zu Ihrem Account und der Werbeeinwilligung.",de_DE
 checkout.summary.no.customer,"Chyba při získávání údajů o vašich zákaznících. Přihlaste se prosím znovu nebo přidejte své údaje.",cs_CZ
 checkout.summary.no.customer,"Fehler beim Abrufen Ihrer Kundendaten. Bitte melden Sie sich erneut an oder ergänzen Sie Ihre Daten.",de_DE

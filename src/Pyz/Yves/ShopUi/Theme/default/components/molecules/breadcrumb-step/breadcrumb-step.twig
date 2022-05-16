@@ -38,14 +38,6 @@
         </a>
     {%- endif -%}
 
-{#    <span class="{{ component.renderClass(config.name ~ '__check', modifiers) }}">#}
-{#        {% include atom('icon') with {#}
-{#            data: {#}
-{#                name: 'check-additional',#}
-{#            },#}
-{#        } only %}#}
-{#    </span>#}
-
     {% if data.withChevron %}
         <span class="{{ config.name }}__separator">
             <svg class="infoIcon icon button__icon"><use xlink:href="#:left-arrow"></use></svg>

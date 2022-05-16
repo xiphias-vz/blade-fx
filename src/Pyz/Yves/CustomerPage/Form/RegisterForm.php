@@ -99,7 +99,7 @@ class RegisterForm extends SprykerRegisterForm
     {
         $builder->add(self::FIELD_FIRST_NAME, TextType::class, [
             'label' => 'customer.first_name',
-            'required' => true,
+            'required' => false,
             'constraints' => [
                 $this->createNotBlankConstraint(),
                 $this->createMinLengthConstraint(),
@@ -122,7 +122,7 @@ class RegisterForm extends SprykerRegisterForm
     {
         $builder->add(self::FIELD_LAST_NAME, TextType::class, [
             'label' => 'customer.last_name',
-            'required' => true,
+            'required' => false,
             'constraints' => [
                 $this->createNotBlankConstraint(),
                 $this->createMinLengthConstraint(),
@@ -145,7 +145,7 @@ class RegisterForm extends SprykerRegisterForm
     {
         $builder->add(self::FIELD_EMAIL, EmailType::class, [
             'label' => 'auth.email',
-            'required' => true,
+            'required' => false,
             'constraints' => [
                 $this->createNotBlankConstraint(),
             ],
@@ -229,7 +229,7 @@ class RegisterForm extends SprykerRegisterForm
     {
         $builder->add(self::FIELD_ADDRESS_1, TextType::class, [
             'label' => 'customer.address.address1',
-            'required' => true,
+            'required' => false,
             'trim' => true,
             'constraints' => [
                 $this->createNotBlankConstraint(),
@@ -254,7 +254,7 @@ class RegisterForm extends SprykerRegisterForm
     {
         $builder->add(self::FIELD_ADDRESS_2, TextType::class, [
             'label' => 'customer.address.number',
-            'required' => true,
+            'required' => false,
             'trim' => true,
             'constraints' => [
                 $this->createNotBlankConstraint(),
@@ -298,7 +298,7 @@ class RegisterForm extends SprykerRegisterForm
                 'Ms' => 'customer.salutation.ms',
                 'Divers' => 'customer.salutation.divers',
             ]),
-            'required' => true,
+            'required' => false,
             'label' => 'address.salutation',
             'constraints' => [
                 $this->createNotBlankConstraint(),
@@ -337,7 +337,7 @@ class RegisterForm extends SprykerRegisterForm
         $countries = Config::get(CustomerConstants::CUSTOMER_COUNTRY);
         $builder->add(self::FIELD_COUNTRY, ChoiceType::class, [
             'choices' => array_flip($countries),
-            'required' => true,
+            'required' => false,
             'label' => 'customer.address.country',
             'constraints' =>
             [
@@ -435,7 +435,7 @@ class RegisterForm extends SprykerRegisterForm
     {
         $builder->add(self::FIELD_ZIP_CODE, TextType::class, [
             'label' => 'customer.address.zip_code',
-            'required' => true,
+            'required' => false,
             'trim' => true,
             'constraints' => [
                 $this->createNotBlankConstraint(),
@@ -459,7 +459,7 @@ class RegisterForm extends SprykerRegisterForm
     {
         $builder->add(self::FIELD_CITY, TextType::class, [
             'label' => 'customer.address.city',
-            'required' => true,
+            'required' => false,
             'trim' => true,
             'constraints' => [
                 $this->createNotBlankConstraint(),

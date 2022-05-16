@@ -3,6 +3,8 @@
 @mixin shop-ui-custom-select($name: '.custom-select') {
     @include shop-ui-select($name) {
         line-height: 0;
+        background-color: transparent;
+        margin: rem(8) 0;
 
 
         &__select {
@@ -12,6 +14,7 @@
             line-height: 1;
             overflow: hidden;
             text-overflow: ellipsis;
+            border-radius: rem(24);
 
             &--auto {
                 width: auto;
@@ -48,15 +51,15 @@
         }
 
         .select2-selection--single {
-            padding: rem(16);
-            background: $setting-color-white;
+            padding: rem(22) rem(12);
+            background: $setting-color-globus-white;
             height: auto;
-            border: rem(1) solid $setting-color-input-border;
-            border-radius: rem(2);
+            border: rem(1) solid $setting-color-input-border-tentgray;
+            border-radius: rem(24);
 
             .select2-selection__rendered {
-                color: $setting-color-gray-6;
-                font: fw(medium) rem(14)/rem(16) $setting-font-family;
+                color: $setting-color-light-tentgray-4;
+                font: fw(medium) rem(14)/rem(16) $setting-font-family-additional;
                 min-height: rem(16);
                 padding-left: 0;
             }
@@ -143,7 +146,8 @@
     }
 
     .select2-results__option {
-        color: $setting-color-gray-6;
+        color: $setting-color-input-border-tentgray;
+        font-family: $setting-font-family-additional;
         font-size: rem(16);
         font-weight: fw(regular);
         line-height: rem(26);

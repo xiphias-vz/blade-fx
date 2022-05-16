@@ -22,14 +22,20 @@
 
         .margin-telefon-title
         {
-            margin-left: 4%;
-            margin-bottom: -3%;
-            margin-top: 5%;
+            font-family: $setting-font-family-additional;
+            font-size: rem(12);
+            font-weight: 600;
+            margin-left: rem(20);
         }
 
         .asterisk-orange {
             color: $setting-color-globus-lightOrange;
         }
+
+        .padding-phone {
+            padding-bottom: 0;
+        }
+
         @content;
     }
 }

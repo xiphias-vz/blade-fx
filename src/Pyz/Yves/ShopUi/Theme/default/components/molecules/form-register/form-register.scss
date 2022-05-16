@@ -236,10 +236,10 @@ $review-rating-field-width: rem(154);
 
         .label {
             display: inline-block;
-            font: fw(medium) rem(12) $setting-font-family-additional;
-            margin-bottom: rem(6);
+            font: fw(semibold) rem(12) $setting-font-family-additional;
             letter-spacing: rem(0.1);
-            color: $setting-color-gray-6;
+            margin-left: rem(12);
+            color: $setting-color-tentgray;
 
             &--required {
                 &::after {

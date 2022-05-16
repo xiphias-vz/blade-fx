@@ -36,7 +36,7 @@ $review-rating-field-width: rem(154);
 
         &__actions {
             text-align: right;
-            padding-top: rem(10);
+            padding-top: rem(35);
 
             &--profile {
                 padding: rem(8) 0;
@@ -54,7 +54,6 @@ $review-rating-field-width: rem(154);
         }
 
         &__action {
-            margin-top: $shop-ui-form-field-margin;
             margin-left: $shop-ui-form-field-margin;
 
             &--login {
@@ -156,8 +155,17 @@ $review-rating-field-width: rem(154);
         &--checkout-actions {
             #{$name}__actions {
                 display: flex;
-                flex-direction: column-reverse;
                 align-items: flex-end;
+            }
+
+            #{$name}__actions-guest {
+                display: flex;
+                align-items: flex-end;
+
+                @include helper-breakpoint-media-min($lg-min) {
+                    display: block;
+                    float: right;
+                }
             }
         }
 
@@ -267,21 +275,28 @@ $review-rating-field-width: rem(154);
 
         .txtarea--checkout {
             width: 100%;
-            height: rem(250);
-            color: $setting-color-black;
+            height: rem(170);
+            color: $setting-color-tentgray;
+            font-family: $setting-font-family-additional;
             font-size: rem(12);
+            border: 1px solid $setting-color-input-border-tentgray;
+            border-radius: rem(24);
         }
 
         .label {
             display: inline-block;
-            font: fw(medium) rem(12) $setting-font-family-additional;
-            margin-bottom: rem(6);
+            font: fw(medium) rem(16) $setting-font-family-additional;
+            font-style: normal;
+            font-weight: 600;
+            margin-left: rem(14);
             letter-spacing: rem(0.1);
-            color: $setting-color-gray-6;
+            line-height: rem(19);
+            color: $setting-color-tentgray;
 
             &--required {
                 &::after {
                     content: '*';
+                    margin: 0;
                     color: $setting-color-tentgray;
                 }
             }

@@ -31,10 +31,10 @@
         &__box {
             @include helper-effect-transition;
             display: inline-block;
-            width: rem(20);
+            width: rem(32);
             min-width: rem(20);
-            height: rem(20);
-            border: rem(2) solid $setting-color-checkbox-border;
+            height: rem(32);
+            border: rem(1) solid $setting-color-input-border-tentgray;
             border-radius: rem(2);
             background-color: $setting-color-white;
             margin-right: rem(8);
@@ -56,7 +56,7 @@
             pointer-events: none;
             position: absolute;
             top: 50%;
-            left: rem(3);
+            left: rem(7);
             transform: translate(0, -50%);
             color: $setting-color-white;
         }

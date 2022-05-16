@@ -6,11 +6,15 @@
     #{$name} {
         @include helper-effect-transition(color background box-shadow border-color);
         display: inline-block;
-        padding: rem(11) rem(15);
+        padding: rem(12) rem(24) rem(12) rem(24);
         border: none;
         min-width: $button-min-width/1.3;
         text-align: center;
-        font: fw(medium) rem(14)/1.7 $setting-font-family-additional;
+        font: rem(16) $setting-font-family-additional;
+        font-style: normal;
+        font-weight: 900;
+        line-height: 19px;
+        letter-spacing: 0.03em;
         cursor: pointer;
         background: $setting-color-fresh-orange;
         color: $setting-color-white;
@@ -264,10 +268,9 @@
         }
 
         &--hollow-ghost {
+            border: 2px solid $setting-color-fresh-orange;
+            box-sizing: border-box;
             background-color: transparent;
-            border-width: thin;
-            border-style: solid;
-            border-color: $setting-color-fresh-orange;
             color: $setting-color-fresh-orange;
         }
 
@@ -379,10 +382,8 @@
         }
 
         &--expand-tablet {
-            width: 100%;
-
-            @include helper-breakpoint-media-min($xl-min) {
-                width: auto;
+            @include helper-breakpoint-media-max($lg-min) {
+                width: 100%;
             }
         }
 

@@ -2,18 +2,15 @@
 
     #{$name} {
         &__body {
-            background-color: $setting-color-globus-lightGray;
-            padding: rem(16);
+            background-color: $setting-color-light-tentgray-3;
+            font-family: $setting-font-family-additional;
+            color: $setting-color-tentgray;
+            padding: rem(24);
             overflow: hidden;
         }
 
-        &__image {
-            width: 80%;
-            margin-left: rem(28);
-        }
-
         &__top-margin {
-            margin-top: rem(16);
+            margin-top: rem(35);
         }
 
         &__top-margin-smaller {
@@ -25,7 +22,7 @@
         }
 
         &__bot-margin {
-            margin-bottom: rem(16);
+            margin-bottom: rem(12);
         }
 
         &__bottom-margin-information {
@@ -49,7 +46,8 @@
         }
 
         &__left-margin {
-            margin-left: rem(16);
+            margin-left: rem(24);
+            display: inline-flex;
         }
 
         &__left-margin-smaller {
@@ -58,10 +56,30 @@
 
         &__right-margin {
             margin-right: rem(16);
+            display: inline-flex;
+        }
+
+        &__value {
+            margin-top: rem(5);
+            margin-left: rem(10);
         }
 
         &__right-margin-smaller {
             margin-right: rem(8);
+        }
+
+        &__header {
+            font-weight: 500;
+        }
+
+        &__input-label {
+            font-size: rem(12);
+            font-weight: 600;
+            margin: rem(12) rem(14) 0 rem(14);
+        }
+
+        &__font-medium {
+            font-size: medium;
         }
 
         &__font-smaller {
@@ -70,12 +88,13 @@
 
         &__icon {
             width: rem(24);
+            height: rem(12);
             vertical-align: middle;
         }
 
         &__height {
-            min-height: rem(60);
-            width: 100%;
+            min-height: rem(48);
+            width: 90%;
             margin-right: rem(4);
         }
 
@@ -83,17 +102,17 @@
             margin: rem(5) auto rem(5) auto;
         }
 
-        &__orange-radio-button {
-            border:2px solid white;
-            box-shadow:0 0 0 1px $setting-color-globus-darkGray;
+        &__green-radio-button {
+            box-shadow:0 0 0 1px $setting-color-input-border-tentgray;
             appearance: none;
             border-radius:50%;
-            width:rem(12);
-            height:rem(12);
-            background-color:#fff;
-            transition:all ease-in 0.2s;
+            width:rem(30);
+            height:rem(30);
+            background-color:$setting-color-globus-white;
+            cursor: pointer;
             &:checked {
-                background-color: $setting-color-orange;
+                border:10px solid $setting-color-forest-green;
+                background-color: $setting-color-globus-white;
             }
         }
 

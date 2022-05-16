@@ -4,11 +4,9 @@
             position: relative;
             text-align: center;
             padding: rem(10) 0;
-            margin-bottom: rem(20);
 
             @include helper-breakpoint-media-min($lg-min) {
                 padding: rem(17) 0;
-                margin-bottom: rem(40);
             }
         }
 
@@ -24,13 +22,19 @@
             }
 
             a {
-                @include helper-breakpoint-media-min() {
+                @include helper-breakpoint-media-max($lg-max) {
                     width: rem(240);
                     font-size: rem(16);
                     font-weight: fw(black);
                     border-radius: rem(30);
                 }
             }
+        }
+
+        &__button_icon {
+            height: rem(12);
+            margin: 0 rem(4) rem(3) 0;
+            color: $setting-color-white;
         }
 
         &__progress-wrap {

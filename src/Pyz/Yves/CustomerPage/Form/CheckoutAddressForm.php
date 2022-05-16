@@ -71,7 +71,7 @@ class CheckoutAddressForm extends SprykerShopCheckoutAddressForm
         $builder->add(self::FIELD_FIRST_NAME, TextType::class, [
             'label' => 'customer.address.first_name',
             'label_attr' => ($storeCodeBucket == 'CZ') ? ['class' => 'label-CZ'] : [],
-            'required' => $this->getRequired(),
+            'required' => false,
             'trim' => true,
             'attr' => [
                 'placeholder' => 'customer.registration.first_name_placeholder',
@@ -99,7 +99,7 @@ class CheckoutAddressForm extends SprykerShopCheckoutAddressForm
         $builder->add(self::FIELD_LAST_NAME, TextType::class, [
             'label' => 'customer.address.last_name',
             'label_attr' => ($storeCodeBucket == 'CZ') ? ['class' => 'label-CZ'] : [],
-            'required' => $this->getRequired(),
+            'required' => false,
             'trim' => true,
             'attr' => [
                 'placeholder' => 'customer.registration.last_name_placeholder',

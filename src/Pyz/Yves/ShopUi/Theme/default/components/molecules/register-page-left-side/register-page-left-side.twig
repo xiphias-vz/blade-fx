@@ -7,51 +7,49 @@
 
 {% block body %}
     <div class="{{ config.name }}__body">
-        <div class="col col--lg-12">
-            <h1>1€ Servicegebühr sparen und jetzt registrieren!</h1>
-        </div>
-        <div class="col col--lg-12 {{ config.name }}__top-margin">
-            <div class="col col--lg-8">
-                <p class="{{ config.name }}__font-smaller">{{ 'globus.card.registration.text' | trans }}</p>
-            </div>
-            <div class="col col--lg-4 {{ config.name }}__top-margin-smaller">
-                <img src="{{ publicPath('images/meinglobus-card.png') }}" class="{{ config.name }}__image" />
-            </div>
-        </div>
-        <div  class="col col--lg-12 {{ config.name }}__top-margin {{ config.name }}__bot-margin">
+        <div class="col col--lg-8">
+            <h1 class="{{ config.name }}__header">1{{ 'register.page.left.side.globus.card.first.header' | trans }}</h1>
+            <p class="{{ config.name }}__font-medium">{{ 'register.page.left.side.globus.card.font.medium_1' | trans }}<i>{{ 'register.page.left.side.globus.card.my' | trans }}</i>{{ 'register.page.left.side.globus.card.font.medium_2' | trans }}</p>
             <div class="{{ config.name }}__icon-list">
-                <p class="{{ config.name }}__font-smaller"><img src="{{ publicPath('images/meinglobus-vorteil-icon1.png') }}" class="{{ config.name }}__icon" /> Mit Tankeschön bis zu 4 Cent pro Liter sparen</p>
+                <p class="{{ config.name }}__font-smaller"><svg class="{{ config.name }}__icon" ><use xlink:href="#:check-codex-orange"></use></svg> {{ 'register.page.left.side.globus.card.font.smaller_1' | trans }}</p>
             </div>
             <div class="{{ config.name }}__icon-list">
-                <p class="{{ config.name }}__font-smaller"><img src="{{ publicPath('images/meinglobus-vorteil-icon2.png') }}" class="{{ config.name }}__icon" /> Scan & Go nutzen und Zeit sparen</p>
+                <p class="{{ config.name }}__font-smaller"><svg class="{{ config.name }}__icon" ><use xlink:href="#:check-codex-orange"></use></svg> {{ 'register.page.left.side.globus.card.font.smaller_2' | trans }}</p>
             </div>
             <div class="{{ config.name }}__icon-list">
-                <p class="{{ config.name }}__font-smaller"><img src="{{ publicPath('images/meinglobus-vorteil-icon3.png') }}" class="{{ config.name }}__icon" /> Exklusive Angebote, Coupons, Veranstaltungen und mehr</p>
+                <p class="{{ config.name }}__font-smaller"><svg class="{{ config.name }}__icon" ><use xlink:href="#:check-codex-orange"></use></svg> {{ 'register.page.left.side.globus.card.font.smaller_3' | trans }}</p>
             </div>
         </div>
+
+        <div class="col col--lg-4 {{ config.name }}__top-margin-smaller">
+            <img src="{{ publicPath('images/meinglobus-card_2.png') }}" class="{{ config.name }}__image" />
+        </div>
+
         <div class="col col--lg-12 {{ config.name }}__top-margin {{ config.name }}__bot-margin">
-            <h2>Möchten Sie eine Kundenkarte, um die Mein Globus Vorteile zu nutzen?</h2>
+            <h1 class="{{ config.name }}__header">{{ 'register.page.left.side.globus.card.second.header_1' | trans }}<i>{{ 'register.page.left.side.globus.card.my' | trans }}</i> {{ 'register.page.left.side.globus.card.second.header_2' | trans }}</h1>
         </div>
         <div class="col col--lg-12 {{ config.name }}__top-margin-smaller {{ config.name }}__bot-margin">
             <form name="form-radio-kundenkarte">
-                <label class="{{ config.name }}__left-margin-smaller {{ config.name }}__right-margin">
-                    <input class="{{ config.name }}__orange-radio-button" type="radio" name="radio_kundenkarte" value="Yes"/> Ja
+                <label class="{{ config.name }}__right-margin">
+                    <input class="{{ config.name }}__green-radio-button" type="radio" name="radio_kundenkarte" value="Yes"/>
+                    <span class="{{ config.name }}__value">{{ 'register.page.left.side.globus.card.yes' | trans }}</span>
                 </label>
-                <label class="{{ config.name }}__left-margin {{ config.name }}__right-margin-smaller">
-                    <input class="{{ config.name }}__orange-radio-button" type="radio" name="radio_kundenkarte" value="No"/> Nein
+                <label class="{{ config.name }}__left-margin">
+                    <input class="{{ config.name }}__green-radio-button" type="radio" name="radio_kundenkarte" value="No"/>
+                    <span class="{{ config.name }}__value">{{ 'register.page.left.side.globus.card.no' | trans }}</span>
                 </label>
             </form>
 
             <div id="globus-card-yes" class="hidden {{ config.name }}__top-margin-smaller">
-                <p class="{{ config.name }}__font-smaller {{ config.name }}__bot-margin">{{ 'register.page.left.side.globus.card.top' | trans }}</p>
+                <p class="{{ config.name }}__input-label">{{ 'register.page.left.side.globus.card.top' | trans }}</p>
                 <div>
-                    <input id="myGlobusCardNumber" type="text" class="input {{ config.name }}__height" placeholder="Kartennummer eingeben"/>
+                    <input id="myGlobusCardNumber" type="text" class="input {{ config.name }}__height" placeholder="{{ 'register.page.left.side.globus.card.placeholder' | trans }}"/>
                 </div>
-                <p class="{{ config.name }}__font-smaller {{ config.name }}__top-margin">{{ 'register.page.left.side.globus.card.bottom' | trans }}<a id="lnkParticipationConditions" class="{{ config.name }}__linkOrange" href="https://www.globus.de/kundenprogramme/meinglobus-teilnahmebedingungen.php" target="_blank">{{ 'register.page.left.side.globus.card.bottom.hyperlink' | trans }}</a>.</p>
+                <p class="{{ config.name }}__font-smaller {{ config.name }}__top-margin">{{ 'register.page.left.side.globus.card.bottom' | trans }}<i>{{ 'register.page.left.side.globus.card.my' | trans }}</i>{{ 'register.page.left.side.globus.card.bottom.globus' | trans }}<a id="lnkParticipationConditions" class="{{ config.name }}__linkOrange" href="https://www.globus.de/kundenprogramme/meinglobus-teilnahmebedingungen.php" target="_blank">{{ 'register.page.left.side.globus.card.bottom.hyperlink' | trans }}</a>.</p>
             </div>
         </div>
-        <div class="col col--lg-12 {{ config.name }}__flex {{ config.name }}__top-margin {{ config.name }}__bottom-margin-information">
-            <div class="">
+        <div class="col col--lg-12 {{ config.name }}__flex {{ config.name }}__bottom-margin-information">
+            <div>
                 {% include atom('checkbox') with {
                     attributes: {
                         id: 'chk_isAdvertise',

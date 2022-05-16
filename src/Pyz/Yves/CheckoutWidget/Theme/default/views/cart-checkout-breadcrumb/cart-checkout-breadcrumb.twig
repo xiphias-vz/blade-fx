@@ -35,6 +35,7 @@
             <div class="{{ config.name }}__button">
                 {% if app.currentCodeBucket == 'DE' %}
                     <a href="{{ url('cart') }}" class="button button--hollow-gray is-hidden-sm-lg">
+                        <svg class="icon {{ config.name }}__button_icon"><use xlink:href="#:chevron-left"></use></svg>
                         {{ 'header.back_to_cart_link' | trans }}
                     </a>
                 {% else %}
@@ -58,7 +59,7 @@
                         {% include molecule('breadcrumb-step') with {
                             modifiers: modifiers,
                             data: {
-                                label: loop.index ~ ' ' ~ step.label,
+                                label: loop.index ~ '. ' ~ step.label,
                                 url: (step.isActive or not step.isEnabled) ? '' : step.url,
                                 withChevron: false
                             }
