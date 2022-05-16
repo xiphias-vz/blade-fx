@@ -29,11 +29,22 @@
             justify-content: space-between;
             align-items: center;
 
+            @include helper-breakpoint-media-max($xs-max){
+                font-size: rem(12);
+            }
+
+            @include helper-breakpoint-media-max($xxs-max){
+                font-size: rem(10);
+            }
+
             @include helper-breakpoint-media-max($md-max){
                 justify-self: flex-start;
                 flex-direction: row;
-                align-items: flex-start;
                 width: auto;
+                margin-left: rem(40);
+            }
+            @include helper-breakpoint-media-between($lg-min, $lg-max){
+               font-size: rem(12);
             }
         }
 
@@ -41,6 +52,13 @@
             display: grid;
             grid-template-columns: 40px auto;
             grid-template-rows: 30px 30px 30px;
+
+            .downbar-timeslot__icon {
+                margin-left: 0;
+            }
+            @include helper-breakpoint-media-max($xxs-max){
+                width: rem(220);
+            }
         }
 
         &__textblockGrid{
@@ -54,14 +72,26 @@
         &__icon{
             margin-top: rem(5);
             margin-right: rem(15);
+
+            @include helper-breakpoint-media-max($sm-max){
+                margin-left: rem(60);
+            }
+
             @include helper-breakpoint-media-max($md-max){
-                margin-right: rem(30);
+                margin-right: rem(10);
                 align-self: flex-start;
+            }
+            @include helper-breakpoint-media-between($lg-min, $lg-max){
+                margin-left: rem(60);
             }
         }
 
         &__title{
             margin-right: rem(15);
+
+            @include helper-breakpoint-media-max($md-max){
+                margin-right: rem(5);
+            }
         }
 
         &__content{
@@ -97,6 +127,10 @@
             @include helper-breakpoint-media-max($md-max){
                 display: none;
             }
+
+            @include helper-breakpoint-media-between($lg-min, $lg-max){
+                margin-right: rem(70);
+            }
         }
         &__close:hover{
             transform: scale(1.1);
@@ -109,6 +143,9 @@
             @include helper-breakpoint-media-min($lg-min) {
                 display: none;
             }
+            @include helper-breakpoint-media-max($md-max) {
+                margin-right: rem(80);
+            }
         }
         &__show{
             display: block;
@@ -116,6 +153,7 @@
         &__toggler-arrow-rotate{
             transition: transform 300ms linear;
             transform: rotateX(180deg);
+            margin-right: rem(55);
         }
         &__toggle-height{
             height: rem(100);
