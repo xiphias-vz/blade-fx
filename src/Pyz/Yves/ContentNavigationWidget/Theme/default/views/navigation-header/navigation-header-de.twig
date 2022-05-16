@@ -1,45 +1,36 @@
-        <style>
-            #desktop_ff-navigation ff-navigation-item {
-                width: 25em;
-                height: 24px;
-                float: right;
-                margin-top: 10px;
-                margin-right: 5px;
-                left: unset!important;
-            }
-            #desktop_ff-navigation .ffw-item-container {
-                left: unset!important;
-                right: 100%;
-            }
-            /*.record-list__amount--original {
-                text-decoration: line-through;
-                text-decoration-color: #E30613;
-            }*/
-        </style>
+{% extends model('component') %}
+
+{% define config = {
+    name: 'navigation-header-de'
+} %}
+
+{% block body %}
         <input id="idGlossaryAngebote" type="hidden" value="{{ 'catalog.sale' | trans }}"/>
         <input id="idGlossaryMyProducts" type="hidden" value="{{ 'my.products' | trans }}"/>
 
         <input id="alleProdukteID" type="hidden" value="{{ 'global.all_products' | trans }}">
 
-        <ff-navigation layout="vertical" id="desktop_ff-navigation">
+        <ff-navigation class="{{ config.name }}__container" layout="vertical" id="desktop_ff-navigation">
+
             <ff-navigation-item>
-                <div class="navigation-multilevel-node__link navigation-multilevel-node__link--header navigation-multilevel-node__link--lvl-1 ">
-                    <a href="{{ "{{previewImageURL}}" }}" class="navigation-multilevel-node__link-inner navigation-multilevel-node__link-inner--lvl-1" onclick="toggleNavigationCategoriesMenu(this);">
-                        {{ "{{name}}" }}&nbsp;
+                    <a class="{{ config.name }}__urlNavItem" href="{{ "{{previewImageURL}}" }}">
+                        <div class="{{ config.name }}__navigation-link-item">
+                            {{ "{{name}}" }}
+                        </div>
                     </a>
-                </div>
             </ff-navigation-item>
+
             <ff-navigation-item type="header">
-                <div class="navigation-multilevel-node__link navigation-multilevel-node__link--header navigation-multilevel-node__link--lvl-1 ">
-                    <a href="{{ "{{previewImageURL}}" }}" class="navigation-multilevel-node__link-inner navigation-multilevel-node__link-inner--lvl-1" onclick="toggleNavigationCategoriesMenu(this);">
-                        {{"{{name}}"}}&nbsp;
+                    <a class="{{ config.name }}__urlNavItem" href="{{ "{{previewImageURL}}" }}">
+                            <div class="navigation-icon {{ config.name }}__navigation-link-item">
+                                {{ "{{name}}" }}
+                            </div>
                     </a>
-                </div>
             </ff-navigation-item>
         </ff-navigation>
-
         <script type="text/javascript">
             {% include '@ContentNavigationWidget/views/navigation-header/navigation-header-de.js' %}
         </script>
 
+{% endblock %}
 

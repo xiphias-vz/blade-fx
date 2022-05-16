@@ -182,10 +182,8 @@ $header-sticky-height: rem(69, number);
             left: 0;
             width: 100%;
             bottom: 0;
-            border-top: rem(8) solid $setting-color-globus-lightOrange;
-            background: $setting-color-globus-lightGray;
+            background: $setting-color-white;
             z-index: $setting-zi-header + 1;
-            box-shadow: 0 rem(2) 0 $setting-color-globus-lightGray;
             display: flex;
             flex-direction: column;
 
@@ -208,9 +206,6 @@ $header-sticky-height: rem(69, number);
                 display: block;
                 width: rem(345);
                 height: calc(100vh - #{$header-height});
-                box-shadow: 0 ($header-height - $header-sticky-height) 0 $setting-color-globus-lightGray;
-                // Move scrollbar to the left side
-                transform: scaleX(-1);
             }
 
             @include helper-media-ie() {

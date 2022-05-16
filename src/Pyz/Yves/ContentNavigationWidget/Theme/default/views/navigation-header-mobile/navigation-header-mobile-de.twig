@@ -8,15 +8,16 @@
 
     {% verbatim %}
         <ff-navigation layout="vertical" id="ffMobileNavigationDe" mobile="true">
+
             <ff-navigation-item>
-                <a href={{previewImageURL}} class="navigation-multilevel-node__link-inner navigation-multilevel-node__link-inner--lvl-1" onclick="toggleNavigationCategoriesMenu(this);">
+                <a href={{previewImageURL}} class="navigation-link-item">
                         {{name}}
                 </a>
             </ff-navigation-item>
 
             <ff-navigation-item type="header">
                 <div class="my-header">
-                   <a href={{previewImageURL}} class="navigation-multilevel-node__link-inner navigation-multilevel-node__link-inner--lvl-1" onclick="toggleNavigationCategoriesMenu(this);">
+                   <a href={{previewImageURL}} class="navigation-icon navigation-link-item">
                         {{name}}
                     </a>
                    <svg class="navigationMenuArrowDown" xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24"><path fill="currentColor" d="M0 7.33l2.829-2.83 9.175 9.339 9.167-9.339 2.829 2.83-11.996 12.17z"/></svg>
@@ -25,12 +26,13 @@
 
             <ff-navigation-item type="parent">
                 <div class="my-item my-parent-item">
-                    <a href={{previewImageURL}} class="navigation-multilevel-node__link-inner navigation-multilevel-node__link-inner--lvl-1" onclick="toggleNavigationCategoriesMenu(this);">
+                    <a href={{previewImageURL}} class="navigation-link-item">
                         {{name}}
                     </a>
-                    <svg class="navigationMenuArrowDown" xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24"><path fill="currentColor" d="M0 7.33l2.829-2.83 9.175 9.339 9.167-9.339 2.829 2.83-11.996 12.17z"/></svg>
+                    <svg class="navigationSubMenuArrowDown" xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24"><path fill="currentColor" d="M0 7.33l2.829-2.83 9.175 9.339 9.167-9.339 2.829 2.83-11.996 12.17z"/></svg>
                 </div>
             </ff-navigation-item>
+
         </ff-navigation>
     {% endverbatim %}
 

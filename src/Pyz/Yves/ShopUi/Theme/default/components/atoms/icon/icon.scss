@@ -7,6 +7,10 @@
         height: rem(8);
     }
 
+    &--error {
+        fill: $setting-color-white;
+    }
+
     &--inherit {
         display: block;
         width: inherit;

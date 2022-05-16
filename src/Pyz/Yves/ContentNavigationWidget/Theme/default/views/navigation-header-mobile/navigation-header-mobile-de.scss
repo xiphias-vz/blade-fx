@@ -1,67 +1,131 @@
 @mixin navigation-header-mobile-de($name: '.navigation-header-mobile-de') {
     #{$name} {
 
+        .ffw-item-caption {
+            font-family: $setting-font-family-additional;
+            padding: rem(10) rem(5) rem(10) rem(25);
+            color: $setting-color-tentgray;
+        }
+
+        .navigationMenuArrowDown {
+            display: none;
+        }
+        .navigationSubMenuArrowDown {
+            transform: rotate(-90deg);
+        }
+
+        ff-navigation-item[has-subelements] {
+            .navigationMenuArrowDown {
+                display: flex;
+            }
+        }
+
+        .navigation-link-item {
+            color: $setting-color-tentgray;
+            text-decoration: none;
+        }
+
         #ffMobileNavigationDe{
             background-color: transparent;
             text-align: left;
             margin-top: rem(20);
 
-            .navigationMenuArrowDown {
+            .navigationMenuArrowDown, .navigationSubMenuArrowDown {
                 width: rem(30);
+                transition: all .3s ease;
+            }
+
+            ff-navigation-item[selected][type="parent"][cluster-level="1"] {
+
+                .my-parent-item {
+                    .navigation-link-item {
+                        color: $setting-color-forest-green;
+                        font-weight: 700;
+                    }
+                }
+
+                .navigationSubMenuArrowDown {
+                    transform: rotate(180deg);
+                    color: $setting-color-tentgray;
+                }
+
+                & > .ffw-item-caption {
+                    border-bottom-right-radius: rem(25);
+                    background-color: $setting-color-navigation-stonegray;
+                }
+            }
+
+            ff-navigation-item[selected][type="header"][cluster-level="0"] {
+
+                & > .ffw-item-caption {
+                    border-bottom-right-radius: rem(25);
+                    background-color: $setting-color-forest-green-light;
+                }
+
+                .my-header {
+                    .navigationMenuArrowDown {
+                        transform: rotate(180deg);
+                        color: $setting-color-tentgray;
+                    }
+
+                    .navigation-link-item {
+                        color: $setting-color-forest-green;
+                        font-weight: 700;
+                    }
+                }
             }
 
             ff-navigation-item[cluster-level="0"]{
+
+                border-bottom: 1px solid $setting-color-navigation-border;
+
                 .ffw-item-caption{
-                    color: $setting-color-gray-6;
-                    font-family: $setting-font-family-additional;
                     font-weight: 500;
-                    font-size: rem(14);
-                    border-bottom: 1px solid $setting-color-alpha-12;
-                    background-color: $setting-color-gray-14;
+                    font-size: rem(16);
 
                     .my-header, .my-item {
                         display: flex;
                         justify-content: space-between;
-                        margin-right: rem(30);
+                        margin-right: rem(20);
                         align-items: center;
                     }
                 }
             }
 
             ff-navigation-item[cluster-level="1"]{
-                margin: rem(15) 0 rem(15) rem(10);
                 padding-top: 0;
                 padding-bottom: 0;
 
-                .ffw-item-container{
-                    margin-top: rem(10);
-                }
                 .ffw-item-caption{
-                    max-width: 94%;
-                    margin-left: rem(20);
-                    padding-left: 0;
-                    color: $setting-color-gray-6;
-                    background-color: $setting-color-white;
-                    border-bottom: none;
-
-                    .navigation-multilevel-node__link-inner--lvl-1{
-                        padding: 0;
-                    }
+                    font-size: rem(14);
                 }
             }
             ff-navigation-item[cluster-level="2"]{
+                .ffw-item-caption {
+                    margin-left: rem(20);
+                }
                 .ffw-item-caption{
-                    padding: rem(10) rem(10);
-                    color: $setting-color-gray-9;
-                    border-bottom: none;
+                    font-weight: 400;
+                    font-size: rem(13);
                 }
             }
 
             .ffw-menu-items {
                 display: flex;
             }
+
+            .navigation-icon {
+                display: flex;
+                align-items: center;
+            }
+
+            .navigation-icon:before {
+                padding-right: rem(5);
+                min-width: rem(30);
+                display: flex;
+                justify-content: center;
+            }
         }
     }
 }
-
 @include navigation-header-mobile-de();

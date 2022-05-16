@@ -33,6 +33,17 @@
             margin-right: 10px;
         }
 
+        }
+
+        .supplier {
+            font-weight: 700;
+            color: #898F87;
+        }
+
+        .new_cart {
+            margin-right: 10px;
+        }
+
         &--catalog {
             padding-bottom: rem(15);
 
@@ -312,6 +323,39 @@
 
                     @include helper-breakpoint-media-max($sm-max) {
                         height: auto;
+                        margin: 0;
+                    }
+                }
+            }
+
+            @include helper-breakpoint-media-max($sm-max) {
+                display: flex;
+                flex-direction: row;
+                justify-content: flex-end;
+                text-align: right;
+                border-top: 1px solid $setting-color-lighter;
+                width: 100%;
+                padding: 8px 1px 3px;
+
+                a {
+                    justify-content: center;
+                    width: 30px;
+                    min-width: 40px;
+                    padding: 15px;
+                    height: 40px;
+                    margin: 0 8px 6px 0;
+                    .add-details-to-cart-text-holder {
+                        display: none;
+                        font-weight: 900;
+                    }
+
+                    .icon-basketplus {
+                        font-size: rem(24);
+                        margin-right: 0;
+                    }
+
+                    .icon {
+                        width: rem(15);
                         margin: 0;
                     }
                 }

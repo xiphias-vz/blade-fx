@@ -164,6 +164,7 @@
                     }
 
                 }
+
                 .header-articles {
                     font-size: rem(16);
                     @include helper-breakpoint-media-max($lg-max){
@@ -204,6 +205,16 @@
                 }
                 .product__item3 {
                     padding: rem(5) rem(70) rem(5) rem(58);
+                }
+            }
+            .sorting-toggler {
+                .toggler-item {
+                    .title {
+                        font-size: inherit;
+                        height: rem(38);
+                        display: flex;
+                        align-items: center;
+                    }
                 }
             }
         }
@@ -256,9 +267,7 @@
                 text-align: center;
                 padding: rem(20);
                 display: flex;
-                flex-direction: column;
                 justify-content: space-between;
-                max-width: rem(800);
                 color: $setting-color-black;
                 border: 2px solid $setting-color-fresh-orange;
                 border-top-width: 5px;
