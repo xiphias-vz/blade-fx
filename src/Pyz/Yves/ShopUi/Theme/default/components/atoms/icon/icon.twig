@@ -1,0 +1,18 @@
+{% extends model('component') %}
+
+{% define config = {
+    name: 'icon',
+    tag: 'svg',
+} %}
+
+{% define data = {
+    name: required,
+} %}
+
+{% define attributes = {
+    title: data.name,
+} %}
+
+{% block body %}
+    <use href="#:{{ data.name }}"></use>
+{% endblock %}

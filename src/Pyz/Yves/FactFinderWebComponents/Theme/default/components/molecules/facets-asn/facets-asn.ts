@@ -60,7 +60,7 @@ export default class FacetsAsn extends Component
                         }
                     }
                 } else if (nodeInsertedEvent.relatedNode.localName === 'ff-navigation-item') {
-                    let anchor = nodeInsertedEvent.relatedNode.querySelector('.navigation-icon');
+                    let anchor = nodeInsertedEvent.relatedNode.querySelector('a');
                     if (anchor !== undefined && anchor !== null) {
                         const className = this.getClassName(anchor.innerText.trim());
                         if (nodeInsertedEvent.relatedNode.hasAttribute('cluster-level')) {
@@ -71,6 +71,9 @@ export default class FacetsAsn extends Component
                     }
                 }
             });
+
+
+
         }
     }
 

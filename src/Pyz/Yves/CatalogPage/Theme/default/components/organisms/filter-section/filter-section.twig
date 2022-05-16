@@ -31,7 +31,7 @@
             {% if filterHasValues and 'enumeration' not in filter.config.type %}
                 {% block filter %}
                     {% embed molecule('toggler-item') with {
-                        modifiers: ['border-without-top', 'filter-sidebar'],
+                        modifiers: ['filter-sidebar', 'code-x-categories'],
                         data: {
                             title: ('product.filter.' ~ filter.name | lower) | trans,
                             triggerClass: data.parentJsName ~ '__toggler-trigger',
@@ -83,7 +83,7 @@
         {% if isEnumerationFilter %}
             <div class="enumeration-filter-holder">
                 {% embed molecule('toggler-item') with {
-                    modifiers: ['border-without-top', 'filter-sidebar'],
+                    modifiers: ['filter-sidebar', 'code-x-filters'],
                     data: {
                         title: 'product.filter.properties' | trans,
                         triggerClass: data.parentJsName ~ '__toggler-trigger',

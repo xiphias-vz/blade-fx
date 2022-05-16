@@ -14,6 +14,8 @@
 {% block body %}
     <div class="grid box grid--center">
         <div class="col col--sm-12 d-flex flex-center">
+            <h1 class="spacing-bottom spacing-bottom--inner {{ config.name }}__title" id="searchResultCountTitle">{{ data.headline }} {{ data.searchString }}</h1>
+            <span class="m-left-m m-bottom-xs text-grey font-weight-500 {{ config.name }}__number-of-products" id="searchResultCount" data-text="{{ 'catalog.itemsFound' | trans }}" data-title="{{ 'global.search.results.for' | trans }}">
                 {% if app.currentCodeBucket == 'DE' %}
                     <h1 class="spacing-bottom spacing-bottom--inner {{ config.name }}__title" id="searchResultCountTitle">{{ data.headline }} {{ data.searchString }}</h1>
                     <span class="m-left-m m-bottom-xs text-grey font-weight-500 {{ config.name }}__number-of-products" id="searchResultCount" data-text="{{ 'catalog.itemsFound' | trans }}" data-title="{{ 'global.search.results.for' | trans }}">

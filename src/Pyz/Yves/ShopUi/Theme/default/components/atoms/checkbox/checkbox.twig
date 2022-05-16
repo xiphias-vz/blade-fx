@@ -29,9 +29,8 @@
         <span class="{{ component.renderClass(config.name ~ '__box', modifiers) }}">
             {% include atom('icon') with {
                 class: component.renderClass(config.name ~ '__check', modifiers),
-                modifiers: ['large'],
                 data: {
-                    name: 'check',
+                    name: 'check-code-x',
                 },
             } only %}
         </span>

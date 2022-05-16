@@ -24,18 +24,18 @@
         {% endif %}
     {%- endif -%}
 
-        {%- if data.itemProp -%}
-            <span class="{{ config.name }}__prop" itemprop="{{-data.itemProp-}}">
-        {%- endif -%}
+    {%- if data.itemProp -%}
+    <span class="{{ config.name }}__prop" itemprop="{{-data.itemProp-}}">
+    {%- endif -%}
 
-            {{- data.label -}}
+    {{- data.label -}}
 
-        {%- if data.itemProp -%}
-            </span>
-        {%- endif -%}
+    {%- if data.itemProp -%}
+    </span>
+    {%- endif -%}
 
     {%- if isLink -%}
-        </a>
+    </a>
     {%- endif -%}
 
     {% if data.withChevron %}

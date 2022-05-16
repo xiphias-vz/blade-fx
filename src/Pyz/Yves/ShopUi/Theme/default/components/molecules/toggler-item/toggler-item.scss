@@ -7,7 +7,6 @@
             opacity: 1;
             font-size: rem(13);
 
-
             @include helper-breakpoint-media-min($lg-min) {
                 font-size: rem(14);
             }
@@ -211,7 +210,7 @@
             }
 
             &--filter-sidebar {
-                padding: rem(10) rem(20);
+                padding: rem(5) rem(20) rem(10) rem(2);
                 background: $setting-color-globus-white;
             }
 
@@ -257,6 +256,163 @@
                 }
             }
         }
+
+        // code-x changes
+        &--code-x-filters {
+            h3.title--heading-CZ {
+                margin: rem(10) rem(5);
+                border: none;
+                background-color: $setting-color-stonegray;
+                border-bottom-right-radius: rem(20);
+
+                &:hover {
+                    background-color: $setting-color-gray-19;
+                }
+            }
+
+            h3.active, h3.active:hover {
+                background-color: $setting-color-light-tentgray;
+                color: $setting-color-white;
+            }
+
+            h3.active::after {
+                background: url('../images/right-chevron-white.svg') !important;
+            }
+
+            div.toggler-item__content {
+                padding: rem(10) !important;
+            }
+
+            ul.menu {
+                padding-left: rem(10);
+                padding-right: rem(10);
+
+                li.menu__item {
+                    border-bottom: rem(1) solid $setting-color-gray-19;
+
+                    label.checkbox__container {
+                        align-items: center;
+
+                        span.checkbox__box {
+                            background-color: $setting-color-gray-20;
+                            border: rem(0.5) solid $setting-color-gray-13;
+                            height: rem(24);
+                            width: rem(24);
+                            border-width: rem(1);
+
+                            &:hover, &:focus {
+                                outline: $setting-color-gray-13 solid rem(1);
+                            }
+                        }
+
+                        input:checked ~ .checkbox__box {
+                            display: block;
+                            background-color: $setting-color-globusCZ-main-green;
+
+                            &:hover {
+                                background-color: $setting-color-globusCZ-hover;
+                            }
+                        }
+
+                        .checkbox__box::after {
+                            content: '';
+                            position: absolute;
+                            display: none;
+                        }
+
+                        .checkbox__box::after {
+                            left: 9px;
+                            top: 5px;
+                            width: 5px;
+                            height: 10px;
+                            border: solid white;
+                            border-width: 0 3px 3px 0;
+                            -webkit-transform: rotate(45deg);
+                            -ms-transform: rotate(45deg);
+                            transform: rotate(45deg);
+                        }
+                    }
+                }
+            }
+        }
+
+        &--code-x-categories {
+            h3.title--heading-CZ {
+                padding-bottom: rem(10) !important;
+            }
+
+            div#{$name}__content {
+                padding-top: 0 !important;
+                overflow-y: auto;
+                max-height: rem(300);
+
+                &::-webkit-scrollbar {
+                    width: rem(7);
+                }
+
+                &::-webkit-scrollbar-track {
+                    background-color: $setting-color-gray-21;
+                    border-radius: rem(10);
+                }
+
+                &::-webkit-scrollbar-thumb {
+                    background-color: $setting-color-globusCZ-main-green;
+                    border-radius: rem(10);
+                }
+            }
+        }
+
+        &--code-x-categories, &--code-x-filters {
+            li {
+                button {
+                    width: 100%;
+
+                    &:hover {
+                        background-color: $setting-color-globusCZ-hover;
+                    }
+                }
+            }
+            div.toggler-item__title-wrapper:hover {
+                background-color: $setting-color-globusCZ-hover;
+            }
+
+            button.filter-category__link {
+                display: flex;
+                align-items: center;
+
+                &::before {
+                    margin-right: rem(10);
+                }
+            }
+
+            div.toggler-item__arrow {
+                height: 100%;
+                margin-right: rem(10);
+            }
+
+            h3 > div.toggler-item__arrow {
+                display: none;
+            }
+
+            h3.title--heading-CZ::after {
+                display: block;
+                border: none !important;
+                width: rem(12.8);
+                height: rem(12.8);
+                background: url('../images/right-chevron.svg');
+                background-size: cover;
+                content: " ";
+                margin-right: rem(21);
+                transform: rotate(90deg);
+                transition: all .3s ease;
+            }
+
+            h3.active::after {
+                transform: rotate(-90deg);
+                transition: all .3s ease;
+            }
+        }
+        // end of code x changes
 
         &--with-top-border {
             border-top: rem(1) solid $setting-color-globus-darkGray;

@@ -11,6 +11,10 @@
             font-weight: 600;
         }
 
+        &:last-of-type > &__separator {
+            display: none;
+        }
+
         &__link {
             font-family: $setting-font-family-additional;
             @include helper-effect-transition(color);

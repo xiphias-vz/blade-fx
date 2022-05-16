@@ -1,6 +1,16 @@
 @mixin facets-asn($name: '.facets-asn') {
     #{$name} {
 
+        .category-filter-style:before {
+            vertical-align: middle;
+            margin-right: rem(4);
+        }
+
+        .category-filter-style-div:before {
+            vertical-align: middle;
+            margin-right: rem(8);
+        }
+
         @include helper-breakpoint-media-max($md-max) {
             display: flex;
             justify-content: center;
@@ -21,25 +31,8 @@
             min-width: unset;
         }
 
-
-        ff-asn-group .expand-arrow::after, ff-asn-group-slider .expand-arrow::after {
-            width: 0.8rem;
-            height: 0.8rem;
-            background: url('../images/right-chevron.svg');
-            background-size: cover;
-            content: " ";
-            transition: all .3s ease;
-        }
-        ff-asn-group[opened] .expand-arrow::after, ff-asn-group-slider[opened] .expand-arrow::after {
-            transform: rotate(90deg);
-            transition: all .3s ease;
-        }
-
         ff-asn {
-
-            font-family: $setting-font-family;
-            border: rem(1) solid $setting-color-globus-lightGray;
-            padding: rem(5);
+            font-family: $setting-font-family-roboto;
 
             @include helper-breakpoint-media-max($md-max) {
                 width: 100%;
@@ -50,33 +43,32 @@
                 overflow-y: auto;
             }
 
-            .sectionBorder {
-                border-bottom: solid $setting-color-globus-lightGray rem(1);
+            .groupName{
+                margin-left: rem(24);
             }
 
             strong {
-                font-weight: 500;
+                font-weight: fw(medium);
             }
 
-            .groupCaption {
-                font-size: 1.25rem;
-                font-family: $setting-font-family-additional;
-                display: flex;
-                justify-content: space-between;
-                align-items: center;
-                padding: rem(5);
+            .expand-arrow::after{
+                width: rem(12.8);
+                height: rem(12.8);
+                background: url('../images/right-chevron.svg');
+                background-size: cover;
+                content: " ";
+                margin-right: rem(21);
+                transform: rotate(90deg);
+                transition: all .3s ease;
             }
 
-            ff-asn-group, ff-asn-group-slider {
+            ff-asn-group {
                 min-width: 100%;
                 padding: rem(5);
             }
 
             .ffw-asn-group-container {
-                padding-left: 1rem;
-
                 .ffw-wrapper {
-
                     div[data-content = detailedLinks] {
                         overflow-y: auto;
                         max-height: rem(300);
@@ -89,11 +81,13 @@
                     ff-asn-group-element {
                         display: flex;
                         justify-content: space-between;
-                        padding: rem(5);
+                        padding: rem(12) rem(16) rem(12);
+                        font-size: rem(16);
                     }
 
                     ff-asn-group-element:hover {
-                        color: $setting-color-globus-darkOrange;
+                        color: $setting-color-zeltgrau;
+                        background-color: $setting-color-light-forest-green;
                         cursor: pointer;
                     }
 
@@ -101,8 +95,9 @@
                         color: $setting-color-gray-13;
                     }
 
-                    .clusterLevel1:hover, .clusterLevel2:hover, .clusterLevel3:hover {
-                        color: $setting-color-orange;
+                    .clusterLevel1:hover {
+                        color: $setting-color-zeltgrau;
+                        background-color: $setting-color-light-forest-green;
                         cursor: pointer;
                     }
 
@@ -120,118 +115,293 @@
                     }
                 }
             }
+        }
 
-            ff-asn-group-slider {
+        ff-asn-group-slider {
+            padding: rem(5);
+            min-width: unset;
+            max-width: unset;
 
-                groupCaption {
-                    @include helper-breakpoint-media-max($xs-max) {
-                        padding-bottom: 0;
-                    }
+            ff-slider-control {
+                ff-slider-one-touch {
+                    height: inherit !important;
                 }
 
-                ff-slider-control {
-                    @include helper-breakpoint-media-max($xs-max) {
-                        padding-top: 0;
-                        margin-top: 0;
-                    }
+                input {
+                    max-width: rem(60);
+                    font-size: rem(16);
+                    font-weight: fw(medium);
+                    color: $setting-color-zeltgrau;
+                    background-color: $setting-color-gray-20;
+                    border:rem(1) solid $setting-color-gray-21;
+                    border-radius: rem(40);
+                    padding: rem(8);
+                    text-align: center;
                 }
 
-                .ffw-sliderSection {
+                .sliderBtn, .ffw-slider-button {
+                    background-color: $setting-color-white;
+                    border: rem(2) solid $setting-color-dark-forest-green;
+                    border-radius: 100%;
+                    height: rem(25);
+                    width: rem(25);
+                }
+            }
 
-                    input {
-                        max-width: 5rem;
-                        font-family: $setting-font-family;
-                        font-size: 1rem;
-                        font-weight: 500;
+            .ffw-sliderSection {
+                height: inherit !important;
+
+                .ffw-slider-container {
+                    align-items: unset !important;
+                    height: rem(40) !important;
+                    margin-top: rem(-15) !important;
+                    margin-bottom: rem(-20) !important;
+                }
+
+                .ffw-button-wrapper{
+                    margin: rem(25) rem(5) rem(10);
+                    display: flex;
+                    justify-content: space-between;
+                }
+
+                .ffw-triangle {
+                    display: none;
+                }
+
+                .ffw-selected-range {
+                    height: rem(10);
+                    background-color: $setting-color-dark-forest-green;
+                    border-radius: rem(40);
+                }
+
+                .ffw-line {
+                    background-color: $setting-color-gray-20;
+                    height: rem(10);
+                    border: none;
+                    border-radius: rem(40);
+                    width: 100%;
+                }
+            }
+        }
+
+        ff-asn-group:first-of-type{
+            ff-asn-group-element[selected]{
+                background-color: $setting-color-light-forest-green;
+                &::after{
+                    content: url("data:image/svg+xml; utf8, <svg xmlns='http://www.w3.org/2000/svg' width='12.8' height='12.8' viewBox='0 0 185.343 185.343'><path fill='rgb(55, 57, 54)' d='M51.707 185.343a10.692 10.692 0 01-7.593-3.149 10.724 10.724 0 010-15.175l74.352-74.347L44.114 18.32c-4.194-4.194-4.194-10.987 0-15.175 4.194-4.194 10.987-4.194 15.18 0l81.934 81.934c4.194 4.194 4.194 10.987 0 15.175l-81.934 81.939a10.678 10.678 0 01-7.587 3.15z'/></svg>");
+                }
+            }
+            .groupCaption {
+                font-size: rem(25);
+                font-weight: fw(medium);
+                display: flex;
+                justify-content: space-between;
+            }
+
+            .expand-arrow-cat::after{
+                margin-right: rem(5);
+                content: url("data:image/svg+xml; utf8, <svg xmlns='http://www.w3.org/2000/svg' width='12.8' height='12.8' viewBox='0 0 185.343 185.343'><path fill='rgb(55, 57, 54)' d='M51.707 185.343a10.692 10.692 0 01-7.593-3.149 10.724 10.724 0 010-15.175l74.352-74.347L44.114 18.32c-4.194-4.194-4.194-10.987 0-15.175 4.194-4.194 10.987-4.194 15.18 0l81.934 81.934c4.194 4.194 4.194 10.987 0 15.175l-81.934 81.939a10.678 10.678 0 01-7.587 3.15z'/></svg>");
+            }
+        }
+
+        ff-asn-group:nth-of-type(2){
+            font-size: rem(25);
+            font-weight: fw(medium);
+
+            [data-container = showMore], [data-container = showLess] {
+                display: none;
+            }
+        }
+
+        ff-asn-group:not(:first-of-type):not(:nth-of-type(2)), ff-asn-group-slider{
+
+            @include helper-breakpoint-media-max($md-max) {
+                min-width: 95vw;
+                max-width: 95vw;
+            }
+            .groupCaption {
+                color: $setting-color-zeltgrau;
+                background-color: $setting-color-stonegray;
+                border-bottom-right-radius: rem(20);
+                display: flex;
+                font-size: rem(20);
+                font-weight: fw(medium);
+                justify-content: space-between;
+                padding: rem(9);
+                align-items: center;
+
+                &:hover {
+                    background-color: $setting-color-gray-19;
+                }
+            }
+
+            .ffw-asn-group-container {
+                .ffw-wrapper {
+                    div[data-content = detailedLinks] {
+                        overflow-y: auto;
+                        max-height: rem(300);
+
+                        @include helper-breakpoint-media-max($md-max){
+                            max-height: 30vh;
+                        }
                     }
 
-                    input[data-control = '2'] {
-                        float: right;
-                        text-align: right;
+                    ff-asn-group-element {
+                        display: flex;
+                        justify-content: space-between;
+                        padding: rem(12) rem(16) rem(12);
+                    }
+                    ff-asn-group-element:hover {
+                        color: $setting-color-forest-green;
+                        cursor: pointer;
                     }
 
-                    ff-slider {
+                    .ffw-asn-selected {
+                        input[type = checkbox] {
+                            width: rem(24);
+                            min-width: rem(24);
+                            height: rem(24);
+                            vertical-align: top;
+                            margin-right: rem(8);
+                            accent-color: $setting-color-dark-forest-green;
+                        }
+                    }
 
-                        height: rem(4);
-                        background-color: $setting-color-gray-1;
-                        border-radius: rem(10);
-
-                        .ffw-sliderBar {
-                            bottom: rem(4);
-
-                            .sliderBtn {
-                                background-color: $setting-color-orange;
-                                border: none;
-                                border-radius: 100%;
-                                height: rem(12);
-                                width: rem(12);
-                            }
+                    .ffw-asn-unselected {
+                        input[type = checkbox] {
+                            width: rem(24);
+                            min-width: rem(24);
+                            height: rem(24);
+                            vertical-align: top;
+                            margin-right: rem(8);
+                            background-color: $setting-color-gray-20;
+                            border:rem(1) solid $setting-color-gray-21;
                         }
                     }
                 }
             }
 
-            .ffw-asn-selected, .ffw-asn-unselected {
-                input[type = checkbox] {
-                    width: 1rem;
-                    min-width: 1rem;
-                    height: 1rem;
+            &[opened]{
+                .groupCaption {
+                    &__selected {
+                        color: $setting-color-white;
+                        background-color: $setting-color-zeltgrau;
+                    }
+                }
+              &  .expand-arrow::after{
+                  transform: rotate(-90deg);
+                  background: url('../images/right-chevron-white.svg');
+                  transition: all .3s ease;
+              }
+            }
+        }
+
+        ff-asn-group[for-group=CategoryPathROOT] {
+            ff-asn-group-element{
+                padding: rem(7) rem(20) rem(7) !important;
+                min-height: rem(42);
+            }
+        }
+
+
+        ff-asn-group:not([for-group=CategoryPathROOT]) {
+            ff-asn-group-element{
+                border-bottom: 1px solid $setting-color-gray-19;
+
+                div[slot=unselected], div[slot=selected] {
+                    input[type=checkbox] {
+                        display: none;
+                    }
+
+                    input[type=checkbox]:checked ~ .checkmark {
+                        background-color: $setting-color-dark-forest-green;
+
+                        &:hover {
+                            background-color: $setting-color-forest-green;
+                        }
+                    }
+
+                    input[type=checkbox]:checked ~ .checkmark:after {
+                        display: block;
+                    }
+
+                    span.checkmark {
+                        display: inline-flex;
+                        justify-content: center;
+                    }
+                }
+
+                .checkmark {
                     vertical-align: top;
-                    margin-right: 0.5rem;
+                    background-color: $setting-color-gray-20;
+                    height: rem(24);
+                    width: rem(24);
+                    min-height: rem(24);
+                    min-width: rem(24);
+                    max-height: rem(25);
+                    max-width: rem(25);
+                    border: rem(0.5) solid $setting-color-gray-13;
+                    border-radius: rem(2);
+                    margin-right: rem(8);
+
+                    &:hover, &:focus {
+                        outline: $setting-color-gray-13 solid rem(1);
+                    }
+
+                    &::after {
+                        content: url('data:image/svg+xml; utf8, <svg width="18" height="13" viewBox="0 0 18 13" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M6.00001 10.17L2.53001 6.70001C2.14002 6.31001 1.51001 6.31001 1.12001 6.70001C0.730015 7.09001 0.730015 7.72001 1.12001 8.11001L5.30001 12.29C5.69001 12.68 6.32001 12.68 6.71001 12.29L17.29 1.71001C17.68 1.32001 17.68 0.690007 17.29 0.300007C16.9 -0.0899927 16.27 -0.0899927 15.88 0.300007L6.00001 10.17Z" fill="white"/></svg>');
+                        display: none;
+                    }
                 }
             }
-            .multiAttributes, .brandsSection {
-                .ffw-asn-selected {
-                    color: $setting-color-globus-darkOrange;
-                }
-            }
+        }
 
-            ff-asn-group[for-group = Sale] {
-                div[data-content = detailedLinks] {
-                    overflow-y: auto;
-                }
+        ff-asn-group[for-group = Sale]{
+            div[data-content = detailedLinks] {
+                overflow-y: auto;
             }
+        }
 
-            div[data-container = showMore] {
-                font-size: rem(13);
-                margin-top: rem(10);
-                color: $setting-color-globus-darkGray;
-            }
+        div[data-container = showMore], div[data-container = showLess] {
+            font-size: rem(13);
+            margin-top: rem(10);
+            padding-left: rem(16);
+            color: $setting-color-globus-darkGray;
+        }
 
-            div[data-container = showMore]:hover {
-                color: $setting-color-orange;
-                cursor: pointer;
-            }
+        div[data-container = showMore]:hover, div[data-container = showLess]:hover {
+            color: $setting-color-forest-green;
+            cursor: pointer;
+        }
 
-            div[data-container = removeFilter] {
-                font-size: rem(13);
-                margin-top: rem(10);
-                color: $setting-color-globus-darkGray;
-            }
+        div[data-container = removeFilter] {
+            font-size: rem(13);
+            margin-top: rem(10);
+            padding-left: rem(16);
+            color: $setting-color-globus-darkGray;
+        }
+        div[data-container = removeFilter]::before {
+            content: "X";
+            padding-right: rem(5);
+        }
 
-            div[data-container = removeFilter]::before {
-                content: "X";
-                padding-right: rem(5);
-            }
+        div[data-container = removeFilter]:hover {
+            color: $setting-color-globus-red;
+            cursor: pointer;
+        }
 
-            div[data-container = removeFilter]:hover {
-                color: $setting-color-globus-red;
-                cursor: pointer;
-            }
+        div[data-content = detailedLinks]::-webkit-scrollbar {
+            width: rem(7);
+        }
 
-            div[data-content = detailedLinks]::-webkit-scrollbar {
-                width: rem(7);
-            }
+        div[data-content = detailedLinks]::-webkit-scrollbar-track {
+            background-color: $setting-color-gray-21;
+            border-radius: rem(10);
+        }
 
-            div[data-content = detailedLinks]::-webkit-scrollbar-track {
-                background-color: $setting-color-gray-1;
-                border-radius: rem(10);
-            }
-
-            div[data-content = detailedLinks]::-webkit-scrollbar-thumb {
-                background: $setting-color-orange;
-                border-radius: rem(5);
-            }
+        div[data-content = detailedLinks]::-webkit-scrollbar-thumb {
+            background: $setting-color-dark-forest-green;
+            border-radius: rem(5);
         }
     }
 }

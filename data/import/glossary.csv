@@ -4321,10 +4321,10 @@ product.filter.wine.quality.properties,Klassifizierung der Weinqualität,de_DE
 product.filter.sales.properties,Angebote,de_DE
 product.filter.sales.properties,"Akce",cs_CZ
 product.filter.sales.properties,Sales,en_US
-product.filter.delete.category,X Auswahl zurücksetzen,de_DE
-product.filter.delete.category,X Resetovat výběr,cs_CZ
-product.filter.delete.all,X Alle Filter zurücksetzen,de_DE
-product.filter.delete.all,X Resetujte všechny filtry,cs_CZ
+product.filter.delete.category,Auswahl zurücksetzen,de_DE
+product.filter.delete.category,Resetovat výběr,cs_CZ
+product.filter.delete.all,Alle Filter zurücksetzen,de_DE
+product.filter.delete.all,Resetujte všechny filtry,cs_CZ
 product.filter.sales.product.attributes,Kennzeichen,de_DE
 product.filter.sales.product.attributes,Označit,cs_CZ
 Angebote,alle Angebote,de_DE

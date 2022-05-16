@@ -33,11 +33,13 @@
 
         &__link {
             font: fw(medium) rem(14) $setting-font-family;
-            margin-bottom: rem(14);
+            /*margin-bottom: rem(14);*/
+            padding: rem(8) rem(15) rem(8);
             color: $setting-color-gray-13;
             background: $setting-color-transparent;
             cursor: pointer;
             text-align: left;
+            vertical-align: middle;
             word-break: break-all;
 
             &:hover {

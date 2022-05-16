@@ -277,6 +277,30 @@ document.addEventListener("ffReady", function (event) {
             // window.history.replaceState(null, document.title, "/de/my-products");
         }
 
+        if(asnData[1].name !== "Filter"){
+            var filterTitle = {
+                "name": "Filter",
+                "elements": [
+                    {
+                        "searchParams": "",
+                    }
+                ],
+                "selectedElements": [],
+                "detailedLinks": 0,
+                "unit": "",
+                "decimalPlaces": 0,
+                "type": "TEXT",
+                "showPreviewImages": false,
+                "filterStyle": "DEFAULT",
+                "selectionType": "singleHideUnselected",
+                "associatedFieldName": "Filter",
+                "groupOrder": 5,
+                "__associatedFieldNameV4": "Filter"
+            }
+            asnData.splice(1, 0, filterTitle);
+            asnData.join();
+        }
+
         var title = "";
         var el = document.getElementById("searchResultCount");
         if (el) {
@@ -499,7 +523,7 @@ window.addEventListener("DOMNodeInserted", function (event) {
             if(el) el.style.display='none';
             el = treeElement.querySelector('ff-asn-group-element');
         }
-    }
+     }
 }, false);
 
 function checkDiscountLabel(element) {

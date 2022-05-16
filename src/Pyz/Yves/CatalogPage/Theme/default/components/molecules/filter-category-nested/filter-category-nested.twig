@@ -4,6 +4,37 @@
     levelMenu: 1,
 } %}
 
+{% set firstLayerClass = 'filter-category__item--level-1' %}
+{% set defaultIconClass = 'icon-globus-leaf-default-md' %}
+{% set classArray = {
+    'Fachtmetzgerei': 'icon-butcher-md',
+    'Tiefkühl': 'icon-ready-meals-md',
+    'Angebote': 'icon-offer-md',
+    'Textil & Schmuck': 'icon-clothes-md',
+    'Fertiggerichte & Tiefkühl': 'icon-ready-meals-md',
+    'Fisch & Fleisch': 'icon-meat-md',
+    'Haushalt': 'icon-household-md',
+    'Spiel- & Schreibwaren': 'icon-games-md',
+    'Spiel & Schreibwaren': 'icon-games-md',
+    'Mražené potraviny': 'icon-sweet-and-savoury-md',
+    'Uzeniny a lahůdky': 'icon-sausage-and-cheese-md',
+    'Pekárna a cukrárna': 'icon-baker-md',
+    'Maso a ryby': 'icon-meat-sausages-fish-md',
+    'Ovoce a zelenina': 'icon-fruit-and-vegetables-md',
+    'Drogerie a kosmetika': 'icon-cosmetics-md',
+    'Mléčné a chlazené': 'icon-fresh-product-md',
+    'Trvanlivé potraviny': 'icon-pantry-md',
+    'Svět zvířat': 'icon-animals-md',
+    'Svět dětí': 'icon-baby-md',
+    'Elektro': 'icon-electronics-md',
+    'Nápoje': 'icon-drinks-md',
+    'Auto-moto': 'icon-auto-md',
+    'Škola': 'icon-leaflet-md',
+    'Domácnost a zahrada': 'icon-raw-materials-md',
+    'Zdravý svět': 'icon-leaf-md',
+} %}
+
+
 {% block body %}
     <ul class="menu">
         {% for categoryNode in data.categories %}
@@ -21,7 +52,7 @@
 
             <li class="{{ classes | join(' ') }}">
                 {% if not categoryNode.hasChildren and categoryNode.quantity %}
-                    <button class="{{ config.name }}__link {{ linkActiveClass }} {{ triggerButtonJsName }}"
+                    <button class="{{ config.name }}__link {{ linkActiveClass }} {{ triggerButtonJsName }} {% if firstLayerClass in classes %} {{ categoryNode.name in classArray | keys ? classArray[categoryNode.name] : defaultIconClass }} {% endif %}"
                         {{ disableAttribute }}
                         type="button"
                         data-url={{ categoryUrl }}>
@@ -38,6 +69,10 @@
                             targetClass: data.parentJsName ~ '__toggler-target--' ~ categoryNode.nodeId,
                             isTogglerIncluded: false,
                             isActive: categoryNode.isActive,
+                            classArray: classArray,
+                            defaultIconClass: defaultIconClass,
+                            classes: classes,
+                            firstLayerClass: firstLayerClass
                         },
                         embed: {
                             parentConfigName: config.name,
@@ -52,7 +87,7 @@
                     } only %}
                         {% block title %}
                             <div class="{{ config.name }}__title-wrapper">
-                                <button class="{{ embed.parentConfigName }}__link {{ embed.parentConfigName }}__link--toggle {{ embed.linkActiveClass }}  {{ embed.triggerButtonJsName }}"
+                                <button class="{{ embed.parentConfigName }}__link {{ embed.parentConfigName }}__link--toggle {{ embed.linkActiveClass }}  {{ embed.triggerButtonJsName }} {% if data.firstLayerClass in data.classes %} {{ data.title in data.classArray | keys ? data.classArray[data.title] : data.defaultIconClass }} {% endif %}"
                                     type="button"
                                     data-url={{ embed.categoryUrl }}>
                                     {{ data.title }}
@@ -63,7 +98,7 @@
                                 <div class="{{ component.renderClass(config.name ~ '__arrow', modifiers) }} {{ iconActiveClass }} {{ data.triggerClass }}" {{ targetAttribute }}>
                                     {% include atom('icon') with {
                                         class: config.name ~ '__arrow-icon',
-                                        modifiers: ['xsmall'],
+                                        modifiers: ['medium'],
                                         data: {
                                             name: 'arrow-right',
                                         },
