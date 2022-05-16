@@ -13,7 +13,7 @@
 
 {% block body %}
     <input type="hidden" id="{{ app.currentCodeBucket }}">
-    <select class="{{ component.renderClass(config.name ~ '__select', modifiers) }} {% block selectClass %}{% endblock %}{% if app.currentCodeBucket == 'DE' %}select--custom{% else %}select--custom-cz{% endif %}" {% block selectAttributes %}{{ component.renderAttributes(attributes) }}{% endblock %}>
+    <select class="{{ component.renderClass(config.name ~ '__select', modifiers) }} {% block selectClass %}{% endblock %} {% if app.currentCodeBucket == 'DE' %}select--custom{% else %}select--custom-cz{% endif %}" {% block selectAttributes %}{{ component.renderAttributes(attributes) }}{% endblock %}>
         {% block options %}
             {% for option in data.options %}
                 {% set isSelected = option.selected | default(false) %}

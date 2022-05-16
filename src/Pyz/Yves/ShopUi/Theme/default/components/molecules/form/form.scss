@@ -97,7 +97,6 @@ $review-rating-field-width: rem(154);
 
             &--checkout {
                 border-radius: rem(30);
-                padding: rem(5);
                 margin: 0;
 
                 &:not(:last-child) {
@@ -317,6 +316,19 @@ $review-rating-field-width: rem(154);
                     margin-left: rem(3);
                     color: $setting-color-globus-lightOrange;
                 }
+            }
+        }
+
+        .margin-telefon-title
+        {
+            font-family: $setting-font-family-additional;
+            font-size: rem(14);
+            font-weight: 500;
+            margin-left: rem(28);
+            margin-right: rem(90);
+
+            @media only screen and (max-width: 769px) {
+                margin-right: rem(8);
             }
         }
 

@@ -11,69 +11,116 @@
 
 {% block container %}
     <style>
+        input:-webkit-autofill,
+        input:-webkit-autofill:focus {
+            transition: background-color 600000s 0s, color 600000s 0s;
+        }
         .button--maxLarge {
             width: 100%;
         }
 
         .stepTitle {
-            margin-bottom: 5px;
+            font-family: "Roboto Thin", sans-serif;
+            font-size: 31px;
+            font-style: normal;
+            color: #373936;
+            line-height: 37px;
+            margin-bottom: 16px;
         }
+
         .form-desc {
-            margin-top: 4px;
-            margin-bottom: 20px;
+            font-family: "Roboto Thin", sans-serif;
+            font-size: 19px;
+            font-style: normal;
+            font-weight: 400;
+            color: #373936;
+            line-height: 24px;
+            margin: 16px 0 30px;
+        }
+
+        .createCustomerTitle {
+            font-family: "Roboto Thin", sans-serif;
+            font-size: 27px;
+            color: #373936;
+            margin-bottom: 16px;
+        }
+
+        .inputGray {
+            background-color: #eeefee;
         }
 
         .customLogin-footer {
             margin-top: 10px;
         }
 
-        .btn-link {
-            background-color: transparent !important;
-            color: #7c7c7c !important;
-        }
-
-        .btn-link:hover,
-        .btn-link:focus,
-        .btn-link:active
-        {
-            background-color: transparent !important;
-            color: #7c7c7c !important;
-        }
-
         .hr-line-solid {
-            border-bottom: 1px solid black;
-            background-color: rgba(0, 0, 0, 0);
-            border-style: solid !important;
-            margin-top: 15px;
-            margin-bottom: 15px;
-            width: 100%;
+            border-top: 1px solid #b3b0aa;
+            margin-top: 52px;
+            margin-bottom: 20px;
+        }
+
+        .hr-line-solid_passwordForgot {
+            border-top: 1px solid #b3b0aa;
+            margin-top: 160px;
+            margin-bottom: 20px;
         }
 
         .hintText {
-            color: #71747c;
+            text-decoration: none;
+            font-family: "Roboto Thin", sans-serif;
+            font-size: 16px;
+            font-weight: 600;
+            color: #373936; !important;
+            line-height: 19px;
         }
 
         .helpLink {
             text-decoration: none;
+            margin-left: 14px;
+            font-family: "Roboto Thin", sans-serif;
+            font-size: 16px;
+            font-weight: 600;
+            color: #373936;
         }
 
-        .linkOrange {
-            color: #ea8901;
+        .icon-hint {
+            width: 7px;
+            height: 11px;
+            vertical-align: baseline;
+            margin-right: 8px;
+        }
+
+        .linkGlobusAccount {
+            color: #373936;
             background-color: transparent;
             cursor: pointer;
-            font-weight: 700;
         }
 
-        .cancelBtn {
-            border: 1px solid;
+        .submitBtn {
+            min-width: 18rem !important;
+            margin: 2.5rem 0 0.5rem !important;
+            clear: both;
+        }
+
+        @media only screen and (max-width: 769px) {
+            .cancelBtn {
+                margin-top: 24px;
+                min-width: 0;
+            }
+        }
+
+        .icon-eye {
+            transform: scale(1.3);
+            display: block;
+        }
+
+        .icon-eyeclosed {
+            transform: scale(1.3);
+            display: none;
         }
 
         #customerPasswordDiv, #ForgotPasswordLinkDiv, #btnLogin {
             display: none;
-        }
-
-        #ForgotPasswordLinkDiv {
-            margin-top: 10px;
         }
 
         #forgotPasswordDiv, #temporarilyLockedOutDiv, #accountDisabledDiv {
@@ -82,25 +129,37 @@
 
         #forgotPasswordMessage, #passwordForgotEmailMessage, #temporarilyLockedOutMessage, #accountDisabledMessage {
             color: #FF3400;
+            margin-left: 8px;
         }
 
-        #emailCheckIcon, #startRegister_emailCheckIcon, #passwordToggleEye, #startRegister_passwordToggleEye {
+        #emailCheckIcon, #startRegister_emailCheckIcon {
             display: none;
             position: absolute;
             bottom: 21px;
-            right: 20px;
-            width: 24px;
-            height: 24px;
+            right: 25px;
+            width: 25px;
+            height: 35px;
             background: transparent;
         }
 
-        #passwordToggleEye, #startRegister_passwordToggleEye {
+        #passwordToggleEye {
             display: block;
             position: absolute;
-            bottom: 28px;
+            bottom: 33px;
             right: 28px;
             width: 24px;
             height: 24px;
+            background: transparent;
+            cursor: pointer;
+        }
+
+        #startRegister_passwordToggleEye {
+            display: block;
+            position: absolute;
+            bottom: 22px;
+            right: 28px;
+            height: 46px;
+            width: 24px;
             background: transparent;
             cursor: pointer;
         }
@@ -132,6 +191,10 @@
             cursor: pointer;
         }
 
+        #btnBackToLogin {
+            margin-top: 10px;
+        }
+
         input[type='checkbox'] {
             appearance: none;
         }
@@ -153,7 +216,7 @@
         }
 
         .page-layout-customer__form-wrap {
-            border-style: hidden;
+            border-style: unset;
         }
 
         @media screen and (max-width: 768px) {
@@ -164,6 +227,7 @@
 
         .btn-cancel-margin {
             margin-top: -5.8rem !important;
+            padding: 1.5rem;
         }
 
         @media screen and (max-width: 768px) {
@@ -174,10 +238,6 @@
 
         .form--checkout-actions {
             width: 100%;
-        }
-
-        .description-passwordForgot {
-            margin-bottom: 25px;
         }
 
         #passwordForgotEmail, #customLoginFormEmail, #emailAlreadyUsed {
@@ -191,16 +251,90 @@
 
         .validation-invalid {
             background-color: #cb3d49;
+            border-radius: 24px;
+            font-family: "Roboto Thin", sans-serif;
+            color: #373936;
+            font-weight: 600;
         }
 
         #passwordForgotEmailMessage, #customLoginFormEmailMessage, #emailAlreadyUsedMessage {
             color: black;
         }
 
+        .password-checkbox {
+            display: inline-flex;
+            font-size: 0.9rem;
+            font-weight: 400;
+        }
+
+        .password-checkbox-label {
+            margin-top: 18px;
+        }
+
+        .checkbox-wrapper {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            padding: 8px 14px;
+            row-gap: 14px;
+        }
+
+        @media only screen and (max-width: 769px) {
+            .checkbox-wrapper {
+                grid-template-columns: auto;
+            }
+        }
+
+        input[type='checkbox'] {
+            appearance: auto;
+            accent-color: #007528;
+            width: 20px;
+            height: 20px;
+            margin-right: 0.5rem;
+        }
+
+        input[type='checkbox']:checked:after {
+            content: "";
+        }
+
+        #loginAPI, #additionalLoginForm, #passwordForgotFormDiv {
+            padding: 0 25%;
+        }
+
+        @media only screen and (max-width: 991px) {
+            #loginAPI, #additionalLoginForm, #passwordForgotFormDiv{
+                padding: unset;
+            }
+        }
+
+        .registrationLeftSideDiv {
+            margin-top: 24px;
+        }
+
+        .registrationRightSideDiv {
+            background-color: #EEEFEE;
+            padding: 24px;
+            margin-top: 24px;
+        }
+
+        @media screen and (min-width: 769px) {
+            .registrationLeftSideDiv {
+                width: 49%;
+            }
+            .registrationCenterDiv {
+                width: 2%;
+            }
+            .registrationRightSideDiv {
+                background-color: #EEEFEE;
+                padding: 24px;
+                float: right;
+                width: 49%;
+            }
+        }
+
     </style>
 
     <div class="page-layout-customer page-layout-customer--login-wrap register-form-tablet-width">
-        <div class="box box--checkout page-layout-customer__form-wrap">
+        <div class="page-layout-customer__form-wrap">
 
             <div id="additionalLoginForm" class="form form--login form--checkout-actions">
                 <h2 class="createCustomerTitle">{{ 'checkout.step.customer.login.create_customer_title' | trans }}</h2>
@@ -212,8 +346,15 @@
                                     <div id="startRegister_customerEmailDiv" class="form__fields grid grid--top">
                                         <div class="form__field col col--sm-12">
                                             <label for="startRegistrationForm_customer_email" class="label label--required">{{ 'checkout.step.customer.login.emailField.labelCreate' | trans }}</label>
-                                            <input id="startRegistrationForm_customer_email" name="startRegistrationForm[customer][email]" required="required" placeholder="{{ 'checkout.step.customer.login.emailField.placeholderCreate' | trans }}" class="input input--expand" type="email" >
-                                            <span id="startRegister_emailCheckIcon" class="icon-check"></span>
+                                            <input id="startRegistrationForm_customer_email" name="startRegistrationForm[customer][email]" required="required" placeholder="{{ 'checkout.step.customer.login.emailField.placeholderCreate' | trans }}" class="input input--expand inputGray" type="email" >
+                                            <span id="startRegister_emailCheckIcon">
+                                                {% include atom('icon') with {
+                                                    class: 'check-codex',
+                                                    data: {
+                                                        name: 'check-codex',
+                                                    },
+                                                } only %}
+                                            </span>
                                             <div id="emailAlreadyUsed" class="is-hidden">
                                                 <span id="emailAlreadyUsedMessage"></span>
                                             </div>
@@ -222,21 +363,45 @@
                                     <div id="startRegister_customerPasswordDiv" class="form__fields grid grid--top">
                                         <div class="form__field col col--sm-12">
                                             <label for="startRegister__customer_password" class="label label--required">{{ 'auth.password' | trans }}</label>
-                                            <input id="startRegister__customer_password" name="startRegistrationForm[customer][password]" required="required" placeholder="{{ 'customer.login.password_placeholder' | trans }}" class="input input--expand" type="password" >
-                                            <button type="button" id="startRegister_passwordToggleEye" class="icon-eye"></button>
+                                            <input id="startRegister__customer_password" name="startRegistrationForm[customer][password]" required="required" placeholder="{{ 'customer.login.password_placeholder' | trans }}" class="input input--expand inputGray" type="password" >
+                                            <button type="button" id="startRegister_passwordToggleEye">
+                                                {% include atom('icon') with {
+                                                    class: 'icon-eye',
+                                                    data: {
+                                                        name: 'eye-codex',
+                                                    },
+                                                } only %}
+                                                {% include atom('icon') with {
+                                                    id: 'iconEyeclosed',
+                                                    class: 'icon-eyeclosed',
+                                                    data: {
+                                                        name: 'eyeclosed-codex',
+                                                    },
+                                                } only %}
+                                            </button>
                                         </div>
                                     </div>
                                     <div id="startRegister_passwordCheckBoxes" class="form__fields grid grid--top">
                                         <div class="form__field col col--sm-12">
-                                            <label for="passwordCheckBoxes" class="label label--required">{{ 'register.page.password.checkboxes.label' | trans}}</label>
-                                            <div><input id="passwordCheckBoxes_length" name="passwordCheckBoxes[length]" type="checkbox" onclick="return false;" />
-                                                <label for="passwordCheckBoxes_length" class="label">{{ 'register.page.password.check.length' | trans }}</label></div>
-                                            <div><input id="passwordCheckBoxes_specChar" name="passwordCheckBoxes[specChar]" placeholder="{{ 'customer.login.password_placeholder' | trans }}" type="checkbox" onclick="return false;" />
-                                                <label for="passwordCheckBoxes_specChar" class="label">{{ 'register.page.password.check.spec.char' | trans }}</label></div>
-                                            <div><input id="passwordCheckBoxes_digit" name="passwordCheckBoxes[digit]" placeholder="{{ 'customer.login.password_placeholder' | trans }}" type="checkbox" onclick="return false;" />
-                                                <label for="passwordCheckBoxes_digit" class="label">{{ 'register.page.password.check.digit' | trans }}</label></div>
-                                            <div><input id="passwordCheckBoxes_letter" name="passwordCheckBoxes[letter]" placeholder="{{ 'customer.login.password_placeholder' | trans }}" type="checkbox" onclick="return false;" />
-                                                <label for="passwordCheckBoxes_letter" class="label">{{ 'register.page.password.check.letter' | trans }}</label></div>
+                                            <label for="passwordCheckBoxes" class="password-checkbox-label label">{{ 'register.page.password.checkboxes.label' | trans}}</label>
+                                            <div class="checkbox-wrapper">
+                                                <div class="password-checkbox">
+                                                    <input id="passwordCheckBoxes_length" name="passwordCheckBoxes[length]" type="checkbox" onclick="return false;" />
+                                                    <label for="passwordCheckBoxes_length" class="">{{ 'register.page.password.check.length' | trans }}</label>
+                                                </div>
+                                                <div class="password-checkbox">
+                                                    <input id="passwordCheckBoxes_specChar" name="passwordCheckBoxes[specChar]" placeholder="{{ 'customer.login.password_placeholder' | trans }}" type="checkbox" onclick="return false;" />
+                                                    <label for="passwordCheckBoxes_specChar" class="">{{ 'register.page.password.check.spec.char' | trans }}</label>
+                                                </div>
+                                                <div class="password-checkbox">
+                                                    <input id="passwordCheckBoxes_digit" name="passwordCheckBoxes[digit]" placeholder="{{ 'customer.login.password_placeholder' | trans }}" type="checkbox" onclick="return false;" />
+                                                    <label for="passwordCheckBoxes_digit" class="" >{{ 'register.page.password.check.digit' | trans }}</label>
+                                                </div>
+                                                <div class="password-checkbox">
+                                                    <input id="passwordCheckBoxes_letter" name="passwordCheckBoxes[letter]" placeholder="{{ 'customer.login.password_placeholder' | trans }}" type="checkbox" onclick="return false;" />
+                                                    <label for="passwordCheckBoxes_letter" class="">{{ 'register.page.password.check.letter' | trans }}</label>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -244,16 +409,13 @@
                         </div>
 
                         <div class="form__actions">
-                            <button id="btnContinueRegistration" type="button" class="col col--middle button button--expand-tablet button--maxLarge" disabled>{{ 'general.next.button' | trans }}</button>
-                        </div>
-
-                        <div class="customLogin-footer form__actions">
-                            <button id="btnCancelLogin" type="button" class="btn btn-link col col--middle">{{ 'general.cancel.button' | trans }}</button>
+                            <button id="btnCancelLogin" type="button" class="button button--hollow-ghost button--expand col col--middle">{{ 'general.cancel.button' | trans }}</button>
+                            <button id="btnContinueRegistration" type="button" class="form__action col col--middle button button--expand-tablet button--maxLarge" disabled>{{ 'general.next.button' | trans }}</button>
                         </div>
 
                         <div class="hr-line-solid"></div>
 
-                        <p id="basicHelpText" class="hintText">> <a class="helpLink" href="https://globus.zendesk.com/hc/de" target="_blank">{{ 'checkout.step.customer.login.help_text' | trans }}</a></p>
+                        <p id="basicHelpText" class="hintText"><svg class="icon icon-hint"><use xlink:href="#:chevron-right"></use></svg><a href="https://globus.zendesk.com/hc/de" class="hintText" target="_blank">{{ 'checkout.step.customer.login.help_text' | trans }}</a></p>
                     </div>
                 </form>
             </div>
@@ -269,22 +431,45 @@
                                     <div id="customerEmailDiv" class="form__fields grid grid--top">
                                         <div class="form__field col col--sm-12">
                                             <label for="customLoginForm_customer_email" class="label label--required">{{ 'checkout.step.customer.login.emailField.label' | trans }}</label>
-                                            <input id="customLoginForm_customer_email" name="customLoginForm[customer][email]" required="required" placeholder="{{ 'checkout.step.customer.login.emailField.placeholderCreate' | trans }}" class="input input--expand" type="email" >
-                                            <span id="emailCheckIcon" class="icon-check"></span>
+                                            <input id="customLoginForm_customer_email" name="customLoginForm[customer][email]" required="required" placeholder="{{ 'checkout.step.customer.login.emailField.placeholder' | trans }}" class="input input--expand inputGray" type="email" >
+                                            <span id="emailCheckIcon">
+                                                {% include atom('icon') with {
+                                                    class: 'check-codex',
+                                                    data: {
+                                                        name: 'check-codex',
+                                                    },
+                                                } only %}
+                                            </span>
+
                                         </div>
                                     </div>
                                     <div id="customerPasswordDiv" class="form__fields grid grid--top" >
                                         <div class="form__field col col--sm-12">
                                             <label for="customLoginForm_customer_password" class="label label--required">{{ 'auth.password' | trans }}</label>
-                                            <input id="customLoginForm_customer_password" name="customLoginForm[customer][password]" placeholder="{{ 'customer.login.password_placeholder' | trans }}" class="input input--expand" type="password" >
-                                            <button type="button" id="passwordToggleEye" class="icon-eye"></button>
+                                            <input id="customLoginForm_customer_password" name="customLoginForm[customer][password]" placeholder="{{ 'customer.login.password_placeholder' | trans }}" class="input input--expand inputGray" type="password" >
+                                            <button type="button" id="passwordToggleEye">
+                                                {% include atom('icon') with {
+                                                    id: 'iconEye',
+                                                    class: 'icon-eye',
+                                                    data: {
+                                                        name: 'eye-codex',
+                                                    },
+                                                } only %}
+                                                {% include atom('icon') with {
+                                                    id: 'iconEyeclosed',
+                                                    class: 'icon-eyeclosed',
+                                                    data: {
+                                                        name: 'eyeclosed-codex',
+                                                    },
+                                                } only %}
+                                            </button>
                                         </div>
                                     </div>
                                     <div id="customLoginFormEmail" class="is-hidden">
                                         <span id="customLoginFormEmailMessage"></span>
                                     </div>
                                     <div id="forgotPasswordDiv">
-                                        <span id="forgotPasswordMessage">{{ 'checkout.step.customer.login.invalidPassword' | trans }}</span>
+                                        <div id="forgotPasswordMessage">{{ 'checkout.step.customer.login.invalidPassword' | trans }}</div>
                                         <input id="captchaGeneratedToken" type="hidden" />
                                     </div>
                                     <div id="temporarilyLockedOutDiv">
@@ -299,36 +484,39 @@
                             </div>
                         </div>
 
-                        <div class="form__actions">
-                            <button id="btnCheckMailOrCard" type="button" class="col col--middle button button--expand-tablet button--maxLarge" data-qa="submit-button">
-                                {{ 'general.next.button' | trans }}
-                            </button>
-                            <button id="btnLogin" type="button" class="col col--middle button button--expand-tablet button--maxLarge">{{ 'general.next.button' | trans }}</button>
-                        </div>
-
                         <div id="ForgotPasswordLinkDiv" onclick="showForgotPassword()">
                             <a class="helpLink"  href="#">{{ 'global.recover.password' | trans }}?</a>
                         </div>
 
+                        <div class="form__actions">
+                            <button id="btnCancelLogin" onclick="cancelLogin()" type="button" class="button button--hollow-ghost button--expand col col--middle">
+                                {{ 'general.cancel.button' | trans }}
+                            </button>
+                            <button id="btnCheckMailOrCard" type="button" class="form__action col col--middle button button--expand" data-qa="submit-button">
+                                {{ 'general.next.button' | trans }}
+                            </button>
+                            <button id="btnLogin" type="button" class="form__action col col--middle button button--expand">
+                                {{ 'general.next.button' | trans }}
+                            </button>
+                        </div>
+
                     </div>
                 </form>
-                <div class="customLogin-footer form__actions">
-                    <a id="btnCancelLogin" onclick="cancelLogin()" type="button" class="btn btn-link col col--middle">{{ 'general.cancel.button' | trans }}</a>
-                </div>
 
                 <div class="hr-line-solid"></div>
 
-                <p id="basicHelpText" class="hintText">> <a class="helpLink" href="https://globus.zendesk.com/hc/de" target="_blank">{{ 'checkout.step.customer.login.help_text' | trans }}</a></p>
-                <p id="newUserHelpText" class="hintText">> {{ 'checkout.step.customer.login.new_user_text' | trans }} <button id="btnRegisterUser" class="helpLink linkOrange">{{ 'checkout.step.customer.login.globus_account_text' | trans }}</button></p>
+                <p id="basicHelpText" class="hintText"><svg class="icon icon-hint"><use xlink:href="#:chevron-right"></use></svg><a class="hintText" href="https://globus.zendesk.com/hc/de" target="_blank">{{ 'checkout.step.customer.login.help_text' | trans }}</a></p>
+                <p id="newUserHelpText" class="hintText"><svg class="icon icon-hint"><use xlink:href="#:chevron-right"></use></svg>{{ 'checkout.step.customer.login.new_user_text' | trans }} <a id="btnRegisterUser" class="hintText linkGlobusAccount">{{ 'checkout.step.customer.login.globus_account_text' | trans }}.</a></p>
             </div>
 
-            <div id="checkoutCustomerRegister" class="js-customer-page-login-register grid">
-                <div class="col col--sm-12 col--lg-6 spacing spacing--bigger spacing--inner">
+            <div id="checkoutCustomerRegister" class="register-form js-customer-page-login-register grid">
+                <div class="registrationLeftSideDiv">
                     {% embed molecule('register-page-left-side') only %}
                     {% endembed %}
                 </div>
-
-                <div class="col col--sm-12 col--lg-6 spacing spacing--bigger spacing--inner"  id="page-layout-customer_register2">
+                <div class="registrationCenterDiv">
+                </div>
+                <div class="registrationRightSideDiv"  id="page-layout-customer_register2">
                     {% embed molecule('form-register') with {
                         class: 'register-form js-login__register',
                         modifiers: ['checkout-actions'],
@@ -357,8 +545,8 @@
                 </div>
 
                     {% block CancelRegisterButton %}
-                        <div class="col col--sm-12 col--lg-6 spacing spacing--bigger spacing--inner btn-cancel-margin">
-                            <button id="btnCancelRegister" type="button" class="btn-link form__action form__action--checkout col col--middle button button--expand-tablet button--large cancelBtn" style="margin-bottom: 5px;">{{ 'general.cancel.button' | trans }}</button>
+                        <div class="col col--sm-12 col--lg-6 btn-cancel-margin">
+                            <button id="btnCancelRegister" type="button" class="form__action form__action--checkout col col--middle button button--hollow-ghost button--expand-tablet button--large cancelBtn" style="margin-bottom: 5px;">{{ 'general.cancel.button' | trans }}</button>
                         </div>
                     {% endblock %}
             </div>
@@ -372,7 +560,7 @@
                                 <div class="form__container">
                                     <div id="passwordForgotEmailDiv" class="form__fields grid grid--top">
                                         <div class="form__field col col--sm-12">
-                                            <p class="description-passwordForgot">{{ 'enter.your.email.address.for.reset.password.title.1' | trans }}, {{ 'enter.your.email.address.for.reset.password.title.2' | trans }}:</p>
+                                            <p class="form-desc">{{ 'enter.your.email.address.for.reset.password.title.1' | trans }}, {{ 'enter.your.email.address.for.reset.password.title.2' | trans }}:</p>
                                             <label for="txt_email_or_card_for_pass_reset" class="label label--required">{{ 'checkout.step.customer.login.emailField.label' | trans }}</label>
                                             <input id="txt_email_or_card_for_pass_reset" name="forgotPassForms[customer][email]" required="required" placeholder="{{ 'checkout.step.customer.login.emailField.placeholder' | trans }}" class="input input--expand" type="email" >
                                         </div>
@@ -384,22 +572,22 @@
                             </div>
                         </div>
 
-                        <div class="form__actions">
-                            <button id="btnCallForgotPasswordApi" type="button" class="form__action col col--middle button button--expand-tablet button--maxLarge" data-qa="submit-button">
+                        <div class="">
+                            <button id="btnCallForgotPasswordApi" type="button" class="col col--middle button button--expand-tablet button--maxLarge" data-qa="submit-button">
                                 {{ 'send' | trans }}
                             </button>
                             <button id="btnLogin" type="button" class="form__action col col--middle button button--expand-tablet button--maxLarge">{{ 'general.next.button' | trans }}</button>
                         </div>
                     </div>
                 </form>
-                <div class="customLogin-footer form__actions">
-                    <a id="btnBackToLogin" onclick="backToLoginForm()" type="button" class="btn btn-link col col--middle">{{ 'return.sign.in' | trans }}</a>
+                <div class="customLogin-footer">
+                    <a id="btnBackToLogin" onclick="backToLoginForm()" type="button" class="button button--hollow-ghost button--expand col col--middle">{{ 'return.sign.in' | trans }}</a>
                 </div>
 
-                <div class="hr-line-solid"></div>
+                <div class="hr-line-solid_passwordForgot"></div>
 
-                <p id="basicHelpText" class="hintText">> <a class="helpLink" href="https://globus.zendesk.com/hc/de" target="_blank">{{ 'checkout.step.customer.login.help_text' | trans }}</a></p>
-                <p id="newUserHelpText" class="hintText">> {{ 'checkout.step.customer.login.new_user_text' | trans }} <a id="lnkRegisterUser" class="helpLink linkOrange" href="/register">{{ 'checkout.step.customer.login.globus_account_text' | trans }}</a></p>
+                <p id="basicHelpText" class="hintText"><svg class="icon icon-hint"><use xlink:href="#:chevron-right"></use></svg><a class="hintText" href="https://globus.zendesk.com/hc/de" target="_blank">{{ 'checkout.step.customer.login.help_text' | trans }}</a></p>
+                <p id="newUserHelpText" class="hintText"><svg class="icon icon-hint"><use xlink:href="#:chevron-right"></use></svg>{{ 'checkout.step.customer.login.new_user_text' | trans }} <a id="lnkRegisterUser" class="hintText linkGlobusAccount" href="/register">{{ 'checkout.step.customer.login.globus_account_text' | trans }}</a></p>
 
             </div>
         </div>
@@ -522,7 +710,7 @@
                             if (response.isAvailable === true) {
                                 checkoutStep('register');
                                 $("#additionalLoginForm").css("display", "none");
-                                $("#checkoutCustomerRegister").css("display", "block");
+                                $("#checkoutCustomerRegister").css("display", "flex");
                                 $("#registerForm_customer_email").val($("#startRegistrationForm_customer_email").val());
                                 $("#registerForm_customer_password_pass").val($("#startRegister__customer_password").val());
                                 $("#registerForm_customer_password_confirm").val($("#startRegister__customer_password").val());
@@ -600,28 +788,30 @@
             var el = $("#customLoginForm_customer_password")[0];
             if(el.type === "password"){
                 el.type = "text";
+                $(".icon-eye").css('display', 'none');
+                $(".icon-eyeclosed").css('display', 'block');
             }
             else
             {
                 el.type = "password";
+                $(".icon-eye").css('display', 'block');
+                $(".icon-eyeclosed").css('display', 'none');
             }
-
-            $("#passwordToggleEye").toggleClass("icon-eye");
-            $("#passwordToggleEye").toggleClass("icon-eyeclosed");
         });
 
         $("#startRegister_passwordToggleEye").click(function(){
             var el = $("#startRegister__customer_password")[0];
             if(el.type === "password"){
                 el.type = "text";
+                $(".icon-eye").css('display', 'none');
+                $(".icon-eyeclosed").css('display', 'block');
             }
             else
             {
                 el.type = "password";
+                $(".icon-eye").css('display', 'block');
+                $(".icon-eyeclosed").css('display', 'none');
             }
-
-            $("#startRegister_passwordToggleEye").toggleClass("icon-eye");
-            $("#startRegister_passwordToggleEye").toggleClass("icon-eyeclosed");
         });
 
         $("#startRegistrationForm_customer_email").on('input', function(ev) {

@@ -8,7 +8,8 @@
     background-color: $setting-color-globus-white;
     padding: rem(12);
     border: rem(1) solid $setting-color-input-border;
-    border-radius: rem(25);
+    border-radius: rem(24);
+    box-sizing: border-box;
     appearance: none;
     margin: rem(8) 0;
 

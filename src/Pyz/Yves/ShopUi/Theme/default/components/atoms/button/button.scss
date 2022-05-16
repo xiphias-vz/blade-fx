@@ -158,10 +158,10 @@
 
         &[disabled],
         &--disabled {
-            background-color: $setting-color-gray-3;
-            border-color: $setting-color-gray-3;
+            border-color: $setting-color-fresh-orange-2;
+            background-color: $setting-color-fresh-orange-2;
             cursor: not-allowed;
-            color: $setting-color-gray-9;
+            color: $setting-color-white;
             pointer-events: none;
         }
 
@@ -272,6 +272,15 @@
             box-sizing: border-box;
             background-color: transparent;
             color: $setting-color-fresh-orange;
+
+            &:hover,
+            &:focus,
+            &:active {
+                border: 2px solid $setting-color-fresh-orange;
+                background: $setting-color-fresh-orange-2;
+                color: $setting-color-fresh-orange;
+                box-shadow: 0 rem(4) rem(18) $setting-color-fresh-orange-2 !important;
+            }
         }
 
         &--hollow-ghost-CZ {
@@ -348,6 +357,10 @@
             min-width: 0;
             padding-left: rem(12);
             padding-right: rem(12);
+        }
+
+        &--large {
+            width: 100%;
         }
 
         &--expand {
