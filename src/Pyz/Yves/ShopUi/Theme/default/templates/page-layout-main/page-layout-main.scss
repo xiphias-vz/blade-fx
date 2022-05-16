@@ -4,6 +4,46 @@
             display: none;
         }
 
+        .slot3-container{
+            .slick-carousel__container {
+                position: relative;
+                display: flex;
+                align-items: center;
+                padding-bottom: rem(30);
+                justify-content: space-between;
+            }
+
+            .slick-arrow {
+                position: relative;
+                font-size: 0;
+                top: 0;
+                width: rem(90);
+                height: rem(30);
+                background: url('../images/right-chevron-slider.svg') no-repeat center / rem(15);
+                border-radius: 50%;
+                z-index: $setting-zi-element + 1;
+
+                &:hover {
+                    background-color: $setting-color-white;
+                    opacity: 1;
+                    cursor: pointer;
+                }
+
+                @include helper-breakpoint-media-max($sm-max){
+                    width: rem(180);
+                }
+            }
+
+            .slick-prev {
+                left: rem(-10);
+                transform: rotate(180deg);
+            }
+
+            .slick-next {
+                left: rem(10);
+            }
+        }
+
         &__container {
             display: flex;
             flex-direction: column;

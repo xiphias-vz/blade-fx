@@ -48,7 +48,10 @@
             <div class="container__inner">
                 {% block content %}
 
-                    {% cms_slot 'slt-3' %}
+                    <div class="slot3-container">
+                        {% cms_slot 'slt-3' %}
+                    </div>
+
                     {{ content_navigation('navigation-categories', 'navigation-categories') }}
                     {% cms_slot 'slt-1st-in-frame' %}
 

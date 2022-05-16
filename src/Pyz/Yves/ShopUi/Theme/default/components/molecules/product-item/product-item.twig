@@ -37,25 +37,66 @@
 {% set isGlobusProduction = data.product.attributes.isGlobusProduction | default(0) %}
 
 {% block body %}
-    <div class="grid {{ component.renderClass(config.name ~ '__container', modifiers) }}">
-        {% block thumbnailWrapper %}
-            {% set extraClass = '' %}
-            {% set modifiers = [] %}
+<div class="grid {{ component.renderClass(config.name ~ '__container', modifiers) }}">
+    {% block thumbnailWrapper %}
+        {% set extraClass = '' %}
+        {% set modifiers = [] %}
 
-            {% block labels %}
-                {% if (data.product.prices['ORIGINAL'] is defined and data.product.prices['DEFAULT'] < data.product.prices['ORIGINAL']) %}
-                    {% set discount = data.product.prices.ORIGINAL - data.product.prices.DEFAULT %}
-                    {% set discount_percentage = ((discount / data.product.prices.ORIGINAL) * 100)|round(0,'floor') %}
+        {% block labels %}
+            {% if (data.product.prices['ORIGINAL'] is defined and data.product.prices['DEFAULT'] < data.product.prices['ORIGINAL']) %}
+                {% set discount = data.product.prices.ORIGINAL - data.product.prices.DEFAULT %}
+                {% set discount_percentage = ((discount / data.product.prices.ORIGINAL) * 100)|round(0,'floor') %}
 
-                    {% set labels = labels | default([]) %}
+                {% set labels = labels | default([]) %}
 
-                    {% if not data.product.id_product_labels is defined or data.product.id_product_labels|length <= 0 %}
-                        {% set labels = labels | merge([{
-                            text: '',
-                            type: 'highlight',
+                {% if not data.product.id_product_labels is defined or data.product.id_product_labels|length >= 0 %}
+                    {% set labels = labels | merge([{
+                        text: '',
+                        type: 'highlight',
+                        product_type: '',
+                        discount: discount,
+                        discount_percentage: discount_percentage
+                    }]) %}
+
+                    {% include molecule('label-group', 'ProductLabelWidget') with {
+                        data: {
+                            labels: labels,
+                            parentJsName: '',
+                        },
+                    } only %}
+
+                {% elseif data.idProductAbstract %}
+                    {% widget 'ProductAbstractLabelWidget' args [data.idProductAbstract] with {
+                        data: {
+                            parentJsName: config.jsName,
                             product_type: '',
                             discount: discount,
                             discount_percentage: discount_percentage
+                        },
+                    } only %}{% endwidget %}
+                {% endif %}
+
+            {% elseif data.idProductAbstract %}
+                {% block productAbstractLabels %}
+
+                {% endblock %}
+            {% endif %}
+        {% endblock %}
+
+        {% block imageContainer %}
+            <div class="col--lg-12 col--md-12 col--sm-5 {{ config.name }}__image-wrap"
+                 onclick="productClicked('{{ data.url }}', '{{ data.idProductAbstract }}', '{{ data.name | escape('js') }}', '{{ data.product.prices.DEFAULT is defined ? data.product.prices.DEFAULT / 100 : null }}', '{{ data.product.abstract_sku }}' )">
+
+                {% if isGlobusProduction == true %}
+                    {% block goproductLabel %}
+                        {% set labels = labels | default([]) %}
+
+                        {% set labels = labels | merge([{
+                            text: '',
+                            type: '',
+                            product_type: 'goproduct',
+                            discount: discount is defined ? discount : 0,
+                            discount_percentage: discount_percentage is defined ? discount_percentage : 0,
                         }]) %}
 
                         {% include molecule('label-group', 'ProductLabelWidget') with {
@@ -64,291 +105,257 @@
                                 parentJsName: '',
                             },
                         } only %}
-
-                    {% elseif data.idProductAbstract %}
-                        {% widget 'ProductAbstractLabelWidget' args [data.idProductAbstract] with {
-                            data: {
-                                parentJsName: config.jsName,
-                                product_type: '',
-                                discount: discount,
-                                discount_percentage: discount_percentage
-                            },
-                        } only %}{% endwidget %}
-                    {% endif %}
-
-                {% elseif data.idProductAbstract %}
-                    {% block productAbstractLabels %}
-
                     {% endblock %}
                 {% endif %}
-            {% endblock %}
-
-            {% block imageContainer %}
-                <div class="col--lg-12 col--md-12 col--sm-3 {{ config.name }}__image-wrap" onclick="productClicked('{{ data.url }}', '{{ data.idProductAbstract }}', '{{ data.name | escape('js') }}', '{{ data.product.prices.DEFAULT is defined ? data.product.prices.DEFAULT / 100 : null  }}', '{{ data.product.abstract_sku }}' )">
-                    {% if isGlobusProduction == true %}
-                        {% block goproductLabel %}
-                            {% set labels = labels | default([]) %}
-
-                            {% set labels = labels | merge([{
-                                text: '',
-                                type: '',
-                                product_type: 'goproduct',
-                                discount: discount is defined ? discount : 0,
-                                discount_percentage: discount_percentage is defined ? discount_percentage : 0,
-                            }]) %}
-
-                            {% include molecule('label-group', 'ProductLabelWidget') with {
-                                data: {
-                                    labels: labels,
-                                    parentJsName: '',
-                                },
-                            } only %}
-                        {% endblock %}
-                    {% endif %}
-                    {% macro thumbnail(src, alt='', extraClass='', modifiers=[], idProductAbstract='') %}
-                        {% if app.currentCodeBucket == 'DE' %}
-                            {% set splitUrl = src| split('.com/') %}
-                            {% set newSrc = splitUrl[0] ~ '.com/thumb_'  ~ splitUrl[1] | default("") %}
-                            {% embed molecule('lazy-thumbnail') with {
-                                class: extraClass,
-                                modifiers: modifiers,
-                                attributes: {
-                                    src: newSrc,
-                                    alt: alt,
-                                },
-                                embed: {
-                                    idProductAbstract: idProductAbstract,
-                                },
-                            } only %}
-                                {% block image %}
-                                    {% set imageExtraClasses = embed.idProductAbstract ? 'js-image-animation__image-' ~ embed.idProductAbstract %}
-                                    {{ parent() }}
-                                {% endblock %}
-                            {% endembed %}
-                        {% else %}
-                            {% if src ends with "type=1" %}
-                                {% set splitUrl = src| split('type=1') %}
-                                {% set newThumbUrl = splitUrl[0] ~ 'type=3' %}
-                                {% set newSrcCz = newThumbUrl %}
-                            {% else %}
-                                {% set newSrcCz = src %}
-                            {% endif %}
-                            {% embed molecule('lazy-thumbnail') with {
-                                class: extraClass,
-                                modifiers: modifiers,
-                                attributes: {
-                                    src: newSrcCz,
-                                    alt: alt,
-                                },
-                                embed: {
-                                    idProductAbstract: idProductAbstract,
-                                },
-                            } only %}
-                                {% block image %}
-                                    {% set imageExtraClasses = embed.idProductAbstract ? 'js-image-animation__image-' ~ embed.idProductAbstract %}
-                                    {{ parent() }}
-                                {% endblock %}
-                            {% endembed %}
-                        {% endif %}
-                    {% endmacro %}
-
-                    {% block image %}
-                        {% if data.url %}
-                            {% block imageLink %}
-                                <a class="image-link" href="{{ data.url }}">
-                                    {{ _self.thumbnail(data.image, data.name, extraClass, modifiers, data.idProductAbstract) }}
-                                </a>
-                            {% endblock %}
-                        {% endif %}
-                        {% if not data.url %}
-                            {% block productThumbnail %}
-                                {{ _self.thumbnail(data.image, data.name, extraClass, modifiers, config.jsName) }}
-                            {% endblock %}
-                        {% endif %}
-                    {% endblock %}
-                </div>
-            {% endblock %}
-        {% endblock %}
-
-        {% block groups %}
-            {% if data.idProductAbstract %}
-                {% block productAbstractGroups %}
-                    {% widget 'ProductGroupWidget' args [data.idProductAbstract] only %}{% endwidget %}
-                {% endblock %}
-            {% endif %}
-        {% endblock %}
-        {% block contentContainer %}
-            <div class="col--sm-9 col--lg-12 {{ config.name }}__content-wrapper"  >
-                {% block content %}
-                    {% block contentTopContainer %}
-                        <span class="supplier">{{ productSupplier }}</span>
-                        <div class="{{ config.name }}__content-top" onclick="productClicked('{{ data.url }}', '{{ data.idProductAbstract }}', '{{ data.name }}', '{{ data.product.prices.DEFAULT is defined ? data.product.prices.DEFAULT / 100 : null  }}', '{{ data.product.abstract_sku }}' )" >
-                            {% block contentTop %}
-                                {% block colors %}
-                                    {% widget 'ProductGroupColorWidget' args [data.idProductAbstract, data.product.selectedAttributes ?? []] use view('product-item-color-selector', 'ProductGroupWidget') with {
-                                        data: {
-                                            parentJsName: config.jsName,
-                                        },
-                                    } only %}{% endwidget %}
-                                {% endblock %}
-
-                                {% block name %}
-                                    {% if data.name and data.url %}
-
-                                        {% if app.currentCodeBucket == 'DE' %}
-                                            {% if productSupplier and productSaleVolume and productSaleUnit %}
-                                                {% set fullname = ((productSupplier == 'keine Marke' or productSupplier == '' or productSupplier == 'keine') ? '' : productSupplier ~ " - ") ~ data.name ~ (productSaleVolume|round(3, 'floor') > 0 ?  " - " ~ productSaleVolume|round(3, 'floor')|replace('.', ',') ~  ' ' ~ productSaleUnit : '') %}
-                                                {% if data.einzelgewicht %}
-                                                    {% set fullname = ((productSupplier == 'keine Marke' or productSupplier == '' or productSupplier == 'keine') ? '' : productSupplier ~ " - ") ~ data.name ~ " - ca. " ~ data.einzelgewicht|round(3, 'floor')|replace('.', ',') ~  ' ' ~ productSaleUnit %}
-                                                {% endif %}
-                                            {% elseif productSaleVolume and productSaleUnit %}
-                                                {% set fullname = data.name ~ (productSaleVolume|round(3, 'floor') > 0 ? " - " ~ productSaleVolume|round(3, 'floor')|replace('.', ',') ~  ' ' ~ productSaleUnit : '') %}
-                                                {% if data.einzelgewicht %}
-                                                    {% set fullname = data.name ~ " - ca. " ~ data.einzelgewicht|round(3, 'floor')|replace('.', ',') ~  ' ' ~ productSaleUnit %}
-                                                {% endif %}
-                                            {% elseif productSupplier %}
-                                                {% set fullname = ((productSupplier == 'keine Marke' or productSupplier == 'keine') ? '' : productSupplier ~ " - ") ~ data.name %}
-                                            {% else %}
-                                                {% set fullname = data.name %}
-                                            {% endif %}
-                                        {% else %}
-                                            {% if productSupplier %}
-                                                {% set fullname = ((productSupplier == 'keine Marke' or productSupplier == 'keine') ? '' : productSupplier ~ " - ") ~ data.name %}
-                                                {% if data.product.attributes.einzelgewicht is defined %}
-                                                    {% set fullname = ((productSupplier == 'keine Marke' or productSupplier == '' or productSupplier == 'keine') ? '' : productSupplier ~ " - ") ~ data.name ~ " - cca " ~ data.einzelgewicht|round(3, 'floor')|replace('.', ',') ~  ' ' ~ productSaleUnit %}
-                                                {% endif %}
-                                            {% else %}
-                                                {% set fullname = data.name %}
-                                            {% endif %}
-                                        {% endif %}
-
-                                        {% block link %}
-                                            <div class="{{ config.name }}__info">
-                                                <a href="javascript:void(0)" class="{{ config.name }}__name" onclick="productClicked('{{ data.url }}', '{{ data.idProductAbstract }}', '{{ data.name | escape('js') }}', '{{ data.product.prices.DEFAULT is defined ? data.product.prices.DEFAULT / 100 : null  }}', '{{ data.product.abstract_sku }}' )">
-                                                    {% block linkName %}
-                                                        {{- fullname -}}
-                                                    {% endblock %}
-                                                </a>
-                                            </div>
-                                            <script type="text/javascript">
-                                                function productClicked(productUrl, productId, productName, productPrice, productSku)
-                                                {
-                                                    var ctrlPressed = 0;
-                                                    if(event.ctrlKey){
-                                                        ctrlPressed = 1;
-                                                    }
-                                                    var rerouted = 0;
-                                                    window.dataLayer = window.dataLayer || [];
-                                                    window.dataLayer.push({
-                                                        'event': 'eec.productClick',
-                                                        'ecommerce':{
-                                                            'click':{
-                                                                'actionField': {'list':'Catalog'},
-                                                                'products': [{
-                                                                    'id': productId,
-                                                                    'name': productName,
-                                                                    'price': productPrice,
-                                                                    'sku': productSku,
-                                                                }]
-                                                            }
-                                                        },
-                                                        'eventCallback': function()
-                                                        {
-                                                            if(ctrlPressed == 0){
-                                                                rerouted = 1;
-                                                                document.location = productUrl;
-                                                            }
-                                                        }
-                                                    });
-                                                    setTimeout(function()
-                                                    {
-                                                        if(rerouted==0 && ctrlPressed==0)
-                                                        {
-                                                            document.location = productUrl;
-                                                        }
-                                                    },1000);
-                                                }
-                                            </script>
-                                        {% endblock %}
-
-                                        {% block productDataContainer %}
-                                            <div class="{{ config.name }}__info-more">
-                                                {% block productSalesVolueme %}
-                                                    <div class="{{ config.name }}__info-more-col">
-                                                        {% if data.productSaleUnit and data.productSaleVolume > 0 %}
-                                                            <div class="{{ config.name }}__sale-volume">
-                                                                {% if data.pricePerKg is not null and data.basicUnit > 0 %}
-                                                                    {{(data.pricePerKg / 100 ) | round(2, 'common') | replace('.', ',') }} {{ data.currencySymbol }}/{{ data.basePriceUnit }}
-                                                                {% elseif data.pricePerKg is null and data.preisProKg is not null and data.basicUnit > 0 %}
-                                                                    {{(data.preisProKg / 100 ) | round(2, 'common') | replace('.', ',') }} {{ data.currencySymbol }}/{{ data.basePriceUnit }}
-                                                                {% elseif data.preisProKg is null and data.pricePerKg is null and data.basicUnit == 0 %}
-
-                                                                {% else %}
-                                                                {% if app.currentCodeBucket == 'CZ' %}
-                                                                        {# <span class="font-cz"> {{ ((((data.product.price / 100) / data.productSaleVolume)) * data.basicUnit ) | round(2, 'common') | replace('.', ',') }} {{ data.currencySymbol }}/1 {{ data.basePriceUnit }} </span>#}
-                                                                        <div class="font-cz">{{ data.productSaleVolume }} {{ data.productSaleUnit }} ( {{(data.pricePerKg / 100 ) | round(2, 'common') | replace('.', ',') }} {{ data.currencySymbol }} / {{ data.basePriceUnit }} )</div>
-                                                                        <div class="font-cz">{{ data.depositPrice }} {{ data.currencySymbol }}</div>
-                                                                    {% else %}
-                                                                        <span class="font-cz"> {{ ((((data.product.price / 100) / data.productSaleVolume)) * data.basicUnit ) | round(2, 'common') | replace('.', ',') }} {{ data.currencySymbol }}/{{ data.basicUnit }} {{ data.basePriceUnit }} </span>
-                                                                {% endif %}
-                                                                {% endif %}
-
-                                                            </div>
-                                                        {% endif %}
-                                                    </div>
-                                                {% endblock %}
-                                            </div>
-                                        {% endblock %}
-                                    {% endif %}
-
-                                    {% if data.name and not data.url %}
-                                        {% block title %}
-                                            <span class="{{ config.name }}__name {{ config.jsName }}__name">{{ data.name }}</span>
-                                        {% endblock %}
-                                    {% endif %}
-                                {% endblock %}
-
-                                {% block rating %}
-                                    {% if data.idProductAbstract %}
-                                        {% block productAbstractRating %}
-                                            {% widget 'DisplayProductAbstractReviewWidget' args [data.idProductAbstract] with {
-                                                data: {
-                                                    parentJsName: config.jsName,
-                                                },
-                                            } only %}{% endwidget %}
-                                        {% endblock %}
-                                    {% endif %}
-                                {% endblock %}
-                            {% endblock %}
-                        </div>
-                    {% endblock %}
-                {% endblock %}
-            </div>
-
-        {% block addToBlock %}
-            <div class="add-to-cart-btn">
-                {% block price %}
-                    <div class="{{ config.name }}__info-more-col"  onclick="productClicked('{{ data.url }}', '{{ data.idProductAbstract }}', '{{ data.name }}', '{{ data.product.prices.DEFAULT is defined ? data.product.prices.DEFAULT / 100 : null  }}', '{{ data.product.abstract_sku }}' )" >
-                        {% include molecule('money-price') with {
+                {% macro thumbnail(src, alt='', extraClass='', modifiers=[], idProductAbstract='') %}
+                    {% if app.currentCodeBucket == 'DE' %}
+                        {% set splitUrl = src| split('.com/') %}
+                        {% set newSrc = splitUrl[0] ~ '.com/thumb_'  ~ splitUrl[1] | default("") %}
+                        {% embed molecule('lazy-thumbnail') with {
+                            class: extraClass,
                             modifiers: modifiers,
-                            data: {
-                                amount: data.product.prices.DEFAULT | default(null),
-                                originalAmount: data.product.prices.ORIGINAL | default(null),
-                                currencyIsoCode: data.currencyIsoCode,
+                            attributes: {
+                                src: newSrc,
+                                alt: alt,
+                            },
+                            embed: {
+                                idProductAbstract: idProductAbstract,
                             },
                         } only %}
+                            {% block image %}
+                                {% set imageExtraClasses = embed.idProductAbstract ? 'js-image-animation__image-' ~ embed.idProductAbstract %}
+                                {{ parent() }}
+                            {% endblock %}
+                        {% endembed %}
+                    {% else %}
+                        {% if src ends with "type=1" %}
+                            {% set splitUrl = src| split('type=1') %}
+                            {% set newThumbUrl = splitUrl[0] ~ 'type=3' %}
+                            {% set newSrcCz = newThumbUrl %}
+                        {% else %}
+                            {% set newSrcCz = src %}
+                        {% endif %}
+                        {% embed molecule('lazy-thumbnail') with {
+                            class: extraClass,
+                            modifiers: modifiers,
+                            attributes: {
+                                src: newSrcCz,
+                                alt: alt,
+                            },
+                            embed: {
+                                idProductAbstract: idProductAbstract,
+                            },
+                        } only %}
+                            {% block image %}
+                                {% set imageExtraClasses = embed.idProductAbstract ? 'js-image-animation__image-' ~ embed.idProductAbstract %}
+                                {{ parent() }}
+                            {% endblock %}
+                        {% endembed %}
+                    {% endif %}
+                {% endmacro %}
+
+                {% block image %}
+                    {% if data.url %}
+                        {% block imageLink %}
+                            <a class="image-link" href="{{ data.url }}">
+                                {{ _self.thumbnail(data.image, data.name, extraClass, modifiers, data.idProductAbstract) }}
+                            </a>
+                        {% endblock %}
+                    {% endif %}
+                    {% if not data.url %}
+                        {% block productThumbnail %}
+                            {{ _self.thumbnail(data.image, data.name, extraClass, modifiers, config.jsName) }}
+                        {% endblock %}
+                    {% endif %}
+                {% endblock %}
+            </div>
+        {% endblock %}
+    {% endblock %}
+
+    {% block groups %}
+        {% if data.idProductAbstract %}
+            {% block productAbstractGroups %}
+                {% widget 'ProductGroupWidget' args [data.idProductAbstract] only %}{% endwidget %}
+            {% endblock %}
+        {% endif %}
+    {% endblock %}
+{% block contentContainer %}
+    {% if app.currentCodeBucket == 'DE' %}
+    <div class="col--sm-7 col--lg-12 {{ config.name }}__content-wrapper">
+        {% else %}
+        <div class="col--sm-7 col--lg-12 {{ config.name }}__content-wrapper font-cz">
+            {% endif %}
+
+            {% block content %}
+                {% block contentTopContainer %}
+                    <div class="{{ config.name }}__content-top"
+                         onclick="productClicked('{{ data.url }}', '{{ data.idProductAbstract }}', '{{ data.name }}', '{{ data.product.prices.DEFAULT is defined ? data.product.prices.DEFAULT / 100 : null }}', '{{ data.product.abstract_sku }}' )">
+                        {% block contentTop %}
+                            {% block colors %}
+                                {% widget 'ProductGroupColorWidget' args [data.idProductAbstract, data.product.selectedAttributes ?? []] use view('product-item-color-selector', 'ProductGroupWidget') with {
+                                    data: {
+                                        parentJsName: config.jsName,
+                                    },
+                                } only %}{% endwidget %}
+                            {% endblock %}
+
+                            {% block name %}
+                                {% if data.name and data.url %}
+
+                                {% if app.currentCodeBucket == 'DE' %}
+                                    {% if productSupplier and productSaleVolume and productSaleUnit %}
+                                        {% set fullname = ((productSupplier == 'keine Marke' or productSupplier == '' or productSupplier == 'keine') ? '' : productSupplier ~ " - ") ~ data.name ~ (productSaleVolume|round(3, 'floor') > 0 ?  " - " ~ productSaleVolume|round(3, 'floor')|replace('.', ',') ~  ' ' ~ productSaleUnit : '') %}
+                                        {% if data.einzelgewicht %}
+                                            {% set fullname = ((productSupplier == 'keine Marke' or productSupplier == '' or productSupplier == 'keine') ? '' : productSupplier ~ " - ") ~ data.name ~ " - ca. " ~ data.einzelgewicht|round(3, 'floor')|replace('.', ',') ~  ' ' ~ productSaleUnit %}
+                                        {% endif %}
+                                    {% elseif productSaleVolume and productSaleUnit %}
+                                        {% set fullname = data.name ~ (productSaleVolume|round(3, 'floor') > 0 ? " - " ~ productSaleVolume|round(3, 'floor')|replace('.', ',') ~  ' ' ~ productSaleUnit : '') %}
+                                        {% if data.einzelgewicht %}
+                                            {% set fullname = data.name ~ " - ca. " ~ data.einzelgewicht|round(3, 'floor')|replace('.', ',') ~  ' ' ~ productSaleUnit %}
+                                        {% endif %}
+                                    {% elseif productSupplier %}
+                                        {% set fullname = ((productSupplier == 'keine Marke' or productSupplier == 'keine') ? '' : productSupplier ~ " - ") ~ data.name %}
+                                    {% else %}
+                                        {% set fullname = data.name %}
+                                    {% endif %}
+                                {% else %}
+                                    {% if productSupplier %}
+                                        {% set fullname = ((productSupplier == 'keine Marke' or productSupplier == 'keine') ? '' : productSupplier ~ " - ") ~ data.name %}
+                                        {% if data.product.attributes.einzelgewicht is defined %}
+                                            {% set fullname = ((productSupplier == 'keine Marke' or productSupplier == '' or productSupplier == 'keine') ? '' : productSupplier ~ " - ") ~ data.name ~ " - cca " ~ data.einzelgewicht|round(3, 'floor')|replace('.', ',') ~  ' ' ~ productSaleUnit %}
+                                        {% endif %}
+                                    {% else %}
+                                        {% set fullname = data.name %}
+                                    {% endif %}
+                                {% endif %}
+
+                            {% block link %}
+                                <div class="{{ config.name }}__info">
+                                    <a href="javascript:void(0)" class="{{ config.name }}__name"
+                                       onclick="productClicked('{{ data.url }}', '{{ data.idProductAbstract }}', '{{ data.name | escape('js') }}', '{{ data.product.prices.DEFAULT is defined ? data.product.prices.DEFAULT / 100 : null }}', '{{ data.product.abstract_sku }}' )">
+                                        {% block linkName %}
+                                            {{- fullname -}}
+                                        {% endblock %}
+                                    </a>
+                                </div>
+                                <script type="text/javascript">
+                                    function productClicked(productUrl, productId, productName, productPrice, productSku) {
+                                        var ctrlPressed = 0;
+                                        if (event.ctrlKey) {
+                                            ctrlPressed = 1;
+                                        }
+                                        var rerouted = 0;
+                                        window.dataLayer = window.dataLayer || [];
+                                        window.dataLayer.push({
+                                            'event': 'eec.productClick',
+                                            'ecommerce': {
+                                                'click': {
+                                                    'actionField': {'list': 'Catalog'},
+                                                    'products': [{
+                                                        'id': productId,
+                                                        'name': productName,
+                                                        'price': productPrice,
+                                                        'sku': productSku,
+                                                    }]
+                                                }
+                                            },
+                                            'eventCallback': function () {
+                                                if (ctrlPressed == 0) {
+                                                    rerouted = 1;
+                                                    document.location = productUrl;
+                                                }
+                                            }
+                                        });
+                                        setTimeout(function () {
+                                            if (rerouted == 0 && ctrlPressed == 0) {
+                                                document.location = productUrl;
+                                            }
+                                        }, 1000);
+                                    }
+                                </script>
+                            {% endblock %}
+
+                            {% block productDataContainer %}
+                                <div class="{{ config.name }}__info-more">
+                                    {% block productSalesVolueme %}
+                                        <div class="{{ config.name }}__info-more-col">
+                                            {% if data.productSaleUnit and data.productSaleVolume > 0 %}
+                                                <div class="{{ config.name }}__sale-volume">
+                                                    {% if data.pricePerKg is not null and data.basicUnit > 0 %}
+                                                        {{ (data.pricePerKg / 100 ) | round(2, 'common') | replace('.', ',') }} {{ data.currencySymbol }}/{{ data.basePriceUnit }}
+                                                    {% elseif data.pricePerKg is null and data.preisProKg is not null and data.basicUnit > 0 %}
+                                                        {{ (data.preisProKg / 100 ) | round(2, 'common') | replace('.', ',') }} {{ data.currencySymbol }}/{{ data.basePriceUnit }}
+                                                    {% elseif data.preisProKg is null and data.pricePerKg is null and data.basicUnit == 0 %}
+
+                                                    {% else %}
+                                                        {% if app.currentCodeBucket == 'CZ' %}
+                                                            <span
+                                                                class="font-cz"> {{ ((((data.product.price / 100) / data.productSaleVolume)) * data.basicUnit ) | round(2, 'common') | replace('.', ',') }} {{ data.currencySymbol }}/1 {{ data.basePriceUnit }} </span>
+                                                        {% else %}
+                                                            <span> {{ ((((data.product.price / 100) / data.productSaleVolume)) * data.basicUnit ) | round(2, 'common') | replace('.', ',') }} {{ data.currencySymbol }}/{{ data.basicUnit }} {{ data.basePriceUnit }} </span>
+                                                        {% endif %}
+                                                    {% endif %}
+
+                                                </div>
+                                            {% endif %}
+                                        </div>
+                                    {% endblock %}
+                                </div>
+                            {% endblock %}
+                                {% endif %}
+
+                                {% if data.name and not data.url %}
+                            {% block title %}
+                                <span
+                                    class="{{ config.name }}__name {{ config.jsName }}__name">{{ data.name }}</span>
+                            {% endblock %}
+                                {% endif %}
+                            {% endblock %}
+
+                            {% block rating %}
+                                {% if data.idProductAbstract %}
+                                    {% block productAbstractRating %}
+                                        {% widget 'DisplayProductAbstractReviewWidget' args [data.idProductAbstract] with {
+                                            data: {
+                                                parentJsName: config.jsName,
+                                            },
+                                        } only %}{% endwidget %}
+                                    {% endblock %}
+                                {% endif %}
+                            {% endblock %}
+                        {% endblock %}
                     </div>
                 {% endblock %}
+            {% endblock %}
+        </div>
+
+        {% block price %}
+            <div class="{{ config.name }}__info-more-col col--sm-12"
+                 onclick="productClicked('{{ data.url }}', '{{ data.idProductAbstract }}', '{{ data.name }}', '{{ data.product.prices.DEFAULT is defined ? data.product.prices.DEFAULT / 100 : null }}', '{{ data.product.abstract_sku }}' )">
+                {% include molecule('money-price') with {
+                    modifiers: modifiers,
+                    data: {
+                        amount: data.product.prices.DEFAULT | default(null),
+                        originalAmount: data.product.prices.ORIGINAL | default(null),
+                        currencyIsoCode: data.currencyIsoCode,
+                    },
+                } only %}
+            </div>
+        {% endblock %}
+
+        {% block addToBlock %}
+            <div class="add-to-cart-btn col--sm-12">
+
                 {% if app.currentCodeBucket == 'DE' %}
                     <a href="{{ addAjaxUrl }}"
                        rel="nofollow"
                        onclick="productAddToCart('{{ data.idProductAbstract }}','{{ data.name }}','{{ data.product.prices.DEFAULT is defined ? data.product.prices.DEFAULT / 100 : null }}','{{ data.product.abstract_sku }}','{{ data.supplier | escape('js') }}')"
                        class="
-                                    button button--with-icon button--middle-icon button_center_align button--backgroundcolor-DE
-                                    js-product-color-group__image-{{ data.idProductAbstract }}
-                                    js-image-animation__link
-                                    js-ajax-add-to-cart__link
-                                "
+                                        button button--with-icon button--middle-icon button_center_align button--backgroundcolor-DE
+                                        js-product-color-group__image-{{ data.idProductAbstract }}
+                                        js-image-animation__link
+                                        js-ajax-add-to-cart__link
+                                    "
                        data-product-id="{{ data.idProductAbstract }}"
                        data-product-sku="{{ data.sku }}"
                        data-product-title="{{ data.name }}"
@@ -360,79 +367,71 @@
                             {{- 'page.detail.add-to-cart' | trans -}}
                         </div>
                     </a>
-               {% else %}
-                   <a href="{{ addAjaxUrl }}"
-                      rel="nofollow"
-                      onclick="productAddToCart('{{ data.idProductAbstract }}','{{ data.name | escape('js') }}','{{ data.product.prices.DEFAULT is defined ? data.product.prices.DEFAULT / 100 : null }}','{{ data.product.abstract_sku }}','{{ data.supplier | escape('js') }}')"
-                      class="
-                                    button button--with-icon button--middle-icon button_center_align button--backgroundcolor-CZ
-                                    js-product-color-group__image-{{ data.idProductAbstract }}
-                                    js-image-animation__link
-                                    js-ajax-add-to-cart__link
-                                "
-                      data-product-id="{{ data.idProductAbstract }}"
-                      data-product-sku="{{ data.product.abstract_sku | replace({'_abstract': ''}) }}"
-                      data-product-url="{{ data.product.url }}"
-                      data-product-title="{{ data.name | escape('js') }}"
-                      data-product-price="{{ data.product.prices.ORIGINAL is defined ? data.product.prices.ORIGINAL / 100 : null }}"
-                      data-csrf-token="{{ csrf_token('add-to-cart-ajax') }}"
-                   >
-                       {% include atom('icon') with {
-                               class: 'new_cart',
-                               data: {
-                                   name: 'new_cart',
-                               },
-                       } only %}
-                       <div class="add-details-to-cart-text-holder font-cz">
-                           {{- 'page.detail.add-to-cart' | trans -}}
-                       </div>
-                   </a>
-               {% endif %}
+                {% else %}
+                    <a href="{{ addAjaxUrl }}"
+                       rel="nofollow"
+                       onclick="productAddToCart('{{ data.idProductAbstract }}','{{ data.name | escape('js') }}','{{ data.product.prices.DEFAULT is defined ? data.product.prices.DEFAULT / 100 : null }}','{{ data.product.abstract_sku }}','{{ data.supplier | escape('js') }}')"
+                       class="
+                                        button button--with-icon button--middle-icon button_center_align button--backgroundcolor-CZ
+                                        js-product-color-group__image-{{ data.idProductAbstract }}
+                                        js-image-animation__link
+                                        js-ajax-add-to-cart__link
+                                    "
+                       data-product-id="{{ data.idProductAbstract }}"
+                       data-product-sku="{{ data.product.abstract_sku | replace({'_abstract': ''}) }}"
+                       data-product-title="{{ data.name | escape('js') }}"
+                       data-product-price="{{ data.product.prices.ORIGINAL is defined ? data.product.prices.ORIGINAL / 100 : null }}"
+                       data-csrf-token="{{ csrf_token('add-to-cart-ajax') }}"
+                    >
+                        <span class="icon-cart"></span>
+                        <div class="add-details-to-cart-text-holder font-cz">
+                            {{- 'page.detail.add-to-cart' | trans -}}
+                        </div>
+                    </a>
+                {% endif %}
                 <div class="counter is-hidden">
                     {% if app.currentCodeBucket == 'DE' %}
                         <span class="is-hidden message item-added">
-                            <span class="checkmark"></span>
-                            {{ 'cart.add.item.ajax.success' | trans }}
-                         </span>
+                                <span class="checkmark"></span>
+                                {{ 'cart.add.item.ajax.success' | trans }}
+                             </span>
                         <span class="is-hidden message item-removed">
-                            <span class="checkmark"></span>
-                            {{ 'cart.remove.item.ajax.success' | trans }}
-                        </span>
+                                <span class="checkmark"></span>
+                                {{ 'cart.remove.item.ajax.success' | trans }}
+                            </span>
                     {% else %}
                         <span class="is-hidden message message-cz item-added font-cz">
-                            <span class="checkmark"></span>
-                            {{ 'cart.add.item.ajax.success' | trans }}
-                         </span>
+                                <span class="checkmark"></span>
+                                {{ 'cart.add.item.ajax.success' | trans }}
+                             </span>
                         <span class="is-hidden message message-cz item-removed font-cz">
-                            <span class="checkmark"></span>
-                            {{ 'cart.remove.item.ajax.success' | trans }}
-                        </span>
+                                <span class="checkmark"></span>
+                                {{ 'cart.remove.item.ajax.success' | trans }}
+                            </span>
                     {% endif %}
                     {% if app.currentCodeBucket == 'DE' %}
-                        <a href="{{ path("cart/change-ajax", { "productAbstractId": data.product.id_product_abstract ?? data.product.idProductAbstract })  }}"
+                        <a href="{{ path("cart/change-ajax", { "productAbstractId": data.product.id_product_abstract ?? data.product.idProductAbstract }) }}"
                            class="
-                                js-ajax-change-quantity__link
-                                js-quantity-counter-product__decr"
+                                    js-ajax-change-quantity__link
+                                    js-quantity-counter-product__decr"
                            data-csrf-token="{{ csrf_token('change-cart-ajax') }}"
                         >
                             -
                         </a>
                     {% else %}
-                        <a href="{{ path("cart/change-ajax", { "productAbstractId": data.product.id_product_abstract ?? data.product.idProductAbstract })  }}"
+                        <a href="{{ path("cart/change-ajax", { "productAbstractId": data.product.id_product_abstract ?? data.product.idProductAbstract }) }}"
                            class="
-                                js-ajax-change-quantity__link
-                                js-quantity-counter-product__decr"
+                                    js-ajax-change-quantity__link
+                                    js-quantity-counter-product__decr"
                            data-csrf-token="{{ csrf_token('change-cart-ajax') }}"
-                           data-product-sku="{{ data.product.abstract_sku | replace({'_abstract': ''}) }}"
-                           data-product-url="{{ data.product.url }}"
-                           style="color:#009933; background-color:transparent;" onmouseover="this.style.backgroundColor='#e5f4ea';" onmouseout="this.style.backgroundColor='#ffffff';">
+                        >
                             -
                         </a>
                     {% endif %}
 
                     <input type="number" class="txt-product-quantity" min="1" max="99" value="1">
                     {% if app.currentCodeBucket == 'DE' %}
-                        <a href="{{ path("cart/change-ajax", { "productAbstractId": data.product.id_product_abstract ?? data.product.idProductAbstract })  }}"
+                        <a href="{{ path("cart/change-ajax", { "productAbstractId": data.product.id_product_abstract ?? data.product.idProductAbstract }) }}"
                            class="
                             js-ajax-change-quantity__link
                             js-quantity-counter-product__incr"
@@ -445,14 +444,14 @@
                             +
                         </a>
                     {% else %}
-                        <a href="{{ path("cart/change-ajax", { "productAbstractId": data.product.id_product_abstract ?? data.product.idProductAbstract })  }}"
+                        <a href="{{ path("cart/change-ajax", { "productAbstractId": data.product.id_product_abstract ?? data.product.idProductAbstract }) }}"
                            class="
                             js-ajax-change-quantity__link
                             js-quantity-counter-product__incr"
                            data-csrf-token="{{ csrf_token('change-cart-ajax') }}"
                            data-product-sku="{{ data.product.abstract_sku | replace({'_abstract': ''}) }}"
                            data-product-url="{{ data.product.url }}"
-                           style="color:#009933; background-color:transparent;" onmouseover="this.style.backgroundColor='#e5f4ea';" onmouseout="this.style.backgroundColor='#ffffff';">
+                        >
                             +
                         </a>
                     {% endif %}
@@ -461,17 +460,16 @@
             <script type="text/javascript">
                 window.catalogList = window.catalogList || [];
                 window.catalogList.push({
-                            'name': '{{ data.name | escape('js') }}',
-                            'id': '{{ data.idProductAbstract }}',
-                            'sku': '{{ data.product.abstract_sku }}',
-                            'price': '{{ data.product.prices.DEFAULT is defined ? data.product.prices.DEFAULT / 100 : null  }}',
-                            'url' : '{{ data.url }}',
-                            'position': '{{ data.position }}',
-                            'list': 'POP',
+                    'name': '{{ data.name | escape('js') }}',
+                    'id': '{{ data.idProductAbstract }}',
+                    'sku': '{{ data.product.abstract_sku }}',
+                    'price': '{{ data.product.prices.DEFAULT is defined ? data.product.prices.DEFAULT / 100 : null }}',
+                    'url': '{{ data.url }}',
+                    'position': '{{ data.position }}',
+                    'list': 'POP',
                 });
 
-                function productAddToCart(productId, productName, productPrice, productSku, productBrand)
-                {
+                function productAddToCart(productId, productName, productPrice, productSku, productBrand) {
                     let selectedElement = document.querySelector(`[data-product-id="${productId}"]`);
                     if (selectedElement !== undefined || selectedElement !== null) {
                         selectedElement.setAttribute("disabled", "true");
@@ -479,8 +477,8 @@
                     window.dataLayer = window.dataLayer || [];
                     window.dataLayer.push({
                         'event': 'eec.addToCart',
-                        'ecommerce':{
-                            'add':{
+                        'ecommerce': {
+                            'add': {
                                 'currencyCode': '{{ data.currencyIsoCode }}',
                                 'products': [{
                                     'id': productId,

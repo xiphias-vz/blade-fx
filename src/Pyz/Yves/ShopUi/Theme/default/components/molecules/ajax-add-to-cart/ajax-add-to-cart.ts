@@ -410,20 +410,20 @@ export default class AjaxAddToCart extends Component {
         counter?.classList.add(this.ajaxCartCounterClass);
         counter?.classList.remove(HIDDEN_CLASS);
         link?.classList.add(HIDDEN_CLASS);
-        this.addOrRemoveBinIcon(counter)
+        this.addOrRemoveBinIcon(counter);
     }
 
     protected addOrRemoveBinIcon(element) {
-       let decreaseButtonElement = element.getElementsByClassName(this.addToCartDecrementer)[0];
-       let quantityElement = element.getElementsByClassName(this.quantityInputField)[0];
-       if (quantityElement.valueAsNumber > 1 && decreaseButtonElement.classList.contains(this.addBinIcon)) {
-           decreaseButtonElement.classList.remove(this.addBinIcon);
-           decreaseButtonElement.innerText = "-";
-       } else if(quantityElement.valueAsNumber === 1) {
-           decreaseButtonElement.classList.add(this.addBinIcon);
-           decreaseButtonElement.innerText = "";
-       }
-   }
+        let decreaseButtonElement = element.getElementsByClassName(this.addToCartDecrementer)[0];
+        let quantityElement = element.getElementsByClassName(this.quantityInputField)[0];
+        if (quantityElement.valueAsNumber > 1 && decreaseButtonElement.classList.contains(this.addBinIcon)) {
+            decreaseButtonElement.classList.remove(this.addBinIcon);
+            decreaseButtonElement.innerText = "-";
+        } else if(quantityElement.valueAsNumber === 1) {
+            decreaseButtonElement.classList.add(this.addBinIcon);
+            decreaseButtonElement.innerText = "";
+        }
+    }
 
     protected showAjaxButtonAndHideCounter(link: HTMLLinkElement): void {
         const counter = link?.parentElement;

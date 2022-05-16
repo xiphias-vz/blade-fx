@@ -2,8 +2,8 @@
     #{$name} {
         display: inline-block;
         padding: rem(1) rem(7);
-        border-radius: rem(2);
-        margin: rem(4) 0 0 rem(8);
+        border-top-right-radius: rem(25);
+        border-bottom-right-radius: rem(25);
 
         @include helper-breakpoint-media-max($sm-max) {
             padding: rem(3) rem(8);

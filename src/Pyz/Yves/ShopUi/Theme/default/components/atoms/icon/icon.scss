@@ -83,12 +83,11 @@
     }
 
     &--record-list-new-cart {
-            margin-right: 10px;
-            margin-bottom: 2px;
-            @include helper-breakpoint-media-max($sm-max) {
-                display: none;
-
-            }
+        margin-right: 10px;
+        margin-bottom: 2px;
+        @include helper-breakpoint-media-max($sm-max) {
+            display: none;
+        }
     }
 
     &--dhl {

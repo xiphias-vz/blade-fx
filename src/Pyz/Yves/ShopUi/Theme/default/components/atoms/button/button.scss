@@ -21,7 +21,6 @@
         .add-details-to-cart-text-holder {
             font-family: $setting-font-family-additional;
             font-weight: 900;
-
         }
 
         @include helper-breakpoint-media-min($md-min) {
@@ -193,7 +192,7 @@
         &--hollow-border-light-CZ,
         &--hollow-gray-CZ,
         &--hollow-light-CZ {
-            background-color: $setting-color-globusCZ-main-green;
+            background-color: $setting-color-forest-green;
             color: $setting-color-white;
 
             &:hover,
@@ -217,7 +216,7 @@
         }
 
         &--backgroundcolor-CZ {
-            background: $setting-color-globusCZ-main-green;
+            background-color: $setting-color-forest-green;
             justify-content: center;
             align-items: center;
 
@@ -230,7 +229,7 @@
         &--backgroundcolor-DE {
             background: $setting-color-fresh-orange;
             &:hover {
-                background: $setting-color-globus-darkGreen !important;;
+                background: $setting-color-fresh-orange !important;;
                 box-shadow: 0 rem(4) rem(18) $setting-color-lightest !important;
             }
         }
@@ -276,8 +275,8 @@
             background-color: transparent;
             border-width: thin;
             border-style: solid;
-            border-color: $setting-color-globusCZ-main-green;
-            color: $setting-color-globusCZ-main-green;
+            border-color: $setting-color-forest-green;
+            color: $setting-color-forest-green;
         }
 
 
@@ -567,7 +566,7 @@
         }
 
         &--alternative {
-            background-color: $setting-color-globus-lightOrange !important;
+            background-color: $setting-color-fresh-orange !important;
             border-color: $setting-color-alt;
             color: $setting-color-white;
 
