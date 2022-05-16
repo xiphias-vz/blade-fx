@@ -13,6 +13,7 @@ use Spryker\Zed\PriceProduct\Business\Model\PriceGrouper as SprykerPriceGrouper;
 class PriceGrouper extends SprykerPriceGrouper
 {
     protected const PRICE_PER_KG = 'PRICE_PER_KG';
+    protected const PROMOTION = 'PROMOTION';
     /**
      * @param \Generated\Shared\Transfer\PriceProductTransfer $priceProductTransfer
      * @param array $prices
@@ -30,6 +31,24 @@ class PriceGrouper extends SprykerPriceGrouper
 
         if ($priceMoneyValueTransfer->getPricePerKg() !== null) {
             $prices[$currencyIsoCode][self::PRICE_PER_KG][$priceType] = $priceMoneyValueTransfer->getPricePerKg();
+        }
+        $prices[$currencyIsoCode][self::PROMOTION] = $priceMoneyValueTransfer->getPromotion();
+
+        return $prices;
+    }
+
+    /**
+     * @phpstan-return array<mixed>
+     *
+     * @param \Generated\Shared\Transfer\PriceProductTransfer[] $priceProductTransfers
+     *
+     * @return array
+     */
+    public function groupPriceProduct(array $priceProductTransfers)
+    {
+        $prices = [];
+        foreach ($priceProductTransfers as $priceProductTransfer) {
+            $prices = $this->groupPriceByCurrencyAndStore($priceProductTransfer, $prices);
         }
 
         return $prices;
