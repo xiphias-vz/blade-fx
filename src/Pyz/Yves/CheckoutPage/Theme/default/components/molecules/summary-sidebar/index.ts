@@ -1,9 +1,9 @@
 import './summary-sidebar.scss';
 const paymentNumberInputField = <HTMLInputElement>document.querySelector('#txt_paymentCardNumber');
-const errorMessageHolder = <HTMLInputElement>document.querySelector('.error-message');
+const errorMessageHolder = <HTMLInputElement>document.querySelector('#errorMessage');
 const payBackForm = <HTMLFormElement>document.querySelector('#frm_payback');
 const linkPayBackInput = <HTMLInputElement>document.querySelector('input[name=linkPayBackInput]');
-const additionalInfo = <HTMLElement>document.querySelector('.additional-info');
+const additionalInfo = <HTMLElement>document.querySelector('#additionalInfo');
 const prefix = '308342';
 const checkbox = <HTMLInputElement>document.querySelector('.checkbox__input');
 const myGlobusCard = <HTMLInputElement>document.querySelector('#myGlobusCard');
@@ -28,7 +28,7 @@ window.addEventListener('DOMContentLoaded', () => {
                 additionalInfo.style.display = 'none';
             } else {
                 errorMessageHolder.style.visibility = 'visible';
-                errorMessageHolder.style.color = 'red';
+                errorMessageHolder.style.color = '#E30613';
 
                 setTimeout(() => {
                     errorMessageHolder.style.visibility = 'hidden';

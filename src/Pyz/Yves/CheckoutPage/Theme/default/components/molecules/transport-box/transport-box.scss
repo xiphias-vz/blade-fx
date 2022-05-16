@@ -125,10 +125,6 @@
 
         @content;
     }
-
-    .checkbox__label {
-        color: $setting-color-globus-black !important;
-    }
 }
 
 @include checkout-page-transport-box();

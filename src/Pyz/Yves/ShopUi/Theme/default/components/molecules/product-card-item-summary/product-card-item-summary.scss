@@ -1,0 +1,173 @@
+@mixin shop-ui-product-card-item-summary($name: '.product-card-item-summary') {
+    #{$name} {
+        display: flex;
+        align-items: center;
+
+        &__box {
+            border: rem(1) solid $setting-color-gray-3;
+            padding: rem(10) rem(31) rem(94);
+            margin-bottom: rem(10);
+            position: relative;
+            width: 100%;
+
+            &--summary {
+                padding: 0;
+                border: 0;
+                margin-bottom: rem(15);
+            }
+        }
+
+        &__heading {
+            width: 100%;
+            font-weight: fw(normal);
+            display: flex;
+            flex-grow: 1;
+            margin-top: rem(12);
+        }
+
+        &__title {
+            font-weight: fw(normal);
+            font-size: rem(16);
+            font-family: $setting-font-family-additional;
+            text-decoration: none;
+            color: $setting-color-tentgray;
+            margin: 0 rem(5) rem(5) 0;
+
+            &:hover {
+                text-decoration: none;
+
+                &:not(&--alternative) {
+                    color: $setting-color-fresh-orange;
+                }
+            }
+
+            &--summary {
+                font-size: rem(15);
+                font-weight: fw(normal);
+                text-decoration: none;
+                margin: 0;
+            }
+        }
+
+        &__title-cz {
+            font-family: $setting-font-family;
+        }
+
+        &__cut-text {
+            display: block;
+            text-overflow: ellipsis;
+            overflow: hidden;
+            white-space: nowrap;
+            width: rem(288);
+
+            @include helper-breakpoint-media-max(550px) {
+                width: rem(256);
+            }
+
+            @include helper-breakpoint-media-max(515px) {
+                width: rem(240);
+            }
+
+            @include helper-breakpoint-media-max(480px) {
+                width: rem(192);
+            }
+
+            @include helper-breakpoint-media-max(440px) {
+                width: rem(192);
+            }
+
+            @include helper-breakpoint-media-max(415px) {
+                width: rem(160);
+            }
+
+            @include helper-breakpoint-media-max($xs-max) {
+                width: rem(112);
+            }
+
+            @include helper-breakpoint-media-max($xxs-max) {
+                width: rem(96);
+            }
+        }
+
+        &__content {
+            width: 100%;
+
+            &--summary {
+                padding-right: 0;
+            }
+        }
+
+        &__image {
+            flex-shrink: 0;
+
+            &--summary {
+                width: rem(70);
+                position: static;
+                margin: rem(5) rem(15) 0 0;
+                background: $setting-color-white;
+            }
+        }
+
+        &__price-col {
+            @include helper-breakpoint-media-min($xl-min) {
+                padding: 0 rem(5);
+                width: 20%;
+                flex-shrink: 0;
+                display: flex;
+                align-items: center;
+            }
+        }
+
+        &__price-unit {
+            flex-grow: 1;
+            display: flex;
+            align-items: flex-end;
+        }
+
+        &__price {
+            color: $setting-color-tentgray;
+            text-align: right;
+            padding: 0;
+            display: block;
+            align-items: center;
+            width: 20%;
+
+            &--summary {
+                padding: 0;
+                margin-top: rem(12);
+            }
+        }
+
+        &__price-cz {
+            font-family: $setting-font-family;
+            color: $setting-color-tentgray;
+            text-align: right;
+            padding: 0;
+            display: block;
+            align-items: center;
+            width: 20%;
+
+            &--summary {
+                padding: 0;
+                margin-top: rem(12);
+            }
+        }
+
+        &__quantity-measurement-line {
+            font-size: rem(15);
+            font-weight: 500;
+            color: $setting-color-tentgray;
+            padding-top: rem(22);
+            padding-left: rem(30);
+        }
+
+        &__quantity-measurement-line-cz {
+            padding-top: 0;
+            font-family: $setting-font-family;
+        }
+
+        @content;
+    }
+}
+
+@include shop-ui-product-card-item-summary();

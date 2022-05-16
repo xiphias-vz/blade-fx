@@ -34,7 +34,7 @@
                                     {% include molecule('icon-tooltip') with {
                                         modifiers: ['medium-up'],
                                         data: {
-                                            icon: 'edit',
+                                            icon: 'edit-codex',
                                             text: 'general.edit.button' | trans,
                                         },
                                     } only %}
@@ -68,7 +68,7 @@
                                 {% endif %}
 
                                 {% if (phoneNumber is not empty) and (phoneNumber|length > 4) %}
-                                    <span class="{{ config.name }}__text">{{ 'customer.address.phone' | trans }}: {{ phoneNumber }}</span>
+                                    <span class="{{ config.name }}__text {{ config.name }}__margin-top">{{ 'customer.address.phone' | trans }}: {{ phoneNumber }}</span>
                                 {% endif %}
 
                                 {% if (mobileNumber is not empty) and (mobileNumber|length > 4) %}
@@ -123,7 +123,7 @@
                     {% endblock %}
 
                     {% block message_for_picker %}
-                        <div style="margin-top: 15px">
+                        <div class="{{ config.name }}__margin-top">
                             {% if app.currentCodeBucket == 'DE' %}
                                 <span class="{{ config.name }}__title {{ config.name }}__title--sub">{{ 'cart.checkout.address.abholstation.note.down' | trans }}</span>
 
@@ -167,26 +167,31 @@
     {% if not data.isGiftCardExists %}
         {% block delivery %}
             <div class="{{ config.name }}__item col col--sm-12">
+                <div class="{{ config.name }}__col {{ config.name }}__col--wide">
+                        <div class="{{ config.name }}__heading">
+                            <h2 class="{{ config.name }}__title"></h2>
+                            <a href="{{ url('checkout-shipment') }}" class="link link--darkest link--edit">
+                                {% include molecule('icon-tooltip') with {
+                                    modifiers: ['medium-up'],
+                                    data: {
+                                        icon: 'edit-codex',
+                                        text: 'general.edit.button' | trans,
+                                    },
+                                } only %}
+                            </a>
+                        </div>
+                </div>
                 <div class="{{ config.name }}__row">
                     <div class="{{ config.name }}__col {{ config.name }}__col--wide">
                         {% block shippingHeading %}
                             <div class="{{ config.name }}__heading">
                                 {% if app.currentCodeBucket == 'DE' %}
-                                    <h2 class="{{ config.name }}__title">{{ 'checkout.step.shipment.title' | trans }}</h2>
+                                    <h2 class="{{ config.name }}__title">{{ 'checkout.step.summary.shipping' | trans }}</h2>
                                 {% else %}
-                                    <h2 class="{{ config.name }}__title-CZ">{{ 'checkout.step.shipment.title' | trans }}</h2>
+                                    <h2 class="{{ config.name }}__title-CZ">{{ 'checkout.step.summary.shipping' | trans }}</h2>
                                 {% endif %}
 
                                 {% if data.canEdit %}
-                                    <a href="{{ url('checkout-shipment') }}" class="link link--darkest link--edit">
-                                        {% include molecule('icon-tooltip') with {
-                                            modifiers: ['medium-up'],
-                                            data: {
-                                                icon: 'edit',
-                                                text: 'general.edit.button' | trans,
-                                            },
-                                        } only %}
-                                    </a>
                                 {% endif %}
                             </div>
                         {% endblock %}
@@ -212,7 +217,7 @@
         {% block payback %}
             <div class="{{ config.name }}__item col col--sm-12 payback-banner">
                 <div class="{{ config.name }}__row">
-                    <div class="col--lg-8">
+                    <div class="col--lg-12">
                         <h3 class="{{ config.name }}__title">{{ 'checkout.step.payback.title' | trans }}</h3>
                         <div class="payback-form-holder">
                             <form id="frm_payback" class="form_payback" method="post">
@@ -221,7 +226,7 @@
                                     <div class="payback-icon">
                                         <img src="{{ publicPath('images/pb-badge-pdp.png') }}" width="70px" height="25" style="margin-right: 5px;" />
                                     </div>
-                                    <div class="payback-name-description" style="text-transform: uppercase">{{ 'checkout.step.payback.name.description' | trans }}</div>
+                                    <div class="payback-name-description">{{ 'checkout.step.payback.name.description' | trans }}</div>
                                 </div>
                                 <div class="input-holder">
                                     <div class="input-text">
@@ -254,23 +259,27 @@
                                     </div>
                                     <button id="btn_submitPayBackNumber" type="submit">{{ 'checkout.step.payback.save' | trans }}</button>
                                 </div>
-                                <div class="error-message" style="visibility: hidden">{{ 'checkout.step.payback.error.message' | trans }}</div>
-                                <div class="checkbox-holder" style="margin-bottom: 10px">
-                                    {% include atom('checkbox') with {
-                                        data: {
-                                            isChecked: data.customer.isConnected
-                                        }
-                                    } only %}
-                                    <span style="margin-bottom: 3px;color: #000;font-weight: normal">{{ 'checkout.step.payback.checkbox.mark' | trans }}</span>
-                                </div>
-                                <input type="hidden" id="myGlobusCard" value= {{ data.customer.myGlobusCard }}>
-                                <input type="hidden" id="isPaybackConnected" value= {{ data.customer.isConnected }} >
-                                <div class="additional-info" style="color: #000;font-weight: normal">{{ 'checkout.step.payback.label' | trans }}. {{ 'checkout.step.payback.label.two' | trans }}, {{ 'checkout.step.payback.label.three' | trans }} <a target="_blank" href="https://www.globus.de/kundenprogramme/payback/index.php" style="text-decoration:none;color:#ea8901;">{{ 'checkout.step.payback.checkbox.marked' | trans }}</a></div>
+                                <div id="errorMessage" class="{{ config.name }}__error-message">{{ 'checkout.step.payback.error.message' | trans }}</div>
                             </form>
                         </div>
                     </div>
-                    <div class="col--lg-4">
-                        <img src="{{ publicPath('images/pb-pointee.png') }}" width="230px" height="130px"/>
+                    <div class="{{ config.name }}__checkbox-and-image-container">
+                        <div class="col--lg-9">
+                            <div class="{{ config.name }}__checkbox-holder">
+                                {% include atom('checkbox') with {
+                                    data: {
+                                        isChecked: data.customer.isConnected
+                                    }
+                                } only %}
+                                <span class="{{ config.name }}__payback-checkbox-text">{{ 'checkout.step.payback.checkbox.mark' | trans }}</span>
+                            </div>
+                            <input type="hidden" id="myGlobusCard" value= {{ data.customer.myGlobusCard }}>
+                            <input type="hidden" id="isPaybackConnected" value= {{ data.customer.isConnected }} >
+                            <div id="additionalInfo" class="{{ config.name }}__additional-info">{{ 'checkout.step.payback.label' | trans }}. {{ 'checkout.step.payback.label.two' | trans }}, {{ 'checkout.step.payback.label.three' | trans }} <a target="_blank" href="https://www.globus.de/kundenprogramme/payback/index.php" class="{{ config.name }}__payback-link">{{ 'checkout.step.payback.checkbox.marked' | trans }}</a></div>
+                        </div>
+                        <div class="col--lg-3">
+                            <img src="{{ publicPath('images/pb-pointee.png') }}" class="{{ config.name }}__payback-image"/>
+                        </div>
                     </div>
                 </div>
             </div>

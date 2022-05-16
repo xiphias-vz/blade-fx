@@ -29,7 +29,7 @@
     {% set isGiftCardExists = null %}
     {% for shipmentGroup in data.shipmentGroups %}
         <article class="checkout-block checkout-block--summary grid grid--indent">
-            <div class="col col--spaced-lg col--sm-12 col--xl-8">
+            <div class="col col--spaced-lg col--sm-12 col--xl-6">
                 {% include molecule('summary-sidebar', 'CheckoutPage') with {
                     class: 'grid',
                     data: {
@@ -44,17 +44,17 @@
                     },
                 } only %}
                 {% if app.currentCodeBucket == 'DE' %}
-                    <a href="{{ data.backUrl }}" class="is-hidden-sm-lg button button--hollow-ghost">
+                    <a href="{{ data.backUrl }}" class="is-hidden-sm-lg button button--hollow-ghost button--checkout">
                         {{ 'general.back.button' | trans }}
                     </a>
                 {% else %}
-                    <a href="{{ data.backUrl }}" class="is-hidden-sm-lg button button--hollow-ghost-CZ button--font-CZ">
+                    <a href="{{ data.backUrl }}" class="is-hidden-sm-lg button button--hollow-ghost-CZ button--checkout button--font-CZ">
                         {{ 'general.back.button' | trans }}
                     </a>
                 {% endif %}
             </div>
 
-            <div class="col col--spaced-lg col--sm-12 col--xl-4">
+            <div class="col col--spaced-lg col--sm-12 col--xl-6">
                 <div class="checkout-block__summary">
                     <script>
                         var products = window.shoppingCartCheckoutList;
@@ -112,7 +112,7 @@
                     {% for item in shipmentGroup.cartItems %}
                         {% set cartItem = item.bundleProduct ?? item %}
                         {% set isGiftCardExists = cartItem.giftCardMetadata is not null and cartItem.giftCardMetadata.isGiftCard %}
-                        {% embed molecule('product-card-item') with {
+                        {% embed molecule('product-card-item-summary') with {
                             modifiers: ['summary'],
                             data: {
                                 productItem: cartItem,
@@ -164,18 +164,8 @@
                                         {% block heading %}
                                             {{ parent() }}
                                         {% endblock %}
-                                    </div>
-                                {% endblock %}
 
-                                {% block quantityCondition %}
-                                    <div class="grid grid--justify grid--bottom">
-                                        <div class="col">
-                                            {% block summary %}
-                                                {{ parent() }}
-                                            {% endblock %}
-                                        </div>
-                                        <div class="col">
-
+                                        {% if app.currentCodeBucket == 'DE' %}
                                             {% include molecule('money-price') with {
                                                 modifiers: ['cart'] | merge(modifiers),
                                                 class: component.renderClass(config.name ~ '__price', modifiers),
@@ -184,7 +174,16 @@
                                                     originalAmount: productItemOriginalPrice,
                                                 },
                                             } only %}
-                                        </div>
+                                        {% else %}
+                                            {% include molecule('money-price') with {
+                                                modifiers: ['cart'] | merge(modifiers),
+                                                class: component.renderClass(config.name ~ '__price-cz', modifiers),
+                                                data: {
+                                                    amount: productItemSubTotal | default(null),
+                                                    originalAmount: productItemOriginalPrice,
+                                                },
+                                            } only %}
+                                        {% endif %}
                                     </div>
                                 {% endblock %}
 
@@ -196,7 +195,7 @@
 
                     <div class="checkout-block__summary-total">
                         {% if app.currentCodeBucket == 'DE' %}
-                            <h3 class="title title--general">
+                            <h3 class="checkout-block__title">
                                 {{ 'checkout.step.summary.total' | trans }}
                             </h3>
                         {% else %}
@@ -233,13 +232,24 @@
                                     {% set labelLink = 'page.terms.title.word' | trans %}
                                     {% set labelText1 = 'summary.forms.accept_terms.text1' | trans %}
                                     {% set labelText2 = 'summary.forms.accept_terms.text2' | trans %}
-                                    {{ form_row(field, {
-                                        component: atom('checkbox'),
-                                        label: labelText1 ~'<a class="link" href="' ~ labelAnchor ~ '" target="_blank">' ~ labelLink ~ '</a>'~ labelText2,
-                                        rowAttr: {
-                                            class: 'spacing-bottom spacing-bottom--bigger' ~ fieldLayoutClass,
-                                        },
-                                    }) }}
+                                    {% if app.currentCodeBucket == 'DE' %}
+                                        {% set labelText3 = 'summary.forms.accept_terms.text3' | trans %}
+                                        {{ form_row(field, {
+                                            component: atom('checkbox'),
+                                            label: labelText1 ~'<a class="link" href="' ~ labelAnchor ~ '" target="_blank">' ~ labelLink ~ '</a>'~ labelText2 ~ '<br>' ~ labelText3,
+                                            rowAttr: {
+                                                class: 'spacing-bottom spacing-bottom--bigger' ~ fieldLayoutClass,
+                                            },
+                                        }) }}
+                                    {% else %}
+                                        {{ form_row(field, {
+                                            component: atom('checkbox'),
+                                            label: labelText1 ~'<a class="link" href="' ~ labelAnchor ~ '" target="_blank">' ~ labelLink ~ '</a>'~ labelText2,
+                                            rowAttr: {
+                                                class: 'spacing-bottom spacing-bottom--bigger' ~ fieldLayoutClass,
+                                            },
+                                        }) }}
+                                    {% endif %}
 
                                 {% else %}
                                     {{ form_row(field, {

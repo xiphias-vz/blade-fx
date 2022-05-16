@@ -4567,8 +4567,9 @@ newsletter.subsription.subheadline,Bekomme 10% Rabatt auf die erste Bestellung u
 newsletter.subsription.subheadline,Get 10% discount on your first order and receive weekly new offers via e-mail.,en_US
 summary.forms.accept_terms.text1,I hereby accept the ,en_US
 summary.forms.accept_terms.text2,.,en_US
-summary.forms.accept_terms.text1,Ich erkläre mich mit ,de_DE
-summary.forms.accept_terms.text2, einverstanden und nehme die Informationen über die Verarbeitung personenbezogener Daten zur Kenntnis.,de_DE
+summary.forms.accept_terms.text1,"Ich erkläre mich mit ",de_DE
+summary.forms.accept_terms.text2," einverstanden und nehme die Informationen über die ",de_DE
+summary.forms.accept_terms.text3,"Verarbeitung personenbezogener Daten zur Kenntnis.",de_DE
 summary.forms.accept_terms.text1,"Souhlasím s ",cs_CZ
 summary.forms.accept_terms.text2," a beru na vědomí informace o zpracování osobních údajů.",cs_CZ
 Filiale,"Výdejní místo",cs_CZ

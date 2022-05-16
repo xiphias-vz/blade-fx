@@ -363,6 +363,10 @@
 
         }
 
+        &--checkout {
+            width: 55%
+        }
+
         &--bigfont {
             padding: rem(8) rem(15);
             font: fw(semibold) rem(21)/1.7 $setting-font-family-additional;

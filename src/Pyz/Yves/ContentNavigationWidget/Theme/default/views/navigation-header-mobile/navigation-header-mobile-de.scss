@@ -51,7 +51,7 @@
 
                 & > .ffw-item-caption {
                     border-bottom-right-radius: rem(25);
-                    background-color: $setting-color-navigation-stonegray;
+                    background-color: $setting-color-stonegray;
                 }
             }
 
@@ -77,7 +77,7 @@
 
             ff-navigation-item[cluster-level="0"]{
 
-                border-bottom: 1px solid $setting-color-navigation-border;
+                border-bottom: 1px solid $setting-color-globus-tableHeader;
 
                 .ffw-item-caption{
                     font-weight: 500;

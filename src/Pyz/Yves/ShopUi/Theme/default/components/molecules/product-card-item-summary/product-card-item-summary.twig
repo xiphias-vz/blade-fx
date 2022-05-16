@@ -1,0 +1,126 @@
+{% extends model('component') %}
+
+{% define config = {
+    name: 'product-card-item-summary',
+    tag: 'article',
+} %}
+
+{% define data = {
+    product: {},
+    productItem: required,
+    attributes: [],
+    options: [],
+    additionalContainerClass: 'grid--justify grid--no-wrap grid--stretch',
+    productOptionsModifiers: [],
+} %}
+
+{% set productItemBox = (data.productItem.productOptions is defined and data.productItem.productOptions is empty) ? '' : config.name ~ '__box--with-options' %}
+{% set defaultImage = publicPath("/images/kein_bild_vorhanden.png") %}
+{% set currentCodeBucket = app.currentCodeBucket %}
+
+{% set productBrand = data.productItem.brand | default %}
+{% set productName = data.productItem.name | default %}
+{% set productBasePriceContent = data.productItem.basePriceContent | default %}
+{% set productBasePriceUnit = data.productItem.basePriceUnit | default %}
+{% set productSaleVolume = data.productItem.concreteAttributes['grundpreisinhalt'] | default(null) %}
+
+{% block body %}
+    <div class="{{ component.renderClass(config.name ~ '__box', modifiers) }} {{ productItemBox }}">
+        <div class="grid {{ data.additionalContainerClass }}">
+            {% block image %}
+                <a href="{{ data.productItem.url }}"
+                   class="{{ component.renderClass(config.name ~ '__image', modifiers) }} col">
+                    {% if data.productItem.images[0].externalUrlLarge is defined %}
+                        {% set imageProduct = data.productItem.images[0].externalUrlLarge %}
+                    {% else %}
+                        {% set imageProduct = defaultImage %}
+                    {% endif %}
+                    {% include molecule('product-image') with {
+                        data: {
+                            name: data.productItem.name | default,
+                            image: imageProduct,
+                            productItem: data.productItem
+                        },
+                    } only %}
+
+                    {% block groups %}{% endblock %}
+                </a>
+            {% endblock %}
+            <div class="{{ component.renderClass(config.name ~ '__content', modifiers) }} col">
+                {% block contentInner %}
+                    {% block headingGrid %}
+                        <div>
+                            {% block heading %}
+                                <div class="{{ component.renderClass(config.name ~ '__heading', modifiers) }}">
+                                    {% block title %}
+                                        <a href="{{ data.productItem.url }}"
+                                            {% if app.currentCodeBucket == 'DE' %}
+                                               class="{{ component.renderClass(config.name ~ '__title', modifiers) }}">
+                                                {{ productBrand }} <br>
+                                                <span class="{{ config.name }}__cut-text">{{ productName }}</span>
+                                                {% if data.productItem.concreteAttributes.einzelgewicht is defined %}
+                                                    -
+                                                    cca
+                                                    {{ data.productItem.concreteAttributes.einzelgewicht|replace('.', ',') }}
+                                                    {% if data.productItem.concreteAttributes["grundpreismasseinheit"] is defined %}
+                                                        {{ (productSaleVolume|round(3, 'floor') > 0 ? data.productItem.concreteAttributes["grundpreismasseinheit"] : '' ) }}
+                                                    {% endif %}
+                                                {% else %}
+                                                    {{ (productSaleVolume|round(3, 'floor') > 0 ? ' - ' ~ productSaleVolume|round(3, 'floor')|replace('.', ',') : '' ) }}
+                                                {% endif %}
+                                                {% if data.product.attributes["grundpreismasseinheit"] is defined %}
+                                                    {{ (productSaleVolume|round(3, 'floor') > 0 ? data.product.attributes["grundpreismasseinheit"] : '' ) }}
+                                                {% endif %}
+                                                {{ productBasePriceUnit }}
+                                            {% else %}
+                                                class="{{ component.renderClass(config.name ~ '__title', modifiers) }} {{ config.name }}__title-cz">
+                                                <span class="{{ config.name }}__cut-text">{{ productName }}</span>
+                                                {% if data.productItem.concreteAttributes.einzelgewicht is defined %}
+                                                    -
+                                                    cca
+                                                    {{ data.productItem.concreteAttributes.einzelgewicht|replace('.', ',') }}
+                                                    {% if data.productItem.concreteAttributes["grundpreismasseinheit"] is defined %}
+                                                        {{ (productSaleVolume|round(3, 'floor') > 0 ? data.productItem.concreteAttributes["grundpreismasseinheit"] : '' ) }}
+                                                    {% endif %}
+                                                {% endif %}
+                                            {% endif %}
+                                        </a>
+                                    {% endblock %}
+
+                                    {% block productQuantityInformation %}
+                                        {% if app.currentCodeBucket == 'DE' %}
+                                            <div class="{{ config.name }}__quantity-measurement-line grid">
+                                        {% else %}
+                                            <div class="{{ config.name }}__quantity-measurement-line {{ config.name }}__quantity-measurement-line-cz grid">
+                                        {% endif %}
+                                            {% if data.productItem.amountSalesUnit is defined and data.productItem.amountSalesUnit is not empty %}                                                {% include molecule('packaging-unit-cart') ignore missing with {
+                                                data: {
+                                                    amount: data.productItem.amount,
+                                                    quantity: data.productItem.quantity,
+                                                    quantitySalesUnit: data.productItem.quantitySalesUnit,
+                                                    quantityConversion: data.productItem.quantitySalesUnit.conversion,
+                                                    quantityProductMeasurementUnit: data.productItem.quantitySalesUnit.productMeasurementUnit,
+                                                    amountSalesUnit: data.productItem.amountSalesUnit,
+                                                    amountConversion: data.productItem.amountSalesUnit.conversion,
+                                                    amountProductMeasurementUnit: data.productItem.amountSalesUnit.productMeasurementUnit,
+                                                    amountValue: data.productItem.amountSalesUnit.value
+                                                }
+                                            } only %}
+                                            {% elseif data.productItem.quantitySalesUnit is defined and data.productItem.quantitySalesUnit is not empty %}
+                                                <span class="spacing-right">{{ data.productItem.quantity }}x</span>
+                                                {% widget 'CartProductMeasurementUnitQuantitySelectorWidget' args [data.productItem] only %}{% endwidget %}
+                                            {% else %}
+                                                <span class="spacing-right">{{ data.productItem.quantity }}x</span>
+                                            {% endif %}
+
+                                        </div>
+                                    {% endblock %}
+                                </div>
+                            {% endblock %}
+                        </div>
+                    {% endblock %}
+                {% endblock %}
+            </div>
+        </div>
+    </div>
+{% endblock %}

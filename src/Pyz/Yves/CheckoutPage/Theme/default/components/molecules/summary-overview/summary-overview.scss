@@ -1,41 +1,38 @@
 @mixin checkout-page-summary-overview($name: '.summary-overview') {
     #{$name} {
-        margin: rem(20) 0 rem(10);
 
         &__list-item {
             font: fw(medium) rem(16) / 1.6 $setting-font-family-additional;
-            margin: rem(15) 0;
-            color: $setting-color-gray-13;
+            margin: rem(6) 0;
+            color: $setting-color-tentgray;
 
             &--total {
-                padding-top: rem(15);
-                font-size: rem(18);
+                font-size: rem(20);
                 font-weight: fw(bold);
                 letter-spacing: rem(0.12);
-                color: $setting-color-gray-6;
+                color:  $setting-color-tentgray;
             }
         }
 
         &__list-item-CZ {
-            font: fw(medium) rem(16) / 1.6 $setting-font-family;
-            margin: rem(15) 0;
-            color: $setting-color-gray-13;
+            font: 400 rem(16) / 1.6 $setting-font-family;
+            margin: rem(6) 0;
+            color: $setting-color-tentgray;
 
             &--total {
-                padding-top: rem(15);
-                font-size: rem(18);
+                font-size: rem(20);
                 font-weight: fw(bold);
                 letter-spacing: rem(0.12);
-                color: $setting-color-gray-6;
+                color: $setting-color-tentgray;
             }
         }
 
         &__price {
-            font-weight: fw(bold);
-            color: $setting-color-gray-13;
+            font-weight: fw(normal);
+            color: $setting-color-tentgray;
 
             &--total {
-                color: $setting-color-gray-6;
+                color: $setting-color-tentgray;
             }
         }
 
