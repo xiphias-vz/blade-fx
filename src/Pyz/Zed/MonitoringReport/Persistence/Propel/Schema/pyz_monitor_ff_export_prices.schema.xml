@@ -15,6 +15,7 @@
         <column name="ShelfInfo" size="100" type="VARCHAR"/>
         <column name="DicountText" size="100" type="VARCHAR"/>
         <column name="basePrice" size="100" type="VARCHAR"/>
+        <column name="Promotion" size="100" type="VARCHAR"/>
         <column name="fk_product" required="true" type="INTEGER"/>
         <column name="dt_created" required="true" type="TIMESTAMP"/>
 

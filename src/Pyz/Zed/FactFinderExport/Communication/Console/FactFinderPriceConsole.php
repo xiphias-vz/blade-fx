@@ -53,7 +53,7 @@ class FactFinderPriceConsole extends Console
             $delimeter = ";";
             $enclosure = "\"";
             // ShelfInfo and DiscountText are empty elements
-            $headers = ["ArticleNumber", "StoreId", "Price", "PseudoPrice", "Stock", "Sale", "ShelfInfo", "DiscountText", "BasePrice"];
+            $headers = ["ArticleNumber", "StoreId", "Price", "PseudoPrice", "Stock", "Sale", "ShelfInfo", "DiscountText", "BasePrice", "Promotion"];
             fputcsv($fp, $headers, $delimeter, $enclosure);
 
             $i = 0;

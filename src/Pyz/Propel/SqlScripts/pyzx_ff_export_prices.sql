@@ -4,7 +4,7 @@ BEGIN
     TRUNCATE TABLE pyz_monitor_ff_export_prices;
 
     INSERT INTO pyz_monitor_ff_export_prices
-        (ean, storeID, price, pseudoPrice, quantity, sale, ShelfInfo, DicountText, basePrice, fk_product, dt_created)
+        (ean, storeID, price, pseudoPrice, quantity, sale, ShelfInfo, DicountText, basePrice, Promotion, fk_product, dt_created)
     SELECT sp.sku as ean, sm.filial_number as storeID
          , ROUND(sppsDef.gross_price / 100, 2) as price
          , CASE WHEN sppsDef.gross_price < orig.gross_price THEN ROUND(orig.gross_price / 100, 2) ELSE null end as pseudoPrice
@@ -25,8 +25,9 @@ BEGIN
                ELSE
                    REPLACE(CONCAT(ROUND(sppsDef.gross_price / 100, 2), ' ', sc.symbol, '/1 ',  JSON_VALUE(spa.`attributes`, '$.grundpreismasseinheit[0]')), '.', ',')
             END as basePrice
-         , sp.id_product
-         , now()
+        , prom.name as Promotion
+        , sp.id_product
+        , now()
     FROM spy_product sp
         INNER JOIN spy_product_abstract spa on sp.fk_product_abstract = spa.id_product_abstract
         INNER JOIN spy_price_product spp on spp.fk_product_abstract = sp.fk_product_abstract
@@ -48,11 +49,19 @@ BEGIN
                       INNER JOIN spy_price_product_default sppdOrig on sppdOrig.fk_price_product_store = sppsOrig.id_price_product_store
          ) orig ON orig.fk_store = sa.fk_store
              AND spp.fk_product_abstract = orig.fk_product_abstract
+        LEFT OUTER JOIN
+         (
+             select spps.fk_product_abstract, spps.fk_store, sppsl.name
+             from spy_price_product_schedule_list sppsl
+                      inner join spy_price_product_schedule spps on sppsl.id_price_product_schedule_list = spps.fk_price_product_schedule_list
+             where sppsl.is_active = 1 and sppsl.name = 'UVP'
+               and spps.is_current = 1
+         ) prom on spa.id_product_abstract = prom.fk_product_abstract AND sa.fk_store = prom.fk_store
     WHERE IFNULL(sa.quantity, 0) > 0
         AND sppsDef.gross_price > 0
         AND sp.is_active = 1;
 
-    SELECT ean, storeID, price, pseudoPrice, quantity, sale, ShelfInfo, DicountText, basePrice
+    SELECT ean, storeID, price, pseudoPrice, quantity, sale, ShelfInfo, DicountText, basePrice, Promotion
     FROM pyz_monitor_ff_export_prices;
 
 END;

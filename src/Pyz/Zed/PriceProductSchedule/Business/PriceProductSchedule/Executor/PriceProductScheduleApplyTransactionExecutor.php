@@ -49,7 +49,43 @@ class PriceProductScheduleApplyTransactionExecutor extends SprykerPriceProductSc
 
         $this->priceProductScheduleEntityManager->savePriceProductSchedule($priceProductScheduleTransfer);
 
+        $this->setPromotionToSpyPriceProductStore($priceProductScheduleTransfer);
+
         FactFinderEventManager::addEvent(FactFinderEventManager::FF_EVENT_GEODATA_UPDATE, $priceProductScheduleTransfer->getPriceProduct()->getIdProductAbstract());
+    }
+
+    /**
+     * @param \Generated\Shared\Transfer\PriceProductScheduleTransfer $priceProductScheduleTransfer
+     *
+     * @return void
+     */
+    protected function setPromotionToSpyPriceProductStore(PriceProductScheduleTransfer $priceProductScheduleTransfer): void
+    {
+        $idProductAbstract = $priceProductScheduleTransfer->getPriceProduct()->getIdProductAbstract() ?? null;
+        $idProduct = $priceProductScheduleTransfer->getPriceProduct()->getIdProduct() ?? null;
+        $priceType = $priceProductScheduleTransfer->getPriceProduct()->getFkPriceType() ?? null;
+
+        $priceProductEntity = SpyPriceProductQuery::create()
+            ->filterByFkProductAbstract($idProductAbstract)
+            ->filterByFkProduct($idProduct)
+            ->filterByFkPriceType($priceType)
+            ->find();
+
+        foreach ($priceProductEntity->getData() as $priceProduct) {
+            $idPriceProduct = $priceProduct->getIdPriceProduct();
+            $priceStoreEntity = SpyPriceProductStoreQuery::create()
+                    ->filterByFkStore($priceProductScheduleTransfer->getStore()->getIdStore())
+                    ->filterByFkPriceProduct($idPriceProduct)
+                    ->findOne();
+            if ($priceStoreEntity) {
+                $promotion = null;
+                if ($priceProductScheduleTransfer->getPriceProductScheduleList()) {
+                    $promotion = $priceProductScheduleTransfer->getPriceProductScheduleList()->getName();
+                }
+                $priceStoreEntity->setPromotion($promotion);
+                $priceStoreEntity->save();
+            }
+        }
     }
 
     /**
