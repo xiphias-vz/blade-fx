@@ -58,6 +58,7 @@ class TimeSlotQueryContainer extends AbstractQueryContainer implements TimeSlotQ
      * @param string $endTime
      * @param string $intervalMinutes
      * @param string $defaultCapacity
+     * @param int $fkUser
      *
      * @return string
      */
@@ -86,10 +87,8 @@ class TimeSlotQueryContainer extends AbstractQueryContainer implements TimeSlotQ
 
     /**
      * @param string $merchantReference
-     * @param string|null $startTime
-     * @param string|null $endTime
-     * @param string $intervalMinutes
-     * @param string $defaultCapacity
+     * @param string|null $exactDate
+     * @param string|null $workDay
      *
      * @return string
      */

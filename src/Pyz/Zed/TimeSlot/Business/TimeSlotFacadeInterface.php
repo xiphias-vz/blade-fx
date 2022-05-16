@@ -61,6 +61,13 @@ interface TimeSlotFacadeInterface
     public function getTimeSlot(): WeekDayTimeSlotsTransfer;
 
     /**
+     * @param string $merchantReference
+     *
+     * @return array
+     */
+    public function getTimeSlotsArray(string $merchantReference): array;
+
+    /**
      * @return \Generated\Shared\Transfer\WeekDayTimeSlotsTransfer
      */
     public function getTimeSlotsForSpecificDate(): WeekDayTimeSlotsTransfer;
@@ -123,9 +130,11 @@ interface TimeSlotFacadeInterface
     public function setDefaultTimeSlotsForSelectedDate(string $store, string $date, string $day, string $time, string $capacity): int;
 
     /**
+     * @param string $storeName
+     *
      * @return int
      */
-    public function getMerchantByStoreName(): int;
+    public function getMerchantByStoreName(string $storeName): int;
 
     /**
      * @param string $store
@@ -167,8 +176,9 @@ interface TimeSlotFacadeInterface
 
     /**
      * @param \Generated\Shared\Transfer\TimeSlotsDefinitionTransfer $timeslotDefinitionTransfer
+     * @param string $storeName
      *
      * @return mixed
      */
-    public function getTimeslotDefinition(TimeSlotsDefinitionTransfer $timeslotDefinitionTransfer);
+    public function getTimeslotDefinition(TimeSlotsDefinitionTransfer $timeslotDefinitionTransfer, string $storeName);
 }

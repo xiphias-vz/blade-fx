@@ -84,6 +84,7 @@
 
         .dropdown-check-list.visible .items {
             width: 145px;
+            height: inherit;
             display: block;
             padding: 2px;
             z-index: 1000000;
@@ -92,6 +93,7 @@
             border: 1px solid #ccc;
             border-top: none;
             background: #FFFFFF;
+            overflow: auto;
         }
 
         .dropdown-check-list.visible .items li {
@@ -159,11 +161,9 @@
                             <span class="fa arrow"></span>
                             </span>
                             <ul class="items">
-                                <li class="timeSlot"><input type="checkbox" value="10:00-12:00" /><span>10:00-12:00</span></li>
-                                <li class="timeSlot"><input type="checkbox" value="12:00-14:00" /><span>12:00-14:00</span></li>
-                                <li class="timeSlot"><input type="checkbox" value="14:00-16:00" /><span>14:00-16:00</span></li>
-                                <li class="timeSlot"><input type="checkbox" value="16:00-18:00" /><span>16:00-18:00</span></li>
-                                <li class="timeSlot"><input type="checkbox" value="18:00-20:00" /><span>18:00-20:00</span></li>
+                                {% for timeslot in timeslotsFilterButtonData  %}
+                                    <li class="timeSlot"><input type="checkbox" value="{{ timeslot }}" /><span>{{ timeslot }}</span></li>
+                                {% endfor %}
                                 <li>
                                     <button class="save-pickZone-btn" type="button" onclick="saveMultiSelectedFields(this.parentElement.parentElement, 'timeSlot')">{{ 'Save' | trans }}</button>
                                 </li>
@@ -242,6 +242,10 @@
         let filterState =  localStorage.getItem('filterState') !== null ? JSON.parse(localStorage.getItem('filterState')) : initialState
         if(parametersList === "") {
             filterState = initialState;
+        }
+
+        if (timeSlotList.querySelector('.items').childElementCount > 10) {
+            timeSlotList.querySelector('.items').style.height = "200px";
         }
 
         function handleDateRange(current, id) {

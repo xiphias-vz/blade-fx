@@ -17,7 +17,10 @@ use Orm\Zed\Sales\Persistence\SpySalesShipmentQuery;
 use Orm\Zed\Store\Persistence\SpyStoreQuery;
 use Orm\Zed\TimeSlot\Persistence\Map\PyzTimeSlotTableMap;
 use Orm\Zed\TimeSlot\Persistence\PyzTimeSlotQuery;
+use Pyz\Shared\Shipment\ShipmentConfig;
+use Pyz\Shared\TimeSlot\TimeSlotConstants;
 use Pyz\Zed\TimeSlot\Persistence\TimeSlotQueryContainerInterface;
+use Spryker\Shared\Config\Config;
 
 class TimeSlotReader implements TimeSlotReaderInterface
 {
@@ -32,6 +35,40 @@ class TimeSlotReader implements TimeSlotReaderInterface
     public function __construct(TimeSlotQueryContainerInterface $queryContainer)
     {
         $this->queryContainer = $queryContainer;
+    }
+
+    /**
+     * @param string $merchantReference
+     *
+     * @return array
+     */
+    public function getTimeSlots(string $merchantReference): array
+    {
+        if ($merchantReference !== "") {
+            $timeslots = PyzTimeSlotQuery::create()
+                ->select('time_slot')
+                ->where(PyzTimeSlotTableMap::COL_DAY . ' is not NULL AND ' . PyzTimeSlotTableMap::COL_DATE . ' is null')
+                ->filterByMerchantReference($merchantReference)
+                ->orderByTimeSlot()
+                ->distinct()
+                ->find();
+        } else {
+            $timeslots = PyzTimeSlotQuery::create()
+                ->select('time_slot')
+                ->where(PyzTimeSlotTableMap::COL_DAY . ' is not NULL AND ' . PyzTimeSlotTableMap::COL_DATE . ' is null')
+                ->orderByTimeSlot()
+                ->distinct()
+                ->find();
+        }
+
+        $timeslots = $timeslots->getData();
+
+        if (empty($timeslots)) {
+            $timeSlotConstants = Config::get(TimeSlotConstants::SHIPMENT_TIME_SLOTS);
+            $timeslots = $timeSlotConstants[ShipmentConfig::SHIPMENT_METHOD_CLICK_AND_COLLECT];
+        }
+
+        return $timeslots;
     }
 
     /**

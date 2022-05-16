@@ -7,6 +7,7 @@
 
 namespace Pyz\Zed\PickingZoneOrderExport\Communication\Controller;
 
+use Generated\Shared\Transfer\TimeSlotsDefinitionTransfer;
 use Pyz\Zed\PickingZoneOrderExport\Communication\Form\PickingZoneOrderExportForm;
 use Spryker\Zed\Kernel\Communication\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -24,7 +25,15 @@ class IndexController extends AbstractController
      */
     public function indexAction(Request $request)
     {
-        $pickingZoneOrderExportFormDataProvider = $this->getFactory()->createpickingZoneOrderExportFormDataProvider();
+        if ($request->request->get('picking_zone_order_export_form') !== null) {
+            $storeName = $request->request->get('picking_zone_order_export_form')['picking_store'];
+        } else {
+            $stores = $this->getFacade()->getPickingStores();
+            asort($stores);
+            $storeName = array_key_first($stores);
+        }
+
+        $pickingZoneOrderExportFormDataProvider = $this->getFactory()->createpickingZoneOrderExportFormDataProvider($storeName);
         $pickingZoneOrderExportForm = $this->getFactory()->createPickingZoneOrderExportForm(
             $pickingZoneOrderExportFormDataProvider->getOptions()
         )->handleRequest($request);
@@ -47,5 +56,23 @@ class IndexController extends AbstractController
         return $this->viewResponse([
             'form' => $pickingZoneOrderExportForm->createView(),
         ]);
+    }
+
+    /**
+     * @param \Symfony\Component\HttpFoundation\Request $request
+     *
+     * @return string|false
+     */
+    public function changeTimeSlotsByUserSelectAction(Request $request)
+    {
+        $timeSlotDefinitionTransfer = new TimeSlotsDefinitionTransfer();
+        $storeName = $request->request->get('storeName');
+        $result = $this->getFactory()->getTimeSlotsFacade()->getTimeslotDefinition($timeSlotDefinitionTransfer, $storeName);
+
+        if (empty($result)) {
+            $result = $this->getFactory()->getConfig()->getTimeSlotConstants();
+        }
+
+        return json_encode($result);
     }
 }

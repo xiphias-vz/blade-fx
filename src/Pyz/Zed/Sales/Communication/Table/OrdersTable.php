@@ -17,6 +17,7 @@ use Propel\Runtime\Exception\LogicException;
 use Pyz\Shared\Acl\AclConstants;
 use Pyz\Zed\PickingZone\Business\PickingZoneFacadeInterface;
 use Pyz\Zed\Sales\SalesConfig;
+use Pyz\Zed\TimeSlot\Business\TimeSlotFacadeInterface;
 use Spryker\Service\UtilDateTime\UtilDateTimeServiceInterface;
 use Spryker\Zed\Acl\Business\AclFacadeInterface;
 use Spryker\Zed\Gui\Communication\Table\TableConfiguration;
@@ -82,6 +83,11 @@ class OrdersTable extends SprykerOrdersTable
     protected $defaultLimit = 50;
 
     /**
+     * @var \Pyz\Zed\TimeSlot\Business\TimeSlotFacadeInterface
+     */
+    protected $timeSlotFacade;
+
+    /**
      * @param \Pyz\Zed\Sales\Communication\Table\OrdersTableQueryBuilderInterface $queryBuilder
      * @param \Spryker\Zed\Sales\Dependency\Facade\SalesToMoneyInterface $moneyFacade
      * @param \Spryker\Zed\Sales\Dependency\Service\SalesToUtilSanitizeInterface $sanitizeService
@@ -93,6 +99,7 @@ class OrdersTable extends SprykerOrdersTable
      * @param \Pyz\Zed\PickingZone\Business\PickingZoneFacadeInterface $pickingZoneFacade
      * @param \Spryker\Zed\Sales\Business\SalesFacadeInterface $salesFacade
      * @param array $salesTablePlugins
+     * @param \Pyz\Zed\TimeSlot\Business\TimeSlotFacadeInterface $timeSlotsFacade
      */
     public function __construct(
         OrdersTableQueryBuilderInterface $queryBuilder,
@@ -105,7 +112,8 @@ class OrdersTable extends SprykerOrdersTable
         SalesConfig $salesConfig,
         PickingZoneFacadeInterface $pickingZoneFacade,
         SalesFacadeInterface $salesFacade,
-        array $salesTablePlugins
+        array $salesTablePlugins,
+        TimeSlotFacadeInterface $timeSlotsFacade
     ) {
         parent::__construct(
             $queryBuilder,
@@ -121,6 +129,7 @@ class OrdersTable extends SprykerOrdersTable
         $this->salesConfig = $salesConfig;
         $this->pickingZoneFacade = $pickingZoneFacade;
         $this->salesFacade = $salesFacade;
+        $this->timeSlotFacade = $timeSlotsFacade;
     }
 
     /**
@@ -474,6 +483,16 @@ class OrdersTable extends SprykerOrdersTable
         $distinctItemStateNames = array_unique($itemStateNames);
 
         return implode(', ', $distinctItemStateNames) . $isPaused;
+    }
+
+    /**
+     * @param string $merchantReference
+     *
+     * @return \Orm\Zed\TimeSlot\Persistence\PyzTimeSlot[]|\Propel\Runtime\Collection\ObjectCollection
+     */
+    public function getTimeslotsFilterButtonData(string $merchantReference)
+    {
+        return $this->timeSlotFacade->getTimeSlotsArray($merchantReference);
     }
 
     /**

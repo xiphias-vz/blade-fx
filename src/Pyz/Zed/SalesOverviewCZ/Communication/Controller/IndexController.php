@@ -36,7 +36,7 @@ class IndexController extends SalesOverviewIndexController
         $merchantList = $this->getFactory()->merchantList();
         $choiceFilter = $this->getFactory()->choiceFilter();
         $tableHeader = $this->getFactory()->getTableHeaderContent();
-        $tableTimeSlots = $this->getFactory()->getTimeSlotsForTableRows();
+        $tableTimeSlots = $this->getFactory()->getTimeSlots()->getTimeSlotsArray($merchant);
         $tableTimeSlots[static::CONST_SUMME] = static::CONST_SUMME;
         $tableColumnWidth = 100 / count($tableHeader);
 

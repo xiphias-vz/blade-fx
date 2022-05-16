@@ -10,6 +10,7 @@ namespace Pyz\Zed\PickingZoneOrderExport;
 use Pyz\Zed\Merchant\Business\MerchantFacadeInterface;
 use Pyz\Zed\MerchantSalesOrder\Business\MerchantSalesOrderFacadeInterface;
 use Pyz\Zed\PickingZone\Business\PickingZoneFacadeInterface;
+use Pyz\Zed\PickingZoneOrderExport\Business\PickingZoneOrderExportFacadeInterface;
 use Pyz\Zed\TimeSlot\Business\TimeSlotFacadeInterface;
 use Pyz\Zed\User\Business\UserFacadeInterface;
 use Spryker\Zed\Kernel\AbstractBundleDependencyProvider;
@@ -24,6 +25,7 @@ class PickingZoneOrderExportDependencyProvider extends AbstractBundleDependencyP
     public const FACADE_MERCHANT_SALES_ORDER = 'FACADE_MERCHANT_SALES_ORDER';
     public const FACADE_USER = 'FACADE_USER';
     public const FACADE_MERCHANT = 'FACADE_MERCHANT';
+    public const FACADE_ORDER_EXPORT = 'FACADE_ORDER_EXPORT';
 
     /**
      * @param \Spryker\Zed\Kernel\Container $container
@@ -36,6 +38,7 @@ class PickingZoneOrderExportDependencyProvider extends AbstractBundleDependencyP
         $container = $this->addTimeSlotsFacade($container);
         $container = $this->addUserFacade($container);
         $container = $this->addMerchantFacade($container);
+        $container = $this->addOrderExportFacade($container);
 
         return $container;
     }
@@ -50,6 +53,9 @@ class PickingZoneOrderExportDependencyProvider extends AbstractBundleDependencyP
         $container = $this->addTranslatorFacade($container);
         $container = $this->addPickingZoneFacade($container);
         $container = $this->addMerchantSalesOrderFacade($container);
+        $container = $this->addMerchantFacade($container);
+        $container = $this->addUserFacade($container);
+        $container = $this->addTimeSlotsFacade($container);
 
         return $container;
     }
@@ -133,6 +139,20 @@ class PickingZoneOrderExportDependencyProvider extends AbstractBundleDependencyP
     {
         $container[static::FACADE_MERCHANT] = function (Container $container): MerchantFacadeInterface {
             return $container->getLocator()->merchant()->facade();
+        };
+
+        return $container;
+    }
+
+    /**
+     * @param \Spryker\Zed\Kernel\Container $container
+     *
+     * @return \Spryker\Zed\Kernel\Container
+     */
+    protected function addOrderExportFacade(Container $container): Container
+    {
+        $container[static::FACADE_ORDER_EXPORT] = function (Container $container): PickingZoneOrderExportFacadeInterface {
+            return $container->getLocator()->pickingZoneOrderExport()->facade();
         };
 
         return $container;

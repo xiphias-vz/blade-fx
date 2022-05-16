@@ -776,6 +776,13 @@ $config[TimeSlotConstants::SHIPMENT_TIME_SLOTS] = [
         '16:00-18:00',
         '18:00-20:00',
     ],
+    ShipmentConfig::DEFAULT_TIMESLOT_ARRAY_FOR_BO => [
+        ['time_slot' => '10:00-12:00'],
+        ['time_slot' => '12:00-14:00'],
+        ['time_slot' => '14:00-16:00'],
+        ['time_slot' => '16:00-18:00'],
+        ['time_slot' => '18:00-20:00'],
+    ],
 ];
 
 $config[TimeSlotConstants::SAME_DAY_SHIPMENT_TIME_SLOTS] = [

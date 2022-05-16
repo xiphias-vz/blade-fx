@@ -17,6 +17,7 @@ use Orm\Zed\Sales\Persistence\Map\SpySalesShipmentTableMap;
 use Pyz\Zed\MerchantSalesOrder\Business\MerchantSalesOrderFacadeInterface;
 use Pyz\Zed\PickingZone\Business\PickingZoneFacadeInterface;
 use Pyz\Zed\PickingZoneOrderExport\PickingZoneOrderExportConfig;
+use Pyz\Zed\TimeSlot\Business\TimeSlotFacadeInterface;
 use Spryker\Zed\Translator\Business\TranslatorFacadeInterface;
 
 class PickingZoneOrderExportContentBuilder implements PickingZoneOrderExportContentBuilderInterface
@@ -43,18 +44,26 @@ class PickingZoneOrderExportContentBuilder implements PickingZoneOrderExportCont
     protected $translatorFacade;
 
     /**
+     * @var \Pyz\Zed\TimeSlot\Business\TimeSlotFacadeInterface
+     */
+    protected $timeSlotFacade;
+
+    /**
      * @param \Pyz\Zed\PickingZone\Business\PickingZoneFacadeInterface $pickingZoneFacade
      * @param \Pyz\Zed\MerchantSalesOrder\Business\MerchantSalesOrderFacadeInterface $merchantSalesOrderFacade
      * @param \Spryker\Zed\Translator\Business\TranslatorFacadeInterface $translatorFacade
+     * @param \Pyz\Zed\TimeSlot\Business\TimeSlotFacadeInterface $timeSlotsFacade
      */
     public function __construct(
         PickingZoneFacadeInterface $pickingZoneFacade,
         MerchantSalesOrderFacadeInterface $merchantSalesOrderFacade,
-        TranslatorFacadeInterface $translatorFacade
+        TranslatorFacadeInterface $translatorFacade,
+        TimeSlotFacadeInterface $timeSlotsFacade
     ) {
         $this->pickingZoneFacade = $pickingZoneFacade;
         $this->merchantSalesOrderFacade = $merchantSalesOrderFacade;
         $this->translatorFacade = $translatorFacade;
+        $this->timeSlotFacade = $timeSlotsFacade;
     }
 
     /**
@@ -72,6 +81,12 @@ class PickingZoneOrderExportContentBuilder implements PickingZoneOrderExportCont
         array_push($statusArr, $status);
 
         $pickingZoneTransfer = $this->pickingZoneFacade->findPickingZoneById($idPickingZone);
+        $merchantReference = $this->timeSlotFacade->getMerchantByStoreName($pickingStore);
+        $timeSlotsFromQuery = $this->timeSlotFacade->getTimeSlotsArray($merchantReference);
+
+        foreach ($timeSlots as $timeSlotKeyValue) {
+                $timeSlotsArray[] = $timeSlotsFromQuery[$timeSlotKeyValue];
+        }
 
         $pickingZoneOrderExportContentsTransfer = new ExportContentsTransfer();
         $pickingZoneOrderExportContentsTransfer->setFilename($this->getFileName($pickingZoneTransfer, $datePicking));
@@ -140,7 +155,7 @@ class PickingZoneOrderExportContentBuilder implements PickingZoneOrderExportCont
             }
 
             if (isset($_REQUEST["orderItemsExport"])) {
-                if (in_array($timeSlotTime, $timeSlots)) {
+                if (in_array($timeSlotTime, $timeSlotsArray)) {
                     $pickingZoneOrderExportContentsTransfer->addContentItem([
                         $salesOrderItemData[SpySalesOrderTableMap::COL_ORDER_REFERENCE],
                         $timeSlotDate,
@@ -158,7 +173,7 @@ class PickingZoneOrderExportContentBuilder implements PickingZoneOrderExportCont
                     ]);
                 }
             } else {
-                if (in_array($timeSlotTime, $timeSlots)) {
+                if (in_array($timeSlotTime, $timeSlotsArray)) {
                     $pickingZoneOrderExportContentsTransfer->addContentItem([
                         $timeSlotDate,
                         $timeSlotTime,

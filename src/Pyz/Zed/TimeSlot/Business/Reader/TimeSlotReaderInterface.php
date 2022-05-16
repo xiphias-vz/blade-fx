@@ -13,6 +13,16 @@ use Generated\Shared\Transfer\WeekDayTimeSlotsTransfer;
 interface TimeSlotReaderInterface
 {
     /**
+     * @param string $merchantReference
+     *
+     * @throws \Propel\Runtime\Exception\PropelException
+     * @throws \Spryker\Zed\Propel\Business\Exception\AmbiguousComparisonException
+     *
+     * @return array
+     */
+    public function getTimeSlots(string $merchantReference): array;
+
+    /**
      * @param string $currentStore
      *
      * @return \Generated\Shared\Transfer\WeekDayTimeSlotsTransfer

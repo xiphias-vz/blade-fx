@@ -161,6 +161,7 @@ interface PickerFacadeInterface
     /**
      * @param int $orderId
      * @param int $itemEan
+     * @param int $itemPrice
      *
      * @return void
      */

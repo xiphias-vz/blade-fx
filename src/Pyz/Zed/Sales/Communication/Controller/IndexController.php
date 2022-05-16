@@ -22,14 +22,33 @@ class IndexController extends SprykerIndexController
      */
     public function indexAction()
     {
+        $merchantReference = $this->getMerchantReferenceForFilter($_REQUEST);
         $table = $this->getFactory()->createOrdersTable();
         $stores = $table->getMerchantFilterButtonsData();
+        $timeslots = $table->getTimeslotsFilterButtonData($merchantReference);
         asort($stores);
 
         return [
             'orders' => $table->render(),
             'merchantFilterButtonsData' => $stores,
+            'timeslotsFilterButtonData' => $timeslots,
             'pickingZones' => $table->getPickingZones(),
         ];
+    }
+
+    /**
+     * @param $request
+     *
+     * @return string
+     */
+    public function getMerchantReferenceForFilter($request): string
+    {
+        if (isset($request['merchant-reference-filter'])) {
+            $mercRef = $request['merchant-reference-filter'];
+        } else {
+            $mercRef = "";
+        }
+
+        return $mercRef;
     }
 }

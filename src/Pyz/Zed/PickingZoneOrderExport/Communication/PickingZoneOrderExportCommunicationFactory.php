@@ -9,6 +9,7 @@ namespace Pyz\Zed\PickingZoneOrderExport\Communication;
 
 use Pyz\Zed\Merchant\Business\MerchantFacadeInterface;
 use Pyz\Zed\PickingZone\Business\PickingZoneFacadeInterface;
+use Pyz\Zed\PickingZoneOrderExport\Business\PickingZoneOrderExportFacadeInterface;
 use Pyz\Zed\PickingZoneOrderExport\Communication\Form\DataProvider\PickingZoneOrderExportFormDataProvider;
 use Pyz\Zed\PickingZoneOrderExport\Communication\Form\PickingZoneOrderExportForm;
 use Pyz\Zed\PickingZoneOrderExport\PickingZoneOrderExportDependencyProvider;
@@ -23,12 +24,14 @@ use Symfony\Component\Form\FormInterface;
  */
 class PickingZoneOrderExportCommunicationFactory extends AbstractCommunicationFactory
 {
-    /**
+    /***
+     * @param string $storeName
+     *
      * @return \Pyz\Zed\PickingZoneOrderExport\Communication\Form\DataProvider\PickingZoneOrderExportFormDataProvider
      */
-    public function createPickingZoneOrderExportFormDataProvider(): PickingZoneOrderExportFormDataProvider
+    public function createPickingZoneOrderExportFormDataProvider(string $storeName): PickingZoneOrderExportFormDataProvider
     {
-        return new PickingZoneOrderExportFormDataProvider($this->getPickingZoneFacade(), $this->getTimeSlotsFacade(), $this->getUserFacade(), $this->getMerchantFacade());
+        return new PickingZoneOrderExportFormDataProvider($this->getPickingZoneFacade(), $this->getTimeSlotsFacade(), $this->getUserFacade(), $this->getMerchantFacade(), $this->getOrderExportFacade(), $storeName);
     }
 
     /**
@@ -71,5 +74,13 @@ class PickingZoneOrderExportCommunicationFactory extends AbstractCommunicationFa
     public function getMerchantFacade(): MerchantFacadeInterface
     {
         return $this->getProvidedDependency(PickingZoneOrderExportDependencyProvider::FACADE_MERCHANT);
+    }
+
+    /**
+     * @return \Pyz\Zed\PickingZoneOrderExport\Business\PickingZoneOrderExportFacadeInterface
+     */
+    public function getOrderExportFacade(): PickingZoneOrderExportFacadeInterface
+    {
+        return $this->getProvidedDependency(PickingZoneOrderExportDependencyProvider::FACADE_ORDER_EXPORT);
     }
 }

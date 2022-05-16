@@ -9,19 +9,30 @@ namespace Pyz\Zed\PickingZoneOrderExport\Communication\Form\DataProvider;
 
 use Generated\Shared\Transfer\TimeSlotsDefinitionTransfer;
 use Orm\Zed\Oms\Persistence\SpyOmsOrderItemStateQuery;
+use Pyz\Shared\Shipment\ShipmentConfig;
+use Pyz\Shared\TimeSlot\TimeSlotConstants;
 use Pyz\Zed\Merchant\Business\MerchantFacadeInterface;
 use Pyz\Zed\PickingZone\Business\PickingZoneFacadeInterface;
+use Pyz\Zed\PickingZoneOrderExport\Business\PickingZoneOrderExportFacadeInterface;
 use Pyz\Zed\PickingZoneOrderExport\Communication\Form\PickingZoneOrderExportForm;
 use Pyz\Zed\TimeSlot\Business\TimeSlotFacadeInterface;
 use Pyz\Zed\User\Business\UserFacadeInterface;
-use Spryker\Shared\Kernel\Store;
+use Spryker\Shared\Config\Config;
 
+/**
+ * @method \Pyz\Zed\PickingZoneOrderExport\Communication\PickingZoneOrderExportCommunicationFactory getFactory()
+ */
 class PickingZoneOrderExportFormDataProvider
 {
     /**
      * @var \Pyz\Zed\PickingZone\Business\PickingZoneFacadeInterface
      */
     protected $pickingZoneFacade;
+
+    /**
+     * @var \Pyz\Zed\PickingZoneOrderExport\Business\PickingZoneOrderExportFacade
+     */
+    protected $pickingZoneOrderExportFacade;
 
     /**
      * @var \Pyz\Zed\TimeSlot\Business\TimeSlotFacadeInterface
@@ -44,17 +55,33 @@ class PickingZoneOrderExportFormDataProvider
     protected $stateTransfer;
 
     /**
+     * @var string
+     */
+    protected $storeName;
+
+    /**
      * @param \Pyz\Zed\PickingZone\Business\PickingZoneFacadeInterface $pickingZoneFacade
      * @param \Pyz\Zed\TimeSlot\Business\TimeSlotFacadeInterface $timeSlotsFacade
      * @param \Pyz\Zed\User\Business\UserFacadeInterface $userFacade
      * @param \Pyz\Zed\Merchant\Business\MerchantFacadeInterface $merchantFacade
+     * @param \Pyz\Zed\PickingZoneOrderExport\Business\PickingZoneOrderExportFacadeInterface $exportFacade
+     * @param string $storeName
      */
-    public function __construct(PickingZoneFacadeInterface $pickingZoneFacade, TimeSlotFacadeInterface $timeSlotsFacade, UserFacadeInterface $userFacade, MerchantFacadeInterface $merchantFacade)
-    {
+    public function __construct(
+        PickingZoneFacadeInterface $pickingZoneFacade,
+        TimeSlotFacadeInterface $timeSlotsFacade,
+        UserFacadeInterface $userFacade,
+        MerchantFacadeInterface $merchantFacade,
+        PickingZoneOrderExportFacadeInterface $exportFacade,
+        string $storeName
+    ) {
+
         $this->pickingZoneFacade = $pickingZoneFacade;
         $this->timeSlotFacade = $timeSlotsFacade;
         $this->userFacade = $userFacade;
         $this->merchantFacade = $merchantFacade;
+        $this->pickingZoneOrderExportFacade = $exportFacade;
+        $this->storeName = $storeName;
     }
 
     /**
@@ -63,7 +90,7 @@ class PickingZoneOrderExportFormDataProvider
     public function getOptions(): array
     {
         $options[PickingZoneOrderExportForm::OPTION_PICKING_ZONES] = $this->getPickingZones();
-        $stores = $this->getPickingStores();
+        $stores = $this->pickingZoneOrderExportFacade->getPickingStores();
         asort($stores);
         $options[PickingZoneOrderExportForm::OPTION_PICKING_STORES] = $stores;
         $options[PickingZoneOrderExportForm::OPTION_PICKING_TIMESLOTS] = $this->getPickingTimeSlots();
@@ -86,33 +113,6 @@ class PickingZoneOrderExportFormDataProvider
         }
 
         return $pickingZones;
-    }
-
-    /**
-     * @return string[]
-     */
-    protected function getPickingStores(): array
-    {
-        $pickingStores = [];
-        $isCurrentUserSupervisor = $this->userFacade->isCurrentUserSupervisor();
-
-        if (isset($isCurrentUserSupervisor) && $isCurrentUserSupervisor) {
-            $currentUser = $this->userFacade->getCurrentUser();
-            $merchantByCurrentUser = $this->merchantFacade->findMerchantByUser($currentUser);
-            if ($merchantByCurrentUser) {
-                $currentStore = $merchantByCurrentUser->getStoreRelation()->getStores();
-                foreach ($currentStore as $store) {
-                    $storeName = $store->getName();
-                    $pickingStores[$storeName] = $storeName;
-                }
-            }
-        } else {
-            foreach (Store::getInstance()->getAllowedStores() as $allowedStore) {
-                $pickingStores[$allowedStore] = $allowedStore;
-            }
-        }
-
-        return $pickingStores;
     }
 
     /**
@@ -151,10 +151,15 @@ class PickingZoneOrderExportFormDataProvider
     protected function getTimeSlotDefinitions(): array
     {
         $timeSlotDefinitionTransfer = new TimeSlotsDefinitionTransfer();
-        $timeSlotsDef = $this->timeSlotFacade->getTimeslotDefinition($timeSlotDefinitionTransfer);
+        $timeSlotsDef = $this->timeSlotFacade->getTimeslotDefinition($timeSlotDefinitionTransfer, $this->storeName);
         $choicesDef = [];
         for ($i = 0; $i < count($timeSlotsDef); $i++) {
             array_push($choicesDef, $timeSlotsDef[$i]["time_slot"]);
+        }
+
+        if (empty($choicesDef)) {
+            $timeSlotConstants = Config::get(TimeSlotConstants::SHIPMENT_TIME_SLOTS);
+            $choicesDef = $timeSlotConstants[ShipmentConfig::SHIPMENT_METHOD_CLICK_AND_COLLECT];
         }
 
         return $choicesDef;

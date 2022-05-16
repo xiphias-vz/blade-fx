@@ -116,6 +116,9 @@ class PickingZoneOrderExportForm extends AbstractType
                 'multiple' => false,
                 'required' => true,
                 'choices' => $options[static::OPTION_PICKING_STORES],
+                'attr' => [
+                    'class' => 'js-store-field',
+                ],
                 'constraints' => [
                     new NotBlank(),
                 ],

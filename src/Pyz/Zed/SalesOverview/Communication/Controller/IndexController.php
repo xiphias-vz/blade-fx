@@ -41,8 +41,6 @@ class IndexController extends SprykerIndexController
         asort($merchantList);
         $choiceFilter = $this->getFactory()->choiceFilter();
         $tableHeader = $this->getFactory()->getTableHeaderContent();
-        $tableTimeSlots = $this->getFactory()->getTimeSlotsForTableRows();
-        $tableTimeSlots[static::CONST_SUMME] = static::CONST_SUMME;
         $tableColumnWidth = 100 / count($tableHeader);
 
         $date = date("Y-m-d");
@@ -65,6 +63,9 @@ class IndexController extends SprykerIndexController
         $data = $this->getFactory()
             ->getSalesOverviewRepository()
             ->getDataByChoiceFilter($choice, $date, $merchant);
+
+        $tableTimeSlots = $this->getFactory()->getTimeSlots()->getTimeSlotsArray($merchant);
+        $tableTimeSlots[static::CONST_SUMME] = static::CONST_SUMME;
 
         return [
             'merchantList' => $merchantList,

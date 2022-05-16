@@ -8,9 +8,7 @@
 namespace Pyz\Zed\SalesOverview;
 
 use Pyz\Shared\BackofficeOverview\BackofficeOverviewConstants;
-use Pyz\Shared\Shipment\ShipmentConfig;
 use Pyz\Shared\Store\StoreConstants;
-use Pyz\Shared\TimeSlot\TimeSlotConstants;
 use Spryker\Zed\Kernel\AbstractBundleConfig;
 
 class SalesOverviewConfig extends AbstractBundleConfig
@@ -37,15 +35,5 @@ class SalesOverviewConfig extends AbstractBundleConfig
     public function getTableHeader(): array
     {
         return $this->get(BackofficeOverviewConstants::TABLE_HEADER);
-    }
-
-    /**
-     * @return array
-     */
-    public function getTimeSlots(): array
-    {
-        $timeSlotContants = $this->get(TimeSlotConstants::SHIPMENT_TIME_SLOTS);
-
-        return $timeSlotContants[ShipmentConfig::SHIPMENT_METHOD_CLICK_AND_COLLECT];
     }
 }

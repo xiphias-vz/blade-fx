@@ -273,7 +273,7 @@ class CapacitiesController extends AbstractController
         $timeslotDefinitionTransfer->setMerchantReference($merchantReference);
         $timeSlotsArr = $this->getFactory()
             ->getTimeSlotsFacade()
-            ->getTimeslotDefinition($timeslotDefinitionTransfer);
+            ->getTimeslotDefinition($timeslotDefinitionTransfer, "");
 
         return $timeSlotsArr[$indexOfTime]["time_slot"];
     }

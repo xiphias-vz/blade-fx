@@ -255,7 +255,7 @@ class DetailController extends SprykerDetailController
         $timeslotDefinitionTransfer->setMerchantReference($merchantReference);
         $timeSlotsData = $this->getFactory()
             ->getTimeSlotsFacade()
-            ->getTimeslotDefinition($timeslotDefinitionTransfer);
+            ->getTimeslotDefinition($timeslotDefinitionTransfer, "");
 
         foreach ($containers as $container) {
             $idZone = $container->getIdPickingZone();

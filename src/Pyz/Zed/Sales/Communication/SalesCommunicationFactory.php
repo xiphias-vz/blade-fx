@@ -23,6 +23,7 @@ use Pyz\Zed\MerchantSalesOrder\MerchantSalesOrderDependencyProvider;
 use Pyz\Zed\MerchantStorage\Business\MerchantStorageFacadeInterface;
 use Pyz\Zed\Oms\Business\OmsFacadeInterface;
 use Pyz\Zed\PickingZone\Business\PickingZoneFacadeInterface;
+use Pyz\Zed\PickingZoneOrderExport\PickingZoneOrderExportDependencyProvider;
 use Pyz\Zed\Sales\Communication\Table\CapacitiesHistoryTable;
 use Pyz\Zed\Sales\Communication\Table\OrdersTable;
 use Pyz\Zed\Sales\Communication\Table\OrdersTableQueryBuilder;
@@ -55,7 +56,8 @@ class SalesCommunicationFactory extends SprykerSalesCommunicationFactory
             $this->getConfig(),
             $this->getPickingZoneFacade(),
             $this->getFacade(),
-            $this->getSalesTablePlugins()
+            $this->getSalesTablePlugins(),
+            $this->getProvidedDependency(PickingZoneOrderExportDependencyProvider::FACADE_TIME_SLOTS)
         );
     }
 

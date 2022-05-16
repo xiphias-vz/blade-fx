@@ -46,4 +46,9 @@ interface PickingZoneOrderExportFacadeInterface
      * @return \Symfony\Component\HttpFoundation\Response
      */
     public function buildCsvResponse(ExportContentsTransfer $exportContentsTransfer): Response;
+
+    /**
+     * @return array
+     */
+    public function getPickingStores(): array;
 }

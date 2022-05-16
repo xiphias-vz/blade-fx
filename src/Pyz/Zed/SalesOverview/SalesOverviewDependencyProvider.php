@@ -7,6 +7,7 @@
 
 namespace Pyz\Zed\SalesOverview;
 
+use Pyz\Zed\TimeSlot\Business\TimeSlotFacadeInterface;
 use Spryker\Zed\Acl\Business\AclFacadeInterface;
 use Spryker\Zed\Kernel\AbstractBundleDependencyProvider;
 use Spryker\Zed\Kernel\Container;
@@ -16,6 +17,7 @@ class SalesOverviewDependencyProvider extends AbstractBundleDependencyProvider
 {
     public const FACADE_USER = 'FACADE_USER';
     public const FACADE_ACL = 'FACADE_ACL';
+    public const FACADE_TIME_SLOTS = 'FACADE_TIME_SLOTS';
 
     /**
      * @param \Spryker\Zed\Kernel\Container $container
@@ -27,6 +29,7 @@ class SalesOverviewDependencyProvider extends AbstractBundleDependencyProvider
         $container = parent::provideBusinessLayerDependencies($container);
         $container = $this->addUserFacade($container);
         $container = $this->addAclFacade($container);
+        $container = $this->addTimeSlotsFacade($container);
 
         return $container;
     }
@@ -41,6 +44,7 @@ class SalesOverviewDependencyProvider extends AbstractBundleDependencyProvider
         $container = parent::provideCommunicationLayerDependencies($container);
         $container = $this->addUserFacade($container);
         $container = $this->addAclFacade($container);
+        $container = $this->addTimeSlotsFacade($container);
 
         return $container;
     }
@@ -68,6 +72,20 @@ class SalesOverviewDependencyProvider extends AbstractBundleDependencyProvider
     {
         $container->set(static::FACADE_ACL, function (Container $container): AclFacadeInterface {
             return $container->getLocator()->acl()->facade();
+        });
+
+        return $container;
+    }
+
+    /**
+     * @param \Spryker\Zed\Kernel\Container $container
+     *
+     * @return \Spryker\Zed\Kernel\Container
+     */
+    protected function addTimeSlotsFacade(Container $container): Container
+    {
+        $container->set(static::FACADE_TIME_SLOTS, function (Container $container): TimeSlotFacadeInterface {
+            return $container->getLocator()->timeSlot()->facade();
         });
 
         return $container;

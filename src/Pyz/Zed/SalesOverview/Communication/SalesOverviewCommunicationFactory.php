@@ -9,6 +9,7 @@ namespace Pyz\Zed\SalesOverview\Communication;
 
 use Pyz\Zed\SalesOverview\Persistence\SalesOverviewRepositoryInterface;
 use Pyz\Zed\SalesOverview\SalesOverviewDependencyProvider;
+use Pyz\Zed\TimeSlot\Business\TimeSlotFacadeInterface;
 use Spryker\Zed\Acl\Business\AclFacadeInterface;
 use Spryker\Zed\Kernel\Communication\AbstractCommunicationFactory;
 
@@ -69,10 +70,10 @@ class SalesOverviewCommunicationFactory extends AbstractCommunicationFactory
     }
 
     /**
-     * @return array
+     * @return \Pyz\Zed\TimeSlot\Business\TimeSlotFacadeInterface
      */
-    public function getTimeSlotsForTableRows(): array
+    public function getTimeSlots(): TimeSlotFacadeInterface
     {
-        return $this->getConfig()->getTimeSlots();
+        return $this->getProvidedDependency(SalesOverviewDependencyProvider::FACADE_TIME_SLOTS);
     }
 }

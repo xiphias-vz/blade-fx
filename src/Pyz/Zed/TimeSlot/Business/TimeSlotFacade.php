@@ -67,6 +67,16 @@ class TimeSlotFacade extends AbstractFacade implements TimeSlotFacadeInterface
     }
 
     /**
+     * @param string $merchantReference
+     *
+     * @return array
+     */
+    public function getTimeSlotsArray(string $merchantReference): array
+    {
+        return $this->getFactory()->createTimeSlotReader()->getTimeSlots($merchantReference);
+    }
+
+    /**
      * @return \Generated\Shared\Transfer\WeekDayTimeSlotsTransfer
      */
     public function getTimeSlotsForSpecificDate(): WeekDayTimeSlotsTransfer
@@ -152,14 +162,12 @@ class TimeSlotFacade extends AbstractFacade implements TimeSlotFacadeInterface
     }
 
     /**
+     * @param string $storeName
      * @return int
      */
-    public function getMerchantByStoreName(): int
+    public function getMerchantByStoreName(string $storeName): int
     {
-        $currentStore = $this->getFactory()->getStoreClient()->getCurrentStore()->getName();
-        $merchantReference = $this->getFactory()->createTimeSlotReader()->getMerchantReferenceByStoreName($currentStore);
-
-        return $merchantReference;
+        return $this->getFactory()->createTimeSlotReader()->getMerchantReferenceByStoreName($storeName);
     }
 
     /**
@@ -217,15 +225,16 @@ class TimeSlotFacade extends AbstractFacade implements TimeSlotFacadeInterface
         return $this->getFactory()->createTimeSlotWriter()->saveTimeSlotDefinitionForStore($timeslotDefinitionTransfer);
     }
 
-    /**
+    /***
      * @param \Generated\Shared\Transfer\TimeSlotsDefinitionTransfer $timeslotDefinitionTransfer
+     * @param string $storeName
      *
-     * @return array
+     * @return array|mixed
      */
-    public function getTimeslotDefinition(TimeSlotsDefinitionTransfer $timeslotDefinitionTransfer)
+    public function getTimeslotDefinition(TimeSlotsDefinitionTransfer $timeslotDefinitionTransfer, string $storeName)
     {
         if ($timeslotDefinitionTransfer->getMerchantReference() == "") {
-            $merchantReference = $this->getMerchantByStoreName();
+            $merchantReference = $this->getMerchantByStoreName($storeName);
             $timeslotDefinitionTransfer->setMerchantReference($merchantReference);
         }
 

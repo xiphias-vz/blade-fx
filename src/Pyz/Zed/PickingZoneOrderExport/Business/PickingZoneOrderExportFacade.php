@@ -58,4 +58,14 @@ class PickingZoneOrderExportFacade extends AbstractFacade implements PickingZone
             ->createExportCsvResponseBuilder()
             ->buildResponse($exportContentsTransfer);
     }
+
+    /**
+     * @return array
+     */
+    public function getPickingStores(): array
+    {
+        return $this->getFactory()
+            ->createPickingStoresReader()
+            ->getPickingStores();
+    }
 }

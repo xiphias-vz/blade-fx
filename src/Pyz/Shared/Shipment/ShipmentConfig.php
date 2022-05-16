@@ -13,6 +13,7 @@ use Spryker\Shared\Shipment\ShipmentConfig as SprykerShipmentConfig;
 class ShipmentConfig extends SprykerShipmentConfig
 {
     public const SHIPMENT_METHOD_CLICK_AND_COLLECT = 'click_and_collect';
+    public const DEFAULT_TIMESLOT_ARRAY_FOR_BO = 'default_timeslot_array_for_bo';
     public const SHIPMENT_METHOD_DELIVERY = 'lieferung';
     public const PROMOTION_CLICK_AND_COLLECT_SHIPMENT_METHOD_PRICE = 0;
 

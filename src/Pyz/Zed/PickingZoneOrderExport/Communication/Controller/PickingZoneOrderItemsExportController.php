@@ -7,9 +7,20 @@
 
 namespace Pyz\Zed\PickingZoneOrderExport\Communication\Controller;
 
+use Symfony\Component\HttpFoundation\Request;
+
 /**
  * @method \Pyz\Zed\PickingZoneOrderExport\Communication\PickingZoneOrderExportCommunicationFactory getFactory()
  */
 class PickingZoneOrderItemsExportController extends IndexController
 {
+    /**
+     * @param \Symfony\Component\HttpFoundation\Request $request
+     *
+     * @return string|false
+     */
+    public function changeTimeSlotsByUserSelectAction(Request $request)
+    {
+        return parent::changeTimeSlotsByUserSelectAction($request);
+    }
 }

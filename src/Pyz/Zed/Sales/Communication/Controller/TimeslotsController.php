@@ -28,6 +28,8 @@ class TimeslotsController extends AbstractController
     ];
 
     /**
+     * @param \Symfony\Component\HttpFoundation\Request $request
+     *
      * @return array
      */
     public function indexAction(Request $request): array
