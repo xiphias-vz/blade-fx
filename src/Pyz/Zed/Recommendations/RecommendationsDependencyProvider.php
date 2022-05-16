@@ -9,11 +9,9 @@ namespace Pyz\Zed\Recommendations;
 
 use Spryker\Zed\Kernel\AbstractBundleDependencyProvider;
 use Spryker\Zed\Kernel\Container;
-use SprykerShop\Yves\CustomerPage\Dependency\Client\CustomerPageToCustomerClientBridge;
 
 class RecommendationsDependencyProvider extends AbstractBundleDependencyProvider
 {
-    public const CUSTOMER_CLIENT = 'CUSTOMER_CLIENT';
     public const FORM_FACTORY = 'FORM_FACTORY';
     public const RECOMMENDATIONS_FACADE = 'RECOMMENDATIONS_FACADE';
     public const EVENT_FACADE = 'EVENT_FACADE';
@@ -29,7 +27,6 @@ class RecommendationsDependencyProvider extends AbstractBundleDependencyProvider
     public function providePersistenceLayerDependencies(Container $container): Container
     {
         $container = parent::providePersistenceLayerDependencies($container);
-        $container = $this->addCustomerClient($container);
         $container = $this->addRecommendationsQueryContainer($container);
 
         return $container;
@@ -43,7 +40,6 @@ class RecommendationsDependencyProvider extends AbstractBundleDependencyProvider
     public function provideCommunicationLayerDependencies(Container $container): Container
     {
         $container = parent::provideCommunicationLayerDependencies($container);
-        $container = $this->addCustomerClient($container);
         $container = $this->addRecommendationsQueryContainer($container);
         $container = $this->addRecommendationsFacade($container);
 
@@ -60,20 +56,6 @@ class RecommendationsDependencyProvider extends AbstractBundleDependencyProvider
         $container = parent::provideBusinessLayerDependencies($container);
         $container = $this->addEventFacade($container);
         $container = $this->addStoreFacade($container);
-
-        return $container;
-    }
-
-    /**
-     * @param \Spryker\Zed\Kernel\Container $container
-     *
-     * @return \Spryker\Zed\Kernel\Container
-     */
-    protected function addCustomerClient(Container $container): Container
-    {
-        $container->set(static::CUSTOMER_CLIENT, function (Container $container) {
-            return new CustomerPageToCustomerClientBridge($container->getLocator()->customer()->client());
-        });
 
         return $container;
     }

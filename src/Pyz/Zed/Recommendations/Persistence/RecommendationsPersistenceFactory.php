@@ -13,9 +13,7 @@ use Orm\Zed\Recommendations\Persistence\PyzRecommendationDefinitionQuery;
 use Orm\Zed\Recommendations\Persistence\PyzRecommendationScenariosQuery;
 use Pyz\Zed\Recommendations\Persistence\Propel\Mapper\ScenarioMapper;
 use Pyz\Zed\Recommendations\Persistence\Propel\Mapper\ScenarioMapperInterface;
-use Pyz\Zed\Recommendations\RecommendationsDependencyProvider;
 use Spryker\Zed\Kernel\Persistence\AbstractPersistenceFactory;
-use SprykerShop\Yves\CustomerPage\Dependency\Client\CustomerPageToCustomerClientInterface;
 
 /**
  * @method \Pyz\Zed\Recommendations\Persistence\RecommendationsQueryContainerInterface getQueryContainer()
@@ -62,13 +60,5 @@ class RecommendationsPersistenceFactory extends AbstractPersistenceFactory
     public function createScenarioMapper(): ScenarioMapperInterface
     {
         return new ScenarioMapper();
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getCustomerClient(): CustomerPageToCustomerClientInterface
-    {
-        return $this->getProvidedDependency(RecommendationsDependencyProvider::CUSTOMER_CLIENT);
     }
 }
