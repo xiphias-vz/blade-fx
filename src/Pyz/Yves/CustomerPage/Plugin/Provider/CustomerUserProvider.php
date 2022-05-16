@@ -48,7 +48,13 @@ class CustomerUserProvider extends SprykerCustomerUserProvider implements Custom
             $pass = $_POST["loginForm"]["password"];
             $pass = $this->getFactory()->getAntiXss()->xss_clean($pass);
         }
-        $authCheck = $this->globusLogin($email, $pass);
+        $uid = $this->getFactory()->getSessionClient()->get('cdcUID');
+        if ($uid == null) {
+            $authCheck = $this->globusLogin($email, $pass);
+        } else {
+            $authCheck = $this->getAccountInfo($uid);
+        }
+        $unparsedAuth = $authCheck;
         $authCheck = JSON::parse($authCheck);
 
         if (isset($authCheck["statusCode"])) {
@@ -78,7 +84,6 @@ class CustomerUserProvider extends SprykerCustomerUserProvider implements Custom
             try {
                 if (is_array($data)) {
                     $token = $data["id_token"];
-                    $res = GlobusRestApiClientAccount::loginWithToken($token);
 
                     $recoTransfer = $this->getFactory()->getStorageClient()->getIsRecommendationsEnabled(new RecoTransfer());
                     $recoTransfer->setCustomer($customerTransfer);
@@ -110,7 +115,7 @@ class CustomerUserProvider extends SprykerCustomerUserProvider implements Custom
                     $this->getFactory()->getSessionClient()->set("recoData", $customerTransfer->getRecoData());
 
                     $cook = new GlobusRestApiClientCookie();
-                    $cook->setLoginCookiePhp($res, $this->getFactory()->getSessionClient());
+                    $cook->setLoginCookiePhp($unparsedAuth, $this->getFactory()->getSessionClient());
                     $cook->setLoginConfirmedCookiePhp();
                 }
             } catch (Exception $ex) {
@@ -238,6 +243,22 @@ class CustomerUserProvider extends SprykerCustomerUserProvider implements Custom
         $profile->processProfileUpdateByTransfer($customerTransfer, false);
 
         return $result->resultToJson();
+    }
+
+    /**
+     * @param string $uid
+     *
+     * @return array|string
+     */
+    public function getAccountInfo(string $uid)
+    {
+        $idToken = $this->getFactory()->getSessionClient()->get("id_token");
+
+        if ($uid == null || $idToken == null) {
+            return [];
+        }
+
+        return GlobusRestApiClientAccount::getAccountInfo($uid, $idToken);
     }
 
     /**
