@@ -314,7 +314,7 @@ export default class AjaxAddToCart extends Component {
                 let productItemsForSyncCounter = JSON.parse(localStorage.getItem('productItemsForSyncCounter'));
 
                 for (let i = 0; i < productItemsForSyncCounter.length; i++) {
-                    if (productItemsForSyncCounter[i][0].includes(productSkuFromPOP)) {
+                    if (productItemsForSyncCounter[i][0].includes(productSkuFromPOP) && productItemsForSyncCounter[i][0] !== null) {
                         productItemsForSyncCounter[i][1] = quantity;
                     }
                 }
