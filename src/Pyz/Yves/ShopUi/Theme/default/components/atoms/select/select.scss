@@ -51,6 +51,9 @@
         }
 
         &--custom {
+            padding: rem(12) rem(25) rem(12) rem(7) !important;
+            background-color: white !important;
+            border: rem(1) solid lightgrey !important;
             padding: rem(12) rem(25);
             background-color: white;
             border: rem(1) solid lightgrey;
