@@ -1,18 +1,17 @@
 @mixin product-image-widget-image-gallery-thumbnail($name: '.image-gallery-thumbnail') {
     #{$name} {
-        width: rem(400) !important;
-        max-height: rem(90) !important;
+        width: rem(568) !important;
+        max-height: rem(168) !important;
         display: flex !important;
 
         @include helper-breakpoint-media-max($md-max) {
-            width: rem(352) !important;
+            width: rem(288) !important;
             display: flex !important;
         }
 
         @include helper-breakpoint-media-min($lg-min) {
             position: absolute !important;
             top: 115%;
-            left: rem(100);
             transform: translateY(-50%);
             z-index: $setting-zi-element + 1;
             width: rem(36);
@@ -22,10 +21,6 @@
             &:not(.slick-initialized) #{$name}__item {
                 margin: rem(16) 0;
             }
-        }
-
-        @include helper-breakpoint-media-min($xxl-min) {
-            left: rem(30);
         }
 
         &__item {
@@ -58,7 +53,7 @@
 
             @include helper-breakpoint-media-min($lg-min) {
                 width: rem(36);
-                height: rem(60);
+                height: rem(124);
                 border: rem(1) solid $setting-color-gray-3;
                 margin: rem(8) 0;
                 cursor: pointer;
@@ -106,20 +101,25 @@
             text-align: center;
             cursor: pointer;
             display: block;
+
+            @include helper-breakpoint-media-max($md-max) {
+                width: 40% !important;
+                margin-top: rem(40) !important;
+            }
         }
 
         &__prev {
-            margin-top: rem(35);
+            margin-top: rem(65.6);
         }
 
         &__next {
-            margin-top: rem(35);
+            margin-top: rem(65.6);
         }
 
         .slick-slide {
             border: none;
             height: auto;
-            width: rem(80) !important;
+            width: rem(134) !important;
             margin: 0 rem(8);
 
             @include helper-breakpoint-media-max($md-max) {

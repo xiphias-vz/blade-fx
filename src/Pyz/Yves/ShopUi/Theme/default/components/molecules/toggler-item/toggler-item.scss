@@ -275,6 +275,19 @@
             border-top: none;
         }
 
+        .title {
+            font-size: rem(21.6);
+            padding: rem(16) 0;
+        }
+
+        .margin-top {
+            margin-top: rem(82) !important;
+
+            @include helper-breakpoint-media-max($md-max) {
+                margin-top: 0 !important;
+            }
+        }
+
         .nutritional-information__trigger-bundle,
         .additional-product-information__trigger-bundle,
         .ingredients-and-allergens__trigger-bundle,
@@ -283,8 +296,8 @@
         .pet-feeding-table__trigger-bundle,
         .product-description__trigger-bundle,
         .warning-and-notes__trigger-bundle {
-            color: $setting-color-globus-lightOrange;
-            border-bottom: 1px solid $setting-color-globus-lightOrange;
+            color: $setting-color-tentgray;
+            border-bottom: 1px solid $setting-color-fresh-orange;
         }
 
         .nutritional-information__trigger-bundle:hover,
@@ -318,9 +331,16 @@
         .product-description__trigger-bundle::after,
         .warning-and-notes__trigger-bundle::after {
             content: '';
-            border-color: $setting-color-globus-lightOrange;
+            border-color: $setting-color-tentgray;
         }
 
+        .title--heading-CZ {
+            border-bottom: 1px solid $setting-color-globusCZ-main-green !important;
+        }
+
+        .title--heading-CZ:hover {
+            color: $setting-color-globusCZ-main-green !important;
+        }
 
         @content;
     }

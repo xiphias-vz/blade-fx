@@ -13,13 +13,14 @@
 } %}
 
 {% set isLink = data.url is not empty %}
+{% set fontClass = app.currentCodeBucket == "CZ" ? 'cz-font' : '' %}
 
 {% block body %}
     {%- if isLink -%}
         {% if app.currentCodeBucket == 'DE' %}
-            <a class="{{ config.name }}__link" href="{{ data.url }}">
+            <a class="{{ config.name }}__link {{ fontClass }}" href="{{ data.url }}">
         {% else %}
-            <a class="{{ config.name }}__link-CZ" href="{{ data.url }}">
+            <a class="{{ config.name }}__link-CZ {{ fontClass }}" href="{{ data.url }}">
         {% endif %}
     {%- endif -%}
 
@@ -37,15 +38,17 @@
         </a>
     {%- endif -%}
 
-    <span class="{{ component.renderClass(config.name ~ '__check', modifiers) }}">
-        {% include atom('icon') with {
-            data: {
-                name: 'check-additional',
-            },
-        } only %}
-    </span>
+{#    <span class="{{ component.renderClass(config.name ~ '__check', modifiers) }}">#}
+{#        {% include atom('icon') with {#}
+{#            data: {#}
+{#                name: 'check-additional',#}
+{#            },#}
+{#        } only %}#}
+{#    </span>#}
 
     {% if data.withChevron %}
-        <span class="{{ config.name }}__separator"></span>
+        <span class="{{ config.name }}__separator">
+            <svg class="infoIcon icon button__icon"><use xlink:href="#:left-arrow"></use></svg>
+        </span>
     {% endif %}
 {% endblock %}

@@ -31,15 +31,17 @@
                 }
             }
 
+            @include helper-breakpoint-media-max($lg-max) {
+                margin-bottom: rem(15);
+            }
+
             @include helper-breakpoint-media-min($lg-min) {
                 display: block;
                 height: rem(400);
-
             }
 
             @include helper-breakpoint-media-min($xl-min) {
                 height: rem(500);
-
             }
         }
 

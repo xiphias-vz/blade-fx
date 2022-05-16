@@ -63,13 +63,13 @@
                 <input type="hidden" name="quantity" class="wishlist-quantity__input"/>
             </div>
 
-            <div class="col col--sm-12 col--lg-2 text-right spacing-bottom">
+            <div class="col col--sm-12 col--lg-2 text-right spacing-bottom wishlist-icon">
                 {% if data.currentCodeBucket=='DE' %}
                     <button type="submit" class="button button--hollow button--collapsed button--backgroundcolor-DE" {{ disableAddToWishlist ? 'disabled' }}>
                         {% include atom('icon') with {
                             modifiers: ['big'],
                             data: {
-                                name: 'create-list',
+                                name: 'icon-wishlist',
                             },
                         } only %}
                     </button>
@@ -78,7 +78,7 @@
                         {% include atom('icon') with {
                             modifiers: ['big'],
                             data: {
-                                name: 'create-list',
+                                name: 'icon-wishlist',
                             },
                         } only %}
                     </button>

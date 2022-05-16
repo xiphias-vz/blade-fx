@@ -28,7 +28,10 @@
                data-product-price="{{ data.product.prices.DEFAULT is defined ? data.product.prices.DEFAULT / 100 : null }}"
                data-csrf-token="{{ csrf_token('add-to-cart-ajax') }}"
             >
-                <span class="icon-basketplus"></span>
+                <svg class="icon-svg">
+                    <use xlink:href="#:icon-basketplus"></use>
+                </svg>
+
                 <div class="add-details-to-cart-text-holder">
                     {{- 'page.detail.add-to-cart' | trans -}}
                 </div>

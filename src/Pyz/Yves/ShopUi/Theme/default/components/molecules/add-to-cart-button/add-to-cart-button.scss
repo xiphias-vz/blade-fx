@@ -2,7 +2,6 @@
     #{$name} {
         position: relative;
         z-index: 0;
-        font-family: "Clearface-Medium", Arial, sans-serif;
         display: flex;
         align-items: flex-end;
         margin-top: rem(16);
@@ -31,6 +30,13 @@
                 &:hover {
                     background-color: $setting-color-globus-darkGreen;
                 }
+
+                .icon-svg {
+                    width: rem(20);
+                    height: rem(14);
+                    margin-right: rem(10);
+                }
+
                 .icon-basketplus {
                     font-size: rem(18);
                     margin-right: rem(10);
@@ -176,10 +182,6 @@
                     padding: 15px;
                     height: 40px;
                     margin: 0 8px 6px 0;
-
-                    .icon-basketplus {
-                        font-size: rem(24);
-                    }
 
                     .icon {
                         width: rem(15);

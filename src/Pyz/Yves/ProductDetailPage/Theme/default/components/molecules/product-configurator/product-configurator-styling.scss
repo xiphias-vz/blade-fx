@@ -1,5 +1,11 @@
 @mixin product-detail-page-product-configurator($name: '.product-configurator') {
     #{$name} {
+        margin-top: rem(55);
+
+        @include helper-breakpoint-media-max($md-max) {
+            margin-top: rem(20);
+        }
+
         &__info {
             .not-in-stock {
                 display: flex;

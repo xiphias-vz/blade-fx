@@ -1,6 +1,6 @@
 @mixin warning-and-notes($name: '.warning-and-notes') {
     #{$name} {
-        color: $setting-color-globus-darkGray;
+        color: $setting-color-tentgray;
 
         .description {
             font-weight: bold;

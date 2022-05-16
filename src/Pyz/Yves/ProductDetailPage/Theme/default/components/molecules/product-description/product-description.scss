@@ -1,10 +1,9 @@
 @mixin product-description($name: '.product-description') {
     #{$name} {
-        color: $setting-color-globus-darkGray;
-
         &__info {
             .description-holder {
-                margin-bottom: 10px;
+                color: $setting-color-tentgray;
+                margin-bottom: rem(10);
                 .description {
                     font-weight: bold;
                     color: #000;
@@ -23,8 +22,15 @@
                     margin-right: 8px;
                 }
             }
+        }
 
+        &__attribute_info {
+            color: $setting-color-globus-black;
+            margin-bottom: rem(5);
+        }
 
+        &__attribute_info_text {
+            color: $setting-color-globus-darkGray;
         }
     }
 }
