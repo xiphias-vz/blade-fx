@@ -1,6 +1,6 @@
 import Component from 'ShopUi/models/component';
 
-export default class FacetsAsn extends Component
+export default class NavigationHeader extends Component
 {
     protected asnPrice: HTMLElement;
     private defaultClassName: string = 'icon-globus-leaf-default-md';
@@ -37,24 +37,13 @@ export default class FacetsAsn extends Component
 
         if (document.readyState === 'interactive' || document.readyState === 'complete') {
             window.addEventListener('DOMNodeInserted', nodeInsertedEvent => {
-                if (nodeInsertedEvent.relatedNode.localName === 'ff-asn-group-element') {
-                    const span = nodeInsertedEvent.relatedNode.querySelector('span');
-                    if (span !== undefined && span !== null) {
-                        if (span.classList.contains('filterName')) {
-                            const className = this.getClassName(span.innerText);
-                            if (!nodeInsertedEvent.relatedNode.classList.contains('clusterLevel1') &&
-                                !nodeInsertedEvent.relatedNode.classList.contains('clusterLevel2') &&
-                                !nodeInsertedEvent.relatedNode.classList.contains('clusterLevel3'))
-                            {
-                                this.addClasses(span, className, 'span');
-                            }
-                        }
-                    } else {
-                        if (nodeInsertedEvent.relatedNode.hasAttribute('selected')) {
-                            const parentDiv = nodeInsertedEvent.relatedNode.querySelector('div[slot=selected]');
-                            if (parentDiv !== undefined && parentDiv !== null) {
-                                const className = this.getClassName(parentDiv.innerText);
-                                this.addClasses(parentDiv, className, 'div');
+                if (nodeInsertedEvent.relatedNode.localName === 'ff-navigation-item') {
+                    let anchor = nodeInsertedEvent.relatedNode.querySelector('.navigation-icon');
+                    if (anchor !== undefined && anchor !== null) {
+                        const className = this.getClassName(anchor.innerText.trim());
+                        if (nodeInsertedEvent.relatedNode.hasAttribute('cluster-level')) {
+                            if (nodeInsertedEvent.relatedNode.getAttribute('cluster-level') === '0') {
+                                this.addClasses(anchor, className, 'span');
                             }
                         }
                     }
