@@ -8,9 +8,11 @@
             font-family:  $setting-font-family-additional;
             font-size: rem(12);
             width: 100%;
+            margin: 0;
 
             @include helper-breakpoint-media-max($sm-max) {
                 width: 100%;
+                margin-top: rem(8);
             }
         }
 
