@@ -14,104 +14,9 @@
 
 {% block extraClass %} {{ config.jsName }} {% endblock %}
 
-{% block body %}
-    <ul class="grid grid--middle grid--right">
-        <li class="{{ config.name }}__item">
-            {% if data.currentCodeBucket=='CZ' %}
-                {% if(is_granted('ROLE_USER')) %}
-                    <a href="{{ url('customer/overview') }}" class="{{ config.name }}__navigation-item link link--nav link--reset-focus">
-                        {% include atom('icon') with {
-                            class: 'link__icon link__icon--xxl-with-text icon--color-orange',
-                            modifiers: ['big'],
-                            data: {
-                                name: 'user-account',
-                            },
-                        } only %}
-
-                        <span class="link__text link__text--xxl-visible">
-                    {{ 'customer.profile.link' | trans }}
-                </span>
-                    </a>
-                {% else %}
-                    <a id="link-to-login-modal" class="{{ config.name }}__navigation-item link link--nav link--reset-focus">
-                        {% if app.currentCodeBucket == 'DE' %}
-                            {% include atom('icon') with {
-                                class: 'link__icon link__icon--xxl-with-text icon--color-orange',
-                                modifiers: ['big'],
-                                data: {
-                                    name: 'user-account',
-                                },
-                            } only %}
-                        {% else %}
-                            {% include atom('icon') with {
-                                class: 'link__icon link__icon--xxl-with-text icon--color-green',
-                                modifiers: ['big'],
-                                data: {
-                                    name: 'user-account',
-                                },
-                            } only %}
-                        {% endif %}
-
-                        <span class="link__text link__text--xxl-visible">
-                    {{ 'customer.profile.link' | trans }}
-                </span>
-                    </a>
-                {% endif %}
-            {% elseif data.currentCodeBucket=='DE' %}
-                {% if(is_granted('ROLE_USER')) %}
-                    <a href="{{ url('customer/overview') }}" class="link link--nav">
-                        {% if app.currentCodeBucket == 'DE' %}
-                            {% include atom('icon') with {
-                                class: 'link__icon link__icon--xxl-with-text icon--color-orange',
-                                modifiers: ['big'],
-                                data: {
-                                    name: 'user-account',
-                                },
-                            } only %}
-                        {% else %}
-                            {% include atom('icon') with {
-                                class: 'link__icon link__icon--xxl-with-text icon--color-green',
-                                modifiers: ['big'],
-                                data: {
-                                    name: 'user-account',
-                                },
-                            } only %}
-                        {% endif %}
-
-                        <span class="link__text link__text--xxl-visible">
-                            {{ 'customer.profile.link' | trans }}
-                        </span>
-                    </a>
-                {% else %}
-                    <a id="link-to-login-modal" class="{{ config.name }}__navigation-item link link--nav link--reset-focus">
-                        {% if app.currentCodeBucket == 'DE' %}
-                            {% include atom('icon') with {
-                                class: 'link__icon link__icon--xxl-with-text icon--color-orange',
-                                modifiers: ['big'],
-                                data: {
-                                    name: 'user-account',
-                                },
-                            } only %}
-                        {% else %}
-                            {% include atom('icon') with {
-                                class: 'link__icon link__icon--xxl-with-text icon--color-green',
-                                modifiers: ['big'],
-                                data: {
-                                    name: 'user-account',
-                                },
-                            } only %}
-                        {% endif %}
-
-                        <span class="link__text link__text--xxl-visible">
-                            {{ 'customer.profile.link' | trans }}
-                        </span>
-                    </a>
-                {% endif %}
-            {% endif %}
-        </li>
-
-
-        {% if data.showUserMenu and is_granted('IS_AUTHENTICATED_FULLY') %}
+  {% block body %}
+    <ul class="grid grid--middle grid--right {{ config.name }}__shop-user">
+         {% if data.showUserMenu and is_granted('IS_AUTHENTICATED_FULLY') %}
             <li class="{{ config.name }}__item">
                 <a href="{{ url('wishlist/overview') }}" class="link link--nav">
                     {% if app.currentCodeBucket == 'DE' %}
@@ -122,6 +27,9 @@
                                 name: 'wishlist',
                             },
                         } only %}
+                        <span class="link__text link__text--xxl-visible">
+                        {{ 'global.my_wishlist' | trans }}
+                        </span>
                     {% else %}
                         {% include atom('icon') with {
                             class: 'link__icon link__icon--xxl-with-text icon--color-orange',
@@ -130,11 +38,12 @@
                                 name: 'wishlist',
                             },
                         } only %}
+                        <span class="link__text-cz link__text--xxl-visible">
+                        {{ 'global.my_wishlist' | trans }}
+                        </span>
                     {% endif %}
 
-                    <span class="link__text link__text--xxl-visible">
-                        {{ 'global.my_wishlist' | trans }}
-                    </span>
+
                 </a>
             </li>
         {% endif %}
@@ -154,6 +63,110 @@
             {% include molecule('cart-block') with {
                 class: 'is-hidden',
             } only %}
+        </li>
+        <li class="{{ config.name }}__item">
+            {% if data.currentCodeBucket=='CZ' %}
+                {% if(is_granted('ROLE_USER')) %}
+                    <a href="{{ url('customer/overview') }}" class="{{ config.name }}__navigation-item link link--nav link--reset-focus">
+                        {% include atom('icon') with {
+                            class: 'link__icon link__icon--xxl-with-text icon--color-orange',
+                            modifiers: ['big','user-acc-cz'],
+                            data: {
+                                name: 'user-account',
+                            },
+                        } only %}
+                        <span class="link__text-cz link__user">
+                    {{ 'customer.profile.link' | trans }}
+                </span>
+                    </a>
+                {% else %}
+                    <a id="link-to-login-modal" class="{{ config.name }}__navigation-item link link--nav link--reset-focus">
+                        {% if app.currentCodeBucket == 'DE' %}
+                            {% include atom('icon') with {
+                                class: 'link__icon link__icon--xxl-with-text icon--color-orange',
+                                modifiers: ['big', 'user-acc-de'],
+                                data: {
+                                    name: 'user-account',
+                                },
+                            } only %}
+                        {% else %}
+                            {% include atom('icon') with {
+                                class: 'link__icon link__icon--xxl-with-text icon--color-green',
+                                modifiers: ['big', 'user-acc-cz'],
+                                data: {
+                                    name: 'user-account',
+                                },
+                            } only %}
+                        {% endif %}
+
+                        <span class="link__user">
+                    {{ 'customer.profile.link' | trans }}
+                </span>
+                    </a>
+                {% endif %}
+            {% elseif data.currentCodeBucket=='DE' %}
+                {% if(is_granted('ROLE_USER')) %}
+                    <a href="{{ url('customer/overview') }}" class="link link--nav">
+                        {% if app.currentCodeBucket == 'DE' %}
+                            {% include atom('icon') with {
+                                class: 'link__icon link__icon--xxl-with-text icon--color-orange',
+                                modifiers: ['big','user-acc-de'],
+                                data: {
+                                    name: 'user-account',
+                                },
+                            } only %}
+                        {% else %}
+                            {% include atom('icon') with {
+                                class: 'link__icon link__icon--xxl-with-text icon--color-green',
+                                modifiers: ['big','user-acc-cz'],
+                                data: {
+                                    name: 'user-account',
+                                },
+                            } only %}
+                        {% endif %}
+
+                        <span class="link__user">
+                            {{ 'customer.profile.link' | trans }}
+                        </span>
+                    </a>
+                {% else %}
+                    <a id="link-to-login-modal" class="{{ config.name }}__navigation-item link link--nav link--reset-focus">
+                        {% if app.currentCodeBucket == 'DE' %}
+                            {% include atom('icon') with {
+                                class: 'link__icon link__icon--xxl-with-text icon--color-orange',
+                                modifiers: ['big','user-acc-de'],
+                                data: {
+                                    name: 'user-account',
+                                },
+                            } only %}
+                        {% else %}
+                            {% include atom('icon') with {
+                                class: 'link__icon link__icon--xxl-with-text icon--color-green',
+                                modifiers: ['big','user-acc-cz'],
+                                data: {
+                                    name: 'user-account',
+                                },
+                            } only %}
+                        {% endif %}
+
+                        <span class="link__user">
+                            {{ 'customer.profile.link' | trans }}
+                        </span>
+                    </a>
+                {% endif %}
+                {% if is_granted('ROLE_USER') %}
+                    <a href="{{ url('logout') }}" class="link link--nav">
+                        {% include atom('icon') with {
+                            modifiers: ['big'],
+                            class: 'link__icon',
+                            data: {
+                                name: 'logout',
+                            },
+                        } only %}
+                        {{ 'customer.logout' | trans }}
+                    </a>
+                {% endif %}
+            {% endif %}
         </li>
     </ul>
 {% endblock %}

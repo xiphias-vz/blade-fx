@@ -85,7 +85,6 @@
                     } only %}
                         {% block body %}
                             {{ parent() }}
-
                             {% if embed.extraButton %}
                                 <button type="button" class="{{ config.name }}__item button button--skinless button--mobile-active {{ embed.extraButton.buttonClass }} {{ embed.extraButton.jsClass }}">
                                     {% include atom('icon') with {

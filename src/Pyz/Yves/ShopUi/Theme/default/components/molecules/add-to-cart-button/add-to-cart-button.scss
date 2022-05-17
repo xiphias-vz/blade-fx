@@ -4,6 +4,7 @@
         z-index: 0;
         display: flex;
         align-items: flex-end;
+        width: 55%;
         margin-top: rem(16);
         input[type=number]::-webkit-inner-spin-button,
         input[type=number]::-webkit-outer-spin-button {
@@ -117,13 +118,14 @@
                 }
 
                 .txt-product-quantity {
-                    width: 100%;
+                    width: 60%;
                     text-align: center;
                     outline: none;
                     border: none;
 
                     @include helper-breakpoint-media-max($sm-max) {
                         padding-left: 0;
+                        width: 40px;
                         margin: 0;
                     }
                 }
@@ -182,6 +184,14 @@
                     padding: 15px;
                     height: 40px;
                     margin: 0 8px 6px 0;
+                    .add-details-to-cart-text-holder {
+                        display: none;
+                    }
+
+                    .icon-basketplus {
+                        font-size: rem(24);
+                        margin-right: 0;
+                    }
 
                     .icon {
                         width: rem(15);

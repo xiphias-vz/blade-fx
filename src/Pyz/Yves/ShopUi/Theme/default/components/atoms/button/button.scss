@@ -49,6 +49,10 @@
             margin-right: rem(10);
             float: left;
 
+            @include helper-breakpoint-media-min($lg-min) {
+                padding: rem(3);
+            }
+
             &--center {
                 position: absolute;
                 top: 50%;
@@ -78,6 +82,31 @@
                 box-shadow: none;
             }
         }
+
+        &__all-products {
+            display: flex;
+            height: rem(44);
+            align-items: center;
+            border-radius: rem(30) rem(0) rem(0) rem(30);
+            border-color: transparent;
+            padding-left: rem(10);
+            background-color: $setting-color-fresh-orange;
+
+            @include helper-breakpoint-media-max($lg-max) {
+                padding: 0;
+                padding-left: rem(10);
+            }
+
+            &:hover{
+                background-color: $setting-color-fresh-orange;
+            }
+            @include helper-breakpoint-media-max($sm-max){
+                width: rem(48);
+                padding-left: 0;
+            }
+        }
+
+
 
         &--collapsed {
             min-width: 100%;
@@ -386,9 +415,28 @@
             border-radius: rem(30);
         }
 
-        &--font-CZ {
-            font: fw(medium) rem(14)/1.7 $setting-font-family;
-        }
+        &--all-products-CZ {
+            font: medium 12px $setting-font-family-additional;
+            background-color: $setting-color-globusCZ-main-green;
+            display: flex;
+            align-items: center;
+            border-radius: rem(30) rem(0) rem(0) rem(30);
+            border-color: transparent;
+            padding-left: rem(10);
+            height: 100%;
+
+            @include helper-breakpoint-media-max($lg-max) {
+                padding-left: rem(10);
+                }
+
+                &:hover{
+                    background-color: $setting-color-globusCZ-hover;
+                }
+                @include helper-breakpoint-media-max($sm-max){
+                    width: rem(48);
+                    height: 100%;
+                }
+            }
 
         &--expand-mobile {
             width: 100%;

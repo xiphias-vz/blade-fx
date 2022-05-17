@@ -17,7 +17,7 @@
 {% block body %}
     {% if app.currentCodeBucket == 'DE' %}
         {% include atom('icon') with {
-            class: 'link__icon link__icon--xxl-with-text icon--color-orange',
+            class: 'link__icon link__icon--xxl-with-text icon__cart-header',
             modifiers: ['big'],
             data: {
                 name: 'cart',
@@ -37,9 +37,8 @@
             },
         } only %}
         <span class="{{ config.name }}__quantity-CZ js-ajax-add-to-cart__quantity">{{ data.cartQuantity }}</span>
-
-        <span class="link__text link__text--xxl-visible">
-        <span class="{{ config.name }}__text">{{'cart.cart' | trans }}</span>
+        <span class="link__text-cz link__text--xxl-visible">
+        <span class="{{ config.name }}__text-cz">{{'cart.cart' | trans }}</span>
     </span>
 
     {% endif %}

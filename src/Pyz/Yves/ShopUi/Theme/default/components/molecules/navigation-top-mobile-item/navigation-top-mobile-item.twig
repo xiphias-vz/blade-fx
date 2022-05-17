@@ -18,14 +18,14 @@
             {% block icon %}
                 {% if app.currentCodeBucket == 'DE' %}
                     {% include atom('icon') with {
-                        modifiers: ['big', 'lightOrange'],
+                        modifiers: ['big', 'lightOrange','nav-top-mobile'],
                         data: {
                             name: data.iconName,
                         },
                     } only %}
                 {% else %}
                     {% include atom('icon') with {
-                        modifiers: ['big', 'color-green'],
+                        modifiers: ['big', 'color-green', 'nav-top-mobile'],
                         data: {
                             name: data.iconName,
                         },

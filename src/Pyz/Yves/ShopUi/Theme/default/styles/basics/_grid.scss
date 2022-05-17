@@ -135,6 +135,7 @@
 
         &--middle {
             align-items: center;
+            margin-right: rem(30);
         }
 
         &--stretch {
@@ -147,11 +148,25 @@
         }
 
         &--justify {
-            justify-content: space-between;
+            justify-content: start;
+            width:100%;
+
+            @include helper-breakpoint-media-max($sm-max) {
+                display:flex;
+                width: 100%;
+
+                :nth-child(4) {
+                    order: 4;
+                }
+            }
+
 
             .col {
                 margin-left: auto;
-                margin-right: auto;
+
+                @include helper-breakpoint-media-max($sm-max) {
+                    height: 100%;
+                }
 
                 &:first-child {
                     margin-left: 0;
@@ -198,9 +213,8 @@
             display: flex;
             flex-direction: row;
             align-content: stretch;
-            justify-content: space-evenly;
             align-items: center;
-
+            margin-right: 0;
         }
 
         &--desktop-no-wrap {

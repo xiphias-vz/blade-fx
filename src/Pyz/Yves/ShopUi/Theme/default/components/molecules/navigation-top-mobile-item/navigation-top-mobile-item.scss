@@ -4,13 +4,22 @@
         display: none;
     }
     #{$name} {
+
         &__item {
             padding: rem(8);
             color: $setting-color-globus-lightOrange;
+            width: 100%;
+            height: 100%;
+
+            @include helper-breakpoint-media-max($sm-max) {
+                padding-bottom: 0;
+            }
+
         }
-        @include helper-breakpoint-media-max($xxs-max) {
+        @include helper-breakpoint-media-max($sm-max) {
             .icon {
-                width:1.3rem;
+                width: rem(20);
+                height: rem(20);
             }
         }
 

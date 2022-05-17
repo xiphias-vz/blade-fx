@@ -32,7 +32,7 @@
         }
 
         ff-asn {
-            font-family: $setting-font-family-roboto;
+            font-family: $setting-font-family-additional;
 
             @include helper-breakpoint-media-max($md-max) {
                 width: 100%;
@@ -86,8 +86,8 @@
                     }
 
                     ff-asn-group-element:hover {
-                        color: $setting-color-zeltgrau;
-                        background-color: $setting-color-light-forest-green;
+                        color: $setting-color-tentgray;
+                        background-color: $setting-color-forest-green-light;
                         cursor: pointer;
                     }
 
@@ -96,8 +96,8 @@
                     }
 
                     .clusterLevel1:hover {
-                        color: $setting-color-zeltgrau;
-                        background-color: $setting-color-light-forest-green;
+                        color: $setting-color-tentgray;
+                        background-color: $setting-color-forest-green-light;
                         cursor: pointer;
                     }
 
@@ -131,7 +131,7 @@
                     max-width: rem(60);
                     font-size: rem(16);
                     font-weight: fw(medium);
-                    color: $setting-color-zeltgrau;
+                    color: $setting-color-tentgray;
                     background-color: $setting-color-gray-20;
                     border:rem(1) solid $setting-color-gray-21;
                     border-radius: rem(40);
@@ -141,7 +141,7 @@
 
                 .sliderBtn, .ffw-slider-button {
                     background-color: $setting-color-white;
-                    border: rem(2) solid $setting-color-dark-forest-green;
+                    border: rem(2) solid $setting-color-forest-green;
                     border-radius: 100%;
                     height: rem(25);
                     width: rem(25);
@@ -170,7 +170,7 @@
 
                 .ffw-selected-range {
                     height: rem(10);
-                    background-color: $setting-color-dark-forest-green;
+                    background-color: $setting-color-forest-green;
                     border-radius: rem(40);
                 }
 
@@ -186,7 +186,7 @@
 
         ff-asn-group:first-of-type{
             ff-asn-group-element[selected]{
-                background-color: $setting-color-light-forest-green;
+                background-color: $setting-color-forest-green-light;
                 &::after{
                     content: url("data:image/svg+xml; utf8, <svg xmlns='http://www.w3.org/2000/svg' width='12.8' height='12.8' viewBox='0 0 185.343 185.343'><path fill='rgb(55, 57, 54)' d='M51.707 185.343a10.692 10.692 0 01-7.593-3.149 10.724 10.724 0 010-15.175l74.352-74.347L44.114 18.32c-4.194-4.194-4.194-10.987 0-15.175 4.194-4.194 10.987-4.194 15.18 0l81.934 81.934c4.194 4.194 4.194 10.987 0 15.175l-81.934 81.939a10.678 10.678 0 01-7.587 3.15z'/></svg>");
                 }
@@ -220,7 +220,7 @@
                 max-width: 95vw;
             }
             .groupCaption {
-                color: $setting-color-zeltgrau;
+                color: $setting-color-tentgray;
                 background-color: $setting-color-stonegray;
                 border-bottom-right-radius: rem(20);
                 display: flex;
@@ -263,7 +263,7 @@
                             height: rem(24);
                             vertical-align: top;
                             margin-right: rem(8);
-                            accent-color: $setting-color-dark-forest-green;
+                            accent-color: $setting-color-forest-green;
                         }
                     }
 
@@ -285,7 +285,7 @@
                 .groupCaption {
                     &__selected {
                         color: $setting-color-white;
-                        background-color: $setting-color-zeltgrau;
+                        background-color: $setting-color-tentgray;
                     }
                 }
               &  .expand-arrow::after{
@@ -314,7 +314,7 @@
                     }
 
                     input[type=checkbox]:checked ~ .checkmark {
-                        background-color: $setting-color-dark-forest-green;
+                        background-color: $setting-color-forest-green;
 
                         &:hover {
                             background-color: $setting-color-forest-green;
@@ -400,7 +400,7 @@
         }
 
         div[data-content = detailedLinks]::-webkit-scrollbar-thumb {
-            background: $setting-color-dark-forest-green;
+            background: $setting-color-forest-green;
             border-radius: rem(5);
         }
     }

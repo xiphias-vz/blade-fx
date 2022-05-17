@@ -11,6 +11,8 @@
 
     &__icon {
         margin-right: rem(15);
+        width: rem(20);
+        height: rem(20);
 
         &--xxl-with-text {
             margin-right: 0;
@@ -21,13 +23,47 @@
         }
     }
 
-    &__text {
+    &__user {
+        color: $setting-color-fresh-orange;
+        &:hover {
+            color: $setting-color-forest-green;
+        }
+    }
+
+    &__text-cz {
+        color: $setting-color-globusCZ-main-green !important;
+
         &--xxl-visible {
             display: none;
 
             @include helper-breakpoint-media-min($xxl-min) {
                 display: inline;
+                color: $setting-color-globusCZ-main-green;
+                &:hover{
+                    color: $setting-color-globusCZ-hover;
+                }
             }
+        }
+        &:hover {
+            color: $setting-color-globusCZ-hover !important;
+        }
+    }
+
+    &__text {
+        color: $setting-color-forest-green;
+        &--xxl-visible {
+            display: none;
+
+            @include helper-breakpoint-media-min($xxl-min) {
+                display: inline;
+                color: $setting-color-forest-green;
+                &:hover{
+                color: $setting-color-fresh-orange;
+                }
+            }
+        }
+        &:hover {
+            color: $setting-color-fresh-orange;
         }
     }
 
@@ -114,13 +150,13 @@
         display: inline-flex;
         align-items: center;
         text-decoration: none;
-        color: $setting-color-gray-13;
+        color: $setting-color-globus-darkGray-4;
         margin: 0 rem(15);
 
         &:hover,
         &:focus {
             opacity: 1;
-            color: $setting-color-black-1;
+            color: $setting-color-fresh-orange;
             text-decoration: none;
             box-shadow: none;
         }

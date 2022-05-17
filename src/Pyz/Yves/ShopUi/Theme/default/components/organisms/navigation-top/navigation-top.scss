@@ -1,8 +1,24 @@
 @mixin shop-ui-navigation-top ($name: '.navigation-top') {
     #{$name} {
-        padding-left: rem(30);
+        padding-left: rem(16);
+        padding-right: rem(16);
+        /*margin-left: rem(70);*/
+        width: 100%;
+
+        &__shop-user {
+            display: flex;
+            flex-flow: row;
+            justify-content: right;
+            align-items: baseline;
+            width: fit-content;
+        }
+
+        &__customer-profile {
+            color: $setting-color-fresh-orange;
+        }
 
         &__item {
+            display: flex;
             position: relative;
             padding: 0 rem(20);
             line-height: 1;

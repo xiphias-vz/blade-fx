@@ -65,56 +65,69 @@
 
     {% if data.currentCodeBucket=='DE' %}
         <div class="{{ config.name }}__meta-navigation-top">
-                <div class="container">
+                <div class="container {{ config.name }}__container-nav ">
                     <div class="{{ config.name }}__text-left col col--lg-4">
+                        <div class="{{ config.name }}__link_container">
                         <a href="https://www.globus.de/" target = "_blank" class="{{ config.name }}__link_orange">
-                            <svg version="1.1" id="Icons" class="{{ config.name }}__icon_left" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
-                                 viewBox="0 0 24 24" style="enable-background:new 0 0 24 24;" fill="#7B7B7B" xml:space="preserve">
-                                <title>004-tiefkuehl</title>
-                                <g>
-                                    <path d="M11.2,10c0,0.7-0.1,1.4-0.4,2.1c-0.3,0.7-0.6,1.2-1.1,1.7c-0.5,0.4-1.1,0.7-1.8,0.7s-1.3-0.2-1.8-0.7s-0.9-1-1.1-1.7
-                                    c-0.3-0.7-0.4-1.4-0.4-2.1c0-0.7,0.1-1.4,0.4-2.1s0.6-1.2,1.1-1.7s1.1-0.7,1.8-0.7s1.3,0.2,1.8,0.6c0.5,0.4,0.9,1,1.1,1.7
-                                    S11.2,9.3,11.2,10z M9.1,10c0-1.5-0.1-2.5-0.3-3S8.3,6.2,7.9,6.2c-0.2,0-0.4,0.1-0.6,0.3S6.9,7.1,6.8,7.7S6.7,9,6.7,10
-                                    c0,0.8,0,1.4,0.1,1.9s0.2,0.9,0.3,1.2c0.1,0.3,0.2,0.5,0.4,0.6s0.3,0.1,0.5,0.1c0.4,0,0.7-0.3,0.9-0.8C9,12.5,9.1,11.5,9.1,10z
-                                     M17,5.7L8.8,20.3H7.5l8.2-14.6H17z M19.7,15.9c0,0.7-0.1,1.4-0.4,2.1s-0.6,1.2-1.1,1.7s-1.1,0.7-1.8,0.7S15,20,14.5,19.6
-                                    s-0.9-1-1.1-1.7S13,16.6,13,15.9c0-0.7,0.1-1.4,0.4-2.1s0.6-1.2,1.1-1.7c0.5-0.4,1.1-0.6,1.8-0.6s1.3,0.2,1.8,0.7
-                                    c0.5,0.4,0.9,1,1.1,1.7S19.7,15.2,19.7,15.9z M17.6,15.9c0-1.5-0.1-2.5-0.3-3c-0.2-0.5-0.5-0.8-0.9-0.8c-0.2,0-0.4,0.1-0.6,0.3
-                                    c-0.2,0.2-0.3,0.6-0.4,1.1c-0.1,0.6-0.2,1.4-0.2,2.4c0,0.8,0,1.4,0.1,1.9s0.2,0.9,0.3,1.2s0.2,0.5,0.4,0.6s0.3,0.2,0.5,0.2
-                                    c0.4,0,0.7-0.3,0.9-0.8S17.6,17.4,17.6,15.9z"/>
-                                </g>
+                            <svg width="21" height="21" id="Icons" class="{{ config.name }}__icon_left" viewBox="0 0 21 21" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M13.99 8.13C13.81 5.34 12.68 2.62 10.56 0.5C8.42 2.64 7.24 5.36 7.01 8.13C8.29 8.81 9.47 9.69
+                                     10.5 10.76C11.53 9.7 12.71 8.82 13.99 8.13ZM10.55 3.69C11.18 4.72 11.62 5.87 11.85 7.07C11.38 7.37 10.94
+                                     7.7 10.51 8.05C10.09 7.71 9.64 7.38 9.18 7.08C9.43 5.88 9.89 4.73 10.55 3.69ZM10.5 13.95C9.68 12.7 8.64
+                                     11.61 7.44 10.75C7.31 10.66 7.17 10.59 7.04 10.49C7.17 10.58 7.31 10.66 7.43 10.74C5.48 9.33 3.09 8.5 0.5
+                                     8.5C0.5 13.82 3.86 18.32 8.53 19.99C9.16 20.22 9.82 20.39 10.5 20.5C11.18 20.38 11.83 20.21 12.47 19.99C17.14
+                                     18.32 20.5 13.82 20.5 8.5C16.32 8.5 12.65 10.67 10.5 13.95ZM11.82 18.1C11.38 18.25 10.94 18.37 10.49 18.47C10.05
+                                     18.38 9.62 18.26 9.21 18.11C5.92 16.93 3.51 14.12 2.76 10.76C3.86 11.02 4.91 11.47 5.88 12.09L5.86 12.1C5.99 12.19
+                                     6.12 12.28 6.25 12.35L6.32 12.39C7.31 13.11 8.16 14 8.83 15.04L10.5 17.6L12.17 15.05C12.86 14 13.72 13.1 14.7
+                                     12.39L14.77 12.34C14.86 12.29 14.95 12.23 15.04 12.17L15.03 12.15C16.01 11.5 17.1 11.02 18.24 10.75C17.49
+                                     14.12 15.09 16.93 11.82 18.1ZM7.49 10.78C7.47 10.77 7.45 10.75 7.44 10.74C7.44 10.74 7.45 10.74 7.45 10.75C7.46
+                                     10.76 7.47 10.77 7.49 10.78Z" fill="white"/>
                             </svg>
                             {{ 'my_market.link' | trans }}
                         </a>
+                        </div>
+                        <div class="{{ config.name }}__link_container">
+                            <a class="{{ config.name }}__link_orange__middle">
+                                <svg width="21" height="21" class="{{ config.name }}__icon_left" viewBox="0 0 21 21" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M6.5 16.5C5.4 16.5 4.51 17.4 4.51 18.5C4.51 19.6 5.4 20.5 6.5 20.5C7.6 20.5
+                                             8.5 19.6 8.5 18.5C8.5 17.4 7.6 16.5 6.5 16.5ZM0.5 1.5C0.5 2.05 0.95 2.5 1.5
+                                             2.5H2.5L6.1 10.09L4.75 12.53C4.02 13.87 4.98 15.5 6.5 15.5H17.5C18.05 15.5
+                                             18.5 15.05 18.5 14.5C18.5 13.95 18.05 13.5 17.5 13.5H6.5L7.6 11.5H15.05C15.8
+                                             11.5 16.46 11.09 16.8 10.47L20.38 3.98C20.75 3.32 20.27 2.5 19.51 2.5H4.71L4.04
+                                             1.07C3.88 0.72 3.52 0.5 3.14 0.5H1.5C0.95 0.5 0.5 0.95 0.5 1.5ZM16.5 16.5C15.4 16.5
+                                             14.51 17.4 14.51 18.5C14.51 19.6 15.4 20.5 16.5 20.5C17.6 20.5 18.5 19.6 18.5 18.5C18.5
+                                             17.4 17.6 16.5 16.5 16.5Z" fill="#373936"/>
+                                </svg>
+                            {{ 'product.buy' | trans }}
+                            </a>
+                        </div>
+                        <div class="{{ config.name }}__link_container">
                         <a href="https://www.globus.de/produkte/" target = "_blank" class="{{ config.name }}__link_orange">
-                            <svg version="1.1" id="Icons" class="{{ config.name }}__icon_left" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
-                                 viewBox="0 0 24 24" style="enable-background:new 0 0 24 24;" fill="#7B7B7B" xml:space="preserve">
-                                 <title>004-tiefkuehl</title>
-                                    <path d="M20.6,11.4c0.8-2.5,0.8-4.7-0.1-5.9c-0.5-0.7-1.2-1-2.1-1c-0.2,0-0.3,0.2-0.3,0.4c0,0.2,0.1,0.4,0.3,0.4c0,0,0,0,0,0
-                                    c0.7,0,1.3,0.2,1.6,0.8c0.6,0.8,0.6,2,0.5,2.9c-0.1,0.8-0.3,1.6-0.6,2.5h-0.8c0,0,0,0,0-0.1c0-0.3-0.1-0.7-0.3-0.9l-2.2-2.9
-                                    c-0.4-0.5-1-0.5-1.3,0c-0.2,0.2-0.3,0.6-0.3,0.9c0,0.3,0.1,0.7,0.3,0.9l1.5,2.1h-2.9c0-0.9-0.1-1.8-0.1-2.6c0-0.2-0.1-0.3-0.3-0.4
-                                    c-0.1,0-0.2,0-0.3,0c1.3-1.4,2.6-2.5,3.8-2.9c0.2-0.1,0.3-0.3,0.2-0.5c0-0.2-0.2-0.3-0.4-0.3c-0.5,0.2-1,0.4-1.4,0.7
-                                    c0.1-0.6,0.1-1.2,0-1.7c-0.1-0.3-0.3-0.5-0.5-0.6c-0.3-0.1-0.9-0.1-1.5,1c0,0.1-0.1,0.1-0.1,0.2c0,0,0,0,0,0
-                                    c-0.1-0.5-0.4-1.4-1.2-1.4c-0.3,0-0.5,0.1-0.6,0.4c-0.2,0.3-0.3,0.9-0.3,1.4c-0.3-0.5-0.6-0.8-0.9-0.8c-0.2,0-0.4,0.2-0.6,0.4
-                                    c-0.4,0.7-0.4,2.3,0,4c-0.1,0-0.2,0-0.3,0C9.1,7.2,8.4,6.6,8.1,6.3V5.5c0.1,0,0.2-0.2,0.2-0.4V3.9c0-0.6-0.4-1.1-0.8-1.1H5.6
-                                    c-0.5,0-0.8,0.5-0.8,1.1v1.1c0,0.2,0.1,0.4,0.2,0.4l0,0.9C4.7,6.7,3.6,7.7,3,9.1c-0.1,0.3-0.2,0.6-0.2,1c0,0.3,0,0.8,0.1,1.4H2
-                                    l2.6,9.8h14.4l3.1-9.8H20.6z M15.9,8.7c-0.1-0.1-0.1-0.2-0.1-0.3s0-0.2,0.1-0.3C16,8,16.1,7.9,16.1,7.9c0.1,0,0.2,0,0.2,0.1l2.2,2.9
-                                    c0.1,0.1,0.1,0.2,0.1,0.3c0,0,0,0,0,0.1h-0.8L15.9,8.7z M10.4,4.6C10.4,4.6,10.5,4.5,10.4,4.6c0.3-0.1,0.7,0.7,1.1,1.7
-                                    c0.1,0.2,0.2,0.3,0.3,0.2c0.1,0,0.2-0.2,0.2-0.4c0,0,0,0,0-0.1c-0.1-1.4,0-2.2,0.2-2.4c0.1-0.1,0.1-0.1,0.2-0.1
-                                    c0.7,0,0.7,1.9,0.7,1.9c0,0.2,0.1,0.4,0.2,0.4c0.1,0,0.3-0.1,0.3-0.2C13.9,5,14.5,3.7,15,3.9c0.1,0,0.1,0.1,0.2,0.2
-                                    c0.1,0.3,0.1,1.1-0.2,1.9c-0.8,0.6-1.6,1.4-2.3,2.3c-0.7-0.1-1.4-0.1-2.1-0.1C10.1,6.4,10.2,5,10.4,4.6z M13.5,9.1
-                                    c0.1,0.7,0.1,1.5,0.1,2.2H7c0-0.7,0.1-1.5,0.1-2.2C9.3,8.9,11.4,8.9,13.5,9.1z M5.4,3.9c0-0.2,0.1-0.3,0.2-0.3h1.8
-                                    c0.1,0,0.2,0.1,0.2,0.3v0.7H5.4V3.9z M7.5,5.5v0.7H5.7l0-0.7H7.5z M3.4,9.7c0-0.2,0-0.3,0.1-0.5C4.1,8,5.2,7.2,5.4,7h2.2
-                                    c0.2,0.1,0.7,0.5,1.2,1.1c-0.7,0-1.3,0.1-2,0.2c-0.1,0-0.2,0.2-0.3,0.3c-0.1,0.9-0.1,1.9-0.2,2.8H3.5C3.5,10.7,3.4,10.1,3.4,9.7z
-                                     M12,18.3c-1.2,0-2.2-1-2.2-2.2c0-1.2,1-2.2,2.2-2.2c1.2,0,2.2,1,2.2,2.2C14.2,17.3,13.2,18.3,12,18.3z"/>
+                            <svg width="21" height="21" id="Icons" class="{{ config.name }}__icon_left" viewBox="0 0 21 21" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M13.99 8.13C13.81 5.34 12.68 2.62 10.56 0.5C8.42 2.64 7.24 5.36 7.01 8.13C8.29
+                                 8.81 9.47 9.69 10.5 10.76C11.53 9.7 12.71 8.82 13.99 8.13ZM10.55 3.69C11.18 4.72 11.62
+                                 5.87 11.85 7.07C11.38 7.37 10.94 7.7 10.51 8.05C10.09 7.71 9.64 7.38 9.18 7.08C9.43 5.88
+                                 9.89 4.73 10.55 3.69ZM10.5 13.95C9.68 12.7 8.64 11.61 7.44 10.75C7.31 10.66 7.17 10.59 7.04
+                                 10.49C7.17 10.58 7.31 10.66 7.43 10.74C5.48 9.33 3.09 8.5 0.5 8.5C0.5 13.82 3.86 18.32 8.53
+                                 19.99C9.16 20.22 9.82 20.39 10.5 20.5C11.18 20.38 11.83 20.21 12.47 19.99C17.14 18.32 20.5
+                                 13.82 20.5 8.5C16.32 8.5 12.65 10.67 10.5 13.95ZM11.82 18.1C11.38 18.25 10.94 18.37 10.49
+                                 18.47C10.05 18.38 9.62 18.26 9.21 18.11C5.92 16.93 3.51 14.12 2.76 10.76C3.86 11.02 4.91
+                                 11.47 5.88 12.09L5.86 12.1C5.99 12.19 6.12 12.28 6.25 12.35L6.32 12.39C7.31 13.11 8.16 14
+                                 8.83 15.04L10.5 17.6L12.17 15.05C12.86 14 13.72 13.1 14.7 12.39L14.77 12.34C14.86 12.29 14.95
+                                 12.23 15.04 12.17L15.03 12.15C16.01 11.5 17.1 11.02 18.24 10.75C17.49 14.12 15.09 16.93 11.82
+                                 18.1ZM7.49 10.78C7.47 10.77 7.45 10.75 7.44 10.74C7.44 10.74 7.45 10.74 7.45 10.75C7.46 10.76
+                                 7.47 10.77 7.49 10.78Z" fill="white"/>
                             </svg>
                             {{ 'product.find' | trans }}
                         </a>
-                        <span>
-                            <img src="{{ publicPath('images/abholservice.svg') }}" class="{{ config.name }}__icon_left"/>
-                            {{ 'product.buy' | trans }}
-                        </span>
+                        </div>
+                        <div class="{{ config.name }}__link_container">
+                            <a href="http://globus.de/payback" target = "_blank" class="{{ config.name }}__link_black">
+                                 <img src="{{ publicPath('images/payback-logo.png') }}" class="{{ config.name }}__icon_right"/>
+                                 {{ 'payback.upper' | trans }}
+                            </a>
+                        </div>
                     </div>
-                    <div class="{{ config.name }}__text-right col col--lg-8">
+                    <div class="{{ config.name }}__text-right">
                         <span>
                             <img src="{{ publicPath('images/check-circle.svg') }}" class="{{ config.name }}__icon_right"/>
                             {{ 'service.fee.customers' | trans}}
@@ -122,12 +135,6 @@
                         <span>
                             <img src="{{ publicPath('images/check-circle.svg') }}" class="{{ config.name }}__icon_right"/>
                             {{ 'without.contact.shop&pay' | trans }}
-                        </span>
-                        <span>
-                            <a href="http://globus.de/payback" target = "_blank" class="{{ config.name }}__link_black">
-                                 <img src="{{ publicPath('images/payback-logo.png') }}" class="{{ config.name }}__icon_right"/>
-                                 {{ 'payback.upper' | trans }}
-                            </a>
                         </span>
                     </div>
                 </div>
@@ -138,26 +145,19 @@
         <div class="container">
             {% block topSection %}
                 <div class="{{ config.name }}__row grid grid--no-wrap grid--justify grid--middle">
-                    <div class="col col--for-truncate grid grid--no-wrap grid--middle">
+                    <div class="{{ config.name }}__logo-container">
+                    <div class="col col--for-truncate grid grid--no-wrap grid--middle {{ config.name }}__logo-content">
                         {% block logo %}
                             {% include molecule('logo') with {
                                 class: 'col col--no-shrink',
                                 modifiers: modifiers | merge(['header']),
                             } only %}
                         {% endblock %}
-
-                        {% if app.currentCodeBucket == 'DE' %}
-                            <span class="{{ config.name }}__merchant">
-                                {{- data.merchant -}}
-                            </span>
-                        {% else %}
-                            <span class="{{ config.name }}__merchant-CZ">
-                                {{- data.merchant -}}
-                            </span>
+                          {% if app.currentCodeBucket == 'DE' %}
+                              <div class="{{ config.name }}__logo-text">{{ 'footer.globus' | trans }}</div>
                         {% endif %}
-
                     </div>
-
+                    </div>
                     <div class="col col--no-shrink grid grid--no-wrap grid--middle zIndex">
                         {% if data.showStoreSwitches %}
                             {% widget 'StoreSwitcherWidget' %}{% endwidget %}
@@ -165,52 +165,28 @@
 
                         {% if app.currentCodeBucket == 'DE' %}
                             <a id="link-to-time-slots" class="{{ config.name }}__navigation-item link link--nav link--reset-focus link-to-time-slots">
-                                <span class="icon-time"></span>
                                 {{ 'header.timeslot.button' | trans }}
                             </a>
                         {% else %}
                             <a id="link-to-time-slots" class="{{ config.name }}__navigation-item link link--nav-CZ link--reset-focus link-to-time-slots">
-                                <span class="icon-time"></span>
                                 {{ 'header.timeslot.button' | trans }}
                             </a>
                         {% endif %}
                         {% if app.currentCodeBucket == 'DE' %}
                             <a href="{{ 'page.fragen.url' | trans }}" class="link link--nav" target="_blank">
-                                {% include atom('icon') with {
-                                    modifiers: ['big'],
-                                    class: 'link__icon',
-                                    data: {
-                                        name: 'help',
-                                    },
-                                } only %}
                                 {{ 'global.help' | trans }}
                             </a>
                         {% else %}
                             <a href="{{ 'page.fragen.url' | trans }}" class="link link--nav-CZ">
-                                {% include atom('icon') with {
-                                    modifiers: ['big'],
-                                    class: 'link__icon',
-                                    data: {
-                                        name: 'help',
-                                    },
-                                } only %}
                                 {{ 'global.help' | trans }}
                             </a>
                         {% endif %}
-
-
-                        {% if is_granted('ROLE_USER') %}
-                            <a href="{{ url('logout') }}" class="link link--nav">
-                                {% include atom('icon') with {
-                                    modifiers: ['big'],
-                                    class: 'link__icon',
-                                    data: {
-                                        name: 'logout',
-                                    },
-                                } only %}
-                                {{ 'customer.logout' | trans }}
-                            </a>
+                        {% if data.showNavigation %}
+                                    <div class="col is-hidden-sm-lg">
+                                        {% include organism('navigation-top') only %}
+                                    </div>
                         {% endif %}
+
                     </div>
                 </div>
             {% endblock %}
@@ -227,31 +203,30 @@
                             <div
                                 class="{{ config.name }}__row {{ config.name }}__navigation-top {{ config.name }}__search-bar grid grid--middle grid--justify js-suggest-search--target">
                                 {% if data.showNavigation %}
-                                    <div class="col is-hidden-sm-lg">
-                                        <div class="{{ config.name }}__navigation-button-container">
-                                            <button class="button button--with-icon button--expand button--ghost {{ app.currentCodeBucket == 'DE' ? '' : 'button--font-CZ' }} {{ config.jsName }}__navigation-trigger js-page-layout-main--block-scroll-trigger" style="box-shadow: none !important;">
+
+                                    <div class="{{ config.name }}__all-products-button">
+                                            <button class="button button--global-products button--expand {{ app.currentCodeBucket == 'DE' ? '' : 'button--all-products-CZ' }} {{ config.jsName }}__navigation-trigger js-page-layout-main--block-scroll-trigger button__all-products" style="box-shadow: none !important;">
                                                 {% include atom('icon') with {
                                                     class: 'button__icon ' ~ config.jsName ~ '__navigation-target',
-                                                    modifiers: ['big', 'with-stroke'],
+                                                    modifiers: ['big', 'with-stroke', 'header'],
                                                     data: {
                                                         name: 'shop',
                                                     },
                                                 } only %}
                                                 {% include atom('icon') with {
                                                     class: 'button__icon is-hidden ' ~ config.jsName ~ '__navigation-target',
-                                                    modifiers: ['big', 'with-stroke'],
+                                                    modifiers: ['big', 'with-stroke', 'header'],
                                                     data: {
                                                         name: 'shop-filled',
                                                     },
                                                 } only %}
-                                                {{- 'global.all_products' | trans -}}
+                                                <div class="{{ config.name }}__products-button-text">{{- 'global.all_products' | trans -}}</div>
                                             </button>
-                                        </div>
                                     </div>
                                 {% endif %}
 
                                 {% if data.showSearchForm %}
-                                    <div class="col col--expand">
+                                    <div class="col col--expand col--sm-7">
                                         {% include molecule('search-form') with {
                                             class: config.name ~ '__search-form',
                                             attributes: {
@@ -261,16 +236,10 @@
                                     </div>
                                 {% endif %}
 
-                                {% if data.showNavigation %}
-                                    <div class="col is-hidden-sm-lg">
-                                        {% include organism('navigation-top') only %}
-                                    </div>
-                                {% endif %}
                             </div>
 
                             {% if data.showNavigation %}
-                                <div class="{{ config.name }}__row {{ config.name }}__navigation-top is-hidden-xl-only">
-
+                                <div class="{{ config.name }}__row {{ config.name }}__navigation-top is-hidden-xl-only {{ config.name }}__top-nav">
                                     <button type="button" class="navigation-top-left-mobile__item tablet-style {{ hamburgerIcon.jsClass }} button--no-inner-events">
                                         {% block icon %}
                                                 {% if app.currentCodeBucket == 'DE' %}
@@ -289,17 +258,17 @@
                                                             } only %}
                                                 {% endif %}
                                             {% endblock %}
-                                        </button>
-
+                                    </button>
                                     {% block logoMobile %}
                                         {% if app.currentCodeBucket == 'DE' %}
                                             <div class="{{ config.name }}__logo">
                                                 {% include molecule('logo') with {
                                                     modifiers: modifiers | merge(['header-mobile']),
                                                     attributes: {
-                                                        src: publicPath('images/spryker-logo.png'),
+                                                        src: publicPath('images/logo-new-globus.png'),
                                                     },
                                                 } only %}
+                                                <div class="{{ config.name }}__logo-text">{{ 'footer.globus' | trans }}</div>
                                             </div>
                                         {% else %}
                                             <div class="{{ config.name }}__logo">
@@ -313,7 +282,6 @@
                                         {% endif %}
 
                                     {% endblock %}
-
                                     {% include molecule('navigation-top-mobile') with {
                                         attributes: {
                                             'mobile-search-trigger-button': 'js-suggest-search--trigger',

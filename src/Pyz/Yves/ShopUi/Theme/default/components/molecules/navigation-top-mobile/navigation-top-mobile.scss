@@ -1,11 +1,36 @@
 @mixin shop-ui-navigation-top-mobile ($name: '.navigation-top-mobile') {
     #{$name} {
+
+        @include helper-breakpoint-media-max($lg-max) {
+            display:flex;
+            width: 100%;
+            margin-left: rem(50);
+        }
+
+        @include helper-breakpoint-media-max($sm-max) {
+            width: 90%;
+        }
+
        nav {
            ul {
+               @include helper-breakpoint-media-min($md-max){
+                   justify-content: stretch;
+                   margin-right: 0;
+               }
+
                @include helper-breakpoint-media-max($lg-max){
                    margin-top: -10px;
+                   margin-right: rem(10);
+                   align-items: center;
+                   display:flex;
+                   flex-flow: row;
                    li {
                        margin-top: -3px;
+                       padding-left: rem(30);
+
+                       @include helper-breakpoint-media-max($sm-max) {
+                           padding-left: rem(16);
+                       }
                    }
                }
            }
@@ -17,10 +42,20 @@
                color: black;
                left: 11px;
                font-size:13px;
+
+               @include helper-breakpoint-media-max($sm-max){
+                   visibility: hidden;
+               }
            }
 
            .store-widget-holder {
                width: 45% !important;
+               font-family: $setting-font-family-additional;
+
+
+           @include helper-breakpoint-media-max($lg-max) {
+               margin-right: rem(150);
+           }
                .custom-select__select--header, .custom-select-cz__select--header{
                    color: #71747c !important;
                    background: #f7f7f7;
@@ -39,14 +74,21 @@
                .store-switcher {
                    @include helper-breakpoint-media-max($sm-max) {
                        margin-top:5px;
+                       display: none;
                    }
                }
            }
 
            @include helper-breakpoint-media-max($sm-max) {
-               margin-left:0px;
+               margin-left:0;
            }
        }
+        &__shop-info {
+            @include helper-breakpoint-media-max($sm-max) {
+                display: flex;
+                flex-flow: row;
+            }
+        }
     }
 }
 

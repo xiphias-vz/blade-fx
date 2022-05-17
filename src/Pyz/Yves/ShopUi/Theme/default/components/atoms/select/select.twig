@@ -25,10 +25,19 @@
             {% endfor %}
         {% endblock %}
     </select>
+    {% if app.currentCodeBucket == 'DE' %}
     {% include atom('icon') with {
         class: config.name ~ '__caret',
         data: {
             name: 'arrow-down'
         }
     } only %}
+    {% else %}
+    {% include atom('icon') with {
+        class: config.name ~ '__caret-cz',
+        data: {
+            name: 'arrow-down'
+        }
+    } only %}
+    {% endif %}
 {% endblock %}

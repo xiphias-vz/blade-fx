@@ -11,33 +11,91 @@ $header-sticky-height: rem(69, number);
             margin-bottom: 3rem;
         }
 
+        &__logo-text {
+            color: $setting-color-fresh-orange;
+            font-size: rem(18);
+            text-transform: uppercase;
+            font-weight: 900;
+            letter-spacing: rem(1);
+
+            @include helper-breakpoint-media-max($sm-max) {
+                display: flex;
+                height: 100%;
+                font-size: rem(25);
+                align-items: center;
+                margin-bottom: 0;
+            }
+
+            @include helper-breakpoint-media-max($lg-max) {
+                margin-bottom: rem(8);
+            }
+        }
+
+        &__logo-container {
+            margin-right: rem(30);
+        }
+
+        &__info-container {
+            margin-left: rem(0);
+        }
+
         &__meta-navigation-top {
-            background: $setting-color-globus-lightGray;
+            height: rem(35);
+            background: $setting-color-globus-darkGray-3;
             font-size: 11px;
-            height: 30px;
-            padding: 5px;
-            margin: 0px;
+            margin: 0;
+            color:$setting-color-globus-white;
 
             @include helper-breakpoint-media-max($xl-min) {
                 display: none;
             }
         }
 
+        &__link_orange__middle {
+            color: $setting-color-gray-4;
+            user-select: none;
+            cursor: pointer;
+        }
+
        &__text-left {
-            display: inline-block;
-            text-align: left;
-            color:$setting-color-globus-lightOrange-2;
+           display: flex;
+           height: rem(35);
+           width: 100%;
+           align-items: center;
+           color: $setting-color-white;
+           justify-content: right;
+
+           :nth-child(2) {
+               background-color: $setting-color-fresh-orange;
+               justify-content: space-evenly;
+           }
+           :nth-child(3) {
+               margin-right: rem(220);
+           }
+           :last-child {
+               justify-content: end;
+           }
         }
 
         &__text-right {
-            display: inline-block;
-            text-align: right;
             color:$setting-color-globus-darkGray-2;
+            display: none;
+        }
+
+        &__link_container {
+            display: flex;
+            height: 100%;
+            /*line-height: rem(19);*/
+            font-size: rem(10);
+            width: rem(150);
+            align-items: center;
+            justify-content: center;
         }
 
         &__link_orange {
-            color: $setting-color-gray-13;
+            color: $setting-color-globus-white;
             text-decoration: none;
+            cursor: pointer;
 
             &:hover {
                 opacity: 1;
@@ -59,6 +117,11 @@ $header-sticky-height: rem(69, number);
             margin-left: 10px;
             text-decoration: none;
 
+            @include helper-breakpoint-media-max($sm-max) {
+                width: rem(8);
+                height: rem(8);
+            }
+
             &:hover {
                 opacity: 1;
                 fill: $setting-color-globus-lightOrange-2;
@@ -74,8 +137,11 @@ $header-sticky-height: rem(69, number);
         }
 
         &__link_black {
-            color: $setting-color-gray-13;
+            display: flex;
+            color: $setting-color-globus-white;
             text-decoration: none;
+            align-items: center;
+
 
             &:hover {
                 opacity: 1;
@@ -97,17 +163,20 @@ $header-sticky-height: rem(69, number);
         }
 
         &__row {
-            padding: 0 rem(20) 0 rem(100);
-            margin-left: 10px;
-            margin-right: 10px;
+            padding: 0 rem(20) 0 rem(20);
 
             @include helper-breakpoint-media-max($lg-max) {
-                margin-left: 0;
                 margin-right: 0;
             }
 
-            @include helper-breakpoint-media-min($xl-min) {
-                padding: 0;
+            @include helper-breakpoint-media-max($sm-max) {
+                height: rem(52);
+                left: unset;
+                margin-left: rem(10);
+                margin-bottom: rem(10);
+                display: flex;
+                flex-flow: wrap;
+                align-items: flex-end;
             }
         }
 
@@ -122,16 +191,16 @@ $header-sticky-height: rem(69, number);
 
         &__middle {
             padding: rem(14) 0;
-            background: $setting-color-globus-lightGray;
-            border-top: rem(5) solid $setting-color-globus-lightGray;
+            background: $setting-color-globus-white;
             z-index: $setting-zi-header + 1;
+            width: 100%;
 
             @include helper-breakpoint-media-min($xl-min) {
                 position: relative;
             }
 
             @include helper-breakpoint-media-max($lg-max) {
-                padding: 0px 0px 3px 0px;
+                padding: 0 rem(10);
                 transition: top 0.3s;
                 top:-120px;
                 background: #FFFFFF;
@@ -145,15 +214,49 @@ $header-sticky-height: rem(69, number);
             }
         }
 
+        &__all-products-button {
+
+            @include helper-breakpoint-media-max($lg-max) {
+                width: rem(60);
+            }
+            @include helper-breakpoint-media-max($sm-max) {
+                height: rem(40);
+            }
+        }
+
+        &__logo-content {
+            display: flex;
+            flex-flow: column;
+            justify-items: center;
+            justify-content: center;
+        }
+
         &__container {
             position: relative;
             z-index: $setting-zi-header + 1;
 
+            @include helper-breakpoint-media-max($sm-max) {
+                margin-left: rem(0);
+                padding-left: rem(10);
+                padding-right: rem(10);
+                padding-bottom: rem(10);
+            }
+        }
+
+        &__top-nav {
+            display: flex;
+            flex-flow: column;
         }
 
         &__navigation-top {
             position: relative;
             z-index: $setting-zi-header + 3;
+            display: flex;
+
+            @include helper-breakpoint-media-max($sm-max){
+                padding-bottom: rem(10);
+                padding-right: 0;
+            }
 
             &--checkout {
                 display: flex;
@@ -162,18 +265,42 @@ $header-sticky-height: rem(69, number);
         }
 
         &__search-bar {
+            height: rem(48);
+            width: 100%;
+
             @include helper-breakpoint-media-max($lg-max) {
                 position: absolute;
                 left: 0;
                 top: 100%;
                 right: 0;
                 padding: 0;
+                margin-top: rem(10);
+            }
+
+            @include helper-breakpoint-media-max($sm-max) {
+                top: 75%;
+                display:flex;
                 margin-top: 0;
+                /*padding-left: rem(10);
+                padding-right: rem(10);*/
+            }
+        }
+
+        &__products-button-text {
+            font-size: rem(14);
+            margin-left: rem(10);
+
+            @include helper-breakpoint-media-max($lg-max){
+                display: none;
             }
         }
 
         &__search-form {
             z-index: $setting-zi-header + 2;
+
+            @include helper-breakpoint-media-max($sm-max) {
+                margin-right: rem(10);
+            }
         }
 
         &__navigation-main {
@@ -184,8 +311,17 @@ $header-sticky-height: rem(69, number);
             bottom: 0;
             background: $setting-color-white;
             z-index: $setting-zi-header + 1;
+            box-shadow: 0 rem(4) rem(4) $setting-color-globus-lightGray;
             display: flex;
             flex-direction: column;
+
+            @include helper-breakpoint-media-max($lg-max) {
+                margin-top: rem(38);
+            }
+
+            @include helper-breakpoint-media-max($sm-max) {
+                margin-top: rem(50);
+            }
 
             h4 {
                 overflow-y: scroll;
@@ -201,11 +337,15 @@ $header-sticky-height: rem(69, number);
 
             @include helper-breakpoint-media-min($xl-min) {
                 position: absolute;
-                top: 100%;
+                left: 13%;
+                top: 68%;
                 bottom: auto;
                 display: block;
-                width: rem(345);
+                width: rem(327);
                 height: calc(100vh - #{$header-height});
+                box-shadow: 0 ($header-height - $header-sticky-height) 0 $setting-color-globus-lightGray;
+                // Move scrollbar to the left side
+                transform: scaleX(-1);
             }
 
             @include helper-media-ie() {
@@ -268,8 +408,8 @@ $header-sticky-height: rem(69, number);
         }
 
         &__navigation-button-container {
-            margin-right: rem(50);
             min-width: rem(190);
+            height: rem(48);
         }
 
         &__navigation-title {
@@ -327,16 +467,39 @@ $header-sticky-height: rem(69, number);
             margin-left: rem(-48);
         }
 
+        &--global-products {
+            margin-right: rem(0);
+            height: rem(44);
+            display:flex;
+            justify-content: center;
+            align-items: center;
+            background: $setting-color-fresh-orange;
+
+            @include helper-breakpoint-media-max($sm-max) {
+                margin-right: rem(0);
+                width: rem(100);
+            }
+        }
+
         &__logo {
+            display: flex;
             position: fixed;
             left: rem(60);
             top: rem(5);
 
             @include helper-breakpoint-media-max($lg-max) {
+                display: flex;
+                align-items: center;
+                height: 100%;
                 position: absolute;
-                top:0px;
-                left:45px;
-                margin-top: 0px;
+                top: rem(0);
+                left: rem(0);
+                margin-top: rem(5);
+            }
+
+            @include helper-breakpoint-media-max($sm-max) {
+                align-items: flex-start;
+                margin-left: 0;
             }
         }
 
@@ -346,14 +509,19 @@ $header-sticky-height: rem(69, number);
             top: rem(15);
             background-color: transparent;
             @include helper-breakpoint-media-max($lg-max) {
-                position: absolute;
-                top: 16px;
-                left: 10px;
+                display: none;
+            }
+            @include helper-breakpoint-media-max($sm-max) {
+                display: none;
             }
         }
 
         .link-to-time-slots {
             cursor: pointer;
+            @include helper-breakpoint-media-min($xl-min) {
+                text-overflow: ellipsis;
+                white-space: nowrap;
+            }
         }
 
         .icon-time {
@@ -363,6 +531,13 @@ $header-sticky-height: rem(69, number);
 
         .zIndex{
             z-index: 1;
+            margin-left: auto;
+            font-size: rem(12);
+
+            @include helper-breakpoint-media-min($lg-max) {
+                /*margin-left: 0;*/
+                width: 90%;
+            }
         }
 
         @content;

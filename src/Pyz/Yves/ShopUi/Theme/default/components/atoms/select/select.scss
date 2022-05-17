@@ -41,6 +41,16 @@
             pointer-events: none;
         }
 
+        &__caret-cz {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            right: rem(10);
+            width: rem(8);
+            height: rem(5);
+            pointer-events: none;
+        }
+
         &--expand {
             width: 100%;
         }
@@ -65,6 +75,10 @@
             padding: rem(12) rem(25);
             background-color: white;
             border-radius: rem(64);
+            color: $setting-color-globusCZ-main-green;
+        }
+
+        &--custom-cz {
             color: $setting-color-globusCZ-main-green;
         }
 

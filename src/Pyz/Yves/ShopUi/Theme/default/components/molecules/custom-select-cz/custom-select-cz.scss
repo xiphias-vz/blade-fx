@@ -50,8 +50,6 @@
             padding: rem(16);
             background: $setting-color-white;
             height: auto;
-            border: rem(1) solid $setting-color-input-border;
-            border-radius: rem(2);
 
             .select2-selection__rendered {
                 color: $setting-color-gray-6;
@@ -73,11 +71,13 @@
 
         &--header {
             .select2-selection--single .select2-selection__rendered {
-                color: $setting-color-globus-CZ-gray-1;
+                color: $setting-color-globusCZ-main-green;
             }
 
             .select2-selection--single {
                 padding: rem(10);
+                border-bottom: rem(5) solid $setting-color-globusCZ-main-green;
+                border-radius: rem(2);
                 @include helper-breakpoint-media-max($lg-max) {
                     padding: 0 1.125rem 0 0.6875rem !important;
                 }

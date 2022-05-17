@@ -616,7 +616,7 @@ global.close,"Uzavřít",cs_CZ
 global.close,Schließen,de_DE
 global.close,Close,en_US
 global.search,"Vyhledávání produktů",cs_CZ
-global.search,Produkte Suchen,de_DE
+global.search,Produkte finden im GLOBUS,de_DE
 global.search,Search,en_US
 global.search.results,"Všechny produkty",cs_CZ
 global.search.results,Alle Produkte,de_DE
@@ -715,7 +715,7 @@ global.benefit.competitive_prices,"Výhodné ceny",cs_CZ
 global.benefit.competitive_prices,Günstige Preise,de_DE
 global.benefit.competitive_prices,Competitive Prices,en_US
 global.help,"Otázky a odpovědi",cs_CZ
-global.help,Fragen? Kundenservice,de_DE
+global.help,Fragen,de_DE
 global.help,Help,en_US
 global.importInfo,"Důležité informace",cs_CZ
 global.importInfo,Wichtige Informationen,de_DE
@@ -724,7 +724,7 @@ global.store_finder,"Filiálky",cs_CZ
 global.store_finder,Filialen,de_DE
 global.store_finder,Store Finder,en_US
 global.my_wishlist,"Můj nákupní seznam",cs_CZ
-global.my_wishlist,Meine Einkaufsliste,de_DE
+global.my_wishlist,Einkaufsliste,de_DE
 global.my_wishlist,My Wishlist,en_US
 global.all_products,"Všechny produkty",cs_CZ
 global.all_products,Alle Produkte,de_DE
@@ -4839,9 +4839,9 @@ show_more.btn.title,Mehr erfahren,de_DE
 show_more.btn.title,Show more,en_US
 my_market.link,Mein Markt,de_DE
 my_market.link,My marketplace,en_US
-product.find,Produkte finden,de_DE
+product.find,Produkte finden im GLOBUS,de_DE
 product.find,Find products,en_US
-product.buy,Produkte kaufen,de_DE
+product.buy,Bestellen & Abholen,de_DE
 product.buy,Buy products,en_US
 service.fee.customers,"nur 1,99€ Servicegebühren für Mein Globus Kunden",de_DE
 service.fee.customers,"only 1.99€ service fees for Mein Globus customers",en_US
@@ -4899,7 +4899,7 @@ my_market.link,Mein Markt,de_DE
 my_market.link,My marketplace,en_US
 product.find,Produkte finden,de_DE
 product.find,Find products,en_US
-product.buy,Produkte kaufen,de_DE
+product.buy,Bestellen & Abholen,de_DE
 product.buy,Buy products,en_US
 service.fee.customers,"nur 1,99€ Servicegebühren für Mein Globus Kunden",de_DE
 service.fee.customers,"only 1.99€ service fees for Mein Globus customers",en_US

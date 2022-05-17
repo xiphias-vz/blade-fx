@@ -53,7 +53,7 @@
             padding: rem(22) rem(12);
             background: $setting-color-globus-white;
             height: auto;
-            border: rem(1) solid $setting-color-input-border-tentgray;
+           /* border: rem(1) solid $setting-color-input-border-tentgray;*/
             border-radius: rem(24);
 
             .select2-selection__rendered {
@@ -113,10 +113,13 @@
 
         &--header {
             .select2-selection--single .select2-selection__rendered {
-                color: $setting-color-gray-13;
+                color: $setting-color-forest-green;
+                font-size: rem(12);
             }
 
             .select2-selection--single {
+                border-bottom: rem(5) solid $setting-color-forest-green;
+                border-radius: rem(2) rem(2) rem(2) rem(2);
                 padding: rem(10);
                 @include helper-breakpoint-media-max($lg-max) {
                     padding: 0 1.125rem 0 0.6875rem !important;
@@ -125,7 +128,16 @@
             }
 
             .custom-select__caret {
-                color: $setting-color-gray-13;
+                color: $setting-color-forest-green;
+
+                @include helper-breakpoint-media-max($lg-max) {
+                    color: $setting-color-tentgray;
+                    right: rem(58);
+                }
+            }
+
+            .custom-select__caret-cz {
+                color: $setting-color-globusCZ-main-green;
             }
         }
 
